@@ -65,6 +65,13 @@ public class Chant_Reincarnation extends Chant
 		}
 		return super.tick(ticking,tickID);
 	}
+	
+	public boolean isGolem(Race R)
+	{
+		MOB M=(MOB)CMClass.sampleMOB().copyOf();
+		R.affectEnvStats(M,M.envStats());
+		return Sense.isGolem(M);
+	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -77,7 +84,9 @@ public class Chant_Reincarnation extends Chant
 		   &&(msg.amISource(mob)))
 		{
 			newRace=null;
-			while((newRace==null)||(newRace.ID().equals("StdRace")))
+			while((newRace==null)
+			||(isGolem(newRace))
+			||(newRace.ID().equals("StdRace")))
 				newRace=CMClass.randomRace();
 			if(newRace!=null)
 				mob.tell("You are being reincarnated as a "+newRace.name()+"!!");

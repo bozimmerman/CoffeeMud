@@ -179,10 +179,10 @@ public class LockSmith extends CommonSkill
 				woodRequired=5;
 
 			Room otherRoom=(dir>=0)?mob.location().getRoomInDir(dir):null;
-			if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location())
-			   ||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
-			   ||((otherRoom!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,otherRoom))
-			   ||((otherRoom!=null)&&(mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),otherRoom)))))
+			if((!CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+			&&((!(mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+			&&(!((otherRoom!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,otherRoom)))
+			&&((!(otherRoom!=null)&&(mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),otherRoom))))))
 			{
 				commonTell(mob,"You'll need the permission of the owner to do that.");
 				return false;

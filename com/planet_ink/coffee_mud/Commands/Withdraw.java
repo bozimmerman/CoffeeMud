@@ -51,9 +51,9 @@ public class Withdraw extends StdCommand
 		String thisName=Util.combine(commands,0);
 		Item thisThang=null;
 		if(thisName.equalsIgnoreCase("all"))
-			thisThang=((Banker)shopkeeper).findDepositInventory(mob.Name(),""+Integer.MAX_VALUE);
+			thisThang=((Banker)shopkeeper).findDepositInventory(mob,""+Integer.MAX_VALUE);
 		else
-			thisThang=((Banker)shopkeeper).findDepositInventory(mob.Name(),thisName);
+			thisThang=((Banker)shopkeeper).findDepositInventory(mob,thisName);
 		if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
 		{
 			mob.tell("That doesn't appear to be available.  Try LIST.");

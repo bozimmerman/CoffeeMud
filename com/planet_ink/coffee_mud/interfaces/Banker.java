@@ -9,12 +9,15 @@ public interface Banker extends ShopKeeper
 	public final static int DATA_DATA=3;
 	
 	public void addDepositInventory(String mob, Item thisThang);
+	public void addDepositInventory(MOB mob, Item thisThang);
 	public void delDepositInventory(String mob, Item thisThang);
+	public void delDepositInventory(MOB mob, Item thisThang);
 	public void delAllDeposits(String mob);
 	public int numberDeposited(String mob);
 	public Vector getAccountNames();
 	public Vector getDepositInventory(String mob);
 	public Item findDepositInventory(String mob, String likeThis);
+	public Item findDepositInventory(MOB mob, String likeThis);
 	public void setCoinInterest(double interest);
 	public void setItemInterest(double interest);
 	public double getCoinInterest();

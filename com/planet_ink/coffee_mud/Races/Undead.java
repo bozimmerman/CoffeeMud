@@ -37,6 +37,7 @@ public class Undead extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -86,6 +86,9 @@ public class GenSuperPill extends GenPill
 		boolean redress=false;
 		if(getSpells(this).size()>0)
 			eatIfAble(mob,this);
+		if((Util.getParmPlus(readableText,"beacon")>0)
+		&&(mob.location()!=null))
+			mob.setStartRoom(mob.location());
 		mob.baseEnvStats().setAbility(mob.baseEnvStats().ability()+Util.getParmPlus(readableText,"abi"));
 		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()+Util.getParmPlus(readableText,"arm"));
 		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+Util.getParmPlus(readableText,"att"));
@@ -139,7 +142,7 @@ public class GenSuperPill extends GenPill
 		mob.setQuestPoint(mob.getQuestPoint()+Util.getParmPlus(readableText,"ques"));
 		mob.setMoney(mob.getMoney()+Util.getParmPlus(readableText,"coin"));
 		int exp=Util.getParmPlus(readableText,"expe");
-		if(exp>0) MUDFight.postExperience(mob,null,mob.getLeigeID(),exp,false);
+		if(exp!=0) MUDFight.postExperience(mob,null,mob.getLeigeID(),exp,false);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();

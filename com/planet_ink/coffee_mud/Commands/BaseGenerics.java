@@ -856,7 +856,8 @@ public class BaseGenerics extends StdCommand
 			{
 				int num=(int)c.charAt(0)-'A';
 				String newVal=mob.session().prompt("Enter new value for "+CharStats.TRAITS[num]+" ("+E.baseCharStats().getStat(num)+"): ","");
-				if((Util.s_int(newVal)>0)&&(num!=CharStats.GENDER))
+				if(((Util.s_int(newVal)>0)||(newVal.trim().equals("0")))
+				&&(num!=CharStats.GENDER))
 					E.baseCharStats().setStat(num,Util.s_int(newVal));
 				else
 					mob.tell("(no change)");
