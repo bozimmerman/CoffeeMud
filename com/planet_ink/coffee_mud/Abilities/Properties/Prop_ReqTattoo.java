@@ -77,8 +77,12 @@ public class Prop_ReqTattoo extends Property
 						((MOB)e.next()).getRideBuddies(H);
 				}
 				for(Iterator e=H.iterator();e.hasNext();)
-					if(passesMuster((MOB)e.next()))
+				{
+				    Environmental E=(Environmental)e.next();
+				    if((E instanceof MOB)
+					&&(passesMuster((MOB)E)))
 						return super.okMessage(myHost,msg);
+				}
 				if(msg.target() instanceof Room)
 					msg.source().tell("You have not been granted authorization to go that way.");
 				else

@@ -26,18 +26,24 @@ public class Prop_ReqLevels extends Property
 	public String name(){ return "Level Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 
-	public boolean passesMuster(MOB mob, Room R)
+	public boolean passesMuster(MOB mob, Environmental R)
 	{
 		if(mob==null) return false;
 		if(Sense.isATrackingMonster(mob))
 			return true;
+		
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
 
-		if((text().toUpperCase().indexOf("ALL")>=0)||(text().length()==0)||(CMSecurity.isAllowed(mob,R,"GOTO")))
+		if((text().toUpperCase().indexOf("ALL")>=0)
+		||(text().length()==0)
+		||(!(R instanceof Room))
+	    ||(CMSecurity.isAllowed(mob,(Room)R,"GOTO")))
 			return true;
 
-		if((text().toUpperCase().indexOf("SYSOP")>=0)&&(!CMSecurity.isAllowed(mob,R,"GOTO")))
+		if((text().toUpperCase().indexOf("SYSOP")>=0)
+		&&(R instanceof Room)
+		&&(!CMSecurity.isAllowed(mob,(Room)R,"GOTO")))
 			return false;
 
 		int lvl=mob.envStats().level();
@@ -92,11 +98,11 @@ public class Prop_ReqLevels extends Property
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
-		   &&(msg.target()!=null)
-		   &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
-			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
-		   &&(!Sense.isFalling(msg.source()))
-		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
+		&&(msg.target()!=null)
+		&&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
+	        ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
+		&&(!Sense.isFalling(msg.source()))
+		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			HashSet H=new HashSet();
 			if(text().toUpperCase().indexOf("NOFOL")>=0)
@@ -108,8 +114,12 @@ public class Prop_ReqLevels extends Property
 					((MOB)e.next()).getRideBuddies(H);
 			}
 			for(Iterator e=H.iterator();e.hasNext();)
-				if(passesMuster((MOB)e.next(),(Room)msg.target()))
+			{
+			    Environmental E=(Environmental)e.next();
+			    if((E instanceof MOB)
+				&&(passesMuster((MOB)E,msg.target())))
 					return super.okMessage(myHost,msg);
+			}
 			msg.source().tell("You are not allowed to go that way.");
 			return false;
 		}

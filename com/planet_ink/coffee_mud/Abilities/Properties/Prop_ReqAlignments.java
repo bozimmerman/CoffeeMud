@@ -63,8 +63,12 @@ public class Prop_ReqAlignments extends Property
 					((MOB)e.next()).getRideBuddies(H);
 			}
 			for(Iterator e=H.iterator();e.hasNext();)
-				if(passesMuster((MOB)e.next()))
+			{
+			    Environmental E=(Environmental)e.next();
+			    if((E instanceof MOB)
+				&&(passesMuster((MOB)E)))
 					return super.okMessage(myHost,msg);
+			}
 			msg.source().tell("You may not go that way.");
 			return false;
 		}

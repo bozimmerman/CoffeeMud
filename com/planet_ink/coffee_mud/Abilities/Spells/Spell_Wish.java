@@ -673,13 +673,17 @@ public class Spell_Wish extends Spell
 						else level=-levelsGained;
 					}
 					int newLevel=target.baseEnvStats().level()+level;
-					if((target instanceof MOB)
-				    &&(newLevel>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL))
-				    &&(newLevel>target.baseEnvStats().level()))
+					if(target instanceof MOB)
 					{
-						wishDrain(mob,baseLoss,false);
-						mob.tell("That's beyond your power, but you lost exp even for trying.");
-						return false;
+					    if(((newLevel>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL))
+					            ||(((MOB)target).charStats().getCurrentClass().leveless())
+					            ||(((MOB)target).charStats().getMyRace().leveless()))
+					    &&(newLevel>target.baseEnvStats().level()))
+						{
+							wishDrain(mob,baseLoss,false);
+							mob.tell("That's beyond your power, but you lost exp even for trying.");
+							return false;
+						}
 					}
 
 					if(target instanceof MOB)

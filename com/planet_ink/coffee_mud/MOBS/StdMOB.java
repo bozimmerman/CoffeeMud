@@ -91,6 +91,10 @@ public class StdMOB implements MOB
 			&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)<=baseEnvStats().level()))
 				return Integer.MAX_VALUE;
 		}
+		if((CMSecurity.isDisabled("EXPERIENCE"))
+		||(charStats().getCurrentClass().expless())
+		||(charStats().getMyRace().expless()))
+		    return Integer.MAX_VALUE;
 		if(ExpNextLevel<=getExperience())
 			ExpNextLevel=getExperience()+1000;
 		return ExpNextLevel-getExperience();
