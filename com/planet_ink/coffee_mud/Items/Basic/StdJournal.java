@@ -254,7 +254,7 @@ public class StdJournal extends StdItem
 						mob.tell("Aborted.");
 						return;
 					}
-					if((subject.startsWith("MOTD")||subject.startsWith("MOTM")||subject.startsWith("MOTY"))
+					if((subject.toUpperCase().startsWith("MOTD")||subject.toUpperCase().startsWith("MOTM")||subject.toUpperCase().startsWith("MOTY"))
 					   &&(!(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))))
 						subject=subject.substring(4);
 					String message=mob.session().prompt("Enter your message\n\r: ");
