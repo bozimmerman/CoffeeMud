@@ -33,8 +33,15 @@ public class Cleric extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Cleric_Turn",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Hammer",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",true);
