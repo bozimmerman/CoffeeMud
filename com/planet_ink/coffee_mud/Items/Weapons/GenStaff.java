@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.Dice;
+import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Items.MiscMagic.StdWand;
 
 
@@ -80,15 +80,16 @@ public class GenStaff extends GenWeapon implements Wand
 		MOB mob=affect.source();
 		switch(affect.targetMinor())
 		{
-		case Affect.TYP_SPEAK:
-			if(affect.amITarget(this))
-			{
-				if(affect.sourceCode()==Affect.NO_EFFECT)
+		case Affect.TYP_CAST_SPELL:
+			if((affect.amITarget(this))
+			   &&(Util.bset(affect.targetCode(),Affect.ACT_GENERAL))
+			   &&(affect.sourceCode()==Affect.NO_EFFECT)
+			   &&(affect.othersCode()==Affect.NO_EFFECT))
 					waveIfAble(mob,affect.tool(),affect.targetMessage(),this);
-			}
-			else
+			break;
+		case Affect.TYP_SPEAK:
 			if(affect.sourceMinor()==Affect.TYP_SPEAK)
-				affect.addTrailerMsg(new FullMsg(affect.source(),this,affect.target(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
+				affect.addTrailerMsg(new FullMsg(affect.source(),this,affect.target(),affect.NO_EFFECT,null,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,affect.targetMessage(),affect.NO_EFFECT,null));
 			break;
 		default:
 			break;
