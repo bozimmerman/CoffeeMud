@@ -24,38 +24,38 @@ public class Property implements Ability, Cloneable
 		displayText="";
 		miscText="";
 	}
-	public int usesRemaining(){return 0;};
-	public void setUsesRemaining(int newUses){};
+	public int usesRemaining(){return 0;}
+	public void setUsesRemaining(int newUses){}
 
-	public MOB invoker(){return null;};
-	public Vector triggerStrings(){return new Vector();};
+	public MOB invoker(){return null;}
+	public Vector triggerStrings(){return new Vector();}
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto){return false;}
 	public boolean invoke(MOB mob, Environmental target, boolean auto){return false;}
-	public boolean autoInvocation(MOB mob){return false;};
-	public void unInvoke(){};
-	public boolean canBeUninvoked(){return false;};
-	public boolean isAnAutoEffect(){return true;};
+	public boolean autoInvocation(MOB mob){return false;}
+	public void unInvoke(){}
+	public boolean canBeUninvoked(){return false;}
+	public boolean isAnAutoEffect(){return true;}
 
-	public boolean canBeTaughtBy(MOB teacher, MOB student){return false;};
-	public boolean canBePracticedBy(MOB teacher, MOB student){return false;};
-	public boolean canBeLearnedBy(MOB teacher, MOB student){return false;};
-	public void teach(MOB teacher, MOB student){};
-	public void practice(MOB teacher, MOB student){};
+	public boolean canBeTaughtBy(MOB teacher, MOB student){return false;}
+	public boolean canBePracticedBy(MOB teacher, MOB student){return false;}
+	public boolean canBeLearnedBy(MOB teacher, MOB student){return false;}
+	public void teach(MOB teacher, MOB student){}
+	public void practice(MOB teacher, MOB student){}
 
-	public boolean qualifies(MOB student){return false;};
-	public int qualifyingLevel(MOB student){return -1;};
-	public void startTickDown(Environmental affected, long tickTime){};
+	public boolean qualifies(MOB student){return false;}
+	public int qualifyingLevel(MOB student){return -1;}
+	public void startTickDown(Environmental affected, long tickTime){}
 
-	public int profficiency(){return 0;};
-	public void setProfficiency(int newProfficiency){};
-	public boolean profficiencyCheck(int adjustment, boolean auto){return false;};
-	public void helpProfficiency(MOB mob){};
+	public int profficiency(){return 0;}
+	public void setProfficiency(int newProfficiency){}
+	public boolean profficiencyCheck(int adjustment, boolean auto){return false;}
+	public void helpProfficiency(MOB mob){}
 
-	public Environmental affecting(){return affected;};
-	public void setAffectedOne(Environmental being){affected=being;};
+	public Environmental affecting(){return affected;}
+	public void setAffectedOne(Environmental being){affected=being;}
 
-	public boolean putInCommandlist(){return false;};
-	public int quality(){return Ability.INDIFFERENT;};
+	public boolean putInCommandlist(){return false;}
+	public int quality(){return Ability.INDIFFERENT;}
 
 	public int classificationCode()
 	{

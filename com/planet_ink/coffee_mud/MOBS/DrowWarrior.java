@@ -257,7 +257,7 @@ public class DrowWarrior extends DrowElf
         }
         else
             prayer = CMClass.getAbility("Prayer_CureSerious");
-        return prayer.invoke(this,null,false);;
+        return prayer.invoke(this,null,false);
     }
 
 	protected boolean castDarkness()

@@ -275,7 +275,7 @@ public class IQCalendar extends GregorianCalendar
 	/**
 	 *  Returns the time zone of the given ID
 	 * 
-  	 * <br><br><b>Usage:</b> MEETZN = GetTheTimeZone(ID);;
+  	 * <br><br><b>Usage:</b> MEETZN = GetTheTimeZone(ID);
 	 * @param theID	The ID of the abbreviated time zone.
 	 * @return String The time zone name
 	 */
@@ -432,7 +432,7 @@ public class IQCalendar extends GregorianCalendar
 	/**
 	 *  Returns the time zone of the server
 	 * 
-  	 * <br><br><b>Usage:</b> MEETZN = T2ZoneString();;
+  	 * <br><br><b>Usage:</b> MEETZN = T2ZoneString();
 	 * @param NA
 	 * @return String The time zone
 	 */

@@ -36,6 +36,7 @@ public class Prayer_MassHarm extends Prayer
 		if(h==null) return false;
 
 		boolean success=profficiencyCheck(0,auto);
+		int numEnemies=h.size();
 		for(Enumeration e=h.elements();e.hasMoreElements();)
 		{
 			MOB target=(MOB)e.nextElement();
@@ -51,7 +52,7 @@ public class Prayer_MassHarm extends Prayer
 					if(mob.location().okAffect(msg))
 					{
 						mob.location().send(mob,msg);
-						int harming=Dice.roll(mob.envStats().level(),5,mob.envStats().level());
+						int harming=Dice.roll(4,mob.envStats().level()/numEnemies,numEnemies);
 						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The spell "+ExternalPlay.hitWord(-1,harming)+" <S-NAME>!");
 						ExternalPlay.postDamage(mob,target,this,harming);
 					}

@@ -40,7 +40,7 @@ public class Archon extends StdCharClass
 				giveMobAbility(mob,A,true);
 			}
 		}
-	};
+	}
 
 	public void outfit(MOB mob)
 	{

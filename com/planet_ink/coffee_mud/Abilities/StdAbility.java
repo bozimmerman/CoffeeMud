@@ -727,7 +727,7 @@ public class StdAbility implements Ability, Cloneable
 	}
 	public void makeLongLasting(){tickDown=Integer.MAX_VALUE;}
 
-	public int quality(){return this.quality;};
+	public int quality(){return this.quality;}
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
@@ -779,7 +779,7 @@ public class StdAbility implements Ability, Cloneable
 	public boolean appropriateToMyAlignment(MOB mob){return true;}
 
 	public void addAffect(Ability to){}
-	public void addNonUninvokableAffect(Ability to){};
+	public void addNonUninvokableAffect(Ability to){}
 	public void delAffect(Ability to){}
 	public int numAffects(){ return 0;}
 	public Ability fetchAffect(int index){return null;}

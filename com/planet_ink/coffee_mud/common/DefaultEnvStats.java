@@ -33,7 +33,7 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 	public void setWeight(int newWeight){Weight=newWeight;}
 	public void setSpeed(double newSpeed){Speed=newSpeed;}
 	public void setAttackAdjustment(int newAdjustment){AttackAdjustment=newAdjustment;}
-	public void setAbility(int newAdjustment){Ability=newAdjustment;};
+	public void setAbility(int newAdjustment){Ability=newAdjustment;}
 	public void setDisposition(int newDisposition){Disposition=newDisposition;}
 	public void setSensesMask(int newMask){SensesMask=newMask;}
 

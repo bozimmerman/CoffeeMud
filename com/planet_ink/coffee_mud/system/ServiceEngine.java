@@ -131,7 +131,7 @@ public class ServiceEngine
 			Tick tock=null;
 			synchronized(tickGroup){tock=(Tick)tickGroup.elementAt(0);}
 			if(tock!=null) tock.shutdown();
-			try{Thread.sleep(100);}catch(Exception e){};
+			try{Thread.sleep(100);}catch(Exception e){}
 		}
 		Log.errOut("ServiceEngine","Shutdown complete.");
 	}

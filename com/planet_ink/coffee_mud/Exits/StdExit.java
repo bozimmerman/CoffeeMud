@@ -437,12 +437,12 @@ public class StdExit implements Exit
 			return true;
 		}
 	}
-	public boolean isOpen(){return isOpen;};
-	public boolean isLocked(){return isLocked;};
-	public boolean hasADoor(){return hasADoor;};
-	public boolean hasALock(){return hasALock;};
-	public boolean defaultsLocked(){return doorDefaultsLocked;};
-	public boolean defaultsClosed(){return doorDefaultsClosed;};
+	public boolean isOpen(){return isOpen;}
+	public boolean isLocked(){return isLocked;}
+	public boolean hasADoor(){return hasADoor;}
+	public boolean hasALock(){return hasALock;}
+	public boolean defaultsLocked(){return doorDefaultsLocked;}
+	public boolean defaultsClosed(){return doorDefaultsClosed;}
 	public void setDoorsNLocks(boolean newHasADoor,
 								  boolean newIsOpen,
 								  boolean newDefaultsClosed,

@@ -299,7 +299,7 @@ public class Drowness extends StdBehavior
         {
             prayer = CMClass.getAbility("Prayer_CureSerious");
         }
-        return prayer.invoke(mob,null,false);;
+        return prayer.invoke(mob,null,false);
     }
 
 	public boolean okAffect(Environmental oking, Affect affect)

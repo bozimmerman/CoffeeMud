@@ -57,7 +57,7 @@ public class StdCharClass implements CharClass
 
 	public void logon(MOB mob)
 	{
-	};
+	}
 
 	public void newCharacter(MOB mob, boolean isBorrowed)
 	{

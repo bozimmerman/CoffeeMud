@@ -31,9 +31,17 @@ public class Prayer_Deathfinger extends Prayer
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-
+		
+		if((auto)||(mob.curState().getMana()<mob.maxState().getMana()))
+		{
+			mob.tell("You must be at full mana to invoke this power.");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
+		
+		mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
 
@@ -50,7 +58,7 @@ public class Prayer_Deathfinger extends Prayer
 				if(!msg.wasModified())
 				{
 					int harming=(int)Math.round(Util.div(target.curState().getHitPoints(),2.0));
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"The deathfinger "+ExternalPlay.hitWord(-1,harming)+" <S-NAME>!");
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The deathfinger "+ExternalPlay.hitWord(-1,harming)+" <S-NAME>!");
 					ExternalPlay.postDamage(mob,target,this,harming);
 				}
 			}
