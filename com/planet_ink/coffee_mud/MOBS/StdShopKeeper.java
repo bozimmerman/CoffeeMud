@@ -878,7 +878,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return 1.0;
 	}
 
-	private int yourValue(MOB mob, Environmental product, boolean sellTo)
+	public int yourValue(MOB mob, Environmental product, boolean sellTo)
 	{
 		int val=0;
 		if(product==null)

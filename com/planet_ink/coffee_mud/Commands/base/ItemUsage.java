@@ -351,6 +351,9 @@ public class ItemUsage
 					mob.tell(container.name()+" is closed.");
 			}
 			else
+			if(containerName.equalsIgnoreCase("all"))
+				mob.tell("You don't see anything here.");
+			else
 				mob.tell("You don't see '"+containerName+"' here.");
 		}
 	}

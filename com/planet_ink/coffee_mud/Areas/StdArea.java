@@ -1168,7 +1168,7 @@ public class StdArea implements Area
 
 	public int adjustWaterConsumption(int base, MOB mob, Room room)
 	{
-		if((room.domainType()&Room.INDOORS)>0)
+		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
 			return base;
 		else
 		switch(currentWeather)
@@ -1217,6 +1217,7 @@ public class StdArea implements Area
 
 	public void fillInAreaRoom(Room R)
 	{
+		if(R==null) return;
 		R.clearSky();
 		if(R.roomID().length()>0)
 		{
@@ -1228,7 +1229,7 @@ public class StdArea implements Area
 
 	public int adjustMovement(int base, MOB mob, Room room)
 	{
-		if((room.domainType()&Room.INDOORS)>0)
+		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
 			return base;
 		else
 		switch(currentWeather)
@@ -1367,13 +1368,13 @@ public class StdArea implements Area
 
 	public int nextWeatherType(Room room)
 	{
-		if((room.domainType()&Room.INDOORS)==(Room.INDOORS))
+		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
 			return Area.WEATHER_CLEAR;
 		return nextWeather;
 	}
 	public String nextWeatherDescription(Room room)
 	{
-		if((room.domainType()&Room.INDOORS)==(Room.INDOORS))
+		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
 			return "You can't tell much about the weather from here.";
 		return getNextWeatherDescription();
 	}

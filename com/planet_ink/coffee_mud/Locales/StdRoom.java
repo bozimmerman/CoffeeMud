@@ -1016,6 +1016,12 @@ public class StdRoom
 		inhabitants.removeElement(mob);
 	}
 
+	public Item fetchAnyItem(String itemID)
+	{
+		Item item=(Item)CoffeeUtensils.fetchEnvironmental(contents,itemID,true);
+		if(item==null) item=(Item)CoffeeUtensils.fetchEnvironmental(contents,itemID,false);
+		return item;
+	}
 	public Item fetchItem(Item goodLocation, String itemID)
 	{
 		Item item=(Item)CoffeeUtensils.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,true);

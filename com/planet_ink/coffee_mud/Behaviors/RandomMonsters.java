@@ -21,8 +21,8 @@ public class RandomMonsters extends ActiveTicker
 		String oldParms=newParms;
 		if(x>=0)
 		{
-			filename=newParms.substring(x+1);
-			oldParms=newParms.substring(0,x);
+			filename=newParms.substring(x+1).trim();
+			oldParms=newParms.substring(0,x).trim();
 		}
 		super.setParms(oldParms);
 		minMonsters=getParmVal(oldParms,"minmonsters",1);

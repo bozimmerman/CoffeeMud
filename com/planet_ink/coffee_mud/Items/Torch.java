@@ -15,7 +15,7 @@ public class Torch extends LightSource
 		setName("a torch");
 		setDisplayText("a small straw torch sits here.");
 		setDescription("It looks like it is lightly covered in oil near the end.");
-		durationTicks=30;
+		durationTicks=150;
 
 		material=EnvResource.RESOURCE_OAK;
 		this.destroyedWhenBurnedOut=true;

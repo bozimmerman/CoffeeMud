@@ -54,7 +54,7 @@ public class Wainwrighting extends CommonSkill
 		Vector V=(Vector)Resources.getResource("WAINWRIGHT RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"wainwright.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"wainwright.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Wainwrighting","Recipes not found!");

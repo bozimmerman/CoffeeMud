@@ -1,3 +1,6 @@
 GAES still isn't done
-Fighter secret skill IMPROVED DISARM if they don't have anything in the wield position, it will cause them to drop what is in the held position.
+when you did open gate, it thought you meant the cityguard
+someone can get a cold for not wearing something on a place they can't wear anything.
+
+
 

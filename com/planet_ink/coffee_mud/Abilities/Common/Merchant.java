@@ -461,7 +461,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			super.affect(myHost,affect);
 	}
 
-	private int yourValue(MOB mob, Environmental product, boolean sellTo)
+	public int yourValue(MOB mob, Environmental product, boolean sellTo)
 	{
 		int val=0;
 		if((product==null)||(!(product instanceof Item)))

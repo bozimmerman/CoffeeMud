@@ -3,12 +3,17 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
-public class EnglishParser
+public class EnglishParser implements Tickable
 {
 	private EnglishParser(){};
+	public String ID(){return "EnglishParser";}
+	public String name(){return "THE English Parser";}
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		return true;
+	}
 	
 	// these should be checked after pmap prelim check.
-	private String[] articles={"a","an","the","some","of","pair"};
 	private String[] universalStarters={
 		"go ",
 		"go and ",
@@ -23,9 +28,11 @@ public class EnglishParser
 	//codes:
 	//%m mob name (anyone)
 	//%i item name (anything)
+	//%g misc parms
 	//%c casters name
 	//%s social name
 	//%k skill command word
+	//%r room name
 	// * match anything
 	private String[][] pmap={
 		// below is killing
@@ -43,13 +50,28 @@ public class EnglishParser
 		{"find and %s %m","mobfind %m;%s %m"},
 		{"%s %m","mobfind %m;%s %m"},
 		// below is item fetching
+//under skills, MAKE, MAKE ME, MAKE FOR ME <item> should be options.
+//DROWN, DROWN YOURSELF, DROWN IN A LAKE, SWIM, SWIM AN OCEAN, CLIMB A MOUNTAIN, CLIMB A TREE, CLIMB <X>, SWIM <x>, HANG YOURSELF, CRAWL <x>
+//BLOW YOUR NOSE, VOMIT, PUKE, THROW UP, KISS MY ASS, KISS <CHAR> <Body part>
+// KILL ALL EVIL, KILL AN EVIL, search and destroy, seek and destroy
 		{"bring %i","itemfind %i;mobfind %c;give %i %c"},
 		{"bring %m %i","itemfind %i;mobfind %m;give %i %m"},
 		{"bring %i to %m","itemfind %i;mobfind %m;give %i %m"},
 		{"bring me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"give %i","itemfind %i;mobfind %c;give %i %c"},
+		{"give %m %i","itemfind %i;mobfind %m;give %i %m"},
+		{"give %i to %m","itemfind %i;mobfind %m;give %i %m"},
+		{"give me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"give your %i","itemfind %i;mobfind %c;give %i %c"},
+		{"give %m your %i","itemfind %i;mobfind %m;give %i %m"},
+		{"give your %i to %m","itemfind %i;mobfind %m;give %i %m"},
+		{"give me your %i","itemfind %i;mobfind %c;give %i %c"},
+		{"buy %i","itemfind %i;mobfind %c;give %i %c"},
+		{"buy %m %i","itemfind %i;mobfind %m;give %i %m"},
+		{"buy %i to %m","itemfind %i;mobfind %m;give %i %m"},
+		{"buy me %i","itemfind %i;mobfind %c;give %i %c"},
 		{"find me %i","itemfind %i;mobfind %c;give %i %c"},
 		{"find %i for %m","itemfind %i;mobfind %m;give %i %m"},
-		{"find %i","itemfind %i;mobfind %c;give %i %c"},
 		{"find %m %i","itemfind %i;mobfind %m;give %i %m"},
 		{"fetch me %i","itemfind %i;mobfind %c;give %i %c"},
 		{"fetch %i for %m","itemfind %i;mobfind %m;give %i %m"},
@@ -57,7 +79,7 @@ public class EnglishParser
 		{"get me %i","itemfind %i;mobfind %c;give %i %c"},
 		{"get %i for %m","itemfind %i;mobfind %m;give %i %m"},
 		{"get %m %i","itemfind %i;mobfind %m;give %i %m"},
-		{"get %i","itemfind %i;mobfind %c;give %i %c"},
+		{"get %i","itemfind %i"},
 		{"deliver %i to %m","itemfind %i;mobfind %m;give %i %m"},
 		// below are eats, drinks
 		{"eat %i","itemfind %i;eat %i"},
@@ -65,15 +87,46 @@ public class EnglishParser
 		{"stuff yourself with %i","itemfind %i;eat %i"},
 		{"drink %i","itemfind %i;drink %i"},
 		// below are gos, and find someone (and report back where), take me to, show me
-		// below are buys and sells
+		{"go to %r","find %r;sit"},
+		{"report to %r","find %r;sit"},
+		{"walk to %r","find %r;sit"},
+		{"find %r","find %r;"},
+		{"find %r","find %r;"},
+		{"show me the way to %r","say follow me;find %r;"},
+		{"show me how to get to %r","say follow me;find %r;"},
+		{"show me how to get %r","say follow me;find %r;"},
+		{"take me to %r","say follow me;find %r;"},
 		// follow someone around (but not FOLLOW)
 		// simple commands: hold, lock, unlock, read, channel
-		// more simpletons: say sit sleep stand wear x, wield x, hold x, 
+		{"hold %i","itemfind %i;hold %i"},
+		{"lock %i","itemfind %i;lock %i"},
+		{"unlock %i","itemfind %i;unlock %i"},
+		{"read %i","itemfind %i;read %i"},
+		{"gossip %g","gossip %g"},
+		// more simpletons: say sit sleep stand wear x, wield x
+		{"sleep","sleep"},
+		{"sit","sit"},
+		{"stand","stand"},
+		{"sit down","sit"},
+		{"stand up","stand"},
+		{"wear %i","itemfind %i;wear %i"},
+		{"wield %i","itemfind %i;wield %i"},
 		// below are sit x sleep x mount x enter x 
+		{"sit %i","itemfind %i;sit %i"},
+		{"sleep %i","itemfind %i;sleep %i"},
+		{"mount %i","itemfind %i;mount %i"},
+		{"mount %m","mobfind %m;mount %m"},
 		// below are learns, practices, teaches, etc..
 		// below are tells, say tos, report tos, 
-		// below are silly questions
+		{"tell %m %g","mobfind %m;say %m %g"},
+		{"say %g to %m","mobfind %m;say %m %g"},
+		{"tell %g to %m","mobfind %m;say %m %g"},
 		// below are skill usages
+		{"%k %i","itemfind %i;%k %i"},
+		{"%k %m","mobfind %m;%k %m"},
+		{"%k %g %i","itemfind %i;%k %g %i"},
+		{"%k %g %m","mobfind %m;%k %g %m"},
+		// below are silly questions
 		{"where %*","say You want me to answer where? I don't know where!"},
 		{"who %*","say You want me to answer who? I don't know who!"},
 		{"when %*","say You want me to answer when? I don't know when!"},
@@ -81,16 +134,7 @@ public class EnglishParser
 		{"why %*","say You want me to answer why? I don't know why!"}
 	};
 	
-	public final static int STEP_EVAL=0;
-	
-	public class geasStep
-	{
-		public Vector que=new Vector();
-		public int step=STEP_EVAL;
-		public Vector bothered=new Vector();
-	}
-	
-	private Hashtable findMatch(Vector req)
+	private Vector findMatch(Vector req)
 	{
 		Vector possibilities=new Vector();
 		Hashtable map=new Hashtable();
@@ -119,6 +163,9 @@ public class EnglishParser
 						}
 						break;
 					case 'm':
+					case 'g':
+					case '*':
+					case 'r':
 					case 'i':
 						String code=(String)chk.elementAt(ci);
 						int remain=chk.size()-ci;
@@ -129,20 +176,19 @@ public class EnglishParser
 						while(ri<=(req.size()-remain))
 						{
 							String nxt="";
-							if(ci<(chk.size()-1))
+							if(ci<chk.size())
 							{
-								nxt=(String)chk.elementAt(ci+1);
+								nxt=(String)chk.elementAt(ci);
 								if(nxt.startsWith("%"))
 									nxt="";
 							}
 							if((nxt.length()>0)
-							&&(ri<(req.size()-1))
-							&&(req.elementAt(ri+1).equals(nxt)))
+							&&(ri<req.size())
+							&&(req.elementAt(ri).equals(nxt)))
 							   break;
-							ri++;
-							ci++;
 							if(ri<req.size())
 								str=str+" "+((String)req.elementAt(ri));
+							ri++; 
 						}
 						map.put(code,str);
 						break;
@@ -171,9 +217,9 @@ public class EnglishParser
 				continue;
 			}
 			map.put("INSTR",pmap[p]);
-			return map;
+			possibilities.addElement(map);
 		}
-		return map;
+		return possibilities;
 	}
 	
 	private String cleanWord(String s)
@@ -190,22 +236,345 @@ public class EnglishParser
 		return s;
 	}
 	
-	public Vector getItemNames()
+	private boolean foundIn(Vector V, String that)
 	{
-		return new Vector();
+		for(int v=0;v<V.size();v++)
+		{
+			if(CoffeeUtensils.containsString((String)V.elementAt(v),that))
+				return true;
+		}
+		return false;
 	}
-	
-	public Vector getMobNames()
-	{
-		return new Vector();
-	}
-										  
 	
 	public geasStep processRequest(MOB you, MOB me, String req)
 	{
 		Vector REQ=Util.parse(req.toLowerCase().trim());
 		for(int v=0;v<REQ.size();v++)
 			REQ.setElementAt(cleanWord((String)REQ.elementAt(v)),v);
-		return new geasStep();
+		Vector poss=findMatch(REQ);
+		if(poss.size()==0)
+		{
+			req=Util.combine(REQ,0);
+			boolean doneSomething=true;
+			while(doneSomething)
+			{
+				doneSomething=false;
+				for(int i=0;i<universalStarters.length;i++)
+					if(req.startsWith(universalStarters[i]))
+					{
+						doneSomething=true;
+						req=req.substring(universalStarters.length).trim();
+					}
+			}
+			REQ=Util.parse(req);
+			poss=findMatch(REQ);
+		}
+		geasStep g=new geasStep();
+		if(poss.size()==0)
+			g.que.addElement("wanderquery "+req);
+		else
+		{
+			Vector likelys=new Vector();
+			Vector itemList=new Vector();
+			Vector mobList=new Vector();
+			Vector roomStuff=new Vector();
+			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+			{
+				Room R=(Room)e.nextElement();
+				roomStuff.addElement(R.displayText());
+				roomStuff.addElement(R.description());
+				for(int i=0;i<R.numItems();i++)
+				{
+					Item I=R.fetchItem(i);
+					if((I!=null)&&(!itemList.contains(I.name())))
+					{
+					   itemList.addElement(I.name());
+					   itemList.addElement(I.displayText());
+					}
+				}
+				for(Enumeration p=CMMap.players();p.hasMoreElements();)
+				{
+					MOB M=(MOB)p.nextElement();
+					if((M!=null)&&(!mobList.contains(M.name())))
+					{
+					   mobList.addElement(M.name());
+					   mobList.addElement(M.displayText());
+					}
+				}
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					MOB M=R.fetchInhabitant(m);
+					if((M!=null)&&(!mobList.contains(M.name())))
+					{
+					   mobList.addElement(M.name());
+					   mobList.addElement(M.displayText());
+					   for(int i=0;i<M.inventorySize();i++)
+					   {
+							Item I=M.fetchInventory(i);
+							if((I!=null)&&(!itemList.contains(I.name())))
+							{
+							   itemList.addElement(I.name());
+							   itemList.addElement(I.displayText());
+							}
+					   }
+					   if(CoffeeUtensils.getShopKeeper(M)!=null)
+					   {
+						   Vector inven=CoffeeUtensils.getShopKeeper(M).getUniqueStoreInventory();
+						   for(int a=0;a<inven.size();a++)
+						   {
+							   if(inven.elementAt(a) instanceof Item)
+							   {
+									Item I=(Item)inven.elementAt(a);
+									if((I!=null)&&(!itemList.contains(I.name())))
+									{
+									   itemList.addElement(I.name());
+									   itemList.addElement(I.displayText());
+									}
+							   }
+							   else
+							   if(inven.elementAt(a) instanceof MOB)
+							   {
+									MOB M2=(MOB)inven.elementAt(a);
+									if((M2!=null)&&(!mobList.contains(M2.name())))
+									{
+										mobList.addElement(M2.name());
+										mobList.addElement(M2.displayText());
+									}
+							   }
+						   }
+					   }
+					}
+				}
+			}
+			for(int p=0;p<poss.size();p++)
+			{
+				Hashtable map=(Hashtable)poss.elementAt(p);
+				String that=(String)map.get("%m");
+				if(that!=null)
+				{
+					if(!foundIn(mobList,that))
+						continue;
+				}
+				that=(String)map.get("%i");
+				if(that!=null)
+				{
+					if(!foundIn(itemList,that))
+						continue;
+				}
+				that=(String)map.get("%r");
+				if(that!=null)
+				{
+					if(!foundIn(roomStuff,that))
+						continue;
+				}
+				likelys.addElement(map);
+			}
+			if(likelys.size()==0) likelys=poss;
+			Hashtable map=(Hashtable)likelys.elementAt(Dice.roll(1,likelys.size(),-1));
+			Vector all=Util.parseSemicolons((String)map.get("INSTR"));
+			g.que=new Vector();
+			for(int a=0;a<all.size();a++)
+				g.que.addElement(Util.parse((String)all.elementAt(a)));
+			if(you!=null)	map.put("%c",you.name());
+			map.put("%i",me.name());
+			g.you=you;
+			g.me=me;
+			for(int q=0;q<g.que.size();q++)
+			{
+				Vector V=(Vector)g.que.elementAt(q);
+				for(int v=0;v<V.size();v++)
+				{
+					String s=(String)g.que.elementAt(q);
+					if(s.startsWith("%"))
+						V.setElementAt((String)map.get(s.trim()),v);
+				}
+			}
+			itemList.clear();
+			mobList.clear();
+			roomStuff.clear();
+		}
+		return g;
 	}
+	
+	public final static int STEP_EVAL=0;
+	public final static int STEP_INT1=1;
+	public final static int STEP_INT2=2;
+	public final static int STEP_INT3=3;
+	public final static int STEP_INT4=4;
+	public final static int STEP_INT5=5;
+	public final static int STEP_ALLDONE=-999;
+	public class geasStep
+	{
+		public Vector que=new Vector();
+		public int step=STEP_EVAL;
+		public Vector bothered=new Vector();
+		public MOB you=null;
+		public MOB me=null;
+		public void step()
+		{
+			if(que.size()==0)
+			{
+				step=STEP_ALLDONE;
+				return;
+			}
+			Vector cur=(Vector)que.firstElement();
+			if(cur.size()==0)
+			{
+				step=STEP_EVAL;
+				que.removeElementAt(0);
+				return;
+			}
+			String s=(String)cur.firstElement();
+			if(s.equalsIgnoreCase("itemfind"))
+			{
+				String item=Util.combine(cur,1);
+				if((Util.isNumber(item)&&(Util.s_int(item)>0)))
+				{
+					if(me.getMoney()>=Util.s_int(item))
+					{
+						step=STEP_EVAL;
+						que.removeElementAt(0);
+						ExternalPlay.quickSay(me,null,"I got the money!",false,false);
+						return;
+					}
+					item="coins";
+				}
+					
+				// do I already have it?
+				Item I=me.fetchInventory(item);
+				if((I!=null)&&(Sense.canBeSeenBy(I,me)))
+				{
+					step=STEP_EVAL;
+					if(!I.amWearingAt(Item.INVENTORY))
+					{
+						ExternalPlay.remove(me,I,false);
+						return;
+					}
+					if(I.container()!=null)
+					{
+						ExternalPlay.get(me,I.container(),I,false);
+						return;
+					}
+					que.removeElementAt(0);
+					ExternalPlay.quickSay(me,null,"I got "+I.name()+"!",false,false);
+					return;
+				}
+				// is it just sitting around?
+				I=me.location().fetchItem(null,item);
+				if((I!=null)&&(Sense.canBeSeenBy(I,me)))
+				{
+					step=STEP_EVAL;
+					ExternalPlay.get(me,null,I,false);
+					return;
+				}
+				// is it in a container?
+				I=me.location().fetchAnyItem(item);
+				if((I!=null)&&(I.container()!=null)
+				   &&(I.container() instanceof Container)
+				   &&(((Container)I.container()).isOpen()))
+				{
+					step=STEP_EVAL;
+					ExternalPlay.get(me,I.container(),I,false);
+					return;
+				}
+				// is it up for sale?
+				for(int m=0;m<me.location().numInhabitants();m++)
+				{
+					MOB M=me.location().fetchInhabitant(m);
+					if((M!=null)&&(M!=me)&&(Sense.canBeSeenBy(M,me)))
+					{
+						I=M.fetchInventory(null,item);
+						if((I!=null)&&(!I.amWearingAt(Item.INVENTORY)))
+						{
+							if(step==STEP_EVAL)
+							{
+								ExternalPlay.quickSay(me,M,"I must have '"+I.name()+".  Give it to me now.",false,false);
+								step=STEP_INT1;
+								return;
+							}
+							else
+							if(step==STEP_INT1)
+							{
+								step=STEP_INT2;
+								return;
+							}
+							else
+							if(step==STEP_INT2)
+							{
+								ExternalPlay.quickSay(me,M,"I MUST HAVE '"+I.name().toUpperCase()+".  GIVE IT TO ME NOW!!!!",false,false);
+								step=STEP_INT3;
+								return;
+							}
+							else
+							if(step==STEP_INT3)
+							{
+								step=STEP_INT4;
+								return;
+							}
+							else
+							if(step==STEP_INT4)
+							{
+								ExternalPlay.postAttack(me,M,me.fetchWieldedItem());
+								step=STEP_EVAL;
+								return;
+							}
+						}
+						ShopKeeper sk=CoffeeUtensils.getShopKeeper(M);
+						if((!item.equals("coins"))&&(sk!=null)&&(sk.getStock(item,me)!=null))
+						{
+							Environmental E=sk.getStock(item,me);
+							if((E!=null)&&(E instanceof Item))
+							{
+								int price=sk.yourValue(me,E,true);
+								if(price<=Money.totalMoney(me))
+								{
+									try{ExternalPlay.doCommand(me,Util.parse("BUY \""+E.name()+"\""));}catch(Exception e){}
+									step=STEP_EVAL;
+									return;
+								}
+								else
+								{
+									price=price-Money.totalMoney(me);
+									que.insertElementAt(Util.parse("itemfind "+price),0);
+									ExternalPlay.quickSay(me,null,"Damn, I need "+price+" gold.",false,false);
+									step=STEP_EVAL;
+									return;
+								}
+							}
+						}
+					}
+				}
+			}
+			else
+			if(s.equalsIgnoreCase("mobfind"))
+			{
+				MOB M=me.location().fetchInhabitant(Util.combine(cur,1));
+				if((M!=null)&&(M!=me)&&(Sense.canBeSeenBy(M,me)))
+				{
+					step=STEP_EVAL;
+					que.removeElementAt(0);
+					return;
+				}
+			}
+			else
+			if(s.equalsIgnoreCase("find"))
+			{
+				
+			}
+			else
+			if(s.equalsIgnoreCase("wanderquery"))
+			{
+				
+			}
+			else
+			{
+				step=STEP_EVAL;
+				que.removeElementAt(0);
+				try{ ExternalPlay.doCommand(me,cur);
+				} catch(Exception e){}
+				return;
+			}
+		}
+	}
+	
 }

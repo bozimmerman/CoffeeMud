@@ -3,6 +3,9 @@ Installation.html update
 Archons Guide updates
 
 //****** next version ********************************************************
+Fighter secret skill IMPROVED DISARM if they don't have anything in the wield position, it will cause them to drop what is in the held position.
+chant to show everyone in all the "wild" areas of their present area.  Should be very high level.
+spell to show everyone in the area, and what rooms they are in.
 GenRaces
 GenCharClasses
 racial abilities (abilities tied to the race)
