@@ -155,7 +155,8 @@ public class Generic
 		{
 			Item item=(Item)E;
 			String xml=
-				((item instanceof Container)?XMLManager.convertXMLtoTag("IID",""+E):"")
+				(((item instanceof Container)&&(((Container)item).capacity()>0))
+				?XMLManager.convertXMLtoTag("IID",""+E):"")
 				+XMLManager.convertXMLtoTag("IWORN",""+item.rawWornCode())
 				+XMLManager.convertXMLtoTag("ILOC",""+((item.container()!=null)?(""+item.container()):""))
 				+XMLManager.convertXMLtoTag("IUSES",""+item.usesRemaining())
@@ -622,7 +623,7 @@ public class Generic
 					buf.append("<RITEM>");
 					Item item=(Item)items.elementAt(i);
 					buf.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(item)));
-					if(item instanceof Container)
+					if((item instanceof Container)&&(((Container)item).capacity()>0))
 						buf.append(XMLManager.convertXMLtoTag("IIDEN",""+item));
 					if(item.container()==null)
 						buf.append("<ILOCA />");
@@ -870,7 +871,7 @@ public class Generic
 						return;
 					}
 					int wornCode=XMLManager.getIntFromPieces(idat,"IWORN");
-					if(newOne instanceof Container)
+					if((newOne instanceof Container)&&(((Container)newOne).capacity()>0))
 						IIDmap.put(XMLManager.getValFromPieces(idat,"IID"),newOne);
 					String ILOC=XMLManager.getValFromPieces(idat,"ILOC");
 					mob.addInventory(newOne);

@@ -23,17 +23,17 @@ public class Spell_Alarm extends Spell
 	{
 		super.affect(affect);
 
-		if(affected==null)
+		if((affected==null)||(invoker==null))
 		{
-			this.unInvoke();
+			unInvoke();
 			return;
 		}
 
 		if(affect.source()!=null)
+		{
 			myRoomContainer=affect.source().location();
-
-		if(affect.source()==invoker)
-			return;
+			if(affect.source()==invoker) return;
+		}
 
 		if(affect.amITarget(affected))
 		{
@@ -41,7 +41,6 @@ public class Spell_Alarm extends Spell
 			invoker.tell("The alarm on your "+affected.name()+" has gone off.");
 			unInvoke();
 		}
-
 	}
 
 
@@ -60,8 +59,8 @@ public class Spell_Alarm extends Spell
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
 				myRoomContainer=mob.location();
+				beneficialAffect(mob,target,0);
 			}
 
 		}
