@@ -71,7 +71,7 @@ public class Prayer_RemovePoison extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) that <T-NAME> be delivered from <T-HIS-HER> poisonous infliction, but there is no answer.");
+			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> pray(s) that <T-NAME> be delivered from <T-HIS-HER> poisonous infliction, but there is no answer.");
 
 
 		// return whether it worked

@@ -707,12 +707,16 @@ public class StdRoom
 		if(mob!=null)
 			found=mob.fetchCarried(goodLocation, thingName);
 		if(found==null)
+		{
 			found=fetchFromRoomFavorItems(goodLocation, thingName);
+			if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
+				return found;
+			else
+				found=null;
+		}
 		if((mob!=null)&&(found==null))
 			found=mob.fetchWornItem(thingName);
-		if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
-			return found;
-		return null;
+		return found;
 	}
 
 	public int pointsPerMove()

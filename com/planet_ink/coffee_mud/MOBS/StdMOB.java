@@ -644,8 +644,7 @@ public class StdMOB implements MOB
 					if(!Sense.aliveAwakeMobile(this,false))
 						return false;
 					if((!Sense.canBeSeenBy(affect.target(),this))
-					&&(!isMine(affect.target()))
-					&&(!(affect.target() instanceof Item)))
+					&&(!(isMine(affect.target())&&(affect.target() instanceof Item))))
 					{
 						mob.tell("You don't see '"+affect.target().name()+"' here.");
 						return false;
@@ -660,7 +659,8 @@ public class StdMOB implements MOB
 			if(Util.bset(srcMajor,Affect.ACT_HANDS))
 			{
 				if((!Sense.canBeSeenBy(affect.target(),this))
-				&&(!(((isInCombat())&&(affect.target()==victim)))))
+				&&(!(isMine(affect.target())&&(affect.target() instanceof Item)))
+				&&(!(isInCombat()&&(affect.target()==victim))))
 				{
 					mob.tell("You don't see '"+affect.target().name()+"' here.");
 					return false;

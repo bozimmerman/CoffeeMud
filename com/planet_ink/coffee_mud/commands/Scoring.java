@@ -266,6 +266,7 @@ public class Scoring
 	public StringBuffer getEquipment(MOB seer, MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
+		boolean foundButUnseen=false;
 		for(int l=0;l<16;l++)
 		{
 			int wornCode=new Double(Math.pow(new Integer(2).doubleValue(),new Integer(l).doubleValue())).intValue();
@@ -274,15 +275,20 @@ public class Scoring
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item thisItem=mob.fetchInventory(i);
-				if((thisItem.location()==null)&&(thisItem.amWearingAt(wornCode))&&(Sense.canBeSeenBy(thisItem,seer)))
-					msg.append(header+thisItem.name()+Sense.colorCodes(thisItem,seer)+"\n\r");
+				if((thisItem.location()==null)&&(thisItem.amWearingAt(wornCode)))
+				{
+					if(Sense.canBeSeenBy(thisItem,seer))
+						msg.append(header+thisItem.name()+Sense.colorCodes(thisItem,seer)+"\n\r");
+					else
+						foundButUnseen=true;
+				}
 			}
 		}
-		if((msg.length()==0)&&(!Sense.isSleeping(seer)))
-			msg.append("nothing!\n\r");
+		if(foundButUnseen)
+			msg.append("(nothing you can see right now)");
 		else
 		if(msg.length()==0)
-			msg.append("(nothing you can see right now)");
+			msg.append("(nothing)\n\r");
 
 		return msg;
 	}

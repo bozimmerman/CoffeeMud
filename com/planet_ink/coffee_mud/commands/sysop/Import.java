@@ -183,6 +183,10 @@ public class Import
 			if((text.endsWith("'"))||(text.endsWith("`")))
 				text=text.substring(0,text.length()-1);
 		}
+		if(text.toUpperCase().trim().startsWith("IT SAYS:"))
+			text=text.trim().substring(8).trim();
+		if(text.toUpperCase().trim().startsWith("IT SAYS"))
+			text=text.trim().substring(7).trim();
 		return text;
 	}
 	

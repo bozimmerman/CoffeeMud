@@ -56,7 +56,7 @@ public class Skill_Write extends StdAbility
 			mob.tell("You must specify what you want to write on and then what you want to write.");
 			return false;
 		}
-		Item target=mob.fetchInventory((String)commands.elementAt(0));
+		Item target=mob.fetchCarried(null,(String)commands.elementAt(0));
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");

@@ -270,13 +270,15 @@ public class StdExit implements Exit
 					for(int i=0;i<mob.inventorySize();i++)
 					{
 						Item item=mob.fetchInventory(i);
-						if((item instanceof Key)&&(item.location()==null))
+						if((item instanceof Key)
+						&&(item.location()==null)
+						&&(Sense.canBeSeenBy(item,mob)))
 						{
 							if(((Key)item).getKey().equals(keyName()))
 								return true;
 						}
 					}
-					mob.tell("You don't have the key.");
+					mob.tell("You don't seem to have the key.");
 					return false;
 				}
 			}

@@ -200,7 +200,9 @@ public class StdContainer extends StdItem implements Container
 						for(int i=0;i<mob.inventorySize();i++)
 						{
 							Item item=mob.fetchInventory(i);
-							if((item instanceof Key)&&(item.location()==null))
+							if((item instanceof Key)
+							&&(item.location()==null)
+							&&(Sense.canBeSeenBy(item,mob)))
 							{
 								if(((Key)item).getKey().equals(keyName()))
 									return true;

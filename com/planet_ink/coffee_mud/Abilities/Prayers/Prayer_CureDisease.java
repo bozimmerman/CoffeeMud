@@ -76,7 +76,7 @@ public class Prayer_CureDisease extends Prayer
 		else
 		{
 			// it didn't work, but tell everyone you tried.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> pray(s) for <T-NAMESELF>, but nothing happens.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> pray(s) for <T-NAMESELF>, but nothing happens.");
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 		}

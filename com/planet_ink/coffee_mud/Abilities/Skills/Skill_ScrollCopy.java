@@ -41,7 +41,7 @@ public class Skill_ScrollCopy extends StdAbility
 			mob.tell("Copy what from what?");
 			return false;
 		}
-		Item target=mob.fetchInventory(Util.combine(commands,1));
+		Item target=mob.fetchCarried(null,Util.combine(commands,1));
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");

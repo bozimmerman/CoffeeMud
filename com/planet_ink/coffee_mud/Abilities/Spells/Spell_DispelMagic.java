@@ -58,6 +58,9 @@ public class Spell_DispelMagic extends Spell
 			if(foundSomethingAtLeast)
 				mob.tell(mob,target,"The magic on <T-NAME> appears too powerful to dispel.");
 			else
+			if(auto)
+				mob.tell(mob,target,"Nothing seems to be happening.");
+			else
 				mob.tell(mob,target,"<T-NAME> does not appear to be affected by anything you can dispel.");
 			return false;
 		}
