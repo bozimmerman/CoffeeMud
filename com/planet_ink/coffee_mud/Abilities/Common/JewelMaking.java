@@ -485,6 +485,13 @@ public class JewelMaking extends CraftingSkill
 			beneficialAffect(mob,mob,completion);
 			return true;
 		}
+		else
+		if(misctype.equalsIgnoreCase("bundle"))
+		{
+			messedUp=false;
+			aborted=false;
+			unInvoke();
+		}
 		return false;
 	}
 }

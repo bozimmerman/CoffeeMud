@@ -161,6 +161,7 @@ public class StdCharClass implements CharClass, Cloneable
 		&&(isQualifyingAuthority(mob,(Ability)E))
 		&&(mob.isMine(E))
 		&&(!E.ID().equals("Skill_Recall"))
+		&&(((Ability)E).classificationCode()!=Ability.COMMON_SKILL)
 		&&(!CoffeeUtensils.armorCheck(mob,allowedArmorLevel()))
 		&&(Dice.rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2)))
 			return false;

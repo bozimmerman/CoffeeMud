@@ -413,6 +413,13 @@ public class Weaving extends CraftingSkill
 			building=(Item)msg.target();
 			beneficialAffect(mob,mob,completion);
 		}
+		else
+		if(bundle)
+		{
+			messedUp=false;
+			aborted=false;
+			unInvoke();
+		}
 		return true;
 	}
 }
