@@ -1022,7 +1022,7 @@ public class TelnetSession extends Thread implements Session
 					System.out.print(("0123456789ABCDEF").charAt(b));
 				}
 			}
-			System.out.println(" ");
+			System.out.print(" \n");
 		}
 		//*/
 		return buf.toString();

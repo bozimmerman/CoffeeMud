@@ -158,7 +158,7 @@ public class MobData extends StdWebMacro
 					if(MATCHING==null)
 						break;
 					else
-					if(Util.s_int(MATCHING)>0)
+					if(Util.isNumber(MATCHING))
 					{
 						Environmental O=(Environmental)inventory.elementAt(Util.s_int(MATCHING)-1);
 						if(O!=null)

@@ -18,7 +18,7 @@ public class GrinderMobs
 		}
 		return "";
 	}
-
+	
 	public static void happilyAddItem(Item I, MOB M)
 	{
 		if(I.subjectToWearAndTear())
@@ -291,7 +291,7 @@ public class GrinderMobs
 						Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
 						if(I2!=null)
 						{
-							if(Util.s_int(MATCHING)>0)
+							if(Util.isNumber(MATCHING))
 								happilyAddItem(I2,M);
 							else
 								happilyAddItem((Item)I2.copyOf(),M);
@@ -317,7 +317,7 @@ public class GrinderMobs
 					if(MATCHING==null)
 						break;
 					else
-					if(Util.s_int(MATCHING)>0)
+					if(Util.isNumber(MATCHING))
 					{
 						Environmental O=(Environmental)inventory.elementAt(Util.s_int(MATCHING)-1);
 						if(O!=null)
@@ -398,7 +398,8 @@ public class GrinderMobs
 		}
 		R.recoverRoomStats();
 		ExternalPlay.DBUpdateMOBs(R);
-		httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
+		String newMobCode=RoomData.getMOBCode(R,M);
+		httpReq.addRequestParameters("MOB",newMobCode);
 		return "";
 	}
 }
