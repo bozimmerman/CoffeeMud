@@ -24,13 +24,15 @@ public class Prop_ReqLevels extends Property
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
-		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area))
-		   &&(affect.targetMinor()==Affect.TYP_ENTER))
+		   &&(affect.target()!=null)
+		   &&(affect.target() instanceof Room)
+		   &&(affect.targetMinor()==Affect.TYP_ENTER)
+		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
-			if((text().toUpperCase().indexOf("ALL")>=0)||(text().length()==0)||(affect.source().isASysOp((Room)affected)))
+			if((text().toUpperCase().indexOf("ALL")>=0)||(text().length()==0)||(affect.source().isASysOp((Room)affect.target())))
 				return super.okAffect(affect);
 
-			if((text().toUpperCase().indexOf("SYSOP")>=0)&&(!affect.source().isASysOp((Room)affected)))
+			if((text().toUpperCase().indexOf("SYSOP")>=0)&&(!affect.source().isASysOp((Room)affect.target())))
 			{
 				affect.source().tell("That way is restricted.  You are not allowed.");
 				return false;

@@ -2494,7 +2494,7 @@ public class Import
 					}
 				}
 
-				Ability prop_RoomCapacity=CMClass.getAbility("Prop_RoomCapacity");
+				Ability prop_RoomCapacity=CMClass.getAbility("Prop_ReqCapacity");
 				Ability prop_RoomLevels=CMClass.getAbility("Prop_ReqLevels");
 
 

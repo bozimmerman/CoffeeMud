@@ -5,18 +5,18 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_RoomCapacity extends Property
+public class Prop_ReqCapacity extends Property
 {
-	public Prop_RoomCapacity()
+	public Prop_ReqCapacity()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Room Capacity Limitations";
+		name="Capacity Limitations";
 	}
 
 	public Environmental newInstance()
 	{
-		Prop_RoomCapacity newOne=new Prop_RoomCapacity();
+		Prop_ReqCapacity newOne=new Prop_ReqCapacity();
 		newOne.setMiscText(text());
 		return newOne;
 	}
@@ -27,14 +27,15 @@ public class Prop_RoomCapacity extends Property
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
-		   &&(affected instanceof Room)
-		   &&(affect.amITarget(affected))
-		   &&(affect.targetMinor()==Affect.TYP_ENTER))
+		   &&(affect.target()!=null)
+		   &&(affect.target() instanceof Room)
+		   &&(affect.targetMinor()==Affect.TYP_ENTER)
+		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
 			int capacity=2;
 			if(Util.s_int(text())>0)
 				capacity=Util.s_int(text());
-			if(((Room)affected).numInhabitants()>=capacity)
+			if(((Room)affect.target()).numInhabitants()>=capacity)
 			{
 				affect.source().tell("No more people can fit in there.");
 				return false;

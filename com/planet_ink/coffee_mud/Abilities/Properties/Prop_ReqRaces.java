@@ -24,8 +24,10 @@ public class Prop_ReqRaces extends Property
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
-		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area))
-		   &&(affect.targetMinor()==Affect.TYP_ENTER))
+		   &&(affect.target()!=null)
+		   &&(affect.target() instanceof Room)
+		   &&(affect.targetMinor()==Affect.TYP_ENTER)
+		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
 			int x=text().toUpperCase().indexOf("ALL");
 			int y=text().toUpperCase().indexOf(affect.source().charStats().getMyRace().name().toUpperCase());

@@ -25,6 +25,12 @@ public class Prop_ItemTransporter extends Property
 	public String accountForYourself()
 	{ return "Item Transporter";	}
 
+	public Item ultimateParent(Item item)
+	{
+		if(item==null) return null;
+		if(item.location()==null) return item;
+		return ultimateParent(item.location());
+	}
 
 	private synchronized boolean setDestination()
 	{
@@ -169,34 +175,45 @@ public class Prop_ItemTransporter extends Property
 				mobMover=(MOB)affect.source();
 			Vector itemsToMove=new Vector();
 			if(roomMover!=null)
-				for(int r=0;r<roomMover.numItems();r++)
+			{
+				for(int i=0;i<roomMover.numItems();i++)
 				{
-					Item item=roomMover.fetchItem(r);
-					if((item!=null)&&(item.location()==container))
+					Item item=roomMover.fetchItem(i);
+					if((item!=null)&&(item!=container)&&(ultimateParent(item)==container))
 					   itemsToMove.addElement(item);
 				}
+				for(int i=0;i<itemsToMove.size();i++)
+					roomMover.delItem((Item)itemsToMove.elementAt(i));
+			}
 			else
 			if(mobMover!=null)
+			{
+				int oldNum=itemsToMove.size();
 				for(int i=0;i<mobMover.inventorySize();i++)
 				{
 					Item item=mobMover.fetchInventory(i);
-					if((item!=null)&&(item.location()==container))
+					if((item!=null)&&(item!=container)&&(ultimateParent(item)==container))
 					   itemsToMove.addElement(item);
 				}
+				for(int i=oldNum;i<itemsToMove.size();i++)
+					mobMover.delInventory((Item)itemsToMove.elementAt(i));
+			}
 			if(itemsToMove.size()>0)
 			{
 				if(roomDestination!=null)
 					for(int i=0;i<itemsToMove.size();i++)
 					{
 						Item item=(Item)itemsToMove.elementAt(i);
-						item.setLocation(nextDestination);
+						if((item.location()==null)||(item.location()==container))
+							item.setLocation(nextDestination);
 						roomDestination.addItem(item);
 					}
 				if(mobDestination!=null)
 					for(int i=0;i<itemsToMove.size();i++)
 					{
 						Item item=(Item)itemsToMove.elementAt(i);
-						item.setLocation(nextDestination);
+						if((item.location()==null)||(item.location()==container))
+							item.setLocation(nextDestination);
 						mobDestination.addInventory(item);
 					}
 			}
