@@ -236,6 +236,7 @@ public class RandomTraps extends ActiveTicker
 					if((doAnyDoors)||(doAnyLockedDoors))
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
+						if(R==null) R=(Room)elligible.elementAt(r);
 						Exit E=R.getExitInDir(d);
 						if((R.getRoomInDir(d)!=null)
 						&&(E!=null)
