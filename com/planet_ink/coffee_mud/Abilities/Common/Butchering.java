@@ -105,7 +105,8 @@ public class Butchering extends CommonSkill
 			body=(DeadBody)I;
 			verb="skinning and butchering "+I.name();
 			int duration=(I.envStats().weight()/10);
-			if(duration<5) duration=5;
+			if(duration<3) duration=3;
+			if(duration>40) duration=40;
 			beneficialAffect(mob,mob,duration);
 		}
 		return true;

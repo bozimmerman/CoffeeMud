@@ -12,6 +12,8 @@ public class Herbalism extends CommonSkill
 	public String name(){ return "Herbalism";}
 	private static final String[] triggerStrings = {"HERBALISM","HERBREW","HBREW"};
 	public String[] triggerStrings(){return triggerStrings;}
+	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
+	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
 
 	private Item building=null;
 	String oldName="";

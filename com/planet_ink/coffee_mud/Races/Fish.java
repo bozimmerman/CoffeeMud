@@ -112,7 +112,7 @@ public class Fish extends StdRace
 				resources.addElement(makeResource
 				("some "+name().toLowerCase(),EnvResource.RESOURCE_FISH));
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+				("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}

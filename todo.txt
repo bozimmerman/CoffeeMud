@@ -7,6 +7,7 @@ Programming.html update
 //****** next version ********************************************************
 GenRaces
 racial abilities (abilities tied to the race)
+encumbrance/ wearing heavy armor slow  you down?
 property on abilities that describes what to say when already affected by it.
 like, I'd like some race specific questions to have during the character creation process
 Some solution for variable eq on mobs

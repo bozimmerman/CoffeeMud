@@ -105,6 +105,9 @@ public class Kobold extends StdRace
 			{
 				resources.addElement(makeResource
 				("some nobby "+name().toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
+				for(int i=0;i<2;i++)
+					resources.addElement(makeResource
+					("some "+name().toLowerCase()+" scales",EnvResource.RESOURCE_SCALES));
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource

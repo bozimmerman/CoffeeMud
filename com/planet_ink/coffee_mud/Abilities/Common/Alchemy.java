@@ -12,6 +12,8 @@ public class Alchemy extends CommonSkill
 	public String name(){ return "Alchemy";}
 	private static final String[] triggerStrings = {"BREW","ALCHEMY"};
 	public String[] triggerStrings(){return triggerStrings;}
+	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
+	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
 
 	private boolean requiresFire=false;
 	private Item building=null;

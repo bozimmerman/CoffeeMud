@@ -16,6 +16,8 @@ public class Apothecary extends Cooking
 	public String cookWord(){return "mixing";};
 	public Environmental newInstance(){	return new Apothecary();}
 	public boolean honorHerbs(){return false;}
+	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
+	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
 
 	
 	protected synchronized Vector loadRecipes()
