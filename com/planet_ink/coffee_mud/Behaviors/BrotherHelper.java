@@ -51,7 +51,7 @@ public class BrotherHelper extends StdBehavior
 		&&(isBrother(target,observer))
 		&&(!isBrother(source,observer)))
 		{
-			boolean yep=Aggressive.startFight(observer,source,(getParms().toUpperCase().indexOf("MOBKILL")>=0));
+			boolean yep=Aggressive.startFight(observer,source,true);
 			if(yep)	ExternalPlay.quickSay(observer,null,"DON'T HURT MY FRIEND!",false,false);
 		}
 	}

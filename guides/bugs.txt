@@ -1,5 +1,4 @@
 GAES still isn't done
-aggressive behaviors should have a flag to set them onto other mobs.
 Make sure arrestmobs works.. can be brought before Hassan...
 
 

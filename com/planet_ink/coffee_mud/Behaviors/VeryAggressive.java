@@ -73,8 +73,9 @@ public class VeryAggressive extends Aggressive
 						if((inhab!=null)
 						&&((!inhab.isMonster())||(mobKiller))
 						&&(ExternalPlay.zapperCheck(zapStr,inhab))
-						&&(inhab.envStats().level()<(mob.envStats().level()+15))
-						&&(inhab.envStats().level()>(mob.envStats().level()-15)))
+						&&((zapStr.length()==0)
+						   ||((inhab.envStats().level()<(mob.envStats().level()+15))
+							  &&(inhab.envStats().level()>(mob.envStats().level()-15)))))
 						{
 							dirCode=d;
 							break;
