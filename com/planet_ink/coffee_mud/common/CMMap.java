@@ -97,7 +97,6 @@ public class CMMap
 	
 	private static void pageRooms(INI page, Hashtable table, String start)
 	{
-		table=new Hashtable();
 		for(int r=0;r<CMClass.races.size();r++)
 		{
 			Race R=(Race)CMClass.races.elementAt(r);
@@ -130,11 +129,13 @@ public class CMMap
 	
 	public static void initStartRooms(INI page)
 	{
+		startRooms=new Hashtable();
 		pageRooms(page,startRooms,"START");
 	}
 
 	public static void initDeathRooms(INI page)
 	{
+		deathRooms=new Hashtable();
 		pageRooms(page,deathRooms,"DEATH");
 	}
 
