@@ -93,7 +93,10 @@ public class Spell_FloatingDisc extends Spell
 				target.envStats().setWeight(0);
 				wasntMine=true;
 				if(target.ID().equals("StdCoins"))
+				{
+					mob.location().delItem((Item)target);
 					mob.addInventory((Item)target);
+				}
 				else
 				if(!ExternalPlay.get(mob,null,(Item)target,true))
 				{

@@ -2386,7 +2386,6 @@ public class Import
 			// build first room structures, leaving rest for later.
 			Room lastRoom=null;
 			Hashtable petShops=new Hashtable();
-			Hashtable banks=new Hashtable();
 			for(int r=0;r<roomData.size();r++)
 			{
 				Vector roomV=null;
@@ -2476,8 +2475,7 @@ public class Import
 				if(Util.isSet(codeBits,21)) // underwater room
 					R=changeRoomClass(R,"UnderWater");
 
-				if(Util.isSet(codeBits,1)) //BANKS are taken care of in MOB import
-					banks.put(R,R);
+				//if(Util.isSet(codeBits,1)) //BANKS are forked up in the ROM files, who knows WHAT this is...
 
 				if(Util.isSet(codeBits,0)) // dark room
 					R.addNonUninvokableAffect(CMClass.getAbility("Prop_RoomDark"));
@@ -2775,7 +2773,7 @@ public class Import
 							returnAnError(mob,"Reset error (no mob) on line: "+s);
 						else
 						{
-							if(banks.contains(R))
+							if(M.displayText().toUpperCase().indexOf("MONEY CHANGER")>=0)
 								M.addBehavior(CMClass.getBehavior("MoneyChanger"));
 							M.recoverCharStats();
 							M.recoverEnvStats();
