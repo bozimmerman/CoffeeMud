@@ -124,7 +124,9 @@ public class Chant_Treemorph extends Chant
 				affectableStats.setName("a "+treeForm.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+treeForm.name());
-			treeForm.setHeightWeight(((MOB)affected).baseEnvStats(),'M');
+			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
+			treeForm.setHeightWeight(affectableStats,'M');
+			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 
 			//affectableStats.setReplacementName("a tree of "+affected.name());
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);

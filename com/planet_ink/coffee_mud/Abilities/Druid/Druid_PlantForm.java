@@ -87,7 +87,9 @@ public class Druid_PlantForm extends StdAbility
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
 			affectableStats.setName(Util.startWithAorAn(raceName.toLowerCase()));
-			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
+			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
+			newRace.setHeightWeight(affectableStats,'M');
+			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
 

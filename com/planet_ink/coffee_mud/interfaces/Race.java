@@ -108,7 +108,7 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 		{-1,-1}, // GILLS, No applicable wear position for this body part
 		{Item.ON_MOUTH,1}, // MOUTH, gains a wear position here for every 1
 		{Item.ON_WAIST,1}, // WAIST, gains a wear position here for every 1
-		{Item.ON_LEGS,-1}, // TAIL, having any of these removes that pos
+		{-1,-1}, // TAIL, having any of these removes that pos
 		{Item.ON_BACK,-1}, // WINGS, having any of these removes that pos
 	};
 }

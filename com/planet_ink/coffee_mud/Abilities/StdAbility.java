@@ -27,7 +27,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	public String Name(){return name();}
 	public String name(){ return "an ability";}
 	public String description(){return "&";}
-	public String displayText(){return "What they see when affected.";}
+	public String displayText(){return "Affected list display for "+ID();}
 	public static final String[] empty={};
 	public String[] triggerStrings(){return empty;}
 	public int maxRange(){return 0;}

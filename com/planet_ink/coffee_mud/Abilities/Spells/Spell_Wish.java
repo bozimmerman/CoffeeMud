@@ -792,7 +792,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" TRANSFORM")>=0)))
 			{
 				CharClass C=CMClass.getCharClass((String)wishV.lastElement());
-				if((C!=null)&&(!C.name().equals("Archon")))
+				if((C!=null)&&(C.playerSelectable()))
 				{
 					CharClass oldC=mob.baseCharStats().getCurrentClass();
 					baseLoss+=1000;

@@ -90,13 +90,33 @@ public class Spell_MirrorImage extends Spell
 						msg.addTrailerMsg(new FullMsg(mob,msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,msg.othersMessage()));
 			}
 		}
+		else
+		if((msg.amITarget(mob.location())&&(!msg.amISource(mob))&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
+		&&((Sense.canBeSeenBy(mob,msg.source()))&&(mob.displayText(msg.source()).length()>0)))
+		{
+			StringBuffer Say=new StringBuffer("");
+			for(int i=0;i<numberOfImages;i++)
+			{
+				Say.append("^M");
+				if(mob.displayText(msg.source()).length()>0)
+					Say.append(mob.displayText(msg.source()));
+				else
+					Say.append(mob.name());
+				Say.append(Sense.colorCodes(mob,msg.source())+"^N\n\r");
+			}
+			if(Say.toString().length()>0)
+			{
+				FullMsg msg2=new FullMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,Say.toString(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+				msg.addTrailerMsg(msg2);
+			}
+		}
 		notAgain=false;
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor() - 10);
+		affectableStats.setArmor(affectableStats.armor() - 5);
 	}
 
 

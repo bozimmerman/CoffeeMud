@@ -425,7 +425,7 @@ public class Prop_ClanEquipment extends Property
 			{
 				FullMsg msg2 = new FullMsg(source, null, CMMsg.MSG_OK_ACTION,
 				                          "The magic on " + affected.Name() +
-				                          " fizzles away at <S-POSSESS> touch.");
+				                          " fizzles away at <S-YOUPOSS> touch.");
 				if (source.location().okMessage(source, msg2))
 				{
 					source.location().send(source, msg2);

@@ -88,7 +88,9 @@ public class Druid_ShapeShift extends StdAbility
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
 			affectableStats.setName(Util.startWithAorAn(raceName.toLowerCase()));
+			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
+			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+
 												(int)Math.round(Util.mul(affectableStats.level(),attadj[getRaceCode()])));
 			affectableStats.setArmor(affectableStats.armor()+

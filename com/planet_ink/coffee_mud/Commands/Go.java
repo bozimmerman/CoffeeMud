@@ -320,6 +320,7 @@ public class Go extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		standIfNecessary(mob);
 		if((commands.size()>3)
 		&&(commands.firstElement() instanceof Integer))
 		{

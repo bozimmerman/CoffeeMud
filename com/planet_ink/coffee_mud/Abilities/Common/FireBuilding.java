@@ -134,6 +134,15 @@ public class FireBuilding extends CommonSkill
 				}
 				return false;
 			}
+			if(!(lighting instanceof EnvResource))
+			{
+				LandTitle t=CoffeeUtensils.getLandTitle(mob.location());
+				if((t!=null)&&(!CoffeeUtensils.doesOwnThisProperty(mob,mob.location())))
+				{
+					mob.tell("You are not allowed to burn anything here.");
+					return false;
+				}
+			}
 			durationOfBurn=Sense.burnStatus(lighting);
 			if(durationOfBurn<0)
 			{

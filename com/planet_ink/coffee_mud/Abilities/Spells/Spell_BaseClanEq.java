@@ -101,7 +101,7 @@ public class Spell_BaseClanEq extends Spell
 			return false;
 		}
 		long exp=points*CommonStrings.getIntVar(CommonStrings.SYSTEMI_CLANENCHCOST);
-		if(C.getExp()<exp)
+		if((C.getExp()<exp)||(exp<0))
 		{
 			mob.tell("You need "+exp+" to do that, but your "+C.typeName()+" has only "+C.getExp()+" experience points.");
 			return false;

@@ -3523,17 +3523,7 @@ public class Scriptable extends StdBehavior
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				int t=Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(s,1)));
 				if((t!=0)&&(newTarget!=null)&&(newTarget instanceof MOB))
-				{
-					HashSet group=((MOB)newTarget).getGroupMembers(new HashSet());
-					if(!group.contains(newTarget))
-						group.add(newTarget);
-					for(Iterator e=group.iterator();e.hasNext();)
-					{
-						MOB M=(MOB)e.next();
-						if(M.location()==lastKnownLocation)
-							MUDFight.postExperience(M,null,null,t,false);
-					}
-				}
+					MUDFight.postExperience((MOB)newTarget,null,null,t,false);
 				break;
 			}
 			case 5: // mpmload

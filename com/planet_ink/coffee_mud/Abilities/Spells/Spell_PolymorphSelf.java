@@ -40,7 +40,9 @@ public class Spell_PolymorphSelf extends Spell
 				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
+			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
+			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)

@@ -198,13 +198,17 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public Item findDepositInventory(String mob, String likeThis)
 	{
 		Vector V=getDepositInventory(mob);
-		boolean money=Util.s_int(likeThis)>0;
+		if(Util.s_int(likeThis)>0)
+			for(int v=0;v<V.size();v++)
+			{
+				Vector V2=(Vector)V.elementAt(v);
+				if(((String)V2.elementAt(DATA_DATA)).startsWith("COINS;"))
+					return makeItem((String)V2.elementAt(DATA_DATA));
+			}
+		else
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);
-			if(money&&((String)V2.elementAt(DATA_DATA)).startsWith("COINS;"))
-				return makeItem((String)V2.elementAt(DATA_DATA));
-
 			Item I=makeItem((String)V2.elementAt(DATA_DATA));
 			if(I==null) continue;
 			if(EnglishParser.containsString(I.Name(),likeThis))
