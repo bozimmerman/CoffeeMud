@@ -1,4 +1,9 @@
 @if?!Authenticate@ @AddFile?failedlogin.cmvp@ @else@
 @if?!CheckReqParm?SUBOP=true@ @AddFile?nopriv.cmvp@ @else@
+<HTML>
+<BODY>
+@MUDGrinder?AREAMAP@
+</BODY>
+</HTML>
 @endif@
 @endif@

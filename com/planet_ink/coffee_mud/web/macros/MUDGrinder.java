@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.web.macros;
 import java.util.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.web.macros.grinder.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 
@@ -53,6 +54,60 @@ public class MUDGrinder extends StdWebMacro
 			else
 				return "false";
 			return "true";
+		}
+		else
+		if(parms.containsKey("AREAMAP"))
+		{
+			String AREA=(String)httpReq.getRequestParameters().get("AREA");
+			if(AREA==null) return "";
+			if(AREA.length()==0) return "";
+			Area A=CMMap.getArea(AREA);
+			if(A==null) return "";
+			StringBuffer buf=new StringBuffer("");
+			GrinderMap map=new GrinderMap(A);
+			map.rebuildGrid();
+			buf.append("<TABLE WIDTH="+(map.Xbound*20)+" BORDER=0 CELLSPACING=0 CELLPADDING=0>");
+			for(int y=0;y<=map.Ybound;y++)
+			{
+				for(int l=0;l<4;l++)
+				{
+					buf.append("<TR>");
+					for(int x=0;x<=map.Xbound;x++)
+					{
+						GrinderRoom GR=map.grid[x][y];
+						if(GR==null)
+							buf.append("<TD COLSPAN=4 WIDTH=20><BR></TD>");
+						else
+						switch(l)
+						{
+						case 0:
+							buf.append("<TD WIDTH=5><BR></TD>");
+							buf.append("<TD WIDTH=5 BGCOLOR=RED>U1</TD>");
+							buf.append("<TD WIDTH=5 BGCOLOR=RED>U2</TD>");
+							buf.append("<TD WIDTH=5><BR></TD>");
+							break;
+						case 1:
+							buf.append("<TD WIDTH=5 BGCOLOR=GREEN>L1</TD>");
+							buf.append("<TD WIDTH=5 COLSPAN=2 BGCOLOR=YELLOW ALIGN=CENTER>"+GR.roomID+"</TD>");
+							buf.append("<TD WIDTH=5 BGCOLOR=BLUE>R1</TD>");
+							break;
+						case 2:
+							buf.append("<TD WIDTH=5 BGCOLOR=GREEN>L2</TD>");
+							buf.append("<TD WIDTH=5 COLSPAN=2 BGCOLOR=YELLOW ALIGN=CENTER>*</TD>");
+							buf.append("<TD WIDTH=5 BGCOLOR=BLUE>R2</TD>");
+							break;
+						case 3:
+							buf.append("<TD WIDTH=5><BR></TD>");
+							buf.append("<TD WIDTH=5 BGCOLOR=BLACK>D1</TD>");
+							buf.append("<TD WIDTH=5 BGCOLOR=BLACK>D2</TD>");
+							buf.append("<TD WIDTH=5><BR></TD>");
+							break;
+						}
+					}
+					buf.append("</TR>");
+				}
+			}
+			buf.append("</TABLE>");
 		}
 		return "";
 	}
