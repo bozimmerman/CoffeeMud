@@ -93,21 +93,33 @@ public class Druid_ShapeShift extends StdAbility
 
 	public void setRaceName(MOB mob)
 	{
-		int raceLevel=4;
 		int classLevel=CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this);
+		raceName=getRaceName(classLevel,myRaceCode);
+		newRace=getRace(classLevel,myRaceCode);
+	}
+	public int getRaceLevel(int classLevel)
+	{
 		if(classLevel<6)
-			raceLevel=0;
+			return 0;
 		else
 		if(classLevel<12)
-			raceLevel=1;
+			return 1;
 		else
 		if(classLevel<18)
-			raceLevel=2;
+			return 2;
 		else
 		if(classLevel<24)
-			raceLevel=3;
-		raceName=shapes[raceLevel][myRaceCode];
-		newRace=CMClass.getRace(races[raceLevel][myRaceCode]);
+			return 3;
+		else
+			return 4;	
+	}
+	public Race getRace(int classLevel, int raceCode)
+	{
+		return CMClass.getRace(races[getRaceLevel(classLevel)][myRaceCode]);
+	}
+	public String getRaceName(int classLevel, int raceCode)
+	{
+		return shapes[getRaceLevel(classLevel)][raceCode];
 	}
 						
 	

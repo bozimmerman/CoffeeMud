@@ -2587,6 +2587,7 @@ public class Generic
 					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 					ok=false;
 				}
+				me.setMiscText(me.text());
 			}
 		}
 
@@ -2726,6 +2727,7 @@ public class Generic
 					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 					ok=false;
 				}
+				me.setMiscText(me.text());
 			}
 		}
 

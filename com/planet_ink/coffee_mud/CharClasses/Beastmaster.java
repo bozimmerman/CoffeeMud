@@ -116,7 +116,7 @@ public class Beastmaster extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),25,"Druid_Rend",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_Dragonsight",false);
 
-CMAble.addCharAbilityMapping(ID(),30,"Druid_PackLeader",true);
+			CMAble.addCharAbilityMapping(ID(),30,"Druid_PackCall",true);
 		}
 	}
 
