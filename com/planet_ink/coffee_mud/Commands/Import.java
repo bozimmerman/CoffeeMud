@@ -2717,7 +2717,8 @@ public class Import extends StdCommand
 						 String areaName,
 						 Vector objectData,
 						 Vector objProgData,
-						 Hashtable doneItems)
+						 Hashtable doneItems,
+						 Hashtable doneRooms)
 	{
 		if(OfThisID.startsWith("#"))
 		{
@@ -2800,7 +2801,7 @@ public class Import extends StdCommand
 			{ "pill","26"},
 			{ "protect",""},
 			{ "map","28"},
-			{ "portal",""},
+			{ "portal","97"},
 			{ "warp_stone",""},
 			{ "room_key","98"},
 			{ "gem",""},
@@ -3048,13 +3049,32 @@ public class Import extends StdCommand
 			case 28: I=CMClass.getStdItem("GenReadable"); // don't use GemMaps any more...
 					 break;
 			case 29: I=CMClass.getStdItem("GenItem"); break;
+			case 97: I=CMClass.getStdItem("GenPortal");
+					 if((str4.length()>0)&&(!str4.equals("0")))
+					 {
+						 Room R=findRoomSomewhere(str4,areaName,doneRooms);
+						 if(R!=null) 
+							 I.setReadableText(R.roomID());
+						 else
+						 for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+						 {
+							 R=(Room)e.nextElement();
+							 if(R.roomID().endsWith("#"+str4))
+							 {
+								I.setReadableText(R.roomID());
+								break;
+							 }
+						 }
+					 }
+					 break;
 			case 98: I=CMClass.getStdItem("GenKey");
 					 ((Key)I).setKey(areaName+objectID);
 					 break;
 			case 99: I=CMClass.getStdItem("GenCorpse"); break;
 			case -1: I=CMClass.getStdItem("GenWallpaper"); break;
 			default:
-					I=CMClass.getStdItem("GenItem"); break;
+					I=CMClass.getStdItem("GenItem"); 
+					break;
 			}
 
 			if(!Util.isSet(wearFlag,0))
@@ -4970,7 +4990,7 @@ public class Import extends StdCommand
 					else
 					{
 						String itemID=Util.getCleanBit(s,2);
-						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
+						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems,doneRooms);
 						if(I==null)
 						{
 							if(multiArea) nextResetData.addElement(s);
@@ -5061,7 +5081,7 @@ public class Import extends StdCommand
 					else
 					{
 						String itemID=Util.getCleanBit(s,5);
-						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
+						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems,doneRooms);
 						if(I==null)
 						{
 							if(multiArea)
@@ -5095,7 +5115,7 @@ public class Import extends StdCommand
 					else
 					{
 						String itemID=Util.getCleanBit(s,2);
-						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
+						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems,doneRooms);
 						if(I==null)
 						{
 							if(multiArea)
@@ -5136,7 +5156,7 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
+						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems,doneRooms);
 						if(I==null)
 						{
 							if(multiArea) nextResetData.addElement(s);
@@ -5165,7 +5185,7 @@ public class Import extends StdCommand
 				{
 					String itemID=Util.getCleanBit(s,2);
 					String containerID=Util.getCleanBit(s,4);
-					Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
+					Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems,doneRooms);
 					Container C=(Container)containerHash.get(containerID);
 					if(I==null)
 					{
