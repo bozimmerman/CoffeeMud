@@ -24,17 +24,19 @@ public class Scrapping extends CommonSkill
 		displayText="You are scrapping...";
 		verb="scrapping";
 		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("Archon",1,ID(),false);}
+					CMAble.addCharAbilityMapping("All",20,ID(),false);
+		}
 	}
 	public Environmental newInstance(){	return new Scrapping();}
 
 	public boolean tick(int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(tickID==Host.MOB_TICK))
 		{
 			MOB mob=(MOB)affected;
 			if((found==null)
-			||(fire==null)
 			||((fire!=null)&&((!Sense.isOnFire(fire))
 							||(!mob.location().isContent(fire))
 							||(mob.isMine(fire)))))

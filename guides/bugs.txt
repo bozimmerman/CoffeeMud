@@ -1,8 +1,4 @@
 \n is still a problem?!
-TEST: new skill: Scrap--turns an item of at least 5lbs into 1 lb of material of the type it is made of.
 TEST: add Arch to mason, that modifies an open passageway with a Majestic Arch
-TEST: rain/snow/swim causes some metals to rust (take minute damage).
-TEST: Infection: Hitpoints are recovered at 1/2 rate. 
-TEST: Amnesia as a disease
 TEST: prop_reflecting to reflect spell damage back to the caster, put on shield items
 

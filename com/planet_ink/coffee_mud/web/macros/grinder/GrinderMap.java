@@ -186,7 +186,7 @@ public class GrinderMap
                 GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
                 if(!processed.containsKey(room.roomID))
                 {
-                    placeRoom(room,0,0,processed,areaMap,true,true);
+                    placeRoom(room,0,0,processed,areaMap,true,true,0);
                     doneSomething=true;
                 }
             }
@@ -433,10 +433,11 @@ public class GrinderMap
                                 Hashtable processed, 
                                 Vector allRooms, 
                                 boolean doNotDefer,
-								boolean passTwo)
+								boolean passTwo,
+								int depth)
     {
         if(room==null) return;
-        
+        if(depth>1000) return;
         GrinderRoom anythingAt=getProcessedRoomAt(processed,favoredX,favoredY);
         if(anythingAt!=null)
         {
@@ -449,7 +450,10 @@ public class GrinderMap
                         for(int rd=0;rd<Directions.NUM_DIRECTIONS;rd++)
                         {
                             GrinderDir RD=roomToBlame.doors[rd];
-                            if((RD!=null)&&(RD.room!=null)&&(RD.room.equals(room.roomID))&&(!RD.positionedAlready))
+                            if((RD!=null)
+							&&(RD.room!=null)
+							&&(RD.room.equals(room.roomID))
+							&&(!RD.positionedAlready))
                                 return;
                         }
                 }
@@ -525,7 +529,7 @@ public class GrinderMap
                             break;
                     }
                     room.doors[d].positionedAlready=true;
-                    placeRoom(nextRoom,newFavoredX,newFavoredY,processed,allRooms,false,passTwo);
+                    placeRoom(nextRoom,newFavoredX,newFavoredY,processed,allRooms,false,passTwo,depth+1);
                 }
             }
         }

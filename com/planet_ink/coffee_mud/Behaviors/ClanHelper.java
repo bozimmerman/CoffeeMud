@@ -12,6 +12,19 @@ public class ClanHelper extends StdBehavior
 	{
 		return new ClanHelper();
 	}
+	public void startBehavior(Environmental forMe)
+	{
+		startBehavior(forMe);
+		if(forMe instanceof MOB)
+		{
+			if(parms.length()>0)
+			{
+				((MOB)forMe).setClanID(parms.trim());
+				((MOB)forMe).setClanRole(Clan.POS_MEMBER);
+			}
+		}
+	}
+	
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
@@ -36,15 +49,16 @@ public class ClanHelper extends StdBehavior
 		&&(source!=target)
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(target,observer))
+		&&(observer.getClanID().length()>0)
 		&&(!BrotherHelper.isBrother(source,observer)))
 		{
-			if(observer.charStats().getMyRace().ID().equalsIgnoreCase(target.charStats().getMyRace().ID()))
+			if(observer.getClanID().equalsIgnoreCase(target.getClanID()))
 			{
 				boolean yep=Aggressive.startFight(observer,source,false);
-				String reason="THAT`S MY FRIEND!! CHARGE!!";
-				if((observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
-				&&(!observer.charStats().getMyRace().ID().equals(source.charStats().getMyRace().ID())))
-					reason=observer.charStats().getMyRace().ID().toUpperCase()+"s UNITE! CHARGE!";
+				String reason="WE ARE UNDER ATTACK!! CHARGE!!";
+				if((observer.getClanID().equals(target.getClanID()))
+				&&(!observer.getClanID().equals(source.getClanID())))
+					reason=observer.getClanID().toUpperCase()+"s UNITE! CHARGE!";
 				if(yep)	ExternalPlay.quickSay(observer,null,reason,false,false);
 			}
 		}
