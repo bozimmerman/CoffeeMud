@@ -167,10 +167,13 @@ public class Arcanist extends Thief
 		{
 			if(msg.tool().ID().equals("Skill_Spellcraft"))
 			{
-				if(msg.tool().text().length()>0)
+				if((msg.tool().text().length()>0)
+				&&(msg.target()!=null)
+				&&(msg.target() instanceof MOB))
 				{
-					Ability A=CMClass.getAbility(msg.tool().text());
-					if((A!=null)&&(mob.fetchAbility(A.ID())==null))
+					Ability A=((MOB)msg.target()).fetchAbility(msg.tool().text());
+					if((A!=null)
+					&&(mob.fetchAbility(A.ID())==null))
 					{
 						Vector otherChoices=new Vector();
 						for(int a=0;a<mob.numAbilities();a++)
