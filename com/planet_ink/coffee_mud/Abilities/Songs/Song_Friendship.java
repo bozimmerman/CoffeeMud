@@ -175,8 +175,9 @@ public class Song_Friendship extends Song
 						if((mindAttack())&&(follower!=mob))
 							msg2=new FullMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 						int levelDiff=follower.envStats().level()-mob.envStats().level();
+						if(levelDiff<0) levelDiff=0;
 
-						if((levelDiff>3)&&(mindAttack()))
+						if((levelDiff>(3+(mob.envStats().level()/10)))&&(mindAttack()))
 							mob.tell(mob,follower,null,"<T-NAME> looks too powerful.");
 						else
 						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))

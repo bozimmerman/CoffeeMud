@@ -85,11 +85,8 @@ public class Spell_Sleep extends Spell
 
 		// sleep has a 3 level difference for PCs, so check for this.
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if(levelDiff>=3)
-		{
-			mob.tell(target.charStats().HeShe()+" looks too powerful.");
-			return false;
-		}
+		if(levelDiff<0) levelDiff=0;
+		if(levelDiff>2) levelDiff=2;
 
 		if(target.isInCombat())
 		{
@@ -130,7 +127,7 @@ public class Spell_Sleep extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,3,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
+					success=maliciousAffect(mob,target,asLevel,3-levelDiff,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
 					if(success)
 						if(target.location()==mob.location())
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");

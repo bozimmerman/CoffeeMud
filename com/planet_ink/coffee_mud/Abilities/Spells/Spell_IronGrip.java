@@ -60,9 +60,24 @@ public class Spell_IronGrip extends Spell
 			}
 			else
 			if((msg.amISource(mob))
+			&&(msg.targetMinor()==CMMsg.TYP_REMOVE)
+			&&(msg.target()!=null)
+			&&(msg.target() instanceof Item)
+			&&(mob.isMine((Item)msg.target()))
+			&&(((Item)msg.target()).amWearingAt(Item.WIELD)))
+			{
+				mob.location().show(mob,null,msg.target(),CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!");
+				if((!mob.isInCombat())&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTODRAW)))
+				{
+					mob.tell("** Autodraw has been turned OFF. **");
+					mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTODRAW));
+				}
+				return false;
+			}
+			else
+			if((msg.amISource(mob))
 			&&((msg.targetMinor()==CMMsg.TYP_DROP)
-				||(msg.targetMinor()==CMMsg.TYP_GET)
-			    ||(msg.targetMinor()==CMMsg.TYP_REMOVE))
+				||(msg.targetMinor()==CMMsg.TYP_GET))
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item)
 			&&(mob.isMine((Item)msg.target()))

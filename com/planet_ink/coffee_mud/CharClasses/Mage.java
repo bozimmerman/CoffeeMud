@@ -326,10 +326,15 @@ public class Mage extends StdCharClass
 				mob.tell("You need at least a 9 Intelligence to become a Mage.");
 			return false;
 		}
-		if(!(mob.charStats().getMyRace().ID().equals("Human"))
-		&& !(mob.charStats().getMyRace().ID().equals("Elf"))
-		&& !(mob.charStats().getMyRace().ID().equals("Gnome"))
-		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
+		if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Gith"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Dragon"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Illithid"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Gnome"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Fairy-kin"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("HalfElf")))
 		{
 			if(!quiet)
 				mob.tell("You need to be Human, Elf, Gnome, or Half Elf to be a Mage.");

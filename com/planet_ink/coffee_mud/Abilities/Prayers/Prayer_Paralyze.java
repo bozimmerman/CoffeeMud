@@ -58,13 +58,8 @@ public class Prayer_Paralyze extends Prayer
 		if(target==null) return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if(levelDiff>=3)
-		{
-			mob.tell(target.charStats().HeShe()+" looks too powerful.");
-			return false;
-		}
-		else
-			levelDiff=0;
+		if(levelDiff<0) levelDiff=0;
+		if(levelDiff>6) levelDiff=6;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -86,7 +81,7 @@ public class Prayer_Paralyze extends Prayer
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					success=maliciousAffect(mob,target,asLevel,8,-1);
+					success=maliciousAffect(mob,target,asLevel,8-levelDiff,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't move!");
 				}
 			}

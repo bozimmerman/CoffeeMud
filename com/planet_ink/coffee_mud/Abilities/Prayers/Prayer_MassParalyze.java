@@ -74,11 +74,14 @@ public class Prayer_MassParalyze extends Prayer
 				FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_GENERAL:0),null);
 				if((target!=mob)&&(mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 				{
+					int levelDiff=target.envStats().level()-mob.envStats().level();
+					if(levelDiff<0) levelDiff=0;
+					if(levelDiff>6) levelDiff=6;
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);
 					if((msg.value()<=0)&&(msg2.value()<=0))
 					{
-						success=maliciousAffect(mob,target,asLevel,7,-1);
+						success=maliciousAffect(mob,target,asLevel,8-levelDiff,-1);
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't move!");
 					}
 					nothingDone=false;

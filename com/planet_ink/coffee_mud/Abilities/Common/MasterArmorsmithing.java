@@ -67,7 +67,6 @@ public class MasterArmorsmithing extends Armorsmithing
 		{
 			autoGenerate=((Integer)commands.firstElement()).intValue();
 			commands.removeElementAt(0);
-			givenTarget=null;
 		}
 		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
 		if(commands.size()==0)

@@ -783,16 +783,19 @@ public class StdMOB implements MOB
 			if(A!=null) A.unInvoke();
 		}
 		setLocation(null);
-		while(numFollowers()>0)
+		if(isMonster())
 		{
-			MOB follower=fetchFollower(0);
-			if(follower!=null)
+			while(numFollowers()>0)
 			{
-				follower.setFollowing(null);
-				delFollower(follower);
+				MOB follower=fetchFollower(0);
+				if(follower!=null)
+				{
+					follower.setFollowing(null);
+					delFollower(follower);
+				}
 			}
+			setFollowing(null);
 		}
-		setFollowing(null);
 		if((!isMonster())&&(soulMate()==null))
 			bringToLife(CMMap.getDeathRoom(this),true);
 		if(deathRoom!=null)

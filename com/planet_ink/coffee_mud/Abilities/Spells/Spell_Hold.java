@@ -60,11 +60,8 @@ public class Spell_Hold extends Spell
 		if(target==null) return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if(levelDiff>=4)
-		{
-			mob.tell(target.charStats().HeShe()+" looks too powerful.");
-			return false;
-		}
+		if(levelDiff<0) levelDiff=0;
+		if(levelDiff>6) levelDiff=6;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -89,7 +86,7 @@ public class Spell_Hold extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,8,-1);
+					success=maliciousAffect(mob,target,asLevel,8-levelDiff,-1);
 					if(success)
 						if(target.location()==mob.location())
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) perfectly still!!");

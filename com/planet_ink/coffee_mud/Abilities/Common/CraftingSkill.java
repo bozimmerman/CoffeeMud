@@ -453,7 +453,11 @@ public class CraftingSkill extends CommonSkill
 				commonTell(mob,"You don't see anything on "+scanning.name()+" that needs mending with "+name()+".");
 			return false;
 		}
-		StringBuffer buf=new StringBuffer("The following items could use some "+name()+":\n\r");
+		StringBuffer buf=new StringBuffer("");
+		if(scanning==mob)
+			buf.append("The following items could use some "+name()+":\n\r");
+		else
+			buf.append("The following items on "+scanning.name()+" could use some "+name()+":\n\r");
 		for(int i=0;i<allStuff.size();i++)
 		{
 			Item I=(Item)allStuff.elementAt(i);

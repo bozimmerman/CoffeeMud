@@ -113,12 +113,6 @@ public class Chant_MagneticField extends Chant
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
-		if(levelDiff>=25)
-		{
-			mob.tell(target.charStats().HeShe()+" looks too powerful.");
-			return false;
-		}
-
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -142,7 +136,7 @@ public class Chant_MagneticField extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1);
 					if(success)
 						if(target.location()==mob.location())
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) surrounded by a powerful magnetic field!!");

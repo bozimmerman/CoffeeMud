@@ -42,6 +42,7 @@ public class Skill_Spellcraft extends StdAbility
 		   return;
 		MOB mob=(MOB)affected;
 		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&(!msg.amISource(mob))
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0)

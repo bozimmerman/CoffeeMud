@@ -82,11 +82,6 @@ public class Fighter_AtemiStrike extends StdAbility
 			return false;
 		}
 
-		if((!auto)&&(mob.envStats().level()<(target.envStats().level()-5)))
-		{
-			mob.tell(target.name()+" is too powerful to strike!");
-			return false;
-		}
 		if((!auto)&&(anyWeapons(mob)))
 		{
 			mob.tell("You must be unarmed to perform the strike.");

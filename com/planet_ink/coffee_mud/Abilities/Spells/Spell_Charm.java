@@ -158,11 +158,7 @@ public class Spell_Charm extends Spell
 		if(target==null) return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if((!target.mayIFight(mob))||(levelDiff>=3))
-		{
-			mob.tell(target.charStats().HeShe()+" looks too powerful.");
-			return false;
-		}
+		if(levelDiff<0) levelDiff=0;
 
 		if(!Sense.canSpeak(mob))
 		{
@@ -201,7 +197,7 @@ public class Spell_Charm extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
+					success=maliciousAffect(mob,target,asLevel,-levelDiff,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();

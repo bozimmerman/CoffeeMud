@@ -181,9 +181,11 @@ public class Ranger extends StdCharClass
 			return false;
 		}
 
-		if(!(mob.charStats().getMyRace().ID().equals("Human"))
-		&& !(mob.charStats().getMyRace().ID().equals("Elf"))
-		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
+		if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Troll-kin"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("HalfElf")))
 		{
 			if(!quiet)
 				mob.tell("You need to be Human, Elf, or Half Elf to be a Ranger.");

@@ -71,11 +71,8 @@ public class Spell_Laughter extends Spell
 		if(target==null) return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if(levelDiff>=5)
-		{
-			mob.tell(target.charStats().HeShe()+" looks too powerful.");
-			return false;
-		}
+		if(levelDiff<0) levelDiff=0;
+		if(levelDiff>7) levelDiff=7;
 
 		// if they can't hear the sleep spell, it
 		// won't happen
@@ -112,7 +109,7 @@ public class Spell_Laughter extends Spell
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					success=maliciousAffect(mob,target,asLevel,8,-1);
+					success=maliciousAffect(mob,target,asLevel,8-levelDiff,-1);
 					if(success)
 						if(target.location()==mob.location())
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) laughing uncontrollably, unable to move!!");

@@ -1,9 +1,6 @@
-when money involved in either a get, put, or drop, the trigger is immediate
-still have to fix the craps/kuncklebonus money problem.  2 problems really, with same cause: #1 ISHERE($o) fails, and #2 Can't confirm it wasn't picked up.
-charm uninvoke should reverse your following, and death should not lose followers for players
+13 ) Loki       MUDCHAT needs to be able to accept a symbol (&&) to do multiple actions on the same probability chance. For example, if someone does the KISS social on the MOB, a mob might have --9!slap $t &&How dare you!--
 grid link problem -- total replacement of a grid room, west first, then south, with a foreign room.
-spellcraft triggered by wear_spellcast?
-!!someone serving me flees, i am told i lose exp, but i really gain it change the ,sireshare to ,-sireshare'
+knucklebones still needs some work -- noticed, for instance, that second round calculations are never right
 Keno: A card with 10 x 8 squares, you choose up to 10 (20 in non video keno) numbers and then 20 balls are drawn each with a non repeating number between 1 and 80. The number of matches are then looked up on a table and multiplied by your bet. The odds are a hypergeometric distribution. Terminology: http://www.gamingtoday.com/Glossary/keno.cfm Sample Payoff: http://casinopassion.s5.com/keno.html
 item generation behavior?
 property tax, with ability to auction AND foreclose

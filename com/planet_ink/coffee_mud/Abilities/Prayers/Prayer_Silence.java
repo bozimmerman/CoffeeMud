@@ -58,13 +58,7 @@ public class Prayer_Silence extends Prayer
 		if(target==null) return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if(levelDiff>=6)
-		{
-			mob.tell(target.charStats().HeShe()+" looks too powerful.");
-			return false;
-		}
-		else
-			levelDiff=0;
+		if(levelDiff<0) levelDiff=0;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -84,7 +78,7 @@ public class Prayer_Silence extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> silenced!");
 				}
 			}

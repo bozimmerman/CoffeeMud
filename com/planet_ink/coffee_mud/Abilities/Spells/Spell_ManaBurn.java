@@ -84,11 +84,7 @@ public class Spell_ManaBurn extends Spell
 		if(target==null) return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if((!target.mayIFight(mob))||(levelDiff>=10))
-		{
-			mob.tell(target.charStats().HeShe()+" looks too powerful.");
-			return false;
-		}
+		if(levelDiff<0) levelDiff=0;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -116,7 +112,7 @@ public class Spell_ManaBurn extends Spell
 				{
 					target.curState().adjMana(-50,target.maxState());
 					curMana=target.curState().getMana();
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1);
 					if(success)
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) drained!");
 				}
