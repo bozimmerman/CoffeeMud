@@ -635,6 +635,7 @@ public class Util
 	public static String combine(Vector commands, int startAt, int endAt)
 	{
 		StringBuffer Combined=new StringBuffer("");
+		if(commands!=null)
 		for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
 			Combined.append((String)commands.elementAt(commandIndex)+" ");
 		return Combined.toString().trim();
@@ -643,6 +644,7 @@ public class Util
 	public static String combine(Vector commands, int startAt)
 	{
 		StringBuffer Combined=new StringBuffer("");
+		if(commands!=null)
 		for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
 			Combined.append((String)commands.elementAt(commandIndex)+" ");
 		return Combined.toString().trim();
@@ -689,6 +691,7 @@ public class Util
 	public static Vector parse(String str, int upTo)
 	{
 		Vector commands=new Vector();
+		if(str==null) return commands;
 		str=str.trim();
 		while(!str.equals(""))
 		{

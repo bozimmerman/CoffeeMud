@@ -61,7 +61,7 @@ public class Prop_FightSpellCast extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(sourceMOB,V,newMOB,true);
+				A.invoke(sourceMOB,V2,newMOB,true);
 			}
 		}
 	}

@@ -415,13 +415,17 @@ public class RoomLoader
 					+thisItem.baseEnvStats().ability()+","
 					+thisItem.baseEnvStats().height()+")";
 					D.update(sql,0);
-					Thread.sleep(50);
+					Thread.sleep(100);
 					DBConnector.DBDone(D);
+					D=null;
 				}
 				catch(Throwable sqle)
 				{
 					Log.errOut("Room",sql);
-					Log.errOut("Room","UpdateItems"+sqle);
+					if((sqle!=null)&&(sqle.getMessage()!=null)&&(sqle.getMessage().length()>0))
+						Log.errOut("Room","UpdateItems"+sqle.getMessage());
+					else
+						Log.errOut("Room","UpdateItems"+sqle);
 					if(D!=null) DBConnector.DBDone(D);
 				}
 			}
@@ -438,14 +442,18 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'",0);
+			try{Thread.sleep(2*room.numItems());}catch(Exception e){}
 			DBConnector.DBDone(D);
-			try{Thread.sleep(room.numItems());}catch(Exception e){}
 		}
-		catch(SQLException sqle)
+		catch(Throwable t)
 		{
-			Log.errOut("Room","UpdateItems"+sqle);
+			if((t!=null)&&(t.getMessage()!=null)&&(t.getMessage().length()>0))
+				Log.errOut("Room","UpdateItems"+t.getMessage());
+			else
+				Log.errOut("Room","UpdateItems"+t);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		D=null;
 		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROIT")||CommonStrings.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Continue item update for room "+room.roomID());
 		DBUpdateContents(room);

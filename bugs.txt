@@ -1,6 +1,8 @@
-open a gate from one side that locks on the other does not open both!
+are embezzle and racketeering really doing right by the banker?
+BEACON does not support a null field for the name, like it says in the Ahelp file.
 
-GenCharClasses -- zappercheck on quals 
+
+time to re-balance the classes
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?

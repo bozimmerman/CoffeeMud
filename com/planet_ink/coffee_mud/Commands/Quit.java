@@ -45,7 +45,6 @@ public class Quit extends StdCommand
 			{
 				if(mob.session()!=null)
 					mob.session().setKillFlag(true);
-				Log.errOut("Quit",e);
 			}
 		}
 		return false;

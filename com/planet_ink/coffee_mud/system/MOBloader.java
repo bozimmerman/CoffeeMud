@@ -656,12 +656,12 @@ public class MOBloader
 		{
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'",0);
+			try{Thread.sleep(2*mob.inventorySize());}catch(Exception e){}
 			DBConnector.DBDone(D);
-			try{Thread.sleep(mob.inventorySize());}catch(Exception e){}
 		}
-		catch(SQLException sqle)
+		catch(Throwable t)
 		{
-			Log.errOut("MOB","UpdateItems"+sqle);
+			Log.errOut("MOB","UpdateItems"+t);
 			if(D!=null) DBConnector.DBDone(D);
 		}
 		Vector V=new Vector();
@@ -675,11 +675,12 @@ public class MOBloader
 			{
 				D=DBConnector.DBFetch();
 				D.update(updateString,0);
+				try{Thread.sleep(100);}catch(Exception e){}
 				DBConnector.DBDone(D);
 			}
-			catch(Exception sqle)
+			catch(Throwable t)
 			{
-				Log.errOut("MOB","UpdateItems"+sqle+"//"+updateString);
+				Log.errOut("MOB","UpdateItems"+t+"//"+updateString);
 				if(D!=null) DBConnector.DBDone(D);
 			}
 		}
@@ -780,9 +781,21 @@ public class MOBloader
 	{
 		if(mob.Name().length()==0) return;
 		DBConnection D=DBConnector.DBFetch();
-		Vector V=new Vector();
-		V.addElement("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
+		try
+		{
+			D=DBConnector.DBFetch();
+			D.update("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'",0);
+			try{Thread.sleep(2*mob.numLearnedAbilities());}catch(Exception e){}
+			DBConnector.DBDone(D);
+		}
+		catch(Throwable t)
+		{
+			Log.errOut("MOB","DBUpdateAbilities: "+t);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+		D=null;
 		HashSet H=new HashSet();
+		Vector V=new Vector();
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability thisAbility=mob.fetchAbility(a);
@@ -852,14 +865,22 @@ public class MOBloader
 			String updateString=(String)V.elementAt(v);
 			try
 			{
+				D=DBConnector.DBFetch();
 				D.update(updateString,0);
+				try{Thread.sleep(100);}catch(Exception e){}
+				DBConnector.DBDone(D);
+				D=null;
 			}
-			catch(SQLException sqle)
+			catch(Throwable t)
 			{
-				Log.errOut("MOB","UpdateAbilities"+sqle+"//"+updateString);
+				Log.errOut("MOB","UpdateAbilities"+t+"//"+updateString);
+				if(D!=null)
+				{
+					DBConnector.DBDone(D);
+					D=null;
+				}
 			}
 		}
-		DBConnector.DBDone(D);
 	}
 
 	public static void DBCreateCharacter(MOB mob)

@@ -21,6 +21,7 @@ public class Stand extends StdCommand
 				mob.tell(getScr("Movement","standerr1"));
 		}
 		else
+		if(mob.location()!=null)
 		{
 			FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_STAND,getScr("Movement","standup"));
 			if(mob.location().okMessage(mob,msg))
