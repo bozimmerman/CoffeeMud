@@ -188,13 +188,13 @@ public class Statement implements java.sql.Statement
             }
             if ((sql.length()>0)&&(sql.charAt(0)==';')) sql=skipWS(sql.substring(1));
             if ((sql.length()>0)||(attributes.size()!=values.size())) {
-               System.out.println(sql);
-               System.out.println(attributes.size());
-               for (java.util.Iterator iter=attributes.iterator();iter.hasNext();)
-                  System.out.println((String)iter.next());
-               System.out.println(values.size());
-               for (java.util.Iterator iter=values.iterator();iter.hasNext();)
-                  System.out.println((String)iter.next());
+               //Syste/m.out.prin/tln(sql);
+               //Syste/m.out.prin/tln(attributes.size());
+               //for (java.util.Iterator iter=attributes.iterator();iter.hasNext();)
+               //   Syste/m.out.prin/tln((String)iter.next());
+               //Syste/m.out.prin/tln(values.size());
+               //for (java.util.Iterator iter=values.iterator();iter.hasNext();)
+               //   Syste/m.out.prin/tln((String)iter.next());
                throw new java.sql.SQLException("something very bad");
             }
             connection.getBackend().insertValues(relationName,(String[])attributes.toArray(new String[0]),(String[])values.toArray(new String[0]));

@@ -316,7 +316,6 @@ public class MUDFight
 		if(target==null) return;
 		Room deathRoom=target.location();
 
-System.out.println(target.name()+"1");
 		HashSet beneficiaries=new HashSet();
 		if((source!=null)&&(source.charStats()!=null))
 		{
@@ -335,7 +334,6 @@ System.out.println(target.name()+"1");
 				C=M.charStats().getCurrentClass();
 			beneficiaries=C.dispenseExperience(source,target);
 		}
-System.out.println(target.name()+"2");
 
 		int deadMoney=target.getMoney();
 		int myAmountOfDeadMoney=0;
@@ -349,7 +347,6 @@ System.out.println(target.name()+"2");
 			&&(deathRoom.isInhabitant(M)))
 			   goldLooters.addElement(M);
 		}
-System.out.println(target.name()+"3");
 		if((goldLooters.size()>0)&&(deadMoney>0))
 		{
 			myAmountOfDeadMoney=(int)Math.round(Util.div(deadMoney,goldLooters.size()));
@@ -404,11 +401,8 @@ System.out.println(target.name()+"3");
 				}
 			}
 		}
-System.out.println(target.name()+"4");
-
 		if(Body==null) Body=target.killMeDead(true);
 
-System.out.println(target.name()+"5");
 		if((!target.isMonster())&&(Dice.rollPercentage()==1))
 		{
 			Ability A=CMClass.getAbility("Disease_Amnesia");
@@ -416,7 +410,6 @@ System.out.println(target.name()+"5");
 				A.invoke(target,target,true);
 		}
 
-System.out.println(target.name()+"6");
 		if(target.soulMate()!=null)
 		{
 			Session s=target.session();
@@ -428,7 +421,6 @@ System.out.println(target.name()+"6");
 			target.setSoulMate(null);
 		}
 
-System.out.println(target.name()+"7");
 		if((source!=null)
 		&&(source.location()==deathRoom)
 		&&(deathRoom.isInhabitant(source))
@@ -452,7 +444,6 @@ System.out.println(target.name()+"7");
 			deathRoom.recoverRoomStats();
 		}
 		
-System.out.println(target.name()+"8");
 		if((deadMoney>0)&&(myAmountOfDeadMoney>0))
 		for(int g=0;g<goldLooters.size();g++)
 		{
@@ -472,7 +463,6 @@ System.out.println(target.name()+"8");
 			if(Sense.canBeSeenBy(Body,mob))
 				CommonMsgs.get(mob,Body,C,false);
 		}
-System.out.println(target.name()+"9");
 	}
 
 }

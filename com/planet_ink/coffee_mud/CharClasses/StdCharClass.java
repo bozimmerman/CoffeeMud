@@ -139,14 +139,15 @@ public class StdCharClass implements CharClass, Cloneable
 
 	protected boolean isQualifyingAuthority(MOB mob, Ability A)
 	{
-		if(CMAble.getQualifyingLevel(ID(),true,A.ID())<=0)
-			return false;
-		if(mob.charStats().getCurrentClass()==this)
-			return true;
-		for(int i=(mob.charStats().numClasses()-2);i>=0;i--) // last one is current
+		CharClass C=null;
+		int ql=0;
+		for(int i=(mob.charStats().numClasses()-1);i>=0;i--) // last one is current
 		{
-			CharClass C=mob.charStats().getMyClass(i);
-			if((C!=null)&&(CMAble.getQualifyingLevel(C.ID(),true,A.ID())<=mob.charStats().getClassLevel(C)))
+			C=mob.charStats().getMyClass(i);
+			ql=CMAble.getQualifyingLevel(C.ID(),true,A.ID());
+			if((C!=null)
+			&&(ql>0)
+			&&(ql<=mob.charStats().getClassLevel(C)))
 				return (C==this);
 		}
 		return false;
