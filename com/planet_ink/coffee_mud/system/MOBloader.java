@@ -179,15 +179,17 @@ public class MOBloader
 			Log.errOut("MOB",sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		
+		mob.recoverCharStats();
+		mob.recoverEnvStats();
+		mob.recoverMaxState();
+		mob.resetToMaxState();
+		
 		if(mob.baseCharStats()!=null)
 		{
 			mob.baseCharStats().getCurrentClass().startCharacter(mob,false,true);
 			mob.baseCharStats().getMyRace().startRacing(mob,true);
 		}
-		mob.recoverCharStats();
-		mob.recoverEnvStats();
-		mob.recoverMaxState();
-		mob.resetToMaxState();
 
 		if(CMMap.getPlayer(mob.Name())==null)
 			CMMap.addPlayer(mob);

@@ -521,7 +521,7 @@ public class Movement extends Scriptable
 				mob.tell(getScr("Movement","youdontsee",knockWhat.toLowerCase()));
 				return;
 			}
-			FullMsg msg=new FullMsg(mob,getThis,null,Affect.MSG_KNOCK,Affect.MSG_KNOCK,Affect.MSG_KNOCK,getScr("Movemenet","knockmsg"));
+			FullMsg msg=new FullMsg(mob,getThis,null,Affect.MSG_KNOCK,Affect.MSG_KNOCK,Affect.MSG_KNOCK,getScr("Movement","knockmsg"));
 			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 			
@@ -534,10 +534,33 @@ public class Movement extends Scriptable
 				mob.tell(getScr("Movement","knockerr2",E.name()));
 				return;
 			}
-			FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_KNOCK,Affect.MSG_KNOCK,Affect.MSG_KNOCK,getScr("Movemenet","knockmsg"));
+			FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_KNOCK,Affect.MSG_KNOCK,Affect.MSG_KNOCK,getScr("Movement","knockmsg"));
 			if(mob.location().okAffect(mob,msg))
+			{
 				mob.location().send(mob,msg);
-			
+				E=mob.location().getPairedExit(dir);
+				Room R=mob.location().getRoomInDir(dir);
+				if((R!=null)&&(E!=null)&&(E.hasADoor())
+				&&(R.showOthers(mob,E,null,Affect.MSG_KNOCK,getScr("Movement","knockmsg2")))
+				&&((R.domainType()&Room.INDOORS)==Room.INDOORS))
+				{
+					Vector V=new Vector();
+					V.addElement(mob.location());
+					ExternalPlay.getRadiantRooms(R,V,true,5);
+					V.removeElement(mob.location());
+					for(int v=0;v<V.size();v++)
+					{
+						Room R2=(Room)V.elementAt(v);
+						int dir2=ExternalPlay.radiatesFromDir(R2,V);
+						if((dir2>=0)&&((R2.domainType()&Room.INDOORS)==Room.INDOORS))
+						{
+							Room R3=R2.getRoomInDir(dir2);
+							if((R3.domainType()&Room.INDOORS)==Room.INDOORS)
+								R2.showHappens(Affect.MASK_SOUND|Affect.TYP_KNOCK,getScr("Movement","knockmsg3",Directions.getInDirectionName(dir2)));
+						}
+					}
+				}
+			}
 		}
 		
 	}
@@ -741,7 +764,15 @@ public class Movement extends Scriptable
 			mountStr=getScr("Movement","sleepmounton",((Rideable)E).mountString(Affect.TYP_SLEEP,mob));
 		else
 			mountStr=getScr("Movement","sleepson");
-		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SLEEP,mountStr);
+		String sourceMountStr=null;
+		if(Sense.canBeSeenBy(E,mob))
+			sourceMountStr=mountStr;
+		else
+		{
+			sourceMountStr=Util.replaceAll(mountStr,"<T-NAME>",E.name());
+			sourceMountStr=Util.replaceAll(sourceMountStr,"<T-NAMESELF>",E.name());
+		}
+		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SLEEP,sourceMountStr,mountStr,mountStr);
 		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}

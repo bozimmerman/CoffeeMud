@@ -664,11 +664,19 @@ public class StdRoom
 			}
 			if(mob.riding()!=null)
 			{
-				if(mob.riding() instanceof MOB)
-					bringMobHere((MOB)mob.riding(),andFollowers);
+				if((mob.riding().rideBasis()!=Rideable.RIDEABLE_SIT)
+				&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_TABLE)
+				&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_SLEEP)
+				&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_LADDER))
+				{
+					if(mob.riding() instanceof MOB)
+						bringMobHere((MOB)mob.riding(),andFollowers);
+					else
+					if(mob.riding() instanceof Item)
+						bringItemHere((Item)mob.riding());
+				}
 				else
-				if(mob.riding() instanceof Item)
-					bringItemHere((Item)mob.riding());
+					mob.setRiding(null);
 			}
 		}
 		oldRoom.recoverRoomStats();

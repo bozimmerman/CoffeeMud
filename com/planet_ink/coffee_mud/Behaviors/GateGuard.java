@@ -13,8 +13,35 @@ public class GateGuard extends StdBehavior
 		return new GateGuard();
 	}
 
-	int noticeTock=4;
+	protected int noticeTock=4;
+	protected boolean heardKnock=false;
+	protected boolean keepLocked=false;
+	protected boolean allnight=false;
 
+	public void setParms(String parm)
+	{
+		super.setParms(parm);
+		keepLocked=false;
+		allnight=false;
+		Vector V=Util.parse(parm);
+		for(int v=0;v<V.size();v++)
+		{
+			if(((String)V.elementAt(v)).equalsIgnoreCase("keeplocked"))
+			{
+				keepLocked=true;
+				V.removeElementAt(v);
+				break;
+			}
+			else
+			if(((String)V.elementAt(v)).equalsIgnoreCase("allnight"))
+			{
+				allnight=true;
+				V.removeElementAt(v);
+				break;
+			}
+		}
+	}
+	
 	private int findGate(MOB mob)
 	{
 		if(mob.location()==null) return -1;
@@ -31,7 +58,7 @@ public class GateGuard extends StdBehavior
 		}
 		return -1;
 	}
-
+	
 	private Key getMyKeyTo(MOB mob, Exit e)
 	{
 		Key key=null;
@@ -70,6 +97,32 @@ public class GateGuard extends StdBehavior
 		return num;
 	}
 
+	public void affect(Environmental host, Affect msg)
+	{
+		if(host instanceof MOB)
+		{
+			MOB mob=(MOB)host;
+			if((msg.targetMinor()==Affect.TYP_KNOCK)
+			&&(!msg.amISource(mob))
+			&&(mob.location()!=null)
+			&&(mob.location()!=msg.source().location())
+			&&(!heardKnock)
+			&&(Sense.canHear(host))
+			&&(canFreelyBehaveNormal(host)))
+			{
+				int dir=findGate(mob);
+				if((dir>=0)
+				&&(ExternalPlay.zapperCheck(getParms(),msg.source())))
+				{
+					Exit e=mob.location().getExitInDir(dir);
+					if(msg.amITarget(e))
+						heardKnock=true;
+				}
+			}
+		}
+		super.affect(host,msg);
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -83,7 +136,9 @@ public class GateGuard extends StdBehavior
 		int numPlayers=numValidPlayers(mob,mob.location());
 		if(noticeTock==0)
 		{
-			if((mob.location().getArea().getTODCode()==Area.TIME_NIGHT))
+			if(heardKnock) numPlayers++;
+			
+			if((!allnight)&&(mob.location().getArea().getTODCode()==Area.TIME_NIGHT))
 			{
 				if((!e.isLocked())&&(e.hasALock()))
 				{
@@ -97,7 +152,7 @@ public class GateGuard extends StdBehavior
 			}
 			else
 			{
-				if(e.isLocked())
+				if((e.isLocked())&&((!keepLocked)||(numPlayers>0)))
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
@@ -106,20 +161,29 @@ public class GateGuard extends StdBehavior
 							ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 					}
 				}
-				if((numPlayers>0)&&(!e.isOpen()))
+				if((numPlayers>0)&&(!e.isOpen())&&(!e.isLocked()))
 				{
 					FullMsg msg=new FullMsg(mob,e,Affect.MSG_OPEN,"<S-NAME> open(s) <T-NAME>.");
 					if(mob.location().okAffect(mob,msg))
 						ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 				}
-				else
 				if((numPlayers==0)&&(e.isOpen()))
 				{
 					FullMsg msg=new FullMsg(mob,e,Affect.MSG_CLOSE,"<S-NAME> close(s) <T-NAME>.");
 					if(mob.location().okAffect(mob,msg))
 						ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 				}
+				if((numPlayers==0)&&(!e.isOpen())&&(!e.isLocked())&&(e.hasALock())&&(keepLocked))
+				{
+					if(getMyKeyTo(mob,e)!=null)
+					{
+						FullMsg msg=new FullMsg(mob,e,Affect.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
+						if(mob.location().okAffect(mob,msg))
+							ExternalPlay.roomAffectFully(msg,mob.location(),dir);
+					}
+				}
 			}
+			heardKnock=false;
 			noticeTock--;
 		}
 		else
@@ -128,8 +192,7 @@ public class GateGuard extends StdBehavior
 			if(mob.location().getArea().getTODCode()==Area.TIME_NIGHT)
 				noticeTock=5;
 			else
-			if((e.isLocked())
-			||((numPlayers==0)&&(e.isOpen())))
+			if((e.isLocked())||((numPlayers==0)&&(e.isOpen())))
 				noticeTock=3;
 			else
 			if((numPlayers>0)&&(!e.isOpen()))

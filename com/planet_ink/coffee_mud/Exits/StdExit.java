@@ -173,6 +173,7 @@ public class StdExit implements Exit
 		case Affect.TYP_EXAMINESOMETHING:
 		case Affect.TYP_READSOMETHING:
 		case Affect.TYP_OK_VISUAL:
+		case Affect.TYP_KNOCK:
 		case Affect.TYP_OK_ACTION:
 			return true;
 		case Affect.TYP_ENTER:

@@ -397,6 +397,14 @@ public class ServiceEngine
 		if(which.toLowerCase().startsWith("tickerlaststopdate"))
 			return IQCalendar.d2String(C.lastStop);
 		else
+		if(which.toLowerCase().startsWith("tickerlastduration"))
+		{
+			if(C.lastStop>C.lastStart)
+				return Util.returnTime(C.lastStop-C.lastStart,0);
+			else
+				return Util.returnTime(System.currentTimeMillis()-C.lastStart,0);
+		}
+		else
 		if(which.toLowerCase().startsWith("tickersuspended"))
 			return ""+C.suspended;
 		return "";
