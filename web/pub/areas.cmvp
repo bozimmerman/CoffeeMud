@@ -14,6 +14,7 @@
 		w=window.open("area.cmvp?AREA="+named,
 		            "Ability",strFeatures, false);
 	}
+
 	//-->
 	</SCRIPT>
 </head>
@@ -22,15 +23,31 @@
 <div align="center">
 	<h3>Installed map areas</H3>
 	<hr><br>
-
+	
 	<table border="1" align="center">
 	@AreaNext?reset@
 	@loop@
 	<TR>
-		@AreaNext@<TD><a href="javascript:openUp('@AreaName@');">@AreaName@</TD>
-		@AreaNext?EMPTYOK@<TD><a href="javascript:openUp('@AreaName@');">@AreaName@</TD>
-		@AreaNext?EMPTYOK@<TD><a href="javascript:openUp('@AreaName@');">@AreaName@</TD>
-		@AreaNext?EMPTYOK@<TD><a href="javascript:openUp('@AreaName@');">@AreaName@</TD>
+		@AreaNext@
+			<script><!--
+				document.writeln('<TD><a href="javascript:openUp(\'@AreaNameEncoded@\');">@AreaName@</a></TD>');
+			//--></script>
+			<noscript><TD><a target="Ability" href="area.cmvp?area=@AreaNameEncoded@">@AreaName@</a></TD></noscript>
+		@AreaNext?EMPTYOK@
+			<script><!--
+				document.writeln('<TD><a href="javascript:openUp(\'@AreaNameEncoded@\');">@AreaName@</a></TD>');
+			//--></script>
+			<noscript><TD><a target="Ability" href="area.cmvp?area=@AreaNameEncoded@">@AreaName@</a></TD></noscript>
+		@AreaNext?EMPTYOK@
+			<script><!--
+				document.writeln('<TD><a href="javascript:openUp(\'@AreaNameEncoded@\');">@AreaName@</a></TD>');
+			//--></script>
+			<noscript><TD><a target="Ability" href="area.cmvp?area=@AreaNameEncoded@">@AreaName@</a></TD></noscript>
+		@AreaNext?EMPTYOK@
+			<script><!--
+				document.writeln('<TD><a href="javascript:openUp(\'@AreaNameEncoded@\');">@AreaName@</a></TD>');
+			//--></script>
+			<noscript><TD><a target="Ability" href="area.cmvp?area=@AreaNameEncoded@">@AreaName@</a></TD></noscript>
 	</TR>
 	@back@
 	</TABLE>
