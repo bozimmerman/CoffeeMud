@@ -121,7 +121,7 @@ public class Tick extends Thread
 			}
 			catch(InterruptedException ioe)
 			{
-				Log.sysOut("Tick","Interrupted!");
+				Log.debugOut("Tick","Interrupted!");
 			}
 			if(tickers.size()==0)
 			{

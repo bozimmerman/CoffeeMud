@@ -251,7 +251,14 @@ public class Intermud implements Runnable, Persistent, Serializable {
         }
         catch( java.io.IOException e ) {
             try { Thread.sleep(attempts * 10); }
-            catch( InterruptedException ignore ) { }
+            catch( InterruptedException ignore )
+			{ 
+				if(shutdown)
+				{
+					Log.sysOut("Intermud","Shutdown!");
+					return; 
+				}
+			}
             connect();
         }
     }
@@ -337,7 +344,14 @@ public class Intermud implements Runnable, Persistent, Serializable {
             Vector data;
 
             try { Thread.sleep(100); }
-            catch( InterruptedException e ) { }
+            catch( InterruptedException e ) 
+			{ 
+				if(shutdown)
+				{
+					Log.sysOut("Intermud","Shutdown!!");
+					return; 
+				}
+			}
             // Read a packet from the router
             {
                 String str;
@@ -354,7 +368,14 @@ public class Intermud implements Runnable, Persistent, Serializable {
                     str = null;
                     connected = false;
                     try { Thread.sleep(120); }
-                    catch( InterruptedException ignore ) { }
+					catch (InterruptedException ee)
+					{ 
+						if(shutdown)
+						{
+							Log.sysOut("Intermud","Shutdown!!!");
+							return; 
+						}
+					}
                     connect();
 					if((e.getMessage()!=null)&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0))
 						Log.errOut("InterMud",e.getMessage());
@@ -725,7 +746,14 @@ class SaveThread extends Thread {
                 Thread.sleep(120000);
                 if(!closed) intermud.save();
             }
-            catch( InterruptedException e ) { }
+			catch (InterruptedException e)
+			{ 
+				if(intermud.shutdown)
+				{
+					Log.sysOut("Intermud","Shutdown!!!!");
+					return; 
+				}
+			}
             catch( PersistenceException e ) {
                 
             }

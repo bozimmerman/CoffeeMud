@@ -430,7 +430,7 @@ public class ServiceEngine
 
 	public static void shutdownAll()
 	{
-		Log.errOut("ServiceEngine","Shutting down all ticks...");
+		Log.sysOut("ServiceEngine","Shutting down all ticks...");
 		while(tickGroup.size()>0)
 		{
 			Tick tock=null;
@@ -438,7 +438,7 @@ public class ServiceEngine
 			if(tock!=null) tock.shutdown();
 			try{Thread.sleep(100);}catch(Exception e){}
 		}
-		Log.errOut("ServiceEngine","Shutdown complete.");
+		Log.sysOut("ServiceEngine","Shutdown complete.");
 	}
 
 	public synchronized static void clearDebri(Room room, int taskCode)

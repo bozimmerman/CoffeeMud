@@ -148,7 +148,7 @@ public class SaveThread extends Thread
 						S.setKillFlag(true);
 						S.interrupt();
 						try{Thread.sleep(500);}catch(Exception e){}
-						S.stop();
+						S.interrupt();
 						Sessions.removeElement(S);
 					}
 					else
@@ -168,7 +168,7 @@ public class SaveThread extends Thread
 					S.setKillFlag(true);
 					S.interrupt();
 					try{Thread.sleep(500);}catch(Exception e){}
-					S.stop();
+					S.interrupt();
 					Sessions.removeElement(S);
 				}
 			}

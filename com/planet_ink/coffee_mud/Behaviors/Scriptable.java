@@ -113,7 +113,8 @@ public class Scriptable extends StdBehavior
 		"MPCALLFUNC", // 24
 		"MPBEACON", // 25
 		"MPALARM", // 26
-		"MPWHILE" // 27
+		"MPWHILE", // 27
+		"MPDAMAGE" // 28
 	};
 
 	public Behavior newInstance()
@@ -2801,6 +2802,22 @@ public class Scriptable extends StdBehavior
 				E=lastKnownLocation.fetchFromRoomFavorMOBs(null,m,Item.WORN_REQ_ANY);
 				if((E!=null)&&(arg2.length()>0))
 					mpsetvar(E.Name(),arg2,arg3);
+				break;
+			}
+			case 28: // mpdamage
+			{
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
+				MOB E=lastKnownLocation.fetchInhabitant(m);
+				if((E!=null)&&(arg2.length()>0))
+				{
+					int min=Util.s_int(arg2);
+					int max=Util.s_int(arg3);
+					if(max<min) max=min;
+					if(min>0)
+						ExternalPlay.postDamage(E,E,null,(max==min)?min:Dice.roll(1,max-min,min),Affect.NO_EFFECT,-1,null);
+				}
 				break;
 			}
 			case 21: //MPENDQUEST
