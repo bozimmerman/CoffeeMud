@@ -54,7 +54,7 @@ public class ExternalCommands implements ExternalCommand
 	}
 	public void resetRoom(Room room)
 	{
-		Reset.resetRoom(room);
+		com.planet_ink.coffee_mud.Commands.sysop.Reset.resetRoom(room);
 	}
 	public Vector getTopics(boolean archonHelp, boolean standardHelp)
 	{
@@ -63,7 +63,7 @@ public class ExternalCommands implements ExternalCommand
 
 	public String getOpenRoomID(String areaName)
 	{
-		return Reset.getOpenRoomID(areaName);
+		return com.planet_ink.coffee_mud.Commands.sysop.Reset.getOpenRoomID(areaName);
 	}
 	public void drawIfNecessary(MOB mob, boolean held)
 	{

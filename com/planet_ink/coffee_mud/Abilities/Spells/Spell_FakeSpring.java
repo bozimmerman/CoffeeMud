@@ -15,10 +15,10 @@ public class Spell_FakeSpring extends Spell
 
 	public void unInvoke()
 	{
+		Item spring=(Item)affected;
 		super.unInvoke();
-		if(canBeUninvoked())
+		if((canBeUninvoked())&&(spring!=null))
 		{
-			Item spring=(Item)affected; // protects against uninvoke loops!
 			Room SpringLocation=CoffeeUtensils.roomLocation(spring);
 			spring.destroy();
 			SpringLocation.recoverRoomStats();

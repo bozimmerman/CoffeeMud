@@ -1,4 +1,5 @@
 parse out all the commands into classes, so that access can be class based, and time req can be determined 
+make it so a native member not of the holding clan scores points when first points scored.
 I tried using broadcast sound in an emoter.  and the sound works for the room yer in, but does NOT broadcast to any adjacent rooms.
 code something to coffeemudify all the beds 
 GenCharClasses -- zappercheck on quals 
