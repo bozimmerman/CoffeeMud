@@ -27,6 +27,7 @@ public class TelnetSession extends Thread implements Session
 
 	private Vector cmdQ=new Vector();
 	private Vector snoops=new Vector();
+	private final static String hexStr="0123456789ABCDEF";
 
 	private boolean lastWasCR=false;
 
@@ -582,11 +583,21 @@ public class TelnetSession extends Thread implements Session
 				case '`':
 					buf.setCharAt(loop,'\'');
 					break;
+				case '&':
+					if(loop<buf.length()-3)
+					{
+						if(buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
+							buf.replace(loop,loop+3,"<");
+						else
+						if(buf.substring(loop,loop+3).equalsIgnoreCase("gt;"))
+							buf.replace(loop,loop+3,">");
+					}
+					break;
 				case '%':
 					if(loop<buf.length()-2)
 					{
-						int dig1=("0123456789ABCDEF").indexOf(buf.charAt(loop+1));
-						int dig2=("0123456789ABCDEF").indexOf(buf.charAt(loop+2));
+						int dig1=hexStr.indexOf(buf.charAt(loop+1));
+						int dig2=hexStr.indexOf(buf.charAt(loop+2));
 						if((dig1>=0)&&(dig2>=0))
 						{
 							buf.setCharAt(loop,(char)((dig1*16)+dig2));

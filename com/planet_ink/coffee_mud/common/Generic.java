@@ -16,33 +16,53 @@ public class Generic
 		int x=s.indexOf("<");
 		while(x>=0)
 		{
-			s=s.substring(0,x)+"%3C"+s.substring(x+1);
+			s=s.substring(0,x)+"&lt;"+s.substring(x+1);
 			x=s.indexOf("<");
 		}
 		x=s.indexOf(">");
 		while(x>=0)
 		{
-			s=s.substring(0,x)+"%3E"+s.substring(x+1);
+			s=s.substring(0,x)+"&gt;"+s.substring(x+1);
 			x=s.indexOf(">");
 		}
 		return s;
 	}
 	
+	private final static String hexStr="0123456789ABCDEF";
 	private static String restoreAngleBrackets(String s)
 	{
-		int x=s.indexOf("%3C");
-		while(x>=0)
+		StringBuffer buf=new StringBuffer(s);
+		int loop=0;
+		while(loop<buf.length())
 		{
-			s=s.substring(0,x)+"<"+s.substring(x+3);
-			x=s.indexOf("%3C");
+			switch(buf.charAt(loop))
+			{
+			case '&':
+				if(loop<buf.length()-3)
+				{
+					if(buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
+						buf.replace(loop,loop+3,"<");
+					else
+					if(buf.substring(loop,loop+3).equalsIgnoreCase("gt;"))
+						buf.replace(loop,loop+3,">");
+				}
+				break;
+			case '%':
+				if(loop<buf.length()-2)
+				{
+					int dig1=hexStr.indexOf(buf.charAt(loop+1));
+					int dig2=hexStr.indexOf(buf.charAt(loop+2));
+					if((dig1>=0)&&(dig2>=0))
+					{
+						buf.setCharAt(loop,(char)((dig1*16)+dig2));
+						buf.deleteCharAt(loop+1);
+					}
+				}
+				break;
+			}
+			++loop;
 		}
-		x=s.indexOf("%3E");
-		while(x>=0)
-		{
-			s=s.substring(0,x)+">"+s.substring(x+3);
-			x=s.indexOf("%3E");
-		}
-		return s;
+		return buf.toString();
 	}
 	
 	public static int envFlags(Environmental E)
