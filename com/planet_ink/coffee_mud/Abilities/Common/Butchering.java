@@ -82,7 +82,9 @@ public class Butchering extends CommonSkill
 		body=null;
 		Item I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(I==null) return false;
-		if(!(I instanceof DeadBody))
+		if((!(I instanceof DeadBody))
+		   ||(((DeadBody)I).charStats()==null)
+		   ||(((DeadBody)I).charStats().getMyRace()==null))
 		{
 			commonTell(mob,"You can't butcher "+I.name()+".");
 			return false;
