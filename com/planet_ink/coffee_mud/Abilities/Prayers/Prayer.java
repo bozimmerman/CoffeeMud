@@ -58,6 +58,18 @@ public class Prayer extends StdAbility
 			return false;
 		return true;
 	}
+	public void helpProfficiency(MOB mob)
+	{
+
+		Ability A=(Ability)mob.fetchAbility(this.ID());
+		if(A==null) return;
+		if(A.appropriateToMyAlignment(mob))
+		{
+			super.helpProfficiency(mob);
+			return;
+		}
+		return;
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -81,6 +93,13 @@ public class Prayer extends StdAbility
 			if(mob.getAlignment()<0)
 				mob.setAlignment(0);
 		}
-		return true;
+		if((appropriateToMyAlignment(mob))||(auto))
+			return true;
+		if(Dice.rollPercentage()<25)
+			return true;
+		if(this.holyQuality()==Prayer.HOLY_EVIL)
+			mob.tell("The evil nature of "+name()+" disrupts your prayer.");
+		else
+			mob.tell("The goodness of "+name()+" disrupts your prayer.");
 	}
 }
