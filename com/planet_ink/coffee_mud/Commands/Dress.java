@@ -53,7 +53,7 @@ public class Dress extends StdCommand
 			mob.tell(target.Name()+" is a player!");
 			return false;
 		}
-		if(target.willFollowOrdersOf(mob))
+		if((target.willFollowOrdersOf(mob))||(Sense.isBound(target)))
 		{
 			Item item=mob.fetchInventory(what);
 			if((item==null)||(!Sense.canBeSeenBy(item,mob)))

@@ -971,6 +971,18 @@ public class Util
 		return V;
 	}
 	
+	public static int abs(int val)
+	{
+	    if(val>=0) return val;
+	    return val*-1;
+	}
+	
+	public static long abs(long val)
+	{
+	    if(val>=0) return val;
+	    return val*-1;
+	}
+	
 	public static Vector parseSpaces(String s, boolean ignoreNulls)
 	{
 		Vector V=new Vector();

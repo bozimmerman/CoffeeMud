@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -48,7 +49,7 @@ public class Feed extends StdCommand
 			mob.tell("Not while you are in combat!");
 			return false;
 		}
-		if(target.willFollowOrdersOf(mob))
+		if(target.willFollowOrdersOf(mob)||(Sense.isBound(target)))
 		{
 			Item item=mob.fetchInventory(what);
 			if((item==null)||(!Sense.canBeSeenBy(item,mob)))

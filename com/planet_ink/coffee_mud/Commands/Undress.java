@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -48,7 +49,7 @@ public class Undress extends StdCommand
 			mob.tell("I don't see "+whom+" here.");
 			return false;
 		}
-		if(target.willFollowOrdersOf(mob))
+		if(target.willFollowOrdersOf(mob)||(Sense.isBound(target)))
 		{
 			Item item=target.fetchInventory(what);
 			if((item==null)

@@ -718,6 +718,21 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							CommonMsgs.say(this,mob,"You can't accept any more followers.",true,false);
 							return false;
 						}
+		                if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF)>0)
+        				&&(!CMSecurity.isAllowed(this,location(),"ORDER"))
+        				&&(!CMSecurity.isAllowed(mob,mob.location(),"ORDER")))
+                        {
+        					if(envStats.level() > (mob.envStats().level() + CommonStrings.getIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF)))
+        					{
+        						mob.tell(msg.tool().name() + " is too advanced for you.");
+        						return false;
+        					}
+        					if(envStats.level() < (mob.envStats().level() - CommonStrings.getIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF)))
+        					{
+        						mob.tell(msg.tool().name() + " is too inexperienced for you.");
+        						return false;
+        					}
+                        }
 					}
 					if(msg.tool() instanceof Ability)
 					{

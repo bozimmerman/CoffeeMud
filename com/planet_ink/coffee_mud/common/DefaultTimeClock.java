@@ -140,13 +140,13 @@ public class DefaultTimeClock implements TimeClock
 	public int getTimeOfDay(){return time;}
 	public int getTODCode()
 	{
-		if(time>=getDawnToDusk()[TimeClock.TIME_NIGHT])
+		if((time>=getDawnToDusk()[TimeClock.TIME_NIGHT])&&(getDawnToDusk()[TimeClock.TIME_NIGHT]>=0))
 			return TimeClock.TIME_NIGHT;
-		if(time>=getDawnToDusk()[TimeClock.TIME_DUSK])
+		if((time>=getDawnToDusk()[TimeClock.TIME_DUSK])&&(getDawnToDusk()[TimeClock.TIME_DUSK]>=0))
 			return TimeClock.TIME_DUSK;
-		if(time>=getDawnToDusk()[TimeClock.TIME_DAY])
+		if((time>=getDawnToDusk()[TimeClock.TIME_DAY])&&(getDawnToDusk()[TimeClock.TIME_DAY]>=0))
 			return TimeClock.TIME_DAY;
-		if(time>=getDawnToDusk()[TimeClock.TIME_DAWN])
+		if((time>=getDawnToDusk()[TimeClock.TIME_DAWN])&&(getDawnToDusk()[TimeClock.TIME_DAWN]>=0))
 			return TimeClock.TIME_DAWN;
 		return TimeClock.TIME_DAY;
 	}
