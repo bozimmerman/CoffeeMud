@@ -22,7 +22,7 @@ public class CoffeeTableRows extends StdWebMacro
 		int days=Util.s_int(httpReq.getRequestParameter("DAYS"));
 		if(days<=0) days=0;
 		int scale=Util.s_int(httpReq.getRequestParameter("SCALE"));
-		if(scale<0) scale=0;
+		if(scale<=0) scale=1;
 		String code=httpReq.getRequestParameter("CODE");
 		if((code==null)||(code.length()==0)) code="*";
 		

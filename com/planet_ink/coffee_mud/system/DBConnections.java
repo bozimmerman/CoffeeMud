@@ -47,6 +47,8 @@ public class DBConnections
 	private Vector Connections;
 	/** last time queued errors were tried */
 	private IQCalendar lastTriedQueued=IQCalendar.getIQInstance();
+	/** set this to true once, cuz it makes it all go away. **/
+	private boolean YOU_ARE_DONE=false;
 	
 	/** 
 	 * Initialize this class.  Must be called at first,
@@ -93,7 +95,7 @@ public class DBConnections
 			{
 				Result=DBToUse.update(updateString,0);
 			}
-			catch(SQLException sqle)
+			catch(Exception sqle)
 			{
 				// queued by the connection for retry
 			}
@@ -104,7 +106,9 @@ public class DBConnections
 		}
 		catch(Exception e)
 		{
-			Log.errOut("DBCOnnections",""+e);
+			enQueueError(updateString,""+e,""+0);
+			reportError();
+			Log.errOut("DBConnections",""+e);
 		}
 		if(DBToUse!=null)
 			DBDone(DBToUse);
@@ -234,6 +238,14 @@ public class DBConnections
 		DBConnection ThisDB=null;
 		while(ThisDB==null)
 		{
+			if(YOU_ARE_DONE) 
+			{
+				// can't throw without declaring, so this is the only way.
+				int x=1;
+				int y=x-1;
+				System.out.println(x/y);
+				// this should create a division by zero error.
+			}
 			boolean connectionFailure=false;
 			ThisDB=null;
 			for(int i=0;i<Connections.size();i++)
@@ -431,6 +443,7 @@ public class DBConnections
 	{
 		try
 		{
+			YOU_ARE_DONE=true;
 			return true;
 		}
 		catch(Exception ce)
@@ -689,13 +702,15 @@ public class DBConnections
 					return -1;
 				}
 			}
-			catch(SQLException sqle)
+			catch(Exception sqle)
 			{
 				Log.errOut("DBConnections",""+sqle);
 			}
 		}
 		catch(Exception e)
 		{
+			enQueueError(SQL,""+e,""+0);
+			reportError();
 			Log.errOut("DBConnections",""+e);
 		}
 		if(DB!=null)

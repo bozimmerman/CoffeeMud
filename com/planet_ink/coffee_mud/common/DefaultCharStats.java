@@ -223,8 +223,6 @@ public class DefaultCharStats implements Cloneable, CharStats
 		}
 	}
 	
-	
-	
 	public void setCurrentClass(CharClass aClass)
 	{
 		if(((myClasses==null)||(myLevels==null))
@@ -291,6 +289,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 			myRace=CMClass.getRace("StdRace");
 		return myRace;
 	}
+	
 	public void setMyRace(Race newVal){myRace=newVal;}
 	public int getBodyPart(int racialPartNumber)
 	{
@@ -308,6 +307,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 			str.append(getBodyPart(i)+";");
 		return str.toString();
 	}
+	
 	public void setBodyPartStrAfterRace(String str)
 	{
 		Vector V=Util.parseSemicolons(str,true);
@@ -382,6 +382,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 	{
 		genderName=gname;
 	}
+	
 	public String genderName()
 	{
 		if(genderName!=null) 
