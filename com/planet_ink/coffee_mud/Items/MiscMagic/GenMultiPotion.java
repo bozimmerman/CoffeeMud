@@ -118,4 +118,5 @@ public class GenMultiPotion extends GenWater implements Potion
 		else
 			super.affect(affect);
 	}
+	// stats handled by gendrink, spells by readabletext
 }

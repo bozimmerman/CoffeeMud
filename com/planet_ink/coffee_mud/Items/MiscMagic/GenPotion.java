@@ -96,4 +96,5 @@ public class GenPotion extends GenWater implements Potion
 		else
 			super.affect(affect);
 	}
+	// stats handled by GenDrink, spells by readable text
 }

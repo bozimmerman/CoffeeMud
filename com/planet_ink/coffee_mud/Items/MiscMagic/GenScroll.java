@@ -102,4 +102,5 @@ public class GenScroll extends GenItem implements Scroll
 	public void setSpellList(Vector newOne){theSpells=newOne;}
 	public boolean isReadableScroll(){return readableScroll;}
 	public void setReadableScroll(boolean isTrue){readableScroll=isTrue;}
+	// stats handled by genitem, spells by readabletext
 }

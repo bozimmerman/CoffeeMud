@@ -102,4 +102,5 @@ public class GenWand extends GenItem implements Wand
 		}
 		super.affect(affect);
 	}
+	// stats handled by genitem, spells by readabletext
 }

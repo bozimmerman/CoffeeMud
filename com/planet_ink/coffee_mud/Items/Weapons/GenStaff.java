@@ -107,4 +107,5 @@ public class GenStaff extends GenWeapon implements Wand
 		}
 		super.affect(affect);
 	}
+	// wand stats handled by genweapon, filled by readableText
 }

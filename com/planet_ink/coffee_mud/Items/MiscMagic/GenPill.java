@@ -68,4 +68,5 @@ public class GenPill extends GenFood implements Pill
 		else
 			super.affect(affect);
 	}
+	// stats handled by genfood, spells by readabletext
 }

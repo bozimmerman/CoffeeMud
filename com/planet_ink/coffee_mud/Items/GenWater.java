@@ -51,7 +51,8 @@ public class GenWater extends StdDrink
 		Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private String[] MYCODES={"QUENCHED","LIQUIDHELD","LIQUIDTYPE"};
+	private String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
+							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE"};
 	public String getStat(String code)
 	{
 		if(Generic.getGenItemCodeNum(code)>=0)
@@ -59,9 +60,13 @@ public class GenWater extends StdDrink
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+thirstQuenched();
-		case 1: return ""+liquidHeld();
-		case 2: return ""+liquidType();
+		case 0: return ""+hasALock();
+		case 1: return ""+hasALid();
+		case 2: return ""+capacity();
+		case 3: return ""+containTypes();
+		case 4: return ""+thirstQuenched();
+		case 5: return ""+liquidHeld();
+		case 6: return ""+liquidType();
 		}
 		return "";
 	}
@@ -72,9 +77,13 @@ public class GenWater extends StdDrink
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setThirstQuenched(Util.s_int(val)); break;
-		case 1: setLiquidHeld(Util.s_int(val)); break;
-		case 2: setLiquidType(Util.s_int(val)); break;
+		case 0: setLidsNLocks(hasALid(),isOpen(),Util.s_bool(val),false); break;
+		case 1: setLidsNLocks(Util.s_bool(val),isOpen(),hasALock(),false); break;
+		case 2: setCapacity(Util.s_int(val)); break;
+		case 3: setContainTypes(Util.s_long(val)); break;
+		case 4: setThirstQuenched(Util.s_int(val)); break;
+		case 5: setLiquidHeld(Util.s_int(val)); break;
+		case 6: setLiquidType(Util.s_int(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){

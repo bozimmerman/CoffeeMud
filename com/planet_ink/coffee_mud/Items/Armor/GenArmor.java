@@ -92,7 +92,7 @@ public class GenArmor extends StdArmor
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenContainer)) return false;
+		if(!(E instanceof GenArmor)) return false;
 		String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
