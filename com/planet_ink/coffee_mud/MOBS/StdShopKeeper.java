@@ -534,7 +534,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					}
 					if(affect.tool() instanceof MOB)
 					{
-						if(affect.source().numFollowers()>=affect.source().maxFollowers())
+						if(affect.source().totalFollowers()>=affect.source().maxFollowers())
 						{
 							ExternalPlay.quickSay(this,mob,"You can't accept any more followers.",true,false);
 							return false;

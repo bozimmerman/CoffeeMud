@@ -38,6 +38,45 @@ public class Undead extends StdRace
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
 	}
+	
+	public boolean okAffect(Environmental myHost, Affect msg)
+	{
+		if((myHost!=null)&&(myHost instanceof MOB))
+		{
+			MOB mob=(MOB)myHost;
+			if(msg.amITarget(mob)&&Util.bset(msg.targetCode(),Affect.MASK_HEAL))
+			{
+				int amount=msg.targetCode()-Affect.MASK_HEAL;
+				if((amount>0)
+				&&(msg.tool()!=null)
+				&&(msg.tool() instanceof Ability)
+				&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALING|Ability.FLAG_HOLY))
+				&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
+				{
+					ExternalPlay.postDamage(msg.source(),mob,msg.tool(),amount,Affect.MASK_GENERAL|Affect.TYP_ACID,Weapon.TYPE_BURNING,"The healing magic from <S-NAME> seems to <DAMAGE> <T-NAMESELF>.");
+					if((mob.getVictim()==null)&&(mob!=msg.source())&&(mob.isMonster()))
+						mob.setVictim(msg.source());
+				}
+				return false;
+			}
+			else
+			if((msg.amITarget(mob)&&Util.bset(msg.targetCode(),Affect.MASK_HURT))
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
+			&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
+			{
+				int amount=msg.targetCode()-Affect.MASK_HURT;
+				if(amount>0)
+				{
+					ExternalPlay.postHealing(msg.source(),mob,msg.tool(),Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,amount,"The harming magic heals <T-NAMESELF>.");
+					return false;
+				}
+			}
+		}
+		return super.okAffect(myHost,msg);
+	}
+	
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

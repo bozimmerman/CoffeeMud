@@ -65,7 +65,7 @@ public class Prayer_AnimateGhoul extends Prayer
 				newMOB.setName("a ghoul");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a ghoul is here");
-				newMOB.baseEnvStats().setLevel(5);
+				newMOB.baseEnvStats().setLevel(4);
 				newMOB.setBaseCharStats(body.charStats());
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setStat(CharStats.STRENGTH,20);

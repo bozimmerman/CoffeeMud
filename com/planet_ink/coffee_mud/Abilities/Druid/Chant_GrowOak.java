@@ -54,8 +54,11 @@ public class Chant_GrowOak extends Chant_SummonPlants
 				int dmg=lastHp-invoker.curState().getHitPoints();
 				if(invoker.location()!=PlantsLocation)
 					dmg=dmg/2;
-				if(dmg>0) invoker.curState().adjHitPoints(dmg,invoker.maxState());
-				invoker.tell("Your oak absorbs "+dmg+" points of your damage!");
+				if(dmg>0)
+				{ 
+					if(ExternalPlay.postHealing(invoker,invoker,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,dmg,null))
+						invoker.tell("Your oak absorbs "+dmg+" points of your damage!");
+				}
 				hpRemaining-=dmg;
 				if(hpRemaining<0)
 					unInvoke();

@@ -570,11 +570,15 @@ public class StdCharClass implements CharClass, Cloneable
 	{
 		if((killer==null)||(killed==null)) return new Hashtable();
 		Room deathRoom=killed.location();
+		if(deathRoom==null) deathRoom=killer.location();
+		
 		Hashtable beneficiaries=new Hashtable();
 		Hashtable followers=(killer!=null)?killer.getGroupMembers(new Hashtable()):(new Hashtable());
 
 		int totalLevels=0;
 		int expAmount=100;
+		
+		if(deathRoom!=null)
 		for(int m=0;m<deathRoom.numInhabitants();m++)
 		{
 			MOB mob=deathRoom.fetchInhabitant(m);

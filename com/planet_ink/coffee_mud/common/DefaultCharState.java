@@ -199,9 +199,10 @@ public class DefaultCharState implements Cloneable, CharState
 			}
 		}
 		
-		if((!mob.isInCombat())&&(!Sense.isClimbing(mob)))
+		if((!mob.isInCombat())
+		&&(!Sense.isClimbing(mob)))
 		{
-			if(hpGain>0)
+			if((hpGain>0)&&(!Sense.isGolem(mob)))
 				mob.curState().adjHitPoints((int)Math.round(hpGain),maxState);
 			if(manaGain>0)
 				mob.curState().adjMana((int)Math.round(manaGain),maxState);
@@ -217,10 +218,10 @@ public class DefaultCharState implements Cloneable, CharState
 			if(expendMovement)
 			{
 				int move=-mob.location().pointsPerMove(mob);
-				if((mob.movesSinceLastTick()>8)
+				if((mob.movesSinceLastTick()>4)
 				&&(mob.riding()==null)
 				&&(!Sense.isInFlight(mob)))
-					move=move+(mob.movesSinceLastTick()-8);
+					move=move+(mob.movesSinceLastTick()-4);
 				if(mob.envStats().weight()>mob.maxCarry())
 					move+=(int)Math.round(Util.mul(move,10.0*Util.div(mob.envStats().weight()-mob.maxCarry(),mob.maxCarry())));
 				adjMovement(move,maxState);

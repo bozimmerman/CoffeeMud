@@ -405,10 +405,13 @@ public class Sense
 					totalWeight+=cap-totalWeight;
 				}
 			}
+			if(totalWeight<=0) return true;
+			
 			return (totalFloatilla/totalWeight)<=1000;
 		}
 		return false;
 	}
+	
 	
 	public static boolean isInFlight(Environmental E)
 	{

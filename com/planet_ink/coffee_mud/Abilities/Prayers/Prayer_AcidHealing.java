@@ -13,9 +13,8 @@ public class Prayer_AcidHealing extends Prayer
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return BENEFICIAL_SELF;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_HEALING;}
 	public Environmental newInstance(){	return new Prayer_AcidHealing();}
-
 
 	public void unInvoke()
 	{
@@ -45,7 +44,7 @@ public class Prayer_AcidHealing extends Prayer
 		{
 			int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The acid attack heals <S-NAME> "+recovery+" points.");
-			mob.curState().adjHitPoints(recovery,mob.maxState());
+			ExternalPlay.postHealing(mob,mob,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,recovery,null);
 			return false;
 		}
 		return true;

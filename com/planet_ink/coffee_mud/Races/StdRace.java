@@ -306,6 +306,8 @@ public class StdRace implements Race
 
 	public DeadBody getCorpse(MOB mob, Room room)
 	{
+		if(room==null) room=mob.location();
+		
 		DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
 		Body.setCharStats(mob.baseCharStats().cloneCharStats());
 		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
@@ -318,7 +320,8 @@ public class StdRace implements Race
 		Body.setName("the body of "+mob.name());
 		Body.setSecretIdentity(mob.name()+"/"+mob.description());
 		Body.setDisplayText("the body of "+mob.name()+" lies here.");
-		room.addItem(Body);
+		if(room!=null)
+			room.addItem(Body);
 		Body.recoverEnvStats();
 		for(int i=0;i<mob.numAffects();i++)
 		{
@@ -351,7 +354,8 @@ public class StdRace implements Race
 				thisItem.unWear();
 				if(thisItem.container()==null)
 					thisItem.setContainer(Body);
-				room.addItem(thisItem);
+				if(room!=null)
+					room.addItem(thisItem);
 				items.addElement(thisItem);
 			}
 			else
@@ -366,7 +370,8 @@ public class StdRace implements Race
 			C.baseEnvStats().setAbility(mob.getMoney());
 			C.recoverEnvStats();
 			C.setContainer(Body);
-			room.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
+			if(room!=null)
+				room.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
 			mob.setMoney(0);
 		}
 		return Body;

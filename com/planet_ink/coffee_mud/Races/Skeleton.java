@@ -25,23 +25,53 @@ public class Skeleton extends StdRace
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,msg);
 		MOB myChar=(MOB)myHost;
 		MOB mob=(MOB)myChar;
-		if((affect.amITarget(mob))
-	    &&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon)
-		&&((((Weapon)affect.tool()).weaponType()==Weapon.TYPE_PIERCING)
-			||(((Weapon)affect.tool()).weaponType()==Weapon.TYPE_SLASHING))
+		if(msg.amITarget(mob)&&Util.bset(msg.targetCode(),Affect.MASK_HEAL))
+		{
+			int amount=msg.targetCode()-Affect.MASK_HEAL;
+			if((amount>0)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALING|Ability.FLAG_HOLY))
+			&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
+			{
+				ExternalPlay.postDamage(msg.source(),mob,msg.tool(),amount,Affect.MASK_GENERAL|Affect.TYP_ACID,Weapon.TYPE_BURNING,"The healing magic from <S-NAME> seems to <DAMAGE> <T-NAMESELF>.");
+				if((mob.getVictim()==null)&&(mob!=msg.source())&&(mob.isMonster()))
+					mob.setVictim(msg.source());
+			}
+			return false;
+		}
+		else
+		if((msg.amITarget(mob)&&Util.bset(msg.targetCode(),Affect.MASK_HURT))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
+		&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
+		{
+			int amount=msg.targetCode()-Affect.MASK_HURT;
+			if(amount>0)
+			{
+				ExternalPlay.postHealing(msg.source(),mob,msg.tool(),Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,amount,"The harming magic heals <T-NAMESELF>.");
+				return false;
+			}
+		}
+		else
+		if((msg.amITarget(mob))
+	    &&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon)
+		&&((((Weapon)msg.tool()).weaponType()==Weapon.TYPE_PIERCING)
+			||(((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SLASHING))
 		&&(!mob.amDead()))
 		{
-			int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
-			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+			int recovery=(int)Math.round(Util.div((msg.targetCode()-Affect.MASK_HURT),2.0));
+			msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode()-recovery,msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 		}
-		return super.okAffect(myChar,affect);
+		return super.okAffect(myChar,msg);
 	}
 
 

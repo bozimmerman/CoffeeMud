@@ -56,8 +56,8 @@ public class Domesticating extends CommonSkill
 						else
 						{
 							ExternalPlay.follow(taming,mob,true);
-							if(taming.amFollowing()!=mob) taming.setFollowing(mob);
-							mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to domesticate "+taming.name()+".");
+							if(taming.amFollowing()==mob)
+                                mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT," manage(s) to domesticate "+taming.name()+".");
 						}
 					}
 				}
@@ -92,8 +92,10 @@ public class Domesticating extends CommonSkill
 			return false;
 		taming=M;
 		verb="domesticating "+M.name();
-		messedUp=!profficiencyCheck(-taming.envStats().level(),auto);
-		int duration=35+taming.envStats().level()-mob.envStats().level();
+		int levelDiff=taming.envStats().level()-mob.envStats().level();
+		if(levelDiff>0) levelDiff=0;
+		messedUp=!profficiencyCheck(-(levelDiff*5),auto);
+		int duration=35+levelDiff;
 		if(duration<10) duration=10;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) domesticating "+M.name()+".");
 		if(mob.location().okAffect(mob,msg))

@@ -65,7 +65,7 @@ public class Prayer_AnimateGhost extends Prayer
 				newMOB.setName("a ghost");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a ghost is here");
-				newMOB.baseEnvStats().setLevel(15);
+				newMOB.baseEnvStats().setLevel(14);
 				newMOB.setBaseCharStats(body.charStats());
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setStat(CharStats.STRENGTH,2);

@@ -80,7 +80,7 @@ public class Chant_Nectar extends Chant
 				{
 					MOB M=(MOB)affect.source();
 					int hp=Dice.roll(1,M.charStats().getStat(CharStats.CONSTITUTION),0);
-					M.curState().adjHitPoints(hp,M.maxState());
+					ExternalPlay.postHealing(M,M,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,hp,null);
 					int mana=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
 					M.curState().adjMana(mana,M.maxState());
 					int move=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);

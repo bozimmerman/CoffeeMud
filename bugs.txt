@@ -1,2 +1,9 @@
 book of laws can be crafted
+text file readable items. 
 damn fighter guildmaster isn't a paladin, but is a MOB
+OK, some issues with the item levitation spells/chants (Floating Disc, Ant Train) No GET message triggers to basically go into the user inventory, so we can't trigger on it at all.It ignores the Is Gettable flag completely.It really feels like encumbrance rules should still apply, even though the weight doesn't add to the player's encumbrance.
+charmed people might attack when wears off
+all UNDEAD should be immune to energy/paralyzation attacks (and poison/Disease/mindaffects). My skeleton just got paralyzed by a ghoul.
+the Armor Rescore button doesn't appear to work. I tried a Torso, LVL 75, Steel armor, and it returned a value of 0.
+i can see a nondetectable thief with detect hidden spell
+i found a vein of stone while mining on a lake. is this right? the lake to the north of the logger.

@@ -10,7 +10,7 @@ public class Prayer_Restoration extends Prayer
 	public String ID() { return "Prayer_Restoration"; }
 	public String name(){ return "Restoration";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
 	public Environmental newInstance(){	return new Prayer_Restoration();}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
@@ -38,7 +38,7 @@ public class Prayer_Restoration extends Prayer
 				int healing=target.maxState().getHitPoints()-target.curState().getHitPoints();
 				if(healing>0)
 				{
-					target.curState().adjHitPoints(healing,target.maxState());
+					ExternalPlay.postHealing(mob,target,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,healing,null);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) much healthier!");
 					target.recoverCharStats();
 					target.recoverEnvStats();

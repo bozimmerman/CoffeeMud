@@ -35,6 +35,7 @@ public class Spell_SummonSteed extends Spell
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
+                if(!mob.isInCombat())
 				if(((mob.amFollowing()==null)
 				||(mob.location()==null)
 				||(mob.amDead())
@@ -46,6 +47,13 @@ public class Spell_SummonSteed extends Spell
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 				}
+                if((mob.amFollowing()==null)&&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
+                {
+                    mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> flees.");
+                    mob.delAffect(this);
+                    if(mob.amDead()) mob.setLocation(null);
+                    mob.destroy();
+                }
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -76,12 +84,21 @@ public class Spell_SummonSteed extends Spell
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
-				if(target.isInCombat()) target.makePeace();
-				ExternalPlay.follow(target,mob,true);
-				invoker=mob;
-				target.addNonUninvokableAffect((Ability)copyOf());
-				if(target.amFollowing()!=mob)
-					mob.tell(target.name()+" seems unwilling to follow you.");
+                MOB squabble = checkPack(target, mob);
+                target.addNonUninvokableAffect( (Ability) copyOf());
+                if(squabble==null) 
+				{
+                    if (target.isInCombat()) target.makePeace();
+                    ExternalPlay.follow(target, mob, true);
+                    invoker=mob;
+                    if (target.amFollowing() != mob)
+                        mob.tell(target.name() + " seems unwilling to follow you.");
+                }
+                else
+                {
+                    squabble.location().showOthers(squabble,target,Affect.MSG_OK_ACTION,"^F<S-NAME> bares its teeth at <T-NAME> and begins to attack!^?");
+                    target.setVictim(squabble);
+                }
 			}
 		}
 		else
@@ -153,4 +170,16 @@ public class Spell_SummonSteed extends Spell
 
 
 	}
+
+    public MOB checkPack(MOB newPackmate, MOB mob) 
+	{
+        for(int i=0;i<mob.numFollowers();i++) 
+		{
+            MOB possibleBitch = mob.fetchFollower(i);
+            if(newPackmate.Name().equalsIgnoreCase(possibleBitch.Name())
+            && (Dice.rollPercentage()-mob.charStats().CHARISMA+newPackmate.envStats().level() > 75)) 
+                return possibleBitch;
+        }
+        return null;
+    }
 }

@@ -17,7 +17,7 @@ public class Paladin_HealingHands extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Paladin_HealingHands();}
 	protected long lastDone=0;
-													 
+	public long flags(){return Ability.FLAG_HEALING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -63,7 +63,7 @@ public class Paladin_HealingHands extends StdAbility
 				mob.location().send(mob,msg);
 				mob.curState().adjMana(-(1+(int)Math.round(Util.div(adjustedLevel(mob),5.0))),mob.maxState());
 				int healing=1+(int)Math.round(Util.div(adjustedLevel(mob),5.0));
-				target.curState().adjHitPoints(healing,target.maxState());
+				ExternalPlay.postHealing(mob,target,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel a little better!");
 			}
 		}

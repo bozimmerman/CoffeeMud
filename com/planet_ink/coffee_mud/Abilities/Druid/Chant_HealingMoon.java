@@ -14,6 +14,7 @@ public class Chant_HealingMoon extends Chant
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_HealingMoon();}
+	public long flags(){return Ability.FLAG_HEALING;}
 
 	public void unInvoke()
 	{
@@ -37,7 +38,8 @@ public class Chant_HealingMoon extends Chant
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB M=room.fetchInhabitant(i);
-				M.curState().adjHitPoints(M.charStats().getStat(CharStats.CONSTITUTION),M.maxState());
+				int healing=M.charStats().getStat(CharStats.CONSTITUTION);
+				ExternalPlay.postHealing(M,M,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,healing,null);
 			}
 		}
 		return true;

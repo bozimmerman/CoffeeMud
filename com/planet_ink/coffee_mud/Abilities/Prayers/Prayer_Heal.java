@@ -10,7 +10,7 @@ public class Prayer_Heal extends Prayer
 	public String ID() { return "Prayer_Heal"; }
 	public String name(){ return "Heal";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
 	public Environmental newInstance(){	return new Prayer_Heal();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -34,7 +34,7 @@ public class Prayer_Heal extends Prayer
 			{
 				mob.location().send(mob,msg);
 				int healing=Dice.roll(5,adjustedLevel(mob),10);
-				target.curState().adjHitPoints(healing,target.maxState());
+				ExternalPlay.postHealing(mob,target,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel tons better!");
 			}
 		}

@@ -91,7 +91,7 @@ public class Druid_PackCall extends StdAbility
 			return false;
 		}
 
-		if(mob.numFollowers()>=mob.maxFollowers())
+		if(mob.totalFollowers()>=mob.maxFollowers())
 		{
 			mob.tell("You can't have any more followers!");
 			return false;
@@ -124,7 +124,7 @@ public class Druid_PackCall extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				int levelsRemaining=90;
-				while((mob.numFollowers()<mob.maxFollowers())&&(levelsRemaining>0))
+				while((mob.totalFollowers()<mob.maxFollowers())&&(levelsRemaining>0))
 				{
 					MOB victim=mob.getVictim();
 					MOB newMOB=(MOB)CMClass.getMOB("GenMOB");

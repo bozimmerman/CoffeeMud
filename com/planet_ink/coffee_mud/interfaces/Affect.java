@@ -44,6 +44,16 @@ public interface Affect extends Cloneable
 	public Vector trailerMsgs();
 	public void addTrailerMsg(Affect msg);
 	
+	// 0-99 are message types
+	// 100-131 are channels
+	// 132-511 are undefined
+	// 512-1023 are healing
+	// 1023-2047 are harming
+	// flags are 2048, 4096, 8192, 16384, 
+	// flags are 2048, 4096, 8192, 16384, 32768, 65536, 
+	//131072, 262144, 524288, 1048576, and 2097152
+	
+	
 	// helpful seperator masks
 	public static final int MINOR_MASK=2047;
 	public static final int MAJOR_MASK=4192256;
@@ -61,6 +71,7 @@ public interface Affect extends Cloneable
 	public static final int MASK_CHANNEL=1048576;  // for channel messages
 	public static final int MASK_OPTIMIZE=2097152; // to optomize a repeated msg
 	public static final int MASK_HURT=MASK_GENERAL|1024;
+	public static final int MASK_HEAL=MASK_GENERAL|512;
 	
 	// minor messages
 	public static final int TYP_AREAAFFECT=1;
@@ -145,7 +156,7 @@ public interface Affect extends Cloneable
 	public static final int TYP_REMOVE=80;
 	
 	public static final int TYP_CHANNEL=100; //(100-131 are channels)
-
+	
 	// helpful message groupings
 	public static final int MSK_CAST_VERBAL=MASK_SOUND|MASK_MOUTH|MASK_MAGIC;
 	public static final int MSK_CAST_MALICIOUS_VERBAL=MASK_SOUND|MASK_MOUTH|MASK_MAGIC|MASK_MALICIOUS;

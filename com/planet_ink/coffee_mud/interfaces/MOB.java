@@ -155,6 +155,7 @@ public interface MOB
 	public void setQuestPoint(int newVal);
 	public long lastTickedDateTime();
 	public int movesSinceLastTick();
+	public long lastMovedDateTime();
 
 	// location!
 	public Room getStartRoom();
@@ -174,7 +175,6 @@ public interface MOB
 	public Item fetchWornItem(String itemName);
 	public Item fetchFirstWornItem(long wornCode);
 	public Item fetchWieldedItem();
-	public int maxFollowers();
 	
 	
 	public int freeWearPositions(long wornCode);
@@ -197,6 +197,8 @@ public interface MOB
 	public Hashtable getGroupMembers(Hashtable list);
 	public Hashtable getRideBuddies(Hashtable list);
 	public boolean isEligibleMonster();
+	public int maxFollowers();
+	public int totalFollowers();
 
 	/** Manipulation of ability objects, which includes
 	 * spells, traits, skills, etc.*/

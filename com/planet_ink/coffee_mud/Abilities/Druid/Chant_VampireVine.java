@@ -25,9 +25,9 @@ public class Chant_VampireVine extends Chant_SummonVine
 				if(amount>3)
 				{
 					amount=amount/4;
-					((MOB)affected).curState().adjHitPoints(amount,((MOB)affected).maxState());
+					ExternalPlay.postHealing(((MOB)affected),((MOB)affected),this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,amount,null);
 					if(invoker!=null)
-						invoker.curState().adjHitPoints(amount,invoker.maxState());
+						ExternalPlay.postHealing(invoker,invoker,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,amount,null);
 				}
 			}
 		}

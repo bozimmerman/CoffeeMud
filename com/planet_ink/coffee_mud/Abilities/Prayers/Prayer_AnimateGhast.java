@@ -65,7 +65,7 @@ public class Prayer_AnimateGhast extends Prayer
 				newMOB.setName("a ghast");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a ghast is here");
-				newMOB.baseEnvStats().setLevel(7);
+				newMOB.baseEnvStats().setLevel(6);
 				newMOB.setBaseCharStats(body.charStats());
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setStat(CharStats.STRENGTH,20);

@@ -65,7 +65,7 @@ public class Prayer_AnimateZombie extends Prayer
 				newMOB.setName("a zombie");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a zombie is here");
-				newMOB.baseEnvStats().setLevel(3);
+				newMOB.baseEnvStats().setLevel(2);
 				newMOB.setBaseCharStats(body.charStats());
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setStat(CharStats.STRENGTH,20);

@@ -48,6 +48,8 @@ public class Prayer_Drain extends Prayer
 					damage += Dice.roll(maxDie,6,20);
 
 					ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,auto?"<T-NAME> shudder(s) in a draining magical wake.":"The draining grasp <DAMAGE> <T-NAME>.");
+					if(mob!=target)
+						ExternalPlay.postHealing(mob,mob,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,damage,null);
 				}
 			}
 		}

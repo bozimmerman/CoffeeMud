@@ -88,9 +88,9 @@ public class StdMOB implements MOB
 	}
 
 	protected int minuteCounter=0;
+	private long lastMoveTime=0;
 	private int movesSinceTick=0;
 	
-
 	// the core state values
 	public CharState curState=new DefaultCharState();
 	public CharState maxState=new DefaultCharState();
@@ -298,6 +298,15 @@ public class StdMOB implements MOB
 	public int maxFollowers()
 	{
 		return ((int)Math.round(Util.div(charStats().getStat(CharStats.CHARISMA),4.0))+1);
+	}
+	public int totalFollowers()
+	{
+		int total=numFollowers();
+		try{
+			for(int i=0;i<total;i++)
+				total+=fetchFollower(i).totalFollowers();
+		}catch(Throwable t){}
+		return total;
 	}
 
 	public CharStats baseCharStats(){return baseCharStats;}
@@ -1210,9 +1219,6 @@ public class StdMOB implements MOB
 				// activity check
 				switch(affect.sourceMinor())
 				{
-				case Affect.TYP_ENTER:
-					movesSinceTick++;
-					break;
 				case Affect.TYP_JUSTICE:
 					if((affect.target()!=null)
 					&&(isInCombat())
@@ -1525,7 +1531,7 @@ public class StdMOB implements MOB
 				}
 				break;
 			case Affect.TYP_FOLLOW:
-				if(numFollowers()>=maxFollowers())
+				if(totalFollowers()>=maxFollowers())
 				{
 					mob.tell(name()+" can't accept any more followers.");
 					return false;
@@ -1709,6 +1715,10 @@ public class StdMOB implements MOB
 				setFollowing(null);
 				tell(affect.source(),affect.target(),affect.tool(),affect.sourceMessage());
 				break;
+			case Affect.TYP_ENTER:
+				lastMoveTime=System.currentTimeMillis();
+				movesSinceTick++;
+				break;
 			default:
 				// you pretty much always know what you are doing, if you can do it.
 				tell(affect.source(),affect.target(),affect.tool(),affect.sourceMessage());
@@ -1720,7 +1730,14 @@ public class StdMOB implements MOB
 		{
 			int targetMajor=affect.targetMajor();
 
-			// malicious by itself is pure pain
+			// healing by itself is pure happy
+			if(Util.bset(affect.targetCode(),Affect.MASK_HEAL))
+			{
+				int amt=affect.targetCode()-Affect.MASK_HEAL;
+				if(amt>0)
+					curState().adjHitPoints(amt,maxState());
+			}
+			else
 			if(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			{
 				int dmg=affect.targetCode()-Affect.MASK_HURT;
@@ -1805,6 +1822,7 @@ public class StdMOB implements MOB
 					tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 			}
 
+			// now do the tells
 			if((Util.bset(targetMajor,Affect.MASK_SOUND))
 			&&(canhearsrc)&&(!asleep))
 			{
@@ -1816,7 +1834,8 @@ public class StdMOB implements MOB
 			}
 			else
 			if((Util.bset(targetMajor,Affect.MASK_GENERAL))
-			||(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+			||(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+			||(Util.bset(affect.targetCode(),Affect.MASK_HEAL)))
 				tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 			else
 			if((Util.bset(targetMajor,Affect.MASK_EYES))
@@ -1914,6 +1933,7 @@ public class StdMOB implements MOB
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
 
 	public int movesSinceLastTick(){return movesSinceTick;}
+	public long lastMovedDateTime(){return lastMoveTime;}
 	public long getTickStatus(){return tickStatus;}
 
 	public boolean tick(Tickable ticking, int tickID)
