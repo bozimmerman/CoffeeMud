@@ -1105,6 +1105,7 @@ public class Import
 					baseHP=getDRoll(Util.getBit(codeStr2,2));
 				else
 					baseHP=getDRoll(Util.getBit(codeStr2,3));
+				baseHP=baseHP-10;
 				baseHP=baseHP-(M.baseEnvStats().level()*M.baseEnvStats().level());
 				baseHP=baseHP/M.baseEnvStats().level();
 				M.baseEnvStats().setAbility(baseHP);
