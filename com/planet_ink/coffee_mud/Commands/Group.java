@@ -31,12 +31,15 @@ public class Group extends StdCommand
 
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
-		msg.append(Util.padRight(who.charStats().raceName(),7)+" ");
+		if(!CMSecurity.isDisabled("RACES"))
+			msg.append(Util.padRight(who.charStats().raceName(),7)+" ");
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
 		int x=levelStr.lastIndexOf(" ");
 		if(x>=0) levelStr=levelStr.substring(x).trim();
-		msg.append(Util.padRight(who.charStats().displayClassName(),7)+" ");
-		msg.append(Util.padRight(levelStr,5));
+		if(!CMSecurity.isDisabled("CLASSES"))
+			msg.append(Util.padRight(who.charStats().displayClassName(),7)+" ");
+		if(!CMSecurity.isDisabled("LEVELS"))
+			msg.append(Util.padRight(levelStr,5));
 		msg.append("] "+Util.padRight(who.name(),13)+" ");
 		msg.append(Util.padRightPreserve("hp("+Util.padRightPreserve(""+who.curState().getHitPoints(),3)+"/"+Util.padRightPreserve(""+who.maxState().getHitPoints(),3)+")",12));
 		msg.append(Util.padRightPreserve("mn("+Util.padRightPreserve(""+who.curState().getMana(),3)+"/"+Util.padRightPreserve(""+who.maxState().getMana(),3)+")",12));

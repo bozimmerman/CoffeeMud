@@ -38,12 +38,15 @@ public class Who extends StdCommand
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
-		msg.append(Util.padRight(who.charStats().raceName(),12)+" ");
+		if(!CMSecurity.isDisabled("RACES"))
+			msg.append(Util.padRight(who.charStats().raceName(),12)+" ");
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
 		int x=levelStr.lastIndexOf(" ");
 		if(x>=0) levelStr=levelStr.substring(x).trim();
-		msg.append(Util.padRight(who.charStats().displayClassName(),12)+" ");
-		msg.append(Util.padRight(levelStr,7));
+		if(!CMSecurity.isDisabled("CLASSES"))
+			msg.append(Util.padRight(who.charStats().displayClassName(),12)+" ");
+		if(!CMSecurity.isDisabled("LEVELS"))
+			msg.append(Util.padRight(levelStr,7));
 		String name=null;
 		if(Util.bset(who.envStats().disposition(),EnvStats.IS_CLOAKED))
 			name="("+(who.Name().equals(who.name())?who.titledName():who.name())+")";
@@ -122,9 +125,12 @@ public class Who extends StdCommand
 		{
 			StringBuffer head=new StringBuffer("");
 			head.append("^x[");
-			head.append(Util.padRight("Race",12)+" ");
-			head.append(Util.padRight("Class",12)+" ");
-			head.append(Util.padRight("Level",7));
+			if(!CMSecurity.isDisabled("RACES"))
+				head.append(Util.padRight("Race",12)+" ");
+			if(!CMSecurity.isDisabled("CLASSES"))
+				head.append(Util.padRight("Class",12)+" ");
+			if(!CMSecurity.isDisabled("LEVELS"))
+				head.append(Util.padRight("Level",7));
 			head.append("] Character name^.^N\n\r");
 			if(mob!=null)
 				mob.tell(head.toString()+msg.toString());

@@ -410,10 +410,4 @@ public class Mage extends StdCharClass
 		}
 		return outfitChoices;
 	}
-	
-
-	public void level(MOB mob)
-	{
-		super.level(mob);
-	}
 }

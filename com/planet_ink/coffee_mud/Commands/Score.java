@@ -33,15 +33,32 @@ public class Score extends Affect
 
 		StringBuffer msg=new StringBuffer("");
 
-		String levelStr=null;
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
-		if(classLevel>=mob.envStats().level())
-			levelStr="level "+mob.envStats().level()+" "+mob.charStats().getCurrentClass().name();
+		if((!CMSecurity.isDisabled("CLASSES"))&&(!CMSecurity.isDisabled("LEVELS")))
+		{
+			String levelStr=null;
+			if(classLevel>=mob.envStats().level())
+				levelStr="level "+mob.envStats().level()+" "+mob.charStats().getCurrentClass().name();
+			else
+				levelStr=mob.charStats().getCurrentClass().name()+" "+classLevel+"/"+mob.envStats().level();
+			msg.append("You are ^H"+mob.Name()+"^? the ^H"+levelStr+"^?.\n\r");
+		}
 		else
-			levelStr=mob.charStats().getCurrentClass().name()+" "+classLevel+"/"+mob.envStats().level();
+		if(CMSecurity.isDisabled("CLASSES"))
+		{
+			String levelStr=null;
+			if(classLevel>=mob.envStats().level())
+				levelStr=", level "+mob.envStats().level();
+			else
+				levelStr=", level "+classLevel+"/"+mob.envStats().level();
+			msg.append("You are ^H"+mob.Name()+"^?^H"+levelStr+"^?.\n\r");
+		}
+		else
+			msg.append("You are ^H"+mob.Name()+"^? the ^H"+mob.charStats().getCurrentClass().name()+"^?.\n\r");
+		    
 		//if(mob.image().length()>0) msg.append("^<IMAGE '"+mob.image()+"' URL=\""+CommonStrings.getVar(CommonStrings.SYSTEM_IMAGEURL)+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
-		msg.append("You are ^H"+mob.Name()+"^? the ^H"+levelStr+"^?.\n\r");
-		if(classLevel<mob.envStats().level())
+		if((!CMSecurity.isDisabled("CLASSES"))
+		&&(classLevel<mob.envStats().level()))
 		{
 			msg.append("You also have levels in: ");
 			StringBuffer classList=new StringBuffer("");
@@ -68,7 +85,11 @@ public class Score extends Affect
 		msg.append("You are a ");
 		if(mob.baseCharStats().getStat(CharStats.AGE)>0)
 		    msg.append("^!"+mob.baseCharStats().getStat(CharStats.AGE)+"^? year old ");
-		msg.append("^!"+genderName+" "+mob.charStats().getMyRace().name() + "^?");
+		msg.append("^!"+genderName);
+		if(!CMSecurity.isDisabled("RACES"))
+			msg.append(" "+mob.charStats().getMyRace().name() + "^?");
+		else
+			msg.append("^?");
 		if(mob.getLiegeID().length()>0)
 		{
 			if(mob.isMarriedToLiege())
@@ -99,7 +120,8 @@ public class Score extends Affect
 			msg.append("You are "+mob.envStats().height()+" inches tall and weigh "+mob.baseWeight()+" pounds.\n\r");
 		msg.append("You have ^!"+mob.envStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds of encumbrance.\n\r");
 		msg.append("You have ^!"+mob.getPractices()+"^? practices, ^!"+mob.getTrains()+"^? training sessions, and ^H"+mob.getQuestPoint()+"^? quest points.\n\r");
-		msg.append("You have scored ^!"+mob.getExperience()+"^? experience points, and have been online for ^!"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
+		if(!CMSecurity.isDisabled("EXPERIENCE"))
+			msg.append("You have scored ^!"+mob.getExperience()+"^? experience points, and have been online for ^!"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
 		if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)>0)
 		&&(mob.baseEnvStats().level()>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
 			msg.append("You will not gain further levels through experience.\n\r");

@@ -264,6 +264,8 @@ public class Oracle extends Cleric
 	
 	public void level(MOB mob)
 	{
+	    if(CMSecurity.isDisabled("LEVELS")) 
+	        return;
 		Vector V=new Vector();
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{

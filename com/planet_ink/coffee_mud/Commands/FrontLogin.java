@@ -420,7 +420,8 @@ public class FrontLogin extends StdCommand
 					    }
 					    break;
 				}
-				mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"races.txt").toString());
+				if(!CMSecurity.isDisabled("RACES"))
+					mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"races.txt").toString());
 
 				StringBuffer listOfRaces=new StringBuffer("[");
 				boolean tmpFirst = true;
@@ -439,8 +440,13 @@ public class FrontLogin extends StdCommand
 					}
 				}
 				listOfRaces.append("]");
-
 				Race newRace=null;
+				if(CMSecurity.isDisabled("RACES"))
+				{
+					newRace=CMClass.getRace("PlayerRace");
+					if(newRace==null)
+					    newRace=CMClass.getRace("StdRace");
+				}
 				while(newRace==null)
 				{
 					mob.session().print("\n\r^!Please choose from the following races (?):^N\n\r");
@@ -534,16 +540,25 @@ public class FrontLogin extends StdCommand
 											  +Util.padRight("TOTAL POINTS",15)+": "
 											  +CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT)+"/"+(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)*6));
 
-						mob.session().println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
+						if(!CMSecurity.isDisabled("CLASSES"))
+							mob.session().println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
 
 						if(!mob.session().confirm("^!Would you like to re-roll (y/N)?^N","N"))
 							mayCont=false;
 					}
 				}
-				mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"classes.txt").toString());
+				if(!CMSecurity.isDisabled("CLASSES"))
+					mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"classes.txt").toString());
 
 				CharClass newClass=null;
 				Vector qualClasses=classQualifies(mob,theme);
+				if(CMSecurity.isDisabled("CLASSES"))
+				{
+				    newClass=CMClass.getCharClass("PlayerClass");
+					if(newClass==null)
+					    newClass=CMClass.getCharClass("StdCharClass");
+				}
+				else
 				if(qualClasses.size()==0)
 				{
 					newClass=CMClass.getCharClass("Apprentice");

@@ -146,6 +146,18 @@ public class DefaultCharStats implements Cloneable, CharStats
 		else
 			return "level "+levelStr+" "+displayClassName();
 	}
+	public String displayClassLevelOnly(MOB mob)
+	{
+		if(displayClassLevel!=null)
+			return displayClassLevel;
+		int classLevel=getClassLevel(getCurrentClass());
+		String levelStr=null;
+		if(classLevel>=mob.envStats().level())
+			levelStr=""+mob.envStats().level();
+		else
+			levelStr=classLevel+"/"+mob.envStats().level();
+		return levelStr;
+	}
 
 	public String getSavesStr()
 	{

@@ -219,9 +219,4 @@ public class Paladin extends StdCharClass
 		}
 		return outfitChoices;
 	}
-	
-	public void level(MOB mob)
-	{
-		super.level(mob);
-	}
 }

@@ -240,6 +240,8 @@ public class Prancer extends StdCharClass
 
 	public void level(MOB mob)
 	{
+	    if(CMSecurity.isDisabled("LEVELS")) 
+	        return;
 		super.level(mob);
 		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
 		int maxDexStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)

@@ -418,7 +418,9 @@ public class StdCharClass implements CharClass, Cloneable
 
 	public void unLevel(MOB mob)
 	{
-		if(mob.baseEnvStats().level()<2) return;
+		if((mob.baseEnvStats().level()<2) 
+		||(CMSecurity.isDisabled("LEVELS")))
+		    return;
 		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CommonStrings.msp("doh.wav",60));
 		if(!mob.isMonster())
 			CommonMsgs.channel("WIZINFO","",mob.Name()+" has just lost a level.",true);
@@ -598,6 +600,8 @@ public class StdCharClass implements CharClass, Cloneable
 	}
 	public void level(MOB mob)
 	{
+	    if(CMSecurity.isDisabled("LEVELS")) 
+	        return;
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CommonStrings.msp("level_gain.wav",60));
 		theNews.append(levelAdjuster(mob,1));
 		if(mob.playerStats()!=null)

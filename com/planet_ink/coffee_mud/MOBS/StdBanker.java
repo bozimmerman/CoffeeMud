@@ -313,12 +313,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 						else
 						if((coinItem==null)||(newBalance!=coinItem.numberOfCoins()))
 						{
-						    if(newBalance>coinItem.numberOfCoins())
-						        MoneyUtils.bankLedger(bankChain(),name,CoffeeUtensils.getFormattedDate(this)+": Deposit of "+(newBalance-coinItem.numberOfCoins())+": Interest paid.");
-						    else
-						        MoneyUtils.bankLedger(bankChain(),name,CoffeeUtensils.getFormattedDate(this)+": Withdrawl of "+(coinItem.numberOfCoins()-newBalance)+": Interest charged.");
-							if(coinItem!=null)
+						    if(coinItem!=null)
+						    {
+							    if(newBalance>coinItem.numberOfCoins())
+							        MoneyUtils.bankLedger(bankChain(),name,CoffeeUtensils.getFormattedDate(this)+": Deposit of "+(newBalance-coinItem.numberOfCoins())+": Interest paid.");
+							    else
+							        MoneyUtils.bankLedger(bankChain(),name,CoffeeUtensils.getFormattedDate(this)+": Withdrawl of "+(coinItem.numberOfCoins()-newBalance)+": Interest charged.");
 								delDepositInventory(name,coinItem);
+						    }
 							coinItem=(Coins)CMClass.getItem("StdCoins");
 							coinItem.setNumberOfCoins(newBalance);
 							coinItem.recoverEnvStats();

@@ -360,7 +360,8 @@ public class Spell_Wish extends Spell
 					int exp=mob.getExperience();
 					//int hp=((MOB)target).curState().getHitPoints();
 					MUDFight.postDeath(mob,(MOB)target,null);
-					if(mob.getExperience()>exp)
+					if((!CMSecurity.isDisabled("EXPERIENCE"))
+					&&(mob.getExperience()>exp))
 					{
 						baseLoss=mob.getExperience()-exp;
 						mob.setExperience(exp);
@@ -592,7 +593,8 @@ public class Spell_Wish extends Spell
 
 			if((target!=null)
 			&&((myWish.indexOf(" LOWER ")>=0)||(myWish.indexOf(" LOSE ")>=0)||(myWish.indexOf(" GAIN ")>=0)||(myWish.indexOf(" HIGHER ")>=0)||(myWish.indexOf(" WAS ")>=0)||(myWish.indexOf(" WOULD BE ")>=0)||(myWish.indexOf(" WOULD BECOME ")>=0)||(myWish.indexOf(" BECAME ")>=0))
-			&&((myWish.indexOf(" LEVEL ")>=0)||(myWish.indexOf(" LEVELS ")>=0)))
+			&&((myWish.indexOf(" LEVEL ")>=0)||(myWish.indexOf(" LEVELS ")>=0))
+			&&(!CMSecurity.isDisabled("LEVELS")))
 			{
 				int level=0;
 				if(myWish.indexOf(" LOWER ")>=0)
@@ -1023,7 +1025,8 @@ public class Spell_Wish extends Spell
 					break;
 				}
 				wishDrain(mob,baseLoss,true);
-				mob.baseCharStats().getCurrentClass().unLevel(mob);
+				if(!CMSecurity.isDisabled("LEVELS"))
+					mob.baseCharStats().getCurrentClass().unLevel(mob);
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+1);
 				else

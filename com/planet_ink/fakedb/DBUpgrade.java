@@ -368,7 +368,7 @@ public class DBUpgrade
 			catch(Exception ce)
 			{
 				pl("That information just did not work for me.");
-				pl("");
+				pl(ce.getMessage());
 			}
 		}
 		/////////////////////////////////////////////////////////////////////////////	
@@ -517,7 +517,7 @@ public class DBUpgrade
 			catch(Exception ce)
 			{
 				pl("That information just did not work for me.");
-				pl("");
+				pl(ce.getMessage());
 			}
 		}
 		/////////////////////////////////////////////////////////////////////////////	
