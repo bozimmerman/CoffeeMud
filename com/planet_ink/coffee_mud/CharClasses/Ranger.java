@@ -57,6 +57,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_LocatePlants",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Fighter_RapidShot",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Fighter_TrueShot",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_Moonbeam",false);
@@ -101,6 +102,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),23,"Ranger_Enemy4",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_AnimalSpy",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonMount",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Fighter_CalledShot",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_NeutralizePoison",false);
 			CMAble.addCharAbilityMapping(ID(),30,"Ranger_AnimalFrenzy",false);
 		}

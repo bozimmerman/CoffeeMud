@@ -59,7 +59,7 @@ CMAble.addCharAbilityMapping(ID(),3,"Thief_Mark",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_SneakAttack",false);
 			
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",true);
-CMAble.addCharAbilityMapping(ID(),4,"Thief_IdentifyPoison",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Skill_IdentifyPoison",false);
 			
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_Dirt",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Thief_DetectTraps",false);
@@ -121,6 +121,7 @@ CMAble.addCharAbilityMapping(ID(),23,"Thief_FrameMark",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Fighter_Tumble",false);
 			
 			CMAble.addCharAbilityMapping(ID(),25,"Skill_AttackHalf",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Fighter_CalledShot",false);
 			
 			CMAble.addCharAbilityMapping(ID(),30,"Thief_ShadowStrike",true);
 		}

@@ -68,7 +68,7 @@ public class Amputation extends StdAbility
 												 AMPUTATE_LEFTEAR,AMPUTATE_RIGHTEAR,
 												 AMPUTATE_LEFTEYE,AMPUTATE_RIGHTEYE};
 
-	protected long missingLimbList(){ return Util.s_long(text());}
+	public long missingLimbList(){ return Util.s_long(text());}
 	public boolean canWear(long missingLimbs, Item item)
 	{
 		long forbiddenWornBits=0;
