@@ -86,7 +86,7 @@ public class TemporaryImmunity extends StdAbility
 		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(set.contains(msg.tool().ID())))
 		{
-			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seems immune to "+msg.tool().name()+".");
+			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+msg.tool().name()+".");
 			return false;
 		}
 		return true;

@@ -26,7 +26,7 @@ public class Beastmaster extends StdCharClass
 	{
 		super();
 		maxStatAdj[CharStats.CONSTITUTION]=4;
-		maxStatAdj[CharStats.STRENGTH]=4;
+		maxStatAdj[CharStats.DEXTERITY]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -138,7 +138,7 @@ public class Beastmaster extends StdCharClass
 	}
 
 
-	public String statQualifications(){return "Constitution 9+, Strength 9+";}
+	public String statQualifications(){return "Constitution 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
@@ -147,10 +147,10 @@ public class Beastmaster extends StdCharClass
 				mob.tell("You need at least a 9 Constitution to become a Beastmaster.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=8)
+		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
 		{
 			if(!quiet)
-				mob.tell("You need at least a 9 Strength to become a Beastmaster.");
+				mob.tell("You need at least a 9 Dexterity to become a Beastmaster.");
 			return false;
 		}
 		if(!(mob.charStats().getMyRace().ID().equals("Human"))

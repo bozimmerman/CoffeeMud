@@ -154,7 +154,7 @@ public class Spell_WizardLock extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> point(s) <S-HIS-HER> at <T-NAMESELF>, incanting, but nothing happens.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF>, incanting, but nothing happens.");
 
 
 		// return whether it worked
