@@ -127,8 +127,8 @@ public class Doomsayer extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Never fumbles evil prayers, and receives 1 pt damage reduction/level from fire attacks.";}
-	public String otherLimitations(){return "Using non-evil prayers introduces failure chance.  Very vulnerable to cold attacks.";}
+	public String otherBonuses(){return "Receives 1 pt damage reduction/level from fire attacks.";}
+	public String otherLimitations(){return "Always fumbles good prayers, and fumbles all prayers when alignment is above 500.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.  Vulnerable to cold attacks.";}
 	public String weaponLimitations(){return "May only use sword, axe, polearm, and some edged weapons.";}
 
 	public boolean okAffect(MOB myChar, Affect affect)
@@ -139,7 +139,6 @@ public class Doomsayer extends Cleric
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			&&(!disableAlignedSpells())
 			&&(affect.tool()!=null)
 			&&(affect.tool() instanceof Ability)
 			&&(myChar.isMine(affect.tool()))
@@ -153,10 +152,17 @@ public class Doomsayer extends Cleric
 				int hq=holyQuality(A);
 					
 				int basis=0;
-				if(hq==0) return true;
-				else
 				if(hq==1000)
-					basis=(1000-align)/10;
+				{
+					myChar.tell("The good nature of "+A.name()+" disrupts your prayer.");
+					return false;
+				}
+				else
+				if(myChar.getAlignment()>500)
+					basis=100;
+				else
+				if(hq==0)
+					basis=align/10;
 				else
 				{
 					basis=(500-align)/10;

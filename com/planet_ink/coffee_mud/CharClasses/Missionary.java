@@ -84,6 +84,7 @@ public class Missionary extends Cleric
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_ChainStrike",true);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Prayer_Monolith",0,"AIR",true);
 			
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Gateway",true);
 
@@ -168,7 +169,6 @@ public class Missionary extends Cleric
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			&&(!disableAlignedSpells())
 			&&(affect.tool()!=null)
 			&&(affect.tool() instanceof Ability)
 			&&(myChar.isMine(affect.tool()))

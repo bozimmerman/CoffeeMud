@@ -151,6 +151,8 @@ public class Sense
 		if(seen==null) return false;
 		if(seen.fetchAffect("Burning")!=null)
 			return true;
+		if(seen.fetchAffect("Prayer_FlameWeapon")!=null)
+			return true;
 		if(!(seen instanceof Light))
 			return false;
 		Light light=(Light)seen;

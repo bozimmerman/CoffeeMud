@@ -158,7 +158,6 @@ public class Shaman extends Cleric
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			&&(!disableAlignedSpells())
 			&&(affect.tool()!=null)
 			&&(affect.tool() instanceof Ability)
 			&&(myChar.isMine(affect.tool()))

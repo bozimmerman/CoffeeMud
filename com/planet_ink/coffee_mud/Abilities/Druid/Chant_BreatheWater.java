@@ -6,13 +6,13 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 
-public class Chant_WaterBreathing extends Chant
+public class Chant_BreatheWater extends Chant
 {
-	public String ID() { return "Chant_WaterBreathing"; }
-	public String name(){ return "Water Breathing";}
-	public String displayText(){return "(Water Breathing)";}
+	public String ID() { return "Chant_BreatheWater"; }
+	public String name(){ return "Breathe Water";}
+	public String displayText(){return "(Breathe Water)";}
 	public int quality(){return Ability.OK_SELF;}
-	public Environmental newInstance(){	return new Chant_WaterBreathing();}
+	public Environmental newInstance(){	return new Chant_BreatheWater();}
 
 	public void unInvoke()
 	{

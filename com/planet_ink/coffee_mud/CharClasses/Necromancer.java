@@ -125,8 +125,8 @@ public class Necromancer extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Never fumbles evil prayers.  Becomes Lich upon death after reaching 30th level Necromancer.";}
-	public String otherLimitations(){return "Using non-evil prayers introduces failure chance.";}
+	public String otherBonuses(){return "Becomes Lich upon death after reaching 30th level Necromancer.";}
+	public String otherLimitations(){return "Always fumbles good prayers.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.";}
 	public String weaponLimitations(){return "May only use sword, axe, polearm, and some edged weapons.";}
 
 	public boolean okAffect(MOB myChar, Affect affect)
@@ -136,21 +136,7 @@ public class Necromancer extends Cleric
 
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((affect.sourceMinor()==Affect.TYP_DEATH)
-			   &&(myChar.baseCharStats().getClassLevel(this)>=30)
-			   &&(!myChar.baseCharStats().getMyRace().ID().equals("Lich")))
-			{
-				Race newRace=(Race)CMClass.getRace("Lich");
-				if(newRace!=null)
-				{
-					myChar.tell("You are being transformed into a "+newRace.name()+"!!");
-					myChar.baseCharStats().setMyRace(newRace);
-					myChar.recoverCharStats();
-				}
-			}
-			else
 			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			&&(!disableAlignedSpells())
 			&&(affect.tool()!=null)
 			&&(affect.tool() instanceof Ability)
 			&&(myChar.isMine(affect.tool()))
@@ -164,10 +150,14 @@ public class Necromancer extends Cleric
 				int hq=holyQuality(A);
 					
 				int basis=0;
-				if(hq==0) return true;
-				else
 				if(hq==1000)
-					basis=(1000-align)/10;
+				{
+					myChar.tell("The good nature of "+A.name()+" disrupts your prayer.");
+					return false;
+				}
+				else
+				if(hq==0)
+					basis=align/10;
 				else
 				{
 					basis=(500-align)/10;
@@ -190,6 +180,19 @@ public class Necromancer extends Cleric
 				if(align<350)
 					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
 				return false;
+			}
+			else
+			if((affect.sourceMinor()==Affect.TYP_DEATH)
+			   &&(myChar.baseCharStats().getClassLevel(this)>=30)
+			   &&(!myChar.baseCharStats().getMyRace().ID().equals("Lich")))
+			{
+				Race newRace=(Race)CMClass.getRace("Lich");
+				if(newRace!=null)
+				{
+					myChar.tell("You are being transformed into a "+newRace.name()+"!!");
+					myChar.baseCharStats().setMyRace(newRace);
+					myChar.recoverCharStats();
+				}
 			}
 			else
 			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)

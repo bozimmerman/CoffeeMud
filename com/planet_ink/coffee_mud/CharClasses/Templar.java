@@ -146,8 +146,8 @@ public class Templar extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Never fumbles evil prayers, and receives Aura of Strife which increases in power.";}
-	public String otherLimitations(){return "Using non-evil prayers introduces failure chance.";}
+	public String otherBonuses(){return "Receives Aura of Strife which increases in power.";}
+	public String otherLimitations(){return "Always fumbles good prayers.  Using non-evil prayers introduces failure chance.";}
 	public String weaponLimitations(){return "";}
 
 	public boolean okAffect(MOB myChar, Affect affect)
@@ -158,7 +158,6 @@ public class Templar extends Cleric
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			&&(!disableAlignedSpells())
 			&&(affect.tool()!=null)
 			&&(affect.tool() instanceof Ability)
 			&&(myChar.isMine(affect.tool()))
@@ -171,22 +170,31 @@ public class Templar extends Cleric
 					return true;
 				int hq=holyQuality(A);
 					
-				if(hq==0)
-					return true;
-				else
+				int basis=0;
 				if(hq==1000)
 				{
-					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
+					myChar.tell("The good nature of "+A.name()+" disrupts your prayer.");
 					return false;
 				}
-				
-				int basis=(500-align)/10;
-				if(basis<0) basis=basis*-1;
-				basis-=10;
+				else
+				if(hq==0)
+					basis=align/10;
+				else
+				{
+					basis=(500-align)/10;
+					if(basis<0) basis=basis*-1;
+					basis-=10;
+				}
 		
 				if(Dice.rollPercentage()>basis)
 					return true;
 
+				if(hq==0)
+					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
+				else
+				if(hq==1000)
+					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
+				else
 				if(align>650)
 					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
 				else
