@@ -50,11 +50,19 @@ public class Prop_PracticeDummy extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg)) 
+		    return false;
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)))
 		{
+			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
+			&&(text().toUpperCase().indexOf("KILL")<0))
+			{
+			    msg.source().tell("You are not allowed to die.");
+			    return false;
+			}
+			else
 			if(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			{
 				((MOB)affected).makePeace();

@@ -207,7 +207,13 @@ public class StdRace implements Race
 			&&((ID().equals("Human"))
 			   ||(msg.source().charStats().getMyRace().ID().equals("Human"))
 			   ||(msg.source().charStats().getMyRace().ID().equals(ID())))
-			&&(msg.source().charStats().getMyRace().fertile()))
+			&&(msg.source().charStats().getMyRace().fertile())
+			&&((msg.source().charStats().getStat(CharStats.AGE)==0)
+			        ||((msg.source().charStats().ageCategory()>Race.AGE_CHILD)
+			                &&(msg.source().charStats().ageCategory()<Race.AGE_OLD)))
+			&&(myChar.charStats().getStat(CharStats.AGE)==0)
+			        ||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
+			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD)))
 			{
 				Ability A=CMClass.getAbility("Pregnancy");
 				if((A!=null)

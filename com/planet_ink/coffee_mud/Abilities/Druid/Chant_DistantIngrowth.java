@@ -48,8 +48,8 @@ public class Chant_DistantIngrowth extends Chant
 			&&(Sense.canAccess(mob,R)))
 			{
 				anyRoom=R;
-				if((newRoom.domainType()==Room.DOMAIN_INDOORS_STONE)
-				||(newRoom.domainType()==Room.DOMAIN_INDOORS_WOOD))
+				if((R.domainType()==Room.DOMAIN_INDOORS_STONE)
+				||(R.domainType()==Room.DOMAIN_INDOORS_WOOD))
 				{
 				    newRoom=R;
 				    break;

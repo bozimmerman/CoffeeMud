@@ -57,7 +57,13 @@ public class Play_Ballad extends Play
 			&&(myChar.numWearingHere(Item.ON_LEGS)==0)
 			&&(mate.numWearingHere(Item.ON_LEGS)==0)
 			&&(myChar.numWearingHere(Item.ON_WAIST)==0)
-			&&(mate.numWearingHere(Item.ON_WAIST)==0))
+			&&(mate.numWearingHere(Item.ON_WAIST)==0)
+			&&((mate.charStats().getStat(CharStats.AGE)==0)
+			        ||((mate.charStats().ageCategory()>Race.AGE_CHILD)
+			                &&(mate.charStats().ageCategory()<Race.AGE_OLD)))
+			&&(myChar.charStats().getStat(CharStats.AGE)==0)
+			        ||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
+			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD)))
 			{
 				MOB female=myChar;
 				MOB male=mate;
