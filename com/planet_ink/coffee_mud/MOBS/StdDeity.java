@@ -301,8 +301,17 @@ public class StdDeity extends StdMOB implements Deity
 			break;
 		case Affect.TYP_REBUKE:
 			msg.source().setWorshipCharID("");
-			msg.source().tell(name()+" takes "+xpwrath+" of experience from you.");
-			msg.source().charStats().getCurrentClass().loseExperience(msg.source(),xpwrath);
+			removeBlessings(msg.source());
+			if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
+			{
+				msg.source().tell("You feel the wrath of "+name()+"!");
+				msg.source().charStats().getCurrentClass().unLevel(msg.source());
+			}
+			else
+			{
+				msg.source().tell(name()+" takes "+xpwrath+" of experience from you.");
+				msg.source().charStats().getCurrentClass().loseExperience(msg.source(),xpwrath);
+			}
 			break;
 		}
 		else
@@ -465,17 +474,17 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						if(!ExternalPlay.zapperCheck(getClericRequirements(),M))
 						{
-							M.tell("You have been rebuked by "+name()+"!");
-							removeBlessings(M);
-							M.setWorshipCharID("");
+							FullMsg msg=new FullMsg(M,this,null,Affect.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+							if((M.location()!=null)&&(M.okAffect(msg)))
+								M.location().send(M,msg);
 						}
 					}
 					else
 					if(!ExternalPlay.zapperCheck(getWorshipRequirements(),M))
 					{
-						M.tell("You have been rebuked by "+name()+"!");
-						removeBlessings(M);
-						M.setWorshipCharID("");
+						FullMsg msg=new FullMsg(M,this,null,Affect.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+						if((M.location()!=null)&&(M.okAffect(msg)))
+							M.location().send(M,msg);
 					}
 				}
 			}
