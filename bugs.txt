@@ -1,7 +1,5 @@
 Comprehend languages no longer translates TELLs in other languages.
 Try out Artisans
-Make sure Hunters Snare actually makes the mob hunt around.
-when you enchant items while serving a liege it costs the liege XP (10%). Now this may sound OK to you, it is not. Because if the liege is logged off, the arcanist basically gets a free 10% discount for serving someone. Just let your liege know when you are making an item, have him log off, make your item, and he can log back on.
 Test: ?holy day,  ?aura of intolerance, Vampirism, Cannibalism, ?Forgive, ?Divine Perspective
 prayer conviction--enhances combat (attack and defence) based on the number of allies of the same faith. Low level prayer that could give high level results in a large party of same religion.
 prayer--benediction. Grants bonus to your prime abilitys based on your class nd priest level. Every 5 levels grants a +1 to one ability. If you have 2 primes, then it would grant the first to one, and the second to the other.
