@@ -393,7 +393,11 @@ public class JewelMaking extends CommonSkill
 				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstOther.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			else
 				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
-			itemName=Util.startWithAorAn(itemName);
+			misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+			if(misctype.equalsIgnoreCase("BUNDLE")) 
+				itemName="a "+woodRequired+"# "+itemName;
+			else
+				itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) making "+building.name()+".";
 			displayText="You are making "+building.name();
@@ -417,7 +421,6 @@ public class JewelMaking extends CommonSkill
 				building.setBaseValue(building.baseGoldValue()+firstOther.baseGoldValue());
 			}
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
-			misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			//int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";

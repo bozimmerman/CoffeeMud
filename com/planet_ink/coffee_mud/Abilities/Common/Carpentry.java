@@ -273,8 +273,12 @@ public class Carpentry extends CommonSkill
 				return false;
 			}
 			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
-			itemName=Util.startWithAorAn(itemName);
+			if(misctype.equalsIgnoreCase("BUNDLE")) 
+				itemName="a "+woodRequired+"# "+itemName;
+			else
+				itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) carving "+building.name()+".";
 			displayText="You are carving "+building.name();
@@ -287,7 +291,6 @@ public class Carpentry extends CommonSkill
 			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-3;
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness));
 			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
-			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));

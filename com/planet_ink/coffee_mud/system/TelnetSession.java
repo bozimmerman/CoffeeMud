@@ -1356,7 +1356,9 @@ public class TelnetSession extends Thread implements Session
 		status=Session.STATUS_LOGOUT4;
 		if(mob!=null)
 		{
-			CommonMsgs.channel("WIZINFO","",mob.Name()+" has logged out.",true);
+			String name=mob.Name();
+			if(name.trim().length()==0) name="Someone";
+				CommonMsgs.channel("WIZINFO","",name+" has logged out.",true);
 			// the player quit message!
 			if(mob.location()!=null)
 			{
@@ -1372,7 +1374,7 @@ public class TelnetSession extends Thread implements Session
 			}
 			if(mob.playerStats()!=null)
 				mob.playerStats().setLastDateTime(System.currentTimeMillis());
-			Log.sysOut("Session","logout: "+mob.Name());
+			Log.sysOut("Session","logout: "+name);
 			mob.removeFromGame();
 			mob.setSession(null);
 			mob=null;

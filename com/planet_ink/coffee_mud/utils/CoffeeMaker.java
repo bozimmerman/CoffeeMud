@@ -1456,9 +1456,9 @@ public class CoffeeMaker
 			return;
 		}
 
-		if(XMLManager.getValFromPieces(buf,"GENDER").length()==0)
+		if((E instanceof MOB)&&(XMLManager.getValFromPieces(buf,"GENDER").length()==0))
 		{
-			Log.errOut("CoffeeMaker",E.ID()+"/"+E.name()+" has malformed XML. Load aborted.");
+			Log.errOut("CoffeeMaker","MOB "+E.ID()+"/"+E.name()+" has malformed XML. Load aborted.");
 			return;
 		}
 		

@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_LotsForSale extends Prop_RoomForSale
+public class Prop_LotsForSale extends Prop_RoomsForSale
 {
 	public String ID() { return "Prop_LotsForSale"; }
 	public String name(){ return "Putting many rooms up for sale";}
@@ -17,7 +17,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		if(theRoom==null) return true;
 
 		if((theRoom.roomID().length()>0)
-		&&((getLandTitle(theRoom)==null)||(getLandTitle(theRoom).landOwner().length()>0)))
+		&&((CoffeeUtensils.getLandTitle(theRoom)==null)
+			||(CoffeeUtensils.getLandTitle(theRoom).landOwner().length()>0)))
 			return false;
 
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -26,20 +27,20 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			if((R!=null)
 			   &&(R!=fromRoom)
 			   &&(R.roomID().length()>0)
-			   &&((getLandTitle(R)==null)||(getLandTitle(R).landOwner().length()>0)))
+			   &&((CoffeeUtensils.getLandTitle(R)==null)||(CoffeeUtensils.getLandTitle(R).landOwner().length()>0)))
 				return false;
 		}
 		return true;
 	}
 
-	public void updateLot(Room R, LandTitle T)
+	public void updateLot()
 	{
-		if(R==null) R=CMMap.getRoom(landRoomID());
-		if(R==null) return;
-		if(T==null) T=getLandTitle(R);
-		if(T==null) return;
-		super.updateLot(R,T);
-		if(T.landOwner().length()==0)
+		if(!(affected instanceof Room))
+			return;
+		lastItemNums=updateLotWithThisData((Room)affected,this,true,lastItemNums);
+		
+		Room R=(Room)affected;
+		if(landOwner().length()==0)
 		{
 			boolean updateExits=false;
 			boolean foundOne=false;
@@ -75,21 +76,13 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					R2=CMClass.getLocale(CMClass.className(R));
 					R2.setRoomID(CMMap.getOpenRoomID(R.getArea().Name()));
 					R2.setArea(R.getArea());
-					Ability newTitle=null;
-					for(int a=0;a<R.numEffects();a++)
+					LandTitle newTitle=CoffeeUtensils.getLandTitle(R);
+					if((newTitle!=null)&&(CoffeeUtensils.getLandTitle(R2)==null))
 					{
-						Ability A2=R.fetchEffect(a);
-						if(A2!=null)
-						{
-							A2=(Ability)A2.copyOf();
-							R2.addNonUninvokableEffect(A2);
-							if(A2 instanceof LandTitle)
-								newTitle=A2;
-						}
+						newTitle=(LandTitle)((Ability)newTitle).copyOf();
+						newTitle.setLandOwner("");
+						R2.addNonUninvokableEffect((Ability)newTitle);
 					}
-					if(newTitle!=null)
-						((LandTitle)newTitle).setLandOwner("");
-
 					R.rawDoors()[d]=R2;
 					R.rawExits()[d]=CMClass.getExit("Open");
 					R2.rawDoors()[Directions.getOpDirectionCode(d)]=R;

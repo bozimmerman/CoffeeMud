@@ -38,31 +38,40 @@ public class StdTitle extends StdItem implements LandTitle
 
 	public int landPrice()
 	{
-		LandTitle A=fetchLandTitle(null);
+		LandTitle A=fetchALandTitle();
 		if(A==null)	return 0;
 		return A.landPrice();
 	}
 	public void setLandPrice(int price)
 	{
-		LandTitle A=fetchLandTitle(null);
+		LandTitle A=fetchALandTitle();
 		if(A==null)	return;
 		A.setLandPrice(price);
 		A.updateTitle();
 	}
 	public String landOwner()
 	{
-		LandTitle A=fetchLandTitle(null);
+		LandTitle A=fetchALandTitle();
 		if(A==null)	return "";
 		return A.landOwner();
 	}
 	public void setLandOwner(String owner)
 	{
-		LandTitle A=fetchLandTitle(null);
+		LandTitle A=fetchALandTitle();
 		if(A==null)	return;
 		A.setLandOwner(owner);
 		A.updateTitle();
 	}
-	public String landRoomID()
+	
+	public LandTitle fetchALandTitle()
+	{
+		Vector V=getPropertyRooms();
+		if((V!=null)&&(V.size()>0))
+			return CoffeeUtensils.getLandTitle((Room)V.firstElement());
+		return null;
+	}
+	
+	public String landPropertyID()
 	{
 		return text();
 	}
@@ -71,62 +80,52 @@ public class StdTitle extends StdItem implements LandTitle
 	{
 		if(!name.startsWith("the title to"))
 		{
-			Vector V=getRooms();
+			Vector V=getPropertyRooms();
 			if(V.size()<2)
-				setName("the title to "+landRoomID());
+				setName("the title to "+landPropertyID());
 			else
 				setName("the title to rooms around "+((Room)V.firstElement()).ID());
 		}
 	}
 
-	public void setLandRoomID(String landID)
+	public void setLandPropertyID(String landID)
 	{
 		setMiscText(landID);
 		updateTitleName();
 	}
 
-	public void updateLot(Room R, LandTitle T)
+	public void updateLot()
 	{
-		if(T==null)
-			T=fetchLandTitle(R);
-		if(T==null) return;
-		T.updateLot(R,T);
+		Vector V=getPropertyRooms();
+		for(int v=0;v<V.size();v++)
+		{
+			Room R=(Room)V.elementAt(v);
+			LandTitle T=CoffeeUtensils.getLandTitle(R);
+			if(T!=null) T.updateLot();
+		}
 	}
 
 	public void updateTitle()
 	{
-		Room R=CMMap.getRoom(landRoomID());
-		if(R!=null)
-		{
-			LandTitle A=(LandTitle)fetchLandTitle(R);
-			if(A!=null) A.updateTitle();
-		}
+		LandTitle T=fetchALandTitle();
+		if(T!=null) T.updateTitle();
 	}
 
-	public Vector getRooms()
+	public Vector getPropertyRooms()
 	{
-		Room R=CMMap.getRoom(landRoomID());
+		Room R=CMMap.getRoom(landPropertyID());
 		if(R!=null)
 		{
-			LandTitle A=(LandTitle)fetchLandTitle(R);
-			if(A!=null) return A.getRooms();
+			LandTitle A=CoffeeUtensils.getLandTitle(R);
+			if(A!=null) return A.getPropertyRooms();
+		}
+		Area area=CMMap.getArea(landPropertyID());
+		if(area!=null)
+		{
+			LandTitle A=CoffeeUtensils.getLandTitle(area);
+			if(A!=null) return A.getPropertyRooms();
 		}
 		return new Vector();
-	}
-
-	private LandTitle fetchLandTitle(Room R)
-	{
-		if(R==null)
-		{
-			if(landRoomID().length()==0) return null;
-			R=CMMap.getRoom(landRoomID());
-			if(R==null) return null;
-		}
-		LandTitle A=null;
-		for(int a=0;a<R.numEffects();a++)
-			if(R.fetchEffect(a) instanceof LandTitle)
-			{ A=(LandTitle)R.fetchEffect(a); break;}
-		return A;
 	}
 
 	public boolean isReadable(){return true;}
@@ -151,23 +150,16 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof ShopKeeper))
 		{
-			Room R=CMMap.getRoom(landRoomID());
-			if(R==null)
-			{
-				destroy();
-				Log.errOut("StdTitle","Unknown room: "+landRoomID());
-				return;
-			}
-			LandTitle A=fetchLandTitle(R);
+			LandTitle A=fetchALandTitle();
 			if(A==null)
 			{
 				destroy();
-				Log.errOut("StdTitle","Unsellable room: "+landRoomID());
+				Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
 				return;
 			}
 			A.setLandOwner("");
-			A.updateTitle();
-			updateLot(R,A);
+			updateTitle();
+			updateLot();
 			recoverEnvStats();
 		}
 		else
@@ -181,23 +173,16 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.target() instanceof MOB)
 		&&(!(msg.target() instanceof Banker)))
 		{
-			Room R=CMMap.getRoom(landRoomID());
-			if(R==null)
-			{
-				destroy();
-				Log.errOut("StdTitle","Unknown room: "+landRoomID());
-				return;
-			}
-			LandTitle A=fetchLandTitle(R);
+			LandTitle A=fetchALandTitle();
 			if(A==null)
 			{
 				destroy();
-				Log.errOut("StdTitle","Ungiveable room: "+landRoomID());
+				Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
 				return;
 			}
 			A.setLandOwner(msg.target().Name());
-			A.updateTitle();
-			updateLot(R,A);
+			updateTitle();
+			updateLot();
 			recoverEnvStats();
 		}
 		else
@@ -206,18 +191,11 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof ShopKeeper))
 		{
-			Room R=CMMap.getRoom(landRoomID());
-			if(R==null)
-			{
-				destroy();
-				Log.errOut("StdTitle","Unknown room: "+landRoomID());
-				return;
-			}
-			LandTitle A=fetchLandTitle(R);
+			LandTitle A=fetchALandTitle();
 			if(A==null)
 			{
 				destroy();
-				Log.errOut("StdTitle","Unbuyable room: "+landRoomID());
+				Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
 				return;
 			}
 			if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)
@@ -225,8 +203,8 @@ public class StdTitle extends StdItem implements LandTitle
 				A.setLandOwner(msg.source().getClanID());
 			else
 				A.setLandOwner(msg.source().Name());
-			A.updateTitle();
-			updateLot(R,A);
+			updateTitle();
+			updateLot();
 			recoverEnvStats();
 		}
 		else
@@ -235,13 +213,13 @@ public class StdTitle extends StdItem implements LandTitle
 		{
 			if(Sense.canBeSeenBy(this,msg.source()))
 			{
-				if((landRoomID()==null)||(landRoomID().length()==0))
+				if((landPropertyID()==null)||(landPropertyID().length()==0))
 					msg.source().tell("It appears to be a blank property title.");
 				else
 				if((landOwner()==null)||(landOwner().length()==0))
-					msg.source().tell("It states that the property herein known as '"+landRoomID()+"' is available for ownership.");
+					msg.source().tell("It states that the property herein known as '"+landPropertyID()+"' is available for ownership.");
 				else
-					msg.source().tell("It states that the property herein known as '"+landRoomID()+"' is deeded to "+landOwner()+".");
+					msg.source().tell("It states that the property herein known as '"+landPropertyID()+"' is deeded to "+landOwner()+".");
 			}
 			else
 				msg.source().tell("You can't see that!");

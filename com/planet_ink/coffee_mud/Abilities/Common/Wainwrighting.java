@@ -185,7 +185,11 @@ public class Wainwrighting extends CommonSkill
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
-		itemName=Util.startWithAorAn(itemName);
+		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+		if(misctype.equalsIgnoreCase("BUNDLE")) 
+			itemName="a "+woodRequired+"# "+itemName;
+		else
+			itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) building "+building.name()+".";
 		displayText="You are building "+building.name();
@@ -197,7 +201,6 @@ public class Wainwrighting extends CommonSkill
 		building.setMaterial(firstWood.material());
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
-		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 		int riders=Util.s_int((String)foundRecipe.elementAt(RCP_NUMRIDERS));

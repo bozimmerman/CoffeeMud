@@ -13,8 +13,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public Environmental newInstance(){	return new Prop_RoomForSale();}
 
 	private final static String theStr=" This lot is for sale (look id).";
-	private boolean confirmedUser=false;
-	private int lastNumItems=-1;
+	protected int lastItemNums=-1;
 
 	public String accountForYourself()
 	{ return "For Sale";	}
@@ -48,40 +47,35 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		setMiscText(owner+"/"+price);
 	}
 
+	// update title, since it may affect clusters, worries about ALL involved
 	public void updateTitle()
 	{
-		Room R=CMMap.getRoom(landRoomID());
-		if(R==null) return;
-		CMClass.DBEngine().DBUpdateRoom(R);
+		if(affected instanceof Room)
+			CMClass.DBEngine().DBUpdateRoom((Room)affected);
+		else
+		{
+			Room R=CMMap.getRoom(landPropertyID());
+			if(R!=null) CMClass.DBEngine().DBUpdateRoom(R);
+		}
 	}
 
-	public String landRoomID(){
+	public String landPropertyID(){
 		if((affected!=null)&&(affected instanceof Room))
 			return CMMap.getExtendedRoomID(((Room)affected));
 		return "";
 	}
 
-	public void setLandRoomID(String landID){}
-
-	public static LandTitle getLandTitle(Room R)
-	{
-		LandTitle oldTitle=null;
-		for(int a=0;a<R.numEffects();a++)
-			if(R.fetchEffect(a) instanceof LandTitle)
-			{ oldTitle=(LandTitle)R.fetchEffect(a); break;}
-		return oldTitle;
-	}
+	public void setLandPropertyID(String landID){}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
-		&&(affected!=null)
-		&&(affected instanceof Room))
+		&&(affected!=null))
 		{
-			Room R=(Room)affected;
-			updateLot(R,this);
+			updateLot();
 			Vector mobs=new Vector();
+			Room R=(Room)affected;
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				MOB M=(MOB)R.fetchInhabitant(m);
@@ -95,7 +89,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
-	public void colorForSale(Room R, boolean reset)
+	public static void colorForSale(Room R, boolean reset)
 	{
 		if(R.description().indexOf(theStr)<0)
 		{
@@ -121,20 +115,24 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
-	public Vector getRooms()
+	public Vector getPropertyRooms()
 	{
 		Vector V=new Vector();
-		Room R=CMMap.getRoom(landRoomID());
-		if(R!=null) V.addElement(R);
+		if(affected instanceof Room)
+			V.addElement(affected);
+		else
+		{
+			Room R=CMMap.getRoom(landPropertyID());
+			if(R!=null) V.addElement(R);
+		}
 		return V;
 	}
 
-	public void updateLot(Room R, LandTitle T)
+	public static int updateLotWithThisData(Room R, 
+											LandTitle T, 
+											boolean clearRoomIfUnsold,
+											int lastNumItems)
 	{
-		if(R==null) R=CMMap.getRoom(landRoomID());
-		if(R==null) return;
-		if(T==null) T=getLandTitle(R);
-		if(T==null) return;
 		if(T.landOwner().length()==0)
 		{
 			for(int i=0;i<R.numItems();i++)
@@ -153,23 +151,20 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					I.recoverEnvStats();
 				}
 			}
-			if(this instanceof Prop_LotsForSale)
-				colorForSale(R,true);
-			else
-				colorForSale(R,false);
+			colorForSale(R,clearRoomIfUnsold);
+			return -1;
 		}
 		else
 		{
 			boolean updateItems=false;
-			if(!confirmedUser)
+			if(lastNumItems<0)
 			{
-				confirmedUser=true;
-				if((!CMClass.DBEngine().DBUserSearch(null,landOwner()))
-				&&(Clans.getClan(landOwner())==null))
+				if((!CMClass.DBEngine().DBUserSearch(null,T.landOwner()))
+				&&(Clans.getClan(T.landOwner())==null))
 				{
 					T.setLandOwner("");
-					updateLot(R,T);
-					return;
+					T.updateLot();
+					return -1;
 				}
 			}
 
@@ -186,7 +181,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			// 3. if an item has been added AND removed, the dispossession time will be != null on the added
 			if((lastNumItems>=0)&&(R.numItems()!=lastNumItems))
 				updateItems=true;
-			
+				
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);
@@ -196,7 +191,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					I.setDispossessionTime(0);
 					updateItems=true;
 				}
-					
+						
 				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
 				&&(I.envStats().rejuv()!=0))
 				{
@@ -206,9 +201,16 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 			}
 			lastNumItems=R.numItems();
-			
 			if(updateItems) 
 				CMClass.DBEngine().DBUpdateItems(R);
+			return lastNumItems;
 		}
+	}
+	
+	// update lot, since its called by the savethread, ONLY worries about itself
+	public void updateLot()
+	{
+		if(affected instanceof Room)
+			lastItemNums=updateLotWithThisData((Room)affected,this,false,lastItemNums);
 	}
 }

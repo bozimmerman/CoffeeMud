@@ -196,7 +196,10 @@ public class Blacksmithing extends CommonSkill
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
-		itemName=Util.startWithAorAn(itemName);
+		if(misctype.equalsIgnoreCase("BUNDLE")) 
+			itemName="a "+woodRequired+"# "+itemName;
+		else
+			itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) smithing "+building.name()+".";
 		displayText="You are smithing "+building.name();

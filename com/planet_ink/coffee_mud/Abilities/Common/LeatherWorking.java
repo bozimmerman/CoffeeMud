@@ -314,6 +314,10 @@ public class LeatherWorking extends CommonSkill
 			}
 			completion=(multiplier*Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS)))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)])).toLowerCase();
+			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+			if(misctype.equalsIgnoreCase("BUNDLE")) 
+				itemName="a "+woodRequired+"# "+itemName;
+			else
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else
@@ -330,7 +334,6 @@ public class LeatherWorking extends CommonSkill
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-2;
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+((multiplier-1)*3));
-			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+(multiplier-1);

@@ -453,17 +453,23 @@ public class CoffeeUtensils
 		CMMap.delArea(A);
 	}
 
+	public static LandTitle getLandTitle(Area area)
+	{
+		if(area==null) return null;
+		for(int a=0;a<area.numEffects();a++)
+		{
+			Ability A=area.fetchEffect(a);
+			if((A!=null)&&(A instanceof LandTitle))
+				return (LandTitle)A;
+		}
+		return null;
+	}
 	public static LandTitle getLandTitle(Room room)
 	{
 		if(room==null) return null;
-		Area area=room.getArea();
-		if(area!=null)
-			for(int a=0;a<area.numEffects();a++)
-			{
-				Ability A=area.fetchEffect(a);
-				if((A!=null)&&(A instanceof LandTitle))
-					return (LandTitle)A;
-			}
+		LandTitle title=getLandTitle(room.getArea());
+		if(title!=null) return title;
+		
 		for(int a=0;a<room.numEffects();a++)
 		{
 			Ability A=room.fetchEffect(a);
