@@ -63,7 +63,7 @@ public class Skill_Disguise extends StdAbility
 	{
 		MOB M=CMMap.getPlayer(Util.capitalize(name));
 		if(M==null) return true;
-		if(M.charStats().getClassLevel("Archon")<=0)
+		if(M.charStats().getClassLevel("Archon")>=0)
 			return false;
 		return true;
 	}
