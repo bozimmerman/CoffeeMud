@@ -43,7 +43,26 @@ public class Prop_UseSpellCast2 extends Property
 			Ability A=(Ability)V.elementAt(v);
 			Ability EA=newMOB.fetchEffect(A.ID());
 			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this)))
-				A.invoke(sourceMOB,newMOB,true);
+			{
+				String t=A.text();
+				A=(Ability)A.copyOf();
+				Vector V2=new Vector();
+				if(t.length()>0)
+				{
+					int x=t.indexOf("/");
+					if(x<0)
+					{ 
+						V2=Util.parse(t);
+						A.setMiscText("");
+					}
+					else
+					{
+						V2=Util.parse(t.substring(0,x));
+						A.setMiscText(t.substring(x+1));
+					}
+				}
+				A.invoke(sourceMOB,V2,newMOB,true);
+			}
 		}
 	}
 

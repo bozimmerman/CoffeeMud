@@ -66,7 +66,24 @@ public class Prop_RideSpellCast extends Property
 			Ability EA=E.fetchEffect(A.ID());
 			if(EA==null)
 			{
-				A.invoke(E,E,true);
+				String t=A.text();
+				A=(Ability)A.copyOf();
+				Vector V2=new Vector();
+				if(t.length()>0)
+				{
+					int x=t.indexOf("/");
+					if(x<0)
+					{ 
+						V2=Util.parse(t);
+						A.setMiscText("");
+					}
+					else
+					{
+						V2=Util.parse(t.substring(0,x));
+						A.setMiscText(t.substring(x+1));
+					}
+				}
+				A.invoke(E,V2,E,true);
 				EA=E.fetchEffect(A.ID());
 			}
 			if(EA!=null)

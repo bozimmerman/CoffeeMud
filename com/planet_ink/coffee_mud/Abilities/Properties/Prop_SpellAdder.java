@@ -44,20 +44,43 @@ public class Prop_SpellAdder extends Property
 		int del=names.indexOf(";");
 		while(del>=0)
 		{
-			String thisOne=names.substring(0,del);
+			String thisOne=names.substring(0,del).trim();
+			String parm="";
+			if(thisOne.endsWith(")"))
+			{
+				int x=thisOne.indexOf("(");
+				if(x>0)
+				{
+					parm=thisOne.substring(x+1,thisOne.length()-1);
+					thisOne=thisOne.substring(0,x).trim();
+				}
+			}
+				
 			Ability A=(Ability)CMClass.getAbility(thisOne);
 			if(A!=null)
 			{
 				A=(Ability)A.copyOf();
+				A.setMiscText(parm);
 				theSpells.addElement(A);
 			}
 			names=names.substring(del+1);
 			del=names.indexOf(";");
 		}
+		String parm="";
+		if(names.endsWith(")"))
+		{
+			int x=names.indexOf("(");
+			if(x>0)
+			{
+				parm=names.substring(x+1,names.length()-1);
+				names=names.substring(0,x).trim();
+			}
+		}
 		Ability A=(Ability)CMClass.getAbility(names);
 		if(A!=null)
 		{
 			A=(Ability)A.copyOf();
+			A.setMiscText(parm);
 			theSpells.addElement(A);
 		}
 		return theSpells;
@@ -125,7 +148,24 @@ public class Prop_SpellAdder extends Property
 			Ability EA=target.fetchEffect(A.ID());
 			if((EA==null)&&(didHappen(100,this)))
 			{
-				A.invoke(qualifiedMOB(target),target,true);
+				String t=A.text();
+				A=(Ability)A.copyOf();
+				Vector V2=new Vector();
+				if(t.length()>0)
+				{
+					int x=t.indexOf("/");
+					if(x<0)
+					{ 
+						V2=Util.parse(t);
+						A.setMiscText("");
+					}
+					else
+					{
+						V2=Util.parse(t.substring(0,x));
+						A.setMiscText(t.substring(x+1));
+					}
+				}
+				A.invoke(qualifiedMOB(target),V2,target,true);
 				EA=target.fetchEffect(A.ID());
 			}
 			if(EA!=null)
