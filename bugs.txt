@@ -7,5 +7,3 @@ better document the damn variable eq thang
 document MPM2I2M -- test, does it work?
 Ability to buy space ship areas, and add them to shopkeepers
 mutable body parts, with ability to grant powers
-add ANY to MPOLOAD FROM syntax
-yahoo smtp bounces

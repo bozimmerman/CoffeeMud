@@ -170,13 +170,13 @@ public class SMTPclient
 		send.flush();
 		rstr = reply.readLine();
 		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
-		sstr = "MAIL FROM: " + froaddress ;
+		sstr = "MAIL FROM:<" + froaddress+">" ;
 		send.print(sstr);
 		send.print(EOL);
 		send.flush();
 		rstr = reply.readLine();
 		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
-		sstr = "RCPT TO: " + to_address;
+		sstr = "RCPT TO:<" + to_address+">";
 		send.print(sstr);
 		send.print(EOL);
 		send.flush();
