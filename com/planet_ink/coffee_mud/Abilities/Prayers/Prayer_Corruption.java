@@ -37,7 +37,9 @@ public class Prayer_Corruption extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		FullMsg msg2=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
+		FullMsg msg2=null;
+		if((mob!=target)&&(!mob.getGroupMembers(new HashSet()).contains(target)))
+			msg2=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -45,7 +47,8 @@ public class Prayer_Corruption extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> feel(s) more evil.":"^S<S-NAME> "+prayWord(mob)+" to corrupt <T-NAMESELF>!^?"));
-			if(mob.location().okMessage(mob,msg))
+			if((mob.location().okMessage(mob,msg))
+			&&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
@@ -57,28 +60,12 @@ public class Prayer_Corruption extends Prayer
 					   target.setAlignment(0);
 					else
 					   target.setAlignment(target.getAlignment() - evilness);
-					if(!target.isInCombat() && target.isMonster())
-					{
-						if(mob.location().okMessage(mob,msg2))
-						{
-							mob.location().send(mob,msg2);
-						}
-					}
 				}
+				if(msg2!=null) mob.location().send(mob,msg2);
 			}
 		}
 		else
-      {
-         if(!target.isInCombat() && target.isMonster())
-         {
-            if(mob.location().okMessage(mob,msg2))
-            {
-               mob.location().send(mob,msg2);
-            }
-         }
 			return beneficialWordsFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+", but nothing happens.");
-      }
-
 
 		// return whether it worked
 		return success;

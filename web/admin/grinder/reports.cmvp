@@ -47,5 +47,16 @@ The ticking players have consumed: <FONT COLOR=#CCFFFF>@SystemInfo?totalMOBMilli
 The most active mob has been '<FONT COLOR=#CCFFFF>@SystemInfo?topMOBClient@</FONT>'<BR>
 That mob has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?topMOBMillisTimePlusAverage@</FONT>.<BR>
 </FONT>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Clicked('/grinder/reports.cmvp');">
+	</TD>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+	</TD>
+	</TR>
+	</TABLE>
 @endif@
 @endif@
