@@ -604,7 +604,7 @@ also the "GenItem",&nbsp;"GenBoat", "GenChair", "GenBed", "GenCoins",
 "GenCorpse", "GenKey", "GenLantern", "GenLightSource", 
 "GenMap",&nbsp;&nbsp;"GenResource", "GenLiquidResource", "GenFoodResource", 
 "GenRideable", "GenWallpaper", "GenJournal", "GenContainer", "GenFood", 
-"GenWater", and "GenReadable".&nbsp; For the fighting spirit there is the 
+"GenDrink", "GenWater", and "GenReadable".&nbsp; For the fighting spirit there is the 
 "GenWeapon", "GenStaff", and "GenArmor".&nbsp; Among the&nbsp;formless magical 
 items are "GenPill", "GenPotion", "GenScroll", "GenWand", and 
 "GenSuperPill".&nbsp;&nbsp;&nbsp; These items just mentioned&nbsp;form 
@@ -1562,7 +1562,7 @@ include everything listed under GenItem and GenContainer, plus a few more:</P>
 things which may be sat one, slept in, ridden on the seas, or pulled by 
 horses.&nbsp; The GenRideable, GenBed, GenChair, and GenBoat all represent 
 different incarnations of GenRideable, but are interchangable otherwise.&nbsp; 
-The GenTub is unique in that it&nbsp;provides the functionality of GenWater as 
+The GenTub is unique in that it&nbsp;provides the functionality of GenDrink as 
 well as GenRideable.&nbsp; GenCageRideable is very different, since it has the 
 unique property of the GenCage -- able to be seen in even when lids or doors are 
 closed.&nbsp;</P>
@@ -1592,16 +1592,16 @@ plus&nbsp;a few more:</P><STRONG>
     <TD><EM>MOBs Held</EM></TD>
     <TD>th emaximum number of mobs which may occupy this 
       piece of furniture at once.</TD></TR></TABLE></STRONG>
-<P><BR><STRONG>The "GenFood", "GenWater", "GenFoodResource", 
+<P><BR><STRONG>The "GenFood", "GenDrink", "GenWater", "GenFoodResource", 
 "GenLiquidResource", "GenFountain", "GenTub"</STRONG></STRONG></P>
 <P>These items represent the edibles and drinkables on 
 CoffeeMud.&nbsp; The GenFood is a simple edible food, while a GenFoodResource is 
 a raw edible material that can be used for cooking or other resource-requiring 
-skills.&nbsp; GenWater and GenFountain are both the same drinkable containers, 
+skills.&nbsp; GenWater, GenDrink, and GenFountain are all templates for drinkable containers, 
 with a GenFountain differing only in a lack of need to ever fill it.&nbsp; A 
 GenLiquidResource represents a liquid resource for potion making or other 
 skills.</P>
-<P>Whenever a GenFood or GenWater&nbsp;is created, much 
+<P>Whenever a GenFood, GenDrink, GenFountain, or GenWater&nbsp;is created, much 
 like the GenItem above, you are presented with a list of properties to fill 
 in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties 
 include everything listed under GenItem, plus GenContainer for the drinkables, 
@@ -1633,7 +1633,7 @@ plus a few more:</P>
       the container is empty and must be refilled.</TD></TR>
   <TR>
     <TD><EM>Liquid Type</EM></TD>
-    <TD>for GenWater only, this denotes what kind of 
+    <TD>for GenWater/GenDrink only, this denotes what kind of 
       liquid it is, whether fresh water, salt water, or even BLOOD!&nbsp; This 
       may differ from the GenItem material type, so that the archon may 
       differentiate between the material of the container from whats inside 
@@ -2037,7 +2037,7 @@ songs.</TD></TR></TABLE></P>
 containers that can be modified by the Archon.&nbsp; If one wishes to modify a 
 dagger, one must either hold the dagger, or have the dagger present in the 
 room.&nbsp; The Archon can then issue the command "modify dagger".&nbsp; If the 
-item is a GenItem, GenContainer, GenFood, GenWater, GenWeapon, or any other 
+item is a GenItem, GenContainer, GenFood, GenWater, GenDrink, GenWeapon, or any other 
 "Gen" item, then the same properties as above will be presented.&nbsp; </P>
 <P>Like rooms and areas, there are a very rich selection of 
 Behaviors you may choose for items.&nbsp; Here are our favorites:</P>
@@ -6359,7 +6359,7 @@ apprentice.</FONT></SPAN></DIV>
 <DIV>
 <P align=left><STRONG>A.</STRONG> The 
 best way to "mix a drink" is to make a GenPotion item, and add the relevant 
-Poison_* as the potion spell effect. Another way is to make a GenWater item, add 
+Poison_* as the potion spell effect. Another way is to make a GenDrink item, add 
 the Poison_ as an effect.</P>
 <DIV><SPAN class=453251818-08032003>
 <P align=left><STRONG><FONT 

@@ -24,7 +24,7 @@ baked dates	FOOD		0	DATES
 fried eggs	FOOD		0	EGGS													
 			0	HOPS													
 			0	COFFEEBEANS													
-chocolate	FOOD		0	COCOA	1	MILK	1										
+chocolate	FOOD		0	COCOA	10	MILK	1										
 % stew	FOOD		0	MEAT	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1		
 beef stew	FOOD		0	BEEF	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1		
 pork stew	FOOD		0	PORK	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1		
