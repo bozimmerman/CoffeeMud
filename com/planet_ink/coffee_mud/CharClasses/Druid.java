@@ -36,75 +36,113 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+CMAble.addCharAbilityMapping(ID(),1,"Herbage",0,false);
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Chant_PredictWeather",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonPlants",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocatePlants",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Chant_SensePoison",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Chant_SummonFood",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Chant_Moonbeam",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Chant_SenseLife",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Chant_Tangle",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Chant_SummonFire",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Chant_FortifyFood",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Chant_LocateAnimals",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Chant_Farsight",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Chant_CalmAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Chant_Sunray",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Chant_Goodberry",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Chant_Hunger",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Chant_Treeform",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Chant_WarpWood",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Chant_ControlFire",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_AnimalFriendship",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_Barkskin",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_WaterWalking",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Chant_Poison",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Chant_SummonPeace",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Chant_VenomWard",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantPass",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Chant_WindGust",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Chant_BreatheWater",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_HoldAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_Treemind",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_WhisperWard",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_Bury",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_FireWard",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_FeelHeat",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_ColdWard",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_FeelCold",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_CharmAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_CalmWind",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_FeelElectricity",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_LightningWard",true);
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_Shillelagh",true);
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_Plague",true);
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_CalmWeather",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_DistantGrowth",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_GasWard",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_SummonAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_SummonHeat",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonCold",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonInsects",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Chant_Hibernation",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Chant_AnimalSpy",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Chant_SummonRain",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_SummonWind",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_SummonMount",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_NeutralizePoison",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Chant_PlantSnare",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonLightning",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Chant_Treemorph",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonElemental",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonFear",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Chant_IllusionaryForest",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_CharmArea",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_SpeedTime",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Chant_PredictWeather",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonPlants",false);
+CMAble.addCharAbilityMapping(ID(),1,"Chant_HardenSkin",false);
+
+			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocatePlants",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Chant_SensePoison",false);
+			
+			CMAble.addCharAbilityMapping(ID(),3,"Chant_SummonFood",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Chant_Moonbeam",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Chant_SenseLife",false);
+			
+			CMAble.addCharAbilityMapping(ID(),4,"Chant_Tangle",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Chant_SummonFire",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Chant_LocateAnimals",false);
+			
+			CMAble.addCharAbilityMapping(ID(),5,"Chant_FortifyFood",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Chant_Farsight",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Chant_FeelElectricity",false);
+			
+			CMAble.addCharAbilityMapping(ID(),6,"Chant_CalmAnimal",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Chant_Sunray",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Chant_Treeform",false);
+			
+			CMAble.addCharAbilityMapping(ID(),7,"Chant_Goodberry",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Chant_Hunger",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Chant_FeelCold",false);
+			
+			CMAble.addCharAbilityMapping(ID(),8,"Chant_WarpWood",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Chant_ControlFire",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Chant_VenomWard",false);
+			
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_CalmWind",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_Barkskin",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_WaterWalking",false);
+			
+			CMAble.addCharAbilityMapping(ID(),10,"Chant_AnimalFriendship",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Chant_FeelHeat",false);
+CMAble.addCharAbilityMapping(ID(),10,"Chant_GrowClub",false);
+			
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantPass",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_WindGust",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_Poison",false);
+			
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_Treemind",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_WhisperWard",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_BreatheWater",false);
+			
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_HoldAnimal",false);
+CMAble.addCharAbilityMapping(ID(),13,"Chant_PlantBed",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_LightningWard",false);
+			
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_ColdWard",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_Bury",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_IllusionaryForest",false);
+			
+CMAble.addCharAbilityMapping(ID(),15,"Herbalism",false);
+CMAble.addCharAbilityMapping(ID(),15,"Chant_SpeedCrop",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_CharmAnimal",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_CalmWeather",false);
+
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_FireWard",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_Shillelagh",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_SummonPeace",false);
+			
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_Plague",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_DistantGrowth",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",false);
+			
+CMAble.addCharAbilityMapping(ID(),18,"Chant_PlantMaze",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_GasWard",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_Hibernation",false);
+			
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonAnimal",false);
+CMAble.addCharAbilityMapping(ID(),19,"Chant_Nectar",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonHeat",false);
+			
+CMAble.addCharAbilityMapping(ID(),20,"PlantLore",false);
+CMAble.addCharAbilityMapping(ID(),20,"Chant_Grapevine",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Chant_SummonCold",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Chant_SummonInsects",false);
+			
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_AnimalSpy",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_SummonRain",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_PlantSnare",false);
+			
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_Treemorph",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonWind",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_NeutralizePoison",false);
+			
+CMAble.addCharAbilityMapping(ID(),23,"Chant_GrowItem",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonLightning",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonMount",false);
+			
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_CharmArea",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonElemental",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonFear",false);
+			
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_SpeedTime",false);
+CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonSapling",false);
+CMAble.addCharAbilityMapping(ID(),25,"Chant_Feralness",false);
+
 			CMAble.addCharAbilityMapping(ID(),30,"Chant_Reincarnation",true);
 		}
 	}
@@ -114,6 +152,48 @@ public class Druid extends StdCharClass
 		return true;
 	}
 
+	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	{
+		super.grantAbilities(mob,isBorrowedClass);
+		
+		Vector grantable=new Vector();
+		
+		int level=mob.charStats().getClassLevel(this);
+		int numChants=2;
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		{
+			Ability A=(Ability)a.nextElement();
+			if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
+			&&((CMAble.getQualifyingLevel(ID(),A.ID())<=25)
+			&&(!CMAble.getDefaultGain(ID(),A.ID()))
+			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)))
+			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}
+		}
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability A=mob.fetchAbility(a);
+			if(grantable.contains(A.ID()))
+			{
+				grantable.remove(A.ID());
+				numChants--;
+			}
+		}
+		for(int i=0;i<numChants;i++)
+		{
+			if(grantable.size()==0) break;
+			String AID=(String)grantable.elementAt(Dice.roll(1,grantable.size(),-1));
+			if(AID!=null)
+			{
+				grantable.removeElement(AID);
+				giveMobAbility(mob,
+							   CMClass.getAbility(AID),
+							   CMAble.getDefaultProfficiency(ID(),AID),
+							   CMAble.getDefaultParm(ID(),AID),
+							   isBorrowedClass);
+			}
+		}
+	}
+	
 	public String statQualifications(){return "Constitution 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

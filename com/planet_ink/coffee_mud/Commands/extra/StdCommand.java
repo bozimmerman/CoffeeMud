@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands.extra;
 import com.planet_ink.coffee_mud.interfaces.*;
 import java.util.Vector;
+import com.planet_ink.coffee_mud.common.*;
 
 public class StdCommand implements Command
 {
@@ -21,4 +22,6 @@ public class StdCommand implements Command
 		// return false to cancel any further command processing (recommended for your commands)
 		return true;
 	}
+	
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -352,7 +352,8 @@ public class ShopKeepers
 					return;
 				}
 			}
-			V.addElement(shopkeeper);
+			else
+				V.addElement(shopkeeper);
 		}
 		if(V.size()==0)
 		{
