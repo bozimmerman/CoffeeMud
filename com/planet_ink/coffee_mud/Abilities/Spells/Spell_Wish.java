@@ -162,7 +162,7 @@ public class Spell_Wish extends Spell
 				mob.location().addItemRefuse(newItem,Item.REFUSE_PLAYER_DROP);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 				mob.location().recoverRoomStats();
-				int experienceRequired=((Coins)newItem).numberOfCoins()/100;
+				int experienceRequired=((Coins)newItem).numberOfCoins()/10;
 				if(experienceRequired<=0)
 					experienceRequired=0;
 				wishDrain(mob,(baseLoss+experienceRequired),false);

@@ -10,6 +10,7 @@ public class Farming extends CommonSkill
 	public String name(){ return "Farming";}
 	private static final String[] triggerStrings = {"PLANT","FARM","FARMING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_GATHERING;}
 
 	private Item found=null;
 	private Room room=null;

@@ -10,6 +10,7 @@ public class Fishing extends CommonSkill
 	public String name(){ return "Fishing";}
 	private static final String[] triggerStrings = {"FISH"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_GATHERING;}
 
 	private Item found=null;
 	private String foundShortName="";

@@ -10,6 +10,7 @@ public class Hunting extends CommonSkill
 	public String name(){ return "Hunting";}
 	private static final String[] triggerStrings = {"HUNT","HUNTING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_GATHERING;}
 
 	private MOB found=null;
 	private String foundShortName="";

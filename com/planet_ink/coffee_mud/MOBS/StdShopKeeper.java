@@ -12,6 +12,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected Hashtable duplicateInventory=new Hashtable();
 	protected int maximumDuplicatesBought=5;
 	protected Hashtable prices=new Hashtable();
+	
+	private final static Hashtable titleSets=new Hashtable();
 
 	public StdShopKeeper()
 	{
@@ -1046,26 +1048,39 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			String name=mob.Name();
 			if(whatISell==DEAL_CLANDSELLER)
 				name=mob.getClanID();
-			Vector roomsHandling=new Vector();
+			HashSet roomsHandling=new HashSet();
+			Hashtable titles=new Hashtable();
 			for(Enumeration r=getStartRoom().getArea().getMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				LandTitle A=CoffeeUtensils.getLandTitle(R);
-				if((A!=null)&&(R.roomID().length()>0)&&(!roomsHandling.contains(R)))
+				if((A!=null)&&(R.roomID().length()>0))
+					titles.put(R,A);
+			}
+			for(Enumeration r=titles.keys();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				LandTitle A=(LandTitle)titles.get(R);
+				if(!roomsHandling.contains(R))
 				{
 					Vector V2=A.getPropertyRooms();
 					for(int v=0;v<V2.size();v++)
-						roomsHandling.addElement(V2.elementAt(v));
-					Item I=CMClass.getItem("GenTitle");
-					((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID(R));
-					if((((LandTitle)I).landOwner().equals(name))
-					   ||(((LandTitle)I).landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
+						roomsHandling.add(V2.elementAt(v));
+					Item I=(Item)titleSets.get(A);
+					if(I==null)
 					{
-						if(!I.Name().endsWith(" (Copy)"))
+						I=CMClass.getItem("GenTitle");
+						((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID(R));
+						if((((LandTitle)I).landOwner().length()>0)
+						&&(!I.Name().endsWith(" (Copy)")))
 							I.setName(I.Name()+" (Copy)");
+						I.text();
+						I.recoverEnvStats();
+						titleSets.put(A,I);
 					}
-					else
-					if(((LandTitle)I).landOwner().length()>0)
+					if((A.landOwner().length()>0)
+					&&(!A.landOwner().equals(name))
+					&&((!A.landOwner().equals(mob.getLiegeID()))||(!mob.isMarriedToLiege())))
 						continue;
 					else
 					{
@@ -1076,7 +1091,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							LandTitle L2=null;
 							if(R2!=null)
 							{
-								L2=CoffeeUtensils.getLandTitle(R2);
+								L2=(LandTitle)titles.get(R2);
 								if(L2==null)
 								{ skipThisOne=false; break;}
 							}
@@ -1090,8 +1105,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						}
 						if(skipThisOne) continue;
 					}
-					I.text();
-					I.recoverEnvStats();
+					if((A.landOwner().length()==0)
+					&&(I.Name().endsWith(" (Copy)")))
+						I.setName(I.Name().substring(0,I.Name().length()-7));
+
 					V.addElement(I);
 				}
 			}

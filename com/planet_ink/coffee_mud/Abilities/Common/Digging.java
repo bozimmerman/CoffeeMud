@@ -10,6 +10,7 @@ public class Digging extends CommonSkill
 	public String name(){ return "Gem Digging";}
 	private static final String[] triggerStrings = {"DIG","DIGGING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_GATHERING;}
 
 	private Item found=null;
 	private String foundShortName="";

@@ -10,6 +10,7 @@ public class Mining extends CommonSkill
 	public String name(){ return "Mining";}
 	private static final String[] triggerStrings = {"MINE","MINING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_GATHERING;}
 
 	private Item found=null;
 	private String foundShortName="";

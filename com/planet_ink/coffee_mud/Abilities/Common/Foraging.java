@@ -10,6 +10,7 @@ public class Foraging extends CommonSkill
 	public String name(){ return "Foraging";}
 	private static final String[] triggerStrings = {"FORAGE","FORAGING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_GATHERING;}
 
 	private Item found=null;
 	private String foundShortName="";

@@ -56,17 +56,16 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_MagneticField",false);
 			
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_EndureRust",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Chant_Brittle",false);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_FodderSignal",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_Den",false);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_RockFeet",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_EarthPocket",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_Rockfeet",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_Earthpocket",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_CrystalGrowth",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Druid_GolemForm",false);
-//Golemform 	The delver can shapeshift into a golem of varying levels. This ability should come around level 10 for the Stoneform, and then they should gain Metal, Quartz, Mithril, Diamond, Adamantite forms (every 4 levels).  Golems should be SLOW, and (except Diamond and Adamantite) unable to chant. 
-			CMAble.addCharAbilityMapping(ID(),10,"Chant_Brittle",false);
 
 CMAble.addCharAbilityMapping(ID(),11,"Chant_CaveIn",false);
 //Cavein Does damage if target is MOB. Can be used to block an exit for duration of spell if target is EXIT. 

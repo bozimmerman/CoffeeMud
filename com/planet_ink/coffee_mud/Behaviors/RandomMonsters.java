@@ -14,6 +14,7 @@ public class RandomMonsters extends ActiveTicker
 	protected int minMonsters=1;
 	protected int maxMonsters=1;
 	protected Vector restrictedLocales=null;
+	private boolean alreadyTriedLoad=false;
 	
 	public void setParms(String newParms)
 	{
@@ -87,6 +88,7 @@ public class RandomMonsters extends ActiveTicker
 		minMonsters=Util.getParmInt(oldParms,"minmonsters",1);
 		maxMonsters=Util.getParmInt(oldParms,"maxmonsters",1);
 		parms=newParms;
+		alreadyTriedLoad=false;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
 			restrictedLocales=null;
 	}
@@ -140,7 +142,9 @@ public class RandomMonsters extends ActiveTicker
 			Resources.submitResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode(),monsters);
 		}
 		else
+		if(!alreadyTriedLoad)
 		{
+			alreadyTriedLoad=true;
 			int extraSemicolon=filename.indexOf(";");
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			filename=filename.trim();

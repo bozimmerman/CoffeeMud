@@ -10,6 +10,7 @@ public class Drilling extends CommonSkill
 	public String name(){ return "Drilling";}
 	private static final String[] triggerStrings = {"DRILL","DRILLING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_GATHERING;}
 
 	private Item found=null;
 	private Drink container=null;

@@ -167,7 +167,8 @@ public class DefaultCharStats implements Cloneable, CharStats
 	{
 		if(myClasses==null)	return -1;
 		for(int i=0;i<myClasses.length;i++)
-			if(myClasses[i].ID().equals(aClass))
+			if((myClasses[i]!=null)
+			&&(myClasses[i].ID().equals(aClass)))
 			   return myLevels[i].intValue();
 		return -1;
 	}
@@ -175,7 +176,8 @@ public class DefaultCharStats implements Cloneable, CharStats
 	{
 		if(myClasses==null)	return -1;
 		for(int i=0;i<myClasses.length;i++)
-			if(myClasses[i]==aClass)
+			if((myClasses[i]!=null)
+			&&(myClasses[i]==aClass))
 			   return myLevels[i].intValue();
 		return -1;
 	}

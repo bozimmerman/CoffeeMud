@@ -6,8 +6,8 @@ Could you set it to auto-detect based on the inventory of the shop whether the i
 put a conquered mob on a home property, quit, log back on, see if this error occurs.
 MudChat should find ALL alternative answers and weigh them ALL against each other
 Have rooms generate their resources instead of skills
-?can not magically leave (plant pass) if in combat.. should be magical exception
 Prop_Translator -- echos translations to the room, but on items, players.
+Hot Chocolate and Chocolate same recipe!
 
 
 Delver:
