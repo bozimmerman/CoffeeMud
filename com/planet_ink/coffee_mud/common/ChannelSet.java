@@ -3,17 +3,17 @@ package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
-/**
-  * Global utility Vector for holding and creating Clans
-  * @author=Jeremy Vyska
-  */
+
 public class ChannelSet
 {
+	protected static final int QUEUE_SIZE=10;
+	
 	protected static int numChannelsLoaded=0;
 	protected static int numIChannelsLoaded=0;
 	protected static Vector channelNames=new Vector();
 	protected static Vector channelMasks=new Vector();
 	protected static Vector ichannelList=new Vector();
+	protected static Vector channelQue=new Vector();
 	
 	public static int getNumChannels()
 	{
@@ -34,6 +34,54 @@ public class ChannelSet
 		return "";
 	}
 
+	public static Vector getChannelQue(int i)
+	{
+		if((i>=0)&&(i<channelQue.size()))
+			return (Vector)channelQue.elementAt(i);
+		return new Vector();
+	}
+	
+	public static boolean mayReadThisChannel(MOB sender,
+											 boolean areaReq,
+											 Session ses, 
+											 int i)
+	{
+		if(ses==null) return false;
+		MOB M=ses.mob();
+		if(M==null) return false;
+		
+		if(getChannelName(i).equalsIgnoreCase("CLANTALK")
+		&&(sender!=null)
+		&&((!sender.getClanID().equals("ALL"))||(M.getClanID().length()==0))
+		&&((!M.getClanID().equalsIgnoreCase(sender.getClanID()))||(M.getClanRole()==Clan.POS_APPLICANT)))
+			return false;
+		
+		if((!ses.killFlag())
+		&&(!M.amDead())
+		&&(M.location()!=null)
+		&&((sender==null)
+			||(M.playerStats()==null)
+			||(!M.playerStats().getIgnored().containsKey(sender.Name())))
+		&&(MUDZapper.zapperCheck(getChannelMask(i),M))
+		&&((sender==null)
+		   ||(!areaReq)
+		   ||(M.location().getArea()==sender.location().getArea()))
+		&&(!Util.isSet(M.playerStats().getChannelMask(),i)))
+			return true;
+		return false;
+	}
+	
+	public static void channelQueUp(int i, CMMsg msg)
+	{
+		Vector q=getChannelQue(i);
+		synchronized(q)
+		{
+			if(q.size()>=QUEUE_SIZE)
+				q.removeElementAt(0);
+			q.addElement(msg);
+		}
+	}
+	
 	public static int getChannelInt(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
@@ -65,6 +113,7 @@ public class ChannelSet
 		channelNames=new Vector();
 		channelMasks=new Vector();
 		ichannelList=new Vector();
+		channelQue=new Vector();
 	}
 
 	public static String[][] iChannelsArray()
@@ -121,6 +170,7 @@ public class ChannelSet
 				channelMasks.addElement("");
 			ichannelList.addElement("");
 			channelNames.addElement(item.toUpperCase().trim());
+			channelQue.addElement(new Vector());
 		}
 		while(ilist.length()>0)
 		{
@@ -146,20 +196,24 @@ public class ChannelSet
 			String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
 			channelNames.addElement(item.toUpperCase().trim());
+			channelQue.addElement(new Vector());
 			channelMasks.addElement(lvl);
 			ichannelList.addElement(ichan);
 		}
 		channelNames.addElement(new String("CLANTALK"));
+		channelQue.addElement(new Vector());
 		channelMasks.addElement("");
 		ichannelList.addElement("");
 		numChannelsLoaded++;
 
 		channelNames.addElement(new String("AUCTION"));
+		channelQue.addElement(new Vector());
 		channelMasks.addElement("");
 		ichannelList.addElement("");
 		numChannelsLoaded++;
 
 		channelNames.addElement(new String("WIZINFO"));
+		channelQue.addElement(new Vector());
 		channelMasks.addElement("+SYSOP -NAMES");
 		ichannelList.addElement("");
 		numChannelsLoaded++;

@@ -108,7 +108,7 @@ public class Dwarf extends StdRace
 		if(pct<.99)
 			return "^g" + mob.name() + "^g is slightly winded.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect health^N";
+			return "^c" + mob.name() + "^c is in perfect health.^N";
 	}
 	public Vector myResources()
 	{

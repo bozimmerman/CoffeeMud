@@ -75,7 +75,7 @@ public class Thief_Sneak extends ThiefSkill
 				Ability toHide=mob.fetchAbility("Thief_Hide");
 				if(toHide==null) toHide=mob.fetchAbility("Ranger_Hide");
 				if(toHide!=null)
-					toHide.invoke(mob,new Vector(),null,true);
+					toHide.invoke(mob,new Vector(),null,false);
 			}
 			if(Sense.isSneaking(mob))
 				mob.envStats().setDisposition(mob.envStats().disposition()-EnvStats.IS_SNEAKING);

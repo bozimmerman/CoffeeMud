@@ -210,14 +210,11 @@ public class IMudInterface implements ImudServices, Serializable
 					msg=new FullMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 
+				ChannelSet.channelQueUp(channelInt,msg);
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session ses=(Session)Sessions.elementAt(s);
-					MOB M=ses.mob();
-					if((!ses.killFlag())&&(M!=null)
-					&&(!M.amDead())
-					&&(M!=null)
-					&&(MUDZapper.zapperCheck(mask,M))
+					if((ChannelSet.mayReadThisChannel(mob,false,ses,channelInt))
 					&&(ses.mob().okMessage(ses.mob(),msg)))
 						ses.mob().executeMsg(ses.mob(),msg);
 				}
@@ -325,13 +322,7 @@ public class IMudInterface implements ImudServices, Serializable
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session ses=(Session)Sessions.elementAt(s);
-					MOB M=ses.mob();
-					if((!ses.killFlag())&&(M!=null)
-					&&(!M.amDead())
-					&&(M.location()!=null)
-					&&(M.playerStats()!=null)
-					&&(MUDZapper.zapperCheck(mask,M))
-					&&(!Util.isSet(M.playerStats().getChannelMask(),channelInt)))
+					if(ChannelSet.mayReadThisChannel(null,false,ses,channelInt))
 						whoV.addElement(ses.mob().name());
 				}
 				wkr.who=whoV;

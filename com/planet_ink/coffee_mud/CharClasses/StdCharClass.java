@@ -280,6 +280,8 @@ public class StdCharClass implements CharClass, Cloneable
 				neededLevel+=1000+(100*(breakLevel-1))+(25*(i-(breakLevel-1)));
 		return neededLevel;
 	}
+	public int getLevelExperience(int level)
+	{ return neededToBeLevel(level);}
 
 	protected StringBuffer levelAdjuster(MOB mob, int adjuster)
 	{

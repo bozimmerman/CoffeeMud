@@ -288,7 +288,11 @@ public class LeatherWorking extends CommonSkill
 				foundWood=findNumberOfResource(mob.location(),firstWood.material());
 			Item firstMetal=null;
 			if(multiplier==3)
+			{
 				firstMetal=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
+				if(firstMetal==null)
+					firstMetal=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_MITHRIL);
+			}
 			if(foundWood==0)
 			{
 				commonTell(mob,"There is no leather here to make anything from!  It might need to put it down first.");

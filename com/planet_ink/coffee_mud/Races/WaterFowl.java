@@ -91,7 +91,7 @@ public class WaterFowl extends StdRace
 		if(pct<.99)
 			return "^g" + mob.name() + "^g has a some ruffled features.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect health^N";
+			return "^c" + mob.name() + "^c is in perfect health.^N";
 	}
 	public Vector myResources()
 	{

@@ -6,6 +6,30 @@ import java.util.*;
 
 public class BaseChanneler extends StdCommand
 {
+	public static void channelTo(Session ses,
+								 boolean areareq,
+								 int channelInt,
+								 CMMsg msg,
+								 MOB mob)
+	{
+		if(ChannelSet.mayReadThisChannel(mob,areareq,ses,channelInt)
+		&&(ses.mob().okMessage(ses.mob(),msg)))
+		{
+			MOB M=ses.mob();
+			M.executeMsg(M,msg);
+			if(msg.trailerMsgs()!=null)
+			{
+				for(int i=0;i<msg.trailerMsgs().size();i++)
+				{
+					CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
+					if((msg!=msg2)&&(M.okMessage(M,msg2)))
+						M.executeMsg(M,msg2);
+				}
+				msg.trailerMsgs().clear();
+			}
+		}
+	}
+	
 	public static void reallyChannel(MOB mob,
 									 String channelName,
 									 String message,
@@ -50,38 +74,11 @@ public class BaseChanneler extends StdCommand
 		&&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))
 		{
 			boolean areareq=mask.toUpperCase().indexOf("SAMEAREA")>=0;
+			ChannelSet.channelQueUp(channelInt,msg);
 			for(int s=0;s<Sessions.size();s++)
 			{
 				Session ses=(Session)Sessions.elementAt(s);
-				MOB M=ses.mob();
-				if(M==null) continue;
-
-				if(channelName.equalsIgnoreCase("CLANTALK")
-				&&((!mob.getClanID().equals("ALL"))||(M.getClanID().length()==0))
-				&&((!M.getClanID().equalsIgnoreCase(mob.getClanID()))||(M.getClanRole()==Clan.POS_APPLICANT)))
-					continue;
-
-				if((!ses.killFlag())
-				&&(!M.amDead())
-				&&(M.location()!=null)
-				&&(MUDZapper.zapperCheck(mask,M))
-				&&((!areareq)||(M.location().getArea()==mob.location().getArea()))
-				&&((M.playerStats()==null)
-					||(!M.playerStats().getIgnored().containsKey(mob.Name())))
-				&&(M.okMessage(M,msg)))
-				{
-					M.executeMsg(M,msg);
-					if(msg.trailerMsgs()!=null)
-					{
-						for(int i=0;i<msg.trailerMsgs().size();i++)
-						{
-							CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
-							if((msg!=msg2)&&(M.okMessage(M,msg2)))
-								M.executeMsg(M,msg2);
-						}
-						msg.trailerMsgs().clear();
-					}
-				}
+				channelTo(ses,areareq,channelInt,msg,mob);
 			}
 		}
 		if((CMClass.I3Interface().i3online())&&(CMClass.I3Interface().isI3channel(channelName)))

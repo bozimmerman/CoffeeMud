@@ -46,9 +46,9 @@ public class StatLoader
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT > "+startTime);
-			T=new CoffeeTables();
 			while(R.next())
 			{
+				T=new CoffeeTables();
 				long strTime=DBConnections.getLongRes(R,"CMSTRT");
 				long endTime=DBConnections.getLongRes(R,"CMENDT");
 				String data=DBConnections.getRes(R,"CMDATA");

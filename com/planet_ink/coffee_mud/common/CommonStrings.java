@@ -484,7 +484,7 @@ public class CommonStrings extends Scriptable
 		case 7:	return "^g" + mob.name() + "^g has some minor cuts and bruises.^N";
 		case 8:	return "^g" + mob.name() + "^g has a few bruises and scratches.^N";
 		case 9:	return "^g" + mob.name() + "^g has a few small bruises.^N";
-		default: return "^c" + mob.name() + "^c is in perfect health^N";
+		default: return "^c" + mob.name() + "^c is in perfect health.^N";
 		}
 	}
 

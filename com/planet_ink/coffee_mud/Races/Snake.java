@@ -83,7 +83,7 @@ public class Snake extends StdRace
 		if(pct<.99)
 			return "^g" + mob.name() + "^g has a few small bruises.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect health^N";
+			return "^c" + mob.name() + "^c is in perfect health.^N";
 	}
 	public Vector myResources()
 	{

@@ -19,10 +19,12 @@ public class CoffeeTableRows extends StdWebMacro
 		if(header==null) header="";
 		String footer=(String)parms.get("FOOTER");
 		if(footer==null) footer="";
-		int days=Util.s_int(httpReq.getRequestParameter("DAYS"));
-		if(days<=0) days=0;
 		int scale=Util.s_int(httpReq.getRequestParameter("SCALE"));
 		if(scale<=0) scale=1;
+		int days=Util.s_int(httpReq.getRequestParameter("DAYS"));
+		days=days*scale;
+		if(days>0) days--;
+		if(days<=0) days=0;
 		String code=httpReq.getRequestParameter("CODE");
 		if((code==null)||(code.length()==0)) code="*";
 		
@@ -42,7 +44,7 @@ public class CoffeeTableRows extends StdWebMacro
 		C.set(C.MILLISECOND,999);
 		long curTime=C.getTimeInMillis();
 		long lastCur=0;
-		while(V.size()>0)
+		while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 		{
 			lastCur=curTime;
 			curTime=curTime-(scale*(24*60*60*1000));
@@ -50,7 +52,7 @@ public class CoffeeTableRows extends StdWebMacro
 			for(int v=V.size()-1;v>=0;v--)
 			{
 				CoffeeTables T=(CoffeeTables)V.elementAt(v);
-				if(T.startTime()>=curTime)
+				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 				{
 					set.addElement(T);
 					V.removeElementAt(v);

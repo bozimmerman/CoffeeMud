@@ -118,17 +118,26 @@ public class Prop_RideSpellCast extends Property
 	{
 		if(processing) return;
 		processing=true;
-		if((affectedMOB instanceof MOB)
-		&&(affected instanceof Rideable))
+		if(affected instanceof Rideable)
 		{
 			Rideable RI=(Rideable)affected;
-			MOB RR=(MOB)affectedMOB;
-
-			if(lastRiders.contains(RR)&&(!RI.amRiding(RR)))
-				removeMyAffectsFromRider(RR);
-			else
-			if((!lastRiders.contains(RR))&&(RI.amRiding(RR)))
-				addMeIfNeccessary(RR);
+			Item myItem=(Item)affectedMOB;
+			for(int r=0;r<RI.numRiders();r++)
+			{
+				Rider R=RI.fetchRider(r);
+				if(R instanceof MOB)
+				{
+					MOB M=(MOB)R;
+					if((!lastRiders.contains(M))&&(RI.amRiding(M)))
+						addMeIfNeccessary(M);
+				}
+				for(int i=lastRiders.size()-1;i>=0;i--)
+				{
+					MOB M=(MOB)lastRiders.elementAt(i);
+					if(!RI.amRiding(M))
+						removeMyAffectsFromRider(M);
+				}
+			}
 		}
 		super.affectEnvStats(affectedMOB,affectableStats);
 		processing=false;

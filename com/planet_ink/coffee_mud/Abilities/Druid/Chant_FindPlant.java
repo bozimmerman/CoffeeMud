@@ -32,17 +32,18 @@ public class Chant_FindPlant extends Chant
 		if(allResources==null)
 		{
 			allResources=new Vector();
-			for(int m=0;m<okResources().length;m++)
-				if(!allResources.contains(new Integer(okResources()[m])))
-				   allResources.addElement(new Integer(okResources()[m]));
+			if(okResources()!=null)
+				for(int m=0;m<okResources().length;m++)
+					if(!allResources.contains(new Integer(okResources()[m])))
+					   allResources.addElement(new Integer(okResources()[m]));
 			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 			{
 				int cd=EnvResource.RESOURCE_DATA[i][0];
-				if((okMaterials()!=null)&&(okMaterials().length>0))
-				for(int m=0;m<okMaterials().length;m++)
-					if((cd&EnvResource.MATERIAL_MASK)==okMaterials()[m])
-						if(!allResources.contains(new Integer(cd)))
-						   allResources.addElement(new Integer(cd));
+				if(okMaterials()!=null)
+					for(int m=0;m<okMaterials().length;m++)
+						if((cd&EnvResource.MATERIAL_MASK)==okMaterials()[m])
+							if(!allResources.contains(new Integer(cd)))
+							   allResources.addElement(new Integer(cd));
 			}
 		}
 		return allResources;

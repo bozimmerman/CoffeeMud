@@ -46,12 +46,7 @@ public class ChanWho extends StdCommand
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session ses=(Session)Sessions.elementAt(s);
-			if((!ses.killFlag())&&(ses.mob()!=null)
-			&&(!ses.mob().amDead())
-			&&(ses.mob().location()!=null)
-			&&(ses.mob().playerStats()!=null)
-			&&(MUDZapper.zapperCheck(ChannelSet.getChannelMask(channelInt),ses.mob()))
-			&&(!Util.isSet(ses.mob().playerStats().getChannelMask(),channelInt)))
+			if(ChannelSet.mayReadThisChannel(null,false,ses,channelInt))
 				buf.append("["+Util.padRight(ses.mob().name(),20)+"]\n\r");
 		}
 		if(buf.length()==0)

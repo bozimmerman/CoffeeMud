@@ -74,7 +74,28 @@ public class Channel extends BaseChanneler
 		  mob.tell("You can't talk to your clan - you don't have one.");
 		  return false;
 		}
-		reallyChannel(mob,channelName,Util.combine(commands,0),systemMsg);
+		if((commands.size()==2)
+		&&(mob.session()!=null)
+		&&(((String)commands.firstElement()).equalsIgnoreCase("last"))
+		&&(Util.isNumber((String)commands.lastElement())))
+		{
+			int num=Util.s_int((String)commands.lastElement());
+			Vector que=ChannelSet.getChannelQue(channelInt);
+			if(que.size()==0)
+			{
+				mob.tell("There are no previous entries on this channel.");
+				return false;
+			}
+			if(num>que.size()) num=que.size();
+			boolean areareq=ChannelSet.getChannelMask(channelInt).toUpperCase().indexOf("SAMEAREA")>=0;
+			for(int i=que.size()-num;i<que.size();i++)
+			{
+				CMMsg msg=(CMMsg)que.elementAt(i);
+				channelTo(mob.session(),areareq,channelInt,msg,msg.source());
+			}
+		}
+		else
+			reallyChannel(mob,channelName,Util.combine(commands,0),systemMsg);
 		return false;
 	}
 

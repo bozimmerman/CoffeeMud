@@ -26,6 +26,8 @@ public class CoffeeMaker
 		mob.resetToMaxState();
 		if(mob.getWimpHitPoint()>0)
 			mob.setWimpHitPoint((int)Math.round(Util.mul(mob.curState().getHitPoints(),.10)));
+		mob.setExperience(mob.charStats().getCurrentClass().getLevelExperience(mob.envStats().level()));
+		mob.setExpNextLevel(mob.charStats().getCurrentClass().getLevelExperience(mob.envStats().level()+1));
 	}
 
 	public static String parseOutAngleBrackets(String s)

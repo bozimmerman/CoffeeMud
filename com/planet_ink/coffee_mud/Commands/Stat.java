@@ -50,6 +50,7 @@ public class Stat extends BaseAbleLister
 
 	public boolean showTableStats(MOB mob, int days, int scale, String rest)
 	{
+		if(days>0) days--;
 		IQCalendar ENDQ=new IQCalendar(System.currentTimeMillis()-(days*(24*60*60*1000)));
 		ENDQ.set(Calendar.HOUR_OF_DAY,0);
 		ENDQ.set(Calendar.MINUTE,0);
@@ -80,8 +81,8 @@ public class Stat extends BaseAbleLister
 		long curTime=C.getTimeInMillis();
 		String code="*";
 		if(rest.length()>0) code=""+rest.toUpperCase().charAt(0);
-		long lastCur=0;
-		while(V.size()>0)
+		long lastCur=System.currentTimeMillis();
+		while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 		{
 			lastCur=curTime;
 			curTime=curTime-(scale*(24*60*60*1000));
@@ -89,7 +90,7 @@ public class Stat extends BaseAbleLister
 			for(int v=V.size()-1;v>=0;v--)
 			{
 				CoffeeTables T=(CoffeeTables)V.elementAt(v);
-				if(T.startTime()>=curTime)
+				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 				{
 					set.addElement(T);
 					V.removeElementAt(v);

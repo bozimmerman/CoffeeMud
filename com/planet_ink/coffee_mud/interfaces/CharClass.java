@@ -35,6 +35,7 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public void endCharacter(MOB mob);
 	public void gainExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
 	public void loseExperience(MOB mob, int amount);
+	public int getLevelExperience(int level);
 	public Hashtable dispenseExperience(MOB killer, MOB killed);
 	public void level(MOB mob);
 	public void unLevel(MOB mob);

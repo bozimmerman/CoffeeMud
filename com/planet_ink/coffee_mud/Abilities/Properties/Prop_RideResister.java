@@ -9,7 +9,7 @@ public class Prop_RideResister extends Property
 	public String ID() { return "Prop_RideResister"; }
 	public String name(){ return "Resistance due to riding";}
 	public boolean bubbleAffect(){return true;}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private CharStats adjCharStats=null;
 
 	public Environmental newInstance(){	Prop_RideResister BOB=new Prop_RideResister();	BOB.setMiscText(text()); return BOB;}

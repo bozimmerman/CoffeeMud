@@ -98,6 +98,7 @@ public class FireBuilding extends CommonSkill
 			completion=25-mob.envStats().level();
 			durationOfBurn=150+(mob.envStats().level()*5);
 			verb="building a fire";
+			displayText="You are building a fire.";
 		}
 		else
 		{
@@ -141,6 +142,7 @@ public class FireBuilding extends CommonSkill
 			if((lighting.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
 				completion=25-mob.envStats().level();
 			verb="lighting "+lighting.name();
+			displayText="You are lighting "+lighting.name()+".";
 		}
 
 		switch(mob.location().getArea().getClimateObj().weatherType(mob.location()))

@@ -15,7 +15,7 @@ public class Prayer_Absorption extends Prayer
 	public int quality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_Absorption();	}
-	private Ability absorbed=null;
+	protected Ability absorbed=null;
 
 	public void unInvoke()
 	{
@@ -43,10 +43,13 @@ public class Prayer_Absorption extends Prayer
 			mob.tell("Umm.. ok. Done.");
 			return false;
 		}
-		Ability old=mob.fetchEffect(ID());
+		Prayer_Absorption old=(Prayer_Absorption)mob.fetchEffect(ID());
 		if(old!=null)
 		{
-			mob.tell("You have already absorbed "+old.text()+" from someone.");
+			if(old.absorbed!=null)
+				mob.tell("You have already absorbed "+old.absorbed.name()+" from someone.");
+			else
+				mob.tell("You have already absorbed a skill from someone.");
 			return false;
 		}
 		

@@ -24,18 +24,23 @@ public class Train extends StdCommand
 
 		int trainsRequired=1;
 		int abilityCode=mob.baseCharStats().getCode(abilityName);
+		int curStat=-1;
 		if(abilityCode>=0)
 		{
-			if(mob.charStats().getStat(abilityCode)<18)
+			CharStats copyStats=mob.baseCharStats().cloneCharStats();
+			mob.charStats().getMyRace().affectCharStats(mob,copyStats);
+			mob.charStats().getCurrentClass().affectCharStats(mob,copyStats);
+			curStat=copyStats.getStat(abilityCode);
+			if(curStat<18)
 				trainsRequired=1;
 			else
-			if(mob.charStats().getStat(abilityCode)<20)
+			if(curStat<20)
 				trainsRequired=2;
 			else
-			if(mob.charStats().getStat(abilityCode)<22)
+			if(curStat<22)
 				trainsRequired=3;
 			else
-			if(mob.charStats().getStat(abilityCode)<24)
+			if(curStat<24)
 				trainsRequired=4;
 			else
 				trainsRequired=5;
@@ -153,13 +158,8 @@ public class Train extends StdCommand
 			return false;
 		}
 
-		int curStat=-1;
 		if(abilityCode<100)
 		{
-			CharStats copyStats=mob.baseCharStats().cloneCharStats();
-			mob.charStats().getMyRace().affectCharStats(mob,copyStats);
-			mob.charStats().getCurrentClass().affectCharStats(mob,copyStats);
-			curStat=copyStats.getStat(abilityCode);
 			if(curStat>=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 						 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+abilityCode)))
 			{

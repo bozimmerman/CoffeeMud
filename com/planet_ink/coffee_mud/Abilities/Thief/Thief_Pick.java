@@ -41,9 +41,8 @@ public class Thief_Pick extends ThiefSkill
 			return false;
 		}
 
-		if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).isOpen()))
-		||((unlockThis instanceof Container)&&(!((Container)unlockThis).isOpen()))
-		||((unlockThis instanceof Item)&&(!(unlockThis instanceof Container))))
+		if(((unlockThis instanceof Exit)&&(((Exit)unlockThis).isOpen()))
+		||((unlockThis instanceof Container)&&(((Container)unlockThis).isOpen())))
 		{
 			mob.tell(unlockThis.name()+" is open!");
 			return false;

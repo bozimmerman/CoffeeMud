@@ -117,7 +117,8 @@ public class LockSmith extends CommonSkill
 								unInvoke();
 							}
 							((Container)workingOn).setLidsNLocks(true,false,true,true);
-							((Container)workingOn).setKeyName(((Key)building).getKey());
+							if(building instanceof Key)
+								((Container)workingOn).setKeyName(((Key)building).getKey());
 						}
 					}
 				}

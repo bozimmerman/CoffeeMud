@@ -26,7 +26,6 @@ public class ClanCreate extends BaseClanner
 						mob.tell("It costs "+cost+" gold to create a clan.  You don't have it.");
 						return false;
 					}
-					MoneyUtils.subtractMoney(null,mob,cost);
 				}
 				try
 				{
@@ -62,6 +61,10 @@ public class ClanCreate extends BaseClanner
 										if(govt.equalsIgnoreCase(Clan.GVT_DESCS[i]))
 											govtType=i;
 								}
+								
+								if(cost>0)
+									MoneyUtils.subtractMoney(null,mob,cost);
+								
 								Clan newClan=Clans.getClanType(Clan.TYPE_CLAN);
 								newClan.setName(doubleCheck);
 								newClan.setGovernment(govtType);
