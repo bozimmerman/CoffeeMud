@@ -15,7 +15,7 @@ public class StdCharClass implements CharClass
 	protected int bonusPracLevel=0;
 	protected int manaMultiplier=15;
 	protected int attackAttribute=CharStats.STRENGTH;
-	protected int bonusAttackLevel=2;
+	protected int bonusAttackLevel=1;
 	protected int practicesAtFirstLevel=5;
 	protected int trainsAtFirstLevel=3;
 	protected int damageBonusPerLevel=1;
@@ -171,7 +171,7 @@ public class StdCharClass implements CharClass
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
 		theNews.append(mvGain+"^B move " + (mvGain!=1?"points":"point") + ", ^H");
 
-		int attGain=(int)Math.round(Util.div(mob.charStats().getCurStat(this.attackAttribute),8.0))+this.bonusAttackLevel;
+		int attGain=(int)Math.round(Util.div(mob.charStats().getCurStat(this.attackAttribute),6.0))+this.bonusAttackLevel;
 		attGain=attGain*adjuster;
 		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+attGain);
 		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
@@ -298,7 +298,7 @@ public class StdCharClass implements CharClass
 
 	public int getLevelAttack(MOB mob)
 	{
-		int attGain=(int)Math.round(Util.div(mob.charStats().getCurStat(this.attackAttribute),8.0))+this.bonusAttackLevel;
+		int attGain=(int)Math.round(Util.div(mob.charStats().getCurStat(this.attackAttribute),6.0))+this.bonusAttackLevel;
 		return ((mob.baseEnvStats().level()-1)*attGain);
 	}
 
