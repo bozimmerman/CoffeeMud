@@ -9,7 +9,6 @@ public class StdWebMacro implements WebMacro
 	public String ID()		{return name();}
 	public String name()	{return "UNKNOWN";}
 
-	// not yet implemented!
 	public boolean isAdminMacro()	{return false;}
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
@@ -28,14 +27,22 @@ public class StdWebMacro implements WebMacro
 			while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\n\r");}
 			x=s.toString().indexOf("\r\n");
 			while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\r\n");}
-			x=s.toString().lastIndexOf("<BR>");
 			int count=0;
-			int lastSpace=x+4;
+			x=0;
+			int lastSpace=0;
 			while((x>=0)&&(x<s.length()))
 			{
 				count++;
 				if(s.charAt(x)==' ')
 					lastSpace=x;
+				if((s.charAt(x)=='<')
+				   &&(x<s.length()-4)
+				   &&(s.substring(x,x+4).equalsIgnoreCase("<BR>")))
+				{
+					count=0;
+					x=x+4;
+					lastSpace=x+4;
+				}
 				if(count>=70)
 				{
 					s.replace(lastSpace,lastSpace+1,"<BR>");

@@ -20,6 +20,7 @@ MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSER
 	<br>
 	Players currently online: <b>@NUMPLAYERS@</B><br>
 	<br>
+	<a href="resources.cmvp">Manage Resources</A><br>
 	<a href="pub/">Go to public pages</A><br>
 	<br>
 	Admin Info:<br>
@@ -31,6 +32,7 @@ MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSER
 	<A href="abilities.cmvp">Complete Skills List</a><BR>
 	<A href="behaviors.cmvp">Complete Behaviors List</a><BR>
 	<A href="affects.cmvp">Complete Affects List</a><BR>
+	<a href="ahelps.cmvp">Archon Help Topics</A><br>
 	<P>
 	<FORM NAME=LOGIN METHOD=GET ACTION=/grinder/loggedin.cmvp TARGET=_top>
 	<TABLE WIDTH=200 BORDER=1>

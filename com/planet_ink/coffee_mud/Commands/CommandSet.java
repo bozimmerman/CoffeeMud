@@ -191,6 +191,7 @@ public class CommandSet extends Hashtable
 	public static final int AUCTION=178;
 	public static final int SOUND=179;
 	public static final int NOSOUND=180;
+	public static final int AUTOIMPROVEMENT=181;
 
 	private CommandSet()
 	{
@@ -211,6 +212,7 @@ public class CommandSet extends Hashtable
 		put("AUTOGUARD",new Integer(AUTOGUARD));
 			put("GUARD",new Integer(AUTOGUARD));
 		put("AUTOEXITS",new Integer(AUTOEXITS));
+		put("AUTOIMPROVEMENT",new Integer(AUTOIMPROVEMENT));
 		put("AUTOMELEE",new Integer(AUTOMELEE));
 		put("AUTOASSIST",new Integer(AUTOASSIST));
 		put("AUTOWEATHER",new Integer(AUTOWEATHER));

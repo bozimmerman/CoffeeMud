@@ -15,18 +15,27 @@
 </head>
 
 <body BGCOLOR=#FFCCCC>
-<h3>CoffeeMud 4.0 Archon Help Topics</h3><P>
+<h3>CoffeeMud 4.0 Help Topics</h3><P>
+	@HelpTopics?reset@
+	@loop@
+		@HelpTopics?NEXTLETTER@
+		<a href="helps.cmvp?FIRSTLETTER=@RequestParameter?HELPFIRSTLETTER@">
+		@RequestParameter?HELPFIRSTLETTER@
+		</a>
+	@back@
+	<P>
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Topics</H2></TD></TR>
 	@HelpTopics?reset@
 	@loop@
 	<TR>
-	@HelpTopics?NEXT@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
-	@HelpTopics?NEXT&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
-	@HelpTopics?NEXT&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
-	@HelpTopics?NEXT&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
+	@HelpTopics?NEXT&SHORT@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
+	@HelpTopics?NEXT&SHORT&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
+	@HelpTopics?NEXT&SHORT&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
+	@HelpTopics?NEXT&SHORT&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
 	</TR>
 	@back@
 	</TABLE>
+<P><CENTER><A href="index.cmvp">Back to the Main page</a></CENTER>
 </BODY>
 </HTML>

@@ -66,7 +66,8 @@ public class Help
 		Properties helpFile=getHelpFile();
 		if(helpFile.size()==0)
 		{
-			mob.tell("No help is available.");
+			if(mob!=null)
+				mob.tell("No help is available.");
 			return;
 		}
 
@@ -78,7 +79,8 @@ public class Help
 		Properties arcHelpFile=getArcHelpFile();
 		if(arcHelpFile.size()==0)
 		{
-			mob.tell("No archon help is available.");
+			if(mob!=null)
+				mob.tell("No archon help is available.");
 			return;
 		}
 
@@ -107,6 +109,43 @@ public class Help
 		return topicBuffer;
 	}
 
+	public static Vector getTopics(boolean archonHelp, boolean standardHelp)
+	{
+		Properties rHelpFile=null;
+		Vector reverseList=new Vector();
+		if(archonHelp)
+			rHelpFile=getArcHelpFile();
+		if(standardHelp)
+		{
+			if(rHelpFile==null) 
+				rHelpFile=getHelpFile();
+			else
+			{
+				for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+				{
+					String ptop = (String)e.nextElement();
+					String thisTag=rHelpFile.getProperty(ptop);
+					if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
+						|| (rHelpFile.getProperty(thisTag)== null) )
+							reverseList.addElement(ptop);
+				}
+				rHelpFile=getHelpFile();
+			}
+		}
+		if(rHelpFile!=null)
+		for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+		{
+			String ptop = (String)e.nextElement();
+			String thisTag=rHelpFile.getProperty(ptop);
+			if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
+				|| (rHelpFile.getProperty(thisTag)== null) )
+					reverseList.addElement(ptop);
+		}
+		Collections.sort((List)reverseList);
+		return reverseList;
+	}
+	
+	
 	public static void doTopics(MOB mob, Properties rHelpFile, String helpName, String resName)
 	{
 		StringBuffer topicBuffer=(StringBuffer)Resources.getResource(resName);
@@ -130,7 +169,7 @@ public class Help
 			topicBuffer=new StringBuffer(topicBuffer.toString().replace('_',' '));
 			Resources.submitResource(resName,topicBuffer);
 		}
-		if((topicBuffer!=null)&&(!mob.isMonster()))
+		if((topicBuffer!=null)&&(mob!=null)&&(!mob.isMonster()))
 			mob.session().rawPrintln(topicBuffer.toString()+"\n\r\n\rEnter "+helpName+" (TOPIC NAME) for more information.");
 	}
 

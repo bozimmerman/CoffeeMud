@@ -1,11 +1,12 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
+<TITLE>@RequestParameter?TOPIC@</TITLE>
 </HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+<BODY BGCOLOR=#000066 TEXT=#FFFFFF>
+<H3>@RequestParameter?TOPIC@</H3>
+<PRE>
+@HelpTopics?data@
+</PRE>
 </BODY>
 </HTML>

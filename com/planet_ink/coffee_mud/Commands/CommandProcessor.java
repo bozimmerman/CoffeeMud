@@ -92,6 +92,9 @@ public class CommandProcessor
 				case CommandSet.AUTOASSIST:
 					TheFight.autoAssist(mob);
 					break;
+				case CommandSet.AUTOIMPROVEMENT:
+					BasicSenses.autoimprovement(mob);
+					break;
 				case CommandSet.AUTOEXITS:
 					BasicSenses.autoExits(mob);
 					break;

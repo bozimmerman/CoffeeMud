@@ -421,6 +421,20 @@ public class BasicSenses
 		}
 	}
 
+	public static void autoimprovement(MOB mob)
+	{
+		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
+		{
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOIMPROVE));
+			mob.tell("Skill improvement notifications are now off.");
+		}
+		else
+		{
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOIMPROVE));
+			mob.tell("Skill improvement notifications are now on.");
+		}
+	}
+
 	public static void ansi(MOB mob, int WhatToDo)
 	{
 		if(!mob.isMonster())

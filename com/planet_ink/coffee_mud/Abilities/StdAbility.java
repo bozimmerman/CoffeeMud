@@ -427,6 +427,8 @@ public class StdAbility implements Ability, Cloneable
 				A.setProfficiency(A.profficiency()+1);
 				if((this!=A)&&(profficiency()<100))
 					setProfficiency(profficiency()+1);
+				if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
+					mob.tell("You become better at "+A.name()+".");
 				((StdAbility)A).lastProfHelp=System.currentTimeMillis();
 			}
 		}

@@ -93,6 +93,11 @@ public class ExternalPlay
 	{
 		if(player!=null) player.makePeaceInGroup(mob);
 	}
+	public static Vector getTopics(boolean archonHelp, boolean standardHelp)
+	{
+		if(player!=null) return player.getTopics(archonHelp,standardHelp);
+		return new Vector();
+	}
 	
 	public static StringBuffer niceLister(MOB mob, Vector items, boolean useName)
 	{

@@ -80,6 +80,11 @@ public class ExternalCommands implements ExternalCommand
 	{
 		Reset.resetRoom(room);
 	}
+	public Vector getTopics(boolean archonHelp, boolean standardHelp)
+	{
+		return Help.getTopics(archonHelp,standardHelp);
+	}
+	
 	public String getOpenRoomID(String areaName)
 	{
 		return Reset.getOpenRoomID(areaName);

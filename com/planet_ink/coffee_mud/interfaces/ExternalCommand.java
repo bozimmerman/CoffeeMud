@@ -46,6 +46,7 @@ public interface ExternalCommand
 	public void roomAffectFully(Affect msg, Room room, int dirCode);
 	public int getMyDirCode(Exit exit, Room room, int testCode);
 	public boolean login(MOB mob) throws IOException;
+	public Vector getTopics(boolean archonHelp, boolean standardHelp);
 	public void resetRoom(Room room);
 	public String getOpenRoomID(String areaName);
 	public void obliterateArea(String areaName);

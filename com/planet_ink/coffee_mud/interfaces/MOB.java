@@ -24,6 +24,7 @@ public interface MOB
 	public static final int ATT_AUTODRAW=2048;
 	public static final int ATT_AUTOGUARD=4096;
 	public static final int ATT_SOUND=8192;
+	public static final int ATT_AUTOIMPROVE=16384;
 
 	public static final boolean[] AUTOREV={false,
 										   false,
@@ -32,6 +33,8 @@ public interface MOB
 										   false,
 										   false,
 										   true,
+										   false,
+										   false,
 										   false,
 										   false,
 										   false,
@@ -50,7 +53,9 @@ public interface MOB
 										   "NOFOLLOW",
 										   "AUTOWEATHER",
 										   "AUTODRAW",
-										   "AUTOGUARD"};
+										   "AUTOGUARD",
+										   "SOUNDS",
+										   "AUTOIMPROVEMENT"};
 
 	/** When the USER last logged off */
 	public long lastDateTime();
