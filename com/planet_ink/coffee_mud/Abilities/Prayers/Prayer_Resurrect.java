@@ -82,7 +82,7 @@ public class Prayer_Resurrect extends Prayer
 								it++;
 						}
 						body.destroyThis();
-						rejuvedMOB.location().show(rejuvedMOB,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> gets up!");
+						rejuvedMOB.location().show(rejuvedMOB,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 						mob.location().recoverRoomStats();
 					}
 					else

@@ -22,7 +22,7 @@ public class Poison extends StdAbility
 
 		quality=Ability.MALICIOUS;
 
-		baseEnvStats().setLevel(1);
+		baseEnvStats().setLevel(10);
 		recoverEnvStats();
 	}
 

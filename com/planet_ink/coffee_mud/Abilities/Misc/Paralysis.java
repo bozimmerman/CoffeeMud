@@ -14,7 +14,7 @@ public class Paralysis extends StdAbility
 		name="Paralyze";
 		displayText="(Paralyzed)";
 		quality=Ability.MALICIOUS;
-		baseEnvStats().setLevel(1);
+		baseEnvStats().setLevel(10);
 
 		recoverEnvStats();
 	}
