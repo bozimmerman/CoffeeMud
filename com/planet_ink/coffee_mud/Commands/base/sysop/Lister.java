@@ -213,7 +213,7 @@ public class Lister
 		Vector V=ExternalPlay.DBReadJournal(journal);
 		if(V!=null)
 		{
-			buf.append("\n\r"+Util.padRight("#",5)+Util.padRight("From",10)+" Entry\n\r");
+			buf.append("\n\r^x"+Util.padRight("#",5)+Util.padRight("From",10)+" Entry^^^N\n\r");
 			buf.append("---------------------------------------------\n\r");
 			for(int j=0;j<V.size();j++)
 			{
@@ -233,7 +233,7 @@ public class Lister
 	{
 		StringBuffer lines=new StringBuffer("^x");
 		lines.append(Util.padRight("Name",17)+"| ");
-		lines.append(Util.padRight("Location",17)+"^?^^\n\r");
+		lines.append(Util.padRight("Location",17)+"^^^N\n\r");
 		String who=Util.combine(commands,1);
 		if(who.length()==0)
 		{
@@ -290,12 +290,12 @@ public class Lister
 	public StringBuffer listReports(MOB mob)
 	{
 		StringBuffer buf=new StringBuffer("");
-		buf.append("\n\rCoffeeMud System Report:\n\r");
+		buf.append("\n\r^xCoffeeMud System Report:^^^N\n\r");
 		long totalTime=Calendar.getInstance().getTimeInMillis()-ExternalPlay.getStartTime().getTimeInMillis();
-		buf.append("The system has been running for "+Util.returnTime(totalTime,0)+".\n\r");
+		buf.append("The system has been running for ^H"+Util.returnTime(totalTime,0)+"^?.\n\r");
 		long free=Runtime.getRuntime().freeMemory()/1000;
 		long total=Runtime.getRuntime().totalMemory()/1000;
-		buf.append("The system is utilizing "+(total-free)+"kb out of "+total+"kb.\n\r");
+		buf.append("The system is utilizing ^H"+(total-free)+"^?kb out of ^H"+total+"^?kb.\n\r");
 		buf.append(ExternalPlay.systemReport());
 		return buf;
 	}

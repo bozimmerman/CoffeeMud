@@ -343,10 +343,12 @@ public class Scoring
 		{
 			Ability thisAffect=affected.fetchAffect(a);
 			if((thisAffect!=null)&&(thisAffect.displayText().length()>0))
-				msg.append("\n\r"+thisAffect.displayText());
+				msg.append("\n\r^S"+thisAffect.displayText());
 		}
 		if(msg.length()==0)
 			msg.append("Nothing!");
+		else
+			msg.append("^?");
 		return msg;
 	}
 

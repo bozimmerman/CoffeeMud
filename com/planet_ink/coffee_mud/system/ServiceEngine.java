@@ -143,7 +143,7 @@ public class ServiceEngine
 	public static StringBuffer report()
 	{
 		StringBuffer buf=new StringBuffer("");
-		buf.append("\n\rService Engine report:\n\r");
+		buf.append("\n\r^xService Engine report:^^^N\n\r");
 		int totalTickers=0;
 		long totalMillis=0;
 		long totalTicks=0;
@@ -179,19 +179,19 @@ public class ServiceEngine
 			}
 		}
 			
-		buf.append("There are "+totalTickers+" ticking objects in "+tickGroup.size()+" threads.\n\r");
-		buf.append("The ticking objects have consumed: "+Util.returnTime(totalMillis,totalTicks)+".\n\r");
-		buf.append("The most active group, #"+topGroupNumber+", has consumed: "+Util.returnTime(topGroupMillis,topGroupTicks)+".\n\r");
+		buf.append("There are ^H"+totalTickers+"^? ticking objects in ^H"+tickGroup.size()+"^? threads.\n\r");
+		buf.append("The ticking objects have consumed: ^H"+Util.returnTime(totalMillis,totalTicks)+"^?.\n\r");
+		buf.append("The most active group, #^H"+topGroupNumber+"^?, has consumed: ^H"+Util.returnTime(topGroupMillis,topGroupTicks)+"^?.\n\r");
 		if(topObjectClient!=null)
 		{
-			buf.append("The most active object has been '"+topObjectClient.name()+"', from group #"+topObjectGroup+".\n\r");
-			buf.append("That object has consumed: "+Util.returnTime(topObjectMillis,topObjectTicks)+".\n\r");
+			buf.append("The most active object has been '^H"+topObjectClient.name()+"^?', from group #^H"+topObjectGroup+"^?.\n\r");
+			buf.append("That object has consumed: ^H"+Util.returnTime(topObjectMillis,topObjectTicks)+"^?.\n\r");
 		}
 		buf.append("\n\r");
-		buf.append("Save Thread report:\n\r");
-		buf.append("The Save Thread has consumed: "+Util.returnTime(SaveThread.milliTotal,SaveThread.tickTotal)+".\n\r");
+		buf.append("^xSave Thread report:^^^N\n\r");
+		buf.append("The Save Thread has consumed: ^H"+Util.returnTime(SaveThread.milliTotal,SaveThread.tickTotal)+"^?.\n\r");
 		buf.append("\n\r");
-		buf.append("Session report:\n\r");
+		buf.append("^xSession report:^^^N\n\r");
 		long totalMOBMillis=0;
 		long totalMOBTicks=0;
 		long topMOBMillis=0;
@@ -209,12 +209,12 @@ public class ServiceEngine
 				topMOBClient=S.mob();
 			}
 		}
-		buf.append("There are "+Sessions.size()+" ticking players logged on.\n\r");
-		buf.append("The ticking players have consumed: "+Util.returnTime(totalMOBMillis,totalMOBTicks)+".\n\r");
+		buf.append("There are ^H"+Sessions.size()+"^? ticking players logged on.\n\r");
+		buf.append("The ticking players have consumed: ^H"+Util.returnTime(totalMOBMillis,totalMOBTicks)+"^?.\n\r");
 		if(topMOBClient!=null)
 		{
-			buf.append("The most active mob has been '"+topMOBClient.name()+"'\n\r");
-			buf.append("That mob has consumed: "+Util.returnTime(topMOBMillis,topMOBTicks)+".\n\r");
+			buf.append("The most active mob has been '^H"+topMOBClient.name()+"^?'\n\r");
+			buf.append("That mob has consumed: ^H"+Util.returnTime(topMOBMillis,topMOBTicks)+"^?.\n\r");
 		}
 		return buf;
 	}

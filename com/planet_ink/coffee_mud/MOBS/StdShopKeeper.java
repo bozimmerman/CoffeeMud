@@ -564,7 +564,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				}
 				return;
 			case Affect.TYP_LIST:
-				ExternalPlay.quickSay(this,mob,"\n\r"+listInventory(mob).toString(),true,false);
+				ExternalPlay.quickSay(this,mob,"\n\r"+listInventory(mob).toString()+"^T",true,false);
 				return;
 			default:
 				break;
@@ -631,8 +631,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			}
 		}
 		
-		String c="["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",30-csize);
-		msg.append(c+c+"\n\r");
+		String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",30-csize);
+		msg.append(c+c+"^^^N\n\r");
 		int colNum=0;
 		for(int i=0;i<inventory.size();i++)
 		{
