@@ -96,11 +96,14 @@ public class Spell_Anchor extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"An magical anchoring field envelopes <T-NAME>!":"<S-NAME> invoke(s) an anchoring field of protection around <T-NAMESELF>."));
-		if((success)&&(mob.location().okAffect(msg)))
+		if(success)
 		{
-			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,0);
+			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"An magical anchoring field envelopes <T-NAME>!":"<S-NAME> invoke(s) an anchoring field of protection around <T-NAMESELF>."));
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob,msg);
+				beneficialAffect(mob,target,0);
+			}
 		}
 		else
 			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an anchoring field, but fail(s).");

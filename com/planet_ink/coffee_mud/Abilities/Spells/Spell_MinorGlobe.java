@@ -86,13 +86,15 @@ public class Spell_MinorGlobe extends Spell
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-
-		FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"An anti-magic field envelopes <T-NAME>!":"<S-NAME> invoke(s) an anti-magic globe of protection around <T-NAMESELF>."));
-		if((success)&&(mob.location().okAffect(msg)))
+		if(success)
 		{
-			amountAbsorbed=0;
-			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,0);
+			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"An anti-magic field envelopes <T-NAME>!":"<S-NAME> invoke(s) an anti-magic globe of protection around <T-NAMESELF>."));
+			if(mob.location().okAffect(msg))
+			{
+				amountAbsorbed=0;
+				mob.location().send(mob,msg);
+				beneficialAffect(mob,target,0);
+			}
 		}
 		else
 			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an anti-magic globe, but fail(s).");

@@ -79,12 +79,14 @@ public class Spell_ResistPetrification extends Spell
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-
-		FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> invoke(s) a flowing barrier of protection around <T-NAMESELF>.");
-		if((success)&&(mob.location().okAffect(msg)))
+		if(success)
 		{
-			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,0);
+			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> invoke(s) a flowing barrier of protection around <T-NAMESELF>.");
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob,msg);
+				beneficialAffect(mob,target,0);
+			}
 		}
 		else
 			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a flowing barrier, but fail(s).");

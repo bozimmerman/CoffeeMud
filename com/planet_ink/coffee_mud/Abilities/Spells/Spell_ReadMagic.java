@@ -53,7 +53,6 @@ public class Spell_ReadMagic extends Spell
 
 
 		boolean success=profficiencyCheck(0,auto);
-
 		if((success)&&(mob.fetchAffect(this.ID())==null))
 		{
 			Ability thisNewOne=(Ability)this.copyOf();
