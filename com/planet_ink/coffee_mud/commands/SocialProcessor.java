@@ -160,7 +160,7 @@ public class SocialProcessor
 			mob.tell("Tell them what?");
 			return;
 		}
-		mob.tell("Ok.");
+		mob.tell("You tell "+target.name()+" '"+combinedCommands+"'");
 		// deafness does not matter!
 		target.tell(mob.name()+" tells you '"+combinedCommands+"'");
 		target.setReplyTo(mob);
