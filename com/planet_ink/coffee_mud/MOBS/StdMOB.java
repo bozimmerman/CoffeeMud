@@ -2738,10 +2738,17 @@ public class StdMOB implements MOB
 	}
 	public void addFollower(MOB follower, int order)
 	{
-		if((follower!=null)&&(followers!=null)&&(!followers.contains(follower)))
+		if(follower!=null)
 		{
 			if(followers==null) followers=new DVector(2);
-			followers.addElement(follower,new Integer(order));
+			if(!followers.contains(follower))
+				followers.addElement(follower,new Integer(order));
+			else
+			{
+				int x=followers.indexOf(follower);
+				if(x>=0)
+					followers.setElementAt(x,2,new Integer(order));
+			}
 		}
 	}
 

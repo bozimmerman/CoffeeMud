@@ -1,4 +1,9 @@
 add that silly group ranging thing
+retargeting range fixes
+only gain/lose exp from vassals when online
+remove same room restriction for rebuke
+To further elaborate on Olick's comment: He was level 25 Pal, got Pal Goodness, died, is now level 24 Pal, and Pal goodness is still going up
+disease blahs caught from excessive idle time.. fatigue and blah language
 wind affects throws
 ?Shapeshifting into a cow lets people see the WIZ channel?!
 items to wear on customized body parts.  Use default Amputation, compined with Limb items which, when worn, give parts back.
