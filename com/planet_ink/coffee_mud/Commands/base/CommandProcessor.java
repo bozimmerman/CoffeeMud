@@ -86,7 +86,7 @@ public class CommandProcessor
 					BasicSenses.autoweather(mob);
 					break;
 				case CommandSet.AUTOGUARD:
-					TheFight.autoGuard(mob);
+					TheFight.autoGuard(mob,commands);
 					break;
 				case CommandSet.AUTODRAW:
 					TheFight.autoDraw(mob);
@@ -501,6 +501,9 @@ public class CommandProcessor
 						SysopItemUsage.take(mob,commands);
 					else
 						BasicSenses.mundaneTake(mob,commands);
+					break;
+				case CommandSet.THROW:
+					TheFight.throwit(mob,commands);
 					break;
 				case CommandSet.TELL:
 					SocialProcessor.tell(mob,commands);

@@ -59,7 +59,7 @@ public class Ranger_Track extends StdAbility
 				{
 					Room nextRoom=mob.location().getRoomInDir(nextDirection);
 					if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
-						ExternalPlay.move(mob,nextDirection,false);
+						ExternalPlay.move(mob,nextDirection,false,false);
 					else
 						unInvoke();
 				}

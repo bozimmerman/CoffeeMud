@@ -72,7 +72,7 @@ public class Skill_Swim extends StdAbility
 					mob.recoverEnvStats();
 				}
 
-				ExternalPlay.move(mob,dirCode,false);
+				ExternalPlay.move(mob,dirCode,false,false);
 				mob.delAffect(this);
 				mob.recoverEnvStats();
 			}

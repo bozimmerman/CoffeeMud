@@ -170,7 +170,6 @@ public class Help
 				{
 					StringBuffer prepend=new StringBuffer("");
 					type=(A.classificationCode()&Ability.ALL_CODES);
-					String typeStr="Skill";
 					prepend.append("\n\r");
 					switch(type)
 					{

@@ -1,2 +1,3 @@
 bug look for alternate materials in the common skills
-bankers are keeping the dough
+throw command to drop latters, ropes into pits. Only works ->indoors though!
+Something to fix my existing imported weapon damages

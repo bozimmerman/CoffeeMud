@@ -59,7 +59,7 @@ public class Thief_Sneak extends ThiefSkill
 				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_SNEAKING);
 				mob.recoverEnvStats();
 			}
-			ExternalPlay.move(mob,dirCode,false);
+			ExternalPlay.move(mob,dirCode,false,false);
 			if(success)
 			{
 				

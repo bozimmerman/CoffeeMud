@@ -93,7 +93,7 @@ public class Spell_PassDoor extends Spell
 				mob.addAffect(this);
 				mob.recoverEnvStats();
 				mob.tell("\n\r\n\r");
-				ExternalPlay.move(mob,dirCode,false);
+				ExternalPlay.move(mob,dirCode,false,false);
 				mob.delAffect(this);
 				mob.recoverEnvStats();
 			}

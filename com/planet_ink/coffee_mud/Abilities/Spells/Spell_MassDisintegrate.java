@@ -37,7 +37,6 @@ public class Spell_MassDisintegrate extends Spell
 			return false;
 
 		int avgLevel=0;
-		int numLevel=0;
 		for(Enumeration e=h.elements();e.hasMoreElements();)
 		{
 			MOB mob2=(MOB)e.nextElement();

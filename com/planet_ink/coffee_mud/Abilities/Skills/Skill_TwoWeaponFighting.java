@@ -66,6 +66,8 @@ public class Skill_TwoWeaponFighting extends StdAbility
 			MOB mob=(MOB)affected;
 			if(mob.isInCombat())
 			{
+				if((mob.getBitmap()&MOB.ATT_AUTODRAW)==MOB.ATT_AUTODRAW)
+					ExternalPlay.drawIfNecessary(mob,true);
 				Item weapon=getSecondWeapon(mob);
 				if((weapon!=null) // try to wield anything!
 				&&(mob.rangeToTarget()>=0)

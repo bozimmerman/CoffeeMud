@@ -26,7 +26,6 @@ public class AbilityHelper
 				
 				char primaryChar=text.charAt(x);
 				x++;
-				boolean ok=false;
 				boolean andEqual=false;
 				if(text.charAt(x)=='=')
 				{

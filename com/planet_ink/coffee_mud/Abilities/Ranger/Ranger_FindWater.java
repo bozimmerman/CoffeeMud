@@ -67,7 +67,7 @@ public class Ranger_FindWater extends StdAbility
 				{
 					Room nextRoom=mob.location().getRoomInDir(nextDirection);
 					if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
-						ExternalPlay.move(mob,nextDirection,false);
+						ExternalPlay.move(mob,nextDirection,false,false);
 					else
 						unInvoke();
 				}
@@ -224,7 +224,6 @@ public class Ranger_FindWater extends StdAbility
 		
 		boolean success=profficiencyCheck(0,auto);
 
-		Hashtable lookedIn=new Hashtable();
 		Vector rooms=new Vector();
 		Vector localMap=mob.location().getArea().getMyMap();
 		for(int r=0;r<localMap.size();r++)

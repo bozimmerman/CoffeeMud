@@ -20,6 +20,37 @@ public class ClimbableSurface extends StdRoom
 	{
 		return new ClimbableSurface();
 	}
+	
+	public void mountLadder(MOB mob, Rideable ladder)
+	{
+		String mountStr=ladder.mountString(Affect.TYP_MOUNT);
+		FullMsg msg=new FullMsg(mob,ladder,null,Affect.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
+		Room room=(Room)((Item)ladder).owner();
+		if(mob.location()==room) room=null;
+		if((mob.location().okAffect(msg))
+		&&((room==null)||(room.okAffect(msg))))
+		{
+			mob.location().send(mob,msg);
+			if(room!=null)
+				room.sendOthers(mob,msg);
+		}
+	}
+	
+	public Rideable findALadder(MOB mob, Room room)
+	{
+		if(room==null) return null;
+		if(mob.riding()!=null) return null;
+		for(int i=0;i<room.numItems();i++)
+		{
+			Item I=room.fetchItem(i);
+			if((I!=null)
+			   &&(I instanceof Rideable)
+			   &&(Sense.canBeSeenBy(I,mob))
+			   &&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_LADDER))
+				return (Rideable)I;
+		}
+		return null;
+	}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -33,8 +64,14 @@ public class ClimbableSurface extends StdRoom
 		&&(!Sense.isClimbing(affect.source()))
 		&&(!Sense.isInFlight(affect.source())))
 		{
-			affect.source().tell("You need to climb that way, if you know how.");
-			return false;
+			Rideable ladder=findALadder(affect.source(),this);
+			if(ladder!=null)
+				mountLadder(affect.source(),ladder);
+			if(!Sense.isClimbing(affect.source()))
+			{
+				affect.source().tell("You need to climb that way, if you know how.");
+				return false;
+			}
 		}
 		return true;
 	}
@@ -45,6 +82,8 @@ public class ClimbableSurface extends StdRoom
 		if(Sense.isSleeping(this)) return;
 
 		if((affect.target() instanceof Item)
+		   &&((!(affect.target() instanceof Rideable))
+			  ||(((Rideable)affect.target()).rideBasis()!=Rideable.RIDEABLE_LADDER))
 		   &&(!Sense.isFlying(affect.target()))
 			  &&(affect.targetMinor()==Affect.TYP_DROP))
 		{
@@ -58,7 +97,7 @@ public class ClimbableSurface extends StdRoom
 			&&(!Sense.isFalling(affect.source())))
 		{
 			MOB mob=affect.source();
-			if(this.isInhabitant(mob))
+			if(isInhabitant(mob))
 			{
 				if((!Sense.isInFlight(mob))
 				&&(!Sense.isClimbing(mob))
@@ -66,9 +105,26 @@ public class ClimbableSurface extends StdRoom
 				&&(getExitInDir(Directions.DOWN)!=null)
 				&&(getExitInDir(Directions.DOWN).isOpen()))
 				{
-					Ability falling=CMClass.getAbility("Falling");
-					falling.setAffectedOne(null);
-					falling.invoke(null,null,mob,true);
+					Rideable ladder=findALadder(mob,this);
+					if(ladder!=null)
+						mountLadder(mob,ladder);
+					if(!Sense.isClimbing(mob))
+					{
+						ladder=findALadder(mob,getRoomInDir(Directions.DOWN));
+						if(ladder!=null)
+						{
+							ExternalPlay.look(mob,null,false);
+							mountLadder(mob,ladder);
+						}
+						if(Sense.isClimbing(mob))
+							ExternalPlay.move(mob,Directions.DOWN,false,true);
+						else
+						{
+							Ability falling=CMClass.getAbility("Falling");
+							falling.setAffectedOne(null);
+							falling.invoke(null,null,mob,true);
+						}
+					}
 				}
 			}
 		}

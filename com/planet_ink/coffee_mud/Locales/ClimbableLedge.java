@@ -15,9 +15,17 @@ public class ClimbableLedge extends ClimbableSurface
 		if(Sense.isSleeping(this)) return true;
 		
 		if((affect.targetMinor()==affect.TYP_ENTER)
-		&&(affect.amITarget(this))
-		&&((getRoomInDir(Directions.DOWN)!=affect.source().location())))
-			return true;
+		&&(affect.amITarget(this)))
+		{
+			Rideable ladder=findALadder(affect.source(),this);
+			if(ladder!=null)
+			{ 
+				affect.source().setRiding(ladder);
+				affect.source().recoverEnvStats();
+			}
+			if((getRoomInDir(Directions.DOWN)!=affect.source().location()))
+				return true;
+		}
 		return super.okAffect(affect);
 	}
 	public Environmental newInstance()

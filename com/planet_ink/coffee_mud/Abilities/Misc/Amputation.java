@@ -144,6 +144,7 @@ public class Amputation extends StdAbility
 			case Affect.TYP_GET:
 			case Affect.TYP_CLOSE:
 			case Affect.TYP_DROP:
+			case Affect.TYP_THROW:
 			case Affect.TYP_OPEN:
 				if((missingLimbList&AMPUTATE_BOTHARMS)==AMPUTATE_BOTHARMS)
 				{

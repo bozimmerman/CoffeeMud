@@ -86,7 +86,7 @@ public class Follower extends StdBehavior
 					move=false;
 			}
 			if(move)
-				ExternalPlay.move(mob,direction,false);
+				ExternalPlay.move(mob,direction,false,false);
 			direction=-1;
 		}
 		return;

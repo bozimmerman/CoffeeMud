@@ -843,7 +843,7 @@ public class Arrest extends StdBehavior
 				if(M!=null)
 				{
 					int direction=Directions.getOpDirectionCode(d);
-					ExternalPlay.move(M,direction,false);
+					ExternalPlay.move(M,direction,false,false);
 					if(M.location()==R) return M;
 				}
 			}

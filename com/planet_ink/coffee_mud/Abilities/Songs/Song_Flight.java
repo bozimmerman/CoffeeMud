@@ -98,7 +98,7 @@ public class Song_Flight extends Song
 									mob.tell("Flee where?!");
 									return false;
 								}
-								ExternalPlay.move(follower,directionCode,true);
+								ExternalPlay.move(follower,directionCode,true,false);
 							}
 						}
 					}

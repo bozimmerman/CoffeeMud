@@ -73,7 +73,7 @@ public class Falling extends StdAbility
 						damageToTake+=Dice.roll(1,6,0);
 				}
 				temporarilyDisable=true;
-				ExternalPlay.move(mob,direction,false);
+				ExternalPlay.move(mob,direction,false,false);
 				temporarilyDisable=false;
 				if((mob.location().getRoomInDir(direction)==null)
 				||(mob.location().getExitInDir(direction)==null)

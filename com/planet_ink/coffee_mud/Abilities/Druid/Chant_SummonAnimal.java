@@ -82,7 +82,7 @@ public class Chant_SummonAnimal extends Chant
 				target.bringToLife(newRoom,true);
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
-				ExternalPlay.move(target,opDir,false);
+				ExternalPlay.move(target,opDir,false,false);
 				if(target.location()==mob.location())
 				{
 					ExternalPlay.follow(target,mob,true);

@@ -141,7 +141,6 @@ public class MudChat extends StdBehavior
 					String names=((String)V.elementAt(0));
 					while(names.length()>0)
 					{
-						String name=null;
 						int y=names.indexOf(" ");
 						if(y>=0)
 						{

@@ -13,7 +13,7 @@ public class Movement
 	{
 		int direction=Directions.getGoodDirectionCode(Util.combine(commands,1));
 		if(direction>=0)
-			move(mob,direction,false);
+			move(mob,direction,false,false);
 		else
 		{
 			String doing=(String)commands.elementAt(0);
@@ -72,7 +72,7 @@ public class Movement
 			mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
 			return;
 		}
-		move(mob,dir,false);
+		move(mob,dir,false,false);
 	}
 	
 	public static void crawl(MOB mob, Vector commands)
@@ -92,7 +92,7 @@ public class Movement
 				if(!Sense.isSitting(mob))
 					mob.location().send(mob,msg);
 				if((mob.isMonster())||(tagged))
-					move(mob,direction,false);
+					move(mob,direction,false,false);
 				else
 				{
 					commands.addElement(""+mob);
@@ -115,10 +115,10 @@ public class Movement
 			mob.tell("You need to stand up first.");
 			return;
 		}
-		move(mob,directionCode,false);
+		move(mob,directionCode,false,false);
 	}
 
-	public static boolean move(MOB mob, int directionCode, boolean flee)
+	public static boolean move(MOB mob, int directionCode, boolean flee, boolean nolook)
 	{
 		if(directionCode<0) return false;
 		if(mob==null) return false;
@@ -210,7 +210,7 @@ public class Movement
 			   &&(((Room)leaveMsg.target()).isInhabitant((MOB)riding)))
 			{
 				((MOB)riding).tell("You are ridden "+Directions.getDirectionName(directionCode)+".");
-				move(((MOB)riding),directionCode,false);
+				move(((MOB)riding),directionCode,false,false);
 			}
 			else
 				riders=null;
@@ -226,7 +226,8 @@ public class Movement
 
 		if(opExit!=null) opExit.affect(leaveMsg);
 		
-		ExternalPlay.look(mob,null,true);
+		if(!nolook)
+			ExternalPlay.look(mob,null,true);
 
 		if((riders!=null)&&(riders.size()>0))
 		{
@@ -239,7 +240,7 @@ public class Movement
 					if(rMOB.location()==thisRoom)
 					{
 						rMOB.tell("You ride "+riding.name()+" "+Directions.getDirectionName(directionCode)+".");
-						if(!move(rMOB,directionCode,flee))
+						if(!move(rMOB,directionCode,flee,false))
 							fallOff=true;
 					}
 					if(fallOff)
@@ -265,10 +266,10 @@ public class Movement
 				&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
 				{
 					if((follower.location()==thisRoom)
-					   &&((follower.getBitmap()&MOB.ATT_AUTOGUARD)==MOB.ATT_AUTOGUARD))
+					   &&((follower.getBitmap()&MOB.ATT_AUTOGUARD)==0))
 					{
 						follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
-						if(!move(follower,directionCode,false))
+						if(!move(follower,directionCode,false,false))
 						{
 							//follower.setFollowing(null);
 						}
@@ -325,7 +326,7 @@ public class Movement
 			lostExperience=10+((mob.envStats().level()-mob.getVictim().envStats().level()))*5;
 			if(lostExperience<10) lostExperience=10;
 		}
-		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true))))
+		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true,false))))
 		{
 			mob.makePeace();
 			mob.tell("You lose "+lostExperience+" experience points for withdrawing.");
@@ -577,7 +578,7 @@ public class Movement
 				mob.tell(M.name()+" is awake!");
 				return;
 			}
-			FullMsg msg=new FullMsg(mob,M,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> wake(s) <T-NAME> up.");
+			FullMsg msg=new FullMsg(mob,M,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to wake <T-NAME> up.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

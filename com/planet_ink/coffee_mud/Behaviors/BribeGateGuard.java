@@ -137,7 +137,6 @@ public class BribeGateGuard extends StdBehavior
     // kill the journal entries for that mob
 		Vector V=ExternalPlay.DBReadJournal(gates());
 		Vector mine=new Vector();
-    int balance=0;
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);

@@ -86,7 +86,7 @@ public class Thief_Shadow extends ThiefSkill
 					if(!mob.isMonster())
 						mob.session().enque(0,Util.parse(directionWent));
 					else
-						ExternalPlay.move(mob,dir,false);
+						ExternalPlay.move(mob,dir,false,false);
 				}
 			}
 		}

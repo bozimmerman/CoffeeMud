@@ -162,6 +162,7 @@ public class CommandSet extends Hashtable
 	public static final int COPY=149;
 	public static final int BAN=150;
 	public static final int AUTOGUARD=151;
+	public static final int THROW=152;
 
 	private CommandSet()
 	{
@@ -178,6 +179,7 @@ public class CommandSet extends Hashtable
 		put("AUTOLOOT",new Integer(AUTOLOOT));
 		put("AUTOGOLD",new Integer(AUTOGOLD));
 		put("AUTOGUARD",new Integer(AUTOGUARD));
+			put("GUARD",new Integer(AUTOGUARD));
 		put("AUTOEXITS",new Integer(AUTOEXITS));
 		put("AUTOMELEE",new Integer(AUTOMELEE));
 		put("AUTOASSIST",new Integer(AUTOASSIST));

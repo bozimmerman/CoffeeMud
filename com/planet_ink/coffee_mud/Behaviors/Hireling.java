@@ -47,7 +47,7 @@ public class Hireling extends StdBehavior
 				else
 					direction=d;
 		if(direction>=0)
-			ExternalPlay.move(observer,direction,false);
+			ExternalPlay.move(observer,direction,false,false);
 		if(observer.getStartRoom()!=null)
 			observer.getStartRoom().bringMobHere(observer,false);
 	}

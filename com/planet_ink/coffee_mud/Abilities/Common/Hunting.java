@@ -63,7 +63,7 @@ public class Hunting extends CommonSkill
 		if(possibilities.size()>0)
 		{
 			int dir=((Integer)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1))).intValue();
-			ExternalPlay.move(found,dir,true);
+			ExternalPlay.move(found,dir,true,false);
 		}
 	}
 

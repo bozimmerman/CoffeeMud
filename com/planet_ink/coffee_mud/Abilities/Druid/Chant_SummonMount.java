@@ -101,7 +101,7 @@ public class Chant_SummonMount extends Chant
 				target.bringToLife(newRoom,true);
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
-				ExternalPlay.move(target,opDir,false);
+				ExternalPlay.move(target,opDir,false,false);
 				if(target.location()==mob.location())
 					ExternalPlay.follow(target,mob,true);
 				invoker=mob;

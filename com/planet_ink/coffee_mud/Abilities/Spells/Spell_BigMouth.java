@@ -160,7 +160,6 @@ public class Spell_BigMouth extends Spell
 		// undo the affects of this spell
 		if(affected==null) return;
 		
-		MOB mob=(MOB)invoker();
 		Environmental thang=affected;
 		super.unInvoke();
 

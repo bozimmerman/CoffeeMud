@@ -73,7 +73,7 @@ public class VeryAggressive extends Aggressive
 		}
 		if(dirCode>=0)
 		{
-			ExternalPlay.move(mob,dirCode,false);
+			ExternalPlay.move(mob,dirCode,false,false);
 			pickAFight(mob,B);
 		}
 	}

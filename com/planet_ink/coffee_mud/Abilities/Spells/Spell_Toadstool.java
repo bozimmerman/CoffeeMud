@@ -85,7 +85,6 @@ public class Spell_Toadstool extends Spell
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					int numRaces=CMClass.races.size();
 					newRace=CMClass.getRace("Toadstool");
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
 					success=beneficialAffect(mob,target,0);

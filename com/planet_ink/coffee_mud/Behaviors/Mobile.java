@@ -103,7 +103,7 @@ public class Mobile extends ActiveTicker
 					A.invoke(mob,V,null,false);
 				}
 				else
-					ExternalPlay.move(mob,direction,false);
+					ExternalPlay.move(mob,direction,false,false);
 
 				if(mob.location()==thisRoom)
 					tickDown=0;

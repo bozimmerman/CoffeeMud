@@ -181,7 +181,10 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			if((rideBasis()==Rideable.RIDEABLE_LADDER)
 			&&(amRiding(mob)))
+			{
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
+				affectableStats.setSpeed(affectableStats.speed()/2);
+			}
 		}
 	}
 	public String displayText()
@@ -216,6 +219,22 @@ public class StdRideable extends StdContainer implements Rideable
 	{
 		switch(affect.targetMinor())
 		{
+		case Affect.TYP_ADVANCE:
+			if((rideBasis()==Rideable.RIDEABLE_LADDER)
+			&&(amRiding(affect.source())))
+			{
+				affect.source().tell("You cannot advance while "+stateString()+" "+name()+"!");
+				return false;
+			}
+			break;
+		case Affect.TYP_RETREAT:
+			if((rideBasis()==Rideable.RIDEABLE_LADDER)
+			&&(amRiding(affect.source())))
+			{
+				affect.source().tell("You cannot retreat while "+stateString()+" "+name()+"!");
+				return false;
+			}
+			break;
 		case Affect.TYP_DISMOUNT:
 			if(affect.amITarget(this))
 			{
