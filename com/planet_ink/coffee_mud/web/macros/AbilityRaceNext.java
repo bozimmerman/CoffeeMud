@@ -45,7 +45,7 @@ public class AbilityRaceNext extends StdWebMacro
 		{
 			Ability A=(Ability)R.racialAbilities(null).elementAt(a);
 			boolean okToShow=true;
-			int level=CMAble.getQualifyingLevel(R.ID(),A.ID());
+			int level=CMAble.getQualifyingLevel(R.ID(),false,A.ID());
 			if(level<0)
 				okToShow=false;
 			else

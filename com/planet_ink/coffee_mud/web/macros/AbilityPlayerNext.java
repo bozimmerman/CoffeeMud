@@ -50,7 +50,7 @@ public class AbilityPlayerNext extends StdWebMacro
 			
 			if((className!=null)&&(className.length()>0))
 			{
-				int level=CMAble.getQualifyingLevel(className,A.ID());
+				int level=CMAble.getQualifyingLevel(className,true,A.ID());
 				if(level<0)
 					okToShow=false;
 				else
@@ -62,7 +62,7 @@ public class AbilityPlayerNext extends StdWebMacro
 			}
 			else
 			{
-				int level=CMAble.getQualifyingLevel("Archon",A.ID());
+				int level=CMAble.getQualifyingLevel("Archon",true,A.ID());
 				if(level<0)
 					okToShow=false;
 				else

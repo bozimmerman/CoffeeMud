@@ -168,24 +168,24 @@ public class Cleric extends StdCharClass
 			for(int a=0;a<mob.numLearnedAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
-				if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
+				if((CMAble.getQualifyingLevel(ID(),true,A.ID())>0)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-				&&(CMAble.getQualifyingLevel(ID(),A.ID())==mob.baseCharStats().getClassLevel(this))
-				&&(!CMAble.getDefaultGain(ID(),A.ID())))
+				&&(CMAble.getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
+				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
 					return;
 			}
 			// now only give one, for current level, respecting alignment!
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
-				if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
+				if((CMAble.getQualifyingLevel(ID(),true,A.ID())>0)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 				&&(A.appropriateToMyAlignment(mob.getAlignment()))
-				&&(!CMAble.getSecretSkill(ID(),A.ID()))
-				&&(CMAble.getQualifyingLevel(ID(),A.ID())==mob.baseCharStats().getClassLevel(this))
-				&&(!CMAble.getDefaultGain(ID(),A.ID())))
+				&&(!CMAble.getSecretSkill(ID(),true,A.ID()))
+				&&(CMAble.getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
+				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
 				{
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
+					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 					break; // one is enough
 				}
 			}
@@ -194,11 +194,11 @@ public class Cleric extends StdCharClass
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
+			if((CMAble.getQualifyingLevel(ID(),true,A.ID())>0)
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-			&&((CMAble.getQualifyingLevel(ID(),A.ID())<=mob.baseCharStats().getClassLevel(this)))
-			&&(!CMAble.getDefaultGain(ID(),A.ID())))
-				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
+			&&((CMAble.getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this)))
+			&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
+				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 		}
 	}
 
@@ -248,7 +248,7 @@ public class Cleric extends StdCharClass
 			&&(!disableAlignedSpells())
 			&&(msg.tool()!=null)
 			&&(myChar.isMine(msg.tool()))
-			&&(CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)
+			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 			{
 				int align=myChar.getAlignment();

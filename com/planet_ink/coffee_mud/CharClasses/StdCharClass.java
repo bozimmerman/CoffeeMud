@@ -124,10 +124,10 @@ public class StdCharClass implements CharClass, Cloneable
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
-			&&(CMAble.getQualifyingLevel(ID(),A.ID())<=mob.baseCharStats().getClassLevel(this))
-			&&(CMAble.getDefaultGain(ID(),A.ID())))
-				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
+			if((CMAble.getQualifyingLevel(ID(),true,A.ID())>0)
+			&&(CMAble.getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this))
+			&&(CMAble.getDefaultGain(ID(),true,A.ID())))
+				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 		}
 	}
 	public void endCharacter(MOB mob)
@@ -208,8 +208,7 @@ public class StdCharClass implements CharClass, Cloneable
 				int sireShare=(int)Math.round(Util.div(amount,10.0));
 				if(sireShare<=0) sireShare=1;
 				amount-=sireShare;
-				if(sire.charStats()!=null)
-					MUDFight.postExperience(sire,null," from "+mob.name(),sireShare,quiet);
+				MUDFight.postExperience(sire,null," from "+mob.name(),sireShare,quiet);
 			}
 			else
 				mob.setLiegeID("");
@@ -457,9 +456,8 @@ public class StdCharClass implements CharClass, Cloneable
             {
                 int sireShare=(int)Math.round(Util.div(amount,10.0));
                 amount-=sireShare;
-                if(sire.charStats()!=null)
-                    sire.charStats().getCurrentClass().loseExperience(sire,sireShare);
-                sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
+				if(MUDFight.postExperience(sire,null,"",sireShare,true))
+					sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
             }
 			else
 				mob.setLiegeID("");

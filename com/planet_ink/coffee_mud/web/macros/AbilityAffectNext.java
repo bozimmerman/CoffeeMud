@@ -27,7 +27,7 @@ public class AbilityAffectNext extends StdWebMacro
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;
 			int classType=A.classificationCode()&Ability.ALL_CODES;
-			if(CMAble.getQualifyingLevel("Archon",A.ID())>=0)
+			if(CMAble.getQualifyingLevel("Archon",true,A.ID())>=0)
 				continue;
 			boolean containsOne=false;
 			for(int i=0;i<Ability.TYPE_DESCS.length;i++)

@@ -152,7 +152,7 @@ public class Oracle extends Cleric
 			for(int a=0;a<mob.numLearnedAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
-				if(CMAble.getQualifyingLevel(ID(),A.ID())<0)
+				if(CMAble.getQualifyingLevel(ID(),true,A.ID())<0)
 					numNonQualified++;
 			}
 			int level=mob.charStats().getClassLevel(this)-30;
@@ -173,8 +173,8 @@ public class Oracle extends Cleric
 						if((A!=null)
 						&&(lql<25)
 						&&(lql>0)
-						&&(!CMAble.getSecretSkill(C.ID(),A.ID()))
-						&&(CMAble.getQualifyingLevel(ID(),A.ID())<0)
+						&&(!CMAble.getSecretSkill(C.ID(),true,A.ID()))
+						&&(CMAble.getQualifyingLevel(ID(),true,A.ID())<0)
 						&&(mob.fetchAbility(A.ID())==null))
 						{
 							newOne=A;
@@ -199,7 +199,7 @@ public class Oracle extends Cleric
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 			&&(msg.tool()!=null)
-			&&(CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)
+			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 			&&(myChar.isMine(msg.tool()))
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 			{

@@ -35,11 +35,11 @@ public class AbilityNext extends StdWebMacro
 			
 			if((className!=null)&&(className.length()>0))
 			{
-				int level=CMAble.getQualifyingLevel(className,A.ID());
+				int level=CMAble.getQualifyingLevel(className,true,A.ID());
 				if(level<0)
 					okToShow=false;
 				else
-				if(CMAble.getSecretSkill(className,A.ID()))
+				if(CMAble.getSecretSkill(className,true,A.ID()))
 					okToShow=false;
 				else
 				{
@@ -50,7 +50,7 @@ public class AbilityNext extends StdWebMacro
 			}
 			else
 			{
-				int level=CMAble.getQualifyingLevel("Archon",A.ID());
+				int level=CMAble.getQualifyingLevel("Archon",true,A.ID());
 				if(level<0)
 					okToShow=false;
 				else

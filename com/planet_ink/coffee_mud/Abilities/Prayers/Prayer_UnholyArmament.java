@@ -34,10 +34,10 @@ public class Prayer_UnholyArmament extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int pos=-1;
+		long pos=-1;
 		for(int i=0;i<checkOrder.length;i++)
 			if(mob.freeWearPositions(checkOrder[i])>0)
-				pos=i;
+			{ pos=checkOrder[i]; break;}
 		if(pos<0)
 		{
 			if(mob.getWorshipCharID().length()>0)

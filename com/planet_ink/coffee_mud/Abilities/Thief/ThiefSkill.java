@@ -23,7 +23,7 @@ public class ThiefSkill extends StdAbility
 		if((!auto)
 		&&(!mob.isMonster())
 		&&(!exemptFromArmorReq())
-		&&(CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),ID())<0)
+		&&(CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),true,ID())<0)
 		&&(!CoffeeUtensils.armorCheck(mob,CharClass.ARMOR_LEATHER))
 		&&(mob.isMine(this))
 		&&(mob.location()!=null)

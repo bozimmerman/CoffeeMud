@@ -178,7 +178,7 @@ public class Beastmaster extends StdCharClass
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 			&&((msg.tool()==null)
-			   ||((CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)&&(myChar.isMine(msg.tool()))))
+			   ||((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)&&(myChar.isMine(msg.tool()))))
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)

@@ -24,15 +24,15 @@ public class SpecialistMage extends Mage
 			Ability A=(Ability)a.nextElement();
 			if(A!=null)
 			{
-				int level=CMAble.getQualifyingLevel(ID(),A.ID());
-				if((!CMAble.getDefaultGain(baseClass(),A.ID()))
+				int level=CMAble.getQualifyingLevel(ID(),true,A.ID());
+				if((!CMAble.getDefaultGain(baseClass(),true,A.ID()))
 				&&(level>0)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 				{
-					boolean secret=CMAble.getSecretSkill(ID(),A.ID());
+					boolean secret=CMAble.getSecretSkill(ID(),true,A.ID());
 					if((A.classificationCode()&Ability.ALL_DOMAINS)==opposed())
 					{
-						if(CMAble.getDefaultGain(baseClass(),A.ID()))
+						if(CMAble.getDefaultGain(baseClass(),true,A.ID()))
 							CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
 						else
 							CMAble.delCharAbilityMapping(ID(),A.ID());
@@ -76,7 +76,7 @@ public class SpecialistMage extends Mage
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 			   &&(domain==opposed())
-			   &&(!CMAble.getDefaultGain(ID(),msg.tool().ID())))
+			   &&(!CMAble.getDefaultGain(ID(),true,msg.tool().ID())))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.INTELLIGENCE)/2))
 				{

@@ -475,7 +475,7 @@ public class StdAbility implements Ability, Cloneable
 		for(int c=0;c<mob.charStats().numClasses();c++)
 		{
 			CharClass C=mob.charStats().getMyClass(c);
-			int qualifyingLevel=CMAble.getQualifyingLevel(C.ID(),ID());
+			int qualifyingLevel=CMAble.getQualifyingLevel(C.ID(),true,ID());
 			int classLevel=mob.charStats().getClassLevel(C.ID());
 			if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
 			{

@@ -150,7 +150,7 @@ public class Apprentice extends StdCharClass
 		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			boolean spellLike=((msg.tool()!=null)
-							   &&((CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0))
+							   &&((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0))
 							   &&(myChar.isMine(msg.tool())));
 			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
 			&&(!armorCheck(myChar)))

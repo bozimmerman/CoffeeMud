@@ -37,7 +37,8 @@ public class Prayer_Faithless extends Prayer
 		if(levelDiff<0) levelDiff=0;
 		boolean success=profficiencyCheck(mob,-(levelDiff*25),auto);
 		Deity D=null;
-		if(target.getWorshipCharID().length()>0) D=CMMap.getDeity(target.getWorshipCharID());
+		if(target.getWorshipCharID().length()>0) 
+			D=CMMap.getDeity(target.getWorshipCharID());
 		int type=affectType(auto);
 		int mal=CMMsg.MASK_MALICIOUS;
 		if(auto){ type=Util.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}

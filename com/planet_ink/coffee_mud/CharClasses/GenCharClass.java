@@ -99,7 +99,7 @@ public class GenCharClass extends StdCharClass
 			if((allowedArmorLevel()!=CharClass.ARMOR_ANY)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)
+			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 			&&(myChar.isMine(msg.tool()))
 			&&(!armorCheck(myChar)))
 			{
@@ -380,11 +380,11 @@ public class GenCharClass extends StdCharClass
 		{
 			String AID=(String)V.elementAt(v);
 			VA.addElement(AID,
-						  ""+CMAble.getQualifyingLevel(ID(),AID),
-						  ""+CMAble.getDefaultProfficiency(ID(),AID),
-						  ""+CMAble.getDefaultGain(ID(),AID),
-						  ""+CMAble.getSecretSkill(ID(),AID),
-						  ""+CMAble.getDefaultParm(ID(),AID));
+						  ""+CMAble.getQualifyingLevel(ID(),true,AID),
+						  ""+CMAble.getDefaultProfficiency(ID(),true,AID),
+						  ""+CMAble.getDefaultGain(ID(),true,AID),
+						  ""+CMAble.getSecretSkill(ID(),true,AID),
+						  ""+CMAble.getDefaultParm(ID(),true,AID));
 		}
 		return VA;
 	}

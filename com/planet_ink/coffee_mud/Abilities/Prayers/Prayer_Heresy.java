@@ -43,15 +43,15 @@ public class Prayer_Heresy extends Prayer
 					if(mob.getWorshipCharID().length()>0) D=CMMap.getDeity(mob.getWorshipCharID());
 					if(D==null)
 					{
-						D=CMClass.getMOB("StdMOB");
+						D=CMClass.getMOB("StdDeity");
 						D.setName("the gods");
 					}
 					Vector V=new Vector();
 					V.addElement(new Integer(Law.MOD_ADDWARRANT));
 					V.addElement(D);//victim first
 					V.addElement("");//crime locs
-					V.addElement("");// crime flags
-					V.addElement("heresy against <T-NAMESELF>");//the crime
+					V.addElement("");//crime flags
+					V.addElement("heresy against <T-NAME>");//the crime
 					int low=CMAble.lowestQualifyingLevel(ID());
 					int me=CMAble.qualifyingClassLevel(mob,this);
 					int lvl=(me-low)/5;

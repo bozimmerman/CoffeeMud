@@ -139,14 +139,14 @@ public class CharClassData extends StdWebMacro
 		int beneficialSkillsGained=0;
 		for(int l=1;l<=30;l++)
 		{
-			Vector set=CMAble.getLevelListings(C.ID(),l);
+			Vector set=CMAble.getLevelListings(C.ID(),true,l);
 			for(int s=0;s<set.size();s++)
 			{
 				String able=(String)set.elementAt(s);
 				if(able.equalsIgnoreCase("Skill_Recall")) continue;
 				if(able.equalsIgnoreCase("Skill_Write")) continue;
 				if(able.equalsIgnoreCase("Skill_Swim")) continue;
-				if(CMAble.getQualifyingLevel("All",able)==l) continue;
+				if(CMAble.getQualifyingLevel("All",true,able)==l) continue;
 				if(seenBefore.contains(able)) continue;
 				seenBefore.add(able);
 				int numOthers=0;
@@ -156,7 +156,7 @@ public class CharClassData extends StdWebMacro
 					CharClass C2=(CharClass)c.nextElement();
 					if(C2==C) continue;
 					if(!C2.playerSelectable()) continue;
-					int tlvl=CMAble.getQualifyingLevel(C2.ID(),able);
+					int tlvl=CMAble.getQualifyingLevel(C2.ID(),true,able);
 					if(tlvl>0)
 					{
 						if(tlvl>l)

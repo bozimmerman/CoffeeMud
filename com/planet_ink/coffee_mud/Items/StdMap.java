@@ -556,7 +556,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 						sec="A0";
 					}
 					if((map.length>1)||(map[0].length>1))
-						mob.session().rawPrintln("Section: "+sec);
+						if(name().length()>0)
+							mob.session().rawPrintln("Section: "+sec);
 					mob.session().rawPrint(map[x][y].toString());
 					if((map.length>1)||(map[0].length>1))
 					{
@@ -565,7 +566,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 							for(int l=0;l<map.length/26;l++)
 								letsec+='Z';
 						letsec=letsec.substring(0,letsec.length()-1)+((char)((((int)'A')+map.length%26)-1));
-						mob.session().rawPrintln("("+sec+") Use 'READ SEC MAPNAME' to read sections A0 through "+letsec+(map[0].length-1)+" (A-"+letsec+", 0-"+(map[0].length-1)+").");
+						if(name().length()>0)
+							mob.session().rawPrintln("("+sec+") Use 'READ SEC MAPNAME' to read sections A0 through "+letsec+(map[0].length-1)+" (A-"+letsec+", 0-"+(map[0].length-1)+").");
 					}
 				}
 				else

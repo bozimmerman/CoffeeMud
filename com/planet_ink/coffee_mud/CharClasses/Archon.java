@@ -90,7 +90,7 @@ public class Archon extends StdCharClass
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			int lvl=CMAble.getQualifyingLevel(ID(),A.ID());
+			int lvl=CMAble.getQualifyingLevel(ID(),true,A.ID());
 			if((lvl>0)
 			&&(lvl<=classLevel)
 			&&(!alreadyAble.containsKey(A.ID())))

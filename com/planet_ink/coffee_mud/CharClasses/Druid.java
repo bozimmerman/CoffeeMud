@@ -168,10 +168,10 @@ public class Druid extends StdCharClass
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
-			&&((CMAble.getQualifyingLevel(ID(),A.ID())<=25)
-			&&(!CMAble.getSecretSkill(ID(),A.ID()))
-			&&(!CMAble.getDefaultGain(ID(),A.ID()))
+			if((CMAble.getQualifyingLevel(ID(),true,A.ID())==level)
+			&&((CMAble.getQualifyingLevel(ID(),true,A.ID())<=25)
+			&&(!CMAble.getSecretSkill(ID(),true,A.ID()))
+			&&(!CMAble.getDefaultGain(ID(),true,A.ID()))
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)))
 			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}
 		}
@@ -193,8 +193,8 @@ public class Druid extends StdCharClass
 				grantable.removeElement(AID);
 				giveMobAbility(mob,
 							   CMClass.getAbility(AID),
-							   CMAble.getDefaultProfficiency(ID(),AID),
-							   CMAble.getDefaultParm(ID(),AID),
+							   CMAble.getDefaultProfficiency(ID(),true,AID),
+							   CMAble.getDefaultParm(ID(),true,AID),
 							   isBorrowedClass);
 			}
 		}
@@ -249,7 +249,7 @@ public class Druid extends StdCharClass
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 			&&((msg.tool()==null)
-			   ||((CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)&&(myChar.isMine(msg.tool()))))
+			   ||((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)&&(myChar.isMine(msg.tool()))))
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)

@@ -165,7 +165,7 @@ public class Charlatan extends StdCharClass
 			&&(msg.tool() instanceof Ability)
 			&&(myChar.isMine(msg.tool()))
 			&&(myChar.charStats().getClassLevel(this)>=30)
-			&&(CMAble.getQualifyingLevel(ID(),msg.tool().ID())<1))
+			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())<1))
 			{
 				Ability A=((Ability)msg.tool());
 				if(Util.bset(A.usageType(),Ability.USAGE_MANA))
@@ -178,7 +178,7 @@ public class Charlatan extends StdCharClass
 
 
 			boolean spellLike=((msg.tool()!=null)
-							   &&((CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0))
+							   &&((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0))
 							   &&(myChar.isMine(msg.tool())));
 			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
 			&&(msg.tool()!=null)

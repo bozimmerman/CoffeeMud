@@ -23,7 +23,8 @@ public class Prayer_BloodHearth extends Prayer
 			return super.okMessage(myHost,msg);
 
 		Room R=(Room)affected;
-		if(msg.sourceMinor()==CMMsg.TYP_DAMAGE)
+		
+		if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		{
 			Hashtable H=msg.source().getGroupMembers(new Hashtable());
 			for(Enumeration e=H.elements();e.hasMoreElements();)

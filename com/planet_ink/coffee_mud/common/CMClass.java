@@ -376,7 +376,7 @@ public class CMClass extends ClassLoader
 				for(int c=0;c<charStats.numClasses();c++)
 				{
 					CharClass C=charStats.getMyClass(c);
-					if(CMAble.getQualifyingLevel(C.ID(),A.ID())>=0)
+					if(CMAble.getQualifyingLevel(C.ID(),true,A.ID())>=0)
 					{	As.addElement(A); break;}
 				}
 			}

@@ -23,18 +23,6 @@ public class Prayer_BlessedHearth extends Prayer
 			return super.okMessage(myHost,msg);
 
 		Room R=(Room)affected;
-		if((msg.sourceMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.target() instanceof MOB))
-		{
-			Hashtable H=((MOB)msg.target()).getGroupMembers(new Hashtable());
-			for(Enumeration e=H.elements();e.hasMoreElements();)
-				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.nextElement(),R))
-				{
-					msg.setValue(msg.value()/10);
-					break;
-				}
-		}
-		else
 		if(((msg.sourceMinor()==CMMsg.TYP_UNDEAD)||(msg.targetMinor()==CMMsg.TYP_UNDEAD))
 		&&(msg.target() instanceof MOB))
 		{
@@ -44,6 +32,18 @@ public class Prayer_BlessedHearth extends Prayer
 				{
 					R.show(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,"The blessed powers block the unholy magic from <S-NAMESELF>.");
 					return false;
+				}
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.target() instanceof MOB))
+		{
+			Hashtable H=((MOB)msg.target()).getGroupMembers(new Hashtable());
+			for(Enumeration e=H.elements();e.hasMoreElements();)
+				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.nextElement(),R))
+				{
+					msg.setValue(msg.value()/10);
+					break;
 				}
 		}
 		return super.okMessage(myHost,msg);

@@ -139,7 +139,7 @@ public class AbilityData extends StdWebMacro
 					String className=httpReq.getRequestParameter("CLASS");
 					if((className!=null)&&(className.length()>0))
 					{
-						boolean defaultGain=CMAble.getDefaultGain(className,A.ID());
+						boolean defaultGain=CMAble.getDefaultGain(className,true,A.ID());
 						if(!defaultGain)
 							str.append("(Qualify), ");
 					}

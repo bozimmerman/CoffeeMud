@@ -1,15 +1,10 @@
-Comprehend languages no longer translates TELLs in other languages.
+do a control panel, include dbconnections reset.
+add author str to areas
 
-Try out Artisans
-Test: ?Forgive, ?Sense Traps, ?Blood Hearth, ?Blessed Hearth, Guardian Hearth,
-Test: ?Condemnation, ?Heresy, ??Faithless, ??Daily Bread,
-Test: ??Birds Eye, Peace Ritual, ?Unholy Armament, ?Create Idol
-Test: !Revival, Annul, Divorce
+Test: Annul, Divorce
 
 Druids meed more Qualifying chants, and more qualifying in general as opposed to gaining. 
 Druids of all kinds suffer double duration on all crafting skills -- need a flag
-
-Chants
 Acid Rain  May only be cast during rain storm. Turns rain into damage-dealing acid that affects all enemies.  
 Hippieness  if a mob, loses clan loyalty.  Is unable to perform common skills.  randomly removes clothing and streaks.
 Magenetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  

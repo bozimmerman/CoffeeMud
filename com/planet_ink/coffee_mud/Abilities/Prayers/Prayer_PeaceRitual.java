@@ -44,6 +44,8 @@ public class Prayer_PeaceRitual extends Prayer
 		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
 		{
 			msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"The peace ritual is disrupted!");
+			clan1="";
+			clan2="";
 			unInvoke();
 		}
 		else
@@ -51,6 +53,8 @@ public class Prayer_PeaceRitual extends Prayer
 		&&((msg.targetMinor()==CMMsg.TYP_ENTER)||(msg.targetMinor()==CMMsg.TYP_LEAVE)))
 		{
 			msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"The peace ritual is disrupted!");
+			clan1="";
+			clan2="";
 			unInvoke();
 		}
 		return true;
@@ -144,7 +148,7 @@ public class Prayer_PeaceRitual extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,(int)MudHost.TICKS_PER_RLMIN*5);
 			}
 		}
 		else

@@ -507,7 +507,7 @@ public class Arrest extends StdBehavior
 				if(laws!=null)
 				{
 					boolean didSomething=false;
-					if((V!=null)&&(V.size()>0)&&(V.elementAt(1) instanceof String))
+					if((V!=null)&&(V.size()>1)&&(V.elementAt(1) instanceof String))
 					{
 						String name=(String)V.elementAt(1);
 						V.clear();
@@ -1334,7 +1334,7 @@ public class Arrest extends StdBehavior
 		}
 
 		// is the victim a protected race?
-		if(victim!=null)
+		if((victim!=null)&&(!(victim instanceof Deity)))
 		{
 			if(!MUDZapper.zapperCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),victim))
 			   return false;
@@ -1779,6 +1779,13 @@ public class Arrest extends StdBehavior
 							CommonMsgs.say(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
 							W.setState(Law.STATE_ARRESTING);
 						}
+					}
+					else
+					if(W.crime().equalsIgnoreCase("pardoned"))
+					{
+						fileAllWarrants(laws,W.criminal());
+						unCuff(W.criminal());
+						W.setArrestingOfficer(null);
 					}
 				}
 				break;
@@ -2314,9 +2321,11 @@ public class Arrest extends StdBehavior
 				break;
 			case Law.STATE_RELEASE:
 				{
-					if((W.criminal().fetchEffect("Prisoner")==null)
+					if(((W.criminal().fetchEffect("Prisoner")==null)||(W.crime().equalsIgnoreCase("pardoned")))
 					&&(W.jail()!=null))
 					{
+						Ability P=W.criminal().fetchEffect("Prisoner");
+						if(P!=null) P.unInvoke();
 						if(W.criminal().location()==W.jail())
 						{
 							MOB officer=W.arrestingOfficer();

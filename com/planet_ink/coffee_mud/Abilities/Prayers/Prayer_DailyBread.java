@@ -35,15 +35,19 @@ public class Prayer_DailyBread extends Prayer
 			if((I!=null)&&(I instanceof Food))
 			{
 				if(I.container()!=null) 
+				{
+					Bread=I;
 					BreadContainer=I.container();
+				}
 				else
 				{
 					Bread=I;
+					BreadContainer=null;
 					break;
 				}
 			}
 		}
-		if((Bread==null)&&(BreadContainer!=null))
+		if((Bread!=null)&&(BreadContainer!=null))
 			CommonMsgs.get(target,BreadContainer,Bread,false);
 		if(Bread==null)
 		{
@@ -63,7 +67,7 @@ public class Prayer_DailyBread extends Prayer
 				}
 			}
 		}
-		if((success)&&(Bread!=null)&&(Bread.container()!=null))
+		if((success)&&(Bread!=null))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the

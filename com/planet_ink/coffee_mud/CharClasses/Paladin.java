@@ -108,7 +108,7 @@ public class Paladin extends StdCharClass
 		if((msg.amISource(myChar))
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(myChar.getAlignment() < 650)
-		&&((msg.tool()==null)||((CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)
+		&&((msg.tool()==null)||((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 								&&(myChar.isMine(msg.tool()))))
 		&&(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2))
 		{

@@ -34,7 +34,7 @@ public class CrossClassAbilities extends StdWebMacro
 			{
 				CharClass C=(CharClass)c.nextElement();
 				if(C.playerSelectable()
-				   &&(CMAble.getQualifyingLevel(C.ID(),A.ID())>=0))
+				   &&(CMAble.getQualifyingLevel(C.ID(),true,A.ID())>=0))
 					if((++numFound)>0) break;
 			}
 			if(numFound>0)
@@ -46,7 +46,7 @@ public class CrossClassAbilities extends StdWebMacro
 					CharClass C=(CharClass)c.nextElement();
 					if(C.playerSelectable())
 					{
-						int qual=CMAble.getQualifyingLevel(C.ID(),A.ID());
+						int qual=CMAble.getQualifyingLevel(C.ID(),true,A.ID());
 						if(qual>=0)
 						{
 							buf.append("<TD>"+qual+"</TD>");

@@ -42,7 +42,7 @@ public class Prayer_SenseTraps extends Prayer
 		if(E==null) return msg.toString();
 		if((E instanceof Room)&&(Sense.canBeSeenBy(E,mob)))
 		{
-			msg.append(trapCheck(mob.location()));
+			msg.append(trapCheck(E));
 			Room R=(Room)E;
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{

@@ -406,9 +406,9 @@ public class StdRace implements Race
 			Ability A=CMClass.getAbility((String)V.elementAt(v));
 			if(A!=null)
 			{
-				A.setProfficiency(CMAble.getDefaultProfficiency(ID(),A.ID()));
+				A.setProfficiency(CMAble.getDefaultProfficiency(ID(),false,A.ID()));
 				A.setBorrowed(mob,true);
-				A.setMiscText(CMAble.getDefaultParm(ID(),A.ID()));
+				A.setMiscText(CMAble.getDefaultParm(ID(),false,A.ID()));
 				finalV.addElement(A);
 			}
 		}

@@ -157,11 +157,11 @@ public class MUDHelp
 					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						CharClass C=(CharClass)c.nextElement();
-						int lvl=CMAble.getQualifyingLevel(C.ID(),A.ID());
+						int lvl=CMAble.getQualifyingLevel(C.ID(),true,A.ID());
 						if((!C.ID().equalsIgnoreCase("Archon"))
 						&&(lvl>=0)
 						&&(C.playerSelectable())
-						&&(!CMAble.getSecretSkill(C.ID(),A.ID())))
+						&&(!CMAble.getSecretSkill(C.ID(),true,A.ID())))
 							avail.addElement(C.name()+"("+lvl+")");
 					}
 					for(int c=0;c<avail.size();c++)

@@ -228,9 +228,9 @@ public class Pregnancy extends StdAbility
 										for(int i=0;i<data.size();i++)
 										{
 											GR.setStat("GETRABLE"+i,(String)data.elementAt(i));
-											GR.setStat("GETRABLELVL"+i,""+CMAble.getQualifyingLevel(R.ID(),(String)data.elementAt(i)));
-											GR.setStat("GETRABLEQUAL"+i,""+CMAble.getDefaultGain(R.ID(),(String)data.elementAt(i)));
-											GR.setStat("GETRABLEPROF"+i,""+CMAble.getDefaultProfficiency(R.ID(),(String)data.elementAt(i)));
+											GR.setStat("GETRABLELVL"+i,""+CMAble.getQualifyingLevel(R.ID(),false,(String)data.elementAt(i)));
+											GR.setStat("GETRABLEQUAL"+i,""+CMAble.getDefaultGain(R.ID(),false,(String)data.elementAt(i)));
+											GR.setStat("GETRABLEPROF"+i,""+CMAble.getDefaultProfficiency(R.ID(),false,(String)data.elementAt(i)));
 										}
 
 										CMClass.addRace(GR);
