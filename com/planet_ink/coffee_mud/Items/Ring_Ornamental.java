@@ -23,15 +23,17 @@ public class Ring_Ornamental extends Ring
 	public final static int GOLD_RING_EMERALD			= 11;
 	public final static int STEEL_RING					= 12;
 	public final static int BRONZE_RING					= 13;
+	
+	private int lastLevel=-1;
 
 	public Ring_Ornamental()
 	{
 		super();
 
 		int ringType = Dice.roll(1,14,-1);
-
-		this.envStats.setLevel(ringType);
-		setItemDescription(this.envStats.level());
+		this.baseEnvStats.setLevel(ringType);
+		setItemDescription(this.baseEnvStats.level());
+		lastLevel=ringType;
 		recoverEnvStats();
 	}
 	public Environmental newInstance()
@@ -39,6 +41,16 @@ public class Ring_Ornamental extends Ring
 		return new Ring_Ornamental();
 	}
 
+	public void recoverEnvStats()
+	{
+		if(lastLevel!=baseEnvStats().level())
+		{
+			setItemDescription(baseEnvStats().level());
+			lastLevel=baseEnvStats().level();
+		}
+		super.recoverEnvStats();
+	}
+	
 	public void setItemDescription(int level)
 	{
 		switch(level)

@@ -211,7 +211,7 @@ public class Fletching extends CraftingSkill
 				return false;
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
-			if(amount>woodRequired) woodRequired=amount;
+			if((amount>woodRequired)&&(woodRequired>0)) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
 			int[] pm={EnvResource.MATERIAL_WOODEN};
 			int[][] data=fetchFoundResourceData(mob,

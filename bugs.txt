@@ -9,12 +9,8 @@ The blessing of a healer will make you drop things that are in containers. I don
 Several of my playtesters have pointed out that fletch bullets doesn't seem to work. I had them try fletch Pack of 50 Bullets with no results. Everything else in fletch works cept th
 compressing genmob data would be really great!
 AddRandomFile' that takes a directory as a parameter?  that'd make it not too hard to have rotating page graphics or random ad banners
-new genraces have wings, aren't ordering their names right to avoid dups, and have 3 legs/feet
-Are childen carried by non-logged in players supposed to emote?
-Everytime I log on, I'm in labor again, and she's not even having sex, and it doesn't say she's pregnant... talk about a bug, I'm on my 6th child now
 Wish does not check to see if the person targeted is in the room, and then casts the wish upon the caster. Example, Kylandaria wished for Fayte to be immune to fire, and ended up with being immune herself.
-People still get in fights over the yawns.
-
+This leads me to a a suggestion for CoffeeMud, a greater logging system, i was thinking another subfolder for logs, one log for the server log
 
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.

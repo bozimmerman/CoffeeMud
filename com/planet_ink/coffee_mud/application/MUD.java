@@ -802,7 +802,7 @@ public class MUD extends Thread implements MudHost
 		CMClass.registerEngines(new DBInterface(),new ServiceEngine());
 		CMClass.registerI3Interface(new IMudClient());
 		CMClass.registerExternalHTTP(new ProcessHTTPrequest(null,null,null,true));
-		
+
 		String nameID="";
 		String iniFile="coffeemud.ini";
 		if(a.length>0)
