@@ -66,6 +66,7 @@ public class SaveThread extends Thread
 			}
 		}
 
+		Vector tryToKill=new Vector();
 		for(int v=0;v<ServiceEngine.tickGroup.size();v++)
 		{
 			Tick almostTock=(Tick)ServiceEngine.tickGroup.elementAt(v);
@@ -74,11 +75,35 @@ public class SaveThread extends Thread
 			{
 				TockClient client=almostTock.lastClient;
 				if(client!=null)
-					Log.errOut("SaveThread","Dead tick group! Last serviced: "+client.clientObject.ID()+", tickID "+client.tickID+".");
+				{
+					StringBuffer str=null;
+					if(client instanceof Environmental)
+						str=new StringBuffer("Dead tick group! Last serviced: "+client.clientObject.name()+" ("+((Environmental)client).ID()+"), tickID "+client.tickID);
+					else
+						str=new StringBuffer("Dead tick group! Last serviced: "+client.clientObject.name()+", tickID "+client.tickID);
+					if((client instanceof MOB)&&(((MOB)client).location()!=null))
+						Log.errOut("SaveThread",str.toString()+" in "+((MOB)client).location().roomID());
+					else
+					if((client instanceof Item)&&(((Item)client).owner()!=null)&&(((Item)client).owner() instanceof Room))
+						Log.errOut("SaveThread",str.toString()+" in "+((Room)((Item)client).owner()).roomID());
+					else
+					if((client instanceof Item)&&(((Item)client).owner()!=null)&&(((Item)client).owner() instanceof MOB))
+						Log.errOut("SaveThread",str.toString()+" owned by "+((MOB)((Item)client).owner()).name());
+					else
+					if(client instanceof Room)
+						Log.errOut("SaveThread",str.toString()+" is "+((Room)client).roomID());
+					else
+						Log.errOut("SaveThread",str.toString());
+				}
 				else
 					Log.errOut("SaveThread","Dead tick group! No further information.");
-
+				tryToKill.addElement(almostTock);
 			}
+		}
+		for(int x=0;x<tryToKill.size();x++)
+		{
+			Tick almostTock=(Tick)ServiceEngine.tickGroup.elementAt(x);
+			almostTock.shutdown();
 		}
 
 		for(int s=0;s<Sessions.size();s++)

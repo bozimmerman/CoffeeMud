@@ -444,7 +444,7 @@ public class Util
 		while(x>=0)
 		{
 			String s2=s.substring(0,x).trim();
-			s=s.substring(x).trim();
+			s=s.substring(x+1).trim();
 			if(s2.length()>0) V.addElement(s2);
 			x=s.indexOf(",");
 		}
@@ -461,7 +461,7 @@ public class Util
 		while(x>=0)
 		{
 			String s2=s.substring(0,x).trim();
-			s=s.substring(x).trim();
+			s=s.substring(x+1).trim();
 			if(s2.length()>0) V.addElement(s2);
 			x=s.indexOf(";");
 		}
