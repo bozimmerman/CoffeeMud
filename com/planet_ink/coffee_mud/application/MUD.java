@@ -157,7 +157,7 @@ public class MUD extends Thread implements MudHost
 			return false;
 		}
 
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: connecting to database");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: connecting to database");
 		
 		CommonStrings.setVar(CommonStrings.SYSTEM_BADNAMES,page.getStr("BADNAMES"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_MULTICLASS,page.getStr("CLASSSYSTEM"));
@@ -246,7 +246,7 @@ public class MUD extends Thread implements MudHost
 		else
 			CMClass.registerExternalHTTP(new ProcessHTTPrequest(null,null,null,true));
 
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading base classes");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading base classes");
 		if(!CMClass.loadClasses(page))
 		{
 			fatalStartupError(t,0);
@@ -256,7 +256,7 @@ public class MUD extends Thread implements MudHost
 		int numChannelsLoaded=ChannelSet.loadChannels(page.getStr("CHANNELS"),page.getStr("ICHANNELS"));
 		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
 
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading socials");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading socials");
 		Socials.load("resources"+File.separatorChar+"socials.txt");
 		if(!Socials.isLoaded())
 			Log.errOut("MUD","WARNING: Unable to load socials from socials.txt!");
@@ -267,12 +267,12 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut("MUD","Clans loaded      : "+Clans.size());
 
 		Log.sysOut("MUD","Loading map...");
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading rooms....");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading rooms....");
 		RoomLoader.DBRead();
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: filling map ("+A.Name()+")");
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: filling map ("+A.Name()+")");
 			A.fillInAreaRooms();
 		}
 		Log.sysOut("MUD","Mapped rooms      : "+CMMap.numRooms()+" in "+CMMap.numAreas()+" areas");
@@ -301,7 +301,7 @@ public class MUD extends Thread implements MudHost
 		if(Quests.numQuests()>0)
 			Log.sysOut("MUD","Quests loaded     : "+Quests.numQuests());
 
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: readying for connections.");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: readying for connections.");
 		try
 		{
 			saveThread=new SaveThread();
@@ -347,7 +347,7 @@ public class MUD extends Thread implements MudHost
 			((MUD)mudThreads.elementAt(i)).acceptConnections=true;
 		Log.sysOut("MUD","Initialization complete.");
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSTARTED,true);
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"UNKNOWN");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"UNKNOWN");
 		return true;
 	}
 
@@ -534,10 +534,10 @@ public class MUD extends Thread implements MudHost
 	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
 	{
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSTARTED,false);
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 		Log.sysOut("MUD","Started shutdown, notifying all objects...");
 		if(S!=null)S.print("Notifying all objects of shutdown...");
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Notifying Objects");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Notifying Objects");
 		MOB mob=null;
 		if(S!=null) mob=S.mob();
 		if(mob==null) mob=CMClass.getMOB("StdMOB");
@@ -555,22 +555,22 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut("MUD","New Connections are now closed");
 		if(S!=null)S.println("Host will now reject new connections.");
 
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Quests");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Quests");
 		Quests.shutdown();
 
 		if(S!=null)S.print("Saving players...");
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Saving players...");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Saving players...");
 		saveThread.savePlayers();
 		if(S!=null)S.println("done");
 		Log.sysOut("MUD","All users saved.");
 
 
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Save Thread");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Save Thread");
 		saveThread.shutdown();
 		saveThread.interrupt();
 		saveThread=null;
 		if(S!=null)S.println("Save thread stopped");
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Utility Thread");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Utility Thread");
 		utiliThread.shutdown();
 		utiliThread.interrupt();
 		utiliThread=null;
@@ -580,7 +580,7 @@ public class MUD extends Thread implements MudHost
 
 		if(imserver!=null)
 		{
-			CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...IMServer");
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...IMServer");
 			imserver.shutdown();
 			imserver=null;
 			if(S!=null)S.println("IMServer stopped");
@@ -588,7 +588,7 @@ public class MUD extends Thread implements MudHost
 		}
 
 		if(S!=null)S.print("Stopping player sessions...");
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Stopping sessions");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Stopping sessions");
 		while(Sessions.size()>0)
 		{
 			Session S2=Sessions.elementAt(0);
@@ -596,9 +596,9 @@ public class MUD extends Thread implements MudHost
 				Sessions.removeElementAt(0);
 			else
 			{
-				CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Stopping session "+S2.getAddress());
+				CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Stopping session "+S2.getAddress());
 				S2.logoff();
-				CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Done stopping session "+S2.getAddress());
+				CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Done stopping session "+S2.getAddress());
 			}
 			if(S!=null)S.print(".");
 		}
@@ -606,29 +606,29 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut("MUD","All users logged off.");
 
 		if(S!=null)S.print("Stopping all threads...");
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...shutting down service engine");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...shutting down service engine");
 		CMClass.ThreadEngine().shutdownAll();
 		if(S!=null)S.println("done");
 		Log.sysOut("MUD","Map Threads Stopped.");
 
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...closing db connections");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...closing db connections");
 		DBConnector.killConnections();
 		if(S!=null)S.println("Database connections closed");
 		Log.sysOut("MUD","Database connections closed.");
 
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Clearing socials, clans, channels");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Clearing socials, clans, channels");
 		Socials.clearAllSocials();
 		Clans.shutdownClans();
 		ChannelSet.unloadChannels();
 
 		MUDHelp.unloadHelpFile(null);
 
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading classes");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading classes");
 		CMClass.unload();
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading map");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading map");
 		CMMap.unLoad();
 		page=null;
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading resources");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading resources");
 		Resources.clearResources();
 		Log.sysOut("MUD","Resources Cleared.");
 		if(S!=null)S.println("All resources unloaded");
@@ -636,7 +636,7 @@ public class MUD extends Thread implements MudHost
 
 		if(webServerThread!=null)
 		{
-			CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...pub webserver");
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...pub webserver");
 			webServerThread.shutdown(S);
 			webServerThread = null;
 			Log.sysOut("MUD","Public Web Server stopped.");
@@ -644,16 +644,16 @@ public class MUD extends Thread implements MudHost
 		}
 		if(adminServerThread!=null)
 		{
-			CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...admin webserver");
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...admin webserver");
 			adminServerThread.shutdown(S);
 			adminServerThread = null;
 			Log.sysOut("MUD","Admin Web Server stopped.");
 			if(S!=null)S.println("Admin Web Server stopped");
 		}
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading macros");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading macros");
 		HTTPserver.unloadWebMacros();
 		Scripts.clear();
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 
 		try{Thread.sleep(500);}catch(Exception i){}
 		Log.sysOut("MUD","CoffeeMud shutdown complete.");
@@ -668,7 +668,7 @@ public class MUD extends Thread implements MudHost
 
 		keepDown=keepItDown;
 		execExternalCommand=externalCommand;
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
 		for(int m=mudThreads.size()-1;m>=0;m--)
 			((MUD)mudThreads.elementAt(m)).interrupt();
 	}
@@ -770,7 +770,7 @@ public class MUD extends Thread implements MudHost
 			nameID=Util.combine(V,0);
 		}
 		if(nameID.length()==0) nameID="Unnamed CoffeeMud";
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDNAME,nameID);
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDNAME,nameID);
 		try
 		{
 			while(true)
@@ -779,12 +779,12 @@ public class MUD extends Thread implements MudHost
 				{
 					Log.errOut("MUD","ERROR: Unable to read ini file.");
 					System.out.println("MUD/ERROR: Unable to read ini file.");
-					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"A terminal error has occured!");
+					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"A terminal error has occured!");
 				}
 				else
 				{
 					isOK = true;
-					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting");
+					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting");
 				}
 				if(page!=null)
 					Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));

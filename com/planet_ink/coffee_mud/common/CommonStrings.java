@@ -119,9 +119,15 @@ public class CommonStrings extends Scriptable
 
 	public static void setVar(int varNum, String val)
 	{
+		if(val==null) val="";
+		setUpLowVar(varNum,val.toUpperCase());
+	}
+
+	public static void setUpLowVar(int varNum, String val)
+	{
 		if((varNum<0)||(varNum>=NUM_SYSTEM)) return ;
 		if(val==null) val="";
-		sysVars[varNum]=val.toUpperCase();
+		sysVars[varNum]=val;
 		switch(varNum)
 		{
 		case SYSTEM_PKILL:

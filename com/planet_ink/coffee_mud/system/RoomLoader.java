@@ -45,7 +45,7 @@ public class RoomLoader
 				A.setTechLevel((int)DBConnections.getLongRes(R,"CMTECH"));
 				A.tickControl(true);
 				if((currentRecordPos%updateBreak)==0)
-					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
+					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
 			}
 			DBConnector.DBDone(D);
 		}
@@ -90,7 +90,7 @@ public class RoomLoader
 					hash.put(roomID,newRoom);
 				}
 				if((currentRecordPos%updateBreak)==0)
-					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Rooms ("+currentRecordPos+" of "+recordCount+")");
+					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Rooms ("+currentRecordPos+" of "+recordCount+")");
 			}
 			DBConnector.DBDone(D);
 		}
@@ -149,7 +149,7 @@ public class RoomLoader
 					thisRoom.rawExits()[direction]=newExit;
 				}
 				if((currentRecordPos%updateBreak)==0)
-					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Exits ("+currentRecordPos+" of "+recordCount+")");
+					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Exits ("+currentRecordPos+" of "+recordCount+")");
 			}
 			DBConnector.DBDone(D);
 		}
@@ -161,7 +161,7 @@ public class RoomLoader
 
 		DBReadContent(null,hash,true);
 
-		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Finalizing room data)");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Finalizing room data)");
 
 		while(CMMap.numRooms()>0) CMMap.delRoom(CMMap.getFirstRoom());
 		for(Enumeration r=hash.elements();r.hasMoreElements();)
@@ -271,7 +271,7 @@ public class RoomLoader
 					newItem.recoverEnvStats();
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
-					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");
+					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");
 			}
 			DBConnector.DBDone(D);
 		}
@@ -329,7 +329,7 @@ public class RoomLoader
 					newMOB.resetToMaxState();
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
-					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading MOBs ("+currentRecordPos+" of "+recordCount+")");
+					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading MOBs ("+currentRecordPos+" of "+recordCount+")");
 			}
 			DBConnector.DBDone(D);
 		}
@@ -349,7 +349,7 @@ public class RoomLoader
 		for(Enumeration e=rooms.elements();e.hasMoreElements();)
 		{
 			if((((++currentRecordPos)%updateBreak)==0)&&(setStatus))
-				CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
+				CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
 			Room room=(Room)e.nextElement();
 			itemNums=(Hashtable)stuff.get("NUMSFOR"+room.roomID());
 			if(itemNums!=null)
