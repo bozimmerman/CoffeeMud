@@ -24,8 +24,8 @@ Delver:
 5//CMAble.addCharAbilityMapping(ID(),19,"Chant_MetalMold",false);
 6//CMAble.addCharAbilityMapping(ID(),23,"Chant_FungalBloom",false);
 7//CMAble.addCharAbilityMapping(ID(),25,"Chant_BrownMold",true);
-8Cavein Does damage if target is MOB. Can be used to block an exit for duration of spell if target is EXIT. 
-9Boulderbash Causes a large rock to hurl itself at the enemy. 
+8//Cavein Does damage if target is MOB. Can be used to block an exit for duration of spell if target is EXIT. 
+9//Boulderbash Causes a large rock to hurl itself at the enemy. 
 *Volcanic Chasm will convert room (for time being) to a CHASM room that does massive heat damage to non-flyers/climbers. 
 1Summon Rock Golem 	
 2Crystal growth 	creates crystaline items that have very low hardnesses, made of crystal (STONE), but similar to other recipes from Tailor, Armorsmith, and Weaponsmith. 
