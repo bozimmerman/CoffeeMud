@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.base.sysop;
+package com.planet_ink.coffee_mud.Commands.sysop;
 
 import java.io.*;
 import java.util.*;

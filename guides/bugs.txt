@@ -1,4 +1,7 @@
 \n is still a problem?!
-TEST: add Arch to mason, that modifies an open passageway with a Majestic Arch
 TEST: prop_reflecting to reflect spell damage back to the caster, put on shield items
-
+TEST: When Underwater, all slashing and Bludgeoning damage is reduced by a factor of 3, after all other modifiers for damage have been calculated.
+TEST: Chant_AlterTime - Can we have a new feature? Prop_changeTimeDay targets: items
+TEST: InstantDeath
+TEST: Fighter_SizeOpponent - an ability to tell how many HP a MOB has
+TEST: add currents to water...

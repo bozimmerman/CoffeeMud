@@ -1,6 +1,7 @@
-package com.planet_ink.coffee_mud.Commands.base;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.base.sysop.*;
+import com.planet_ink.coffee_mud.Commands.sysop.*;
+import com.planet_ink.coffee_mud.Commands.base.*;
 import java.util.*;
 import java.io.IOException;
 public class ExternalCommands implements ExternalCommand

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.base.sysop;
+package com.planet_ink.coffee_mud.Commands.sysop;
 
 import com.planet_ink.coffee_mud.Commands.base.Socials;
 import com.planet_ink.coffee_mud.utils.*;

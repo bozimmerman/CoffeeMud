@@ -5,9 +5,6 @@ WHISPER command to talk to everyone at a table only LISTEN should counter it.
 racial abilities (abilities tied to the race)
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
-Can we have a new feature? Prop_changeTimeDay targets: items
-add currents to water...
-an ability to tell how many HP a MOB has
 gen-wizard player editor
 possible to have NE SE SW NW directions?
 Behavior & Skill libido - Property Pregnancy (with eggs for some), Property Aging 
@@ -16,7 +13,6 @@ Ambusher—This gives the MOB an aggressive attitude, with the hide and backstab s
 Sniper.  This allows a character to make a single ranged attack from a hidden position without entering combat.  After the shot, combat is ended, as is the Hide.
 Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
-When Underwater, all slashing and Bludgeoning damage is reduced by a factor of 3, after all other modifiers for damage have been calculated.
 'law' area, intelligent MOBs should cry out when they're being attacked, and officers should come to their rescue.
 random monster property class which reads stats from a resource file
 Taxidermy

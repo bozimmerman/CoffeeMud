@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands;
+package com.planet_ink.coffee_mud.Commands.extra;
 import com.planet_ink.coffee_mud.interfaces.*;
 import java.util.Vector;
 

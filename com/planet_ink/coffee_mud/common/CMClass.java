@@ -337,7 +337,7 @@ public class CMClass extends ClassLoader
 		
 		clantypes=loadVectorListToObj(prefix+"Clans"+File.separatorChar,page.getStr("CLANTYPES"),"com.planet_ink.coffee_mud.interfaces.Clan");
 		
-		Vector cmds=loadVectorListToObj(prefix+"Commands"+File.separatorChar,page.getStr("COMMANDS"),"com.planet_ink.coffee_mud.interfaces.Command");
+		Vector cmds=loadVectorListToObj(prefix+"Commands"+File.separatorChar+"extra"+File.separatorChar,page.getStr("COMMANDS"),"com.planet_ink.coffee_mud.interfaces.Command");
 		if(cmds.size()>1)
 		{
 			Log.sysOut("MUD","XCommands loaded  : "+cmds.size());

@@ -3,8 +3,7 @@ package com.planet_ink.coffee_mud.Commands.base;
 import java.util.*;
 import java.io.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Commands.base.sysop.CreateEdit;
-import com.planet_ink.coffee_mud.Commands.base.sysop.SysopItemUsage;
+import com.planet_ink.coffee_mud.Commands.sysop.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
