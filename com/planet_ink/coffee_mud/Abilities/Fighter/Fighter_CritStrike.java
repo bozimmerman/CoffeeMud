@@ -37,18 +37,27 @@ public class Fighter_CritStrike extends StdAbility
 		return Ability.SKILL;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
+	public boolean okAffect(Affect affect)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(!super.okAffect(affect))
+			return false;
+
+		if((affected==null)||(!(affected instanceof MOB)))
+			return true;
+
+		MOB mob=(MOB)affected;
+		if(affect.amISource(mob)
+		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		&&(affect.tool()!=null)
+		&&(affect.tool() instanceof Weapon)
+		&&(profficiencyCheck(-90+mob.charStats().getStrength(),false)))
 		{
-			MOB mob=(MOB)affected;
-			Item I=mob.fetchWieldedItem();
-			if((I instanceof Weapon)&&(((Weapon)I).weaponClassification()!=Weapon.CLASS_NATURAL))
-			{
-				if((affectedStats.level()>=envStats().level())
-				&&(profficiencyCheck(-65,false)))
-					affectedStats.setDamage(affectedStats.damage()+(int)Math.round(Util.mul(I.envStats().damage(),(Util.div(profficiency(),100.0)))));
-			}
+			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
+			int bonus=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),pctRecovery));
+			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()+bonus,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
 		}
+		return true;
 	}
+	
 }
