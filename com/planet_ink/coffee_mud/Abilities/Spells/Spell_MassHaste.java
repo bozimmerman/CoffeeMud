@@ -57,7 +57,7 @@ public class Spell_MassHaste extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=ExternalPlay.properTargets(this,mob);
+		Hashtable h=ExternalPlay.properTargets(this,mob,false);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth speeding up.");

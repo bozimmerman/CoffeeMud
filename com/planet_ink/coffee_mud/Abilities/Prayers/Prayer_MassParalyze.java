@@ -52,7 +52,7 @@ public class Prayer_MassParalyze extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		Hashtable h=ExternalPlay.properTargets(this,mob);
+		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
 		if(h==null) return false;
 
 		boolean success=profficiencyCheck(0,auto);

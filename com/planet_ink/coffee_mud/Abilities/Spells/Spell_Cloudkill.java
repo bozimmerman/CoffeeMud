@@ -65,7 +65,7 @@ public class Spell_Cloudkill extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=ExternalPlay.properTargets(this,mob);
+		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth clouding.");

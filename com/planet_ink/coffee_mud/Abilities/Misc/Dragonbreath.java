@@ -89,7 +89,7 @@ public class Dragonbreath extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=ExternalPlay.properTargets(this,mob);
+		Hashtable h=ExternalPlay.properTargets(this,mob,false);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth breathing on.");

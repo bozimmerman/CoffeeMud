@@ -30,6 +30,10 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.theFight.postAttack(attacker,target,weapon);
 	}
+	public Ability getToEvoke(MOB mob, Vector commands)
+	{
+		return processor.abilityEvoker.getToEvoke(mob,commands);
+	}
 	public void postDamage(MOB attacker, 
 						   MOB target, 
 						   Environmental weapon, 
@@ -80,9 +84,9 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.theFight.adjustedAttackBonus(mob);
 	}
-	public Hashtable properTargets(Ability A, MOB caster)
+	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
-		return processor.theFight.properTargets(A,caster);
+		return processor.theFight.properTargets(A,caster,beRuthless);
 	}
 	public String standardMobCondition(MOB mob)
 	{

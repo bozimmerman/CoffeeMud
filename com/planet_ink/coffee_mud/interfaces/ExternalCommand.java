@@ -10,13 +10,14 @@ public interface ExternalCommand
 	public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString);
 	public void strike(MOB source, MOB target, Weapon weapon, boolean success);
 	public boolean isHit(MOB attacker, MOB target);
-	public Hashtable properTargets(Ability A, MOB caster);
+	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless);
 	public void die(MOB source, MOB target);
 
 	// other actions
 	public boolean wear(MOB mob, Item item);
 	public boolean remove(MOB mob, Item item);
 	public void standIfNecessary(MOB mob);
+	public Ability getToEvoke(MOB mob, Vector commands);
 	public void look(MOB mob, Vector commands, boolean quiet);
 	public boolean move(MOB mob, int directionCode, boolean flee);
 	public void flee(MOB mob, String direction);

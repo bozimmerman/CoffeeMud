@@ -97,7 +97,7 @@ public class TheFight
 			return "^c" + mob.name() + "^c is in perfect health^N";
 	}
 
-	public Hashtable allPossibleCombatants(MOB mob)
+	public Hashtable allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
 		Hashtable h=new Hashtable();
 		Room thisRoom=mob.location();
@@ -109,13 +109,13 @@ public class TheFight
 			if((inhab!=null)
 			&&(inhab!=mob)
 			&&(h1.get(inhab)==null)
-			&&((!mob.isMonster())||(!inhab.isMonster())))
+			&&((beRuthless)||(!mob.isMonster())||(!inhab.isMonster())))
 				h.put(inhab,inhab);
 		}
 		return h;
 	}
 
-	public Hashtable properTargets(Ability A, MOB caster)
+	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
 		Hashtable h=null;
 		if(A.quality()!=Ability.MALICIOUS)
@@ -124,7 +124,7 @@ public class TheFight
 		if(caster.isInCombat())
 			h=allCombatants(caster);
 		else
-			h=allPossibleCombatants(caster);
+			h=allPossibleCombatants(caster,beRuthless);
 		return h;
 	}
 

@@ -35,6 +35,11 @@ public class ExternalPlay
 		if(player!=null) player.resetRoom(room);
 		
 	}
+	public static Ability getToEvoke(MOB mob, Vector commands)
+	{
+		if(player!=null) return player.getToEvoke(mob,commands);
+		return null;
+	}
 	public static String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
 	{
 		if(player!=null) return player.standardMissString(weaponType,weaponClassification,weaponName,useExtendedMissString);
@@ -91,9 +96,9 @@ public class ExternalPlay
 		if(player!=null) return player.adjustedAttackBonus(mob);
 		return 0;
 	}
-	public static Hashtable properTargets(Ability A, MOB caster)
+	public static Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
-		if(player!=null) return player.properTargets(A,caster);
+		if(player!=null) return player.properTargets(A,caster,beRuthless);
 		return new Hashtable();
 	}
 	public static boolean move(MOB mob, int directionCode, boolean flee)

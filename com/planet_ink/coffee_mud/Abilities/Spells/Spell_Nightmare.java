@@ -106,7 +106,8 @@ public class Spell_Nightmare extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to wake up from <S-HIS-HER> nightmare.");
+		if((!mob.amDead())&&(mob.location()!=null))
+			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to wake up from <S-HIS-HER> nightmare.");
 	}
 
 	public boolean tick(int tickID)

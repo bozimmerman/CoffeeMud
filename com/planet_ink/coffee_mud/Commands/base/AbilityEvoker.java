@@ -30,7 +30,7 @@ public class AbilityEvoker
 		return false;
 	}
 
-	public void evoke(MOB mob, Vector commands)
+	public Ability getToEvoke(MOB mob, Vector commands)
 	{
 		String evokeWord=((String)commands.elementAt(0)).toUpperCase();
 
@@ -121,7 +121,12 @@ public class AbilityEvoker
 				}
 			}
 		}
-
+		return evokableAbility;
+	}
+	
+	public void evoke(MOB mob, Vector commands)
+	{
+		Ability evokableAbility=getToEvoke(mob,commands);
 		if(evokableAbility==null)
 		{
 			mob.tell("You don't know how to do that.");
