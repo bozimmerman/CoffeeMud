@@ -85,9 +85,12 @@ public class Prop_WizInvis extends Property
 	{
 		if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)&&(msg.amITarget(affected))&&(affected!=null)&&(!disabled)))
 		{
-			msg.source().tell("Ah, leave "+affected.name()+" alone.");
-			if(affected instanceof MOB)
-				((MOB)affected).makePeace();
+			if(msg.source()!=msg.target())
+			{
+				msg.source().tell("Ah, leave "+affected.name()+" alone.");
+				if(affected instanceof MOB)
+					((MOB)affected).makePeace();
+			}
 			return false;
 		}
 		else
