@@ -749,7 +749,7 @@ public class StdArea implements Area
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		affectableStats.setSensesMask(affectableStats.disposition()|envStats().sensesMask());
+		affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
 		affectableStats.setDisposition(affectableStats.disposition()|envStats().disposition());
 		if((affected instanceof Room)&&((((Room)affected).domainType()&Room.INDOORS)==0))
 		{

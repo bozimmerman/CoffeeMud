@@ -10,6 +10,10 @@ public class ExternalSystems implements ExternalSystem
 	{
 		ServiceEngine.startTickDown(E,tickID,numTicks);
 	}
+	public void vassals(MOB mob, String leigeID)
+	{
+		MOBloader.vassals(mob,leigeID);
+	}
 	public boolean deleteTick(Environmental E, int tickID)
 	{
 		return ServiceEngine.deleteTick(E,tickID);

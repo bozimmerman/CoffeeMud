@@ -93,6 +93,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if((affect.amISource(mob))
+		&&(!middleOfTheFight)
 		&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
 		&&(profficiencyCheck(0,false))
 		&&(mob.isInCombat())

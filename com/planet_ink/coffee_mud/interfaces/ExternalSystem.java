@@ -32,4 +32,5 @@ public interface ExternalSystem
 	public void clearDebri(Room room, int taskCode);
 	public StringBuffer listTicks(int whichTick);
 	public boolean DBUserSearch(MOB mob, String Login);
+	public void vassals(MOB mob, String leigeID);
 }

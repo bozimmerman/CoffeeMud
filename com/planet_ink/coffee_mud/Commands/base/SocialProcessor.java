@@ -29,6 +29,12 @@ public class SocialProcessor
 		return null;
 	}
 
+	public void vassals(MOB mob, Vector commands)
+	{
+		mob.tell("The following players are in your service:");
+		ExternalPlay.vassals(mob,mob.name());
+	}
+	
 	public void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag)
 	{
 		Room location=mob.location();

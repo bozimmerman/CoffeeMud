@@ -454,6 +454,9 @@ public class CommandProcessor
 				case CommandSet.VALUE:
 					socialProcessor.value(mob,commands);
 					break;
+				case CommandSet.VASSALS:
+					socialProcessor.vassals(mob,commands);
+					break;
 				case CommandSet.VER:
 					mob.tell(myHost.getVer());
 					mob.tell("(C) 2000-2002 Bo Zimmerman");

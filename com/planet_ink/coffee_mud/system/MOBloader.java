@@ -173,8 +173,8 @@ public class MOBloader
 			head.append("[");
 			head.append(Util.padRight("Race",8)+" ");
 			head.append(Util.padRight("Class",10)+" ");
-			head.append(Util.padRight("Lvl",4));
-			head.append(Util.padRight("Last",18)+" ");
+			head.append(Util.padRight("Lvl",4)+" ");
+			head.append(Util.padRight("Last",18));
 			head.append("] Character name\n\r");
 			while(R.next())
 			{
@@ -186,8 +186,48 @@ public class MOBloader
 				head.append("[");
 				head.append(Util.padRight(race,8)+" ");
 				head.append(Util.padRight(cclass,10)+" ");
-				head.append(Util.padRight(Integer.toString(lvl),4));
-				head.append(Util.padRight((new IQCalendar().string2Date(lastCall)).d2String(),18)+" ");
+				head.append(Util.padRight(Integer.toString(lvl),4)+" ");
+				head.append(Util.padRight((new IQCalendar().string2Date(lastCall)).d2String(),18));
+				head.append("] "+Util.padRight(username,15));
+				head.append("\n\r");
+			}
+			mob.tell(head.toString());
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("MOB",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+	}
+
+	public static void vassals(MOB mob, String leigeID)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMLEIG='"+leigeID+"'");
+			StringBuffer head=new StringBuffer("");
+			head.append("[");
+			head.append(Util.padRight("Race",8)+" ");
+			head.append(Util.padRight("Class",10)+" ");
+			head.append(Util.padRight("Lvl",4)+" ");
+			head.append(Util.padRight("Exp/Lvl",17));
+			head.append("] Character name\n\r");
+			while(R.next())
+			{
+				String username=DBConnections.getRes(R,"CMUSERID");
+				String cclass=((CharClass)CMClass.getCharClass(DBConnections.getRes(R,"CMCLAS"))).name();
+				String race=((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
+				int lvl=Util.s_int(DBConnections.getRes(R,"CMLEVL"));
+				int exp=Util.s_int(DBConnections.getRes(R,"CMEXPE"));
+				int exlv=Util.s_int(DBConnections.getRes(R,"CMEXLV"));
+				head.append("[");
+				head.append(Util.padRight(race,8)+" ");
+				head.append(Util.padRight(cclass,10)+" ");
+				head.append(Util.padRight(Integer.toString(lvl),4)+" ");
+				head.append(Util.padRight(exp+"/"+exlv,17));
 				head.append("] "+Util.padRight(username,15));
 				head.append("\n\r");
 			}

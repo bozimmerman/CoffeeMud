@@ -21,7 +21,7 @@ public interface EnvStats extends Cloneable
 	public final static int CAN_SEE_VICTIM=32768;
 	public final static int CAN_SEE_METAL=65536;
 
-	public final static long ALLMASK=(int)Math.round((Integer.MAX_VALUE/2)-0.5);
+	public final static long ALLMASK=Integer.MAX_VALUE;
 	
 	// dispositions
 	public final static int IS_SEEN=1;

@@ -60,6 +60,10 @@ public class ExternalPlay
 		if(player!=null) return player.remove(mob,item);
 		return false;
 	}
+	public static void follow(MOB mob, MOB tofollow, boolean quiet)
+	{
+		if(player!=null) player.follow(mob,tofollow,quiet);
+	}
 	public static boolean wear(MOB mob, Item item)
 	{
 		if(player!=null) return player.wear(mob,item);
@@ -287,10 +291,8 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBWriteJournal(Journal,from,to,subject,message,which);
 	}
-	public static void follow(MOB mob, MOB tofollow, boolean quiet)
+	public static void vassals(MOB mob, String leigeID)
 	{
-		if(player!=null) player.follow(mob,tofollow,quiet);
+		if(sysPlayer!=null) sysPlayer.vassals(mob,leigeID);
 	}
-
-	
 }
