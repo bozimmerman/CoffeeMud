@@ -24,7 +24,7 @@ public class Spell_StoreSpell extends Spell
 			Environmental target=null;
 			if((mob.location()!=null))
 				target=afftarget;
-			String name=me.name().toUpperCase();
+			String name=Util.removeColors(me.name().toUpperCase());
 			if(name.startsWith("A ")) name=name.substring(2).trim();
 			if(name.startsWith("AN ")) name=name.substring(3).trim();
 			if(name.startsWith("THE ")) name=name.substring(4).trim();

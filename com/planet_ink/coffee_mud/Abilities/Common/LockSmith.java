@@ -45,6 +45,20 @@ public class LockSmith extends CommonSkill
 		super.unInvoke();
 	}
 
+	public Item getBuilding(Environmental target)
+	{
+		String keyName=""+Math.random();
+		Item building=CMClass.getItem("GenKey");
+		if((workingOn instanceof Exit)
+		&&((Exit)workingOn).hasALock())
+			keyName=((Exit)workingOn).keyName();
+		if((workingOn instanceof Container)
+		&&((Container)workingOn).hasALock())
+			keyName=((Container)workingOn).keyName();
+		((Key)building).setKey(keyName);
+		return building;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -52,6 +66,7 @@ public class LockSmith extends CommonSkill
 			MOB mob=(MOB)affected;
 			if(tickDown==6)
 			{
+				if(building==null) building=getBuilding(workingOn);
 				if((workingOn!=null)&&(mob.location()!=null))
 				{
 					if(workingOn instanceof Exit)
@@ -68,6 +83,7 @@ public class LockSmith extends CommonSkill
 								building=null;
 								unInvoke();
 							}
+							
 							Exit exit2=mob.location().getPairedExit(dir);
 							Room room2=mob.location().getRoomInDir(dir);
 							((Exit)workingOn).baseEnvStats().setLevel(mob.envStats().level());
@@ -235,7 +251,7 @@ public class LockSmith extends CommonSkill
 			&&((--woodDestroyed)>=0))
 				I.destroy();
 		}
-		building=CMClass.getItem("GenKey");
+		building=getBuilding(workingOn);
 		if(building==null)
 		{
 			commonTell(mob,"There's no such thing as a GenKey!!!");
@@ -251,7 +267,6 @@ public class LockSmith extends CommonSkill
 		verb="working on "+(keyFlag?"a key for ":"")+workingOn.name();
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
-		((Key)building).setKey(keyName);
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(1);
 		building.setMaterial(firstWood.material());

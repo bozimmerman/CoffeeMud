@@ -67,7 +67,7 @@ public class Spell_Ignite extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> evoke(s) a spell upon <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> flares up!":"^S<S-NAME> evoke(s) a spell upon <T-NAMESELF>.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -51,7 +51,7 @@ public class Chant_LightningWard extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) for a shimmering organic field of protection around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"An organic field of protection appears around <T-NAME>.":"^S<S-NAME> chant(s) for a shimmering organic field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -42,7 +42,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 			&&(msg.target()!=null)
 			&&(getMark(mob)==msg.target())
 			&&(getMarkTicks(mob)>15)
-			&&(profficiencyCheck(0,false)))
+			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 			{
 				StringBuffer str=ExternalPlay.getScore((MOB)msg.target());
 				if(!mob.isMonster())

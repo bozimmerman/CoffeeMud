@@ -37,8 +37,8 @@ public class Skill_Songcraft extends StdAbility
 		&&(!lastID.equalsIgnoreCase(msg.tool().ID()))
 		&&(mob.location()!=null)
 		&&(mob.location().isInhabitant(msg.source()))
-		&&(profficiencyCheck(0,false))
-		&&(Sense.canBeSeenBy(msg.source(),mob)))
+		&&(Sense.canBeSeenBy(msg.source(),mob))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
 			Ability A=(Ability)copyOf();
 			A.setMiscText(msg.tool().ID());

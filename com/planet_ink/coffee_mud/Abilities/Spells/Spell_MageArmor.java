@@ -68,7 +68,7 @@ public class Spell_MageArmor extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a magical glowing breast plate!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A magical breast plate appears around <S-NAME>.":"^S<S-NAME> invoke(s) a magical glowing breast plate!^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -47,7 +47,7 @@ public class Spell_CombatPrecognition extends Spell
 			else
 			if((!affect.wasModified())
 			   &&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-			   &&(profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-50,false)))
+			   &&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-50,false)))
 			{
 				String tool=null;
 				if((affect.tool()!=null)&&(affect.tool() instanceof Ability))

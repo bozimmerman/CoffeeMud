@@ -41,7 +41,7 @@ public class Spell_ResistPetrification extends Spell
 		&&(affect.tool()!=null)
 		&&(affect.tool().ID().equalsIgnoreCase("Spell_FleshStone"))
 		&&(!mob.amDead())
-		&&(profficiencyCheck(0,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
 			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs the Stone to Flesh spell from <T-NAME>!");
 			return false;

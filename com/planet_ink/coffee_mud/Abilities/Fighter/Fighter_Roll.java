@@ -38,7 +38,7 @@ public class Fighter_Roll extends StdAbility
 		&&(affect.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
 		&&(!doneThisRound)
-		&&(profficiencyCheck(-85+mob.charStats().getStat(CharStats.DEXTERITY),false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.DEXTERITY),false)))
 		{
 			doneThisRound=true;
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());

@@ -60,6 +60,7 @@ public class Chant_Hibernation extends Chant
 
 		if((affect.amISource(mob)
 		&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
+		&&(!Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))
 		&&(affect.sourceMajor()>0)))
 		{
 			if(roundsHibernating<10)

@@ -26,12 +26,13 @@ public class Skill_Stability extends StdAbility
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
+		MOB mob=(MOB)affected;
 		if((affect.tool()!=null)
 		&&(affect.tool() instanceof Ability)
 		&&(affect.amITarget(affected))
 		&&(((Ability)affect.tool()).quality()==Ability.MALICIOUS)
 		&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_MOVING))
-		&&(profficiencyCheck(-40,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-40,false)))
 		{
 			Room roomS=null;
 			Room roomD=null;

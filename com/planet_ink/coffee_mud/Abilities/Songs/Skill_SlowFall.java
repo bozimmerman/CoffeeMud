@@ -30,7 +30,9 @@ public class Skill_SlowFall extends StdAbility
 		if(affected!=null)
 		{
 			if((affected.fetchAffect("Falling")!=null)
-			   &&(profficiencyCheck(0,false)))
+			   &&((!(affected instanceof MOB))
+				  ||(((MOB)affected).fetchAbility(ID())==null)
+				  ||profficiencyCheck(0,false)))
 			{
 				activated=true;
 				affected.recoverEnvStats();

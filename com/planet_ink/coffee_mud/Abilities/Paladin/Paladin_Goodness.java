@@ -30,9 +30,9 @@ public class Paladin_Goodness extends Paladin
 				MOB target=mob.location().fetchInhabitant(m);
 				if((target!=null)
 				&&(target.getAlignment()<350)
-			    &&(profficiencyCheck(0,false))
 				&&((paladinsGroup.contains(target))
-					||((target.getVictim()==invoker)&&(target.rangeToTarget()==0))))
+					||((target.getVictim()==invoker)&&(target.rangeToTarget()==0)))
+			    &&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 				{
 					int harming=Dice.roll(1,15,0);
 					if(target.getAlignment()<350)

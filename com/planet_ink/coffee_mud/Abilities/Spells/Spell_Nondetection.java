@@ -42,7 +42,7 @@ public class Spell_Nondetection extends Spell
 		&&(affect.tool() instanceof Ability)
 		&&((((Ability)affect.tool()).classificationCode()&ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
 		&&(!mob.amDead())
-		&&(profficiencyCheck(0,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 			return false;
 		return true;
 	}

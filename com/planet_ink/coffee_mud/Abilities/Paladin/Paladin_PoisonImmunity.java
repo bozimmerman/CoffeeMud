@@ -21,7 +21,7 @@ public class Paladin_PoisonImmunity extends Paladin
 		&&(affect.targetMinor()==Affect.TYP_POISON)
 		&&(!mob.amDead())
 		&&(mob.getAlignment()>650)
-		&&(profficiencyCheck(0,false)))
+		&&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 			return false;
 		return super.okAffect(myHost,affect);
 	}

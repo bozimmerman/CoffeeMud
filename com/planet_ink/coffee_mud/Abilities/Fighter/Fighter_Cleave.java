@@ -71,10 +71,10 @@ public class Fighter_Cleave extends StdAbility
 			int damAmount=affect.targetCode()-Affect.MASK_HURT;
 
 			if((damAmount>victim.curState().getHitPoints())
-			&&(profficiencyCheck(0,false))
 			&&(w.weaponType()==Weapon.TYPE_SLASHING)
 			&&(w.weaponClassification()!=Weapon.CLASS_NATURAL)
-			&&(Sense.aliveAwakeMobile(mob,true)))
+			&&(Sense.aliveAwakeMobile(mob,true))
+			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 			{
 				nextTarget=null;
 				thisTarget=null;

@@ -67,8 +67,8 @@ public class Thief_SenseLaw extends ThiefSkill
 					}
 				}
 				if((buf.length()>0)
-				&&(profficiencyCheck(0,false))
-				&&((mob.location()!=oldroom)||(!buf.toString().equals(lastReport))))
+				&&((mob.location()!=oldroom)||(!buf.toString().equals(lastReport)))
+				&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 				{
 					mob.tell("You sense: "+buf.toString());
 					oldroom=mob.location();

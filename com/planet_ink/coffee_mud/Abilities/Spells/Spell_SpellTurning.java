@@ -42,7 +42,7 @@ public class Spell_SpellTurning extends Spell
 		&&(affect.tool() instanceof Ability)
 		&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 		&&(!mob.amDead())
-		&&(profficiencyCheck(-(affect.source().envStats().level()*2),false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-(affect.source().envStats().level()*2),false)))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The field around <S-NAME> reflects the spell!");
 			Ability A=(Ability)affect.tool();
@@ -64,7 +64,7 @@ public class Spell_SpellTurning extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) an reflective barrier of protection around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A reflective barrier appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) an reflective barrier of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

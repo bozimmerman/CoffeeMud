@@ -25,13 +25,14 @@ public class Fighter_Intimidate extends StdAbility
 		&&((affect.amITarget(affected))))
 		{
 			MOB target=(MOB)affect.target();
+			MOB mob=(MOB)affected;
 			int levelDiff=((affect.source().envStats().level()-target.envStats().level())*10);
 			// 1 level off = -10
 			// 10 levels off = -100
 			if((!target.isInCombat())
 			&&(affect.source().getVictim()!=target)
 			&&(levelDiff<0)
-			&&(profficiencyCheck((-(100+levelDiff))+(target.charStats().getStat(CharStats.CHARISMA)*2),false)))
+			&&((mob.fetchAbility(ID())==null)||profficiencyCheck((-(100+levelDiff))+(target.charStats().getStat(CharStats.CHARISMA)*2),false)))
 			{
 				affect.source().tell("You are too intimidated by "+target.name());
 				if(affect.source().location()!=lastRoom)

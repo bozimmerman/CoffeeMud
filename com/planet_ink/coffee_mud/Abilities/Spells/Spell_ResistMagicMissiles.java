@@ -41,7 +41,7 @@ public class Spell_ResistMagicMissiles extends Spell
 		&&(affect.tool()!=null)
 		&&(affect.tool().ID().equalsIgnoreCase("Spell_MagicMissile"))
 		&&(!mob.amDead())
-		&&(profficiencyCheck(0,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
 			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs a magic missile from <T-NAME>!");
 			return false;

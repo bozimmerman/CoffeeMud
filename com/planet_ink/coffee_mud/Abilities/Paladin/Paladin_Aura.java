@@ -15,17 +15,18 @@ public class Paladin_Aura extends Paladin
 		paladinsGroup=new Vector();
 	}
 	public Environmental newInstance(){	return new Paladin_Aura();}
+	private boolean pass=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
+		pass=(invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(0,false);
 		for(int i=paladinsGroup.size()-1;i>=0;i--)
 		{
 			try
 			{
 				MOB mob=(MOB)paladinsGroup.elementAt(i);
-				if((mob.getAlignment()<350)
-				&&(profficiencyCheck(0,false)))
+				if((mob.getAlignment()<350)&&(pass))
 				{
 					int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
 					ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGE> <T-NAME>!^?");
@@ -50,7 +51,7 @@ public class Paladin_Aura extends Paladin
 		if((affect.target()!=null)
 		   &&(paladinsGroup.contains(affect.target()))
 		   &&(!paladinsGroup.contains(affect.source()))
-		   &&(profficiencyCheck(0,false))
+		   &&(pass)
 		   &&(affect.target() instanceof MOB)
 		   &&(affect.source()!=invoker))
 		{
@@ -65,7 +66,7 @@ public class Paladin_Aura extends Paladin
 				return false;
 			}
 			if(((affect.targetMinor()==Affect.TYP_POISON)||(affect.targetMinor()==Affect.TYP_DISEASE))
-			&&(profficiencyCheck(0,false)))
+			&&(pass))
 				return false;
 		}
 		return true;

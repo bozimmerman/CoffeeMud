@@ -36,7 +36,7 @@ public class Fighter_Stonebody extends StdAbility
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
-		&&(profficiencyCheck(-85+mob.charStats().getStat(CharStats.CONSTITUTION),false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.CONSTITUTION),false)))
 		{
 			int regain=(int)Math.round(Util.mul(Util.div(profficiency(),100.0),2.0));
 			if(regain>(affect.targetCode()-Affect.MASK_HURT))

@@ -22,7 +22,7 @@ public class Paladin_DiseaseImmunity extends Paladin
 		&&(affect.targetMinor()==Affect.TYP_DISEASE)
 		&&(!mob.amDead())
 		&&(mob.getAlignment()>650)
-		&&(profficiencyCheck(0,false)))
+		&&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 			return false;
 		return super.okAffect(myHost,affect);
 	}

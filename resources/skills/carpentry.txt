@@ -43,6 +43,7 @@ Small % Chest	6	50	20	20	GenContainer	LOCK	25		0
 % Ladder	6	40	20	10	GenRideable	LADDER	0		0
 % Shield	6	50	30	8	GenShield	HELD	1	10	0
 Large % Box	6	40	40	10	GenContainer	LID	50		0
+% Bar	12	30	60	20	GenRideable	TABLE	50		0
 Large % Table	12	45	90	30	GenRideable	TABLE	100		0
 Ornate % Chair	12	45	45	15	GenChair	CHAIR	1		0
 Long % Bench	12	60	60	22	GenChair	CHAIR	6		0

@@ -39,7 +39,7 @@ public class Spell_MindBlock extends Spell
 		MOB mob=(MOB)affected;
 		if((affect.amITarget(mob))
 		&&(!mob.amDead())
-		&&(profficiencyCheck(0,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
 			boolean yep=(affect.targetMinor()==Affect.TYP_MIND);
 			if((!yep)

@@ -42,7 +42,7 @@ public class Spell_Immunity extends Spell
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		&&(affect.targetMinor()==immunityType)
 		&&(!mob.amDead())
-		&&(profficiencyCheck(0,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
 			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attack from <T-NAME>.");
 			return false;

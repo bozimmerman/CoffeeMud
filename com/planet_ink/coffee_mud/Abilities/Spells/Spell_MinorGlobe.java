@@ -47,7 +47,7 @@ public class Spell_MinorGlobe extends Spell
 			||((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 		&&(!mob.amDead())
 		&&(CMAble.lowestQualifyingLevel(affect.tool().ID())<=8)
-		&&(profficiencyCheck(0,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
 			amountAbsorbed+=CMAble.lowestQualifyingLevel(affect.tool().ID());
 			mob.location().show(mob,affect.source(),null,Affect.MSG_OK_VISUAL,"The absorbing globe around <S-NAME> absorbs the "+affect.tool().name()+" from <T-NAME>.");

@@ -51,7 +51,7 @@ public class Prayer_ProtCold extends Prayer
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for a warm field of protection around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A warm field of protection appears around <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a warm field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

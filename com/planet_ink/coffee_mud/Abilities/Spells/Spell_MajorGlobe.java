@@ -47,7 +47,7 @@ public class Spell_MajorGlobe extends Spell
 			||((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
 		&&(!mob.amDead())
 		&&(CMAble.lowestQualifyingLevel(affect.tool().ID())<=15)
-		&&(profficiencyCheck(0,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
 			amountAbsorbed+=CMAble.lowestQualifyingLevel(affect.tool().ID());
 			mob.location().show(mob,affect.source(),null,Affect.MSG_OK_VISUAL,"The globe around <S-NAME> absorbs the "+affect.tool().name()+" from <T-NAME>!");

@@ -38,7 +38,7 @@ public class Fighter_CritStrike extends StdAbility
 		&&(affect.tool() instanceof Weapon)
 		&&(((Weapon)affect.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
 		&&(((Weapon)affect.tool()).weaponClassification()!=Weapon.CLASS_THROWN)
-		&&(profficiencyCheck((-90)+mob.charStats().getStat(CharStats.STRENGTH),false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck((-90)+mob.charStats().getStat(CharStats.STRENGTH),false)))
 		{
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
 			int bonus=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),pctRecovery));
