@@ -19,4 +19,20 @@ public class Plains extends StdRoom
 	{
 		return new Plains();
 	}
+	public static final Integer[] resourceList={
+		new Integer(EnvResource.RESOURCE_WHEAT),
+		new Integer(EnvResource.RESOURCE_CORN),
+		new Integer(EnvResource.RESOURCE_RICE),
+		new Integer(EnvResource.RESOURCE_CARROTS),
+		new Integer(EnvResource.RESOURCE_TOMATOES),
+		new Integer(EnvResource.RESOURCE_FLINT),
+		new Integer(EnvResource.RESOURCE_COTTON),
+		new Integer(EnvResource.RESOURCE_MEAT),
+		new Integer(EnvResource.RESOURCE_SKIN),
+		new Integer(EnvResource.RESOURCE_FUR),
+		new Integer(EnvResource.RESOURCE_FEATHERS),
+		new Integer(EnvResource.RESOURCE_LEATHER),
+		new Integer(EnvResource.RESOURCE_WOOL)};
+	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
+	public Vector resourceChoices(){return Plains.roomResources;}
 }

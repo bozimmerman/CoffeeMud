@@ -17,4 +17,5 @@ public class FrozenPlains extends Plains
 	{
 		return new FrozenPlains();
 	}
+	public Vector resourceChoices(){return Plains.roomResources;}
 }

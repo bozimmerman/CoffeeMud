@@ -20,4 +20,5 @@ public class WoodsMaze extends StdMaze
 		return new WoodsMaze();
 	}
 	public String getChildLocaleID(){return "Woods";}
+	public Vector resourceChoices(){return Woods.roomResources;}
 }

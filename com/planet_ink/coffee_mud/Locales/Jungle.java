@@ -20,4 +20,12 @@ public class Jungle extends StdRoom
 	{
 		return new Jungle();
 	}
+	public static final Integer[] resourceList={
+		new Integer(EnvResource.RESOURCE_JADE),
+		new Integer(EnvResource.RESOURCE_SCALES),
+		new Integer(EnvResource.RESOURCE_HEMP),
+		new Integer(EnvResource.RESOURCE_FEATHERS)
+	};
+	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
+	public Vector resourceChoices(){return Jungle.roomResources;}
 }

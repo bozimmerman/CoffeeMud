@@ -17,4 +17,5 @@ public class FrozenMountains extends Mountains
 	{
 		return new FrozenMountains();
 	}
+	public Vector resourceChoices(){return Mountains.roomResources;}
 }

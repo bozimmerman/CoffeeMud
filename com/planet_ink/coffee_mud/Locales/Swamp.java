@@ -20,4 +20,14 @@ public class Swamp extends StdRoom
 	{
 		return new Swamp();
 	}
+	public static final Integer[] resourceList={
+		new Integer(EnvResource.RESOURCE_JADE),
+		new Integer(EnvResource.RESOURCE_SCALES),
+		new Integer(-1),
+		new Integer(-1),
+		new Integer(-1),
+		new Integer(-1)
+	};
+	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
+	public Vector resourceChoices(){return Swamp.roomResources;}
 }

@@ -19,4 +19,5 @@ public class MountainSurface extends ClimbableSurface
 	{
 		return new MountainSurface();
 	}
+	public Vector resourceChoices(){return Mountains.roomResources;}
 }

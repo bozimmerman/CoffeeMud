@@ -22,4 +22,5 @@ public class WetCaveRoom extends CaveRoom
 		if(maxRange>=0) return maxRange;
 		return 5;
 	}
+	public Vector resourceChoices(){return CaveRoom.roomResources;}
 }

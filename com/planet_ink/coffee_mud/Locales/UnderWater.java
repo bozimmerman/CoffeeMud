@@ -80,4 +80,11 @@ public class UnderWater extends StdRoom implements Drink
 	public void setLiquidHeld(int amount){}
 	public void setLiquidRemaining(int amount){}
 	public boolean containsDrink(){return true;}
+	public static final Integer[] resourceList={
+		new Integer(EnvResource.RESOURCE_SEAWEED),
+		new Integer(EnvResource.RESOURCE_FISH),
+		new Integer(EnvResource.RESOURCE_SAND),
+		new Integer(EnvResource.RESOURCE_LIMESTONE)};
+	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
+	public Vector resourceChoices(){return UnderWater.roomResources;}
 }

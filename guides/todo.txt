@@ -45,8 +45,7 @@
 ! iron grip spell to thwart disarm
 ! Buy command for standard mobs, to facilitate trades.
 ! race based wearing restrictions, and a "become" method to enforce them (and clothing size);
-
-resources property for rooms
+! resources property for rooms
 
 HuntableAnimals that produce pieces of raw meat in inventory when killed.  Poisoned and poisoning 
 animals will produce poisoned meat, of course.  

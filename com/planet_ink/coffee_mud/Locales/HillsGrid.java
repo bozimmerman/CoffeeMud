@@ -21,4 +21,5 @@ public class HillsGrid extends StdGrid
 		return new HillsGrid();
 	}
 	public String getChildLocaleID(){return "Hills";}
+	public Vector resourceChoices(){return Hills.roomResources;}
 }

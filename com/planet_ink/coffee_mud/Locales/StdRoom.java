@@ -30,7 +30,6 @@ public class StdRoom
 	// base move points and thirst points per round
 	protected int baseMove=2;
 	protected int baseThirst=1;
-	protected Vector resourceChoices=null;
 	protected int myResource=-1;
 
 	protected boolean skyedYet=false;
@@ -155,14 +154,65 @@ public class StdRoom
 			CMMap.addRoom(sky);
 		}
 	}
-	public int myResource()
+	public Vector resourceChoices(){return null;}
+	public Environmental myResource()
 	{
-		if(myResource>=0) return myResource;
-		if(resourceChoices==null) 
-			myResource=-1;
+		if(myResource<0)
+		{
+			if(resourceChoices()==null) 
+				myResource=-1;
+			else
+				myResource=((Integer)resourceChoices().elementAt(Dice.roll(1,resourceChoices().size(),-1))).intValue();
+		}
+		if(myResource<0)
+			return null;
 		else
-			myResource=((Integer)resourceChoices.elementAt(Dice.roll(1,resourceChoices.size(),-1))).intValue();
-		return myResource;
+		{
+			int material=(myResource&EnvResource.MATERIAL_MASK);
+			Item I=null;
+			String name=EnvResource.RESOURCE_DESCS[myResource&EnvResource.RESOURCE_MASK].toLowerCase();
+			if(myResource==EnvResource.RESOURCE_WOOL)
+				material=EnvResource.MATERIAL_LEATHER;
+			switch(material)
+			{
+			case EnvResource.MATERIAL_LEATHER:
+			case EnvResource.MATERIAL_FLESH:
+				// return an animal
+				break;
+			case EnvResource.MATERIAL_VEGETATION:
+			{
+				I=CMClass.getItem("GenFoodResource");
+				break;
+			}
+			case EnvResource.MATERIAL_CLOTH:
+			case EnvResource.MATERIAL_PAPER:
+			case EnvResource.MATERIAL_LIQUID:
+			case EnvResource.MATERIAL_WOODEN:
+			case EnvResource.MATERIAL_ROCK:
+			{
+				I=CMClass.getItem("GenResource");
+				break;
+			}
+			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_MITHRIL:
+			{
+				I=CMClass.getItem("GenResource");
+				name=name+" ore";
+				break;
+			}
+			}
+			if(I!=null)
+			{
+				I.setMaterial(myResource);
+				I.baseEnvStats().setWeight(1);
+				I.setName("a pound of "+name);
+				I.setDisplayText("some "+name+" sit here.");
+				I.setDescription("Looks like "+I.name()+".");
+				I.recoverEnvStats();
+				return I;
+			}
+		}
+		return null;
 	}
 			
 

@@ -27,4 +27,5 @@ public class WetCaveMaze extends StdMaze
 		if(maxRange>=0) return maxRange;
 		return 5;
 	}
+	public Vector resourceChoices(){return CaveRoom.roomResources;}
 }

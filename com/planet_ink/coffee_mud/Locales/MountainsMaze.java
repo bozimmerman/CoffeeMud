@@ -20,4 +20,5 @@ public class MountainsMaze extends StdMaze
 		return new MountainsMaze();
 	}
 	public String getChildLocaleID(){return "Mountains";}
+	public Vector resourceChoices(){return Mountains.roomResources;}
 }

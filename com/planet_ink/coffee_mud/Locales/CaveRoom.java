@@ -27,4 +27,25 @@ public class CaveRoom extends StdRoom
 		if(maxRange>=0) return maxRange;
 		return 5;
 	}
+	public static final Integer[] resourceList={
+		new Integer(EnvResource.RESOURCE_GRANITE),
+		new Integer(EnvResource.RESOURCE_OBSIDIAN),
+		new Integer(EnvResource.RESOURCE_MARBLE),
+		new Integer(EnvResource.RESOURCE_STONE),
+		new Integer(EnvResource.RESOURCE_IRON),
+		new Integer(EnvResource.RESOURCE_LEAD),
+		new Integer(EnvResource.RESOURCE_BRONZE),
+		new Integer(EnvResource.RESOURCE_GOLD),
+		new Integer(EnvResource.RESOURCE_SILVER),
+		new Integer(EnvResource.RESOURCE_ZINC),
+		new Integer(EnvResource.RESOURCE_COPPER),
+		new Integer(EnvResource.RESOURCE_TIN),
+		new Integer(EnvResource.RESOURCE_MITHRIL),
+		new Integer(EnvResource.RESOURCE_ADAMANTITE),
+		new Integer(EnvResource.RESOURCE_GEM),
+		new Integer(EnvResource.RESOURCE_DIAMOND),
+		new Integer(EnvResource.RESOURCE_CRYSTAL),
+		new Integer(EnvResource.RESOURCE_PLATINUM)};
+	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
+	public Vector resourceChoices(){return CaveRoom.roomResources;}
 }

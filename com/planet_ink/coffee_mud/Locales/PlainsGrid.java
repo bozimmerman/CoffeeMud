@@ -19,4 +19,5 @@ public class PlainsGrid extends StdGrid
 		return new PlainsGrid();
 	}
 	public String getChildLocaleID(){return "Plains";}
+	public Vector resourceChoices(){return Plains.roomResources;}
 }

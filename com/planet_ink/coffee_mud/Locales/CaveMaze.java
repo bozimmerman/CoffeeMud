@@ -26,4 +26,5 @@ public class CaveMaze extends StdMaze
 		return 5;
 	}
 	public String getChildLocaleID(){return "CaveRoom";}
+	public Vector resourceChoices(){return CaveRoom.roomResources;}
 }

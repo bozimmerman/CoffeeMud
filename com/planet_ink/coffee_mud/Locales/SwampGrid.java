@@ -21,4 +21,5 @@ public class SwampGrid extends StdGrid
 		return new SwampGrid();
 	}
 	public String getChildLocaleID(){return "Swamp";}
+	public Vector resourceChoices(){return Swamp.roomResources;}
 }

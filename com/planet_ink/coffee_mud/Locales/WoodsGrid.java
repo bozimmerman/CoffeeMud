@@ -20,4 +20,5 @@ public class WoodsGrid extends StdGrid
 		return new WoodsGrid();
 	}
 	public String getChildLocaleID(){return "Woods";}
+	public Vector resourceChoices(){return Woods.roomResources;}
 }

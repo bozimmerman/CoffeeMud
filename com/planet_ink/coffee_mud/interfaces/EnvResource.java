@@ -22,6 +22,7 @@ public interface EnvResource extends Item
 		MATERIAL_VEGETATION|MATERIAL_FLESH|MATERIAL_PAPER|
 		MATERIAL_ROCK|MATERIAL_LIQUID;
 	
+	
 	public final static String[] MATERIAL_DESCS={
 	"UNKNOWN",
 	"CLOTH",

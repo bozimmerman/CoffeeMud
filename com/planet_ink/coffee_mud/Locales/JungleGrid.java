@@ -21,4 +21,5 @@ public class JungleGrid extends StdGrid
 		return new JungleGrid();
 	}
 	public String getChildLocaleID(){return "Jungle";}
+	public Vector resourceChoices(){return Jungle.roomResources;}
 }

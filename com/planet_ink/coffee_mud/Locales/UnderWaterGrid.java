@@ -31,4 +31,5 @@ public class UnderWaterGrid extends StdGrid
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
+	public Vector resourceChoices(){return UnderWater.roomResources;}
 }
