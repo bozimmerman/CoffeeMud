@@ -1,7 +1,6 @@
-n of 11656 door is not there in margate, 11752 should have been no_mob
+n of 11656 door is not there in margate 
+11752 should have been no_mob
 All the doors except locked ones became default open
-Gender doesn't seem to import from Ember/ROM.
-
 
 Install ship battery
 make diff levels of drunk, and disease_hangover

@@ -2062,6 +2062,9 @@ public class Import extends StdCommand
 
 				if(circleFormat)
 				{
+					if(Util.isNumber(Util.getCleanBit(codeStr4,2)))
+						sexCode=Util.s_int(Util.getCleanBit(codeStr4,2));
+					else
 					if(Util.getCleanBit(codeStr4,2).toUpperCase().equals("MALE"))
 						sexCode=1;
 					else
@@ -2073,6 +2076,9 @@ public class Import extends StdCommand
 					else
 						sexCode=3;
 
+					if(Util.isNumber(Util.getCleanBit(codeStr4,0)))
+						positionCode=Util.s_int(Util.getCleanBit(codeStr4,2));
+					else
 					if(Util.getCleanBit(codeStr4,0).trim().startsWith("STAND"))
 						positionCode=8;
 					else

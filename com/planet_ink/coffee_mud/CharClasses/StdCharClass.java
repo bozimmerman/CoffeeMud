@@ -694,15 +694,13 @@ public class StdCharClass implements CharClass, Cloneable
 				&&(!beneficiaries.contains(mob)))
 				{
 					beneficiaries.add(mob);
-					totalLevels+=mob.envStats().level();
+					totalLevels+=(mob.envStats().level()*mob.envStats().level());
 					expAmount+=25;
 				}
 			}
 		}
 
 		if(beneficiaries.size()>0)
-		{
-			totalLevels=totalLevels*totalLevels;
 			for(Iterator i=beneficiaries.iterator();i.hasNext();)
 			{
 				MOB mob=(MOB)i.next();
@@ -710,7 +708,6 @@ public class StdCharClass implements CharClass, Cloneable
 				if(myAmount>100) myAmount=100;
 				MUDFight.postExperience(mob,killed,"",myAmount,false);
 			}
-		}
 		return beneficiaries;
 	}
 	public String classParms(){ return "";}
