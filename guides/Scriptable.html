@@ -5,8 +5,8 @@
 </HEAD>
 <BODY>
 <P style="TEXT-ALIGN: center" align=center><SPAN 
-style="FONT-SIZE: 18pt"><FONT 
-size=7>Scripting in CoffeeMud 4.3</FONT></SPAN></P>
+style="FONT-SIZE: 18pt"><FONT size=6><STRONG>Scripting in 
+CoffeeMud 4.3</STRONG></FONT></SPAN></P>
 <P style="TEXT-ALIGN: center" align=left><IMG 
 src="images/mug.jpg"></P>
 <P><FONT color=royalblue size=6>Introduction to 
@@ -71,35 +71,36 @@ href="http://aoc.pandapub.com/home.shtml">http://aoc.pandapub.com/home.shtml</A>
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">all_greet_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>all_greet_prog [integer 
 percentage]</EM></P>
-<P class=MsoNormal>This type of mobprog checks a percentage 
-chance every time someone enters the room that the mob is currently in. If the 
-random number generated between 1 and 100 is equal to or below the percentage of 
-the greet_prog, the prog is triggered. Note that greet_progs are triggered by 
-both players and mobs, and a mob in a maze can actually sometimes end up 
-triggering itself! This type of mobprog has all sorts of uses, ranging from 
-giving in-zone quest information to people entering the room, creating 
-aggressive progs, etc. It is a good idea to use the if isqueued function in 
-greet_progs to cut down on spam when multiple players enter the room at the same 
-time.</P>
+<P class=MsoNormal>       
+               
+      This type of mobprog checks a percentage chance every 
+time someone enters the room that the mob is currently in. If 
+the random number generated between 1 and 100 is equal to or below the percentage 
+of the all_greet_prog, the prog is triggered. Note that all_greet_progs are triggered by 
+both players and mobs, and a mob in a maze 
+can actually sometimes end up triggering itself! This type of mobprog has all sorts of 
+uses, ranging from giving in-zone quest information to people entering the room, creating aggressive progs, 
+etc.</P>
 <P class=MsoNormal>EXAMPLES:<BR><EM><BR>all_greet_prog 25</EM><SPAN 
 style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
 prog will be triggered 25% of the time when someone enters the room where the 
 mob currently is.)</P>
-<P class=MsoNormal><EM>all_greet_prog 100</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This prog will be triggered 100% of the time when someone enters the 
+<P class=MsoNormal><EM>all_greet_prog 
+100</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This prog will be triggered 100% of the time when someone enters the 
 room where the mob currently is. This means every time.)</P>
-<P class=MsoNormal>SPECIAL NOTES: You’ll probably want to do 
-a large number of if checks in greet_progs, specifically in the difference 
-between mobs and player characters. Note that greet_progs will trigger&nbsp;even 
-if a person is sneaking, though the mob must have detect invisibility to see 
-invisible people, infravision to see people in the dark, sense sneaking to see 
-sneakers, and will not see people if blinded.<SPAN 
+<P class=MsoNormal>SPECIAL NOTES: You’ll probably want to 
+do a large number of if checks in all_greet_progs, specifically in the 
+difference between mobs and player characters. Note that all_greet_progs will 
+trigger&nbsp;even if a person is sneaking, though the mob must have detect 
+invisibility to see invisible people, infravision to see people in the dark, 
+sense sneaking to see sneakers, and will not see people if blinded.<SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></O:P></SPAN></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">act_prog<BR><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mask_prog</SPAN></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>act_prog [trigger 
-message]<BR>act_prog p [trigger message]&nbsp;<o:p></O:P></EM></P>
+<P class=MsoNormal>Usage:<BR><EM>act_prog [trigger message]<BR>act_prog 
+p [trigger message]&nbsp;<o:p></O:P></EM></P>
 <P class=MsoNormal>This type of mobprog will trigger when 
 the mob sees a certain string of text. When the 'p' is inserted into the trigger 
 line, the string of text must be precise, while if it is not, any of the words 
@@ -110,14 +111,14 @@ You can use these and act_progs to safely have mobs trigger each other, without
 people seeing what is going on. Other uses include triggering off of people 
 fleeing, moving out of the room, etc. The possibilities are endless.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>act_prog wolf dog coyote</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger whenever 
-the mob sees a segment of text containing any of the words wolf, dog, or<SPAN 
+<P class=MsoNormal><EM>act_prog wolf dog 
+coyote</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger whenever the 
+mob sees a segment of text containing any of the words wolf, dog, or<SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>coyote. If the 
 string contains more than one of these, the prog will be triggered multiple 
 times.)</P>
-<P class=MsoNormal><EM>act_prog p A wolf howls at the moon.</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog when 
+<P class=MsoNormal><EM>act_prog p A wolf 
+howls at the moon.</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog when 
 it sees this precise message. Note that punctuation is important here as 
 well.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
@@ -129,8 +130,7 @@ that may be part of your act_prog trigger. Variables are not used in act_progs,
 so do not try to use them; it won’t work.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">bribe_prog</SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>bribe_prog [integer money 
-value]</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>bribe_prog [integer money value]</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered when a 
 value of money is given to the mob. If the amount of money is equal to or more 
 than the integer money value of the bribe_prog, the prog will go off. If it is 
@@ -140,16 +140,14 @@ or bribing a bartender to give you some information. It can also be used for
 larger, special mob behavior, such as a ferryman who will move a player to 
 another spot in the world for a fee.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>bribe_prog 1</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>(This bribe_prog will 
+<P class=MsoNormal><EM>bribe_prog 
+1</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>(This bribe_prog will 
 trigger whenever the mob is given an amount of gold equal to or greater than 1 
 coin. Of course, this means that the prog will be triggered if any amount of 
-money is given to the mob at all.)<BR 
-style="mso-special-character: line-break"><BR 
-style="mso-special-character: line-break"><EM>bribe_prog 500</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>(This bribe_prog will 
-trigger if someone gives the mob an&nbsp;<SPAN style="mso-spacerun: yes">&nbsp; 
-</SPAN>amount of money 
+money is given to the mob at all.)<BR style="mso-special-character: line-break"><BR style="mso-special-character: line-break"><EM>bribe_prog 500</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN>(This bribe_prog will trigger if someone gives the mob an&nbsp;<SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>amount of money 
 equal to or greater than 500 coins.)</P>
 <P class=MsoNormal>&nbsp;MULTIPLE PROGS: You can have 
 multiple bribe_progs on the same mob. However, these must be listed in order 
@@ -158,8 +156,7 @@ from largest gold amount to smallest gold amount. So if you have a bribe_prog
 don’t do this your larger sum bribe_progs will never be triggered.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">consume_prog<O:P></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>consume_prog [keyword 
-list]<BR>consume_prog p [keyword list]<BR>consume_prog all</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>consume_prog [keyword list]<BR>consume_prog p [keyword list]<BR>consume_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by the 
 mob&nbsp;eating or drinking from an object. If the object&nbsp;used&nbsp;by the 
 mob matches the keywords of the consume_prog, the prog is triggered. If there is 
@@ -170,21 +167,20 @@ the consume_prog will trigger from any object at all being&nbsp;used by&nbsp;the
 mob. This type of prog is usually used for in-zone quests and special mob 
 behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>consume_prog orange apple banana</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
+<P class=MsoNormal><EM>consume_prog 
+orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
 eaten by the mob has any of the keywords orange, apple, or banana. This means 
 that it would be triggered by&nbsp;eating a banana, an apple pie, or even an 
 orange shield.)</P>
-<P class=MsoNormal><EM>consume_prog p apple pie delicious</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;eaten by&nbsp;the mob has the exact keywords apple 
-pie delicious. The prog would not be triggered by eating an object with keywords 
-red apple or blackberry pie or anything except the exact order and wording of 
-the keyword list.)<SPAN 
-style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-</SPAN></P>
-<P class=MsoNormal><EM>consume_prog all</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any object is ate or drank by the mob.)</P>
+<P class=MsoNormal><EM>consume_prog p 
+apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object&nbsp;eaten by&nbsp;the mob has the exact keywords apple pie delicious. 
+The prog would not be triggered by eating an object with keywords red apple or 
+blackberry pie or anything except the exact order and wording of the keyword 
+list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+<P class=MsoNormal><EM>consume_prog 
+all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger if any object is ate or drank by the mob.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one consume_prog on a mob. Generally it is best not to have consume_progs with 
 the same keywords in them, unless they are a consume_prog p with different 
@@ -192,47 +188,47 @@ keyword lists but some of the same keywords – for example a consume_prog p apple
 red juicy and a consume_prog p apple red poisoned.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">day_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>day_prog [list of integer day of the 
-month]</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>day_prog [list of integer day of the month]</EM></P>
 <P class=MsoNormal>This type of mobprog triggers once per 
 mud day, on the days of the month listed.&nbsp; This allows you to have a script 
 which triggers very infrequently indeed.&nbsp; There are 30 days per month in 
 CoffeeMud.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>day_prog 20</EM><SPAN 
-style="mso-spacerun: yes"><EM>&nbsp;21 22</EM>&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 
+<P class=MsoNormal><EM>day_prog 
+20</EM><SPAN style="mso-spacerun: yes"><EM>&nbsp;21 22</EM>&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 
 if day of the month is 20, 21, or 22. )</P>
-<P class=MsoNormal><EM>day_prog 10</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger on the 10th day of every month .)&nbsp;</P>
+<P class=MsoNormal><EM>day_prog 
+10</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger on the 10th day of every month .)&nbsp;</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">death_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>death_prog</EM></P>
-<P class=MsoNormal>This mobprog type triggers on the mob’s death.&nbsp; 
-The death_prog has a wide range of uses. The death_prog is queued just before 
-the mob dies, so it is considered to be the mob’s last gasp.&nbsp; At the end of 
-the death-prog, however, the mob dies. Even if the mob sets its hit points to 
-full, it will die. Other than that, the mob can mpjunk equipment it has, mpgoto 
-a new room to die, unlock a door, load an object of some kind, 
+<P class=MsoNormal>This mobprog type triggers on the mob’s 
+death.&nbsp; The death_prog has a wide range of uses. The death_prog is queued 
+just before the mob dies, so it is considered to be the mob’s last gasp.&nbsp; 
+At the end of the death-prog, however, the mob dies. Even if the mob sets its 
+hit points to full, it will die. Other than that, the mob can mpjunk equipment 
+it has, mpgoto a new room to die, unlock a door, load an object of some kind, 
 etc.<BR><BR>MULTIPLE PROGS: You can have 
 multiple death_progs on the same mob.&nbsp;&nbsp;</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">delay_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>delay_prog [integer, minimum number of ticks] [integer, 
-maximum number of 
-ticks]</EM></P>
+maximum number of ticks]</EM></P>
 <P class=MsoNormal>This kind of mobprog&nbsp;triggers after 
 a random number of ticks have elapsed.&nbsp; The number of random ticks is 
 between the two integers provided.&nbsp; This trigger is used to take some of 
 the load off of rand_prog type programs.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>delay_prog 10 20</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This delay_prog will be triggered after 10-20 ticks have elapsed.)</P>
+<P class=MsoNormal><EM>delay_prog 10 
+20</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This delay_prog will be triggered after 10-20 ticks have elapsed.)</P>
 <P><EM>delay_prog 1 11</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This delay_prog will be triggered 
-after 1-11 ticks have elapsed.)&nbsp;<SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
+delay_prog will be triggered after 1-11 ticks have elapsed.)&nbsp;<SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">drop_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>drop_prog [keyword 
-list]<BR>drop_prog p [keyword list]<BR>drop_prog all</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>drop_prog [keyword list]<BR>drop_prog p 
+[keyword list]<BR>drop_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by the 
 mob&nbsp;dropping an object. If the object&nbsp;dropped by&nbsp;the mob matches 
 the keywords of the drop_prog, the prog is triggered. If there is a ‘p’ placed 
@@ -243,31 +239,28 @@ trigger from any object at all being&nbsp;dropped by&nbsp;the mob. This type of
 prog is usually used for in-zone quests and special mob behavior, and has a 
 variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>drop_prog orange apple banana</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
+<P class=MsoNormal><EM>drop_prog orange 
+apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
 dropped by the mob has any of the keywords orange, apple, or banana. This means 
 that it would be triggered by dropping a banana, an apple pie, or even an orange 
 shield.)</P>
-<P class=MsoNormal><EM>drop_prog p apple pie delicious</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;dropped by&nbsp;the  mob has the 
-exact keywords apple pie delicious. The prog would not be triggered by&nbsp;dropping an object 
-with keywords red apple or blackberry pie or anything except the exact order and 
-wording of the keyword list.)<SPAN 
-style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-</SPAN></P>
-<P class=MsoNormal><EM>drop_prog all</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any object is&nbsp;dropped by&nbsp;the mob.)</P>
+<P class=MsoNormal><EM>drop_prog p apple 
+pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object&nbsp;dropped by&nbsp;the mob has the exact keywords apple pie delicious. 
+The prog would not be triggered by&nbsp;dropping an object with keywords red 
+apple or blackberry pie or anything except the exact order and wording of the 
+keyword list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+<P class=MsoNormal><EM>drop_prog 
+all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger if any object is&nbsp;dropped by&nbsp;the mob.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one drop_prog on a mob. Generally it is best not to have drop_progs with the 
 same keywords in them, unless they are a drop_prog p with different keyword 
 lists but some of the same keywords – for example a drop_prog p apple red juicy 
-and a drop_prog p apple red poisoned.</P>          
-<o:p></O:P>
+and a drop_prog p apple red poisoned.</P><o:p></O:P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">entry_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>entry_prog [integer 
-percentage]</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>entry_prog [integer percentage]</EM></P>
 <P class=MsoNormal>This type of prog checks a percentage 
 chance every time the mob moves into a new room. If the random number generated 
 is equal to or below the percentage of the entry_prog when the mob steps into a 
@@ -276,15 +269,15 @@ instance, you can use it in conjunction with the inroom function to make sure a
 mob stays in the same room or never oversteps a boundary, or to have the mob 
 attack players as it enters the room. There are many possibilities.</P>
 <P class=MsoNormal>EXAMPLES:<BR><EM><BR>entry_prog 25</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 25% of 
-the time when the mob enters a<SPAN style="mso-spacerun: yes"> 
-</SPAN>room.)</P>
-<P class=MsoNormal><EM>entry_prog 100</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 100%, or every time, the mob enters a room.)</P>
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
+will trigger 25% of the time when the mob enters a<SPAN 
+style="mso-spacerun: yes"> </SPAN>room.)</P>
+<P class=MsoNormal><EM>entry_prog 
+100</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger 100%, or every time, the mob enters a room.)</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">exit_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>exit_prog [integer 
-percentage]</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>exit_prog [integer percentage]</EM></P>
 <P class=MsoNormal>This type of prog checks a percentage 
 chance every time&nbsp;a mob moves out of a&nbsp;the room the scripted mob is 
 in. If the random number generated is equal to or below the percentage of the 
@@ -296,12 +289,12 @@ players when one leaves. There are many possibilities.</P>
 <P class=MsoNormal>EXAMPLES:<BR><EM><BR>exit_prog 25</EM><SPAN 
 style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
 will trigger 25% of the time when a mob leaves the room.)</P>
-<P class=MsoNormal><EM>exit_prog 100</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 100%, or every time, a mob leaves the room.)</P>
+<P class=MsoNormal><EM>exit_prog 
+100</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger 100%, or every time, a mob leaves the room.)</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">fight_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>fight_prog [integer 
-percentage]</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>fight_prog [integer percentage]</EM></P>
 <P class=MsoNormal>This type of mobprog checks a percentage 
 chance every round of combat that the mob is in. If the random number generated 
 between 1 and 100 is equal to or less than the percentage of the fight_prog, 
@@ -310,29 +303,30 @@ mob do certain things in combat, for instance, cast spells or use skills.
 Sometimes it is used to ensure a mob doesn’t fight at all, or to perform 
 special, more complicated actions in combat.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>fight_prog 10</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 10% of the time each round of combat the mob is in. 
+<P class=MsoNormal><EM>fight_prog 
+10</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger 10% of the time each round of combat the mob is in. 
 That means that it is probable that this mobprog will go off every 10 rounds or 
 so, although it is not guaranteed to do so.)</P>
-<P class=MsoNormal><EM>fight_prog 75</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 75% of the time each combat round. That means it’s a 
+<P class=MsoNormal><EM>fight_prog 
+75</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger 75% of the time each combat round. That means it’s a 
 safe bet that the trigger will go off 3 out of every 4 rounds.)</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">function_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>function_prog [string name of the 
-function]</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>function_prog [string name of the function]</EM></P>
 <P class=MsoNormal>This type of prog provides a named 
 placeholder for the series of commands that follows.&nbsp; This type of mobprog 
 is never independently triggered, but instead relys on one of the commands, 
 MPCALLFUNC, to trigger it manually.&nbsp; The usefullness of doing this will 
 become apparant in the&nbsp;discussion of MPCALLFUNC.&nbsp;</P>
-<P class=MsoNormal>EXAMPLES:<BR><EM><BR>function_prog&nbsp;Destroy Everyone</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger only when 
+<P class=MsoNormal>EXAMPLES:<BR><EM><BR>function_prog&nbsp;Destroy 
+Everyone</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger only when 
 called by MPCALLFUNC)</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">get_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>get_prog [keyword 
-list]<BR>get_prog p [keyword list]<BR>get_prog all</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>get_prog [keyword list]<BR>get_prog p 
+[keyword list]<BR>get_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by the 
 mob&nbsp;getting an object. If the object picked up&nbsp;by the mob matches the 
 keywords of the get_prog, the prog is triggered. If there is a ‘p’ placed before 
@@ -343,21 +337,20 @@ from any object at all being&nbsp;picked up by&nbsp;the mob. This type of prog
 is usually used for in-zone quests and special mob behavior, and has a variety 
 of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>get_prog orange apple banana</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
+<P class=MsoNormal><EM>get_prog orange 
+apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
 picked up&nbsp;by the mob has any of the keywords orange, apple, or banana. This 
 means that it would be triggered by&nbsp;getting a banana, an apple pie, or even 
 an orange shield.)</P>
-<P class=MsoNormal><EM>get_prog p apple pie delicious</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;picked up by&nbsp;the mob has the exact 
-keywords apple pie delicious. The prog would not be triggered by getting an object 
-with keywords red apple or blackberry pie or anything except the exact order and 
-wording of the keyword list.)<SPAN 
-style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-</SPAN></P>
-<P class=MsoNormal><EM>get_prog all</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any object is&nbsp;picked up by&nbsp;the mob.)</P>
+<P class=MsoNormal><EM>get_prog p apple 
+pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object&nbsp;picked up by&nbsp;the mob has the exact keywords apple pie 
+delicious. The prog would not be triggered by getting an object with keywords 
+red apple or blackberry pie or anything except the exact order and wording of 
+the keyword list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+<P class=MsoNormal><EM>get_prog 
+all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger if any object is&nbsp;picked up by&nbsp;the mob.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one get_prog on a mob. Generally it is best not to have get_progs with the same 
 keywords in them, unless they are a get_prog p with different keyword lists but 
@@ -365,8 +358,8 @@ some of the same keywords – for example a get_prog p apple red juicy and a
 get_prog p apple red poisoned.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">give_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>give_prog [keyword 
-list]<BR>give_prog p [keyword list]<BR>give_prog all</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>give_prog [keyword list]<BR>give_prog p 
+[keyword list]<BR>give_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by the 
 mob being given an object. If the object given to the mob matches the keywords 
 of the give_prog, the prog is triggered. If there is a ‘p’ placed before the 
@@ -377,21 +370,20 @@ trigger from any object at all being given to the mob. This type of prog is
 usually used for in-zone quests and special mob behavior, and has a variety of 
 uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>give_prog orange apple banana</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
+<P class=MsoNormal><EM>give_prog orange 
+apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
 given to the mob has any of the keywords orange, apple, or banana. This means 
 that it would be triggered by being given a banana, an apple pie, or even an 
 orange shield.)</P>
-<P class=MsoNormal>&nbsp;<EM>give_prog p apple pie delicious</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
-given to the mob has the exact keywords apple pie 
-delicious. The prog would not be triggered by being given an object with 
-keywords red apple or blackberry pie or anything except the exact order and 
-wording of the keyword list.)<SPAN 
-style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-</SPAN></P>
-<P class=MsoNormal><EM>give_prog all</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any object is given to the mob.)</P>
+<P class=MsoNormal>&nbsp;<EM>give_prog p 
+apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
+given to the mob has the exact keywords apple pie delicious. The prog would not 
+be triggered by being given an object with keywords red apple or blackberry pie 
+or anything except the exact order and wording of the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+<P class=MsoNormal><EM>give_prog 
+all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger if any object is given to the mob.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one give_prog on a mob. Generally it is best not to have give_progs with the 
 same keywords in them, unless they are a give_prog p with different keyword 
@@ -405,8 +397,7 @@ is also not a bad idea to have a give_prog all to have the mob drop items other
 than the ones it will accept in other give_progs.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">greet_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>greet_prog [integer 
-percentage]</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>greet_prog [integer percentage]</EM></P>
 <P class=MsoNormal>This type of mobprog checks a percentage 
 chance every time someone enters the room that the mob is currently in. If the 
 random number generated between 1 and 100 is equal to or below the percentage of 
@@ -414,15 +405,14 @@ the greet_prog, the prog is triggered. Note that greet_progs are triggered by
 both players and mobs, and a mob in a maze can actually sometimes end up 
 triggering itself! This type of mobprog has all sorts of uses, ranging from 
 giving in-zone quest information to people entering the room, creating 
-aggressive progs, etc. It is a good idea to use the if isqueued function in 
-greet_progs to cut down on spam when multiple players enter the room at the same 
-time.</P>
-<P class=MsoNormal>EXAMPLES:<BR><BR><EM>greet_prog 
-25</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
+aggressive progs, etc.</P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>greet_prog 25</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
 prog will be triggered 25% of the time when someone enters the room where the 
 mob currently is.)</P>
-<P class=MsoNormal><EM>greet_prog 100</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This prog will be triggered 100% of the time when someone enters the 
+<P class=MsoNormal><EM>greet_prog 
+100</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This prog will be triggered 100% of the time when someone enters the 
 room where the mob currently is. This means every time.)</P>
 <P class=MsoNormal>SPECIAL NOTES: You’ll probably want to do 
 a large number of if checks in greet_progs, specifically in the difference 
@@ -433,8 +423,7 @@ dark, and will not see people if blinded.<SPAN
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></O:P></SPAN></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">hitprcnt_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>hitprcnt_prog [integer 
-percentage]</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>hitprcnt_prog [integer percentage]</EM></P>
 <P class=MsoNormal>This type of mobprog checks every round 
 of combat to see if the mob’s hit points are equal to or under the percentage 
 given to the hitprcnt_prog. This type of prog is used mainly to have the mob do 
@@ -443,14 +432,14 @@ this prog will trigger EVERY round of combat in which the mob’s hit points are
 under the percentage. So if you want the mob to do only one thing, you will have 
 to set up the mobprog that way with if checks.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>hitprcnt_prog 50</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+<P class=MsoNormal><EM>hitprcnt_prog 
+50</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
 mob’s hit points are 50% or under every round of combat.)</P>
-<P class=MsoNormal><EM>hitprcnt_prog 100</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the mob’s hit points are 100% or under every round 
+<P class=MsoNormal><EM>hitprcnt_prog 
+100</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger if the mob’s hit points are 100% or under every round 
 of combat. This means, more or less, every round of combat the mob will ever be 
 in.)&nbsp;</P>
-
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">once_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>once_prog</EM></P>
@@ -462,8 +451,7 @@ after the mud boots.&nbsp;This type of prog is usually used for in-zone quests
 and special mob behavior, and has a variety of usesmmediately by the script once 
 it is loaded, and never .</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>   once_prog&nbsp;</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger once, right 
+<P class=MsoNormal><EM>once_prog&nbsp;</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger once, right 
 away)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have&nbsp;only 
 one&nbsp;once_prog on a mob.</P>
@@ -477,16 +465,15 @@ minutes remaining in the quest is equal to the number of minutes
 specified.&nbsp; This is used as part of a quest plot line, to allow the mobs to 
 give warnings about a quest that is running out of time.&nbsp;</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>quest_time_prog 'my quest' 20</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This quest_time_prog will be 
+<P class=MsoNormal><EM>quest_time_prog 
+'my quest' 20</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This quest_time_prog will be 
 triggered on the final 20th minute of the quest 'my quest'.)</P>
-<P><EM>quest_time_prog 'that quest'&nbsp;1</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
-quest_time_prog will be triggered on the final minute of the quest 'that 
-quest'.)&nbsp;<SPAN 
+<P><EM>quest_time_prog 'that 
+quest'&nbsp;1</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This quest_time_prog will be 
+triggered on the final minute of the quest 'that quest'.)&nbsp;<SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">put_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>put_prog [keyword 
-list]<BR>put_prog p [keyword list]<BR>put_prog all</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>put_prog [keyword list]<BR>put_prog p 
+[keyword list]<BR>put_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by the 
 mob&nbsp;putting something in a container. If the&nbsp;container being 
 used&nbsp;by the mob matches the keywords of the put_prog, the prog is 
@@ -497,21 +484,20 @@ put_prog all is used, then the put_prog will trigger from any container at all
 being&nbsp;used by&nbsp;the mob. This type of prog is usually used for in-zone 
 quests and special mob behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>put_prog orange apple banana</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+<P class=MsoNormal><EM>put_prog orange 
+apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
 container&nbsp;used&nbsp;by the mob has any of the keywords orange, apple, or 
 banana. This means that it would be triggered by putting something into a 
 banana, an apple pie, or even an orange shield.)</P>
-<P class=MsoNormal><EM>put_prog p apple pie delicious</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-container used up by&nbsp;the mob has the exact keywords 
-apple pie delicious. The prog would not be triggered by putting anything into a&nbsp;container 
-with keywords red apple or blackberry pie or anything except the exact order and 
-wording of the keyword list.)<SPAN 
-style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-</SPAN></P>
-<P class=MsoNormal><EM>put_prog all</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any container is&nbsp;used by&nbsp;the mob.)</P>
+<P class=MsoNormal><EM>put_prog p apple 
+pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+container used up by&nbsp;the mob has the exact keywords apple pie delicious. 
+The prog would not be triggered by putting anything into a&nbsp;container with 
+keywords red apple or blackberry pie or anything except the exact order and 
+wording of the keyword list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+<P class=MsoNormal><EM>put_prog 
+all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger if any container is&nbsp;used by&nbsp;the mob.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one put_prog on a mob. Generally it is best not to have put_progs with the same 
 keywords in them, unless they are a put_prog p with different keyword lists but 
@@ -519,8 +505,7 @@ some of the same keywords – for example a put_prog p apple red juicy and a
 put_prog p apple red poisoned.</P><o:p></O:P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">rand_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>rand_prog [integer 
-percentage]</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>rand_prog [integer percentage]</EM></P>
 <P class=MsoNormal>This kind of mobprog checks a percentage 
 chance every tick. If the random number generated between 1 and 100 is equal to 
 or below the percentage of the rand_prog, then it will be triggered. This type 
@@ -530,10 +515,12 @@ elements of your zone, or for giving personality to your mobs, such as having a
 blacksmith who pounds out a sword. This kind of mobprog ONLY goes off when a 
 player is in the same zone that your mob is in.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>rand_prog 20</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This rand_prog will be triggered 20% of each tick.)</P>
-<P class=MsoNormal><EM>rand_prog 75</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This rand_prog will be triggered 75% of each tick.)&nbsp;<o:p></O:P></P>
+<P class=MsoNormal><EM>rand_prog 
+20</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This rand_prog will be triggered 20% of each tick.)</P>
+<P class=MsoNormal><EM>rand_prog 
+75</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This rand_prog will be triggered 75% of each tick.)&nbsp;<o:p></O:P></P>
 <P class=MsoNormal>SPECIAL NOTES: While using rand_progs 
 seems really easy, having a lot of them&nbsp;can slow down your zone. Having 
 extremely long rand_progs on many, many mobs is generally not a good idea. If 
@@ -543,8 +530,7 @@ because they have some sort of internal check, or because they go and mppurge
 themselves afterwards.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">remove_prog<O:P></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>remove_prog [keyword 
-list]<BR>remove_prog p [keyword list]<BR>remove_prog all</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>remove_prog [keyword list]<BR>remove_prog p [keyword list]<BR>remove_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by the 
 mob&nbsp;removing an object. If the object removed&nbsp;&nbsp;by the mob matches 
 the keywords of the remove_prog, the prog is triggered. If there is a ‘p’ placed 
@@ -555,21 +541,20 @@ remove_prog will trigger from any object at all being&nbsp;removed by&nbsp;the
 mob. This type of prog is usually used for in-zone quests and special mob 
 behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>remove_prog orange apple banana</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+<P class=MsoNormal><EM>remove_prog 
+orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
 object&nbsp;removed&nbsp;by the mob has any of the keywords orange, apple, or 
 banana. This means that it would be triggered by&nbsp;removing a banana, an 
 apple pie, or even an orange shield.)</P>
-<P class=MsoNormal><EM>remove_prog p apple pie delicious</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
-removed by the mob has the exact keywords apple pie 
-delicious. The prog would not be triggered by removing an object with keywords 
-red apple or blackberry pie or anything except the exact order and wording of 
-the keyword list.)<SPAN 
-style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-</SPAN></P>
-<P class=MsoNormal><EM>remove_prog all</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any object is&nbsp;removed by&nbsp;the mob.)</P>
+<P class=MsoNormal><EM>remove_prog p 
+apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
+removed by the mob has the exact keywords apple pie delicious. The prog would 
+not be triggered by removing an object with keywords red apple or blackberry pie 
+or anything except the exact order and wording of the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+<P class=MsoNormal><EM>remove_prog 
+all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger if any object is&nbsp;removed by&nbsp;the mob.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one remove_prog on a mob. Generally it is best not to have remove_progs with the 
 same keywords in them, unless they are a remove_prog p with different keyword 
@@ -577,8 +562,7 @@ lists but some of the same keywords – for example a remove_prog p apple red
 juicy and a remove_prog p apple red poisoned.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">speech_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>speech_prog [trigger 
-message]<BR>speech_prog p [trigger message]</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>speech_prog [trigger message]<BR>speech_prog p [trigger message]</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by 
 someone saying the trigger line, be it mob or player. If a 'p' is inserted in 
 the prog as above, the line spoken must exactly match the trigger message; if it 
@@ -589,13 +573,13 @@ spoken. This type of prog can also be used to have a mob trigger itself if you
 want to have multiple connected progs – see complex progs for details. Note that 
 this kind of mobprog is only triggered by someone using the say command.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>speech_prog dog wolf coyote</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog 
+<P class=MsoNormal><EM>speech_prog dog 
+wolf coyote</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog 
 whenever dog, wolf, or coyote is said in the room with the mob. If more than one 
 of the keywords is spoken in the same line, the prog will trigger more than 
 once.)</P>
-<P class=MsoNormal><EM>speech_prog p The dog barks at the cat</EM>.<SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog only 
+<P class=MsoNormal><EM>speech_prog p The 
+dog barks at the cat</EM>.<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog only 
 if the exact expression is said. Note that punctuation counts, although you 
 don't *have* to use it.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
@@ -603,23 +587,21 @@ one speech_prog on a mob. It is generally not a good idea to have more than one
 speech_prog be triggered by the same expression.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">time_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>time_prog [list of hours in the 
-day]</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>time_prog [list of hours in the day]</EM></P>
 <P class=MsoNormal>This type of mobprog triggers once per 
 mud hour, on the hours of the&nbsp;day listed.&nbsp; This allows you to have a 
 script which triggers&nbsp;infrequently.&nbsp; There are&nbsp;16&nbsp;hours per 
 day (0-15)&nbsp;in CoffeeMud.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>time_prog 10</EM><SPAN 
-style="mso-spacerun: yes"><EM>&nbsp;1 2</EM>&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 
+<P class=MsoNormal><EM>time_prog 
+10</EM><SPAN style="mso-spacerun: yes"><EM>&nbsp;1 2</EM>&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 
 if&nbsp;hour of the&nbsp;day is 10, 1, or 2. )</P>
-<P class=MsoNormal><EM> time_prog&nbsp;3</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger on 
+<P class=MsoNormal><EM>time_prog&nbsp;3</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger on 
 the&nbsp;3rd&nbsp;hour of every month .)&nbsp;</P><o:p></O:P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">wear_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>wear_prog [keyword 
-list]<BR>wear_prog p [keyword list]<BR>wear_prog all</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>wear_prog [keyword list]<BR>wear_prog p 
+[keyword list]<BR>wear_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by the 
 mob&nbsp;wearing, wielding, or holding an item. If the object&nbsp;worn&nbsp;by 
 the mob matches the keywords of the wear_prog, the prog is triggered. If there 
@@ -630,556 +612,617 @@ wear_prog will trigger from any object at all worn by&nbsp;the mob. This type of
 prog is usually used for in-zone quests and special mob behavior, and has a 
 variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>wear_prog orange apple banana</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+<P class=MsoNormal><EM>wear_prog orange 
+apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
 object&nbsp;worn&nbsp;by the mob has any of the keywords orange, apple, or 
 banana. This means that it would be triggered by&nbsp;wearing a banana, an apple 
 pie, or even an orange shield.)</P>
-<P class=MsoNormal><EM>wear_prog p apple pie delicious</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;worn by&nbsp;the mob has the exact 
-keywords apple pie delicious. The prog would not be triggered by wearing an object 
-with keywords red apple or blackberry pie or anything except the exact order and 
-wording of the keyword list.)<SPAN 
-style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-</SPAN></P>
-<P class=MsoNormal><EM>wear_prog all</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any object is&nbsp;worn by&nbsp;the mob.)</P>
+<P class=MsoNormal><EM>wear_prog p apple 
+pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object&nbsp;worn by&nbsp;the mob has the exact keywords apple pie delicious. The 
+prog would not be triggered by wearing an object with keywords red apple or 
+blackberry pie or anything except the exact order and wording of the keyword 
+list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+<P class=MsoNormal><EM>wear_prog 
+all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger if any object is&nbsp;worn by&nbsp;the mob.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one wear_prog on a mob. Generally it is best not to have wear_progs with the 
 same keywords in them, unless they are a wear_prog p with different keyword 
 lists but some of the same keywords – for example a wear_prog p apple red juicy 
 and a wear_prog p apple red poisoned.</P>
-<P class=MsoNormal><FONT color=#4169e1 size=6>Scripting 
-Commands</FONT></P>
-<P class=MsoNormal><FONT color=black>Commands inside your scripts should each be 
-terminated by a carriage return (ENTER) or a semicolon, depending upon the 
-manner in which your script is presented.</FONT></P>
-<P class=MsoNormal><FONT color=black>Commands are of two general types: MUD 
-Commands, and&nbsp;MOBPROG (MP)&nbsp;Commands.&nbsp; </FONT></P>
-<P class=MsoNormal><FONT color=black>MUD Commands you should already be familiar 
-with, as they include commands such as GET, PUT, SAY, DROP, etc.&nbsp; It is not 
-within the scope of this document to list or describe the standard MUD 
+<P class=MsoNormal><FONT color=#4169e1 size=6>Scripting Commands</FONT></P>
+<P class=MsoNormal>Commands inside your scripts should each 
+be terminated by a carriage return (ENTER) or a semicolon, depending upon the 
+manner in which your script is presented.</P>
+<P class=MsoNormal>Commands are of two general types: MUD 
+Commands, and&nbsp;MOBPROG (MP)&nbsp;Commands.&nbsp; </P>
+<P class=MsoNormal>MUD Commands you should already be 
+familiar with, as they include commands such as GET, PUT, SAY, DROP, etc.&nbsp; 
+It is not within the scope of this document to list or describe the standard MUD 
 Commands.&nbsp; The help files inside the mud itself can do a far better 
 job.&nbsp; It is sufficient to say that issueing the command in your script 
 cause the scripted mob to attempt to perform the command exactly as it is 
-written.&nbsp; If you enter a script line such as:</FONT></P>
-<P class=MsoNormal><EM>get sword</EM></P>
-<P class=MsoNormal>.. and there is&nbsp;a sword, the mob will get it.&nbsp; If 
-there is NO sword, the mob will not appear to be doing anything at 
-all.&nbsp;</P>
-<P class=MsoNormal><FONT color=black>MP Commands are what we will be discussing 
-in more detail here.&nbsp; Like MUD Commands, they each have a syntax and 
-structure which must be followed.&nbsp; </FONT></P>
-<P class=MsoNormal><FONT color=black><EM>commandword parameter1 parameter2 ... 
-parametern</EM><BR><BR>Like MUD Commands, MP Commands all have a key command 
-word followed by one or more parameters.&nbsp;&nbsp;As in&nbsp;MUD Commands, 
-those parameters are delimited by spaces.&nbsp; If you need to specify a single 
+written.&nbsp; If you enter a script line such as:</P>
+<P class=MsoNormal><EM>get 
+sword</EM></P>
+<P class=MsoNormal>.. and there is&nbsp;a sword, the mob 
+will get it.&nbsp; If there is NO sword, the mob will not appear to be doing 
+anything at all.&nbsp;</P>
+<P class=MsoNormal>MP Commands are what we will be 
+discussing in more detail here.&nbsp; Like MUD Commands, they each have a syntax 
+and structure which must be followed.&nbsp; </P>
+<P class=MsoNormal><EM>commandword 
+parameter1 parameter2 ... parametern</EM><BR><BR>Like MUD Commands, MP Commands all have a key command word 
+followed by one or more parameters.&nbsp;&nbsp;As in&nbsp;MUD Commands, those 
+parameters are delimited by spaces.&nbsp; If you need to specify a single 
 parameter which contains a space, you would put double quotes (") around the 
-parameter.&nbsp; </FONT></P>
-<P class=MsoNormal><FONT color=black><EM>say "the scary monster" 
-hi!</EM></FONT></P>
-<P class=MsoNormal><FONT color=black>In an MP Command, however, this is not 
+parameter.&nbsp; </P>
+<P class=MsoNormal><EM>say "the scary 
+monster" hi!</EM></P>
+<P class=MsoNormal>In an MP Command, however, this is not 
 true.&nbsp; In an MP Command, the single quote (') is used around a parameter 
-when it contains spaces.&nbsp; </FONT><FONT color=black>Keep this difference in 
-mind when writing your scripts, lest you run into problems.&nbsp; This 
-difference is actually more important with MP Functions.&nbsp; This is because 
-most MP Commands only have one parameter, so that&nbsp;parameter word grouping 
-using quotes is usually not necessary.</FONT></P>
+when it contains spaces.&nbsp; Keep this difference in mind when writing your 
+scripts, lest you run into problems.&nbsp; This difference is actually more 
+important with MP Functions.&nbsp; This is because most MP Commands only have 
+one parameter, so that&nbsp;parameter word grouping using quotes is usually not 
+necessary.</P><PRE><FONT color=black><SPAN style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT color=#000000 size=3>MPENABLE [MOB] [ABILITY NAME] [PROF] [STR] adds a new skill to the mob.<BR>MPENDQUEST [QUEST NAME] this command will stop and shutdown the quest of the given name.<BR>MPEXP [MOB NAME] [EXP] grants amount of exp to mob and entire group.<BR>MPFORCE [MOB NAME] [COMMAND] force the given mob to do the given command.<BR>MPGOTO [ROOM ID/NAME/DESC] take the monster to the given room.<BR>MPGSET [MOB/ITEM] [VAR NAME] [VALUE] like MPSET but player data accessible. See GSTAT.<BR>MPHIDE [MOB/ITEM/EXIT] makes the target undetectable by any means.<BR>MPJUNK [ITEM] destroy the given item from the monsters inventory.<BR>MPKILL [MOB NAME] attack the given target.<BR>MPLOADVAR [MOB NAME] [VAR NAME] loads the variable from the database.<BR>MPLOCK [ITEM/EXIT] closes and locks a lockable container or door.<BR>MPM2I2M [MOB/ITEM] this strange command turns a mob into an item and back into a mob MPMLOAD [MOB NAME] create an instance of the given mob name.<BR>MPMLOAD FROMFILE [CMARE FILE] [MOB NAME] create a given mob name from a file.<BR>MPOLOAD [ITEM NAME] create an instanceof the given item, give it to the mob.<BR>MPOLOAD FROMFILE [CMARE FILE] [ITEM NAME] create an item from a file, give it to the mob.<BR>MPOLOADROOM [ITEM NAME] create an instanceof the given item, drop it in the room.<BR>MPOLOADROOM FROMFILE [CMARE FILE] [ITEM NAME] create an item from a file, drop it in the room.<BR>MPOPEN [ITEM/EXIT] opens a closed container or door.<BR>MPPURGE [ITEM/MOB NAME] destroy the given target item or mob.<BR>MPQUESTWIN [MOB NAME] [QUEST NAME] declares the mob a winner of the given quest.<BR>MPSAVEVAR [MOB NAME] [VAR NAME] saves the variable set using MPSETVAR to the database.<BR>MPSET [MOB/ITEM] [VAR NAME] [VALUE] use with care! sets a stat for a mob or item.<BR>MPSETVAR [MOB NAME] [VAR NAME] [VALUE] set a variable for the given mob.<BR>Value may be ++, MPSLAY [MOB NAME] utterly kill the target.<BR>MPSTARTQUEST [QUEST NAME] this command will start the quest of the given name.<BR>MPTATTOO [MOB] ( )[TATTOONAME] MPTRACKTO [MOB NAME] forces the mob to track down the given mob.<BR>MPTRANSFER [ALL/MOB NAME] [ROOM ID/NAME/DESC] transfer mobs to the given room.<BR>MPUNAFFECT [MOB NAME] removes all non MPUNBEHAVE [BEHAVIOR] [MOB NAME] removes a behavior from a mob.<BR>MPUNHIDE [MOB/ITEM/EXIT] reverses the affects of MPHIDE MPUNLOCK [ITEM/EXIT] unlocks a locked container or door, but does not open.<BR>MPWHILE ([IF CONDITION]) [COMMAND] repeatedly executes commmand.</FONT><BR></PRE>
 <P class=MsoNormal><FONT color=black><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpasound<o:p></o:p></SPAN></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpaffect</SPAN></P>
+<P class=MsoNormal><FONT size=3>Usage: 
+<BR><EM>mpaffect [spell name] [target] 
+[parameters]</EM></FONT></P>
+<P class=MsoNormal><FONT size=3>This 
+command will&nbsp;put the target&nbsp;under the affect of the given spell, 
+chant, prayer, song,&nbsp;skill, or CoffeeMud property.&nbsp; This is not the 
+same as someone casting the given spell on the target.&nbsp;&nbsp;Instead, this 
+command causes the target simply to come under the affect (as if the whole 
+casting process were skipped).&nbsp; This means that not all spells&nbsp;will 
+work&nbsp;with this command.&nbsp; Fireball, for instance, since it has 
+no&nbsp;effect&nbsp;after casting, would do nothing&nbsp;under this 
+command.&nbsp; The&nbsp;parameters given apply specifically to CoffeeMud 
+properties, and are unnecessary for most spells, chants, etc.</FONT> </P>
+<P class=MsoNormal><FONT size=3>EXAMPLES:</FONT> </P>
+<P class=MsoNormal><FONT size=3><EM>mpaffect&nbsp;Invisibility $n<BR></EM></FONT><FONT size=3><EM>mpaffect Prop_PracticeDummy $n KILLABLE</EM></FONT> </P>
+<P class=MsoNormal><FONT size=3><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpalarm</SPAN></FONT> </P>
+<P class=MsoNormal><FONT><FONT size=3><FONT color=black>Usage:<BR><EM>mpalarm [ticks] 
+[command]&nbsp;</EM></FONT></FONT></FONT> </P>
+<P class=MsoNormal><FONT size=3>This 
+very simple command will wait the given number of ticks (4 second intervals) 
+before executing the command given in the parameters.&nbsp; This command 
+does&nbsp;NOT end execution.&nbsp; Any commands after&nbsp;mpalarm will be 
+executed immediately.&nbsp; It is only the command given in the mpalarm 
+parameters that will be executed after the delay.&nbsp; It is for this reason 
+that the trigger type function_prog exists: namely to allow you to execute the 
+group of instructions in the function_prog after&nbsp;some delay.</FONT> </P>
+<P class=MsoNormal><FONT size=3>EXAMPLES:</FONT> </P>
+<P class=MsoNormal><EM><FONT size=3>mpalarm 10 say&nbsp;umm.. what was the question?<BR>mpalarm&nbsp;30 mpecho You think you heard something.<BR>mpalarm 30 mpcallfunc myfunction</FONT></EM><FONT><FONT size=3>&nbsp;&nbsp;</FONT></FONT> 
+&nbsp;</P></FONT></SPAN></FONT>
+<P class=MsoNormal><FONT color=black><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpasound<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage: <BR><EM>mpasound [text string]</EM></P>
-<P class=MsoNormal>This command will echo the text string to all of the rooms 
-adjacent to the one the mob is in, much like the death echo when a mob dies. 
-This can be useful for creating dramatic deaths from mobs, or for use with mobs 
-such as a wandering minstrel or the like.</P>
+<P class=MsoNormal>This command will echo the text string to 
+all of the rooms adjacent to the one the mob is in, much like the death echo 
+when a mob dies. This can be useful for creating dramatic deaths from mobs, or 
+for use with mobs such as a wandering minstrel or the like.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>mpasound You hear a scream from nearby!<BR>mpasound A 
-delightful music fills the air from somewhere near here.<BR>mpasound The drunken 
-hollering of $I can be heard nearby.<BR>mpasound The earth thunders as $I’s 
-corpse falls to the ground nearby.</EM></P>
-<P class=MsoNormal>SPECIAL NOTES: Keep in mind that mpasound does not echo to 
-those in the room with the mob, only to rooms adjacent to it. So if you want 
-people in the room to hear the mpasound too, you’ll need to use an mpecho as 
-well.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><EM>mpasound You hear 
+a scream from nearby!<BR>mpasound A delightful music fills 
+the air from somewhere near here.<BR>mpasound The drunken 
+hollering of $n can be heard nearby.<BR>mpasound The earth 
+thunders as $n’s corpse falls to the ground nearby.</EM></P>
+<P class=MsoNormal>SPECIAL NOTES: Keep in mind that mpasound 
+does not echo to those in the room with the mob, only to rooms adjacent to it. 
+So if you want people in the room to hear the mpasound too, you’ll need to use 
+an mpecho as well.</P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpat<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>Usage: mpat [destination] [command]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>Performs the desired command at a designated location. The 
-destination can be either a room vnum, a character variable such as $n, or a 
-specific keyword of a mob. The command can be just about anything you want it to 
-be. This command is very useful for doing slight of hand kind of tricks with 
-mobs by performing actions away from the player, or doing things elsewhere in 
-the zone for you. It has many potential uses.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpat<o:p></O:P></SPAN></P>
+<P class=MsoNormal>Usage: <BR><EM>mpat [destination] [command]</EM></P>
+<P class=MsoNormal>Performs the desired command at a 
+designated location. The destination can be either a room id, a key word from 
+the room description, or&nbsp;the name of a&nbsp;mob. The command can be just 
+about anything you want it to be. This command is very useful for doing slight 
+of hand kind of tricks with mobs by performing actions away from the player, or 
+doing things elsewhere in the zone for you. It has many potential uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>mpat 10056 unlock door<BR>mpat<SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>xxxguardonexxx poke 
-xxxguardonexxx<BR><SPAN style="mso-spacerun: yes"> </SPAN>mpat $n mpechoat $n 
-You feel weakened from your escape.<BR>mpat 1252 drop all</P>
-<P class=MsoNormal>SPECIAL NOTES: When using mpat, it is not a bad idea to give 
-your mobs specific, unique keywords so they can be manipulated with no error. 
-The command is usually essential for zones that have complicated quests, and can 
-be used to trigger other mobs, unlock and open doors and chests away from the 
-mob, and a variety of other things.</P>
+<P class=MsoNormal><EM>mpat&nbsp;MyArea#1232 unlock door<BR>mpat<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>guardone poke guardone<BR><SPAN style="mso-spacerun: yes"></SPAN>mpat&nbsp;'a lovely pool'&nbsp;mpechoat $n&nbsp;You 
+feel weakened from your escape.<BR>mpat Sewers#1252 drop 
+all</EM> </P>
+<P class=MsoNormal>SPECIAL NOTES: When using mpat, it is not 
+a bad idea to give your mobs specific, unique keywords so they can be 
+manipulated with no error. The command is usually essential for zones that have 
+complicated quests, and can be used to trigger other mobs, unlock and open doors 
+and chests away from the mob, and a variety of other things.</P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpecho<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>Usage: mpecho [text string]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>Quite simply, the mpecho command sends a message to the room 
-of the mob. This message can be anything you like, although it does not support 
-ANSI colors. It does, however, support all of the character variables the mud 
-uses, and can also use variables set by the mpsetvar command. This has a wide 
-range of use, from setting background noise to a mob, to allowing the mob to 
-express itself safely as if speaking. The mpecho command does not set off 
-speech_progs, although it does set off act_progs.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpbeacon</SPAN></P>
+<P class=MsoNormal>Usage: <BR><EM>mpbeacon [destination] [target]</EM></P>
+<P class=MsoNormal>This command changes the recall/start 
+room of the target, which must be a player.&nbsp; .</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho $I says, 
-‘Hey how’s it going?’</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho A blast 
-of strong wind rushes into the room suddenly!</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho $I 
-hisses, ‘So, $[adventurer], you’ve come to face me…’</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho A dagger 
-flashes into $I’s hand, and $j snickers softly.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: Using mpecho $I says, ‘blah’ is a safe way to 
-have a mob talk. Anytime you want to have a mob say something, you should use 
-this, unless you want it to trigger speech_progs. Also, remember that whatever 
-is mpechoed is seen be everyone in the room exactly the same. So if you want a 
-message that targets a specific person, see the mpechoat and mpechoaround 
-commands.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><EM>mpbeacon&nbsp;MyArea#1232 all<BR>mpbeacon<SPAN style="mso-spacerun: yes">&nbsp;</SPAN>guardone $n<BR><SPAN 
+style="mso-spacerun: yes"></SPAN>mpat&nbsp;'a lovely 
+pool'&nbsp;$n</EM></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpechoaround<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>Usage: mpechoaround [target] [text string]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command is similar to the mpecho command, but instead of 
-echoing to everyone in the room, can be used to echo to everyone BUT the 
-targeted person. Why would you do this? If used in conjunction with the mpechoat 
-command, you can create text strings which look right to everyone involved. The 
-way to make mpechoaround do this is to use the mpat command. If you don’t use 
-the mpat command first, this command will function exactly like mpecho. Compare 
-the below examples to the examples shown in mpechoat.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpbehave</SPAN></P>
+<P class=MsoNormal>Usage: <BR><EM>mpbehave [behavior id] [target] [parameters]</EM></P>
+<P class=MsoNormal><FONT size=3>This 
+command will&nbsp;put the target&nbsp;under the affect of the given CoffeeMud 
+behavior.&nbsp;&nbsp; The&nbsp;parameters given apply specifically to CoffeeMud 
+behaviors, and are unnecessary for&nbsp;some.&nbsp; The Archon may use LIST 
+BEHAVIORS, and AHELP&nbsp;[behavior name] for more information.&nbsp; 
+</FONT></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpechoaround $n 
-You hear voices speaking all around you.</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat $n 
-mpechoaround $n $N cringes as a poisoned dart strikes $s chest!</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat $n 
-mpechoaround $n A pile of rocks rains down upon $n!</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat $n 
-mpechoaround $n A circle of light surrounds $n, and then $e vanishes.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: Just remember that to use this command 
-correctly it must be used in conjunction with the mpat command.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><EM>mpbehave&nbsp;Aggressive $n<BR>mpbehave<SPAN style="mso-spacerun: yes">&nbsp;</SPAN>Mobile $n <BR><SPAN 
+style="mso-spacerun: yes"></SPAN>mbehave&nbsp;Scriptable $n 
+ONCE_PROG;say hello;~;</EM></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpechoat<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>Usage: mpechoat [target] [text string]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command functions similar to the mpecho command, but can 
-be used in such a way that only the targeted person sees the text string. This 
-is useful for cutting down on spam from greet_prog mpechos, for example, as well 
-as personalizing the text string for all parties involved in conjunction with 
-the mpechoaround command. In order to get mpechoat to work in this way, you must 
-first use the mpat command.<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>Compare 
-the examples below to the examples shown in the mpechoaround command 
-description.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>EXAMPLES:<BR><BR><SPAN style="mso-spacerun: yes">&nbsp; 
-</SPAN>mpechoat $n You hear voices speaking all around you.</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat $n 
-mpechoat $n You cringe as a poisoned dart strikes you in the chest!</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat $n 
-mpechoat $n A pile of rocks rains down upon you!</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat $n 
-mpechoat $n A circle of light surrounds you, and you are transported.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: Just remember that to use this command 
-correctly it must be used in conjunction with the mpat command.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpcallfunc</SPAN></P>
+<P class=MsoNormal>Usage: <BR><EM>mpcallfunc [function name] [parameters]</EM></P>
+<P class=MsoNormal><FONT size=3>This 
+command allows you to execute a group of other predefined commands without 
+typing them all again.&nbsp; This is done by first defining a group of commands 
+using the trigger function_prog.&nbsp; Once it is defined, the commands inside 
+the function_prog may be executed by placing mpcallfunc followed by the 
+function_prog's name parameter into another set of commands.&nbsp; This is 
+useful for executing a set of commands that would normally have to be typed 
+identically into your triggers over and over again.&nbsp; It is especially 
+useful when used in conjunction with commands like mpalarm.&nbsp; The parameters 
+passed into the mpcallfunc can be referenced using the $g and $G code 
+variables.</FONT></P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>mpcallfunc&nbsp;CompleteTask $n 'my house'<BR>mpcallfunc<SPAN style="mso-spacerun: yes">&nbsp;</SPAN>MyFunction</EM></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpexp<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpcast</SPAN></P>
+<P class=MsoNormal>Usage: <BR><EM>mpcast [spell] [target]</EM></P>
+<P class=MsoNormal><FONT size=3>This 
+command causes the host mob to cast the given spell, chant, prayer, song, or use 
+the given skill against the given target.&nbsp; Unlike using the mundane cast 
+command, this scripting form does not require the mob to actually have the 
+skill.&nbsp; Although there is still the 1-in-20 chance of failure of any skill, 
+and the level of the host will affect the probability of success.</FONT></P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>mpcast fireball $r<BR>mpcast 
+'stinking cloud' </EM></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpclose</SPAN></P>
+<P class=MsoNormal>Usage: <BR><EM>mpclose&nbsp;[target]</EM></P>
+<P class=MsoNormal><FONT size=3>This command closes a lid on a container, or the 
+door on an exit.&nbsp; This command has no effect if there is no lid or door, or 
+it is already closed.</FONT></P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>mpclose $xN<BR>mpclose 'the magic door'</EM></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpdamage</SPAN></P>
+<P class=MsoNormal>Usage: <BR><EM>mpdamage&nbsp;[target] [min amount] [max 
+amount]</EM></P>
+<P class=MsoNormal><FONT size=3>This command does damage to a mob or item 
+specified as the target.&nbsp; The amount of damage will be randomly between the 
+min and max amounts.&nbsp; This command, by default, will never ever kill the 
+target UNLESS the parameters are followed by the word kill as shown in the 
+example below.&nbsp; Also, this command will treat any items that do not 
+normally display a condition (like mundane items, wands, etc) as having 1 hit 
+point.&nbsp; Other items (weapons, armor) will have a number of hit points equal 
+to their condition.&nbsp; This command is useful not only for hurting mobs, but 
+for scratching up their armor when acid falls from the ceiling or something 
+similar.</FONT></P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>mpdamage $r 1 10 KILL<BR>mpdamage $n 10 50</EM></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpdisable</SPAN></P>
+<P class=MsoNormal>Usage: <BR><EM>mpdisable&nbsp;[target] [spell]</EM></P>
+<P class=MsoNormal><FONT size=3>This command causes the target mob to lose the 
+spell, skill, prayer, etc specified.&nbsp; It does nothing if the mob does not 
+have the skill.</FONT></P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>mpdisable $n fireball<BR>mpdisable $n pass door</EM></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpecho<o:p></O:P></SPAN></P>
+<P class=MsoNormal>Usage: <BR><EM>mpecho [text 
+string]</EM></P>
+<P class=MsoNormal>Quite simply, the mpecho command sends a 
+message to the room of the mob. This message can be anything you like. It&nbsp; 
+supports all of the character variables the mud uses, and can also use variables 
+set by the mpsetvar command. This has a wide range of uses, from setting 
+background noise to a mob, to allowing the mob to express itself safely as if 
+speaking. The mpecho command does not set off speech_progs, although it does set 
+off act_progs.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>mpecho $i says, ‘Hey how’s it 
+going?’<BR>mpecho A blast of strong wind rushes into the room 
+suddenly!<BR>mpecho $i hisses, ‘So, $n, you’ve come to face me…’<BR>mpecho A 
+dagger flashes into $i’s hand, and $j snickers softly.</EM></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: Using mpecho $i says, 
+‘blah’ is a safe way to have a mob talk. Anytime you want to have a mob say 
+something, you should use this, unless you want it to trigger speech_progs. 
+Also, remember that whatever is mpechoed is seen be everyone in the room exactly 
+the same. So if you want a message that targets a specific person, see the 
+mpechoat and mpechoaround commands.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpechoaround<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>Usage: <BR><EM>mpechoaround [target] 
+[text string]</EM></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command is similar to the mpecho 
+command, but instead of echoing to everyone in the room, can be used to echo to 
+everyone BUT the targeted person. Why would you do this? If used in conjunction 
+with the mpechoat command, you can create text strings which look right to 
+everyone involved. The way to make mpechoaround do this is to use the mpat 
+command. </P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><EM>mpechoaround $n You hear voices 
+speaking all around you.<BR>mpechoaround $n $N cringes as a poisoned dart 
+strikes $s chest!<BR>mpechoaround $n A pile of rocks rains down upon 
+$n!<BR>mpechoaround $n A circle of light surrounds $n, and then $e 
+vanishes.</EM></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpechoat<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>Usage: <BR><EM>mpechoat [target] [text 
+string]</EM></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command functions similar to the 
+mpecho command, but can be used in such a way that only the targeted person sees 
+the text string. This is useful for cutting down on spam from greet_prog 
+mpechos, for example, as well as personalizing the text string for all parties 
+involved in conjunction with the mpechoaround command. </P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpechoat $n You hear voices speaking all around 
+you.<BR>mpechoat $n You cringe as a poisoned dart strikes you in the 
+chest!<BR>mpechoat $n A pile of rocks rains down upon you!<BR>mpechoat $n A 
+circle of light surrounds you, and you are transported.</EM></P>
+<P class=MsoNormal><EM><o:p></O:P></EM></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpexp<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: mpexp [target] [exp amount]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command gives an amount of experience to the target, and 
-gives the same amount of experience to each member of the target’s group who is 
-in the room with the target. This amount is capped by level for those who are 
-lower level, and caps at 100k for non-transed, 50k for transed, and 25k for 
-multiclassed characters. This is a useful command to use to award players for 
-completing in zone quests, etc. that you have set up. If you want to award more 
-experience than the capped amount, you can have the mob give several experience 
-awards in a row. It is best when you award an experience award to give some sort 
-of message to the player about why they are receiving the award. </P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>EXAMPLES:<BR style="mso-special-character: line-break"><BR 
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command gives an amount of 
+experience to the target, and gives the same amount of experience to each member 
+of the target’s group who is in the room with the target. This amount is capped 
+by level for those who are lower level, and caps at 100k for non-transed, 50k 
+for transed, and 25k for multiclassed characters. This is a useful command to 
+use to award players for completing in zone quests, etc. that you have set up. 
+If you want to award more experience than the capped amount, you can have the 
+mob give several experience awards in a row. It is best when you award an 
+experience award to give some sort of message to the player about why they are 
+receiving the award. </P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>EXAMPLES:<BR 
+style="mso-special-character: line-break"><BR 
 style="mso-special-character: line-break"></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpexp $n 
-100000</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpexp $n 
-75000</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpexp 
-$[adventurer] 50000</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpexp $n 
-500</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: Giving experience to mobs is worthless, as you 
-might expect. Players can level off of these experience awards, just as if they 
-had killed something.<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>Be careful 
-with this command. You don’t want to give out awards for every little thing 
-characters do, nor do you want to give large awards for menial tasks. You also 
-will, of course, not want to make it so a mob can accidentally give the same 
-award over and over endlessly, or something equally abusable.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpexp $n 100000</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpexp $n 75000</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpexp $[adventurer] 50000</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpexp $n 500</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: Giving experience to mobs 
+is worthless, as you might expect. Players can level off of these experience 
+awards, just as if they had killed something.<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>Be careful with this command. You don’t want 
+to give out awards for every little thing characters do, nor do you want to give 
+large awards for menial tasks. You also will, of course, not want to make it so 
+a mob can accidentally give the same award over and over endlessly, or something 
+equally abusable.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpforce<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpforce<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: mpforce [target] [command]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command forces the victim to do the designated command. 
-The target can be a character variable or a keyword of a mob. The mob can also 
-mpforce all, in which case every player in the room will be forced to do the 
-command. This command has a lot of uses, but is mostly use in combat to do 
-particularly nasty things, like force the player to heal the mob, etc. It can 
-also be used to trigger other mobs by forcing them to perform a specific action 
-which triggers an act_prog.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command forces the victim to do the 
+designated command. The target can be a character variable or a keyword of a 
+mob. The mob can also mpforce all, in which case every player in the room will 
+be forced to do the command. This command has a lot of uses, but is mostly use 
+in combat to do particularly nasty things, like force the player to heal the 
+mob, etc. It can also be used to trigger other mobs by forcing them to perform a 
+specific action which triggers an act_prog.</P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpforce $n 
-flee</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpforce all 
-sleep</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpforce 
-xxxguardtwoxxx poke self</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpforce $n cast 
-‘heal serious’ giant</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: Remember that whatever you force something to 
-do, it needs to be typed out exactly as if they were typing the command 
-themselves. That means if you want a player, for example, to be forced to cast 
-‘heal serious’ on your mob, you need to mpforce them to cast it on the mob name, 
-not $i or me, etc. What that also means is you cannot mpforce a mob in the room 
-with your mob to kill $n, for example, because the other mob might not 
-necessarily know who $n is. You can, however, mpforce the mob to assist your 
-mob, rescue, etc.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpforce $n flee</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpforce all sleep</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpforce xxxguardtwoxxx poke self</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpforce $n cast ‘heal serious’ giant</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: Remember that whatever you 
+force something to do, it needs to be typed out exactly as if they were typing 
+the command themselves. That means if you want a player, for example, to be 
+forced to cast ‘heal serious’ on your mob, you need to mpforce them to cast it 
+on the mob name, not $i or me, etc. What that also means is you cannot mpforce a 
+mob in the room with your mob to kill $n, for example, because the other mob 
+might not necessarily know who $n is. You can, however, mpforce the mob to 
+assist your mob, rescue, etc.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpgoto<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpgoto<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: mpgoto [destination]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>Quite simply, this command will move the mob to the 
-designated location. The destination can be a room vnum, character variable, or 
-keyword of a mob. There is no message given to this command, so if you want 
-there to be one, you need to include an mpecho in your mobprog. This command is 
-a good way to move your mob around your zone should you need to.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>Quite simply, this command will move the 
+mob to the designated location. The destination can be a room vnum, character 
+variable, or keyword of a mob. There is no message given to this command, so if 
+you want there to be one, you need to include an mpecho in your mobprog. This 
+command is a good way to move your mob around your zone should you need to.</P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpgoto 10076</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpgoto 
-xxxguardthreexxx</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpgoto xxxguardthreexxx</P>
 <P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpgoto $n</P>
 <P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpgoto 1252</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: You must be very, very careful if you choose 
-to use mpgoto to go to a character variable like $n. Remember that it is very 
-possible that a player might recall or die while interacting with the mob, and 
-the mob may very well end up mpgotoing $n, who is now in town! This is bad. 
-That’s why it is not a good idea to use the mpgoto command to go to character 
-variables; its just too unreliable.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: You must be very, very 
+careful if you choose to use mpgoto to go to a character variable like $n. 
+Remember that it is very possible that a player might recall or die while 
+interacting with the mob, and the mob may very well end up mpgotoing $n, who is 
+now in town! This is bad. That’s why it is not a good idea to use the mpgoto 
+command to go to character variables; its just too unreliable.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpjunk<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpjunk<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: mpjunk [object]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command destroys the object that the mob is referring 
-to. The object must be in the mob’s inventory or part of its equipment. You can 
-also have a mob mpjunk all, which destroys everything on their person. You can 
-also do things such as mpjunk all.sword or mpjunk all.bread, and can use the 
-character variable $o. The command gives no message about its use, so it is a 
-good way to secretly handle the junking of items. It is useful for getting rid 
-of quest items given to the mob for give_progs, or if you have more complicated 
-mobs where you must perform some sort of action in order to get its equipment, 
-for example.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command destroys the object that the 
+mob is referring to. The object must be in the mob’s inventory or part of its 
+equipment. You can also have a mob mpjunk all, which destroys everything on 
+their person. You can also do things such as mpjunk all.sword or mpjunk 
+all.bread, and can use the character variable $o. The command gives no message 
+about its use, so it is a good way to secretly handle the junking of items. It 
+is useful for getting rid of quest items given to the mob for give_progs, or if 
+you have more complicated mobs where you must perform some sort of action in 
+order to get its equipment, for example.</P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpjunk 
-xxxchalicexxx</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpjunk 
-greatsword</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpjunk 
-all.arrow</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpjunk xxxchalicexxx</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpjunk greatsword</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpjunk all.arrow</P>
 <P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpjunk all</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: This command is very good for give_progs where 
-you want to destroy the thing given so it can load again or not be used again by 
-the same people. It is a good idea to give quest objects like that unique 
-keywords so there is no mistaking what the mob is mpjunking.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: This command is very good 
+for give_progs where you want to destroy the thing given so it can load again or 
+not be used again by the same people. It is a good idea to give quest objects 
+like that unique keywords so there is no mistaking what the mob is 
+mpjunking.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpkill<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpkill<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: mpkill [victim]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command basically causes the mob to attack the victim. 
-The only real benefit of using this command is if your mob is low level or 
-attacking something which it is required to ‘murder.’ Other than that, there is 
-no difference between this command and say, kill, murder, hit, etc.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpkill $n</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpkill 
-xxxguardfourxxx</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpkill $r</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpkill 
-giant</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: Really, this command doesn’t get used much. It 
-was built for other MUD’s which might have level requirements for kill, etc. You 
-can use it, but it more or less works exactly the same as kill, murder, hit, 
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command basically causes the mob to 
+attack the victim. The only real benefit of using this command is if your mob is 
+low level or attacking something which it is required to ‘murder.’ Other than 
+that, there is no difference between this command and say, kill, murder, hit, 
 etc.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpkill $n</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpkill xxxguardfourxxx</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpkill $r</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpkill giant</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: Really, this command 
+doesn’t get used much. It was built for other MUD’s which might have level 
+requirements for kill, etc. You can use it, but it more or less works exactly 
+the same as kill, murder, hit, etc.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpmload<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpmload<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: mpmload [vnum]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command loads the mob designated by vnum into the room. 
-If you want the mob loaded somewhere besides the room the mpmloading mob is 
-located, you’ll need to use the mpat command. This command gives no message to 
-the world, so if you want one, you’ll use the mpecho command. This command is 
-useful for loading mobs to assist the calling mob in combat, load in-zone quest 
-mobs, etc.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command loads the mob designated by 
+vnum into the room. If you want the mob loaded somewhere besides the room the 
+mpmloading mob is located, you’ll need to use the mpat command. This command 
+gives no message to the world, so if you want one, you’ll use the mpecho 
+command. This command is useful for loading mobs to assist the calling mob in 
+combat, load in-zone quest mobs, etc.</P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpmload 
-10056</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpmload 
-22176</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat $n mpmload 
-10024</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat 1145 
-mpmload 1104</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: Remember that this newly loaded mob may not 
-have interacted with the world just yet, so having your mob, for example, 
-mpforce it to kill $n will not work, since the new mob has no idea who $n 
-is.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpmload 10056</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpmload 22176</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat $n mpmload 10024</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat 1145 mpmload 1104</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: Remember that this newly 
+loaded mob may not have interacted with the world just yet, so having your mob, 
+for example, mpforce it to kill $n will not work, since the new mob has no idea 
+who $n is.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpoload<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpoload<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: mpoload [vnum]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command loads an object of the designated vnum into the 
-inventory of the mob, or if the object is not takable, into the room. If you 
-want to load a non-takable object in another room, you will have to use the mpat 
-command. This command gives no message to the world, so if you want one you’ll 
-have to use the mpecho command. This command is very useful for loading in-zone 
-quest objects, mob pelts, portals, etc. It has many, many uses.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command loads an object of the 
+designated vnum into the inventory of the mob, or if the object is not takable, 
+into the room. If you want to load a non-takable object in another room, you 
+will have to use the mpat command. This command gives no message to the world, 
+so if you want one you’ll have to use the mpecho command. This command is very 
+useful for loading in-zone quest objects, mob pelts, portals, etc. It has many, 
+many uses.</P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpoload 
-10002</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpoload 
-1305</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat 10056 
-mpoload 10095</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat 1252 
-mpoload 1256</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: You can do a lot with this command. There is 
-no max on objects loaded in this way, so keep that in mind. Using this command 
-along with the mppurge command can create shifting portals and the like.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpoload 10002</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpoload 1305</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat 10056 mpoload 10095</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpat 1252 mpoload 1256</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: You can do a lot with this 
+command. There is no max on objects loaded in this way, so keep that in mind. 
+Using this command along with the mppurge command can create shifting portals 
+and the like.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mppurge<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mppurge<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: mppurge [argument]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command destroys the argument in the room with the mob. 
-This argument can be a mob keyword, object keyword, character variable, or self. 
-If no argument is given, then the mob clears the room of all mobs and objects in 
-the room except itself. If you are going to have a mob mppurge itself, it must 
-be the last command the mob does, or bad things will happen. Also, never ever 
-mppurge self as part of a death_prog. This is a very useful command. With it you 
-can destroy charmed mobs, switch portals and the like, and clear out mobs and 
-objects you may have loaded.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>EXAMPLES:<BR style="mso-special-character: line-break"><BR 
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command destroys the argument in the 
+room with the mob. This argument can be a mob keyword, object keyword, character 
+variable, or self. If no argument is given, then the mob clears the room of all 
+mobs and objects in the room except itself. If you are going to have a mob 
+mppurge itself, it must be the last command the mob does, or bad things will 
+happen. Also, never ever mppurge self as part of a death_prog. This is a very 
+useful command. With it you can destroy charmed mobs, switch portals and the 
+like, and clear out mobs and objects you may have loaded.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>EXAMPLES:<BR 
+style="mso-special-character: line-break"><BR 
 style="mso-special-character: line-break"></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppurge 
-xxxportalonexxx</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppurge 
-xxxguardthreexxx</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppurge xxxportalonexxx</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppurge xxxguardthreexxx</P>
 <P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppurge $n</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppurge 
-self</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: It is a good idea to have unique keywords for 
-mobs and objects you are sure you are going to be mppurging. That way there is 
-no mistake what you are trying to mppurge. Also, you should avoid mppurging 
-players, as it basically causes them to be ejected from the game and their 
-equipment to be dropped upon the ground. Use this command for mobs that set up 
-special quests and then go away, so each zone reset you’ll have a fresh zone for 
-adventurers to pillage.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppurge self</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: It is a good idea to have 
+unique keywords for mobs and objects you are sure you are going to be mppurging. 
+That way there is no mistake what you are trying to mppurge. Also, you should 
+avoid mppurging players, as it basically causes them to be ejected from the game 
+and their equipment to be dropped upon the ground. Use this command for mobs 
+that set up special quests and then go away, so each zone reset you’ll have a 
+fresh zone for adventurers to pillage.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mppush<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mppush<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: mppush [command]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command is very similar to mpadd. Basically, it places 
-whatever command follows it in a queue. This makes mobprogs more stable and 
-ensures that every command is referenced and completed. The difference between 
-mpadd and mppush is that mppush will wait two seconds before completing the 
-command. This is useful for mobs that you want to talk more slowly and 
-realistically. You can combine mppushs and mpadds in the same mobprog, so some 
-commands will be done right away and others stalled. The danger of doing this is 
-that sometimes certain commands can get skipped, although this rare. You should 
-never mppush the mpsetvar command or use it in death_progs or 
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command is very similar to mpadd. 
+Basically, it places whatever command follows it in a queue. This makes mobprogs 
+more stable and ensures that every command is referenced and completed. The 
+difference between mpadd and mppush is that mppush will wait two seconds before 
+completing the command. This is useful for mobs that you want to talk more 
+slowly and realistically. You can combine mppushs and mpadds in the same 
+mobprog, so some commands will be done right away and others stalled. The danger 
+of doing this is that sometimes certain commands can get skipped, although this 
+rare. You should never mppush the mpsetvar command or use it in death_progs or 
 hitprcnt_progs.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppush open 
-door</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppush mpecho 
-$I says, ‘It has been a long time since I have seen daylight…’</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppush cast 
-‘fireball’ $n</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppush open door</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppush mpecho $I says, ‘It has been a long 
+time since I have seen daylight…’</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppush cast ‘fireball’ $n</P>
 <P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mppush yawn</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: You should pretty much always use mppush if 
-you want your commands to take a little time before going through, and never use 
-them in death_progs or hitprcnt_progs. Also, mpadd or mppush should be the first 
-command in a line, so it would be “mppush mpat $n mpecho A bird sings here” and 
-not “mpat $n mppush mpecho A bird sings here”</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: You should pretty much 
+always use mppush if you want your commands to take a little time before going 
+through, and never use them in death_progs or hitprcnt_progs. Also, mpadd or 
+mppush should be the first command in a line, so it would be “mppush mpat $n 
+mpecho A bird sings here” and not “mpat $n mppush mpecho A bird sings here”</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpset<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpset<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: mpset [victim] [field] [value]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command sets certain fields of a victim to whatever 
-values you want. The fields that can be affected by a mob include maxhit, 
-maxmana,maxmove, hit, mana, move, align, str, dex, int, wis, con, cha, ac, gold, 
-bank, exp, hitroll, damroll, level, class, race, attacks, height, weight, sex, 
-drunk, hunger, thirst, perm affects and more. Obviously you aren’t going to want 
-to do some of these to players. In fact, the only fields you should ever 
-manipulate on a player character are hit, mana, move, align, and gold. These are 
-the only fields that are safe to manipulate on PC’s. This command is incredibly 
-useful, and can be used to set permanent affects on your mob, alter stats of a 
-mob, etc.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command sets certain fields of a 
+victim to whatever values you want. The fields that can be affected by a mob 
+include maxhit, maxmana,maxmove, hit, mana, move, align, str, dex, int, wis, 
+con, cha, ac, gold, bank, exp, hitroll, damroll, level, class, race, attacks, 
+height, weight, sex, drunk, hunger, thirst, perm affects and more. Obviously you 
+aren’t going to want to do some of these to players. In fact, the only fields 
+you should ever manipulate on a player character are hit, mana, move, align, and 
+gold. These are the only fields that are safe to manipulate on PC’s. This 
+command is incredibly useful, and can be used to set permanent affects on your 
+mob, alter stats of a mob, etc.</P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpset $n hit 
 $(-(stat(var("actor"),"hit"),25))</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpset me con 
-$(+(stat(var(“me”),”con”),1))</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpset me perm 
-fshield</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpset 
-xxxguardsevenxxx cha 22</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: Be very careful with this command when dealing 
-with players. If used poorly it can cause bad things to happen to them, so make 
-sure you have good checks to ensure they get affected correctly and fairly.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpset me con $(+(stat(var(“me”),”con”),1))</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpset me perm fshield</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpset xxxguardsevenxxx cha 22</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: Be very careful with this 
+command when dealing with players. If used poorly it can cause bad things to 
+happen to them, so make sure you have good checks to ensure they get affected 
+correctly and fairly.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpsetvar<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>Usage: mpsetvar [target] [variable name] [value]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command creates a variable for a target and stores a 
-value in it. For more information on how to use variables, see the Fun With 
-Variables section of this tutorial. Never mpadd or mppush an mpsetvar command, 
-or the mpsetvar will never work. You can mpsetvar any name that you choose to, 
-and the value can be a specific text string, an integer, or an expanded 
-character variable. The target has to be a mob, but can be either me or $i, or 
-the keyword of another mob. See the examples below.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpsetvar<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>Usage: mpsetvar [target] [variable name] 
+[value]</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command creates a variable for a 
+target and stores a value in it. For more information on how to use variables, 
+see the Fun With Variables section of this tutorial. Never mpadd or mppush an 
+mpsetvar command, or the mpsetvar will never work. You can mpsetvar any name 
+that you choose to, and the value can be a specific text string, an integer, or 
+an expanded character variable. The target has to be a mob, but can be either me 
+or $i, or the keyword of another mob. See the examples below.</P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpsetvar me 
-bugcount 1</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpsetvar 
-xxxfrogboyxxx myvictim “The guard”</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpsetvar me 
-myvictim var-actor</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpsetvar $i 
-bugcount $(+(var-bugcount,1))</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: Variables rock. You can do almost anything you 
-ever wanted to do once you get the hang of them. The Fun With Variables section 
-of this tutorial is a great resource to get you on the right track with using 
-them.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpsetvar me bugcount 1</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpsetvar xxxfrogboyxxx myvictim “The 
+guard”</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpsetvar me myvictim var-actor</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpsetvar $i bugcount $(+(var-bugcount,1))</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: Variables rock. You can do 
+almost anything you ever wanted to do once you get the hang of them. The Fun 
+With Variables section of this tutorial is a great resource to get you on the 
+right track with using them.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mptransfer<o:p></o:p></SPAN></P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>Usage: mptransfer [victim] [destination]</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>This command sends the victim to a designated destination. 
-The victim can be either a mob keyword or a character variable. The destination 
-can be a room vnum, a mob keyword, or a character variable. If there is no 
-destination given, the mob transfers the victim to the same room that it is in. 
-There is no message given to this command, so if you want there to be one, you 
-need to include an mpecho in your mobprog. This command is a good way to move 
-players around your zone or into other zones.</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mptransfer<o:p></O:P></SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>Usage: mptransfer [victim] 
+[destination]</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This command sends the victim to a 
+designated destination. The victim can be either a mob keyword or a character 
+variable. The destination can be a room vnum, a mob keyword, or a character 
+variable. If there is no destination given, the mob transfers the victim to the 
+same room that it is in. There is no message given to this command, so if you 
+want there to be one, you need to include an mpecho in your mobprog. This 
+command is a good way to move players around your zone or into other zones.</P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mptransfer $n 
-10049</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mptransfer 
-$n</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mptransfer 
-xxxguardeightxxx 1252</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mptransfer 
-xxxguardtenxxx $n</P>
-<P class=MsoNormal>&nbsp;<o:p></o:p></P>
-<P class=MsoNormal>SPECIAL NOTES: You need to be careful with this command. 
-First of all, you should never transfer a character variable that is a mob. Why 
-not? Because you may actually end up transferring a different mob entirely with 
-a keyword that is the same. You can mptransfer mobs if they have unique 
-keywords. Also, be sure to be careful about mptransfering mobs to players. If a 
-player recalls or dies, you will end up transferring a mob into town.</P></FONT>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mptransfer $n 10049</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mptransfer $n</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mptransfer xxxguardeightxxx 1252</P>
+<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mptransfer xxxguardtenxxx $n</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: You need to be careful 
+with this command. First of all, you should never transfer a character variable 
+that is a mob. Why not? Because you may actually end up transferring a different 
+mob entirely with a keyword that is the same. You can mptransfer mobs if they 
+have unique keywords. Also, be sure to be careful about mptransfering mobs to 
+players. If a player recalls or dies, you will end up transferring a mob into 
+town.</P></FONT>
 <P class=MsoNormal>&nbsp;</P>
 </BODY>
 </HTML>
