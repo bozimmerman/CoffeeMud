@@ -26,11 +26,10 @@ public class Spell_LocateObject extends Spell
 		int maxLevel=Integer.MAX_VALUE;
 		String s=(String)commands.lastElement();
 		boolean levelAdjust=false;
-		while((mob.isASysOp(mob.location()))
-		&&(commands.size()>1)
-		&&(Util.s_int(s)>0)
+		while((commands.size()>1)
+		&&((Util.s_int(s)>0)
 			||(s.startsWith(">"))
-			||(s.startsWith("<")))
+			||(s.startsWith("<"))))
 			{
 				levelAdjust=true;
 				boolean lt=true;
@@ -79,10 +78,7 @@ public class Spell_LocateObject extends Spell
 					if((item!=null)&&(Sense.canBeLocated((Item)item)))
 					{
 						String str=item.name()+" is in a place called '"+room.roomTitle()+"'.";
-						if(mob.isASysOp(null))
-							mob.tell(str);
-						else
-							itemsFound.addElement(str);
+						itemsFound.addElement(str);
 					}
 					for(int i=0;i<room.numInhabitants();i++)
 					{
@@ -94,25 +90,19 @@ public class Spell_LocateObject extends Spell
 							item=CoffeeUtensils.getShopKeeper(inhab).getStock(what,mob);
 						if((item!=null)
 						&&(item instanceof Item)
-						&&((Sense.canBeLocated((Item)item))||(mob.isASysOp(room)))
+						&&((Sense.canBeLocated((Item)item)))
 						&&(item.envStats().level()>minLevel)
 						&&(item.envStats().level()<maxLevel))
 						{
 							String str=item.name()+((!levelAdjust)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle()+"'.";
-							if(mob.isASysOp(null))
-								mob.tell(str);
-							else
-								itemsFound.addElement(str);
+							itemsFound.addElement(str);
 						}
 					}
 				}
-				if(!mob.isASysOp(null))
-				{
-					if(itemsFound.size()==0)
-						mob.tell("There doesn't seem to be anything in the wide world called '"+what+"'.");
-					else
-						mob.tell((String)itemsFound.elementAt(Dice.roll(1,itemsFound.size(),-1)));
-				}
+				if(itemsFound.size()==0)
+					mob.tell("There doesn't seem to be anything in the wide world called '"+what+"'.");
+				else
+					mob.tell((String)itemsFound.elementAt(Dice.roll(1,itemsFound.size(),-1)));
 			}
 
 		}

@@ -13,11 +13,6 @@ public class UnLink extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return false;
-		}
 		commands.setElementAt("DESTROY",0);
 		commands.insertElementAt("ROOM",1);
 		Command C=CMClass.getCommand("Destroy");

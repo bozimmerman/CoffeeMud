@@ -230,7 +230,6 @@ public class MUD extends Thread implements MudHost
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE,nocache.contains("ROOMDESC"));
 		
 		
-		CMSecurity.setSysOp(page.getStr("SYSOP"));
 		CMSecurity.setDisableVars(page.getStr("DISABLE"));
 		if(page.getStr("DISABLE").trim().length()>0)
 			Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));
@@ -290,6 +289,7 @@ public class MUD extends Thread implements MudHost
 			fatalStartupError(t,0);
 			return false;
 		}
+		CMSecurity.setSysOp(page.getStr("SYSOP")); // requires all classes be loaded
 
 		int numChannelsLoaded=ChannelSet.loadChannels(page.getStr("CHANNELS"),page.getStr("ICHANNELS"));
 		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
@@ -317,6 +317,7 @@ public class MUD extends Thread implements MudHost
 		CMMap.initStartRooms(page);
 		CMMap.initDeathRooms(page);
 		CMMap.initBodyRooms(page);
+		
 
 		if(CMMap.numRooms()==0)
 		{

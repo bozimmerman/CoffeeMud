@@ -136,11 +136,6 @@ public class Stat extends BaseAbleLister
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return false;
-		}
 		commands.removeElementAt(0);
 		if(commands.size()==0) commands.addElement("TODAY");
 		String s1=(commands.size()>0)?((String)commands.elementAt(0)).toUpperCase():"";
@@ -208,15 +203,18 @@ public class Stat extends BaseAbleLister
 			target=mob.location().fetchInhabitant(MOBname);
 		if((target==null)||((target!=null)&&(!target.isMonster())))
 		{
-			Enumeration r=mob.isASysOp(null)?CMMap.rooms():mob.location().getArea().getMap();
+			Enumeration r=CMMap.rooms();
 			for(;r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				MOB mob2=R.fetchInhabitant(MOBname);
-				if(mob2!=null)
+				if(CMSecurity.isAllowed(mob,R,"STAT"))
 				{
-					target=mob2;
-					break;
+					MOB mob2=R.fetchInhabitant(MOBname);
+					if(mob2!=null)
+					{
+						target=mob2;
+						break;
+					}
 				}
 			}
 		}

@@ -25,9 +25,9 @@ public class Order extends StdCommand
 			mob.tell("Order them to do what?");
 			return false;
 		}
-		if((!mob.isASysOp(mob.location())
+		if((!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 		&&(!mob.isMonster())
-		&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST))))
+		&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST)))
 		{
 			mob.tell("You may not order someone around with AUTOASSIST off.");
 			return false;
@@ -73,7 +73,7 @@ public class Order extends StdCommand
 		commands.removeElementAt(0);
 		Object O=EnglishParser.findCommand(mob,commands);
 		String order=Util.combine(commands,0);
-		if((!mob.isASysOp(mob.location()))
+		if((!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 		&&(O instanceof Command)
 		&&(!((Command)O).canBeOrdered()))
 		{

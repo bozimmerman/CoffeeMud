@@ -13,7 +13,6 @@ public class TickTock extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(null)) return false;
 		int h=Util.s_int(Util.combine(commands,1));
 		if(h==0) h=1;
 		mob.tell("..tick..tock..");

@@ -13,7 +13,6 @@ public class WizInv extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(null)) return false;
 		String str=(String)commands.firstElement();
 		if(Character.toUpperCase(str.charAt(0))!='W')
 			commands.insertElementAt("OFF",1);

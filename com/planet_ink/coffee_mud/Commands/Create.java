@@ -130,7 +130,7 @@ public class Create extends BaseGenerics
 		}
 
 		if((newItem instanceof ArchonOnly)
-		&&(!mob.isASysOp(null)))
+		&&(!CMSecurity.isASysOp(mob)))
 		{
 			mob.tell("NO!");
 			return;
@@ -162,12 +162,6 @@ public class Create extends BaseGenerics
 		if(mob.location().roomID().equals(""))
 		{
 			mob.tell("This command is invalid from within a GridLocaleChild room.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-			return;
-		}
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("Sorry Charlie! Not your room!");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -361,12 +355,6 @@ public class Create extends BaseGenerics
 		if(mob.isMonster())
 			return;
 		
-		if(!mob.isASysOp(null))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return;
-		}
-
 		if(commands.size()<3)
 		{
 			mob.tell("but fail to specify the proper fields.\n\rThe format is CREATE SOCIAL [NAME]\n\r");

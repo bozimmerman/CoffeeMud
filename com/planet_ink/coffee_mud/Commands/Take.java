@@ -13,7 +13,7 @@ public class Take extends BaseItemParser
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(mob.isASysOp(mob.location()))
+		if(CMSecurity.isAllowed(mob,mob.location(),"TAKE"))
 		{
 			if(commands.size()<3)
 			{

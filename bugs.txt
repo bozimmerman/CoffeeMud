@@ -1,5 +1,6 @@
 merge, export, import security
-no disintegrate clan items
+resist divination no protect from scry
+scry should not tell you if you are being scryed on
 preload shows spells being invoked on people
 parolled mobs should wander off after being sentenced
 add days of week, months, and years to scripts

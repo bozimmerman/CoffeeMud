@@ -13,11 +13,6 @@ public class Xml extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(null))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return false;
-		}
 		mob.tell("This command is deprecated, and no longer functions.");
 		return false;
 	}

@@ -79,15 +79,7 @@ public class Transfer extends At
 
 		if(room==null)
 		{
-			if(mob.isASysOp(mob.location()))
-				mob.tell("Goto where? Try a Room ID, player name, area name, or room text!");
-			else
-				mob.tell("You aren't powerful enough to do that. Try 'GO'.");
-			return false;
-		}
-		if(!mob.isASysOp(room))
-		{
-			mob.tell("You aren't powerful enough to do that. Try 'GO'.");
+			mob.tell("Goto where? Try a Room ID, player name, area name, or room text!");
 			return false;
 		}
 		for(int i=0;i<V.size();i++)

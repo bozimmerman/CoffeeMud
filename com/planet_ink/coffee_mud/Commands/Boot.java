@@ -33,7 +33,6 @@ public class Boot extends StdCommand
 					return false;
 				}
 				else
-				if((mob.isASysOp(S.mob().location())))
 				{
 					mob.tell("You boot "+S.mob().name());
 					if(S.mob().location()!=null)

@@ -13,7 +13,8 @@ public class CMSecurity
 	// COPYMOBS, COPYITEMS, COPYROOMS, CMDQUESTS, CMDMOBS, CMDSOCIALS, CMDROOMS,
 	// CMDITEMS, CMDEXITS, CMDAREAS, CMDRACES, CMDCLASSES, NOPURGE, KILLBUGS,
 	// KILLIDEAS, KILLTYPOS, CMDCLANS, DUMPFILE, GOTO, LOADUNLOAD, CMDPLAYERS
-	// POSSESS, SHUTDOWN, SNOOP, STAT, SYSMSGS, TICKTOCK, TRANSFER, WIZINV,"WHERE"
+	// POSSESS, SHUTDOWN, SNOOP, STAT, SYSMSGS, TICKTOCK, TRANSFER, WIZINV, WHERE
+	// RESET, RESETUTILS, KILLDEAD, ORDER, TAKE
 	
 	// todo: import, export, merge
 	public static void setSysOp(String zapCheck)
@@ -24,7 +25,24 @@ public class CMSecurity
 	}
 	
 	public static boolean isASysOp(MOB mob)
-	{ return MUDZapper.zapperCheckReal(compiledSysop,mob);}
+	{
+		for(int v=0;v<compiledSysop.size();v++)
+		{
+			Vector V=(Vector)compiledSysop.elementAt(v);
+			StringBuffer str=new StringBuffer("");
+			for(int v2=0;v2<V.size();v2++)
+			{
+				if(V.elementAt(v2) instanceof Integer)
+					str.append(((Integer)V.elementAt(v2)).intValue()+"/");
+				else
+				if(V.elementAt(v2) instanceof String)
+					str.append(((String)V.elementAt(v2))+"/");
+				else
+					str.append("?/");
+			}
+		}
+		return MUDZapper.zapperCheckReal(compiledSysop,mob);
+	}
 	
 	
 	public static boolean isStaff(MOB mob)

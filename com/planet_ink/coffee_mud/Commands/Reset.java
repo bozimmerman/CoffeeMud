@@ -10,6 +10,7 @@ public class Reset extends StdCommand
 
 	private String[] access={"RESET"};
 	public String[] getAccessWords(){return access;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"RESET");}
 
 	public int resetAreaOramaManaI(MOB mob, Item I, Hashtable rememberI, String lead)
 		throws java.io.IOException
@@ -179,11 +180,6 @@ public class Reset extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return false;
-		}
 		commands.removeElementAt(0);
 		if(commands.size()<1)
 		{
@@ -201,29 +197,6 @@ public class Reset extends StdCommand
 		{
 			resetArea(mob.location().getArea());
 			mob.tell("Done.");
-		}
-		else
-		if(s.equalsIgnoreCase("bankdata"))
-		{
-			String bank=Util.combine(commands,1);
-			if(bank.length()==0){
-				mob.tell("Which bank?");
-				return false;
-			}
-			Vector V=CMClass.DBEngine().DBReadJournal(bank);
-			for(int v=0;v<V.size();v++)
-			{
-				Vector V2=(Vector)V.elementAt(v);
-				String name=(String)V2.elementAt(1);
-				String ID=(String)V2.elementAt(4);
-				String classID=((String)V2.elementAt(3));
-				String data=((String)V2.elementAt(5));
-				if(ID.equalsIgnoreCase("COINS")) classID="COINS";
-				Item I=(Item)CMClass.getItem("GenItem").copyOf();
-				CMClass.DBEngine().DBCreateData(name,bank,""+I,classID+";"+data);
-			}
-			CMClass.DBEngine().DBDeleteJournal(bank,Integer.MAX_VALUE);
-			mob.tell(V.size()+" records done.");
 		}
 		else
 		if(s.equalsIgnoreCase("arearoomids"))
@@ -261,6 +234,35 @@ public class Reset extends StdCommand
 				mob.tell("No rooms were found which needed renaming.");
 			else
 				mob.tell("Done renumbering rooms.");
+		}
+		else
+		if(!CMSecurity.isAllowed(mob,mob.location(),"RESETUTILS"))
+		{
+			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.");
+			return false;
+		}
+		else
+		if(s.equalsIgnoreCase("bankdata"))
+		{
+			String bank=Util.combine(commands,1);
+			if(bank.length()==0){
+				mob.tell("Which bank?");
+				return false;
+			}
+			Vector V=CMClass.DBEngine().DBReadJournal(bank);
+			for(int v=0;v<V.size();v++)
+			{
+				Vector V2=(Vector)V.elementAt(v);
+				String name=(String)V2.elementAt(1);
+				String ID=(String)V2.elementAt(4);
+				String classID=((String)V2.elementAt(3));
+				String data=((String)V2.elementAt(5));
+				if(ID.equalsIgnoreCase("COINS")) classID="COINS";
+				Item I=(Item)CMClass.getItem("GenItem").copyOf();
+				CMClass.DBEngine().DBCreateData(name,bank,""+I,classID+";"+data);
+			}
+			CMClass.DBEngine().DBDeleteJournal(bank,Integer.MAX_VALUE);
+			mob.tell(V.size()+" records done.");
 		}
 		else
 		if(s.equalsIgnoreCase("groundlydoors"))

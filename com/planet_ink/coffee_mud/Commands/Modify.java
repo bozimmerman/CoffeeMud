@@ -166,12 +166,6 @@ public class Modify extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("Sorry Charlie! Not your room!");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-			return;
-		}
 		if(commands.size()==2)
 		{
 			int showFlag=-1;
@@ -219,7 +213,7 @@ public class Modify extends BaseGenerics
 			String checkID=CMMap.getOpenRoomID(restStr);
 			if(A==null)
 			{
-				if((!mob.isMonster())||(!mob.isASysOp(null)))
+				if(!mob.isMonster())
 				{
 					if(mob.session().confirm("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '"+restStr+"'.  Are you SURE (y/N)?","N"))
 					{
@@ -352,14 +346,6 @@ public class Modify extends BaseGenerics
 		if(mob.location()==null) return;
 		if(mob.location().getArea()==null) return;
 		Area myArea=mob.location().getArea();
-
-		if((!mob.isASysOp(null))
-		&&(!myArea.amISubOp(mob.Name())))
-		{
-			mob.tell("Sorry Charlie! Not your area!");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-			return;
-		}
 
 		String oldName=myArea.Name();
 		Vector allMyDamnRooms=new Vector();
@@ -678,12 +664,6 @@ public class Modify extends BaseGenerics
 		if(mob.isMonster())
 			return;
 
-		if(!mob.isASysOp(null))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return;
-		}
-
 		if(commands.size()<3)
 		{
 			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is MODIFY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
@@ -732,12 +712,6 @@ public class Modify extends BaseGenerics
 	public void players(MOB mob, Vector commands)
 		throws IOException
 	{
-		if(!mob.isASysOp(null))
-		{
-			mob.tell("Only Archons may modify players.");
-			return;
-		}
-
 		if(commands.size()<3)
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY USER [PLAYER NAME]\n\r");
@@ -968,7 +942,7 @@ public class Modify extends BaseGenerics
 			mobs(mob,commands);
 		}
 		else
-		if((commandType.equals("USER"))&&(mob.isASysOp(null)))
+		if(commandType.equals("USER"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");

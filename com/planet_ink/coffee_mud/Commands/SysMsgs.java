@@ -13,11 +13,6 @@ public class SysMsgs extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return false;
-		}
 		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
 		else

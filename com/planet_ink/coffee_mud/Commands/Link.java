@@ -13,11 +13,6 @@ public class Link extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("You lack the power to link rooms.\n\r");
-			return false;
-		}
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 		
 		if(commands.size()<3)
@@ -36,12 +31,6 @@ public class Link extends StdCommand
 		if(mob.location().roomID().equals(""))
 		{
 			mob.tell("This command is invalid from within a GridLocaleChild room.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-			return false;
-		}
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("Sorry Charlie! Not your room!");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return false;
 		}

@@ -13,7 +13,6 @@ public class WizEmote extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))return true;
 		if(commands.size()>2)
 		{
 			String who=(String)commands.elementAt(1);

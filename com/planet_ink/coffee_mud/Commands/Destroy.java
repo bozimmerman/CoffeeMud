@@ -157,6 +157,11 @@ public class Destroy extends BaseItemParser
 		}
 		else
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS"))
+			{
+				errorOut(mob);
+				return;
+			}
 			mob.location().rawDoors()[direction]=null;
 			mob.location().rawExits()[direction]=null;
 			CMClass.DBEngine().DBUpdateExits(mob.location());
@@ -301,15 +306,6 @@ public class Destroy extends BaseItemParser
 			return;
 		}
 			
-		if((!mob.isASysOp(null))
-		&&(!A.amISubOp(mob.Name())))
-		{
-			mob.tell("Sorry Charlie! Not your area!");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-			return;
-		}
-
-
 		if(!confirmed);
 		if(mob.session().confirm("Area: \""+areaName+"\", OBLITERATE IT???","N"))
 		{
@@ -405,12 +401,6 @@ public class Destroy extends BaseItemParser
 	public void socials(MOB mob, Vector commands)
 		throws IOException
 	{
-		if(!mob.isASysOp(null))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return;
-		}
-
 		if(commands.size()<3)
 		{
 			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
@@ -635,7 +625,7 @@ public class Destroy extends BaseItemParser
 			classes(mob,commands);
 		}
 		else
-		if((commandType.equals("USER"))&&(mob.isASysOp(null)))
+		if(commandType.equals("USER"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
