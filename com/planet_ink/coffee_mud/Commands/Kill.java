@@ -99,7 +99,6 @@ public class Kill extends StdCommand
 						range+=mob.rangeToTarget();
 					if(range>=0)
 						mob.setAtRange(range);
-					
 				}
 				mob.tell("^FYou are now targeting "+target.name()+".^?");
 				mob.setVictim(target);

@@ -718,8 +718,10 @@ public class StdMOB implements MOB
 
 	public MOB getVictim()
 	{
-		if(!isInCombat()) return null;
-		return victim;
+		if(!isInCombat())
+			return null;
+		else
+			return victim;
 	}
 
 	public void setVictim(MOB mob)
@@ -1107,13 +1109,8 @@ public class StdMOB implements MOB
 			}
 
 			MOB follow=source.amFollowing();
-			if(target.getVictim()==source)
-			{
-				if(target.rangeToTarget()>=0)
-					source.setAtRange(target.rangeToTarget());
-				else
-					source.setAtRange(maxRange(tool));
-			}
+			if((target.getVictim()==source)&&(target.rangeToTarget()>=0))
+				source.setAtRange(target.rangeToTarget());
 			else
 			if(follow!=null)
 			{
@@ -1563,6 +1560,8 @@ public class StdMOB implements MOB
 					victim.setAtRange(rangeToTarget());
 					victim.recoverEnvStats();
 				}
+				else
+					setAtRange(-1);
 				recoverEnvStats();
 				return ok;
 			}
@@ -1587,6 +1586,8 @@ public class StdMOB implements MOB
 					victim.setAtRange(rangeToTarget());
 					victim.recoverEnvStats();
 				}
+				else
+					setAtRange(-1);
 				recoverEnvStats();
 			}
 			else
@@ -2424,6 +2425,12 @@ public class StdMOB implements MOB
 							numAttacks--;
 						}
 					
+					int folrange=(Util.bset(getBitmap(),MOB.ATT_AUTOMELEE)
+									&&(amFollowing()!=null)
+								    &&(amFollowing().getVictim()==victim)
+								    &&(amFollowing().rangeToTarget()>=0)
+								    &&(amFollowing().fetchFollowerOrder(this)>=0))?
+									amFollowing().fetchFollowerOrder(this)+amFollowing().rangeToTarget():-1;
 					if(Sense.aliveAwakeMobile(this,true))
 					{
 						for(int s=0;s<numAttacks;s++)
@@ -2441,6 +2448,32 @@ public class StdMOB implements MOB
 								{
 									boolean inminrange=(rangeToTarget()>=minRange(weapon));
 									boolean inmaxrange=(rangeToTarget()<=maxRange(weapon));
+									if((folrange>=0)&&(rangeToTarget()>=0)&&(folrange!=rangeToTarget()))
+									{
+										if(rangeToTarget()<folrange)
+											inminrange=false;
+										else
+										if(rangeToTarget()>folrange)
+										{
+											// these settings are ONLY to ensure that neither of the
+											// next two conditions evaluate to true.
+											inminrange=true;
+											inmaxrange=false;
+											// we advance
+											FullMsg msg=new FullMsg(this,victim,CMMsg.MSG_ADVANCE,"<S-NAME> advances(s) at <T-NAMESELF>.");
+											if(location().okMessage(this,msg))
+											{
+												location().send(this,msg);
+												setAtRange(rangeToTarget()-1);
+												if((victim!=null)&&(victim.getVictim()==this))
+												{
+													victim.setAtRange(rangeToTarget());
+													victim.recoverEnvStats();
+												}
+											}
+										}
+									}
+									   
 									if((!inminrange)&&(curState().getMovement()>=25))
 									{
 										FullMsg msg=new FullMsg(this,victim,CMMsg.MSG_RETREAT,"<S-NAME> retreat(s) before <T-NAME>.");

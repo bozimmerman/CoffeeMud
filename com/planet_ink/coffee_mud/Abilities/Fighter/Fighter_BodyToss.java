@@ -104,6 +104,8 @@ public class Fighter_BodyToss extends StdAbility
 				mob.setAtRange(dist);
 				target.setAtRange(dist);
 				MUDFight.postDamage(mob,target,this,Dice.roll(1,12,0),CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BASHING,"The hard landing <DAMAGE> <T-NAME>!");
+				if(mob.getVictim()==null) mob.setVictim(null); // correct range
+				if(target.getVictim()==null) target.setVictim(null); // correct range
 			}
 		}
 		else

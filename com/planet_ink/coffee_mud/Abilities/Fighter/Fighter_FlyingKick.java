@@ -94,6 +94,8 @@ public class Fighter_FlyingKick extends StdAbility
 					mob.setAtRange(0);
 					target.setAtRange(0);
 				}
+				if(mob.getVictim()==null) mob.setVictim(null); // correct range
+				if(target.getVictim()==null) target.setVictim(null); // correct range
 			}
 		}
 		else

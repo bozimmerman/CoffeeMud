@@ -225,6 +225,7 @@ public class LightSource extends StdItem implements Light
 					myLight.light(true);
 					CMClass.ThreadEngine().startTickDown(myLight,MudHost.TICK_LIGHT_FLICKERS,myLight.getDuration());
 					myLight.recoverEnvStats();
+					msg.source().recoverEnvStats();
 					room.recoverRoomStats();
 				}
 				break;

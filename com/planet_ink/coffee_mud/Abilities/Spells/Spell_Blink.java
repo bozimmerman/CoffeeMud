@@ -92,7 +92,7 @@ public class Spell_Blink extends Spell
 						break;
 					}
 				}
-
+				if(mob.getVictim()==null) mob.setVictim(null); // correct range
 			}
 			else
 			if((roll>2)&&(roll<7))

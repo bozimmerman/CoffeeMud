@@ -126,6 +126,8 @@ public class Spell_Repulsion extends Spell
 								target.setAtRange(level);
 							if(target.getVictim()!=null)
 								target.getVictim().setAtRange(target.rangeToTarget());
+							if(mob.getVictim()==null) mob.setVictim(null); // correct range
+							if(target.getVictim()==null) target.setVictim(null); // correct range
 						}
 					}
 				}

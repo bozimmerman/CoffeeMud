@@ -134,6 +134,8 @@ public class Chant_WindGust extends Chant
 						}
 						if(target.getVictim()!=null)
 							target.getVictim().setAtRange(target.rangeToTarget());
+						if(mob.getVictim()==null) mob.setVictim(null); // correct range
+						if(target.getVictim()==null) target.setVictim(null); // correct range
 					}
 				}
 			}

@@ -111,6 +111,8 @@ public class Fighter_Charge extends StdAbility
 					}
 					else
 						done=false;
+					if(mob.getVictim()==null) mob.setVictim(null); // correct range
+					if(target.getVictim()==null) target.setVictim(null); // correct range
 				}
 			}
 		}
