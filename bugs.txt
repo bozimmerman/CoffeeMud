@@ -4,6 +4,8 @@ webmacro ANNOUNCE Make announcements without having to log into the game, makes 
 webmacro DUMPFILE To view some text file on your computer through the MUD without  having to log on or ebing on the host PC.
 webmacro LIST Maybe a system for the command LIST, wouldnt be as easy implemented  as some of the above (SHUTDOWN for example could just be a button on  a .cmvp page)
 
+leash in mobile broke
+wimpy zappercheck (very?) broken
 pets dont go away when players quit
 loading a new command doesn't appear to work
 
