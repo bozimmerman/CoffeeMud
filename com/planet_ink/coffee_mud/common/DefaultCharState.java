@@ -120,7 +120,7 @@ public class DefaultCharState implements Cloneable, CharState
 		double lvlby4=Util.div(lvl,4.0);
 
 		double hpGain=(con/4.0)+lvlby4+1.0;
-		double manaGain=(man/4.0)+lvlby2+1.0;
+		double manaGain=(man/6.0)+lvlby2+1.0;
 		double moveGain=(str/2.0)+lvlby2+4.0;
 		
 		if(Sense.isSleeping(mob)){
