@@ -105,5 +105,4 @@ public class Skill_Convert extends StdAbility
 		// return whether it worked
 		return success;
 	}
-
 }
