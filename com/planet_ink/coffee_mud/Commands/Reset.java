@@ -435,6 +435,72 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
+		if(s.equalsIgnoreCase("areainstall"))
+		{
+			if(mob.session()==null) return false;
+			if(commands.size()<2)
+			{
+				mob.tell("You need to specify a property or behavior to install.");
+				return false;
+			}
+			String ID=(String)commands.elementAt(1);
+			Object O=CMClass.getAbility(ID);
+			if(O==null) O=CMClass.getBehavior(ID);
+			if(O==null)
+			{
+				mob.tell("'"+ID+"' is not a known property or behavior.  Try LIST.");
+				return false;
+			}
+			
+			mob.session().print("working...");
+			for(Enumeration r=CMMap.areas();r.hasMoreElements();)
+			{
+				Area A=(Area)r.nextElement();
+				boolean changed=false;
+				if((O instanceof Behavior))
+				{
+					Behavior B=A.fetchBehavior(((Behavior)O).ID());
+					if(B==null)
+					{
+						B=((Behavior)O).copyOf();
+						B.setParms(Util.combine(commands,2));
+						A.addBehavior(B);
+						changed=true;
+					}
+					else
+					if(!B.getParms().equals(Util.combine(commands,2)))
+					{
+						B.setParms(Util.combine(commands,2));
+						changed=true;
+					}
+				}
+				else
+				if(O instanceof Ability)
+				{
+					Ability B=A.fetchEffect(((Ability)O).ID());
+					if(B==null)
+					{
+						B=(Ability)((Ability)O).copyOf();
+						B.setMiscText(Util.combine(commands,2));
+						A.addNonUninvokableEffect(B);
+						changed=true;
+					}
+					else
+					if(!B.text().equals(Util.combine(commands,2)))
+					{
+						B.setMiscText(Util.combine(commands,2));
+						changed=true;
+					}
+				}
+				if(changed)
+				{
+					CMClass.DBEngine().DBUpdateArea(A.Name(),A);
+					mob.session().print(".");
+				}
+			}
+			mob.session().println("done!");
+		}
+		else
 		if(s.equalsIgnoreCase("worldmatconfirm"))
 		{
 			if(mob.session()==null) return false;
@@ -776,7 +842,7 @@ public class Reset extends StdCommand
 			mob.tell("Done.");
 		}
 		else
-			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, MOBSTATS ROOM, MOBSTATS AREA *, MOBSTATS WORLD *, AREARACEMAT *, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.");
+			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, MOBSTATS ROOM, MOBSTATS AREA *, MOBSTATS WORLD *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete.");
 		return false;
 	}
 

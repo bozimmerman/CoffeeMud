@@ -104,6 +104,7 @@ public class Archon_Metacraft extends CraftingSkill
 			mob.tell("The metacraft failed.");
 			return false;
 		}
+		building.setSecretIdentity("");
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();
