@@ -181,9 +181,13 @@ public class Spell_FleshStone extends Spell
 					target.makePeace();
 					ExternalPlay.standIfNecessary(target);
 					statue=CMClass.getItem("GenItem");
-					statue.setName("a statue of "+target.name());
-					statue.setDisplayText("a statue of "+target.name()+" stands here.");
-					statue.setDescription("It`s a hard granite statue, which looks exactly like "+target.name()+".");
+					String name=target.name();
+					if(name.startsWith("A ")) name="a "+name.substring(2);
+					if(name.startsWith("An ")) name="an "+name.substring(3);
+					if(name.startsWith("The ")) name="the "+name.substring(4);
+					statue.setName("a statue of "+name);
+					statue.setDisplayText("a statue of "+name+" stands here.");
+					statue.setDescription("It`s a hard granite statue, which looks exactly like "+name+".");
 					statue.setMaterial(EnvResource.RESOURCE_GRANITE);
 					statue.baseEnvStats().setWeight(2000);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) into stone!!");

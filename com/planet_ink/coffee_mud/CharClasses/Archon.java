@@ -62,8 +62,8 @@ public class Archon extends StdCharClass
 		for(int a=0;a<CMClass.abilities.size();a++)
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if((CMAble.qualifyingLevel(mob,A)>0)
-			&&(CMAble.qualifyingLevel(mob,A)<=mob.charStats().getClassLevel(this)))
+			if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
+			&&(CMAble.getQualifyingLevel(ID(),A.ID())<=mob.charStats().getClassLevel(this)))
 			{
 				Ability mine=mob.fetchAbility(A.ID());
 				if(mine!=null)

@@ -287,15 +287,6 @@ public class Mage extends StdCharClass
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
-		int numTotal=0;
-		for(int a=0;a<CMClass.abilities.size();a++)
-		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if((CMAble.qualifyingLevel(mob,A)>0)
-			&&(CMAble.qualifyingLevel(mob,A)==mob.charStats().getClassLevel(this))
-			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
-				numTotal++;
-		}
 		Hashtable given=new Hashtable();
 		int level=mob.charStats().getClassLevel(this);
 		int numSpells=3;
@@ -309,18 +300,40 @@ public class Mage extends StdCharClass
 		int numLevel=0;
 		while(numLevel<numSpells)
 		{
-			int randSpell=(int)Math.round(Math.random()*numTotal);
+			// this is important, because losing a level and regaining
+			// should not give you another random set!
+			for(int a=0;a<mob.numAbilities();a++)
+			{
+				Ability A=mob.fetchAbility(a);
+				if((A!=null)
+				   &&(CMAble.getQualifyingLevel(ID(),A.ID())==level)
+				   &&(!CMAble.getDefaultGain(ID(),A.ID()))
+				   &&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+					numLevel++;
+					   
+			}
+			int numToChooseFrom=0;
 			for(int a=0;a<CMClass.abilities.size();a++)
 			{
 				Ability A=(Ability)CMClass.abilities.elementAt(a);
-				if((CMAble.qualifyingLevel(mob,A)>0)
-				&&(CMAble.qualifyingLevel(mob,A)==mob.charStats().getClassLevel(this))
+				if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
+				&&(!CMAble.getDefaultGain(ID(),A.ID()))
+				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+					numToChooseFrom++;
+			}
+			int randSpell=(int)Math.round(Math.random()*numToChooseFrom);
+				
+			if((numLevel<numSpells)&&(numToChooseFrom>(numSpells-numLevel)))
+			for(int a=0;a<CMClass.abilities.size();a++)
+			{
+				Ability A=(Ability)CMClass.abilities.elementAt(a);
+				if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
 				&&(!CMAble.getDefaultGain(ID(),A.ID()))
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 				{
 					if(randSpell==0)
 					{
-						if((CMAble.qualifyingLevel(mob,A)==level)
+						if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
 						&&(given.get(A.ID())==null))
 						{
 							giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);

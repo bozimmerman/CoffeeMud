@@ -84,6 +84,7 @@ public class StdCharClass implements CharClass
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
 			if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
+			&&(CMAble.getQualifyingLevel(ID(),A.ID())<=mob.charStats().getClassLevel(this))
 			&&(CMAble.getDefaultGain(ID(),A.ID())))
 				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
 		}
@@ -221,6 +222,7 @@ public class StdCharClass implements CharClass
 		StringBuffer theNews=new StringBuffer("");
 
 		int classLevel=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
+		String levelStr=null;
 		if(classLevel>=(mob.baseEnvStats().level()-1))
 			levelStr="level "+mob.baseEnvStats().level()+" "+mob.baseCharStats().getCurrentClass().name();
 		else

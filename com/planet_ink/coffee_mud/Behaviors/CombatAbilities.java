@@ -21,7 +21,10 @@ public class CombatAbilities extends StdBehavior
 		{
 			Ability A=mob.fetchAbility(a);
 			if(A!=null)
+			{
+				A.setProfficiency(50);
 				oldAbilities.addElement(A);
+			}
 		}
 		mob.charStats().getCurrentClass().startCharacter(mob,true,false);
 		for(int a=0;a<mob.numAbilities();a++)

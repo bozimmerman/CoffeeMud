@@ -473,7 +473,7 @@ public class TelnetSession extends Thread implements Session
 		{
 			if (c != currentColor)
 			{
-				if(c !='^')
+				if(c !='.')
 				{
 					lastColor = currentColor;
 					currentColor = c;
