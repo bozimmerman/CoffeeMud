@@ -90,16 +90,19 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			updateLot();
 			Vector mobs=new Vector();
 			Room R=(Room)affected;
-			for(int m=0;m<R.numInhabitants();m++)
+			if(R!=null)
 			{
-				MOB M=(MOB)R.fetchInhabitant(m);
-				if((M!=null)
-				&&(M.isEligibleMonster())
-				&&(M.getStartRoom()==R)
-				&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
-					mobs.addElement(M);
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					MOB M=(MOB)R.fetchInhabitant(m);
+					if((M!=null)
+					&&(M.isEligibleMonster())
+					&&(M.getStartRoom()==R)
+					&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
+						mobs.addElement(M);
+				}
+				CMClass.DBEngine().DBUpdateTheseMOBs(R,mobs);
 			}
-			CMClass.DBEngine().DBUpdateTheseMOBs(R,mobs);
 		}
 	}
 

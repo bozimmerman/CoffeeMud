@@ -56,6 +56,7 @@ public class Fighter_DualParry extends StdAbility
 				&&(myOtherWeapon instanceof Weapon)
 				&&(attackerWeapon instanceof Weapon)
 				&&(!myOtherWeapon.rawLogicalAnd())
+				&&(Sense.canBeSeenBy(msg.source(),mob))
 				&&(((Weapon)myOtherWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)
 				&&(((Weapon)myOtherWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)myOtherWeapon).weaponClassification()!=Weapon.CLASS_THROWN)

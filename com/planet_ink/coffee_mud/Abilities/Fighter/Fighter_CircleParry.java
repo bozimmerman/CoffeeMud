@@ -67,6 +67,7 @@ public class Fighter_CircleParry extends StdAbility
 				&&(attackerWeapon!=null)
 				&&(attackerWeapon instanceof Weapon)
 				&&(mob.charStats().getBodyPart(Race.BODY_HAND)>0)
+				&&(Sense.canBeSeenBy(msg.source(),mob))
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_NATURAL)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)

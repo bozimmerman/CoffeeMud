@@ -144,6 +144,12 @@ public class INIModify extends StdWebMacro
 					CMSecurity.setSysOp(ipage.getStr("SYSOPMASK"));
 				if(modified(modified,"GROUP_*"))
 					CMSecurity.parseGroups(ipage);
+				if(modified(modified,"START")||(modified(modified,"START_*")))
+					CMMap.initStartRooms(ipage);
+				if(modified(modified,"DEATH")||(modified(modified,"DEATH_*")))
+					CMMap.initDeathRooms(ipage);
+				if(modified(modified,"MORGUE")||(modified(modified,"MORGUE_*")))
+					CMMap.initBodyRooms(ipage);
 				if(modified(modified,"CHANNELS")
 				||(modified(modified,"ICHANNELS"))
 				||(modified(modified,"IMC2CHANNELS")))

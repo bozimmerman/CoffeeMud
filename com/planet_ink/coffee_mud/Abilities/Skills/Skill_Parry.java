@@ -62,6 +62,7 @@ public class Skill_Parry extends StdAbility
 				&&(attackerWeapon!=null)
 				&&(myWeapon instanceof Weapon)
 				&&(attackerWeapon instanceof Weapon)
+				&&(Sense.canBeSeenBy(msg.source(),mob))
 				&&(((Weapon)myWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)
 				&&(((Weapon)myWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)myWeapon).weaponClassification()!=Weapon.CLASS_THROWN)
