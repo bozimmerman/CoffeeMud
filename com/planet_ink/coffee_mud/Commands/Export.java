@@ -111,7 +111,7 @@ public class Export extends StdCommand
 				fileNameCode=0;
 			else
 			{
-				if(CMSecurity.isAllowedAnywhere(mob,"EXPORTFILE"))
+				if(!CMSecurity.isAllowedAnywhere(mob,"EXPORTFILE"))
 				{
 					mob.tell("You are not allowed to export to a file.");
 					return false;

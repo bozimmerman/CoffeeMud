@@ -125,8 +125,8 @@ public class INIModify extends StdWebMacro
 				ipage=INI.loadPropPage(CommonStrings.getVar(CommonStrings.SYSTEM_INIPATH));
 				if((ipage==null)||(!ipage.loaded)) return "";
 				CommonStrings.loadCommonINISettings(ipage);
-				if(modified(modified,"SYSOP"))
-					CMSecurity.setSysOp(ipage.getStr("SYSOP"));
+				if(modified(modified,"SYSOPMASK"))
+					CMSecurity.setSysOp(ipage.getStr("SYSOPMASK"));
 				if(modified(modified,"GROUP_*"))
 					CMSecurity.parseGroups(ipage);
 				if(modified(modified,"CHANNELS")||(modified(modified,"ICHANNELS")))

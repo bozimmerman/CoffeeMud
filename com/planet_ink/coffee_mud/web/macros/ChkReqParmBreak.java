@@ -56,8 +56,8 @@ public class ChkReqParmBreak extends StdWebMacro
 			finalCondition=finalCondition||thisCondition;
 		}
 		if(finalCondition)
-			return "";
+			return " @break@";
 		else
-			return "@break@";
+			return "";
 	}
 }

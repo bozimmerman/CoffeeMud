@@ -77,7 +77,7 @@
 <br>
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-@if?CheckReqParm?SYSOP=true&AUTH_LOADUNLOAD=true&AUTO_LISTADMIN=true&AUTH_CMDPLAYERS&AUTH_STAT=true&AUTH_JOURNALS=true&AUTH_CMDQUESTS=true&AUTH_BAN=true@
+@if?CheckReqParm?SYSOP=true&AUTH_LOADUNLOAD=true&AUTH_LISTADMIN=true&AUTH_CMDPLAYERS&AUTH_STAT=true&AUTH_JOURNALS=true&AUTH_CMDQUESTS=true&AUTH_BAN=true@
 <TABLE WIDTH=200 BORDER=1>
 <TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD></TR>
 <TR><TD ALIGN=CENTER>
@@ -85,7 +85,7 @@
 	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Manage Resources</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckReqParm?AUTH_STAT=true&AUTH_CMDPLAYERS=true&AUTO_LISTADMIN=true@
+	@if?CheckReqParm?AUTH_STAT=true&AUTH_CMDPLAYERS=true&AUTH_LISTADMIN=true@
 	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Players List</FONT></a>
 	<BR>
 	@endif@
@@ -101,18 +101,20 @@
 	<A href="javascript:Clicked('banners.cmvp')"><FONT COLOR=WHITE>Banned List</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckReqParm?SYSOP=true&AUTO_LISTADMIN=true@
+	@if?CheckReqParm?SYSOP=true&AUTH_LISTADMIN=true@
 	<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
 	<BR>
 	<A href="javascript:Threads()"><FONT COLOR=WHITE>Thread Groups</FONT></a>
 	<BR>
-		@if?CheckReqParm?SYSOP=true@
-		<A href="javascript:Clicked('control.cmvp')"><FONT COLOR=WHITE>Control Panel</FONT></a>
-		<BR>
-		@endif@
-	<A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=WHITE>Statistics</FONT></a>
+	<A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>Server Log</FONT></a>
 	<BR>
-	<A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>View Server Log</FONT></a>
+	@endif@
+	@if?CheckReqParm?SYSOP=true@
+	<A href="javascript:Clicked('control.cmvp')"><FONT COLOR=WHITE>Control Panel</FONT></a>
+	<BR>
+	@endif@
+	@if?CheckReqParm?AUTH_STAT=true@
+	<A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=WHITE>Statistics</FONT></a>
 	@endif@
 </TD></TR>
 </TABLE>
