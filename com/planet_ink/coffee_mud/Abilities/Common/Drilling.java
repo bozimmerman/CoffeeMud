@@ -140,11 +140,12 @@ public class Drilling extends CommonSkill
 		}
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) drilling.");
+		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) drilling.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			container=(Drink)I;
+			found=(Item)msg.target();
 			beneficialAffect(mob,mob,duration);
 		}
 		return true;

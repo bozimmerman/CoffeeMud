@@ -121,6 +121,7 @@ public class Scalp extends CommonSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
+			I=(Item)msg.target();
 			body=(DeadBody)I;
 			verb="scalping "+I.name();
 			int duration=(I.envStats().weight()/10);

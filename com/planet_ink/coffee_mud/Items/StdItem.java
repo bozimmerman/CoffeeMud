@@ -534,6 +534,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_EXAMINESOMETHING:
 		case CMMsg.TYP_READSOMETHING:
 		case CMMsg.TYP_QUIETMOVEMENT:
+		case CMMsg.TYP_NOISYMOVEMENT:
 		case CMMsg.TYP_HANDS:
 		case CMMsg.TYP_SPEAK:
 		case CMMsg.TYP_OK_ACTION:

@@ -177,13 +177,14 @@ public class Farming extends CommonSkill
 			found=(Item)makeResource(code,false);
 		int duration=45-mob.envStats().level();
 		if(duration<25) duration=25;
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) planting "+foundShortName+".");
+		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) planting "+foundShortName+".");
 		verb="planting "+foundShortName;
 		displayText="You are planting "+foundShortName;
 		room=mob.location();
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
+			found=(Item)msg.target();
 			beneficialAffect(mob,mob,duration);
 		}
 		return true;
