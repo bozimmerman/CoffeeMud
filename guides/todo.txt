@@ -9,6 +9,8 @@ should be assignable to GENMOBS via a new tag.
 More WeaponTypes, with text file (Resource)? descriptions.  These should also be
 assignable to MOBs at build time, or to GENMOBs via a new tag.
 
+Seperate commands to objects, like abilities.  This will provide the easy addition of custom commands.
+
 Add CoffeeMud area files!
 
 Buy command for standard mobs, to facilitate trades.
@@ -19,29 +21,25 @@ produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  
 Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and 
 remove rawness from Meat).
 
+Two-handed fighting
+
 ThievesTools required for picking locks, check/remove traps without severe penalty.
 
 HuntableAnimals that produce pieces of raw meat in inventory when killed.  Poisoned and poisoning 
 animals will produce poisoned meat, of course.
 
-Beacon, Worship command to change recall/start room to a new temple or church.  Worshiped room would 
-also get ticked, and previews of actions,  which will improve the Cleric class considerably.  
-
 Meditation for Mage should be like Endurance for Fighter.
-Lore skill for Bards.. allows an identify for them.
 
-Guilds will have the ability to take on a character and make him or her the class sponsored by the 
-guild.  These will be special Sub-Classes (derivatives of existing classes).
+Lore skill for Bards.. allows an identify for them.
 
 Serve and Rebuke commands.  Any character may take on a leige, but Clerics may only take worshipper
 of the same god (room) as a leige.  A Leige receives 10% of all experience gained by the
 vassels, providing incentive to assist the vassel.
 
-Seperate commands to objects, like abilities.  This will provide the easy addition of custom commands.
-
-To make mouted riding possible, allow Environmentals to modify displayText.  Mounted animals
-will take half of all combat damage, will add to attack ability, and increase movement and will
-act as a container for the purposes of cargo.
+Make mountable MOBS, and mountable Items. Mounted animals will take half of all combat damage, will add
+to attack ability, and increase movement and will act as a container for the purposes of cargo.  Mounted
+Items will not appear in inventory, and be restrained to a terrain type (air, water, etc).  More than
+one person can mount an item (a boat).
 
 For trade skills, and to make spells more realistic, perfect the delay of these abilities, and
 allow some message to be displayed as they are put in Que.  For example "You start whittling" (delay)
@@ -58,14 +56,13 @@ A Multi-Room Gate would work the same way.  An Entry, Exit, and TwoWay type woul
 Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course.  The 
 Following thing would be automatic, if an Exit and Direction extensions are used.
 
-If you are adventurous, put the Archon GenProperties modifiers into a method so that Generic object 
-properties can be more easily added without affecting the ONE class.
-
 PlayerKill flag
 
-Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard
+Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard.  Please just create new MUDGrinder 
+derivatives of the standard Interfaces.
 
-SubClasses: 
+Guilds will have the ability to take on a character and make him or her the class sponsored by the 
+guild.  These will be special Sub-Classes (derivatives of existing classes).  SubClasses: 
 Wild Mage: 50% chance similar (diff) spell is cast (higher level, perhaps)
 Assassin: Assassinate skill to auto-kill, lose something else though
 Barbarian: Free Berzerk, lower charisma
@@ -73,7 +70,4 @@ Priests of specific Gods: bonuses to like spells, lose others
 Knights Order: special sword as part of outfit?
 Prancers: Dancing bards who get special ability
 Illusionist: Illusion spells at 100%, get all of them
-
-
-
 

@@ -440,7 +440,10 @@ public class StdMOB implements MOB
 	public boolean isInCombat()
 	{
 		if(victim==null) return false;
-		if((victim.location()!=location())||(victim.amDead()))
+		if((victim.location()==null)
+		||(location()==null)
+		||(victim.location()!=location())
+		||(victim.amDead()))
 		{
 			setVictim(null);
 			return false;
