@@ -19,7 +19,7 @@ public class Chant_Goodberry extends Chant
 		if((newTarget!=null)
 		&&(newTarget instanceof Food)
 		&&(!(newTarget instanceof Pill))
-		&&(((Food)newTarget).material()==EnvResource.RESOURCE_BERRIES)
+		&&(isBerry(newTarget))
 		&&(newTarget.container()==originaltarget.container())
 		&&(newTarget.name().equals(originaltarget.name())))
 		{
