@@ -773,6 +773,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		return null;
 	}
+	
+	protected double getSalesTax()
+	{
+		Law theLaw=CoffeeUtensils.getTheLaw(location(),this);
+		if(theLaw!=null)
+		{
+			String taxs=(String)theLaw.taxLaws().get("SALESTAX");
+			if(taxs!=null)
+				return Util.s_double(taxs);
+		}
+		return 0.0;
+	    
+	}
 
 
 	public Vector removeSellableProduct(String named, MOB mob)
@@ -1068,7 +1081,67 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_LIST:
 				{
 					super.executeMsg(myHost,msg);
-					StringBuffer str=listInventory(mob);
+					StringBuffer str=new StringBuffer("");
+					int csize=0;
+					Vector inventory=getUniqueStoreInventory();
+					inventory=addRealEstate(inventory,mob);
+					if(inventory.size()>0)
+					{
+						int totalCols=((whatISell==DEAL_LANDSELLER)
+									   ||(whatISell==DEAL_CLANDSELLER)
+									   ||(whatISell==DEAL_SHIPSELLER)
+									   ||(whatISell==DEAL_CSHIPSELLER))?1:2;
+						int totalWidth=60/totalCols;
+						int limit=Util.getParmInt(prejudiceFactors(),"LIMIT",0);
+						for(int i=0;i<inventory.size();i++)
+						{
+							Environmental E=(Environmental)inventory.elementAt(i);
+	
+							if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
+							{
+								int[] val=yourValue(mob,E,true);
+								if((val[2]>0)&&(((""+val[2]).length()+2)>(4+csize)))
+									csize=(""+val[2]).length()-2;
+								else
+								if((val[1]>0)&&(((""+val[1]).length()+2)>(4+csize)))
+									csize=(""+val[1]).length()-2;
+								else
+								if((""+val[0]).length()>(4+csize))
+									csize=(""+val[0]).length()-4;
+							}
+						}
+	
+						String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",totalWidth-csize);
+						str.append(c+((totalCols>1)?c:"")+"^.^N\n\r");
+						int colNum=0;
+						int rowNum=0;
+						for(int i=0;i<inventory.size();i++)
+						{
+							Environmental E=(Environmental)inventory.elementAt(i);
+	
+							if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
+							{
+								int val[]=yourValue(mob,E,true);
+								String col=null;
+								if(val[1]>0)
+									col=Util.padRight("["+val[1]+"qp",5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+								else
+								if(val[2]>0)
+									col=Util.padRight("["+val[2]+"xp",5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+								else
+									col=Util.padRight("["+val[0],5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+								if((++colNum)>totalCols)
+								{
+									str.append("\n\r");
+									rowNum++;
+									if((limit>0)&&(rowNum>limit))
+										break;
+									colNum=1;
+								}
+								str.append(col);
+							}
+						}
+					}
 					if(str.length()==0)
 					{
 						if((whatISell!=DEAL_BANKER)
@@ -1076,7 +1149,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							CommonMsgs.say(this,mob,"I have nothing for sale.",false,false);
 					}
 					else
-						mob.tell("\n\r"+str+"^T");
+					{
+					    double salesTax=getSalesTax();
+						mob.tell("\n\r"+str
+						        +((salesTax<=0.0)?"":"\n\r\n\rPrices above include a "+salesTax+"% sales tax.")
+						        +"^T");
+					}
 				}
 				break;
 			default:
@@ -1237,7 +1315,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if(buyPrice>sellPrice)buyPrice=sellPrice;
 
 		if(sellTo)
-			val[0]=sellPrice;
+			val[0]=sellPrice+((int)Util.mul(val[0],Util.div(getSalesTax(),100.0)));
 		else
 			val[0]=buyPrice;
 
@@ -1373,68 +1451,4 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	public int invResetRate(){return invResetRate;}
 	public void setInvResetRate(int ticks){invResetRate=ticks; invResetTickDown=0;}
 	
-	protected StringBuffer listInventory(MOB mob)
-	{
-		StringBuffer msg=new StringBuffer("");
-		int csize=0;
-		Vector inventory=getUniqueStoreInventory();
-		inventory=addRealEstate(inventory,mob);
-		if(inventory.size()==0) return msg;
-
-		int totalCols=((whatISell==DEAL_LANDSELLER)
-					   ||(whatISell==DEAL_CLANDSELLER)
-					   ||(whatISell==DEAL_SHIPSELLER)
-					   ||(whatISell==DEAL_CSHIPSELLER))?1:2;
-		int totalWidth=60/totalCols;
-		int limit=Util.getParmInt(prejudiceFactors(),"LIMIT",0);
-		for(int i=0;i<inventory.size();i++)
-		{
-			Environmental E=(Environmental)inventory.elementAt(i);
-
-			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
-			{
-				int[] val=yourValue(mob,E,true);
-				if((val[2]>0)&&(((""+val[2]).length()+2)>(4+csize)))
-					csize=(""+val[2]).length()-2;
-				else
-				if((val[1]>0)&&(((""+val[1]).length()+2)>(4+csize)))
-					csize=(""+val[1]).length()-2;
-				else
-				if((""+val[0]).length()>(4+csize))
-					csize=(""+val[0]).length()-4;
-			}
-		}
-
-		String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",totalWidth-csize);
-		msg.append(c+((totalCols>1)?c:"")+"^.^N\n\r");
-		int colNum=0;
-		int rowNum=0;
-		for(int i=0;i<inventory.size();i++)
-		{
-			Environmental E=(Environmental)inventory.elementAt(i);
-
-			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
-			{
-				int val[]=yourValue(mob,E,true);
-				String col=null;
-				if(val[1]>0)
-					col=Util.padRight("["+val[1]+"qp",5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
-				else
-				if(val[2]>0)
-					col=Util.padRight("["+val[2]+"xp",5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
-				else
-					col=Util.padRight("["+val[0],5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
-				if((++colNum)>totalCols)
-				{
-					msg.append("\n\r");
-					rowNum++;
-					if((limit>0)&&(rowNum>limit))
-						return msg;
-					colNum=1;
-				}
-				msg.append(col);
-			}
-		}
-		return msg;
-	}
 }

@@ -34,9 +34,9 @@ public class Song_Strength extends Song
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
 		if(affected==invoker)
-			affectableStats.setStat(CharStats.STRENGTH,Math.round(affectableStats.getStat(CharStats.STRENGTH)-amount));
+			affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-amount);
 		else
-			affectableStats.setStat(CharStats.STRENGTH,Math.round(affectableStats.getStat(CharStats.STRENGTH)+amount));
+			affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+amount);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

@@ -82,6 +82,7 @@ public class As extends StdCommand
 		if((oldRoom!=null)&&(inside)&&(!oldRoom.isInhabitant(M)))
 			oldRoom.bringMobHere(M,false);
 		else
+		if((oldRoom==null)||(!inside))
 		{
 			if(M.location()!=null) 
 				M.location().delInhabitant(M);

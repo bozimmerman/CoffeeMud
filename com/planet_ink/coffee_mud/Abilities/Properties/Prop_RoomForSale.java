@@ -171,9 +171,6 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(Prop_RoomForSale.robberyCheck(this,msg))
-		    return;
-		else
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(affected instanceof Room))
 		{
@@ -196,6 +193,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+	    if(!super.okMessage(myHost,msg)) return false;
+		Prop_RoomForSale.robberyCheck(this,msg);
+		return true;
+	}
+	
 	public static void colorForSale(Room R, boolean rental, boolean reset)
 	{
 	    String theStr=rental?RENTSTR:SALESTR;

@@ -25,7 +25,8 @@ public class Spell_SummoningWard extends Spell
 	public String ID() { return "Spell_SummoningWard"; }
 	public String name(){return "Summoning Ward";}
 	public String displayText(){return "(Summoning Ward)";}
-	public int quality(){ return MALICIOUS;}
+	private int quality=Ability.INDIFFERENT;
+	public int quality(){ return quality;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
@@ -117,6 +118,7 @@ public class Spell_SummoningWard extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> seem(s) magically protected.":"^S<S-NAME> invoke(s) a summoning ward upon <T-NAMESELF>.^?");
+			if(target instanceof Room) quality=MALICIOUS;
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -127,11 +129,19 @@ public class Spell_SummoningWard extends Spell
 					CMClass.DBEngine().DBUpdateRoom((Room)target);
 				}
 				else
+				{
 					beneficialAffect(mob,target,asLevel,0);
+					if(target instanceof Room)
+					{
+					    Spell_SummoningWard A=(Spell_SummoningWard)target.fetchEffect(ID());
+					    if(A!=null) A.quality=Ability.MALICIOUS;
+					}
+				}
 			}
 		}
 		else
 			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a summoning ward, but fail(s).");
+		quality=INDIFFERENT;
 
 		return success;
 	}

@@ -69,6 +69,21 @@ public class CoffeeUtensils
 				return EnvResource.RESOURCE_DATA[i][0];
 		return -1;
 	}
+	
+	public static Law getTheLaw(Room R, MOB mob)
+	{
+	    Behavior B=CoffeeUtensils.getLegalBehavior(R);
+	    if(B!=null)
+	    {
+			Vector VB=new Vector();
+			Area A2=CoffeeUtensils.getLegalObject(R.getArea());
+			VB.addElement(new Integer(Law.MOD_LEGALINFO));
+			B.modifyBehavior(A2,mob,VB);
+			return (Law)VB.firstElement();
+	    }
+	    return null;
+	}
+	
 	public static Behavior getLegalBehavior(Area A)
 	{
 		if(A==null) return null;

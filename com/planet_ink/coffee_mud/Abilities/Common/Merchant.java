@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -410,6 +411,26 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return super.okMessage(myHost,msg);
 	}
 
+	protected double getSalesTax()
+	{
+	    if(affected instanceof MOB)
+	    {
+	        MOB mob=(MOB)affected;
+	        if(mob.location()!=null)
+	        {
+				Law theLaw=CoffeeUtensils.getTheLaw(mob.location(),mob);
+				if(theLaw!=null)
+				{
+					String taxs=(String)theLaw.taxLaws().get("SALESTAX");
+					if(taxs!=null)
+						return Util.s_double(taxs);
+				}
+	        }
+	    }
+		return 0.0;
+	    
+	}
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -477,7 +498,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					if(str.length()==0)
 						CommonMsgs.say(M,mob,"I have nothing for sale.",false,false);
 					else
-						mob.tell("\n\r"+str+"^T");
+					{
+					    double salesTax=getSalesTax();
+						mob.tell("\n\r"+str
+						        +((salesTax<=0.0)?"":"\n\r\n\rPrices above include a "+salesTax+"% sales tax.")
+						        +"^T");
+					}
 				}
 				break;
 			default:
@@ -500,6 +526,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		// the price is 200% at 0 charisma, and 100% at 30
 		val[0]=(int)Math.round(val[0]+val[0]-Util.mul(val[0],Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
 		if(val[0]<=0) val[0]=1;
+		if(sellTo)
+			val[0]+=((int)Util.mul(val[0],Util.div(getSalesTax(),100.0)));
 		return val;
 	}
 

@@ -790,7 +790,7 @@ public class StdLawBook extends StdItem
 			str.append("3. NUDITY            "+shortLawDesc((String[])theLaw.basicCrimes().get("NUDITY"))+"\n\r");
 			str.append("4. ARMED             "+shortLawDesc((String[])theLaw.basicCrimes().get("ARMED"))+"\n\r");
 			str.append("5. RESISTING ARREST  "+shortLawDesc((String[])theLaw.basicCrimes().get("RESISTINGARREST"))+"\n\r");
-			str.append("5. ROBBING HOMES     "+shortLawDesc((String[])theLaw.basicCrimes().get("PROPERTYROB"))+"\n\r");
+			str.append("6. ROBBING HOMES     "+shortLawDesc((String[])theLaw.basicCrimes().get("PROPERTYROB"))+"\n\r");
 			str.append("\n\r");
 			mob.session().colorOnlyPrintln(str.toString());
 			if(!theLaw.hasModifiableLaws())
@@ -865,7 +865,7 @@ public class StdLawBook extends StdItem
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
-				if(A.inMetroArea(mob.location().getArea()))
+				if(CoffeeUtensils.getLegalObject(A).inMetroArea(mob.location().getArea()))
 					mob.tell("You can not add this room as a release room, as it is not in the area.");
 				else
 				if(mob.session().confirm("Add this room as a new release room (y/N)? ","N"))
@@ -953,7 +953,7 @@ public class StdLawBook extends StdItem
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
-				if(!A.inMetroArea(mob.location().getArea()))
+				if(!CoffeeUtensils.getLegalObject(A).inMetroArea(mob.location().getArea()))
 					mob.tell("You can not add this room as a jail, as it is not in the area.");
 				else
 				if(mob.session().confirm("Add this room as a new jail room (y/N)? ","N"))

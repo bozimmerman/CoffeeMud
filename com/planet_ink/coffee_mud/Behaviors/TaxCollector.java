@@ -209,15 +209,10 @@ public class TaxCollector extends StdBehavior
 		if((R!=null)&&(lastMonthChecked!=R.getArea().getTimeObj().getMonth()))
 		{
 		    lastMonthChecked=R.getArea().getTimeObj().getMonth();
-		    Behavior B=CoffeeUtensils.getLegalBehavior(R.getArea());
-		    if(B!=null)
-		    {
-				Vector VB=new Vector();
-				Area A2=CoffeeUtensils.getLegalObject(R.getArea());
-				VB.addElement(new Integer(Law.MOD_LEGALINFO));
-				B.modifyBehavior(A2,mob,VB);
-				Law theLaw=(Law)VB.firstElement();
-				
+			Law theLaw=CoffeeUtensils.getTheLaw(R,mob);
+			if(theLaw!=null)
+			{
+			    Area A2=CoffeeUtensils.getLegalObject(R);
 				String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
 				LandTitle T=null;
 				peopleWhoOwe.clear();
@@ -238,7 +233,7 @@ public class TaxCollector extends StdBehavior
 				Environmental[] Treas=theLaw.getTreasuryNSafe(A2);
 				treasuryR=(Room)Treas[0];
 				treasuryItem=(Item)Treas[1];
-		    }
+			}
 		}
 		
 		if((R!=null)

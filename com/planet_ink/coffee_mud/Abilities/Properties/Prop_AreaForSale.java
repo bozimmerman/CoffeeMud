@@ -122,12 +122,16 @@ public class Prop_AreaForSale extends Property implements LandTitle
 
 	public void setLandPropertyID(String landID){}
 
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+	    if(!super.okMessage(myHost,msg)) return false;
+		Prop_RoomForSale.robberyCheck(this,msg);
+		return true;
+	}
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(Prop_RoomForSale.robberyCheck(this,msg))
-		    return;
-		else
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(affected instanceof Area)
 		&&((System.currentTimeMillis()-lastMobSave)>360000))
