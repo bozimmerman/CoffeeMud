@@ -76,7 +76,12 @@ public class Arrest extends StdBehavior
 			if(lawName.length()==0)
 				lawName="laws.ini";
 			laws=new Properties();
-			try{laws.load(new FileInputStream("resources"+File.separatorChar+lawName));}catch(IOException e){Log.errOut("Arrest",e);}
+			try{laws.load(new FileInputStream("resources"+File.separatorChar+lawName));}
+			catch(IOException e)
+			{
+				Log.errOut("Arrest","Unable to load: "+lawName+", legal system inoperable.");
+				return laws;
+			}
 			String officers=(String)laws.get("OFFICERS");
 			if((officers!=null)&&(officers.length()>0))
 				officerNames=Util.parse(officers);

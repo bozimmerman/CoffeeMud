@@ -29,18 +29,18 @@ public class Emoter extends ActiveTicker
 
 	public void setParms(String newParms)
 	{
-		String myParms=newParms;
+		parms=newParms;
 		broadcast=false;
 		emoteType=EMOTE_VISUAL;
 		
 		emotes=new Vector();
 		char c=';';
-		int x=myParms.indexOf(c);
-		if(x<0){ c='/'; x=myParms.indexOf(c);}
+		int x=newParms.indexOf(c);
+		if(x<0){ c='/'; x=newParms.indexOf(c);}
 		if(x>0)
 		{
-			String parmText=myParms.substring(0,x);
-			myParms=myParms.substring(x+1);
+			String parmText=newParms.substring(0,x);
+			newParms=newParms.substring(x+1);
 			Vector V=Util.parse(parmText);
 			for(int v=V.size()-1;v>=0;v--)
 			{
@@ -63,22 +63,22 @@ public class Emoter extends ActiveTicker
 					emoteType=EMOTE_SOUND;
 				}
 			}
-			super.setParms(Util.combine(V,0));
+			super.setParms(parmText);
 		}
-		while(myParms.length()>0)
+		while(newParms.length()>0)
 		{
-			String thisEmote=myParms;
-			x=myParms.indexOf(";");
+			String thisEmote=newParms;
+			x=newParms.indexOf(";");
 			if(x>0)
 			{
-				thisEmote=myParms.substring(0,x);
-				myParms=myParms.substring(x+1);
+				thisEmote=newParms.substring(0,x);
+				newParms=newParms.substring(x+1);
 			}
 			else
-				myParms="";
-			emotes.addElement(thisEmote);
+				newParms="";
+			if(thisEmote.length()>0)
+				emotes.addElement(thisEmote);
 		}
-		parms=newParms;
 	}
 
 	private void emoteHere(Room room, MOB emoter, String emote)
@@ -112,7 +112,7 @@ public class Emoter extends ActiveTicker
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(canAct(ticking,tickID))
+		if((canAct(ticking,tickID))&&(emotes.size()>0))
 		{
 			String emote=(String)emotes.elementAt(Dice.roll(1,emotes.size(),-1));
 			MOB emoter=null;
