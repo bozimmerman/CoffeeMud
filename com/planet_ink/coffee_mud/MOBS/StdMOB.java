@@ -671,7 +671,7 @@ public class StdMOB implements MOB
 				    &&(((!(affect.tool() instanceof Item))
 				      ||(!this.isMine(affect.tool())))))))
 				{
-					tell("You must stand up to do that.");
+					tell("You need to stand up.");
 					return false;
 				}
 			}

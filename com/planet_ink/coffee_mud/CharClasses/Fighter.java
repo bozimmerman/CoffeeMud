@@ -43,6 +43,7 @@ public class Fighter extends StdCharClass
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
 			if((A.qualifyingLevel(mob)>0)
 			   &&(!A.ID().equals("Skill_Write"))
+			   &&(!A.ID().equals("Skill_WandUse"))
 			   &&(!A.ID().equals("Skill_Climb")))
 				giveMobAbility(mob,A, isBorrowedClass);
 		}
