@@ -2748,13 +2748,10 @@ public class Scriptable extends StdBehavior
 			}
 			case 17: // mptransfer
 			{
-				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
-				String mobName=Util.getCleanBit(s,2);
-				if((mobName.length()==0)&&(roomName.length()>0)&&(lastKnownLocation!=null))
-				{
-					mobName=roomName;
+				String mobName=Util.getCleanBit(s,1);
+				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				if((roomName.length()==0)&&(lastKnownLocation!=null))
 					roomName=lastKnownLocation.roomID();
-				}
 				if(roomName.length()>0)
 				{
 					s=varify(source,target,monster,primaryItem,secondaryItem,msg,mobName);
