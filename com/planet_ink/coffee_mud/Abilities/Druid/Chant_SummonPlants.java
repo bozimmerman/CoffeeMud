@@ -99,6 +99,12 @@ public class Chant_SummonPlants extends Chant
 			return false;
 		}
 
+		if(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		{
+			mob.tell("This magic will not work here.");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
