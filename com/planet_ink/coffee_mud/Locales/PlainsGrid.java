@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
-public class PlainsGrid extends Grid
+public class PlainsGrid extends StdGrid
 {
 	public PlainsGrid()
 	{
@@ -18,4 +18,5 @@ public class PlainsGrid extends Grid
 	{
 		return new PlainsGrid();
 	}
+	public String getChildLocaleID(){return "Plains";}
 }

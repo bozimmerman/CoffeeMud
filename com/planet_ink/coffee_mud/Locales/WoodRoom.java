@@ -17,12 +17,5 @@ public class WoodRoom extends StdRoom
 	public Environmental newInstance()
 	{
 		return new WoodRoom();
-	}
-	public static boolean isOkAffect(Room room, Affect affect)
-	{
-		return true;
-	}
-	public static void doAffect(Room room, Affect affect)
-	{
-	}
+	} 
 }

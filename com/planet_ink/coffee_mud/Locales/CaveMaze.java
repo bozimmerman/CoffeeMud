@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.Sense;
 import java.util.*;
 
-public class CaveMaze extends Maze
+public class CaveMaze extends StdMaze
 {
 	public CaveMaze()
 	{
@@ -26,4 +26,5 @@ public class CaveMaze extends Maze
 		if(maxRange>=0) return maxRange;
 		return 5;
 	}
+	public String getChildLocaleID(){return "CaveRoom";}
 }

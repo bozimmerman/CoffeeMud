@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
-public class WoodsGrid extends Grid
+public class WoodsGrid extends StdGrid
 {
 	public WoodsGrid()
 	{
@@ -18,4 +18,5 @@ public class WoodsGrid extends Grid
 	{
 		return new WoodsGrid();
 	}
+	public String getChildLocaleID(){return "Woods";}
 }

@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.Directions;
 import com.planet_ink.coffee_mud.utils.Dice;
 import java.util.*;
 
-public class Grid extends StdRoom implements GridLocale
+public class StdGrid extends StdRoom implements GridLocale
 {
 	protected Room[] alts=new Room[Directions.NUM_DIRECTIONS];
 	protected Room[][] subMap=null;
@@ -14,15 +14,16 @@ public class Grid extends StdRoom implements GridLocale
 	protected String[] displayTexts=null;
 	protected int size=5;
 
-	public Grid()
+	public StdGrid()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	}
 	public Environmental newInstance()
 	{
-		return new Grid();
+		return new StdGrid();
 	}
+	public String getChildLocaleID(){return "StdRoom";}
 
 	public void setDescription(String newDescription)
 	{
@@ -81,15 +82,26 @@ public class Grid extends StdRoom implements GridLocale
 
 		if(subMap==null) buildGrid();
 		
-		if(loc instanceof GridLocaleChild)
-			loc=((GridLocaleChild)loc).parent();
-
-		for(int x=0;x<Directions.NUM_DIRECTIONS;x++)
-			if((doors[x]!=null)&&(doors[x]==loc))
-			{
-				oldDirCode=x;
-				break;
-			}
+		if(loc.ID().length()==0) // might be a child of an adjacent grid!
+		{
+			for(int x=0;x<Directions.NUM_DIRECTIONS;x++)
+				if((doors[x]!=null)
+				   &&(doors[x] instanceof GridLocale)
+				   &&(((GridLocale)doors[x]).isMyChild(loc)))
+				{
+					loc=doors[x];
+					oldDirCode=x;
+					break;
+				}
+		}
+		
+		if(oldDirCode<0)
+			for(int x=0;x<Directions.NUM_DIRECTIONS;x++)
+				if((doors[x]!=null)&&(doors[x]==loc))
+				{
+					oldDirCode=x;
+					break;
+				}
 		if(oldDirCode<0) return null;
 
 		return this.alts[oldDirCode];
@@ -236,6 +248,17 @@ public class Grid extends StdRoom implements GridLocale
 			}
 		this.buildFinalLinks();
 	}
+	public boolean isMyChild(Room loc)
+	{
+		if(this.subMap!=null)
+			for(int x=0;x<this.subMap.length;x++)
+				for(int y=0;y<this.subMap[x].length;y++)
+				{
+					Room room=this.subMap[x][y];
+					if(room==loc) return true;
+				}
+		return false;
+	}
 
 	public void clearGrid()
 	{
@@ -255,14 +278,11 @@ public class Grid extends StdRoom implements GridLocale
 	protected Room getGridRoom(int x, int y)
 	{
 		if((x<0)||(y<0)||(y>=this.subMap[0].length)||(x>=this.subMap.length)) return null;
-		GridChild gc=new GridChild();
-		gc.parent=this;
+		Room gc=CMClass.getLocale(getChildLocaleID());
 		gc.setID("");
 		gc.setArea(this.getArea());
 		gc.setDisplayText(this.displayText);
 		gc.setDescription(this.description);
-		gc.domainCondition=this.domainCondition;
-		gc.domainType=this.domainType;
 		int c=-1;
 		if(this.displayTexts!=null)
 		if(this.displayTexts.length>0)
@@ -312,68 +332,5 @@ public class Grid extends StdRoom implements GridLocale
 			}
 		}
 		return true;
-	}
-
-	protected class GridChild
-		extends StdRoom
-		implements GridLocaleChild
-	{
-		public Room parent=this;
-		public GridChild()
-		{
-			super();
-			if(parent!=null)
-			{
-				this.domainType=((Room)parent).domainType();
-				this.domainCondition=((Room)parent).domainConditions();
-				if(parent.baseEnvStats()!=null)
-				{
-					this.setBaseEnvStats(parent.baseEnvStats().cloneStats());
-					this.recoverEnvStats();
-				}
-			}
-			this.myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		}
-		public Environmental newInstance()
-		{
-			return new GridChild();
-		}
-
-		public boolean okAffect(Affect affect)
-		{
-			if(!super.okAffect(affect))
-				return false;
-			if(parent!=null)
-				if(!parent.okAffect(affect))
-					return false;
-			return true;
-		}
-
-		public void affect(Affect affect)
-		{
-			super.affect(affect);
-			if(parent!=null)
-				parent.affect(affect);
-		}
-
-
-		public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-		{
-			super.affectEnvStats(affected,affectableStats);
-			if(parent!=null)
-				parent.affectEnvStats(affected,affectableStats);
-		}
-
-		public void affectEnvStats(MOB affected, CharStats affectableStats)
-		{
-			super.affectCharStats(affected,affectableStats);
-			if(parent!=null)
-				parent.affectCharStats(affected,affectableStats);
-		}
-
-		public Room parent()
-		{
-			return parent;
-		}
 	}
 }

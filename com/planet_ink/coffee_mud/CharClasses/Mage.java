@@ -154,6 +154,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_ChainLightening",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_Choke",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Skill_Meditation",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Skill_MageClaws",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_PredictWeather",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_Cloudkill",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_Web",false);

@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
-public class MountainsMaze extends Maze
+public class MountainsMaze extends StdMaze
 {
 	public MountainsMaze()
 	{
@@ -18,4 +18,5 @@ public class MountainsMaze extends Maze
 	{
 		return new MountainsMaze();
 	}
+	public String getChildLocaleID(){return "Mountains";}
 }

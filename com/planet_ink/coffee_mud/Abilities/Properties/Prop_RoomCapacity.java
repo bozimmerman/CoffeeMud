@@ -28,8 +28,7 @@ public class Prop_RoomCapacity extends Property
 	{
 		if((affected!=null)
 		   &&(affected instanceof Room)
-		   &&((affect.amITarget(affected))
-			||((affect.target() instanceof GridLocaleChild)&&(affected==((GridLocaleChild)affect.target()).parent())))
+		   &&(affect.amITarget(affected))
 		   &&(affect.targetMinor()==Affect.TYP_ENTER))
 		{
 			int capacity=2;

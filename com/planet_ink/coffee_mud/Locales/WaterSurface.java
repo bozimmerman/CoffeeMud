@@ -21,12 +21,14 @@ public class WaterSurface extends StdRoom
 		return new WaterSurface();
 	}
 
-	public static boolean isOkAffect(Room room, Affect affect)
+	public boolean okAffect(Affect affect)
 	{
+		if(!super.okAffect(affect)) return false;
+		
 		if(((affect.targetMinor()==Affect.TYP_LEAVE)
 			||(affect.targetMinor()==Affect.TYP_ENTER)
 			||(affect.targetMinor()==Affect.TYP_FLEE))
-		   &&(affect.amITarget(room))
+		   &&(affect.amITarget(this))
 		   &&(!Sense.isSwimming(affect.source()))
 		   &&((affect.source().riding()==null)||(!Sense.isSwimming(affect.source().riding()))))
 		{
@@ -61,7 +63,7 @@ public class WaterSurface extends StdRoom
 		return true;
 	}
 
-	public static void doAffect(Room room, Affect affect)
+	public void affect(Affect affect)
 	{
 		if((affect.target() instanceof Item)&&(affect.targetMinor()==Affect.TYP_DROP))
 			((Item)affect.target()).destroyThis();

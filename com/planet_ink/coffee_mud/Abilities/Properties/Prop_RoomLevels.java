@@ -25,8 +25,7 @@ public class Prop_RoomLevels extends Property
 	{
 		if((affected!=null)
 		   &&(affected instanceof Room)
-		   &&((affect.amITarget(affected))
-			||((affect.target() instanceof GridLocaleChild)&&(affected==((GridLocaleChild)affect.target()).parent())))
+		   &&(affect.amITarget(affected))
 		   &&(affect.targetMinor()==Affect.TYP_ENTER))
 		{
 			if((text().toUpperCase().indexOf("ALL")>=0)||(text().length()==0)||(affect.source().isASysOp((Room)affected)))

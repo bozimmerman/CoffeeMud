@@ -11,9 +11,9 @@ public class Exits
 	public void create(MOB mob, Vector commands)
 		throws IOException
 	{
-		if(mob.location() instanceof GridLocaleChild)
+		if(mob.location().ID().equals(""))
 		{
-			mob.tell("This command is invalid from with a GridLocaleChild room.");
+			mob.tell("This command is invalid from within a GridLocaleChild room.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -90,9 +90,9 @@ public class Exits
 	public void modify(MOB mob, Vector commands)
 		throws IOException
 	{
-		if(mob.location() instanceof GridLocaleChild)
+		if(mob.location().ID().equals(""))
 		{
-			mob.tell("This command is invalid from with a GridLocaleChild room.");
+			mob.tell("This command is invalid from within a GridLocaleChild room.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -152,9 +152,9 @@ public class Exits
 
 	public void destroy(MOB mob, Vector commands)
 	{
-		if(mob.location() instanceof GridLocaleChild)
+		if(mob.location().ID().equals(""))
 		{
-			mob.tell("This command is invalid from with a GridLocaleChild room.");
+			mob.tell("This command is invalid from within a GridLocaleChild room.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}

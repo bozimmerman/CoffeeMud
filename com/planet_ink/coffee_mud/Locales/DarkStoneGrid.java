@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.Sense;
 import java.util.*;
 
-public class DarkStoneGrid extends Grid
+public class DarkStoneGrid extends StdGrid
 {
 	public DarkStoneGrid()
 	{

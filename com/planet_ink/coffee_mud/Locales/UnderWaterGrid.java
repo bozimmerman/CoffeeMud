@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.Sense;
 import java.util.*;
 
-public class UnderWaterGrid extends Grid
+public class UnderWaterGrid extends StdGrid
 {
 	public UnderWaterGrid()
 	{
@@ -22,6 +22,7 @@ public class UnderWaterGrid extends Grid
 	{
 		return new UnderWaterGrid();
 	}
+	public String getChildLocaleID(){return "UnderWater";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

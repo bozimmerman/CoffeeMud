@@ -32,6 +32,7 @@ public class StdAbility implements Ability, Cloneable
 	protected int trainsRequired=1;
 	protected int practicesRequired=1;
 	protected int practicesToPractice=1;
+	protected int affectType=0; // nothing!
 
 	protected int quality=Ability.INDIFFERENT;
 	
@@ -41,6 +42,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 	}
 
+	public int affectType(){return affectType;}
 	public boolean qualifies(MOB student)
 	{
 		int level=qualifyingLevel(student);

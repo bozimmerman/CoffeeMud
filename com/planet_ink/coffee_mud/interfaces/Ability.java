@@ -36,6 +36,12 @@ public interface Ability  extends Environmental
 	// the quality is used for more intelligent
 	// usage by mobs.  it returns one of the above
 	public int quality();
+	public static final int MASK_MAGICAL=65536;
+	// some spells duplicate weapon or other message
+	// types in their delivery.  In order to make this
+	// plain during off-messages (HURT, perhaps), 
+	// this method will make it clear.
+	public int affectType();
 
 	// who is responsible for initiating this affect?
 	public MOB invoker();

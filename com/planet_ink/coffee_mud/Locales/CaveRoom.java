@@ -26,11 +26,4 @@ public class CaveRoom extends StdRoom
 		if(maxRange>=0) return maxRange;
 		return 5;
 	}
-	public static boolean isOkAffect(Room room, Affect affect)
-	{
-		return true;
-	}
-	public static void doAffect(Room room, Affect affect)
-	{
-	}
 }

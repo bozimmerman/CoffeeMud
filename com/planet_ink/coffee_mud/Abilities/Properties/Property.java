@@ -142,6 +142,7 @@ public class Property implements Ability, Cloneable
 	{ description=newDescription;}
 	public boolean appropriateToMyAlignment(MOB mob){return true;}
 	public String accountForYourself(){return "";}
+	public int affectType(){return 0;}
 
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

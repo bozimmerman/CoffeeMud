@@ -5,18 +5,18 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.Dice;
 import com.planet_ink.coffee_mud.utils.Directions;
 import java.util.*;
-public class Maze extends Grid
+public class StdMaze extends StdGrid
 {
 	protected int size=10;
 
-	public Maze()
+	public StdMaze()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	}
 	public Environmental newInstance()
 	{
-		return new Maze();
+		return new StdMaze();
 	}
 
 	protected void buildFinalLinks()

@@ -221,6 +221,8 @@ public class Falling extends StdAbility
 			E.addAffect(F);
 			if(!(E instanceof MOB))
 				ExternalPlay.startTickDown(F,Host.MOB_TICK,1);
+			E.recoverEnvStats();
+			
 		}
 		return true;
 	}

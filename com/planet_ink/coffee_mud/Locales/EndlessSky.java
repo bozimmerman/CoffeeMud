@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.Sense;
 import com.planet_ink.coffee_mud.utils.Directions;
 import java.util.*;
 
-public class EndlessSky extends Grid
+public class EndlessSky extends StdGrid
 {
 	public EndlessSky()
 	{
@@ -31,6 +31,7 @@ public class EndlessSky extends Grid
 
 		return InTheAir.isOkAffect(this,affect);
 	}
+	public String getChildLocaleID(){return "InTheAir";}
 
 	protected void buildFinalLinks()
 	{

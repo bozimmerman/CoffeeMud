@@ -17,4 +17,5 @@ public class StoneGrid extends StdRoom
 	{
 		return new StoneGrid();
 	}
+	public String getChildLocaleID(){return "StoneRoom";}
 }

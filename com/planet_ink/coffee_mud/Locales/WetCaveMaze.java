@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.Sense;
 import java.util.*;
 
-public class WetCaveMaze extends Maze
+public class WetCaveMaze extends StdMaze
 {
 	public WetCaveMaze()
 	{
@@ -21,6 +21,7 @@ public class WetCaveMaze extends Maze
 	{
 		return new WetCaveMaze();
 	}
+	public String getChildLocaleID(){return "WetCaveRoom";}
 	public int getMaxRange()
 	{
 		if(maxRange>=0) return maxRange;

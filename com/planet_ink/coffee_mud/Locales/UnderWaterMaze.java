@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.Sense;
 import java.util.*;
 
-public class UnderWaterMaze extends Maze
+public class UnderWaterMaze extends StdMaze
 {
 	public UnderWaterMaze()
 	{
@@ -22,6 +22,7 @@ public class UnderWaterMaze extends Maze
 	{
 		return new UnderWaterMaze();
 	}
+	public String getChildLocaleID(){return "UnderWater";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.Sense;
 import java.util.*;
 
-public class DarkStoneMaze extends Maze
+public class DarkStoneMaze extends StdMaze
 {
 	public DarkStoneMaze()
 	{
@@ -20,4 +20,5 @@ public class DarkStoneMaze extends Maze
 	{
 		return new DarkStoneMaze();
 	}
+	public String getChildLocaleID(){return "DarkStoneRoom";}
 }

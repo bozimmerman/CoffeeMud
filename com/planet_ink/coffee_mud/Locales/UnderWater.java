@@ -8,8 +8,6 @@ import com.planet_ink.coffee_mud.utils.Sense;
 import com.planet_ink.coffee_mud.utils.Util;
 public class UnderWater extends StdRoom
 {
-
-
 	public UnderWater()
 	{
 		super();
@@ -32,37 +30,16 @@ public class UnderWater extends StdRoom
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
 
-	public static boolean isOkAffect(Room room, Affect affect)
+	public boolean okAffect(Affect affect)
 	{
+		if(!super.okAffect(affect)) return false;
+			  
 		if((affect.targetMinor()==affect.TYP_FIRE)
 		||(affect.targetMinor()==affect.TYP_GAS))
 		{
 			affect.source().tell("That won't work underwater.");
 			return false;
 		}
-
-		if(affect.amITarget(room)
-		   &&(Util.bset(affect.sourceMajor(),Affect.AFF_MOVEDON))
-		   &&(!Sense.isSwimming(affect.source()))
-		   &&((affect.source().riding()==null)||(!Sense.isSwimming(affect.source().riding()))))
-		{
-			MOB mob=affect.source();
-			if(!Sense.isSwimming(mob))
-			{
-				mob.tell("You need to swim or ride a boat that way.");
-				return false;
-			}
-			else
-			if(Sense.isSwimming(mob))
-				if(mob.envStats().weight()>Math.round(Util.mul(mob.maxCarry(),0.50)))
-				{
-					mob.tell("You are too encumbered to swim.");
-					return false;
-				}
-		}
 		return true;
-	}
-	public static void doAffect(Room room, Affect affect)
-	{
 	}
 }

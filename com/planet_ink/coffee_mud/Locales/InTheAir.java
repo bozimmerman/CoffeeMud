@@ -22,8 +22,10 @@ public class InTheAir extends StdRoom
 		return new InTheAir();
 	}
 
-	public static void doAffect(Room room, Affect affect)
+	public boolean okAffect(Affect affect)
 	{
+		if(!super.okAffect(affect)) return false;
+		return isOkAffect(this,affect);
 	}
 	public static boolean isOkAffect(Room room, Affect affect)
 	{

@@ -169,7 +169,7 @@ public class StdExit implements Exit
 				mob.tell("You can't go that way.");
 				return false;
 			}
-			if((Sense.isFlying(this))&&(!Sense.isFlying(mob)))
+			if((Sense.isFlying(this))&&(!Sense.isFlying(mob))&&(!Sense.isFalling(mob)))
 			{
 				mob.tell("You can't fly.");
 				return false;
