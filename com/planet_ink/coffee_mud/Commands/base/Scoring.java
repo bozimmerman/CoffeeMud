@@ -146,7 +146,7 @@ public class Scoring
 		msg.append("Your combat prowess is : ^H"+theFight.fightingProwessStr(adjustedAttack)+"^?.\n\r");
 		msg.append("Wimpy is set to ^B"+mob.getWimpHitPoint()+"^? hit points.\n\r");
 
-		if(Sense.isFlying(mob))
+		if(Sense.isFalling(mob))
 			msg.append("^BYou are falling!!!^?\n\r");
 		else
 		if(Sense.isSleeping(mob))
