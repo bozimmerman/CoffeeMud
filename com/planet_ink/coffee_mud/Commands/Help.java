@@ -45,7 +45,7 @@ public class Help extends StdCommand
 			thisTag=MUDHelp.getHelpText(helpStr,MUDHelp.getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
-			mob.tell("No help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
+			mob.tell("No help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list, or 'HELPLIST' to search.");
 			Log.errOut("Help",mob.Name()+" wanted help on "+helpStr);
 		}
 		else

@@ -43,6 +43,34 @@ public class Export extends StdCommand
 				mob.session().rawPrintln(xml+"\n\r\n\r");
 		}
 		else
+		if(fileName.equalsIgnoreCase("EMAIL"))
+		{
+			if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_EMAILFORWARDING))
+			{
+			    mob.tell("Mail forwarding is not enabled on this mud.");
+			    return;
+			}
+			if(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()==0)
+			{
+			    mob.tell("No email box has been defined.");
+			    return;
+			}
+			if(mob.playerStats().getEmail().length()==0)
+			{
+			    mob.tell("No email address has been defined.");
+			    return;
+			}
+			xml=xml.replace('\n',' ');
+			xml=xml.replace('\r',' ');
+			CMClass.DBEngine().DBWriteJournal(
+			        CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX),
+			        mob.Name(),
+			        mob.Name(),
+			        "Exported XML",
+			        xml.toString(),
+			        -1);
+		}
+		else
 		{
 			mob.tell("Writing file...");
 			try
@@ -74,7 +102,7 @@ public class Export extends StdCommand
 	{
 		String commandType="";
 		String fileName="";
-		int fileNameCode=-1; // -1=indetermined, 0=screen, 1=file, 2=path
+		int fileNameCode=-1; // -1=indetermined, 0=screen, 1=file, 2=path, 3=email
 		HashSet custom=new HashSet();
 
 		commands.removeElementAt(0);
@@ -125,12 +153,15 @@ public class Export extends StdCommand
 
 			if(commands.size()==0)
 			{
-				mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump.");
+				mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump, or 'EMAIL' to send to your email address.");
 				return false;
 			}
 			fileName=Util.combine(commands,0);
 			if(fileName.equalsIgnoreCase("screen"))
 				fileNameCode=0;
+			else
+			if(fileName.equalsIgnoreCase("email"))
+				fileNameCode=3;
 			else
 			{
 				if(!CMSecurity.isAllowedAnywhere(mob,"EXPORTFILE"))
@@ -147,7 +178,7 @@ public class Export extends StdCommand
 		}
 		else
 		{
-			mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump.");
+			mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump or 'EMAIL' to send to an email address.");
 			return false;
 		}
 

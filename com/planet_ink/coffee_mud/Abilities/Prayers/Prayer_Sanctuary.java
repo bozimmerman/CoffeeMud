@@ -84,6 +84,8 @@ public class Prayer_Sanctuary extends Prayer
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A white aura surrounds <S-NAME>.");
 				beneficialAffect(mob,target,asLevel,0);
+				Ability A=target.fetchEffect("Prayer_Fortress");
+				if(A!=null) A.unInvoke();
 			}
 		}
 		else

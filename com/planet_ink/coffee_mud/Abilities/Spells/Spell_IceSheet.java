@@ -79,6 +79,19 @@ public class Spell_IceSheet extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		if((affected==null)||(!(affected instanceof Room)))
+		   return;
+		super.executeMsg(myHost,msg);
+		if((msg.target()==affected)&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
+		{
+			MOB mob=msg.source();
+			Room room=(Room)affected;
+			msg.addTrailerMsg(new FullMsg(mob,room,null,CMMsg.MSG_OK_VISUAL,"\n\r<T-NAME> is covered in ice.",null,null));
+		}
+	}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -46,39 +46,83 @@ public class AHelp extends StdCommand
 				if(theRest==null)
 				{
 					Vector V=new Vector();
-					theRest=new StringBuffer("\n\rProperties:\n\r");
+					theRest=new StringBuffer("");
+					
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PROPERTY))
 							V.addElement(A.ID());
 					}
-					theRest.append(CMLister.fourColumns(V));
-					V=new Vector();
-					theRest=new StringBuffer("\n\rDiseases:\n\r");
+					if(V.size()>0)
+					{
+					    theRest.append("\n\rProperties:\n\r");
+						theRest.append(CMLister.fourColumns(V));
+					}
+					
+					V.clear();
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE))
 							V.addElement(A.ID());
 					}
-					theRest.append(CMLister.fourColumns(V));
-					theRest=new StringBuffer("\n\rPoisons:\n\r");
+					if(V.size()>0)
+					{
+					    theRest.append("\n\rDiseases:\n\r");
+						theRest.append(CMLister.fourColumns(V));
+					}
+					
+					V.clear();
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
 							V.addElement(A.ID());
 					}
-					theRest.append(CMLister.fourColumns(V));
-					theRest.append("\n\r\n\rBehaviors:\n\r");
-					V=new Vector();
+					if(V.size()>0)
+					{
+					    theRest.append("\n\rPoisons:\n\r");
+						theRest.append(CMLister.fourColumns(V));
+					}
+					
+					V.clear();
+					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+					{
+						Ability A=(Ability)a.nextElement();
+						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SUPERPOWER))
+							V.addElement(A.ID());
+					}
+					if(V.size()>0)
+					{
+					    theRest.append("\n\rSuper Powers:\n\r");
+						theRest.append(CMLister.fourColumns(V));
+					}
+					
+					V.clear();
+					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+					{
+						Ability A=(Ability)a.nextElement();
+						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.EVILDEED))
+							V.addElement(A.ID());
+					}
+					if(V.size()>0)
+					{
+					    theRest.append("\n\rEvil Deeds:\n\r");
+						theRest.append(CMLister.fourColumns(V));
+					}
+					
+					V.clear();
 					for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 					{
 						Behavior B=(Behavior)b.nextElement();
 						if(B!=null) V.addElement(B.ID());
 					}
-					theRest.append(CMLister.fourColumns(V)+"\n\r");
+					if(V.size()>0)
+					{
+					    theRest.append("\n\r\n\rBehaviors:\n\r");
+						theRest.append(CMLister.fourColumns(V));
+					}
 					Resources.submitResource("arc_help.therest",theRest);
 				}
 				thisTag=new StringBuffer(thisTag.toString());

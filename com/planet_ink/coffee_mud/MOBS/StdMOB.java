@@ -1990,6 +1990,14 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_DEATH:
 				if(!amDead)
 				{
+					if((!isMonster())&&(soulMate()==null))
+					{
+						CoffeeTables.bump(this,CoffeeTables.STAT_DEATHS);
+						if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+							CommonMsgs.channel("WIZINFO","",Name()+" was just killed in "+CMMap.getExtendedRoomID(location())+" by "+msg.tool().Name()+".",true);
+						else
+							CommonMsgs.channel("WIZINFO","",Name()+" has just died at "+CMMap.getExtendedRoomID(location()),true);
+					}
 					if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
 					{
 						MUDFight.justDie((MOB)msg.tool(),this);
@@ -1999,14 +2007,6 @@ public class StdMOB implements MOB
 					else
 						MUDFight.justDie(null,this);
 					tell(this,msg.target(),msg.tool(),msg.sourceMessage());
-					if((!isMonster())&&(soulMate()==null))
-					{
-						CoffeeTables.bump(this,CoffeeTables.STAT_DEATHS);
-						if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-							CommonMsgs.channel("WIZINFO","",Name()+" was just killed by "+msg.tool().Name()+".",true);
-						else
-							CommonMsgs.channel("WIZINFO","",Name()+" has just died.",true);
-					}
 					if(riding()!=null) riding().delRider(this);
 				}
 				break;

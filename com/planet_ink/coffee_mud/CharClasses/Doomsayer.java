@@ -85,7 +85,7 @@ public class Doomsayer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",false);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Fortress",false);
 
 			CMAble.addCharAbilityMapping(ID(),14,"Prayer_Demonshield",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Prayer_AuraHarm",false);

@@ -737,6 +737,10 @@ public class List extends StdCommand
 		/*39*/{"RESOURCES","LOADUNLOAD"},
 		/*40*/{"ONEWAYDOORS","CMDEXITS","CMDROOMS","CMDAREAS"},
 		/*41*/{"CHANTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*42*/{"POWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*43*/{"SUPERPOWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*44*/{"DEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*45*/{"EVILDEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 	};
 	
 	public void archonlist(MOB mob, Vector commands)
@@ -836,6 +840,10 @@ public class List extends StdCommand
 		case 39: s.rawPrintln(CMLister.reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString()); break;
 		case 40: s.rawPrintln(reallyFindOneWays(mob,commands)); break;
 		case 41: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.CHANT).toString()); break;
+		case 42:
+		case 43: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SUPERPOWER).toString()); break;
+		case 44:
+		case 45: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.EVILDEED).toString()); break;
 		default:
 			s.println("List?!");
 			break;

@@ -591,15 +591,15 @@ public class CMClass extends ClassLoader
 			addV(tempV,abilities);
 
 			size+=tempV.size();
-			Log.sysOut("MUD","Fighter Skills    : "+size);
+			if(size>0) Log.sysOut("MUD","Fighter Skills    : "+size);
 			addV(tempV,abilities);
 
 			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Druid"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			Log.sysOut("MUD","Chants loaded     : "+tempV.size());
+			if(tempV.size()>0) Log.sysOut("MUD","Chants loaded     : "+tempV.size());
 			addV(tempV,abilities);
 
 			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Languages"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			Log.sysOut("MUD","Languages loaded  : "+tempV.size());
+			if(tempV.size()>0) Log.sysOut("MUD","Languages loaded  : "+tempV.size());
 			addV(tempV,abilities);
 
 			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Properties"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
@@ -642,39 +642,47 @@ public class CMClass extends ClassLoader
 			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Specializations"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
 			size+=tempV.size();
 			addV(tempV,abilities);
-			Log.sysOut("MUD","Skills loaded     : "+size);
+			if(size>0) Log.sysOut("MUD","Skills loaded     : "+size);
 
 			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Songs"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			Log.sysOut("MUD","Songs loaded      : "+tempV.size());
+			if(tempV.size()>0) Log.sysOut("MUD","Songs loaded      : "+tempV.size());
 			addV(tempV,abilities);
 
 			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Spells"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			Log.sysOut("MUD","Spells loaded     : "+tempV.size());
+			if(tempV.size()>0) Log.sysOut("MUD","Spells loaded     : "+tempV.size());
 			addV(tempV,abilities);
 
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"SuperPowers"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size=tempV.size();
+			addV(tempV,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"EvilDeeds"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size+=tempV.size();
+			addV(tempV,abilities);
+			if(size>0) Log.sysOut("MUD","Heroics loaded    : "+size);
+			
 			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Traps"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			Log.sysOut("MUD","Traps loaded      : "+tempV.size());
+			if(tempV.size()>0) Log.sysOut("MUD","Traps loaded      : "+tempV.size());
 			addV(tempV,abilities);
 			abilities=new Vector(new TreeSet(abilities));
 		}
 
 		items=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Basic"+File.separatorChar,page.getStr("ITEMS"),"com.planet_ink.coffee_mud.interfaces.Item");
-		Log.sysOut("MUD","Basic Items loaded: "+items.size());
+		if(items.size()>0) Log.sysOut("MUD","Basic Items loaded: "+items.size());
 
 		weapons=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Weapons"+File.separatorChar,page.getStr("WEAPONS"),"com.planet_ink.coffee_mud.interfaces.Weapon");
-		Log.sysOut("MUD","Weapons loaded    : "+weapons.size());
+		if(weapons.size()>0) Log.sysOut("MUD","Weapons loaded    : "+weapons.size());
 
 		armor=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Armor"+File.separatorChar,page.getStr("ARMOR"),"com.planet_ink.coffee_mud.interfaces.Armor");
-		Log.sysOut("MUD","Armor loaded      : "+armor.size());
+		if(armor.size()>0) Log.sysOut("MUD","Armor loaded      : "+armor.size());
 
 		miscMagic=loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscMagic"+File.separatorChar,page.getStr("MISCMAGIC"),"com.planet_ink.coffee_mud.interfaces.MiscMagic");
-		Log.sysOut("MUD","Magic Items loaded: "+miscMagic.size());
+		if(miscMagic.size()>0) Log.sysOut("MUD","Magic Items loaded: "+miscMagic.size());
 
 		clanItems=loadVectorListToObj(prefix+"Items"+File.separatorChar+"ClanItems"+File.separatorChar,page.getStr("CLANITEMS"),"com.planet_ink.coffee_mud.interfaces.ClanItem");
-		Log.sysOut("MUD","Clan Items loaded : "+clanItems.size());
+		if(clanItems.size()>0) Log.sysOut("MUD","Clan Items loaded : "+clanItems.size());
 
 		miscTech=loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscTech"+File.separatorChar,page.getStr("MISCTECH"),"com.planet_ink.coffee_mud.interfaces.Electronics");
-		Log.sysOut("MUD","Electronics loaded: "+miscTech.size());
+		if(miscTech.size()>0) Log.sysOut("MUD","Electronics loaded: "+miscTech.size());
 
 		if((items.size()+weapons.size()+armor.size()+miscTech.size()+miscMagic.size()+clanItems.size())==0)
 			return false;

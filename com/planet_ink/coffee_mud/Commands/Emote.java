@@ -36,7 +36,7 @@ public class Emote extends StdCommand
 		String combinedCommands=Util.combine(commands,1);
 		combinedCommands=CommonStrings.applyFilter(combinedCommands,CommonStrings.SYSTEM_EMOTEFILTER);
 		String emote="^E<S-NAME> "+combinedCommands+" ^?";
-		FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_EMOTE,emote);
+		FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_EMOTE,"^E"+mob.name()+" "+combinedCommands+" ^?",emote,emote);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;
