@@ -44,6 +44,8 @@ be able to drink or fill waterskin from freshwater locales
 
 PlayerKill flag
 
+vassels command to list the ones who serve you (and are online)
+
 Forget spell to make someone forget a skill they try, at random!
 
 Distract ability (can't fight during) to make an enemies scores worse...

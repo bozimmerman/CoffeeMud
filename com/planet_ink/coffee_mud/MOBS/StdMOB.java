@@ -917,9 +917,10 @@ public class StdMOB implements MOB
 						return false;
 					}
 					else
-					if(!((affect.target() instanceof MOB)&&(((MOB)affect.target()).getWorshipCharID().equals(name()))))
+					if((!((affect.target() instanceof MOB)&&(((MOB)affect.target()).getWorshipCharID().equals(name()))))
+					&&(!affect.target().name().equals(getWorshipCharID())))
 					{
-						tell(affect.target().name()+" does not serve you.");
+						tell(affect.target().name()+" does not serve you, and you do not serve "+affect.target().name()+".");
 						return false;
 					}
 				}
@@ -932,6 +933,11 @@ public class StdMOB implements MOB
 				break;
 			case Affect.TYP_SERVE:
 				if(affect.target()==null) return false;
+				if(affect.target()==this)
+				{
+					tell("You can't serve yourself!");
+					return false;
+				}
 				if(!Sense.canBeHeardBy(this,affect.target()))
 				{
 					tell(affect.target().name()+" can't hear you!");
@@ -1168,12 +1174,16 @@ public class StdMOB implements MOB
 			switch(affect.sourceMinor())
 			{
 			case Affect.TYP_REBUKE:
-				if((affect.target()==null)&&(WorshipCharID.length()>0))
+				if(((affect.target()==null)&&(WorshipCharID.length()>0))
+				||((affect.target()!=null)&&(affect.target().name().equals(WorshipCharID))))
 					WorshipCharID="";
+				
+				tell(this,affect.target(),affect.sourceMessage());
 				break;
 			case Affect.TYP_SERVE:
 				if(affect.target()!=null)
 					WorshipCharID=affect.target().name();
+				tell(this,affect.target(),affect.sourceMessage());
 				break;
 			case Affect.TYP_EXAMINESOMETHING:
 				if((Sense.canBeSeenBy(this,mob))&&(affect.amITarget(this)))
@@ -1186,12 +1196,12 @@ public class StdMOB implements MOB
 					myDescription.append(healthText()+"\n\r\n\r");
 					myDescription.append(description()+"\n\r\n\r");
 					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(affect.source(),this));
-					mob.tell(myDescription.toString());
+					tell(myDescription.toString());
 				}
 				break;
 			case Affect.TYP_READSOMETHING:
 				if((Sense.canBeSeenBy(this,mob))&&(affect.amITarget(this)))
-					mob.tell("There is nothing written on "+name());
+					tell("There is nothing written on "+name());
 				break;
 			case Affect.TYP_SIT:
 				{
@@ -1201,7 +1211,7 @@ public class StdMOB implements MOB
 				mob.recoverEnvStats();
 				mob.recoverCharStats();
 				mob.recoverMaxState();
-				tell(affect.source(),affect.target(),affect.sourceMessage());
+				tell(this,affect.target(),affect.sourceMessage());
 				}
 				break;
 			case Affect.TYP_SLEEP:
@@ -1212,7 +1222,7 @@ public class StdMOB implements MOB
 				mob.recoverEnvStats();
 				mob.recoverCharStats();
 				mob.recoverMaxState();
-				tell(affect.source(),affect.target(),affect.sourceMessage());
+				tell(this,affect.target(),affect.sourceMessage());
 				}
 				break;
 			case Affect.TYP_STAND:
@@ -1223,7 +1233,7 @@ public class StdMOB implements MOB
 				mob.recoverEnvStats();
 				mob.recoverCharStats();
 				mob.recoverMaxState();
-				tell(affect.source(),affect.target(),affect.sourceMessage());
+				tell(this,affect.target(),affect.sourceMessage());
 				}
 				break;
 			case Affect.TYP_RECALL:
@@ -1234,9 +1244,9 @@ public class StdMOB implements MOB
 					((Room)affect.target()).addInhabitant(this);
 					((Room)affect.target()).showOthers(mob,null,Affect.MSG_ENTER,"<S-NAME> appears out of the Java Plain.");
 					setLocation(((Room)affect.target()));
-					affect.source().recoverEnvStats();
-					affect.source().recoverCharStats();
-					affect.source().recoverMaxState();
+					recoverEnvStats();
+					recoverCharStats();
+					recoverMaxState();
 					ExternalPlay.look(mob,new Vector(),true);
 				}
 				break;
@@ -1321,7 +1331,7 @@ public class StdMOB implements MOB
 			}
 			else
 			if((affect.targetMinor()==Affect.TYP_REBUKE)
-			&&(Sense.canBeHeardBy(affect.source(),this)))
+			&&(affect.source().name().equals(WorshipCharID)))
 				WorshipCharID="";
 			
 			int targetMajor=affect.targetMajor();

@@ -132,7 +132,12 @@ public class StdCharClass implements CharClass
 
 		mob.setExperience(mob.getExperience()+amount);
 		if(homage==null) homage="";
-		mob.tell("^BYou gain ^H"+amount+"^? experience points"+homage+".^N");
+		if(amount>1)
+			mob.tell("^BYou gain ^H"+amount+"^? experience points"+homage+".^N");
+		else
+		if(amount>0)
+			mob.tell("^BYou gain ^H"+amount+"^? experience point"+homage+".^N");
+			
 		while(mob.getExperience()>mob.getExpNextLevel())
 			level(mob);
 	}
