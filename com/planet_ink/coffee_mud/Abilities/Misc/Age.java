@@ -140,7 +140,7 @@ public class Age extends StdAbility
 							STAT.setMiscText("CHA=10 CON=7 DEX=3 INT=3 STR=2 WIS=2");
 						babe.text();
 						babe.bringToLife(R,true);
-						babe.setMoney(0);
+						BeanCounter.clearZeroMoney(babe,null);
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
 						I.destroy();
@@ -224,7 +224,7 @@ public class Age extends StdAbility
 					newMan.setFollowing(null);
 					newMan.setLiegeID(babe.getLiegeID());
 					newMan.setLocation(babe.location());
-					newMan.setMoney(babe.getMoney());
+					BeanCounter.setMoney(newMan,BeanCounter.getMoney(babe));
 					newMan.setName(babe.Name());
 					newMan.setPlayerStats(new DefaultPlayerStats());
 					newMan.setPractices(babe.getPractices());

@@ -75,7 +75,7 @@ public class Spell_SummonArmy extends Spell
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
-					newMOB.setMoney(0);
+					BeanCounter.clearZeroMoney(newMOB,null);
 					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 					newMOB.setStartRoom(null);
 					newMOB.setVictim(mob.getVictim());

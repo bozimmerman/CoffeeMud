@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -139,7 +140,7 @@ public class Chant_AstralProjection extends Chant
 				Item I=spirit.fetchInventory(0);
 				if(I!=null) I.destroy();
 			}
-			spirit.setMoney(0);
+			BeanCounter.clearZeroMoney(spirit,null);
 			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
 			beneficialAffect(spirit,target,asLevel,0);
 			Ability A=CMClass.getAbility("Prop_AstralSpirit");

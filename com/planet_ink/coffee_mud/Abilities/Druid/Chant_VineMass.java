@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -66,7 +67,7 @@ public class Chant_VineMass extends Chant_SummonVine
 			newMOB.recoverMaxState();
 			newMOB.resetToMaxState();
 			newMOB.bringToLife(caster.location(),true);
-			newMOB.setMoney(0);
+			BeanCounter.clearZeroMoney(newMOB,null);
 			if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 			newMOB.setVictim(victim);
 			newMOB.setStartRoom(null);

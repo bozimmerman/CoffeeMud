@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -95,7 +96,7 @@ public class Chant_HowlersMoon extends Chant
 				Room newRoom=room.getRoomInDir(fromDir);
 				int opDir=Directions.getOpDirectionCode(fromDir);
 				target.bringToLife(newRoom,true);
-				target.setMoney(0);
+				BeanCounter.clearZeroMoney(target,null);
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);

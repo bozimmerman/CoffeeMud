@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -167,7 +168,7 @@ public class Spell_PhantomHound extends Spell
 				beast.resetToMaxState();
 				beast.text();
 				beast.bringToLife(mob.location(),true);
-				beast.setMoney(0);
+				BeanCounter.clearZeroMoney(beast,null);
 				beast.location().showOthers(beast,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				beast.setStartRoom(null);
 				victim=mob.getVictim();

@@ -132,7 +132,7 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.addBehavior(B);
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
-				newMOB.setMoney(0);
+				BeanCounter.clearZeroMoney(newMOB,null);
 				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				int it=0;
 				while(it<newMOB.location().numItems())

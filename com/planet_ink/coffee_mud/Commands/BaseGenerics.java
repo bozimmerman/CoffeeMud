@@ -1856,9 +1856,9 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Money: '"+E.getMoney()+"'.");
+		mob.tell(showNumber+". Money: '"+BeanCounter.getMoney(E)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.setMoney(getNumericData(mob,"Enter a new value\n\r:",E.getMoney()));
+		BeanCounter.setMoney(E,getNumericData(mob,"Enter a new value\n\r:",BeanCounter.getMoney(E)));
 	}
 
 	public static void genWeaponAmmo(MOB mob, Weapon E, int showNumber, int showFlag)

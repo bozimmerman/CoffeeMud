@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -114,7 +115,7 @@ public class Spell_SummonEnemy extends Spell
 		monster.resetToMaxState();
 		monster.text();
 		monster.bringToLife(caster.location(),true);
-		monster.setMoney(0);
+		BeanCounter.clearZeroMoney(monster,null);
 		monster.location().showOthers(monster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		monster.setStartRoom(null);

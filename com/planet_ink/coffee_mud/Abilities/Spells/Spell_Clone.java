@@ -143,7 +143,7 @@ public class Spell_Clone extends Spell
 			newMOB.delBehavior(B);
 		}
 		newMOB.bringToLife(caster.location(),true);
-		newMOB.setMoney(0);
+		BeanCounter.clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);

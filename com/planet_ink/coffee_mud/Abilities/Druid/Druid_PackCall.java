@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -177,7 +178,7 @@ public class Druid_PackCall extends StdAbility
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
-					newMOB.setMoney(0);
+					BeanCounter.clearZeroMoney(newMOB,null);
 					if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 					newMOB.setStartRoom(null);
 					int dir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();

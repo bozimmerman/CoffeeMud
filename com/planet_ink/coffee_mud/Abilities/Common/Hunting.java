@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -119,7 +120,7 @@ public class Hunting extends CommonSkill
 					displayText="You are hunting for "+found.name();
 					verb="hunting for "+found.name();
 					found.bringToLife(nearByRoom(),true);
-					found.setMoney(0);
+					BeanCounter.clearZeroMoney(found,null);
 				}
 				else
 				{

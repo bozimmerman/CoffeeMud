@@ -154,7 +154,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.resetToMaxState();
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
-		newMOB.setMoney(0);
+		BeanCounter.clearZeroMoney(newMOB,null);
         newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> tears through the fabric of reality and steps into this world!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);

@@ -109,7 +109,7 @@ public class Spell_SummonMonster extends Spell
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
-		newMOB.setMoney(0);
+		BeanCounter.clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		newMOB.setStartRoom(null);
 		return(newMOB);

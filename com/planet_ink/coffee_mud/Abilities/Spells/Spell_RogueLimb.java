@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -141,7 +142,7 @@ public class Spell_RogueLimb extends Spell
 					rogueLimb.recoverEnvStats();
 					rogueLimb.resetToMaxState();
 					rogueLimb.bringToLife(mob.location(),true);
-					rogueLimb.setMoney(0);
+					BeanCounter.clearZeroMoney(rogueLimb,null);
 					rogueLimb.setVictim(target);
 					maliciousAffect(mob,target,asLevel,0,-1);
 					rogueLimb.setVictim(target);

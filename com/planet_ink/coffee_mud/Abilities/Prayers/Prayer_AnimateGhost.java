@@ -83,7 +83,7 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.resetToMaxState();
 		newMOB.text();
 		newMOB.bringToLife(R,true);
-		newMOB.setMoney(0);
+		BeanCounter.clearZeroMoney(newMOB,null);
 		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		int it=0;
 		while(it<newMOB.location().numItems())
