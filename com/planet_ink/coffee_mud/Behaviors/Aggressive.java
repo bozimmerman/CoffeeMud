@@ -28,7 +28,7 @@ public class Aggressive extends StdBehavior
 		&&(monster.location().isInhabitant(mob))
 		&&(canFreelyBehaveNormal(monster))
 		&&(Sense.canBeSeenBy(mob,monster))
-		&&((mob.charStats().getMyClass()==null)||(!(mob.charStats().getMyClass().ID().equals("Archon")))))
+		&&(!mob.isASysOp(mob.location())))
 		{
 			// special backstab sneak attack!
 			if(Sense.isHidden(monster))
