@@ -28,7 +28,7 @@ public class StdJournal extends StdItem
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_WRITE:
-			if((!ExternalPlay.zapperCheck(getWriteReq(),mob))&&(!affect.source().isASysOp(null)))
+			if((!ExternalPlay.zapperCheck(getWriteReq(),affect.source()))&&(!affect.source().isASysOp(null)))
 			{
 				affect.source().tell("You are not allowed to write on "+name());
 				return false;
@@ -53,7 +53,7 @@ public class StdJournal extends StdItem
 				if(!ExternalPlay.zapperCheck(getReadReq(),mob))
 				{
 					mob.tell("You are not allowed to read "+name()+".");
-					return false;
+					return;
 				}
 				int which=-1;
 				if(Util.s_long(affect.targetMessage())>0)
