@@ -41,8 +41,8 @@ public class ProtectedCitizen extends ActiveTicker
 		if(s.length()==0)
 		{ cityguard=defcityguard; return cityguard;}
 		char c=';';
-		int x=parms.indexOf(c);
-		if(x<0){ c='/'; x=parms.indexOf(c);}
+		int x=s.indexOf(c);
+		if(x<0){ c='/'; x=s.indexOf(c);}
 		if(x<0)
 		{ cityguard=defcityguard; return cityguard;}
 		cityguard=s.substring(0,x).trim();
@@ -57,21 +57,23 @@ public class ProtectedCitizen extends ActiveTicker
 		String s=getParmsNoTicks();
 		if(s.length()==0)
 		{ claims=defclaims; return claims;}
+		
 		char c=';';
-		int x=parms.indexOf(c);
-		if(x<0){ c='/'; x=parms.indexOf(c);}
+		int x=s.indexOf(c);
+		if(x<0){ c='/'; x=s.indexOf(c);}
 		if(x<0)
 		{ claims=defclaims; return claims;}
 		s=s.substring(x+1).trim();
 		if(s.length()==0)
 		{ claims=defclaims; return claims;}
 		Vector V=new Vector();
-		x=parms.indexOf(c);
+		x=s.indexOf(c);
 		while(x>=0)
 		{
 			String str=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if(str.length()>0)V.addElement(str);
+			x=s.indexOf(c);
 		}
 		if(s.length()>0)V.addElement(s);
 		claims=new String[V.size()];
@@ -98,7 +100,8 @@ public class ProtectedCitizen extends ActiveTicker
 			}
 
 			try{
-			ExternalPlay.doCommand(mob,Util.parse("YELL "+getClaims()[Dice.roll(1,getClaims().length,-1)]));
+				String claim=getClaims()[Dice.roll(1,getClaims().length,-1)];
+			ExternalPlay.doCommand(mob,Util.parse("YELL \""+claim+"\""));
 			}catch(Exception e){}
 
 

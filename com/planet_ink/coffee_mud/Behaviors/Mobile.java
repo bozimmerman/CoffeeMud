@@ -32,8 +32,6 @@ public class Mobile extends ActiveTicker
 	{
 		if(currentRoom==null) return false;
 		if(newRoom==null) return false;
-		if((!wander)&&(!currentRoom.getArea().Name().equals(newRoom.getArea().Name())))
-		   return false;
 		if(restrictedLocales==null) return true;
 		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
 	}
@@ -110,156 +108,19 @@ public class Mobile extends ActiveTicker
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
-			// ridden things dont wander!
+			Vector objections=null;
 			MOB mob=(MOB)ticking;
-			if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0))
-			||((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location())))
-				return true;
-
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				Room R=mob.location().getRoomInDir(d);
+				if((R!=null)&&(!okRoomForMe(mob.location(),R)))
+				{
+					if(objections==null) objections=new Vector();
+					objections.addElement(R);
+				}
+			}
 			Room oldRoom=mob.location();
-			if(oldRoom instanceof GridLocale)
-			{
-				Vector V=((GridLocale)oldRoom).getAllRooms();
-				Room R=(Room)(V.elementAt(Dice.roll(1,V.size(),-1)));
-				if(R!=null) R.bringMobHere(mob,true);
-				oldRoom=mob.location();
-			}
-
-			int tries=0;
-			int direction=-1;
-			while((tries++<10)&&(direction<0))
-			{
-				direction=(int)Math.round(Math.floor(Math.random()*6));
-				Room nextRoom=oldRoom.getRoomInDir(direction);
-				Exit nextExit=oldRoom.getExitInDir(direction);
-				if((nextRoom!=null)&&(nextExit!=null))
-				{
-					Exit opExit=nextRoom.getExitInDir(Directions.getOpDirectionCode(direction));
-					for(int a=0;a<nextExit.numAffects();a++)
-					{
-						Ability aff=nextExit.fetchAffect(a);
-						if((aff!=null)&&(aff instanceof Trap))
-							direction=-1;
-					}
-
-					if(opExit!=null)
-					{
-						for(int a=0;a<opExit.numAffects();a++)
-						{
-							Ability aff=opExit.fetchAffect(a);
-							if((aff!=null)&&(aff instanceof Trap))
-								direction=-1;
-						}
-					}
-
-					if((oldRoom.domainConditions()!=nextRoom.domainConditions())
-					&&(!Sense.isFlying(mob))
-					&&((nextRoom.domainConditions()==Room.DOMAIN_INDOORS_AIR)
-					||(nextRoom.domainConditions()==Room.DOMAIN_OUTDOORS_AIR)))
-						direction=-1;
-					
-					if(!okRoomForMe(oldRoom,nextRoom))
-						direction=-1;
-					else
-						break;
-				}
-				else
-					direction=-1;
-			}
-
-			if(direction<0)
-				return true;
-
-			for(int m=0;m<oldRoom.numInhabitants();m++)
-			{
-				MOB inhab=oldRoom.fetchInhabitant(m);
-				if((inhab!=null)&&(inhab.isASysOp(oldRoom)))
-					return true;
-			}
-			
-			Room nextRoom=oldRoom.getRoomInDir(direction);
-			Exit nextExit=oldRoom.getExitInDir(direction);
-			int opDirection=Directions.getOpDirectionCode(direction);
-			if((nextRoom!=null)&&(nextExit!=null))
-			{
-				boolean reclose=false;
-				boolean relock=false;
-				// handle doors!
-				if(nextExit.hasADoor()&&(!nextExit.isOpen())&&(dooropen))
-				{
-					if((nextExit.hasALock())&&(nextExit.isLocked()))
-					{
-						FullMsg msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-						if(oldRoom.okAffect(mob,msg))
-						{
-							relock=true;
-							msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_UNLOCK,Affect.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
-							if(oldRoom.okAffect(mob,msg))
-								ExternalPlay.roomAffectFully(msg,oldRoom,direction);
-						}
-					}
-					FullMsg msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-					if(oldRoom.okAffect(mob,msg))
-					{
-						reclose=true;
-						msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OPEN,Affect.MSG_OK_VISUAL,"<S-NAME> open(s) <T-NAMESELF>.");
-						ExternalPlay.roomAffectFully(msg,oldRoom,direction);
-					}
-				}
-				if(!nextExit.isOpen())
-					return true;
-				else
-				{
-					int dir=direction;
-					Ability A=mob.fetchAbility("Thief_Sneak");
-					if(A!=null)
-					{
-						Vector V=new Vector();
-						V.add(Directions.getDirectionName(direction));
-						if(A.profficiency()<50)
-						{
-							A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
-							Ability A2=mob.fetchAbility("Thief_Hide");
-							if(A2!=null)
-								A2.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
-						}
-						int oldMana=mob.curState().getMana();
-						A.invoke(mob,V,null,false);
-						mob.curState().setMana(oldMana);
-					}
-					else
-						ExternalPlay.move(mob,direction,false,false);
-					if((reclose)&&(mob.location()==nextRoom)&&(dooropen))
-					{
-						Exit opExit=nextRoom.getExitInDir(opDirection);
-						if((opExit!=null)
-						&&(opExit.hasADoor())
-						&&(opExit.isOpen()))
-						{
-							FullMsg msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-							if(nextRoom.okAffect(mob,msg))
-							{
-								msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_CLOSE,Affect.MSG_OK_VISUAL,"<S-NAME> close(s) <T-NAMESELF>.");
-								ExternalPlay.roomAffectFully(msg,nextRoom,opDirection);
-							}
-							if((opExit.hasALock())&&(relock))
-							{
-								msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-								if(nextRoom.okAffect(mob,msg))
-								{
-									msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_LOCK,Affect.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
-									if(nextRoom.okAffect(mob,msg))
-										ExternalPlay.roomAffectFully(msg,nextRoom,opDirection);
-								}
-							}
-						}
-					}
-				}
-			}
-			else
-				return true;
-			
-
+			SaucerSupport.beMobile((MOB)ticking,dooropen,wander,false,objections!=null,objections);
 			if(mob.location()==oldRoom)
 				tickDown=0;
 		}

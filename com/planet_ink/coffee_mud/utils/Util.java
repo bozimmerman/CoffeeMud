@@ -27,6 +27,60 @@ public class Util
 		return str;
 	}
 	
+	public static String[] toStringArray(Vector V)
+	{
+		if((V==null)||(V.size()==0)){
+			String[] s=new String[0];
+			return s;
+		}
+		String[] s=new String[V.size()];
+		for(int v=0;v<V.size();v++)
+			s[v]=(String)V.elementAt(v);
+		return s;
+	}
+	
+	public static String toStringList(Vector V)
+	{
+		if((V==null)||(V.size()==0)){
+			return "";
+		}
+		StringBuffer s=new StringBuffer("");
+		for(int v=0;v<V.size();v++)
+			s.append(((String)V.elementAt(v))+"/");
+		return s.toString();
+	}
+	
+	public static String[] toStringArray(Hashtable V)
+	{
+		if((V==null)||(V.size()==0)){
+			String[] s=new String[0];
+			return s;
+		}
+		String[] s=new String[V.size()];
+		int v=0;
+		for(Enumeration e=V.keys();e.hasMoreElements();)
+		{
+			String KEY=(String)e.nextElement();
+			s[v]=(String)V.get(KEY);
+			v++;
+		}
+		return s;
+	}
+	
+	public static String toStringList(Hashtable V)
+	{
+		if((V==null)||(V.size()==0)){
+			return "";
+		}
+		StringBuffer s=new StringBuffer("");
+		for(Enumeration e=V.keys();e.hasMoreElements();)
+		{
+			String KEY=(String)e.nextElement();
+			s.append(KEY+"="+((String)V.get(KEY))+"/");
+		}
+		return s.toString();
+	}
+	
 	public static String replaceAll(String str, String thisStr, String withThisStr)
 	{
 		if((str==null)

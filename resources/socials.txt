@@ -139,7 +139,7 @@ mo	FLINCH <T-NAME>	Don't you wish you could just crawl under a rock and die?	<S-
 oo	HIGHFIVE	You jump in the air and give a BIG high five to...umm...absolutely nothing.	<S-NAME> wildly high fives the air, looking very foolish -- very foolish indeed.		
 ss	CACKLE	You cackle gleefully.	<S-NAME> throws back <S-HIS-HER> head and cackles with insane glee!		
 mo	BONK SELF	You bonk yourself, fool that you are.	<S-NAME> bonks <S-HIM-HERSELF> and grimaces in pain.		
-ww	CURSE	You swear loudly for a long time.	<S-NAME> swears : #@*"*&^*#%@*&! !!!!!		
+ww	CURSE	You swear loudly for a long time.	<S-NAME> swears : #@*"*&*#%@*&! !!!!!		
 ww	BEG	You beg the gods for mercy.	The gods fall down laughing at <S-NAME>'s request for mercy.		
 mo	WRIST	You hold out out a wrist for a slap.	<S-NAME> holds out a wrist for a slap.		
 oo	BOW <T-NAME>	You bow before <T-HIM-HER>.	<S-NAME> bows before <T-NAMESELF>.	<S-NAME> bows before you.	Who's that?

@@ -103,10 +103,10 @@ public class Alchemy extends CommonSkill
 		super.unInvoke();
 	}
 
-	private int spellLevel(MOB mob, String spell)
+	private int spellLevel(MOB mob, Ability A)
 	{
-		int lvl=CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),spell);
-		if(lvl<0) return lvl;
+		int lvl=CMAble.qualifyingLevel(mob,A);
+		if(lvl<0) lvl=CMAble.lowestQualifyingLevel(A.ID());
 		switch(lvl)
 		{
 		case 0: return lvl;
@@ -147,8 +147,8 @@ public class Alchemy extends CommonSkill
 					String spell=(String)V.elementAt(0);
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
-					&&(spellLevel(mob,spell)>=0)
-					&&(mob.envStats().level()>=spellLevel(mob,spell)))
+					&&(spellLevel(mob,A)>=0)
+					&&(mob.envStats().level()>=spellLevel(mob,A)))
 					{
 						buf.append(Util.padRight(A.name(),25)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -206,7 +206,7 @@ public class Alchemy extends CommonSkill
 					String spell=(String)V.elementAt(0);
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
-					&&(mob.envStats().level()>=spellLevel(mob,spell))
+					&&(mob.envStats().level()>=spellLevel(mob,A))
 					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;

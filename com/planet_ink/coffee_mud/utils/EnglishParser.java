@@ -14,7 +14,7 @@ public class EnglishParser implements Tickable
 	}
 	
 	// these should be checked after pmap prelim check.
-	private String[] universalStarters={
+	private static String[] universalStarters={
 		"go ",
 		"go and ",
 		"i want you to ",
@@ -25,6 +25,51 @@ public class EnglishParser implements Tickable
 		"to ",
 	    "you are ordered to "};
 	
+	private static String[] responseStarters={
+		"try at the",
+		"its at the",
+		"it`s at the",
+		"over at the",
+		"at the",
+		"go to",
+		"go to the",
+		"find the",
+		"go ",
+		"try to the",
+		"over to the",
+		"you`ll have to go",
+		"you`ll have to find the",
+		"you`ll have to find",
+		"look at the",
+		"look at",
+		"look to",
+		"look to the",
+		"search at the",
+		"search at",
+		"search to the",
+		"look",
+		"i saw one at",
+		"he`s",
+		"it`s",
+		"she`s",
+		"hes",
+		"shes",
+		"its",
+	};
+	private static String[] universalRejections={
+		"dunno",
+		"nope",
+		"not",
+		"never",
+		"nowhere",
+		"noone",
+		"can`t",
+		"cant",
+		"don`t",
+		"dont",
+		"no"
+	};
+	
 	//codes:
 	//%m mob name (anyone)
 	//%i item name (anything)
@@ -34,15 +79,17 @@ public class EnglishParser implements Tickable
 	//%k skill command word
 	//%r room name
 	// * match anything
-	private String[][] pmap={
+	private static String[][] pmap={
 		// below is killing
 		{"kill %m","mobfind %m;kill %m"},
 		{"find and kill %m","mobfind %m;kill %m"},
 		{"murder %m","mobfind %m;kill %m"},
 		{"find and murder %m","mobfind %m;kill %m"},
 		{"find and destroy %m","mobfind %m;kill %m"},
+		{"search and destroy %m","mobfind %m;kill %m"},
 		{"destroy %i","itemfind %i;recall"},
 		{"find and destroy %i","mobfind %i;recall"},
+		{"search and destroy %i","mobfind %i;recall"},
 		{"destroy %m","mobfind %m;kill %m"},
 		{"assassinate %m","mobfind %m; kill %m"},
 		{"find and assassinate %m","mobfind %m; kill %m"},
@@ -50,14 +97,17 @@ public class EnglishParser implements Tickable
 		{"find and %s %m","mobfind %m;%s %m"},
 		{"%s %m","mobfind %m;%s %m"},
 		// below is item fetching
-//under skills, MAKE, MAKE ME, MAKE FOR ME <item> should be options.
 //DROWN, DROWN YOURSELF, DROWN IN A LAKE, SWIM, SWIM AN OCEAN, CLIMB A MOUNTAIN, CLIMB A TREE, CLIMB <X>, SWIM <x>, HANG YOURSELF, CRAWL <x>
 //BLOW YOUR NOSE, VOMIT, PUKE, THROW UP, KISS MY ASS, KISS <CHAR> <Body part>
-// KILL ALL EVIL, KILL AN EVIL, search and destroy, seek and destroy
 		{"bring %i","itemfind %i;mobfind %c;give %i %c"},
 		{"bring %m %i","itemfind %i;mobfind %m;give %i %m"},
 		{"bring %i to %m","itemfind %i;mobfind %m;give %i %m"},
 		{"bring me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"bring my %i","itemfind %i;mobfind %c;give %i %c"},
+		{"make %i","itemfind %i;mobfind %c;give %i %c"},
+		{"make %m %i","itemfind %i;mobfind %m;give %i %m"},
+		{"make %i for %m","itemfind %i;mobfind %m;give %i %m"},
+		{"make me %i","itemfind %i;mobfind %c;give %i %c"},
 		{"give %i","itemfind %i;mobfind %c;give %i %c"},
 		{"give %m %i","itemfind %i;mobfind %m;give %i %m"},
 		{"give %i to %m","itemfind %i;mobfind %m;give %i %m"},
@@ -71,16 +121,20 @@ public class EnglishParser implements Tickable
 		{"buy %i to %m","itemfind %i;mobfind %m;give %i %m"},
 		{"buy me %i","itemfind %i;mobfind %c;give %i %c"},
 		{"find me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"find my %i","itemfind %i;mobfind %c;give %i %c"},
 		{"find %i for %m","itemfind %i;mobfind %m;give %i %m"},
 		{"find %m %i","itemfind %i;mobfind %m;give %i %m"},
 		{"fetch me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"fetch my %i","itemfind %i;mobfind %c;give %i %c"},
 		{"fetch %i for %m","itemfind %i;mobfind %m;give %i %m"},
 		{"fetch %m %i","itemfind %i;mobfind %m;give %i %m"},
 		{"get me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"get my %i","itemfind %i;mobfind %c;give %i %c"},
 		{"get %i for %m","itemfind %i;mobfind %m;give %i %m"},
 		{"get %m %i","itemfind %i;mobfind %m;give %i %m"},
 		{"get %i","itemfind %i"},
 		{"deliver %i to %m","itemfind %i;mobfind %m;give %i %m"},
+		{"deliver my %i to %m","itemfind %i;mobfind %m;give %i %m"},
 		// below are eats, drinks
 		{"eat %i","itemfind %i;eat %i"},
 		{"consume %i","itemfind %i;eat %i"},
@@ -134,7 +188,7 @@ public class EnglishParser implements Tickable
 		{"why %*","say You want me to answer why? I don't know why!"}
 	};
 	
-	private Vector findMatch(Vector req)
+	private static Vector findMatch(Vector req)
 	{
 		Vector possibilities=new Vector();
 		Hashtable map=new Hashtable();
@@ -216,13 +270,14 @@ public class EnglishParser implements Tickable
 				map.clear();
 				continue;
 			}
-			map.put("INSTR",pmap[p]);
+			map.put("INSTR",pmap[p][1]);
 			possibilities.addElement(map);
+			map=new Hashtable();
 		}
 		return possibilities;
 	}
 	
-	private String cleanWord(String s)
+	private static String cleanWord(String s)
 	{
 		String chars=".,;!?'";
 		for(int x=0;x<chars.length();x++)
@@ -236,7 +291,23 @@ public class EnglishParser implements Tickable
 		return s;
 	}
 	
-	private boolean foundIn(Vector V, String that)
+	private static String cleanArticles(String s)
+	{
+		String[] articles={"a","an","all of","some one","a pair of","one of","all","the","some"};
+		Vector V=Util.parse(s);
+		while(V.size()>1)
+		{
+			for(int a=0;a<articles.length;a++)
+			{
+				if(s.toLowerCase().startsWith(articles[a]+" "))
+					s=s.substring(articles[a].length()+1);
+			}
+			V=Util.parse(s);
+		}
+		return s;
+	}
+	
+	private static boolean foundIn(Vector V, String that)
 	{
 		for(int v=0;v<V.size();v++)
 		{
@@ -246,7 +317,7 @@ public class EnglishParser implements Tickable
 		return false;
 	}
 	
-	public geasStep processRequest(MOB you, MOB me, String req)
+	public static geasStep processRequest(MOB you, MOB me, String req)
 	{
 		Vector REQ=Util.parse(req.toLowerCase().trim());
 		for(int v=0;v<REQ.size();v++)
@@ -376,7 +447,7 @@ public class EnglishParser implements Tickable
 			for(int a=0;a<all.size();a++)
 				g.que.addElement(Util.parse((String)all.elementAt(a)));
 			if(you!=null)	map.put("%c",you.name());
-			map.put("%i",me.name());
+			map.put("%n",me.name());
 			g.you=you;
 			g.me=me;
 			for(int q=0;q<g.que.size();q++)
@@ -384,9 +455,9 @@ public class EnglishParser implements Tickable
 				Vector V=(Vector)g.que.elementAt(q);
 				for(int v=0;v<V.size();v++)
 				{
-					String s=(String)g.que.elementAt(q);
+					String s=(String)V.elementAt(v);
 					if(s.startsWith("%"))
-						V.setElementAt((String)map.get(s.trim()),v);
+						V.setElementAt(cleanArticles((String)map.get(s.trim())),v);
 				}
 			}
 			itemList.clear();
@@ -403,13 +474,83 @@ public class EnglishParser implements Tickable
 	public final static int STEP_INT4=4;
 	public final static int STEP_INT5=5;
 	public final static int STEP_ALLDONE=-999;
-	public class geasStep
+	public static class geasStep
 	{
 		public Vector que=new Vector();
 		public int step=STEP_EVAL;
 		public Vector bothered=new Vector();
+		public MOB bothering=null;
 		public MOB you=null;
 		public MOB me=null;
+		
+		public void botherOrMove(String msgOrQ, int moveCode)
+		{
+			bothering=null;
+			if((me==null)||(me.location()==null)) return;
+			if(msgOrQ!=null)
+				for(int m=0;m<me.location().numInhabitants();m++)
+				{
+					MOB M=me.location().fetchInhabitant(m);
+					if((M!=null)&&(M!=me)&&(!bothered.contains(M)))
+					{
+						ExternalPlay.quickSay(me,M,msgOrQ,false,false);
+						bothering=M;
+						bothered.addElement(M);
+						return;
+					}
+				}
+			if(!bothered.contains(me.location()))
+				bothered.addElement(me.location());
+			if(moveCode==0)
+			{
+				if(!SaucerSupport.beMobile(me,true,true,false,true,bothered))
+					SaucerSupport.beMobile(me,true,true,false,false,null);
+			}
+			else
+			{
+				if(!SaucerSupport.beMobile(me,true,true,true,false,bothered))
+					SaucerSupport.beMobile(me,true,true,false,false,null);
+			}
+		}
+		
+		public void sayResponse(MOB speaker, MOB target, String response)
+		{
+			if((speaker!=null)
+			&&(speaker!=me)
+			&&(bothering!=null)
+			&&(speaker==bothering)
+			&&(step!=STEP_EVAL)
+			&&((target==null)||(target==me)))
+			{
+				for(int s=0;s<universalRejections.length;s++)
+				{
+					if(CoffeeUtensils.containsString(response,universalRejections[s]))
+					{
+						ExternalPlay.quickSay(me,speaker,"Ok, thanks anyway.",false,false);
+						return;
+					}
+				}
+				boolean starterFound=false;
+				response=response.toLowerCase().trim();
+				for(int i=0;i<responseStarters.length;i++);
+					for(int s=0;s<responseStarters.length;s++)
+					{
+						if(response.startsWith(responseStarters[s]))
+						{
+							starterFound=true;
+							response=response.substring(responseStarters[s].length()).trim();
+						}
+					}
+				if((!starterFound)&&(speaker.isMonster())&&(Dice.rollPercentage()<10))
+					return;
+				if(response.trim().length()==0)
+					return;
+				bothering=null;
+				que.insertElementAt(Util.parse("find150 \""+response+"\""),0);
+				step=STEP_EVAL;
+			}
+		}
+		
 		public void step()
 		{
 			if(que.size()==0)
@@ -535,7 +676,7 @@ public class EnglishParser implements Tickable
 								else
 								{
 									price=price-Money.totalMoney(me);
-									que.insertElementAt(Util.parse("itemfind "+price),0);
+									que.insertElementAt(Util.parse("itemfind "+sk.yourValue(me,E,true)),0);
 									ExternalPlay.quickSay(me,null,"Damn, I need "+price+" gold.",false,false);
 									step=STEP_EVAL;
 									return;
@@ -544,27 +685,120 @@ public class EnglishParser implements Tickable
 						}
 					}
 				}
+				// if asked someone something, give them time to respond.
+				if((step>STEP_EVAL)&&(step<=STEP_INT4)&&(bothered!=null))
+				{	step++; return;}
+				step=STEP_EVAL;
+				botherOrMove("Can you tell me where to find "+Util.combine(cur,1)+"?",0);
+				if(bothered!=null) step=STEP_INT1;
 			}
 			else
 			if(s.equalsIgnoreCase("mobfind"))
 			{
-				MOB M=me.location().fetchInhabitant(Util.combine(cur,1));
+				String name=Util.combine(cur,1);
+				if(name.equalsIgnoreCase("you")) name=me.name();
+				if(name.equalsIgnoreCase("yourself")) name=me.name();
+				if(you!=null)
+				{
+					if(name.equals("me")) name=you.name();
+					if(name.equals("myself")) name=you.name();
+					if(name.equals("my")) name=you.name();
+				}
+					
+				MOB M=me.location().fetchInhabitant(name);
 				if((M!=null)&&(M!=me)&&(Sense.canBeSeenBy(M,me)))
 				{
 					step=STEP_EVAL;
 					que.removeElementAt(0);
 					return;
 				}
+				
+				// if asked someone something, give them time to respond.
+				if((step>STEP_EVAL)&&(bothering!=null)&&((step<=STEP_INT4)||(bothering.isMonster())))
+				{	step++; return;}
+				step=STEP_EVAL;
+				int code=0;
+				if((you!=null)&&(you.name().equalsIgnoreCase(name)))
+					code=1;
+				botherOrMove("Can you tell me where to find "+name+"?",code);
+				if(bothering!=null) step=STEP_INT1;
 			}
 			else
-			if(s.equalsIgnoreCase("find"))
+			if(s.toLowerCase().startsWith("find"))
 			{
+				String name=Util.combine(cur,1);
+				if(name.equalsIgnoreCase("you")) name=me.name();
+				if(name.equalsIgnoreCase("yourself")) name=me.name();
+				if(you!=null)
+				{
+					if(name.equals("me")) name=you.name();
+					if(name.equals("myself")) name=you.name();
+					if(name.equals("my")) name=you.name();
+				}
+				int dirCode=Directions.getGoodDirectionCode((String)Util.parse(name).firstElement());
+				if((dirCode>=0)&&(me.location()!=null)&&(me.location().getRoomInDir(dirCode)!=null))
+				{
+					if(Util.parse(name).size()>1)
+						cur.setElementAt(Util.combine(Util.parse(name),1),1);
+					step=STEP_EVAL;
+					ExternalPlay.move(me,dirCode,false,false);
+					return;
+				}
 				
+				if(CoffeeUtensils.containsString(me.location().name(),name)
+				   ||CoffeeUtensils.containsString(me.location().displayText(),name)
+				   ||CoffeeUtensils.containsString(me.location().description(),name))
+				{
+					step=STEP_EVAL;
+					que.removeElementAt(0);
+					return;
+				}
+				MOB M=me.location().fetchInhabitant(name);
+				if((M!=null)&&(M!=me)&&(Sense.canBeSeenBy(M,me)))
+				{
+					step=STEP_EVAL;
+					que.removeElementAt(0);
+					return;
+				}
+				// is it just sitting around?
+				Item I=me.location().fetchItem(null,name);
+				if((I!=null)&&(Sense.canBeSeenBy(I,me)))
+				{
+					step=STEP_EVAL;
+					ExternalPlay.get(me,null,I,false);
+					return;
+				}
+				if((s.length()>4)&&(Util.isNumber(s.substring(4))))
+				{
+					int x=Util.s_int(s.substring(4));
+					if((--x)<0)
+					{
+						que.removeElementAt(0);
+						step=STEP_EVAL;
+						return;
+					}
+					cur.setElementAt("find"+x,0);
+				}
+				
+				// if asked someone something, give them time to respond.
+				if((step>STEP_EVAL)&&(bothering!=null)&&((step<=STEP_INT4)||(bothering.isMonster())))
+				{	step++; return;}
+				step=STEP_EVAL;
+				if(s.length()>4)
+					botherOrMove("Can you tell me where to find "+name+"?",0);
+				else
+					botherOrMove(null,0);
+				if(bothering!=null) step=STEP_INT1;
 			}
 			else
 			if(s.equalsIgnoreCase("wanderquery"))
 			{
-				
+				// if asked someone something, give them time to respond.
+				if((step>STEP_EVAL)&&(bothering!=null)&&((step<=STEP_INT4)||(bothering.isMonster())))
+				{	step++; return;}
+				step=STEP_EVAL;
+				botherOrMove("Can you help me "+Util.combine(cur,1)+"?",0);
+				if(bothering!=null) step=STEP_INT1;
 			}
 			else
 			{

@@ -467,13 +467,12 @@ public class CoffeeUtensils
 
 	public static void wanderAway(MOB M, boolean mindPCs, boolean andGoHome)
 	{
-		Behavior B=CMClass.getBehavior("Mobile");
-		B.setParms("MIN=1 MAX=1 CHANCE=100 WANDER OPENDOORS");
+		
 		Room R=M.location();
 		if(R==null) return;
 		int tries=0;
 		while((M.location()==R)&&((++tries)<100)&&((!mindPCs)||(M.location().numPCInhabitants()>0)))
-			B.tick(M,Host.MOB_TICK);
+			SaucerSupport.beMobile(M,true,true,false,false,null);
 		if((M.getStartRoom()!=null)&&(andGoHome))
 			M.getStartRoom().bringMobHere(M,true);
 	}

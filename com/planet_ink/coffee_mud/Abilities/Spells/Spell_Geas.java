@@ -19,10 +19,8 @@ public class Spell_Geas extends Spell
 	public int maxRange(){return 5;}
 	public Environmental newInstance(){	return new Spell_Geas();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-
-	// should be set to TRUE when the geas is BEING completed!
-	private boolean completed=false;
-
+	public EnglishParser.geasStep STEP=null;
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -32,7 +30,7 @@ public class Spell_Geas extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if(completed)
+			if((STEP!=null)&&(STEP.que!=null)&&(STEP.que.size()==0))
 				mob.tell("You have completed your geas.");
 			else
 				mob.tell("You have been released from your geas.");
@@ -52,21 +50,35 @@ public class Spell_Geas extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
-		&&(!completed)
 		&&((msg.targetCode()&Affect.MASK_HURT)>0)
 		&&((msg.targetCode()-Affect.MASK_HURT)>0))
 			ExternalPlay.postPanic(mob,msg);
+		if((msg.sourceMinor()==Affect.TYP_SPEAK)
+		&&(STEP!=null)
+		&&(msg.sourceMessage()!=null)
+		&&((msg.target()==null)||(msg.target() instanceof MOB))
+		&&(msg.sourceMessage().length()>0))
+		{
+			int start=msg.sourceMessage().indexOf("'");
+			int end=msg.sourceMessage().lastIndexOf("'");
+			if((start>0)&&(end>(start+1)))
+				STEP.sayResponse(msg.source(),(MOB)msg.target(),msg.sourceMessage().substring(start+1,end));
+		}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)&&(!completed))
+		if((affected==null)||(!(affected instanceof MOB)))
+			return super.tick(ticking,tickID);
+		if((tickID==Host.MOB_TICK)&&(STEP!=null))
 		{
-			// undo the affects of this spell
-			if((affected==null)||(!(affected instanceof MOB)))
-				return super.tick(ticking,tickID);
+			if((STEP.que!=null)&&(STEP.que.size()==0))
+			{
+				unInvoke();
+				return false;
+			}
 			MOB mob=(MOB)affected;
-			CoffeeUtensils.wanderAway(mob,false,true);
+			if(STEP.que!=null)	STEP.step();
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -94,14 +106,6 @@ public class Spell_Geas extends Spell
 			mob.tell(target.name()+" is too stupid to understand the instructions!");
 			return false;
 		}
-		// kill x, bring x, find x, get x, social x, eat x, drink x, buy x,
-		// sell x, do a skill x, open x, close x, go x, go to x, emote x,
-		// look x, follow x, give x x, hold x, lock x, unlock x, channel x,
-		// practice x, read x, say x, sit, sit x, sleep, sleep x, stand,
-		// take x, tell x x, wear x, wield x, hold x, mount x, dismount,
-		// serve x, rebuke x, crawl x, enter x, deposit x, withdraw x,
-		// hire x, fire x,
-
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -115,20 +119,29 @@ public class Spell_Geas extends Spell
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(target.location()==mob.location())
+				STEP=EnglishParser.processRequest(mob,target,Util.combine(commands,0));
+				if((STEP==null)||(STEP.que==null)||(STEP.que.size()==0))
 				{
-					maliciousAffect(mob,target,0,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
-
-					mob.tell("Geas isn't even CLOSE to being done yet...");
-
-					target.makePeace();
-					if(mob.getVictim()==target)
-						mob.makePeace();
-					for(int m=0;m<target.location().numInhabitants();m++)
+					target.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) confused.");
+					return false;
+				}
+				else
+				{
+					setMiscText(Util.combine(commands,0));
+					if(maliciousAffect(mob,target,500,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0)))
 					{
-						MOB M=target.location().fetchInhabitant(m);
-						if((M!=null)&&(M.getVictim()==target))
-							M.makePeace();
+						target.makePeace();
+						if(mob.getVictim()==target)
+							mob.makePeace();
+						if(target.location()==mob.location())
+						{
+							for(int m=0;m<target.location().numInhabitants();m++)
+							{
+								MOB M=target.location().fetchInhabitant(m);
+								if((M!=null)&&(M.getVictim()==target))
+									M.makePeace();
+							}
+						}
 					}
 				}
 			}
