@@ -45,7 +45,11 @@ public class Spell_MagicItem extends Spell
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
-			if((A!=null)&&(A instanceof Spell)&&(CMAble.qualifiesByLevel(mob,A))&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))&&(!A.ID().equals(this.ID())))
+			if((A!=null)
+			&&(A instanceof Spell)
+			&&(A.isBorrowed(mob)||(CMAble.qualifiesByLevel(mob,A)))
+			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
+			&&(!A.ID().equals(this.ID())))
 				wandThis=(Spell)A;
 		}
 		if(wandThis==null)
@@ -54,7 +58,7 @@ public class Spell_MagicItem extends Spell
 			return false;
 		}
 		
-		if(wand.numAffects()>0)
+		if((wand.numAffects()>0)||(!wand.isGeneric()))
 		{
 			mob.tell("You can't enchant '"+wand.name()+"'.");
 			return false;

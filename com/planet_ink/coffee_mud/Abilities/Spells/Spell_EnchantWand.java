@@ -45,7 +45,11 @@ public class Spell_EnchantWand extends Spell
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
-			if((A!=null)&&(A instanceof Spell)&&(CMAble.qualifiesByLevel(mob,A))&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))&&(!A.ID().equals(this.ID())))
+			if((A!=null)
+			&&(A instanceof Spell)
+			&&(A.isBorrowed(mob)||(CMAble.qualifiesByLevel(mob,A)))
+			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
+			&&(!A.ID().equals(this.ID())))
 				wandThis=(Spell)A;
 		}
 		if(wandThis==null)
@@ -59,12 +63,6 @@ public class Spell_EnchantWand extends Spell
 			mob.tell("A spell has already been enchanted into '"+wand.name()+"'.");
 			return false;
 		}
-		if(wand.getSpell().ID().equalsIgnoreCase(wandThis.ID()))
-		{
-			mob.tell("That spell has already been enchanted into '"+wand.name()+"'.");
-			return false;
-		}
-
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

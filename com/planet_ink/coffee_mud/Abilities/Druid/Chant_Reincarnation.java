@@ -114,7 +114,7 @@ public class Chant_Reincarnation extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for a reincarnation geis, but nothing happen(s).");
+			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for a reincarnation geis, but nothing happens.");
 
 		return success;
 	}

@@ -60,7 +60,7 @@ public class Thief_DetectTraps extends ThiefSkill
 				else
 				if((opTrap!=null)&&(theTrap==null))
 					theTrap=opTrap;
-				if((theTrap.disabled())&&(roomTrap!=null))
+				if((theTrap!=null)&&(theTrap.disabled())&&(roomTrap!=null))
 				{
 					opTrap=null;
 					unlockThis=nextRoom;

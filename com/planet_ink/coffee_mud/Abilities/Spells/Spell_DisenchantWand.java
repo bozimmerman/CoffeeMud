@@ -43,7 +43,7 @@ public class Spell_DisenchantWand extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> hold(s) <T-NAMESELF> and whisper(s), but nothing happen(s).");
+			beneficialWordsFizzle(mob,target,"<S-NAME> hold(s) <T-NAMESELF> and whisper(s), but nothing happens.");
 
 
 		// return whether it worked

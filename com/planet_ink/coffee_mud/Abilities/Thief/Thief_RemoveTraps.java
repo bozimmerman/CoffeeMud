@@ -53,7 +53,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 					opTrap=CMClass.fetchMyTrap(exit);
 				Trap roomTrap=null;
 				if(nextRoom!=null) roomTrap=CMClass.fetchMyTrap(nextRoom);
-				if((theTrap.disabled())&&(roomTrap!=null))
+				if((theTrap!=null)&&(theTrap.disabled())&&(roomTrap!=null))
 				{
 					opTrap=null;
 					unlockThis=nextRoom;
