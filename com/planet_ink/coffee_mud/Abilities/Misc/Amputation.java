@@ -10,7 +10,15 @@ public class Amputation extends StdAbility
 {
 	public String ID() { return "Amputation"; }
 	public String name(){ return "Amputation";}
-	public String displayText(){ return "";}
+	public String displayText(){ 
+		long missingLimbList=missingLimbList();
+		StringBuffer buf=new StringBuffer("");
+		for(int i=0;i<AMPUTATE_BITS;i++)
+			if(Util.isSet((int)missingLimbList,i))
+				buf.append(", "+AMPUTATE_DESCS[i]);
+		if(buf.length()==0) return "";
+		return "(Missing your "+buf.substring(1)+")";
+	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Amputation();}

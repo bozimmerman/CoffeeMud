@@ -13,6 +13,7 @@ public class StdJournal extends StdItem
 		super();
 		name="a journal";
 		displayText="a journal sits here.";
+		description="Enter 'READ [NUMBER] [JOURNAL]' to read an entry.%0D%0AUse your WRITE skill to add new entries. ";
 		description="Use the READ command to read the journal, and WRITE to add your own entries.";
 		material=EnvResource.RESOURCE_PAPER;
 		isReadable=true;
@@ -67,7 +68,9 @@ public class StdJournal extends StdItem
 					entry.setCharAt(0,' ');
 				}
 				mob.tell(entry.toString()+"\n\r");
-				if((entry.toString().trim().length()>0)&&(which>0))
+				if((entry.toString().trim().length()>0)
+				   &&(which>0)
+				   &&(envStats().level()<=mob.envStats().level()))
 				{
 					try
 					{
@@ -106,10 +109,7 @@ public class StdJournal extends StdItem
 				}
 				else
 				if(which<0)
-				{
-					mob.tell("Enter 'READ [NUMBER] [JOURNAL]' to read an entry.");
-					mob.tell("Use your WRITE skill to add new entries. ");
-				}
+					mob.tell(description);
 				else
 					mob.tell("That message is private.");
 				return;
@@ -170,10 +170,15 @@ public class StdJournal extends StdItem
 		Vector journal=ExternalPlay.DBReadJournal(Journal);
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
-			buf.append("#\n\r "+Util.padRight("#",5)+Util.padRight("From",16)+Util.padRight("To",16)+"Subject\n\r");
-			buf.append("---------------------------------------------\n\r");
+			buf.append("#\n\r "+Util.padRight("#",5)
+					   +Util.padRight("From",11)
+					   +Util.padRight("To",11)
+					   +Util.padRight("Date",20)
+					   +"Subject\n\r");
+			buf.append("-------------------------------------------------------------------------\n\r");
 			if(journal==null) return buf;
 		}
+							 
 		if((which<0)||(which>=journal.size()))
 		{
 			for(int j=0;j<journal.size();j++)
@@ -185,11 +190,17 @@ public class StdJournal extends StdItem
 				String subject=(String)entry.elementAt(4);
 				if(to.equals("ALL")||to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username))
 				{
+					IQCalendar theDate=IQCalendar.getIQInstance();
+					theDate.getTime().setTime(Util.s_long(date));
 					if(Util.s_long(date)>lastTimeDate)
 						buf.append("*");
 					else
 						buf.append(" ");
-					buf.append(Util.padRight((j+1)+"",3)+") "+Util.padRight(from,15)+" "+Util.padRight(to,15)+" "+subject+"\n\r");
+					buf.append(Util.padRight((j+1)+"",3)+") "
+							   +Util.padRight(from,10)+" "
+							   +Util.padRight(to,10)+" "
+							   +Util.padRight(theDate.d2String(),19)+" "
+							   +Util.padRight(subject,25)+"\n\r");
 				}
 			}
 		}
@@ -197,14 +208,22 @@ public class StdJournal extends StdItem
 		{
 			Vector entry=(Vector)journal.elementAt(which);
 			String from=(String)entry.elementAt(1);
+			String date=(String)entry.elementAt(2);
 			String to=(String)entry.elementAt(3);
 			String subject=(String)entry.elementAt(4);
 			String message=(String)entry.elementAt(5);
+			IQCalendar theDate=IQCalendar.getIQInstance();
+			theDate.getTime().setTime(Util.s_long(date));
 			boolean mineAble=to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username);
 			if(mineAble) buf.append("*");
 			else buf.append(" ");
 			if(to.equals("ALL")||mineAble)
-				buf.append("\n\r"+Util.padRight((which+1)+"",3)+")\n\r"+"FROM: "+Util.padRight(from,15)+"\n\rTO  : "+Util.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
+				buf.append("\n\r"+Util.padRight((which+1)+"",3)+")\n\r"
+						   +"FROM: "+from
+						   +"\n\rTO  : "+to
+						   +"\n\rDATE: "+theDate.d2String()
+						   +"\n\rSUBJ: "+subject
+						   +"\n\r"+message);
 		}
 		return buf;
 	}
