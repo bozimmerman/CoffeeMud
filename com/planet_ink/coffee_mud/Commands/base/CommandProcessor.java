@@ -700,6 +700,9 @@ public class CommandProcessor
 		if(helpStr.indexOf(" ")>=0)
 			helpStr=helpStr.replace(' ','_');
 		String thisTag=rHelpFile.getProperty(helpStr);
+		if(thisTag==null) thisTag=rHelpFile.getProperty("SPELL_"+helpStr);
+		if(thisTag==null) thisTag=rHelpFile.getProperty("PRAYER_"+helpStr);
+		if(thisTag==null) thisTag=rHelpFile.getProperty("SONG_"+helpStr);
 
 		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<25))
 		{
