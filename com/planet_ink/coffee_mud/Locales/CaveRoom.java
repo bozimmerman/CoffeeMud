@@ -40,6 +40,7 @@ public class CaveRoom extends StdRoom
 		new Integer(EnvResource.RESOURCE_COPPER),
 		new Integer(EnvResource.RESOURCE_TIN),
 		new Integer(EnvResource.RESOURCE_MITHRIL),
+		new Integer(EnvResource.RESOURCE_MUSHROOMS),
 		new Integer(EnvResource.RESOURCE_GEM),
 		new Integer(EnvResource.RESOURCE_SCALES),
 		new Integer(EnvResource.RESOURCE_CRYSTAL),

@@ -29,19 +29,66 @@ public class Spell_Disenchant extends Spell
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(target.envStats().ability()<=0)
-					mob.tell(target.name()+" doesn't seem to be enchanted.");
-				else
+				boolean doneSomething=false;
+				if(target instanceof Wand)
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> fades and becomes dull!");
+					((Wand)target).setSpell(null);
+					((Wand)target).setUsesRemaining(0);
+					doneSomething=true;
+				}
+				else
+				if(target instanceof Scroll)
+				{
+					((Scroll)target).setSpellList(new Vector());
+					((Scroll)target).setScrollText("");
+					doneSomething=true;
+				}
+				else
+				if(target instanceof Potion)
+				{
+					((Potion)target).setSpellList("");
+					doneSomething=true;
+				}
+				else
+				if(target instanceof Pill)
+				{
+					((Pill)target).setSpellList("");
+					doneSomething=true;
+				}
+				else
+				if(target.envStats().ability()>0)
+				{
 					target.baseEnvStats().setLevel(target.baseEnvStats().level()-(mob.envStats().level()*3));
 					if(target.baseEnvStats().level()<=0)
 						target.baseEnvStats().setLevel(1);
 					target.baseEnvStats().setAbility(0);
+					doneSomething=true;
+				}
+				
+				Vector affects=new Vector();
+				for(int a=target.numAffects()-1;a>=0;a--)
+				{
+					Ability A=target.fetchAffect(a);
+					if(A!=null)
+						affects.addElement(A);
+				}
+				for(int a=0;a<affects.size();a++)
+				{
+					Ability A=(Ability)affects.elementAt(a);
+					A.unInvoke();
+					target.delAffect(A);
+					doneSomething=true;
+				}
+
+				if(doneSomething)
+				{
+					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> fades and becomes dull!");
 					if((target.baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS)
 						target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()-EnvStats.IS_BONUS);
 					target.recoverEnvStats();
 				}
+				else
+					mob.tell(target.name()+" doesn't seem to be enchanted.");
 			}
 
 		}

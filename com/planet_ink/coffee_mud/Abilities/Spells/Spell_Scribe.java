@@ -73,12 +73,15 @@ public class Spell_Scribe extends Spell
 			return false;
 
 		mob.curState().setMana(0);
-		mob.charStats().getCurrentClass().loseExperience(mob,100);
+		int experienceToLose=10;
+		mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
+		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
 		{
+			setMiscText(scrollThis.ID());
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting softly.^?");
 			if(mob.location().okAffect(mob,msg))
 			{

@@ -38,7 +38,7 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Edged",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
-CMAble.addCharAbilityMapping(ID(),1,"Apothecary",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Apothecary",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			
@@ -60,7 +60,7 @@ CMAble.addCharAbilityMapping(ID(),1,"Apothecary",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
 			
 			CMAble.addCharAbilityMapping(ID(),7,"Thief_Peek",true);
-CMAble.addCharAbilityMapping(ID(),7,"Thief_UsePoison",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Thief_UsePoison",true);
 		
 			CMAble.addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
@@ -93,7 +93,7 @@ CMAble.addCharAbilityMapping(ID(),7,"Thief_UsePoison",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",true);
 			
 			CMAble.addCharAbilityMapping(ID(),18,"Thief_SilentLoot",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Spell_Knock",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Spell_ComprehendLangs",false);
 			
 			CMAble.addCharAbilityMapping(ID(),19,"Thief_Distract",true);
 			
@@ -102,17 +102,16 @@ CMAble.addCharAbilityMapping(ID(),7,"Thief_UsePoison",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Thief_Sap",true);
 CMAble.addCharAbilityMapping(ID(),21,"Thief_Caltrops",true);
 			
-CMAble.addCharAbilityMapping(ID(),22,"Thief_Flank",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Thief_Flank",true);
 			
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_Trap",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_Charm",false);
 			
 			CMAble.addCharAbilityMapping(ID(),24,"Thief_Bribe",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Spell_ComprehendLangs",false);
 			
-CMAble.addCharAbilityMapping(ID(),25,"Thief_Ambush",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Thief_Ambush",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Ventrilloquate",false);
-CMAble.addCharAbilityMapping(ID(),30,"Thief_Nondetection",false);
+			CMAble.addCharAbilityMapping(ID(),30,"Thief_Nondetection",false);
 		}
 	}
 

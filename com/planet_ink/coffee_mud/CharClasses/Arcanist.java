@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
 
 public class Arcanist extends Thief
 {
@@ -45,7 +47,7 @@ public class Arcanist extends Thief
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Thief_Pick",false);
 			
-CMAble.addCharAbilityMapping(ID(),7,"Skill_Spellcraft",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Skill_Spellcraft",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
 		
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",true);
@@ -59,15 +61,15 @@ CMAble.addCharAbilityMapping(ID(),7,"Skill_Spellcraft",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Thief_Lore",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_Trip",false);
 			
-CMAble.addCharAbilityMapping(ID(),12,"Thief_RecordSpell",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Spell_Scribe",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Thief_Snatch",false);
 			
-CMAble.addCharAbilityMapping(ID(),13,"Spell_DisenchantWand",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Spell_DisenchantWand",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_Map",false);
 			
 			CMAble.addCharAbilityMapping(ID(),14,"Fighter_RapidShot",false);
 
-CMAble.addCharAbilityMapping(ID(),15,"Thief_EnchantWand",true);
+CMAble.addCharAbilityMapping(ID(),15,"Spell_EnchantWand",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Bash",false);
 			
 CMAble.addCharAbilityMapping(ID(),16,"Spell_WardArea",true);
@@ -119,12 +121,96 @@ CMAble.addCharAbilityMapping(ID(),30,"Spell_EnchantedItem",true);
 	}
 	public String otherBonuses()
 	{
-		return "Magic resistance, 1%/level";
+		return "Magic resistance, 1%/level.  Huge discounts when buying potions.";
+	}
+	public boolean okAffect(Environmental myHost, Affect msg)
+	{
+		if((myHost==null)||(!(myHost instanceof MOB))) return super.okAffect(myHost,msg);
+		MOB mob=(MOB)myHost;
+		if(msg.amISource(mob))
+		{
+			if(((msg.sourceMinor()==Affect.TYP_BUY)||(msg.sourceMinor()==Affect.TYP_VALUE))
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Potion))
+			{
+				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_BONUS);
+				mob.recoverEnvStats();
+			}
+			else
+			if(Sense.isABonusItems(mob))
+			{
+				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()-EnvStats.IS_BONUS);
+				mob.recoverEnvStats();
+			}
+		}
+		return super.okAffect(myHost,msg);
+	}
+	
+	public void affect(Environmental myHost, Affect msg)
+	{
+		super.affect(myHost,msg);
+		if((myHost==null)||(!(myHost instanceof MOB)))
+		   return;
+		MOB mob=(MOB)myHost;
+		if(msg.amISource(mob)&&(msg.tool()!=null))
+		{
+			if(msg.tool().ID().equals("Skill_Spellcraft"))
+			{
+				if(msg.tool().text().length()>0)
+				{
+					Ability A=CMClass.getAbility(msg.tool().text());
+					if((A!=null)&&(mob.fetchAbility(A.ID())==null))
+					{
+						Vector otherChoices=new Vector();
+						for(int a=0;a<mob.numAbilities();a++)
+						{
+							Ability A2=mob.fetchAbility(a);
+							if((A2!=null)
+							&&(A2.isBorrowed(mob))
+							&&((A2.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+								otherChoices.addElement(A2);
+						}
+						A.setProfficiency(0);
+						A.setBorrowed(mob,true);
+						mob.addAbility(A);
+						if(otherChoices.size()>3)
+							mob.delAbility((Ability)otherChoices.elementAt(Dice.roll(1,otherChoices.size(),-1)));
+					}
+				}
+			}
+			else
+			if((msg.tool().ID().equals("Spell_Scribe"))
+			||(msg.tool().ID().equals("Spell_EnchantWand")))
+			{
+				Ability A=mob.fetchAbility(msg.tool().text());
+				if((A!=null)&&(A.isBorrowed(mob)))
+					mob.delAbility(A);
+			}
+			else
+			if(msg.tool() instanceof Ability)
+			{
+				Ability A=mob.fetchAbility(msg.tool().ID());
+				if((A!=null)&&(A.isBorrowed(mob)))
+					mob.delAbility(A);
+			}
+		}
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((ticking instanceof MOB)&&(Sense.isABonusItems((MOB)ticking)))
+		{
+			((MOB)ticking).baseEnvStats().setDisposition(((MOB)ticking).baseEnvStats().disposition()-EnvStats.IS_BONUS);
+			((MOB)ticking).recoverEnvStats();
+		}
+		return super.tick(ticking,tickID);
 	}
 	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+(affectableStats.getClassLevel(this)));
+		if(Sense.isABonusItems(affected))
+			affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+30);
 	}
 }

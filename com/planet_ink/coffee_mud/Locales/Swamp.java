@@ -23,6 +23,7 @@ public class Swamp extends StdRoom
 		new Integer(EnvResource.RESOURCE_JADE),
 		new Integer(EnvResource.RESOURCE_SCALES),
 		new Integer(EnvResource.RESOURCE_COAL),
+		new Integer(EnvResource.RESOURCE_SUGAR),
 		new Integer(EnvResource.RESOURCE_CLAY),
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));

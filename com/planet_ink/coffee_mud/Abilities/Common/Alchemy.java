@@ -218,11 +218,6 @@ public class Alchemy extends CommonSkill
 				commonTell(mob,"You don't know how to brew '"+recipeName+"'.  Try \"brew list\" for a list.");
 				return false;
 			}
-			if(theSpell.profficiency()<75)
-			{
-				commonTell(mob,"You don't have the profficiency to brew that potion.");
-				return false;
-			}
 			int experienceToLose=10;
 			if((theSpell.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 			{
@@ -249,7 +244,7 @@ public class Alchemy extends CommonSkill
 					commonTell(mob,"A fire will need to be built first.");
 					return false;
 				}
-				experienceToLose+=CMAble.qualifyingLevel(mob,theSpell)*15;
+				experienceToLose+=CMAble.qualifyingLevel(mob,theSpell)*10;
 				experienceToLose-=CMAble.qualifyingClassLevel(mob,theSpell)*5;
 			}
 			int resourceType=-1;

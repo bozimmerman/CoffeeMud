@@ -49,6 +49,23 @@ public class Prayer_Disenchant extends Prayer
 					A.unInvoke();
 					target.delAffect(A);
 				}
+				if(target instanceof Wand)
+				{
+					((Wand)target).setSpell(null);
+					((Wand)target).setUsesRemaining(0);
+				}
+				else
+				if(target instanceof Scroll)
+				{
+					((Scroll)target).setSpellList(new Vector());
+					((Scroll)target).setScrollText("");
+				}
+				else
+				if(target instanceof Potion)
+					((Potion)target).setSpellList("");
+				else
+				if(target instanceof Pill)
+					((Pill)target).setSpellList("");
 				target.recoverEnvStats();
 				mob.location().recoverRoomStats();
 			}

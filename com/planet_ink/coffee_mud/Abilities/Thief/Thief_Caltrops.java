@@ -1,5 +1,58 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
 
-public class Thief_Caltrops
+import com.planet_ink.coffee_mud.Abilities.Traps.Trap_Trap;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Thief_Caltrops extends ThiefSkill
 {
+	public String ID() { return "Thief_Caltrops"; }
+	public String name(){ return "Caltrops";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"CALTROPS"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Caltrops();}
+
+	public boolean okAffect(Environmental myHost, Affect msg)
+	{
+		if(affected==null) return super.okAffect(myHost,msg);
+		if(!(affected instanceof Room)) return super.okAffect(myHost,msg);
+		if(invoker()==null) return super.okAffect(myHost,msg);
+		Room room=(Room)affected;
+		if((msg.amITarget(room)||room.isInhabitant(msg.source()))
+		&&(!msg.amISource(invoker()))
+		&&((msg.sourceMinor()==Affect.TYP_ENTER)
+			||(msg.sourceMinor()==Affect.TYP_LEAVE)
+			||(msg.sourceMinor()==Affect.TYP_FLEE)
+			||(msg.sourceMinor()==Affect.TYP_ADVANCE)
+			||(msg.sourceMinor()==Affect.TYP_RETREAT)))
+				ExternalPlay.postDamage(invoker(),msg.source(),null,Dice.roll(1,5,0),Affect.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");
+		return true;
+	}
+	
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		if(mob.location()==null) return false;
+		if(mob.location().fetchAffect(ID())!=null)
+		{
+			mob.tell("Caltrops have already been tossed down here.");
+			return false;
+		}
+		boolean success=profficiencyCheck(0,auto);
+		Environmental target=mob.location();
+		if(success)
+		{
+			if(mob.location().show(mob,target,(auto?Affect.MASK_GENERAL:0)|Affect.MSG_THIEF_ACT,"<S-NAME> throw(s) down caltrops!"))
+				maliciousAffect(mob,target,0,-1);
+			else
+				success=false;
+		}
+		else
+			maliciousFizzle(mob,target,"<S-NAME> fail(s) to throw down <S-HIS-HER> caltrops properly.");
+		return success;
+	}
 }

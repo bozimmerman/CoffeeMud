@@ -80,8 +80,8 @@ CMAble.addCharAbilityMapping(ID(),7,"Thief_UsePoison",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",true);
 			
 			CMAble.addCharAbilityMapping(ID(),18,"Thief_SilentLoot",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Spell_Knock",false);
-			
+			CMAble.addCharAbilityMapping(ID(),18,"Spell_ComprehendLangs",false);
+		
 			CMAble.addCharAbilityMapping(ID(),19,"Thief_Distract",true);
 			
 			CMAble.addCharAbilityMapping(ID(),20,"Thief_Lore",false);
@@ -95,7 +95,6 @@ CMAble.addCharAbilityMapping(ID(),22,"Thief_Flank",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_Charm",false);
 			
 			CMAble.addCharAbilityMapping(ID(),24,"Thief_Bribe",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Spell_ComprehendLangs",false);
 			
 CMAble.addCharAbilityMapping(ID(),25,"Thief_Ambush",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Ventrilloquate",false);

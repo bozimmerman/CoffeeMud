@@ -55,10 +55,4 @@ public class Paladin extends StdAbility
 			helpProfficiency(invoker);
 		return true;
 	}
-	public boolean autoInvocation(MOB mob)
-	{
-		if(mob.isASysOp(null))
-			return false;
-		return super.autoInvocation(mob);
-	}
 }

@@ -21,6 +21,8 @@ public class Plains extends StdRoom
 	}
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_WHEAT),
+		new Integer(EnvResource.RESOURCE_HOPS),
+		new Integer(EnvResource.RESOURCE_BARLEY),
 		new Integer(EnvResource.RESOURCE_CORN),
 		new Integer(EnvResource.RESOURCE_RICE),
 		new Integer(EnvResource.RESOURCE_CARROTS),
@@ -32,6 +34,7 @@ public class Plains extends StdRoom
 		new Integer(EnvResource.RESOURCE_BEEF),
 		new Integer(EnvResource.RESOURCE_HIDE),
 		new Integer(EnvResource.RESOURCE_FUR),
+		new Integer(EnvResource.RESOURCE_HONEY),
 		new Integer(EnvResource.RESOURCE_FEATHERS),
 		new Integer(EnvResource.RESOURCE_LEATHER),
 		new Integer(EnvResource.RESOURCE_WOOL)};
