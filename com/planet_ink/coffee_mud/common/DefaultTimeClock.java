@@ -212,7 +212,7 @@ public class DefaultTimeClock implements TimeClock
 		{
 			boolean raiseLowerTheSun=setTimeOfDay(getTimeOfDay()+howManyHours);
 			lastTicked=System.currentTimeMillis();
-			if(getTimeOfDay()>=getHoursInDay())
+			while(getTimeOfDay()>=getHoursInDay())
 			{
 				raiseLowerTheSun=setTimeOfDay(getTimeOfDay()-getHoursInDay());
 				setDayOfMonth(getDayOfMonth()+1);
@@ -227,8 +227,7 @@ public class DefaultTimeClock implements TimeClock
 					}
 				}
 			}
-			else
-			if(getTimeOfDay()<0)
+			while(getTimeOfDay()<0)
 			{
 				raiseLowerTheSun=setTimeOfDay(getHoursInDay()+getTimeOfDay());
 				setDayOfMonth(getDayOfMonth()-1);

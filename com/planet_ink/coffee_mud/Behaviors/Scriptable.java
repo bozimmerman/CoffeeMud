@@ -4408,7 +4408,7 @@ public class Scriptable extends StdBehavior
 					}
 				}
 				break;
-			case 2: // allgreet_prog
+			case 2: // all_greet_prog
 				if((msg.targetMinor()==CMMsg.TYP_ENTER)
 				&&(msg.amITarget(lastKnownLocation))
 				&&(!msg.amISource(eventMob))

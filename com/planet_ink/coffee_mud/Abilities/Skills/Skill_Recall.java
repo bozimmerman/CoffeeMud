@@ -26,24 +26,28 @@ public class Skill_Recall extends StdAbility
 		{
 			Room recalledRoom=mob.location();
 			Room recallRoom=mob.getStartRoom();
-			FullMsg msg=new FullMsg(mob,recallRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?getScr("Skills","recallgo1"):getScr("Skills","recallgo2"));
-			if(recalledRoom.okMessage(mob,msg))
+			FullMsg msg=new FullMsg(mob,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?getScr("Skills","recallgo1"):getScr("Skills","recallgo2"));
+			FullMsg msg2=new FullMsg(mob,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
+			if((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
 			{
 				if(mob.isInCombat())
 					CommonMsgs.flee(mob,"NOWHERE");
 				recalledRoom.send(mob,msg);
+				recallRoom.send(mob,msg2);
 				if(recalledRoom.isInhabitant(mob))
 					recallRoom.bringMobHere(mob,false);
 				for(int f=0;f<mob.numFollowers();f++)
 				{
 					MOB follower=mob.fetchFollower(f);
+					msg=new FullMsg(follower,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?getScr("Skills","recallgo1"):getScr("Skills","recallgo3",mob.name()));
 					if((follower!=null)
 					&&(follower.isMonster())
 					&&(follower.location()==recalledRoom)
-					&&(recalledRoom.isInhabitant(follower)))
+					&&(recalledRoom.isInhabitant(follower))
+					&&(recalledRoom.okMessage(follower,msg)))
 					{
-						FullMsg msg2=new FullMsg(follower,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,getScr("Skills","recallgo3",mob.name()));
-						if(recalledRoom.okMessage(follower,msg2))
+						msg2=new FullMsg(follower,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
+						if(recallRoom.okMessage(follower,msg2))
 						{
 							if(follower.isInCombat())
 								CommonMsgs.flee(follower,("NOWHERE"));

@@ -23,7 +23,7 @@ public class Stand extends StdCommand
 		else
 		if(mob.location()!=null)
 		{
-			FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_STAND,getScr("Movement","standup"));
+			FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_STAND,mob.amDead()?null:getScr("Movement","standup"));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

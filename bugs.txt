@@ -1,17 +1,13 @@
 leash in mobile broke
-ticktock cmd does not skip hours over days well
-?sounders should have triggers for damage and starting a fight.
+I have a vambrace with clanenchant acid on it to a power of 10. It should increase my acid save by 50. It makes no change at all to my acid save.
 deviations report uses a diff baseline than rescore in the grinder does.
+Corpses should note time/manner of death 
 Prop_ClosedNightDay gets seasonal stuff
 ability to deposit a container and its contents.
 monetary tax rate on shopkeepers in controlled areas
-Hassan still doesn't recognize quester who recall to him.
-I have a vambrace with clanenchant acid on it to a power of 10. It should increase my acid save by 50. It makes no change at all to my acid save.
-im not sure if this is a bug or not but for some reason my character is fatigued and no matter how much i sleep nothing happens :P
 
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
-racial affects
 Install ship battery
 make diff levels of drunk, and disease_hangover (makes everything loud that you hear)
 mutable racial body parts, with ability to grant powers. items to wear on customized body parts.

@@ -394,10 +394,7 @@ public class Sounder extends StdBehavior
 			&&(msg.target()!=E)
 			&&((msg.source()==E)||(msg.tool()==E)||(E instanceof Room)||(E instanceof Exit))
 			&&(!oncePerRound1))
-			{
 				lookFor=CMMsg.TYP_WEAPONATTACK;
-				oncePerRound1=true;
-			}
 			break;
 		case CMMsg.TYP_DAMAGE:
 			if((msg.target()!=null)
@@ -410,7 +407,9 @@ public class Sounder extends StdBehavior
 		Room room=msg.source().location();
 		if((lookFor>=0)
 		&&(room!=null)
-		&&((!(E instanceof MOB))||(canFreelyBehaveNormal((MOB)E))))
+		&&((!(E instanceof MOB))||(lookFor==CMMsg.TYP_WEAPONATTACK)
+								||(lookFor==CMMsg.TYP_DAMAGE)
+								||(canFreelyBehaveNormal((MOB)E))))
 		for(int v=0;v<triggers.length;v++)
 			if(((triggers[v]&UNDER_MASK)==lookFor)
 			&&(!Util.bset(triggers[v],TICK_MASK)))

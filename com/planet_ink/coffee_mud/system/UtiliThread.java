@@ -221,6 +221,8 @@ public class UtiliThread extends Thread
 			try{Thread.sleep(2000);}catch(Exception e){}
 		}
 		
+		try{Thread.sleep(MudHost.TICK_TIME*(long)2);}catch(Exception e){}
+		
 		while(true)
 		{
 			try

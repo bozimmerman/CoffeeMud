@@ -189,6 +189,7 @@ public class StdRace implements Race
 			for(int i=1;i<11;i++)
 			{
 				naturalWeapon=CMClass.getWeapon("StdWeapon");
+				if(naturalWeapon==null) continue;
 				switch(i)
 				{
 					case 1:
