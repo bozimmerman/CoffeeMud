@@ -21,13 +21,13 @@ public class Disease_Pneumonia extends Disease
 	protected String DISEASE_DONE(){return "Your pneumonia clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with pneumonia.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> shake(s) feverishly.";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return false;}
+	public int spreadCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
+		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
 		if((--diseaseTick)<=0)

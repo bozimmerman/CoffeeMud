@@ -21,13 +21,13 @@ public class Disease_Giggles extends Disease
 	protected String DISEASE_DONE(){return "You feel more serious.";}
 	protected String DISEASE_START(){return "^G<S-NAME> start(s) giggling.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> giggle(s) and laugh(s) uncontrollably.";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return false;}
+	public int spreadCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
+		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
 		if((getTickDownRemaining()==1)

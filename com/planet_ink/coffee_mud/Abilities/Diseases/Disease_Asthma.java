@@ -21,13 +21,13 @@ public class Disease_Asthma extends Disease
 	protected String DISEASE_DONE(){return "Your asthma clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> start(s) wheezing.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> wheeze(s) loudly.";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return true;}
+	public int spreadCode(){return 0;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
+		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
 		if((--diseaseTick)<=0)

@@ -21,8 +21,7 @@ public class Disease_Arthritis extends Disease
 	protected String DISEASE_DONE(){return "Your arthritis clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-IS-ARE> in pain.^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return false;}
+	public int spreadCode(){return 0;}
 	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

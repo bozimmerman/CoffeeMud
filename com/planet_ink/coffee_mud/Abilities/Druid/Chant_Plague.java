@@ -5,14 +5,14 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Chant_Plague extends Chant
+public class Chant_Plague extends Chant implements DiseaseAffect
 {
 	public String ID() { return "Chant_Plague"; }
 	public String name(){ return "Plague";}
 	public String displayText(){return "(Plague)";}
 	public int quality(){return Ability.MALICIOUS;}
 	public Environmental newInstance(){	return new Chant_Plague();}
-	public String text(){return "DISEASE";}
+	public int spreadCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	int plagueDown=4;
 	public boolean tick(Tickable ticking, int tickID)
 	{

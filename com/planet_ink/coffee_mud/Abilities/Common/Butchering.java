@@ -43,7 +43,17 @@ public class Butchering extends CommonSkill
 					{
 						mob.location().show(mob,null,body,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up <O-NAME>.");
 						Vector resources=body.charStats().getMyRace().myResources();
-						Ability useSpellCast=body.fetchAffect("Prop_UseSpellCast2");
+						Vector diseases=new Vector();
+						for(int i=0;i<body.numAffects();i++)
+						{
+							Ability A=body.fetchAffect(i);
+							if((A!=null)&&(A instanceof DiseaseAffect))
+							{
+								if((Util.bset(((DiseaseAffect)A).spreadCode(),DiseaseAffect.SPREAD_CONSUMPTION))
+								||(Util.bset(((DiseaseAffect)A).spreadCode(),DiseaseAffect.SPREAD_CONTACT)))
+									diseases.addElement(A);
+							}
+						}
 						for(int i=0;i<mob.location().numItems();i++)
 						{
 							Item I=mob.location().fetchItem(i);
@@ -56,9 +66,9 @@ public class Butchering extends CommonSkill
 							for(int i=0;i<resources.size();i++)
 							{
 								Item newFound=(Item)((Item)resources.elementAt(i)).copyOf();
-								if((useSpellCast!=null)
-								&&((newFound instanceof Food)||(newFound instanceof Drink)))
-									newFound.addNonUninvokableAffect(((Ability)useSpellCast.copyOf()));
+								if((newFound instanceof Food)||(newFound instanceof Drink))
+								for(int d=0;d<diseases.size();d++)
+									newFound.addNonUninvokableAffect((Ability)((Ability)diseases.elementAt(d)).copyOf());
 								newFound.recoverEnvStats();
 								mob.location().addItemRefuse(newFound,Item.REFUSE_RESOURCE);
 								mob.location().recoverRoomStats();

@@ -22,13 +22,13 @@ public class Disease_Infection extends Disease
 	protected String DISEASE_DONE(){return "Your infected wounds feel better.";}
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> infected wounds.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> wince(s) in pain.";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return false;}
+	public int spreadCode(){return 0;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
+		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
 		if(mob.curState().getHitPoints()>=mob.maxState().getHitPoints())

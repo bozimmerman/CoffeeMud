@@ -21,13 +21,12 @@ public class Disease_Migraines extends Disease
 	protected String DISEASE_DONE(){return "Your headaches stop.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) terrible headaches.^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return false;}
+	public int spreadCode(){return 0;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
+			return super.okAffect(myHost,affect);
 
 		MOB mob=(MOB)affected;
 

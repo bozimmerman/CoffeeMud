@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prayer_Contagion extends Prayer
+public class Prayer_Contagion extends Prayer implements DiseaseAffect
 {
 	public String ID() { return "Prayer_Contagion"; }
 	public String displayText(){ return "(Contagion)";}
@@ -25,7 +25,7 @@ public class Prayer_Contagion extends Prayer
 		super.unInvoke();
 	}
 
-	public String text(){return "DISEASE";}
+	public int spreadCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

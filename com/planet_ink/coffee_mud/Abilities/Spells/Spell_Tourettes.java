@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Spell_Tourettes extends Spell
+public class Spell_Tourettes extends Spell implements DiseaseAffect
 {
 	public String ID() { return "Spell_Tourettes"; }
 	public String name(){return "Tourettes";}
@@ -17,7 +17,7 @@ public class Spell_Tourettes extends Spell
 
 	int plagueDown=4;
 
-	public String text(){return "DISEASE";}
+	public int spreadCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

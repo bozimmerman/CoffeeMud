@@ -48,8 +48,7 @@ public class Prayer_ProtectHealth extends Prayer
 		{
 			if((affect.tool()!=null)
 			   &&(Dice.rollPercentage()>50)
-			   &&(affect.tool().text().equalsIgnoreCase("DISEASE")||((affect.tool() instanceof Ability)&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.DISEASE))
-				||(affect.targetMinor()==Affect.TYP_DISEASE)))
+			   &&(affect.tool() instanceof DiseaseAffect))
 			{
 				affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"An unhealthy assault against <S-NAME> is magically repelled.");
 				return false;

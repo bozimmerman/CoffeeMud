@@ -195,9 +195,16 @@ public class ItemUsage
 					   boolean quiet,
 					   String getWord)
 	{
+		String theWhat="<T-NAME>";
 		Environmental target=getThis;
 		Environmental tool=null;
-		FullMsg msg=new FullMsg(mob,target,tool,Affect.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) <O-NAME>"+((container==null)?".":"from <T-NAME>."));
+		if(container!=null)
+		{
+			tool=getThis;
+			target=container;
+			theWhat="<O-NAME> from <T-NAME>";
+		}
+		FullMsg msg=new FullMsg(mob,target,tool,Affect.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat+".");
 		if(!mob.location().okAffect(mob,msg))
 			return false;
 		mob.location().send(mob,msg);

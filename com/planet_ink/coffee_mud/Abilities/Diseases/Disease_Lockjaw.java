@@ -21,13 +21,13 @@ public class Disease_Lockjaw extends Disease
 	protected String DISEASE_DONE(){return "Your lockjaw is cured.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) lockjaw!^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return false;}
+	public int spreadCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
+		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
 		if((--diseaseTick)<=0)
@@ -45,7 +45,7 @@ public class Disease_Lockjaw extends Disease
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
+			return super.okAffect(myHost,affect);
 
 		MOB mob=(MOB)affected;
 

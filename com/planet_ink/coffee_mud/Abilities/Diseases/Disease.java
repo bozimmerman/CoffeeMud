@@ -5,13 +5,13 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Disease extends StdAbility
+public class Disease extends StdAbility implements DiseaseAffect
 {
 	public String ID() { return "Disease"; }
 	public String name(){ return "Disease";}
 	public String displayText(){ return "(a disease)";}
 	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease();}
@@ -22,20 +22,43 @@ public class Disease extends StdAbility
 	protected String DISEASE_DONE(){return "Your disease has run its coarse.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a disease.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and groan(s).";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return false;}
+	
+	public int spreadCode(){return 0;}
+	private boolean processing=false;
+	
 
 	protected int diseaseTick=DISEASE_DELAY();
 
-	protected boolean catchIt(MOB mob, MOB target)
+	protected boolean catchIt(Item item, Environmental target)
 	{
-		if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
-			if(Dice.rollPercentage()>target.charStats().getStat(CharStats.SAVE_DISEASE))
+		if(invoker!=null) return catchIt(invoker,target);
+		MOB M=CMClass.getMOB("StdMOB");
+		M.baseEnvStats().setLevel(5);
+		M.recoverEnvStats();
+		return catchIt(M,target);
+	}
+	protected boolean catchIt(MOB mob, Environmental target)
+	{
+		MOB diseased=invoker;
+		if(diseased==null) diseased=mob;
+		if((target!=null)&&(target!=diseased)&&(target!=mob)&&(target.fetchAffect(ID())==null))
+		{
+			if(target instanceof MOB)
 			{
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,DISEASE_START());
-				maliciousAffect(invoker,target,DISEASE_TICKS(),-1);
+				MOB targetMOB=(MOB)target;
+				if(Dice.rollPercentage()>targetMOB.charStats().getStat(CharStats.SAVE_DISEASE))
+				{
+					targetMOB.location().show(targetMOB,null,Affect.MSG_OK_VISUAL,DISEASE_START());
+					maliciousAffect(diseased,target,DISEASE_TICKS(),-1);
+					return true;
+				}
+			}
+			else
+			{
+				maliciousAffect(diseased,target,DISEASE_TICKS(),-1);
 				return true;
 			}
+		}
 		return false;
 	}
 	protected boolean catchIt(MOB mob)
@@ -57,28 +80,79 @@ public class Disease extends StdAbility
 
 	public void affect(Environmental myHost, Affect affect)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-
-		MOB mob=(MOB)affected;
-
-		// when this spell is on a MOBs Affected list,
-		// it should consistantly prevent the mob
-		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))
-		&&(DISEASE_TOUCHSPREAD())
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon)
-		&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
-		&&(affect.source().fetchWieldedItem()==null)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof MOB)
-		&&(affect.target()!=affect.source())
-		&&(Dice.rollPercentage()>(((MOB)affect.target()).charStats().getStat(CharStats.SAVE_DISEASE)+75)))
+		if(affected==null) return;
+		if(affected instanceof MOB)
 		{
-			Ability A=(Ability)this.copyOf();
-			A.invoke(mob,affect.target(),true);
+			MOB mob=(MOB)affected;
+
+			// when this spell is on a MOBs Affected list,
+			// it should consistantly prevent the mob
+			// from trying to do ANYTHING except sleep
+			if((Util.bset(spreadCode(),DiseaseAffect.SPREAD_DAMAGE))
+			&&(affect.amISource(mob))
+			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+			&&(affect.tool()!=null)
+			&&(affect.tool() instanceof Weapon)
+			&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
+			&&(affect.source().fetchWieldedItem()==null)
+			&&(affect.target()!=null)
+			&&(affect.target() instanceof MOB)
+			&&(affect.target()!=affect.source())
+			&&(Dice.rollPercentage()>(((MOB)affect.target()).charStats().getStat(CharStats.SAVE_DISEASE)+70)))
+				catchIt(mob,affect.target());
+			else
+			if((Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONTACT))
+			&&(affect.amISource(mob)||affect.amITarget(mob))
+			&&(affect.target()!=null)
+			&&(affect.target() instanceof MOB)
+			&&(Util.bset(affect.targetCode(),Affect.MASK_MOVE)||Util.bset(affect.targetCode(),Affect.MASK_HANDS))
+			&&((affect.tool()==null)
+				||(affect.tool()!=null)
+					&&(affect.tool() instanceof Weapon)
+					&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
+				catchIt(mob,affect.amITarget(mob)?affect.source():affect.target());
+		}
+		else
+		if(affected instanceof Item)
+		{
+			if(!processing)
+			{
+				Item myItem=(Item)affected;
+				if(myItem.owner()==null) return;
+				processing=true;
+				switch(affect.sourceMinor())
+				{
+				case Affect.TYP_DRINK:
+					if((Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONSUMPTION))
+					||(Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONTACT)))
+					{
+						if((myItem instanceof Drink)
+						&&(affect.amITarget(myItem)))
+							catchIt(myItem,affect.source());
+					}
+					break;
+				case Affect.TYP_EAT:
+					if((Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONSUMPTION))
+					||(Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONTACT)))
+					{
+						
+						if((myItem instanceof Food)
+						&&(affect.amITarget(myItem)))
+							catchIt(myItem,affect.source());
+					}
+					break;
+				case Affect.TYP_GET:
+					if(Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONTACT))
+					{
+						if((!(myItem instanceof Drink))
+						  &&(!(myItem instanceof Food))
+						  &&(affect.amITarget(myItem)))
+							catchIt(myItem,affect.source());
+					}
+					break;
+				}
+			}
+			processing=false;
 		}
 		super.affect(myHost,affect);
 	}

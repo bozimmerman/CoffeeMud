@@ -5,12 +5,12 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Disease_MummyRot extends StdAbility
+public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 {
 	public String ID() { return "Disease_MummyRot"; }
 	public String name(){ return "Mummy Rot";}
 	public String displayText(){ return "(Mummy Rot)";}
-	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
@@ -18,6 +18,7 @@ public class Disease_MummyRot extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Disease_MummyRot();}
 	public int classificationCode(){return Ability.DISEASE;}
+	public int spreadCode(){return 0;}
 
 	int conDown=1;
 	int diseaseTick=0;
@@ -26,6 +27,7 @@ public class Disease_MummyRot extends StdAbility
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
+		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
 		if((--diseaseTick)<=0)
@@ -41,12 +43,17 @@ public class Disease_MummyRot extends StdAbility
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
+		{
+			super.unInvoke();
 			return;
-		MOB mob=(MOB)affected;
-
-		super.unInvoke();
-		if(canBeUninvoked())
-			mob.tell("The rot is cured.");
+		}
+		else
+		{
+			MOB mob=(MOB)affected;
+			super.unInvoke();
+			if(canBeUninvoked())
+				mob.tell("The rot is cured.");
+		}
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

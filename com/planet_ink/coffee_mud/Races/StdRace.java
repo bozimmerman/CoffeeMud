@@ -310,20 +310,17 @@ public class StdRace implements Race
 		Body.setDisplayText("the body of "+mob.name()+" lies here.");
 		room.addItem(Body);
 		Body.recoverEnvStats();
-		Ability getSpellCast=null;
 		for(int i=0;i<mob.numAffects();i++)
 		{
 			Ability A=mob.fetchAffect(i);
-			if((A!=null)&&((A.text().equalsIgnoreCase("DISEASE")||((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE))))
+			if((A!=null)&&(A instanceof DiseaseAffect))
 			{
-				if(getSpellCast==null) getSpellCast=CMClass.getAbility("Prop_UseSpellCast2");
-				getSpellCast.setMiscText(A.ID()+";"+getSpellCast.text());
+				if((Util.bset(((DiseaseAffect)A).spreadCode(),DiseaseAffect.SPREAD_CONSUMPTION))
+				||(Util.bset(((DiseaseAffect)A).spreadCode(),DiseaseAffect.SPREAD_CONTACT)))
+					Body.addNonUninvokableAffect((Ability)A.copyOf());
 			}
 		}
-		if(getSpellCast!=null)
-		{
-			Body.addNonUninvokableAffect(getSpellCast);
-		}
+
 		Vector items=new Vector();
 		for(int i=0;i<mob.inventorySize();)
 		{

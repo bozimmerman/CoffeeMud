@@ -22,13 +22,12 @@ public class Disease_Amnesia extends Disease
 	protected String DISEASE_DONE(){return "Your memory returns.";}
 	protected String DISEASE_START(){return "^G<S-NAME> feel(s) like <S-HE-SHE> <S-HAS-HAVE> forgotten something.^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return false;}
+	public int spreadCode(){return 0;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
+			return super.okAffect(myHost,affect);
 
 		MOB mob=(MOB)affected;
 
@@ -44,7 +43,6 @@ public class Disease_Amnesia extends Disease
 			mob.tell("You can't remember "+affect.tool().name()+"!");
 			return false;
 		}
-
 		return super.okAffect(myHost,affect);
 	}
 

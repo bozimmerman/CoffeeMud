@@ -21,13 +21,13 @@ public class Disease_Magepox extends Disease
 	protected String DISEASE_DONE(){return "Your magepox clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with the Magepox.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> watch(es) new mystical sores appear on <S-HIS-HER> body.";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return false;}
+	public int spreadCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
+		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
 		if((--diseaseTick)<=0)

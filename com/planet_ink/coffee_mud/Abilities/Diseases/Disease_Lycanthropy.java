@@ -23,7 +23,7 @@ public class Disease_Lycanthropy extends Disease
 	protected String DISEASE_AFFECT(){return "";}
 	protected boolean DISEASE_STD(){return false;}
 	protected boolean changed=false;
-	protected boolean DISEASE_TOUCHSPREAD(){return changed;}
+	public int spreadCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
 	protected Vector deathTrail=null;
 	protected Race theRace=null;
 	protected Race lycanRace(){
@@ -35,6 +35,7 @@ public class Disease_Lycanthropy extends Disease
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
+		if(!(affected instanceof MOB)) return;
 		if(lycanRace()!=null)
 		{
 			if(affected.name().indexOf(" ")>0)
@@ -153,6 +154,8 @@ public class Disease_Lycanthropy extends Disease
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
+		if(!(affected instanceof MOB)) return true;
+		
 		MOB mob=(MOB)affected;
 		if(!changed)
 		{

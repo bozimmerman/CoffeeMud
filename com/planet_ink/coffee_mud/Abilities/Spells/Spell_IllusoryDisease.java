@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Spell_IllusoryDisease extends Spell
+public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 {
 	public String ID() { return "Spell_IllusoryDisease"; }
 	public String name(){return "Illusory Disease";}
@@ -22,7 +22,7 @@ public class Spell_IllusoryDisease extends Spell
 		affectableStats.setStat(CharStats.STRENGTH,(int)Math.round(Util.div(affectableStats.getStat(CharStats.STRENGTH),2.0)));
 	}
 
-	public String text(){return "DISEASE";}
+	public int spreadCode(){return 0;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

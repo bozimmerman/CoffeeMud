@@ -21,8 +21,7 @@ public class Disease_Tinnitus extends Disease
 	protected String DISEASE_DONE(){return "Your ears stop ringing.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with tinnitus.^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return false;}
+	public int spreadCode(){return 0;}
 	
 	protected boolean ringing=false;
 	
@@ -30,6 +29,7 @@ public class Disease_Tinnitus extends Disease
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
+		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
 		if((--diseaseTick)<=0)

@@ -22,8 +22,7 @@ public class Disease_Lepresy extends Disease
 	protected String DISEASE_DONE(){return "Your lepresy is cured!";}
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) pale!^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return false;}
+	public int spreadCode(){return 0;}
 
 	private static String replaceDamageTag(String str, int damage, int damageType)
 	{
@@ -37,7 +36,7 @@ public class Disease_Lepresy extends Disease
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
+			return super.okAffect(myHost,affect);
 
 		MOB mob=(MOB)affected;
 

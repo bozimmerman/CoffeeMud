@@ -21,13 +21,13 @@ public class Disease_PoisonIvy extends Disease
 	protected String DISEASE_DONE(){return "Your poison ivy clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> covered in poison ivy.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIM-HERSELF>.";}
-	protected boolean DISEASE_STD(){return false;}
-	protected boolean DISEASE_TOUCHSPREAD(){return true;}
+	public int spreadCode(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
+		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
 		if((--diseaseTick)<=0)
