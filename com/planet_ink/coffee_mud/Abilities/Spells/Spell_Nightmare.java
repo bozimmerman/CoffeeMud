@@ -50,7 +50,7 @@ public class Spell_Nightmare extends Spell
 			&&((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
 			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
-				if(notAgainThisRound)
+				if(!notAgainThisRound)
 				{
 					Room R=mob.location();
 					Item I=null;

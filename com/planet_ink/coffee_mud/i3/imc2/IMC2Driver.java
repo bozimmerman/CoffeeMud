@@ -136,7 +136,7 @@ public final class IMC2Driver extends Thread {
 	
     final public void ev_keepalive(Object param)
     {
-        imc_send_keepalive("*@*");
+        imc_send_isalive("*@*");
         imc_register_call_out(150, "ev_keepalive", null);
     }
 
@@ -1321,7 +1321,7 @@ public final class IMC2Driver extends Thread {
 
         if (p.type.equals("keepalive-request")) {
             tracef(8, "Keepalive request received from " + p.i.from);
-            imc_send_keepalive(p.i.from);
+            imc_send_isalive(p.i.from);
         }
 
         if (p.type.equals("who-reply")) {
@@ -1466,7 +1466,7 @@ public final class IMC2Driver extends Thread {
     }
 
     /* send a keepalive to everyone */
-    final public void imc_send_keepalive(String reqFrom) {
+    final public void imc_send_isalive(String reqFrom) {
         PACKET out = new PACKET();
 
         if (imc_active < IA_UP)
@@ -1480,7 +1480,6 @@ public final class IMC2Driver extends Thread {
         imc_addkey(out, "networkname", this_imcmud.network);
         if (imc_siteinfo.flags != null && imc_siteinfo.flags != "")
             imc_addkey(out, "flags", imc_siteinfo.flags);
-
         imc_send(out);
     }
 

@@ -1,10 +1,10 @@
 name,level,ticks,wood,value,class,misc,capacity,armordmg,materialtype,spell
-% Whipping Post	1	20	10	10	GenChair	CHAIR	1	0	wood	Prop_RideSpellCast;Thief_Bind;Spell_Torture(HITONLY)
-% Stockade	8	100	50	50	GenChair	CHAIR	1	0	wood	Prop_RideSpellCast;Thief_Bind
-% Gallows	10	150	200	500	GenRideable	TABLE	3	0	wood	Prop_RideSpellCast;Thief_Bind;Spell_Choke
-% Torture Rack	20	200	200	1000	GenBed	BED	1	0	wood	Prop_RideSpellCast;Thief_Bind;Spell_Torture
-% Spanish watercloth	15	5	2	5	GenArmor	MOUTH	0	0	cloth	Prop_RideSpellCast;Spell_Choke
-% Garucha Gallows	10	150	200	500	GenRideable	TABLE	1	0	wood	Prop_RideSpellCast;Thief_Bind;Spell_LimbRack(ARMSONLY);Spell_Torture
-% Garotte Bed	10	150	200	500	GenRideable	TABLE	1	0	wood	Prop_RideSpellCast;Thief_Bind;Spell_LimbRack;Spell_Torture
-% Brank Helmet	10	150	200	500	GenArmor	HEAD	0	0	metal	Prop_RideSpellCast;Spell_Blademouth
-The Machine	20	250	5000	2000	GenBed	BED	1	0	wood	Prop_RideSpellCast;Spell_Torture(<S-NAME> let(s) out a scream of ultimate suffering!)
+% Whipping Post	15	20	10	10	GenChair	CHAIR	1	0	wood	Prop_RideSpellCast;Thief_Bind;Spell_Torture(HITONLY)
+% Stockade	16	100	50	50	GenChair	CHAIR	1	0	wood	Prop_RideSpellCast;Thief_Bind
+% Gallows	17	150	200	500	GenRideable	TABLE	3	0	wood	Prop_RideSpellCast;Thief_Bind;Spell_Choke
+% Torture Rack	18	200	200	1000	GenBed	BED	1	0	wood	Prop_RideSpellCast;Thief_Bind;Spell_Torture
+% Spanish watercloth	19	5	2	5	GenArmor	MOUTH	0	0	cloth	Prop_RideSpellCast;Spell_Choke
+% Garucha Gallows	20	150	200	500	GenRideable	TABLE	1	0	wood	Prop_RideSpellCast;Thief_Bind;Spell_LimbRack(ARMSONLY);Spell_Torture
+% Garotte Bed	21	150	200	500	GenRideable	TABLE	1	0	wood	Prop_RideSpellCast;Thief_Bind;Spell_LimbRack;Spell_Torture
+% Brank Helmet	22	150	200	500	GenArmor	HEAD	0	0	metal	Prop_RideSpellCast;Spell_Blademouth
+The Machine	25	250	5000	2000	GenBed	BED	1	0	wood	Prop_RideSpellCast;Spell_Torture(<S-NAME> let(s) out a scream of ultimate suffering!)

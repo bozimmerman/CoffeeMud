@@ -48,7 +48,7 @@ public class Go extends StdCommand
 					{
 						if(rMOB.riding()!=null)
 							rMOB.tell(getScr("Movement","youride",rMOB.riding().name(),Directions.getDirectionName(directionCode)));
-						if(!move(rMOB,directionCode,flee,false,true))
+						if(!move(rMOB,directionCode,flee,false,true,false))
 							fallOff=true;
 					}
 					if(fallOff)
@@ -136,7 +136,7 @@ public class Go extends StdCommand
 			&&((sourceRoom).isInhabitant((MOB)riding)))
 			{
 				((MOB)riding).tell(getScr("Movement","youridden",Directions.getDirectionName(directionCode)));
-				if(!move(((MOB)riding),directionCode,false,false,true))
+				if(!move(((MOB)riding),directionCode,false,false,true,false))
 				{
 					if(theRider instanceof MOB)
 						((MOB)theRider).tell(getScr("Movement","rideerr1",((MOB)riding).name()));
@@ -161,10 +161,19 @@ public class Go extends StdCommand
 	}
 
 	public static boolean move(MOB mob,
+						   int directionCode,
+						   boolean flee,
+						   boolean nolook,
+						   boolean noriders)
+	{
+	    return move(mob,directionCode,flee,nolook,noriders,false);
+	}
+	public static boolean move(MOB mob,
 							   int directionCode,
 							   boolean flee,
 							   boolean nolook,
-							   boolean noriders)
+							   boolean noriders,
+							   boolean always)
 	{
 		if(directionCode<0) return false;
 		if(mob==null) return false;
@@ -182,20 +191,21 @@ public class Go extends StdCommand
 		String directionName=Directions.getDirectionName(directionCode);
 		String otherDirectionName=Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
 
-		int leaveCode=CMMsg.MSG_LEAVE;
+		int generalMask=always?CMMsg.MASK_GENERAL:0;
+		int leaveCode=generalMask|CMMsg.MSG_LEAVE;
 		if(flee)
-			leaveCode=CMMsg.MSG_FLEE;
+			leaveCode=generalMask|CMMsg.MSG_FLEE;
 
 		FullMsg enterMsg=null;
 		FullMsg leaveMsg=null;
 		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
-			enterMsg=new FullMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","sridesin",mob.riding().name(),otherDirectionName));
+			enterMsg=new FullMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","sridesin",mob.riding().name(),otherDirectionName));
 			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sfleeswith",mob.riding().name(),directionName):getScr("Movement","srides",mob.riding().name(),directionName)));
 		}
 		else
 		{
-			enterMsg=new FullMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","senter",Sense.dispositionString(mob,Sense.flag_arrives),otherDirectionName));
+			enterMsg=new FullMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","senter",Sense.dispositionString(mob,Sense.flag_arrives),otherDirectionName));
 			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sflees",directionName):getScr("Movement","sleaves",Sense.dispositionString(mob,Sense.flag_leaves),directionName)));
 		}
 		boolean gotoAllowed=CMSecurity.isAllowed(mob,destRoom,"GOTO");
@@ -289,7 +299,7 @@ public class Go extends StdCommand
 					&&(!Util.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
 					{
 						follower.tell(getScr("Movement","youfollow",mob.name(),Directions.getDirectionName(directionCode)));
-						if(!move(follower,directionCode,false,false,false))
+						if(!move(follower,directionCode,false,false,false,false))
 						{
 							//follower.setFollowing(null);
 						}
@@ -329,7 +339,7 @@ public class Go extends StdCommand
 						((Integer)commands.elementAt(0)).intValue(),
 						((Boolean)commands.elementAt(1)).booleanValue(),
 						((Boolean)commands.elementAt(2)).booleanValue(),
-						((Boolean)commands.elementAt(3)).booleanValue());
+						((Boolean)commands.elementAt(3)).booleanValue(),false);
 
 		}
 
@@ -341,7 +351,7 @@ public class Go extends StdCommand
 		}
 		String doing=(String)commands.elementAt(0);
 		if(direction>=0)
-			move(mob,direction,false,false,false);
+			move(mob,direction,false,false,false,false);
 		else
 		{
 			boolean doneAnything=false;
@@ -373,7 +383,7 @@ public class Go extends StdCommand
 						{
 							if(mob.isMonster())
 							{
-								if(!move(mob,direction,false,false,false))
+								if(!move(mob,direction,false,false,false,false))
 									return false;
 							}
 							else

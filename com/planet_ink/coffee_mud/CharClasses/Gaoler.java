@@ -64,20 +64,21 @@ public class Gaoler extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"ClanCrafting",false);
 			CMAble.addCharAbilityMapping(ID(),1,"SmokeRings",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Butchering",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Cooking",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Searching",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Blacksmithing",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Carpentry",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_Warrants",false);
-			
-			CMAble.addCharAbilityMapping(ID(),1,"SlaveTrading",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Thief_Sap",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Thief_Bind",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Enslave",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Fighter_Behead",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Thief_TarAndFeather",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Stoning",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Torturesmithing",true);
-
+			CMAble.addCharAbilityMapping(ID(),5,"Carpentry",false);
+			CMAble.addCharAbilityMapping(ID(),6,"LockSmith",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Skill_Warrants",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Thief_Sap",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Thief_Bind",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Thief_TarAndFeather",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Torturesmithing",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Behead",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Stoning",true);
+			CMAble.addCharAbilityMapping(ID(),18,"SlaveTrading",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Skill_Enslave",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Thief_Pick",true);
 		}
 	}
 

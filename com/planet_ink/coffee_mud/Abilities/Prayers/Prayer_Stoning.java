@@ -67,9 +67,9 @@ public class Prayer_Stoning extends Prayer
 			    }
 			    else
 			    {
-			        if(Dice.rollPercentage()>50)
+			        if(Dice.rollPercentage()>=50)
 			        {
-				        int dmg=mob.curState().getHitPoints()/20;
+				        int dmg=mob.maxState().getHitPoints()/20;
 				        if(dmg<1) dmg=1;
 				        Item W=mob.fetchWieldedItem();
 				        if(W!=null)

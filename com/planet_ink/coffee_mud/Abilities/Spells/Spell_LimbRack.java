@@ -37,7 +37,9 @@ public class Spell_LimbRack extends Spell
 	        return false;
 	    if(invoker==null) return false;
 	    MOB mob=(MOB)affected;
-	    if(mob.location()!=null)
+	    if((mob.location()!=null)
+	    &&(mob.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>=0)
+	    &&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0))
 	    {
 	        String str=(text().equalsIgnoreCase("ARMSONLY"))?
 		        "<S-NAME> <S-IS-ARE> having <S-HIS-HER> arms pulled from <S-HIS-HER> body!"
@@ -53,7 +55,9 @@ public class Spell_LimbRack extends Spell
 	    if((msg.sourceMinor()==CMMsg.TYP_DEATH)
         &&(affected instanceof MOB)
         &&(msg.amISource((MOB)affected))
-        &&(msg.source().location()!=null))
+        &&(msg.source().location()!=null)
+	    &&(msg.source().charStats().getMyRace().bodyMask()[Race.BODY_ARM]>=0)
+	    &&(msg.source().charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0))
 	    {
 	        MOB mob=msg.source();
 	        if(text().equalsIgnoreCase("ARMSONLY"))
@@ -81,6 +85,7 @@ public class Spell_LimbRack extends Spell
 			}
 			mob.confirmWearability();
 	    }
+	    super.executeMsg(host,msg);
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -98,7 +103,9 @@ public class Spell_LimbRack extends Spell
 		    &&(!gone.toUpperCase().endsWith(" LEG")))
 		        remainingLimbList.removeElementAt(i);
 		}
-		if(remainingLimbList.size()==0)
+		if((remainingLimbList.size()==0)
+	    ||((target.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>=0)
+	    &&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0)))
 		{
 			if(!auto)
 				mob.tell("There is nothing left on "+target.name()+" to rack off!");
@@ -126,6 +133,8 @@ public class Spell_LimbRack extends Spell
 			{
 				mob.location().send(mob,msg);
 				super.maliciousAffect(mob,target,asLevel,12,-1);
+				Ability A2=target.fetchEffect(ID());
+				if(A2!=null) ((Spell_LimbRack)A2).limbsToRemove=(Vector)remainingLimbList.clone();
 			}
 		}
 		else

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -33,11 +34,20 @@ public class Pull extends Go
 		Environmental openThis=null;
 		String dir="";
 		int dirCode=-1;
+		Environmental E=null;
 		if(commands.size()>1)
 		{
 			dirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
 			if(dirCode>=0)
 			{
+			    if((mob.location().getRoomInDir(dirCode)==null)
+			    ||(mob.location().getExitInDir(dirCode)==null)
+			    ||(!mob.location().getExitInDir(dirCode).isOpen()))
+			    {
+			        mob.tell("You can't pull anything that way.");
+			        return false;
+			    }
+			    E=mob.location().getRoomInDir(dirCode);
 			    dir=" "+Directions.getDirectionName(dir);
 			    commands.removeElementAt(commands.size()-1);
 			}
@@ -55,9 +65,24 @@ public class Pull extends Go
 			mob.tell("You don't see '"+whatToOpen+"' here.");
 			return false;
 		}
-		FullMsg msg=new FullMsg(mob,openThis,null,CMMsg.MSG_PULL,"<S-NAME> pull(s) <T-NAME>"+dir+".");
+		FullMsg msg=new FullMsg(mob,openThis,E,CMMsg.MSG_PULL,"<S-NAME> pull(s) <T-NAME>"+dir+".");
 		if(mob.location().okMessage(mob,msg))
+		{
 			mob.location().send(mob,msg);
+		    if((dir.length()>0)&&(msg.tool() instanceof Room))
+		    {
+		        Room R=(Room)msg.tool();
+		        dirCode=MUDTracker.findExitDir(mob,R,"");
+		        if((dirCode>=0)&&(super.move(mob,dirCode,false,false,false,false)))
+		        {
+			        if(openThis instanceof Item)
+			            R.bringItemHere((Item)openThis,Item.REFUSE_PLAYER_DROP);
+			        else
+			        if(openThis instanceof MOB)
+			            super.move((MOB)openThis,dirCode,true,false,true,true);
+		        }
+		    }
+		}
 		return false;
 	}
 	public int ticksToExecute(){return 1;}

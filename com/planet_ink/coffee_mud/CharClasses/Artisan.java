@@ -114,12 +114,12 @@ public class Artisan extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),11,"Speculate",true);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Painting",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Construction",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Masonry",true);
-
-			CMAble.addCharAbilityMapping(ID(),15,"LockSmith",true);
+			
+			CMAble.addCharAbilityMapping(ID(),15,"Construction",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Masonry",true);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Thief_Appraise",false);
+			CMAble.addCharAbilityMapping(ID(),17,"LockSmith",0,"",false,true);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Thief_Haggle",false);
 
