@@ -168,6 +168,16 @@ public class StdMOB implements MOB
 				inventory.addElement(I);
 			}
 		}
+		for(int i=0;i<inventorySize();i++)
+		{
+			Item I2=fetchInventory(i);
+			if((I2!=null)
+			&&(I2.container()!=null)
+			&&(!isMine(I2.container())))
+				for(int ii=0;ii<E.inventorySize();ii++)
+					if((E.fetchInventory(ii)==I2.container())&&(ii<inventorySize()))
+					{ I2.setContainer(fetchInventory(ii)); break;}
+		}
 		for(int i=0;i<E.numAbilities();i++)
 		{
 			Ability A2=E.fetchAbility(i);

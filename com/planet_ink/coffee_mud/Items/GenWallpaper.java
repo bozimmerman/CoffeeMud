@@ -70,6 +70,7 @@ public class GenWallpaper implements Item
 	public long whereCantWear(MOB mob){ return 0;}
 	public boolean canWear(MOB mob){ return false;}
 	public long rawWornCode(){return 0;}
+	public void setRawWornCode(long newValue){}
 	public void remove(){}
 	public int capacity(){return 0;}
 	public void setCapacity(int newValue){}

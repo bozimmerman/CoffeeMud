@@ -105,6 +105,7 @@ public interface Item extends Environmental
 	public void wearAt(long wornCode);
 	public void remove();
 	public long rawWornCode();
+	public void setRawWornCode(long newValue);
 	public long rawProperLocationBitmap();
 	public void setRawProperLocationBitmap(long newValue);
 	public boolean rawLogicalAnd();

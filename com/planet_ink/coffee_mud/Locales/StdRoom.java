@@ -55,12 +55,13 @@ public class StdRoom
 	public boolean isGeneric(){return false;}
 	private void cloneFix(Room E)
 	{
-		affects=new Vector();
 		baseEnvStats=E.baseEnvStats().cloneStats();
 		envStats=E.envStats().cloneStats();
 
 		contents=new Vector();
 		inhabitants=new Vector();
+		affects=new Vector();
+		behaviors=new Vector();
 		exits=new Exit[Directions.NUM_DIRECTIONS];
 		doors=new Room[Directions.NUM_DIRECTIONS];
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -70,6 +71,50 @@ public class StdRoom
 			if(E.rawDoors()[d]!=null)
 				doors[d]=E.rawDoors()[d];
 
+		}
+		for(int i=0;i<E.numItems();i++)
+		{
+			Item I2=E.fetchItem(i);
+			if(I2!=null)
+			{
+				Item I=(Item)I2.copyOf();
+				I.setOwner(this);
+				contents.addElement(I);
+			}
+		}
+		for(int i=0;i<numItems();i++)
+		{
+			Item I2=fetchItem(i);
+			if((I2!=null)
+			&&(I2.container()!=null)
+			&&(!isContent(I2.container())))
+				for(int ii=0;ii<E.numItems();ii++)
+					if((E.fetchItem(ii)==I2.container())&&(ii<numItems()))
+					{I2.setContainer(fetchItem(ii)); break;}
+		}
+		for(int m=0;m<E.numInhabitants();m++)
+		{
+			MOB M2=E.fetchInhabitant(m);
+			if(M2!=null)
+			{
+				MOB M=(MOB)M2.copyOf();
+				if(M.getStartRoom()==E)
+					M.setStartRoom(this);
+				M.setLocation(this);
+				inhabitants.addElement(M);
+			}
+		}
+		for(int i=0;i<E.numAffects();i++)
+		{
+			Ability A=(Ability)E.fetchAffect(i);
+			if((A!=null)&&(!A.canBeUninvoked()))
+				addAffect((Ability)A.copyOf());
+		}
+		for(int i=0;i<E.numBehaviors();i++)
+		{
+			Behavior B=E.fetchBehavior(i);
+			if(B!=null)
+				behaviors.addElement(B);
 		}
 	}
 	public Environmental copyOf()

@@ -185,9 +185,9 @@ public class StdItem implements Item
 			return;
 		}
 		if(wornLogicalAnd)
-			myWornCode=properWornBitmap;
+			setRawWornCode(properWornBitmap);
 		else
-			myWornCode=wornCode;
+			setRawWornCode(wornCode);
 		recoverEnvStats();
 	}
 
@@ -255,10 +255,14 @@ public class StdItem implements Item
 	{
 		return myWornCode;
 	}
+	public void setRawWornCode(long newValue)
+	{
+		myWornCode=newValue;
+	}
 
 	public void remove()
 	{
-		myWornCode=Item.INVENTORY;
+		setRawWornCode(Item.INVENTORY);
 		recoverEnvStats();
 	}
 
