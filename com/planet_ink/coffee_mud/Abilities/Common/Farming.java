@@ -51,7 +51,6 @@ public class Farming extends CommonSkill
 		{
 			if((affected!=null)&&(affected==room))
 			{
-				MOB mob=(MOB)invoker();
 				if((found!=null)&&(!aborted))
 				{
 					int amount=Dice.roll(1,20,0)*(usesRemaining());

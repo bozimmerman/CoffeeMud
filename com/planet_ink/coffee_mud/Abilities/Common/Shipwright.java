@@ -263,8 +263,6 @@ public class Shipwright extends CommonSkill
 			building.setMaterial(firstWood.material());
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
-			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			key=null;
 			if(building instanceof Rideable)
 			{

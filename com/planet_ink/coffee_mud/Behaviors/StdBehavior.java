@@ -167,7 +167,7 @@ public class StdBehavior implements Behavior
 	}
 	public boolean sameAs(Behavior E)
 	{
-		if(!(E instanceof Behavior)) return false;
+		if(!(E instanceof StdBehavior)) return false;
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 				return false;

@@ -15,6 +15,7 @@ public class Prayer_FlameWeapon extends Prayer
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_FlameWeapon();}
+	private boolean notAgain=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -34,9 +35,11 @@ public class Prayer_FlameWeapon extends Prayer
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&((affect.targetCode()-Affect.MASK_HURT)>0)
 		&&(affect.tool()==affected)
+		&&(!notAgain)
 		&&(affect.target() instanceof MOB)
 		&&(!((MOB)affect.target()).amDead()))
 		{
+			notAgain=true;
 			FullMsg msg=new FullMsg(affect.source(),(MOB)affect.target(),affected,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_FIRE,Affect.MSG_NOISYMOVEMENT,null);
 			if(affect.source().location().okAffect(msg))
 			{
@@ -45,10 +48,11 @@ public class Prayer_FlameWeapon extends Prayer
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,"The flames around "+name()+" "+CommonStrings.standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
+					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,"The flames around "+affected.name()+" "+CommonStrings.standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
 					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),null,Affect.NO_EFFECT,Affect.MASK_HURT+flameDamage,Affect.NO_EFFECT,null));
 				}
 			}
+			notAgain=false;
 		}
 	}
 
@@ -110,7 +114,7 @@ public class Prayer_FlameWeapon extends Prayer
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
-				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is egulfed in flames!");
+				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is engulfed in flames!");
 				target.recoverEnvStats();
 				mob.recoverEnvStats();
 			}

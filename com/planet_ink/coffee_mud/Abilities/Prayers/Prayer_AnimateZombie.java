@@ -38,7 +38,6 @@ public class Prayer_AnimateZombie extends Prayer
 			mob.tell("You can't animate that.");
 			return false;
 		}
-		String realName=body.rawSecretIdentity().substring(0,x);
 		String description=body.rawSecretIdentity().substring(x+1);
 		if(description.trim().length()==0)
 			description="It looks dead.";

@@ -223,7 +223,6 @@ public class Cleric extends StdCharClass
 		boolean notneutral=(!A.appropriateToMyAlignment(500));
 		boolean notevil=(!A.appropriateToMyAlignment(0));
 		boolean good=!notgood;
-		boolean neutral=!notneutral;
 		boolean evil=!notevil;
 		if(notgood&&notneutral&&evil) return 0;
 		if(notevil&&notneutral&&good) return 1000;
