@@ -17,7 +17,7 @@
 </head>
 
 <body BGCOLOR=#FFFFCC>
-<h3>CoffeeMud 4.0 Installed Deities Information</h3><P>
+<h3>Installed Deities Information</h3><P>
 <UL>
 @loop@
 @DeityNext@

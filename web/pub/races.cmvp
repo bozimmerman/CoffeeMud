@@ -7,7 +7,7 @@
 </head>
 
 <body BGCOLOR=#FFFFCC>
-<h3>CoffeeMud 4.0 Player Races Information</h3><P>
+<h3>CoffeeMud 4.1 Player Races Information</h3><P>
 <UL>
 @loop@
 @RaceNext@
