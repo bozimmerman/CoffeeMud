@@ -1527,7 +1527,7 @@ public class StdMOB implements MOB
 			MOB target=(MOB)msg.target();
 			// and now, the consequences of range
 			if(((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)&&(rangeToTarget()>maxRange(msg.tool())))
-			||((msg.sourceMinor()==CMMsg.TYP_THROW)&&(rangeToTarget()>1)&&(msg.target() instanceof MOB)&&(!(msg.tool() instanceof Weapon))))
+			||((msg.sourceMinor()==CMMsg.TYP_THROW)&&(rangeToTarget()>2)&&(maxRange(msg.tool())<=0)))
 			{
 				String newstr="<S-NAME> advance(s) at ";
 				msg.modify(this,target,null,CMMsg.MSG_ADVANCE,newstr+target.name(),CMMsg.MSG_ADVANCE,newstr+"you",CMMsg.MSG_ADVANCE,newstr+target.name());
