@@ -33,7 +33,6 @@ public class Fighter_Whomp extends StdAbility
 			if((Util.bset(affect.sourceMajor(),Affect.ACT_EYES))
 			||(Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))
 			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOUTH))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_EARS))
 			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOVE)))
 			{
 				if(affect.sourceMessage()!=null)

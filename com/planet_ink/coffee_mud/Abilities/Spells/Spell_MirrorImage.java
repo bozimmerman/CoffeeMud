@@ -64,7 +64,6 @@ public class Spell_MirrorImage extends Spell
 			if((
 				(Util.bset(affect.othersCode(),Affect.OTH_SEE_SEEING))
 				||(Util.bset(affect.othersCode(),Affect.OTH_SENSE_MOVEMENT))
-				||(Util.bset(affect.othersCode(),Affect.OTH_SENSE_LISTENING))
 				||(Util.bset(affect.othersCode(),Affect.OTH_SENSE_CONSUMPTION))
 				||(Util.bset(affect.othersCode(),Affect.OTH_SENSE_TOUCHING)))
 			&&(affect.othersMessage()!=null)

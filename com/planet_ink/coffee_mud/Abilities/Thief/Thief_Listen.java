@@ -47,7 +47,7 @@ public class Thief_Listen extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.ACT_EARS),Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,"<S-NAME> listen(s)"+((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))+".");
+		FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT),Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,"<S-NAME> listen(s)"+((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))+".");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

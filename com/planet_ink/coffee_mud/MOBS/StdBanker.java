@@ -394,8 +394,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			}
 		}
 		else
-		if((affect.sourceMinor()==Affect.TYP_RETIRE)
-		&&(amISubOp(affect.source().name())))
+		if(affect.sourceMinor()==Affect.TYP_RETIRE)
 			delAllDeposits(affect.source().name());
 		super.affect(affect);
 	}

@@ -65,7 +65,6 @@ public class Spell_FeignDeath extends Spell
 			}
 			else
 			if((Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_EARS))
 			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOUTH)))
 			{
 				if(Util.bset(affect.sourceMajor(),Affect.ACT_SOUND))

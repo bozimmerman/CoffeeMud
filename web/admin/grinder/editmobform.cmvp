@@ -158,6 +158,11 @@
     </TD>
 </TR>
 <TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Hit Points/Level Modifier:</B><BR>(hp=((10*level) + (random*level*THIS)))</FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ABILITY SIZE=5 VALUE="@MobData?ABILITY@">
+    </TD>
+</TR>
+<TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Attack Speed:</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=SPEED SIZE=5 VALUE="@MobData?SPEED@">
     </TD>

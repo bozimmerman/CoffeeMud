@@ -1517,8 +1517,7 @@ public class StdMOB implements MOB
 				tell(affect.source(),affect.target(),affect.targetMessage());
 			}
 			else
-			if(((Util.bset(targetMajor,Affect.AFF_HEARD))
-			  ||(Util.bset(targetMajor,Affect.AFF_SEEN))
+			if(((Util.bset(targetMajor,Affect.AFF_SEEN))
 			  ||(Util.bset(targetMajor,Affect.AFF_GENERAL)))
 			&&(!asleep)&&(canseesrc))
 				tell(affect.source(),affect.target(),affect.targetMessage());
@@ -1554,7 +1553,6 @@ public class StdMOB implements MOB
 				tell(affect.source(),affect.target(),affect.othersMessage());
 			else
 			if(((Util.bset(othersMajor,Affect.OTH_SEE_SEEING))
-			||(Util.bset(othersMajor,Affect.OTH_SENSE_LISTENING))
 			||(Util.bset(othersMajor,Affect.OTH_SENSE_TOUCHING))
 			||(Util.bset(othersMajor,Affect.OTH_GENERAL)))
 			&&((!asleep)&&(canseesrc)))

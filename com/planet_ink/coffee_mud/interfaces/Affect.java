@@ -49,7 +49,7 @@ public interface Affect extends Cloneable
 	public static final int MAJOR_MASK=2096128;////1046528
 	
 	// masks for all messages
-	public static final int MASK_HURT=512+1024;
+	public static final int MASK_HURT=65536;
 	public static final int MASK_MAGIC=131072;    // the magic mask!
 	public static final int MASK_DELICATE=262144; // for thief skills!
 	public static final int MASK_MALICIOUS=524288;// for attacking
@@ -61,7 +61,7 @@ public interface Affect extends Cloneable
 	public static final int ACT_MOVE=4096;        // large body movements (travel)
 	public static final int ACT_EYES=8192;        // looking and seeing
 	public static final int ACT_MOUTH=16384;      // speaking and eating
-	public static final int ACT_EARS=32768;       // listening to
+	//public static final int ACT_EARS=32768;       // listening to
 	public static final int ACT_SOUND=65536;      // general body noises 
 	
 	
@@ -71,8 +71,7 @@ public interface Affect extends Cloneable
 	public static final int AFF_MOVEDON=4096;
 	public static final int AFF_SEEN=8192;
 	public static final int AFF_CONSUMED=16384;
-	public static final int AFF_HEARD=32768;
-	public static final int AFF_SOUNDEDAT=65536;
+	public static final int AFF_SOUNDEDAT=32768;
 
 	// action observation types
 	public static final int OTH_GENERAL=1024;
@@ -80,8 +79,7 @@ public interface Affect extends Cloneable
 	public static final int OTH_SENSE_MOVEMENT=4096;
 	public static final int OTH_SEE_SEEING=8192;
 	public static final int OTH_SENSE_CONSUMPTION=16384;
-	public static final int OTH_SENSE_LISTENING=32768;
-	public static final int OTH_HEAR_SOUNDS=65536;
+	public static final int OTH_HEAR_SOUNDS=32768;
 
 	// minor messages
 	public static final int TYP_AREAAFFECT=1;
