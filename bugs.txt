@@ -1,6 +1,4 @@
 The mobs in Narnia are crawling around instead of walking.
-From the spell that has (Affected by (DISEASED)) (I think it's illusory disease), it gives you the message YOU DOUBLE OVER AND DRY HEAVES. The HEAVES part needs to be HEAVES.
-it appears that speed aging doesn't take the baby to toddler stage.
 thingrids are broken. They don't seem to link e-w well. They keep looping back on themselves. I have a grid ItantanSea#1 (s-#2) (e(#11) (N-#0). I can go north south fine, but east west keeps looping me back into the same grid room.
 spraypaint is the command, which doesn't seem to want to unload/reload.
 items to wear on customized body parts.  Use default Amputation, compined with Limb items which, when worn, give parts back.

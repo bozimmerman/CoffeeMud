@@ -51,7 +51,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 			switch(Dice.roll(1,5,0))
 			{
 			case 1:
-				str="<S-NAME> double(s) over and dry heaves.";
+				str="<S-NAME> double(s) over and dry heave(s).";
 				break;
 			case 2:
 				str="<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";
