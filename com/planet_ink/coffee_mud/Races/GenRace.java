@@ -241,7 +241,11 @@ public class GenRace extends StdRace
 	}
 	public void setRacialParms(String parms)
 	{
-		if(parms.trim().length()==0) return;
+		if(parms.trim().length()==0)
+		{
+			Log.errOut("GenRace","Unable to parse: "+parms);
+			return;
+		}
 		Vector xml=XMLManager.parseAllXML(parms);
 		if(xml==null)
 		{
@@ -251,12 +255,19 @@ public class GenRace extends StdRace
 		Vector raceData=XMLManager.getRealContentsFromPieces(xml,"RACE");
 		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data."); return;}
 		String id=XMLManager.getValFromPieces(raceData,"ID");
-		if(id.length()==0) return;
+		if(id.length()==0)
+		{
+			Log.errOut("GenRace","Unable to parse: "+parms);
+			return;
+		}
 		ID=id;
 		name=XMLManager.getValFromPieces(raceData,"NAME");
 		String rcat=XMLManager.getValFromPieces(raceData,"CAT");
 		if((rcat==null)||(rcat.length()==0))
+		{
+			Log.errOut("GenRace","Unable to parse: "+parms);
 			return;
+		}
 		racialCategory=rcat;
 		forbiddenWornBits=XMLManager.getLongFromPieces(raceData,"WEAR");
 		weightVariance=XMLManager.getIntFromPieces(raceData,"VWEIGHT");
