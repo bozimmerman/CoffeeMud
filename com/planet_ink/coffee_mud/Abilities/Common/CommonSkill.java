@@ -77,10 +77,11 @@ public class CommonSkill extends StdAbility
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if((affected!=null)
+			&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((aborted)&&(!verb.equalsIgnoreCase("working")))
+				if(aborted)
 					commonEmote(mob,"<S-NAME> stop(s) "+verb);
 				else
 					commonEmote(mob,"<S-NAME> <S-IS-ARE> done "+verb);
@@ -314,7 +315,7 @@ public class CommonSkill extends StdAbility
 		return foundWood;
 	}
 
-	protected Environmental makeResource(int myResource)
+	protected Environmental makeResource(int myResource, boolean noAnimals)
 	{
 		if(myResource<0)
 			return null;
@@ -323,95 +324,102 @@ public class CommonSkill extends StdAbility
 			int material=(myResource&EnvResource.MATERIAL_MASK);
 			Item I=null;
 			String name=EnvResource.RESOURCE_DESCS[myResource&EnvResource.RESOURCE_MASK].toLowerCase();
-			if((myResource==EnvResource.RESOURCE_WOOL)
-			||(myResource==EnvResource.RESOURCE_FEATHERS)
-			||(myResource==EnvResource.RESOURCE_SCALES)
-			||(myResource==EnvResource.RESOURCE_HIDE)
-			||(myResource==EnvResource.RESOURCE_FUR))
-			   material=EnvResource.MATERIAL_LEATHER;
-			if(myResource==EnvResource.RESOURCE_FISH)
-				material=EnvResource.MATERIAL_VEGETATION;
+			if(!noAnimals)
+			{
+				if((myResource==EnvResource.RESOURCE_WOOL)
+				||(myResource==EnvResource.RESOURCE_FEATHERS)
+				||(myResource==EnvResource.RESOURCE_SCALES)
+				||(myResource==EnvResource.RESOURCE_HIDE)
+				||(myResource==EnvResource.RESOURCE_FUR))
+				   material=EnvResource.MATERIAL_LEATHER;
+				if(myResource==EnvResource.RESOURCE_FISH)
+					material=EnvResource.MATERIAL_VEGETATION;
+				if((material==EnvResource.MATERIAL_LEATHER)
+				||(material==EnvResource.MATERIAL_FLESH))
+				{
+					switch(myResource)
+					{
+					case EnvResource.RESOURCE_MUTTON:
+					case EnvResource.RESOURCE_WOOL:
+						return CMClass.getMOB("Sheep");
+					case EnvResource.RESOURCE_LEATHER:
+					case EnvResource.RESOURCE_HIDE:
+						switch(Dice.roll(1,10,0))
+						{
+						case 1:
+						case 2:
+						case 3: return CMClass.getMOB("Cow");
+						case 4: return CMClass.getMOB("Bull");
+						case 5:
+						case 6:
+						case 7: return CMClass.getMOB("Doe");
+						case 8:
+						case 9:
+						case 10: return CMClass.getMOB("Buck");
+						}
+						break;
+					case EnvResource.RESOURCE_PORK:
+						return CMClass.getMOB("Pig");
+					case EnvResource.RESOURCE_FUR:
+					case EnvResource.RESOURCE_MEAT:
+						switch(Dice.roll(1,10,0))
+						{
+						case 1:
+						case 2:
+						case 3:
+						case 4: return CMClass.getMOB("Wolf");
+						case 5:
+						case 6:
+						case 7: return CMClass.getMOB("Buffalo");
+						case 8:
+						case 9: return CMClass.getMOB("BrownBear");
+						case 10: return CMClass.getMOB("BlackBear");
+						}
+						break;
+					case EnvResource.RESOURCE_SCALES:
+						switch(Dice.roll(1,10,0))
+						{
+						case 1:
+						case 2:
+						case 3:
+						case 4: return CMClass.getMOB("Lizard");
+						case 5:
+						case 6:
+						case 7: return CMClass.getMOB("GardenSnake");
+						case 8:
+						case 9: return CMClass.getMOB("Cobra");
+						case 10: return CMClass.getMOB("Python");
+						}
+						break;
+					case EnvResource.RESOURCE_POULTRY:
+					case EnvResource.RESOURCE_EGGS:
+						return CMClass.getMOB("Chicken");
+					case EnvResource.RESOURCE_BEEF:
+						switch(Dice.roll(1,5,0))
+						{
+						case 1:
+						case 2:
+						case 3:
+						case 4: return CMClass.getMOB("Cow");
+						case 5: return CMClass.getMOB("Bull");
+						}
+						break;
+					case EnvResource.RESOURCE_FEATHERS:
+						switch(Dice.roll(1,4,0))
+						{
+						case 1: return CMClass.getMOB("WildEagle");
+						case 2: return CMClass.getMOB("Falcon");
+						case 3: return CMClass.getMOB("Chicken");
+						case 4: return CMClass.getMOB("Parakeet");
+						}
+						break;
+					}
+				}
+			}
 			switch(material)
 			{
-			case EnvResource.MATERIAL_LEATHER:
 			case EnvResource.MATERIAL_FLESH:
-				switch(myResource)
-				{
-				case EnvResource.RESOURCE_MUTTON:
-				case EnvResource.RESOURCE_WOOL:
-					return CMClass.getMOB("Sheep");
-				case EnvResource.RESOURCE_LEATHER:
-				case EnvResource.RESOURCE_HIDE:
-					switch(Dice.roll(1,10,0))
-					{
-					case 1:
-					case 2:
-					case 3: return CMClass.getMOB("Cow");
-					case 4: return CMClass.getMOB("Bull");
-					case 5:
-					case 6:
-					case 7: return CMClass.getMOB("Doe");
-					case 8:
-					case 9:
-					case 10: return CMClass.getMOB("Buck");
-					}
-					break;
-				case EnvResource.RESOURCE_PORK:
-					return CMClass.getMOB("Pig");
-				case EnvResource.RESOURCE_FUR:
-				case EnvResource.RESOURCE_MEAT:
-					switch(Dice.roll(1,10,0))
-					{
-					case 1:
-					case 2:
-					case 3:
-					case 4: return CMClass.getMOB("Wolf");
-					case 5:
-					case 6:
-					case 7: return CMClass.getMOB("Buffalo");
-					case 8:
-					case 9: return CMClass.getMOB("BrownBear");
-					case 10: return CMClass.getMOB("BlackBear");
-					}
-					break;
-				case EnvResource.RESOURCE_SCALES:
-					switch(Dice.roll(1,10,0))
-					{
-					case 1:
-					case 2:
-					case 3:
-					case 4: return CMClass.getMOB("Lizard");
-					case 5:
-					case 6:
-					case 7: return CMClass.getMOB("GardenSnake");
-					case 8:
-					case 9: return CMClass.getMOB("Cobra");
-					case 10: return CMClass.getMOB("Python");
-					}
-					break;
-				case EnvResource.RESOURCE_POULTRY:
-				case EnvResource.RESOURCE_EGGS:
-					return CMClass.getMOB("Chicken");
-				case EnvResource.RESOURCE_BEEF:
-					switch(Dice.roll(1,5,0))
-					{
-					case 1:
-					case 2:
-					case 3:
-					case 4: return CMClass.getMOB("Cow");
-					case 5: return CMClass.getMOB("Bull");
-					}
-					break;
-				case EnvResource.RESOURCE_FEATHERS:
-					switch(Dice.roll(1,4,0))
-					{
-					case 1: return CMClass.getMOB("WildEagle");
-					case 2: return CMClass.getMOB("Falcon");
-					case 3: return CMClass.getMOB("Chicken");
-					case 4: return CMClass.getMOB("Parakeet");
-					}
-					break;
-				}
+				I=CMClass.getItem("GenFoodResource");
 				break;
 			case EnvResource.MATERIAL_VEGETATION:
 			{
@@ -431,6 +439,7 @@ public class CommonSkill extends StdAbility
 				I=CMClass.getItem("GenLiquidResource");
 				break;
 			}
+			case EnvResource.MATERIAL_LEATHER:
 			case EnvResource.MATERIAL_CLOTH:
 			case EnvResource.MATERIAL_PAPER:
 			case EnvResource.MATERIAL_WOODEN:
@@ -610,6 +619,13 @@ public class CommonSkill extends StdAbility
 				if(I.baseEnvStats().weight()>howMuch)
 				{ 
 					I.baseEnvStats().setWeight(I.baseEnvStats().weight()-howMuch);
+					I.destroy();
+					for(int x=0;x<I.baseEnvStats().weight();x++)
+					{
+						Environmental E=makeResource(finalMaterial,true);
+						if(E instanceof Item)
+							room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
+					}
 					break;
 				}
 				else

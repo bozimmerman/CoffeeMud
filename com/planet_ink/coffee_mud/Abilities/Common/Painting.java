@@ -75,6 +75,7 @@ public class Painting extends CommonSkill
 		String str=Util.combine(commands,0);
 		building=null;
 		messedUp=false;
+		boolean bundle=false;
 		Session S=mob.session();
 		if((S==null)&&(mob.amFollowing()!=null))
 			S=mob.amFollowing().session();
@@ -176,6 +177,7 @@ public class Painting extends CommonSkill
 		messedUp=!profficiencyCheck(0,auto);
 		completion=completion-mob.envStats().level()+5;
 		if(completion<10) completion=10;
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(mob,msg))
 		{

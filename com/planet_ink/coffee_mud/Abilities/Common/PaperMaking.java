@@ -89,6 +89,7 @@ public class PaperMaking extends CommonSkill
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int completion=4;
+		boolean bundle=false;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",21)+" Material required\n\r");
@@ -213,6 +214,7 @@ public class PaperMaking extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<20) completion=20;
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(mob,msg))
 		{

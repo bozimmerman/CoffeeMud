@@ -137,6 +137,7 @@ public class LockSmith extends CommonSkill
 		building=null;
 		boolean keyFlag=false;
 		workingOn=null;
+		boolean bundle=false;
 		messedUp=false;
 		int woodRequired=1;
 		boolean lboltlock=false;
@@ -283,6 +284,7 @@ public class LockSmith extends CommonSkill
 			profficiencyAddition=workingOn.envStats().level()-mob.envStats().level();
 		messedUp=!profficiencyCheck(profficiencyAddition*5,auto);
 		if(completion<8) completion=8;
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(mob,msg))
 		{

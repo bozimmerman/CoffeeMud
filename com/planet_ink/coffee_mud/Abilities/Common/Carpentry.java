@@ -136,6 +136,7 @@ public class Carpentry extends CommonSkill
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int completion=4;
+		boolean bundle=false;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Wood required\n\r");
@@ -284,6 +285,7 @@ public class Carpentry extends CommonSkill
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+			bundle=misctype.equalsIgnoreCase("BUNDLE");
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			if(spell.length()>0)
 			{
@@ -407,6 +409,16 @@ public class Carpentry extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
+		
+		if(bundle)
+		{
+			messedUp=false; 
+			completion=1;
+			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			startStr="<S-NAME> start(s) "+verb+".";
+			displayText="You are "+verb;
+		}
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(mob,msg))
 		{

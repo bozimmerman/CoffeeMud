@@ -641,6 +641,7 @@ public class Masonry extends CommonSkill
 		messedUp=!profficiencyCheck(0,auto);
 		startStr="<S-NAME> start(s) "+verb;
 		if(completion<15) completion=15;
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr+".");
 		if(mob.location().okAffect(mob,msg))
 		{

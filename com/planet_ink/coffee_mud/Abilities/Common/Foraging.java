@@ -95,7 +95,7 @@ public class Foraging extends CommonSkill
 			  ||(resourceType==EnvResource.RESOURCE_SILK)
 			  ||(resourceType==EnvResource.RESOURCE_COTTON)))
 		{
-			found=(Item)makeResource(resourceType);
+			found=(Item)makeResource(resourceType,false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();

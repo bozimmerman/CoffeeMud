@@ -253,7 +253,9 @@ public class Herbalism extends CommonSkill
 
 			int completion=CMAble.qualifyingLevel(mob,theSpell)*5;
 			if(completion<10) completion=10;
+			
 			messedUp=!profficiencyCheck(0,auto);
+			
 			FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,null);
 			if(mob.location().okAffect(mob,msg))
 			{

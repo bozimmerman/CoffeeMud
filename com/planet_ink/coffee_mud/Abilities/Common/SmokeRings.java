@@ -9,6 +9,8 @@ public class SmokeRings extends CommonSkill
 	public String ID() { return "SmokeRings"; }
 	public String name(){ return "Smoke Rings";}
 	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	
 	private static boolean mapped=false;
 	
 	public SmokeRings()

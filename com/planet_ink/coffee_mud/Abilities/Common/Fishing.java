@@ -89,7 +89,7 @@ public class Fishing extends CommonSkill
 		if((profficiencyCheck(0,auto))
 		   &&(resourceType==EnvResource.RESOURCE_FISH))
 		{
-			found=(Item)makeResource(resourceType);
+			found=(Item)makeResource(resourceType,false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();

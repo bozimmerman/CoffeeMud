@@ -124,6 +124,7 @@ public class Sculpting extends CommonSkill
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int completion=4;
+		boolean bundle=false;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Stone required\n\r");
@@ -229,6 +230,7 @@ public class Sculpting extends CommonSkill
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+			bundle=misctype.equalsIgnoreCase("BUNDLE");
 			if(spell.length()>0)
 			{
 				String parm="";
@@ -329,6 +331,16 @@ public class Sculpting extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
+		
+		if(bundle)
+		{
+			messedUp=false; 
+			completion=1;
+			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			startStr="<S-NAME> start(s) "+verb+".";
+			displayText="You are "+verb;
+		}
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(mob,msg))
 		{

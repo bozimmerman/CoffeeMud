@@ -94,7 +94,7 @@ public class Digging extends CommonSkill
 		   ||(resourceType==EnvResource.RESOURCE_SAND)
 		   ||(resourceType==EnvResource.RESOURCE_STONE)))
 		{
-			found=(Item)makeResource(resourceType);
+			found=(Item)makeResource(resourceType,false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();

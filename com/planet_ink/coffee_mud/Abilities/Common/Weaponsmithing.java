@@ -196,6 +196,7 @@ public class Weaponsmithing extends CommonSkill
 		}
 		Vector recipes=loadRecipes();
 		String str=(String)commands.elementAt(0);
+		boolean bundle=false;
 		String startStr=null;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
@@ -333,6 +334,7 @@ public class Weaponsmithing extends CommonSkill
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+			bundle=spell.equalsIgnoreCase("BUNDLE");
 			if(spell.length()>0)
 			{
 				String parm="";
@@ -364,6 +366,16 @@ public class Weaponsmithing extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<6) completion=6;
+		
+		if(bundle)
+		{
+			messedUp=false; 
+			completion=1;
+			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			startStr="<S-NAME> start(s) "+verb+".";
+			displayText="You are "+verb;
+		}
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(mob,msg))
 		{

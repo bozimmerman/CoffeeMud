@@ -638,6 +638,7 @@ public class Construction extends CommonSkill
 		messedUp=!profficiencyCheck(0,auto);
 		startStr="<S-NAME> start(s) "+verb;
 		if(completion<25) completion=25;
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr+".");
 		if(mob.location().okAffect(mob,msg))
 		{

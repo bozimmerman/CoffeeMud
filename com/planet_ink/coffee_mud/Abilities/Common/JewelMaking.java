@@ -368,6 +368,16 @@ public class JewelMaking extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<8) completion=8;
+		
+		if(misctype.equalsIgnoreCase("bundle"))
+		{
+			messedUp=false; 
+			completion=1;
+			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			startStr="<S-NAME> start(s) "+verb+".";
+			displayText="You are "+verb;
+		}
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(mob,msg))
 		{

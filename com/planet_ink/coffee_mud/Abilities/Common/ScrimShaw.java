@@ -122,6 +122,7 @@ public class ScrimShaw extends CommonSkill
 		Vector recipes=loadRecipes();
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
+		boolean bundle=false;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
@@ -229,6 +230,7 @@ public class ScrimShaw extends CommonSkill
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+			bundle=misctype.equalsIgnoreCase("BUNDLE");
 			if(spell.length()>0)
 			{
 				String parm="";
@@ -318,6 +320,16 @@ public class ScrimShaw extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
+		
+		if(bundle)
+		{
+			messedUp=false; 
+			completion=1;
+			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			startStr="<S-NAME> start(s) "+verb+".";
+			displayText="You are "+verb;
+		}
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(mob,msg))
 		{

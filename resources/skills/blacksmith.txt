@@ -1,4 +1,5 @@
 name,level,ticks,wood,value,class,misc,capacity,armordmg,spell
+% Bundle	1	1	25	0	GenResource	BUNDLE			
 % Cup	1	20	1	1	GenWater		5	
 % Key Ring	1	10	1	1	GenContainer	1024	100
 % Mug	1	20	1	1	GenWater		5	
@@ -16,3 +17,4 @@ name,level,ticks,wood,value,class,misc,capacity,armordmg,spell
 % Trashcan	6	20	20	5	GenContainer		250	Prop_Trashcan
 % Drum	3	10	20	1	GenContainer		250	
 % Can	1	5	5	1	GenContainer		10	
+

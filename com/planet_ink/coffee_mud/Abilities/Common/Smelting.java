@@ -106,6 +106,7 @@ public class Smelting extends CommonSkill
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int completion=4;
+		boolean bundle=false;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" "+Util.padRight("Metal #1",20)+" Metal #2\n\r");
@@ -226,13 +227,14 @@ public class Smelting extends CommonSkill
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
-		building=(Item)makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0]);
+		building=(Item)makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0],false);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
 		displayText="You are smelting "+doneResourceDesc.toLowerCase();
 		verb="smelting "+doneResourceDesc.toLowerCase();
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(mob,msg))
 		{

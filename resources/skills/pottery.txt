@@ -1,4 +1,5 @@
 name,level,ticks,wood,value,class,misc,capacity,spell
+% Bundle	1	1	25	0	GenResource	BUNDLE			
 % Cup	1	10	5	1	GenWater		5	
 % Flask	1	10	5	1	GenWater		5	
 % Mug	3	10	5	1	GenWater		5	

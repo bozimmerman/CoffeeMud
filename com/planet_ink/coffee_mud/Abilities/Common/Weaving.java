@@ -130,6 +130,7 @@ public class Weaving extends CommonSkill
 		}
 		Vector recipes=loadRecipes();
 		String str=(String)commands.elementAt(0);
+		boolean bundle=false;
 		String startStr=null;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
@@ -293,6 +294,7 @@ public class Weaving extends CommonSkill
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+			bundle=misctype.equalsIgnoreCase("BUNDLE");
 			if(spell.length()>0)
 			{
 				String parm="";
@@ -376,6 +378,16 @@ public class Weaving extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
+		
+		if(bundle)
+		{
+			messedUp=false; 
+			completion=1;
+			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			startStr="<S-NAME> start(s) "+verb+".";
+			displayText="You are "+verb;
+		}
+		
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(mob,msg))
 		{
