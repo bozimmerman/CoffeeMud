@@ -28,6 +28,7 @@ public class JewelMaking extends CommonSkill
 	private Item building=null;
 	private Item fire=null;
 	private boolean messedUp=false;
+	private Vector beingDone=null;
 	private static boolean mapped=false;
 	public JewelMaking()
 	{
@@ -78,6 +79,19 @@ public class JewelMaking extends CommonSkill
 				MOB mob=(MOB)affected;
 				if((building!=null)&&(!aborted))
 				{
+					if((beingDone!=null)||(beingDone.size()<2))
+					{
+						if(messedUp)
+							commonTell(mob,"You've ruined "+verb+"!");
+						else
+						{
+							Item I=(Item)beingDone.elementAt(1);
+							building.setBaseValue(building.baseGoldValue()+(I.baseGoldValue()*2));
+							building.setDescription(building.description()+" "+(String)beingDone.elementAt(0));
+						}
+						beingDone=null;
+					}
+					else
 					if(messedUp)
 						commonTell(mob,"You've ruined "+building.name()+"!");
 					else
@@ -93,7 +107,7 @@ public class JewelMaking extends CommonSkill
 	{
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"jewel list\" for a list.");
+			commonTell(mob,"Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, or jewel mount <gem name> <item name>.");
 			return false;
 		}
 		Vector recipes=loadRecipes();
@@ -118,10 +132,80 @@ public class JewelMaking extends CommonSkill
 			commonTell(mob,buf.toString());
 			return true;
 		}
+		else
+		if((str.equalsIgnoreCase("encrust"))||(str.equalsIgnoreCase("mount")))
+		{
+			String word=str.toLowerCase();
+			if(commands.size()<3)
+			{
+				commonTell(mob,Util.capitalize(word)+" what jewel onto what item?");
+				return false;
+			}
+			fire=getRequiredFire(mob);
+			building=null;
+			messedUp=false;
+			if(fire==null) return false;
+			String jewel=(String)commands.elementAt(1);
+			String rest=Util.combine(commands,2);
+			Environmental jewelE=mob.location().fetchFromMOBRoomFavorsItems(mob,null,jewel,Item.WORN_REQ_UNWORNONLY);
+			Environmental thangE=mob.location().fetchFromMOBRoomFavorsItems(mob,null,rest,Item.WORN_REQ_UNWORNONLY);
+			if((jewelE==null)||(!Sense.canBeSeenBy(jewelE,mob)))
+			{ commonTell(mob,"You don't see any '"+jewel+"' here."); return false;}
+			if((thangE==null)||(!Sense.canBeSeenBy(thangE,mob)))
+			{ commonTell(mob,"You don't see any '"+rest+"' here."); return false;}
+			if((!(jewelE instanceof EnvResource))||(!(jewelE instanceof Item))
+			   ||(((((Item)jewelE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PRECIOUS)
+				  &&((((Item)jewelE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_GLASS)))
+			{ commonTell(mob,"A "+jewelE.name()+" is not suitable to "+word+" on anything."); return false;}
+			Item jewelI=(Item)jewelE;
+			if((!(thangE instanceof Item))
+			   ||(!thangE.isGeneric())
+			   ||(((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
+				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_MITHRIL)
+				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PLASTIC)
+				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ROCK)
+				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER)))
+			{ commonTell(mob,"A "+thangE.name()+" is not suitable to be "+word+"ed on."); return false;}
+			if(!super.invoke(mob,commands,givenTarget,auto))
+				return false;
+			building=(Item)thangE;
+			beingDone=new Vector();
+			String materialName=EnvResource.RESOURCE_DESCS[jewelI.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			if(word.equals("encrust"))
+			{
+				beingDone.addElement(Util.capitalize(building.name())+" is encrusted with bits of "+materialName+".");
+				startStr="<S-NAME> start(s) encrusting "+building.name()+" with "+materialName+".";
+				displayText="You are encrusting "+building.name()+" with "+materialName;
+				verb="encrusting "+building.name()+" with bits of "+materialName;
+			}
+			else
+			{
+				materialName=Util.startWithAorAn(materialName).toLowerCase();
+				beingDone.addElement(Util.capitalize(building.name())+" has "+materialName+" mounted on it.");
+				startStr="<S-NAME> start(s) mounting "+materialName+" onto "+building.name()+".";
+				displayText="You are mounting "+materialName+" onto "+building.name();
+				verb="mounting "+materialName+" onto "+building.name();
+			}
+			beingDone.addElement(jewelI);
+			messedUp=!profficiencyCheck(0,auto);
+			completion=10;
+			FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
+			if(mob.location().okAffect(mob,msg))
+			{
+				jewelI.destroy();
+				mob.location().send(mob,msg);
+				beneficialAffect(mob,mob,completion);
+				return true;
+			}
+			return false;
+		}
+		beingDone=null;
 		fire=getRequiredFire(mob);
-		if(fire==null) return false;
 		building=null;
 		messedUp=false;
+		if(fire==null) return false;
 		String recipeName=Util.combine(commands,0);
 		Vector foundRecipe=null;
 		for(int r=0;r<recipes.size();r++)
@@ -289,7 +373,8 @@ public class JewelMaking extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);
+			return true;
 		}
-		return true;
+		return false;
 	}
 }

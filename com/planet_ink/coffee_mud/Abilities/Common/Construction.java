@@ -23,15 +23,18 @@ public class Construction extends CommonSkill
 	private final static int BUILD_DESC=7;
 	private final static int BUILD_SECRETDOOR=8;
 	private final static int BUILD_STAIRS=9;
+	private final static int BUILD_WINDOW=10;
+	private final static int BUILD_CRAWLWAY=11;
 
-	private final static String[] names={"Wall","Door","Roof","Gate","Fence","Demolish","Title","Description","Secret Door"};
-	private final static int[] woodReq={100,125,350,50,50,0,0,0,200,350};
+	private final static String[] names={"Wall","Door","Roof","Gate","Fence","Demolish","Title","Description","Secret Door","Window","Crawlway"};
+	private final static int[] woodReq={100,125,350,50,50,0,0,0,200,350,50,250};
 
 	private Room room=null;
 	private int dir=-1;
 	private int doingCode=-1;
 	private boolean messedUp=false;
 	private static boolean mapped=false;
+	private int workingOn=-1;
 	private String designTitle="";
 	private String designDescription="";
 
@@ -42,6 +45,24 @@ public class Construction extends CommonSkill
 					CMAble.addCharAbilityMapping("All",10,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Construction();}
+	
+	public Exit generify(Exit E)
+	{
+		Exit E2=CMClass.getExit("GenExit");
+		E2.setName(E.name());
+		E2.setDisplayText(E.displayText());
+		E2.setDescription(E.description());
+		E2.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),E.hasALock(),E.isLocked(),E.defaultsLocked());
+		E2.setBaseEnvStats(E.baseEnvStats().cloneStats());
+		E2.setExitParams(E.doorName(),E.closeWord(),E.openWord(),E.closedText());
+		E2.setKeyName(E.keyName());
+		E2.setOpenDelayTicks(E.openDelayTicks());
+		E2.setReadable(E.isReadable());
+		E2.setReadableText(E.readableText());
+		E2.setTemporaryDoorLink(E.temporaryDoorLink());
+		E2.recoverEnvStats();
+		return E2;
+	}
 
 	public void unInvoke()
 	{
@@ -81,6 +102,12 @@ public class Construction extends CommonSkill
 						break;
 					case BUILD_DESC:
 						commonTell(mob,"You've ruined the describing!");
+						break;
+					case BUILD_WINDOW:
+						commonTell(mob,"You've ruined the window!");
+						break;
+					case BUILD_CRAWLWAY:
+						commonTell(mob,"You've ruined the crawlway!");
 						break;
 					case BUILD_DEMOLISH:
 					default:
@@ -178,8 +205,61 @@ public class Construction extends CommonSkill
 						break;
 					case BUILD_DESC:
 						{
-							room.setDescription(designDescription);
-							ExternalPlay.DBUpdateRoom(room);
+							if(workingOn>=0)
+							{
+								Exit E=room.getExitInDir(workingOn);
+								if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
+								{
+									E=generify(E);
+									room.rawExits()[workingOn]=E;
+								}
+								E.setDescription(designDescription);
+								ExternalPlay.DBUpdateExits(room);
+							}
+							else
+							{
+								room.setDescription(designDescription);
+								ExternalPlay.DBUpdateRoom(room);
+							}
+						}
+						break;
+					case BUILD_CRAWLWAY:
+						{
+							if(workingOn>=0)
+							{
+								Exit E=room.getExitInDir(workingOn);
+								if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
+								{
+									E=generify(E);
+									room.rawExits()[workingOn]=E;
+								}
+								E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|EnvStats.IS_SITTING);
+								ExternalPlay.DBUpdateExits(room);
+							}
+						}
+						break;
+					case BUILD_WINDOW:
+						{
+							if(workingOn>=0)
+							{
+								Exit E=room.getExitInDir(workingOn);
+								if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
+								{
+									E=generify(E);
+									room.rawExits()[workingOn]=E;
+								}
+								Room R2=room.getRoomInDir(workingOn);
+								if(R2!=null)
+								{
+									Ability A=CMClass.getAbility("Prop_RoomView");
+									if(A!=null)
+									{
+										A.setMiscText(CMMap.getExtendedRoomID(R2));
+										E.addNonUninvokableAffect(A);
+									}
+								}
+								ExternalPlay.DBUpdateExits(room);
+							}
 						}
 						break;
 					case BUILD_GATE:
@@ -394,6 +474,33 @@ public class Construction extends CommonSkill
 		else
 		if(doingCode==BUILD_DESC)
 		{
+			if(commands.size()<3)
+			{
+				commonTell(mob,"You must specify an exit direction or room, followed by a description for it.");
+				return false;
+			}
+			workingOn=-1;
+			if(Directions.getGoodDirectionCode((String)commands.elementAt(1))>=0)
+			{
+				int dir=Directions.getGoodDirectionCode((String)commands.elementAt(1));
+				
+				if(mob.location().getExitInDir(dir)==null)
+				{
+					commonTell(mob,"There is no exit "+Directions.getInDirectionName(dir)+" to describe.");
+					return false;
+				}
+				workingOn=dir;
+				commands.removeElementAt(1);
+			}
+			else
+			if(!((String)commands.elementAt(1)).equalsIgnoreCase("room"))
+			{
+				commonTell(mob,"'"+((String)commands.elementAt(1))+"' is neither the word room, nor an exit direction.");
+				return false;
+			}
+			else
+				commands.removeElementAt(1);
+																 
 			String title=Util.combine(commands,1);
 			if(title.length()==0)
 			{
@@ -487,6 +594,12 @@ public class Construction extends CommonSkill
 			break;
 		case BUILD_SECRETDOOR:
 			verb="building a hidden "+Directions.getDirectionName(dir)+" door";
+			break;
+		case BUILD_WINDOW:
+			verb="building a window "+Directions.getDirectionName(dir);
+			break;
+		case BUILD_CRAWLWAY:
+			verb="building a crawlway "+Directions.getDirectionName(dir);
 			break;
 		case BUILD_TITLE:
 			verb="giving this place a title";

@@ -20,13 +20,17 @@ public class Masonry extends CommonSkill
 	private final static int BUILD_TITLE=4;
 	private final static int BUILD_DESC=5;
 	private final static int BUILD_MONUMENT=6;
-	private final static String[] names={"Wall","Roof","Archway","Demolish","Title","Description","Druidic Monument"};
-	private final static int[] woodReq={250,500,200,0,0,0,1000};
+	private final static int BUILD_WINDOW=7;
+	private final static int BUILD_CRAWLWAY=8;
+	
+	private final static String[] names={"Wall","Roof","Archway","Demolish","Title","Description","Druidic Monument","Window","Crawlway"};
+	private final static int[] woodReq={250,500,200,0,0,0,1000,100,500};
 
 	private Room room=null;
 	private int dir=-1;
 	private int doingCode=-1;
 	private boolean messedUp=false;
+	private int workingOn=-1;
 	private static boolean mapped=false;
 	private String designTitle="";
 	private String designDescription="";
@@ -39,6 +43,24 @@ public class Masonry extends CommonSkill
 	}
 	public Environmental newInstance(){	return new Masonry();}
 
+	public Exit generify(Exit E)
+	{
+		Exit E2=CMClass.getExit("GenExit");
+		E2.setName(E.name());
+		E2.setDisplayText(E.displayText());
+		E2.setDescription(E.description());
+		E2.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),E.hasALock(),E.isLocked(),E.defaultsLocked());
+		E2.setBaseEnvStats(E.baseEnvStats().cloneStats());
+		E2.setExitParams(E.doorName(),E.closeWord(),E.openWord(),E.closedText());
+		E2.setKeyName(E.keyName());
+		E2.setOpenDelayTicks(E.openDelayTicks());
+		E2.setReadable(E.isReadable());
+		E2.setReadableText(E.readableText());
+		E2.setTemporaryDoorLink(E.temporaryDoorLink());
+		E2.recoverEnvStats();
+		return E2;
+	}
+	
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -68,6 +90,12 @@ public class Masonry extends CommonSkill
 						break;
 					case BUILD_MONUMENT:
 						commonTell(mob,"You've ruined the druidic monument!");
+						break;
+					case BUILD_WINDOW:
+						commonTell(mob,"You've ruined the window!");
+						break;
+					case BUILD_CRAWLWAY:
+						commonTell(mob,"You've ruined the crawlway!");
 						break;
 					case BUILD_DEMOLISH:
 					default:
@@ -178,8 +206,22 @@ public class Masonry extends CommonSkill
 						break;
 					case BUILD_DESC:
 						{
-							room.setDescription(designDescription);
-							ExternalPlay.DBUpdateRoom(room);
+							if(workingOn>=0)
+							{
+								Exit E=room.getExitInDir(workingOn);
+								if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
+								{
+									E=generify(E);
+									room.rawExits()[workingOn]=E;
+								}
+								E.setDescription(designDescription);
+								ExternalPlay.DBUpdateExits(room);
+							}
+							else
+							{
+								room.setDescription(designDescription);
+								ExternalPlay.DBUpdateRoom(room);
+							}
 						}
 						break;
 					case BUILD_MONUMENT:
@@ -187,6 +229,45 @@ public class Masonry extends CommonSkill
 							Item I=CMClass.getItem("DruidicMonument");
 							room.addItem(I);
 							I.setDispossessionTime(0);
+						}
+						break;
+					case BUILD_CRAWLWAY:
+						{
+							if(workingOn>=0)
+							{
+								Exit E=room.getExitInDir(workingOn);
+								if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
+								{
+									E=generify(E);
+									room.rawExits()[workingOn]=E;
+								}
+								E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|EnvStats.IS_SITTING);
+								ExternalPlay.DBUpdateExits(room);
+							}
+						}
+						break;
+					case BUILD_WINDOW:
+						{
+							if(workingOn>=0)
+							{
+								Exit E=room.getExitInDir(workingOn);
+								if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
+								{
+									E=generify(E);
+									room.rawExits()[workingOn]=E;
+								}
+								Room R2=room.getRoomInDir(workingOn);
+								if(R2!=null)
+								{
+									Ability A=CMClass.getAbility("Prop_RoomView");
+									if(A!=null)
+									{
+										A.setMiscText(CMMap.getExtendedRoomID(R2));
+										E.addNonUninvokableAffect(A);
+									}
+								}
+								ExternalPlay.DBUpdateExits(room);
+							}
 						}
 						break;
 					case BUILD_DEMOLISH:
@@ -325,7 +406,6 @@ public class Masonry extends CommonSkill
 		}
 
 		int woodRequired=woodReq[doingCode];
-
 		if(doingCode==BUILD_TITLE)
 		{
 			String title=Util.combine(commands,1);
@@ -348,13 +428,33 @@ public class Masonry extends CommonSkill
 		else
 		if(doingCode==BUILD_DESC)
 		{
-			String title=Util.combine(commands,1);
-			if(title.length()==0)
+			if(commands.size()<3)
 			{
-				commonTell(mob,"A description must be specified.");
+				commonTell(mob,"You must specify an exit direction or room, followed by a description for it.");
 				return false;
 			}
-			designDescription=title;
+			workingOn=-1;
+			if(Directions.getGoodDirectionCode((String)commands.elementAt(1))>=0)
+			{
+				int dir=Directions.getGoodDirectionCode((String)commands.elementAt(1));
+				
+				if(mob.location().getExitInDir(dir)==null)
+				{
+					commonTell(mob,"There is no exit "+Directions.getInDirectionName(dir)+" to describe.");
+					return false;
+				}
+				workingOn=dir;
+				commands.removeElementAt(1);
+			}
+			else
+			if(!((String)commands.elementAt(1)).equalsIgnoreCase("room"))
+			{
+				commonTell(mob,"'"+((String)commands.elementAt(1))+"' is neither the word room, nor an exit direction.");
+				return false;
+			}
+			else
+				commands.removeElementAt(1);
+			designDescription=Util.combine(commands,2);
 		}
 
 		Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
@@ -430,6 +530,12 @@ public class Masonry extends CommonSkill
 			break;
 		case BUILD_MONUMENT:
 			verb="building a druidic monument";
+			break;
+		case BUILD_WINDOW:
+			verb="building a window "+Directions.getDirectionName(dir);
+			break;
+		case BUILD_CRAWLWAY:
+			verb="building a crawlway "+Directions.getDirectionName(dir);
 			break;
 		case BUILD_DEMOLISH:
 		default:

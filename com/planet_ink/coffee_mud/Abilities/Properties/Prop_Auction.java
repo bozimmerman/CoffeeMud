@@ -95,6 +95,8 @@ public class Prop_Auction extends Property
 								((Item)auctioning).unWear();
 								highBidder.location().bringItemHere((Item)auctioning,Item.REFUSE_PLAYER_DROP);
 								ExternalPlay.get(highBidder,null,(Item)auctioning,false);
+								M.tell(bid+" gold has been transferred to you as payment from "+highBidder.name()+".  The goods have also been transferred in exchange.");
+								highBidder.tell(bid+" gold has been transferred to "+M.name()+".  You should have received the auctioned goods.  This auction is complete.");
 							}
 							else
 							{
@@ -104,9 +106,6 @@ public class Prop_Auction extends Property
 						}
 					}
 				}
-				V=new Vector();
-				V.addElement("AUCTION");
-				V.addElement("CLOSE");
 				try{ExternalPlay.doCommand(M,V);}catch(Exception e){}
 				setInvoker(null);
 				return false;
@@ -121,6 +120,7 @@ public class Prop_Auction extends Property
 		Vector V=new Vector();
 		V.addElement("AUCTION");
 		V.addElement("CHANNEL");
+System.out.println(Util.combine(commands,0));		
 		if(target!=null)
 		{
 			setInvoker(mob);
@@ -128,6 +128,7 @@ public class Prop_Auction extends Property
 			bid=Util.s_int(Util.combine(commands,0));
 			highBid=bid-1;
 			auctionStart=System.currentTimeMillis();
+System.out.println("S-"+auctioning.name()+"/"+mob.Name()+"/"+bid+"/"+highBid);
 			setAbilityCode(STATE_START);
 			ExternalPlay.startTickDown(this,Host.QUEST_TICK,1);
 			V.addElement("New lot: "+auctioning.name()+".  The opening bid is "+bid+".");
@@ -165,6 +166,22 @@ public class Prop_Auction extends Property
 			{
 				mob.tell("Your bid of "+b+" is insufficient."+((bid>0)?" The current high bid is "+bid+".":""));
 				return false;
+			}
+			else
+			if((b==bid)&&(highBidder!=null))
+			{
+				mob.tell("You must bid higher than "+bid+" to have your bid accepted.");
+				return false;
+			}
+			else
+			if((b==highBid)&&(highBidder!=null))
+			{
+				if((highBidder!=null)&&(highBidder!=mob))
+				{
+					mob.tell("You have been outbid by proxy for "+auctioning.name()+".");
+					highBidder.tell("Your high bid for "+auctioning.name()+" has been reached.");
+				}
+				bid=b;
 			}
 			else
 				bid=b;
