@@ -84,6 +84,45 @@ public class CMClass extends ClassLoader
 	{ virtualPager=reqer;}
 	public static ExternalHTTPRequests httpUtils(){return virtualPager;}
 	
+	public static void addAllItemClassNames(Vector V, boolean NonArchon, boolean NonGeneric)
+	{
+		for(Enumeration i=items();i.hasMoreElements();)
+		{
+			Item I=(Item)i.nextElement();
+			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonGeneric)||(!I.isGeneric())))
+				V.addElement(CMClass.className(I));
+		}
+		for(Enumeration i=weapons();i.hasMoreElements();)
+		{
+			Item I=(Item)i.nextElement();
+			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonGeneric)||(!I.isGeneric())))
+				V.addElement(CMClass.className(I));
+		}
+		for(Enumeration i=armor();i.hasMoreElements();)
+		{
+			Item I=(Item)i.nextElement();
+			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonGeneric)||(!I.isGeneric())))
+				V.addElement(CMClass.className(I));
+		}
+		for(Enumeration i=miscMagic();i.hasMoreElements();)
+		{
+			Item I=(Item)i.nextElement();
+			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonGeneric)||(!I.isGeneric())))
+				V.addElement(CMClass.className(I));
+		}
+		for(Enumeration i=clanItems();i.hasMoreElements();)
+		{
+			Item I=(Item)i.nextElement();
+			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonGeneric)||(!I.isGeneric())))
+				V.addElement(CMClass.className(I));
+		}
+	}
+	
 	public static Item getItem(String calledThis)
 	{
 		Item thisItem=(Item)getEnv(items,calledThis);

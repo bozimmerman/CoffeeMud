@@ -148,36 +148,8 @@ public class RoomData extends StdWebMacro
 		}
 		else
 		{
-			for(Enumeration i=CMClass.items();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				if(CMClass.className(I).equals(MATCHING))
-					return I;
-			}
-			for(Enumeration i=CMClass.armor();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				if(CMClass.className(I).equals(MATCHING))
-					return I;
-			}
-			for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				if(CMClass.className(I).equals(MATCHING))
-					return I;
-			}
-			for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				if(CMClass.className(I).equals(MATCHING))
-					return I;
-			}
-			for(Enumeration i=CMClass.clanItems();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				if(CMClass.className(I).equals(MATCHING))
-					return I;
-			}
+			Item I=CMClass.getItem(MATCHING);
+			if((I!=null)&&(!(I instanceof ArchonOnly))) return I;
 		}
 		return null;
 	}
@@ -490,41 +462,7 @@ public class RoomData extends StdWebMacro
 			{
 				ilist=new StringBuffer("");
 				Vector sortMe=new Vector();
-				for(Enumeration i=CMClass.items();i.hasMoreElements();)
-				{
-					Item I=(Item)i.nextElement();
-					if((!I.isGeneric())
-					&&(!(I instanceof ArchonOnly)))
-						sortMe.addElement(CMClass.className(I));
-				}
-				for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
-				{
-					Item I=(Item)i.nextElement();
-					if((!I.isGeneric())
-					&&(!(I instanceof ArchonOnly)))
-						sortMe.addElement(CMClass.className(I));
-				}
-				for(Enumeration i=CMClass.armor();i.hasMoreElements();)
-				{
-					Item I=(Item)i.nextElement();
-					if((!I.isGeneric())
-					&&(!(I instanceof ArchonOnly)))
-						sortMe.addElement(CMClass.className(I));
-				}
-				for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
-				{
-					Item I=(Item)i.nextElement();
-					if((!I.isGeneric())
-					&&(!(I instanceof ArchonOnly)))
-						sortMe.addElement(CMClass.className(I));
-				}
-				for(Enumeration i=CMClass.clanItems();i.hasMoreElements();)
-				{
-					Item I=(Item)i.nextElement();
-					if((!I.isGeneric())
-					&&(!(I instanceof ArchonOnly)))
-						sortMe.addElement(CMClass.className(I));
-				}
+				CMClass.addAllItemClassNames(sortMe,true,true);
 				Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
 				for(int i=0;i<sorted.length;i++)
 					ilist.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);

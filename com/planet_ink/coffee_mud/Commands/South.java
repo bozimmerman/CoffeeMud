@@ -14,7 +14,7 @@ public class South extends Go
 		throws java.io.IOException
 	{
 		standIfNecessary(mob);
-		if(Sense.isSitting(mob))
+		if((Sense.isSitting(mob))||(Sense.isSleeping(mob)))
 		{
 			mob.tell(getScr("Movement","standandgoerr1"));
 			return false;

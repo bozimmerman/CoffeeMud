@@ -3174,7 +3174,7 @@ public class Scriptable extends StdBehavior
 						if(e instanceof Item)
 							m=(Item)e;
 					}
-					if(m!=null)
+					if((m!=null)&&(!(m instanceof ArchonOnly)))
 					{
 						m=(Item)m.copyOf();
 						m.recoverEnvStats();

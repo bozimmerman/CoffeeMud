@@ -268,7 +268,8 @@ public class Go extends StdCommand
 				&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
 				{
 					if((follower.location()==thisRoom)
-					   &&(!Util.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
+					&&(Sense.aliveAwakeMobile(follower,true))
+					&&(!Util.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
 					{
 						follower.tell(getScr("Movement","youfollow",mob.name(),Directions.getDirectionName(directionCode)));
 						if(!move(follower,directionCode,false,false,false))

@@ -130,6 +130,21 @@ public class Merge extends StdCommand
 		}
 		return didAnything;
 	}
+	
+	public void sortEnumeratedList(Enumeration e, Vector allKnownFields, StringBuffer allFieldsMsg)
+	{
+		for(;e.hasMoreElements();)
+		{
+			Environmental E=(Environmental)e.nextElement();
+			String[] fields=E.getStatCodes();
+			for(int x=0;x<fields.length;x++)
+				if(!allKnownFields.contains(fields[x]))
+				{
+					allKnownFields.addElement(fields[x]);
+					allFieldsMsg.append(fields[x]+" ");
+				}
+		}
+	}
 
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -164,28 +179,12 @@ public class Merge extends StdCommand
 		{
 			StringBuffer allFieldsMsg=new StringBuffer("");
 			Vector allKnownFields=new Vector();
-			for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
-			{
-				MOB M=(MOB)m.nextElement();
-				String[] fields=M.getStatCodes();
-				for(int x=0;x<fields.length;x++)
-					if(!allKnownFields.contains(fields[x]))
-					{
-						allKnownFields.addElement(fields[x]);
-						allFieldsMsg.append(fields[x]+" ");
-					}
-			}
-			for(Enumeration i=CMClass.items();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				String[] fields=I.getStatCodes();
-				for(int x=0;x<fields.length;x++)
-					if(!allKnownFields.contains(fields[x]))
-					{
-						allKnownFields.addElement(fields[x]);
-						allFieldsMsg.append(fields[x]+" ");
-					}
-			}
+			sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.items(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.armor(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 			mob.tell("Valid field names are "+allFieldsMsg.toString());
 			return false;
 		}
@@ -268,52 +267,14 @@ public class Merge extends StdCommand
 		}
 		StringBuffer allFieldsMsg=new StringBuffer("");
 		if(aremobs)
-			for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
-			{
-				MOB M=(MOB)m.nextElement();
-				String[] fields=M.getStatCodes();
-				for(int x=0;x<fields.length;x++)
-					if(!allKnownFields.contains(fields[x]))
-					{
-						allKnownFields.addElement(fields[x]);
-						allFieldsMsg.append(fields[x]+" ");
-					}
-			}
+			sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
 		else
 		{
-			for(Enumeration i=CMClass.items();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				String[] fields=I.getStatCodes();
-				for(int x=0;x<fields.length;x++)
-					if(!allKnownFields.contains(fields[x]))
-					{
-						allKnownFields.addElement(fields[x]);
-						allFieldsMsg.append(fields[x]+" ");
-					}
-			}
-			for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				String[] fields=I.getStatCodes();
-				for(int x=0;x<fields.length;x++)
-					if(!allKnownFields.contains(fields[x]))
-					{
-						allKnownFields.addElement(fields[x]);
-						allFieldsMsg.append(fields[x]+" ");
-					}
-			}
-			for(Enumeration i=CMClass.armor();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				String[] fields=I.getStatCodes();
-				for(int x=0;x<fields.length;x++)
-					if(!allKnownFields.contains(fields[x]))
-					{
-						allKnownFields.addElement(fields[x]);
-						allFieldsMsg.append(fields[x]+" ");
-					}
-			}
+			sortEnumeratedList(CMClass.items(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.armor(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 		}
 
 		allKnownFields.addElement("REJUV");

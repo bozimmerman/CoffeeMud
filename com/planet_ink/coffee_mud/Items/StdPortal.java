@@ -80,6 +80,10 @@ public class StdPortal extends StdContainer implements Rideable
 						msg.source().tell(name()+" is closed.");
 						return false;
 					}
+					msg.modify(msg.source(),msg.target(),msg.tool(),
+							   msg.sourceMajor()|CMMsg.TYP_ENTER,msg.sourceMessage(),
+							   msg.targetMajor()|CMMsg.TYP_ENTER,msg.targetMessage(),
+							   msg.othersMajor()|CMMsg.TYP_ENTER,msg.othersMessage());
 					return true;
 				}
 				else
@@ -114,14 +118,6 @@ public class StdPortal extends StdContainer implements Rideable
 		case CMMsg.TYP_DISMOUNT:
 			break;
 		case CMMsg.TYP_ENTER:
-			break;
-		case CMMsg.TYP_LEAVE:
-		case CMMsg.TYP_FLEE:
-		case CMMsg.TYP_SLEEP:
-		case CMMsg.TYP_MOUNT:
-			break;
-		case CMMsg.TYP_SIT:
-		{
 			if(msg.amITarget(this))
 			{
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
@@ -144,7 +140,12 @@ public class StdPortal extends StdContainer implements Rideable
 				}
 			}
 			break;
-		}
+		case CMMsg.TYP_LEAVE:
+		case CMMsg.TYP_FLEE:
+		case CMMsg.TYP_SLEEP:
+		case CMMsg.TYP_MOUNT:
+		case CMMsg.TYP_SIT:
+			break;
 		}
 	}
 }

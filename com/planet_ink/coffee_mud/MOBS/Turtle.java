@@ -40,6 +40,6 @@ public class Turtle extends StdMOB
 	}
 	public Environmental newInstance()
 	{
-		return new Duck();
+		return new Turtle();
 	}
 }

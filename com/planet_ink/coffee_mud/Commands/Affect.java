@@ -12,7 +12,6 @@ public class Affect extends StdCommand
 	public String getAffects(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^!You are affected by:^? ");
 		int colnum=2;
 		for(int a=0;a<mob.numEffects();a++)
 		{
@@ -37,8 +36,36 @@ public class Affect extends StdCommand
 		throws java.io.IOException
 	{
 		Session S=mob.session();
+		if((commands!=null)&&(commands.size()>0)&&(!(commands.firstElement() instanceof String)))
+		{
+			if(commands.firstElement() instanceof MOB)
+				S=((MOB)commands.firstElement()).session();
+			else
+			if(commands.firstElement() instanceof StringBuffer)
+			{
+				((StringBuffer)commands.firstElement()).append(getAffects(mob));
+				return false;
+			}
+			else
+			if(commands.firstElement() instanceof Vector)
+			{
+				((Vector)commands.firstElement()).addElement(getAffects(mob));
+				return false;
+			}
+			else
+			{
+				commands.clear();
+				commands.addElement(getAffects(mob));
+				return false;
+			}
+		}
+
 		if(S!=null)
+		{
+			if(S==mob.session())
+				S.colorOnlyPrint("\n\r^!You are affected by:^? ");
 			S.colorOnlyPrintln(getAffects(mob));
+		}
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

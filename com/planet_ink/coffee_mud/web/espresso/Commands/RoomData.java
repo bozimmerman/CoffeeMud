@@ -162,30 +162,9 @@ public static Item getItemFromAnywhere(Object allitems, String MATCHING)
         }
         else
         {
-                for(Enumeration i=CMClass.items();i.hasMoreElements();)
-                {
-                        Item I=(Item)i.nextElement();
-                        if(CMClass.className(I).equals(MATCHING))
-                                return I;
-                }
-                for(Enumeration i=CMClass.armor();i.hasMoreElements();)
-                {
-                        Item I=(Item)i.nextElement();
-                        if(CMClass.className(I).equals(MATCHING))
-                                return I;
-                }
-                for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
-                {
-                        Item I=(Item)i.nextElement();
-                        if(CMClass.className(I).equals(MATCHING))
-                                return I;
-                }
-                for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
-                {
-                        Item I=(Item)i.nextElement();
-                        if(CMClass.className(I).equals(MATCHING))
-                                return I;
-                }
+			Item I=CMClass.getItem(MATCHING);
+			if((I!=null)&&(!(I instanceof ArchonOnly)))
+				return I;
         }
         return null;
 }

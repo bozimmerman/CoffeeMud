@@ -107,7 +107,7 @@ public class GenSuperPill extends GenPill
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 			mob.baseCharStats().setStat(CharStats.GENDER,(int)val.charAt(0));
 		val=Util.getParmStr(readableText,"cla","").toUpperCase();
-		if((val.length()>0)&&(CMClass.getCharClass(val)!=null))
+		if((val.length()>0)&&(CMClass.getCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
 		{
 			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(val));
 			if((!mob.isMonster())&&(mob.soulMate()==null))

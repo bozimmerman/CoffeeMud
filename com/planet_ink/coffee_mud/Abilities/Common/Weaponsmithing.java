@@ -214,9 +214,9 @@ public class Weaponsmithing extends CraftingSkill
 		{
 			StringBuffer buf=new StringBuffer("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r");
 			int toggler=1;
-			int toggleTop=4;
+			int toggleTop=3;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(Util.padRight("Item",14)+" "+Util.padRight("Amt",3)+" ");
+				buf.append(Util.padRight("Item",21)+" "+Util.padRight("Amt",3)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -229,7 +229,7 @@ public class Weaponsmithing extends CraftingSkill
 					if((level<=mob.envStats().level())
 					&&(canDo((String)V.elementAt(this.RCP_WEAPONCLASS),mob)))
 					{
-						buf.append(Util.padRight(item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight(item,21)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}

@@ -1,11 +1,10 @@
 are stats working?
 cast scry with no target gives a list.
-After lstrike, if I am still drowsy, it will tell me I follow the leader when they move, and I don't
-When creating a locked door from your room, it creates the door on your side at your level, but the door on the opposite side is level 0.
 the coin quest needs to stipulate that the QUESTOR can not be in the same room as the QUEST COIN.
 You may want to add some things to certain sectors, such as city, where people can`t randomly practice skills like fish or mining in the city.
-add another thing to report: report affects, to show what spells are cast on the person
-Have rooms generate their resources instead of skills
+Have rooms generate their resources instead of skills, or have gathering skills drop their stuff on the ground?
+Check to see if the grinder putting items in containers works still.
+
 
 SMTP Server
 

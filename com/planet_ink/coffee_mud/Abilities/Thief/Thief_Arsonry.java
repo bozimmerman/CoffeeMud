@@ -46,6 +46,8 @@ public class Thief_Arsonry extends ThiefSkill
 				Item I=room.fetchItem(i);
 				if((I!=null)
 				&&(I.container()==null)
+				&&(I.displayText().length()==0)
+				&&(Sense.isGettable(I))
 				&&(Sense.burnStatus(I)>0))
 					choices.addElement(I);
 			}

@@ -43,6 +43,15 @@ public class Report extends BaseAbleLister
 				CommonMsgs.say(mob,null,("^NMy skills:^? "+getAbilities(mob,V,-1,false,level)),false,false);
 			}
 			else
+			if("AFFECTS".startsWith(s))
+			{
+				
+				StringBuffer aff=new StringBuffer("\n\r^!I am affected by:^? ");
+				Command C=CMClass.getCommand("Affect");
+				if(C!=null) C.execute(mob,Util.makeVector(aff));
+				CommonMsgs.say(mob,null,aff.toString(),false,false);
+			}
+			else
 			if("PRAYERS".startsWith(s))
 				CommonMsgs.say(mob,null,("^NMy prayers:^? "+getAbilities(mob,Ability.PRAYER,-1,false,level)),false,false);
 			else

@@ -107,7 +107,10 @@ public class ItemData extends StdWebMacro
 		if((newClassID!=null)
 		&&(!newClassID.equals(CMClass.className(I)))
 		&&(CMClass.getItem(newClassID)!=null))
+		{
 			I=CMClass.getItem(newClassID);
+			if(I instanceof ArchonOnly) I=oldI;
+		}
 
 		boolean changedClass=(((httpReq.isRequestParameter("CHANGEDCLASS"))&&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true"))&&(itemCode.equals("NEW")));
 		boolean changedLevel=(httpReq.isRequestParameter("CHANGEDLEVEL"))&&(httpReq.getRequestParameter("CHANGEDLEVEL")).equals("true");
@@ -205,16 +208,7 @@ public class ItemData extends StdWebMacro
 						if(sorted==null)
 						{
 							Vector sortMe=new Vector();
-							for(Enumeration i=CMClass.items();i.hasMoreElements();)
-								sortMe.addElement(CMClass.className(i.nextElement()));
-							for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
-								sortMe.addElement(CMClass.className(i.nextElement()));
-							for(Enumeration i=CMClass.armor();i.hasMoreElements();)
-								sortMe.addElement(CMClass.className(i.nextElement()));
-							for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
-								sortMe.addElement(CMClass.className(i.nextElement()));
-							for(Enumeration i=CMClass.clanItems();i.hasMoreElements();)
-								sortMe.addElement(CMClass.className(i.nextElement()));
+							CMClass.addAllItemClassNames(sortMe,true,false);
 							sorted=(Object[])(new TreeSet(sortMe)).toArray();
 							Resources.submitResource("MUDGRINDER-ITEMS2",sorted);
 						}
