@@ -9,6 +9,7 @@ import java.util.*;
 public class Lantern extends LightSource
 {
 	public String ID(){	return "Lantern";}
+	public static final int DURATION_TICKS=400;
 	public Lantern()
 	{
 		super();
@@ -18,7 +19,7 @@ public class Lantern extends LightSource
 
 		baseEnvStats().setWeight(5);
 		setMaterial(EnvResource.RESOURCE_STEEL);
-		durationTicks=400;
+		durationTicks=DURATION_TICKS;
 		this.destroyedWhenBurnedOut=false;
 		this.goesOutInTheRain=false;
 		baseGoldValue=60;
@@ -38,11 +39,6 @@ public class Lantern extends LightSource
 				case Affect.TYP_FILL:
 					if(mob.isMine(this))
 					{
-						if(getDuration()>0)
-						{
-							mob.tell(name()+" still has some oil left in it.");
-							return false;
-						}
 						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 						{
 							if(((Drink)affect.tool()).liquidType()!=EnvResource.RESOURCE_LAMPOIL)
@@ -90,8 +86,7 @@ public class Lantern extends LightSource
 					if(amountToTake>thePuddle.liquidRemaining())
 						amountToTake=0;
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
-					light(false);
-					setDuration(200);
+					setDuration(DURATION_TICKS);
 					description="The lantern still looks like it has some oil in it.";
 				}
 				break;
