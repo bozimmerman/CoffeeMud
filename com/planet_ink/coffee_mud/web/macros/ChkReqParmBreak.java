@@ -23,14 +23,14 @@ public class ChkReqParmBreak extends StdWebMacro
 			}
 			String equals=(String)parms.get(key);
 			String check=httpReq.getRequestParameter(key);
-			if(not)
+			if(!not)
 			{
+System.out.println(key+"/"+check+"=="+equals);				
 				if((check==null)&&(equals.length()==0))
 					return " @break@";
 				if(check==null) return "";
 				if(check.equalsIgnoreCase(equals))
-					return "";
-				return " @break@";
+					return " @break@";
 			}
 			else
 			{

@@ -22,8 +22,10 @@
 <TABLE WIDTH=100% BORDER=0>
 <TR>
 	<TD WIDTH=80%>
+
 @AddRequestParameter?TICKGROUPCT=0@
 @AddRequestParameter?TICKGROUPSZ=@@SystemInfo?tickGroupSize@@ @
+
 @loop@
 	@ChkReqParmBreak?TICKGROUPCT=@@RequestParameter?TICKGROUPSZ@@ @
 	<A HREF="javascript:ReOpen('@RequestParameter?TICKGROUPCT@')"><FONT COLOR=WHITE> @RequestParameter?TICKGROUPCT@</FONT></a>

@@ -194,11 +194,11 @@ loops.</TD></TR>
       parameter is "VALUE", and "false" otherwise.&nbsp; See the @if?@ macro for 
       more information on how this may be useful.</TD></TR>
 <TR><TD>ChkReqParmBreak</TD><TD>Evaulates to the string " @break@" (see&nbsp;the 
-      break macro) if the specified Request parameters are NOT equal to the 
+      break macro) if the specified Request parameters are equal to the 
       values given.&nbsp; It returns "" otherwise.&nbsp; For example, 
-      @ChkReqParmBreak?PARM=VALUE@ would return "" if PARM is equal to VALUE, 
-      and @break@ otherwise. See the @loop@ macro for more information on how 
-      this might be useful.</TD></TR>
+      @ChkReqParmBreak?PARM=VALUE@ would return " @break@" if PARM is 
+      equal to VALUE, and "" otherwise. See the @loop@ macro for 
+      more information on how this might be useful.</TD></TR>
 <TR><TD>ClassRaceNext</TD><TD></TD></TR>
 <TR><TD>CrossClassAbilities</TD><TD></TD></TR>
 <TR><TD>else</TD><TD>Creates an exception to an @if?@ macro.</TD></TR>

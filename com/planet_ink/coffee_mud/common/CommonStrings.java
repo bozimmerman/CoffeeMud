@@ -153,20 +153,20 @@ public class CommonStrings extends Scriptable
 	{
 		if(type<0) type=Weapon.TYPE_BURSTING;
 		int damnCode=0;
-			 if(damage<=3) damnCode=0;
-		else if(damage<=6) damnCode=1;
-		else if(damage<=10) damnCode=2;
-		else if(damage<=15) damnCode=3;
-		else if(damage<=25) damnCode=4;
-		else if(damage<=35) damnCode=5;
-		else if(damage<=45) damnCode=6;
-		else if(damage<=65) damnCode=7;
-		else if(damage<=95) damnCode=8;
-		else if(damage<=115) damnCode=9;
-		else if(damage<=145) damnCode=10;
-		else if(damage<=175) damnCode=11;
-		else if(damage<=225) damnCode=12;
-		else if(damage<=300) damnCode=13;
+			 if(damage<=3) damnCode=0; //3
+		else if(damage<=6) damnCode=1; //4
+		else if(damage<=10) damnCode=2;//5
+		else if(damage<=15) damnCode=3; //10
+		else if(damage<=25) damnCode=4; //10
+		else if(damage<=35) damnCode=5; //15
+		else if(damage<=50) damnCode=6; //20
+		else if(damage<=70) damnCode=7; //30
+		else if(damage<=100) damnCode=8; //30
+		else if(damage<=130) damnCode=9; //35
+		else if(damage<=165) damnCode=10; //50
+		else if(damage<=215) damnCode=11; //75
+		else if(damage<=295) damnCode=12; //100
+		else if(damage<=395) damnCode=13;
 		else damnCode=14;
 
 		switch(damnCode)
@@ -321,14 +321,17 @@ public class CommonStrings extends Scriptable
 		return "";
 	}
 
+	public static final int ARMOR_CEILING=500;
+	public static final int ATTACK_CEILING=400;
+	
 	public static String armorStr(int armor){
 		return (armor<0)?armorStrs[0]:(
-			   (armor>200)?armorStrs[armorStrs.length-1]+" ("+armor+")":(
-				armorStrs[(int)Math.round(Math.floor(Util.div(armor,15.0)))]+" ("+armor+")"));}
+			   (armor>=ARMOR_CEILING)?armorStrs[armorStrs.length-1]+" ("+armor+")":(
+				armorStrs[(int)Math.round(Math.floor(Util.mul(Util.div(armor,ARMOR_CEILING),armorStrs.length)))]+" ("+armor+")"));}
 	public static String fightingProwessStr(int prowess){
 		return (prowess<0)?fightStrs[0]:(
-			   (prowess>200)?fightStrs[fightStrs.length-1]+" ("+prowess+")":(
-				fightStrs[(int)Math.round(Math.floor(Util.div(prowess,15.0)))]+" ("+prowess+")"));}
+			   (prowess>=ATTACK_CEILING)?fightStrs[fightStrs.length-1]+" ("+prowess+")":(
+				fightStrs[(int)Math.round(Math.floor(Util.mul(Util.div(prowess,ATTACK_CEILING),fightStrs.length)))]+" ("+prowess+")"));}
 	public static String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
 	{
 		int dex=3;
@@ -468,38 +471,78 @@ public class CommonStrings extends Scriptable
 	{ return msp(soundName,50,Dice.roll(1,50,priority));}
 
 	public static String[] armorStrs={
-	"nonexistant",				//0
-	"covered",					//1
-	"padded",					//2
-	"heavily padded",			//3
-	"protected",				//4
-	"well protected",			//5
-	"armored",					//6
-	"well armored",				//7
-	"heavily armored",			//8
-	"completely armored",		//9
-	"divinely armored",			//10
-	"practically unhittable",	//11
-	"almost impenetrable",		//12
-	"almost invincible",		//13
-	"invincible!"				//14
+	"vulnerable",
+	"slightly covered",
+	"somewhat covered",
+	"covered",
+	"well covered",
+	"very covered",
+	"slightly protected",
+	"somewhat protected",
+	"protected",
+	"well protected",
+	"very protected",
+	"heavily protected",
+	"slightly armored",
+	"somewhat armored",
+	"armored",
+	"well armored",
+	"very armored",
+	"heavily armored",
+	"completely armored",
+	"totally armored",
+	"divinely armored",
+	"slightly unhittable",
+	"somewhat unhittable",
+	"practically unhittable",
+	"unhittable",
+	"totally unhittable",
+	"slightly impenetrable",
+	"somewhat impenetrable",
+	"almost impenetrable",
+	"impenetrable",
+	"totally impenetrable",
+	"slightly invincible",
+	"somewhat invincible",
+	"almost invincible",
+	"invincible",
+	"completely invincible",
+	"totally invincible!"
 	};
+	
 	public final static String[] fightStrs={
-	"none",					//0
-	"hardly any",			//1
-	"very little",			//2
-	"a little",				//3
-	"some skill",			//4
-	"skilled",				//5
-	"very skilled",			//6
-	"a master",				//7
-	"dangerous",			//8
-	"extremely dangerous",	//9
-	"deadly",				//10
-	"extremely deadly",		//11
-	"a dealer of death",	//12
-	"a master of death",	//13
-	"death incarnate!"		//14
+	"none",
+	"mostly unskilled",
+	"a little skilled",
+	"somewhat skilled",
+	"almost skilled",
+	"mostly skilled",
+	"skilled",
+	"very skilled",
+	"extremely skilled",
+	"a little dangerous",
+	"somewhat dangerous",
+	"almost dangerous",
+	"mostly dangerous",
+	"dangerous",
+	"very dangerous",
+	"extremely dangerous",
+	"a master level I",
+	"a master level II",
+	"a master level III",
+	"a master level IV",
+	"a master level V",
+	"a master level VI",
+	"a master level VII",
+	"a master level VIII",
+	"a master level IX",
+	"a master level X",
+	"a bringer of death",
+	"a giver of death",
+	"a dealer of death",
+	"a master of death",
+	"a lord of death",
+	"death incarnate!"
 	};
 	public final static String[] missStrs1={
 		"<S-NAME> fire(s) at <T-NAMESELF> with <TOOLNAME> and miss(es).", // 0

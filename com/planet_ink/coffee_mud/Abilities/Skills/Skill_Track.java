@@ -137,7 +137,6 @@ public class Skill_Track extends StdAbility
 		MOB mob=(MOB)affected;
 		if((affect.amISource(mob))
 		&&(affect.amITarget(mob.location()))
-		&&(Sense.canBeSeenBy(mob.location(),mob))
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
 			nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
@@ -146,12 +145,6 @@ public class Skill_Track extends StdAbility
 	{
 		if(!Sense.aliveAwakeMobile(mob,false))
 			return false;
-
-		if(!Sense.canBeSeenBy(mob.location(),mob))
-		{
-			mob.tell("You can't see anything to track!");
-			return false;
-		}
 
 		Ability oldTrack=mob.fetchAffect("Ranger_Track");
 		if(oldTrack==null) oldTrack=mob.fetchAffect("Skill_Track");

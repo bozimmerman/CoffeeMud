@@ -353,12 +353,13 @@ public class StdCharClass implements CharClass, Cloneable
 
 		mob.setAlignment(500);
 		mob.baseCharStats().setStat(CharStats.GENDER,(int)gender);
-		mob.baseCharStats().setStat(CharStats.STRENGTH,11);
+		mob.baseCharStats().setStat(CharStats.STRENGTH,10);
 		mob.baseCharStats().setStat(CharStats.WISDOM,10);
 		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,10);
-		mob.baseCharStats().setStat(CharStats.DEXTERITY,11);
+		mob.baseCharStats().setStat(CharStats.DEXTERITY,13);
 		mob.baseCharStats().setStat(CharStats.CONSTITUTION,10);
 		mob.baseCharStats().setStat(CharStats.CHARISMA,10);
+		mob.baseCharStats().setStat(getAttackAttribute(),16);
 		mob.baseCharStats().setCurrentClass(this);
 		mob.baseCharStats().setClassLevel(this,1);
 		mob.baseEnvStats().setArmor(50);
@@ -402,10 +403,10 @@ public class StdCharClass implements CharClass, Cloneable
 				break;
 			}
 			int oldattack=mob.baseEnvStats().attackAdjustment();
-			mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1);
 			mob.recoverEnvStats();
 			mob.recoverCharStats();
 			mob.recoverMaxState();
+			mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1);
 			int newAttack=mob.baseEnvStats().attackAdjustment()-oldattack;
 			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-newAttack);
 			mob.recoverEnvStats();

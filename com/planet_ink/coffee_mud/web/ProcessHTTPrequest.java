@@ -114,6 +114,28 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				statusExtra = "Empty request";
 				return false;
 			}
+			
+			if(command.startsWith("["))
+			{
+				int err=400;
+				if(command.length()>1)
+					err=Util.s_int(command.substring(1));
+				switch(err)
+				{
+				case 200: status=S_200; break;
+				case 301: status=S_301; break;
+				case 302: status=S_302; break;
+				case 303: status=S_303; break;
+				case 307: status=S_307; break;
+				case 400: status=S_400; break;
+				case 401: status=S_401; break;
+				case 404: status=S_404; break;
+				case 500: status=S_500; break;
+				case 501: status=S_501; break;
+				}
+				statusExtra=inLine;
+				return false;
+			}
 
 
 			// should always be uppercase, but I allow for mixed-case anyway
@@ -971,74 +993,129 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return "";
 	}
 
-	private byte[] getData(InputStream sin)
+	private Vector getData(InputStream sin)
 	{
-		ByteArrayOutputStream out=new ByteArrayOutputStream();
+		Vector data=new Vector();
 		try
 		{
 			int timeout=0;
+			ByteArrayOutputStream out=new ByteArrayOutputStream();
+			boolean gotHeader=false;
+			int contentlength=-1;
 			while(true)
 			{
 				while(sin.available()>0)
-					out.write(sin.read());
+				{
+					int x=sin.read();
+					if((x==10)&&(!gotHeader))
+					{
+						if(out.size()==0)
+						{
+							gotHeader=true;
+							// got empty line, but no data yet!
+							contentlength=getContentLength(data);
+							if(contentlength<0) return data;
+						}
+						else
+						{
+							String s=new String(out.toByteArray());
+							out=new ByteArrayOutputStream();
+							data.addElement(s);
+							if(s.startsWith("GET "))
+							{
+								data.addElement(out.toByteArray());
+								return data;
+							}
+						}
+					}
+					else
+					if((x!=13)||(gotHeader))
+					{
+						out.write(x);
+						if((contentlength>0)&&(out.size()>=contentlength))
+						{
+							data.addElement(out.toByteArray());
+							return data;
+						}
+					}
+				}
 				try{Thread.sleep(100);}catch(Exception e){}
 				timeout++;
-				if((sin.available()==0)&&(timeout>=20))
-					break;
+				if(sin.available()==0)
+				{
+					if(timeout>=20)
+					{
+						data.addElement(out.toByteArray());
+						break;
+					}
+				}
 				else
-					timeout=0;
+					timeout=0;					
 			}
 		}
 		catch(Exception e)
 		{
 		};
-		return out.toByteArray();					
+		return data;					
+	}
+
+	public String getContentType(Vector data)
+	{
+		for(int s=0;s<data.size();s++)
+		{
+			Object O=data.elementAt(s);
+			if(O instanceof String)
+			{
+				String str=(String)O;
+				if(str.toLowerCase().startsWith("content-type: "))
+					return str.substring(14).trim();
+			}
+		}
+		return "";
+	}
+	
+	public int getContentLength(Vector data)
+	{
+		for(int s=0;s<data.size();s++)
+		{
+			Object O=data.elementAt(s);
+			if(O instanceof String)
+			{
+				String str=(String)O;
+				if(str.toLowerCase().startsWith("content-length: "))
+					return Util.s_int(str.substring(16).trim());
+			}
+		}
+		return -1;
 	}
 	
 	public String getHTTPRequest(InputStream sin)
 	{
 		try
 		{
-			byte[] inData = getData(sin);
+			Vector inData = getData(sin);
 			//Log.sysOut("HTTP",inLine);
-			if((inData==null)||(inData.length==0)) 
-				return "";
-			
-			String inLine=new String(inData);
+			if((inData==null)||(inData.size()==0)) 
+				return "[400 -- no request received]";
+			String inLine=(String)inData.elementAt(0);
 			if((inLine.startsWith("GET")||inLine.startsWith("HEAD")))
-			{
-				for(int i=0;i<inLine.length();i++)
-					if((inLine.charAt(i)=='\n')||(inLine.charAt(i)=='\r'))
-						return inLine.substring(0,i);
-			}
+				return inLine;
 			else
 			if(inLine.startsWith("POST"))
 			{
-				String firstLine=null;
-				for(int i=0;i<inLine.length()-4;i++)
-					if(inLine.charAt(i)=='\n')
-					{
-						if(firstLine==null)
-							firstLine=inLine.substring(0,i);
-						else
-						if((inLine.charAt(i+2)=='\n')
-						&&(firstLine!=null))
-						{
-							int x=firstLine.lastIndexOf(" ");
-							inLine=inLine.substring(i+3);
-							int y=inLine.indexOf("\r");
-							if(y<0) y=inLine.indexOf("\n");
-							while((y>0)&&((inLine.charAt(y-1)=='\n')||(inLine.charAt(y-1)=='\r')))
-								y--;
-							if((x>=0)&&(y>=0))
-							{
-								String returnable=firstLine.substring(0,x)+"?"+inLine.substring(0,y)+firstLine.substring(x);
-								return returnable;
-							}
-						}
-					}
+				String type=getContentType(inData);
+				if(type.length()==0) return "";
+				if(type.toLowerCase().indexOf("urlencoded")<0)
+					return "[501 -- urlencoded posts only]";
+				if(!(inData.lastElement() instanceof byte[]))
+					return "[400 -- no content data received]";
+				String lastLine=new String((byte[])inData.lastElement());
+				int x=inLine.lastIndexOf(" ");
+				if(x<0) return "[400 -- improperly formatted post request]";
+				return inLine.substring(0,x)+"?"+lastLine+inLine.substring(x);
 			}
-			return inLine;
+			else
+				return "[501 -- command not implemented]";
 		}
 		catch (Exception e)
 		{
@@ -1049,7 +1126,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					Log.errOut(getName(),e);
 			}
 		}
-		return "err";
+		return "[400 -- error occurred processing request]";
 	}
 	
 	

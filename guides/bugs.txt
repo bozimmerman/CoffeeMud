@@ -1,5 +1,3 @@
 GAES still isn't done
 if wearable AND holdable, wear should still remove the old stuff...
-cityguards cant do or unjail in the dark.
-ability to refill/top off a lantern
-in the dark
+ability to refill/top off a lantern in the dark
