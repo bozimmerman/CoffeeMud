@@ -1,5 +1,9 @@
-If a subop turns on sysmsgs, then leaves their area, it's still on and cannot be shut off unless they return to that area.
-do tims readable with pages - genbook
+catch projectile, deflect projectile don't seem to be working?
+code an .are confirmation dealy, that checks for missing mobs/items, and confirms their display/description
+need a room-reset message for rooms to get so behaviors (conquerable) can respond.
+i tried creating a banned.ini file in the same dir as coffeemud.ini and listed the following: > *fingolfin* > *finrod* > *finwe*
+archons should not need sleep
+do tims readable with pages - genbook - auto paging 24 lines - read book shows all with pauses, read 1 book.
 code something to examine all items and make sure they aren't overboard.
 code something to coffeemudify all the beds 
 GenCharClasses -- zappercheck on quals 

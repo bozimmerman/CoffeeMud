@@ -218,16 +218,24 @@ public class UtiliThread extends Thread
 		{
 			try
 			{
-				itemSweep();
-				checkHealth();
-				status="ticking the first area for time";
-				if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(1);
-				lastStop=System.currentTimeMillis();
-				milliTotal+=(lastStop-lastStart);
-				tickTotal++;
-				status="sleeping";
-				Thread.sleep(MudHost.TIME_TICK_DELAY);
-				lastStart=System.currentTimeMillis();
+				if(!CommonStrings.isDisabled("UTILITHREAD"))
+				{
+					itemSweep();
+					checkHealth();
+					status="ticking the first area for time";
+					if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(1);
+					lastStop=System.currentTimeMillis();
+					milliTotal+=(lastStop-lastStart);
+					tickTotal++;
+					status="sleeping";
+					Thread.sleep(MudHost.TIME_TICK_DELAY);
+					lastStart=System.currentTimeMillis();
+				}
+				else
+				{
+					status="sleeping";
+					Thread.sleep(MudHost.TIME_TICK_DELAY*10);
+				}
 			}
 			catch(InterruptedException ioe)
 			{

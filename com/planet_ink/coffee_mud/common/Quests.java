@@ -1239,8 +1239,10 @@ public class Quests implements Cloneable, Quest
 	public long getTickStatus(){return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID!=MudHost.TICK_QUEST)||(CommonStrings.isDisabled("QUESTS")))
+		if(tickID!=MudHost.TICK_QUEST)
 			return false;
+		if(CommonStrings.isDisabled("QUESTS")) return true;
+		
 		tickStatus=Tickable.STATUS_START;
 		if(running())
 		{

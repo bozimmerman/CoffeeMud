@@ -176,23 +176,31 @@ public class SaveThread extends Thread
 		{
 			try
 			{
-				status="checking database health";
-				StringBuffer ok=DBConnector.errorStatus();
-				if(ok.length()!=0)
-					Log.errOut("Save Thread","DB: "+ok);
+				if(!CommonStrings.isDisabled("SAVETHREAD"))
+				{
+					status="checking database health";
+					StringBuffer ok=DBConnector.errorStatus();
+					if(ok.length()!=0)
+						Log.errOut("Save Thread","DB: "+ok);
+					else
+					{
+						itemSweep();
+						autoPurge();
+						lastStop=System.currentTimeMillis();
+						milliTotal+=(lastStop-lastStart);
+						tickTotal++;
+						status="sleeping";
+						Thread.sleep(MudHost.TIME_TICK_DELAY);
+						lastStart=System.currentTimeMillis();
+						savePlayers();
+						//if(processed>0)
+						//	Log.sysOut("SaveThread","Saved "+processed+" mobs.");
+					}
+				}
 				else
 				{
-					itemSweep();
-					autoPurge();
-					lastStop=System.currentTimeMillis();
-					milliTotal+=(lastStop-lastStart);
-					tickTotal++;
 					status="sleeping";
-					Thread.sleep(MudHost.TIME_TICK_DELAY);
-					lastStart=System.currentTimeMillis();
-					savePlayers();
-					//if(processed>0)
-					//	Log.sysOut("SaveThread","Saved "+processed+" mobs.");
+					Thread.sleep(MudHost.TIME_TICK_DELAY*10);
 				}
 			}
 			catch(InterruptedException ioe)

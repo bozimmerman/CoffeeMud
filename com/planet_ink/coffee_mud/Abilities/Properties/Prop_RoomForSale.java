@@ -92,6 +92,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					mobs.addElement(M);
 			}
 			CMClass.DBEngine().DBUpdateTheseMOBs(R,mobs);
+			CMClass.DBEngine().DBUpdateItems(R);
 		}
 	}
 
@@ -180,35 +181,19 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				CMClass.DBEngine().DBUpdateRoom(R);
 			}
 
-			// this works on the priciple that
-			// 1. if an item has ONLY been removed, the lastNumItems will be != current # items
-			// 2. if an item has ONLY been added, the dispossessiontime will be != null
-			// 3. if an item has been added AND removed, the dispossession time will be != null on the added
-			if(lastNumItems<0)
-				lastNumItems=R.numItems();
-			else
-			if(R.numItems()!=lastNumItems)
-				updateItems=true;
-
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);
 				if((I.dispossessionTime()!=0)
 				&&(!(I instanceof DeadBody)))
-				{
 					I.setDispossessionTime(0);
-					updateItems=true;
-				}
 				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
 				&&(I.envStats().rejuv()!=0))
 				{
 					I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 					I.recoverEnvStats();
-					updateItems=true;
 				}
 			}
-			if(updateItems)
-				CMClass.DBEngine().DBUpdateItems(R);
 		}
 	}
 }
