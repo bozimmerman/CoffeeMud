@@ -97,7 +97,20 @@ public class Spell_Mirage extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(Affect.MSG_OK_VISUAL,"The appearance of this place changes...");
-				beneficialAffect(mob,mob.location(),0);
+				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
+				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+				{
+					Ability A=(Ability)copyOf();
+					A.setInvoker(mob);
+					newRoom=((Room)affected).getArea().getRandomRoom();
+					if((newRoom!=null)&&(newRoom.roomID().length()>0)&&(!(newRoom instanceof GridLocale)))
+					{
+						A.setMiscText(newRoom.roomID());
+						mob.location().addNonUninvokableAffect(A);
+					}
+				}
+				else
+					beneficialAffect(mob,mob.location(),0);
 			}
 		}
 		else

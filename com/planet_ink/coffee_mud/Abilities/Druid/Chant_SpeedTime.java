@@ -26,9 +26,12 @@ public class Chant_SpeedTime extends Chant
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"Something is happening!":"^S<S-NAME> begin(s) to chant...^?");
 			if(mob.location().okAffect(mob,msg))
 			{
+				int mana=mob.curState().getMana();
 				mob.location().send(mob,msg);
 				for(int i=0;i<(adjustedLevel(mob)/2);i++)
 					ExternalPlay.tickAllTickers(mob.location());
+				if(mob.curState().getMana()>mana)
+					mob.curState().setMana(mana);
 				mob.location().show(mob,null,this,affectType(auto),auto?"It stops.":"^S<S-NAME> stop(s) chanting.^?");
 			}
 		}

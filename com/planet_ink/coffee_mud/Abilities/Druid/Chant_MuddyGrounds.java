@@ -67,7 +67,11 @@ public class Chant_MuddyGrounds extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(Affect.MSG_OK_VISUAL,"The ground here turns to MUD!");
-				beneficialAffect(mob,mob.location(),0);
+				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
+				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+					mob.location().addNonUninvokableAffect(this);
+				else
+					beneficialAffect(mob,mob.location(),0);
 			}
 			
 		}

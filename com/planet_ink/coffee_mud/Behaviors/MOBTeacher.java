@@ -135,6 +135,7 @@ public class MOBTeacher extends CombatAbilities
 		if((!affect.amISource(monster))
 		&&(!mob.isMonster())
 		&&(affect.sourceMessage()!=null)
+		&&((affect.target()==null)||affect.amITarget(monster))
 		&&(affect.targetMinor()==Affect.TYP_SPEAK))
 		{
 			int x=affect.sourceMessage().toUpperCase().indexOf("TEACH");

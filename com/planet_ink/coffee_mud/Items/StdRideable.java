@@ -428,6 +428,11 @@ public class StdRideable extends StdContainer implements Rideable
 						&&(sourceRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
 						&&(targetRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
 							ok=false;
+						if((targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
+						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+							ok=false;
 						break;
 					}
 					if(!ok)

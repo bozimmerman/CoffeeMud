@@ -563,6 +563,7 @@ public class Generic
 					 EnvStats.IS_FLYING,
 					 EnvStats.IS_CLIMBING,
 					 EnvStats.IS_SNEAKING,
+					 EnvStats.IS_SWIMMING,
 					 EnvStats.IS_EVIL,
 					 EnvStats.IS_GOOD};
 		if((showFlag!=showNumber)&&(showFlag>-999))
@@ -575,6 +576,7 @@ public class Generic
 							 "fly",
 							 "climb",
 							 "sneak",
+							 "swimmer",
 							 "evil",
 							 "good"};
 			StringBuffer buf=new StringBuffer(showNumber+". Dispositions: ");

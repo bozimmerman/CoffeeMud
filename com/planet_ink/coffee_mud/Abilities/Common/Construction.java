@@ -22,9 +22,10 @@ public class Construction extends CommonSkill
 	private final static int BUILD_TITLE=6;
 	private final static int BUILD_DESC=7;
 	private final static int BUILD_STAIRS=8;
+	private final static int BUILD_SECRETDOOR=9;
 
-	private final static String[] names={"Wall","Door","Roof","Gate","Fence","Demolish","Title","Description","Stairs"};
-	private final static int[] woodReq={100,125,350,50,50,0,0,0,350};
+	private final static String[] names={"Wall","Door","Roof","Gate","Fence","Demolish","Title","Description","Stairs","Secret Door"};
+	private final static int[] woodReq={100,125,350,50,50,0,0,0,350,200};
 
 	private Room room=null;
 	private int dir=-1;
@@ -65,6 +66,9 @@ public class Construction extends CommonSkill
 						break;
 					case BUILD_DOOR:
 						commonTell(mob,"You've ruined the door!");
+						break;
+					case BUILD_SECRETDOOR:
+						commonTell(mob,"You've ruined the secret door!");
 						break;
 					case BUILD_FENCE:
 						commonTell(mob,"You've ruined the fence!");
@@ -198,8 +202,11 @@ public class Construction extends CommonSkill
 						}
 						break;
 					case BUILD_DOOR:
+					case BUILD_SECRETDOOR:
 						{
 							Exit X=CMClass.getExit("GenExit");
+							if(doingCode==BUILD_SECRETDOOR)
+								X.baseEnvStats().setDisposition(EnvStats.IS_HIDDEN);
 							X.setName("a door");
 							X.setDescription("");
 							X.setDisplayText("");
@@ -210,6 +217,8 @@ public class Construction extends CommonSkill
 							if(room.rawDoors()[dir]!=null)
 							{
 								Exit X2=(Exit)X.copyOf();
+								if(doingCode==BUILD_SECRETDOOR)
+									X2.baseEnvStats().setDisposition(EnvStats.IS_HIDDEN);
 								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=X2;
 								ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
 							}
@@ -305,8 +314,11 @@ public class Construction extends CommonSkill
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Wood required\n\r");
-			for(int r=0;r<8;r++)
-				buf.append(Util.padRight(names[r],20)+" "+woodReq[r]+"\n\r");
+			for(int r=0;r<9;r++)
+			{
+				if((r!=BUILD_SECRETDOOR)||(mob.charStats().getCurrentClass().baseClass().equals("Thief")))
+					buf.append(Util.padRight(names[r],20)+" "+woodReq[r]+"\n\r");
+			}
 			commonTell(mob,buf.toString());
 			return true;
 		}
@@ -322,9 +334,10 @@ public class Construction extends CommonSkill
 		messedUp=false;
 
 		String firstWord=(String)commands.firstElement();
-		for(int r=0;r<8;r++)
+		for(int r=0;r<0;r++)
 		{
-			if(names[r].toUpperCase().startsWith(firstWord.toUpperCase()))
+			if((names[r].toUpperCase().startsWith(firstWord.toUpperCase()))
+			&&((r!=BUILD_SECRETDOOR)||(mob.charStats().getCurrentClass().baseClass().equals("Thief"))))
 				doingCode=r;
 		}
 		if(doingCode<0)
@@ -469,6 +482,9 @@ public class Construction extends CommonSkill
 			break;
 		case BUILD_DOOR:
 			verb="building the "+Directions.getDirectionName(dir)+" door";
+			break;
+		case BUILD_SECRETDOOR:
+			verb="building a hidden "+Directions.getDirectionName(dir)+" door";
 			break;
 		case BUILD_TITLE:
 			verb="giving this place a title";

@@ -14,7 +14,9 @@ QUEST_TIME_PROG smurfocide 1
 ~
 
 QUEST_TIME_PROG smurfocide -1
-	QUESTCHAT Ahh -- forget it! I have plans of my own...<evil grin>
+	if var($i SMURFOCIDE != DONE)
+		QUESTCHAT Ahh -- forget it! I have plans of my own...<evil grin>
+	endif
 	mpsetvar $i SMURFOCIDE ''
 	mpsetvar * SMURFOCIDE ''
 	mpsetvar $i PAPASMURF ''
@@ -34,7 +36,7 @@ GIVE_PROG 'the body of papa smurf'
 				mpsetvar $i SMURFOCIDE DONE
 				say "$n" Wonderful!  Now I can make my famous smurf stew!
 				MPFORCE Azreal emote licks his lips.
-				mpexp $n 100
+				mpexp $n 1000
 				mpoload QuestPoint
 				give "a quest point" "$n"
 				mpquestwin $n smurfocide

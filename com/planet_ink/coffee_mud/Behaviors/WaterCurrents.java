@@ -44,6 +44,7 @@ public class WaterCurrents extends ActiveTicker
 			if((M!=null)
 			&&(!M.isMonster())
 			&&(M.riding()==null)
+			&&(!Sense.isFlying(M))
 			&&((!(M instanceof Rideable))||(((Rideable)M).numRiders()==0))
 			&&(!M.isInCombat())
 			&&(!mobsDone.contains(M)))

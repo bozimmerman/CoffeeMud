@@ -10,31 +10,24 @@ public class Spell_FakeSpring extends Spell
 	public String name(){return "Fake Spring";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	Room SpringLocation=null;
-	Drink littleSpring=null;
 	public Environmental newInstance(){	return new Spell_FakeSpring();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void unInvoke()
 	{
-		if(SpringLocation==null)
-			return;
-		if(littleSpring==null)
-			return;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			Item spring=(Item)littleSpring; // protects against uninvoke loops!
-			littleSpring=null;
+			Item spring=(Item)affected; // protects against uninvoke loops!
+			Room SpringLocation=CoffeeUtensils.roomLocation(spring);
 			spring.destroy();
 			SpringLocation.recoverRoomStats();
-			SpringLocation=null;
 		}
 	}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(affect.amITarget(littleSpring))
+		if(affect.amITarget(affected))
 		{
 			if(affect.targetMinor()==Affect.TYP_DRINK)
 			{
@@ -45,7 +38,7 @@ public class Spell_FakeSpring extends Spell
 			}
 		}
 		else
-		if((affect.tool()!=null)&&(affect.tool()==littleSpring)&&(affect.target()!=null)&&(affect.target() instanceof Drink))
+		if((affect.tool()!=null)&&(affect.tool()==affected)&&(affect.target()!=null)&&(affect.target() instanceof Drink))
 		{
 			if(affect.targetMinor()==Affect.TYP_FILL)
 			{
@@ -89,9 +82,15 @@ public class Spell_FakeSpring extends Spell
 				W.recoverEnvStats();
 				mob.location().addItem((Item)W);
 				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
-				SpringLocation=mob.location();
-				littleSpring=W;
-				beneficialAffect(mob,W,0);
+				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
+				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+				{
+					Ability A=(Ability)copyOf();
+					A.setInvoker(mob);
+					W.addNonUninvokableAffect(A);
+				}
+				else
+					beneficialAffect(mob,W,0);
 				mob.location().recoverEnvStats();
 			}
 		}

@@ -58,7 +58,13 @@ public class Spell_IllusoryWall extends Spell
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,exit,0);
+				if((ExternalPlay.doesOwnThisProperty(mob,room))
+				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),room)))
+				||(ExternalPlay.doesOwnThisProperty(mob,mob.location()))
+				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+					exit.addNonUninvokableAffect(this);
+				else
+					beneficialAffect(mob,exit,0);
 			}
 		}
 

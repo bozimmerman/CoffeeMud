@@ -60,7 +60,11 @@ public class Fish extends StdRace
 					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
 			}
 			else
+			{
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
+				if((affectableStats.disposition()&EnvStats.IS_SWIMMING)>0)
+					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SWIMMING);
+			}
 		}
 	}
 	public String healthText(MOB mob)

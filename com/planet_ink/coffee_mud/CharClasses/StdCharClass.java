@@ -330,7 +330,9 @@ public class StdCharClass implements CharClass, Cloneable
 		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " +
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
-		int mvGain=(int)Math.round(Util.mul(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0),getMovementMultiplier()));
+		double lvlMul=1.0-Util.div(mob.envStats().level(),100.0);
+		int mvGain=(int)Math.round(lvlMul*Util.mul(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0),getMovementMultiplier()));
+		
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
@@ -502,7 +504,11 @@ public class StdCharClass implements CharClass, Cloneable
 
 	public int getLevelMove(MOB mob)
 	{
-		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),9.0)*getMovementMultiplier())));
+		int move=100;
+		double lvlMul=1.0-Util.div(mob.envStats().level(),100.0);
+		for(int i=1;i<mob.baseEnvStats().level();i++)
+			move+=((int)Math.round(lvlMul*Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),9.0)*getMovementMultiplier()));
+		return move;
 	}
 
 	public boolean canAdvance(MOB mob, int abilityCode)

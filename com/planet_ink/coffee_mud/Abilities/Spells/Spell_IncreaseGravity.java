@@ -13,7 +13,15 @@ public class Spell_IncreaseGravity extends Spell
 	protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	private Vector childrenAffects=new Vector();
-	private Room gravityRoom=null;
+	private Room theGravityRoom=null;
+	private Room gravityRoom()
+	{
+		if(theGravityRoom!=null)
+			return theGravityRoom;
+		if(affected instanceof Room)
+			theGravityRoom=(Room)affected;
+		return theGravityRoom;
+	}
 	public Environmental newInstance(){	return new Spell_IncreaseGravity();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
@@ -57,7 +65,7 @@ public class Spell_IncreaseGravity extends Spell
 			if(affected instanceof MOB)
 			{
 				MOB mob=(MOB)affected;
-				if((mob.location()!=null)&&(mob.location()!=gravityRoom))
+				if((mob.location()!=null)&&(mob.location()!=gravityRoom()))
 					mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "Your weight returns to normal..");
 			}
 		}
@@ -69,7 +77,7 @@ public class Spell_IncreaseGravity extends Spell
 		if(!super.okAffect(myHost,msg)) return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			if(((MOB)affected).location()!=gravityRoom)
+			if(((MOB)affected).location()!=gravityRoom())
 			{
 				unInvoke();
 				return false;
@@ -101,7 +109,7 @@ public class Spell_IncreaseGravity extends Spell
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(!(affected instanceof MOB)) return;
-		if(((MOB)affected).location()!=gravityRoom)
+		if(((MOB)affected).location()!=gravityRoom())
 			unInvoke();
 		else
 		{
@@ -144,8 +152,12 @@ public class Spell_IncreaseGravity extends Spell
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				gravityRoom=mob.location();
-				beneficialAffect(mob,mob.location(),adjustedLevel(mob));
+				theGravityRoom=mob.location();
+				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
+				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+					mob.location().addNonUninvokableAffect((Ability)copyOf());
+				else
+					beneficialAffect(mob,mob.location(),adjustedLevel(mob));
 			}
 		}
 		else

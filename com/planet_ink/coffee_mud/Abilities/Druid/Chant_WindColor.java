@@ -76,13 +76,19 @@ public class Chant_WindColor extends Chant
 			{
 				int done=0;
 				if(colors==null) colors=new int[9];
-				if(I.envStats().level()>=25)
-					levelCode=2;
+				if(I.envStats().level()>=(mob.envStats().level()+25))
+					levelCode=4;
 				else
-				if(I.envStats().level()>=15)
+				if(I.envStats().level()>=(mob.envStats().level()+15))
+				{ if (levelCode<3) levelCode=3;}
+				else
+				if(I.envStats().level()>=(mob.envStats().level()+5))
+				{ if (levelCode<2) levelCode=2;}
+				else
+				if(I.envStats().level()>(mob.envStats().level()-5))
 				{ if (levelCode<1) levelCode=1;}
 				else
-				if(I.envStats().level()>5)
+				if(I.envStats().level()>(mob.envStats().level()-15))
 				{ if (levelCode<0) levelCode=0;}
 				if(Sense.isHidden(I))
 				{ done++; colors[5]++;}
@@ -111,14 +117,21 @@ public class Chant_WindColor extends Chant
 			if((M!=null)&&(M!=mob)&&(!group.contains(M)))
 			{
 				if(colors==null) colors=new int[9];
-				if(M.envStats().level()>=25)
-					levelCode=2;
+				if(M.envStats().level()>=(mob.envStats().level()+25))
+					levelCode=4;
 				else
-				if(M.envStats().level()>=15)
+				if(M.envStats().level()>=(mob.envStats().level()+15))
+				{ if (levelCode<3) levelCode=3;}
+				else
+				if(M.envStats().level()>=(mob.envStats().level()+5))
+				{ if (levelCode<2) levelCode=2;}
+				else
+				if(M.envStats().level()>(mob.envStats().level()-5))
 				{ if (levelCode<1) levelCode=1;}
 				else
-				if(M.envStats().level()>5)
+				if(M.envStats().level()>(mob.envStats().level()-15))
 				{ if (levelCode<0) levelCode=0;}
+				
 				int done=0;
 				if(M.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 				{ done++; colors[0]++;}
@@ -156,16 +169,22 @@ public class Chant_WindColor extends Chant
 			switch(levelCode)
 			{
 			case -1:
-				str.append("faded stripes of ");
+				str.append("dull stripes of ");
 				break;
 			case 0:
-				str.append("striped ");
+				str.append("faded stripes of ");
 				break;
 			case 1:
-				str.append("brightly striped ");
+				str.append("striped ");
 				break;
 			case 2:
+				str.append("brightly striped ");
+				break;
+			case 3:
 				str.append("brilliant stripes of ");
+				break;
+			case 4:
+				str.append("dazzling stripes of ");
 				break;
 			}
 			break;
@@ -173,16 +192,22 @@ public class Chant_WindColor extends Chant
 			switch(levelCode)
 			{
 			case -1:
-				str.append("a swirl of faded ");
+				str.append("a swirl of dull ");
 				break;
 			case 0:
-				str.append("a swirl of ");
+				str.append("a swirl of faded ");
 				break;
 			case 1:
-				str.append("a bright swirl of ");
+				str.append("a swirl of ");
 				break;
 			case 2:
+				str.append("a bright swirl of ");
+				break;
+			case 3:
 				str.append("a swirl of brilliant ");
+				break;
+			case 4:
+				str.append("a swirl of dazzling ");
 				break;
 			}
 			break;
@@ -193,12 +218,18 @@ public class Chant_WindColor extends Chant
 				str.append("faded ");
 				break;
 			case 0:
+				str.append("faded ");
 				break;
 			case 1:
-				str.append("bright ");
 				break;
 			case 2:
+				str.append("bright ");
+				break;
+			case 3:
 				str.append("brilliant ");
+				break;
+			case 4:
+				str.append("dazzling ");
 				break;
 			}
 			break;

@@ -13,26 +13,19 @@ public class Prayer_CreateWater extends Prayer
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	private Room SpringLocation=null;
-	private Item littleSpring=null;
 	public Environmental newInstance(){	return new Prayer_CreateWater();}
 
 	public void unInvoke()
 	{
-		if(SpringLocation==null)
-			return;
-		if(littleSpring==null)
-			return;
-		if(canBeUninvoked())
+		Item spring=(Item)affected; // protects against uninvoke loops!
+		Room SpringLocation=CoffeeUtensils.roomLocation(spring);
+		if((canBeUninvoked())&&(SpringLocation!=null))
 			SpringLocation.showHappens(Affect.MSG_OK_VISUAL,"The little spring dries up.");
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			Item spring=littleSpring; // protects against uninvoke loops!
-			littleSpring=null;
 			spring.destroy();
 			SpringLocation.recoverRoomStats();
-			SpringLocation=null;
 		}
 	}
 
@@ -61,9 +54,15 @@ public class Prayer_CreateWater extends Prayer
 
 				mob.location().addItem(newItem);
 				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
-				SpringLocation=mob.location();
-				littleSpring=newItem;
-				beneficialAffect(mob,newItem,0);
+				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
+				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+				{
+					Ability A=(Ability)copyOf();
+					A.setInvoker(mob);
+					newItem.addNonUninvokableAffect(A);
+				}
+				else
+					beneficialAffect(mob,newItem,0);
 				mob.location().recoverEnvStats();
 			}
 		}

@@ -507,7 +507,7 @@ public class SaucerSupport
 	
 	public static int trackNextDirectionFromHere(Vector theTrail, 
 												 Room location,
-												 boolean noWater)
+												 boolean noWaterOrAir)
 	{
 		if((theTrail==null)||(location==null))
 			return -1;
@@ -523,11 +523,13 @@ public class SaucerSupport
 			Exit thisExit=location.getExitInDir(dirs);
 			if((thisRoom!=null)
 			&&(thisExit!=null)
-			&&((!noWater)||(
+			&&((!noWaterOrAir)||(
 			 	  (thisRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
 			 	&&(thisRoom.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
 			 	&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-			 	&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))))
+			 	&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			 	&&(thisRoom.domainType()!=Room.DOMAIN_INDOORS_AIR)
+			 	&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_AIR))))
 			{
 				for(int trail=0;trail<theTrail.size();trail++)
 				{
@@ -689,6 +691,12 @@ public class SaucerSupport
 				||(nextRoom.domainConditions()==Room.DOMAIN_OUTDOORS_AIR)))
 					direction=-1;
 				else
+				if((oldRoom.domainConditions()!=nextRoom.domainConditions())
+				&&(!Sense.isSwimming(mob))
+				&&((nextRoom.domainConditions()==Room.DOMAIN_INDOORS_UNDERWATER)
+				||(nextRoom.domainConditions()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
+					direction=-1;
+				else
 				if((!wander)&&(!oldRoom.getArea().Name().equals(nextRoom.getArea().Name())))
 					direction=-1;
 				else
@@ -747,9 +755,34 @@ public class SaucerSupport
 			return false;
 
 		int dir=direction;
-		Ability A=mob.fetchAbility("Thief_Sneak");
-		if(A!=null)
+		if(((nextRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+		||(nextRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		   &&(mob.fetchAbility("Skill_Swim")!=null))
 		{
+			Ability A=mob.fetchAbility("Skill_Swim");
+			Vector V=new Vector();
+			V.add(Directions.getDirectionName(direction));
+			if(A.profficiency()<50)	A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
+			int oldMana=mob.curState().getMana();
+			A.invoke(mob,V,null,false);
+			mob.curState().setMana(oldMana);
+		}
+		else
+		if((nextRoom.ID().indexOf("Surface")>0)
+		&&(mob.fetchAbility("Skill_Climb")!=null))
+		{
+			Ability A=mob.fetchAbility("Skill_Climb");
+			Vector V=new Vector();
+			V.add(Directions.getDirectionName(direction));
+			if(A.profficiency()<50)	A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
+			int oldMana=mob.curState().getMana();
+			A.invoke(mob,V,null,false);
+			mob.curState().setMana(oldMana);
+		}
+		else
+		if(mob.fetchAbility("Thief_Sneak")!=null)
+		{
+			Ability A=mob.fetchAbility("Thief_Sneak");
 			Vector V=new Vector();
 			V.add(Directions.getDirectionName(direction));
 			if(A.profficiency()<50)
