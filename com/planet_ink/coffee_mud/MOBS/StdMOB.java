@@ -625,8 +625,8 @@ public class StdMOB implements MOB
 	{
 		if((!mayIFight(mob))
 		||(location()!=mob.location())
-		||(!Sense.isInTheGame(this))
-		||(!Sense.isInTheGame(mob)))
+		||(!Sense.isInTheGame(this,false))
+		||(!Sense.isInTheGame(mob,false)))
 		   return false;
 		return true;
 	}

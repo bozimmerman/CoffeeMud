@@ -304,7 +304,7 @@ public class Pregnancy extends StdAbility
 		if((tickID==MudHost.TICK_MOB)
 		&&(affected!=null)
 		&&(affected instanceof MOB)
-		&&(Sense.isInTheGame(affected))
+		&&(Sense.isInTheGame(affected,true))
 		&&(((MOB)affected).location().isInhabitant((MOB)affected)))
 		{
 			MOB mob=(MOB)affected;

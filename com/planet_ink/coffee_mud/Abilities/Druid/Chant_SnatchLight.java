@@ -32,7 +32,7 @@ public class Chant_SnatchLight extends Chant
 	public Room snatchLocation()
 	{
 		if((invoker!=null)
-		&&Sense.isInTheGame(invoker)
+		&&Sense.isInTheGame(invoker,false)
 		&&(invoker.fetchEffect(ID())!=null))
 		   return ((MOB)invoker).location();
 		return null;

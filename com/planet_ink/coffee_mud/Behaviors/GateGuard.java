@@ -56,7 +56,7 @@ public class GateGuard extends StdBehavior
 
 	private int findGate(MOB mob)
 	{
-		if(!Sense.isInTheGame(mob))
+		if(!Sense.isInTheGame(mob,false))
 			return -1;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{

@@ -40,7 +40,7 @@ public class Prop_LimitedItems extends Property
 
 	private void countIfNecessary(Item I)
 	{
-		if(Sense.isInTheGame(I))
+		if(Sense.isInTheGame(I,false))
 		{
 			int max=Util.s_int(text());
 			Vector myInstances=null;

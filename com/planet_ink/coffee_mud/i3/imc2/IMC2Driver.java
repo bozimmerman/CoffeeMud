@@ -983,7 +983,7 @@ public final class IMC2Driver extends Thread {
 		MOB M=CMMap.getPlayer(from.name);
 		if(M==null) return;
         imc_addkey(out, "text", "imcpfind "+from.name+"@"+imc_name
-						+" is "+(Sense.isInTheGame(M) ? "online":"offline")+ ".");
+						+" is "+(Sense.isInTheGame(M,false) ? "online":"offline")+ ".");
 
         imc_send(out);
     }

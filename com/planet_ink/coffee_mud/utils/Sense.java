@@ -655,21 +655,24 @@ public class Sense
 		return 0;
 	}
 	
-	public static boolean isInTheGame(Environmental E)
+	public static boolean isInTheGame(Environmental E, boolean reqInhabitation)
 	{
 		if(E instanceof Room)
 			return CMMap.getRoom(CMMap.getExtendedRoomID((Room)E))==E;
 		else
 		if(E instanceof MOB)
-			return (((MOB)E).location()!=null)&&((MOB)E).amActive();
+			return (((MOB)E).location()!=null)
+				   &&((MOB)E).amActive()
+				   &&((!reqInhabitation)||(((MOB)E).location().isInhabitant((MOB)E)));
 		else
 		if(E instanceof Item)
 		{
 			if(((Item)E).owner() instanceof MOB)
-				return isInTheGame((MOB)((Item)E).owner());
+				return isInTheGame((MOB)((Item)E).owner(),reqInhabitation);
 			else
 			if(((Item)E).owner() instanceof Room)
-				return !((Item)E).amDestroyed();
+				return ((!((Item)E).amDestroyed())
+						&&((!reqInhabitation)||(((MOB)E).location().isInhabitant((MOB)E))));
 			else
 				return false;
 		}

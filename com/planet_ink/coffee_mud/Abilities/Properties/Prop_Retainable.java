@@ -87,7 +87,7 @@ public class Prop_Retainable extends Property
 					}
 					if(period<=0)
 						period=((long)periodic)*((long)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY))*MudHost.TICK_TIME;
-					if((System.currentTimeMillis()>(last+period))&&(Sense.isInTheGame(mob)))
+					if((System.currentTimeMillis()>(last+period))&&(Sense.isInTheGame(mob,false)))
 					{
 						last=System.currentTimeMillis();
 						miscText=price+";"+periodic+";"+last;

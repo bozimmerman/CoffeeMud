@@ -331,7 +331,7 @@ public class Sounder extends StdBehavior
 		}
 		else
 		{
-			if((ticking instanceof Item)&&(!Sense.isInTheGame((Item)ticking)))
+			if((ticking instanceof Item)&&(!Sense.isInTheGame((Item)ticking,false)))
 				return;
 			Room R=getBehaversRoom(ticking);
 			if(R!=null)

@@ -20,23 +20,32 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Follower extends StdBehavior
+public class Follower extends ActiveTicker
 {
 	public String ID(){return "Follower";}
-    private int followChance = 100;
+	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
 	private boolean realFollow=false;
+	private boolean inventory=false;
 	private int lastNumPeople=-1;
+	private Room lastRoom=null;
+	private MOB lastOwner=null;
 	
 	public Follower()
 	{
+		minTicks=0;
+		maxTicks=0;
 		direction=-1;
 	}
 	
     public void setParms(String newParms) 
 	{
+		minTicks=0;
+		maxTicks=0;
+		chance=100;
         super.setParms(newParms);
-        followChance = Util.getParmInt(newParms, "chance", 100);
-		realFollow=Util.parse(newParms.toUpperCase()).contains("GROUP");
+		Vector V=Util.parse(newParms.toUpperCase());
+		realFollow=V.contains("GROUP");
+		inventory=V.contains("INVENTORY")||V.contains("INV");
     }
 	
 
@@ -50,97 +59,165 @@ public class Follower extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 
-		if((!canFreelyBehaveNormal(affecting))||(realFollow)) return;
-
 		MOB mob=msg.source();
 		if(mob.amDead()) return;
 		if(mob.location()==null) return;
-
-
-		if((direction<0)
-		&&(msg.amITarget(((MOB)affecting).location()))
-		&&(Sense.canBeSeenBy(mob,(MOB)affecting))
-		&&(msg.othersMessage()!=null)
-		&&((msg.targetMinor()==CMMsg.TYP_LEAVE)
-		 ||(msg.targetMinor()==CMMsg.TYP_FLEE))
-        &&(followChance>Dice.rollPercentage())
-		&&(MUDZapper.zapperCheck(getParms(),mob)))
+		
+		if(affecting instanceof MOB)
 		{
-			String directionWent=msg.othersMessage();
-			int x=directionWent.lastIndexOf(" ");
-			if(x>=0)
-			{
-				directionWent=directionWent.substring(x+1);
-				direction=Directions.getDirectionCode(directionWent);
-			}
-			else
-				direction=-1;
-		}
+			if((!canFreelyBehaveNormal(affecting))||(realFollow)) 
+				return;
 
+			if((direction<0)
+			&&(msg.amITarget(((MOB)affecting).location()))
+			&&(Sense.canBeSeenBy(mob,(MOB)affecting))
+			&&(msg.othersMessage()!=null)
+			&&((msg.targetMinor()==CMMsg.TYP_LEAVE)
+			 ||(msg.targetMinor()==CMMsg.TYP_FLEE))
+			&&(MUDZapper.zapperCheck(getParms(),mob))
+			&&(Dice.rollPercentage()<chance))
+			{
+				String directionWent=msg.othersMessage();
+				int x=directionWent.lastIndexOf(" ");
+				if(x>=0)
+				{
+					directionWent=directionWent.substring(x+1);
+					direction=Directions.getDirectionCode(directionWent);
+				}
+				else
+					direction=-1;
+			}
+		}
+	}
+	
+	public MOB pickRandomMOBHere(Environmental ticking, Room room)
+	{
+		if(room==null) return null;
+		if((room.numInhabitants()!=lastNumPeople)
+		||(room!=lastRoom))
+		{
+			lastNumPeople=room.numInhabitants();
+			lastRoom=room;
+			for(int i=0;i<room.numInhabitants();i++)
+			{
+				MOB M=room.fetchInhabitant(i);
+				if((M!=null)
+				&&(M!=ticking)
+				&&(!CMSecurity.isAllowed(M,room,"CMDMOBS"))
+				&&(!CMSecurity.isAllowed(M,room,"CMDROOMS"))
+				&&(MUDZapper.zapperCheck(getParms(),M)))
+					return M;
+			}
+		}
+		return null;
+	}
+
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(!super.okMessage(host,msg))
+			return false;
+		if((host instanceof Item)
+		&&(msg.tool()==host)
+		&&(msg.sourceMinor()==CMMsg.TYP_SELL))
+		{
+			msg.source().tell("You can not sell "+host.name()+".");
+			return false;
+		}
+		return true;
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=MudHost.TICK_MOB) return true;
-		if((realFollow)&&(ticking instanceof MOB))
+		
+		if((ticking instanceof Item)
+		&&((lastOwner==null)
+		   ||((!inventory)&&(!Sense.isInTheGame(lastOwner,false)))))
 		{
+			Item I=(Item)ticking;
+			if((I.owner()!=null)
+			&&(I.owner() instanceof MOB)
+			&&(MUDZapper.zapperCheck(getParms(),(MOB)I.owner())))
+				lastOwner=(MOB)I.owner();
+			else
+			if(!inventory)
+			{
+				MOB M=pickRandomMOBHere(I,CoffeeUtensils.roomLocation(I));
+				if(M!=null) lastOwner=M;
+			}
+		}
+		
+		if(!canAct(ticking,tickID)) 
+			return true;
+		
+		if(ticking instanceof MOB)
+		{
+			if(tickID!=MudHost.TICK_MOB) 
+				return true;
 			if(!canFreelyBehaveNormal(ticking)) 
 				return true;
-			MOB mob=(MOB)ticking;
-			Room room=mob.location();
-			if((room.numInhabitants()!=lastNumPeople)&&(mob.amFollowing()==null))
+			if(realFollow)
 			{
-				for(int i=0;i<room.numInhabitants();i++)
+				MOB mob=(MOB)ticking;
+				Room room=mob.location();
+				if(mob.amFollowing()==null)
 				{
-					MOB M=room.fetchInhabitant(i);
-					if((M!=null)
-					&&(M!=ticking)
-					&&(!CMSecurity.isAllowed(M,room,"CMDMOBS"))
-					&&(!CMSecurity.isAllowed(M,room,"CMDROOMS"))
-					&&(MUDZapper.zapperCheck(getParms(),M))
-					&&(followChance>Dice.rollPercentage()))
-					{
+					MOB M=pickRandomMOBHere(mob,room);
+					if(M!=null)
 						CommonMsgs.follow(mob,M,false);
-						break;
-					}
 				}
-				lastNumPeople=room.numInhabitants();
+			}
+			else
+			if(direction>=0)
+			{
+				MOB mob=(MOB)ticking;
+				Room thisRoom=mob.location();
+				Room otherRoom=(Room)thisRoom.getRoomInDir(direction);
+
+				if(otherRoom!=null)
+				{
+					if(!otherRoom.getArea().Name().equals(thisRoom.getArea().Name()))
+						direction=-1;
+				}
+				else
+					direction=-1;
+
+				if(direction<0)
+					return true;
+				
+				boolean move=true;
+				for(int m=0;m<thisRoom.numInhabitants();m++)
+				{
+					MOB inhab=thisRoom.fetchInhabitant(m);
+					if((inhab!=null)
+					&&(CMSecurity.isAllowed(inhab,thisRoom,"CMDMOBS")
+					   ||CMSecurity.isAllowed(inhab,thisRoom,"CMDROOMS")))
+						move=false;
+				}
+				if(move)
+					MUDTracker.move(mob,direction,false,false);
+				direction=-1;
 			}
 		}
 		else
-		if((direction>=0)&&(ticking instanceof MOB))
+		if((ticking instanceof Item)
+		&&(lastOwner!=null))
 		{
-			if(!canFreelyBehaveNormal(ticking)) 
-				return true;
-			MOB mob=(MOB)ticking;
-			Room thisRoom=mob.location();
-			Room otherRoom=(Room)thisRoom.getRoomInDir(direction);
-
-			if(otherRoom!=null)
+			Item I=(Item)ticking;
+			if(I.container()!=null) I.setContainer(null);
+			
+			Room R=CoffeeUtensils.roomLocation(I);
+			if(R==null)	return true;
+			
+			if(R!=lastOwner.location())
+				lastOwner.location().bringItemHere(I,0);
+			if((inventory)&&(R.isInhabitant(lastOwner)))
 			{
-				if(!otherRoom.getArea().Name().equals(thisRoom.getArea().Name()))
-					direction=-1;
+				CommonMsgs.get(lastOwner,null,I,true);
+				if(!lastOwner.isMine(I))
+					lastOwner.giveItem(I);
 			}
-			else
-				direction=-1;
-
-			if(direction<0)
-				return true;
-
-
-			boolean move=true;
-			for(int m=0;m<thisRoom.numInhabitants();m++)
-			{
-				MOB inhab=thisRoom.fetchInhabitant(m);
-				if((inhab!=null)
-				&&(CMSecurity.isAllowed(inhab,thisRoom,"CMDMOBS")
-				   ||CMSecurity.isAllowed(inhab,thisRoom,"CMDROOMS")))
-					move=false;
-			}
-			if(move)
-				MUDTracker.move(mob,direction,false,false);
-			direction=-1;
+			
 		}
 		return true;
 	}

@@ -146,7 +146,7 @@ public class Archon_Multiwatch extends ArchonSkill
 						MOB M=(MOB)V.elementAt(v);
 						if(M==mob) continue;
 						if(M.session()==null) continue;
-						if(!Sense.isInTheGame(M)) continue;
+						if(!Sense.isInTheGame(M,true)) continue;
 						String hisLastCmd=Util.combine(mob.session().previousCMD(),0);
 						Archon_Multiwatch A=(Archon_Multiwatch)M.fetchEffect(ID());
 						if(A!=null)
@@ -242,7 +242,7 @@ public class Archon_Multiwatch extends ArchonSkill
 			{
 				String name=(String)commands.elementAt(i);
 				MOB M=CMMap.getPlayer(name);
-				if((M.session()!=null)&&(Sense.isInTheGame(M)))
+				if((M.session()!=null)&&(Sense.isInTheGame(M,true)))
 					V.addElement(M);
 				else
 					mob.tell("'"+name+"' is not online.");

@@ -44,7 +44,7 @@ public class Chant_PlantConstriction extends Chant
 		{
 			MOB mob=(MOB)I.owner();
 			if((!mob.amDead())
-			&&(Sense.isInTheGame(mob)))
+			&&(Sense.isInTheGame(mob,false)))
 			{
 				mob.tell(I.name()+" loosens its grip on you and falls off.");
 				I.setRawWornCode(0);
@@ -64,7 +64,7 @@ public class Chant_PlantConstriction extends Chant
 			MOB mob=(MOB)I.owner();
 			if((!mob.amDead())
 			&&(mob.isMonster())
-			&&(Sense.isInTheGame(mob)))
+			&&(Sense.isInTheGame(mob,false)))
 				CommonMsgs.remove(mob,I,false);
 		}
 		return super.tick(ticking,tickID);

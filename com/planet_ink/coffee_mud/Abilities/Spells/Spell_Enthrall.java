@@ -106,7 +106,7 @@ public class Spell_Enthrall extends Spell
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;
 		MOB mob=(MOB)affecting();
-		if((getCharmer()!=null)&&(!Sense.isInTheGame(getCharmer())))
+		if((getCharmer()!=null)&&(!Sense.isInTheGame(getCharmer(),false)))
 			unInvoke();
 		else
 		if((affected==mob)

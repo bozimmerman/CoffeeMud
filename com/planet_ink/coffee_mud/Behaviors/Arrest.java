@@ -1817,7 +1817,7 @@ public class Arrest extends StdBehavior
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(!W.criminal().amDead())
-					&&(Sense.isInTheGame(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal(),true))
 					&&(Sense.canBeSeenBy(W.criminal(),officer))
 					&&(canFocusOn(officer,W.criminal())))
 					{
@@ -1877,7 +1877,7 @@ public class Arrest extends StdBehavior
 					W.setTravelAttemptTime(0);
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(Sense.isInTheGame(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal(),true))
 					&&(!W.criminal().amDead())
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(Sense.canBeSeenBy(W.criminal(),officer)))
@@ -1930,7 +1930,7 @@ public class Arrest extends StdBehavior
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(!W.criminal().amDead())
-					&&(Sense.isInTheGame(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal(),true))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(Sense.canBeSeenBy(W.criminal(),officer)))
 					{
@@ -1965,7 +1965,7 @@ public class Arrest extends StdBehavior
 						Ability cuff=W.criminal().fetchEffect("Skill_HandCuff");
 						if((Sense.isSitting(W.criminal())||(cuff!=null)||(Sense.isSleeping(W.criminal())))
 						&&(!W.criminal().amDead())
-						&&(Sense.isInTheGame(W.criminal())))
+						&&(Sense.isInTheGame(W.criminal(),true)))
 						{
 							makePeace(officer.location());
 							// cuff him!
@@ -2028,7 +2028,7 @@ public class Arrest extends StdBehavior
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(!W.criminal().amDead())
-					&&(Sense.isInTheGame(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal(),true))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
 					&&(Sense.aliveAwakeMobile(officer,true)))
@@ -2074,7 +2074,7 @@ public class Arrest extends StdBehavior
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(!W.criminal().amDead())
-					&&(Sense.isInTheGame(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal(),true))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&(Sense.aliveAwakeMobile(officer,true)))
 					{
@@ -2134,7 +2134,7 @@ public class Arrest extends StdBehavior
 					if((officer!=null)
 					&&(!W.criminal().amDead())
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(Sense.isInTheGame(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal(),true))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&(Sense.aliveAwakeMobile(officer,true)))
 					{
@@ -2192,7 +2192,7 @@ public class Arrest extends StdBehavior
 					if((officer!=null)
 					&&(!W.criminal().amDead())
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(Sense.isInTheGame(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal(),true))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&(Sense.canBeSeenBy(W.criminal(),officer)))
@@ -2242,7 +2242,7 @@ public class Arrest extends StdBehavior
 					if((officer!=null)
 					&&(!W.criminal().amDead())
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(Sense.isInTheGame(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal(),true))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&(Sense.canBeSeenBy(W.criminal(),officer)))
@@ -2308,7 +2308,7 @@ public class Arrest extends StdBehavior
 				{
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
-					&&(Sense.isInTheGame(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal(),true))
 					&&(!W.criminal().amDead())
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(Sense.aliveAwakeMobile(officer,true))
@@ -2361,7 +2361,7 @@ public class Arrest extends StdBehavior
 					if((officer!=null)
 					&&(!W.criminal().amDead())
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(Sense.isInTheGame(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal(),true))
 					&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(W.jail()!=null))
@@ -2434,7 +2434,7 @@ public class Arrest extends StdBehavior
 							if((officer==null)
 							||(!Sense.aliveAwakeMobile(officer,true))
 							||(W.criminal().amDead())
-							||(!Sense.isInTheGame(W.criminal()))
+							||(!Sense.isInTheGame(W.criminal(),true))
 							||(!W.criminal().location().isInhabitant(officer)))
 							{
 								W.setArrestingOfficer(myArea,getAnyElligibleOfficer(laws,W.jail().getArea(),W.criminal(),W.victim()));

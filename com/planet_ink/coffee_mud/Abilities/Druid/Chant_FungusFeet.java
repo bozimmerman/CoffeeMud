@@ -45,7 +45,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 			drawups+=.1;
 			if(drawups>=3.1)
 			{
-				if((mob.location()!=null)&&(Sense.isInTheGame(mob)))
+				if((mob.location()!=null)&&(Sense.isInTheGame(mob,false)))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOU-POSS> feet rot off!");
 					Ability A=CMClass.getAbility("Amputation");

@@ -75,9 +75,7 @@ public class Age extends StdAbility
 					if(I.owner() instanceof MOB)
 					{
 						following=((MOB)I.owner());
-						if((!Sense.isInTheGame(following))
-						||(following.location()==null)
-						||(!following.location().isInhabitant(following)))
+						if(!Sense.isInTheGame(following,true))
 							return;
 					}
 							

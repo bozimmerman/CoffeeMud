@@ -46,8 +46,8 @@ public class Spell_RogueLimb extends Spell
 			||(rogueLimb.getVictim()!=affected)
 			||(!Sense.aliveAwakeMobile(rogueLimb,true))
 			||(!Sense.aliveAwakeMobile((MOB)affected,true))
-			||(!Sense.isInTheGame((MOB)affected))
-			||(!Sense.isInTheGame(rogueLimb)))
+			||(!Sense.isInTheGame((MOB)affected,false))
+			||(!Sense.isInTheGame(rogueLimb,false)))
 				unInvoke();
 		}
 		else
