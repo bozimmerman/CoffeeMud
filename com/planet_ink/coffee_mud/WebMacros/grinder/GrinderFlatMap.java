@@ -28,6 +28,8 @@ public class GrinderFlatMap
     private GrinderRoom[][] grid=null;
     protected int Xbound=0;
     protected int Ybound=0;
+    protected int Ystart=0;
+    protected int Xstart=0;
 	protected Area area=null;
 	protected boolean debug = false;
 
@@ -54,7 +56,8 @@ public class GrinderFlatMap
 
     public void rebuildGrid()
     {
-		if(areaMap==null) return;
+		if(areaMap==null) 
+		    return;
 	    // build grid!
 	    int xoffset=0;
 	    int yoffset=0;
@@ -107,6 +110,224 @@ public class GrinderFlatMap
                 return room;
         }
         return null;
+    }
+
+    public GrinderRoom crowdInY(int x)
+    {
+        for(int y=Ystart;y<=Ybound;y++)
+            if(grid[x][y]!=null)  return grid[x][y];
+        if(x==Xstart) 
+            Xstart++; 
+        else 
+            Xbound--;
+        return null;
+    }
+    public GrinderRoom crowdInX(int y)
+    {
+        for(int x=Xstart;x<=Xbound;x++)
+            if(grid[x][y]!=null)
+                return grid[x][y];
+        if(y==Ystart) 
+            Ystart++; 
+        else 
+            Ybound--;
+        return null;
+    }
+    
+    
+    public HashSet getCrowdedBlock(GrinderRoom startR)
+    {
+        HashSet block=new HashSet();
+        block.add(startR);
+        boolean doneSomething=true;
+        GrinderRoom R=null;
+        GrinderRoom gridEdgeR=null;
+        GrinderDir dir=null;
+        while(doneSomething)
+        {
+            doneSomething=false;
+            for(Iterator i=block.iterator();i.hasNext();)
+            {
+                R=(GrinderRoom)i.next();
+                for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+                {
+                    gridEdgeR=getRoomInDir(startR,d);
+                    dir=R.doors[d];
+                    if((gridEdgeR!=null)
+                    &&(dir!=null)
+                    &&(dir.room!=null)
+                    &&(dir.room.length()>0)
+                    &&(!block.contains(gridEdgeR)))
+                    {
+                		gridEdgeR=null;
+                	    if((d==Directions.UP)||(d==Directions.DOWN))
+                	    {
+                			int actualDir=findRelGridDir(startR,dir.room);
+                			if(actualDir>=0) gridEdgeR=getRoomInDir(startR,actualDir);
+                	    }
+                	    else
+                	        gridEdgeR=getRoomInDir(startR,d);
+
+                	    if((dir.room.length()>0)&&((gridEdgeR==null)||((gridEdgeR!=null)&&(!gridEdgeR.roomID.equals(dir.room)))))
+                    	    continue;
+                	    else
+                	    {
+                	        doneSomething=true;
+                	        block.add(gridEdgeR);
+                	    }
+                    }
+                }
+            }
+        }
+        return block;
+    }
+    
+    public GrinderRoom closestToCenter(HashSet block)
+    {
+        GrinderRoom R=null;
+        int centerX=Xstart+((Xbound-Xstart)/2);
+        int centerY=Ystart+((Ybound-Ystart)/2);
+        double bestDistance=Double.MAX_VALUE;
+        GrinderRoom winnerR=null;
+        for(Iterator i=block.iterator();i.hasNext();)
+        {
+            R=(GrinderRoom)i.next();
+            double diff=new Integer(((R.x>centerX)?R.x-centerX:centerX-R.x)
+         		   +((R.y>centerY)?R.y-centerY:centerY-R.y)).doubleValue()/2.0;
+            if(diff<bestDistance)
+            {
+                bestDistance=diff;
+                winnerR=R;
+            }
+        }
+        return winnerR;
+    }
+    
+    public boolean moveCrowdToBestBlock(GrinderRoom R)
+    {
+        HashSet block=getCrowdedBlock(R);
+        if((block==null)||(block.size()==0)) return false;
+        GrinderRoom closestR=closestToCenter(block);
+        int[] newBlock=findEmptyCrowdBlock(block,closestR);
+        if(newBlock!=null)
+        {
+            // remove from old grid
+            for(Iterator i=block.iterator();i.hasNext();)
+            {
+                R=(GrinderRoom)i.next();
+                if(grid[R.x][R.y]!=R)
+                    System.out.println("You found the problem!");
+                grid[R.x][R.y]=null;
+            }
+            int xworkdiff=newBlock[0]-closestR.x;
+            int yworkdiff=newBlock[1]-closestR.y;
+            for(Iterator i=block.iterator();i.hasNext();)
+            {
+                R=(GrinderRoom)i.next();
+                R.x+=xworkdiff;
+                R.y+=yworkdiff;
+                grid[R.x][R.y]=R;
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    public int[] findEmptyCrowdBlock(HashSet block, GrinderRoom bestR)
+    {
+        int[] found=null;
+        if(bestR==null) return null;
+        int centerX=Xstart+((Xbound-Xstart)/2);
+        int centerY=Ystart+((Ybound-Ystart)/2);
+        double bestdiff=new Integer(((bestR.x>centerX)?bestR.x-centerX:centerX-bestR.x)
+     		   +((bestR.y>centerY)?bestR.y-centerY:centerY-bestR.y)).doubleValue()/2.0;
+        double diff=0.0;
+        GrinderRoom R=null;
+        boolean good=false;
+        int xworkdiff=0;
+        int yworkdiff=0;
+        int newx=0;
+        int newy=0;
+        for(int x=Xstart;x<=Xbound;x++)
+            for(int y=Ystart;y<=Ybound;y++)
+	        {
+	            diff=new Integer(((x>centerX)?x-centerX:centerX-x)
+          		   +((y>centerY)?y-centerY:centerY-y)).doubleValue()/2.0;
+	            if(diff<bestdiff)
+	            {
+	                good=true;
+	                xworkdiff=x-bestR.x;
+	                yworkdiff=y-bestR.y;
+	                for(Iterator i=block.iterator();i.hasNext();)
+	                {
+	                    R=(GrinderRoom)i.next();
+	                    newx=R.x+xworkdiff;
+	                    newy=R.y+yworkdiff;
+	                    if((newx<=Xstart)
+	                    ||(newx>=Xbound)
+	                    ||(newy<=Ystart)
+	                    ||(newy>=Ybound))
+	                    { good=false; break;}
+	                        
+	                    if(((grid[newx][newy]!=null)&&(!block.contains(grid[newx][newy])))
+	                    ||((grid[newx-1][newy]!=null)&&(!block.contains(grid[newx-1][newy])))
+	                    ||((grid[newx+1][newy]!=null)&&(!block.contains(grid[newx+1][newy])))
+	                    ||((grid[newx][newy-1]!=null)&&(!block.contains(grid[newx][newy-1])))
+	                    ||((grid[newx][newy+1]!=null)&&(!block.contains(grid[newx][newy+1]))))
+	                    { good=false; break;}
+	                }
+	                if(good)
+	                {
+	                    bestdiff=diff;
+	                    if(found==null) found=new int[2];
+	                    found[0]=x;
+	                    found[1]=y;
+	                }
+	            }
+	        }
+        return found;
+    }
+    
+    public void crowdMap()
+    {
+        boolean somethingDone=true;
+        GrinderRoom R=null;
+        while(somethingDone)
+        {
+            somethingDone=false;
+            R=crowdInY(Xstart);
+            if(R!=null)
+            {
+                if(moveCrowdToBestBlock(R))
+                    somethingDone=true;
+            }
+            else
+                somethingDone=true;
+            R=crowdInY(Xbound);
+            if(R!=null)
+            {
+                if(moveCrowdToBestBlock(R))
+                    somethingDone=true;
+            }
+            else
+                somethingDone=true;
+            R=crowdInX(Ystart);
+            if(R!=null)
+            {
+                if(moveCrowdToBestBlock(R))
+                    somethingDone=true;
+            }
+            else
+                somethingDone=true;
+            R=crowdInX(Ybound);
+            if(R!=null)
+            {
+                if(moveCrowdToBestBlock(R))
+                    somethingDone=true;
+            }
+            else
+                somethingDone=true;
+        }
     }
 
     public GrinderRoom getRoom(String ID)
@@ -196,7 +417,7 @@ public class GrinderFlatMap
 			{
 				GrinderRoom R1=(GrinderRoom)rooms.elementAt(r);
 				if(R1!=null)
-					for(int d=0;d<6;d++)
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
 						GrinderDir R=R1.doors[d];
 						GrinderRoom GR=((R!=null)?getRoom(R.room):null);
@@ -253,14 +474,14 @@ public class GrinderFlatMap
 	{
 		StringBuffer buf=new StringBuffer("");
 		buf.append("<TABLE WIDTH="+((Xbound+1)*138)+" BORDER=0 CELLSPACING=0 CELLPADDING=0>");
-		for(int y=0;y<=Ybound;y++)
+		for(int y=Ystart;y<=Ybound;y++)
 		{
 			// up=nwes
 			// down=sewn
 			for(int l=0;l<5;l++)
 			{
 				buf.append("<TR HEIGHT=24>");
-				for(int x=0;x<=Xbound;x++)
+				for(int x=Xstart;x<=Xbound;x++)
 				{
 					GrinderRoom GR=grid[x][y];
 					if(GR==null)
