@@ -77,6 +77,14 @@ public class SchoolMonster extends StdRace
 		else
 			return "^c" + mob.name() + "^c is in perfect health^N";
 	}
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+		&&(((msg.target()==myHost)&&(myHost instanceof MOB))))
+			msg.setValue(msg.value()*2);
+		return super.okMessage(myHost,msg);
+	}
+		
 	public Vector myResources()
 	{
 		synchronized(resources)

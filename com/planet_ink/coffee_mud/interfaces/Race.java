@@ -11,6 +11,11 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public void startRacing(MOB mob, boolean verifyOnly);
 	
 	public void setHeightWeight(EnvStats stats, char gender);
+	public int shortestMale();
+	public int shortestFemale();
+	public int heightVariance();
+	public int lightestWeight();
+	public int weightVariance();
 	public int getMaxWeight();
 	public long forbiddenWornBits();
 	public int[] bodyMask();
