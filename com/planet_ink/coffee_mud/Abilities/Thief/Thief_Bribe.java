@@ -12,7 +12,7 @@ public class Thief_Bribe extends ThiefSkill
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Peek";
+		name="Bribe";
 		displayText="(in a dark realm of thievery)";
 		miscText="";
 

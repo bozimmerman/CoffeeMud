@@ -145,7 +145,8 @@ public class MOBTeacher extends CombatAbilities
 					monster.recoverCharStats();
 				}
 
-				if(!myAbility.qualifies(monster))
+				if((!myAbility.qualifies(monster))
+				&&(!monster.baseCharStats().getMyClass().ID().equals("StdCharClass")))
 				{
 					ExternalPlay.quickSay(monster,mob,"I'm sorry, I don't know '"+myAbility.name()+"'.",true,false);
 					return;

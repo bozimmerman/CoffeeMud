@@ -72,7 +72,10 @@ public class SocialProcessor
 		Environmental target=null;
 		if(commands.size()>2)
 		{
-			target=mob.location().fetchFromRoomFavorMOBs(null,(String)commands.elementAt(1));
+			String possibleTarget=(String)commands.elementAt(1);
+			target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget);
+			if((!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
+			   target=null;
 			if((target!=null)&&(Sense.canBeSeenBy(target,mob)))
 				commands.removeElementAt(1);
 			else

@@ -236,7 +236,7 @@ public class RoomLoader
 			if(DBConnector.DBConfirmDeletions)
 			{
 				ResultSet R=D.query("SELECT * FROM CMROIT WHERE CMROID='"+room.ID()+"'");
-				if(R.next())
+				if((R!=null)&&(R.next()))
 					Log.errOut("DBUpdateItems","Delete Failed.");
 			}
 			DBConnector.DBDone(D);
@@ -261,7 +261,7 @@ public class RoomLoader
 			if(DBConnector.DBConfirmDeletions)
 			{
 				ResultSet R=D.query("SELECT * FROM CMROEX WHERE CMROID='"+room.ID()+"'");
-				if(R.next())
+				if((R!=null)&&(R.next()))
 					Log.errOut("DBUpdateExits","Delete Failed.");
 			}
 			DBConnector.DBDone(D);
@@ -309,7 +309,7 @@ public class RoomLoader
 			if(DBConnector.DBConfirmDeletions)
 			{
 				ResultSet R=D.query("SELECT * FROM CMROCH WHERE CMROID='"+room.ID()+"'");
-				if(R.next())
+				if((R!=null)&&(R.next()))
 					Log.errOut("DBUpdateMOBs","Delete Failed.");
 			}
 			DBConnector.DBDone(D);
@@ -493,7 +493,7 @@ public class RoomLoader
 			if(DBConnector.DBConfirmDeletions)
 			{
 				ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+room.ID()+"'");
-				if(R.next())
+				if((R!=null)&&(R.next()))
 					Log.errOut("DBDeleteRoom","Delete Failed.");
 			}
 			DBConnector.DBDone(D);

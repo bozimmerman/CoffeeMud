@@ -171,6 +171,20 @@ public class Import
 		return false;
 	}
 
+	private String fixReadableContent(String text)
+	{
+		while(text.startsWith("%0D"))
+			text=text.substring(3);
+		if((text.toUpperCase().trim().startsWith("IT SAYS `"))
+		||(text.toUpperCase().trim().startsWith("IT SAYS '")))
+		{
+			text=text.trim().substring(9).trim();
+			if((text.endsWith("'"))||(text.endsWith("`")))
+				text=text.substring(0,text.length()-1);
+		}
+		return text;
+	}
+	
 	private boolean returnAnError(MOB mob, String str)
 	{
 		Log.errOut("Import",str);
@@ -1548,7 +1562,7 @@ public class Import
 					 break;
 			case 12: I=(Item)CMClass.getStdItem("GenItem");
 					 if(hasReadableContent(objectName))
-						CMClass.getStdItem("GenReadable");
+						I=CMClass.getStdItem("GenReadable");
 					 break;
 			case 13: I=(Item)CMClass.getStdItem("GenItem");
 					 if(hasReadableContent(objectName))
@@ -1593,6 +1607,7 @@ public class Import
 					 if(((val3>0)&&(val3<6))
 					  ||(str3.indexOf("BEER")>=0)
 					  ||(str3.indexOf("ALE")>=0)
+					  ||(str3.indexOf("BREW")>=0)
 					  ||(str3.indexOf("WINE")>=0)
 					  ||(str3.indexOf("FIREBEATHER")>=0)
 					  ||(str3.indexOf("LOCAL SPECIALTY")>=0)
@@ -1689,8 +1704,7 @@ public class Import
 			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			if((adjuster.ID().equals("Prop_HaveAdjuster"))
 			&&(I.rawProperLocationBitmap()>0)
-			&&(I.rawProperLocationBitmap()!=9)
-			&&(objType!=12))
+			)
 			{
 				adjuster=CMClass.getAbility("Prop_WearAdjuster");
 				if(I.ID().equals("GenItem"))
@@ -1870,12 +1884,16 @@ public class Import
 				String codeLine=eatNextLine(objV).trim().toUpperCase();
 				if(codeLine.equals("E"))
 				{
+					if((CMClass.getItem(I.ID())!=null)
+					&&(I.description().equals(CMClass.getItem(I.ID()).description())))
+					   I.setDescription("");
+					else
 					if(I.description().length()>0)
 						I.setDescription(I.description()+"%0D");
 					eatLineSquiggle(objV);
 					I.setDescription(I.description()+Util.safetyFilter(eatLineSquiggle(objV)));
 					if(I.ID().equals("GenReadable"))
-						I.setReadableText(I.description());
+						I.setReadableText(fixReadableContent(I.description()));
 				}
 				else
 				if(codeLine.equals("L"))
@@ -1935,9 +1953,13 @@ public class Import
 							adjuster.setMiscText(adjuster.text()+" armor"+((val>=0)?("+"+(val*5)):(""+(val*5))));
 							break;
 						case 18:
+							if((val>0)&&(I instanceof Weapon))
+								I.baseEnvStats().setAttackAdjustment(I.baseEnvStats().attackAdjustment()+(val*5));
 							adjuster.setMiscText(adjuster.text()+" attack"+((val>=0)?("+"+(val*5)):(""+(val*5))));
 							break;
 						case 19:
+							if((val>0)&&(I instanceof Weapon))
+								I.baseEnvStats().setDamage(I.baseEnvStats().damage()+val);
 							adjuster.setMiscText(adjuster.text()+" damage"+((val>=0)?("+"+(val)):(""+(val))));
 							break;
 						case 20: // spells, but with a numeric value.. ?!?!
@@ -2430,7 +2452,7 @@ public class Import
 						if(hasReadableContent(nameString))
 						{
 							I=CMClass.getStdItem("GenReadable");
-							I.setReadableText(descString);
+							I.setReadableText(fixReadableContent(descString));
 						}
 						else
 							I=CMClass.getStdItem("GenItem");
