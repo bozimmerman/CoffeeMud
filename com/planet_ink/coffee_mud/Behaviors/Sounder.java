@@ -312,7 +312,9 @@ public class Sounder extends StdBehavior
 		}
 		lastMsg=msg;
 		Room room=msg.source().location();
-		if((lookFor>=0)&&(room!=null))
+		if((lookFor>=0)
+		&&(room!=null)
+		&&((!(E instanceof MOB))||(canFreelyBehaveNormal((MOB)E))))
 		for(int v=0;v<triggers.length;v++)
 			if(((triggers[v]&UNDER_MASK)==lookFor)
 			&&(!Util.bset(triggers[v],TICK_MASK)))

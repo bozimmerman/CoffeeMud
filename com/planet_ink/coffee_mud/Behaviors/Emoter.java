@@ -181,7 +181,7 @@ public class Emoter extends ActiveTicker
 
 			Room room=getBehaversRoom(ticking);
 			if(room==null) return true;
-			if(ticking instanceof MOB)
+			if((ticking instanceof MOB)&&(canFreelyBehaveNormal(ticking)))
 				emoter=(MOB)ticking;
 			else
 			{
@@ -195,6 +195,8 @@ public class Emoter extends ActiveTicker
 				else
 					emoter.setName(name);
 			}
+			if(emoter==null) return true;
+			
 			emoteHere(room,emoter,emote,true);
 
 			if(((Boolean)emote.elementAt(1)).booleanValue())
