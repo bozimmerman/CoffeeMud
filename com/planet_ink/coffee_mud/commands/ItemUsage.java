@@ -666,7 +666,7 @@ public class ItemUsage
 	{
 
 		Environmental openThis=null;
-		int dirCode=Directions.getDirectionCode(whatToOpen);
+		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)
 			openThis=mob.location().exits()[dirCode];
 		if(openThis==null)

@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Prayer_Plague extends Prayer
 {
-	int tickDown=3;
+	int tickDown=4;
 
 	public Prayer_Plague()
 	{
@@ -37,10 +37,10 @@ public class Prayer_Plague extends Prayer
 		if((--tickDown)<=0)
 		{
 			MOB mob=(MOB)affected;
-			tickDown=3;
+			tickDown=4;
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
 			if(invoker==null) invoker=mob;
-			ExternalPlay.postDamage(invoker,mob,this,invoker.envStats().level());
+			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level());
 		}
 		return super.tick(tickID);
 	}
@@ -88,7 +88,7 @@ public class Prayer_Plague extends Prayer
 				if(!msg.wasModified())
 				{
 					invoker=mob;
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,48,-1);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
 				}
 			}
