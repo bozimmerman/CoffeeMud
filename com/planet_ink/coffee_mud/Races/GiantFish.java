@@ -9,11 +9,11 @@ public class GiantFish extends StdRace
 {
 	public String ID(){	return "GiantFish"; }
 	public String name(){ return "Giant Fish"; }
-	protected int shortestMale(){return 30;}
-	protected int shortestFemale(){return 35;}
-	protected int heightVariance(){return 10;}
-	protected int lightestWeight(){return 55;}
-	protected int weightVariance(){return 15;}
+	protected int shortestMale(){return 50;}
+	protected int shortestFemale(){return 55;}
+	protected int heightVariance(){return 20;}
+	protected int lightestWeight(){return 1955;}
+	protected int weightVariance(){return 405;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
 	public String racialCategory(){return "Amphibian";}
 	protected static Vector resources=new Vector();
@@ -52,12 +52,12 @@ public class GiantFish extends StdRace
 		{
 			if(resources.size()==0)
 			{
-				for(int i=0;i<5;i++)
+				for(int i=0;i<25;i++)
 				resources.addElement(makeResource
 				("some "+name().toLowerCase(),EnvResource.RESOURCE_FISH));
-				for(int i=0;i<5;i++)
+				for(int i=0;i<15;i++)
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+				("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}

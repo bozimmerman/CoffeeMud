@@ -53,13 +53,13 @@ public class Turtle extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is facing a cold death!^N";
+			return "^r" + mob.name() + "^r is facing a slow death!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is covered in blood.^N";
+			return "^r" + mob.name() + "^r is slowly being covered in blood.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is bleeding badly from lots of wounds.^N";
+			return "^r" + mob.name() + "^r is slowly bleeding badly.^N";
 		else
 		if(pct<.40)
 			return "^y" + mob.name() + "^y has numerous bloody wounds and gashes.^N";

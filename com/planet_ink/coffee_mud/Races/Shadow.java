@@ -5,12 +5,10 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Shadow extends Undead
+public class Shadow extends Spirit
 {
 	public String ID(){	return "Shadow"; }
 	public String name(){ return "Shadow"; }
-	protected int lightestWeight(){return 0;}
-	protected int weightVariance(){return 0;}
 	protected long forbiddenWornBits(){return 0;}
 
 	protected static Vector resources=new Vector();
@@ -22,18 +20,6 @@ public class Shadow extends Undead
 		||((affected instanceof MOB)&&(((MOB)affected).location()!=null)&&(Sense.isInDark((((MOB)affected).location())))))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
-	}
-	public Vector myResources()
-	{
-		synchronized(resources)
-		{
-			if(resources.size()==0)
-			{
-				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" essence",EnvResource.RESOURCE_BLOOD));
-			}
-		}
-		return resources;
 	}
 }
 

@@ -143,6 +143,7 @@ public class SaveThread extends Thread
 					if((S.previousCMD()!=null)
 					&&(S.previousCMD().size()>0)
 					&&(((String)S.previousCMD().firstElement()).equalsIgnoreCase("IMPORT")
+					   ||((String)S.previousCMD().firstElement()).equalsIgnoreCase("EXPORT")
 					   ||((String)S.previousCMD().firstElement()).equalsIgnoreCase("MERGE")))
 						check=check*60;
 					else
