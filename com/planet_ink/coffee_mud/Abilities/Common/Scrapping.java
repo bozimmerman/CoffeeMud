@@ -118,6 +118,20 @@ public class Scrapping extends CommonSkill
 				V.addElement(I2);
 			}
 		}
+		
+		LandTitle t=null;
+		for(int a=0;a<mob.location().numAffects();a++)
+		{
+			Ability A=mob.location().fetchAffect(a);
+			if((A!=null)&&(A instanceof LandTitle))
+				t=(LandTitle)A;
+		}
+		if((t!=null)&&(t.landOwner().length()>0)&&(!t.landOwner().equals(mob.Name())))
+		{
+			mob.tell("You are not allowed to scrap anything here.");
+			return false;
+		}
+			
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I2=mob.location().fetchItem(i);
@@ -147,15 +161,23 @@ public class Scrapping extends CommonSkill
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
+		int duration=35-mob.envStats().level();
+		if(duration<10) duration=10;
 		for(int v=0;v<V.size();v++)
-			((Item)V.elementAt(v)).destroy();
+		{
+		    if(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
+		    ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+		    ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
+		        duration+=((Item)V.elementAt(v)).envStats().weight();
+		    else
+		        duration+=((Item)V.elementAt(v)).envStats().weight()/2;
+		    ((Item)V.elementAt(v)).destroy();
+		}
 		messedUp=!profficiencyCheck(0,auto);
 		found=makeItemResource(I.material());
 		foundShortName="nothing";
 		if(found!=null)
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
-		int duration=35+V.size()-mob.envStats().level();
-		if(duration<10) duration=10;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
 		if(mob.location().okAffect(mob,msg))
 		{

@@ -125,6 +125,7 @@ public class Spell_FakeArmor extends Spell
 				armor.setDescription("looks like your size!");
 				armor.baseEnvStats().setWeight(0);
 				armor.recoverEnvStats();
+				armor.setBaseValue(0);
 				mob.addInventory(armor);
 				mob.location().show(mob,null,armor,Affect.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
 				myItem=armor;

@@ -57,6 +57,15 @@ public class Skill_Swim extends StdAbility
 				return false;
 			}
 		}
+        else
+        {
+            Room r=mob.location().getRoomInDir(dirCode);
+            if (!placeToSwim(r))
+            {
+                mob.tell("There is no water to swim on that way.");
+                return false;
+            }
+        }
 
 		if((mob.riding()!=null)
 		&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_WATER)

@@ -215,9 +215,11 @@ public class Masonry extends CommonSkill
 							x.setName("an archway");
 							x.setDescription("A portcullis lies this way.");
 							x.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
+							x.setDoorsNLocks(true,false,true,false,false,false);
 							x2.setName("a portcullis");
 							x2.setDescription("A portcullis lies this way.");
 							x2.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
+							x2.setDoorsNLocks(true,false,true,false,false,false);
 							room.rawExits()[dir]=x;
 							if(room.rawDoors()[dir]!=null)
 							{

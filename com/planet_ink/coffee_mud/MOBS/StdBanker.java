@@ -97,6 +97,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				
 			Item I=makeItem((String)V2.elementAt(DATA_DATA));
 			if(I==null) continue;
+Log.sysOut("DBGBANK",thisThang.name()+"/"+I.name()+"/"+thisThang.sameAs(I));			
 			if(thisThang.sameAs(I))
 			{
 				ExternalPlay.DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_BANK)),((String)V2.elementAt(DATA_KEY)));

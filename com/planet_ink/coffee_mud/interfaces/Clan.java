@@ -29,6 +29,13 @@ public interface Clan extends Cloneable, Tickable
 	public static final int POS_TREASURER=8;
 	public static final int POS_LEADER=16;
 	public static final int POS_BOSS=32;
+	public static final int[] POSORDER={POS_APPLICANT,
+										POS_MEMBER,
+										POS_STAFF,
+										POS_ENCHANTER,
+										POS_TREASURER,
+										POS_LEADER,
+										POS_BOSS};
 
 	public static final int CLANSTATUS_ACTIVE=0;
 	public static final int CLANSTATUS_PENDING=1;

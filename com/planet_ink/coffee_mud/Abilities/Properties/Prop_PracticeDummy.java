@@ -37,21 +37,31 @@ public class Prop_PracticeDummy extends Property
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!super.okAffect(myHost,affect)) return false;
-		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)
-			&&(affected!=null)
-			&&(affected instanceof MOB)
-			&&(affect.amISource((MOB)affected))))
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(affect.amISource((MOB)affected)))
 		{
-			((MOB)affected).makePeace();
-			Room room=((MOB)affected).location();
-			if(room!=null)
-			for(int i=0;i<room.numInhabitants();i++)
+			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 			{
-				MOB mob=room.fetchInhabitant(i);
-				if((mob.getVictim()!=null)&&(mob.getVictim()==affected))
-					mob.makePeace();
+				((MOB)affected).makePeace();
+				Room room=((MOB)affected).location();
+				if(room!=null)
+				for(int i=0;i<room.numInhabitants();i++)
+				{
+					MOB mob=room.fetchInhabitant(i);
+					if((mob.getVictim()!=null)&&(mob.getVictim()==affected))
+						mob.makePeace();
+				}
+				return false;
 			}
-			return false;
+			else
+			if((affect.targetMinor()==Affect.TYP_GET)
+			&&(affect.target()!=null)
+			&&(affect.target() instanceof Item))
+			{
+				affect.source().tell("Dummys cant get anything.");
+				return false;
+			}
 		}
 		return true;
 	}

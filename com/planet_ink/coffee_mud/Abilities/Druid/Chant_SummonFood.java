@@ -49,6 +49,7 @@ public class Chant_SummonFood extends Chant
 					newItem.setDescription("Small and round, these little red berries look juicy and good.");
 					newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
 					newItem.setNourishment(150);
+					newItem.setBaseValue(1);
 					newItem.setMiscText(newItem.text());
 					mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
 				}

@@ -187,6 +187,18 @@ public class Util
 		return s;
 	}
 	
+	public static String toStringList(String[] V)
+	{
+		if((V==null)||(V.length==0)){
+			return "";
+		}
+		StringBuffer s=new StringBuffer("");
+		for(int v=0;v<V.length;v++)
+			s.append(", "+V[v]);
+		if(s.length()==0) return "";
+		return s.toString().substring(2);
+	}
+	
 	public static String toStringList(Vector V)
 	{
 		if((V==null)||(V.size()==0)){
@@ -194,8 +206,9 @@ public class Util
 		}
 		StringBuffer s=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
-			s.append(((String)V.elementAt(v))+"/");
-		return s.toString();
+			s.append(", "+((String)V.elementAt(v)));
+		if(s.length()==0) return "";
+		return s.toString().substring(2);
 	}
 	
 	public static String[] toStringArray(Hashtable V)

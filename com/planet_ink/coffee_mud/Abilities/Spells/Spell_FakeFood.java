@@ -50,6 +50,7 @@ public class Spell_FakeFood extends Spell
 						break;
 				}
 				F.setNourishment(0);
+				F.setBaseValue(0);
 				for(int f=0;f<5;f++)
 				{
 					Food F2=(Food)F.copyOf();

@@ -207,11 +207,14 @@ public class Prop_ClanEquipment extends Property
 	                       String message,
 	                       Wand me) 
 	{
-		if ( (mob.isMine(me))
-		    && (!me.amWearingAt(Item.INVENTORY))) 
+		if ((mob.isMine(me))
+		&&(afftarget!=null)
+		&&(afftarget instanceof MOB)
+		&&(!me.amWearingAt(Item.INVENTORY))) 
 		{
 			MOB target = null;
-			if ( (mob.location() != null)) {
+			if( (mob.location() != null))
+			{
 				target = (MOB)afftarget;
 			}
 			int x = message.toUpperCase().indexOf(secretWord.toUpperCase());

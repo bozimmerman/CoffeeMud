@@ -1,21 +1,12 @@
-!Can this pretty, pretty please take a param of how much material you're trying to smelt?
 make sure import cmare handles rooms with containers in containers with items ok
 save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
-!Masonry	POOL will convert the room into a Water room, with 1 level of underwater added for free
-!Masonry	portcullis (but it requires METAL instead of stone)
-book of laws can be crafted
 A young player had a follower, who had the skill kick and a decent amount of movement.  She turned off autoassist, then ordered the follower to kick a mob.  She then could order the mob to kick as often as she could type it, completely bypassing the fight delay system.
-The skill's help files should mention that certain woods use certain diff amounts.  Ironwood take more wood, for example.
-I've run into some strange scenarios where players reported that crafted canoes, furniture, and pipes can be withdrawn repeatedly and they're still in their bank account
-My players are complaining a fairly large amount about the strangeness involved in re-conncting.  Anytime they reconnect for any reason (like link death), their followers are no longer following them, esp pets they bought or hirelings they had.  The latter is fine, but the former is a big problem.  Players with carts and horses find that their horses no longer will take their orders.
-SECSPERTICK- number of real life seconds between each game "tick".
-HOURSPERDAY- number of real life hours in one game day.
-DAYSPERMONTH- number of game days that make up a game month.
-DAYSPERYEAR- number of game days that makes up a game year.
-Englarge object REALLY needs to uninvoke when scrapping, butchering, etc are used.
-!UNDEAD should not be able to get pregnant, nor register as life by the spells
+Players reported that crafted canoes, furniture, and pipes can be withdrawn repeatedly and they're still in their bank account
+Re-conncting.  Anytime they reconnect for any reason (like link death), their followers are no longer following them, esp pets they bought or hirelings they had.  The latter is fine, but the former is a big problem.  Players with carts and horses find that their horses no longer will take their orders.
 A sengir Scholar was killed by one touch of my flameshield. It just said that it warmed him, but he died
-!the Mako Shark is treading water. He needs to be underwater.
-!verify the tells during shutdown please.. they dont look right
 amputation does not affect wear position
-clan bosses cant enchant.. need autopromote for clan and guild types
+a modification to the charm spell to allow the names of players as parameters would do the trick.
+packaging skill now
+book of laws can be crafted
+Helix wanted help on protection from good
+

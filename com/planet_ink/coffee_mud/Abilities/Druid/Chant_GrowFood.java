@@ -73,7 +73,7 @@ public class Chant_GrowFood extends Chant
 					newItem.setNourishment(150);
 				String name=EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK].toLowerCase();
 				newItem.setMaterial(material);
-				newItem.setBaseValue(EnvResource.RESOURCE_DATA[material&EnvResource.RESOURCE_MASK][1]);
+				newItem.setBaseValue(1);
 				newItem.baseEnvStats().setWeight(1);
 				newItem.setName("a pound of "+name);
 				newItem.setDisplayText("some "+name+" sits here.");

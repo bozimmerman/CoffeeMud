@@ -129,6 +129,7 @@ public class Spell_FakeWeapon extends Spell
 					break;
 				}
 				weapon.baseEnvStats().setWeight(0);
+				weapon.setBaseValue(0);
 				weapon.recoverEnvStats();
 				mob.addInventory(weapon);
 				mob.location().show(mob,null,weapon,Affect.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");

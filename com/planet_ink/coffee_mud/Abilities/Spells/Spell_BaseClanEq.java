@@ -55,7 +55,7 @@ public class Spell_BaseClanEq extends Spell
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		if(C.allowedToDoThis(mob,Clan.FUNC_CLANENCHANT)==1)
+		if(C.allowedToDoThis(mob,Clan.FUNC_CLANENCHANT)!=1)
 		{
 			mob.tell("You are not authorized to draw from the power of your "+C.typeName()+".");
 			return false;

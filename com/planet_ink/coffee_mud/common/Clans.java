@@ -200,6 +200,14 @@ public class Clans implements Clan, Tickable
 	public int getGovernment(){return government;}
 	public void setGovernment(int type){government=type;}
 	
+	public static int getRoleOrder(int role)
+	{
+		for(int i=0;i<Clan.POSORDER.length;i++)
+			if(Clan.POSORDER[i]==role) return i;
+		return 1;
+	}
+	
+	
 	public static String getRoleName(int government, int role, boolean titleCase, boolean plural)
 	{
 		StringBuffer roleName=new StringBuffer();
@@ -207,33 +215,7 @@ public class Clans implements Clan, Tickable
 			government=0;
 		String[] roles=Clan.ROL_DESCS[government];
 		Character c;
-		switch(role)
-		{
-		case Clan.POS_APPLICANT:
-			roleName.append(roles[0].toLowerCase());
-			break;
-		case Clan.POS_STAFF:
-			roleName.append(roles[2].toLowerCase());
-			break;
-		case Clan.POS_MEMBER:
-			roleName.append(roles[1].toLowerCase());
-			break;
-		case Clan.POS_ENCHANTER:
-			roleName.append(roles[3].toLowerCase());
-			break;
-		case Clan.POS_TREASURER:
-			roleName.append(roles[4].toLowerCase());
-			break;
-		case Clan.POS_LEADER:
-			roleName.append(roles[5].toLowerCase());
-			break;
-		case Clan.POS_BOSS:
-			roleName.append(roles[6].toLowerCase());
-			break;
-		default:
-			roleName.append("member");
-			break;
-		}
+		roleName.append(roles[getRoleOrder(role)].toLowerCase());
 		if(titleCase)
 		{
 			String titled=Util.capitalize(roleName.toString());
@@ -762,12 +744,41 @@ public class Clans implements Clan, Tickable
 			DVector members=getMemberList();
 			int activeMembers=0;
 			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*Host.TICKS_PER_MUDDAY*Host.TICK_TIME;
+			int[] numTypes=new int[Clan.ROL_DESCS.length];
 			for(int j=0;j<members.size();j++)
 			{
 				long lastLogin=((Long)members.elementAt(j,3)).longValue();
 				if((System.currentTimeMillis()-lastLogin)<deathMilis)
 					activeMembers++;
+				numTypes[getRoleOrder(((Integer)members.elementAt(j,2)).intValue())]++;
 			}
+			
+			// handle any necessary promotions
+			if((getGovernment()==Clan.GVT_DICTATORSHIP)
+			||(getGovernment()==Clan.GVT_OLIGARCHY))
+			{
+				int highest=0;
+				for(int i=numTypes.length-1;i>=0;i--)
+					if(numTypes[i]>0){ highest=i; break;}
+				int max=Clan.topRanks[getGovernment()];
+				if(highest<getRoleOrder(max))
+				{
+					for(int i=0;i<members.size();i++)
+					{
+						if(((Integer)members.elementAt(i,2)).intValue()==highest)
+						{
+							String s=(String)members.elementAt(i,1);
+							clanAnnounce(s+" is now a "+Clans.getRoleName(getGovernment(),max,true,false));
+							Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+getRoleName(getGovernment(),max,true,false)+".");
+							MOB M2=CMMap.getPlayer(s);
+							if(M2!=null) M2.setClanRole(max);
+							ExternalPlay.DBUpdateClanMembership(s, ID(), max);
+							break;
+						}
+					}
+				}
+			}
+			
 			
 			if(activeMembers<CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS))
 			{
@@ -793,20 +804,20 @@ public class Clans implements Clan, Tickable
 				}
 			}
 			else
-				switch(getStatus())
-				{
-				case Clan.CLANSTATUS_FADING:
-					setStatus(Clan.CLANSTATUS_ACTIVE);
-					clanAnnounce(""+typeName()+" "+name()+" is no longer in danger of being deleted.  Be aware that there is required activity level.");
-					break;
-				case Clan.CLANSTATUS_PENDING:
-					setStatus(Clan.CLANSTATUS_ACTIVE);
-					Log.sysOut("Clans",""+typeName()+" '"+getName()+" now active with "+activeMembers+".");
-					clanAnnounce(""+typeName()+" "+name()+" now has sufficient members.  The "+typeName()+" is now fully approved.");
-					break;
-				default:
-					break;
-				}
+			switch(getStatus())
+			{
+			case Clan.CLANSTATUS_FADING:
+				setStatus(Clan.CLANSTATUS_ACTIVE);
+				clanAnnounce(""+typeName()+" "+name()+" is no longer in danger of being deleted.  Be aware that there is required activity level.");
+				break;
+			case Clan.CLANSTATUS_PENDING:
+				setStatus(Clan.CLANSTATUS_ACTIVE);
+				Log.sysOut("Clans",""+typeName()+" '"+getName()+" now active with "+activeMembers+".");
+				clanAnnounce(""+typeName()+" "+name()+" now has sufficient members.  The "+typeName()+" is now fully approved.");
+				break;
+			default:
+				break;
+			}
 			
 			
 			// now do votes

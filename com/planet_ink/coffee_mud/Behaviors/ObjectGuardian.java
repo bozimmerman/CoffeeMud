@@ -21,8 +21,18 @@ public class ObjectGuardian extends StdBehavior
 	{
 		if(!super.okAffect(oking,affect)) return false;
 		MOB mob=affect.source();
-		if(!canFreelyBehaveNormal(oking)) return true;
-		MOB monster=(MOB)oking;
+        MOB monster=(MOB)oking;
+        if(parms.toUpperCase().indexOf("SENTINAL")>=0)
+        {
+            if(!canActAtAll(monster)) return true;
+            if(monster.amFollowing()!=null)  return true;
+            if(monster.curState().getHitPoints()<((int)Math.round(monster.maxState().getHitPoints()/4.0)))
+                return true;
+        }
+        else
+		if(!canFreelyBehaveNormal(oking)) 
+			return true;
+		
 		if((mob!=monster)
 		&&((affect.sourceMinor()==Affect.TYP_GET)
 		||((affect.sourceMinor()==Affect.TYP_THROW)&&(monster.location()==affect.tool()))

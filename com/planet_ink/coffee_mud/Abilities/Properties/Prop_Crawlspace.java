@@ -40,9 +40,25 @@ public class Prop_Crawlspace extends Property
 				if((affected instanceof Room)
 				&&(affect.source().envStats().height()>12))
 				{
-					affect.source().tell("You cannot stand up here, try crawling.");
-					return false;
+			        if(Sense.isSleeping(affect.source()))
+					{
+			            MOB mob=affect.source();
+			            int oldDisposition = mob.baseEnvStats().disposition();
+			            oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
+			            mob.baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SITTING);
+			            mob.recoverEnvStats();
+			            mob.recoverCharStats();
+			            mob.recoverMaxState();
+			            mob.tell("You wake up, but you are still crawling.");
+			            return false;
+			        }
+			        else
+			        {
+			            affect.source().tell("You cannot stand up here, try crawling.");
+			            return false;
+			        }
 				}
+				break;
 			}
 		}
 		return super.okAffect(myHost,affect);
