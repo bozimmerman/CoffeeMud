@@ -1505,7 +1505,7 @@ other objects have circumstantial ticks in certain instances.</FONT></P>
 <P align=left><FONT size=4>Now, to add a 
 new periodic call to the "tick" method on an Environmental object, one needs 
 only to make a method call like this:</FONT></P><pre>	
-	ExternalPlay.startTickDown(theEnvObject,Host.MY_TICK_ID,NUM_TICKS);
+	CMClass.ThreadEngine().startTickDown(theEnvObject,Host.MY_TICK_ID,NUM_TICKS);
 </PRE>
 <P align=left><FONT size=4>The second 
 parameter is the tickID which will be used when the "tick" method on the 
@@ -1513,7 +1513,7 @@ parameter is the tickID which will be used when the "tick" method on the
 Host.TICK_TIME (4 second) intervals between each call. Stopping these tick calls 
 can be done by simply returning "false" from the tick method itself, or manually 
 using the following:</FONT></P><pre>	
-	ExternalPlay.deleteTick(theEnvObject,Host.MY_TICK_ID);
+	CMClass.ThreadEngine().deleteTick(theEnvObject,Host.MY_TICK_ID);
 </PRE>
 <P align=left></P>
 <P align=left></P>
@@ -1661,7 +1661,8 @@ Otherwise, we just return true, and try again on the next tick.</FONT></P><PRE>
 </PRE>
 <P align=left><FONT size=4>Next we will 
 pick a random piece of inventory from that mob, and see if it is food.&nbsp; If 
-not, we return true and try again on the next tick.</FONT></P><PRE>		ExternalPlay.quickSay(mob,mobToHitUp,
+not, we return true and try again on the next tick.</FONT></P>
+<PRE>		CommonMsgs.say(mob,mobToHitUp,
 				  "May I have some of your "+eatible.name()+"?",
 				  false,false);
 				  
@@ -2886,7 +2887,7 @@ cancels the message, without comment, by returning false.</FONT></P><PRE>   publ
             if(mob.location().okMessage(mob,msg))
             {
                mob.location().send(mob,msg);
-               ExternalPlay.standIfNecessary(mob);
+               CommonMsgs.stand(mob,true);
             }
          }
          else
