@@ -9,7 +9,7 @@ public class Falling extends StdAbility
 {
 	boolean temporarilyDisable=false;
 	public Room room=null;
-
+	int damageToTake=0;
 	public Falling()
 	{
 		super();
@@ -29,6 +29,8 @@ public class Falling extends StdAbility
 	{
 		return new Falling();
 	}
+	
+	private boolean reversed(){return profficiency()==100;}
 
 	public boolean tick(int tickID)
 	{
@@ -41,46 +43,76 @@ public class Falling extends StdAbility
 		if(affected==null)
 			return false;
 
+		int direction=Directions.DOWN;
+		String addStr="down";
+		if(reversed()) 
+		{
+			direction=Directions.UP;
+			addStr="upwards";
+		}
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
 			if(mob==null) return false;
 			if(mob.location()==null) return false;
 
-			if((mob.location().doors()[Directions.DOWN]==null)
-			||(mob.location().exits()[Directions.DOWN]==null)
-			||(!mob.location().exits()[Directions.DOWN].isOpen()))
+			if(Sense.isFlying(mob))
 			{
+				damageToTake=0;
 				unInvoke();
 				return false;
 			}
 			else
-			if(Sense.isFlying(mob))
+			if((mob.location().doors()[direction]==null)
+			||(mob.location().exits()[direction]==null)
+			||(!mob.location().exits()[direction].isOpen()))
 			{
+				if(reversed()) 
+					return true;
 				unInvoke();
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground.");
+				ExternalPlay.postDamage(mob,mob,this,damageToTake);
 				return false;
 			}
 			else
 			{
 				if(mob.envStats().weight()<1)
 				{
-					mob.tell("\n\r\n\rYou are floating gently down.\n\r\n\r");
+					mob.tell("\n\r\n\rYou are floating gently "+addStr+".\n\r\n\r");
 				}
 				else
 				{
-					mob.tell("\n\r\n\rYOU ARE FALLING!!\n\r\n\r");
-					ExternalPlay.postDamage(mob,mob,this,Dice.roll(1,6,0));
+					mob.tell("\n\r\n\rYOU ARE FALLING "+addStr.toUpperCase()+"!!\n\r\n\r");
+					if(!reversed())
+						damageToTake+=Dice.roll(1,6,0);
 				}
 				temporarilyDisable=true;
-				ExternalPlay.move(mob,Directions.DOWN,false);
+				ExternalPlay.move(mob,direction,false);
 				temporarilyDisable=false;
-				return true;
+				if((mob.location().doors()[direction]==null)
+				||(mob.location().exits()[direction]==null)
+				||(!mob.location().exits()[direction].isOpen()))
+				{
+					if(reversed()) 
+						return true;
+					unInvoke();
+					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground.");
+					ExternalPlay.postDamage(mob,mob,this,damageToTake);
+					return false;
+				}
+				else
+					return true;
 			}
 		}
 		else
 		if(affected instanceof Item)
 		{
 			Item item=(Item)affected;
+			if((room==null)
+			   &&(item.myOwner()!=null)
+			   &&(item.myOwner() instanceof Room))
+				room=(Room)item.myOwner();
+				
 			if((room==null)||((room!=null)&&(!room.isContent(item))))
 			{
 				unInvoke();
@@ -88,12 +120,19 @@ public class Falling extends StdAbility
 			}
 			else
 			{
-				Room nextRoom=room.doors()[Directions.DOWN];
+				Room nextRoom=room.doors()[direction];
 				if((nextRoom!=null)
-				&&(room.exits()[Directions.DOWN]!=null)
-				&&(room.exits()[Directions.DOWN].isOpen()))
+				&&(room.exits()[direction]!=null)
+				&&(room.exits()[direction].isOpen()))
 				{
-					room.show(invoker,null,Affect.MSG_OK_ACTION,item.name()+" falls.");
+					if((nextRoom instanceof GridLocale)
+					&&(!(nextRoom instanceof GridLocaleChild)))
+					{
+						nextRoom=((GridLocale)nextRoom).getAltRoomFrom(room);
+						if(nextRoom==null) 
+							nextRoom=room.doors()[direction];
+					}
+					room.show(invoker,null,Affect.MSG_OK_ACTION,item.name()+" falls "+addStr+".");
 					Vector V=new Vector();
 					recursiveRoomItems(V,item,room);
 					for(int v=0;v<V.size();v++)
@@ -103,11 +142,13 @@ public class Falling extends StdAbility
 						nextRoom.addItem(thisItem);
 					}
 					room=nextRoom;
-					nextRoom.show(invoker,null,Affect.MSG_OK_ACTION,item.name()+" falls in from above.");
+					nextRoom.show(invoker,null,Affect.MSG_OK_ACTION,item.name()+" falls in from "+(reversed()?"below":"above")+".");
 					return true;
 				}
 				else
 				{
+					if(reversed())
+						return true;
 					unInvoke();
 					return false;
 				}
@@ -138,20 +179,21 @@ public class Falling extends StdAbility
 		if(temporarilyDisable)
 			return true;
 		MOB mob=affect.source();
-
-		if(affect.amISource((MOB)affected))
-		{
-			if(Sense.isFlying(mob))
+		if((affected!=null)&&(affected instanceof MOB))
+			if(affect.amISource((MOB)affected))
 			{
-				unInvoke();
-				return true;
+				if(Sense.isFlying(mob))
+				{
+					damageToTake=0;
+					unInvoke();
+					return true;
+				}
+				if(Util.bset(affect.targetMajor(),Affect.ACT_MOVE))
+				{
+					affect.source().tell("You are too busy falling to do that right now.");
+					return false;
+				}
 			}
-			if(Util.bset(affect.targetMajor(),Affect.ACT_MOVE))
-			{
-				affect.source().tell("You are too busy falling to the ground to do that right now.");
-				return false;
-			}
-		}
 		return true;
 	}
 
@@ -165,13 +207,13 @@ public class Falling extends StdAbility
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto)
 	{
 		if(!auto) return false;
-
 		Environmental E=target;
 		if(E==null) return false;
 		if((E instanceof Item)&&(room==null)) return false;
 		if(E.fetchAffect("Falling")==null)
 		{
 			Falling F=new Falling();
+			F.setProfficiency(profficiency());
 			F.invoker=null;
 			if(E instanceof MOB)
 				F.invoker=(MOB)E;

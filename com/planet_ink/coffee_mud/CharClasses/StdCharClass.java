@@ -159,16 +159,20 @@ public class StdCharClass implements CharClass
 
 	protected StringBuffer levelAdjuster(MOB mob, int adjuster)
 	{
-		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+1);
+		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+adjuster);
 
 		int neededNext=1000;
+		int neededLower=1000;
 		for(int i=1;i<mob.baseEnvStats().level();i++)
-		{
 			neededNext+=1000+(125*i);
-		}
+		if(mob.baseEnvStats().level()==1)
+			neededLower=0;
+		else
+		for(int i=1;i<(mob.baseEnvStats().level()-1);i++)
+			neededLower+=1000+(125*i);
 		mob.setExpNextLevel(neededNext);
 		if(mob.getExperience()>mob.getExpNextLevel())
-			mob.setExperience(mob.getExpNextLevel()-1000);
+			mob.setExperience(neededLower);
 
 		StringBuffer theNews=new StringBuffer("");
 

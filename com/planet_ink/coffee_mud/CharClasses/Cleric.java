@@ -143,7 +143,7 @@ public class Cleric extends StdCharClass
 					||(classification==Weapon.CLASS_HAMMER))
 						return true;
 				}
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*4)
+				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
 				{
 					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"During a conflict of <S-HIS-HER> conscience, <S-NAME> fumble(s) horribly with "+I.name()+".");
 					return false;

@@ -29,54 +29,7 @@ public class EndlessSky extends Grid
 		if(!super.okAffect(affect))
 			return false;
 
-		if((affect.targetMinor()==affect.TYP_ENTER)
-		&&(affect.target() instanceof Room)
-		&&((affect.target()==this)
-		   ||(affect.target() instanceof GridChild)))
-		{
-			MOB mob=affect.source();
-			Room room=(Room)affect.target();
-			if(mob.location()!=room.doors()[Directions.UP])
-				if((!Sense.isFlying(mob))
-				&&((mob.riding()==null)||(!Sense.isFlying(mob.riding()))))
-				{
-					mob.tell("You can't fly.");
-					return false;
-				}
-		}
-		return true;
-	}
-
-	public void affect(Affect affect)
-	{
-		super.affect(affect);
-
-		if((affect.target() instanceof Item)
-		&&(!Sense.isFlying(affect.target())
-		&&(affect.targetMinor()==Affect.TYP_DROP))
-		&&(affect.source()!=null)
-		&&(affect.source().location()!=null))
-		{
-			Ability falling=CMClass.getAbility("Falling");
-			falling.setAffectedOne(affect.source().location());
-			falling.invoke(null,null,affect.target(),true);
-		}
-		else
-		if(this.isInhabitant(affect.source())
-		   ||((affect.source().location()!=null)&&(affect.source().location() instanceof GridChild)))
-		{
-			MOB mob=affect.source();
-			if((!Sense.isFlying(mob))
-			&&((mob.riding()==null)||(!Sense.isFlying(mob.riding())))
-			&&(doors()[Directions.DOWN]!=null)
-			&&(exits()[Directions.DOWN]!=null)
-			&&(exits()[Directions.DOWN].isOpen()))
-			{
-				Ability falling=CMClass.getAbility("Falling");
-				falling.setAffectedOne(null);
-				falling.invoke(null,null,mob,true);
-			}
-		}
+		return InTheAir.isOkAffect(this,affect);
 	}
 
 	protected void buildFinalLinks()

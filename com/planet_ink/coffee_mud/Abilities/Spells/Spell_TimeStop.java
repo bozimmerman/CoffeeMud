@@ -123,7 +123,7 @@ public class Spell_TimeStop extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"D":"<S-NAME> chant(s) and gesture(s) and t")+"ime suddenly STOPS!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"T":"<S-NAME> chant(s) and gesture(s) and t")+"ime suddenly STOPS!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

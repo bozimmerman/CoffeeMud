@@ -41,12 +41,11 @@ public class Prayer_DispelEvil extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			Prayer_DispelEvil newOne=(Prayer_DispelEvil)this.copyOf();
-			FullMsg msg=new FullMsg(mob,target,newOne,affectType|Affect.MASK_MALICIOUS,auto?"The evil inside <T-NAME> exercise(s)!":"<S-NAME> exercise(s) the evil inside <T-NAMESELF>!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"The evil inside <T-NAME> exercise(s)!":"<S-NAME> exercise(s) the evil inside <T-NAMESELF>!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				int harming=(int)Math.round(Math.random()*15)+10;
+				int harming=Dice.roll(1,15,10);
 				if(msg.wasModified())
 					harming=(int)Math.round(Util.div(harming,2.0));
 				if(target.getAlignment()<350)

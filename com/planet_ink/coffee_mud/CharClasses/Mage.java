@@ -155,6 +155,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_RechargeWand",false);
 			// level 18
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_SeeAura",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Spell_ReverseGravity",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Delude",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Portal",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Summon",false);
@@ -178,7 +179,7 @@ public class Mage extends StdCharClass
 			// level 24
 			// level 25
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Disintegrate",false);
-			
+			CMAble.addCharAbilityMapping(ID(),25,"Spell_Wish",false);
 		}
 	}
 
@@ -307,7 +308,7 @@ public class Mage extends StdCharClass
 						if((I instanceof Armor)
 						&&(I.material()!=Armor.CLOTH)
 						&&(I.material()!=Armor.PAPER))
-							if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*4)
+							if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
 							{
 								myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
 								return false;
@@ -325,7 +326,7 @@ public class Mage extends StdCharClass
 					||(classification==Weapon.CLASS_DAGGER)
 					||(classification==Weapon.CLASS_STAFF))
 					   )
-						if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*4)
+						if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
 						{
 							myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+I.name()+".");
 							return false;

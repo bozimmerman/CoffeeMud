@@ -115,7 +115,7 @@ public class Thief extends StdCharClass
 						   &&(I.material()!=Armor.FLESH)
 						   &&(I.material()!=Armor.VEGETATION)
 						   &&(I.material()!=Armor.LEATHER))
-							if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*4))
+							if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 							{
 								myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) in <S-HIS-HER> maneuver!");
 								return false;
@@ -135,7 +135,7 @@ public class Thief extends StdCharClass
 					||(classification==Weapon.CLASS_NATURAL)
 					||(classification==Weapon.CLASS_DAGGER))
 					   )
-						if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*4))
+						if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 						{
 							myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+I.name()+".");
 							return false;

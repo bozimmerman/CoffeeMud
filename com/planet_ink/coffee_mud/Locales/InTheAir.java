@@ -22,17 +22,73 @@ public class InTheAir extends StdRoom
 		return new InTheAir();
 	}
 
-	public boolean okAffect(Affect affect)
+	public static boolean isOkAffect(Room room, Affect affect)
 	{
-		if(!super.okAffect(affect))
-			return false;
-
+		boolean foundReversed=false;
+		boolean foundNormal=false;
+		Vector needToFall=new Vector();
+		Vector mightNeedAdjusting=new Vector();
+		for(int i=0;i<room.numInhabitants();i++)
+		{
+			MOB mob=room.fetchInhabitant(i);
+			if(mob!=null)
+			{
+				Ability A=mob.fetchAffect("Falling");
+				if(A!=null)
+				{
+					if(A.profficiency()>=100)
+					{
+						foundReversed=true;
+						mightNeedAdjusting.addElement(mob);
+					}
+					foundNormal=foundNormal||(A.profficiency()<=0);
+				}
+				else
+					needToFall.addElement(mob);
+			}
+		}
+		for(int i=0;i<room.numItems();i++)
+		{
+			Item item=room.fetchItem(i);
+			if(item!=null)
+			{
+				Ability A=item.fetchAffect("Falling");
+				if(A!=null)
+				{
+					if(A.profficiency()>=100)
+					{
+						foundReversed=true;
+						mightNeedAdjusting.addElement(item);
+					}
+					foundNormal=foundNormal||(A.profficiency()<=0);
+				}
+				else
+					needToFall.addElement(item);
+			}
+		}
+		int avg=((foundReversed)&&(!foundNormal))?100:0;
+		for(int i=0;i<mightNeedAdjusting.size();i++)
+		{
+			Environmental E=(Environmental)mightNeedAdjusting.elementAt(i);
+			Ability A=E.fetchAffect("Falling");
+			if(A!=null) A.setProfficiency(avg);
+		}
+		for(int i=0;i<needToFall.size();i++)
+		{
+			Environmental E=(Environmental)needToFall.elementAt(i);
+			Ability falling=CMClass.getAbility("Falling");
+			falling.setProfficiency(avg);
+			falling.setAffectedOne(room);
+			boolean kaplah=falling.invoke(null,null,E,true);
+		}
+		
 		if((affect.targetMinor()==affect.TYP_ENTER)
-		&&(affect.target()==this))
+		&&(affect.target()==room))
 		{
 			MOB mob=affect.source();
-			if(mob.location()!=this.doors()[Directions.UP])
+			if(mob.location()!=room.doors()[Directions.UP])
 				if((!Sense.isFlying(mob))
+				&&(mob.fetchAffect("Falling")==null)
 				&&((mob.riding()==null)||(!Sense.isFlying(mob.riding()))))
 				{
 					mob.tell("You can't fly.");
@@ -41,33 +97,10 @@ public class InTheAir extends StdRoom
 		}
 		return true;
 	}
-
-	public void affect(Affect affect)
+	public boolean okAffect(Affect affect)
 	{
-		super.affect(affect);
-
-		if((affect.target() instanceof Item)
-		   &&(!Sense.isFlying(affect.target()))
-		   &&(affect.targetMinor()==Affect.TYP_DROP))
-		{
-			Ability falling=CMClass.getAbility("Falling");
-			falling.setAffectedOne(this);
-			falling.invoke(null,null,affect.target(),true);
-		}
-		else
-		if(this.isInhabitant(affect.source()))
-		{
-			MOB mob=affect.source();
-			if((!Sense.isFlying(mob))
-			&&((mob.riding()==null)||(!Sense.isFlying(mob.riding())))
-			&&(doors()[Directions.DOWN]!=null)
-			&&(exits()[Directions.DOWN]!=null)
-			&&(exits()[Directions.DOWN].isOpen()))
-			{
-				Ability falling=CMClass.getAbility("Falling");
-				falling.setAffectedOne(null);
-				falling.invoke(null,null,mob,true);
-			}
-		}
+		if(!super.okAffect(affect))
+			return false;
+		return isOkAffect(this,affect);
 	}
 }
