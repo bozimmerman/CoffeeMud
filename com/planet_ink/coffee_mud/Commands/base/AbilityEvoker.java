@@ -10,6 +10,11 @@ public class AbilityEvoker
 	public void gain(MOB mob, Vector commands)
 		throws Exception
 	{
+		if(commands.size()==1)
+		{
+			mob.tell("Gain what?  Enter QUALIFY to see what you can gain.");
+			return;
+		}
 		commands.insertElementAt("SAY",0);
 		ExternalPlay.doCommand(mob,commands);
 	}

@@ -124,15 +124,7 @@ public class StdCharClass implements CharClass, Cloneable
 				default:
 					break;
 				}
-				if((!ok)
-				&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER))
-				&&(I.rawProperLocationBitmap()!=Item.ON_EARS)
-				&&(I.rawProperLocationBitmap()!=(Item.ON_EARS|Item.HELD))
-				&&(I.rawProperLocationBitmap()!=Item.ON_EYES)
-				&&(I.rawProperLocationBitmap()!=(Item.ON_EYES|Item.HELD))
-				&&(I.rawProperLocationBitmap()!=Item.ON_NECK)
-				&&(I.rawProperLocationBitmap()!=(Item.ON_NECK|Item.HELD))
-				&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER|Item.HELD)))
+				if((!ok)&&((I.rawProperLocationBitmap()&wearMask)>0))
 					return false;
 			}
 		}
