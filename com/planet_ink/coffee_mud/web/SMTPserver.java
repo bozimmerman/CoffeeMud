@@ -475,8 +475,7 @@ public class SMTPserver extends Thread implements Tickable
 			}
 			catch(java.io.IOException ioe)
 			{
-				// failure to send, so, if private, tell the sender
-				
+				Log.errOut("SMTPServer","Unable to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+"': "+ioe.getMessage()+".");
 			}
 			
 			// kaplah! On to next...
