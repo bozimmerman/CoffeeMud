@@ -72,7 +72,7 @@ public class IMudPeer implements PersistentPeer
 				out.writeObject(((Intermud)myobj).name_servers);
 			}
 			catch(Exception e){
-				Log.errOut("IMudPeer",e.getMessage());
+				//Log.errOut("IMudPeer",e.getMessage());
 			}
 		}
 	}
