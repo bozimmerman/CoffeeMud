@@ -1,8 +1,4 @@
 Archons Guide updates
-	shopkeepers/bankers should mention change bags
-	How to create Deities (and sample ones)
-	money system explanation?
-	How to create Homes
 	How to create Inns
 Programming.html update
 	Include building information

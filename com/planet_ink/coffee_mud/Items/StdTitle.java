@@ -120,12 +120,7 @@ public class StdTitle extends StdItem implements LandTitle
 		{
 			if(landRoomID().length()==0) return null;
 			R=CMMap.getRoom(landRoomID());
-			if(R==null)
-			{
-				destroy();
-				Log.errOut("StdTitle","Unknown room: "+landRoomID());
-				return null;
-			}
+			if(R==null) return null;
 		}
 		LandTitle A=null;
 		for(int a=0;a<R.numAffects();a++)

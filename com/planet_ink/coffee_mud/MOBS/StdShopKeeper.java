@@ -160,6 +160,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return "Caster of spells/prayers";
 		case DEAL_ALCHEMIST:
 			return "Potions";
+		case DEAL_INNKEEPER:
+			return "My services as an Inn Keeper";
 		case DEAL_JEWELLER:
 			return "Precious stones and jewellery";
 		case DEAL_BANKER:
@@ -282,6 +284,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return (thisThang instanceof MOB);
 		case DEAL_INVENTORYONLY:
 			return (inBaseInventory(thisThang));
+		case DEAL_INNKEEPER:
+			return thisThang instanceof InnKey;
 		case DEAL_JEWELLER:
 			return ((thisThang instanceof Item)
 					&&(!(thisThang instanceof Weapon))

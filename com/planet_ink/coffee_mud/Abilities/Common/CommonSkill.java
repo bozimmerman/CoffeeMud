@@ -587,6 +587,11 @@ public class CommonSkill extends StdAbility
 			commonTell(mob,"<S-NAME> can't see to do that!");
 			return false;
 		}
+		if(Sense.isSitting(mob)||Sense.isSleeping(mob))
+		{
+			commonTell(mob,"You need to stand up!");
+			return false;
+		}
 		for(int a=mob.numAffects()-1;a>=0;a--)
 		{
 			Ability A=mob.fetchAffect(a);

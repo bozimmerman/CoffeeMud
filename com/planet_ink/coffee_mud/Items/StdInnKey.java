@@ -69,12 +69,23 @@ public class StdInnKey extends StdKey implements InnKey
 		if(!super.okAffect(myHost,affect))
 			return false;
 
+		if(((affect.targetMinor()==Affect.TYP_GIVE)
+		||(affect.targetMinor()==Affect.TYP_SELL))
+		&&(affect.target() instanceof ShopKeeper)
+		&&(myShopkeeper!=null)
+		&&(affect.target()!=myShopkeeper)
+		&&(affect.tool()==this))
+		{
+			ExternalPlay.quickSay((MOB)affect.target(),affect.source(),"I'm not interested.",false,false);
+			return false;
+		}
+		else
 		if((affect.sourceMinor()==Affect.TYP_BUY)
 		&&(affect.target()==this)
 		&&(affect.tool()!=null)
 		&&(myShopkeeper!=null)
 		&&(affect.tool()==myShopkeeper))
-			ExternalPlay.startTickDown(this,Host.ITEM_BOUNCEBACK,2000);
+			ExternalPlay.startTickDown(this,Host.ITEM_BOUNCEBACK,(int)Host.TICKS_PER_DAY);
 		return true;
 	}
 }

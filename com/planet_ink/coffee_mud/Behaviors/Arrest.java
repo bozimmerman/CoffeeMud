@@ -10,6 +10,7 @@ import java.util.*;
 public class Arrest extends StdBehavior
 {
 	public String ID(){return "Arrest";}
+	protected int canImproveCode(){return Behavior.CAN_AREAS;}
 
 	public Behavior newInstance()
 	{

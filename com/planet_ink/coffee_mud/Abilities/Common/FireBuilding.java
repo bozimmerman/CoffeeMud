@@ -98,7 +98,7 @@ public class FireBuilding extends CommonSkill
 		{
 			lighting=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 			if(lighting==null) return false;
-			if((!lighting.isGettable())||(lighting.displayText().length()==0))
+			if(lighting.displayText().length()==0)
 			{
 				commonTell(mob,"For some reason, "+lighting.name()+" just won't catch.");
 				return false;
@@ -111,7 +111,14 @@ public class FireBuilding extends CommonSkill
 					commonTell(mob,l.name()+" is already lit!");
 					return false;
 				}
-				commonTell(mob,"Just hold this item to light it.");
+				if(lighting.isGettable())
+					commonTell(mob,"Just hold this item to light it.");
+				else
+				{
+					l.light(true);
+					mob.location().show(mob,lighting,Affect.TYP_HANDS,"<S-NAME> light(s) <T-NAMESELF>.");
+					return true;
+				}
 				return false;
 			}
 			switch(lighting.material()&EnvResource.MATERIAL_MASK)
