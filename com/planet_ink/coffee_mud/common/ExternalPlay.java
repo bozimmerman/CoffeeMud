@@ -25,9 +25,9 @@ public class ExternalPlay
 		if(player!=null) return player.standardHitWord(weaponType,damageAmount);
 		return "";
 	}
-	public static String standardMissString(int weaponType, String weaponName, boolean useExtendedMissString)
+	public static String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
 	{
-		if(player!=null) return player.standardMissString(weaponType,weaponName,useExtendedMissString);
+		if(player!=null) return player.standardMissString(weaponType,weaponClassification,weaponName,useExtendedMissString);
 		return "";
 	}
 	public static String standardMobCondition(MOB mob)

@@ -471,7 +471,7 @@ public class TheFight
 
 	public String standardHitString(int weaponType, int weaponClass, int damageAmount, String weaponName)
 	{
-		if((weaponClass!=Weapon.CLASS_NATURAL)||(weaponName==null)||(weaponName.length()==0))
+		if((weaponClass!=Weapon.CLASS_NATURAL)&&(weaponName!=null)&&(weaponName.length()>0))
 			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+weaponName;
 		else
 			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+" <T-NAMESELF>";
@@ -776,8 +776,11 @@ public class TheFight
 			return "you are death incarnate! ("+prowess+")";
 	}
 
-	public String standardMissString(int weaponType, String weaponName, boolean useExtendedMissString)
+	public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
 	{
+		if(weaponClassification==Weapon.CLASS_RANGED)
+			return "<S-NAME> fire(s) at <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
+		else
 		switch(weaponType)
 		{
 		case Weapon.TYPE_BASHING:
@@ -792,7 +795,7 @@ public class TheFight
 		case Weapon.TYPE_BURSTING:
 			return "<S-NAME> attack(s) <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
 		case Weapon.TYPE_SHOOT:
-			return "<S-NAME> shoot(s) at <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
+			return "<S-NAME> fire(s) at <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
 		default:
 			return "<S-NAME> attack(s) <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
 		}

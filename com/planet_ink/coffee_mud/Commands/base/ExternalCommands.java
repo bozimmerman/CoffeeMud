@@ -31,9 +31,9 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.theFight.standardHitWord(weaponType,damageAmount);
 	}
-	public String standardMissString(int weaponType, String weaponName, boolean useExtendedMissString)
+	public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
 	{
-		return processor.theFight.standardMissString(weaponType,weaponName,useExtendedMissString);
+		return processor.theFight.standardMissString(weaponType,weaponClassification,weaponName,useExtendedMissString);
 	}
 
 	public void standIfNecessary(MOB mob)

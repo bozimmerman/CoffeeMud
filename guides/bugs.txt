@@ -2,7 +2,8 @@ Have the tick confirm someones victim -- fighting the wolf for all of zaras pets
 ! fireball only affects one enemy at a time -- yes, and it should
 change import so that we get some default journals, along with the parchments!
 change import so we get some arrows that dont exist yet!
-at max/min range to genweapon definitions, dammit!
+! fix import of ranged weapons to HAVE a range and ammo requirements!
+! at max/min range to genweapon definitions, dammit!
 
 
 

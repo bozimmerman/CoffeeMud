@@ -28,9 +28,18 @@ public interface Weapon extends Item
 	public int weaponClassification();
 	public void setWeaponType(int newType);
 	public void setWeaponClassification(int newClassification);
+	public void setRanges(int min, int max);
+	public boolean requiresAmmunition();
+	public void setAmmunitionType(String ammo);
+	public String ammunitionType();
+	public int ammunitionRemaining();
+	public void setAmmoRemaining(int amount);
+	public int ammunitionCapacity();
+	public void setAmmoCapacity(int amount);
+	
+
 	public String typeDescription();
 	public String classifictionDescription();
 	public String hitString(int damageAmount);
 	public String missString();
-	public void setRanges(int min, int max);
 }

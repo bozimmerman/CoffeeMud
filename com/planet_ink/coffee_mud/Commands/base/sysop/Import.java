@@ -626,7 +626,11 @@ public class Import
 
 		switch(val1)
 		{
-		case 0: ((Weapon)I).setWeaponClassification(Weapon.CLASS_RANGED); break;
+		case 0: ((Weapon)I).setWeaponClassification(Weapon.CLASS_RANGED); 
+				((Weapon)I).setAmmoCapacity(20);
+				((Weapon)I).setAmmoRemaining(20);
+				((Weapon)I).setAmmunitionType("arrows");
+				break;
 		case 1: ((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD); break;
 		case 2: ((Weapon)I).setWeaponClassification(Weapon.CLASS_EDGED); break;
 		case 3: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM); break;
@@ -2729,10 +2733,37 @@ public class Import
 								((ShopKeeper)M).addStoreInventory(I,num);
 								if((I instanceof Light)&&(!((ShopKeeper)M).doIHaveThisInStock("OilFlask")))
 									((ShopKeeper)M).addStoreInventory(CMClass.getStdItem("OilFlask"),num*2);
+								else
 								if(((I.ID().equals("GenReadable"))
 								||(I instanceof com.planet_ink.coffee_mud.interfaces.Map))
 								&&(!((ShopKeeper)M).doIHaveThisInStock("Parchment")))
+								{
+									((ShopKeeper)M).setWhatIsSold(ShopKeeper.ONLYBASEINVENTORY);
 									((ShopKeeper)M).addStoreInventory(CMClass.getStdItem("Parchment"),num);
+									Item journal1=CMClass.getItem("GenJournal");
+									journal1.setName("the bug journal");
+									journal1.setBaseValue(5);
+									((ShopKeeper)M).addStoreInventory(journal1,num);
+									Item journal2=CMClass.getItem("GenJournal");
+									journal2.setName("the adventurers journal");
+									journal2.setBaseValue(250);
+									((ShopKeeper)M).addStoreInventory(journal2,num);
+									Item journal3=CMClass.getItem("GenJournal");
+									journal3.setName("a feature guide");
+									journal3.setBaseValue(50);
+									((ShopKeeper)M).addStoreInventory(journal3,num);
+								}
+								else
+								if(((ShopKeeper)M).whatIsSold()==ShopKeeper.WEAPONS)
+								{
+									Item arrows=CMClass.getItem("GenItem");
+									I.setSecretIdentity("arrows");
+									I.setName("a pack of 20 arrows");
+									I.setBaseValue(50);
+									I.setDescription("They are sturdy and wooden, but probably not much use without a bow.");
+									I.setDisplayText("Some arrows have been left here.");
+									((ShopKeeper)M).addStoreInventory(arrows,num);
+								}
 							}
 							else
 								M.addInventory(I);

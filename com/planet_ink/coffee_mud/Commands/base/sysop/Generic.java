@@ -874,6 +874,45 @@ public class Generic
 			mob.tell("(no change)");
 	}
 
+	void genWeaponAmmo(MOB mob, Weapon E)
+		throws IOException
+	{
+		String defaultAmmo=(E.requiresAmmunition())?"Y":"N";
+		
+		if(mob.session().confirm("Does this weapon require ammunition (default="+defaultAmmo+") (Y/N)?",defaultAmmo))
+		{
+			mob.tell("\n\rAmmo type: '"+E.ammunitionType()+"'.");
+			String newName=mob.session().prompt("Enter a new one\n\r:","");
+			if(newName.length()>0)
+			{
+				E.setAmmunitionType(newName);
+				mob.tell("(Remember to create a readable GenItem with '"+E.ammunitionType()+"' in the secret identity, and the uses remaining above 0!");
+			}
+			else
+				mob.tell("(no change)");
+		}
+		else
+			E.setAmmunitionType("");
+	}
+	void genWeaponRanges(MOB mob, Weapon E)
+		throws IOException
+	{
+		mob.tell("\n\rMinimum/Maximum Ranges: "+((int)Math.round(E.minRange()))+"/"+((int)Math.round(E.maxRange()))+".");
+		String newMinStr=mob.session().prompt("Enter a new minimum range\n\r:","");
+		String newMaxStr=mob.session().prompt("Enter a new maximum range\n\r:","");
+		if((newMinStr.length()==0)&&(newMaxStr.length()==0))
+			mob.tell("(no change)");
+		else
+		{
+			E.setRanges(Util.s_int(newMinStr),Util.s_int(newMaxStr));
+			if((E.minRange()>E.maxRange())||(E.minRange()<0)||(E.maxRange()<0))
+			{
+				mob.tell("(defective entries.  resetting.)");
+				E.setRanges(0,0);
+			}
+		}
+	}
+	
 	void genWeaponType(MOB mob, Weapon E)
 		throws IOException
 	{
@@ -1462,9 +1501,9 @@ public class Generic
 		while(!ok)
 		{
 			genName(mob,me);
-			genLevel(mob,me);
 			genDisplayText(mob,me);
 			genDescription(mob,me);
+			genLevel(mob,me);
 			genSecretIdentity(mob,me);
 			genMaterialCode(mob,me);
 			genGettable(mob,me);
@@ -1497,9 +1536,9 @@ public class Generic
 			genName(mob,me);
 			genDisplayText(mob,me);
 			genDescription(mob,me);
+			genLevel(mob,me);
 			genSecretIdentity(mob,me);
 			genGettable(mob,me);
-			genLevel(mob,me);
 			genValue(mob,me);
 			genWeight(mob,me);
 			genRejuv(mob,me);
@@ -1562,14 +1601,15 @@ public class Generic
 			genName(mob,me);
 			genDisplayText(mob,me);
 			genDescription(mob,me);
+			genLevel(mob,me);
 			genAttack(mob,me);
 			genDamage(mob,me);
 			genMaterialCode(mob,me);
 			genWeaponType(mob,me);
 			genWeaponClassification(mob,me);
 			genWeaponHands(mob,me);
-			genLevel(mob,me);
-			genUses(mob,me);
+			genWeaponRanges(mob,me);
+			genWeaponAmmo(mob,me);
 			genRejuv(mob,me);
 			genAbility(mob,me);
 			genSecretIdentity(mob,me);
@@ -1599,9 +1639,9 @@ public class Generic
 			genName(mob,me);
 			genDisplayText(mob,me);
 			genDescription(mob,me);
+			genLevel(mob,me);
 			genMaterialCode(mob,me);
 			genWornLocation(mob,me);
-			genLevel(mob,me);
 			genRejuv(mob,me);
 			genArmor(mob,me);
 			genAbility(mob,me);
@@ -1631,8 +1671,8 @@ public class Generic
 		while(!ok)
 		{
 			genName(mob,me);
-			genDescription(mob,me);
 			genDisplayText(mob,me);
+			genDescription(mob,me);
 			genLevel(mob,me);
 			genDoorsNLocks(mob,me);
 			if(me.hasADoor())
