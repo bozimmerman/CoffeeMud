@@ -84,7 +84,6 @@ public class ROMGangMember extends StdBehavior
 		super.tick(ticking,tickID);
 
 		if(tickID!=Host.MOB_TICK) return;
-		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
 		tickTock--;
 		if(tickTock<=0)

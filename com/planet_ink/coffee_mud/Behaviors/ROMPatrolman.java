@@ -112,12 +112,11 @@ public class ROMPatrolman extends StdBehavior
 		super.tick(ticking,tickID);
 
 		if(tickID!=Host.MOB_TICK) return;
-		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
 		tickTock--;
 		if(tickTock<=0)
 		{
-			tickTock=Dice.roll(1,10,0);
+			tickTock=Dice.roll(1,3,0);
 			keepPeace(mob);
 		}
 	}
