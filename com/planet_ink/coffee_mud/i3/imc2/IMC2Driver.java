@@ -962,8 +962,27 @@ public final class IMC2Driver extends Thread {
 
     final void imc_recv_tell(imc_char_data d, String from, String text)
     {
-        send_to_player(d.name, from+" imcptells you '&BSAY"+text+"'&ESAY");
+		MOB mob=CMClass.getMOB("StdMOB");
+		mob.setName(from);
+		mob.setLocation(CMClass.getLocale("StdRoom"));
+		MOB smob=findSessMob(d.name);
+		if(smob!=null)
+			CommonMsgs.say(mob,smob,text,true,true);
     }
+
+	private MOB findSessMob(String mobName)
+	{
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session ses=(Session)Sessions.elementAt(s);
+			if((!ses.killFlag())&&(ses.mob()!=null)
+			&&(!ses.mob().amDead())
+			&&(ses.mob().Name().equalsIgnoreCase(mobName))
+			&&(ses.mob().location()!=null))
+				return ses.mob();
+		}
+		return null;
+	}
 
     final void imc_recv_chat(imc_char_data d, String from, String channel, String text)
     {
@@ -973,17 +992,35 @@ public final class IMC2Driver extends Thread {
             channel = st.nextToken();
         }
 
-        String chatText = from + " &BLUE[&YELLOW&BOLD<&GREEN" + channel +
-                   "&YELLOW&BOLD>&BLUE]" +
-                   "&OFF " + text + "&OFF";
+		MOB mob=CMClass.getMOB("StdMOB");
+		mob.setName(from);
+		mob.setLocation(CMClass.getLocale("StdRoom"));
+		String channelName=channel;
+		FullMsg msg=null;
 
-        send_to_player("all", chatText);
+		if(from.toUpperCase().endsWith(imc_name.toUpperCase()))
+		   return;
+		if(channelName.length()==0)
+			return;
+		int channelInt=ChannelSet.getChannelInt(channelName);
+		if(channelInt<0) return;
+		String str="^Q^q"+mob.name()+" "+channelName+"(S) '"+text+"'^?^.";
+		msg=new FullMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
+
+		ChannelSet.channelQueUp(channelInt,msg);
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session ses=(Session)Sessions.elementAt(s);
+			if((ChannelSet.mayReadThisChannel(mob,false,ses,channelInt))
+			&&(ses.mob().okMessage(ses.mob(),msg)))
+				ses.mob().executeMsg(ses.mob(),msg);
+		}
 
         LinkedList l = (LinkedList) chanhist.get(channel);
         if(l == null)
             l = new LinkedList();
 
-        l.add(chatText);
+        l.add(str);
         chanhist.put(channel, l);
     }
 
