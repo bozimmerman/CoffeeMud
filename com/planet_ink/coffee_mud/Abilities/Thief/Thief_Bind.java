@@ -131,7 +131,7 @@ public class Thief_Bind extends ThiefSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((!Sense.isSleeping(target))&&(!auto))
+		if((!Sense.isSleeping(target))&&(Sense.canMove(target)&&(!auto)))
 		{
 			mob.tell(target.name()+" doesn't look willing to cooperate.");
 			return false;

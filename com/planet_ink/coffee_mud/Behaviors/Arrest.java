@@ -2823,11 +2823,18 @@ public class Arrest extends StdBehavior
 						&&(Sense.aliveAwakeMobile(judge,true))
 						&&(judge.location()==W.criminal().location()))
 						{
-							fileAllWarrants(laws,W.criminal());
-							unCuff(W.criminal());
 							dismissOfficer(officer);
 							Ability A=CMClass.getAbility("Prisoner");
 							A.startTickDown(judge,W.criminal(),100);
+						    A=judge.fetchAbility("Fighter_Behead");
+						    if(A==null)A=judge.fetchAbility("Prayer_Stoning");
+						    if(A!=null)
+						    {
+						        A.setProfficiency(100);
+						        A.invoke(judge,W.criminal(),false,0);
+						    }
+							unCuff(W.criminal());
+							fileAllWarrants(laws,W.criminal());
 							W.criminal().recoverEnvStats();
 							W.criminal().recoverCharStats();
 							MUDFight.postAttack(judge,W.criminal(),judge.fetchWieldedItem());

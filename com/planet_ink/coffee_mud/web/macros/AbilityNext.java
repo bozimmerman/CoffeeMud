@@ -54,7 +54,7 @@ public class AbilityNext extends StdWebMacro
 				if(level<0)
 					okToShow=false;
 				else
-				if(CMAble.getSecretSkill(className,true,A.ID()))
+				if(CMAble.getSecretSkill(className,false,A.ID()))
 					okToShow=false;
 				else
 				{

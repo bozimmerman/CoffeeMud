@@ -75,6 +75,8 @@ public class Thief_Snipe extends ThiefSkill
 		int code=CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT;
 		String str=auto?"":"<S-NAME> strike(s) <T-NAMESELF> from the shadows!";
 		int otherCode=success?code:CMMsg.NO_EFFECT;
+		if(Util.bset(otherCode,CMMsg.MASK_SOUND))
+		    otherCode=Util.unsetb(otherCode,CMMsg.MASK_SOUND);
 		String otherStr=success?str:null;
 		FullMsg msg=new FullMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);
 		if(mob.location().okMessage(mob,msg))

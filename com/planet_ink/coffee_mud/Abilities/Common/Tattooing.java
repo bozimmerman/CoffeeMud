@@ -77,7 +77,7 @@ public class Tattooing extends CommonSkill
 		}
 		String whom=(String)commands.firstElement();
 		commands.removeElementAt(0);
-		String part=(String)commands.lastElement();
+		String part=(String)commands.firstElement();
 		commands.removeElementAt(0);
 		String message=Util.combine(commands,0);
 		commands.clear();

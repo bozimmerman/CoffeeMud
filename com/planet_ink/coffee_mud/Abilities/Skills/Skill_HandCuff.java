@@ -182,7 +182,7 @@ public class Skill_HandCuff extends StdAbility
 		    mob.tell(target.name()+" has no warrants out here.");
 		    return false;
 		}
-		if((!Sense.isSleeping(target))&&(!Sense.isSitting(target))&&(!auto))
+		if(((!Sense.isSleeping(target))&&(!Sense.isSitting(target)))&&(!auto))
 		{
 			mob.tell(target.name()+" doesn't look willing to cooperate.");
 			return false;
@@ -198,7 +198,7 @@ public class Skill_HandCuff extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,"<S-NAME> handcuff(s) <T-NAME>.");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_GENERAL:CMMsg.MASK_MALICIOUS),"<S-NAME> handcuff(s) <T-NAME>.");
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);

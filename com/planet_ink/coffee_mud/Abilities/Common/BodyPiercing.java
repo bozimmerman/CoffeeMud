@@ -80,7 +80,7 @@ public class BodyPiercing extends CommonSkill
 		
 		int partNum=-1;
 		StringBuffer allParts=new StringBuffer("");
-		long[] piercable={Item.ON_BACK,Item.ON_HEAD,Item.ON_EARS,Item.ON_EYES,Item.ON_TORSO};
+		long[] piercable={Item.ON_HEAD,Item.ON_EARS,Item.ON_EYES,Item.ON_TORSO};
 		for(int i=0;i<Item.wornLocation.length;i++)
 		{
 		    for(int ii=0;ii<piercable.length;ii++)
@@ -129,13 +129,16 @@ public class BodyPiercing extends CommonSkill
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		writing=wornName.toUpperCase()+":A pierced "+wornName.toLowerCase();
+		if(wornName.toLowerCase().endsWith("s"))
+			writing=wornName.toUpperCase()+":Pierced "+wornName.toLowerCase();
+		else
+			writing=wornName.toUpperCase()+":A pierced "+wornName.toLowerCase();
 		verb="piercing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
 		if(!profficiencyCheck(mob,0,auto)) writing="";
 		int duration=30-mob.envStats().level();
 		if(duration<6) duration=6;
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) piercing "+target.name()+" on "+wornName.toLowerCase()+".");
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) piercing "+target.name()+" on the "+wornName.toLowerCase()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

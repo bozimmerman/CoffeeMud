@@ -258,6 +258,93 @@ public class Reset extends StdCommand
 			return false;
 		}
 		else
+		if(s.equalsIgnoreCase("genraceagingcharts"))
+		{
+		    for(Enumeration e=CMClass.races();e.hasMoreElements();)
+		    {
+		        Race R=(Race)e.nextElement();
+		        Vector racesToBaseFrom=new Vector();
+		        Race human=CMClass.getRace("Human");
+		        Race halfling=CMClass.getRace("Halfling");
+		        if((R.isGeneric())&&(R.ID().length()>1)&&(!R.ID().endsWith("Race"))&&(Character.isUpperCase(R.ID().charAt(0))))
+		        {
+		            int lastStart=0;
+		            int c=1;
+		            while(c<=R.ID().length())
+		            {
+		                if((c==R.ID().length())||(Character.isUpperCase(R.ID().charAt(c))))
+		                {
+		                    if((lastStart==0)&&(c==R.ID().length())&&(!R.ID().endsWith("ling"))&&(!R.ID().startsWith("Half")))
+	                            break;
+		                    String partial=R.ID().substring(lastStart,c);
+		                    if(partial.equals("Half")&&(!racesToBaseFrom.contains(human)))
+		                    {
+		                        racesToBaseFrom.add(human);
+		                        lastStart=c;
+		                    }
+		                    else
+		                    {
+		                        Race R2=CMClass.getRace(partial);
+		                        if((R2!=null)&&(R2!=R))
+		                        {
+			                        racesToBaseFrom.add(R2);
+			                        lastStart=c;
+		                        }
+		                        else
+		                        if(partial.endsWith("ling"))
+		                        {
+		                            if(!racesToBaseFrom.contains(halfling))
+				                        racesToBaseFrom.add(halfling);
+			                        lastStart=c;
+		                            R2=CMClass.getRace(partial.substring(0,partial.length()-4));
+		                            if(R2!=null)
+				                        racesToBaseFrom.add(R2);
+		                        }
+		                    }
+		                    if(c==R.ID().length())
+		                        break;
+		                }
+	                    c++;
+		            }
+		            StringBuffer answer=new StringBuffer(R.ID()+": ");
+		            for(int i=0;i<racesToBaseFrom.size();i++)
+		                answer.append(((Race)racesToBaseFrom.elementAt(i)).ID()+" ");
+		            mob.tell(answer.toString());
+		            if(racesToBaseFrom.size()>0)
+		            {
+		                long[] ageChart=new long[Race.AGE_ANCIENT+1];
+		                for(int i=0;i<racesToBaseFrom.size();i++)
+		                {
+		                    Race R2=(Race)racesToBaseFrom.elementAt(i);
+		                    int lastVal=0;
+		                    for(int x=0;x<ageChart.length;x++)
+		                    {
+		                        int val=R2.getAgingChart()[x];
+		                        if(val>=Integer.MAX_VALUE)
+		                            val=lastVal+(x*1000);
+		                        ageChart[x]+=val;
+		                        lastVal=val;
+		                    }
+		                }
+	                    for(int x=0;x<ageChart.length;x++)
+	                        ageChart[x]=ageChart[x]/racesToBaseFrom.size();
+	                    int lastVal=0;
+	                    int thisVal=0;
+	                    for(int x=0;x<ageChart.length;x++)
+	                    {
+	                        lastVal=thisVal;
+	                        thisVal=(int)ageChart[x];
+	                        if(thisVal<lastVal)
+	                            thisVal+=lastVal;
+	                        R.getAgingChart()[x]=thisVal;
+	                    }
+	                    CMClass.DBEngine().DBDeleteRace(R.ID());
+	                    CMClass.DBEngine().DBCreateRace(R.ID(),R.racialParms());
+		            }
+		        }
+		    }
+		}
+		else
 		if(s.equalsIgnoreCase("bankdata"))
 		{
 			String bank=Util.combine(commands,1);

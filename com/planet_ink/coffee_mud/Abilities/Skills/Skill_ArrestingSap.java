@@ -29,7 +29,7 @@ public class Skill_ArrestingSap extends StdAbility
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
-	private static final String[] triggerStrings = {"SAP"};
+	private static final String[] triggerStrings = {"ASAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	private int enhancement=0;
 	public int abilityCode(){return enhancement;}
@@ -135,7 +135,7 @@ public class Skill_ArrestingSap extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS|CMMsg.MSK_MALICIOUS_MOVE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> rear(s) back and sap(s) <T-NAMESELF>, knocking <T-HIM-HER> out!^?");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_GENERAL:CMMsg.MASK_MALICIOUS),(mob==target)?"<T-NAME> hit(s) the floor!":"^F<S-NAME> rear(s) back and sap(s) <T-NAMESELF>, knocking <T-HIM-HER> out!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -39,12 +39,13 @@ public class Equipment extends StdCommand
 	    String wornName=null;
 	    Item thisItem=null;
 	    String tat=null;
+	    int numWears=0;
 		for(int l=0;l<Item.wornOrder.length;l++)
 		{
 			wornCode=Item.wornOrder[l];
-			header="^N(^H"+Sense.wornLocation(wornCode)+"^?)";
+			wornName=Sense.wornLocation(wornCode);
+			header="^N(^H"+wornName+"^?)";
 			header+=Util.SPACES.substring(0,26-header.length())+": ^!";
-			wornName=Item.wornLocation[l];
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				thisItem=mob.fetchInventory(i);
@@ -62,18 +63,20 @@ public class Equipment extends StdCommand
 						msg.append(header+"(something you can`t see)"+Sense.colorCodes(thisItem,seer)+"^?\n\r");
 				}
 			}
-			if(found<mob.getWearPositions(wornCode))
+			numWears=mob.getWearPositions(wornCode);
+			if(found<numWears)
 			{
 			    numTattsDone=found;
+			    wornName=wornName.toUpperCase();
 				for(int i=0;i<mob.numTattoos();i++)
 				{
-				    tat=mob.fetchTattoo(i);
-				    if((tat.toUpperCase().startsWith(wornName.toUpperCase()+":"))
-				    &&((++numTattsDone)<=mob.getWearPositions(wornCode)))
+				    tat=mob.fetchTattoo(i).toUpperCase();
+				    if((tat.startsWith(wornName+":"))
+				    &&((++numTattsDone)<=numWears))
 				    {
-				        tat=tat.substring(wornName.length()+1);
+				        tat=Util.capitalize(tat.substring(wornName.length()+1).toLowerCase());
 						if(tat.length()>53) tat=tat.substring(0,50)+"...";
-						msg.append(header+tat+tat+"^?\n\r");
+						msg.append(header+tat+"^?\n\r");
 				    }
 				}
 			}

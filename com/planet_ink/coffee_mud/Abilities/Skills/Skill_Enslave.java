@@ -30,12 +30,9 @@ public class Skill_Enslave extends StdAbility
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.INDIFFERENT;}
-	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"ENSLAVE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public boolean canBeUninvoked(){return false;}
-	public boolean isAutoInvoked(){return false;}
-	public int classificationCode(){return Ability.PROPERTY;}
+	public int classificationCode(){return Ability.SKILL;}
 	
 	private MOB myMaster=null;
 	private EnglishParser.geasStep STEP=null;
@@ -46,28 +43,6 @@ public class Skill_Enslave extends StdAbility
 	private int hungerTickDown=HUNGERTICKMAX;
 	private Room lastRoom=null;
 	
-	public void unInvoke()
-	{
-		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-		super.unInvoke();
-		if(canBeUninvoked())
-		{
-			if((STEP!=null)&&(STEP.que!=null)&&(STEP.que.size()==0))
-				mob.tell("You have completed your masters task.");
-			else
-				mob.tell("You have been released from your masters task.");
-			if((mob.isMonster())
-			&&(!mob.amDead())
-			&&(mob.location()!=null)
-			&&(mob.location()!=mob.getStartRoom()))
-				MUDTracker.wanderAway(mob,true,true);
-		}
-		STEP=null;
-	}
-
 	public void setMiscText(String txt)
 	{
 	    myMaster=null;
@@ -272,6 +247,15 @@ public class Skill_Enslave extends StdAbility
 				{
 					if(mob.isInCombat())
 						return true; // let them finish fighting.
+					if((STEP!=null)&&(STEP.que!=null)&&(STEP.que.size()==0))
+						mob.tell("You have completed your masters task.");
+					else
+						mob.tell("You have been released from your masters task.");
+					if((mob.isMonster())
+					&&(!mob.amDead())
+					&&(mob.location()!=null)
+					&&(mob.location()!=mob.getStartRoom()))
+						MUDTracker.wanderAway(mob,true,true);
 					unInvoke();
 					return !canBeUninvoked();
 				}
@@ -296,7 +280,7 @@ public class Skill_Enslave extends StdAbility
 			mob.tell("You need to specify a target to enslave.");
 			return false;
 		}
-		MOB target=getTarget(mob,commands,givenTarget);
+		MOB target=getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
 		if(target.charStats().getStat(CharStats.INTELLIGENCE)<5)
 		{
@@ -304,7 +288,7 @@ public class Skill_Enslave extends StdAbility
 			return false;
 		}
 		
-		if(!Sense.isBoundOrHeld(target))
+		if((!Sense.isBoundOrHeld(target))&&(target.fetchEffect(ID())==null))
 		{
 		    mob.tell(target.name()+" must be bound first.");
 		    return false;
@@ -322,9 +306,13 @@ public class Skill_Enslave extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=(Ability)copyOf();
+				Ability A=target.fetchEffect(ID());
+				if(A==null)
+				{
+					A=(Ability)copyOf();
+					target.addNonUninvokableEffect(A);
+				}
 				A.setMiscText(mob.Name());
-				target.addNonUninvokableEffect(A);
 			}
 		}
 		else

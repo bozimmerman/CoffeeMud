@@ -168,6 +168,12 @@ public class Skill_CollectBounty extends StdAbility
 				    return false;
 				}
 				int gold=0;
+				Ability A=mob.fetchEffect("Skill_HandCuff");
+				if((A!=null)||(mob.fetchEffect("Thief_Bind")!=null)&&(target.amFollowing()==mob))
+			    {
+				    A.setInvoker(officer);
+				    target.setFollowing(officer);
+			    }
 			    LegalWarrant W=(LegalWarrant)warrants.firstElement();
 		        W.setArrestingOfficer(legalA,officer);
 		        W.setState(Law.STATE_REPORTING);
