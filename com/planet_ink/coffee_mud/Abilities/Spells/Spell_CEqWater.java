@@ -21,7 +21,7 @@ public class Spell_CEqWater extends Spell_BaseClanEq {
 
   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
   {
-    commands.insertElementAt("Water",2);
+    type="Water";
     // All the work is done by the base model
     if(!super.invoke(mob,commands,givenTarget,auto))
         return false;

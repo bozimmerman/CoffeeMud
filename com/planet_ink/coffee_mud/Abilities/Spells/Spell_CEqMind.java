@@ -21,7 +21,7 @@ public class Spell_CEqMind extends Spell_BaseClanEq {
 
   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
   {
-    commands.insertElementAt("Mind",2);
+    type="Mind";
     // All the work is done by the base model
     if(!super.invoke(mob,commands,givenTarget,auto))
         return false;

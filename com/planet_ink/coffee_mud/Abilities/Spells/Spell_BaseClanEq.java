@@ -22,9 +22,28 @@ public class Spell_BaseClanEq extends Spell
 	public Environmental newInstance(){	return new Spell_BaseClanEq();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected String type="";
 
+	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	{
+		if(student!=null)
+		{
+			for(int a=0;a<student.numAbilities();a++)
+			{
+				Ability A=student.fetchAbility(a);
+				if((A!=null)&&(A instanceof Spell_BaseClanEq))
+				{
+					teacher.tell(student.name()+" already knows '"+A.name()+"', and may not learn another clan enchantment.");
+					student.tell("You may only learn a single clan enchantment.");
+					return false;
+				}
+			}
+		}
+		return super.canBeLearnedBy(teacher,student);
+	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if(type.length()==0) return false;
 		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 		{
 			mob.tell("You aren't even a member of a clan.");
@@ -96,7 +115,7 @@ public class Spell_BaseClanEq extends Spell
 				mob.location().send(mob, msg);
 				Ability A=CMClass.getAbility("Prop_ClanEquipment");
 				StringBuffer str=new StringBuffer("");
-				str.append(((String)commands.elementAt(2)).toUpperCase()); // Type of Enchantment
+				str.append(type); // Type of Enchantment
 				str.append(" ");
 				str.append(""+points);     // Power of Enchantment
 				str.append(" ");

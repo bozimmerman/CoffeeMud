@@ -703,8 +703,9 @@ for inserting those cute little blurbs in the area.<BR>"Sounder" is also for ins
 reacts to player actions.<BR>"InstantDeath" makes 
 everything that comes here DIE!!!!!<BR>"LinkedWeather" 
 makes the weather in this area mimic the weather from another area.<BR>"PuddleMaker" will scatter some puddles around after rain 
-or snow.<BR>"RandomTraps" will scatter some traps around 
-your area.<BR>"RandomMonsters" will populate the area with 
+or snow.<BR>"RandomTraps" 
+will scatter some traps around your area.<BR>"Scriptable" allows you to script 
+the behavior of the room in a limited sense.<BR>"RandomMonsters" will populate the area with 
 lots of hideously random creatures that you choose.<BR>"ResetWhole" will cause the whole area to re-boot every so 
 often, thus supplementing the natural <BR>"ProtectedCitizens" will allow 
 resident mobs to scream for help and receive it&nbsp;when attacked.<BR>"rejuv" 
@@ -1340,7 +1341,7 @@ differently than described above:</P>
         <LI>+DEX X (<WORD> those with 
         dexterity greater than X)</LI></UL></TD></TR></TABLE></P>
 <P><BR><STRONG>The "GenWeapon", "GenBow", "GenLasso", "GenNet", 
-"GenSling", "GenSpear"</STRONG></P>
+"GenSling", "GenSpear", "GenBoffWeapon"</STRONG></P>
 <P>These are the assorted weapons players and mobs use to 
 attack each other.&nbsp; They are typically worn in the WIELD position, though 
 some may also go in the HOLD position, either as a requirement (for two handed 
@@ -1350,7 +1351,9 @@ weapons) or as an option (for those with two-weapon fighting).&nbsp;&nbsp;&nbsp;
 bows you shoot ammunition at, to spears that you throw.&nbsp; It all depends on 
 how you design them.&nbsp; The GenBow, GenSling, and GenSpear classes don't 
 actually offer any functionality you couldn't get out of a properly molded 
-GenWeapon, but are provided as good examples of how to make them.&nbsp; </P>
+GenWeapon, but are provided as good examples of how to make them.&nbsp; 
+The&nbsp;GenBoffWeapon is another form of GenWeapon, but it provides some 
+silly&nbsp;and random hit messages during combat.&nbsp; </P>
 <P>The GenNet and GenLasso, however, are quite 
 different.&nbsp; Each of those are capable of ensnaring someone who is hit by 
 them when they are thrown.&nbsp; They do default to thrown weapons.</P>
@@ -1534,13 +1537,15 @@ include everything listed under GenItem and GenContainer, plus a few more:</P>
       first time.&nbsp; Any other number means that the wearer must be near to 
       the size in inches to wear it.</TD></TR></TABLE></P><STRONG>
 <P>The "GenBed" "GenChair",&nbsp;"GenBoat", "GenRideable", 
-"GenCageRideable"</STRONG></P>
+"GenCageRideable", "GenTub"</STRONG></P>
 <P>These represent the GenRideable group -- a group of 
 things which may be sat one, slept in, ridden on the seas, or pulled by 
 horses.&nbsp; The GenRideable, GenBed, GenChair, and GenBoat all represent 
 different incarnations of GenRideable, but are interchangable otherwise.&nbsp; 
-Only the GenCageRideable is different, since it has the unique property of the 
-GenCage -- able to be seen in even when lids or doors are closed.&nbsp;</P>
+The GenTub is unique in that it&nbsp;provides the functionality of GenWater as 
+well as GenRideable.&nbsp; GenCageRideable is very different, since it has the 
+unique property of the GenCage -- able to be seen in even when lids or doors are 
+closed.&nbsp;</P>
 <P>Whenever a GenRideable item is created, much like the 
 GenContainer above, you are presented with a list of properties to fill 
 in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties 
@@ -1568,7 +1573,7 @@ plus&nbsp;a few more:</P><STRONG>
     <TD>th emaximum number of mobs which may occupy this 
       piece of furniture at once.</TD></TR></TABLE></STRONG>
 <P><BR><STRONG>The "GenFood", "GenWater", "GenFoodResource", 
-"GenLiquidResource", "GenFountain"</STRONG></STRONG></P>
+"GenLiquidResource", "GenFountain", "GenTub"</STRONG></STRONG></P>
 <P>These items represent the edibles and drinkables on 
 CoffeeMud.&nbsp; The GenFood is a simple edible food, while a GenFoodResource is 
 a raw edible material that can be used for cooking or other resource-requiring 
@@ -1903,7 +1908,8 @@ time.<BR>"DelayedTransporter" to make an item that moves
 people around.<BR>"Emoter" to make items behave in random 
 and cute manners.<BR>"InstantDeath" to cause an item to 
 kill someone.<BR>"Mime" to make an item mimic the socials 
-that players do.<BR>"Sounder" to add new color to item 
+that players do.<BR>"Scriptable" allows you to script the 
+behavior of the item based on triggers.<BR>"Sounder" to add new color to item 
 usage.</P>
 <P>Items also benefit from affects, just like rooms, areas, 
 and exits.&nbsp; Here are some important affects you may consider for your 
@@ -5987,8 +5993,8 @@ hire mobs, as well as have politics with others.</P>
 <P align=left>Once you've made your clan, people can 
 'clanapply' to the clan. Of course, the person has to be at least level 
 MINCLANLEVEL (Set in the INI file). 'clanapply' can be done even if you're the 
-only one online. Clan bosses can set qualifications to the clan with the 'clanqual'
-command and both bosses and leaders will see new applicants in their 
+only one online. Clan bosses can set qualifications to the clan with the 
+'clanqual' command and both bosses and leaders will see new applicants in their 
 'clandetails' screen, at which point, they can 'clanaccept' or 'clanreject' the 
 player (regardless of online status). Clan bosses can also 'clanassign' people 
 roles, such as treasurer, leader, or even boss. Clan bosses and leaders may, at 

@@ -21,7 +21,7 @@ public class Spell_CEqFire extends Spell_BaseClanEq {
 
   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
   {
-    commands.insertElementAt("Fire",2);
+    type="Fire";
     // All the work is done by the base model
     if(!super.invoke(mob,commands,givenTarget,auto))
         return false;

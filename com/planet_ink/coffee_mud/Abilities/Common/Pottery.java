@@ -200,6 +200,8 @@ public class Pottery extends CommonSkill
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 		building.setMaterial(firstWood.material());
+		if(building.name().toUpperCase().indexOf("CHINA ")>=0)
+			building.setMaterial(EnvResource.RESOURCE_CHINA);
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);

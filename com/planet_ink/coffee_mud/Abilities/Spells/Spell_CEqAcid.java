@@ -21,7 +21,7 @@ public class Spell_CEqAcid extends Spell_BaseClanEq {
 
   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
   {
-    commands.insertElementAt("Acid",2);
+    type="Acid";
     // All the work is done by the base model
     if(!super.invoke(mob,commands,givenTarget,auto))
         return false;

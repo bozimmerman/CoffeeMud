@@ -8,7 +8,7 @@ import java.util.*;
 public class Scriptable extends StdBehavior
 {
 	public String ID(){return "Scriptable";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_ITEMS|Behavior.CAN_ROOMS;}
 	private MOB lastToHurtMe=null;
 	private Room lastKnownLocation=null;
 	private Vector que=new Vector();
@@ -75,7 +75,12 @@ public class Scriptable extends StdBehavior
 		"DELAY_PROG", // 16
 		"FUNCTION_PROG", // 17
 		"ACT_PROG", // 18
-		"BRIBE_PROG" // 19
+		"BRIBE_PROG", // 19
+		"GET_PROG", // 20
+		"PUT_PROG", // 21
+		"DROP_PROG", // 22
+		"WEAR_PROG", // 23
+		"REMOVE_PROG", // 24
 	};
 	private static final String[] funcs={
 		"RAND", //1
@@ -3781,12 +3786,9 @@ public class Scriptable extends StdBehavior
 	{
 		super.affect(affecting,affect);
 		if(affecting==null) return;
-		if(!(affecting instanceof MOB)) return;
-		MOB monster=(MOB)affecting;
-		if(!monster.amDead())
-			lastKnownLocation=monster.location();
-		else
-			return;
+		MOB monster=getScriptableMOB(affecting);
+		if((monster==null)||(monster.amDead())||(lastKnownLocation==null)) return;
+		Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
 
 		Vector scripts=getScripts();
 
@@ -3798,7 +3800,6 @@ public class Scriptable extends StdBehavior
 		&&(affect.source()!=monster))
 			lastToHurtMe=affect.source();
 
-		if(lastKnownLocation!=null)
 		for(int v=0;v<scripts.size();v++)
 		{
 			Vector script=(Vector)scripts.elementAt(v);
@@ -3817,7 +3818,7 @@ public class Scriptable extends StdBehavior
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
 					{
-						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,defaultItem,null,script,2,null));
 						return;
 					}
 				}
@@ -3831,7 +3832,7 @@ public class Scriptable extends StdBehavior
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
 					{
-						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,defaultItem,null,script,2,null));
 						return;
 					}
 				}
@@ -3856,7 +3857,7 @@ public class Scriptable extends StdBehavior
 						trigger=trigger.substring(1).trim();
 						if(match(msg,trigger))
 						{
-							que.addElement(new ScriptableResponse(affect.source(),affect.target(),monster,null,null,script,2,msg));
+							que.addElement(new ScriptableResponse(affect.source(),affect.target(),monster,defaultItem,null,script,2,msg));
 							return;
 						}
 					}
@@ -3868,7 +3869,7 @@ public class Scriptable extends StdBehavior
 							String t=Util.getCleanBit(trigger,i);
 							if(msg.indexOf(" "+t+" ")>=0)
 							{
-								que.addElement(new ScriptableResponse(affect.source(),affect.target(),monster,null,null,script,2,t));
+								que.addElement(new ScriptableResponse(affect.source(),affect.target(),monster,defaultItem,null,script,2,t));
 								return;
 							}
 						}
@@ -3877,7 +3878,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 4: // give_prog
 				if((affect.targetMinor()==Affect.TYP_GIVE)
-				&&(affect.amITarget(monster))
+				&&((affect.amITarget(monster))||(affect.tool()==affecting))
 				&&(!affect.amISource(monster))
 				&&(affect.tool() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
@@ -3889,7 +3890,7 @@ public class Scriptable extends StdBehavior
 						if(((" "+trigger+" ").indexOf(affect.tool().Name().toUpperCase())>=0)
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
-							que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2,null));
+							que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),defaultItem,script,2,null));
 							return;
 						}
 					}
@@ -3902,7 +3903,175 @@ public class Scriptable extends StdBehavior
 							if(((" "+affect.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
 							||(t.equalsIgnoreCase("ALL")))
 							{
-								que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2,null));
+								que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),defaultItem,script,2,null));
+								return;
+							}
+						}
+					}
+				}
+				break;
+			case 20: // get_prog
+				if((affect.targetMinor()==Affect.TYP_GET)
+				&&((affect.amISource(monster))||(affect.amITarget(affecting)))
+				&&(affect.target() instanceof Item)
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					trigger=trigger.substring(9).trim();
+					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(((" "+trigger+" ").indexOf(affect.target().Name().toUpperCase())>=0)
+						||(trigger.equalsIgnoreCase("ALL")))
+						{
+							que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.target(),defaultItem,script,2,null));
+							return;
+						}
+					}
+					else
+					{
+						int num=Util.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=Util.getCleanBit(trigger,i).toUpperCase();
+							if(((" "+affect.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(t.equalsIgnoreCase("ALL")))
+							{
+								que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.target(),defaultItem,script,2,null));
+								return;
+							}
+						}
+					}
+				}
+				break;
+			case 22: // drop_prog
+				if((affect.targetMinor()==Affect.TYP_DROP)
+				&&((affect.amISource(monster))||(affect.amITarget(affecting)))
+				&&(affect.target() instanceof Item)
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					trigger=trigger.substring(9).trim();
+					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(((" "+trigger+" ").indexOf(affect.target().Name().toUpperCase())>=0)
+						||(trigger.equalsIgnoreCase("ALL")))
+						{
+							que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.target(),defaultItem,script,2,null));
+							return;
+						}
+					}
+					else
+					{
+						int num=Util.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=Util.getCleanBit(trigger,i).toUpperCase();
+							if(((" "+affect.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(t.equalsIgnoreCase("ALL")))
+							{
+								que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.target(),defaultItem,script,2,null));
+								return;
+							}
+						}
+					}
+				}
+				break;
+			case 24: // remove_prog
+				if((affect.targetMinor()==Affect.TYP_REMOVE)
+				&&((affect.amISource(monster))||(affect.amITarget(affecting)))
+				&&(affect.target() instanceof Item)
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					trigger=trigger.substring(9).trim();
+					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(((" "+trigger+" ").indexOf(affect.target().Name().toUpperCase())>=0)
+						||(trigger.equalsIgnoreCase("ALL")))
+						{
+							que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.target(),defaultItem,script,2,null));
+							return;
+						}
+					}
+					else
+					{
+						int num=Util.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=Util.getCleanBit(trigger,i).toUpperCase();
+							if(((" "+affect.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(t.equalsIgnoreCase("ALL")))
+							{
+								que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.target(),defaultItem,script,2,null));
+								return;
+							}
+						}
+					}
+				}
+				break;
+			case 21: // put_prog
+				if((affect.targetMinor()==Affect.TYP_PUT)
+				&&((affect.amISource(monster))||(affect.amITarget(affecting)))
+				&&(affect.tool() instanceof Item)
+				&&(affect.target() instanceof Item)
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					trigger=trigger.substring(9).trim();
+					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(((" "+trigger+" ").indexOf(affect.tool().Name().toUpperCase())>=0)
+						||(trigger.equalsIgnoreCase("ALL")))
+						{
+							que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.target(),(Item)affect.tool(),script,2,null));
+							return;
+						}
+					}
+					else
+					{
+						int num=Util.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=Util.getCleanBit(trigger,i).toUpperCase();
+							if(((" "+affect.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(t.equalsIgnoreCase("ALL")))
+							{
+								que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.target(),(Item)affect.tool(),script,2,null));
+								return;
+							}
+						}
+					}
+				}
+				break;
+			case 23: // wear_prog
+				if(((affect.targetMinor()==Affect.TYP_WEAR)
+					||(affect.targetMinor()==Affect.TYP_HOLD)
+					||(affect.targetMinor()==Affect.TYP_WIELD))
+				&&((affect.amISource(monster))||(affect.amITarget(affecting)))
+				&&(affect.target() instanceof Item)
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					trigger=trigger.substring(9).trim();
+					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(((" "+trigger+" ").indexOf(affect.target().Name().toUpperCase())>=0)
+						||(trigger.equalsIgnoreCase("ALL")))
+						{
+							que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.target(),defaultItem,script,2,null));
+							return;
+						}
+					}
+					else
+					{
+						int num=Util.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=Util.getCleanBit(trigger,i).toUpperCase();
+							if(((" "+affect.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(t.equalsIgnoreCase("ALL")))
+							{
+								que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.target(),defaultItem,script,2,null));
 								return;
 							}
 						}
@@ -3921,7 +4090,7 @@ public class Scriptable extends StdBehavior
 					if((((Coins)affect.tool()).numberOfCoins()>=t)
 					||(trigger.equalsIgnoreCase("ALL")))
 					{
-						que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2,null));
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),defaultItem,script,2,null));
 						return;
 					}
 				}
@@ -3934,7 +4103,7 @@ public class Scriptable extends StdBehavior
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if(Dice.rollPercentage()<prcnt)
 					{
-						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,defaultItem,null,script,2,null));
 						return;
 					}
 				}
@@ -3948,7 +4117,7 @@ public class Scriptable extends StdBehavior
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
 					{
-						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,defaultItem,null,script,2,null));
 						return;
 					}
 				}
@@ -3960,7 +4129,7 @@ public class Scriptable extends StdBehavior
 					MOB src=lastToHurtMe;
 					if((src==null)||(src.location()!=monster.location()))
 					   src=monster;
-					execute(src,monster,monster,null,null,script,null);
+					execute(src,monster,monster,defaultItem,null,script,null);
 					return;
 				}
 				break;
@@ -4000,13 +4169,14 @@ public class Scriptable extends StdBehavior
 						Item Tool=null;
 						if(affect.tool() instanceof Item)
 							Tool=(Item)affect.tool();
+						if(Tool==null) Tool=defaultItem;
 						if(affect.target() instanceof MOB)
-							que.addElement(new ScriptableResponse(affect.source(),(MOB)affect.target(),monster,Tool,null,script,2,msg));
+							que.addElement(new ScriptableResponse(affect.source(),(MOB)affect.target(),monster,Tool,defaultItem,script,2,msg));
 						else
 						if(affect.target() instanceof Item)
 							que.addElement(new ScriptableResponse(affect.source(),null,monster,Tool,(Item)affect.target(),script,2,msg));
 						else
-							que.addElement(new ScriptableResponse(affect.source(),null,monster,Tool,null,script,2,msg));
+							que.addElement(new ScriptableResponse(affect.source(),null,monster,Tool,defaultItem,script,2,msg));
 						return;
 					}
 				}
@@ -4027,155 +4197,194 @@ public class Scriptable extends StdBehavior
 		return I.intValue();
 	}
 
+	public MOB backupMOB=null;
+	public MOB getScriptableMOB(Tickable ticking)
+	{
+		MOB mob=null;
+		if(ticking instanceof MOB)
+		{
+			mob=(MOB)ticking;
+			if(!mob.amDead())
+				lastKnownLocation=mob.location();
+		}
+		else
+		if(ticking instanceof Environmental)
+		{
+			
+			if(CoffeeUtensils.roomLocation((Environmental)ticking)!=null)
+				lastKnownLocation=CoffeeUtensils.roomLocation((Environmental)ticking);
+			
+			if(backupMOB==null)
+			{
+				backupMOB=CMClass.getMOB("StdMOB");
+				if(backupMOB!=null)
+				{
+					backupMOB.setName(ticking.name());
+					backupMOB.setDisplayText(ticking.name()+" is here.");
+					backupMOB.setDescription("");
+					mob=backupMOB;
+					if(backupMOB.location()!=lastKnownLocation)
+						backupMOB.setLocation(lastKnownLocation);
+				}
+			}
+			else
+			{
+				mob=backupMOB;
+				if(backupMOB.location()!=lastKnownLocation)
+					backupMOB.setLocation(lastKnownLocation);
+			}
+		}
+		return mob;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(ticking instanceof MOB)
+		
+		MOB mob=getScriptableMOB(ticking);
+		Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
+		
+		if((mob==null)||(lastKnownLocation==null)) 
+			return true;
+		
+		Vector scripts=getScripts();
+
+		for(int v=0;v<scripts.size();v++)
 		{
-			MOB mob=(MOB)ticking;
-			Vector scripts=getScripts();
-
-			if(!mob.amDead())
-				lastKnownLocation=mob.location();
-
-			if(lastKnownLocation!=null)
-			for(int v=0;v<scripts.size();v++)
+			Vector script=(Vector)scripts.elementAt(v);
+			String trigger="";
+			if(script.size()>0)
+				trigger=((String)script.elementAt(0)).toUpperCase().trim();
+			switch(getTriggerCode(trigger))
 			{
-				Vector script=(Vector)scripts.elementAt(v);
-				String trigger="";
-				if(script.size()>0)
-					trigger=((String)script.elementAt(0)).toUpperCase().trim();
-				switch(getTriggerCode(trigger))
+			case 5: // rand_Prog
+				if(!mob.amDead())
 				{
-				case 5: // rand_Prog
-					if(!mob.amDead())
+					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
+					if(Dice.rollPercentage()<prcnt)
+						execute(mob,mob,mob,defaultItem,null,script,null);
+				}
+				break;
+			case 16: // delay_prog
+				if(!mob.amDead())
+				{
+					int targetTick=-1;
+					if(delayTargetTimes.containsKey(new Integer(v)))
+						targetTick=((Integer)delayTargetTimes.get(new Integer(v))).intValue();
+					else
 					{
-						int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-						if(Dice.rollPercentage()<prcnt)
-							execute(mob,mob,mob,null,null,script,null);
+						int low=Util.s_int(Util.getCleanBit(trigger,1));
+						int high=Util.s_int(Util.getCleanBit(trigger,2));
+						if(high<low) high=low;
+						targetTick=Dice.roll(1,high-low+1,low-1);
+						delayTargetTimes.put(new Integer(v),new Integer(targetTick));
 					}
-					break;
-				case 16: // delay_prog
-					if(!mob.amDead())
+					int delayProgCounter=0;
+					if(delayProgCounters.containsKey(new Integer(v)))
+						delayProgCounter=((Integer)delayProgCounters.get(new Integer(v))).intValue();
+					else
+						delayProgCounters.put(new Integer(v),new Integer(0));
+					if(delayProgCounter==targetTick)
 					{
-						int targetTick=-1;
-						if(delayTargetTimes.containsKey(new Integer(v)))
-							targetTick=((Integer)delayTargetTimes.get(new Integer(v))).intValue();
-						else
+						execute(mob,mob,mob,defaultItem,null,script,null);
+						delayProgCounter=-1;
+					}
+					delayProgCounters.remove(new Integer(v));
+					delayProgCounters.put(new Integer(v),new Integer(delayProgCounter+1));
+				}
+				break;
+			case 7: // fightProg
+				if((mob.isInCombat())&&(!mob.amDead()))
+				{
+					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
+					if(Dice.rollPercentage()<prcnt)
+						execute(mob.getVictim(),mob,mob,defaultItem,null,script,null);
+				}
+				break;
+			case 11: // hitprcnt
+				if((mob.isInCombat())&&(!mob.amDead()))
+				{
+					int floor=(int)Math.round(Util.mul(Util.div(Util.s_int(Util.getCleanBit(trigger,1)),100.0),mob.maxState().getHitPoints()));
+					if(mob.curState().getHitPoints()<=floor)
+						execute(mob.getVictim(),mob,mob,defaultItem,null,script,null);
+				}
+				break;
+			case 6: // once_prog
+				if(!oncesDone.contains(script))
+				{
+					oncesDone.addElement(script);
+					execute(mob,mob,mob,defaultItem,null,script,null);
+				}
+				break;
+			case 14: // time_prog
+				if((mob.location()!=null)
+				&&(!mob.amDead()))
+				{
+					int lastTimeProgDone=-1;
+					if(lastTimeProgsDone.containsKey(new Integer(v)))
+						lastTimeProgDone=((Integer)lastTimeProgsDone.get(new Integer(v))).intValue();
+					int time=mob.location().getArea().getTimeOfDay();
+					if(lastTimeProgDone!=time)
+					{
+						boolean done=false;
+						for(int i=1;i<Util.numBits(trigger);i++)
 						{
-							int low=Util.s_int(Util.getCleanBit(trigger,1));
-							int high=Util.s_int(Util.getCleanBit(trigger,2));
-							if(high<low) high=low;
-							targetTick=Dice.roll(1,high-low+1,low-1);
-							delayTargetTimes.put(new Integer(v),new Integer(targetTick));
-						}
-						int delayProgCounter=0;
-						if(delayProgCounters.containsKey(new Integer(v)))
-							delayProgCounter=((Integer)delayProgCounters.get(new Integer(v))).intValue();
-						else
-							delayProgCounters.put(new Integer(v),new Integer(0));
-						if(delayProgCounter==targetTick)
-						{
-							execute(mob,mob,mob,null,null,script,null);
-							delayProgCounter=-1;
-						}
-						delayProgCounters.remove(new Integer(v));
-						delayProgCounters.put(new Integer(v),new Integer(delayProgCounter+1));
-					}
-					break;
-				case 7: // fightProg
-					if((mob.isInCombat())&&(!mob.amDead()))
-					{
-						int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-						if(Dice.rollPercentage()<prcnt)
-							execute(mob.getVictim(),mob,mob,null,null,script,null);
-					}
-					break;
-				case 11: // hitprcnt
-					if((mob.isInCombat())&&(!mob.amDead()))
-					{
-						int floor=(int)Math.round(Util.mul(Util.div(Util.s_int(Util.getCleanBit(trigger,1)),100.0),mob.maxState().getHitPoints()));
-						if(mob.curState().getHitPoints()<=floor)
-							execute(mob.getVictim(),mob,mob,null,null,script,null);
-					}
-					break;
-				case 6: // once_prog
-					if(!oncesDone.contains(script))
-					{
-						oncesDone.addElement(script);
-						execute(mob,mob,mob,null,null,script,null);
-					}
-					break;
-				case 14: // time_prog
-					if((mob.location()!=null)
-					&&(!mob.amDead()))
-					{
-						int lastTimeProgDone=-1;
-						if(lastTimeProgsDone.containsKey(new Integer(v)))
-							lastTimeProgDone=((Integer)lastTimeProgsDone.get(new Integer(v))).intValue();
-						int time=mob.location().getArea().getTimeOfDay();
-						if(lastTimeProgDone!=time)
-						{
-							boolean done=false;
-							for(int i=1;i<Util.numBits(trigger);i++)
+							if(time==Util.s_int(Util.getCleanBit(trigger,i).trim()))
 							{
-								if(time==Util.s_int(Util.getCleanBit(trigger,i).trim()))
-								{
-									done=true;
-									execute(mob,mob,mob,null,null,script,null);
-									lastTimeProgsDone.remove(new Integer(v));
-									lastTimeProgsDone.put(new Integer(v),new Integer(time));
-									break;
-								}
-							}
-							if(!done)
-								lastDayProgsDone.remove(new Integer(v));
-						}
-						break;
-					}
-				case 15: // day_prog
-					if((mob.location()!=null)
-					&&(!mob.amDead()))
-					{
-						int lastDayProgDone=-1;
-						if(lastDayProgsDone.containsKey(new Integer(v)))
-							lastDayProgDone=((Integer)lastDayProgsDone.get(new Integer(v))).intValue();
-						int day=mob.location().getArea().getDayOfMonth();
-						if(lastDayProgDone!=day)
-						{
-							boolean done=false;
-							for(int i=1;i<Util.numBits(trigger);i++)
-							{
-								if(day==Util.s_int(Util.getCleanBit(trigger,i)))
-								{
-									done=true;
-									execute(mob,mob,mob,null,null,script,null);
-									lastDayProgsDone.remove(new Integer(v));
-									lastDayProgsDone.put(new Integer(v),new Integer(day));
-									break;
-								}
-							}
-							if(!done)
-								lastDayProgsDone.remove(new Integer(v));
-						}
-						break;
-					}
-				case 13: // questtimeprog
-					if(!oncesDone.contains(script))
-					{
-						Quest Q=Quests.fetchQuest(Util.getCleanBit(trigger,1));
-						if((Q!=null)&&(Q.running()))
-						{
-							int time=Util.s_int(Util.getCleanBit(trigger,2));
-							if(time>=Q.minsRemaining())
-							{
-								oncesDone.addElement(script);
-								execute(mob,mob,mob,null,null,script,null);
+								done=true;
+								execute(mob,mob,mob,defaultItem,null,script,null);
+								lastTimeProgsDone.remove(new Integer(v));
+								lastTimeProgsDone.put(new Integer(v),new Integer(time));
+								break;
 							}
 						}
+						if(!done)
+							lastDayProgsDone.remove(new Integer(v));
 					}
 					break;
 				}
+			case 15: // day_prog
+				if((mob.location()!=null)
+				&&(!mob.amDead()))
+				{
+					int lastDayProgDone=-1;
+					if(lastDayProgsDone.containsKey(new Integer(v)))
+						lastDayProgDone=((Integer)lastDayProgsDone.get(new Integer(v))).intValue();
+					int day=mob.location().getArea().getDayOfMonth();
+					if(lastDayProgDone!=day)
+					{
+						boolean done=false;
+						for(int i=1;i<Util.numBits(trigger);i++)
+						{
+							if(day==Util.s_int(Util.getCleanBit(trigger,i)))
+							{
+								done=true;
+								execute(mob,mob,mob,defaultItem,null,script,null);
+								lastDayProgsDone.remove(new Integer(v));
+								lastDayProgsDone.put(new Integer(v),new Integer(day));
+								break;
+							}
+						}
+						if(!done)
+							lastDayProgsDone.remove(new Integer(v));
+					}
+					break;
+				}
+			case 13: // questtimeprog
+				if(!oncesDone.contains(script))
+				{
+					Quest Q=Quests.fetchQuest(Util.getCleanBit(trigger,1));
+					if((Q!=null)&&(Q.running()))
+					{
+						int time=Util.s_int(Util.getCleanBit(trigger,2));
+						if(time>=Q.minsRemaining())
+						{
+							oncesDone.addElement(script);
+							execute(mob,mob,mob,defaultItem,null,script,null);
+						}
+					}
+				}
+				break;
 			}
 
 			try{

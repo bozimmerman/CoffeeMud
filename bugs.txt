@@ -1,6 +1,4 @@
-! test construction, masonry
 save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
 Masonry
-	tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own.
 	POOL will convert the room into a Water room, with 1 level of underwater added for free
 	portcullis (but it requires METAL instead of stone)

@@ -233,7 +233,7 @@ public class Masonry extends CommonSkill
 						break;
 					case BUILD_CRAWLWAY:
 						{
-							if(workingOn>=0)
+							if((workingOn>=0)&&(room.getExitInDir(workingOn)!=null))
 							{
 								Exit E=room.getExitInDir(workingOn);
 								if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
@@ -241,14 +241,15 @@ public class Masonry extends CommonSkill
 									E=generify(E);
 									room.rawExits()[workingOn]=E;
 								}
-								E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|EnvStats.IS_SITTING);
+								Ability A=CMClass.getAbility("Prop_Crawlspace");
+								if(A!=null) E.addNonUninvokableAffect(A);
 								ExternalPlay.DBUpdateExits(room);
 							}
 						}
 						break;
 					case BUILD_WINDOW:
 						{
-							if(workingOn>=0)
+							if((workingOn>=0)&&(room.getExitInDir(workingOn)!=null))
 							{
 								Exit E=room.getExitInDir(workingOn);
 								if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
@@ -456,6 +457,9 @@ public class Masonry extends CommonSkill
 				commands.removeElementAt(1);
 			designDescription=Util.combine(commands,2);
 		}
+		else
+		if((doingCode==BUILD_WINDOW)||(doingCode==BUILD_CRAWLWAY))
+			workingOn=dir;
 
 		Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
 		int foundWood=0;
