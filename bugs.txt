@@ -2,3 +2,4 @@ prayer Feed the Dead--cast on an undead MOB, with a secondary target of a body, 
 summon lightening is still healing people!
 record the rejuv rates for hp, mana, move, etc.
 can fill something from itself
+can get two kills from two damage messages from two directions.

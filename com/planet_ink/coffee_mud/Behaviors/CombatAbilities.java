@@ -174,20 +174,22 @@ public class CombatAbilities extends StdBehavior
 		{
 			if(Util.bset(tryThisOne.usageType(),Ability.USAGE_MANA))
 			{
-				if ( (Math.random() > Util.div(mob.curState().getMana(), mob.maxState().getMana()))
-                || (mob.curState().getMana() < tryThisOne.usageCost(mob)[0])) 
+				if((Math.random()>Util.div(mob.curState().getMana(), mob.maxState().getMana()))
+                ||(mob.curState().getMana() < tryThisOne.usageCost(mob)[0])) 
 				{
-                   if (Dice.rollPercentage() > 30)
+                   if((Dice.rollPercentage()>30)
+				   ||(CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACONSUMETIME)<=0)
+				   ||((mob.amFollowing()!=null)&&(!mob.amFollowing().isMonster())))
                         return true;
                    else
-                        mob.curState().setMana(tryThisOne.usageCost(mob)[0]+mob.curState().getMana());
-				   mob.curState().adjMana(5,mob.maxState());
+					   mob.curState().adjMana(tryThisOne.usageCost(mob)[0]);
 				}
+				mob.curState().adjMana(5,mob.maxState());
 			}
 			if(Util.bset(tryThisOne.usageType(),Ability.USAGE_MOVEMENT))
 			{
 				if((Math.random()>Util.div(mob.curState().getMovement(),mob.maxState().getMovement()))
-				   ||(mob.curState().getMovement()<tryThisOne.usageCost(mob)[1]))
+				||(mob.curState().getMovement()<tryThisOne.usageCost(mob)[1]))
 					return true;
 				mob.curState().adjMovement(5,mob.maxState());
 			}
