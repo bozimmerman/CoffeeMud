@@ -79,7 +79,7 @@ public class SkyWatcher extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_WindShape",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_AcidWard",true);
 	
-CMAble.addCharAbilityMapping(ID(),13,"Chant_GroveWalk",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_GroveWalk",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_BlueMoon",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_RedMoon",true);
 	

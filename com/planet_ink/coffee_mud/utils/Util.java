@@ -238,9 +238,56 @@ public class Util
 		s=getBit(s,which);
 		if(s.startsWith("'"))
 			s=s.substring(1);
+		while(s.endsWith(" "))
+			s=s.substring(0,s.length()-1);
 		if(s.endsWith("'"))
 			s=s.substring(0,s.length()-1);
 		return s;
+	}
+	
+	public static String getPastBit(String s, int which)
+	{
+		int i=0;
+		int w=0;
+		boolean in=false;
+		s=s.trim();
+		String t="";
+		char c=(char)0;
+		char lc=(char)0;
+		char fc=(char)0;
+		while(i<s.length())
+		{
+			c=s.charAt(i);
+			boolean white=(Character.isWhitespace(c)||(c==' ')||(c=='	')||(c=='\t'));
+			if(white&&in&&(((fc=='\'')&&(lc!='\''))||((fc=='`')&&(lc!='`'))))
+				white=false;
+			if(white&&in)
+			{
+				if(w==which)
+					return s.substring(i+1);
+				w++;
+				in=false;
+				c=(char)0;
+				lc=(char)0;
+				fc=(char)0;
+			}
+			else
+			if(!white)
+			{
+				if(!in)
+				{
+					t="";
+					fc=c;
+					lc=(char)0;
+					in=true;
+				}
+				else
+					lc=c;
+				t+=c;
+			}
+			i++;
+		}
+		return "";
 	}
 	
 	public static String getBit(String s, int which)

@@ -10,15 +10,93 @@ public class Mobile extends ActiveTicker
 	public String ID(){return "Mobile";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public boolean grantsMobility(){return true;}
+	protected boolean wander=false;
+	protected Vector restrictedLocales=null;
+	
 	public Mobile()
 	{
 		super();
 		minTicks=10; maxTicks=30; chance=100;
+		wander=false;
+		restrictedLocales=null;
 		tickReset();
 	}
 	public Behavior newInstance()
 	{
 		return new Mobile();
+	}
+	
+	public boolean okRoomForMe(Room currentRoom, Room newRoom)
+	{
+		if(currentRoom==null) return false;
+		if(newRoom==null) return false;
+		if((!wander)&&(!currentRoom.getArea().name().equals(newRoom.getArea().name())))
+		   return false;
+		if(restrictedLocales==null) return true;
+		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
+	}
+	
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		wander=false;
+		restrictedLocales=null;
+		Vector V=Util.parse(newParms);
+		for(int v=0;v<V.size();v++)
+		{
+			String s=(String)V.elementAt(v);
+			if(s.equalsIgnoreCase("WANDER"))
+				wander=true;
+			else
+			if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
+			{
+				if(restrictedLocales==null) 
+					restrictedLocales=new Vector();
+				if(s.equalsIgnoreCase("+ALL"))
+					restrictedLocales.clear();
+				else
+				if(s.equalsIgnoreCase("-ALL"))
+				{
+					restrictedLocales.clear();
+					for(int i=0;i<Room.indoorDomainDescs.length;i++)
+						restrictedLocales.addElement(new Integer(Room.INDOORS+i));
+					for(int i=0;i<Room.outdoorDomainDescs.length;i++)
+						restrictedLocales.addElement(new Integer(i));
+				}
+				else
+				{
+					char c=s.charAt(0);
+					s=s.substring(1).toUpperCase().trim();
+					int code=-1;
+					for(int i=0;i<Room.indoorDomainDescs.length;i++)
+						if(Room.indoorDomainDescs[i].startsWith(s))
+							code=Room.INDOORS+i;
+					if(code>=0)
+					{
+						if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
+							restrictedLocales.removeElement(new Integer(code));
+						else
+						if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
+							restrictedLocales.addElement(new Integer(code));
+					}
+					code=-1;
+					for(int i=0;i<Room.outdoorDomainDescs.length;i++)
+						if(Room.outdoorDomainDescs[i].startsWith(s))
+							code=i;
+					if(code>=0)
+					{
+						if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
+							restrictedLocales.removeElement(new Integer(code));
+						else
+						if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
+							restrictedLocales.addElement(new Integer(code));
+					}
+					
+				}
+			}
+		}
+		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
+			restrictedLocales=null;
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -68,8 +146,7 @@ public class Mobile extends ActiveTicker
 						}
 					}
 
-					if((!otherRoom.getArea().name().equals(thisRoom.getArea().name()))
-					   &&(this.getParms().toUpperCase().indexOf("WANDER")<0))
+					if(!okRoomForMe(thisRoom,otherRoom))
 						direction=-1;
 					else
 						break;

@@ -10,6 +10,7 @@ public class VeryAggressive extends Aggressive
 	public String ID(){return "VeryAggressive";}
 	protected int tickWait=0;
 	protected int tickDown=0;
+	protected boolean wander=false;
 	public Behavior newInstance()
 	{
 		return new VeryAggressive();
@@ -20,6 +21,14 @@ public class VeryAggressive extends Aggressive
 		super.setParms(newParms);
 		tickWait=getParmVal(newParms,"delay",0);
 		tickDown=tickWait;
+		wander=false;
+		Vector V=Util.parse(newParms);
+		for(int v=0;v<V.size();v++)
+		{
+			String s=(String)V.elementAt(v);
+			if(s.equalsIgnoreCase("WANDER"))
+				wander=true;
+		}
 	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
@@ -28,6 +37,7 @@ public class VeryAggressive extends Aggressive
 
 	public static void tickVeryAggressively(Tickable ticking, 
 											int tickID,
+											boolean wander,
 											Behavior B)
 	{
 		if(tickID!=Host.MOB_TICK) return;
@@ -59,7 +69,9 @@ public class VeryAggressive extends Aggressive
 		{
 			Room room=thisRoom.getRoomInDir(d);
 			Exit exit=thisRoom.getExitInDir(d);
-			if((room!=null)&&(exit!=null)&&(room.getArea().name().equals(thisRoom.getArea().name())))
+			if((room!=null)
+			   &&(exit!=null)
+			   &&(wander||room.getArea().name().equals(thisRoom.getArea().name())))
 			{
 				if(exit.isOpen())
 				{
@@ -92,7 +104,7 @@ public class VeryAggressive extends Aggressive
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
-			tickVeryAggressively(ticking,tickID,this);
+			tickVeryAggressively(ticking,tickID,wander,this);
 		}
 		return true;
 	}

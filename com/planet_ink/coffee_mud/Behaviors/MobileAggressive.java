@@ -34,7 +34,7 @@ public class MobileAggressive extends Mobile
 		{
 			tickDown=tickWait;
 			Aggressive.tickAggressively(ticking,tickID,this);
-			VeryAggressive.tickVeryAggressively(ticking,tickID,this);
+			VeryAggressive.tickVeryAggressively(ticking,tickID,wander,this);
 		}
 		return true;
 	}

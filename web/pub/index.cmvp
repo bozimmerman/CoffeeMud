@@ -23,7 +23,6 @@ Players currently online: <b>@NUMPLAYERS@</B>
 <UL>
 <LI><a href="guides/mudintro.html">Introduction</a>
 <LI><a href="guides/Features.html">CoffeeMUD features</a>
-<LI><a href="guides/NewFeatures.html">New in 3.0</a>
 <LI><a href="areas.cmvp">Installed Areas</a>
 <LI><B>Player Races: </B>
 	@loop@

@@ -84,6 +84,7 @@ public class Song_Babble extends Song
 		&&(affect.sourceMessage()!=null)
 		&&(affect.tool()==null)
 		&&((affect.sourceMinor()==Affect.TYP_SPEAK)
+		   ||(affect.sourceMinor()==Affect.TYP_TELL)
 		   ||(Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))))
 		{
 			String msg=affect.othersMessage();

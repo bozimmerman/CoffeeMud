@@ -1532,6 +1532,8 @@ public class StdMOB implements MOB
 		else
 		if((affect.targetCode()!=Affect.NO_EFFECT)&&(affect.amITarget(this)))
 		{
+			int targetMajor=affect.targetMajor();
+			
 			// malicious by itself is pure pain
 			if(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			{
@@ -1614,8 +1616,13 @@ public class StdMOB implements MOB
 			if((affect.targetMinor()==Affect.TYP_REBUKE)
 			&&(affect.source().name().equals(getLeigeID())))
 				setLeigeID("");
+			else
+			if(Util.bset(targetMajor,affect.MASK_CHANNEL))
+			{
+				if(!Util.isSet(getChannelMask(),(targetMajor-affect.MASK_CHANNEL)))
+					tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
+			}
 
-			int targetMajor=affect.targetMajor();
 			if((Util.bset(targetMajor,Affect.MASK_SOUND))
 			&&(canhearsrc)&&(!asleep))
 			{

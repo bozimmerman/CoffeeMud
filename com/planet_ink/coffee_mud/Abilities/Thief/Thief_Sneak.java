@@ -38,7 +38,7 @@ public class Thief_Sneak extends ThiefSkill
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
 			MOB M=mob.location().fetchInhabitant(i);
-			if(((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
+			if((M!=null)&&((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
 				highestLevel=mob.envStats().level();
 		}
 		int levelDiff=mob.envStats().level()-highestLevel;

@@ -43,22 +43,6 @@ public class Searching extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	public void unInvoke()
-	{
-		if(canBeUninvoked())
-		{
-			if((affected!=null)&&(affected instanceof MOB))
-			{
-				MOB mob=(MOB)affected;
-				Room room=mob.location();
-				if((success)&&(!aborted)&&(room!=null))
-					mob.tell("You have completed your search.");
-			}
-		}
-		super.unInvoke();
-	}
-
-
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -74,13 +58,14 @@ public class Searching extends CommonSkill
 			return false;
 		if(profficiencyCheck(0,auto))
 			success=true;
-		int duration=4;
+		int duration=3;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) searching.");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			searchRoom=mob.location();
 			beneficialAffect(mob,mob,duration);
+			mob.tell(" ");
 			ExternalPlay.look(mob,null,true);
 		}
 		return true;

@@ -267,28 +267,41 @@ public class Channels
 		if(systemMsg)
 		{
 		  String str="["+channelName+"] '"+Util.combine(commands,0)+"'^?^.";
-		  msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"^Q"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
+		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^Q"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
 		}
 		else
 		{
 		  String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'^?^.";
-		  msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
+		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
 		}
 		if(mob.location().okAffect(mob,msg))
 		{
 			for(int s=0;s<Sessions.size();s++)
 			{
 				Session ses=(Session)Sessions.elementAt(s);
-
+				MOB M=ses.mob();
+				if(M==null) continue;
 				if(channelName.equalsIgnoreCase("CLANTALK")
-				&&(!ses.mob().getClanID().equalsIgnoreCase(mob.getClanID())))
+				&&(!M.getClanID().equalsIgnoreCase(mob.getClanID())))
 					continue;
-				if((!ses.killFlag())&&(ses.mob()!=null)
-				&&(!ses.mob().amDead())
-				&&(ses.mob().location()!=null)
-				&&(ses.mob().envStats().level()>=lvl)
-				&&(ses.mob().okAffect(ses.mob(),msg)))
-					ses.mob().affect(ses.mob(),msg);
+				if((!ses.killFlag())
+				&&(!M.amDead())
+				&&(M.location()!=null)
+				&&(M.envStats().level()>=lvl)
+				&&(M.okAffect(M,msg)))
+				{
+					M.affect(M,msg);
+					if(msg.trailerMsgs()!=null)
+					{
+						for(int i=0;i<msg.trailerMsgs().size();i++)
+						{
+							Affect affect=(Affect)msg.trailerMsgs().elementAt(i);
+							if((affect!=msg)&&(M.okAffect(M,affect)))
+								M.affect(M,affect);
+						}
+						msg.trailerMsgs().clear();
+					}
+				}
 			}
 		}
 		if((ExternalPlay.i3().i3online())&&(ExternalPlay.i3().isI3channel(getChannelName(channelName))))

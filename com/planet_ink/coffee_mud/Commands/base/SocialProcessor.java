@@ -65,9 +65,27 @@ public class SocialProcessor
 				}
 				else
 				{
-					mob.tell("You tell "+targetName+" '"+text+"'");
-					target.tell(mob.name()+" tell(s) you '"+text+"'");
-					target.setReplyTo(mob);
+					FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_TELL,"^TYou tell "+target.name()+" '"+text+"'^?^.",Affect.MSG_TELL,"^T"+mob.name()+" tell(s) you '"+text+"'^?^.",Affect.NO_EFFECT,null);
+					if((mob.location().okAffect(mob,msg))
+					&&(target.okAffect(target,msg)))
+					{
+						mob.affect(mob,msg);
+						if(mob!=target)
+						{
+							target.affect(target,msg);
+							if(msg.trailerMsgs()!=null)
+							{
+								for(int i=0;i<msg.trailerMsgs().size();i++)
+								{
+									Affect affect=(Affect)msg.trailerMsgs().elementAt(i);
+									if((affect!=msg)&&(target.okAffect(target,affect)))
+										target.affect(target,affect);
+								}
+								msg.trailerMsgs().clear();
+							}
+							target.setReplyTo(mob);
+						}
+					}
 				}
 			}
 			else
@@ -336,10 +354,7 @@ public class SocialProcessor
 				return;
 			}
 		}
-		mob.tell("You tell "+target.name()+" '"+combinedCommands+"'");
-		// deafness does not matter!
-		target.tell(mob.name()+" tells you '"+combinedCommands+"'");
-		target.setReplyTo(mob);
+		quickSay(mob,target,combinedCommands,true,true);
 	}
 
 	public static void give(MOB mob, Vector commands, boolean involuntarily)

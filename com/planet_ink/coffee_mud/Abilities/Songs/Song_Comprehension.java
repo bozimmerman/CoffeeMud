@@ -38,6 +38,7 @@ public class Song_Comprehension extends Song
 		if((affected instanceof MOB)
 		&&(!affect.amISource((MOB)affected))
 		&&((affect.sourceMinor()==Affect.TYP_SPEAK)
+		   ||(affect.sourceMinor()==Affect.TYP_TELL)
 		   ||(Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL)))
 		&&(affect.tool() !=null)
 		&&(affect.sourceMessage()!=null)
@@ -48,6 +49,9 @@ public class Song_Comprehension extends Song
 			String msg=this.getMsgFromAffect(affect.sourceMessage());
 			if(msg!=null)
 			{
+				if(Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))
+					affect.addTrailerMsg(new FullMsg(affect.source(),null,null,Affect.NO_EFFECT,Affect.NO_EFFECT,affect.othersCode(),this.subStitute(affect.othersMessage(),msg)+" (translated from "+ID()+")"));
+				else
 				if(affect.amITarget(null)&&(affect.targetMessage()!=null))
 					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.targetCode(),Affect.NO_EFFECT,this.subStitute(affect.targetMessage(),msg)+" (translated from "+((Ability)affect.tool()).ID()+")"));
 				else

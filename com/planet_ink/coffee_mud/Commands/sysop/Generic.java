@@ -410,7 +410,7 @@ public class Generic
 							if(chosenOne!=null)
 								ok=true;
 							else
-								mob.tell("'"+newName+"' is not recognized.  Try 'LIST'.");
+								mob.tell("'"+newName+"' is not recognized.  Try '?'.");
 						}
 						else
 						if((E instanceof Scroll)
@@ -428,7 +428,7 @@ public class Generic
 									ok=true;
 								else
 								{
-									mob.tell("'"+spellName+"' is not recognized.  Try 'LIST'.");
+									mob.tell("'"+spellName+"' is not recognized.  Try '?'.");
 									break;
 								}
 								newName=newName.substring(x+1).trim();
@@ -816,7 +816,7 @@ public class Generic
 					if(Container.CONTAIN_DESCS[i].startsWith(change.toUpperCase()))
 						found=i;
 				if(found<0)
-					mob.tell("Unknown type.  Try LIST.");
+					mob.tell("Unknown type.  Try '?'.");
 				else
 				if(found==0)
 					E.setContainTypes(0);
@@ -1459,7 +1459,7 @@ public class Generic
 					E.baseCharStats().getMyRace().setHeightWeight(E.baseEnvStats(),(char)E.baseCharStats().getStat(CharStats.GENDER));
 				}
 				else
-					mob.tell("Unknown race! Try 'LIST'.");
+					mob.tell("Unknown race! Try '?'.");
 			}
 		}
 	}
@@ -1485,7 +1485,7 @@ public class Generic
 				if(C!=null)
 					E.baseCharStats().setCurrentClass(C);
 				else
-					mob.tell("Unknown character class! Try 'LIST'.");
+					mob.tell("Unknown character class! Try '?'.");
 			}
 		}
 	}
@@ -1561,7 +1561,7 @@ public class Generic
 						}
 						else
 						{
-							mob.tell("'"+behave+"' is not recognized.  Try 'LIST'.");
+							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
 						}
 					}
 				}
@@ -1628,7 +1628,7 @@ public class Generic
 						}
 						else
 						{
-							mob.tell("'"+behave+"' is not recognized.  Try 'LIST'.");
+							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
 						}
 					}
 				}
@@ -1786,7 +1786,7 @@ public class Generic
 						}
 						else
 						{
-							mob.tell("'"+itemstr+"' is not recognized.  Try 'LIST'.");
+							mob.tell("'"+itemstr+"' is not recognized.  Try '?'.");
 						}
 					}
 				}
@@ -1872,7 +1872,7 @@ public class Generic
 						}
 						else
 						{
-							mob.tell("'"+behave+"' is not recognized.  Try 'LIST'.");
+							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
 						}
 					}
 				}
@@ -1988,7 +1988,7 @@ public class Generic
 						}
 						else
 						{
-							mob.tell("'"+behave+"' is not recognized.  Try 'LIST'.");
+							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
 						}
 					}
 				}

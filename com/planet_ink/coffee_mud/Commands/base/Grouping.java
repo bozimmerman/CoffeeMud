@@ -169,7 +169,22 @@ public class Grouping
 		for(Enumeration e=group.elements();e.hasMoreElements();)
 		{
 			MOB target=(MOB)e.nextElement();
-			target.tell(mob.name()+" tell(s) the group '"+text+"'.");
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_TELL,"^T<S-NAME> tell(s) the group '"+text+"'^?^.",Affect.MSG_TELL,"^T<S-NAME> tell(s) the group '"+text+"'^?^.",Affect.NO_EFFECT,null);
+			if((mob.location().okAffect(mob,msg))
+			&&(target.okAffect(target,msg)))
+			{
+				target.affect(target,msg);
+				if(msg.trailerMsgs()!=null)
+				{
+					for(int i=0;i<msg.trailerMsgs().size();i++)
+					{
+						Affect affect=(Affect)msg.trailerMsgs().elementAt(i);
+						if((affect!=msg)&&(target.okAffect(target,affect)))
+							target.affect(target,affect);
+					}
+					msg.trailerMsgs().clear();
+				}
+			}
 		}
 	}
 

@@ -38,7 +38,7 @@ public class MobileGoodGuardian extends Mobile
 		{
 			Room room=thisRoom.getRoomInDir(d);
 			Exit exit=thisRoom.getExitInDir(d);
-			if((room!=null)&&(exit!=null)&&(room.getArea().name().equals(thisRoom.getArea().name())))
+			if((room!=null)&&(exit!=null)&&(okRoomForMe(thisRoom,room)))
 			{
 				if(exit.isOpen())
 				{

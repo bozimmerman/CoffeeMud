@@ -9,7 +9,7 @@ public class Prop_RoomView extends Property
 {
 	public String ID() { return "Prop_RoomView"; }
 	public String name(){ return "Different Room View";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	public Environmental newInstance(){	return new Prop_RoomView();}
 	private Room newRoom=null;
 
@@ -23,7 +23,7 @@ public class Prop_RoomView extends Property
 		if(newRoom==null) return super.okAffect(myHost,affect);
 		
 		if((affected!=null)
-		&&((affected instanceof Room)||(affected instanceof Exit))
+		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Item))
 		&&(affect.amITarget(affected))
 		&&(newRoom.fetchAffect(ID())==null)
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))

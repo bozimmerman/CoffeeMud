@@ -763,7 +763,7 @@ public class CMClass extends ClassLoader
 				return ((Behavior)e).ID();
 			else
 			if(e instanceof Clan)
-				return ((Clan)e).ID();
+				return className(e);
 			else
 			if(e instanceof WebMacro)
 				return ((WebMacro)e).ID();

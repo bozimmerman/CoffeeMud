@@ -219,15 +219,41 @@ public class Scriptable extends StdBehavior
 	{
 		if(thisName.length()==0) return null;
 		Room room=CMMap.getRoom(thisName);
-		if(room!=null) return room;
+		if((room!=null)&&(room.ID().equalsIgnoreCase(thisName))) 
+			return room;
 		Room inAreaRoom=null;
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if((CoffeeUtensils.containsString(R.name(),thisName))
-			||(R.ID().endsWith("#"+thisName))
-			||(R.ID().endsWith(thisName))
-			||(R.fetchFromRoomFavorMOBs(null,thisName,Item.WORN_REQ_UNWORNONLY)!=null))
+			if((R.ID().endsWith("#"+thisName))
+			||(R.ID().endsWith(thisName)))
+			{
+				if((imHere!=null)&&(imHere.getArea().name().equals(R.getArea().name())))
+					inAreaRoom=R;
+				else
+					room=R;
+			}
+		}
+		if(inAreaRoom!=null) return inAreaRoom;
+		if(room!=null) return room;
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			if(CoffeeUtensils.containsString(R.displayText(),thisName))
+			{
+				if((imHere!=null)&&(imHere.getArea().name().equals(R.getArea().name())))
+					inAreaRoom=R;
+				else
+					room=R;
+			}
+		}
+		if(inAreaRoom!=null) return inAreaRoom;
+		if(room!=null) return room;
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			if((R.fetchInhabitant(thisName)!=null)
+			||(R.fetchItem(null,thisName)!=null))
 			{
 				if((imHere!=null)&&(imHere.getArea().name().equals(R.getArea().name())))
 					inAreaRoom=R;
@@ -1679,7 +1705,7 @@ public class Scriptable extends StdBehavior
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
 				{
-					s=s.substring(s.indexOf(Util.getCleanBit(s,1))+Util.getCleanBit(s,1).length()).trim();
+					s=Util.getPastBit(s,1).trim();
 					lastKnownLocation.showSource(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s));
 				}
 				break;
@@ -1690,7 +1716,7 @@ public class Scriptable extends StdBehavior
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
 				{
-					s=s.substring(s.indexOf(Util.getCleanBit(s,1))+Util.getCleanBit(s,1).length()).trim();
+					s=Util.getPastBit(s,1).trim();
 					lastKnownLocation.showOthers(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s));
 				}
 				break;
@@ -1748,20 +1774,15 @@ public class Scriptable extends StdBehavior
 				String roomName=Util.getCleanBit(s,1);
 				if(roomName.length()>0)
 				{
-					s=s.substring(s.indexOf(Util.getCleanBit(s,1))+Util.getCleanBit(s,1).length()).trim();
+					s=Util.getPastBit(s,1).trim();
 					Room goHere=getRoom(roomName,lastKnownLocation);
 					if(goHere!=null)
 					{
 						goHere.bringMobHere(monster,true);
-						try
-						{
-							Vector V=Util.parse(varify(source,target,monster,primaryItem,secondaryItem,s));
-							ExternalPlay.doCommand(monster,V);
-						}
-						catch(Exception e)
-						{
-							Log.errOut("Scriptable",e);
-						}
+						Vector V=new Vector();
+						V.addElement("");
+						V.addElement(s.trim());
+						execute(source,target,monster,primaryItem,secondaryItem,V);
 						lastPlace.bringMobHere(monster,true);
 					}
 				}
@@ -1772,7 +1793,7 @@ public class Scriptable extends StdBehavior
 				String roomName=Util.getCleanBit(s,1);
 				if(roomName.length()>0)
 				{
-					s=s.substring(s.indexOf(Util.getCleanBit(s,1))+Util.getCleanBit(s,1).length()).trim();
+					s=Util.getPastBit(s,1).trim();
 					Room goHere=getRoom(roomName,lastKnownLocation);
 					if(goHere!=null)
 					{
@@ -1871,7 +1892,7 @@ public class Scriptable extends StdBehavior
 				String whoName=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,1));
 				if(whoName.length()>0)
 				{
-					s=s.substring(s.indexOf(Util.getCleanBit(s,1))+Util.getCleanBit(s,1).length()).trim();
+					s=Util.getPastBit(s,1).trim();
 					Quest Q=Quests.fetchQuest(s);
 					if(Q!=null) Q.declareWinner(whoName);
 				}
