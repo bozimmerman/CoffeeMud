@@ -44,9 +44,9 @@ public class Spell_FeatherFall extends Spell
 		&&(((msg.tool()==null)||(msg.tool() instanceof MOB))))
 		{
 			MOB mob=msg.source();
-			if((msg.target().envStats().weight()>(mob.maxCarry()-mobWeight(msg.source())))&&(!msg.source().isMine(msg.target())))
+			if((msg.target().envStats().weight()>(mob.maxCarry()-mobWeight(mob)))&&(!mob.isMine(msg.target())))
 			{
-				mob.tell(name()+" is too heavy.");
+				mob.tell(msg.target().name()+" is too heavy.");
 				return false;
 			}
 		}

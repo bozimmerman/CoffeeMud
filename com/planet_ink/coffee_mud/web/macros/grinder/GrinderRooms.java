@@ -124,6 +124,11 @@ public class GrinderRooms
 				{
 					MOB M=RoomData.getMOBFromCode(allmobs,MATCHING);
 					if(M!=null)	happilyAddMob(M,R);
+					else
+					{
+						StringBuffer str=new StringBuffer("!!!No MOB?!!!!");
+						str.append(" Got: "+MATCHING);
+					}
 				}
 				else
 				if(MATCHING.indexOf("@")>0)

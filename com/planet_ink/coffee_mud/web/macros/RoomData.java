@@ -16,7 +16,7 @@ public class RoomData extends StdWebMacro
 		if(I==null) return "";
 		for(int i=0;i<R.numItems();i++)
 			if(R.fetchItem(i)==I)
-				return new Long(new String(CMClass.className(I)+"/"+I.name()+"/"+I.displayText()+"/"+I.text()).hashCode()).toString()+i;
+				return new Long(new String(CMClass.className(I)+"/"+I.name()+"/"+I.displayText()).hashCode()<<5).toString()+i;
 		return "";
 	}
 	
@@ -25,7 +25,7 @@ public class RoomData extends StdWebMacro
 		if(I==null) return "";
 		for(int i=0;i<allitems.size();i++)
 			if(allitems.elementAt(i)==I)
-				return new Long(new String(CMClass.className(I)+"/"+I.name()+"/"+I.displayText()+"/"+I.text()).hashCode()).toString()+i;
+				return new Long(new String(CMClass.className(I)+"/"+I.name()+"/"+I.displayText()).hashCode()<<5).toString()+i;
 		return "";
 	}
 	
@@ -34,7 +34,7 @@ public class RoomData extends StdWebMacro
 		if(I==null) return "";
 		for(int i=0;i<M.inventorySize();i++)
 			if(M.fetchInventory(i)==I)
-				return new Long(new String(CMClass.className(I)+"/"+I.name()+"/"+I.displayText()+"/"+I.text()).hashCode()).toString()+i;
+				return new Long(new String(CMClass.className(I)+"/"+I.name()+"/"+I.displayText()).hashCode()<<5).toString()+i;
 		return "";
 	}
 	
@@ -46,7 +46,7 @@ public class RoomData extends StdWebMacro
 		{
 			MOB M2=R.fetchInhabitant(i);
 			if(M==M2)
-				return new Long(new String(CMClass.className(M)+"/"+M.name()+"/"+M.displayText()+"/"+M.text()).hashCode()).toString()+code;
+				return new Long(new String(CMClass.className(M)+"/"+M.name()+"/"+M.displayText()).hashCode()<<5).toString()+code;
 			else
 			if((M2!=null)&&(M2.isEligibleMonster()))
 				code++;
@@ -59,7 +59,7 @@ public class RoomData extends StdWebMacro
 		if(M==null) return "";
 		for(int i=0;i<mobs.size();i++)
 			if(mobs.elementAt(i)==M)
-				return new Long(new String(CMClass.className(M)+"/"+M.name()+"/"+M.displayText()+"/"+M.text()).hashCode()).toString()+i;
+				return new Long(new String(CMClass.className(M)+"/"+M.name()+"/"+M.displayText()).hashCode()<<5).toString()+i;
 		return "";
 	}
 	

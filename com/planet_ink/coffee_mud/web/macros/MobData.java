@@ -280,18 +280,29 @@ public class MobData extends StdWebMacro
 		else
 			M=RoomData.getMOBFromCode(R,mobCode);
 		
-		if(M==null)
-			return "No MOB?!";
+		if((M==null)||(!M.isEligibleMonster()))
+		{
+			StringBuffer str=new StringBuffer("No MOB?!");
+			str.append(" Got: "+mobCode);
+			str.append(", Includes: ");
+			for(int m=0;m<R.numInhabitants();m++)
+			{
+				MOB M2=R.fetchInhabitant(m);
+				if((M2!=null)&&(M2.isEligibleMonster()))
+				   str.append(M2.name()+"="+RoomData.getMOBCode(R,M2));
+			}
+			return str.toString();
+		}
 		
 		// important generic<->non generic swap!
 		String newClassID=(String)reqs.get("CLASSES");
-		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(M))))
+		if((newClassID!=null)
+		&&(!newClassID.equals(CMClass.className(M)))
+		&&(CMClass.getMOB(newClassID)!=null))
 			M=CMClass.getMOB(newClassID);
 		
-		if((M==null)||(!M.isEligibleMonster()))
-			return "No MOB!!";
-		
-		boolean changedClass=((reqs.get("CHANGEDCLASS")!=null)&&((String)reqs.get("CHANGEDCLASS")).equals("true"))&&(mobCode.equals("NEW"));
+		boolean changedClass=((reqs.get("CHANGEDCLASS")!=null)&&((String)reqs.get("CHANGEDCLASS")).equals("true"));
+		changedClass=changedClass&&(mobCode.equals("NEW"));
 		boolean changedLevel=((reqs.get("CHANGEDLEVEL")!=null)&&((String)reqs.get("CHANGEDLEVEL")).equals("true"));
 		boolean firstTime=(reqs.get("ACTION")==null)
 				||(!((String)reqs.get("ACTION")).equals("MODIFYMOB"))

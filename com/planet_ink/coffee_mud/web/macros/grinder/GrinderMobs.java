@@ -76,7 +76,18 @@ public class GrinderMobs
 			M=RoomData.getMOBFromCode(R,mobCode);
 		
 		if(M==null)
-			return "No MOB?!";
+		{
+			StringBuffer str=new StringBuffer("No MOB?!");
+			str.append(" Got: "+mobCode);
+			str.append(", Includes: ");
+			for(int m=0;m<R.numInhabitants();m++)
+			{
+				MOB M2=R.fetchInhabitant(m);
+				if((M2!=null)&&(M2.isEligibleMonster()))
+				   str.append(M2.name()+"="+RoomData.getMOBCode(R,M2));
+			}
+			return str.toString();
+		}
 		MOB oldM=M;
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(M))))
 			M=CMClass.getMOB(newClassID);
@@ -335,6 +346,7 @@ public class GrinderMobs
 		R.recoverRoomStats();
 		ExternalPlay.DBUpdateMOBs(R);
 		httpReq.getRequestParameters().put("MOB",RoomData.getMOBCode(R,M));
+		httpReq.resetRequestEncodedParameters();
 		return "";
 	}
 }

@@ -45,7 +45,18 @@ public class ItemData extends StdWebMacro
 		{
 			M=RoomData.getMOBFromCode(R,mobNum);
 			if(M==null)
-				return "No MOB?!";
+			{
+				StringBuffer str=new StringBuffer("No MOB?!");
+				str.append(" Got: "+mobNum);
+				str.append(", Includes: ");
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					MOB M2=R.fetchInhabitant(m);
+					if((M2!=null)&&(M2.isEligibleMonster()))
+					   str.append(M2.name()+"="+RoomData.getMOBCode(R,M2));
+				}
+				return str.toString();
+			}
 			if(itemCode.equals("NEW"))
 				I=CMClass.getItem("GenItem");
 			else
@@ -58,12 +69,31 @@ public class ItemData extends StdWebMacro
 			I=RoomData.getItemFromCode(R,itemCode);
 		
 		if(I==null)
-			return "No Item?!";
+		{
+			StringBuffer str=new StringBuffer("No Item?!");
+			str.append(" Got: "+itemCode);
+			str.append(", Includes: ");
+			if(M==null)
+				for(int i=0;i<R.numItems();i++)
+				{
+					Item I2=R.fetchItem(i);
+					if(I2!=null) str.append(I2.name()+"="+RoomData.getItemCode(R,I2));
+				}
+			else
+				for(int i=0;i<M.inventorySize();i++)
+				{
+					Item I2=M.fetchInventory(i);
+					if(I2!=null) str.append(RoomData.getItemCode(M,I2));
+				}
+			return str.toString();
+		}
 		
 		Item oldI=I;
 		// important generic<->non generic swap!
 		String newClassID=(String)reqs.get("CLASSES");
-		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(I))))
+		if((newClassID!=null)
+		&&(!newClassID.equals(CMClass.className(I)))
+		&&(CMClass.getItem(newClassID)!=null))
 			I=CMClass.getItem(newClassID);
 		
 		boolean firstTime=(reqs.get("ACTION")==null)
@@ -522,7 +552,7 @@ public class ItemData extends StdWebMacro
 								str.append("<OPTION VALUE=\""+RoomData.getItemCode(M,I2)+"\"");
 								if(old.equals(RoomData.getItemCode(M,I2)))
 									str.append(" SELECTED");
-								str.append(">"+" ("+CMClass.className(I2)+")"+((I2.container()==null)?"":(" in "+I2.container().name())));
+								str.append(">"+I2.name()+" ("+CMClass.className(I2)+")"+((I2.container()==null)?"":(" in "+I2.container().name())));
 							}
 						}
 					}

@@ -26,7 +26,18 @@ public class GrinderItems
 		{
 			M=RoomData.getMOBFromCode(R,mobNum);
 			if(M==null)
-				return "No MOB?!";
+			{
+				StringBuffer str=new StringBuffer("No MOB?!");
+				str.append(" Got: "+mobNum);
+				str.append(", Includes: ");
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					MOB M2=R.fetchInhabitant(m);
+					if((M2!=null)&&(M2.isEligibleMonster()))
+					   str.append(M2.name()+"="+RoomData.getMOBCode(R,M2));
+				}
+				return str.toString();
+			}
 		}
 		if(itemCode.equals("NEW"))
 			I=CMClass.getItem(newClassID);
@@ -37,7 +48,24 @@ public class GrinderItems
 			I=RoomData.getItemFromCode(R,itemCode);
 		
 		if(I==null)
-			return "No Item?!";
+		{
+			StringBuffer str=new StringBuffer("No Item?!");
+			str.append(" Got: "+itemCode);
+			str.append(", Includes: ");
+			if(M==null)
+				for(int i=0;i<R.numItems();i++)
+				{
+					Item I2=R.fetchItem(i);
+					if(I2!=null) str.append(I2.name()+"="+RoomData.getItemCode(R,I2));
+				}
+			else
+				for(int i=0;i<M.inventorySize();i++)
+				{
+					Item I2=M.fetchInventory(i);
+					if(I2!=null) str.append(I2.name()+"="+RoomData.getItemCode(M,I2));
+				}
+			return str.toString();
+		}
 		Item oldI=I;
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(I))))
 			I=CMClass.getItem(newClassID);
@@ -406,6 +434,7 @@ public class GrinderItems
 		{
 			ExternalPlay.DBUpdateItems(R);
 			httpReq.getRequestParameters().put("ITEM",RoomData.getItemCode(R,I));
+			httpReq.resetRequestEncodedParameters();
 		}
 		else
 		{
@@ -420,6 +449,7 @@ public class GrinderItems
 			ExternalPlay.DBUpdateMOBs(R);
 			httpReq.getRequestParameters().put("MOB",RoomData.getMOBCode(R,M));
 			httpReq.getRequestParameters().put("ITEM",RoomData.getItemCode(M,I));
+			httpReq.resetRequestEncodedParameters();
 		}
 		R.startItemRejuv();
 		return "";
