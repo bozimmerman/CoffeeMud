@@ -1622,7 +1622,7 @@ public class StdMOB implements MOB
 			else
 			if(Util.bset(targetMajor,affect.MASK_CHANNEL))
 			{
-				if(!Util.isSet(getChannelMask(),(targetMajor-affect.MASK_CHANNEL)))
+				if(!Util.isSet(getChannelMask(),((affect.targetCode()-affect.MASK_CHANNEL)-Affect.TYP_CHANNEL)))
 					tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 			}
 
@@ -1672,7 +1672,7 @@ public class StdMOB implements MOB
 			else
 			if(Util.bset(othersMajor,affect.MASK_CHANNEL))
 			{
-				if(!Util.isSet(getChannelMask(),(affect.othersCode()-affect.MASK_CHANNEL)))
+				if(!Util.isSet(getChannelMask(),((affect.othersCode()-affect.MASK_CHANNEL)-Affect.TYP_CHANNEL)))
 					tell(affect.source(),affect.target(),affect.tool(),affect.othersMessage());
 			}
 			else

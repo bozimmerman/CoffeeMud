@@ -746,7 +746,7 @@ public class ClanCommands
 				coins.setNumberOfCoins(coins.numberOfCoins()-((Coins)old).numberOfCoins());
 				coins.recoverEnvStats();
 				((Banker)banker).delDepositInventory(mob.getClanID(),item);
-				com.planet_ink.coffee_mud.utils.Money.makeChange(mob,((MOB)banker),((Coins)old).numberOfCoins());
+				com.planet_ink.coffee_mud.utils.Money.giveMoney(mob,((MOB)banker),((Coins)old).numberOfCoins());
 				if(coins.numberOfCoins()<=0)
 				{
 					ExternalPlay.quickSay((MOB)banker,mob,"I have closed your Clan's account. Thanks for your business.",true,false);

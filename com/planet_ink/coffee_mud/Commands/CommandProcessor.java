@@ -83,6 +83,9 @@ public class CommandProcessor
 				case CommandSet.AREAS:
 					Scoring.areas(mob);
 					break;
+				case CommandSet.AUCTION:
+					Channels.auction(mob,commands);
+					break;
 				case CommandSet.AUTOMELEE:
 					TheFight.autoMelee(mob);
 					break;

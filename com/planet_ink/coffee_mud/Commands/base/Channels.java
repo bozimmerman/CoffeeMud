@@ -14,6 +14,7 @@ public class Channels
 	private static Vector channelNames=new Vector();
 	private static Vector channelLevels=new Vector();
 	private static Vector ichannelList=new Vector();
+	private static Ability auctionA=null;
 
 	public static void unloadChannels()
 	{
@@ -178,8 +179,11 @@ public class Channels
 				channelLevels.addElement(new Integer(0));
 			ichannelList.addElement("");
 			channelNames.addElement(item.toUpperCase().trim());
-			cmdSet.put(item.toUpperCase().trim(),new Integer(CommandSet.CHANNEL));
-			cmdSet.put("NO"+item.toUpperCase().trim(),new Integer(CommandSet.NOCHANNEL));
+			if(!cmdSet.containsKey(item.toUpperCase().trim()))
+			{
+				cmdSet.put(item.toUpperCase().trim(),new Integer(CommandSet.CHANNEL));
+				cmdSet.put("NO"+item.toUpperCase().trim(),new Integer(CommandSet.NOCHANNEL));
+			}
 		}
 		while(ilist.length()>0)
 		{
@@ -207,8 +211,11 @@ public class Channels
 			channelNames.addElement(item.toUpperCase().trim());
 			channelLevels.addElement(new Integer(Util.s_int(lvl)));
 			ichannelList.addElement(ichan);
-			cmdSet.put(item.toUpperCase().trim(),new Integer(CommandSet.CHANNEL));
-			cmdSet.put("NO"+item.toUpperCase().trim(),new Integer(CommandSet.NOCHANNEL));
+			if(!cmdSet.containsKey(item.toUpperCase().trim()))
+			{
+				cmdSet.put(item.toUpperCase().trim(),new Integer(CommandSet.CHANNEL));
+				cmdSet.put("NO"+item.toUpperCase().trim(),new Integer(CommandSet.NOCHANNEL));
+			}
 		}
 		channelNames.addElement(new String("CLANTALK"));
 		channelLevels.addElement(new Integer(0));
@@ -216,12 +223,19 @@ public class Channels
 		cmdSet.put(new String("CLANTALK"),new Integer(CommandSet.CHANNEL));
 		cmdSet.put("NO"+(new String("CLANTALK")),new Integer(CommandSet.NOCHANNEL));
 		numChannelsLoaded++;
+		
+		channelNames.addElement(new String("AUCTION"));
+		channelLevels.addElement(new Integer(0));
+		ichannelList.addElement("");
+		//cmdSet.put(new String("AUCTION"),new Integer(CommandSet.CHANNEL));
+		cmdSet.put("NO"+(new String("AUCTION")),new Integer(CommandSet.NOCHANNEL));
+		numChannelsLoaded++;
 		return numChannelsLoaded;
 	}
 
 	public static void channel(MOB mob, Vector commands)
 	{
-	  channel(mob, commands, false);
+		channel(mob, commands, false);
 	}
 
 	public static void channel(MOB mob, Vector commands, boolean systemMsg)
@@ -229,7 +243,6 @@ public class Channels
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim();
 		FullMsg msg=null;
 		commands.removeElementAt(0);
-
 
 		int channelInt=getChannelInt(channelName);
 		int channelNum=getChannelNum(channelName);
@@ -267,12 +280,12 @@ public class Channels
 		if(systemMsg)
 		{
 		  String str="["+channelName+"] '"+Util.combine(commands,0)+"'^?^.";
-		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^Q"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
+		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^Q"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.name()+str);
 		}
 		else
 		{
 		  String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'^?^.";
-		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
+		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.name()+str);
 		}
 		if(mob.location().okAffect(mob,msg))
 		{
@@ -351,6 +364,72 @@ public class Channels
 		{
 			mob.tell("All channels have been turned back on.");
 			mob.setChannelMask(0);
+		}
+	}
+	
+	public static void auction(MOB mob, Vector commands)
+		throws java.io.IOException
+	{
+		int channelInt=getChannelInt("AUCTION");
+		int channelNum=getChannelNum("AUCTION");
+
+		if(Util.isSet(mob.getChannelMask(),channelInt))
+		{
+			mob.setChannelMask(mob.getChannelMask()&(mob.getChannelMask()-channelNum));
+			mob.tell("The AUCTION channel has been turned on.  Use `NOAUCTION` to turn it off again.");
+		}
+
+		if((commands.size()>1)
+		&&(auctionA!=null)
+		&&(auctionA.invoker()==mob))
+		{
+			if(((String)commands.elementAt(1)).equalsIgnoreCase("CHANNEL"))
+			{
+				commands.removeElementAt(1);
+				channel(mob,commands);
+				return;
+			}
+			else
+			if(((String)commands.elementAt(1)).equalsIgnoreCase("CLOSE"))
+			{
+				commands.removeElementAt(1);
+				Vector V=new Vector();
+				V.addElement("AUCTION");
+				V.addElement("The auction has been closed.");
+				ExternalPlay.deleteTick(auctionA,Host.QUEST_TICK);
+				auctionA=null;
+				channel(mob,commands);
+				return;
+			}
+		}
+		if(auctionA==null)
+		{
+			Vector V=new Vector();
+			if((commands.size()>2)
+			&&((Util.s_int((String)commands.lastElement())>0)||(((String)commands.lastElement()).equals("0"))))
+			{
+				V.addElement((String)commands.lastElement());
+				commands.removeElementAt(commands.size()-1);
+			}
+			else
+				V.addElement("0");
+			
+			String s=Util.combine(commands,1);
+			Environmental E=mob.fetchInventory(null,s);
+			if((E==null)||(E instanceof MOB))
+			{
+				mob.tell("'"+s+"' is not an item you can auction.");
+				return;
+			}
+			if((!mob.isMonster())&&(!mob.session().confirm("Auction "+E.name()+" with a starting bid of "+((String)V.firstElement())+" (Y/n)? ","Y")))
+				return;
+			auctionA=CMClass.getAbility("Prop_Auction");
+			auctionA.invoke(mob,V,E,false);
+		}
+		else
+		{
+			commands.removeElementAt(0);
+			auctionA.invoke(mob,commands,null,false);
 		}
 	}
 }

@@ -201,13 +201,13 @@ public class IMudInterface implements ImudServices, Serializable
 				if(ck.type==Packet.CHAN_MESSAGE)
 				{
 					String str="^Q"+mob.name()+" "+channelName+"(S) '"+fixColors(ck.message)+"'^?^.";
-					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,str);
+					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str);
 				}
 				else
 				{
 					String msgs=socialFix(fixColors(ck.message));
 					String str="^Q("+channelName+") "+msgs+"^?^.";
-					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,str);
+					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str);
 				}
 
 				for(int s=0;s<Sessions.size();s++)

@@ -137,6 +137,8 @@ public interface Affect extends Cloneable
 	public static final int TYP_THROW=73;
 	public static final int TYP_EXTINGUISH=74;
 	public static final int TYP_TELL=75;
+	
+	public static final int TYP_CHANNEL=100; //(100-131 are channels)
 
 	// helpful message groupings
 	public static final int MSK_CAST_VERBAL=MASK_SOUND|MASK_MOUTH|MASK_MAGIC;

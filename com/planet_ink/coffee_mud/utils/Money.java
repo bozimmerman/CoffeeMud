@@ -141,7 +141,7 @@ public class Money
 		return msliver;
 	}
 
-	public static Item makeChange(MOB banker, MOB customer, int value)
+	public static Item giveMoney(MOB banker, MOB customer, int value)
 	{
 		Container changeBag=(Container)CMClass.getItem("GenContainer");
 		changeBag.setCapacity(0);
@@ -154,6 +154,7 @@ public class Money
 		changeBag.setContainTypes(Container.CONTAIN_COINS);
 		changeBag.setDescription("");
 		banker.addInventory(changeBag);
+		
 		int totalWeight=0;
 		while(value>=10000000)
 		{
@@ -229,42 +230,46 @@ public class Money
 		changeBag.setCapacity(totalWeight);
 		changeBag.recoverEnvStats();
 		changeBag.text();
-		FullMsg newMsg=new FullMsg(banker,customer,changeBag,Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
-		if(banker.location().okAffect(banker,newMsg))
+		if(banker!=customer)
 		{
-			banker.location().send(banker,newMsg);
-			if(customer.isMine(changeBag))
+			FullMsg newMsg=new FullMsg(banker,customer,changeBag,Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+			if(banker.location().okAffect(banker,newMsg))
+				banker.location().send(banker,newMsg);
+			else
 			{
-				Vector V=changeBag.getContents();
-				if(V.size()>0)
-				for(int i=0;i<customer.inventorySize();i++)
+				ExternalPlay.drop(banker,changeBag,true);
+				return null;
+			}
+		}
+		
+		if(customer.isMine(changeBag))
+		{
+			Vector V=changeBag.getContents();
+			if(V.size()>0)
+			for(int i=0;i<customer.inventorySize();i++)
+			{
+				Item I=customer.fetchInventory(i);
+				if((I!=null)
+				&&(I!=changeBag)
+				&&(I instanceof Container)
+				&&(((Container)I).isOpen())
+				&&(I.name().equals(changeBag.name())))
 				{
-					Item I=customer.fetchInventory(i);
-					if((I!=null)
-					&&(I!=changeBag)
-					&&(I instanceof Container)
-					&&(((Container)I).isOpen())
-					&&(I.name().equals(changeBag.name())))
-					{
-						for(int v=0;v<V.size();v++)
-							((Item)V.elementAt(v)).setContainer(I);
-						changeBag.destroyThis();
-						changeBag=(Container)I;
-						break;
-					}
+					for(int v=0;v<V.size();v++)
+						((Item)V.elementAt(v)).setContainer(I);
+					changeBag.destroyThis();
+					changeBag=(Container)I;
+					break;
 				}
 			}
-			else
-				ExternalPlay.drop(banker,changeBag,true);
-			return changeBag;
 		}
 		else
 			ExternalPlay.drop(banker,changeBag,true);
-		return null;
+		return changeBag;
 	}
 	
 
-	public static void setTotalMoney(MOB banker, MOB mob, int amount)
+	public static void subtractMoney(MOB banker, MOB mob, int amount)
 	{
 		if(mob==null) return;
 		if(mob.getMoney()>=amount)
@@ -304,7 +309,7 @@ public class Money
 			return;
 		}
 		if(amount<0)
-			makeChange(banker,mob,-amount);
+			giveMoney(banker,mob,-amount);
 	}
 
 	public static int totalMoney(MOB mob)

@@ -188,6 +188,7 @@ public class CommandSet extends Hashtable
 	public static final int CLANDONATE=175;
 	public static final int CLANCREATE=176;
 	public static final int EMAIL=177;
+	public static final int AUCTION=178;
 
 	private CommandSet()
 	{
@@ -202,6 +203,7 @@ public class CommandSet extends Hashtable
 		put("ARCTOPICS",new Integer(ARCTOPICS));
 			put("ATOPICS",new Integer(ARCTOPICS));
 		put("AREAS",new Integer(AREAS));
+		put("AUCTION",new Integer(AUCTION));
 		put("AUTOLOOT",new Integer(AUTOLOOT));
 		put("AUTOGOLD",new Integer(AUTOGOLD));
 		put("AUTOGUARD",new Integer(AUTOGUARD));

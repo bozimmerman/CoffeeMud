@@ -322,7 +322,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							coins.setNumberOfCoins(coins.numberOfCoins()-((Coins)old).numberOfCoins());
 							coins.recoverEnvStats();
 							delDepositInventory(affect.source().name(),item);
-							com.planet_ink.coffee_mud.utils.Money.makeChange(mob,affect.source(),((Coins)old).numberOfCoins());
+							com.planet_ink.coffee_mud.utils.Money.giveMoney(mob,affect.source(),((Coins)old).numberOfCoins());
 							if(coins.numberOfCoins()<=0)
 							{
 								ExternalPlay.quickSay(this,mob,"I have closed your account. Thanks for your business.",true,false);

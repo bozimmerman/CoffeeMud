@@ -223,14 +223,14 @@ public class Chant_GrowItem extends Chant
 						if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
 							((Weapon)building).setWeaponClassification(cl);
 					}
-					building.baseEnvStats().setAttackAdjustment((abilityCode()-1));
+					building.baseEnvStats().setAttackAdjustment(0);
 					building.baseEnvStats().setDamage(armordmg);
 					((Weapon)building).setRawProperLocationBitmap(Item.WIELD|Item.HELD);
 					((Weapon)building).setRawLogicalAnd((capacity>1));
 				}
 				if(building instanceof Armor)
 				{
-					((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+					((Armor)building).baseEnvStats().setArmor(armordmg);
 					((Armor)building).setRawProperLocationBitmap(0);
 					for(int wo=1;wo<Item.wornLocation.length;wo++)
 					{
