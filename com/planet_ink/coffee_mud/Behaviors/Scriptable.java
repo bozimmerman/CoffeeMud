@@ -26,6 +26,7 @@ public class Scriptable extends StdBehavior
 	protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_ITEMS|Behavior.CAN_ROOMS;}
 	private MOB lastToHurtMe=null;
 	private Room lastKnownLocation=null;
+	private Tickable altStatusTickable=null;
 	private Vector que=new Vector();
 	private static final Hashtable funcH=new Hashtable();
 	private static final Hashtable methH=new Hashtable();
@@ -36,7 +37,12 @@ public class Scriptable extends StdBehavior
 	private Hashtable lastTimeProgsDone=new Hashtable();
 	private Hashtable lastDayProgsDone=new Hashtable();
 	private long tickStatus=Tickable.STATUS_NOT;
-	public long getTickStatus(){return tickStatus;}
+	public long getTickStatus()
+	{
+	    Tickable T=altStatusTickable;
+	    if(T!=null) return T.getTickStatus();
+	    return tickStatus;
+	}
 
 	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
 	{
@@ -4938,7 +4944,12 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				Ability A=CMClass.getAbility("Skill_Track");
-				if(A!=null)	A.invoke(monster,Util.parse(arg1),null,true,0);
+				if(A!=null)	
+				{
+				    altStatusTickable=A;
+				    A.invoke(monster,Util.parse(arg1),null,true,0);
+				    altStatusTickable=null;
+				}
 				break;
 			}
 			case 21: //MPENDQUEST

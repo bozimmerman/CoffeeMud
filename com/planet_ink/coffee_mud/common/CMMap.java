@@ -30,7 +30,7 @@ public class CMMap
 	protected static final int QUADRANT_WIDTH=10;
 	protected static Vector space=new Vector();
 
-	private static void theWorldChanged()
+	public static void theWorldChanged()
 	{
 		for (Enumeration a=areas(); a.hasMoreElements();)
 			((Area)a.nextElement()).clearMaps();
@@ -193,6 +193,13 @@ public class CMMap
 		roomsList.remove(oneToDel);
 		theWorldChanged();
 	}
+	public static void justDelRoom(Room oneToDel)
+	{
+		if(oneToDel instanceof GridLocale)
+			((GridLocale)oneToDel).clearGrid(null);
+		roomsList.remove(oneToDel);
+	}
+	
 
 	public static String getExtendedRoomID(Room R)
 	{

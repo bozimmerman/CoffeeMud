@@ -46,8 +46,9 @@ public class Where extends StdCommand
 	    if((show!=null)
 	    &&(show.session()!=null)
 	    &&(showTo!=null)
-		&&((show.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
-			||((CMSecurity.isAllowedAnywhere(showTo,"CLOAK")||CMSecurity.isAllowedAnywhere(showTo,"WIZINV"))&&(showTo.envStats().level()>=show.envStats().level())))
+		&&(((show.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
+			||((CMSecurity.isAllowedAnywhere(showTo,"CLOAK")||CMSecurity.isAllowedAnywhere(showTo,"WIZINV"))
+		        &&(showTo.envStats().level()>=show.envStats().level()))))
 			return true;
 		return false;
 	}

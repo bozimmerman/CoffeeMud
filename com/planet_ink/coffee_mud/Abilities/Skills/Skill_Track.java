@@ -35,6 +35,8 @@ public class Skill_Track extends StdAbility
 	public long flags(){return Ability.FLAG_TRACKING;}
 	private Hashtable cachedPaths=new Hashtable();
 	private int cacheCode=-1;
+	private long tickStatus=0;
+	public long getTickStatus(){return tickStatus;} 
 	public int abilityCode(){return cacheCode;}
 	public void setAbilityCode(int newCode){cacheCode=newCode;}
 	public int usageType(){return USAGE_MOVEMENT;}
@@ -166,8 +168,13 @@ public class Skill_Track extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+	    tickStatus=Tickable.STATUS_MISC6;
 		if((!Sense.aliveAwakeMobile(mob,false))||(mob.location()==null))
+		{
+		    tickStatus=Tickable.STATUS_NOT;
 			return false;
+		}
+	    tickStatus=Tickable.STATUS_MISC6+1;
 		Room thisRoom=mob.location();
 
 		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
@@ -176,20 +183,29 @@ public class Skill_Track extends StdAbility
 		if(V.size()>0)
 		{
 			mob.tell("You stop tracking.");
-			if(commands.size()==0) return true;
+			if(commands.size()==0) 
+			{
+			    tickStatus=Tickable.STATUS_NOT;
+			    return true;
+			}
 		}
 
+	    tickStatus=Tickable.STATUS_MISC6+2;
 		theTrail=null;
 		nextDirection=-2;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+		{
+		    tickStatus=Tickable.STATUS_NOT;
 			return false;
+		}
 
+	    tickStatus=Tickable.STATUS_MISC6+3;
 		String mobName=Util.combine(commands,0);
-		if((givenTarget==null)
-		&&(mobName.length()==0))
+		if((givenTarget==null)&&(mobName.length()==0))
 		{
 			mob.tell("Track whom?");
+		    tickStatus=Tickable.STATUS_NOT;
 			return false;
 		}
 
@@ -199,10 +215,12 @@ public class Skill_Track extends StdAbility
 		if(givenTarget==null)
 			givenTarget=CMMap.getArea(mobName);
 
+	    tickStatus=Tickable.STATUS_MISC6+4;
 		if((givenTarget==null)
 		&&(thisRoom.fetchInhabitant(mobName)!=null))
 		{
 			mob.tell("Try 'look'.");
+		    tickStatus=Tickable.STATUS_NOT;
 			return false;
 		}
 
@@ -222,6 +240,7 @@ public class Skill_Track extends StdAbility
 			if(R!=null) rooms.addElement(R);
 		}
 
+	    tickStatus=Tickable.STATUS_MISC6+5;
 		if(rooms.size()<=0)
 		{
 		    try
@@ -234,6 +253,7 @@ public class Skill_Track extends StdAbility
 				}
 		    }catch(NoSuchElementException nse){}
 		}
+	    tickStatus=Tickable.STATUS_MISC6+6;
 
 		if(rooms.size()<=0)
 		{
@@ -247,9 +267,9 @@ public class Skill_Track extends StdAbility
 				}
 		    }catch(NoSuchElementException nse){}
 		}
-
+		
+	    tickStatus=Tickable.STATUS_MISC6+7;
 		boolean success=profficiencyCheck(mob,0,auto);
-
 		if(rooms.size()>0)
 		{
 			theTrail=null;
@@ -261,6 +281,7 @@ public class Skill_Track extends StdAbility
 				cachedPaths.put(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);
 		}
 
+	    tickStatus=Tickable.STATUS_MISC6+8;
 		if((success)&&(theTrail!=null))
 		{
 			theTrail.addElement(thisRoom);
@@ -272,19 +293,24 @@ public class Skill_Track extends StdAbility
 			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
 			if(thisRoom.okMessage(mob,msg))
 			{
+			    tickStatus=Tickable.STATUS_MISC6+9;
 				thisRoom.send(mob,msg);
 				invoker=mob;
 				Skill_Track newOne=(Skill_Track)copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
+			    tickStatus=Tickable.STATUS_MISC6+10;
 				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,thisRoom,false);
 			}
+		    tickStatus=Tickable.STATUS_MISC6+11;
 		}
 		else
+		{
+		    tickStatus=Tickable.STATUS_NOT;
 			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track, but can't find the trail.");
-
-
+		}
+	    tickStatus=Tickable.STATUS_NOT;
 		// return whether it worked
 		return success;
 	}

@@ -416,6 +416,8 @@ public class CMClass extends ClassLoader
 	{
 		return (Room)getEnv(locales,calledThis);
 	}
+	public static Area anyOldArea(){return (Area)areaTypes.elementAt(0);}
+	
 	public static Area getAreaType(String calledThis)
 	{
 		return (Area)getEnv(areaTypes,calledThis);

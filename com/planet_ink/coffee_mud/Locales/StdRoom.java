@@ -227,7 +227,7 @@ public class StdRoom
 	}
 	public Area getArea()
 	{
-		if(myArea==null) return CMClass.getAreaType("StdArea");
+		if(myArea==null) return CMClass.anyOldArea();
 		return myArea;
 	}
 	public void setArea(Area newArea)

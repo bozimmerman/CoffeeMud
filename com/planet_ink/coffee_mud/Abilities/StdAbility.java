@@ -722,6 +722,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 								   int additionAffectCheckCode)
 	{
 		boolean ok=true;
+		if(mob.location()==null) return false;
 		if(additionAffectCheckCode>=0)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.NO_EFFECT,additionAffectCheckCode,CMMsg.NO_EFFECT,null);
@@ -762,6 +763,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	{
 		// it didn't work, but tell everyone you tried.
 		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T"+message+"^?");
+		if(mob.location()==null) return false;
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 
@@ -774,6 +776,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	{
 		// it didn't work, but tell everyone you tried.
 		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,message);
+		if(mob.location()==null) return false;
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 
@@ -786,6 +789,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	{
 		// it didn't work, but tell everyone you tried.
 		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message);
+		if(mob.location()==null) return false;
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 

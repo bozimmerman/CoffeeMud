@@ -492,19 +492,23 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			room.rawExits()[d]=null;
 		}
 		if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+17;
-		CMMap.delRoom(room);
 	}
 	
 	public void clearGrid(Room bringBackHere)
 	{
 		try
 		{
-			while(rooms.size()>0)
+		    for(int r=0;r<rooms.size();r++)
 			{
-				Room room=(Room)rooms.elementAt(0,1);
-				rooms.removeElementAt(0);
+				Room room=(Room)rooms.elementAt(r,1);
 				clearRoom(room,bringBackHere,null);
 			}
+		    while(rooms.size()>0)
+		    {
+				Room room=(Room)rooms.elementAt(0,1);
+				rooms.removeElementAt(0);
+		        CMMap.delRoom(room);
+		    }
 		}
 		catch(Exception e){}
 	}
@@ -668,13 +672,22 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			}
 			catch(java.util.NoSuchElementException  nse){}
 			tickStatus=Tickable.STATUS_MISC+5;
-			if(STG!=null)
 			for(int i=0;i<roomsToClear.size();i++)
 			{
 			    R=(Room)roomsToClear.elementAt(i);
 			    tickStatus=Tickable.STATUS_MISC+6;
 			    clearRoom(R,null,this);
+			    tickStatus=Tickable.STATUS_MISC+7;
 			}
+		    tickStatus=Tickable.STATUS_MISC+8;
+			for(int i=0;i<roomsToClear.size();i++)
+			{
+			    R=(Room)roomsToClear.elementAt(i);
+			    tickStatus=Tickable.STATUS_MISC+9;
+				CMMap.justDelRoom(R);
+			    tickStatus=Tickable.STATUS_MISC+10;
+			}
+			CMMap.theWorldChanged();
 			tickStatus=Tickable.STATUS_NOT;
 			return true;
 		}
