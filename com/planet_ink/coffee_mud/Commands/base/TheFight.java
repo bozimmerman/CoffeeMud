@@ -244,7 +244,7 @@ public class TheFight
 			   &&(damageType>=0)
 			   &&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
 			{
-				if(weapon instanceof Weapon)
+				if((weapon==null)||(!(weapon instanceof Weapon)))
 				{
 					int replace=allDisplayMessage.indexOf("<DAMAGE>");
 					if(replace>=0)
@@ -273,7 +273,6 @@ public class TheFight
 						   null,
 						   Affect.NO_EFFECT,
 						   null);
-				}
 			}
 			target.location().send(target,msg);
 		}
