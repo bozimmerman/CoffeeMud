@@ -33,7 +33,7 @@ public class Dwarf extends StdRace
 			A.setProfficiency(100);
 			mob.addAbility(A);
 			A.autoInvocation(mob);
-			if((mob.isMonster())&&(!verifyOnly))
+			if(mob.isMonster())
 				A.invoke(mob,mob,true);
 		}
 		A=CMClass.getAbility("Mining");

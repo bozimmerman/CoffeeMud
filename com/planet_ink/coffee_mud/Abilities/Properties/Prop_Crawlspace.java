@@ -49,7 +49,7 @@ public class Prop_Crawlspace extends Property
 				if((affected instanceof Room)
 				&&(affect.source().envStats().height()>12))
 				{
-					affect.source().tell("You cannot stand up here.");
+					affect.source().tell("You cannot stand up here, try crawling.");
 					return false;
 				}
 			}

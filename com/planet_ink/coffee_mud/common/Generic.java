@@ -820,7 +820,14 @@ public class Generic
 			
 			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
 			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))
-				mob.baseCharStats().setMyRace(CMClass.getRace(raceID));
+			{
+				Race R=CMClass.getRace(raceID);
+				if(R!=null)
+				{
+					mob.baseCharStats().setMyRace(R);
+					R.startRacing(mob,true);
+				}
+			}
 			
 			Vector V=XMLManager.getRealContentsFromPieces(buf,"INVEN");
 			if(V==null)

@@ -322,6 +322,14 @@ public class Carpentry extends CommonSkill
 					key.text();
 				}
 			}
+			if(building instanceof Drink)
+			{
+				((Drink)building).setLiquidRemaining(0);
+				((Drink)building).setLiquidHeld(capacity*50);
+				((Drink)building).setThirstQuenched(250);
+				if((capacity*50)<250)
+					((Drink)building).setThirstQuenched(capacity*50);
+			}
 			if(building instanceof Rideable)
 			{
 				if(misctype.equalsIgnoreCase("CHAIR"))

@@ -203,6 +203,8 @@ public class Language extends StdAbility
 			Ability A=mob.fetchAffect(a);
 			if((A!=null)&&(A instanceof Language))
 			{
+				if(mob.isMonster())
+					A.setProfficiency(100);
 				if(A.ID().equals(ID()))
 					((Language)A).setBeingSpoken(true);
 				else

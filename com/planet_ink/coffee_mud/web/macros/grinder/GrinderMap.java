@@ -186,12 +186,12 @@ public class GrinderMap
                 GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
                 if(!processed.containsKey(room.roomID))
                 {
-                    placeRoom(room,0,0,processed,areaMap,true,false);
+                    placeRoom(room,0,0,processed,areaMap,true,true);
                     doneSomething=true;
                 }
             }
         }
-		doneSomething=true;
+		/*doneSomething=true;
         while((areaMap.size()>processed.size())&&(doneSomething))
         {
             doneSomething=false;
@@ -204,7 +204,7 @@ public class GrinderMap
                     doneSomething=true;
                 }
             }
-        }
+        }*/
         if(areaMap.size()>processed.size())
             Log.errOut("GrinderMap",areaMap.size()-processed.size()+" room(s) were not placed.");
     }
@@ -433,8 +433,10 @@ public class GrinderMap
             if(room.doors[d]!=null)
                 roomID=((GrinderDir)room.doors[d]).room;
 			
-            if(passTwo||((d!=Directions.UP)&&(d!=Directions.DOWN)))
-            if((roomID!=null)&&(roomID.length()>0)&&(processed.get(roomID)==null))
+            if((roomID!=null)
+			&&(roomID.length()>0)
+			&&(processed.get(roomID)==null)
+            &&(passTwo||((d!=Directions.UP)&&(d!=Directions.DOWN))))
             {
                 GrinderRoom nextRoom=getRoom(allRooms,roomID);
                 if(nextRoom!=null)

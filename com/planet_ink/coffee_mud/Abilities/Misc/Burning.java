@@ -38,11 +38,52 @@ public class Burning extends StdAbility
 			if(affected instanceof Item)
 			{
 				Environmental E=((Item)affected).owner();
-				((Item)affected).destroyThis();
+				if(E==null)
+					((Item)affected).destroyThis();
+				else
 				if(E instanceof Room)
+				{
+					Room room=(Room)E;
+					if((affected instanceof EnvResource)
+					&&(room.isContent((Item)affected)))
+					{
+						for(int i=0;i<room.numItems();i++)
+						{
+							Item I=room.fetchItem(i);
+							if(I.name().equals(affected.name())
+							&&(I instanceof EnvResource)
+							&&(I.material()==((Item)affected).material()))
+							{
+								int durationOfBurn=5;
+								switch(I.material()&EnvResource.MATERIAL_MASK)
+								{
+								case EnvResource.MATERIAL_LEATHER:
+									durationOfBurn=20+I.envStats().weight();
+									break;
+								case EnvResource.MATERIAL_CLOTH:
+								case EnvResource.MATERIAL_PAPER:
+									durationOfBurn=5+I.envStats().weight();
+									break;
+								case EnvResource.MATERIAL_WOODEN:
+									durationOfBurn=40+(I.envStats().weight()*2);
+									break;
+								}
+								Burning B=new Burning();
+								B.setProfficiency(durationOfBurn);
+								B.invoke(invoker,I,true);
+								break;
+							}
+						}
+					}
+					((Item)affected).destroyThis();
 					((Room)E).recoverRoomStats();
+				}
+				else
 				if(E instanceof MOB)
+				{
+					((Item)affected).destroyThis();
 					((MOB)E).location().recoverRoomStats();
+				}
 				return false;
 			}
 		}
