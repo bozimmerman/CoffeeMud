@@ -21,6 +21,7 @@ public class Specialization_EdgedWeapon extends Specialization_Weapon
 
 		baseEnvStats().setLevel(1);
 		weaponType=Weapon.CLASS_EDGED;
+		secondWeaponType=Weapon.CLASS_DAGGER;
 
 		addQualifyingClass("Fighter",1);
 		addQualifyingClass("Ranger",1);
