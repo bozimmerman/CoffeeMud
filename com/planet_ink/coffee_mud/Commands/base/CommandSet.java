@@ -373,11 +373,11 @@ public class CommandSet extends Hashtable
 		{
 			Ability thisAbility=(Ability)abilities.elementAt(e);
 			if((thisAbility.triggerStrings()!=null)
-			&&(thisAbility.triggerStrings().size()>0))
+			&&(thisAbility.triggerStrings().length>0))
 			{
-				for(int a=0;a<thisAbility.triggerStrings().size();a++)
+				for(int a=0;a<thisAbility.triggerStrings().length;a++)
 				{
-					String ts=(String)thisAbility.triggerStrings().elementAt(a);
+					String ts=(String)thisAbility.triggerStrings()[a];
 					if(a==0)
 					{
 						extraCMDs.addElement(ts);

@@ -15,9 +15,9 @@ public class AbilityEvoker
 	}
 	private boolean evokedBy(Ability thisAbility, String thisWord)
 	{
-		for(int i=0;i<thisAbility.triggerStrings().size();i++)
+		for(int i=0;i<thisAbility.triggerStrings().length;i++)
 		{
-			if(((String)thisAbility.triggerStrings().elementAt(i)).equalsIgnoreCase(thisWord))
+			if(((String)thisAbility.triggerStrings()[i]).equalsIgnoreCase(thisWord))
 				return true;
 		}
 		return false;
@@ -25,9 +25,9 @@ public class AbilityEvoker
 
 	private boolean evokedBy(Ability thisAbility, String thisWord, String secondWord)
 	{
-		for(int i=0;i<thisAbility.triggerStrings().size();i++)
+		for(int i=0;i<thisAbility.triggerStrings().length;i++)
 		{
-			if(((String)thisAbility.triggerStrings().elementAt(i)).equalsIgnoreCase(thisWord))
+			if(((String)thisAbility.triggerStrings()[i]).equalsIgnoreCase(thisWord))
 			{
 				if((thisAbility.name().toUpperCase().startsWith(secondWord)))
 					return true;
