@@ -391,11 +391,10 @@ public class StdAbility implements Ability, Cloneable
 			if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
 				diff+=(classLevel-qualifyingLevel);
 		}
-
-		
+	
 		int manaConsumed=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACOST);
 		if(diff>0)
-			manaConsumed=manaConsumed - (manaConsumed /10 *  -diff);
+			manaConsumed=manaConsumed - (manaConsumed /10 * diff);
 		if(manaConsumed<5) manaConsumed=5;
 		if(overrideMana()>=0) manaConsumed=overrideMana();
 		return manaConsumed;
