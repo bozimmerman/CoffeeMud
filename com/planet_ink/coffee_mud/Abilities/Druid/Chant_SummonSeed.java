@@ -28,7 +28,7 @@ public class Chant_SummonSeed extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String s=Util.combine(commands,0);
 		StringBuffer buf=new StringBuffer("Seed types known:\n\r");
@@ -67,7 +67,7 @@ public class Chant_SummonSeed extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -78,7 +78,7 @@ public class Chant_SummonSeed extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(int i=2;i<(2+(adjustedLevel(mob)/4));i++)
+				for(int i=2;i<(2+(adjustedLevel(mob,asLevel)/4));i++)
 				{
 					Item newItem=(Item)CMClass.getStdItem("GenResource");
 					String name=foundShortName.toLowerCase();

@@ -596,7 +596,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		public int combatCastingTime(){return 0;}
 		public int abilityCode(){return 0;}
 		public void setAbilityCode(int newCode){}
-		public int adjustedLevel(MOB mob){return -1;}
+		public int adjustedLevel(MOB mob, int asLevel){return -1;}
 		public boolean bubbleAffect(){return false;}
 		public long flags(){return 0;}
 		public long getTickStatus(){return Tickable.STATUS_NOT;}
@@ -608,8 +608,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		public void setInvoker(MOB mob){}
 		public static final String[] empty={};
 		public String[] triggerStrings(){return empty;}
-		public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto){return false;}
-		public boolean invoke(MOB mob, Environmental target, boolean auto){return false;}
+		public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel){return false;}
+		public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel){return false;}
 		public boolean autoInvocation(MOB mob){return false;}
 		public void unInvoke(){}
 		public boolean canBeUninvoked(){return false;}

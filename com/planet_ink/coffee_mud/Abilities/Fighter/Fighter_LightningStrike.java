@@ -105,7 +105,7 @@ public class Fighter_LightningStrike extends StdAbility
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -137,10 +137,10 @@ public class Fighter_LightningStrike extends StdAbility
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-adjustedLevel(mob);
+		int levelDiff=target.envStats().level()-adjustedLevel(mob,asLevel);
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else
@@ -164,7 +164,7 @@ public class Fighter_LightningStrike extends StdAbility
 				if(!anyWeapons(mob))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> collapse(s) in exhaustion.");
-					success=maliciousAffect(mob,mob,7,-1);
+					success=maliciousAffect(mob,mob,asLevel,7,-1);
 				}
 			}
 		}

@@ -50,7 +50,7 @@ public class Chant_SummonFire extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((((mob.location().domainType()&Room.INDOORS)>0))&&(!auto))
 		{
@@ -68,7 +68,7 @@ public class Chant_SummonFire extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -94,7 +94,7 @@ public class Chant_SummonFire extends Chant
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, a little magical campfire begins burning here.");
 				FireLocation=mob.location();
 				littleFire=I;
-				beneficialAffect(mob,I,0);
+				beneficialAffect(mob,I,asLevel,0);
 				mob.location().recoverEnvStats();
 			}
 		}

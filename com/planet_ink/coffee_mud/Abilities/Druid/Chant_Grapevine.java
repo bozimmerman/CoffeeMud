@@ -65,7 +65,7 @@ public class Chant_Grapevine extends Chant
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null)||(mob.fetchEffect("Chant_TapGrapevine")!=null))
 		{
@@ -85,7 +85,7 @@ public class Chant_Grapevine extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -97,7 +97,7 @@ public class Chant_Grapevine extends Chant
 			{
 				mob.location().send(mob,msg);
 				myChants=new Vector();
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,mob,asLevel,0);
 				Chant_Grapevine C=(Chant_Grapevine)mob.fetchEffect(ID());
 				if(C==null) return false;
 				for(int i=0;i<myRooms.size();i++)

@@ -28,7 +28,7 @@ public class Spell_Knock extends Spell
 	protected int canTargetCode(){return CAN_ITEMS|CAN_EXITS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
@@ -80,11 +80,11 @@ public class Spell_Knock extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
-		int levelDiff=openThis.envStats().level()-adjustedLevel(mob);
+		int levelDiff=openThis.envStats().level()-adjustedLevel(mob,asLevel);
 		if(levelDiff<0) levelDiff=0;
 		boolean success=profficiencyCheck(mob,-(levelDiff*25),auto);
 

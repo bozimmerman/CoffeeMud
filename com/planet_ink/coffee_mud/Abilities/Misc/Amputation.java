@@ -385,7 +385,7 @@ public class Amputation extends StdAbility
 			A.setMiscText(A.text()+((String)theRest.elementAt(i))+";");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String choice="";
 		if(givenTarget!=null)
@@ -404,7 +404,7 @@ public class Amputation extends StdAbility
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)

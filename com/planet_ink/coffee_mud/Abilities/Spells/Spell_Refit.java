@@ -27,14 +27,14 @@ public class Spell_Refit extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 		if(!(target instanceof Armor))
 		{	mob.tell(target.name()+" cannot be refitted."); return false;}
 
-		if(!super.invoke(mob,commands, givenTarget, auto))
+		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,((mob.envStats().level()-target.envStats().level())*5),auto);

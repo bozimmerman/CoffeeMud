@@ -213,7 +213,7 @@ public class DrowPriestess extends DrowElf
         }
 
 		if(prayer!=null)
-		    return prayer.invoke(this,null,false);
+		    return prayer.invoke(this,null,false,0);
 		else
 	        return false;
 
@@ -233,7 +233,7 @@ public class DrowPriestess extends DrowElf
 		else
 			dark =this.fetchAbility(dark.ID());
 
-		if(dark!=null) dark.invoke(this,null,false);
+		if(dark!=null) dark.invoke(this,null,false,0);
 		return true;
 	}
 

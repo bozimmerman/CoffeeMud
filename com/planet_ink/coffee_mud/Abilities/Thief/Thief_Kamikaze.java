@@ -89,7 +89,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -114,7 +114,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		}
 
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int amountRequired=(int)(Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level());
@@ -164,7 +164,7 @@ public class Thief_Kamikaze extends ThiefSkill
 				mob.location().send(mob,msg);
 				target.setMoney(target.getMoney()+amountRequired);
 				target.recoverEnvStats();
-				beneficialAffect(mob,target,2);
+				beneficialAffect(mob,target,asLevel,2);
 				((Trap)bombFound).activateBomb();
 				commands=new Vector();
 				commands.addElement("GO");

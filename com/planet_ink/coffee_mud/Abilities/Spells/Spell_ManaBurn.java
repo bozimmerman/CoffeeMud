@@ -78,7 +78,7 @@ public class Spell_ManaBurn extends Spell
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -94,7 +94,7 @@ public class Spell_ManaBurn extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -116,7 +116,7 @@ public class Spell_ManaBurn extends Spell
 				{
 					target.curState().adjMana(-50,target.maxState());
 					curMana=target.curState().getMana();
-					success=maliciousAffect(mob,target,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1);
 					if(success)
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) drained!");
 				}

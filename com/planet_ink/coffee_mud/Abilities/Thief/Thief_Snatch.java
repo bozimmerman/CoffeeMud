@@ -32,7 +32,7 @@ public class Thief_Snatch extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())
 		{
@@ -73,7 +73,7 @@ public class Thief_Snatch extends StdAbility
 		}
 		Weapon hisWeapon=(Weapon)hisItem;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();

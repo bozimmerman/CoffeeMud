@@ -61,9 +61,9 @@ public class Chant_SummonElemental extends Chant
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -92,7 +92,7 @@ public class Chant_SummonElemental extends Chant
 	public MOB determineMonster(MOB caster, int level)
 	{
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
-		newMOB.baseEnvStats().setLevel(adjustedLevel(caster));
+		newMOB.baseEnvStats().setLevel(adjustedLevel(caster,0));
 		switch(Dice.roll(1,4,0))
 		{
 		case 1:

@@ -32,7 +32,7 @@ public class Skill_Bash extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -57,7 +57,7 @@ public class Skill_Bash extends StdAbility
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

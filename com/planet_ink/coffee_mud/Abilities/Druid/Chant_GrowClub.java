@@ -28,7 +28,7 @@ public class Chant_GrowClub extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
 		&&((mob.location().myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
@@ -54,7 +54,7 @@ public class Chant_GrowClub extends Chant
 				material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked

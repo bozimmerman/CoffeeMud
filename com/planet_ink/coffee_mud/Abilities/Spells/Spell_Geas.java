@@ -93,7 +93,7 @@ public class Spell_Geas extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isMonster())
 		{
@@ -117,7 +117,7 @@ public class Spell_Geas extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -138,7 +138,7 @@ public class Spell_Geas extends Spell
 				else
 				{
 					setMiscText(Util.combine(commands,0));
-					if(maliciousAffect(mob,target,500,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0)))
+					if(maliciousAffect(mob,target,asLevel,500,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0)))
 					{
 						target.makePeace();
 						if(mob.getVictim()==target)

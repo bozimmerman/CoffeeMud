@@ -76,7 +76,7 @@ public class Spell_StoreSpell extends Spell
 						V.addElement(target.name());
 					V.addElement(message);
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
-					A.invoke(mob, V, target, true);
+					A.invoke(mob, V, target, true,0);
 				}
 			}
 		}
@@ -102,7 +102,7 @@ public class Spell_StoreSpell extends Spell
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -169,7 +169,7 @@ public class Spell_StoreSpell extends Spell
 		overridemana=mana;
 
 		// lose all the mana!
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		overridemana=-1;
 

@@ -59,7 +59,7 @@ public class Prayer_Earthshield extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> earth shield vanishes.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -71,7 +71,7 @@ public class Prayer_Earthshield extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -87,7 +87,7 @@ public class Prayer_Earthshield extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=beneficialAffect(mob,target,0);
+					success=beneficialAffect(mob,target,asLevel,0);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is covered by an Earth Shield!");
 				}
 			}

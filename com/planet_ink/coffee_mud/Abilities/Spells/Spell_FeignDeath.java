@@ -111,12 +111,12 @@ public class Spell_FeignDeath extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -130,7 +130,7 @@ public class Spell_FeignDeath extends Spell
 			deathRoom=mob.location();
 			Body=(DeadBody)CMClass.getItem("Corpse");
 			Body.setCharStats(target.baseCharStats().cloneCharStats());
-			beneficialAffect(mob,target,10);
+			beneficialAffect(mob,target,asLevel,10);
 
 			int tries=0;
 			while((target.numFollowers()>0)&&((++tries)<1000))

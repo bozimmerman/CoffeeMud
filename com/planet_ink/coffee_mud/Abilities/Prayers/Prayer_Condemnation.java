@@ -30,7 +30,7 @@ public class Prayer_Condemnation extends Prayer
 	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Vector Bs=Sense.flaggedBehaviors(mob.location().getArea(),Behavior.FLAG_LEGALBEHAVIOR);
 		Behavior B=null;
@@ -46,7 +46,7 @@ public class Prayer_Condemnation extends Prayer
 				warrants.clear();
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

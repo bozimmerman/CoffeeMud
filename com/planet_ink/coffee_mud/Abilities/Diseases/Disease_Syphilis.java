@@ -59,7 +59,7 @@ public class Disease_Syphilis extends Disease
 					A=CMClass.getAbility("Disease_Cold");
 				else
 					A=CMClass.getAbility("Disease_Fever");
-				if(A!=null)A.invoke(mob,mob,true);
+				if(A!=null)A.invoke(mob,mob,true,0);
 			}
 			return true;
 		}

@@ -28,7 +28,7 @@ public class Prayer_ChainStrike extends Prayer
 	public int maxRange(){return 2;}
 	public int quality(){return MALICIOUS;};
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) h=new HashSet();
@@ -48,10 +48,10 @@ public class Prayer_ChainStrike extends Prayer
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int maxDie=adjustedLevel(mob);
+		int maxDie=adjustedLevel(mob,asLevel);
 		int damage = Dice.roll(maxDie,8,1);
 
 		boolean success=profficiencyCheck(mob,0,auto);

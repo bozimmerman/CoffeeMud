@@ -30,7 +30,7 @@ public class Chant_Hunger extends Chant
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -39,7 +39,7 @@ public class Chant_Hunger extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 

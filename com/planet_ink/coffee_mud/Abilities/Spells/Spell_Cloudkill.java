@@ -57,7 +57,7 @@ public class Spell_Cloudkill extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null)
@@ -70,7 +70,7 @@ public class Spell_Cloudkill extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -96,7 +96,7 @@ public class Spell_Cloudkill extends Spell
 
 					int damage = target.curState().getHitPoints();
 
-					int midLevel=(int)Math.round(Util.div(adjustedLevel(mob),2.0));
+					int midLevel=(int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0));
 					if(midLevel<target.envStats().level())
 						damage-=(int)Math.round(Util.div(damage,2.0));
 
@@ -107,7 +107,7 @@ public class Spell_Cloudkill extends Spell
 					if((target.location()==mob.location())
 					&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 					{
-						maliciousAffect(mob,target,2,-1);
+						maliciousAffect(mob,target,asLevel,2,-1);
 						MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
 					}
 				}

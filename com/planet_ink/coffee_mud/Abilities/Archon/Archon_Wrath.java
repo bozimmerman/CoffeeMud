@@ -34,12 +34,12 @@ public class Archon_Wrath extends ArchonSkill
 	public int maxRange(){return 1;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTargetAnywhere(mob,commands,givenTarget,true);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

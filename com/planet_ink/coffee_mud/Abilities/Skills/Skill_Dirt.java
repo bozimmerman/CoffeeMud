@@ -66,7 +66,7 @@ public class Skill_Dirt extends StdAbility
 			mob.tell("You can see again!");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -109,7 +109,7 @@ public class Skill_Dirt extends StdAbility
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,-(target.charStats().getStat(CharStats.DEXTERITY)*3),auto);
@@ -121,7 +121,7 @@ public class Skill_Dirt extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> blinded!");
-				maliciousAffect(mob,target,3,-1);
+				maliciousAffect(mob,target,asLevel,3,-1);
 			}
 		}
 		else

@@ -83,7 +83,7 @@ public class Thief_Distract extends ThiefSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -104,7 +104,7 @@ public class Thief_Distract extends ThiefSkill
 			mob.tell("You are too far away to distract "+mob.getVictim().name()+"!");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
@@ -119,7 +119,7 @@ public class Thief_Distract extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,4);
+				beneficialAffect(mob,target,asLevel,4);
 			}
 		}
 		else

@@ -68,7 +68,7 @@ public class Chant_Goodberry extends Chant
 		return false;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
@@ -76,7 +76,7 @@ public class Chant_Goodberry extends Chant
 		Environmental owner=target.owner();
 		if(owner==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -90,7 +90,7 @@ public class Chant_Goodberry extends Chant
 
 		if(success)
 		{
-			int numAffected=Dice.roll(1,adjustedLevel(mob)/7,1);
+			int numAffected=Dice.roll(1,adjustedLevel(mob,asLevel)/7,1);
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{

@@ -78,11 +78,11 @@ public class LifeFountain extends StdDrink implements MiscMagic
 					if((time==null)||(time.longValue()<(System.currentTimeMillis()-16000)))
 					{
 						Ability A=CMClass.getAbility("Prayer_CureLight");
-						if(A!=null) A.invoke(msg.source(),msg.source(),true);
+						if(A!=null) A.invoke(msg.source(),msg.source(),true,envStats().level());
 						A=CMClass.getAbility("Prayer_RemovePoison");
-						if(A!=null) A.invoke(msg.source(),msg.source(),true);
+						if(A!=null) A.invoke(msg.source(),msg.source(),true,envStats().level());
 						A=CMClass.getAbility("Prayer_CureDisease");
-						if(A!=null) A.invoke(msg.source(),msg.source(),true);
+						if(A!=null) A.invoke(msg.source(),msg.source(),true,envStats().level());
 						time=new Long(System.currentTimeMillis());
 						lastDrinks.put(msg.source(),time);
 					}

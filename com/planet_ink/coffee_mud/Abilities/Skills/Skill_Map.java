@@ -74,7 +74,7 @@ public class Skill_Map extends StdAbility
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Ability A=mob.fetchEffect(ID());
 		if(A!=null)
@@ -118,7 +118,7 @@ public class Skill_Map extends StdAbility
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -168,7 +168,7 @@ public class Skill_Map extends StdAbility
 					rooms=rooms.substring(x+1);
 					x=rooms.indexOf(";");
 				}
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,mob,asLevel,0);
 			}
 		}
 		else

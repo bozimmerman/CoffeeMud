@@ -30,7 +30,7 @@ public class Chant_GrowItem extends Chant
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 50;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
 		&&((mob.location().myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
@@ -56,7 +56,7 @@ public class Chant_GrowItem extends Chant
 				material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -76,7 +76,7 @@ public class Chant_GrowItem extends Chant
 					{
 						Vector V=new Vector();
 						V.addElement(new Integer(material));
-						A.invoke(mob,V,A,true);
+						A.invoke(mob,V,A,true,asLevel);
 						if((V.size()>0)&&(V.lastElement() instanceof Item))
 						{
 							if((V.size()>1)&&((V.elementAt(V.size()-2) instanceof Item)))

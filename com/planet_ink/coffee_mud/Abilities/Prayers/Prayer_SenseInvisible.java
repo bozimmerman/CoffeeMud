@@ -52,7 +52,7 @@ public class Prayer_SenseInvisible extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The clearness fades from <S-YOUPOSS> eyes.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
@@ -60,7 +60,7 @@ public class Prayer_SenseInvisible extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Environmental target=mob;
@@ -78,7 +78,7 @@ public class Prayer_SenseInvisible extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

@@ -28,12 +28,12 @@ public class Prayer_Plague extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -51,7 +51,7 @@ public class Prayer_Plague extends Prayer
 				{
 					Ability A=CMClass.getAbility("Disease_Plague");
 					if(A!=null)
-						return A.invoke(mob,target,auto);
+						return A.invoke(mob,target,auto,asLevel);
 				}
 			}
 		}

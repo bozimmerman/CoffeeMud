@@ -35,7 +35,7 @@ public class Skill_Cage extends StdAbility
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item cage=null;
 		if(mob.location()!=null)
@@ -99,7 +99,7 @@ public class Skill_Cage extends StdAbility
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

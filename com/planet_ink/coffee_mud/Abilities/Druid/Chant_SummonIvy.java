@@ -71,7 +71,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 			newItem.addNonUninvokableEffect(newChant);
 		}
 		else
-			newChant.beneficialAffect(mob,newItem,(newChant.adjustedLevel(mob)*240)+450);
+			newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
 		room.recoverEnvStats();
 		return newItem;
 	}

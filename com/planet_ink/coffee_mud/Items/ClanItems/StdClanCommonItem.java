@@ -71,10 +71,10 @@ public class StdClanCommonItem extends StdClanItem
 						}
 						Vector V=new Vector();
 						if(I!=null)	V.addElement(I.name());
-						A.invoke(M,V,null,false);
+						A.invoke(M,V,null,false,envStats().level());
 					}
 					else
-						A.invoke(M,new Vector(),null,false);
+						A.invoke(M,new Vector(),null,false,envStats().level());
 				}
 
 			}

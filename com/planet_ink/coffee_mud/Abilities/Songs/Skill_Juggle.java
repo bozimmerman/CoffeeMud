@@ -294,7 +294,7 @@ public class Skill_Juggle extends BardSkill
 									w.setWeaponType(((Weapon)I).weaponType());
 								else
 									w.setWeaponType(Weapon.TYPE_BASHING);
-								w.baseEnvStats().setDamage(Dice.roll(1,adjustedLevel(mob),0));
+								w.baseEnvStats().setDamage(Dice.roll(1,adjustedLevel(mob,0),0));
 								w.baseEnvStats().setWeight(I.baseEnvStats().weight());
 								w.recoverEnvStats();
 								MUDFight.postAttack(mob,mob.getVictim(),w);
@@ -327,7 +327,7 @@ public class Skill_Juggle extends BardSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String whatToJuggle=Util.combine(commands,0);
 		Skill_Juggle A=(Skill_Juggle)mob.fetchEffect("Skill_Juggle");
@@ -395,7 +395,7 @@ public class Skill_Juggle extends BardSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -404,7 +404,7 @@ public class Skill_Juggle extends BardSkill
 		{
 			if(A==null)
 			{
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,mob,asLevel,0);
 				A=(Skill_Juggle)mob.fetchEffect(ID());
 				if(A==null) return false;
 			}

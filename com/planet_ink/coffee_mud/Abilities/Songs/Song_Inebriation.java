@@ -103,7 +103,7 @@ public class Song_Inebriation extends Song
 			if(A!=null)
 			{
 				A.setProfficiency(100);
-				A.invoke(msg.source(),null,true);
+				A.invoke(msg.source(),null,true,0);
 				A.setAffectedOne(msg.source());
 				if(!A.okMessage(myHost,msg))
 					return false;

@@ -138,7 +138,7 @@ public class Chant_StoneFriend extends Chant
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -155,7 +155,7 @@ public class Chant_StoneFriend extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -173,7 +173,7 @@ public class Chant_StoneFriend extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1);
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();

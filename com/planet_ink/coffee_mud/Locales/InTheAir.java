@@ -58,7 +58,7 @@ public class InTheAir extends StdRoom
 				{
 					falling.setProfficiency(avg);
 					falling.setAffectedOne(room);
-					falling.invoke(null,null,E,true);
+					falling.invoke(null,null,E,true,0);
 				}
 			}
 		}

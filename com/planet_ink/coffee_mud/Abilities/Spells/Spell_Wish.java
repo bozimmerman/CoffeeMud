@@ -78,7 +78,7 @@ public class Spell_Wish extends Spell
 			mob.tell("Your wish drains "+(expLoss)+" experience points.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isMonster())
 		{
@@ -100,7 +100,7 @@ public class Spell_Wish extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int baseLoss=25;

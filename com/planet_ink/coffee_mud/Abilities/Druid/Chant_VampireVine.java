@@ -54,7 +54,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 	{
 		MOB victim=caster.getVictim();
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
-		int level=adjustedLevel(caster);
+		int level=adjustedLevel(caster,0);
 		if(level<1) level=1;
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setAbility(19);

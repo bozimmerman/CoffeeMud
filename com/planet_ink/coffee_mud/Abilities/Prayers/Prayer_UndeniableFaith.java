@@ -89,7 +89,7 @@ public class Prayer_UndeniableFaith extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -126,7 +126,7 @@ public class Prayer_UndeniableFaith extends Prayer
 			}
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
@@ -157,7 +157,7 @@ public class Prayer_UndeniableFaith extends Prayer
 					if(mob!=target)
 						MUDFight.postExperience(mob,target,null,25,false);
 					godName=mob.getWorshipCharID();
-					beneficialAffect(mob,target,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
+					beneficialAffect(mob,target,asLevel,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
 					convertStack.addElement(target,new Long(System.currentTimeMillis()));
 				}
 			}

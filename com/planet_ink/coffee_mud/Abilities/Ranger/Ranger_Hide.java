@@ -72,9 +72,9 @@ public class Ranger_Hide extends StdAbility
 			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SNEAKING);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if(mob.fetchEffect(this.ID())!=null)

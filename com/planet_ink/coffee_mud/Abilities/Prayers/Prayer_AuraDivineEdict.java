@@ -126,7 +126,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		}
 		return true;
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -138,7 +138,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -156,7 +156,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 				godName="THE GODS";
 				if(mob.getWorshipCharID().length()>0)
 					godName=mob.getWorshipCharID().toUpperCase();
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

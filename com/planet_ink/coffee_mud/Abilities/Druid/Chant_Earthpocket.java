@@ -119,7 +119,7 @@ public class Chant_Earthpocket extends Chant
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -141,7 +141,7 @@ public class Chant_Earthpocket extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -167,7 +167,7 @@ public class Chant_Earthpocket extends Chant
 				pocket.setDescription("It looks like an endless black hole in the wall.  Very mystical.");
 				pocket.recoverEnvStats();
 				target.location().addItem(pocket);
-				beneficialAffect(mob,target,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5);
+				beneficialAffect(mob,target,asLevel,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5);
 				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A dark pocket of energy appears in a nearby wall.");
 			}
 		}

@@ -128,7 +128,7 @@ public class Chant_FindPlant extends Chant
 			return "There seems to be "+lookingFor+" around here.\n\r";
 		return "";
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -174,7 +174,7 @@ public class Chant_FindPlant extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		String here=itsHere(target,target.location());

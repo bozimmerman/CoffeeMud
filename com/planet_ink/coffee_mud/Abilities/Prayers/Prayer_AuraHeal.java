@@ -71,7 +71,7 @@ public class Prayer_AuraHeal extends Prayer
 			{
 				if(invoker()!=null)
 				{
-					int healing=Dice.roll(2,adjustedLevel(invoker()),4);
+					int healing=Dice.roll(2,adjustedLevel(invoker(),0),4);
 					MUDFight.postHealing(invoker(),M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 				}
 				else
@@ -84,7 +84,7 @@ public class Prayer_AuraHeal extends Prayer
 		}
 		return super.tick(ticking,tickID);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
@@ -99,7 +99,7 @@ public class Prayer_AuraHeal extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -115,7 +115,7 @@ public class Prayer_AuraHeal extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"A healing aura descends over the area!");
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

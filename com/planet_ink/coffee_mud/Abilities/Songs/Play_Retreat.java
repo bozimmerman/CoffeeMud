@@ -42,7 +42,7 @@ public class Play_Retreat extends Play
 		MUDTracker.move(mob,directionCode,true,false);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		directionCode=-1;
@@ -72,7 +72,7 @@ public class Play_Retreat extends Play
 				directionCode=Directions.getGoodDirectionCode(where);
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		return true;
 	}

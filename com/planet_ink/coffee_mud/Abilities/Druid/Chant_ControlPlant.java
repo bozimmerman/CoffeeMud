@@ -45,7 +45,7 @@ public class Chant_ControlPlant extends Chant
 		return null;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item myPlant=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(myPlant==null) return false;
@@ -63,7 +63,7 @@ public class Chant_ControlPlant extends Chant
 		}
 
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

@@ -64,9 +64,9 @@ public class Prayer_SenseUndead extends Prayer
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		MOB target=mob;
@@ -86,7 +86,7 @@ public class Prayer_SenseUndead extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

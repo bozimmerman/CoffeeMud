@@ -96,7 +96,7 @@ public class GiantScorpion extends StdMOB
 					if(msg.value()<=0)
 					{
 						Ability poison = CMClass.getAbility("Poison");
-						if(poison!=null) poison.invoke(this, target, true);
+						if(poison!=null) poison.invoke(this, target, true,0);
 					}
 				}
 			}

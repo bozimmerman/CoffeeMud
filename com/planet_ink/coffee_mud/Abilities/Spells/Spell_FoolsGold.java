@@ -48,7 +48,7 @@ public class Spell_FoolsGold extends Spell
 				destroyOnNextTick=true;
 		}
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()==0)||(Util.s_int(Util.combine(commands,0))==0))
 		{
@@ -56,7 +56,7 @@ public class Spell_FoolsGold extends Spell
 			return false;
 		}
 		int amount=Util.s_int(Util.combine(commands,0));
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -88,7 +88,7 @@ public class Spell_FoolsGold extends Spell
 				mob.addInventory(gold);
 				mob.location().show(mob,null,gold,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> hold(s) <O-NAME>.");
 				destroyOnNextTick=false;
-				beneficialAffect(mob,gold,0);
+				beneficialAffect(mob,gold,asLevel,0);
 			}
 		}
 		else

@@ -996,7 +996,7 @@ public class Arrest extends StdBehavior
 			Room R=findTheJudge(laws,myArea);
 			if(R!=null)
 			{
-				A.invoke(officer,Util.parse("\""+CMMap.getExtendedRoomID(R)+"\""),R,true);
+				A.invoke(officer,Util.parse("\""+CMMap.getExtendedRoomID(R)+"\""),R,true,0);
 				return true;
 			}
 		}
@@ -1953,11 +1953,11 @@ public class Arrest extends StdBehavior
 								int curPoints=(int)Math.round(Util.div(W.criminal().curState().getHitPoints(),W.criminal().maxState().getHitPoints())*100.0);
 								A.setProfficiency(100);
 								A.setAbilityCode(10);
-								if(!A.invoke(officer,W.criminal(),(curPoints<=25)))
+								if(!A.invoke(officer,W.criminal(),(curPoints<=25),0))
 								{
 									A=CMClass.getAbility("Skill_Trip");
 									A.setAbilityCode(30);
-									if(!A.invoke(officer,W.criminal(),(curPoints<=50)))
+									if(!A.invoke(officer,W.criminal(),(curPoints<=50),0))
 										MUDFight.postAttack(officer,W.criminal(),officer.fetchWieldedItem());
 								}
 							}
@@ -1975,7 +1975,7 @@ public class Arrest extends StdBehavior
 								W.setState(Law.STATE_MOVING);
 							if(cuff!=null){ cuff.unInvoke(); W.criminal().delEffect(cuff);}
 							Ability A=CMClass.getAbility("Skill_HandCuff");
-							if(A!=null)	A.invoke(officer,W.criminal(),true);
+							if(A!=null)	A.invoke(officer,W.criminal(),true,0);
 							W.criminal().makePeace();
 							makePeace(officer.location());
 							A=W.criminal().fetchEffect("Skill_ArrestingSap");
@@ -2260,7 +2260,7 @@ public class Arrest extends StdBehavior
 							W.setState(Law.STATE_MOVING2);
 							A=CMClass.getAbility("Skill_HandCuff");
 							if((A!=null)&&(!Sense.isBoundOrHeld(W.criminal())))
-								A.invoke(officer,W.criminal(),true);
+								A.invoke(officer,W.criminal(),true,0);
 							W.criminal().makePeace();
 							makePeace(officer.location());
 							CommonMsgs.stand(W.criminal(),true);
@@ -2270,7 +2270,7 @@ public class Arrest extends StdBehavior
 							{
 								W.setTravelAttemptTime(System.currentTimeMillis());
 								A.setAbilityCode(1);
-								A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(jail)),jail,true);
+								A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(jail)),jail,true,0);
 							}
 							if(officer.fetchEffect("Skill_Track")==null)
 							{
@@ -2396,7 +2396,7 @@ public class Arrest extends StdBehavior
 							{
 								stopTracking(officer);
 								A.setAbilityCode(1); // tells track to cache the path
-								A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.jail())),W.jail(),true);
+								A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.jail())),W.jail(),true,0);
 							}
 							if(officer.fetchEffect("Skill_Track")==null)
 							{
@@ -2452,7 +2452,7 @@ public class Arrest extends StdBehavior
 									W.jail().show(officer,W.criminal(),CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> arrive(s) to release <T-NAME>.");
 								Ability A=CMClass.getAbility("Skill_HandCuff");
 								if((A!=null)&&(!Sense.isBoundOrHeld(W.criminal())))
-									A.invoke(officer,W.criminal(),true);
+									A.invoke(officer,W.criminal(),true,0);
 							}
 							W.setReleaseRoom(setReleaseRoom(laws,myArea,W.criminal()));
 							W.criminal().makePeace();
@@ -2462,7 +2462,7 @@ public class Arrest extends StdBehavior
 							if(A!=null)
 							{
 								W.setTravelAttemptTime(System.currentTimeMillis());
-								A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true);
+								A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true,0);
 							}
 							if(officer.fetchEffect("Skill_Track")==null)
 							{
@@ -2508,7 +2508,7 @@ public class Arrest extends StdBehavior
 									{
 										stopTracking(officer);
 										Ability A=CMClass.getAbility("Skill_Track");
-										if(A!=null)	A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true);
+										if(A!=null)	A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true,0);
 										if(W.arrestingOfficer().fetchEffect("Skill_Track")==null)
 										{
 											W.setTravelAttemptTime(0);

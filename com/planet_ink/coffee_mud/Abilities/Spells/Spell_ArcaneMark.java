@@ -28,7 +28,7 @@ public class Spell_ArcaneMark extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -48,7 +48,7 @@ public class Spell_ArcaneMark extends Spell
 		}
 		String message=Util.combine(commands,1);
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

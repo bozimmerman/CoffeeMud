@@ -116,14 +116,14 @@ public class Spell_PhantomHound extends Spell
 		return super.okMessage(myHost,msg);
 
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())
 		{
 			mob.tell("You must be in combat to cast this spell!");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -177,7 +177,7 @@ public class Spell_PhantomHound extends Spell
 					beast.setVictim(victim);
 				}
 				pointsLeft=130;
-				beneficialAffect(mob,beast,0);
+				beneficialAffect(mob,beast,asLevel,0);
 			}
 		}
 		else

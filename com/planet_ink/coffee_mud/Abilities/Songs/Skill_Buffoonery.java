@@ -56,7 +56,7 @@ public class Skill_Buffoonery extends BardSkill
 		return getFreeWearingPositions(target).size()>0;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -101,7 +101,7 @@ public class Skill_Buffoonery extends BardSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();

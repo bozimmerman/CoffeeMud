@@ -70,7 +70,7 @@ public class Chant_AnimalGrowth extends Chant
 		affectedStats.setName("An ENORMOUS "+oldName);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -80,7 +80,7 @@ public class Chant_AnimalGrowth extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -96,7 +96,7 @@ public class Chant_AnimalGrowth extends Chant
 			{
 				mob.location().send(mob,msg);
 				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) to an ENORMOUS size!");
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				mob.location().recoverRoomStats();
 			}
 		}

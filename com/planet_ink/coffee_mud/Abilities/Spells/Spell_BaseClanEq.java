@@ -52,7 +52,7 @@ public class Spell_BaseClanEq extends Spell
 		}
 		return super.canBeLearnedBy(teacher,student);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(type.length()==0) return false;
 		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
@@ -115,7 +115,7 @@ public class Spell_BaseClanEq extends Spell
 		}
 
 		// lose all the mana!
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 		    return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

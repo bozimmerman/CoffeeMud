@@ -30,7 +30,7 @@ public class Thief_Arsonry extends ThiefSkill
 	private static final String[] triggerStrings = {"ARSON","ARSONRY"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -92,7 +92,7 @@ public class Thief_Arsonry extends ThiefSkill
 			mob.tell("You need to have something in your inventory on fire, like a torch, to use this skill.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
@@ -108,7 +108,7 @@ public class Thief_Arsonry extends ThiefSkill
 				if(targetRoom!=mob.location()) targetRoom.sendOthers(mob,msg);
 				Ability B=CMClass.getAbility("Burning");
 				B.setProfficiency(Sense.burnStatus(target));
-				B.invoke(mob,target,true);
+				B.invoke(mob,target,true,asLevel);
 			}
 		}
 		else

@@ -32,7 +32,7 @@ public class Thief_Bribe extends ThiefSkill
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	private MOB lastChecked=null;
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -78,7 +78,7 @@ public class Thief_Bribe extends ThiefSkill
 		
 		int oldProfficiency=profficiency();
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int amountRequired=target.getMoney()+(int)(Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level());

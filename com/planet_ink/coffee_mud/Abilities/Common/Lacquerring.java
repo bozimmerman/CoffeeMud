@@ -97,7 +97,7 @@ public class Lacquerring extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -138,7 +138,7 @@ public class Lacquerring extends CommonSkill
 			commonTell(mob,"You can't lacquer anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark'.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		verb="lacquering "+target.name()+" "+writing;
 		displayText="You are "+verb;
@@ -151,7 +151,7 @@ public class Lacquerring extends CommonSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,duration);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

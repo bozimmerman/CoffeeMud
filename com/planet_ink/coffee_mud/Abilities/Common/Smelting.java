@@ -103,7 +103,7 @@ public class Smelting extends CraftingSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		randomRecipeFix(mob,loadRecipes(),commands,0);
 		if(commands.size()==0)
@@ -199,7 +199,7 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,"There is no "+resourceDesc2+" here to make "+doneResourceDesc+" from.  It might need to put it down first.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		amountMaking=amountResource1;
 		if(amountResource2<amountResource1) amountMaking=amountResource2;
@@ -221,7 +221,7 @@ public class Smelting extends CraftingSkill
 		{
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
-			beneficialAffect(mob,mob,completion);
+			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		return true;
 	}

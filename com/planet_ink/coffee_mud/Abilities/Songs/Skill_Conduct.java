@@ -33,7 +33,7 @@ public class Skill_Conduct extends BardSkill
 	public int maxRange(){return 2;}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Ability SYMPHONY=mob.fetchAbility("Play_Symphony");
 		if((!auto)&&(SYMPHONY==null))
@@ -46,7 +46,7 @@ public class Skill_Conduct extends BardSkill
 			SYMPHONY=CMClass.getAbility("Play_Symphony");
 			SYMPHONY.setProfficiency(100);
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if((!auto)&&(!Sense.aliveAwakeMobile(mob,false)))
@@ -84,7 +84,7 @@ public class Skill_Conduct extends BardSkill
 						{
 							follower.location().send(follower,msg2);
 							if(msg2.value()<=0)
-								SYMPHONY.invoke(follower,new Vector(),null,false);
+								SYMPHONY.invoke(follower,new Vector(),null,false,asLevel);
 						}
 					}
 				}

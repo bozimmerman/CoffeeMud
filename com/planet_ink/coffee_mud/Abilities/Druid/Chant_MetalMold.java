@@ -27,7 +27,7 @@ public class Chant_MetalMold extends Chant
 	public String name(){return "Metal Mold";}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
@@ -60,7 +60,7 @@ public class Chant_MetalMold extends Chant
 
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

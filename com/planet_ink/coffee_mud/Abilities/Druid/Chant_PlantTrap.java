@@ -37,7 +37,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
-	{beneficialAffect(mob,E,0); return (Trap)E.fetchEffect(ID());}
+	{beneficialAffect(mob,E,classLevel,0); return (Trap)E.fetchEffect(ID());}
 
 	public boolean disabled(){return false;}
 	public boolean sprung(){return false;}
@@ -66,7 +66,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 				{
 					String s=(String)them.elementAt(Dice.roll(1,them.size(),-1));
 					Ability A=CMClass.getAbility(s);
-					A.invoke(target,target,true);
+					A.invoke(target,target,true,0);
 				}
 			}
 		}
@@ -81,7 +81,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
@@ -115,7 +115,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			mob.tell("This chant does not work here.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -130,7 +130,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

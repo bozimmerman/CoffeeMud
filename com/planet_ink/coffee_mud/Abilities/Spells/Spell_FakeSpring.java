@@ -63,9 +63,9 @@ public class Spell_FakeSpring extends Spell
 		return super.okMessage(myHost,msg);
 
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -103,7 +103,7 @@ public class Spell_FakeSpring extends Spell
 					W.addNonUninvokableEffect(A);
 				}
 				else
-					beneficialAffect(mob,W,0);
+					beneficialAffect(mob,W,asLevel,0);
 				mob.location().recoverEnvStats();
 			}
 		}

@@ -51,7 +51,7 @@ public class Prayer_Gateway extends Prayer
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((auto||mob.isMonster())&&(commands.size()==0))
 			commands.addElement(CMMap.getRandomRoom().displayText());
@@ -97,7 +97,7 @@ public class Prayer_Gateway extends Prayer
 		}
 		profNeg+=newRoom.numItems()*20;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,-profNeg,auto);
@@ -123,7 +123,7 @@ public class Prayer_Gateway extends Prayer
 				mob.location().rawExits()[Directions.GATE]=e;
 				newRoom.rawExits()[Directions.GATE]=e;
 				oldRoom=mob.location();
-				beneficialAffect(mob,e,5);
+				beneficialAffect(mob,e,asLevel,5);
 			}
 		}
 		else

@@ -29,9 +29,9 @@ public class Play_Reveille extends Play
 	protected int canAffectCode(){return 0;}
 	protected boolean skipStandardSongTick(){return true;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 		unplay(mob,mob,true);
@@ -77,7 +77,7 @@ public class Play_Reveille extends Play
 								if(!Sense.isSleeping(follower))
 								{
 									Ability A=CMClass.getAbility("Searching");
-									if(A!=null)	A.invoke(follower,null,true);
+									if(A!=null)	A.invoke(follower,null,true,asLevel);
 								}
 							}
 						}

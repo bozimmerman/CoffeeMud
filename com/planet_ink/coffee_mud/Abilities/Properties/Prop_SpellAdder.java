@@ -179,7 +179,7 @@ public class Prop_SpellAdder extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(qualifiedMOB(target),V2,target,true);
+				A.invoke(qualifiedMOB(target),V2,target,true,(affected!=null)?affected.envStats().level():0);
 				EA=target.fetchEffect(A.ID());
 			}
 			if(EA!=null)

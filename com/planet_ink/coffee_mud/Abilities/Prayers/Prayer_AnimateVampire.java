@@ -40,13 +40,13 @@ public class Prayer_AnimateVampire extends Prayer
 			{
 				Ability A=CMClass.getAbility("Disease_Vampirism");
 				if((A!=null)&&(mob.fetchEffect(A.ID())==null))
-					A.invoke(mob,mob,true);
+					A.invoke(mob,mob,true,0);
 			}
 		}
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
@@ -80,7 +80,7 @@ public class Prayer_AnimateVampire extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

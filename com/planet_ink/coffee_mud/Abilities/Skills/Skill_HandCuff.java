@@ -142,7 +142,7 @@ public class Skill_HandCuff extends StdAbility
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -161,7 +161,7 @@ public class Skill_HandCuff extends StdAbility
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -174,10 +174,10 @@ public class Skill_HandCuff extends StdAbility
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					amountRemaining=adjustedLevel(mob)*300;
+					amountRemaining=adjustedLevel(mob,asLevel)*300;
 					if(target.location()==mob.location())
 					{
-						success=maliciousAffect(mob,target,Integer.MAX_VALUE-1000,-1);
+						success=maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE-1000,-1);
 						if(success)
 						{
 							oldAssist=Util.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);

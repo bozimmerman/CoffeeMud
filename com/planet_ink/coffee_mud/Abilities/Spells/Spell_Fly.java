@@ -53,7 +53,7 @@ public class Spell_Fly extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to float back down.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -63,7 +63,7 @@ public class Spell_Fly extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -82,7 +82,7 @@ public class Spell_Fly extends Spell
 				if(target.location()==mob.location())
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) to fly around!");
-					success=beneficialAffect(mob,target,0);
+					success=beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}

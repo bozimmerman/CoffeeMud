@@ -68,7 +68,7 @@ public class Chant_Den extends Chant
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target = mob.location();
 		if(target.fetchEffect(ID())!=null)
@@ -103,7 +103,7 @@ public class Chant_Den extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -144,7 +144,7 @@ public class Chant_Den extends Chant
 
 				newRoom.rawExits()[Directions.getOpDirectionCode(d)]=E;
 				newRoom.getArea().fillInAreaRoom(newRoom);
-				beneficialAffect(mob,mob.location(),(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
+				beneficialAffect(mob,mob.location(),asLevel,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
 			}
 		}
 		else

@@ -33,7 +33,7 @@ public class Thief_Racketeer extends ThiefSkill
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public Vector mobs=new Vector();
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
@@ -71,7 +71,7 @@ public class Thief_Racketeer extends ThiefSkill
 			mob.tell("You cannot racketeer "+target.charStats().himher()+".");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int amount=Dice.roll(profficiency(),target.envStats().level(),0);
@@ -82,7 +82,7 @@ public class Thief_Racketeer extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay())/MudHost.TICK_TIME)).intValue());
+				beneficialAffect(mob,target,asLevel,new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay())/MudHost.TICK_TIME)).intValue());
 				Coins C=(Coins)CMClass.getItem("StdCoins");
 				C.setNumberOfCoins(amount);
 				C.recoverEnvStats();

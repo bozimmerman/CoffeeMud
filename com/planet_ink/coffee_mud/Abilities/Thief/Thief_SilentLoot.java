@@ -66,7 +66,7 @@ public class Thief_SilentLoot extends ThiefSkill
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{
@@ -74,7 +74,7 @@ public class Thief_SilentLoot extends ThiefSkill
 			mob.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -82,7 +82,7 @@ public class Thief_SilentLoot extends ThiefSkill
 		if(success)
 		{
 			mob.tell("You will now automatically loot items from corpses silently.");
-			beneficialAffect(mob,mob,0);
+			beneficialAffect(mob,mob,asLevel,0);
 			Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 		}

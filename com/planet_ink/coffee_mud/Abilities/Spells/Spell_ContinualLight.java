@@ -52,7 +52,7 @@ public class Spell_ContinualLight extends Spell
 			room.recoverRoomStats();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;
 		if(commands.size()==0) target=mob;
@@ -60,7 +60,7 @@ public class Spell_ContinualLight extends Spell
 		target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 
 		if(target==null) return false;
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -72,7 +72,7 @@ public class Spell_ContinualLight extends Spell
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,Integer.MAX_VALUE-100);
+			beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE-100);
 			mob.location().recoverRoomStats(); // attempt to handle followers
 		}
 		else

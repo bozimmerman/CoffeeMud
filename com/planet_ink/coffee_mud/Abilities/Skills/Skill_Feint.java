@@ -73,7 +73,7 @@ public class Skill_Feint extends StdAbility
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())
 		{
@@ -88,7 +88,7 @@ public class Skill_Feint extends StdAbility
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,-(target.charStats().getStat(CharStats.DEXTERITY)),auto);
@@ -100,7 +100,7 @@ public class Skill_Feint extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				done=false;
-				maliciousAffect(mob,target,2,-1);
+				maliciousAffect(mob,target,asLevel,2,-1);
 			}
 		}
 		else

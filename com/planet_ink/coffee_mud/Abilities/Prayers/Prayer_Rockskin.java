@@ -78,7 +78,7 @@ public class Prayer_Rockskin extends Prayer
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -87,7 +87,7 @@ public class Prayer_Rockskin extends Prayer
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -105,8 +105,8 @@ public class Prayer_Rockskin extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> skin turn hard as rock!");
-				HitsRemaining=5+(int)Math.round(adjustedLevel(mob)/2);
-				beneficialAffect(mob,target,0);
+				HitsRemaining=5+(int)Math.round(adjustedLevel(mob,asLevel)/2);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

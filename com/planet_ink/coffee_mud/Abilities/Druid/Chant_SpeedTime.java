@@ -31,9 +31,9 @@ public class Chant_SpeedTime extends Chant
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -44,7 +44,7 @@ public class Chant_SpeedTime extends Chant
 			{
 				int mana=mob.curState().getMana();
 				mob.location().send(mob,msg);
-				for(int i=0;i<(adjustedLevel(mob)/2);i++)
+				for(int i=0;i<(adjustedLevel(mob,asLevel)/2);i++)
 					CMClass.ThreadEngine().tickAllTickers(mob.location());
 				if(mob.curState().getMana()>mana)
 					mob.curState().setMana(mana);

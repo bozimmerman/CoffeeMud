@@ -67,7 +67,7 @@ public class UnderWater extends StdRoom implements Drink
 				{
 					sinking.setProfficiency(avg);
 					sinking.setAffectedOne(room);
-					sinking.invoke(null,null,E,true);
+					sinking.invoke(null,null,E,true,0);
 				}
 			}
 	}

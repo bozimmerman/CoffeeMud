@@ -52,9 +52,9 @@ public class Spell_Clone extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -99,7 +99,7 @@ public class Spell_Clone extends Spell
 						mob.tell(myMonster.name()+" seems unwilling to follow you.");
 				}
 				invoker=mob;
-				beneficialAffect(mob,myMonster,0);
+				beneficialAffect(mob,myMonster,asLevel,0);
 			}
 		}
 		else

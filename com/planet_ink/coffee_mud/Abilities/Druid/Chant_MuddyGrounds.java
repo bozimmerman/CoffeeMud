@@ -58,7 +58,7 @@ public class Chant_MuddyGrounds extends Chant
 
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		int type=mob.location().domainType();
@@ -72,7 +72,7 @@ public class Chant_MuddyGrounds extends Chant
 			mob.tell("That magic won't work here.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -90,7 +90,7 @@ public class Chant_MuddyGrounds extends Chant
 					CMClass.DBEngine().DBUpdateRoom(mob.location());
 				}
 				else
-					beneficialAffect(mob,mob.location(),0);
+					beneficialAffect(mob,mob.location(),asLevel,0);
 			}
 
 		}

@@ -121,8 +121,8 @@ public interface Ability  extends Environmental
 
 	// when a mob uses an ability manually, this is the method
 	// to make it happen.
-	public boolean invoke(MOB mob, Environmental target, boolean auto);
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto);
+	public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel);
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel);
 
 	// for affects which may be uninvoked, this will do the trick!
 	public void unInvoke();
@@ -183,7 +183,7 @@ public interface Ability  extends Environmental
 	// For clerics, usually, whether this ability is
 	// appropriate for the mob using it
 	public boolean appropriateToMyAlignment(int alignment);
-	public int adjustedLevel(MOB mob);
+	public int adjustedLevel(MOB mob, int asLevel);
 
 	// intelligently add this ability as an effect upon a target,
 	// and start a new clock (if necessary), setting the timer

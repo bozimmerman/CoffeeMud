@@ -29,7 +29,7 @@ public class Spell_MassInvisibility extends Spell
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,false);
 		if(h==null)
@@ -42,7 +42,7 @@ public class Spell_MassInvisibility extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -65,7 +65,7 @@ public class Spell_MassInvisibility extends Spell
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fade(s) from view!");
 					Spell_Invisibility spell=new Spell_Invisibility();
 					spell.setProfficiency(profficiency());
-					spell.beneficialAffect(mob,target,0);
+					spell.beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}

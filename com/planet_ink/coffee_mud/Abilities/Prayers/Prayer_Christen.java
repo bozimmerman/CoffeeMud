@@ -29,7 +29,7 @@ public class Prayer_Christen extends Prayer
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -65,7 +65,7 @@ public class Prayer_Christen extends Prayer
 
 		name=Util.capitalize(name);
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

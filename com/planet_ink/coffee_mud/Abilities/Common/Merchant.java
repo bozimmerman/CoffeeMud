@@ -552,7 +552,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return msg;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -638,7 +638,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if(!profficiencyCheck(mob,0,auto))

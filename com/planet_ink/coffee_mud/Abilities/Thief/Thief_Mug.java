@@ -35,7 +35,7 @@ public class Thief_Mug extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob.getVictim();
 		if(!mob.isInCombat())
@@ -50,7 +50,7 @@ public class Thief_Mug extends ThiefSkill
 		}
 		String itemToSteal=Util.combine(commands,0);
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Item stolen=target.fetchCarried(null,itemToSteal);

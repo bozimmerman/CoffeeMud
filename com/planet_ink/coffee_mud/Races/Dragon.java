@@ -71,7 +71,7 @@ public class Dragon extends StdRace
 				mob.addAbility(A);
 				A.autoInvocation(mob);
 				if(mob.isMonster())
-					A.invoke(mob,mob,false);
+					A.invoke(mob,mob,false,0);
 			}
 		}
 	}

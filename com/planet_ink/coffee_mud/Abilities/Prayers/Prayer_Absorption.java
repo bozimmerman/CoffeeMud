@@ -49,7 +49,7 @@ public class Prayer_Absorption extends Prayer
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -83,7 +83,7 @@ public class Prayer_Absorption extends Prayer
 				absorbed=null;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -102,7 +102,7 @@ public class Prayer_Absorption extends Prayer
 				absorbed=(Ability)absorbed.copyOf();
 				absorbed.setBorrowed(mob,true);
 				mob.addAbility(absorbed);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

@@ -52,13 +52,13 @@ public class Spell_FaerieFire extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		MOB target = getTarget(mob,commands,givenTarget);
@@ -77,7 +77,7 @@ public class Spell_FaerieFire extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				maliciousAffect(mob,target,0,-1);
+				maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}
 		else

@@ -240,7 +240,7 @@ public class Prop_ClosedDayNight extends Property
 						if(A!=null)
 						{
 							A.setAbilityCode(1);
-							A.invoke(mob,R,true);
+							A.invoke(mob,R,true,0);
 						}
 						return true;
 					}
@@ -269,7 +269,7 @@ public class Prop_ClosedDayNight extends Property
 						if(A!=null)
 						{
 							A.setAbilityCode(1);
-							A.invoke(mob,mob.getStartRoom(),true);
+							A.invoke(mob,mob.getStartRoom(),true,0);
 						}
 						return true;
 					}

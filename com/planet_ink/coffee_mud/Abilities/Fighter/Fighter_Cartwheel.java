@@ -33,7 +33,7 @@ public class Fighter_Cartwheel extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB victim=mob.getVictim();
 		if(victim==null)
@@ -57,7 +57,7 @@ public class Fighter_Cartwheel extends StdAbility
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked

@@ -120,7 +120,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 					if(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
-						maliciousAffect(invoker,target,0,-1);
+						maliciousAffect(invoker,target,0,0,-1);
 					}
 				}
 			}
@@ -136,7 +136,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -145,7 +145,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 
@@ -165,7 +165,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					invoker=mob;
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,asLevel,0,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
 				}
 			}

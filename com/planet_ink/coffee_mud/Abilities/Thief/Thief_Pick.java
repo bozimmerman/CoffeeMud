@@ -36,7 +36,7 @@ public class Thief_Pick extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String whatTounlock=Util.combine(commands,0);
 		Environmental unlockThis=null;
@@ -62,7 +62,7 @@ public class Thief_Pick extends ThiefSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int adjustment=((mob.envStats().level()+abilityCode())-unlockThis.envStats().level())*5;

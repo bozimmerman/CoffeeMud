@@ -114,7 +114,7 @@ public class AnimalTraining extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb="training";
 		taming=null;
@@ -231,7 +231,7 @@ public class AnimalTraining extends CommonSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		messedUp=!profficiencyCheck(mob,-taming.envStats().level(),auto);
 		int duration=35+taming.envStats().level()-mob.envStats().level();
@@ -241,7 +241,7 @@ public class AnimalTraining extends CommonSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,duration);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

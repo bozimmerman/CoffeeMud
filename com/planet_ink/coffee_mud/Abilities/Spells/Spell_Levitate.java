@@ -80,7 +80,7 @@ public class Spell_Levitate extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=super.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
@@ -106,7 +106,7 @@ public class Spell_Levitate extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -119,7 +119,7 @@ public class Spell_Levitate extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1);
 					if(target instanceof MOB)
 						((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) straight up!");
 					else

@@ -107,7 +107,7 @@ public class Social implements Environmental
 					{
 						Ability A=CMClass.getAbility("Disease_Smiles");
 						if((A!=null)&&(target.fetchEffect(A.ID())==null))
-							A.invoke(tmob,tmob,true);
+							A.invoke(tmob,tmob,true,0);
 					}
 				}
 			}

@@ -49,7 +49,7 @@ public class Spell_ReverseGravity extends Spell
 					Ability A=CMClass.getAbility("Falling");
 					A.setAffectedOne(null);
 					A.setProfficiency(100);
-					A.invoke(null,null,inhab,true);
+					A.invoke(null,null,inhab,true,0);
 					A=inhab.fetchEffect("Falling");
 					if(A!=null)
 						childrenAffects.addElement(A);
@@ -63,7 +63,7 @@ public class Spell_ReverseGravity extends Spell
 					Ability A=CMClass.getAbility("Falling");
 					A.setAffectedOne(room);
 					A.setProfficiency(100);
-					A.invoke(null,null,inhab,true);
+					A.invoke(null,null,inhab,true,0);
 					A=inhab.fetchEffect("Falling");
 					if(A!=null)
 						childrenAffects.addElement(A);
@@ -111,13 +111,13 @@ public class Spell_ReverseGravity extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Environmental target = mob.location();
@@ -145,7 +145,7 @@ public class Spell_ReverseGravity extends Spell
 			{
 				childrenAffects=new Vector();
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),7);
+				beneficialAffect(mob,mob.location(),asLevel,7);
 			}
 		}
 		else

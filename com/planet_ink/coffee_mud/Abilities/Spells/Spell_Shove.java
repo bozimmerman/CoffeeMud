@@ -33,7 +33,7 @@ public class Spell_Shove extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int dir=-1;
 		if(commands.size()>0)
@@ -61,7 +61,7 @@ public class Spell_Shove extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

@@ -52,7 +52,7 @@ public class Prayer_Paralyze extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -66,7 +66,7 @@ public class Prayer_Paralyze extends Prayer
 		else
 			levelDiff=0;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -86,7 +86,7 @@ public class Prayer_Paralyze extends Prayer
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					success=maliciousAffect(mob,target,8,-1);
+					success=maliciousAffect(mob,target,asLevel,8,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't move!");
 				}
 			}

@@ -325,7 +325,7 @@ public class Song_Ode extends Song
 		return songs;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(auto) return false;
 
@@ -374,7 +374,7 @@ public class Song_Ode extends Song
 					whom.setName(name);
 					whom.setLocation(mob.location());
 				}
-				return super.invoke(mob,commands,givenTarget,auto);
+				return super.invoke(mob,commands,givenTarget,auto,asLevel);
 			}
 		}
 

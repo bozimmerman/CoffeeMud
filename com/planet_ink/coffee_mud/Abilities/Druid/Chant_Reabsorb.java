@@ -29,7 +29,7 @@ public class Chant_Reabsorb extends Chant
 	protected int canAffectCode(){return 0;}
 	public int quality(){return Ability.MALICIOUS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
@@ -61,7 +61,7 @@ public class Chant_Reabsorb extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

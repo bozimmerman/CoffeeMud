@@ -27,13 +27,13 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 	public String ID() { return "Chant_MassFungalGrowth"; }
 	public String name(){ return "Mass Fungal Growth";}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Vector V=new Vector();
-		MUDTracker.getRadiantRooms(mob.location(),V,false,false,true,null,adjustedLevel(mob));
+		MUDTracker.getRadiantRooms(mob.location(),V,false,false,true,null,adjustedLevel(mob,asLevel));
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			Room R=(Room)V.elementAt(v);
@@ -50,7 +50,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 				Room R=(Room)V.elementAt(v);
 				if(R==mob.location()) continue;
 				buildMyPlant(mob,R);
-				if((done++)==adjustedLevel(mob))
+				if((done++)==adjustedLevel(mob,asLevel))
 					break;
 			}
 		}

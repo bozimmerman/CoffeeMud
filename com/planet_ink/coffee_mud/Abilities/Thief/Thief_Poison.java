@@ -37,12 +37,12 @@ public class Thief_Poison extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -58,7 +58,7 @@ public class Thief_Poison extends ThiefSkill
 				if(msg.value()<=0)
 				{
 					Ability A=CMClass.getAbility("Poison");
-					A.invoke(mob,target,true);
+					A.invoke(mob,target,true,asLevel);
 				}
 			}
 		}

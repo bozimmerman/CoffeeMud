@@ -166,7 +166,7 @@ public class Druid_ShapeShift extends StdAbility
 		return false;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
@@ -275,9 +275,9 @@ public class Druid_ShapeShift extends StdAbility
 					{
 						list.append(Util.padLeft(""+(i+1),2)+") "+A.raceName+" ("+forms[A.myRaceCode]+")\n\r");
 						if(EnglishParser.containsString(A.raceName,parm))
-							return A.invoke(mob,new Vector(),givenTarget,auto);
+							return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
 						if(EnglishParser.containsString(forms[A.myRaceCode],parm))
-							return A.invoke(mob,new Vector(),givenTarget,auto);
+							return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
 					}
 				}
 			}
@@ -287,14 +287,14 @@ public class Druid_ShapeShift extends StdAbility
 				if(iparm<=allShapeshifts.size())
 				{
 					Ability A=(Ability)allShapeshifts.elementAt(iparm-1);
-					return A.invoke(mob,new Vector(),givenTarget,auto);
+					return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
 				}
 			}
 			mob.tell("'"+parm+"' is an illegal form!\n\rValid forms include: \n\r"+list.toString());
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -318,7 +318,7 @@ public class Druid_ShapeShift extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,Integer.MAX_VALUE);
+				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
 				raceName=Util.capitalize(Util.startWithAorAn(raceName.toLowerCase()));
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				mob.confirmWearability();

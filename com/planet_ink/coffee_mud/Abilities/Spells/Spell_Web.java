@@ -84,7 +84,7 @@ public class Spell_Web extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null)
@@ -97,7 +97,7 @@ public class Spell_Web extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -122,7 +122,7 @@ public class Spell_Web extends Spell
 						amountRemaining=160;
 						if(target.location()==mob.location())
 						{
-							success=maliciousAffect(mob,target,(adjustedLevel(mob)*10),-1);
+							success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck in a mass of web!");
 						}
 					}

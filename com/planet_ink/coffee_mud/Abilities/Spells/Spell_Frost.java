@@ -29,7 +29,7 @@ public class Spell_Frost extends Spell
 	public int quality(){return MALICIOUS;};
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -38,7 +38,7 @@ public class Spell_Frost extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -58,7 +58,7 @@ public class Spell_Frost extends Spell
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie =  adjustedLevel(mob)/4;
+				int maxDie =  adjustedLevel(mob,asLevel)/4;
 				damage += Dice.roll(maxDie,6,5);
 				mob.location().send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))

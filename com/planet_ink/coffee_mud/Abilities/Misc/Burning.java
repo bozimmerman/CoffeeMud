@@ -75,7 +75,7 @@ public class Burning extends StdAbility
 								}
 								Burning B=new Burning();
 								B.setProfficiency(durationOfBurn);
-								B.invoke(invoker,I,true);
+								B.invoke(invoker,I,true,0);
 								break;
 							}
 						}
@@ -236,7 +236,7 @@ public class Burning extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
 		if(!auto) return false;
 		if(target==null) return false;
@@ -250,7 +250,7 @@ public class Burning extends StdAbility
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
-			beneficialAffect(mob,target,profficiency());
+			beneficialAffect(mob,target,asLevel,profficiency());
 			target.recoverEnvStats();
 			if(target instanceof Item)
 			{

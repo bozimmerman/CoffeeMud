@@ -74,7 +74,7 @@ public class Spell_Repulsion extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
@@ -87,7 +87,7 @@ public class Spell_Repulsion extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -112,10 +112,10 @@ public class Spell_Repulsion extends Spell
 						amountRemaining=130;
 						if(target.location()==mob.location())
 						{
-							success=maliciousAffect(mob,target,(mob.envStats().level()*10),-1);
+							success=maliciousAffect(mob,target,asLevel,(mob.envStats().level()*10),-1);
 							int level=2;
-							if((CMAble.qualifyingClassLevel(mob,this)>0)&&((adjustedLevel(mob)-CMAble.qualifyingClassLevel(mob,this))>10))
-								level+=((adjustedLevel(mob)-CMAble.qualifyingClassLevel(mob,this))-10)/10;
+							if((CMAble.qualifyingClassLevel(mob,this)>0)&&((adjustedLevel(mob,asLevel)-CMAble.qualifyingClassLevel(mob,this))>10))
+								level+=((adjustedLevel(mob,asLevel)-CMAble.qualifyingClassLevel(mob,this))-10)/10;
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) repelled!");
 							if((target.getVictim()!=null)&&(target.rangeToTarget()>0))
 								target.setAtRange(target.rangeToTarget());

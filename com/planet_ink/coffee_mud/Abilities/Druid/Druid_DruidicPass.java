@@ -44,7 +44,7 @@ public class Druid_DruidicPass extends StdAbility
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if((mob.location().domainType()&Room.INDOORS)>0)
@@ -76,7 +76,7 @@ public class Druid_DruidicPass extends StdAbility
 		}
 		Exit opExit=room.getReverseExit(dirCode);
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 

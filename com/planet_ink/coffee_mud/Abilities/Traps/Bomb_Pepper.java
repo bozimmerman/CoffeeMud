@@ -50,7 +50,7 @@ public class Bomb_Pepper extends StdBomb
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility("Spell_Irritation");
-				if(A!=null) A.invoke(target,target,true);
+				if(A!=null) A.invoke(target,target,true,invoker().envStats().level());
 			}
 		}
 	}

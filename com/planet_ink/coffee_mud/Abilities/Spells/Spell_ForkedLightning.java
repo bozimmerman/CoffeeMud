@@ -27,7 +27,7 @@ public class Spell_ForkedLightning extends Spell
 	public int quality(){return MALICIOUS;};
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null)
@@ -40,7 +40,7 @@ public class Spell_ForkedLightning extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -65,7 +65,7 @@ public class Spell_ForkedLightning extends Spell
 					mob.location().send(mob,msg2);
 					invoker=mob;
 
-					int maxDie=(int)Math.round(Util.div(adjustedLevel(mob),2.0));
+					int maxDie=(int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0));
 					int damage = Dice.roll(maxDie,8,1);
 					if((msg.value()>0)||(msg2.value()>0))
 						damage = (int)Math.round(Util.div(damage,2.0));

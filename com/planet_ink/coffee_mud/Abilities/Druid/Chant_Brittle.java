@@ -51,7 +51,7 @@ public class Chant_Brittle extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
@@ -85,7 +85,7 @@ public class Chant_Brittle extends Chant
 
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -107,7 +107,7 @@ public class Chant_Brittle extends Chant
 				{
 					if(target.subjectToWearAndTear())
 						oldCondition=target.usesRemaining();
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}

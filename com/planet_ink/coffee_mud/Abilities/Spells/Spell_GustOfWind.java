@@ -73,7 +73,7 @@ public class Spell_GustOfWind extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
@@ -86,7 +86,7 @@ public class Spell_GustOfWind extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -120,7 +120,7 @@ public class Spell_GustOfWind extends Spell
 						{
 							mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");
 							doneTicking=false;
-							success=maliciousAffect(mob,target,2,-1);
+							success=maliciousAffect(mob,target,asLevel,2,-1);
 						}
 						victim=target.getVictim();
 						if(victim!=null)

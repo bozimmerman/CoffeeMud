@@ -28,7 +28,7 @@ public class Spell_MarkerSummoning extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room oldRoom=null;
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
@@ -62,7 +62,7 @@ public class Spell_MarkerSummoning extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 

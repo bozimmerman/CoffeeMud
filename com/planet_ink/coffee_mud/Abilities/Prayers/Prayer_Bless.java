@@ -117,12 +117,12 @@ public class Prayer_Bless extends Prayer
 		return Sense.flaggedAffects(item,Ability.FLAG_CURSE).size()>0;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -147,7 +147,7 @@ public class Prayer_Bless extends Prayer
 					I=getSomething(target,true);
 				}
 				endLowerCurses(target,CMAble.lowestQualifyingLevel(ID()));
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				target.recoverEnvStats();
 				target.location().recoverRoomStats();
 			}

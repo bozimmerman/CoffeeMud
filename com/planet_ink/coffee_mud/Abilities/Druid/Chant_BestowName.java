@@ -45,7 +45,7 @@ public class Chant_BestowName extends Chant
 			affectedStats.setName(text());
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -82,7 +82,7 @@ public class Chant_BestowName extends Chant
 			myName=myName+", "+target.name();
 
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

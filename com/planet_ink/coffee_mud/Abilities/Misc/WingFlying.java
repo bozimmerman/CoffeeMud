@@ -47,7 +47,7 @@ public class WingFlying extends StdAbility
 			affectableStats.setDisposition(Util.unsetb(affectableStats.disposition(),EnvStats.IS_FLYING));
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if(target==null) return false;
@@ -74,7 +74,7 @@ public class WingFlying extends StdAbility
 		}
 
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -88,7 +88,7 @@ public class WingFlying extends StdAbility
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
-				beneficialAffect(mob,target,9999);
+				beneficialAffect(mob,target,asLevel,9999);
 				A=target.fetchEffect(ID());
 				if(A!=null) A.makeLongLasting();
 			}

@@ -43,12 +43,12 @@ public class Spell_AcidArrow extends Spell
 		}
 		return super.tick(ticking,tickID);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -66,12 +66,12 @@ public class Spell_AcidArrow extends Spell
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
 				invoker=mob;
-                int numDice = adjustedLevel(mob);
+                int numDice = adjustedLevel(mob,asLevel);
 				int damage = Dice.roll(1, numDice+10, 5);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(Util.div(damage,2.0));
 				MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acidic blast <DAMAGE> <T-NAME>!");
-				maliciousAffect(mob,target,3,-1);
+				maliciousAffect(mob,target,asLevel,3,-1);
 			}
 		}
 		else

@@ -75,7 +75,7 @@ public class Prop_UseSpellCast2 extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(sourceMOB,V2,newMOB,true);
+				A.invoke(sourceMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
 			}
 		}
 	}

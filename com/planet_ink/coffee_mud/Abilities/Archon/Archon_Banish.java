@@ -116,7 +116,7 @@ public class Archon_Banish extends ArchonSkill
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
 		if(target==null) return false;
@@ -129,7 +129,7 @@ public class Archon_Banish extends ArchonSkill
 			return true;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -141,7 +141,7 @@ public class Archon_Banish extends ArchonSkill
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> banished!");
-				beneficialAffect(mob,target,Integer.MAX_VALUE/2);
+				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
 				A=(Archon_Banish)target.fetchEffect(ID());
 				if(A!=null)
 				{

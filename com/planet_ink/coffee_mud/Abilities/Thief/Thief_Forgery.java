@@ -30,7 +30,7 @@ public class Thief_Forgery extends ThiefSkill
 	private static final String[] triggerStrings = {"FORGERY"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -128,7 +128,7 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		forgeWhat=newName;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

@@ -29,7 +29,7 @@ public class Prayer_Desecrate extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=null;
 		if((commands.size()==0)&&(!auto)&&(givenTarget==null))
@@ -50,7 +50,7 @@ public class Prayer_Desecrate extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

@@ -29,7 +29,7 @@ public class Spell_GravitySlam extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -38,7 +38,7 @@ public class Spell_GravitySlam extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -57,7 +57,7 @@ public class Spell_GravitySlam extends Spell
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie =  adjustedLevel(mob);
+				int maxDie =  adjustedLevel(mob,asLevel);
 				if(!Sense.isInFlight(target))
 					maxDie=maxDie/2;
 				Room R=mob.location();

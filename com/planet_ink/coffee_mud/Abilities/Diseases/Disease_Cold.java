@@ -55,7 +55,7 @@ public class Disease_Cold extends Disease
 		{
 			mob.delEffect(this);
 			Ability A=CMClass.getAbility("Disease_Pneumonia");
-			A.invoke(diseaser,mob,true);
+			A.invoke(diseaser,mob,true,0);
 		}
 		else
 		if((!mob.amDead())&&((--diseaseTick)<=0))

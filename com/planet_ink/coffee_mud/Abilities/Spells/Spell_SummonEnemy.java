@@ -51,9 +51,9 @@ public class Spell_SummonEnemy extends Spell
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -68,7 +68,7 @@ public class Spell_SummonEnemy extends Spell
 				MOB target = determineMonster(mob, mob.envStats().level());
 				if(target!=null)
 				{
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 					target.setVictim(mob);
 				}
 				else

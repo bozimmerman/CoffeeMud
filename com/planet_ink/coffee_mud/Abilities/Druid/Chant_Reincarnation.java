@@ -112,7 +112,7 @@ public class Chant_Reincarnation extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -122,7 +122,7 @@ public class Chant_Reincarnation extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -136,7 +136,7 @@ public class Chant_Reincarnation extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,1800);
+				beneficialAffect(mob,target,asLevel,1800);
 			}
 		}
 		else

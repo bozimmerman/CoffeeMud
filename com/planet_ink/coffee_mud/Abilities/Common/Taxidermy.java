@@ -95,7 +95,7 @@ public class Taxidermy extends CraftingSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Vector POSES=loadRecipes();
 		String pose=null;
@@ -159,7 +159,7 @@ public class Taxidermy extends CraftingSkill
 		woodRequired=data[0][FOUND_AMT];
 
 		found=null;
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,0);
 		messedUp=!profficiencyCheck(mob,0,auto);
@@ -195,7 +195,7 @@ public class Taxidermy extends CraftingSkill
 		{
 			mob.location().send(mob,msg);
 			found=(Item)msg.target();
-			beneficialAffect(mob,mob,duration);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

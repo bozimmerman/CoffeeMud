@@ -40,12 +40,12 @@ public class Skill_Warrants extends BardSkill
 		return (Behavior)V.firstElement();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Behavior B=null;
 		if(mob.location()!=null)
 			B=getArrest(mob.location().getArea());
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,(-25+mob.charStats().getStat(CharStats.CHARISMA)),auto);

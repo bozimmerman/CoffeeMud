@@ -106,7 +106,7 @@ public class Chant_WaterWalking extends Chant
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -122,7 +122,7 @@ public class Chant_WaterWalking extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -141,7 +141,7 @@ public class Chant_WaterWalking extends Chant
 				if(target.location()==mob.location())
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> feel(s) a little lighter!");
-					success=beneficialAffect(mob,target,0);
+					success=beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}

@@ -65,7 +65,7 @@ public class Spell_SpellTurning extends Spell
 			oncePerRound=true;
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the spell!");
 			Ability A=(Ability)msg.tool();
-			A.invoke(mob,msg.source(),true);
+			A.invoke(mob,msg.source(),true,msg.source().envStats().level());
 			return false;
 		}
 		return true;
@@ -78,12 +78,12 @@ public class Spell_SpellTurning extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -93,7 +93,7 @@ public class Spell_SpellTurning extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

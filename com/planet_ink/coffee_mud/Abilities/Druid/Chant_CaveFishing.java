@@ -29,7 +29,7 @@ public class Chant_CaveFishing extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
@@ -67,7 +67,7 @@ public class Chant_CaveFishing extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 

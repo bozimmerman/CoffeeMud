@@ -58,7 +58,7 @@ public class Disease_Pneumonia extends Disease
 			if(Dice.rollPercentage()==1)
 			{
 				Ability A2=CMClass.getAbility("Disease_Fever");
-				if(A2!=null) A2.invoke(diseaser,mob,true);
+				if(A2!=null) A2.invoke(diseaser,mob,true,0);
 			}
 			return true;
 		}

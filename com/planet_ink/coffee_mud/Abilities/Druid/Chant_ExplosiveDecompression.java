@@ -38,7 +38,7 @@ public class Chant_ExplosiveDecompression extends Chant
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
@@ -52,7 +52,7 @@ public class Chant_ExplosiveDecompression extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 
@@ -80,7 +80,7 @@ public class Chant_ExplosiveDecompression extends Chant
 							{
 								mob.location().send(mob,msg2);
 								invoker=mob;
-							    int numDice = adjustedLevel(mob);
+							    int numDice = adjustedLevel(mob,asLevel);
 								int damage = Dice.roll(numDice, 10, 50);
 								if(msg2.value()>0)
 									damage = (int)Math.round(Util.div(damage,2.0));
@@ -91,7 +91,7 @@ public class Chant_ExplosiveDecompression extends Chant
 								mob.location().show(M,null,CMMsg.MASK_GENERAL|CMMsg.TYP_SIT,"<S-NAME> <S-IS-ARE> blown off <S-HIS-HER> feet!");
 						}
 					}
-					maliciousAffect(mob,target,20,-1);
+					maliciousAffect(mob,target,asLevel,20,-1);
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The fire burns off all the air here!");
 				}
 			}

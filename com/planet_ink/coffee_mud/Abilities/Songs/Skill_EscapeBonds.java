@@ -42,7 +42,7 @@ public class Skill_EscapeBonds extends BardSkill
 			stats.setStat(CharStats.STRENGTH,stats.getStat(CharStats.STRENGTH)+stats.getStat(CharStats.DEXTERITY)+mob.envStats().level());
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!Sense.isBoundOrHeld(mob))
 		{
@@ -50,7 +50,7 @@ public class Skill_EscapeBonds extends BardSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

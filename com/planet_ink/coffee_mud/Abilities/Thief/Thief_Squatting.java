@@ -90,7 +90,7 @@ public class Thief_Squatting extends ThiefSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -100,7 +100,7 @@ public class Thief_Squatting extends ThiefSkill
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already squatting.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if(CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
@@ -141,7 +141,7 @@ public class Thief_Squatting extends ThiefSkill
 			failed=false;
 			room=mob.location();
 			title=T;
-			beneficialAffect(mob,target,(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5));
+			beneficialAffect(mob,target,asLevel,(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5));
 		}
 		return success;
 	}

@@ -95,7 +95,7 @@ public class Herbalism extends CraftingSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -250,7 +250,7 @@ public class Herbalism extends CraftingSkill
 
 			if(experienceToLose<10) experienceToLose=10;
 
-			if(!super.invoke(mob,commands,givenTarget,auto))
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 
 			MUDFight.postExperience(mob,null,null,-experienceToLose,false);
@@ -283,7 +283,7 @@ public class Herbalism extends CraftingSkill
 			{
 				mob.location().send(mob,msg);
 				building=(Item)msg.target();
-				beneficialAffect(mob,mob,completion);
+				beneficialAffect(mob,mob,asLevel,completion);
 			}
 		}
 		return true;

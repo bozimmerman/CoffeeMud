@@ -29,7 +29,7 @@ public class Spell_MagicMissile extends Spell
 	public int quality(){return MALICIOUS;};
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -38,14 +38,14 @@ public class Spell_MagicMissile extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			int numMissiles=((int)Math.round(Math.floor(Util.div(adjustedLevel(mob),5)))+1);
+			int numMissiles=((int)Math.round(Math.floor(Util.div(adjustedLevel(mob,asLevel),5)))+1);
 			for(int i=0;i<numMissiles;i++)
 			{
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(i==0)?((auto?"A magic missle appears hurling full speed at <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a magic missile!^?")+CommonStrings.msp("spelldam2.wav",40)):null);

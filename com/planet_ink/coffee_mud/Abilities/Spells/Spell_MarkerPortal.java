@@ -51,7 +51,7 @@ public class Spell_MarkerPortal extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room newRoom=null;
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
@@ -103,7 +103,7 @@ public class Spell_MarkerPortal extends Spell
 		}
 		profNeg+=newRoom.numItems()*20;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,-profNeg,auto);
@@ -128,7 +128,7 @@ public class Spell_MarkerPortal extends Spell
 				newRoom.rawDoors()[Directions.GATE]=oldRoom;
 				oldRoom.rawExits()[Directions.GATE]=e;
 				newRoom.rawExits()[Directions.GATE]=e;
-				beneficialAffect(mob,e,5);
+				beneficialAffect(mob,e,asLevel,5);
 			}
 		}
 		else

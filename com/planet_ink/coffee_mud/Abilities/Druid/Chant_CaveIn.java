@@ -73,7 +73,7 @@ public class Chant_CaveIn extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;
 		if((commands.size()>0)&&(givenTarget==null))
@@ -97,7 +97,7 @@ public class Chant_CaveIn extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -118,7 +118,7 @@ public class Chant_CaveIn extends Chant
 				if(target instanceof MOB)
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"A cave-in drops rocks on <T-NAME>!");
-					int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob)).doubleValue()/3.0);
+					int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)).doubleValue()/3.0);
 					int damage = Dice.roll(maxDie,3,maxDie);
 					if(msg.value()>0)
 						damage = (int)Math.round(Util.div(damage,1.5));
@@ -126,7 +126,7 @@ public class Chant_CaveIn extends Chant
 						MUDFight.postDamage(mob,(MOB)target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BASHING,"The falling rubble <DAMAGE> <T-NAME>!");
 				}
 				if(msg.value()<=0)
-					success=maliciousAffect(mob,target,(target instanceof Exit)?0:10,0);
+					success=maliciousAffect(mob,target,asLevel,(target instanceof Exit)?0:10,0);
 			}
 		}
 		else

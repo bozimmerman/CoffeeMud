@@ -51,7 +51,7 @@ public class Spell_Infravision extends Spell
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -62,7 +62,7 @@ public class Spell_Infravision extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -72,7 +72,7 @@ public class Spell_Infravision extends Spell
 		{
 			successfulObservation=success;
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,0);
+			beneficialAffect(mob,target,asLevel,0);
 		}
 
 		return success;

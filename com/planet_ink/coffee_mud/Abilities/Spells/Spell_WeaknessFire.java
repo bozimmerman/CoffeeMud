@@ -102,12 +102,12 @@ public class Spell_WeaknessFire extends Spell
 		super.affectCharStats(affectedMOB,affectedStats);
 		affectedStats.setStat(CharStats.SAVE_FIRE,affectedStats.getStat(CharStats.SAVE_FIRE)-100);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -117,7 +117,7 @@ public class Spell_WeaknessFire extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				success=maliciousAffect(mob,target,0,-1);
+				success=maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}
 		else

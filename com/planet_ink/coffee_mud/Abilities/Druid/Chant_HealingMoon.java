@@ -60,7 +60,7 @@ public class Chant_HealingMoon extends Chant
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
@@ -91,7 +91,7 @@ public class Chant_HealingMoon extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 
@@ -109,7 +109,7 @@ public class Chant_HealingMoon extends Chant
 				if(msg.value()<=0)
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Healing Moon Rises!");
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}

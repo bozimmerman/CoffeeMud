@@ -209,7 +209,7 @@ public class Spell_Delirium extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to feel a bit less delirius.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -218,7 +218,7 @@ public class Spell_Delirium extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -240,7 +240,7 @@ public class Spell_Delirium extends Spell
 				if(msg.value()<=0)
 				{
 					amountRemaining=300;
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,asLevel,0,-1);
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) under the grip of delirium!!");
 				}
 			}

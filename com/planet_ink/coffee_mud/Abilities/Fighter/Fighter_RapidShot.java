@@ -52,7 +52,7 @@ public class Fighter_RapidShot extends StdAbility
 			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 			{
 				helpProfficiency(mob);
-				for(int i=0;i<(adjustedLevel(mob)/7);i++)
+				for(int i=0;i<(adjustedLevel(mob,0)/7);i++)
 					MUDFight.postAttack(mob,mob.getVictim(),w);
 			}
 		}

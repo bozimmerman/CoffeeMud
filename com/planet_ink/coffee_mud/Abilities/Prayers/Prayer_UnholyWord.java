@@ -66,9 +66,9 @@ public class Prayer_UnholyWord extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -107,7 +107,7 @@ public class Prayer_UnholyWord extends Prayer
 								I.recoverEnvStats();
 							}
 							Prayer_Curse.endLowerBlessings(target,CMAble.lowestQualifyingLevel(ID()));
-							beneficialAffect(mob,target,0);
+							beneficialAffect(mob,target,asLevel,0);
 							target.recoverEnvStats();
 						}
 						else

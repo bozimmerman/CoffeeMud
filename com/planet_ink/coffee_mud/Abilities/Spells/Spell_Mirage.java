@@ -82,7 +82,7 @@ public class Spell_Mirage extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.location().getArea().properSize()<2)
 		{
@@ -94,7 +94,7 @@ public class Spell_Mirage extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Environmental target = mob.location();
@@ -125,7 +125,7 @@ public class Spell_Mirage extends Spell
 					}
 				}
 				else
-					beneficialAffect(mob,mob.location(),0);
+					beneficialAffect(mob,mob.location(),asLevel,0);
 			}
 		}
 		else

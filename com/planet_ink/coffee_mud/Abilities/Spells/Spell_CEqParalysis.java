@@ -29,11 +29,11 @@ public class Spell_CEqParalysis extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqParalysis"; }
   public String name(){return "ClanEnchant Paralysis";}
 
-  public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+  public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
   {
     type="Paralysis";
     // All the work is done by the base model
-    if(!super.invoke(mob,commands,givenTarget,auto))
+    if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
         return false;
       return true;
   }

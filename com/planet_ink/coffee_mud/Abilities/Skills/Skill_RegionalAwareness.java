@@ -56,7 +56,7 @@ public class Skill_RegionalAwareness extends StdAbility
 		}
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)==Room.INDOORS)
 		{
@@ -72,7 +72,7 @@ public class Skill_RegionalAwareness extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				
-				int diameter=2+(adjustedLevel(mob)/10);
+				int diameter=2+(adjustedLevel(mob,asLevel)/10);
 				char[][] map=new char[diameter][diameter];
 				for(int i=0;i<diameter;i++)
 					for(int i2=0;i2<diameter;i2++)

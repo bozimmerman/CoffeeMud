@@ -115,7 +115,7 @@ public class Chant_AnimalSpy extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<1)
@@ -138,7 +138,7 @@ public class Chant_AnimalSpy extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -152,7 +152,7 @@ public class Chant_AnimalSpy extends Chant
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);
 				spy=target;
-				beneficialAffect(mob,spy,0);
+				beneficialAffect(mob,spy,asLevel,0);
 				Ability A=spy.fetchEffect(ID());
 				if(A!=null)
 				{

@@ -52,9 +52,9 @@ public class Prayer_FountainLife extends Prayer
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -80,7 +80,7 @@ public class Prayer_FountainLife extends Prayer
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				SpringLocation=mob.location();
 				littleSpring=newItem;
-				beneficialAffect(mob,newItem,0);
+				beneficialAffect(mob,newItem,asLevel,0);
 				mob.location().recoverEnvStats();
 			}
 		}

@@ -134,13 +134,13 @@ public class Spell_IncreaseGravity extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Environmental target = mob.location();
@@ -168,7 +168,7 @@ public class Spell_IncreaseGravity extends Spell
 			{
 				mob.location().send(mob,msg);
 				theGravityRoom=mob.location();
-				beneficialAffect(mob,mob.location(),adjustedLevel(mob));
+				beneficialAffect(mob,mob.location(),asLevel,adjustedLevel(mob,asLevel));
 			}
 		}
 		else

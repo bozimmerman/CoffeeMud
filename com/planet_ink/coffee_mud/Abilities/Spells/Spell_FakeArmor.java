@@ -65,7 +65,7 @@ public class Spell_FakeArmor extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String[] choices={"plate","chain","leather", "studded"};
 		String[] choices2={"helmet","shirt","leggings", "sleeves","boots"};
@@ -90,7 +90,7 @@ public class Spell_FakeArmor extends Spell
 			+"You must also specify a armor type: helmet, shirt, leggings, sleeves, or boots");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -143,7 +143,7 @@ public class Spell_FakeArmor extends Spell
 				mob.addInventory(armor);
 				mob.location().show(mob,null,armor,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
 				myItem=armor;
-				beneficialAffect(mob,armor,0);
+				beneficialAffect(mob,armor,asLevel,0);
 			}
 		}
 		else

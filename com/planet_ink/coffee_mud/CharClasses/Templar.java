@@ -144,7 +144,7 @@ public class Templar extends Cleric
 			if(myChar.fetchEffect("Prayer_AuraStrife")==null)
 			{
 				Ability A=CMClass.getAbility("Prayer_AuraStrife");
-				if(A!=null) A.invoke(myChar,myChar,true);
+				if(A!=null) A.invoke(myChar,myChar,true,0);
 			}
 		}
 		super.tick(myChar,tickID);

@@ -75,7 +75,7 @@ public class Spell_Toadstool extends Spell
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -84,10 +84,10 @@ public class Spell_Toadstool extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int chance=-((target.envStats().level()-adjustedLevel(mob))*5);
+		int chance=-((target.envStats().level()-adjustedLevel(mob,asLevel))*5);
 		boolean success=profficiencyCheck(mob,chance-(target.charStats().getStat(CharStats.CONSTITUTION)*2),auto);
 
 		if(success)
@@ -105,7 +105,7 @@ public class Spell_Toadstool extends Spell
 				{
 					newRace=CMClass.getRace("Toadstool");
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
-					success=beneficialAffect(mob,target,0);
+					success=beneficialAffect(mob,target,asLevel,0);
 					target.makePeace();
 					for(int i=0;i<mob.location().numInhabitants();i++)
 					{

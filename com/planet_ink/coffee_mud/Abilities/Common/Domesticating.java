@@ -81,7 +81,7 @@ public class Domesticating extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		taming=null;
 		String str=Util.combine(commands,0);
@@ -141,7 +141,7 @@ public class Domesticating extends CommonSkill
 				newName=newName+", "+M.name();
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		taming=M;
 		verb="domesticating "+M.name();
@@ -166,7 +166,7 @@ public class Domesticating extends CommonSkill
 				}
 			}
 			else
-				beneficialAffect(mob,mob,duration);
+				beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

@@ -1035,7 +1035,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							if(A.canTarget(mobFor))
 							{
 								V.addElement(mobFor.name()+"$");
-								A.invoke(this,V,mobFor,true);
+								A.invoke(this,V,mobFor,true,0);
 							}
 							else
 							if(A.canTarget(CMClass.sampleItem()))
@@ -1047,7 +1047,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								if(I==null) return;
 								V.addElement(I.name()+"$");
 								addInventory(I);
-								A.invoke(this,V,I,true);
+								A.invoke(this,V,I,true,0);
 								delInventory(I);
 								if(!mobFor.isMine(I)) mobFor.addInventory(I);
 							}

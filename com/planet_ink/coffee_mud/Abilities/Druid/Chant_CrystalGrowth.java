@@ -30,7 +30,7 @@ public class Chant_CrystalGrowth extends Chant
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 50;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{
@@ -38,7 +38,7 @@ public class Chant_CrystalGrowth extends Chant
 			return false;
 		}
 		int material=EnvResource.RESOURCE_CRYSTAL;
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -77,7 +77,7 @@ public class Chant_CrystalGrowth extends Chant
 					{
 						Vector V=new Vector();
 						V.addElement(new Integer(material));
-						A.invoke(mob,V,A,true);
+						A.invoke(mob,V,A,true,asLevel);
 						if((V.size()>0)&&(V.lastElement() instanceof Item))
 							building=(Item)V.lastElement();
 						else

@@ -86,7 +86,7 @@ public class Spell_WallOfFire extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
@@ -107,7 +107,7 @@ public class Spell_WallOfFire extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Environmental target = mob.location();
@@ -137,7 +137,7 @@ public class Spell_WallOfFire extends Spell
 				mob.location().addItem(I);
 				theWall=I;
 				deathNotice="The wall of fire flickers...";
-				beneficialAffect(mob,I,20);
+				beneficialAffect(mob,I,asLevel,20);
 			}
 		}
 		else

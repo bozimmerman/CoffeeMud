@@ -61,9 +61,9 @@ public class Chant_SummonRockGolem extends Chant
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if((!auto)
@@ -99,7 +99,7 @@ public class Chant_SummonRockGolem extends Chant
 	public MOB determineMonster(MOB caster, int level)
 	{
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
-		newMOB.baseEnvStats().setLevel(adjustedLevel(caster));
+		newMOB.baseEnvStats().setLevel(adjustedLevel(caster,0));
 		newMOB.setName("an golem of stone");
 		newMOB.setDisplayText("an stone golem lumbers around here.");
 		newMOB.setDescription("A large beast, made of rock and stone, with a hard stare.");

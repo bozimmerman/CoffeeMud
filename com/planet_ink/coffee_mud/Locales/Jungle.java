@@ -47,7 +47,7 @@ public class Jungle extends StdRoom
 			else
 				A=CMClass.getAbility("Disease_Malaria");
 			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))
-				A.invoke(msg.source(),msg.source(),true);
+				A.invoke(msg.source(),msg.source(),true,0);
 		}
 		super.executeMsg(myHost,msg);
 	}

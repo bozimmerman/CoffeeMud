@@ -99,7 +99,7 @@ public class Prop_SpellReflecting extends Property
 
 			target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,"The field around <T-NAMESELF> reflects the spell!");
 			Ability A=(Ability)msg.tool();
-			A.invoke(target,msg.source(),true);
+			A.invoke(target,msg.source(),true,msg.source().envStats().level());
 			setAbilityCode(abilityCode()-lvl);
 			if(abilityCode()<=0)
 			{

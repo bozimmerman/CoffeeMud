@@ -87,13 +87,13 @@ public class Spell_IceSheet extends Spell
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Environmental target = mob.location();
@@ -127,7 +127,7 @@ public class Spell_IceSheet extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),0);
+				beneficialAffect(mob,mob.location(),asLevel,0);
 			}
 		}
 		else

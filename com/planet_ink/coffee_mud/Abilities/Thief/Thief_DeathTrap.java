@@ -133,7 +133,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room trapThis=mob.location();
 
@@ -147,7 +147,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		}
 
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int woodDestroyed=100;

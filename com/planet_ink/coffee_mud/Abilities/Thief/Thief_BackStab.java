@@ -34,12 +34,12 @@ public class Thief_BackStab extends ThiefSkill
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		int factor=(int)Math.round(Util.div(adjustedLevel((MOB)affected),2.0))+2;
+		int factor=(int)Math.round(Util.div(adjustedLevel((MOB)affected,0),2.0))+2;
 		affectableStats.setDamage(affectableStats.damage()*factor);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
@@ -77,7 +77,7 @@ public class Thief_BackStab extends ThiefSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

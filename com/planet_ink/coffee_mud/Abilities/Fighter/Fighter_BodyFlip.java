@@ -80,7 +80,7 @@ public class Fighter_BodyFlip extends StdAbility
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -116,7 +116,7 @@ public class Fighter_BodyFlip extends StdAbility
 			mob.tell("You need at least two arms to do this.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
@@ -133,7 +133,7 @@ public class Fighter_BodyFlip extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				maliciousAffect(mob,target,2,-1);
+				maliciousAffect(mob,target,asLevel,2,-1);
 				target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the floor!");
 			}
 		}

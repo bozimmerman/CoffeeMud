@@ -148,7 +148,7 @@ public class Prayer_FleshRock extends Prayer
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -157,7 +157,7 @@ public class Prayer_FleshRock extends Prayer
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -200,7 +200,7 @@ public class Prayer_FleshRock extends Prayer
 					statue.setMaterial(EnvResource.RESOURCE_GRANITE);
 					statue.baseEnvStats().setWeight(2000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into rock!!");
-					success=maliciousAffect(mob,target,mob.envStats().level()*50,-1);
+					success=maliciousAffect(mob,target,asLevel,mob.envStats().level()*50,-1);
 					Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))
 					{

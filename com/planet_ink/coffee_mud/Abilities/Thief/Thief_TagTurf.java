@@ -67,9 +67,9 @@ public class Thief_TagTurf extends ThiefSkill
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Room target=mob.location();
@@ -107,7 +107,7 @@ public class Thief_TagTurf extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			setMiscText(mob.Name());
-			beneficialAffect(mob,target,(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5));
+			beneficialAffect(mob,target,asLevel,(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5));
 		}
 		return success;
 	}

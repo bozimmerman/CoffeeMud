@@ -44,7 +44,7 @@ public class Spell_DetectMetal extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_METAL);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -54,7 +54,7 @@ public class Spell_DetectMetal extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting metallic things.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -65,7 +65,7 @@ public class Spell_DetectMetal extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

@@ -113,7 +113,7 @@ public class Spell_StinkingCloud extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=null;
 		if(givenTarget!=null)
@@ -133,7 +133,7 @@ public class Spell_StinkingCloud extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -160,7 +160,7 @@ public class Spell_StinkingCloud extends Spell
 					if((msg.value()<=0)&&(msg2.value()<=0)&&(target.location()==mob.location()))
 					{
 						castingLocation=mob.location();
-						success=maliciousAffect(mob,target,(adjustedLevel(mob)*10),-1);
+						success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped in the stinking cloud!");
 					}
 				}

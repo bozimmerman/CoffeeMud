@@ -95,7 +95,7 @@ public class Chant_PlantChoke extends Chant
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -122,7 +122,7 @@ public class Chant_PlantChoke extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -140,7 +140,7 @@ public class Chant_PlantChoke extends Chant
 				target.giveItem(myPlant);
 				myPlant.setRawWornCode(Item.ON_NECK);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,myPlant.name()+" jumps up and wraps itself around <S-YOUPOSS> neck!");
-				beneficialAffect(mob,myPlant,5);
+				beneficialAffect(mob,myPlant,asLevel,5);
 			}
 		}
 		else

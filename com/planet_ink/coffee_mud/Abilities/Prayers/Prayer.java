@@ -128,9 +128,9 @@ public class Prayer extends StdAbility
 		}
 		return;
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,target,auto))
+		if(!super.invoke(mob,commands,target,auto,asLevel))
 			return false;
 		if((!auto)
 		&&(!mob.isMonster())

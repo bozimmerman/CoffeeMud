@@ -76,7 +76,7 @@ public class Druid_PackCall extends StdAbility
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
@@ -128,7 +128,7 @@ public class Druid_PackCall extends StdAbility
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -188,7 +188,7 @@ public class Druid_PackCall extends StdAbility
 						newMOB.destroy();
 						break;
 					}
-					beneficialAffect(mob,newMOB,0);
+					beneficialAffect(mob,newMOB,asLevel,0);
 				}
 			}
 		}

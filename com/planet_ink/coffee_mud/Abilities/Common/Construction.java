@@ -420,7 +420,7 @@ public class Construction extends CraftingSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -470,7 +470,7 @@ public class Construction extends CraftingSkill
 				commonTell(mob,targetMOB.Name()+" is not constructing anything.");
 				return false;
 			}
-			if(!super.invoke(mob,commands,givenTarget,auto))
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			{
 				helpingAbility=null;
 				return false;
@@ -482,7 +482,7 @@ public class Construction extends CraftingSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,completion);
+				beneficialAffect(mob,mob,asLevel,completion);
 			}
 			return true;
 		}
@@ -619,7 +619,7 @@ public class Construction extends CraftingSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		room=mob.location();
@@ -696,7 +696,7 @@ public class Construction extends CraftingSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,completion);
+			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		return true;
 	}

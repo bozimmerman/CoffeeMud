@@ -129,7 +129,7 @@ public class Prop_Auction extends Property
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
 		Vector V=new Vector();
 		V.addElement("AUCTION");

@@ -109,7 +109,7 @@ public class Skill_Meditation extends StdAbility
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if(mob.isInCombat())
@@ -140,7 +140,7 @@ public class Skill_Meditation extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,Integer.MAX_VALUE-1000);
+				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE-1000);
 				helpProfficiency(mob);
 			}
 		}

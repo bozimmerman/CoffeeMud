@@ -61,7 +61,7 @@ public class Thief_Assassinate extends ThiefSkill
 				{
 					Ability A=mob.fetchAbility("Thief_BackStab");
 					if(A!=null)
-						A.invoke(mob,tracking,false);
+						A.invoke(mob,tracking,false,0);
 				}
 				else
 					MUDFight.postAttack(mob,tracking,mob.fetchWieldedItem());
@@ -112,7 +112,7 @@ public class Thief_Assassinate extends ThiefSkill
 								nextDirection=-2;
 								Vector V=new Vector();
 								V.addElement(Directions.getDirectionName(dir));
-								A.invoke(mob,V,null,false);
+								A.invoke(mob,V,null,false,0);
 							}
 							else
 							{
@@ -154,7 +154,7 @@ public class Thief_Assassinate extends ThiefSkill
 			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!Sense.aliveAwakeMobile(mob,false))
 			return false;
@@ -207,7 +207,7 @@ public class Thief_Assassinate extends ThiefSkill
 			}
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 

@@ -2456,7 +2456,7 @@ public class StdMOB implements MOB
                      	&&(Dice.rollPercentage()==1))
                      	{
                         	Ability theYawns = CMClass.getAbility("Disease_Yawning");
-                        	if(theYawns!=null) theYawns.invoke(this, this, true);
+                        	if(theYawns!=null) theYawns.invoke(this, this, true,0);
                      	}
 					}
 				}
@@ -2477,14 +2477,14 @@ public class StdMOB implements MOB
 							{
 								Ability A=CMClass.getAbility("Disease_Cancer");
 								if((A!=null)&&(fetchEffect(A.ID())==null))
-									A.invoke(this,this,true);
+									A.invoke(this,this,true,0);
 							}
 							else
 							if(((AgeHours%1200)==0)&&(Dice.rollPercentage()<25))
 							{
 								Ability A=CMClass.getAbility("Disease_Arthritis");
 								if((A!=null)&&(fetchEffect(A.ID())==null))
-									A.invoke(this,this,true);
+									A.invoke(this,this,true,0);
 							}
 						}
 					}

@@ -29,7 +29,7 @@ public class AnimalTrading extends CommonSkill
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental taming=null;
 		Item cage=null;
@@ -112,7 +112,7 @@ public class AnimalTrading extends CommonSkill
 			M=((CagedAnimal)taming).unCageMe();
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if(profficiencyCheck(mob,0,auto))
 		{

@@ -52,7 +52,7 @@ public class Spell_AlterSubstance extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String material="";
 		if(commands.size()>0)
@@ -101,7 +101,7 @@ public class Spell_AlterSubstance extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -130,7 +130,7 @@ public class Spell_AlterSubstance extends Spell
 						oldName=oldName.substring(0,x)+" "+material+oldName.substring(x);
 				}
 				newName=Util.capitalize(oldName);
-				beneficialAffect(mob,target,100);
+				beneficialAffect(mob,target,asLevel,100);
 			}
 
 		}

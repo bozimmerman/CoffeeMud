@@ -54,7 +54,7 @@ public class Chant_AcidRain extends Chant
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
@@ -68,7 +68,7 @@ public class Chant_AcidRain extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 
@@ -92,7 +92,7 @@ public class Chant_AcidRain extends Chant
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Acid rain starts pouring from the sky!");
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}

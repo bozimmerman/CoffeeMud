@@ -79,7 +79,7 @@ public class Spell_Ensnare extends Spell
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the ensnarement.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null)
@@ -92,7 +92,7 @@ public class Spell_Ensnare extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -117,7 +117,7 @@ public class Spell_Ensnare extends Spell
 						amountRemaining=60;
 						if(target.location()==mob.location())
 						{
-							success=maliciousAffect(mob,target,0,-1);
+							success=maliciousAffect(mob,target,asLevel,0,-1);
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) ensnared, and is unable to move <S-HIS-HER> feet!");
 						}
 					}

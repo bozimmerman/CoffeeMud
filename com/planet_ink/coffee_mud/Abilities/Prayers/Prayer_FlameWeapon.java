@@ -100,7 +100,7 @@ public class Prayer_FlameWeapon extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((auto||mob.isMonster())&&(commands.size()==0)&&(givenTarget==null))
 		{
@@ -127,7 +127,7 @@ public class Prayer_FlameWeapon extends Prayer
 			mob.tell(target.name()+" is already enflamed.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -142,7 +142,7 @@ public class Prayer_FlameWeapon extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,("<T-NAME> is engulfed in flames!")+CommonStrings.msp("fireball.wav",10));
 				target.recoverEnvStats();
 				mob.recoverEnvStats();

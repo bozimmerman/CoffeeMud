@@ -87,19 +87,19 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 			return true;
 		if(Dice.rollPercentage()>(target.charStats().getSave(CharStats.SAVE_DISEASE)))
 		{
-			((Ability)this.copyOf()).invoke(target,target,true);
+			((Ability)this.copyOf()).invoke(target,target,true,0);
 			if(target.fetchEffect(ID())!=null)
-				((Ability)thisOne.copyOf()).invoke(target,target,true);
+				((Ability)thisOne.copyOf()).invoke(target,target,true,0);
 		}
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -118,7 +118,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
-					success=maliciousAffect(mob,target,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}
 		else

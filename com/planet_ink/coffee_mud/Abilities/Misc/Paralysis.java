@@ -58,12 +58,12 @@ public class Paralysis extends StdAbility
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -79,7 +79,7 @@ public class Paralysis extends StdAbility
 				target.location().send(target,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't move!");
 				}
 			}

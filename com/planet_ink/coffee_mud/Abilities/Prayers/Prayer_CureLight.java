@@ -28,13 +28,13 @@ public class Prayer_CureLight extends Prayer
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -49,7 +49,7 @@ public class Prayer_CureLight extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int healing=Dice.roll(2,adjustedLevel(mob),4);
+				int healing=Dice.roll(2,adjustedLevel(mob,asLevel),4);
 				MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel a little better!");
 			}

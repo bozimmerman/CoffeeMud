@@ -29,12 +29,12 @@ public class Prayer_RemoveCurse extends Prayer
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -63,12 +63,12 @@ public class Prayer_RemoveCurse extends Prayer
 						Sense.setRemovable(I,true);
 						Sense.setDroppable(I,true);
 					}
-					Prayer_Bless.endLowerCurses(I,adjustedLevel(mob));
+					Prayer_Bless.endLowerCurses(I,adjustedLevel(mob,asLevel));
 					I.recoverEnvStats();
 					lastI=I;
 					I=Prayer_Bless.getSomething(target,true);
 				}
-				Prayer_Bless.endLowerCurses(target,adjustedLevel(mob));
+				Prayer_Bless.endLowerCurses(target,adjustedLevel(mob,asLevel));
 				target.recoverEnvStats();
 			}
 		}

@@ -54,7 +54,7 @@ public class Skill_ControlUndead extends StdAbility
 		return super.okMessage(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -76,7 +76,7 @@ public class Skill_ControlUndead extends StdAbility
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,(mob.envStats().level()-target.envStats().level())*30,auto);
@@ -107,7 +107,7 @@ public class Skill_ControlUndead extends StdAbility
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) submissive!");
 						target.makePeace();
-						beneficialAffect(mob,target,5);
+						beneficialAffect(mob,target,asLevel,5);
 					}
 
 				}

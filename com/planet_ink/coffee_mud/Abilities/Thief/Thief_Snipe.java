@@ -33,7 +33,7 @@ public class Thief_Snipe extends ThiefSkill
 	protected int overrideMana(){return 100;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
 		{
@@ -68,7 +68,7 @@ public class Thief_Snipe extends ThiefSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -90,7 +90,7 @@ public class Thief_Snipe extends ThiefSkill
 				if(mob.fetchEffect("Thief_Hide")==null)
 				{
 					Ability hide=mob.fetchAbility("Thief_Hide");
-					if(hide!=null) hide.invoke(mob,null,false);
+					if(hide!=null) hide.invoke(mob,null,false,asLevel);
 
 					mob.location().recoverRoomStats();
 					if(Sense.canBeSeenBy(mob,target))

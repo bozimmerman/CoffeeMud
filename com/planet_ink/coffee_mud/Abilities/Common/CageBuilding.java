@@ -42,13 +42,13 @@ public class CageBuilding extends Wainwrighting
 		return V;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Build what? Enter \"buildcage list\" for a list.");
 			return false;
 		}
-		return super.invoke(mob,commands,givenTarget,auto);
+		return super.invoke(mob,commands,givenTarget,auto,asLevel);
 	}
 }

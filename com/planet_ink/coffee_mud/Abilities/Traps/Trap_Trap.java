@@ -123,7 +123,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				MUDFight.postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
 
 				Ability P=CMClass.getAbility("Poison");
-				if(P!=null) P.invoke(invoker(),target,true);
+				if(P!=null) P.invoke(invoker(),target,true,0);
 			}
 		}
 	}
@@ -144,7 +144,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				if(msg.value()>0)
 					dmg=(int)Math.round(Util.div(dmg,2.0));
 				Ability P=CMClass.getAbility("Poison");
-				if(P!=null) P.invoke(invoker(),target,true);
+				if(P!=null) P.invoke(invoker(),target,true,0);
 				MUDFight.postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
 			}
 		}
@@ -173,7 +173,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"But nothing happened...");
 				return;
 			}
-			A.invoke(invoker(),V,mob,true);
+			A.invoke(invoker(),V,mob,true,0);
 		}
 	}
 

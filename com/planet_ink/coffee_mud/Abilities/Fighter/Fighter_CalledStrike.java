@@ -116,7 +116,7 @@ public class Fighter_CalledStrike extends StdAbility
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!prereqs(mob)) return false;
 
@@ -208,7 +208,7 @@ public class Fighter_CalledStrike extends StdAbility
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -218,7 +218,7 @@ public class Fighter_CalledStrike extends StdAbility
 			if(mob.location().show(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F<S-NAME> call(s) '"+gone+"'!^?"))
 			{
 				invoker=mob;
-				beneficialAffect(mob,mob,2);
+				beneficialAffect(mob,mob,asLevel,2);
 				mob.recoverEnvStats();
 			}
 		}

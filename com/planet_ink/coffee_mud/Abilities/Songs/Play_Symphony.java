@@ -710,7 +710,7 @@ public class Play_Symphony extends Play
 				MOB V=M.getVictim();
 				Ability A=CMClass.getAbility(toDoString);
 				if(A==null) Log.errOut("Symphony","No spell- "+toDoString);
-				else A.invoke(M,V,true);
+				else A.invoke(M,V,true,0);
 			}
 			break;
 		default:
@@ -718,14 +718,14 @@ public class Play_Symphony extends Play
 				MOB M=(MOB)affected;
 				Ability A=CMClass.getAbility(toDoString);
 				if(A==null) Log.errOut("Symphony","No spell- "+toDoString);
-				else A.invoke(M,M,true);
+				else A.invoke(M,M,true,0);
 			}
 			break;
 		}
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		instrument=null;
 		toDoCode=-1;
@@ -734,7 +734,7 @@ public class Play_Symphony extends Play
 			instrument=getInstrument(mob,requiredInstrumentType(),true);
 			if(instrument!=null) getToDoCode();
 		}
-		return super.invoke(mob,commands,givenTarget,auto);
+		return super.invoke(mob,commands,givenTarget,auto,asLevel);
 	}
 }
 

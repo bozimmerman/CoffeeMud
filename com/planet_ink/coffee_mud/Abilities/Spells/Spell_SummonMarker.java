@@ -36,7 +36,7 @@ public class Spell_SummonMarker extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
@@ -54,7 +54,7 @@ public class Spell_SummonMarker extends Spell
 				}
 			}
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -66,7 +66,7 @@ public class Spell_SummonMarker extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,mob.location(),CMMsg.MSG_OK_VISUAL,"The spot <S-NAME> pointed to glows for brief moment.");
-				beneficialAffect(mob,mob.location(),(adjustedLevel(mob)*240)+450);
+				beneficialAffect(mob,mob.location(),0,(adjustedLevel(mob,asLevel)*240)+450);
 			}
 
 		}

@@ -32,7 +32,7 @@ public class Thief_Ambush extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect("Thief_Hide")!=null)
 		{
@@ -46,7 +46,7 @@ public class Thief_Ambush extends ThiefSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		HashSet H=mob.getGroupMembers(new HashSet());
@@ -87,7 +87,7 @@ public class Thief_Ambush extends ThiefSkill
 				for(Iterator e=H.iterator();e.hasNext();)
 				{
 					MOB M=(MOB)e.next();
-					hide.invoke(M,M,true);
+					hide.invoke(M,M,true,asLevel);
 				}
 			}
 			else

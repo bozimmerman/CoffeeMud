@@ -95,8 +95,8 @@ public class Thiefness extends CombatAbilities
 					}
 					if(!A.ID().equalsIgnoreCase("Thief_Mug"))
 						V.addElement(victim.name());
-					A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
-					A.invoke(mob,V,null,false);
+					A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
+					A.invoke(mob,V,null,false,0);
 				}
 			}
 		}

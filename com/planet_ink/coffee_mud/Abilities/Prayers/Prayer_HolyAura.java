@@ -57,12 +57,12 @@ public class Prayer_HolyAura extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> holy aura fades.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -88,7 +88,7 @@ public class Prayer_HolyAura extends Prayer
 				}
 				Prayer_Bless.endLowerBlessings(target,CMAble.lowestQualifyingLevel(ID()));
 				Prayer_Bless.endLowerCurses(target,CMAble.lowestQualifyingLevel(ID()));
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				target.recoverEnvStats();
 			}
 		}

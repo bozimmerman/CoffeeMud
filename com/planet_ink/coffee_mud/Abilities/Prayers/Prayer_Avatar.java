@@ -130,7 +130,7 @@ public class Prayer_Avatar extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -152,7 +152,7 @@ public class Prayer_Avatar extends Prayer
 		}
 
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -168,7 +168,7 @@ public class Prayer_Avatar extends Prayer
 			{
 				mob.location().send(mob,msg);
 				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) the AVATAR!");
-				beneficialAffect(mob,target,levels);
+				beneficialAffect(mob,target,asLevel,levels);
 			}
 		}
 		else

@@ -113,7 +113,7 @@ public class ClanCrafting extends CraftingSkill
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -258,7 +258,7 @@ public class ClanCrafting extends CraftingSkill
 			}
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if(amt1>0)
 			destroyResources(mob.location(),amt1,data[0][FOUND_CODE],0,null,autoGenerate);
@@ -396,7 +396,7 @@ public class ClanCrafting extends CraftingSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,completion);
+			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		return true;
 	}

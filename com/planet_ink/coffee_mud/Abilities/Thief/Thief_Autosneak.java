@@ -76,7 +76,7 @@ public class Thief_Autosneak extends ThiefSkill
 				if(A!=null)
 				{
 					noRepeat=true;
-					if(A.invoke(mob,Util.parse(Directions.getDirectionName(dir)),null,false))
+					if(A.invoke(mob,Util.parse(Directions.getDirectionName(dir)),null,false,0))
 					{
 						int[] usage=A.usageCost(mob);
 						if(Util.bset(A.usageType(),Ability.USAGE_HITPOINTS)&&(usage[USAGE_HITPOINTSINDEX]>0))
@@ -96,7 +96,7 @@ public class Thief_Autosneak extends ThiefSkill
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{
@@ -104,7 +104,7 @@ public class Thief_Autosneak extends ThiefSkill
 			mob.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -112,7 +112,7 @@ public class Thief_Autosneak extends ThiefSkill
 		if(success)
 		{
 			mob.tell("You will now automatically sneak around while you move.");
-			beneficialAffect(mob,mob,0);
+			beneficialAffect(mob,mob,asLevel,0);
 			Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 		}

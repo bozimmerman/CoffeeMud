@@ -35,7 +35,7 @@ public class Thief_Appraise extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -48,7 +48,7 @@ public class Thief_Appraise extends ThiefSkill
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());

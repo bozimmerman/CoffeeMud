@@ -33,7 +33,7 @@ public class Fighter_Kick extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0)&&(!auto))
 		{
@@ -52,7 +52,7 @@ public class Fighter_Kick extends StdAbility
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -64,7 +64,7 @@ public class Fighter_Kick extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			int topDamage=adjustedLevel(mob)+2;
+			int topDamage=adjustedLevel(mob,asLevel)+2;
 			int damage=Dice.roll(1,topDamage,0);
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
 			if(mob.location().okMessage(mob,msg))

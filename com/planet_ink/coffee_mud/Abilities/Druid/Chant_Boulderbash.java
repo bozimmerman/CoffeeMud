@@ -30,7 +30,7 @@ public class Chant_Boulderbash extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
@@ -47,7 +47,7 @@ public class Chant_Boulderbash extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -65,7 +65,7 @@ public class Chant_Boulderbash extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob)).doubleValue());
+				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)).doubleValue());
 				int damage = Dice.roll(maxDie,6,maxDie);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(Util.div(damage,1.5));

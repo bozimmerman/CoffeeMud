@@ -53,7 +53,7 @@ public class Disease_Gonorrhea extends Disease
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;
 			Ability A=CMClass.getAbility("Disease_Arthritis");
-			A.invoke(diseaser,mob,true);
+			A.invoke(diseaser,mob,true,0);
 		}
 		else
 		if((!mob.amDead())&&((--diseaseTick)<=0))

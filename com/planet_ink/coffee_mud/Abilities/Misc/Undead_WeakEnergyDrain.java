@@ -81,7 +81,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 			mob.tell("The energy drain is lifted.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=null;
 		Ability reAffect=null;
@@ -102,7 +102,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 			target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -128,7 +128,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 						mob.recoverMaxState();
 					}
 					else
-						success=maliciousAffect(mob,target,10,-1);
+						success=maliciousAffect(mob,target,asLevel,10,-1);
 				}
 			}
 		}

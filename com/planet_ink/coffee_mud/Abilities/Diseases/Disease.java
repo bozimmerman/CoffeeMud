@@ -62,7 +62,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 				&&(targetMOB.location()!=null))
 				{
 					MOB following=targetMOB.amFollowing();
-					boolean doMe=invoke(diseased,targetMOB,true);
+					boolean doMe=invoke(diseased,targetMOB,true,0);
 					if(targetMOB.amFollowing()!=following)
 						targetMOB.setFollowing(following);
 					return doMe;
@@ -70,7 +70,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			}
 			else
 			{
-				maliciousAffect(diseased,target,DISEASE_TICKS(),-1);
+				maliciousAffect(diseased,target,0,DISEASE_TICKS(),-1);
 				return true;
 			}
 		}
@@ -202,12 +202,12 @@ public class Disease extends StdAbility implements DiseaseAffect
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
@@ -222,7 +222,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 				if(msg.value()<=0)
 				{
 					R.show(target,null,CMMsg.MSG_OK_VISUAL,DISEASE_START());
-				    success=maliciousAffect(mob,target,DISEASE_TICKS(),-1);
+				    success=maliciousAffect(mob,target,asLevel,DISEASE_TICKS(),-1);
 				}
 			}
 			if(auto)

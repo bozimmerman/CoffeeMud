@@ -72,7 +72,7 @@ public class Chant_SummonMount extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
@@ -101,7 +101,7 @@ public class Chant_SummonMount extends Chant
 		fromDir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
 		Room newRoom=mob.location().getRoomInDir(fromDir);
 		int opDir=Directions.getOpDirectionCode(fromDir);
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -113,7 +113,7 @@ public class Chant_SummonMount extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, adjustedLevel(mob));
+				MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
 				target.setMoney(0);
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");

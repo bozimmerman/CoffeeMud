@@ -28,7 +28,7 @@ public class Chant_SummonFood extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
@@ -46,7 +46,7 @@ public class Chant_SummonFood extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -59,7 +59,7 @@ public class Chant_SummonFood extends Chant
 				mob.location().send(mob,msg);
 				Food newItem=null;
 				int berryType=EnvResource.BERRIES[Dice.roll(1,EnvResource.BERRIES.length,-1)];
-				for(int i=0;i<((adjustedLevel(mob)/4)+1);i++)
+				for(int i=0;i<((adjustedLevel(mob,asLevel)/4)+1);i++)
 				{
 					newItem=(Food)CMClass.getStdItem("GenFoodResource");
 					newItem.setName("some "+EnvResource.RESOURCE_DESCS[berryType&EnvResource.RESOURCE_MASK].toLowerCase());

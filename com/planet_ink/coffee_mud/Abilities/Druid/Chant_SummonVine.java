@@ -93,7 +93,7 @@ public class Chant_SummonVine extends Chant
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
@@ -117,7 +117,7 @@ public class Chant_SummonVine extends Chant
 		}
 		int material=EnvResource.RESOURCE_HEMP;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -132,7 +132,7 @@ public class Chant_SummonVine extends Chant
 				MOB target = determineMonster(mob, material);
 				if(target!=null)
 				{
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 					if(target.isInCombat()) target.makePeace();
 					CommonMsgs.follow(target,mob,true);
 					if(target.amFollowing()!=mob)
@@ -152,7 +152,7 @@ public class Chant_SummonVine extends Chant
 	{
 		MOB victim=caster.getVictim();
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
-		int level=adjustedLevel(caster);
+		int level=adjustedLevel(caster,0);
 		if(level<1) level=1;
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setAbility(13);

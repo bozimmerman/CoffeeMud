@@ -50,9 +50,9 @@ public class Spell_SummonArmy extends Spell
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -84,7 +84,7 @@ public class Spell_SummonArmy extends Spell
 						newMOB.setFollowing(mob);
 					if(newMOB.getVictim()!=null)
 						newMOB.getVictim().setVictim(newMOB);
-					beneficialAffect(mob,newMOB,0);
+					beneficialAffect(mob,newMOB,asLevel,0);
 				}
 			}
 		}

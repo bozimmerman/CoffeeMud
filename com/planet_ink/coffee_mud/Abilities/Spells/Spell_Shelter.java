@@ -59,9 +59,9 @@ public class Spell_Shelter extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if(mob.fetchEffect(ID())!=null)
@@ -104,7 +104,7 @@ public class Spell_Shelter extends Spell
 						follower.tell("\n\r\n\r");
 						CommonMsgs.look(follower,true);
 						if(follower==mob)
-							beneficialAffect(mob,mob,999999);
+							beneficialAffect(mob,mob,asLevel,999999);
 					}
 				}
 			}

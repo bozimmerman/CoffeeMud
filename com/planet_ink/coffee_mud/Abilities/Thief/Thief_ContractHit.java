@@ -93,9 +93,9 @@ public class Thief_ContractHit extends ThiefSkill
 					M.setVictim(mob);
 					mob.setVictim(M);
 					Ability A=M.fetchAbility("Thief_Hide");
-					if(A!=null) A.invoke(M,M,true);
+					if(A!=null) A.invoke(M,M,true,0);
 					A=M.fetchAbility("Thief_BackStab");
-					if(A!=null) A.invoke(M,mob,false);
+					if(A!=null) A.invoke(M,mob,false,0);
 				}
 			}
 			else
@@ -119,7 +119,7 @@ public class Thief_ContractHit extends ThiefSkill
 							M.setVictim(null);
 							Ability A=M.fetchAbility("Thief_Assassinate");
 							A.setProfficiency(100);
-							A.invoke(M,mob,false);
+							A.invoke(M,mob,false,0);
 						}
 					}
 				}
@@ -150,7 +150,7 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -202,7 +202,7 @@ public class Thief_ContractHit extends ThiefSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
@@ -216,7 +216,7 @@ public class Thief_ContractHit extends ThiefSkill
 
 			mob.setMoney(mob.getMoney()-goldRequired);
 			if(success)
-				maliciousAffect(mob,target,target.envStats().level()+10,0);
+				maliciousAffect(mob,target,asLevel,target.envStats().level()+10,0);
 		}
 		return success;
 	}

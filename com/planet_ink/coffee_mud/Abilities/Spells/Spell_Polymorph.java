@@ -66,7 +66,7 @@ public class Spell_Polymorph extends Spell
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -75,7 +75,7 @@ public class Spell_Polymorph extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,-(target.charStats().getStat(CharStats.CONSTITUTION)*2),auto);
@@ -99,7 +99,7 @@ public class Spell_Polymorph extends Spell
 						newRace=CMClass.randomRace();
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
 					oldStats=target.baseEnvStats().cloneStats();
-					success=beneficialAffect(mob,target,0);
+					success=beneficialAffect(mob,target,asLevel,0);
 					target.recoverCharStats();
 					target.confirmWearability();
 				}

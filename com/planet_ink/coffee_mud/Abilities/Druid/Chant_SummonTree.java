@@ -57,7 +57,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 			newItem.addNonUninvokableEffect(newChant);
 		}
 		else
-			newChant.beneficialAffect(mob,newItem,(newChant.adjustedLevel(mob)*240)+450);
+			newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
 		room.recoverEnvStats();
 		return newItem;
 	}
@@ -90,7 +90,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		material=EnvResource.RESOURCE_OAK;
@@ -111,6 +111,6 @@ public class Chant_SummonTree extends Chant_SummonPlants
 				material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
 		}
 
-		return super.invoke(mob,commands,givenTarget,auto);
+		return super.invoke(mob,commands,givenTarget,auto,asLevel);
 	}
 }

@@ -34,7 +34,7 @@ public class Thief_Palm extends ThiefSkill
 	public int combatCastingTime(){return 0;}
 	public int castingTime(){return 0;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(!success)

@@ -59,7 +59,7 @@ public class MasterArmorsmithing extends Armorsmithing
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget,boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 
@@ -77,6 +77,6 @@ public class MasterArmorsmithing extends Armorsmithing
 		}
 		if(autoGenerate>0)
 			commands.insertElementAt(new Integer(autoGenerate),0);
-		return super.invoke(mob,commands,givenTarget,auto);
+		return super.invoke(mob,commands,givenTarget,auto,asLevel);
 	}
 }

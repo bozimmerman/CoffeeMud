@@ -39,7 +39,7 @@ public class Spell_IllusoryWall extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		String whatToOpen=Util.combine(commands,0);
@@ -58,7 +58,7 @@ public class Spell_IllusoryWall extends Spell
 			mob.tell("That way is already closed.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -72,7 +72,7 @@ public class Spell_IllusoryWall extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,exit,0);
+				beneficialAffect(mob,exit,asLevel,0);
 			}
 		}
 

@@ -61,7 +61,7 @@ public class Fighter_Charge extends StdAbility
 		affectableStats.setArmor(affectableStats.armor()+(2*affected.envStats().level()));
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		boolean notInCombat=!mob.isInCombat();
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -83,7 +83,7 @@ public class Fighter_Charge extends StdAbility
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -102,7 +102,7 @@ public class Fighter_Charge extends StdAbility
 				{
 					mob.setAtRange(0);
 					target.setAtRange(0);
-					beneficialAffect(mob,mob,2);
+					beneficialAffect(mob,mob,asLevel,2);
 					mob.recoverEnvStats();
 					if(notInCombat)
 					{

@@ -50,9 +50,9 @@ public class Spell_SummonMonster extends Spell
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -67,7 +67,7 @@ public class Spell_SummonMonster extends Spell
 				MOB target = determineMonster(mob, mob.envStats().level());
 				if(target.isInCombat()) target.makePeace();
 				CommonMsgs.follow(target,mob,true);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				if(target.amFollowing()!=mob)
 					mob.tell(target.name()+" seems unwilling to follow you.");
 			}

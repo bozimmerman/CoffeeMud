@@ -68,7 +68,7 @@ public class Chant_Treehouse extends Chant
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target = mob.location();
 		if(target.fetchEffect(ID())!=null)
@@ -99,7 +99,7 @@ public class Chant_Treehouse extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -158,7 +158,7 @@ public class Chant_Treehouse extends Chant
 					}
 				}
 				newRoom.getArea().fillInAreaRoom(newRoom);
-				beneficialAffect(mob,mob.location(),0);
+				beneficialAffect(mob,mob.location(),asLevel,0);
 			}
 		}
 		else

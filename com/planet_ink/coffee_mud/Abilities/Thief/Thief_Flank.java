@@ -85,7 +85,7 @@ public class Thief_Flank extends ThiefSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())
 		{
@@ -111,7 +111,7 @@ public class Thief_Flank extends ThiefSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -122,7 +122,7 @@ public class Thief_Flank extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				target=mob.getVictim();
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,mob,asLevel,0);
 			}
 		}
 		else

@@ -150,7 +150,7 @@ public class Druid_PlantForm extends StdAbility
 		return false;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
@@ -203,7 +203,7 @@ public class Druid_PlantForm extends StdAbility
 		raceName=getRaceName(classLevel);
 		newRace=getRace(classLevel);
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -227,7 +227,7 @@ public class Druid_PlantForm extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,Integer.MAX_VALUE);
+				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
 				raceName=Util.capitalize(Util.startWithAorAn(raceName.toLowerCase()));
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				mob.confirmWearability();

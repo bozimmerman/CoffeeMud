@@ -58,7 +58,7 @@ public class Spell_GreaterInvisibility extends Spell
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
 		if(target==null) return false;
@@ -67,7 +67,7 @@ public class Spell_GreaterInvisibility extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -84,7 +84,7 @@ public class Spell_GreaterInvisibility extends Spell
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fade(s) from view!");
 
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

@@ -54,12 +54,12 @@ public class Chant_Rockthought extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -76,7 +76,7 @@ public class Chant_Rockthought extends Chant
 				if(msg.value()<=0)
 				{
 					stubb=null;
-					success=maliciousAffect(mob,target,20,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
+					success=maliciousAffect(mob,target,asLevel,20,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();

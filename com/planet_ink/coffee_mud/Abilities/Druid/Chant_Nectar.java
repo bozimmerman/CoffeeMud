@@ -107,7 +107,7 @@ public class Chant_Nectar extends Chant
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!auto)
 		{
@@ -128,7 +128,7 @@ public class Chant_Nectar extends Chant
 		}
 
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -150,7 +150,7 @@ public class Chant_Nectar extends Chant
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				drank=new Vector();
 				lastNum=-1;
-				beneficialAffect(mob,newItem,0);
+				beneficialAffect(mob,newItem,asLevel,0);
 				mob.location().recoverEnvStats();
 			}
 		}

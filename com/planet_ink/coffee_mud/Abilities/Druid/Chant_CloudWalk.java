@@ -76,7 +76,7 @@ public class Chant_CloudWalk extends Chant
 					   &&(M.fetchEffect(ID())==null))
 					{
 						M.location().show(M,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> start(s) to fly around!");
-						beneficialAffect(mob,M,0);
+						beneficialAffect(mob,M,0,0);
 					}
 				}
 			}
@@ -84,7 +84,7 @@ public class Chant_CloudWalk extends Chant
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -100,7 +100,7 @@ public class Chant_CloudWalk extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 
@@ -118,7 +118,7 @@ public class Chant_CloudWalk extends Chant
 				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> start(s) to fly around!");
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}

@@ -53,7 +53,7 @@ public class Prayer_BloodHearth extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=mob.location();
 		if(target==null) return false;
@@ -63,7 +63,7 @@ public class Prayer_BloodHearth extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -81,7 +81,7 @@ public class Prayer_BloodHearth extends Prayer
 					CMClass.DBEngine().DBUpdateRoom((Room)target);
 				}
 				else
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

@@ -47,7 +47,7 @@ public class Play_Cymbals extends Play_Instrument
 					{
 						Vector chcommands=new Vector();
 						chcommands.addElement(Directions.getDirectionName(d));
-						getSpell().invoke(invoker(),chcommands,null,true);
+						getSpell().invoke(invoker(),chcommands,null,true,0);
 					}
 				}
 				for(int i=0;i<mob.location().numItems();i++)
@@ -60,7 +60,7 @@ public class Play_Cymbals extends Play_Instrument
 						{
 							Vector chcommands=new Vector();
 							chcommands.addElement(C.name());
-							getSpell().invoke(invoker(),chcommands,C,true);
+							getSpell().invoke(invoker(),chcommands,C,true,0);
 						}
 					}
 				}
@@ -75,7 +75,7 @@ public class Play_Cymbals extends Play_Instrument
 					{
 						Vector chcommands=new Vector();
 						chcommands.addElement(C.name());
-						getSpell().invoke(mob,chcommands,C,true);
+						getSpell().invoke(mob,chcommands,C,true,0);
 					}
 				}
 			}

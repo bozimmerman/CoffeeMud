@@ -29,7 +29,7 @@ public class Chant_CalmAnimal extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -45,7 +45,7 @@ public class Chant_CalmAnimal extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -60,7 +60,7 @@ public class Chant_CalmAnimal extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,3);
+				beneficialAffect(mob,target,asLevel,3);
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
 					MOB mob2=mob.location().fetchInhabitant(i);

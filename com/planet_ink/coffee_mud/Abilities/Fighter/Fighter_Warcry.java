@@ -66,9 +66,9 @@ public class Fighter_Warcry extends StdAbility
 			mob.tell("You calm down a bit.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -85,7 +85,7 @@ public class Fighter_Warcry extends StdAbility
 					MOB target=(MOB)e.next();
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> get(s) enraged!");
 					timesTicking=0;
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}

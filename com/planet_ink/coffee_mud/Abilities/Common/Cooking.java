@@ -343,7 +343,7 @@ public class Cooking extends CraftingSkill
 		return missing;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb=cookWord();
 		cooking=null;
@@ -715,7 +715,7 @@ public class Cooking extends CraftingSkill
 		//***********************************************
 		//* done figuring out recipe
 		//***********************************************
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		FullMsg msg=new FullMsg(mob,cooking,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_OK_ACTION,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) "+cookWord()+" something in <T-NAME>.");
@@ -723,7 +723,7 @@ public class Cooking extends CraftingSkill
 		{
 			mob.location().send(mob,msg);
 			cooking=(Container)msg.target();
-			beneficialAffect(mob,mob,duration);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

@@ -97,7 +97,7 @@ public class Thief_Bind extends ThiefSkill
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -117,7 +117,7 @@ public class Thief_Bind extends ThiefSkill
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -141,9 +141,9 @@ public class Thief_Bind extends ThiefSkill
 						amountRemaining=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level())*((int)Math.round(5.0+prof));
 					}
 					else
-						amountRemaining=adjustedLevel(mob)*25;
+						amountRemaining=adjustedLevel(mob,asLevel)*25;
 					if((target.location()==mob.location())||(auto))
-						success=maliciousAffect(mob,target,Integer.MAX_VALUE-1000,-1);
+						success=maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE-1000,-1);
 				}
 				if((mob.getVictim()==target)&&(!auto))
 					mob.setVictim(null);

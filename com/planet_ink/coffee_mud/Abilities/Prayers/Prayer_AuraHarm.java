@@ -68,7 +68,7 @@ public class Prayer_AuraHarm extends Prayer
 			{
 				if(invoker()!=null)
 				{
-					int harming=Dice.roll(1,adjustedLevel(invoker())+3,3);
+					int harming=Dice.roll(1,adjustedLevel(invoker(),0)+3,3);
 					MUDFight.postDamage(invoker(),M,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy aura <DAMAGE> <T-NAME>!");
 				}
 				else
@@ -80,7 +80,7 @@ public class Prayer_AuraHarm extends Prayer
 		}
 		return super.tick(ticking,tickID);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
@@ -95,7 +95,7 @@ public class Prayer_AuraHarm extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -111,7 +111,7 @@ public class Prayer_AuraHarm extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"A harmful aura descends over the area!");
-				maliciousAffect(mob,target,0,-1);
+				maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}
 		else

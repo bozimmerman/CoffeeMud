@@ -61,7 +61,7 @@ public class Spell_ConjureNexus extends Spell
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
@@ -77,7 +77,7 @@ public class Spell_ConjureNexus extends Spell
 				}
 			}
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -88,7 +88,7 @@ public class Spell_ConjureNexus extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),0);
+				beneficialAffect(mob,mob.location(),asLevel,0);
 			}
 
 		}

@@ -62,12 +62,12 @@ public class Prayer_BloodMoon extends Prayer
 		}
 		return true;
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -83,7 +83,7 @@ public class Prayer_BloodMoon extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"The Blood Moon rises over <S-NAME>.");
-				maliciousAffect(mob,target,0,-1);
+				maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}
 		else

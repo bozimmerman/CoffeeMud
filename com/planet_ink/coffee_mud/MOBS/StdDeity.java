@@ -279,7 +279,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(Blessing.canTarget(mob))
 			{
 				V.addElement(mob.name()+"$");
-				Blessing.invoke(this,V,mob,true);
+				Blessing.invoke(this,V,mob,true,mob.envStats().level());
 			}
 			else
 			if(Blessing.canTarget(CMClass.sampleItem()))
@@ -291,12 +291,12 @@ public class StdDeity extends StdMOB implements Deity
 				if(I==null) return;
 				V.addElement(I.name()+"$");
 				addInventory(I);
-				Blessing.invoke(this,V,I,true);
+				Blessing.invoke(this,V,I,true,mob.envStats().level());
 				delInventory(I);
 				if(!mob.isMine(I)) mob.addInventory(I);
 			}
 			else
-				Blessing.invoke(this,mob,true);
+				Blessing.invoke(this,mob,true,mob.envStats().level());
 		}
 		prevRoom.bringMobHere(this,false);
 		if(mob.location()!=prevRoom)
@@ -330,7 +330,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(Curse.canTarget(mob))
 			{
 				V.addElement(mob.name()+"$");
-				Curse.invoke(this,V,mob,true);
+				Curse.invoke(this,V,mob,true,mob.envStats().level());
 			}
 			else
 			if(Curse.canTarget(CMClass.sampleItem()))
@@ -342,12 +342,12 @@ public class StdDeity extends StdMOB implements Deity
 				if(I==null) return;
 				V.addElement(I.name()+"$");
 				addInventory(I);
-				Curse.invoke(this,V,I,true);
+				Curse.invoke(this,V,I,true,mob.envStats().level());
 				delInventory(I);
 				if(!mob.isMine(I)) mob.addInventory(I);
 			}
 			else
-				Curse.invoke(this,mob,true);
+				Curse.invoke(this,mob,true,mob.envStats().level());
 		}
 		prevRoom.bringMobHere(this,false);
 		if(mob.location()!=prevRoom)

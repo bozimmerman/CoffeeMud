@@ -90,12 +90,12 @@ public class Spell_RogueLimb extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -143,7 +143,7 @@ public class Spell_RogueLimb extends Spell
 					rogueLimb.bringToLife(mob.location(),true);
 					rogueLimb.setMoney(0);
 					rogueLimb.setVictim(target);
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,asLevel,0,-1);
 					rogueLimb.setVictim(target);
 				}
 			}

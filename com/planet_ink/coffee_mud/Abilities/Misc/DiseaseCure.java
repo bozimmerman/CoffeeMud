@@ -64,21 +64,21 @@ public class DiseaseCure extends StdAbility
 					case CMMsg.TYP_DRINK:
 						if(myItem instanceof Drink)
 						{
-							invoke(msg.source(),null,msg.source(),true);
+							invoke(msg.source(),null,msg.source(),true,0);
 							myItem.destroy();
 						}
 						break;
 					case CMMsg.TYP_EAT:
 						if(myItem instanceof Food)
 						{
-							invoke(msg.source(),null,msg.source(),true);
+							invoke(msg.source(),null,msg.source(),true,0);
 							myItem.destroy();
 						}
 						break;
 					case CMMsg.TYP_WEAR:
 						if(myItem.rawProperLocationBitmap()!=Item.HELD)
 						{
-							invoke(msg.source(),null,msg.source(),true);
+							invoke(msg.source(),null,msg.source(),true,0);
 							myItem.destroy();
 						}
 						break;
@@ -89,12 +89,12 @@ public class DiseaseCure extends StdAbility
 		super.executeMsg(myHost,msg);
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

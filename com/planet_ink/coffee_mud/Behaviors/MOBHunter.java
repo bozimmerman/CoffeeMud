@@ -92,7 +92,7 @@ public class MOBHunter extends ActiveTicker
 					A.setProfficiency(100);
 					mob.curState().setMana(mob.maxState().getMana());
 					mob.curState().setMovement(mob.maxState().getMovement());
-					A.invoke(mob, new Vector(), prey, false);
+					A.invoke(mob, new Vector(), prey, false,0);
 				}
 			}
 	    }

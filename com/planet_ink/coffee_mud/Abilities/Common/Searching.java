@@ -62,11 +62,11 @@ public class Searching extends CommonSkill
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb="searching";
 		success=false;
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if(profficiencyCheck(mob,0,auto))
 			success=true;
@@ -76,7 +76,7 @@ public class Searching extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			searchRoom=mob.location();
-			beneficialAffect(mob,mob,duration);
+			beneficialAffect(mob,mob,asLevel,duration);
 			mob.tell(" ");
 			CommonMsgs.look(mob,true);
 		}

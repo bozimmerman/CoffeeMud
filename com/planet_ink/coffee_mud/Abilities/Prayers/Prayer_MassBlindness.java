@@ -51,9 +51,9 @@ public class Prayer_MassBlindness extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		HashSet h=properTargets(mob,givenTarget,auto);
@@ -78,7 +78,7 @@ public class Prayer_MassBlindness extends Prayer
 						mob.location().send(mob,msg);
 						if(msg.value()<=0)
 						{
-							success=maliciousAffect(mob,target,0,-1);
+							success=maliciousAffect(mob,target,asLevel,0,-1);
 							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) blind!");
 						}
 						nothingDone=false;

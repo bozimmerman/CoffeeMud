@@ -57,6 +57,6 @@ public class Fighter_Heroism extends StdAbility
 								affectableStats.getStat(CharStats.SAVE_JUSTICE)
 								+(affectableStats.getStat(CharStats.CHARISMA)/4)
 								+(affectableStats.getStat(CharStats.STRENGTH)/4)
-								+(adjustedLevel(affected)/2));
+								+(adjustedLevel(affected,0)/2));
 	}
 }

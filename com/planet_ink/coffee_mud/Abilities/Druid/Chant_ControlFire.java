@@ -31,7 +31,7 @@ public class Chant_ControlFire extends Chant
 	public int maxRange(){return 5;}
 	public int minRange(){return 0;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -40,7 +40,7 @@ public class Chant_ControlFire extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -80,7 +80,7 @@ public class Chant_ControlFire extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-                int numDice = (int)Math.round(Util.div(adjustedLevel(mob),2.0))+1;
+                int numDice = (int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0))+1;
 				int damage = Dice.roll(numDice, 6, 20);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(Util.div(damage,2.0));

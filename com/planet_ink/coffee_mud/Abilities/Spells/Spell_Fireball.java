@@ -29,12 +29,12 @@ public class Spell_Fireball extends Spell
 	public int quality(){return MALICIOUS;};
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -52,7 +52,7 @@ public class Spell_Fireball extends Spell
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
 				invoker=mob;
-                int numDice = (int)Math.round(Util.div(adjustedLevel(mob),2.0));
+                int numDice = (int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0));
 				int damage = Dice.roll(numDice, 10, 10);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(Util.div(damage,2.0));

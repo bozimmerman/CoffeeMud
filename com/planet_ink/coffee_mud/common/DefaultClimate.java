@@ -465,7 +465,7 @@ public class DefaultClimate implements Climate
 								if(Dice.rollPercentage()<(fluChance+(((M.location().domainConditions()&Room.CONDITION_WET)>0)?10:0)))
 									COLD=CMClass.getAbility("Disease_Flu");
 								if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null))
-									COLD.invoke(M,M,true);
+									COLD.invoke(M,M,true,0);
 							}
 						}
 					}

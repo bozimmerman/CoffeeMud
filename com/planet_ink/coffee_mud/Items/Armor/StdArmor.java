@@ -342,7 +342,7 @@ public class StdArmor extends StdContainer implements Armor
 						{
 							Ability A=CMClass.getAbility("Disease_Tinnitus");
 							if((A!=null)&&(owner().fetchEffect(A.ID())==null))
-								A.invoke((MOB)owner(),owner(),true);
+								A.invoke((MOB)owner(),owner(),true,0);
 						}
 						if(Dice.rollPercentage()<5)
 							setUsesRemaining(usesRemaining()-2);

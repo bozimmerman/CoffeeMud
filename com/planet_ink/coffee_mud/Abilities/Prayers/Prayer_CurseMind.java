@@ -67,7 +67,7 @@ public class Prayer_CurseMind extends Prayer
 		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)-50);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -76,7 +76,7 @@ public class Prayer_CurseMind extends Prayer
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,-target.envStats().level(),auto);
@@ -95,7 +95,7 @@ public class Prayer_CurseMind extends Prayer
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
-					success=maliciousAffect(mob,target,15,-1);
+					success=maliciousAffect(mob,target,asLevel,15,-1);
 			}
 		}
 		else

@@ -51,12 +51,12 @@ public class Chant_Sunray extends Chant
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
@@ -80,7 +80,7 @@ public class Chant_Sunray extends Chant
 				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) blind!");
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}

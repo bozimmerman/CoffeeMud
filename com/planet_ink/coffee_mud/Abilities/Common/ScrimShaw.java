@@ -120,7 +120,7 @@ public class ScrimShaw extends CraftingSkill
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -171,7 +171,7 @@ public class ScrimShaw extends CraftingSkill
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
 			mending=true;
-			if(!super.invoke(mob,commands,givenTarget,auto))
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+building.name()+".";
 			displayText="You are mending "+building.name();
@@ -220,7 +220,7 @@ public class ScrimShaw extends CraftingSkill
 												autoGenerate);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
-			if(!super.invoke(mob,commands,givenTarget,auto))
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,autoGenerate);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
@@ -384,7 +384,7 @@ public class ScrimShaw extends CraftingSkill
 		{
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
-			beneficialAffect(mob,mob,completion);
+			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		else
 		if(bundle)

@@ -75,7 +75,7 @@ public class NiceAbilities extends ActiveTicker
 					tryThisOne.setProfficiency(100);
 					Vector V=new Vector();
 					V.addElement(target.name());
-					tryThisOne.invoke(mob,V,target,false);
+					tryThisOne.invoke(mob,V,target,false,0);
 				}
 		}
 		return true;

@@ -100,7 +100,7 @@ public class Chant_Shapelessness extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -116,7 +116,7 @@ public class Chant_Shapelessness extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -132,7 +132,7 @@ public class Chant_Shapelessness extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shimmer(s) and become(s) ethereal!");
-				beneficialAffect(mob,target,3);
+				beneficialAffect(mob,target,asLevel,3);
 			}
 		}
 		else

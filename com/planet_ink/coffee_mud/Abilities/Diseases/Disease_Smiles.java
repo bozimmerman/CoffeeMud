@@ -53,7 +53,7 @@ public class Disease_Smiles extends Disease
 			if(diseaser==null) diseaser=mob;
 			mob.delEffect(this);
 			Ability A=CMClass.getAbility("Disease_Giggles");
-			A.invoke(diseaser,mob,true);
+			A.invoke(diseaser,mob,true,0);
 		}
 		else
 		if((!mob.amDead())&&((--diseaseTick)<=0))

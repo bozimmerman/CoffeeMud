@@ -56,7 +56,7 @@ public class Thief_Steal extends ThiefSkill
 		return times+1;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -84,7 +84,7 @@ public class Thief_Steal extends ThiefSkill
 			mob.tell("You cannot steal from "+target.charStats().himher()+".");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Item stolen=target.fetchCarried(null,itemToSteal);

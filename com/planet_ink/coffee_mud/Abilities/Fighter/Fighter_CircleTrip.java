@@ -80,7 +80,7 @@ public class Fighter_CircleTrip extends StdAbility
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!Sense.aliveAwakeMobile(mob,true)||(Sense.isSitting(mob))))
 		{
@@ -97,7 +97,7 @@ public class Fighter_CircleTrip extends StdAbility
 			mob.tell("You need at least two legs to do this.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		HashSet h=properTargets(mob,givenTarget,auto);
@@ -147,7 +147,7 @@ public class Fighter_CircleTrip extends StdAbility
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
-						maliciousAffect(mob,target,2,-1);
+						maliciousAffect(mob,target,asLevel,2,-1);
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the floor!");
 					}
 				}

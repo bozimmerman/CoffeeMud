@@ -98,7 +98,7 @@ public class Prop_WearSpellCast extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(newMOB,V2,newMOB,true);
+				A.invoke(newMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
 				EA=newMOB.fetchEffect(A.ID());
 			}
 			if(EA!=null)

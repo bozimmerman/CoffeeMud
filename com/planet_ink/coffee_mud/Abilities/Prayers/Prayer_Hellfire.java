@@ -28,13 +28,13 @@ public class Prayer_Hellfire extends Prayer
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -52,7 +52,7 @@ public class Prayer_Hellfire extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					int harming=Dice.roll(3,adjustedLevel(mob),adjustedLevel(mob));
+					int harming=Dice.roll(3,adjustedLevel(mob,asLevel),adjustedLevel(mob,asLevel));
 					if(undead) harming=harming/2;
 					if(target.getAlignment()>650)
 						MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURNING,"The unholy HELLFIRE <DAMAGE> <T-NAME>!");

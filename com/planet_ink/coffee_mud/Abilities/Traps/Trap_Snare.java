@@ -73,7 +73,7 @@ public class Trap_Snare extends StdTrap
 				Item I=CMClass.getItem("StdItem");
 				I.setName("the snare");
 				A.setAffectedOne(I);
-				A.invoke(invoker(),target,true);
+				A.invoke(invoker(),target,true,0);
 			}
 		}
 	}

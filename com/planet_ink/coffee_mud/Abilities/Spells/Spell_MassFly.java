@@ -29,7 +29,7 @@ public class Spell_MassFly extends Spell
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,false);
 		if(h==null)
@@ -42,7 +42,7 @@ public class Spell_MassFly extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -66,7 +66,7 @@ public class Spell_MassFly extends Spell
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) to fly around!");
 					Spell_Fly fly=new Spell_Fly();
 					fly.setProfficiency(profficiency());
-					fly.beneficialAffect(mob,target,0);
+					fly.beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}

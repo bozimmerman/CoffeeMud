@@ -46,7 +46,7 @@ public class Chant_VolcanicChasm extends Chant
 				if((I!=null)&&(!Sense.isOnFire(I)))
 				{
 					Ability A=CMClass.getAbility("Burning");
-					if(A!=null)	A.invoke(invoker(),I,true);
+					if(A!=null)	A.invoke(invoker(),I,true,0);
 				}
 			}
 		}
@@ -67,7 +67,7 @@ public class Chant_VolcanicChasm extends Chant
 		super.executeMsg(host,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
@@ -82,7 +82,7 @@ public class Chant_VolcanicChasm extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 
@@ -106,7 +106,7 @@ public class Chant_VolcanicChasm extends Chant
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Flames and sulfurous steam leap from cracks opening around you!");
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}

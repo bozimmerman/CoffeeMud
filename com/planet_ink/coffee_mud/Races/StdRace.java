@@ -138,7 +138,7 @@ public class StdRace implements Race
 				if((A!=null)
 				&&(myChar.fetchAbility(A.ID())==null)
 				&&(myChar.fetchEffect(A.ID())==null))
-					A.invoke(msg.source(),myChar,true);
+					A.invoke(msg.source(),myChar,true,0);
 			}
 		}
 	}
@@ -177,7 +177,7 @@ public class StdRace implements Race
 					mob.addAbility(A);
 					A.autoInvocation(mob);
 					if((mob.isMonster())&&((A.classificationCode()&Ability.ALL_CODES)==Ability.LANGUAGE))
-						A.invoke(mob,mob,false);
+						A.invoke(mob,mob,false,0);
 				}
 			}
 		}

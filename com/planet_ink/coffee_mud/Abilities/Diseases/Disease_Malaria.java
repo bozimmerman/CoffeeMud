@@ -70,7 +70,7 @@ public class Disease_Malaria extends Disease
 			if(Dice.rollPercentage()==1)
 			{
 				Ability A=CMClass.getAbility("Disease_Fever");
-				if(A!=null) A.invoke(diseaser,mob,true);
+				if(A!=null) A.invoke(diseaser,mob,true,0);
 			}
 			return true;
 		}

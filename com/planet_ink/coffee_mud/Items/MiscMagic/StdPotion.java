@@ -75,7 +75,7 @@ public class StdPotion extends StdDrink implements Potion
 				for(int i=0;i<spells.size();i++)
 				{
 					Ability thisOne=(Ability)((Ability)spells.elementAt(i)).copyOf();
-					thisOne.invoke(mob,mob,true);
+					thisOne.invoke(mob,mob,true,envStats().level());
 					setDrunk(true);
 					setLiquidRemaining(0);
 				}

@@ -80,7 +80,7 @@ public class Spell_WizardLock extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
@@ -129,7 +129,7 @@ public class Spell_WizardLock extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -164,13 +164,13 @@ public class Spell_WizardLock extends Spell
 						CMClass.DBEngine().DBUpdateExits(R);
 					}
 					else
-						beneficialAffect(mob,target,0);
+						beneficialAffect(mob,target,asLevel,0);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");
 				}
 				else
 				if(target instanceof Container)
 				{
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 					Container container=(Container)target;
 					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");

@@ -60,7 +60,7 @@ public class Disease_Infection extends Disease
 		{
 			mob.delEffect(this);
 			Ability A=CMClass.getAbility("Disease_Gangrene");
-			A.invoke(diseaser,mob,true);
+			A.invoke(diseaser,mob,true,0);
 		}
 		else
 		if((!mob.amDead())&&((--diseaseTick)<=0))
@@ -72,7 +72,7 @@ public class Disease_Infection extends Disease
 			if(Dice.rollPercentage()==1)
 			{
 				Ability A=CMClass.getAbility("Disease_Fever");
-				if(A!=null) A.invoke(diseaser,mob,true);
+				if(A!=null) A.invoke(diseaser,mob,true,0);
 			}
 			return true;
 		}

@@ -104,7 +104,7 @@ public class Chant_LocatePlants extends Chant
 			msg.append("There seem to be a large number of plants all around you!\n\r");
 		return msg.toString();
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -118,7 +118,7 @@ public class Chant_LocatePlants extends Chant
 		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		String here=plantsHere(target,target.location());

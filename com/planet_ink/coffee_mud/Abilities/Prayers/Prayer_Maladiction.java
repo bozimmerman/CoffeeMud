@@ -56,12 +56,12 @@ public class Prayer_Maladiction extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -77,7 +77,7 @@ public class Prayer_Maladiction extends Prayer
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
-					maliciousAffect(mob,target,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY),-1);
+					maliciousAffect(mob,target,asLevel,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY),-1);
 			}
 		}
 		else

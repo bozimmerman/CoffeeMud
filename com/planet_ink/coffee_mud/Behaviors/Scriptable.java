@@ -3743,7 +3743,7 @@ public class Scriptable extends StdBehavior
 				if((newTarget!=null)&&(A!=null))
 				{
 					A.setProfficiency(100);
-					A.invoke(monster,newTarget,false);
+					A.invoke(monster,newTarget,false,0);
 				}
 				break;
 			}
@@ -3760,7 +3760,7 @@ public class Scriptable extends StdBehavior
 					if((A.classificationCode()&Ability.ALL_CODES)==A.PROPERTY)
 						newTarget.addNonUninvokableEffect(A);
 					else
-						A.invoke(monster,Util.parse(m2),newTarget,true);
+						A.invoke(monster,Util.parse(m2),newTarget,true,0);
 				}
 				break;
 			}
@@ -4193,7 +4193,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				Ability A=CMClass.getAbility("Skill_Track");
-				if(A!=null)	A.invoke(monster,Util.parse(arg1),null,true);
+				if(A!=null)	A.invoke(monster,Util.parse(arg1),null,true,0);
 				break;
 			}
 			case 21: //MPENDQUEST

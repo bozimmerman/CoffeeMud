@@ -52,7 +52,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 					if(A!=null)
 					{
 						int x=100;
-						while(((--x)>0)&&A.invoke(mob,Util.parse("foot"),mob,true));
+						while(((--x)>0)&&A.invoke(mob,Util.parse("foot"),mob,true,0));
 						mob.recoverCharStats();
 						mob.recoverEnvStats();
 						mob.recoverMaxState();
@@ -100,7 +100,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -111,7 +111,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -130,7 +130,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					invoker=mob;
-					maliciousAffect(mob,target,Integer.MAX_VALUE/2,-1);
+					maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE/2,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A fungus sprouts up between <S-YOUPOSS> toes!");
 				}
 			}

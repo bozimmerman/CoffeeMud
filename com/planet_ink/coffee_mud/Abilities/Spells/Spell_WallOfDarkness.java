@@ -100,7 +100,7 @@ public class Spell_WallOfDarkness extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
@@ -121,7 +121,7 @@ public class Spell_WallOfDarkness extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Environmental target = mob.location();
@@ -149,7 +149,7 @@ public class Spell_WallOfDarkness extends Spell
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;
-				beneficialAffect(mob,I,10);
+				beneficialAffect(mob,I,asLevel,10);
 			}
 		}
 		else

@@ -56,7 +56,7 @@ public class FireBuilding extends CommonSkill
 					}
 					Ability B=CMClass.getAbility("Burning");
 					B.setProfficiency(durationOfBurn);
-					B.invoke(mob,lighting,true);
+					B.invoke(mob,lighting,true,0);
 				}
 				lighting=null;
 			}
@@ -64,7 +64,7 @@ public class FireBuilding extends CommonSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.isMonster()
 		&&(!Sense.isAnimalIntelligence(mob)))
@@ -76,7 +76,7 @@ public class FireBuilding extends CommonSkill
 			commonTell(mob,"Light what?  Try light fire, or light torch...");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		String name=Util.combine(commands,0);
@@ -184,7 +184,7 @@ public class FireBuilding extends CommonSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,completion);
+			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		return true;
 	}

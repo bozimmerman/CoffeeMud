@@ -77,7 +77,7 @@ public class Prayer_CreateIdol extends Prayer
 		return super.okMessage(host,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.getWorshipCharID().length()==0)||(CMMap.getDeity(mob.getWorshipCharID())==null))
 		{
@@ -85,7 +85,7 @@ public class Prayer_CreateIdol extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int material=-1;
 		Room R=mob.location();

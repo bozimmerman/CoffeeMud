@@ -28,7 +28,7 @@ public class Spell_Summon extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
@@ -76,7 +76,7 @@ public class Spell_Summon extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int adjustment=(target.envStats().level()-mob.envStats().level())*3;

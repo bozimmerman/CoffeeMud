@@ -150,7 +150,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	}
 	
 	
-	public int adjustedLevel(MOB caster)
+	public int adjustedLevel(MOB caster, int asLevel)
 	{
 		if(caster==null) return 1;
 		int lowestQualifyingLevel=CMAble.lowestQualifyingLevel(this.ID());
@@ -159,11 +159,10 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		if((caster.isMonster())||(qualifyingLevel>=0))
 			adjLevel+=(CMAble.qualifyingClassLevel(caster,this)-qualifyingLevel);
 		else
-		{
 			adjLevel=caster.envStats().level()-lowestQualifyingLevel-25;
-			if(adjLevel<lowestQualifyingLevel)
-				adjLevel=lowestQualifyingLevel;
-		}
+		if(asLevel>=0) adjLevel=asLevel;
+		if(adjLevel<lowestQualifyingLevel)
+			adjLevel=lowestQualifyingLevel;
 		if(adjLevel<1) return 1;
 		return adjLevel;
 	}
@@ -606,15 +605,15 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			A.setProfficiency(100);
 	}
 
-	public boolean invoke(MOB mob, Environmental target, boolean auto)
+	public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel)
 	{
 		Vector V=new Vector();
 		if(target!=null)
 			V.addElement(target.name());
-		return invoke(mob,V,target,auto);
+		return invoke(mob,V,target,auto,asLevel);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
 		if(!auto)
 		{
@@ -681,6 +680,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 
 	public boolean maliciousAffect(MOB mob,
 								   Environmental target,
+								   int asLevel,
 								   int tickAdjustmentFromStandard,
 								   int additionAffectCheckCode)
 	{
@@ -703,7 +703,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			((StdAbility)newOne).canBeUninvoked=true;
 			if(tickAdjustmentFromStandard<=0)
 			{
-				tickAdjustmentFromStandard=(adjustedLevel(mob)*4)+25;
+				tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*4)+25;
 
 				if(target!=null)
 					tickAdjustmentFromStandard-=(target.envStats().level()*2);
@@ -759,6 +759,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 
 	public boolean beneficialAffect(MOB mob,
 								   Environmental target,
+								   int asLevel,
 								   int tickAdjustmentFromStandard)
 	{
 		boolean ok=true;
@@ -770,7 +771,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 
 			if(tickAdjustmentFromStandard<=0)
 			{
-				tickAdjustmentFromStandard=(adjustedLevel(mob)*7)+60;
+				tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*7)+60;
 				if(tickAdjustmentFromStandard>(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2))
 					tickAdjustmentFromStandard=(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2);
 				if(tickAdjustmentFromStandard<5)

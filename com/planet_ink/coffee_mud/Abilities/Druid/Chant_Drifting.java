@@ -77,7 +77,7 @@ public class Chant_Drifting extends Chant
 			Ability A=CMClass.getAbility("Falling");
 			A.setAffectedOne(null);
 			A.setProfficiency(100);
-			A.invoke(null,null,affected,true);
+			A.invoke(null,null,affected,true,0);
 			affected.recoverEnvStats();
 		}
 		return true;
@@ -108,7 +108,7 @@ public class Chant_Drifting extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -123,7 +123,7 @@ public class Chant_Drifting extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -136,7 +136,7 @@ public class Chant_Drifting extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=beneficialAffect(mob,target,0);
+					success=beneficialAffect(mob,target,asLevel,0);
 					((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) drifting up!");
 				}
 			}

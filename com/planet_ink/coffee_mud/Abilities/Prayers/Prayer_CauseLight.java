@@ -28,13 +28,13 @@ public class Prayer_CauseLight extends Prayer
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -51,7 +51,7 @@ public class Prayer_CauseLight extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					int harming=Dice.roll(1,adjustedLevel(mob)+3,3);
+					int harming=Dice.roll(1,adjustedLevel(mob,asLevel)+3,3);
 					MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
 				}
 			}

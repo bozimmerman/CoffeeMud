@@ -27,7 +27,7 @@ public class Spell_ShockingGrasp extends Spell
 	public int quality(){return MALICIOUS;};
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -36,7 +36,7 @@ public class Spell_ShockingGrasp extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -58,7 +58,7 @@ public class Spell_ShockingGrasp extends Spell
 					if(msg2.value()<=0)
 					{
 						invoker=mob;
-						int damage = Dice.roll(1,8,adjustedLevel(mob));
+						int damage = Dice.roll(1,8,adjustedLevel(mob,asLevel));
 						MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,auto?"<T-NAME> gasp(s) in shock and pain!":"The shocking grasp <DAMAGE> <T-NAME>!");
 					}
 				}

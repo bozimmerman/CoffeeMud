@@ -37,7 +37,7 @@ public class Prayer_Benediction extends Prayer
 		if(invoker==null)return;
 
 		MOB mob=(MOB)affected;
-		int pts=adjustedLevel(invoker())/5;
+		int pts=adjustedLevel(invoker(),0)/5;
 		CharStats chk=new DefaultCharStats(0);
 		chk.setCurrentClass(mob.charStats().getCurrentClass());
 		for(int c=0;c<mob.charStats().numClasses();c++)
@@ -63,12 +63,12 @@ public class Prayer_Benediction extends Prayer
 			mob.tell("Your benediction fades.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -83,7 +83,7 @@ public class Prayer_Benediction extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

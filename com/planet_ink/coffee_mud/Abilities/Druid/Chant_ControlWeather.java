@@ -43,14 +43,14 @@ public class Chant_ControlWeather extends Chant
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Ability A=mob.location().getArea().fetchEffect(ID());
@@ -68,7 +68,7 @@ public class Chant_ControlWeather extends Chant
 				if((A!=null)&&(A.invoker()!=mob))
 					mob.tell("You successfully wrest control of the weather from "+A.invoker().name()+".");
 				if(A!=null) A.unInvoke();
-				beneficialAffect(mob,mob.location().getArea(),0);
+				beneficialAffect(mob,mob.location().getArea(),asLevel,0);
 			}
 		}
 		else

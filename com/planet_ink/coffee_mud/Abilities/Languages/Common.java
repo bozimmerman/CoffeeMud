@@ -37,7 +37,7 @@ public class Common extends Language
 	}
 	public int profficiency(){return 100;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		for(int a=0;a<mob.numAllEffects();a++)
 		{

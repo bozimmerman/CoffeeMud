@@ -112,7 +112,7 @@ public class Chant_SummonPlants extends Chant
 			newItem.addNonUninvokableEffect(newChant);
 		}
 		else
-			newChant.beneficialAffect(mob,newItem,(newChant.adjustedLevel(mob)*240)+450);
+			newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
 		room.recoverEnvStats();
 		return newItem;
 	}
@@ -142,11 +142,11 @@ public class Chant_SummonPlants extends Chant
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!rightPlace(mob,auto)) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked

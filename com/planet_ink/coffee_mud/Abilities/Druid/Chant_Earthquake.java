@@ -89,7 +89,7 @@ public class Chant_Earthquake extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null)
@@ -102,7 +102,7 @@ public class Chant_Earthquake extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -130,7 +130,7 @@ public class Chant_Earthquake extends Chant
 					{
 						if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
 						{
-							success=maliciousAffect(mob,target,3,-1);
+							success=maliciousAffect(mob,target,asLevel,3,-1);
 							if(success)
 							{
 								if(target.location()==mob.location())

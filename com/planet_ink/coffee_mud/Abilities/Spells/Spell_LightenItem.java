@@ -58,7 +58,7 @@ public class Spell_LightenItem extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null)
@@ -75,7 +75,7 @@ public class Spell_LightenItem extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -87,7 +87,7 @@ public class Spell_LightenItem extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) much lighter.");
-				beneficialAffect(mob,target,100);
+				beneficialAffect(mob,target,asLevel,100);
 				target.recoverEnvStats();
 				mob.recoverEnvStats();
 				mob.location().recoverRoomStats();

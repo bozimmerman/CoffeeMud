@@ -53,7 +53,7 @@ public class Spell_Claireaudience extends Spell
 			((MOB)invoker).executeMsg(invoker,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
@@ -126,7 +126,7 @@ public class Spell_Claireaudience extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -140,7 +140,7 @@ public class Spell_Claireaudience extends Spell
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);
 				scries.addElement(target,mob);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 
 		}

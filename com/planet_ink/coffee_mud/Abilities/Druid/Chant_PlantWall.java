@@ -125,7 +125,7 @@ public class Chant_PlantWall extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
@@ -151,7 +151,7 @@ public class Chant_PlantWall extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Environmental target = mob.location();
@@ -181,7 +181,7 @@ public class Chant_PlantWall extends Chant
 				mob.location().addItem(I);
 				theWall=I;
 				deathNotice="The plant wall withers away!";
-				beneficialAffect(mob,I,0);
+				beneficialAffect(mob,I,asLevel,0);
 			}
 		}
 		else

@@ -75,7 +75,7 @@ public class Thief_Listen extends ThiefSkill
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String whom=Util.combine(commands,0);
 		int dirCode=Directions.getGoodDirectionCode(whom);
@@ -110,7 +110,7 @@ public class Thief_Listen extends ThiefSkill
 			}
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=false;
@@ -134,7 +134,7 @@ public class Thief_Listen extends ThiefSkill
 					if(profficiency()>((room==mob.location())?50:75))
 					{
 						sourceRoom=mob.location();
-						beneficialAffect(mob,room,((room==mob.location())?0:10));
+						beneficialAffect(mob,room,asLevel,((room==mob.location())?0:10));
 					}
 				}
 				else

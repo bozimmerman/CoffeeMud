@@ -30,7 +30,7 @@ public class Thief_Surrender extends ThiefSkill
 	private static final String[] triggerStrings = {"SURRENDER"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Vector theList=new Vector();
 		int gold=0;
@@ -49,7 +49,7 @@ public class Thief_Surrender extends ThiefSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

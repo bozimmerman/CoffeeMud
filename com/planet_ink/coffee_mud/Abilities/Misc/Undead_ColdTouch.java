@@ -54,7 +54,7 @@ public class Undead_ColdTouch extends StdAbility
 			mob.tell("The chill is lifted.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
@@ -64,7 +64,7 @@ public class Undead_ColdTouch extends StdAbility
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -80,7 +80,7 @@ public class Undead_ColdTouch extends StdAbility
 				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) cold!");
-					success=maliciousAffect(mob,target,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}

@@ -58,7 +58,7 @@ public class Injury extends StdAbility
 		super.setMiscText(text);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         return true;
 	}

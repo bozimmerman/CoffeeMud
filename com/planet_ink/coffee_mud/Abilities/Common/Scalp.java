@@ -90,7 +90,7 @@ public class Scalp extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		body=null;
 		Item I=null;
@@ -129,7 +129,7 @@ public class Scalp extends CommonSkill
 			return false;
 
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		failed=!profficiencyCheck(mob,0,auto);
 		FullMsg msg=new FullMsg(mob,I,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_OK_ACTION,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scalping <T-NAME>.");
@@ -142,7 +142,7 @@ public class Scalp extends CommonSkill
 			int duration=(I.envStats().weight()/10);
 			if(duration<3) duration=3;
 			if(duration>40) duration=40;
-			beneficialAffect(mob,mob,duration);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

@@ -62,7 +62,7 @@ public class Fighter_KiStrike extends StdAbility
 			affectableStats.setDamage(affectableStats.damage()+(affected.envStats().level()));
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -78,7 +78,7 @@ public class Fighter_KiStrike extends StdAbility
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -94,7 +94,7 @@ public class Fighter_KiStrike extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				done=false;
-				beneficialAffect(mob,target,2);
+				beneficialAffect(mob,target,asLevel,2);
 			}
 		}
 		else

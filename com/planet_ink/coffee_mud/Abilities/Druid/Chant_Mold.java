@@ -42,7 +42,7 @@ public class Chant_Mold extends Chant
 			item.destroy();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
@@ -59,7 +59,7 @@ public class Chant_Mold extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 
@@ -84,7 +84,7 @@ public class Chant_Mold extends Chant
 							A.setInvoker(mob);
 							target.addNonUninvokableEffect(A);
 						}
-						maliciousAffect(mob,target,(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*3),-1);
+						maliciousAffect(mob,target,asLevel,(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*3),-1);
 					}
 					else
 					if(target instanceof MOB)
@@ -99,7 +99,7 @@ public class Chant_Mold extends Chant
 								A.setInvoker(mob);
 								I.addNonUninvokableEffect(A);
 							}
-							maliciousAffect(mob,I,(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*3),-1);
+							maliciousAffect(mob,I,asLevel,(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*3),-1);
 						}
 					}
 				}

@@ -42,10 +42,11 @@ public class Spell extends StdAbility
 
 	public boolean maliciousAffect(MOB mob,
 								   Environmental target,
+								   int asLevel,
 								   int tickAdjustmentFromStandard,
 								   int additionAffectCheckCode)
 	{
-		boolean truefalse=super.maliciousAffect(mob,target,tickAdjustmentFromStandard,additionAffectCheckCode);
+		boolean truefalse=super.maliciousAffect(mob,target,asLevel,tickAdjustmentFromStandard,additionAffectCheckCode);
 		if(truefalse
 		&&(target!=null)
 		&&(target instanceof MOB)
@@ -68,7 +69,7 @@ public class Spell extends StdAbility
 					{
 						Ability A2=CMClass.getAbility("Disease_Magepox");
 						if((A2!=null)&&(target.fetchEffect(A2.ID())==null))
-							A2.invoke(mob,target,true);
+							A2.invoke(mob,target,true,asLevel);
 						break;
 					}
 				}
@@ -76,9 +77,9 @@ public class Spell extends StdAbility
 		}
 		return truefalse;
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if((!auto)

@@ -29,7 +29,7 @@ public class Spell_Scribe extends Spell
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<2)
@@ -90,7 +90,7 @@ public class Spell_Scribe extends Spell
 			}
 
 		// lose all the mana!
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int experienceToLose=10*CMAble.lowestQualifyingLevel(scrollThis.ID());

@@ -160,7 +160,7 @@ public class Thief_Shadow extends ThiefSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Thief_Shadow A=(Thief_Shadow)mob.fetchEffect(ID());
 		if(A!=null)
@@ -206,7 +206,7 @@ public class Thief_Shadow extends ThiefSkill
 			mob.tell(target.name()+" is watching you too closely.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		shadowing=null;
@@ -227,7 +227,7 @@ public class Thief_Shadow extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				shadowing=target;
-				if(beneficialAffect(mob,target,Integer.MAX_VALUE-1000))
+				if(beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE-1000))
 				{
 					A=(Thief_Shadow)target.fetchEffect(ID());
 					if(A!=null)

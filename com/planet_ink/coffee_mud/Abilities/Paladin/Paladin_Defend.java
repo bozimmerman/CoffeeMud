@@ -102,7 +102,7 @@ public class Paladin_Defend extends StdAbility
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!Sense.aliveAwakeMobile(mob,false))
 			return false;
@@ -125,7 +125,7 @@ public class Paladin_Defend extends StdAbility
 			mob.tell("You don't feel worthy of a good defense.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,mob,auto))
+		if(!super.invoke(mob,commands,mob,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -141,7 +141,7 @@ public class Paladin_Defend extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				fullRound=false;
-				beneficialAffect(mob,mob,Integer.MAX_VALUE);
+				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
 			}
 		}
 		else

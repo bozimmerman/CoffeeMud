@@ -218,7 +218,7 @@ public class CombatAbilities extends StdBehavior
 			tryThisOne.setProfficiency(Dice.roll(1,70,mob.baseEnvStats().level()));
 			Vector V=new Vector();
 			V.addElement(victim.name());
-			if(tryThisOne.invoke(mob,V,victim,false))
+			if(tryThisOne.invoke(mob,V,victim,false,0))
 				wandThis=false;
 		}
 		if((wandThis)

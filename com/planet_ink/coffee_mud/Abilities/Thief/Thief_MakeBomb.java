@@ -32,7 +32,7 @@ public class Thief_MakeBomb extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
@@ -88,7 +88,7 @@ public class Thief_MakeBomb extends ThiefSkill
 				return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,+((mob.envStats().level()
@@ -112,13 +112,13 @@ public class Thief_MakeBomb extends ThiefSkill
 			if(success)
 			{
 				mob.tell("You have completed your task.");
-				theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob));
+				theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
 			}
 			else
 			{
 				if(Dice.rollPercentage()>50)
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob));
+					Trap T=theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> set(s) the bomb off on accident!");
 					T.spring(mob);
 				}

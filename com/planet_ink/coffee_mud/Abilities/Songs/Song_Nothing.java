@@ -34,7 +34,7 @@ public class Song_Nothing extends Song
 	public void setProfficiency(int newProfficiency){	super.setProfficiency(100);}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		boolean foundOne=false;
 		for(int a=0;a<mob.numEffects();a++)

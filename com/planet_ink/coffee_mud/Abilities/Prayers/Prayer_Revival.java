@@ -112,13 +112,13 @@ public class Prayer_Revival extends Prayer
 					if(M.getWorshipCharID().length()>0)
 					{
 						Ability A=CMClass.getAbility("Prayer_Faithless");
-						if(A!=null) A.invoke(mob,M,true);
+						if(A!=null) A.invoke(mob,M,true,0);
 					}
 					if(M.getWorshipCharID().length()==0)
 					{
 						Ability A=CMClass.getAbility("Prayer_UndeniableFaith");
 						if(A!=null)
-							if(A.invoke(mob,M,true))
+							if(A.invoke(mob,M,true,0))
 							{
 								if(M.getWorshipCharID().equals(mob.getWorshipCharID()))
 								{
@@ -139,7 +139,7 @@ public class Prayer_Revival extends Prayer
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -156,7 +156,7 @@ public class Prayer_Revival extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -166,7 +166,7 @@ public class Prayer_Revival extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,10);
+				beneficialAffect(mob,target,asLevel,10);
 			}
 		}
 		else

@@ -139,7 +139,7 @@ public class Thief_Panhandling extends ThiefSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -149,7 +149,7 @@ public class Thief_Panhandling extends ThiefSkill
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already panhandling.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if(!Sense.isSitting(mob))
@@ -172,7 +172,7 @@ public class Thief_Panhandling extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,0);
+			beneficialAffect(mob,target,asLevel,0);
 		}
 		return success;
 	}

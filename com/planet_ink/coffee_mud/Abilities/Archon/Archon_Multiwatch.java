@@ -163,7 +163,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(Util.combine(commands,0).equalsIgnoreCase("auto"))
 		{

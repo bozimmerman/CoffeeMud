@@ -99,7 +99,7 @@ public class Prop_WeakBridge extends Property
 								Ability falling=CMClass.getAbility("Falling");
 								falling.setProfficiency(0);
 								falling.setAffectedOne(msg.target());
-								falling.invoke(null,null,mob,true);
+								falling.invoke(null,null,mob,true,0);
 							}
 							CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
 						}
@@ -160,7 +160,7 @@ public class Prop_WeakBridge extends Property
 									Ability falling=CMClass.getAbility("Falling");
 									falling.setProfficiency(0);
 									falling.setAffectedOne(affected);
-									falling.invoke(null,null,mob,true);
+									falling.invoke(null,null,mob,true,0);
 								}
 							}
 							else

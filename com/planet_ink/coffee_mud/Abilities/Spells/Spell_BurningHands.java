@@ -28,7 +28,7 @@ public class Spell_BurningHands extends Spell
 	public int quality(){return MALICIOUS;};
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -37,7 +37,7 @@ public class Spell_BurningHands extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -57,7 +57,7 @@ public class Spell_BurningHands extends Spell
 				invoker=mob;
 				mob.location().send(mob,msg2);
 				int damage = 0;
-				int maxDie =  adjustedLevel(mob);
+				int maxDie =  adjustedLevel(mob,asLevel);
 				damage += Dice.roll(1,maxDie,15);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(Util.div(damage,2.0));

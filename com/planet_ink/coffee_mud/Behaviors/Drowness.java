@@ -312,7 +312,7 @@ public class Drowness extends StdBehavior
             prayer = CMClass.getAbility("Prayer_CureSerious");
         }
 		if(prayer!=null)
-	        return prayer.invoke(mob,null,false);
+	        return prayer.invoke(mob,null,false,0);
 		else
 			return false;
     }
@@ -403,7 +403,7 @@ public class Drowness extends StdBehavior
             prayer.setProfficiency(Dice.roll(5, 10, 50));
         }
 		if(prayer!=null)
-	        return prayer.invoke(mob,null,false);
+	        return prayer.invoke(mob,null,false,0);
 		else
 			return false;
     }
@@ -423,7 +423,7 @@ public class Drowness extends StdBehavior
 		else
 			dark = mob.fetchAbility(dark.ID());
 
-		if(dark!=null) dark.invoke(mob,null,false);
+		if(dark!=null) dark.invoke(mob,null,false,0);
 		return true;
 	}
 }

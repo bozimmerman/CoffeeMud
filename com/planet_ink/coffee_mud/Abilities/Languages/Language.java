@@ -206,7 +206,7 @@ public class Language extends StdAbility
 		}
 		return super.okMessage(myHost,msg);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!auto)
 		{

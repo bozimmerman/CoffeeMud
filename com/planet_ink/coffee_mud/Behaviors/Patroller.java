@@ -205,13 +205,13 @@ public class Patroller extends ActiveTicker
 					V.add(Directions.getDirectionName(direction));
 					if(A.profficiency()<50)
 					{
-						A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
+						A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
 						Ability A2=mob.fetchAbility("Thief_Hide");
 						if(A2!=null)
-							A2.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
+							A2.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
 					}
 					CharState oldState=mob.curState().cloneCharState();
-					A.invoke(mob,V,null,false);
+					A.invoke(mob,V,null,false,0);
 					mob.curState().setMana(oldState.getMana());
 					mob.curState().setMovement(oldState.getMovement());
 				}

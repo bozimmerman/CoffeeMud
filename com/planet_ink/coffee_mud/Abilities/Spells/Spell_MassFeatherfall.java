@@ -29,7 +29,7 @@ public class Spell_MassFeatherfall extends Spell
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,false);
 		if(h==null)
@@ -42,7 +42,7 @@ public class Spell_MassFeatherfall extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -64,7 +64,7 @@ public class Spell_MassFeatherfall extends Spell
 					mob.location().send(mob,msg);
 					Spell_FeatherFall fall=new Spell_FeatherFall();
 					fall.setProfficiency(profficiency());
-					fall.beneficialAffect(mob,target,0);
+					fall.beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}

@@ -50,7 +50,7 @@ public class Prayer_Fertilize extends Prayer
 
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		int type=mob.location().domainType();
@@ -64,7 +64,7 @@ public class Prayer_Fertilize extends Prayer
 			mob.tell("That magic won't work here.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -75,7 +75,7 @@ public class Prayer_Fertilize extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),CMAble.qualifyingClassLevel(mob,this)*new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay())/MudHost.TICK_TIME)).intValue());
+				beneficialAffect(mob,mob.location(),asLevel,CMAble.qualifyingClassLevel(mob,this)*new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay())/MudHost.TICK_TIME)).intValue());
 			}
 
 		}

@@ -29,7 +29,7 @@ public class Prayer_Drain extends Prayer
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -38,7 +38,7 @@ public class Prayer_Drain extends Prayer
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -59,7 +59,7 @@ public class Prayer_Drain extends Prayer
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int damage = 0;
-					int maxDie =  adjustedLevel(mob);
+					int maxDie =  adjustedLevel(mob,asLevel);
 					damage += Dice.roll(maxDie,6,20);
 					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,auto?"<T-NAME> shudder(s) in a draining magical wake.":"The draining grasp <DAMAGE> <T-NAME>.");
 					if(mob!=target)

@@ -28,7 +28,7 @@ public class Prayer_HealUndead extends Prayer
 	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEALING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -40,7 +40,7 @@ public class Prayer_HealUndead extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -55,7 +55,7 @@ public class Prayer_HealUndead extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int healing=Dice.roll(5,adjustedLevel(mob),10);
+				int healing=Dice.roll(5,adjustedLevel(mob,asLevel),10);
 				if(undead)
 				{
 					target.curState().adjHitPoints(healing,target.maxState());

@@ -183,7 +183,7 @@ public class Spell_Cogniportive extends Spell
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null)
@@ -201,7 +201,7 @@ public class Spell_Cogniportive extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -213,7 +213,7 @@ public class Spell_Cogniportive extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> glow(s) softly!");
-				beneficialAffect(mob,target,1000);
+				beneficialAffect(mob,target,asLevel,1000);
 				A=target.fetchEffect(ID());
 				if(A!=null)
 					A.setMiscText(((Spell_Cogniportive)A).establishHome(mob,target));

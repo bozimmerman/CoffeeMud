@@ -77,12 +77,12 @@ public class Spell_Boomerang extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -96,7 +96,7 @@ public class Spell_Boomerang extends Spell
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glows slightly!");
 				mob.tell(target.name()+" will now await someone to GET it before acknowleding its new master.");
 				setMiscText("");
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				target.recoverEnvStats();
 				mob.recoverEnvStats();
 			}

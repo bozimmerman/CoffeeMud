@@ -56,7 +56,9 @@ public class Poison extends StdAbility
 			MOB targetMOB=(MOB)target;
 			if(targetMOB.location().show(targetMOB,null,CMMsg.MASK_GENERAL|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,POISON_START()))
 			{
-				maliciousAffect(poisoner,target,POISON_TICKS(),-1);
+				maliciousAffect(poisoner,target,
+								(affected instanceof Item)?affected.envStats().level():0,
+								POISON_TICKS(),-1);
 				return true;
 			}
 		}
@@ -157,11 +159,11 @@ public class Poison extends StdAbility
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
@@ -178,7 +180,7 @@ public class Poison extends StdAbility
 				{
 					if(target instanceof MOB)
 						R.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,POISON_START());
-				    success=maliciousAffect(mob,target,POISON_TICKS(),-1);
+				    success=maliciousAffect(mob,target,asLevel,POISON_TICKS(),-1);
 				}
 				else
 					success=false;

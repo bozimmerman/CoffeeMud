@@ -31,7 +31,7 @@ public class Spell_FindFamiliar extends Spell
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.numFollowers()>0)
 		{
@@ -39,7 +39,7 @@ public class Spell_FindFamiliar extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		MUDFight.postExperience(mob,null,null,-100,false);

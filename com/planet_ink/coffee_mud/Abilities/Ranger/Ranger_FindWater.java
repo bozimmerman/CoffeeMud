@@ -224,7 +224,7 @@ public class Ranger_FindWater extends StdAbility
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
@@ -234,7 +234,7 @@ public class Ranger_FindWater extends StdAbility
 			if(commands.size()==0) return true;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		String here=waterHere(mob,mob.location(),null);

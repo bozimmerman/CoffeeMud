@@ -71,7 +71,7 @@ public class Chant_AntTrain extends Chant
 		affectableStats.setWeight(0);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
@@ -88,7 +88,7 @@ public class Chant_AntTrain extends Chant
 			return false;
 		}
 		
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -128,7 +128,7 @@ public class Chant_AntTrain extends Chant
 				((Item)target).setRawLogicalAnd(properWornLogical);
 				((Item)target).setRawProperLocationBitmap(properWornCode);
 				((Item)target).recoverEnvStats();
-				beneficialAffect(mob,target,mob.envStats().level()*10);
+				beneficialAffect(mob,target,asLevel,mob.envStats().level()*10);
 				mob.recoverEnvStats();
 				mob.recoverMaxState();
 				mob.recoverCharStats();

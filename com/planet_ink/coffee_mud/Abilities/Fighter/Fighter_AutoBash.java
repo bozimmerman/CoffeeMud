@@ -63,13 +63,13 @@ public class Fighter_AutoBash extends StdAbility
 		&&(profficiencyCheck(null,0,false)))
 		{
 			Ability A=mob.fetchAbility("Skill_Bash");
-			if(A!=null) A.invoke(mob,mob.getVictim(),false);
+			if(A!=null) A.invoke(mob,mob.getVictim(),false,0);
 			if(Dice.rollPercentage()<10)
 				helpProfficiency(mob);
 		}
 		return true;
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{
@@ -77,7 +77,7 @@ public class Fighter_AutoBash extends StdAbility
 			mob.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -85,7 +85,7 @@ public class Fighter_AutoBash extends StdAbility
 		if(success)
 		{
 			mob.tell("You will now automatically bash opponents when you fight.");
-			beneficialAffect(mob,mob,0);
+			beneficialAffect(mob,mob,asLevel,0);
 			Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 		}

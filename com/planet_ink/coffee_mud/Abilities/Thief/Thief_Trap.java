@@ -34,7 +34,7 @@ public class Thief_Trap extends ThiefSkill
 
 	protected int maxLevel(){return Integer.MAX_VALUE;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
@@ -111,7 +111,7 @@ public class Thief_Trap extends ThiefSkill
 				return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,+((mob.envStats().level()
@@ -159,13 +159,13 @@ public class Thief_Trap extends ThiefSkill
 					CMClass.DBEngine().DBUpdateRoom(mob.location());
 				}
 				else
-					theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob));
+					theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
 			}
 			else
 			{
 				if(Dice.rollPercentage()>50)
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob));
+					Trap T=theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
 					T.spring(mob);
 				}

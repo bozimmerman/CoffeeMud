@@ -31,7 +31,7 @@ public class Thief_Sneak extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String dir=Util.combine(commands,0);
 		if(commands.size()>0) dir=(String)commands.lastElement();
@@ -58,7 +58,7 @@ public class Thief_Sneak extends ThiefSkill
 		}
 		int levelDiff=mob.envStats().level()-highestLevel;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=false;
@@ -89,7 +89,7 @@ public class Thief_Sneak extends ThiefSkill
 				Ability toHide=mob.fetchAbility("Thief_Hide");
 				if(toHide==null) toHide=mob.fetchAbility("Ranger_Hide");
 				if(toHide!=null)
-					toHide.invoke(mob,new Vector(),null,false);
+					toHide.invoke(mob,new Vector(),null,false,asLevel);
 			}
 			if(Sense.isSneaking(mob))
 				mob.envStats().setDisposition(mob.envStats().disposition()-EnvStats.IS_SNEAKING);

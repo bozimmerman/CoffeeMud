@@ -44,7 +44,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 		return -1;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Skill_Disguise A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
 		if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
@@ -80,7 +80,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 
 		mark=target;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -91,7 +91,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(A==null)	beneficialAffect(mob,mob,0);
+				if(A==null)	beneficialAffect(mob,mob,asLevel,0);
 				if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
 				A.values[0]=""+target.baseEnvStats().weight();
 				A.values[1]=""+target.baseEnvStats().level();

@@ -75,7 +75,7 @@ public class Fighter_Berzerk extends StdAbility
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -93,7 +93,7 @@ public class Fighter_Berzerk extends StdAbility
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -104,7 +104,7 @@ public class Fighter_Berzerk extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				hpAdjustment=(int)Math.round(Util.div(target.maxState().getHitPoints(),5.0));
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);
 				target.recoverMaxState();
 			}

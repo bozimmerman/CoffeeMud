@@ -83,12 +83,12 @@ public class Prayer_Tithe extends Prayer
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -106,7 +106,7 @@ public class Prayer_Tithe extends Prayer
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg3);
 				if((msg.value()<=0)&&(msg3.value()<=0))
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}
 		else

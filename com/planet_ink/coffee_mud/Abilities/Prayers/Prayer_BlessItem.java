@@ -67,7 +67,7 @@ public class Prayer_BlessItem extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
@@ -79,7 +79,7 @@ public class Prayer_BlessItem extends Prayer
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -95,7 +95,7 @@ public class Prayer_BlessItem extends Prayer
 			{
 				mob.location().send(mob,msg);
 				Prayer_Bless.endLowerCurses(target,CMAble.lowestQualifyingLevel(ID()));
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				target.recoverEnvStats();
 				mob.recoverEnvStats();
 			}

@@ -90,12 +90,12 @@ public class Auction extends Channel
 			if((!mob.isMonster())&&(!mob.session().confirm("Auction "+E.name()+" with a starting bid of "+((String)V.firstElement())+" (Y/n)? ","Y")))
 				return false;
 			auctionA=CMClass.getAbility("Prop_Auction");
-			auctionA.invoke(mob,V,E,false);
+			auctionA.invoke(mob,V,E,false,0);
 		}
 		else
 		{
 			commands.removeElementAt(0);
-			auctionA.invoke(mob,commands,null,false);
+			auctionA.invoke(mob,commands,null,false,0);
 		}
 		return false;
 	}

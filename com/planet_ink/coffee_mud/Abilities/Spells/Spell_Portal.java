@@ -52,7 +52,7 @@ public class Spell_Portal extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
@@ -114,7 +114,7 @@ public class Spell_Portal extends Spell
 		}
 		profNeg+=newRoom.numItems()*20;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,-profNeg,auto);
@@ -151,7 +151,7 @@ public class Spell_Portal extends Spell
 				mob.location().rawExits()[Directions.GATE]=e;
 				newRoom.rawExits()[Directions.GATE]=e2;
 				oldRoom=mob.location();
-				beneficialAffect(mob,e,5);
+				beneficialAffect(mob,e,asLevel,5);
 			}
 		}
 		else

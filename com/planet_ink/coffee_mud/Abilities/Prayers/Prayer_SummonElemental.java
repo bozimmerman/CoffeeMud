@@ -66,9 +66,9 @@ public class Prayer_SummonElemental extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -84,7 +84,7 @@ public class Prayer_SummonElemental extends Prayer
 				if(myMonster.isInCombat()) myMonster.makePeace();
 				CommonMsgs.follow(myMonster,mob,true);
 				invoker=mob;
-				beneficialAffect(mob,myMonster,0);
+				beneficialAffect(mob,myMonster,asLevel,0);
 				if(myMonster.amFollowing()!=mob)
 					mob.tell(myMonster.name()+" seems unwilling to follow you.");
 			}

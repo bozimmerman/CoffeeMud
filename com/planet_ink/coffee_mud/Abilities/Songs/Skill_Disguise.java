@@ -127,10 +127,10 @@ public class Skill_Disguise extends BardSkill
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!ID().equals("Skill_Disguise"))
-			return super.invoke(mob,commands,givenTarget,auto);
+			return super.invoke(mob,commands,givenTarget,auto,asLevel);
 
 		Skill_Disguise A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
 		if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
@@ -280,7 +280,7 @@ public class Skill_Disguise extends BardSkill
 		}
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,adjustment,auto);
@@ -291,7 +291,7 @@ public class Skill_Disguise extends BardSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(A==null)	beneficialAffect(mob,mob,0);
+				if(A==null)	beneficialAffect(mob,mob,asLevel,0);
 				if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
 				A.values[which]=how;
 				mob.recoverCharStats();

@@ -53,7 +53,7 @@ public class Spell_PassDoor extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
@@ -99,7 +99,7 @@ public class Spell_PassDoor extends Spell
 			}
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -115,7 +115,7 @@ public class Spell_PassDoor extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,5);
+				beneficialAffect(mob,mob,asLevel,5);
 				mob.recoverEnvStats();
 			}
 		}

@@ -50,7 +50,7 @@ public class CaveRoom extends StdRoom
 		{
 			Ability A=CMClass.getAbility("Disease_Syphilis");
 			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))
-				A.invoke(msg.source(),msg.source(),true);
+				A.invoke(msg.source(),msg.source(),true,0);
 		}
 		super.executeMsg(myHost,msg);
 	}

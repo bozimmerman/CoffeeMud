@@ -87,7 +87,7 @@ public class Chant_BrownMold extends Chant
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())
 		{
@@ -96,7 +96,7 @@ public class Chant_BrownMold extends Chant
 		}
 		int material=EnvResource.RESOURCE_HEMP;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -109,7 +109,7 @@ public class Chant_BrownMold extends Chant
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, material);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				if(target.isInCombat()) target.makePeace();
 				CommonMsgs.follow(target,mob,true);
 				if(target.amFollowing()!=mob)

@@ -33,7 +33,7 @@ public class Ranger_Sneak extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String dir=Util.combine(commands,0);
 		if(commands.size()>0) dir=(String)commands.lastElement();
@@ -73,7 +73,7 @@ public class Ranger_Sneak extends StdAbility
 		}
 		int levelDiff=mob.envStats().level()-highestLevel;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=false;

@@ -132,7 +132,7 @@ public class Skill_Puppeteer extends BardSkill
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
@@ -148,7 +148,7 @@ public class Skill_Puppeteer extends BardSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -165,7 +165,7 @@ public class Skill_Puppeteer extends BardSkill
 				else
 					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) animating <T-NAME>!");
 				if(mob.location().isContent(target))
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

@@ -121,7 +121,7 @@ public class Sculpting extends CraftingSkill
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -172,13 +172,13 @@ public class Sculpting extends CraftingSkill
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
 			mending=true;
-			if(!super.invoke(mob,commands,givenTarget,auto))
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+building.name()+".";
 			displayText="You are mending "+building.name();
 			verb="mending "+building.name();
 
-			if(!super.invoke(mob,commands,givenTarget,auto))
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 		}
 		else
@@ -365,7 +365,7 @@ public class Sculpting extends CraftingSkill
 				commonTell(mob,"You are not allowed to build that here.");
 				return false;
 			}
-			if(!super.invoke(mob,commands,givenTarget,auto))
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,building,autoGenerate);
 			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
@@ -397,7 +397,7 @@ public class Sculpting extends CraftingSkill
 		{
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
-			beneficialAffect(mob,mob,completion);
+			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		else
 		if(bundle)

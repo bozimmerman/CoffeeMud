@@ -211,7 +211,7 @@ public class DrowWizard extends DrowElf
 //        Vector commands = new Vector();
 //        commands.addElement();
 		if(prayer!=null)
-	        return prayer.invoke(this,null,false);
+	        return prayer.invoke(this,null,false,0);
 		return false;
     }
 
@@ -229,7 +229,7 @@ public class DrowWizard extends DrowElf
 		else
 			dark =this.fetchAbility(dark.ID());
 
-		if(dark!=null) dark.invoke(this,null,false);
+		if(dark!=null) dark.invoke(this,null,false,0);
 		return true;
 	}
 

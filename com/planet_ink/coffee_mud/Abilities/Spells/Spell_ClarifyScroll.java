@@ -28,7 +28,7 @@ public class Spell_ClarifyScroll extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
@@ -39,7 +39,7 @@ public class Spell_ClarifyScroll extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

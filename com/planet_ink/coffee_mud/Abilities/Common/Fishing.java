@@ -86,7 +86,7 @@ public class Fishing extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int foundFish=-1;
 		boolean maybeFish=false;
@@ -110,7 +110,7 @@ public class Fishing extends CommonSkill
 		}
 		verb="fishing";
 		found=null;
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if((profficiencyCheck(mob,0,auto))
 		   &&(foundFish>0))
@@ -127,7 +127,7 @@ public class Fishing extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			found=(Item)msg.target();
-			beneficialAffect(mob,mob,duration);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

@@ -96,11 +96,11 @@ public class Digging extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb="digging";
 		found=null;
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(mob,0,auto))
@@ -122,7 +122,7 @@ public class Digging extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			found=(Item)msg.target();
-			beneficialAffect(mob,mob,duration);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

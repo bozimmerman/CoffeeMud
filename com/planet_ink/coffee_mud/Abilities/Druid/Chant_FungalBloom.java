@@ -28,7 +28,7 @@ public class Chant_FungalBloom extends Chant
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
@@ -47,7 +47,7 @@ public class Chant_FungalBloom extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked

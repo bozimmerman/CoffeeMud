@@ -76,12 +76,12 @@ public class Spell_Shrink extends Spell
 		affectedStats.setHeight(height);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental E=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(E==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -91,7 +91,7 @@ public class Spell_Shrink extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,E,0);
+				beneficialAffect(mob,E,asLevel,0);
 				if(E instanceof MOB)
 					((MOB)E).confirmWearability();
 			}

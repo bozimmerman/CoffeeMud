@@ -70,7 +70,7 @@ public class Poison_Alcohol extends Poison
 			{
 				Ability A=CMClass.getAbility("Disease_Migraines");
 				if((A!=null)&&(mob.fetchEffect(A.ID())==null))
-					A.invoke(mob,mob,true);
+					A.invoke(mob,mob,true,0);
 			}
 			CommonMsgs.stand(mob,true);
 		}
@@ -215,7 +215,7 @@ public class Poison_Alcohol extends Poison
 				if(A!=null)
 				{
 					A.setProfficiency(100);
-					A.invoke(msg.source(),null,true);
+					A.invoke(msg.source(),null,true,0);
 					A.setAffectedOne(msg.source());
 					if(!A.okMessage(myHost,msg))
 						return false;
@@ -238,7 +238,7 @@ public class Poison_Alcohol extends Poison
 		return true;
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int largest=alchoholContribution();
 		if((givenTarget instanceof MOB)&&(auto)&&(givenTarget.fetchEffect(ID())!=null))
@@ -284,7 +284,7 @@ public class Poison_Alcohol extends Poison
 			for(int i=0;i<remove.size();i++)
 				givenTarget.delEffect((Ability)remove.elementAt(i));
 		}
-		boolean success=super.invoke(mob,commands,givenTarget,auto);
+		boolean success=super.invoke(mob,commands,givenTarget,auto,asLevel);
 		if(success&&(givenTarget instanceof MOB)&&(auto))
 		{
 			Ability A=givenTarget.fetchEffect(ID());

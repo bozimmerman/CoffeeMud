@@ -42,7 +42,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
-	{maliciousAffect(mob,E,0,-1); return (Trap)E.fetchEffect(ID());}
+	{maliciousAffect(mob,E,classLevel,0,-1); return (Trap)E.fetchEffect(ID());}
 
 	public boolean sprung(){return false;}
 	public void spring(MOB mob)
@@ -71,7 +71,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.location()==null) return false;
 		if(mob.location().fetchEffect(ID())!=null)
@@ -79,7 +79,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 			mob.tell("Caltrops have already been tossed down here.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -87,7 +87,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		if(success)
 		{
 			if(mob.location().show(mob,target,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> throw(s) down caltrops!"))
-				maliciousAffect(mob,target,0,-1);
+				maliciousAffect(mob,target,asLevel,0,-1);
 			else
 				success=false;
 		}

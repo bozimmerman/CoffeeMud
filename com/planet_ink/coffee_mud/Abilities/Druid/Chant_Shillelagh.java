@@ -55,7 +55,7 @@ public class Chant_Shillelagh extends Chant
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
@@ -76,7 +76,7 @@ public class Chant_Shillelagh extends Chant
 			mob.tell(target.name()+" is already enchanted.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -91,7 +91,7 @@ public class Chant_Shillelagh extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s)!");
 				target.recoverEnvStats();
 				mob.recoverEnvStats();

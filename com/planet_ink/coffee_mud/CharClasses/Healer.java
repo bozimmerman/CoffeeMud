@@ -155,7 +155,7 @@ public class Healer extends Cleric
 				Ability A=CMClass.getAbility("Prayer_CureLight");
 				if(A!=null)
 				for(Iterator e=followers.iterator();e.hasNext();)
-					A.invoke(myChar,((MOB)e.next()),true);
+					A.invoke(myChar,((MOB)e.next()),true,0);
 			}
 			if((tenDown)<=0)
 			{
@@ -163,7 +163,7 @@ public class Healer extends Cleric
 				Ability A=CMClass.getAbility("Prayer_RemovePoison");
 				if(A!=null)
 				for(Iterator e=followers.iterator();e.hasNext();)
-					A.invoke(myChar,((MOB)e.next()),true);
+					A.invoke(myChar,((MOB)e.next()),true,0);
 			}
 			if((twentyDown)<=0)
 			{
@@ -171,7 +171,7 @@ public class Healer extends Cleric
 				Ability A=CMClass.getAbility("Prayer_CureDisease");
 				if(A!=null)
 				for(Iterator e=followers.iterator();e.hasNext();)
-					A.invoke(myChar,((MOB)e.next()),true);
+					A.invoke(myChar,((MOB)e.next()),true,0);
 			}
 		}
 		super.tick(myChar,tickID);

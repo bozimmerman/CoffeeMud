@@ -217,7 +217,7 @@ public class Prayer_Monolith extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
@@ -238,7 +238,7 @@ public class Prayer_Monolith extends Prayer
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Environmental target = mob.location();
@@ -309,7 +309,7 @@ public class Prayer_Monolith extends Prayer
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;
-				beneficialAffect(mob,I,0);
+				beneficialAffect(mob,I,asLevel,0);
 			}
 		}
 		else

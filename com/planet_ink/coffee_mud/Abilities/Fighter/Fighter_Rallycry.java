@@ -70,9 +70,9 @@ public class Fighter_Rallycry extends StdAbility
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -90,7 +90,7 @@ public class Fighter_Rallycry extends StdAbility
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) rallyed!");
 					timesTicking=0;
 					hpUp=mob.envStats().level();
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 					target.recoverMaxState();
 					if(target.fetchEffect(ID())!=null)
 						mob.curState().adjHitPoints(hpUp,mob.maxState());

@@ -1094,7 +1094,7 @@ public class EnglishParser extends Scriptable implements Tickable
 			mob.tell(getScr("AbilityEvoker","evokeerr2"));
 			return;
 		}
-		evokableAbility.invoke(mob,commands,null,false);
+		evokableAbility.invoke(mob,commands,null,false,0);
 	}
 
 	public static boolean containsString(String toSrchStr, String srchStr)

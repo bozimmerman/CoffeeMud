@@ -30,7 +30,7 @@ public class Thief_Graffiti extends ThiefSkill
 	private static final String[] triggerStrings = {"GRAFFITI"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String str=Util.combine(commands,0);
 		if(str.length()==0)
@@ -50,7 +50,7 @@ public class Thief_Graffiti extends ThiefSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());

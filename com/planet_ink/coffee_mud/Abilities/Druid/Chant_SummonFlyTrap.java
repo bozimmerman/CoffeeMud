@@ -78,7 +78,7 @@ public class Chant_SummonFlyTrap extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
@@ -96,7 +96,7 @@ public class Chant_SummonFlyTrap extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -109,7 +109,7 @@ public class Chant_SummonFlyTrap extends Chant
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				CommonMsgs.follow(target,mob,true);
 				if(target.amFollowing()!=mob)
 					mob.tell(target.name()+" seems unwilling to follow you.");
@@ -124,7 +124,7 @@ public class Chant_SummonFlyTrap extends Chant
 	public MOB determineMonster(MOB caster)
 	{
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
-		int level=adjustedLevel(caster);
+		int level=adjustedLevel(caster,0);
 		if(level<1) level=1;
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));

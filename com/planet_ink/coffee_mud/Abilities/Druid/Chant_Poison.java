@@ -30,12 +30,12 @@ public class Chant_Poison extends Chant
 	public int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -54,7 +54,7 @@ public class Chant_Poison extends Chant
 					invoker=mob;
 					Ability A=CMClass.getAbility("Poison_Venom");
 					if(A!=null)
-						A.invoke(mob,target,true);
+						A.invoke(mob,target,true,asLevel);
 				}
 			}
 		}

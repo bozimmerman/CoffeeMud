@@ -101,7 +101,7 @@ public class Prayer_HuntEvil extends Prayer
 		return null;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
@@ -114,7 +114,7 @@ public class Prayer_HuntEvil extends Prayer
 		theTrail=null;
 		nextDirection=-2;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if(gameHere(mob.location())!=null)

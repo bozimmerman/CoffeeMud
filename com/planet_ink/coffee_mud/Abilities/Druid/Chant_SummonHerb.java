@@ -28,7 +28,7 @@ public class Chant_SummonHerb extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
@@ -46,7 +46,7 @@ public class Chant_SummonHerb extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -57,7 +57,7 @@ public class Chant_SummonHerb extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(int i=0;i<((adjustedLevel(mob)/4)+1);i++)
+				for(int i=0;i<((adjustedLevel(mob,asLevel)/4)+1);i++)
 				{
 					Food newItem=(Food)CMClass.getStdItem("GenFoodResource");
 					newItem.setName("some herbs");

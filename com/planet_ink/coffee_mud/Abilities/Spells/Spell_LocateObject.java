@@ -27,7 +27,7 @@ public class Spell_LocateObject extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<1)
@@ -70,7 +70,7 @@ public class Spell_LocateObject extends Spell
 			}
 		String what=Util.combine(commands,0);
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

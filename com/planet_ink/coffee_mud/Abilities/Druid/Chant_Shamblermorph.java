@@ -70,7 +70,7 @@ public class Chant_Shamblermorph extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -79,7 +79,7 @@ public class Chant_Shamblermorph extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -102,9 +102,9 @@ public class Chant_Shamblermorph extends Chant
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"Leaves sprout from <S-YOUPOSS> skin as <S-HE-SHE> grow(s) into a Shambling Mound!");
 					if(malicious)
-						maliciousAffect(mob,target,0,-1);
+						maliciousAffect(mob,target,asLevel,0,-1);
 					else
-						beneficialAffect(mob,target,0);
+						beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}

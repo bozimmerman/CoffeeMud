@@ -44,7 +44,7 @@ public class Chant_PlantBed extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((((mob.location().domainType()&Room.INDOORS)>0)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_DESERT)
@@ -59,7 +59,7 @@ public class Chant_PlantBed extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -90,7 +90,7 @@ public class Chant_PlantBed extends Chant
 				mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A comfortable pea-pod bed grows nearby.");
 				mob.location().recoverEnvStats();
-				beneficialAffect(mob,newItem,0);
+				beneficialAffect(mob,newItem,asLevel,0);
 			}
 		}
 		else

@@ -69,7 +69,7 @@ public class Play_Ballad extends Play
 				&&(female.fetchAbility(A.ID())==null)
 				&&(female.fetchEffect(A.ID())==null))
 				{
-					A.invoke(male,female,true);
+					A.invoke(male,female,true,0);
 					unInvoke();
 				}
 			}

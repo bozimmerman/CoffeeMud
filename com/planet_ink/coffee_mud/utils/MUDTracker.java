@@ -351,9 +351,9 @@ public class MUDTracker extends Scriptable
 			Ability A=mob.fetchAbility("Skill_Swim");
 			Vector V=new Vector();
 			V.add(Directions.getDirectionName(direction));
-			if(A.profficiency()<50)	A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
+			if(A.profficiency()<50)	A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
 			CharState oldState=mob.curState().cloneCharState();
-			A.invoke(mob,V,null,false);
+			A.invoke(mob,V,null,false,0);
 			mob.curState().setMana(oldState.getMana());
 			mob.curState().setMovement(oldState.getMovement());
 		}
@@ -366,9 +366,9 @@ public class MUDTracker extends Scriptable
 			Ability A=mob.fetchAbility("Skill_Climb");
 			Vector V=new Vector();
 			V.add(Directions.getDirectionName(direction));
-			if(A.profficiency()<50)	A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
+			if(A.profficiency()<50)	A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
 			CharState oldState=mob.curState().cloneCharState();
-			A.invoke(mob,V,null,false);
+			A.invoke(mob,V,null,false,0);
 			mob.curState().setMana(oldState.getMana());
 			mob.curState().setMovement(oldState.getMovement());
 		}
@@ -380,13 +380,13 @@ public class MUDTracker extends Scriptable
 			V.add(Directions.getDirectionName(direction));
 			if(A.profficiency()<50)
 			{
-				A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
+				A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
 				Ability A2=mob.fetchAbility("Thief_Hide");
 				if(A2!=null)
-					A2.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
+					A2.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
 			}
 			CharState oldState=mob.curState().cloneCharState();
-			A.invoke(mob,V,null,false);
+			A.invoke(mob,V,null,false,0);
 			mob.curState().setMana(oldState.getMana());
 			mob.curState().setMovement(oldState.getMovement());
 		}

@@ -97,7 +97,7 @@ public class Chant_AstralProjection extends Chant
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -117,7 +117,7 @@ public class Chant_AstralProjection extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -141,7 +141,7 @@ public class Chant_AstralProjection extends Chant
 			}
 			spirit.setMoney(0);
 			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
-			beneficialAffect(spirit,target,0);
+			beneficialAffect(spirit,target,asLevel,0);
 			Ability A=CMClass.getAbility("Prop_AstralSpirit");
 			spirit.addNonUninvokableEffect(A);
 			Session s=target.session();

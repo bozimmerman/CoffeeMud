@@ -440,7 +440,7 @@ public class MUDFight
 		{
 			Ability A=CMClass.getAbility("Disease_Amnesia");
 			if((A!=null)&&(target.fetchEffect(A.ID())==null))
-				A.invoke(target,target,true);
+				A.invoke(target,target,true,0);
 		}
 
 		if(target.soulMate()!=null)

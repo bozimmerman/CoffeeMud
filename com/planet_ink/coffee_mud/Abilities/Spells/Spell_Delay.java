@@ -53,7 +53,7 @@ public class Spell_Delay extends Spell
 			newCaster.setLocation((Room)affected);
 			try
 			{
-				shooter.invoke(newCaster,parameters,null,true);
+				shooter.invoke(newCaster,parameters,null,true,0);
 			}
 			catch(Exception e){Log.errOut("DELAY/"+Util.combine(parameters,0),e);}
 			newCaster.setLocation(null);
@@ -67,7 +67,7 @@ public class Spell_Delay extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -99,7 +99,7 @@ public class Spell_Delay extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Environmental target = mob.location();
@@ -125,7 +125,7 @@ public class Spell_Delay extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.tell("You hear a clock start ticking down in your head...20...19...");
-				beneficialAffect(mob,mob.location(),5);
+				beneficialAffect(mob,mob.location(),asLevel,5);
 				shooter=null;
 				parameters=null;
 			}

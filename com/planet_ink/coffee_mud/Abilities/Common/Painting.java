@@ -72,7 +72,7 @@ public class Painting extends CommonSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		try{
 		if(commands.size()==0)
@@ -119,7 +119,7 @@ public class Painting extends CommonSkill
 			}
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int completion=25;
@@ -189,7 +189,7 @@ public class Painting extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
-			beneficialAffect(mob,mob,completion);
+			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		}catch(java.io.IOException e){return false;}
 		return true;

@@ -30,7 +30,7 @@ public class Chant_VineWeave extends Chant
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 50;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.location().resourceChoices()==null)
 		{
@@ -65,7 +65,7 @@ public class Chant_VineWeave extends Chant
 		if(mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_SEAWEED)))
 			material=EnvResource.RESOURCE_SEAWEED;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -85,7 +85,7 @@ public class Chant_VineWeave extends Chant
 					{
 						Vector V=new Vector();
 						V.addElement(new Integer(material));
-						A.invoke(mob,V,A,true);
+						A.invoke(mob,V,A,true,asLevel);
 						if((V.size()>0)&&(V.lastElement() instanceof Item))
 							building=(Item)V.lastElement();
 						else

@@ -40,7 +40,7 @@ public class Skill_Climb extends StdAbility
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int dirCode=Directions.getDirectionCode(Util.combine(commands,0));
 		if(dirCode<0)
@@ -59,7 +59,7 @@ public class Skill_Climb extends StdAbility
 			mob.tell("You need to stand up first!");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

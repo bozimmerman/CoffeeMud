@@ -27,9 +27,9 @@ public class Prayer_MassHarm extends Prayer
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		HashSet h=properTargets(mob,givenTarget,auto);
@@ -52,7 +52,7 @@ public class Prayer_MassHarm extends Prayer
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
-						int harming=Dice.roll(4,adjustedLevel(mob)/numEnemies,numEnemies);
+						int harming=Dice.roll(4,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
 						MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
 					}
 				}

@@ -44,7 +44,7 @@ public class Thief_UsePoison extends ThiefSkill
 		return offenders;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -77,7 +77,7 @@ public class Thief_UsePoison extends ThiefSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -91,7 +91,7 @@ public class Thief_UsePoison extends ThiefSkill
 				Ability A=(Ability)V.firstElement();
 				if(A!=null)
 					if(target instanceof Weapon)
-						A.invoke(mob,target,true);
+						A.invoke(mob,target,true,asLevel);
 					else
 						target.addNonUninvokableEffect(A);
 			}

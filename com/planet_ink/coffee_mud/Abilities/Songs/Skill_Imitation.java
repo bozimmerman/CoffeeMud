@@ -73,7 +73,7 @@ public class Skill_Imitation extends BardSkill
 
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;
 		if(commands.size()>1)
@@ -101,7 +101,7 @@ public class Skill_Imitation extends BardSkill
 		if(target==null) target=mob.getVictim();
 		if(target==null) target=mob;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

@@ -93,7 +93,7 @@ public class Spell_TeleportationWard extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;
 		if(commands.size()>0)
@@ -119,7 +119,7 @@ public class Spell_TeleportationWard extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -136,7 +136,7 @@ public class Spell_TeleportationWard extends Spell
 					CMClass.DBEngine().DBUpdateRoom((Room)target);
 				}
 				else
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

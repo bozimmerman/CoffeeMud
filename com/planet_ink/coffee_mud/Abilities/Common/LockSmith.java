@@ -137,7 +137,7 @@ public class LockSmith extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -233,7 +233,7 @@ public class LockSmith extends CraftingSkill
 											0);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,0);
 		building=getBuilding(workingOn);
@@ -275,7 +275,7 @@ public class LockSmith extends CraftingSkill
 		{
 			mob.location().send(mob,msg);
 			boltlock=lboltlock;
-			beneficialAffect(mob,mob,completion);
+			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		return true;
 	}

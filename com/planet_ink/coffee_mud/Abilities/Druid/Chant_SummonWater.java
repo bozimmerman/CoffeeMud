@@ -49,7 +49,7 @@ public class Chant_SummonWater extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
@@ -66,7 +66,7 @@ public class Chant_SummonWater extends Chant
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -91,7 +91,7 @@ public class Chant_SummonWater extends Chant
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				SpringLocation=mob.location();
 				littleSpring=newItem;
-				beneficialAffect(mob,newItem,0);
+				beneficialAffect(mob,newItem,asLevel,0);
 				mob.location().recoverEnvStats();
 			}
 		}

@@ -92,7 +92,7 @@ public class Scrapping extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb="scrapping";
 		String str=Util.combine(commands,0);
@@ -182,7 +182,7 @@ public class Scrapping extends CommonSkill
 		}
 
 		found=null;
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;
@@ -206,7 +206,7 @@ public class Scrapping extends CommonSkill
 			}
 			mob.location().send(mob,msg);
 			found=(Item)msg.target();
-			beneficialAffect(mob,mob,duration);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

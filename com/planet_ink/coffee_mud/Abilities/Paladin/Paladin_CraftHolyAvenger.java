@@ -93,7 +93,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int completion=16;
 		fire=null;
@@ -123,7 +123,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,auto?1:0);
 		building=CMClass.getWeapon("GenWeapon");
@@ -165,7 +165,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,completion);
+			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		return true;
 	}

@@ -129,9 +129,9 @@ public class Spell_Spellbinding extends Spell
 						int curMana=msg.source().curState().getMana();
 						msg.source().curState().setMana(1000);
 						if(msg.target()!=null)
-							A.invoke(msg.source(),Util.parse(msg.target().Name()),null,false);
+							A.invoke(msg.source(),Util.parse(msg.target().Name()),null,false,0);
 						else
-							A.invoke(msg.source(),new Vector(),null,false);
+							A.invoke(msg.source(),new Vector(),null,false,0);
 						msg.source().curState().setMana(curMana);
 					}
 					if(canBeUninvoked())
@@ -143,13 +143,13 @@ public class Spell_Spellbinding extends Spell
 		super.executeMsg(host,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		MOB target = mob;
@@ -240,7 +240,7 @@ public class Spell_Spellbinding extends Spell
 				mob.location().send(mob,msg);
 				if(priorBinding==null)
 				{
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 					priorBinding=(Spell_Spellbinding)target.fetchEffect(ID());
 					if(priorBinding==null) return false;
 					priorBinding.makeLongLasting();

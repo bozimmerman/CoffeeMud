@@ -142,7 +142,7 @@ public class Chant_SummonDustdevil extends Chant
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
@@ -158,7 +158,7 @@ public class Chant_SummonDustdevil extends Chant
 
 		int material=EnvResource.RESOURCE_HEMP;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -174,7 +174,7 @@ public class Chant_SummonDustdevil extends Chant
 				if(target!=null)
 				{
 					if(target.isInCombat()) target.makePeace();
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 					CommonMsgs.follow(target,mob,true);
 					if(target.amFollowing()!=mob)
 						mob.tell(target.name()+" seems unwilling to follow you.");

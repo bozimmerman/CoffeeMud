@@ -32,7 +32,7 @@ public class Prayer_Wave extends Prayer
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
@@ -66,7 +66,7 @@ public class Prayer_Wave extends Prayer
 					FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> swept away by a great wave!":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
-						int harming=Dice.roll(4,adjustedLevel(mob)/numEnemies,numEnemies);
+						int harming=Dice.roll(4,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
 						MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,"A crashing wave <DAMAGE> <T-NAME>!");
 						int chanceToStay=10+(target.charStats().getStat(CharStats.STRENGTH)-mob.envStats().level()*4);
 						int roll=Dice.rollPercentage();

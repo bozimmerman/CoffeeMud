@@ -71,7 +71,7 @@ public class Thief_Robbery extends ThiefSkill
 		return super.okMessage(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -100,7 +100,7 @@ public class Thief_Robbery extends ThiefSkill
 			mob.tell("You cannot rob from "+target.charStats().himher()+".");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		ShopKeeper shop=CoffeeUtensils.getShopKeeper(target);
@@ -140,7 +140,7 @@ public class Thief_Robbery extends ThiefSkill
 				{
 					mobs.clear();
 					mobs.addElement(mob);
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 				}
 				else
 					A.mobs.addElement(mob);
@@ -177,7 +177,7 @@ public class Thief_Robbery extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				Thief_Robbery A=(Thief_Robbery)target.fetchEffect(ID());
-				if(A==null)	beneficialAffect(mob,target,0);
+				if(A==null)	beneficialAffect(mob,target,asLevel,0);
 				A=(Thief_Robbery)target.fetchEffect(ID());
 				if(A!=null)
 					A.mobs.addElement(mob);

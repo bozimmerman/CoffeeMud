@@ -33,10 +33,10 @@ public class Play_Charge extends Play
 	protected void inpersistantAffect(MOB mob)
 	{
 		Ability A=CMClass.getAbility("Fighter_Charge");
-		if(A!=null) A.invoke(mob,chcommands,null,true);
+		if(A!=null) A.invoke(mob,chcommands,null,true,0);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()==0)&&(!mob.isInCombat()))
 		{
@@ -46,7 +46,7 @@ public class Play_Charge extends Play
 		if(commands.size()==0)
 			commands.addElement(mob.getVictim().name());
 		chcommands=commands;
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		return true;
 	}

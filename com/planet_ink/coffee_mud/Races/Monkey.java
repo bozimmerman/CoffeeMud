@@ -101,7 +101,7 @@ public class Monkey extends StdRace
 		{
 			Ability A=CMClass.getAbility("Disease_Aids");
 			if(A!=null)
-				A.invoke(msg.source(),myChar,true);
+				A.invoke(msg.source(),myChar,true,0);
 		}
 	}
 

@@ -95,7 +95,7 @@ public class Spell_MagicMouth extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<3)
@@ -138,7 +138,7 @@ public class Spell_MagicMouth extends Spell
 		}
 
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -151,7 +151,7 @@ public class Spell_MagicMouth extends Spell
 				mob.location().send(mob,msg);
 				myRoomContainer=mob.location();
 				message=Util.combine(commands,2);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 
 		}

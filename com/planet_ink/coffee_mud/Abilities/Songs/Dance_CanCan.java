@@ -45,7 +45,7 @@ public class Dance_CanCan extends Dance
 				kick.setProfficiency(100);
 			}
 			int oldMana=mob.curState().getMana();
-			kick.invoke(mob,mob.getVictim(),false);
+			kick.invoke(mob,mob.getVictim(),false,0);
 			mob.curState().setMana(oldMana);
 		}
 		return true;

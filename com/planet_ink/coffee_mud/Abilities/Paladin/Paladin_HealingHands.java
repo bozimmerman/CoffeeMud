@@ -34,7 +34,7 @@ public class Paladin_HealingHands extends StdAbility
 	protected long lastDone=0;
 	public long flags(){return Ability.FLAG_HEALING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!Sense.aliveAwakeMobile(mob,false))
 			return false;
@@ -45,7 +45,7 @@ public class Paladin_HealingHands extends StdAbility
 			return false;
 		}
 
-		int healing=1+((int)Math.round(Util.div(adjustedLevel(mob),5.0)));
+		int healing=1+((int)Math.round(Util.div(adjustedLevel(mob,asLevel),5.0)));
 		if(mob.curState().getMana()<healing)
 		{
 			mob.tell("You don't have enough mana to do that.");

@@ -37,7 +37,7 @@ public class Chant_SummonTornado extends Chant
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
@@ -65,7 +65,7 @@ public class Chant_SummonTornado extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -178,7 +178,7 @@ public class Chant_SummonTornado extends Chant
 								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,"The tornado picks <S-NAME> up and whisks <S-HIM-HER> away.");
 								R.bringMobHere(M,false);
 							}
-							int maxDie=(int)Math.round(Util.div(adjustedLevel(mob),2.0));
+							int maxDie=(int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0));
 							int damage = Dice.roll(maxDie,7,1);
 							if((msg.value()>0)||(msg2.value()>0))
 								damage = (int)Math.round(Util.div(damage,2.0));

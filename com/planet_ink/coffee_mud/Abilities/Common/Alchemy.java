@@ -131,7 +131,7 @@ public class Alchemy extends CraftingSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		randomRecipeFix(mob,loadRecipes(),commands,0);
 		if(commands.size()<1)
@@ -281,7 +281,7 @@ public class Alchemy extends CraftingSkill
 			}
 			if(experienceToLose<10) experienceToLose=10;
 
-			if(!super.invoke(mob,commands,givenTarget,auto))
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 
 			MUDFight.postExperience(mob,null,null,-experienceToLose,false);
@@ -306,7 +306,7 @@ public class Alchemy extends CraftingSkill
 			{
 				mob.location().send(mob,msg);
 				building=(Item)msg.target();
-				beneficialAffect(mob,mob,completion);
+				beneficialAffect(mob,mob,asLevel,completion);
 			}
 		}
 		return true;

@@ -61,7 +61,7 @@ public class Spell_Grow extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -72,7 +72,7 @@ public class Spell_Grow extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -88,7 +88,7 @@ public class Spell_Grow extends Spell
 				double aff=1.0 + Util.mul(0.1,(mob.envStats().level()));
 				aff=aff*aff;
 				mob.baseEnvStats().setWeight((int)Math.round(Util.mul(mob.baseEnvStats().weight(),aff)));
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				mob.confirmWearability();
 			}
 

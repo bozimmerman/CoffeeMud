@@ -124,7 +124,7 @@ public class Chant_Hibernation extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
 		{
@@ -150,7 +150,7 @@ public class Chant_Hibernation extends Chant
 			{
 				mob.location().send(mob,msg);
 				oldState=mob.curState();
-				beneficialAffect(mob,mob,Integer.MAX_VALUE-1000);
+				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE-1000);
 				helpProfficiency(mob);
 			}
 		}

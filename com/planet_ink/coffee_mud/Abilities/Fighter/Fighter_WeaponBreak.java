@@ -34,7 +34,7 @@ public class Fighter_WeaponBreak extends StdAbility
 	public int classificationCode(){ return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())
 		{
@@ -59,10 +59,10 @@ public class Fighter_WeaponBreak extends StdAbility
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=mob.getVictim().envStats().level()-adjustedLevel(mob);
+		int levelDiff=mob.getVictim().envStats().level()-adjustedLevel(mob,asLevel);
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else

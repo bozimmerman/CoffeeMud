@@ -96,7 +96,7 @@ public class Prayer_HolyDay extends Prayer
 
 		return super.tick(ticking,tickID);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Area target=mob.location().getArea();
 		if(target==null) return false;
@@ -106,7 +106,7 @@ public class Prayer_HolyDay extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -129,7 +129,7 @@ public class Prayer_HolyDay extends Prayer
 						godName="the gods";
 					R.showHappens(CMMsg.MSG_OK_VISUAL,"A holy day of "+godName+" has begun!");
 				}
-				beneficialAffect(mob,target,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
+				beneficialAffect(mob,target,asLevel,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
 			}
 		}
 		else

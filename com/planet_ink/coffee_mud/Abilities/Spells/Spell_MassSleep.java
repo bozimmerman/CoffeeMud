@@ -29,7 +29,7 @@ public class Spell_MassSleep extends Spell
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null)
@@ -42,7 +42,7 @@ public class Spell_MassSleep extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,-20,auto);
@@ -71,7 +71,7 @@ public class Spell_MassSleep extends Spell
 						{
 							Spell_Sleep spell=new Spell_Sleep();
 							spell.setProfficiency(profficiency());
-							success=spell.maliciousAffect(mob,target,2,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
+							success=spell.maliciousAffect(mob,target,asLevel,2,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
 							if(success)
 								target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
 						}

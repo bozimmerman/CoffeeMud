@@ -28,7 +28,7 @@ public class Spell_DispelMagic extends Spell
 	public int quality(){ return MALICIOUS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
 		if(target==null) return false;
@@ -67,7 +67,7 @@ public class Spell_DispelMagic extends Spell
 		}
 
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int diff=revokeThis.invoker().envStats().level()-mob.envStats().level();

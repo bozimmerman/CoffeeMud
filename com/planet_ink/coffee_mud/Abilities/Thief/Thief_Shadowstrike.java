@@ -33,7 +33,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT;}
 	protected int overrideMana(){return 100;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
 		{
@@ -60,7 +60,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -82,7 +82,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 				if(mob.fetchEffect("Thief_Hide")==null)
 				{
 					Ability hide=mob.fetchAbility("Thief_Hide");
-					if(hide!=null) hide.invoke(mob,null,false);
+					if(hide!=null) hide.invoke(mob,null,false,asLevel);
 
 					mob.location().recoverRoomStats();
 					if(Sense.canBeSeenBy(mob,target))

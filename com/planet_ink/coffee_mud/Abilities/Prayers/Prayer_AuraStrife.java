@@ -95,25 +95,25 @@ public class Prayer_AuraStrife extends Prayer
 			{
 				MOB M=mob.location().fetchInhabitant(m);
 				if((M!=null)&&(M!=invoker())&&(!invokerGroup.contains(M)))
-					beneficialAffect(invoker,M,Integer.MAX_VALUE-1000);
+					beneficialAffect(invoker,M,0,Integer.MAX_VALUE-1000);
 			}
 		}
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			beneficialAffect(mob,target,0);
+			beneficialAffect(mob,target,asLevel,0);
 			target.recoverEnvStats();
 			target.location().recoverRoomStats();
 		}

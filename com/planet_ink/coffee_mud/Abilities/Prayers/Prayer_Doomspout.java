@@ -71,7 +71,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 				if(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
-					maliciousAffect(invoker,target,0,-1);
+					maliciousAffect(invoker,target,0,0,-1);
 				}
 		}
 		return true;
@@ -112,12 +112,12 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -142,7 +142,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 					invoker=mob;
 					if(mob.getWorshipCharID().length()>0)
 						godName=mob.getWorshipCharID();
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,asLevel,0,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
 				}
 			}

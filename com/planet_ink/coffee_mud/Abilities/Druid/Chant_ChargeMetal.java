@@ -108,7 +108,7 @@ public class Chant_ChargeMetal extends Chant
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
 		if(target==null) return false;
@@ -128,7 +128,7 @@ public class Chant_ChargeMetal extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -145,7 +145,7 @@ public class Chant_ChargeMetal extends Chant
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
-					success=maliciousAffect(mob,I,0,-1);
+					success=maliciousAffect(mob,I,asLevel,0,-1);
 			}
 		}
 		else

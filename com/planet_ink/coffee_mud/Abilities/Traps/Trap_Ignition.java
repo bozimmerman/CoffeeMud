@@ -83,7 +83,7 @@ public class Trap_Ignition extends StdTrap
 				if(B!=null)
 				{
 					B.setProfficiency(trapLevel()/5);
-					B.invoke(invoker(),affected,true);
+					B.invoke(invoker(),affected,true,0);
 				}
 				if(affected instanceof Item)
 				{

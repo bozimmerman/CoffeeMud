@@ -93,7 +93,7 @@ public class Prop_NarrowLedge extends Property
 						Ability falling=CMClass.getAbility("Falling");
 						falling.setProfficiency(0);
 						falling.setAffectedOne(msg.target());
-						falling.invoke(null,null,mob,true);
+						falling.invoke(null,null,mob,true,0);
 						CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
 					}
 				}

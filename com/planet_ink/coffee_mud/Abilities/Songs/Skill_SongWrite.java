@@ -32,7 +32,7 @@ public class Skill_SongWrite extends BardSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -91,7 +91,7 @@ public class Skill_SongWrite extends BardSkill
 			}
 
 		// lose all the mana!
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if(!auto)mob.curState().setMana(0);

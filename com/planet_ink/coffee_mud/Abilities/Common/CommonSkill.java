@@ -204,7 +204,7 @@ public class CommonSkill extends StdAbility
 		return buildCostArray(mob,consumed);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
 		{

@@ -73,7 +73,7 @@ public class Prayer_DivinePerspective extends Prayer
 		noRecurse=false;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.getWorshipCharID().length()==0)
 		||(CMMap.getDeity(mob.getWorshipCharID())==null))
@@ -84,7 +84,7 @@ public class Prayer_DivinePerspective extends Prayer
 		Deity target=CMMap.getDeity(mob.getWorshipCharID());
 		Room newRoom=target.location();
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -98,7 +98,7 @@ public class Prayer_DivinePerspective extends Prayer
 			{
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);
-				beneficialAffect(mob,target,10);
+				beneficialAffect(mob,target,asLevel,10);
 			}
 
 		}

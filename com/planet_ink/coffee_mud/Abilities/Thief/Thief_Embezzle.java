@@ -33,7 +33,7 @@ public class Thief_Embezzle extends ThiefSkill
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public Vector mobs=new Vector();
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
@@ -97,7 +97,7 @@ public class Thief_Embezzle extends ThiefSkill
 		&&(hisAmount>(1000*classLevel)))
 		   hisAmount=(1000*classLevel);
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,-(levelDiff),auto);
@@ -107,7 +107,7 @@ public class Thief_Embezzle extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay())/MudHost.TICK_TIME)).intValue());
+				beneficialAffect(mob,target,asLevel,new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay())/MudHost.TICK_TIME)).intValue());
 				bank.delDepositInventory(victim,hisCoins);
 				hisCoins.setNumberOfCoins(hisCoins.numberOfCoins()-hisAmount);
 				bank.addDepositInventory(victim,hisCoins);

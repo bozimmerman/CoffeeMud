@@ -50,7 +50,7 @@ public class Spell_FakeWeapon extends Spell
 		return super.okMessage(myHost,msg);
 
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String weaponName=Util.combine(commands,0);
 		String[] choices={"sword","dagger","mace","staff","axe","hammer", "flail"};
@@ -65,7 +65,7 @@ public class Spell_FakeWeapon extends Spell
 			mob.tell("You must specify what kind of weapon to create: sword, dagger, mace, flail, staff, axe, or hammer.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -138,7 +138,7 @@ public class Spell_FakeWeapon extends Spell
 				mob.addInventory(weapon);
 				mob.location().show(mob,null,weapon,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
 				myItem=weapon;
-				beneficialAffect(mob,weapon,0);
+				beneficialAffect(mob,weapon,asLevel,0);
 			}
 		}
 		else

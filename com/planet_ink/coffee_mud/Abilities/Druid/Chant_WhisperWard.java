@@ -41,7 +41,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
-	{beneficialAffect(mob,E,0); return (Trap)E.fetchEffect(ID());}
+	{beneficialAffect(mob,E,classLevel,0); return (Trap)E.fetchEffect(ID());}
 
 	public boolean disabled(){return false;}
 	public boolean sprung(){return false;}
@@ -108,7 +108,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<2)
@@ -155,7 +155,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -167,7 +167,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 			{
 				mob.location().send(mob,msg);
 				myRoomContainer=mob.location();
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 			}
 
 		}

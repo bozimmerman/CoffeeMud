@@ -28,7 +28,7 @@ public class Spell_Duplicate extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
@@ -44,7 +44,7 @@ public class Spell_Duplicate extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int multiPlier=5+target.envStats().weight();

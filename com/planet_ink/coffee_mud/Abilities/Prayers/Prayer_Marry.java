@@ -28,7 +28,7 @@ public class Prayer_Marry extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	public int quality(){return Ability.OK_OTHERS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -114,7 +114,7 @@ public class Prayer_Marry extends Prayer
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

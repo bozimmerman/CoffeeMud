@@ -164,7 +164,7 @@ public class Skill_Track extends StdAbility
 			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!Sense.aliveAwakeMobile(mob,false))||(mob.location()==null))
 			return false;
@@ -181,7 +181,7 @@ public class Skill_Track extends StdAbility
 		theTrail=null;
 		nextDirection=-2;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		String mobName=Util.combine(commands,0);

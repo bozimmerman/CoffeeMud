@@ -106,14 +106,14 @@ public class Chant_HowlersMoon extends Chant
 					if((d<33)&&(invoker()!=null)&&(invoker().location()==room))
 					{
 						CommonMsgs.follow(target,invoker(),true);
-						beneficialAffect(invoker(),target,0);
+						beneficialAffect(invoker(),target,0,0);
 						if(target.amFollowing()!=invoker())
 							target.setVictim(invoker());
 					}
 					else
 					if((d>66)&&(invoker()!=null)&&(invoker().location()==room))
 						target.setVictim(invoker());
-					beneficialAffect(target,target,Integer.MAX_VALUE/2);
+					beneficialAffect(target,target,0,Integer.MAX_VALUE/2);
 				}
 				else
 				{
@@ -143,7 +143,7 @@ public class Chant_HowlersMoon extends Chant
 		return choices;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
@@ -187,7 +187,7 @@ public class Chant_HowlersMoon extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 
@@ -206,7 +206,7 @@ public class Chant_HowlersMoon extends Chant
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Howler's Moon Rises!");
 					ticksTicked=0;
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}

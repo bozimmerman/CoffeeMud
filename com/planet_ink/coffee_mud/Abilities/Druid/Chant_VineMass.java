@@ -39,7 +39,7 @@ public class Chant_VineMass extends Chant_SummonVine
 		for(int i=0;i<limit;i++)
 		{
 			newMOB=(MOB)CMClass.getMOB("GenMOB");
-			int level=adjustedLevel(caster);
+			int level=adjustedLevel(caster,0);
 			if(level<1) level=1;
 			newMOB.baseEnvStats().setLevel(level);
 			newMOB.baseEnvStats().setAbility(13);
@@ -72,7 +72,7 @@ public class Chant_VineMass extends Chant_SummonVine
 			newMOB.setStartRoom(null);
 			if((i+1)<limit)
 			{
-				beneficialAffect(caster,newMOB,0);
+				beneficialAffect(caster,newMOB,0,0);
 				CommonMsgs.follow(newMOB,caster,true);
 				if(newMOB.amFollowing()!=caster)
 				{

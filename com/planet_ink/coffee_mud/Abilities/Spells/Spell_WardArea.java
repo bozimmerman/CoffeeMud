@@ -51,7 +51,7 @@ public class Spell_WardArea extends Spell implements Trap
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
-	{beneficialAffect(mob,E,0);return (Trap)E.fetchEffect(ID());}
+	{beneficialAffect(mob,E,classLevel,0);return (Trap)E.fetchEffect(ID());}
 
 	public boolean sprung(){return sprung;}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -107,7 +107,7 @@ public class Spell_WardArea extends Spell implements Trap
 			newCaster.setLocation((Room)affected);
 			try
 			{
-				shooter.invoke(newCaster,parameters,mob,true);
+				shooter.invoke(newCaster,parameters,mob,true,0);
 			}
 			catch(Exception e){Log.errOut("WARD/"+Util.combine(parameters,0),e);}
 			newCaster.setLocation(null);
@@ -142,7 +142,7 @@ public class Spell_WardArea extends Spell implements Trap
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -174,7 +174,7 @@ public class Spell_WardArea extends Spell implements Trap
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		Environmental target = mob.location();
 		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
@@ -205,7 +205,7 @@ public class Spell_WardArea extends Spell implements Trap
 					CMClass.DBEngine().DBUpdateRoom(mob.location());
 				}
 				else
-					beneficialAffect(mob,mob.location(),9999);
+					beneficialAffect(mob,mob.location(),asLevel,9999);
 				shooter=null;
 				parameters=null;
 			}

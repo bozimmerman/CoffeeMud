@@ -30,14 +30,14 @@ public class Chant_SummonHeat extends Chant
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int size=mob.location().getArea().numberOfProperIDedRooms();

@@ -46,7 +46,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
-	{beneficialAffect(mob,E,0);return (Trap)E.fetchEffect(ID());}
+	{beneficialAffect(mob,E,classLevel,0);return (Trap)E.fetchEffect(ID());}
 
 	public void spring(MOB M)
 	{
@@ -113,7 +113,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String whatToalarm=Util.combine(commands,0);
 		Exit alarmThis=null;
@@ -126,7 +126,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -142,13 +142,13 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 				room1=mob.location();
 				room2=mob.location().getRoomInDir(dirCode);
 				mob.tell("You have set the alarm.");
-				beneficialAffect(mob,alarmThis,0);
+				beneficialAffect(mob,alarmThis,asLevel,0);
 			}
 			else
 			{
 				if(Dice.rollPercentage()>50)
 				{
-					beneficialAffect(mob,alarmThis,0);
+					beneficialAffect(mob,alarmThis,asLevel,0);
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the alarm on accident!");
 					Trap T=(Trap)alarmThis.fetchEffect(ID());
 					if(T!=null) T.spring(mob);

@@ -81,7 +81,7 @@ public class Chant_Feralness extends Chant
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -97,7 +97,7 @@ public class Chant_Feralness extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -116,7 +116,7 @@ public class Chant_Feralness extends Chant
 				if(!Druid_ShapeShift.isShapeShifted(mob))
 				{
 					Ability A=mob.fetchAbility("Druid_ShapeShift");
-					if(A!=null) A.invoke(mob,new Vector(),null,false);
+					if(A!=null) A.invoke(mob,new Vector(),null,false,asLevel);
 				}
 				if(!Druid_ShapeShift.isShapeShifted(mob))
 				{
@@ -124,7 +124,7 @@ public class Chant_Feralness extends Chant
 					return false;
 				}
 				hpAdjustment=(int)Math.round(Util.div(target.maxState().getHitPoints(),5.0));
-				success=beneficialAffect(mob,target,0);
+				success=beneficialAffect(mob,target,asLevel,0);
 				target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);
 				target.recoverMaxState();
 				target.location().recoverRoomStats();

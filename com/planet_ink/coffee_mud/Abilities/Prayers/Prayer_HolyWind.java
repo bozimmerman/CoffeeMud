@@ -78,7 +78,7 @@ public class Prayer_HolyWind extends Prayer
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
@@ -91,7 +91,7 @@ public class Prayer_HolyWind extends Prayer
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -130,7 +130,7 @@ public class Prayer_HolyWind extends Prayer
 						{
 							mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");
 							doneTicking=false;
-							success=maliciousAffect(mob,target,howLong,-1);
+							success=maliciousAffect(mob,target,asLevel,howLong,-1);
 						}
 						if(target.getVictim()!=null)
 							target.getVictim().setAtRange(target.rangeToTarget());

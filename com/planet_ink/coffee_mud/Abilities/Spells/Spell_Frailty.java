@@ -62,7 +62,7 @@ public class Spell_Frailty extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -71,7 +71,7 @@ public class Spell_Frailty extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,mob.envStats().level()-target.envStats().level(),auto);
 
@@ -89,7 +89,7 @@ public class Spell_Frailty extends Spell
 				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) frail!");
-					maliciousAffect(mob,target,10,-1);
+					maliciousAffect(mob,target,asLevel,10,-1);
 				}
 			}
 		}

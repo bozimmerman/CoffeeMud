@@ -73,12 +73,12 @@ public class Chant_Yearning extends Chant
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -95,7 +95,7 @@ public class Chant_Yearning extends Chant
 				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) to yearn for something!");
-					maliciousAffect(mob,target,(Integer.MAX_VALUE/2),-1);
+					maliciousAffect(mob,target,asLevel,(Integer.MAX_VALUE/2),-1);
 				}
 			}
 		}

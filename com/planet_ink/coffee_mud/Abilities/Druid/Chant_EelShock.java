@@ -72,7 +72,7 @@ public class Chant_EelShock extends Chant
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=MUDFight.properTargets(this,mob,auto);
 		if(h==null)
@@ -110,7 +110,7 @@ public class Chant_EelShock extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -131,7 +131,7 @@ public class Chant_EelShock extends Chant
 				{
 					mob.location().send(mob,msg);
 					if(msg.value()<=0)
-						maliciousAffect(mob,target,3,-1);
+						maliciousAffect(mob,target,asLevel,3,-1);
 				}
 			}
 		}

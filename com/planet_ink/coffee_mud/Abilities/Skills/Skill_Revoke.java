@@ -33,7 +33,7 @@ public class Skill_Revoke extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public int maxRange(){return 10;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		String whatToRevoke=Util.combine(commands,0);
@@ -60,7 +60,7 @@ public class Skill_Revoke extends StdAbility
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Ability revokeThis=null;

@@ -112,7 +112,7 @@ public class Spell_AnimateWeapon extends Spell
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
@@ -122,7 +122,7 @@ public class Spell_AnimateWeapon extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -139,7 +139,7 @@ public class Spell_AnimateWeapon extends Spell
 				else
 					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> starts flying around!");
 				if(mob.location().isContent(target))
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

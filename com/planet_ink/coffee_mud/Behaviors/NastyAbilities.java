@@ -89,9 +89,9 @@ public class NastyAbilities extends ActiveTicker
 					Vector V=new Vector();
 					V.addElement(target.name());
 					if((tryThisOne.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
-						tryThisOne.invoke(mob,new Vector(),null,false);
+						tryThisOne.invoke(mob,new Vector(),null,false,0);
 					else
-						tryThisOne.invoke(mob,V,target,false);
+						tryThisOne.invoke(mob,V,target,false,0);
 					
 					if(!fightok)
 					for(int i=0;i<thisRoom.numInhabitants();i++)

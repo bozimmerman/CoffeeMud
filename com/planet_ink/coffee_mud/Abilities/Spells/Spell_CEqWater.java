@@ -29,11 +29,11 @@ public class Spell_CEqWater extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqWater"; }
   public String name(){return "ClanEnchant Water";}
 
-  public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+  public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
   {
     type="Water";
     // All the work is done by the base model
-    if(!super.invoke(mob,commands,givenTarget,auto))
+    if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
         return false;
       return true;
   }

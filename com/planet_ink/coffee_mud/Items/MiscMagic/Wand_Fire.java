@@ -70,7 +70,7 @@ public class Wand_Fire extends StdWand
 					if((usesRemaining()>0)&&(spell!=null)&&(useTheWand(spell,mob)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
-						spell.invoke(mob, target, true);
+						spell.invoke(mob, target, true,envStats().level());
 						return;
 					}
 				}
@@ -81,7 +81,7 @@ public class Wand_Fire extends StdWand
 					if((usesRemaining()>4)&&(spell!=null)&&(useTheWand(spell,mob)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-5);
-						spell.invoke(mob, target, true);
+						spell.invoke(mob, target, true,envStats().level());
 						return;
 					}
 				}

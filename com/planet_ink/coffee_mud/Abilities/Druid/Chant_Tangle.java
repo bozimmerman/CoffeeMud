@@ -86,7 +86,7 @@ public class Chant_Tangle extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -102,7 +102,7 @@ public class Chant_Tangle extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -124,7 +124,7 @@ public class Chant_Tangle extends Chant
 						amountRemaining=200;
 						if(target.location()==mob.location())
 						{
-							success=maliciousAffect(mob,target,(adjustedLevel(mob)*10),-1);
+							success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
 							target.location().show(target,null,thePlants,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck in <O-NAME> as they grow and twist around <S-HIM-HER>!");
 						}
 					}

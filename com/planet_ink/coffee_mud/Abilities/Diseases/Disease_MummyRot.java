@@ -99,7 +99,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
@@ -109,7 +109,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -126,7 +126,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) grey!");
 					conDown=1;
-					success=maliciousAffect(mob,target,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}

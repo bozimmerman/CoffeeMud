@@ -27,9 +27,9 @@ public class ThiefSkill extends StdAbility
 	public int quality(){return Ability.INDIFFERENT;}
 	public int classificationCode(){	return Ability.THIEF_SKILL;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if((!auto)

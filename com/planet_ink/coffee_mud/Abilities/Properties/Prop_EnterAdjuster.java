@@ -60,7 +60,7 @@ public class Prop_EnterAdjuster extends Property
 		for(int i=0;i<theSpells.size();i++)
 		{
 			Ability thisOne=(Ability)((Ability)theSpells.elementAt(i)).copyOf();
-			thisOne.invoke(mob,mob,true);
+			thisOne.invoke(mob,mob,true,0);
 		}
 	}
 

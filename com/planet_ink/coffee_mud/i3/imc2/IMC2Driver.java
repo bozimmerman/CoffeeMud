@@ -71,6 +71,7 @@ public final class IMC2Driver extends Thread {
     
     public Hashtable chan_conf = new Hashtable();
 	public Hashtable chan_mask = new Hashtable();
+
     DataInputStream in;
     DataOutputStream out;
 
@@ -1721,6 +1722,7 @@ public final class IMC2Driver extends Thread {
     final public void run() {
         imc_read_from_socket(in);
         HeartBeat = 0;
+
 		if(c_thread2==null)
 		{
 			c_thread2 = new call_in(this);

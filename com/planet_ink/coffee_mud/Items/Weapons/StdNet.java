@@ -89,7 +89,7 @@ public class StdNet extends StdWeapon
 					if(A!=null)
 					{
 						A.setAffectedOne(this);
-						A.invoke(msg.source(),msg.target(),true);
+						A.invoke(msg.source(),msg.target(),true,envStats().level());
 					}
 				}
 			}

@@ -57,7 +57,7 @@ public class Thief_Swipe extends ThiefSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
@@ -80,7 +80,7 @@ public class Thief_Swipe extends ThiefSkill
 			mob.tell("You cannot swipe from "+target.charStats().himher()+".");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*3);

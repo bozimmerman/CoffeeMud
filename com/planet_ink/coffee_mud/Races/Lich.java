@@ -47,7 +47,7 @@ public class Lich extends Skeleton
 			if(A!=null)
 			{
 				A.setMiscText("WEAK");
-				A.invoke(myChar,null,true);
+				A.invoke(myChar,null,true,0);
 			}
 		}
 	}

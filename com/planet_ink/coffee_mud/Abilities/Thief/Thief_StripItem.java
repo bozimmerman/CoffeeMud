@@ -35,7 +35,7 @@ public class Thief_StripItem extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -57,7 +57,7 @@ public class Thief_StripItem extends ThiefSkill
 			mob.tell("You cannot strip anything off of "+target.charStats().himher()+".");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Item stolen=target.fetchWornItem(itemToSteal);

@@ -154,7 +154,7 @@ public class Chant_Treeform extends Chant
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
@@ -176,7 +176,7 @@ public class Chant_Treeform extends Chant
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -198,7 +198,7 @@ public class Chant_Treeform extends Chant
 					target.makePeace();
 					CommonMsgs.stand(target,true);
 					oldState=target.curState().cloneCharState();
-					success=beneficialAffect(mob,target,mob.envStats().level()*50);
+					success=beneficialAffect(mob,target,asLevel,mob.envStats().level()*50);
 					if(success)
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> transform(s) into a tree!!");

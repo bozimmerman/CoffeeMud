@@ -87,7 +87,7 @@ public class Chant_SaplingWorkers extends Chant
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
 		&&((mob.location().myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
@@ -113,7 +113,7 @@ public class Chant_SaplingWorkers extends Chant
 				material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -126,7 +126,7 @@ public class Chant_SaplingWorkers extends Chant
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, material);
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,asLevel,0);
 				CommonMsgs.follow(target,mob,true);
 				if(target.amFollowing()!=mob)
 					mob.tell(target.name()+" seems unwilling to follow you.");
@@ -141,7 +141,7 @@ public class Chant_SaplingWorkers extends Chant
 	public MOB determineMonster(MOB caster, int material)
 	{
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
-		int level=adjustedLevel(caster)-6;
+		int level=adjustedLevel(caster,0)-6;
 		if(level<1) level=1;
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("TreeGolem"));
@@ -207,7 +207,7 @@ public class Chant_SaplingWorkers extends Chant
 		newMOB.setBitmap(MOB.ATT_AUTOASSIST);
 		newMOB.setStartRoom(null);
 		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) looking around!");
-		if(start) A.invoke(newMOB,null,false);
+		if(start) A.invoke(newMOB,null,false,0);
 		return(newMOB);
 	}
 }

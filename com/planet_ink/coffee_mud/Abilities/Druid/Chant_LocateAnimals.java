@@ -101,7 +101,7 @@ public class Chant_LocateAnimals extends Chant
 		return null;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
@@ -114,7 +114,7 @@ public class Chant_LocateAnimals extends Chant
 		theTrail=null;
 		nextDirection=-2;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if(animalHere(mob.location())!=null)

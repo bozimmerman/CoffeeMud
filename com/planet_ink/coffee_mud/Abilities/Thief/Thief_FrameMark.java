@@ -53,7 +53,7 @@ public class Thief_FrameMark extends ThiefSkill
 		return (Behavior)V.firstElement();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getMark(mob);
 		if(target==null)
@@ -76,7 +76,7 @@ public class Thief_FrameMark extends ThiefSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=(target.envStats().level()-mob.envStats().level()*15);

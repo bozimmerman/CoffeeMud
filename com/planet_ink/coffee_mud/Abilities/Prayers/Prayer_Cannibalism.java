@@ -136,7 +136,7 @@ public class Prayer_Cannibalism extends Prayer
 				if(B!=null)
 				{
 					Ability A=CMClass.getAbility("Butchering");
-					if(A!=null) A.invoke(M,Util.parse(B.Name()),B,true);
+					if(A!=null) A.invoke(M,Util.parse(B.Name()),B,true,0);
 				}
 				else
 				if(Dice.rollPercentage()<10)
@@ -151,12 +151,12 @@ public class Prayer_Cannibalism extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
@@ -177,7 +177,7 @@ public class Prayer_Cannibalism extends Prayer
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> inflicted with cannibalistic urges!");
 					target.curState().setHunger(0);
 					target.curState().setThirst(0);
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}

@@ -33,7 +33,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 	public Environmental lastChecked=null;
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String whatTounlock=Util.combine(commands,0);
 		Environmental unlockThis=null;
@@ -51,7 +51,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 		if(unlockThis==null) return false;
 		int oldProfficiency=profficiency();
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,+((mob.envStats().level()

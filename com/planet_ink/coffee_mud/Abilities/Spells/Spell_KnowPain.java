@@ -28,7 +28,7 @@ public class Spell_KnowPain extends Spell
 	public int quality(){return MALICIOUS;};
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -37,7 +37,7 @@ public class Spell_KnowPain extends Spell
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
@@ -57,7 +57,7 @@ public class Spell_KnowPain extends Spell
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie = (target.envStats().level()+adjustedLevel(mob))/2;
+				int maxDie = (target.envStats().level()+adjustedLevel(mob,asLevel))/2;
 				damage += Dice.roll(maxDie,6,target.charStats().getStat(CharStats.INTELLIGENCE));
 				mob.location().send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))

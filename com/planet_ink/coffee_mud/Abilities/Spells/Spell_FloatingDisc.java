@@ -68,7 +68,7 @@ public class Spell_FloatingDisc extends Spell
 		affectableStats.setWeight(0);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
@@ -85,7 +85,7 @@ public class Spell_FloatingDisc extends Spell
 			return false;
 		}
 		
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -125,7 +125,7 @@ public class Spell_FloatingDisc extends Spell
 				((Item)target).setRawLogicalAnd(properWornLogical);
 				((Item)target).setRawProperLocationBitmap(properWornCode);
 				((Item)target).recoverEnvStats();
-				beneficialAffect(mob,target,mob.envStats().level()*30);
+				beneficialAffect(mob,target,asLevel,mob.envStats().level()*30);
 				mob.recoverEnvStats();
 				mob.recoverMaxState();
 				mob.recoverCharStats();

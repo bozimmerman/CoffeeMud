@@ -30,7 +30,7 @@ public class Spell_Permanency extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
 		if(target==null) return false;
@@ -41,7 +41,7 @@ public class Spell_Permanency extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
