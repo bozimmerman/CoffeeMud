@@ -1,1 +1,54 @@
+Implement a clean-up feature in the saver thread for junk lying around
+
+Add Area objects and Tables and Affect/Properties!
+
+Buy command for standard mobs, to facilitate trades.
+
+0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where 
+one could buy raw materials.  Facilities available there would be used, along with your skill, to 
+produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing, 
+Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and 
+remove rawness from Meat).
+
+ThievesTools required for picking locks, check/remove traps without severe penalty.
+
+HuntableAnimals that produce pieces of raw meat in inventory when killed.  Poisoned and poisoning 
+animals will produce poisoned meat, of course.
+
+Beacon, Worship command to change recall/start room to a new temple or church.  Worshiped room would 
+also get ticked, and previews of actions,  which will improve the Cleric class considerably.  
+
+Guilds will have the ability to take on a character and make him or her the class sponsored by the 
+guild.  These will be special Sub-Classes (derivatives of existing classes).
+
+Serve and Rebuke commands.  Any character may take on a leige, but Clerics may only take worshipper
+of the same god (room) as a leige.  A Leige receives 10% of all experience gained by the
+vassels, providing incentive to assist the vassel.
+
+Seperate commands to objects, like abilities.  This will provide the easy addition of custom commands.
+
+Allow classes and directories to be assigned in the INI file in addition to the default path.
+
+To make mouted riding possible, allow Environmentals to modify displayText.  Mounted animals
+will take half of all combat damage, will add to attack ability, and increase movement and will
+act as a container for the purposes of cargo.
+
+For trade skills, and to make spells more realistic, perfect the delay of these abilities, and
+allow some message to be displayed as they are put in Que.  For example "You start whittling" (delay)
+"You have completed your piece of art". (Combat should cancel this!)
+
+Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it 
+will send the items to the appropriate GateObject.  The GateObject can be either a container or not. 
+If not, the GateObject will drop its cargo on the floor.  The TeleportingContainer and the GateObject 
+will have identical MiscText fields to establish the Keys between them.
+
+A Multi-Room Gate would work the same way.  An Entry, Exit, and TwoWay type would be constructed.  The 
+Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course.  The 
+Following thing would be automatic, if an Exit and Direction extensions are used.
+
+If you are adventurous, put the Archon GenProperties modifiers into a method so that Generic object 
+properties can be more easily added without affecting the ONE class.
+
 Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard
+
+

@@ -3,9 +3,9 @@
     C     O  O  F     F     E     E     MM MM  U  U  D  D
     C     O  O  FFF   FFF   EEE   EEE   M M M  U  U  D  D
     C     O  O  F     F     E     E     M   M  U  U  D  D
-     CCC   OO   F     F     EEEE  EEEE  M   M   UU   DDD    v1.0
+     CCC   OO   F     F     EEEE  EEEE  M   M   UU   DDD    v1.2
 
-       (C) 2000 Bo Zimmerman, Lee H. Fox, Mike Rundell
+       (C) 2000 - 2002 Bo Zimmerman
 
                         (
                           )     (
