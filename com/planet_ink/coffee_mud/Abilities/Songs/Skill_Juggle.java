@@ -242,7 +242,7 @@ public class Skill_Juggle extends StdAbility
 								w.setDescription(I.description());
 								copy.removeElement(I);
 								unJuggle(I);
-								w.setWeaponClassification(Weapon.CLASS_RANGED);
+								w.setWeaponClassification(Weapon.CLASS_THROWN);
 								w.setRanges(0,10);
 								if(I instanceof Weapon)
 									w.setWeaponType(((Weapon)I).weaponType());
