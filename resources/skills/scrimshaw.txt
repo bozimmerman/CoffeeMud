@@ -1,3 +1,4 @@
+% comb	1	5	1	1	GenItem		0	
 % Table	6	30	50	20	GenRideable	TABLE	150	
 % Stool	6	30	10	6	GenChair	CHAIR	1	
 % Chair	6	30	15	10	GenChair	CHAIR	1	
@@ -6,4 +7,5 @@
 % Statue	12	22	100	100	GenItem	STATUE	0	
 % Figurine	3	40	30	25	GenItem	STATUE	0	
 % Sword	3	20	6	25	GenWeapon	PIERCE	8	
+% Knife	1	10	2	5	GenWeapon	PIERCE	3	
 % Spear	3	20	6	25	GenSpear	PIERCE	6	

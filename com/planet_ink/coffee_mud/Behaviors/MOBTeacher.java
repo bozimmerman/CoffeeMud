@@ -172,7 +172,7 @@ public class MOBTeacher extends CombatAbilities
 					ExternalPlay.quickSay(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
 					return;
 				}
-				ensureCharClass();
+				//ensureCharClass();
 				myAbility=monster.fetchAbility(myAbility.ID());
 				if(myAbility==null)
 				{

@@ -1,7 +1,1 @@
 GAES still isn't done
-the MONK MOBtrainer behavior does not seem to be working correctly. The fighter guildmaster in Midgaard has it, but doesn't know any of the monkly skills.
-I think that Etching would be an awesome new skill! To Etch symbols on you gear. Liatshard hold a Platinum Giant Sword with an Eagle Etched on it.
-can't make sounds when muted? during combat (I wasn't saying anything, was I?)
-You get a pile of 3767 gold coins from the body of MrFlowers
-You don't see 'a pile of 3767 gold coins' here.
-Floating Disc says something is too heavy?!

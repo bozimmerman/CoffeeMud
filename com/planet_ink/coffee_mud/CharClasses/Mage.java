@@ -71,6 +71,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_Knock",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_FeatherFall",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_Sleep",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Spell_ElementalStorm",false);
 			// level 4
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_AnimateItem",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_FakeFood",false);
