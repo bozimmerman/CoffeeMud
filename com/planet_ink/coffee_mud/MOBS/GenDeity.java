@@ -33,7 +33,8 @@ public class GenDeity extends StdDeity
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		Generic.setPropertiesStr(this,newText,false);
+		if((newText!=null)&&(newText.length()>0))
+			Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 		recoverCharStats();
 		baseState().setHitPoints((10*baseEnvStats().level())+Dice.roll(baseEnvStats().level(),baseEnvStats().ability(),1));
