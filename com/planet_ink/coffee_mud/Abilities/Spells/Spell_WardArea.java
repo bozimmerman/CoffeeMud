@@ -19,6 +19,7 @@ public class Spell_WardArea extends Spell implements Trap
 	private boolean sprung=false;
 	
 	public boolean isABomb(){return false;}
+	public void activateBomb(){}
 	public boolean disabled(){return sprung;}
 	public void disable(){unInvoke();}
 	public void setReset(int Reset){}

@@ -47,8 +47,8 @@ public class Chant_FungalBloom extends Chant
 				A.setMiscText("Poison_Bloodboil");
 				A.setInvoker(mob);
 				A.setBorrowed(target,true);
-				target.addNonUninvokableAffect(A);
 				((Trap)A).setReset(3);
+				target.addAffect(A);
 				target.setMiscText(target.text());
 				((Trap)A).activateBomb();
 			}

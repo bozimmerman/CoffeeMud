@@ -21,6 +21,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public Room room2=null;
 
 	public boolean isABomb(){return false;}
+	public void activateBomb(){}
 	public boolean sprung(){return sprung;}
 	public boolean disabled(){return false;}
 	public void disable(){ unInvoke();}

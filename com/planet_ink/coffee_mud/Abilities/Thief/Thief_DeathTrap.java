@@ -23,6 +23,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	public boolean sprung(){return false;}
 	
 	public boolean isABomb(){return false;}
+	public void activateBomb(){}
 	public void setReset(int Reset){}
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}

@@ -94,6 +94,7 @@ public class StdTrap extends StdAbility implements Trap
 			tickDown=getReset();
 			sprung=false;
 			disabled=false;
+System.out.println("!"+tickDown);			
 			ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
 		}
 	}
@@ -217,6 +218,7 @@ public class StdTrap extends StdAbility implements Trap
 		else
 		if((tickID==Host.TRAP_RESET)&&(getReset()>0))
 		{
+System.out.println(tickDown);			
 			if((--tickDown)<=0)
 			{
 				if((isABomb())

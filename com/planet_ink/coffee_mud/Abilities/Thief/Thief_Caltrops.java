@@ -18,6 +18,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public Environmental newInstance(){	return new Thief_Caltrops();}
 	
 	public boolean isABomb(){return false;}
+	public void activateBomb(){}
 	public boolean disabled(){return false;}
 	public void disable(){ unInvoke();}
 	public void setReset(int Reset){}
