@@ -1,6 +1,11 @@
-Finish Scripting doc
-Install ship battery
 n of 11656 door is not there in margate, 11752 should have been no_mob
+All the doors except locked ones became default open
+Gender doesn't seem to import from Ember/ROM.
+Check out that damn bug with clanweapons 
+Translations for regular say is messed up. i.e. say to, whisper and tell still translate but if you're in a room with someone, and you know the language they are speaking, but they don't say it directly to you the translations are not working
+
+
+Install ship battery
 make diff levels of drunk, and disease_hangover
 mutable body parts, with ability to grant powers
 document real estate, space ship selling, genairlock

@@ -225,7 +225,9 @@ the load off of rand_prog type programs.</P>
 </SPAN>(This delay_prog will be triggered after 10-20 ticks have elapsed.)</P>
 <P><EM>delay_prog 1 11</EM><SPAN 
 style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
-delay_prog will be triggered after 1-11 ticks have elapsed.)&nbsp;<SPAN 
+delay_prog will be triggered after 1-11 ticks have elapsed.)&nbsp;</P>
+<P> 
+        <SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">drop_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>drop_prog [keyword list]<BR>drop_prog 
 p [keyword list]<BR>drop_prog all</EM></P>
@@ -638,12 +640,12 @@ literal&nbsp;is a specific&nbsp;static string or number, such as&nbsp;'the hairy
 blog' or 'green' or&nbsp;'72'.&nbsp; A scripting code, however, is a 
 special&nbsp;string which represents a literal and stands for it in your 
 scripts.&nbsp; </P>
-<P class=MsoNormal>Understanding scripting&nbsp;codes is 
-absolutely necessary for you to write scripts successfully.&nbsp; When a 
-DEATH_PROG triggers, for example, it is impossible for the commands that execute 
-to guess the name of the mobs killer.&nbsp; Therefore the name of the killer is 
-stored in a scripting code for you.&nbsp; In this case, that code is $n.&nbsp; 
-This allows you to use the code $n in your commands and be sure that wherever 
+<P class=MsoNormal>Understanding scripting&nbsp;codes is absolutely 
+necessary for you to write scripts successfully.&nbsp; When a DEATH_PROG 
+triggers, for example, it is impossible for the commands that execute to 
+guess the name of the mobs killer.&nbsp; Therefore the name of the killer is stored 
+in a scripting code for you.&nbsp; In this case, that code is $n.&nbsp; This 
+allows you to use the code $n in your DEATH_PROG&nbsp; commands and be sure that wherever 
 you use it, it is referring to "the creature that killed me".&nbsp; </P>
 <P class=MsoNormal>Also, when using commands that cause 
 strings to echo, you may want to use a pronoun to refer to the creature who 
@@ -797,7 +799,7 @@ $o.1 would evalulate to "magic". If&nbsp;$l evaluated to "orc bob hassan", then
 $l.2 would give "hassan".&nbsp; This can be very useful when used with the $l 
 or&nbsp;$L codes to iterate through the contents of a&nbsp;room.</P>
 <P class=MsoNormal>The last code we are going to discuss is 
-also the most powerful.&nbsp; It allows you to full in a value from a function 
+also the most powerful.&nbsp; It allows you to fill in a value from a function 
 call.&nbsp; The format of this code is as follows:</P>
 <P class=MsoNormal>
 <TABLE width="100%" bgColor=lightblue border=1>
@@ -1191,9 +1193,9 @@ group of instructions in the function_prog after&nbsp;some delay.</FONT> </P>
 <P class=MsoNormal><FONT color=black><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpasound<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage: <BR><EM>mpasound [text string]</EM></P>
-<P class=MsoNormal>This command will echo the text string 
-to all of the rooms adjacent to the one the mob is in, much like the death echo 
-when a mob dies. This can be useful for creating dramatic deaths from mobs, or 
+<P class=MsoNormal> This command will echo the text 
+string to all of the rooms adjacent to the one the mob is in, much like the echo 
+when a mob yells. This can be useful for creating dramatic deaths from mobs, or 
 for use with mobs such as a wandering minstrel or the like.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>mpasound You 
@@ -1230,15 +1232,15 @@ style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpbeacon</SPAN>
 room of the target, which must be a player.&nbsp; .</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>mpbeacon&nbsp;MyArea#1232 all<BR>mpbeacon<SPAN style="mso-spacerun: yes">&nbsp;</SPAN>guardone $n<BR><SPAN 
-style="mso-spacerun: yes"></SPAN>mpat&nbsp;'a lovely 
+style="mso-spacerun: yes"></SPAN>mpbeacon&nbsp;'a lovely 
 pool'&nbsp;$n</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpbehave</SPAN></P>
 <P class=MsoNormal>Usage: <BR><EM>mpbehave [behavior id] [target] [parameters]</EM></P>
-<P class=MsoNormal><FONT size=3>This 
-command will&nbsp;put the target&nbsp;under the affect of the given CoffeeMud 
-behavior.&nbsp;&nbsp; The&nbsp;parameters given apply specifically to CoffeeMud 
-behaviors, and are unnecessary for&nbsp;some.&nbsp; The Archon may use LIST 
+<P class=MsoNormal><FONT size=3> 
+   This command will&nbsp;put the target&nbsp;under the affect 
+of the given CoffeeMud behavior.&nbsp;&nbsp; The&nbsp;parameters given 
+apply specifically to CoffeeMud behaviors.&nbsp; The Archon may use LIST 
 BEHAVIORS, and AHELP&nbsp;[behavior name] for more information.&nbsp;&nbsp; 
 </FONT></P>
 <P class=MsoNormal>EXAMPLES:</P>
@@ -1296,8 +1298,8 @@ a number of hit points equal to their condition.&nbsp; This command is useful
 not only for hurting mobs, but for scratching up their armor when acid falls 
 from the ceiling or something similar.</FONT></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>mpdamage $r 1 
-10 KILL<BR>mpdamage $n 10 50</EM></P>
+<P class=MsoNormal><EM>mpdamage $r 1 10 
+KILL<BR>mpdamage $n 10 50</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpdisable</SPAN></P>
 <P class=MsoNormal>Usage: <BR><EM>mpdisable&nbsp;[target] [spell]</EM></P>
@@ -1322,9 +1324,9 @@ act_progs.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>mpecho $i says, 
 ‘Hey how’s it going?’<BR>mpecho A blast of strong wind 
-rushes into the room suddenly!<BR>mpecho $i hisses, ‘So, 
-$n, you’ve come to face me…’<BR>mpecho A dagger flashes 
-into $i’s hand, and $j snickers softly.</EM></P>
+rushes into the room suddenly!<BR>mpecho $i hisses, ‘So, $n, 
+you’ve come to face me…’<BR>mpecho A dagger flashes into 
+$i’s hand, and $j snickers softly.</EM></P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>SPECIAL NOTES: Using mpecho $i says, 
 ‘blah’ is a safe way to have a mob talk. Anytime you want to have a mob say 
@@ -2233,22 +2235,19 @@ style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor
 who caused the trigger is not named goober.<BR>endif</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><EM><FONT color=#000000 size=3>if isname($n $i)<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I, or someone with my 
-name,&nbsp;is the actor!<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I, or 
+someone with my name,&nbsp;is the actor!<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho Someone else is the actor.<BR>endif</FONT></EM></SPAN></P><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>isneutral</STRONG></SPAN></P>
 <P class=MsoNormal><FONT color=black size=3>Usage:</FONT><FONT size=3><FONT 
-color=black><SPAN style="mso-spacerun: yes">&nbsp; 
-<BR></SPAN><EM>isneutral(character)</EM></FONT></FONT></P>
-<P class=MsoNormal><FONT color=black size=3>This checks whether the character is 
-neutral.</FONT></P>
+color=black><SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>isneutral(character)</EM></FONT></FONT></P>
+<P class=MsoNormal><FONT color=black size=3>This checks whether the character is neutral.</FONT></P>
 <P class=MsoNormal><FONT color=black size=3>EXAMPLE:</FONT></P>
-<P class=MsoNormal><EM><FONT color=black size=3>if isneutral($i)<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am neutral!<BR>else<BR>&nbsp; 
-mpecho I am either&nbsp;good or evil.</FONT></EM><EM><BR><FONT color=black 
-size=3>end</FONT></EM></P></SPAN>
+<P class=MsoNormal><EM><FONT 
+color=black size=3>if isneutral($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho I am neutral!<BR>else<BR>&nbsp; mpecho I am either&nbsp;good or evil.</FONT></EM><EM><BR><FONT color=black size=3>end</FONT></EM></P></SPAN>
 <P class=MsoNormal><B><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isnpc<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: </P>
@@ -2256,309 +2255,402 @@ style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isnpc<o:p></O:P
 <P class=MsoNormal>This checks to see if a character 
 variable is a mob.</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if isnpc($n)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor setting my prog off is a 
-mob.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
-</SPAN>mpecho The actor setting my prog off is a player 
-character.<BR>endif</EM></P>
+<P class=MsoNormal><EM>if isnpc($n)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor setting my prog off is a mob.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+setting my prog off is a player character.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isopen</SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isopen(target)<BR>isopen(direction)</EM></P>
-<P class=MsoNormal>This checks to see if the target container or exit is 
-open.&nbsp; The target may be either an item, or an item code ($o, $p), or a 
-direction name (north, south, east, west, etc.), or a direction code ($x, $xN, 
-$xS, etc..)</P>
+<P class=MsoNormal>This checks to see if the target 
+container or exit is open.&nbsp; The target may be either an item, or an item 
+code ($o, $p), or a direction name (north, south, east, west, etc.), or a 
+direction code ($x, $xN, $xS, etc..)</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if isopen(the chest)<BR><SPAN 
+<P class=MsoNormal><EM>if isopen(the 
+chest)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The chest is open.<BR>else<BR><SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The chest is 
-open.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The chest 
-is not open.<BR>endif</EM></P>
+not open.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ispc<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>ispc(character)</EM></P>
 <P class=MsoNormal>This checks to see if a character 
 variable is a player character.</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if ispc($n)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor setting my prog off is a 
-player character.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor setting my prog off is not a 
-player character.<BR>endif</EM></P>
+<P class=MsoNormal><EM>if ispc($n)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor setting my prog off is a player character.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+setting my prog off is not a player character.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ispkill</SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>ispc(character)</EM></P>
-<P class=MsoNormal>This checks to see if a character has their pkill flag 
-set.&nbsp; Only really matters with pcs, so it is best to use this function in 
-conjunction with ispc(character).</P>
+<P class=MsoNormal>This checks to see if a character has 
+their pkill flag set.&nbsp; Only really matters with pcs, so it is best to use 
+this function in conjunction with ispc(character).</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if ispc($n) and ispkill($n)<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor setting my prog off is 
-a player killer.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho 
-The actor setting my prog off is not a player killer.<BR>endif</EM></P>
+<P class=MsoNormal><EM>if ispc($n) and 
+ispkill($n)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor setting my prog off is a 
+player killer.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+setting my prog off is not a player killer.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isquestmobalive</SPAN></B></P>
-<P class=MsoNormal>Usage: <BR><EM>isquestmobalive(number 
-questname)<BR>isquestmobalive(mobname questname)</EM></P>
-<P class=MsoNormal>This function only works if the script was assigned to a mob 
-as part of the ADDBEHAVIOR quest command.&nbsp; It checks to see if a mob of the 
-given number or name is alive.&nbsp; The numbers refer to the order in which 
-they were designated in the quest script.&nbsp; </P>
+<P class=MsoNormal>Usage: <BR><EM>isquestmobalive(number questname)<BR>isquestmobalive(mobname questname)</EM></P>
+<P class=MsoNormal>This function only works if the script 
+was assigned to a mob as part of the ADDBEHAVIOR quest command.&nbsp; It checks 
+to see if a mob of the given number or name is alive.&nbsp; The numbers refer to 
+the order in which they were designated in the quest script.&nbsp; </P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if isquestmobalive(1 myquest)<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The first set mob in the quest 
-myquest is still alive.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+<P class=MsoNormal><EM>if 
+isquestmobalive(1 myquest)<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The first 
+set mob in the quest myquest is still alive.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho He's not dead yet.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isseason</SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isseason(seasonname)</EM></P>
-<P class=MsoNormal>This function is used to check the season of the year.&nbsp; 
-Valid seasonnames include "WINTER", "SPRING", "SUMMER", or "FALL".</P>
+<P class=MsoNormal>This function is used to check the 
+season of the year.&nbsp; Valid seasonnames include "WINTER", "SPRING", 
+"SUMMER", or "FALL".</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if isseason(summer)<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Yea, its 
-summertime!<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Boo! 
-It's not summer yet.<BR>endif</EM></P>
+<P class=MsoNormal><EM>if 
+isseason(summer)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Yea, its summertime!<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Boo! It's 
+not summer yet.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">istime</SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>istime(integer)<BR>istime(todword)</EM></P>
-<P class=MsoNormal>This function is used to check the time.&nbsp; You may either 
-specify a numeric hour of the day, or a time of day description, such as "DAY", 
-"DAWN", "DUSK", or "NIGHT".</P>
+<P class=MsoNormal>This function is used to check the 
+time.&nbsp; You may either specify a numeric hour of the day, or a time of day 
+description, such as "DAY", "DAWN", "DUSK", or "NIGHT".</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if istime(night)<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho It is nighttime.<BR>else<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho It must be dawn, dusk, or 
-daytime.<BR>endif</EM></P>
+<P class=MsoNormal><EM>if 
+istime(night)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho It is nighttime.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho It must be 
+dawn, dusk, or daytime.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isweather</SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isweather(weathername)</EM></P>
-<P class=MsoNormal>This function is used to check the weather where the monster 
-is at.&nbsp; If the monster is indoors, this function will only return true for 
-"CLEAR".&nbsp; Other valid weathernames include: "CLOUDY", "WINDY", "RAIN", 
-"THUNDERSTORM", "SNOW", "HAIL", "HEAT", "SLEET", "BLIZZARD", "DUST", "DROUGHT", 
-"COLD"</P>
+<P class=MsoNormal>This function is used to check the 
+weather where the monster is at.&nbsp; If the monster is indoors, this function 
+will only return true for "CLEAR".&nbsp; Other valid weathernames include: 
+"CLOUDY", "WINDY", "RAIN", "THUNDERSTORM", "SNOW", "HAIL", "HEAT", "SLEET", 
+"BLIZZARD", "DUST", "DROUGHT", "COLD"</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if isweather(rain)<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Rain, rain go 
-away...<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho We can 
-play! No Rain!<BR>endif</EM></P>
+<P class=MsoNormal><EM>if 
+isweather(rain)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Rain, rain go away...<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho We can play! 
+No Rain!<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">level<o:p></O:P></SPAN></B></P>
-<P class=MsoNormal>Usage: level(character)</P>
-<P class=MsoNormal>This checks the level of the character 
-variable.</P>
+<P class=MsoNormal>Usage: <BR><EM>level(character == number)</EM></P>
+<P class=MsoNormal>This checks the total level of the 
+character variable.&nbsp; Where '==' may be any of the logical operators 
+mentioned above.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>if &lt;=(level($n),15)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is 15th level 
-or less.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is above 15th 
-level.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal>if &gt;(level($n),level($i))</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is higher 
-level than me.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is my level or 
-under.</P>
-<P class=MsoNormal>endif</P>
+<P class=MsoNormal><EM>if 
+level($n&nbsp;&lt;= 15)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is 15th level 
+or less.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+triggering me is above 15th level.<BR>endif</EM></P>
+<P class=MsoNormal><EM>if level($n 
+&gt; $%level($i)%)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is higher 
+level than me.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+triggering me is my level or under.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">name<o:p></O:P></SPAN></B></P>
-<P class=MsoNormal>Usage: name(character/object)</P>
-<P class=MsoNormal>Returns the name of the character 
-variable or object.</P>
-<P class=MsoNormal>EXAMPLES:<BR>if 
-==(name($n),”guard sven tall”)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The keywords of the actor include 
-guard, sven, and tall.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho It isn’t Sven the Tall guard that’s 
-triggering me.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal>if ==(name($o),”gold ring fancy”)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The keywords of this object are gold, 
-ring, and fancy.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The object is not a fancy gold 
-ring.</P>
-<P class=MsoNormal>endif</P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mobitem</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>mobitem(character number keywords)</EM></P>
+<P class=MsoNormal>This infrequently used function checks 
+whether the numberth item in characters inventory has keywords in its name.</P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if 
+mobitem($n&nbsp;1 sword) or mobitem ($n $g.1 sword)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho Either the actors first item is a sword, or an item whose 
+cardinality is represented by the code $g.1 is a sword.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Neither of 
+those items is a sword.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">number<o:p></O:P></SPAN></B></P>
-<P class=MsoNormal>Usage: number(character/object)<SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>or<SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>number(integer 
-x,integer y)</P>
-<P class=MsoNormal>This function has a few uses. First of 
-all, it can return the vnum of a character variable or an object. Secondly, it 
-can be used to generate a random numbe between x and y.</P>
-<P class=MsoNormal>EXAMPLES:<BR>if 
-==(number($n),10045)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The vnum of the actor is 10045.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The vnum of the actor is not 
-10045.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal>if ==(number($o),1123)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The vnum of the object is 1123.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The vnum of the object is not 
-1123.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal>mpsetvar diceone number(1,6)</P>
+<P class=MsoNormal>Usage: <BR><EM>number(string)</EM></P>
+<P class=MsoNormal>This function returns whether the string 
+given is a number.</P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>if number($g.2)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The second parameter to this function_prog is a number.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The second 
+parameter to this function_prog is not a number.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">objtype<o:p></O:P></SPAN></B></P>
-<P class=MsoNormal>Usage: objtype(object)</P>
-<P class=MsoNormal>Returns the type of object that an 
-object is.</P>
-<P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal>if ==(objtype($o),5)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The object is type 5, a weapon.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The object is not a weapon, since it 
-is not type 5.</P>
-<P class=MsoNormal>endif</P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">numitemsmob</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>numitemsmob(character == number)</EM></P>
+<P class=MsoNormal>This function compares the total number 
+of items in the characters inventory to the number given.&nbsp;&nbsp;&nbsp;This 
+function only counts items not in a container, or sheathed.&nbsp; It does count 
+worn items.&nbsp; The '==' may also be any of the logical operators from 
+above.</P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;numitemsmob($n &gt; 10)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor has an inventory size greater than 10.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+has an inventory size less than or equal to 10.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">numitemsroom</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>numitemsroom( == number)</EM></P>
+<P class=MsoNormal>This function compares the total number 
+of items in the&nbsp;same room as the monster&nbsp;to the number 
+given.&nbsp;&nbsp;&nbsp;This function only counts items not in a 
+container.&nbsp; The '==' may also be anyof the logical operators from 
+above.</P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;numitemsroom( &gt; 10)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho There are more than 10 items in this room.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10 
+or less&nbsp;items in the room&nbsp;.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">nummobs</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>nummobs(name == number)</EM></P>
+<P class=MsoNormal>This function compares the total number 
+of mobs with the given name to the number.&nbsp; This function counts every 
+single mob in the whole world, whether they are seen or detectable or not.&nbsp; 
+The '==' may also be any of the logical operators from above.</P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;nummobs(goobers &gt; 
+10)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are more than 10 goobers in the 
+world.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10 
+or less&nbsp;goobers in the world&nbsp;.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">nummobsinarea</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>nummobsinarea(name == number)</EM></P>
+<P class=MsoNormal>This function compares the total number 
+of mobs with the given name to the number.&nbsp; This function counts every 
+single mob in the&nbsp;same area&nbsp;as the scripted monster&nbsp;or 
+object,&nbsp;whether they are seen or detectable or not.&nbsp; The '==' may also 
+be any of the logical operators from above.</P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;nummobsinarea(goobers &gt; 
+10)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are more than 10 goobers in this 
+area.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10 
+or less&nbsp;goobers in this area.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">nummobsroom</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>nummobsroom( == number)</EM></P>
+<P class=MsoNormal>This function compares the total number 
+of mobs in the&nbsp;same room as the monster&nbsp;to the number 
+given.&nbsp;&nbsp;&nbsp;This function counts players, npcs, and the hidden and 
+undetectable.&nbsp; The '==' may also be any of the logical operators from 
+above.</P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;nummobsroom( &gt; 10)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho There are more than 10 mobs in this room.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10 
+or less&nbsp;mobs in the room&nbsp;.<BR>endif</EM></P>
+<P class=MsoNormal>
+<P class=MsoNormal><EM></EM></P><B 
+style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">numraces</SPAN></B>
+<P></P>
+<P class=MsoNormal>Usage: <BR><EM>nummobs(race== number)</EM></P>
+<P class=MsoNormal>This function compares the total number 
+of mobs with the given race to the number.&nbsp; This function counts every 
+single mob in the whole world, whether they are seen or detectable or not.&nbsp; 
+The '==' may also be any of the logical operators from above.</P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;numraces(Goblin&gt; 10)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho There are more than 10 goblins in the world.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10 
+or less&nbsp;goblins in the world&nbsp;.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">numracesinarea</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>numracesinarea(race== number)</EM></P>
+<P class=MsoNormal>This function compares the total number 
+of mobs with the given&nbsp;race to the number.&nbsp; This function counts every 
+single mob in the&nbsp;same area&nbsp;as the scripted monster&nbsp;or 
+object,&nbsp;whether they are seen or detectable or not.&nbsp; The '==' may also 
+be&nbsp;any of the logical operators from above.</P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;numracesinarea(Goblin &gt; 
+10)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are more than 10 goblins in this 
+area.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10 
+or less&nbsp;goblins in this area.<BR>endif</EM></P>
+<P class=MsoNormal>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">position<o:p></O:P></SPAN></B></P>
-<P class=MsoNormal>Usage: position(character)</P>
+<P></P>
+<P class=MsoNormal>Usage: <BR><EM>position(character == posword)</EM></P>
 <P class=MsoNormal>This checks the position of the 
-character variable. The position is a number; you can see what value each 
-position has by looking at the docs on mob creation in the main building docs on 
-the Age of Chaos web site.</P>
+character variable. The position is a word, either SITTING, STANDING, or 
+SLEEPING.&nbsp; The '==' may also be another of the logical operators from 
+above.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>if ==(position($n),8)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho This means that the actor is 
-standing.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho This means the actor is not 
-standing.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal>if &lt;(position($n),5)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is SLEEPING or 
-worse.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is RESTING or 
-better.</P>
-<P class=MsoNormal>endif</P>
+<P class=MsoNormal><EM>if position($n 
+== STANDING)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho This means that the actor is 
+standing.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho This means 
+the actor is not standing.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">questitem</SPAN></B></P>
+<P></P>
+<P class=MsoNormal>Usage: <BR><EM>questitem(item questname)</EM></P>
+<P class=MsoNormal>This checks whether the given item is an 
+official item created by a quest of the given questname.</P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>if questitem($o 
+myquest)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho This means that item is a quest item 
+for quest myquest.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho This means 
+the item is not a quest item for quest myquest.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">questmob</SPAN></B></P>
+<P></P>
+<P class=MsoNormal>Usage: <BR><EM>questmob(character questname)</EM></P>
+<P class=MsoNormal>This checks whether the given character 
+is an official mob created by a quest of the given questname.</P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>if questmob($n 
+myquest)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho This means that the actor is a quest 
+mob for quest myquest.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho This means the&nbsp;the actor&nbsp;is not a quest mob for quest 
+myquest.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">questwinner</SPAN></B></P>
+<P></P>
+<P class=MsoNormal>Usage: <BR><EM>questmob(character questname)</EM></P>
+<P class=MsoNormal>This checks whether the given character 
+has been declared a winner of the quest in the past via the MPQUESTWIN 
+command.</P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>if 
+questwubber($n myquest)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho This means that the actor has been a 
+winner of the quest myquest.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho This means the&nbsp;the actor&nbsp;hss not&nbsp;been a winner of 
+the&nbsp;quest myquest.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></O:P></SPAN></B></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">race<o:p></O:P></SPAN></B></P>
-<P class=MsoNormal>Usage: race(character)</P>
-<P class=MsoNormal>This function returns the race of the 
-character variable. Note that mobs don’t have a race technically, unless they 
-set themselves to have one first. For race integer values, check out the FAQ’s 
-page.</P>
-<P class=MsoNormal>EXAMPLE:<BR>if 
-==(race($n),2)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor is race 2, or elf.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor is not an elf, because it is 
-not race type 2.</P>
-<P class=MsoNormal>endif</P>
+<P class=MsoNormal>Usage: <BR><EM>race(character == race)</EM></P>
+<P class=MsoNormal>This function compares the race of the 
+character variable with the race name given. For a list of race names, do LIST 
+RACES from the command line in the mud.&nbsp; The '==' may also be another of 
+the logical operators from above.</P>
+<P class=MsoNormal>EXAMPLE:<BR><BR><EM>if race($n == Goblin)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor is a goblin.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor is not a goblin.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">racecat<o:p></o:p></SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>race(character == category)</EM></P>
+<P class=MsoNormal>This function compares the racial 
+category of the race&nbsp;of the character variable with the racial category 
+given. For a list of racial categories, do LIST RACES from the command line in 
+the mud.&nbsp; The '==' may also be another of the logical operators from 
+above.</P>
+<P class=MsoNormal>EXAMPLE:<BR><BR><EM>if racecat($n == Elf)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor is an Elf, or Elf-kin.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor is not an Elf-Kin.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></o:p><EM></EM></SPAN></B></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">rand<o:p></O:P></SPAN></B></P>
-<P class=MsoNormal>Usage: rand(integer)</P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">rand<o:p></o:p></SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>rand(integer)</EM></P>
 <P class=MsoNormal>This generates a random number and 
 checks to see if it is under the integer. This is best used for random events 
 where there are only two outcomes.</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal>if rand(40)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho This is under 40% chance for me to 
-echo this.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Not under 40%.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">sex<o:p></O:P></SPAN></B></P>
-<P class=MsoNormal>Usage: sex(character)</P>
-<P class=MsoNormal>This checks the sex of the character 
-variable, usually using operators.</P>
-<P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>if ==(sex($n),1)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is a male.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is not a 
-male.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal>if ==(sex($n),2)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is a 
-female.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is not a 
-female.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal>if !=(sex($n),sex($i))</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is the 
-opposite sex of me.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is not the 
-opposite sex of me.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">stat<o:p></O:P></SPAN></B></P>
-<P class=MsoNormal>Usage: stat(character,string)</P>
-<P class=MsoNormal>This returns the value of the stat in 
-the string position for a character variable. Valid values for the stat are 
-“str” “stradd” “intel” “wis” “dex” “con” “cha” “hit” “maxhit” “mana” “maxmana” 
-“move” “maxmove”</P>
-<P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal>if &lt;(stat($i,”con”),16)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho My con is less than 16.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho My con is 16 or greater.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal>if 
-&gt;(stat($i,”cha”),stat($n,”cha”))</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho My charisma is greater than the 
-charisma of the actor.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor has a charisma equal to or 
-greater than mine.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">var<o:p></O:P></SPAN></B></P>
-<P class=MsoNormal>Usage: var(string)<SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>or<SPAN 
-style="mso-spacerun: yes">&nbsp; 
-</SPAN>var(string,character)</P>
-<P class=MsoNormal>This function returns the value of the 
-variable in the string space. If this function is called with a character 
-variable, use that mob’s variable list instead of the calling mob. Currently you 
-can only have a mob take a variable from another mob if it is an integer. See 
-fun with variables for more information.</P>
+<P class=MsoNormal><EM>if rand(40)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho This is under 40% chance for me to echo this.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Not under 
+40%.<BR>endif</EM></P>
+<P class=MsoNormal><B><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">randnum<o:p></o:p></SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>rand(integer == integer)</EM></P>
+<P class=MsoNormal>This generates a random number from 1 to 
+the first integer given, and checks to see if it is under the value give in the 
+second integer. This is best used for random events where there are only two 
+outcomes.</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal>if ==(var(“actor”),$r)</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor is also the random 
-actor.</P>
-<P class=MsoNormal>else</P>
-<P class=MsoNormal><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor and the random actor are 
-different people.</P>
-<P class=MsoNormal>endif</P>
-<P class=MsoNormal>mpsetvar genvar 
-$(var(“salsa”,$n))</P></DIV></FONT></SPAN></FONT></SPAN><BR><STRONG><FONT color=red>LEVEL([CODE] == [LVL]) evaluates level. Where == may be !=, 
-&lt;, &gt;, &gt;=, &lt;=. <BR>MOBITEM([MOBNAME] [NUM] 
-[NAME]) whether the NUMth item owned by mob mobname is named NAME. <BR>NUMBER([VALUE/CODE]) whether the given code or value is a 
-number. <BR>NUMITEMSMOB([NAME] == [NUMBER]) compares the 
-number of items the mob has. Where == may be !=, &gt;, &lt;, &gt;=, &lt;=. <BR>NUMITEMSROOM(== [NUMBER]) compares the number of mobs in 
-the room. Where == may be !=, &gt;, &lt;, &gt;=, &lt;=. <BR>NUMMOBS([MOB NAME] == [NUM]) if comparison of number of 
-mobs of that name in world. Where == may be !=, &gt;, &lt;, &lt;=, &lt;=. <BR>NUMMOBSINAREA([MOB NAME] == [NUM]) if comparison of number 
-of mobs of that name in area. Where == may be !=, &gt;, &lt;, &lt;=, &lt;=. <BR>NUMMOBSROOM(== [NUMBER]) compares the number of mobs in the 
-room. Where == may be !=, &gt;, &lt;, &gt;=, &lt;=. <BR>NUMRACEINAREA([MOB NAME] == [NUM]) if comparison of number 
-of mobs of that name in area. Where == may be !=, &gt;, &lt;, &lt;=, &lt;=. <BR>NUMRACES([MOB NAME] == [NUM]) if comparison of number of 
-mobs of that name in world. Where == may be !=, &gt;, &lt;, &lt;=, &lt;=. <BR>POSITION([CODE] == [SLEEPING/STANDING/SITTING] Evaluates 
-position. <BR>QUESTITEM([NAME] [QUEST NAME]) returns 
-whether the item of the given name is an item designated in the given quest. <BR>QUESTMOB([NAME] [QUEST NAME]) returns whether the mob of 
-the given name is a mob designated in the given quest. <BR>QUESTWINNER([CODE] [QUEST NAME]) returns whether the code 
-of the given name has won the given quest. <BR>RACE([CODE] 
-== [RACE NAME]) evaluates race. Where == may be !=. <BR>RACECAT([CODE] == [RACE CAT NAME]) evaluates racial 
-category. Where == may be !=. <BR>RAND([% CHANCE]) Random 
-truth <BR>RANDNUM([VALUE] == [MAX VALUE]) how the 1st code 
-compares to rand 1..max code. <BR>ROOMITEM([NUM] [NAME]) 
-whether the NUMth item in the room is named NAME. <BR>ROOMMOB([NUM] [NAME]) whether the NUMth mob in the room is 
-named NAME. <BR>SEX([CODE] == [M/F/N]) evaluates sex. Where 
-== may also be !=. <BR>STAT([CODE] [STAT] == [VALUE]) if 
-the given mob/item has a stat of value, != is also valid. <BR>VAR([CODE] [VAR NAME] == [VALUE]) if the var for the given 
-mob has value. Where == may be !=, &gt;, &lt;, &gt;=, &lt;=. <BR>WORN([CODE] [ITEM NAME]) if the given mob wears the 
-specified item.</FONT></STRONG>           
+<P class=MsoNormal><EM>if 
+rand(1000&nbsp;== 5)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho This is under&nbsp;a&nbsp;5 in 
+1000&nbsp;chance for me to echo this.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho Not under 5 in 1000.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">roomitem</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>roomitem(number keywords)</EM></P>
+<P class=MsoNormal>This infrequently used function checks 
+whether the numberth item in the room has keywords in its name.</P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if roomitem(1 
+sword) or roomitem ($g.1 sword)<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Either the 
+rooms first item is a sword, or an item whose cardinality is represented by the 
+code $g.1 is a sword.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Neither of 
+those items is a sword.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">roommob</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>roommob(number keywords)</EM></P>
+<P class=MsoNormal>This infrequently used function checks 
+whether the numberth mob in&nbsp;the room&nbsp;has keywords in its name.</P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if roommob(1 
+joe) or roommob($g.1 joe)<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Either the 
+rooms first&nbsp;mob is named joe, or a mob whose cardinality is represented by 
+the code $g.1 is joe.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Neither of 
+those mobs is joe.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">sex<o:p></o:p></SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>sex(character == letter)</EM></P>
+<P class=MsoNormal>This compares the sex of the character 
+variable to the letter given.&nbsp; The letter may be "M", "F", or "N".&nbsp; 
+The '==' may also be another of the logical operators from above.</P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal>if sex($n == M)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor triggering me is a male.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor triggering me is not a male.<BR>endif</P>
+<P class=MsoNormal>if sex($n != $%sex($n)%)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor triggering me is not the same sex as me.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+triggering me is the same sex as me.<BR>endif</P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>stat</STRONG></SPAN> </P>
+<P></P>
+<P class=MsoNormal>Usage: <BR><EM>stat(target variable == value)</EM></P>
+<P class=MsoNormal>This is a powerful function which allows 
+you to make comparisons based on numerous characteristics of the target.&nbsp; 
+The target may be any code, including mobs or items.&nbsp; The variable may be 
+any of those listed above under MPGSET in the section on Scriptable 
+Commands.&nbsp; The '==' may be any of the above logical operators, and the 
+value any expression, including codes.&nbsp; This function is like gstat, with 
+one important difference: stat respects only the variables which the target has 
+available.&nbsp; For Generic mobs and items, this will be many more than for 
+Standard mobs and items.&nbsp; For this reason, it is almost always preferable 
+to use gstat.</P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>if stat($n 
+CHARISMA &gt; 10)<BR>&nbsp; mpecho The actor, if&nbsp;a 
+generic mob,&nbsp;has a charisma greater than 10.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">var<o:p></o:p></SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>var(character variable == value)</EM></P>
+<P class=MsoNormal>This function compares the variable 
+belonging to the character to the given value.&nbsp; The character is almost 
+always a code of some sort, where the variable is almost always a literal 
+string.&nbsp; The value may be anything necessary.&nbsp; Where '==' may be any 
+of the above logical operators.&nbsp; See MPSETVAR for information on settings 
+variables.</P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if var($n KILLS 
+&gt; 10)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor's KILLS variable is greater 
+than 10.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor's 
+KILLS variable is equal to or less than 10.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">worn</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>worn(character item)</EM></P>
+<P class=MsoNormal>This function checks whether the 
+character is wearing an item of the given name.</P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if worn($n 
+brass shirt)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor is wearing a brass shirt 
+somewhere.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor is 
+not wearing a brass shirt.<BR>endif</EM></P></FONT></SPAN></FONT></SPAN></DIV>           
 
 </BODY>
 </HTML>

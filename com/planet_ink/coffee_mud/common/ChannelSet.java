@@ -6,7 +6,7 @@ import java.util.*;
 
 public class ChannelSet
 {
-	protected static final int QUEUE_SIZE=10;
+	protected static final int QUEUE_SIZE=100;
 	
 	protected static int numChannelsLoaded=0;
 	protected static int numIChannelsLoaded=0;

@@ -27,4 +27,7 @@ Michael Rundell - for a few of the coded weapon, armor, and MOB objects, includi
 the coded Dragon object, and for providing the base code for the Dragonbreath ability
 and the MOBEater behavior.
 
+Tyra and Lori - for single handedly inspiring this project.  I have never ever forgotten that
+fact, nor the unusual circumstances surrounding it.  I hope in time they have forgiven me. :)
+
 
