@@ -35,7 +35,7 @@ public class Spell_Earthquake extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(mob.location()!=null)
 			{

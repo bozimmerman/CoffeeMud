@@ -21,10 +21,10 @@ public class Chant_SummonPlants extends Chant
 			return;
 		if(littlePlants==null)
 			return;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			PlantsLocation.showHappens(Affect.MSG_OK_VISUAL,littlePlants.name()+" wither"+(littlePlants.name().startsWith("s")?"":"s")+" away.");
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			Item plants=littlePlants; // protects against uninvoke loops!
 			littlePlants=null;
@@ -40,7 +40,7 @@ public class Chant_SummonPlants extends Chant
 		&&(affect.targetMinor()==Affect.TYP_GET))
 			affect.addTrailerMsg(new FullMsg(affect.source(),littlePlants,null,Affect.MSG_OK_VISUAL,Affect.MASK_GENERAL|Affect.MSG_DEATH,-1,null));
 	}
-	
+
 	public static Item buildPlant(MOB mob, Room room)
 	{
 		Item newItem=(Item)CMClass.getItem("GenItem");
@@ -85,7 +85,7 @@ public class Chant_SummonPlants extends Chant
 		room.recoverEnvStats();
 		return newItem;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
@@ -96,7 +96,7 @@ public class Chant_SummonPlants extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		// now see if it worked
 		boolean success=profficiencyCheck(0,auto);
 		if(success)

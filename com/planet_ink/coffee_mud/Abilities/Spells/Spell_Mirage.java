@@ -14,7 +14,7 @@ public class Spell_Mirage extends Spell
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public Environmental newInstance(){	return new Spell_Mirage();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
-	
+
 	Room newRoom=null;
 
 	public void unInvoke()
@@ -25,7 +25,7 @@ public class Spell_Mirage extends Spell
 		if(!(affected instanceof Room))
 			return;
 		Room room=(Room)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			room.showHappens(Affect.MSG_OK_VISUAL, "The appearance of this place changes...");
 		super.unInvoke();
 	}
@@ -59,7 +59,7 @@ public class Spell_Mirage extends Spell
 			mob.tell("This area is too small to cast this spell.");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -72,7 +72,7 @@ public class Spell_Mirage extends Spell
 		newRoom=mob.location();
 		while(newRoom==mob.location())
 			newRoom=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
-		
+
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

@@ -12,7 +12,7 @@ public class ScrimShaw extends CommonSkill
 	public String name(){ return "Scrimshaw";}
 	private static final String[] triggerStrings = {"SCRIM","SCRIMSHAW"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -34,7 +34,7 @@ public class ScrimShaw extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new ScrimShaw();}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -44,7 +44,7 @@ public class ScrimShaw extends CommonSkill
 		}
 		return super.tick(tickID);
 	}
-	
+
 	private static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("SCRIMSHAW RECIPES");
@@ -58,10 +58,10 @@ public class ScrimShaw extends CommonSkill
 		}
 		return V;
 	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -97,7 +97,7 @@ public class ScrimShaw extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
@@ -235,7 +235,7 @@ public class ScrimShaw extends CommonSkill
 				itemName="an "+itemName;
 			else
 				itemName="a "+itemName;
-			
+
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) scrimshawing "+building.name()+".";
 			displayText="You are scrimshawing "+building.name();
@@ -320,8 +320,8 @@ public class ScrimShaw extends CommonSkill
 			building.text();
 			building.recoverEnvStats();
 		}
-		
-		
+
+
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);

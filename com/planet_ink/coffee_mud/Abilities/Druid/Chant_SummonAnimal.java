@@ -19,13 +19,13 @@ public class Chant_SummonAnimal extends Chant
 	{
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked)&&(mob!=null))
+		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
 	}
-	
+
 	public void affect(Affect msg)
 	{
 		super.affect(msg);
@@ -35,7 +35,7 @@ public class Chant_SummonAnimal extends Chant
 		&&(msg.sourceMinor()==Affect.MSG_QUIT))
 			unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
@@ -65,7 +65,7 @@ public class Chant_SummonAnimal extends Chant
 		fromDir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
 		Room newRoom=mob.location().getRoomInDir(fromDir);
 		int opDir=Directions.getOpDirectionCode(fromDir);
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -105,7 +105,7 @@ public class Chant_SummonAnimal extends Chant
 	public MOB determineMonster(MOB caster, int level)
 	{
 		MOB newMOB=null;
-		
+
 		while(newMOB==null)
 		{
 			switch(Dice.rollPercentage())

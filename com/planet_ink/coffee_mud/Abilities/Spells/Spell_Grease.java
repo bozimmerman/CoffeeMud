@@ -18,7 +18,7 @@ public class Spell_Grease extends Spell
     public final static int SIT = 0;
     public final static int FUMBLE_WEAPON = 1;
     public final static int BOTH = 2;
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -119,7 +119,7 @@ public class Spell_Grease extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You manage to work your way out of the grease.");
 	}
 

@@ -22,7 +22,7 @@ public class Spell_PhantomHound extends Spell
 			if(((affected==null)
 			||(unInvoked)
 			||(!(affected instanceof MOB)))
-				&&(canBeUninvoked))
+				&&(canBeUninvoked()))
 				unInvoke();
 			else
 			{
@@ -61,15 +61,15 @@ public class Spell_PhantomHound extends Spell
 					if(pointsLeft<0)
 					{
 						if(beast.amDead()) beast.setLocation(null);
-						beast.destroy(); 
+						beast.destroy();
 					}
 				}
 			}
-			
+
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public void affect(Affect msg)
 	{
 		super.affect(msg);
@@ -79,18 +79,18 @@ public class Spell_PhantomHound extends Spell
 		&&(msg.sourceMinor()==Affect.MSG_QUIT))
 			unInvoke();
 	}
-	
+
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked)&&(mob!=null))
+		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
@@ -109,7 +109,7 @@ public class Spell_PhantomHound extends Spell
 						  affect.othersMessage());
 		}
 		return super.okAffect(affect);
-	
+
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

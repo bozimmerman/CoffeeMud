@@ -10,7 +10,7 @@ public class Chopping extends CommonSkill
 	public String name(){ return "Wood Chopping";}
 	private static final String[] triggerStrings = {"CHOP","CHOPPING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private Item found=null;
 	private String foundShortName="";
 	private static boolean mapped=false;
@@ -23,7 +23,7 @@ public class Chopping extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Chopping();}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -48,7 +48,7 @@ public class Chopping extends CommonSkill
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
-				
+
 			}
 		}
 		return super.tick(tickID);
@@ -56,7 +56,7 @@ public class Chopping extends CommonSkill
 
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -78,8 +78,8 @@ public class Chopping extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		verb="chopping";

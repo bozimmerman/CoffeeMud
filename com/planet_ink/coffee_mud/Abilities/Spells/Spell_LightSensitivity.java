@@ -35,7 +35,7 @@ public class Spell_LightSensitivity extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your light sensitivity returns to normal.");
 	}
 

@@ -37,7 +37,7 @@ public class Paralysis extends StdAbility
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The paralysis eases out of your muscles.");
 	}
 

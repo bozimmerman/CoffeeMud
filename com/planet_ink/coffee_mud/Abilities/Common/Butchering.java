@@ -10,7 +10,7 @@ public class Butchering extends CommonSkill
 	public String name(){ return "Butchering";}
 	private static final String[] triggerStrings = {"BUTCHER","BUTCHERING","SKIN"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private DeadBody body=null;
 	private String foundShortName="";
 	private boolean failed=false;
@@ -24,10 +24,10 @@ public class Butchering extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Butchering();}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -57,8 +57,8 @@ public class Butchering extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		body=null;

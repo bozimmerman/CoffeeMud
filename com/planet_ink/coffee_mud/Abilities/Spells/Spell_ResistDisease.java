@@ -22,7 +22,7 @@ public class Spell_ResistDisease extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your immunizing protection fades away.");
 
 		super.unInvoke();

@@ -21,10 +21,10 @@ public class Chant_SummonWater extends Chant
 			return;
 		if(littleSpring==null)
 			return;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			SpringLocation.showHappens(Affect.MSG_OK_VISUAL,"The little spring dries up.");
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			Item spring=littleSpring; // protects against uninvoke loops!
 			littleSpring=null;
@@ -49,7 +49,7 @@ public class Chant_SummonWater extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		// now see if it worked
 		boolean success=profficiencyCheck(0,auto);
 		if(success)

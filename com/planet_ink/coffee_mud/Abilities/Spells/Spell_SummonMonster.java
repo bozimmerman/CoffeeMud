@@ -18,13 +18,13 @@ public class Spell_SummonMonster extends Spell
 	{
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked)&&(mob!=null))
+		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
 	}
-	
+
 	public void affect(Affect msg)
 	{
 		super.affect(msg);
@@ -34,7 +34,7 @@ public class Spell_SummonMonster extends Spell
 		&&(msg.sourceMinor()==Affect.MSG_QUIT))
 			unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

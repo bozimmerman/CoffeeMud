@@ -23,10 +23,10 @@ public class Spell_Blink extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You stop blinking.");
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((tickID==Host.MOB_TICK)&&(affected!=null)&&(affected instanceof MOB))
@@ -77,7 +77,7 @@ public class Spell_Blink extends Spell
 						break;
 					}
 				}
-					
+
 			}
 			else
 			if((roll>2)&&(roll<7))

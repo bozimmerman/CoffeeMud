@@ -16,7 +16,7 @@ public class Spell_Confusion extends Spell
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	boolean notAgain=false;
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -38,7 +38,7 @@ public class Spell_Confusion extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You feel less confused.");
 		ExternalPlay.standIfNecessary(mob);
 	}

@@ -24,7 +24,7 @@ public class Chant_IllusionaryForest extends Chant
 		if(!(affected instanceof Room))
 			return;
 		Room room=(Room)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			room.showHappens(Affect.MSG_OK_VISUAL, "The appearance of this place changes...");
 		super.unInvoke();
 	}
@@ -61,14 +61,14 @@ public class Chant_IllusionaryForest extends Chant
 
 		Environmental target = mob.location();
 		boolean success=profficiencyCheck(0,auto);
-		
+
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			
+
 			newRoom=CMClass.getLocale("Woods");
 			switch(Dice.roll(1,10,0))
 			{

@@ -16,7 +16,7 @@ public class Spell_Permanency extends Spell
 	public int oldTicksRemaining=0;
 	public Environmental newInstance(){	return new Spell_Permanency();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	
+
 	public String displayText()
 	{
 		if(permanentAbility!=null)
@@ -24,17 +24,17 @@ public class Spell_Permanency extends Spell
 		else
 			return "(Permanency of nothing!)";
 	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(permanentAbility!=null)
 				permanentAbility.setTickDownRemaining(oldTicksRemaining);
 			permanentAbility=null;
 		}
 		super.unInvoke();
-		
+
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -60,9 +60,9 @@ public class Spell_Permanency extends Spell
 			return false;
 		}
 
-		
+
 		if(success)
-		{ 
+		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{

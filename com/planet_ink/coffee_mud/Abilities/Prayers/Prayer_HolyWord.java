@@ -48,7 +48,7 @@ public class Prayer_HolyWord extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your blinding holy aura fades.");
 	}
 
@@ -67,7 +67,7 @@ public class Prayer_HolyWord extends Prayer
 		{
 			MOB target=room.fetchInhabitant(i);
 			if(target==null) break;
-			
+
 			int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|Affect.MASK_GENERAL;
 			if(target.getAlignment()<350)

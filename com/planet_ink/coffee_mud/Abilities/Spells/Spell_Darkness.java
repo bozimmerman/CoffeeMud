@@ -24,7 +24,7 @@ public class Spell_Darkness extends Spell
 			return;
 		Room room=(Room)affected;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			room.recoverRoomStats();
 			room.recoverRoomStats();

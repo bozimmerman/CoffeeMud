@@ -23,10 +23,10 @@ public class Prayer_CreateWater extends Prayer
 			return;
 		if(littleSpring==null)
 			return;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			SpringLocation.showHappens(Affect.MSG_OK_VISUAL,"The little spring dries up.");
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			Item spring=littleSpring; // protects against uninvoke loops!
 			littleSpring=null;

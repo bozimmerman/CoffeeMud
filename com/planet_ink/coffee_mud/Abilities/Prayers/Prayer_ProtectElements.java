@@ -26,7 +26,7 @@ public class Prayer_ProtectElements extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your elemental protection fades.");
 	}
 

@@ -17,10 +17,10 @@ public class Skill_HandCuff extends StdAbility
 	private static final String[] triggerStrings = {"HANDCUFF","CUFF"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	
+
 	public int amountRemaining=0;
 	public int oldAssist=0;
-	
+
 	public Environmental newInstance(){	return new Skill_HandCuff();}
 
 	public boolean okAffect(Affect affect)
@@ -76,7 +76,7 @@ public class Skill_HandCuff extends StdAbility
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			mob.setFollowing(null);
 			if(!mob.amDead())
@@ -89,10 +89,10 @@ public class Skill_HandCuff extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		
+
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if((!Sense.isSleeping(target))&&(!Sense.isSitting(target)))
 		{
 			mob.tell(target.name()+" doesn't look willing to cooperate.");

@@ -44,7 +44,7 @@ public class Spell_Laughter extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			mob.tell("You stop laughing!");
 			ExternalPlay.standIfNecessary(mob);

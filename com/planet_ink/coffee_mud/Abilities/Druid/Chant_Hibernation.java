@@ -24,7 +24,7 @@ public class Chant_Hibernation extends Chant
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
 			{
@@ -51,7 +51,7 @@ public class Chant_Hibernation extends Chant
 			unInvoke();
 		return;
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -81,7 +81,7 @@ public class Chant_Hibernation extends Chant
 
 		if(tickID!=Host.MOB_TICK) return true;
 		if(!profficiencyCheck(0,false)) return true;
-		
+
 		if((!mob.isInCombat())
 		&&(Sense.isSleeping(mob)))
 		{
@@ -100,7 +100,7 @@ public class Chant_Hibernation extends Chant
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.isInCombat())

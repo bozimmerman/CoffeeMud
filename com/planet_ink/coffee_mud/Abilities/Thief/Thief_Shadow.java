@@ -35,7 +35,7 @@ public class Thief_Shadow extends ThiefSkill
 		if(!Sense.aliveAwakeMobile(mob,true)) return false;
 		return true;
 	}
-	
+
 	public boolean stillAShadowee()
 	{
 		if(shadowing==null) return false;
@@ -45,7 +45,7 @@ public class Thief_Shadow extends ThiefSkill
 		if(!Sense.aliveAwakeMobile(shadowing,true)) return false;
 		return true;
 	}
-	
+
 	public boolean canShadow()
 	{
 		if(!stillAShadower()) return false;
@@ -91,7 +91,7 @@ public class Thief_Shadow extends ThiefSkill
 			}
 		}
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID)) return false;
@@ -111,7 +111,7 @@ public class Thief_Shadow extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -123,10 +123,10 @@ public class Thief_Shadow extends ThiefSkill
 		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))
 			lastTogether=Calendar.getInstance();
 	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((invoker!=null)&&(shadowing!=null))
 			{
@@ -138,7 +138,7 @@ public class Thief_Shadow extends ThiefSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Thief_Shadow A=(Thief_Shadow)mob.fetchAffect(ID());
@@ -210,13 +210,13 @@ public class Thief_Shadow extends ThiefSkill
 				{
 					A=(Thief_Shadow)target.fetchAffect(ID());
 					if(A!=null)
-					{ 
-						mob.addAffect(A); 
-						A.shadowing=target; 
+					{
+						mob.addAffect(A);
+						A.shadowing=target;
 						A.setAffectedOne(target);
 						mob.recoverEnvStats();
 					}
-					else 
+					else
 						A.unInvoke();
 				}
 			}

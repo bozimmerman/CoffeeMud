@@ -10,7 +10,7 @@ public class Fishing extends CommonSkill
 	public String name(){ return "Fishing";}
 	private static final String[] triggerStrings = {"FISH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private Item found=null;
 	private String foundShortName="";
 	private static boolean mapped=false;
@@ -23,7 +23,7 @@ public class Fishing extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Fishing();}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -39,7 +39,7 @@ public class Fishing extends CommonSkill
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
-				
+
 			}
 		}
 		return super.tick(tickID);
@@ -47,7 +47,7 @@ public class Fishing extends CommonSkill
 
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -69,8 +69,8 @@ public class Fishing extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)

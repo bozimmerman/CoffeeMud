@@ -22,7 +22,7 @@ public class Spell_ResistGas extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your filtering protection dissipates.");
 
 		super.unInvoke();
@@ -34,7 +34,7 @@ public class Spell_ResistGas extends Spell
 		super.affectCharStats(affectedMOB,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_GAS,affectableStats.getStat(CharStats.SAVE_GAS)+100);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

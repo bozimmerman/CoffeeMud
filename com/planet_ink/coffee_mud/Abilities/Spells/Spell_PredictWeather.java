@@ -15,18 +15,18 @@ public class Spell_PredictWeather extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_PredictWeather();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
-	
+
 	String lastPrediction="";
-	
+
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			lastPrediction="";
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"Your senses are no longer sensitive to the weather.");
 	}
 	public boolean tick(int tickID)
@@ -48,7 +48,7 @@ public class Spell_PredictWeather extends Spell
 		}
 		return true;
 	}
-	
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -23,15 +23,15 @@ public class Prayer_SenseLife extends Prayer
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		
+
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			lastRoom=null;
 			mob.tell("Your life sensations fade.");
 		}
 	}
-	
+
 	public void messageTo(MOB mob)
 	{
 		String last="";
@@ -81,7 +81,7 @@ public class Prayer_SenseLife extends Prayer
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -15,7 +15,7 @@ public class Spell_Shelter extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_Shelter();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
-	
+
 	public Room previousLocation=null;
 	public Room shelter=null;
 
@@ -25,7 +25,7 @@ public class Spell_Shelter extends Spell
 			return;
 		MOB mob=(MOB)affected;
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			int i=0;
 			while(i<shelter.numInhabitants())

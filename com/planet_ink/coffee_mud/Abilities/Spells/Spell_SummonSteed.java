@@ -20,13 +20,13 @@ public class Spell_SummonSteed extends Spell
 	{
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked)&&(mob!=null))
+		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
@@ -49,7 +49,7 @@ public class Spell_SummonSteed extends Spell
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public void affect(Affect msg)
 	{
 		super.affect(msg);
@@ -59,7 +59,7 @@ public class Spell_SummonSteed extends Spell
 		&&(msg.sourceMinor()==Affect.MSG_QUIT))
 			unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -88,7 +88,7 @@ public class Spell_SummonSteed extends Spell
 	}
 	public MOB determineMonster(MOB caster, int level)
 	{
-		
+
 		MOB newMOB=(MOB)CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(11);

@@ -16,21 +16,21 @@ public class Spell_MageArmor extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	Item theArmor=null;
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		if(theArmor!=null)
 		{
 			theArmor.destroyThis();
 			mob.location().recoverRoomStats();
 		}
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your magical armor vanishes!");
 	}
 

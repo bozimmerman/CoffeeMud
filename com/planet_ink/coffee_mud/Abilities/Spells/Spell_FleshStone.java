@@ -37,7 +37,7 @@ public class Spell_FleshStone extends Spell
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if(affected instanceof MOB)
@@ -73,7 +73,7 @@ public class Spell_FleshStone extends Spell
 		}
 		if(!super.okAffect(affect))
 			return false;
-		
+
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
@@ -117,7 +117,7 @@ public class Spell_FleshStone extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(statue!=null) statue.destroyThis();
 			mob.tell("Your flesh returns to normal!");

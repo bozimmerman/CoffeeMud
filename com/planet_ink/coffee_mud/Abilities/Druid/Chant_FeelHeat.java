@@ -32,8 +32,8 @@ public class Chant_FeelHeat extends Chant
 		}
 		return true;
 	}
-	
-	
+
+
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID)) return false;
@@ -68,7 +68,7 @@ public class Chant_FeelHeat extends Chant
 		}
 		return true;
 	}
-	
+
 
 	public void unInvoke()
 	{
@@ -76,7 +76,7 @@ public class Chant_FeelHeat extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your hot feeling is gone.");
 
 		super.unInvoke();
@@ -88,7 +88,7 @@ public class Chant_FeelHeat extends Chant
 		super.affectCharStats(affectedMOB,affectedStats);
 		affectedStats.setStat(CharStats.SAVE_FIRE,affectedStats.getStat(CharStats.SAVE_FIRE)-100);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

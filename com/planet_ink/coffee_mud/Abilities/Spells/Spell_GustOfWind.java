@@ -43,10 +43,10 @@ public class Spell_GustOfWind extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			doneTicking=true;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
@@ -96,7 +96,7 @@ public class Spell_GustOfWind extends Spell
 							target.setAtRange(target.rangeToTarget()+1);
 						if(target.rangeToTarget()>target.location().maxRange())
 							target.setAtRange(target.location().maxRange());
-						
+
 						mob.location().send(mob,msg);
 						if((!Sense.isFlying(target))
 						&&(Dice.rollPercentage()>((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level())))

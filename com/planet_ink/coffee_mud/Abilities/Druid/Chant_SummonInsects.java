@@ -40,11 +40,11 @@ public class Chant_SummonInsects extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			if((!mob.amDead())&&(mob.location()!=null))
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the insect swarm!");
 	}
-		
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -53,7 +53,7 @@ public class Chant_SummonInsects extends Chant
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		
+
 		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
 
 		// the invoke method for spells receives as

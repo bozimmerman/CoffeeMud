@@ -12,7 +12,7 @@ public class LeatherWorking extends CommonSkill
 	public String name(){ return "Leather Working";}
 	private static final String[] triggerStrings = {"LEATHERWORK","LEATHERWORKING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -22,8 +22,8 @@ public class LeatherWorking extends CommonSkill
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
-	
-	
+
+
 	private Item building=null;
 	private boolean mending=false;
 	private boolean refitting=false;
@@ -36,7 +36,7 @@ public class LeatherWorking extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new LeatherWorking();}
-	
+
 	private static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("LEATHERWORK RECIPES");
@@ -50,10 +50,10 @@ public class LeatherWorking extends CommonSkill
 		}
 		return V;
 	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -90,7 +90,7 @@ public class LeatherWorking extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
@@ -402,7 +402,7 @@ public class LeatherWorking extends CommonSkill
 			building.text();
 			building.recoverEnvStats();
 		}
-		
+
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);

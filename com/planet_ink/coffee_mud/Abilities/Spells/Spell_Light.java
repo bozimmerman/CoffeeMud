@@ -30,10 +30,10 @@ public class Spell_Light extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		Room room=((MOB)affected).location();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			room.show(mob,null,Affect.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			room.recoverRoomStats();
 	}
 

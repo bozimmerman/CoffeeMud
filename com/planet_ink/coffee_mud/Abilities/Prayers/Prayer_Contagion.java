@@ -20,18 +20,18 @@ public class Prayer_Contagion extends Prayer
 	{
 		if(affected==null) return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The contagion fades.");
 		super.unInvoke();
 	}
-	
+
 	public String text(){return "DISEASE";}
-	
+
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID))
 			return false;
-		
+
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return false;
 		MOB mob=(MOB)affected;
@@ -80,7 +80,7 @@ public class Prayer_Contagion extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			
+
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"^S<S-NAME> pray(s) at <T-NAMESELF> for contagion.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.TYP_DISEASE|Affect.MASK_MALICIOUS,null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))

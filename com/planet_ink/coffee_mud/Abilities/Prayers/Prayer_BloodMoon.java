@@ -26,7 +26,7 @@ public class Prayer_BloodMoon extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The blood moon over you fades.");
 	}
 

@@ -38,14 +38,14 @@ public class Prayer_Bless extends Prayer
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
-			if(canBeUninvoked)
+			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
 				((MOB)((Item)affected).owner()).tell("The blessing on "+((Item)affected).name()+" fades.");
 			super.unInvoke();
 			return;
 		}
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your aura of blessing fades.");
 		super.unInvoke();
 	}
@@ -71,7 +71,7 @@ public class Prayer_Bless extends Prayer
 			target=(Item)good.elementAt(Dice.roll(1,good.size(),-1));
 		return target;
 	}
-	
+
 	public static void endIt(Environmental target, int level)
 	{
 		for(int a=target.numAffects()-1;a>=0;a--)
@@ -98,7 +98,7 @@ public class Prayer_Bless extends Prayer
 			}
 		}
 	}
-	
+
 	public static boolean isCursed(Item item)
 	{
 		if(item.fetchAffect("Prayer_Curse")!=null)
@@ -115,7 +115,7 @@ public class Prayer_Bless extends Prayer
 			return true;
 		return false;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

@@ -108,7 +108,7 @@ public class Spell_Delirium extends Spell
 	private String process(MOB mob, String str, Environmental obj)
 	{
 		if(obj==null) return str;
-		
+
 		int x=str.indexOf("<S-NAME>");
 		if(x>=0)
 			str=str.substring(0,x)+getRand(obj)+str.substring(x+("<S-NAME>").length());
@@ -143,7 +143,7 @@ public class Spell_Delirium extends Spell
 		}
 		return str.trim();
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
@@ -157,15 +157,15 @@ public class Spell_Delirium extends Spell
 		}
 		return super.tick(tickID);
 	}
-	
-	
+
+
 	public boolean okAffect(Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		
+
 		String othersMessage=affect.othersMessage();
 		String sourceMessage=affect.sourceMessage();
 		String targetMessage=affect.targetMessage();
@@ -192,7 +192,7 @@ public class Spell_Delirium extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You begin to feel a bit less delirius.");
 	}
 

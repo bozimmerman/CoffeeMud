@@ -17,7 +17,7 @@ public class Fighter_Warcry extends StdAbility
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.SKILL;}
-	
+
 	private int timesTicking=0;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -37,7 +37,7 @@ public class Fighter_Warcry extends StdAbility
 			unInvoke();
 		return true;
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -47,7 +47,7 @@ public class Fighter_Warcry extends StdAbility
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You calm down a bit.");
 	}
 

@@ -15,7 +15,7 @@ public class Spell_DetectMagic extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_DetectMagic();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
-	
+
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -23,7 +23,7 @@ public class Spell_DetectMagic extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"Your eyes cease to sparkle.");
 	}
 

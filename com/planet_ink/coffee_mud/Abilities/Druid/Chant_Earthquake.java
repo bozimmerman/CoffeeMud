@@ -34,7 +34,7 @@ public class Chant_Earthquake extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(mob.location()!=null)
 			{

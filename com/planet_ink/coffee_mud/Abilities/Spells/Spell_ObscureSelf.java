@@ -32,7 +32,7 @@ public class Spell_ObscureSelf extends Spell
 			return true;
 
 		MOB mob=(MOB)affected;
-		
+
 		String othersMessage=affect.othersMessage();
 		String sourceMessage=affect.sourceMessage();
 		String targetMessage=affect.targetMessage();
@@ -116,7 +116,7 @@ public class Spell_ObscureSelf extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You begin to feel a bit less obscure.");
 	}
 
@@ -141,7 +141,7 @@ public class Spell_ObscureSelf extends Spell
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the 
+			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;

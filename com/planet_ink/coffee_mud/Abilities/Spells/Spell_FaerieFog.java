@@ -24,7 +24,7 @@ public class Spell_FaerieFog extends Spell
 			return;
 		if(!(affected instanceof Room))
 			return;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			Room room=(Room)affected;
 			room.showHappens(Affect.MSG_OK_VISUAL, "The faerie fog starts to clear out.");

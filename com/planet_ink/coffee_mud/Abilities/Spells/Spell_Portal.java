@@ -15,10 +15,10 @@ public class Spell_Portal extends Spell
 
 	Room newRoom=null;
 	Room oldRoom=null;
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(newRoom!=null)
 			{

@@ -45,13 +45,13 @@ public class Spell_AcidFog extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the acid fog!");
 		}
 	}
-		
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -72,7 +72,7 @@ public class Spell_AcidFog extends Spell
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
-		{ 
+		{
 			mob.location().show(mob,null,affectType(auto),auto?"A horrendous cloud of acid appears!":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{

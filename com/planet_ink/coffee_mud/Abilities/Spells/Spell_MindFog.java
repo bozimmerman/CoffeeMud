@@ -21,7 +21,7 @@ public class Spell_MindFog extends Spell
 		affectableStats.setStat(CharStats.WISDOM,1);
 		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)-25);
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -30,7 +30,7 @@ public class Spell_MindFog extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You feel a little less foggy in the head.");
 	}
 

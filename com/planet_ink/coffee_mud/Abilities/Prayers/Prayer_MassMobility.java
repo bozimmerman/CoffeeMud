@@ -65,7 +65,7 @@ public class Prayer_MassMobility extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The aura of mobility around you fades.");
 	}
 
@@ -90,7 +90,7 @@ public class Prayer_MassMobility extends Prayer
 				{
 					MOB target=room.fetchInhabitant(i);
 					if(target==null) break;
-					
+
 					// it worked, so build a copy of this ability,
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else

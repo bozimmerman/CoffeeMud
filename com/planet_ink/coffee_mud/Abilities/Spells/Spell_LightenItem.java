@@ -13,7 +13,7 @@ public class Spell_LightenItem extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_LightenItem();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -22,7 +22,7 @@ public class Spell_LightenItem extends Spell
 
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		if((affected!=null)&&(affected instanceof Item))
 		{
 			Item item=(Item)affected;
@@ -41,7 +41,7 @@ public class Spell_LightenItem extends Spell
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);

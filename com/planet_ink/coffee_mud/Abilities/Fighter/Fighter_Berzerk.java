@@ -17,7 +17,7 @@ public class Fighter_Berzerk extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Fighter_Berzerk();}
 	public int classificationCode(){ return Ability.SKILL;}
-	
+
 	public int hpAdjustment=0;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -48,7 +48,7 @@ public class Fighter_Berzerk extends StdAbility
 
 			super.unInvoke();
 
-			if(canBeUninvoked)
+			if(canBeUninvoked())
 			{
 				if(mob.curState().getHitPoints()<=hpAdjustment)
 					mob.curState().setHitPoints(1);

@@ -77,7 +77,7 @@ public class Chant_Treeform extends Chant
 		}
 		if(!super.okAffect(affect))
 			return false;
-		
+
 		if(affect.source().getVictim()==mob)
 			affect.source().setVictim(null);
 		if(mob.isInCombat())
@@ -113,7 +113,7 @@ public class Chant_Treeform extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			mob.tell("Your body returns to normal!");
 			if(oldState!=null)
@@ -145,7 +145,7 @@ public class Chant_Treeform extends Chant
 			mob.tell("You must be outdoors to try this.");
 			return false;
 		}
-		
+
 		MOB target=mob;
 		if(mob.fetchAffect(this.ID())!=null)
 		{

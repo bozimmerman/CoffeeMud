@@ -41,7 +41,7 @@ public class Spell_WallOfStone extends Spell
 				if(w==null) return false;
 				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of stone with "+w.name()+".^?");
 				amountRemaining-=mob.envStats().damage();
-				if(amountRemaining<0) 
+				if(amountRemaining<0)
 				{
 					deathNotice="The wall of stone is destroyed!";
 					((Item)affected).destroyThis();
@@ -55,7 +55,7 @@ public class Spell_WallOfStone extends Spell
 	public void unInvoke()
 	{
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((theWall!=null)
 			&&(invoker!=null)
@@ -83,7 +83,7 @@ public class Spell_WallOfStone extends Spell
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
@@ -110,7 +110,7 @@ public class Spell_WallOfStone extends Spell
 
 		Environmental target = mob.location();
 
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

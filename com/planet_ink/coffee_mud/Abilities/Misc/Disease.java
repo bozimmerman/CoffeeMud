@@ -22,9 +22,9 @@ public class Disease extends StdAbility
 	protected String DISEASE_DONE(){return "Your disease has run its coarse.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a disease.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and groan(s).";}
-	
+
 	protected int diseaseTick=DISEASE_DELAY();
-	
+
 	protected boolean catchIt(MOB mob)
 	{
 		MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
@@ -47,7 +47,7 @@ public class Disease extends StdAbility
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,DISEASE_DONE());
 	}
 

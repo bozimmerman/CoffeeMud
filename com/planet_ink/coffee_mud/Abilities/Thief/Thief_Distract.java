@@ -56,7 +56,7 @@ public class Thief_Distract extends ThiefSkill
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
 			{
@@ -78,7 +78,7 @@ public class Thief_Distract extends ThiefSkill
 			mob.tell(target.name()+" is on the floor!");
 			return false;
 		}
-		
+
 		if((!Sense.aliveAwakeMobile(mob,true)||(Sense.isSitting(mob))))
 		{
 			mob.tell("You need to stand up!");
@@ -93,9 +93,9 @@ public class Thief_Distract extends ThiefSkill
 			return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=levelDiff*5;
-		else 
+		else
 			levelDiff=0;
 		boolean success=profficiencyCheck(-levelDiff,auto);
 		if(success)

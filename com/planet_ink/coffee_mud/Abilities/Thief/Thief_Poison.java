@@ -26,7 +26,7 @@ public class Thief_Poison extends ThiefSkill
 		MOB mob=(MOB)affected;
 		if(mob==null) return false;
 		if(invoker==null) return false;
-		
+
 		if((--poisonDown)<=0)
 		{
 			poisonDown=3;
@@ -56,7 +56,7 @@ public class Thief_Poison extends ThiefSkill
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"The poison runs its course.");
 	}
 

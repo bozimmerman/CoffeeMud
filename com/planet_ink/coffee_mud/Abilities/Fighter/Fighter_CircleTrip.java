@@ -45,7 +45,7 @@ public class Fighter_CircleTrip extends StdAbility
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			doneTicking=true;
 		super.unInvoke();
 		if(!mob.amDead())
@@ -78,14 +78,14 @@ public class Fighter_CircleTrip extends StdAbility
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth tripping.");
 			return false;
 		}
-		
+
 		boolean success=true;
 		FullMsg msg=new FullMsg(mob,null,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"":"^F<S-NAME> slide(s) into a circle trip!^?");
 		if(mob.location().okAffect(msg))
@@ -94,13 +94,13 @@ public class Fighter_CircleTrip extends StdAbility
 			for(Enumeration e=h.elements();e.hasMoreElements();)
 			{
 				MOB target=(MOB)e.nextElement();
-				
+
 				if((Sense.isSitting(target)||Sense.isSleeping(target)))
 				{
 					mob.tell(target.name()+" is already on the floor!");
 					return false;
 				}
-		
+
 				if(target.riding()!=null)
 				{
 					mob.tell("You can't trip someone "+target.riding().stateString()+" "+target.riding().name()+"!");
@@ -113,9 +113,9 @@ public class Fighter_CircleTrip extends StdAbility
 				}
 
 				int levelDiff=target.envStats().level()-mob.envStats().level();
-				if(levelDiff>0) 
+				if(levelDiff>0)
 					levelDiff=levelDiff*5;
-				else 
+				else
 					levelDiff=0;
 				int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))));
 				success=profficiencyCheck(adjustment,auto);

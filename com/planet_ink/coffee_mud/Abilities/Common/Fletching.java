@@ -12,7 +12,7 @@ public class Fletching extends CommonSkill
 	public String name(){ return "Fletching";}
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -24,7 +24,7 @@ public class Fletching extends CommonSkill
 	private static final int RCP_ARMORDMG=8;
 	private static final int RCP_MAXRANGE=9;
 	private static final int RCP_EXTRAREQ=10;
-	
+
 	private Item building=null;
 	private boolean messedUp=false;
 	private boolean mending=false;
@@ -50,7 +50,7 @@ public class Fletching extends CommonSkill
 		}
 		return V;
 	}
-	
+
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
 		if(!super.canBeLearnedBy(teacher,student))
@@ -64,10 +64,10 @@ public class Fletching extends CommonSkill
 		}
 		return true;
 	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -95,7 +95,7 @@ public class Fletching extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -105,7 +105,7 @@ public class Fletching extends CommonSkill
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
@@ -306,8 +306,8 @@ public class Fletching extends CommonSkill
 			building.text();
 			building.recoverEnvStats();
 		}
-		
-		
+
+
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);

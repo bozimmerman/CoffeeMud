@@ -36,7 +36,7 @@ public class Chant_Treemorph extends Chant
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if(affected instanceof MOB)
@@ -72,7 +72,7 @@ public class Chant_Treemorph extends Chant
 		}
 		if(!super.okAffect(affect))
 			return false;
-		
+
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
@@ -115,7 +115,7 @@ public class Chant_Treemorph extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(tree!=null) tree.destroyThis();
 			mob.tell("You feel like your normal self again!");

@@ -12,7 +12,7 @@ public class JewelMaking extends CommonSkill
 	public String name(){ return "Jewel Making";}
 	private static final String[] triggerStrings = {"JEWEL","JEWELMAKING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -23,7 +23,7 @@ public class JewelMaking extends CommonSkill
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
 	private static final int RCP_EXTRAREQ=9;
-	
+
 	private Item building=null;
 	private Item fire=null;
 	private boolean messedUp=false;
@@ -35,7 +35,7 @@ public class JewelMaking extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new JewelMaking();}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -50,7 +50,7 @@ public class JewelMaking extends CommonSkill
 		}
 		return super.tick(tickID);
 	}
-	
+
 	private static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("JEWELMAKING RECIPES");
@@ -64,10 +64,10 @@ public class JewelMaking extends CommonSkill
 		}
 		return V;
 	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -84,7 +84,7 @@ public class JewelMaking extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
@@ -226,7 +226,7 @@ public class JewelMaking extends CommonSkill
 			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 		else
 			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstOther.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
-			
+
 		if(new String("aeiou").indexOf(Character.toLowerCase(itemName.charAt(0)))>=0)
 			itemName="an "+itemName;
 		else
@@ -279,13 +279,13 @@ public class JewelMaking extends CommonSkill
 				}
 			}
 		}
-		
-		
+
+
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();
-		
-		
+
+
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<8) completion=8;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);

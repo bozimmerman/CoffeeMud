@@ -62,7 +62,7 @@ public class Fighter_LightningStrike extends StdAbility
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
 			{
@@ -110,7 +110,7 @@ public class Fighter_LightningStrike extends StdAbility
 			mob.tell("You must be unarmed to perform the strike.");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -119,9 +119,9 @@ public class Fighter_LightningStrike extends StdAbility
 			return false;
 
 		int levelDiff=target.envStats().level()-adjustedLevel(mob);
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=levelDiff*5;
-		else 
+		else
 			levelDiff=0;
 		// now see if it worked
 		boolean success=profficiencyCheck((-levelDiff),auto);

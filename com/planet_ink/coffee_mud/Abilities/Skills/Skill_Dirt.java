@@ -47,7 +47,7 @@ public class Skill_Dirt extends StdAbility
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You can see again!");
 	}
 

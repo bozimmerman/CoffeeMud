@@ -48,7 +48,7 @@ public class Spell_GiantStrength extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your muscles shrink back to their normal size.");
 	}
 

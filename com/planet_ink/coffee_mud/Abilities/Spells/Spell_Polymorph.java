@@ -16,7 +16,7 @@ public class Spell_Polymorph extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	Race newRace=null;
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -44,7 +44,7 @@ public class Spell_Polymorph extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You feel more like yourself again.");
 	}
 

@@ -18,8 +18,8 @@ public class Spell_Claireaudience extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		
-		if(canBeUninvoked)
+
+		if(canBeUninvoked())
 		if(invoker!=null)
 			invoker.tell("The sounds of '"+mob.name()+"' fade.");
 		super.unInvoke();
@@ -36,7 +36,7 @@ public class Spell_Claireaudience extends Spell
 		&&(affect.othersMessage()!=null))
 			((MOB)invoker).affect(affect);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 
@@ -68,7 +68,7 @@ public class Spell_Claireaudience extends Spell
 			mob.tell("You can't seem to focus on '"+mobName+"'.");
 			return false;
 		}
-			
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

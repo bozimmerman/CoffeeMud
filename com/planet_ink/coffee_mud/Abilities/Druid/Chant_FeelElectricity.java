@@ -39,14 +39,14 @@ public class Chant_FeelElectricity extends Chant
 		}
 		return true;
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your charged feeling is gone.");
 
 		super.unInvoke();
@@ -70,8 +70,8 @@ public class Chant_FeelElectricity extends Chant
 		}
 		return true;
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

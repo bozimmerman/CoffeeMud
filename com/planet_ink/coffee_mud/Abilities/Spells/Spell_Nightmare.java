@@ -29,7 +29,7 @@ public class Spell_Nightmare extends Spell
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		
+
 		if(affect.amISource(mob))
 		{
 			if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
@@ -81,7 +81,7 @@ public class Spell_Nightmare extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		if((!mob.amDead())&&(mob.location()!=null))
 			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to wake up from <S-HIS-HER> nightmare.");
 	}
@@ -92,7 +92,7 @@ public class Spell_Nightmare extends Spell
 			notAgainThisRound=false;
 		return super.tick(tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

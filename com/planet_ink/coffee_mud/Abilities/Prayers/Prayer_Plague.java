@@ -18,7 +18,7 @@ public class Prayer_Plague extends Prayer
 	int plagueDown=4;
 
 	public String text(){return "DISEASE";}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -62,7 +62,7 @@ public class Prayer_Plague extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The sores on your face clear up.");
 	}
 

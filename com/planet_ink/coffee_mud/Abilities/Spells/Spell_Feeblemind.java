@@ -21,7 +21,7 @@ public class Spell_Feeblemind extends Spell
 		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)-25);
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -30,7 +30,7 @@ public class Spell_Feeblemind extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You begin to remember some rather simple things--like your name.  The feeblemind spell must be wearing off.");
 	}
 

@@ -10,7 +10,7 @@ public class FireBuilding extends CommonSkill
 	public String name(){ return "Fire Building";}
 	private static final String[] triggerStrings = {"LIGHT","FIREBUILD","FIREBUILDING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	public Item lighting=null;
 	private int durationOfBurn=0;
 	private boolean failed=false;
@@ -22,11 +22,11 @@ public class FireBuilding extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance()	{return new FireBuilding();	}
-	
-	
+
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
 			{
@@ -56,7 +56,7 @@ public class FireBuilding extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
@@ -66,7 +66,7 @@ public class FireBuilding extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		String name=Util.combine(commands,0);
 		int profficiencyAdjustment=0;
 		int completion=6;
@@ -168,7 +168,7 @@ public class FireBuilding extends CommonSkill
 			break;
 		}
 		failed=!profficiencyCheck(profficiencyAdjustment,auto);
-		   
+
 		if(completion<4) completion=4;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) building a fire.");
 		if(mob.location().okAffect(msg))

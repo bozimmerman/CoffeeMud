@@ -12,7 +12,7 @@ public class Chant_WaterWalking extends Chant
 	public String displayText(){return "(Water Walking)";}
 	private boolean triggerNow=false;
 	public Environmental newInstance(){	return new Chant_WaterWalking();}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -70,13 +70,13 @@ public class Chant_WaterWalking extends Chant
 		}
 		return true;
 	}
-		
+
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
 		if(triggerNow)triggerNow=false;
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -85,7 +85,7 @@ public class Chant_WaterWalking extends Chant
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You have a sinking feeling that your water walking ability is gone.");
 	}
 
@@ -99,7 +99,7 @@ public class Chant_WaterWalking extends Chant
 			mob.tell("You are already a water walker.");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

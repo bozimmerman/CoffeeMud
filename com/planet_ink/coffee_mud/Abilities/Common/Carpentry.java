@@ -12,7 +12,7 @@ public class Carpentry extends CommonSkill
 	public String name(){ return "Carpentry";}
 	private static final String[] triggerStrings = {"CARVE","CARPENTRY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -22,8 +22,8 @@ public class Carpentry extends CommonSkill
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
-	
-	
+
+
 	private Item building=null;
 	private Item key=null;
 	private boolean mending=false;
@@ -37,7 +37,7 @@ public class Carpentry extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){return new Carpentry();}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -47,7 +47,7 @@ public class Carpentry extends CommonSkill
 		}
 		return super.tick(tickID);
 	}
-	
+
 	private static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("CARPENTRY RECIPES");
@@ -61,10 +61,10 @@ public class Carpentry extends CommonSkill
 		}
 		return V;
 	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -109,7 +109,7 @@ public class Carpentry extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
@@ -387,8 +387,8 @@ public class Carpentry extends CommonSkill
 			building.text();
 			building.recoverEnvStats();
 		}
-		
-		
+
+
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);

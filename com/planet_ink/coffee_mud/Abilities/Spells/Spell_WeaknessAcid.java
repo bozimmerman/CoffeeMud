@@ -33,14 +33,14 @@ public class Spell_WeaknessAcid extends Spell
 		}
 		return true;
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your acidic weakness is now gone.");
 
 		super.unInvoke();

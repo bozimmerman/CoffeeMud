@@ -33,7 +33,7 @@ public class Prayer_SenseHidden extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your eyes are no longer opague.");
 	}
 

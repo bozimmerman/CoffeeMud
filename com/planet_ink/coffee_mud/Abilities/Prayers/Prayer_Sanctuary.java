@@ -26,7 +26,7 @@ public class Prayer_Sanctuary extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The sanctuary around you fades.");
 	}
 

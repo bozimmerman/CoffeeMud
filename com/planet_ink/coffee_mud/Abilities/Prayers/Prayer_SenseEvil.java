@@ -33,7 +33,7 @@ public class Prayer_SenseEvil extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The red fades from your eyes.");
 	}
 

@@ -40,7 +40,7 @@ public class Spell_Frailty extends Spell
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(mob.location()!=null)
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) less frail.");

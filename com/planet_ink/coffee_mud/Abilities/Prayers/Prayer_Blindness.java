@@ -21,7 +21,7 @@ public class Prayer_Blindness extends Prayer
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		
+
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
 	}
 
@@ -34,7 +34,7 @@ public class Prayer_Blindness extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your vision returns.");
 	}
 

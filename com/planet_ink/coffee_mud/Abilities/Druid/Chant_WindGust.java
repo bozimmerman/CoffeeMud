@@ -16,7 +16,7 @@ public class Chant_WindGust extends Chant
 	public int maxRange(){return 4;}
 	public boolean doneTicking=false;
 	public Environmental newInstance(){	return new Chant_WindGust();}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -43,10 +43,10 @@ public class Chant_WindGust extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			doneTicking=true;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(mob.location()!=null)
 			{
@@ -101,7 +101,7 @@ public class Chant_WindGust extends Chant
 						||(mob.location().getArea().weatherType(mob.location())==Area.WEATHER_DUSTSTORM)
 						||(mob.location().getArea().weatherType(mob.location())==Area.WEATHER_THUNDERSTORM))
 							howLong=4;
-						
+
 						MOB victim=target.getVictim();
 						if((victim!=null)&&(target.rangeToTarget()>=0))
 							target.setAtRange(target.rangeToTarget()+(howLong/2));

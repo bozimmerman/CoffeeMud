@@ -51,14 +51,14 @@ public class Spell_WallOfAir extends Spell
 				ExternalPlay.remove(mob,(Item)affect.tool(),false);
 			return false;
 		}
-			
+
 		return super.okAffect(affect);
 	}
 
 	public void unInvoke()
 	{
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((theWall!=null)
 			&&(invoker!=null)
@@ -86,7 +86,7 @@ public class Spell_WallOfAir extends Spell
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
@@ -113,7 +113,7 @@ public class Spell_WallOfAir extends Spell
 
 		Environmental target = mob.location();
 
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

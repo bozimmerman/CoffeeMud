@@ -17,7 +17,7 @@ public class Spell_HeatMetal extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	private Vector affectedItems=new Vector();
-	
+
 	public boolean okAffect(Affect msg)
 	{
 		if(!super.okAffect(msg)) return false;
@@ -86,7 +86,7 @@ public class Spell_HeatMetal extends Spell
 			return;
 		}
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		if(affected instanceof MOB)
 		{
 			for(int i=0;i<affectedItems.size();i++)

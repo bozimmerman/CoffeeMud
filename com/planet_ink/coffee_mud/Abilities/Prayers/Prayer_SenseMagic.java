@@ -33,7 +33,7 @@ public class Prayer_SenseMagic extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The sparkles fade from your eyes.");
 	}
 

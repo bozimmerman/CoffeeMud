@@ -25,7 +25,7 @@ public class Skill_Meditation extends StdAbility
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
 			{
@@ -60,7 +60,7 @@ public class Skill_Meditation extends StdAbility
 		}
 		return;
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -70,7 +70,7 @@ public class Skill_Meditation extends StdAbility
 
 		if(tickID!=Host.MOB_TICK) return true;
 		if(!profficiencyCheck(0,false)) return true;
-		
+
 		if((mob.curState().getHunger()<=0)
 		||(mob.curState().getThirst()<=0))
 		{
@@ -78,7 +78,7 @@ public class Skill_Meditation extends StdAbility
 			unInvoke();
 			return false;
 		}
-		
+
 		if((!mob.isInCombat())
 		&&(Sense.isSitting(mob)))
 		{
@@ -92,7 +92,7 @@ public class Skill_Meditation extends StdAbility
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;

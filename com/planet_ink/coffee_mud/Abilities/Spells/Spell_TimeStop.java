@@ -15,13 +15,13 @@ public class Spell_TimeStop extends Spell
 	protected int overrideMana(){return 100;}
 	public Environmental newInstance(){	return new Spell_TimeStop();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
-	
+
 	protected Vector fixed=new Vector();
 
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected!=null)&&(canBeUninvoked))
+		if((affected!=null)&&(canBeUninvoked()))
 		{
 			if(affected instanceof Room)
 			{

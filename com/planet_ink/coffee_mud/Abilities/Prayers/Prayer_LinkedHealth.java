@@ -27,7 +27,7 @@ public class Prayer_LinkedHealth extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(buddy!=null)
 			{

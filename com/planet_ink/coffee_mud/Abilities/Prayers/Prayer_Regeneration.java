@@ -27,7 +27,7 @@ public class Prayer_Regeneration extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your regenerative powers go away.");
 	}
 
@@ -57,7 +57,7 @@ public class Prayer_Regeneration extends Prayer
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;

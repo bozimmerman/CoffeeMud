@@ -21,10 +21,10 @@ public class Chant_SummonFire extends Chant
 			return;
 		if(littleFire==null)
 			return;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			FireLocation.showHappens(Affect.MSG_OK_VISUAL,"The little magical fire goes out.");
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			Item fire=littleFire; // protects against uninvoke loops!
 			littleFire=null;
@@ -49,7 +49,7 @@ public class Chant_SummonFire extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		// now see if it worked
 		boolean success=profficiencyCheck(0,auto);
 		if(success)

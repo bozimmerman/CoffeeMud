@@ -26,7 +26,7 @@ public class Spell_Delay extends Spell
 			return;
 		if((shooter==null)||(parameters==null))
 			return;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			MOB newCaster=CMClass.getMOB("StdMOB");
 			newCaster.setName("the thin air");
@@ -45,7 +45,7 @@ public class Spell_Delay extends Spell
 			newCaster.destroy();
 		}
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			shooter=null;
 			parameters=null;
@@ -74,7 +74,7 @@ public class Spell_Delay extends Spell
 			mob.tell("You don't know any arcane spell by that name.");
 			return false;
 		}
-		
+
 		if(shooter.quality()==Ability.MALICIOUS)
 		for(int m=0;m<mob.location().numInhabitants();m++)
 		{

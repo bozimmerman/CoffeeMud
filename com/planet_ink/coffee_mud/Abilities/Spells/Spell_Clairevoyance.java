@@ -12,15 +12,15 @@ public class Spell_Clairevoyance extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Clairevoyance();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		
-		if(canBeUninvoked)
+
+		if(canBeUninvoked())
 		if(invoker!=null)
 			invoker.tell("Your visions of '"+mob.name()+"' fade.");
 		super.unInvoke();
@@ -41,7 +41,7 @@ public class Spell_Clairevoyance extends Spell
 			affect.target().affect(newAffect);
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 
@@ -73,7 +73,7 @@ public class Spell_Clairevoyance extends Spell
 			mob.tell("You can't seem to focus on '"+mobName+"'.");
 			return false;
 		}
-			
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

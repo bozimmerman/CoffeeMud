@@ -15,8 +15,8 @@ public class Spell_DetectHidden extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_DetectHidden();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
-	
-	
+
+
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -24,7 +24,7 @@ public class Spell_DetectHidden extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"Your vision is no longer as keen.");
 	}
 

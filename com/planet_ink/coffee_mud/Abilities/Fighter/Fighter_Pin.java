@@ -69,7 +69,7 @@ public class Fighter_Pin extends StdAbility
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
 			{
@@ -119,9 +119,9 @@ public class Fighter_Pin extends StdAbility
 			return false;
 
 		int levelDiff=target.envStats().level()-adjustedLevel(mob);
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=levelDiff*10;
-		else 
+		else
 			levelDiff=0;
 		// now see if it worked
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+target.adjustedArmor()));

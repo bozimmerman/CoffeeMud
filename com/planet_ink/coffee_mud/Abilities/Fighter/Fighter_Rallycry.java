@@ -37,7 +37,7 @@ public class Fighter_Rallycry extends StdAbility
 			unInvoke();
 		return true;
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -47,7 +47,7 @@ public class Fighter_Rallycry extends StdAbility
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			mob.tell("You feel less rallyed.");
 			if(mob.curState().getHitPoints()>mob.baseState().getHitPoints())

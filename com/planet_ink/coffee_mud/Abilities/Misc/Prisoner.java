@@ -23,7 +23,7 @@ public class Prisoner extends StdAbility
 		if(!(affected instanceof MOB)) return;
 		if(jail==null) jail=((MOB)affected).location();
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if(affect.sourceMinor()==affect.TYP_RECALL)
@@ -57,7 +57,7 @@ public class Prisoner extends StdAbility
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your sentence has been served.");
 	}
 }

@@ -10,7 +10,7 @@ public class Amputation extends StdAbility
 {
 	public String ID() { return "Amputation"; }
 	public String name(){ return "Amputation";}
-	public String displayText(){ 
+	public String displayText(){
 		long missingLimbList=missingLimbList();
 		StringBuffer buf=new StringBuffer("");
 		for(int i=0;i<AMPUTATE_BITS;i++)
@@ -28,7 +28,7 @@ public class Amputation extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.SKILL;}
-	
+
 	public static final long AMPUTATE_LEFTHAND=1;
 	public static final long AMPUTATE_RIGHTHAND=2;
 	public static final long AMPUTATE_LEFTARM=4|AMPUTATE_LEFTHAND;
@@ -67,7 +67,7 @@ public class Amputation extends StdAbility
 												 0,0,
 												 AMPUTATE_LEFTEAR,AMPUTATE_RIGHTEAR,
 												 AMPUTATE_LEFTEYE,AMPUTATE_RIGHTEYE};
-	
+
 	protected long missingLimbList(){ return Util.s_long(text());}
 	public boolean canWear(long missingLimbs, Item item)
 	{
@@ -92,7 +92,7 @@ public class Amputation extends StdAbility
 			forbiddenWornBits=forbiddenWornBits|Item.ON_RIGHT_WRIST;
 		if((missingLimbs&AMPUTATE_BOTHHANDS)==AMPUTATE_BOTHHANDS)
 			forbiddenWornBits=forbiddenWornBits|Item.ON_HANDS;
-		
+
 		if((item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&forbiddenWornBits)>0))
 			return false;
 		else
@@ -100,7 +100,7 @@ public class Amputation extends StdAbility
 			return false;
 		return true;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -188,7 +188,7 @@ public class Amputation extends StdAbility
 				}
 				break;
 			case Affect.TYP_WEAR:
-				if((affect.target()!=null)	
+				if((affect.target()!=null)
 				&&(affect.target() instanceof Item)
 				&&(!canWear(missingLimbList,(Item)affect.target())))
 				{
@@ -218,7 +218,7 @@ public class Amputation extends StdAbility
 		return super.okAffect(affect);
 	}
 
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -228,10 +228,10 @@ public class Amputation extends StdAbility
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your limbs have been restored.");
 	}
-	
+
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet)
 	{
 		String targetName=Util.combine(commands,0);
@@ -260,9 +260,9 @@ public class Amputation extends StdAbility
 			}
 		}
 
-		if(target!=null) 
+		if(target!=null)
 			targetName=target.name();
-		
+
 		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
@@ -293,7 +293,7 @@ public class Amputation extends StdAbility
 				A=new Amputation();
 				newOne=true;
 			}
-			
+
 			Vector V=new Vector();
 			long bit=0;
 			long missingLimbList=A.missingLimbList();
@@ -302,7 +302,7 @@ public class Amputation extends StdAbility
 				if(!Util.isSet((int)missingLimbList,i))
 					V.addElement(new Integer(i));
 			}
-			if(V.size()==0) 
+			if(V.size()==0)
 			{
 				if(!auto)
 					mob.tell("There is nothing left on "+target.name()+" to amputate!");
@@ -311,7 +311,7 @@ public class Amputation extends StdAbility
 			bit=((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).longValue();
 			String gone=AMPUTATE_DESCS[(int)bit];
 			long code=AMPUTATE_CODES[(int)bit];
-			
+
 			String str=auto?"":"^F<S-NAME> amputate <T-NAMESELF>'s "+gone+"!^?";
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_DELICATE_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),str);
 			if(target.location().okAffect(msg))
@@ -339,7 +339,7 @@ public class Amputation extends StdAbility
 					mob.confirmWearability();
 				}
 			}
-			else 
+			else
 				success=false;
 		}
 		else

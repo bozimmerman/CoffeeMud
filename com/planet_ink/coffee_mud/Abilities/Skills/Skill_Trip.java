@@ -45,7 +45,7 @@ public class Skill_Trip extends StdAbility
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			doneTicking=true;
 		super.unInvoke();
 		if(!mob.amDead())
@@ -74,7 +74,7 @@ public class Skill_Trip extends StdAbility
 			mob.tell(target.name()+" is already on the floor!");
 			return false;
 		}
-		
+
 		if((!Sense.aliveAwakeMobile(mob,true)||(Sense.isSitting(mob))))
 		{
 			mob.tell("You need to stand up!");
@@ -99,9 +99,9 @@ public class Skill_Trip extends StdAbility
 			return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=levelDiff*5;
-		else 
+		else
 			levelDiff=0;
 		int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))));
 		boolean success=profficiencyCheck(adjustment,auto);

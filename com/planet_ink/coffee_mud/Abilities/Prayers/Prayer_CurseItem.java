@@ -38,14 +38,14 @@ public class Prayer_CurseItem extends Prayer
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
-			if(canBeUninvoked)
+			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
 				((MOB)((Item)affected).owner()).tell("The curse on "+((Item)affected).name()+" is lifted.");
 			super.unInvoke();
 			return;
 		}
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The curse is lifted.");
 		super.unInvoke();
 	}
@@ -95,7 +95,7 @@ public class Prayer_CurseItem extends Prayer
 			target=Prayer_Curse.getSomething(mobTarget,false);
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
-		
+
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -13,18 +13,18 @@ public class Spell_SummonEnemy extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_SummonEnemy();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
-	
+
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked)&&(mob!=null))
+		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
 	}
-	
+
 	public void affect(Affect msg)
 	{
 		super.affect(msg);
@@ -34,7 +34,7 @@ public class Spell_SummonEnemy extends Spell
 		&&(msg.sourceMinor()==Affect.MSG_QUIT))
 			unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

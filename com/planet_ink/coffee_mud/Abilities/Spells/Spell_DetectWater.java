@@ -16,16 +16,16 @@ public class Spell_DetectWater extends Spell
 	Room lastRoom=null;
 	public Environmental newInstance(){	return new Spell_DetectWater();	}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
-	
+
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			lastRoom=null;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"Your senses are no longer sensitive to liquids.");
 	}
 	public String waterCheck(MOB mob, Item I, Item container, StringBuffer msg)
@@ -147,7 +147,7 @@ public class Spell_DetectWater extends Spell
 					if((M!=null)&&(M!=mob)&&(waterHere(mob,M,null).length()>0))
 					{ metalFound=true; break;}
 				}
-				
+
 				if(metalFound)
 				{
 					if(last.length()>0)
@@ -183,7 +183,7 @@ public class Spell_DetectWater extends Spell
 		}
 		return true;
 	}
-	
+
 
 	public void affect(Affect affect)
 	{

@@ -22,7 +22,7 @@ public class Spell_WeaknessCold extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your cold weakness is now gone.");
 
 		super.unInvoke();
@@ -78,7 +78,7 @@ public class Spell_WeaknessCold extends Spell
 		}
 		return true;
 	}
-	
+
 
 	public boolean okAffect(Affect affect)
 	{
@@ -97,7 +97,7 @@ public class Spell_WeaknessCold extends Spell
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

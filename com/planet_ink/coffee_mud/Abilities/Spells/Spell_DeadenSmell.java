@@ -29,7 +29,7 @@ public class Spell_DeadenSmell extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You nose clears up.");
 	}
 

@@ -24,7 +24,7 @@ public class Spell_LowerResists extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your cold weakness is now gone.");
 
 		super.unInvoke();

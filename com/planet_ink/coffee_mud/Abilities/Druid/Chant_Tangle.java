@@ -26,7 +26,7 @@ public class Chant_Tangle extends Chant
 			unInvoke();
 			return super.okAffect(affect);
 		}
-		
+
 		MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
@@ -57,7 +57,7 @@ public class Chant_Tangle extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of "+thePlants.name());
@@ -69,14 +69,14 @@ public class Chant_Tangle extends Chant
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(thePlants==null)
 		{
 			mob.tell("There doesn't appear to be any plants here you can control!");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

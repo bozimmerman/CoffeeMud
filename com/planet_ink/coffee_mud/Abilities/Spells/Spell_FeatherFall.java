@@ -29,7 +29,7 @@ public class Spell_FeatherFall extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your normal weight returns.");
 	}
 

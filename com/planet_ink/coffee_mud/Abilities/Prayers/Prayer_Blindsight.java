@@ -26,7 +26,7 @@ public class Prayer_Blindsight extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your natural vision returns.");
 	}
 

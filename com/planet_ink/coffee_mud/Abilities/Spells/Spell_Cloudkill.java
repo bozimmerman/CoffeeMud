@@ -36,7 +36,7 @@ public class Spell_Cloudkill extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			mob.tell("You feel less intoxicated.");
 			ExternalPlay.standIfNecessary(mob);

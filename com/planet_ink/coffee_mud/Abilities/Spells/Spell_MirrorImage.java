@@ -14,7 +14,7 @@ public class Spell_MirrorImage extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_MirrorImage();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
-	
+
 	private	Random randomizer = new Random(System.currentTimeMillis());
 	private int numberOfImages = 0;
 	private boolean notAgain=false;
@@ -71,7 +71,7 @@ public class Spell_MirrorImage extends Spell
 			&&(affect.othersMessage().length()>0))
 			{
 				notAgain=true;
-				if(numberOfImages<=0) 
+				if(numberOfImages<=0)
 					unInvoke();
 				else
 				for(int x=0;x<numberOfImages;x++)
@@ -94,11 +94,11 @@ public class Spell_MirrorImage extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			numberOfImages=0;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your mirror images fade away.");
 	}
 

@@ -20,7 +20,7 @@ public class Skill_Regeneration extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.SKILL;}
-	
+
 	private static final int maxTickDown=3;
 	private int regenDown=maxTickDown;
 	public Environmental newInstance(){	return new Skill_Regeneration();}
@@ -54,7 +54,7 @@ public class Skill_Regeneration extends StdAbility
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"You feel less regenerative.");
 	}
 

@@ -12,7 +12,7 @@ public class LockSmith extends CommonSkill
 	public String name(){ return "Locksmith";}
 	private static final String[] triggerStrings = {"LOCKSMITH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private Item building=null;
 	private Environmental workingOn=null;
 	private boolean messedUp=false;
@@ -24,10 +24,10 @@ public class LockSmith extends CommonSkill
 					CMAble.addCharAbilityMapping("All",15,ID(),false);}
 	}
 	public Environmental newInstance(){	return new LockSmith();}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -44,7 +44,7 @@ public class LockSmith extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -106,7 +106,7 @@ public class LockSmith extends CommonSkill
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
@@ -127,7 +127,7 @@ public class LockSmith extends CommonSkill
 			workingOn=mob.location().fetchFromMOBRoomFavorsItems(mob,null,recipeName,Item.WORN_REQ_UNWORNONLY);
 		else
 			workingOn=mob.location().getExitInDir(dir);
-		
+
 		if((workingOn==null)||(!Sense.canBeSeenBy(workingOn,mob)))
 		{
 			commonTell(mob,"You don't see a '"+recipeName+"' here.");
@@ -153,7 +153,7 @@ public class LockSmith extends CommonSkill
 			}
 			else
 				woodRequired=5;
-			
+
 			String titleInName="";
 			for(int a=0;a<mob.location().numAffects();a++)
 			{
@@ -206,7 +206,7 @@ public class LockSmith extends CommonSkill
 			commonTell(mob,"You can't put a lock on that.");
 			return false;
 		}
-		
+
 		Item firstWood=null;
 		int foundWood=0;
 		for(int i=0;i<mob.location().numItems();i++)
@@ -273,7 +273,7 @@ public class LockSmith extends CommonSkill
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();
-		
+
 		int profficiencyAddition=0;
 		if(workingOn.envStats().level()>mob.envStats().level())
 			profficiencyAddition=workingOn.envStats().level()-mob.envStats().level();

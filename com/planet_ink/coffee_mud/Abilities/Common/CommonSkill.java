@@ -11,15 +11,15 @@ public class CommonSkill extends StdAbility
 	public String name(){ return "Common Skill";}
 	private static final String[] triggerStrings = {"CARVE","CARPENTRY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	public int quality(){return Ability.INDIFFERENT;}
 	protected String displayText="(Doing something productive)";
 	public String displayText(){return displayText;}
-	
+
 	protected int trainsRequired(){return 0;}
 	protected int practicesRequired(){return 2;}
 	protected int practicesToPractice(){return 1;}
-	
+
 	protected Room activityRoom=null;
 	protected boolean aborted=false;
 	protected int tickUp=0;
@@ -27,7 +27,7 @@ public class CommonSkill extends StdAbility
 
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	
+
 	public Environmental newInstance()	{	return new CommonSkill();	}
 	public int classificationCode()	{	return Ability.COMMON_SKILL; }
 
@@ -49,7 +49,7 @@ public class CommonSkill extends StdAbility
 		}
 		return thisStr;
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -62,15 +62,15 @@ public class CommonSkill extends StdAbility
 			else
 			if((tickUp%4)==0)
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+".");
-			
-			tickUp++;	
+
+			tickUp++;
 		}
 		return super.tick(tickID);
 	}
 
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -79,12 +79,12 @@ public class CommonSkill extends StdAbility
 					commonEmote(mob,"<S-NAME> stops "+verb);
 				else
 					commonEmote(mob,"<S-NAME> <S-IS-ARE> done "+verb);
-				
+
 			}
 		}
 		super.unInvoke();
 	}
-	
+
 	protected static Vector loadList(StringBuffer str)
 	{
 		Vector V=new Vector();
@@ -130,7 +130,7 @@ public class CommonSkill extends StdAbility
 		}
 		return V;
 	}
-	
+
 	protected void commonTell(MOB mob, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
@@ -141,7 +141,7 @@ public class CommonSkill extends StdAbility
 		else
 			mob.tell(str);
 	}
-	
+
 	protected void commonEmote(MOB mob, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
@@ -149,14 +149,14 @@ public class CommonSkill extends StdAbility
 		else
 			mob.tell(mob,null,str);
 	}
-	
+
 	protected int lookingFor(int material, Room fromHere)
 	{
 		Vector V=new Vector();
 		V.addElement(new Integer(material));
 		return lookingFor(V,fromHere);
 	}
-	
+
 	protected int lookingFor(Vector materials, Room fromHere)
 	{
 		Vector possibilities=new Vector();
@@ -171,12 +171,12 @@ public class CommonSkill extends StdAbility
 				{possibilities.addElement(new Integer(d));}
 			}
 		}
-		if(possibilities.size()==0) 
+		if(possibilities.size()==0)
 			return -1;
-		else 
+		else
 			return ((Integer)(possibilities.elementAt(Dice.roll(1,possibilities.size(),-1)))).intValue();
 	}
-	
+
 	protected Environmental makeResource(int myResource)
 	{
 		if(myResource<0)
@@ -228,7 +228,7 @@ public class CommonSkill extends StdAbility
 					case 1:
 					case 2:
 					case 3:
-					case 4: return CMClass.getMOB("Wolf"); 
+					case 4: return CMClass.getMOB("Wolf");
 					case 5:
 					case 6:
 					case 7: return CMClass.getMOB("Buffalo");
@@ -243,7 +243,7 @@ public class CommonSkill extends StdAbility
 					case 1:
 					case 2:
 					case 3:
-					case 4: return CMClass.getMOB("Lizard"); 
+					case 4: return CMClass.getMOB("Lizard");
 					case 5:
 					case 6:
 					case 7: return CMClass.getMOB("GardenSnake");
@@ -261,15 +261,15 @@ public class CommonSkill extends StdAbility
 					case 1:
 					case 2:
 					case 3:
-					case 4: return CMClass.getMOB("Cow"); 
-					case 5: return CMClass.getMOB("Bull"); 
+					case 4: return CMClass.getMOB("Cow");
+					case 5: return CMClass.getMOB("Bull");
 					}
 					break;
 				case EnvResource.RESOURCE_FEATHERS:
 					switch(Dice.roll(1,4,0))
 					{
-					case 1: return CMClass.getMOB("WildEagle"); 
-					case 2: return CMClass.getMOB("Falcon"); 
+					case 1: return CMClass.getMOB("WildEagle");
+					case 2: return CMClass.getMOB("Falcon");
 					case 3: return CMClass.getMOB("Chicken");
 					case 4: return CMClass.getMOB("Parakeet");
 					}
@@ -326,7 +326,7 @@ public class CommonSkill extends StdAbility
 		}
 		return null;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.isInCombat())
@@ -374,7 +374,7 @@ public class CommonSkill extends StdAbility
 		activityRoom=mob.location();
 		mob.curState().adjMana(-manaConsumed,mob.maxState());
 		helpProfficiency(mob);
-		
+
 		return true;
 	}
 }

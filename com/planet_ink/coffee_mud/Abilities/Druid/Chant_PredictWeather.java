@@ -13,16 +13,16 @@ public class Chant_PredictWeather extends Chant
 	public String displayText(){return "(Predict Weather)";}
 	String lastPrediction="";
 	public Environmental newInstance(){	return new Chant_PredictWeather();}
-	
+
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			lastPrediction="";
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"Your senses are no longer sensitive to the weather.");
 	}
 	public boolean tick(int tickID)
@@ -44,7 +44,7 @@ public class Chant_PredictWeather extends Chant
 		}
 		return true;
 	}
-	
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -59,7 +59,7 @@ public class Chant_PredictWeather extends Chant
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

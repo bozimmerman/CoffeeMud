@@ -20,13 +20,13 @@ public class Spell_SummonFlyer extends Spell
 	{
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked)&&(mob!=null))
+		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
 	}
-	
+
 	public void affect(Affect msg)
 	{
 		super.affect(msg);
@@ -36,7 +36,7 @@ public class Spell_SummonFlyer extends Spell
 		&&(msg.sourceMinor()==Affect.MSG_QUIT))
 			unInvoke();
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
@@ -59,7 +59,7 @@ public class Spell_SummonFlyer extends Spell
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.curState().getMana()<mob.maxState().getMana())
@@ -70,7 +70,7 @@ public class Spell_SummonFlyer extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
@@ -95,7 +95,7 @@ public class Spell_SummonFlyer extends Spell
 	}
 	public MOB determineMonster(MOB caster, int level)
 	{
-		
+
 		MOB newMOB=(MOB)CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(11);

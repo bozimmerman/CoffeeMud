@@ -15,9 +15,9 @@ public class Spell_Infravision extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Infravision();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
-	
+
 	public boolean successfulObservation=false;
-	
+
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -25,7 +25,7 @@ public class Spell_Infravision extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"Your eyes cease to sparkle.");
 	}
 

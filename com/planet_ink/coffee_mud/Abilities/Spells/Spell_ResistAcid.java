@@ -22,7 +22,7 @@ public class Spell_ResistAcid extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your oily protection dries up.");
 
 		super.unInvoke();
@@ -35,7 +35,7 @@ public class Spell_ResistAcid extends Spell
 		affectedStats.setStat(CharStats.SAVE_ACID,affectedStats.getStat(CharStats.SAVE_ACID)+100);
 	}
 
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

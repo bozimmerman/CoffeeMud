@@ -53,7 +53,7 @@ public class Thief_Bind extends ThiefSkill
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the ropes.");
@@ -63,10 +63,10 @@ public class Thief_Bind extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		
+
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if(!Sense.isSleeping(target))
 		{
 			mob.tell(target.name()+" doesn't look willing to cooperate.");

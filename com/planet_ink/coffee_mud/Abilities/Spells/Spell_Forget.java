@@ -47,7 +47,7 @@ public class Spell_Forget extends Spell
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You start remembering things again.");
 	}
 
@@ -94,7 +94,7 @@ public class Spell_Forget extends Spell
 						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) forgetful!");
 				}
 			}
-		} 
+		}
 		if(!success)
 			return maliciousFizzle(mob,target,"<S-NAME> incant(s) confusingly at <T-NAMESELF>, but nothing happens.");
 

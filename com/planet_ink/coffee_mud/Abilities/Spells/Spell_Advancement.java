@@ -38,7 +38,7 @@ public class Spell_Advancement extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your temporary advancement has receeded.");
 	}
 

@@ -60,7 +60,7 @@ public class Prayer_ProtUndead extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your protection from undead fades.");
 	}
 

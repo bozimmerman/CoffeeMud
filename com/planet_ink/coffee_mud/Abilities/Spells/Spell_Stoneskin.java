@@ -32,7 +32,7 @@ public class Spell_Stoneskin extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your skins softens.");
 	}
 

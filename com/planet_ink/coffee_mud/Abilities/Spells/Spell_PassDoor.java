@@ -13,7 +13,7 @@ public class Spell_PassDoor extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_PassDoor();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{
 		super.affectEnvStats(affected,affectedStats);
@@ -27,14 +27,14 @@ public class Spell_PassDoor extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You are no longer translucent.");
 
 		super.unInvoke();
 
 	}
 
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 

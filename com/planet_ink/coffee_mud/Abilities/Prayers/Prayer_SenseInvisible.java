@@ -33,7 +33,7 @@ public class Prayer_SenseInvisible extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The clearness fades from your eyes.");
 	}
 

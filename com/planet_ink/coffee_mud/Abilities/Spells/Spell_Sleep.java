@@ -54,7 +54,7 @@ public class Spell_Sleep extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			mob.tell("You feel less drowsy.");
 			ExternalPlay.standIfNecessary(mob);

@@ -16,7 +16,7 @@ public class Spell_ManaBurn extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	int curMana=0;
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		adjustMana();
@@ -34,22 +34,22 @@ public class Spell_ManaBurn extends Spell
 		adjustMana();
 		return super.tick(tickID);
 	}
-	
+
 	public void adjustMana()
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(mob.curState().getMana()<curMana)
 				mob.curState().adjMana(mob.curState().getMana()-curMana,mob.maxState());
 			curMana=mob.curState().getMana();
 		}
-		
+
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -90,7 +90,7 @@ public class Spell_ManaBurn extends Spell
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
-			// what happened. 
+			// what happened.
 			String str=auto?"":"^S<S-NAME> incant(s) hotly at <T-NAMESELF>^?";
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),str);
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);

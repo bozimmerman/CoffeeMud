@@ -22,7 +22,7 @@ public class Spell_FakeSpring extends Spell
 		if(littleSpring==null)
 			return;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			Item spring=(Item)littleSpring; // protects against uninvoke loops!
 			littleSpring=null;
@@ -52,7 +52,7 @@ public class Spell_FakeSpring extends Spell
 			}
 		}
 		return super.okAffect(affect);
-	
+
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -76,7 +76,7 @@ public class Spell_FakeSpring extends Spell
 					mob.tell("There's no such thing as a '"+itemID+"'.\n\r");
 					return false;
 				}
-				
+
 				Drink W=(Drink)CMClass.getItem("GenWater");
 				W.setName(newItem.name());
 				W.setDisplayText(newItem.displayText());

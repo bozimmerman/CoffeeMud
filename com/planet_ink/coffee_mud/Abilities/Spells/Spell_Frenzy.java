@@ -40,7 +40,7 @@ public class Spell_Frenzy extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(mob.curState().getHitPoints()<=hpAdjustment)
 				mob.curState().setHitPoints(1);

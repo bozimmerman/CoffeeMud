@@ -50,7 +50,7 @@ public class Chant_CharmAnimal extends Chant
 			ExternalPlay.follow(mob,invoker,true);
 		return super.tick(tickID);
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -60,7 +60,7 @@ public class Chant_CharmAnimal extends Chant
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			mob.tell("Your free-will returns.");
 			ExternalPlay.follow(mob,null,false);

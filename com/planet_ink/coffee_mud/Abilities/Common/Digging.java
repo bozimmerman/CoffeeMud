@@ -10,7 +10,7 @@ public class Digging extends CommonSkill
 	public String name(){ return "Gem Digging";}
 	private static final String[] triggerStrings = {"DIG","DIGGING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private Item found=null;
 	private String foundShortName="";
 	private static boolean mapped=false;
@@ -19,12 +19,12 @@ public class Digging extends CommonSkill
 		super();
 		displayText="You are digging...";
 		verb="digging";
-		
+
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Digging();}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -44,7 +44,7 @@ public class Digging extends CommonSkill
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
-				
+
 			}
 		}
 		return super.tick(tickID);
@@ -52,7 +52,7 @@ public class Digging extends CommonSkill
 
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -79,8 +79,8 @@ public class Digging extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		verb="digging";

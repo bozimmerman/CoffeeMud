@@ -13,7 +13,7 @@ public class Chant_Barkskin extends Chant
 	public String displayText(){return "(Barkskin)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	public Environmental newInstance(){	return new Chant_Barkskin();}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -27,7 +27,7 @@ public class Chant_Barkskin extends Chant
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your skin returns to normal.");
 	}
 

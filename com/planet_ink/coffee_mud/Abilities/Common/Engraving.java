@@ -11,7 +11,7 @@ public class Engraving extends CommonSkill
 	public String name(){ return "Engraving";}
 	private static final String[] triggerStrings = {"ENGRAVE","ENGRAVING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private Item found=null;
 	private String writing="";
 	private static boolean mapped=false;
@@ -24,10 +24,10 @@ public class Engraving extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Engraving();	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
 			{
@@ -47,8 +47,8 @@ public class Engraving extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<2)
@@ -64,7 +64,7 @@ public class Engraving extends CommonSkill
 		}
 		else
 			commands.remove(commands.firstElement());
-		
+
 		if((((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_GLASS)
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ROCK)

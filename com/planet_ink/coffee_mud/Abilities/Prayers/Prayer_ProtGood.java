@@ -85,7 +85,7 @@ public class Prayer_ProtGood extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your protection from goodness fades.");
 	}
 

@@ -21,7 +21,7 @@ public class Prayer_Deafness extends Prayer
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		
+
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 	}
 
@@ -34,7 +34,7 @@ public class Prayer_Deafness extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your hearing returns.");
 	}
 

@@ -15,7 +15,7 @@ public class Prayer_Poison extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_Poison();}
-	
+
 	int poisonTick=3;
 
 	public boolean tick(int tickID)
@@ -26,7 +26,7 @@ public class Prayer_Poison extends Prayer
 		MOB mob=(MOB)affected;
 		if(mob==null) return false;
 		if(invoker==null) return false;
-		
+
 		if((--poisonTick)<=0)
 		{
 			poisonTick=3;
@@ -55,7 +55,7 @@ public class Prayer_Poison extends Prayer
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"The unholy poison runs its course.");
 	}
 

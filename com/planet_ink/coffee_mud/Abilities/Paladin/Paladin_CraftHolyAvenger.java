@@ -13,11 +13,11 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 	private static final String[] triggerStrings = {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Paladin_CraftHolyAvenger();}
-	
+
 	private Item building=null;
 	private Item fire=null;
 	private boolean messedUp=false;
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -32,10 +32,10 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -52,8 +52,8 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		}
 		super.unInvoke();
 	}
-	
-	
+
+
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
 		if(!super.canBeLearnedBy(teacher,student))
@@ -71,10 +71,10 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 			student.tell("You need to learn weaponsmithing before you can learn "+name()+".");
 			return false;
 		}
-			
+
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		int completion=16;
@@ -159,7 +159,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		building.setMaterial(firstWood.material());
 		building.baseEnvStats().setLevel(mob.envStats().level());
 		building.baseEnvStats().setAbility(5);
-		
+
 		int highestAttack=CMAble.qualifyingClassLevel(mob,this)/2;
 		int highestDamage=CMAble.qualifyingClassLevel(mob,this)/2;
 		Weapon w=(Weapon)building;
@@ -172,11 +172,11 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		Ability A=CMClass.getAbility("Prop_HaveZapper");
 		A.setMiscText("-CLASS +Paladin -ALIGNMENT +Good");
 		building.addNonUninvokableAffect(A);
-			
+
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();
-		
+
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<6) completion=6;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);

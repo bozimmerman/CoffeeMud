@@ -10,7 +10,7 @@ public class Embroidering extends CommonSkill
 	public String name(){ return "Embroidering";}
 	private static final String[] triggerStrings = {"EMBROIDER","EMBROIDERING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private Item found=null;
 	private String writing="";
 	private static boolean mapped=false;
@@ -26,7 +26,7 @@ public class Embroidering extends CommonSkill
 
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
 			{
@@ -46,8 +46,8 @@ public class Embroidering extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<2)
@@ -63,7 +63,7 @@ public class Embroidering extends CommonSkill
 		}
 		else
 			commands.remove(commands.firstElement());
-		
+
 		if((((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER))
 		||(!target.isGeneric()))

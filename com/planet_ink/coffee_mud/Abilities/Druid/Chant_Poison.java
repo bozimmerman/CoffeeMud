@@ -22,7 +22,7 @@ public class Chant_Poison extends Chant
 		MOB mob=(MOB)affected;
 		if(mob==null) return false;
 		if(invoker==null) return false;
-		
+
 		if((--poisonTick)<=0)
 		{
 			poisonTick=3;
@@ -51,7 +51,7 @@ public class Chant_Poison extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"The unholy poison runs its course.");
 	}
 

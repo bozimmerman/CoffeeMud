@@ -25,7 +25,7 @@ public class Spell_Flameshield extends Spell
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your flame shield disappears.");
 	}
 
@@ -39,7 +39,7 @@ public class Spell_Flameshield extends Spell
 		if(affect.source()==null) return;
 		MOB source=affect.source();
 		if(source.location()==null) return;
-		
+
 
 		if(affect.amITarget(mob))
 		{

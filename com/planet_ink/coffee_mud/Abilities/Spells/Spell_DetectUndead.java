@@ -15,7 +15,7 @@ public class Spell_DetectUndead extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_DetectUndead();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
-	
+
 	Room lastRoom=null;
 	public void unInvoke()
 	{
@@ -24,7 +24,7 @@ public class Spell_DetectUndead extends Spell
 		MOB mob=(MOB)affected;
 		lastRoom=null;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"Your senses are no longer as dark.");
 	}
 	public boolean tick(int tickID)
@@ -47,7 +47,7 @@ public class Spell_DetectUndead extends Spell
 		}
 		return true;
 	}
-	
+
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

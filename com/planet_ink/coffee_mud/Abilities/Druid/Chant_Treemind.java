@@ -20,7 +20,7 @@ public class Chant_Treemind extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your treemind fades.");
 
 		super.unInvoke();
@@ -48,7 +48,7 @@ public class Chant_Treemind extends Chant
 				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
 				   yep=true;
 			}
-			return !yep;			
+			return !yep;
 		}
 		return true;
 	}

@@ -14,7 +14,7 @@ public class Spell_IceSheet extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){ return new Spell_IceSheet();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
-	
+
 
 	public void unInvoke()
 	{
@@ -24,7 +24,7 @@ public class Spell_IceSheet extends Spell
 		if(!(affected instanceof Room))
 			return;
 		Room room=(Room)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			room.showHappens(Affect.MSG_OK_VISUAL, "The ice sheet melts.");
 		super.unInvoke();
 	}
@@ -71,7 +71,7 @@ public class Spell_IceSheet extends Spell
 		if(affected instanceof Room)
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		// the invoke method for spells receives as

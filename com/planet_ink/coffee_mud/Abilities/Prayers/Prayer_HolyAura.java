@@ -37,7 +37,7 @@ public class Prayer_HolyAura extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your holy aura fades.");
 	}
 

@@ -12,7 +12,7 @@ public class Weaponsmithing extends CommonSkill
 	public String name(){ return "Weaponsmithing";}
 	private static final String[] triggerStrings = {"WEAPONSMITH","WEAPONSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -26,7 +26,7 @@ public class Weaponsmithing extends CommonSkill
 	private static final int RCP_HANDS=10;
 	private static final int RCP_MAXRANGE=11;
 	private static final int RCP_EXTRAREQ=12;
-	
+
 	private Item building=null;
 	private Item fire=null;
 	private boolean mending=false;
@@ -39,7 +39,7 @@ public class Weaponsmithing extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Weaponsmithing();}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -54,7 +54,7 @@ public class Weaponsmithing extends CommonSkill
 		}
 		return super.tick(tickID);
 	}
-	
+
 	private static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("WEAPONSMITHING RECIPES");
@@ -68,10 +68,10 @@ public class Weaponsmithing extends CommonSkill
 		}
 		return V;
 	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -99,8 +99,8 @@ public class Weaponsmithing extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
-	
+
+
 	private int specClass(String weaponClass)
 	{
 		for(int i=0;i<Weapon.classifictionDescription.length;i++)
@@ -140,7 +140,7 @@ public class Weaponsmithing extends CommonSkill
 		if(mob.fetchAbility(specialization)==null) return false;
 		return true;
 	}
-	
+
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
 		if(!super.canBeLearnedBy(teacher,student))
@@ -164,10 +164,10 @@ public class Weaponsmithing extends CommonSkill
 			student.tell("You need to learn blacksmithing before you can learn "+name()+".");
 			return false;
 		}
-			
+
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
@@ -215,7 +215,7 @@ public class Weaponsmithing extends CommonSkill
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
-			
+
 			if((!(building instanceof Weapon))
 			||((((Weapon)building).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL))
 			{
@@ -380,12 +380,12 @@ public class Weaponsmithing extends CommonSkill
 				building.setRawLogicalAnd(true);
 			building.baseEnvStats().setAttackAdjustment(Util.s_int((String)foundRecipe.elementAt(RCP_ATTACK))+(hardness*5));
 			building.baseEnvStats().setDamage(Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+hardness);
-			
+
 			building.recoverEnvStats();
 			building.text();
 			building.recoverEnvStats();
 		}
-		
+
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<6) completion=6;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);

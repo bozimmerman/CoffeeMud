@@ -29,7 +29,7 @@ public class Chant_Shillelagh extends Chant
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(((affected!=null)&&(affected instanceof Item))
 			&&((((Item)affected).owner()!=null)

@@ -15,14 +15,14 @@ public class Spell_DetectMetal extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_DetectMetal();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
-	
+
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"Your senses are no longer as metallic.");
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -14,7 +14,7 @@ public class Chant_AnimalSpy extends Chant
 	private MOB spy=null;
 	private boolean disable=false;
 	public Environmental newInstance()	{	return new Chant_AnimalSpy();}
-	
+
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID))
@@ -30,13 +30,13 @@ public class Chant_AnimalSpy extends Chant
 		}
 		return true;
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(invoker!=null)
 			{
@@ -107,7 +107,7 @@ public class Chant_AnimalSpy extends Chant
 				unInvoke();
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 
@@ -118,7 +118,7 @@ public class Chant_AnimalSpy extends Chant
 		}
 		String mobName=Util.combine(commands,0).trim().toUpperCase();
 		MOB target=getTarget(mob,commands,givenTarget);
-		
+
 		Room newRoom=mob.location();
 		if(target!=null)
 			newRoom=target.location();

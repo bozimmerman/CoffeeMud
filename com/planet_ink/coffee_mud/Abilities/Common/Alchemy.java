@@ -12,7 +12,7 @@ public class Alchemy extends CommonSkill
 	public String name(){ return "Alchemy";}
 	private static final String[] triggerStrings = {"BREW","ALCHEMY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private boolean requiresFire=false;
 	private Item building=null;
 	private Item fire=null;
@@ -23,13 +23,13 @@ public class Alchemy extends CommonSkill
 	public Alchemy()
 	{
 		super();
-		
+
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("Mage",1,ID(),false);
 					CMAble.addCharAbilityMapping("Cleric",1,ID(),false);}
 	}
 	public Environmental newInstance(){ return new Alchemy();	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -64,7 +64,7 @@ public class Alchemy extends CommonSkill
 		}
 		return super.tick(tickID);
 	}
-	
+
 	private static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("ALCHEMY RECIPES");
@@ -78,10 +78,10 @@ public class Alchemy extends CommonSkill
 		}
 		return V;
 	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -101,7 +101,7 @@ public class Alchemy extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	private int spellLevel(MOB mob, String spell)
 	{
 		int lvl=CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),spell);
@@ -121,8 +121,8 @@ public class Alchemy extends CommonSkill
 		default: return lvl+5;
 		}
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<1)
@@ -256,7 +256,7 @@ public class Alchemy extends CommonSkill
 			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 				if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(ingrediant))
 				{ resourceType=EnvResource.RESOURCE_DATA[i][0]; break;}
-			
+
 			boolean found=false;
 			Vector V=((Container)building).getContents();
 			if(resourceType>0)
@@ -289,10 +289,10 @@ public class Alchemy extends CommonSkill
 				}
 			}
 			if(experienceToLose<10) experienceToLose=10;
-			
+
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-		
+
 			mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
@@ -303,8 +303,8 @@ public class Alchemy extends CommonSkill
 			building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
 			building.setDescription("");
 			building.recoverEnvStats();
-			building.text();			
-			
+			building.text();
+
 			int completion=CMAble.qualifyingLevel(mob,theSpell)*5;
 			if(completion<10) completion=10;
 			messedUp=!profficiencyCheck(0,auto);

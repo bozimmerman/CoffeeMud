@@ -17,7 +17,7 @@ public class Spell_WallOfFire extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_WallOfFire();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
-	
+
 	private Item theWall=null;
 	private String deathNotice="";
 
@@ -50,12 +50,12 @@ public class Spell_WallOfFire extends Spell
 		}
 		return super.tick(tickID);
 	}
-	
-	
+
+
 	public void unInvoke()
 	{
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((theWall!=null)
 			&&(invoker!=null)
@@ -97,7 +97,7 @@ public class Spell_WallOfFire extends Spell
 
 		Environmental target = mob.location();
 
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

@@ -15,18 +15,18 @@ public class Spell_DetectGold extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_DetectGold();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
-	
+
 	Room lastRoom=null;
-	
+
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			lastRoom=null;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"Your senses are no longer as golden.");
 	}
 	public String metalCheck(MOB mob, Item I, Item container, StringBuffer msg)
@@ -106,7 +106,7 @@ public class Spell_DetectGold extends Spell
 					if((M!=null)&&(M!=mob)&&(metalHere(mob,M,null).length()>0))
 					{ metalFound=true; break;}
 				}
-				
+
 				if(metalFound)
 				{
 					if(last.length()>0)
@@ -142,7 +142,7 @@ public class Spell_DetectGold extends Spell
 		}
 		return true;
 	}
-	
+
 
 	public void affect(Affect affect)
 	{

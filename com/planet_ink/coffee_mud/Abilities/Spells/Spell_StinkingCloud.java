@@ -16,7 +16,7 @@ public class Spell_StinkingCloud extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_StinkingCloud();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
-	
+
 	Room castingLocation=null;
 
 	public boolean tick(int tickID)
@@ -44,7 +44,7 @@ public class Spell_StinkingCloud extends Spell
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
@@ -65,7 +65,7 @@ public class Spell_StinkingCloud extends Spell
 		}
 		return super.okAffect(affect);
 	}
-	
+
 	public void affect(Affect affect)
 	{
 		if((affected!=null)
@@ -80,7 +80,7 @@ public class Spell_StinkingCloud extends Spell
 		}
 		super.affect(affect);
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -89,13 +89,13 @@ public class Spell_StinkingCloud extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the stinking cloud!");
 		}
 	}
-		
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -116,7 +116,7 @@ public class Spell_StinkingCloud extends Spell
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
-		{ 
+		{
 			mob.location().show(mob,null,affectType(auto),auto?"A stinking cloud of orange and green gas appears!":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{

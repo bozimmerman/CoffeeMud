@@ -10,7 +10,7 @@ public class Hunting extends CommonSkill
 	public String name(){ return "Hunting";}
 	private static final String[] triggerStrings = {"HUNT","HUNTING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	private MOB found=null;
 	private String foundShortName="";
 	private static boolean mapped=false;
@@ -23,7 +23,7 @@ public class Hunting extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Hunting();}
-	
+
 	public Room nearByRoom()
 	{
 		Vector possibilities=new Vector();
@@ -44,11 +44,11 @@ public class Hunting extends CommonSkill
 		}
 		return null;
 	}
-	
+
 	public void moveFound()
 	{
 		if(found.location()==null) return;
-		
+
 		Vector possibilities=new Vector();
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
@@ -66,7 +66,7 @@ public class Hunting extends CommonSkill
 			ExternalPlay.move(found,dir,true);
 		}
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -88,7 +88,7 @@ public class Hunting extends CommonSkill
 				if(found.location()==mob.location())
 					moveFound();
 			}
-			
+
 			if(tickUp==0)
 			{
 				if(found!=null)
@@ -110,7 +110,7 @@ public class Hunting extends CommonSkill
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
-				
+
 			}
 		}
 		return super.tick(tickID);
@@ -118,7 +118,7 @@ public class Hunting extends CommonSkill
 
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -136,8 +136,8 @@ public class Hunting extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		verb="hunting";

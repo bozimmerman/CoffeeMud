@@ -34,7 +34,7 @@ public class Spell_ChangeSex extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You feel more like yourself again.");
 	}
 

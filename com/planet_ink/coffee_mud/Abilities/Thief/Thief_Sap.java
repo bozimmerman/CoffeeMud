@@ -61,7 +61,7 @@ public class Thief_Sap extends ThiefSkill
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
 			{
@@ -88,13 +88,13 @@ public class Thief_Sap extends ThiefSkill
 				mob.tell("Not while you are fighting!");
 				return false;
 			}
-		
+
 			if(Sense.canBeSeenBy(mob,target))
 			{
 				mob.tell(target.name()+" is watching you way too closely.");
 				return false;
 			}
-		
+
 			if(mob.envStats().weight()<(target.envStats().weight()-100))
 			{
 				mob.tell(target.name()+" is way to big to knock out!");
@@ -110,9 +110,9 @@ public class Thief_Sap extends ThiefSkill
 			return false;
 
 		int levelDiff=target.envStats().level()-adjustedLevel(mob);
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=levelDiff*3;
-		else 
+		else
 			levelDiff=0;
 		// now see if it worked
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+target.adjustedArmor()));

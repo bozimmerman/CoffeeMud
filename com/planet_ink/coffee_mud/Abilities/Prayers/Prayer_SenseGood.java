@@ -33,7 +33,7 @@ public class Prayer_SenseGood extends Prayer
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The glowing blue fades from your eyes.");
 	}
 

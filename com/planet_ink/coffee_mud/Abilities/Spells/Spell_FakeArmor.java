@@ -20,7 +20,7 @@ public class Spell_FakeArmor extends Spell
 		if(notAgainThisRound) notAgainThisRound=false;
 		return super.tick(tickID);
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
@@ -37,13 +37,13 @@ public class Spell_FakeArmor extends Spell
 			((Item)affected).destroyThis();
 		}
 		return super.okAffect(affect);
-	
+
 	}
 	public void unInvoke()
 	{
 		if(myItem==null) return;
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			Item item=myItem;
 			myItem=null;
@@ -101,27 +101,27 @@ public class Spell_FakeArmor extends Spell
 				switch(choice2)
 				{
 				case 0:
-					armor.setName("a "+materialName+" helmet"); 
+					armor.setName("a "+materialName+" helmet");
 					armor.setRawProperLocationBitmap(Item.ON_HEAD);
 					break;
 				case 1:
-					armor.setName("a "+materialName+" shirt"); 
+					armor.setName("a "+materialName+" shirt");
 					armor.setRawProperLocationBitmap(Item.ON_HEAD);
 					break;
 				case 2:
-					armor.setName("a pair of "+materialName+" leggings"); 
+					armor.setName("a pair of "+materialName+" leggings");
 					armor.setRawProperLocationBitmap(Item.ON_LEGS);
 					break;
 				case 3:
-					armor.setName("a pair of "+materialName+" sleeves"); 
+					armor.setName("a pair of "+materialName+" sleeves");
 					armor.setRawProperLocationBitmap(Item.ON_ARMS);
 					break;
 				case 4:
-					armor.setName("a pair of "+materialName+" boots"); 
+					armor.setName("a pair of "+materialName+" boots");
 					armor.setRawProperLocationBitmap(Item.ON_FEET);
 					break;
 				}
-				armor.setDisplayText(armor.name()+" sits here"); 
+				armor.setDisplayText(armor.name()+" sits here");
 				armor.setDescription("looks like your size!");
 				armor.baseEnvStats().setWeight(0);
 				armor.recoverEnvStats();

@@ -14,18 +14,18 @@ public class Chant_SummonMount extends Chant
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_SummonMount();}
-	
+
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked)&&(mob!=null))
+		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
 	}
-	
+
 	public void affect(Affect msg)
 	{
 		super.affect(msg);
@@ -35,7 +35,7 @@ public class Chant_SummonMount extends Chant
 		&&(msg.sourceMinor()==Affect.MSG_QUIT))
 			unInvoke();
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
@@ -55,7 +55,7 @@ public class Chant_SummonMount extends Chant
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
@@ -116,7 +116,7 @@ public class Chant_SummonMount extends Chant
 	}
 	public MOB determineMonster(MOB caster, int level)
 	{
-		
+
 		MOB newMOB=(MOB)CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(11);

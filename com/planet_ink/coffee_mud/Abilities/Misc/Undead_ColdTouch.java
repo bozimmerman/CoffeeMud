@@ -35,7 +35,7 @@ public class Undead_ColdTouch extends StdAbility
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"The chill is lifted.");
 	}
 

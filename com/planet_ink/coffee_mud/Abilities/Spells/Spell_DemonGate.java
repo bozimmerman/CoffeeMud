@@ -36,7 +36,7 @@ public class Spell_DemonGate extends Spell
 		}
 		return super.tick(tickID);
 	}
-	
+
 	public void affect(Affect msg)
 	{
 		super.affect(msg);
@@ -46,19 +46,19 @@ public class Spell_DemonGate extends Spell
 		&&(msg.sourceMinor()==Affect.MSG_QUIT))
 			unInvoke();
 	}
-	
+
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked)&&(mob!=null))
+		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
 	}
-	
-	
+
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

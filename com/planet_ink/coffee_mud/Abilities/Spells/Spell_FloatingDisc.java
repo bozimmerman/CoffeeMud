@@ -13,7 +13,7 @@ public class Spell_FloatingDisc extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_FloatingDisc();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
-	
+
 	boolean wasntMine=false;
 
 	public void unInvoke()
@@ -29,7 +29,7 @@ public class Spell_FloatingDisc extends Spell
 		super.unInvoke();
 
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(item.amWearingAt(Item.FLOATING_NEARBY))
 			{
@@ -39,7 +39,7 @@ public class Spell_FloatingDisc extends Spell
 			if(wasntMine)
 				ExternalPlay.drop(mob,item,true);
 			wasntMine=false;
-		
+
 			item.recoverEnvStats();
 			mob.recoverMaxState();
 			mob.recoverCharStats();
@@ -57,7 +57,7 @@ public class Spell_FloatingDisc extends Spell
 			mob.tell("You cannot float "+target.name()+"!");
 			return false;
 		}
-			
+
 
 		if(mob.amWearingSomethingHere(Item.FLOATING_NEARBY))
 		{

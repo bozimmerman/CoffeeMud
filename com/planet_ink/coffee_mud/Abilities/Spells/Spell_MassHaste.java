@@ -29,7 +29,7 @@ public class Spell_MassHaste extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You begin to slow down to a normal speed.");
 	}
 

@@ -56,13 +56,13 @@ public class Spell_ReverseGravity extends Spell
 		}
 		return true;
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
 		if(affected==null)
 			return;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(affected instanceof Room)
 			{

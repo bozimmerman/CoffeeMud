@@ -30,7 +30,7 @@ public class Spell_Deafness extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your hearing returns.");
 	}
 

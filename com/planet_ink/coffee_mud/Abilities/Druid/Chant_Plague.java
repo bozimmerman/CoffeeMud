@@ -56,7 +56,7 @@ public class Chant_Plague extends Chant
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("The sores on your face clear up.");
 	}
 

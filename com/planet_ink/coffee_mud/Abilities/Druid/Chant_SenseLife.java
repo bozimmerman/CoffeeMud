@@ -19,15 +19,15 @@ public class Chant_SenseLife extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		
+
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			lastRoom=null;
 			mob.tell("Your life sensations fade.");
 		}
 	}
-	
+
 	public void messageTo(MOB mob)
 	{
 		String last="";
@@ -77,7 +77,7 @@ public class Chant_SenseLife extends Chant
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.fetchAffect(this.ID())!=null)

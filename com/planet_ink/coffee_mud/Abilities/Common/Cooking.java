@@ -11,12 +11,12 @@ public class Cooking extends CommonSkill
 	public String name(){ return "Cooking";}
 	private static final String[] triggerStrings = {"COOK","COOKING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	public static int RCP_FINALFOOD=0;
 	public static int RCP_FOODDRINK=1;
 	public static int RCP_MAININGR=2;
 	public static int RCP_MAINAMNT=3;
-	
+
 	private Container cooking=null;
 	private Item fire=null;
 	private Item finalDish=null;
@@ -35,7 +35,7 @@ public class Cooking extends CommonSkill
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Cooking();}
-	
+
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -79,10 +79,10 @@ public class Cooking extends CommonSkill
 		}
 		return V;
 	}
-	
+
 	public void unInvoke()
 	{
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -106,7 +106,7 @@ public class Cooking extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean contentsSame(Hashtable h1, Hashtable h2)
 	{
 		if(h1.size()!=h2.size()) return false;
@@ -120,7 +120,7 @@ public class Cooking extends CommonSkill
 		}
 		return true;
 	}
-	
+
 	public Hashtable potContents(Container pot)
 	{
 		Hashtable h=new Hashtable();
@@ -156,7 +156,7 @@ public class Cooking extends CommonSkill
 		return h;
 	}
 
-	
+
 	public Vector countIngrediants(Vector Vr)
 	{
 		String[] contents=new String[oldContents.size()];
@@ -168,9 +168,9 @@ public class Cooking extends CommonSkill
 			amounts[numIngrediants]=((Integer)oldContents.get(contents[numIngrediants])).intValue();
 			numIngrediants++;
 		}
-		
+
 		int amountMade=0;
-		
+
 		Vector codedList=new Vector();
 		boolean RanOutOfSomething=false;
 		boolean NotEnoughForThisRun=false;
@@ -206,7 +206,7 @@ public class Cooking extends CommonSkill
 		{
 			codedList.addElement(new Integer(-amountMade));
 			for(int i=0;i<contents.length;i++)
-				if(amounts[i]<0) 
+				if(amounts[i]<0)
 					codedList.addElement(contents[i]);
 		}
 		else
@@ -221,10 +221,10 @@ public class Cooking extends CommonSkill
 					codedList.addElement(contents[i]);
 			}
 		}
-		
+
 		return codedList;
 	}
-	
+
 	public Vector extraIngrediantsInOldContents(Vector Vr)
 	{
 		Vector extra=new Vector();
@@ -242,11 +242,11 @@ public class Cooking extends CommonSkill
 		}
 		return extra;
 	}
-	
+
 	public Vector missingIngrediantsFromOldContents(Vector Vr)
 	{
 		Vector missing=new Vector();
-		
+
 		String possiblyMissing=null;
 		boolean foundOptional=false;
 		boolean hasOptional=false;
@@ -273,7 +273,7 @@ public class Cooking extends CommonSkill
 			missing.addElement(possiblyMissing);
 		return missing;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		verb="cooking";
@@ -283,7 +283,7 @@ public class Cooking extends CommonSkill
 		finalAmount=0;
 		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
-		
+
 		if(!mob.isMine(target))
 		{
 			commonTell(mob,"You'll need to pick that up first.");
@@ -306,7 +306,7 @@ public class Cooking extends CommonSkill
 			commonTell(mob,target.name()+" is not suitable to cook in.");
 			return false;
 		}
-		
+
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I2=mob.location().fetchItem(i);
@@ -326,7 +326,7 @@ public class Cooking extends CommonSkill
 		if(duration<15) duration=15;
 		cooking=(Container)target;
 		oldContents=potContents(cooking);
-		
+
 		//***********************************************
 		//* figure out recipe
 		//***********************************************
@@ -425,7 +425,7 @@ public class Cooking extends CommonSkill
 				return false;
 			}
 		}
-		
+
 		String foodType=(String)finalRecipe.elementAt(RCP_FOODDRINK);
 		Vector contents=cooking.getContents();
 		String replaceName=((String)finalRecipe.elementAt(RCP_MAININGR));
@@ -498,13 +498,13 @@ public class Cooking extends CommonSkill
 			if(burnt)drink.setThirstQuenched(1);
 			drink.text();
 		}
-		
+
 		//***********************************************
 		//* done figuring out recipe
 		//***********************************************
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		FullMsg msg=new FullMsg(mob,cooking,null,Affect.MSG_NOISYMOVEMENT,Affect.MSG_OK_ACTION,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) cooking something in <T-NAME>.");
 		if(mob.location().okAffect(msg))
 		{

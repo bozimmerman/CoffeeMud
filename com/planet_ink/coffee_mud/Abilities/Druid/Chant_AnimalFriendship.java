@@ -32,7 +32,7 @@ public class Chant_AnimalFriendship extends Chant
 		}
 		return super.okAffect(affect);
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -41,7 +41,7 @@ public class Chant_AnimalFriendship extends Chant
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You seem less animal friendly.");
 	}
 

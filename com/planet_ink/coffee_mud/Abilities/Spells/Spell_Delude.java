@@ -23,7 +23,7 @@ public class Spell_Delude extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			mob.setAlignment(previousAlignment);
 			mob.tell("Your attitude returns to normal.");

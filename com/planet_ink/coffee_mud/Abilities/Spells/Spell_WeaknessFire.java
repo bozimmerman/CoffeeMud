@@ -33,7 +33,7 @@ public class Spell_WeaknessFire extends Spell
 		}
 		return true;
 	}
-	
+
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID)) return false;
@@ -68,7 +68,7 @@ public class Spell_WeaknessFire extends Spell
 		}
 		return true;
 	}
-	
+
 
 	public void unInvoke()
 	{
@@ -76,7 +76,7 @@ public class Spell_WeaknessFire extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your fire weakness is now gone.");
 
 		super.unInvoke();

@@ -24,7 +24,7 @@ public class Spell_ComprehendLangs extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("You no longer feel so comprehensive.");
 	}
 
@@ -80,7 +80,7 @@ public class Spell_ComprehendLangs extends Spell
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		MOB target=mob;
 		if(target==null) return false;
 		if(target.fetchAffect(ID())!=null)

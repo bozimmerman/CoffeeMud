@@ -34,7 +34,7 @@ public class Chant_HoldAnimal extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			mob.tell("You can move again!");
 			ExternalPlay.standIfNecessary(mob);

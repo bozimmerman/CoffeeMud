@@ -14,7 +14,7 @@ public class Spell_FeignDeath extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_FeignDeath();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
-	
+
 	public DeadBody Body=null;
 	public Room deathRoom=null;
 	public void unInvoke()
@@ -23,7 +23,7 @@ public class Spell_FeignDeath extends Spell
 			return;
 		MOB mob=(MOB)affected;
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell(mob,null,"Your death is no longer feigned.");
 		if((Body!=null)&&(deathRoom!=null)&&(deathRoom.isContent(Body)))
 		{
@@ -44,7 +44,7 @@ public class Spell_FeignDeath extends Spell
 				inhab.setVictim(null);
 		}
 	}
-	
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
@@ -101,7 +101,7 @@ public class Spell_FeignDeath extends Spell
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

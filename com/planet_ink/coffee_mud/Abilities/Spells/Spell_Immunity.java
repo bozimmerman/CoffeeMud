@@ -24,7 +24,7 @@ public class Spell_Immunity extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your immunity has passed.");
 
 		super.unInvoke();
@@ -67,23 +67,23 @@ public class Spell_Immunity extends Spell
 			{
 				switch(Dice.roll(1,5,0))
 				{
-				case 1: 
+				case 1:
 					immunityType=Affect.TYP_ACID;
 					immunityName="acid";
 					break;
-				case 2: 
+				case 2:
 					immunityType=Affect.TYP_FIRE;
 					immunityName="fire";
 					break;
-				case 3: 
+				case 3:
 					immunityType=Affect.TYP_GAS;
 					immunityName="gas";
 					break;
-				case 4: 
+				case 4:
 					immunityType=Affect.TYP_COLD;
 					immunityName="cold";
 					break;
-				case 5: 
+				case 5:
 					immunityType=Affect.TYP_ELECTRIC;
 					immunityName="electricity";
 					break;

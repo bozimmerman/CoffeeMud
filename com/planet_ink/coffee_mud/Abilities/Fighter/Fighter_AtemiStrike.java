@@ -17,7 +17,7 @@ public class Fighter_AtemiStrike extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Fighter_AtemiStrike();	}
 	public int classificationCode(){ return Ability.SKILL;}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -27,7 +27,7 @@ public class Fighter_AtemiStrike extends StdAbility
 
 		super.unInvoke();
 
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
 				ExternalPlay.die(invoker,mob);
@@ -46,7 +46,7 @@ public class Fighter_AtemiStrike extends StdAbility
 			mob.tell("You are too far away from your target to strike!");
 			return false;
 		}
-		
+
 		if((!auto)&&(mob.envStats().weight()<(target.envStats().weight()-100)))
 		{
 			mob.tell(target.name()+" is way to big to strike!");
@@ -67,9 +67,9 @@ public class Fighter_AtemiStrike extends StdAbility
 			return false;
 
 		int levelDiff=target.envStats().level()-adjustedLevel(mob);
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=levelDiff*20;
-		else 
+		else
 			levelDiff=0;
 		// now see if it worked
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+target.adjustedArmor()));

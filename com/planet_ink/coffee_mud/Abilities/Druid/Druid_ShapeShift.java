@@ -14,10 +14,10 @@ public class Druid_ShapeShift extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	
+
 	public Environmental newInstance(){	return new Druid_ShapeShift();}
 	public int classificationCode(){return Ability.SKILL;}
-	
+
 	private int myRaceCode=-1;
 	private Race newRace=null;
 	private String raceName="";
@@ -27,7 +27,7 @@ public class Druid_ShapeShift extends StdAbility
 			return super.displayText();
 		return "(in "+newRace.name().toLowerCase()+" form)";
 	}
-	
+
 	private static String[][] shapes={
 	{"Mouse",   "Kitten",   "Puppy",    "Robin",  "Garden Snake", "Cub",    "Grasshopper","Spider Monkey","Calf"},
 	{"Rat",     "Cat",      "Dog",      "Owl",    "Snake",        "Cub",    "Centipede",  "Chimp",        "Cow"},
@@ -42,15 +42,15 @@ public class Druid_ShapeShift extends StdAbility
 	{"WereRat","Lion",     "DireWolf","Eagle",  "Cobra",      "Bear",    "Scarab",     "Gorilla",  "Bull"},
 	{"WereBat","Manticore","WereWolf","Griffon","Naga",       "WereBear","ManScorpion","Sasquatch","Minotaur"}
 	};
-	
-	
+
+
 	public void setMiscText(String newText)
 	{
 		if(newText.length()>0)
 			myRaceCode=Util.s_int(newText);
 		super.setMiscText(newText);
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -63,7 +63,7 @@ public class Druid_ShapeShift extends StdAbility
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
 		}
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -78,7 +78,7 @@ public class Druid_ShapeShift extends StdAbility
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked)&&(mob.location()!=null))
+		if((canBeUninvoked())&&(mob.location()!=null))
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().getMyRace().name().toLowerCase()+" form.");
 	}
 
@@ -91,9 +91,9 @@ public class Druid_ShapeShift extends StdAbility
 			A.unInvoke();
 			return true;
 		}
-		
+
 		if(mob.isMonster()) return false;
-		
+
 		if(myRaceCode<0)
 		{
 			if(mob.isInCombat())
@@ -136,7 +136,7 @@ public class Druid_ShapeShift extends StdAbility
 			raceName=shapes[raceLevel][myRaceCode];
 			newRace=CMClass.getRace(races[raceLevel][myRaceCode]);
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -150,7 +150,7 @@ public class Druid_ShapeShift extends StdAbility
 				return false;
 			}
 		}
-		
+
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

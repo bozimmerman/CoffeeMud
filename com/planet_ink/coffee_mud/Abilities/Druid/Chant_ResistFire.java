@@ -20,7 +20,7 @@ public class Chant_ResistFire extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked)
+		if(canBeUninvoked())
 			mob.tell("Your cool protection warms up.");
 
 		super.unInvoke();
