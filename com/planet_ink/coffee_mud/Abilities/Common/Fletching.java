@@ -203,6 +203,7 @@ public class Fletching extends CommonSkill
 			{
 				Item I=mob.location().fetchItem(i);
 				if((I instanceof EnvResource)
+				&&(!Sense.isOnFire(I))
 				&&(I.container()==null))
 				{
 					if((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
@@ -255,8 +256,9 @@ public class Fletching extends CommonSkill
 				if((I instanceof EnvResource)
 				&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
 				&&(I.container()==null)
-				&&((--woodDestroyed)>=0)
-				&&(I.material()==firstWood.material()))
+				&&(!Sense.isOnFire(I))
+				&&(I.material()==firstWood.material())
+				&&((--woodDestroyed)>=0))
 					I.destroyThis();
 				else
 				if((firstOther!=null)&&(I==firstOther))

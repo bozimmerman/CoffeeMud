@@ -69,7 +69,7 @@ public class Weaponsmithing extends CommonSkill
 			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"weaponsmith.txt");
 			V=loadList(str);
 			if(V.size()==0)
-				Log.errOut("Weaponsmith","Recipes not found!");
+				Log.errOut("Weaponsmithing","Recipes not found!");
 			Resources.submitResource("WEAPONSMITHING RECIPES",V);
 		}
 		return V;
@@ -289,6 +289,7 @@ public class Weaponsmithing extends CommonSkill
 			{
 				Item I=mob.location().fetchItem(i);
 				if((I instanceof EnvResource)
+				&&(!Sense.isOnFire(I))
 				&&(I.container()==null))
 				{
 					if(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
@@ -311,6 +312,11 @@ public class Weaponsmithing extends CommonSkill
 				mob.tell("There is no metal here to make anything from!  You might need to put it down first.");
 				return false;
 			}
+			if(firstWood.material()==EnvResource.RESOURCE_MITHRIL)
+				woodRequired=woodRequired/2;
+			else
+			if(firstWood.material()==EnvResource.RESOURCE_ADAMANTITE)
+				woodRequired=woodRequired/3;
 			if(foundWood<woodRequired)
 			{
 				mob.tell("You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
@@ -332,9 +338,10 @@ public class Weaponsmithing extends CommonSkill
 				else
 				if((I instanceof EnvResource)
 				&&(I.container()==null)
-				&&((--woodDestroyed)>=0)
-				&&(I.material()==firstWood.material()))
-					I.destroyThis();
+				&&(!Sense.isOnFire(I))
+				&&(I.material()==firstWood.material())
+				&&((--woodDestroyed)>=0))
+				  I.destroyThis();
 			}
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
@@ -377,7 +384,7 @@ public class Weaponsmithing extends CommonSkill
 		}
 		
 		messedUp=!profficiencyCheck(0,auto);
-		if(completion<4) completion=4;
+		if(completion<6) completion=6;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(msg))
 		{

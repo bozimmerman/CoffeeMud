@@ -173,9 +173,14 @@ public class Blacksmithing extends CommonSkill
 		}
 		if(foundWood==0)
 		{
-			mob.tell("There is no sand here to make anything from!  You might need to put it down first.");
+			mob.tell("There is no metal here to make anything from!  You might need to put it down first.");
 			return false;
 		}
+		if(firstWood.material()==EnvResource.RESOURCE_MITHRIL)
+			woodRequired=woodRequired/2;
+		else
+		if(firstWood.material()==EnvResource.RESOURCE_ADAMANTITE)
+			woodRequired=woodRequired/3;
 		if(foundWood<woodRequired)
 		{
 			mob.tell("You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
@@ -189,8 +194,8 @@ public class Blacksmithing extends CommonSkill
 			Item I=mob.location().fetchItem(i);
 			if((I instanceof EnvResource)
 			&&(I.container()==null)
-			&&((--woodDestroyed)>=0)
-			&&(I.material()==firstWood.material()))
+			&&(I.material()==firstWood.material())
+			&&((--woodDestroyed)>=0))
 				I.destroyThis();
 		}
 		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));

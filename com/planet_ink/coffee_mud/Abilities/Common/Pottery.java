@@ -188,8 +188,8 @@ public class Pottery extends CommonSkill
 		{
 			Item I=mob.location().fetchItem(i);
 			if((I instanceof EnvResource)
-			&&(I.material()==EnvResource.RESOURCE_CLAY)
 			&&(I.container()==null)
+			&&(I.material()==firstWood.material())
 			&&((--woodDestroyed)>=0))
 				I.destroyThis();
 		}

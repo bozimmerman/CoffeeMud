@@ -100,6 +100,7 @@ public class CommonSkill extends StdAbility
 		Vector V2=new Vector();
 		boolean oneComma=false;
 		int start=0;
+		int longestList=0;
 		for(int i=0;i<str.length();i++)
 		{
 			if(str.charAt(i)=='\t')
@@ -114,6 +115,7 @@ public class CommonSkill extends StdAbility
 				if(oneComma)
 				{
 					V2.addElement(str.substring(start,i));
+					if(V2.size()>longestList) longestList=V2.size();
 					V.addElement(V2);
 					V2=new Vector();
 				}
@@ -125,7 +127,14 @@ public class CommonSkill extends StdAbility
 		{
 			if(oneComma)
 				V2.addElement(str.substring(start,str.length()));
+			if(V2.size()>longestList) longestList=V2.size();
 			V.addElement(V2);
+		}
+		for(int v=0;v<V.size();v++)
+		{
+			V2=(Vector)V.elementAt(v);
+			while(V2.size()<longestList)
+				V2.addElement("");
 		}
 		return V;
 	}
@@ -275,7 +284,11 @@ public class CommonSkill extends StdAbility
 			case EnvResource.MATERIAL_MITHRIL:
 			{
 				I=CMClass.getItem("GenResource");
-				name=name+" ore";
+				if((myResource!=EnvResource.RESOURCE_ADAMANTITE)
+				&&(myResource!=EnvResource.RESOURCE_BRASS)
+				&&(myResource!=EnvResource.RESOURCE_BRONZE)
+				&&(myResource!=EnvResource.RESOURCE_STEEL))
+					name=name+" ore";
 				break;
 			}
 			}

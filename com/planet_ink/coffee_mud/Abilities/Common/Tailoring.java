@@ -220,10 +220,9 @@ public class Tailoring extends CommonSkill
 			{
 				Item I=mob.location().fetchItem(i);
 				if((I instanceof EnvResource)
-				&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_CLOTH)
 				&&(I.container()==null)
-				&&((--woodDestroyed)>=0)
-				&&(I.material()==firstWood.material()))
+				&&(I.material()==firstWood.material())
+				&&((--woodDestroyed)>=0))
 					I.destroyThis();
 			}
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));

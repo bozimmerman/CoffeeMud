@@ -195,6 +195,7 @@ public class Carpentry extends CommonSkill
 				Item I=mob.location().fetchItem(i);
 				if((I instanceof EnvResource)
 				&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+				&&(!Sense.isOnFire(I))
 				&&(I.container()==null))
 				{
 					if(firstWood==null)firstWood=I;
@@ -221,8 +222,9 @@ public class Carpentry extends CommonSkill
 				if((I instanceof EnvResource)
 				&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
 				&&(I.container()==null)
-				&&((--woodDestroyed)>=0)
-				&&(I.material()==firstWood.material()))
+				&&(!Sense.isOnFire(I))
+				&&(I.material()==firstWood.material())
+				&&((--woodDestroyed)>=0))
 					I.destroyThis();
 			}
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));

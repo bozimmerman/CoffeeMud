@@ -8,7 +8,8 @@ import java.util.*;
 public class Thief_Shadow extends ThiefSkill
 {
 	public MOB shadowing=null;
-	private Vector moves=null;
+	private Room lastRoom=null;
+	private Calendar lastTogether=null;
 	public Thief_Shadow()
 	{
 		super();
@@ -73,7 +74,6 @@ public class Thief_Shadow extends ThiefSkill
 		super.affect(affect);
 		if(((affect.targetMinor()==Affect.TYP_LEAVE)
 		 ||(affect.targetMinor()==Affect.TYP_FLEE))
-		&&(moves!=null)
 		&&(stillAShadower())
 		&&(stillAShadowee())
 		&&(affect.amISource(shadowing))
@@ -84,47 +84,37 @@ public class Thief_Shadow extends ThiefSkill
 			int x=directionWent.lastIndexOf(" ");
 			if(x>=0)
 			{
-				synchronized(moves)
+				directionWent=directionWent.substring(x+1);
+				int dir=Directions.getDirectionCode(directionWent);
+				if((dir>=0)&&(affect.source().location()!=lastRoom))
 				{
-					directionWent=directionWent.substring(x+1);
-					moves.addElement(new Integer(Directions.getDirectionCode(directionWent)));
+					MOB mob=(MOB)invoker;
+					lastRoom=affect.source().location();
+					if(!mob.isMonster())
+						mob.session().enque(0,Util.parse(directionWent));
+					else
+						ExternalPlay.move(mob,dir,false);
 				}
 			}
 		}
 	}
-
+	
 	public boolean tick(int tickID)
 	{
-		if(!super.tick(tickID))
-			return false;
-		if(tickID!=Host.MOB_TICK)
-			return true;
-		if((stillAShadower())&&(stillAShadowee()))
+		if(!super.tick(tickID)) return false;
+		if(lastTogether==null) return true;
+		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))
+			lastTogether=Calendar.getInstance();
+		Calendar C=Calendar.getInstance();
+		C.add(Calendar.SECOND,-5);
+		if(C.after(lastTogether))
 		{
-			MOB mob=(MOB)invoker;
-			while((moves!=null)&&(moves.size()>0)&&(mob.location()!=shadowing.location()))
+			if((invoker!=null)&&(shadowing!=null))
 			{
-				synchronized(moves)
-				{
-					Integer move=(Integer)moves.firstElement();
-					moves.removeElement(move);
-					if((move.intValue()>=0)&&stillAShadower()&&stillAShadowee())
-					{
-						mob.tell("You shadow "+shadowing.name()+" "+Directions.getDirectionName(move.intValue())+".");
-						ExternalPlay.move(mob,move.intValue(),false);
-					}
-					else
-					{
-						moves.clear();
-						break;
-					}
-				}
+				invoker.tell("You lost "+shadowing.charStats().himher()+".");
+				unInvoke();
+				return false;
 			}
-		}
-		if(!canShadow())
-		{
-			unInvoke();
-			return false;
 		}
 		return true;
 	}
@@ -137,6 +127,8 @@ public class Thief_Shadow extends ThiefSkill
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 		}
+		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))
+			lastTogether=Calendar.getInstance();
 	}
 	
 	public void unInvoke()
@@ -148,7 +140,6 @@ public class Thief_Shadow extends ThiefSkill
 			((MOB)invoker).tell("You are no longer shadowing "+shadowing.name()+".");
 		}
 		shadowing=null;
-		moves=null;
 		super.unInvoke();
 	}
 	
@@ -202,7 +193,6 @@ public class Thief_Shadow extends ThiefSkill
 			return false;
 
 		shadowing=null;
-		moves=null;
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 
 		boolean success=profficiencyCheck(-(levelDiff*10),auto);
@@ -219,7 +209,6 @@ public class Thief_Shadow extends ThiefSkill
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				moves=new Vector();
 				shadowing=target;
 				if(beneficialAffect(mob,target,Integer.MAX_VALUE-1000))
 				{

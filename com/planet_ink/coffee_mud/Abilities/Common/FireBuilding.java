@@ -130,7 +130,7 @@ public class FireBuilding extends CommonSkill
 				break;
 			case EnvResource.MATERIAL_WOODEN:
 				completion=25-mob.envStats().level();
-				durationOfBurn=40+lighting.envStats().weight();
+				durationOfBurn=40+(lighting.envStats().weight()*2);
 				break;
 			case EnvResource.MATERIAL_VEGETATION:
 			case EnvResource.MATERIAL_FLESH:

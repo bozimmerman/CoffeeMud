@@ -187,8 +187,8 @@ public class GlassBlowing extends CommonSkill
 		{
 			Item I=mob.location().fetchItem(i);
 			if((I instanceof EnvResource)
-			&&(I.material()==EnvResource.RESOURCE_SAND)
 			&&(I.container()==null)
+			&&(I.material()==firstWood.material())
 			&&((--woodDestroyed)>=0))
 				I.destroyThis();
 		}
