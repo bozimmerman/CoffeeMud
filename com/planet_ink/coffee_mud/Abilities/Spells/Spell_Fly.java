@@ -35,7 +35,8 @@ public class Spell_Fly extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You begin to float back down to the ground.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> begin(s) to float back down.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

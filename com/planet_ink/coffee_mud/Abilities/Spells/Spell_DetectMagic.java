@@ -52,7 +52,7 @@ public class Spell_DetectMagic extends Spell
 					if(msg2==null)
 						msg2=affect.target().name()+" is affected by: "+A.name();
 					else
-						msg2+=" "+affect.target().name();
+						msg2+=" "+A.name();
 				}
 			}
 			if((msg2==null)&&(Sense.isABonusItems(affect.target())))

@@ -85,7 +85,6 @@ public class StdWeapon extends StdItem implements Weapon
 		&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
 			affect.addTrailerMsg(new FullMsg(affect.source(),this,Affect.MSG_DROP,null));
-		else
 		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&(affect.tool()==this)
 		&&(amWearingAt(Item.WIELD))
@@ -100,7 +99,7 @@ public class StdWeapon extends StdItem implements Weapon
 		{
 			int hurt=(affect.targetCode()-Affect.MASK_HURT);
 			MOB tmob=(MOB)affect.target();
-			if((hurt>(tmob.maxState().getHitPoints()/10))
+			if((hurt>(tmob.maxState().getHitPoints()/10)||(hurt>50))
 			&&(tmob.curState().getHitPoints()>hurt))
 			{
 				if((!tmob.isMonster())
@@ -124,8 +123,7 @@ public class StdWeapon extends StdItem implements Weapon
 						A.invoke(affect.source(),affect.target(),true);
 				}
 				else
-				if((hurt>50)
-				   &&((this instanceof Electronics)||(hurt>200)))
+				if((hurt>50)&&((this instanceof Electronics)||(hurt>200)))
 				{
 					switch(weaponType())
 					{

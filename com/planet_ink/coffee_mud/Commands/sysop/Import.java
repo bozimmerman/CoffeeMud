@@ -4057,6 +4057,7 @@ public class Import
 
 	public static void merge(MOB mob, Vector commands)
 	{
+		boolean noisy=false;
 		Vector placesToDo=new Vector();
 		commands.removeElementAt(0);
 		if(commands.size()==0)
@@ -4325,7 +4326,12 @@ public class Import
 		// now do the merge...
 		if(mob.session()!=null)
 			mob.session().rawPrint("Merging and saving...");
-		Log.sysOut("Import",mob.Name()+" merged '"+filename+"'.");
+		if(noisy) mob.tell("Rooms to do: "+placesToDo.size());
+		if(noisy) mob.tell("Things loaded: "+things.size());
+		if(noisy) mob.tell("On fields="+Util.toStringList(onfields));
+		if(noisy) mob.tell("Ignore fields="+Util.toStringList(ignore));
+		if(noisy) mob.tell("Change fields="+Util.toStringList(changes));
+		Log.sysOut("Import",mob.Name()+" merge '"+filename+"'.");
 		for(int r=0;r<placesToDo.size();r++)
 		{
 			Room R=(Room)placesToDo.elementAt(r);
@@ -4340,7 +4346,7 @@ public class Import
 				{
 					MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M.isEligibleMonster()))
-						if(tryMerge(mob,R,M,things,changes,onfields,ignore))
+						if(tryMerge(mob,R,M,things,changes,onfields,ignore,noisy))
 							savemobs=true;
 				}
 			}
@@ -4349,7 +4355,7 @@ public class Import
 				for(int i=0;i<R.numItems();i++)
 				{
 					Item I=R.fetchItem(i);
-					if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore)))
+					if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
 						saveitems=true;
 				}
 				for(int m=0;m<R.numInhabitants();m++)
@@ -4360,7 +4366,7 @@ public class Import
 						for(int i=0;i<M.inventorySize();i++)
 						{
 							Item I=M.fetchInventory(i);
-							if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore)))
+							if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
 								savemobs=true;
 						}
 						if(CoffeeUtensils.getShopKeeper(M)!=null)
@@ -4371,7 +4377,7 @@ public class Import
 								if(V.elementAt(i) instanceof Item)
 								{
 									Item I=(Item)V.elementAt(i);
-									if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore)))
+									if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
 										savemobs=true;
 								}
 							}
@@ -4396,7 +4402,8 @@ public class Import
 									Vector things,
 									Vector changes,
 									Vector onfields,
-									Vector ignore)
+									Vector ignore,
+									boolean noisy)
 	{
 		boolean didAnything=false;
 		Vector efields=new Vector();
@@ -4412,9 +4419,12 @@ public class Import
 		for(int v=0;v<changes.size();v++)
 			if(efields.contains(changes.elementAt(v)))
 				efields.removeElement(changes.elementAt(v));
+		if(noisy) mob.tell("AllMy-"+Util.toStringList(allMyFields));
+		if(noisy) mob.tell("efields-"+Util.toStringList(efields));
 		for(int t=0;t<things.size();t++)
 		{
 			Environmental E2=(Environmental)things.elementAt(t);
+			if(noisy) mob.tell(E.name()+"/"+E2.name()+"/"+CMClass.className(E)+"/"+CMClass.className(E2));
 			if(CMClass.className(E).equals(CMClass.className(E2)))
 			{
 				Vector fieldsToCheck=null;
@@ -4429,11 +4439,14 @@ public class Import
 					fieldsToCheck=(Vector)efields.clone();
 
 				boolean checkedOut=fieldsToCheck.size()>0;
+				if(noisy) mob.tell("fieldsToCheck-"+Util.toStringList(fieldsToCheck));
+				if(checkedOut)
 				for(int i=0;i<fieldsToCheck.size();i++)
 				{
 					String field=(String)fieldsToCheck.elementAt(i);
+					if(noisy) mob.tell(field+"/"+E.getStat(field)+"/"+E2.getStat(field)+"/"+E.getStat(field).equals(E2.getStat(field)));
 					if(!E.getStat(field).equals(E2.getStat(field)))
-					   checkedOut=false;
+					{ checkedOut=false; break;}
 				}
 				if(checkedOut)
 				{
@@ -4447,9 +4460,11 @@ public class Import
 							if(allMyFields.contains(changes.elementAt(v)))
 								fieldsToChange.addElement(changes.elementAt(v));
 					}
+					if(noisy) mob.tell("fieldsToChange-"+Util.toStringList(fieldsToChange));
 					for(int i=0;i<fieldsToChange.size();i++)
 					{
 						String field=(String)fieldsToChange.elementAt(i);
+						if(noisy) mob.tell(E.name()+" wants to change "+field+" value "+E.getStat(field)+" to "+E2.getStat(field)+"/"+(!E.getStat(field).equals(E2.getStat(field))));
 						if(!E.getStat(field).equals(E2.getStat(field)))
 						{
 							E.setStat(field,E2.getStat(field));

@@ -18,6 +18,63 @@ public class Falling extends StdAbility
 	public Environmental newInstance(){	return new Falling();}
 
 	private boolean reversed(){return profficiency()==100;}
+	
+	private boolean isWaterSurface(Room R)
+	{
+		if(R==null) return false;
+		if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+		||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			return true;
+		return false;
+	}
+	private boolean isUnderWater(Room R)
+	{
+		if(R==null) return false;
+		if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+		||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+			return true;
+		return false;
+	}
+	
+	private boolean isAirRoom(Room R)
+	{
+		if(R==null) return false;
+		if((R.domainType()==Room.DOMAIN_INDOORS_AIR)
+		||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR))
+			return true;
+		return false;
+	}
+	
+	private boolean canFallFrom(Room fromHere, int direction)
+	{
+		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS)) 
+			return false;
+		
+		Room toHere=fromHere.getRoomInDir(direction);
+		if((toHere==null)
+		||(fromHere.getExitInDir(direction)==null)
+		||(!fromHere.getExitInDir(direction).isOpen()))
+			return false;
+		if(isWaterSurface(fromHere)&&isUnderWater(toHere))
+			return false;
+		return true;
+	}
+
+	private boolean stopFalling(MOB mob)
+	{
+		if(reversed()) return true;
+		unInvoke();
+		if(isAirRoom(mob.location()))
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> stop(s) falling."+CommonStrings.msp("splat.wav",50));
+		else
+		if(isWaterSurface(mob.location())||isUnderWater(mob.location()))
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CommonStrings.msp("splat.wav",50));
+		else
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CommonStrings.msp("splat.wav",50));
+		ExternalPlay.postDamage(mob,mob,this,damageToTake,Affect.NO_EFFECT,-1,null);
+		return false;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -49,23 +106,8 @@ public class Falling extends StdAbility
 				return false;
 			}
 			else
-			if((mob.location().getRoomInDir(direction)==null)
-			||(mob.location().getExitInDir(direction)==null)
-			||(!mob.location().getExitInDir(direction).isOpen()))
-			{
-				if(reversed())
-					return true;
-				unInvoke();
-				if((mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-				||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-				||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-				||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
-					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CommonStrings.msp("splat.wav",50));
-				else
-					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CommonStrings.msp("splat.wav",50));
-				ExternalPlay.postDamage(mob,mob,this,damageToTake,Affect.NO_EFFECT,-1,null);
-				return false;
-			}
+			if(!canFallFrom(mob.location(),direction))
+				return stopFalling(mob);
 			else
 			{
 				if(mob.envStats().weight()<1)
@@ -81,25 +123,8 @@ public class Falling extends StdAbility
 				temporarilyDisable=true;
 				ExternalPlay.move(mob,direction,false,false);
 				temporarilyDisable=false;
-				if((mob.location().getRoomInDir(direction)==null)
-				||(mob.location().getExitInDir(direction)==null)
-				||(!mob.location().getExitInDir(direction).isOpen()))
-				{
-					if(reversed())
-						return true;
-					unInvoke();
-					if((mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-					||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-					||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-					||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
-						mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CommonStrings.msp("splat.wav",50));
-					else
-						mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CommonStrings.msp("splat.wav",50));
-					ExternalPlay.postDamage(mob,mob,this,damageToTake,Affect.NO_EFFECT,-1,null);
-					return false;
-				}
-				else
-					return true;
+				if(!canFallFrom(mob.location(),direction))
+					return stopFalling(mob);
 			}
 		}
 		else
@@ -122,9 +147,7 @@ public class Falling extends StdAbility
 			else
 			{
 				Room nextRoom=room.getRoomInDir(direction);
-				if((nextRoom!=null)
-				&&(room.getExitInDir(direction)!=null)
-				&&(room.getExitInDir(direction).isOpen()))
+				if(!canFallFrom(room,direction))
 				{
 					room.show(invoker,null,item,Affect.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
 					Vector V=new Vector();

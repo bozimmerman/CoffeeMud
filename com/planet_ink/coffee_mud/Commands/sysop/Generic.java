@@ -1092,7 +1092,6 @@ public class Generic
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		if(E.baseEnvStats().ability()<1) E.baseEnvStats().setAbility(11);
 		mob.tell(showNumber+". Hit Points/Level Modifier (hp=((level*level) + (random*level*THIS))) : '"+E.baseEnvStats().ability()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newLevelStr=mob.session().prompt("Enter a new value\n\r:","");
