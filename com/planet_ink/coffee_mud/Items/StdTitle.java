@@ -169,8 +169,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.source()!=null)
 		&&(landOwner().length()>0)
 		&&((msg.source().Name().equals(landOwner()))
-			||(msg.source().getLiegeID().equals(landOwner())&&msg.source().isMarriedToLiege())
-			||((msg.source().getClanID().equals(landOwner()))))
+			||(msg.source().getLiegeID().equals(landOwner())&&msg.source().isMarriedToLiege()))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(!(msg.target() instanceof Banker)))
@@ -186,6 +185,7 @@ public class StdTitle extends StdItem implements LandTitle
 			updateTitle();
 			updateLot();
 			recoverEnvStats();
+			msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");
 		}
 		else
 		if((msg.targetMinor()==CMMsg.TYP_GET)
@@ -200,13 +200,17 @@ public class StdTitle extends StdItem implements LandTitle
 				Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
 				return;
 			}
-			if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)
-			&&(msg.source().getClanID().length()>0))
-				A.setLandOwner(msg.source().getClanID());
-			else
-				A.setLandOwner(msg.source().Name());
-			updateTitle();
-			updateLot();
+			if(A.landOwner().length()==0)
+			{
+				if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)
+				&&(msg.source().getClanID().length()>0))
+					A.setLandOwner(msg.source().getClanID());
+				else
+					A.setLandOwner(msg.source().Name());
+				updateTitle();
+				updateLot();
+				msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");
+			}
 			recoverEnvStats();
 		}
 		else

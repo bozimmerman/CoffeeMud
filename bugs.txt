@@ -3,8 +3,7 @@ A little thing, but it would come in handy - importing and exporting users.  It 
 Abilility to do Archon commands in Scriptable.
 MOBReSave doesn't work? Creates dups?
 the grinder doesn't support geninstruments well (there is no field to determine instrument type)
-grinder and command line to support tattoos and educations
-Clan Property should only be transferrable to other clans....that is to say, if the owner of a property is a clan, then giving the title to another person should transfer it to that person's clan. This was the bug in guilds (had nothing to do with the guild...sorry).
+grinder to support tattoos and educations
 Every time I get pregnant.. it gets just.. undone.. and then like the next day.. I'm not pregnant if that loosing baby is supposed to happen.. then how about a message to tell me I loose it and why!
 crafting info parm
 

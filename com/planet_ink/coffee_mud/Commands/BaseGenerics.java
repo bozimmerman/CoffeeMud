@@ -1884,6 +1884,78 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
+	public static void genTattoos(MOB mob, MOB E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		String behave="NO";
+		while(behave.length()>0)
+		{
+			String behaviorstr="";
+			for(int b=0;b<E.numTattoos();b++)
+			{
+				String B=E.fetchTattoo(b);
+				if(B!=null)	behaviorstr+=B+", ";
+			}
+			if(behaviorstr.length()>0)
+				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
+			mob.tell(showNumber+". Tattoos: '"+behaviorstr+"'.");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			behave=mob.session().prompt("Enter a tattoo to add/remove\n\r:","");
+			if(behave.length()>0)
+			{
+				if(E.fetchTattoo(behave)!=null)
+				{
+					mob.tell(behave.trim().toUpperCase()+" removed.");
+					E.delTattoo(behave);
+				}
+				else
+				{
+					mob.tell(behave.trim().toUpperCase()+" added.");
+					E.addTattoo(behave);
+				}
+			}
+			else
+				mob.tell("(no change)");
+		}
+	}
+
+	public static void genEducations(MOB mob, MOB E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		String behave="NO";
+		while(behave.length()>0)
+		{
+			String behaviorstr="";
+			for(int b=0;b<E.numEducations();b++)
+			{
+				String B=E.fetchEducation(b);
+				if(B!=null)	behaviorstr+=B+", ";
+			}
+			if(behaviorstr.length()>0)
+				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
+			mob.tell(showNumber+". Educations: '"+behaviorstr+"'.");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			behave=mob.session().prompt("Enter a lesson to add/remove\n\r:","");
+			if(behave.length()>0)
+			{
+				if(E.fetchEducation(behave)!=null)
+				{
+					mob.tell(behave+" removed.");
+					E.delEducation(behave);
+				}
+				else
+				{
+					mob.tell(behave+" added.");
+					E.addEducation(behave);
+				}
+			}
+			else
+				mob.tell("(no change)");
+		}
+	}
+
 	public static void genBehaviors(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4481,6 +4553,8 @@ public class BaseGenerics extends StdCommand
 				genDeity0(mob,(Deity)me,++showNumber,showFlag);
 				genDeity7(mob,(Deity)me,++showNumber,showFlag);
 			}
+			genTattoos(mob,me,++showNumber,showFlag);
+			genEducations(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -4550,6 +4624,8 @@ public class BaseGenerics extends StdCommand
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
 			}
+			genTattoos(mob,me,++showNumber,showFlag);
+			genEducations(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -4625,6 +4701,8 @@ public class BaseGenerics extends StdCommand
 			}
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genSensesMask(mob,me.baseEnvStats(),++showNumber,showFlag);
+			genTattoos(mob,(MOB)me,++showNumber,showFlag);
+			genEducations(mob,(MOB)me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
