@@ -176,7 +176,7 @@ public class Arcanist extends Thief
 					&&(mob.fetchAbility(A.ID())==null))
 					{
 						Vector otherChoices=new Vector();
-						for(int a=0;a<mob.numAbilities();a++)
+						for(int a=0;a<mob.numLearnedAbilities();a++)
 						{
 							Ability A2=mob.fetchAbility(a);
 							if((A2!=null)

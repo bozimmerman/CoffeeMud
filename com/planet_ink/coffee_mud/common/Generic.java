@@ -210,7 +210,7 @@ public class Generic
 	private static String getGenMobAbilities(MOB M)
 	{
 		StringBuffer abilitystr=new StringBuffer("");
-		for(int b=0;b<M.numAbilities();b++)
+		for(int b=0;b<M.numLearnedAbilities();b++)
 		{
 			Ability A=M.fetchAbility(b);
 			if((A!=null)&&(!A.isBorrowed(M)))
@@ -1314,7 +1314,7 @@ public class Generic
 
 		if(E instanceof MOB)
 		{
-			while(((MOB)E).numAbilities()>0)
+			while(((MOB)E).numLearnedAbilities()>0)
 			{
 				Ability A=((MOB)E).fetchAbility(0);
 				if(A!=null)
@@ -1986,7 +1986,7 @@ public class Generic
 		case 16:
 			{
 				String extras=Generic.getExtraEnvPropertiesStr(M);
-				while(M.numAbilities()>0)
+				while(M.numLearnedAbilities()>0)
 				{
 					Ability A=M.fetchAbility(0);
 					if(A!=null)	M.delAbility(A);

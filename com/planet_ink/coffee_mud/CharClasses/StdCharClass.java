@@ -495,7 +495,7 @@ public class StdCharClass implements CharClass, Cloneable
 		grantAbilities(mob,false);
 
 		// check for autoinvoking abilities
-		for(int a=0;a<mob.numAbilities();a++)
+		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)

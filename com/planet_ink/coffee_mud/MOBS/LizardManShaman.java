@@ -87,9 +87,9 @@ public class LizardManShaman extends LizardMan
 	    Ability prayer = null;
         if(Dice.rollPercentage() < 70)
         {
-            prayer = (Ability) this.fetchAbility(Dice.roll(1,numAbilities(),-1));
+            prayer = (Ability) this.fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
             while((prayer==null)||(this.baseEnvStats().level() < prayer.baseEnvStats().level()))
-				prayer = (Ability) this.fetchAbility(Dice.roll(1,numAbilities(),-1));
+				prayer = (Ability) this.fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
         }
         else
         {

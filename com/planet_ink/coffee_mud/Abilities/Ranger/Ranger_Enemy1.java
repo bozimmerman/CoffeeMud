@@ -33,7 +33,7 @@ public class Ranger_Enemy1 extends StdAbility
 				if(!choices.contains(R.racialCategory()))
 					choices.addElement(R.racialCategory());
 			}
-			for(int a=0;a<mob.numAbilities();a++)
+			for(int a=0;a<mob.numLearnedAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
 				if((A instanceof Ranger_Enemy1)
@@ -51,7 +51,7 @@ public class Ranger_Enemy1 extends StdAbility
 			choices.remove("Unknown");
 			choices.remove(mob.charStats().getMyRace().racialCategory());
 			miscText=(String)choices.elementAt(Dice.roll(1,choices.size(),-1));
-			for(int a=0;a<mob.numAbilities();a++)
+			for(int a=0;a<mob.numLearnedAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
 				if((A!=null)&&(A.ID().equals(ID()))) 

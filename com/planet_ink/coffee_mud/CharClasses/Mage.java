@@ -325,7 +325,7 @@ public class Mage extends StdCharClass
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)))
 			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}
 		}
-		for(int a=0;a<mob.numAbilities();a++)
+		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if(grantable.contains(A.ID()))

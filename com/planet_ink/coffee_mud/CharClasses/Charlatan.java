@@ -238,7 +238,7 @@ public class Charlatan extends StdCharClass
 			if(classLevel<2) return;
 			if((classLevel%2)!=0) return;
 
-			for(int a=0;a<mob.numAbilities();a++)
+			for(int a=0;a<mob.numLearnedAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
 				if((CMAble.qualifyingLevel(mob,A)<=0)
@@ -271,14 +271,14 @@ public class Charlatan extends StdCharClass
 	public void level(MOB mob)
 	{
 		Vector V=new Vector();
-		for(int a=0;a<mob.numAbilities();a++)
+		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if(A!=null)	V.addElement(A);
 		}
 		super.level(mob);
 		Ability able=null;
-		for(int a=0;a<mob.numAbilities();a++)
+		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)

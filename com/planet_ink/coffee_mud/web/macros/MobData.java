@@ -57,7 +57,7 @@ public class MobData extends StdWebMacro
 				}
 			}
 			else
-			for(int a=0;a<E.numAbilities();a++)
+			for(int a=0;a<E.numLearnedAbilities();a++)
 			{
 				Ability Able=E.fetchAbility(a);
 				if((Able!=null)&&(!Able.isBorrowed(E)))

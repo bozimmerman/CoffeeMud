@@ -71,7 +71,7 @@ public class Archon extends StdCharClass
 			Ability A=mob.fetchAffect(a);
 			if(A!=null) alreadyAff.put(A.ID(),A);
 		}
-		for(int a=0;a<mob.numAbilities();a++)
+		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if(A!=null)

@@ -168,7 +168,7 @@ public class Druid_ShapeShift extends StdAbility
 		if((myRaceCode>=0)&&(myRaceCode<racesTaken.length))
 			racesTaken[myRaceCode]++;
 		
-		for(int a=0;a<mob.numAbilities();a++)
+		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)&&(A instanceof Druid_ShapeShift))

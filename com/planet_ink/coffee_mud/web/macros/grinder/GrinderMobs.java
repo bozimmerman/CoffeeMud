@@ -32,7 +32,7 @@ public class GrinderMobs
 
 	public static String abilities(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
-		while(E.numAbilities()>0)
+		while(E.numLearnedAbilities()>0)
 		{
 			Ability A=E.fetchAbility(0);
 			if(E.fetchAffect(A.ID())!=null)

@@ -291,9 +291,9 @@ public class Drowness extends StdBehavior
         Ability prayer = null;
         if(Dice.rollPercentage() < 70)
         {
-            prayer = mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
+            prayer = mob.fetchAbility(Dice.roll(1,mob.numLearnedAbilities(),-1));
             while((prayer==null)||(mob.baseEnvStats().level() < CMAble.lowestQualifyingLevel(prayer.ID())))
-                prayer = mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
+                prayer = mob.fetchAbility(Dice.roll(1,mob.numLearnedAbilities(),-1));
         }
         else
         {
@@ -381,9 +381,9 @@ public class Drowness extends StdBehavior
 	    Ability prayer = null;
         if(Dice.rollPercentage() < 70)
         {
-            prayer = mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
+            prayer = mob.fetchAbility(Dice.roll(1,mob.numLearnedAbilities(),-1));
             while((prayer==null)||(mob.baseEnvStats().level() < CMAble.lowestQualifyingLevel(prayer.ID())))
-                prayer = mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
+                prayer = mob.fetchAbility(Dice.roll(1,mob.numLearnedAbilities(),-1));
         }
         else
         {

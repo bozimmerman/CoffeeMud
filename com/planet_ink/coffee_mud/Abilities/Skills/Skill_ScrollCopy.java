@@ -66,7 +66,7 @@ public class Skill_ScrollCopy extends StdAbility
 		MOB T=(MOB)CMClass.getMOB("Teacher");
 		T.setName(target.name());
 		T.charStats().setStat(CharStats.GENDER,(int)'N');
-		while(T.numAbilities()>0)
+		while(T.numLearnedAbilities()>0)
 		{
 			Ability A=T.fetchAbility(0);
 			if(A!=null)

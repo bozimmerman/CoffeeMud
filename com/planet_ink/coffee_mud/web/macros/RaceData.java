@@ -139,7 +139,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("ABILITIES"))
 				{
-					for(int i=0;i<mob.numAbilities();i++)
+					for(int i=0;i<mob.numLearnedAbilities();i++)
 					{
 						Ability A=mob.fetchAbility(i);
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.LANGUAGE))
@@ -152,7 +152,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("LANGS"))
 				{
-					for(int i=0;i<mob.numAbilities();i++)
+					for(int i=0;i<mob.numLearnedAbilities();i++)
 					{
 						Ability A=mob.fetchAbility(i);
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.LANGUAGE))

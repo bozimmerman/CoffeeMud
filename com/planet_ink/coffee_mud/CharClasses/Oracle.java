@@ -147,7 +147,7 @@ public class Oracle extends Cleric
 		if((!mob.isMonster())&&(mob.charStats().getClassLevel(this)>=30))
 		{
 			int numNonQualified=0;
-			for(int a=0;a<mob.numAbilities();a++)
+			for(int a=0;a<mob.numLearnedAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
 				if(CMAble.getQualifyingLevel(ID(),A.ID())<0)
@@ -296,7 +296,7 @@ public class Oracle extends Cleric
 	public void level(MOB mob)
 	{
 		Vector V=new Vector();
-		for(int a=0;a<mob.numAbilities();a++)
+		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if(A!=null)	V.addElement(A);
@@ -305,7 +305,7 @@ public class Oracle extends Cleric
 		if((!mob.isMonster())&&(mob.charStats().getClassLevel(this)>=30))
 		{
 			Ability able=null;
-			for(int a=0;a<mob.numAbilities();a++)
+			for(int a=0;a<mob.numLearnedAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
 				if((A!=null)

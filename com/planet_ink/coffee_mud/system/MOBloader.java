@@ -725,7 +725,7 @@ public class MOBloader
 		}
 		DBUpdateFollowers(mob);
 
-		while(mob.numAbilities()>0)
+		while(mob.numLearnedAbilities()>0)
 		{
 			Ability A=mob.fetchAbility(0);
 			if(A!=null)
@@ -741,7 +741,7 @@ public class MOBloader
 		Vector V=new Vector();
 		V.addElement("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
 		HashSet H=new HashSet();
-		for(int a=0;a<mob.numAbilities();a++)
+		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability thisAbility=mob.fetchAbility(a);
 			H.add(thisAbility.ID());

@@ -2006,8 +2006,8 @@ public class Import
 				case 5: M.baseEnvStats().setWeight(2000); break;
 				}
 				// ignore the above, coffeemud does it better!
+				int numAbiles=M.numLearnedAbilities();
 				M.baseCharStats().getMyRace().startRacing(M,false);
-				int numAbiles=M.numAbilities();
 				//if(Util.isSet(off,0)) // no area killers in coffeemud
 				//if(Util.isSet(off,1)) // no circling in coffeemud
 
@@ -2066,7 +2066,7 @@ public class Import
 				if(Util.isSet(off,22))
 					M.addAbility(CMClass.getAbility("Fighter_Sweep"));
 
-				if(M.numAbilities()>numAbiles)
+				if((M.numAbilities())>numAbiles)
 					M.addBehavior(CMClass.getBehavior("CombatAbilities"));
 
 				Ability resist=CMClass.getAbility("Prop_Resistance");
@@ -2520,7 +2520,7 @@ public class Import
 				if(s.trim().length()>0)
 					returnAnError(mob,"Unknown mob special line: "+s);
 			}
-			for(int a=0;a<M.numAbilities();a++)
+			for(int a=0;a<M.numLearnedAbilities();a++)
 			{
 				Ability A=M.fetchAbility(a);
 				if(A!=null)

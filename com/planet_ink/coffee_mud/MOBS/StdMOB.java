@@ -198,7 +198,7 @@ public class StdMOB implements MOB
 					if((E.fetchInventory(ii)==I2.container())&&(ii<inventorySize()))
 					{ I2.setContainer(fetchInventory(ii)); break;}
 		}
-		for(int i=0;i<E.numAbilities();i++)
+		for(int i=0;i<E.numLearnedAbilities();i++)
 		{
 			Ability A2=E.fetchAbility(i);
 			if(A2!=null)
@@ -396,7 +396,7 @@ public class StdMOB implements MOB
 			delBehavior(fetchBehavior(0));
 		while(numAffects()>0)
 			delAffect(fetchAffect(0));
-		while(numAbilities()>0)
+		while(numLearnedAbilities()>0)
 			delAbility(fetchAbility(0));
 		while(inventorySize()>0)
 		{
@@ -482,7 +482,7 @@ public class StdMOB implements MOB
 		ExternalPlay.startTickDown(this,Host.MOB_TICK,1);
 		if(tickStatus==Tickable.STATUS_NOT)
 			tick(this,Host.MOB_TICK); // slap on the butt
-		for(int a=0;a<numAbilities();a++)
+		for(int a=0;a<numLearnedAbilities();a++)
 		{
 			Ability A=fetchAbility(a);
 			if(A!=null)
@@ -2238,7 +2238,7 @@ public class StdMOB implements MOB
 	public void addAbility(Ability to)
 	{
 		if(to==null) return;
-		for(int a=0;a<numAbilities();a++)
+		for(int a=0;a<numLearnedAbilities();a++)
 		{
 			Ability A=fetchAbility(a);
 			if((A!=null)&&(A.ID().equals(to.ID())))
@@ -2250,9 +2250,13 @@ public class StdMOB implements MOB
 	{
 		abilities.removeElement(to);
 	}
-	public int numAbilities()
+	public int numLearnedAbilities()
 	{
 		return abilities.size();
+	}
+	public int numAbilities()
+	{
+		return abilities.size()+charStats().getMyRace().racialAbilities(this).size();
 	}
 	public boolean hasAbilityEvoker(String word)
 	{
@@ -2295,7 +2299,7 @@ public class StdMOB implements MOB
 	public Ability fetchAbility(String ID)
 	{
 		Ability A=null;
-		for(int a=0;a<numAbilities();a++)
+		for(int a=0;a<numLearnedAbilities();a++)
 		{
 			A=fetchAbility(a);
 			if((A!=null)

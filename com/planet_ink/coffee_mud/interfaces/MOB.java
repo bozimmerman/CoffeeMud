@@ -199,6 +199,7 @@ public interface MOB
 	public boolean hasAbilityEvoker(String word);
 	public void addAbility(Ability to);
 	public void delAbility(Ability to);
+	public int numLearnedAbilities();
 	public int numAbilities();
 	public Ability fetchAbility(int index);
 	public Ability fetchAbility(String ID);

@@ -2010,7 +2010,7 @@ public class Generic
 		while(behave.length()>0)
 		{
 			String abilitiestr="";
-			for(int a=0;a<E.numAbilities();a++)
+			for(int a=0;a<E.numLearnedAbilities();a++)
 			{
 				Ability A=E.fetchAbility(a);
 				if((A!=null)&&(!A.isBorrowed(E)))
@@ -2028,7 +2028,7 @@ public class Generic
 				else
 				{
 					Ability chosenOne=null;
-					for(int a=0;a<E.numAbilities();a++)
+					for(int a=0;a<E.numLearnedAbilities();a++)
 					{
 						Ability A=E.fetchAbility(a);
 						if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
@@ -2046,13 +2046,7 @@ public class Generic
 						chosenOne=(Ability)CMClass.getAbility(behave);
 						if(chosenOne!=null)
 						{
-							boolean alreadyHasIt=false;
-							for(int a=0;a<E.numAbilities();a++)
-							{
-								Ability A=E.fetchAbility(a);
-								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
-									alreadyHasIt=true;
-							}
+							boolean alreadyHasIt=(E.fetchAbility(chosenOne.ID())!=null);
 							if(!alreadyHasIt)
 								mob.tell(chosenOne.ID()+" added.");
 							else

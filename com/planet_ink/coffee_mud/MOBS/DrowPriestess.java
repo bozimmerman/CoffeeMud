@@ -187,9 +187,9 @@ public class DrowPriestess extends DrowElf
 	    Ability prayer = null;
         if(Dice.rollPercentage() < 70)
         {
-            prayer = (Ability) this.fetchAbility(Dice.roll(1,numAbilities(),-1));
+            prayer = (Ability) this.fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
             while((prayer==null)||(this.baseEnvStats().level() < CMAble.lowestQualifyingLevel(prayer.ID())))
-				prayer = (Ability) this.fetchAbility(Dice.roll(1,numAbilities(),-1));
+				prayer = (Ability) this.fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
         }
         else
         {

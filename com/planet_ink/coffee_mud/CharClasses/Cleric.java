@@ -163,7 +163,7 @@ public class Cleric extends StdCharClass
 		// if he already has one, don't give another!
 		if(!mob.isMonster())
 		{
-			for(int a=0;a<mob.numAbilities();a++)
+			for(int a=0;a<mob.numLearnedAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
 				if((CMAble.getQualifyingLevel(ID(),A.ID())>0)

@@ -47,7 +47,7 @@ public class Skill_SongWrite extends StdAbility
 
 		String spellName=Util.combine(commands,0).trim();
 		Song scrollThis=null;
-		for(int a=0;a<mob.numAbilities();a++)
+		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
