@@ -20,16 +20,7 @@ public class Chant_ControlWeather extends Chant
 		if(!msg.amISource(invoker())
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-		&&((msg.tool().ID().equalsIgnoreCase("Chant_CalmWeather"))
-		   ||(msg.tool().ID().equalsIgnoreCase("Chant_CalmWeather"))
-		   ||(msg.tool().ID().equalsIgnoreCase("Chant_CalmWind"))
-		   ||(msg.tool().ID().equalsIgnoreCase("Chant_SummonCold"))
-		   ||(msg.tool().ID().equalsIgnoreCase("Chant_SummonHeat"))
-		   ||(msg.tool().ID().equalsIgnoreCase("Chant_SummonLightning"))
-		   ||(msg.tool().ID().equalsIgnoreCase("Chant_SummonRain"))
-		   ||(msg.tool().ID().equalsIgnoreCase("Chant_SummonTornado"))
-		   ||(msg.tool().ID().equalsIgnoreCase("Chant_SummonWind"))))
+		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_WEATHERAFFECTING)))
 		{
 			msg.source().tell("The weather does not heed to your call.");
 			return false;

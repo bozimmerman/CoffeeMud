@@ -11,16 +11,18 @@ public class Spell_Anchor extends Spell
 	public String name(){return "Anchor";}
 	public String displayText(){return "(Anchor)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_Anchor();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
-
-
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
+		{
+			super.unInvoke();
 			return;
+		}
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("Your anchor has been lifted.");
@@ -35,21 +37,36 @@ public class Spell_Anchor extends Spell
 		if(!super.okAffect(myHost,affect))
 			return false;
 
-		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
+		if(affected==null)	return true;
 
 		if((affect.tool()!=null)
 		&&(affect.tool() instanceof Ability)
-		&&("spell_summon;spell_gate;spell_dismissal;spell_shove;fighter_bullrush".toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))
+		&&((affected==null)
+			||((affected instanceof Item)&&(!((Item)affected).amWearingAt(Item.INVENTORY))&&(affect.amITarget(((Item)affected).owner())))
+			||((affected instanceof MOB)&&(affect.amITarget((MOB)affected))))
+		&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_MOVING)
+		   ||Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_TRANSPORTING)))
 		{
 			Room roomS=null;
 			Room roomD=null;
 			if((affect.target()!=null)&&(affect.target() instanceof MOB))
 				roomD=((MOB)affect.target()).location();
-			if((affect.source()!=null)&&(affect.source().location()!=null))
-				roomS=affect.source().location();
+			else
+			if((affect.target()!=null)&&(affect.target() instanceof Item))
+			{
+				Item I=(Item)affect.target();
+				if((I.owner()!=null)&&(I.owner() instanceof MOB))
+					roomD=((MOB)((Item)affect.target()).owner()).location();
+				else
+				if((I.owner()!=null)&&(I.owner() instanceof Room))
+					roomD=(Room)((Item)affect.target()).owner();
+			}
+			else
 			if((affect.target()!=null)&&(affect.target() instanceof Room))
 				roomD=(Room)affect.target();
+			
+			if((affect.source()!=null)&&(affect.source().location()!=null))
+				roomS=affect.source().location();
 
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
 				roomD=null;

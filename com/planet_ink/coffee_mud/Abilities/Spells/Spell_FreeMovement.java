@@ -44,21 +44,29 @@ public class Spell_FreeMovement extends Spell
 		&&(profficiencyCheck(0,false)))
 		{
 			Ability A=(Ability)affect.tool();
-			MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
-			FullMsg msg=new FullMsg(newMOB,null,null,Affect.MSG_SIT,null);
-			newMOB.recoverEnvStats();
-			try
+			if(Util.bset(A.flags(),Ability.FLAG_BINDING))
 			{
-				A.affectEnvStats(newMOB,newMOB.envStats());
-				if((!Sense.aliveAwakeMobile(newMOB,true))
-				   ||(!A.okAffect(newMOB,msg)))
-				{
-					affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
-					return false;
-				}
+				affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
+				return false;
 			}
-			catch(Exception e)
-			{}
+			else
+			{
+				MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
+				FullMsg msg=new FullMsg(newMOB,null,null,Affect.MSG_SIT,null);
+				newMOB.recoverEnvStats();
+				try
+				{
+					A.affectEnvStats(newMOB,newMOB.envStats());
+					if((!Sense.aliveAwakeMobile(newMOB,true))
+					   ||(!A.okAffect(newMOB,msg)))
+					{
+						affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
+						return false;
+					}
+				}
+				catch(Exception e)
+				{}
+			}
 		}
 		return true;
 	}

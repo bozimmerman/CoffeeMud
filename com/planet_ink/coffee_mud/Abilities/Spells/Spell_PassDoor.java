@@ -13,6 +13,7 @@ public class Spell_PassDoor extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_PassDoor();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{

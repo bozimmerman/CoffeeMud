@@ -16,6 +16,7 @@ public class Prayer_HolyWind extends Prayer
 	public int maxRange(){return 4;}
 	public boolean doneTicking=false;
 	public Environmental newInstance(){	return new Prayer_HolyWind();}
+	public long flags(){return Ability.FLAG_MOVING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

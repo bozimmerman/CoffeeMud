@@ -16,6 +16,7 @@ public class Spell_DemonGate extends Spell
 	MOB myTarget=null;
 	public Environmental newInstance(){	return new Spell_DemonGate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public long flags(){return Ability.FLAG_SUMMONING;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

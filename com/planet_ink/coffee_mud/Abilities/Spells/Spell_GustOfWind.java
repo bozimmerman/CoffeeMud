@@ -16,6 +16,7 @@ public class Spell_GustOfWind extends Spell
 	public boolean doneTicking=false;
 	public Environmental newInstance(){	return new Spell_GustOfWind();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public long flags(){return Ability.FLAG_MOVING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

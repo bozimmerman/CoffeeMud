@@ -13,6 +13,7 @@ public class Prayer_MassParalyze extends Prayer
 	public int holyQuality(){ return HOLY_EVIL;}
 	public String displayText(){ return "(Paralyzed)";}
 	public Environmental newInstance(){	return new Prayer_MassParalyze();}
+	public long flags(){return Ability.FLAG_BINDING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

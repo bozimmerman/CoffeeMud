@@ -14,6 +14,7 @@ public class Chant_VineMass extends Chant_SummonVine
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_VineMass();}
+	public long flags(){return Ability.FLAG_SUMMONING;}
 	
 	public MOB determineMonster(MOB caster, int material)
 	{

@@ -12,6 +12,7 @@ public class Spell_Dismissal extends Spell
 	public int quality(){return MALICIOUS;};
 	public Environmental newInstance(){	return new Spell_Dismissal();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_TRANSPORTING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

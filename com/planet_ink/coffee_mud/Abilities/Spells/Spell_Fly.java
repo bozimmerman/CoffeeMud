@@ -14,6 +14,7 @@ public class Spell_Fly extends Spell
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_Fly();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public long flags(){return Ability.FLAG_MOVING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

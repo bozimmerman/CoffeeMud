@@ -7,14 +7,7 @@ public class Prop_NoSummon extends Property
 	public String name(){ return "Summon Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prop_NoSummon();}
-
-	public final static String spellList=
-		(" Spell_Summon Spell_SummonEnemy Spell_SummonSteed Spell_SummonFlyer "
-		 +"Spell_SummonMonster Spell_DemonGate Chant_SummonMount "
-		 +"Chant_SummonAnimal Spell_PhantomHound ").toUpperCase();
-
-	public String text(){ return spellList; }
-
+	
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!super.okAffect(myHost,affect))
@@ -26,7 +19,7 @@ public class Prop_NoSummon extends Property
 		&&(affect.source().location()!=null)
 		&&((affect.source().location()==affected)
 		   ||(affect.source().location().getArea()==affected))
-		&&(text().toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))
+		&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_SUMMONING)))
 		{
 			affect.source().location().showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 			return false;

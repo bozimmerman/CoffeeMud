@@ -12,6 +12,7 @@ public class Poison_Ghoultouch extends Poison
 	private static final String[] triggerStrings = {"POISONGHOUL"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Ghoultouch();}
+	public long flags(){return Ability.FLAG_BINDING;}
 	
 	protected int POISON_TICKS(){return 10;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}

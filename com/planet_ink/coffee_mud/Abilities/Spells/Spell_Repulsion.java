@@ -15,6 +15,7 @@ public class Spell_Repulsion extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Repulsion();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public long flags(){return Ability.FLAG_MOVING;}
 
 	public int amountRemaining=0;
 

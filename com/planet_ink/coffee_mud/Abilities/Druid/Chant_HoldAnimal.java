@@ -14,6 +14,7 @@ public class Chant_HoldAnimal extends Chant
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Chant_HoldAnimal();}
+	public long flags(){return Ability.FLAG_BINDING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

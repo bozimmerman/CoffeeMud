@@ -14,6 +14,7 @@ public class Chant_SummonMoon extends Chant
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_SummonMoon();}
+	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
 
 	public void unInvoke()
 	{

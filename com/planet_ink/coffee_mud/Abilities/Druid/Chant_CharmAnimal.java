@@ -13,6 +13,7 @@ public class Chant_CharmAnimal extends Chant
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
+	public long flags(){return Ability.FLAG_CHARMING;}
 
 	public Environmental newInstance(){	return new Chant_CharmAnimal();}
 

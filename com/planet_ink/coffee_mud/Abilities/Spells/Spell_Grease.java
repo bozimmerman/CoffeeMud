@@ -14,6 +14,7 @@ public class Spell_Grease extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Grease();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public long flags(){return Ability.FLAG_MOVING;}
 
     public final static int SIT = 0;
     public final static int FUMBLE_WEAPON = 1;

@@ -23,6 +23,7 @@ public class Fighter_Pin extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Fighter_Pin();	}
 	public int classificationCode(){ return Ability.SKILL;}
+	public long flags(){return Ability.FLAG_BINDING;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

@@ -13,6 +13,7 @@ public class Chant_SummonHeat extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_SummonHeat();}
+	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -22,6 +22,7 @@ public class StdAbility implements Ability, Cloneable
 	protected int trainsRequired(){return 1;}
 	protected int practicesRequired(){return 0;}
 	protected int practicesToPractice(){return 1;}
+	public long flags(){return 0;}
 	protected int overrideMana(){return -1;}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_AREAS|

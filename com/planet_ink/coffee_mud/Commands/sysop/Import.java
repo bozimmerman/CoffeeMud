@@ -3109,23 +3109,20 @@ public class Import
 					if(R.fetchAffect(prop_RoomLevels.ID())==null)
 						R.addNonUninvokableAffect(prop_RoomLevels);
 				}
-				Ability restrictor=CMClass.getAbility("Prop_RestrictSpells");
+				
 				if(Util.isSet(codeBits,18))
-					restrictor.setMiscText(restrictor.text()+" Spell_Summon Spell_SummonMonster Spell_Charm Song_Friendship ");
+					R.addNonUninvokableAffect(CMClass.getAbility("Prop_NoSummon"));
 
 				if(Util.isSet(codeBits,19))
 					R.addNonUninvokableAffect(CMClass.getAbility("Prop_reqPKill"));
 
 				if(Util.isSet(codeBits,20))
-					restrictor.setMiscText(restrictor.text()+" Spell_Teleport Spell_Gate Spell_Portal ");
+					R.addNonUninvokableAffect(CMClass.getAbility("Prop_NoTeleportOut"));
 
 				// if(Util.isSet(codeBits,23)) No "dirt" in CoffeeMud, so this doesn't matter
 
 				if(Util.isSet(codeBits,24))
 					R.addNonUninvokableAffect(CMClass.getAbility("Prop_NoChannel"));
-
-				if(restrictor.text().length()>0)
-					R.addNonUninvokableAffect(restrictor);
 
 				roomV.insertElementAt(R.roomID(),0);
 				CMMap.addRoom(R);

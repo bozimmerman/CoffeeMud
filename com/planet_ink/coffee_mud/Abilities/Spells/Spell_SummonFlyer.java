@@ -15,6 +15,7 @@ public class Spell_SummonFlyer extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_SummonFlyer();	}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public long flags(){return Ability.FLAG_SUMMONING;}
 
 	public void unInvoke()
 	{

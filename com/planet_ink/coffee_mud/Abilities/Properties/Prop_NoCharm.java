@@ -8,11 +8,6 @@ public class Prop_NoCharm extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prop_NoCharm();}
 
-	public final static String spellList=
-		(" Spell_Charm Spell_Enthrall Chant_CharmAnimal ").toUpperCase();
-
-	public String text(){ return spellList; }
-
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!super.okAffect(myHost,affect))
@@ -24,7 +19,7 @@ public class Prop_NoCharm extends Property
 		&&(affect.source().location()!=null)
 		&&((affect.source().location()==affected)
 		   ||(affect.source().location().getArea()==affected))
-		&&(text().toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))
+		&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_CHARMING)))
 		{
 			affect.source().location().showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 			return false;

@@ -12,6 +12,7 @@ public class Spell_ClanHome extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){return new Spell_ClanHome();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -15,6 +15,7 @@ public class Chant_Tangle extends Chant
 	public int amountRemaining=0;
 	public Item thePlants=null;
 	public Environmental newInstance(){	return new Chant_Tangle();}
+	public long flags(){return Ability.FLAG_BINDING;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

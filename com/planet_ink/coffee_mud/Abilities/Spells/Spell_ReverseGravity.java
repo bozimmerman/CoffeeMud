@@ -15,6 +15,7 @@ public class Spell_ReverseGravity extends Spell
 	private Vector childrenAffects=new Vector();
 	public Environmental newInstance(){	return new Spell_ReverseGravity();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public long flags(){return Ability.FLAG_MOVING;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -16,6 +16,7 @@ public class Chant_WindGust extends Chant
 	public int maxRange(){return 4;}
 	public boolean doneTicking=false;
 	public Environmental newInstance(){	return new Chant_WindGust();}
+	public long flags(){return Ability.FLAG_MOVING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

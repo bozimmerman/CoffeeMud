@@ -1,2 +1,5 @@
 GAES still isn't done
+NOTRAIN - If ON, people cannot teach, train or prac with you.
+Prompt for teaching.
+test free movement spell
 

@@ -49,7 +49,9 @@ public class Chant_Root extends Chant
 			if(affect.amITarget(affected))
 			{
 				if((affect.tool()!=null)
-				&&(("spell_dismissal;spell_levitate;spell_gustofwind;spell_repulsion;chant_windgust;prayer_holywind;spell_shove;fighter_bullrush;").indexOf(affect.tool().ID().toLowerCase())>=0))
+				&&(affect.tool() instanceof Ability)
+				&&((Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_MOVING))
+					||(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_TRANSPORTING))))
 				{
 					if(!uprooted)
 					{

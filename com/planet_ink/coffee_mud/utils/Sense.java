@@ -145,13 +145,15 @@ public class Sense
 		return true;
 	}
 
-	public static boolean isBound(MOB mob)
+	public static boolean isBound(Environmental E)
 	{
-		return ((mob.fetchAffect("Skill_HandCuff")!=null)
-				||(mob.fetchAffect("Prisoner")!=null)
-				||(mob.fetchAffect("Fighter_Pin")!=null)
-				||(mob.fetchAffect("Thief_Bind")!=null));
-
+		if(E==null) return false;
+		for(int a=0;a<E.numAffects();a++)
+		{
+			Ability A=E.fetchAffect(a);
+			if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_BINDING)))
+			   return true;
+		}
 	}
 	public static boolean isOnFire(Environmental seen)
 	{
@@ -171,7 +173,6 @@ public class Sense
 	
 	public static boolean canBeSeenBy(Environmental seen , Environmental seer)
 	{
-
 		if(seer==seen) return true;
 		if(seen==null) return true;
 
@@ -184,22 +185,11 @@ public class Sense
 		if((isHidden(seen))&&(!canSeeHidden(seer)))
 		   return false;
 		
-		if(seen instanceof MOB)
-		{
-			MOB mob=(MOB)seen;
-			if((mob.location()!=null)&&(!mob.location().isInhabitant(mob)))
-				return false;
-		}
-		
 		if((seer instanceof MOB)&&(!(seen instanceof Room)))
 		{
 			MOB mob=(MOB)seer;
 			if(mob.location()!=null)
 			{
-				
-				if(!mob.location().isInhabitant(mob))
-					return false;
-				
 				if(isInDark(mob.location()))
 				{
 					if((isGlowing(seen))||(isLightSource(seer)))

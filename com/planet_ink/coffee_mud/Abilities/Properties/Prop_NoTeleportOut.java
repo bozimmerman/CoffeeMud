@@ -21,7 +21,7 @@ public class Prop_NoTeleportOut extends Property
 		&&(affect.source().location()!=null)
 		&&(affect.source().location()!=affected)
 		&&(affect.source().location().getArea()!=affected)
-		&&(text().toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))
+		&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_TRANSPORTING)))
 		{
 			affect.source().location().showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 			return false;

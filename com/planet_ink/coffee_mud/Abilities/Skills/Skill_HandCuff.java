@@ -17,6 +17,7 @@ public class Skill_HandCuff extends StdAbility
 	private static final String[] triggerStrings = {"HANDCUFF","CUFF"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
+	public long flags(){return Ability.FLAG_BINDING;}
 
 	public int amountRemaining=0;
 	public boolean oldAssist=false;

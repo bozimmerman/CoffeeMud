@@ -54,11 +54,27 @@ public interface Ability  extends Environmental
 	public static final int BENEFICIAL_SELF=4;
 	public static final int BENEFICIAL_OTHERS=5;
 	// the quality is used for more intelligent
-	// usage by mobs.  it returns one of the above
+	// usage by mobs.  it returns one of the above,
+	// and dictates how an ability is to be used
+	// by mobs
 	public int quality();
+
+	// misc_flags
+	public static final int FLAG_BINDING=1;
+	public static final int FLAG_MOVING=2;
+	public static final int FLAG_TRANSPORTING=4;
+	public static final int FLAG_WEATHERAFFECTING=8;
+	public static final int FLAG_SUMMONING=16;
+	public static final int FLAG_CHARMING=32;
+	public long flags();
+	// these are flags which deliver slightly more
+	// specific information about this ability.
+	
+	
 	// who is responsible for initiating this affect?
 	public MOB invoker();
 	public void setInvoker(MOB mob);
+	
 	// who (or what) is being affected by the abilitys use?
 	public Environmental affecting();
 	public void setAffectedOne(Environmental being);

@@ -12,6 +12,8 @@ public class Song_Flying extends Song
 	public String name(){ return "Flying";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public Environmental newInstance(){	return new Song_Flying();}
+	public long flags(){return Ability.FLAG_MOVING;}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

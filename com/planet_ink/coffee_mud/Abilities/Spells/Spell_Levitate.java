@@ -15,6 +15,7 @@ public class Spell_Levitate extends Spell
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_Levitate();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public long flags(){return Ability.FLAG_MOVING;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

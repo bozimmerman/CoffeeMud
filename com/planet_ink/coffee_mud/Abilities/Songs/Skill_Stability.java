@@ -29,7 +29,8 @@ public class Skill_Stability extends StdAbility
 		if((affect.tool()!=null)
 		&&(affect.tool() instanceof Ability)
 		&&(affect.amITarget(affected))
-		&&("spell_earthquake;spell_grease;spell_gustofwind;trap_tripline;chant_earthquake;prayer_tremor;skill_trip;spell_shove;fighter_bullrush".toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0)
+		&&(((Ability)affect.tool()).quality()==Ability.MALICIOUS)
+		&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_MOVING))
 		&&(profficiencyCheck(-40,false)))
 		{
 			Room roomS=null;

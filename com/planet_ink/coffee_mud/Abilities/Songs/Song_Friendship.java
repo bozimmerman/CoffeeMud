@@ -13,6 +13,7 @@ public class Song_Friendship extends Song
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Song_Friendship();}
 	protected boolean skipStandardSongInvoke(){return true;}
+	public long flags(){return Ability.FLAG_CHARMING;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

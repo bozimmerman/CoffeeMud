@@ -17,6 +17,7 @@ public class Spell_Shove extends Spell
 	public boolean doneTicking=false;
 	public Environmental newInstance(){	return new Spell_Shove();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public long flags(){return Ability.FLAG_MOVING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

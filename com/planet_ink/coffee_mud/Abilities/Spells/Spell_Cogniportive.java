@@ -13,6 +13,7 @@ public class Spell_Cogniportive extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_Cogniportive();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	public String establishHome(Item me)
 	{

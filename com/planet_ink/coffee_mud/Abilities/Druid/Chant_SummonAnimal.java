@@ -14,6 +14,7 @@ public class Chant_SummonAnimal extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_SummonAnimal();}
+	public long flags(){return Ability.FLAG_SUMMONING;}
 
 	public void unInvoke()
 	{

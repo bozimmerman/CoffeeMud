@@ -18,6 +18,7 @@ public class Thief_Bind extends ThiefSkill
 	private int maxRange=0;
 	public int maxRange(){return maxRange;}
 	public int minRange(){return 0;}
+	public long flags(){return Ability.FLAG_BINDING;}
 
 	public int amountRemaining=500;
 	public String ropeName="the ropes";

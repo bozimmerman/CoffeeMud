@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.utils.*;
 
 public class Prop_NoTeleport extends Property
 {
@@ -7,12 +8,6 @@ public class Prop_NoTeleport extends Property
 	public String name(){ return "Teleport INTO Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 	public Environmental newInstance(){	return new Prop_NoTeleport();}
-
-	public final static String spellList=
-		(" Spell_Gate Spell_Teleport Spell_Portal Chant_PlantPass "
-		 +" Spell_Cogniportive Prayer_Gateway").toUpperCase();
-
-	public String text(){ return spellList; }
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
@@ -25,7 +20,7 @@ public class Prop_NoTeleport extends Property
 		&&(affect.source().location()!=null)
 		&&(affect.source().location()!=affected)
 		&&(affect.source().location().getArea()!=affected)
-		&&(text().toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))
+		&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_TRANSPORTING)))
 		{
 			affect.source().location().showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 			return false;

@@ -14,6 +14,7 @@ public class Prisoner extends StdAbility
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Prisoner();}
+	public long flags(){return Ability.FLAG_BINDING;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

@@ -17,6 +17,7 @@ public class Spell_Web extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_Web();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public long flags(){return Ability.FLAG_BINDING;}
 
 	public int amountRemaining=0;
 
