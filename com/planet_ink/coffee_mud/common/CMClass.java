@@ -181,7 +181,6 @@ public class CMClass extends ClassLoader
 	}
 	public static Ability getAbility(String calledThis)
 	{
-		System.out.println("tRY: "+calledThis);
 		Ability A=(Ability)abilities.get(calledThis);
 		if(A==null)
 			A=(Ability)getGlobal(abilities,calledThis);
