@@ -27,6 +27,9 @@ public class StdArea implements Area
 
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
+	protected String author="";
+	public void setAuthorID(String authorID){author=authorID;}
+	public String getAuthorID(){return author;}
 
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
@@ -502,6 +505,8 @@ public class StdArea implements Area
 		if(s!=null) return s;
 		s=new StringBuffer("");
 		s.append(description()+"\n\r");
+		if(author.length()>0)
+			s.append("Author         : "+author+"\n\r");
 		s.append("Number of rooms: "+numberOfIDedRooms()+"\n\r");
 
 		Vector levelRanges=new Vector();

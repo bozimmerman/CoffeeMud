@@ -214,6 +214,7 @@ public class CoffeeMaker
 		    }
 		    str.append(XMLManager.convertXMLtoTag("CHILDREN",childrenstr.toString()));
 		    str.append(getExtraEnvPropertiesStr(E));
+			str.append(XMLManager.convertXMLtoTag("AUTHOR",((Area)E).getAuthorID()));
 		    return str.toString();
 		}
 		else
@@ -1308,6 +1309,7 @@ public class CoffeeMaker
 		if(E instanceof Area)
 		{
 			((Area)E).setArchivePath(XMLManager.getValFromPieces(V,"ARCHP"));
+			((Area)E).setAuthorID(XMLManager.getValFromPieces(V,"AUTHOR"));
             Vector VP=XMLManager.getRealContentsFromPieces(V,"PARENTS");
             if(VP!=null)
             {

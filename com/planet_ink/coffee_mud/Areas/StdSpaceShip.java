@@ -50,6 +50,9 @@ public class StdSpaceShip implements Area, SpaceObject
 	protected long tickStatus=Tickable.STATUS_NOT;
 	private Boolean roomSemaphore=new Boolean(true);
 	private int[] statData=null;
+	protected String author=""; // will be used for owner, I guess.
+	public void setAuthorID(String authorID){author=authorID;}
+	public String getAuthorID(){return author;}
 
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();

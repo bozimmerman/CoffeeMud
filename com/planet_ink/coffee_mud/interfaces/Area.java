@@ -28,6 +28,8 @@ public interface Area extends Environmental
 	public void setTimeObj(TimeClock obj);
 	public int climateType();
 	public void setClimateType(int newClimateType);
+	public void setAuthorID(String authorID);
+	public String getAuthorID();
 
 	public void fillInAreaRooms();
 	public void fillInAreaRoom(Room R);

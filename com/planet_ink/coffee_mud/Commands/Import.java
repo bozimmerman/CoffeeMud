@@ -221,6 +221,7 @@ public class Import extends StdCommand
 
 	private static String getAreaName(Vector V)
 	{
+		V=(Vector)V.clone();
 		// find area line first
 		String areaName="";
 		String firstLine=nextLine(V);
@@ -290,6 +291,143 @@ public class Import extends StdCommand
 		}
 		return Util.removeColors(Util.safetyFilter(areaName));
 	}
+	
+	private static String getAreaAuthor(Vector V)
+	{
+		V=(Vector)V.clone();
+		for(int v=0;v<V.size();v++)
+		{
+			String s=((String)V.elementAt(v)).trim();
+			if(s.toUpperCase().startsWith("#AUTHOR "))
+			{
+				s=s.substring(8).trim();
+				if(s.endsWith("~"))
+					s=s.substring(0,s.length()-1).trim();
+				return s;
+			}
+			else
+			if(s.toUpperCase().startsWith("BUILDERS "))
+			{
+				s=s.substring(9).trim();
+				if(s.endsWith("~"))
+					s=s.substring(0,s.length()-1).trim();
+				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
+					continue;
+				return s;
+			}
+			else
+			if((s.toUpperCase().startsWith("NAME     "))
+			&&(s.indexOf("{")>0))
+			{
+				s=s.substring(5).trim();
+				if(s.endsWith("~"))
+					s=s.substring(0,s.length()-1).trim();
+				if(Util.parse(s).size()>0)
+					s=(String)Util.parse(s).lastElement();
+				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
+					continue;
+				return s;
+			}
+			else
+			if((s.toUpperCase().startsWith("#AREA "))
+			&&(s.indexOf("{")>0))
+			{
+				s=s.substring(6).trim();
+				if(s.trim().startsWith("{"))
+				{
+					int x=s.trim().indexOf("}");
+					if(x>0) s=s.substring(x+1).trim();
+					if(s.endsWith("~"))
+						s=s.substring(0,s.length()-1).trim();
+					x=s.indexOf(" ");
+					if((x>1)
+					&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
+					&&(Util.parse(s).size()>0))
+						s=(String)Util.parse(s).lastElement();
+					else
+					if(x>1) 
+						s=s.substring(0,x).trim();
+					if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
+						continue;
+					return s;
+				}
+			}
+			else
+			if(s.trim().startsWith("O ")&&(s.trim().endsWith("~")))
+			{
+				s=s.substring(1).trim();
+				if(s.endsWith("~"))
+					s=s.substring(0,s.length()-1).trim();
+				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
+					continue;
+				return s;
+			}
+			else
+			if(s.toUpperCase().startsWith("CREDITS "))
+			{
+				s=s.substring(8).trim();
+				if(s.trim().startsWith("("))
+					continue;
+				if(s.trim().startsWith("{"))
+				{
+					int x=s.trim().indexOf("}");
+					if(x>0) s=s.substring(x+1).trim();
+				}
+				else
+				if((Util.parse(s).size()>2)
+				&&(Util.isNumber((String)Util.parse(s).elementAt(0)))
+				&&(Util.isNumber((String)Util.parse(s).elementAt(1))))
+					s=(String)Util.parse(s).elementAt(2);
+				if(s.endsWith("~"))
+					s=s.substring(0,s.length()-1).trim();
+				int x=s.indexOf(" ");
+				if(x>1) s=s.substring(0,x).trim();
+				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
+					continue;
+				return s;
+			}
+			else
+			if(s.trim().startsWith("{"))
+			{
+				int x=s.trim().indexOf("}");
+				if(x>0) s=s.substring(x+1).trim();
+				if(s.endsWith("~"))
+					s=s.substring(0,s.length()-1).trim();
+				x=s.indexOf(" ");
+				if((x>1)
+				&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
+				&&(Util.parse(s).size()>0))
+					s=(String)Util.parse(s).lastElement();
+				else
+				if(x>1) 
+					s=s.substring(0,x).trim();
+				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
+					continue;
+				return s;
+			}
+			else
+			if(s.trim().startsWith("["))
+			{
+				int x=s.trim().indexOf("]");
+				if(x>0) s=s.substring(x+1).trim();
+				if(s.endsWith("~"))
+					s=s.substring(0,s.length()-1).trim();
+				x=s.indexOf(" ");
+				if((x>1)
+				&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
+				&&(Util.parse(s).size()>0))
+					s=(String)Util.parse(s).lastElement();
+				else
+				if(x>1) 
+					s=s.substring(0,x).trim();
+				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
+					continue;
+				return s;
+			}
+		}
+		return "";
+	}
+	
 	private static final String[][] colors={
 		{((char)27)+"ash"+((char)27),"^c"},
 		{((char)27)+"black"+((char)27),"^W"},
@@ -1284,11 +1422,12 @@ public class Import extends StdCommand
 			if(s.startsWith("#"))
 			{
 				s=s.substring(1).trim();
-				if(s.startsWith("AREA"))
+				if((s.startsWith("AREA"))
+				||(s.startsWith("AUTHOR")))
 				{
 					wasUsingThisOne=null;
 					if((s.indexOf("~")>=0)
-					&&(s.startsWith("AREA ")))
+					&&(s.startsWith("AREA ")||s.startsWith("AUTHOR ")))
 						okString=true;
 					useThisOne=areaData;
 				}
@@ -1310,7 +1449,6 @@ public class Import extends StdCommand
 				if((s.startsWith("OLIMITS"))
 				||(s.startsWith("OMPROGS"))
 				||(s.startsWith("ECONOMY"))
-				||(s.startsWith("AUTHOR"))
 				||(s.startsWith("RANGES"))
 				||(s.startsWith("CLIMATE"))
 				||(s.startsWith("RESETMSG"))
@@ -4119,6 +4257,7 @@ public class Import extends StdCommand
 			}
 		}
 		String areaName=getAreaName(areaData);
+		String areaAuthor=getAreaAuthor(areaData);
 		if((areaName==null)||((areaName!=null)&&(areaName.length()==0)))
 		{
 			if(!didSocials)
@@ -4183,10 +4322,14 @@ public class Import extends StdCommand
 
 				Area A=CMMap.getArea(areaName);
 				if(A==null)
+				{
 					A=CMClass.DBEngine().DBCreateArea(areaName,"StdArea");
+					A.setAuthorID(areaAuthor);
+					CMClass.DBEngine().DBUpdateArea(areaName,A);
+				}
 				else
 					A.toggleMobility(false);
-
+				
 				Room R=CMClass.getLocale("StdRoom");
 				String plainRoomID=eatNextLine(roomV);
 				R.setRoomID(plainRoomID);
