@@ -7,5 +7,4 @@ The programmer's guide still shows the playerSelectable method btw.
 Christening Prayer, Chant Bestow Name, pregnancy change, domesticate name change
 Add Prop_HaveDmgAbsorb
 Finish Scripting doc
-do new security system
 mutable body parts, with ability to grant powers
