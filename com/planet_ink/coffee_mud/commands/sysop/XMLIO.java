@@ -533,13 +533,7 @@ public class XMLIO
 
 			Area newArea=CMMap.getArea(newAreaStr);
 			if(newArea==null)
-			{
-				Resources.removeResource("areasList");
-				newArea=(Area)CMClass.getAreaType("StdArea").copyOf();
-				newArea.setName(newAreaStr);
-				CMMap.AREAS.addElement(newArea);
-// *** BLAH BLAH fix area creation				
-			}
+				newArea=ExternalPlay.DBCreateArea(newAreaStr,"StdArea");
 			
 			boolean isNewRoom=false;
 			if(newID.equalsIgnoreCase("NEW"))
@@ -551,7 +545,7 @@ public class XMLIO
 				room.setID(myRooms.getOpenRoomID(newArea.name()));
 				room.setArea(newArea);
 				newID=room.ID();
-				ExternalPlay.DBCreate(room,newRoomClass);
+				ExternalPlay.DBCreateRoom(room,newRoomClass);
 				CMMap.map.addElement(room);
 				response=newID;
 				Log.sysOut("ROOMXML",mob.name()+" created room "+room.ID()+".");

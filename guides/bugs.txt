@@ -2,7 +2,9 @@ have the tick confirm someones victim -- fighting the wolf for all of zaras pets
  (related to bug above) when they fight someone else, it says they are fighting him as their description, but then they revert to the peaceful description of fighting the wolf
 Put a limit on followers based on charisma, enforce in shopkeeper
 areas -- fix looping through areas
-area -- search for stdarea and fix all creations
+areas -- make sure generic has the same swoop at area that it has at room
+areas -- add help stuff
+
 
 
 

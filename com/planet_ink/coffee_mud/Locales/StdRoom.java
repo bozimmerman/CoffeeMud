@@ -14,7 +14,7 @@ public class StdRoom
 	protected String miscText="";
 	protected String description="";
 	private String objectID=myID;
-	protected Area myArea=null;
+	protected String myAreaID="";
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
 	public Exit[] exits=new Exit[Directions.NUM_DIRECTIONS];
@@ -116,17 +116,20 @@ public class StdRoom
 		if(newMiscText.trim().length()>0)
 			Generic.setPropertiesStr(this,newMiscText,true);
 	}
-	public Area getArea()
-	{
-		return myArea;
-	}
 	public void setID(String newID)
 	{
 		myID=newID;
 	}
+	public Area getArea()
+	{
+		return CMMap.getArea(myAreaID);
+	}
 	public void setArea(Area newArea)
 	{
-		myArea=newArea;
+		if(newArea==null)
+			myAreaID="";
+		else
+			myAreaID=newArea.name();
 	}
 
 	protected void giveASky(Room room)
@@ -440,7 +443,7 @@ public class StdRoom
 		StringBuffer Say=new StringBuffer("");
 		if(mob.readSysopMsgs())
 		{
-			Say.append("^BArea  :^N("+myArea.name()+")"+"\n\r");
+			Say.append("^BArea  :^N("+myAreaID+")"+"\n\r");
 			Say.append("^BLocale:^N("+CMClass.className(this)+")"+"\n\r");
 			Say.append("^H("+ID()+")^N ");
 		}

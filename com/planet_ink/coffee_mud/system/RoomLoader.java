@@ -16,6 +16,21 @@ public class RoomLoader
 			ResultSet R=D.query("SELECT * FROM CMAREA");
 			while(R.next())
 			{
+				String areaName=DBConnections.getRes(R,"CMAREA");
+				String areaType=DBConnections.getRes(R,"CMTYPE");
+				Area A=CMClass.getAreaType(areaType);
+				if(A==null) A=CMClass.getAreaType("StdArea");
+				if(A==null)
+				{
+					Log.errOut("Could not create area: "+areaName);
+					return;
+				}
+				A.setName(areaName);
+				areas.addElement(A);
+				A.setClimateType((int)DBConnections.getLongRes(R,"CMCLIM"));
+				A.setSubOpList(DBConnections.getRes(R,"CMSUBS"));
+				A.setDescription(DBConnections.getRes(R,"CMDESC"));
+				A.setMiscText(DBConnections.getRes(R,"CMROTX"));
 			}
 			DBConnector.DBDone(D);
 		}
@@ -26,6 +41,7 @@ public class RoomLoader
 			return;
 		}
 		
+		Hashtable newAreasToCreate=new Hashtable();
 		try
 		{
 			D=DBConnector.DBFetch();
@@ -46,7 +62,8 @@ public class RoomLoader
 					{
 						myArea=(Area)CMClass.getAreaType("StdArea").copyOf();
 						myArea.setName(areaName);
-						CMMap.AREAS.addElement(myArea);
+						if(!newAreasToCreate.containsKey(areaName))
+							newAreasToCreate.put(areaName,areaName);
 					}
 					newRoom.setArea(myArea);
 					newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
@@ -63,6 +80,15 @@ public class RoomLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
+		
+		// handle stray areas
+		for(Enumeration e=newAreasToCreate.elements();e.hasMoreElements();)
+		{
+			String areaName=(String)e.nextElement();
+			Log.sysOut("Area","Creating unhandled area: "+areaName);
+			DBCreate(areaName,"StdArea");
+		}
+		
 		// now grab the exits
 		try
 		{
@@ -454,7 +480,96 @@ public class RoomLoader
 		}
 	}
 
-
+	public static Area DBCreate(String areaName, String areaType)
+	{
+		Area A=CMClass.getAreaType(areaType);
+		if(A==null) A=CMClass.getAreaType("StdArea");
+		if((A==null)||(areaName.length()==0)) return null;
+		Resources.removeResource("areasList");
+		A=(Area)A.copyOf();
+		A.setName(areaName);
+		CMMap.AREAS.addElement(A);
+		DBConnection D=null;
+		String str=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			str="INSERT INTO CMAREA ("
+			+"CMAREA,"
+			+"CMTYPE,"
+			+"CMCLIM,"
+			+"CMSUBS,"
+			+"CMDESC,"
+			+"CMROTX"
+			+") values ("
+			+"'"+A.name()+"',"
+			+"'"+CMClass.className(A)+"',"
+			+""+A.climateType()+","
+			+"'"+A.getSubOpList()+"',"
+			+"'"+A.description()+" ',"
+			+"'"+A.text()+" ')";
+			D.update(str);
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Area",str);
+			Log.errOut("Area",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+		return A;
+	}
+	
+	public static void DBUpdate(Area A)
+	{
+		DBConnection D=null;
+		String str=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			str="UPDATE CMAREA SET "
+				+"CMTYPE='"+CMClass.className(A)+"',"
+				+"CMCLIM="+A.climateType()+","
+				+"CMSUBS='"+A.getSubOpList()+"',"
+				+"CMDESC='"+A.description()+" ',"
+				+"CMROTX='"+A.text()+" '"
+				+"WHERE CMAREA='"+A.name()+"'";
+			D.update(str);
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Area",str);
+			Log.errOut("Area",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+			return;
+		}
+	}
+	
+	public static void DBDelete(Area A)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			D.update("DELETE FROM CMAREA WHERE CMAREA='"+A.name()+"'");
+			if(DBConnector.DBConfirmDeletions)
+			{
+				ResultSet R=D.query("SELECT * FROM CMAREA WHERE CMAREA='"+A.name()+"'");
+				if((R!=null)&&(R.next()))
+					Log.errOut("DBDeleteArea","Delete Failed.");
+			}
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+			return;
+		}
+	}
+	
+	
 	public static void DBCreate(Room room, String LocaleID)
 	{
 		if(room.ID().length()==0) return;

@@ -181,17 +181,30 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateMOBs(room);
 	}
-	public static void DBCreate(Room room, String LocaleID)
+	public static void DBCreateRoom(Room room, String LocaleID)
 	{
-		if(sysPlayer!=null) sysPlayer.DBCreate(room,LocaleID);
+		if(sysPlayer!=null) sysPlayer.DBCreateRoom(room,LocaleID);
+	}
+	public static Area DBCreateArea(String areaName, String areaType)
+	{
+		if(sysPlayer!=null) return sysPlayer.DBCreateArea(areaName,areaType);
+		return null;
+	}
+	public static void DBDeleteArea(Area A)
+	{
+		if(sysPlayer!=null) sysPlayer.DBDeleteArea(A);
+	}
+	public static void DBUpdateArea(Area A)
+	{
+		if(sysPlayer!=null) sysPlayer.DBUpdateArea(A);
 	}
 	public static void DBUpdateRoom(Room room)
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateRoom(room);
 	}
-	public static void DBUpdate(MOB mob)
+	public static void DBUpdateMOB(MOB mob)
 	{
-		if(sysPlayer!=null) sysPlayer.DBUpdate(mob);
+		if(sysPlayer!=null) sysPlayer.DBUpdateMOB(mob);
 	}
 	public static void DBUpdateItems(Room room)
 	{
@@ -201,13 +214,13 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBReCreate(room,oldID);
 	}
-	public static void DBDelete(Room room)
+	public static void DBDeleteRoom(Room room)
 	{
-		if(sysPlayer!=null) sysPlayer.DBDelete(room);
+		if(sysPlayer!=null) sysPlayer.DBDeleteRoom(room);
 	}
-	public static void DBRead(MOB mob)
+	public static void DBReadMOB(MOB mob)
 	{
-		if(sysPlayer!=null) sysPlayer.DBRead(mob);
+		if(sysPlayer!=null) sysPlayer.DBReadMOB(mob);
 	}
 	public static void listUsers(MOB mob)
 	{
@@ -217,9 +230,9 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBReadFollowers(mob);
 	}
-	public static void DBDelete(MOB mob)
+	public static void DBDeleteMOB(MOB mob)
 	{
-		if(sysPlayer!=null) sysPlayer.DBDelete(mob);
+		if(sysPlayer!=null) sysPlayer.DBDeleteMOB(mob);
 	}
 	public static void DBCreateCharacter(MOB mob)
 	{

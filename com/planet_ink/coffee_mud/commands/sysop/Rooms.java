@@ -91,7 +91,7 @@ public class Rooms
 			thisRoom.setID(getOpenRoomID(mob.location().getArea().name()));
 			thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.ID());
 			thisRoom.setDescription("");
-			ExternalPlay.DBCreate(thisRoom,Locale);
+			ExternalPlay.DBCreateRoom(thisRoom,Locale);
 			CMMap.map.addElement(thisRoom);
 		}
 
@@ -180,11 +180,20 @@ public class Rooms
 				{
 					if(mob.session().confirm("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '"+restStr+"'.  Are you SURE (y/N)?","N"))
 					{
-						
-						Resources.removeResource("areasList");
-						A=(Area)CMClass.getAreaType("StdArea").copyOf();
-						A.setName(restStr);
-						CMMap.AREAS.addElement(A);
+						String areaType="";
+						int tries=0;
+						while((areaType.length()==0)&&((++tries)<10))
+						{
+							areaType=mob.session().prompt("Enter an area type to create (default=StdArea): ","StdArea");
+							if(CMClass.getAreaType(areaType)==null)
+							{
+								mob.session().println("Invalid area type! Valid ones are:");
+								mob.session().println(new Lister().reallyList(CMClass.areaTypes,-1,null).toString());
+								areaType="";
+							}
+						}
+						if(areaType.length()==0) areaType="StdArea";
+						A=ExternalPlay.DBCreateArea(restStr,areaType);
 						mob.location().setArea(A);
 						CMMap.map.remove(mob.location());
 						String oldID=mob.location().ID();
@@ -313,7 +322,7 @@ public class Rooms
 		Resources.removeResource("areasList");
 		if(deadRoom instanceof GridLocale)
 			((GridLocale)deadRoom).clearGrid();
-		ExternalPlay.DBDelete(deadRoom);
+		ExternalPlay.DBDeleteRoom(deadRoom);
 	}
 
 	public void destroy(MOB mob, Vector commands)

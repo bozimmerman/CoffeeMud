@@ -101,9 +101,9 @@ public class FrontDoor
 				}
 				else
 				{
-					ExternalPlay.DBRead(mob);
+					ExternalPlay.DBReadMOB(mob);
 					mob.setUserInfo(mob.ID(),password,Calendar.getInstance());
-					ExternalPlay.DBUpdate(mob);
+					ExternalPlay.DBUpdateMOB(mob);
 					if(mob.baseCharStats()!=null)
 						if(mob.baseCharStats().getMyClass()!=null)
 							mob.baseCharStats().getMyClass().logon(mob);

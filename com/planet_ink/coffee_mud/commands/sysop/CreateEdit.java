@@ -164,7 +164,7 @@ public class CreateEdit
 				Session session=(Session)Sessions.elementAt(s);
 				if(session.mob()!=null)
 				{
-					ExternalPlay.DBUpdate(session.mob());
+					ExternalPlay.DBUpdateMOB(session.mob());
 					ExternalPlay.DBUpdateFollowers(session.mob());
 				}
 			}

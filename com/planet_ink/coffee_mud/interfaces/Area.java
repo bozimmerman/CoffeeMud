@@ -5,10 +5,13 @@ public interface Area extends Environmental
 {
 	public int weatherType(Room room);
 	public int climateType();
+	public void setClimateType(int newClimateType);
 	
-	public Vector getSubOps();
 	public void addSubOp(String username);
 	public void delSubOp(String username);
+	public boolean amISubOp(String username);
+	public String getSubOpList();
+	public void setSubOpList(String list);
 	
 	public final static int WEATHER_CLEAR=0;
 	public final static int WEATHER_CLOUDY=1;

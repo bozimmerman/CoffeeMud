@@ -68,7 +68,7 @@ public class Generic
 					if(mob2.getStartRoom()==R)
 					{
 						mob2.setStartRoom(newRoom);
-						ExternalPlay.DBUpdate(mob2);
+						ExternalPlay.DBUpdateMOB(mob2);
 					}
 				}
 				newRoom.setID(R.ID());

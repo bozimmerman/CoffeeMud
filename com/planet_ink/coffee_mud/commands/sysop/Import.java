@@ -2323,13 +2323,7 @@ public class Import
 
 				Area A=CMMap.getArea(areaName);
 				if(A==null)
-				{
-					Resources.removeResource("areasList");
-					A=(Area)CMClass.getAreaType("StdArea").copyOf();
-					A.setName(areaName);
-					CMMap.AREAS.addElement(A);
-// *** BLAH CREATE THE DAMN AREA HERE!!!
-				}
+					A=ExternalPlay.DBCreateArea(areaName,"StdArea");
 				
 				Room R=CMClass.getLocale("StdRoom");
 				R.setID(eatNextLine(roomV));
@@ -2996,7 +2990,7 @@ public class Import
 			for(int r=0;r<newRooms.size();r++)
 			{
 				Room saveRoom=(Room)newRooms.elementAt(r);
-				ExternalPlay.DBCreate(saveRoom,CMClass.className(saveRoom));
+				ExternalPlay.DBCreateRoom(saveRoom,CMClass.className(saveRoom));
 				ExternalPlay.DBUpdateExits(saveRoom);
 				myRooms.clearDebriAndRestart(saveRoom,0);
 				saveRoom.recoverRoomStats();

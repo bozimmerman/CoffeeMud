@@ -51,7 +51,7 @@ public class Mobs
 		if(mob.session().confirm("This will complete OBLITERATE the user '"+deadMOB.ID()+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
 			deadMOB.destroy();
-			ExternalPlay.DBDelete(deadMOB);
+			ExternalPlay.DBDeleteMOB(deadMOB);
 			mob.tell("The user '"+Util.combine(commands,2)+"' is no more!\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"A horrible death cry can be heard throughout the land.");
 		}
