@@ -42,7 +42,7 @@ public class DefaultPlayerStats implements PlayerStats
 	private String tranpoofout="";						  
 	private MOB replyTo=null;
 	private Vector securityGroups=new Vector();
-	
+
 	public String lastIP(){return lastIP;}
 	public void setLastIP(String ip){lastIP=ip;}
 	public String getEmail(){if(email==null) return ""; return email;}

@@ -24,7 +24,17 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 												 "Available to magic spells only",
 												 "Not available to players"};
 	
-	
+	public final static int AGE_INFANT=0;
+	public final static int AGE_TODDLER=1;
+	public final static int AGE_CHILD=2;
+	public final static int AGE_YOUNGADULT=3;
+	public final static int AGE_MATURE=4;
+	public final static int AGE_MIDDLEAGED=5;
+	public final static int AGE_OLD=6;
+	public final static int AGE_VENERABLE=7;
+	public final static int AGE_ANCIENT=8;
+	public final static String[] AGE_DESCS={"Infant","Toddler","Child","Young adult","Adult", "Mature", "Old", "Venerable", "Ancient"};
+
 	public String ID();
 	public String name();
 	public String racialCategory();
@@ -40,6 +50,7 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public int lightestWeight();
 	public int weightVariance();
 	public int getMaxWeight();
+	public int[] getAgingChart();
 	public long forbiddenWornBits();
 	public int[] bodyMask();
 	public boolean fertile();

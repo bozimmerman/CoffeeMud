@@ -50,7 +50,9 @@ public interface CharStats extends Cloneable
 	public static final int MAX_CHARISMA_ADJ=26;
 	public static final int MAX_WISDOM_ADJ=27;
 
-	public final static int NUM_STATS=28;
+	public static final int AGE=28;
+	
+	public final static int NUM_STATS=29;
 
 	public static final String[] TRAITS=
 	{
@@ -82,6 +84,7 @@ public interface CharStats extends Cloneable
 		"MAX CONSTITUTION ADJ.",
 		"MAX CHARISMA ADJ.",
 		"MAX WISDOM ADJ.",
+		"AGE"
 	};
 
 	public static final String[] TRAITABBR1=
@@ -113,7 +116,8 @@ public interface CharStats extends Cloneable
 		"mD",
 		"mC",
 		"mCH",
-		"mW"
+		"mW",
+		"A"
 	};
 	public String getSavesStr();
 	public void setSaves(String str);
@@ -183,6 +187,7 @@ public interface CharStats extends Cloneable
 										-1, // max con
 										-1,	// max cha
 									    -1, // max wis
+									    -1, // age
 									   };
 
 	// create a new one of these
@@ -195,4 +200,5 @@ public interface CharStats extends Cloneable
 	public String heshe();
 	public String HeShe();
 
+	public int ageCategory();
 }

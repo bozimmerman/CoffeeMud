@@ -39,6 +39,9 @@ public class StdRace implements Race
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public int[] bodyMask(){return parts;}
 
+	private int[] agingChart={0,1,3,15,35,53,70,74,78};
+	public int[] getAgingChart(){return agingChart;}
+	
 	private static final Vector empty=new Vector();
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
