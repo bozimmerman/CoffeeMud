@@ -1,11 +1,12 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+@if?Authenticate@
+<HTML><BODY>
+<FORM NAME=SELECTAREA METHOD=GET TARGET=/selectarea.cmvp>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH">
+Logged In!
+</FORM>
 </BODY>
 </HTML>
+@else@ @AddFile?failedlogin.cmvp@ @endif@
+
+
+

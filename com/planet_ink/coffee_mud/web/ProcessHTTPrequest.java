@@ -303,6 +303,91 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	}
 
 
+	private int myEndif(StringBuffer s, int i)
+	{
+		int endifsToFind=1;
+		for(;i<s.length();i++)
+		{
+			if(s.charAt(i)=='@')
+			{
+				String foundMacro=parseFoundMacro(s,i);
+				if(foundMacro!=null)
+				{
+					if(foundMacro.startsWith("if?"))
+					   endifsToFind++;
+					else
+					if(foundMacro.equalsIgnoreCase("endif"))
+					{
+						endifsToFind--;
+						if(endifsToFind<=0)
+							return i;
+					}
+				}
+			}
+		}
+		return -1;
+	}
+	
+	private String runMacro(String foundMacro)
+		throws HTTPRedirectException, HTTPServerException
+	{
+		int l=foundMacro.length();
+		int x=foundMacro.indexOf("?");
+		String parms=null;
+		if(x>=0)
+		{
+			parms=foundMacro.substring(x+1);
+			foundMacro=foundMacro.substring(0,x);
+		}
+		if(foundMacro.length()==0)
+			return "";
+		WebMacro W=(WebMacro)webServer.webMacros.get(foundMacro.toUpperCase());
+		if(W!=null)
+		{
+			String q=null;
+			if (!isAdminServer && W.isAdminMacro())
+			{
+				Log.errOut(getName(), "Non-admin cannot access admin macro '" + W.name() + "'; client IP: " + sock.getInetAddress());
+				q = "[error]";
+			}
+			else
+				q=W.runMacro(this,parms);
+			if (q != null)
+				return q;
+			else
+				return "[error]";
+		}
+		return null;
+	}
+
+	private int myElse(StringBuffer s, int i, int end)
+	{
+		int endifsToFind=1;
+		for(;i<end;i++)
+		{
+			if(s.charAt(i)=='@')
+			{
+				String foundMacro=parseFoundMacro(s,i);
+				if(foundMacro!=null)
+				{
+					if(foundMacro.startsWith("if?"))
+					   endifsToFind++;
+					else
+					if(foundMacro.equalsIgnoreCase("endif"))
+					{
+						endifsToFind--;
+						if(endifsToFind<=0)
+							return -1;
+					}
+					else
+					if((foundMacro.equalsIgnoreCase("else"))&&(endifsToFind==1))
+					   return i;
+				}
+			}
+		}
+		return -1;
+	}
+
 	// OK - this parser is getting a bit ugly now;
 	//  I'm probably gonna replace it soon
 	private byte [] doVirtualPage(byte [] data) throws HTTPRedirectException
@@ -322,6 +407,55 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					String foundMacro=parseFoundMacro(s,i);
 					if(foundMacro!=null)
 					{
+						if(foundMacro.startsWith("if?"))
+						{
+							int l=foundMacro.length()+2;
+							int v=myEndif(s,l);
+							if(v<0)
+								s.replace(i,i+l,"[if without endif]");
+							else
+							{
+								int v2=myElse(s,l,v);
+								foundMacro=foundMacro.substring(3);
+								try
+								{
+									String q=runMacro(foundMacro);
+									if((q!=null)&&(q.equalsIgnoreCase("true")))
+									{
+										if(v2>=0)
+											s.replace(v2,v+7,"");
+										else
+											s.replace(v,v+7,"");
+										s.replace(i,i+l,"");
+									}
+									else
+									{
+										if(v2>=0)
+											s.replace(i,v2+6,"");
+										else
+											s.replace(i,v+7,"");
+									}
+									foundMacro="";
+								}
+								catch (HTTPRedirectException e)
+								{
+									redirectTo = e.getMessage();
+								}
+							}
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("endif"))
+						{
+							s.replace(i,i+7,"");
+							foundMacro="";
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("else"))
+						{
+							s.replace(i,i+6,"");
+							foundMacro="";
+						}
+						else
 						if(foundMacro.equalsIgnoreCase("loop"))
 						{
 							int v=myBack(s,i+6);
@@ -354,46 +488,30 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 						else
 						if(foundMacro.equalsIgnoreCase("break"))
 							return ("").getBytes();
+						// seperated on purpose?
 						if(foundMacro.equalsIgnoreCase("back"))
 							s.replace(i,i+6, "[back without loop]" );
 						else
+						if(foundMacro.length()>0)
 						{
-							int l=foundMacro.length();
-							int x=foundMacro.indexOf("?");
-							String parms=null;
-							if(x>=0)
+							try
 							{
-								parms=foundMacro.substring(x+1);
-								foundMacro=foundMacro.substring(0,x);
+								int l=foundMacro.length();
+								String q=runMacro(foundMacro);
+								if (q != null)
+									s.replace(i,i+l+2, q );
+								else
+									s.replace(i,i+l+2, "[error]" );
 							}
-							WebMacro W=(WebMacro)webServer.webMacros.get(foundMacro.toUpperCase());
-							if(W!=null)
+							catch (HTTPRedirectException e)
 							{
-								try
-								{
-									String q;
-									if (!isAdminServer && W.isAdminMacro())
-									{
-										Log.errOut(getName(), "Non-admin cannot access admin macro '" + W.name() + "'; client IP: " + sock.getInetAddress());
-										q = "[error]";
-									}
-									else
-										q=W.runMacro(this,parms);
-									if (q != null)
-										s.replace(i,i+l+2, q );
-									else
-										s.replace(i,i+l+2, "[error]" );
-								}
-								catch (HTTPRedirectException e)
-								{
-									// can't just do this:
-									// throw e;
-									// since we want ALL macros on the page to run
-									redirectTo = e.getMessage();
-									// doesn't bother to replace original
-									// macro text; page will never be seen
-									// (replaced by redirection page)
-								}
+								// can't just do this:
+								// throw e;
+								// since we want ALL macros on the page to run
+								redirectTo = e.getMessage();
+								// doesn't bother to replace original
+								// macro text; page will never be seen
+								// (replaced by redirection page)
 							}
 						}
 					}
@@ -409,9 +527,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			throw new HTTPRedirectException(redirectTo);
 		}
-
-
-
+		
 		return s.toString().getBytes();
 	}
 
@@ -686,6 +802,35 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return null;
 	}
 
+	public String getPageContent(String filename)
+	{
+		try
+		{
+			GrabbedFile requestedFile = webServer.pageGrabber.grabFile(filename);
+			if((requestedFile==null)
+			||(requestedFile.state!=GrabbedFile.OK))
+				return "";
+			DataInputStream fileIn = new DataInputStream( new BufferedInputStream( new FileInputStream(requestedFile.file) ) );
+			byte[] replyData = new byte [ fileIn.available() ];
+
+			fileIn.readFully(replyData);
+			fileIn.close();
+			fileIn = null;
+			String exten="";
+			try { exten = filename.substring(filename.lastIndexOf(".")); }
+			catch (Exception e) {}
+			if(page.getStr("VIRTUALPAGEEXTENSION").equalsIgnoreCase(exten) )
+				replyData=doVirtualPage(replyData);
+			return new String(replyData);
+		}
+		catch (Exception e)
+		{
+			Log.errOut(getName(),"Exception: " + e.getMessage() );
+		}
+		return "";
+	}
+	
+	
 	public String ServerVersionString(){return HTTPserver.ServerVersionString;}
 	public String getWebServerPortStr(){return getWebServer().getPortStr();}
 	public String getWebServerPartialName(){ return getWebServer().getPartialName();}

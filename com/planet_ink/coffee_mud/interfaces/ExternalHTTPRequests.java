@@ -15,4 +15,5 @@ public interface ExternalHTTPRequests
 	public Hashtable getRequestParameters();
 	public String getRequestEncodedParameters();
 	public InetAddress getServerAddress();
+	public String getPageContent(String filename);
 }

@@ -11,12 +11,33 @@ public class Authenticate extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		return Encrypt(getLogin(httpReq))+"\""+Encrypt(getPassword(httpReq));
+		Hashtable parms=parseParms(parm);
+		if((parms!=null)&&(parms.containsKey("AUTH")))
+			return Encrypt(getLogin(httpReq))+"\""+Encrypt(getPassword(httpReq));
+		else
+		{
+			if(authenticated(getLogin(httpReq),getPassword(httpReq)))
+				return "true";
+			else
+				return "false";
+		}
 	}
 	
 	private static final String ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~1!2@3#4$5%6^7&8*9(0)-_=+[{]}|;:',<.>/? ";
 	private static final String FILTER="peniswrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad";
 
+	public static boolean authenticated(String login, String password)
+	{
+		MOB mob=(MOB)CMMap.MOBs.get(login);
+		if(mob==null)
+		{
+			mob=CMClass.getMOB("StdMOB");
+			if(!ExternalPlay.DBUserSearch(mob,login))
+				return false;
+		}
+		return mob.password().equalsIgnoreCase(password)&&(mob.name().trim().length()>0);
+	}
+	
 	private static char ABCeq(char C)
 	{
 		for(int A=0;A<ABCs.length();A++)
