@@ -6,8 +6,7 @@
 ! From Maree: (Game/Heath Texts), the descriptions for the health of a MOB should be moved to a text file (A resource?), that is loaded.  The descriptions would be assigned to the MOB at build time, and should be assignable to GENMOBS via a new tag.
 ! ranged combat?! Yes! And thrown weapons! And ranged pole-arms!
 ! Add CoffeeMud area files! can import and export rooms or areas
-
-Languages!  Affects says and replies if you don't know a language spoken by the speaker.
+! Languages!  Affects says and replies if you don't know a language spoken by the speaker.
 
 Make mountable MOBS, and mountable Items. Mounted animals will take half of all combat damage, will add
 to attack ability, and increase movement and will act as a container for the purposes of cargo.  Mounted
