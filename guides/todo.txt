@@ -1,5 +1,6 @@
 Bard Subclasses
 Programming.html update
+when you type langs it should tell you what language you are currently speaking
 
 
 //****** next version ********************************************************
@@ -19,7 +20,8 @@ Electronic items which can be activated/deactivated, grant some affect, and use 
 Prop_TechShield that absorbs enormous damage, but like Prop_SpellReflector -- needs reset time.
 possible to have NE SE SW NW directions?
 racial abilities (abilities tied to the race)
-Conquest behavior
+apply languages to writing as well. Should be simple, right?
+Conquest Area behavior
 GenRaces
 GenCharClasses
 Some solution for variable eq on mobs

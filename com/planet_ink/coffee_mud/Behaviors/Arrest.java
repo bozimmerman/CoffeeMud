@@ -23,6 +23,9 @@ public class Arrest extends StdBehavior
 	private Vector chitChat=new Vector();
 	private Vector chitChat2=new Vector();
 
+	private static final long ONE_REAL_DAY=1000*60*60*24;
+	private static final long EXPIRATION_MILLIS=ONE_REAL_DAY*7; // 7 real days
+	
 	private static final int ACTION_WARN=0;
 	private static final int ACTION_THREATEN=1;
 	private static final int ACTION_PAROLE1=2;
@@ -297,6 +300,9 @@ public class Arrest extends StdBehavior
 
 		if(H.containsKey(W.witness)) return false;
 		if((W.victim!=null)&&(H.containsKey(W.victim))) return false;
+		// crimes expire after three real days
+		if((W.lastOffense>0)&&((System.currentTimeMillis()-W.lastOffense)>EXPIRATION_MILLIS))
+			return false;
 		return true;
 	}
 
