@@ -16,6 +16,7 @@ public class Decay extends ActiveTicker
 	}
 
 	boolean activated=false;
+	protected String answer=" vanishes!";
 
 	public Behavior newInstance()
 	{
@@ -25,7 +26,11 @@ public class Decay extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
+		activated=false;
 		tickDown=Util.getParmInt(parms,"remain",tickDown);
+		answer=Util.getParmStr(parms,"answer"," vanishes!");
+		if(newParms.toUpperCase().indexOf("NOTRIGGER")>=0)
+			activated=true;
 	}
 
 	public String getParms()
@@ -64,16 +69,19 @@ public class Decay extends ActiveTicker
 				Room room=getBehaversRoom(ticking);
 				if(room==null) return true;
 				item.destroy();
-				if(E instanceof MOB)
+				if(answer.trim().length()>0)
 				{
-					((MOB)E).tell(item.name()+" vanishes!");
-					((MOB)E).recoverEnvStats();
-					((MOB)E).recoverCharStats();
-					((MOB)E).recoverMaxState();
+					if(E instanceof MOB)
+					{
+						((MOB)E).tell(item.name()+answer);
+						((MOB)E).recoverEnvStats();
+						((MOB)E).recoverCharStats();
+						((MOB)E).recoverMaxState();
+					}
+					else
+					if(E instanceof Room)
+						((Room)E).showHappens(CMMsg.MSG_OK_VISUAL,item.name()+answer);
 				}
-				else
-				if(E instanceof Room)
-					((Room)E).showHappens(CMMsg.MSG_OK_VISUAL,item.name()+" vanishes!");
 				room.recoverRoomStats();
 			}
 		}

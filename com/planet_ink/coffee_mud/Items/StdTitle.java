@@ -156,7 +156,7 @@ public class StdTitle extends StdItem implements LandTitle
 			if(A.landOwner().length()==0)
 			{
 				Area AREA=CMMap.getArea(A.landPropertyID());
-				if((AREA!=null)&&(AREA.Name().indexOf("<NEW>")>=0)&&(msg.source().isMonster()))
+				if((AREA!=null)&&(AREA.Name().indexOf("UNNAMED")>=0)&&(msg.source().isMonster()))
 					return false;
 			}
 		}
@@ -223,7 +223,7 @@ public class StdTitle extends StdItem implements LandTitle
 			if(A.landOwner().length()==0)
 			{
 				Area AREA=CMMap.getArea(landPropertyID());
-				if((AREA!=null)&&(AREA.Name().indexOf("<NEW>")>=0))
+				if((AREA!=null)&&(AREA.Name().indexOf("UNNAMED")>=0))
 				{
 					String newName="";
 					try{
@@ -238,15 +238,15 @@ public class StdTitle extends StdItem implements LandTitle
 							else
 							if(n.length()!=0)
 							{
-								String nn=Util.replaceAll(AREA.Name(),"<NEW>",Util.capitalize(n.toLowerCase()));
+								String nn=Util.replaceAll(AREA.Name(),"UNNAMED",Util.capitalize(n.toLowerCase()));
 								if(CMClass.DBEngine().DBUserSearch(null,nn))
 									msg.source().tell("That name is already taken.  Please enter a different one.");
 								else
 								if(msg.source().session().confirm("If the name '"+nn+"' correct (y/N)?","N",60000))
 								{
-									name=Util.replaceAll(name,"<NEW>",Util.capitalize(n.toLowerCase()));
-									displayText=Util.replaceAll(displayText,"<NEW>",Util.capitalize(n.toLowerCase()));
-									setDescription(Util.replaceAll(description(),"<NEW>",Util.capitalize(n.toLowerCase())));
+									name=Util.replaceAll(name,"UNNAMED",Util.capitalize(n.toLowerCase()));
+									displayText=Util.replaceAll(displayText,"UNNAMED",Util.capitalize(n.toLowerCase()));
+									setDescription(Util.replaceAll(description(),"UNNAMED",Util.capitalize(n.toLowerCase())));
 									newName=nn;
 								}
 								else

@@ -1,5 +1,4 @@
 Finish Scripting doc
-get rid of ship <new> syntax -- won't work! 
 Install ship battery
 n of 11656 door is not there in margate, 11752 should have been no_mob
 make diff levels of drunk, and disease_hangover
