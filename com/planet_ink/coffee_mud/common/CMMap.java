@@ -9,8 +9,8 @@ public class CMMap
 	protected static Vector roomsList = new Vector();
 	protected static Vector playersList = new Vector();
 	protected static Vector deitiesList = new Vector();
-	private static Hashtable startRooms=new Hashtable();
-	private static Hashtable deathRooms=new Hashtable();
+	protected static Hashtable startRooms=new Hashtable();
+	protected static Hashtable deathRooms=new Hashtable();
 
 	private static void theWorldChanged()
 	{
