@@ -7,22 +7,14 @@ import java.util.*;
 public class StdClosedDoorway extends StdExit
 {
 	public String ID(){	return "StdClosedDoorway";}
-	public StdClosedDoorway()
-	{
-		super();
-		name="a Door";
-		description="An ordinary wooden door with swinging hinges and a latch.";
-		displayText="an open door";
-		closedText="a closed door";
-		miscText="KEY";
-		hasADoor=true;
-		isOpen=false;
-		hasALock=false;
-		isLocked=false;
-		doorDefaultsClosed=true;
-		doorDefaultsLocked=false;
-		openDelayTicks=45;
-	}
+	public String Name(){ return "a door";}
+	public String displayText(){ return "";}
+	public String description(){ return "An ordinary wooden door with swinging hinges and a latch.";}
+	public boolean hasADoor(){return true;}
+	public boolean hasALock(){return false;}
+	public boolean defaultsLocked(){return false;}
+	public boolean defaultsClosed(){return true;}
+	public String closedText(){return "a closed door";}
 	public Environmental newInstance()
 	{
 		return new StdClosedDoorway();

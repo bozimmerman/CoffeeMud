@@ -1,4 +1,24 @@
 GAES still isn't done
 Called Strike -- Maybe allow head, but require a larger % of HP, such as 40%?
 Optimize StdExits
+-------------------------------------------------
+>value short
+Jacob Strongblade says 'I'll give you 5 for a short sword.' to you.
 
+<255/255 190/190 288/288><1630>
+>sell short
+You sell a short sword to Jacob Strongblade.
+Jacob Strongblade pays you 35 for a short sword.
+
+30 gold extra?  Seems a little odd.. Yes, I only had one thing on me that
+could count as 'short'.  No, the shopkeeper had no params set for races.
+
+-------------------------------------------------
+Quests mob name should include negative mask -beggar
+Scale - Barbarian(5), Templar(10), Assassin (10), or Thief(20)
+-------------------------------------------------
+Also, the aggressive and all the other aggressive behaviors cease attacking after its hp is at a certain point
+-------------------------------------------------
+Aggr mobs no attack each other when archon present.
+-------------------------------------------------
+With a ****non-archon****, trying to trigger a GIVE_PROG on a shopkeeper. > It just adds the item to inventory.

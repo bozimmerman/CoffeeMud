@@ -7,17 +7,12 @@ import com.planet_ink.coffee_mud.common.*;
 public class Grate extends StdClosedDoorway
 {
 	public String ID(){	return "Grate";}
-	public Grate()
-	{
-		super();
-		name="a barred grate";
-		description="A metal grate of thick steel bars is inset here.";
-		displayText="a dark hole";
-		closedText="a closed grate";
-		doorName="grate";
-		openName="remove";
-		closeName="close";
-	}
+	public String Name(){return "a barred grate";}
+	public String doorName(){return "grate";}
+	public String closedText(){return "a closed grate";}
+	public String description(){return "A metal grate of thick steel bars is inset here.";}
+	public String closeWord(){return "close";}
+	public String openWord(){return "remove";}
 	public Environmental newInstance()
 	{
 		return new Grate();

@@ -7,22 +7,15 @@ import java.util.*;
 public class ClimbableExit extends StdExit
 {
 	public String ID(){	return "ClimbableExit";}
+	public String Name(){ return "a sheer surface";}
+	public String displayText(){ return "a sheer surface";}
+	public String description(){ return "Looks like you'll have to climb it.";}
+	
 	public ClimbableExit()
 	{
 		super();
-		name="a sheer surface";
-		description="Looks like you'll have to climb it.";
-		displayText="a sheer surface";
-		miscText="";
-		hasADoor=false;
-		isOpen=true;
-		hasALock=false;
-		isLocked=false;
-		doorDefaultsClosed=false;
-		doorDefaultsLocked=false;
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_CLIMBING);
 		recoverEnvStats();
-		openDelayTicks=1;
 	}
 	public Environmental newInstance()
 	{

@@ -7,21 +7,9 @@ import java.util.*;
 public class StdOpenDoorway extends StdExit
 {
 	public String ID(){	return "StdOpenDoorway";}
-	public StdOpenDoorway()
-	{
-		super();
-		name="a walkway";
-		description="";
-		displayText="";
-		miscText="";
-		hasADoor=false;
-		isOpen=true;
-		hasALock=false;
-		isLocked=false;
-		doorDefaultsClosed=false;
-		doorDefaultsLocked=false;
-		openDelayTicks=1;
-	}
+	public String Name(){ return "a walkway";}
+	public String displayText(){ return "";}
+	public String description(){ return "";}
 	public Environmental newInstance()
 	{
 		return new StdOpenDoorway();

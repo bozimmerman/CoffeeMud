@@ -7,22 +7,9 @@ import java.util.*;
 public class GapExit extends StdExit
 {
 	public String ID(){	return "GapExit";}
-	public GapExit()
-	{
-		super();
-		name="a crevasse";
-		description="Looks like you'll have to jump it.";
-		displayText="";
-		miscText="";
-		hasADoor=false;
-		isOpen=true;
-		hasALock=false;
-		isLocked=false;
-		doorDefaultsClosed=false;
-		doorDefaultsLocked=false;
-		recoverEnvStats();
-		openDelayTicks=1;
-	}
+	public String Name(){ return "a crevasse";}
+	public String description(){return "Looks like you'll have to jump it.";}
+	
 	public Environmental newInstance()
 	{
 		return new GapExit();

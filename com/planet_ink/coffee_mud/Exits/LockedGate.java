@@ -4,20 +4,12 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
 
-public class LockedGate extends StdLockedDoorway
+public class LockedGate extends Gate
 {
 	public String ID(){	return "LockedGate";}
-	public LockedGate()
-	{
-		super();
-		name="a barred gate";
-		description="A pair of study metal bar doors.";
-		displayText="an open gate";
-		closedText="a closed gate";
-		doorName="gate";
-		openName="open";
-		closeName="close";
-	}
+	public String closedText(){return "a closed, locked gate";}
+	public boolean hasALock(){return true;}
+	public boolean defaultsLocked(){return true;}
 	public Environmental newInstance()
 	{
 		return new LockedGate();

@@ -7,39 +7,38 @@ import java.util.*;
 public class StdExit implements Exit
 {
 	public String ID(){	return "StdExit";}
-	protected String name="a walkway";
-	protected String description="Looks like an ordinary path from here to there.";
-	protected String displayText="";
-	protected String closedText="A barrier blocks the way.";
-	protected String miscText="";
-
-	protected String doorName="door";
-	protected String closeName="close";
-	protected String openName="open";
-
+	
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
 	protected boolean isOpen=true;
 	protected boolean isLocked=false;
-	protected boolean hasADoor=false;
-	protected boolean doorDefaultsClosed=true;
-	protected boolean hasALock=false;
-	protected boolean doorDefaultsLocked=false;
-	protected boolean isReadable=false;
-	protected int openDelayTicks=45;
-
-	protected Vector affects=new Vector();
-	protected Vector behaviors=new Vector();
+	protected String miscText="";
+	protected Vector affects=null;
+	protected Vector behaviors=null;
 
 	public StdExit()
 	{
+		isOpen=!defaultsClosed();
+		isLocked=defaultsLocked();
 	}
-	public String Name(){ return name;}
-	public void setName(String newName){name=newName;}
+	
+	public String Name(){ return "a walkway";}
+	public boolean hasADoor(){return false;}
+	public boolean hasALock(){return false;}
+	public boolean defaultsLocked(){return false;}
+	public boolean defaultsClosed(){return false;}
+	public String displayText(){ return "";}
+	public String description(){ return "";}
+	public String doorName(){return "door";}
+	public String closedText(){return "a closed door";}
+	public String closeWord(){return "close";}
+	public String openWord(){return "open";}
+	
+	public void setName(String newName){}
 	public String name()
 	{
 		if(envStats().newName()!=null) return envStats().newName();
-		return name;
+		return Name();
 	}
 	public EnvStats envStats()
 	{
@@ -69,20 +68,19 @@ public class StdExit implements Exit
 		return new StdExit();
 	}
 	public boolean isGeneric(){return false;}
-	private void cloneFix(Exit E)
+	protected void cloneFix(Exit E)
 	{
 		baseEnvStats=E.baseEnvStats().cloneStats();
 		envStats=E.envStats().cloneStats();
 
-		affects=new Vector();
-		behaviors=new Vector();
+		affects=null;
+		behaviors=null;
 		for(int b=0;b<E.numBehaviors();b++)
 		{
 			Behavior B=E.fetchBehavior(b);
 			if(B!=null)
-				behaviors.addElement(B);
+				addBehavior((Behavior)B.copyOf());
 		}
-
 	}
 	public Environmental copyOf()
 	{
@@ -98,20 +96,11 @@ public class StdExit implements Exit
 			return this.newInstance();
 		}
 	}
-	public String displayText()
-	{ return displayText;}
-	public void setDisplayText(String newDisplayText)
-	{ displayText=newDisplayText;}
-	public void setMiscText(String newMiscText)
-	{
-		miscText=newMiscText;
-	}
-	public String text()
-	{ return miscText;}
-	public String description()
-	{ return description;}
-	public void setDescription(String newDescription)
-	{ description=newDescription;}
+	public void setMiscText(String newMiscText){miscText=newMiscText;}
+	public String text(){return miscText;}
+	
+	public void setDisplayText(String newDisplayText){}
+	public void setDescription(String newDescription){}
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
@@ -177,7 +166,7 @@ public class StdExit implements Exit
 		case Affect.TYP_OK_ACTION:
 			return true;
 		case Affect.TYP_ENTER:
-			if((hasADoor)&&(!isOpen)&&(mob.envStats().height()>=0))
+			if((hasADoor())&&(!isOpen())&&(mob.envStats().height()>=0))
 			{
 				if((!Sense.canBeSeenBy(this,mob))
 				&&(Sense.canSee(mob))
@@ -188,7 +177,7 @@ public class StdExit implements Exit
 					mob.tell("You can't go that way.");
 					return false;
 				}
-				mob.tell("The "+doorName+" is "+closeName+"d.");
+				mob.tell("The "+doorName()+" is "+closeWord()+"d.");
 				return false;
 			}
 			if((Sense.isFlying(this))
@@ -222,9 +211,9 @@ public class StdExit implements Exit
 		case Affect.TYP_CLOSE:
 			if(isOpen)
 			{
-				if(!hasADoor)
+				if(!hasADoor())
 				{
-					mob.tell("There is nothing to "+closeName+"!");
+					mob.tell("There is nothing to "+closeWord()+"!");
 					return false;
 				}
 				else
@@ -232,26 +221,26 @@ public class StdExit implements Exit
 			}
 			else
 			{
-				mob.tell("The "+doorName+" is already "+closeName+"d.");
+				mob.tell("The "+doorName()+" is already "+closeWord()+"d.");
 				return false;
 			}
 			//break;
 		case Affect.TYP_OPEN:
-			if(!hasADoor)
+			if(!hasADoor())
 			{
-				mob.tell("There is nothing to "+openName+" that way!");
+				mob.tell("There is nothing to "+openWord()+" that way!");
 				return false;
 			}
-			if(isOpen)
+			if(isOpen())
 			{
-				mob.tell("The "+doorName+" is already "+openName+"!");
+				mob.tell("The "+doorName()+" is already "+openWord()+"!");
 				return false;
 			}
 			else
 			{
-				if(isLocked)
+				if(isLocked())
 				{
-					mob.tell("The "+doorName+" is locked.");
+					mob.tell("The "+doorName()+" is locked.");
 					return false;
 				}
 				else
@@ -259,7 +248,7 @@ public class StdExit implements Exit
 			}
 			//break;
 		case Affect.TYP_PUSH:
-			if((isOpen)||(!hasADoor))
+			if((isOpen())||(!hasADoor()))
 			{
 				mob.tell("There is nothing to push over there.");
 				return false;
@@ -270,46 +259,46 @@ public class StdExit implements Exit
 		case Affect.TYP_CAST_SPELL:
 			return true;
 		case Affect.TYP_PULL:
-			if((isOpen)||(!hasADoor))
+			if((isOpen())||(!hasADoor()))
 			{
 				mob.tell("There is nothing to pull over there.");
 				return false;
 			}
 			return true;
 		case Affect.TYP_LOCK:
-			if(!hasADoor)
+			if(!hasADoor())
 			{
 				mob.tell("There is nothing to lock that way!");
 				return false;
 			}
 		case Affect.TYP_UNLOCK:
-			if(!hasADoor)
+			if(!hasADoor())
 			{
 				mob.tell("There is nothing to unlock that way!");
 				return false;
 			}
-			if(isOpen)
+			if(isOpen())
 			{
-				mob.tell("The "+doorName+" is already "+openName+"!");
+				mob.tell("The "+doorName()+" is already "+openWord()+"!");
 				return false;
 			}
 			else
-			if(!hasALock)
+			if(!hasALock())
 			{
 				mob.tell("There is no lock!");
 				return false;
 			}
 			else
 			{
-				if((!isLocked)&&(affect.targetMinor()==Affect.TYP_UNLOCK))
+				if((!isLocked())&&(affect.targetMinor()==Affect.TYP_UNLOCK))
 				{
-					mob.tell("The "+doorName+" is not locked.");
+					mob.tell("The "+doorName()+" is not locked.");
 					return false;
 				}
 				else
-				if((isLocked)&&(affect.targetMinor()==Affect.TYP_LOCK))
+				if((isLocked())&&(affect.targetMinor()==Affect.TYP_LOCK))
 				{
-					mob.tell("The "+doorName+" is already locked.");
+					mob.tell("The "+doorName()+" is already locked.");
 					return false;
 				}
 				else
@@ -423,7 +412,7 @@ public class StdExit implements Exit
 		case Affect.TYP_READSOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
-				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
+				if((isReadable())&&(readableText()!=null)&&(readableText().length()>0))
 					mob.tell("It says '"+readableText()+"'.");
 				else
 					mob.tell("There is nothing written on "+name()+".");
@@ -432,18 +421,18 @@ public class StdExit implements Exit
 				mob.tell("You can't see that!");
 			return;
 		case Affect.TYP_CLOSE:
-			if((!hasADoor)||(!isOpen)) return;
+			if((!hasADoor())||(!isOpen())) return;
 			isOpen=false;
 			break;
 		case Affect.TYP_OPEN:
-			if((!hasADoor)||(isOpen)||(isLocked)) return;
-			if(doorDefaultsClosed||doorDefaultsLocked)
-				ExternalPlay.startTickDown(this,Host.EXIT_REOPEN,openDelayTicks);
+			if((!hasADoor())||(isOpen())||(isLocked())) return;
+			if(defaultsClosed()||defaultsLocked())
+				ExternalPlay.startTickDown(this,Host.EXIT_REOPEN,openDelayTicks());
 			isLocked=false;
 			isOpen=true;
 			break;
 		case Affect.TYP_LOCK:
-			if((!hasADoor)||(!hasALock)||(isLocked)) return;
+			if((!hasADoor())||(!hasALock())||(isLocked())) return;
 			isOpen=false;
 			isLocked=true;
 			break;
@@ -452,7 +441,7 @@ public class StdExit implements Exit
 			mob.tell("It doesn't appear to be doing any good.");
 			break;
 		case Affect.TYP_UNLOCK:
-			if((!hasADoor)||(!hasALock)||(isOpen)||(!isLocked))
+			if((!hasADoor())||(!hasALock())||(isOpen())||(!isLocked()))
 				return;
 			isLocked=false;
 			break;
@@ -466,9 +455,9 @@ public class StdExit implements Exit
 	{
 		if(tickID==Host.EXIT_REOPEN)
 		{
-			if(doorDefaultsClosed)
+			if(defaultsClosed())
 				isOpen=false;
-			if(doorDefaultsLocked)
+			if(defaultsLocked())
 			{
 				isOpen=false;
 				isLocked=true;
@@ -508,10 +497,6 @@ public class StdExit implements Exit
 	}
 	public boolean isOpen(){return isOpen;}
 	public boolean isLocked(){return isLocked;}
-	public boolean hasADoor(){return hasADoor;}
-	public boolean hasALock(){return hasALock;}
-	public boolean defaultsLocked(){return doorDefaultsLocked;}
-	public boolean defaultsClosed(){return doorDefaultsClosed;}
 	public void setDoorsNLocks(boolean newHasADoor,
 								  boolean newIsOpen,
 								  boolean newDefaultsClosed,
@@ -521,36 +506,15 @@ public class StdExit implements Exit
 	{
 		isOpen=newIsOpen;
 		isLocked=newIsLocked;
-		hasADoor=newHasADoor;
-		hasALock=newHasALock;
-		doorDefaultsClosed=newDefaultsClosed;
-		doorDefaultsLocked=newDefaultsLocked;
 	}
 
-	public String readableText(){ return (isReadable?miscText:"");}
-	public boolean isReadable(){ return isReadable;}
-	public void setReadable(boolean isTrue){isReadable=isTrue;}
+	public String readableText(){ return (isReadable()?miscText:"");}
+	public boolean isReadable(){ return false;}
+	public void setReadable(boolean isTrue){}
 	public void setReadableText(String text) { miscText=text; }
-
-	public String doorName(){return doorName;}
-	public String closeWord(){return closeName;}
-	public String openWord(){return openName;}
-	public String closedText(){return closedText;}
-	public void setExitParams(String newDoorName,
-							  String newCloseWord,
-							  String newOpenWord,
-							  String newClosedText)
-	{
-		doorName=newDoorName;
-		closeName=newCloseWord;
-		openName=newOpenWord;
-		closedText=newClosedText;
-	}
-
-	public String keyName()	{ return (hasALock?miscText:""); }
+	public void setExitParams(String newDoorName, String newCloseWord, String newOpenWord, String newClosedText){}
+	public String keyName()	{ return (hasALock()?text():""); }
 	public void setKeyName(String newKeyName){miscText=newKeyName;}
-
-
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{}//exits will never be asked this, so this method should always do NOTHING
@@ -562,6 +526,7 @@ public class StdExit implements Exit
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;
+		if(affects==null) affects=new Vector();
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability A=fetchAffect(a);
@@ -576,6 +541,7 @@ public class StdExit implements Exit
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
+		if(affects==null) affects=new Vector();
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability A=fetchAffect(a);
@@ -587,6 +553,7 @@ public class StdExit implements Exit
 	}
 	public void delAffect(Ability to)
 	{
+		if(affects==null) return;
 		int size=affects.size();
 		affects.removeElement(to);
 		if(affects.size()<size)
@@ -594,10 +561,12 @@ public class StdExit implements Exit
 	}
 	public int numAffects()
 	{
+		if(affects==null) return 0;
 		return affects.size();
 	}
 	public Ability fetchAffect(int index)
 	{
+		if(affects==null) return null;
 		try
 		{
 			return (Ability)affects.elementAt(index);
@@ -607,6 +576,7 @@ public class StdExit implements Exit
 	}
 	public Ability fetchAffect(String ID)
 	{
+		if(affects==null) return null;
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability A=fetchAffect(a);
@@ -620,6 +590,8 @@ public class StdExit implements Exit
 	 * movement, speech, spellcasting, etc, etc.*/
 	public void addBehavior(Behavior to)
 	{
+		if(behaviors==null)
+			behaviors=new Vector();
 		if(to==null) return;
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -635,6 +607,7 @@ public class StdExit implements Exit
 	}
 	public void delBehavior(Behavior to)
 	{
+		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
 			ExternalPlay.deleteTick(this,Host.EXIT_BEHAVIOR_TICK);
@@ -642,10 +615,13 @@ public class StdExit implements Exit
 
 	public int numBehaviors()
 	{
+		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
 	public Behavior fetchBehavior(int index)
 	{
+		if(behaviors==null) 
+			return null;
 		try
 		{
 			return (Behavior)behaviors.elementAt(index);
@@ -655,6 +631,8 @@ public class StdExit implements Exit
 	}
 	public Behavior fetchBehavior(String ID)
 	{
+		if(behaviors==null) 
+			return null;
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
@@ -663,8 +641,9 @@ public class StdExit implements Exit
 		}
 		return null;
 	}
-	public int openDelayTicks()	{ return openDelayTicks;}
-	public void setOpenDelayTicks(int numTicks){openDelayTicks=numTicks;}
+	public int openDelayTicks()	{ return 45;}
+	public void setOpenDelayTicks(int numTicks){}
+	
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
 	private int getCodeNum(String code){

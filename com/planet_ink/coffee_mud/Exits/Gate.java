@@ -7,17 +7,9 @@ import com.planet_ink.coffee_mud.common.*;
 public class Gate extends StdClosedDoorway
 {
 	public String ID(){	return "Gate";}
-	public Gate()
-	{
-		super();
-		name="a barred gate";
-		description="A pair of study metal bar doors.";
-		displayText="an open gate";
-		closedText="a closed gate";
-		doorName="gate";
-		openName="open";
-		closeName="close";
-	}
+	public String Name(){return "a gate";}
+	public String doorName(){return "gate";}
+	public String closedText(){return "a closed gate";}
 	public Environmental newInstance()
 	{
 		return new Gate();

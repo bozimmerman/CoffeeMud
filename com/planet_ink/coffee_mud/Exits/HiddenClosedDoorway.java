@@ -4,24 +4,13 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class HiddenClosedDoorway extends StdExit
+public class HiddenClosedDoorway extends StdClosedDoorway
 {
 	public String ID(){	return "HiddenClosedDoorway";}
+	public String description(){return "a cleverly concealed door.";}
 	public HiddenClosedDoorway()
 	{
 		super();
-		name="a Door";
-		description="a cleverly concealed door.";
-		displayText="an open door";
-		closedText="a closed door";
-		miscText="KEY";
-		hasADoor=true;
-		isOpen=false;
-		hasALock=false;
-		isLocked=false;
-		doorDefaultsClosed=true;
-		doorDefaultsLocked=false;
-		openDelayTicks=45;
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_HIDDEN);
 		recoverEnvStats();
 	}

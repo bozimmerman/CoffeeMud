@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 public class PitOpen extends StdOpenDoorway
 {
 	public String ID(){	return "PitOpen";}
+	public String Name(){return "a pit";}
 	public PitOpen()
 	{
 		super();
