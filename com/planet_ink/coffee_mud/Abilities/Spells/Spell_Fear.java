@@ -2,11 +2,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_Fear extends Spell
-	implements CharmDevotion
 {
 	public Spell_Fear()
 	{
@@ -33,6 +31,10 @@ public class Spell_Fear extends Spell
 	public Environmental newInstance()
 	{
 		return new Spell_Fear();
+	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_CHARM;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

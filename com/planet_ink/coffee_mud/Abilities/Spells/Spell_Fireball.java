@@ -3,11 +3,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_Fireball extends Spell
-	implements EvocationDevotion, InvocationDevotion
 {
 	public Spell_Fireball()
 	{
@@ -35,6 +33,10 @@ public class Spell_Fireball extends Spell
 	public Environmental newInstance()
 	{
 		return new Spell_Fireball();
+	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_EVOCATION;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

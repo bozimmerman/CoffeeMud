@@ -259,7 +259,7 @@ public class Scoring
 			if((thisAbility!=null)
 			&&(thisAbility.envStats().level()>highestLevel)
 			&&(thisAbility.envStats().level()<lowestLevel)
-			&&(thisAbility.classificationCode()==ofType))
+			&&((thisAbility.classificationCode()&Ability.ALL_CODES)==ofType))
 				highestLevel=thisAbility.envStats().level();
 		}
 		for(int l=0;l<=highestLevel;l++)
@@ -271,7 +271,7 @@ public class Scoring
 				Ability thisAbility=able.fetchAbility(a);
 				if((thisAbility!=null)
 				&&(thisAbility.envStats().level()==l)
-				&&(thisAbility.classificationCode()==ofType))
+				&&((thisAbility.classificationCode()&Ability.ALL_CODES)==ofType))
 				{
 					if(thisLine.length()==0)
 						thisLine.append("\n\rLevel ^B"+l+"^?:\n\r");
@@ -304,7 +304,7 @@ public class Scoring
 			if((thisAbility.qualifies(able))
 			&&(level>highestLevel)
 			&&(level<lowestLevel)
-			&&(thisAbility.classificationCode()==ofType))
+			&&((thisAbility.classificationCode()&Ability.ALL_CODES)==ofType))
 				highestLevel=level;
 		}
 		int col=0;
@@ -314,7 +314,7 @@ public class Scoring
 			for(int a=0;a<CMClass.abilities.size();a++)
 			{
 				Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
-				if((thisAbility.qualifies(able))&&(thisAbility.qualifyingLevel(able)==l)&&(thisAbility.classificationCode()==ofType))
+				if((thisAbility.qualifies(able))&&(thisAbility.qualifyingLevel(able)==l)&&((thisAbility.classificationCode()&Ability.ALL_CODES)==ofType))
 				{
 					if((++col)>3)
 					{

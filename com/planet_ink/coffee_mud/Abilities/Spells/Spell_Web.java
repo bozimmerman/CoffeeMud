@@ -3,11 +3,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_Web extends Spell
-	implements EvocationDevotion
 {
 
 	public int amountRemaining=0;
@@ -40,6 +38,11 @@ public class Spell_Web extends Spell
 	{
 		return new Spell_Web();
 	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_EVOCATION;
+	}
+
 
 	public boolean okAffect(Affect affect)
 	{

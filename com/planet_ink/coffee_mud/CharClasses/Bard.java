@@ -116,7 +116,7 @@ public class Bard extends StdCharClass
 				if(CMAble.getDefaultGain(ID(),A.ID()))
 					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
 				else
-				if(A.classificationCode()==Ability.SONG)
+				if((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
 				{
 					if((A.qualifyingLevel(mob)<5)&&(A.qualifyingLevel(mob)>=1))
 						giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);

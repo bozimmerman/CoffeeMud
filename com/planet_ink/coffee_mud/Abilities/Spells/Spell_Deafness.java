@@ -3,11 +3,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_Deafness extends Spell
-	implements AlterationDevotion
 {
 	public Spell_Deafness()
 	{
@@ -34,6 +32,10 @@ public class Spell_Deafness extends Spell
 	public Environmental newInstance()
 	{
 		return new Spell_Deafness();
+	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_ALTERATION;
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

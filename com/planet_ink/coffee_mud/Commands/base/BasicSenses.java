@@ -45,7 +45,7 @@ public class BasicSenses
 				}
 				FullMsg msg=new FullMsg(mob,thisThang,null,Affect.MSG_EXAMINESOMETHING,textMsg+name);
 				if(mob.location().okAffect(msg))
-					thisThang.affect(msg);
+					mob.location().send(mob,msg);
 				if((thisThang instanceof Room)&&((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0))
 					((Room)thisThang).listExits(mob);
 

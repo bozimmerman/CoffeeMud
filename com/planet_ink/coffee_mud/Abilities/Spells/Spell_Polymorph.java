@@ -3,11 +3,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_Polymorph extends Spell
-	implements AlterationDevotion
 {
 
 	Race newRace=null;
@@ -36,6 +34,11 @@ public class Spell_Polymorph extends Spell
 	{
 		return new Spell_Polymorph();
 	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_ALTERATION;
+	}
+
 
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

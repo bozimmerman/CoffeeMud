@@ -4,11 +4,9 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_FaerieFog extends Spell
-	implements EvocationDevotion
 {
 
 	public Spell_FaerieFog()
@@ -34,6 +32,10 @@ public class Spell_FaerieFog extends Spell
 	public Environmental newInstance()
 	{
 		return new Spell_FaerieFog();
+	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_ILLUSION;
 	}
 
 

@@ -3,11 +3,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_Friends extends Spell
-	implements AlterationDevotion
 {
 	public Spell_Friends()
 	{
@@ -33,6 +31,10 @@ public class Spell_Friends extends Spell
 	public Environmental newInstance()
 	{
 		return new Spell_Friends();
+	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_ALTERATION;
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

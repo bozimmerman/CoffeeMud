@@ -3,12 +3,10 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 
 public class Spell_Shelter extends Spell
-	implements InvocationDevotion
 {
 
 	public Room previousLocation=null;
@@ -36,6 +34,11 @@ public class Spell_Shelter extends Spell
 	{
 		return new Spell_Shelter();
 	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_EVOCATION;
+	}
+
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

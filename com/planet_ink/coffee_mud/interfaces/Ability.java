@@ -48,6 +48,7 @@ public interface Ability  extends Environmental
 	public boolean putInCommandlist();
 	public int quality();
 	
+	// general classifications
 	public static final int SKILL=0;
 	public static final int SPELL=1;
 	public static final int PRAYER=2;
@@ -56,7 +57,19 @@ public interface Ability  extends Environmental
 	public static final int PROPERTY=5;
 	public static final int THIEF_SKILL=6;
 	public static final int LANGUAGE=7;
+	public static final int ALL_CODES=31;
 	
+	// domains
+	public static final int SPELL_DIVINATION=1<<5;
+	public static final int SPELL_ABJURATION=2<<5;
+	public static final int SPELL_ILLUSION=3<<5;
+	public static final int SPELL_EVOCATION=4<<5;
+	public static final int SPELL_ALTERATION=5<<5;
+	public static final int SPELL_TRANSMUTATION=6<<5;	
+	public static final int SPELL_ENCHANTMENT=7<<5;	
+	public static final int SPELL_CHARM=8<<5;	
+	
+	// qualities
 	public static final int MALICIOUS=0;
 	public static final int INDIFFERENT=1;
 	public static final int OK_SELF=2;

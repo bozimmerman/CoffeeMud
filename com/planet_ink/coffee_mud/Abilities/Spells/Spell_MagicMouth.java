@@ -3,11 +3,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_MagicMouth extends Spell
-	implements AlterationDevotion
 {
 	Room myRoomContainer=null;
 	int myTrigger=Affect.TYP_ENTER;
@@ -37,11 +35,13 @@ public class Spell_MagicMouth extends Spell
 		unInvoke();
 		return;
 	}
-
-
 	public Environmental newInstance()
 	{
 		return new Spell_MagicMouth();
+	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_ALTERATION;
 	}
 
 	public void affect(Affect affect)

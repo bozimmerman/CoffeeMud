@@ -3,11 +3,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_Spook extends Spell
-	implements CharmDevotion
 {
 	public Spell_Spook()
 	{
@@ -35,6 +33,11 @@ public class Spell_Spook extends Spell
 	{
 		return new Spell_Spook();
 	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_CHARM;
+	}
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

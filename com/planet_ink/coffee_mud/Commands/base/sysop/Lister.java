@@ -47,7 +47,7 @@ public class Lister
 			{
 				if((thisThang!=null)&&(thisThang instanceof Ability))
 				{
-					if(((Ability)thisThang).classificationCode()!=ofType)
+					if((((Ability)thisThang).classificationCode()&Ability.ALL_CODES)!=ofType)
 						ok=false;
 				}
 			}
@@ -83,7 +83,7 @@ public class Lister
 			{
 				if((thisThang!=null)&&(thisThang instanceof Ability))
 				{
-					if(((Ability)thisThang).classificationCode()!=ofType)
+					if((((Ability)thisThang).classificationCode()&Ability.ALL_CODES)!=ofType)
 						ok=false;
 				}
 			}

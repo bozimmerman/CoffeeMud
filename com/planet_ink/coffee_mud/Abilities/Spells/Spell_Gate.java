@@ -2,11 +2,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_Gate extends Spell
-	implements InvocationDevotion
 {
 	public Spell_Gate()
 	{
@@ -27,6 +25,10 @@ public class Spell_Gate extends Spell
 	public Environmental newInstance()
 	{
 		return new Spell_Gate();
+	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_EVOCATION;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -43,13 +43,15 @@ public class Mage extends StdCharClass
 			// level 2
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Blur",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Infravision",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Spell_DetectUndead",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_ObscureSelf",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Spell_KnowAlignment",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Enlarge",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Light",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Clog",false);
 			// level 3
+			CMAble.addCharAbilityMapping(ID(),3,"Spell_KnowAlignment",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_DeadenSmell",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Spell_DetectMetal",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_Grease",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_WizardLock",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_Deafness",false);
@@ -198,7 +200,7 @@ public class Mage extends StdCharClass
 				if(CMAble.getDefaultGain(ID(),A.ID()))
 					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
 				else
-				if(A.classificationCode()==Ability.SPELL)
+				if((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 					numTotal++;
 			}
 		}
@@ -215,7 +217,7 @@ public class Mage extends StdCharClass
 					Ability A=(Ability)CMClass.abilities.elementAt(a);
 					if((A.qualifyingLevel(mob)>0)
 					&&(!CMAble.getDefaultGain(ID(),A.ID()))
-					&&(A.classificationCode()==Ability.SPELL))
+					&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 					{
 						if(randSpell==0)
 						{
@@ -242,7 +244,7 @@ public class Mage extends StdCharClass
 				Ability A=(Ability)CMClass.abilities.elementAt(a);
 				if((A.qualifyingLevel(mob)>0)
 				&&(!CMAble.getDefaultGain(ID(),A.ID()))
-				&&(A.classificationCode()==Ability.SPELL))
+				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 				{
 					if(randSpell==0)
 					{

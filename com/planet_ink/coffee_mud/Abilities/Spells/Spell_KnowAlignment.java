@@ -3,11 +3,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_KnowAlignment extends Spell
-	implements DivinationDevotion
 {
 	public Spell_KnowAlignment()
 	{
@@ -28,6 +26,10 @@ public class Spell_KnowAlignment extends Spell
 	public Environmental newInstance()
 	{
 		return new Spell_KnowAlignment();
+	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_DIVINATION;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

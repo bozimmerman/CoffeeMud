@@ -3,12 +3,10 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 
 public class Spell_WaterBreathing extends Spell
-	implements AbjurationDevotion
 {
 
 	public Spell_WaterBreathing()
@@ -34,6 +32,11 @@ public class Spell_WaterBreathing extends Spell
 	{
 		return new Spell_WaterBreathing();
 	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_ABJURATION;
+	}
+
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

@@ -3,11 +3,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_MassInvisibility extends Spell
-	implements AlterationDevotion
 {
 	public Spell_MassInvisibility()
 	{
@@ -34,6 +32,10 @@ public class Spell_MassInvisibility extends Spell
 	public Environmental newInstance()
 	{
 		return new Spell_MassInvisibility();
+	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_ILLUSION;
 	}
 
 	/** this method defines how this thing responds

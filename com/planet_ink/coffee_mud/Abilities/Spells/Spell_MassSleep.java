@@ -3,11 +3,9 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 public class Spell_MassSleep extends Spell
-	implements CharmDevotion
 {
 	public Spell_MassSleep()
 	{
@@ -35,6 +33,10 @@ public class Spell_MassSleep extends Spell
 	public Environmental newInstance()
 	{
 		return new Spell_MassSleep();
+	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_CHARM;
 	}
 
 	public boolean okAffect(Affect affect)

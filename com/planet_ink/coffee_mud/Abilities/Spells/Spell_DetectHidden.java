@@ -3,15 +3,11 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
 import java.util.*;
 
 
 public class Spell_DetectHidden extends Spell
-	implements DivinationDevotion
 {
-
-	public boolean successfulObservation=false;
 
 	public Spell_DetectHidden()
 	{
@@ -36,6 +32,10 @@ public class Spell_DetectHidden extends Spell
 	{
 		return new Spell_DetectHidden();
 	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.SPELL_DIVINATION;
+	}
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -49,8 +49,7 @@ public class Spell_DetectHidden extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(successfulObservation)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_HIDDEN);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_HIDDEN);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -66,13 +65,17 @@ public class Spell_DetectHidden extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) keen vision!":"<S-NAME> chant(s) for keen vision!");
-		if(mob.location().okAffect(msg))
+		if(success)
 		{
-			mob.location().send(mob,msg);
-			successfulObservation=success;
-			beneficialAffect(mob,mob,0);
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) keen vision!":"<S-NAME> chant(s) for keen vision!");
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob,msg);
+				beneficialAffect(mob,mob,0);
+			}
 		}
+		else
+			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HER-HER> keen eyes, but the spell fizzles.");
 
 		return success;
 	}

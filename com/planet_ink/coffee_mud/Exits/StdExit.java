@@ -138,6 +138,9 @@ public class StdExit implements Exit
 		if((!affect.amITarget(this))&&(affect.tool()!=this))
 			return true;
 		else
+		if(affect.targetCode()==Affect.NO_EFFECT)
+			return true;
+		else
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_EXAMINESOMETHING:
