@@ -282,11 +282,12 @@ public class Injury extends StdAbility
 					    { bodyLoc=i; break;}
 					if(bodyLoc>=0)
 					{
-					    if(injuries[bodyLoc]==null) injuries[bodyLoc]=new Vector();
+					    Vector bodyVec=injuries[bodyLoc];
+					    if(bodyVec==null){ injuries[bodyLoc]=new Vector(); bodyVec=injuries[bodyLoc];}
 					    int whichInjury=-1;
-					    for(int i=0;i<injuries[bodyLoc].size();i++)
+					    for(int i=0;i<bodyVec.size();i++)
 					    {
-					        Object[] O=(Object[])injuries[bodyLoc].elementAt(i);
+					        Object[] O=(Object[])bodyVec.elementAt(i);
 					        if(((String)O[0]).equalsIgnoreCase((String)remains.elementAt(chosenOne)))
 					        { whichInjury=i; break;}
 					    }
@@ -302,11 +303,11 @@ public class Injury extends StdAbility
 						        Object[] O=new Object[2];
 						        O[0]=((String)remains.elementAt(chosenOne)).toLowerCase();
 						        O[1]=new Integer(BodyPct);
-						        injuries[bodyLoc].addElement(O);
+						        bodyVec.addElement(O);
 						    }
 						    else
 						    {
-						        Object[] O=(Object[])injuries[bodyLoc].elementAt(whichInjury);
+						        Object[] O=(Object[])bodyVec.elementAt(whichInjury);
 						        O[1]=new Integer(((Integer)O[1]).intValue()+BodyPct);
 						        if(((Integer)O[1]).intValue()>100)
 						            O[1]=new Integer(100);
@@ -314,12 +315,12 @@ public class Injury extends StdAbility
 						        {
 						            if(Amputation.validamputees[bodyLoc])
 				                    {
+							            bodyVec.removeElement(O);
+							            if(bodyVec.size()==0)
+							                injuries[bodyLoc]=null;
 							            Amputation.amputate(mob,A,((String)O[0]).toLowerCase());
 							            if(mob.fetchEffect(A.ID())==null)
 							                mob.addNonUninvokableEffect(A);
-							            injuries[bodyLoc].removeElement(O);
-							            if(injuries[bodyLoc].size()==0)
-							                injuries[bodyLoc]=null;
 				                    }
 						        }
 						    }

@@ -416,7 +416,7 @@ public class Amputation extends StdAbility
 			    V=I.injuries[i];
 			    if(V!=null)
 			    for(int v=0;v<V.size();v++)
-				    if(((String)V.elementAt(v)).equalsIgnoreCase(gone))
+				    if(((String)((Object[])V.elementAt(v))[0]).equalsIgnoreCase(gone))
 				    {
 				        V.removeElementAt(v);
 				        if(V.size()==0) I.injuries[i]=null;
