@@ -1,4 +1,3 @@
-area zapper for channels-- just for channels, regular zapper cant use it
 code something to examine all items and make sure they aren't overboard.
 code something to coffeemudify all the beds 
 GenCharClasses -- zappercheck on quals 

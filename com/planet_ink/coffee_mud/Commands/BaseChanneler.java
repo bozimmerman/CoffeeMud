@@ -48,6 +48,7 @@ public class BaseChanneler extends StdCommand
 		if((mob.location()!=null)
 		&&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))
 		{
+			boolean areareq=mask.toUpperCase().indexOf("SAMEAREA")>=0;
 			for(int s=0;s<Sessions.size();s++)
 			{
 				Session ses=(Session)Sessions.elementAt(s);
@@ -63,6 +64,7 @@ public class BaseChanneler extends StdCommand
 				&&(!M.amDead())
 				&&(M.location()!=null)
 				&&(MUDZapper.zapperCheck(mask,M))
+				&&((!areareq)||(M.location().getArea()==mob.location().getArea()))
 				&&((M.playerStats()==null)
 					||(!M.playerStats().getIgnored().containsKey(mob.Name())))
 				&&(M.okMessage(M,msg)))

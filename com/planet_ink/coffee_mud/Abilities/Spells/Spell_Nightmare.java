@@ -166,7 +166,7 @@ public class Spell_Nightmare extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				if(msg.value()<=0)
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					amountRemaining=100;
 					maliciousAffect(mob,target,0,-1);

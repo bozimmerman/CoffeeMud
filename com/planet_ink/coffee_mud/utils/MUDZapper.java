@@ -73,6 +73,8 @@ public class MUDZapper
 			zapCodes.put("-DEXTERITY",new Integer(28));
 			zapCodes.put("-CONSTITUTION",new Integer(29));
 			zapCodes.put("-CHARISMA",new Integer(30));
+			zapCodes.put("-AREA",new Integer(31));
+			zapCodes.put("+AREA",new Integer(32));
 		}
 		return zapCodes;
 	}
@@ -128,7 +130,11 @@ public class MUDZapper
 									+"-CHA X (<WORD> those with charisma less than X)  <BR>"
 									+"+CHA X (<WORD> those with charisma greater than X)  <BR>"
 									+"-DEX X (<WORD> those with dexterity less than X)  <BR>"
-									+"+DEX X (<WORD> those with dexterity greater than X)";
+									+"+DEX X (<WORD> those with dexterity greater than X) <BR>"
+									+"-AREA (<WORD> in all areas) <BR>"
+									+"\"+my areaname\" etc.. (create exceptions to +area) <BR>"
+									+"+AREA (do not <WORD> any areas) <BR>"
+									+"\"-my areaname\" etc.. (create exceptions to -area)";
 
 	public static String zapperInstructions(String CR, String word)
 	{
@@ -246,6 +252,14 @@ public class MUDZapper
 			if(fromHere(V,plusMinus,fromHere,(String)names.elementAt(v)))
 				return true;
 		return false;
+	}
+
+	public static boolean areaCheck(Vector V, char plusMinus, int fromHere, MOB mob)
+	{
+		if((mob==null)||(mob.location()==null)) return false;
+		Area A=mob.location().getArea();
+		if(A==null) return false;
+		return fromHere(V,plusMinus,fromHere,A.name());
 	}
 
 	public static boolean fromHere(Vector V, char plusMinus, int fromHere, String find)
@@ -564,6 +578,34 @@ public class MUDZapper
 					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a charisma of at most "+val+".");
 					break;
+				case 31: // +Area
+					{
+						buf.append("Disallows the following area(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str2.startsWith("-")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 32: // -Area
+					{
+						buf.append("Requires the following area(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str.startsWith("-")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				}
 			else
 			{
@@ -771,6 +813,13 @@ public class MUDZapper
 					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.CHARISMA)>val)
 						return false;
+					break;
+				case 31: // +area
+					if(areaCheck(V,'-',v+1,mob))
+						return false;
+					break;
+				case 32: // -area
+					if(!areaCheck(V,'+',v+1,mob)) return false;
 					break;
 				}
 			else

@@ -1748,11 +1748,14 @@ public class StdMOB implements MOB
 				}
 				break;
 			case CMMsg.TYP_DEATH:
-				if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-					MUDFight.justDie((MOB)msg.tool(),this);
-				else
-					MUDFight.justDie(null,this);
-				tell(this,msg.target(),msg.tool(),msg.sourceMessage());
+				if(!amDead)
+				{
+					if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+						MUDFight.justDie((MOB)msg.tool(),this);
+					else
+						MUDFight.justDie(null,this);
+					tell(this,msg.target(),msg.tool(),msg.sourceMessage());
+				}
 				break;
 			case CMMsg.TYP_REBUKE:
 				if(((msg.target()==null)&&(getLeigeID().length()>0))
@@ -1890,7 +1893,7 @@ public class StdMOB implements MOB
 								weapon=(Weapon)msg.tool();
 							if(weapon!=null)
 							{
-								boolean isHit=(Dice.normalizeAndRollLess(msg.source().adjustedAttackBonus(this)+(adjustedArmor()-50)));
+								boolean isHit=(Dice.normalizeAndRollLess(msg.source().adjustedAttackBonus(this)+adjustedArmor()));
 								MUDFight.postWeaponDamage(msg.source(),this,weapon,isHit);
 								msg.setValue(1);
 							}

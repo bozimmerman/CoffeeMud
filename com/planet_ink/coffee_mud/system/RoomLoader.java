@@ -413,7 +413,7 @@ public class RoomLoader
 					D.update(sql,0);
 					DBConnector.DBDone(D);
 				}
-				catch(SQLException sqle)
+				catch(Throwable sqle)
 				{
 					Log.errOut("Room",sql);
 					Log.errOut("Room","UpdateItems"+sqle);

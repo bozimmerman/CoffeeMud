@@ -134,9 +134,9 @@ public class TimsItemTable extends StdWebMacro
 		int otherArm=0;
 		if(ADJ!=null)
 		{
-			otherArm=Util.getParmPlus(ADJ.text(),"arm")*-1;
-			otherAtt=Util.getParmPlus(ADJ.text(),"att");
-			otherDam=Util.getParmPlus(ADJ.text(),"dam");
+			//otherArm=Util.getParmPlus(ADJ.text(),"arm")*-1;
+			//otherAtt=Util.getParmPlus(ADJ.text(),"att");
+			//otherDam=Util.getParmPlus(ADJ.text(),"dam");
 		}
 		int curArmor=savedI.baseEnvStats().armor()+otherArm;
 		int curFight=(savedI.baseEnvStats().damage()+savedI.baseEnvStats().attackAdjustment()+otherDam+otherAtt)/2;
@@ -233,12 +233,6 @@ public class TimsItemTable extends StdWebMacro
 			int arm=Util.getParmPlus(newText,"arm")*-1;
 			int att=Util.getParmPlus(newText,"att");
 			int dam=Util.getParmPlus(newText,"dam");
-			if(I instanceof Weapon)
-			{
-				att=0; dam=0;
-			}
-			else
-				arm=0;
 			level+=(arm*3);
 			level+=(att/2);
 			level+=(dam*3);
