@@ -909,7 +909,7 @@ public class StdMOB implements MOB
 						myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r");
 					if(!isMonster())
 						myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a level "+envStats().level()+" "+charStats().getMyClass().name()+".\n\r");
-					myDescription.append(ExternalPlay.standardMobCondition(this)+"\n\r\n\r");
+					myDescription.append(healthText()+"\n\r\n\r");
 					myDescription.append(description()+"\n\r\n\r");
 					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(affect.source(),this));
 					mob.tell(myDescription.toString());
@@ -1093,7 +1093,7 @@ public class StdMOB implements MOB
 					myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r"+description()+"\n\r");
 				if(!isMonster())
 					myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a level "+envStats().level()+" "+charStats().getMyClass().name()+".\n\r");
-				myDescription.append(ExternalPlay.standardMobCondition(this)+"\n\r\n\r");
+				myDescription.append(healthText()+"\n\r\n\r");
 				myDescription.append(description()+"\n\r\n\r");
 				myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(affect.source(),this));
 				mob.tell(myDescription.toString());
@@ -1245,7 +1245,7 @@ public class StdMOB implements MOB
 						{
 							MOB target=this.getVictim();
 							if((target!=null)&&(!target.amDead())&&(Sense.canBeSeenBy(target,this)))
-								session().print(ExternalPlay.standardMobCondition(target)+"\n\r\n\r");
+								session().print(target.healthText()+"\n\r\n\r");
 						}
 					}
 					else
