@@ -193,54 +193,6 @@ public class CommandProcessor
 		case CommandSet.CHANWHO:
 			Channels.channelWho(mob,Util.combine(commands,1));
 			break;
-		case CommandSet.CLANACCEPT:
-			ClanCommands.clanaccept(mob,commands,mob.Name().equals(mob.getClanID()));
-			break;
-		case CommandSet.CLANAPPLY:
-			ClanCommands.clanapply(mob,commands);
-			break;
-		case CommandSet.CLANASSIGN:
-			ClanCommands.clanassign(mob,commands,mob.Name().equals(mob.getClanID()));
-			break;
-		case CommandSet.CLANCREATE:
-			ClanCommands.clanCreate(mob,commands);
-			break;
-		case CommandSet.CLANDECLARE:
-			ClanCommands.clandeclare(mob,commands,mob.Name().equals(mob.getClanID()));
-			break;
-		case CommandSet.CLANDETAILS:
-			ClanCommands.clandetails(mob,commands);
-			break;
-		case CommandSet.CLANDONATESET:
-			ClanCommands.clandonateset(mob,commands,mob.Name().equals(mob.getClanID()));
-			break;
-		case CommandSet.CLANEXILE:
-			ClanCommands.clanexile(mob,commands,mob.Name().equals(mob.getClanID()));
-			break;
-		case CommandSet.CLANHOMESET:
-			ClanCommands.clanhomeset(mob,commands,mob.Name().equals(mob.getClanID()));
-			break;
-		case CommandSet.CLANLIST:
-			ClanCommands.clanlist(mob,commands);
-			break;
-		case CommandSet.CLANPREMISE:
-			ClanCommands.clanpremise(mob,commands,mob.Name().equals(mob.getClanID()));
-			break;
-		case CommandSet.CLANQUAL:
-			ClanCommands.clanqual(mob,commands,mob.Name().equals(mob.getClanID()));
-			break;
-		case CommandSet.CLANREJECT:
-			ClanCommands.clanreject(mob,commands,mob.Name().equals(mob.getClanID()));
-			break;
-		case CommandSet.CLANRESIGN:
-			ClanCommands.clanresign(mob,commands);
-			break;
-		case CommandSet.CLANTAX:
-			ClanCommands.clantax(mob,commands,mob.Name().equals(mob.getClanID()));
-			break;
-		case CommandSet.CLANVOTE:
-			ClanCommands.clanvote(mob,commands,mob.Name().equals(mob.getClanID()));
-			break;
 		case CommandSet.CONSIDER:
 			SocialProcessor.consider(mob,commands);
 			break;

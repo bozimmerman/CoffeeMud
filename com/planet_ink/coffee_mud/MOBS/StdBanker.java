@@ -119,8 +119,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);
-			Item I=makeItem((String)V2.elementAt(DATA_DATA));
-			if(I!=null)	mine.addElement(I);
+			if(V2.size()>3)
+			{
+				Item I=makeItem((String)V2.elementAt(DATA_DATA));
+				if(I!=null)	mine.addElement(I);
+			}
 		}
 		return mine;
 	}

@@ -1,3 +1,4 @@
+I tried using broadcast sound in an emoter.  and the sound works for the room yer in, but does NOT broadcast to any adjacent rooms.
 parse out all the commands into classes, so that access can be class based, and time req can be determined 
 code something to coffeemudify all the beds 
 GenCharClasses -- zappercheck on quals 

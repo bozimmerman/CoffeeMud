@@ -523,12 +523,10 @@ public class CMClass extends ClassLoader
 			for(int c=0;c<cmds.size();c++)
 			{
 				Command C=(Command)cmds.elementAt(c);
-				Vector wordList=C.getAccessWords();
-				for(int w=0;w<wordList.size();w++)
-				{
-					String word=(String)wordList.elementAt(w);
-					extraCmds.put(word.trim().toUpperCase(),C);
-				}
+				String[] wordList=C.getAccessWords();
+				if(wordList!=null)
+					for(int w=0;w<wordList.length;w++)
+						extraCmds.put(wordList[w].trim().toUpperCase(),C);
 			}
 		}
 		

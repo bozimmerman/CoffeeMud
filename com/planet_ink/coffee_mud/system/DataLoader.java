@@ -47,17 +47,17 @@ public class DataLoader
 				R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'");
 			while(R.next())
 			{
-				Vector V=new Vector();
 				String playerID2=DBConnections.getRes(R,"CMPLID");
 				String section2=DBConnections.getRes(R,"CMSECT");
 				if(section2.equalsIgnoreCase(section))
 				{
+					Vector V=new Vector();
 					V.addElement(playerID2);
 					V.addElement(section2);
 					V.addElement(DBConnections.getRes(R,"CMPKEY"));
 					V.addElement(DBConnections.getRes(R,"CMPDAT"));
+					rows.addElement(V);
 				}
-				rows.addElement(V);
 			}
 			DBConnector.DBDone(D);
 		}
@@ -83,18 +83,18 @@ public class DataLoader
 				R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"' AND CMPKEY='"+key+"'");
 			while(R.next())
 			{
-				Vector V=new Vector();
 				String playerID2=DBConnections.getRes(R,"CMPLID");
 				String section2=DBConnections.getRes(R,"CMSECT");
 				if((playerID2.equalsIgnoreCase(playerID))
 				&&(section2.equalsIgnoreCase(section)))
 				{
+					Vector V=new Vector();
 					V.addElement(playerID2);
 					V.addElement(section2);
 					V.addElement(DBConnections.getRes(R,"CMPKEY"));
 					V.addElement(DBConnections.getRes(R,"CMPDAT"));
+					rows.addElement(V);
 				}
-				rows.addElement(V);
 			}
 			DBConnector.DBDone(D);
 		}

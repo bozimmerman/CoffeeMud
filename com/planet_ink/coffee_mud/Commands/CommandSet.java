@@ -163,14 +163,6 @@ public class CommandSet extends Hashtable
 	public static final int BAN=150;
 	public static final int AUTOGUARD=151;
 	public static final int THROW=152;
-	public static final int CLANACCEPT=153;
-	public static final int CLANAPPLY=154;
-	public static final int CLANDETAILS=155;
-	public static final int CLANEXILE=156;
-	public static final int CLANHOMESET=157;
-	public static final int CLANLIST=158;
-	public static final int CLANREJECT=159;
-	public static final int CLANRESIGN=160;
 	public static final int GODS=161;
 	public static final int MERGE=162;
 	public static final int FEED=163;
@@ -180,13 +172,7 @@ public class CommandSet extends Hashtable
 	public static final int WHISPER=167;
 	public static final int CONFIG=168;
 	public static final int LOAD=169;
-	public static final int CLANASSIGN=170;
-	public static final int CLANDONATESET=171;
-	public static final int CLANPREMISE=172;
-	public static final int CLANDECLARE=173; //
-	public static final int CLANVOTE=174; //
 	public static final int AT=175;
-	public static final int CLANCREATE=176;
 	public static final int EMAIL=177;
 	public static final int AUCTION=178;
 	public static final int SOUND=179;
@@ -203,8 +189,6 @@ public class CommandSet extends Hashtable
 	public static final int STAT=190;
 	public static final int WIZEMOTE=191;
 	public static final int POUR=192;
-	public static final int CLANQUAL=193;
-	public static final int CLANTAX=194;
 	public static final int NOPURGE=195;
 	public static final int AFTER=196;
 
@@ -250,24 +234,6 @@ public class CommandSet extends Hashtable
 		put("CHANNELS",new Integer(CHANNELS));
 		put("CHANTS",new Integer(CHANTS));
 		put("CHANWHO",new Integer(CHANWHO));
-	  	put("CLANACCEPT",new Integer(CLANACCEPT));
-		put("CLANAPPLY",new Integer(CLANAPPLY));
-		put("CLANASSIGN",new Integer(CLANASSIGN));
-		put("CLANCREATE",new Integer(CLANCREATE));
-		put("CLANDECLARE",new Integer(CLANDECLARE));
-		put("CLANDETAILS",new Integer(CLANDETAILS));
-		put("CLAN",new Integer(CLANDETAILS));
-		put("CLANDONATESET",new Integer(CLANDONATESET));
-		put("CLANEXILE",new Integer(CLANEXILE));
-		put("CLANHOMESET",new Integer(CLANHOMESET));
-		put("CLANLIST",new Integer(CLANLIST));
-		put("CLANS",new Integer(CLANLIST));
-		put("CLANPREMISE",new Integer(CLANPREMISE));
-		put("CLANQUAL",new Integer(CLANQUAL));
-		put("CLANREJECT",new Integer(CLANREJECT));
-		put("CLANRESIGN",new Integer(CLANRESIGN));
-		put("CLANTAX",new Integer(CLANTAX));
-		put("CLANVOTE",new Integer(CLANVOTE));
 		put("COLORSET",new Integer(COLORSET));
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));

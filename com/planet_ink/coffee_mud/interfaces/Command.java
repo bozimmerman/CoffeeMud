@@ -7,5 +7,5 @@ public interface Command extends Comparable
 	public int ticksToExecute();
 	public boolean canBeOrdered();
 	public boolean execute(MOB mob, Vector commands)
-		throws java.io.Exception;
+		throws java.io.IOException;
 }

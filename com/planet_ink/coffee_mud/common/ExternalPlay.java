@@ -39,11 +39,6 @@ public class ExternalPlay
 	}
 	
 	public static I3Interface i3(){return i3interface;}
-	public static int channelInt(String channelName)
-	{
-		if(player!=null) return player.channelInt(channelName);
-		return -1;
-	}
 	public static boolean doesOwnThisProperty(MOB mob, Room room)
 	{
 		if(player!=null) return player.doesOwnThisProperty(mob,room);

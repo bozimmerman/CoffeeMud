@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.sysop.*;
 import com.planet_ink.coffee_mud.Commands.base.*;
+import com.planet_ink.coffee_mud.Commands.extra.*;
 import java.util.*;
 import java.io.IOException;
 public class ExternalCommands implements ExternalCommand
@@ -29,11 +30,6 @@ public class ExternalCommands implements ExternalCommand
 	public boolean wear(MOB mob, Item item, boolean quiet)
 	{
 		return ItemUsage.wear(mob,item,quiet);
-	}
-
-	public int channelInt(String channelName)
-	{
-		return Channels.getChannelInt(channelName);
 	}
 
 	public void obliterateArea(String areaName)
@@ -150,9 +146,9 @@ public class ExternalCommands implements ExternalCommand
 		TheFight.justDie(source,target);
 	}
 	public void channel(MOB mob, String channelName, String message, boolean systemMsg)
-	{ Channels.reallyChannel(mob,channelName,message,systemMsg);}
+	{ com.planet_ink.coffee_mud.Commands.base.Channels.reallyChannel(mob,channelName,message,systemMsg);}
 	public void channel(String channelName, String clanID, String message, boolean systemMsg)
-	{ Channels.reallyChannel(channelName,clanID,message,systemMsg);}
+	{ com.planet_ink.coffee_mud.Commands.base.Channels.reallyChannel(channelName,clanID,message,systemMsg);}
 
 	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
