@@ -90,7 +90,7 @@ public class Forage extends CommonSkill
 		Environmental E=mob.location().myResource();
 		if((profficiencyCheck(0,auto))
 		   &&(E instanceof Item)
-		   &&(((Item)E).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
+		   &&((((Item)E).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
 		{
 			found=(Item)E;
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
