@@ -42,9 +42,11 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		if(T.landOwner().length()==0)
 		{
 			boolean updateExits=false;
+			boolean foundOne=false;
 			for(int d=0;d<4;d++)
 			{
 				Room R2=R.rawDoors()[d];
+				foundOne=foundOne||(R2!=null);
 				if((R2!=null)&&(isCleanRoom(R,R2)))
 				{
 					R.rawDoors()[d]=null;
@@ -53,6 +55,11 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					ExternalPlay.obliterateRoom(R2);
 					R2.getArea().fillInAreaRoom(R2);
 				}
+			}
+			if(!foundOne)
+			{
+				ExternalPlay.obliterateRoom(R);
+				return;
 			}
 			if(updateExits)
 				ExternalPlay.DBUpdateExits(R);
@@ -68,8 +75,6 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					R2=CMClass.getLocale(CMClass.className(R));
 					R2.setID(ExternalPlay.getOpenRoomID(R.getArea().name()));
 					R2.setArea(R.getArea());
-					R2.setDisplayText("An empty plot of land");
-					R2.setDescription("Posted here is a notice that this lot, "+R2.ID()+", is for sale.");
 					Ability newTitle=null;
 					for(int a=0;a<R.numAffects();a++)
 					{
@@ -93,13 +98,14 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						
 					ExternalPlay.DBCreateRoom(R2,CMClass.className(R2));
 					CMMap.addRoom(R2);
-					R.getArea().fillInAreaRoom(R);
+					colorForSale(R2,true);
 					R2.getArea().fillInAreaRoom(R2);
 					ExternalPlay.DBUpdateExits(R2);
 				}
 			}
 			if(updateExits)
 				ExternalPlay.DBUpdateExits(R);
+			R.getArea().fillInAreaRoom(R);
 		}
 	}
 }

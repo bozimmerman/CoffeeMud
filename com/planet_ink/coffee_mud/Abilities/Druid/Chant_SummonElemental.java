@@ -34,6 +34,16 @@ public class Chant_SummonElemental extends Chant
 		return super.tick(tickID);
 	}
 	
+	public void affect(Affect msg)
+	{
+		super.affect(msg);
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+		&&(msg.sourceMinor()==Affect.MSG_QUIT))
+			unInvoke();
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

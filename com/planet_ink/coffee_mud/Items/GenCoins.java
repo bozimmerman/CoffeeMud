@@ -7,6 +7,7 @@ import java.util.*;
 public class GenCoins extends GenItem implements Coins
 {
 	public String ID(){	return "GenCoins";}
+	public int value(){	return envStats().ability();}
 	public GenCoins()
 	{
 		super();
@@ -32,7 +33,6 @@ public class GenCoins extends GenItem implements Coins
 		if(((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)&&((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PAPER))
 			baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
 		envStats=baseEnvStats.cloneStats();
-		goldValue=envStats().ability();
 		// import not to sup this, otherwise 'ability' makes it magical!
 		for(int a=0;a<affects.size();a++)
 		{

@@ -106,7 +106,6 @@ public class Generic
 			item.setGettable(get(f,2));
 			item.setReadable(get(f,4));
 			item.setRemovable(get(f,8));
-			if(get(f,16)) Log.errOut("Generic","Item is trapped!");
 		}
 		if(E instanceof Container)
 		{

@@ -1243,6 +1243,19 @@ public class TelnetSession extends Thread implements Session
 		status=Session.STATUS_LOGOUT4;
 		if(mob!=null)
 		{
+			// the player quit message!
+			if(mob.location()!=null)
+			{
+				FullMsg msg=new FullMsg(mob,null,Affect.MSG_QUIT,null);
+				for(int f=0;f<mob.numFollowers();f++)
+				{
+					MOB follower=mob.fetchFollower(f);
+					if((follower!=null)&&(follower.location()!=mob.location()))
+						follower.affect(msg);
+				}
+				if(mob.location()!=null)
+					mob.location().send(mob,msg);
+			}
 			mob.setLastDateTime(Calendar.getInstance());
 			Log.sysOut("Session","logout: "+mob.name());
 			mob.destroy();

@@ -1,1 +1,12 @@
 summon a horse, jump on it, get attacked by something, wait till its dead, and cast a spell at it, your encumbrance goes up, cast another spell and it goes back down.
+the gems you buy from the store dont work to make jewlery.
+!hirelings can save as followers if not out before player quits&saves
+the bank should refund above 1000 as a money changer.
+the money changer should just fill any bag the person may already have.
+corky will carpentry a small chest, but when he is done he does not drop one. He did a plaque fine, and yesterday made a chest, but its not anywhere to be seen today
+!when a hireling nofollows, he should save the mobs followers?
+!ok, then I logged out and I was back in my house, and the killed dude reapeared...
+corky will take my wood and not actually build anything, but will make carpentry stuff.
+! items are rejuving at the houses -- bad
+! archon's have aura's again
+! meditation not lasting long enough.

@@ -25,6 +25,8 @@ public class MobileGoodGuardian extends Mobile
 		if(ticking instanceof Rideable)
 			if(((Rideable)ticking).numRiders()>0)
 				return;
+		if((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
+		   return;
 		
 		Room thisRoom=mob.location();
 		MOB victim=GoodGuardian.anyPeaceToMake(mob.location(),mob);

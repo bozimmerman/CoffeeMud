@@ -253,12 +253,6 @@ public class StdBanker extends StdShopKeeper implements Banker
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GIVE:
-				if((affect.tool() instanceof Item)
-				&&(!mob.isASysOp(mob.location())))
-				{
-					super.affect(affect);
-					return;
-				}
 			case Affect.TYP_DEPOSIT:
 				{
 					if(affect.tool() instanceof Container)
@@ -266,8 +260,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 					    Vector V=((Container)affect.tool()).getContents();
 					    for(int i=0;i<V.size();i++)
 					    {
-					   	 Item I=(Item)V.elementAt(i);
-					   	 I.setContainer(null);
+							Item I=(Item)V.elementAt(i);
+							I.setContainer(null);
 					    }
 					}
 					FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
@@ -405,10 +399,6 @@ public class StdBanker extends StdShopKeeper implements Banker
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GIVE:
-				if(affect.tool()==null) return false;
-				if((affect.tool() instanceof Item)
-				&&(!mob.isASysOp(mob.location())))
-					return true;
 			case Affect.TYP_DEPOSIT:
 				{
 					if(affect.tool()==null) return false;

@@ -7,6 +7,7 @@ import java.util.*;
 public class StdCoins extends StdItem implements Coins
 {
 	public String ID(){	return "StdCoins";}
+	public int value(){	return envStats().ability();}
 	public StdCoins()
 	{
 		super();
@@ -45,12 +46,10 @@ public class StdCoins extends StdItem implements Coins
 		else
 			return name()+" sit here.";
 	}
-	
 	public void recoverEnvStats()
 	{
 		baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
 		envStats=baseEnvStats.cloneStats();
-		goldValue=envStats().ability();
 	}
 	
 	public boolean putCoinsBack()

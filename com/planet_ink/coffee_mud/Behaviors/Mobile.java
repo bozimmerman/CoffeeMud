@@ -30,8 +30,10 @@ public class Mobile extends ActiveTicker
 			if(ticking instanceof Rideable)
 				if(((Rideable)ticking).numRiders()>0)
 					return;
-			
 			MOB mob=(MOB)ticking;
+			if((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
+			   return;
+			
 			Room thisRoom=mob.location();
 			if(thisRoom instanceof GridLocale)
 			{

@@ -231,6 +231,9 @@ public class CommandProcessor
 				case CommandSet.FILL:
 					itemUsage.fill(mob,commands);
 					break;
+				case CommandSet.FIRE:
+					socialProcessor.fire(mob,Util.combine(commands,1));
+					break;
 				case CommandSet.FLEE:
 					movement.flee(mob,Util.combine(commands,1));
 					break;
@@ -895,6 +898,12 @@ public class CommandProcessor
 			Log.errOut("CommandProcessor",mob.name()+" starts system restarting '"+externalCommand+"'...");
 		else
 			Log.errOut("CommandProcessor",mob.name()+" starts system restart...");
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_SHUTDOWN,null);
+		for(int r=0;r<CMMap.numRooms();r++)
+		{
+			Room R=CMMap.getRoom(r);
+			R.send(mob,msg);
+		}
 		if(myHost!=null)
 			myHost.shutdown(mob.session(),keepItDown,externalCommand);
 		else

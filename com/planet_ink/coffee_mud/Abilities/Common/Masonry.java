@@ -46,7 +46,7 @@ public class Masonry extends CommonSkill
 				MOB mob=(MOB)affected;
 				if(!aborted)
 				{
-					if((messedUp)&&(room!=null)&&(dir>=0))
+					if((messedUp)&&(room!=null))
 					switch(doingCode)
 					{
 					case BUILD_ROOF:
@@ -152,13 +152,72 @@ public class Masonry extends CommonSkill
 					case BUILD_DEMOLISH:
 					default:
 						{
-							room.rawExits()[dir]=CMClass.getExit("Open");
-							if(room.rawDoors()[dir]!=null)
+							if(dir<0)
 							{
-								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("Open");
-								ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+								Room R=CMClass.getLocale("Plains");
+								R.setID(room.ID());
+								R.setDisplayText(room.displayText());
+								R.setDescription(room.description());
+								R.setArea(room.getArea());
+								for(int a=room.numAffects()-1;a>=0;a--)
+								{
+									Ability A=room.fetchAffect(a);
+									if(A!=null){
+										room.delAffect(A);
+										R.addAffect(A);
+									}
+								}
+								for(int i=room.numItems()-1;i>=0;i--)
+								{
+									Item I=room.fetchItem(i);
+									if(I!=null){
+										room.delItem(I);
+										R.addItem(I);
+									}
+								}
+								for(int m=room.numInhabitants()-1;m>=0;m--)
+								{
+									MOB M=room.fetchInhabitant(m);
+									if(M!=null){
+										room.delInhabitant(M);
+										R.addInhabitant(M);
+										M.setLocation(R);
+									}
+								}
+								ExternalPlay.deleteTick(room,-1);
+								CMMap.delRoom(room);
+								CMMap.addRoom(R);
+								for(int d=0;d<R.rawDoors().length;d++)
+									R.rawDoors()[d]=room.rawDoors()[d];
+								for(int d=0;d<R.rawExits().length;d++)
+									R.rawExits()[d]=room.rawExits()[d];
+								R.startItemRejuv();
+								for(int r=0;r<CMMap.numRooms();r++)
+								{
+									Room R2=CMMap.getRoom(r);
+									for(int d=0;d<R2.rawDoors().length;d++)
+										if(R2.rawDoors()[d]==room)
+										{
+											R2.rawDoors()[d]=R;
+											if(R2 instanceof GridLocale)
+												((GridLocale)R2).buildGrid();
+										}
+								}
+								R.getArea().clearMap();
+								R.getArea().fillInAreaRoom(R);
+								ExternalPlay.DBUpdateRoom(R);
+								ExternalPlay.DBUpdateExits(R);
 							}
-							ExternalPlay.DBUpdateExits(room);
+							else
+							{
+								room.rawExits()[dir]=CMClass.getExit("Open");
+								if(room.rawDoors()[dir]!=null)
+								{
+									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("Open");
+									ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+								}
+								ExternalPlay.DBUpdateExits(room);
+							}
 						}
 						break;
 					}
@@ -208,6 +267,9 @@ public class Masonry extends CommonSkill
 		}
 		String dirName=(String)commands.lastElement();
 		dir=Directions.getGoodDirectionCode(dirName);
+		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("roof")))
+		   dir=-1;
+		else
 		if(((dir<0)||(dir>3))
 		   &&(doingCode!=BUILD_ROOF)&&(doingCode!=BUILD_DESC)&&(doingCode!=BUILD_TITLE))
 		{
@@ -297,7 +359,7 @@ public class Masonry extends CommonSkill
 		if(!(titleInName.equals(mob.name())
 		   ||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().name())))))
 		{
-			if((doingCode!=BUILD_ROOF)&&(doingCode!=BUILD_TITLE)&&(doingCode!=BUILD_DESC))
+			if((doingCode!=BUILD_ROOF)&&(doingCode!=BUILD_TITLE)&&(doingCode!=BUILD_DESC)&&(dir>=0))
 				R2=mob.location().getRoomInDir(dir);
 			if(R2!=null)
 			for(int a=0;a<R2.numAffects();a++)
@@ -347,7 +409,10 @@ public class Masonry extends CommonSkill
 			break;
 		case BUILD_DEMOLISH:
 		default:
-			verb="demolishing the "+Directions.getDirectionName(dir)+" wall";
+			if(dir<0)
+				verb="demolishing the roof";
+			else
+				verb="demolishing the "+Directions.getDirectionName(dir)+" wall";
 			break;
 		}
 		messedUp=!profficiencyCheck(0,auto);

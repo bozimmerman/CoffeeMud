@@ -34,6 +34,16 @@ public class Spell_DemonGate extends Spell
 		return super.tick(tickID);
 	}
 	
+	public void affect(Affect msg)
+	{
+		super.affect(msg);
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+		&&(msg.sourceMinor()==Affect.MSG_QUIT))
+			unInvoke();
+	}
+	
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;

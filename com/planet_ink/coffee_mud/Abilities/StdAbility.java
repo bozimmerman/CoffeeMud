@@ -42,6 +42,7 @@ public class StdAbility implements Ability, Cloneable
 	protected boolean canBeUninvoked=true;
 	protected boolean unInvoked=false;
 	protected int tickDown=-1;
+	private long lastProfHelp=0;
 	
 	public StdAbility()
 	{
@@ -373,6 +374,9 @@ public class StdAbility implements Ability, Cloneable
 
 	public void helpProfficiency(MOB mob)
 	{
+		if((Calendar.getInstance().getTime().getTime()-lastProfHelp)<60000)
+			return;
+		
 		Ability A=(Ability)mob.fetchAbility(ID());
 		if(A==null) return;
 		if(A.profficiency()<100)
@@ -382,12 +386,14 @@ public class StdAbility implements Ability, Cloneable
 				// very important, since these can be autoinvoked affects (copies)!
 				A.setProfficiency(A.profficiency()+1);
 				if((this!=A)&&(profficiency()<100))
+				{
 					setProfficiency(profficiency()+1);
+					lastProfHelp=Calendar.getInstance().getTime().getTime();
+				}
 			}
 		}
 		else
 			A.setProfficiency(100);
-
 	}
 
 	public boolean invoke(MOB mob, Environmental target, boolean auto)
@@ -529,8 +535,6 @@ public class StdAbility implements Ability, Cloneable
 		}
 		return ok;
 	}
-
-
 
 	public boolean autoInvocation(MOB mob)
 	{

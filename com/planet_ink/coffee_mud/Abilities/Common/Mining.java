@@ -56,9 +56,11 @@ public class Mining extends CommonSkill
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted))
+				if((found!=null)&&(!aborted)&&(found instanceof Item))
 				{
-					int amount=Dice.roll(1,3,0);
+					int amount=Dice.roll(1,10,0);
+					if((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
+						amount=Dice.roll(1,85,0);
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to mine "+amount+" pound"+s+" of "+foundShortName+".");
@@ -83,23 +85,10 @@ public class Mining extends CommonSkill
 			return false;
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(0,auto))
-		   &&(resourceType!=EnvResource.RESOURCE_CRYSTAL)
-		   &&(resourceType!=EnvResource.RESOURCE_OPAL)
-		   &&(resourceType!=EnvResource.RESOURCE_AMETHYST)
-		   &&(resourceType!=EnvResource.RESOURCE_GARNET)
-		   &&(resourceType!=EnvResource.RESOURCE_AMBER)
-		   ||(resourceType==EnvResource.RESOURCE_GRANITE)
-		   &&(resourceType!=EnvResource.RESOURCE_AQUAMARINE)
-		   &&(resourceType!=EnvResource.RESOURCE_CRYSOBERYL)
-		   &&(resourceType!=EnvResource.RESOURCE_TOPAZ)
+		   &&((resourceType&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PRECIOUS)
+		   &&((resourceType&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_GLASS)
 		   &&(resourceType!=EnvResource.RESOURCE_SAND)
-		   &&(resourceType!=EnvResource.RESOURCE_DIAMOND)
-		   &&(resourceType!=EnvResource.RESOURCE_GEM)
-		   &&(resourceType!=EnvResource.RESOURCE_GLASS)
-		   &&(resourceType!=EnvResource.RESOURCE_PEARL)
-		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
-		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
-		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
+		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
 		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
 		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)))
 		{

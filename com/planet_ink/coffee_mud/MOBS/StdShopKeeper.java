@@ -496,10 +496,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						if(item instanceof Container)
 							V=((Container)item).getContents();
 						else
-						{
 							V=new Vector();
-							V.addElement(item);
-						}
+						if(!V.contains(item)) V.addElement(item);
 						for(int v=0;v<V.size();v++)
 						{
 							Item item2=(Item)V.elementAt(v);
@@ -694,20 +692,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if(A!=null)
 				{
 					Item I=CMClass.getItem("StdTitle");
-					I.setDisplayText("The title to "+R.ID()+" has foolishly been left here.");
 					((LandTitle)I).setLandRoomID(R.ID());
-					if(((LandTitle)I).landOwner().length()==0)
-					{
-						I.setName("the Title to "+R.ID());
-						I.setBaseValue(((LandTitle)A).landPrice());
-					}
-					else
 					if(((LandTitle)I).landOwner().equals(mob.name()))
-					{
-						I.setName("the Title to "+R.ID()+" (Copy)");
-						I.setBaseValue(10);
-					}
+						I.baseEnvStats().setWeight(1);
 					else
+					if(((LandTitle)I).landOwner().length()>0)
 						continue;
 					I.recoverEnvStats();
 					V.addElement(I);

@@ -54,9 +54,9 @@ public class Skill_Meditation extends StdAbility
 		   &&(Sense.canBeHeardBy(affect.source(),mob)))
 		{
 			if(!affect.amISource(mob))
-				affect.addTrailerMsg(new FullMsg(mob,null,null,Affect.TYP_GENERAL|Affect.ACT_HANDS,Affect.NO_EFFECT,Affect.NO_EFFECT,null));
-			else
 				affect.addTrailerMsg(new FullMsg(mob,null,null,Affect.TYP_GENERAL|Affect.ACT_HANDS,Affect.NO_EFFECT,Affect.NO_EFFECT,"Your meditation is interrupted by the noise."));
+			else
+				affect.addTrailerMsg(new FullMsg(mob,null,null,Affect.TYP_GENERAL|Affect.ACT_HANDS,Affect.NO_EFFECT,Affect.NO_EFFECT,null));
 		}
 		return;
 	}

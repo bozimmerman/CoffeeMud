@@ -23,6 +23,9 @@ public class VeryAggressive extends Aggressive
 		if(ticking instanceof Rideable)
 			if(((Rideable)ticking).numRiders()>0)
 				return;
+		
+		if((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
+		   return;
 
 		// let's not do this 100%
 		if(Dice.rollPercentage()>15) return;

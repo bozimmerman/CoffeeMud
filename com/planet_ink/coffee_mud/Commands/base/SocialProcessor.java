@@ -99,6 +99,23 @@ public class SocialProcessor
 			mob.location().send(mob,msg);
 	}
 
+	public void fire(MOB mob, String rest)
+	{
+		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Item.WORN_REQ_ANY);
+		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
+		   target=null;
+		if((target!=null)&&(!Sense.canBeSeenBy(target,mob)))
+			target=null;
+		if(target==null)
+			mob.tell("Fire whom?");
+		else
+		{
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) to <T-NAMESELF> 'You are fired!'^?");
+			if(mob.location().okAffect(msg))
+				mob.location().send(mob,msg);
+		}
+	}
+
 	public void cmdSay(MOB mob, Vector commands)
 	{
 		String theWord="Say";

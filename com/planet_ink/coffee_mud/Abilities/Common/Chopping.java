@@ -31,7 +31,7 @@ public class Chopping extends CommonSkill
 			MOB mob=(MOB)affected;
 			if(tickUp==6)
 			{
-				if(found!=null)
+				if((found!=null)&&(found instanceof Item))
 				{
 					commonTell(mob,"You have a good tree for "+foundShortName+".");
 					displayText="You are chopping up "+foundShortName;

@@ -12,6 +12,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	public Environmental newInstance(){	return new Prop_RoomForSale();}
 	
+	private final static String theStr=" This lot is for sale (look id).";
 	private boolean confirmedUser=false;
 	private int lastNumItems=-1;
 
@@ -64,6 +65,32 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return oldTitle;
 	}
 	
+	public void colorForSale(Room R, boolean reset)
+	{
+		if(R.description().indexOf(theStr)<0)
+		{
+			if(reset)
+			{
+				R.setDisplayText("An empty plot");
+				R.setDescription("");
+			}
+			R.setDescription(R.description()+theStr);
+			ExternalPlay.DBUpdateRoom(R);
+			
+			Item I=R.fetchItem(null,"id$");
+			if((I==null)||(!I.ID().equals("GenWallpaper")))
+			{
+				I=CMClass.getItem("GenWallpaper");
+				I.setReadable(true);
+				I.setName("id");
+				I.setReadableText("This room is "+R.ID());
+				I.setDescription("This room is "+R.ID());
+				R.addItem(I);
+				ExternalPlay.DBUpdateItems(R);
+			}
+		}
+	}
+	
 	public void updateLot(Room R, LandTitle T)
 	{
 		if(R==null) R=CMMap.getRoom(landRoomID());
@@ -81,28 +108,21 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					C.add(Calendar.HOUR,Item.REFUSE_PLAYER_DROP);
 					I.setDispossessionTime(C);
 				}
+				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
+				&&(I.envStats().rejuv()!=0))
+				{
+					I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+					I.recoverEnvStats();
+				}
 			}
-			if(!R.displayText().equals("An empty plot of land"))
-			{
-				R.setDisplayText("An empty plot of land");
-				R.setDescription("Posted here is a notice that this lot, "+R.ID()+", is for sale.");
-				ExternalPlay.DBUpdateRoom(R);
-			}
+			if(this instanceof Prop_LotsForSale)
+				colorForSale(R,true);
+			else
+				colorForSale(R,false);
 		}
 		else
 		{
 			boolean updateItems=false;
-			Item I=R.fetchItem(null,"id$");
-			if((I==null)||(!I.ID().equals("GenWallpaper")))
-			{
-				I=CMClass.getItem("GenWallpaper");
-				I.setReadable(true);
-				I.setName("id");
-				I.setReadableText("This room is "+R.ID());
-				I.setDescription("This room is "+R.ID());
-				R.addItem(I);
-				updateItems=true;
-			}
 			if(!confirmedUser)
 			{
 				confirmedUser=true;
@@ -112,6 +132,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					updateLot(R,T);
 					return;
 				}
+			}
+			
+			int x=R.description().indexOf(theStr);
+			if(x>0)
+			{
+				R.setDescription(R.description().substring(0,x)+R.description().substring(x+1));
+				ExternalPlay.DBUpdateRoom(R);
 			}
 			
 			// this works on the priciple that 
@@ -126,10 +153,17 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			
 			for(int i=0;i<R.numItems();i++)
 			{
-				I=R.fetchItem(i);
+				Item I=R.fetchItem(i);
 				if(I.dispossessionTime()!=null)
 				{
 					I.setDispossessionTime(null);
+					updateItems=true;
+				}
+				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
+				&&(I.envStats().rejuv()!=0))
+				{
+					I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+					I.recoverEnvStats();
 					updateItems=true;
 				}
 			}

@@ -52,7 +52,7 @@ public class Fishing extends CommonSkill
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted))
+				if((found!=null)&&(!aborted)&&(found instanceof Item))
 				{
 					int amount=Dice.roll(1,5,0);
 					String s="s";

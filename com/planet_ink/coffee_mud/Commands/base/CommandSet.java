@@ -151,6 +151,7 @@ public class CommandSet extends Hashtable
 	public static final int WITHDRAW=139;
 	public static final int NOCOLOR=140;
 	public static final int HIRE=141;
+	public static final int FIRE=142;
 
 	public CommandSet()
 	{
@@ -223,6 +224,7 @@ public class CommandSet extends Hashtable
 			put("EX",new Integer(EXITS));
 		put("EXPORT",new Integer(EXPORT));
 		put("FILL",new Integer(FILL));
+		put("FIRE",new Integer(FIRE));
 		put("FLEE",new Integer(FLEE));
 		put("FOLLOW",new Integer(FOLLOW));
 			put("FOL",new Integer(FOLLOW));

@@ -45,7 +45,7 @@ public class BasicSenses
 					commands.removeElementAt(1);
 					String ID2=Util.combine(commands,1);
 					thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID2,Item.WORN_REQ_ANY);
-					if((thisThang!=null)&&(!(thisThang instanceof Container)))
+					if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
 					{
 						mob.tell("That's not a container.");
 						return;

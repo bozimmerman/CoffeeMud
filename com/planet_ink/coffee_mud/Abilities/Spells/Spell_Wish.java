@@ -82,7 +82,12 @@ public class Spell_Wish extends Spell
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
-			
+			if(mob.isMonster())
+			{
+				mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> sigh(s).");
+				ExternalPlay.quickSay(mob,null,"The wishes of mobs never seem to come true.",false,false);
+				return false;
+			}
 			StringBuffer wish=new StringBuffer(myWish);
 			for(int i=0;i<wish.length();i++)
 				if(!Character.isLetterOrDigit(wish.charAt(i)))

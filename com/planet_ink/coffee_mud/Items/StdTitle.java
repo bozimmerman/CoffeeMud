@@ -8,13 +8,29 @@ import java.util.*;
 public class StdTitle extends StdItem implements LandTitle
 {
 	public String ID(){	return "StdTitle";}
+	public String name()
+	{ 
+		String str="the title to "+landRoomID();
+		if(baseEnvStats().weight()>0)
+			str+=" (Copy)";
+		return str;
+	}
+	public String displayText() {return "an official looking document sits here";}
+	public int baseGoldValue() {return landPrice();}
+	public int value() 
+	{
+		if(baseEnvStats().weight()>0)
+			return 10;
+		else
+			return landPrice();
+	}
+	public void setBaseGoldValue(int newValue) {setLandPrice(newValue);}
+	
 	public StdTitle()
 	{
 		super();
-		name="a land title";
 		baseEnvStats.setWeight(0);
-		displayText="A title to somewhere sits here.";
-		description="1. Take this title to your plot to claim possession.  2. Give or Sell this title to transfer ownership.  3. DON'T LOSE THIS!";
+		description="Give or Sell this title to transfer ownership. **DON'T LOSE THIS!**";
 		baseGoldValue=10000;
 		miscText="Who Knows?";
 		setMaterial(EnvResource.RESOURCE_PAPER);
@@ -109,8 +125,10 @@ public class StdTitle extends StdItem implements LandTitle
 				return;
 			}
 			A.setLandOwner("");
+			baseEnvStats().setWeight(0);
 			ExternalPlay.DBUpdateRoom(R);
 			updateLot(R,A);
+			recoverEnvStats();
 		}
 		else
 		if((msg.targetMinor()==Affect.TYP_GIVE)
@@ -135,8 +153,10 @@ public class StdTitle extends StdItem implements LandTitle
 				return;
 			}
 			A.setLandOwner(msg.target().name());
+			baseEnvStats().setWeight(0);
 			ExternalPlay.DBUpdateRoom(R);
 			updateLot(R,A);
+			recoverEnvStats();
 		}
 		else
 		if((msg.targetMinor()==Affect.TYP_GET)
@@ -158,8 +178,8 @@ public class StdTitle extends StdItem implements LandTitle
 				Log.errOut("StdTitle","Unbuyable room: "+landRoomID());
 				return;
 			}
-			setBaseValue(landPrice());
 			A.setLandOwner(msg.source().name());
+			baseEnvStats().setWeight(0);
 			ExternalPlay.DBUpdateRoom(R);
 			updateLot(R,A);
 			recoverEnvStats();

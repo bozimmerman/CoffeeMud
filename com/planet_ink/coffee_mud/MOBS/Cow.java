@@ -59,7 +59,8 @@ public class Cow extends StdMOB implements Drink
 		if((affect.tool()==this)
 		&&(affect.targetMinor()==Affect.TYP_FILL)
 		&&(affect.target()!=null)
-		&&(affect.target() instanceof Container))
+		&&(affect.target() instanceof Container)
+		&&(((Container)affect.target()).capacity()>0))
 		{
 			Item container=(Item)affect.target();
 			Item I=CMClass.getItem("GenLiquidResource");

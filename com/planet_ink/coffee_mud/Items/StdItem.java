@@ -24,8 +24,6 @@ public class StdItem implements Item
 	protected boolean	isGettable=true;
 	protected boolean	isDroppable=true;
 	protected boolean	isRemovable=true;
-	protected boolean	isTrapped=false;
-	protected int		goldValue=0;
 	protected int		material=EnvResource.RESOURCE_COTTON;
 	protected Environmental owner=null;
 	protected Calendar dispossessionTime=null;
@@ -59,7 +57,6 @@ public class StdItem implements Item
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();
-		goldValue=baseGoldValue+(10*envStats().ability());
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability A=fetchAffect(a);
@@ -268,7 +265,7 @@ public class StdItem implements Item
 
 	public int value()
 	{
-		return goldValue;
+		return baseGoldValue()+(10*envStats().ability());
 	}
 	public int baseGoldValue(){return baseGoldValue;}
 	public void setBaseValue(int newValue)
@@ -286,8 +283,6 @@ public class StdItem implements Item
 	public void setDroppable(boolean isTrue){isDroppable=isTrue;}
 	public boolean isRemovable(){return isRemovable;}
 	public void setRemovable(boolean isTrue){isRemovable=isTrue;}
-	public boolean isTrapped(){return isTrapped;}
-	public void setTrapped(boolean isTrue){isTrapped=isTrue;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

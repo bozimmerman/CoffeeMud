@@ -372,9 +372,9 @@ public class Armorsmithing extends CommonSkill
 					}
 				}
 			}
-			else
 			if(building instanceof Container)
-				((Container)building).setCapacity(capacity+woodRequired);
+				if(capacity>0)
+					((Container)building).setCapacity(capacity+woodRequired);
 			building.recoverEnvStats();
 			building.text();
 			building.recoverEnvStats();

@@ -10,19 +10,13 @@ public class ShopKeepers
 {
 	private ShopKeeper shopkeeper(Room here, MOB mob)
 	{
-		MOB thisOne=null;
 		for(int i=0;i<here.numInhabitants();i++)
 		{
 			MOB thisMOB=here.fetchInhabitant(i);
 			if((thisMOB!=null)&&(thisMOB instanceof ShopKeeper)&&(Sense.canBeSeenBy(thisMOB,mob)))
-			{
-				if(thisOne==null)
-					thisOne=thisMOB;
-				else
-					return null;
-			}
+				return (ShopKeeper)thisMOB;
 		}
-		return (ShopKeeper)thisOne;
+		return null;
 	}
 
 	public void sell(MOB mob, Vector commands)
@@ -36,12 +30,9 @@ public class ShopKeepers
 				return;
 			}
 			commands.removeElementAt(0);
-			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-			{
-				shopkeeper=(MOB)possibleShopkeeper;
+			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 				commands.removeElementAt(commands.size()-1);
-			}
 			else
 			{
 				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' buying anything.");
@@ -95,12 +86,9 @@ public class ShopKeepers
 				return;
 			}
 			commands.removeElementAt(0);
-			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-			{
-				shopkeeper=(MOB)possibleShopkeeper;
+			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 				commands.removeElementAt(commands.size()-1);
-			}
 			else
 			{
 				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' buying anything.");
@@ -153,12 +141,9 @@ public class ShopKeepers
 				return;
 			}
 			commands.removeElementAt(0);
-			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-			{
-				shopkeeper=(MOB)possibleShopkeeper;
+			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 				commands.removeElementAt(commands.size()-1);
-			}
 			else
 			{
 				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' selling anything.");
@@ -212,12 +197,9 @@ public class ShopKeepers
 				return;
 			}
 			commands.removeElementAt(0);
-			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
 			if((shopkeeper!=null)&&(shopkeeper instanceof Banker)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-			{
-				shopkeeper=(MOB)possibleShopkeeper;
 				commands.removeElementAt(commands.size()-1);
-			}
 			else
 			{
 				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' running a bank.");
@@ -261,12 +243,9 @@ public class ShopKeepers
 				return;
 			}
 			commands.removeElementAt(0);
-			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
 			if((shopkeeper!=null)&&(shopkeeper instanceof Banker)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-			{
-				shopkeeper=(MOB)possibleShopkeeper;
 				commands.removeElementAt(commands.size()-1);
-			}
 			else
 			{
 				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' holding your money.");
@@ -350,10 +329,8 @@ public class ShopKeepers
 				return;
 			}
 			commands.removeElementAt(0);
-			MOB possibleShopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
-			if((shopkeeper!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-				shopkeeper=(MOB)possibleShopkeeper;
-			else
+			shopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
+			if((shopkeeper==null)||(!(shopkeeper instanceof ShopKeeper))||(!Sense.canBeSeenBy(shopkeeper,mob)))
 			{
 				if(mob.isASysOp(mob.location()))
 					new Lister().list(mob,commands);

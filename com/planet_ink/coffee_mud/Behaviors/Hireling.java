@@ -30,6 +30,28 @@ public class Hireling extends StdBehavior
 		return mins;
 	}
 	
+	public void allDone(MOB observer)
+	{
+		workingFor="";
+		onTheJobUntil=null;
+		ExternalPlay.follow(observer,null,false);
+		observer.setFollowing(null);
+		int direction=-1;
+		for(int d=0;d<4;d++)
+			if(observer.location().getExitInDir(d)!=null)
+				if(observer.location().getExitInDir(d).isOpen())
+				{
+					direction=d; 
+					break;
+				}
+				else
+					direction=d;
+		if(direction>=0)
+			ExternalPlay.move(observer,direction,false);
+		if(observer.getStartRoom()!=null)
+			observer.getStartRoom().bringMobHere(observer,false);
+	}
+	
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -64,24 +86,7 @@ public class Hireling extends StdBehavior
 			{
 				if(talkTo!=null)
 					ExternalPlay.quickSay(observer,talkTo,"Your time is up.  Goodbye!",true,false);
-				workingFor="";
-				onTheJobUntil=null;
-				ExternalPlay.follow(observer,null,false);
-				observer.setFollowing(null);
-				int direction=-1;
-				for(int d=0;d<4;d++)
-					if(observer.location().getExitInDir(d)!=null)
-						if(observer.location().getExitInDir(d).isOpen())
-						{
-							direction=d; 
-							break;
-						}
-						else
-							direction=d;
-				if(direction>=0)
-					ExternalPlay.move(observer,direction,false);
-				if(observer.getStartRoom()!=null)
-					observer.getStartRoom().bringMobHere(observer,false);
+				allDone(observer);
 			}
 			else
 			{
@@ -116,13 +121,27 @@ public class Hireling extends StdBehavior
 		if(!canActAtAll(affecting)) return;
 		
 		MOB observer=(MOB)affecting;
+		if((affect.sourceMinor()==Affect.MSG_QUIT)
+		&&(affect.amISource(observer)||affect.amISource(observer.amFollowing())))
+		   allDone(observer);
+		else
 		if((affect.sourceMinor()==Affect.TYP_SPEAK)
 		&&(!affect.amISource(observer))
-		&&(!affect.source().isMonster())
-		&&((affect.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
-			||(affect.sourceMessage().toUpperCase().indexOf("'HIRE")>0))
-		&&(onTheJobUntil==null))
-			ExternalPlay.quickSay(observer,null,"I'm for hire.  Just give me "+price()+" and I'll work for you.",false,false);
+		&&(!affect.source().isMonster()))
+		{
+			if(((affect.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
+				||(affect.sourceMessage().toUpperCase().indexOf("'HIRE")>0))
+			&&(onTheJobUntil==null))
+				ExternalPlay.quickSay(observer,null,"I'm for hire.  Just give me "+price()+" and I'll work for you.",false,false);
+			else
+			if(((affect.sourceMessage().toUpperCase().indexOf(" FIRED")>0))
+			&&(affect.amITarget(observer))
+			&&(onTheJobUntil!=null))
+			{
+				ExternalPlay.quickSay(observer,affect.source(),"Suit yourself.  Goodbye.",false,false);
+				allDone(observer);
+			}
+		}
 		else
 		if(affect.amITarget(observer)
 		   &&(!affect.amISource(observer))

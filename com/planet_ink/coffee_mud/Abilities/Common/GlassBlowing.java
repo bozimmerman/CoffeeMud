@@ -215,7 +215,8 @@ public class GlassBlowing extends CommonSkill
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		if(building instanceof Container)
 		{
-			((Container)building).setCapacity(capacity+woodRequired);
+			if(capacity>0)
+				((Container)building).setCapacity(capacity+woodRequired);
 			if(misctype.equalsIgnoreCase("LID"))
 				((Container)building).setLidsNLocks(true,false,false,false);
 			else

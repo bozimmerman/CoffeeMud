@@ -23,6 +23,16 @@ public class Chant_SummonAnimal extends Chant
 			mob.destroy();
 	}
 	
+	public void affect(Affect msg)
+	{
+		super.affect(msg);
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+		&&(msg.sourceMinor()==Affect.MSG_QUIT))
+			unInvoke();
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
