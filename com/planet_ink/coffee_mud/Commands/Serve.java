@@ -35,6 +35,11 @@ public class Serve extends StdCommand
 		}
 		commands.removeElementAt(0);
 		MOB recipient=mob.location().fetchInhabitant(Util.combine(commands,0));
+		if((recipient!=null)&&(recipient.isMonster())&&(!(recipient instanceof Deity)))
+		{
+			mob.tell("You may not serve "+recipient.name()+".");
+			return false;
+		}
 		if((recipient==null)||((recipient!=null)&&(!Sense.canBeSeenBy(recipient,mob))))
 		{
 			mob.tell("I don't see "+Util.combine(commands,0)+" here.");

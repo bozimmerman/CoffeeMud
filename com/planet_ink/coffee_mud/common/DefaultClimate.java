@@ -33,6 +33,7 @@ public class DefaultClimate implements Climate
 
 	public int nextWeatherType(Room room)
 	{
+		if(room==null) return nextWeather;
 		if(!CoffeeUtensils.hasASky(room)) return Climate.WEATHER_CLEAR;
 		return nextWeather;
 	}
@@ -117,6 +118,7 @@ public class DefaultClimate implements Climate
 	public void setCurrentWeatherType(int weatherCode){currentWeather=weatherCode;}
 	public int weatherType(Room room)
 	{
+		if(room==null) return currentWeather;
 		if(!CoffeeUtensils.hasASky(room)) return Climate.WEATHER_CLEAR;
 		return currentWeather;
 	}

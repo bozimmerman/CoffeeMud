@@ -383,16 +383,14 @@ public class StdCharClass implements CharClass, Cloneable
 		}
 		if((mob.getLiegeID().length()>0)&&(amount>2))
 		{
-			MOB sire=CMMap.getLoadPlayer(mob.getLiegeID());
-			if(sire!=null)
+			MOB sire=CMMap.getPlayer(mob.getLiegeID());
+			if((sire!=null)&&(Sense.isInTheGame(sire,true)))
 			{
 				int sireShare=(int)Math.round(Util.div(amount,10.0));
 				if(sireShare<=0) sireShare=1;
 				amount-=sireShare;
 				MUDFight.postExperience(sire,null," from "+mob.name(),sireShare,quiet);
 			}
-			else
-				mob.setLiegeID("");
 		}
 		if((mob.getClanID().length()>0)&&(amount>2))
 		{
@@ -571,16 +569,14 @@ public class StdCharClass implements CharClass, Cloneable
 		mob.setExperience(mob.getExperience()-amount);
         if((mob.getLiegeID().length()>0)&&(amount>2))
         {
-            MOB sire=CMMap.getLoadPlayer(mob.getLiegeID());
-            if(sire!=null)
+			MOB sire=CMMap.getPlayer(mob.getLiegeID());
+			if((sire!=null)&&(Sense.isInTheGame(sire,true)))
             {
                 int sireShare=(int)Math.round(Util.div(amount,10.0));
                 amount-=sireShare;
 				if(MUDFight.postExperience(sire,null,"",sireShare,true))
 					sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
             }
-			else
-				mob.setLiegeID("");
         }
         if((mob.getClanID().length()>0)&&(amount>2))
         {

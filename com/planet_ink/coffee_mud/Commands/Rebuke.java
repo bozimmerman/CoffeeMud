@@ -33,18 +33,19 @@ public class Rebuke extends StdCommand
 			mob.tell("Rebuke whom?");
 			return false;
 		}
-		MOB target=mob.location().fetchInhabitant(Util.combine(commands,1));
+		String str=Util.combine(commands,1);
+		MOB target=mob.location().fetchInhabitant(str);
+		if((target==null)&&(mob.getWorshipCharID().length()>0)
+		&&(EnglishParser.containsString(mob.getWorshipCharID(),str)))
+			target=(MOB)CMMap.getDeity(str);
+		if((target==null)&&(mob.getLiegeID().length()>0)
+		&&(EnglishParser.containsString(mob.getLiegeID(),str)))
+			target=(MOB)CMMap.getLoadPlayer(mob.getLiegeID());
+		
 		if(target==null)
 		{
-			if(mob.getWorshipCharID().length()>0)
-				target=(MOB)CMMap.getDeity(Util.combine(commands,1));
-			if((target==null)
-			&&(!Util.combine(commands,1).equalsIgnoreCase(mob.getLiegeID()))
-			&&(!Util.combine(commands,1).equalsIgnoreCase(mob.getWorshipCharID())))
-			{
-				mob.tell("There's nobody here called '"+Util.combine(commands,1)+"' and you aren't serving '"+Util.combine(commands,1)+"'.");
-				return false;
-			}
+			mob.tell("You don't see anybody called '"+Util.combine(commands,1)+"' or you aren't serving '"+Util.combine(commands,1)+"'.");
+			return false;
 		}
 
 		FullMsg msg=null;

@@ -79,8 +79,8 @@ public class Kill extends StdCommand
 		
 		if(mob.isInCombat())
 		{
-			if(((mob.getVictim()!=null)
-			&&(mob.getVictim()==target)
+			MOB oldVictim=mob.getVictim();
+			if(((oldVictim!=null)&&(oldVictim==target)
 			&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)==MUDFight.COMBAT_DEFAULT)))
 			{
 				mob.tell("^FYou are already fighting "+mob.getVictim().name()+".^?");
@@ -88,8 +88,19 @@ public class Kill extends StdCommand
 			}
 			
 			if((mob.location().okMessage(mob,new FullMsg(mob,target,CMMsg.MSG_WEAPONATTACK,null)))
-			&&(mob.getVictim()!=target))
+			&&(oldVictim!=target))
 			{
+				if((target.getVictim()==oldVictim.getVictim())
+				&&(target.rangeToTarget()>=0)
+				&&(oldVictim.rangeToTarget()>=0))
+				{
+					int range=target.rangeToTarget()-oldVictim.rangeToTarget();
+					if(mob.rangeToTarget()>=0)
+						range+=mob.rangeToTarget();
+					if(range>=0)
+						mob.setAtRange(range);
+					
+				}
 				mob.tell("^FYou are now targeting "+target.name()+".^?");
 				mob.setVictim(target);
 				return false;

@@ -1134,7 +1134,7 @@ public class StdMOB implements MOB
 					if(follow.rangeToTarget()>=0)
 						newRange=newRange+follow.rangeToTarget();
 				}
-				if((location()!=null)&&(location().maxRange()>newRange))
+				if((location()!=null)&&(location().maxRange()<newRange))
 					newRange=location().maxRange();
 				source.setAtRange(newRange);
 			}
@@ -2771,7 +2771,7 @@ public class StdMOB implements MOB
 		{
 			if(followers==null) return -1;
 			int x=followers.indexOf(thisOne);
-			if(x>0) return ((Integer)followers.elementAt(x,2)).intValue();
+			if(x>=0) return ((Integer)followers.elementAt(x,2)).intValue();
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return -1;
@@ -3315,7 +3315,7 @@ public class StdMOB implements MOB
 		||((target.amFollowing()!=null)&&(target.amFollowing()==this.amFollowing())))
 		{
 			setVictim(source);//MUDFight.postAttack(this,source,fetchWieldedItem());
-			establishRange(this,source,this.fetchWieldedItem());
+			establishRange(this,source,fetchWieldedItem());
 		}
 		else
 		if((amFollowing()==source)
@@ -3323,7 +3323,7 @@ public class StdMOB implements MOB
 		||((source.amFollowing()!=null)&&(source.amFollowing()==this.amFollowing())))
 		{
 			setVictim(target);//MUDFight.postAttack(this,source,fetchWieldedItem());
-			establishRange(this,target,this.fetchWieldedItem());
+			establishRange(this,target,fetchWieldedItem());
 		}
 	}
 

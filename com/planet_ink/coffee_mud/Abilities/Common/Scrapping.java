@@ -125,15 +125,10 @@ public class Scrapping extends CommonSkill
 			return false;
 		}
 		
-		for(int i=0;i<I.numEffects();i++)
+		if(enchanted(I))
 		{
-			Ability A=I.fetchEffect(i);
-			if((A!=null)
-			&&(A.classificationCode()!=A.PROPERTY))
-			{
-				commonTell(mob,I.name()+" is enchanted, and can't be scrapped.");
-				return false;
-			}
+			commonTell(mob,I.name()+" is enchanted, and can't be scrapped.");
+			return false;
 		}
 		
 		Vector V=new Vector();

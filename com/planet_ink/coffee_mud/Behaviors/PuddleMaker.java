@@ -132,6 +132,7 @@ public class PuddleMaker extends StdBehavior
 					{
 						Room R=(Room)e.nextElement();
 						if(((R.domainType()&Room.INDOORS)==0)
+						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
 						&&(Dice.rollPercentage()<pct()))

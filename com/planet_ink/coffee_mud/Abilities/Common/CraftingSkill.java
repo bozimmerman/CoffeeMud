@@ -109,6 +109,7 @@ public class CraftingSkill extends CommonSkill
 			if((I instanceof EnvResource)
 			&&(I.material()==resource)
 			&&(!Sense.isOnFire(I))
+			&&(!enchanted(I))
 			&&(I.container()==null))
 				return I;
 		}
@@ -136,6 +137,7 @@ public class CraftingSkill extends CommonSkill
 			&&((I.material()&EnvResource.MATERIAL_MASK)==material)
 			&&(I.material()!=mostMaterial)
 			&&(!Sense.isOnFire(I))
+			&&(!enchanted(I))
 			&&(I.container()==null))
 			{
 				int num=findNumberOfResource(room,I.material());
@@ -361,6 +363,7 @@ public class CraftingSkill extends CommonSkill
 			if((I instanceof EnvResource)
 			&&(I.material()==resource)
 			&&(!Sense.isOnFire(I))
+			&&(!enchanted(I))
 			&&(I.container()==null))
 				foundWood+=I.envStats().weight();
 		}
@@ -499,6 +502,7 @@ public class CraftingSkill extends CommonSkill
 			&&(I instanceof EnvResource)
 			&&(I.container()==null)
 			&&(!Sense.isOnFire(I))
+			&&(!enchanted(I))
 			&&(I.material()==otherMaterial))
 			{
 				otherMaterial=-1;
@@ -509,6 +513,7 @@ public class CraftingSkill extends CommonSkill
 			if((I instanceof EnvResource)
 			&&(I.container()==null)
 			&&(!Sense.isOnFire(I))
+			&&(!enchanted(I))
 			&&(I.material()==finalMaterial))
 			{
 				if(I.baseEnvStats().weight()>howMuch)

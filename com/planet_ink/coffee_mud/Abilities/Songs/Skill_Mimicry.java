@@ -31,7 +31,6 @@ public class Skill_Mimicry extends BardSkill
 	private static final String[] triggerStrings = {"MIMICRY","MIMIC"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public MOB mimicing=null;
 	private CMMsg lastMsg=null;
 	private boolean disabled=false;
 
@@ -45,9 +44,11 @@ public class Skill_Mimicry extends BardSkill
 		if((affecting instanceof MOB)&&(!Sense.aliveAwakeMobile((MOB)affecting,true)))
 			return;
 		if(disabled) return;
+		
 		if(((!(affecting instanceof MOB))||(!msg.amISource((MOB)affecting)))
+		&&((text().length()==0)||(text().equalsIgnoreCase(msg.source().Name())))
 		&&((msg.sourceMinor()!=CMMsg.TYP_EMOTE)
-		||((msg.tool()!=null)&&(msg.tool().ID().equals("Social")))))
+			||((msg.tool()!=null)&&(msg.tool().ID().equals("Social")))))
 			lastMsg=msg;
 	}
 
@@ -170,8 +171,9 @@ public class Skill_Mimicry extends BardSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mimicing=target;
 				beneficialAffect(mob,mob,asLevel,0);
+				Ability A=mob.fetchEffect(ID());
+				if((A!=null)&&(target!=mob)) A.setMiscText(target.Name());
 			}
 		}
 		else

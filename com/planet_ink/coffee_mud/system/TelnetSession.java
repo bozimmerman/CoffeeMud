@@ -62,6 +62,7 @@ public class TelnetSession extends Thread implements Session
 	public long lastStart=System.currentTimeMillis();
 	public long lastStop=System.currentTimeMillis();
 	public long lastLoopTop=System.currentTimeMillis();
+	public long lastBlahCheck=0;
 	public long milliTotal=0;
 	public long tickTotal=0;
 	public long lastKeystroke=0;
@@ -936,8 +937,22 @@ public class TelnetSession extends Thread implements Session
 						if((spamStack>0)&&((lastOutput-System.currentTimeMillis())>100))
 							onlyPrint("",0);
 
-						if((!afkFlag())&&(getIdleMillis()>=600000))
-							setAfkFlag(true);
+						if(!afkFlag())
+						{
+							if(getIdleMillis()>=600000)
+								setAfkFlag(true);
+						}
+						else
+						if((getIdleMillis()>=10800000)&&((System.currentTimeMillis()-lastBlahCheck)>=60000))
+						{
+							lastBlahCheck=System.currentTimeMillis();
+							if((mob()!=null)
+							&&(mob().fetchEffect("Disease_Blahs")==null))
+							{
+								Ability A=CMClass.getAbility("Disease_Blahs");
+								if(A!=null) A.invoke(mob,mob,true,0);
+							}
+						}
 
 						if((needPrompt)&&(waiting))
 						{
