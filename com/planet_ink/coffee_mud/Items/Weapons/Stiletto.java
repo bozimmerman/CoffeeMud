@@ -9,10 +9,10 @@ public class Stiletto extends Dagger
 	{
 		super();
 
-		name="a cool stiletto";
-		displayText="a stiletto is in the corner.";
-		miscText="";
-		description="A dagger, more or less, with a long slender blade and sharp point.";
+		setName("a cool stiletto");
+		setDisplayText("a stiletto is in the corner.");
+		setMiscText("");
+		setDescription("A dagger, more or less, with a long slender blade and sharp point.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(1);

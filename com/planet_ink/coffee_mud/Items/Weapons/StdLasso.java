@@ -11,10 +11,10 @@ public class StdLasso extends StdWeapon
 	public StdLasso()
 	{
 		super();
-		name="a lasso";
-		displayText="a lasso has been left here.";
-		miscText="";
-		description="Its a rope with a big stiff loop on one end!";
+		setName("a lasso");
+		setDisplayText("a lasso has been left here.");
+		setMiscText("");
+		setDescription("Its a rope with a big stiff loop on one end!");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(1);
@@ -67,7 +67,7 @@ public class StdLasso extends StdWeapon
 		else
 			super.affect(myHost,affect);
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new StdLasso();

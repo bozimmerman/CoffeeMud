@@ -32,9 +32,17 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_MINCLANLEVEL=6;
 	public static final int SYSTEMI_MANACOST=7;
 	public static final int NUMI_SYSTEM=8;
+	
+	  
+	public static final int SYSTEMB_MOBCOMPRESS=0;
+	public static final int SYSTEMB_ITEMDCOMPRESS=1;
+	public static final int SYSTEMB_ROOMDCOMPRESS=2;
+	public static final int SYSTEMB_MOBDCOMPRESS=3;
+	public static final int NUMB_SYSTEM=4;
 
 	private static String[] sysVars=new String[NUM_SYSTEM];
 	private static Integer[] sysInts=new Integer[NUMI_SYSTEM];
+	private static Boolean[] sysBools=new Boolean[NUMB_SYSTEM];
 
 	public static int pkillLevelDiff=26;
 
@@ -52,6 +60,19 @@ public class CommonStrings extends Scriptable
 		if((varNum<0)||(varNum>=NUMI_SYSTEM)) return -1;
 		if(sysInts[varNum]==null) return -1;
 		return sysInts[varNum].intValue();
+	}
+
+	public static boolean getBoolVar(int varNum)
+	{
+		if((varNum<0)||(varNum>=NUMB_SYSTEM)) return false;
+		if(sysBools[varNum]==null) return false;
+		return sysBools[varNum].booleanValue();
+	}
+
+	public static void setBoolVar(int varNum, boolean val)
+	{
+		if((varNum<0)||(varNum>=NUMB_SYSTEM)) return ;
+		sysBools[varNum]=new Boolean(val);
 	}
 
 	public static void setIntVar(int varNum, int val)

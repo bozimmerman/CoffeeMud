@@ -10,10 +10,10 @@ public class Sword extends StdWeapon
 	{
 		super();
 
-		name="a sword";
-		displayText="a rather plain looking sword leans against the wall.";
-		miscText="";
-		description="An plain sword.";
+		setName("a sword");
+		setDisplayText("a rather plain looking sword leans against the wall.");
+		setMiscText("");
+		setDescription("An plain sword.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(10);

@@ -12,10 +12,10 @@ public class GenChair extends GenRideable
 	public GenChair()
 	{
 		super();
-		name="a generic chair";
+		setName("a generic chair");
 		baseEnvStats.setWeight(150);
-		displayText="a generic chair is here.";
-		description="";
+		setDisplayText("a generic chair is here.");
+		setDescription("");
 		material=EnvResource.RESOURCE_OAK;
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);

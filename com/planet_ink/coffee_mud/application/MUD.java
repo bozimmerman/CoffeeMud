@@ -204,6 +204,12 @@ public class MUD extends Thread implements Host
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS,page.getStr("MINCLANMEMBERS"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH,page.getStr("DAYSCLANDEATH"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL,page.getStr("MINCLANLEVEL"));
+		Vector compress=Util.parseCommas(page.getStr("COMPRESS").toUpperCase());
+		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS,compress.contains("ITEMDESC"));
+		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS,compress.contains("GENMOBS"));
+		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_ROOMDCOMPRESS,compress.contains("ROOMDESC"));
+		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MOBDCOMPRESS,compress.contains("MOBDESC"));
+		Resources.setCompression(compress.contains("RESOURCES"));
 
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();

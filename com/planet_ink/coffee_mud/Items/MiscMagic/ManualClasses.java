@@ -13,10 +13,10 @@ public class ManualClasses extends StdItem implements MiscMagic
 	{
 		super();
 
-		name="a book";
+		setName("a book");
 		baseEnvStats.setWeight(1);
-		displayText="an roughly treated book sits here.";
-		description="An roughly treated book filled with mystical symbols.";
+		setDisplayText("an roughly treated book sits here.");
+		setDescription("An roughly treated book filled with mystical symbols.");
 		secretIdentity="The Manual of Classes.";
 		this.setUsesRemaining(Integer.MAX_VALUE);
 		baseGoldValue=5000;

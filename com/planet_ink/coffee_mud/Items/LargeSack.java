@@ -9,9 +9,9 @@ public class LargeSack extends StdContainer
 	public LargeSack()
 	{
 		super();
-		name="a large sack";
-		displayText="a large sack is crumpled up here.";
-		description="A nice big berlap sack to put your things in.";
+		setName("a large sack");
+		setDisplayText("a large sack is crumpled up here.");
+		setDescription("A nice big berlap sack to put your things in.");
 		capacity=100;
 		baseGoldValue=5;
 		setMaterial(EnvResource.RESOURCE_COTTON);

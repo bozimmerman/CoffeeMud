@@ -10,9 +10,9 @@ public class Pants extends StdArmor
 	{
 		super();
 
-		name="a pair of pants";
-		displayText="a pair of pants lies here";
-		description="a well tailored pair of travellors pants.";
+		setName("a pair of pants");
+		setDisplayText("a pair of pants lies here");
+		setDescription("a well tailored pair of travellors pants.");
 		properWornBitmap=Item.ON_LEGS;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(1);

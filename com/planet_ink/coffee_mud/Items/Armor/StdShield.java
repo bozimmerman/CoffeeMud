@@ -10,9 +10,9 @@ public class StdShield extends StdArmor implements Armor, Shield
 	{
 		super();
 
-		name="a shield";
-		displayText="a sturdy round shield sits here.";
-		description="Its made of steel, and looks in good shape.";
+		setName("a shield");
+		setDisplayText("a sturdy round shield sits here.");
+		setDescription("Its made of steel, and looks in good shape.");
 		properWornBitmap=Item.HELD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(10);

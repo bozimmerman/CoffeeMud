@@ -10,9 +10,9 @@ public class FullPlate extends StdArmor
 	{
 		super();
 
-		name="suit of Full Plate";
-		displayText="a suit of Full Plate Armor.";
-		description="A suit of Full Plate Armor including everything from head to toe.  Fine workmanship make this both very decorative and functional.";
+		setName("suit of Full Plate");
+		setDisplayText("a suit of Full Plate Armor.");
+		setDescription("A suit of Full Plate Armor including everything from head to toe.  Fine workmanship make this both very decorative and functional.");
 		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS | Item.ON_FEET | Item.ON_HEAD | Item.ON_HANDS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(90);

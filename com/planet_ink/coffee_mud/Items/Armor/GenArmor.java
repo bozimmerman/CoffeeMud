@@ -13,10 +13,10 @@ public class GenArmor extends StdArmor
 	{
 		super();
 
-		name="a generic armor piece";
+		setName("a generic armor piece");
 		baseEnvStats.setWeight(25);
-		displayText="a generic piece of armor sits here.";
-		description="";
+		setDisplayText("a generic piece of armor sits here.");
+		setDescription("");
 		baseGoldValue=5;
 		properWornBitmap=Item.INVENTORY;
 		wornLogicalAnd=false;
@@ -62,7 +62,7 @@ public class GenArmor extends StdArmor
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(Generic.getGenItemCodeNum(code)>=0)
 			Generic.setGenItemStat(this,code,val);
 		else

@@ -10,10 +10,10 @@ public class FlamingSword extends Longsword
 	{
 		super();
 
-		name="a fancy longsword";
-		displayText="a fancy longsword has been dropped on the ground.";
-		miscText="";
-		description="A one-handed sword with a very slight red tinge on the blade.";
+		setName("a fancy longsword");
+		setDisplayText("a fancy longsword has been dropped on the ground.");
+		setMiscText("");
+		setDescription("A one-handed sword with a very slight red tinge on the blade.");
 		secretIdentity="A Flaming Sword (Additional fire damage when you strike)";
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(1);

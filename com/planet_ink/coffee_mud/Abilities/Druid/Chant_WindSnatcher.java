@@ -85,7 +85,7 @@ public class Chant_WindSnatcher extends Chant
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The wind snatcher surrounds <S-NAME>");
+				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The wind snatcher surrounds <S-NAME>.");
 				beneficialAffect(mob,target,0);
 			}
 		}

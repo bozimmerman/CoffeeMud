@@ -10,10 +10,10 @@ public class DrowDagger extends Dagger
 	{
 		super();
 
-		name="a dagger";
-		displayText="a dagger with a dark metallic blade.";
-		miscText="";
-		description="A dagger made out of a very dark material metal.";
+		setName("a dagger");
+		setDisplayText("a dagger with a dark metallic blade.");
+		setMiscText("");
+		setDescription("A dagger made out of a very dark material metal.");
 		secretIdentity="A Drow dagger";
 		baseEnvStats().setAbility(Dice.roll(1,6,0));
 		baseEnvStats().setLevel(1);

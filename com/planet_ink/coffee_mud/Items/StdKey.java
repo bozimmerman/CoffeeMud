@@ -11,9 +11,9 @@ public class StdKey extends StdItem implements Key
 	public StdKey()
 	{
 		super();
-		name="a metal key";
-		displayText="a small metal key sits here.";
-		description="You can't tell what it\\`s to by looking at it.";
+		setName("a metal key");
+		setDisplayText("a small metal key sits here.");
+		setDescription("You can't tell what it\\`s to by looking at it.");
 
 		material=EnvResource.RESOURCE_STEEL;
 		baseGoldValue=0;

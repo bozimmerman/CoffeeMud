@@ -11,10 +11,10 @@ public class BardMap extends GenMap
 	public BardMap()
 	{
 		super();
-		name="a map";
+		setName("a map");
 		baseEnvStats.setWeight(0);
-		displayText="a map is rolled up here.";
-		description="";
+		setDisplayText("a map is rolled up here.");
+		setDescription("");
 		baseGoldValue=5;
 		baseEnvStats().setLevel(3);
 		setMaterial(EnvResource.RESOURCE_PAPER);
@@ -38,26 +38,8 @@ public class BardMap extends GenMap
 
 	public Hashtable makeMapRooms()
 	{
-		Vector mapAreas=new Vector();
 		String newText=getMapArea();
-		while(newText.length()>0)
-		{
-			int y=newText.indexOf(";");
-			String areaName="";
-			if(y>=0)
-			{
-				areaName=newText.substring(0,y).trim();
-				newText=newText.substring(y+1);
-			}
-			else
-			{
-				areaName=newText;
-				newText="";
-			}
-			if(areaName.length()>0)
-				mapAreas.addElement(areaName);
-		}
-
+		Vector mapAreas=Util.parseSemicolons(newText);
 		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{

@@ -10,9 +10,9 @@ public class LeatherBoots extends StdArmor
 	{
 		super();
 
-		name="a pair of leather boots";
-		displayText="a pair of leather boots sits here.";
-		description="They look like a rather nice pair of footwear.";
+		setName("a pair of leather boots");
+		setDisplayText("a pair of leather boots sits here.");
+		setDescription("They look like a rather nice pair of footwear.");
 		properWornBitmap=Item.ON_FEET;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(1);

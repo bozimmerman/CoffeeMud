@@ -735,7 +735,7 @@ public class TheFight
 			Container container=(Container)containers.elementAt(i);
 			if(ExternalPlay.remove(mob,putThis,true))
 			{
-				FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,((quiet?null:"<S-NAME> sheath(s) <O-NAME> in <T-NAME>")));
+				FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,((quiet?null:"<S-NAME> sheath(s) <O-NAME> in <T-NAME>.")));
 				if(mob.location().okAffect(mob,putMsg))
 					mob.location().send(mob,putMsg);
 			}

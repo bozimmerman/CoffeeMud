@@ -12,8 +12,8 @@ public class GenJournal extends StdJournal
 	public GenJournal()
 	{
 		super();
-		displayText="a journal sits here.";
-		description="Enter `READ [NUMBER] [JOURNAL]` to read an entry.%0D%0AUse your WRITE skill to add new entries. ";
+		setDisplayText("a journal sits here.");
+		setDescription("Enter `READ [NUMBER] [JOURNAL]` to read an entry.%0D%0AUse your WRITE skill to add new entries. ");
 		isReadable=true;
 		setMaterial(EnvResource.RESOURCE_PAPER);
 	}
@@ -23,7 +23,7 @@ public class GenJournal extends StdJournal
 		return new GenJournal();
 	}
 	public boolean isGeneric(){return true;}
-	
+
 	public String text()
 	{
 		return Generic.getPropertiesStr(this,false);

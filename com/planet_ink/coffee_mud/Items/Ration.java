@@ -11,11 +11,11 @@ public class Ration extends StdFood
 	public Ration()
 	{
 		super();
-		name="a ration pack";
+		setName("a ration pack");
 		baseEnvStats.setWeight(10);
 		amountOfNourishment=500;
-		displayText="a standard ration pack sits here.";
-		description="Bits of salt dried meat, dried fruit, and hard bread.";
+		setDisplayText("a standard ration pack sits here.");
+		setDescription("Bits of salt dried meat, dried fruit, and hard bread.");
 		baseGoldValue=15;
 		setMaterial(EnvResource.RESOURCE_MEAT);
 		recoverEnvStats();

@@ -13,9 +13,9 @@ public class GenSling extends StdSling
 	{
 		super();
 
-		name="a generic sling";
-		displayText="a generic sling sits here.";
-		description="";
+		setName("a generic sling");
+		setDisplayText("a generic sling sits here.");
+		setDescription("");
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

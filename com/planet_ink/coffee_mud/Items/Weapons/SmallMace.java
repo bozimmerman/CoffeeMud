@@ -9,10 +9,10 @@ public class SmallMace extends StdWeapon
 	{
 		super();
 
-		name="a small mace";
-		displayText="a small mace has been left here.";
-		miscText="";
-		description="It`s metallic and quite hard..";
+		setName("a small mace");
+		setDisplayText("a small mace has been left here.");
+		setMiscText("");
+		setDescription("It`s metallic and quite hard..");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(10);

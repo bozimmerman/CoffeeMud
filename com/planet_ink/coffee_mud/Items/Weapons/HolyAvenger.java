@@ -10,10 +10,10 @@ public class HolyAvenger extends TwoHandedSword
 	{
 		super();
 
-		name="the holy avenger";
-		displayText="a beautiful two-handed sword has been left here";
-		miscText="";
-		description="A two-handed sword crafted with a careful hand, and inscribed with several holy symbols.";
+		setName("the holy avenger");
+		setDisplayText("a beautiful two-handed sword has been left here");
+		setMiscText("");
+		setDescription("A two-handed sword crafted with a careful hand, and inscribed with several holy symbols.");
 		secretIdentity="The Holy Avenger!  A good-only Paladin sword that casts dispel evil on its victims";
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(20);

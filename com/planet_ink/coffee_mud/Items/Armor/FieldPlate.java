@@ -10,9 +10,9 @@ public class FieldPlate extends StdArmor
 	{
 		super();
 
-		name="suit of Field Plate";
-		displayText="a suit of field plate Armor.";
-		description="A suit of field plate Armor including everything to protect the body, legs and arms.";
+		setName("suit of Field Plate");
+		setDisplayText("a suit of field plate Armor.");
+		setDescription("A suit of field plate Armor including everything to protect the body, legs and arms.");
 		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(59);

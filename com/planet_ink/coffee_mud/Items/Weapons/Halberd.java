@@ -40,24 +40,24 @@ public class Halberd extends StdWeapon
 		switch(level)
 		{
 			case Claymore.PLAIN:
-				name="a simple halberd";
-				displayText="a simple halberd is on the ground.";
-				description="It`s a polearm with a large bladed axe on the end.";
+				setName("a simple halberd");
+				setDisplayText("a simple halberd is on the ground.");
+				setDescription("It`s a polearm with a large bladed axe on the end.");
 				break;
 			case Claymore.QUALITY_WEAPON:
-				name="a very nice halberd";
-				displayText="a very nice halberd leans against the wall.";
-				description="It`s an ornate polearm with a large bladed axe on the end.";
+				setName("a very nice halberd");
+				setDisplayText("a very nice halberd leans against the wall.");
+				setDescription("It`s an ornate polearm with a large bladed axe on the end.");
 				break;
 			case Claymore.EXCEPTIONAL:
-				name="an exceptional halberd";
-				displayText="an exceptional halberd is found nearby.";
-				description="It`s an ornate polearm with a large bladed axe on the end.  It is well balanced and decorated with fine etchings.";
+				setName("an exceptional halberd");
+				setDisplayText("an exceptional halberd is found nearby.");
+				setDescription("It`s an ornate polearm with a large bladed axe on the end.  It is well balanced and decorated with fine etchings.");
 				break;
 			default:
-				name="a simple halberd";
-				displayText="a simple halberd is on the ground.";
-				description="It`s a polearm with a large bladed axe on the end.";
+				setName("a simple halberd");
+				setDisplayText("a simple halberd is on the ground.");
+				setDescription("It`s a polearm with a large bladed axe on the end.");
 				break;
 		}
 	}

@@ -12,9 +12,9 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 	public GenFoodResource()
 	{
 		super();
-		name="an edible resource";
-		displayText="a pile of edible resource sits here.";
-		description="";
+		setName("an edible resource");
+		setDisplayText("a pile of edible resource sits here.");
+		setDescription("");
 		isReadable=false;
 		setMaterial(EnvResource.RESOURCE_BERRIES);
 		setNourishment(200);

@@ -9,20 +9,20 @@ import java.util.*;
 public class LifeFountain extends StdDrink implements MiscMagic
 {
 	public String ID(){	return "LifeFountain";}
-	
+
 	private Hashtable lastDrinks=new Hashtable();
-											   
+
 	public LifeFountain()
 	{
 		super();
-		name="a fountain";
+		setName("a fountain");
 		amountOfThirstQuenched=250;
 		amountOfLiquidHeld=999999;
 		amountOfLiquidRemaining=999999;
 		baseEnvStats().setWeight(5);
 		capacity=0;
-		displayText="a fountain of life flows here.";
-		description="The fountain is coming magically from the ground.  The water looks pure and clean.";
+		setDisplayText("a fountain of life flows here.");
+		setDescription("The fountain is coming magically from the ground.  The water looks pure and clean.");
 		baseGoldValue=10;
 		isGettable=false;
 		material=EnvResource.RESOURCE_FRESHWATER;

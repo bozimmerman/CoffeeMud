@@ -9,10 +9,10 @@ public class ShieldWeapon extends StdWeapon
 	{
 		super();
 
-		name="a bashing shield";
-		displayText="A bashing shield has been left here.";
-		miscText="";
-		description="Looks like natural fighting ability.";
+		setName("a bashing shield");
+		setDisplayText("A bashing shield has been left here.");
+		setMiscText("");
+		setDescription("Looks like natural fighting ability.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats().setWeight(0);
@@ -29,7 +29,7 @@ public class ShieldWeapon extends StdWeapon
 		name=shield.name();
 		displayText=shield.displayText();
 		miscText="";
-		description=shield.description();
+		setDescription(shield.description());
 		baseEnvStats().setDamage(shield.envStats().level());
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

@@ -23,10 +23,10 @@ public class StdTitle extends StdItem implements LandTitle
 	public StdTitle()
 	{
 		super();
-		name="a standard title";
-		description="Give or Sell this title to transfer ownership. **DON'T LOSE THIS!**";
+		setName("a standard title");
+		setDescription("Give or Sell this title to transfer ownership. **DON'T LOSE THIS!**");
 		baseGoldValue=10000;
-		miscText="Who Knows?";
+		setMiscText("Who Knows?");
 		setMaterial(EnvResource.RESOURCE_PAPER);
 		recoverEnvStats();
 	}
@@ -73,9 +73,9 @@ public class StdTitle extends StdItem implements LandTitle
 		{
 			Vector V=getRooms();
 			if(V.size()<2)
-				name="the title to "+landRoomID();
+				setName("the title to "+landRoomID());
 			else
-				name="the title to rooms around "+((Room)V.firstElement()).ID();
+				setName("the title to rooms around "+((Room)V.firstElement()).ID());
 		}
 	}
 

@@ -11,9 +11,9 @@ public class BagOfEndlessness extends BagOfHolding
 	{
 		super();
 
-		name="a small sack";
-		displayText="a small black sack is crumpled up here.";
-		description="A nice silk sack to put your things in.";
+		setName("a small sack");
+		setDisplayText("a small black sack is crumpled up here.");
+		setDescription("A nice silk sack to put your things in.");
 		secretIdentity="The Bag of Endless Stuff";
 		baseEnvStats().setLevel(1);
 		capacity=Integer.MAX_VALUE-1000;

@@ -11,9 +11,9 @@ public class StdJournal extends StdItem
 	public StdJournal()
 	{
 		super();
-		name="a journal";
-		displayText="a journal sits here.";
-		description="Enter `READ [NUMBER] [JOURNAL]` to read an entry.%0D%0AUse your WRITE skill to add new entries. ";
+		setName("a journal");
+		setDisplayText("a journal sits here.");
+		setDescription("Enter `READ [NUMBER] [JOURNAL]` to read an entry.%0D%0AUse your WRITE skill to add new entries. ");
 		material=EnvResource.RESOURCE_PAPER;
 		isReadable=true;
 	}
@@ -115,7 +115,7 @@ public class StdJournal extends StdItem
 				}
 				else
 				if(which<0)
-					mob.tell(description);
+					mob.tell(description());
 				else
 					mob.tell("That message is private.");
 				return;

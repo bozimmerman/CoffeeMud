@@ -6,10 +6,10 @@ import java.io.*;
 
 public class Resources
 {
+	private static boolean compress=false;
 	private static Vector resourceIDs=new Vector();
 	private static Vector resource=new Vector();
 									   
-
 	public static void clearResources()
 	{
 		resourceIDs=new Vector();
@@ -28,12 +28,33 @@ public class Resources
 		return V;
 	}
 	
+	private static Object fetchResource(int x)
+	{
+		if((x<resource.size())&&(x>=0))
+		{
+			if(!compress) return resource.elementAt(x);
+			if(resource.elementAt(x) instanceof byte[])
+				return new StringBuffer(Util.decompressString((byte[])resource.elementAt(x)));
+			else
+				return resource.elementAt(x);
+		}
+		return null;
+	}
+	
 	public static Object getResource(String ID)
 	{
 		for(int i=0;i<resourceIDs.size();i++)
 			if(((String)resourceIDs.elementAt(i)).equalsIgnoreCase(ID))
-				return resource.elementAt(i);
+				return fetchResource(i);
 		return null;
+	}
+
+	public static Object prepareObject(Object obj)
+	{
+		if(!compress) return obj;
+		if(obj instanceof StringBuffer)
+			return Util.compressString(((StringBuffer)obj).toString());
+		return obj;
 	}
 	
 	public static void submitResource(String ID, Object obj)
@@ -41,7 +62,7 @@ public class Resources
 		if(getResource(ID)!=null)
 			return;
 		resourceIDs.addElement(ID);
-		resource.addElement(obj);
+		resource.addElement(prepareObject(obj));
 	}
 	
 	public static void updateResource(String ID, Object obj)
@@ -49,7 +70,7 @@ public class Resources
 		for(int i=0;i<resourceIDs.size();i++)
 			if(((String)resourceIDs.elementAt(i)).equalsIgnoreCase(ID))
 			{
-				resource.setElementAt(obj,i);
+				resource.setElementAt(prepareObject(obj),i);
 				return;
 			}
 	}
@@ -152,5 +173,9 @@ public class Resources
 			Log.errOut("Resources",e);
 		}
 	}
+	
+	public static void setCompression(boolean truefalse)
+	{	compress=truefalse;}
+	public static boolean compressed(){return compress;}
 	
 }

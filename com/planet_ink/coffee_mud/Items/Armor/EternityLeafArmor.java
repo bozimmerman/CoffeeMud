@@ -10,9 +10,9 @@ public class EternityLeafArmor extends StdArmor
 	{
 		super();
 
-		name="a suit of Eternity Tree Leaf Armor";
-		displayText="a suit of Eternity tree leaf armor sits here.";
-		description="This suit of armor is made from the leaves of the Eternity Tree, a true gift from the Fox god himself.  (armor:  50, grants a modest degree of stealth, and is as light as cloth.)";
+		setName("a suit of Eternity Tree Leaf Armor");
+		setDisplayText("a suit of Eternity tree leaf armor sits here.");
+		setDescription("This suit of armor is made from the leaves of the Eternity Tree, a true gift from the Fox god himself.  (armor:  50, grants a modest degree of stealth, and is as light as cloth.)");
 		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
 		wornLogicalAnd=true;
 		baseGoldValue+=25000;

@@ -9,10 +9,10 @@ public class Longsword extends Sword
 	{
 		super();
 
-		name="a fancy longsword";
-		displayText="a fancy longsword has been dropped on the ground.";
-		miscText="";
-		description="A standard one-handed sword.";
+		setName("a fancy longsword");
+		setDisplayText("a fancy longsword has been dropped on the ground.");
+		setMiscText("");
+		setDescription("A standard one-handed sword.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(4);

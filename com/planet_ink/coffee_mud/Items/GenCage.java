@@ -11,9 +11,9 @@ public class GenCage extends StdCage
 	public GenCage()
 	{
 		super();
-		name="a cage";
-		displayText="a cage sits here.";
-		description="It\\`s of solid wood construction with metal bracings.  The door has a key hole.";
+		setName("a cage");
+		setDisplayText("a cage sits here.");
+		setDescription("It\\`s of solid wood construction with metal bracings.  The door has a key hole.");
 		capacity=1000;
 		setContainTypes(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED);
 		material=EnvResource.RESOURCE_OAK;
@@ -65,7 +65,7 @@ public class GenCage extends StdCage
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(Generic.getGenItemCodeNum(code)>=0)
 			Generic.setGenItemStat(this,code,val);
 		else

@@ -13,9 +13,9 @@ public class GenBow extends StdBow
 	{
 		super();
 
-		name="a generic short bow";
-		displayText="a generic short bow sits here.";
-		description="";
+		setName("a generic short bow");
+		setDisplayText("a generic short bow sits here.");
+		setDescription("");
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

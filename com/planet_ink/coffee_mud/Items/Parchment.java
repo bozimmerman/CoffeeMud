@@ -8,9 +8,9 @@ public class Parchment extends GenReadable
 	public Parchment()
 	{
 		super();
-		name="a piece of parchment";
-		displayText="a piece of parchment here.";
-		description="looks kinda like a piece of paper";
+		setName("a piece of parchment");
+		setDisplayText("a piece of parchment here.");
+		setDescription("looks kinda like a piece of paper");
 		baseEnvStats().setWeight(1);
 		recoverEnvStats();
 		setMaterial(EnvResource.RESOURCE_PAPER);

@@ -13,9 +13,9 @@ public class Lantern extends LightSource
 	public Lantern()
 	{
 		super();
-		name="a hooded lantern";
-		displayText="a hooded lantern sits here.";
-		description="The lantern still looks like it has some oil in it.";
+		setName("a hooded lantern");
+		setDisplayText("a hooded lantern sits here.");
+		setDescription("The lantern still looks like it has some oil in it.");
 
 		baseEnvStats().setWeight(5);
 		setMaterial(EnvResource.RESOURCE_STEEL);
@@ -86,7 +86,7 @@ public class Lantern extends LightSource
 					if(!thePuddle.containsDrink()) amountToTake=0;
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					setDuration(DURATION_TICKS);
-					description="The lantern still looks like it has some oil in it.";
+					setDescription("The lantern still looks like it has some oil in it.");
 				}
 				break;
 			default:

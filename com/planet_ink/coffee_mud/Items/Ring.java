@@ -11,9 +11,9 @@ public class Ring extends StdItem
 	public Ring()
 	{
 		super();
-		name="an ordinary ring";
-		displayText="a nondescript ring sits here doing nothing.";
-		description="It looks like a ring you wear on your fingers.";
+		setName("an ordinary ring");
+		setDisplayText("a nondescript ring sits here doing nothing.");
+		setDescription("It looks like a ring you wear on your fingers.");
 
 		properWornBitmap=Item.ON_LEFT_FINGER | Item.ON_RIGHT_FINGER;
 		wornLogicalAnd=false;

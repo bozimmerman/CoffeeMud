@@ -12,9 +12,9 @@ public class GoodyBag extends BagOfEndlessness
 	public GoodyBag()
 	{
 		super();
-		name="a little bag";
-		displayText="a small bag is sitting here.";
-		description="A nice little bag to put your things in.";
+		setName("a little bag");
+		setDisplayText("a small bag is sitting here.");
+		setDescription("A nice little bag to put your things in.");
 		secretIdentity="The Archon's Goody Bag";
 		recoverEnvStats();
 	}

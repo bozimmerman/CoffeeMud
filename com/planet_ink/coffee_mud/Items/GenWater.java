@@ -12,10 +12,10 @@ public class GenWater extends StdDrink
 	public GenWater()
 	{
 		super();
-		name="a generic puddle of water";
+		setName("a generic puddle of water");
 		baseEnvStats.setWeight(2);
-		displayText="a generic puddle of water sits here.";
-		description="";
+		setDisplayText("a generic puddle of water sits here.");
+		setDescription("");
 		baseGoldValue=5;
 		capacity=0;
 		amountOfThirstQuenched=250;
@@ -71,7 +71,7 @@ public class GenWater extends StdDrink
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(Generic.getGenItemCodeNum(code)>=0)
 			Generic.setGenItemStat(this,code,val);
 		else

@@ -10,9 +10,9 @@ public class LeatherCap extends StdArmor
 	{
 		super();
 
-		name="a leather cap";
-		displayText="a round leather cap sits here.";
-		description="It looks like its made of cured leather hide, with metal bindings.";
+		setName("a leather cap");
+		setDisplayText("a round leather cap sits here.");
+		setDescription("It looks like its made of cured leather hide, with metal bindings.");
 		properWornBitmap=Item.ON_HEAD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(4);

@@ -326,8 +326,8 @@ public class StdGrid extends StdRoom implements GridLocale
 		Room gc=CMClass.getLocale(getChildLocaleID());
 		gc.setRoomID("");
 		gc.setArea(getArea());
-		gc.setDisplayText(displayText);
-		gc.setDescription(description);
+		gc.setDisplayText(displayText());
+		gc.setDescription(description());
 		int c=-1;
 		if(displayTexts!=null)
 		if(displayTexts.size()>0)

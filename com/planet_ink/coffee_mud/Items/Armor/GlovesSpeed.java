@@ -10,9 +10,9 @@ public class GlovesSpeed extends StdArmor
 	{
 		super();
 
-		name="a pair of gloves";
-		displayText="a pair of finely crafted gloves is found on the ground.";
-		description="This is a pair of very nice gloves.";
+		setName("a pair of gloves");
+		setDisplayText("a pair of finely crafted gloves is found on the ground.");
+		setDescription("This is a pair of very nice gloves.");
 		secretIdentity="Gloves of the blinding strike (Double attack speed, truely usable only by fighters.)";
 		baseGoldValue+=10000;
 		properWornBitmap=Item.ON_HANDS;

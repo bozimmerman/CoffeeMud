@@ -44,100 +44,100 @@ public class Ring_Ornamental extends Ring
 		switch(level)
 		{
 			case SILVER_RING:
-				name="a silver ring";
-				displayText="a silver ring is on the ground.";
-				description="It is a fancy silver ring inscribed with shields.";
+				setName("a silver ring");
+				setDisplayText("a silver ring is on the ground.");
+				setDescription("It is a fancy silver ring inscribed with shields.");
 				baseGoldValue=5;
 				material=EnvResource.RESOURCE_SILVER;
 				break;
 			case COPPER_RING:
-				name="a copper ring";
-				displayText="a copper ring is on the ground.";
-				description="It is a fancy copper ring inscribed with runes.";
+				setName("a copper ring");
+				setDisplayText("a copper ring is on the ground.");
+				setDescription("It is a fancy copper ring inscribed with runes.");
 				baseGoldValue=1;
 				material=EnvResource.RESOURCE_COPPER;
 				break;
 			case PLATINUM_RING:
-				name="a platinum ring";
-				displayText="a platinum ring is on the ground.";
-				description="It is a fancy platinum ring inscribed with ornate symbols.";
+				setName("a platinum ring");
+				setDisplayText("a platinum ring is on the ground.");
+				setDescription("It is a fancy platinum ring inscribed with ornate symbols.");
 				baseGoldValue=500;
 				material=EnvResource.RESOURCE_PLATINUM;
 				break;
 			case GOLD_RING_DIAMOND:
-				name="a diamond ring";
-				displayText="a diamond ring is on the ground.";
-				description="It is a fancy gold ring with a diamond inset.";
+				setName("a diamond ring");
+				setDisplayText("a diamond ring is on the ground.");
+				setDescription("It is a fancy gold ring with a diamond inset.");
 				baseGoldValue=1000;
 				material=EnvResource.RESOURCE_DIAMOND;
 				break;
 			case GOLD_RING:
-				name="a gold ring";
-				displayText="a golden ring is on the ground.";
-				description="It is a simple gold ";
+				setName("a gold ring");
+				setDisplayText("a golden ring is on the ground.");
+				setDescription("It is a simple gold ");
 				baseGoldValue=50;
 				material=EnvResource.RESOURCE_GOLD;
 				break;
 			case GOLD_RING_RUBY:
-				name="a ruby ring";
-				displayText="a ruby ring is on the ground.";
-				description="It is a fancy gold ring with a ruby inset.";
+				setName("a ruby ring");
+				setDisplayText("a ruby ring is on the ground.");
+				setDescription("It is a fancy gold ring with a ruby inset.");
 				baseGoldValue=100;
 				material=EnvResource.RESOURCE_GEM;
 				break;
 			case GOLD_RING_OPAL:
-				name="a opal ring";
-				displayText="an opal ring is on the ground.";
-				description="It is a fancy gold ring with an opal inset.";
+				setName("a opal ring");
+				setDisplayText("an opal ring is on the ground.");
+				setDescription("It is a fancy gold ring with an opal inset.");
 				baseGoldValue=75;
 				material=EnvResource.RESOURCE_GEM;
 				break;
 			case GOLD_RING_TOPAZ:
-				name="a diamond ring";
-				displayText="a diamond ring is on the ground.";
-				description="It is a fancy gold ring with a diamond inset.";
+				setName("a diamond ring");
+				setDisplayText("a diamond ring is on the ground.");
+				setDescription("It is a fancy gold ring with a diamond inset.");
 				baseGoldValue=65;
 				material=EnvResource.RESOURCE_GEM;
 				break;
 			case GOLD_RING_SAPPHIRE:
-				name="a sapphire ring";
-				displayText="a sapphire ring is on the ground.";
-				description="It is a fancy gold ring with a sapphire inset.";
+				setName("a sapphire ring");
+				setDisplayText("a sapphire ring is on the ground.");
+				setDescription("It is a fancy gold ring with a sapphire inset.");
 				baseGoldValue=200;
 				material=EnvResource.RESOURCE_GEM;
 				break;
 			case MITHRIL_RING:
-				name="a mithril ring";
-				displayText="a mithril ring is on the ground.";
-				description="It is a fancy mithril ring.";
+				setName("a mithril ring");
+				setDisplayText("a mithril ring is on the ground.");
+				setDescription("It is a fancy mithril ring.");
 				baseGoldValue=20;
 				material=EnvResource.RESOURCE_MITHRIL;
 				break;
 			case GOLD_RING_PEARL:
-				name="a pearl ring";
-				displayText="a pearl ring is on the ground.";
-				description="It is a fancy gold ring with a pearl inset.";
+				setName("a pearl ring");
+				setDisplayText("a pearl ring is on the ground.");
+				setDescription("It is a fancy gold ring with a pearl inset.");
 				baseGoldValue=65;
 				material=EnvResource.RESOURCE_PEARL;
 				break;
 			case GOLD_RING_EMERALD:
-				name="a emerald ring";
-				displayText="a emerald ring is on the ground.";
-				description="It is a fancy gold ring with an emerald inset.";
+				setName("a emerald ring");
+				setDisplayText("a emerald ring is on the ground.");
+				setDescription("It is a fancy gold ring with an emerald inset.");
 				baseGoldValue=100;
 				material=EnvResource.RESOURCE_GEM;
 				break;
 			case BRONZE_RING:
-				name="a bronze ring";
-				displayText="a bronze ring is on the ground.";
-				description="It is a simple broze ring.";
+				setName("a bronze ring");
+				setDisplayText("a bronze ring is on the ground.");
+				setDescription("It is a simple broze ring.");
 				baseGoldValue=2;
 				material=EnvResource.RESOURCE_BRONZE;
 				break;
 			default:
-				name="a metal ring";
-				displayText="a simple steel ring is on the ground.";
-				description="It is a simple steel ring.";
+				setName("a metal ring");
+				setDisplayText("a simple steel ring is on the ground.");
+				setDescription("It is a simple steel ring.");
 				material=EnvResource.RESOURCE_STEEL;
 				break;
 		}

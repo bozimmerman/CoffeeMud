@@ -10,9 +10,9 @@ public class Hood extends StdArmor
 	{
 		super();
 
-		name="a cloth hood";
-		displayText="a cloth hood sits here.";
-		description="This is a cloth hood that covers the head and shoulders.";
+		setName("a cloth hood");
+		setDisplayText("a cloth hood sits here.");
+		setDescription("This is a cloth hood that covers the head and shoulders.");
 		properWornBitmap=Item.ON_HEAD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(2);

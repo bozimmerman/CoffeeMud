@@ -10,9 +10,9 @@ public class LeatherArmor extends StdArmor
 	{
 		super();
 
-		name="a suit of leather armor";
-		displayText="a suit of leather armor including a breastplate, arms, and legs.";
-		description="This is a fairly decent looking suit of leather armor.";
+		setName("a suit of leather armor");
+		setDisplayText("a suit of leather armor including a breastplate, arms, and legs.");
+		setDescription("This is a fairly decent looking suit of leather armor.");
 		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(12);

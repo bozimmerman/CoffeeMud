@@ -13,9 +13,9 @@ public class GenSpear extends StdSpear
 	{
 		super();
 
-		name="a generic spear";
-		displayText="a generic spear sits here.";
-		description="";
+		setName("a generic spear");
+		setDisplayText("a generic spear sits here.");
+		setDescription("");
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

@@ -9,10 +9,10 @@ public class Glaive extends StdWeapon
 	{
 		super();
 
-		name="a heavy glaive";
-		displayText="a glaive leans against the wall.";
-		miscText="";
-		description="A long blade on a pole.";
+		setName("a heavy glaive");
+		setDisplayText("a glaive leans against the wall.");
+		setMiscText("");
+		setDescription("A long blade on a pole.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(8);

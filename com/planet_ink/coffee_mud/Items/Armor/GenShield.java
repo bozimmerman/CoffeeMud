@@ -10,9 +10,9 @@ public class GenShield extends GenArmor implements Shield
 	{
 		super();
 
-		name="a shield";
-		displayText="a sturdy round shield sits here.";
-		description="";
+		setName("a shield");
+		setDisplayText("a sturdy round shield sits here.");
+		setDescription("");
 		properWornBitmap=Item.HELD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(10);

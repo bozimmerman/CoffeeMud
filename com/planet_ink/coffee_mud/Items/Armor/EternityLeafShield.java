@@ -10,9 +10,9 @@ public class EternityLeafShield extends StdShield
 	{
 		super();
 
-		name="a huge leaf";
-		displayText="a huge and very rigid leaf lays on the ground.";
-		description="a very huge and very rigid leaf";
+		setName("a huge leaf");
+		setDisplayText("a huge and very rigid leaf lays on the ground.");
+		setDescription("a very huge and very rigid leaf");
 		secretIdentity="A shield made from one of the leaves of the Fox god\\`s Eternity Trees.  (Armor:  30)";
 		properWornBitmap=Item.HELD;
 		wornLogicalAnd=true;

@@ -289,16 +289,7 @@ public class Amputation extends StdAbility
 		if(affected==null) return missingLimbs;
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
 		   return missingLimbs;
-		String s=text();
-		int x=s.indexOf(";");
-		while(x>=0)
-		{
-			String s2=s.substring(0,x);
-			if(s2.length()>0)
-				missingLimbs.addElement(s2);
-			s=s.substring(x+1);
-			x=s.indexOf(";");
-		}
+		missingLimbs=Util.parseSemicolons(text());
 		forbiddenWornBits=0;
 		if(missingLimbs.contains("left eye")&&missingLimbs.contains("right eye"))
 			forbiddenWornBits=forbiddenWornBits|Item.ON_EYES;

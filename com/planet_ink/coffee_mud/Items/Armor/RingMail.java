@@ -10,9 +10,9 @@ public class RingMail extends StdArmor
 	{
 		super();
 
-		name="suit of ring mail";
-		displayText="a suit of armor made with large metal rings fastened to leather";
-		description="A suit of ring mail including everything to protect the body, legs and arms.";
+		setName("suit of ring mail");
+		setDisplayText("a suit of armor made with large metal rings fastened to leather");
+		setDescription("A suit of ring mail including everything to protect the body, legs and arms.");
 		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(22);

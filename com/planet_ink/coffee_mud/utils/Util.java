@@ -436,6 +436,41 @@ public class Util
 		return commands;
 	}
 
+	public static Vector parseCommas(String s)
+	{
+		Vector V=new Vector();
+		if((s==null)||(s.length()==0)) return V;
+		int x=s.indexOf(",");
+		while(x>=0)
+		{
+			String s2=s.substring(0,x).trim();
+			s=s.substring(x).trim();
+			if(s2.length()>0) V.addElement(s2);
+			x=s.indexOf(",");
+		}
+		if(s.trim().length()>0)
+			V.addElement(s.trim());
+		return V;
+	}
+	
+	public static Vector parseSemicolons(String s)
+	{
+		Vector V=new Vector();
+		if((s==null)||(s.length()==0)) return V;
+		int x=s.indexOf(";");
+		while(x>=0)
+		{
+			String s2=s.substring(0,x).trim();
+			s=s.substring(x).trim();
+			if(s2.length()>0) V.addElement(s2);
+			x=s.indexOf(";");
+		}
+		if(s.trim().length()>0)
+			V.addElement(s.trim());
+		return V;
+	}
+	
+	
 	public static int lengthMinusColors(String thisStr)
 	{
 		int size=0;

@@ -11,7 +11,7 @@ public class StdItem implements Item
 
 	protected String 	name="an ordinary item";
 	protected String	displayText="a nondescript item sits here doing nothing.";
-	protected String 	description="It looks like something.";
+	protected byte[] 	description=null;
 	protected Item 		myContainer=null;
 	protected int 		myUses=Integer.MAX_VALUE;
 	protected long 		myWornCode=Item.INVENTORY;
@@ -423,7 +423,7 @@ public class StdItem implements Item
 	public void setSecretIdentity(String newIdentity)
 	{
 		if((newIdentity==null)
-		||(newIdentity.trim().equalsIgnoreCase(description))
+		||(newIdentity.trim().equalsIgnoreCase(description()))
 		||(newIdentity.length()==0))
 			secretIdentity=null;
 		else
@@ -440,11 +440,23 @@ public class StdItem implements Item
 	}
 	public String description()
 	{
-		return description;
+		if((description==null)||(description.length==0))
+			return "";
+		else
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
+			return Util.decompressString(description);
+		else
+			return new String(description);
 	}
 	public void setDescription(String newDescription)
 	{
-		description=newDescription;
+		if(newDescription.length()==0)
+			description=null;
+		else
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
+			description=Util.compressString(newDescription);
+		else
+			description=newDescription.getBytes();
 	}
 	public void setContainer(Item newContainer)
 	{
@@ -923,7 +935,7 @@ public class StdItem implements Item
 
 		riding=null;
 		destroyed=true;
-		
+
 		if(owner!=null)
 		{
 			if (owner instanceof Room)

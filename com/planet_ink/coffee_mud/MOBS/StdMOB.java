@@ -26,7 +26,7 @@ public class StdMOB implements MOB
 
 	protected Session mySession=null;
 	protected boolean pleaseDestroy=false;
-	protected String description="";
+	protected byte[] description=null;
 	protected String displayText="";
 	protected byte[] miscText=null;
 
@@ -444,7 +444,12 @@ public class StdMOB implements MOB
 	{
 		amDead=false;
 		if((miscText!=null)&&(resetStats))
-			setMiscText(Util.decompressString(miscText));
+		{
+			if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
+				setMiscText(Util.decompressString(miscText));
+			else
+				setMiscText(new String(miscText));
+		}
 		if(getStartRoom()==null)
 			setStartRoom(isMonster()?newLocation:CMMap.getStartRoom(this));
 		setLocation(newLocation);
@@ -795,19 +800,40 @@ public class StdMOB implements MOB
 	}
 	public String description()
 	{
-		return description;
+		if((description==null)||(description.length==0))
+			return "";
+		else
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBDCOMPRESS))
+			return Util.decompressString(description);
+		else
+			return new String(description);
 	}
 	public void setDescription(String newDescription)
 	{
-		description=newDescription;
+		if(newDescription.length()==0)
+			description=null;
+		else
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBDCOMPRESS))
+			description=Util.compressString(newDescription);
+		else
+			description=newDescription.getBytes();
 	}
 	public void setMiscText(String newText)
 	{
-		miscText=Util.compressString(newText);
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
+			miscText=Util.compressString(newText);
+		else
+			miscText=newText.getBytes();
 	}
 	public String text()
 	{
-		return Util.decompressString(miscText);
+		if(miscText.length==0)
+			return "";
+		else
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
+			return Util.decompressString(miscText);
+		else
+			return new String(miscText);
 	}
 
 	public String healthText()

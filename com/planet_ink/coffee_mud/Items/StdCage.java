@@ -10,9 +10,9 @@ public class StdCage extends StdContainer
 	public StdCage()
 	{
 		super();
-		name="a cage";
-		displayText="a cage sits here.";
-		description="It\\`s of solid wood construction with metal bracings.  The door has a key hole.";
+		setName("a cage");
+		setDisplayText("a cage sits here.");
+		setDescription("It\\`s of solid wood construction with metal bracings.  The door has a key hole.");
 		capacity=1000;
 		setContainTypes(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED);
 		material=EnvResource.RESOURCE_OAK;

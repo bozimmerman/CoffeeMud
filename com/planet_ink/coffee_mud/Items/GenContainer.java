@@ -12,10 +12,10 @@ public class GenContainer extends StdContainer
 	public GenContainer()
 	{
 		super();
-		name="a generic container";
+		setName("a generic container");
 		baseEnvStats.setWeight(2);
-		displayText="a generic container sits here.";
-		description="";
+		setDisplayText("a generic container sits here.");
+		setDescription("");
 		baseGoldValue=5;
 		capacity=50;
 		recoverEnvStats();
@@ -64,7 +64,7 @@ public class GenContainer extends StdContainer
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(Generic.getGenItemCodeNum(code)>=0)
 			Generic.setGenItemStat(this,code,val);
 		else

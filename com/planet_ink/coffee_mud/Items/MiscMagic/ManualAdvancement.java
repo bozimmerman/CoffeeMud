@@ -13,10 +13,10 @@ public class ManualAdvancement extends StdItem implements MiscMagic
 	{
 		super();
 
-		name="a book";
+		setName("a book");
 		baseEnvStats().setWeight(1);
-		displayText="an ornately bound book sits here.";
-		description="An ornately bound book filled with mystical symbols.";
+		setDisplayText("an ornately bound book sits here.");
+		setDescription("An ornately bound book filled with mystical symbols.");
 		secretIdentity="The Manual of Advancement.";
 		this.setUsesRemaining(5);
 		baseGoldValue=10000;

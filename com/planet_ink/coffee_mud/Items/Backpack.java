@@ -9,9 +9,9 @@ public class Backpack extends CloseableContainer
 	public Backpack()
 	{
 		super();
-		name="a backpack";
-		displayText="a backpack sits here.";
-		description="The straps are a little worn, but it\\`s in nice shape!";
+		setName("a backpack");
+		setDisplayText("a backpack sits here.");
+		setDescription("The straps are a little worn, but it\\`s in nice shape!");
 		capacity=25;
 		baseGoldValue=5;
 		properWornBitmap=Item.ON_TORSO|Item.HELD;

@@ -10,10 +10,10 @@ public class StdSling extends StdWeapon
 	public StdSling()
 	{
 		super();
-		name="a sling";
-		displayText="a sling has been left here.";
-		miscText="";
-		description="It looks like it might shoot bullets!";
+		setName("a sling");
+		setDisplayText("a sling has been left here.");
+		setMiscText("");
+		setDescription("It looks like it might shoot bullets!");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(8);

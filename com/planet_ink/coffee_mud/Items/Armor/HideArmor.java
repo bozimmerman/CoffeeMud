@@ -10,9 +10,9 @@ public class HideArmor extends StdArmor
 	{
 		super();
 
-		name="suit of Hide Armor";
-		displayText="a suit of armor made from animal hides";
-		description="A suit of armor made from animal hides including everything to protect the body, legs and arms.";
+		setName("suit of Hide Armor");
+		setDisplayText("a suit of armor made from animal hides");
+		setDescription("A suit of armor made from animal hides including everything to protect the body, legs and arms.");
 		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(29);

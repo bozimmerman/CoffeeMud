@@ -13,10 +13,10 @@ public class GenBed extends GenRideable
 	{
 		super();
 
-		name="a generic bed";
+		setName("a generic bed");
 		baseEnvStats.setWeight(150);
-		displayText="a generic bed sits here.";
-		description="";
+		setDisplayText("a generic bed sits here.");
+		setDescription("");
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		setMaterial(EnvResource.RESOURCE_COTTON);

@@ -10,9 +10,9 @@ public class ChainMailVest extends StdArmor
 	{
 		super();
 
-		name="a chain mail vest";
-		displayText="a chain mail vest sits here.";
-		description="This is fairly solid looking vest made of chain mail.";
+		setName("a chain mail vest");
+		setDisplayText("a chain mail vest sits here.");
+		setDescription("This is fairly solid looking vest made of chain mail.");
 		properWornBitmap=Item.ON_TORSO;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(25);

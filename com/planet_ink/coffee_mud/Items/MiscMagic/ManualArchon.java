@@ -13,10 +13,10 @@ public class ManualArchon extends StdItem implements MiscMagic
 	{
 		super();
 
-		name="an ornately decorated book";
+		setName("an ornately decorated book");
 		baseEnvStats.setWeight(1);
-		displayText="an ornately decorated book has definitely been left behind by someone.";
-		description="A book covered with mystical symbols, inside and out.";
+		setDisplayText("an ornately decorated book has definitely been left behind by someone.");
+		setDescription("A book covered with mystical symbols, inside and out.");
 		secretIdentity="The Manual of the Archons.";
 		this.setUsesRemaining(Integer.MAX_VALUE);
 		baseGoldValue=50000;

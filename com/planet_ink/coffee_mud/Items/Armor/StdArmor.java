@@ -13,9 +13,9 @@ public class StdArmor extends StdContainer implements Armor
 	{
 		super();
 
-		name="a shirt of armor";
-		displayText="a thick armored shirt sits here.";
-		description="Thick padded leather with strips of metal interwoven.";
+		setName("a shirt of armor");
+		setDisplayText("a thick armored shirt sits here.");
+		setDescription("Thick padded leather with strips of metal interwoven.");
 		properWornBitmap=Item.ON_TORSO;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(10);

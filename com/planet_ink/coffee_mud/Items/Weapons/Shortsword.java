@@ -9,10 +9,10 @@ public class Shortsword extends Sword
 	{
 		super();
 
-		name="a short sword";
-		displayText="a short sword has been dropped on the ground.";
-		miscText="";
-		description="A sword with a not-too-long blade.";
+		setName("a short sword");
+		setDisplayText("a short sword has been dropped on the ground.");
+		setMiscText("");
+		setDescription("A sword with a not-too-long blade.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(3);

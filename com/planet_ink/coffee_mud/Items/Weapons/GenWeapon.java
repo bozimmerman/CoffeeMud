@@ -13,10 +13,10 @@ public class GenWeapon extends StdWeapon
 	{
 		super();
 
-		name="a generic weapon";
+		setName("a generic weapon");
 		baseEnvStats.setWeight(2);
-		displayText="a generic weapon sits here.";
-		description="";
+		setDisplayText("a generic weapon sits here.");
+		setDescription("");
 		baseGoldValue=5;
 		properWornBitmap=Item.WIELD|Item.HELD;
 		wornLogicalAnd=false;
@@ -66,7 +66,7 @@ public class GenWeapon extends StdWeapon
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(Generic.getGenItemCodeNum(code)>=0)
 			Generic.setGenItemStat(this,code,val);
 		else

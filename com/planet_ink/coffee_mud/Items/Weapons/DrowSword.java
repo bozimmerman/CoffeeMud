@@ -10,10 +10,10 @@ public class DrowSword extends Longsword
 	{
 		super();
 
-		name="a longsword";
-		displayText="a fancy longsword has been dropped on the ground.";
-		miscText="";
-		description="A one-handed sword with a very dark blade.";
+		setName("a longsword");
+		setDisplayText("a fancy longsword has been dropped on the ground.");
+		setMiscText("");
+		setDescription("A one-handed sword with a very dark blade.");
 		secretIdentity="A Drow Sword";
 		baseEnvStats().setAbility(Dice.roll(1,6,0));
 		baseEnvStats().setLevel(1);

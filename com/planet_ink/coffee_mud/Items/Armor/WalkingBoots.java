@@ -10,9 +10,9 @@ public class WalkingBoots extends StdArmor
 	{
 		super();
 
-		name="a pair of nice hide walking boots";
-		displayText="a pair of hide walking boots sits here.";
-		description="They look like a rather nice pair of footwear.";
+		setName("a pair of nice hide walking boots");
+		setDisplayText("a pair of hide walking boots sits here.");
+		setDescription("They look like a rather nice pair of footwear.");
 		properWornBitmap=Item.ON_FEET;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(1);

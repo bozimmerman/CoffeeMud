@@ -11,10 +11,10 @@ public class StdNet extends StdWeapon
 	public StdNet()
 	{
 		super();
-		name="a net";
-		displayText="a net has been left here.";
-		miscText="";
-		description="Its a wide tangling net!";
+		setName("a net");
+		setDisplayText("a net has been left here.");
+		setMiscText("");
+		setDescription("Its a wide tangling net!");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(1);
@@ -64,7 +64,7 @@ public class StdNet extends StdWeapon
 			MOB M=(MOB)affect.target();
 			Hashtable H=affect.source().getGroupMembers(new Hashtable());
 			if(H.contains(M)) H.remove(M);
-			
+
 			for(int i=0;i<M.location().numInhabitants();i++)
 			{
 				MOB M2=M.location().fetchInhabitant(i);

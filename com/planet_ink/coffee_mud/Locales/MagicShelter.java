@@ -13,7 +13,7 @@ public class MagicShelter extends StdRoom
 		super();
 		name="the shelter";
 		displayText="Magic Shelter";
-		description="You are in a domain of complete void and peace.";
+		setDescription("You are in a domain of complete void and peace.");
 		baseEnvStats.setWeight(0);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_MAGIC;

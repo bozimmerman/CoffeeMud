@@ -12,10 +12,10 @@ public class GenSuperPill extends GenPill
 	{
 		super();
 
-		name="a pill";
+		setName("a pill");
 		baseEnvStats.setWeight(1);
-		displayText="An strange pill lies here.";
-		description="Large and round, with strange markings.";
+		setDisplayText("An strange pill lies here.");
+		setDescription("Large and round, with strange markings.");
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();

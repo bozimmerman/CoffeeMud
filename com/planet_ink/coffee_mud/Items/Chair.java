@@ -12,10 +12,10 @@ public class Chair extends StdRideable
 	public Chair()
 	{
 		super();
-		name="a chair";
+		setName("a chair");
 		baseEnvStats.setWeight(150);
-		displayText="a chair is here.";
-		description="Looks like a nice comfortable wooden chair";
+		setDisplayText("a chair is here.");
+		setDescription("Looks like a nice comfortable wooden chair");
 		material=EnvResource.RESOURCE_OAK;
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);

@@ -11,14 +11,14 @@ public class Spring extends StdDrink
 	public Spring()
 	{
 		super();
-		name="a spring";
+		setName("a spring");
 		amountOfThirstQuenched=250;
 		amountOfLiquidHeld=999999;
 		amountOfLiquidRemaining=999999;
 		baseEnvStats().setWeight(5);
 		capacity=0;
-		displayText="a little magical spring flows here.";
-		description="The spring is coming magically from the ground.  The water looks pure and clean.";
+		setDisplayText("a little magical spring flows here.");
+		setDescription("The spring is coming magically from the ground.  The water looks pure and clean.");
 		baseGoldValue=10;
 		isGettable=false;
 		material=EnvResource.RESOURCE_FRESHWATER;

@@ -10,9 +10,9 @@ public class GenShirt extends GenArmor
 	{
 		super();
 
-		name="a nice tunic";
-		displayText="a plain tunic is folded neatly here.";
-		description="It is a plain buttoned tunic.";
+		setName("a nice tunic");
+		setDisplayText("a plain tunic is folded neatly here.");
+		setDescription("It is a plain buttoned tunic.");
 		properWornBitmap=Item.ON_TORSO;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(2);

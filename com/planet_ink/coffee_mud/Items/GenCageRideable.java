@@ -11,9 +11,9 @@ public class GenCageRideable extends StdCageRideable
 	public GenCageRideable()
 	{
 		super();
-		name="a cage wagon";
-		displayText="a cage wagon sits here.";
-		description="It\\`s of solid wood construction with metal bracings.  The door has a key hole.";
+		setName("a cage wagon");
+		setDisplayText("a cage wagon sits here.");
+		setDescription("It\\`s of solid wood construction with metal bracings.  The door has a key hole.");
 		capacity=5000;
 		setContainTypes(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED);
 		material=EnvResource.RESOURCE_OAK;
@@ -61,7 +61,7 @@ public class GenCageRideable extends StdCageRideable
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(Generic.getGenItemCodeNum(code)>=0)
 			Generic.setGenItemStat(this,code,val);
 		else

@@ -30,7 +30,7 @@ public class Fighter_Shrug extends StdAbility
 		&&(msg.tool() instanceof Weapon))
 		{
 			MOB mob=(MOB)affected;
-			if(mob.location().show(mob,msg.source(),this,Affect.MSG_OK_ACTION,"<S-NAME> shrug(s) off the attack from <T-NAME>"))
+			if(mob.location().show(mob,msg.source(),this,Affect.MSG_OK_ACTION,"<S-NAME> shrug(s) off the attack from <T-NAME>."))
 			{
 				unInvoke();
 				return false;

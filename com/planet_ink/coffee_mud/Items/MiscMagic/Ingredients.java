@@ -20,7 +20,7 @@ public class Ingredients extends BagOfEndlessness
 	{
 		return new Ingredients();
 	}
-	
+
 	protected Item makeResource(String name, int type)
 	{
 		Item I=null;
@@ -47,7 +47,7 @@ public class Ingredients extends BagOfEndlessness
 			((MOB)owner()).addInventory(I);
 		return I;
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if((!alreadyFilled)&&(owner()!=null))

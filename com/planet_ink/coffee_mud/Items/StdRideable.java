@@ -15,9 +15,9 @@ public class StdRideable extends StdContainer implements Rideable
 	public StdRideable()
 	{
 		super();
-		name="a boat";
-		displayText="a boat is docked here.";
-		description="Looks like a boat";
+		setName("a boat");
+		setDisplayText("a boat is docked here.");
+		setDescription("Looks like a boat");
 		baseEnvStats().setWeight(2000);
 		recoverEnvStats();
 		capacity=3000;

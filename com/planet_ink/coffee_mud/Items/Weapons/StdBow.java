@@ -10,10 +10,10 @@ public class StdBow extends StdWeapon
 	public StdBow()
 	{
 		super();
-		name="a short bow";
-		displayText="a short bow has been left here.";
-		miscText="";
-		description="It looks like it might shoot arrows!";
+		setName("a short bow");
+		setDisplayText("a short bow has been left here.");
+		setMiscText("");
+		setDescription("It looks like it might shoot arrows!");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(8);

@@ -10,9 +10,9 @@ public class Hat extends StdArmor
 	{
 		super();
 
-		name="a feathered cap";
-		displayText="a feathered cap.";
-		description="It looks like a regular cap with long feather.";
+		setName("a feathered cap");
+		setDisplayText("a feathered cap.");
+		setDescription("It looks like a regular cap with long feather.");
 		properWornBitmap=Item.ON_HEAD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(2);

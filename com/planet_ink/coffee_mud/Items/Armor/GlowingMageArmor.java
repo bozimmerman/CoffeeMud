@@ -10,9 +10,9 @@ public class GlowingMageArmor extends StdArmor
 	{
 		super();
 
-		name="a mystical glowing breast plate";
-		displayText="If this is sitting around somewhere, something is wrong!";
-		description="This suit of armor is made from magical energy, but looks sturdy and protective.";
+		setName("a mystical glowing breast plate");
+		setDisplayText("If this is sitting around somewhere, something is wrong!");
+		setDescription("This suit of armor is made from magical energy, but looks sturdy and protective.");
 		properWornBitmap=Item.ON_TORSO;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(45);

@@ -10,9 +10,9 @@ public class Helmet extends StdArmor
 	{
 		super();
 
-		name="a helmet";
-		displayText="a helmet sits here.";
-		description="This is fairly solid looking helmet.";
+		setName("a helmet");
+		setDisplayText("a helmet sits here.");
+		setDescription("This is fairly solid looking helmet.");
 		properWornBitmap=Item.ON_HEAD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(10);

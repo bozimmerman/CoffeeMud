@@ -11,14 +11,14 @@ public class StdCoins extends StdItem implements Coins
 	public StdCoins()
 	{
 		super();
-		name="a pile of gold coins";
-		displayText="some gold coins sit here.";
+		setName("a pile of gold coins");
+		setDisplayText("some gold coins sit here.");
 		myContainer=null;
-		description="Looks like someone left some gold sitting around.";
+		setDescription("Looks like someone left some gold sitting around.");
 		myUses=Integer.MAX_VALUE;
 		material=EnvResource.RESOURCE_GOLD;
 		myWornCode=0;
-		miscText="";
+		setMiscText("");
 		baseEnvStats.setWeight(0);
 		recoverEnvStats();
 	}

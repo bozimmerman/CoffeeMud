@@ -44,27 +44,27 @@ public class Claymore extends Sword
 		switch(level)
 		{
 			case Claymore.PLAIN:
-				name="a simple claymore";
-				displayText="a simple claymore is on the ground.";
-				description="It\\`s an oversized two-handed sword.  Someone made it just to make it.";
+				setName("a simple claymore");
+				setDisplayText("a simple claymore is on the ground.");
+				setDescription("It\\`s an oversized two-handed sword.  Someone made it just to make it.");
 				break;
 
 			case Claymore.QUALITY_WEAPON:
-				name="a very nice claymore";
-				displayText="a very nice claymore leans against the wall.";
-				description="It\\`s ornate with an etched hilt.  Someone took their time making it.";
+				setName("a very nice claymore");
+				setDisplayText("a very nice claymore leans against the wall.");
+				setDescription("It\\`s ornate with an etched hilt.  Someone took their time making it.");
 				break;
 
 			case Claymore.EXCEPTIONAL:
-				name="an exceptional claymore";
-				displayText="an exceptional claymore is found nearby.";
-				description="It\\`s a huge two-handed sword, with a etchings in the blade and a tassel hanging from the hilt.";
+				setName("an exceptional claymore");
+				setDisplayText("an exceptional claymore is found nearby.");
+				setDescription("It\\`s a huge two-handed sword, with a etchings in the blade and a tassel hanging from the hilt.");
 				break;
 
 			default:
-				name="a simple claymore";
-				displayText="a simple claymore is on the ground.";
-				description="It\\`s an oversized two-handed sword.  Someone made it just to make it.";
+				setName("a simple claymore");
+				setDisplayText("a simple claymore is on the ground.");
+				setDescription("It\\`s an oversized two-handed sword.  Someone made it just to make it.");
 				break;
 		}
 	}

@@ -15,9 +15,9 @@ public class Corpse extends GenContainer implements DeadBody
 	{
 		super();
 
-		name="the body of someone";
-		displayText="the body of someone lies here.";
-		description="Bloody and bruised, obviously mistreated.";
+		setName("the body of someone");
+		setDisplayText("the body of someone lies here.");
+		setDescription("Bloody and bruised, obviously mistreated.");
 		properWornBitmap=0;
 		baseEnvStats.setWeight(150);
 		baseEnvStats.setRejuv(100);
@@ -29,7 +29,7 @@ public class Corpse extends GenContainer implements DeadBody
 	public void setMiscText(String newText)
 	{
 		miscText="";
-		if(newText.length()>0) 
+		if(newText.length()>0)
 			super.setMiscText(newText);
 	}
 	public Environmental newInstance()

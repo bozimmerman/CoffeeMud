@@ -12,10 +12,10 @@ public class GenMap extends StdMap
 	public GenMap()
 	{
 		super();
-		name="a generic map";
+		setName("a generic map");
 		baseEnvStats.setWeight(1);
-		displayText="a generic map sits here.";
-		description="";
+		setDisplayText("a generic map sits here.");
+		setDescription("");
 		baseGoldValue=5;
 		setMaterial(EnvResource.RESOURCE_PAPER);
 		recoverEnvStats();

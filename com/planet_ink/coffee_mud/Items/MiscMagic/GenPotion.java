@@ -14,10 +14,10 @@ public class GenPotion extends GenWater implements Potion
 	{
 		super();
 
-		name="a potion";
+		setName("a potion");
 		baseEnvStats.setWeight(1);
-		displayText="A potion sits here.";
-		description="A strange potion with stranger markings.";
+		setDisplayText("A potion sits here.");
+		setDescription("A strange potion with stranger markings.");
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();

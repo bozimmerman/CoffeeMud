@@ -11,9 +11,9 @@ public class Wand_Nourishment extends StdWand
 	{
 		super();
 
-		name="a wooden wand";
-		displayText="a small wooden wand is here.";
-		description="A wand made out of wood";
+		setName("a wooden wand");
+		setDisplayText("a small wooden wand is here.");
+		setDescription("A wand made out of wood");
 		secretIdentity="The wand of nourishment.  Hold the wand say \\`shazam\\` to it.";
 		baseGoldValue=200;
 		material=EnvResource.RESOURCE_OAK;

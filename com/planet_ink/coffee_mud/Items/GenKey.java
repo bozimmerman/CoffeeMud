@@ -12,9 +12,9 @@ public class GenKey extends GenItem implements Key
 	public GenKey()
 	{
 		super();
-		name="a generic key thing";
-		displayText="a generic key thing sits here.";
-		description="";
+		setName("a generic key thing");
+		setDisplayText("a generic key thing sits here.");
+		setDescription("");
 		isReadable=false;
 		setMaterial(EnvResource.RESOURCE_IRON);
 	}

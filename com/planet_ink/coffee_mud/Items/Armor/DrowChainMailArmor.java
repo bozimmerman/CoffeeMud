@@ -10,9 +10,9 @@ public class DrowChainMailArmor extends StdArmor
 	{
 		super();
 
-		name="a suit of dark chain mail armor";
-		displayText="a suit of chain mail armor made of dark material sits here.";
-		description="This suit includes a fairly solid looking hauberk with leggings and a coif, all constructed from a strong, dark metal.";
+		setName("a suit of dark chain mail armor");
+		setDisplayText("a suit of chain mail armor made of dark material sits here.");
+		setDescription("This suit includes a fairly solid looking hauberk with leggings and a coif, all constructed from a strong, dark metal.");
         secretIdentity="A suit of Drow Chain Mail Armor";
 		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
 		wornLogicalAnd=true;

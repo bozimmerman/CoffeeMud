@@ -15,9 +15,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 	public StdMap()
 	{
 		super();
-		name="a map";
-		displayText="a map sits here";
-		description="Looks like a map of some place.";
+		setName("a map");
+		setDisplayText("a map sits here");
+		setDescription("Looks like a map of some place.");
 		isReadable=true;
 		baseGoldValue=10;
 		material=EnvResource.RESOURCE_PAPER;
@@ -175,29 +175,11 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 			}
 		}
 	}
-	
+
 	public Hashtable makeMapRooms()
 	{
-		Vector mapAreas=new Vector();
 		String newText=getMapArea();
-		while(newText.length()>0)
-		{
-			int y=newText.indexOf(";");
-			String areaName="";
-			if(y>=0)
-			{
-				areaName=newText.substring(0,y).trim();
-				newText=newText.substring(y+1);
-			}
-			else
-			{
-				areaName=newText;
-				newText="";
-			}
-			if(areaName.length()>0)
-				mapAreas.addElement(areaName);
-		}
-
+		Vector mapAreas=Util.parseSemicolons(newText);
 		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
@@ -345,7 +327,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		try
 		{	nextRoom=grid[x][y];	}
 		catch(Throwable t){}
-		
+
 		if(nextRoom==null)
 		{
 			if((room.r!=null)&&(room.r.getRoomInDir(dirCode)==null))

@@ -9,10 +9,10 @@ public class Sabre extends StdWeapon
 	{
 		super();
 
-		name="a sabre";
-		displayText="a sabre has been dropped by someone.";
-		miscText="";
-		description="A slender piece of metal with a fancy silver basket-hilt.";
+		setName("a sabre");
+		setDisplayText("a sabre has been dropped by someone.");
+		setMiscText("");
+		setDescription("A slender piece of metal with a fancy silver basket-hilt.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(2);
 		baseEnvStats.setWeight(5);

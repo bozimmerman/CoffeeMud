@@ -9,10 +9,10 @@ public class Javelin extends StdWeapon
 	{
 		super();
 
-		name="a steel javelin";
-		displayText="a steel javelin sticks out from the wall.";
-		miscText="";
-		description="It`s metallic and quite sharp..";
+		setName("a steel javelin");
+		setDisplayText("a steel javelin sticks out from the wall.");
+		setMiscText("");
+		setDescription("It`s metallic and quite sharp..");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(2);

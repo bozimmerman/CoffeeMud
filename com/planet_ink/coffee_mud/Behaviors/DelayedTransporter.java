@@ -24,7 +24,6 @@ public class DelayedTransporter extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		String myParms=newParms;
-		destRoomNames=new Vector();
 		int x=myParms.indexOf(";");
 		if(x>0)
 		{
@@ -32,6 +31,7 @@ public class DelayedTransporter extends ActiveTicker
 			myParms=myParms.substring(x+1);
 			super.setParms(parmText);
 		}
+		destRoomNames=new Vector();
 		while(myParms.length()>0)
 		{
 			String thisRoom=myParms;

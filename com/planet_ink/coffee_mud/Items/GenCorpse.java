@@ -9,13 +9,13 @@ public class GenCorpse extends GenContainer implements DeadBody
 	public String ID(){	return "GenCorpse";}
 	protected Room roomLocation=null;
 	protected CharStats charStats=null;
-	
+
 	public GenCorpse()
 	{
 		super();
-		name="an anonymous corpse";
-		displayText="a corpse lies here.";
-		description="Looks dead.";
+		setName("an anonymous corpse");
+		setDisplayText("a corpse lies here.");
+		setDescription("Looks dead.");
 		isReadable=false;
 		setMaterial(EnvResource.RESOURCE_MEAT);
 	}

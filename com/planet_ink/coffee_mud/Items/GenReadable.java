@@ -12,9 +12,9 @@ public class GenReadable extends GenItem
 	public GenReadable()
 	{
 		super();
-		name="a generic readable thing";
-		displayText="a generic readable thing sits here.";
-		description="";
+		setName("a generic readable thing");
+		setDisplayText("a generic readable thing sits here.");
+		setDescription("");
 		setMaterial(EnvResource.RESOURCE_WOOD);
 		isReadable=true;
 		baseEnvStats().setWeight(1);

@@ -151,7 +151,7 @@ public class Regeneration extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			String str=auto?"":"<S-NAME> lay(s) regenerative magic upon <T-NAMESELF>";
+			String str=auto?"":"<S-NAME> lay(s) regenerative magic upon <T-NAMESELF>.";
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,str);
 			if(target.location().okAffect(target,msg))
 			{

@@ -9,10 +9,10 @@ public class Rapier extends Sword
 	{
 		super();
 
-		name="an sleek rapier";
-		displayText="a sleek rapier sits on the ground.";
-		miscText="";
-		description="It has a long, thin metal blade.";
+		setName("an sleek rapier");
+		setDisplayText("a sleek rapier sits on the ground.");
+		setMiscText("");
+		setDescription("It has a long, thin metal blade.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(4);

@@ -12,14 +12,14 @@ public class Wineskin extends StdDrink
 	{
 		super();
 
-		name="a wineskin";
+		setName("a wineskin");
 		amountOfThirstQuenched=200;
 		amountOfLiquidHeld=1000;
 		amountOfLiquidRemaining=1000;
 		baseEnvStats.setWeight(10);
 		capacity=5;
-		displayText="a tough little wineskin sits here.";
-		description="Looks like it could hold quite a bit of drink.";
+		setDisplayText("a tough little wineskin sits here.");
+		setDescription("Looks like it could hold quite a bit of drink.");
 		baseGoldValue=10;
 		material=EnvResource.RESOURCE_LEATHER;
 		recoverEnvStats();

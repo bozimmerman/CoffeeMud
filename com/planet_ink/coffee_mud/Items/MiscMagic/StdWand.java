@@ -15,10 +15,10 @@ public class StdWand extends StdItem implements Wand
 	{
 		super();
 
-		name="a crooked stick";
+		setName("a crooked stick");
 		baseEnvStats.setWeight(1);
-		displayText="a small crooked stick is here.";
-		description="Looks like an broken piece of a tree.";
+		setDisplayText("a small crooked stick is here.");
+		setDescription("Looks like an broken piece of a tree.");
 		secretIdentity="";
 		baseGoldValue=200;
 		material=EnvResource.RESOURCE_OAK;

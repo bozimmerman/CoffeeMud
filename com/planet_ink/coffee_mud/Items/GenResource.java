@@ -12,9 +12,9 @@ public class GenResource extends GenItem implements EnvResource
 	public GenResource()
 	{
 		super();
-		name="a pile of resource thing";
-		displayText="a pile of resource sits here.";
-		description="";
+		setName("a pile of resource thing");
+		setDisplayText("a pile of resource sits here.");
+		setDescription("");
 		isReadable=false;
 		setMaterial(EnvResource.RESOURCE_IRON);
 		baseEnvStats().setWeight(0);

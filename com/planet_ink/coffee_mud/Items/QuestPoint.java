@@ -10,13 +10,13 @@ public class QuestPoint extends StdItem
 	public QuestPoint()
 	{
 		super();
-		name="a quest point";
-		displayText="A shiny blue coin has been left here.";
+		setName("a quest point");
+		setDisplayText("A shiny blue coin has been left here.");
 		myContainer=null;
-		description="A shiny blue coin with magical script around the edges.";
+		setDescription("A shiny blue coin with magical script around the edges.");
 		myUses=Integer.MAX_VALUE;
 		myWornCode=0;
-		miscText="";
+		setMiscText("");
 		material=0;
 		baseEnvStats.setWeight(0);
 		recoverEnvStats();

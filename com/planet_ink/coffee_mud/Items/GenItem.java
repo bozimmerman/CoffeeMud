@@ -12,10 +12,10 @@ public class GenItem extends StdItem
 	public GenItem()
 	{
 		super();
-		name="a generic item";
+		setName("a generic item");
 		baseEnvStats.setWeight(2);
-		displayText="a generic item sits here.";
-		description="";
+		setDisplayText("a generic item sits here.");
+		setDescription("");
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
@@ -40,7 +40,7 @@ public class GenItem extends StdItem
 		Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	
+
 	public String getStat(String code)
 	{ return Generic.getGenItemStat(this,code);}
 	public void setStat(String code, String val)

@@ -10,9 +10,9 @@ public class WandArchon extends StdWand
 	{
 		super();
 
-		name="a flashy wand";
-		displayText="a flashy wand has been left here.";
-		description="A wand made out of sparkling energy.";
+		setName("a flashy wand");
+		setDisplayText("a flashy wand has been left here.");
+		setDescription("A wand made out of sparkling energy.");
 		secretIdentity="The Wand of the Archons!";
 		this.setUsesRemaining(99999);
 		baseGoldValue=20000;

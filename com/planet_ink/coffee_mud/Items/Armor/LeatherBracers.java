@@ -10,9 +10,9 @@ public class LeatherBracers extends StdArmor
 	{
 		super();
 
-		name="a pair of leather bracers";
-		displayText="a pair of leather bracers are here.";
-		description="Strong enough to protect your forearms against the strongest of feathers...";
+		setName("a pair of leather bracers");
+		setDisplayText("a pair of leather bracers are here.");
+		setDescription("Strong enough to protect your forearms against the strongest of feathers...");
 		properWornBitmap=Item.ON_LEFT_WRIST | Item.ON_RIGHT_WRIST | Item.ON_ARMS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(1);

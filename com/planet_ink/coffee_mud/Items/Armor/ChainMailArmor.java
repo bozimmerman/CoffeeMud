@@ -10,9 +10,9 @@ public class ChainMailArmor extends StdArmor
 	{
 		super();
 
-		name="a suit of chain mail armor";
-		displayText="a suit of chain mail armor sits here.";
-		description="This suit includes a fairly solid looking hauberk with leggings and a coif.";
+		setName("a suit of chain mail armor");
+		setDisplayText("a suit of chain mail armor sits here.");
+		setDescription("This suit includes a fairly solid looking hauberk with leggings and a coif.");
 		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(37);

@@ -13,9 +13,9 @@ public class GenLasso extends StdLasso
 	{
 		super();
 
-		name="a generic lasso";
-		displayText="a generic lasso sits here.";
-		description="";
+		setName("a generic lasso");
+		setDisplayText("a generic lasso sits here.");
+		setDescription("");
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

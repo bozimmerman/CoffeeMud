@@ -58,7 +58,7 @@ public class Chant_SummonDustdevil extends Chant
 						}
 						for(int i=0;i<V.size();i++)
 						{
-							FullMsg msg=new FullMsg(mob,invoker,(Item)V.elementAt(i),Affect.MSG_GIVE,"<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>");
+							FullMsg msg=new FullMsg(mob,invoker,(Item)V.elementAt(i),Affect.MSG_GIVE,"<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>.");
 							if(mob.location().okAffect(mob,msg))
 								mob.location().send(mob,msg);
 							else

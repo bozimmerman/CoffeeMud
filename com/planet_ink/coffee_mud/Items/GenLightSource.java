@@ -17,9 +17,9 @@ public class GenLightSource extends GenItem implements Light
 	{
 		super();
 
-		name="a generic lightable thing";
-		displayText="a generic lightable thing sits here.";
-		description="";
+		setName("a generic lightable thing");
+		setDisplayText("a generic lightable thing sits here.");
+		setDescription("");
 		isReadable=false;
 		destroyedWhenBurnedOut=true;
 		setMaterial(EnvResource.RESOURCE_OAK);
@@ -80,7 +80,7 @@ public class GenLightSource extends GenItem implements Light
 		LightSource.recoverMyEnvStats(this);
 		super.recoverEnvStats();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!LightSource.pleaseTickLightly(this,tickID))

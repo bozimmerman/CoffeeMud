@@ -16,26 +16,7 @@ public class Prop_Tattoo extends Property
 		Vector tattos=new Vector();
 		Ability A=mob.fetchAbility("Prop_Tattoo");
 		if(A!=null)
-		{
-			String tattoos=A.text();
-			String tattoo=null;
-			while(tattoos.length()>0)
-			{
-				int x=tattoos.indexOf(";");
-				if(x>=0)
-				{
-					tattoo=tattoos.substring(0,x);
-					tattoos=tattoos.substring(x+1);
-				}
-				else
-				{
-					tattoo=tattoos;
-					tattoos="";
-				}
-				if(tattoo.length()>0)
-					tattos.addElement(tattoo.toUpperCase());
-			}
-		}
+			tattos=Util.parseSemicolons(A.text().toUpperCase());
 		return tattos;
 	}
 			

@@ -9,10 +9,10 @@ public class Cestus extends StdWeapon
 	{
 		super();
 
-		name="a mean looking cestus";
-		displayText="a cestus is on the gound.";
-		miscText="";
-		description="It\\`s a glove covered in long spikes and blades.";
+		setName("a mean looking cestus");
+		setDisplayText("a cestus is on the gound.");
+		setMiscText("");
+		setDescription("It\\`s a glove covered in long spikes and blades.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(2);

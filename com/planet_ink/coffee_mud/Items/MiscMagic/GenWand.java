@@ -13,9 +13,9 @@ public class GenWand extends GenItem implements Wand
 	{
 		super();
 
-		name="a wand";
-		displayText="a simple wand is here.";
-		description="A wand made out of wood.";
+		setName("a wand");
+		setDisplayText("a simple wand is here.");
+		setDescription("A wand made out of wood.");
 		secretIdentity=null;
 		this.setUsesRemaining(50);
 		baseGoldValue=20000;

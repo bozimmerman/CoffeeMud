@@ -13,9 +13,9 @@ public class StdInnKey extends StdKey implements InnKey
 	public StdInnKey()
 	{
 		super();
-		name="a metal key";
-		displayText="a small metal key sits here.";
-		description="It says it goes to room 1.";
+		setName("a metal key");
+		setDisplayText("a small metal key sits here.");
+		setDescription("It says it goes to room 1.");
 
 		material=EnvResource.RESOURCE_STEEL;
 		baseGoldValue=10;
@@ -49,9 +49,9 @@ public class StdInnKey extends StdKey implements InnKey
 		{
 			myShopkeeper=sk;
 			int y=sk.numberInStock(this);
-			name="key to room "+(y+1);
-			description="The key goes to room "+(y+1)+", but will expire soon, so you better use it quickly! Give the key to your innkeeper, "+sk.name()+", when you leave.";
-			miscText="INN"+(y+1);
+			setName("key to room "+(y+1));
+			setDescription("The key goes to room "+(y+1)+", but will expire soon, so you better use it quickly! Give the key to your innkeeper, "+sk.name()+", when you leave.");
+			setMiscText("INN"+(y+1));
 		}
 	}
 

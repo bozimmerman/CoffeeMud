@@ -9,10 +9,10 @@ public class Sickle extends StdWeapon
 	{
 		super();
 
-		name="a sickle";
-		displayText="a sickle lies on the ground.";
-		miscText="";
-		description="A long and very curvy blade attached to a wooden handle.";
+		setName("a sickle");
+		setDisplayText("a sickle lies on the ground.");
+		setMiscText("");
+		setDescription("A long and very curvy blade attached to a wooden handle.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(3);

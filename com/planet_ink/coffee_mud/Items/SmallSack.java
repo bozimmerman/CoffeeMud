@@ -10,9 +10,9 @@ public class SmallSack extends StdContainer
 	public SmallSack()
 	{
 		super();
-		name="a small sack";
-		displayText="a small sack is crumpled up here.";
-		description="A nice berlap sack to put your things in.";
+		setName("a small sack");
+		setDisplayText("a small sack is crumpled up here.");
+		setDescription("A nice berlap sack to put your things in.");
 		capacity=25;
 		material=EnvResource.RESOURCE_COTTON;
 		baseGoldValue=1;

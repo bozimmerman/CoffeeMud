@@ -9,10 +9,10 @@ public class Dirk extends Dagger
 	{
 		super();
 
-		name="a dirk";
-		displayText="a pointy dirk is on the ground.";
-		miscText="";
-		description="The dirk is a single-edged, grooved weapon with a back edge near the point. ";
+		setName("a dirk");
+		setDisplayText("a pointy dirk is on the ground.");
+		setMiscText("");
+		setDescription("The dirk is a single-edged, grooved weapon with a back edge near the point. ");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(1);

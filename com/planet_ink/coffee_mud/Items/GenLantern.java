@@ -13,9 +13,9 @@ public class GenLantern extends GenLightSource
 	public GenLantern()
 	{
 		super();
-		name="a hooded lantern";
-		displayText="a hooded lantern sits here.";
-		description="";
+		setName("a hooded lantern");
+		setDisplayText("a hooded lantern sits here.");
+		setDescription("");
 
 		baseEnvStats().setWeight(5);
 		setDuration(DURATION_TICKS);
@@ -88,7 +88,7 @@ public class GenLantern extends GenLightSource
 					if(!thePuddle.containsDrink()) amountToTake=0;
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					setDuration(DURATION_TICKS);
-					description="The lantern still looks like it has some oil in it.";
+					setDescription("The lantern still looks like it has some oil in it.");
 				}
 				break;
 			default:

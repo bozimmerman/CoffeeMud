@@ -9,10 +9,10 @@ public class DragonClaw extends Natural
 	{
 		super();
 
-		name="a vicious dragons claw.";
-		displayText="a Dragons Claw";
-		miscText="";
-		description="the claw of a dragon";
+		setName("a vicious dragons claw.");
+		setDisplayText("a Dragons Claw");
+		setMiscText("");
+		setDescription("the claw of a dragon");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(7);

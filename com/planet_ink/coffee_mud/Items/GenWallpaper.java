@@ -9,7 +9,7 @@ public class GenWallpaper implements Item
 {
 	public String ID(){	return "GenWallpaper";}
 	protected String 	name="some wallpaper";
-	protected String 	description="Looks like it needs a new description";
+	protected byte[] 	description=null;
 	protected String	readableText="";
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected boolean destroyed=false;
@@ -130,9 +130,25 @@ public class GenWallpaper implements Item
 	public String displayText(){return "";}
 	public void setDisplayText(String newDisplayText){}
 	public String description()
-	{ return description; }
+	{
+		if((description==null)||(description.length==0))
+			return "You see nothing special about "+name()+".";
+		else
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
+			return Util.decompressString(description);
+		else
+			return new String(description);
+	}
 	public void setDescription(String newDescription)
-	{ description=newDescription; }
+	{
+		if(newDescription.length()==0)
+			description=null;
+		else
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
+			description=Util.compressString(newDescription);
+		else
+			description=newDescription.getBytes();
+	}
 	public void setContainer(Item newContainer){}
 	public int usesRemaining(){return Integer.MAX_VALUE;}
 	public void setUsesRemaining(int newUses){}

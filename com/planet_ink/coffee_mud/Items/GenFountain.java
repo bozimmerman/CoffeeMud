@@ -11,14 +11,14 @@ public class GenFountain extends GenWater
 	public GenFountain()
 	{
 		super();
-		name="a fountain";
+		setName("a fountain");
 		amountOfThirstQuenched=250;
 		amountOfLiquidHeld=999999;
 		amountOfLiquidRemaining=999999;
 		baseEnvStats().setWeight(5);
 		capacity=0;
-		displayText="a little fountain flows here.";
-		description="The water looks pure and clean.";
+		setDisplayText("a little fountain flows here.");
+		setDescription("The water looks pure and clean.");
 		baseGoldValue=10;
 		isGettable=false;
 		material=EnvResource.RESOURCE_FRESHWATER;

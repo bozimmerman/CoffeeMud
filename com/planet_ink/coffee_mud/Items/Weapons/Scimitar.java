@@ -9,10 +9,10 @@ public class Scimitar extends Sword
 	{
 		super();
 
-		name="an ornate scimitar";
-		displayText="a rather ornate looking Scimitar leans against the wall.";
-		miscText="";
-		description="It has a metallic pommel, and a long curved blade.";
+		setName("an ornate scimitar");
+		setDisplayText("a rather ornate looking Scimitar leans against the wall.");
+		setMiscText("");
+		setDescription("It has a metallic pommel, and a long curved blade.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats().setWeight(4);

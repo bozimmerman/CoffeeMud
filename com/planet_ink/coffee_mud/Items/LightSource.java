@@ -15,9 +15,9 @@ public class LightSource extends StdItem implements Light
 	public LightSource()
 	{
 		super();
-		name="a light source";
-		displayText="an ordinary light source sits here doing nothing.";
-		description="It looks like a light source of some sort.  I'll bet it would help you see in the dark.";
+		setName("a light source");
+		setDisplayText("an ordinary light source sits here doing nothing.");
+		setDescription("It looks like a light source of some sort.  I'll bet it would help you see in the dark.");
 
 		properWornBitmap=Item.HELD;
 		setMaterial(EnvResource.RESOURCE_OAK);

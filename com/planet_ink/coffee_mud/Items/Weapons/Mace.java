@@ -9,10 +9,10 @@ public class Mace extends StdWeapon
 	{
 		super();
 
-		name="a rather large mace";
-		displayText="a heavy mace is found in the center of the room.";
-		miscText="";
-		description="It`s metallic and quite hard..";
+		setName("a rather large mace");
+		setDisplayText("a heavy mace is found in the center of the room.");
+		setMiscText("");
+		setDescription("It`s metallic and quite hard..");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(10);

@@ -15,10 +15,10 @@ public class GenScroll extends GenItem implements Scroll
 	{
 		super();
 
-		name="a scroll";
+		setName("a scroll");
 		baseEnvStats.setWeight(1);
-		displayText="a scroll is rolled up here.";
-		description="A rolled up parchment marked with mystical symbols.";
+		setDisplayText("a scroll is rolled up here.");
+		setDescription("A rolled up parchment marked with mystical symbols.");
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();
@@ -42,9 +42,9 @@ public class GenScroll extends GenItem implements Scroll
 	}
 	public int value()
 	{
-		if(usesRemaining()<=0) 
+		if(usesRemaining()<=0)
 			return 0;
-		else 
+		else
 			return super.value();
 	}
 

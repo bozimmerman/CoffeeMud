@@ -13,10 +13,10 @@ public class Staff extends StdWeapon implements Wand
 	{
 		super();
 
-		name="a wooden staff";
-		displayText="a wooden staff lies in the corner of the room.";
-		miscText="";
-		description="It`s long and wooden, just like a staff ought to be.";
+		setName("a wooden staff");
+		setDisplayText("a wooden staff lies in the corner of the room.");
+		setMiscText("");
+		setDescription("It`s long and wooden, just like a staff ought to be.");
 		secretIdentity="";
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

@@ -12,9 +12,9 @@ public class Boat extends StdRideable
 	public Boat()
 	{
 		super();
-		name="a boat";
-		displayText="a boat is docked here.";
-		description="Looks like a boat";
+		setName("a boat");
+		setDisplayText("a boat is docked here.");
+		setDescription("Looks like a boat");
 		rideBasis=Rideable.RIDEABLE_WATER;
 		material=EnvResource.RESOURCE_OAK;
 	}

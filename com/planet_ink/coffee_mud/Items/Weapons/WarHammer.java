@@ -9,10 +9,10 @@ public class WarHammer extends StdWeapon
 	{
 		super();
 
-		name="a warhammer";
-		displayText="a brutal warhammer sits here";
-		miscText="";
-		description="It has a large wooden handle with a brutal blunt double-head.";
+		setName("a warhammer");
+		setDisplayText("a brutal warhammer sits here");
+		setMiscText("");
+		setDescription("It has a large wooden handle with a brutal blunt double-head.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(10);

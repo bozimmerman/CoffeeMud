@@ -11,9 +11,9 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	public GenPiano()
 	{
 		super();
-		name="a generic piano";
-		displayText="a generic piano sits here.";
-		description="";
+		setName("a generic piano");
+		setDisplayText("a generic piano sits here.");
+		setDescription("");
 		baseGoldValue=1015;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();

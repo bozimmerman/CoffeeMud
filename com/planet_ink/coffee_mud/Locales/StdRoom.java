@@ -12,8 +12,7 @@ public class StdRoom
 	protected String myID="room#";
 	protected String name="the room";
 	protected String displayText="Standard Room";
-	protected String miscText="";
-	protected String description="";
+	protected byte[] description=null;
 	protected Area myArea=null;
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
@@ -153,11 +152,23 @@ public class StdRoom
 	}
 	public String description()
 	{
-		return description;
+		if((description==null)||(description.length==0))
+			return "";
+		else
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDCOMPRESS))
+			return Util.decompressString(description);
+		else
+			return new String(description);
 	}
 	public void setDescription(String newDescription)
 	{
-		description=newDescription;
+		if(newDescription.length()==0)
+			description=null;
+		else
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDCOMPRESS))
+			description=Util.compressString(newDescription);
+		else
+			description=newDescription.getBytes();
 	}
 	public String text()
 	{
@@ -165,7 +176,6 @@ public class StdRoom
 	}
 	public void setMiscText(String newMiscText)
 	{
-		miscText="";
 		if(newMiscText.trim().length()>0)
 			Generic.setPropertiesStr(this,newMiscText,true);
 	}

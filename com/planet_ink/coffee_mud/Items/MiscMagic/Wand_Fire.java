@@ -11,9 +11,9 @@ public class Wand_Fire extends StdWand
 	{
 		super();
 
-		name="a gold wand";
-		displayText="a golden wand is here.";
-		description="A wand made out of gold, with a deep red ruby at the tip";
+		setName("a gold wand");
+		setDisplayText("a golden wand is here.");
+		setDescription("A wand made out of gold, with a deep red ruby at the tip");
 		secretIdentity="The wand of fire.  Responds to 'Blaze' and 'Burn'";
 		this.setUsesRemaining(50);
 		baseGoldValue=20000;
@@ -37,7 +37,7 @@ public class Wand_Fire extends StdWand
 		super.setMiscText(newText);
 		secretWord="BLAZE, BURN";
 	}
-	
+
 
 	public void affect(Environmental myHost, Affect affect)
 	{

@@ -11,10 +11,10 @@ public class GenMirror extends GenItem
 	public GenMirror()
 	{
 		super();
-		name="a generic mirror";
+		setName("a generic mirror");
 		baseEnvStats.setWeight(2);
-		displayText="a generic mirror sits here.";
-		description="You see yourself in it!";
+		setDisplayText("a generic mirror sits here.");
+		setDescription("You see yourself in it!");
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
@@ -24,7 +24,7 @@ public class GenMirror extends GenItem
 	{
 		return "You see yourself in it!";
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new GenMirror();

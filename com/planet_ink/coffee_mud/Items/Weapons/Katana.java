@@ -9,10 +9,10 @@ public class Katana extends Sword
 	{
 		super();
 
-		name="a katana";
-		displayText="a very ornate katana rests in the room.";
-		miscText="";
-		description="Just your typical, run-of-the-mill ninja sword--wrapped handle, steel blade, etc.";
+		setName("a katana");
+		setDisplayText("a very ornate katana rests in the room.");
+		setMiscText("");
+		setDescription("Just your typical, run-of-the-mill ninja sword--wrapped handle, steel blade, etc.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(4);

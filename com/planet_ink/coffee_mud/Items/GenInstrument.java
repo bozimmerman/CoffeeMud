@@ -11,10 +11,10 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	public GenInstrument()
 	{
 		super();
-		name="a generic musical instrument";
+		setName("a generic musical instrument");
 		baseEnvStats.setWeight(12);
-		displayText="a generic musical instrument sits here.";
-		description="";
+		setDisplayText("a generic musical instrument sits here.");
+		setDescription("");
 		baseGoldValue=15;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
@@ -28,4 +28,22 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	public int instrumentType(){return Util.s_int(readableText);}
 	public void setInstrumentType(int type){readableText=(""+type);}
 
+	public boolean okAffect(Environmental E, Affect msg)
+	{
+		if(!super.okAffect(E,msg)) return false;
+		if(amWearingAt(Item.WIELD)
+		   &&(msg.source()==owner())
+		   &&(msg.sourceMinor()==Affect.TYP_WEAPONATTACK)
+		   &&(msg.source().location()!=null)
+		   &&((msg.tool()==null)
+			  ||(msg.tool()==this)
+			  ||(!(msg.tool() instanceof Weapon))
+			  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
+		{
+			msg.source().location().show(msg.source(),null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> play(s) <O-NAME>.");
+			return false;
+		}
+
+		return true;
+	}
 }

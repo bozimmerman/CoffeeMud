@@ -15,10 +15,10 @@ public class GenMultiPotion extends GenWater implements Potion
 		super();
 
 		material=EnvResource.RESOURCE_GLASS;
-		name="a flask";
+		setName("a flask");
 		baseEnvStats.setWeight(1);
-		displayText="A flask sits here.";
-		description="A strange flask with stranger markings.";
+		setDisplayText("A flask sits here.");
+		setDescription("A strange flask with stranger markings.");
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();

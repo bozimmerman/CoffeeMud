@@ -12,10 +12,10 @@ public class GenCaged extends GenItem implements CagedAnimal
 	public GenCaged()
 	{
 		super();
-		name="a caged creature";
+		setName("a caged creature");
 		baseEnvStats.setWeight(150);
-		displayText="a caged creature sits here.";
-		description="";
+		setDisplayText("a caged creature sits here.");
+		setDescription("");
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		setMaterial(EnvResource.RESOURCE_MEAT);
@@ -31,7 +31,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		if(!M.isMonster()) return false;
 		name=M.Name();
 		displayText=M.displayText();
-		description=M.description();
+		setDescription(M.description());
 		baseEnvStats().setLevel(M.baseEnvStats().level());
 		baseEnvStats().setWeight(M.baseEnvStats().weight());
 		baseEnvStats().setHeight(M.baseEnvStats().height());

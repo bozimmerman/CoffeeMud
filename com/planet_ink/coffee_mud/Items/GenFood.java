@@ -13,10 +13,10 @@ public class GenFood extends StdFood
 	{
 		super();
 
-		name="a generic blob of food";
+		setName("a generic blob of food");
 		baseEnvStats.setWeight(2);
-		displayText="a generic blob of food sits here.";
-		description="";
+		setDisplayText("a generic blob of food sits here.");
+		setDescription("");
 		baseGoldValue=5;
 		amountOfNourishment=500;
 		recoverEnvStats();
@@ -55,7 +55,7 @@ public class GenFood extends StdFood
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(Generic.getGenItemCodeNum(code)>=0)
 			Generic.setGenItemStat(this,code,val);
 		else

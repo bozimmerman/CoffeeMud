@@ -10,9 +10,9 @@ public class GreatHelm extends StdArmor
 	{
 		super();
 
-		name="a steel Great Helm.";
-		displayText="a steel great helm sits here.";
-		description="This is a steel helmet that completely encloses the head.";
+		setName("a steel Great Helm.");
+		setDisplayText("a steel great helm sits here.");
+		setDescription("This is a steel helmet that completely encloses the head.");
 		properWornBitmap=Item.ON_HEAD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(18);

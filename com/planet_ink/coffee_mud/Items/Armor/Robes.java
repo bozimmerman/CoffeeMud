@@ -10,9 +10,9 @@ public class Robes extends StdArmor
 	{
 		super();
 
-		name="a set of robes";
-		displayText="a set of robes is folded nice and neatly here.";
-		description="It is a finely crafted set of robes.";
+		setName("a set of robes");
+		setDisplayText("a set of robes is folded nice and neatly here.");
+		setDescription("It is a finely crafted set of robes.");
 		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(8);

@@ -12,9 +12,9 @@ public class DruidicMonument extends StdItem implements MiscMagic
 	{
 		super();
 
-		name="the druidic stones";
-		displayText="druidic stones are arrayed here.";
-		description="These large mysterious monuments have a power and purpose only the druid understands.";
+		setName("the druidic stones");
+		setDisplayText("druidic stones are arrayed here.");
+		setDescription("These large mysterious monuments have a power and purpose only the druid understands.");
 		secretIdentity="DRUIDIC STONES";
 		baseEnvStats().setLevel(1);
 		setMaterial(EnvResource.RESOURCE_STONE);

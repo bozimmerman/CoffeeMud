@@ -10,9 +10,9 @@ public class Dress extends StdArmor
 	{
 		super();
 
-		name="a nice dress";
-		displayText="a nice dress has been left here.";
-		description="Well and neatly made, this plain dress would look fine on just about anyone.";
+		setName("a nice dress");
+		setDisplayText("a nice dress has been left here.");
+		setDescription("Well and neatly made, this plain dress would look fine on just about anyone.");
 		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(8);

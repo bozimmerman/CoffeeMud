@@ -17,10 +17,10 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	{
 		super();
 
-		name="a scroll";
+		setName("a scroll");
 		baseEnvStats.setWeight(1);
-		displayText="a scroll is rolled up here.";
-		description="A rolled up parchment marked with mystical symbols.";
+		setDisplayText("a scroll is rolled up here.");
+		setDescription("A rolled up parchment marked with mystical symbols.");
 		secretIdentity="";
 		material=EnvResource.RESOURCE_PAPER;
 		baseGoldValue=200;

@@ -11,11 +11,11 @@ public class GenCoins extends GenItem implements Coins
 	public GenCoins()
 	{
 		super();
-		name="a pile of gold coins";
-		displayText="some gold coins sit here.";
+		setName("a pile of gold coins");
+		setDisplayText("some gold coins sit here.");
 		myContainer=null;
 		setMaterial(EnvResource.RESOURCE_GOLD);
-		description="";
+		setDescription("");
 		isReadable=false;
 	}
 
@@ -23,10 +23,10 @@ public class GenCoins extends GenItem implements Coins
 	{
 		return new GenCoins();
 	}
-	
+
 	public int numberOfCoins(){return envStats().ability();}
 	public void setNumberOfCoins(int number){baseEnvStats().setAbility(number); recoverEnvStats();}
-	
+
 	public boolean isGeneric(){return true;}
 	public void recoverEnvStats()
 	{
@@ -92,7 +92,7 @@ public class GenCoins extends GenItem implements Coins
 		}
 		return false;
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		super.affect(myHost,affect);

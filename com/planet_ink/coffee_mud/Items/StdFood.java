@@ -13,10 +13,10 @@ public class StdFood extends StdItem implements Food
 	public StdFood()
 	{
 		super();
-		name="a bit of food";
+		setName("a bit of food");
 		baseEnvStats.setWeight(2);
-		displayText="a bit of food is here.";
-		description="Looks like some mystery meat";
+		setDisplayText("a bit of food is here.");
+		setDescription("Looks like some mystery meat");
 		baseGoldValue=5;
 		material=EnvResource.RESOURCE_MEAT;
 		recoverEnvStats();

@@ -9,9 +9,9 @@ public class Broom extends Quarterstaff
 	{
 		super();
 
-		name="a broom";
-		displayText="a broom lies in the corner of the room.";
-		description="It`s long and wooden, with lots of bristles on one end.";
+		setName("a broom");
+		setDisplayText("a broom lies in the corner of the room.");
+		setDescription("It`s long and wooden, with lots of bristles on one end.");
 		material=EnvResource.RESOURCE_OAK;
 	}
 

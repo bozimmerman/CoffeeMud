@@ -18,9 +18,9 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		super();
 
-		name="weapon";
-		displayText=" sits here.";
-		description="This is a deadly looking weapon.";
+		setName("weapon");
+		setDisplayText(" sits here.");
+		setDescription("This is a deadly looking weapon.");
 		wornLogicalAnd=false;
 		properWornBitmap=Item.HELD|Item.WIELD;
 		baseEnvStats().setAttackAdjustment(0);

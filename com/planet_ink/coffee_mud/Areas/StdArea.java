@@ -320,16 +320,7 @@ public class StdArea implements Area
 	}
 	public void setSubOpList(String list)
 	{
-		subOps=new Vector();
-		int x=list.indexOf(";");
-		while(x>0)
-		{
-			subOps.addElement(list.substring(0,x).trim());
-			list=list.substring(x+1).trim();
-			x=list.indexOf(";");
-		}
-		if((list.trim().length()>0)&&(!list.trim().equalsIgnoreCase(";")))
-			subOps.addElement(list.trim());
+		subOps=Util.parseSemicolons(list);
 	}
 	public void addSubOp(String username){subOps.addElement(username);}
 	public void delSubOp(String username)

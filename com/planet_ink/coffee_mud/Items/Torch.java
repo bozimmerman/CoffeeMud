@@ -12,9 +12,9 @@ public class Torch extends LightSource
 	public Torch()
 	{
 		super();
-		name="a torch";
-		displayText="a small straw torch sits here.";
-		description="It looks like it is lightly covered in oil near the end.";
+		setName("a torch");
+		setDisplayText("a small straw torch sits here.");
+		setDescription("It looks like it is lightly covered in oil near the end.");
 		durationTicks=30;
 
 		material=EnvResource.RESOURCE_OAK;

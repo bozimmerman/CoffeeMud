@@ -13,9 +13,9 @@ public class GenRideable extends StdRideable
 	public GenRideable()
 	{
 		super();
-		name="a generic boat";
-		displayText="a generic boat sits here.";
-		description="";
+		setName("a generic boat");
+		setDisplayText("a generic boat sits here.");
+		setDescription("");
 		baseEnvStats().setWeight(2000);
 		rideBasis=Rideable.RIDEABLE_WATER;
 		setMaterial(EnvResource.RESOURCE_OAK);
@@ -60,7 +60,7 @@ public class GenRideable extends StdRideable
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(Generic.getGenItemCodeNum(code)>=0)
 			Generic.setGenItemStat(this,code,val);
 		else

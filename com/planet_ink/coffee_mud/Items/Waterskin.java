@@ -11,14 +11,14 @@ public class Waterskin extends StdDrink
 	public Waterskin()
 	{
 		super();
-		name="a waterskin";
+		setName("a waterskin");
 		amountOfThirstQuenched=200;
 		amountOfLiquidHeld=1000;
 		amountOfLiquidRemaining=1000;
 		baseEnvStats.setWeight(10);
 		capacity=5;
-		displayText="a tough little waterskin sits here.";
-		description="Looks like it could hold quite a bit of drink.";
+		setDisplayText("a tough little waterskin sits here.");
+		setDescription("Looks like it could hold quite a bit of drink.");
 		baseGoldValue=10;
 		material=EnvResource.RESOURCE_LEATHER;
 		recoverEnvStats();

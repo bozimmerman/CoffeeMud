@@ -9,10 +9,10 @@ public class TwoHandedSword extends Sword
 	{
 		super();
 
-		name="a two-handed sword";
-		displayText="a heavy two-handed sword hangs on the wall.";
-		miscText="";
-		description="It has a metallic pommel, and a very large blade.";
+		setName("a two-handed sword");
+		setDisplayText("a heavy two-handed sword hangs on the wall.");
+		setMiscText("");
+		setDescription("It has a metallic pommel, and a very large blade.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(15);

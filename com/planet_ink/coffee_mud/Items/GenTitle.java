@@ -9,14 +9,14 @@ public class GenTitle extends StdTitle
 {
 	public String ID(){	return "GenTitle";}
 	protected String readableText="";
-	
+
 	public GenTitle()
 	{
 		super();
-		name="a generic title";
+		setName("a generic title");
 		baseEnvStats.setWeight(2);
-		displayText="a generic title sits here.";
-		description="";
+		setDisplayText("a generic title sits here.");
+		setDescription("");
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();

@@ -48,19 +48,7 @@ public class MovingRoom extends ActiveTicker
 			myParms=myParms.substring(x+1);
 			super.setParms(parmText);
 		}
-		while(myParms.length()>0)
-		{
-			String thisRoom=myParms;
-			x=myParms.indexOf(";");
-			if(x>0)
-			{
-				thisRoom=myParms.substring(0,x);
-				myParms=myParms.substring(x+1);
-			}
-			else
-				myParms="";
-			roomInfos.addElement(thisRoom);
-		}
+		roomInfos=Util.parseSemicolons(myParms);
 		parms=newParms;
 		xmlInfo=loadInfo();
 		parseMovingXML(xmlInfo);

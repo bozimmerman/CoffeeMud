@@ -13,9 +13,9 @@ public class GenNet extends StdNet
 	{
 		super();
 
-		name="a generic net";
-		displayText="a generic net sits here.";
-		description="";
+		setName("a generic net");
+		setDisplayText("a generic net sits here.");
+		setDescription("");
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

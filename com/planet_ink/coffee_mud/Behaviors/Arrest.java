@@ -483,18 +483,7 @@ public class Arrest extends StdBehavior
 	public Room getRoom(Area A, String roomstr)
 	{
 		Room jail=null;
-		Vector V=new Vector();
-		int x=roomstr.indexOf(";");
-		while(x>=0)
-		{
-			String s=roomstr.substring(0,x).trim();
-			if(s.length()>0)
-				V.addElement(s);
-			roomstr=roomstr.substring(x+1).trim();
-			x=roomstr.indexOf(";");
-		}
-		if(roomstr.trim().length()>0)
-			V.addElement(roomstr);
+		Vector V=Util.parseSemicolons(roomstr);
 		if(V.size()==0) return jail;
 		String which=(String)V.elementAt(Dice.roll(1,V.size(),-1));
 		jail=CMMap.getRoom(which);

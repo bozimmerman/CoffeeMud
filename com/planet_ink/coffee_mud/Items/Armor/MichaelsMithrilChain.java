@@ -10,9 +10,9 @@ public class MichaelsMithrilChain extends StdArmor
 	{
 		super();
 
-		name="a chain mail vest made of mithril";
-		displayText="a chain mail vest made from the dwarven alloy mithril";
-		description="This chain mail vest is made from a dwarven alloy called mithril, making it very light.";
+		setName("a chain mail vest made of mithril");
+		setDisplayText("a chain mail vest made from the dwarven alloy mithril");
+		setDescription("This chain mail vest is made from a dwarven alloy called mithril, making it very light.");
 		properWornBitmap=Item.ON_TORSO;
 		secretIdentity="Michael\\`s Mithril Chain! (Armor Value:+75, Protection from Lightning)";
 		baseGoldValue+=10000;

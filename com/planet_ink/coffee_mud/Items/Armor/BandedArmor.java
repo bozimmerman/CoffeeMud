@@ -9,9 +9,9 @@ public class BandedArmor extends StdArmor
 	public BandedArmor()
 	{
 		super();
-		name="a suit of banded armor";
-		displayText="a suit of armor made from metal bands fastened to leather";
-		description="This suit of armor is made from metal bands fastened to leather and will provide protection for the torso, arms, and legs.";
+		setName("a suit of banded armor");
+		setDisplayText("a suit of armor made from metal bands fastened to leather");
+		setDescription("This suit of armor is made from metal bands fastened to leather and will provide protection for the torso, arms, and legs.");
 		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(44);
