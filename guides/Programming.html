@@ -2083,25 +2083,21 @@ public class SlidingDoor extends StdExit
 	public SlidingDoor()
 	{
 		super();
-		name="a sliding door";
-		description="A sliding door.";
-		displayText="";
-		closedText="a closed sliding door";
-		doorName="door";
-		openName="slide";
-		closeName="slide";
-		miscText="KEY-NAME";
-		hasADoor=true;
-		isOpen=false;
-		hasALock=true;
-		isLocked=false;
-		doorDefaultsClosed=true;
-		doorDefaultsLocked=false;
-		openDelayTicks=45;
 		Ability A=CMClass.getAbility("Prop_ReqHeight"));
 		A.setMiscText("30");
 		addNonUninvokableAffect(A);
 	}
+	public String name(){return "a sliding door";}
+	public String displayText(){return "";}
+	public String closedText(){return "a closed sliding door";}
+	public String doorName(){return "door";}
+	public String openName(){return "slide";}
+	public String closeName(){return "slide";}
+	public boolean hasADoor(){return true;}
+	public boolean hasALock(){return false;}
+	public boolean defaultsLocked(){return false;}
+	public boolean defaultsClosed(){return true;}
+	public int openDelayTicks(){return 45;}
 	public Environmental newInstance()
 	{
 		return new SlidingDoor();

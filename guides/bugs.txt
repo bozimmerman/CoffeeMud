@@ -1,3 +1,4 @@
 GAES still isn't done
 Called Strike -- Maybe allow head, but require a larger % of HP, such as 40%?
+Optimize StdExits
 
