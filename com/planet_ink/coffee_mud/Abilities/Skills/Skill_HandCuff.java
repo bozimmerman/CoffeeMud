@@ -34,6 +34,13 @@ public class Skill_HandCuff extends StdAbility
 		// from trying to do ANYTHING except sleep
 		if(affect.amISource(mob))
 		{
+			if(affect.sourceMinor()==affect.TYP_RECALL)
+			{
+				if((affect.source()!=null)&&(affect.source().location()!=null))
+					affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but the handcuffs prevent <S-HIM-HER>.");
+				return false;
+			}
+			else
 			if(((affect.sourceMinor()==Affect.TYP_FOLLOW)&&(affect.target()!=invoker()))
 			||((affect.sourceMinor()==Affect.TYP_NOFOLLOW)&&(affect.source().amFollowing()==invoker())))
 			{

@@ -31,6 +31,10 @@ public class AbilityHelper
 			zapCodes.put("-LEVELS",new Integer(5));
 			zapCodes.put("-CLASSLEVEL",new Integer(6));
 			zapCodes.put("-CLASSLEVELS",new Integer(6));
+			zapCodes.put("-TATTOOS",new Integer(7));
+			zapCodes.put("-TATTOO",new Integer(7));
+			zapCodes.put("+TATTOOS",new Integer(8));
+			zapCodes.put("+TATTOO",new Integer(8));
 		}
 		return zapCodes;
 	}
@@ -90,16 +94,36 @@ public class AbilityHelper
 		return false;
 	}
 	
-	public static boolean fromHere(Vector V, int fromHere, String find)
+	public static boolean fromHere(Vector V, char plusMinus, int fromHere, String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
-			if(str.toUpperCase().startsWith("+"+find)) return true;
+			if(str.length()==0) continue;
+			if(zapCodes.containsKey(str))
+				return false;
+			if(str.startsWith(plusMinus+find)) return true;
 		}
 		return false;
 	}
 
+	public static boolean tattooCheck(Vector V, char plusMinus, int fromHere, MOB mob)
+	{
+		Ability A=mob.fetchAffect("Prop_Tattoo");
+		if(A==null) return false;
+		String txt=A.text().toUpperCase();
+		int x=txt.indexOf(";");
+		if(x>=0)
+		{
+			String t=txt.substring(0,x).trim();
+			txt=txt.substring(x+1).trim();
+			if((t.length()>0)&&(fromHere(V,plusMinus,fromHere,t)))
+				return true;
+			x=txt.indexOf(";");
+		}
+		return false;
+	}
+	
 	public static StringBuffer levelHelp(String str, char c, String append)
 	{
 		if(str.startsWith(c+">="))
@@ -137,7 +161,7 @@ public class AbilityHelper
 					for(int c=0;c<CMClass.charClasses.size();c++)
 					{
 						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
-						if(fromHere(V,v+1,C.name().toUpperCase().substring(0,3)))
+						if(fromHere(V,'+',v+1,C.name().toUpperCase().substring(0,3)))
 							buf.append(C.name()+", ");
 					}
 					if(buf.toString().endsWith(", "))
@@ -152,7 +176,7 @@ public class AbilityHelper
 						{
 							CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
 							if((C.ID().equals(C.baseClass())
-							&&(fromHere(V,v+1,C.name().toUpperCase().substring(0,3)))))
+							&&(fromHere(V,'+',v+1,C.name().toUpperCase().substring(0,3)))))
 								buf.append(C.name()+" types, ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -170,7 +194,7 @@ public class AbilityHelper
 							String cat=C.racialCategory().toUpperCase();
 							if(cat.length()>6) cat=cat.substring(0,6);
 							if((!cats.contains(C.racialCategory())
-							&&(fromHere(V,v+1,cat))))
+							&&(fromHere(V,'+',v+1,cat))))
 							   cats.addElement(C.racialCategory());
 						}
 						for(int c=0;c<cats.size();c++)
@@ -186,7 +210,7 @@ public class AbilityHelper
 						for(int c=0;c<=1000;c+=500)
 						{
 							String C=CommonStrings.shortAlignmentStr(c);
-							if(fromHere(V,v+1,C.toUpperCase().substring(0,3)))
+							if(fromHere(V,'+',v+1,C.toUpperCase().substring(0,3)))
 								buf.append(C+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -197,11 +221,11 @@ public class AbilityHelper
 				case 4: // -Gender
 					{
 						buf.append("Allows only ");
-						if(fromHere(V,v+1,"MALE"))
+						if(fromHere(V,'+',v+1,"MALE"))
 							buf.append("Male, ");
-						if(fromHere(V,v+1,"FEMALE"))
+						if(fromHere(V,'+',v+1,"FEMALE"))
 							buf.append("Female, ");
-						if(fromHere(V,v+1,"FEMALE"))
+						if(fromHere(V,'+',v+1,"FEMALE"))
 							buf.append("Neuter");
 						if(buf.toString().endsWith(", "))
 							buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -218,6 +242,34 @@ public class AbilityHelper
 					{
 						for(int v2=v+1;v2<V.size();v2++)
 							buf.append(levelHelp((String)V.elementAt(v2),'+',"Allows only class "));
+					}
+					break;
+				case 7: // -Tattoos
+					{
+						buf.append("Requires the following tattoo(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str.startsWith("+")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 8: // +Tattoos
+					{
+						buf.append("Disallows the following tattoo(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str2.startsWith("-")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
 					}
 					break;
 				}
@@ -293,25 +345,31 @@ public class AbilityHelper
 				switch(((Integer)zapCodes.get(str)).intValue())
 				{
 				case 0: // -class
-					if(!fromHere(V,v+1,mobClass)) return false;
+					if(!fromHere(V,'+',v+1,mobClass)) return false;
 					break;
 				case 1: // -baseclass
-					if(!fromHere(V,v+1,mobBaseClass)) return false;
+					if(!fromHere(V,'+',v+1,mobBaseClass)) return false;
 					break;
 				case 2: // -Race
-					if(!fromHere(V,v+1,mobRace)) return false;
+					if(!fromHere(V,'+',v+1,mobRace)) return false;
 					break;
 				case 3: // -Alignment
-					if(!fromHere(V,v+1,mobAlign)) return false;
+					if(!fromHere(V,'+',v+1,mobAlign)) return false;
 					break;
 				case 4: // -Gender
-					if(!fromHere(V,v+1,mobGender)) return false;
+					if(!fromHere(V,'+',v+1,mobGender)) return false;
 					break;
 				case 5: // -Levels
 					if(!levelCheck(Util.combine(V,v+1),'+',0,level)) return false;
 					break;
 				case 6: // -ClassLevels
 					if(!levelCheck(Util.combine(V,v+1),'+',0,classLevel)) return false;
+					break;
+				case 7: // -tattoos
+					if(!tattooCheck(V,'+',v+1,mob)) return false;
+					break;
+				case 8: // +tattoos
+					if(tattooCheck(V,'-',v+1,mob)) return false;
 					break;
 				}
 			else
