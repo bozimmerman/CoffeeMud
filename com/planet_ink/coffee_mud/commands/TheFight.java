@@ -320,6 +320,11 @@ public class TheFight
 					deathRoom.addItem(thisItem);
 					items.addElement(thisItem);
 				}
+				else
+				if(thisItem!=null)
+					target.delInventory(thisItem);
+				else
+					i++;
 			}
 			target.kill();
 			

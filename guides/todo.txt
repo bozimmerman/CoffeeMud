@@ -54,8 +54,6 @@ properties can be more easily added without affecting the ONE class.
 
 Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard
 
-From Maree: Expand Directions to non-cardinal (NW, SW, NE, SE).  Do this before you create the "Gate" direction.
-
 From Maree: (Game/Heath Texts), the descriptions for the health of a MOB should be moved to a text file
 (A resource?), that is loaded.  The descriptions would be assigned to the MOB at build time, and
 should be assignable to GENMOBS via a new tag.

@@ -1,10 +1,6 @@
 ? gain spellname gives two messages, one for the teaching, and one saying you already have it
-! rescueing an enemy crashes your connection. (Fighter.Fighter_Rescue.invoke(Fighter_Rescue.java)) NULL POINTER
 ! if you kill someone wearing mage armor, you can loot their body for the mage armor, but you can not get it. Then it says n he ground is this is sitting around somewhere, something is wrong!
 ! aggressives should not attack statues. I don`t know if they can do any damage, but they just shouldn`t attack statues
-! The cast light bug
-  change sex should NOT be a lvl 12 spell. And worse, it shouldn`t be the LVL 12 spell you got at random
-  why do wizards only get one spell per level after level 10, when clerics continue to get 2? especially considering that there are at least twice as many wizard spells....
 ! com.planet_ink.coffee_mud.Behaviors.Aggressive.startFight(Aggressive.java) (NULL POINTER)
 ! if you try to remove something from a container while overburdened, it won`t let you
  
