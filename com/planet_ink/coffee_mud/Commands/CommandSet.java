@@ -433,6 +433,8 @@ public class CommandSet extends Hashtable
 		put("TYPO",new Integer(TYPO));
 		put("UNDRESS",new Integer(UNDRESS));
 		put("UNLOCK",new Integer(UNLOCK));
+			put("UN",new Integer(UNLOCK));
+			put("UNL",new Integer(UNLOCK));
 		put("UNLINK",new Integer(UNLINK));
 		put("UNLOAD",new Integer(UNLOAD));
 		put("UP",new Integer(UP));

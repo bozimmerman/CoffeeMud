@@ -8,6 +8,7 @@ friends list, for filter who (who works ok, but who friends shows just friends)
 ReScore button for items, to get default att/armor from level.
 Arrest idea: banned substances (get, drop, eq, etc), and resisting arrest, and harder sentence for parole.
 
+
 //****** next version ********************************************************
 SMTP capability
 Z-level for the GrinderMap (elevation?) how the heck would THAT work...

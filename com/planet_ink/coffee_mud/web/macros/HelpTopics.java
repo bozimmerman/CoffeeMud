@@ -73,6 +73,7 @@ public class HelpTopics extends StdWebMacro
 							 ||topic.startsWith("BEHAVIOR_")
 							 ||topic.startsWith("CHANT_")
 							 ||topic.startsWith("PRAYER_")
+							 ||topic.startsWith("BEHAVIOR_")
 							 ||topic.startsWith("PROP_")))
 				   continue;
 				if(topic.startsWith(fletter)||(fletter.length()==0))

@@ -324,37 +324,63 @@ public class Grouping
 			return;
 		}
 		String whomToOrder=(String)commands.elementAt(0);
-		MOB target=target=mob.location().fetchInhabitant(whomToOrder);
-
-		if((target==null)
-		||(!Sense.canBeSeenBy(target,mob))
-		||(!Sense.canBeHeardBy(mob,target))
-		||(target.location()!=mob.location()))
+		Vector V=new Vector();
+		boolean allFlag=whomToOrder.equalsIgnoreCase("all");
+		if(whomToOrder.toUpperCase().startsWith("ALL.")){ allFlag=true; whomToOrder="ALL "+whomToOrder.substring(4);}
+		if(whomToOrder.toUpperCase().endsWith(".ALL")){ allFlag=true; whomToOrder="ALL "+whomToOrder.substring(0,whomToOrder.length()-4);}
+		int addendum=1;
+		String addendumStr="";
+		do
 		{
-			mob.tell("'"+whomToOrder+"' doesn't seem to be listening.");
-			return;
+			MOB target=target=mob.location().fetchInhabitant(whomToOrder+addendumStr);
+			if(target==null) break;
+			if((Sense.canBeSeenBy(target,mob))
+			&&(target!=mob)
+			&&(!V.contains(target)))
+				V.addElement(target);
+			addendumStr="."+(++addendum);
 		}
+		while(allFlag);
 
-		if(target.willFollowOrdersOf(mob))
+		MOB target=null;
+		if(V.size()==1)
 		{
-			commands.removeElementAt(0);
-			Integer commandCodeObj=(Integer)(CommandSet.getInstance()).get((String)commands.elementAt(0));
-			if((!mob.isASysOp(mob.location()))
-			   &&(commandCodeObj!=null)
-			   &&(commandCodeObj.intValue()==CommandSet.ORDER))
+			target=(MOB)V.firstElement();
+			if((!Sense.canBeSeenBy(target,mob))
+			||(!Sense.canBeHeardBy(mob,target))
+			||(target.location()!=mob.location()))
 			{
-				mob.tell("You cannot order someone to follow.");
+				mob.tell("'"+whomToOrder+"' doesn't seem to be listening.");
 				return;
 			}
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'^?.");
-			if(mob.location().okAffect(mob,msg))
+			if(!target.willFollowOrdersOf(mob))
 			{
-				mob.location().send(mob,msg);
-				ExternalPlay.doCommand(target,commands);
+				mob.tell("You can't order '"+target.name()+"' around.");
+				return;
 			}
 		}
-		else
-			mob.tell("You can't order '"+whomToOrder+"' around.");
+
+		commands.removeElementAt(0);
+		Vector doV=new Vector();
+		for(int v=0;v<V.size();v++)
+		{
+			target=(MOB)V.elementAt(v);
+			if(target.willFollowOrdersOf(mob))
+			{
+				Integer commandCodeObj=(Integer)(CommandSet.getInstance()).get((String)commands.elementAt(0));
+				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'^?.");
+				if(mob.location().okAffect(mob,msg))
+				{
+					mob.location().send(mob,msg);
+					doV.addElement(target);
+				}
+			}
+		}
+		for(int v=0;v<doV.size();v++)
+		{
+			target=(MOB)doV.elementAt(v);
+			ExternalPlay.doCommand(target,commands);
+		}
 	}
 
 	public static void split(MOB mob, Vector commands)

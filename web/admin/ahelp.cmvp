@@ -1,10 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-<TITLE>@RequestParameter?TOPIC@</TITLE>
+<TITLE>@RequestParameter?HELPTOPIC@</TITLE>
 </HEAD>
 <BODY BGCOLOR=#000066 TEXT=#FFFFFF>
-<H3>@RequestParameter?TOPIC@</H3>
+<H3>@RequestParameter?HELPTOPIC@</H3>
 <PRE>
 @HelpTopics?data@
 </PRE>

@@ -22,6 +22,11 @@ public class ClanCommands
 			else
 			{
 				C=Clans.getClan(mob.getClanID());
+				if(C==null)
+				{
+					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+					return false;
+				}
 				if((mob.getClanRole()==Clan.POS_BOSS)||(mob.getClanRole()==Clan.POS_LEADER))
 				{
 					Vector apps=C.getMemberList(Clan.POS_APPLICANT);
@@ -116,7 +121,7 @@ public class ClanCommands
 				}
 				else
 				{
-					msg.append("There is no "+C.typeName()+" named '"+qual+"'.");
+					msg.append("There is no clan named '"+qual+"'.");
 				}
 			}
 			else
@@ -149,6 +154,11 @@ public class ClanCommands
 			else
 			{
 				C=Clans.getClan(mob.getClanID());
+				if(C==null)
+				{
+					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+					return false;
+				}
 				if((mob.getClanRole()==Clan.POS_BOSS)||(mob.getClanRole()==Clan.POS_LEADER))
 				{
 					Vector apps=C.getMemberList();
@@ -286,6 +296,11 @@ public class ClanCommands
 			else
 			{
 				C=Clans.getClan(mob.getClanID());
+				if(C==null)
+				{
+					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+					return false;
+				}
 				if((mob.getClanRole()==Clan.POS_BOSS)||(mob.getClanRole()==Clan.POS_LEADER))
 				{
 					Vector apps=C.getMemberList();
@@ -366,6 +381,11 @@ public class ClanCommands
 		else
 		{
 			Clan C=Clans.getClan(mob.getClanID());
+			if(C==null)
+			{
+				mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+				return false;
+			}
 			if(C.getStatus()>Clan.STATUS_ACTIVE)
 			{
 				mob.tell("You cannot set a home.  Your clan does not have enough members to be considered active.");
@@ -421,6 +441,11 @@ public class ClanCommands
 		else
 		{
 			Clan C=Clans.getClan(mob.getClanID());
+			if(C==null)
+			{
+				mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+				return false;
+			}
 			if(C.getStatus()>Clan.STATUS_ACTIVE)
 			{
 				mob.tell("You cannot set a donation room.  Your clan does not have enough members to be considered active.");
@@ -521,6 +546,11 @@ public class ClanCommands
 			else
 			{
 				C=Clans.getClan(mob.getClanID());
+				if(C==null)
+				{
+					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+					return false;
+				}
 				if((mob.getClanRole()==Clan.POS_BOSS)||(mob.getClanRole()==Clan.POS_LEADER))
 				{
 					Vector apps=C.getMemberList(Clan.POS_APPLICANT);
@@ -622,6 +652,11 @@ public class ClanCommands
 			return false;
 		}
 		Clan C=Clans.getClan(mob.getClanID());
+		if(C==null)
+		{
+			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+			return false;
+		}
 		if(C.getStatus()>Clan.STATUS_ACTIVE)
 		{
 			mob.tell("You cannot access your account.  Your clan does not have enough members to be considered active.");
@@ -819,6 +854,11 @@ public class ClanCommands
 		}
 		Clan C=null;
 		C=Clans.getClan(mob.getClanID());
+		if(C==null)
+		{
+			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+			return false;
+		}
 		if(C.getStatus()>Clan.STATUS_ACTIVE)
 		{
 			mob.tell("You cannot donate items.  Your clan does not have enough members to be considered active.");

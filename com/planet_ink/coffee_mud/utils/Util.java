@@ -593,6 +593,12 @@ public class Util
 			return true;
 		return false;
 	}
+	public static boolean isSet(long number, int bitnumber)
+	{
+		if((number&(pow(2,bitnumber)))==(pow(2,bitnumber)))
+			return true;
+		return false;
+	}
 	
 	public static String sameCase(String str, char c)
 	{

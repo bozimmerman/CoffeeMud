@@ -4,7 +4,7 @@
 <TITLE>@RequestParameter?TOPIC@</TITLE>
 </HEAD>
 <BODY BGCOLOR=#000066 TEXT=#FFFFFF>
-<H3>@RequestParameter?TOPIC@</H3>
+<H3>@RequestParameter?HELPTOPIC@</H3>
 <PRE>
 @HelpTopics?data@
 </PRE>

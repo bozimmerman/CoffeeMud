@@ -43,12 +43,6 @@ public class Thief_Bribe extends ThiefSkill
 			return false;
 		}
 
-		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
-		{
-			mob.tell("You can't bribe someone to follow.");
-			return false;
-		}
-
 		int oldProfficiency=profficiency();
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -1861,7 +1861,9 @@ public class StdMOB implements MOB
 				{
 					speeder=0.0;
 					peaceTime+=Host.TICK_TIME;
-					if(Util.bset(getBitmap(),MOB.ATT_AUTODRAW)&&(peaceTime>=SHEATH_TIME))
+					if(Util.bset(getBitmap(),MOB.ATT_AUTODRAW)
+					&&(peaceTime>=SHEATH_TIME)
+					&&(Sense.aliveAwakeMobile(this,true)))
 						ExternalPlay.sheathIfPossible(this);
 				}
 				if(!isMonster())

@@ -41,7 +41,7 @@ public class Prayer_Tremor extends Prayer
 			if(mob!=lastMOB)
 			{
 				lastMOB=mob;
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to stand up, and falls back down!");
+				mob.location().show(mob,null,Affect.MASK_GENERAL|Affect.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to stand up, and falls back down!");
 			}
 			else
 				lastMOB=null;
@@ -115,7 +115,7 @@ public class Prayer_Tremor extends Prayer
 					{
 						if(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0)
 						{
-							success=maliciousAffect(mob,target,7,-1);
+							success=maliciousAffect(mob,target,4,-1);
 							if(success)
 							{
 								if(target.location()==mob.location())

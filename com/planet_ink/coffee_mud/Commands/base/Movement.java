@@ -592,7 +592,23 @@ public class Movement extends Scriptable
 		}
 		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,(getScr("Movement","sopens"))+CommonStrings.msp("dooropen.wav",10));
 		if(openThis instanceof Exit)
-			roomOkAndAffectFully(msg,mob.location(),dirCode);
+		{
+			boolean open=((Exit)openThis).isOpen();
+			if((roomOkAndAffectFully(msg,mob.location(),dirCode))
+			&&(!open)
+			&&(((Exit)openThis).isOpen()))
+			{
+				dirCode=getMyDirCode((Exit)openThis,mob.location(),dirCode);
+				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
+				{
+					Room opR=mob.location().getRoomInDir(dirCode);
+					Exit opE=mob.location().getPairedExit(dirCode);
+					int opCode=Directions.getOpDirectionCode(dirCode);
+					if((opE!=null)&&(opE.isOpen()))
+					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","afteropens",opE.name(),Directions.getFromDirectionName(opCode)));
+				}
+			}
+		}
 		else
 		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
@@ -619,7 +635,23 @@ public class Movement extends Scriptable
 		}
 		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.MSG_UNLOCK,getScr("Movement","sunlocks")+CommonStrings.msp("doorunlock.wav",10));
 		if(unlockThis instanceof Exit)
-			roomOkAndAffectFully(msg,mob.location(),dirCode);
+		{
+			boolean locked=((Exit)unlockThis).isLocked();
+			if((roomOkAndAffectFully(msg,mob.location(),dirCode))
+			&&(locked)
+			&&(!((Exit)unlockThis).isLocked()))
+			{
+				dirCode=getMyDirCode((Exit)unlockThis,mob.location(),dirCode);
+				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
+				{
+					Room opR=mob.location().getRoomInDir(dirCode);
+					Exit opE=mob.location().getPairedExit(dirCode);
+					int opCode=Directions.getOpDirectionCode(dirCode);
+					if((opE!=null)&&(!opE.isLocked()))
+					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","afterunlocks",opE.name(),Directions.getFromDirectionName(opCode)));
+				}
+			}
+		}
 		else
 		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
@@ -646,7 +678,23 @@ public class Movement extends Scriptable
 		}
 		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.MSG_CLOSE,getScr("Movement","scloses")+CommonStrings.msp("dooropen.wav",10));
 		if(closeThis instanceof Exit)
-			roomOkAndAffectFully(msg,mob.location(),dirCode);
+		{
+			boolean open=((Exit)closeThis).isOpen();
+			if(roomOkAndAffectFully(msg,mob.location(),dirCode)
+			&&(open)
+			&&(!((Exit)closeThis).isOpen()))
+			{
+				dirCode=getMyDirCode((Exit)closeThis,mob.location(),dirCode);
+				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
+				{
+					Room opR=mob.location().getRoomInDir(dirCode);
+					Exit opE=mob.location().getPairedExit(dirCode);
+					int opCode=Directions.getOpDirectionCode(dirCode);
+					if((opE!=null)&&(!opE.isOpen()))
+					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","aftercloses",opE.name(),Directions.getFromDirectionName(opCode)));
+				}
+			}
+		}
 		else
 		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
@@ -715,7 +763,23 @@ public class Movement extends Scriptable
 		}
 		FullMsg msg=new FullMsg(mob,lockThis,null,Affect.MSG_LOCK,getScr("Movement","slocks")+CommonStrings.msp("doorunlock.wav",10));
 		if(lockThis instanceof Exit)
-			roomOkAndAffectFully(msg,mob.location(),dirCode);
+		{
+			boolean locked=((Exit)lockThis).isLocked();
+			if(roomOkAndAffectFully(msg,mob.location(),dirCode)
+			&&(!locked)
+			&&(((Exit)lockThis).isLocked()))
+			{
+				dirCode=getMyDirCode((Exit)lockThis,mob.location(),dirCode);
+				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
+				{
+					Room opR=mob.location().getRoomInDir(dirCode);
+					Exit opE=mob.location().getPairedExit(dirCode);
+					int opCode=Directions.getOpDirectionCode(dirCode);
+					if((opE!=null)&&(opE.isLocked()))
+					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","afterlocks",opE.name(),Directions.getFromDirectionName(opCode)));
+				}
+			}
+		}
 		else
 		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
