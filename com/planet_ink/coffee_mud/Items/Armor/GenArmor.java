@@ -46,16 +46,56 @@ public class GenArmor extends StdArmor
 		Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
+	private String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES"};
 	public String getStat(String code)
-	{ return Generic.getGenItemStat(this,code);}
+	{
+		if(Generic.getGenItemCodeNum(code)>=0)
+			return Generic.getGenItemStat(this,code);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: return ""+hasALock();
+		case 1: return ""+hasALid();
+		case 2: return ""+capacity();
+		case 3: return ""+containTypes();
+		}
+		return "";
+	}
 	public void setStat(String code, String val)
-	{ Generic.setGenItemStat(this,code,val);}
-	public String[] getStatCodes(){return Generic.GENITEMCODES;}
+	{ 
+		if(Generic.getGenItemCodeNum(code)>=0)
+			Generic.setGenItemStat(this,code,val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: setLidsNLocks(hasALid(),isOpen(),Util.s_bool(val),false); break;
+		case 1: setLidsNLocks(Util.s_bool(val),isOpen(),hasALock(),false); break;
+		case 2: setCapacity(Util.s_int(val)); break;
+		case 3: setContainTypes(Util.s_long(val)); break;
+		}
+	}
+	protected int getCodeNum(String code){
+		for(int i=0;i<MYCODES.length;i++)
+			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+		return -1;
+	}
+	public String[] getStatCodes()
+	{
+		String[] superCodes=Generic.GENITEMCODES;
+		String[] codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<=superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenArmor)) return false;
-		for(int i=0;i<getStatCodes().length;i++)
-			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+		if(!(E instanceof GenContainer)) return false;
+		String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
 		return true;
 	}
