@@ -290,7 +290,7 @@ public class StdItem implements Item
 	{
 		return goldValue;
 	}
-	public int baseGoldGalue(){return baseGoldValue;}
+	public int baseGoldValue(){return baseGoldValue;}
 	public void setBaseValue(int newValue)
 	{
 		baseGoldValue=newValue;

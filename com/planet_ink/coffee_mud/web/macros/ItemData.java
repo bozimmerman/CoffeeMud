@@ -82,7 +82,7 @@ public class ItemData extends StdWebMacro
 							  "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP",
 							  "READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
 							  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
-							  "READABLETEXT","CONTAINER","ISLIGHT","DURATION"};
+							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -459,6 +459,8 @@ public class ItemData extends StdWebMacro
 					if(old.equals("on")) 
 						old="checked";
 					str.append(old);
+					resetIfNecessary=true;
+					httpReq.getRequestParameters().put(okparms[o],old.equals("checked")?"on":old);
 					break;
 				case 53: // has a lock
 					if((firstTime)&&(I instanceof Container))
@@ -467,6 +469,8 @@ public class ItemData extends StdWebMacro
 					if(old.equals("on")) 
 						old="checked";
 					str.append(old);
+					resetIfNecessary=true;
+					httpReq.getRequestParameters().put(okparms[o],old.equals("checked")?"on":old);
 					break;
 				case 54: // key code
 					if((firstTime)&&(I instanceof Container))
@@ -539,7 +543,7 @@ public class ItemData extends StdWebMacro
 				}
 				
 			}
-			str.append(ExitData.dispositions(I,httpReq,parms));
+			str.append(ExitData.dispositions(I,firstTime,httpReq,parms));
 			str.append(AreaData.affectsNBehaves(I,httpReq,parms));
 		
 			if(resetIfNecessary)

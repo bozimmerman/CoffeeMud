@@ -42,17 +42,17 @@ public class GrinderItems
 		StringBuffer str=new StringBuffer("");
 		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
 						  " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
-						  "MATERIALS","ISGENERIC","ISFOOD","NOURISHMENT",
+						  "MATERIALS","ISGENERIC","ISREADABLE","READABLETEXT",
 						  "ISDRINK","LIQUIDHELD","QUENCHED","ISCONTAINER",
 						  "CAPACITY","ISARMOR","ARMOR","WORNDATA"," HEIGHT",
 						  "ISWEAPON","WEAPONTYPE","WEAPONCLASS","ATTACK","DAMAGE","MINRANGE",
 						  "MAXRANGE","SECRETIDENTITY","ISGETTABLE","ISREMOVABLE",
 						  "ISDROPPABLE","ISTWOHANDED","ISTRAPPED","READABLESPELLS",
-						  "ISWAND"," USESREMAIN","VALUE","WEIGHT","ISMAP","MAPAREAS","ISREADABLE",
+						  "ISWAND"," USESREMAIN","VALUE","WEIGHT","ISMAP","MAPAREAS","ISFOOD",
 						  "ISPILL","ISSUPERPILL","ISPOTION","LIQUIDTYPES","AMMOTYPE",
 						  "AMMOCAP","READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
-						  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER","READABLETEXT","CONTAINER",
-						  "ISLIGHT","DURATION"};
+						  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER",
+						  "ISLIGHTSOURCE","DURATION"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -97,11 +97,12 @@ public class GrinderItems
 				break;
 			case 9: // is generic
 				break;
-			case 10: // is food
+			case 10: // readable text
+				I.setReadableText(old);
+				I.setReadable(old.length()>0);
 				break;
-			case 11: // nourishment
-				if(I instanceof Food)
-					((Food)I).setNourishment(Util.s_int(old));
+			case 11: // isreadable
+				I.setReadable(old.equals("on"));
 				break;
 			case 12: // is drink
 				break;
@@ -231,7 +232,6 @@ public class GrinderItems
 				}
 				break;
 			case 41: // is readable
-				I.setReadable(old.equals("on"));
 				break;
 			case 42: // is pill
 				break;
@@ -282,9 +282,9 @@ public class GrinderItems
 				break;
 			case 55: // is wallpaper
 				break;
-			case 56: // readabletext
-				I.setReadable(old.length()>0);
-				I.setReadableText(old);
+			case 56: // nourishment
+				if(I instanceof Food)
+					((Food)I).setNourishment(Util.s_int(old));
 				break;
 			case 57: // container
 				if(Util.s_int(old)<=0)

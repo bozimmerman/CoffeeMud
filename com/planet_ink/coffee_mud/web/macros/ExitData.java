@@ -9,35 +9,40 @@ public class ExitData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
+	private static final String[] dispositions={"ISSEEN",
+												"ISHIDDEN",
+												"ISINVISIBLE",
+												"ISEVIL",
+												"ISGOOD",
+												"ISSNEAKING",
+												"ISBONUS",
+												"ISDARK",
+												"ISINFRARED",
+												"ISSLEEPING",
+												"ISSITTING",
+												"ISFLYING",
+												"ISSWIMMING",
+												"ISLIGHT",
+												"ISCLIMBING",
+												"ISFALLING"};
 	
-	public static String dispositions(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String dispositions(Environmental E, 
+									  boolean firstTime,
+									  ExternalHTTPRequests httpReq, 
+									  Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
-		String[] dispositions={"ISSEEN",
-							   "ISHIDDEN",
-							   "ISINVISIBLE",
-							   "ISEVIL",
-							   "ISGOOD",
-							   "ISSNEAKING",
-							   "ISBONUS",
-							   "ISDARK",
-							   "ISINFRARED",
-							   "ISSLEEPING",
-							   "ISSITTING",
-							   "ISFLYING",
-							   "ISSWIMMING",
-							   "ISLIGHT",
-							   "ISCLIMBING",
-							   "ISFALLING"};
 		for(int d=0;d<dispositions.length;d++)
+		{
 			if(parms.containsKey(dispositions[d]))
 			{
 				String parm=(String)httpReq.getRequestParameters().get(dispositions[d]);
-				if(parm==null)
+				if(firstTime)
 					parm=(((E.baseEnvStats().disposition()&(1<<d))>0)?"on":"");
-				if(parm.length()>0)
+				if((parm==null)||(parm.length()>0))
 					str.append("checked");
 			}
+		}
 		return str.toString();
 	}
 	
@@ -249,14 +254,14 @@ public class ExitData extends StdWebMacro
 					httpReq.resetRequestEncodedParameters();
 					break;
 				}
-				if((oldold==null)&&(old!=null))
+				if((oldold==null)&&(!firstTime))
 				{
 					resetIfNecessary=true;
 					httpReq.getRequestParameters().put(okparms[o],old.equals("checked")?"on":old);
 				}
 				
 			}
-			str.append(ExitData.dispositions(E,httpReq,parms));
+			str.append(ExitData.dispositions(E,firstTime,httpReq,parms));
 			str.append(AreaData.affectsNBehaves(E,httpReq,parms));
 			E.recoverEnvStats();
 			E.text();
