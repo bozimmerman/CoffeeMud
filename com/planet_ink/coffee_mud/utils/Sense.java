@@ -5,7 +5,6 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Sense
 {
-
 	public static boolean canSee(Environmental E)
 	{ return (!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SEE)==0); }
 	public static boolean canSeeHidden(Environmental E)
@@ -41,6 +40,9 @@ public class Sense
 	public static boolean canSeeMetal(Environmental E)
 	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_METAL)==EnvStats.CAN_SEE_METAL); }
 
+	
+	
+	
 	public static boolean isSeen(Environmental E)
 	{ return ((E.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0) || isSleeping(E); }
 	public static boolean isHidden(Environmental E)
