@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.io.File;
 import java.util.*;
 
-public class Cooking extends CommonSkill
+public class Cooking extends CraftingSkill
 {
 	public String ID() { return "Cooking"; }
 	public String name(){ return "Cooking";}
@@ -13,6 +13,7 @@ public class Cooking extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public String cookWordShort(){return "cook";};
 	public String cookWord(){return "cooking";};
+	public long flags(){return 0;}
 	public boolean honorHerbs(){return true;}
 
 	public static int RCP_FINALFOOD=0;
