@@ -973,11 +973,6 @@ public class Generic
 				V=XMLManager.getRealContentsFromPieces(buf,"STORE");
 				if(V==null)
 				{
-for(int i=0;i<buf.size();i++)
-{
-	XMLManager.XMLpiece XML=(XMLManager.XMLpiece)buf.elementAt(i);
-System.out.println(XML.tag+"/"+XML.value);
-}
 					Log.errOut("Generic","Error parsing 'STORE' of "+E.ID()+".  Load aborted");
 					return;
 				}

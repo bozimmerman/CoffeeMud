@@ -11,8 +11,6 @@ public class Util
 	private static byte[] encodeBuffer = new byte[65536];
 	private static Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
 	private static Inflater decompresser = new Inflater();
-	private static int totalCharactersProcessed = 0;
-	private static int totalBytesEncoded = 0;
 	
 	public static String decompressString(byte[] b)
 	{
@@ -42,7 +40,6 @@ public class Util
 
 		try
 		{
-			totalCharactersProcessed += s.length();
 			compresser.reset();
 			compresser.setInput(s.getBytes("UTF-8"));
 			compresser.finish();
@@ -51,8 +48,9 @@ public class Util
 			{
 				int len = compresser.deflate(encodeBuffer);
 				result = new byte[len];
+				if(len>encodeBuffer.length)
+					encodeBuffer=new byte[len];
 				System.arraycopy(encodeBuffer, 0, result, 0, len);
-				totalBytesEncoded += len;
 			}
 		}
 		catch (Exception ex)
@@ -61,11 +59,6 @@ public class Util
 		}
 
 	    return result;
-	}
-
-	public static double getCompressionRatio()
-	{
-		return (1 - ((double)totalBytesEncoded)/((double)totalCharactersProcessed)) * 100;
 	}
 
 	public static String capitalize(String name)
