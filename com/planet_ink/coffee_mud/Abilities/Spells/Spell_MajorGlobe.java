@@ -50,7 +50,7 @@ public class Spell_MajorGlobe extends Spell
 		&&(profficiencyCheck(0,false)))
 		{
 			amountAbsorbed+=CMAble.lowestQualifyingLevel(affect.tool().ID());
-			affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The absorbing globe around <S-NAME> absorbs the "+affect.tool().name()+"."));
+			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The globe around <S-NAME> absorbs the "+affect.tool().name()+" from <T-NAME>!");
 			return false;
 		}
 		if((invoker!=null)&&(amountAbsorbed>(invoker.envStats().level()*4)))

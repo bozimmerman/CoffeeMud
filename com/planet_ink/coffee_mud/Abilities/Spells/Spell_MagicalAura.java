@@ -52,13 +52,15 @@ public class Spell_MagicalAura extends Spell
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-
-		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A magical aura appears around <T-NAME>.":"^S<S-NAME> invoke(s) a magical aura around <T-NAMESELF>.^?");
-		if(mob.location().okAffect(msg))
+		if(success)
 		{
-			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,0);
-			target.recoverEnvStats();
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A magical aura appears around <T-NAME>.":"^S<S-NAME> invoke(s) a magical aura around <T-NAMESELF>.^?");
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob,msg);
+				beneficialAffect(mob,target,0);
+				target.recoverEnvStats();
+			}
 		}
 		else
 			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a magical aura, but fail(s).");

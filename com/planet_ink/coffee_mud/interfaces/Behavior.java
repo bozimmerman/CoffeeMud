@@ -32,6 +32,8 @@ public interface Behavior extends Cloneable
 	public static final int CAN_EXITS=16;
 	
 	public boolean grantsMobility();
+	public boolean grantsAggressivenessTo(MOB M);
+	
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class

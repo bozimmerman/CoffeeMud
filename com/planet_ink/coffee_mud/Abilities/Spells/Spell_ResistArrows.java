@@ -47,7 +47,7 @@ public class Spell_ResistArrows extends Spell
 		&&(!mob.amDead())
 		&&(profficiencyCheck(0,false)))
 		{
-			affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The absorbing barrier around <S-NAME> absorbs the "+((Weapon)affect.tool()).ammunitionType()+"."));
+			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs the "+((Weapon)affect.tool()).ammunitionType()+" from <T-NAME>!");
 			return false;
 		}
 		return true;

@@ -176,12 +176,12 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					case Weapon.TYPE_STRIKING:
 						if(Dice.rollPercentage()<25)
-							setUsesRemaining(usesRemaining()-5);
+							setUsesRemaining(usesRemaining()-Dice.roll(1,5,0));
 						break;
 					case Weapon.TYPE_MELTING:
 					case Weapon.TYPE_BURNING:
 						if(Dice.rollPercentage()<25)
-							setUsesRemaining(usesRemaining()-15);
+							setUsesRemaining(usesRemaining()-Dice.roll(1,15,0));
 						break;
 					case Weapon.TYPE_BASHING:
 					case Weapon.TYPE_NATURAL:
@@ -207,18 +207,18 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_STRIKING:
 					case Weapon.TYPE_FROSTING:
 						if(Dice.rollPercentage()<5)
-							setUsesRemaining(usesRemaining()-20);
+							setUsesRemaining(usesRemaining()-Dice.roll(1,20,0));
 						break;
 					case Weapon.TYPE_BASHING:
 					case Weapon.TYPE_NATURAL:
 						if(Dice.rollPercentage()<10)
-							setUsesRemaining(usesRemaining()-10);
+							setUsesRemaining(usesRemaining()-Dice.roll(1,10,0));
 						break;
 					case Weapon.TYPE_PIERCING:
 					case Weapon.TYPE_SHOOT:
 					case Weapon.TYPE_SLASHING:
 						if(Dice.rollPercentage()<5)
-							setUsesRemaining(usesRemaining()-15);
+							setUsesRemaining(usesRemaining()-Dice.roll(1,15,0));
 						break;
 					}
 					break;
@@ -231,12 +231,12 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					case Weapon.TYPE_STRIKING:
 						if(Dice.rollPercentage()<25)
-							setUsesRemaining(usesRemaining()-5);
+							setUsesRemaining(usesRemaining()-Dice.roll(1,5,0));
 						break;
 					case Weapon.TYPE_MELTING:
 					case Weapon.TYPE_BURNING:
 						if(Dice.rollPercentage()<25)
-							setUsesRemaining(usesRemaining()-15);
+							setUsesRemaining(usesRemaining()-Dice.roll(1,15,0));
 						break;
 					case Weapon.TYPE_BASHING:
 					case Weapon.TYPE_NATURAL:
@@ -246,7 +246,7 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_PIERCING:
 					case Weapon.TYPE_SHOOT:
 						if(Dice.rollPercentage()<10)
-							setUsesRemaining(usesRemaining()-4);
+							setUsesRemaining(usesRemaining()-Dice.roll(1,4,0));
 						break;
 					case Weapon.TYPE_SLASHING:
 						if(Dice.rollPercentage()<5)
@@ -267,7 +267,7 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					case Weapon.TYPE_MELTING:
 						if(Dice.rollPercentage()<25)
-							setUsesRemaining(usesRemaining()-15);
+							setUsesRemaining(usesRemaining()-Dice.roll(1,15,0));
 						break;
 					case Weapon.TYPE_BURNING:
 						if(Dice.rollPercentage()==1)
@@ -297,7 +297,7 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					case Weapon.TYPE_MELTING:
 						if(Dice.rollPercentage()<5)
-							setUsesRemaining(usesRemaining()-5);
+							setUsesRemaining(usesRemaining()-Dice.roll(1,5,0));
 						break;
 					case Weapon.TYPE_BURNING:
 						if(Dice.rollPercentage()==1)
@@ -331,7 +331,7 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_MELTING:
 					case Weapon.TYPE_BURNING:
 						if(Dice.rollPercentage()<20)
-							setUsesRemaining(usesRemaining()-5);
+							setUsesRemaining(usesRemaining()-Dice.roll(1,5,0));
 						break;
 					case Weapon.TYPE_BASHING:
 					case Weapon.TYPE_NATURAL:
@@ -362,15 +362,15 @@ public class StdArmor extends StdContainer implements Armor
 				case EnvResource.MATERIAL_PRECIOUS:
 				case EnvResource.MATERIAL_VEGETATION:
 				case EnvResource.MATERIAL_FLESH:
-					setUsesRemaining(usesRemaining()-5);
+					setUsesRemaining(usesRemaining()-Dice.roll(1,5,0));
 					break;
 				case EnvResource.MATERIAL_MITHRIL:
 					if(Dice.rollPercentage()<25)
-						setUsesRemaining(usesRemaining()-5);
+						setUsesRemaining(usesRemaining()-Dice.roll(1,5,0));
 					break;
 				case EnvResource.MATERIAL_WOODEN:
 					if(Dice.rollPercentage()<50)
-						setUsesRemaining(usesRemaining()-5);
+						setUsesRemaining(usesRemaining()-Dice.roll(1,5,0));
 					break;
 				default:
 					break;
@@ -385,7 +385,7 @@ public class StdArmor extends StdContainer implements Armor
 				case EnvResource.MATERIAL_PAPER:
 				case EnvResource.MATERIAL_WOODEN:
 				case EnvResource.MATERIAL_LEATHER:
-					setUsesRemaining(usesRemaining()-10);
+					setUsesRemaining(usesRemaining()-Dice.roll(1,10,0));
 					break;
 				default:
 					break;

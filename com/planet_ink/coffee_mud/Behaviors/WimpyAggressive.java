@@ -12,6 +12,11 @@ public class WimpyAggressive extends Aggressive
 	{
 		return new WimpyAggressive();
 	}
+	public boolean grantsAggressivenessTo(MOB M)
+	{
+		return false;
+	}
+
 	public static void pickAWimpyFight(MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;

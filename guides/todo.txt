@@ -1,5 +1,9 @@
+Add parameters to Aggressive behavior, like the GateGuards
+New Skill -- Double the damage on all Ranged Weapons to make them more deadly.
 Ability to save riding status in the database.
-Chain Lightning is wrong.  It is actually FORKED Lightning.  Chain Does max damage to first target, then goes to nearest enemy, and does reduced damage, then bounces to next enemy, and does a little less, etc until it is reduced to 0 damage.
+AUTOFOLLOW (or GUARD) to prevent a mob from actually following followers. 
+Scrolls can now disappear when used up.
+Paper-maker to make paper, scrolls (silkscreens) Wood. Cloth=Canvas. Cotton=Canvas. Silk=Silkscreen
 Should Greater Globe require Globe in order to gain?  YES.
 random monster property class which reads stats from a resource file
 Auto quests, quests, questbox (Behavior)
@@ -10,13 +14,12 @@ add grid dimensions fields and to the grinder and editor
 problems flying during storms
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
 Mining, Foraging, Etc ought to be able to accept a parameter, so MINE IRON would do mine, but would stop mining if you found something other than IRON, and tell you where you might try looking.
-CONTINUAL LIGHT spell
-ability to make wallpaper
+ARTIST ability to make wallpaper -- make Paintings.
 add Bridge to Construct and Mason, that allows a bridge over a watery surface. Must take a LOT of material, though. On the order of 4000.
 add fountain, pit to the mason skill.
 add Arch to mason, that modifies an open passageway with a Majestic Arch
 possible to have NE SE SW NW directions?
-rain/show causes some metals to rust (take minute damage).
+rain/show/swim causes some metals to rust (take minute damage).
 Amnesia as a disease
 eggs that hatch
 merchant class with haggle skill to lower prices HAGGLE 300 item
@@ -27,7 +30,6 @@ skill available all for help?????????????????????
 Infection: Hitpoints are recovered at 1/2 rate. 
 add currents to water...
 an ability to tell how many HP a MOB has
-ability to resist WHOMP
 gen-wizard player editor
 property to force an object to decay once worn/picked up
 viewer/editor for items/mobs worldwide
@@ -35,12 +37,9 @@ SPECULATE skill to determine what resources are available in a given area.
 mime behavior: A MOB will mimic any social that you do.
 pillow social to start a pillow fight
 aroma property. Exudes an odor to all adjacent rooms. Given to Undead for their stench. Given to Harem girls for their perfume. Parameter would be the emitted aroma description, and a Min/Max/Chance of message being created.
-cause stink spell. Also radiates from room.
 titles for high levels.
 new social= smurf
 new items to add to the CARVE list and the SCULPT list Toy,Door, Wall, Chop Sticks, Bookshelf, Desk, Ladder, Steps, Fountain, Podium,Bridge, Coffin/sarcophogus,
-the Artisan is created, players can start building their houses at high enough levels, in appropriate areas.
-Steps would allow him to build up or down. Roofs and floors are free. Each new room requires 3 new walls before you can expand it further.
 Ambusher—This gives the MOB an aggressive attitude, with the hide and backstab skills.  Ambushers may have a delay on them, a number of ticks before they come out of hiding and attack.
 ReligiousHelper—Aids other MOBs of given religion
 Nonconvertable—MOB won’t accept another religion.
@@ -50,27 +49,18 @@ IMPROVED TURNING:  Affects your bonus to Turn or control.  Don’t give this to an
 * RESISTANCE, Where * is a school of magic, adds resistance to all harmful spells from that school.
 * SPECIALIZATION, Where * is a school of magic, makes all spells from that school more difficult to resist.
 CONVERT:  A Cleric may convert a character to his Diety.  It will ask a confirmation from the other character.  Cleric gains 25 XP for each conversion.  A Cleric MAY attempt to convert MOBs, and get that XP.  A Cleric loses 25 XP for killing a MOB of his religion.
-Cover.  This is a defensive skill that improves a character’s AC vs all ranged attacks.
 Sniper.  This allows a character to make a single ranged attack from a hidden position without entering combat.  After the shot, combat is ended, as is the Hide.
-* slayer.  Where * is the name of a race.
-Contingency: caster makes a contingency statement (HP<x, MANA<x, MOVE<x, COMBAT START, COMBAT END, x ENTERS [the room]) and then the spell to cast upon that contingency (TELEPORT HOME, STONESKIN, etc)
 Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
 Offering: A cleric may sacrifice money to their deity.  Doing so restores X/10 Mana points.
-Analyze Dwoemer: Improved Identify that gives material type, item type (Sword, flail, etc) but not value.
-New Skill -- Double the damage on all Ranged Weapons to make them more deadly.
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 When Underwater, all slashing and Bludgeoning damage is reduced by a factor of 3, after all other modifiers for damage have been calculated.
 When Underwater, movement is expended at 2* the rate.  If you run out of movement on water, you suffer a -50% to your swim check.
 
-more spells/ideas at http://www.turf.org/helps/
-
 Guilds will have the ability to take on a character and make him or her the class sponsored by the 
 guild.  These will be special Sub-Classes (derivatives of existing classes).  SubClasses: 
-Wild Mage: 50% chance similar (diff) spell is cast (higher level, perhaps)
 Assassin: Assassinate skill to auto-kill, lose something else though
 Priests of specific Gods: bonuses to like spells, lose others
 Prancers: Dancing bards who get special ability
-Illusionist: Illusion spells at 100%, get all of them
 Alchemist: brew spells into potions, missile potions, transmute stuff to gold, cloth to metal, etc..
 Wizard: must memorize spells from book.  Profficiency check at casting time (unerring in casting).  No memorizing duplicates.  Mana is consumed at memorize time.
 trashcan behavior that can be added to items to destroy unwanted items.

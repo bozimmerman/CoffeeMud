@@ -12,8 +12,15 @@ public class VeryAggressive extends Aggressive
 	{
 		return new VeryAggressive();
 	}
+	
+	public boolean grantsAggressivenessTo(MOB M)
+	{
+		return !ExternalPlay.zapperCheck(getParms(),M);
+	}
 
-	public static void tickVeryAggressively(Environmental ticking, int tickID)
+	public static void tickVeryAggressively(Environmental ticking, 
+											int tickID,
+											Behavior B)
 	{
 		if(tickID!=Host.MOB_TICK) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
@@ -67,13 +74,13 @@ public class VeryAggressive extends Aggressive
 		if(dirCode>=0)
 		{
 			ExternalPlay.move(mob,dirCode,false);
-			pickAFight(mob);
+			pickAFight(mob,B);
 		}
 	}
 
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		tickVeryAggressively(ticking,tickID);
+		tickVeryAggressively(ticking,tickID,this);
 	}
 }

@@ -44,7 +44,7 @@ public class Spell_Immunity extends Spell
 		&&(!mob.amDead())
 		&&(profficiencyCheck(0,false)))
 		{
-			affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> is immune to "+immunityName+"."));
+			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attack from <T-NAME>.");
 			return false;
 		}
 		return true;

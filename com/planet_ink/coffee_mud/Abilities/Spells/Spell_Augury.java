@@ -73,7 +73,7 @@ public class Spell_Augury extends Spell
 						for(int b=0;b<mon.numBehaviors();b++)
 						{
 							Behavior B=mon.fetchBehavior(b);
-							if((B!=null)&&(B.ID().toUpperCase().indexOf("AGGRE")>=0))
+							if((B!=null)&&(B.grantsAggressivenessTo(mob)))
 							{
 								aggressiveMonster=true;
 								break;
@@ -87,7 +87,7 @@ public class Spell_Augury extends Spell
 				||((opExit!=null)&&(isTrapped(opExit))))
 					mob.tell("You feel going that way would be bad.");
 				else
-					mob.tell("You feel going that way would be good.");
+					mob.tell("You feel going that way would be ok.");
 			}
 
 		}

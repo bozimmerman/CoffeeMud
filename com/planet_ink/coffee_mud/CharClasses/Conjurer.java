@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Conjurer extends SpecialistMage
 {
@@ -11,4 +12,16 @@ public class Conjurer extends SpecialistMage
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	private static boolean myAbilitiesLoaded=false;
+		
+	public Conjurer()
+	{
+		super();
+		if(!myAbilitiesLoaded)
+		{
+			myAbilitiesLoaded=true;
+			CMAble.addCharAbilityMapping(ID(),17,"Spell_ForkedLightning",25,true);
+			CMAble.addCharAbilityMapping(ID(),1,"",25,true);
+		}
+	}
 }

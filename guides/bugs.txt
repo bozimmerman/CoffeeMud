@@ -1,1 +1,3 @@
 Some mage stuff at the trading post.
+bug can't copy what a player has?
+bug look for alternate materials in the common skills

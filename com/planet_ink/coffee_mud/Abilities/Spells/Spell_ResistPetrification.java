@@ -43,7 +43,7 @@ public class Spell_ResistPetrification extends Spell
 		&&(!mob.amDead())
 		&&(profficiencyCheck(0,false)))
 		{
-			affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The flowing barrier around <S-NAME> absorbs the deadly spell!"));
+			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs the Stone to Flesh spell from <T-NAME>!");
 			return false;
 		}
 		return true;

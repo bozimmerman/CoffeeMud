@@ -16,12 +16,17 @@ public class Spell_ChainLightening extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
-		if(h==null)
-		{
-			mob.tell("There doesn't appear to be anyone here worth electrocuting.");
-			return false;
-		}
+		if(h==null) h=new Hashtable();
 
+		Hashtable myGroup=mob.getGroupMembers(new Hashtable());
+		Vector targets=new Vector((Collection)h.elements());
+		for(Enumeration e=myGroup.elements();e.hasMoreElements();)
+		{
+			MOB M=(MOB)e.nextElement();
+			if((M!=mob)&&(!targets.contains(M))) targets.addElement(M);
+		}
+		targets.addElement(mob);
+		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -29,15 +34,17 @@ public class Spell_ChainLightening extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		int maxDie=adjustedLevel(mob);
+		int damage = Dice.roll(maxDie,8,1);
+		
 		boolean success=profficiencyCheck(0,auto);
-
 		if(success)
 		{
-
 			mob.location().show(mob,null,affectType(auto),auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?");
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			while(damage>0)
+			for(int i=0;i<targets.size();i++)
 			{
-				MOB target=(MOB)f.nextElement();
+				MOB target=(MOB)targets.elementAt(i);
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
@@ -51,12 +58,15 @@ public class Spell_ChainLightening extends Spell
 					mob.location().send(mob,msg2);
 					invoker=mob;
 
-					int maxDie=(int)Math.round(Util.div(adjustedLevel(mob),2.0));
-					int damage = Dice.roll(maxDie,8,1);
+					int dmg=damage;
 					if((!msg.wasModified())&&(!msg2.wasModified()))
-						damage = (int)Math.round(Util.div(damage,2.0));
+						dmg = (int)Math.round(Util.div(dmg,2.0));
 					if(target.location()==mob.location())
-						ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
+					{
+						ExternalPlay.postDamage(mob,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
+						damage = (int)Math.round(Util.div(damage,2.0));
+						if(damage<5){ damage=0; break;}
+					}
 				}
 			}
 		}

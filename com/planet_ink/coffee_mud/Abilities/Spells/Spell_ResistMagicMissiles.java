@@ -43,7 +43,7 @@ public class Spell_ResistMagicMissiles extends Spell
 		&&(!mob.amDead())
 		&&(profficiencyCheck(0,false)))
 		{
-			affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The absorbing barrier around <S-NAME> absorbs the missile!"));
+			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs a magic missile from <T-NAME>!");
 			return false;
 		}
 		return true;
