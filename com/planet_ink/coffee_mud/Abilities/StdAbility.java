@@ -169,6 +169,9 @@ public class StdAbility implements Ability, Cloneable
 		if((targetName.length()==0)&&(quality()!=Ability.MALICIOUS))
 			target=mob;
 		else
+		if(targetName.equalsIgnoreCase("self"))
+		   target=mob;
+		else
 		if((targetName.length()>0)&&(mob.location()!=null))
 		{
 			target=mob.location().fetchInhabitant(targetName);
@@ -223,6 +226,9 @@ public class StdAbility implements Ability, Cloneable
 		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(quality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
 			target=mob.getVictim();
+		else
+		if(targetName.equalsIgnoreCase("self"))
+		   target=mob;
 		else
 		if(mob.location()!=null)
 		{

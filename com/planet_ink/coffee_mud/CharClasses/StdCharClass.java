@@ -130,6 +130,9 @@ public class StdCharClass implements CharClass, Cloneable
 				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
 		}
 	}
+	public void endCharacter(MOB mob)
+	{
+	}
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
 		if(!verifyOnly)

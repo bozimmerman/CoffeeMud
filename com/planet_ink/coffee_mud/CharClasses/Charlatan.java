@@ -253,10 +253,14 @@ public class Charlatan extends StdCharClass
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
+				int lql=CMAble.lowestQualifyingLevel(A.ID());
 				if((CMAble.qualifyingLevel(mob,A)<=0)
 				&&(mob.fetchAbility(A.ID())==null)
-				&&(CMAble.lowestQualifyingLevel(A.ID())<30)
-				&&((CMAble.lowestQualifyingLevel(A.ID())==classLevel)||(CMAble.lowestQualifyingLevel(A.ID())==classLevel-1)||(classLevel>=30))
+				&&(lql<25)
+				&&(lql>0)
+				&&((lql==classLevel)
+				   ||(lql==classLevel-1)
+				   ||(classLevel>=25))
 				&&(!CMAble.getSecretSkill(A.ID())))
 					choices.addElement(A);
 			}

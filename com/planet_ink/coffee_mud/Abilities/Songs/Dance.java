@@ -45,16 +45,6 @@ public class Dance extends StdAbility
 		return affectType;
 	}
 
-	public void executeMsg(Environmental host, CMMsg msg)
-	{
-		super.executeMsg(host,msg);
-		if((affected==invoker)
-		&&(msg.amISource(invoker))
-		&&(!unInvoked)
-		&&(msg.sourceMinor()==CMMsg.TYP_ENTER))
-			unInvoke();
-	}
-
 	public Environmental newInstance(){	return new Dance();}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -156,9 +146,11 @@ public class Dance extends StdAbility
 				if(h==null) return false;
 				if(h.get(mob)==null) h.put(mob,mob);
 
+				Room R=mob.location();
 				for(Enumeration f=h.elements();f.hasMoreElements();)
 				{
 					MOB follower=(MOB)f.nextElement();
+					Room R2=follower.location();
 
 					// malicious dances must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
@@ -166,18 +158,18 @@ public class Dance extends StdAbility
 						affectType=affectType|CMMsg.MASK_MALICIOUS;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 
-					if((Sense.canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					if((R!=null)&&(R2!=null)&&(Sense.canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
 						FullMsg msg3=msg2;
 						if((mindAttack())&&(follower!=mob))
 							msg2=new FullMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
-						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
+						if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
 						{
-							follower.location().send(follower,msg2);
+							R2.send(follower,msg2);
 							if(msg2.value()<=0)
 							{
-								follower.location().send(follower,msg3);
+								R2.send(follower,msg3);
 								if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
 								{
 									undance(follower,null,null);
@@ -190,7 +182,7 @@ public class Dance extends StdAbility
 						}
 					}
 				}
-				mob.location().recoverRoomStats();
+				R.recoverRoomStats();
 			}
 		}
 		else

@@ -53,6 +53,7 @@ public class Spell_Duplicate extends Spell
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,target.name()+" blurs and divides into two!");
 				Item newTarget=(Item)target.copyOf();
+				Spell_Disenchant.disenchantItem(newTarget);
 				newTarget.recoverEnvStats();
 				if(target.owner() instanceof MOB)
 					((MOB)target.owner()).addInventory(newTarget);

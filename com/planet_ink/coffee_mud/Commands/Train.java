@@ -252,6 +252,7 @@ public class Train extends StdCommand
 		case 106:
 			mob.tell("You have undergone "+theClass.name()+" training!");
 			mob.setTrains(mob.getTrains()-1);
+			mob.baseCharStats().getCurrentClass().endCharacter(mob);
 			mob.baseCharStats().setCurrentClass(theClass);
 			mob.recoverCharStats();
 			mob.charStats().getCurrentClass().startCharacter(mob,false,true);

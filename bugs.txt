@@ -1,12 +1,35 @@
 Comprehend languages no longer translates TELLs in other languages.
 Try out Artisans
 Make sure Hunters Snare actually makes the mob hunt around.
-
-Test: ?holy day, 
-Test: ?aura of intolerance
-Test: 
-Test: Vampirism, Cannibalism
-Test: ?Forgive, ?Divine Perspective
+when you enchant items while serving a liege it costs the liege XP (10%). Now this may sound OK to you, it is not. Because if the liege is logged off, the arcanist basically gets a free 10% discount for serving someone. Just let your liege know when you are making an item, have him log off, make your item, and he can log back on.
+Test: ?holy day,  ?aura of intolerance, Vampirism, Cannibalism, ?Forgive, ?Divine Perspective
+prayer conviction--enhances combat (attack and defence) based on the number of allies of the same faith. Low level prayer that could give high level results in a large party of same religion.
+prayer--benediction. Grants bonus to your prime abilitys based on your class nd priest level. Every 5 levels grants a +1 to one ability. If you have 2 primes, then it would grant the first to one, and the second to the other.
+prayer malediction--This evil prayer reduces XP earned by 50% for the duration of the prayer. Should have double standard duration.
+Condemnation 		1. Opposite of Forgive. This worsens the laws opinions towards a subject, making the law more likely to pass a harsh punishment. 
+Heresy 		1. This prayer makes the victim become accused of a crime that has been commited (IE, there must already be SOMEONE wanted for breaking a law). The victim will acquire the warrant of the random crime, being accused of commiting the crime through infernal means. (witchcraft) 
+Bone Moon 		1. This moon spell causes all bodies in the room to be animated into skeletons. The first skeleton will be raised as a level 1 skeleton. The second at level 2, the third at level 4, the fourth at level 8, etc.(2^(#-1)). Skeletons are hostile towards all. (unless they can't see you...) All skeletons created by a bone moon become uncreated at the end of the duration (nobody gains XP for their deaths). This is similar to Howler's moon. Unlike a necromancer's animate prayers, the skeletons should be able to attack the caster of this prayer. 	2. I think of this as a Doomsayer prayer...end of the world type stuff. 
+Birds Eye 		1. This missionary prayer creates a map of all rooms within 2 moves of the missionary. The map is autoread, and then autodestroyed, allowing a once-per-casting perusal. 
+Find Evil/Find Good 		1. These prayers will TRACK the most EVIL/GOOD MOB in the area. To determine most evil/most good, you take the alignment variance from 500, and multiply that times 10*lvl of mob. So players with a moderate alignement will rarely become the target of this prayer...but could. This way, it will be useful in very active coffeemuds to find enemies. 
+Divine ally 		1. This prayer group (Holy/Divine/Unholy) summons a being of appropriate nature to assist the cleric. The being will require some sort of payment for each action it does, but should have various skill sets. Minor allies would have thiefness, moderate allies would have fighterness, and Major allies would have Mageness. Each casting requires something from the cleric. For minor it requires 1 gemresource. For moderate it requires 25lb metal resource (must be bundled). For Major, it requires an item of opposing alignment (or any alignment). (For example to summon a major holy ally, you must have an item with an EVIL aura, or EVIL zapper, to sacrifice.) 
+Sense Traps 		1. nuff said 
+Consecrate Land/Desecrate land/Neutralize land 		1. This prayer makes casting prayers of opposed alignment subject to increased failure chance. The neutral one erases all ROOM enchantments. 
+Infuse Holiness/Infuse Unholiness 		1. Makes an item have a good/evil aura AND a evil/good Have_zapper. CAN be done on magical items. DOES NOT affect the level of the item. 
+Bless Hearth 		1. grants owner of property HUGE bonuses to combat while in that room. (SHAMAN) 
+Lend Prayer 		1. This neutral prayer grants another person the ability to use a level 1-10 prayer designated in the casting. This prayer is temporarily unusable by the cleric, until the end of the LENDING. IE LEND "CURE LIGHT WOUNDS" AEREON would allow Aereon to PRAY CLW as often as desired (Costing AEREON 50 mana, since he doesn't qualify for it.) Each MOB can only be affected by 1 lend at a time, but the priest could lend to multiple people, if desired. 
+DEATH'S DOOR 		1. Prevent's a character from dying. ONCE. So you PRAY DD AEREON. Aereon gets reduced to -20 hp. DD goes off, saying that Aereon only gets reduced to -1hp. This only protects from damage effects, not instant kills, such as disintigrate. 
+Peace ritual 		1. This prayer takes time to cast (like 5 minutes). It reduces a clan that is as war with the cleric's clan to HOSTILE. While casting this prayer, a CLANTALK to the enemy clan goes off every 30 seconds stating WHO is trying to affect their clan, WHERE exactly they are (room name, area name), and what clan. If the casting cleric is interrupted, in anyway, during the casting of this ritual, it is instantly terminated. (Tells, Gossips, etc shouldn't stop it...but SOCIALS targetting him should. Obviously attacking him will.) 
+Haunt room 		1. This wicked prayer will cause a room to be possessed by the SPIRITS of any killed in it. It should have a long duration, and a maximum number of spirits based on the level of the caster (1 per 8 levels of caster sounds good.) SPIRITS created by this spell will be POLTERGEISTS. They will have thiefness, and the ANIMATE ITEM spell. They should be invisible and immune to slash/pierce/blunt. They die instantly if removed from the HAUNTED room. (wave spell..etc.) 
+Giganticus 		1. Makes the Templar an enormous version of himself, with some xtra strength 
+Position 		1. Shows the walking trail from the casting place to the last place this prayer was cast (or recall) 
+Marry/Divorce/Annul 		1. Marriage is described better elsewhere. Annul, if done without a certain amount of time after the wedding, will return all property to previous owners. Divorce always splits 50-50. 
+Tithe 		1. Makes it so that whenever the target receives money (through GET or BUY), 10% goes instantly to the caster. 
+Revival 		1. Mass Convert, plus bonuses for those who already believe in same god (-int, -wis, +cha, +str) 
+Doomspout 		1. Makes the target a raving spouter of doom messages. This is a contageous disease! 
+Divine Armament 		1. Causes random bits of level-worthy armor or weapons to appear within one room of the caster. 
+Daily Bread 		1. Compells the target shopkeeper or mob/player to hand over any food/water they may have to the caster. 
+Create Idol 		1. Creates an idol to the caster's god (or the unholy gods). Not sure what the idol does. 
+Faithless 		1. Compells the target to reject their god, if not the same as the caster. 
 Clerics - need more skills in general, and more unique skills especially.
 
 Druids meed more Qualifying chants, and more qualifying in general as opposed to gaining. 
@@ -67,3 +90,7 @@ mutable body parts, with ability to grant powers
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
+Blood should act as a cure light wounds to a vampire. that is...if a blood resource is drunk by a vampire, he should regain some hit points.
+Don't know how many emotes there are for the kid.. but just as some ideas.. I'd like.. if I drop him.. He cries.. or if anyone else but the parents hold the kid for like.. so long.. it cries for it's parents.. and I think it'd also be cool.. if after a year old.. it not only cries for them.. but cries out, Momma or Dadda . It'd also be cool if the baby emoted stuff like, wiggles their toes. or makes a spit bubble. you know.. those stupid things parents get over excited about. 7  ) Sendasien  Oh Oh! and what about, chews on their finger. holds up a finger. cries for no reason. streches. makes baby noises. Just things.. to always remind the parent they have a baby. The more the baby does.. the more fun!! :D I love you guys!That babies will cry for their fathers too!!Oh oh! What about the babies.. falling asleep ..maybe they coudl even wake up crying.. or.. just.. wake up.. that'd be fun too
+Don't know if I ideaed this before or not.. but pregnant women to gain weight?
+Why do I need to stand to embroider? I would think it's easier to do it sitting down!

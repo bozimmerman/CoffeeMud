@@ -29,7 +29,7 @@ public class Prayer_ElectricStrike extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			Prayer_Thunderbolt newOne=(Prayer_Thunderbolt)this.copyOf();
+			Prayer_ElectricStrike newOne=(Prayer_ElectricStrike)this.copyOf();
 			FullMsg msg=new FullMsg(mob,target,newOne,affectType(auto),(auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+"!^?")+CommonStrings.msp("lightning.wav",40));
 			if(mob.location().okMessage(mob,msg))
 			{

@@ -13,6 +13,67 @@ public class Spell_Disenchant extends Spell
 	public Environmental newInstance(){	return new Spell_Disenchant();	}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;	}
 
+	
+	public static int disenchantItem(Item target)
+	{
+		int level=target.baseEnvStats().level();
+		boolean doneSomething=false;
+		if(target instanceof Wand)
+		{
+			Ability A=((Wand)target).getSpell();
+			if(A!=null)
+				level=level-CMAble.lowestQualifyingLevel(A.ID())+2;
+			((Wand)target).setSpell(null);
+			((Wand)target).setUsesRemaining(0);
+			doneSomething=true;
+		}
+		else
+		if(target instanceof Scroll)
+		{
+			((Scroll)target).setSpellList(new Vector());
+			((Scroll)target).setScrollText("");
+			doneSomething=true;
+		}
+		else
+		if(target instanceof Potion)
+		{
+			((Potion)target).setSpellList("");
+			doneSomething=true;
+		}
+		else
+		if(target instanceof Pill)
+		{
+			((Pill)target).setSpellList("");
+			doneSomething=true;
+		}
+		else
+		if(target.envStats().ability()>0)
+		{
+			level=level-(target.baseEnvStats().ability()*3);
+			target.baseEnvStats().setAbility(0);
+			doneSomething=true;
+		}
+
+		Vector affects=new Vector();
+		for(int a=target.numEffects()-1;a>=0;a--)
+		{
+			Ability A=target.fetchEffect(a);
+			if(A!=null)
+				affects.addElement(A);
+		}
+		for(int a=0;a<affects.size();a++)
+		{
+			Ability A=(Ability)affects.elementAt(a);
+			A.unInvoke();
+			level=level-1;
+			target.delEffect(A);
+			doneSomething=true;
+		}
+		if(doneSomething) return level;
+		return -999;
+	}
+							   
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
@@ -29,61 +90,8 @@ public class Spell_Disenchant extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				boolean doneSomething=false;
-				int level=target.baseEnvStats().level();
-				if(target instanceof Wand)
-				{
-					Ability A=((Wand)target).getSpell();
-					if(A!=null)
-						level=level-CMAble.lowestQualifyingLevel(A.ID())+2;
-					((Wand)target).setSpell(null);
-					((Wand)target).setUsesRemaining(0);
-					doneSomething=true;
-				}
-				else
-				if(target instanceof Scroll)
-				{
-					((Scroll)target).setSpellList(new Vector());
-					((Scroll)target).setScrollText("");
-					doneSomething=true;
-				}
-				else
-				if(target instanceof Potion)
-				{
-					((Potion)target).setSpellList("");
-					doneSomething=true;
-				}
-				else
-				if(target instanceof Pill)
-				{
-					((Pill)target).setSpellList("");
-					doneSomething=true;
-				}
-				else
-				if(target.envStats().ability()>0)
-				{
-					level=level-(target.baseEnvStats().ability()*3);
-					target.baseEnvStats().setAbility(0);
-					doneSomething=true;
-				}
-
-				Vector affects=new Vector();
-				for(int a=target.numEffects()-1;a>=0;a--)
-				{
-					Ability A=target.fetchEffect(a);
-					if(A!=null)
-						affects.addElement(A);
-				}
-				for(int a=0;a<affects.size();a++)
-				{
-					Ability A=(Ability)affects.elementAt(a);
-					A.unInvoke();
-					level=level-1;
-					target.delEffect(A);
-					doneSomething=true;
-				}
-
-				if(doneSomething)
+				int level=disenchantItem(target);
+				if(level>-999)
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fades and becomes dull!");
 					if((target.baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS)

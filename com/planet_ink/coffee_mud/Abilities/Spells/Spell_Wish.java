@@ -668,7 +668,7 @@ public class Spell_Wish extends Spell
 					if((A!=null)
 					&&(CMAble.lowestQualifyingLevel(A.ID())>0))
 					{
-						if(CMAble.lowestQualifyingLevel(A.ID())>25)
+						if(CMAble.lowestQualifyingLevel(A.ID())>=25)
 						{
 							MUDFight.postExperience(mob,null,null,-baseLoss,false);
 							mob.tell("Your wish has drained you of "+baseLoss+" experience points, but that is beyond your wishing ability.");

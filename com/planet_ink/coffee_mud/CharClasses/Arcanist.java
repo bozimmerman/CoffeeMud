@@ -168,6 +168,21 @@ public class Arcanist extends Thief
 		return super.okMessage(myHost,msg);
 	}
 
+	public void endCharacter(MOB mob)
+	{
+		Vector otherChoices=new Vector();
+		for(int a=0;a<mob.numLearnedAbilities();a++)
+		{
+			Ability A2=mob.fetchAbility(a);
+			if((A2!=null)
+			&&(A2.isBorrowed(mob))
+			&&((A2.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+				otherChoices.addElement(A2);
+		}
+		for(int a=0;a<otherChoices.size();a++)
+			mob.delAbility((Ability)otherChoices.elementAt(a));
+	}
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
