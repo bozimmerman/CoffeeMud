@@ -46,16 +46,21 @@ public class Spell_Wish extends Spell
 		}
 	}
 
-	public void wishDrain(MOB mob, int expLoss)
+	public void wishDrain(MOB mob, int expLoss, boolean conLoss)
 	{
 		if(mob==null) return;
 		MUDFight.postExperience(mob,null,null,-expLoss,false);
-		mob.tell("Your wish drains "+(expLoss)+" experience points and a point of constitution from you.");
-		mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)-1);
-		mob.baseCharStats().setStat(CharStats.MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CONSTITUTION_ADJ)-1);
-		mob.recoverCharStats();
-		if(mob.charStats().getStat(CharStats.CONSTITUTION)<1)
-			MUDFight.postDeath(mob,mob,null);
+		if(conLoss)
+		{
+			mob.tell("Your wish drains you of "+(expLoss)+" experience points and a point of constitution.");
+			mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)-1);
+			mob.baseCharStats().setStat(CharStats.MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CONSTITUTION_ADJ)-1);
+			mob.recoverCharStats();
+			if(mob.charStats().getStat(CharStats.CONSTITUTION)<1)
+				MUDFight.postDeath(mob,mob,null);
+		}
+		else
+			mob.tell("Your wish drains "+(expLoss)+" experience points.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -193,7 +198,7 @@ public class Spell_Wish extends Spell
 				}
 				if(experienceRequired<=0)
 					experienceRequired=0;
-				wishDrain(mob,(baseLoss+experienceRequired));
+				wishDrain(mob,(baseLoss+experienceRequired),false);
 				return true;
 			}
 
@@ -251,7 +256,7 @@ public class Spell_Wish extends Spell
 					recallRoom=((MOB)target).getStartRoom();
 				if(recallRoom!=null)
 				{
-					wishDrain(mob,baseLoss);
+					wishDrain(mob,baseLoss,false);
 					bringThangHere(mob,recallRoom,target);
 					return true;
 				}
@@ -297,7 +302,7 @@ public class Spell_Wish extends Spell
 						mob.setExperience(exp);
 					}
 				}
-				wishDrain(mob,baseLoss);
+				wishDrain(mob,baseLoss,false);
 				return true;
 			}
 
@@ -385,7 +390,7 @@ public class Spell_Wish extends Spell
 				if(newRoom!=null)
 				{
 					bringThangHere(mob,newRoom,target);
-					wishDrain(mob,baseLoss);
+					wishDrain(mob,baseLoss,false);
 					return true;
 				}
 			}
@@ -402,7 +407,7 @@ public class Spell_Wish extends Spell
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is healthier!");
 					tm.curState().setHitPoints(tm.maxState().getHitPoints());
-					wishDrain(mob,baseLoss);
+					wishDrain(mob,baseLoss,true);
 					return true;
 				}
 				else
@@ -411,14 +416,14 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is healthier!");
 					tm.baseState().setHitPoints(tm.baseState().getHitPoints()+2);
 					tm.recoverMaxState();
-					wishDrain(mob,baseLoss);
+					wishDrain(mob,baseLoss,true);
 					return true;
 				}
 				if((myWish.indexOf("MANA")>=0)&&(tm.curState().getMana()<tm.maxState().getMana()))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" has more mana!");
 					tm.curState().setMana(tm.maxState().getMana());
-					wishDrain(mob,baseLoss);
+					wishDrain(mob,baseLoss,true);
 					return true;
 				}
 				else
@@ -427,14 +432,14 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" has more mana!");
 					tm.baseState().setMana(tm.baseState().getMana()+2);
 					tm.recoverMaxState();
-					wishDrain(mob,baseLoss);
+					wishDrain(mob,baseLoss,true);
 					return true;
 				}
 				if((myWish.indexOf("MOVE")>=0)&&(tm.curState().getMovement()<tm.maxState().getMovement()))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" has more move points!");
 					tm.curState().setMovement(tm.maxState().getMovement());
-					wishDrain(mob,baseLoss);
+					wishDrain(mob,baseLoss,true);
 					return true;
 				}
 				else
@@ -443,7 +448,7 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" has more move points!");
 					tm.baseState().setMovement(tm.baseState().getMovement()+5);
 					tm.recoverMaxState();
-					wishDrain(mob,baseLoss);
+					wishDrain(mob,baseLoss,true);
 					return true;
 				}
 
@@ -460,7 +465,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" MAN ")>=0)
 			||(myWish.indexOf(" BOY ")>=0)))
 			{
-				wishDrain(mob,baseLoss);
+				wishDrain(mob,baseLoss,true);
 				((MOB)target).baseCharStats().setStat(CharStats.GENDER,'M');
 				((MOB)target).recoverCharStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now male!");
@@ -473,7 +478,7 @@ public class Spell_Wish extends Spell
 			&&((myWish.indexOf(" LIGHTER ")>=0)
 			||(myWish.indexOf(" LOSE WEIGHT ")>=0)))
 			{
-				wishDrain(mob,baseLoss);
+				wishDrain(mob,baseLoss,true);
 				int weight=((MOB)target).baseEnvStats().weight();
 				weight-=50;
 				if(weight<=0) weight=1;
@@ -488,7 +493,7 @@ public class Spell_Wish extends Spell
 			&&((myWish.indexOf(" HEAVIER ")>=0)
 			||(myWish.indexOf(" GAIN WEIGHT ")>=0)))
 			{
-				wishDrain(mob,baseLoss);
+				wishDrain(mob,baseLoss,true);
 				int weight=((MOB)target).baseEnvStats().weight();
 				weight+=50;
 				((MOB)target).baseEnvStats().setWeight(weight);
@@ -528,7 +533,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" SHORT ")>=0)
 			||(myWish.indexOf(" LITTLE ")>=0)))
 			{
-				wishDrain(mob,baseLoss);
+				wishDrain(mob,baseLoss,true);
 				int weight=((MOB)target).baseEnvStats().height();
 				weight-=12;
 				if(weight<=0) weight=5;
@@ -544,7 +549,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" BIG ")>=0)
 			||(myWish.indexOf(" TALL ")>=0)))
 			{
-				wishDrain(mob,baseLoss);
+				wishDrain(mob,baseLoss,true);
 				int weight=((MOB)target).baseEnvStats().height();
 				weight+=12;
 				((MOB)target).baseEnvStats().setHeight(weight);
@@ -565,7 +570,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WOMAN ")>=0)
 			||(myWish.indexOf(" GIRL ")>=0)))
 			{
-				wishDrain(mob,baseLoss);
+				wishDrain(mob,baseLoss,true);
 				((MOB)target).baseCharStats().setStat(CharStats.GENDER,'F');
 				((MOB)target).recoverCharStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now female!");
@@ -589,7 +594,7 @@ public class Spell_Wish extends Spell
 						baseLoss+=500;
 						mob.baseCharStats().getCurrentClass().unLevel(mob);
 					}
-					wishDrain(mob,baseLoss);
+					wishDrain(mob,baseLoss,true);
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
 					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).baseEnvStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.GENDER));
@@ -616,7 +621,7 @@ public class Spell_Wish extends Spell
 				{
 					CharClass oldC=mob.baseCharStats().getCurrentClass();
 					baseLoss+=1000;
-					wishDrain(mob,baseLoss);
+					wishDrain(mob,baseLoss,true);
 					mob.baseCharStats().getCurrentClass().unLevel(mob);
 					mob.baseCharStats().getCurrentClass().unLevel(mob);
 					mob.baseCharStats().getCurrentClass().unLevel(mob);
@@ -679,7 +684,7 @@ public class Spell_Wish extends Spell
 						{
 							tm.addAbility(A);
 							baseLoss+=500;
-							wishDrain(mob,baseLoss);
+							wishDrain(mob,baseLoss,true);
 							mob.baseCharStats().getCurrentClass().unLevel(mob);
 							mob.baseCharStats().getCurrentClass().unLevel(mob);
 						}
@@ -789,7 +794,7 @@ public class Spell_Wish extends Spell
 					baseLoss-=10;
 					break;
 				}
-				wishDrain(mob,baseLoss);
+				wishDrain(mob,baseLoss,true);
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-1);
 				else
@@ -826,7 +831,7 @@ public class Spell_Wish extends Spell
 					baseLoss+=10;
 					break;
 				}
-				wishDrain(mob,baseLoss);
+				wishDrain(mob,baseLoss,true);
 				mob.baseCharStats().getCurrentClass().unLevel(mob);
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+1);

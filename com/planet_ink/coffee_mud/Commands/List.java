@@ -1190,7 +1190,7 @@ public class List extends StdCommand
 			mob.tell(listSessions(mob).toString());
         else
         if(("LINKAGES".startsWith(listThis))&&(mob.isASysOp(null)))
-                mob.tell(listLinkages(mob).toString());
+            mob.tell(listLinkages(mob).toString());
         else
 		if(("REPORTS".startsWith(listThis))&&(mob.isASysOp(null)))
 			mob.tell(listReports(mob).toString());

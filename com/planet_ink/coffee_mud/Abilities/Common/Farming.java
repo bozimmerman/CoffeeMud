@@ -102,6 +102,32 @@ public class Farming extends CommonSkill
 			commonTell(mob,"It looks like a crop is already growing here.");
 			return false;
 		}
+		if((mob.isMonster()
+		&&(!Sense.isAnimalIntelligence(mob)))
+		&&(commands.size()==0))
+		{
+			for(int i=0;i<mob.inventorySize();i++)
+			{
+				Item I2=mob.fetchInventory(i);
+				if((I2!=null)
+				&&(I2 instanceof EnvResource)
+				&&(Sense.canBeSeenBy(I2,mob))
+				&&(I2.container()==null)
+				&&(((I2.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
+				  ||(I2.material()==EnvResource.RESOURCE_COTTON)
+				  ||((I2.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)))
+				{
+					commands.addElement(EnvResource.RESOURCE_DESCS[I2.material()&EnvResource.RESOURCE_MAPLE]);
+					break;
+				}
+				if(commands.size()==0)
+				{
+					commonTell(mob,"You don't have anything you can plant.");
+					return false;
+				}
+			}
+		}
+		else
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Grow what?");

@@ -239,6 +239,19 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
+	static void genPassword(MOB mob, MOB E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Password: ********.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new one to reset\n\r:","");
+		if((newName.length()>0)&&(E.playerStats()!=null))
+			E.playerStats().setPassword(newName);
+		else
+			mob.tell("(no change)");
+	}
+
 	public static void genDisplayText(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -3847,6 +3860,7 @@ public class BaseGenerics extends StdCommand
 				mob.tell("The name given cannot be chosen, as it is already being used.");
 				genName(mob,me,showNumber,showFlag);
 			}
+			genPassword(mob,me,++showNumber,showFlag);
 
 			genDescription(mob,me,++showNumber,showFlag);
 			genLevel(mob,me,++showNumber,showFlag);

@@ -160,6 +160,7 @@ public class MUDHelp
 						int lvl=CMAble.getQualifyingLevel(C.ID(),A.ID());
 						if((!C.ID().equalsIgnoreCase("Archon"))
 						&&(lvl>=0)
+						&&(C.playerSelectable())
 						&&(!CMAble.getSecretSkill(C.ID(),A.ID())))
 							avail.addElement(C.name()+"("+lvl+")");
 					}

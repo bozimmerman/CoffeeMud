@@ -88,6 +88,29 @@ public class Where extends StdCommand
 		}
 		else
 		{
+			int alignment=mob.getAlignment();
+			for(int i=commands.size()-1;i>=0;i--)
+			{
+				String s=(String)commands.elementAt(i);
+				if(s.equalsIgnoreCase("good"))
+				{
+					alignment=0;
+					commands.removeElementAt(i);
+				}
+				else
+				if(s.equalsIgnoreCase("neutral"))
+				{
+					alignment=500;
+					commands.removeElementAt(i);
+				}
+				else
+				if(s.equalsIgnoreCase("evil"))
+				{
+					alignment=1000;
+					commands.removeElementAt(i);
+				}
+			}
+												 
 			int adjust=Util.s_int(Util.combine(commands,1));
 			DVector levelsVec=new DVector(2);
 			DVector mobsVec=new DVector(2);
@@ -114,7 +137,7 @@ public class Where extends StdCommand
 					whereAdd(mobsVec,A.name(),A.getAreaIStats()[Area.AREASTAT_POPULATION]);
 
 					int align=A.getAreaIStats()[Area.AREASTAT_MEDALIGN];
-					int alignDiff=((int)Math.abs(new Integer(mob.getAlignment()-align).doubleValue()));
+					int alignDiff=((int)Math.abs(new Integer(alignment-align).doubleValue()));
 					whereAdd(alignVec,A.name(),alignDiff);
 				}
 			}

@@ -81,6 +81,7 @@ public class Scriptable extends StdBehavior
 		"DROP_PROG", // 22
 		"WEAR_PROG", // 23
 		"REMOVE_PROG", // 24
+		"CONSUME_PROG", // 25
 	};
 	private static final String[] funcs={
 		"RAND", //1
@@ -3717,7 +3718,7 @@ public class Scriptable extends StdBehavior
 	
 	protected Vector getScripts()
 	{
-		if(CommonStrings.isDisabled("MOBILITY"))
+		if(CommonStrings.isDisabled("SCRIPTABLE"))
 			return empty;
 		Vector scripts=null;
 		if(getParms().length()>100)
@@ -3951,6 +3952,39 @@ public class Scriptable extends StdBehavior
 				&&(canFreelyBehaveNormal(monster)))
 				{
 					trigger=trigger.substring(9).trim();
+					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
+						||(trigger.equalsIgnoreCase("ALL")))
+						{
+							que.addElement(new ScriptableResponse(msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+							return;
+						}
+					}
+					else
+					{
+						int num=Util.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=Util.getCleanBit(trigger,i).toUpperCase();
+							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(t.equalsIgnoreCase("ALL")))
+							{
+								que.addElement(new ScriptableResponse(msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+								return;
+							}
+						}
+					}
+				}
+				break;
+			case 25: // consume_prog
+				if(((msg.targetMinor()==CMMsg.TYP_EAT)||(msg.targetMinor()==CMMsg.TYP_DRINK))
+				&&((msg.amISource(monster))||(msg.amITarget(affecting)))
+				&&(msg.target() instanceof Item)
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					trigger=trigger.substring(12).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();

@@ -90,7 +90,27 @@ public class Butchering extends CommonSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		body=null;
-		Item I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+		Item I=null;
+		if((mob.isMonster()
+		&&(!Sense.isAnimalIntelligence(mob)))
+		&&(commands.size()==0))
+		{
+			for(int i=0;i<mob.location().numItems();i++)
+			{
+				Item I2=mob.location().fetchItem(i);
+				if((I2!=null)
+				&&(I2 instanceof DeadBody)
+				&&(Sense.canBeSeenBy(I2,mob))
+				&&(I2.container()==null))
+				{
+					I=I2; 
+					break;
+				}
+			}
+		}
+		else
+			I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+		
 		if(I==null) return false;
 		if((!(I instanceof DeadBody))
 		   ||(((DeadBody)I).charStats()==null)

@@ -206,13 +206,17 @@ public class Amputation extends StdAbility
 			&&(validamputees[i]))
 			{
 				if(limbs[i]-amputations[i]==1)
-					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+				{
+					if(!missingLimbNameSet().contains(Race.BODYPARTSTR[i].toLowerCase()))
+						V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+				}
 				else
 				if(limbs[i]-amputations[i]==2)
 				{
-					if(limbs[i]==2)
+					if(!missingLimbNameSet().contains("left "+Race.BODYPARTSTR[i].toLowerCase()))
 						V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
-					V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
+					if(!missingLimbNameSet().contains("right "+Race.BODYPARTSTR[i].toLowerCase()))
+						V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
 				}
 				else
 				for(int ii=0;ii<limbs[i];ii++)
@@ -327,7 +331,6 @@ public class Amputation extends StdAbility
 					mob.tell("There is nothing left on "+target.name()+" to amputate!");
 				return false;
 			}
-System.out.println(Util.toStringList(VN));
 			String gone=(String)VN.elementAt(Dice.roll(1,VN.size(),-1));
 
 			String str=auto?"":"^F<S-NAME> amputate <T-NAMESELF>'s "+gone+"!^?";

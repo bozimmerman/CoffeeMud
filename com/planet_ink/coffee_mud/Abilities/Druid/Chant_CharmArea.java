@@ -31,7 +31,7 @@ public class Chant_CharmArea extends Chant
 			   &&(msg.target()!=null)
 			   &&(msg.source()!=msg.target()))
 			{
-				msg.source().tell("Nah, you feel too peaceful here.");
+				msg.source().tell("You feel too peaceful here.");
 				if(msg.source().getVictim()!=null)
 					msg.source().getVictim().makePeace();
 				msg.source().makePeace();
