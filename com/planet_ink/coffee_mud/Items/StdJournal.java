@@ -160,7 +160,7 @@ public class StdJournal extends StdItem
 		Vector journal=ExternalPlay.DBReadJournal(Journal);
 		if(which<0)
 		{
-			buf.append("\n\r"+Util.padRight("#",6)+Util.padRight("From",16)+Util.padRight("To",16)+"Subject\n\r");
+			buf.append("\n\r "+Util.padRight("#",5)+Util.padRight("From",16)+Util.padRight("To",16)+"Subject\n\r");
 			buf.append("---------------------------------------------\n\r");
 		}
 		if(journal==null) return buf;
