@@ -935,6 +935,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			String inLine = sin.readLine();
 			//Log.sysOut("HTTP",inLine);
+			if(inLine==null) return "";
+			
 			if((inLine.startsWith("GET")||inLine.startsWith("HEAD")))
 			{
 				return inLine;

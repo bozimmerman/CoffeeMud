@@ -187,21 +187,26 @@ public class Language extends StdAbility
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		for(int a=0;a<mob.numAffects();a++)
+		if(!auto) 
 		{
-			Ability A=mob.fetchAffect(a);
-			if((A!=null)&&(A instanceof Language))
+			for(int a=0;a<mob.numAffects();a++)
 			{
-				if(mob.isMonster())
-					A.setProfficiency(100);
-				if(A.ID().equals(ID()))
-					((Language)A).setBeingSpoken(true);
-				else
-					((Language)A).setBeingSpoken(false);
+				Ability A=mob.fetchAffect(a);
+				if((A!=null)&&(A instanceof Language))
+				{
+					if(mob.isMonster())
+						A.setProfficiency(100);
+					if(A.ID().equals(ID()))
+						((Language)A).setBeingSpoken(true);
+					else
+						((Language)A).setBeingSpoken(false);
+				}
 			}
+			isAnAutoEffect=false;
+			mob.tell("You are now speaking "+displayName()+".");
 		}
-		isAnAutoEffect=false;
-		mob.tell("You are now speaking "+displayName()+".");
+		else
+			setBeingSpoken(true);
 		return true;
 	}
 	

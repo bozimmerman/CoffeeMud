@@ -226,7 +226,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
             send("({\"startup-req-3\",5,\"" + intermud.getMudName() + "\",0,\"" +
                  n.name + "\",0," + password +
                  "," + muds.getMudListId() + "," + channels.getChannelListId() + "," + intermud.getMudPort() +
-                 ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"Imaginary 0.8\",\"CoffeeMud\"," +
+                 ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"Custom\"," +
                  "\""+intermud.getMudState()+"\",\"bo@zimmers.net\",([" +
                  "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,]),([]),})");
             connected = true;

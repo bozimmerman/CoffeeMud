@@ -80,6 +80,24 @@ public class Song_Inebriation extends Song
 		if(!(affect.target() instanceof MOB))
 		   return true;
 
+		if((affect.amISource((MOB)affected))
+		&&(affect.sourceMessage()!=null)
+		&&(affect.tool()==null)
+		&&((affect.sourceMinor()==Affect.TYP_SPEAK)
+		   ||(affect.sourceMinor()==Affect.TYP_TELL)
+		   ||(Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))))
+		{
+			Ability A=CMClass.getAbility("Drunken");
+			if(A!=null)
+			{
+				A.setProfficiency(100);
+				A.invoke(affect.source(),null,true);
+				A.setAffectedOne(affect.source());
+				if(!A.okAffect(myHost,affect))
+					return false;
+			}
+		}
+		else
 		if((!Util.bset(affect.targetMajor(),Affect.MASK_GENERAL))
 		&&(affect.targetMajor()>0))
 		{

@@ -1386,6 +1386,8 @@ public class TelnetSession extends Thread implements Session
 			else
 			if((e.getMessage().indexOf("reset by peer")<0)
 			&&(e.getMessage().indexOf("socket closed")<0)
+			&&(e.getMessage().indexOf("connection abort")<0)
+			&&(e.getMessage().indexOf("JVM_recv")<0)
 			&&(e.getMessage().indexOf("timed out")<0)
 			&&(e.getMessage().indexOf("tream closed")<0))
 			{
@@ -1400,6 +1402,8 @@ public class TelnetSession extends Thread implements Session
 			if((t.getMessage().indexOf("reset by peer")<0)
 			 &&(t.getMessage().indexOf("socket closed")<0)
 			 &&(t.getMessage().indexOf("timed out")<0)
+			 &&(e.getMessage().indexOf("connection abort")<0)
+			 &&(e.getMessage().indexOf("JVM_recv")<0)
 			 &&(t.getMessage().indexOf("tream closed")<0))
 			{
 				errorOut(t);
