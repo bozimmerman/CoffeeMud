@@ -167,6 +167,7 @@ public class Scriptable extends StdBehavior
 		"CLAN", // 65
 		"CLANRANK", // 66
 		"HASTITLE", // 67
+		"CLANDATA", // 68
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -218,8 +219,29 @@ public class Scriptable extends StdBehavior
 		"MPUNLOCK", // 47
 		"RETURN", // 48
 		"MPTITLE", // 49
+		"BREAK", // 50
+		"MPSETCLANDATA", // 51
 	};
 
+    private final static String[] clanVars={
+        "ACCEPTANCE", // 0
+        "DETAIL", // 1
+        "DONATEROOM", // 2
+        "EXP", // 3
+        "GOVT", // 4
+        "MORGUE", // 5
+        "POLITICS", // 6
+        "PREMISE", // 7
+        "RECALL", // 8
+        "SIZE", // 9
+        "STATUS", // 10
+        "TAXES", // 11
+        "TROPHIES", // 12
+        "TYPE", // 13
+        "AREAS", // 14
+        "MEMBERLIST", // 15
+        "TOPMEMBER" // 16
+    };
 
 
 	protected class ScriptableResponse
@@ -668,6 +690,7 @@ public class Scriptable extends StdBehavior
 		{
 			switch(str.charAt(1))
 			{
+			case 'a': return (lastKnownLocation!=null)?lastKnownLocation.getArea():null;
 			case 'N':
 			case 'n': return source;
 			case 'I':
@@ -678,6 +701,8 @@ public class Scriptable extends StdBehavior
 			case 'o': return primaryItem;
 			case 'P':
 			case 'p': return secondaryItem;
+			case 'd': 
+			case 'D': return lastKnownLocation;
 			case 'F':
 			case 'f': if((monster!=null)&&(monster.amFollowing()!=null))
 						return monster.amFollowing();
@@ -729,7 +754,7 @@ public class Scriptable extends StdBehavior
 			{
 			case 'a':
 				if(lastKnownLocation!=null)
-					return lastKnownLocation.name();
+					middle=lastKnownLocation.getArea().name();
 				break;
 			case 'i':
 				if(monster!=null)
@@ -804,6 +829,8 @@ public class Scriptable extends StdBehavior
 				break;
 			case 'g': middle=((msg==null)?"":msg.toLowerCase()); break;
 			case 'G': middle=((msg==null)?"":msg); break;
+			case 'd': middle=(lastKnownLocation!=null)?lastKnownLocation.roomTitle():""; break;
+			case 'D': middle=(lastKnownLocation!=null)?lastKnownLocation.roomDescription():""; break;
 			case 'p':
 			case 'P':
 				if(secondaryItem!=null)
@@ -851,13 +878,17 @@ public class Scriptable extends StdBehavior
 						Environmental E=null;
 						if(y>=0)
 						{
-							E=getArgumentMOB(mid.substring(0,y).trim(),source,monster,target,primaryItem,secondaryItem,msg);
+							E=getArgumentItem(mid.substring(0,y).trim(),source,monster,monster,target,primaryItem,secondaryItem,msg);
 							mid=mid.substring(y+1).trim();
 						}
 						if(E!=null)
 						{
 							middle=null;
-							Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
+							Hashtable H=null;
+							if(E instanceof Room)
+								H=(Hashtable)Resources.getResource("SCRIPTVAR-"+CMMap.getExtendedRoomID((Room)E));
+							else
+								H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
 							if(H!=null)
 								middle=(String)H.get(mid);
 							if(middle==null) middle="";
@@ -2265,6 +2296,74 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 68: // clandata
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),2).toUpperCase());
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					scriptableError(scripted,"CLANDATA","Syntax",evaluable);
+					return returnable;
+				}
+				String clanID=null;
+				if((E!=null)&&(E instanceof MOB))
+				    clanID=((MOB)E).getClanID();
+				else
+					clanID=varify(source,target,monster,primaryItem,secondaryItem,msg,arg1);
+				Clan C=Clans.getClan(clanID);
+				if(C!=null)
+				{
+				    int whichVar=-1;
+				    for(int i=0;i<clanVars.length;i++)
+				        if(arg2.equalsIgnoreCase(clanVars[i]))
+				        { whichVar=i; break;}
+				    String whichVal="";
+				    switch(whichVar)
+				    {
+				    case 0: whichVal=C.getAcceptanceSettings(); break;
+				    case 1: whichVal=C.getDetail(monster); break;
+				    case 2: whichVal=C.getDonation(); break;
+				    case 3: whichVal=""+C.getExp(); break;
+				    case 4: whichVal=Clan.GVT_DESCS[C.getGovernment()]; break;
+				    case 5: whichVal=C.getMorgue(); break;
+				    case 6: whichVal=C.getPolitics(); break;
+				    case 7: whichVal=C.getPremise(); break;
+				    case 8: whichVal=C.getRecall(); break;
+				    case 9: whichVal=""+C.getSize(); break; // size
+				    case 10: whichVal=Clan.CLANSTATUS_DESC[C.getStatus()]; break;
+				    case 11: whichVal=""+C.getTaxes(); break;
+				    case 12: whichVal=""+C.getTrophies(); break;
+				    case 13: whichVal=""+C.getType(); break; // type
+				    case 14: {
+			        	 Vector areas=C.getControlledAreas();
+			        	 StringBuffer list=new StringBuffer("");
+			        	 for(int i=0;i<areas.size();i++)
+			        	     list.append("\""+((Environmental)areas.elementAt(i)).name()+"\" ");
+			        	 whichVal=list.toString().trim();
+			    		 break; // areas
+				    }
+				    case 15: {
+				        	 DVector members=C.getMemberList();
+				        	 StringBuffer list=new StringBuffer("");
+				        	 for(int i=0;i<members.size();i++)
+				        	     list.append("\""+((String)members.elementAt(i,1))+"\" ");
+				        	 whichVal=list.toString().trim();
+				    		 break; // memberlist
+				    }
+				    case 16: MOB M=C.getResponsibleMember();
+				    		 if(M!=null) whichVal=M.Name();
+				    		 break; // topmember
+				    default:
+						scriptableError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
+				    	break;
+				    }
+				    returnable=simpleEval(scripted,whichVal,arg4,arg3,"CLANDATA");
+				}
+				break;
+			}
 			case 65: // clan 
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
@@ -2489,7 +2588,11 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				else
 				{
-					Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
+					Hashtable H=null;
+					if(E instanceof Room)
+						H=(Hashtable)Resources.getResource("SCRIPTVAR-"+CMMap.getExtendedRoomID((Room)E));
+					else
+						H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
 					String val="";
 					if(H!=null)
 					{
@@ -3172,7 +3275,7 @@ public class Scriptable extends StdBehavior
 			case 17: // inroom
 			{
 				if(lastKnownLocation!=null)
-					results.append(lastKnownLocation.displayText());
+					results.append(CMMap.getExtendedRoomID(lastKnownLocation));
 				break;
 			}
 			case 37: // inlocale
@@ -3341,6 +3444,67 @@ public class Scriptable extends StdBehavior
 					results.append(E.envStats().level());
 				break;
 			}
+			case 68: // clandata
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getPastBitClean(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				String clanID=null;
+				if((E!=null)&&(E instanceof MOB))
+				    clanID=((MOB)E).getClanID();
+				else
+					clanID=varify(source,target,monster,primaryItem,secondaryItem,msg,arg1);
+				Clan C=Clans.getClan(clanID);
+				if(C!=null)
+				{
+				    int whichVar=-1;
+				    for(int i=0;i<clanVars.length;i++)
+				        if(arg2.equalsIgnoreCase(clanVars[i]))
+				        { whichVar=i; break;}
+				    String whichVal="";
+				    switch(whichVar)
+				    {
+				    case 0: whichVal=C.getAcceptanceSettings(); break;
+				    case 1: whichVal=C.getDetail(monster); break;
+				    case 2: whichVal=C.getDonation(); break;
+				    case 3: whichVal=""+C.getExp(); break;
+				    case 4: whichVal=Clan.GVT_DESCS[C.getGovernment()]; break;
+				    case 5: whichVal=C.getMorgue(); break;
+				    case 6: whichVal=C.getPolitics(); break;
+				    case 7: whichVal=C.getPremise(); break;
+				    case 8: whichVal=C.getRecall(); break;
+				    case 9: whichVal=""+C.getSize(); break; // size
+				    case 10: whichVal=Clan.CLANSTATUS_DESC[C.getStatus()]; break;
+				    case 11: whichVal=""+C.getTaxes(); break;
+				    case 12: whichVal=""+C.getTrophies(); break;
+				    case 13: whichVal=""+C.getType(); break; // type
+				    case 14: {
+			        	 Vector areas=C.getControlledAreas();
+			        	 StringBuffer list=new StringBuffer("");
+			        	 for(int i=0;i<areas.size();i++)
+			        	     list.append("\""+((Environmental)areas.elementAt(i)).name()+"\" ");
+			        	 whichVal=list.toString().trim();
+			    		 break; // areas
+				    }
+				    case 15: {
+				        	 DVector members=C.getMemberList();
+				        	 StringBuffer list=new StringBuffer("");
+				        	 for(int i=0;i<members.size();i++)
+				        	     list.append("\""+((String)members.elementAt(i,1))+"\" ");
+				        	 whichVal=list.toString().trim();
+				    		 break; // memberlist
+				    }
+				    case 16: MOB M=C.getResponsibleMember();
+				    		 if(M!=null) whichVal=M.Name();
+				    		 break; // topmember
+				    default:
+						scriptableError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
+				    	break;
+				    }
+				    results.append(whichVal);
+				}
+				break;
+			}
 			case 67: // hastitle
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
@@ -3491,7 +3655,11 @@ public class Scriptable extends StdBehavior
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if(E!=null)
 				{
-					Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
+					Hashtable H=null;
+					if(E instanceof Room)
+						H=(Hashtable)Resources.getResource("SCRIPTVAR-"+CMMap.getExtendedRoomID((Room)E));
+					else
+						H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
 					String val="";
 					if(H!=null)
 					{
@@ -4175,6 +4343,52 @@ public class Scriptable extends StdBehavior
 					monster.setVictim((MOB)newTarget);
 				break;
 			}
+			case 51: // mpsetclandata
+			{
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				String clanID=null;
+				if((newTarget!=null)&&(newTarget instanceof MOB))
+				    clanID=((MOB)newTarget).getClanID();
+				else
+					clanID=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				String clanvar=Util.getCleanBit(s,2);
+				String clanval=Util.getPastBitClean(s,2);
+				Clan C=Clans.getClan(clanID);
+				if(C!=null)
+				{
+				    int whichVar=-1;
+				    for(int i=0;i<clanVars.length;i++)
+				        if(clanvar.equalsIgnoreCase(clanVars[i]))
+				        { whichVar=i; break;}
+				    boolean nosave=false;
+				    switch(whichVar)
+				    {
+				    case 0: C.setAcceptanceSettings(clanval); break;
+				    case 1: nosave=true; break; // detail
+				    case 2: C.setDonation(clanval); break;
+				    case 3: C.setExp(Util.s_long(clanval)); break;
+				    case 4: C.setGovernment(Util.s_int(clanval)); break;
+				    case 5: C.setMorgue(clanval); break;
+				    case 6: C.setPolitics(clanval); break;
+				    case 7: C.setPremise(clanval); break;
+				    case 8: C.setRecall(clanval); break;
+				    case 9: nosave=true; break; // size
+				    case 10: C.setStatus(Util.s_int(clanval)); break;
+				    case 11: C.setTaxes(Util.s_double(clanval)); break;
+				    case 12: C.setTrophies(Util.s_int(clanval)); break;
+				    case 13: nosave=true; break; // type
+				    case 14: nosave=true; break; // areas
+				    case 15: nosave=true; break; // memberlist
+				    case 16: nosave=true; break; // topmember
+				    default:
+						scriptableError(scripted,"MPSETCLANDATA","RunTime",clanvar+" is not a valid clan variable.");
+					    nosave=true; 
+				    	break;
+				    }
+				    if(!nosave) C.update();
+				}
+				break;
+			}
 			case 12: // mppurge
 			{
 				if(lastKnownLocation!=null)
@@ -4384,10 +4598,13 @@ public class Scriptable extends StdBehavior
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,2));
 				if(!which.equals("*"))
 				{
-					if(E!=null)
-						which=E.Name();
+					if(E==null)
+					    which="";
 					else
-						which="";
+					if(E instanceof Room)
+					    which=CMMap.getExtendedRoomID((Room)E);
+					else
+						which=E.Name();
 				}
 				if((which.length()>0)&&(arg2.length()>0))
 					mpsetvar(which,arg2,arg3);
@@ -4400,10 +4617,13 @@ public class Scriptable extends StdBehavior
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if(!arg1.equals("*"))
 				{
-					if(E!=null)
-						arg1=E.Name();
+					if(E==null)
+					    arg1="";
 					else
-						arg1="";
+					if(E instanceof Room)
+					    arg1=CMMap.getExtendedRoomID((Room)E);
+					else
+						arg1=E.Name();
 				}
 				if((arg1.length()>0)&&(arg2.length()>0))
 				{
@@ -4433,12 +4653,20 @@ public class Scriptable extends StdBehavior
 				if((E!=null)&&(arg2.length()==0))
 				{
 					Vector V=null;
-					if(arg2.equals("*"))
-						V=CMClass.DBEngine().DBReadData(E.Name(),"SCRIPTABLEVARS");
+					String which=null;
+					if(E==null)
+					    which="";
 					else
-						V=CMClass.DBEngine().DBReadData(E.Name(),"SCRIPTABLEVARS",arg2);
+					if(E instanceof Room)
+					    which=CMMap.getExtendedRoomID((Room)E);
+					else
+						which=E.Name();
+					if(arg2.equals("*"))
+						V=CMClass.DBEngine().DBReadData(which,"SCRIPTABLEVARS");
+					else
+						V=CMClass.DBEngine().DBReadData(which,"SCRIPTABLEVARS",arg2);
 					if((V!=null)&&(V.size()>3))
-						mpsetvar(E.Name(),arg2,(String)V.elementAt(3));
+						mpsetvar(which,arg2,(String)V.elementAt(3));
 				}
 				break;
 			}

@@ -742,6 +742,14 @@ monster.</TD></TR>
     <TD colSpan=2>The pronoun his/her of the target of 
       the trigger.</TD></TR>
   <TR>
+    <TD>$d</TD>
+    <TD colSpan=2>The title of the room of the scripted 
+      monster.</TD></TR>
+  <TR>
+    <TD>$D</TD>
+    <TD colSpan=2>The long description of the room of the 
+      scripted monster.</TD></TR>
+  <TR>
     <TD>$K</TD>
     <TD colSpan=2>The pronoun his/her of a random pc 
       inhabitant.</TD></TR>
@@ -871,6 +879,10 @@ useless. </P>
     <TD>Returns the rank of the given mob in their 
     clan.</TD></TR>
   <TR>
+    <TD>CLANDATA([clan code] [variable])</TD>
+    <TD>Returns data about the given clan. See CLANDATA 
+      function below for variables.</TD></TR>
+  <TR>
     <TD>CLASS([code])</TD>
     <TD>Returns the class of the given mob.</TD></TR>
   <TR>
@@ -912,8 +924,8 @@ useless. </P>
       in (plains, city, mountains, hills, watersurface, etc).</TD></TR>
   <TR>
     <TD>INROOM()</TD>
-    <TD>Returns the name of the room the scripted monster 
-      is in.</TD></TR>
+    <TD>Returns the raw id of the room the scripted 
+      monster is in.</TD></TR>
   <TR>
     <TD>ISABLE([code]&nbsp; [skill name])</TD>
     <TD>Returns the given mobs profficiency in the given 
@@ -1791,6 +1803,28 @@ correctly and fairly.</P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpsetclandata</SPAN></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>Usage: <BR><EM>mpsetclandata [clan] [variable] [value]</EM> </P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>This powerful command lets you change 
+several aspects of the given clan based on the given variable. The clan code may 
+be either a mob code to denote that mobs clan, or a clan name. Valid variables 
+for setting are: ACCEPTANCE,&nbsp;DONATEROOM, EXP, GOVT, MORGUE, POLITICS, 
+PREMISE, RECALL,&nbsp;STATUS, TAXES, TROPHIES. 
+<P class=MsoNormal><o:p></O:P></P>
+<P>EXAMPLES:<BR><BR><EM>mpsetclandata&nbsp;'Groovy Clan' EXP 0<BR>mpecho Groovy 
+Clans experience is now gone!</EM><EM><BR>mpset 
+$n&nbsp;PREMISE my premise is new.<BR>mpecho Whoever $n is, their clan now has a 
+new premise!</EM></P>
+<P></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal>SPECIAL NOTES: Be very careful with this 
+command, to ensure no damage is done to clan records.</P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpsetvar<o:p></O:P></SPAN></P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: <BR><EM>mpsetvar [mob name] [variable name] [value]<BR>mpsetvar [mob name] [variable name] ++<BR>mpsetvar [mob name] [variable name] --<BR>mpsetvar [mob name] [variable name] +[number]<BR>mpsetvar [mob name] [variable name] -[number]<BR>mpsetvar [mob name] [variable name] *[number]<BR>mpsetvar [mob name] [variable name] /[number]</EM> </P>
@@ -1847,21 +1881,21 @@ for permanently flagging players in some way which can be checked and acted on
 elsewhere, for instance using the HASTATTOO function.&nbsp; The tattoo must 
 begin with the character - to denote removal.</P>
 <P class=MsoNormal><O:P></O:P></P>
-<P class=MsoNormal>EXAMPLES:<BR><BR><EM>mptattoo 
-$n&nbsp;smurfkiller<BR>mptattoo $n&nbsp;-smurfkiller</EM></P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>mptattoo $n&nbsp;smurfkiller<BR>mptattoo $n&nbsp;-smurfkiller</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mptitle</SPAN></P>
-<P class=MsoNormal><?XML:NAMESPACE PREFIX = O /><O:P></O:P></P>
-<P class=MsoNormal>Usage: <BR><EM>mptitle&nbsp;[target]&nbsp;(-)[title 
-string]</EM></P>
 <P class=MsoNormal><O:P></O:P></P>
-<P class=MsoNormal>This command&nbsp;grants or removes from&nbsp;the target a 
-title given.&nbsp; Title strings are are name replacements for player mobs in 
-which any * character in the string is replaced with the players name.&nbsp; The 
-player uses the TITLE command to select which of any granted titles they may 
-use.&nbsp; This command is completely case sensitive.
-<P class=MsoNormal><O:P></O:P></P>EXAMPLES:<BR><BR><EM>mptitle $n&nbsp;*, slayer 
-of smurfs<BR>mptitle $n&nbsp;-*, slayer of smurfs</EM></P>
+<P class=MsoNormal>Usage: <BR><EM>mptitle&nbsp;[target]&nbsp;(-)[title string]</EM></P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal>This command&nbsp;grants or removes 
+from&nbsp;the target a title given.&nbsp; Title strings are are name 
+replacements for player mobs in which any * character in the string is replaced 
+with the players name.&nbsp; The player uses the TITLE command to select which 
+of any granted titles they may use.&nbsp; This command is completely case 
+sensitive. 
+<P class=MsoNormal><O:P></O:P></P>EXAMPLES:<BR><BR><EM>mptitle $n&nbsp;*, slayer of 
+smurfs<BR>mptitle $n&nbsp;-*, slayer of smurfs</EM> 
+<P></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mptrackto</SPAN></P>
 <P class=MsoNormal><O:P></O:P></P>
@@ -2057,6 +2091,22 @@ from&nbsp;above.&nbsp;</P>
 an Unholy Goober.<BR>else<BR><SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
 triggering me appears not to be a Goober.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clandata<o:p></O:P></SPAN></B></P>
+<P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>clandata(clan variable == value)</EM></P>
+<P class=MsoNormal>This checks the value of a piece of 
+datum about the given clan. The clan parameter may be either a mob to denote the 
+mobs clan, or a clan name.&nbsp; Where variable should be one of the following 
+ACCEPTANCE, DETAIL, DONATEROOM, EXP, GOVT, MORGUE, POLITICS, PREMISE, RECALL, 
+SIZE, STATUS, TAXES, TROPHIES, TYPE, AREAS, MEMBERLIST, or TOPMEMBER. Where '==' 
+may be&nbsp;another logical operator from&nbsp;above.&nbsp; The value may be any 
+numeric, string, or literal.</P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if clandata($n 
+SIZE &lt;= 1)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me appears to be 
+the only solitary member of the clan.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor triggering me appears to be part of a clan larger than 1 
+member.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clanrank<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>clanrank(character == integer)</EM></P>
