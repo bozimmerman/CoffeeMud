@@ -976,13 +976,17 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		ByteArrayOutputStream out=new ByteArrayOutputStream();
 		try
 		{
+			int timeout=0;
 			while(true)
 			{
 				while(sin.available()>0)
 					out.write(sin.read());
-				try{Thread.sleep(50);}catch(Exception e){}
-				if(sin.available()==0)
+				try{Thread.sleep(100);}catch(Exception e){}
+				timeout++;
+				if((sin.available()==0)&&(timeout>=20))
 					break;
+				else
+					timeout=0;
 			}
 		}
 		catch(Exception e)
