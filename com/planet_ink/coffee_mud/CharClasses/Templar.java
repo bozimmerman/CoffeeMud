@@ -87,7 +87,7 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_BloodHearth",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindness",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Haunted",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Prayer_BoneMoon",false);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Attack2",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_Tithe",false);
@@ -102,7 +102,7 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Corruption",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BoneMoon",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Haunted",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_BackStab",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_HealUndead",false);
