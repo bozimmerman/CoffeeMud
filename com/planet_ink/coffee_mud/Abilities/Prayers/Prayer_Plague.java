@@ -32,19 +32,20 @@ public class Prayer_Plague extends Prayer
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.tick(tickID);
 
+		if(!super.tick(tickID))
+			return false;
 		if((--plagueDown)<=0)
 		{
 			MOB mob=(MOB)affected;
 			plagueDown=4;
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
 			if(invoker==null) invoker=mob;
-			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level(),Affect.NO_EFFECT,-1,null);
+			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level(),Affect.TYP_DISEASE,-1,"<T-NAME> watch(es) <T-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
-				if(Dice.rollPercentage()>(target.charStats().getStat(CharStats.CONSTITUTION)*4))
+				if(Dice.rollPercentage()>target.charStats().getStat(CharStats.SAVE_DISEASE))
 					maliciousAffect(invoker,target,48,-1);
 		}
-		return super.tick(tickID);
+		return true;
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -84,10 +85,12 @@ public class Prayer_Plague extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"":"<S-NAME> inflict(s) an unholy plague upon <T-NAMESELF>.");
-			if(mob.location().okAffect(msg))
+			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_DISEASE,null);
+			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				mob.location().send(mob,msg2);
+				if((!msg.wasModified())&&(!msg2.wasModified()))
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,48,-1);

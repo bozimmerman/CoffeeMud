@@ -1,0 +1,7 @@
+You havn't added ANY, I repeat, ANY of the help for the new spells!
+
+the damage message is broken on Flameshield.  Whenever a royal guard attacks
+me and takes damage it says the flameshield around you flares up an <DAMAGE>
+the royal guard.  At the time, I am under the affects of Improved Inv, Mirror
+image, stoneskin, mage armor, et al.
+

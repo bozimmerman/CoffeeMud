@@ -115,6 +115,7 @@ public class Prop_HaveResister extends Property
 		affectedStats.setStat(CharStats.SAVE_ACID,affectedStats.getStat(CharStats.SAVE_ACID)+adjCharStats.getStat(CharStats.SAVE_ACID));
 		affectedStats.setStat(CharStats.SAVE_WATER,affectedStats.getStat(CharStats.SAVE_WATER)+adjCharStats.getStat(CharStats.SAVE_WATER));
 		affectedStats.setStat(CharStats.SAVE_UNDEAD,affectedStats.getStat(CharStats.SAVE_UNDEAD)+adjCharStats.getStat(CharStats.SAVE_UNDEAD));
+		affectedStats.setStat(CharStats.SAVE_DISEASE,affectedStats.getStat(CharStats.SAVE_DISEASE)+adjCharStats.getStat(CharStats.SAVE_DISEASE));
 		affectedStats.setStat(CharStats.SAVE_POISON,affectedStats.getStat(CharStats.SAVE_POISON)+adjCharStats.getStat(CharStats.SAVE_POISON));
 		affectedStats.setStat(CharStats.SAVE_PARALYSIS,affectedStats.getStat(CharStats.SAVE_PARALYSIS)+adjCharStats.getStat(CharStats.SAVE_PARALYSIS));
 	}
@@ -181,6 +182,7 @@ public class Prop_HaveResister extends Property
 		adjCharStats.setStat(CharStats.SAVE_ACID,getProtection(me,"acid"));
 		adjCharStats.setStat(CharStats.SAVE_WATER,getProtection(me,"water"));
 		adjCharStats.setStat(CharStats.SAVE_UNDEAD,getProtection(me,"evil"));
+		adjCharStats.setStat(CharStats.SAVE_DISEASE,getProtection(me,"disease"));
 		adjCharStats.setStat(CharStats.SAVE_POISON,getProtection(me,"poison"));
 		adjCharStats.setStat(CharStats.SAVE_PARALYSIS,getProtection(me,"paralyze"));
 	}

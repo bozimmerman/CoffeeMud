@@ -611,6 +611,14 @@ public class Spell_Wish extends Spell
 					foundAttribute=CharStats.SAVE_POISON;
 				if(myWish.indexOf(" DEATH")>=0)
 					foundAttribute=CharStats.SAVE_UNDEAD;
+				if(myWish.indexOf(" DISEASE")>=0)
+					foundAttribute=CharStats.SAVE_DISEASE;
+				if(myWish.indexOf(" PLAGUE")>=0)
+					foundAttribute=CharStats.SAVE_DISEASE;
+				if(myWish.indexOf(" COLDS ")>=0)
+					foundAttribute=CharStats.SAVE_DISEASE;
+				if(myWish.indexOf(" SICK")>=0)
+					foundAttribute=CharStats.SAVE_DISEASE;
 				if(myWish.indexOf(" UNDEAD")>=0)
 					foundAttribute=CharStats.SAVE_UNDEAD;
 				if(myWish.indexOf(" EVIL")>=0)

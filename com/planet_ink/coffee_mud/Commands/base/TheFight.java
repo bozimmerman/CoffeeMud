@@ -957,6 +957,9 @@ public class TheFight
 		case Affect.TYP_POISON:
 			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> shake(s) off the "+((tool==null)?"poison":tool)+endPart));
 			break;
+		case Affect.TYP_DISEASE:
+			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> resist(s) the "+((tool==null)?"disease":tool)));
+			break;
 		case Affect.TYP_JUSTICE:
 			//affect.addTrailerMsg(new FullMsg(source,source,Affect.MSG_OK_ACTION,"<S-NAME> shake(s) off the "+((tool==null)?"poisonous attack":tool)+endPart));
 			break;

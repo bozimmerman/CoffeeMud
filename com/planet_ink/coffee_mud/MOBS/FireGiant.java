@@ -47,7 +47,7 @@ public class FireGiant extends StdMOB
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();
-		charStats().setStat(CharStats.SAVE_MAGIC,charStats().getStat(CharStats.SAVE_FIRE)+100);
+		charStats().setStat(CharStats.SAVE_FIRE,charStats().getStat(CharStats.SAVE_FIRE)+100);
 	}
 
 

@@ -58,6 +58,8 @@ public class DefaultCharStats implements Cloneable, CharStats
 			return getStat(SAVE_POISON)+getStat(CONSTITUTION);
 		case SAVE_UNDEAD:
 			return getStat(SAVE_UNDEAD)+getStat(WISDOM);
+		case SAVE_DISEASE:
+			return getStat(SAVE_DISEASE)+getStat(CONSTITUTION);
 		case SAVE_MAGIC:
 			return getStat(SAVE_MAGIC)+getStat(INTELLIGENCE);
 		}

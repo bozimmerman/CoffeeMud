@@ -28,6 +28,8 @@ Convert some properties to work with the new areas. Prop_NOMOB, etc..
 
 Furniture.. chairs to sit in, beds to lie in, tables to put things on?  It's all riding...
 
+make room properties also work for exits
+
 ranger skills: find water, hunt (finds a huntable animal)
 
 target commmand to switch among targets fighting you
@@ -42,7 +44,7 @@ Add last-call date/time string to the "list users" command
 
 be able to drink or fill waterskin from freshwater locales
 
-PlayerKill flag
+PlayerKill flag, properties for nopkill areas, rooms, etc.. (and pkill ONLY areas, room, etc..)
 
 vassels command to list the ones who serve you (even those which are online)
 

@@ -47,8 +47,8 @@ public class StdDrink extends StdContainer implements Drink
 		&&(myOwner() instanceof Room)
 		&&(((Room)myOwner()).getArea()!=null)
 		&&(((Room)myOwner()).getArea().weatherType((Room)myOwner())==Area.WEATHER_DROUGHT)))
-			return true;
-		return false;
+			return false;
+		return true;
 	}
 
 	public boolean okAffect(Affect affect)

@@ -141,6 +141,7 @@ public interface Affect
 	public static final int TYP_SERVE=59;
 	public static final int TYP_REBUKE=60;
 	public static final int TYP_ADVANCE=61;
+	public static final int TYP_DISEASE=62;
 
 	// helpful message groupings
 	public static final int MSK_CAST_VERBAL=ACT_SOUND|ACT_MOUTH|MASK_MAGIC;

@@ -73,7 +73,7 @@ public class Skill_Revoke extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> revoke(s) "+revokeThis.name()+" from <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> revoke(s) "+revokeThis.name()+" from "+target.name());
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -81,7 +81,7 @@ public class Skill_Revoke extends StdAbility
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to revoke "+revokeThis.name()+" from <T-NAMESELF>, but flub(s) it.");
+			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to revoke "+revokeThis.name()+" from "+target.name()+", but flub(s) it.");
 		return success;
 	}
 
