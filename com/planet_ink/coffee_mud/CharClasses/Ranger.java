@@ -55,6 +55,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Trip",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Fighter_Sweep",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);	
 			
 			// qualify for all spells

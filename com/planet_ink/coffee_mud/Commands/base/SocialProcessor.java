@@ -278,7 +278,7 @@ public class SocialProcessor
 
 	public void sell(MOB mob, Vector commands)
 	{
-		ShopKeeper shopkeeper=shopkeeper(mob.location());
+		MOB shopkeeper=shopkeeper(mob.location());
 		if(shopkeeper==null)
 		{
 			if(commands.size()<3)
@@ -290,7 +290,7 @@ public class SocialProcessor
 			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
 			if(shopkeeper!=null)
 			{
-				shopkeeper=(ShopKeeper)possibleShopkeeper;
+				shopkeeper=(MOB)possibleShopkeeper;
 				commands.removeElementAt(commands.size()-1);
 			}
 			else
@@ -335,7 +335,7 @@ public class SocialProcessor
 
 	public void value(MOB mob, Vector commands)
 	{
-		ShopKeeper shopkeeper=shopkeeper(mob.location());
+		MOB shopkeeper=shopkeeper(mob.location());
 		if(shopkeeper==null)
 		{
 			if(commands.size()<3)
@@ -347,7 +347,7 @@ public class SocialProcessor
 			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
 			if(shopkeeper!=null)
 			{
-				shopkeeper=(ShopKeeper)possibleShopkeeper;
+				shopkeeper=(MOB)possibleShopkeeper;
 				commands.removeElementAt(commands.size()-1);
 			}
 			else
@@ -391,7 +391,7 @@ public class SocialProcessor
 
 	public void buy(MOB mob, Vector commands)
 	{
-		ShopKeeper shopkeeper=shopkeeper(mob.location());
+		MOB shopkeeper=shopkeeper(mob.location());
 		if(shopkeeper==null)
 		{
 			if(commands.size()<3)
@@ -403,7 +403,7 @@ public class SocialProcessor
 			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
 			if(shopkeeper!=null)
 			{
-				shopkeeper=(ShopKeeper)possibleShopkeeper;
+				shopkeeper=(MOB)possibleShopkeeper;
 				commands.removeElementAt(commands.size()-1);
 			}
 			else
@@ -424,9 +424,14 @@ public class SocialProcessor
 		String thisName=Util.combine(commands,0);
 		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		if(!(shopkeeper instanceof ShopKeeper))
+		{
+			mob.tell(shopkeeper.name()+" is not a shop keeper!");
+			return;
+		}
 		do
 		{
-			Environmental thisThang=shopkeeper.getStock(thisName);
+			Environmental thisThang=((ShopKeeper)shopkeeper).getStock(thisName);
 			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 			{
 				if(!doneSomething)
@@ -443,7 +448,7 @@ public class SocialProcessor
 
 	public void list(MOB mob, Vector commands)
 	{
-		ShopKeeper shopkeeper=shopkeeper(mob.location());
+		MOB shopkeeper=shopkeeper(mob.location());
 		if(shopkeeper==null)
 		{
 			if(commands.size()<2)
@@ -457,7 +462,7 @@ public class SocialProcessor
 			commands.removeElementAt(0);
 			MOB possibleShopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
 			if(shopkeeper!=null)
-				shopkeeper=(ShopKeeper)possibleShopkeeper;
+				shopkeeper=(MOB)possibleShopkeeper;
 			else
 			{
 				if(mob.isASysOp(mob.location()))

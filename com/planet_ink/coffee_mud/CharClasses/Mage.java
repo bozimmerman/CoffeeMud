@@ -34,6 +34,7 @@ public class Mage extends StdCharClass
 			// level 1
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_Erase",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_MagicMissile",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Spell_IronGrip",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_InsatiableThirst",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_ResistMagicMissiles",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_MagicalAura",false);

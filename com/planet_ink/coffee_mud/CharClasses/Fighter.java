@@ -54,6 +54,7 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Skill_Trip",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Sweep",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Roll",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Fighter_Whomp",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Attack3",true);
