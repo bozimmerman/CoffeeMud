@@ -153,20 +153,10 @@ public class GlassBlowing extends CommonSkill
 			return false;
 		}
 		int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
-		Item firstWood=null;
+		Item firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_SAND);
 		int foundWood=0;
-		for(int i=0;i<mob.location().numItems();i++)
-		{
-			Item I=mob.location().fetchItem(i);
-			if((I instanceof EnvResource)
-			&&(I.material()==EnvResource.RESOURCE_SAND)
-			&&(I.container()==null))
-			{
-				if(firstWood==null)firstWood=I;
-				if(firstWood.material()==I.material())
-					foundWood++;
-			}
-		}
+		if(firstWood!=null)
+			foundWood=findNumberOfResource(mob.location(),firstWood.material());
 		if(foundWood==0)
 		{
 			commonTell(mob,"There is no sand here to make anything from!  It might need to put it down first.");

@@ -321,22 +321,10 @@ public class Masonry extends CommonSkill
 			designDescription=title;
 		}
 
-		Item firstWood=null;
+		Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
 		int foundWood=0;
-		for(int i=0;i<mob.location().numItems();i++)
-		{
-			Item I=mob.location().fetchItem(i);
-			if((I instanceof EnvResource)
-			&&(I.container()==null))
-			{
-				if((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
-				{
-					if(firstWood==null)firstWood=I;
-					if(firstWood.material()==I.material())
-						foundWood++;
-				}
-			}
-		}
+		if(firstWood!=null)
+			foundWood=findNumberOfResource(mob.location(),firstWood.material());
 		if((foundWood==0)&&(woodRequired>0))
 		{
 			commonTell(mob,"There is no stone here to make anything from!  It might need to put it down first.");

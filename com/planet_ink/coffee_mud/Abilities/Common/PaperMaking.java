@@ -150,20 +150,12 @@ public class PaperMaking extends CommonSkill
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			Item firstWood=null;
 			int foundWood=0;
-			for(int i=0;i<mob.location().numItems();i++)
-			{
-				Item I=mob.location().fetchItem(i);
-				if((I instanceof EnvResource)
-				&&((I.material()==materialType)
-				   ||((materialType==EnvResource.MATERIAL_WOODEN)
-					  &&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)))
-				&&(I.container()==null))
-				{
-					if(firstWood==null)firstWood=I;
-					if(firstWood.material()==I.material())
-						foundWood++;
-				}
-			}
+			if(materialType==EnvResource.MATERIAL_WOODEN)
+				firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_WOODEN);
+			else
+				firstWood=findFirstResource(mob.location(),materialType);
+			if(firstWood!=null)
+				foundWood=findNumberOfResource(mob.location(),firstWood.material());
 			if(foundWood==0)
 			{
 				commonTell(mob,"There is no "+materialDesc.toLowerCase()+" here to make anything from!  It might need to put it down first.");

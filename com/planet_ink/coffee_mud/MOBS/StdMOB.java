@@ -441,7 +441,8 @@ public class StdMOB implements MOB
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		amDead=false;
-		setMiscText(Util.decompressString(miscText));
+		if(miscText!=null)
+			setMiscText(Util.decompressString(miscText));
 		if(getStartRoom()==null)
 			setStartRoom(isMonster()?newLocation:CMMap.getStartRoom(this));
 		setLocation(newLocation);

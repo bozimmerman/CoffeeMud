@@ -191,29 +191,11 @@ public class Fletching extends CommonSkill
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
-			Item firstWood=null;
-			Item firstOther=null;
 			int foundWood=0;
-			for(int i=0;i<mob.location().numItems();i++)
-			{
-				Item I=mob.location().fetchItem(i);
-				if((I instanceof EnvResource)
-				&&(!Sense.isOnFire(I))
-				&&(I.container()==null))
-				{
-					if((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
-					{
-						if(firstWood==null)firstWood=I;
-						if(firstWood.material()==I.material())
-							foundWood++;
-					}
-					else
-					if((otherRequired.length()>0)
-					&&(firstOther==null)
-					&&(EnvResource.MATERIAL_DESCS[(I.material()&EnvResource.MATERIAL_MASK)>>8].equalsIgnoreCase(otherRequired)))
-						firstOther=I;
-				}
-			}
+			Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_WOODEN);
+			if(firstWood!=null)
+				foundWood=findNumberOfResource(mob.location(),firstWood.material());
+			Item firstOther=findMostOfMaterial(mob.location(),otherRequired);
 			if((foundWood==0)&&(woodRequired>0))
 			{
 				commonTell(mob,"There is no wood here to make anything from!  It might need to put it down first.");

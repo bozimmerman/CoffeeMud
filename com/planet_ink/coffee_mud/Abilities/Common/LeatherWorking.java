@@ -271,26 +271,13 @@ public class LeatherWorking extends CommonSkill
 				return false;
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
-			Item firstWood=null;
-			Item firstMetal=null;
+			Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_LEATHER);
 			int foundWood=0;
-			for(int i=0;i<mob.location().numItems();i++)
-			{
-				Item I=mob.location().fetchItem(i);
-				if((I instanceof EnvResource)
-				&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)
-				&&(I.container()==null))
-				{
-					if(firstWood==null)firstWood=I;
-					if(firstWood.material()==I.material())
-						foundWood++;
-				}
-				if((I instanceof EnvResource)
-				&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-				&&(I.container()==null)
-				&&(multiplier==3))
-					firstMetal=I;
-			}
+			if(firstWood!=null)
+				foundWood=findNumberOfResource(mob.location(),firstWood.material());
+			Item firstMetal=null;
+			if(multiplier==3)
+				firstMetal=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
 			if(foundWood==0)
 			{
 				commonTell(mob,"There is no leather here to make anything from!  It might need to put it down first.");

@@ -181,6 +181,79 @@ public class CommonSkill extends StdAbility
 			return ((Integer)(possibilities.elementAt(Dice.roll(1,possibilities.size(),-1)))).intValue();
 	}
 
+	protected Item findFirstResource(Room room, String other)
+	{
+		if((other==null)||(other.length()==0))
+			return null;
+		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+			if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(other))
+				return findFirstResource(room,EnvResource.RESOURCE_DATA[i][0]);
+		return null;
+	}
+	protected Item findFirstResource(Room room, int resource)
+	{
+		for(int i=0;i<room.numItems();i++)
+		{
+			Item I=room.fetchItem(i);
+			if((I instanceof EnvResource)
+			&&(I.material()==resource)
+			&&(!Sense.isOnFire(I))
+			&&(I.container()==null))
+				return I;
+		}
+		return null;
+	}
+	protected Item findMostOfMaterial(Room room, String other)
+	{
+		if((other==null)||(other.length()==0))
+			return null;
+		for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
+			if(EnvResource.MATERIAL_DESCS[i].equalsIgnoreCase(other))
+				return findMostOfMaterial(room,(i<<8));
+		return null;
+	}
+	
+	protected Item findMostOfMaterial(Room room, int material)
+	{
+		int most=0;
+		int mostMaterial=-1;
+		Item mostItem=null;
+		for(int i=0;i<room.numItems();i++)
+		{
+			Item I=room.fetchItem(i);
+			if((I instanceof EnvResource)
+			&&((I.material()&EnvResource.MATERIAL_MASK)==material)
+			&&(I.material()!=mostMaterial)
+			&&(!Sense.isOnFire(I))
+			&&(I.container()==null))
+			{
+				int num=findNumberOfResource(room,I.material());
+				if(num>most)
+				{
+					mostItem=I;
+					most=num;
+					mostMaterial=I.material();
+				}
+			}
+		}
+		return mostItem;	   
+	}
+	
+	protected int findNumberOfResource(Room room, int resource)
+	{
+		int foundWood=0;
+		for(int i=0;i<room.numItems();i++)
+		{
+			Item I=room.fetchItem(i);
+			if((I instanceof EnvResource)
+			&&(I.material()==resource)
+			&&(!Sense.isOnFire(I))
+			&&(I.container()==null))
+				foundWood++;
+		}
+		return foundWood;
+	}
+	
 	protected Environmental makeResource(int myResource)
 	{
 		if(myResource<0)

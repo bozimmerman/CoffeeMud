@@ -284,31 +284,15 @@ public class Weaponsmithing extends CommonSkill
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
-			Item firstWood=null;
-			Item firstOther=null;
+			Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
+			if(firstWood==null)
+				firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_MITHRIL);
 			int foundWood=0;
-			for(int i=0;i<mob.location().numItems();i++)
-			{
-				Item I=mob.location().fetchItem(i);
-				if((I instanceof EnvResource)
-				&&(!Sense.isOnFire(I))
-				&&(I.container()==null))
-				{
-					if(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-					   ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
-					{
-						if(firstWood==null)firstWood=I;
-						if(firstWood.material()==I.material())
-							foundWood++;
-					}
-					else
-					if((otherRequired.length()>0)
-					&&(firstOther==null)
-					&&(((EnvResource.MATERIAL_DESCS[(I.material()&EnvResource.MATERIAL_MASK)>>8].equalsIgnoreCase(otherRequired))
-					   ||(EnvResource.RESOURCE_DESCS[(I.material()&EnvResource.RESOURCE_MASK)].equalsIgnoreCase(otherRequired)))))
-						firstOther=I;
-				}
-			}
+			if(firstWood!=null)
+				foundWood=findNumberOfResource(mob.location(),firstWood.material());
+			Item firstOther=findMostOfMaterial(mob.location(),otherRequired);
+			if((firstOther==null)&&(otherRequired.length()>0))
+				firstOther=findFirstResource(mob.location(),otherRequired);
 			if(foundWood==0)
 			{
 				commonTell(mob,"There is no metal here to make anything from!  It might need to put it down first.");
