@@ -61,7 +61,7 @@ public class Skill_Track extends StdAbility
 			if(nextDirection>=0)
 			{
 				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
-				if(mob.isMonster())
+				if((mob.isMonster())&&(mob.location()!=null))
 				{
 					Room oldRoom=mob.location();
 					Room nextRoom=oldRoom.getRoomInDir(nextDirection);
@@ -152,8 +152,9 @@ public class Skill_Track extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!Sense.aliveAwakeMobile(mob,false))
+		if((!Sense.aliveAwakeMobile(mob,false))||(mob.location()==null))
 			return false;
+		Room thisRoom=mob.location();
 
 		boolean stoppedTracking=false;
 		for(int a=mob.numAffects()-1;a>=0;a--)
@@ -183,7 +184,7 @@ public class Skill_Track extends StdAbility
 		}
 
 		if(givenTarget==null)
-		if(mob.location().fetchInhabitant(mobName)!=null)
+		if(thisRoom.fetchInhabitant(mobName)!=null)
 		{
 			mob.tell("Try 'look'.");
 			return false;
@@ -207,7 +208,7 @@ public class Skill_Track extends StdAbility
 		}
 		
 		if(rooms.size()<=0)
-		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+		for(Enumeration r=thisRoom.getArea().getMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(R.fetchInhabitant(mobName)!=null)
@@ -227,31 +228,31 @@ public class Skill_Track extends StdAbility
 		{
 			theTrail=null;
 			if((cacheCode==1)&&(rooms.size()==1))
-				theTrail=(Vector)cachedPaths.get(CMMap.getExtendedRoomID(mob.location())+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()));
+				theTrail=(Vector)cachedPaths.get(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()));
 			if(theTrail==null)
-				theTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,false);
+				theTrail=SaucerSupport.findBastardTheBestWay(thisRoom,rooms,false);
 			if((cacheCode==1)&&(rooms.size()==1))
-				cachedPaths.put(CMMap.getExtendedRoomID(mob.location())+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);
+				cachedPaths.put(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);
 		}
 		
 		if((success)&&(theTrail!=null))
 		{
-			theTrail.addElement(mob.location());
+			theTrail.addElement(thisRoom);
 			
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
-			if(mob.location().okAffect(mob,msg))
+			if(thisRoom.okAffect(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				thisRoom.send(mob,msg);
 				invoker=mob;
 				Skill_Track newOne=(Skill_Track)copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),false);
+				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,thisRoom,false);
 			}
 		}
 		else

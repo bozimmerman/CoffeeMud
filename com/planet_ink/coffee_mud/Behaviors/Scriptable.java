@@ -1294,13 +1294,44 @@ public class Scriptable extends StdBehavior
 				else
 				{
 					boolean found=false;
+					String val="";
 					for(int i=0;i<E.getStatCodes().length;i++)
 					{
 						if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
 						{
-							found=true; break;
+							val=E.getStat(arg2);
+							found=true; 
+							break;
 						}
 					}
+					if((!found)&&(E instanceof MOB))
+					{
+						MOB M=(MOB)E;
+						for(int i=0;i<CharStats.TRAITS.length;i++)
+							if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+							{
+								val=""+M.charStats().getStat(CharStats.TRAITS[i]);
+								found=true;
+								break;
+							}
+						if(!found)
+						for(int i=0;i<M.curState().getCodes().length;i++)
+							if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+							{
+								val=M.curState().getStat(M.curState().getCodes()[i]);
+								found=true;
+								break;
+							}
+						if(!found)
+						for(int i=0;i<M.envStats().getCodes().length;i++)
+							if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
+							{
+								val=M.envStats().getStat(M.envStats().getCodes()[i]);
+								found=true;
+								break;
+							}
+					}
+					
 
 					if(!found)
 					{
@@ -1309,12 +1340,12 @@ public class Scriptable extends StdBehavior
 					}
 
 					if(arg3.equals("=="))
-						returnable=E.getStat(arg2).equalsIgnoreCase(arg4);
+						returnable=val.equalsIgnoreCase(arg4);
 					else
 					if(arg3.equals("!="))
-						returnable=!E.getStat(arg2).equalsIgnoreCase(arg4);
+						returnable=!val.equalsIgnoreCase(arg4);
 					else
-						returnable=simpleEval(getStat(arg2),arg4,arg3,"STAT");
+						returnable=simpleEval(val,arg4,arg3,"STAT");
 				}
 				break;
 			}
@@ -1345,6 +1376,33 @@ public class Scriptable extends StdBehavior
 								val=Generic.getGenMobStat((MOB)E,Generic.GENMOBCODES[i]);
 								found=true; break;
 							}
+						}
+						if(!found)
+						{
+							MOB M=(MOB)E;
+							for(int i=0;i<CharStats.TRAITS.length;i++)
+								if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+								{
+									val=""+M.charStats().getStat(CharStats.TRAITS[i]);
+									found=true;
+									break;
+								}
+							if(!found)
+							for(int i=0;i<M.curState().getCodes().length;i++)
+								if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+								{
+									val=M.curState().getStat(M.curState().getCodes()[i]);
+									found=true;
+									break;
+								}
+							if(!found)
+							for(int i=0;i<M.envStats().getCodes().length;i++)
+								if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
+								{
+									val=M.envStats().getStat(M.envStats().getCodes()[i]);
+									found=true;
+									break;
+								}
 						}
 					}
 					else
@@ -2210,12 +2268,41 @@ public class Scriptable extends StdBehavior
 				if(E!=null)
 				{
 					boolean found=false;
+					String val="";
 					for(int i=0;i<E.getStatCodes().length;i++)
 					{
 						if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
 						{
+							val=E.getStat(arg2);
 							found=true; break;
 						}
+					}
+					if((!found)&&(E instanceof MOB))
+					{
+						MOB M=(MOB)E;
+						for(int i=0;i<CharStats.TRAITS.length;i++)
+							if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+							{
+								val=""+M.charStats().getStat(CharStats.TRAITS[i]);
+								found=true;
+								break;
+							}
+						if(!found)
+						for(int i=0;i<M.curState().getCodes().length;i++)
+							if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+							{
+								val=M.curState().getStat(M.curState().getCodes()[i]);
+								found=true;
+								break;
+							}
+						if(!found)
+						for(int i=0;i<M.envStats().getCodes().length;i++)
+							if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
+							{
+								val=M.envStats().getStat(M.envStats().getCodes()[i]);
+								found=true;
+								break;
+							}
 					}
 
 					if(!found)
@@ -2224,7 +2311,7 @@ public class Scriptable extends StdBehavior
 						break;
 					}
 
-					results.append(E.getStat(arg2));
+					results.append(val);
 					break;
 				}
 				break;
@@ -2247,6 +2334,33 @@ public class Scriptable extends StdBehavior
 								val=Generic.getGenMobStat((MOB)E,Generic.GENMOBCODES[i]);
 								found=true; break;
 							}
+						}
+						if(!found)
+						{
+							MOB M=(MOB)E;
+							for(int i=0;i<CharStats.TRAITS.length;i++)
+								if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+								{
+									val=""+M.charStats().getStat(CharStats.TRAITS[i]);
+									found=true;
+									break;
+								}
+							if(!found)
+							for(int i=0;i<M.curState().getCodes().length;i++)
+								if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+								{
+									val=M.curState().getStat(M.curState().getCodes()[i]);
+									found=true;
+									break;
+								}
+							if(!found)
+							for(int i=0;i<M.envStats().getCodes().length;i++)
+								if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
+								{
+									val=M.envStats().getStat(M.envStats().getCodes()[i]);
+									found=true;
+									break;
+								}
 						}
 					}
 					else
@@ -2909,8 +3023,38 @@ public class Scriptable extends StdBehavior
 					{
 						if(newTarget.getStatCodes()[i].equalsIgnoreCase(arg2))
 						{
-							found=true; break;
+							newTarget.setStat(arg2,arg3);
+							found=true;
+							break;
 						}
+					}
+					if((!found)&&(newTarget instanceof MOB))
+					{
+						MOB M=(MOB)newTarget;
+						for(int i=0;i<CharStats.TRAITS.length;i++)
+							if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+							{
+								M.baseCharStats().setStat(i,Util.s_int(arg3));
+								M.recoverCharStats();
+								found=true;
+								break;
+							}
+						if(!found)
+						for(int i=0;i<M.curState().getCodes().length;i++)
+							if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+							{
+								M.curState().setStat(arg2,arg3);
+								found=true;
+								break;
+							}
+						if(!found)
+						for(int i=0;i<M.baseEnvStats().getCodes().length;i++)
+							if(M.baseEnvStats().getCodes()[i].equalsIgnoreCase(arg2))
+							{
+								M.baseEnvStats().setStat(arg2,arg3);
+								found=true;
+								break;
+							}
 					}
 
 					if(!found)
@@ -2918,7 +3062,6 @@ public class Scriptable extends StdBehavior
 						Log.errOut("Scriptable","MPSET Syntax -- "+monster.Name()+", unknown stat: "+arg2+" for "+newTarget.Name());
 						break;
 					}
-					newTarget.setStat(arg2,arg3);
 				}
 				break;
 			}
@@ -2940,6 +3083,34 @@ public class Scriptable extends StdBehavior
 								Generic.setGenMobStat((MOB)newTarget,Generic.GENMOBCODES[i],arg3);
 								found=true; break;
 							}
+						}
+						if(!found)
+						{
+							MOB M=(MOB)newTarget;
+							for(int i=0;i<CharStats.TRAITS.length;i++)
+								if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+								{
+									M.baseCharStats().setStat(i,Util.s_int(arg3));
+									M.recoverCharStats();
+									found=true;
+									break;
+								}
+							if(!found)
+							for(int i=0;i<M.curState().getCodes().length;i++)
+								if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+								{
+									M.curState().setStat(arg2,arg3);
+									found=true;
+									break;
+								}
+							if(!found)
+							for(int i=0;i<M.baseEnvStats().getCodes().length;i++)
+								if(M.baseEnvStats().getCodes()[i].equalsIgnoreCase(arg2))
+								{
+									M.baseEnvStats().setStat(arg2,arg3);
+									found=true;
+									break;
+								}
 						}
 					}
 					else
