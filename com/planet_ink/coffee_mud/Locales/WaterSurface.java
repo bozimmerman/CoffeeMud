@@ -24,6 +24,7 @@ public class WaterSurface extends StdRoom implements Drink
 	protected void giveASky()
 	{
 		skyedYet=true;
+		super.giveASky();
 		if((rawDoors()[Directions.DOWN]==null)
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -44,6 +45,7 @@ public class WaterSurface extends StdRoom implements Drink
 	public void clearSky()
 	{
 		if(!skyedYet) return;
+		super.clearSky();
 		Room room=rawDoors()[Directions.DOWN];
 		if(room==null) return;
 		if((room.ID().length()==0)&&(room instanceof UnderWaterGrid))

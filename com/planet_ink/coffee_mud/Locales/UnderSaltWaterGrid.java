@@ -83,9 +83,10 @@ public class UnderSaltWaterGrid extends StdGrid
 		for(int x=0;x<size;x++)
 			for(int y=0;y<size;y++)
 			{
-				Room newRoom=getGridRoom(x,y);
+				UnderSaltWater newRoom=(UnderSaltWater)getGridRoom(x,y);
 				if(newRoom!=null)
 				{
+					newRoom.setSeaGrid(this);
 					subMap[x][y]=newRoom;
 					if((y>0)&&(subMap[x][y-1]!=null))
 					{

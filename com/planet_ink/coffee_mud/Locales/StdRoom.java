@@ -571,14 +571,14 @@ public class StdRoom
 			if((mob2!=null)
 			   &&(mob2!=mob)
 			   &&((Sense.canBeSeenBy(mob2,mob)))
-			   &&((mob2.displayText().length()>0)
+			   &&((mob2.displayText(mob).length()>0)
 				  ||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)))
 			{
 				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 					Say.append("^H("+CMClass.className(mob2)+")^N ");
 
 				Say.append("^M");
-				if(mob2.displayText().length()>0)
+				if(mob2.displayText(mob).length()>0)
 					Say.append(mob2.displayText(mob));
 				else
 					Say.append(mob2.name());

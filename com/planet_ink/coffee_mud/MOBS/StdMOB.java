@@ -712,12 +712,8 @@ public class StdMOB implements MOB
 		else
 			return displayText;
 	}
+	
 	public String displayText()
-	{
-		return displayText(null);
-	}
-
-	public String rawDisplayText()
 	{
 		return displayText;
 	}

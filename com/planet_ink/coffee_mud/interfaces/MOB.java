@@ -39,7 +39,6 @@ public interface MOB
 	public void recoverCharStats();
 	public void setBaseCharStats(CharStats newBaseCharStats);
 	public String displayText(MOB viewer);
-	public String rawDisplayText();
 	public int maxCarry();
 	public String healthText();
 
