@@ -76,6 +76,9 @@ public class StdContainer extends StdItem implements Container
 							mob.tell(name()+" is full.");
 							return false;
 						}
+						if(!affect.source().isMine(this))
+							if(!ExternalPlay.drop(affect.source(),newitem,true))
+								return false;
 						return true;
 					}
 				}

@@ -1230,6 +1230,18 @@ public class StdMOB implements MOB
 					mob.tell(name()+" can't see what you are giving.");
 					return false;
 				}
+				FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
+				if(!location().okAffect(msg))
+					return false;
+				if((affect.target()!=null)&&(affect.target() instanceof MOB))
+				{
+					msg=new FullMsg((MOB)affect.target(),affect.tool(),null,Affect.MSG_GET,null);
+					if(!location().okAffect(msg))
+					{
+						mob.tell(affect.target().name()+" cannot seem to accept "+affect.tool().name()+".");
+						return false;
+					}
+				}
 				break;
 			case Affect.TYP_FOLLOW:
 				if(isMonster())
@@ -1450,12 +1462,8 @@ public class StdMOB implements MOB
 			 &&(affect.tool() instanceof Item))
 			{
 				FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
-				if(!location().okAffect(msg))
-					return;
 				location().send(this,msg);
 				msg=new FullMsg((MOB)affect.target(),affect.tool(),null,Affect.MSG_GET,null);
-				if(!location().okAffect(msg))
-					return;
 				location().send(this,msg);
 			}
 			else

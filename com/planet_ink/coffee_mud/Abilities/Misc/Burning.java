@@ -99,7 +99,7 @@ public class Burning extends StdAbility
 		if((affected instanceof Item)&&(((Item)affected).owner() instanceof MOB))
 		{
 			if(!ouch((MOB)((Item)affected).owner()))
-				ExternalPlay.drop((MOB)((Item)affected).owner(),(Item)affected);
+				ExternalPlay.drop((MOB)((Item)affected).owner(),(Item)affected,false);
 		}
 		
 		// might want to add the ability for it to spread

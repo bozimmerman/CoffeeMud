@@ -115,9 +115,9 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.movement.getMyDirCode(exit,room,testCode);
 	}
-	public boolean drop(MOB mob, Environmental dropThis)
+	public boolean drop(MOB mob, Environmental dropThis, boolean quiet)
 	{
-		return processor.itemUsage.drop(mob,dropThis);
+		return processor.itemUsage.drop(mob,dropThis,quiet);
 	}
 	public void read(MOB mob, Environmental thisThang, String theRest)
 	{

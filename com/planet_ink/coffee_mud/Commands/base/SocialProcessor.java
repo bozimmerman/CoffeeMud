@@ -235,50 +235,35 @@ public class SocialProcessor
 		if((commands.size()>0)&&(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("to")))
 			commands.removeElementAt(commands.size()-1);
 
-		String itemID=Util.combine(commands,0);
-
-
-		boolean doneSomething=false;
-		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		String thingToGive=Util.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
-		Environmental last=null;
+		Vector V=new Vector();
+		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		do
 		{
-			Item giveThis=possibleGold(mob,itemID+addendumStr);
+			Environmental giveThis=new SocialProcessor().possibleGold(mob,thingToGive);
 			if(giveThis!=null)
 				allFlag=false;
 			else
-			{
-				giveThis=mob.fetchCarried(null,itemID+addendumStr);
-				if((giveThis!=null)&&(mob.isMine(giveThis)))
-				{
-					((Item)giveThis).setContainer(null);
-					((Item)giveThis).remove();
-				}
-			}
-			if((giveThis==null)||(!Sense.canBeSeenBy(giveThis,mob)))
-			{
-				if((!doneSomething)&&(Util.s_int(itemID)<=0))
-					mob.tell("You aren't carrying that.");
-				return;
-			}
-			else
-			if(last==giveThis)
-			{
-				addendumStr="."+(++addendum);
-				continue;
-			}
-
+				giveThis=mob.fetchCarried(null,thingToGive+addendumStr);
+			if(giveThis==null) break;
+			if(Sense.canBeSeenBy(giveThis,mob))
+				V.addElement(giveThis);
+			addendumStr="."+(++addendum);
+		}
+		while(allFlag);
+		
+		if(V.size()==0)
+			mob.tell("You don't seem to be carrying that.");
+		else
+		for(int i=0;i<V.size();i++)
+		{
+			Environmental giveThis=(Environmental)V.elementAt(i);
 			FullMsg newMsg=new FullMsg(mob,recipient,giveThis,Affect.MSG_GIVE,"<S-NAME> give(s) "+giveThis.name()+" to <T-NAMESELF>.");
 			if(mob.location().okAffect(newMsg))
 				mob.location().send(mob,newMsg);
-			else
-				addendumStr="."+(++addendum);
-
-			last=giveThis;
-			doneSomething=true;
-		}while(allFlag);
+		}
 	}
 
 	private ShopKeeper shopkeeper(Room here, MOB mob)

@@ -57,7 +57,7 @@ public class Spell_FloatingDisc extends Spell
 				item.remove();
 			}
 			if(wasntMine)
-				ExternalPlay.drop(mob,item);
+				ExternalPlay.drop(mob,item,true);
 			wasntMine=false;
 		
 			item.recoverEnvStats();

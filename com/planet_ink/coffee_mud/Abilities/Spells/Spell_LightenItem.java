@@ -55,7 +55,7 @@ public class Spell_LightenItem extends Spell
 					if(!item.amWearingAt(Item.INVENTORY))
 						ExternalPlay.remove(mob,item);
 					if(item.amWearingAt(Item.INVENTORY))
-						ExternalPlay.drop(mob,item);
+						ExternalPlay.drop(mob,item,false);
 				}
 			}
 		}

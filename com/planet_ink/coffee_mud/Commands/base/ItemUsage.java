@@ -121,11 +121,10 @@ public class ItemUsage
 			containerName=(String)commands.lastElement();
 		Item container=possibleContainer(mob,commands,Item.WORN_REQ_ANY);
 		String whatToGet=Util.combine(commands,0);
-		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		Vector V=new Vector();
 		int addendum=1;
 		String addendumStr="";
-		Environmental last=null;
 		do
 		{
 			Environmental getThis=null;
@@ -133,39 +132,36 @@ public class ItemUsage
 			   getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,(Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
 			else
 			   getThis=mob.location().fetchFromRoomFavorItems((Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
-
-			if((getThis==null)
-			||(!(getThis instanceof Item))
-			||((!Sense.canBeSeenBy(getThis,mob))&&(!allFlag)))
+			if(getThis==null) break;
+			if((getThis instanceof Item)&&(Sense.canBeSeenBy(getThis,mob)))
+				V.addElement(getThis);
+			addendumStr="."+(++addendum);
+		}
+		while(allFlag);
+		
+		if(V.size()==0)
+		{
+			if(container!=null)
 			{
-				if(!doneSomething)
-				{
-					if(container!=null)
-					{
-						if(((Container)container).isOpen())
-							mob.tell("You don't see that in "+container.name()+".");
-						else
-							mob.tell(container.name()+" is closed.");
-					}
-					else
-						mob.tell("You don't see '"+containerName+"' here.");
-				}
-				return;
+				if(((Container)container).isOpen())
+					mob.tell("You don't see that in "+container.name()+".");
+				else
+					mob.tell(container.name()+" is closed.");
 			}
-
-			if((last==getThis)
-			   ||(!Sense.canBeSeenBy(getThis,mob))
-			   ||(!get(mob,container,(Item)getThis,false)))
-				addendumStr="."+(++addendum);
-			last=getThis;
-			if(Sense.canBeSeenBy(getThis,mob))
-				doneSomething=true;
-		}while(allFlag);
+			else
+				mob.tell("You don't see '"+containerName+"' here.");
+		}
+		else
+		for(int i=0;i<V.size();i++)
+		{
+			Item getThis=(Item)V.elementAt(i);
+			get(mob,container,(Item)getThis,false);
+		}
 	}
 
-	public boolean drop(MOB mob, Environmental dropThis)
+	public boolean drop(MOB mob, Environmental dropThis, boolean quiet)
 	{
-		FullMsg msg=new FullMsg(mob,dropThis,null,Affect.MSG_DROP,"<S-NAME> drop(s) <T-NAME>.");
+		FullMsg msg=new FullMsg(mob,dropThis,null,Affect.MSG_DROP,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
@@ -186,11 +182,10 @@ public class ItemUsage
 		Item container=possibleContainer(mob,commands,Item.WORN_REQ_UNWORNONLY);
 		whatToDrop=Util.combine(commands,0);
 
-		boolean doneSomething=false;
+		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		int addendum=1;
 		String addendumStr="";
-		Environmental last=null;
 		do
 		{
 			Item dropThis=new SocialProcessor().possibleGold(mob,whatToDrop+addendumStr);
@@ -198,28 +193,21 @@ public class ItemUsage
 				allFlag=false;
 			else
 				dropThis=mob.fetchCarried(container,whatToDrop+addendumStr);
-			if((dropThis==null)
-			   ||(dropThis.container()!=container)
-			   ||((!Sense.canBeSeenBy(dropThis,mob))&&(!allFlag)))
-			{
-				if((!doneSomething)&&(Util.s_int(whatToDrop)<=0))
-					mob.tell("You aren't carrying that.");
-				return;
-			}
-			else
-			if(last==dropThis)
-			{
-				addendumStr="."+(++addendum);
-				continue;
-			}
-
-			if((!Sense.canBeSeenBy(dropThis,mob))||(!drop(mob,dropThis)))
-				addendumStr="."+(++addendum);
-
-			last=dropThis;
-			if(Sense.canBeSeenBy(dropThis,mob))
-				doneSomething=true;
-		}while(allFlag);
+			if(dropThis==null) break;
+			if((dropThis instanceof Item)&&(Sense.canBeSeenBy(dropThis,mob)))
+				V.addElement(dropThis);
+			addendumStr="."+(++addendum);
+		}
+		while(allFlag);
+		
+		if(V.size()==0)
+			mob.tell("You don't seem to be carrying that.");
+		else
+		for(int i=0;i<V.size();i++)
+		{
+			Item dropThis=(Item)V.elementAt(i);
+			drop(mob,dropThis,false);
+		}
 	}
 
 	public void put(MOB mob, Vector commands)
@@ -259,11 +247,10 @@ public class ItemUsage
 		}
 
 		String thingToPut=Util.combine(commands,0);
-		boolean doneSomething=false;
 		int addendum=1;
 		String addendumStr="";
+		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
-		Environmental last=null;
 		do
 		{
 			Environmental putThis=new SocialProcessor().possibleGold(mob,thingToPut);
@@ -271,42 +258,23 @@ public class ItemUsage
 				allFlag=false;
 			else
 				putThis=mob.fetchCarried(null,thingToPut+addendumStr);
-			if((putThis==null)
-			   ||((putThis!=null)
-			   &&(!Sense.canBeSeenBy(putThis,mob))&&(!allFlag)))
-			{
-				if((!doneSomething)&&(Util.s_int(thingToPut)<=0))
-					mob.tell("I don't see '"+thingToPut+"' here.");
-				return;
-			}
-			else
-			if(putThis==container)
-			{
-				addendumStr="."+(++addendum);
-				continue;
-			}
-
-			if((!mob.isMine(putThis))&&(doneSomething))
-				return;
-
-			if(!mob.isMine(container))
-			{
-				FullMsg newMsg=new FullMsg(mob,putThis,null,Affect.MSG_DROP,null);
-				if(!mob.location().okAffect(newMsg))
-					return;
-				mob.location().send(mob,newMsg);
-			}
-			FullMsg newMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> put(s) "+putThis.name()+" in <T-NAME>");
-			if((last!=putThis)
-			   &&(Sense.canBeSeenBy(putThis,mob))
-			   &&(mob.location().okAffect(newMsg)))
-				mob.location().send(mob,newMsg);
-			else
-				addendumStr="."+(++addendum);
-			last=putThis;
+			if(putThis==null) break;
 			if(Sense.canBeSeenBy(putThis,mob))
-				doneSomething=true;
-		}while(allFlag);
+				V.addElement(putThis);
+			addendumStr="."+(++addendum);
+		}
+		while(allFlag);
+		
+		if(V.size()==0)
+			mob.tell("You don't seem to be carrying that.");
+		else
+		for(int i=0;i<V.size();i++)
+		{
+			Environmental putThis=(Environmental)V.elementAt(i);
+			FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> put(s) "+putThis.name()+" in <T-NAME>");
+			if(mob.location().okAffect(putMsg))
+				mob.location().send(mob,putMsg);
+		}
 	}
 
 	public void fill(MOB mob, Vector commands)
@@ -338,42 +306,36 @@ public class ItemUsage
 		}
 
 		String thingToFill=Util.combine(commands,0);
-		boolean doneSomething=false;
 		int addendum=1;
 		String addendumStr="";
-		Environmental lastThingFilled=null;
+		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		do
 		{
 			Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill+addendumStr,Item.WORN_REQ_ANY);
-			if((fillThis==null)||((fillThis!=null)&&(!Sense.canBeSeenBy(fillThis,mob))))
+			if(fillThis==null) break;
+			if(Sense.canBeSeenBy(fillThis,mob))
+				V.addElement(fillThis);
+			addendumStr="."+(++addendum);
+		}
+		while(allFlag);
+		if(V.size()==0)
+			mob.tell("I don't see '"+thingToFill+"' here.");
+		else
+		for(int i=0;i<V.size();i++)
+		{
+			Environmental fillThis=(Environmental)V.elementAt(i);
+			FullMsg fillMsg=new FullMsg(mob,fillThis,fillFromThis,Affect.MSG_FILL,"<S-NAME> fill(s) <T-NAME> from "+fillFromThis.name()+".");
+			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
 			{
-				if((!doneSomething)&&(Util.s_int(thingToFill)<=0))
-					mob.tell("I don't see '"+thingToFill+"' here.");
-				return;
+				if(get(mob,null,(Item)fillThis,false))
+					if(mob.location().okAffect(fillMsg))
+						mob.location().send(mob,fillMsg);
 			}
 			else
-			if(fillThis==lastThingFilled)
-			{
-				addendumStr="."+(++addendum);
-				continue;
-			}
-			else
-			if((doneSomething)&&(!(fillThis instanceof Item)))
-			   return;
-
-			if((!mob.isMine(fillThis))&&(!doneSomething))
-				if(!get(mob,null,(Item)fillThis,false))
-					return;
-
-			if(!mob.isMine(fillThis))
-				return;
-			FullMsg newMsg=new FullMsg(mob,fillThis,fillFromThis,Affect.MSG_FILL,"<S-NAME> fill(s) <T-NAME> from "+fillFromThis.name()+".");
-			if(!mob.location().okAffect(newMsg))
-				return;
-			mob.location().send(mob,newMsg);
-			doneSomething=true;
-		}while(allFlag);
+			if(mob.location().okAffect(fillMsg))
+				mob.location().send(mob,fillMsg);
+		}
 	}
 
 	public boolean wear(MOB mob, Item item)
@@ -431,6 +393,43 @@ public class ItemUsage
 		}
 		return false;
 	}
+	
+	public Vector fetchItemList(Environmental from, 
+								MOB mob, 
+								Item container, 
+								Vector commands, 
+								int preferredLoc,
+								boolean visionMatters)
+	{
+		int addendum=1;
+		String addendumStr="";
+		Vector V=new Vector();
+		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		String name=Util.combine(commands,0);
+		do
+		{
+			Environmental item=null;
+			if(from instanceof MOB)
+			{
+				if(preferredLoc==Item.WORN_REQ_UNWORNONLY)
+					item=((MOB)from).fetchCarried(container,name+addendumStr);
+				else
+				if(preferredLoc==Item.WORN_REQ_WORNONLY)
+					item=((MOB)from).fetchWornItem(name+addendumStr);
+				else
+					item=((MOB)from).fetchInventory(name+addendumStr);
+			}
+			else
+			if(from instanceof Room)
+				item=((Room)from).fetchFromMOBRoomFavorsItems(mob,container,name+addendumStr,preferredLoc);
+			if((item!=null)&&(item instanceof Item)&&((!visionMatters)||(Sense.canBeSeenBy(item,mob))))
+				V.addElement(item);
+			if(item==null) return V;
+			addendumStr="."+(++addendum);
+		}
+		while(allFlag);
+		return V;
+	}
 
 	public void wear(MOB mob, Vector commands)
 	{
@@ -440,34 +439,12 @@ public class ItemUsage
 			return;
 		}
 		commands.removeElementAt(0);
-
-		boolean doneSomething=false;
-		int addendum=1;
-		String addendumStr="";
-		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
-		Environmental last=null;
-		do
-		{
-			Item thisItem=mob.fetchCarried(null,Util.combine(commands,0)+addendumStr);
-			if((thisItem==null)
-			   ||((thisItem!=null)
-			   &&(!Sense.canBeSeenBy(thisItem,mob))&&(!allFlag)))
-			{
-				if(!doneSomething)
-					mob.tell("You don't seem to be carrying that.");
-				return;
-			}
-			if(!thisItem.amWearingAt(Item.INVENTORY))
-			{
-				addendumStr="."+(++addendum);
-				continue;
-			}
-			if((last==thisItem)||(!Sense.canBeSeenBy(thisItem,mob))||(!wear(mob,thisItem)))
-				addendumStr="."+(++addendum);
-			if(Sense.canBeSeenBy(thisItem,mob))
-				doneSomething=true;
-			last=thisItem;
-		}while(allFlag);
+		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
+		if(items.size()==0)
+			mob.tell("You don't seem to be carrying that.");
+		else
+		for(int i=0;i<items.size();i++)
+			wear(mob,(Item)items.elementAt(i));
 	}
 
 	public void hold(MOB mob, Vector commands)
@@ -478,55 +455,12 @@ public class ItemUsage
 			return;
 		}
 		commands.removeElementAt(0);
-		boolean doneSomething=false;
-		int addendum=1;
-		String addendumStr="";
-		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
-		Environmental last=null;
-		do
-		{
-			Item thisItem=mob.fetchCarried(null,Util.combine(commands,0)+addendumStr);
-			if((thisItem==null)
-			   ||((thisItem!=null)
-			   &&(!Sense.canBeSeenBy(thisItem,mob))&&(!allFlag)))
-			{
-				if(!doneSomething)
-					mob.tell("You don't seem to be carrying that.");
-				return;
-			}
-			if(!thisItem.amWearingAt(Item.INVENTORY))
-			{
-				addendumStr="."+(++addendum);
-				continue;
-			}
-			if((last==thisItem)
-			||(!Sense.canBeSeenBy(thisItem,mob))
-			||(!alreadyWornMsg(mob,thisItem))
-			||(!hold(mob,thisItem)))
-				addendumStr="."+(++addendum);
-			last=thisItem;
-			if(Sense.canBeSeenBy(thisItem,mob))
-				doneSomething=true;
-		}while(allFlag);
-	}
-
-	public boolean alreadyWornMsg(MOB mob, Item thisItem)
-	{
-		if(!thisItem.amWearingAt(Item.INVENTORY))
-		{
-			if(thisItem.amWearingAt(Item.WIELD))
-				mob.tell(thisItem.name()+" is already being wielded.");
-			else
-			if(thisItem.amWearingAt(Item.HELD))
-				mob.tell(thisItem.name()+" is already being held.");
-			else
-			if(thisItem.amWearingAt(Item.FLOATING_NEARBY))
-				mob.tell(thisItem.name()+" is floating nearby.");
-			else
-				mob.tell(thisItem.name()+"is already being worn.");
-			return false;
-		}
-		return true;
+		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
+		if(items.size()==0)
+			mob.tell("You don't seem to be carrying that.");
+		else
+		for(int i=0;i<items.size();i++)
+			hold(mob,(Item)items.elementAt(i));
 	}
 
 	public void wield(MOB mob, Vector commands)
@@ -537,18 +471,12 @@ public class ItemUsage
 			return;
 		}
 		commands.removeElementAt(0);
-
-		Item thisItem=mob.fetchCarried(null,Util.combine(commands,0));
-		if((thisItem==null)
-		   ||((thisItem!=null)
-			  &&(!Sense.canBeSeenBy(thisItem,mob))))
-		{
+		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
+		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
-			return;
-		}
-		if(!alreadyWornMsg(mob,thisItem))
-			return;
-		wield(mob,thisItem);
+		else
+		for(int i=0;i<items.size();i++)
+			wield(mob,(Item)items.elementAt(i));
 	}
 
 	public void drink(MOB mob, Vector commands)
@@ -671,32 +599,12 @@ public class ItemUsage
 			return;
 		}
 		commands.removeElementAt(0);
-		boolean doneSomething=false;
-		int addendum=1;
-		String addendumStr="";
-		Environmental last=null;
-		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
-		do
-		{
-			Item thisItem=mob.fetchWornItem(Util.combine(commands,0)+addendumStr);
-			if(thisItem==null)
-			{
-				if(!doneSomething)
-					mob.tell("You don't seem to be wearing that.");
-				return;
-			}
-			if(thisItem.amWearingAt(Item.INVENTORY))
-			{
-				if(!doneSomething)
-					mob.tell("You aren't wearing that.");
-				return;
-			}
-			if((last==thisItem)
-			   ||(!remove(mob,thisItem)))
-				addendumStr="."+(++addendum);
-			last=thisItem;
-			doneSomething=true;
-		}while(allFlag);
+		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_WORNONLY,false);
+		if(items.size()==0)
+			mob.tell("You don't seem to be wearing that.");
+		else
+		for(int i=0;i<items.size();i++)
+			remove(mob,(Item)items.elementAt(i));
 	}
 
 	public void push(MOB mob, String whatToOpen, CommandSet commandSet)

@@ -434,6 +434,25 @@ public class StdItem implements Item
 		return ""+(dispossessionTime().getTimeInMillis()-IQCalendar.getInstance().getTimeInMillis());
 	}
 	
+	private boolean alreadyWornMsg(MOB mob, Item thisItem)
+	{
+		if(!thisItem.amWearingAt(Item.INVENTORY))
+		{
+			if(thisItem.amWearingAt(Item.WIELD))
+				mob.tell(thisItem.name()+" is already being wielded.");
+			else
+			if(thisItem.amWearingAt(Item.HELD))
+				mob.tell(thisItem.name()+" is already being held.");
+			else
+			if(thisItem.amWearingAt(Item.FLOATING_NEARBY))
+				mob.tell(thisItem.name()+" is floating nearby.");
+			else
+				mob.tell(thisItem.name()+"is already being worn.");
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean okAffect(Affect affect)
 	{
 		for(int b=0;b<numBehaviors();b++)
@@ -479,6 +498,8 @@ public class StdItem implements Item
 		case Affect.TYP_NOISE:
 			return true;
 		case Affect.TYP_HOLD:
+			if(!alreadyWornMsg(affect.source(),this))
+				return false;
 			if(!canBeWornAt(Item.HELD))
 			{
 				StringBuffer msg=new StringBuffer("You can't hold "+name()+".");
@@ -524,11 +545,8 @@ public class StdItem implements Item
 				mob.tell("You can't wear "+name()+".");
 				return false;
 			}
-			if(!amWearingAt(Item.INVENTORY))
-			{
-				mob.tell("You are already wearing "+name()+".");
+			if(!alreadyWornMsg(affect.source(),this))
 				return false;
-			}
 			if(!mob.charStats().getMyRace().canWear(this))
 			{
 				mob.tell("You lack the anatomy to wear "+name()+".");
@@ -564,11 +582,8 @@ public class StdItem implements Item
 				mob.tell("You can't wield "+name()+" as a weapon.");
 				return false;
 			}
-			if(amWearingAt(Item.WIELD))
-			{
-				mob.tell("That's already being wielded.");
+			if(!alreadyWornMsg(affect.source(),this))
 				return false;
-			}
 			if(!mob.charStats().getMyRace().canWear(this))
 			{
 				mob.tell("You lack the anatomy to wield "+name()+".");

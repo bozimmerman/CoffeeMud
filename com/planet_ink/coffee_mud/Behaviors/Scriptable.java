@@ -279,9 +279,12 @@ public class Scriptable extends ActiveTicker
 			switch(c)
 			{
 			case 'i':
-			case 'I':
 				if(monster!=null)
 					middle=monster.name();
+				break;
+			case 'I':
+				if(monster!=null)
+					middle=monster.displayText();
 				break;
 			case 'n':
 			case 'N':
