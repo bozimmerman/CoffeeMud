@@ -16,14 +16,11 @@ public class Drilling extends CommonSkill
 	private Item found=null;
 	private Drink container=null;
 	private String foundShortName="";
-	private static boolean mapped=false;
 	public Drilling()
 	{
 		super();
 		displayText="You are drilling...";
 		verb="drilling";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

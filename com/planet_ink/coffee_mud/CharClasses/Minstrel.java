@@ -40,6 +40,7 @@ public class Minstrel extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",false);
+			CMAble.addCharAbilityMapping(ID(),1,"InstrumentMaking",false);
 
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Play_Tempo",true);

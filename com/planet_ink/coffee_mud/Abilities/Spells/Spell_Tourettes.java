@@ -59,7 +59,11 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			if(invoker==null) invoker=mob;
 
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
-			if((target!=null)&&(!mob.amDead())&&(Sense.canSpeak(mob))&&(Sense.canBeSeenBy(target,mob)))
+			if((target!=null)
+			&&(!mob.amDead())
+			&&(target.charStats().getStat(CharStats.INTELLIGENCE)>5)
+			&&(Sense.canSpeak(mob))
+			&&(Sense.canBeHeardBy(target,mob)))
 			{
 				String say="Penis wrinkle!";
 				switch(Dice.roll(1,30,0))

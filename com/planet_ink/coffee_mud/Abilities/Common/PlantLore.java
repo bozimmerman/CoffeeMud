@@ -10,7 +10,6 @@ public class PlantLore extends CommonSkill
 	public String name(){ return "Plant Lore";}
 	private static final String[] triggerStrings = {"PLANTLORE","PSPECULATE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private static boolean mapped=false;
 
 	private boolean success=false;
 	public PlantLore()
@@ -18,8 +17,6 @@ public class PlantLore extends CommonSkill
 		super();
 		displayText="You are observing plant growth...";
 		verb="observing plant growths";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("Archon",10,ID(),false);}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

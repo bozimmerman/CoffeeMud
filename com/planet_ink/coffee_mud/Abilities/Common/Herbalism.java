@@ -19,12 +19,6 @@ public class Herbalism extends CraftingSkill
 	String oldName="";
 	private Ability theSpell=null;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public Herbalism()
-	{
-		super();
-	}
-
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

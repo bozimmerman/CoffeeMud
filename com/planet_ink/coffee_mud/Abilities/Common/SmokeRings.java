@@ -11,15 +11,11 @@ public class SmokeRings extends CommonSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
-	private static boolean mapped=false;
-
 	public SmokeRings()
 	{
 		super();
 		displayText="";
 		canBeUninvoked=false;
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public void executeMsg(Environmental affected, CMMsg msg)

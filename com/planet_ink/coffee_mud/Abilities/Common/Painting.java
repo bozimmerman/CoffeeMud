@@ -25,13 +25,6 @@ public class Painting extends CommonSkill
 
 	private Item building=null;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public Painting()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",5,ID(),false);}
-	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

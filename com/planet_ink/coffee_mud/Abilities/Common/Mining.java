@@ -15,14 +15,11 @@ public class Mining extends CommonSkill
 
 	private Item found=null;
 	private String foundShortName="";
-	private static boolean mapped=false;
 	public Mining()
 	{
 		super();
 		displayText="You are mining...";
 		verb="mining";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -26,14 +26,6 @@ public class GlassBlowing extends CraftingSkill
 	private Item building=null;
 	private Item fire=null;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public GlassBlowing()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
-
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

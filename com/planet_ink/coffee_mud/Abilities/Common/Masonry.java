@@ -51,16 +51,8 @@ public class Masonry extends CraftingSkill
 	private int doingCode=-1;
 	private boolean messedUp=false;
 	private int workingOn=-1;
-	private static boolean mapped=false;
 	private String designTitle="";
 	private String designDescription="";
-
-	public Masonry()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",5,ID(),false);}
-	}
 
 	public Exit generify(Exit E)
 	{

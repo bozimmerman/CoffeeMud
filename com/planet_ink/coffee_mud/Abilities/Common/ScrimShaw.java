@@ -27,13 +27,6 @@ public class ScrimShaw extends CraftingSkill
 	private Item key=null;
 	private boolean mending=false;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public ScrimShaw()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

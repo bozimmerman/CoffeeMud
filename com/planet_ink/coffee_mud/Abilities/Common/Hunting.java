@@ -14,14 +14,11 @@ public class Hunting extends CommonSkill
 
 	private MOB found=null;
 	private String foundShortName="";
-	private static boolean mapped=false;
 	public Hunting()
 	{
 		super();
 		displayText="You are hunting...";
 		verb="hunting";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public Room nearByRoom()

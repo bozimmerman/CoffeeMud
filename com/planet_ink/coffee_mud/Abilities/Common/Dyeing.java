@@ -14,14 +14,11 @@ public class Dyeing extends CommonSkill
 
 	private Item found=null;
 	private String writing="";
-	private static boolean mapped=false;
 	public Dyeing()
 	{
 		super();
 		displayText="You are dyeing...";
 		verb="dyeing";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	private String fixColor(String name, String colorWord)

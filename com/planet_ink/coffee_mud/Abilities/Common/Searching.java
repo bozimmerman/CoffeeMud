@@ -10,7 +10,6 @@ public class Searching extends CommonSkill
 	public String name(){ return "Searching";}
 	private static final String[] triggerStrings = {"SEARCH","SEARCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private static boolean mapped=false;
 	private Room searchRoom=null;
 
 	private boolean success=false;
@@ -19,8 +18,6 @@ public class Searching extends CommonSkill
 		super();
 		displayText="You are searching...";
 		verb="searching";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

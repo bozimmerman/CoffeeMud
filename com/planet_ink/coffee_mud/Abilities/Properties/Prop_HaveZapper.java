@@ -16,8 +16,6 @@ public class Prop_HaveZapper extends Property
 		return "Ownership restricted as follows: "+MUDZapper.zapperDesc(miscText);
 	}
 
-
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -41,6 +39,14 @@ public class Prop_HaveZapper extends Property
 			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> flashes and flies out of <S-HIS-HER> hands!");
+				return false;
+			}
+			break;
+		case CMMsg.TYP_EAT:
+		case CMMsg.TYP_DRINK:
+			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			{
+				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> flashes and falls out your <S-HIS-HER> mouth!");
 				return false;
 			}
 			break;

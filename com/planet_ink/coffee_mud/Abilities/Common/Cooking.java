@@ -31,14 +31,11 @@ public class Cooking extends CraftingSkill
 	private Vector finalRecipe=null;
 	private boolean burnt=false;
 	private Hashtable oldContents=null;
-	private static boolean mapped=false;
 	public Cooking()
 	{
 		super();
 		displayText="You are "+cookWord()+"...";
 		verb=cookWord();
-		if(ID().equals("Cooking")&&(!mapped))
-		{mapped=true; CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public boolean isMineForCooking(MOB mob, Item cooking)

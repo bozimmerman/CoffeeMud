@@ -14,14 +14,11 @@ public class Engraving extends CommonSkill
 
 	private Item found=null;
 	private String writing="";
-	private static boolean mapped=false;
 	public Engraving()
 	{
 		super();
 		displayText="You are engraving...";
 		verb="engraving";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public void unInvoke()

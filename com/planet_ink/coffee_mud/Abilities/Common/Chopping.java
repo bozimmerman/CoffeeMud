@@ -15,14 +15,11 @@ public class Chopping extends CommonSkill
 
 	private Item found=null;
 	private String foundShortName="";
-	private static boolean mapped=false;
 	public Chopping()
 	{
 		super();
 		displayText="You are chopping wood...";
 		verb="chopping";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

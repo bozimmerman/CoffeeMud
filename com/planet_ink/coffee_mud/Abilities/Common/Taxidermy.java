@@ -15,16 +15,12 @@ public class Taxidermy extends CraftingSkill
 	private Item found=null;
 	private String foundShortName="";
 	private boolean messedUp=false;
-	private static boolean mapped=false;
 
 	public Taxidermy()
 	{
 		super();
 		displayText="You are stuffing...";
 		verb="stuffing";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",20,ID(),false);
-		}
 	}
 
 	public void unInvoke()

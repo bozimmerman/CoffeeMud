@@ -51,17 +51,9 @@ public class Construction extends CraftingSkill
 	private int dir=-1;
 	private int doingCode=-1;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
 	private int workingOn=-1;
 	private String designTitle="";
 	private String designDescription="";
-
-	public Construction()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",10,ID(),false);}
-	}
 
 	public Exit generify(Exit E)
 	{

@@ -14,14 +14,6 @@ public class FireBuilding extends CommonSkill
 	public Item lighting=null;
 	private int durationOfBurn=0;
 	private boolean failed=false;
-	private static boolean mapped=false;
-	public FireBuilding()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
-
 
 	public void unInvoke()
 	{

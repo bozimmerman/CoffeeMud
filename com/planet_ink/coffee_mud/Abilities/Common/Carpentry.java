@@ -31,13 +31,6 @@ public class Carpentry extends CraftingSkill
 	private boolean mending=false;
 	private boolean refitting=false;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public Carpentry()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

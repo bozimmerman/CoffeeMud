@@ -13,15 +13,11 @@ public class AnimalTaming extends CommonSkill
 
 	private Environmental taming=null;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
 	public AnimalTaming()
 	{
 		super();
 		displayText="You are taming...";
 		verb="taming";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("Archon",1,ID(),false);
-		}
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -15,14 +15,11 @@ public class Foraging extends CommonSkill
 
 	private Item found=null;
 	private String foundShortName="";
-	private static boolean mapped=false;
 	public Foraging()
 	{
 		super();
 		displayText="You are foraging...";
 		verb="foraging";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

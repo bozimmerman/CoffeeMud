@@ -21,16 +21,6 @@ public class Alchemy extends CraftingSkill
 	String oldName="";
 	private Ability theSpell=null;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public Alchemy()
-	{
-		super();
-
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("Mage",1,ID(),false);
-					CMAble.addCharAbilityMapping("Bard",10,ID(),false);
-					CMAble.addCharAbilityMapping("Cleric",1,ID(),false);}
-	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

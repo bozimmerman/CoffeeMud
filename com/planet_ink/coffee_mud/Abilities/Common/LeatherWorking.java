@@ -30,13 +30,6 @@ public class LeatherWorking extends CraftingSkill
 	private boolean mending=false;
 	private boolean refitting=false;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public LeatherWorking()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
 
 	protected Vector loadRecipes()
 	{

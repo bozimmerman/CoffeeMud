@@ -14,14 +14,11 @@ public class Butchering extends CommonSkill
 	private DeadBody body=null;
 	private String foundShortName="";
 	private boolean failed=false;
-	private static boolean mapped=false;
 	public Butchering()
 	{
 		super();
 		displayText="You are skinning and butchering something...";
 		verb="skinning and butchering";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

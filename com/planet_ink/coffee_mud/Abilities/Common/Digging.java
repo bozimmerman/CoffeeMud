@@ -15,15 +15,11 @@ public class Digging extends CommonSkill
 
 	private Item found=null;
 	private String foundShortName="";
-	private static boolean mapped=false;
 	public Digging()
 	{
 		super();
 		displayText="You are digging...";
 		verb="digging";
-
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

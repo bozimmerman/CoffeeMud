@@ -19,15 +19,11 @@ public class Scrapping extends CommonSkill
 	private String oldItemName="";
 	private String foundShortName="";
 	private boolean messedUp=false;
-	private static boolean mapped=false;
 	public Scrapping()
 	{
 		super();
 		displayText="You are scrapping...";
 		verb="scrapping";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("Archon",20,ID(),false);
-		}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

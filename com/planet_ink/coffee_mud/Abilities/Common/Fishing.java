@@ -14,14 +14,11 @@ public class Fishing extends CommonSkill
 
 	private Item found=null;
 	private String foundShortName="";
-	private static boolean mapped=false;
 	public Fishing()
 	{
 		super();
 		displayText="You are fishing...";
 		verb="fishing";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

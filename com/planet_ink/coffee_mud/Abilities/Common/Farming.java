@@ -16,14 +16,11 @@ public class Farming extends CommonSkill
 	private Item found=null;
 	private Room room=null;
 	private String foundShortName="";
-	private static boolean mapped=false;
 	public Farming()
 	{
 		super();
 		displayText="You are planting...";
 		verb="planting";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",10,ID(),false);}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

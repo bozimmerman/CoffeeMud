@@ -29,17 +29,9 @@ public class JewelMaking extends CraftingSkill
 	private Item fire=null;
 	private boolean messedUp=false;
 	private Vector beingDone=null;
-	private static boolean mapped=false;
 	private boolean mending=false;
 	private boolean refitting=false;
 	private boolean fireRequired=true;
-
-	public JewelMaking()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -12,13 +12,6 @@ public class MasterWeaponsmithing extends Weaponsmithing
 	public String name(){ return "Master Weaponsmithing";}
 	private static final String[] triggerStrings = {"MWEAPONSMITH","MASTERWEAPONSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private static boolean mapped2=false;
-
-	public MasterWeaponsmithing()
-	{
-		if(!mapped2){mapped2=true;
-					CMAble.addCharAbilityMapping("All",30,ID(),false);}
-	}
 
 	protected Vector loadRecipes()
 	{

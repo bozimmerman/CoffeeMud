@@ -29,13 +29,74 @@ public class StdCharClass implements CharClass, Cloneable
 	protected HashSet requiredWeaponMaterials(){return null;}
 	protected int requiredArmorSourceMinor(){return -1;}
 	protected String armorFailMessage(){return "<S-NAME> fumble(s) <S-HIS-HER> <SKILL> due to <S-HIS-HER> armor!";}
-
+	private static boolean commonMapped=false;
+	
+	public StdCharClass()
+	{
+		if(!commonMapped)
+		{
+			commonMapped=true;
+			CMAble.addCharAbilityMapping("All",1,"Armorsmithing",false);
+			CMAble.addCharAbilityMapping("All",1,"Blacksmithing",false);
+			CMAble.addCharAbilityMapping("All",1,"Butchering",false);
+			CMAble.addCharAbilityMapping("All",1,"Carpentry",false);
+			CMAble.addCharAbilityMapping("All",1,"Chopping",false);
+			CMAble.addCharAbilityMapping("All",1,"ClanCrafting",false);
+			CMAble.addCharAbilityMapping("All",1,"Cobbling",false);
+			CMAble.addCharAbilityMapping("All",10,"Construction",false);
+			CMAble.addCharAbilityMapping("All",1,"Cooking",false);
+			CMAble.addCharAbilityMapping("All",1,"Digging",false);
+			CMAble.addCharAbilityMapping("All",1,"Distilling",false);
+			CMAble.addCharAbilityMapping("All",1,"Drilling",false);
+			CMAble.addCharAbilityMapping("All",1,"Dyeing",false);
+			CMAble.addCharAbilityMapping("All",1,"Embroidering",false);
+			CMAble.addCharAbilityMapping("All",1,"Engraving",false);
+			CMAble.addCharAbilityMapping("All",10,"Farming",false);
+			CMAble.addCharAbilityMapping("All",1,"FireBuilding",false);
+			CMAble.addCharAbilityMapping("All",1,"Fishing",false);
+			CMAble.addCharAbilityMapping("All",1,"Fletching",false);
+			CMAble.addCharAbilityMapping("All",1,"Foraging",false);
+			CMAble.addCharAbilityMapping("All",1,"GlassBlowing",false);
+			CMAble.addCharAbilityMapping("All",1,"Herbology",false);
+			CMAble.addCharAbilityMapping("All",1,"Hunting",false);
+			CMAble.addCharAbilityMapping("All",1,"JewelMaking",false);
+			CMAble.addCharAbilityMapping("All",1,"Lacquerring",false);
+			CMAble.addCharAbilityMapping("All",1,"LeatherWorking",false);
+			CMAble.addCharAbilityMapping("All",15,"LockSmith",false);
+			CMAble.addCharAbilityMapping("All",10,"Masonry",false);
+			CMAble.addCharAbilityMapping("All",30,"MasterTailoring",false);
+			CMAble.addCharAbilityMapping("All",30,"MasterWeaponsmithing",false);
+			CMAble.addCharAbilityMapping("All",20,"Merchant",false);
+			CMAble.addCharAbilityMapping("All",1,"Mining",false);
+			CMAble.addCharAbilityMapping("All",5,"Painting",false);
+			CMAble.addCharAbilityMapping("All",5,"PaperMaking",false);
+			CMAble.addCharAbilityMapping("All",1,"Pottery",false);
+			CMAble.addCharAbilityMapping("All",1,"ScrimShaw",false);
+			CMAble.addCharAbilityMapping("All",1,"Sculpting",false);
+			CMAble.addCharAbilityMapping("All",1,"Searching",false);
+			CMAble.addCharAbilityMapping("All",4,"Shipwright",false);
+			CMAble.addCharAbilityMapping("All",1,"Smelting",false);
+			CMAble.addCharAbilityMapping("All",1,"SmokeRings",false);
+			CMAble.addCharAbilityMapping("All",10,"Speculate",false);
+			CMAble.addCharAbilityMapping("All",1,"Tailoring",false);
+			CMAble.addCharAbilityMapping("All",20,"Taxidermy",false);
+			CMAble.addCharAbilityMapping("All",4,"Wainwrighting",false);
+			CMAble.addCharAbilityMapping("All",1,"Weaponsmithing",false);
+			CMAble.addCharAbilityMapping("All",1,"Weaving",false);
+		
+		
+			CMAble.addCharAbilityMapping("Mage",1,"Alchemy",false);
+			CMAble.addCharAbilityMapping("Bard",10,"Alchemy",false);
+			CMAble.addCharAbilityMapping("Cleric",1,"Alchemy",false);
+		}
+	}
+	
 	public boolean isGeneric(){return false;}
 	public boolean playerSelectable()
 	{
 		return false;
 	}
-
+	
 	public void cloneFix(CharClass C)
 	{
 	}

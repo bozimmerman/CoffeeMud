@@ -31,13 +31,6 @@ public class Armorsmithing extends CraftingSkill
 	private boolean mending=false;
 	private boolean refitting=false;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public Armorsmithing()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
 	protected String primeMaterialDesc(){return "metal";}
 
 	public boolean tick(Tickable ticking, int tickID)

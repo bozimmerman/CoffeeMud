@@ -16,7 +16,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
 
-	private static boolean mapped=false;
 	protected Vector baseInventory=new Vector();
 	protected Hashtable inventorySize=new Hashtable();
 	protected Hashtable stockValues=new Hashtable();
@@ -26,8 +25,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		displayText="";
 
 		isAutoInvoked();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",20,ID(),false);}
 	}
 	public String text()
 	{

@@ -28,13 +28,6 @@ public class Blacksmithing extends CraftingSkill
 	private Item fire=null;
 	private boolean fireRequired=true;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public Blacksmithing()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

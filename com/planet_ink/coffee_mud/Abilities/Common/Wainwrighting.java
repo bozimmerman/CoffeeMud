@@ -28,16 +28,6 @@ public class Wainwrighting extends CraftingSkill
 	private Item building=null;
 	private Item key=null;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public Wainwrighting()
-	{
-		super();
-		if((!mapped)&&(ID().equals("Wainwrighting")))
-		{
-			mapped=true;
-			CMAble.addCharAbilityMapping("All",4,ID(),false);
-		}
-	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

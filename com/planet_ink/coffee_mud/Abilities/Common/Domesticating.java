@@ -13,15 +13,11 @@ public class Domesticating extends CommonSkill
 
 	private MOB taming=null;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
 	public Domesticating()
 	{
 		super();
 		displayText="You are domesticating...";
 		verb="domesticating";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("Archon",1,ID(),false);
-		}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

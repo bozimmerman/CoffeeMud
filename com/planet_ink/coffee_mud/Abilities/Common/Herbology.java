@@ -14,7 +14,6 @@ public class Herbology extends CommonSkill
 
 	private Item found=null;
 	private String writing="";
-	private static boolean mapped=false;
 	private boolean messedUp=false;
 	private static final String[] herbList={"angelica","mustard","anise",
 											"myrrh","cassia","peppermint",
@@ -29,8 +28,6 @@ public class Herbology extends CommonSkill
 		super();
 		displayText="You are evaluating...";
 		verb="evaluating";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public void unInvoke()

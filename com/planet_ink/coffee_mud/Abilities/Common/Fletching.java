@@ -29,13 +29,6 @@ public class Fletching extends CraftingSkill
 	private Item building=null;
 	private boolean messedUp=false;
 	private boolean mending=false;
-	private static boolean mapped=false;
-	public Fletching()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
 
 	protected Vector loadRecipes()
 	{

@@ -15,14 +15,6 @@ public class Distilling extends Cooking
 	public String cookWordShort(){return "distill";};
 	public String cookWord(){return "distilling";};
 	public boolean honorHerbs(){return false;}
-	private static boolean myMapped=false;
-
-	public Distilling()
-	{
-		super();
-		if(ID().equals("Distilling")&&(!myMapped))
-		{myMapped=true; CMAble.addCharAbilityMapping("All",10,ID(),false);}
-	}
 
 	protected Vector loadRecipes()
 	{

@@ -26,13 +26,6 @@ public class Smelting extends CraftingSkill
 	private Item fire=null;
 	private boolean messedUp=false;
 	private int amountMaking=0;
-	private static boolean mapped=false;
-	public Smelting()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

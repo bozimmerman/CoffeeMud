@@ -15,15 +15,11 @@ public class AnimalTraining extends CommonSkill
 	private String skillto="";
 	private Object skill=null;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
 	public AnimalTraining()
 	{
 		super();
 		displayText="You are taming...";
 		verb="taming";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("Archon",1,ID(),false);
-		}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

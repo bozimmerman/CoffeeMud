@@ -16,14 +16,7 @@ public class LockSmith extends CraftingSkill
 	private Item building=null;
 	private Environmental workingOn=null;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
 	private boolean boltlock=false;
-	public LockSmith()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",15,ID(),false);}
-	}
 
 	public void unInvoke()
 	{

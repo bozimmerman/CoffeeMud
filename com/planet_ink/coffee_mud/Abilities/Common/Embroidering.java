@@ -13,14 +13,11 @@ public class Embroidering extends CommonSkill
 
 	private Item found=null;
 	private String writing="";
-	private static boolean mapped=false;
 	public Embroidering()
 	{
 		super();
 		displayText="You are embroidering...";
 		verb="embroidering";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public void unInvoke()

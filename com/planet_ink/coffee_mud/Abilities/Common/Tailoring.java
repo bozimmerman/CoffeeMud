@@ -30,13 +30,6 @@ public class Tailoring extends CraftingSkill
 	private boolean mending=false;
 	private boolean refitting=false;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public Tailoring()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

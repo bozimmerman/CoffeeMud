@@ -25,13 +25,6 @@ public class PaperMaking extends CraftingSkill
 
 	private Item building=null;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public PaperMaking()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",5,ID(),false);}
-	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

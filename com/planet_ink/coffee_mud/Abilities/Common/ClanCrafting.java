@@ -32,13 +32,6 @@ public class ClanCrafting extends CraftingSkill
 
 	private Item building=null;
 	private boolean messedUp=false;
-	private static boolean mapped=false;
-	public ClanCrafting()
-	{
-		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
-	}
 
 	protected Vector loadRecipes()
 	{

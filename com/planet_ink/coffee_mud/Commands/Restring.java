@@ -89,7 +89,11 @@ public class Restring extends BaseGenerics
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"CMD");}
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowedStartsWith(mob,mob.location(),"CMD")
+		     ||CMSecurity.isAllowed(mob,mob.location(),"RESTRING");
+	}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -10,7 +10,6 @@ public class Speculate extends CommonSkill
 	public String name(){ return "Speculating";}
 	private static final String[] triggerStrings = {"SPECULATE","SPECULATING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private static boolean mapped=false;
 
 	private boolean success=false;
 	public Speculate()
@@ -18,8 +17,6 @@ public class Speculate extends CommonSkill
 		super();
 		displayText="You are speculating...";
 		verb="speculating";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",10,ID(),false);}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
