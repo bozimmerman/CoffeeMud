@@ -1,171 +1,171 @@
-name,level,ticks,wood,value,class,misc,capacity,armordmg,contain,spell
-% Cap	1	25	10		GenArmor	HEAD	0	3	0
-% Helm	10	70	15		GenArmor	HEAD	0	6	0
-% Helmet	16	100	15		GenArmor	HEAD	0	8	0
-% Heaume	25	145	15		GenArmor	HEAD	0	10	0
-% Skullcap	6	50	10		GenArmor	HEAD	0	4	0
-% Basinette	20	120	15		GenArmor	HEAD	0	9	0
-Horned % Helm	7	55	15		GenArmor	HEAD	0	5	0
-% Gorget	16	100	15		GenArmor	NECK	0	4	0
-Heavy % Gorget	20	120	25		GenArmor	NECK	0	4	0
-Embossed % Gorget	25	145	25		GenArmor	NECK	0	5	0
-% Chainmail Collar	10	70	15	210	GenArmor	NECK	0	3	0
-% Chainmail Mantle	10	70	15	210	GenArmor	NECK	0	3	0
-% Chainmail Coif	10	70	15	210	GenArmor	HEAD	0	6	0
-% Chainmail Shirt	10	70	50	410	GenArmor	TORSO	0	18	0
-% Chainmail Jacket	10	70	55	410	GenArmor	TORSO	0	18	0
-% Chainmail Vest	10	70	55	410	GenArmor	TORSO	0	18	0
-% Chainmail Hauberk	10	70	50	410	GenArmor	TORSO	0	18	0
-% Chainmail Jerkin	10	70	50	410	GenArmor	TORSO	0	18	0
-% Chainmail Coat	10	70	55	420	GenArmor	TORSO	0	18	0
-% Chainmail Sleeves	10	70	25	340	GenArmor	ARMS	0	6	0
-% Chainmail Cuffs	10	70	10	210	GenArmor	LEFT WRIST||RIGHT WRIST	25	3	8
-% Chainmail Gloves	10	70	10	210	GenArmor	HANDS	0	3	0
-% Chainmail Leggings	10	70	30	350	GenArmor	LEGS	0	12	0
-% Chainmail Belt	10	70	15	210	GenArmor	WAIST	100	3	32
-% Chainmail Skirt	10	70	35	350	GenArmor	LEGS	0	12	0
-% Chainmail Socks	10	70	10	210	GenArmor	FEET	0	3	0
-% Scalemail Collar	7	55	10	105	GenArmor	NECK	0	2	0
-% Scalemail Mantle	7	55	10	105	GenArmor	NECK	0	2	0
-% Scalemail Coif	7	55	10	105	GenArmor	HEAD	0	5	0
-% Scalemail Shirt	7	55	35	150	GenArmor	TORSO	0	15	0
-% Scalemail Jacket	7	55	40	160	GenArmor	TORSO	0	15	0
-% Scalemail Vest	7	55	35	150	GenArmor	TORSO	0	15	0
-% Scalemail Hauberk	7	55	35	150	GenArmor	TORSO	0	15	0
-% Scalemail Jerkin	7	55	35	150	GenArmor	TORSO	0	15	0
-% Scalemail Coat	7	55	40	160	GenArmor	TORSO	0	15	0
-% Scalemail Sleeves	7	55	10	110	GenArmor	ARMS	0	5	0
-% Scalemail Cuffs	7	55	8	105	GenArmor	LEFT WRIST||RIGHT WRIST	25	2	8
-% Scalemail Gloves	7	55	8	105	GenArmor	HANDS	0	2	0
-% Scalemail Leggings	7	55	20	125	GenArmor	LEGS	0	10	0
-% Scalemail Belt	7	55	8	105	GenArmor	WAIST	100	2	32
-% Scalemail Skirt	7	55	17	125	GenArmor	LEGS	0	10	0
-% Scalemail Socks	7	55	7	105	GenArmor	FEET	0	2	0
-% Ringmail Collar	6	50	8	5	GenArmor	NECK	0	2	0
-% Ringmail Mantle	6	50	8	5	GenArmor	NECK	0	2	0
-% Ringmail Coif	6	50	8	5	GenArmor	HEAD	0	4	0
-% Ringmail Shirt	6	50	30	15	GenArmor	TORSO	0	12	0
-% Ringmail Jacket	6	50	33	15	GenArmor	TORSO	0	12	0
-% Ringmail Vest	6	50	26	15	GenArmor	TORSO	0	12	0
-% Ringmail Hauberk	6	50	30	15	GenArmor	TORSO	0	12	0
-% Ringmail Jerkin	6	50	30	15	GenArmor	TORSO	0	12	0
-% Ringmail Coat	6	50	32	15	GenArmor	TORSO	0	12	0
-% Ringmail Sleeves	6	50	13	10	GenArmor	ARMS	0	4	0
-% Ringmail Cuffs	6	50	10	5	GenArmor	LEFT WRIST||RIGHT WRIST	25	2	8
-% Ringmail Gloves	6	50	10	5	GenArmor	HANDS	0	2	0
-% Ringmail Leggings	6	50	15	10	GenArmor	LEGS	0	8	0
-% Ringmail Belt	6	50	7	10	GenArmor	WAIST	100	2	32
-% Ringmail Skirt	6	50	22	10	GenArmor	LEGS	0	8	0
-% Ringmail Socks	6	50	5	5	GenArmor	FEET	0	2	0
-% Banded Collar	13	85	15	410	GenArmor	NECK	0	3	0
-% Banded Mantle	13	85	15	410	GenArmor	NECK	0	3	0
-% Banded Jacket	13	85	50	850	GenArmor	TORSO	0	21	0
-% Banded Vest	13	85	55	850	GenArmor	TORSO	0	21	0
-% Banded Hauberk	13	85	55	850	GenArmor	TORSO	0	21	0
-% Banded Jerkin	13	85	55	850	GenArmor	TORSO	0	21	0
-% Banded Coat	13	85	50	850	GenArmor	TORSO	0	21	0
-% Banded Sleeves	13	85	20	610	GenArmor	ARMS	0	7	0
-% Banded Armbands	13	85	15	610	GenArmor	ARMS	0	7	0
-% Banded Rearbraces	13	85	15	610	GenArmor	ARMS	0	7	0
-% Banded Upperarm Cannons	13	85	15	610	GenArmor	ARMS	0	7	0
-% Banded Pauldrons	13	85	15	610	GenArmor	ARMS	0	7	0
-% Banded Bracer	13	85	10	410	GenArmor	LEFT WRIST||RIGHT WRIST	25	3	8
-% Banded Vambrace	13	85	10	410	GenArmor	LEFT WRIST||RIGHT WRIST	25	3	8
-% Banded Lowerarm Cannon	13	85	10	410	GenArmor	LEFT WRIST||RIGHT WRIST	25	3	8
-% Banded Gauntlets	13	85	10	410	GenArmor	HANDS	0	3	0
-% Banded Locking Gauntlets	13	85	10	410	GenArmor	HANDS	0	3	0
-% Banded Mitts	13	85	10	410	GenArmor	HANDS	0	3	0
-% Banded Handguards	13	85	10	410	GenArmor	HANDS	0	3	0
-% Banded Girdle	13	85	25	650	GenArmor	WAIST	0	3	0
-% Banded Leggings	13	85	20	650	GenArmor	LEGS	0	14	0
-% Banded Skirt	13	85	25	650	GenArmor	LEGS	0	14	0
-% Banded Leg Cannons	13	85	15	610	GenArmor	LEGS	0	14	0
-% Banded Boots	13	85	10	410	GenArmor	FEET	25	3	8
-% Banded Greaves	13	85	10	410	GenArmor	FEET	0	3	0
-% Banded Sabottons	13	85	10	410	GenArmor	FEET	0	3	0
-% Banded Belt	13	85	15	410	GenArmor	WAIST	100	3	24
-% Banded Shirt	13	85	55	850	GenArmor	TORSO	0	21	0
-% Platemail Collar	16	100	20	810	GenArmor	NECK	0	4	0
-% Platemail Mantle	16	100	20	810	GenArmor	NECK	0	4	0
-% Platemail Jacket	16	100	55	1700	GenArmor	TORSO	0	24	0
-% Platemail Vest	16	100	50	1700	GenArmor	TORSO	0	24	0
-% Platemail Hauberk	16	100	50	1700	GenArmor	TORSO	0	24	0
-% Platemail Jerkin	16	100	55	1700	GenArmor	TORSO	0	24	0
-% Platemail Coat	16	100	60	1700	GenArmor	TORSO	0	24	0
-% Platemail Sleeves	16	100	20	1320	GenArmor	ARMS	0	8	0
-% Platemail Armbands	16	100	15	1320	GenArmor	ARMS	0	8	0
-% Platemail Rearbraces	16	100	10	1320	GenArmor	ARMS	0	8	0
-% Platemail Upperarm Cannons	16	100	10	1320	GenArmor	ARMS	0	8	0
-% Platemail Pauldrons	16	100	10	1320	GenArmor	ARMS	0	8	0
-% Platemail Bracer	16	100	10	820	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8
-% Platemail Vambrace	16	100	10	820	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8
-% Platemail Lowerarm Cannon	16	100	10	820	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8
-% Platemail Gauntlets	16	100	10	820	GenArmor	HANDS	0	4	0
-% Platemail Locking Gauntlets	16	100	10	820	GenArmor	HANDS	0	4	0
-% Platemail Mitts	16	100	10	820	GenArmor	HANDS	0	4	0
-% Platemail Handguards	16	100	10	820	GenArmor	HANDS	0	4	0
-% Platemail Girdle	16	100	35	1300	GenArmor	WAIST	100	4	32
-% Platemail Leggings	16	100	25	1400	GenArmor	LEGS	0	16	0
-% Platemail Skirt	16	100	35	1400	GenArmor	LEGS	0	16	0
-% Platemail Leg Cannons	16	100	25	1200	GenArmor	LEGS	0	16	0
-% Platemail Boots	16	100	10	820	GenArmor	FEET	25	4	8
-% Platemail Greaves	16	100	10	820	GenArmor	FEET	0	4	0
-% Platemail Sabottons	16	100	10	820	GenArmor	FEET	0	4	0
-% Platemail Shirt	16	100	55	1700	GenArmor	TORSO	0	24	0
-% Fieldplate Collar	20	120	25	1620	GenArmor	NECK	0	4	0
-% Fieldplate Mantle	20	120	25	1620	GenArmor	NECK	0	4	0
-% Fieldplate Jacket	20	120	60	3400	GenArmor	TORSO	0	27	0
-% Fieldplate Vest	20	120	55	3400	GenArmor	TORSO	0	27	0
-% Fieldplate Hauberk	20	120	55	3400	GenArmor	TORSO	0	27	0
-% Fieldplate Jerkin	20	120	60	3400	GenArmor	TORSO	0	27	0
-% Fieldplate Coat	20	120	65	3400	GenArmor	TORSO	0	27	0
-% Fieldplate Sleeves	20	120	25	2640	GenArmor	ARMS	0	9	0
-% Fieldplate Armbands	20	120	15	2640	GenArmor	ARMS	0	9	0
-% Fieldplate Rearbraces	20	120	10	2640	GenArmor	ARMS	0	9	0
-% Fieldplate Upperarm Cannons	20	120	10	2640	GenArmor	ARMS	0	9	0
-% Fieldplate Pauldrons	20	120	10	2640	GenArmor	ARMS	0	9	0
-% Fieldplate Bracer	20	120	10	2640	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8
-% Fieldplate Vambrace	20	120	10	2640	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8
-% Fieldplate Lowerarm Cannon	20	120	10	2640	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8
-% Fieldplate Gauntlets	20	120	10	2640	GenArmor	HANDS	0	4	0
-% Fieldplate Locking Gauntlets	20	120	10	2640	GenArmor	HANDS	0	4	0
-% Fieldplate Mitts	20	120	10	2640	GenArmor	HANDS	0	4	0
-% Fieldplate Handguards	20	120	10	2640	GenArmor	HANDS	0	4	0
-% Fieldplate Girdle	20	120	35	2600	GenArmor	WAIST	100	4	32
-% Fieldplate Leggings	20	120	25	2800	GenArmor	LEGS	0	18	0
-% Fieldplate Skirt	20	120	35	2800	GenArmor	LEGS	0	18	0
-% Fieldplate Leg Cannons	20	120	25	2800	GenArmor	LEGS	0	18	0
-% Fieldplate Boots	20	120	10	1640	GenArmor	FEET	25	4	8
-% Fieldplate Greaves	20	120	10	1640	GenArmor	FEET	0	4	0
-% Fieldplate Sabottons	20	120	10	1640	GenArmor	FEET	0	4	0
-% Fieldplate Shirt	20	120	55	3400	GenArmor	TORSO	0	27	0
-% Fullplate Collar	25	145	25	1620	GenArmor	NECK	0	5	0
-% Fullplate Mantle	25	145	25	3240	GenArmor	NECK	0	5	0
-% Fullplate Jacket	25	145	60	6800	GenArmor	TORSO	0	30	0
-% Fullplate Vest	25	145	55	6800	GenArmor	TORSO	0	30	0
-% Fullplate Hauberk	25	145	55	6800	GenArmor	TORSO	0	30	0
-% Fullplate Jerkin	25	145	60	6800	GenArmor	TORSO	0	30	0
-% Fullplate Coat	25	145	70	6800	GenArmor	TORSO	0	30	0
-% Fullplate Sleeves	25	145	30	5200	GenArmor	ARMS	0	10	0
-% Fullplate Armbands	25	145	20	5200	GenArmor	ARMS	0	10	0
-% Fullplate Rearbraces	25	145	15	5200	GenArmor	ARMS	0	10	0
-% Fullplate Upperarm Cannons	25	145	15	5200	GenArmor	ARMS	0	10	0
-% Fullplate Pauldrons	25	145	15	5200	GenArmor	ARMS	0	10	0
-% Fullplate Bracer	25	145	15	5200	GenArmor	LEFT WRIST||RIGHT WRIST	25	5	8
-% Fullplate Vambrace	25	145	15	5200	GenArmor	LEFT WRIST||RIGHT WRIST	25	5	8
-% Fullplate Lowerarm Cannon	25	145	15	5200	GenArmor	LEFT WRIST||RIGHT WRIST	25	5	8
-% Fullplate Gauntlets	25	145	15	5200	GenArmor	HANDS	0	5	0
-% Fullplate Locking Gauntlets	25	145	15	5200	GenArmor	HANDS	0	5	0
-% Fullplate Mitts	25	145	15	5200	GenArmor	HANDS	0	5	0
-% Fullplate Handguards	25	145	15	5200	GenArmor	HANDS	0	5	0
-% Fullplate Girdle	25	145	40	5000	GenArmor	WAIST	100	5	32
-% Fullplate Leggings	25	145	30	5000	GenArmor	LEGS	0	20	0
-% Fullplate Skirt	25	145	40	5000	GenArmor	LEGS	0	20	0
-% Fullplate Leg Cannons	25	145	30	5000	GenArmor	LEGS	0	20	0
-% Fullplate Boots	25	145	15	3280	GenArmor	FEET	25	5	8
-% Fullplate Greaves	25	145	15	3280	GenArmor	FEET	0	5	0
-% Fullplate Sabottons	25	145	15	3280	GenArmor	FEET	0	5	0
-% Fullplate Shirt	25	145	60	6800	GenArmor	TORSO	0	30	0
-% Knuckles 	6	50	10	110	GenArmor	HANDS	0	2	0
-Small % Shield	7	55	15	520	GenShield	HELD	0	5	0
-Large % Shield	25	145	35	7800	GenShield	HELD	0	10	0
+name,level,ticks,wood,value,class,misc,capacity,armordmg,contain,spell										
+% Cap	0	25	6	27	GenArmor	HEAD	0	3	0	
+% Helm	5	70	12	216	GenArmor	HEAD	0	6	0	
+% Helmet	12	100	16	512	GenArmor	HEAD	0	8	0	
+% Heaume	23	145	20	1000	GenArmor	HEAD	0	10	0	
+% Skullcap	1	50	8	64	GenArmor	HEAD	0	4	0	
+% Basinette	17	120	18	729	GenArmor	HEAD	0	9	0	
+Horned % Helm	3	55	10	125	GenArmor	HEAD	0	5	0	
+% Gorget	12	100	8	256	GenArmor	NECK	0	4	0	
+Heavy % Gorget	12	120	8	256	GenArmor	NECK	0	4	0	
+Embossed % Gorget	23	145	10	500	GenArmor	NECK	0	5	0	
+% Chainmail Collar	5	70	6	108	GenArmor	NECK	0	3	0	
+% Chainmail Mantle	5	70	6	108	GenArmor	NECK	0	3	0	
+% Chainmail Coif	5	70	12	216	GenArmor	HEAD	0	6	0	
+% Chainmail Shirt	5	70	36	648	GenArmor	TORSO	0	18	0	
+% Chainmail Jacket	5	70	54	972	GenArmor	TORSO&&ARMS	0	24	0	
+% Chainmail Vest	5	70	36	648	GenArmor	TORSO	0	18	0	
+% Chainmail Hauberk	5	70	54	972	GenArmor	TORSO&&ARMS	0	24	0	
+% Chainmail Jerkin	5	70	36	648	GenArmor	TORSO	0	18	0	
+% Chainmail Coat	5	70	48	682	GenArmor	BODY	0	24	0	
+% Chainmail Sleeves	5	70	18	324	GenArmor	ARMS	0	6	0	
+% Chainmail Cuffs	6	70	6	108	GenArmor	LEFT WRIST||RIGHT WRIST	25	3	8	
+% Chainmail Gloves	5	70	6	108	GenArmor	HANDS	0	3	0	
+% Chainmail Leggings	5	70	18	324	GenArmor	LEGS	0	12	0	
+% Chainmail Belt	9	70	6	108	GenArmor	WAIST	100	3	32	
+% Chainmail Skirt	5	70	18	324	GenArmor	LEGS	0	12	0	
+% Chainmail Socks	5	70	12	216	GenArmor	FEET	0	3	0	
+% Scalemail Collar	1	55	4	32	GenArmor	NECK	0	2	0	
+% Scalemail Mantle	1	55	4	32	GenArmor	NECK	0	2	0	
+% Scalemail Coif	3	55	10	125	GenArmor	HEAD	0	5	0	
+% Scalemail Shirt	3	55	30	375	GenArmor	TORSO	0	15	0	
+% Scalemail Jacket	3	55	45	562	GenArmor	TORSO&&ARMS	0	20	0	
+% Scalemail Vest	3	55	30	375	GenArmor	TORSO	0	15	0	
+% Scalemail Hauberk	3	55	45	562	GenArmor	TORSO&&ARMS	0	20	0	
+% Scalemail Jerkin	3	55	30	375	GenArmor	TORSO	0	15	0	
+% Scalemail Coat	3	55	44	525	GenArmor	BODY	0	22	0	
+% Scalemail Sleeves	3	55	15	187	GenArmor	ARMS	0	5	0	
+% Scalemail Cuffs	2	55	4	32	GenArmor	LEFT WRIST||RIGHT WRIST	25	2	8	
+% Scalemail Gloves	1	55	4	32	GenArmor	HANDS	0	2	0	
+% Scalemail Leggings	3	55	15	187	GenArmor	LEGS	0	10	0	
+% Scalemail Belt	5	55	4	32	GenArmor	WAIST	100	2	32	
+% Scalemail Skirt	3	55	15	187	GenArmor	LEGS	0	10	0	
+% Scalemail Socks	1	55	8	64	GenArmor	FEET	0	2	0	
+% Ringmail Collar	1	50	4	32	GenArmor	NECK	0	2	0	
+% Ringmail Mantle	1	50	4	32	GenArmor	NECK	0	2	0	
+% Ringmail Coif	1	50	8	64	GenArmor	HEAD	0	4	0	
+% Ringmail Shirt	1	50	24	192	GenArmor	TORSO	0	12	0	
+% Ringmail Jacket	1	50	36	288	GenArmor	TORSO&&ARMS	0	16	0	
+% Ringmail Vest	1	50	24	192	GenArmor	TORSO	0	12	0	
+% Ringmail Hauberk	1	50	36	288	GenArmor	TORSO&&ARMS	0	16	0	
+% Ringmail Jerkin	1	50	24	192	GenArmor	TORSO	0	12	0	
+% Ringmail Coat	1	50	36	288	GenArmor	BODY	0	18	0	
+% Ringmail Sleeves	1	50	12	96	GenArmor	ARMS	0	4	0	
+% Ringmail Cuffs	2	50	4	32	GenArmor	LEFT WRIST||RIGHT WRIST	25	2	8	
+% Ringmail Gloves	1	50	4	32	GenArmor	HANDS	0	2	0	
+% Ringmail Leggings	1	50	12	96	GenArmor	LEGS	0	8	0	
+% Ringmail Belt	5	50	4	32	GenArmor	WAIST	100	2	32	
+% Ringmail Skirt	1	50	12	96	GenArmor	LEGS	0	8	0	
+% Ringmail Socks	1	50	8	64	GenArmor	FEET	0	2	0	
+% Banded Collar	5	85	6	108	GenArmor	NECK	0	3	0	
+% Banded Mantle	5	85	6	108	GenArmor	NECK	0	3	0	
+% Banded Jacket	8	85	63	1543	GenArmor	TORSO&&ARMS	0	28	0	
+% Banded Vest	8	85	42	1029	GenArmor	TORSO	0	21	0	
+% Banded Hauberk	8	85	63	1543	GenArmor	TORSO&&ARMS	0	28	0	
+% Banded Jerkin	8	85	42	1029	GenArmor	TORSO	0	21	0	
+% Banded Coat	3	85	42	457	GenArmor	BODY	0	21	0	
+% Banded Sleeves	8	85	21	514	GenArmor	ARMS	0	7	0	
+% Banded Armbands	8	85	21	514	GenArmor	ARMS	0	7	0	
+% Banded Rearbraces	8	85	21	514	GenArmor	ARMS	0	7	0	
+% Banded Upperarm Cannons	8	85	21	514	GenArmor	ARMS	0	7	0	
+% Banded Pauldrons	8	85	21	514	GenArmor	ARMS	0	7	0	
+% Banded Bracer	6	85	6	108	GenArmor	LEFT WRIST||RIGHT WRIST	25	3	8	
+% Banded Vambrace	6	85	6	108	GenArmor	LEFT WRIST||RIGHT WRIST	25	3	8	
+% Banded Lowerarm Cannon	6	85	6	108	GenArmor	LEFT WRIST||RIGHT WRIST	25	3	8	
+% Banded Gauntlets	5	85	6	108	GenArmor	HANDS	0	3	0	
+% Banded Locking Gauntlets	8	85	6	108	GenArmor	HANDS	0	3	0	Prop_WearSpellCast;Spell_IronGrip
+% Banded Mitts	5	85	6	108	GenArmor	HANDS	0	3	0	
+% Banded Handguards	5	85	6	108	GenArmor	HANDS	0	3	0	
+% Banded Girdle	5	85	6	108	GenArmor	WAIST	0	3	0	
+% Banded Leggings	8	85	21	514	GenArmor	LEGS	0	14	0	
+% Banded Skirt	8	85	21	514	GenArmor	LEGS	0	14	0	
+% Banded Leg Cannons	8	85	21	514	GenArmor	LEGS	0	14	0	
+% Banded Boots	6	85	12	216	GenArmor	FEET	25	3	8	
+% Banded Greaves	5	85	12	216	GenArmor	FEET	0	3	0	
+% Banded Sabottons	5	85	12	216	GenArmor	FEET	0	3	0	
+% Banded Belt	9	85	6	108	GenArmor	WAIST	100	3	24	
+% Banded Shirt	8	85	42	1029	GenArmor	TORSO	0	21	0	
+% Platemail Collar	12	100	8	256	GenArmor	NECK	0	4	0	
+% Platemail Mantle	12	100	8	256	GenArmor	NECK	0	4	0	
+% Platemail Jacket	12	100	72	2304	GenArmor	TORSO&&ARMS	0	32	0	
+% Platemail Vest	12	100	48	1536	GenArmor	TORSO	0	24	0	
+% Platemail Hauberk	12	100	72	2304	GenArmor	TORSO&&ARMS	0	32	0	
+% Platemail Jerkin	12	100	48	1536	GenArmor	TORSO	0	24	0	
+% Platemail Coat	12	100	72	2304	GenArmor	BODY	0	36	0	
+% Platemail Sleeves	12	100	24	768	GenArmor	ARMS	0	8	0	
+% Platemail Armbands	12	100	24	768	GenArmor	ARMS	0	8	0	
+% Platemail Rearbraces	12	100	24	768	GenArmor	ARMS	0	8	0	
+% Platemail Upperarm Cannons	12	100	24	768	GenArmor	ARMS	0	8	0	
+% Platemail Pauldrons	12	100	24	768	GenArmor	ARMS	0	8	0	
+% Platemail Bracer	13	100	8	256	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8	
+% Platemail Vambrace	13	100	8	256	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8	
+% Platemail Lowerarm Cannon	13	100	8	256	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8	
+% Platemail Gauntlets	12	100	8	256	GenArmor	HANDS	0	4	0	
+% Platemail Locking Gauntlets	15	100	8	256	GenArmor	HANDS	0	4	0	Prop_WearSpellCast;Spell_IronGrip
+% Platemail Mitts	12	100	8	256	GenArmor	HANDS	0	4	0	
+% Platemail Handguards	12	100	8	256	GenArmor	HANDS	0	4	0	
+% Platemail Girdle	16	100	8	256	GenArmor	WAIST	100	4	32	
+% Platemail Leggings	12	100	24	768	GenArmor	LEGS	0	16	0	
+% Platemail Skirt	12	100	24	768	GenArmor	LEGS	0	16	0	
+% Platemail Leg Cannons	12	100	24	768	GenArmor	LEGS	0	16	0	
+% Platemail Boots	13	100	16	512	GenArmor	FEET	25	4	8	
+% Platemail Greaves	12	100	16	512	GenArmor	FEET	0	4	0	
+% Platemail Sabottons	12	100	16	512	GenArmor	FEET	0	4	0	
+% Platemail Shirt	12	100	48	1536	GenArmor	TORSO	0	24	0	
+% Fieldplate Collar	12	120	8	256	GenArmor	NECK	0	4	0	
+% Fieldplate Mantle	12	120	8	256	GenArmor	NECK	0	4	0	
+% Fieldplate Jacket	17	120	81	3280	GenArmor	TORSO&&ARMS	0	36	0	
+% Fieldplate Vest	17	120	54	2187	GenArmor	TORSO	0	27	0	
+% Fieldplate Hauberk	17	120	81	3280	GenArmor	TORSO&&ARMS	0	36	0	
+% Fieldplate Jerkin	17	120	54	2187	GenArmor	TORSO	0	27	0	
+% Fieldplate Coat	12	120	72	2304	GenArmor	BODY	0	36	0	
+% Fieldplate Sleeves	17	120	27	1093	GenArmor	ARMS	0	9	0	
+% Fieldplate Armbands	17	120	27	1093	GenArmor	ARMS	0	9	0	
+% Fieldplate Rearbraces	17	120	27	1093	GenArmor	ARMS	0	9	0	
+% Fieldplate Upperarm Cannons	17	120	27	1093	GenArmor	ARMS	0	9	0	
+% Fieldplate Pauldrons	17	120	27	1093	GenArmor	ARMS	0	9	0	
+% Fieldplate Bracer	13	120	8	256	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8	
+% Fieldplate Vambrace	13	120	8	256	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8	
+% Fieldplate Lowerarm Cannon	13	120	8	256	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8	
+% Fieldplate Gauntlets	12	120	8	256	GenArmor	HANDS	0	4	0	
+% Fieldplate Locking Gauntlets	15	120	8	256	GenArmor	HANDS	0	4	0	Prop_WearSpellCast;Spell_IronGrip
+% Fieldplate Mitts	12	120	8	256	GenArmor	HANDS	0	4	0	
+% Fieldplate Handguards	12	120	8	256	GenArmor	HANDS	0	4	0	
+% Fieldplate Girdle	16	120	8	256	GenArmor	WAIST	100	4	32	
+% Fieldplate Leggings	17	120	27	1093	GenArmor	LEGS	0	18	0	
+% Fieldplate Skirt	17	120	27	1093	GenArmor	LEGS	0	18	0	
+% Fieldplate Leg Cannons	17	120	27	1093	GenArmor	LEGS	0	18	0	
+% Fieldplate Boots	13	120	16	512	GenArmor	FEET	25	4	8	
+% Fieldplate Greaves	12	120	16	512	GenArmor	FEET	0	4	0	
+% Fieldplate Sabottons	12	120	16	512	GenArmor	FEET	0	4	0	
+% Fieldplate Shirt	17	120	54	2187	GenArmor	TORSO	0	27	0	
+% Fullplate Collar	23	145	10	500	GenArmor	NECK	0	5	0	
+% Fullplate Mantle	23	145	10	500	GenArmor	NECK	0	5	0	
+% Fullplate Jacket	23	145	90	4500	GenArmor	TORSO&&ARMS	0	40	0	
+% Fullplate Vest	23	145	60	3000	GenArmor	TORSO	0	30	0	
+% Fullplate Hauberk	23	145	90	4500	GenArmor	TORSO&&ARMS	0	40	0	
+% Fullplate Jerkin	23	145	60	3000	GenArmor	TORSO	0	30	0	
+% Fullplate Coat	23	145	90	4500	GenArmor	BODY	0	45	0	
+% Fullplate Sleeves	23	145	30	1500	GenArmor	ARMS	0	10	0	
+% Fullplate Armbands	23	145	30	1500	GenArmor	ARMS	0	10	0	
+% Fullplate Rearbraces	23	145	30	1500	GenArmor	ARMS	0	10	0	
+% Fullplate Upperarm Cannons	23	145	30	1500	GenArmor	ARMS	0	10	0	
+% Fullplate Pauldrons	23	145	30	1500	GenArmor	ARMS	0	10	0	
+% Fullplate Bracer	24	145	10	500	GenArmor	LEFT WRIST||RIGHT WRIST	25	5	8	
+% Fullplate Vambrace	24	145	10	500	GenArmor	LEFT WRIST||RIGHT WRIST	25	5	8	
+% Fullplate Lowerarm Cannon	24	145	10	500	GenArmor	LEFT WRIST||RIGHT WRIST	25	5	8	
+% Fullplate Gauntlets	23	145	10	500	GenArmor	HANDS	0	5	0	
+% Fullplate Locking Gauntlets	26	145	10	500	GenArmor	HANDS	0	5	0	Prop_WearSpellCast;Spell_IronGrip
+% Fullplate Mitts	23	145	10	500	GenArmor	HANDS	0	5	0	
+% Fullplate Handguards	23	145	10	500	GenArmor	HANDS	0	5	0	
+% Fullplate Girdle	27	145	10	500	GenArmor	WAIST	100	5	32	
+% Fullplate Leggings	23	145	30	1500	GenArmor	LEGS	0	20	0	
+% Fullplate Skirt	23	145	30	1500	GenArmor	LEGS	0	20	0	
+% Fullplate Leg Cannons	23	145	30	1500	GenArmor	LEGS	0	20	0	
+% Fullplate Boots	24	145	20	1000	GenArmor	FEET	25	5	8	
+% Fullplate Greaves	23	145	20	1000	GenArmor	FEET	0	5	0	
+% Fullplate Sabottons	23	145	20	1000	GenArmor	FEET	0	5	0	
+% Fullplate Shirt	23	145	60	3000	GenArmor	TORSO	0	30	0	
+% Knuckles 	6	50	4	32	GenArmor	HANDS	0	2	0	
+Small % Shield	7	55	15	187	GenShield	HELD	0	5	0	
+Large % Shield	25	145	30	1500	GenShield	HELD	0	10	0	

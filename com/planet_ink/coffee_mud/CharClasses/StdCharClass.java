@@ -66,6 +66,7 @@ public class StdCharClass implements CharClass, Cloneable
 			CMAble.addCharAbilityMapping("All",10,"Masonry",false);
 			CMAble.addCharAbilityMapping("All",30,"MasterTailoring",false);
 			CMAble.addCharAbilityMapping("All",30,"MasterWeaponsmithing",false);
+			CMAble.addCharAbilityMapping("All",30,"MasterArmorsmithing",false);
 			CMAble.addCharAbilityMapping("All",20,"Merchant",false);
 			CMAble.addCharAbilityMapping("All",1,"Mining",false);
 			CMAble.addCharAbilityMapping("All",5,"Painting",false);

@@ -332,6 +332,8 @@ public class StdRoom
 
 	public void toggleMobility(boolean onoff){mobility=onoff;}
 	public boolean getMobility(){return mobility;}
+	
+	protected Vector herbTwistChart(){return null;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -379,6 +381,7 @@ public class StdRoom
 		if(isInhabitant(msg.source()))
 			if(!msg.source().okMessage(this,msg))
 				return false;
+			
 		for(int i=0;i<numInhabitants();i++)
 		{
 			MOB inhab=fetchInhabitant(i);

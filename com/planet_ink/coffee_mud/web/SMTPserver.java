@@ -336,35 +336,8 @@ public class SMTPserver extends Thread implements Tickable
 	
 	public Hashtable getMailingLists(Hashtable oldH)
 	{
-		if(oldH==null)
-		{
-			oldH=new Hashtable();
-			Vector V=new Vector();
-			try{
-				V=Resources.getFileLineVector(Resources.getFile("resources"+File.separatorChar+"mailinglists.txt"));
-			}catch(Exception e){}
-			if((V!=null)&&(V.size()>0))
-			{
-				String journal="";
-				Vector set=new Vector();
-				for(int v=0;v<V.size();v++)
-				{
-					String s=(String)V.elementAt(v);
-					if(s.trim().length()==0)
-						journal="";
-					else
-					if(journal.length()==0)
-					{
-						journal=s;
-						set=new Vector();
-						oldH.put(journal,set);
-					}
-					else
-						set.addElement(s);
-				}
-			}
-		}
-		return oldH;
+		if(oldH!=null) return oldH;
+		return Resources.getMultiLists("mailinglists.txt");
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
@@ -528,18 +501,7 @@ public class SMTPserver extends Thread implements Tickable
 			lastAllProcessing=System.currentTimeMillis();
 			if((updatedMailingLists)&&(lists!=null))
 			{
-				StringBuffer str=new StringBuffer("");
-				for(Enumeration e=lists.keys();e.hasMoreElements();)
-				{
-					String ml=(String)e.nextElement();
-					Vector V=(Vector)lists.get(ml);
-					str.append(ml+"\r\n");
-					if(V!=null)
-					for(int v=0;v<V.size();v++)
-						str.append(((String)V.elementAt(v))+"\r\n");
-					str.append("\r\n");
-				}
-				Resources.saveFileResource("mailinglists.txt",str);
+				Resources.updateMultiList("mailinglists.txt",lists);
 				updatedMailingLists=false;
 			}
 		}

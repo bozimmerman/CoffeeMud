@@ -77,10 +77,29 @@ public class Prop_Retainable extends Property
 						last=System.currentTimeMillis();
 						miscText=price+";"+periodic+";"+last;
 						LandTitle t=CoffeeUtensils.getLandTitle(mob.location());
-						if((t==null)||(t.landOwner().length()==0)
-						||((mob.amFollowing()!=null)&&(!CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+						String owner="";
+						if(mob.amFollowing()!=null)
 						{
-							CommonMsgs.say(mob,null,"I can't work just anywhere!  I quit!",false,false);
+							owner=mob.amFollowing().Name();
+							if((t!=null)
+							&&(t.landOwner().length()>0)
+							&&(!t.landOwner().equalsIgnoreCase(mob.amFollowing().Name()))
+							&&(!t.landOwner().equalsIgnoreCase(mob.amFollowing().getClanID())))
+							{
+								CommonMsgs.say(mob,null,"Hey, I'm not a crook!",false,false);
+								mob.setFollowing(null);
+								MUDTracker.wanderAway(mob,true,false);
+								mob.destroy();
+								return false;
+							}
+						}
+						else
+						if((t!=null)&&(t.landOwner().length()>0))
+							owner=t.landOwner();
+						
+						if(owner.length()==0)
+						{
+							CommonMsgs.say(mob,null,"Argh! I quit!",false,false);
 							mob.setFollowing(null);
 							MUDTracker.wanderAway(mob,true,false);
 							mob.destroy();
@@ -88,7 +107,6 @@ public class Prop_Retainable extends Property
 						}
 						else
 						{
-							String owner=t.landOwner();
 							Vector V=CMClass.DBEngine().DBReadAllPlayerData(owner);
 							boolean paid=false;
 							for(int v=0;v<V.size();v++)

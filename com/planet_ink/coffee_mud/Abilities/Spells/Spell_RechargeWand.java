@@ -36,9 +36,26 @@ public class Spell_RechargeWand extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s) brightly!");
-
-				((Item)target).setUsesRemaining(((Item)target).usesRemaining()+5);
+				if((((Wand)target).usesRemaining()+5) >= ((Wand)target).maxUses()) 
+				{
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s) brightly then disintigrates!");
+					target.destroy();
+				}
+                else 
+				{
+                    boolean willBreak = false;
+                    if((((Wand)target).usesRemaining()+10) >= ((Wand)target).maxUses())
+                        willBreak = true;
+					((Wand)target).setUsesRemaining(((Wand)target).usesRemaining()+5);
+                    if(!(willBreak)) 
+					{
+                        mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-NAME> glow(s) brightly!");
+                    }
+                    else 
+					{
+                        mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-NAME> glow(s) brightly and begins to hum.  It clearly cannot hold more magic.");
+                    }
+				}
 			}
 
 		}

@@ -11,4 +11,6 @@ public interface Wand extends MiscMagic
 	public String magicWord();
 	public void setSpell(Ability theSpell);
 	public Ability getSpell();
+    public int maxUses();
+    public void setMaxUses(int maxUses);
 }

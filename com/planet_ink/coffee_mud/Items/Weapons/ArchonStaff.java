@@ -34,6 +34,9 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 			theWand=(Wand)CMClass.getMiscMagic("StdWand");
 	}
 
+	public int maxUses(){return Integer.MAX_VALUE;}
+	public void setMaxUses(int newMaxUses){}
+	
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);

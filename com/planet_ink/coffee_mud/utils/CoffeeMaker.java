@@ -347,6 +347,9 @@ public class CoffeeMaker
 		if(E instanceof Light)
 			text.append(XMLManager.convertXMLtoTag("BURNOUT",((Light)E).destroyedWhenBurnedOut()));
 		
+		if(E instanceof Wand)
+			text.append(XMLManager.convertXMLtoTag("MAXUSE",((Wand)E).maxUses()));
+		
 		if(E instanceof Rideable)
 		{
 			text.append(XMLManager.convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
@@ -1655,6 +1658,13 @@ public class CoffeeMaker
 				((Light)E).setDestroyedWhenBurntOut(Util.s_bool(bo));
 		}
 
+		if(E instanceof Wand)
+		{
+			String bo=XMLManager.getValFromPieces(buf,"MAXUSE");
+			if((bo!=null)&&(bo.length()>0))
+				((Wand)E).setMaxUses(Util.s_int(bo));
+		}
+		
 		if(E instanceof LandTitle)
 			((LandTitle)E).setLandPropertyID(XMLManager.getValFromPieces(buf,"LANDID"));
 

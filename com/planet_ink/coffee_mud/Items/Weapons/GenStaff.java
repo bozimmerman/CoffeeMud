@@ -33,6 +33,10 @@ public class GenStaff extends GenWeapon implements Wand
 		recoverEnvStats();
 	}
 
+	protected int maxUses=Integer.MAX_VALUE;
+	public int maxUses(){return maxUses;}
+	public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
+	
 	public boolean isGeneric(){return true;}
 
 	public boolean useTheWand(Ability A, MOB mob)

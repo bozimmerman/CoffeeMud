@@ -667,7 +667,7 @@ public class BaseGenerics extends StdCommand
 
 				if((showFlag!=showNumber)&&(showFlag>-999)) return;
 				String newName=null;
-				
+
 				if((E instanceof Wand)
 				||(E instanceof Scroll)
 				||((E instanceof Pill)&&(!(CMClass.className(E).endsWith("SuperPill"))))
@@ -1212,6 +1212,15 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". Uses Remaining: '"+E.usesRemaining()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setUsesRemaining(getNumericData(mob,"Enter a new value\n\r:",E.usesRemaining()));
+	}
+
+	public static void genMaxUses(MOB mob, Wand E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Maximum Uses: '"+E.maxUses() +"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		E.setMaxUses(getNumericData(mob,"Enter a new value\n\r:",E.maxUses()));
 	}
 
 	public static void genCondition(MOB mob, Item E, int showNumber, int showFlag)
@@ -2969,7 +2978,7 @@ public class BaseGenerics extends StdCommand
 		StringBuffer str=new StringBuffer("");
 		for(int v=0;v<set.size();v++)
 			str.append(" "+Weapon.classifictionDescription[Util.s_int((String)set.elementAt(v))].toLowerCase());
-		
+
 		mob.tell(showNumber+". "+FieldDisp+": '"+str.toString()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="?";
@@ -4161,7 +4170,7 @@ public class BaseGenerics extends StdCommand
 		while(!ok)
 		{
 			int showNumber=0;
-			
+
 			genText(mob,me,++showNumber,showFlag,"Name","NAME");
 			genText(mob,me,++showNumber,showFlag,"Base Class","BASE");
 			genBool(mob,me,++showNumber,showFlag,"Player Class","PLAYER");
@@ -4269,6 +4278,8 @@ public class BaseGenerics extends StdCommand
 			genRejuv(mob,me,++showNumber,showFlag);
 			genAbility(mob,me,++showNumber,showFlag);
 			genUses(mob,me,++showNumber,showFlag);
+			if(me instanceof Wand)
+				genMaxUses(mob,(Wand)me,++showNumber,showFlag);
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
@@ -4550,6 +4561,8 @@ public class BaseGenerics extends StdCommand
 			{
 				genReadable1(mob,me,++showNumber,showFlag);
 				genReadable2(mob,me,++showNumber,showFlag);
+				genUses(mob,me,++showNumber,showFlag);
+				genMaxUses(mob,(Wand)me,++showNumber,showFlag);
 				if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			}
 			else

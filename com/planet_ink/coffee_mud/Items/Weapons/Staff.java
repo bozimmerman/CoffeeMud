@@ -31,6 +31,9 @@ public class Staff extends StdWeapon implements Wand
 		weaponClassification=Weapon.CLASS_STAFF;
 	}
 
+	public int maxUses(){return Integer.MAX_VALUE;}
+	public void setMaxUses(int newMaxUses){}
+	
 	public String magicWord()
 	{
 		return secretWord;

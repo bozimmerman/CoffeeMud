@@ -103,6 +103,25 @@ public class Foraging extends CommonSkill
 		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) foraging.");
 		if(mob.location().okMessage(mob,msg))
 		{
+			// herb/locale customisation for jeremy
+			if((found.material()==EnvResource.RESOURCE_HERBS)
+			&&((found.Name().toUpperCase().endsWith(" HERBS"))
+			   ||(found.Name().equalsIgnoreCase("herbs"))))
+			{
+				Hashtable H=(Hashtable)Resources.getResource("HERB_LOCALE_MAP");
+				if(H==null)
+				{
+					H=Resources.getMultiLists("skills"+java.io.File.separatorChar+"herbs.txt");
+					if(H!=null)
+						Resources.submitResource("HERB_LOCALE_MAP",H);
+				}
+				if(H!=null)
+				{
+					Vector V=(Vector)H.get(mob.location().ID());
+					if((V!=null)&&(V.size()>0))
+						found.setSecretIdentity((String)V.elementAt(Dice.roll(1,V.size(),-1)));
+				}
+			}
 			mob.location().send(mob,msg);
 			found=(Item)msg.target();
 			beneficialAffect(mob,mob,duration);

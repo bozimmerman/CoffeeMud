@@ -9,6 +9,7 @@ public class GenWand extends GenItem implements Wand
 {
 	public String ID(){	return "GenWand";}
 	private String secretWord=StdWand.words[Dice.roll(1,StdWand.words.length,0)-1];
+	
 	public GenWand()
 	{
 		super();
@@ -28,6 +29,10 @@ public class GenWand extends GenItem implements Wand
 
 	public boolean isGeneric(){return true;}
 
+	protected int maxUses=Integer.MAX_VALUE;
+	public int maxUses(){return maxUses;}
+	public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
+	
 	public boolean useTheWand(Ability A, MOB mob)
 	{
 		return new StdWand().useTheWand(A,mob);

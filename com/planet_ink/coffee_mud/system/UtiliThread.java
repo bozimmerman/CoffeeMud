@@ -216,6 +216,11 @@ public class UtiliThread extends Thread
 		started=true;
 		
 		// now start the thread
+		while(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		{ 
+			try{Thread.sleep(2000);}catch(Exception e){}
+		}
+		
 		while(true)
 		{
 			try

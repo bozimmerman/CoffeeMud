@@ -26,6 +26,9 @@ public class StdWand extends StdItem implements Wand
 		recoverEnvStats();
 	}
 
+	public int maxUses(){return Integer.MAX_VALUE;}
+	public void setMaxUses(int newMaxUses){}
+	
 	public boolean useTheWand(Ability A, MOB mob)
 	{
 		int manaRequired=5;

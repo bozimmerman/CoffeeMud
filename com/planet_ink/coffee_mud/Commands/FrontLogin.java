@@ -58,7 +58,9 @@ public class FrontLogin extends StdCommand
 
 	private static boolean isOkName(String login)
 	{
-		if(login.length()>20) return false;
+        if(login.length()>20) return false;
+        if(login.length()<3) return false;
+
 		if(login.trim().indexOf(" ")>=0) return false;
 
 		login=login.toUpperCase().trim();

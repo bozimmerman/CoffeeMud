@@ -116,7 +116,7 @@ public class Prop_WearEnabler extends Property
 		{
 			myItem=(Item)affectedMOB;
 
-			boolean worn=myItem.amWearingAt(Item.INVENTORY)
+			boolean worn=(!myItem.amWearingAt(Item.INVENTORY))
 			&&((!myItem.amWearingAt(Item.FLOATING_NEARBY))||(myItem.fitsOn(Item.FLOATING_NEARBY)));
 			
 			if((lastMOB!=null)

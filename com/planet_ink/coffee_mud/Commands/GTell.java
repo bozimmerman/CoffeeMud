@@ -47,10 +47,8 @@ public class GTell extends StdCommand
 			if((mob.location().okMessage(mob,msg))
 			&&(target.okMessage(target,msg)))
 			{
-				if(mob.playerStats()!=null) 
-					mob.playerStats().addGTellStack(Util.replaceAll(msg.sourceMessage(),"<S-NAME>",mob.name()));
-				if((target!=mob)&&(target.playerStats()!=null))
-					target.playerStats().addGTellStack(Util.replaceAll(msg.sourceMessage(),"<S-NAME>",mob.name()));
+				if(target.playerStats()!=null)
+					target.playerStats().addGTellStack(CoffeeFilter.fullOutFilter(target.session(),target,mob,target,null,msg.sourceMessage(),false));
 				target.executeMsg(target,msg);
 				if(msg.trailerMsgs()!=null)
 				{
