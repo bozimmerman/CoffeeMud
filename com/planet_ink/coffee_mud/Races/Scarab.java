@@ -57,7 +57,7 @@ public class Scarab extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("some "+name.toLowerCase()+" pincers",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -95,7 +95,7 @@ public class Bird extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" feet",EnvResource.RESOURCE_BONE));
+				("some "+name.toLowerCase()+" brains",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
 				("some "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
 				resources.addElement(makeResource

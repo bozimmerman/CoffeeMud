@@ -89,7 +89,15 @@ public class Wyvern extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("a "+name.toLowerCase()+" tail",EnvResource.RESOURCE_BONE));
+				for(int i=0;i<5;i++)
+					resources.addElement(makeResource
+					("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+				for(int i=0;i<10;i++)
+					resources.addElement(makeResource
+					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

@@ -92,7 +92,13 @@ public class Snake extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("a pair of "+name.toLowerCase()+" fangs",EnvResource.RESOURCE_SCALES));
+				resources.addElement(makeResource
+				("a "+name.toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

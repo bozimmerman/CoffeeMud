@@ -34,8 +34,18 @@ public class Gorilla extends Monkey
 		{
 			if(resources.size()==0)
 			{
+				for(int i=0;i<3;i++)
+					resources.addElement(makeResource
+					("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("an "+name.toLowerCase()+" nose",EnvResource.RESOURCE_HIDE));
+				for(int i=0;i<3;i++)
+					resources.addElement(makeResource
+					("a pound of "+name.toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

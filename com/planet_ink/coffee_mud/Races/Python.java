@@ -23,8 +23,14 @@ public class Python extends Snake
 		{
 			if(resources.size()==0)
 			{
+				for(int i=0;i<5;i++)
+					resources.addElement(makeResource
+					("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+				for(int i=0;i<3;i++)
+					resources.addElement(makeResource
+					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

@@ -25,7 +25,9 @@ public class Kitten extends Cat
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("a "+name.toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

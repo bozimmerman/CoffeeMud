@@ -90,7 +90,7 @@ public class Turtle extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("a "+name.toLowerCase()+" shell",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

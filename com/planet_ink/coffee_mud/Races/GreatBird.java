@@ -85,8 +85,9 @@ public class GreatBird extends StdRace
 		{
 			if(resources.size()==0)
 			{
-				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+				for(int i=0;i<2;i++)
+					resources.addElement(makeResource
+					("a pile of "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
 				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
 				resources.addElement(makeResource

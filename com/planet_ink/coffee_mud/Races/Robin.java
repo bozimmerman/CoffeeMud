@@ -21,7 +21,7 @@ public class Robin extends Bird
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" beak",EnvResource.RESOURCE_BONE));
+				("a pair of "+name.toLowerCase()+" feet",EnvResource.RESOURCE_BONE));
 				resources.addElement(makeResource
 				("some "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
 				resources.addElement(makeResource

@@ -77,7 +77,9 @@ public class Doll extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("some "+name.toLowerCase()+" clothes",EnvResource.RESOURCE_COTTON));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" parts",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

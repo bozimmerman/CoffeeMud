@@ -40,7 +40,17 @@ public class Minotaur extends Cow
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("a pair of "+name.toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
+				for(int i=0;i<10;i++)
+					resources.addElement(makeResource
+					("a strip of "+name.toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
+				for(int i=0;i<2;i++)
+					resources.addElement(makeResource
+					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

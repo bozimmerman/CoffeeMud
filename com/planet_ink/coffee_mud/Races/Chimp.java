@@ -39,7 +39,7 @@ public class Chimp extends Monkey
 				resources.addElement(makeResource
 				("some "+name.toLowerCase()+" toes",EnvResource.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name.toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
 				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource

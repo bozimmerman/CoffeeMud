@@ -56,7 +56,7 @@ public class Grasshopper extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("a pair of "+name.toLowerCase()+" legs",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

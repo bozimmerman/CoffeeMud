@@ -56,7 +56,7 @@ public class Centipede extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("some "+name.toLowerCase()+" legs",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

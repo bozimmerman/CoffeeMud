@@ -93,7 +93,11 @@ public class Giant extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("some "+name.toLowerCase()+" hairs",EnvResource.RESOURCE_FUR));
+				resources.addElement(makeResource
+				("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

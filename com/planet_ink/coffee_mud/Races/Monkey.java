@@ -81,7 +81,7 @@ public class Monkey extends StdRace
 				resources.addElement(makeResource
 				("some "+name.toLowerCase()+" fingers",EnvResource.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name.toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
 				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource

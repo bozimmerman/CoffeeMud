@@ -52,7 +52,7 @@ public class Cub extends Bear
 				resources.addElement(makeResource
 				("some "+name.toLowerCase()+" paws",EnvResource.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
 				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource

@@ -83,8 +83,16 @@ public class Sheep extends StdRace
 		{
 			if(resources.size()==0)
 			{
+				for(int i=0;i<10;i++)
+					resources.addElement(makeResource
+					("some "+name.toLowerCase()+" wool",EnvResource.RESOURCE_WOOL));
+				for(int i=0;i<3;i++)
+					resources.addElement(makeResource
+					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MUTTON));
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

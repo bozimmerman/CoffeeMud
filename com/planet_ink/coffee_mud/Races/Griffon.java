@@ -30,7 +30,16 @@ public class Griffon extends GreatBird
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("some greasy "+name.toLowerCase()+" claws",EnvResource.RESOURCE_BONE));
+				for(int i=0;i<2;i++)
+					resources.addElement(makeResource
+					("some dirty "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

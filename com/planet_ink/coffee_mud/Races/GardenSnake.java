@@ -11,6 +11,7 @@ public class GardenSnake extends Snake
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Garden Snake";
 	}
+
 	public Vector myResources()
 	{
 		synchronized(resources)
@@ -18,7 +19,11 @@ public class GardenSnake extends Snake
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("a "+name.toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

@@ -97,7 +97,15 @@ public class Rabbit extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("a "+name.toLowerCase()+" foot",EnvResource.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

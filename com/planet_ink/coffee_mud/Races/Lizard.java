@@ -105,7 +105,11 @@ public class Lizard extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("a "+name.toLowerCase()+" tongue",EnvResource.RESOURCE_SCALES));
+				resources.addElement(makeResource
+				("a "+name.toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

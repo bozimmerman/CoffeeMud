@@ -67,7 +67,7 @@ public class Unique extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
+				("a "+name.toLowerCase()+" internal organ",EnvResource.RESOURCE_MEAT));
 			}
 		}
 		return resources;
