@@ -9,7 +9,7 @@ import java.util.*;
 public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfaces.Map
 {
 	public String ID(){	return "StdMap";}
-	protected StringBuffer myMap=null;
+	protected StringBuffer[][] myMap=null;
 	protected int oldLevel=0;
 
 	public StdMap()
@@ -192,25 +192,50 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		return mapRooms;
 	}
 	
-	public StringBuffer finishMapMaking()
+	
+	public StringBuffer[][] finishMapMaking()
 	{
 		Vector mapRooms=makeMapRooms();
-		StringBuffer map=new StringBuffer("");
+		StringBuffer[][] map=new StringBuffer[0][0];
 		if(mapRooms.size()>0)
 		{
 			placeRooms(mapRooms);
 			MapRoom[][] grid=rebuildGrid(mapRooms);
-			if(grid.length>0)
+			if((grid.length==0)||(grid[0].length==0))
+				return map;
+			int ysize=grid[0].length/5;
+			int xsize=grid.length/9;
+			map=new StringBuffer[xsize+1][ysize+1];
 			for(int y=0;y<grid[0].length;y++)
 			{
+				int ycoord=y/5;
+				int lastX=-1;
 				String line1="";
 				String line2="";
 				String line3="";
 				String line4="";
 				String line5="";
 				String line6="";
+				int xcoord=-1;
 				for(int x=0;x<grid.length;x++)
 				{
+					xcoord=x/9;
+					if(xcoord!=lastX)
+					{
+						if(lastX>=0)
+						{
+							if(map[lastX][ycoord]==null)
+								map[lastX][ycoord]=new StringBuffer("");
+							map[lastX][ycoord].append(line1+"\n\r"+line2+"\n\r"+line3+"\n\r"+line4+"\n\r"+line5+"\n\r"+line6+"\n\r");
+						}
+						lastX=xcoord;
+						line1="";
+						line2="";
+						line3="";
+						line4="";
+						line5="";
+						line6="";
+					}
 					MapRoom room=grid[x][y];
 					if(room==null)
 					{
@@ -232,13 +257,22 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 						line6+="---"+dirChar(Directions.SOUTH,grid,x,y)+"----";
 					}
 				}
-				map.append(line1+"\n\r"+line2+"\n\r"+line3+"\n\r"+line4+"\n\r"+line5+"\n\r"+line6+"\n\r");
+				if(xcoord>=0)
+				{
+					if(map[xcoord][ycoord]==null)
+						map[xcoord][ycoord]=new StringBuffer("");
+					map[xcoord][ycoord].append(line1+"\n\r"+line2+"\n\r"+line3+"\n\r"+line4+"\n\r"+line5+"\n\r"+line6+"\n\r");
+				}
 			}
 		}
+		for(int x=0;x<map.length;x++)
+			for(int y=0;y<map[x].length;y++)
+				if(map[x][y]==null) map[x][y]=new StringBuffer("");
 		return map;
 	}
 	
-	public StringBuffer getMyMappedRoom()
+	
+	public StringBuffer[][] getMyMappedRoom()
 	{
 		if(oldLevel!=envStats().level())
 		{
@@ -250,8 +284,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 			return myMap;
 
 		Object o=Resources.getResource("map"+envStats().level()+":"+getMapArea());
-		if((o!=null)&&(o instanceof StringBuffer))
-			myMap=(StringBuffer)o;
+		if((o!=null)&&(o instanceof StringBuffer[][]))
+			myMap=(StringBuffer[][])o;
 
 		if(myMap!=null)
 			return myMap;
@@ -494,10 +528,56 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		case Affect.TYP_READSOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
-				StringBuffer map=this.getMyMappedRoom();
-
-				if((isReadable)&&(map!=null)&&(!mob.isMonster()))
-					mob.session().rawPrint(map.toString());
+				StringBuffer map[][]=getMyMappedRoom();
+				if((isReadable)
+				&&(map!=null)
+				&&(map.length>0)
+				&&(map[0].length>0)
+				&&(!mob.isMonster()))
+				{
+					int x=0;
+					int y=0;
+					String sec="A0";
+					if((affect.targetMessage().length()>0)&&(!affect.targetMessage().startsWith("<S-NAME>")))
+					{
+						sec="";
+						boolean trans=false;
+						for(int i=0;i<affect.targetMessage().length();i++)
+						{
+							char c=affect.targetMessage().charAt(i);
+							if(Character.isDigit(c))
+							{
+								trans=true;
+								y=(y*10)+Util.s_int(""+c);
+							}
+							else
+							if(Character.isLetter(c)&&(!trans))
+							{
+								x=(x*10)+(Character.toUpperCase(c)-'A');
+								sec=sec+Character.toUpperCase(c);
+							}
+						}
+						sec+=y;
+					}
+					if((x>=map.length)||(y>=map[0].length))
+					{
+						x=0;
+						y=0;
+						sec="A0";
+					}
+					if((map.length>1)||(map[0].length>1))
+						mob.session().rawPrintln("Section: "+sec);
+					mob.session().rawPrint(map[x][y].toString());
+					if((map.length>1)||(map[0].length>1))
+					{
+						String letsec="A";
+						if(map.length>25)
+							for(int l=0;l<map.length/26;l++)
+								letsec+='Z';
+						letsec=letsec.substring(0,letsec.length()-1)+((char)((((int)'A')+map.length%26)-1));
+						mob.session().rawPrintln("("+sec+") Use 'READ SEC MAPNAME' to read sections A0 through "+letsec+(map[0].length-1)+" (A-"+letsec+", 0-"+(map[0].length-1)+").");
+					}
+				}
 				else
 					mob.tell(name()+" appears to be blank.");
 			}
@@ -507,6 +587,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		}
 		super.affect(myHost,affect);
 	}
+	
     public void placeRoom(MapRoom room,
 							int favoredX,
 							int favoredY,

@@ -29,7 +29,7 @@ public class BardMap extends GenMap
 		myMap=null;
 	}
 
-	public StringBuffer getMyMappedRoom()
+	public StringBuffer[][] getMyMappedRoom()
 	{
 		if(myMap!=null)	return myMap;
 		myMap=finishMapMaking();
