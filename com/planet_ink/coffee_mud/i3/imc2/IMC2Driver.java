@@ -271,18 +271,6 @@ public final class IMC2Driver extends Thread {
         return true;
     }
 
-    final public void ev_keepalive(Object param)
-    {
-        imc_send_keepalive();
-        imc_register_call_out(150, "ev_keepalive", null);
-    }
-
-    public void ev_request_keepalive(Object param)
-    {
-        imc_request_keepalive();
-        //imc_register_call_out(25, "ev_keepalive", null);
-    }
-
     /* start up IMC */
     final boolean imc_startup_network() {
         if (imc_active != IA_CONFIG2) {
@@ -1290,8 +1278,11 @@ public final class IMC2Driver extends Thread {
         }
 
         if (p.type.equals("keepalive-request")) {
-            tracef(8, "Keepalive request received from " + p.i.from);
-            imc_send_keepalive();
+            tracef(0, "Keepalive request received from " + p.i.from);
+			String from=p.i.from;
+			int x=from.indexOf("@");
+			if(x>0) from=from.substring(x+1);
+            imc_send_keepalive(from);
         }
 
         if (p.type.equals("who-reply")) {
@@ -1365,8 +1356,29 @@ public final class IMC2Driver extends Thread {
                 }
             }
         }
-        catch (Exception e) {
+        catch (Exception e) 
+		{
 			Log.errOut("IMC2Driver", "read: "+e.getMessage());
+			if(e.getMessage().toUpperCase().indexOf("CONNECTION")>=0)
+			{
+				imc_active = IA_NONE;
+				tracef(0, "Waiting 20 seconds and try to reconnect.");
+				try 
+				{
+				    sleep(20000);
+				}
+				catch (Exception ex) {}
+				this.imc_startup(true,
+								 imc_name,
+								 imc_siteinfo.host,
+								 imc_siteinfo.email,
+								 imc_siteinfo.www,
+								 this_imcmud.hubname,
+								 this_imcmud.port,
+								 this_imcmud.clientpw,
+								 this_imcmud.serverpw,
+								 buildChannelMap());
+			}
         }
     }
 
@@ -1401,7 +1413,7 @@ public final class IMC2Driver extends Thread {
     }
 
     /* send a keepalive to everyone */
-    final public void imc_send_keepalive() {
+    final public void imc_send_keepalive(String reqFrom) {
         PACKET out = new PACKET();
 
         if (imc_active < IA_UP)
@@ -1410,7 +1422,7 @@ public final class IMC2Driver extends Thread {
         imc_initdata(out);
         out.type = "is-alive";
         out.from = "*";
-        out.to = "*@*";
+        out.to = "*@"+reqFrom;
         imc_addkey(out, "versionid", IMC_VERSIONID);
         imc_addkey(out, "networkname", this_imcmud.network);
         if (imc_siteinfo.flags != null && imc_siteinfo.flags != "")

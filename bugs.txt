@@ -1,8 +1,8 @@
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
+prop_hereadjuster
 I can fletch a quiver of 500 arrows. Tells me that I need to put metal down first, even though there`s 500+ mithril and 3000+ adamantite available....
 test innkeepers
 test randmonmonster locale restrictions
-
 
 Skills:
 	soap recipe ash lime internal oragans.
