@@ -2,4 +2,5 @@ mutable racial body parts, with ability to grant powers. items to wear on custom
 Install ship battery
 Injury -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.
 ability to deposit a container and its contents.
+we'd need a slavetrading skill, and the ability to have the mob items "grow up" in the shopkeepers care, and we'd need some way to transfer ownership (make them serve, etc) when you buy them.
 document real estate, space ship selling, genairlock

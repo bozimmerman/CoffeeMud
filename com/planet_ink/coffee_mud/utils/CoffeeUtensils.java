@@ -653,10 +653,7 @@ public class CoffeeUtensils
 		
 		CMClass.DBEngine().DBDeleteMOB(deadMOB);
 		if(deadMOB.session()!=null)
-		{
 			deadMOB.session().setKillFlag(true);
-			deadMOB.session().setMob(null);
-		}
 		Log.sysOut("Scoring",deadMOB.name()+" has been deleted.");
 	}
 
