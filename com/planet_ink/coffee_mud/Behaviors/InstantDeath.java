@@ -49,7 +49,8 @@ public class InstantDeath extends ActiveTicker
 			{
 				MOB mob=(MOB)ticking;
 				Room room=mob.location();
-				killEveryoneHere(mob,mob.location());
+				if(room!=null)
+					killEveryoneHere(mob,room);
 			}
 			else
 			if(ticking instanceof Item)

@@ -360,9 +360,9 @@ public class Quests implements Cloneable, Quest
 									else
 									if(CoffeeUtensils.containsString(mname,mobName))
 									{
-										if((choices==null)||(choices==choices3))
-											choices=choices2;
-										choices2.addElement(M2);
+										if((choices==null)||(choices==choices2)||(choices==choices3))
+											choices=choices1;
+										choices1.addElement(M2);
 									}
 									else
 									if(CoffeeUtensils.containsString(mdisp,mobName))
@@ -439,9 +439,9 @@ public class Quests implements Cloneable, Quest
 									else
 									if(CoffeeUtensils.containsString(iname,itemName))
 									{
-										if((choices==null)||(choices==choices3))
-											choices=choices2;
-										choices2.addElement(I2);
+										if((choices==null)||(choices==choices2)||(choices==choices3))
+											choices=choices1;
+										choices1.addElement(I2);
 									}
 									else
 									if(CoffeeUtensils.containsString(idisp,itemName))

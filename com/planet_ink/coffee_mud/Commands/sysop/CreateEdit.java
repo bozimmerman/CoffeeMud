@@ -419,7 +419,6 @@ public class CreateEdit
 
 				if(thang!=null)
 				{
-					boolean showOnly=false;
 					Generic.genMiscText(mob,thang,1,1);
 					thang.recoverEnvStats();
 					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)

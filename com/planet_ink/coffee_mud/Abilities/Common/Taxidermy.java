@@ -57,7 +57,6 @@ public class Taxidermy extends CommonSkill
 			commonTell(mob,"You don't see anything called '"+str+"' here.");
 			return false;
 		}
-		boolean okMaterial=true;
 		foundShortName=I.name();
 		if((!(I instanceof DeadBody))||(I.rawSecretIdentity().indexOf("/")<0))
 		{

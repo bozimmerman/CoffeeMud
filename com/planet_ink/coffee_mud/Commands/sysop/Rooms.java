@@ -158,7 +158,6 @@ public class Rooms
 		if(mob.location().getArea()==null) return;
 		Area myArea=mob.location().getArea();
 
-		boolean showOnly=false;
 		String oldName=myArea.name();
 		Resources.removeResource("HELP_"+myArea.name().toUpperCase());
 		if(commands.size()==2)
@@ -322,7 +321,6 @@ public class Rooms
 	public static void modify(MOB mob, Vector commands)
 		throws Exception
 	{
-		boolean showOnly=false;
 		if(mob.location().ID().equals(""))
 		{
 			mob.tell("This command is invalid from within a GridLocaleChild room.");
