@@ -14,7 +14,7 @@ public class Prayer_HuntGood extends Prayer_HuntEvil
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRACKING;}
 	public String displayText(){return "(Hunting Good)";}
 	protected String word="good";
-	public Environmental newInstance(){	return new Prayer_HuntEvil();}
+	public Environmental newInstance(){	return new Prayer_HuntGood();}
 	
 	protected MOB gameHere(Room room)
 	{
