@@ -12,7 +12,7 @@ public class Spell_DemonGate extends Spell
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Steed";
+		name="Demon Gate";
 
 		// what the affected mob sees when they
 		// bring up their affected list.
@@ -104,15 +104,16 @@ public class Spell_DemonGate extends Spell
 		newMOB.setDisplayText("a horrendous demonbeast is stalking around here");
 		newMOB.setDescription("Blood red skin with massive horns, and of course muscles in places you didn`t know existed.");
 		ride.setMobCapacity(2);
-		newMOB.setStartRoom(null);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.text();
 		newMOB.bringToLife(caster.location());
+		newMOB.setStartRoom(null);
 		caster.location().recoverRoomStats();
-		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseEnvStats().attackAdjustment()+50);
+		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseEnvStats().attackAdjustment()+100);
+		newMOB.baseEnvStats().setSpeed(3);
 		newMOB.baseEnvStats().setDamage(newMOB.baseEnvStats().damage()+20);
 		newMOB.recoverEnvStats();
 		return(newMOB);

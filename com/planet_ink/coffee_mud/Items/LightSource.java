@@ -168,7 +168,7 @@ public class LightSource extends StdItem implements Light
 			&&(myLight.isLit())
 			&&(myLight.getDuration()>0)
 			&&(mob.isMine(myLight))
-			&&((!Sense.isFlying(mob))
+			&&((!Sense.isInFlight(mob))
 			   ||(LightSource.inTheRain(room))
 			   ||(room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)))
 			{

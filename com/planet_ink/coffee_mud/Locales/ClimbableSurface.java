@@ -30,7 +30,7 @@ public class ClimbableSurface extends StdRoom
 		&&(Util.bset(affect.targetCode(),Affect.AFF_MOVEDON))
 		&&(!Sense.isFalling(affect.source()))
 		&&(!Sense.isClimbing(affect.source()))
-		&&(!Sense.isFlying(affect.source())))
+		&&(!Sense.isInFlight(affect.source())))
 		{
 			affect.source().tell("You need to climb that way, if you know how.");
 			return false;
@@ -44,8 +44,8 @@ public class ClimbableSurface extends StdRoom
 		if(Sense.isSleeping(this)) return;
 
 		if((affect.target() instanceof Item)
-		   &&(!Sense.isFlying(affect.target())
-			  &&(affect.targetMinor()==Affect.TYP_DROP)))
+		   &&(!Sense.isFlying(affect.target()))
+			  &&(affect.targetMinor()==Affect.TYP_DROP))
 		{
 			Ability falling=CMClass.getAbility("Falling");
 			falling.setAffectedOne(this);
@@ -59,7 +59,7 @@ public class ClimbableSurface extends StdRoom
 			MOB mob=affect.source();
 			if(this.isInhabitant(mob))
 			{
-				if((!Sense.isFlying(mob))
+				if((!Sense.isInFlight(mob))
 				&&(!Sense.isClimbing(mob))
 				&&(getRoomInDir(Directions.DOWN)!=null)
 				&&(getExitInDir(Directions.DOWN)!=null)

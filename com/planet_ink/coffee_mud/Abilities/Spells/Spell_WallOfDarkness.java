@@ -148,7 +148,7 @@ public class Spell_WallOfDarkness extends Spell
 				mob.location().send(mob,msg);
 				Item I=CMClass.getItem("GenItem");
 				I.setName("a wall of darkness");
-				I.setDisplayText("a mighty wall of darkness lingers here");
+				I.setDisplayText("an eerie wall of darkness lingers here");
 				I.setDescription("It`s black.");
 				I.setMaterial(Item.GLASS);
 				I.setGettable(false);

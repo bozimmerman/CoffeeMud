@@ -49,7 +49,7 @@ public class Spell_ReverseGravity extends Spell
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB inhab=room.fetchInhabitant(i);
-				if(!Sense.isFlying(inhab))
+				if(!Sense.isInFlight(inhab))
 				{
 					inhab.makePeace();
 					Ability A=CMClass.getAbility("Falling");
@@ -64,7 +64,8 @@ public class Spell_ReverseGravity extends Spell
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item inhab=room.fetchItem(i);
-				if((!Sense.isFlying(inhab))&&(inhab.isGettable()))
+				if((!Sense.isInFlight(inhab))
+				   &&(inhab.isGettable()))
 				{
 					Ability A=CMClass.getAbility("Falling");
 					A.setAffectedOne(room);

@@ -120,7 +120,7 @@ public class DefaultCharState implements Cloneable, CharState
 			adjMovement((int)Math.round(str),maxState);
 		}
 		else
-		if(Sense.isSitting(mob))
+		if((Sense.isSitting(mob))||(mob.riding()!=null))
 		{
 			adjHitPoints((int)Math.round(con*.1)+1,maxState);
 			adjMana((int)Math.round((man*.1)+lvlby2),maxState);

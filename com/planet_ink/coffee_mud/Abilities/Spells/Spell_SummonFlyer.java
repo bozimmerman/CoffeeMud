@@ -52,9 +52,6 @@ public class Spell_SummonFlyer extends Spell
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		if(mob.curState().getMana()<mob.maxState().getMana())
 		{
 			mob.tell("You need to be at full mana to cast this.");

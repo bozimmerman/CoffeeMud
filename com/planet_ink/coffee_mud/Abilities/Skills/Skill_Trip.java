@@ -98,6 +98,11 @@ public class Skill_Trip extends StdAbility
 			mob.tell("You are too far away to trip!");
 			return false;
 		}
+		if(target.riding()!=null)
+		{
+			mob.tell("You can't trip someone riding "+target.riding().name()+"!");
+			return false;
+		}
 		if(Sense.isFlying(target))
 		{
 			mob.tell(target.name()+" is flying and can't be tripped!");

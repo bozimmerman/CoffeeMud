@@ -147,7 +147,7 @@ public class Spell_WallOfForce extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"An eerie wall of darkness appears!":"<S-NAME> chant(s) and conjur(s) up a eerie wall of darkness!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"An impenetrable wall of force appears!":"<S-NAME> chant(s) and conjur(s) up a impenetrable wall of force!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

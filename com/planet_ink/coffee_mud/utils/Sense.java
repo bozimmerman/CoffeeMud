@@ -284,6 +284,18 @@ public class Sense
 
 	}
 
+	public static boolean isInFlight(Environmental E)
+	{
+		if(Sense.isFlying(E)) return true;
+		if(E instanceof MOB)
+		{
+			if(((MOB)E).riding()==null) 
+				return false;
+			if(Sense.isFlying(((MOB)E).riding())) 
+				return true;
+		}
+		return false;
+	}
 	public static String wornLocation(long wornCode)
 	{
 		for(int wornNum=0;wornNum<20;wornNum++)

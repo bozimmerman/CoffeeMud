@@ -34,9 +34,8 @@ public class InTheAir extends StdRoom
 		&&(affect.amITarget(room)))
 		{
 			MOB mob=affect.source();
-			if((!Sense.isFlying(mob))
-			&&(!Sense.isFalling(mob))
-			&&((mob.riding()==null)||(!Sense.isFlying(mob.riding()))))
+			if((!Sense.isInFlight(mob))
+			&&(!Sense.isFalling(mob)))
 			{
 				mob.tell("You can't fly.");
 				return false;

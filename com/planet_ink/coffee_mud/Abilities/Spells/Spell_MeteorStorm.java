@@ -27,7 +27,7 @@ public class Spell_MeteorStorm extends Spell
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 		minRange=1;
-		maxRange=1;
+		maxRange=4;
 	}
 
 	public Environmental newInstance()
@@ -76,7 +76,7 @@ public class Spell_MeteorStorm extends Spell
 					invoker=mob;
 
 					int damage = 0;
-					int maxDie =  envStats().level()-mob.envStats().level();
+					int maxDie =  envStats().level()-15;
 					if (maxDie > 10) maxDie = 10;
 					else if(maxDie<0) maxDie=1;
 					damage += Dice.roll(maxDie,6,6);

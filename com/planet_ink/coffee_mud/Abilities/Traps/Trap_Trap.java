@@ -201,7 +201,7 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	public void fallInPit(MOB mob)
 	{
-		if(Sense.isFlying(mob))
+		if(Sense.isInFlight(mob))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap door beneath <S-HIS-HER> feet! <S-NAME> pause(s) over it in flight.");
 			return;

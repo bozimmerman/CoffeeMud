@@ -56,7 +56,7 @@ public class Falling extends StdAbility
 			if(mob==null) return false;
 			if(mob.location()==null) return false;
 
-			if(Sense.isFlying(mob))
+			if(Sense.isInFlight(mob))
 			{
 				damageToTake=0;
 				unInvoke();
@@ -175,7 +175,7 @@ public class Falling extends StdAbility
 		if((affected!=null)&&(affected instanceof MOB))
 			if(affect.amISource((MOB)affected))
 			{
-				if(Sense.isFlying(mob))
+				if(Sense.isInFlight(mob))
 				{
 					damageToTake=0;
 					unInvoke();

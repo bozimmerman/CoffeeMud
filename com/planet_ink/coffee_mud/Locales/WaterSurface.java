@@ -41,7 +41,7 @@ public class WaterSurface extends StdRoom
 				if((I!=null)&&(I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
 				{	hasBoat=true; break;}
 			}
-			if((!Sense.isSwimming(mob))&&(!hasBoat)&&(!Sense.isFlying(mob)))
+			if((!Sense.isSwimming(mob))&&(!hasBoat)&&(!Sense.isInFlight(mob)))
 			{
 				mob.tell("You need to swim or ride a boat that way.");
 				return false;
