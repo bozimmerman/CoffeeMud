@@ -2054,26 +2054,28 @@ public class StdMOB implements MOB
 						&&(!charStats().getCurrentClass().leveless())
 						&&(!charStats().getMyRace().leveless())
 						&&(!CMSecurity.isDisabled("LEVELS")))
-							levelStr=charStats().displayClassLevel(this,false);
+							levelStr=Util.startWithAorAn(charStats().displayClassLevel(this,false));
 						else
 						if((!CMSecurity.isDisabled("LEVELS"))
 						&&(!charStats().getCurrentClass().leveless())
 						&&(!charStats().getMyRace().leveless()))
-						    levelStr=charStats().displayClassLevelOnly(this);
+						    levelStr="level "+charStats().displayClassLevelOnly(this);
 						else
 						if((!CMSecurity.isDisabled("CLASSES"))
 						&&(!charStats().getMyRace().classless()))
-						    levelStr=charStats().displayClassName();
-						myDescription.append(name()+" the ");
+						    levelStr=Util.startWithAorAn(charStats().displayClassName());
 						if((!CMSecurity.isDisabled("RACES"))
 						&&(!charStats.getCurrentClass().raceless()))
 						{
+							myDescription.append(name()+" the ");
 							if(charStats.getStat(CharStats.AGE)>0)
 							    myDescription.append(charStats.ageName().toLowerCase()+" ");
 							myDescription.append(charStats().raceName());
 						}
+						else
+							myDescription.append(name()+" ");
 						if(levelStr!=null)
-							myDescription.append(" is a "+levelStr+".\n\r");
+							myDescription.append(" is "+levelStr+".\n\r");
 						else
 						    myDescription.append("is here.\n\r");
 					}
@@ -2252,25 +2254,27 @@ public class StdMOB implements MOB
 						&&(!charStats.getMyRace().leveless())
 						&&(!charStats.getCurrentClass().leveless())
 						&&(!CMSecurity.isDisabled("LEVELS")))
-							levelStr=charStats().displayClassLevel(this,false);
+							levelStr=Util.startWithAorAn(charStats().displayClassLevel(this,false));
 						else
 						if((!CMSecurity.isDisabled("LEVELS"))
 						&&(!charStats.getMyRace().leveless())
 						&&(!charStats.getCurrentClass().leveless()))
-						    levelStr=charStats().displayClassLevelOnly(this);
+						    levelStr="level "+charStats().displayClassLevelOnly(this);
 						else
 						if((!CMSecurity.isDisabled("CLASSES"))
 						&&(!charStats.getMyRace().classless()))
-						    levelStr=charStats().displayClassName();
-						myDescription.append(name()+" the ");
+						    levelStr=Util.startWithAorAn(charStats().displayClassName());
 						if(!CMSecurity.isDisabled("RACES"))
 						{
+							myDescription.append(name()+" the ");
 							if(charStats.getStat(CharStats.AGE)>0)
 							    myDescription.append(charStats.ageName().toLowerCase()+" ");
 							myDescription.append(charStats().raceName());
 						}
+						else
+							myDescription.append(name()+" ");
 						if(levelStr!=null)
-							myDescription.append(" is a "+levelStr+".\n\r");
+							myDescription.append(" is "+levelStr+".\n\r");
 						else
 						    myDescription.append("is here.\n\r");
 					}

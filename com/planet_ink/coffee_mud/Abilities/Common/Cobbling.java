@@ -150,7 +150,6 @@ public class Cobbling extends CraftingSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
-        Item IE=(Item)givenTarget;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{	
 			autoGenerate=((Integer)commands.firstElement()).intValue(); 
@@ -223,7 +222,7 @@ public class Cobbling extends CraftingSkill
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
-			if(!IE.fitsOn(Item.ON_FEET))
+			if(!building.fitsOn(Item.ON_FEET))
 			{
 				commonTell(mob,"That's not footwear.  That can't be refitted.");
 				return false;

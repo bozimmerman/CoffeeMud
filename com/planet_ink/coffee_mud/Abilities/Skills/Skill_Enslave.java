@@ -35,7 +35,7 @@ public class Skill_Enslave extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	
 	private MOB myMaster=null;
-	private EnglishParser.geasStep STEP=null;
+	private EnglishParser.geasSteps STEPS=null;
 	private int masterAnger=0;
 	private int speedDown=0;
 	private final static int HUNGERTICKMAX=4;
@@ -74,7 +74,7 @@ public class Skill_Enslave extends StdAbility
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0))
 		{
-			if(STEP!=null)
+			if(STEPS!=null)
 			{
 				if((msg.target()==null)||(msg.target() instanceof MOB))
 				{
@@ -93,7 +93,7 @@ public class Skill_Enslave extends StdAbility
 					            return;
 					        }
 					    }
-						STEP.sayResponse(msg.source(),(MOB)msg.target(),response);
+					    STEPS.sayResponse(msg.source(),(MOB)msg.target(),response);
 					}
 				}
 			}
@@ -134,8 +134,11 @@ public class Skill_Enslave extends StdAbility
 					            CommonMsgs.say(mob,msg.source(),"Master, please begin your instruction with the words 'I command you to '.  You can also tell me to 'stop' or 'cancel' any order you give.",false,false);
 					            return;
 						    }
-							STEP=EnglishParser.processRequest(msg.source(),mob,response);
-				            CommonMsgs.say(mob,msg.source(),"Yes master.",false,false);
+							STEPS=EnglishParser.processRequest(msg.source(),mob,response);
+							if((STEPS!=null)&&(STEPS.size()>0))
+					            CommonMsgs.say(mob,msg.source(),"Yes master.",false,false);
+							else
+					            CommonMsgs.say(mob,msg.source(),"Huh? Wuh?",false,false);
 						}
 					}
 		    	}
@@ -250,13 +253,13 @@ public class Skill_Enslave extends StdAbility
 	            if(myMaster==null) myMaster=CMMap.getPlayer(text());
 	            if(myMaster!=null) mob.setClanID(myMaster.getClanID());
 			}
-		    if(STEP!=null)
+		    if(STEPS!=null)
 		    {
-				if((STEP.que!=null)&&(STEP.que.size()==0))
+				if((STEPS==null)||(STEPS.size()==0)||(STEPS.done))
 				{
 					if(mob.isInCombat())
 						return true; // let them finish fighting.
-					if((STEP!=null)&&(STEP.que!=null)&&(STEP.que.size()==0))
+					if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.done)))
 						mob.tell("You have completed your masters task.");
 					else
 						mob.tell("You have been released from your masters task.");
@@ -268,8 +271,8 @@ public class Skill_Enslave extends StdAbility
 					unInvoke();
 					return !canBeUninvoked();
 				}
-				if((STEP!=null)&&(STEP.que!=null))
-				    STEP.step();
+				else
+				    STEPS.step();
 		    }
 		}
 		return super.tick(ticking,tickID);

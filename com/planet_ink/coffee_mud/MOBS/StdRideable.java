@@ -256,7 +256,7 @@ public class StdRideable extends StdMOB implements Rideable
 				return false;
 			}
 			else
-			if(msg.source() instanceof Rideable)
+			if((msg.source() instanceof Rideable)&&(msg.source()!=this))
 			{
 				msg.source().tell("You are not allowed on "+name()+".");
 				return false;

@@ -59,6 +59,7 @@ public class StdRace implements Race
 	protected int[] racialAbilityLevels(){return null;}
 	protected int[] racialAbilityProfficiencies(){return null;}
 	protected boolean[] racialAbilityQuals(){return null;}
+	private boolean mappedCulturalAbilities=false;
 	protected String[] culturalAbilityNames(){return null;}
 	protected int[] culturalAbilityProfficiencies(){return null;}
 	protected boolean uncharmable(){return false;}
@@ -241,6 +242,13 @@ public class StdRace implements Race
 	public boolean tick(Tickable myChar, int tickID){return true;}
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
+		if((!mappedCulturalAbilities)
+		&&(culturalAbilityNames()!=null))
+		{
+			for(int a=0;a<culturalAbilityNames().length;a++)
+			    CMAble.addCharAbilityMapping(ID(),0,culturalAbilityNames()[a],false);
+			mappedCulturalAbilities=true;
+		}
 		if(!verifyOnly)
 		{
 			if(mob.baseEnvStats().level()<=1)
@@ -252,16 +260,18 @@ public class StdRace implements Race
 
 			if((culturalAbilityNames()!=null)&&(culturalAbilityProfficiencies()!=null)
 			   &&(culturalAbilityNames().length==culturalAbilityProfficiencies().length))
-			for(int a=0;a<culturalAbilityNames().length;a++)
 			{
-				Ability A=CMClass.getAbility(culturalAbilityNames()[a]);
-				if(A!=null)
+				for(int a=0;a<culturalAbilityNames().length;a++)
 				{
-					A.setProfficiency(culturalAbilityProfficiencies()[a]);
-					mob.addAbility(A);
-					A.autoInvocation(mob);
-					if((mob.isMonster())&&((A.classificationCode()&Ability.ALL_CODES)==Ability.LANGUAGE))
-						A.invoke(mob,mob,false,0);
+					Ability A=CMClass.getAbility(culturalAbilityNames()[a]);
+					if(A!=null)
+					{
+						A.setProfficiency(culturalAbilityProfficiencies()[a]);
+						mob.addAbility(A);
+						A.autoInvocation(mob);
+						if((mob.isMonster())&&((A.classificationCode()&Ability.ALL_CODES)==Ability.LANGUAGE))
+							A.invoke(mob,mob,false,0);
+					}
 				}
 			}
 		}

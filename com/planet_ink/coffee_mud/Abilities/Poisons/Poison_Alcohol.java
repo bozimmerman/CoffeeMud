@@ -26,7 +26,7 @@ public class Poison_Alcohol extends Poison
 	public String ID() { return "Poison_Alcohol"; }
 	public String name(){ return "Alcohol";}
 	private static final String[] triggerStrings = {"POISONALCOHOL"};
-	public String displayText(){ return (drunkness<=3)?"(Tipsy)":(drunkness<10)?"(Drunk)":"(Smashed)";}
+	public String displayText(){ return (drunkness<=3)?"(Tipsy)":((drunkness<10)?"(Drunk)":"(Smashed)");}
 	public String[] triggerStrings(){return triggerStrings;}
 
 	protected int POISON_TICKS(){return 65;}
@@ -288,10 +288,10 @@ public class Poison_Alcohol extends Poison
 		if(success&&(givenTarget instanceof MOB)&&(auto))
 		{
 			Ability A=givenTarget.fetchEffect(ID());
-			if(A instanceof Poison_Alcohol)
+			if(A!=null)
 			{
 				((Poison_Alcohol)A).drunkness=largest;
-				((Poison_Alcohol)A).drunkness=POISON_TICKS();
+				((Poison_Alcohol)A).tickDown=POISON_TICKS();
 			}
 			Room R=(((MOB)givenTarget).location()!=null)?((MOB)givenTarget).location():mob.location();
 			R.recoverRoomStats();

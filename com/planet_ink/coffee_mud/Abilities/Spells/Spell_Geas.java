@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -28,7 +29,7 @@ public class Spell_Geas extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int maxRange(){return 5;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public EnglishParser.geasStep STEP=null;
+	public EnglishParser.geasSteps STEPS=null;
 
 	public void unInvoke()
 	{
@@ -39,7 +40,7 @@ public class Spell_Geas extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if((STEP!=null)&&(STEP.que!=null)&&(STEP.que.size()==0))
+			if((STEPS==null)||(STEPS.size()==0)||(STEPS.done))
 				mob.tell("You have completed your geas.");
 			else
 				mob.tell("You have been released from your geas.");
@@ -63,7 +64,7 @@ public class Spell_Geas extends Spell
 		&&((msg.value())>0))
 			MUDFight.postPanic(mob,msg);
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-		&&(STEP!=null)
+		&&(STEPS!=null)
 		&&(msg.sourceMessage()!=null)
 		&&((msg.target()==null)||(msg.target() instanceof MOB))
 		&&(msg.sourceMessage().length()>0))
@@ -71,7 +72,7 @@ public class Spell_Geas extends Spell
 			int start=msg.sourceMessage().indexOf("'");
 			int end=msg.sourceMessage().lastIndexOf("'");
 			if((start>0)&&(end>(start+1)))
-				STEP.sayResponse(msg.source(),(MOB)msg.target(),msg.sourceMessage().substring(start+1,end));
+			    STEPS.sayResponse(msg.source(),(MOB)msg.target(),msg.sourceMessage().substring(start+1,end));
 		}
 	}
 
@@ -79,16 +80,16 @@ public class Spell_Geas extends Spell
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.tick(ticking,tickID);
-		if((tickID==MudHost.TICK_MOB)&&(STEP!=null))
+		if((tickID==MudHost.TICK_MOB)&&(STEPS!=null))
 		{
-			if((STEP.que!=null)&&(STEP.que.size()==0))
+			if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.done)))
 			{
 				if(((MOB)ticking).isInCombat())
 					return true; // let them finish fighting.
 				unInvoke();
 				return false;
 			}
-			if(STEP.que!=null)	STEP.step();
+			STEPS.step();
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -129,8 +130,8 @@ public class Spell_Geas extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				STEP=EnglishParser.processRequest(mob,target,Util.combine(commands,0));
-				if((STEP==null)||(STEP.que==null)||(STEP.que.size()==0))
+				STEPS=EnglishParser.processRequest(mob,target,Util.combine(commands,0));
+				if((STEPS==null)||(STEPS.size()==0))
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) confused.");
 					return false;

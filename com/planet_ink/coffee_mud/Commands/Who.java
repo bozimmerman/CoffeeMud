@@ -89,7 +89,7 @@ public class Who extends StdCommand
 			}
 			name=name+(" (idle: "+s+")");
 		}
-		msg.append("] "+Util.padRight(name,35));
+		msg.append("] "+Util.padRight(name,40));
 		msg.append("\n\r");
 		return msg;
 	}

@@ -1177,6 +1177,8 @@ public class Scriptable extends StdBehavior
 		evaluable=Util.combine(formatCheck,0);
 		String uevaluable=evaluable.toUpperCase().trim();
 		boolean returnable=false;
+		boolean lastreturnable=true;
+		int joined=0;
 		while(evaluable.length()>0)
 		{
 			int y=evaluable.indexOf("(");
@@ -1199,7 +1201,8 @@ public class Scriptable extends StdBehavior
 			z--;
 			String preFab=uevaluable.substring(0,y).trim();
 			Integer funcCode=(Integer)funcH.get(preFab);
-			if(funcCode==null) funcCode=new Integer(0);
+			if(funcCode==null)
+			    funcCode=new Integer(0);
 			if(y==0)
 			{
 				int depth=0;
@@ -1213,6 +1216,16 @@ public class Scriptable extends StdBehavior
 						evaluable=evaluable.substring(i+1).trim();
 						uevaluable=uevaluable.substring(i+1).trim();
 						returnable=eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,expr);
+						switch(joined)
+						{
+						case 1: returnable=lastreturnable&&returnable; break;
+						case 2: returnable=lastreturnable||returnable; break;
+						case 4: returnable=!returnable; break;
+						case 5: returnable=lastreturnable&&(!returnable); break;
+						case 6: returnable=lastreturnable||(!returnable); break;
+						default: break;
+						}
+						joined=0;
 						break;
 					}
 					else
@@ -1224,13 +1237,27 @@ public class Scriptable extends StdBehavior
 			}
 			else
 			if(evaluable.startsWith("!"))
-				return !eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,evaluable.substring(1).trim());
+			{
+			    joined=joined|4;
+				evaluable=evaluable.substring(1).trim();
+				uevaluable=uevaluable.substring(1).trim();
+			}
 			else
 			if(uevaluable.startsWith("AND "))
-				return returnable&&eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,evaluable.substring(3).trim());
+			{
+			    joined=1;
+			    lastreturnable=returnable;
+				evaluable=evaluable.substring(4).trim();
+				uevaluable=uevaluable.substring(4).trim();
+			}
 			else
 			if(uevaluable.startsWith("OR "))
-				return returnable||eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,evaluable.substring(2).trim());
+			{
+			    joined=2;
+			    lastreturnable=returnable;
+				evaluable=evaluable.substring(3).trim();
+				uevaluable=uevaluable.substring(3).trim();
+			}
 			else
 			if((y<0)||(z<y))
 			{
@@ -2719,6 +2746,16 @@ public class Scriptable extends StdBehavior
 				evaluable=evaluable.substring(z+1).trim();
 				uevaluable=uevaluable.substring(z+1).trim();
 			}
+			switch(joined)
+			{
+			case 1: returnable=lastreturnable&&returnable; break;
+			case 2: returnable=lastreturnable||returnable; break;
+			case 4: returnable=!returnable; break;
+			case 5: returnable=lastreturnable&&(!returnable); break;
+			case 6: returnable=lastreturnable||(!returnable); break;
+			default: break;
+			}
+			joined=0;
 		}
 		}
 		return returnable;
