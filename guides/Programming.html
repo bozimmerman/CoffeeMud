@@ -300,7 +300,9 @@ system to load and build, and take up a lot of database disk space.&nbsp; For
 this reason, using Standard instead of Generic whereever possible is always 
 good.&nbsp; </FONT></P>
 <P><FONT size=4>Each MOB must also 
-have custom "ID()" and "newInstance" methods as shown below.</FONT></P><PRE>public class MyNewMOB extends StdMOB 
+have custom "ID()" and "newInstance" methods as shown below.&nbsp; Notice that 
+the ID() is the same as the name of the 
+class.&nbsp; This is no accident -- this is required!</FONT></P><PRE>public class MyNewMOB extends StdMOB 
 { 
 	public String ID(){	return "MyNewMOB";}
 	public MyNewMOB() 
@@ -453,7 +455,7 @@ mob.baseEnvStats().setRejuv(500); // 30 minutes rejuvination time
 mob.recoverEnvStats(); // remember this command?!
 	
 mob.bringToLife(room,true); // tadah!
-</PRE>
+</pre>
 <P><FONT size=4>And THAT's all there 
 is to bring a standard mob to life. Now, generic items require an additional 
 step: </FONT></P><PRE>Item item=CMClass.getItem("GenItem");
@@ -477,7 +479,7 @@ for(int i=0;i&lt;room.numInhabitants();i++)
 	MOB mob=room.fetchInhabitant(i);
 	mob.destroy();
 }
-</PRE>
+</pre>
 <P align=left></P>
 <P align=left></P>
 <P align=left><FONT size=5><STRONG><IMG src="images/sword.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
@@ -507,7 +509,9 @@ system to load and build, and take up a lot of database disk space.&nbsp; For
 this reason, using Standard instead of Generic whereever possible is always 
 good.&nbsp; </FONT></P>
 <P><FONT size=4>Each Item must also 
-have a custom newInstance() and ID() methods as shown below.</FONT></P><PRE>public class MyNewSword extends StdWeapon 
+have a custom newInstance() and ID() methods as shown below.&nbsp; Notice that 
+the ID() is the same as the name of the class.&nbsp; This is no accident -- this 
+is required!</FONT></P><PRE>public class MyNewSword extends StdWeapon 
 { 
 	public String ID(){	return "MyNewSword";}
 	public MyNewSword() 
@@ -1476,10 +1480,11 @@ public class Ravenous implements Behavior
 </PRE>
 <P align=left><FONT size=4>Our first 
 step, as seen above, is to make sure we define an ID() method with the classes 
-name, just as we do in other CoffeeMud objects.&nbsp; The next step is to give 
-the Behavior a name, which is entirely unimportant to players, but helpful for 
-Archons.&nbsp; And, of course, we must define a newInstance() method to return a 
-coy of the behavior.</FONT></P><PRE>	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+name, just as we do in other CoffeeMud objects.&nbsp; Notice that the ID() is 
+the same as the name of the class.&nbsp; This is no accident -- this is 
+required!&nbsp; The next step is to give the Behavior a name, which is entirely 
+unimportant to players, but helpful for Archons.&nbsp; And, of course, we must 
+define a newInstance() method to return a coy of the behavior.</FONT></P><PRE>	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public boolean grantsMobility(){return false;}
 	public boolean grantsAggressivenessTo(MOB M){return false;}
 </PRE>
@@ -1651,16 +1656,17 @@ public String baseClass(){return ID();}
 </PRE>
 <P align=left><FONT size=4>The first 
 methods above are the unique Character Class ID and the displayable Name of the 
-class. The baseClass method takes a bit of explaining. If your CoffeeMud system 
-is using the default SubClassing system, the baseClass will define which classes 
-may be switched between by a player, as well as which classes are available to 
-choose from when a new player is created. Fighter, Monk, Paladin, Ranger, and 
-Barbarian, for instance, all have a baseClass of "Fighter". This means that the 
-Fighter class is one of the classes which may be chosen by a new player (since 
-it's ID() and baseClass() are the same), and that any of the baseClass() 
-"Fighter" classes may switch amongst each other. If your CoffeeMud system is 
-using the multi-class or single classing system, this method is 
-irrelevant.</FONT></P><pre>public int getMinHitPointsLevel(){return 1;}
+class. Notice that the ID() is the same as the name of the class.&nbsp; This is 
+no accident -- this is required!&nbsp;The baseClass method takes a bit of 
+explaining. If your CoffeeMud system is using the default SubClassing system, 
+the baseClass will define which classes may be switched between by a player, as 
+well as which classes are available to choose from when a new player is created. 
+Fighter, Monk, Paladin, Ranger, and Barbarian, for instance, all have a 
+baseClass of "Fighter". This means that the Fighter class is one of the classes 
+which may be chosen by a new player (since it's ID() and baseClass() are the 
+same), and that any of the baseClass() "Fighter" classes may switch amongst each 
+other. If your CoffeeMud system is using the multi-class or single classing 
+system, this method is irrelevant.</FONT></P><pre>public int getMinHitPointsLevel(){return 1;}
 public int getMaxHitPointsLevel(){return 10;}
 </PRE>
 <P align=left><FONT size=4>Next come 
@@ -2234,10 +2240,11 @@ public class StdArea implements Area
 </PRE>
 <P></P>
 <P align=left><FONT size=4>Of course, 
-like every Environmental object, the Area must define an ID().&nbsp; However, 
-the name, display text, description, and others are all handled by the builder, 
-or Properties or behaviors, and aren't pertinant to this discussion of 
-Areas.</FONT></P>
+like every Environmental object, the Area must define an ID().&nbsp; Notice that 
+the ID() is the same as the name of the class.&nbsp; This is no accident -- this 
+is required!&nbsp; The name, display text, description, and others are all 
+handled by the builder, or Properties or behaviors, and aren't pertinant to this 
+discussion of Areas.</FONT></P>
 <P align=left><FONT size=4>The 
 weather, however, is a direct function of each area.&nbsp; Each area knows its 
 current weather code (see the AREA interface) as well as the next weather change 
