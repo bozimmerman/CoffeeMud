@@ -181,12 +181,18 @@ public class StdBanker extends StdShopKeeper implements Banker
 					Vector userNames=new Vector();
 					for(int v=0;v<V.size();v++)
 					{
+						Clan C=null;
 						Vector V2=(Vector)V.elementAt(v);
 						String name=(String)V2.elementAt(1);
 						if(!userNames.contains(name))
 						{
 							if(!ExternalPlay.DBUserSearch(null,name))
-								delAllDeposits(name);
+							{
+								if((Clans.getClan(name))==null)
+									delAllDeposits(name);
+								else
+									userNames.addElement(name);
+							}
 							else
 								userNames.addElement(name);
 						}
