@@ -1,5 +1,9 @@
 ability to save riding status in the database.
 
+Chain Lightning is wrong.  It is actually FORKED Lightning.  Chain Does max damage to first target, then goes to nearest enemy, and does reduced damage, then bounces to next enemy, and does a little less, etc until it is reduced to 0 damage.
+
+Should Greater Globe require Globe in order to gain?  YES.
+
 random monster property class which reads stats from a resource file
 
 Auto quests, quests, questbox (Behavior)
@@ -36,6 +40,10 @@ add currents to water. Scratch that, you can simulate currents by the teleport b
 an ability to tell how many HP a MOB has
 
 an ability to resist TRIP, another to resist DISARM, another to resist WHOMP
+
+Thief--Bonus for stealing, based on TARGET level.  about 1/6 the XP as for killing.
+
+Bard--Bonus XP from groups (similar 
 
 trashcan behavior that can be added to items to destroy unwanted items.
 the arrest behavior
