@@ -167,7 +167,7 @@ public class DBConnections
 					((DBConnection)Connections.elementAt(0)).close();
 					Connections.removeElementAt(0);
 				}
-				Connections=new Vector();
+				Connections.clear();
 				for(int c=0;c<numConnections;c++)
 				{
 					DBConnection DBConnect = new DBConnection(this,DBClass,DBService,DBUser,DBPass);
@@ -427,20 +427,17 @@ public class DBConnections
 	 */
 	public void killConnections()
 	{
-		synchronized(Connections)
+		while(Connections.size()>0)
 		{
-			while(Connections.size()>0)
+			DBConnection DB=(DBConnection)Connections.elementAt(0);
+			Connections.removeElement(DB);
+			try
 			{
-				DBConnection DB=(DBConnection)Connections.elementAt(0);
-				Connections.removeElement(DB);
-				try
-				{
-					DB.close();
-				}
-				catch(SQLException sqle)
-				{
-					Log.errOut("DBConnections",sqle);
-				}
+				DB.close();
+			}
+			catch(SQLException sqle)
+			{
+				Log.errOut("DBConnections",sqle);
 			}
 		}
 	}

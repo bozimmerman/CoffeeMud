@@ -90,7 +90,8 @@ public class GenRace extends StdRace
 	}
 	public String healthText(MOB mob)
 	{
-		if(healthBuddy()!=null) return healthBuddy.healthText(mob);
+		if((healthBuddy!=null)&&(healthBuddy!=this))
+			return healthBuddy.healthText(mob);
 		return CommonStrings.standardMobCondition(mob);
 	}
 

@@ -82,7 +82,7 @@ public class DBConnection
 	 * @param NA
 	 * @return NA
 	 */
-	public synchronized void close()
+	public void close()
 		throws SQLException
 	{
 		if(myConnection!=null)
@@ -194,7 +194,7 @@ public class DBConnection
 	 * @param Closer	Any SQL string you'd like to send
 	 * @return NA
 	 */
-	public synchronized void doneUsing(String Closer)
+	public void doneUsing(String Closer)
 	{
 		try
 		{
@@ -231,7 +231,7 @@ public class DBConnection
 	 * @param QueryString	SQL query-style string
 	 * @return ResultSet	The results of the query
 	 */
-	public synchronized ResultSet query(String queryString)
+	public ResultSet query(String queryString)
 		throws SQLException
 	{
 		ResultSet R=null;
@@ -298,7 +298,7 @@ public class DBConnection
 	 * @param UpdateString	SQL update-style string
 	 * @return int	The status of the update
 	 */
-	public synchronized int update(String updateString)
+	public int update(String updateString)
 		throws SQLException
 	{
 		int responseCode=-1;
