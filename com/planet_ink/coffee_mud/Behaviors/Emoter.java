@@ -7,19 +7,18 @@ import java.util.*;
 
 public class Emoter extends ActiveTicker
 {
-	protected Vector emotes=new Vector();
-
+	public String ID(){return "Emoter";}
 	public Emoter()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=10;maxTicks=30;chance=50;
 		tickReset();
 	}
-
 	public Behavior newInstance()
 	{
 		return new Emoter();
 	}
+
+	protected Vector emotes=new Vector();
 
 	public void setParms(String newParms)
 	{

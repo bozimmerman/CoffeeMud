@@ -7,16 +7,15 @@ import java.util.*;
 
 public class DelayedTransporter extends ActiveTicker
 {
+	public String ID(){return "DelayedTransporter";}
 	private Hashtable transportees=new Hashtable();
 	private Vector destRoomNames=new Vector();
 	
 	public DelayedTransporter()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=5;maxTicks=5;chance=100;
 		tickReset();
 	}
-
 	public Behavior newInstance()
 	{
 		return new DelayedTransporter();

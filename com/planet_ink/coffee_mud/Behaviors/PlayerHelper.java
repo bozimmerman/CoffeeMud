@@ -7,11 +7,7 @@ import java.util.*;
 
 public class PlayerHelper extends StdBehavior
 {
-
-	public PlayerHelper()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "PlayerHelper";}
 	public Behavior newInstance()
 	{
 		return new PlayerHelper();

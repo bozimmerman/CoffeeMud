@@ -7,11 +7,7 @@ import java.util.*;
 
 public class AlignHelper extends StdBehavior
 {
-
-	public AlignHelper()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "AlignHelper";}
 	public Behavior newInstance()
 	{
 		return new AlignHelper();

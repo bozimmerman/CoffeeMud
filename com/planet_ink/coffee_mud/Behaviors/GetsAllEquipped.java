@@ -7,15 +7,15 @@ import java.util.*;
 
 public class GetsAllEquipped extends ActiveTicker
 {
-	private boolean DoneEquipping=false;
-
+	public String ID(){return "GetsAllEquipped";}
+	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public GetsAllEquipped()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		maxTicks=5;minTicks=10;chance=100;
 		tickReset();
-		canImproveCode=Behavior.CAN_MOBS;
 	}
+	
+	private boolean DoneEquipping=false;
 
 	public Behavior newInstance()
 	{

@@ -7,10 +7,7 @@ import java.util.*;
 
 public class ObjectGuardian extends StdBehavior
 {
-	public ObjectGuardian()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "ObjectGuardian";}
 	public Behavior newInstance()
 	{
 		return new ObjectGuardian();

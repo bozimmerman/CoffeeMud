@@ -7,10 +7,7 @@ import java.util.*;
 
 public class ItemMender extends StdBehavior
 {
-	public ItemMender()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "ItemMender";}
 	public Behavior newInstance()
 	{
 		return new ItemMender();

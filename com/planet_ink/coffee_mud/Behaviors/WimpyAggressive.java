@@ -7,11 +7,7 @@ import java.util.*;
 
 public class WimpyAggressive extends Aggressive
 {
-
-	public WimpyAggressive()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "WimpyAggressive";}
 	public Behavior newInstance()
 	{
 		return new WimpyAggressive();

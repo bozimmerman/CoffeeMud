@@ -7,15 +7,13 @@ import java.util.*;
 
 public class ROMGangMember extends StdBehavior
 {
-	int tickTock=5;
-	public ROMGangMember()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "ROMGangMember";}
 	public Behavior newInstance()
 	{
 		return new ROMGangMember();
 	}
+	
+	int tickTock=5;
 	public void pickAFight(MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;

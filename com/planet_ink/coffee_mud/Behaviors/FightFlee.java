@@ -7,13 +7,13 @@ import java.util.*;
 
 public class FightFlee extends ActiveTicker
 {
+	public String ID(){return "FightFlee";}
+	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public FightFlee()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=1;maxTicks=1;chance=33;
 		tickReset();
 	}
-
 	public Behavior newInstance()
 	{
 		return new FightFlee();

@@ -7,6 +7,12 @@ import java.util.*;
 
 public class Drowness extends StdBehavior
 {
+	public String ID(){return "Drowness";}
+	public Behavior newInstance()
+	{
+		return new Drowness();
+	}
+
 	boolean confirmedSetup=false;
 	public int darkDown=4;
 	public int fightDown=2;
@@ -17,16 +23,6 @@ public class Drowness extends StdBehavior
 	public static final int CAST_DARKNESS = 1;
 	public static final int FIGHTER_SKILL = 128;
     public static final int CHECK_STATUS = 129;
-
-	public Drowness()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-
-	public Behavior newInstance()
-	{
-		return new Drowness();
-	}
 
 	public void startBehavior(Environmental forMe)
 	{
@@ -151,6 +147,7 @@ public class Drowness extends StdBehavior
         Weapon secondWeapon = null;
 
         int weaponry = Dice.roll(1,4,0);
+		if(mob.inventorySize()==0)
         switch(weaponry)
         {
             case 1:

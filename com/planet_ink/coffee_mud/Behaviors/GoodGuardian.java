@@ -7,11 +7,7 @@ import java.util.*;
 
 public class GoodGuardian extends StdBehavior
 {
-	public GoodGuardian()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-	
+	public String ID(){return "GoodGuardian";}
 	public Behavior newInstance()
 	{
 		return new GoodGuardian();

@@ -7,15 +7,12 @@ import java.util.*;
 
 public class Guard extends StdBehavior
 {
-
-	public Guard()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "Guard";}
 	public Behavior newInstance()
 	{
 		return new Guard();
 	}
+	
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class

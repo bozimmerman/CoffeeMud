@@ -6,6 +6,12 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 public class MudChat extends StdBehavior
 {
+	public String ID(){return "MudChat";}
+	public Behavior newInstance()
+	{
+		return new MudChat();
+	}
+
 	//----------------------------------------------
 	private static boolean resourceLoaded=false;
 	// format: first group is general mob (no other
@@ -30,15 +36,6 @@ public class MudChat extends StdBehavior
 	// run through the standard command processor,
 	// on tick or more.
 	private final static int RESPONSE_DELAY=2;
-
-	public MudChat()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-	public Behavior newInstance()
-	{
-		return new MudChat();
-	}
 
 	public static synchronized void initChat()
 	{

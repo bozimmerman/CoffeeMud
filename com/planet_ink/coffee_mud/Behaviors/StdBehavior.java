@@ -12,16 +12,11 @@ import java.util.*;
  */
 public class StdBehavior implements Behavior
 {
-	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+	public String ID(){return "StdBehavior";}
+	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	public boolean grantsMobility(){return false;}
+	
 	protected String parms="";
-	protected boolean mobileType=false;
-	protected int canImproveCode=Behavior.CAN_MOBS;
-
-	/** General descriptive ID for this
-	 * object.	Includes everything from
-	 * an item ID (Dagger, etc), to a particular
-	 * users name "Bob the Avenger" */
-	public String ID(){return myID;}
 
 	/** return a new instance of the object*/
 	public Behavior newInstance()
@@ -43,8 +38,6 @@ public class StdBehavior implements Behavior
 	{
 
 	}
-
-	public boolean grantsMobility(){return mobileType;}
 	protected MOB getBehaversMOB(Environmental ticking)
 	{
 		if(ticking==null) return null;
@@ -101,13 +94,13 @@ public class StdBehavior implements Behavior
 
 	public boolean canImprove(Environmental E)
 	{
-		if((E==null)&&(canImproveCode==0)) return true;
+		if((E==null)&&(canImproveCode()==0)) return true;
 		if(E==null) return false;
-		if((E instanceof MOB)&&((canImproveCode&Ability.CAN_MOBS)>0)) return true;
-		if((E instanceof Item)&&((canImproveCode&Ability.CAN_ITEMS)>0)) return true;
-		if((E instanceof Exit)&&((canImproveCode&Ability.CAN_EXITS)>0)) return true;
-		if((E instanceof Room)&&((canImproveCode&Ability.CAN_ROOMS)>0)) return true;
-		if((E instanceof Area)&&((canImproveCode&Ability.CAN_AREAS)>0)) return true;
+		if((E instanceof MOB)&&((canImproveCode()&Ability.CAN_MOBS)>0)) return true;
+		if((E instanceof Item)&&((canImproveCode()&Ability.CAN_ITEMS)>0)) return true;
+		if((E instanceof Exit)&&((canImproveCode()&Ability.CAN_EXITS)>0)) return true;
+		if((E instanceof Room)&&((canImproveCode()&Ability.CAN_ROOMS)>0)) return true;
+		if((E instanceof Area)&&((canImproveCode()&Ability.CAN_AREAS)>0)) return true;
 		return false;
 	}
 	public static boolean canActAtAll(Environmental affecting)

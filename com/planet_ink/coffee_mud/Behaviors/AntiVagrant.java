@@ -7,11 +7,8 @@ import java.util.*;
 
 public class AntiVagrant extends StdBehavior
 {
+	public String ID(){return "AntiVagrant";}
 	private MOB target=null;
-	public AntiVagrant()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
 	public Behavior newInstance()
 	{
 		return new AntiVagrant();

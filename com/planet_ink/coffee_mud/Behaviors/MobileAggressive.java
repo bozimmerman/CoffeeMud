@@ -7,12 +7,7 @@ import java.util.*;
 
 public class MobileAggressive extends Mobile
 {
-
-	public MobileAggressive()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "MobileAggressive";}
 	public Behavior newInstance()
 	{
 		return new MobileAggressive();

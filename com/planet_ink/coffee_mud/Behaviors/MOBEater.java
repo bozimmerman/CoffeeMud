@@ -7,6 +7,8 @@ import java.util.*;
 
 public class MOBEater extends ActiveTicker
 {
+	public String ID(){return "MOBEater";}
+	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	private Room Stomach = null;
 	private int swallowDown=5;
 	private int digestDown=4;
@@ -14,10 +16,8 @@ public class MOBEater extends ActiveTicker
 
 	public MOBEater()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=10; maxTicks=30; chance=25;
 		tickReset();
-		canImproveCode=Behavior.CAN_MOBS;
 	}
 
 	public Behavior newInstance()

@@ -7,11 +7,7 @@ import java.util.*;
 
 public class BrotherHelper extends StdBehavior
 {
-
-	public BrotherHelper()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "BrotherHelper";}
 	public Behavior newInstance()
 	{
 		return new BrotherHelper();

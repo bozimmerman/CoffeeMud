@@ -7,11 +7,9 @@ import java.util.*;
 
 public class Follower extends StdBehavior
 {
-	int direction=-1;
-
+	public String ID(){return "Follower";}
 	public Follower()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		direction=-1;
 	}
 
@@ -20,6 +18,7 @@ public class Follower extends StdBehavior
 		return new Follower();
 	}
 
+	int direction=-1;
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

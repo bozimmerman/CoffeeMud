@@ -7,11 +7,7 @@ import java.util.*;
 
 public class VeryAggressive extends Aggressive
 {
-
-	public VeryAggressive()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "VeryAggressive";}
 	public Behavior newInstance()
 	{
 		return new VeryAggressive();

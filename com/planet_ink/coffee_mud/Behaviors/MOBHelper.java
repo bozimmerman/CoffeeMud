@@ -7,11 +7,7 @@ import java.util.*;
 
 public class MOBHelper extends StdBehavior
 {
-
-	public MOBHelper()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "MOBHelper";}
 	public Behavior newInstance()
 	{
 		return new MOBHelper();

@@ -7,12 +7,9 @@ import java.util.*;
 
 public class Beggar extends StdBehavior
 {
+	public String ID(){return "Beggar";}
 	Vector mobsHitUp=new Vector();
 	int tickTock=0;
-	public Beggar()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
 	public Behavior newInstance()
 	{
 		return new Beggar();

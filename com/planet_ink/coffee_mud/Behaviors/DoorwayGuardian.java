@@ -7,10 +7,7 @@ import java.util.*;
 
 public class DoorwayGuardian extends StdBehavior
 {
-	public DoorwayGuardian()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "DoorwayGuardian";}
 	public Behavior newInstance()
 	{
 		return new DoorwayGuardian();

@@ -8,11 +8,7 @@ import java.util.*;
 
 public class Aggressive extends StdBehavior
 {
-
-	public Aggressive()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "Aggressive";}
 	public Behavior newInstance()
 	{
 		return new Aggressive();

@@ -6,7 +6,7 @@ import java.util.*;
 
 public class StdArea implements Area
 {
-	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+	public String ID(){	return "StdArea";}
 	protected String name="the area";
 	protected String description="";
 	protected String miscText="";
@@ -104,11 +104,6 @@ public class StdArea implements Area
 			
 	public StdArea()
 	{
-	}
-
-	public String ID()
-	{
-		return myID;
 	}
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}

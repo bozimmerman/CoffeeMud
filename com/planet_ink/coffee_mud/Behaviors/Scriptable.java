@@ -7,17 +7,16 @@ import java.util.*;
 
 public class Scriptable extends ActiveTicker
 {
-
+	public String ID(){return "Scriptable";}
+	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	private Vector scripts=null;
 	private boolean wasDeadBefore=false;
 	private Room lastKnownLocation=null;
 
 	public Scriptable()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=10; maxTicks=30; chance=50;
 		tickReset();
-		canImproveCode=Behavior.CAN_MOBS;
 	}
 
 	public Behavior newInstance()

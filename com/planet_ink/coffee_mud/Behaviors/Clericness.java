@@ -7,17 +7,13 @@ import java.util.*;
 
 public class Clericness extends CombatAbilities
 {
-	boolean confirmedSetup=false;
-
-	public Clericness()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-
+	public String ID(){return "Clericness";}
 	public Behavior newInstance()
 	{
 		return new Clericness();
 	}
+	
+	boolean confirmedSetup=false;
 
 	public void startBehavior(Environmental forMe)
 	{

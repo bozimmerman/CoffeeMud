@@ -7,12 +7,12 @@ import java.util.*;
 
 public class Scavenger extends ActiveTicker
 {
+	public String ID(){return "Scavenger";}
+	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public Scavenger()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=10; maxTicks=30; chance=25;
 		tickReset();
-		canImproveCode=Behavior.CAN_MOBS;
 	}
 
 	public Behavior newInstance()

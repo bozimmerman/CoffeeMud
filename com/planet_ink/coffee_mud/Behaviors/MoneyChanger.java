@@ -7,10 +7,7 @@ import java.util.*;
 
 public class MoneyChanger extends StdBehavior
 {
-	public MoneyChanger()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "MoneyChanger";}
 	public Behavior newInstance()
 	{
 		return new MoneyChanger();

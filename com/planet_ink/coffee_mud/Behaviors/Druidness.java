@@ -7,17 +7,12 @@ import java.util.*;
 
 public class Druidness extends CombatAbilities
 {
-	boolean confirmedSetup=false;
-
-	public Druidness()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-
+	public String ID(){return "Druidness";}
 	public Behavior newInstance()
 	{
 		return new Druidness();
 	}
+	boolean confirmedSetup=false;
 
 	public void startBehavior(Environmental forMe)
 	{

@@ -7,13 +7,8 @@ import java.util.*;
 
 public class MOBTeacher extends CombatAbilities
 {
+	public String ID(){return "MOBTeacher";}
 	private MOB myMOB=null;
-
-	public MOBTeacher()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-
 	public Behavior newInstance()
 	{
 		return new MOBTeacher();

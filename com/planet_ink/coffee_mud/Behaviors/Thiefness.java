@@ -7,12 +7,8 @@ import java.util.*;
 
 public class Thiefness extends CombatAbilities
 {
+	public String ID(){return "Thiefness";}
 	private int tickDown=0;
-	public Thiefness()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-
 	public Behavior newInstance()
 	{
 		return new Thiefness();

@@ -9,6 +9,13 @@ import java.util.*;
 
 public class Arrest extends StdBehavior
 {
+	public String ID(){return "Arrest";}
+	
+	public Behavior newInstance()
+	{
+		return new Arrest();
+	}
+	
 	private Vector warrants=new Vector();
 	private Properties laws=null;
 	private Vector otherCrimes=new Vector();
@@ -85,16 +92,6 @@ public class Arrest extends StdBehavior
 			}
 		}
 		return laws;
-	}
-	
-	public Arrest()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-	
-	public Behavior newInstance()
-	{
-		return new Arrest();
 	}
 	
 	public String getBit(String words, int which)

@@ -7,10 +7,7 @@ import java.util.*;
 
 public class ItemRefitter extends StdBehavior
 {
-	public ItemRefitter()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "ItemRefitter";}
 	public Behavior newInstance()
 	{
 		return new ItemRefitter();

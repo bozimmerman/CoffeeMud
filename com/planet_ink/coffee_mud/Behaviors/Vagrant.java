@@ -7,12 +7,9 @@ import java.util.*;
 
 public class Vagrant extends StdBehavior
 {
+	public String ID(){return "Vagrant";}
 	private int sleepForTicks=0;
 	private int wakeForTicks=0;
-	public Vagrant()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
 	public Behavior newInstance()
 	{
 		return new Vagrant();

@@ -7,11 +7,7 @@ import java.util.*;
 
 public class MobileGoodGuardian extends Mobile
 {
-	public MobileGoodGuardian()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "MobileGoodGuardian";}
 	public Behavior newInstance()
 	{
 		return new MobileGoodGuardian();

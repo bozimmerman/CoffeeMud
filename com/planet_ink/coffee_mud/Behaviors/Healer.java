@@ -7,11 +7,12 @@ import java.util.*;
 
 public class Healer extends ActiveTicker
 {
+	public String ID(){return "Healer";}
+	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	private static Vector healingVector=new Vector();
 
 	public Healer()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=10; maxTicks=20; chance=100;
 		tickReset();
 		if(healingVector.size()==0)
@@ -23,7 +24,6 @@ public class Healer extends ActiveTicker
 			healingVector.addElement(CMClass.getAbility("Prayer_Bless"));
 			healingVector.addElement(CMClass.getAbility("Prayer_Sanctuary"));
 		}
-		canImproveCode=Behavior.CAN_MOBS;
 	}
 
 	public Behavior newInstance()

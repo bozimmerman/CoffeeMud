@@ -7,11 +7,7 @@ import java.util.*;
 
 public class Mageness extends CombatAbilities
 {
-	public Mageness()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-
+	public String ID(){return "Mageness";}
 	public Behavior newInstance()
 	{
 		return new Mageness();

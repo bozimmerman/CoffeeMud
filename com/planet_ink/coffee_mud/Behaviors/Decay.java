@@ -7,13 +7,14 @@ import java.util.*;
 
 public class Decay extends ActiveTicker
 {
-	boolean activated=false;
+	public String ID(){return "Decay";}
 	public Decay()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=50;maxTicks=50;chance=100;
 		tickReset();
 	}
+	
+	boolean activated=false;
 
 	public Behavior newInstance()
 	{

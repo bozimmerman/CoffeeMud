@@ -7,15 +7,13 @@ import java.util.*;
 
 public class GateGuard extends StdBehavior
 {
-	int tickTock=0;
-	public GateGuard()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){return "GateGuard";}
 	public Behavior newInstance()
 	{
 		return new GateGuard();
 	}
+	
+	int tickTock=0;
 	
 	private int findGate(MOB mob)
 	{

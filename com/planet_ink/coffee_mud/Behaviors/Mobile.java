@@ -7,14 +7,14 @@ import java.util.*;
 
 public class Mobile extends ActiveTicker
 {
+	public String ID(){return "Mobile";}
+	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	public boolean grantsMobility(){return true;}
 	public Mobile()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=10; maxTicks=30; chance=100;
 		tickReset();
-		mobileType=true;
-		canImproveCode=Behavior.CAN_MOBS;
 	}
 	public Behavior newInstance()
 	{

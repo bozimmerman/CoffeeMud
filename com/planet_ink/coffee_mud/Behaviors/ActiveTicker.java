@@ -7,17 +7,13 @@ import java.util.*;
 
 public class ActiveTicker extends StdBehavior
 {
-	protected int tickDown=0;
+	public String ID(){return "ActiveTicker";}
+	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
+	
 	protected int minTicks=10;
 	protected int maxTicks=30;
 	protected int chance=100;
-
-	public ActiveTicker()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		tickReset();
-		canImproveCode=Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;
-	}
+	protected int tickDown=(int)Math.round(Math.random()*(maxTicks-minTicks))+minTicks;
 
 	protected void tickReset()
 	{

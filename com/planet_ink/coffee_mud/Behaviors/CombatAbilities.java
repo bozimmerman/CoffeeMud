@@ -8,11 +8,7 @@ import java.io.*;
 
 public class CombatAbilities extends StdBehavior
 {
-	public CombatAbilities()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-
+	public String ID(){return "CombatAbilities";}
 	public Behavior newInstance()
 	{
 		return new CombatAbilities();

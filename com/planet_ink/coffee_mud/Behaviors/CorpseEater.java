@@ -7,14 +7,13 @@ import java.util.*;
 
 public class CorpseEater extends ActiveTicker
 {
+	public String ID(){return "CorpseEater";}
+	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public CorpseEater()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=10; maxTicks=30; chance=25;
 		tickReset();
-		canImproveCode=Behavior.CAN_MOBS;
 	}
-
 	public Behavior newInstance()
 	{
 		return new CorpseEater();

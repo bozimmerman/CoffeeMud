@@ -7,11 +7,7 @@ import java.util.*;
 
 public class Fighterness extends CombatAbilities
 {
-	public Fighterness()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-
+	public String ID(){return "Fighterness";}
 	public Behavior newInstance()
 	{
 		return new Fighterness();
