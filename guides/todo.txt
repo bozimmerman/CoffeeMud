@@ -1,7 +1,6 @@
 Some sort of Archon-only Journal that you can add banned address to (and remove).
 And the last IP the player connects from would be nice to have in the player-table
 Archons can't boot players off? (shutdowns down count)
-Sometimes when an archon would run a quest, the rewards might not always be $...  they could be pracs, trains, exp, stat mods... etc.. Can there be an Archon toolkit for rewarding the playerfolk?
 
 New Skill -- Double the damage on all Ranged Weapons to make them more deadly.
 Ability to save riding status in the database.

@@ -4,6 +4,7 @@ create copy destroy modify
 link unlink save sysmsgs
 take unloadhelp dumpfile
 reset order ticktock list
+boot ban
 ^HModules^N  
 import export xml i3
 

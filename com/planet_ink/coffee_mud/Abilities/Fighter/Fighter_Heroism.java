@@ -18,6 +18,23 @@ public class Fighter_Heroism extends StdAbility
 	public Environmental newInstance(){	return new Fighter_Heroism();}
 	public int classificationCode(){ return Ability.SKILL;}
 
+	public boolean tick(int tickID)
+	{
+		if((affected==null)||(!(affected instanceof MOB)))
+			return super.tick(tickID);
+
+		MOB mob=(MOB)affected;
+
+		if((!Sense.isSitting(mob))
+		&&(Sense.isSleeping(mob))
+		&&(mob.isInCombat())
+		&&(profficiencyCheck(0,false))
+		&&(Dice.rollPercentage()==1)
+		&&(tickID==Host.MOB_TICK))
+			helpProfficiency(mob);
+		return super.tick(tickID);
+	}
+	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

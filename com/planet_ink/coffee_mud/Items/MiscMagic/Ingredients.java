@@ -5,14 +5,14 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.system.*;
 
-public class Ingredients extends BagOfHolding
+public class Ingredients extends BagOfEndlessness
 {
 	public String ID(){	return "Ingredients";}
 	boolean alreadyFilled=false;
 	public Ingredients()
 	{
 		super();
-
+		secretIdentity="The Archon's Secret Ingredient Bag";
 		recoverEnvStats();
 	}
 
@@ -57,7 +57,6 @@ public class Ingredients extends BagOfHolding
 			for(int i=0;i<EnvResource.RESOURCE_DATA.length;i++)
 			{
 				String name=EnvResource.RESOURCE_DESCS[i];
-				makeResource(name.toLowerCase(),EnvResource.RESOURCE_DATA[i][0]);
 				makeResource(name.toLowerCase(),EnvResource.RESOURCE_DATA[i][0]);
 			}
 		}
