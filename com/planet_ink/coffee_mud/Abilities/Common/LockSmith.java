@@ -12,6 +12,7 @@ public class LockSmith extends CommonSkill
 	public String name(){ return "Locksmithing";}
 	private static final String[] triggerStrings = {"LOCKSMITH","LOCKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_CRAFTING;}
 
 	private Item building=null;
 	private Environmental workingOn=null;

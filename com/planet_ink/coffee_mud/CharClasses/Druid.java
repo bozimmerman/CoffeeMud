@@ -44,6 +44,7 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_PredictWeather",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonPlants",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_HardenSkin",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocatePlants",false);
@@ -102,6 +103,7 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_Fertilization",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_CharmAnimal",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_CalmWeather",false);
+			CMAble.addCharAbilityMapping(ID(),15,"PlantLore",false);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_FireWard",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_Shillelagh",false);
@@ -120,7 +122,6 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonHeat",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_SenseSentience",false);
 
-			CMAble.addCharAbilityMapping(ID(),20,"PlantLore",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_Grapevine",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_SummonCold",false);
@@ -129,20 +130,26 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_AnimalSpy",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_SummonRain",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_PlantSnare",false);
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_SensePregnancy",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_SensePregnancy",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_Treemorph",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonWind",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_NeutralizePoison",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_FindPlant",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_SensePlants",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_GrowItem",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonLightning",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonMount",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindOre",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_SenseOres",false);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_CharmArea",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonElemental",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonFear",false);
-			CMAble.addCharAbilityMapping(ID(),24,"Chant_SenseAge",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_SenseAge",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_FindGem",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_SenseGems",false);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SpeedTime",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonSapling",false);
@@ -308,4 +315,16 @@ public class Druid extends StdCharClass
 		return outfitChoices;
 	}
 	
+	public int classDurationModifier(MOB myChar,
+									 Ability skill,
+									 int duration)
+	{
+		if(myChar==null) return duration;
+		if(Util.bset(skill.flags(),Ability.FLAG_CRAFTING)
+		&&(!skill.ID().equals("Weaving"))
+		&&(!skill.ID().equals("Masonry")))
+			return duration*2;
+		   
+		return duration;
+	}
 }

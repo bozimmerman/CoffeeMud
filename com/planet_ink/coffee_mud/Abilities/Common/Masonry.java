@@ -12,6 +12,7 @@ public class Masonry extends CommonSkill
 	public String name(){ return "Masonry";}
 	private static final String[] triggerStrings = {"MASONRY"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_CRAFTING;}
 
 	private final static int BUILD_WALL=0;
 	private final static int BUILD_ROOF=1;

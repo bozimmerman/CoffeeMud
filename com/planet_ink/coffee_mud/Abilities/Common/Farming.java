@@ -115,6 +115,7 @@ public class Farming extends CommonSkill
 				&&(I2.container()==null)
 				&&(((I2.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
 					||(I2.material()==EnvResource.RESOURCE_COTTON)
+					||(I2.material()==EnvResource.RESOURCE_HEMP)
 					||((I2.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)))
 				{
 					commands.addElement(EnvResource.RESOURCE_DESCS[I2.material()&EnvResource.RESOURCE_MASK]);
@@ -140,6 +141,7 @@ public class Farming extends CommonSkill
 			if((str.toUpperCase().equalsIgnoreCase(Util.combine(commands,0)))
 			&&(((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
 			  ||(EnvResource.RESOURCE_DATA[i][0]==EnvResource.RESOURCE_COTTON)
+			  ||(EnvResource.RESOURCE_DATA[i][0]==EnvResource.RESOURCE_HEMP)
 			  ||((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)))
 			{
 				code=EnvResource.RESOURCE_DATA[i][0];

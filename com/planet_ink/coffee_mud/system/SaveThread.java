@@ -189,7 +189,7 @@ public class SaveThread extends Thread
 				{
 					status="checking database health";
 					StringBuffer ok=DBConnector.errorStatus();
-					if(ok.length()!=0)
+					if((ok.length()!=0)&&(!ok.toString().startsWith("OK")))
 						Log.errOut("Save Thread","DB: "+ok);
 					else
 					{

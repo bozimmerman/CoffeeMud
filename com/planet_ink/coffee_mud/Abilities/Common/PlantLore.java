@@ -65,6 +65,9 @@ public class PlantLore extends CommonSkill
 							if((resource<0)||(resource>=EnvResource.RESOURCE_DESCS.length))
 								continue;
 							if((material!=EnvResource.MATERIAL_VEGETATION)
+							&&(resource!=EnvResource.RESOURCE_COTTON)
+							&&(resource!=EnvResource.RESOURCE_HEMP)
+							&&(resource!=EnvResource.RESOURCE_SAP)
 							&&(material!=EnvResource.MATERIAL_WOODEN))
 								continue;
 							String resourceStr=EnvResource.RESOURCE_DESCS[resource];

@@ -12,6 +12,7 @@ public class InstrumentMaking extends CommonSkill
 	public String name(){ return "Instrument Making";}
 	private static final String[] triggerStrings = {"INSTRUMENTMAKING","INSTRUMENTMAKE"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_CRAFTING;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

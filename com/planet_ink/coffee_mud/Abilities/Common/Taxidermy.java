@@ -10,6 +10,7 @@ public class Taxidermy extends CommonSkill
 	public String name(){ return "Taxidermy";}
 	private static final String[] triggerStrings = {"STUFF","TAXIDERMY"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_CRAFTING;}
 
 	private Item found=null;
 	private String foundShortName="";

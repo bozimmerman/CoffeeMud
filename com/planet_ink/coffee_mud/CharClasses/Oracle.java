@@ -59,6 +59,7 @@ public class Oracle extends Cleric
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_IdentifyObject",false);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_Augury",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Skill_WildernessLore",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);

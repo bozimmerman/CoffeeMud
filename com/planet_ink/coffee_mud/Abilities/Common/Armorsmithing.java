@@ -12,6 +12,7 @@ public class Armorsmithing extends CommonSkill
 	public String name(){ return "Armorsmithing";}
 	private static final String[] triggerStrings = {"ARMORSMITH","ARMORSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public long flags(){return FLAG_CRAFTING;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
