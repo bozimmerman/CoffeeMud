@@ -79,7 +79,7 @@ public class Spell_BaseClanEq extends Spell
 		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Item.WORN_REQ_UNWORNONLY);
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
-		    mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
+		    mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
 		    return false;
 		}
 		// Add clan power check start
@@ -97,6 +97,11 @@ public class Spell_BaseClanEq extends Spell
 		}
 
 		// Add clan power check end
+		if(target.fetchAffect("Prop_ClanEquipment")!=null)
+		{
+			mob.tell(target.name()+" is already clan enchanted.");
+			return false;
+		}
 
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -118,10 +123,11 @@ public class Spell_BaseClanEq extends Spell
 				str.append(type); // Type of Enchantment
 				str.append(" ");
 				str.append(""+points);     // Power of Enchantment
-				str.append(" ");
+				str.append(" \"");
 				str.append(ClanName);                          // Clan Name
-				str.append(" ");
+				str.append("\" \"");
 				str.append(ClanType);                          // Clan Type
+				str.append("\"");
 				A.setMiscText(str.toString());
 				target.addAffect(A);
 			}

@@ -238,38 +238,13 @@ public class Prop_ClanEquipment extends Property
 						boolean showDamn = CommonStrings.getVar(CommonStrings.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES");
 						int flameDamage = Dice.roll(1, 6, 0);
 						flameDamage *= PowerLevel;
-						FullMsg msg = new FullMsg
-						                          (mob, target, null,
-						                           Affect.MSG_OK_ACTION,
-						// Source Message
-						                           "^FYour " + clanType + "'s " +
-						                           type.toLowerCase() +
-						                           " magic coarses through "
-						                           + affected.name() +
-						                           " and " +
-						                           CommonStrings.standardHitWord(WeaponType,
-						    flameDamage) + ( (showDamn) ? " (" + flameDamage + ")" : "") +
-						                           " <T-NAME>!^?",
-						// Target Message
-						                           "^FThe magic of " +
+						ExternalPlay.postDamage(mob,target,null,flameDamage, Affect.MASK_MALICIOUS|Affect.MASK_GENERAL|TypeOfEffect, WeaponType,
+												   "^FThe magic of " +
 						                           clanType + " " + clanName +
-						                           " coarses through " + affected.name() +
+						                           " coarses through " + me.name() +
 						                           " and " +
-						                           CommonStrings.standardHitWord(WeaponType,
-						    flameDamage) + ( (showDamn) ? " (" + flameDamage + ")" : "") +
-						                           " <T-NAME>!^?",
-						// Other Message
-						                           "^FThe magic of " +
-						                           clanType + " " + clanName +
-						                           " coarses through " + affected.name() +
-						                           " and " +
-						                           CommonStrings.standardHitWord(WeaponType,
-						    flameDamage) + ( (showDamn) ? " (" + flameDamage + ")" : "") +
+						                           "<DAMAGE>"+
 						                           " <T-NAME>!^?");
-						if (target.location().okAffect(target, msg)) 
-						{
-							target.location().send(target, msg);
-						}
 						wandUse.helpProfficiency(mob);
 						return;
 					}
@@ -381,7 +356,7 @@ public class Prop_ClanEquipment extends Property
 			    flameDamage) + ( (showDamn) ? " (" + flameDamage + ")" : "") +
 			                      " <T-NAME>!^?"));
 			affect.addTrailerMsg(new FullMsg(affect.source(), (MOB) affect.target(), null,
-			                                 Affect.NO_EFFECT,
+			                                 Affect.MASK_MALICIOUS|Affect.MASK_GENERAL|TypeOfEffect,
 			                                 Affect.MASK_HURT + flameDamage,
 			                                 Affect.NO_EFFECT, null));
 			notAgain = false;
@@ -415,7 +390,8 @@ public class Prop_ClanEquipment extends Property
 					    int damage = Dice.roll(1, 3, 0);
 					    damage *= PowerLevel;
 					    ExternalPlay.postDamage(mob, source, affected, damage,
-					                            Affect.MASK_HURT | TypeOfEffect, WeaponType,
+					                            Affect.MASK_MALICIOUS|Affect.MASK_GENERAL| TypeOfEffect
+												, WeaponType,
 					                            "^FThe magic of " + clanType + " " +
 					                            clanName +
 					                            " around <S-NAME> <DAMAGE> <T-NAME>!^?");
