@@ -95,6 +95,7 @@ public class Bard extends StdCharClass
 		if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
 		{
 			Hashtable H=mob.getGroupMembers(new Hashtable());
+			double origAmount=theAmount;
 			for(Enumeration e=H.elements();e.hasMoreElements();)
 			{
 				MOB mob2=(MOB)e.nextElement();
@@ -104,7 +105,7 @@ public class Bard extends StdCharClass
 				   &&(mob2.location()==mob.location()))
 				{
 					if(!mob2.isMonster())
-						theAmount+=(theAmount/5.0);
+						theAmount+=(origAmount/5.0);
 					else
 					if(mob2.charStats().getStat(CharStats.INTELLIGENCE)>3)
 						theAmount+=1.0;

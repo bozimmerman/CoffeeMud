@@ -102,6 +102,14 @@ public class DefaultCharStats implements Cloneable, CharStats
 			return CMClass.getCharClass("StdCharClass");
 		return myClasses[i];
 	}
+	public int getClassLevel(String aClass)
+	{
+		if(myClasses==null)	return -1;
+		for(int i=0;i<myClasses.length;i++)
+			if(myClasses[i].ID().equals(aClass))
+			   return myLevels[i].intValue();
+		return -1;
+	}
 	public int getClassLevel(CharClass aClass)
 	{
 		if(myClasses==null)	return -1;

@@ -1754,7 +1754,7 @@ public class StdMOB implements MOB
 	public boolean isASysOp(Room of)
 	{
 		if(baseCharStats()==null) return false;
-		if(baseCharStats().getCurrentClass().ID().equals("Archon"))
+		if(baseCharStats().getClassLevel("Archon")>=0)
 			return true;
 		if(of==null) return false;
 		if(of.getArea()==null) return false;
