@@ -18,6 +18,7 @@ public interface ExternalSystem
 	public void DBCreateRoom(Room room, String LocaleID);
 	public void DBUpdateRoom(Room room);
 	public void DBUpdateMOB(MOB mob);
+	public void DBUpdateRoomMOB(String keyName, Room room, MOB mob);
 	public void DBUpdateItems(Room room);
 	public void DBUpdateQuests(Vector quests);
 	public void DBUpdateQuest(Quest Q);

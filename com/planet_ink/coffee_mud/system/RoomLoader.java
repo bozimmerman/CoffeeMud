@@ -489,6 +489,51 @@ public class RoomLoader
 		}
 	}
 
+	private static void DBCreateThisMOB(Room room, MOB thisMOB)
+	{
+		DBConnection D=null;
+		String str=null;
+		String ride=null;
+		if(thisMOB.riding()!=null)
+			ride=""+thisMOB.riding();
+		else
+		if(thisMOB.amFollowing()!=null)
+			ride=""+thisMOB.amFollowing();
+		else
+			ride="";
+		try
+		{
+			D=DBConnector.DBFetch();
+			str=
+			 "INSERT INTO CMROCH ("
+			 +"CMROID, "
+			 +"CMCHNM, "
+			 +"CMCHID, "
+			 +"CMCHTX, "
+			 +"CMCHLV, "
+			 +"CMCHAB, "
+			 +"CMCHRE, "
+			 +"CMCHRI "
+			 +") values ("
+			 +"'"+room.roomID()+"',"
+			 +"'"+thisMOB+"',"
+			 +"'"+CMClass.className(thisMOB)+"',"
+			 +"'"+thisMOB.text()+" ',"
+			 +thisMOB.baseEnvStats().level()+","
+			 +thisMOB.baseEnvStats().ability()+","
+			 +thisMOB.baseEnvStats().rejuv()+","
+			 +"'"+ride+"'"
+			 +")";
+			D.update(str);
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Room",str);
+			Log.errOut("Room","CrRoomMOB"+sqle.getMessage());
+			if(D!=null) DBConnector.DBDone(D);
+		}
+	}
 	public static void DBUpdateTheseMOBs(Room room, Vector mobs)
 	{
 		if(room.roomID().length()==0) return;
@@ -511,47 +556,7 @@ public class RoomLoader
 		for(int m=0;m<mobs.size();m++)
 		{
 			MOB thisMOB=(MOB)mobs.elementAt(m);
-
-			String ride=null;
-			if(thisMOB.riding()!=null)
-				ride=""+thisMOB.riding();
-			else
-			if(thisMOB.amFollowing()!=null)
-				ride=""+thisMOB.amFollowing();
-			else
-				ride="";
-			try
-			{
-				D=DBConnector.DBFetch();
-				str=
-				 "INSERT INTO CMROCH ("
-				 +"CMROID, "
-				 +"CMCHNM, "
-				 +"CMCHID, "
-				 +"CMCHTX, "
-				 +"CMCHLV, "
-				 +"CMCHAB, "
-				 +"CMCHRE, "
-				 +"CMCHRI "
-				 +") values ("
-				 +"'"+room.roomID()+"',"
-				 +"'"+thisMOB+"',"
-				 +"'"+CMClass.className(thisMOB)+"',"
-				 +"'"+thisMOB.text()+" ',"
-				 +thisMOB.baseEnvStats().level()+","
-				 +thisMOB.baseEnvStats().ability()+","
-				 +thisMOB.baseEnvStats().rejuv()+","
-				 +"'"+ride+"'"
-				 +")";
-				D.update(str);
-				DBConnector.DBDone(D);
-			}
-			catch(SQLException sqle)
-			{
-				Log.errOut("Room",str);
-				Log.errOut("Room","UpdateMOBs"+sqle.getMessage());
-				if(D!=null) DBConnector.DBDone(D);
-			}
+			DBCreateThisMOB(room,thisMOB);
 		}
 	}
 
@@ -728,6 +733,29 @@ public class RoomLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
+	}
+
+	public static void DBUpdateRoomMOB(String keyName, Room room, MOB mob)
+	{
+		DBConnection D=null;
+		String str=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			str="DELETE FROM CMROCH "
+				+"WHERE CMROID='"+room.roomID()+"' "
+				+"AND CMCHNM='"+keyName+"'";
+			D.update(str);
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("UpRoomMOB",str);
+			Log.errOut("UpRoomMOB",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+			return;
+		}
+		DBCreateThisMOB(room,mob);
 	}
 
 	public static void DBDelete(Area A)

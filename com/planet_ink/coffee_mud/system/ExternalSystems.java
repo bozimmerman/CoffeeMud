@@ -105,6 +105,10 @@ public class ExternalSystems implements ExternalSystem
 	{
 		MOBloader.DBUpdate(mob);
 	}
+	public void DBUpdateRoomMOB(String keyName, Room room, MOB mob)
+	{
+		RoomLoader.DBUpdateRoomMOB(keyName,room,mob);
+	}
 	public void DBUpdateItems(Room room)
 	{
 		RoomLoader.DBUpdateItems(room);

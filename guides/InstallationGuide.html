@@ -11,7 +11,7 @@
 <P><STRONG><FONT size=5>Installation:</FONT></STRONG></P>
 <P>The first and most critical step in installing CoffeeMud 
 4.0 is to make sure that you have downloaded and installed the latest version of 
-the Sun Java JDK.&nbsp; As of this writing, that version is Java 1.4.1.&nbsp; CoffeeMud uses the 
+the Sun Java J2SDK.&nbsp; As of this writing, that version is Java 1.4.1.&nbsp; CoffeeMud uses the 
 latest Sun classes, so stay up to date!&nbsp; If you are using some flavor of Unix or Linux instead of Windows, make 
 sure you aren't trying to get by with GCJ -- CoffeeMud 
 (and Sun) do not support it.</P>
@@ -21,6 +21,21 @@ is your first installation, keep reading.</P>
 <P>You will now need to&nbsp;unpack the CoffeeMud.zip package into a directory 
 on your hard drive.&nbsp; This directory may be called, for instance, 
 "CoffeeMud".</P>
+<P>If you are using a UNIX/Linux system, you should now bring up a console and 
+cd to whatever directory you unpacked CoffeeMud to.&nbsp; Make sure you can 
+write to mudUNIX.sh by issung the the command <STRONG>chmod 766 
+mudUNIX.sh&nbsp;</STRONG>&nbsp; Now,&nbsp;enter&nbsp;<STRONG>sh 
+InstallUNIX.sh</STRONG>&nbsp; Follow the prompts by inputting the directory of 
+JAVA; do not enter a trailing slash, for instance: 
+<STRONG>/opt/j2sdk/j2sdk1.4.2</STRONG>&nbsp; Continue following the prompts: 
+Say&nbsp;<STRONG>y</STRONG> if you want to compile the main 
+program,&nbsp;<STRONG>n</STRONG> if you don't. Enter the name of your new MUD 
+(this only works FIRST RUN; you cannot use this to change MUD's name in the 
+FUTURE). Say&nbsp;<STRONG>y</STRONG> if you want to start your MUD now, and 
+<STRONG>n</STRONG> if you don't. Hit enter after the nohup comes up.&nbsp; Send 
+an email to <A href="mailto:wrichter@att.net">wrichter@att.net</A> or <A 
+href="mailto:bo@zimmers.net">bo@zimmers.net</A> if you have any problems with 
+this script.</P>
 <P align=center><STRONG><FONT size=6>Congratulations!</FONT></STRONG></P>
 <P align=left>You have successfully installed CoffeeMud.&nbsp; </P>
 <P align=left>You may wish, at this point, to investigate the settings and 

@@ -277,6 +277,10 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateMOBs(room);
 	}
+	public static void DBUpdateRoomMOB(String keyName, Room room, MOB mob)
+	{
+		if(sysPlayer!=null) sysPlayer.DBUpdateRoomMOB(keyName,room,mob);
+	}
 	public static void DBCreateRoom(Room room, String LocaleID)
 	{
 		if(sysPlayer!=null) sysPlayer.DBCreateRoom(room,LocaleID);

@@ -87,22 +87,17 @@ new common skill FABRICATING....includes any assembly-type work.....cigarettes, 
 construct needs to be able to modify door descriptions
 we need a property that allows a MOB to use a general skill whenever a player is present. For example, making the lumberjack chop if a player enters a room
 
-From Lee:
-Techno-magic weapons/armor  Weapons would draw mana as ammo from the wielder in order to deal damage.  Laser/ray guns would be prime candidates for this as would something akin to a lightsaber.  Techno magic items would draw mana from the user for each strike and give some sort of effect, ie a spell cast or damage reduction.  Tradeoff:  these would be great weapons/armor, but could quickly deplete the character of mana in a fight.
-Open wormhole.  Allows a character to open a wormhole for quick transportation. 
-Predict wormhole.  A lower level spell allowing the character to predict the opening of a naturally occuring wormhole.
-Cyborgs, andriods, robots.  All basically robots....un-healable MOBS.  Must be repaired via some engineering/mechanic skill to "heal"  cyborgs, being part human part machine, have a healable portion and a non-healable portion.  different gadgets can be incorporated/plugged into these mobs and get destroyed and possibly need replacing as the mob gets damaged.  Definitely ought to be available as player characters.  Trade offs might be that they get a huge number of hit points, but can't heal....and don't get extra hitpoints as they level (except for cyborgs).  Also, possibly might not be able to "repair" themselves.
-Tech armors.  Basically, an item than is a rideable version of #5.  The character must be inside/riding the vehicle in order to use.  New opportunities for player classes here (robot pilot, etc.)
-Tinkerer player class.  Player class with the ability to create, modify, repair tech items. 
-FTL travel.  Some areas in space are so far apart, that they may only be reached via Faster-Than-Light travel of some sort.
-Probes.  Space ships may send out probes to investigate planets, other space ships, etc.  Some probes are better than others---might not be blocked by shields, etc---cost more money, higher level, though.
-
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
 Create Outer Space.
 Create Docking areas.
 Electronic items which can be activated/deactivated, grant some affect, and use up power
 Prop_TechShield that absorbs enormous damage, but like Prop_SpellReflector -- needs reset time.
+Cyborgs, andriods, robots.  All basically robots....un-healable MOBS.  Must be repaired via some engineering/mechanic skill to "heal"  cyborgs, being part human part machine, have a healable portion and a non-healable portion.  different gadgets can be incorporated/plugged into these mobs and get destroyed and possibly need replacing as the mob gets damaged.  Definitely ought to be available as player characters.  Trade offs might be that they get a huge number of hit points, but can't heal....and don't get extra hitpoints as they level (except for cyborgs).  Also, possibly might not be able to "repair" themselves.
+Tech armors.  Basically, an item than is a rideable version of #5.  The character must be inside/riding the vehicle in order to use.  New opportunities for player classes here (robot pilot, etc.)
+FTL travel.  Some areas in space are so far apart, that they may only be reached via Faster-Than-Light travel of some sort.
+Probes.  Space ships may send out probes to investigate planets, other space ships, etc.  Some probes are better than others---might not be blocked by shields, etc---cost more money, higher level, though.
+
 
 Wild Mage: 50% of the time, a spell cast will end up higher level, different spell.
 Cavelier the knight, law enforcer - mounted bonuses, Mounted Combat 2 Mounted Combat 3 Vigilance....allows the character to be on guard moreso than others...can recover hp, mana, movement at sleeping rates while resting. a skill dealing with a lance like Joust or Mounted Charge.Horsemanship.Dragon Lore.Leadership.Reputation
