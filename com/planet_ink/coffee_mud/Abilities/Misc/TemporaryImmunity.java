@@ -55,7 +55,7 @@ public class TemporaryImmunity extends StdAbility
 		if(str.startsWith("+"))
 		{
 			str=str.substring(1);
-			if(set.contains(str))
+			if(set.indexOf(str)>=0)
 				set.setElementAt(set.indexOf(str),2,new Long(System.currentTimeMillis()));
 			else
 				set.addElement(str,new Long(System.currentTimeMillis()));

@@ -86,7 +86,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 					if(A==null)
 					{
 						A=CMClass.getAbility("TemporaryImmunity");
-						A.setBorrowed(mob,false);
+						A.setBorrowed(mob,true);
 						A.makeLongLasting();
 						mob.addEffect(A);
 						A.makeLongLasting();

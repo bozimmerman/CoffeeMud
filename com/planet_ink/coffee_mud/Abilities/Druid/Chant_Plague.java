@@ -64,7 +64,7 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 				if(A==null)
 				{
 					A=CMClass.getAbility("TemporaryImmunity");
-					A.setBorrowed(mob,false);
+					A.setBorrowed(mob,true);
 					A.makeLongLasting();
 					mob.addEffect(A);
 					A.makeLongLasting();

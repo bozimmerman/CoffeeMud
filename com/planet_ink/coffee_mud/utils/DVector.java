@@ -189,7 +189,7 @@ public class DVector implements Cloneable, java.io.Serializable
 	}
 	public void setElementAt(int index, int dim, Object O)
 	{
-		if(dimensions!=1) throw new java.lang.IndexOutOfBoundsException();
+		if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
 		synchronized(stuff)
 		{
 			stuff[dim-1].setElementAt(O,index);

@@ -28,7 +28,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 				if(A==null)
 				{
 					A=CMClass.getAbility("TemporaryImmunity");
-					A.setBorrowed(mob,false);
+					A.setBorrowed(mob,true);
 					A.makeLongLasting();
 					mob.addEffect(A);
 					A.makeLongLasting();
