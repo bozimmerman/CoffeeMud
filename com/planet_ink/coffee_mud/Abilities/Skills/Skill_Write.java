@@ -30,6 +30,7 @@ public class Skill_Write extends StdAbility
 		addQualifyingClass("Paladin",1);
 		addQualifyingClass("Thief",1);
 		addQualifyingClass("Bard",1);
+		addQualifyingClass("Ranger",1);
 		recoverEnvStats();
 	}
 

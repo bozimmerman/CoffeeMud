@@ -110,7 +110,7 @@ public class StdCharClass implements CharClass
 				theAmount=theAmount+Util.mul(levelFactor,amount);
 			}
 			
-			double victimFactor=Util.div((500.0-new Integer(victim.getAlignment()).doubleValue()),5.0);
+			double victimFactor=Util.div((500.0-new Integer(victim.getAlignment()).doubleValue()),10.0);
 			double mobFactor=Util.div(Math.abs(500.0-new Integer(mob.getAlignment()).doubleValue()),1000.0)+0.5;
 			mob.setAlignment(mob.getAlignment()+(int)Math.round(mobFactor*victimFactor));
 			

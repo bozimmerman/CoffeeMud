@@ -226,7 +226,10 @@ public class Sense
 			Say.append(" (sneaking)");
 		if((Sense.isHidden(seen))&&(Sense.canSeeHidden(seer)))
 			Say.append(" (hidden)");
-		if((Sense.isInfrared(seen))&&(Sense.canSeeInfrared(seer)))
+		if((Sense.isInfrared(seen))
+		&&(Sense.canSeeInfrared(seer))
+		&&(seer instanceof MOB)
+		&&(isInDark(((MOB)seer).location())))
 			Say.append(" (heat aura)");
 		if((Sense.isABonusItems(seen))&&(Sense.canSeeBonusItems(seer)))
 			Say.append(" (glowing white)");

@@ -74,7 +74,7 @@ public class SocialProcessor
 		{
 			String possibleTarget=(String)commands.elementAt(1);
 			target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget);
-			if((!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
+			if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
 			   target=null;
 			if((target!=null)&&(Sense.canBeSeenBy(target,mob)))
 				commands.removeElementAt(1);

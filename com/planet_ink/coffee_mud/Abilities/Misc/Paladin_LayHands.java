@@ -54,14 +54,10 @@ public class Paladin_LayHands extends StdAbility
 			return false;
 		}
 
-		if(profficiency()<100)
-		{
-			if(Math.round(Util.div(mob.charStats().getIntelligence(),25)*100.0*Math.random())>50)
-			   setProfficiency(profficiency()+1);
-		}
-
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+
+		helpProfficiency(mob);
 
 		boolean success=profficiencyCheck(0,auto);
 

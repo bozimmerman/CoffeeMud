@@ -165,6 +165,7 @@ public class Import
 		    ||(objectName.indexOf("WRITING")>=0)
 		    ||(objectName.indexOf("CARVING")>=0)
 		    ||(objectName.indexOf("LETTER")>=0)
+		    ||(objectName.indexOf("INSCRIPTION")>=0)
 		    ||(objectName.indexOf("NOTE")>=0)
 		    ||(objectName.indexOf("POST")>=0))
 				return true;
@@ -2543,6 +2544,13 @@ public class Import
 						}
 						E.setDisplayText(descStr);
 						String name=((nameStr.indexOf(" ")<=0)?nameStr:(nameStr.substring(0,nameStr.indexOf(" ")))).trim();
+						if(name.equalsIgnoreCase("SECRET"))
+						{
+							name="secret door";
+							E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|Sense.IS_HIDDEN);
+							E.recoverEnvStats();
+						}
+						
 						if(name.length()>0)
 						{
 							if(("aeiouAEIOU").indexOf(name.charAt(0))>=0)

@@ -18,7 +18,7 @@ public class GenWater extends StdDrink
 		description="Looks like a puddle";
 		baseGoldValue=5;
 		capacity=0;
-		amountOfThirstQuenched=50;
+		amountOfThirstQuenched=200;
 		amountOfLiquidHeld=500;
 		amountOfLiquidRemaining=500;
 		recoverEnvStats();

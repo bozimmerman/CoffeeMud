@@ -125,7 +125,7 @@ public class Dragonbreath extends StdAbility
 					int maxDie =  mob.envStats().level();
 					if (maxDie > 10)
 						maxDie = 10;
-					damage += Dice.roll(maxDie,20,1);
+					damage += Dice.roll(maxDie,6,1);
 					if(msg.wasModified())
 						damage = (int)Math.round(Util.div(damage,2.0));
 

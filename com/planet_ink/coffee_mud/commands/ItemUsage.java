@@ -42,7 +42,7 @@ public class ItemUsage
 		Item toThis=mob.fetchInventory(Util.combine(commands,1));
 		if((toThis==null)||((toThis!=null)&&(!Sense.canBeSeenBy(toThis,mob))))
 		{
-			mob.tell("You don't have a "+((String)commands.elementAt(0))+".");
+			mob.tell("You don't have a "+((String)commands.elementAt(1))+".");
 			return;
 		}
 
@@ -56,9 +56,9 @@ public class ItemUsage
 				mob.tell(compareThis.name()+" and "+toThis.name()+" look about the same.");
 			else
 			if(cDmg>tDmg)
-				mob.tell(compareThis.name()+" look better than "+toThis.name()+".");
+				mob.tell(compareThis.name()+" looks better than "+toThis.name()+".");
 			else
-				mob.tell(compareThis.name()+" look worse than "+toThis.name()+".");
+				mob.tell(compareThis.name()+" looks worse than "+toThis.name()+".");
 		}
 		else
 		if((compareThis instanceof Armor)&&(toThis instanceof Armor))

@@ -286,7 +286,10 @@ public class StdAbility implements Ability, Cloneable
 	{ description=newDescription;}
 	public int profficiency(){ return profficiency;}
 	public void setProfficiency(int newProfficiency)
-	{ profficiency=newProfficiency;}
+	{ 
+		profficiency=newProfficiency;
+		if(profficiency>100) profficiency=100;
+	}
 
 	public boolean profficiencyCheck(int adjustment, boolean auto)
 	{
@@ -386,12 +389,15 @@ public class StdAbility implements Ability, Cloneable
 		if(A==null) return;
 		if(A.profficiency()<100)
 		{
-			if(Math.round((Util.div(mob.charStats().getIntelligence(),25.0))*100.0*Math.random())>50)
+			if(Math.round((Util.div(mob.charStats().getIntelligence(),18.0))*100.0*Math.random())>50)
 			{
 			   A.setProfficiency(A.profficiency()+1);
-			   this.setProfficiency(this.profficiency()+1);
+			   if((this!=A)&&(profficiency()<100))
+				   setProfficiency(profficiency()+1);
 			}
 		}
+		else
+			A.setProfficiency(100);
 
 	}
 

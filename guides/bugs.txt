@@ -1,3 +1,16 @@
 ?autogold when blind
 Can't attack the permanently invisible?
-
+//fire damage from bats
+//11 int fighter no gain in skills
+//at com.planet_ink.coffee_mud.commands.SocialProcessor.cmdSay(SocialProcessor.java)
+cant drop slime mold
+//heat aura only in the dark
+//lower the alignment changes slightly
+//doors called secret are hidden
+//inscription is genreadable
+//more sips from fountains
+//spell abilities above 100% for mobs (CombatAbilities)
+if you don`t quit, it leaves a MOB open, but not you, just MOB/MOB/0
+//(help bug)what is write used for, and why can all classes get it if it is only used for `scroll copy`
+//when comparing, it has incorrect grammar O. Is should say a broad sword lookS better than a long sword. not look. I believe just about everything is on an individual basis (singular) even a pair of boots looks better than a pair of sandals.
+//when comparing, if you don`t have one of the items, it will tell you that you don`t have (the first item listed) even if that`s the one you do have.
