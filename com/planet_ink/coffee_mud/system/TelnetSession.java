@@ -437,38 +437,38 @@ public class TelnetSession extends Thread implements Session
 			{
 				clookup=new String[256];
 				// N B H - normal bold highlight underline flash italic
-				clookup[(int)'N']="\033[0;37m";
-				clookup[(int)'!']="\033[1;37m";
-				clookup[(int)'H']="\033[1;36m";
+				clookup[(int)'N']="^w";
+				clookup[(int)'!']="\033[1m";
+				clookup[(int)'H']="^c";
 				clookup[(int)'_']="\033[4m";
 				clookup[(int)'*']="\033[5m";
 				clookup[(int)'/']="\033[6m";
 				// reset
 				clookup[(int)'^']="\033[0m";
 				// F S - NOT IN USE! fight spell
-				clookup[(int)'F']="\033[1;31m";
-				clookup[(int)'S']="\033[1;34m";
+				clookup[(int)'F']="^r";
+				clookup[(int)'S']="^b";
 				// E T Q - NOT IN USE! emote talk channeltalk
-				clookup[(int)'E']="\033[1;35m";
-				clookup[(int)'T']="\033[1;32m";
+				clookup[(int)'E']="^p";
+				clookup[(int)'T']="^g";
 				clookup[(int)'Q']="\033[0;36;44m";
 				// X Y Z - important messages
 				clookup[(int)'x']="\033[1;36;44m";
 				clookup[(int)'X']="\033[1;33;44m";
 				clookup[(int)'Z']="\033[1;33;41m";
 				//  R L D d - roomtitle roomdesc(look) Direction door
-				clookup[(int)'O']="\033[1;32m";
-				clookup[(int)'L']="\033[0;32m";
+				clookup[(int)'O']="^g";
+				clookup[(int)'L']="^G";
 				clookup[(int)'D']="\033[1;36;44m";
-				clookup[(int)'d']="\033[0;32m";
+				clookup[(int)'d']="^G";
 				// I M - item, mob
-				clookup[(int)'I']="\033[0;36m";
-				clookup[(int)'M']="\033[0;33m";
+				clookup[(int)'I']="^C";
+				clookup[(int)'M']="^Y";
 				// h m v - prompt colors
-				clookup[(int)'h']="\033[1;32m";
-				clookup[(int)'m']="\033[1;36m";
-				clookup[(int)'v']="\033[1;34m";
-				// fixed system colors
+				clookup[(int)'h']="^g";
+				clookup[(int)'m']="^c";
+				clookup[(int)'v']="^b";
+				// fixed system colors, 1= bright, 0=dark
 				clookup[(int)'w']="\033[1;37m";
 				clookup[(int)'g']="\033[1;32m";
 				clookup[(int)'b']="\033[1;34m";
@@ -483,6 +483,12 @@ public class TelnetSession extends Thread implements Session
 				clookup[(int)'Y']="\033[0;33m";
 				clookup[(int)'C']="\033[0;36m";
 				clookup[(int)'P']="\033[0;35m";
+				for(int i=0;i<clookup.length;i++)
+				{
+					String s=clookup[i];
+					if((s!=null)&&(s.startsWith("^")))
+						clookup[i]=clookup[(int)s.charAt(1)];
+				}
 			}
 			if (c != currentColor)
 			{

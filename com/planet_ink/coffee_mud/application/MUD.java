@@ -287,7 +287,9 @@ public class MUD extends Thread implements Host
 			{
 				IMudInterface imud=new IMudInterface(nameID,getVer(),getPort(),commandProcessor.channels.iChannelsArray());
 				imserver=new Server();
-				imserver.start("CoffeeMud",27766,imud);
+				int i3port=page.getInt("I3PORT");
+				if(i3port==0) i3port=27766;
+				imserver.start("CoffeeMud",i3port,imud);
 			}
 		}
 		catch(Exception e)

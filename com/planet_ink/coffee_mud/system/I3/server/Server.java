@@ -4,7 +4,7 @@
  * The mudlib interface to the server.
  */
 package com.planet_ink.coffee_mud.system.I3.server;
-
+import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.system.I3.packets.ImudServices;
 /**
  * The Server class is the mudlib's interface to the
@@ -37,6 +37,8 @@ public class Server {
         else {
             started = true;
         }
+		Log.sysOut("I3Server", "InterMud3 Server started on port "+port);
+		Log.sysOut("I3Server", "InterMud3 Core (c)1996 George Reese");
         thread = new ServerThread(mud, port, imud);
         thread.start();
     }

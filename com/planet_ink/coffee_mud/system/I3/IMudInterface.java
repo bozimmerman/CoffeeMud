@@ -51,7 +51,7 @@ public class IMudInterface implements ImudServices, Serializable
 		/* Text Affects */
 		{ "^^", "%^RESET%^",     "\033[0m" }, // Reset Text
 		{ "^^", "%^RESET%^",     "\033[0m" }, // Reset Text
-		{ "&L", "%^BOLD%^",      "\033[1m" }, // Bolden Text(Brightens it)
+		{ "^H", "%^BOLD%^",      "\033[1m" }, // Bolden Text(Brightens it)
 		{ "^^", "%^EBOLD%^",	 "\033[0m" }, // Assumed to be a reset tag to stop bold
 		{ "^_", "%^UNDERLINE%^", "\033[4m" }, // Underline Text
 		{ "^*", "%^FLASH%^",     "\033[5m" }, // Blink Text

@@ -22,15 +22,23 @@ may be called, for instance, "CoffeeMud".</P>
 components of the CoffeeMud server.&nbsp; If so, by all means, finish reading 
 this document.&nbsp; If you couldn't care less, then go into the your CoffeeMud 
 directory on a command line and enter:</P>
-<P align=left><STRONG>java -Xms25535000 -Xmx85535000 
-com.planet_ink.coffee_mud.application.MUD</STRONG></P>
-<P align=left>  This will start up the CoffeeMud server.&nbsp;Connect to 
-the server on port&nbsp;4444 using your telnet or other MUD client.&nbsp; Create yourself a 
-new character.&nbsp; This new character will be your administrative player, or 
-Archon, so most of the player settings, such as class, race, stats, etc. won't 
-matter much.&nbsp; When your character logs in for the first time, you will see 
-a book in a room.&nbsp; Your player should pick up the book and read it.&nbsp; 
-The commands to do this are:</P>
+<P align=left><STRONG>java 
+-Xms25535000 -Xmx85535000 com.planet_ink.coffee_mud.application.MUD&nbsp;"Your Muds 
+Name"</STRONG></P>
+<P align=left>          
+              
+           
+              
+        This will start up the CoffeeMud 
+server.&nbsp;Remember to change the "Your Muds Name" text at the end to the unique name 
+you want to give your mud.</P>
+<P align=left>Now, connect to the server on port&nbsp;4444 using your telnet or 
+other MUD client.&nbsp; Create yourself a new character.&nbsp; This new 
+character will be your administrative player, or Archon, so most of the player 
+settings, such as class, race, stats, etc. won't matter much.&nbsp; When your 
+character logs in for the first time, you will see a book in a room.&nbsp; Your 
+player should pick up the book and read it.&nbsp; The commands to do this 
+are:</P>
 <P align=left>get book</P>
 <P align=left>read book</P>
 <P align=left>Doing this will turn your player into an Archon.&nbsp; An Archon 
@@ -68,17 +76,39 @@ your map where new players will start off at.&nbsp; It also dictates where
 players are brought to when the Recall skill is used.&nbsp; By default, an 
 arbitary room ID has been assigned.&nbsp; Once you've put together a few areas, 
 you had better update this setting before new players start 
-arriving.<BR><BR><EM>CHANNELS<BR></EM>This is a comma seperated list of channels 
-which the users of your system may converse publicly on.&nbsp; The names given 
-here are completely arbitrary and may be meaningful or whimsical terms.&nbsp; A 
-couple of standard channels are specified.&nbsp; The limit for the number of 
-channels is 16 or 32, I forget.<BR><BR><EM>BACKLOG</EM> <BR>This TCP/IP setting 
+arriving.<BR><BR><EM>CHANNELS<BR></EM>This is a comma 
+seperated list of channels which the users of your system may converse publicly 
+on.&nbsp; An miminum character level may optionally be specified after each 
+channel name. &nbsp;The channel names given here are completely arbitrary and 
+may be meaningful or whimsical terms, though the names may not contains 
+spaces.&nbsp; A couple of standard channels are specified.&nbsp; The limit for 
+the number of standard channels plus any InterMud channels (see <EM>I3CHANNELS 
+</EM>        
+             
+            
+            
+below) is 16 or 32, I forget.<BR><BR><EM>BACKLOG</EM> <BR>This TCP/IP setting 
 denotes how many connections can be queued up when the server is busy. Leave it 
 at 6.&nbsp; </P>
 <P align=left><EM>BIND</EM> <BR>This TCP/IP setting will limit the IP addresses 
 which can connect to your server.&nbsp; It is commented out by default, which 
 means that everyone is allowed to connect.&nbsp; Leave it that 
-way.<BR><BR><EM>RUNWEBSERVERS<BR></EM>This setting tells CoffeeMud whether to 
+way.<BR><EM><BR>RUNI3SERVER<BR></EM>This setting tells CoffeeMud 
+whether to start up the built-in&nbsp;InterMud3 server and make a connection to 
+the InterMud router.&nbsp; A value of "TRUE" will turn on the I3 server and make 
+the connection.<BR><BR><EM>I3PORT<BR></EM>This is the TCP/IP port number which 
+the main&nbsp;InterMud3 server will listen on.&nbsp; By default the setting is 
+27766.&nbsp; If you would like to change this number to some other port, you may 
+do so.&nbsp; If the <EM>RUNI3SERVER </EM>entry above is FALSE, this setting will 
+have no effect.<BR><BR><EM>I3CHANNELS<BR></EM>This is a comma seperated list of 
+InterMud3 channels which the users of your system may converse publicly 
+on.&nbsp; Each channel entry is seperated by a comma.&nbsp; Each entry consists 
+of a locate channel name (no spaces in the name), followed by a space, followed 
+by a minimum character level to view or chat on the channel, followed by&nbsp; a 
+space, followed by the name of the InterMud3 channel to map this local channel 
+to.&nbsp; A couple of standard channels are specified.&nbsp; The limit for the 
+number of standard channels (see <EM>CHANNELS </EM>above) plus any InterMud 
+channels&nbsp; is 16 or 32, I forget.<BR><BR><EM>RUNWEBSERVERS<BR></EM>This setting tells CoffeeMud whether to 
 start up the built-in web servers.&nbsp; A value of "TRUE" will turn on the web 
 servers.&nbsp; Even if you don't wish to publish any of your MUDs information to 
 the web, you may want to run the Admin web server so that you can use the 
@@ -86,10 +116,11 @@ MUDGrinder area editing tool.&nbsp; See the MUDGrinder Guide (MUDGrinder.html)
 for more information on this tool.&nbsp; For more information on the CoffeeMud 
 web server in general, please read the WebServer Guide 
 (WebServer.html).<BR><BR><EM>ITEMS, MOBS, BEHAVIORS, ABILITIES, CHARCLASSES, RACES, 
-COMMANDS, LOCALES, AREAS, EXITS</EM> <BR>These settings each specify a path on 
-your local drive which will contain Java class files.&nbsp; These class files 
-are typically classes which you might want to use with your CoffeeMud system, 
-but which are not included with the standard CoffeeMud distribution.&nbsp;</P>
+COMMANDS, LOCALES, AREAS, EXITS</EM> <BR>These settings 
+each specify a path on your local drive which will contain Java class 
+files.&nbsp; These class files are typically classes which you might want to use 
+with your CoffeeMud system, but which are not included with the standard 
+CoffeeMud distribution.&nbsp;</P>
 <P align=left><EM>DBCLASS<BR></EM>This specifies the name of the Java class 
 which will be used as your&nbsp;JDBC or ODBC database driver.&nbsp;&nbsp;If you 
 are using a System ODBC data&nbsp;source, this entry will typically be 

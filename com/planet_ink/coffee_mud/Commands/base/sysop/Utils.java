@@ -36,6 +36,7 @@ public class Utils
 					if(mob2!=null)
 					{
 						E=mob2.fetchInventory(name);
+						if(E==null)	E=mob.fetchInventory(name);
 						if((E==null)&&(mob2 instanceof ShopKeeper))
 							E=((ShopKeeper)mob2).getStock(name);
 					}
