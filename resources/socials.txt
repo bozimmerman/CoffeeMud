@@ -651,6 +651,7 @@ mv	TOUT SELF	You stick your tongue out and wag it all about.	<S-NAME> sticks <S-
 ww	PROPOSE SELF	You are SO full of yourself!	<S-NAME> proposes to <S-HIM-HERSELF> -- how narcissistic!		
 ss	POLITE	You give a polite little chuckle.	<S-NAME> gives a polite little chuckle.		
 ss	GACK	Gaaack!	<S-NAME> gacks with dismay!		
+ov	ROFLMAO	You roll on the floor hysterically laughing your ass off.	<S-NAME> rolls on the floor hysterically laughing <S-HIS-HER> ass off.		
 ov	ROFLMAO SELF	You roll on the floor hysterically laughing your ass off.	<S-NAME> rolls on the floor hysterically laughing <S-HIS-HER> ass off.		
 ss	SNORT <T-NAME>	You snort derisively at <T-NAMESELF>.	<S-NAME> snorts derisively at <T-NAMESELF>.	<S-NAME> snorts at you.	Snort at whom?
 ot	SUPPORT <T-NAME>	You hug <T-HIM-HER> supportively and smile.	<S-NAME> hugs <T-NAMESELF> supportively and smiles.	<S-NAME> hugs you supportively and smiles.	Sorry, friend, I can't see that person here.

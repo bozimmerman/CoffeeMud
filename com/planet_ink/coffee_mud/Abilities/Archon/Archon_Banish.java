@@ -120,12 +120,12 @@ public class Archon_Banish extends ArchonSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> is banished!":"^F<S-NAME> banish(es) <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> is banished!":"^F<S-NAME> banish(es) <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> banished!");
-				maliciousAffect(mob,target,Integer.MAX_VALUE/2,-1);
+				beneficialAffect(mob,target,Integer.MAX_VALUE/2);
 				A=(Archon_Banish)target.fetchEffect(ID());
 				if(A!=null)
 				{
@@ -148,7 +148,7 @@ public class Archon_Banish extends ArchonSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to banish <T-NAMESELF>, but fail(s).");
+			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to banish <T-NAMESELF>, but fail(s).");
 		return success;
 	}
 }

@@ -30,7 +30,7 @@ public class Archon_Wrath extends ArchonSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),
 									auto?"<T-NAME> <T-IS-ARE> knocked out of <T-HIS-HER> shoes!!!":
 										 "^F**<S-NAME> BLAST(S) <T-NAMESELF>**, knocking <T-HIM-HER> out of <T-HIS-HER> shoes!!^?");
 			if(target.location().okMessage(mob,msg))
@@ -52,7 +52,7 @@ public class Archon_Wrath extends ArchonSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to inflict <S-HIS-HER> wrath upon <T-NAMESELF>, but fail(s).");
+			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to inflict <S-HIS-HER> wrath upon <T-NAMESELF>, but fail(s).");
 		return success;
 	}
 }

@@ -32,31 +32,31 @@ public class Mobile extends ActiveTicker
 	{
 		if(currentRoom==null) return false;
 		if(newRoom==null) return false;
-		if(restrictedLocales==null) return true;
 		if(leash>0)
 		{
 			if(leashHash==null)	leashHash=new Hashtable();
 			Integer DISTNOW=(Integer)leashHash.get(currentRoom);
-			Integer DISTTHEN=(Integer)leashHash.get(newRoom);
+			Integer DISTLATER=(Integer)leashHash.get(newRoom);
 			if(DISTNOW==null)
 			{
 				DISTNOW=new Integer(0);
 				leashHash.put(currentRoom,DISTNOW);
 			}
-			if(DISTTHEN==null)
+			if(DISTLATER==null)
 			{
-				DISTTHEN=new Integer(DISTNOW.intValue()+1);
-				leashHash.put(newRoom,DISTNOW);
+				DISTLATER=new Integer(DISTNOW.intValue()+1);
+				leashHash.put(newRoom,DISTLATER);
 			}
-			if(DISTTHEN.intValue()>(DISTNOW.intValue()+1))
+			if(DISTLATER.intValue()>(DISTNOW.intValue()+1))
 			{
-				DISTTHEN=new Integer(DISTNOW.intValue()+1);
+				DISTLATER=new Integer(DISTNOW.intValue()+1);
 				leashHash.remove(newRoom);
-				leashHash.put(newRoom,DISTTHEN);
+				leashHash.put(newRoom,DISTLATER);
 			}
-			if(DISTTHEN.intValue()>leash)
+			if(DISTLATER.intValue()>leash)
 				return false;
 		}
+		if(restrictedLocales==null) return true;
 		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
 	}
 
