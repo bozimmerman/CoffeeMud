@@ -3075,7 +3075,10 @@ public class Scriptable extends StdBehavior
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
+					{
 						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
+						return;
+					}
 				}
 				break;
 			case 2: // allgreet_prog
@@ -3086,7 +3089,10 @@ public class Scriptable extends StdBehavior
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
+					{
 						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
+						return;
+					}
 				}
 				break;
 			case 3: // speech_prog
@@ -3108,7 +3114,10 @@ public class Scriptable extends StdBehavior
 					{
 						trigger=trigger.substring(1).trim();
 						if(match(msg,trigger))
+						{
 							que.addElement(new ScriptableResponse(affect.source(),affect.target(),monster,null,null,script,2,msg));
+							return;
+						}
 					}
 					else
 					{
@@ -3119,7 +3128,7 @@ public class Scriptable extends StdBehavior
 							if(msg.indexOf(" "+t+" ")>=0)
 							{
 								que.addElement(new ScriptableResponse(affect.source(),affect.target(),monster,null,null,script,2,t));
-								break;
+								return;
 							}
 						}
 					}
@@ -3138,7 +3147,10 @@ public class Scriptable extends StdBehavior
 						trigger=trigger.substring(1).trim().toUpperCase();
 						if(((" "+trigger+" ").indexOf(affect.tool().Name().toUpperCase())>=0)
 						||(trigger.equalsIgnoreCase("ALL")))
+						{
 							que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2,null));
+							return;
+						}
 					}
 					else
 					{
@@ -3150,7 +3162,7 @@ public class Scriptable extends StdBehavior
 							||(t.equalsIgnoreCase("ALL")))
 							{
 								que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2,null));
-								break;
+								return;
 							}
 						}
 					}
@@ -3163,7 +3175,10 @@ public class Scriptable extends StdBehavior
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if(Dice.rollPercentage()<prcnt)
+					{
 						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
+						return;
+					}
 				}
 				break;
 			case 9: // exit prog
@@ -3174,7 +3189,10 @@ public class Scriptable extends StdBehavior
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
+					{
 						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
+						return;
+					}
 				}
 				break;
 			case 10: // death prog
@@ -3185,6 +3203,7 @@ public class Scriptable extends StdBehavior
 					if((src==null)||(src.location()!=monster.location()))
 					   src=monster;
 					execute(src,monster,monster,null,null,script,null);
+					return;
 				}
 				break;
 			case 12: // mask prog
@@ -3229,6 +3248,7 @@ public class Scriptable extends StdBehavior
 							que.addElement(new ScriptableResponse(affect.source(),null,monster,Tool,(Item)affect.target(),script,2,msg));
 						else
 							que.addElement(new ScriptableResponse(affect.source(),null,monster,Tool,null,script,2,msg));
+						return;
 					}
 				}
 				break;
