@@ -84,7 +84,7 @@ public class Chant_HardenSkin extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<T-YOUPOSS> skin hardens!":"^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> skin hardens!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-YOUPOSS> skin hardens!":"^S<S-NAME> chant(s) to <T-NAMESELF> and <T-HIS-HER> skin hardens!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -93,7 +93,7 @@ public class Chant_HardenSkin extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to <S-NAMESELF>, but nothing happens");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens");
 
 		// return whether it worked
 		return success;

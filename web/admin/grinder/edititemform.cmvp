@@ -247,6 +247,26 @@
 	</TR>
 	@endif@
 
+@if?ItemData?ISDUST@
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast on affected:</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2>
+    <SELECT NAME=READABLESPELLS MULTIPLE>
+    @ItemData?READABLESPELLS@
+    </SELECT>
+    </TD>
+</TR>
+@else@
+@if?ItemData?ISPERFUME@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF">
+		<B>Smell emotes:</B><BR><FONT SIZE=-1><I>(Semicolon Delimited)</I></FONT></FONT>
+		</TD>
+	    <TD WIDTH=450 COLSPAN=2>
+	    <INPUT TYPE=TEXT NAME=SMELLS SIZE=60 VALUE="@ItemData?SMELLS@">
+	    </TD>
+	</TR>
+@else@
 @if?ItemData?ISMAP@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Assigned Map Areas:</B></FONT>
@@ -339,16 +359,16 @@
 	    </TD>
 	</TR>
 	@else@
-	@if?ItemData?ISPILL@
-	<TR>
-		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast on eater:</B></FONT></TD>
-	    <TD WIDTH=450 COLSPAN=2>
-	    <SELECT NAME=READABLESPELLS MULTIPLE>
-	    @ItemData?READABLESPELLS@
-	    </SELECT>
-	    </TD>
-	</TR>
-	@endif@
+		@if?ItemData?ISPILL@
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast on eater:</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2>
+		    <SELECT NAME=READABLESPELLS MULTIPLE>
+		    @ItemData?READABLESPELLS@
+		    </SELECT>
+		    </TD>
+		</TR>
+		@endif@
 	@endif@
 @else@
 @if?ItemData?ISDRINK@
@@ -607,17 +627,6 @@
 					    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=5 VALUE="@ItemData?USESREMAIN@">
 					    </TD>
 					</TR>
-				@else
-					@if?ItemData?ISDUST@
-					<TR>
-						<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast on affected:</B></FONT></TD>
-					    <TD WIDTH=450 COLSPAN=2>
-					    <SELECT NAME=READABLESPELLS MULTIPLE>
-					    @ItemData?READABLESPELLS@
-					    </SELECT>
-					    </TD>
-					</TR>
-					@endif@
 				@endif@
 			@endif@
 		@endif@
@@ -637,10 +646,12 @@
 	@endif@
 @endif@
 @endif@
+@endif@
 @endif@	
 @endif@	
 @endif@	
 @endif@	
+@endif@
 @endif@
 @endif@
 @endif@

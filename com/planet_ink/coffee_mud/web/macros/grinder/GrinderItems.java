@@ -97,7 +97,8 @@ public class GrinderItems
 						  "AMMOCAP","READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
 						  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER",
 						  "ISLIGHTSOURCE","DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES",
-						  "ISINSTRUMENT","INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST"};
+						  "ISINSTRUMENT","INSTRUMENTTYPE","ISAMMO","ISMOBITEM",
+						  "ISDUST","ISPERFUME","SMELLS"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -391,6 +392,12 @@ public class GrinderItems
 			case 66: // is mob type
 				break;
 			case 67: // is dust
+				break;
+			case 68: // is perfume
+				break;
+			case 69: // smells
+				if(I instanceof Perfume)
+					((Perfume)I).setSmellList(old);
 				break;
 			}
 		}

@@ -204,7 +204,7 @@ public class ItemData extends StdWebMacro
 							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
 							  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE",
 							  "ISKEY", "CONTENTTYPES","ISINSTRUMENT","INSTRUMENTTYPE",
-							  "ISAMMO","ISMOBITEM","ISDUST"};
+							  "ISAMMO","ISMOBITEM","ISDUST","ISPERFUME","SMELLS"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -730,6 +730,15 @@ public class ItemData extends StdWebMacro
 				case 71: // is dust
 					if(I instanceof MagicDust) return "true";
 					else return "false";
+				case 72: // is perfume
+System.out.println(I.ID()+"/"+(I instanceof Perfume)+"/"+(I instanceof MagicDust));
+					if(I instanceof Perfume) return "true";
+					else return "false";
+				case 73: // smells
+					if((firstTime)&&(I instanceof Perfume))
+						old=""+((Perfume)I).getSmellList();
+					str.append(old);
+					break;
 				}
 				if(firstTime)
 					httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
