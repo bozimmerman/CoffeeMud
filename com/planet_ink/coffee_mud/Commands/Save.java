@@ -20,7 +20,7 @@ public class Save extends StdCommand
 		
 		if(commandType.equals("USERS"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS"))
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
 			{
 				mob.tell("You are not allowed to save players.");
 				return false;
@@ -141,7 +141,9 @@ public class Save extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"CMD");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")
+												 ||CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")
+												 ||CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS");;}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

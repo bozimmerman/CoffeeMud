@@ -138,7 +138,7 @@ public class Corpse extends GenContainer implements DeadBody
                 return false;
 	        }
 			else
-            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PLAYERKILL"))
+            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PKONLY"))
 			{
                 if(!(Util.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL))) 
 				{

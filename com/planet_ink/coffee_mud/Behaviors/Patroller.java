@@ -118,7 +118,9 @@ public class Patroller extends ActiveTicker
 			for(int m=0;m<thisRoom.numInhabitants();m++)
 			{
 				MOB inhab=thisRoom.fetchInhabitant(m);
-				if((inhab!=null)&&(CMSecurity.isAllowed(inhab,thisRoom,"CMDMOBS")))
+				if((inhab!=null)
+				&&(CMSecurity.isAllowed(inhab,thisRoom,"CMDMOBS")
+				   ||CMSecurity.isAllowed(inhab,thisRoom,"CMDROOMS")))
 					move=false;
 			}
 			if(move)

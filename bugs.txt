@@ -1,11 +1,11 @@
-document security in the archons guide
-does clantalk span the clans when doing last 10?
+update security in the archons guide, its outdated -- also 4 more archon cmds to add
 I have the DAYSCLANDEATH set to 0 in the INI which should disable that. Also, minclanmembers is set to 2.  I just received the message [CLANTALK] 'Clan Clan of the Test is in danger of being deleted if  more members do not log on within 24 hours.' One of the other clanmembers logged out less than an hour ago. 
 preload shows spells being invoked on people
-add days of week, months, and years to scripts
 document real estate and space ship selling, document genairlock?
+Add Commands to the programmer's guide
 The programmer's guide still shows the playerSelectable method btw.
 Christening Prayer, Chant Bestow Name, pregnancy change, domesticate name change
 Add Prop_HaveDmgAbsorb
 Finish Scripting doc
 mutable body parts, with ability to grant powers
+add days of week, months, and years to scripts

@@ -166,6 +166,25 @@ public class Resources
 	public static void saveFileResource(String filename)
 	{saveFileResource(filename,getFileResource(filename));}
 	
+	public static void saveFile(String filename, StringBuffer myRsc)
+	{
+		if(myRsc==null)
+		{
+			Log.errOut("Resources","Unable to save file '"+filename+"': No Data.");
+			return;
+		}
+		try
+		{
+			File F=new File(filename);
+			FileWriter FW=new FileWriter(F);
+			FW.write(myRsc.toString());
+			FW.close();
+		}
+		catch(IOException e)
+		{
+			Log.errOut("Resources",e);
+		}
+	}
 	public static void saveFileResource(String filename, StringBuffer myRsc)
 	{
 		if(myRsc==null)

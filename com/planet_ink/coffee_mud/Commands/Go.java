@@ -183,7 +183,7 @@ public class Go extends StdCommand
 			enterMsg=new FullMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","senter",Sense.dispositionString(mob,Sense.flag_arrives),otherDirectionName));
 			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sflees",directionName):getScr("Movement","sleaves",Sense.dispositionString(mob,Sense.flag_leaves),directionName)));
 		}
-		boolean gotoAllowed=(!CMSecurity.isAllowed(mob,destRoom,"GOTO"));
+		boolean gotoAllowed=CMSecurity.isAllowed(mob,destRoom,"GOTO");
 		if((exit==null)&&(!gotoAllowed))
 		{
 			mob.tell(getScr("Movement","moveerr1"));

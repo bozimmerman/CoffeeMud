@@ -46,7 +46,9 @@ public class Dress extends StdCommand
 				mob.tell("I don't see "+what+" here.");
 				return false;
 			}
-			if(CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
+			if(CMSecurity.isAllowed(mob,mob.location(),"ORDER")
+			||(CMSecurity.isAllowed(mob,mob.location(),"CMROOMS")&&(target.isMonster()))
+			||(CMSecurity.isAllowed(mob,mob.location(),"CMMOBS")&&(target.isMonster())))
 			{
 				mob.location().show(mob,target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>.");
 				item.unWear();

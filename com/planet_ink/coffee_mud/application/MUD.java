@@ -22,7 +22,6 @@ public class MUD extends Thread implements MudHost
 	public static String execExternalCommand=null;
 	public static SaveThread saveThread=null;
 	public static UtiliThread utiliThread=null;
-	public static INI page=null;
 	public static Server imserver=null;
 	public static HTTPserver webServerThread=null;
 	public static HTTPserver adminServerThread=null;
@@ -42,17 +41,6 @@ public class MUD extends Thread implements MudHost
 	public MUD()
 	{
 		super("MUD-MainServer");
-	}
-
-	private static boolean loadPropPage(String iniFile)
-	{
-		if (page==null || !page.loaded)
-		{
-			page=new INI(iniFile);
-			if(!page.loaded)
-				return false;
-		}
-		return true;
 	}
 
 	public static void fatalStartupError(Thread t, int type)
@@ -136,7 +124,7 @@ public class MUD extends Thread implements MudHost
     }
 
 
-	private static boolean initHost(Thread t)
+	private static boolean initHost(Thread t, INI page)
 	{
 
 		if (!isOK)
@@ -162,63 +150,8 @@ public class MUD extends Thread implements MudHost
 
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: connecting to database");
 		
-		CommonStrings.setVar(CommonStrings.SYSTEM_BADNAMES,page.getStr("BADNAMES"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_MULTICLASS,page.getStr("CLASSSYSTEM"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_PKILL,page.getStr("PLAYERKILL"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_PLAYERDEATH,page.getStr("PLAYERDEATH"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_PLAYERFLEE,page.getStr("FLEE"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_SHOWDAMAGE,page.getStr("SHOWDAMAGE"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_EMAILREQ,page.getStr("EMAILREQ"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_ESC0,page.getStr("ESCAPE0"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_ESC1,page.getStr("ESCAPE1"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_ESC2,page.getStr("ESCAPE2"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_ESC3,page.getStr("ESCAPE3"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_ESC4,page.getStr("ESCAPE4"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_ESC5,page.getStr("ESCAPE5"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_ESC6,page.getStr("ESCAPE6"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_ESC7,page.getStr("ESCAPE7"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_ESC8,page.getStr("ESCAPE8"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_ESC9,page.getStr("ESCAPE9"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_MSPPATH,page.getStr("SOUNDPATH"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_CLANVOTED,page.getStr("CLANVOTED"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_CLANVOTEO,page.getStr("CLANVOTEO"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_CLANVOTER,page.getStr("CLANVOTER"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_AUTOPURGE,page.getStr("AUTOPURGE"));
-        CommonStrings.setVar(CommonStrings.SYSTEM_CORPSEGUARD,page.getStr("CORPSEGUARD"));
-		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
-			CommonStrings.setIntVar(CommonStrings.SYSTEMI_MANACONSUMEAMT,-100);
-		else
-		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("SPELLLEVEL"))
-			CommonStrings.setIntVar(CommonStrings.SYSTEMI_MANACONSUMEAMT,-200);
-		else
-			CommonStrings.setIntVar(CommonStrings.SYSTEMI_MANACONSUMEAMT,Util.s_int(page.getStr("MANACONSUMEAMT").trim()));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MANACONSUMETIME,page.getStr("MANACONSUMETIME"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_PAGEBREAK,page.getStr("PAGEBREAK"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MINMOVETIME,page.getStr("MINMOVETIME"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_CLANENCHCOST,page.getStr("CLANENCHCOST"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF,page.getStr("FOLLOWLEVELDIFF"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKYSIZE,page.getStr("SKYSIZE"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MAXSTAT,page.getStr("MAXSTATS"));
-		if(page.getStr("BASEMAXSTAT").length()==0)
-			CommonStrings.setIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT,18);
-		else
-			CommonStrings.setIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT,page.getStr("BASEMAXSTAT"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MANACOST,page.getStr("MANACOST"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MANAMINCOST,page.getStr("MANAMINCOST"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EDITORTYPE,0);
-		if(page.getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) CommonStrings.setIntVar(CommonStrings.SYSTEMI_EDITORTYPE,1);
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS,page.getStr("MINCLANMEMBERS"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_CLANCOST,page.getStr("CLANCOST"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH,page.getStr("DAYSCLANDEATH"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL,page.getStr("MINCLANLEVEL"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST,page.getStr("SKILLPRACCOST"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST,page.getStr("SKILLTRAINCOST"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST,page.getStr("COMMONPRACCOST"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST,page.getStr("COMMONTRAINCOST"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_LANGPRACCOST,page.getStr("LANGPRACCOST"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_LANGTRAINCOST,page.getStr("LANGTRAINCOST"));
-		CommonStrings.setIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL,page.getStr("LASTPLAYERLEVEL"));
+		CommonStrings.loadCommonINISettings(page);
+		
 		Vector compress=Util.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS,compress.contains("ITEMDESC"));
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS,compress.contains("GENMOBS"));
@@ -229,11 +162,6 @@ public class MUD extends Thread implements MudHost
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MOBNOCACHE,nocache.contains("GENMOBS"));
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE,nocache.contains("ROOMDESC"));
 		
-		
-		CMSecurity.setDisableVars(page.getStr("DISABLE"));
-		if(page.getStr("DISABLE").trim().length()>0)
-			Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));
-		CMSecurity.setDebugVars(page.getStr("DEBUG"));
 		
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();
@@ -400,26 +328,20 @@ public class MUD extends Thread implements MudHost
 
 		if (!isOK)	return;
 
-		if ((page == null) || (!page.loaded))
-		{
-			Log.errOut("MUD","ERROR: Host thread will not run with no properties.");
-			return;
-		}
-
 		InetAddress bindAddr = null;
 
-		if (page.getInt("BACKLOG") > 0)
-			q_len = page.getInt("BACKLOG");
+		if (CommonStrings.getIntVar(CommonStrings.SYSTEMI_MUDBACKLOG) > 0)
+			q_len = CommonStrings.getIntVar(CommonStrings.SYSTEMI_MUDBACKLOG);
 
-		if (page.getStr("BIND") != null && page.getStr("BIND").length() > 0)
+		if (CommonStrings.getVar(CommonStrings.SYSTEM_MUDBINDADDRESS).length() > 0)
 		{
 			try
 			{
-				bindAddr = InetAddress.getByName(page.getStr("BIND"));
+				bindAddr = InetAddress.getByName(CommonStrings.getVar(CommonStrings.SYSTEM_MUDBINDADDRESS));
 			}
 			catch (UnknownHostException e)
 			{
-				Log.errOut("MUD","ERROR: MUD Server could not bind to address " + page.getStr("BIND"));
+				Log.errOut("MUD","ERROR: MUD Server could not bind to address " + CommonStrings.getVar(CommonStrings.SYSTEM_MUDBINDADDRESS));
 				bindAddr = null;
 			}
 		}
@@ -680,7 +602,6 @@ public class MUD extends Thread implements MudHost
 		CMClass.unload();
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading map");
 		CMMap.unLoad();
-		page=null;
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading resources");
 		Resources.clearResources();
 		Log.sysOut("MUD","Resources Cleared.");
@@ -810,7 +731,8 @@ public class MUD extends Thread implements MudHost
 		CMClass.registerEngines(new DBInterface(),new ServiceEngine());
 		CMClass.registerI3Interface(new IMudClient());
 		CMClass.registerExternalHTTP(new ProcessHTTPrequest(null,null,null,true));
-
+		INI page=null;
+		
 		String nameID="";
 		String iniFile="coffeemud.ini";
 		if(a.length>0)
@@ -837,23 +759,23 @@ public class MUD extends Thread implements MudHost
 		{
 			while(true)
 			{
-				if (!loadPropPage(iniFile))
+				page=INI.loadPropPage(iniFile);
+				if ((page==null)||(!page.loaded))
 				{
 					Log.startLogFiles(1);
 					Log.errOut("MUD","ERROR: Unable to read ini file.");
 					System.out.println("MUD/ERROR: Unable to read ini file.");
 					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"A terminal error has occured!");
+					System.exit(-1);
 				}
-				else
-				{
-					isOK = true;
-					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting");
-				}
-				if(page!=null)
-				{
-					Log.startLogFiles(page.getInt("NUMLOGS"));
-					Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
-				}
+				
+				isOK = true;
+				CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting");
+				CommonStrings.setVar(CommonStrings.SYSTEM_INIPATH,iniFile);
+				CommonStrings.setVar(CommonStrings.SYSTEM_MUDBINDADDRESS,page.getStr("BIND"));
+				CommonStrings.setIntVar(CommonStrings.SYSTEMI_MUDBACKLOG,page.getInt("BACKLOG"));
+				Log.startLogFiles(page.getInt("NUMLOGS"));
+				Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
 
 				System.out.println();
 				Log.sysOut("MUD","CoffeeMud v"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER));
@@ -891,7 +813,7 @@ public class MUD extends Thread implements MudHost
 				}
 				CommonStrings.setVar(CommonStrings.SYSTEM_MUDPORTS,str.toString());
 				
-				if(initHost(Thread.currentThread()))
+				if(initHost(Thread.currentThread(),page))
 					((MUD)mudThreads.firstElement()).join();
 
 				System.gc();

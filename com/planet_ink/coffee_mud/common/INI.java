@@ -39,6 +39,37 @@ public class INI extends Properties
 	}
 
 
+	public static INI loadPropPage(String iniFile)
+	{
+		INI page=null;
+		if (page==null || !page.loaded)
+		{
+			page=new INI(iniFile);
+			if(!page.loaded)
+				return null;
+		}
+		return page;
+	}
+	public static Vector loadEnumerablePage(String iniFile)
+	{
+		StringBuffer str=Resources.getFile(iniFile,true);
+		if((str==null)||(str.length()==0)) return new Vector();
+		Vector page=Resources.getFileLineVector(str);
+		for(int p=0;p<(page.size()-1);p++)
+		{
+			String s=((String)page.elementAt(p)).trim();
+			if(s.startsWith("#")||s.startsWith("!")) continue;
+			if(s.endsWith("\\"))
+			{
+				s=s.substring(0,s.length()-1)+((String)page.elementAt(p+1)).trim();
+				page.removeElementAt(p+1);
+				page.setElementAt(s,p);
+				p=p-1;
+			}
+		}
+		return page;
+	}
+
 	/** retrieve a particular .ini file entry as a string
 	*
 	* <br><br><b>Usage:</b>  String s=propertyGetter(p,"TAG");

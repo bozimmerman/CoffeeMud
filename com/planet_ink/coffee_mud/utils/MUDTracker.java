@@ -221,7 +221,8 @@ public class MUDTracker extends Scriptable
 			MOB inhab=oldRoom.fetchInhabitant(m);
 			if((inhab!=null)
 			&&(!inhab.isMonster())
-			&&(CMSecurity.isAllowed(inhab,oldRoom,"CMDMOBS")))
+			&&(CMSecurity.isAllowed(inhab,oldRoom,"CMDMOBS")
+			   ||CMSecurity.isAllowed(inhab,oldRoom,"CMDROOMS")))
 				return false;
 		}
 

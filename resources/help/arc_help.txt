@@ -1,16 +1,18 @@
 ^HArchon help^N
 ^HCommands^N
+restring poof purge sessions
 create copy destroy modify
 link unlink save sysmsgs
 take load unload dumpfile
 reset order ticktock list
 boot ban beacon announce
 wizinfo nowizinfo wizemote
+
 ^HModules^N  
 import export xml i3 merge
 
 ^HSkills^N
 genchar possess goto wizinv
 where snoop visible stat
-at after
+at after Multiwatch trailto
 ** enter ^HAHELP 'command name'^N or ^!ATOPICS^N for more help!

@@ -35,7 +35,9 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_MUDSTATUS=24;
 	public static final int SYSTEM_MUDPORTS=25;
 	public static final int SYSTEM_CORPSEGUARD=26;
-	public static final int NUM_SYSTEM=27;
+	public static final int SYSTEM_INIPATH=27;
+	public static final int SYSTEM_MUDBINDADDRESS=28;
+	public static final int NUM_SYSTEM=29;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -61,7 +63,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_MINMOVETIME=21;
 	public static final int SYSTEMI_MANACONSUMETIME=22;
 	public static final int SYSTEMI_MANACONSUMEAMT=23;
-	public static final int NUMI_SYSTEM=24;
+	public static final int SYSTEMI_MUDBACKLOG=24;
+	public static final int NUMI_SYSTEM=25;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -142,6 +145,73 @@ public class CommonStrings extends Scriptable
 			}
 			break;
 		}
+	}
+	
+	public static void loadCommonINISettings(INI page)
+	{
+		setVar(SYSTEM_BADNAMES,page.getStr("BADNAMES"));
+		setVar(SYSTEM_MULTICLASS,page.getStr("CLASSSYSTEM"));
+		setVar(SYSTEM_PKILL,page.getStr("PLAYERKILL"));
+		setVar(SYSTEM_PLAYERDEATH,page.getStr("PLAYERDEATH"));
+		setVar(SYSTEM_PLAYERFLEE,page.getStr("FLEE"));
+		setVar(SYSTEM_SHOWDAMAGE,page.getStr("SHOWDAMAGE"));
+		setVar(SYSTEM_EMAILREQ,page.getStr("EMAILREQ"));
+		setVar(SYSTEM_ESC0,page.getStr("ESCAPE0"));
+		setVar(SYSTEM_ESC1,page.getStr("ESCAPE1"));
+		setVar(SYSTEM_ESC2,page.getStr("ESCAPE2"));
+		setVar(SYSTEM_ESC3,page.getStr("ESCAPE3"));
+		setVar(SYSTEM_ESC4,page.getStr("ESCAPE4"));
+		setVar(SYSTEM_ESC5,page.getStr("ESCAPE5"));
+		setVar(SYSTEM_ESC6,page.getStr("ESCAPE6"));
+		setVar(SYSTEM_ESC7,page.getStr("ESCAPE7"));
+		setVar(SYSTEM_ESC8,page.getStr("ESCAPE8"));
+		setVar(SYSTEM_ESC9,page.getStr("ESCAPE9"));
+		setVar(SYSTEM_MSPPATH,page.getStr("SOUNDPATH"));
+		setVar(SYSTEM_CLANVOTED,page.getStr("CLANVOTED"));
+		setVar(SYSTEM_CLANVOTEO,page.getStr("CLANVOTEO"));
+		setVar(SYSTEM_CLANVOTER,page.getStr("CLANVOTER"));
+		setVar(SYSTEM_AUTOPURGE,page.getStr("AUTOPURGE"));
+        setVar(SYSTEM_CORPSEGUARD,page.getStr("CORPSEGUARD"));
+		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
+			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
+		else
+		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("SPELLLEVEL"))
+			setIntVar(SYSTEMI_MANACONSUMEAMT,-200);
+		else
+			setIntVar(SYSTEMI_MANACONSUMEAMT,Util.s_int(page.getStr("MANACONSUMEAMT").trim()));
+		setIntVar(SYSTEMI_MANACONSUMETIME,page.getStr("MANACONSUMETIME"));
+		setIntVar(SYSTEMI_PAGEBREAK,page.getStr("PAGEBREAK"));
+		setIntVar(SYSTEMI_MINMOVETIME,page.getStr("MINMOVETIME"));
+		setIntVar(SYSTEMI_CLANENCHCOST,page.getStr("CLANENCHCOST"));
+		setIntVar(SYSTEMI_FOLLOWLEVELDIFF,page.getStr("FOLLOWLEVELDIFF"));
+		setIntVar(SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
+		setIntVar(SYSTEMI_SKYSIZE,page.getStr("SKYSIZE"));
+		setIntVar(SYSTEMI_MAXSTAT,page.getStr("MAXSTATS"));
+		if(page.getStr("BASEMAXSTAT").length()==0)
+			setIntVar(SYSTEMI_BASEMAXSTAT,18);
+		else
+			setIntVar(SYSTEMI_BASEMAXSTAT,page.getStr("BASEMAXSTAT"));
+		setIntVar(SYSTEMI_MANACOST,page.getStr("MANACOST"));
+		setIntVar(SYSTEMI_MANAMINCOST,page.getStr("MANAMINCOST"));
+		setIntVar(SYSTEMI_EDITORTYPE,0);
+		if(page.getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) setIntVar(SYSTEMI_EDITORTYPE,1);
+		setIntVar(SYSTEMI_MINCLANMEMBERS,page.getStr("MINCLANMEMBERS"));
+		setIntVar(SYSTEMI_CLANCOST,page.getStr("CLANCOST"));
+		setIntVar(SYSTEMI_DAYSCLANDEATH,page.getStr("DAYSCLANDEATH"));
+		setIntVar(SYSTEMI_MINCLANLEVEL,page.getStr("MINCLANLEVEL"));
+		setIntVar(SYSTEMI_SKILLPRACCOST,page.getStr("SKILLPRACCOST"));
+		setIntVar(SYSTEMI_SKILLTRAINCOST,page.getStr("SKILLTRAINCOST"));
+		setIntVar(SYSTEMI_COMMONPRACCOST,page.getStr("COMMONPRACCOST"));
+		setIntVar(SYSTEMI_COMMONTRAINCOST,page.getStr("COMMONTRAINCOST"));
+		setIntVar(SYSTEMI_LANGPRACCOST,page.getStr("LANGPRACCOST"));
+		setIntVar(SYSTEMI_LANGTRAINCOST,page.getStr("LANGTRAINCOST"));
+		setIntVar(SYSTEMI_LASTPLAYERLEVEL,page.getStr("LASTPLAYERLEVEL"));
+		
+		CMSecurity.setDisableVars(page.getStr("DISABLE"));
+		if(page.getStr("DISABLE").trim().length()>0)
+			Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));
+		CMSecurity.setDebugVars(page.getStr("DEBUG"));
+		
 	}
 
 	public static String[] standardColorLookups()
