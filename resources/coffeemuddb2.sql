@@ -6,6 +6,7 @@ CMABLVL integer NULL,
 CMABAB integer NULL,
 CMABUR integer NULL,
 CMABPF integer NULL,
+CMABTX text NULL,
 PRIMARY KEY (CMUSERID, CMABID)
 );
 

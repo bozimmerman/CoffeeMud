@@ -5,6 +5,7 @@ CMABLVL integer NULL
 CMABAB integer NULL
 CMABUR integer NULL
 CMABPF integer NULL
+CMABTX string NULL
 
 CMCHAR
 CMUSERID string KEY
