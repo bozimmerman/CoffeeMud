@@ -31,7 +31,7 @@ public class PlayerData extends StdWebMacro
 		"TRAINS",
 		"MONEY",
 		"DEITY",
-		"LEIGE",
+		"LIEGE",
 		"CLAN",
 		"CLANROLE",
 		"ALIGNMENT",
@@ -60,7 +60,7 @@ public class PlayerData extends StdWebMacro
 	public static int getBasicCode(String val)
 	{
 		for(int i=0;i<BASICS.length;i++)
-			if(val.equalsIgnoreCase(BASICS[i])) 
+			if(val.equalsIgnoreCase(BASICS[i]))
 				return i;
 		return -1;
 	}
@@ -72,10 +72,10 @@ public class PlayerData extends StdWebMacro
 		case 0: str.append(M.Name()+", "); break;
 		case 1: str.append(M.description()+", "); break;
 		case 2:  if(M.playerStats()!=null)
-					str.append(IQCalendar.d2String(M.playerStats().lastDateTime())+", "); 
+					str.append(IQCalendar.d2String(M.playerStats().lastDateTime())+", ");
 				 break;
 		case 3: if(M.playerStats()!=null)
-					str.append(M.playerStats().getEmail()+", "); 
+					str.append(M.playerStats().getEmail()+", ");
 				break;
 		case 4: str.append(M.baseCharStats().getMyRace().name()+", "); break;
 		case 5: str.append(M.baseCharStats().getCurrentClass().name()+", "); break;
@@ -99,12 +99,12 @@ public class PlayerData extends StdWebMacro
 		case 17: if(M.getExpNeededLevel()==Integer.MAX_VALUE)
 					str.append("N/A, ");
 				 else
-					str.append(M.getExpNextLevel()+", "); 
+					str.append(M.getExpNextLevel()+", ");
 				 break;
 		case 18: str.append(M.getTrains()+", "); break;
 		case 19: str.append(M.getMoney()+", "); break;
 		case 20: str.append(M.getWorshipCharID()+", "); break;
-		case 21: str.append(M.getLeigeID()+", "); break;
+		case 21: str.append(M.getLiegeID()+", "); break;
 		case 22: str.append(M.getClanID()+", "); break;
 		case 23: if(M.getClanID().length()>0)
 				 {
@@ -117,20 +117,20 @@ public class PlayerData extends StdWebMacro
 		case 25: str.append(Util.capitalize(CommonStrings.alignmentStr(M.getAlignment()))+", "); break;
 		case 26: str.append(M.getWimpHitPoint()+", "); break;
 		case 27: if(M.getStartRoom()!=null)
-					 str.append(M.getStartRoom().displayText()+", "); 
+					 str.append(M.getStartRoom().displayText()+", ");
 				 break;
 		case 28: if(M.location()!=null)
-					 str.append(M.location().displayText()+", "); 
+					 str.append(M.location().displayText()+", ");
 				 break;
 		case 29: if(M.getStartRoom()!=null)
-					 str.append(M.getStartRoom().roomID()+", "); 
+					 str.append(M.getStartRoom().roomID()+", ");
 				 break;
 		case 30: if(M.location()!=null)
-					 str.append(M.location().roomID()+", "); 
+					 str.append(M.location().roomID()+", ");
 				 break;
 		case 31:
 				for(int inv=0;inv<M.inventorySize();inv++)
-				{ 
+				{
 					Item I=M.fetchInventory(inv);
 					if((I!=null)&&(I.container()==null))
 						  str.append(I.name()+", ");
@@ -140,7 +140,7 @@ public class PlayerData extends StdWebMacro
 		case 33: str.append(M.envStats().weight()+", "); break;
 		case 34: str.append(Util.capitalize(M.baseCharStats().genderName())+", "); break;
 		case 35: if(M.playerStats()!=null)
-					 str.append(M.playerStats().lastDateTime()+", "); 
+					 str.append(M.playerStats().lastDateTime()+", ");
 				 break;
 		case 36: str.append(M.curState().getHitPoints()+", "); break;
 		case 37: str.append(M.curState().getMana()+", "); break;
@@ -153,7 +153,7 @@ public class PlayerData extends StdWebMacro
 					 str.append(M.session().getAddress()+", ");
 				 else
 				 if(M.playerStats()!=null)
-					 str.append(M.playerStats().lastIP()+", "); 
+					 str.append(M.playerStats().lastIP()+", ");
 				 break;
 		case 42:  str.append(M.getQuestPoint()+", "); break;
 		case 43: str.append(M.maxState().getHitPoints()+", "); break;
@@ -171,7 +171,7 @@ public class PlayerData extends StdWebMacro
 		}
 		return "";
 	}
-	
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
@@ -184,7 +184,7 @@ public class PlayerData extends StdWebMacro
 		{
 			MOB M=CMMap.getLoadPlayer(last);
 			if(M==null) return " @break@";
-			
+
 			StringBuffer str=new StringBuffer("");
 			for(int i=0;i<MOB.AUTODESC.length;i++)
 			{

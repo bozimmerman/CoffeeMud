@@ -155,7 +155,7 @@ public class Pregnancy extends StdAbility
 												GR.bodyMask()[i]=R.bodyMask()[i];
 											else
 												GR.bodyMask()[i]=R.bodyMask()[i];
-										
+
 										EnvStats RS=new DefaultEnvStats(0);
 										R.affectEnvStats(babe,RS);
 										RS.setAbility(RS.ability()/2);
@@ -167,7 +167,7 @@ public class Pregnancy extends StdAbility
 										RS.setWeight(RS.weight()/2);
 										RS.setRejuv(0);
 										GR.setStat("ESTATS",CoffeeMaker.getEnvStatsStr(RS));
-										
+
 										CharStats S1=new DefaultCharStats(0);
 										CharStats S2=new DefaultCharStats(10);
 										CharStats SETSTAT=new DefaultCharStats(0);
@@ -189,7 +189,7 @@ public class Pregnancy extends StdAbility
 										}
 										GR.setStat("ASTATS",CoffeeMaker.getCharStatsStr(ADJSTAT));
 										GR.setStat("CSTATS",CoffeeMaker.getCharStatsStr(SETSTAT));
-										
+
 										CharState CS=new DefaultCharState(0);
 										R.affectCharState(babe,CS);
 										CS.setFatigue(CS.getFatigue()/2);
@@ -199,13 +199,13 @@ public class Pregnancy extends StdAbility
 										CS.setMovement(CS.getMovement()/2);
 										CS.setThirst(CS.getThirst()/2);
 										GR.setStat("ASTATE",CoffeeMaker.getCharStateStr(CS));
-										
+
 										GR.setStat("NUMRSC","");
 										for(int i=0;i<R.myResources().size();i++)
 											GR.setStat("GETRSCID"+i,((Item)R.myResources().elementAt(i)).ID());
 										for(int i=0;i<R.myResources().size();i++)
 											GR.setStat("GETRSCPARM"+i,((Item)R.myResources().elementAt(i)).text());
-										
+
 										GR.setStat("NUMOFT","");
 										if(R.outfit()!=null)
 										{
@@ -214,13 +214,13 @@ public class Pregnancy extends StdAbility
 											for(int i=0;i<R.outfit().size();i++)
 												GR.setStat("GETOFTPARM"+i,((Item)R.outfit().elementAt(i)).text());
 										}
-										
+
 										R.racialAbilities(null);
 										Vector data=CMAble.getUpToLevelListings(R.ID(),Integer.MAX_VALUE,true,false);
 										// kill half of them.
 										for(int i=1;i<data.size();i++)
 											data.removeElementAt(i);
-										
+
 										if(data.size()>0)
 											GR.setStat("NUMRABLE",""+data.size());
 										else
@@ -232,7 +232,7 @@ public class Pregnancy extends StdAbility
 											GR.setStat("GETRABLEQUAL"+i,""+CMAble.getDefaultGain(R.ID(),(String)data.elementAt(i)));
 											GR.setStat("GETRABLEPROF"+i,""+CMAble.getDefaultProfficiency(R.ID(),(String)data.elementAt(i)));
 										}
-										
+
 										CMClass.addRace(GR);
 										CMClass.DBEngine().DBCreateRace(GR.ID(),GR.racialParms());
 										R=GR;
@@ -243,7 +243,7 @@ public class Pregnancy extends StdAbility
 							babe.setName(name);
 							babe.setAlignment(1000);
 							babe.setClanID(mob.getClanID());
-							babe.setLeigeID(mob.getLeigeID());
+							babe.setLiegeID(mob.getLiegeID());
 							babe.setDescription(desc);
 							babe.setDisplayText(name+" is here");
 							babe.setMoney(0);

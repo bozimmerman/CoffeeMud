@@ -50,12 +50,12 @@ public class Score extends Affect
 		else
 		if(mob.charStats().getStat(CharStats.GENDER)=='F') genderName="female";
 		msg.append("You are a ^!"+genderName+" "+mob.charStats().getMyRace().name() + "^?");
-		if(mob.getLeigeID().length()>0)
+		if(mob.getLiegeID().length()>0)
 		{
-			if(mob.isMarriedToLeige())
-				msg.append(" who is married to ^H"+mob.getLeigeID()+"^?");
+			if(mob.isMarriedToLiege())
+				msg.append(" who is married to ^H"+mob.getLiegeID()+"^?");
 			else
-				msg.append(" who serves ^H"+mob.getLeigeID()+"^?");
+				msg.append(" who serves ^H"+mob.getLiegeID()+"^?");
 		}
 		if(mob.getWorshipCharID().length()>0)
 			msg.append(" worshipping ^H"+mob.getWorshipCharID()+"^?");

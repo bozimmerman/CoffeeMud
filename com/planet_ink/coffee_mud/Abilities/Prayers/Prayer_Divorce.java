@@ -18,7 +18,7 @@ public class Prayer_Divorce extends Prayer
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if(!target.isMarriedToLeige())
+		if(!target.isMarriedToLiege())
 		{
 			mob.tell(target.name()+" is not married!");
 			return false;
@@ -28,27 +28,27 @@ public class Prayer_Divorce extends Prayer
 			mob.tell(target.name()+" must remove the wedding band first.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> divorce(s) <T-NAMESELF> from "+target.getLeigeID()+".^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> divorce(s) <T-NAMESELF> from "+target.getLiegeID()+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String maleName=target.Name();
-				String femaleName=target.getLeigeID();
+				String femaleName=target.getLiegeID();
 				if(target.charStats().getStat(CharStats.GENDER)=='F')
 				{
 					femaleName=target.Name();
-					maleName=target.getLeigeID();
+					maleName=target.getLiegeID();
 				}
-				MOB M=CMMap.getPlayer(target.getLeigeID());
-				if(M!=null) M.setLeigeID("");
-				target.setLeigeID("");
+				MOB M=CMMap.getPlayer(target.getLiegeID());
+				if(M!=null) M.setLiegeID("");
+				target.setLiegeID("");
 				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();

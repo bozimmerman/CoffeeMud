@@ -53,7 +53,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			storeInventory=new Vector();
 			baseInventory=new Vector();
 			duplicateInventory=new Hashtable();
-			
+
 			StdShopKeeper SK=(StdShopKeeper)E;
 			for(int i=0;i<SK.storeInventory.size();i++)
 			{
@@ -1059,7 +1059,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					Item I=CMClass.getItem("GenTitle");
 					((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID(R));
 					if((((LandTitle)I).landOwner().equals(name))
-					   ||(((LandTitle)I).landOwner().equals(mob.getLeigeID())&&(mob.isMarriedToLeige())))
+					   ||(((LandTitle)I).landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 					{
 						if(!I.Name().endsWith(" (Copy)"))
 							I.setName(I.Name()+" (Copy)");
@@ -1083,7 +1083,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							else
 								continue;
 							if((L2.landOwner().equals(name))
-							||(L2.landOwner().equals(mob.getLeigeID())&&(mob.isMarriedToLeige())))
+							||(L2.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 							{ skipThisOne=false; break;}
 							if(L2.landOwner().length()>0)
 								skipThisOne=true;

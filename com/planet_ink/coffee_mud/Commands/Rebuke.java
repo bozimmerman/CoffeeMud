@@ -24,7 +24,7 @@ public class Rebuke extends StdCommand
 			if(mob.getWorshipCharID().length()>0)
 				target=(MOB)CMMap.getDeity(Util.combine(commands,1));
 			if((target==null)
-			&&(!Util.combine(commands,1).equalsIgnoreCase(mob.getLeigeID()))
+			&&(!Util.combine(commands,1).equalsIgnoreCase(mob.getLiegeID()))
 			&&(!Util.combine(commands,1).equalsIgnoreCase(mob.getWorshipCharID())))
 			{
 				mob.tell("There's nobody here called '"+Util.combine(commands,1)+"' and you aren't serving '"+Util.combine(commands,1)+"'.");
@@ -36,7 +36,7 @@ public class Rebuke extends StdCommand
 		if(target!=null)
 			msg=new FullMsg(mob,target,null,CMMsg.MSG_REBUKE,"<S-NAME> rebuke(s) "+target.Name()+".");
 		else
-			msg=new FullMsg(mob,target,null,CMMsg.MSG_REBUKE,"<S-NAME> rebuke(s) "+mob.getLeigeID()+".");
+			msg=new FullMsg(mob,target,null,CMMsg.MSG_REBUKE,"<S-NAME> rebuke(s) "+mob.getLiegeID()+".");
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

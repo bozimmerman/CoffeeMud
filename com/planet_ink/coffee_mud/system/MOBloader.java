@@ -69,7 +69,7 @@ public class MOBloader
 				mob.baseEnvStats().setArmor(Util.s_int(DBConnections.getRes(R,"CMAMOR")));
 				mob.baseEnvStats().setDamage(Util.s_int(DBConnections.getRes(R,"CMDAMG")));
 				mob.setBitmap(Util.s_int(DBConnections.getRes(R,"CMBTMP")));
-				mob.setLeigeID(DBConnections.getRes(R,"CMLEIG"));
+				mob.setLiegeID(DBConnections.getRes(R,"CMLEIG"));
 				mob.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 				mob.baseEnvStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
 				pstats.setPrompt(DBConnections.getRes(R,"CMPRPT"));
@@ -275,9 +275,9 @@ public class MOBloader
 					thisUser.addElement(cclass);
 					String rrace=DBConnections.getRes(R,"CMRACE");
 					Race R2=CMClass.getRace(rrace);
-					if(R2!=null)	
+					if(R2!=null)
 						thisUser.addElement(R2.name());
-					else 
+					else
 						thisUser.addElement(rrace);
 					String lvl=DBConnections.getRes(R,"CMLEVL");
 					x=lvl.indexOf(";");
@@ -310,13 +310,13 @@ public class MOBloader
 		return allUsers;
 	}
 
-	public static void vassals(MOB mob, String leigeID)
+	public static void vassals(MOB mob, String liegeID)
 	{
 		DBConnection D=null;
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMLEIG='"+leigeID+"'");
+			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMLEIG='"+liegeID+"'");
 			StringBuffer head=new StringBuffer("");
 			head.append("[");
 			head.append(Util.padRight("Race",8)+" ");
@@ -362,7 +362,7 @@ public class MOBloader
 			for(Enumeration e=CMMap.players();e.hasMoreElements();)
 			{
 				MOB M=(MOB)e.nextElement();
-				if((M.getLeigeID().equals(leigeID))
+				if((M.getLiegeID().equals(liegeID))
 				&&(!done.contains(M.Name())))
 				{
 					head.append("[");
@@ -503,7 +503,7 @@ public class MOBloader
 		DBUpdateAbilities(mob);
 		mob.playerStats().setUpdated(System.currentTimeMillis());
 	}
-	
+
 	public static void DBUpdateJustMOB(MOB mob)
 	{
 		if(mob.Name().length()==0)
@@ -550,7 +550,7 @@ public class MOBloader
 		+", CMAMOR="+mob.baseEnvStats().armor()
 		+", CMDAMG="+mob.baseEnvStats().damage()
 		+", CMBTMP="+mob.getBitmap()
-		+", CMLEIG='"+mob.getLeigeID()+"'"
+		+", CMLEIG='"+mob.getLiegeID()+"'"
 		+", CMHEIT="+mob.baseEnvStats().height()
 		+", CMWEIT="+mob.baseEnvStats().weight()
 		+", CMPRPT='"+pstats.getPrompt()+"'"
@@ -562,13 +562,13 @@ public class MOBloader
 		+", CMPFIL='"+pstats.getFriendsIgnoreStr()+"'"
 		+", CMSAVE='"+mob.baseCharStats().getSavesStr()+"'"
 		+"  WHERE CMUSERID='"+mob.Name()+"'");
-		
+
 		DBConnector.update(
 		"UPDATE CMCHAR SET"
 		+" CMDESC='"+mob.description()+"'"
 		+" WHERE CMUSERID='"+mob.Name()+"'");
 	}
-	
+
 	private static void DBUpdateContents(MOB mob, Vector V)
 	{
 		Vector done=new Vector();

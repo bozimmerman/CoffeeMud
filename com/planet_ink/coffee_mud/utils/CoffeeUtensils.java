@@ -15,7 +15,7 @@ public class CoffeeUtensils
 			return false;
 		return true;
 	}
-	
+
 	public static ShopKeeper getShopKeeper(MOB mob)
 	{
 		if(mob==null) return null;
@@ -47,7 +47,7 @@ public class CoffeeUtensils
 			}
 		}
 	}
-	
+
 	public static Vector shopkeepers(Room here, MOB notMOB)
 	{
 		Vector V=new Vector();
@@ -63,7 +63,7 @@ public class CoffeeUtensils
 		}
 		return V;
 	}
-	
+
 	public static Trap getATrap(Environmental unlockThis)
 	{
 		Trap theTrap=null;
@@ -340,7 +340,7 @@ public class CoffeeUtensils
 			pair.executeMsg(msg.source(),altMsg);
 		}
 	}
-	
+
 	public static void obliteratePlayer(MOB deadMOB, boolean quiet)
 	{
 		if(CMMap.getPlayer(deadMOB.Name())!=null)
@@ -393,7 +393,7 @@ public class CoffeeUtensils
 		CMClass.DBEngine().DBReadContent(room,null);
 		room.toggleMobility(mobile);
 	}
-	
+
 	public static void clearTheRoom(Room room)
 	{
 		for(int m=room.numInhabitants()-1;m>=0;m--)
@@ -469,7 +469,7 @@ public class CoffeeUtensils
 		if(room==null) return null;
 		LandTitle title=getLandTitle(room.getArea());
 		if(title!=null) return title;
-		
+
 		for(int a=0;a<room.numEffects();a++)
 		{
 			Ability A=room.fetchEffect(a);
@@ -486,7 +486,7 @@ public class CoffeeUtensils
 		if(title.landOwner()==null) return false;
 		if(title.landOwner().length()==0) return false;
 		if(title.landOwner().equals(mob.Name())) return true;
-		if((title.landOwner().equals(mob.getLeigeID())&&(mob.isMarriedToLeige())))
+		if((title.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 		   return true;
 		if(title.landOwner().equals(mob.getClanID()))
 		{
@@ -496,7 +496,7 @@ public class CoffeeUtensils
 		}
 		return false;
 	}
-	
+
 	public static boolean armorCheck(MOB mob, int allowedArmorLevel)
 	{
 		if(allowedArmorLevel==CharClass.ARMOR_ANY) return true;

@@ -13,7 +13,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 	protected String myClan="";
 	protected int ciType=0;
 	public int ciType(){return ciType;}
-	public void setCIType(int type){ ciType=type;}	
+	public void setCIType(int type){ ciType=type;}
 	public StdClanFlag()
 	{
 		super();
@@ -28,10 +28,10 @@ public class StdClanFlag extends StdItem implements ClanItem
 		material=EnvResource.RESOURCE_COTTON;
 		recoverEnvStats();
 	}
-	
+
 	public String clanID(){return myClan;}
 	public void setClanID(String ID){myClan=ID;}
-	
+
 	public String getClanInfoAt(Room R, MOB mob, int code)
 	{
 		if(R==null)
@@ -57,9 +57,9 @@ public class StdClanFlag extends StdItem implements ClanItem
 		}
 		return "";
 	}
-	
-	
-	
+
+
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(StdClanItem.stdExecuteMsg(this,msg))
@@ -138,7 +138,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					}
 					if((T==null)
 					||((!T.landOwner().equals(clanID()))
-					   &&((!T.landOwner().equals(msg.source().getLeigeID()))||(!msg.source().isMarriedToLeige()))
+					   &&((!T.landOwner().equals(msg.source().getLiegeID()))||(!msg.source().isMarriedToLiege()))
 					   &&(!T.landOwner().equals(msg.source().Name()))))
 					{
 						if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
@@ -182,7 +182,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 				}
 			}
 		}
-		
+
 		if(StdClanItem.stdOkMessage(this,msg))
 		{
 			if((clanID().length()>0)
@@ -199,7 +199,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					{
 						int relation=Clan.REL_WAR;
 						Clan C=Clans.getClan(clanID());
-						if(C!=null) 
+						if(C!=null)
 							relation=C.getClanRelations(rulingClan);
 						else
 						{
@@ -219,7 +219,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 		}
 		return false;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!StdClanItem.standardTick(this,tickID))

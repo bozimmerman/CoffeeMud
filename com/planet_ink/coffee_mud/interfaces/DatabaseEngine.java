@@ -38,7 +38,7 @@ public interface DatabaseEngine
 	public void DBDeleteJournal(String Journal, int which);
 	public boolean DBReadUserOnly(MOB mob);
 	public boolean DBUserSearch(MOB mob, String Login);
-	public void vassals(MOB mob, String leigeID);
+	public void vassals(MOB mob, String liegeID);
 	public Vector DBReadData(String playerID, String section);
 	public Vector DBReadData(String playerID, String section, String key);
 	public Vector DBReadData(String section);

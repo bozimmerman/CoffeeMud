@@ -88,7 +88,7 @@ public class Spell_WardArea extends Spell implements Trap
 			newCaster.recoverEnvStats();
 			newCaster.recoverCharStats();
 			if(invoker()!=null)
-				newCaster.setLeigeID(invoker().Name());
+				newCaster.setLiegeID(invoker().Name());
 			newCaster.setLocation((Room)affected);
 			try
 			{

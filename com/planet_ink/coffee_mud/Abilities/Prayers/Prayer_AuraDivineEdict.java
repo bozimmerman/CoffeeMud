@@ -42,7 +42,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			return msg.substring(start+1,end);
 		return null;
 	}
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -66,26 +66,26 @@ public class Prayer_AuraDivineEdict extends Prayer
 		&&(getMsgFromAffect(msg.sourceMessage().toUpperCase()).equals(getMsgFromAffect(msg.sourceMessage()))))
 		{
 			noRecurse=true;
-			String oldLeige=((MOB)msg.target()).getLeigeID();
-			((MOB)msg.target()).setLeigeID(msg.source().Name());
+			String oldLiege=((MOB)msg.target()).getLiegeID();
+			((MOB)msg.target()).setLiegeID(msg.source().Name());
 			msg.source().doCommand(Util.parse("ORDER \""+msg.target().Name()+"\" "+getMsgFromAffect(msg.sourceMessage())));
-			((MOB)msg.target()).setLeigeID(oldLeige);
+			((MOB)msg.target()).setLiegeID(oldLiege);
 			noRecurse=false;
 			return false;
 		}
 		noRecurse=false;
 		return true;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
 			return super.tick(ticking,tickID);
-		
+
 		if(!super.tick(ticking,tickID))
 			return false;
 		if(invoker()==null) return true;
-		
+
 		Room R=invoker().location();
 		for(int i=0;i<R.numInhabitants();i++)
 		{
@@ -107,7 +107,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			mob.tell("The aura of the divine edict is already with you.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

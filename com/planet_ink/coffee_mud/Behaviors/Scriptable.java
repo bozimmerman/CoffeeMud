@@ -3131,7 +3131,7 @@ public class Scriptable extends StdBehavior
 					{
 						MOB M=(MOB)e.nextElement();
 						if(M.location()==lastKnownLocation)
-							MUDFight.postExperience(M,null,M.getLeigeID(),t,false);
+							MUDFight.postExperience(M,null,M.getLiegeID(),t,false);
 					}
 				}
 				break;
@@ -3715,7 +3715,7 @@ public class Scriptable extends StdBehavior
 	}
 
 	private static final Vector empty=new Vector();
-	
+
 	protected Vector getScripts()
 	{
 		if(CommonStrings.isDisabled("SCRIPTABLE"))

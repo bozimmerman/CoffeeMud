@@ -4,9 +4,9 @@ import java.util.*;
 import java.io.IOException;
 public class DBInterface implements DatabaseEngine
 {
-	public void vassals(MOB mob, String leigeID)
+	public void vassals(MOB mob, String liegeID)
 	{
-		MOBloader.vassals(mob,leigeID);
+		MOBloader.vassals(mob,liegeID);
 	}
 	public Vector userList()
 	{

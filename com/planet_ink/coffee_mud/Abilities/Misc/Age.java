@@ -69,7 +69,7 @@ public class Age extends StdAbility
 					babe.baseState().setMana(10);
 					babe.baseState().setMovement(20);
 					if(following!=null)
-						babe.setLeigeID(following.Name());
+						babe.setLiegeID(following.Name());
 					babe.recoverCharStats();
 					babe.recoverEnvStats();
 					babe.recoverMaxState();
@@ -132,10 +132,10 @@ public class Age extends StdAbility
 				if(R!=null)
 				{
 					MOB babe=(MOB)affected;
-					MOB leige=null;
-					if(babe.getLeigeID().length()>0)
-						leige=CMMap.getLoadPlayer(babe.getLeigeID());
-					if(leige==null) leige=babe.amFollowing();
+					MOB liege=null;
+					if(babe.getLiegeID().length()>0)
+						liege=CMMap.getLoadPlayer(babe.getLiegeID());
+					if(liege==null) liege=babe.amFollowing();
 					MOB newMan=CMClass.getMOB("StdMOB");
 					newMan.setAgeHours(babe.getAgeHours());
 					newMan.setAlignment(babe.getAlignment());
@@ -149,7 +149,7 @@ public class Age extends StdAbility
 					newMan.setExperience(babe.getExperience());
 					newMan.setExpNextLevel(babe.getExpNextLevel());
 					newMan.setFollowing(null);
-					newMan.setLeigeID(babe.getLeigeID());
+					newMan.setLiegeID(babe.getLiegeID());
 					newMan.setLocation(babe.location());
 					newMan.setMoney(babe.getMoney());
 					newMan.setName(babe.Name());
@@ -160,8 +160,8 @@ public class Age extends StdAbility
 					newMan.setTrains(babe.getTrains());
 					newMan.setWimpHitPoint(babe.getWimpHitPoint());
 					newMan.setWorshipCharID(babe.getWorshipCharID());
-					newMan.playerStats().setPassword(leige.playerStats().password());
-					newMan.playerStats().setEmail(leige.playerStats().getEmail());
+					newMan.playerStats().setPassword(liege.playerStats().password());
+					newMan.playerStats().setEmail(liege.playerStats().getEmail());
 					newMan.playerStats().setUpdated(System.currentTimeMillis());
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.baseEnvStats(),(char)newMan.baseCharStats().getStat(CharStats.GENDER));
@@ -187,7 +187,7 @@ public class Age extends StdAbility
 					if(CMMap.getPlayer(newMan.Name())==null)
 						CMMap.addPlayer(newMan);
 
-					newMan.playerStats().setLastIP(leige.session().getAddress());
+					newMan.playerStats().setLastIP(liege.session().getAddress());
 					Log.sysOut("Age","Created user: "+newMan.Name());
 					for(int s=0;s<Sessions.size();s++)
 					{
@@ -200,9 +200,9 @@ public class Age extends StdAbility
 							S.mob().tell("^X"+newMan.Name()+" has just been created.^.^?");
 					}
 					CommonMsgs.channel("WIZINFO","",newMan.Name()+" has just been created.",true);
-					if(leige!=babe.amFollowing())
-						babe.amFollowing().tell(newMan.Name()+" has just grown up! "+Util.capitalize(newMan.baseCharStats().hisher())+" password is the same as "+leige.Name()+"'s.");
-					leige.tell(newMan.Name()+" has just grown up! "+Util.capitalize(newMan.baseCharStats().hisher())+" password is the same as "+leige.Name()+"'s.");
+					if(liege!=babe.amFollowing())
+						babe.amFollowing().tell(newMan.Name()+" has just grown up! "+Util.capitalize(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
+					liege.tell(newMan.Name()+" has just grown up! "+Util.capitalize(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
 					newMan.removeFromGame();
 					babe.destroy();
 				}

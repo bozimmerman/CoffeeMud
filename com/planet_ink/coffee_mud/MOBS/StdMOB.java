@@ -103,16 +103,16 @@ public class StdMOB implements MOB
 	// mental characteristics
 	protected int Alignment=0;
 	protected String WorshipCharID="";
-	protected String LeigeID="";
+	protected String LiegeID="";
 	protected int WimpHitPoint=0;
 	protected int QuestPoint=0;
 	protected int DeityIndex=-1;
-	public String getLeigeID(){return LeigeID;}
+	public String getLiegeID(){return LiegeID;}
 	public String getWorshipCharID(){return WorshipCharID;}
 	public int getAlignment(){return Alignment;}
 	public int getWimpHitPoint(){return WimpHitPoint;}
 	public int getQuestPoint(){return QuestPoint;}
-	public void setLeigeID(String newVal){LeigeID=newVal;}
+	public void setLiegeID(String newVal){LiegeID=newVal;}
 	public void setAlignment(int newVal)
 	{
 		if(newVal<0) newVal=0;
@@ -352,13 +352,13 @@ public class StdMOB implements MOB
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}
-	public boolean isMarriedToLeige()
+	public boolean isMarriedToLiege()
 	{
-		if(getLeigeID().length()==0) return false;
-		if(getLeigeID().equals(Name())) return false;
-		MOB M=CMMap.getLoadPlayer(getLeigeID());
-		if(M==null){ setLeigeID(""); return false;}
-		if(M.getLeigeID().equals(Name()))
+		if(getLiegeID().length()==0) return false;
+		if(getLiegeID().equals(Name())) return false;
+		MOB M=CMMap.getLoadPlayer(getLiegeID());
+		if(M==null){ setLiegeID(""); return false;}
+		if(M.getLiegeID().equals(Name()))
 			return true;
 		return false;
 	}
@@ -682,7 +682,7 @@ public class StdMOB implements MOB
 	public void setVictim(MOB mob)
 	{
 		if(mob==null)
-		{	
+		{
 			setAtRange(-1);
 			if(victim!=null)
 				commandQue.clear();
@@ -952,7 +952,7 @@ public class StdMOB implements MOB
 		}
 		if(returnable!=null)
 			doCommand(EnglishParser.findCommand(this,returnable),returnable);
-	} 
+	}
 
 	public void doCommand(Vector commands)
 	{
@@ -1147,12 +1147,12 @@ public class StdMOB implements MOB
 							tell("You like "+amFollowing().charStats().himher()+" too much.");
 							return false;
 						}
-						if((getLeigeID().length()>0)&&(target.Name().equals(getLeigeID())))
+						if((getLiegeID().length()>0)&&(target.Name().equals(getLiegeID())))
 						{
-							if(isMarriedToLeige())
-								tell("You are married to '"+getLeigeID()+"'!");
+							if(isMarriedToLiege())
+								tell("You are married to '"+getLiegeID()+"'!");
 							else
-								tell("You are serving '"+getLeigeID()+"'!");
+								tell("You are serving '"+getLiegeID()+"'!");
 							return false;
 						}
 						establishRange(this,(MOB)msg.target(),msg.tool());
@@ -1394,24 +1394,24 @@ public class StdMOB implements MOB
 							}
 							else
 							if((!((msg.target() instanceof MOB)
-							&&(((MOB)msg.target()).getLeigeID().equals(Name()))))
-							&&(!msg.target().Name().equals(getLeigeID())))
+							&&(((MOB)msg.target()).getLiegeID().equals(Name()))))
+							&&(!msg.target().Name().equals(getLiegeID())))
 							{
 								tell(msg.target().name()+" does not serve you, and you do not serve "+msg.target().name()+".");
 								return false;
 							}
 							else
 							if((msg.target() instanceof MOB)
-							&&(((MOB)msg.target()).getLeigeID().equals(Name()))
-							&&(getLeigeID().equals(msg.target().Name()))
-							&&(((MOB)msg.target()).isMarriedToLeige()))
+							&&(((MOB)msg.target()).getLiegeID().equals(Name()))
+							&&(getLiegeID().equals(msg.target().Name()))
+							&&(((MOB)msg.target()).isMarriedToLiege()))
 							{
 								tell("You cannot rebuke "+msg.target().name()+".  You must get an annulment or a divorce.");
 								return false;
 							}
 						}
 						else
-						if(getLeigeID().length()==0)
+						if(getLiegeID().length()==0)
 						{
 							tell("You aren't serving anyone!");
 							return false;
@@ -1438,13 +1438,13 @@ public class StdMOB implements MOB
 						tell(msg.target().name()+" can't hear you!");
 						return false;
 					}
-					if(getLeigeID().length()>0)
+					if(getLiegeID().length()>0)
 					{
-						tell("You are already serving '"+getLeigeID()+"'.");
+						tell("You are already serving '"+getLiegeID()+"'.");
 						return false;
 					}
 					if((msg.target() instanceof MOB)
-					&&(((MOB)msg.target()).getLeigeID().equals(Name())))
+					&&(((MOB)msg.target()).getLiegeID().equals(Name())))
 					{
 						tell("You can not serve each other!");
 						return false;
@@ -1813,16 +1813,16 @@ public class StdMOB implements MOB
 				}
 				break;
 			case CMMsg.TYP_REBUKE:
-				if(((msg.target()==null)&&(getLeigeID().length()>0))
+				if(((msg.target()==null)&&(getLiegeID().length()>0))
 				||((msg.target()!=null)
-				   &&(msg.target().Name().equals(getLeigeID()))
-				   &&(!isMarriedToLeige())))
-					setLeigeID("");
+				   &&(msg.target().Name().equals(getLiegeID()))
+				   &&(!isMarriedToLiege())))
+					setLiegeID("");
 				tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 				break;
 			case CMMsg.TYP_SERVE:
 				if((msg.target()!=null)&&(!(msg.target() instanceof Deity)))
-					setLeigeID(msg.target().Name());
+					setLiegeID(msg.target().Name());
 				tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 				break;
 			case CMMsg.TYP_EXAMINESOMETHING:
@@ -1995,9 +1995,9 @@ public class StdMOB implements MOB
 				}
 				else
 				if((msg.targetMinor()==CMMsg.TYP_REBUKE)
-				&&(msg.source().Name().equals(getLeigeID())
-				&&(!isMarriedToLeige())))
-					setLeigeID("");
+				&&(msg.source().Name().equals(getLiegeID())
+				&&(!isMarriedToLiege())))
+					setLiegeID("");
 				else
 				if(Util.bset(targetMajor,CMMsg.MASK_CHANNEL))
 				{
@@ -2510,7 +2510,7 @@ public class StdMOB implements MOB
 	{
 		if(mob.isASysOp(mob.location())
 		||(amFollowing()==mob)
-		||(getLeigeID().equals(mob.Name()))
+		||(getLiegeID().equals(mob.Name()))
 		||(CoffeeUtensils.doesOwnThisProperty(mob,getStartRoom())))
 			return true;
 		if((getClanID().length()>0)&&(getClanID().equals(mob.getClanID())))

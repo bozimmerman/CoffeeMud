@@ -200,9 +200,9 @@ public class StdCharClass implements CharClass, Cloneable
 			double alignExpFactor=Math.abs(Util.div(victim.getAlignment()-mob.getAlignment(),1000.0));
 			amount=(int)Math.round((theAmount/2.0)+((theAmount/2.0)*alignExpFactor));
 		}
-		if((homage!=null)&&(mob.getLeigeID().length()>0)&&(amount>2))
+		if((homage!=null)&&(mob.getLiegeID().length()>0)&&(amount>2))
 		{
-			MOB sire=CMMap.getLoadPlayer(mob.getLeigeID());
+			MOB sire=CMMap.getLoadPlayer(mob.getLiegeID());
 			if(sire!=null)
 			{
 				int sireShare=(int)Math.round(Util.div(amount,10.0));
@@ -212,7 +212,7 @@ public class StdCharClass implements CharClass, Cloneable
 					MUDFight.postExperience(sire,null," from "+mob.name(),sireShare,quiet);
 			}
 			else
-				mob.setLeigeID("");
+				mob.setLiegeID("");
 		}
 		if((mob.getClanID().length()>0)&&(amount>2))
 		{
@@ -450,9 +450,9 @@ public class StdCharClass implements CharClass, Cloneable
 		if((mob.isMonster())||(mob.soulMate()!=null)) return;
 		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
 		mob.setExperience(mob.getExperience()-amount);
-        if((mob.getLeigeID().length()>0)&&(amount>2))
+        if((mob.getLiegeID().length()>0)&&(amount>2))
         {
-            MOB sire=CMMap.getLoadPlayer(mob.getLeigeID());
+            MOB sire=CMMap.getLoadPlayer(mob.getLiegeID());
             if(sire!=null)
             {
                 int sireShare=(int)Math.round(Util.div(amount,10.0));
@@ -462,7 +462,7 @@ public class StdCharClass implements CharClass, Cloneable
                 sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
             }
 			else
-				mob.setLeigeID("");
+				mob.setLiegeID("");
         }
         if((mob.getClanID().length()>0)&&(amount>2))
         {

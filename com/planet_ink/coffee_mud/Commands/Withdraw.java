@@ -56,15 +56,15 @@ public class Withdraw extends StdCommand
 			thisThang=((Banker)shopkeeper).findDepositInventory(mob,thisName);
 		if((thisThang==null)
 		&&(((Banker)shopkeeper).whatIsSold()!=ShopKeeper.DEAL_CLANBANKER)
-		&&(mob.isMarriedToLeige()))
+		&&(mob.isMarriedToLiege()))
 		{
-			MOB mob2=CMMap.getPlayer(mob.getLeigeID());
+			MOB mob2=CMMap.getPlayer(mob.getLiegeID());
 			if(thisName.equalsIgnoreCase("all"))
 				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,""+Integer.MAX_VALUE);
 			else
 				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,thisName);
 		}
-		
+
 		if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
 		{
 			mob.tell("That doesn't appear to be available.  Try LIST.");

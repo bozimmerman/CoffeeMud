@@ -62,7 +62,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		if(thisThang instanceof Coins) name="COINS";
 		CMClass.DBEngine().DBCreateData(mob,bankChain(),""+thisThang+Math.random(),name+";"+CoffeeMaker.getPropertiesStr(thisThang,true));
 	}
-	
+
 	public void addDepositInventory(MOB mob, Item thisThang)
 	{
 		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
@@ -74,7 +74,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		else
 			addDepositInventory(mob.Name(),thisThang);
 	}
-	
+
 	public boolean delDepositInventory(MOB mob, Item thisThang)
 	{
 		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
@@ -172,7 +172,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		}
 		return mine;
 	}
-	
+
 	public Item findDepositInventory(MOB mob, String likeThis)
 	{
 		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
@@ -183,7 +183,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		else
 			return findDepositInventory(mob.Name(),likeThis);
 	}
-	
+
 	public Item findDepositInventory(String mob, String likeThis)
 	{
 		Vector V=getDepositInventory(mob);
@@ -348,10 +348,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 						MOB owner=msg.source();
 						if((old==null)
 						&&(whatISell!=ShopKeeper.DEAL_CLANBANKER)
-						&&(msg.source().isMarriedToLeige()))
+						&&(msg.source().isMarriedToLiege()))
 						{
-							old=findDepositInventory(msg.source().getLeigeID(),""+Integer.MAX_VALUE);
-							if(old!=null) owner=CMMap.getPlayer(msg.source().getLeigeID());
+							old=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
+							if(old!=null) owner=CMMap.getPlayer(msg.source().getLiegeID());
 						}
 						if((old!=null)&&(old instanceof Coins))
 							newNum+=((Coins)old).numberOfCoins();
@@ -386,10 +386,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 						MOB owner=msg.source();
 						if((item==null)
 						&&(whatISell!=ShopKeeper.DEAL_CLANBANKER)
-						&&(msg.source().isMarriedToLeige()))
+						&&(msg.source().isMarriedToLiege()))
 						{
-							item=findDepositInventory(msg.source().getLeigeID(),""+Integer.MAX_VALUE);
-							if(item!=null) owner=CMMap.getPlayer(msg.source().getLeigeID());
+							item=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
+							if(item!=null) owner=CMMap.getPlayer(msg.source().getLiegeID());
 						}
 						if((item!=null)&&(item instanceof Coins))
 						{
@@ -422,8 +422,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						if((!delDepositInventory(msg.source(),old))
 						&&(whatISell!=ShopKeeper.DEAL_CLANBANKER)
-						&&(msg.source().isMarriedToLeige()))
-							delDepositInventory(msg.source().getLeigeID(),old);
+						&&(msg.source().isMarriedToLiege()))
+							delDepositInventory(msg.source().getLiegeID(),old);
 
 					    CommonMsgs.say(this,mob,"Thank you for your trust.",true,false);
 						if(location()!=null)
@@ -452,14 +452,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 				else
 				{
 					V=getDepositedItems(mob.Name());
-					if(mob.isMarriedToLeige())
+					if(mob.isMarriedToLiege())
 					{
-						Vector V2=getDepositedItems(mob.getLeigeID());
+						Vector V2=getDepositedItems(mob.getLiegeID());
 						if((V2!=null)&&(V2.size()>0))
 							Util.addToVector(V2,V);
 					}
 				}
-					
+
 				StringBuffer str=new StringBuffer("\n\r");
 				String c="^x[Item                              ] ";
 				str.append(c+c+"^.^N\n\r");
@@ -494,9 +494,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 						str.append("Your balance with us is ^H"+balance+"^? gold coins.");
 				}
 				if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
-				&&(mob.isMarriedToLeige()))
+				&&(mob.isMarriedToLiege()))
 				{
-					balance=getBalance(CMMap.getPlayer(mob.getLeigeID()));
+					balance=getBalance(CMMap.getPlayer(mob.getLiegeID()));
 					str.append("Your spouses balance with us is ^H"+balance+"^? gold coins.");
 				}
 				if(coinInterest!=0.0)
@@ -593,9 +593,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 					&&(findDepositInventory(thename,msg.tool().Name())==null))
 					{
 						if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
-						&&(msg.source().isMarriedToLeige())
-						&&(findDepositInventory(msg.source().getLeigeID(),msg.tool().Name())!=null))
-							owner=CMMap.getPlayer(msg.source().getLeigeID());
+						&&(msg.source().isMarriedToLiege())
+						&&(findDepositInventory(msg.source().getLiegeID(),msg.tool().Name())!=null))
+							owner=CMMap.getPlayer(msg.source().getLiegeID());
 						else
 						{
 							CommonMsgs.say(this,mob,"You want WHAT?",true,false);
@@ -654,8 +654,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 				else
 				if((numberDeposited(thename)==0)
 				&&((whatISell==ShopKeeper.DEAL_CLANBANKER)
-				   ||(!msg.source().isMarriedToLeige())
-				   ||(numberDeposited(msg.source().getLeigeID())==0)))
+				   ||(!msg.source().isMarriedToLiege())
+				   ||(numberDeposited(msg.source().getLiegeID())==0)))
 				{
 					StringBuffer str=new StringBuffer("");
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)

@@ -62,7 +62,7 @@ public class StdTitle extends StdItem implements LandTitle
 		A.setLandOwner(owner);
 		A.updateTitle();
 	}
-	
+
 	public LandTitle fetchALandTitle()
 	{
 		Vector V=getPropertyRooms();
@@ -70,7 +70,7 @@ public class StdTitle extends StdItem implements LandTitle
 			return CoffeeUtensils.getLandTitle((Room)V.firstElement());
 		return null;
 	}
-	
+
 	public String landPropertyID()
 	{
 		return text();
@@ -169,7 +169,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.source()!=null)
 		&&(landOwner().length()>0)
 		&&((msg.source().Name().equals(landOwner()))
-			||(msg.source().getLeigeID().equals(landOwner())&&msg.source().isMarriedToLeige())
+			||(msg.source().getLiegeID().equals(landOwner())&&msg.source().isMarriedToLiege())
 			||((msg.source().getClanID().equals(landOwner()))))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)

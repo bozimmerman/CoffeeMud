@@ -41,24 +41,24 @@ public class Prayer_Marry extends Prayer
 			wife=husband;
 			husband=M;
 		}
-		if(wife.isMarriedToLeige())
+		if(wife.isMarriedToLiege())
 		{
 			mob.tell(wife.name()+" is already married!!");
 			return false;
 		}
-		if(husband.isMarriedToLeige())
+		if(husband.isMarriedToLiege())
 		{
 			mob.tell(husband.name()+" is already married!!");
 			return false;
 		}
-		if(wife.getLeigeID().length()>0)
+		if(wife.getLiegeID().length()>0)
 		{
-			mob.tell(wife.name()+" is leiged to "+wife.getLeigeID()+", and cannot marry.");
+			mob.tell(wife.name()+" is lieged to "+wife.getLiegeID()+", and cannot marry.");
 			return false;
 		}
-		if(husband.getLeigeID().length()>0)
+		if(husband.getLiegeID().length()>0)
 		{
-			mob.tell(husband.name()+" is leiged to "+husband.getLeigeID()+", and cannot marry.");
+			mob.tell(husband.name()+" is lieged to "+husband.getLiegeID()+", and cannot marry.");
 			return false;
 		}
 		if((wife.isMonster())||(wife.playerStats()==null))
@@ -98,7 +98,7 @@ public class Prayer_Marry extends Prayer
 			mob.tell("You need a witness present.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -109,8 +109,8 @@ public class Prayer_Marry extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				husband.setLeigeID(wife.Name());
-				wife.setLeigeID(husband.Name());
+				husband.setLiegeID(wife.Name());
+				wife.setLiegeID(husband.Name());
 				CommonMsgs.say(mob,husband,"You may kiss your bride!",false,false);
 			}
 		}
