@@ -1404,7 +1404,7 @@ public class TelnetSession extends Thread implements Session
 					mob.location().send(mob,msg);
 			}
 			mob.setLastDateTime(System.currentTimeMillis());
-			Log.sysOut("Session","logout: "+mob.name());
+Log.sysOut("Session","logout: "+mob.name());
 			mob.destroy();
 			mob.setSession(null);
 			mob=null;

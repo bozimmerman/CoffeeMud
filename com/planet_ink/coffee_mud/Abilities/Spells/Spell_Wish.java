@@ -642,6 +642,11 @@ public class Spell_Wish extends Spell
 					if((A!=null)
 					&&(CMAble.lowestQualifyingLevel(A.ID())>0))
 					{
+						if(CMAble.lowestQualifyingLevel(A.ID())>25)
+						{
+							mob.tell("Your wish has drained you of "+baseLoss+" experience points, but that is beyond your wishing ability.");
+							return false;
+						}
 						if(tm.fetchAbility(A.ID())!=null)
 						{
 							A=tm.fetchAbility(A.ID());

@@ -157,6 +157,17 @@ public class FrontDoor
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),false);
 					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+					for(int f=0;f<mob.numFollowers();f++)
+					{
+						MOB follower=mob.fetchFollower(f);
+						if(follower!=null)
+						{
+							follower.setLocation(mob.location());
+							follower.bringToLife(mob.location(),false);
+							follower.setFollowing(mob);
+							follower.location().showOthers(follower,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+						}
+					}
 				}
 				else
 				{
@@ -170,9 +181,9 @@ public class FrontDoor
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
 					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+					ExternalPlay.DBReadFollowers(mob);
 				}
 				ExternalPlay.DBUpdateIP(mob);
-				ExternalPlay.DBReadFollowers(mob);
 			}
 			else
 			{
@@ -205,9 +216,9 @@ public class FrontDoor
 				mob.setUserInfo(login,password);
 				Log.sysOut("FrontDoor","Creating user: "+mob.name());
 
-				mob.session().setTermID(0);
+				mob.setBitmap(0);
 				if(mob.session().confirm("\n\rDo want ANSI colors (Y/n)?","Y"))
-					mob.session().setTermID(1);
+					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
 
 				mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"races.txt").toString());
 

@@ -136,9 +136,11 @@ public class CMAble
 			CharClass C=student.charStats().getMyClass(c);
 			int level=CMAble.getQualifyingLevel(C.ID(),A.ID());
 			int classLevel=student.charStats().getClassLevel(C);
-			if((level>=0)&&(classLevel>=level)&&((classLevel-level)>greatestDiff))
+			if((level>=0)
+			&&(classLevel>=level)
+			&&((classLevel-level)>greatestDiff))
 			{
-				greatestDiff=level-classLevel;
+				greatestDiff=classLevel-level;
 				theLevel=level;
 			}
 		}
@@ -159,9 +161,11 @@ public class CMAble
 			CharClass C=student.charStats().getMyClass(c);
 			int level=CMAble.getQualifyingLevel(C.ID(),A.ID());
 			int classLevel=student.charStats().getClassLevel(C);
-			if((level>=0)&&(classLevel>=level)&&((classLevel-level)>greatestDiff))
+			if((level>=0)
+			&&(classLevel>=level)
+			&&((classLevel-level)>greatestDiff))
 			{
-				greatestDiff=level-classLevel;
+				greatestDiff=classLevel-level;
 				theLevel=level;
 				theClass=C;
 			}

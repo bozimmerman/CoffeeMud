@@ -418,6 +418,7 @@ public class StdMOB implements MOB
 				{
 					MOB newFol=(MOB)follower.copyOf();
 					newFol.baseEnvStats().setRejuv(0);
+					newFol.text();
 					follower.killMeDead(false);
 					addFollower(newFol);
 				}
@@ -450,7 +451,7 @@ public class StdMOB implements MOB
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		amDead=false;
-		if(miscText!=null)
+		if((miscText!=null)&&(resetStats))
 			setMiscText(Util.decompressString(miscText));
 		if(getStartRoom()==null)
 			setStartRoom(isMonster()?newLocation:CMMap.getStartRoom(this));

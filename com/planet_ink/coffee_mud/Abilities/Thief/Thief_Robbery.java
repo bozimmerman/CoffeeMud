@@ -89,6 +89,15 @@ public class Thief_Robbery extends ThiefSkill
 				FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to rob <T-NAMESELF>; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob you and fails!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob <T-NAME> and fails!");
 				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
+				Thief_Robbery A=(Thief_Robbery)target.fetchAffect(ID());
+				if(A==null)
+				{
+					mobs.clear();
+					mobs.addElement(mob);
+					beneficialAffect(mob,target,0);
+				}
+				else
+					A.mobs.addElement(mob);
 			}
 			else
 				mob.tell(mob,target,null,auto?"":"You fumble the attempt to rob <T-NAME>.");
@@ -113,8 +122,9 @@ public class Thief_Robbery extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				Thief_Robbery A=(Thief_Robbery)target.fetchAffect(ID());
-				if(A!=null)
+				if(A==null)
 				{
+					mobs.clear();
 					mobs.addElement(mob);
 					beneficialAffect(mob,target,0);
 				}
