@@ -1289,9 +1289,11 @@ public class StdRoom
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode)
 	{
 		Environmental found=null;
+		boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
+		if(mineOnly) thingName=thingName.trim().substring(3).trim();
 		if((mob!=null)&&(wornReqCode!=Item.WORN_REQ_WORNONLY))
 			found=mob.fetchCarried(goodLocation, thingName);
-		if(found==null)
+		if((found==null)&&(!mineOnly))
 		{
 			if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,true);
 			if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
@@ -1370,11 +1372,13 @@ public class StdRoom
 	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornReqCode)
 	{
 		Environmental found=null;
+		boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
+		if(mineOnly) thingName=thingName.trim().substring(3).trim();
 		if((mob!=null)&&(wornReqCode!=Item.WORN_REQ_WORNONLY))
 			found=mob.fetchCarried(goodLocation, thingName);
-		if(found==null)
+		if((found==null)&&(!mineOnly))
 		{
-			found=fetchFromRoomFavorItems(goodLocation, thingName,wornReqCode);
+				found=fetchFromRoomFavorItems(goodLocation, thingName,wornReqCode);
 			if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
 				return found;
 			else
