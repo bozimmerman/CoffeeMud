@@ -279,7 +279,6 @@ public class DBConnections
 						Log.errOut("DBConnections","Minor failure obtaining DBConnection("+inuse+"/"+Connections.size()+" in use).");
 					try
 					{
-						Log.errOut("DBConnections","Trivial failure obtaining DBConnection("+inuse+"/"+Connections.size()+" in use).");
 						Thread.sleep(Math.round(Math.random()*500));
 					}
 					catch(InterruptedException i)

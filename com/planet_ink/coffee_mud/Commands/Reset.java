@@ -380,6 +380,7 @@ public class Reset extends StdCommand
 				for(Enumeration r=A.getMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
+					if(R.roomID().length()==0) continue;
 					CoffeeUtensils.resetRoom(R);
 					boolean didSomething=false;
 					for(int i=0;i<R.numInhabitants();i++)
@@ -387,7 +388,7 @@ public class Reset extends StdCommand
 						MOB M=(MOB)R.fetchInhabitant(i);
 						if((M.isMonster())
 						&&(M.getStartRoom()==R)
-						&&(M.baseEnvStats().armor()==(75-((M.baseEnvStats().level()-1)*3))))
+						&&(M.baseEnvStats().armor()>M.baseCharStats().getCurrentClass().getLevelArmor(M)))
 						{
 							int oldArmor=M.baseEnvStats().armor();
 							M.baseEnvStats().setArmor(M.baseCharStats().getCurrentClass().getLevelArmor(M));
