@@ -51,7 +51,7 @@ public class Skill_Lore extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_EXAMINESOMETHING,auto?"":"<S-NAME> study(s) <T-NAMESELF> and consider(s) for a moment.");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> study(s) <T-NAMESELF> and consider(s) for a moment.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

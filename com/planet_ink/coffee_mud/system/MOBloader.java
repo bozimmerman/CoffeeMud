@@ -144,6 +144,7 @@ public class MOBloader
 					newAbility.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMABAB"));
 					newAbility.setUsesRemaining((int)DBConnections.getLongRes(R,"CMABUR"));
 					newAbility.setProfficiency((int)DBConnections.getLongRes(R,"CMABPF"));
+					newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
 					newAbility.recoverEnvStats();
 					mob.addAbility(newAbility);
 				}
@@ -563,14 +564,16 @@ public class MOBloader
 					+"CMABLVL, "
 					+"CMABAB, "
 					+"CMABUR,"
-					+"CMABPF"
+					+"CMABPF,"
+					+"CMABTX"
 					+") values ("
 					+"'"+mob.ID()+"',"
 					+"'"+thisAbility.ID()+"',"
 					+thisAbility.baseEnvStats().level()+","
 					+thisAbility.baseEnvStats().ability()+","
 					+thisAbility.usesRemaining()+","
-					+thisAbility.profficiency()
+					+thisAbility.profficiency()+",'"
+					+thisAbility.text()+"'"
 					+")";
 					D.update(str);
 					DBConnector.DBDone(D);
