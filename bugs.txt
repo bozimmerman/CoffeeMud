@@ -1,3 +1,2 @@
-!SET MOBGROUP quest command for narrowing mob selections, or applying stuff to more than one mob
 Ability to buy space ship areas, and add them to shopkeepers
 mutable body parts, with ability to grant powers

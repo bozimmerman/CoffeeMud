@@ -9,6 +9,7 @@ public class ListenThread extends Thread {
     private Vector clients;
 
     public ListenThread(int port) throws java.io.IOException {
+		super("ListenThread");
         clients = new Vector(10, 2);
         listen = new ServerSocket(port);
         start();

@@ -937,7 +937,7 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', cannot give item, no item set.");
 							error=true; break;
 						}
-						if((M==null)&&(MG!=null))
+						if((M==null)&&(MG==null))
 						{
 							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', cannot give item, no mob set.");
@@ -999,22 +999,23 @@ public class Quests implements Cloneable, Quest
 								stuff.addElement(M);
 							Vector V=new Vector();
 							V.addElement(M);
+							Ability A4=(Ability)A3.copyOf();
 							if(M.fetchAbility(A3.ID())!=null)
 							{
-								A3=M.fetchAbility(A3.ID());
-								V.addElement(A3);
-								V.addElement(A3);
-								V.addElement(A3.text());
-								A3.setMiscText(Util.combine(p,3));
-								A3.setProfficiency(100);
+								A4=M.fetchAbility(A4.ID());
+								V.addElement(A4);
+								V.addElement(A4);
+								V.addElement(A4.text());
+								A4.setMiscText(Util.combine(p,3));
+								A4.setProfficiency(100);
 							}
 							else
 							{
-								A3.setMiscText(Util.combine(p,3));
-								V.addElement(A3);
-								V.addElement(A3);
-								A3.setProfficiency(100);
-								M.addAbility(A3);
+								A4.setMiscText(Util.combine(p,3));
+								V.addElement(A4);
+								V.addElement(A4);
+								A4.setProfficiency(100);
+								M.addAbility(A4);
 							}
 							addons.addElement(V);
 						}
@@ -1022,7 +1023,7 @@ public class Quests implements Cloneable, Quest
 					else
 					if(cmd.equals("BEHAVIOR"))
 					{
-						if((E==null)&&(MG!=null))
+						if((E==null)&&(MG==null))
 						{
 							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', cannot give behavior, no mob or item set.");
@@ -1073,7 +1074,7 @@ public class Quests implements Cloneable, Quest
 					else
 					if(cmd.equals("AFFECT"))
 					{
-						if((E==null)&&(MG!=null))
+						if((E==null)&&(MG==null))
 						{
 							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', cannot give Effect, no mob or item set.");
@@ -1105,23 +1106,24 @@ public class Quests implements Cloneable, Quest
 								stuff.addElement(E);
 							Vector V=new Vector();
 							V.addElement(E);
-							if(E.fetchEffect(A3.ID())!=null)
+							Ability A4=(Ability)A3.copyOf();
+							if(E.fetchEffect(A4.ID())!=null)
 							{
-								A3=E.fetchEffect(A3.ID());
-								V.addElement(A3);
-								V.addElement(A3.text());
-								A3.makeLongLasting();
-								A3.setMiscText(Util.combine(p,3));
+								A4=E.fetchEffect(A4.ID());
+								V.addElement(A4);
+								V.addElement(A4.text());
+								A4.makeLongLasting();
+								A4.setMiscText(Util.combine(p,3));
 							}
 							else
 							{
-								V.addElement(A3);
-								A3.setMiscText(Util.combine(p,3));
+								V.addElement(A4);
+								A4.setMiscText(Util.combine(p,3));
 								if(M!=null)
-									A3.startTickDown(M,E,99999);
+									A4.startTickDown(M,E,99999);
 								else
-									A3.startTickDown(null,E,99999);
-								A3.makeLongLasting();
+									A4.startTickDown(null,E,99999);
+								A4.makeLongLasting();
 							}
 							addons.addElement(V);
 						}

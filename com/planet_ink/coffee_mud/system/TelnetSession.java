@@ -924,9 +924,6 @@ public class TelnetSession extends Thread implements Session
 		}
 		status=Session.STATUS_LOGOUT3;
 
-		Sessions.removeElement(this);
-
-		status=Session.STATUS_LOGOUT4;
 		if(mob!=null)
 		{
 			String name=mob.Name();
@@ -952,12 +949,18 @@ public class TelnetSession extends Thread implements Session
 			mob.setSession(null);
 			mob=null;
 		}
-		status=Session.STATUS_LOGOUT5;
+		
+		status=Session.STATUS_LOGOUT4;
 		killFlag=true;
 		waiting=false;
 		needPrompt=false;
 
 		closeSocks();
+		
+		
+		status=Session.STATUS_LOGOUT5;
+		Sessions.removeElement(this);
+
 		//finally
 		//{
 		//}

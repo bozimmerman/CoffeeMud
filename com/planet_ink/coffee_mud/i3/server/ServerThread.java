@@ -38,7 +38,7 @@ public class ServerThread extends Thread {
     protected ServerThread(String mname, 
 						   int mport,
 						   ImudServices imud) {
-        super();
+        super("ServerThread");
         setName("ServerThread");
         setPriority(Thread.NORM_PRIORITY + 1);
         mud_name = mname;
