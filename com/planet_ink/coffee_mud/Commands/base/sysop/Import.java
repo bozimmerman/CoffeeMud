@@ -627,10 +627,13 @@ public class Import
 		switch(val1)
 		{
 		case 0: ((Weapon)I).setWeaponClassification(Weapon.CLASS_RANGED); 
-				((Weapon)I).setAmmoCapacity(20);
-				((Weapon)I).setAmmoRemaining(20);
-				((Weapon)I).setAmmunitionType("arrows");
-				((Weapon)I).setRanges(1,3);
+				if(name.toUpperCase().indexOf("BOW")>=0)
+				{
+					((Weapon)I).setAmmoCapacity(20);
+					((Weapon)I).setAmmoRemaining(20);
+					((Weapon)I).setAmmunitionType("arrows");
+					((Weapon)I).setRanges(1,3);
+				}
 				break;
 		case 1: ((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD); break;
 		case 2: ((Weapon)I).setWeaponClassification(Weapon.CLASS_EDGED); break;

@@ -819,7 +819,11 @@ public class TheFight
 		if(success)
 		{
             // calculate Base Damage (with Strength bonus)
-            double damageAmount = new Integer(Dice.roll(1, source.envStats().damage(), (source.charStats().getStrength() / 3)-2)).doubleValue();
+			double damageAmount=0.0;
+			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
+				damageAmount = new Integer(Dice.roll(1, weapon.envStats().damage(),1)).doubleValue();
+			else
+				damageAmount = new Integer(Dice.roll(1, source.envStats().damage(), (source.charStats().getStrength() / 3)-2)).doubleValue();
 
             // modify damage if target can not be seen
             if(!Sense.canBeSeenBy(target,source))
