@@ -44,9 +44,8 @@ public class Thief_SneakAttack extends ThiefSkill
 		return true;
 	}
 	
-	public boolean tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
 		if(Sense.isHidden(affected))
 		{
 			if(!activated)
@@ -62,7 +61,7 @@ public class Thief_SneakAttack extends ThiefSkill
 			affected.recoverEnvStats();
 		}
 		if(oncePerRound) oncePerRound=false;
-		return true;
+		return super.tick(ticking,tickID);
 	}
 	
 }

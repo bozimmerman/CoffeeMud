@@ -32,7 +32,7 @@ public class Trap_Noise extends StdTrap
 					if(R!=target.location())
 						R.showHappens(Affect.MASK_GENERAL|Affect.MSG_NOISE,"You hear a loud noise coming from somewhere.");
 				}
-				if(canBeUninvoked())
+				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}
 		}

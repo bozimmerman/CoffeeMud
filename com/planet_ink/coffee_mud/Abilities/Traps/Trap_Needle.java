@@ -12,7 +12,7 @@ public class Trap_Needle extends StdTrap
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 4;}
-	public String requiresToSet(){return "";}
+	public String requiresToSet(){return "some poison";}
 	public Environmental newInstance(){	return new Trap_Needle();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
@@ -36,8 +36,7 @@ public class Trap_Needle extends StdTrap
 		{
 			Item I=mob.location().fetchItem(i);
 			if((I!=null)
-			&&(I instanceof Drink)
-			&&(I instanceof EnvResource))
+			&&(I instanceof Drink))
 			{
 				Vector V=returnOffensiveAffects(I);
 				if(V.size()>0)
@@ -84,7 +83,7 @@ public class Trap_Needle extends StdTrap
 				Ability A=CMClass.getAbility(text());
 				if(A==null) A=CMClass.getAbility("Poison");
 				A.invoke(invoker(),target,true);
-				if(canBeUninvoked())
+				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}
 		}
