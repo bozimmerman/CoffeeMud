@@ -34,7 +34,7 @@ public class Spell_DetectAmbush extends Spell
 			return super.okAffect(msg);
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob)
-		&&(msg.targetMinor()==Affect.MSG_ENTER)
+		&&(msg.targetMinor()==Affect.TYP_ENTER)
 		&&(msg.target()!=null)
 		&&(msg.target()!=lastRoom)
 		&&(msg.target() instanceof Room)))

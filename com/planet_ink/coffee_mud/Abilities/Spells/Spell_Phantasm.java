@@ -65,7 +65,7 @@ public class Spell_Phantasm extends Spell
 		{
 			MOB mob=(MOB)affected;
 			if((msg.amISource(mob)||msg.amISource(mob.amFollowing()))
-			&&(msg.sourceMinor()==Affect.MSG_QUIT))
+			&&(msg.sourceMinor()==Affect.TYP_QUIT))
 				unInvoke();
 			else
 			if(msg.amITarget(mob)&&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))

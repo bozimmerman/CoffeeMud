@@ -1769,6 +1769,7 @@ public class StdMOB implements MOB
 
 	public void confirmWearability()
 	{
+		Race R=charStats().getMyRace();
 		for(int i=0;i<inventorySize();i++)
 		{
 			Item item=fetchInventory(i);
@@ -1783,7 +1784,8 @@ public class StdMOB implements MOB
 				if((oldCode&Item.HELD)>0)
 					msgCode=Affect.MSG_HOLD;
 				FullMsg msg=new FullMsg(this,item,null,Affect.NO_EFFECT,null,msgCode,null,Affect.NO_EFFECT,null);
-				if(item.okAffect(msg)) item.wearAt(oldCode);
+				if((R.okAffect(this,msg))&&(item.okAffect(msg)))
+				   item.wearAt(oldCode);
 			}
 		}
 	}

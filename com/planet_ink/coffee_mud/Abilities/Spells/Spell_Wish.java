@@ -47,6 +47,13 @@ public class Spell_Wish extends Spell
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if(mob.isMonster())
+		{
+			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> sigh(s).");
+			ExternalPlay.quickSay(mob,null,"My wishes never seem to come true.",false,false);
+			return false;
+		}
+		
 		String myWish=Util.combine(commands,0);
 		if(mob.curState().getMana()<mob.maxState().getMana())
 		{
@@ -88,12 +95,6 @@ public class Spell_Wish extends Spell
 			// cast wish to cast gaes on orc to kill bob
 			
 			mob.location().send(mob,msg);
-			if(mob.isMonster())
-			{
-				mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> sigh(s).");
-				ExternalPlay.quickSay(mob,null,"The wishes of mobs never seem to come true.",false,false);
-				return false;
-			}
 			StringBuffer wish=new StringBuffer(myWish);
 			for(int i=0;i<wish.length();i++)
 				if(!Character.isLetterOrDigit(wish.charAt(i)))

@@ -145,8 +145,8 @@ public class TheFight
 		{
 			Affect affect=(Affect)addHere.trailerMsgs().elementAt(i);
 			if((affect.source()==target)
-			&&((affect.sourceMinor()==Affect.MSG_PANIC))
-			   ||(affect.sourceMinor()==Affect.MSG_DEATH))
+			&&((affect.sourceMinor()==Affect.TYP_PANIC))
+			   ||(affect.sourceMinor()==Affect.TYP_DEATH))
 				return;
 		}
 		
@@ -198,8 +198,8 @@ public class TheFight
 		{
 			Affect affect=(Affect)addHere.trailerMsgs().elementAt(i);
 			if((affect.source()==mob)
-			&&((affect.sourceMinor()==Affect.MSG_PANIC))
-			   ||(affect.sourceMinor()==Affect.MSG_DEATH))
+			&&((affect.sourceMinor()==Affect.TYP_PANIC))
+			   ||(affect.sourceMinor()==Affect.TYP_DEATH))
 				return;
 		}
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_PANIC,null);

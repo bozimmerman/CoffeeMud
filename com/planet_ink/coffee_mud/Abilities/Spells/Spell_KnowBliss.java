@@ -25,7 +25,31 @@ public class Spell_KnowBliss extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
+		{
 			mob.tell(mob,null,"You feel less blissful.");
+			if((mob.isMonster())
+			   &&(!mob.amDead())
+			   &&(mob.location()!=null)
+			   &&(mob.location()!=mob.getStartRoom()))
+			{
+				for(int b=0;b<mob.numBehaviors();b++)
+				{
+					Behavior B=mob.fetchBehavior(b);
+					if((B!=null)&&(B.grantsMobility()))
+					{
+						B.tick(mob,Host.MOB_TICK);
+						mob.getStartRoom().bringMobHere(mob,false);
+						break;
+					}
+				}
+				if(mob.location()!=mob.getStartRoom())
+				{
+					Behavior B=CMClass.getBehavior("Mobile");
+					B.tick(mob,Host.MOB_TICK);
+					mob.getStartRoom().bringMobHere(mob,false);
+				}
+			}
+		}
 	}
 
 	public void affect(Affect msg)
@@ -52,7 +76,10 @@ public class Spell_KnowBliss extends Spell
 			{
 				Behavior B=mob.fetchBehavior(b);
 				if((B!=null)&&(B.grantsMobility()))
+				{
+					B.tick(affected,tickID);
 					return super.tick(tickID);
+				}
 			}
 			Behavior B=CMClass.getBehavior("Mobile");
 			B.tick(affected,tickID);

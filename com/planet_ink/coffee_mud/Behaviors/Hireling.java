@@ -121,7 +121,7 @@ public class Hireling extends StdBehavior
 		if(!canActAtAll(affecting)) return;
 		
 		MOB observer=(MOB)affecting;
-		if((affect.sourceMinor()==Affect.MSG_QUIT)
+		if((affect.sourceMinor()==Affect.TYP_QUIT)
 		&&(affect.amISource(observer)||affect.amISource(observer.amFollowing())))
 		   allDone(observer);
 		else

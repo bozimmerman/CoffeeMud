@@ -68,7 +68,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public void affect(Affect msg)
 	{
 		super.affect(msg);
-		if((msg.sourceMinor()==Affect.MSG_SHUTDOWN)
+		if((msg.sourceMinor()==Affect.TYP_SHUTDOWN)
 		&&(affected!=null)
 		&&(affected instanceof Room))
 		{

@@ -58,7 +58,7 @@ public class Paladin_SummonMount extends StdAbility
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==Affect.MSG_QUIT))
+		&&(msg.sourceMinor()==Affect.TYP_QUIT))
 			unInvoke();
 	}
 

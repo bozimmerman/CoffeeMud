@@ -482,8 +482,8 @@ public class StdItem implements Item
 			return true;
 		else
 		if((Util.bset(affect.targetCode(),Affect.MASK_MAGIC))
-		&&(!this.isGettable())
-		&&((this.displayText().length()==0)
+		&&(!isGettable())
+		&&((displayText().length()==0)
 		   ||((affect.tool()!=null)
 			&&(affect.tool() instanceof Ability)
 			&&(((Ability)affect.tool()).quality()==Ability.MALICIOUS))))
@@ -526,7 +526,8 @@ public class StdItem implements Item
 				Item alreadyWearing=mob.fetchWornItem(Item.HELD);
 				if(alreadyWearing!=null)
 				{
-					if(!ExternalPlay.remove(mob,alreadyWearing,false))
+					if((!ExternalPlay.remove(mob,alreadyWearing,false))
+					||(!canWear(mob)))
 					{
 						mob.tell("Your hands are full.");
 						return false;
@@ -558,21 +559,23 @@ public class StdItem implements Item
 				Item alreadyWearing=mob.fetchWornItem(cantWearAt);
 				if((alreadyWearing!=null)&&(cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
 				{
-					if(!ExternalPlay.remove(mob,alreadyWearing,false))
+					if((!ExternalPlay.remove(mob,alreadyWearing,false))
+					||(!canWear(mob)))
 					{
 						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
 						return false;
 					}
 				}
 				else
+				if(alreadyWearing!=null)
 				{
 					if(cantWearAt==Item.HELD)
-						mob.tell("You are already holding something.");
+						mob.tell("You are already holding "+alreadyWearing.name()+".");
 					else
 					if(cantWearAt==Item.WIELD)
-						mob.tell("You are already wielding something.");
+						mob.tell("You are already wielding "+alreadyWearing.name()+".");
 					else
-						mob.tell("You are already wearing something on your "+Sense.wornLocation(cantWearAt)+".");
+						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
 					return false;
 				}
 			}
