@@ -34,6 +34,12 @@ public class MXP extends StdCommand
 		{
 			if((!Util.bset(mob.getBitmap(),MOB.ATT_MXP))||(!Util.bset(mob.session().getTermID(),Session.TERM_MXP)))
 			{
+			    if(!mob.session().supports(Session.TERM_MXP))
+			    {
+					char[] mxpWill={Session.TELNET_IAC,Session.TELNET_WILL,Session.TELNET_MXP};
+					mob.session().out(mxpWill);
+					try{mob.session().prompt("",1000);}catch(Exception e){}
+			    }
 			    if(mob.session().supports(Session.TERM_MXP))
 			    {
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_MXP));

@@ -71,6 +71,12 @@ public class Report extends BaseAbleLister
 			if("PRAYERS".startsWith(s))
 				CommonMsgs.say(mob,null,("^NMy prayers:^? "+getAbilities(mob,Ability.PRAYER,-1,false,level)),false,false);
 			else
+			if(("POWERS".startsWith(s))||("SUPER POWERS".startsWith(s)))
+				CommonMsgs.say(mob,null,("^NMy super powers:^? "+getAbilities(mob,Ability.SUPERPOWER,-1,false,level)),false,false);
+			else
+			if("EVIL DEEDS".startsWith(s))
+				CommonMsgs.say(mob,null,("^NMy evil deeds:^? "+getAbilities(mob,Ability.EVILDEED,-1,false,level)),false,false);
+			else
 			if("CHANTS".startsWith(s))
 				CommonMsgs.say(mob,null,("^NMy chants:^? "+getAbilities(mob,Ability.CHANT,-1,false,level)),false,false);
 			else
