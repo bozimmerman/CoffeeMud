@@ -764,21 +764,20 @@ public class TheFight
 		switch(weaponType)
 		{
 		case Weapon.TYPE_BASHING:
-			return "<S-NAME> swing(s) at <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+" and miss(es).";
+			return "<S-NAME> swing(s) at <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
 		case Weapon.TYPE_NATURAL:
-			return "<S-NAME> attack(s) <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
+			return "<S-NAME> attack(s) <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
 		case Weapon.TYPE_SLASHING:
-			return "<S-NAME> swing(s) at <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
+			return "<S-NAME> swing(s) at <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
 		case Weapon.TYPE_PIERCING:
-			return "<S-NAME> lunge(s) at <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
-		case Weapon.TYPE_BURNING:
-			return "<S-NAME> attack(s) <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
+			return "<S-NAME> lunge(s) at <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";		case Weapon.TYPE_BURNING:
+			return "<S-NAME> attack(s) <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
 		case Weapon.TYPE_BURSTING:
-			return "<S-NAME> attack(s) <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
+			return "<S-NAME> attack(s) <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
 		case Weapon.TYPE_SHOOT:
-			return "<S-NAME> shoot(s) at <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
+			return "<S-NAME> shoot(s) at <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
 		default:
-			return "<S-NAME> attack(s) <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
+			return "<S-NAME> attack(s) <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
 		}
 	}
 
