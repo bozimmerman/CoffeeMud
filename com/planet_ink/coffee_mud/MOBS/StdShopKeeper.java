@@ -465,10 +465,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				invResetTickDown=invResetRate();
 				if(invResetTickDown==0) invResetTickDown=Util.s_int(CommonStrings.getVar(CommonStrings.SYSTEM_INVRESETRATE));
 				if(invResetTickDown==0) invResetTickDown=Integer.MAX_VALUE;
-				String newText=CoffeeMaker.getGenMOBTextUnpacked(this,text());
-				if(newText!=null)
+				if(miscText!=null)
 				{
-					Vector xml=XMLManager.parseAllXML(newText);
+					String shoptext;
+					if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
+						shoptext=CoffeeMaker.getGenMOBTextUnpacked(this,Util.decompressString(miscText));
+					else
+						shoptext=CoffeeMaker.getGenMOBTextUnpacked(this,new String(miscText));
+					Vector xml=XMLManager.parseAllXML(shoptext);
 					if(xml!=null)
 					{
 						CoffeeMaker.populateShops(this,xml);

@@ -520,9 +520,9 @@ public class StdMOB implements MOB
 		if((miscText!=null)&&(resetStats)&&(isGeneric()))
 		{
 			if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-				CoffeeMaker.resetGenMOB(this,Util.decompressString(miscText));
+				CoffeeMaker.resetGenMOB(this,CoffeeMaker.getGenMOBTextUnpacked(this,Util.decompressString(miscText)));
 			else
-				CoffeeMaker.resetGenMOB(this,new String(miscText));
+				CoffeeMaker.resetGenMOB(this,CoffeeMaker.getGenMOBTextUnpacked(this,new String(miscText)));
 		}
 		if(getStartRoom()==null)
 			setStartRoom(isMonster()?newLocation:CMMap.getStartRoom(this));
