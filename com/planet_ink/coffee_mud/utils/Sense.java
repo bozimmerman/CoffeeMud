@@ -54,6 +54,8 @@ public class Sense
 	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMNODROP)==0); }
 	public static boolean isRemovable(Item I)
 	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMNOREMOVE)==0); }
+	public static boolean hasSeenContents(Environmental E)
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.SENSE_CONTENTSUNSEEN)==0); }
 	public static void setReadable(Item I, boolean truefalse)
 	{
 		if(I==null) return;

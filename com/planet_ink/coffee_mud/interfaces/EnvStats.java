@@ -29,7 +29,7 @@ public interface EnvStats extends Cloneable
 	public final static int SENSE_ITEMNOTGET=16;
 	public final static int SENSE_ITEMNODROP=32;
 	public final static int SENSE_ITEMNOREMOVE=64;
-	public final static int SENSE_UNUSEDMASK8=128;
+	public final static int SENSE_CONTENTSUNSEEN=128;
 	public final static int SENSE_UNUSEDMASK9=256;
 	public final static int SENSE_UNUSEDMASK10=512;
 	public final static int SENSE_ROOMNOMOVEMENT=1024;

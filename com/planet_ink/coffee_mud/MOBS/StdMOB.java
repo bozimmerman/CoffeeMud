@@ -821,7 +821,7 @@ public class StdMOB implements MOB
 		   ||(Sense.isSleeping(this))
 		   ||(Sense.isSitting(this))
 		   ||(riding()!=null)
-		   ||((this instanceof Rideable)&&(((Rideable)this).numRiders()>0))
+		   ||((this instanceof Rideable)&&(((Rideable)this).numRiders()>0)&&Sense.hasSeenContents(this))
 		   ||(isInCombat()))
 		{
 			StringBuffer sendBack=null;

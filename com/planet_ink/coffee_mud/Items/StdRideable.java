@@ -214,6 +214,8 @@ public class StdRideable extends StdContainer implements Rideable
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
+			if(!Sense.hasSeenContents(this))
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
 			if((mob.isInCombat())&&(mob.rangeToTarget()==0)&&(amRiding(mob)))
 			{
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.baseEnvStats().attackAdjustment());
@@ -230,7 +232,7 @@ public class StdRideable extends StdContainer implements Rideable
 
 	public String displayText()
 	{
- 		if((numRiders()>0)&&(stateStringSubject(this).length()>0))
+ 		if((numRiders()>0)&&(stateStringSubject(this).length()>0)&&Sense.hasSeenContents(this))
 		{
 			StringBuffer sendBack=new StringBuffer(name());
 			sendBack.append(" "+stateStringSubject(this)+" ");

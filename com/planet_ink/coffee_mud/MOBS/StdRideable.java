@@ -99,6 +99,8 @@ public class StdRideable extends StdMOB implements Rideable
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
+			if(!Sense.hasSeenContents(this))
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
 			if((mob.isInCombat())&&(mob.rangeToTarget()==0)&&(amRiding(mob)))
 			{
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.baseEnvStats().attackAdjustment());
