@@ -65,7 +65,7 @@ public class MUDGrinder extends StdWebMacro
 			if(A==null) return "";
 			GrinderMap map=new GrinderMap(A);
 			map.rePlaceRooms();
-			return map.getHTMLTable().toString();
+			return map.getHTMLTable(httpReq).toString();
 		}
 		return "";
 	}

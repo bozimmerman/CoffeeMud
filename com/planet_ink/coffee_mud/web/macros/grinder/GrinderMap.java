@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.web.macros.grinder;
+import java.net.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
@@ -190,7 +191,7 @@ public class GrinderMap
             Log.errOut("GrinderMap",areaMap.size()-processed.size()+" room(s) could not be placed.  I recommend restarting your server.");
     }
 	
-	public StringBuffer getHTMLTable()
+	public StringBuffer getHTMLTable(ExternalHTTPRequests httpReq)
 	{
 		StringBuffer buf=new StringBuffer("");
 		buf.append("<TABLE WIDTH="+((Xbound+1)*138)+" BORDER=0 CELLSPACING=0 CELLPADDING=0>");
@@ -231,28 +232,28 @@ public class GrinderMap
 						case 0: // north, up
 							{
 							buf.append("<TD WIDTH=24><BR></TD>");
-							buf.append("<TD WIDTH=30>"+getDoorLabelGif(Directions.NORTH,GR)+"</TD>");
+							buf.append("<TD WIDTH=30>"+getDoorLabelGif(Directions.NORTH,GR,httpReq)+"</TD>");
 							buf.append("<TD WIDTH=30><BR></TD>");
 							String alt="<BR>";
-							if(up==Directions.NORTH) alt=getDoorLabelGif(Directions.UP,GR);
-							if(down==Directions.NORTH) alt=getDoorLabelGif(Directions.DOWN,GR);
+							if(up==Directions.NORTH) alt=getDoorLabelGif(Directions.UP,GR,httpReq);
+							if(down==Directions.NORTH) alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
 							buf.append("<TD WIDTH=30>"+alt+"</TD>");
 							buf.append("<TD WIDTH=24><BR></TD>");
 							}
 							break;
 						case 1: // west, east
 							{
-							buf.append("<TD WIDTH=24>"+getDoorLabelGif(Directions.WEST,GR)+"</TD>");
+							buf.append("<TD WIDTH=24>"+getDoorLabelGif(Directions.WEST,GR,httpReq)+"</TD>");
 							buf.append("<TD WIDTH=90 COLSPAN=3 ROWSPAN=3 BGCOLOR=#CCCCFF VALIGN=TOP>");
 							String roomID=GR.roomID;
 							if(roomID.indexOf("#")>0)
 							    roomID=roomID.substring(roomID.indexOf("#"));
-							buf.append("<FONT SIZE=-1><B>"+roomID+"</B></FONT><BR>");
+							buf.append("<a target=MENU href=\"rmmenu.cmvp?ROOM="+URLEncoder.encode(GR.roomID)+"&"+httpReq.getRequestEncodedParameters()+"\"><FONT SIZE=-1><B>"+roomID+"</B></FONT></a><BR>");
 							buf.append("<FONT SIZE=-2>("+CMClass.className(GR.room)+")<BR>");
 							String displayText=GR.room.displayText();
 							if(displayText.length()>20)	displayText=displayText.substring(0,20)+"...";
 							buf.append(displayText+"</FONT></TD>");
-							buf.append("<TD WIDTH=24>"+getDoorLabelGif(Directions.EAST,GR)+"</TD>");
+							buf.append("<TD WIDTH=24>"+getDoorLabelGif(Directions.EAST,GR,httpReq)+"</TD>");
 							}
 							break;
 						case 2: // nada
@@ -262,23 +263,23 @@ public class GrinderMap
 						case 3: // alt e,w
 							{
 							String alt="<BR>";
-							if(up==Directions.WEST) alt=getDoorLabelGif(Directions.UP,GR);
-							if(down==Directions.WEST) alt=getDoorLabelGif(Directions.DOWN,GR);
+							if(up==Directions.WEST) alt=getDoorLabelGif(Directions.UP,GR,httpReq);
+							if(down==Directions.WEST) alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
 							buf.append("<TD WIDTH=24>"+alt+"</TD>");
 							alt="<BR>";
-							if(up==Directions.EAST) alt=getDoorLabelGif(Directions.UP,GR);
-							if(down==Directions.EAST) alt=getDoorLabelGif(Directions.DOWN,GR);
+							if(up==Directions.EAST) alt=getDoorLabelGif(Directions.UP,GR,httpReq);
+							if(down==Directions.EAST) alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
 							buf.append("<TD WIDTH=24>"+alt+"</TD>");
 							}
 							break;
 						case 4: // south, down
 							{
 							buf.append("<TD WIDTH=24><BR></TD>");
-							buf.append("<TD WIDTH=30>"+getDoorLabelGif(Directions.SOUTH,GR)+"</TD>");
+							buf.append("<TD WIDTH=30>"+getDoorLabelGif(Directions.SOUTH,GR,httpReq)+"</TD>");
 							buf.append("<TD WIDTH=30><BR></TD>");
 							String alt="<BR>";
-							if(up==Directions.SOUTH) alt=getDoorLabelGif(Directions.UP,GR);
-							if(down==Directions.SOUTH) alt=getDoorLabelGif(Directions.DOWN,GR);
+							if(up==Directions.SOUTH) alt=getDoorLabelGif(Directions.UP,GR,httpReq);
+							if(down==Directions.SOUTH) alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
 							buf.append("<TD WIDTH=30>"+alt+"</TD>");
 							buf.append("<TD WIDTH=24><BR></TD>");
 							}
@@ -328,13 +329,14 @@ public class GrinderMap
 		return -1;
 	}
 	
-    private String getDoorLabelGif(int d, GrinderRoom room)
+    private String getDoorLabelGif(int d, GrinderRoom room, ExternalHTTPRequests httpReq)
 	{
 	    GrinderDir dir=(GrinderDir)room.doors[d];
 	    String dirLetter=""+Directions.getDirectionName(d).toUpperCase().charAt(0);
 		GrinderRoom roomPointer=null;
+		String parms="?ROOM="+URLEncoder.encode(room.roomID)+"&DIR="+d+"&"+httpReq.getRequestEncodedParameters();
 	    if((dir==null)||((dir!=null)&&(dir.room.length()==0)))
-			return "<IMG SRC=\"images/E"+dirLetter+".gif\">";
+			return "<a target=MENU href=\"lnkxmenu.cmvp"+parms+"\"><IMG BORDER=0 SRC=\"images/E"+dirLetter+".gif\"></a>";
 	    else
 	    if((d==Directions.UP)||(d==Directions.DOWN))
 	    {
@@ -346,15 +348,15 @@ public class GrinderMap
 		
 	    if((dir.room.length()>0)&&((roomPointer==null)||((roomPointer!=null)&&(!roomPointer.roomID.equals(dir.room)))))
     	    dirLetter+="R";
-		String theRest=".gif\" ALT=\""+Directions.getDirectionName(d)+" to "+dir.room+"\">";
+		String theRest=".gif\" BORDER=0 ALT=\""+Directions.getDirectionName(d)+" to "+dir.room+"\"></a>";
     	Exit exit=dir.exit;
     	if(exit==null)
-			return "<IMG SRC=\"images/U"+dirLetter+theRest;
+			return "<a target=MENU href=\"edxmenu.cmvp"+parms+"\"><IMG SRC=\"images/U"+dirLetter+theRest;
     	else
     	if(exit.hasADoor())
-			return "<IMG SRC=\"images/D"+dirLetter+theRest;
+			return "<a target=MENU href=\"edxmenu.cmvp"+parms+"\"><IMG SRC=\"images/D"+dirLetter+theRest;
     	else
-			return "<IMG SRC=\"images/O"+dirLetter+theRest;
+			return "<a target=MENU href=\"edxmenu.cmvp"+parms+"\"><IMG SRC=\"images/O"+dirLetter+theRest;
     }
 
 	public void placeRoom(GrinderRoom room, 
