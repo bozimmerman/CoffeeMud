@@ -63,7 +63,7 @@ public class Archon extends StdCharClass
 						mine.autoInvocation(mob);
 				}
 				else
-					giveMobAbility(mob,A,100,true);
+					giveMobAbility(mob,A,100,"",true);
 			}
 		}
 	}

@@ -11,7 +11,7 @@ public class Skill_TurnUndead extends StdAbility
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Turn Undead";
+		name="Turn/Control Undead";
 
 		// what the affected mob sees when they
 		// bring up their affected list.
@@ -25,6 +25,7 @@ public class Skill_TurnUndead extends StdAbility
 		isAutoinvoked=false;
 
 		triggerStrings.addElement("TURN");
+		triggerStrings.addElement("CONTROL");
 
 		recoverEnvStats();
 	}
@@ -50,7 +51,10 @@ public class Skill_TurnUndead extends StdAbility
 		}
 		else
 		{
-			mob.tell(auto?"Only the undead can be turned.":"You can only turn the undead.");
+			if(mob.getAlignment()<350)
+				mob.tell(auto?"Only the undead can be controlled.":"You can only control the undead.");
+			else
+				mob.tell(auto?"Only the undead can be turned.":"You can only turn the undead.");
 			return false;
 		}
 
@@ -75,6 +79,13 @@ public class Skill_TurnUndead extends StdAbility
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
+					if(mob.getAlignment()<350)
+					{
+						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is now controlled.");
+						target.makePeace();
+						ExternalPlay.follow(target,mob,false);
+					}
+					else
 					if((mob.envStats().level()-target.envStats().level())>6)
 					{
 						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> wither(s)"+(auto?".":" under <S-HIS-HER> holy power!"));
@@ -82,7 +93,7 @@ public class Skill_TurnUndead extends StdAbility
 					}
 					else
 					{
-						if(mob.getAlignment()<500)
+						if(mob.getAlignment()<650)
 						{
 							mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) submissive.");
 							target.makePeace();

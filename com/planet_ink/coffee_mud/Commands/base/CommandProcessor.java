@@ -112,6 +112,9 @@ public class CommandProcessor
 				case CommandSet.CHANNELS:
 					channels.listChannels(mob);
 					break;
+				case CommandSet.CHANTS:
+					scoring.chants(mob);
+					break;
 				case CommandSet.CHARGEN:
 					if(mob.isASysOp(mob.location()))
 						sysopSkills.chargen(mob,commands);
@@ -579,6 +582,7 @@ public class CommandProcessor
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"spell_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"songs_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"prayer_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"chant_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 		}
 		if(helpFile==null) return false;
 		return true;

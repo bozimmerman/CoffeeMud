@@ -100,7 +100,6 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.resetToMaxState();
 				newMOB.text();
 				newMOB.bringToLife(mob.location());
-				ExternalPlay.follow(newMOB,mob,true);
 				int it=0;
 				while(it<newMOB.location().numItems())
 				{

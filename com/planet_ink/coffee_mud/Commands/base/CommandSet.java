@@ -133,6 +133,7 @@ public class CommandSet extends Hashtable
 	public static final int ENTER=121;
 	public static final int PLAYERKILL=122;
 	public static final int VASSALS=123;
+	public static final int CHANTS=124;
 
 	public CommandSet()
 	{
@@ -157,6 +158,7 @@ public class CommandSet extends Hashtable
 			put("CL",new Integer(CLOSE));
 			put("CLO",new Integer(CLOSE));
 		put("CHANNELS",new Integer(CHANNELS));
+		put("CHANTS",new Integer(CHANTS));
 		put("CHARGEN",new Integer(CHARGEN));
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));

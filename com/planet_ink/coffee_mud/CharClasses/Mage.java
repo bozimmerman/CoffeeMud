@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.common.*;
 public class Mage extends StdCharClass
 {
 	private static boolean abilitiesLoaded=false;
+	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	public Mage()
 	{
 		super();
@@ -308,7 +309,7 @@ public class Mage extends StdCharClass
 							{
 								if((A.qualifyingLevel(mob)==level)&&(given.get(A.ID())==null))
 								{
-									giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
+									giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
 									given.put(A.ID(),A);
 									numLevel++;
 								}
@@ -343,39 +344,44 @@ public class Mage extends StdCharClass
 				{
 					Item I=myChar.fetchInventory(i);
 					if(I==null) break;
-					if((I.amWearingAt(Item.ON_TORSO))
-					 ||(I.amWearingAt(Item.HELD)&&(I instanceof Shield))
-					 ||(I.amWearingAt(Item.ON_LEGS))
-					 ||(I.amWearingAt(Item.ON_ARMS))
-					 ||(I.amWearingAt(Item.ON_WAIST))
-					 ||(I.amWearingAt(Item.ON_HEAD)))
-						if((I instanceof Armor)
-						&&((I.material()&EnvResource.MATERIAL_MASK)!=0)
-						&&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
-						&&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION))
+					if((((I.rawWornCode()&wearMask)>0)&&(I instanceof Armor))
+					 ||(I.amWearingAt(Item.HELD)&&(I instanceof Shield)))
+					{
+						switch(I.material()&EnvResource.MATERIAL_MASK)
+						{
+						case EnvResource.MATERIAL_CLOTH:
+						case EnvResource.MATERIAL_VEGETATION:
+						case EnvResource.MATERIAL_PAPER:
+							break;
+						default:
 							if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
 							{
 								myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
 								return false;
 							}
+							break;
+						}
+					}
 				}
 			}
 			else
-			if(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			&&(affect.tool()!=null)
+			&&(affect.tool() instanceof Weapon))
 			{
-				Item I=myChar.fetchWieldedItem();
-				if((I!=null)&&(I instanceof Weapon))
+				int classification=((Weapon)affect.tool()).weaponClassification();
+				switch(classification)
 				{
-					int classification=((Weapon)I).weaponClassification();
-					if(!((classification==Weapon.CLASS_NATURAL)
-					||(classification==Weapon.CLASS_DAGGER)
-					||(classification==Weapon.CLASS_STAFF))
-					   )
-						if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
-						{
-							myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+I.name()+".");
-							return false;
-						}
+				case Weapon.CLASS_STAFF:
+				case Weapon.CLASS_NATURAL:
+				case Weapon.CLASS_DAGGER:
+					break;
+				default:
+					if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
+					{
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						return false;
+					}
 				}
 			}
 		}

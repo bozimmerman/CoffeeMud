@@ -119,10 +119,10 @@ public class Bard extends StdCharClass
 				if((A.qualifyingLevel(mob)>=0)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG))
 				{
 					if((A.qualifyingLevel(mob)<5)&&(A.qualifyingLevel(mob)>=1))
-						giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
+						giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
 					else
 					if(extras.get(new Integer(A.qualifyingLevel(mob)))!=null)
-						giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
+						giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
 				}
 			}
 		}
@@ -141,7 +141,7 @@ public class Bard extends StdCharClass
 	}
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
-		if(!new Thief().okAffect(myChar, affect))
+		if(!Thief.thiefOk(myChar,affect))
 			return false;
 		return super.okAffect(myChar, affect);
 	}

@@ -12,9 +12,10 @@ public interface Ability  extends Environmental
 	public static final int PROPERTY=5;
 	public static final int THIEF_SKILL=6;
 	public static final int LANGUAGE=7;
+	public static final int CHANT=8;
 	public static final int ALL_CODES=31;
 	public static final String[] TYPE_DESCS={
-		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY","THIEF SKILL","LANGUAGE"
+		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY","THIEF SKILL","LANGUAGE","CHANT"
 	};
 	
 	// domains

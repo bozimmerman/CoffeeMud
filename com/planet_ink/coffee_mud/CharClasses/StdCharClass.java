@@ -39,13 +39,14 @@ public class StdCharClass implements CharClass
 		return true;
 	}
 
-	protected void giveMobAbility(MOB mob, Ability A, int profficiency, boolean isBorrowedClass)
+	protected void giveMobAbility(MOB mob, Ability A, int profficiency, String defaultParm, boolean isBorrowedClass)
 	{
 		A=(Ability)A.copyOf();
 		if(mob.fetchAbility(A.ID())==null)
 		{
 			A.setBorrowed(mob,isBorrowedClass);
 			A.setProfficiency(profficiency);
+			A.setMiscText(defaultParm);
 			mob.addAbility(A);
 			A.autoInvocation(mob);
 		}
@@ -67,7 +68,7 @@ public class StdCharClass implements CharClass
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
 			if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
-				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
+				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
 		}
 	}
 

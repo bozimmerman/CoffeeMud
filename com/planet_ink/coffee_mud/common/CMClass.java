@@ -261,7 +261,9 @@ public class CMClass extends ClassLoader
 		Log.sysOut("MUD","      All Fighters: "+(tempV.size()+size));
 		if(tempV.size()==0) return false; addV(tempV,abilities);
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Archon"+File.separatorChar,"");
-		Log.sysOut("MUD","           Archon : "+tempV.size());
+		if(tempV.size()==0) return false; addV(tempV,abilities);
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Druid"+File.separatorChar,"");
+		Log.sysOut("MUD","           Chants : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Languages"+File.separatorChar,"");
 		Log.sysOut("MUD","        Languages : "+tempV.size());

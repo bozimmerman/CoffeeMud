@@ -160,46 +160,44 @@ public class Cleric extends StdCharClass
 			return false;
 
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
-		if(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+		if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+		&&(affect.tool()!=null)
+		&&(affect.tool() instanceof Weapon))
 		{
-			Item I=myChar.fetchWieldedItem();
-			if((I!=null)&&(I instanceof Weapon))
+			int classification=((Weapon)affect.tool()).weaponClassification();
+			if(myChar.getAlignment()<350)
 			{
-				int classification=((Weapon)I).weaponClassification();
-				if(myChar.getAlignment()<350)
-				{
-					if((classification==Weapon.CLASS_POLEARM)
-					||(classification==Weapon.CLASS_SWORD)
-					||(classification==Weapon.CLASS_AXE)
-					||(classification==Weapon.CLASS_NATURAL)
-					||(classification==Weapon.CLASS_EDGED))
-						return true;
-				}
-				else
-				if(myChar.getAlignment()<650)
-				{
-					if((classification==Weapon.CLASS_BLUNT)
-					||(classification==Weapon.CLASS_RANGED)
-					||(classification==Weapon.CLASS_THROWN)
-					||(classification==Weapon.CLASS_STAFF)
-					||(classification==Weapon.CLASS_NATURAL)
-					||(classification==Weapon.CLASS_SWORD))
-						return true;
-				}
-				else
-				{
-					if((classification==Weapon.CLASS_BLUNT)
-					||(classification==Weapon.CLASS_FLAILED)
-					||(classification==Weapon.CLASS_STAFF)
-					||(classification==Weapon.CLASS_NATURAL)
-					||(classification==Weapon.CLASS_HAMMER))
-						return true;
-				}
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
-				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"During a conflict of <S-HIS-HER> conscience, <S-NAME> fumble(s) horribly with "+I.name()+".");
-					return false;
-				}
+				if((classification==Weapon.CLASS_POLEARM)
+				||(classification==Weapon.CLASS_SWORD)
+				||(classification==Weapon.CLASS_AXE)
+				||(classification==Weapon.CLASS_NATURAL)
+				||(classification==Weapon.CLASS_EDGED))
+					return true;
+			}
+			else
+			if(myChar.getAlignment()<650)
+			{
+				if((classification==Weapon.CLASS_BLUNT)
+				||(classification==Weapon.CLASS_RANGED)
+				||(classification==Weapon.CLASS_THROWN)
+				||(classification==Weapon.CLASS_STAFF)
+				||(classification==Weapon.CLASS_NATURAL)
+				||(classification==Weapon.CLASS_SWORD))
+					return true;
+			}
+			else
+			{
+				if((classification==Weapon.CLASS_BLUNT)
+				||(classification==Weapon.CLASS_FLAILED)
+				||(classification==Weapon.CLASS_STAFF)
+				||(classification==Weapon.CLASS_NATURAL)
+				||(classification==Weapon.CLASS_HAMMER))
+					return true;
+			}
+			if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
+			{
+				myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+				return false;
 			}
 		}
 		return true;

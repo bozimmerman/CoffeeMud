@@ -223,12 +223,14 @@ public class Scoring
 			msg.append("\n\r^HSpells:^? "+getQualifiedAbilities(mob,Ability.SPELL,-1)+"\n\r");
 		if((qual.length()==0)||(qual.equalsIgnoreCase("PRAYERS"))||(qual.equalsIgnoreCase("PRAYER"))||(qual.equalsIgnoreCase("CLERIC")))
 			msg.append("\n\r^HPrayers:^? "+getQualifiedAbilities(mob,Ability.PRAYER,-1)+"\n\r");
+		if((qual.length()==0)||(qual.equalsIgnoreCase("CHANTS"))||(qual.equalsIgnoreCase("CHANT"))||(qual.equalsIgnoreCase("DRUID")))
+			msg.append("\n\r^HDruidic Chants:^? "+getQualifiedAbilities(mob,Ability.CHANT,-1)+"\n\r");
 		if((qual.length()==0)||(qual.equalsIgnoreCase("SONGS"))||(qual.equalsIgnoreCase("SONG"))||(qual.equalsIgnoreCase("BARD")))
 			msg.append("\n\r^HSongs:^? "+getQualifiedAbilities(mob,Ability.SONG,-1)+"\n\r");
 		if((qual.length()==0)||(qual.equalsIgnoreCase("LANGS"))||(qual.equalsIgnoreCase("LANG"))||(qual.equalsIgnoreCase("LANGUAGES")))
 			msg.append("\n\r^HLanguages:^? "+getQualifiedAbilities(mob,Ability.LANGUAGE,-1)+"\n\r");
 		if(msg.length()==0)
-			mob.tell("Valid parameters to the QUALIFY command include SKILLS, THIEF, SPELLS, PRAYERS, SONGS, or LANGS.");
+			mob.tell("Valid parameters to the QUALIFY command include SKILLS, THIEF, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
 		else
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln("^BYou now qualify for the following:^?"+msg.toString());
@@ -238,6 +240,14 @@ public class Scoring
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("\n\r^HPrayers known:^? "+getAbilities(mob,Ability.PRAYER,-1)+"\n\r");
+		if(!mob.isMonster())
+			mob.session().unfilteredPrintln(msg.toString());
+	}
+
+	public void chants(MOB mob)
+	{
+		StringBuffer msg=new StringBuffer("");
+		msg.append("\n\r^HDruidic Chants known:^? "+getAbilities(mob,Ability.CHANT,-1)+"\n\r");
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(msg.toString());
 	}

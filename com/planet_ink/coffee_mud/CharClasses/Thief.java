@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.common.*;
 public class Thief extends StdCharClass
 {
 	private static boolean abilitiesLoaded=false;
+	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	
 	public Thief()
 	{
@@ -50,7 +51,6 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),12,"Skill_Trip",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_Distract",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Search",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Thief_SilentGold",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Thief_Surrender",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_DetectInvisible",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Thief_Poison",true);
@@ -59,6 +59,7 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Knock",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Thief_SilentLoot",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Thief_Bribe",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Thief_SilentGold",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Skill_Dirt",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_Trap",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_Charm",false);
@@ -87,7 +88,7 @@ public class Thief extends StdCharClass
 				w.wearAt(Item.WIELD);
 		}
 	}
-	public boolean okAffect(MOB myChar, Affect affect)
+	public static boolean thiefOk(MOB myChar, Affect affect)
 	{
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
@@ -97,46 +98,56 @@ public class Thief extends StdCharClass
 				{
 					Item I=myChar.fetchInventory(i);
 					if(I==null) break;
-					if((I.amWearingAt(Item.ON_TORSO))
-					 ||(I.amWearingAt(Item.HELD)&&(I instanceof Shield))
-					 ||(I.amWearingAt(Item.ON_LEGS))
-					 ||(I.amWearingAt(Item.ON_ARMS))
-					 ||(I.amWearingAt(Item.ON_WAIST))
-					 ||(I.amWearingAt(Item.ON_HEAD)))
-						if((I instanceof Armor)
-						   &&((I.material()&EnvResource.MATERIAL_MASK)!=0)
-						   &&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
-						   &&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_FLESH)
-						   &&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION)
-						   &&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER))
+					if((((I.rawWornCode()&wearMask)>0)&&(I instanceof Armor))
+					 ||(I.amWearingAt(Item.HELD)&&(I instanceof Shield)))
+					{
+						switch(I.material()&EnvResource.MATERIAL_MASK)
+						{
+						case EnvResource.MATERIAL_CLOTH:
+						case EnvResource.MATERIAL_LEATHER:
+						case EnvResource.MATERIAL_VEGETATION:
+							break;
+						default:
 							if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 							{
-								myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) in <S-HIS-HER> maneuver!");
+								myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) in <S-HIS-HER> maneuver!");
 								return false;
 							}
+							break;
+						}
+					}
 				}
 			}
 			else
-			if(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			&&(affect.tool()!=null)
+			&&(affect.tool() instanceof Weapon))
 			{
-				Item I=myChar.fetchWieldedItem();
-				if((I!=null)&&(I instanceof Weapon))
+				int classification=((Weapon)affect.tool()).weaponClassification();
+				switch(classification)
 				{
-					int classification=((Weapon)I).weaponClassification();
-					if(!((classification==Weapon.CLASS_SWORD)
-					||(classification==Weapon.CLASS_RANGED)
-					||(classification==Weapon.CLASS_THROWN)
-					||(classification==Weapon.CLASS_NATURAL)
-					||(classification==Weapon.CLASS_DAGGER))
-					   )
-						if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
-						{
-							myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+I.name()+".");
-							return false;
-						}
+				case Weapon.CLASS_SWORD:
+				case Weapon.CLASS_RANGED:
+				case Weapon.CLASS_THROWN:
+				case Weapon.CLASS_NATURAL:
+				case Weapon.CLASS_DAGGER:
+					break;
+				default:
+					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
+					{
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						return false;
+					}
+					break;
 				}
 			}
 		}
+		return true;
+	}
+	public boolean okAffect(MOB myChar, Affect affect)
+	{
+		if(!thiefOk(myChar,affect))
+			return false;
 		return super.okAffect(myChar,affect);
 	}
 
