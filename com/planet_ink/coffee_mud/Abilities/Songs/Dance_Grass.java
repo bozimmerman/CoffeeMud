@@ -20,7 +20,7 @@ public class Dance_Grass extends Dance
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
-		affectableStats.setArmor(affectableStats.armor()-10);
+		affectableStats.setArmor(affectableStats.armor()-invoker().charStats().getStat(CharStats.CHARISMA));
 	}
 
 }

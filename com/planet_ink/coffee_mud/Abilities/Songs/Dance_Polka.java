@@ -20,7 +20,7 @@ public class Dance_Polka extends Dance
 
 		if(affected==invoker) return;
 
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(invoker.envStats().level()));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-invoker.envStats().level());
 	}
 
 

@@ -12,7 +12,6 @@ public class Dance_Flamenco extends Dance
 	public String name(){ return "Flamenco";}
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Dance_Flamenco();}
-	protected boolean mindAttack(){return true;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

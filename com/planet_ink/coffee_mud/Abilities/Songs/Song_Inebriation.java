@@ -11,7 +11,6 @@ public class Song_Inebriation extends Song
 	public String ID() { return "Song_Inebriation"; }
 	public String name(){ return "Drunkenness";}
 	public int quality(){ return MALICIOUS;}
-	protected boolean mindAttack(){return true;}
 	public Environmental newInstance(){	return new Song_Inebriation();}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -20,7 +19,7 @@ public class Song_Inebriation extends Song
 
 		if(affected==invoker) return;
 
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(invoker.envStats().level()));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-invoker.envStats().level());
 	}
 
 

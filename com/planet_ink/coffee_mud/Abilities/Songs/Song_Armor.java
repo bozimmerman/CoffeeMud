@@ -17,6 +17,6 @@ public class Song_Armor extends Song
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(invoker.envStats().level())*1));
+		affectableStats.setArmor((affectableStats.armor()-invoker().charStats().getStat(CharStats.CHARISMA))-(invoker.envStats().level()));
 	}
 }

@@ -18,7 +18,7 @@ public class Song extends StdAbility
 	public int maxRange(){return 2;}
 
 	protected boolean skipStandardSongInvoke(){return false;}
-	protected boolean mindAttack(){return false;}
+	protected boolean mindAttack(){return quality()==Ability.MALICIOUS;}
 	protected boolean skipStandardSongTick(){return false;}
 	protected String songOf(){return "Song of "+name();}
 
@@ -51,7 +51,7 @@ public class Song extends StdAbility
 		||(referenceSong.affected==null)
 		||(referenceSong.invoker==null)
 		||(invoker.location()!=mob.location())
-		||(Sense.isSleeping(invoker))
+		||(!Sense.aliveAwakeMobile(invoker,true))
 		||(!Sense.canBeHeardBy(invoker,mob)))
 		{
 			unsing(mob);

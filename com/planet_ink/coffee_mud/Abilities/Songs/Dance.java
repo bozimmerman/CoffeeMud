@@ -19,7 +19,7 @@ public class Dance extends StdAbility
 	protected int invokerManaCost=-1;
 
 	protected boolean skipStandardDanceInvoke(){return false;}
-	protected boolean mindAttack(){return false;}
+	protected boolean mindAttack(){return quality()==Ability.MALICIOUS;}
 	protected boolean skipStandardDanceTick(){return false;}
 	protected String danceOf(){return name();}
 

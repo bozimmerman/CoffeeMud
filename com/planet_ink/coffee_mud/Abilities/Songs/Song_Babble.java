@@ -15,7 +15,6 @@ public class Song_Babble extends Song
 	private final static String vowels="aeiouy";
 	public Environmental newInstance(){	return new Song_Babble();}
 	protected boolean skipStandardSongInvoke(){return true;}
-	protected boolean mindAttack(){return true;}
 
 	protected int numChars(String words)
 	{

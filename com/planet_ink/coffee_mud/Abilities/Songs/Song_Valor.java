@@ -15,8 +15,7 @@ public class Song_Valor extends Song
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(invoker==null) return;
-
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+5+((int)Math.round(Util.div(invoker.envStats().level(),10.0))*5));
+		if(invoker!=null)
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+invoker().charStats().getStat(CharStats.CHARISMA)+(invoker.envStats().level()/3));
 	}
 }

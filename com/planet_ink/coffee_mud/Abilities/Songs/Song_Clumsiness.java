@@ -18,7 +18,7 @@ public class Song_Clumsiness extends Song
 		if(invoker==null) return;
 		if(affected==invoker) return;
 
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-((int)Math.round(invoker.envStats().level())*3));
+		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()-invoker().charStats().getStat(CharStats.CHARISMA))-(invoker.envStats().level()*2));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

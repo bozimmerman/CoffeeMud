@@ -11,7 +11,6 @@ public class Song_Lullibye extends Song
 	public String ID() { return "Song_Lullibye"; }
 	public String name(){ return "Lullibye";}
 	public int quality(){ return MALICIOUS;}
-	protected boolean mindAttack(){return true;}
 	public Environmental newInstance(){	return new Song_Lullibye();	}
 
 	boolean asleep=false;

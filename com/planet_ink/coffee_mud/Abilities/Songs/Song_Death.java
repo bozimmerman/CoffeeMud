@@ -12,7 +12,6 @@ public class Song_Death extends Song
 	public String name(){ return "Death";}
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Song_Death();}
-	protected boolean mindAttack(){return true;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

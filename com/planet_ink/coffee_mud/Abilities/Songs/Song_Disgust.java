@@ -12,7 +12,6 @@ public class Song_Disgust extends Song
 	public String name(){ return "Disgust";}
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Song_Disgust();}
-	protected boolean mindAttack(){return true;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{

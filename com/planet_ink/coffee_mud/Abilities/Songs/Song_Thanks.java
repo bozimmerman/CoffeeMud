@@ -12,7 +12,6 @@ public class Song_Thanks extends Song
 	public String name(){ return "Thanks";}
 	public int quality(){ return MALICIOUS;}
 	protected boolean skipStandardSongInvoke(){return true;}
-	protected boolean mindAttack(){return true;}
 	public Environmental newInstance(){	return new Song_Thanks();}
 
 	public boolean tick(Tickable ticking, int tickID)
