@@ -39,6 +39,7 @@ public class Score extends Affect
 			levelStr="level "+mob.envStats().level()+" "+mob.charStats().getCurrentClass().name();
 		else
 			levelStr=mob.charStats().getCurrentClass().name()+" "+classLevel+"/"+mob.envStats().level();
+		if(mob.image().length()>0) msg.append("^<SCOREIMG '"+mob.image()+"'^>^N");
 		msg.append("You are ^H"+mob.Name()+"^? the ^H"+levelStr+"^?.\n\r");
 		if(classLevel<mob.envStats().level())
 		{

@@ -45,11 +45,11 @@ public class BaseGenerics extends StdCommand
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". GIF file: '"+E.image()+"'.");
+		mob.tell(showNumber+". MXP file: '"+E.image()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a new filename\n\r:","");
 		if(newName.length()>0)
-			E.setName(newName);
+			E.setImage(newName);
 		else
 			mob.tell("(no change)");
 	}
