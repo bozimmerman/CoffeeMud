@@ -129,8 +129,8 @@ public class RoomLoader
 						newExit=(Exit)newExit.newInstance();
 						newExit.setMiscText(exitMiscText);
 					}
-					thisRoom.doors()[direction]=newRoom;
-					thisRoom.exits()[direction]=newExit;
+					thisRoom.rawDoors()[direction]=newRoom;
+					thisRoom.rawExits()[direction]=newExit;
 				}
 			}
 			DBConnector.DBDone(D);
@@ -344,8 +344,8 @@ public class RoomLoader
 			DBConnector.DBDone(D);
 			for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
 			{
-				Exit thisExit=room.exits()[e];
-				Room thisRoom=room.doors()[e];
+				Exit thisExit=room.rawExits()[e];
+				Room thisRoom=room.rawDoors()[e];
 				if(((thisRoom==null)&&(thisExit!=null))||(thisRoom!=null)&&(thisRoom.ID().length()>0))
 				{
 					D=DBConnector.DBFetch();
@@ -651,8 +651,8 @@ public class RoomLoader
 
 			for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 			{
-				room.exits()[i]=null;
-				room.doors()[i]=null;
+				room.rawExits()[i]=null;
+				room.rawDoors()[i]=null;
 			}
 			DBUpdateExits(room);
 

@@ -39,6 +39,7 @@ public interface EnvStats extends Cloneable
 	public final static int IS_SWIMMING=4096;
 	public final static int IS_LIGHT=8192;
 	public final static int IS_CLIMBING=16384;
+	public final static int IS_FALLING=32768;
 
 	public int sensesMask();
 	public int disposition();

@@ -60,10 +60,10 @@ public class StdRoom
 		doors=new Room[Directions.NUM_DIRECTIONS];
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			if(E.exits()[d]!=null)
-				exits[d]=(Exit)E.exits()[d].copyOf();
-			if(E.doors()[d]!=null)
-				doors[d]=E.doors()[d];
+			if(E.rawExits()[d]!=null)
+				exits[d]=(Exit)E.rawExits()[d].copyOf();
+			if(E.rawDoors()[d]!=null)
+				doors[d]=E.rawDoors()[d];
 
 		}
 	}
@@ -134,20 +134,19 @@ public class StdRoom
 	protected void giveASky(Room room)
 	{
 		skyedYet=true;
-		if((room.doors()[Directions.UP]==null)
+		if((room.rawDoors()[Directions.UP]==null)
 		&&((room.domainType()&Room.INDOORS)==0)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(!(room instanceof EndlessSky))
-		&&(!(room instanceof InTheAir)))
+		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
 		{
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway").newInstance();
 			EndlessSky sky=new EndlessSky();
 			sky.setArea(room.getArea());
 			sky.setID("");
-			room.doors()[Directions.UP]=sky;
-			room.exits()[Directions.UP]=o;
-			sky.doors()[Directions.DOWN]=room;
-			sky.exits()[Directions.DOWN]=o;
+			room.rawDoors()[Directions.UP]=sky;
+			room.rawExits()[Directions.UP]=o;
+			sky.rawDoors()[Directions.DOWN]=room;
+			sky.rawExits()[Directions.DOWN]=o;
 			CMMap.map.addElement(sky);
 		}
 	}
@@ -220,7 +219,7 @@ public class StdRoom
 
 		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 		{
-			Exit thisExit=exits()[i];
+			Exit thisExit=rawExits()[i];
 			if(thisExit!=null)
 				if(!thisExit.okAffect(affect))
 					return false;
@@ -287,7 +286,7 @@ public class StdRoom
 
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			Exit thisExit=exits()[d];
+			Exit thisExit=rawExits()[d];
 			if(thisExit!=null)
 				thisExit.affect(affect);
 		}
@@ -518,16 +517,16 @@ public class StdRoom
 	{
 		if(direction>=Directions.NUM_DIRECTIONS)
 			return null;
-		Room opRoom=doors()[direction];
+		Room opRoom=getRoomInDir(direction);
 		if(opRoom!=null)
-			return opRoom.exits()[Directions.getOpDirectionCode(direction)];
+			return opRoom.getExitInDir(Directions.getOpDirectionCode(direction));
 		else
 			return null;
 	}
 	public Exit getPairedExit(int direction)
 	{
 		Exit opExit=getReverseExit(direction);
-		Exit myExit=exits()[direction];
+		Exit myExit=getExitInDir(direction);
 		if((myExit==null)||(opExit==null))
 			return null;
 		if(myExit.hasADoor()!=opExit.hasADoor())
@@ -535,6 +534,31 @@ public class StdRoom
 		return opExit;
 	}
 
+	public Room getRoomInDir(int direction)
+	{
+		if(direction>=Directions.NUM_DIRECTIONS)
+			return null;
+		Room nextRoom=rawDoors()[direction];
+		if(nextRoom!=null)
+		{
+			if(nextRoom instanceof GridLocaleChild)
+				return nextRoom;
+			else
+			if(nextRoom instanceof GridLocale)
+			{
+				Room realRoom=((GridLocale)nextRoom).getAltRoomFrom(this);
+				if(realRoom!=null) return realRoom;
+			}
+		}
+		return nextRoom;
+	}
+	public Exit getExitInDir(int direction)
+	{
+		if(direction>=Directions.NUM_DIRECTIONS)
+			return null;
+		return rawExits()[direction];
+	}
+	
 	public void listExits(MOB mob)
 	{
 		if(!Sense.canSee(mob))
@@ -545,8 +569,8 @@ public class StdRoom
 
 		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 		{
-			Exit exit=exits()[i];
-			Room room=doors()[i];
+			Exit exit=getExitInDir(i);
+			Room room=getRoomInDir(i);
 
 			String Dir=Directions.getDirectionName(i);
 			StringBuffer Say=new StringBuffer("");
@@ -628,11 +652,11 @@ public class StdRoom
 		source.affect(msg);
 	}
 
-	public Exit[] exits()
+	public Exit[] rawExits()
 	{
 		return exits;
 	}
-	public Room[] doors()
+	public Room[] rawDoors()
 	{
 		return doors;
 	}

@@ -38,7 +38,7 @@ public class Thief_Trap extends ThiefSkill
 		Environmental unlockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
 		if(dirCode>=0)
-			unlockThis=mob.location().exits()[dirCode];
+			unlockThis=mob.location().getExitInDir(dirCode);
 		if(unlockThis==null)
 			unlockThis=this.getTarget(mob,mob.location(),givenTarget,commands);
 		if(unlockThis==null) return false;

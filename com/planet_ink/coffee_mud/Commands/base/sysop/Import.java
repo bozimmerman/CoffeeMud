@@ -2373,7 +2373,7 @@ public class Import
 							if(!r.getArea().name().equalsIgnoreCase(areaName))
 								for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 								{
-									Room dirR=r.doors()[d];
+									Room dirR=r.rawDoors()[d];
 									if((dirR!=null)&&(dirR.getArea().name().equalsIgnoreCase(areaName)))
 										reLinkTable.addElement(r.ID()+"/"+d+"/"+dirR.ID());
 								}
@@ -2652,7 +2652,7 @@ public class Import
 							returnAnError(mob,"Room: "+R.ID()+", Malformed exit codeStr "+codeStr+".  Aborting exit!");
 							continue;
 						}
-						if((R.exits()[dirCode]!=null)||(R.doors()[dirCode]!=null))
+						if((R.rawExits()[dirCode]!=null)||(R.rawDoors()[dirCode]!=null))
 						{
 							returnAnError(mob,"Room: "+R.ID()+", Redundant exit codeStr "+codeStr+".  Aborting exit!");
 							continue;
@@ -2727,7 +2727,7 @@ public class Import
 						}
 						E.setExitParams(name,E.closeWord(),E.openWord(),E.name()+", closed");
 						E.setDescription(descStr);
-						R.exits()[dirCode]=E;
+						R.rawExits()[dirCode]=E;
 						Exit opExit=null;
 						if((linkRoom==null)&&(linkRoomID>=0))
 						{
@@ -2738,12 +2738,12 @@ public class Import
 								{
 									for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 									{
-										Exit E3=R2.exits()[d];
+										Exit E3=R2.rawExits()[d];
 										if(E3!=null)
 											if(R.ID().endsWith(E3.closeWord()))
 											{
 												opExit=E3;
-												R2.doors()[d]=R;
+												R2.rawDoors()[d]=R;
 											}
 									}
 									if(opExit==null)
@@ -2763,7 +2763,7 @@ public class Import
 								E.setExitParams(E.doorName(),"close",E.openWord(),E.displayText());
 
 						}
-						R.doors()[dirCode]=linkRoom;
+						R.rawDoors()[dirCode]=linkRoom;
 						if((linkRoom==null)&&(linkRoomID>=0))
 							returnAnError(mob,"Room: "+R.ID()+" links "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+".");
 					}
@@ -3000,7 +3000,7 @@ public class Import
 						}
 						if(dirCode<Directions.NUM_DIRECTIONS)
 						{
-							Exit E=R.exits()[dirCode];
+							Exit E=R.rawExits()[dirCode];
 							int lockBit=getBitMask(s,4);
 							boolean HasDoor=E.hasADoor();
 							boolean HasLock=E.hasALock();
@@ -3131,7 +3131,7 @@ public class Import
 						Log.errOut("Import","Relink error: "+sourceRoomID+"="+sourceRoom+"/"+destRoomID+"="+destRoom);
 					else
 					{
-						sourceRoom.doors()[direction]=destRoom;
+						sourceRoom.rawDoors()[direction]=destRoom;
 						if((nextLink.length()==0)||(!nextLink.startsWith(sourceRoomID+"/")))
 							ExternalPlay.DBUpdateExits(sourceRoom);
 					}

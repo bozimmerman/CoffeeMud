@@ -103,8 +103,8 @@ public class Spell_DetectGold extends Spell
 			Exit E=null;
 			if(d<Directions.NUM_DIRECTIONS)
 			{
-				R=mob.location().doors()[d];
-				E=mob.location().exits()[d];
+				R=mob.location().getRoomInDir(d);
+				E=mob.location().getExitInDir(d);
 			}
 			else
 			{

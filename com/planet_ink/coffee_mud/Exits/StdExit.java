@@ -175,7 +175,7 @@ public class StdExit implements Exit
 				return false;
 			}
 			if((Sense.isClimbing(this))
-			&&(mob.fetchAffect("Falling")==null)
+			&&(!Sense.isFalling(this))
 			&&(!Sense.isClimbing(mob))
 			&&(!Sense.isFlying(mob)))
 			{
@@ -368,9 +368,9 @@ public class StdExit implements Exit
 				{
 					Room room=null;
 					for(int r=0;r<Directions.NUM_DIRECTIONS;r++)
-						if(mob.location().exits()[r]==this)
+						if(mob.location().getExitInDir(r)==this)
 						{
-							room=mob.location().doors()[r];
+							room=mob.location().getRoomInDir(r);
 							break;
 						}
 					mob.tell(this.viewableText(mob,room).toString());

@@ -26,10 +26,10 @@ public class WaterSurface extends StdRoom
 		if(!super.okAffect(affect))
 			return false;
 
-		if(affect.amITarget(this)
-		   &&((affect.targetMinor()==Affect.TYP_LEAVE)
+		if(((affect.targetMinor()==Affect.TYP_LEAVE)
 			||(affect.targetMinor()==Affect.TYP_ENTER)
 			||(affect.targetMinor()==Affect.TYP_FLEE))
+		   &&(affect.amITarget(this))
 		   &&(!Sense.isSwimming(affect.source()))
 		   &&((affect.source().riding()==null)||(!Sense.isSwimming(affect.source().riding()))))
 		{

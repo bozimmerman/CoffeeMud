@@ -43,7 +43,7 @@ public class Spell_Knock extends Spell
 		Environmental openThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)
-			openThis=mob.location().exits()[dirCode];
+			openThis=mob.location().getExitInDir(dirCode);
 		if(openThis==null)
 			openThis=getTarget(mob,mob.location(),givenTarget,commands);
 		if(openThis==null) return false;

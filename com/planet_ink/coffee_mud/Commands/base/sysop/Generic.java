@@ -43,8 +43,8 @@ public class Generic
 				newRoom=(Room)newRoom.newInstance();
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
-					newRoom.exits()[d]=R.exits()[d];
-					newRoom.doors()[d]=R.doors()[d];
+					newRoom.rawExits()[d]=R.rawExits()[d];
+					newRoom.rawDoors()[d]=R.rawDoors()[d];
 				}
 				for(int x=0;x<R.numInhabitants();x++)
 				{
@@ -84,8 +84,8 @@ public class Generic
 					}
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
-						if(room.doors()[d]==R)
-							room.doors()[d]=newRoom;
+						if(room.rawDoors()[d]==R)
+							room.rawDoors()[d]=newRoom;
 					}
 					for(int i=0;i<room.numInhabitants();i++)
 					{

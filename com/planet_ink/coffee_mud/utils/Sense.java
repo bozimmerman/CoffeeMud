@@ -97,6 +97,8 @@ public class Sense
 	{ return ((E.envStats().disposition()&EnvStats.IS_CLIMBING)==EnvStats.IS_CLIMBING); }
 	public static boolean isSwimming(Environmental E)
 	{ return ((E.envStats().disposition()&EnvStats.IS_SWIMMING)==EnvStats.IS_SWIMMING); }
+	public static boolean isFalling(Environmental E)
+	{ return ((E.envStats().disposition()&EnvStats.IS_FALLING)==EnvStats.IS_FALLING); }
 
 	public static boolean canBeHeardBy(Environmental heard , Environmental hearer)
 	{
@@ -208,6 +210,8 @@ public class Sense
 		
 		if(isFlying(seen))
 			Say.append(" (^pflying^?)");
+		if(isFalling(seen))
+			Say.append(" (^pfalling^?)");
 		if((isLight(seen))&&(seen instanceof Item))
 			Say.append(" (^gglowing^?)");
 		return Say;
@@ -243,6 +247,9 @@ public class Sense
 		else
 		if(isFlying(seen))
 			type="flys";
+		else
+		if(isFalling(seen))
+			type="falls";
 		else
 		if(isClimbing(seen))
 			type="climbs";

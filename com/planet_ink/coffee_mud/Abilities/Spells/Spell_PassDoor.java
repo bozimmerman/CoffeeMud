@@ -44,8 +44,8 @@ public class Spell_PassDoor extends Spell
 			return false;
 		}
 
-		Exit exit=mob.location().exits()[dirCode];
-		Room room=mob.location().doors()[dirCode];
+		Exit exit=mob.location().getExitInDir(dirCode);
+		Room room=mob.location().getRoomInDir(dirCode);
 
 		if((exit==null)||(room==null)||((exit!=null)&&(!Sense.canBeSeenBy(exit,mob))))
 		{

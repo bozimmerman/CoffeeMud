@@ -287,7 +287,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		}
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			if(room.r.doors()[d]==nextRoom.r)
+			if(room.r.rawDoors()[d]==nextRoom.r)
 			{
 				dirCode=d;
 				break;
@@ -386,7 +386,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 
     public boolean anythingThatDirection(MapRoom room, int direction)
     {
-        Room D=room.r.doors()[direction];
+        Room D=room.r.rawDoors()[direction];
         if(D==null)
             return false;
         return true;
@@ -405,7 +405,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		boolean ok=false;
 		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
 		{
-			Exit exit=room.r.exits()[e];
+			Exit exit=room.r.rawExits()[e];
 			if(exit!=null)
 			{
 				if(envStats().level()<2)
@@ -446,7 +446,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
             room.y=0;
             for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
             {
-                Room dir=room.r.doors()[d];
+                Room dir=room.r.rawDoors()[d];
                 if(dir!=null)
 				{
 					MapRoom rm=getRoom(areaMap,dir.ID());
@@ -519,7 +519,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
                     if(roomToBlame!=room)
                         for(int rd=0;rd<Directions.NUM_DIRECTIONS;rd++)
                         {
-                            Room RD=roomToBlame.r.doors()[rd];
+                            Room RD=roomToBlame.r.rawDoors()[rd];
 							if(RD!=null)
 							{
 								MapRoom MR=getRoom(allRooms,RD.ID());
@@ -550,10 +550,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
         {
             String roomID=null;
 			Exit exit=null;
-            if(room.r.doors()[d]!=null)
+            if(room.r.rawDoors()[d]!=null)
 			{
-                roomID=room.r.doors()[d].ID();
-				exit=room.r.exits()[d];
+                roomID=room.r.rawDoors()[d].ID();
+				exit=room.r.rawExits()[d];
 			}
 
             if((roomID!=null)&&(roomID.length()>0)&&(processed.get(roomID)==null))

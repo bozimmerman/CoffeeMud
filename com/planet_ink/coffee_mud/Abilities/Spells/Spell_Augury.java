@@ -59,8 +59,8 @@ public class Spell_Augury extends Spell
 		int dirCode=Directions.getGoodDirectionCode(targetName);
 		if(dirCode>=0)
 		{
-			exit=mob.location().exits()[dirCode];
-			room=mob.location().doors()[dirCode];
+			exit=mob.location().getExitInDir(dirCode);
+			room=mob.location().getRoomInDir(dirCode);
 			if(room!=null)
 				opExit=mob.location().getReverseExit(dirCode);
 		}

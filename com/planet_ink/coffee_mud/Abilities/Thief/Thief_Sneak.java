@@ -40,7 +40,7 @@ public class Thief_Sneak extends ThiefSkill
 			return false;
 		}
 
-		if((mob.location().doors()[dirCode]==null)||(mob.location().exits()[dirCode]==null))
+		if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{
 			mob.tell("Sneak where?");
 			return false;

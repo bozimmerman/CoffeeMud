@@ -11,6 +11,12 @@ public class Exits
 	public void create(MOB mob, Vector commands)
 		throws IOException
 	{
+		if(mob.location() instanceof GridLocaleChild)
+		{
+			mob.tell("This command is invalid from with a GridLocaleChild room.");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
 		if(commands.size()<4)
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE EXIT [DIRECTION] [EXIT TYPE]\n\r");
@@ -37,10 +43,12 @@ public class Exits
 		else
 			thisExit=(Exit)thisExit.newInstance();
 
-		Exit opExit=mob.location().exits()[direction];
-		Room opRoom=mob.location().doors()[direction];
+		Exit opExit=mob.location().rawExits()[direction];
+		Room opRoom=mob.location().rawDoors()[direction];
 
-		Exit reverseExit=mob.location().getReverseExit(direction);
+		Exit reverseExit=null;
+		if(opRoom!=null)
+			reverseExit=opRoom.rawExits()[Directions.getOpDirectionCode(direction)];
 		if(reverseExit!=null)
 		{
 			if((thisExit.isGeneric())&&(reverseExit.isGeneric()))
@@ -51,7 +59,7 @@ public class Exits
 		}
 
 
-		mob.location().exits()[direction]=thisExit;
+		mob.location().rawExits()[direction]=thisExit;
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
 		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly a portal opens up "+Directions.getInDirectionName(direction)+".\n\r");
@@ -59,9 +67,9 @@ public class Exits
 		if((reverseExit!=null)&&(opExit!=null)&&(opRoom!=null))
 		{
 			int revDirCode=Directions.getOpDirectionCode(direction);
-			if(opRoom.exits()[revDirCode]==reverseExit)
+			if(opRoom.rawExits()[revDirCode]==reverseExit)
 			{
-				opRoom.exits()[revDirCode]=(Exit)thisExit.copyOf();
+				opRoom.rawExits()[revDirCode]=(Exit)thisExit.copyOf();
 				ExternalPlay.DBUpdateExits(opRoom);
 			}
 		}
@@ -69,9 +77,9 @@ public class Exits
 		if((reverseExit==null)&&(opExit==null)&&(opRoom!=null))
 		{
 			int revDirCode=Directions.getOpDirectionCode(direction);
-			if((opRoom.exits()[revDirCode]==null)&&(opRoom.doors()[revDirCode]==mob.location()))
+			if((opRoom.rawExits()[revDirCode]==null)&&(opRoom.rawDoors()[revDirCode]==mob.location()))
 			{
-				opRoom.exits()[revDirCode]=(Exit)thisExit.copyOf();
+				opRoom.rawExits()[revDirCode]=(Exit)thisExit.copyOf();
 				ExternalPlay.DBUpdateExits(opRoom);
 			}
 		}
@@ -82,6 +90,12 @@ public class Exits
 	public void modify(MOB mob, Vector commands)
 		throws IOException
 	{
+		if(mob.location() instanceof GridLocaleChild)
+		{
+			mob.tell("This command is invalid from with a GridLocaleChild room.");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
 		if(commands.size()<4)
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] ([NEW MISC TEXT])\n\r");
@@ -96,7 +110,7 @@ public class Exits
 			return;
 		}
 
-		Exit thisExit=mob.location().exits()[direction];
+		Exit thisExit=mob.location().rawExits()[direction];
 		if(thisExit==null)
 		{
 			mob.tell("You have failed to specify a valid exit '"+((String)commands.elementAt(2))+"'.\n\r");
@@ -124,7 +138,7 @@ public class Exits
 			Room room=(Room)CMMap.map.elementAt(m);
 			for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
 			{
-				Exit exit=room.exits()[e2];
+				Exit exit=room.rawExits()[e2];
 				if((exit!=null)&&(exit==thisExit))
 				{
 					ExternalPlay.DBUpdateExits(room);
@@ -138,6 +152,12 @@ public class Exits
 
 	public void destroy(MOB mob, Vector commands)
 	{
+		if(mob.location() instanceof GridLocaleChild)
+		{
+			mob.tell("This command is invalid from with a GridLocaleChild room.");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
 		if(commands.size()<3)
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY EXIT [DIRECTION]\n\r");
@@ -159,7 +179,7 @@ public class Exits
 			return;
 
 		}
-		mob.location().exits()[direction]=null;
+		mob.location().rawExits()[direction]=null;
 		ExternalPlay.DBUpdateExits(mob.location());
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();

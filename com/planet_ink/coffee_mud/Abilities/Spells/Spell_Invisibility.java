@@ -43,6 +43,7 @@ public class Spell_Invisibility extends Spell
 	 * from the given Environmental source */
 	public void affect(Affect affect)
 	{
+		super.affect(affect);
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;

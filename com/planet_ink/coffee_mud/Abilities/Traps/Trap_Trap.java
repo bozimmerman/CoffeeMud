@@ -219,8 +219,8 @@ public class Trap_Trap extends StdAbility implements Trap
 			myPitUp.baseEnvStats().setDisposition(myPitUp.baseEnvStats().disposition()|EnvStats.IS_DARK);
 			myPitUp.setDisplayText("Inside a dark pit");
 			myPitUp.setDescription("The walls here are slick and tall.  The trap door has already closed.");
-			myPitUp.exits()[Directions.UP]=CMClass.getExit("StdLockedDoorway");
-			myPitUp.doors()[Directions.UP]=mob.location();
+			myPitUp.rawExits()[Directions.UP]=CMClass.getExit("StdLockedDoorway");
+			myPitUp.rawDoors()[Directions.UP]=mob.location();
 			myPitUp.recoverEnvStats();
 
 			myPit=CMClass.getLocale("StdRoom");
@@ -228,8 +228,8 @@ public class Trap_Trap extends StdAbility implements Trap
 			myPit.baseEnvStats().setDisposition(myPit.baseEnvStats().disposition()|EnvStats.IS_DARK);
 			myPit.setDisplayText("Inside a dark pit");
 			myPit.setDescription("The walls here are slick and tall.  You can barely see the closed trap door well above you.");
-			myPit.exits()[Directions.UP]=CMClass.getExit("StdOpenDoorway");
-			myPit.doors()[Directions.UP]=myPitUp;
+			myPit.rawExits()[Directions.UP]=CMClass.getExit("StdOpenDoorway");
+			myPit.rawDoors()[Directions.UP]=myPitUp;
 			myPitUp.recoverEnvStats();
 
 			CMMap.map.addElement(myPit);

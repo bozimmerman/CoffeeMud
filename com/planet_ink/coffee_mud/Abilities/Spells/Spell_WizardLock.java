@@ -95,7 +95,7 @@ public class Spell_WizardLock extends Spell
 		Environmental target=null;
 		int dirCode=Directions.getGoodDirectionCode(targetName);
 		if(dirCode>=0)
-			target=mob.location().exits()[dirCode];
+			target=mob.location().getExitInDir(dirCode);
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands);
 		if(target==null) return false;

@@ -349,7 +349,7 @@ public class Generic
 				if(xxV==null) return unpackErr("Room","null 'exit'"+" in room "+newRoom.ID());
 				exit=(Exit)exit.newInstance();
 				exit.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(xxV,"EXDAT")));
-				newRoom.exits()[dir]=exit;
+				newRoom.rawExits()[dir]=exit;
 			}
 			else
 				exit=(Exit)exit.newInstance();
@@ -358,10 +358,10 @@ public class Generic
 			{
 				Room link=CMMap.getRoom(doorID);
 				if(link!=null)
-					newRoom.doors()[dir]=link;
+					newRoom.rawDoors()[dir]=link;
 				else
 				{
-					newRoom.exits()[dir]=exit; // get will get the fake one too!
+					newRoom.rawExits()[dir]=exit; // get will get the fake one too!
 					exit.setExitParams(exit.doorName(),doorID,exit.openWord(),exit.closedText());
 				}
 			}
@@ -374,18 +374,18 @@ public class Generic
 			Room room=(Room)CMMap.map.elementAt(m);
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
-				Exit exit=room.exits()[d];
+				Exit exit=room.rawExits()[d];
 				if((exit!=null)&&(exit.closeWord().equalsIgnoreCase(newRoom.ID())))
 				{
 					Exit newExit=(Exit)exit.newInstance();
 					exit.setExitParams(exit.doorName(),newExit.closeWord(),exit.openWord(),exit.closedText());
-					room.doors()[d]=newRoom;
+					room.rawDoors()[d]=newRoom;
 					changed=true;
 				}
 				else
-				if((room.doors()[d]!=null)&&(room.doors()[d].ID().equals(newRoom.ID())))
+				if((room.rawDoors()[d]!=null)&&(room.rawDoors()[d].ID().equals(newRoom.ID())))
 				{
-					room.doors()[d]=newRoom;
+					room.rawDoors()[d]=newRoom;
 					changed=true;
 				}
 			}
@@ -558,8 +558,8 @@ public class Generic
 		buf.append("<ROOMEXITS>");
 		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
 		{
-			Room door=room.doors()[e];
-			Exit exit=room.exits()[e];
+			Room door=room.rawDoors()[e];
+			Exit exit=room.rawExits()[e];
 			if((door!=null)||(exit!=null))
 			{
 				buf.append("<REXIT>");

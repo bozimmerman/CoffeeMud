@@ -4,6 +4,29 @@ import java.util.*;
 
 public interface Room extends Environmental
 {
+	public final static int INDOORS=128;
+	
+	public final static int DOMAIN_OUTDOORS_CITY=0;
+	public final static int DOMAIN_OUTDOORS_WOODS=1;
+	public final static int DOMAIN_OUTDOORS_ROCKS=2;
+	public final static int DOMAIN_OUTDOORS_PLAINS=3;
+	public final static int DOMAIN_OUTDOORS_UNDERWATER=4;
+	public final static int DOMAIN_OUTDOORS_AIR=5;
+	public final static int DOMAIN_OUTDOORS_WATERSURFACE=6;
+	
+	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
+	public final static int DOMAIN_INDOORS_WOOD=INDOORS+1;
+	public final static int DOMAIN_INDOORS_CAVE=INDOORS+2;
+	public final static int DOMAIN_INDOORS_MAGIC=INDOORS+3;
+	
+	public final static int CONDITION_NORMAL=0;
+	public final static int CONDITION_WET=1;
+	public final static int CONDITION_HOT=2;
+	public final static int CONDITION_COLD=3;
+	
+	public int domainType();
+	public int domainConditions();
+	
 	public void setID(String newID);
 	public String objectID();
 	public void startItemRejuv();
@@ -12,10 +35,12 @@ public interface Room extends Environmental
 	public Area getArea();
 	public void setArea(Area newArea);
 	
-	public Exit[] exits();
-	public Room[] doors();
+	public Exit[] rawExits();
+	public Room[] rawDoors();
 	public Exit getReverseExit(int direction);
 	public Exit getPairedExit(int direction);
+	public Room getRoomInDir(int direction);
+	public Exit getExitInDir(int direction);
 	
 	public int pointsPerMove();
 	public void look(MOB mob);
@@ -57,27 +82,5 @@ public interface Room extends Environmental
 	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName);
 	
 	
-	public int domainType();
-	public int domainConditions();
 	
-	
-	public final static int INDOORS=128;
-	
-	public final static int DOMAIN_OUTDOORS_CITY=0;
-	public final static int DOMAIN_OUTDOORS_WOODS=1;
-	public final static int DOMAIN_OUTDOORS_ROCKS=2;
-	public final static int DOMAIN_OUTDOORS_PLAINS=3;
-	public final static int DOMAIN_OUTDOORS_UNDERWATER=4;
-	public final static int DOMAIN_OUTDOORS_AIR=5;
-	public final static int DOMAIN_OUTDOORS_WATERSURFACE=6;
-	
-	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
-	public final static int DOMAIN_INDOORS_WOOD=INDOORS+1;
-	public final static int DOMAIN_INDOORS_CAVE=INDOORS+2;
-	public final static int DOMAIN_INDOORS_MAGIC=INDOORS+3;
-	
-	public final static int CONDITION_NORMAL=0;
-	public final static int CONDITION_WET=1;
-	public final static int CONDITION_HOT=2;
-	public final static int CONDITION_COLD=3;
 }

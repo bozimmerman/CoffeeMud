@@ -20,8 +20,8 @@ public class BasicSenses
 			int dirCode=Directions.getGoodDirectionCode(ID);
 			if(dirCode>=0)
 			{
-				Room room=mob.location().doors()[dirCode];
-				Exit exit=mob.location().exits()[dirCode];
+				Room room=mob.location().getRoomInDir(dirCode);
+				Exit exit=mob.location().getExitInDir(dirCode);
 				if((room!=null)&&(exit!=null))
 					thisThang=exit;
 				else

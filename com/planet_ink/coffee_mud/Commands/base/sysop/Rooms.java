@@ -10,38 +10,44 @@ public class Rooms
 	private void exitifyNewPortal(MOB mob, Room room, int direction)
 	{
 
-		Room opRoom=mob.location().doors()[direction];
+		Room opRoom=mob.location().rawDoors()[direction];
 		if((opRoom!=null)&&(opRoom.ID().length()==0))
 			opRoom=null;
 		Room reverseRoom=null;
 		if(opRoom!=null)
-			reverseRoom=opRoom.doors()[Directions.getOpDirectionCode(direction)];
+			reverseRoom=opRoom.rawDoors()[Directions.getOpDirectionCode(direction)];
 
 		if((reverseRoom!=null)&&(reverseRoom==mob.location()))
 			mob.tell("Opposite room already exists and heads this way.  One-way link created.");
 
 		if(opRoom!=null)
-			mob.location().doors()[direction]=null;
+			mob.location().rawDoors()[direction]=null;
 
-		mob.location().doors()[direction]=room;
-		Exit thisExit=mob.location().exits()[direction];
+		mob.location().rawDoors()[direction]=room;
+		Exit thisExit=mob.location().rawExits()[direction];
 		if(thisExit==null)
 		{
 			thisExit=CMClass.getExit("StdOpenDoorway");
-			mob.location().exits()[direction]=thisExit;
+			mob.location().rawExits()[direction]=thisExit;
 		}
 		ExternalPlay.DBUpdateExits(mob.location());
 
-		if(room.doors()[Directions.getOpDirectionCode(direction)]==null)
+		if(room.rawDoors()[Directions.getOpDirectionCode(direction)]==null)
 		{
-			room.doors()[Directions.getOpDirectionCode(direction)]=mob.location();
-			room.exits()[Directions.getOpDirectionCode(direction)]=thisExit;
+			room.rawDoors()[Directions.getOpDirectionCode(direction)]=mob.location();
+			room.rawExits()[Directions.getOpDirectionCode(direction)]=thisExit;
 			ExternalPlay.DBUpdateExits(room);
 		}
 	}
 
 	public void create(MOB mob, Vector commands)
 	{
+		if(mob.location() instanceof GridLocaleChild)
+		{
+			mob.tell("This command is invalid from with a GridLocaleChild room.");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
 		if(commands.size()<4)
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ROOM [DIRECTION] [ROOM TYPE]\n\r");
@@ -98,11 +104,16 @@ public class Rooms
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-
 		int direction=Directions.getDirectionCode(Util.combine(commands,2));
 		if(direction<0)
 		{
 			mob.tell("You have failed to specify a direction.  Try N, S, E, W, mob or D.\n\r");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
+		if(mob.location() instanceof GridLocaleChild)
+		{
+			mob.tell("This command is invalid from with a GridLocaleChild room.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -264,6 +275,12 @@ public class Rooms
 	public void modify(MOB mob, Vector commands)
 		throws Exception
 	{
+		if(mob.location() instanceof GridLocaleChild)
+		{
+			mob.tell("This command is invalid from with a GridLocaleChild room.");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
 		if(commands.size()==2)
 		{
 			// too dangerous
@@ -321,7 +338,7 @@ public class Rooms
 							Room thisRoom=(Room)CMMap.map.elementAt(m);
 							for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
 							{
-								Room thatRoom=thisRoom.doors()[dir];
+								Room thatRoom=thisRoom.rawDoors()[dir];
 								if(thatRoom==mob.location())
 								{
 									ExternalPlay.DBUpdateExits(thisRoom);
@@ -394,14 +411,14 @@ public class Rooms
 			boolean changes=false;
 			for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
 			{
-				Room thatRoom=thisRoom.doors()[dir];
+				Room thatRoom=thisRoom.rawDoors()[dir];
 				if(thatRoom==deadRoom)
 				{
-					thisRoom.doors()[dir]=null;
+					thisRoom.rawDoors()[dir]=null;
 					changes=true;
-					if((thisRoom.exits()[dir]!=null)&&(thisRoom.exits()[dir].isGeneric()))
+					if((thisRoom.rawExits()[dir]!=null)&&(thisRoom.rawExits()[dir].isGeneric()))
 					{
-						Exit GE=(Exit)thisRoom.exits()[dir];
+						Exit GE=(Exit)thisRoom.rawExits()[dir];
 						GE.setExitParams(GE.doorName(),deadRoom.ID(),GE.openWord(),GE.closedText());
 					}
 				}
@@ -503,8 +520,8 @@ public class Rooms
 		}
 		else
 		{
-			mob.location().doors()[direction]=null;
-			mob.location().exits()[direction]=null;
+			mob.location().rawDoors()[direction]=null;
+			mob.location().rawExits()[direction]=null;
 			ExternalPlay.DBUpdateExits(mob.location());
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
 			Log.sysOut("Rooms",mob.ID()+" unlinked direction "+Directions.getDirectionName(direction)+" from room "+mob.location().ID()+".");

@@ -48,7 +48,7 @@ public class Skill_Swim extends StdAbility
 		Room r2=mob.location();
 		if((r2==null)||((r2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(r2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
 		{
-			Room r=mob.location().doors()[dirCode];
+			Room r=mob.location().getRoomInDir(dirCode);
 			if((r==null)||((r.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(r.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
 			{
 				mob.tell("There is no water to swim on that way.");

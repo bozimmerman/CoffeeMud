@@ -41,8 +41,8 @@ public class Prayer_SenseLife extends Prayer
 		String dirs="";
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			Room R=mob.location().doors()[d];
-			Exit E=mob.location().exits()[d];
+			Room R=mob.location().getRoomInDir(d);
+			Exit E=mob.location().getExitInDir(d);
 			if((R!=null)&&(E!=null))
 			{
 				if(R.numInhabitants()>0)

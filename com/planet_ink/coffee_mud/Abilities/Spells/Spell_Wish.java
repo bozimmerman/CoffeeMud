@@ -359,7 +359,7 @@ public class Spell_Wish extends Spell
 				Room newRoom=null;
 				int dir=Directions.getGoodDirectionCode((String)wishV.lastElement());
 				if(dir>=0)
-					newRoom=mob.location().doors()[dir];
+					newRoom=mob.location().getRoomInDir(dir);
 				if(newRoom==null)
 				for(int m=0;m<CMMap.map.size();m++)
 				{

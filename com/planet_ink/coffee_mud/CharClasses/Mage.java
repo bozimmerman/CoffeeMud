@@ -90,6 +90,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_WeaknessCold",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_Darkness",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_Invisibility",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Spell_LightSensitivity",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_DetectHidden",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_PassDoor",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_Fireball",false);
@@ -152,6 +153,7 @@ public class Mage extends StdCharClass
 			// level 16
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_ChainLightening",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_Choke",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Skill_Meditation",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_PredictWeather",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_Cloudkill",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_Web",false);

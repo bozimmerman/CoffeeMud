@@ -27,7 +27,7 @@ public class ClimbableSurface extends StdRoom
 
 		if(affect.amITarget(this)
 		&&(Util.bset(affect.targetCode(),Affect.AFF_MOVEDON))
-		&&(affect.source().fetchAffect("Falling")==null)
+		&&(!Sense.isFalling(affect.source()))
 		&&(!Sense.isClimbing(affect.source()))
 		&&(!Sense.isFlying(affect.source())))
 		{
@@ -52,16 +52,16 @@ public class ClimbableSurface extends StdRoom
 		else
 		if(affect.amITarget(this)
 			&&(Util.bset(affect.targetCode(),Affect.AFF_MOVEDON))
-		    &&(affect.source().fetchAffect("Falling")==null))
+			&&(!Sense.isFalling(affect.source())))
 		{
 			MOB mob=affect.source();
 			if(this.isInhabitant(mob))
 			{
 				if((!Sense.isFlying(mob))
 				&&(!Sense.isClimbing(mob))
-				&&(doors()[Directions.DOWN]!=null)
-				&&(exits()[Directions.DOWN]!=null)
-				&&(exits()[Directions.DOWN].isOpen()))
+				&&(getRoomInDir(Directions.DOWN)!=null)
+				&&(getExitInDir(Directions.DOWN)!=null)
+				&&(getExitInDir(Directions.DOWN).isOpen()))
 				{
 					Ability falling=CMClass.getAbility("Falling");
 					falling.setAffectedOne(null);

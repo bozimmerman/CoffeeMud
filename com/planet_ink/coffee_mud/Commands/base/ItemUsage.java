@@ -667,7 +667,7 @@ public class ItemUsage
 		Environmental openThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)
-			openThis=mob.location().exits()[dirCode];
+			openThis=mob.location().getExitInDir(dirCode);
 		if(openThis==null)
 			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen);
 
@@ -687,7 +687,7 @@ public class ItemUsage
 		Environmental openThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)
-			openThis=mob.location().exits()[dirCode];
+			openThis=mob.location().getExitInDir(dirCode);
 		if(openThis==null)
 			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen);
 

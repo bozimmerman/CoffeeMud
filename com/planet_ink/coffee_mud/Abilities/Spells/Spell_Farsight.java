@@ -68,8 +68,8 @@ public class Spell_Farsight extends Spell
 					}
 					else
 					{
-						Exit exit=thatRoom.exits()[dirCode];
-						Room room=thatRoom.doors()[dirCode];
+						Exit exit=thatRoom.getExitInDir(dirCode);
+						Room room=thatRoom.getRoomInDir(dirCode);
 
 						if((exit==null)||(room==null)||((exit!=null)&&(!Sense.canBeSeenBy(exit,mob)))||((exit!=null)&&(!exit.isOpen())))
 						{

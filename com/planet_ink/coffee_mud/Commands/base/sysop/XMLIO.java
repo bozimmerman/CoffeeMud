@@ -486,14 +486,14 @@ public class XMLIO
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMTEXT",room.text()));
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
-				Room door=room.doors()[d];
-				Exit exit=room.exits()[d];
+				Room door=room.rawDoors()[d];
+				Exit exit=room.rawExits()[d];
 				Exit opExit=null;
 				roomXML.append("<ROOM"+Directions.getDirectionName(d).toUpperCase()+">");
 				if((door!=null)&&(door.ID().length()>0))
 				{
 					roomXML.append(XMLManager.convertXMLtoTag("DOOR",door.ID()));
-					opExit=door.exits()[Directions.getOpDirectionCode(d)];
+					opExit=door.rawExits()[Directions.getOpDirectionCode(d)];
 				}
 				else
 					roomXML.append("<DOOR></DOOR>");
@@ -572,8 +572,8 @@ public class XMLIO
 				String newDoor=null;
 				String newClass=null;
 				String newText=null;
-				Room door=room.doors()[d];
-				Exit exit=room.exits()[d];
+				Room door=room.rawDoors()[d];
+				Exit exit=room.rawExits()[d];
 				Exit opExit=null;
 				if(block.length()>10)
 				{
@@ -585,13 +585,13 @@ public class XMLIO
 					}
 					else
 					if(newDoor.length()==0)
-						room.doors()[d]=null;
+						room.rawDoors()[d]=null;
 					else
 					{
 						Room newRoom=CMMap.getRoom(newDoor);
 						if(newRoom!=null)
 						{
-							room.doors()[d]=newRoom;
+							room.rawDoors()[d]=newRoom;
 							door=newRoom;
 						}
 					}
@@ -608,14 +608,14 @@ public class XMLIO
 								newExit=(Exit)newExit.newInstance();
 								if(door!=null)
 								{
-									opExit=(Exit)door.exits()[Directions.getOpDirectionCode(d)];
+									opExit=(Exit)door.rawExits()[Directions.getOpDirectionCode(d)];
 									if(opExit==exit)
 									{
-										door.exits()[Directions.getOpDirectionCode(d)]=newExit;
+										door.rawExits()[Directions.getOpDirectionCode(d)]=newExit;
 										ExternalPlay.DBUpdateExits(door);
 									}
 								}
-								room.exits()[d]=newExit;
+								room.rawExits()[d]=newExit;
 								exit=newExit;
 							}
 						}
@@ -626,7 +626,7 @@ public class XMLIO
 					}
 					else
 					{
-						room.exits()[d]=null;
+						room.rawExits()[d]=null;
 						exit=null;
 					}
 

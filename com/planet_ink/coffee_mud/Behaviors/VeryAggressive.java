@@ -35,8 +35,8 @@ public class VeryAggressive extends Aggressive
 		int dirCode=-1;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			Room room=thisRoom.doors()[d];
-			Exit exit=thisRoom.exits()[d];
+			Room room=thisRoom.getRoomInDir(d);
+			Exit exit=thisRoom.getExitInDir(d);
 			if((room!=null)&&(exit!=null)&&(room.getArea().name().equals(thisRoom.getArea().name())))
 			{
 				if(exit.isOpen())

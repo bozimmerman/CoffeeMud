@@ -68,8 +68,8 @@ public class Movement
 		if(mob==null) return false;
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return false;
-		Room destRoom=thisRoom.doors()[directionCode];
-		Exit exit=thisRoom.exits()[directionCode];
+		Room destRoom=thisRoom.getRoomInDir(directionCode);
+		Exit exit=thisRoom.getExitInDir(directionCode);
 		if(destRoom==null)
 		{
 			mob.tell("You can't go that way.");
@@ -238,7 +238,7 @@ public class Movement
 			{
 				for(int i=0;i<7;i++)
 				{
-					Exit thisExit=mob.location().exits()[i];
+					Exit thisExit=mob.location().getExitInDir(i);
 					if(thisExit!=null)
 					{
 						if(thisExit.isOpen())
@@ -280,7 +280,7 @@ public class Movement
 		Environmental openThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)
-			openThis=mob.location().exits()[dirCode];
+			openThis=mob.location().getExitInDir(dirCode);
 		if(openThis==null)
 			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen);
 
@@ -307,7 +307,7 @@ public class Movement
 		Environmental unlockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
 		if(dirCode>=0)
-			unlockThis=mob.location().exits()[dirCode];
+			unlockThis=mob.location().getExitInDir(dirCode);
 		if(unlockThis==null)
 			unlockThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatTounlock);
 
@@ -334,7 +334,7 @@ public class Movement
 		Environmental closeThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatToClose);
 		if(dirCode>=0)
-			closeThis=mob.location().exits()[dirCode];
+			closeThis=mob.location().getExitInDir(dirCode);
 		if(closeThis==null)
 			closeThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToClose);
 
@@ -368,7 +368,7 @@ public class Movement
 	{
 		if(testCode>=0) return testCode;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-			if(room.exits()[d]==exit) return d;
+			if(room.getExitInDir(d)==exit) return d;
 		return -1;
 	}
 
@@ -403,7 +403,7 @@ public class Movement
 		Environmental lockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTolock);
 		if(dirCode>=0)
-			lockThis=mob.location().exits()[dirCode];
+			lockThis=mob.location().getExitInDir(dirCode);
 		if(lockThis==null)
 			lockThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatTolock);
 

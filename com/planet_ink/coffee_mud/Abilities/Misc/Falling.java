@@ -63,9 +63,9 @@ public class Falling extends StdAbility
 				return false;
 			}
 			else
-			if((mob.location().doors()[direction]==null)
-			||(mob.location().exits()[direction]==null)
-			||(!mob.location().exits()[direction].isOpen()))
+			if((mob.location().getRoomInDir(direction)==null)
+			||(mob.location().getExitInDir(direction)==null)
+			||(!mob.location().getExitInDir(direction).isOpen()))
 			{
 				if(reversed()) 
 					return true;
@@ -89,9 +89,9 @@ public class Falling extends StdAbility
 				temporarilyDisable=true;
 				ExternalPlay.move(mob,direction,false);
 				temporarilyDisable=false;
-				if((mob.location().doors()[direction]==null)
-				||(mob.location().exits()[direction]==null)
-				||(!mob.location().exits()[direction].isOpen()))
+				if((mob.location().getRoomInDir(direction)==null)
+				||(mob.location().getExitInDir(direction)==null)
+				||(!mob.location().getExitInDir(direction).isOpen()))
 				{
 					if(reversed()) 
 						return true;
@@ -120,18 +120,11 @@ public class Falling extends StdAbility
 			}
 			else
 			{
-				Room nextRoom=room.doors()[direction];
+				Room nextRoom=room.getRoomInDir(direction);
 				if((nextRoom!=null)
-				&&(room.exits()[direction]!=null)
-				&&(room.exits()[direction].isOpen()))
+				&&(room.getExitInDir(direction)!=null)
+				&&(room.getExitInDir(direction).isOpen()))
 				{
-					if((nextRoom instanceof GridLocale)
-					&&(!(nextRoom instanceof GridLocaleChild)))
-					{
-						nextRoom=((GridLocale)nextRoom).getAltRoomFrom(room);
-						if(nextRoom==null) 
-							nextRoom=room.doors()[direction];
-					}
 					room.show(invoker,null,Affect.MSG_OK_ACTION,item.name()+" falls "+addStr+".");
 					Vector V=new Vector();
 					recursiveRoomItems(V,item,room);
@@ -197,6 +190,12 @@ public class Falling extends StdAbility
 		return true;
 	}
 
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		if((affectableStats.disposition()&EnvStats.IS_FLYING)==0)
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FALLING);
+	}
 	public void setAffectedOne(Environmental being)
 	{
 		if(being instanceof Room)

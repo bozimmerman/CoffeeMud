@@ -79,6 +79,8 @@ public class Grid extends StdRoom implements GridLocale
 		int oldDirCode=-1;
 		if(loc==null) return null;
 
+		if(subMap==null) buildGrid();
+		
 		if(loc instanceof GridLocaleChild)
 			loc=((GridLocaleChild)loc).parent();
 
@@ -99,12 +101,12 @@ public class Grid extends StdRoom implements GridLocale
 		if(room==null) return;
 		int opCode=Directions.getOpDirectionCode(dirCode);
 		Exit o=(Exit)CMClass.getExit("Open").newInstance();
-		if(room.doors()[dirCode]!=null) return;
-		room.doors()[dirCode]=loc;
-		room.exits()[dirCode]=o;
-		if(loc.doors()[opCode]!=null) return;
-		loc.doors()[opCode]=room;
-		loc.exits()[opCode]=o;
+		if(room.rawDoors()[dirCode]!=null) return;
+		room.rawDoors()[dirCode]=loc;
+		room.rawExits()[dirCode]=o;
+		if(loc.rawDoors()[opCode]!=null) return;
+		loc.rawDoors()[opCode]=room;
+		loc.rawExits()[opCode]=o;
 	}
 
 	public Room findCenterRoom(int dirCode)
@@ -177,7 +179,7 @@ public class Grid extends StdRoom implements GridLocale
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			Room dirRoom=this.doors()[d];
+			Room dirRoom=this.rawDoors()[d];
 			if(dirRoom!=null)
 			{
 				this.alts[d]=this.findCenterRoom(d);
@@ -288,8 +290,6 @@ public class Grid extends StdRoom implements GridLocale
 		if((affect.targetMinor()==affect.TYP_ENTER)
 		&&(affect.target()==this))
 		{
-			if(this.subMap==null)
-				this.buildGrid();
 			MOB mob=affect.source();
 			if((mob.location()!=null)&&(mob.location().ID().length()>0))
 			{

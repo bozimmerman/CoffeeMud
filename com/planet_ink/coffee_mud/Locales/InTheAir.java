@@ -24,6 +24,18 @@ public class InTheAir extends StdRoom
 
 	public static boolean isOkAffect(Room room, Affect affect)
 	{
+		if((affect.targetMinor()==affect.TYP_ENTER)&&(affect.amITarget(room)))
+		{
+			MOB mob=affect.source();
+			if((!Sense.isFlying(mob))
+			&&(!Sense.isFalling(mob))
+			&&((mob.riding()==null)||(!Sense.isFlying(mob.riding()))))
+			{
+				mob.tell("You can't fly.");
+				return false;
+			}
+		}
+		
 		boolean foundReversed=false;
 		boolean foundNormal=false;
 		Vector needToFall=new Vector();
@@ -80,20 +92,6 @@ public class InTheAir extends StdRoom
 			falling.setProfficiency(avg);
 			falling.setAffectedOne(room);
 			falling.invoke(null,null,E,true);
-		}
-		
-		if((affect.targetMinor()==affect.TYP_ENTER)
-		&&(affect.target()==room))
-		{
-			MOB mob=affect.source();
-			if(mob.location()!=room.doors()[Directions.UP])
-				if((!Sense.isFlying(mob))
-				&&(mob.fetchAffect("Falling")==null)
-				&&((mob.riding()==null)||(!Sense.isFlying(mob.riding()))))
-				{
-					mob.tell("You can't fly.");
-					return false;
-				}
 		}
 		return true;
 	}

@@ -38,11 +38,11 @@ public class Mobile extends ActiveTicker
 			while((tries++<10)&&(direction<0))
 			{
 				direction=(int)Math.round(Math.floor(Math.random()*6));
-				Room otherRoom=thisRoom.doors()[direction];
-				Exit otherExit=thisRoom.exits()[direction];
+				Room otherRoom=thisRoom.getRoomInDir(direction);
+				Exit otherExit=thisRoom.getExitInDir(direction);
 				if((otherRoom!=null)&&(otherExit!=null))
 				{
-					Exit opExit=otherRoom.exits()[Directions.getOpDirectionCode(direction)];
+					Exit opExit=otherRoom.getExitInDir(Directions.getOpDirectionCode(direction));
 					for(int a=0;a<otherExit.numAffects();a++)
 					{
 						Ability aff=otherExit.fetchAffect(a);

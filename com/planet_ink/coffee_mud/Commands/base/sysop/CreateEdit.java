@@ -288,7 +288,7 @@ public class CreateEdit
 			if((Directions.getGoodDirectionCode(allWord)>=0)||(thang instanceof Exit))
 			{
 				if(Directions.getGoodDirectionCode(allWord)>=0)
-					thang=mob.location().exits()[Directions.getGoodDirectionCode(allWord)];
+					thang=mob.location().rawExits()[Directions.getGoodDirectionCode(allWord)];
 
 				if(thang!=null)
 				{

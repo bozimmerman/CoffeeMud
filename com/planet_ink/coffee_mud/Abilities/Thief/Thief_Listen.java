@@ -45,12 +45,12 @@ public class Thief_Listen extends ThiefSkill
 			room=mob.location();
 		else
 		{
-			if((mob.location().doors()[dirCode]==null)||(mob.location().exits()[dirCode]==null))
+			if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 			{
 				mob.tell("Listen which direction?");
 				return false;
 			}
-			room=mob.location().doors()[dirCode];
+			room=mob.location().getRoomInDir(dirCode);
 			if((room.domainType()&Room.INDOORS)==0)
 			{
 				mob.tell("You can only listen indoors.");

@@ -36,7 +36,7 @@ public class EndlessSky extends Grid
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			Room dirRoom=this.doors()[d];
+			Room dirRoom=rawDoors()[d];
 			if(dirRoom!=null)
 			{
 				if(d!=Directions.DOWN)
@@ -96,7 +96,7 @@ public class EndlessSky extends Grid
 				}
 			}
 		buildFinalLinks();
-		if((subMap[0][0]!=null)&&(subMap[0][0].doors()[Directions.UP]==null))
+		if((subMap[0][0]!=null)&&(subMap[0][0].rawDoors()[Directions.UP]==null))
 			linkRoom(subMap[0][0],subMap[1][0],Directions.UP);
 		for(int y=0;y<subMap[0].length;y++)
 			linkRoom(subMap[0][y],subMap[subMap.length-1][y],Directions.WEST);

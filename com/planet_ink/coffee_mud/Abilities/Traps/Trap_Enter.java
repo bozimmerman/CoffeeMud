@@ -23,7 +23,8 @@ public class Trap_Enter extends Trap_Trap
 		if(!super.okAffect(affect))
 			return false;
 
-		if((affect.amITarget(affected))||((affect.tool()!=null)&&(affect.tool()==affected)))
+		   if((affect.amITarget(affected))
+		   ||((affect.tool()!=null)&&(affect.tool()==affected)))
 		{
 			if((affect.targetMinor()==Affect.TYP_ENTER)
 			||(affect.targetMinor()==Affect.TYP_LEAVE)

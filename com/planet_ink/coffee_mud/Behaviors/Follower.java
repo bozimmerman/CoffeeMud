@@ -65,7 +65,7 @@ public class Follower extends StdBehavior
 			if(!canFreelyBehaveNormal(ticking)) return;
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
-			Room otherRoom=(Room)thisRoom.doors()[direction];
+			Room otherRoom=(Room)thisRoom.getRoomInDir(direction);
 
 			if(otherRoom!=null)
 			{

@@ -51,23 +51,20 @@ public class Ranger_Track extends StdAbility
 		int trailLength=Integer.MAX_VALUE;
 		for(int dirs=0;dirs<Directions.NUM_DIRECTIONS;dirs++)
 		{
-			Room thisRoom=location.doors()[dirs];
-			Exit thisExit=location.exits()[dirs];
+			Room thisRoom=location.getRoomInDir(dirs);
+			Exit thisExit=location.getExitInDir(dirs);
 			if((thisRoom!=null)&&(thisExit!=null))
 			{
-				if(thisRoom instanceof GridLocale)
-					thisRoom=((GridLocale)thisRoom).getAltRoomFrom(location);
-				if(thisRoom!=null)
-					for(int trail=0;trail<theTrail.size();trail++)
+				for(int trail=0;trail<theTrail.size();trail++)
+				{
+					if((theTrail.elementAt(trail)==thisRoom)
+					&&(trail<trailLength))
 					{
-						if((theTrail.elementAt(trail)==thisRoom)
-						&&(trail<trailLength))
-						{
-							bestDirection=dirs;
-							trailLength=trail;
-							nextRoom=thisRoom;
-						}
+						bestDirection=dirs;
+						trailLength=trail;
+						nextRoom=thisRoom;
 					}
+				}
 			}
 		}
 		return bestDirection;
@@ -137,8 +134,8 @@ public class Ranger_Track extends StdAbility
 		for(int x=0;x<dirVec.size();x++)
 		{
 			int i=((Integer)dirVec.elementAt(x)).intValue();
-			Room nextRoom=location.doors()[i];
-			Exit nextExit=location.exits()[i];
+			Room nextRoom=location.getRoomInDir(i);
+			Exit nextExit=location.getExitInDir(i);
 			if((nextRoom!=null)&&(nextExit!=null))
 			{
 				MOB mobCheck=nextRoom.fetchInhabitant(mobName);

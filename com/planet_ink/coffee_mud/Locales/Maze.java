@@ -23,7 +23,7 @@ public class Maze extends Grid
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			Room dirRoom=this.doors()[d];
+			Room dirRoom=rawDoors()[d];
 			if(dirRoom!=null)
 			{
 				alts[d]=findCenterRoom(d);
