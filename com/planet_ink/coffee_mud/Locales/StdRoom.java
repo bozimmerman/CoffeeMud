@@ -720,7 +720,7 @@ public class StdRoom
 
 	public int pointsPerMove()
 	{
-		return 3;
+		return 2;
 	}
 
 	public void addAffect(Ability to)

@@ -41,6 +41,13 @@ public class Spell_LocateObject extends Spell
 			mob.tell("Locate what?");
 			return false;
 		}
+		
+		int levelFind=0;
+		if((mob.isASysOp())&&(Util.s_int((String)commands.lastElement())>0))
+		{
+			levelFind=Util.s_int((String)commands.lastElement());
+			commands.remove(commands.lastElement());
+		}
 		String what=Util.combine(commands,0);
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -67,7 +74,12 @@ public class Spell_LocateObject extends Spell
 						if((item==null)&&(inhab instanceof ShopKeeper))
 							item=((ShopKeeper)inhab).getStock(what);
 						if(item!=null)
-							mob.tell(item.name()+" is being carried by "+inhab.name()+" in a place called '"+room.displayText()+"'.");
+						{
+							if((levelFind==0)
+							||((item.envStats().level()>levelFind-1)
+							 &&(item.envStats().level()<levelFind+1)))
+								mob.tell(item.name()+" is being carried by "+inhab.name()+" in a place called '"+room.displayText()+"'.");
+						}
 					}
 				}
 			}

@@ -1956,7 +1956,10 @@ public class Import
 						case 15: 	break;
 						case 16: 	break;
 						case 17:
-							adjuster.setMiscText(adjuster.text()+" armor"+((val>=0)?("+"+(val*5)):(""+(val*5))));
+							if((val>0)&&(I instanceof Armor))
+								I.baseEnvStats().setArmor(I.baseEnvStats().armor()+(val*5));
+							else
+								adjuster.setMiscText(adjuster.text()+" armor"+((val>=0)?("+"+(val*5)):(""+(val*5))));
 							break;
 						case 18:
 							if((val>0)&&(I instanceof Weapon))

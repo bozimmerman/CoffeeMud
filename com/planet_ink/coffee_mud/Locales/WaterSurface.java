@@ -50,6 +50,13 @@ public class WaterSurface extends StdRoom
 					return false;
 				}
 		}
+		else
+		if((affect.sourceMinor()==Affect.TYP_SIT)
+		||(affect.sourceMinor()==Affect.TYP_SLEEP))
+		{
+			affect.source().tell("You cannot rest here.");
+			return false;
+		}
 		return true;
 	}
 
