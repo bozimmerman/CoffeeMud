@@ -2072,6 +2072,7 @@ public class StdMOB implements MOB
 		||((getClanID().length()>0)
 			&&(getClanID().equals(mob.getClanID()))
 		    &&(mob.getClanRole()!=getClanRole())
+		    &&(getClanRole()!=Clan.POS_BOSS)
 			&&((mob.getClanRole()==Clan.POS_LEADER)
 				||(mob.getClanRole()==Clan.POS_BOSS)))
 		||(ExternalPlay.doesOwnThisProperty(mob,getStartRoom())))
