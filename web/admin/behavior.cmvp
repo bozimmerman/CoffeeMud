@@ -1,0 +1,11 @@
+<HTML>
+<HEAD>
+<TITLE>@BehaviorID@</TITLE>
+</HEAD>
+<BODY BGCOLOR=#000066 TEXT=#FFFFFF>
+<H3>@BehaviorID@</H3>
+<PRE>
+@BehaviorData?help@
+</PRE>
+</BODY>
+</HTML>

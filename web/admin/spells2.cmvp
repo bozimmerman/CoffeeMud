@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Spells</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+	function openUp(named)
+	{
+		var strFeatures="top=200,left=50,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+		w=window.open("ability.cmvp?ABILITY="+named,
+		            "Ability",strFeatures, false);
+	}
+	//-->
+	</SCRIPT>
+</head>
+
+<body BGCOLOR=#00FF99>
+<h3>CoffeeMud 3.0 Player Spell Information</h3><P>
+(<a href="spells.cmvp">View the spells by level</a>)<P>
+<BR>
+	<TABLE WIDTH=100% BORDER=1>	@AbilityDomainNext?reset@ @loop@ @AbilityDomainNext@ @LevelNext?reset@ @loop@ @LevelNext@ @AbilityNext?reset@	@loop@ @AbilityNext?spell@ 
+		<TR><TD WIDTH=35% BGCOLOR=GREEN><B><FONT COLOR=WHITE>(@AbilityData?domain@)</FONT></B></TD>
+		<TD WIDTH=5% BGCOLOR=WHITE ALIGN=CENTER><B><FONT COLOR=BLACK>@LevelNumber@</FONT></B></TD>
+		<TD WIDTH=60%>&nbsp;
+		<a href="javascript:openUp('@AbilityID@');"><B>@AbilityName@</B></a> 
+		</TD></TR> @back@ @back@ 
+		<TR><TD COLSPAN=3 BGCOLOR=BLACK><BR></TD></TR>
+		@back@
+	</TABLE>
+</BODY>
+</HTML>

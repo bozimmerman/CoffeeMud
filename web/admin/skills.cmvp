@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Skills</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+	function openUp(named)
+	{
+		var strFeatures="top=200,left=50,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+		w=window.open("ability.cmvp?ABILITY="+named,
+		            "Ability",strFeatures, false);
+	}
+	//-->
+	</SCRIPT>
+</head>
+
+<body BGCOLOR=#00FF99>
+<h3>CoffeeMud 3.0 Player Skill Information</h3><P>
+
+	<TABLE WIDTH=100% BORDER=1> @LevelNext?reset@ 
+	@loop@ @LevelNext@
+	<TR><TD WIDTH=10% ALIGN=TOP BGCOLOR=GREEN><H1><FONT COLOR=WHITE>@LevelNumber@</FONT></H1></TD>
+	<TD WIDTH=90%>@AbilityNext?reset@
+	<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+		@loop@ @AbilityNext?skill&thief skill@ 
+		<TR><TD WIDTH=35%><B>(@AbilityData?domain@)</B></TD>
+		<TD WIDTH=65%>&nbsp;
+		<a href="javascript:openUp('@AbilityID@');"><B>@AbilityName@</B></a> 
+		</TD></TR>
+		@back@
+		</TABLE>
+	</TD>
+	</TR>
+	@back@
+	</TABLE>
+</BODY>
+</HTML>
