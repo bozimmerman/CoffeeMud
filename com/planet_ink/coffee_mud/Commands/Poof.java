@@ -29,7 +29,7 @@ public class Poof extends BaseGenerics
 		{
 			int showNumber=0;
 			String poofIn=genText(mob,mob.playerStats().poofIn(),++showNumber,showFlag,"Poof-in");
-			String poofOut=genText(mob,mob.playerStats().poofIn(),++showNumber,showFlag,"Poof-out");
+			String poofOut=genText(mob,mob.playerStats().poofOut(),++showNumber,showFlag,"Poof-out");
 			mob.playerStats().setPoofs(poofIn,poofOut);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}

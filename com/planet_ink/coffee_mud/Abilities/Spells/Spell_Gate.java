@@ -11,6 +11,7 @@ public class Spell_Gate extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){ return new Spell_Gate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

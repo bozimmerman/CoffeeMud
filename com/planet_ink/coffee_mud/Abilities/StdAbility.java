@@ -373,7 +373,7 @@ public class StdAbility implements Ability, Cloneable
 			return true;
 		}
 		
-		if(CMSecurity.isAllowed(mob,mob.location(),"SUPERSKILL"))
+		if((mob!=null)&&CMSecurity.isAllowed(mob,mob.location(),"SUPERSKILL"))
 		   return true;
 
 		isAnAutoEffect=false;

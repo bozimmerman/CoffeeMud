@@ -1,5 +1,6 @@
 grinder is not done at all in the security stuff
 document security in the archons guide
+do auto-security for log-ins
 resist divination no protect from scry
 scry should not tell you if you are being scryed on
 preload shows spells being invoked on people
