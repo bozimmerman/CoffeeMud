@@ -19,15 +19,17 @@
 	</script>
 </head>
 <BODY>
-<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/editarea.cmvp">
+<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/quickfind.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
 <TABLE WIDTH=90% CELLSPACING=0 CELLPADDING=0 BORDER=0>
 <TR>
 	<TD WIDTH=50% ALIGN=LEFT>
-	<INPUT TYPE=BUTTON VALUE="Quick Find" ONCLICK="Clicked('/grinder/quickfind.cmvp');">
-	<INPUT TYPE=TEXT NAME=QUICKFIND VALUE=""></TD>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<INPUT TYPE=TEXT NAME=QUICKFIND VALUE="">
+	<INPUT TYPE=SUBMIT VALUE="Quick Find" ONCLICK="Clicked('/grinder/quickfind.cmvp');">
+	</TD>
 	<TD WIDTH=40% ALIGN=RIGHT>
 		<INPUT TYPE=BUTTON VALUE="Edit Area" ONCLICK="Clicked('/grinder/editarea.cmvp');">
 		<INPUT TYPE=BUTTON VALUE="Log Out" ONCLICK="Clicked('/index.cmvp');">

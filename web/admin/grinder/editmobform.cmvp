@@ -20,6 +20,11 @@
 			if(ME.selectedIndex>0)
 				ReShow();
 		}
+		function DelItem(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
 		function EditItem(ME)
 		{
 			document.AREAEDIT.ITEM.value=ME;
