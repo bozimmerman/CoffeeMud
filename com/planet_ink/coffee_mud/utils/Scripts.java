@@ -8,8 +8,8 @@ public class Scripts
 	private static String language="en";
 	private static String country="TX";
 	private static Locale currentLocale;
-	private static ResourceBundle messages;
-
+	private static Vector allScripts=null;
+	private static Hashtable scripts=null;
 	
 	public static void setLocale(String lang, String state)
 	{
@@ -19,51 +19,41 @@ public class Scripts
 			language=lang;
 		}
 		currentLocale = new Locale(language, country);
-		messages = ResourceBundle.getBundle("resources/messages", currentLocale);
+		allScripts=Resources.getFileLineVector(Resources.getFile("resources/messages_"+language+"_"+country+".scripts"));
+	}
+
+	public static String[] load(String ID)
+	{
+		if(allScripts==null) setLocale(language,country);
+		if(scripts==null) scripts=new Hashtable();
+		if(scripts.containsKey(ID))
+			return (String[])scripts.get(ID);
+		Vector script=new Vector();
+		boolean reading=false;
+		for(int i=0;i<allScripts.size();i++)
+		{
+			String str=(String)allScripts.elementAt(i);
+			if(str.startsWith("["))
+			{
+				reading=false;
+				if(str.substring(1).startsWith(ID+"]"))
+				   reading=true;
+			}
+			else
+			if(reading)
+				script.addElement(str);
+		}
+		String[] strings=new String[script.size()+1];
+		for(int i=0;i<script.size();i++)
+			strings[i]=(String)script.elementAt(i);
+		scripts.put(ID,strings);
+		return strings;
 	}
 	
-	public static String get(String tag)
-	{
-		if(messages==null) setLocale(language,country);
-		return messages.getString(tag);
-	}
-	
-	public static String get(String tag, String replaceX)
-	{
-		if(messages==null) setLocale(language,country);
-		String msg=messages.getString(tag);
-		if(msg!=null) msg=Util.replaceAll(msg,"@x1",replaceX);
-		else msg="";
-		return msg;
-	}
-	public static String get(String tag, String replaceX, String replaceX2)
-	{
-		if(messages==null) setLocale(language,country);
-		String msg=messages.getString(tag);
-		if(msg!=null)
-		{
-			msg=Util.replaceAll(msg,"@x1",replaceX);
-			msg=Util.replaceAll(msg,"@x2",replaceX2);
-		}
-		else msg="";
-		return msg;
-	}
-	public static String get(String tag, String replaceX, String replaceX2, String replaceX3)
-	{
-		if(messages==null) setLocale(language,country);
-		String msg=messages.getString(tag);
-		if(msg!=null)
-		{
-			msg=Util.replaceAll(msg,"@x1",replaceX);
-			msg=Util.replaceAll(msg,"@x2",replaceX2);
-			msg=Util.replaceAll(msg,"@x3",replaceX3);
-		}
-		else msg="";
-		return msg;
-	}
 	public static void clear()
 	{
-		messages=null;
+		scripts=null;
+		allScripts=null;
 	}
 	
 }

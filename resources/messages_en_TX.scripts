@@ -1,49 +1,50 @@
-All-youdontsee=You don't see '@x1' here.
-Movement-goerr=which direction?\n\rTry north, south, east, west, up, or down.
-Movement-entererr1=Enter what or where? Try EXITS.
-Movement-crawlerr1=Crawl which way?\n\rTry north, south, east, west, up, or down.
-Movement-standandgoerr1=You need to stand up first.
-Movement-moveerr1=You can't go that way.
-Movement-youflee=You flee @x1.
-Movement-sflees=<S-NAME> flee(s) @x1.
-Movement-sfleeswith=<S-NAME> flee(s) with @x1 @x2.
-Movement-srides=<S-NAME> ride(s) @x1 @x2.
-Movement-sridesin=<S-NAME> ride(s) @x1 in from @x2.
-Movement-senter=<S-NAME> @x1 from @x2.
-Movement-sleaves=<S-NAME> @x1 @x2.
-Movement-stwitch=The area to the @x1 shimmers and becomes transparent.
-Movement-tootired=You are too tired.
-Movement-youridden=You are ridden @x1.
-Movement-youride=You ride @x1 @x2.
-Movement-youfalloff=You fall off @x1!
-Movement-youfollow=You follow @x1 @x2.
-Movement-fleeerr1=You can only flee while in combat.
-Movement-fleeerr2=Flee where?!
-Movement-fleeexp=You lose @x1experience points for withdrawing.
-Movement-openerr1=Open what?
-Movement-sopens=<S-NAME> open(s) @x1.
-Movement-unlockerr1=Unlock what?
-Movement-sunlocks=<S-NAME> unlocks(s) @x1.
-Movement-closeerr1=Close what?
-Movement-scloses=<S-NAME> close(s) @x1.
-Movement-lockerr1=Lock what?
-Movement-slocks=<S-NAME> lock(s) @x1.
-Movement-siterr1=You are already sitting!
-Movement-sitson=<S-NAME> sit(s) on @x1.
-Movement-sitmounton=<S-NAME> @x1 @x2.
-Movement-sleeperr1=You are already asleep!
-Movement-sleepson=<S-NAME> sleep(s) on @x1.
-Movement-sleepmounton=<S-NAME> @x1 @x2.
-Movement-sitdown=<S-NAME> sit(s) down and take(s) a rest.
-Movement-sleep=<S-NAME> lay(s) down and take(s) a nap.
-Movement-wakeerr1=You aren't sleeping!?
-Movement-wakeup=<S-NAME> awake(s) and stand(s) up.
-Movement-wakeerr2=@x1 is awake!
-Movement-wakeother=<S-NAME> attempt(s) to wake <T-NAME> up.
-Movement-standerr1=You are already standing!
-Movement-standup=<S-NAME> stand(s) up.
-Movement-mounterr1=@x1 what?
-Movement-mounton=<S-NAME> @x1 <T-NAMESELF>.
-Movement-mounts=<S-NAME> mount(s) <T-NAMESELF>.
-Movement-dismounterr1=But you aren't riding anything?!
-Movement-dismounts=<S-NAME> @x1 <T-NAMESELF>.
+[Movement]
+You don't see '@x1' here.
+Which direction?\n\rTry north, south, east, west, up, or down.
+Enter what or where? Try EXITS.
+Crawl which way?\n\rTry north, south, east, west, up, or down.
+You need to stand up first.
+You can't go that way.
+You flee @x1.
+<S-NAME> flee(s) @x1.
+<S-NAME> flee(s) with @x1 @x2.
+<S-NAME> ride(s) @x1 @x2.
+<S-NAME> ride(s) @x1 in from @x2.
+<S-NAME> @x1 from @x2.
+<S-NAME> @x1 @x2.
+The area to the @x1 shimmers and becomes transparent.
+You are too tired.
+You are ridden @x1.
+You ride @x1 @x2.
+You fall off @x1!
+You follow @x1 @x2.
+You can only flee while in combat.
+Flee where?!
+You lose @x1 experience points for withdrawing.
+Open what?
+<S-NAME> open(s) @x1.
+Unlock what?
+<S-NAME> unlocks(s) @x1.
+Close what?
+<S-NAME> close(s) @x1.
+Lock what?
+<S-NAME> lock(s) @x1.
+You are already sitting!
+<S-NAME> sit(s) on @x1.
+<S-NAME> @x1 @x2.
+You are already asleep!
+<S-NAME> sleep(s) on @x1.
+<S-NAME> @x1 @x2.
+<S-NAME> sit(s) down and take(s) a rest.
+<S-NAME> lay(s) down and take(s) a nap.
+You aren't sleeping!?
+<S-NAME> awake(s) and stand(s) up.
+@x1 is awake!
+<S-NAME> attempt(s) to wake <T-NAME> up.
+You are already standing!
+<S-NAME> stand(s) up.
+@x1 what?
+<S-NAME> @x1 <T-NAMESELF>.
+<S-NAME> mount(s) <T-NAMESELF>.
+But you aren't riding anything?!
+<S-NAME> @x1 <T-NAMESELF>.
