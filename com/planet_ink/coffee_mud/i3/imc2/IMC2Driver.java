@@ -60,8 +60,6 @@ public final class IMC2Driver extends Thread {
     public siteinfo imc_siteinfo = new siteinfo();
     imc_statistics imc_stats = new imc_statistics();
     public int imc_active; /* Connection state */
-	public boolean initialed=false;
-
     long HeartBeat = 0; // elapsed heartbeats
 	call_out c_thread=null;
 	call_in c_thread2=null;
@@ -295,8 +293,6 @@ public final class IMC2Driver extends Thread {
         tracef(8, "IMC2 Network Initializing");
 
         imc_active = IA_UP;
-		initialed=false;
-
         imc_stats.start = imc_now;
         imc_stats.rx_pkts = 0;
         imc_stats.tx_pkts = 0;
@@ -384,7 +380,6 @@ public final class IMC2Driver extends Thread {
 				return true;
 		  }
 		  imc_active = IA_NONE;
-		  initialed=false;
        }
        return false;
     }
@@ -1325,12 +1320,6 @@ public final class IMC2Driver extends Thread {
                             imc_getkey(p, "excluded", ""));
 
         }
-		
-		if(!initialed)
-		{
-			initialed=true;
-			imc_request_keepalive();
-		}
     }
 
     final boolean check_password(String s) {
@@ -1381,7 +1370,6 @@ public final class IMC2Driver extends Thread {
 			if(e.getMessage().toUpperCase().indexOf("CONNECTION")>=0)
 			{
 				imc_active = IA_NONE;
-				initialed=false;
 				tracef(0, "Waiting 20 seconds and try to reconnect.");
 				try 
 				{
@@ -1414,7 +1402,6 @@ public final class IMC2Driver extends Thread {
         catch (Exception e) {
             tracef(0, "write socket error: " + e.toString());
             imc_active = IA_NONE;
-			initialed=false;
             tracef(0, "Waiting 20 seconds and try to reconnect.");
             try {
                 sleep(20000);
