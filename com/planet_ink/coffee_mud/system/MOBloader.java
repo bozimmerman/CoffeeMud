@@ -501,6 +501,7 @@ public class MOBloader
 				Log.errOut("MOB","UpdateFollowers"+sqle);
 			}
 		}
+		DBConnector.DBDone(D);
 	}
 
 	public static void DBDelete(MOB mob)
@@ -590,6 +591,7 @@ public class MOBloader
 				Log.errOut("MOB","UpdateAbilities"+sqle);
 			}
 		}
+		DBConnector.DBDone(D);
 	}
 
 	public static void DBCreateCharacter(MOB mob)
