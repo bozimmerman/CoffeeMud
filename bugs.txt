@@ -1,5 +1,5 @@
-guildmaster cant locksmith a clan room
 move armor restrictions to spells, thief skills, druid chants, make some spells override
+spell casting times
 code something to examine all items and make sure they aren't overboard.
 code something to coffeemudify all the beds 
 GenCharClasses -- zappercheck on quals 

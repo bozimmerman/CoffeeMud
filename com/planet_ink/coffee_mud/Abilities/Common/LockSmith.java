@@ -178,27 +178,11 @@ public class LockSmith extends CommonSkill
 			else
 				woodRequired=5;
 
-			String titleInName="";
-			for(int a=0;a<mob.location().numEffects();a++)
-			{
-				Ability A=mob.location().fetchEffect(a);
-				if((A!=null)&&(A instanceof LandTitle))
-				{ titleInName=((LandTitle)A).landOwner(); break;}
-			}
-			if((!(titleInName.equals(mob.Name())||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().Name())))))
-			   &&(dir>=0))
-			{
-				Room R2=mob.location().getRoomInDir(dir);
-				if(R2!=null)
-				for(int a=0;a<R2.numEffects();a++)
-				{
-					Ability A=R2.fetchEffect(a);
-					if((A!=null)&&(A instanceof LandTitle))
-					{ titleInName=((LandTitle)A).landOwner(); break;}
-				}
-			}
-			if(!(titleInName.equals(mob.Name())
-			   ||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().Name())))))
+			Room otherRoom=(dir>=0)?mob.location().getRoomInDir(dir):null;
+			if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location())
+			   ||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+			   ||((otherRoom!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,otherRoom))
+			   ||((otherRoom!=null)&&(mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),otherRoom)))))
 			{
 				commonTell(mob,"You'll need the permission of the owner to do that.");
 				return false;
