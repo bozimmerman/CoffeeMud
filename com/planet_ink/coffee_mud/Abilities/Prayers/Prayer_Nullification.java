@@ -72,12 +72,7 @@ public class Prayer_Nullification extends Prayer
 				}
 			}
 			else
-			{
-				// it didn't work, but tell everyone you tried.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but <S-HIS-HER> god does not heed.");
-				if(mob.location().okAffect(msg))
-					mob.location().send(mob,msg);
-			}
+				beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but <S-HIS-HER> god does not heed.");
 		}
 
 		// return whether it worked

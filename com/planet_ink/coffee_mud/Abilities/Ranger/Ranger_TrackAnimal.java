@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Ranger_Track extends StdAbility
+public class Ranger_TrackAnimal extends StdAbility
 {
 	private MOB trackingWhom=null;
 	private Vector theTrail=null;
@@ -13,14 +13,14 @@ public class Ranger_Track extends StdAbility
 	public int nextDirection=-2;
 	protected final static int TRACK_ATTEMPTS=25;
 
-	public Ranger_Track()
+	public Ranger_TrackAnimal()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Track";
-		displayText="(tracking)";
+		name="Track Animal";
+		displayText="(tracking an animal)";
 		miscText="";
-		triggerStrings.addElement("TRACK");
+		triggerStrings.addElement("TRACKANIMAL");
 
 		baseEnvStats().setLevel(1);
 
@@ -36,7 +36,7 @@ public class Ranger_Track extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Ranger_Track();
+		return new Ranger_TrackAnimal();
 	}
 
 	public int nextDirectionFromHere(Room location)
@@ -125,7 +125,7 @@ public class Ranger_Track extends StdAbility
 				nextDirection=nextDirectionFromHere(mob.location());
 	}
 
-	public boolean findTheBastard(Room location, String mobName, int tryCode, Vector dirVec)
+	public boolean findTheBastard(Room location, int tryCode, Vector dirVec)
 	{
 		if(lookedIn==null) return false;
 		if(lookedIn.get(location)!=null)
@@ -138,9 +138,9 @@ public class Ranger_Track extends StdAbility
 			Exit nextExit=location.getExitInDir(i);
 			if((nextRoom!=null)&&(nextExit!=null))
 			{
-				MOB mobCheck=nextRoom.fetchInhabitant(mobName);
+				MOB mobCheck=animalHere(nextRoom);
 				if((mobCheck!=null)
-				||(findTheBastard(nextRoom,mobName,tryCode,dirVec)))
+				||(findTheBastard(nextRoom,tryCode,dirVec)))
 				{
 					if(mobCheck!=null)
 						trackingWhom=mobCheck;
@@ -155,9 +155,8 @@ public class Ranger_Track extends StdAbility
 		return false;
 	}
 	
-	public boolean findBastardTheBestWay(Room location, String mobName)
+	public boolean findBastardTheBestWay(Room location)
 	{
-		
 		Vector trailArray[] = new Vector[TRACK_ATTEMPTS];
 		MOB trackArray[] = new MOB[TRACK_ATTEMPTS];
 		
@@ -175,7 +174,7 @@ public class Ranger_Track extends StdAbility
 						continue;
 				dirVec.addElement(new Integer(direction));
 			}
-			findTheBastard(location,mobName,2,dirVec);
+			findTheBastard(location,2,dirVec);
 			trailArray[t]=theTrail;
 			trackArray[t]=trackingWhom;
 		}
@@ -205,6 +204,18 @@ public class Ranger_Track extends StdAbility
 		}
 	}
 
+	public MOB animalHere(Room room)
+	{
+		for(int i=0;i<room.numInhabitants();i++)
+		{
+			MOB mob=room.fetchInhabitant(i);
+			if(mob.charStats().getStat(CharStats.INTELLIGENCE)<2)
+				return mob;
+		}
+		return null;
+	}
+	
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!Sense.aliveAwakeMobile(mob,false))
@@ -216,10 +227,11 @@ public class Ranger_Track extends StdAbility
 			return false;
 		}
 
-		Ranger_Track oldTrack=(Ranger_Track)mob.fetchAffect(this.ID());
+		Ability oldTrack=mob.fetchAffect("Ranger_Track");
+		if(oldTrack==null) oldTrack=mob.fetchAffect("Ranger_TrackAnimal");
 		if(oldTrack!=null)
 		{
-			mob.tell(mob,null,"You stop tracking "+trackingWhom.name()+".");
+			mob.tell(mob,null,"You stop tracking.");
 			oldTrack.unInvoke();
 		}
 
@@ -230,14 +242,7 @@ public class Ranger_Track extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		String mobName=Util.combine(commands,0);
-		if(mobName.length()==0)
-		{
-			mob.tell("Track whom?");
-			return false;
-		}
-
-		if(mob.location().fetchInhabitant(mobName)!=null)
+		if(animalHere(mob.location())!=null)
 		{
 			mob.tell("Try 'look'.");
 			return false;
@@ -246,7 +251,7 @@ public class Ranger_Track extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 
 		lookedIn=new Hashtable();
-		findBastardTheBestWay(mob.location(),mobName);
+		findBastardTheBestWay(mob.location());
 
 		if((success)&&(trackingWhom!=null)&&(theTrail!=null))
 		{
@@ -262,7 +267,7 @@ public class Ranger_Track extends StdAbility
 				mob.location().send(mob,msg);
 				invoker=mob;
 				displayText="(tracking "+trackingWhom.name()+")";
-				Ranger_Track newOne=(Ranger_Track)this.copyOf();
+				Ranger_TrackAnimal newOne=(Ranger_TrackAnimal)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();
@@ -270,7 +275,7 @@ public class Ranger_Track extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track "+mobName+", but can't find the trail.");
+			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track an animal, but can't find the trail.");
 
 
 		// return whether it worked

@@ -66,6 +66,13 @@ public class Druid_ShapeShift extends StdAbility
 		}
 	}
 	
+	public String displayText()
+	{
+		if((myRaceCode<0)||(newRace==null))
+			return super.displayText();
+		return "(in "+newRace.name()+" form)";
+	}
+	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

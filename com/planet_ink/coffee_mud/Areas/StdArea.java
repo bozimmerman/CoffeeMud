@@ -431,6 +431,12 @@ public class StdArea implements Area
 		return returnable;
 	}
 	
+	public void forceWeatherTick()
+	{
+		weatherTicker=1;
+		weatherTick();
+	}
+	
 	public void weatherTick()
 	{
 		if((--weatherTicker)<=0)

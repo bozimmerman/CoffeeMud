@@ -89,12 +89,7 @@ public class Prayer_Resurrect extends Prayer
 			}
 		}
 		else
-		{
-			// it didn't work, but tell everyone you tried.
-			FullMsg msg=new FullMsg(mob,body,this,affectType,"<S-NAME> attempt(s) to resurrect <T-NAMESELF>, but nothing happens.");
-			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
-		}
+			beneficialWordsFizzle(mob,body,auto?"":"<S-NAME> attempt(s) to resurrect <T-NAMESELF>, but nothing happens.");
 
 
 		// return whether it worked

@@ -51,12 +51,7 @@ public class Prayer_SenseAlignment extends Prayer
 			}
 		}
 		else
-		{
-			// it didn't work, but tell everyone you tried.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> peer(s) into the eyes of <T-NAMESELF>, but then blink(s).");
-			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
-		}
+			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> peer(s) into the eyes of <T-NAMESELF>, but then blink(s).");
 
 
 		// return whether it worked

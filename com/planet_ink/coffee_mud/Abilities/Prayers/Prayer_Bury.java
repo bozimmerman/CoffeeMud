@@ -57,13 +57,7 @@ public class Prayer_Bury extends Prayer
 			}
 		}
 		else
-		{
-			// it didn't work, but tell everyone you tried.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> attempt(s) to bury <T-NAMESELF>, but fail(s).");
-			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
-		}
-
+			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to bury <T-NAMESELF>, but fail(s).");
 
 		// return whether it worked
 		return success;

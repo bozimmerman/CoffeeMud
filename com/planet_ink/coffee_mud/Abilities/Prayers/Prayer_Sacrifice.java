@@ -57,13 +57,7 @@ public class Prayer_Sacrifice extends Prayer
 			}
 		}
 		else
-		{
-			// it didn't work, but tell everyone you tried.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> attempt(s) to sacrifice <T-NAMESELF>, but fail(s).");
-			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
-		}
-
+			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> attempt(s) to sacrifice <T-NAMESELF>, but fail(s).");
 
 		// return whether it worked
 		return success;

@@ -42,6 +42,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Ranger_FindWater",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Rescue",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Ranger_TrackAnimal",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_TwoWeaponFighting",false);
@@ -61,18 +62,16 @@ public class Ranger extends StdCharClass
 			// qualify for all spells
 			for(int level=1;level<22;level++)
 			{
-				Vector V=CMAble.getLevelListings("Mage",level);
+				Vector V=CMAble.getLevelListings("Druid",level);
 				for(int v=0;v<V.size();v++)
 				{
-					String spell=(String)V.elementAt(v);
-					Ability Spell=CMClass.getAbility(spell);
-					if((Spell!=null)&&((Spell.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
-						CMAble.addCharAbilityMapping(ID(),level+4,spell,false);
+					String chant=(String)V.elementAt(v);
+					Ability Chant=CMClass.getAbility(chant);
+					if((Chant!=null)&&((Chant.classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
+						CMAble.addCharAbilityMapping(ID(),level+4,chant,false);
 				}
 			}
-			
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_ReadMagic",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Spell_Light",true);
 		}
 	}
 

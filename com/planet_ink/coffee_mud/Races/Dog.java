@@ -39,7 +39,7 @@ public class Dog extends StdRace
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
-		super.affectCharState(affectedMOB,affectableMaxState);
+		super.affectCharState(affectedMob,affectableMaxState);
 		affectableMaxState.setMovement(affectableMaxState.getMovement()+100);
 	}
 	public Weapon myNaturalWeapon()

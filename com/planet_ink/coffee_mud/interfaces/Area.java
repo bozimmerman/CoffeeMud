@@ -91,6 +91,7 @@ public interface Area extends Environmental
 	public boolean setTimeOfDay(int t);
 	public int getTODCode();
 	
+	public void forceWeatherTick();
 	public void tickControl(boolean start);
 	public StringBuffer getAreaStats();
 	public Vector getMyMap();
