@@ -131,7 +131,7 @@ public class StdSpaceShip implements Area, SpaceObject
 		{
 			Ability A=E.fetchEffect(a);
 			if(A!=null)
-				affects.addElement(A);
+				affects.addElement((Ability)A.copyOf());
 		}
 	}
 	public Environmental copyOf()

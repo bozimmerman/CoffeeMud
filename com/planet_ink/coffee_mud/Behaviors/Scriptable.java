@@ -4058,12 +4058,15 @@ public class Scriptable extends StdBehavior
 		MOB monster=getScriptableMOB(affecting);
 		if((monster==null)||(monster.amDead())||(lastKnownLocation==null)) return;
 		Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
+		MOB eventMob=monster;
+		if((defaultItem!=null)&&(defaultItem.owner() instanceof MOB))
+			eventMob=(MOB)defaultItem.owner();
 
 		Vector scripts=getScripts();
 
 		if(msg.source()==null) return;
 
-		if(msg.amITarget(monster)
+		if(msg.amITarget(eventMob)
 		&&(!msg.amISource(monster))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.source()!=monster))
@@ -4080,7 +4083,7 @@ public class Scriptable extends StdBehavior
 			case 1: // greet_prog
 				if((msg.targetMinor()==CMMsg.TYP_ENTER)
 				&&(msg.amITarget(lastKnownLocation))
-				&&(!msg.amISource(monster))
+				&&(!msg.amISource(eventMob))
 				&&(canFreelyBehaveNormal(monster))
 				&&((!(affecting instanceof MOB))||Sense.canSenseMoving(msg.source(),(MOB)affecting)))
 				{
@@ -4095,7 +4098,7 @@ public class Scriptable extends StdBehavior
 			case 2: // allgreet_prog
 				if((msg.targetMinor()==CMMsg.TYP_ENTER)
 				&&(msg.amITarget(lastKnownLocation))
-				&&(!msg.amISource(monster))
+				&&(!msg.amISource(eventMob))
 				&&(canActAtAll(monster)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
@@ -4382,7 +4385,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 19: // bribe_prog
 				if((msg.targetMinor()==CMMsg.TYP_GIVE)
-				&&(msg.amITarget(monster))
+				&&(msg.amITarget(eventMob))
 				&&(!msg.amISource(monster))
 				&&(msg.tool() instanceof Coins)
 				&&(canFreelyBehaveNormal(monster)))
@@ -4399,7 +4402,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 8: // entry_prog
 				if((msg.targetMinor()==CMMsg.TYP_ENTER)
-				&&(msg.amISource(monster))
+				&&(msg.amISource(eventMob))
 				&&(canFreelyBehaveNormal(monster)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
@@ -4413,7 +4416,7 @@ public class Scriptable extends StdBehavior
 			case 9: // exit prog
 				if((msg.targetMinor()==CMMsg.TYP_LEAVE)
 				&&(msg.amITarget(lastKnownLocation))
-				&&(!msg.amISource(monster))
+				&&(!msg.amISource(eventMob))
 				&&(canFreelyBehaveNormal(monster)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
@@ -4426,8 +4429,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 10: // death prog
 				if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-				&&(msg.amISource(monster)
-				   ||((defaultItem!=null)&&(msg.source()==defaultItem.owner()))))
+				&&(msg.amISource(eventMob)))
 				{
 					MOB ded=msg.source();
 					MOB src=lastToHurtMe;

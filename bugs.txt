@@ -1,7 +1,4 @@
 !SET MOBGROUP quest command for narrowing mob selections, or applying stuff to more than one mob
 look into bug with decay from group
-test new scriptable death_prog
-When I aged Thorne tobecomeing a toddler, his name suddenly changed to Esuom Jr
 Ability to buy space ship areas, and add them to shopkeepers
-Some solution for variable eq on mobs -- use rejuv!
 mutable body parts, with ability to grant powers

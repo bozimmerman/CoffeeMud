@@ -519,7 +519,12 @@ public class StdMOB implements MOB
 		// will ensure no duplicate ticks, this obj, this id
 		CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_MOB,1);
 		if(tickStatus==Tickable.STATUS_NOT)
-			tick(this,MudHost.TICK_MOB); // slap on the butt
+		{
+			// slap on the butt
+			if(lastTickedDateTime==-1) lastTickedDateTime=-2;
+			tick(this,MudHost.TICK_MOB); 
+			if(lastTickedDateTime==-2) lastTickedDateTime=-1;
+		}
 		for(int a=0;a<numLearnedAbilities();a++)
 		{
 			Ability A=fetchAbility(a);
@@ -2217,9 +2222,9 @@ public class StdMOB implements MOB
 				Vector V=(Vector)rivals.elementAt(i);
 				if(((Item)V.firstElement()).rawWornCode()==0)
 				{
-					for(int r=0;r<rivals.size();r++)
+					for(int r=0;r<V.size();r++)
 					{
-						Item I=(Item)rivals.elementAt(r);
+						Item I=(Item)V.elementAt(r);
 						if(Dice.rollPercentage()<I.baseEnvStats().rejuv())
 							delInventory(I);
 						else
@@ -2232,17 +2237,17 @@ public class StdMOB implements MOB
 				else
 				{
 					int totalChance=0;
-					for(int r=0;r<rivals.size();r++)
+					for(int r=0;r<V.size();r++)
 					{
-						Item I=(Item)rivals.elementAt(r);
+						Item I=(Item)V.elementAt(r);
 						totalChance+=I.baseEnvStats().rejuv();
 					}
 					int chosenChance=Dice.roll(1,totalChance,0);
 					totalChance=0;
 					Item chosenI=null;
-					for(int r=0;r<rivals.size();r++)
+					for(int r=0;r<V.size();r++)
 					{
-						Item I=(Item)rivals.elementAt(r);
+						Item I=(Item)V.elementAt(r);
 						if(chosenChance<=(totalChance+I.baseEnvStats().rejuv()))
 						{ 
 							chosenI=I; 
@@ -2251,9 +2256,9 @@ public class StdMOB implements MOB
 						else
 							totalChance+=I.baseEnvStats().rejuv();
 					}
-					for(int r=0;r<rivals.size();r++)
+					for(int r=0;r<V.size();r++)
 					{
-						Item I=(Item)rivals.elementAt(r);
+						Item I=(Item)V.elementAt(r);
 						if(chosenI!=I)
 							delInventory(I);
 						else

@@ -269,6 +269,7 @@ public class Pregnancy extends StdAbility
 						ticksInLabor++;
 						if(ticksInLabor==45)
 						{
+							ticksInLabor=0;
 							String name=mob.Name()+" jr.";
 							String race1=mob.baseCharStats().getMyRace().ID();
 							char gender='F';
@@ -301,7 +302,6 @@ public class Pregnancy extends StdAbility
 								catch(Throwable t)
 								{
 									labor=false;
-									ticksInLabor=0;
 									return true;
 								};
 							}
