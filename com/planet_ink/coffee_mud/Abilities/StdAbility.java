@@ -626,7 +626,7 @@ public class StdAbility implements Ability, Cloneable
 			student.tell("You are not high enough level to learn '"+name()+"'.");
 			return false;
 		}
-		if(qLevel>student.charStats().getStat(CharStats.INTELLIGENCE)+7)
+		if(qLevel>(student.charStats().getStat(CharStats.INTELLIGENCE)+15))
 		{
 			teacher.tell(student.name()+" is too stupid to learn '"+name()+"'.");
 			student.tell("You are not of high enough intelligence to learn '"+name()+"'.");
