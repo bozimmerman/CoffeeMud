@@ -532,7 +532,7 @@ public class List extends StdCommand
 	{
 		StringBuffer msg=new StringBuffer("");
 		boolean activeOnly=false;
-		if("ACTIVE".startsWith(whichTickTock.toUpperCase()))
+		if("ACTIVE".startsWith(whichTickTock.toUpperCase())&&(whichTickTock.length()>0))
 		{
 		    activeOnly=true;
 		    whichTickTock="";
@@ -543,7 +543,7 @@ public class List extends StdCommand
 		int col=0;
 		int numGroups=Util.s_int(CMClass.ThreadEngine().tickInfo("tickGroupSize"));
 		int whichTick=-1;
-		if(Util.isNumber(whichTickTock)&&(whichTickTock.length()>0)) 
+		if(Util.isInteger(whichTickTock)&&(whichTickTock.length()>0)) 
 		    whichTick=Util.s_int(whichTickTock);
 		for(int v=0;v<numGroups;v++)
 		{

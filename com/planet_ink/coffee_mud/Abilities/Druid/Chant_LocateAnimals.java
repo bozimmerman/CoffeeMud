@@ -146,6 +146,8 @@ public class Chant_LocateAnimals extends Chant
 				}
 		    }catch(NoSuchElementException e){}
 		}
+		while(rooms.size()>10)
+		    rooms.removeElementAt(Dice.roll(1,rooms.size(),-1));
 
 		if(rooms.size()>0)
 			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,false,false,false,false,50);
