@@ -185,6 +185,7 @@ public class Prop_HaveResister extends Property
 
 		if((affected!=null)
 		&&(affected instanceof Item)
+		&&(!((Item)affected).amDestroyed())
 		&&(((Item)affected).owner() instanceof MOB))
 		{
 			MOB mob=(MOB)((Item)affected).owner();

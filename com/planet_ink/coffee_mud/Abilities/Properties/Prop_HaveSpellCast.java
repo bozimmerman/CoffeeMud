@@ -121,10 +121,11 @@ public class Prop_HaveSpellCast extends Property
 		{
 			myItem=(Item)affectedMOB;
 
-			if((lastMOB!=null)&&(myItem.owner()!=lastMOB)
+			if((lastMOB!=null)
+			&&(myItem.owner()!=lastMOB)
 			&&(lastMOB.location()!=null))
 				removeMyAffectsFromLastMob();
-
+			
 			if((lastMOB==null)&&(myItem.owner()!=null)
 			&&(myItem.owner() instanceof MOB)&&(((MOB)myItem.owner()).location()!=null))
 				addMeIfNeccessary((MOB)myItem.owner());
