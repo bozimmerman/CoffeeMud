@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class AbilityAffectNext extends StdWebMacro
 {
-	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name(){return getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
@@ -40,7 +40,7 @@ public class AbilityAffectNext extends StdWebMacro
 			if(parms.containsKey("NOT")) okToShow=!okToShow;
 			if(okToShow)
 			{
-				if((last==null)||((last.length()>0)&&(last.equals(lastID))))
+				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))
 				{
 					httpReq.getRequestParameters().put("ABILITY",A.ID());
 					return "";

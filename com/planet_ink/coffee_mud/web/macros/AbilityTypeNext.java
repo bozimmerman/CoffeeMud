@@ -22,7 +22,7 @@ public class AbilityTypeNext extends StdWebMacro
 		for(int i=0;i<Ability.TYPE_DESCS.length;i++)
 		{
 			String S=Ability.TYPE_DESCS[i];
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))))
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!S.equals(lastID))))
 			{
 				httpReq.getRequestParameters().put("ABILITYTYPE",S);
 				return "";

@@ -77,7 +77,7 @@ public class AbilityNext extends StdWebMacro
 			if(parms.containsKey("NOT")) okToShow=!okToShow;
 			if(okToShow)
 			{
-				if((last==null)||((last.length()>0)&&(last.equals(lastID))))
+				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))
 				{
 					httpReq.getRequestParameters().put("ABILITY",A.ID());
 					return "";

@@ -22,7 +22,7 @@ public class BehaviorNext extends StdWebMacro
 		for(int b=0;b<CMClass.behaviors.size();b++)
 		{
 			Behavior B=(Behavior)CMClass.behaviors.elementAt(b);
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))))
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.ID().equals(lastID))))
 			{
 				httpReq.getRequestParameters().put("BEHAVIOR",B.ID());
 				return "";

@@ -24,7 +24,7 @@ public class RaceNext extends StdWebMacro
 			Race R=(Race)CMClass.races.elementAt(r);
 			if((R.playerSelectable())||(parms.containsKey("ALL")))
 			{
-				if((last==null)||((last.length()>0)&&(last.equals(lastID))))
+				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!R.ID().equals(lastID))))
 				{
 					httpReq.getRequestParameters().put("RACE",R.ID());
 					return "";

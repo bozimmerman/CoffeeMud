@@ -24,7 +24,7 @@ public class CharClassNext extends StdWebMacro
 			CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
 			if((C.playerSelectable())||(parms.containsKey("ALL")))
 			{
-				if((last==null)||((last.length()>0)&&(last.equals(lastID))))
+				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))
 				{
 					httpReq.getRequestParameters().put("CLASS",C.ID());
 					return "";

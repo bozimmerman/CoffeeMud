@@ -22,7 +22,7 @@ public class AreaNext extends StdWebMacro
 		for(int a=0;a<CMMap.numAreas();a++)
 		{
 			Area A=(Area)CMMap.getArea(a);
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))))
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.name().equals(lastID))))
 			{
 				httpReq.getRequestParameters().put("AREA",A.name());
 				if(!Sense.isHidden(A))

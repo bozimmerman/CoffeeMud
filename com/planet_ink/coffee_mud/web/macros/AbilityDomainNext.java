@@ -22,7 +22,7 @@ public class AbilityDomainNext extends StdWebMacro
 		for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
 		{
 			String S=Ability.DOMAIN_DESCS[i];
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))))
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!S.equals(lastID))))
 			{
 				httpReq.getRequestParameters().put("DOMAIN",S);
 				return "";

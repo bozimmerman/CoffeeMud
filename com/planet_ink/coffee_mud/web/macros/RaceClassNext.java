@@ -35,7 +35,7 @@ public class RaceClassNext extends StdWebMacro
 			if(((C.playerSelectable())||(parms.containsKey("ALL")))
 			   &&(C.qualifiesForThisClass(mob,true)))
 			{
-				if((last==null)||((last.length()>0)&&(last.equals(lastID))))
+				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))
 				{
 					httpReq.getRequestParameters().put("CLASS",C.ID());
 					return "";
