@@ -193,30 +193,6 @@ public class StdRoom
 			}
 		}
 
-		switch(affect.targetMinor())
-		{
-		case Affect.TYP_FLEE:
-		case Affect.TYP_ENTER:
-		case Affect.TYP_RECALL:
-			if((affect.source().riding()!=null)&&(affect.source().location()!=affect.target()))
-			{
-				MOB mob=(MOB)affect.source();
-				if(mob.riding() instanceof Item)
-				{
-					Item riding=(Item)mob.riding();
-					if((riding.myOwner()!=mob.location())&&(riding.myOwner()!=affect.target()))
-						mob.setRiding(null);
-				}
-				else
-				if(mob.riding() instanceof MOB)
-				{
-					MOB riding=(MOB)mob.riding();
-					if((riding.location()!=mob.location())&&(riding.location()!=affect.target()))
-						mob.setRiding(null);
-				}
-			}
-		}
-		
 		for(int i=0;i<numInhabitants();i++)
 		{
 			MOB inhab=fetchInhabitant(i);

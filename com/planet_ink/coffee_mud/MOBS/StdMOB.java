@@ -1408,63 +1408,66 @@ public class StdMOB implements MOB
 			{
 				curState().adjState(this,maxState);
 				curState().expendEnergy(this,maxState,false);
-				if(location()!=null)
+				if(!Sense.canBreathe(this))
 				{
-					if(!Sense.canBreathe(this))
-					{
-						this.location().show(this,this,Affect.MSG_OK_VISUAL,"^Z<S-NAME> can't breathe!^?");
-						ExternalPlay.doDamage(this,this,(int)Math.round(Util.mul(Math.random(),baseEnvStats().level()+2)));
-					}
-					if(isInCombat())
-					{
-						Item weapon=this.fetchWieldedItem();
-						if(weapon==null) // try to wield anything!
-						{
-							for(int i=0;i<inventorySize();i++)
-							{
-								Item thisItem=fetchInventory(i);
-								if((thisItem!=null)
-								 &&(thisItem.canBeWornAt(Item.WIELD))
-								 &&(thisItem.canWear(this))
-								 &&(!thisItem.amWearingAt(Item.INVENTORY)))
-								{
-									thisItem.wearAt(Item.WIELD);
-									weapon=thisItem;
-									break;
-								}
-							}
-						}
-						if(((getBitmap()&MOB.ATT_AUTOMELEE)==0)
-						   ||(rangeToTarget()<=minRange(weapon)))
-						{
-							double curSpeed=Math.floor(speeder);
-							speeder+=envStats().speed();
-							if(Sense.aliveAwakeMobile(this,true))
-							{
-								int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
-								for(int s=0;s<numAttacks;s++)
-									if((!amDead())
-									&&(curState().getHitPoints()>0)
-									&&((s==0)||(!Sense.isSitting(this))))
-									{
-										if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
-											weapon=this.fetchWieldedItem();
-										ExternalPlay.postAttack(this,victim,weapon);
-									}
-								curState().expendEnergy(this,maxState,true);
-							}
-						}
-						if(!isMonster())
-						{
-							MOB target=this.getVictim();
-							if((target!=null)&&(!target.amDead())&&(Sense.canBeSeenBy(target,this)))
-								session().print(target.healthText()+"\n\r\n\r");
-						}
-					}
-					else
-						speeder=0.0;
+					this.location().show(this,this,Affect.MSG_OK_VISUAL,"^Z<S-NAME> can't breathe!^?");
+					ExternalPlay.doDamage(this,this,(int)Math.round(Util.mul(Math.random(),baseEnvStats().level()+2)));
 				}
-
+				if(isInCombat())
+				{
+					Item weapon=this.fetchWieldedItem();
+					if(weapon==null) // try to wield anything!
+					{
+						for(int i=0;i<inventorySize();i++)
+						{
+							Item thisItem=fetchInventory(i);
+							if((thisItem!=null)
+							 &&(thisItem.canBeWornAt(Item.WIELD))
+							 &&(thisItem.canWear(this))
+							 &&(!thisItem.amWearingAt(Item.INVENTORY)))
+							{
+								thisItem.wearAt(Item.WIELD);
+								weapon=thisItem;
+								break;
+							}
+						}
+					}
+					if(((getBitmap()&MOB.ATT_AUTOMELEE)==0)
+					   ||(rangeToTarget()<=minRange(weapon)))
+					{
+						double curSpeed=Math.floor(speeder);
+						speeder+=envStats().speed();
+						if(Sense.aliveAwakeMobile(this,true))
+						{
+							int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
+							for(int s=0;s<numAttacks;s++)
+								if((!amDead())
+								&&(curState().getHitPoints()>0)
+								&&((s==0)||(!Sense.isSitting(this))))
+								{
+									if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
+										weapon=this.fetchWieldedItem();
+									ExternalPlay.postAttack(this,victim,weapon);
+								}
+							curState().expendEnergy(this,maxState,true);
+						}
+					}
+					if(!isMonster())
+					{
+						MOB target=this.getVictim();
+						if((target!=null)&&(!target.amDead())&&(Sense.canBeSeenBy(target,this)))
+							session().print(target.healthText()+"\n\r\n\r");
+					}
+				}
+				else
+					speeder=0.0;
+				// this could create timing problems.  Keep an eye on it.
+				if(riding()!=null)
+				{
+					if(((riding() instanceof Item)&&(((Item)riding()).myOwner()!=location()))
+					||((riding() instanceof MOB)&&(((MOB)riding()).location()!=location())))
+						setRiding(null);
+				}
 				if((!isMonster())&&(((++minuteCounter)*Host.TICK_TIME)>60000))
 				{
 					minuteCounter=0;
