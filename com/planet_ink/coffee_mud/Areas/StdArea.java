@@ -744,6 +744,9 @@ public class StdArea implements Area
 					fluChance=10;
 					break;
 				}
+				long[] allspot={Item.ON_FEET,Item.ON_TORSO,Item.ON_LEGS};
+				long allcode=0;
+				for(int l=0;l<allspot.length;l++) allcode=allcode|allspot[l];
 				if((coldChance>0)||(rustChance>0))
 				for(int s=0;s<Sessions.size();s++)
 				{
@@ -759,21 +762,26 @@ public class StdArea implements Area
 						if(Dice.rollPercentage()<(coldChance-save))
 						{
 							long coveredPlaces=0;
+							Item I=CMClass.getItem("GenItem");
+							I.setRawLogicalAnd(false);
+							for(int l=0;l<allspot.length;l++)
+							{
+								I.setRawProperLocationBitmap(allspot[l]);
+								if(!M.charStats().getMyRace().canWear(I))
+									coveredPlaces=coveredPlaces|allspot[l];
+							}
 							for(int i=0;i<M.inventorySize();i++)
 							{
-								Item I=M.fetchInventory(i);
+								I=M.fetchInventory(i);
 								if((I==null)||(I.amWearingAt(Item.INVENTORY)))
 								   continue;
-								if(I.amWearingAt(Item.ON_FEET))
-									coveredPlaces=coveredPlaces|Item.ON_FEET;
 								if(I.amWearingAt(Item.ABOUT_BODY))
 									coveredPlaces=coveredPlaces|Item.ON_TORSO|Item.ON_LEGS;
-								if(I.amWearingAt(Item.ON_TORSO))
-									coveredPlaces=coveredPlaces|Item.ON_TORSO;
-								if(I.amWearingAt(Item.ON_LEGS))
-									coveredPlaces=coveredPlaces|Item.ON_LEGS;
+								for(int l=0;l<allspot.length;l++)
+									if(I.amWearingAt(allspot[l]))
+										coveredPlaces=coveredPlaces|allspot[l];
 							}
-							if(coveredPlaces!=(Item.ON_FEET|Item.ON_TORSO|Item.ON_LEGS))
+							if(coveredPlaces!=allcode)
 							{
 								Ability COLD=CMClass.getAbility("Disease_Cold");
 								if(Dice.rollPercentage()<(fluChance+(((M.location().domainConditions()&Room.CONDITION_WET)>0)?10:0)))

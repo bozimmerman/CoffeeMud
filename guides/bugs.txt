@@ -1,6 +1,4 @@
 GAES still isn't done
-when you did open gate, it thought you meant the cityguard
-someone can get a cold for not wearing something on a place they can't wear anything.
 
 
 

@@ -15,6 +15,7 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public Vector myResources();
 	public String racialCategory();
 	public void reRoll(MOB mob, CharStats C);
+	public boolean canWear(Item item);
 	public Race copyOf();
 	public int[] bodyMask();
 	
