@@ -1,5 +1,6 @@
 large % cage	12	75	150	35	GenCage	LOCK	2500	0	576
 small % cage	1	30	10	5	GenCage	LOCK	100	0	576
+% playpen	15	80	120	50	GenCage	LOCK	1000	0	576
 % cage	6	30	35	15	GenCage	LOCK	250	0	576
 % cage cart	6	25	250	8	GenCageRideable	LOCK	1000	1	576
 large % cage wagon	15	45	400	25	GenCageRideable	LOCK	12000	10	576

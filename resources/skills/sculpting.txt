@@ -31,4 +31,7 @@ name,level,ticks,wood,value,classtype,misctype,capacity,containmask,spell
 % Tub	10	60	400	75	GenTub	CHAIR	2000	0	
 % Jacuzzi	15	80	600	75	GenTub	CHAIR	2600	0	
 % Roman Tub	15	60	500	75	GenTub	CHAIR	2400	0	
-% Sink	15	120	1000	150	GenFountain		0	1
+% Sink	15	120	1000	150	GenFountain		100	1
+% Altar	10	100	300	200	GenRideable	TABLE	100	0
+% Throne	25	40	150	150	GenRideable	CHAIR	1	0
+% Bird Bath	18	100	200	80	GenContainer	100	1

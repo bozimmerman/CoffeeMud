@@ -70,3 +70,8 @@ Large % Crib	18	70	50	200	GenContainer		200		0
 % Vanity	25	120	40	250	GenContainer	LOCK	50		0
 Four Poster % Bed	30	150	200	1500	GenBed	BED	4		0
 % Torture Rack	30	200	200	1000	GenBed	BED	1		0	Prop_RideSpellCast;Spell_KnowPain
+% Armoire	9	80	50	40	GenContainer	LID	100	0	4096
+% Hat Rack	2	20	5	GenContainer		10	0	4096
+% Coat Rack	7	30	10	GenContainer		50	0	4096
+% Couch	10	80	120	200	GenChair	CHAIR	3	0	0
+% Sofa	16	90	100	250	GenChair	CHAIR	4	0	0

@@ -115,7 +115,7 @@ Master Katana	49	150	16	3470	GenWeapon	SWORD	SLASHING	35	20	1	0
 Master Pixie Blade	37	160	3	1008	GenWeapon	SWORD	PIERCING	12	55	1	0
 Master Throwing Iron	33	20	2	940	GenSpear	THROWN	SLASHING	20	-5	1	1
 Master Throwing Knife	33	20	2	528	GenSpear	THROWN	PIERCING	8	35	1	1
-Master % Boomerang	32	20	8	768	GenSpear	THROWN	BASHING	8	50	1	1
+Master % Boomerang	32	20	8	768	GenSpear	THROWN	BASHING	8	50	1	1		Spell_Boomerang
 Master Throwing Hammer	33	30	8	1552	GenSpear	THROWN	BASHING	24	0	1	1	WOODEN
 Master Manriki-Gusari	35	40	6	1512	GenSpear	THROWN	BASHING	24	0	1	1
 Master Throwing Axe	38	50	4	1232	GenSpear	THROWN	SLASHING	16	30	1	1	WOODEN

@@ -455,6 +455,26 @@ public class JewelMaking extends CraftingSkill
 					}
 				}
 			}
+			if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
+			{
+				String of="";
+				try
+				{
+					of=mob.session().prompt("What is this a statue of?","");
+					if(of.trim().length()==0)
+						return false;
+				}
+				catch(java.io.IOException x)
+				{
+					return false;
+				}
+				of=of.trim();
+				if(of.startsWith("of "))
+					of=of.substring(3).trim();
+				building.setName(itemName+" of "+of);
+				building.setDisplayText(itemName+" of "+of+" is here");
+				building.setDescription(itemName+" of "+of+". ");
+			}
 			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
 			building.recoverEnvStats();
 			building.text();

@@ -115,7 +115,7 @@ Katana	19	150	16	992	GenWeapon	SWORD	SLASHING	16	10	1	0
 Pixie Blade	17	160	3	408	GenWeapon	SWORD	PIERCING	12	5	1	0
 Throwing Iron	1	20	2	48	GenSpear	THROWN	SLASHING	2	-10	1	1
 Throwing Knife	1	20	2	48	GenSpear	THROWN	PIERCING	2	-10	1	1
-% Boomerang	2	20	8	188	GenSpear	THROWN	BASHING	2		1	1
+% Boomerang	2	20	8	188	GenSpear	THROWN	BASHING	2		1	1		Spell_Boomerang
 Throwing Hammer	3	30	8	232	GenSpear	THROWN	BASHING	6	-10	1	1	WOODEN
 Manriki-Gusari	4	40	6	192	GenSpear	THROWN	BASHING	6	-10	1	1
 Throwing Axe	7	50	4	152	GenSpear	THROWN	SLASHING	4	0	1	1	WOODEN

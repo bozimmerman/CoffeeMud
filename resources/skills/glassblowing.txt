@@ -9,3 +9,8 @@ Glass Wand	12	30	20	3	GenWand
 Flask	1	20	5	1	GenDrink		1
 Glass Lens	5	10	5	1	GenResource	
 Bong	5	20	10	10	GenPipe		1
+Hooka	10	30	20	50	GenPipe		3
+Marbles	2	5	1	1	GenItem
+Vase	6	20	10	5	GenDrink		10
+Carafe	8	20	5	10	GenDrink		8
+Vial	12	10	2	5	GenDrink		1

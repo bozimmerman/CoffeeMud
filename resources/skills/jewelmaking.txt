@@ -22,3 +22,14 @@
 % Crown	20	100	10	150	GenArmor	HEAD	0	1
 % Monocle	21	30	1	20	GenArmor	EYES	0	0	GLASS
 % Sunglasses	30	60	2	50	GenArmor	EYES	0	0	GLASS
+% Bangle Bracelet	19	50	3	250	GenArmor	LEFT WRIST||RIGHT WRIST	10	0	PRECIOUS
+% Armlet	12	30	5	20	GenArmor	ARMS	0	0
+% Charm	5	30	1	10	GenItem	STATUE	0	0	WOODEN
+% Cufflinks	24	50	2	GenArmor	LEFT WRIST||RIGHT WRIST	0	0	PRECIOUS	Prop_WearAdjuster(CHA+1)
+% Bindi	25	40	1	500	GenArmor	EYES	0	0	PRECIOUS
+% Bejewelled Rose	23	120	5	500	GenItem		0	0	PRECIOUS
+% Bejewelled Flower	19	100	5	100	GenItem		0	0	PRECIOUS
+% Bejewelled Egg	29	150	2	1000	GenItem		0	0	PRECIOUS
+% Figurine	33	80	30	250	GenItem	STATUE	0	0	PRECIOUS
+% Bust	36	160	150	500	GenItem	STATUE	0	0	PRECIOUS
+% Statue	42	240	450	1000	GenItem	STATUE	0	0	PRECIOUS

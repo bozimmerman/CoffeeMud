@@ -16,5 +16,9 @@
 % Sliver	24	10	1	668	GenWeapon	EDGED	18
 % Flail	13	40	15	692	GenWeapon	BLUNT	14
 % Skull mace	50	80	12	3602	GenWeapon	BLUNT	41
-
-
+% Altar	10	100	100	200	GenRideable	TABLE	1000
+Sacraficial % Altar	30	200	150	500	GenRideable TABLE	1000
+% Throne	25	40	50	150	GenRideable	CHAIR	1
+Drinking Horn	4	10	4	5	GenDrink		100
+% Spoon	8	10	1	2	GenDrink		1
+% Pipe	12	40	2	10	GenPipe		1
