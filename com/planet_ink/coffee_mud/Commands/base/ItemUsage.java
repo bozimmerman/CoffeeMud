@@ -570,14 +570,15 @@ public class ItemUsage
 		}
 		commands.removeElementAt(0);
 
-		Item thisItem=mob.fetchCarried(null,Util.combine(commands,0));
-		if((thisItem==null)
-		||((thisItem!=null)&&(!mob.isMine(thisItem))&&(!Sense.canBeSeenBy(thisItem,mob))))
+		Environmental thisThang=null;
+		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0),Item.WORN_REQ_ANY);
+		if((thisThang==null)
+		||((thisThang!=null)&&(!mob.isMine(thisThang))&&(!Sense.canBeSeenBy(thisThang,mob))))
 		{
-			mob.tell("You don't seem to be carrying '"+Util.combine(commands,0)+"'.");
+			mob.tell("You don't see '"+Util.combine(commands,0)+"' here.");
 			return;
 		}
-		FullMsg newMsg=new FullMsg(mob,thisItem,null,Affect.MSG_EAT,"<S-NAME> eat(s) <T-NAMESELF>.");
+		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_EAT,"<S-NAME> eat(s) <T-NAMESELF>.");
 		if(mob.location().okAffect(newMsg))
 			mob.location().send(mob,newMsg);
 	}
