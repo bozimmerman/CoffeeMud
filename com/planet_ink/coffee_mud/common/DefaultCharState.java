@@ -104,7 +104,7 @@ public class DefaultCharState implements Cloneable, CharState
 		return true;
 	}
 
-	public void adjState(MOB mob, CharState maxState)
+	public void recoverTick(MOB mob, CharState maxState)
 	{
 		if(++botherCycle<ADJUST_FACTOR)
 			return;

@@ -31,7 +31,7 @@ public class Fighter_Endurance extends StdAbility
 		&&(profficiencyCheck(0,false))
 		&&(tickID==Host.MOB_TICK))
 		{
-			mob.curState().adjState(mob,mob.maxState());
+			mob.curState().recoverTick(mob,mob.maxState());
 			helpProfficiency(mob);
 		}
 		return super.tick(tickID);

@@ -51,7 +51,7 @@ public class FasterRoom extends StdBehavior
 				for(int i2=0;i2<burst;i2++)
 					M.tick(Host.MOB_TICK);
 				for(int i2=0;i2<health;i2++)
-					M.curState().adjState(M,M.maxState());
+					M.curState().recoverTick(M,M.maxState());
 			}
 		}
 	}

@@ -26,7 +26,7 @@ public interface CharState extends Cloneable
 	public void setMovement(int newVal);
 	public boolean adjMovement(int byThisMuch, CharState max);
 	
-	public void adjState(MOB mob, CharState maxState);
+	public void recoverTick(MOB mob, CharState maxState);
 	
 	public void expendEnergy(MOB mob, CharState maxState, boolean expendMovement);
 	

@@ -556,7 +556,7 @@ public class StdItem implements Item
 			{	
 				long cantWearAt=whereCantWear(mob);
 				Item alreadyWearing=mob.fetchWornItem(cantWearAt);
-				if(alreadyWearing!=null)
+				if((alreadyWearing!=null)&&(cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
 				{
 					if(!ExternalPlay.remove(mob,alreadyWearing,false))
 					{
@@ -566,7 +566,13 @@ public class StdItem implements Item
 				}
 				else
 				{
-					mob.tell("You are already wearing something on your "+Sense.wornLocation(cantWearAt)+".");
+					if(cantWearAt==Item.HELD)
+						mob.tell("You are already holding something.");
+					else
+					if(cantWearAt==Item.WIELD)
+						mob.tell("You are already wielding something.");
+					else
+						mob.tell("You are already wearing something on your "+Sense.wornLocation(cantWearAt)+".");
 					return false;
 				}
 			}

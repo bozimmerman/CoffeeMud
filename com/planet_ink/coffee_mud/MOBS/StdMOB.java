@@ -1654,7 +1654,7 @@ public class StdMOB implements MOB
 			else
 			if(location()!=null)
 			{
-				curState().adjState(this,maxState);
+				curState().recoverTick(this,maxState);
 				curState().expendEnergy(this,maxState,false);
 				if(!Sense.canBreathe(this))
 				{

@@ -42,18 +42,18 @@ public interface EnvStats extends Cloneable
 	public final static int IS_FALLING=32768;
 	public final static int IS_LIGHTSOURCE=65536;
 
-	public int sensesMask();
-	public int disposition();
-	public int level();
-	public int ability();
-	public int rejuv();
-	public int weight();
-	public int height();
-	public int armor();
-	public int damage();
-	public double speed();
-	public int attackAdjustment();
-	public String replacementName();
+	public int sensesMask(); // mobs
+	public int disposition(); // items, mobs
+	public int level(); // items, exits, mobs
+	public int ability(); // items, mobs
+	public int rejuv(); // items, mobs
+	public int weight(); // items, mobs
+	public int height(); // items, mobs
+	public int armor(); // armor items, mobs
+	public int damage(); // weapon items, mobs
+	public double speed(); // mobs
+	public int attackAdjustment(); // weapon items, mobs
+	public String replacementName(); // items, mobs
 	
 	public void setRejuv(int newRejuv);
 	public void setLevel(int newLevel);
