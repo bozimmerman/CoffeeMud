@@ -179,7 +179,8 @@ public class StdRideable extends StdContainer implements Rideable
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.baseEnvStats().attackAdjustment());
 				affectableStats.setDamage(affectableStats.damage()-mob.baseEnvStats().damage());
 			}
-			if(rideBasis==Rideable.RIDEABLE_LADDER)
+			if((rideBasis()==Rideable.RIDEABLE_LADDER)
+			&&(amRiding(mob)))
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
 		}
 	}
@@ -418,11 +419,14 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			break;
 		case Affect.TYP_ENTER:
+		case Affect.TYP_LEAVE:
+		case Affect.TYP_FLEE:
 			if((rideBasis()==Rideable.RIDEABLE_LADDER)
 			&&(amRiding(affect.source())))
 			{
 				affect.source().setRiding(null);
-				affect.source().recoverEnvStats();
+				if(affect.source().location()!=null)
+					affect.source().location().recoverRoomStats();
 			}
 			break;
 		case Affect.TYP_MOUNT:
