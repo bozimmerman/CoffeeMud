@@ -195,6 +195,8 @@ public class Reset
 		area.toggleMobility(false);
 		for(int r=0;r<allRooms.size();r++)
 		{
+			if((((Util.div(r,allRooms.size()))*100.0)%10.0)==0)
+				System.out.println("5/"+((Util.div(r,allRooms.size()))*100.0));
 			Room room=(Room)allRooms.elementAt(r);
 			resetRoom(room);
 		}

@@ -873,13 +873,19 @@ public class StdArea implements Area
 		for(int r=0;r<V.size();r++)
 		{
 			Room R=(Room)V.elementAt(r);
-			if(R instanceof GridLocale)
-				((GridLocale)R).buildGrid();
+			R.clearSky();
+			if(R.ID().length()>0)
+			{
+				if(R instanceof GridLocale)
+					((GridLocale)R).buildGrid();
+			}
 		}
 		myRooms=null;
 		V=getMyMap();
 		for(int r=0;r<V.size();r++)
 		{
+			if((((Util.div(r,V.size()))*100.0)%10.0)==0)
+				System.out.println("f6/"+((Util.div(r,V.size()))*100.0));
 			Room R=(Room)V.elementAt(r);
 			R.clearSky();
 			R.giveASky();
@@ -889,9 +895,12 @@ public class StdArea implements Area
 	
 	public void fillInAreaRoom(Room R)
 	{
-		if(R instanceof GridLocale)
-			((GridLocale)R).buildGrid();
 		R.clearSky();
+		if(R.ID().length()>0)
+		{
+			if(R instanceof GridLocale)
+				((GridLocale)R).buildGrid();
+		}
 		R.giveASky();
 	}
 	
