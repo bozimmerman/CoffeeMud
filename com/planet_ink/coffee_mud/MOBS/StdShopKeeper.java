@@ -1067,7 +1067,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		{
 			Ability A=product.fetchEffect("Prop_Retainable");
 			if(A!=null)
-				val[0]=Util.s_int(A.text());
+			{
+				if(A.text().indexOf(";")<0)
+					val[0]=Util.s_int(A.text());
+				else
+					val[0]=Util.s_int(A.text().substring(0,A.text().indexOf(";")));
+			}
 			if(val[0]==0)
 				val[0]=25*product.envStats().level();
 		}

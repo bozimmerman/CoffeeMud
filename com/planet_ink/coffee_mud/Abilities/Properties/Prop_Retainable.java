@@ -53,29 +53,16 @@ public class Prop_Retainable extends Property
 	{
 	}
 	
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		super.executeMsg(myHost,msg);
+		if(!super.tick(ticking,tickID))
+			return false;
+		
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
-				if(mob.amFollowing()!=null)
-				{
-					Room room=mob.location();
-					if((room!=lastRoom)
-					&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),room))
-					&&(room.isInhabitant(mob)))
-					{
-						lastRoom=room;
-						mob.baseEnvStats().setRejuv(0);
-						mob.setStartRoom(room);
-					}
-					if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
-					||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource(mob.amFollowing()))))
-						mob.setFollowing(null);
-				}
 				if(periodic>0)
 				{
 					if(last==0) 
@@ -85,16 +72,19 @@ public class Prop_Retainable extends Property
 					}
 					if(period<=0)
 						period=((long)periodic)*((long)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY))*MudHost.TICK_TIME;
-					if(System.currentTimeMillis()<(last+period))
+					if((System.currentTimeMillis()>(last+period))&&(Sense.isInTheGame(mob)))
 					{
 						last=System.currentTimeMillis();
 						miscText=price+";"+periodic+";"+last;
 						LandTitle t=CoffeeUtensils.getLandTitle(mob.location());
-						if((t==null)||(t.landOwner().length()==0))
+						if((t==null)||(t.landOwner().length()==0)
+						||((mob.amFollowing()!=null)&&(!CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
 						{
 							CommonMsgs.say(mob,null,"I can't work just anywhere!  I quit!",false,false);
+							mob.setFollowing(null);
 							MUDTracker.wanderAway(mob,true,false);
 							mob.destroy();
+							return false;
 						}
 						else
 						{
@@ -124,12 +114,42 @@ public class Prop_Retainable extends Property
 							}
 							if(!paid)
 							{
-								CommonMsgs.say(mob,null,"I don't for free!  I quit!",false,false);
+								CommonMsgs.say(mob,null,"I don't work for free!  I quit!",false,false);
+								mob.setFollowing(null);
 								MUDTracker.wanderAway(mob,true,false);
 								mob.destroy();
+								return false;
 							}
 						}
 					}
+				}
+			}
+		}
+		return true;
+	}
+	
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+			MOB mob=(MOB)affected;
+			if(mob.location()!=null)
+			{
+				if(mob.amFollowing()!=null)
+				{
+					Room room=mob.location();
+					if((room!=lastRoom)
+					&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),room))
+					&&(room.isInhabitant(mob)))
+					{
+						lastRoom=room;
+						mob.baseEnvStats().setRejuv(0);
+						mob.setStartRoom(room);
+					}
+					if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+					||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource(mob.amFollowing()))))
+						mob.setFollowing(null);
 				}
 			}
 		}

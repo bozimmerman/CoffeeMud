@@ -407,7 +407,7 @@ public class MUDTracker extends Scriptable
 		Room R=M.location();
 		if(R==null) return;
 		int tries=0;
-		while((M.location()==R)&&((++tries)<100)&&((!mindPCs)||(M.location().numPCInhabitants()>0)))
+		while((M.location()==R)&&((++tries)<100)&&((!mindPCs)||(R.numPCInhabitants()>0)))
 			beMobile(M,true,true,false,false,null);
 		if((M.getStartRoom()!=null)&&(andGoHome))
 			M.getStartRoom().bringMobHere(M,true);

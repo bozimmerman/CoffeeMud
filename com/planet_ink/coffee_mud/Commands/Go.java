@@ -317,6 +317,11 @@ public class Go extends StdCommand
 		}
 
 		int direction=Directions.getGoodDirectionCode(Util.combine(commands,1));
+		if((direction<0)&&(mob.location().fetchFromRoomFavorItems(null,Util.combine(commands,1),Item.WORN_REQ_UNWORNONLY) instanceof Rideable))
+		{
+			Command C=CMClass.getCommand("Enter");
+			return C.execute(mob,commands);
+		}
 		String doing=(String)commands.elementAt(0);
 		if(direction>=0)
 			move(mob,direction,false,false,false);
