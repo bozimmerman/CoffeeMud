@@ -131,12 +131,12 @@ public class RoomLoader
 			{
 				currentRecordPos=R.getRow();
 				String roomID=DBConnections.getRes(R,"CMROID");
+				int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
 				thisRoom=(Room)hash.get(roomID);
 				if(thisRoom==null)
-					Log.errOut("Room","Couldn't set exit for unknown room '"+roomID+"'");
+					Log.errOut("Room","Couldn't set "+Directions.getDirectionName(direction)+" exit for unknown room '"+roomID+"'");
 				else
 				{
-					int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
 					String exitID=DBConnections.getRes(R,"CMEXID");
 					String exitMiscText=DBConnections.getResQuietly(R,"CMEXTX");
 					String nextRoomID=DBConnections.getRes(R,"CMNRID");
