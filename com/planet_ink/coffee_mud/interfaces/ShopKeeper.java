@@ -46,11 +46,12 @@ public interface ShopKeeper extends Environmental
 	public String storeKeeperString();
 	public Vector removeSellableProduct(String named, MOB mob);
 	public void clearStoreInventory();
-	public void addStoreInventory(Environmental thisThang, int number);
+	public void addStoreInventory(Environmental thisThang, int number, int price);
 	public void delStoreInventory(Environmental thisThang);
 	public boolean doISellThis(Environmental thisThang);
 	public boolean doIHaveThisInStock(String name, MOB mob);
 	public int numberInStock(Environmental likeThis);
+	public int stockPrice(Environmental likeThis);
 	public Environmental getStock(String name, MOB mob);
 	public Environmental removeStock(String name, MOB mob);
 	public String prejudiceFactors();

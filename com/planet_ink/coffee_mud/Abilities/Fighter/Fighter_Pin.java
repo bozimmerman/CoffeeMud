@@ -128,7 +128,7 @@ public class Fighter_Pin extends StdAbility
 		// now see if it worked
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus(target)+target.adjustedArmor()));
 		boolean success=profficiencyCheck((-levelDiff)+(-(((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH))*5))),auto)&&(hit);
-		success=success&&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0);
+		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

@@ -30,7 +30,7 @@ public class Druid_Rend extends StdAbility
 			mob.tell("You must be in your animal form to rend.");
 			return false;
 		}
-		if(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]==0)
+		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=0)
 		{
 			mob.tell("You must have legs to rend!");
 			return false;

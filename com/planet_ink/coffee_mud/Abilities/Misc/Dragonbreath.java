@@ -14,6 +14,18 @@ public class Dragonbreath extends StdAbility
 	private String castPhrase="<S-NAME> blast(s) flames from <S-HIS-HER> mouth!";
 	private int WeaponType=Weapon.TYPE_BURNING;
 	private int strikeType=Affect.TYP_FIRE;
+	private final static String[][] DragonColors={
+		{"WHITE","c"},
+		{"BLACK","a"},
+		{"BLUE","l"},
+		{"GREEN","g"},
+		{"RED","f"},
+		{"BRASS","f"},
+		{"COPPER","a"},
+		{"BRONZE","l"},
+		{"SILVER","c"},
+		{"GOLD","g"},
+	};
 
 	public String ID() { return "Dragonbreath"; }
 	public String name(){ return "Dragonbreath";}
@@ -35,7 +47,7 @@ public class Dragonbreath extends StdAbility
 	public void setMiscText(String newType)
 	{
 		super.setMiscText(newType);
-		if(newType.length()==0)
+		if(newType.trim().length()==0)
 		{
 			int x=Dice.roll(1,5,-1);
 			newType=("rlcag").substring(x,x+1);
@@ -89,6 +101,22 @@ public class Dragonbreath extends StdAbility
 		{
 			mob.tell("There doesn't appear to be anyone here worth breathing on.");
 			return false;
+		}
+		if((text().length()==0)
+		&&(mob.charStats().getMyRace().racialCategory().equals("Dragon")))
+		{
+			int color=-1;
+			for(int i=0;i<DragonColors.length;i++)
+				if(CoffeeUtensils.containsString(mob.Name(),DragonColors[i][0]))
+				{ color=i; break;}
+			if(color<0)
+			for(int i=0;i<DragonColors.length;i++)
+				if(CoffeeUtensils.containsString(mob.displayText(),DragonColors[i][0]))
+				{ color=i; break;}
+			if(color<0)	
+				setMiscText("fire");
+			else 
+				setMiscText(DragonColors[color][1]);
 		}
 
 		// the invoke method for spells receives as

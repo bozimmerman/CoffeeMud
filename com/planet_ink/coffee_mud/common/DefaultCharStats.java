@@ -16,6 +16,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 	protected String genderName=null;
 	protected String displayClassName=null;
 	protected String displayClassLevel=null;
+	protected int[] bodyAlterations=null;
 	
 	public DefaultCharStats()
 	{
@@ -291,6 +292,19 @@ public class DefaultCharStats implements Cloneable, CharStats
 		return myRace;
 	}
 	public void setMyRace(Race newVal){myRace=newVal;}
+	public int getBodyPart(int racialPartNumber)
+	{
+		int num=getMyRace().bodyMask()[racialPartNumber];
+		if((num<0)||(bodyAlterations==null)) return num;
+		num+=bodyAlterations[racialPartNumber];
+		if(num<0) return 0;
+		return num;
+	}
+	public void alterBodypart(int racialPartNumber, int deviation)
+	{
+		if(bodyAlterations==null) bodyAlterations=new int[Race.BODY_PARTS];
+		bodyAlterations[racialPartNumber]=deviation;
+	}
 	public int getSave(int which)
 	{
 		switch(which)

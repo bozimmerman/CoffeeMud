@@ -22,6 +22,8 @@ public class StdCommand implements Command
 		// return false to cancel any further command processing (recommended for your commands)
 		return true;
 	}
+	public int ticksToExecute(){return 0;}
+	public boolean canBeOrdered(){return true;}
 	
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

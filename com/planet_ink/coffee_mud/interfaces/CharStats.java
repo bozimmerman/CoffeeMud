@@ -85,6 +85,9 @@ public interface CharStats extends Cloneable
 	public String getSavesStr();
 	public void setSaves(String str);
 	
+	public int getBodyPart(int racialPartNumber);
+	public void alterBodypart(int racialPartNumber, int number);
+	
 	public int getStat(int statNum);
 	public int getStat(String abilityName);
 	public void setStat(int statNum, int value);

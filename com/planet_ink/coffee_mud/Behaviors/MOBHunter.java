@@ -14,38 +14,46 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-public class ZapperHunter extends ActiveTicker 
+public class MOBHunter extends ActiveTicker 
 {
-	public String ID(){return "ZapperHunter";}
+	public String ID(){return "MOBHunter";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public long flags(){return Behavior.FLAG_MOBILITY|Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
 	private boolean debug=false;
+	int radius=20;
 
-	public ZapperHunter() 
+	public MOBHunter() 
 	{
 		super();
-		minTicks=600; maxTicks=1200; chance=100;
+		minTicks=600; maxTicks=1200; chance=100; radius=20;
 		tickReset();
 	}
 	public Behavior newInstance()
 	{
-	    return new ZapperHunter();
+	    return new MOBHunter();
 	}
 
 	private boolean isHunting(MOB mob)
 	{
-		Ability A=mob.fetchAbility("Thief_Assasinate");
+		Ability A=mob.fetchAffect("Thief_Assasinate");
 		if(A!=null) return true;
 		return false;
 	}
 
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		radius=getParmVal(newParms,"radius",radius);
+	}
 	private MOB findPrey(MOB mob)
 	{
 		MOB prey=null;
+		Vector rooms=new Vector();
+		SaucerSupport.getRadiantRooms(mob.location(),rooms,true,true,true,null,radius);
 		Area a=mob.location().getArea();
-		for(int r=0;r<a.mapSize()*2;r++)
+		for(int r=0;r<rooms.size();r++)
 		{
-			Room R=(Room)a.getRandomRoom();
+			Room R=(Room)rooms.elementAt(r);
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB M=R.fetchInhabitant(i);
@@ -74,7 +82,6 @@ public class ZapperHunter extends ActiveTicker
 				{
 					if(debug) Log.sysOut("ZAPHUNT", "'"+mob.Name()+"' found prey: '"+prey.Name()+"'");
 					Ability A=CMClass.getAbility("Thief_Assassinate");
-					mob.addAbility(A);
 					A.setProfficiency(100);
 					mob.curState().setMana(mob.maxState().getMana());
 					mob.curState().setMovement(mob.maxState().getMovement());

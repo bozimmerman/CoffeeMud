@@ -226,6 +226,7 @@ public class FrontDoor
 					&&(S.mob()!=mob)
 					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 					&&(S.mob().playerStats()!=null)
+					&&(S.mob().isASysOp(null)||(!mob.isASysOp(null)))
 					&&((S.mob().playerStats().getFriends().containsKey(mob.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
 						S.mob().tell("^X"+mob.Name()+" has logged on.^.^?");
 				}

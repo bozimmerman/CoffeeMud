@@ -9,11 +9,13 @@ public class ProtectedCitizen extends ActiveTicker
 {
 	public String ID(){return "ProtectedCitizen";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	private static String zapper=null;
 	private static String defcityguard="cityguard";
 	private static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
 	private String cityguard=null;
 	private String[] claims=null;
 	private int radius=7;
+	private int maxAssistance=1;
 
 	public Behavior newInstance()
 	{
@@ -22,7 +24,7 @@ public class ProtectedCitizen extends ActiveTicker
 
 	public ProtectedCitizen()
 	{
-		minTicks=1; maxTicks=3; chance=99; radius=7;
+		minTicks=1; maxTicks=3; chance=99; radius=7; maxAssistance=1;
 		tickReset();
 	}
 
@@ -30,24 +32,37 @@ public class ProtectedCitizen extends ActiveTicker
 	{
 		super.setParms(parms);
 		cityguard=null;
+		zapper=null;
 		radius=getParmVal(parms,"radius",radius);
+		maxAssistance=getParmVal(parms,"maxassists",maxAssistance);
 		claims=null;
 	}
 
 	public String getCityguardName()
 	{
-		if(cityguard!=null) return cityguard;
+		if(cityguard!=null) return "-NAME \"+"+cityguard+"\"";
+		if(zapper!=null) return zapper;
 		String s=getParmsNoTicks();
 		if(s.length()==0)
-		{ cityguard=defcityguard; return cityguard;}
+		{ cityguard=defcityguard; return "-NAME \"+"+cityguard+"\"";}
 		char c=';';
 		int x=s.indexOf(c);
 		if(x<0){ c='/'; x=s.indexOf(c);}
 		if(x<0)
-		{ cityguard=defcityguard; return cityguard;}
+		{ cityguard=defcityguard; return "-NAME \"+"+cityguard+"\"";}
 		cityguard=s.substring(0,x).trim();
 		if(cityguard.length()==0)
-		{ cityguard=defcityguard; return cityguard;}
+		{ cityguard=defcityguard; return "-NAME \"+"+cityguard+"\"";}
+		if((cityguard.indexOf("+")>0)
+		||(cityguard.indexOf("-")>0)
+		||(cityguard.indexOf(">")>0)
+		||(cityguard.indexOf("<")>0)
+		||(cityguard.indexOf("=")>0))
+		{
+			zapper=cityguard;
+			cityguard=null;
+			return zapper;
+		}
 		return cityguard;
 	}
 
@@ -81,58 +96,74 @@ public class ProtectedCitizen extends ActiveTicker
 			claims[i]=(String)V.elementAt(i);
 		return claims;
 	}
+	
+	public boolean assistMOB(MOB mob)
+	{
+		int assistance=0;
+		for(int i=0;i<mob.location().numInhabitants();i++)
+		{
+			MOB M=mob.location().fetchInhabitant(i);
+			if((M!=null)
+			&&(M!=mob)
+			&&(M.getVictim()==mob.getVictim()))
+			   assistance++;
+		}
+		if(assistance>=maxAssistance)
+			return false;
+
+		try{
+			String claim=getClaims()[Dice.roll(1,getClaims().length,-1)];
+		ExternalPlay.doCommand(mob,Util.parse("YELL \""+claim+"\""));
+		}catch(Exception e){}
+
+
+		Room thisRoom=mob.location();
+		Vector V=new Vector();
+		SaucerSupport.getRadiantRooms(thisRoom,V,true,true,false,null,radius);
+		for(int v=0;v<V.size();v++)
+		{
+			Room R=(Room)V.elementAt(v);
+			MOB M=null;
+			if(R.getArea().Name().equals(mob.location().getArea().Name()))
+				for(int i=0;i<R.numInhabitants();i++)
+				{
+					MOB M2=R.fetchInhabitant(i);
+					if((M2!=null)
+					&&(M2!=mob.getVictim())
+					&&(Sense.aliveAwakeMobile(M2,true)
+					&&(!M2.isInCombat())
+					&&(Sense.isMobile(M2))
+					&&(SaucerSupport.zapperCheck(getCityguardName(),M2))
+					&&(!BrotherHelper.isBrother(mob.getVictim(),M2))
+					&&(BrotherHelper.canFreelyBehaveNormal(M2))
+					&&(M2.fetchAffect("Skill_Track")==null)
+					&&(Sense.canHear(M2))))
+					{
+						M=M2; break;
+					}
+				}
+			if(M!=null)
+			{
+				if(R==mob.location())
+					ExternalPlay.postAttack(M,mob.getVictim(),M.fetchWieldedItem());
+				else
+				{
+					int dir=SaucerSupport.radiatesFromDir(R,V);
+					if(dir>=0)
+						ExternalPlay.move(M,dir,false,false);
+				}
+			}
+		}
+		return true;
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if((canAct(ticking,tickID))
-		&&(ticking instanceof MOB)
-		&&(((MOB)ticking).isInCombat()))
+		if(canAct(ticking,tickID))
 		{
-			MOB mob=(MOB)ticking;
-			for(int i=0;i<mob.location().numInhabitants();i++)
-			{
-				MOB M=mob.location().fetchInhabitant(i);
-				if((M!=null)
-				&&(M!=mob)
-				&&(M.getVictim()==mob.getVictim()))
-				   return true;
-			}
-
-			try{
-				String claim=getClaims()[Dice.roll(1,getClaims().length,-1)];
-			ExternalPlay.doCommand(mob,Util.parse("YELL \""+claim+"\""));
-			}catch(Exception e){}
-
-
-			Room thisRoom=mob.location();
-			Vector V=new Vector();
-			SaucerSupport.getRadiantRooms(thisRoom,V,true,true,false,null,radius);
-			for(int v=0;v<V.size();v++)
-			{
-				Room R=(Room)V.elementAt(v);
-				MOB M=R.fetchInhabitant(getCityguardName());
-				if((M!=null)
-				&&(R.getArea().Name().equals(mob.location().getArea().Name()))
-				&&(M!=mob.getVictim())
-				&&(Sense.aliveAwakeMobile(M,true))
-				&&(!M.isInCombat())
-				&&(Sense.isMobile(M))
-				&&(!BrotherHelper.isBrother(mob.getVictim(),M))
-				&&(BrotherHelper.canFreelyBehaveNormal(M))
-				&&(M.fetchAffect("Skill_Track")==null)
-				&&(Sense.canHear(M)))
-				{
-					if(R==mob.location())
-						ExternalPlay.postAttack(M,mob.getVictim(),M.fetchWieldedItem());
-					else
-					{
-						int dir=SaucerSupport.radiatesFromDir(R,V);
-						if(dir>=0)
-							ExternalPlay.move(M,dir,false,false);
-					}
-				}
-			}
+			if((ticking instanceof MOB)&&(((MOB)ticking).isInCombat()))
+				assistMOB((MOB)ticking);
 		}
 		return true;
 	}

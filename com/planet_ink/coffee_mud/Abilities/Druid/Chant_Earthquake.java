@@ -113,7 +113,7 @@ public class Chant_Earthquake extends Chant
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
 					{
-						if(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0)
+						if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
 						{
 							success=maliciousAffect(mob,target,3,-1);
 							if(success)

@@ -474,7 +474,7 @@ public class StdAbility implements Ability, Cloneable
 	public void helpProfficiency(MOB mob)
 	{
 		Ability A=(Ability)mob.fetchAbility(ID());
-		if(A==null) return;
+		if((A==null)||(A.isBorrowed(mob))) return;
 
 		if((System.currentTimeMillis()
 		-((StdAbility)A).lastProfHelp)<60000)

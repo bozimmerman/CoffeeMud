@@ -111,7 +111,7 @@ public class Skill_Trip extends StdAbility
 		levelDiff-=(abilityCode()*mob.charStats().getStat(CharStats.DEXTERITY));
 		int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))));
 		boolean success=profficiencyCheck(adjustment,auto);
-		success=success&&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0);
+		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> trip(s)!":"^F<S-NAME> trip(s) <T-NAMESELF>!^?");

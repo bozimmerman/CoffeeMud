@@ -1974,7 +1974,8 @@ include the Ranger Favored Enemy skill, as well as most of the race-based
 restrictions on doors and with shopkeepers.&nbsp; In many ways, the racial 
 category is more important than the name of the race itself, if functionality is 
 considered.&nbsp; Lastly, return true from playerSelectable if you want players 
-to be able to select this race when they create their characters.</FONT></P><pre>protected int shortestMale(){return 84;}
+to be able to select this race when they create their characters.</FONT></P>
+<pre>protected int shortestMale(){return 84;}
 protected int shortestFemale(){return 78;}
 protected int heightVariance(){return 80;}
 protected int lightestWeight(){return 2000;}
@@ -2006,7 +2007,26 @@ BODY_MOUTH, BODY_WAIST, BODY_TAIL, BODY_WING</FONT>. Remember that these can be
 found in the Race interface for you to reference.&nbsp; In the above example, we 
 find no antenea, 2 eyes, 2 ears, a head, neck, no arms or hands, a torso, 4 
 legs, 4 feet, anose, but&nbsp;no gill, and then a mouth, waist, tail, and 2 
-wings.</FONT></P><pre>public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+wings.</FONT></P>
+<PRE>
+	protected String[] racialAbilityNames={"Skill_Trip","Fighter_Whomp"};
+	protected int[] racialAbilityLevels={1,3};
+	protected int[] racialAbilityProfficiencies={75,50};
+	protected boolean[] racialAbilityQuals={false,false};
+	public Vector racialAbilities(MOB mob)
+	{
+		Vector V=super.racialAbilities(mob);
+		return V;
+	}
+</PRE>
+<P align=left><FONT size=4>Racial Abilities!</FONT></P>
+<PRE>
+	protected String[] culturalAbilityNames={"Dwarven","Mining"};
+	protected int[] culturalAbilityProfficiencies={100,50};
+</PRE>
+<P align=left><FONT size=4>Cultural Abilities!</FONT></P>
+
+<pre>public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 {
 	super.affectEnvStats(affected,affectableStats);
 	affectableStats.setSensesMask(affectableStats.sensesMask()
@@ -2031,25 +2051,9 @@ equipment, it should be used with care!</FONT></P><pre>
 public void startRacing(MOB mob, boolean verifyOnly)
 {
 	super.startRacing(mob,verifyOnly);
-	if(!verifyOnly)
-	{
-		Ability A=CMClass.getAbility("Draconic");
-		if(A!=null)
-		{
-			mob.addAbility(A);
-			A.autoInvocation(mob);
-			if(mob.isMonster())
-				A.invoke(mob,mob,false);
-		}
-	}
 }
 </PRE>
-<P align=left><FONT size=4>The 
-startRacing method simply allows you to give creatures of this race any special 
-abilities for being the race.&nbsp; In this case, we give the creature a 
-language (Draconic), and if they are not a player, we automatically make them 
-speak the language (via the invoke method -- see below on Spell 
-creation).</FONT></P><pre>	
+<P align=left><FONT size=4>StartRacing is for what now?</FONT></P><pre>	
 public Weapon myNaturalWeapon()
 {
 	if(naturalWeapon==null)
@@ -2945,7 +2949,7 @@ adjustment.&nbsp; The second parameter is the auto flag mentioned above, to
 allow overrides of the normal profficiency.&nbsp; In the case of Trip, we 
 calculate an adjustment based both on level and the dexterity of the 
 target.&nbsp; We store whether or not the profficiency check failed or passed 
-into the variable success.</FONT></P><PRE>      success=success&amp;&amp;(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]&gt;0);
+into the variable success.</FONT></P><PRE>      success=success&amp;&amp;(target.charStats().getBodyPart(Race.BODY_LEG)&gt;0);
       if(success)
       {
          FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"&lt;T-NAME&gt; trip(s)!":"^F&lt;S-NAME&gt; trip(s) &lt;T-NAMESELF&gt;!^?");

@@ -149,7 +149,7 @@ public class Fighter_CalledStrike extends StdAbility
 			newOne=true;
 		}
 
-		Vector remainingLimbList=A.remainingLimbNameSet(target.charStats().getMyRace());
+		Vector remainingLimbList=A.remainingLimbNameSet(target);
 		if(remainingLimbList.size()==0)
 		{
 			if(!auto)
@@ -172,7 +172,7 @@ public class Fighter_CalledStrike extends StdAbility
 		{
 			String off=Util.combine(commands,0);
 			if((off.equalsIgnoreCase("head"))
-			&&(target.charStats().getMyRace().bodyMask()[Race.BODY_HEAD]>=0))
+			&&(target.charStats().getBodyPart(Race.BODY_HEAD)>=0))
 		    {	
 				gone=Race.BODYPARTSTR[Race.BODY_HEAD].toLowerCase();
 				hpReq=3;

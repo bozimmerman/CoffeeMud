@@ -43,7 +43,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				itemstr.append("<INV>");
 				itemstr.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(I)));
 				itemstr.append(XMLManager.convertXMLtoTag("INUM",""+numberInStock(I)));
-				itemstr.append(XMLManager.convertXMLtoTag("IVAL",""+stockValue(I)));
+				itemstr.append(XMLManager.convertXMLtoTag("IVAL",""+stockPrice(I)));
 				itemstr.append(XMLManager.convertXMLtoTag("IDATA",Generic.getPropertiesStr(I,true)));
 				itemstr.append("</INV>");
 			}
@@ -142,9 +142,11 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return null;
 	}
 
-	private int stockValue(Item I)
+	public int stockPrice(Environmental E)
 	{
-		if(I==null) return 0;
+		if(E==null) return 0;
+		if(!(E instanceof Item)) return 0;
+		Item I=(Item)E;
 		Item I2=getBaseItem(I);
 		Integer N=null;
 		if(I2!=null) N=(Integer)stockValues.get(""+I2);
@@ -209,7 +211,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public void addStoreInventory(Environmental thisThang, int number)
 	{
 		if(thisThang instanceof Item)
-			addStoreInventory(thisThang,number,stockValue((Item)thisThang));
+			addStoreInventory(thisThang,number,stockPrice((Item)thisThang));
 		else
 			addStoreInventory(thisThang,number,1);
 	}
@@ -466,7 +468,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		int val=0;
 		if((product==null)||(!(product instanceof Item)))
 			return val;
-		val=stockValue((Item)product);
+		val=stockPrice((Item)product);
 		if((mob==null)||(mob==affected)) return val;
 
 		// the price is 200% at 0 charisma, and 100% at 30

@@ -317,7 +317,7 @@ public class Scriptable extends StdBehavior
 					s=s.substring(y+1).trim();
 				}
 				if((cmd.length()>0)&&(!cmd.startsWith("#")))
-					script.addElement(cmd);
+					script.addElement(Util.replaceAll(cmd,"\\;",";"));
 				V.setElementAt(script,v);
 			}
 		}

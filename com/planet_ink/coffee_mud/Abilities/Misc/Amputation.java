@@ -30,6 +30,7 @@ public class Amputation extends StdAbility
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	private Vector missingLimbs=null;
 	private long forbiddenWornBits=-1;
+	private int[] amputations=new int[Race.BODY_PARTS];
 
 	public final static boolean[] validamputees={true,//antenea
 												 true,//eye
@@ -102,6 +103,14 @@ public class Amputation extends StdAbility
 		else
 		if(Util.bset(forbiddenWornBits,Item.ON_FEET))
 			affectableState.setMovement(affectableState.getMovement()/4);
+	}
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		missingLimbNameSet();
+		for(int i=0;i<amputations.length;i++)
+			if(amputations[i]!=0)
+				affectableStats.alterBodypart(i,amputations[i]);
 	}
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
@@ -262,28 +271,6 @@ public class Amputation extends StdAbility
 		missingLimbs=null;
 	}
 	
-	public static Vector racialLimbNameSet(Race R)
-	{
-		Vector V=new Vector();
-		int[] limbs=R.bodyMask();
-		for(int i=0;i<limbs.length;i++)
-		{
-			if(validamputees[i])
-				if(limbs[i]==1)
-					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
-				else
-				if(limbs[i]==2)
-				{
-					V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
-					V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
-				}
-				else
-				for(int ii=0;ii<limbs[i];ii++)
-					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
-		}
-		return V;
-	}
-	
 	public Vector missingLimbNameSet()
 	{
 		if(missingLimbs!=null) return missingLimbs;
@@ -293,6 +280,18 @@ public class Amputation extends StdAbility
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
 		   return missingLimbs;
 		missingLimbs=Util.parseSemicolons(text());
+		amputations=new int[Race.BODY_PARTS];
+		for(int v=0;v<missingLimbs.size();v++)
+		{
+			String s=(String)missingLimbs.elementAt(v);
+			if(s.startsWith("left ")) s=s.substring(5).trim();
+			if(s.startsWith("right ")) s=s.substring(6).trim();
+			int code=-1;
+			for(int r=0;r<Race.BODYPARTSTR.length;r++)
+				if(Race.BODYPARTSTR[r].equalsIgnoreCase(s))
+				{ code=r; break;}
+			if(code>=0)	amputations[code]--;
+		}
 		forbiddenWornBits=0;
 		if(missingLimbs.contains("left eye")&&missingLimbs.contains("right eye"))
 			forbiddenWornBits=forbiddenWornBits|Item.ON_EYES;
@@ -317,16 +316,32 @@ public class Amputation extends StdAbility
 		return missingLimbs;
 	}
 
-	public Vector remainingLimbNameSet(Race R)
+	public Vector remainingLimbNameSet(MOB M)
 	{
-		Vector RV=racialLimbNameSet(R);
-		Vector MV=missingLimbNameSet();
-		for(int m=0;m<MV.size();m++)
+		missingLimbNameSet();
+		Vector V=new Vector();
+		int[] limbs=new int[Race.BODY_PARTS];
+		for(int i=0;i<limbs.length;i++)
 		{
-			String S=(String)MV.elementAt(m);
-			if(RV.contains(S)) RV.removeElement(S);
+			limbs[i]=M.charStats().getBodyPart(i);
+			if(limbs[i]>0)
+			{
+				if(validamputees[i])
+					if(limbs[i]-amputations[i]==1)
+						V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+					else
+					if(limbs[i]-amputations[i]==2)
+					{
+						if(limbs[i]==2)
+							V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
+						V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
+					}
+					else
+					for(int ii=0;ii<limbs[i];ii++)
+						V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+			}
 		}
-		return RV;
+		return V;
 	}
 	
 	public static int getRacialCode(String name)
@@ -338,7 +353,7 @@ public class Amputation extends StdAbility
 		return -1;
 	}
 	
-	public Vector affectedLimbNameSet(Race R, String missing, Vector missingLimbs)
+	public Vector affectedLimbNameSet(Object O, String missing, Vector missingLimbs)
 	{
 		Vector AL=new Vector();
 		int x=getRacialCode(missing);
@@ -347,7 +362,8 @@ public class Amputation extends StdAbility
 			int[] aff=extraamuputees[x];
 			if((aff.length>1)||(aff[0]>=0))
 			for(int a=0;a<aff.length;a++)
-			if(R.bodyMask()[aff[a]]>0)
+			if(((O instanceof MOB)&&(((MOB)O).charStats().getBodyPart(aff[a])>0))
+			||((O instanceof Race)&&(((Race)O).bodyMask()[aff[a]]>0)))
 			{
 				String r=Race.BODYPARTSTR[aff[a]].toLowerCase();
 				if(missing.startsWith("left "))
@@ -397,20 +413,14 @@ public class Amputation extends StdAbility
 		if(target!=null)
 		{
 			if(target instanceof MOB)
-			{
 				((MOB)target).location().addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
-				R=((MOB)target).charStats().getMyRace();
-			}
 			else
 			if((target instanceof DeadBody)
 			&&(((Item)target).owner()!=null)
 			&&(((Item)target).owner() instanceof Room))
-			{
 				((Room)((Item)target).owner()).addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
-				R=((DeadBody)target).charStats().getMyRace();
-			}
 		}
-		Vector theRest=A.affectedLimbNameSet(R,gone,A.missingLimbNameSet());
+		Vector theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
 		if(!theRest.contains(gone)) theRest.addElement(gone);
 		for(int i=0;i<theRest.size();i++)
 			A.setMiscText(A.text()+((String)theRest.elementAt(i))+";");
@@ -433,7 +443,7 @@ public class Amputation extends StdAbility
 				newOne=true;
 			}
 
-			Vector VN=A.remainingLimbNameSet(target.charStats().getMyRace());
+			Vector VN=A.remainingLimbNameSet(target);
 			if(VN.size()==0)
 			{
 				if(!auto)

@@ -247,11 +247,13 @@ public class MobData extends StdWebMacro
 		{
 			Vector theclasses=new Vector();
 			Vector theparms=new Vector();
+			Vector theprices=new Vector();
 			if(httpReq.isRequestParameter("SHP1"))
 			{
 				int num=1;
 				String MATCHING=httpReq.getRequestParameter("SHP"+num);
 				String theparm=httpReq.getRequestParameter("SDATA"+num);
+				String theprice=httpReq.getRequestParameter("SPRIC"+num);
 				Vector inventory=E.getUniqueStoreInventory();
 				while((MATCHING!=null)&&(theparm!=null))
 				{
@@ -301,9 +303,11 @@ public class MobData extends StdWebMacro
 							theclasses.addElement(O);
 					}
 					theparms.addElement(theparm);
+					theprices.addElement(theprice);
 					num++;
 					MATCHING=httpReq.getRequestParameter("SHP"+num);
 					theparm=httpReq.getRequestParameter("SDATA"+num);
+					theprice=httpReq.getRequestParameter("SPRIC"+num);
 				}
 			}
 			else
@@ -318,6 +322,7 @@ public class MobData extends StdWebMacro
 					if(O instanceof MOB) mobClasses.addElement(O);
 					theclasses.addElement(O);
 					theparms.addElement(""+E.numberInStock(O));
+					theprices.addElement(""+E.stockPrice(O));
 				}
 				RoomData.contributeItems(itemClasses);
 				RoomData.contributeMOBs(mobClasses);
@@ -327,6 +332,7 @@ public class MobData extends StdWebMacro
 			{
 				Environmental O=(Environmental)theclasses.elementAt(i);
 				String theparm=(String)theparms.elementAt(i);
+				String theprice=(String)theprices.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=SHP"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -341,8 +347,9 @@ public class MobData extends StdWebMacro
 				else
 					str.append("<OPTION SELECTED VALUE=\""+O.ID()+"\">"+O.Name()+" ("+O.ID()+")");
 				str.append("</SELECT>");
-				str.append("</TD><TD WIDTH=50%>Stock:");
-				str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(i+1)+" VALUE=\""+theparm+"\">");
+				str.append("</TD><TD WIDTH=50%><TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0><TR><TD WIDTH=50%>Stock:</TD>");
+				str.append("<TD WIDTH=50%><INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(i+1)+" VALUE=\""+theparm+"\"></TD></TR>");
+				str.append("<TR><TD WIDTH=50%>Price:</TD><TD WIDTH=50%><INPUT TYPE=TEXT SIZE=5 NAME=SPRIC"+(i+1)+" VALUE=\""+theprice+"\"></TD></TR></TABLE>");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=50%>");

@@ -324,7 +324,7 @@ public class Generic
 		{
 			text.append(XMLManager.convertXMLtoTag("ALIG",((MOB)E).getAlignment()));
 			text.append(XMLManager.convertXMLtoTag("MONEY",((MOB)E).getMoney()));
-			text.append(XMLManager.convertXMLtoTag("CLAN",((MOB)E).getClanID());
+			text.append(XMLManager.convertXMLtoTag("CLAN",((MOB)E).getClanID()));
 			text.append(XMLManager.convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.GENDER)));
 			text.append(XMLManager.convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
 			text.append(getGenMobInventory((MOB)E));
@@ -395,6 +395,7 @@ public class Generic
 					itemstr.append("<SHITEM>");
 					itemstr.append(XMLManager.convertXMLtoTag("SICLASS",CMClass.className(Env)));
 					itemstr.append(XMLManager.convertXMLtoTag("SISTOCK",((ShopKeeper)E).numberInStock(Env)));
+					itemstr.append(XMLManager.convertXMLtoTag("SIPRICE",((ShopKeeper)E).stockPrice(Env)));
 					itemstr.append(XMLManager.convertXMLtoTag("SIDATA",getPropertiesStr(Env,true)));
 					itemstr.append("</SHITEM>");
 				}
@@ -1623,6 +1624,10 @@ public class Generic
 						}
 						String itemi=XMLManager.getValFromPieces(iblk.contents,"SICLASS");
 						int numStock=XMLManager.getIntFromPieces(iblk.contents,"SISTOCK");
+						String prc=XMLManager.getValFromPieces(iblk.contents,"SIPRICE");
+						int stockPrice=-1;
+						if((prc!=null)&&(prc.length()>0))
+							stockPrice=Util.s_int(prc);
 						Environmental newOne=null;
 						Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"SIDATA");
 						if((iblk.value.indexOf("<ABLTY>")>=0)||(iblk.value.indexOf("&lt;ABLTY&gt;")>=0))
@@ -1642,7 +1647,7 @@ public class Generic
 								LOCmap.put(ILOC,newOne);
 						}
 						setPropertiesStr(newOne,idat,true);
-						shopmob.addStoreInventory(newOne,numStock);
+						shopmob.addStoreInventory(newOne,numStock,stockPrice);
 					}
 					for(int i=0;i<shopmob.getUniqueStoreInventory().size();i++)
 					{

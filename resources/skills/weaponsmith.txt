@@ -34,18 +34,18 @@ Half-moon	7	90	25	983	GenWeapon	BLUNT	SLASHING	15	-10	2	0
 % Sceptre	8	110	12	450	GenWeapon	BLUNT	BASHING	7	-5	1	0
 Grand % Sceptre	12	140	16	680	GenWeapon	BLUNT	BASHING	8	5	1	0
 % War Sceptre	15	180	18	800	GenWeapon	BLUNT	BASHING	8	15	1	0
-Butter Knife	1	20	1	20	GenWeapon	EDGED	PIERCING	2	-10	1	0
-% Knife	1	20	2	40	GenWeapon	EDGED	PIERCING	1	-5	1	0
-Butcher's Knife	1	20	6	130	GenWeapon	EDGED	PIERCING	2	-5	1	0
-Dagger	1	20	6	130	GenWeapon	EDGED	PIERCING	2	-5	1	0
-Serrated Knife	1	20	4	80	GenWeapon	EDGED	PIERCING	1	-5	1	0
-Poignard	2	40	7	180	GenWeapon	EDGED	PIERCING	4	-10	1	0
-Dirk	5	60	5	130	GenWeapon	EDGED	PIERCING	2	5	1	0
+Butter Knife	1	20	1	20	GenWeapon	DAGGER	PIERCING	2	-10	1	0
+% Knife	1	20	2	40	GenWeapon	DAGGER	PIERCING	1	-5	1	0
+Butcher's Knife	1	20	6	130	GenWeapon	DAGGER	PIERCING	2	-5	1	0
+Dagger	1	20	6	130	GenWeapon	DAGGER	PIERCING	2	-5	1	0
+Serrated Knife	1	20	4	80	GenWeapon	DAGGER	PIERCING	1	-5	1	0
+Poignard	2	40	7	180	GenWeapon	DAGGER	PIERCING	4	-10	1	0
+Dirk	5	60	5	130	GenWeapon	DAGGER	PIERCING	2	5	1	0
 Katar	5	80	8	220	GenWeapon	EDGED	PIERCING	3	5	1	0
 Cat Claws	7	90	10	275	GenWeapon	EDGED	SLASHING	3	10	1	0
-Crys-knife	6	90	6	160	GenWeapon	EDGED	PIERCING	2	10	1	0
+Crys-knife	6	90	6	160	GenWeapon	DAGGER	PIERCING	2	10	1	0
 Rondel	8	100	6	170	GenWeapon	EDGED	PIERCING	2	15	1	0
-Stiletto	13	140	10	400	GenWeapon	EDGED	PIERCING	5	15	1	0
+Stiletto	13	140	10	400	GenWeapon	DAGGER	PIERCING	5	15	1	0
 Main Gauche	13	160	4	220	GenWeapon	EDGED	PIERCING	4	15	1	0
 Kusari-Gama	1	20	12	260	GenWeapon	FLAILED	SLASHING	6	-15	2	1
 Three-sectioned staff	1	20	15	317	GenWeapon	FLAILED	BASHING	7	-10	2	0

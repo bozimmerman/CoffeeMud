@@ -389,6 +389,7 @@ public class GrinderMobs
 				int num=1;
 				String MATCHING=httpReq.getRequestParameter("SHP"+num);
 				String theparm=httpReq.getRequestParameter("SDATA"+num);
+				String theprice=httpReq.getRequestParameter("SPRIC"+num);
 				while((MATCHING!=null)&&(theparm!=null))
 				{
 					if(MATCHING==null)
@@ -398,7 +399,7 @@ public class GrinderMobs
 					{
 						Environmental O=(Environmental)inventory.elementAt(Util.s_int(MATCHING)-1);
 						if(O!=null)
-							K.addStoreInventory(O,Util.s_int(theparm));
+							K.addStoreInventory(O,Util.s_int(theparm),Util.s_int(theprice));
 					}
 					else
 					if(MATCHING.indexOf("@")>0)
@@ -413,7 +414,7 @@ public class GrinderMobs
 						if(O==null)
 							O=RoomData.getItemFromAnywhere(null,MATCHING);
 						if(O!=null)
-							K.addStoreInventory(O.copyOf(),Util.s_int(theparm));
+							K.addStoreInventory(O.copyOf(),Util.s_int(theparm),Util.s_int(theprice));
 					}
 					else
 					{
@@ -434,11 +435,12 @@ public class GrinderMobs
 						if(O==null)
 							O=RoomData.getItemFromAnywhere(null,MATCHING);
 						if(O!=null)
-							K.addStoreInventory(O.copyOf(),Util.s_int(theparm));
+							K.addStoreInventory(O.copyOf(),Util.s_int(theparm),Util.s_int(theprice));
 					}
 					num++;
 					MATCHING=httpReq.getRequestParameter("SHP"+num);
 					theparm=httpReq.getRequestParameter("SDATA"+num);
+					theprice=httpReq.getRequestParameter("SPRIC"+num);
 				}
 			}
 

@@ -5,18 +5,18 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_DiseaseImmunity extends Property 
+public class Prop_AbilityImmunity extends Property 
 {
-	public String ID() { return "Prop_DiseaseImmunity"; }
-	public String name(){ return "Disease Immunity";}
+	public String ID() { return "Prop_AbilityImmunity"; }
+	public String name(){ return "Ability Immunity";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prop_DiseaseImmunity();}
-	public String accountForYourself() { return "Disease Immunity";	}
+	public Environmental newInstance(){	return new Prop_AbilityImmunity();}
+	public String accountForYourself() { return "Immunity";	}
 	private Vector diseases=new Vector();
 
 	public void setMiscText(String newText)
 	{
-		diseases=Util.parse(newText.toUpperCase());
+		diseases=Util.parseSemicolons(newText.toUpperCase());
 		super.setMiscText(newText);
 	}
 
@@ -27,15 +27,19 @@ public class Prop_DiseaseImmunity extends Property
 	    && (affect.target() != null)
 	    && (affect.tool() != null)
 	    && (affect.amITarget(affected))
-	    && (affect.tool() instanceof DiseaseAffect )) 
+	    && (affect.tool() instanceof Ability )) 
 		{
-			DiseaseAffect d = (DiseaseAffect)affect.tool();
+			Ability d = (Ability)affect.tool();
 			for(int i = 0; i < diseases.size(); i++) 
 			{
 				if((CoffeeUtensils.containsString(d.ID(),((String)diseases.elementAt(i))))
 				||(CoffeeUtensils.containsString(d.name(),((String)diseases.elementAt(i)))))
 				{
-					affect.source().tell(affected.name()+" is immune to "+affect.tool().name()+".");
+					if(affect.target() instanceof MOB)
+						((MOB)affect.target()).tell("You are immune to "+affect.tool().name()+".");
+					if(affect.source()!=affect.target())
+						affect.source().tell(affected.name()+" is immune to "+affect.tool().name()+".");
+					else
 					return false;
 				}
 			}

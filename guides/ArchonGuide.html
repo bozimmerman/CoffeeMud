@@ -706,15 +706,16 @@ makes the weather in this area mimic the weather from another area.<BR>"PuddleMa
 or snow.<BR>"RandomTraps" will scatter some traps around 
 your area.<BR>"RandomMonsters" will populate the area with 
 lots of hideously random creatures that you choose.<BR>"ResetWhole" will cause the whole area to re-boot every so 
-often, thus supplementing the natural "rejuv" process.<BR>"WaterCurrents" will make those on the water bob and flow 
-in the direction you specify. </P>
+often, thus supplementing the natural <BR>"ProtectedCitizens" will allow 
+resident mobs to scream for help and receive it&nbsp;when attacked.<BR>"rejuv" 
+process.<BR>"WaterCurrents" will make those on the water 
+bob and flow in the direction you specify. </P>
 <P>As for affects, well, affects are special properties 
 which you can attach to your new little holes in the ground.&nbsp; There are 
 lots of nice properties that one may add to an&nbsp;Area, which will affect 
 every room in it, such as: </P>
-<P>"Prop_ReqNoMOB" to make your area a player-only place to 
-be.&nbsp; <BR>"Prop_MagicFreedom" to fluster any 
-spell-using folks that happen along.<BR>"Prop_NoChannel" 
+<P>"Prop_ReqNoMOB" to make your area a player-only place to be.&nbsp; <BR>"Prop_MagicFreedom" to fluster any spell-using folks that 
+happen along.<BR>"Prop_NoChannel" 
 for a place of quiet.<BR>"Prop_PeaceMaker" to go with it if 
 you want peace AND quiet.&nbsp; <BR>"Prop_Hidden" will make 
 the area unlisted to normal players.<BR>"Prop_NoTeleport" 
@@ -803,7 +804,8 @@ might enjoy: </P>
 whisked elsewhere.<BR>"Emoter" - yea -- this was mentioned 
 under Areas, but it's just sooo cool.<BR>"Sounder" is still 
 a good alternative to Emoter.<BR>"Mime"&nbsp;causes the 
-room to mimic players.&nbsp; Wierd.. yea, I know.<BR>"MovingRoom" the fast train to somewhere.<BR>"ResourceOverride" if you want fishing in the desert, or 
+room to mimic players.&nbsp; Wierd.. yea, I know.<BR>"MovingRoom" the fast train to somewhere.<BR>"ProtectedCitizens" will allow resident mobs to scream for 
+help and receive it&nbsp;when attacked.<BR>"ResourceOverride" if you want fishing in the desert, or 
 sand in your swap, this is the way to go.<BR>Lots of other 
 properties and affects are also available for rooms.&nbsp; In addition to all 
 the ones listed above under Areas, here are a few more you might want to add: 
@@ -817,14 +819,15 @@ are very very careful.<BR>"Prop_ReqTattoo" checks out a
 mobs forearm before letting them in.<BR>"Prop_RestrictSpells" shuts down a list of spells that you 
 provide.<BR>"Prop_RoomDark" turns off the lights.<BR>"Prop_RoomForSale" puts this one little room on the 
 market.<BR>"Prop_RoomsForSale" designates that this room, 
-and all others like it nearby, are for sale as a group.<BR>"Prop_RoomView" makes this room seem to be another...<BR>"Prop_RoomWatch" allows folks in other rooms to watch what 
-goes on here.<BR>"Prop_SparringRoom" makes the consequences 
-of death more palatable.<BR>"Prop_SpellAdder" puts everyone 
-who enters under its spell.<BR>"Prop_TattooAdder" 
-puts&nbsp;a little something on all who enter.<BR>"Prop_Transporter" send those who enter to the room you 
-designate.<BR>"Prop_Trashcan" destroys stuff dropped on the 
-ground.<BR>"Prop_WeakBridge" makes cross this room very 
-very dangerous.<BR>"Spell_Silence" to quiet things down.<BR>And lots and lots of traps to put in your rooms: 
+and all others like it nearby, are for sale as a group.<BR>"Prop_RoomView" makes this room seem to be another...<BR>"Prop_AbilityImmunity" protects the room from specified 
+targeted spells.<BR>"Prop_RoomWatch" allows folks in other 
+rooms to watch what goes on here.<BR>"Prop_SparringRoom" 
+makes the consequences of death more palatable.<BR>"Prop_SpellAdder" puts everyone who enters under its 
+spell.<BR>"Prop_TattooAdder" puts&nbsp;a little something 
+on all who enter.<BR>"Prop_Transporter" send those who 
+enter to the room you designate.<BR>"Prop_Trashcan" 
+destroys stuff dropped on the ground.<BR>"Prop_WeakBridge" 
+makes cross this room very very dangerous.<BR>"Spell_Silence" to quiet things down.<BR>And lots and lots of traps to put in your rooms: 
 "Thief_Caltrops", "Thief_DeathTrap", "Thief_Listen", "Thief_MinorTrap", 
 "Thief_Trap", "Trap_AcidPit", "Trap_Avalanche", "Trap_BearTrap", 
 "Trap_Boulders", "Trap_CaveIn", "Trap_CrushingRoom", "Trap_Darkfall", 
@@ -1044,12 +1047,13 @@ that only the bloodthirsty may enter.<BR>"Prop_NoPKill"
 keeps out the riffraff.<BR>"Prop_ClosedDayNight" shuts and 
 locks any doors at night.<BR>"Prop_NarrowLedge" makes this 
 an exit&nbsp;you can cross.. if you are very very careful.<BR>"Prop_ReqTattoo" checks out a mobs forearm before letting 
-them in.<BR>"Prop_RoomView" makes looking at this exit more 
-revealing.<BR>"Prop_SpellAdder" puts everyone who enters 
-under its spell.<BR>"Prop_TattooAdder" puts&nbsp;a little 
-something on all who enter.<BR>"Prop_Transporter" send 
-those who enter to the room you designate.<BR>"Prop_WeakBridge" makes cross this room very very 
-dangerous.<BR>Popular traps for exits include: 
+them in.<BR>"Prop_AbilityImmunity" protects the exitfrom 
+specified targeted spells.<BR>"Prop_RoomView" makes looking 
+at this exit more revealing.<BR>"Prop_SpellAdder" puts 
+everyone who enters under its spell.<BR>"Prop_TattooAdder" 
+puts&nbsp;a little something on all who enter.<BR>"Prop_Transporter" send those who enter to the room you 
+designate.<BR>"Prop_WeakBridge" makes cross this room very 
+very dangerous.<BR>Popular traps for exits include: 
 Trap_AcidSpray", "Trap_ElectricShock", "Trap_Enter", "Trap_EnterGas", 
 "Trap_EnterNeedle", "Trap_EnterPit", "Trap_EnterSpell", "Trap_Launcher", 
 "Trap_Needle", "Trap_Noise", "Trap_Open", "Trap_OpenBlade", "Trap_OpenGas", 
@@ -1909,13 +1913,14 @@ night.<BR>"Prop_FightSpellCast" makes a weapon cast a spell
 when it hits.<BR>"Prop_HaveAdjuster" modifies the owners 
 stats.<BR>"Prop_HaveResister" modifies the owners saving 
 throws.<BR>"Prop_HaveSpellCast" gives a spell affect to the 
-owner.<BR>"Prop_HaveZapper" restricts ownership.<BR>"Prop_Hidden" makes an item hidden, temporarily.<BR>"Prop_Invisibility" makes an item invisible.<BR>"Prop_ItemTransporter" makes an item that transports 
-things.<BR>"Prop_ItemTransReceiver" makes an item receives 
-transported things.<BR>"Prop_OpenPassword" gives a 
-container a secret opening word.<BR>"Prop_RideAdjuster" 
-modifies the mounted persons stats.<BR>"Prop_RideResister" 
-modifies the mounted persons saving throws.<BR>"Prop_RideSpellCast" gives a spell affect to the 
-mounter.<BR>"Prop_RideZapper" restricts mounting.<BR>"Prop_RoomView" makes an item that gives you a view of 
+owner.<BR>"Prop_HaveZapper" restricts ownership.<BR>"Prop_Hidden" makes an item hidden, temporarily.<BR>"Prop_Invisibility" makes an item invisible.<BR>"Prop_AbilityImmunity" protects the&nbsp;item from 
+specified targeted spells.<BR>"Prop_ItemTransporter" makes 
+an item that transports things.<BR>"Prop_ItemTransReceiver" 
+makes an item receives transported things.<BR>"Prop_OpenPassword" gives a container a secret opening 
+word.<BR>"Prop_RideAdjuster" modifies the mounted persons 
+stats.<BR>"Prop_RideResister" modifies the mounted persons 
+saving throws.<BR>"Prop_RideSpellCast" gives a spell affect 
+to the mounter.<BR>"Prop_RideZapper" restricts mounting.<BR>"Prop_RoomView" makes an item that gives you a view of 
 something else.&nbsp; A window maker!<BR>"Prop_SpellReflecting"&nbsp;helps make&nbsp;a shield that 
 reflects magic.<BR>"Prop_TattooAdder" makes an item that 
 grants one a tattoo.<BR>"Prop_TicketTaker" makes a rideable 
@@ -2626,12 +2631,16 @@ skills.<BR>"Beggar" makes the mob beg for money.<BR>"BribeGateGuard" makes the m
 bribed.<BR>"BrotherHelper" makes the mob defend similar 
 mobs.<BR>"ClanHelper" makes the mob defend clan buddies.<BR>"Clericness" makes the mob fight with cleric skills 
 appropriate to alignment.<BR>"CombatAbilities" makes the 
-mob use its abilities in combat.<BR>"CommonSpeaker" makes 
-the mob speak common, even if it doesn't want to.<BR>"CorpseEater" makes the mob eat corpses it comes across.<BR>"CorpseLooter" makes the mob loot corpses it kills.<BR>"Decay" makes the mob go away after a time.<BR>"DelayedTransporter" makes a mob that randomly zaps around 
-the place.<BR>"DoorwayGuardian" makes a mob that won't let 
-anyone pass.<BR>"Drowness" provides certain drow-like 
-behavior to genmobs.<BR>"Druidness" makes the mob fight 
-with druid skills.<BR>"Emoter" makes the mob do 
+mob use its abilities in combat.<BR>"CombatAssister" makes 
+the mob assist specific other mobs in combat.<BR>"CommonSpeaker" makes the mob speak common, even if it 
+doesn't want to.<BR>"CorpseEater" makes the mob eat corpses 
+it comes across.<BR>"CorpseLooter" makes the mob loot 
+corpses it kills.<BR>"Decay" makes the mob go away after a 
+time.<BR>"DelayedTransporter" makes a mob that randomly 
+zaps around the place.<BR>"DoorwayGuardian" makes a mob 
+that won't let anyone pass.<BR>"Drowness" provides certain 
+drow-like behavior to genmobs.<BR>"Druidness" makes the mob 
+fight with druid skills.<BR>"Emoter" makes the mob do 
 the&nbsp;silly things you think of.<BR>"FaithHelper" makes 
 the mob defend those of the same faith.<BR>"FightFlee" 
 makes an annoying mob that runs away.<BR>"Fighterness" 
@@ -2648,7 +2657,7 @@ the room with the mob, after a time.<BR>"ItemIdentifier"
 makes the mob an identifier for hire.<BR>"ItemMender" makes 
 the mob a mender for hire.<BR>"ItemRefitter" makes the mob 
 a refitter for hire.<BR>"MOBEater" makes the mob eat its 
-enemies.<BR>"MOBHelper" makes the mob assist other mobs.<BR>"MOBTeacher" makes the mob a teacher of class skills.<BR>"Mageness" makes the mob use mage skills in combat.<BR>"Mime" makes the mob mime the socials of other mobs.<BR>"Mobile" makes the mob mobile.<BR>"MobileAggressive" makes the mob mobile and aggressive.<BR>"MobileGoodGuardian" makes the mob mobile and 
+enemies.<BR>"MOBHelper" makes the mob assist other mobs.<BR>"MOBHunter" makes the mob&nbsp;hunt other mobs.<BR>"MOBTeacher" makes the mob a teacher of class skills.<BR>"Mageness" makes the mob use mage skills in combat.<BR>"Mime" makes the mob mime the socials of other mobs.<BR>"Mobile" makes the mob mobile.<BR>"MobileAggressive" makes the mob mobile and aggressive.<BR>"MobileGoodGuardian" makes the mob mobile and 
 peacemaking.<BR>"MOBReSave" keeps the mob updated in the 
 database at all times.<BR>"MoneyChanger" makes the mob 
 exchange coins for notes.<BR>"MudChat" makes the mob 
@@ -2676,15 +2685,14 @@ for your mobs:</P>
 <P>"Chant_Fertility" makes the mob fertile.<BR>"Chant_PrayerWard" resists prayers.<BR>"Chant_Shapelessness" makes the mob very light.<BR>"Chant_SongWard" resists songs.<BR>"Chant_SpellWard" resist spells.<BR>"Chant_Thorns" makes those fighting the mob get pricked!<BR>"Chant_Treemind" resist mind affects.<BR>"Chant_WindShape" takes less damage.<BR>"Chant_WindSnatcher" makes the mob resist the wind.<BR>"Immunities" gives the mob immunities you pick.<BR>"Inebriation" makes the mob drunk.<BR>"Paladin_Aura" protects the mob from evil.<BR>"Paladin_Goodness" assaults all evil!<BR>"Prayer_AcidHealing" heals from acid attacks.<BR>"Prayer_AiryForm" takes less damage.<BR>"Prayer_BladeBarrier" hits back!<BR>"Prayer_Bless" a holy aura.<BR>"Prayer_Demonshield" flames back!<BR>"Prayer_ElectricHealing" heals from electric hits.<BR>"Prayer_Etherealness" allows him to walk through doors.<BR>"Prayer_FireHealing" heals from fire attacks<BR>"Prayer_IceHealing" heals from cold attacks.<BR>"Prayer_ProtEvil" protects from evil.<BR>"Prayer_ProtGood" protects from good.<BR>"Prayer_ProtParalyzation" protects from paralysis.<BR>"Prayer_ProtUndead" protects from the undead.<BR>"Prayer_Sanctuary" takes less damage.<BR>"Prop_ClosedDayNight" makes the mob go home at night, or 
 just disappear.<BR>"Prop_Doppleganger" makes the mob change 
 its level and skill to match opponents.<BR>"Prop_Hidden" 
-makes the mob hidden.<BR>"Prop_Invisibility" makes the mob 
-invisible.<BR>"Prop_ItemTransporter" makes the mob a 
-transporter of items.<BR>"Prop_ItemTransReceiver" makes the 
-mob a receiver of transported items.<BR>"Prop_NoCharm" 
-protects from charms.<BR>"Prop_NoSummon" protects from 
-summoning.<BR>"Prop_PracticeDummy" makes into an unkillable 
-unhitting dummy.<BR>"Prop_Resistance" gives resistances 
-which you pick.<BR>"Prop_RestrictSpells" restricts spells 
-from being cast.<BR>"Prop_Retainable" changes its price to 
+makes the mob hidden.<BR>"Prop_AbilityImmunity" protects 
+the mob from specified targeted spells.<BR>"Prop_Invisibility" makes the mob invisible.<BR>"Prop_ItemTransporter" makes the mob a transporter of 
+items.<BR>"Prop_ItemTransReceiver" makes the mob a receiver 
+of transported items.<BR>"Prop_NoCharm" protects from 
+charms.<BR>"Prop_NoSummon" protects from summoning.<BR>"Prop_PracticeDummy" makes into an unkillable unhitting 
+dummy.<BR>"Prop_Resistance" gives resistances which you 
+pick.<BR>"Prop_RestrictSpells" restricts spells from being 
+cast.<BR>"Prop_Retainable" changes its price to 
 shopkeepers.<BR>"Prop_RideAdjuster" adjusts stats when 
 ridden.<BR>"Prop_RideResister" adjusts saves when 
 ridden.<BR>"Prop_RideSpellCast" gives spell affects when 
@@ -2766,7 +2774,119 @@ described above under "Creating Items".&nbsp; Now, you may use the Archon
 up the items you created and wear or wield them as necessary.&nbsp; Another way 
 is to "order" the mob to pick up the items you created, and then "order" them 
 again to wear or wield the items.&nbsp; Either way will accomplish the 
-purpose.<BR><BR><STRONG><FONT color=royalblue size=5>"Rejuvenating Items and Mobs" or "How to Save a 
+purpose.</P>
+<P><STRONG><FONT color=blue size=5>Creating Races</FONT></STRONG></P>
+<P>Although the myriad of available races should be quite 
+sufficient for any Archon's needs, you may find yourself at a point where a new 
+species is required for the balance of your ecosystem.&nbsp; In this situation, 
+we must turn to the CREATE RACE command.&nbsp; Supposing we needed the raveging 
+Woogler to grace our shores, we would enter:</P>
+<P><STRONG>CREATE RACE 
+Woogler</STRONG></P>
+<P>And it would be done.&nbsp; Whenever creating or 
+modifying a new race, the Archon is presented with a menu of selections and 
+options available to customize the little boogers.&nbsp; Here is a description 
+of those options:</P>
+<P>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG 
+      >Property</STRONG></TD>
+    <TD width="75%"><STRONG 
+      >Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Name</EM></TD>
+    <TD>the displayable name of the race.</TD></TR>
+  <TR>
+    <TD><EM>Racial Category</EM></TD>
+    <TD>the category into which the race fits.&nbsp; Use 
+      ? to get a list of existing ones.</TD></TR>
+  <TR>
+    <TD><EM>Base Weight</EM></TD>
+    <TD>the minimum weight of a mob of this race</TD></TR>
+  <TR>
+    <TD><EM>Weight Variance</EM></TD>
+    <TD>the amount by which the weight of the mob may 
+      vary above the base.</TD></TR>
+  <TR>
+    <TD><EM>Base Male Height</EM></TD>
+    <TD>the minimum height of a male mob of this 
+  race</TD></TR>
+  <TR>
+    <TD><EM>Base Female 
+    Height</EM></TD>
+    <TD>the minimum height of a female mob of this 
+  race</TD></TR>
+  <TR>
+    <TD><EM>Height Variance</EM></TD>
+    <TD>the amount by which the height of the mob may 
+      vary above the base.</TD></TR>
+  <TR>
+    <TD><EM>Player Race</EM></TD>
+    <TD>whether or not players may choose this race</TD></TR>
+  <TR>
+    <TD><EM>Leaving Text</EM></TD>
+    <TD>the word displayed when a mob of this race leaves 
+      the room</TD></TR>
+  <TR>
+    <TD><EM>Arriving Text</EM></TD>
+    <TD>the word displayed when a mob of this race 
+      arrives into&nbsp;a room</TD></TR>
+  <TR>
+    <TD><EM>Health Race</EM></TD>
+    <TD>the name of a standard race which will be used as 
+      a source of health descriptions during combat.&nbsp; In short, enter here 
+      the name of a race that looks the most like the one you are 
+creating.</TD></TR>
+  <TR>
+    <TD><EM>Body Parts</EM></TD>
+    <TD>the number and type of body parts available for 
+      amputation</TD></TR>
+  <TR>
+    <TD><EM>EStat 
+Adjustments</EM></TD>
+    <TD>adjustments, positive or negative, to attack, 
+      defense, and other stats.&nbsp; Use ? for a list.</TD></TR>
+  <TR>
+    <TD><EM>CharStat 
+    Adjustments</EM></TD>
+    <TD>adjustments, positive or negative, to strength, 
+      saving throws, and other stats.&nbsp; Use ? for a list.</TD></TR>
+  <TR>
+    <TD><EM>CharStat 
+Settings</EM></TD>
+    <TD>hard settings for strength, saving throws, and 
+      other stats.&nbsp; Use ? for a list.</TD></TR>
+  <TR>
+    <TD><EM>State 
+Adjustments</EM></TD>
+    <TD>adjustments, positive or negative, to hit points, 
+      mana, and other stats.&nbsp; Use ? for a list.</TD></TR>
+  <TR>
+    <TD><EM>Resources</EM></TD>
+    <TD>list of items produced from the corpse of this 
+      race when it is Butchered.&nbsp; </TD></TR>
+  <TR>
+    <TD><EM>Natural Weapon</EM></TD>
+    <TD>the weapon used by this race when it is 
+    unarmed.</TD></TR>
+  <TR>
+    <TD><EM>Racial Abilities</EM></TD>
+    <TD>a list of abilities available to members of this 
+      race.&nbsp; the abilities must be of the type that have command 
+      words.&nbsp; the profficiency given to the ability is hard coded and 
+      cannot be modified.&nbsp; the level referred to is in player levels as 
+      opposed to class levels.</TD></TR>
+  <TR>
+    <TD><EM>Cultural 
+    Abilities</EM></TD>
+    <TD>a list of abilities granted automatically to 
+      those who are born this race.&nbsp; it is assumed these abilities are 
+      learned because of the races culture.&nbsp; the profficiency given is the 
+      default profficiency which players/mobs of this race start out 
+  with.</TD></TR></TABLE></P>
+<P><BR><BR><STRONG><FONT color=royalblue size=5>"Rejuvenating Items and Mobs" or "How to Save a 
 Room"</FONT></STRONG></P>
 <P>MOBs and Items that are created in rooms, even those 
 which have had the Rejuv Ticks property set to some reasonable number, will not 

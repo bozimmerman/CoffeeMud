@@ -3,7 +3,7 @@
     C     O  O  F     F     E     E     MM MM  U  U  D  D
     C     O  O  FFF   FFF   EEE   EEE   M M M  U  U  D  D
     C     O  O  F     F     E     E     M   M  U  U  D  D
-     CCC   OO   F     F     EEEE  EEEE  M   M   UU   DDD    v4.0
+     CCC   OO   F     F     EEEE  EEEE  M   M   UU   DDD    v4.1
 
        (C) 2000 - 2003 Bo Zimmerman
 

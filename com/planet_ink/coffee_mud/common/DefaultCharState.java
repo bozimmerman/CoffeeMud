@@ -187,18 +187,16 @@ public class DefaultCharState implements Cloneable, CharState
 			}
 		}
 		else
-		if(Sense.isFlying(mob))
 		{
-			hpGain+=(hpGain/8.0);
-			manaGain+=(manaGain/4.0);
-			moveGain+=(moveGain/8.0);
-		}
-		else
-		if(Sense.isSwimming(mob))
-		{
-			hpGain-=(hpGain/2.0);
-			manaGain-=(manaGain/4.0);
-			moveGain-=(moveGain/2.0);
+			if(Sense.isFlying(mob))
+				moveGain+=(moveGain/8.0);
+			else
+			if(Sense.isSwimming(mob))
+			{
+				hpGain-=(hpGain/2.0);
+				manaGain-=(manaGain/4.0);
+				moveGain-=(moveGain/2.0);
+			}
 		}
 		
 		if((!mob.isInCombat())&&(!Sense.isClimbing(mob)))

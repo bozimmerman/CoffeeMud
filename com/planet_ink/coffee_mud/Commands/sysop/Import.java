@@ -3734,7 +3734,7 @@ public class Import
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area from file: '"+areaFileName+"'...");
 				Vector areaD=new Vector();
-				String error=com.planet_ink.coffee_mud.common.Generic.fillAreaAndCustomVectorFromXML(buf.toString(),custom,areaD);
+				String error=com.planet_ink.coffee_mud.common.Generic.fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
 				if(error.length()==0)
 					error=com.planet_ink.coffee_mud.common.Generic.unpackAreaFromXML(areaD,mob.session(),true);
@@ -4659,34 +4659,34 @@ public class Import
 							{
 								int num=Util.s_int(Util.getCleanBit(s,3));
 								if(num<0) num=100;
-								((ShopKeeper)M).addStoreInventory(I,num);
+								((ShopKeeper)M).addStoreInventory(I,num,-1);
 								if((I instanceof Light)&&(!((ShopKeeper)M).doIHaveThisInStock("OilFlask",null)))
-									((ShopKeeper)M).addStoreInventory(CMClass.getStdItem("OilFlask"),num*2);
+									((ShopKeeper)M).addStoreInventory(CMClass.getStdItem("OilFlask"),num*2,-1);
 								else
 								if(((I.ID().equals("GenReadable"))
 								||(I instanceof com.planet_ink.coffee_mud.interfaces.Map))
 								&&(!((ShopKeeper)M).doIHaveThisInStock("Parchment",null)))
 								{
 									((ShopKeeper)M).setWhatIsSold(ShopKeeper.DEAL_INVENTORYONLY);
-									((ShopKeeper)M).addStoreInventory(CMClass.getStdItem("Parchment"),num);
+									((ShopKeeper)M).addStoreInventory(CMClass.getStdItem("Parchment"),num,-1);
 									Item journal1=CMClass.getStdItem("GenJournal");
 									journal1.setName("the bug journal");
 									journal1.setBaseValue(250);
 									journal1.recoverEnvStats();
 									journal1.text();
-									((ShopKeeper)M).addStoreInventory(journal1,num);
+									((ShopKeeper)M).addStoreInventory(journal1,num,-1);
 									Item journal2=CMClass.getStdItem("GenJournal");
 									journal2.setName("the adventurers journal");
 									journal2.setBaseValue(250);
 									journal2.recoverEnvStats();
 									journal2.text();
-									((ShopKeeper)M).addStoreInventory(journal2,num);
+									((ShopKeeper)M).addStoreInventory(journal2,num,-1);
 									Item journal3=CMClass.getStdItem("GenJournal");
 									journal3.setName("a feature guide");
 									journal3.setBaseValue(500);
 									journal3.recoverEnvStats();
 									journal3.text();
-									((ShopKeeper)M).addStoreInventory(journal3,num);
+									((ShopKeeper)M).addStoreInventory(journal3,num,-1);
 								}
 								else
 								if(((ShopKeeper)M).whatIsSold()==ShopKeeper.DEAL_WEAPONS)
@@ -4700,7 +4700,7 @@ public class Import
 									arrows.setDisplayText("Some arrows have been left here.");
 									arrows.recoverEnvStats();
 									arrows.text();
-									((ShopKeeper)M).addStoreInventory(arrows,num);
+									((ShopKeeper)M).addStoreInventory(arrows,num,-1);
 								}
 							}
 							else
@@ -5014,7 +5014,7 @@ public class Import
 					MOB pet=storeRoom.fetchInhabitant(0);
 					if(pet!=null)
 					{
-						shopKeeper.addStoreInventory(pet,20);
+						shopKeeper.addStoreInventory(pet,20,-1);
 						pet.setFollowing(null);
 						pet.destroy();
 					}

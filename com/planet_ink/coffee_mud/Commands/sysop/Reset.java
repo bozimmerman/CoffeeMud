@@ -452,8 +452,9 @@ public class Reset
 										if(didSomething)
 										{
 											int numInStock=SK.numberInStock(I);
+											int stockPrice=SK.stockPrice(I);
 											SK.delStoreInventory(I);
-											SK.addStoreInventory(I,numInStock);
+											SK.addStoreInventory(I,numInStock,stockPrice);
 										}
 									}
 								}
@@ -512,8 +513,9 @@ public class Reset
 										if(didSomething)
 										{
 											int numInStock=SK.numberInStock(I);
+											int stockPrice=SK.stockPrice(I);
 											SK.delStoreInventory(I);
-											SK.addStoreInventory(I,numInStock);
+											SK.addStoreInventory(I,numInStock,stockPrice);
 										}
 									}
 								}
@@ -678,8 +680,9 @@ public class Reset
 								{
 									somethingDone=true;
 									int numInStock=SK.numberInStock(I);
+									int stockPrice=SK.stockPrice(I);
 									SK.delStoreInventory(I);
-									SK.addStoreInventory(I,numInStock);
+									SK.addStoreInventory(I,numInStock,stockPrice);
 								}
 							}
 						}

@@ -98,7 +98,7 @@ public class Spell_RogueLimb extends Spell
 					Race theRace=target.charStats().getMyRace();
 					for(int i=0;i<Race.BODY_PARTS;i++)
 					{
-						if((theRace.bodyMask()[i]>0)
+						if((target.charStats().getBodyPart(i)>0)
 						&&(i!=Race.BODY_TORSO))
 							limbs.addElement(new Integer(i));
 					}

@@ -264,7 +264,7 @@ public class Sounder extends StdBehavior
 			tickReset();
 			for(int v=0;v<triggers.length;v++)
 			if((Util.bset(triggers[v],TICK_MASK))
-			&&(Dice.rollPercentage()<triggers[v]))
+			&&(Dice.rollPercentage()<(triggers[v]&UNDER_MASK)))
 			{
 				doEmote(ticking,strings[v]);
 				break;

@@ -59,8 +59,6 @@ public class Arrest extends StdBehavior
 	private static final int BIT_SENTENCE=3;
 	private static final int BIT_WARNMSG=4;
 
-	private static Vector illegalRaces=null;
-	
 	private class ArrestWarrant implements Cloneable
 	{
 		public MOB criminal=null;
@@ -154,7 +152,6 @@ public class Arrest extends StdBehavior
 	{
 		super.setParms(newParms);
 		loadAttempt=false;
-		illegalRaces=null;
 	}
 
 	private Properties getLaws()
@@ -695,8 +692,8 @@ public class Arrest extends StdBehavior
 		// is the victim a protected race?
 		if(victim!=null)
 		{
-			String races=(String)getLaws().get("PROTECTED");
-			if((races!=null)&&(races.length()>0)&&(!CoffeeUtensils.containsString(races,victim.charStats().getMyRace().racialCategory())))
+			String protectedStr=(String)getLaws().get("PROTECTED");
+			if((protectedStr!=null)&&(!SaucerSupport.zapperCheck(protectedStr,victim)))
 			   return false;
 		}
 
@@ -779,7 +776,7 @@ public class Arrest extends StdBehavior
 		// the archons pardon
 		if((affect.sourceMinor()==Affect.TYP_SPEAK)
 		&&(affect.sourceMessage()!=null)
-		&&((affect.source().isASysOp(affect.source().location()))
+		&&(affect.source().isASysOp(affect.source().location())
 		   ||(isTheJudge(affect.source()))))
 		{
 			int x=affect.sourceMessage().toUpperCase().indexOf("I HEREBY PARDON ");
@@ -798,9 +795,19 @@ public class Arrest extends StdBehavior
 					ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
 					if((W.criminal!=null)&&(CoffeeUtensils.containsString(W.criminal.Name(),name)))
 					{
-						if(W.arrestingOfficer!=null)
-							dismissOfficer(W.arrestingOfficer);
-						warrants.removeElement(W);
+						Ability A=W.criminal.fetchAffect("Prisoner");
+						if(A!=null) A.unInvoke();
+						if(W.jail!=W.criminal.location())
+						{
+							if(W.arrestingOfficer!=null)
+								dismissOfficer(W.arrestingOfficer);
+							warrants.removeElement(W);
+						}
+						else
+						{
+							W.crime="pardoned";
+							W.offenses=0;
+						}
 					}
 				}
 			}
@@ -977,35 +984,22 @@ public class Arrest extends StdBehavior
 								   getBit(armed,BIT_CRIMENAME),
 								   getBit(armed,BIT_SENTENCE),
 								   getBit(armed,BIT_WARNMSG));
-				if(illegalRaces==null)
+				
+				String tresspassStr=(String)laws.get("TRESPASSERS");
+				if((tresspassStr!=null)
+				&&(SaucerSupport.zapperCheck(tresspassStr,affect.source())))
 				{
-					String illegalRaceStr=(String)laws.get("TRESPASSERS");
-					if((illegalRaceStr!=null)&&(illegalRaceStr.length()>0))
-						illegalRaces=Util.parse(illegalRaceStr);
-					else
-						illegalRaces=new Vector();
-				}
-				if(illegalRaces.size()>0)
-				{
-					String myRace=affect.source().charStats().getMyRace().racialCategory();
-					for(int v=0;v<illegalRaces.size();v++)
+					String trespassing=(String)laws.get("TRESPASSING");
+					if((trespassing!=null)&&(trespassing.length()>0))
 					{
-						if(myRace.equalsIgnoreCase((String)illegalRaces.elementAt(v)))
-						{
-							String trespassing=(String)laws.get("TRESPASSING");
-							if((trespassing!=null)&&(trespassing.length()>0))
-							{
-								fillOutWarrant(affect.source(),
-											   myArea,
-											   null,
-											   getBit(trespassing,BIT_CRIMELOCS),
-											   getBit(trespassing,BIT_CRIMEFLAGS),
-											   getBit(trespassing,BIT_CRIMENAME),
-											   getBit(trespassing,BIT_SENTENCE),
-											   getBit(trespassing,BIT_WARNMSG));
-							}
-							break;
-						}
+						fillOutWarrant(affect.source(),
+									   myArea,
+									   null,
+									   getBit(trespassing,BIT_CRIMELOCS),
+									   getBit(trespassing,BIT_CRIMEFLAGS),
+									   getBit(trespassing,BIT_CRIMENAME),
+									   getBit(trespassing,BIT_SENTENCE),
+									   getBit(trespassing,BIT_WARNMSG));
 					}
 				}
 			}
@@ -1067,7 +1061,7 @@ public class Arrest extends StdBehavior
 
 	public boolean isTheJudge(MOB M)
 	{
-		if((M.isMonster())&&(M.location()!=null))
+		if(((M.isMonster()||M.soulMate()!=null))&&(M.location()!=null))
 		{
 			String judgeName=(String)getLaws().get("JUDGE");
 			if((CoffeeUtensils.containsString(M.Name(),judgeName))
@@ -1246,6 +1240,12 @@ public class Arrest extends StdBehavior
 								}
 							}
 							else
+							if(W.crime.equalsIgnoreCase("pardoned"))
+							{
+								setFree(W.criminal);
+								W.setArrestingOfficer(null);
+							}
+							else
 							if(judgeMe(null,officer,W.criminal,W))
 							{
 								setFree(W.criminal);
@@ -1282,6 +1282,12 @@ public class Arrest extends StdBehavior
 									W.setArrestingOfficer(null);
 									W.state=STATE_SEEKING;
 								}
+							}
+							else
+							if(W.crime.equalsIgnoreCase("pardoned"))
+							{
+								setFree(W.criminal);
+								W.setArrestingOfficer(null);
 							}
 							else
 							{
@@ -1322,6 +1328,12 @@ public class Arrest extends StdBehavior
 								W.criminal.makePeace();
 								try{ExternalPlay.doCommand(W.criminal,Util.parse("SIT"));}catch(Exception e){}
 							}
+							if(W.crime.equalsIgnoreCase("pardoned"))
+							{
+								setFree(W.criminal);
+								W.setArrestingOfficer(null);
+							}
+							else
 							if(!Sense.isSitting(W.criminal)&&(!Sense.isSleeping(W.criminal)))
 							{
 								if(!W.arrestingOfficer.isInCombat())
@@ -1379,6 +1391,7 @@ public class Arrest extends StdBehavior
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(W.criminal.location().isInhabitant(W.criminal))
+						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
 							if(W.criminal.curState().getMovement()<50)
@@ -1414,6 +1427,7 @@ public class Arrest extends StdBehavior
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(W.criminal.location().isInhabitant(W.criminal))
+						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
 							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
@@ -1462,6 +1476,7 @@ public class Arrest extends StdBehavior
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(W.criminal.location().isInhabitant(W.criminal))
+						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
 							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
@@ -1507,6 +1522,7 @@ public class Arrest extends StdBehavior
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(W.criminal.location().isInhabitant(W.criminal))
 						&&(Sense.aliveAwakeMobile(officer,true))
+						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
 							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
@@ -1548,6 +1564,7 @@ public class Arrest extends StdBehavior
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(W.criminal.location().isInhabitant(W.criminal))
 						&&(Sense.aliveAwakeMobile(officer,true))
+						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
 							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
@@ -1606,6 +1623,7 @@ public class Arrest extends StdBehavior
 						&&(W.criminal.location().isInhabitant(W.criminal))
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(Sense.aliveAwakeMobile(officer,true))
+						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
 							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));

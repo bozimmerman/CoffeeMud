@@ -11,6 +11,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected Vector baseInventory=new Vector();
 	private Hashtable duplicateInventory=new Hashtable();
 	protected int maximumDuplicatesBought=5;
+	private Hashtable prices=new Hashtable();
 
 	public StdShopKeeper()
 	{
@@ -63,7 +64,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 	public void addStoreInventory(Environmental thisThang)
 	{
-		addStoreInventory(thisThang,1);
+		addStoreInventory(thisThang,1,-1);
 	}
 
 	public int baseStockSize()
@@ -193,10 +194,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 	}
 
-	public void addStoreInventory(Environmental thisThang, int number)
+	public void addStoreInventory(Environmental thisThang, int number, int price)
 	{
 		if((whatISell==DEAL_INVENTORYONLY)&&(!inBaseInventory(thisThang)))
 			baseInventory.addElement(thisThang.copyOf());
+		if(prices.containsKey(thisThang.ID()+"/"+thisThang.name()))
+			prices.remove(thisThang.ID()+"/"+thisThang.name());
+		prices.put(thisThang.ID()+"/"+thisThang.name(),new Integer(price));
 		if(thisThang instanceof InnKey)
 		{
 			for(int v=0;v<number;v++)
@@ -252,6 +256,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				duplicateInventory.remove(E);
 			}
 		}
+		prices.remove(thisThang.ID()+"/"+thisThang.name());
 	}
 
 	public boolean doISellThis(Environmental thisThang)
@@ -353,6 +358,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return false;
 	}
 
+	public int stockPrice(Environmental likeThis)
+	{
+		if(prices.containsKey(likeThis.ID()+"/"+likeThis.name()))
+		   return ((Integer)prices.get(likeThis.ID()+"/"+likeThis.name())).intValue();
+		return -1;
+	}
 	public int numberInStock(Environmental likeThis)
 	{
 		int num=0;
@@ -934,6 +945,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		else
 			val=CMAble.lowestQualifyingLevel(product.ID())*25;
+		Integer I=(Integer)prices.get(product.ID()+"/"+product.name());
+		if((I!=null)&&(I.intValue()>=0)) val=I.intValue();
 		if(mob==null) return val;
 
 		double d=prejudiceFactor(mob,sellTo);

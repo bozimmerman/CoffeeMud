@@ -1993,7 +1993,8 @@ public class Generic
 									int num=1;
 									if(!(item instanceof Ability))
 										num=Util.s_int(mob.session().prompt("How many? :",""));
-									E.addStoreInventory(item,num);
+									int price=Util.s_int(mob.session().prompt("At what price? :",""));
+									E.addStoreInventory(item,num,price);
 								}
 							}
 						}
@@ -3118,7 +3119,7 @@ public class Generic
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genGender(mob,mme,++showNumber,showFlag);
-			genClan(mob,me,++showNumber,showFlag);
+			genClan(mob,mme,++showNumber,showFlag);
 			genSpeed(mob,me,++showNumber,showFlag);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
 				me.baseEnvStats().setDamage((int)Math.round(Util.div(me.baseEnvStats().damage(),me.baseEnvStats().speed())));

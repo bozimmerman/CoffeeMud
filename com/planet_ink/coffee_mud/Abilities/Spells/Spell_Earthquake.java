@@ -113,7 +113,7 @@ public class Spell_Earthquake extends Spell
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
 					{
-						if(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0)
+						if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
 						{
 							success=maliciousAffect(mob,target,2,-1);
 							if(success)

@@ -258,6 +258,11 @@ public class AbilityEvoker extends Scriptable
 			mob.tell(getScr("AbilityEvoker","pracerr3",abilityName));
 			return;
 		}
+		if(myAbility.isBorrowed(mob))
+		{
+			mob.tell(getScr("AbilityEvoker","pracerr5",abilityName));
+			return;
+		}
 
 		Ability teacherAbility=mob.fetchAbility(abilityName);
 		if(teacherAbility==null)
