@@ -94,6 +94,7 @@ public class Necromancer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_FeignLife",false);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Anger",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Prayer_AuraFear",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindness",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
