@@ -29,8 +29,7 @@ public class StdAbility implements Ability, Cloneable
 	protected boolean putInCommandlist=true;
 
 	protected int quality=Ability.INDIFFERENT;
-	protected int lowestQualifyingLevel=Integer.MAX_VALUE;
-
+	
 	protected long tickDown=-1;
 
 	public StdAbility()
@@ -83,24 +82,8 @@ public class StdAbility implements Ability, Cloneable
 		if(student.charStats().getMyClass()==null)
 			return -1;
 
-		if(lowestQualifyingLevel==Integer.MIN_VALUE)
-			return -1;
-		else
-		if((lowestQualifyingLevel==Integer.MAX_VALUE)
-		&&(CMClass.charClasses.size()>0))
-		{
-			for(int c=0;c<CMClass.charClasses.size();c++)
-			{
-				int lvl=CMAble.getQualifyingLevel(((CharClass)CMClass.charClasses.elementAt(c)).ID(),ID());
-				if(lvl<lowestQualifyingLevel)
-					lowestQualifyingLevel=lvl;
-			}
-			if(lowestQualifyingLevel==Integer.MAX_VALUE)
-				lowestQualifyingLevel=Integer.MIN_VALUE;
-		}
-
-		if(student.charStats().getMyClass().ID().equals("Archon"))
-			return lowestQualifyingLevel;
+		if(student.isASysOp())
+			return CMAble.lowestQualifyingLevel(ID());
 		
 		return CMAble.getQualifyingLevel(student.charStats().getMyClass().ID(),ID());
 	}
