@@ -34,10 +34,13 @@ public class Prayer_RemovePoison extends Prayer
 		for(int a=0;a<fromMe.numAffects();a++)
 		{
 			Ability A=fromMe.fetchAffect(a);
-			if((A.ID().toUpperCase().indexOf("POISON")>=0)
-			||(A.name().toUpperCase().indexOf("POISON")>=0)
-			||(A.displayText().toUpperCase().indexOf("POISON")>=0))
-				offenders.addElement(A);
+			if(A!=null)
+			{
+				if((A.ID().toUpperCase().indexOf("POISON")>=0)
+				||(A.name().toUpperCase().indexOf("POISON")>=0)
+				||(A.displayText().toUpperCase().indexOf("POISON")>=0))
+					offenders.addElement(A);
+			}
 		}
 		return offenders;
 	}

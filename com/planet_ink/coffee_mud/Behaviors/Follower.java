@@ -81,8 +81,11 @@ public class Follower extends StdBehavior
 
 			boolean move=true;
 			for(int m=0;m<thisRoom.numInhabitants();m++)
-				if(thisRoom.fetchInhabitant(m).isASysOp())
+			{
+				MOB inhab=thisRoom.fetchInhabitant(m);
+				if((inhab!=null)&&(inhab.isASysOp()))
 					move=false;
+			}
 			if(move)
 				ExternalPlay.move(mob,direction,false);
 			direction=-1;

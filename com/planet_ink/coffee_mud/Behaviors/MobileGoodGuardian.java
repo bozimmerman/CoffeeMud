@@ -48,7 +48,7 @@ public class MobileGoodGuardian extends Mobile
 					for(int i=0;i<room.numInhabitants();i++)
 					{
 						MOB inhab=room.fetchInhabitant(i);
-						if(inhab.isInCombat()&&(inhab.getAlignment()>650))
+						if((inhab!=null)&&(inhab.isInCombat())&&(inhab.getAlignment()>650))
 						{
 							dirCode=d;
 							break;

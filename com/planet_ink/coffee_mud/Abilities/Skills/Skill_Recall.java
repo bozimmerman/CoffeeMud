@@ -55,7 +55,7 @@ public class Skill_Recall extends StdAbility
 				for(int f=0;f<mob.numFollowers();f++)
 				{
 					MOB follower=mob.fetchFollower(f);
-					if(follower.isMonster())
+					if((follower!=null)&&(follower.isMonster())&&(follower.location()!=null))
 					{
 						FullMsg msg2=new FullMsg(follower,mob.getStartRoom(),this,Affect.MSG_RECALL,"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
 						if(follower.location().okAffect(msg2))

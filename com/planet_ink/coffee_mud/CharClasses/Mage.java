@@ -134,6 +134,7 @@ public class Mage extends StdCharClass
 				for(int i=0;i<myChar.inventorySize();i++)
 				{
 					Item I=myChar.fetchInventory(i);
+					if(I==null) break;
 					if((I.amWearingAt(Item.ON_TORSO))
 					 ||(I.amWearingAt(Item.HELD)&&(I instanceof Shield))
 					 ||(I.amWearingAt(Item.ON_LEGS))

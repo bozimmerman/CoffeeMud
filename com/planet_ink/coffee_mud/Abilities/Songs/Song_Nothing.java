@@ -46,7 +46,7 @@ public class Song_Nothing extends Song
 		for(int a=0;a<mob.numAffects();a++)
 		{
 			Ability A=(Ability)mob.fetchAffect(a);
-			if(A instanceof Song)
+			if((A!=null)&&(A instanceof Song))
 				foundOne=true;
 		}
 		unsing(mob);

@@ -68,7 +68,7 @@ public class Spell_Disintegrate extends Spell
 					for(int i=0;i<mob.location().numItems();i++)
 					{
 						Item item=mob.location().fetchItem(i);
-						if(item instanceof DeadBody)
+						if((item!=null)&&(item instanceof DeadBody))
 							V.put(item,item);
 					}
 
@@ -95,7 +95,7 @@ public class Spell_Disintegrate extends Spell
 						{
 							int s=mob.location().numItems();
 							Item item=mob.location().fetchItem(i);
-							if((item instanceof DeadBody)&&(V.get(item)==null))
+							if((item!=null)&&(item instanceof DeadBody)&&(V.get(item)==null))
 								item.destroyThis();
 							if(s==mob.location().numItems())
 								i++;

@@ -32,9 +32,12 @@ public class Utils
 				for(int m=0;m<room.numInhabitants();m++)
 				{
 					MOB mob2=room.fetchInhabitant(m);
-					E=mob2.fetchInventory(name);
-					if((E==null)&&(mob2 instanceof ShopKeeper))
-						E=((ShopKeeper)mob2).getStock(name);
+					if(mob2!=null)
+					{
+						E=mob2.fetchInventory(name);
+						if((E==null)&&(mob2 instanceof ShopKeeper))
+							E=((ShopKeeper)mob2).getStock(name);
+					}
 				}
 				if(E!=null) break;	
 			}

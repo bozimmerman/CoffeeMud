@@ -49,11 +49,19 @@ public class Generic
 				}
 				for(int x=0;x<R.numInhabitants();x++)
 				{
-					newRoom.addInhabitant(R.fetchInhabitant(x));
-					R.fetchInhabitant(x).setLocation(newRoom);
+					MOB inhab=R.fetchInhabitant(x);
+					if(inhab!=null)
+					{
+						newRoom.addInhabitant(inhab);
+						inhab.setLocation(newRoom);
+					}
 				}
 				for(int x=0;x<R.numItems();x++)
-					newRoom.addItem(R.fetchItem(x));
+				{
+					Item I=R.fetchItem(x);
+					if(I!=null)
+						newRoom.addItem(I);
+				}
 				for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
 				{
 					MOB mob2=(MOB)e.nextElement();
@@ -83,7 +91,7 @@ public class Generic
 					for(int i=0;i<room.numInhabitants();i++)
 					{
 						MOB mob2=room.fetchInhabitant(i);
-						if(mob2.getStartRoom()==room)
+						if((mob2!=null)&&(mob2.getStartRoom()==room))
 							mob2.setStartRoom(newRoom);
 					}
 				}
@@ -955,12 +963,15 @@ public class Generic
 			String behaviorstr="";
 			for(int b=0;b<E.numBehaviors();b++)
 			{
-				behaviorstr+=E.fetchBehavior(b).ID();
-				if(E.fetchBehavior(b).getParms().trim().length()>0)
-					behaviorstr+="("+E.fetchBehavior(b).getParms().trim()+"), ";
-				else
-					behaviorstr+=", ";
-
+				Behavior B=E.fetchBehavior(b);
+				if(B!=null)
+				{
+					behaviorstr+=B.ID();
+					if(B.getParms().trim().length()>0)
+						behaviorstr+="("+B.getParms().trim()+"), ";
+					else
+						behaviorstr+=", ";
+				}
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
@@ -976,7 +987,7 @@ public class Generic
 					for(int b=0;b<E.numBehaviors();b++)
 					{
 						Behavior B=E.fetchBehavior(b);
-						if(B.ID().equalsIgnoreCase(behave))
+						if((B!=null)&&(B.ID().equalsIgnoreCase(behave)))
 							chosenOne=B;
 					}
 					if(chosenOne!=null)
@@ -995,7 +1006,7 @@ public class Generic
 							for(int b=0;b<E.numBehaviors();b++)
 							{
 								Behavior B=E.fetchBehavior(b);
-								if(B.ID().equals(chosenOne.ID()))
+								if((B!=null)&&(B.ID().equals(chosenOne.ID())))
 								{
 									alreadyHasIt=true;
 									chosenOne=B;
@@ -1034,7 +1045,7 @@ public class Generic
 			for(int b=0;b<E.numAffects();b++)
 			{
 				Ability A=E.fetchAffect(b);
-				if(!A.isBorrowed(E))
+				if((A!=null)&&(!A.isBorrowed(E)))
 				{
 					affectstr+=A.ID();
 					if(A.text().trim().length()>0)
@@ -1058,7 +1069,7 @@ public class Generic
 					for(int a=0;a<E.numAffects();a++)
 					{
 						Ability A=E.fetchAffect(a);
-						if(A.ID().equalsIgnoreCase(behave))
+						if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
 							chosenOne=A;
 					}
 					if(chosenOne!=null)
@@ -1191,9 +1202,12 @@ public class Generic
 		while(behave.length()>0)
 		{
 			String abilitiestr="";
-			for(int b=0;b<E.numAbilities();b++)
-				if(!E.fetchAbility(b).isBorrowed(E))
-					abilitiestr+=E.fetchAbility(b).ID()+", ";
+			for(int a=0;a<E.numAbilities();a++)
+			{
+				Ability A=E.fetchAbility(a);
+				if((A!=null)&&(!A.isBorrowed(E)))
+					abilitiestr+=A.ID()+", ";
+			}
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
 			mob.tell("\n\rAbilities: '"+abilitiestr+"'.");
@@ -1205,11 +1219,11 @@ public class Generic
 				else
 				{
 					Ability chosenOne=null;
-					for(int b=0;b<E.numAbilities();b++)
+					for(int a=0;a<E.numAbilities();a++)
 					{
-						Ability B=E.fetchAbility(b);
-						if(B.ID().equalsIgnoreCase(behave))
-							chosenOne=B;
+						Ability A=E.fetchAbility(a);
+						if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
+							chosenOne=A;
 					}
 					if(chosenOne!=null)
 					{
@@ -1224,10 +1238,10 @@ public class Generic
 						if(chosenOne!=null)
 						{
 							boolean alreadyHasIt=false;
-							for(int b=0;b<E.numAbilities();b++)
+							for(int a=0;a<E.numAbilities();a++)
 							{
-								Ability B=E.fetchAbility(b);
-								if(B.ID().equals(chosenOne.ID()))
+								Ability A=E.fetchAbility(a);
+								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
 									alreadyHasIt=true;
 							}
 							if(!alreadyHasIt)

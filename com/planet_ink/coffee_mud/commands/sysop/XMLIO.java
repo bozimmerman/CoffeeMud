@@ -288,7 +288,7 @@ public class XMLIO
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB mob2=room.fetchInhabitant(i);
-				if(CoffeeUtensils.isEligibleMonster(mob2))
+				if((mob2!=null)&&(CoffeeUtensils.isEligibleMonster(mob2)))
 				{
 					num++;
 					roomXML.append("<ROOMMOB"+num+">");
@@ -307,26 +307,30 @@ public class XMLIO
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item item=room.fetchItem(i);
-				num++;
-				roomXML.append("<ROOMITEM"+num+">");
-				roomXML.append(XMLManager.convertXMLtoTag("ITEMCLASS",CMClass.className(item)));
-				roomXML.append(XMLManager.convertXMLtoTag("ITEMTEXT",""+item.text()));
-				roomXML.append(XMLManager.convertXMLtoTag("ITEMLEVEL",""+item.baseEnvStats().level()));
-				roomXML.append(XMLManager.convertXMLtoTag("ITEMABILITY",""+item.baseEnvStats().ability()));
-				roomXML.append(XMLManager.convertXMLtoTag("ITEMREJUV",""+item.baseEnvStats().rejuv()));
-				roomXML.append(XMLManager.convertXMLtoTag("ITEMUSES",""+item.usesRemaining()));
-				int locationNum=0;
-				if(item.location()!=null)
-					for(int num2=0;num2<room.numItems();num2++)
-					{
-						if(room.fetchItem(num2)==item.location())
+				if(item!=null)
+				{
+					num++;
+					roomXML.append("<ROOMITEM"+num+">");
+					roomXML.append(XMLManager.convertXMLtoTag("ITEMCLASS",CMClass.className(item)));
+					roomXML.append(XMLManager.convertXMLtoTag("ITEMTEXT",""+item.text()));
+					roomXML.append(XMLManager.convertXMLtoTag("ITEMLEVEL",""+item.baseEnvStats().level()));
+					roomXML.append(XMLManager.convertXMLtoTag("ITEMABILITY",""+item.baseEnvStats().ability()));
+					roomXML.append(XMLManager.convertXMLtoTag("ITEMREJUV",""+item.baseEnvStats().rejuv()));
+					roomXML.append(XMLManager.convertXMLtoTag("ITEMUSES",""+item.usesRemaining()));
+					int locationNum=0;
+					if(item.location()!=null)
+						for(int num2=0;num2<room.numItems();num2++)
 						{
-							locationNum=num2+1;
-							break;
+							Item fitem=room.fetchItem(num2);
+							if((fitem!=null)&&(fitem==item.location()))
+							{
+								locationNum=num2+1;
+								break;
+							}
 						}
-					}
-				roomXML.append(XMLManager.convertXMLtoTag("ITEMLOCATION",""+locationNum));
-				roomXML.append("</ROOMITEM"+num+">");
+					roomXML.append(XMLManager.convertXMLtoTag("ITEMLOCATION",""+locationNum));
+					roomXML.append("</ROOMITEM"+num+">");
+				}
 			}
 
 			roomXML.append("</ROOMITEMS>");

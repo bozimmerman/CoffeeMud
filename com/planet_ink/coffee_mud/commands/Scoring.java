@@ -14,7 +14,8 @@ public class Scoring
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item thisItem=mob.fetchInventory(i);
-			if((thisItem.location()==null)
+			if((thisItem!=null)
+			&&(thisItem.location()==null)
 			&&(thisItem.amWearingAt(Item.INVENTORY)))
 	  	   {
 				if(Sense.canBeSeenBy(thisItem,seer))
@@ -171,7 +172,7 @@ public class Scoring
 		for(int a=0;a<affected.numAffects();a++)
 		{
 			Ability thisAffect=affected.fetchAffect(a);
-			if(thisAffect.displayText().length()>0)
+			if((thisAffect!=null)&&(thisAffect.displayText().length()>0))
 				msg.append("\n\r"+thisAffect.displayText());
 		}
 		if(msg.length()==0)
@@ -188,7 +189,8 @@ public class Scoring
 		for(int a=0;a<able.numAbilities();a++)
 		{
 			Ability thisAbility=able.fetchAbility(a);
-			if((thisAbility.envStats().level()>highestLevel)
+			if((thisAbility!=null)
+			&&(thisAbility.envStats().level()>highestLevel)
 			&&(thisAbility.envStats().level()<lowestLevel)
 			&&(thisAbility.classificationCode()==ofType))
 				highestLevel=thisAbility.envStats().level();
@@ -200,7 +202,9 @@ public class Scoring
 			for(int a=0;a<able.numAbilities();a++)
 			{
 				Ability thisAbility=able.fetchAbility(a);
-				if((thisAbility.envStats().level()==l)&&(thisAbility.classificationCode()==ofType))
+				if((thisAbility!=null)
+				&&(thisAbility.envStats().level()==l)
+				&&(thisAbility.classificationCode()==ofType))
 				{
 					if(thisLine.length()==0)
 						thisLine.append("\n\rLevel ^B"+l+"^?:\n\r");

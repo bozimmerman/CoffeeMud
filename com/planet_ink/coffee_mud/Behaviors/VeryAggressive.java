@@ -39,7 +39,8 @@ public class VeryAggressive extends Aggressive
 					for(int i=0;i<room.numInhabitants();i++)
 					{
 						MOB inhab=room.fetchInhabitant(i);
-						if((!inhab.isMonster())
+						if((inhab!=null)
+						&&(!inhab.isMonster())
 						&&(inhab.envStats().level()<(mob.envStats().level()+11))
 						&&(inhab.envStats().level()>(mob.envStats().level()-11)))
 						{

@@ -32,16 +32,16 @@ public class NiceAbilities extends ActiveTicker
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))
 				return;
 
-			MOB target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),0)-1);
+			MOB target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),-1));
 			int x=0;
 			while(((target==null)||(target==mob)||(target.isMonster()))&&((++x)<10))
-				target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),0)-1);
+				target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),-1));
 
 			int tries=0;
 			Ability tryThisOne=null;
 			while((tryThisOne==null)&&(tries<100)&&(mob.numAbilities()>0))
 			{
-				tryThisOne=mob.fetchAbility((int)Math.round(Math.random()*mob.numAbilities()));
+				tryThisOne=mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
 				if((tryThisOne!=null)&&(mob.fetchAffect(tryThisOne.ID())==null)&&((tryThisOne.quality()!=Ability.BENEFICIAL_OTHERS)||(tryThisOne.quality()!=Ability.OK_OTHERS)))
 				{
 					if(tryThisOne.classificationCode()==Ability.PRAYER)

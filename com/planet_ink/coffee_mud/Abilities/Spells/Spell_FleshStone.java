@@ -172,7 +172,7 @@ public class Spell_FleshStone extends Spell
 					{
 						Ability A=target.fetchAffect(a);
 						int s=target.numAffects();
-						A.unInvoke();
+						if(A!=null) A.unInvoke();
 						if(target.numAffects()==s)
 							a++;
 					}

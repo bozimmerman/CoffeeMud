@@ -29,7 +29,7 @@ public class SaveThread extends Thread
 			for(int m=0;m<room.numInhabitants();m++)
 			{
 				MOB mob=(MOB)room.fetchInhabitant(m);
-				if(mob.lastTickedDateTime().before(lastDateTime))
+				if((mob!=null)&&(mob.lastTickedDateTime().before(lastDateTime)))
 				{
 					boolean ticked=ServiceEngine.isTicking(mob,Host.MOB_TICK);
 					Log.errOut("SaveThread",mob.name()+" in room "+room.ID()+" unticked ("+(!ticked)+") since: "+new IQCalendar(mob.lastTickedDateTime()).d2String()+".");
@@ -38,7 +38,7 @@ public class SaveThread extends Thread
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item I=room.fetchItem(i);
-				if((I.possessionTime()!=null)&&(I.myOwner()==room))
+				if((I!=null)&&(I.possessionTime()!=null)&&(I.myOwner()==room))
 				{
 					if(itemKillTime.after(I.possessionTime()))
 					{

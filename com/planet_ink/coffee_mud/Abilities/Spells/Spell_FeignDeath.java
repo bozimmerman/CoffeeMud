@@ -56,10 +56,14 @@ public class Spell_FeignDeath extends Spell
 
 	public void peaceAt(MOB mob)
 	{
-		if(mob.location()!=null)
-		for(int m=0;m<mob.location().numInhabitants();m++)
-			if(mob.location().fetchInhabitant(m).getVictim()==mob)
-				mob.location().fetchInhabitant(m).setVictim(null);
+		Room room=mob.location();
+		if(room==null) return;
+		for(int m=0;m<room.numInhabitants();m++)
+		{
+			MOB inhab=room.fetchInhabitant(m);
+			if((inhab!=null)&&(inhab.getVictim()==mob))
+				inhab.setVictim(null);
+		}
 	}
 	
 	/** this method defines how this thing responds
@@ -133,7 +137,11 @@ public class Spell_FeignDeath extends Spell
 			beneficialAffect(mob,target,0);
 
 			while(target.numFollowers()>0)
-				target.fetchFollower(0).setFollowing(null);
+			{
+				MOB follower=target.fetchFollower(0);
+				if(follower!=null)
+					follower.setFollowing(null);
+			}
 			deathRoom.show(target,null,Affect.MSG_OK_ACTION,"^Z"+target.name()+" is DEAD!!!\n\r");
 			Body.setName("the body of "+target.name());
 			Body.setDisplayText("the body of "+target.name()+" lies here.");

@@ -67,10 +67,11 @@ public class StdItem implements Item
 	{
 		envStats=baseEnvStats.cloneStats();
 		goldValue=baseGoldValue+(10*envStats().ability());
-		for(int a=0;a<affects.size();a++)
+		for(int a=0;a<numAffects();a++)
 		{
-			Ability affect=(Ability)affects.elementAt(a);
-			affect.affectEnvStats(this,envStats);
+			Ability A=fetchAffect(a);
+			if(A!=null)
+				A.affectEnvStats(this,envStats);
 		}
 		if(envStats().ability()>0)
 			envStats().setDisposition(envStats().disposition()|Sense.IS_BONUS);
@@ -96,12 +97,18 @@ public class StdItem implements Item
 
 		affects=new Vector();
 		behaviors=new Vector();
-		for(int i=0;i<E.numBehaviors();i++)
-			addBehavior(E.fetchBehavior(i));
-
-		for(int i=0;i<E.numAffects();i++)
-			if(!((Ability)E.fetchAffect(i)).canBeUninvoked())
-				addAffect((Ability)E.fetchAffect(i).copyOf());
+		for(int b=0;b<E.numBehaviors();b++)
+		{
+			Behavior B=E.fetchBehavior(b);
+			if(B!=null)	addBehavior(B);
+		}
+			
+		for(int a=0;a<E.numAffects();a++)
+		{
+			Ability A=E.fetchAffect(a);
+			if((A!=null)&&(!A.canBeUninvoked()))
+				addAffect((Ability)A.copyOf());
+		}
 
 	}
 	public Environmental copyOf()
@@ -329,28 +336,34 @@ public class StdItem implements Item
 		if(tickID==Host.ITEM_BEHAVIOR_TICK)
 		{
 			if(behaviors.size()==0) return false;
-
-			for(int b=0;b<behaviors.size();b++)
+			for(int b=0;b<numBehaviors();b++)
 			{
-				Behavior B=(Behavior)behaviors.elementAt(b);
-				B.tick(this,tickID);
+				Behavior B=fetchBehavior(b);
+				if(B!=null)
+					B.tick(this,tickID);
 			}
 		}
 		else
 		{
 			int a=0;
-			while(a<affects.size())
+			while(a<numAffects())
 			{
-				Ability A=(Ability)affects.elementAt(a);
-				int s=affects.size();
-				if(!A.tick(tickID))
-					A.unInvoke();
-				if(affects.size()==s)
+				Ability A=fetchAffect(a);
+				if(A!=null)
+				{
+					int s=affects.size();
+					if(!A.tick(tickID))
+						A.unInvoke();
+					if(affects.size()==s)
+						a++;
+				}
+				else
 					a++;
 			}
 		}
 		return true;
 	}
+	
 	public Item location()
 	{
 		return myLocation;
@@ -404,15 +417,19 @@ public class StdItem implements Item
 
 	public boolean okAffect(Affect affect)
 	{
-		for(int b=0;b<behaviors.size();b++)
+		for(int b=0;b<numBehaviors();b++)
 		{
-			Behavior B=(Behavior)behaviors.elementAt(b);
-			if(!B.okAffect(this,affect)) return false;
+			Behavior B=fetchBehavior(b);
+			if((B!=null)&&(!B.okAffect(this,affect)))
+				return false;
 		}
 
-		for(int i=0;i<affects.size();i++)
-			if(!((Ability)fetchAffect(i)).okAffect(affect))
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if((A!=null)&&(!A.okAffect(affect)))
 				return false;
+		}
 
 		MOB mob=affect.source();
 		if(!affect.amITarget(this))
@@ -611,14 +628,19 @@ public class StdItem implements Item
 
 	public void affect(Affect affect)
 	{
-		for(int b=0;b<behaviors.size();b++)
+		for(int b=0;b<numBehaviors();b++)
 		{
-			Behavior B=(Behavior)behaviors.elementAt(b);
-			B.affect(this,affect);
+			Behavior B=fetchBehavior(b);
+			if(B!=null)
+				B.affect(this,affect);
 		}
-
-		for(int i=0;i<affects.size();i++)
-			((Ability)fetchAffect(i)).affect(affect);
+		
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if(A!=null)
+				A.affect(affect);
+		}
 
 		MOB mob=affect.source();
 		if(!affect.amITarget(this))
@@ -719,8 +741,11 @@ public class StdItem implements Item
 		myLocation=null;
 		if(owner==null) return;
 		for(int a=this.numAffects()-1;a>=0;a--)
-			if(!(fetchAffect(a).ID().equals("ItemRejuv")))
-				fetchAffect(a).unInvoke();
+		{
+			Ability aff=fetchAffect(a);
+			if((aff!=null)&&(!(aff.ID().equals("ItemRejuv"))))
+				aff.unInvoke();
+		}
 
 		destroyed=true;
 
@@ -730,7 +755,9 @@ public class StdItem implements Item
 			for(int r=thisRoom.numItems()-1;r>=0;r--)
 			{
 				Item thisItem = thisRoom.fetchItem(r);
-				if((thisItem.location()!=null)&&(thisItem.location()==this))
+				if((thisItem!=null)
+				   &&(thisItem.location()!=null)
+				   &&(thisItem.location()==this))
 					thisItem.destroyThis();
 			}
 			thisRoom.delItem(this);
@@ -742,7 +769,7 @@ public class StdItem implements Item
 			for(int r=mob.inventorySize()-1;r>=0;r--)
 			{
 				Item thisItem = mob.fetchInventory(r);
-				if((thisItem.location()!=null)&&(thisItem.location()==this))
+				if((thisItem!=null)&&(thisItem.location()!=null)&&(thisItem.location()==this))
 					thisItem.destroyThis();
 			}
 			mob.delInventory(this);
@@ -756,8 +783,11 @@ public class StdItem implements Item
 
 		if(owner==null) return;
 		for(int a=this.numAffects()-1;a>=0;a--)
-			if(!fetchAffect(a).ID().equals("ItemRejuv"))
-				fetchAffect(a).unInvoke();
+		{
+			Ability A=fetchAffect(a);
+			if((A!=null)&&(!A.ID().equals("ItemRejuv")))
+				A.unInvoke();
+		}
 
 		if (owner instanceof Room)
 		{
@@ -765,7 +795,9 @@ public class StdItem implements Item
 			for(int r=thisRoom.numItems()-1;r>=0;r--)
 			{
 				Item thisItem = thisRoom.fetchItem(r);
-				if((thisItem.location()!=null)&&(thisItem.location()==this))
+				if((thisItem!=null)
+				&&(thisItem.location()!=null)
+				&&(thisItem.location()==this))
 					thisItem.removeThis();
 			}
 			thisRoom.delItem(this);
@@ -777,7 +809,9 @@ public class StdItem implements Item
 			for(int r=mob.inventorySize()-1;r>=0;r--)
 			{
 				Item thisItem = mob.fetchInventory(r);
-				if((thisItem.location()!=null)&&(thisItem.location()==this))
+				if((thisItem!=null)
+				&&(thisItem.location()!=null)
+				&&(thisItem.location()==this))
 					thisItem.removeThis();
 			}
 			mob.delInventory(this);
@@ -788,9 +822,12 @@ public class StdItem implements Item
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int i=0;i<affects.size();i++)
-			if(((Ability)affects.elementAt(i))==to)
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if((A!=null)&&(A==to))
 				return;
+		}
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -799,9 +836,12 @@ public class StdItem implements Item
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int i=0;i<affects.size();i++)
-			if(((Ability)affects.elementAt(i))==to)
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if((A!=null)&&(A==to))
 				return;
+		}
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
@@ -818,15 +858,21 @@ public class StdItem implements Item
 	}
 	public Ability fetchAffect(int index)
 	{
-		if(index <numAffects())
+		try
+		{
 			return (Ability)affects.elementAt(index);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Ability fetchAffect(String ID)
 	{
-		for(int a=0;a<affects.size();a++)
-			if(((Ability)affects.elementAt(a)).ID().equals(ID))
-			   return (Ability)affects.elementAt(a);
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if((A!=null)&&(A.ID().equals(ID)))
+				return A;
+		}
 		return null;
 	}
 
@@ -835,9 +881,12 @@ public class StdItem implements Item
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
-		for(int i=0;i<behaviors.size();i++)
-			if(((Behavior)behaviors.elementAt(i)).ID().equals(to.ID()))
+		for(int b=0;b<numBehaviors();b++)
+		{
+			Behavior B=fetchBehavior(b);
+			if(B.ID().equals(to.ID()))
 				return;
+		}
 
 		// first one! so start ticking...
 		if(behaviors.size()==0)
@@ -857,8 +906,11 @@ public class StdItem implements Item
 	}
 	public Behavior fetchBehavior(int index)
 	{
-		if(index <numBehaviors())
+		try
+		{
 			return (Behavior)behaviors.elementAt(index);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	protected String tackOns()
@@ -869,7 +921,7 @@ public class StdItem implements Item
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability A=fetchAffect(a);
-			if(A.accountForYourself().length()>0)
+			if((A!=null)&&(A.accountForYourself().length()>0))
 				identity+="\n\r"+A.accountForYourself();
 		}
 		return identity;
@@ -894,5 +946,4 @@ public class StdItem implements Item
 		}
 		return "";
 	}
-
 }

@@ -285,19 +285,25 @@ public class Rooms
 		for(int mb=deadRoom.numInhabitants()-1;mb>=0;mb--)
 		{
 			MOB mob2=deadRoom.fetchInhabitant(mb);
-			if((mob2.getStartRoom()!=deadRoom)&&(mob2.getStartRoom()!=null)&&(CMMap.getRoom(mob2.getStartRoom().ID())!=null))
-				mob2.getStartRoom().bringMobHere(mob2,true);
-			else
+			if(mob2!=null)
 			{
-				ExternalPlay.deleteTick(mob2,-1);
-				mob2.destroy();
+				if((mob2.getStartRoom()!=deadRoom)&&(mob2.getStartRoom()!=null)&&(CMMap.getRoom(mob2.getStartRoom().ID())!=null))
+					mob2.getStartRoom().bringMobHere(mob2,true);
+				else
+				{
+					ExternalPlay.deleteTick(mob2,-1);
+					mob2.destroy();
+				}
 			}
 		}
 		for(int i=deadRoom.numItems()-1;i>=0;i--)
 		{
 			Item item2=deadRoom.fetchItem(i);
-			ExternalPlay.deleteTick(item2,-1);
-			item2.destroyThis();
+			if(item2!=null)
+			{
+				ExternalPlay.deleteTick(item2,-1);
+				item2.destroyThis();
+			}
 		}
 		clearTheRoom(deadRoom);
 		Resources.removeResource("areasList");
@@ -455,7 +461,7 @@ public class Rooms
 		for(int m=room.numInhabitants()-1;m>=0;m--)
 		{
 			MOB mob2=room.fetchInhabitant(m);
-			if(CoffeeUtensils.isEligibleMonster(mob2))
+			if((mob2!=null)&&(CoffeeUtensils.isEligibleMonster(mob2)))
 			{
 				if(mob2.getStartRoom()==room)
 					mob2.destroy();
@@ -465,7 +471,11 @@ public class Rooms
 			}
 		}
 		for(int i=room.numItems()-1;i>=0;i--)
-			room.delItem(room.fetchItem(i));
+		{
+			Item item=room.fetchItem(i);
+			if(item!=null)
+				room.delItem(item);
+		}
 		ExternalPlay.clearDebri(room,0);
 	}
 

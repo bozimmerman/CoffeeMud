@@ -98,12 +98,9 @@ public class Song_Inebriation extends Song
 		if((!Util.bset(affect.targetMajor(),Affect.ACT_GENERAL))
 		&&(affect.targetMajor()>0))
 		{
-			int n=affect.source().location().numInhabitants();
-			int which=(int)Math.round(Math.random()*n);
-			MOB newTarget=null;
-			for(int i=0;i<=which;i++)
-				newTarget=affect.source().location().fetchInhabitant(i);
-			affect.modify(affect.source(),newTarget,affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode(),affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+			MOB newTarget=affect.source().location().fetchInhabitant(Dice.roll(1,affect.source().location().numInhabitants(),-1));
+			if(newTarget!=null)
+				affect.modify(affect.source(),newTarget,affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode(),affect.targetMessage(),affect.othersCode(),affect.othersMessage());
 		}
 		return true;
 	}

@@ -185,34 +185,37 @@ public class RoomLoader
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item thisItem=room.fetchItem(i);
-				thisItem.setPossessionTime(null); // saved items won't clear!
-				if(thisItem.location()==item)
+				if(thisItem!=null)
 				{
-					D=DBConnector.DBFetch();
-					sql=
-					"INSERT INTO CMROIT ("
-					+"CMROID, "
-					+"CMITNM, "
-					+"CMITID, "
-					+"CMITLO, "
-					+"CMITTX, "
-					+"CMITRE, "
-					+"CMITUR, "
-					+"CMITLV, "
-					+"CMITAB"
-					+") values ("
-					+"'"+room.ID()+"',"
-					+(++newItemNumber)+","
-					+"'"+thisItem.ID()+"',"
-					+Integer.toString(itemNumber)+","
-					+"'"+thisItem.text()+" ',"
-					+thisItem.baseEnvStats().rejuv()+","
-					+thisItem.usesRemaining()+","
-					+thisItem.baseEnvStats().level()+","
-					+thisItem.baseEnvStats().ability()+")";
-					D.update(sql);
-					DBConnector.DBDone(D);
-					newItemNumber=DBUpdateContents(room,thisItem,newItemNumber);
+					thisItem.setPossessionTime(null); // saved items won't clear!
+					if(thisItem.location()==item)
+					{
+						D=DBConnector.DBFetch();
+						sql=
+						"INSERT INTO CMROIT ("
+						+"CMROID, "
+						+"CMITNM, "
+						+"CMITID, "
+						+"CMITLO, "
+						+"CMITTX, "
+						+"CMITRE, "
+						+"CMITUR, "
+						+"CMITLV, "
+						+"CMITAB"
+						+") values ("
+						+"'"+room.ID()+"',"
+						+(++newItemNumber)+","
+						+"'"+thisItem.ID()+"',"
+						+Integer.toString(itemNumber)+","
+						+"'"+thisItem.text()+" ',"
+						+thisItem.baseEnvStats().rejuv()+","
+						+thisItem.usesRemaining()+","
+						+thisItem.baseEnvStats().level()+","
+						+thisItem.baseEnvStats().ability()+")";
+						D.update(sql);
+						DBConnector.DBDone(D);
+						newItemNumber=DBUpdateContents(room,thisItem,newItemNumber);
+					}
 				}
 			}
 		}
@@ -317,7 +320,7 @@ public class RoomLoader
 			{
 				MOB thisMOB=room.fetchInhabitant(m);
 
-				if(CoffeeUtensils.isEligibleMonster(thisMOB))
+				if((thisMOB!=null)&&(CoffeeUtensils.isEligibleMonster(thisMOB)))
 				{
 					D=DBConnector.DBFetch();
 					str=
@@ -470,7 +473,11 @@ public class RoomLoader
 		try
 		{
 			while(room.numInhabitants()>0)
-				room.delInhabitant(room.fetchInhabitant(0));
+			{
+				MOB inhab=room.fetchInhabitant(0);
+				if(inhab!=null)
+					room.delInhabitant(inhab);
+			}
 			DBUpdateMOBs(room);
 
 			for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
@@ -483,8 +490,11 @@ public class RoomLoader
 			while(room.numItems()>0)
 			{
 				Item thisItem=room.fetchItem(0);
-				thisItem.setLocation(null);
-				room.delItem(thisItem);
+				if(thisItem!=null)
+				{
+					thisItem.setLocation(null);
+					room.delItem(thisItem);
+				}
 			}
 			DBUpdateItems(room);
 

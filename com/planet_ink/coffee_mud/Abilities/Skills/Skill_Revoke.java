@@ -60,7 +60,7 @@ public class Skill_Revoke extends StdAbility
 		for(int a=0;a<target.numAffects();a++)
 		{
 			Ability A=(Ability)target.fetchAffect(a);
-			if((A.invoker()==mob)&&(A.canBeUninvoked()))
+			if((A!=null)&&(A.invoker()==mob)&&(A.canBeUninvoked()))
 				revokeThis=A;
 		}
 

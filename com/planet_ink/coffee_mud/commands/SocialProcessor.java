@@ -276,7 +276,7 @@ public class SocialProcessor
 		for(int i=0;i<here.numInhabitants();i++)
 		{
 			MOB thisMOB=here.fetchInhabitant(i);
-			if(thisMOB instanceof ShopKeeper)
+			if((thisMOB!=null)&&(thisMOB instanceof ShopKeeper))
 			{
 				if(thisOne==null)
 					thisOne=thisMOB;

@@ -1143,7 +1143,7 @@ public class Import
 					for(int b=M.numBehaviors()-1;b>=0;b--)
 					{
 						Behavior B=M.fetchBehavior(b);
-						if(B.grantsMobility())
+						if((B!=null)&&(B.grantsMobility()))
 						{
 							if(guardian.ID().equals("GoodGuardian"))
 								guardian=CMClass.getBehavior("MobileGoodGuardian");
@@ -1406,7 +1406,11 @@ public class Import
 					returnAnError(mob,"Special line: "+s);
 			}
 			for(int a=0;a<M.numAbilities();a++)
-				M.fetchAbility(a).autoInvocation(M);
+			{
+				Ability A=M.fetchAbility(a);
+				if(A!=null)
+					A.autoInvocation(M);
+			}
 			int rejuv=(int)Math.round(Util.div(60000,Host.TICK_TIME)*2.0);
 			M.baseEnvStats().setRejuv(rejuv*M.baseEnvStats().level());
 			return M;
@@ -2904,7 +2908,7 @@ public class Import
 				for(int i=0;i<shopRoom.numInhabitants();i++)
 				{
 					MOB sk=shopRoom.fetchInhabitant(i);
-					if(sk instanceof ShopKeeper)
+					if((sk!=null)&&(sk instanceof ShopKeeper))
 					{ shopKeeper=(ShopKeeper)sk; break;	}
 				}
 				if(shopKeeper==null)
@@ -2914,9 +2918,12 @@ public class Import
 				{
 					shopKeeper.setWhatIsSold(ShopKeeper.PETS);
 					MOB pet=storeRoom.fetchInhabitant(0);
-					shopKeeper.addStoreInventory(pet,20);
-					pet.setFollowing(null);
-					pet.destroy();
+					if(pet!=null)
+					{
+						shopKeeper.addStoreInventory(pet,20);
+						pet.setFollowing(null);
+						pet.destroy();
+					}
 				}
 			}
 			// now fix the smurfy wells
@@ -2926,12 +2933,13 @@ public class Import
 				for(int ei=0;ei<smurfRoom.numItems();ei++)
 				{
 					Item lookItem=smurfRoom.fetchItem(ei);
-					if(lookItem.displayText().length()==0)
+					if((lookItem!=null)&&(lookItem.displayText().length()==0))
 					{
 						for(int i=0;i<smurfRoom.numItems();i++)
 						{
 							Item I=smurfRoom.fetchItem(i);
-							if((I.displayText().length()>0)
+							if((I!=null)
+							&&(I.displayText().length()>0)
 							&&(I.displayText().indexOf(lookItem.name())>=0))
 							{
 								String description=lookItem.description();

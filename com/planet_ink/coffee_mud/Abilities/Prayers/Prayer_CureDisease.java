@@ -34,13 +34,16 @@ public class Prayer_CureDisease extends Prayer
 		for(int a=0;a<fromMe.numAffects();a++)
 		{
 			Ability A=fromMe.fetchAffect(a);
-			if((A.ID().toUpperCase().indexOf("DISEASE")>=0)
-			||(A.displayText().toUpperCase().indexOf("DISEASE")>=0)
-			||(A.name().toUpperCase().indexOf("PLAGUE")>=0)
-			||(A.displayText().toUpperCase().indexOf("PLAGUE")>=0)
-			||(A.name().toUpperCase().indexOf("VIRUS")>=0)
-			||(A.displayText().toUpperCase().indexOf("VIRUS")>=0))
-				offenders.addElement(A);
+			if(A!=null)
+			{
+				if((A.ID().toUpperCase().indexOf("DISEASE")>=0)
+				||(A.displayText().toUpperCase().indexOf("DISEASE")>=0)
+				||(A.name().toUpperCase().indexOf("PLAGUE")>=0)
+				||(A.displayText().toUpperCase().indexOf("PLAGUE")>=0)
+				||(A.name().toUpperCase().indexOf("VIRUS")>=0)
+				||(A.displayText().toUpperCase().indexOf("VIRUS")>=0))
+					offenders.addElement(A);
+			}
 		}
 		return offenders;
 	}

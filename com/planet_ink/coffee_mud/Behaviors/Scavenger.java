@@ -28,8 +28,11 @@ public class Scavenger extends ActiveTicker
 			Room thisRoom=mob.location();
 			if(thisRoom.numItems()==0) return;
 			for(int i=0;i<thisRoom.numItems();i++)
-				if(thisRoom.fetchItem(i) instanceof DeadBody)
+			{
+				Item thisItem=thisRoom.fetchItem(i);
+				if((thisItem!=null)&&(thisItem instanceof DeadBody))
 					return;
+			}
 
 			Vector V=new Vector();
 			V.addElement(new String("GET"));

@@ -50,7 +50,11 @@ public class MOBTeacher extends CombatAbilities
 		monster.baseCharStats().setWisdom(18);
 		monster.recoverCharStats();
 		while(monster.numAbilities()>0)
-			monster.delAbility(monster.fetchAbility(0));
+		{
+			Ability A=monster.fetchAbility(0);
+			if(A!=null)
+				monster.delAbility(A);
+		}
 		if(monster.numAbilities()<CMClass.abilities.size())
 		{
 			for(int i=0;i<CMClass.abilities.size();i++)

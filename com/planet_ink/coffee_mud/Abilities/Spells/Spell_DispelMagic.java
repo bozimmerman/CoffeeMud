@@ -43,7 +43,7 @@ public class Spell_DispelMagic extends Spell
 		for(int a=0;a<target.numAffects();a++)
 		{
 			Ability A=(Ability)target.fetchAffect(a);
-			if((A.canBeUninvoked())&&(A instanceof Spell))
+			if((A!=null)&&(A.canBeUninvoked())&&(A instanceof Spell))
 			{
 				foundSomethingAtLeast=true;
 				if((A.invoker()!=null)

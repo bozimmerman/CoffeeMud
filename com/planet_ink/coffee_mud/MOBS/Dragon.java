@@ -333,12 +333,14 @@ public class Dragon extends StdMOB
 			return false;
 		}
 
-		for (int x=0;x<location().numInhabitants();x++)
+		Room room=location();
+		if(room!=null)
+		for (int x=0;x<room.numInhabitants();x++)
 		{
 			// ===== get the next target
-			target = location().fetchInhabitant(x);
+			target = room.fetchInhabitant(x);
 			// ===== do not attack yourself
-			if (!target.ID().equals(this.ID()))
+			if ((target!=null)&&(!target.ID().equals(this.ID())))
 			{
 				FullMsg Message = new FullMsg(this,
 											  target,
@@ -347,15 +349,15 @@ public class Dragon extends StdMOB
 											  Affect.MSK_MALICIOUS_MOVE|AffectCode,
 											  Affect.MSG_NOISYMOVEMENT,
 											  msgText);
-				if (location().okAffect(Message))
+				if (room.okAffect(Message))
 				{
-					location().send(this,Message);
+					room.send(this,Message);
 					int damage=((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge),2.0)));
 					if(!Message.wasModified())
 						damage=((short)Math.round(Math.random()*7)*DragonAge);
 					FullMsg msg=new FullMsg(this,target,null,Affect.NO_EFFECT,Affect.MASK_HURT+(damage),Affect.NO_EFFECT,null);
-					if(location().okAffect(msg))
-						location().send(this,msg);
+					if(room.okAffect(msg))
+						room.send(this,msg);
 				}
 			}
 		}
@@ -521,7 +523,8 @@ public class Dragon extends StdMOB
 		{
 			// ===== get the tasty morsels
 			MOB TastyMorsel = Stomach.fetchInhabitant(x);
-			this.location().bringMobHere(TastyMorsel,false);
+			if((TastyMorsel!=null)&&(location()!=null))
+				this.location().bringMobHere(TastyMorsel,false);
 		}
 
 		// =====move the inventory of the stomach to the room
@@ -529,7 +532,7 @@ public class Dragon extends StdMOB
 		for (int y=itemCount-1;y>=0;y--)
 		{
 			Item PartiallyDigestedItem = Stomach.fetchItem(y);
-			if (PartiallyDigestedItem!=null)
+			if((PartiallyDigestedItem!=null)&&(location()!=null))
 			{
 				this.location().addItem(PartiallyDigestedItem);
 				Stomach.delItem(PartiallyDigestedItem);

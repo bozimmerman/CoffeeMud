@@ -157,17 +157,32 @@ public class StdMOB implements MOB
 		behaviors=new Vector();
 		for(int i=0;i<E.inventorySize();i++)
 		{
-			Item I=(Item)E.fetchInventory(i).copyOf();
-			I.setOwner(this);
-			inventory.addElement(I);
+			Item I2=E.fetchInventory(i);
+			if(I2!=null)
+			{
+				Item I=(Item)I2.copyOf();
+				I.setOwner(this);
+				inventory.addElement(I);
+			}
 		}
 		for(int i=0;i<E.numAbilities();i++)
-			abilities.addElement(E.fetchAbility(i).copyOf());
+		{
+			Ability A2=E.fetchAbility(i);
+			if(A2!=null)
+				abilities.addElement(A2.copyOf());
+		}
 		for(int i=0;i<E.numAffects();i++)
-			if(!((Ability)E.fetchAffect(i)).canBeUninvoked())
-				addAffect((Ability)E.fetchAffect(i).copyOf());
+		{
+			Ability A=(Ability)E.fetchAffect(i);
+			if((A!=null)&&(!A.canBeUninvoked()))
+				addAffect((Ability)A.copyOf());
+		}
 		for(int i=0;i<E.numBehaviors();i++)
-			behaviors.addElement(E.fetchBehavior(i));
+		{
+			Behavior B=E.fetchBehavior(i);
+			if(B!=null)
+				behaviors.addElement(B);
+		}
 
 	}
 	public Environmental copyOf()
@@ -217,16 +232,20 @@ public class StdMOB implements MOB
 			if(charStats().getMyRace()!=null)
 				charStats().getMyRace().affectEnvStats(this,envStats);
 		}
-		for(int i=0;i<inventory.size();i++)
+		for(int i=0;i<inventorySize();i++)
 		{
-			Item item=(Item)inventory.elementAt(i);
-			item.recoverEnvStats();
-			item.affectEnvStats(this,envStats);
+			Item item=fetchInventory(i);
+			if(item!=null)
+			{
+				item.recoverEnvStats();
+				item.affectEnvStats(this,envStats);
+			}
 		}
-		for(int a=0;a<affects.size();a++)
+		for(int a=0;a<numAffects();a++)
 		{
-			Ability affect=(Ability)affects.elementAt(a);
-			affect.affectEnvStats(this,envStats);
+			Ability affect=fetchAffect(a);
+			if(affect!=null)
+				affect.affectEnvStats(this,envStats);
 		}
 	}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
@@ -254,15 +273,17 @@ public class StdMOB implements MOB
 	public void recoverCharStats()
 	{
 		charStats=baseCharStats().cloneCharStats();
-		for(int a=0;a<affects.size();a++)
+		for(int a=0;a<numAffects();a++)
 		{
-			Ability affect=(Ability)affects.elementAt(a);
-			affect.affectCharStats(this,charStats);
+			Ability affect=fetchAffect(a);
+			if(affect!=null)
+				affect.affectCharStats(this,charStats);
 		}
-		for(int i=0;i<inventory.size();i++)
+		for(int i=0;i<inventorySize();i++)
 		{
-			Item item=(Item)inventory.elementAt(i);
-			item.affectCharStats(this,charStats);
+			Item item=fetchInventory(i);
+			if(item!=null)
+				item.affectCharStats(this,charStats);
 		}
 		if(location()!=null)
 			location().affectCharStats(this,charStats);
@@ -303,15 +324,17 @@ public class StdMOB implements MOB
 	public void recoverMaxState()
 	{
 		maxState=baseState.cloneCharState();
-		for(int a=0;a<affects.size();a++)
+		for(int a=0;a<numAffects();a++)
 		{
-			Ability affect=(Ability)affects.elementAt(a);
-			affect.affectCharState(this,maxState);
+			Ability affect=fetchAffect(a);
+			if(affect!=null)
+				affect.affectCharState(this,maxState);
 		}
-		for(int i=0;i<inventory.size();i++)
+		for(int i=0;i<inventorySize();i++)
 		{
-			Item item=(Item)inventory.elementAt(i);
-			item.affectCharState(this,maxState);
+			Item item=fetchInventory(i);
+			if(item!=null)
+				item.affectCharState(this,maxState);
 		}
 		if(location()!=null)
 			location().affectCharState(this,maxState);
@@ -346,9 +369,12 @@ public class StdMOB implements MOB
 		while(numFollowers()>0)
 		{
 			MOB follower=fetchFollower(0);
-			if((follower.amFollowing()==this)&&(follower.isMonster()))
-				follower.destroy();
-			delFollower(follower);
+			if(follower!=null)
+			{
+				if((follower.amFollowing()==this)&&(follower.isMonster()))
+					follower.destroy();
+				delFollower(follower);
+			}
 		}
 		if(!isMonster())
 			session().setKillFlag(true);
@@ -392,7 +418,11 @@ public class StdMOB implements MOB
 		// will ensure no duplicate ticks, this obj, this id
 		ExternalPlay.startTickDown(this,Host.MOB_TICK,1);
 		for(int a=0;a<numAbilities();a++)
-			fetchAbility(a).autoInvocation(this);
+		{
+			Ability A=fetchAbility(a);
+			if(A!=null)
+				A.autoInvocation(this);
+		}
 		location().recoverRoomStats();
 		ExternalPlay.look(this,null,true);
 	}
@@ -466,12 +496,17 @@ public class StdMOB implements MOB
 		victim=null;
 
 		int a=0;
-		while(a<affects.size())
+		while(a<numAffects())
 		{
-			Ability A=(Ability)affects.elementAt(a);
-			int s=affects.size();
-			A.unInvoke();
-			if(affects.size()==s)
+			Ability A=fetchAffect(a);
+			if(A!=null)
+			{
+				int s=affects.size();
+				A.unInvoke();
+				if(affects.size()==s)
+					a++;
+			}
+			else
 				a++;
 		}
 		if(isMonster())
@@ -560,18 +595,24 @@ public class StdMOB implements MOB
 					return false;
 		}
 
-		for(int i=0;i<affects.size();i++)
-			if(!((Ability)fetchAffect(i)).okAffect(affect))
+		for(int i=0;i<numAffects();i++)
+		{
+			Ability aff=(Ability)fetchAffect(i);
+			if((aff!=null)&&(!aff.okAffect(affect)))
 				return false;
+		}
 
 		for(int i=0;i<inventorySize();i++)
-			if(!((Item)fetchInventory(i)).okAffect(affect))
-				return false;
-
-		for(int b=0;b<behaviors.size();b++)
 		{
-			Behavior B=(Behavior)behaviors.elementAt(b);
-			if(!B.okAffect(this,affect))
+			Item I=(Item)fetchInventory(i);
+			if((I!=null)&&(!I.okAffect(affect)))
+				return false;
+		}
+
+		for(int b=0;b<numBehaviors();b++)
+		{
+			Behavior B=fetchBehavior(b);
+			if((B!=null)&&(!B.okAffect(this,affect)))
 				return false;
 		}
 
@@ -831,10 +872,10 @@ public class StdMOB implements MOB
 				charStats().getMyRace().affect(this,affect);
 		}
 
-		for(int b=0;b<behaviors.size();b++)
+		for(int b=0;b<numBehaviors();b++)
 		{
-			Behavior B=(Behavior)behaviors.elementAt(b);
-			B.affect(this,affect);
+			Behavior B=fetchBehavior(b);
+			if(B!=null)	B.affect(this,affect);
 		}
 
 		MOB mob=affect.source();
@@ -1100,10 +1141,18 @@ public class StdMOB implements MOB
 		}
 
 		for(int i=0;i<inventorySize();i++)
-			((Item)fetchInventory(i)).affect(affect);
+		{
+			Item I=(Item)fetchInventory(i);
+			if(I!=null)
+				I.affect(affect);
+		}
 
 		for(int i=0;i<numAffects();i++)
-			((Ability)fetchAffect(i)).affect(affect);
+		{
+			Ability A=(Ability)fetchAffect(i);
+			if(A!=null)
+				A.affect(affect);
+		}
 	}
 
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
@@ -1149,10 +1198,11 @@ public class StdMOB implements MOB
 					{
 						Item weapon=this.fetchWieldedItem();
 						if(weapon==null) // try to wield anything!
-							for(int i=0;i<inventory.size();i++)
+							for(int i=0;i<inventorySize();i++)
 							{
-								Item thisItem=(Item)inventory.elementAt(i);
-								if((thisItem.canBeWornAt(Item.WIELD))
+								Item thisItem=fetchInventory(i);
+								if((thisItem!=null)
+								 &&(thisItem.canBeWornAt(Item.WIELD))
 								 &&(thisItem.canWear(this))
 								 &&(!thisItem.amWearingAt(Item.INVENTORY)))
 								{
@@ -1190,20 +1240,25 @@ public class StdMOB implements MOB
 			}
 
 			int a=0;
-			while(a<affects.size())
+			while(a<numAffects())
 			{
-				Ability A=(Ability)affects.elementAt(a);
-				int s=affects.size();
-				if(!A.tick(tickID))
-					A.unInvoke();
-				if(affects.size()==s)
+				Ability A=fetchAffect(a);
+				if(A!=null)
+				{
+					int s=affects.size();
+					if(!A.tick(tickID))
+						A.unInvoke();
+					if(affects.size()==s)
+						a++;
+				}
+				else
 					a++;
 			}
 
-			for(int b=0;b<behaviors.size();b++)
+			for(int b=0;b<numBehaviors();b++)
 			{
-				Behavior B=(Behavior)behaviors.elementAt(b);
-				B.tick(this,tickID);
+				Behavior B=fetchBehavior(b);
+				if(B!=null) B.tick(this,tickID);
 			}
 		}
 		lastTickedDateTime=Calendar.getInstance();
@@ -1244,8 +1299,11 @@ public class StdMOB implements MOB
 	}
 	public Item fetchInventory(int index)
 	{
-		if(index<inventorySize())
+		try
+		{
 			return (Item)inventory.elementAt(index);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Item fetchInventory(String itemName)
@@ -1283,8 +1341,11 @@ public class StdMOB implements MOB
 	}
 	public MOB fetchFollower(int index)
 	{
-		if(index<numFollowers())
+		try
+		{
 			return (MOB)followers.elementAt(index);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public MOB fetchFollower(MOB thisOne)
@@ -1337,9 +1398,12 @@ public class StdMOB implements MOB
 	public void addAbility(Ability to)
 	{
 		if(to==null) return;
-		for(int i=0;i<abilities.size();i++)
-			if(((Ability)abilities.elementAt(i)).ID().equals(to.ID()))
+		for(int a=0;a<numAbilities();a++)
+		{
+			Ability A=fetchAbility(a);
+			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
+		}
 		int qualifyingLevel=to.qualifyingLevel(this);
 		if((qualifyingLevel>=0)&&(qualifyingLevel!=to.envStats().level()))
 		{
@@ -1358,16 +1422,21 @@ public class StdMOB implements MOB
 	}
 	public Ability fetchAbility(int index)
 	{
-		if(index <numAbilities())
+		try
+		{
 			return (Ability)abilities.elementAt(index);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Ability fetchAbility(String ID)
 	{
-		for(int i=0;i<abilities.size();i++)
-			if((((Ability)abilities.elementAt(i)).ID().equals(ID))
-			||(((Ability)abilities.elementAt(i)).name().equalsIgnoreCase(ID)))
-				return (Ability)abilities.elementAt(i);
+		for(int a=0;a<numAbilities();a++)
+		{
+			Ability A=fetchAbility(a);
+			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.name().equalsIgnoreCase(ID))))
+				return A;
+		}
 		return (Ability)CoffeeUtensils.fetchEnvironmental(abilities,ID,false);
 	}
 
@@ -1400,15 +1469,21 @@ public class StdMOB implements MOB
 	}
 	public Ability fetchAffect(int index)
 	{
-		if(index <numAffects())
+		try
+		{
 			return (Ability)affects.elementAt(index);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Ability fetchAffect(String ID)
 	{
-		for(int a=0;a<affects.size();a++)
-			if(((Ability)affects.elementAt(a)).ID().equals(ID))
-			   return (Ability)affects.elementAt(a);
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if((A!=null)&&(A.ID().equals(ID)))
+				return A;
+		}
 		return null;
 	}
 
@@ -1417,9 +1492,12 @@ public class StdMOB implements MOB
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
-		for(int i=0;i<behaviors.size();i++)
-			if(((Behavior)behaviors.elementAt(i)).ID().equals(to.ID()))
+		for(int b=0;b<numBehaviors();b++)
+		{
+			Behavior B=fetchBehavior(b);
+			if((B!=null)&&(B.ID().equals(to.ID())))
 				return;
+		}
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1433,27 +1511,30 @@ public class StdMOB implements MOB
 	}
 	public Behavior fetchBehavior(int index)
 	{
-		if(index <numBehaviors())
+		try
+		{
 			return (Behavior)behaviors.elementAt(index);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 
 	public boolean amWearingSomethingHere(long wornCode)
 	{
-		for(int i=0;i<inventory.size();i++)
+		for(int i=0;i<inventorySize();i++)
 		{
-			Item thisItem=(Item)inventory.elementAt(i);
-			if(thisItem.amWearingAt(wornCode))
+			Item thisItem=fetchInventory(i);
+			if((thisItem!=null)&&(thisItem.amWearingAt(wornCode)))
 				return true;
 		}
 		return false;
 	}
 	public Item fetchWornItem(long wornCode)
 	{
-		for(int i=0;i<inventory.size();i++)
+		for(int i=0;i<inventorySize();i++)
 		{
-			Item thisItem=(Item)inventory.elementAt(i);
-			if(thisItem.amWearingAt(wornCode))
+			Item thisItem=fetchInventory(i);
+			if((thisItem!=null)&&(thisItem.amWearingAt(wornCode)))
 				return thisItem;
 		}
 		return null;
@@ -1461,10 +1542,10 @@ public class StdMOB implements MOB
 
 	public Item fetchWieldedItem()
 	{
-		for(int i=0;i<inventory.size();i++)
+		for(int i=0;i<inventorySize();i++)
 		{
-			Item thisItem=(Item)inventory.elementAt(i);
-			if(thisItem.amWearingAt(Item.WIELD))
+			Item thisItem=fetchInventory(i);
+			if((thisItem!=null)&&(thisItem.amWearingAt(Item.WIELD)))
 				return thisItem;
 		}
 		return null;

@@ -249,9 +249,9 @@ public class DrowWarrior extends DrowElf
         Ability prayer = null;
         if(Dice.rollPercentage() < 70)
         {
-            prayer =  this.fetchAbility(Dice.roll(1,14,1));
-            while(this.baseEnvStats().level() < prayer.baseEnvStats().level())
-                prayer = this.fetchAbility(Dice.roll(1,14,1));
+            prayer =  this.fetchAbility(Dice.roll(1,numAbilities(),-1));
+            while((prayer==null)||(this.baseEnvStats().level() < prayer.baseEnvStats().level()))
+                prayer = this.fetchAbility(Dice.roll(1,numAbilities(),-1));
         }
         else
             prayer = CMClass.getAbility("Prayer_CureSerious");

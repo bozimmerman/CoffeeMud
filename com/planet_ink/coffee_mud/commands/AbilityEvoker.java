@@ -39,7 +39,8 @@ public class AbilityEvoker
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability thisAbility=mob.fetchAbility(a);
-			if(evokedBy(thisAbility,evokeWord))
+			if((thisAbility!=null)
+			   &&(evokedBy(thisAbility,evokeWord)))
 				if(evokableAbility!=null)
 				{
 					foundMoreThanOne=true;
@@ -61,7 +62,8 @@ public class AbilityEvoker
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability thisAbility=mob.fetchAbility(a);
-				if(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase()))
+				if((thisAbility!=null)
+				   &&(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase())))
 				{
 					if(thisAbility.name().equalsIgnoreCase(secondWord))
 					{
@@ -86,7 +88,8 @@ public class AbilityEvoker
 				for(int a=0;a<mob.numAbilities();a++)
 				{
 					Ability thisAbility=mob.fetchAbility(a);
-					if(evokedBy(thisAbility,evokeWord,secondAndThirdWord.toUpperCase()))
+					if((thisAbility!=null)
+					   &&(evokedBy(thisAbility,evokeWord,secondAndThirdWord.toUpperCase())))
 					{
 						evokableAbility=thisAbility;
 						break;
@@ -103,7 +106,8 @@ public class AbilityEvoker
 				for(int a=0;a<mob.numAbilities();a++)
 				{
 					Ability thisAbility=mob.fetchAbility(a);
-					if((evokedBy(thisAbility,evokeWord))
+					if((thisAbility!=null)
+					&&(evokedBy(thisAbility,evokeWord))
 					&&(thisAbility.name().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
 					{
 						evokableAbility=thisAbility;
@@ -194,7 +198,7 @@ public class AbilityEvoker
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
 			MOB possTeach=mob.location().fetchInhabitant(i);
-			if((possTeach.fetchAbility(abilityName)!=null)&&(possTeach!=mob))
+			if((possTeach!=null)&&(possTeach.fetchAbility(abilityName)!=null)&&(possTeach!=mob))
 			{
 				teacher=possTeach;
 				break;
