@@ -42,10 +42,7 @@ public class CMClass extends ClassLoader
 	public static Enumeration extraCmds(){return extraCmds.elements();}
 	public static Enumeration abilities(){return abilities.elements();}
 	public static Ability randomAbility()
-	{
-		Vector V=new Vector(abilities.entrySet());
-		return (Ability)V.elementAt((int)Math.round(Math.floor(Math.random()*new Integer(V.size()).doubleValue())));
-	}
+	{ return (Ability)new Vector(abilities.values()).elementAt((int)Math.round(Math.floor(Math.random()*new Integer(abilities.size()).doubleValue())));	}
 	
 	public static Item getItem(String calledThis)
 	{
