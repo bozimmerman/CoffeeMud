@@ -1,4 +1,6 @@
 problems flying during storms
+Sparring room where death does not really happen
+Archon broadcast command (like a channel)
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
 ARTIST ability to make wallpaper -- make Paintings.
 there is no help for TIME. It might be helpful to put in a help, that tells when the sun rises and sets.

@@ -28,6 +28,7 @@ public class Chant_Plague extends Chant
 			if(invoker==null) invoker=mob;
 			int dmg=(mob.envStats().level()/2)+1;
 			ExternalPlay.postDamage(invoker,mob,this,dmg,Affect.TYP_DISEASE,-1,"<T-NAME> watch(es) <T-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
+			if(mob.location()==null) return false;
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
 				if(Dice.rollPercentage()>target.charStats().getStat(CharStats.SAVE_DISEASE))

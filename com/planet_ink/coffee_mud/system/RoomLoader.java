@@ -295,8 +295,9 @@ public class RoomLoader
 			{
 				currentRecordPos=R.getRow();
 				String roomID=DBConnections.getRes(R,"CMROID");
-				String MOBID=DBConnections.getRes(R,"CMCHID");
 				String NUMID=DBConnections.getRes(R,"CMCHNM");
+				String MOBID=DBConnections.getRes(R,"CMCHID");
+				
 				itemNums=(Hashtable)stuff.get("NUMSFOR"+roomID);
 				if(itemNums==null)
 				{
