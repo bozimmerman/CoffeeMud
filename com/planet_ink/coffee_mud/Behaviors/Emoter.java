@@ -32,7 +32,43 @@ public class Emoter extends ActiveTicker
 	protected final static int EMOTE_SMELL=2;
 	protected int emoteType=0;
 
-
+	private void setEmoteTypes(Vector V)
+	{
+		for(int v=V.size()-1;v>=0;v--)
+		{
+			String str=((String)V.elementAt(v)).toUpperCase();
+			if(str.equals("BROADCAST"))
+			{
+				V.removeElementAt(v);
+				broadcast=true;
+			}
+			else
+			if(str.equals("NOBROADCAST"))
+			{
+				V.removeElementAt(v);
+				broadcast=false;
+			}
+			else
+			if(str.equals("VISUAL")||(str.equals("SIGHT")))
+			{
+				V.removeElementAt(v);
+				emoteType=EMOTE_VISUAL;
+			}
+			else
+			if(str.equals("AROMA")||(str.equals("SMELL")))
+			{
+				V.removeElementAt(v);
+				emoteType=EMOTE_SMELL;
+			}
+			else
+			if(str.equals("SOUND")||(str.equals("NOISE")))
+			{
+				V.removeElementAt(v);
+				emoteType=EMOTE_SOUND;
+			}
+		}
+	}
+	
 	private Vector parseEmotes()
 	{
 		if(emotes!=null) return emotes;
@@ -43,60 +79,40 @@ public class Emoter extends ActiveTicker
 		char c=';';
 		int x=newParms.indexOf(c);
 		if(x<0){ c='/'; x=newParms.indexOf(c);}
-		if(x>0)	newParms=newParms.substring(x+1);
+		if(x>0)
+		{
+			String oldParms=newParms.substring(0,x);
+			setEmoteTypes(Util.parse(oldParms));
+			newParms=newParms.substring(x+1);
+		}
+		int defaultType=emoteType;
+		boolean defaultBroadcast=broadcast;
 		while(newParms.length()>0)
 		{
 			Vector thisEmoteV=new Vector();
 			String thisEmote=newParms;
 			x=newParms.indexOf(";");
-			if(x>0)
+			if(x<0)	
+				newParms="";
+			else
 			{
 				thisEmote=newParms.substring(0,x);
 				newParms=newParms.substring(x+1);
-				Vector V=Util.parse(thisEmote);
-				for(int v=V.size()-1;v>=0;v--)
-				{
-					String str=((String)V.elementAt(v)).toUpperCase();
-					if(str.equals("BROADCAST"))
-					{
-						V.removeElementAt(v);
-						broadcast=true;
-					}
-					else
-					if(str.equals("NOBROADCAST"))
-					{
-						V.removeElementAt(v);
-						broadcast=false;
-					}
-					else
-					if(str.equals("VISUAL")||(str.equals("SIGHT")))
-					{
-						V.removeElementAt(v);
-						emoteType=EMOTE_VISUAL;
-					}
-					else
-					if(str.equals("AROMA")||(str.equals("SMELL")))
-					{
-						V.removeElementAt(v);
-						emoteType=EMOTE_SMELL;
-					}
-					else
-					if(str.equals("SOUND")||(str.equals("NOISE")))
-					{
-						V.removeElementAt(v);
-						emoteType=EMOTE_SOUND;
-					}
-				}
-				thisEmote=Util.combine(V,0);
 			}
-			else
-				newParms="";
-			if(thisEmote.length()>0)
+			if(thisEmote.trim().length()>0)
 			{
-				thisEmoteV.addElement(new Integer(emoteType));
-				thisEmoteV.addElement(new Boolean(broadcast));
-				thisEmoteV.addElement(thisEmote);
-				emotes.addElement(thisEmoteV);
+				Vector V=Util.parse(thisEmote);
+				emoteType=defaultType;
+				broadcast=defaultBroadcast;
+				setEmoteTypes(V);
+				thisEmote=Util.combine(V,0);
+				if(thisEmote.length()>0)
+				{
+					thisEmoteV.addElement(new Integer(emoteType));
+					thisEmoteV.addElement(new Boolean(broadcast));
+					thisEmoteV.addElement(thisEmote);
+					emotes.addElement(thisEmoteV);
+				}
 			}
 		}
 		return emotes;

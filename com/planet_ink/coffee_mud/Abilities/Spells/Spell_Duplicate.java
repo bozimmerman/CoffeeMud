@@ -32,9 +32,16 @@ public class Spell_Duplicate extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
+		
+		int multiPlier=5;
+		multiPlier+=(target.numEffects()*10);
+		multiPlier+=(target instanceof Potion)?10:0;
+		multiPlier+=(target instanceof Pill)?10:0;
+		multiPlier+=(target instanceof Wand)?5:0;
 
-		mob.tell("You lose "+(target.envStats().level()*5)+" experience points.");
-		MUDFight.postExperience(mob,null,null,-target.envStats().level()*5,false);
+		int expLoss=(target.envStats().level()*multiPlier);
+		mob.tell("You lose "+expLoss+" experience points.");
+		MUDFight.postExperience(mob,null,null,-expLoss,false);
 
 		boolean success=profficiencyCheck(0,auto);
 

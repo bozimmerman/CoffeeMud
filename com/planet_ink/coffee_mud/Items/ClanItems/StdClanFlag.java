@@ -193,20 +193,23 @@ public class StdClanFlag extends StdItem implements ClanItem
 						else
 						{
 							msg.source().tell("This area is presently controlled by "+rulingClan+".");
-							int relation=Clan.REL_WAR;
-							Clan C=Clans.getClan(clanID());
-							if(C!=null) 
-								relation=C.getClanRelations(rulingClan);
-							else
+							if(!rulingClan.equals(clanID()))
 							{
-								C=Clans.getClan(rulingClan);
-								if(C!=null)
-									relation=C.getClanRelations(clanID());
-							}
-							if(relation!=Clan.REL_WAR)
-							{
-								msg.source().tell("You must be at war with this clan to put down your flag on their area.");
-								return false;
+								int relation=Clan.REL_WAR;
+								Clan C=Clans.getClan(clanID());
+								if(C!=null) 
+									relation=C.getClanRelations(rulingClan);
+								else
+								{
+									C=Clans.getClan(rulingClan);
+									if(C!=null)
+										relation=C.getClanRelations(clanID());
+								}
+								if(relation!=Clan.REL_WAR)
+								{
+									msg.source().tell("You must be at war with this clan to put down your flag on their area.");
+									return false;
+								}
 							}
 						}
 					}

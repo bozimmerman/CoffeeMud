@@ -1309,8 +1309,8 @@ public class TelnetSession extends Thread implements Session
 								lastStart=System.currentTimeMillis();
 								mob.enqueCommand(CMDS,0);
 								lastStop=System.currentTimeMillis();
-								needPrompt=true;
 							}
+							needPrompt=true;
 						}
 						if(mob==null) break;
 

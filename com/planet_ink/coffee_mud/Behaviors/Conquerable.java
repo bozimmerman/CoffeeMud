@@ -551,6 +551,25 @@ public class Conquerable extends Arrest
 			}
 			if(index<0)
 			{
+				if((holdingClan.length()>0)
+				&&(!clanID.equals(holdingClan))
+				&&(myArea!=null))
+				{
+					for(Enumeration e=myArea.getMap();e.hasMoreElements();)
+					{
+						Room R=(Room)e.nextElement();
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							MOB M=R.fetchInhabitant(i);
+							if((M!=null)
+							&&(M.isMonster())
+							&&(M.getStartRoom()!=null)
+							&&(M.getStartRoom().getArea()==myArea)
+							&&(M.getClanID().equals(clanID)))
+								amount+=M.envStats().level();
+						}
+					}
+				}
 				if(amount>0)
 				{
 					int[] i=new int[1];

@@ -6,7 +6,23 @@ import java.util.*;
 
 public class BaseAbleLister extends StdCommand
 {
-	public static StringBuffer getAbilities(MOB able, int ofType, int ofDomain, boolean addQualLine)
+	public static int parseOutLevel(Vector commands)
+	{
+		if((commands.size()>1)
+		&&(commands.lastElement() instanceof String)
+		&&(Util.isNumber((String)commands.lastElement())))
+		{
+			int x=Util.s_int((String)commands.lastElement());
+			commands.removeElementAt(commands.size()-1);
+			return x;
+		}
+		return -1;
+	}
+	public static StringBuffer getAbilities(MOB able, 
+											int ofType, 
+											int ofDomain, 
+											boolean addQualLine,
+											int maxLevel)
 	{
 		Vector V=new Vector();
 		int mask=Ability.ALL_CODES;
@@ -16,9 +32,13 @@ public class BaseAbleLister extends StdCommand
 			ofType=ofType|ofDomain;
 		}
 		V.addElement(new Integer(ofType));
-		return getAbilities(able,V,mask,addQualLine);
+		return getAbilities(able,V,mask,addQualLine,maxLevel);
 	}
-	public static StringBuffer getAbilities(MOB able, Vector ofTypes, int mask, boolean addQualLine)
+	public static StringBuffer getAbilities(MOB able, 
+											Vector ofTypes, 
+											int mask, 
+											boolean addQualLine,
+											int maxLevel)
 	{
 		int highestLevel=0;
 		int lowestLevel=able.envStats().level()+1;
@@ -34,6 +54,8 @@ public class BaseAbleLister extends StdCommand
 			&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				highestLevel=level;
 		}
+		if((maxLevel>=0)&&(maxLevel<highestLevel))
+			highestLevel=maxLevel;
 		for(int l=0;l<=highestLevel;l++)
 		{
 			StringBuffer thisLine=new StringBuffer("");

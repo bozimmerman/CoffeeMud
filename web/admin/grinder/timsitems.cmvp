@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+	<title>Tims Item Table</title>
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="admin.css">
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="log.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0" ALIGN=RIGHT>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=35% VALIGN=TOP>
+	Max. Mins to run: <INPUT TYPE=TEXT SIZE=3 NAME=MIN VAL="5">
+	</TD>
+	<TD WIDTH=35% VALIGN=TOP>
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Clicked('/grinder/log.cmvp');">
+	</TD>
+	<TD WIDTH=30% VALIGN=TOP>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+	</TD>
+	</TR>
+	</TABLE>
+	<FONT SIZE=-1 COLOR=WHITE>
+	@TimsItemTable@
+	</FONT>
+</BODY>
+</HTML>

@@ -13,6 +13,7 @@ public class Spells extends BaseAbleLister
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		int lvl=parseOutLevel(commands);
 		String qual=Util.combine(commands,1).toUpperCase();
 		int domain=-1;
 		String domainName="Arcane";
@@ -35,7 +36,7 @@ public class Spells extends BaseAbleLister
 
 		}
 		else
-			spells.append("\n\r^HYour "+domainName+" spells:^? "+getAbilities(mob,Ability.SPELL,domain,true));
+			spells.append("\n\r^HYour "+domainName+" spells:^? "+getAbilities(mob,Ability.SPELL,domain,true,lvl));
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(spells.toString()+"\n\r");
 		return false;

@@ -102,7 +102,7 @@ public class Stat extends BaseAbleLister
 			Vector V=new Vector();
 			int mask=Ability.ALL_CODES;
 			V.addElement(new Integer(ableTypes));
-			str=getAbilities(target,V,mask,false);
+			str=getAbilities(target,V,mask,false,-1);
 		}
 		else
 			str=CommonMsgs.getScore(target);

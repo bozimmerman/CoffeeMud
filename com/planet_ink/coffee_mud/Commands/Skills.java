@@ -18,7 +18,7 @@ public class Skills extends BaseAbleLister
 		V.addElement(new Integer(Ability.THIEF_SKILL));
 		V.addElement(new Integer(Ability.SKILL));
 		V.addElement(new Integer(Ability.COMMON_SKILL));
-		msg.append("\n\r^HYour skills:^? "+getAbilities(mob,V,-1,true)+"\n\r");
+		msg.append("\n\r^HYour skills:^? "+getAbilities(mob,V,-1,true,parseOutLevel(commands))+"\n\r");
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(msg.toString());
 		return false;

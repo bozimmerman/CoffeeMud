@@ -29,9 +29,10 @@ public class Report extends BaseAbleLister
 		}
 		else
 		{
+			int level=parseOutLevel(commands);
 			String s=Util.combine(commands,1).toUpperCase();
 			if("SPELLS".startsWith(s))
-				CommonMsgs.say(mob,null,("^NMy spells:^? "+getAbilities(mob,Ability.SPELL,-1,false)),false,false);
+				CommonMsgs.say(mob,null,("^NMy spells:^? "+getAbilities(mob,Ability.SPELL,-1,false,level)),false,false);
 			else
 			if("SKILLS".startsWith(s))
 			{
@@ -39,17 +40,17 @@ public class Report extends BaseAbleLister
 				V.addElement(new Integer(Ability.THIEF_SKILL));
 				V.addElement(new Integer(Ability.SKILL));
 				V.addElement(new Integer(Ability.COMMON_SKILL));
-				CommonMsgs.say(mob,null,("^NMy skills:^? "+getAbilities(mob,V,-1,false)),false,false);
+				CommonMsgs.say(mob,null,("^NMy skills:^? "+getAbilities(mob,V,-1,false,level)),false,false);
 			}
 			else
 			if("PRAYERS".startsWith(s))
-				CommonMsgs.say(mob,null,("^NMy prayers:^? "+getAbilities(mob,Ability.PRAYER,-1,false)),false,false);
+				CommonMsgs.say(mob,null,("^NMy prayers:^? "+getAbilities(mob,Ability.PRAYER,-1,false,level)),false,false);
 			else
 			if("CHANTS".startsWith(s))
-				CommonMsgs.say(mob,null,("^NMy chants:^? "+getAbilities(mob,Ability.CHANT,-1,false)),false,false);
+				CommonMsgs.say(mob,null,("^NMy chants:^? "+getAbilities(mob,Ability.CHANT,-1,false,level)),false,false);
 			else
 			if("SONGS".startsWith(s))
-				CommonMsgs.say(mob,null,("^NMy songs:^? "+getAbilities(mob,Ability.SONG,-1,false)),false,false);
+				CommonMsgs.say(mob,null,("^NMy songs:^? "+getAbilities(mob,Ability.SONG,-1,false,level)),false,false);
 			else
 				mob.tell("'"+s+"' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, or SONGS.");
 		}

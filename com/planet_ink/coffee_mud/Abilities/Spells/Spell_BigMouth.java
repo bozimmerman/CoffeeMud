@@ -28,8 +28,13 @@ public class Spell_BigMouth extends Spell
 		&&(msg.target() instanceof MOB))
 		{
 			MOB target=(MOB)msg.target();
-			if(target.envStats().weight()<(mob.envStats().weight()/2))
+			if(target.envStats().weight()<(mob.envStats().weight()/3))
 			{
+				if((Stomach!=null)&&(Stomach.numInhabitants()>(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this))))
+				{
+					mob.tell("Your stomach is too full.");
+					return false;
+				}
 				boolean isHit=(Dice.normalizeAndRollLess(msg.source().adjustedAttackBonus(target)+target.adjustedArmor()));
 				if(!isHit)
 					mob.tell("You fail to eat "+target.name());
