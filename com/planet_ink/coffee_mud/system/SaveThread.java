@@ -4,6 +4,8 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
+import java.io.*;
+import com.planet_ink.coffee_mud.exceptions.*;
 
 /* 
    Copyright 2000-2004 Bo Zimmerman
@@ -101,16 +103,20 @@ public class SaveThread extends Thread
 	public boolean autoPurge()
 	{
 		long[] levels=new long[2001];
+		long[] prePurgeLevels=new long[2001];
 		for(int i=0;i<levels.length;i++) levels[i]=0;
+		for(int i=0;i<prePurgeLevels.length;i++) prePurgeLevels[i]=0;
 		String mask=CommonStrings.getVar(CommonStrings.SYSTEM_AUTOPURGE);
 		Vector maskV=Util.parseCommas(mask.trim(),false);
+		long purgePoint=0;
 		for(int mv=0;mv<maskV.size();mv++)
 		{
 			Vector V=Util.parse(((String)maskV.elementAt(mv)).trim());
-			if(V.size()<2) continue;
-			long val=Util.s_long((String)V.lastElement());
+			if(V.size()<3) continue;
+			long val=Util.s_long((String)V.elementAt(1));
 			if(val<=0) continue;
-			String cond=Util.combine(V,0,V.size()-1).trim();
+			long prepurge=Util.s_long((String)V.elementAt(2));
+			String cond=Util.combine(V,0,V.size()-2).trim();
 			int start=0;
 			int finish=levels.length-1;
 			if(cond.startsWith("<="))
@@ -140,10 +146,13 @@ public class SaveThread extends Thread
 			if((start>=0)&&(finish<levels.length)&&(start<=finish))
 			{
 				long realVal=System.currentTimeMillis()-((long)(val*1000*60*60*24));
-				for(int s=start;s<=finish;s++)
+				purgePoint=realVal-((long)(prepurge*1000*60*60*24));
+				for(int s=start;s<=finish;s++) 
+				{
 					if(levels[s]==0) levels[s]=realVal;
+					if(prePurgeLevels[s]==0) prePurgeLevels[s]=purgePoint;
+				}
 			}
-
 		}
 		status="autopurge process";
 		Vector allUsers=CMClass.DBEngine().getUserList();
@@ -157,13 +166,40 @@ public class SaveThread extends Thread
 			int level=Util.s_int((String)user.elementAt(3));
 			long last=Util.s_long((String)user.elementAt(5));
 			long when=Long.MAX_VALUE;
-			if(level>levels.length)
+			long warn=Long.MAX_VALUE;
+			if(level>levels.length) {
 				when=levels[levels.length-1];
+				warn=prePurgeLevels[prePurgeLevels.length-1];
+			}
 			else
-			if(level>=0)
+			if(level>=0) {
 				when=levels[level];
+				warn=prePurgeLevels[level];
+			}
 			else
 				continue;
+
+	        if((last<warn)&&(last>when)) 
+			{
+				boolean protectedOne=false;
+				for(int p=0;p<protectedOnes.size();p++)
+				{
+					String P=(String)protectedOnes.elementAt(p);
+					if(P.equalsIgnoreCase(name))
+					{ 
+						protectedOne=true; 
+						break;	
+					}
+				}
+				if(!protectedOne)
+				{
+					MOB M=CMMap.getLoadPlayer(name);
+					if(M!=null)
+					{
+						warnPrePurge(M,when-warn);
+					}
+				}
+			}
 
 			if(last<when)
 			{
@@ -248,4 +284,64 @@ public class SaveThread extends Thread
 
 		Log.sysOut("SaveThread","Shutdown complete.");
 	}
+
+	private void warnPrePurge(MOB mob, long timeLeft) 
+	{
+		//  timeLeft is in millis
+		String from="AutoPurgeWarning";
+		String to=mob.Name();
+		long date=System.currentTimeMillis();
+		String subj=CommonStrings.SYSTEM_MUDNAME+" Autopurge Warning: "+to;
+		String textTimeLeft="";
+		if(timeLeft>(1000*60*60*24*2)) 
+		{
+			int days=new Double(Util.div((double)timeLeft,1000*60*60*24)).intValue();
+			textTimeLeft = days + " days";
+		}
+		else
+		{
+			int hours=new Double(Util.div((double)timeLeft,1000*60*60)).intValue();
+			textTimeLeft = hours + " hours";
+		}
+		String msg="Your character, "+to+" is going to be autopurged by the system in "+textTimeLeft+".  If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.";
+		
+		// check for valid recipient
+		if(mob==null) return;
+
+		if((mob.playerStats()==null)
+		||(mob.playerStats().getEmail().length()==0)) // no email addy to forward TO
+			return;
+
+		SMTPclient SC=null;
+		try
+		{
+			SC=new SMTPclient(mob.playerStats().getEmail());
+		}
+		catch(BadEmailAddressException be)
+		{
+			Log.errOut("SaveThread","Unable to notify "+to+" of impending autopurge.  Invalid email address.");
+			return;
+		}
+		catch(java.io.IOException ioe)
+		{
+			return;
+		}
+
+		String replyTo="AutoPurge";
+		String domain=CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase();
+		try
+		{
+			SC.sendMessage(from+"@"+domain,
+						   replyTo+"@"+domain,
+						   mob.playerStats().getEmail(),
+						   mob.playerStats().getEmail(),
+						   subj,
+						   CoffeeFilter.simpleOutFilter(msg));
+		}
+		catch(java.io.IOException ioe)
+		{
+			Log.errOut("SaveThread","Unable to notify "+to+" of impending autopurge.");
+		}
+	}
+
 }

@@ -35,8 +35,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	protected int registeredSize=0;
 	
 	protected final DVector rooms=new  DVector(4);
-	protected static final Vector used=new Vector();
-	protected static int totalSize=0;
+	protected static final Hashtable used=new Hashtable();
+	protected static final Hashtable totalSizes=new Hashtable();
 
 	public StdThinGrid()
 	{
@@ -89,9 +89,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		{
 			for(int i=0;i<rooms.size();i++)
 			{
-				if((((Integer)rooms.elementAt(i,1)).intValue()==x)
-				&&(((Integer)rooms.elementAt(i,2)).intValue()==y))
-					return (Room)rooms.elementAt(i,0);
+				if((((Integer)rooms.elementAt(i,2)).intValue()==x)
+				&&(((Integer)rooms.elementAt(i,3)).intValue()==y))
+					return (Room)rooms.elementAt(i,1);
 			}
 			return null;
 		}
@@ -100,80 +100,190 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	protected static boolean cleanRoom(Room R)
 	{
 		if(R.getGridParent()==null) return true;
+		if(R.numInhabitants()>0) return false;
+		if(R.numItems()>0) return false;
+		for(int a=0;a<R.numEffects();a++)
+		{
+			Ability A=R.fetchEffect(a);
+			if((A!=null)&&(A.isBorrowed(R)))
+				return false;
+		}
 		if(R.getGridParent() instanceof StdThinGrid)
 		{
 			StdThinGrid STG=(StdThinGrid)R.getGridParent();
-			
+			synchronized(STG.rooms)
+			{
+				for(int i=0;i<STG.rooms.size();i++)
+				{
+					if(STG.rooms.elementAt(i,1)==R)
+					{
+						long l=((Long)STG.rooms.elementAt(i,4)).longValue();
+						if((System.currentTimeMillis()-l)<EXPIRATION)
+							return false;
+					}
+				}
+			}
 		}
-		// *TODO*
-		return false;
+		return true;
 	}
 	
 	protected static boolean cleanRoomCenter(Room R)
 	{
-		// *TODO*
-		return false;
+		if(!cleanRoom(R)) 
+			return false;
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			Room R2=(Room)R.rawDoors()[d];
+			if((R2!=null)&&(!cleanRoom(R2)))
+				return false;
+		}
+		return true;
 	}
 	
 	protected static Room getMakeFreeRoom(String locale)
 	{
+		Vector set=null;
 		synchronized(used)
 		{
-			if(used.size()>=((totalSize/DIVISOR)+5))
+			set=(Vector)used.get(locale);
+			if(set==null)
 			{
-				for(int i=0;i<used.size();i++)
+				set=new Vector();
+				used.put(locale,set);
+			}
+		}
+		Integer totalSize=null;
+		synchronized(totalSizes)
+		{
+			totalSize=(Integer)totalSizes.get(locale);
+			if(totalSize==null)
+			{
+				totalSize=new Integer(0);
+				totalSizes.put(locale,totalSize);
+			}
+		}
+		synchronized(set)
+		{
+			if(set.size()>=((totalSize.intValue()/DIVISOR)+5))
+			{
+				for(int i=0;i<set.size();i++)
 				{
-					Room R=(Room)used.firstElement();
-					used.removeElementAt(0);
-					used.addElement(R);
+					Room R=(Room)set.firstElement();
+					set.removeElementAt(0);
+					set.addElement(R);
 					if(cleanRoomCenter(R))
 						return R;
 				}
 			}
 			Room R=CMClass.getLocale(locale);
-			used.addElement(R);
+			set.addElement(R);
 			return R;
+		}
+	}
+	
+	protected void fixRoomData(Room R)
+	{
+		R.setGridParent(this);
+		R.setArea(getArea());
+		R.setRoomID("");
+		R.setDisplayText(displayText());
+		R.setDescription(description());
+		int c=-1;
+		if(displayTexts!=null)
+		if(displayTexts.size()>0)
+		{
+			c=Dice.roll(1,displayTexts.size(),-1);
+			R.setDisplayText((String)displayTexts.elementAt(c));
+		}
+		if(descriptions!=null)
+		if(descriptions.size()>0)
+		{
+			if((c<0)||(c>descriptions.size())||(descriptions.size()!=displayTexts.size()))
+				c=Dice.roll(1,descriptions.size(),-1);
+			R.setDescription((String)descriptions.elementAt(c));
+		}
+
+		for(int a=0;a<numEffects();a++)
+			R.addEffect((Ability)fetchEffect(a).copyOf());
+		for(int b=0;b<numBehaviors();b++)
+			R.addBehavior((Behavior)fetchBehavior(b).copyOf());
+	}
+	
+	protected Room getMakeSingleGridRoom(int x, int y)
+	{
+		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
+			return null;
+		
+		synchronized(rooms)
+		{
+			Room R=getGridRoomIfExists(x,y);
+			if(R==null)
+			{
+				R=getMakeFreeRoom(getChildLocaleID());
+				if(R==null) return null;
+				rooms.addElement(R,new Integer(x),new Integer(y),new Long(System.currentTimeMillis()));
+			}
+			return R;
+		}
+	}
+	
+	protected void fillExitsOfGridRoom(Room R, int x, int y)
+	{
+		Exit ox=CMClass.getExit("Open");
+		Room R2=null;
+		if(y>0)
+		{
+			R2=getMakeSingleGridRoom(x,y-1);
+			if(R2!=null) linkRoom(R,R2,Directions.NORTH,ox,ox);
+		}
+		if(x>0)
+		{
+			R2=getMakeSingleGridRoom(x-1,y);
+			if(R2!=null) linkRoom(R,R2,Directions.WEST,ox,ox);
+		}
+		if(y<(ySize()-1))
+		{
+			R2=getMakeSingleGridRoom(x,y+1);
+			if(R2!=null) linkRoom(R,R2,Directions.SOUTH,ox,ox);
+		}
+		if(x<(xSize()-1))
+		{
+			R2=getMakeSingleGridRoom(x+1,y);
+			if(R2!=null) linkRoom(R,R2,Directions.EAST,ox,ox);
 		}
 	}
 	
 	protected Room getMakeGridRoom(int x, int y)
 	{
-		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) return null;
+		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
+			return null;
+		
 		synchronized(rooms)
 		{
-			Room R=getGridRoomIfExists(x,y);
-			if(R!=null) return R;
-			R=getMakeFreeRoom(getChildLocaleID());
+			if(registeredSize!=(ySize()*xSize()))
+			{
+				Integer totalSize=null;
+				synchronized(totalSizes)
+				{
+					totalSize=(Integer)totalSizes.get(getChildLocaleID());
+					if(totalSize==null)
+					{
+						totalSize=new Integer(0);
+						totalSizes.put(getChildLocaleID(),totalSize);
+					}
+					totalSizes.remove(getChildLocaleID());
+					int newSize=totalSize.intValue()-registeredSize;
+					newSize+=(ySize()*xSize());
+					totalSizes.put(getChildLocaleID(),new Integer(newSize));
+				}
+				registeredSize=(ySize()*xSize());
+			}
+			Room R=getMakeSingleGridRoom(x,y);
 			if(R==null) return null;
-			R.setGridParent(this);
-			R.setArea(getArea());
-			R.setRoomID("");
-			R.setDisplayText(displayText());
-			R.setDescription(description());
-			int c=-1;
-			if(displayTexts!=null)
-			if(displayTexts.size()>0)
-			{
-				c=Dice.roll(1,displayTexts.size(),-1);
-				R.setDisplayText((String)displayTexts.elementAt(c));
-			}
-			if(descriptions!=null)
-			if(descriptions.size()>0)
-			{
-				if((c<0)||(c>descriptions.size())||(descriptions.size()!=displayTexts.size()))
-					c=Dice.roll(1,descriptions.size(),-1);
-				R.setDescription((String)descriptions.elementAt(c));
-			}
-
-			for(int a=0;a<numEffects();a++)
-				R.addEffect((Ability)fetchEffect(a).copyOf());
-			for(int b=0;b<numBehaviors();b++)
-				R.addBehavior((Behavior)fetchBehavior(b).copyOf());
-			rooms.addElement(R,new Integer(x),new Integer(y),new Long(System.currentTimeMillis()));
+			fillExitsOfGridRoom(R,x,y);
 			return R;
 		}
 	}
-	
 	
 	public Room getAltRoomFrom(Room loc, int direction)
 	{
@@ -239,8 +349,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	public Vector getAllRooms()
 	{
 		Vector V=new Vector();
+		if(rooms.size()==0) getMakeGridRoom(0,0);
 		for(int i=0;i<rooms.size();i++)
-			V.addElement(rooms.elementAt(i,0));
+			V.addElement(rooms.elementAt(i,1));
 		return V;
 	}
 	protected static void halfLink(Room room, Room loc, int dirCode, Exit o)
@@ -276,7 +387,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	public boolean isMyChild(Room loc)
 	{
 		for(int i=0;i<rooms.size();i++)
-			if(loc==rooms.elementAt(i,0))
+			if(loc==rooms.elementAt(i,1))
 				return true;
 		return false;
 	}
@@ -287,7 +398,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		{
 			while(rooms.size()>0)
 			{
-				Room room=(Room)rooms.elementAt(0,0);
+				Room room=(Room)rooms.elementAt(0,1);
 				rooms.removeElementAt(0);
 				while(room.numInhabitants()>0)
 				{
@@ -316,29 +427,32 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if(roomID().length()==0) return "";
 		DVector rs=rooms.copyOf();
 		for(int i=0;i<rs.size();i++)
-			if(rs.elementAt(i,0)==loc)
+			if(rs.elementAt(i,1)==loc)
 				return roomID()+"#("+((Integer)rs.elementAt(i,1)).intValue()+","+((Integer)rs.elementAt(i,2)).intValue()+")";
 		return "";
 
 	}
+	
 	public int getChildX(Room loc)
 	{
 		if(roomID().length()==0) return -1;
 		DVector rs=rooms.copyOf();
 		for(int i=0;i<rs.size();i++)
-			if(rs.elementAt(i,0)==loc)
+			if(rs.elementAt(i,1)==loc)
 				return ((Integer)rs.elementAt(i,1)).intValue();
 		return -1;
 	}
+	
 	public int getChildY(Room loc)
 	{
 		if(roomID().length()==0) return -1;
 		DVector rs=rooms.copyOf();
 		for(int i=0;i<rs.size();i++)
-			if(rs.elementAt(i,0)==loc)
+			if(rs.elementAt(i,1)==loc)
 				return ((Integer)rs.elementAt(i,2)).intValue();
 		return -1;
 	}
+	
 	public Room getChild(String childCode)
 	{
 		if(childCode.equals(roomID()))
@@ -350,7 +464,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if(comma<0) return null;
 		int x=Util.s_int(childCode.substring(len,comma));
 		int y=Util.s_int(childCode.substring(comma+1,childCode.length()-1));
-		return this.getMakeGridRoom(x,y);
+		return getMakeGridRoom(x,y);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
