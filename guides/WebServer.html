@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>The CoffeeMUD Web Server</title>
+</head>
+
+<body>
+
+<p><b>The CoffeeMUD Web Server:</B><br>
+The CoffeeMUD Web Server is a simple, extensible 
+web server that runs as part of CoffeeMUD; it uses HTTP 1.0 
+to communicate with a web browser. In addition to being able to 
+serve standard HTML web pages, it allows mime-types to be specified 
+for any file extension; it also supports a simple server-processed form of HTML
+called <i>CMVP</i> (Coffee MUD Virtual Pages) - this allows the server 
+to insert information into the page before sending it to the browser.  
+It is NOT intended to be a full-blown web server! This document assumes you have
+some familiarty with HTTP, mime types, and stuff like that.</p>
+
+<p><b>What it doesn't do:</b><br>
+It only supports GET and HEAD requests (I think HEAD is HTTP 1.1, but it's supported anyway).
+It does not support POST (or, for that matter, PUT, DELETE, OPTIONS or TRACE...)
+<br>
+It does not cache.
+</p>
+
+<p><b>Security:</b><br>
+In the default CoffeeMUD installation, the server named admin is bound to 127.0.0.1 (localhost) - this
+means it will not accept external connections (see below).<br>
+The servers will not permit access to a directory or file outside their base directory tree (which 
+includes mounted virtual directories, see below); attempts will generate a log message and return
+a HTTP 401.
+</p>
+
+
+<p><b>Configuration:</b><br>
+The default installation of CoffeeMUD has two inbuilt web servers, named 'pub' and 'admin'.
+The web servers are enabled with the line 'RUNWEBSERVERS=true' in 'coffeemud.ini'; any other
+value or the abscence of this line will cause the web servers not to be loaded.</p>
+<p>INI files for the web servers live in the 'web/' directory off the CoffeeMUD root; by default, 
+all pages to be served go in <I>web/(servername)/</I>, though this can be overridden. 
+Options are placed in either 'web/common.ini' or 'web/(servername).ini'; an option in the latter
+will override one in common.
+The options are:
+</p>
+<ul>
+	<li><b>PORT</b>=xx : 
+			<b>[REQUIRED]</b>
+			<i>(e.g. PORT=80)</i>
+			Sets the port number the web server will listen for HTTP requests on; 
+			this cannot be the same port as the main MUD server or another web servers.
+			Identical to MUD server usage.
+			Normally this would go in <I>web/(servername).ini</I>.
+	<li><b>BACKLOG</b>=xx : 
+			<i>(e.g. BACKLOG=10)</i>
+			Sets the number of requests that can be 
+			queued by the internal TCP/IP stack. Identical to MUD server usage.
+	<li><b>BIND</b>=addr : 
+			<i>(e.g. BIND=127.0.0.1)</i>
+			Causes the server to be bound to a 
+			specific address; this is useful on multi-homed machines or if you wish to prevent
+			public access to the pages. Identical to MUD server usage.<br>
+			<b>The Admin server should be bound to localhost (or 127.0.0.1) unless you really know
+			what you're doing...</b>
+
+	<li><b>DEFAULTFILE</b>=filename : 
+			<b>[REQUIRED]</b> 
+			<i>(e.g. DEFAULTFILE=index.html)</i>
+			Sets the default filename to be appended if none is specified in the 
+			request (or the request refers to a directory - in which case the browser 
+			will get a 401 Unauthorized rather than a 404 Not Found if this file doesn't exist).
+	<li><b>VIRTUALPAGEEXTENSION</b>=.xxxx : 
+			<b>[REQUIRED]</b> 
+			<i>(e.g. VIRTUALPAGEEXTENSION=CMVP)</i> 
+			Allows you to change the file extension for server-processed files to whatever takes
+			your fancy. Note that the leading dot is required; you should 
+			set MIME.xxxx=text/html, unless you're being clever and serving server-processed plaintext 
+			or something. At the moment, the web server only supports one VIRTUALPAGEEXTENSION.
+	<li><b>MIME.xxxx</b>=.yyyy/zzzz : 
+			<b>[A GOOD IDEA TO SPECIFY!]</b>
+			<i>(e.g. MIME.HTML=text/html, MIME.JPEG=image/jpg)</i> 
+			Allows you to specify a mime type for file extension xxxx;
+			some useful mime types include <code>text/html</code>, <code>text/plain</code>, <code>image/gif</code>
+			and <code>image/jpg</code>.  If no
+			mime type is specified for an extension, it defaults to <code>application/octet-stream</code> - 
+			which is to say, raw binary; for this reason, it's usually a good idea to specify
+			at least <code>MIME.HTM=text/html</code> and <code>MIME.HTML=text/html</code> - 
+			it's also good manners to specify <code>MIME.CLASS=application/octet-stream</code> if you 
+			intend to be running java applets on the web pages.
+			Normally these would be placed in <I>web/common.ini</I>.
+	<li><b>ADMIN</b>=true : allows admin macros to run on this server (see below). [NOT IMPLEMENTED YET]
+	<li><b>BASEDIRECTORY</B>=path : allows you to override the web-page directory that this server 
+			uses - default is <i>web/(servername)</I>. Servers can share base directories.
+	<li><b>TEMPLATEDIRECTORY</B>=path : allows you to override the web-page template directory that this server 
+			uses - default is BASEDIRECTORY + <i>.templates</I>.  
+			The template directory is where pages such as <I>error.cmvp</I> are placed.
+			Servers can share template directories.
+</ul>
+
+<p><b>Virtual Directories:</b><br>
+This is a quick-and-dirty directory mounting method; using an operating-system specific method would
+be preferable. Nevertheless, you can specify <B>MOUNT/virtualdir=physicaldir</B> in a server cfg file;
+for example, <B>MOUNT/guides=guides</B> creates a virtual directory with access to the player guides.<br>
+Now the limitation - URLs that do things like this: <B>/guides/..</B> won't work; this means you can't
+link BACK from a virtual directory with a RELATIVE link, unless you rely on the user's browser to preprocess the URL and 
+remove redundancies; instead, specify a path from the root ('/') - 
+e.g., instead of ../index.cmvp specify /index.cmvp.
+</p>
+
+<p><b>CoffeeMUD Virtual Pages:</b><br>
+Kind of misnamed (these pages in their original, very different incarnation didn't exist at all), 
+this is typically a HTML or plaintext file that is preprocessed by the server before being 
+dispatched to the browser.  Preprocessing is a simple search-and-replace; NO ACCOUNT is taken of where the macro appears within the file
+(ie, macros within comments or quoted strings will be replaced).  The following macros are currently
+defined (nb: CASE SENSITIVE!):</p>
+<ul>
+	<li><b>@MUDSERVERVERSION@</b>: Returns the name and version of the mud server.
+	<li><b>@WEBSERVERVERSION@</b>: Returns the name and version of the web server.
+
+	<li><b>@MUDSERVERPORT@</b>: Returns the port number the mud server is running on.
+	<li><b>@WEBSERVERPORT@</b>: Returns the port number the web server is running on.
+
+	<li><b>@MUDSERVERSTATUS@</b>: Returns a string showing the status of the mud server (note that
+		there's no @WEB equivalent - if it wasn't running, you wouldn't be able to see it!)
+
+	<li><b>@NUMPLAYERS@</b>: Returns the number of players online.
+	<li><b>@PLAYERLIST@</b>: Returns a series of HTML &lt;LI&gt; elements;
+		the enclosing list elements (&lt;UL&gt;..&lt;/UL&gt; or &lt;OL&gt;..&lt;/OL&gt;) are not
+		part of this string and so must be defined in the surronding page.  Additionally, each
+		element will have their style-sheet class set to either <I>cmPlayerListEntry</I> or,
+		if applicable, <I>cmPlayerListEntryArchon</I>.
+	<li><b>@AREATBL@</b>: Returns a formatted HTML table containing all the areas currently installed in the
+		game; as with @PLAYERLIST@, the enclosing &lt;TABLE&gt;..&lt;/TABLE&gt; must still be 
+		specified. Each &lt;TD&gt; element has style-sheet class <I>cmAreaTblEntry</I>. The area 
+		list may only be obtained while the mud server is running; otherwise a simple table 
+		containing a game-not-running message is returned.
+	<li><b>@HTTPSTATUS@</b>: Returns the http return code; 
+		this is normally of no use ("200 OK") unless customising the error page.
+	<li><b>@HTTPSTATUSINFO@</b>: Returns additional http status information;
+		this is normally of no use unless customising the error page.
+	<li><b>@HTTPCLIENTIP@</b>: Returns the client's IP address.
+</ul>
+
+<p><b>Customising the error page:</b><br>
+Simply create a file <I>error.cmvp</I> (or whatever the v.p. extension is) 
+in the template directory of the server; at some point on the page you
+should use the @HTTPSTATUS@ and @HTTPSTATUSINFO@ macros.
+Note that the template directory is served as though it were in the specified path - images and 
+stylesheets should therefore go in the server's base directory.
+</p>
+
+<p><b>Adding new macros to CMVP:</b><br>
+Create the new .java file in the <I>com/planet_ink/coffee_mud/web/macros</I> directory; all classes
+in this directory are loaded as macros by default.<br>
+The new class should inherit from <code>StdWebMacro</code> in the 
+<I>com.planet_ink.coffee_mud.web</i> package.<br>
+The package of the new class should be <I>com.planet_ink.coffee_mud.web.macros</I>; the 
+<code>name()</code> member should return the name of your new macro 
+(it will be capitalised and the @ symbols added by StdWebMacro) - the name doesn't have to match 
+the class name but it is recommended to avoid confusion.<br>
+Finally, the <code>runMacro()</code> function returns the String data you wish to insert into the processed
+output; it takes a single parameter, a reference to the <i>ProcessWebRequest</I> that is calling
+the macro (you can use <code>.getWebServer()</code> on this parameter to get a reference to 
+the web server, and <code>.getWebServer().getMUD()</code> to get a reference to the main MUD object).<br>
+If <code>runMacro()</code> returns <I>null</I>, the string [Error] is used to replace the macro; also
+note that <B>macros may not return other macros in the processed text.</B>
+</p>
+Example: this is the complete code for the <B>@HTTPCLIENTIP@</B> macro (HTTPclientIP.java):
+<pre>
+package com.planet_ink.coffee_mud.web.macros;
+import com.planet_ink.coffee_mud.web.*;
+
+public class HTTPclientIP extends StdWebMacro
+{
+	public String name()	{return "HTTPclientIP";}
+
+	public String runMacro(ProcessWebRequest httpReq)
+	{
+		return httpReq.getHTTPclientIP();
+	}
+
+}
+</PRE>
+The <code>.getHTTPclientIP()</code> member of ProcessWebRequest essentially just does this:
+<pre>
+	return sock.getInetAddress().getHostAddress();
+</pre>
+(don't be confused by the name <code>.getHostAddress()</code> - this just returns the 
+dotted quad notation form of the address, whereas 
+<code>.toString()</code> would attempt to do a reverse DNS(?) 
+and return a meaningful name as well)
+<br>
+If your macro is intended to be for the admin server only, you can override the
+<code>.isAdminMacro()</code> member to return <code>true</CODE>; nb: not implemented.
+
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="admin.css">
+	<title>CoffeeMUD ADMIN Server</title>
+</head>
+
+<body>
+
+<div align="center">
+<IMG SRC="images/pyramid.jpg" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<h3>CoffeeMUD Admin Server</H3>
+<B>@WEBSERVERVERSION@ '@WEBSERVERNAME@'</B> on port <B>@WEBSERVERPORT@</B><br>
+<br>
+MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSERVERSTATUS@</B><br>
+
+<big>
+	<br>
+	Players currently online: <b>@NUMPLAYERS@</B><br>
+	<br>
+	<a href="pub/">Go to public pages</A><br>
+	<br>
+	Admin Info:<br>
+	<A HREF="pub/guides/WebServer.html">The CoffeeMUD Web Server guide</A><br>
+	
+</big>
+<br>
+<a href="dbg.cmvp">test HTTP errors</A><br>
+
+<br>
+</DIV>
+</body>
+</html>
