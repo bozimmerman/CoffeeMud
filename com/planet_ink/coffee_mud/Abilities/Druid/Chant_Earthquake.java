@@ -121,6 +121,8 @@ public class Chant_Earthquake extends Chant
 									ExternalPlay.postDamage(mob,target,this,20,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
 							}
 						}
+						else
+							mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected by the quake.");
 					}
 				}
 			}
