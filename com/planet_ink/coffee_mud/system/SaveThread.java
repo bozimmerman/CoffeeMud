@@ -129,6 +129,40 @@ public class SaveThread extends Thread
 
 			}
 		}
+		
+		for(int s=0;s<Sessions.size();s++)
+		{
+			TelnetSession S=(TelnetSession)Sessions.elementAt(s);
+			long time=System.currentTimeMillis()-S.lastLoopTime();
+			if(time>0)
+			{
+				if((S.mob()!=null)&&(S.getStatus()!=Session.STATUS_LOGIN))
+				{
+					long check=60000;
+					if(S.mob().isASysOp(null))
+						check=check*10;
+					if(time>(check*10))
+					{
+						Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().name())+", out for "+time);
+						Log.errOut("SaveThread","STATUS  was :"+S.getStatus());
+						Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+						S.interrupt();
+					}
+					else
+					if(time>check)
+						Log.errOut("SaveThread","Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().name())+", out for "+time);
+				}
+				else
+				if(time>(60000))
+				{
+					Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().name())+", out for "+time);
+					Log.errOut("SaveThread","STATUS  was :"+S.getStatus());
+					Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+					S.interrupt();
+				}
+			}
+		}
+		
 		StringBuffer ok=DBConnector.errorStatus();
 		if(ok.length()!=0)
 			Log.errOut("Save Thread","DB: "+ok);

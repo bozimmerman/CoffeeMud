@@ -33,6 +33,7 @@ public class TelnetSession extends Thread implements Session
 
 	public long lastStart=System.currentTimeMillis();
 	public long lastStop=System.currentTimeMillis();
+	public long lastLoopTop=System.currentTimeMillis();
 	public long milliTotal=0;
 	public long tickTotal=0;
 	
@@ -95,6 +96,8 @@ public class TelnetSession extends Thread implements Session
 
 	public long getTotalMillis(){return milliTotal;}
 	public long getTotalTicks(){return tickTotal;}
+
+	public long lastLoopTime(){return lastLoopTop;}
 	
 	public MOB mob(){return mob;}
 	public void setMob(MOB newmob)
@@ -1262,6 +1265,7 @@ public class TelnetSession extends Thread implements Session
 					while((!killFlag)&&(mob!=null))
 					{
 						status=Session.STATUS_OK;
+						lastLoopTop=System.currentTimeMillis();
 						waiting=true;
 						String input=readlineContinue();
 						if(input!=null)

@@ -331,7 +331,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 	{
 		int avg=0;
 		int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT);
-		while((avg!=max)||(avg==0))
+		while((avg!=max)||(avg==0)||(max<(4*6)))
 		{
 			setStat(STRENGTH,3+(int)Math.floor(Math.random()*16.0));
 			setStat(INTELLIGENCE,3+(int)Math.floor(Math.random()*16.0));
