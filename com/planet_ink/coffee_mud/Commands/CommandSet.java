@@ -238,12 +238,10 @@ public class CommandSet extends Hashtable
 		put("AUTONOTIFY",new Integer(AUTONOTIFY));
 		put("AUTOWEATHER",new Integer(AUTOWEATHER));
 		put("AUTODRAW",new Integer(AUTODRAW));
-		put("BEACON",new Integer(BEACON));
-		put("BRIEF",new Integer(BRIEF));
-		put("PUSH",new Integer(PUSH));
-		put("PULL",new Integer(PULL));
 		put("BAN",new Integer(BAN));
+		put("BEACON",new Integer(BEACON));
 		put("BOOT",new Integer(BOOT));
+		put("BRIEF",new Integer(BRIEF));
 		put("BUG",new Integer(BUG));
 		put("BUY",new Integer(BUY));
 		put("CLOSE",new Integer(CLOSE));
@@ -397,6 +395,8 @@ public class CommandSet extends Hashtable
 		put("PRAYERS",new Integer(PRAYERS));
 		put("PROMPT",new Integer(PROMPT));
 		put("!",new Integer(PREVIOUS_CMD));
+		put("PUSH",new Integer(PUSH));
+		put("PULL",new Integer(PULL));
 		put("PUT",new Integer(PUT));
 			put("P",new Integer(PUT));
 		put("QUALIFY",new Integer(QUALIFY));
