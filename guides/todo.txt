@@ -26,18 +26,13 @@ Perhaps a little modification to have the mob act as a better assassin, and the 
 
 scrimshaw common skill
 
-property to eliminate save thread clearing of an item
-
-clear out the sky after some delay
-
 Mining, Foraging, Etc ought to be able to accept a parameter, so MINE IRON would do mine, but would stop mining if you found something other than IRON, and tell you where you might try looking.
 
 CONTINUAL LIGHT spell
 
 rain/show causes some metals to rust (take minute damage).
+
 Catch cold if you are naked!
-
-
 
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 skill available all for help.
@@ -54,13 +49,18 @@ Illusionist: Illusion spells at 100%, get all of them
 Alchemist: brew spells into potions, missile potions, transmute stuff to gold, cloth to metal, etc..
 Wizard: must memorize spells from book.  Profficiency check at memorize time (unerring in casting).  No memorizing duplicates.  Mana is consumed at memorize time.
 
-We need more diseases. Leprecy: take more physical damage in combat. Heart Disease: All actions take 2* movement. Lung Disease: Movement is recovered at 1/2 rate. Infection: Hitpoints are recovered at 1/2 rate. Flu: Mana is recovered at 1/2 rate.
+We need more diseases. 
+Leprecy: take more physical damage in combat. 
+Heart Disease: All actions take 2* movement. 
+Lung Disease: Movement is recovered at 1/2 rate. 
+Infection: Hitpoints are recovered at 1/2 rate. 
+Flu: Mana is recovered at 1/2 rate.
 
 add currents to water. Scratch that, you can simulate currents by the teleport behavior, and a good emoter.
 
 an ability to tell how many HP a MOB has
 
-an ability to resist TRIP, another to resist DISARM, another to resist WHOMP
+ability to resist WHOMP
 
 Thief--Bonus for stealing, based on TARGET level.  about 1/6 the XP as for killing.
 

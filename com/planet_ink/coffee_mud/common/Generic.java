@@ -156,7 +156,7 @@ public class Generic
 		{
 			Item item=(Item)E;
 			String xml=
-				 XMLManager.convertXMLtoTag("IID",""+E)
+				((item instanceof Container)?XMLManager.convertXMLtoTag("IID",""+E):"")
 				+XMLManager.convertXMLtoTag("IWORN",""+item.rawWornCode())
 				+XMLManager.convertXMLtoTag("ILOC",""+((item.container()!=null)?(""+item.container()):""))
 				+XMLManager.convertXMLtoTag("IUSES",""+item.usesRemaining())
@@ -433,7 +433,8 @@ public class Generic
 					String iClass=XMLManager.getValFromPieces(iblk.contents,"ICLAS");
 					Item newItem=CMClass.getItem(iClass);
 					if(newItem==null) return unpackErr("Room","null 'iClass': "+iClass+" in room "+newRoom.ID());
-					identTable.put(XMLManager.getValFromPieces(iblk.contents,"IIDEN"),newItem);
+					if(newItem instanceof Container)
+						identTable.put(XMLManager.getValFromPieces(iblk.contents,"IIDEN"),newItem);
 					String iloc=XMLManager.getValFromPieces(iblk.contents,"ILOCA");
 					if(iloc.length()>0) itemLocTable.put(iloc,newItem);
 					newItem.baseEnvStats().setLevel(XMLManager.getIntFromPieces(iblk.contents,"ILEVL"));
@@ -619,7 +620,8 @@ public class Generic
 					buf.append("<RITEM>");
 					Item item=(Item)items.elementAt(i);
 					buf.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(item)));
-					buf.append(XMLManager.convertXMLtoTag("IIDEN",""+item));
+					if(item instanceof Container)
+						buf.append(XMLManager.convertXMLtoTag("IIDEN",""+item));
 					if(item.container()==null)
 						buf.append("<ILOCA />");
 					else
@@ -862,10 +864,10 @@ public class Generic
 						return;
 					}
 					int wornCode=XMLManager.getIntFromPieces(idat,"IWORN");
-					String IID=XMLManager.getValFromPieces(idat,"IID");
+					if(newOne instanceof Container)
+						IIDmap.put(XMLManager.getValFromPieces(idat,"IID"),newOne);
 					String ILOC=XMLManager.getValFromPieces(idat,"ILOC");
 					mob.addInventory(newOne);
-					IIDmap.put(IID,newOne);
 					if(ILOC.length()>0)
 						LOCmap.put(newOne,ILOC);
 					setPropertiesStr(newOne,idat,true);
@@ -958,9 +960,9 @@ public class Generic
 						}
 						if(newOne instanceof Item)
 						{
-							String IID=XMLManager.getValFromPieces(idat,"IID");
+							if(newOne instanceof Container)
+								IIDmap.put(XMLManager.getValFromPieces(idat,"IID"),newOne);
 							String ILOC=XMLManager.getValFromPieces(idat,"ILOC");
-							IIDmap.put(newOne,IID);
 							if(ILOC.length()>0)
 								LOCmap.put(ILOC,newOne);
 						}

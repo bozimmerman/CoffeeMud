@@ -95,7 +95,7 @@ public class Chant_SummonMount extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) humbly for a mount, but is not answered.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) humbly for a mount, but <S-IS-ARE> not answered.");
 
 		// return whether it worked
 		return success;

@@ -172,7 +172,12 @@ public class DefaultCharState implements Cloneable, CharState
 		if((!mob.isMonster())&&(mob.location()!=null))
 		{
 			if(expendMovement)
+			{
+				int move=-mob.location().pointsPerMove(mob);
+				if(mob.envStats().weight()>mob.maxCarry())
+					move+=(int)Math.round(Util.mul(move,10.0*Util.div(mob.envStats().weight()-mob.maxCarry(),mob.maxCarry())));
 				adjMovement(-mob.location().pointsPerMove(mob),maxState);
+			}
 			if(!Sense.isSleeping(mob))
 			{
 				adjThirst(-mob.location().thirstPerRound(mob),maxState);
