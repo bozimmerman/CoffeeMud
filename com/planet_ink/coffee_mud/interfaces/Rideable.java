@@ -29,6 +29,7 @@ public interface Rideable extends Environmental
 	public void delRider(Rider mob);
 	public boolean amRiding(Rider mob);
 	public String stateString(Rider R);
+	public String putString(Rider R);
 	public String stateStringSubject(Rider R);
 	public boolean mobileRideBasis();
 	public String mountString(int commandType, Rider R);

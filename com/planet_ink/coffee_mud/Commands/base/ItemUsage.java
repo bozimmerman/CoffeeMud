@@ -541,7 +541,8 @@ public class ItemUsage
 		for(int i=0;i<V.size();i++)
 		{
 			Environmental putThis=(Environmental)V.elementAt(i);
-			FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> put(s) <O-NAME> in <T-NAME>.");
+			String putWord=(putThis instanceof Rideable)?((Rideable)putThis).putString(mob):"in";
+			FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> put(s) <O-NAME> "+putWord+" <T-NAME>.");
 			if(mob.location().okAffect(mob,putMsg))
 				mob.location().send(mob,putMsg);
 			if(putThis instanceof Coins)

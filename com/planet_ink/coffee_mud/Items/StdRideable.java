@@ -110,6 +110,25 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return "riding in";
 	}
+	public String putString(Rider R)
+	{
+		switch(rideBasis)
+		{
+		case Rideable.RIDEABLE_AIR:
+		case Rideable.RIDEABLE_LAND:
+		case Rideable.RIDEABLE_WAGON:
+		case Rideable.RIDEABLE_WATER:
+		case Rideable.RIDEABLE_SLEEP:
+		case Rideable.RIDEABLE_ENTERIN:
+			return "in";
+		case Rideable.RIDEABLE_SIT:
+		case Rideable.RIDEABLE_TABLE:
+		case Rideable.RIDEABLE_LADDER:
+			return "on";
+		}
+		return "in";
+	}
+	
 	public String mountString(int commandType, Rider R)
 	{
 		switch(rideBasis)

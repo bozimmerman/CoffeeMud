@@ -57,6 +57,10 @@ public class StdRideable extends StdMOB implements Rideable
 		catch(java.lang.ArrayIndexOutOfBoundsException e){}
 		return null;
 	}
+	public String putString(Rider R)
+	{
+		return "on";
+	}
 	public void addRider(Rider mob)
 	{
 		if((mob!=null)&&(!riders.contains(mob)))
