@@ -106,10 +106,10 @@ public class RoomData extends StdWebMacro
 		{
 			MOB M2=R.fetchInhabitant(i);
 			if(M2.isEligibleMonster())
-			if(card==here)
-				return M2;
-			else
-				card++;
+				if(card==here)
+					return M2;
+				else
+					card++;
 		}
 		return null;
 	}
@@ -196,7 +196,7 @@ public class RoomData extends StdWebMacro
 					if(MOBSsame(M,M2))
 					{	found=true;	break;	}
 				}
-				if(!found)
+				if((!found)&&(M.isEligibleMonster()))
 					mobs.addElement((MOB)M.copyOf());
 			}
 		}
@@ -324,7 +324,8 @@ public class RoomData extends StdWebMacro
 					for(int m=0;m<CMClass.MOBs.size();m++)
 					{
 						MOB M2=(MOB)CMClass.MOBs.elementAt(m);
-						if(CMClass.className(M2).equals(MATCHING)&&(!M2.isGeneric()))
+						if(CMClass.className(M2).equals(MATCHING)
+						   &&(!M2.isGeneric()))
 						{	classes.addElement(M2.copyOf()); break;	}
 					}
 				}

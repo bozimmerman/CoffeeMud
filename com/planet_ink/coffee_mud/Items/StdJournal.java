@@ -28,6 +28,11 @@ public class StdJournal extends StdItem
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_WRITE:
+			if(affect.source().envStats().level()<envStats().level())
+			{
+				mob.tell("You are not allowed to write on "+name());
+				return false;
+			}
 			return true;
 		}
 		return super.okAffect(affect);

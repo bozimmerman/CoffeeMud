@@ -4,6 +4,23 @@ import com.planet_ink.coffee_mud.utils.*;
 public class CommonStrings
 {
 	public static String[] clookup=null;
+	public static final int SYSTEM_PKILL=0;
+	public static final int SYSTEM_MULTICLASS=1;
+	public static final int SYSTEM_PLAYERDEATH=2;
+	public static final int NUM_SYSTEM=3;
+	private static String[] sysVars=new String[NUM_SYSTEM];
+	
+	public static String getVar(int varNum)
+	{
+		if((varNum<0)||(varNum>=NUM_SYSTEM)) return "";
+		return sysVars[varNum];
+	}
+	
+	public static void setVar(int varNum, String val)
+	{
+		if((varNum<0)||(varNum>=NUM_SYSTEM)) return ;
+		sysVars[varNum]=val;
+	}
 	
 	public static String[] standardColorLookups()
 	{

@@ -287,7 +287,8 @@ public class Mage extends StdCharClass
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
-		Hashtable given=new Hashtable();
+		Vector grantable=new Vector();
+		
 		int level=mob.charStats().getClassLevel(this);
 		int numSpells=3;
 		if(level<8)
@@ -297,54 +298,35 @@ public class Mage extends StdCharClass
 			numSpells=2;
 		else
 			numSpells=1;
-		int numLevel=0;
-		while(numLevel<numSpells)
+		for(int a=0;a<CMClass.abilities.size();a++)
 		{
-			// this is important, because losing a level and regaining
-			// should not give you another random set!
-			for(int a=0;a<mob.numAbilities();a++)
+			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
+			&&(!CMAble.getDefaultGain(ID(),A.ID()))
+			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}
+		}
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability A=mob.fetchAbility(a);
+			if(grantable.contains(A.ID()))
 			{
-				Ability A=mob.fetchAbility(a);
-				if((A!=null)
-				   &&(CMAble.getQualifyingLevel(ID(),A.ID())==level)
-				   &&(!CMAble.getDefaultGain(ID(),A.ID()))
-				   &&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
-					numLevel++;
-					   
+				grantable.remove(A.ID());
+				numSpells--;
 			}
-			int numToChooseFrom=0;
-			for(int a=0;a<CMClass.abilities.size();a++)
+		}
+		if(grantable.size()>0)
+		for(int i=0;i<numSpells;i++)
+		{
+			String AID=(String)grantable.elementAt(Dice.roll(1,grantable.size(),-1));
+			if(AID!=null)
 			{
-				Ability A=(Ability)CMClass.abilities.elementAt(a);
-				if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
-				&&(!CMAble.getDefaultGain(ID(),A.ID()))
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
-					numToChooseFrom++;
-			}
-			int randSpell=(int)Math.round(Math.random()*numToChooseFrom);
-				
-			if((numLevel<numSpells)&&(numToChooseFrom>(numSpells-numLevel)))
-			for(int a=0;a<CMClass.abilities.size();a++)
-			{
-				Ability A=(Ability)CMClass.abilities.elementAt(a);
-				if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
-				&&(!CMAble.getDefaultGain(ID(),A.ID()))
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
-				{
-					if(randSpell==0)
-					{
-						if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
-						&&(given.get(A.ID())==null))
-						{
-							giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
-							given.put(A.ID(),A);
-							numLevel++;
-						}
-						break;
-					}
-					else
-						randSpell--;
-				}
+				grantable.removeElement(AID);
+				giveMobAbility(mob,
+							   CMClass.getAbility(AID),
+							   CMAble.getDefaultProfficiency(ID(),AID),
+							   CMAble.getDefaultParm(ID(),AID),
+							   isBorrowedClass);
 			}
 		}
 	}

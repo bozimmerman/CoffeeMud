@@ -166,12 +166,12 @@ public class Scoring
 
 		String levelStr=null;
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
-		if(classLevel>=(mob.envStats().level()-1))
+		if(classLevel>=mob.envStats().level())
 			levelStr="level "+mob.envStats().level()+" "+mob.charStats().getCurrentClass().name();
 		else
 			levelStr=mob.charStats().getCurrentClass().name()+" "+classLevel+"/"+mob.envStats().level();
 		msg.append("You are ^H"+mob.name()+"^? the ^H"+levelStr+"^?.\n\r");
-		if(classLevel<(mob.envStats().level()-1))
+		if(classLevel<mob.envStats().level())
 		{
 			msg.append("You also have levels in: ");
 			StringBuffer classList=new StringBuffer("");
@@ -399,7 +399,7 @@ public class Scoring
 		{
 			Ability thisAbility=able.fetchAbility(a);
 			int level=CMAble.qualifyingLevel(able,thisAbility);
-			if(level<0) level=able.envStats().level();
+			if(level<0) level=0;
 			if((thisAbility!=null)
 			&&(level>highestLevel)
 			&&(level<lowestLevel)
@@ -414,7 +414,7 @@ public class Scoring
 			{
 				Ability thisAbility=able.fetchAbility(a);
 				int level=CMAble.qualifyingLevel(able,thisAbility);
-				if(level<0) level=able.envStats().level();
+				if(level<0) level=0;
 				if((thisAbility!=null)
 				&&(level==l)
 				&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))

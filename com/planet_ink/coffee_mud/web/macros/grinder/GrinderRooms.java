@@ -140,7 +140,7 @@ public class GrinderRooms
 				for(int m=0;m<CMClass.MOBs.size();m++)
 				{
 					MOB M2=(MOB)CMClass.MOBs.elementAt(m);
-					if(CMClass.className(M2).equals(MATCHING))
+					if((CMClass.className(M2).equals(MATCHING)))
 					{	
 						happilyAddMob((MOB)M2.copyOf(),R);
 						break;	

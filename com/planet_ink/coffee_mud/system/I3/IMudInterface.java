@@ -370,7 +370,7 @@ public class IMudInterface implements ImudServices, Serializable
 						whoV2.addElement(new Integer(0));
 						int classLevel=smob.charStats().getClassLevel(smob.charStats().getCurrentClass());
 						String levelStr=smob.charStats().getCurrentClass().name()+" ";
-						if(classLevel>=(smob.envStats().level()-1))
+						if(classLevel>=smob.envStats().level())
 							levelStr+=smob.envStats().level();
 						else
 							levelStr+=classLevel+"/"+smob.envStats().level();

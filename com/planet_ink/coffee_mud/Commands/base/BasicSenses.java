@@ -257,6 +257,13 @@ public class BasicSenses
 			return;
 		}
 
+		if((abilityCode==106)
+		&&(!teacher.charStats().getCurrentClass().baseClass().equals(mob.charStats().getCurrentClass().baseClass())))
+	    {
+			mob.tell("You can only learn that from another "+mob.charStats().getCurrentClass().baseClass()+".");
+			return;
+		}
+																 
 		int curStat=-1;
 		if(abilityCode<100)
 		{

@@ -1322,7 +1322,7 @@ public class StdMOB implements MOB
 					{
 						String levelStr=null;
 						int classLevel=charStats().getClassLevel(charStats().getCurrentClass());
-						if(classLevel>=(envStats().level()-1))
+						if(classLevel>=envStats().level())
 							levelStr="level "+envStats().level()+" "+charStats().getCurrentClass().name();
 						else
 							levelStr=charStats().getCurrentClass().name()+" "+classLevel+"/"+envStats().level();
@@ -1472,7 +1472,7 @@ public class StdMOB implements MOB
 				{
 					String levelStr=null;
 					int classLevel=charStats().getClassLevel(charStats().getCurrentClass());
-					if(classLevel>=(envStats().level()-1))
+					if(classLevel>=envStats().level())
 						levelStr="level "+envStats().level()+" "+charStats().getCurrentClass().name();
 					else
 						levelStr=charStats().getCurrentClass().name()+" "+classLevel+"/"+envStats().level();

@@ -220,12 +220,15 @@ public class MOBloader
 			while(R.next())
 			{
 				String username=DBConnections.getRes(R,"CMUSERID");
-				String cclass=((CharClass)CMClass.getCharClass(DBConnections.getRes(R,"CMCLAS"))).name();
+				String cclass=DBConnections.getRes(R,"CMCLAS");
 				String race=((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
 				int lvl=(Util.s_int(DBConnections.getRes(R,"CMLEVL")));
 				String lastCall=DBConnections.getRes(R,"CMDATE");
 				head.append("[");
 				head.append(Util.padRight(race,8)+" ");
+				int x=cclass.lastIndexOf(";");
+				if((x>0)&&(x<cclass.length()-2))
+					cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
 				head.append(Util.padRight(cclass,10)+" ");
 				head.append(Util.padRight(Integer.toString(lvl),4)+" ");
 				head.append(Util.padRight((new IQCalendar().string2Date(lastCall)).d2String(),18));

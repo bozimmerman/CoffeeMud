@@ -23,7 +23,7 @@ public class MUD extends Thread implements Host
 	public String execExternalCommand=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)3.8;
-	public static final float HOST_VERSION_MINOR=(float)0.7;
+	public static final float HOST_VERSION_MINOR=(float)5.0;
 	
 	private boolean acceptConnections=false;
 	private String offlineReason=new String("UNKNOWN");
@@ -207,6 +207,9 @@ public class MUD extends Thread implements Host
 		}
 
 		offlineReason=new String("Booting: connecting to database");
+		CommonStrings.setVar(CommonStrings.SYSTEM_MULTICLASS,page.getStr("CLASSSYSTEM"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_PKILL,page.getStr("PLAYERKILL"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_PLAYERDEATH,page.getStr("PLAYERDEATH"));
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();
 		if(DBerrors.length()==0)

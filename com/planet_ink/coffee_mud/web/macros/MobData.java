@@ -288,7 +288,7 @@ public class MobData extends StdWebMacro
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(M))))
 			M=CMClass.getMOB(newClassID);
 		
-		if(M==null)
+		if((M==null)||(!M.isEligibleMonster()))
 			return "No MOB!!";
 		
 		boolean changedClass=((reqs.get("CHANGEDCLASS")!=null)&&((String)reqs.get("CHANGEDCLASS")).equals("true"))&&(mobCode.equals("NEW"));

@@ -97,7 +97,7 @@ public class StdRoom
 		for(int m=0;m<E.numInhabitants();m++)
 		{
 			MOB M2=E.fetchInhabitant(m);
-			if(M2!=null)
+			if((M2!=null)&&(M2.isEligibleMonster()))
 			{
 				MOB M=(MOB)M2.copyOf();
 				if(M.getStartRoom()==E)

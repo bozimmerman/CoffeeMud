@@ -307,7 +307,8 @@ public class StdExit implements Exit
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
-		if((Sense.canBeSeenBy(this,mob))||isOpen())
+		if(((Sense.canBeSeenBy(this,mob))||isOpen())
+		&&(Sense.isSeen(this)))
 			if(isOpen())
 			{
 				if((room!=null)&&(!Sense.canBeSeenBy(room,mob)))

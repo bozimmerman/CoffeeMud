@@ -106,7 +106,7 @@ public class Grouping
 		msg.append(Util.padRight(who.charStats().getMyRace().name(),8)+" ");
 		int classLevel=who.charStats().getClassLevel(who.charStats().getCurrentClass());
 		String levelStr=null;
-		if(classLevel>=(who.envStats().level()-1))
+		if(classLevel>=who.envStats().level())
 			levelStr=""+who.envStats().level();
 		else
 			levelStr=classLevel+"/"+who.envStats().level();
