@@ -185,7 +185,7 @@ public class Sinking extends StdAbility
 			else
 			{
 				Room nextRoom=room.getRoomInDir(direction);
-				if(canSinkFrom(room,direction))
+				if((nextRoom!=null)&&(canSinkFrom(room,direction)))
 				{
 					room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks "+addStr+".");
 					Vector V=new Vector();

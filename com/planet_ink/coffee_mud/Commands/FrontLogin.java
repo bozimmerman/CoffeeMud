@@ -290,10 +290,11 @@ public class FrontLogin extends StdCommand
 						&&(follower.isMonster())
 						&&((R==null)||(!R.isInhabitant(follower))))
 						{
-							follower.setLocation(mob.location());
-							follower.bringToLife(mob.location(),false);
+						    if(R==null) R=mob.location();
+							follower.setLocation(R);
+							follower.bringToLife(R,false);
 							follower.setFollowing(mob);
-							follower.location().showOthers(follower,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+							follower.location().showOthers(follower,R,CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
 						}
 					}
 				}

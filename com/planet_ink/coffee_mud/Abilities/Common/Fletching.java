@@ -174,6 +174,7 @@ public class Fletching extends CraftingSkill
 					}
 				}
 			}
+			buf.append("\n\rSome items may require additional material.");
 			commonTell(mob,buf.toString());
 			return true;
 		}

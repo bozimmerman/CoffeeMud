@@ -161,58 +161,62 @@ public class DefaultTimeClock implements TimeClock
 
 	public void raiseLowerTheSunEverywhere()
 	{
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-		{
-			Room R=(Room)r.nextElement();
-			if((R!=null)
-			&&(R.getArea()!=null)
-			&&(R.getArea().getTimeObj()==this)
-			&&((R.numInhabitants()>0)||(R.numItems()>0)))
+	    try
+	    {
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				R.recoverEnvStats();
-				for(int m=0;m<R.numInhabitants();m++)
+				Room R=(Room)r.nextElement();
+				if((R!=null)
+				&&(R.getArea()!=null)
+				&&(R.getArea().getTimeObj()==this)
+				&&((R.numInhabitants()>0)||(R.numItems()>0)))
 				{
-					MOB mob=R.fetchInhabitant(m);
-					if((mob!=null)
-					&&(!mob.isMonster()))
+					R.recoverEnvStats();
+					for(int m=0;m<R.numInhabitants();m++)
 					{
-						if(CoffeeUtensils.hasASky(R)
-						&&(!Sense.isSleeping(mob))
-						&&(Sense.canSee(mob)))
+						MOB mob=R.fetchInhabitant(m);
+						if((mob!=null)
+						&&(!mob.isMonster()))
 						{
-							switch(getTODCode())
+							if(CoffeeUtensils.hasASky(R)
+							&&(!Sense.isSleeping(mob))
+							&&(Sense.canSee(mob)))
 							{
-							case TimeClock.TIME_DAWN:
-								mob.tell("The sun begins to rise in the west.");
-								break;
-							case TimeClock.TIME_DAY:
-								break;
-								//mob.tell("The sun is now shining brightly."); break;
-							case TimeClock.TIME_DUSK:
-								mob.tell("The sun begins to set in the east."); break;
-							case TimeClock.TIME_NIGHT:
-								mob.tell("The sun has set and darkness again covers the world."); break;
+								switch(getTODCode())
+								{
+								case TimeClock.TIME_DAWN:
+									mob.tell("The sun begins to rise in the west.");
+									break;
+								case TimeClock.TIME_DAY:
+									break;
+									//mob.tell("The sun is now shining brightly."); break;
+								case TimeClock.TIME_DUSK:
+									mob.tell("The sun begins to set in the east."); break;
+								case TimeClock.TIME_NIGHT:
+									mob.tell("The sun has set and darkness again covers the world."); break;
+								}
 							}
-						}
-						else
-						{
-							switch(getTODCode())
+							else
 							{
-							case TimeClock.TIME_DAWN:
-								mob.tell("It is now daytime."); break;
-							case TimeClock.TIME_DAY: break;
-								//mob.tell("The sun is now shining brightly."); break;
-							case TimeClock.TIME_DUSK: break;
-								//mob.tell("It is almost nighttime."); break;
-							case TimeClock.TIME_NIGHT:
-								mob.tell("It is nighttime."); break;
+								switch(getTODCode())
+								{
+								case TimeClock.TIME_DAWN:
+									mob.tell("It is now daytime."); break;
+								case TimeClock.TIME_DAY: break;
+									//mob.tell("The sun is now shining brightly."); break;
+								case TimeClock.TIME_DUSK: break;
+									//mob.tell("It is almost nighttime."); break;
+								case TimeClock.TIME_NIGHT:
+									mob.tell("It is nighttime."); break;
+								}
 							}
 						}
 					}
 				}
+				R.recoverRoomStats();
 			}
-			R.recoverRoomStats();
-		}
+	    }
+	    catch(java.util.NoSuchElementException x){}
 	}
 
 	public void tickTock(int howManyHours)

@@ -67,7 +67,7 @@ public class Thief_PlantItem extends ThiefSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_GIVE,"<S-NAME> plant(s) <O-NAME> on <T-NAMESELF>.",CMMsg.MSG_GIVE,null,CMMsg.MSG_GIVE,null);
+			FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_GIVE,"<S-NAME> plant(s) <O-NAME> on <T-NAMESELF>.",CMMsg.MASK_GENERAL|CMMsg.MSG_GIVE,null,CMMsg.MASK_GENERAL|CMMsg.MSG_GIVE,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -1844,17 +1844,18 @@ public class StdMOB implements MOB
 					msg.source().tell(name()+" is unable to accept that from you.");
 					return false;
 				}
-				if(!Sense.canBeSeenBy(msg.tool(),this))
+				if((!Sense.canBeSeenBy(msg.tool(),this))&&(!Util.bset(msg.targetCode(),CMMsg.MASK_GENERAL)))
 				{
 					mob.tell(name()+" can't see what you are giving.");
 					return false;
 				}
+				int GC=msg.targetCode()&CMMsg.MASK_GENERAL;
 				FullMsg msg2=new FullMsg(msg.source(),msg.tool(),null,CMMsg.MSG_DROP,null,CMMsg.MSG_DROP,"GIVE",CMMsg.MSG_DROP,null);
 				if(!location().okMessage(msg.source(),msg2))
 					return false;
 				if((msg.target()!=null)&&(msg.target() instanceof MOB))
 				{
-					msg2=new FullMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET,null,CMMsg.MSG_GET,"GIVE",CMMsg.MSG_GET,null);
+					msg2=new FullMsg((MOB)msg.target(),msg.tool(),null,GC|CMMsg.MSG_GET,null,GC|CMMsg.MSG_GET,"GIVE",GC|CMMsg.MSG_GET,null);
 					if(!location().okMessage(msg.target(),msg2))
 					{
 						mob.tell(msg.target().name()+" cannot seem to accept "+msg.tool().name()+".");

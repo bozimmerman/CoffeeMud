@@ -82,39 +82,67 @@ public class Spell_LocateObject extends Spell
 			{
 				mob.location().send(mob,msg);
 				Vector itemsFound=new Vector();
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				HashSet areas=new HashSet();
+				HashSet areasTried=new HashSet();
+				Area A=null;
+				int numAreas=(int)Math.round(Util.mul(CMMap.numAreas(),0.90))+1;
+				if(numAreas>CMMap.numAreas()) numAreas=CMMap.numAreas();
+				int tries=numAreas*numAreas;
+				while((areas.size()<numAreas)&&(((--tries)>0)))
 				{
-					Room room=(Room)r.nextElement();
-
-					if(!Sense.canAccess(mob,room)) continue;
-
-					Environmental item=room.fetchItem(null,what);
-					if((item!=null)&&(Sense.canBeLocated((Item)item)))
+				    A=CMMap.getRandomArea();
+				    if((A!=null)&&(!areasTried.contains(A)))
+				    {
+				        areasTried.add(A);
+				        if(Sense.canAccess(mob,A))
+				            areas.add(A);
+				        else
+				            numAreas--;
+				    }
+				}
+				MOB inhab=null;
+				Environmental item=null;
+				Room room=null;
+				for(Iterator a=areas.iterator();a.hasNext();)
+				{
+				    A=(Area)a.next();
+					for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 					{
-						String str=item.name()+" is in a place called '"+room.roomTitle()+"'.";
-						itemsFound.addElement(str);
-					}
-					for(int i=0;i<room.numInhabitants();i++)
-					{
-						MOB inhab=room.fetchInhabitant(i);
-						if(inhab==null) break;
-
-						item=inhab.fetchInventory(what);
-						if((item==null)&&(CoffeeUtensils.getShopKeeper(inhab)!=null))
-							item=CoffeeUtensils.getShopKeeper(inhab).getStock(what,mob);
-						if((item!=null)
-						&&(item instanceof Item)
-						&&((Sense.canBeLocated((Item)item)))
-						&&(item.envStats().level()>minLevel)
-						&&(item.envStats().level()<maxLevel))
+					    room=(Room)r.nextElement();
+	
+						if(!Sense.canAccess(mob,room)) continue;
+	
+						item=room.fetchItem(null,what);
+						if((item!=null)&&(Sense.canBeLocated((Item)item)))
 						{
-							String str=item.name()+((!levelAdjust)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle()+"'.";
+							String str=item.name()+" is in a place called '"+room.roomTitle()+"'.";
 							itemsFound.addElement(str);
 						}
+						for(int i=0;i<room.numInhabitants();i++)
+						{
+							inhab=room.fetchInhabitant(i);
+							if(inhab==null) break;
+	
+							item=inhab.fetchInventory(what);
+							if((item==null)&&(CoffeeUtensils.getShopKeeper(inhab)!=null))
+								item=CoffeeUtensils.getShopKeeper(inhab).getStock(what,mob);
+							if((item!=null)
+							&&(item instanceof Item)
+							&&((Sense.canBeLocated((Item)item)))
+							&&(item.envStats().level()>minLevel)
+							&&(item.envStats().level()<maxLevel))
+							{
+								String str=item.name()+((!levelAdjust)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle()+"'.";
+								itemsFound.addElement(str);
+								break;
+							}
+						}
+						if(itemsFound.size()>0) break;
 					}
+					if(itemsFound.size()>0) break;
 				}
 				if(itemsFound.size()==0)
-					mob.tell("There doesn't seem to be anything in the wide world called '"+what+"'.");
+					mob.tell("Your magic fails to focus on anything called '"+what+"'.");
 				else
 					mob.tell((String)itemsFound.elementAt(Dice.roll(1,itemsFound.size(),-1)));
 			}

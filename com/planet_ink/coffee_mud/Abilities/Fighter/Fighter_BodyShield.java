@@ -54,7 +54,8 @@ public class Fighter_BodyShield extends StdAbility
 		&&(msg.tool() instanceof Weapon)
 		&&(mob.getVictim()!=null)
 		&&(mob.getVictim().fetchEffect("Fighter_Pin")!=null)
-		&&(!doneThisRound))
+		&&(!doneThisRound)
+		&&(mob.getVictim().baseWeight()>=(mob.baseWeight()/2)))
 		{
 			Ability A=mob.fetchEffect("Fighter_Pin");
 			if((A!=null)&&(A.invoker()==mob))
