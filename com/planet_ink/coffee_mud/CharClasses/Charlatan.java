@@ -42,6 +42,7 @@ public class Charlatan extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_Hide",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Thief_Mark",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Song_Charm",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_Disguise",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_Warrants",true);
@@ -54,11 +55,13 @@ public class Charlatan extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),12,"Skill_Spellcraft",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_Trip",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_Map",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Thief_AnalyzeMark",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Song_Protection",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Chantcraft",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Prayercraft",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Thief_Swipe",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Skill_MarkDisguise",false);
 		}
 	}
 	

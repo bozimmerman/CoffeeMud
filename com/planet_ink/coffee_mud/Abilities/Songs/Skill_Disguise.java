@@ -115,7 +115,12 @@ public class Skill_Disguise extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if(!ID().equals("Skill_Disguise"))
+			return super.invoke(mob,commands,givenTarget,auto);
+		
 		Skill_Disguise A=(Skill_Disguise)mob.fetchAffect("Skill_Disguise");
+		if(A==null) A=(Skill_Disguise)mob.fetchAffect("Skill_MarkDisguise");
+		
 		String validChoices="Weight, sex, race, height, name, level, class, or alignment";
 		if(commands.size()==0)
 		{
@@ -267,7 +272,7 @@ public class Skill_Disguise extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				if(A==null)	beneficialAffect(mob,mob,0);
-				A=(Skill_Disguise)mob.fetchAffect("Skill_Disguise");
+				if(A==null) A=(Skill_Disguise)mob.fetchAffect("Skill_Disguise");
 				A.values[which]=how;
 				mob.recoverCharStats();
 				mob.recoverEnvStats();

@@ -24,12 +24,13 @@ public class Prop_Auction extends Property
 	public static final int STATE_RUNOUT=1;
 	public static final int STATE_ONCE=2;
 	public static final int STATE_TWICE=3;
-	public static final int STATE_CLOSED=4;
+	public static final int STATE_THREE=4;
+	public static final int STATE_CLOSED=5;
 	
 	public void setAbilityCode(int code)
 	{
 		state=code;
-		tickDown=60000/Host.TICK_TIME;
+		tickDown=15000/Host.TICK_TIME;
 	}
 	
 	private MOB invoker=null;
@@ -46,7 +47,7 @@ public class Prop_Auction extends Property
 		{
 			if((state==STATE_START)&&((System.currentTimeMillis()-auctionStart)<(5*60000)))
 			{
-				if(((System.currentTimeMillis()-auctionStart)>(3*60000))
+				if(((System.currentTimeMillis()-auctionStart)>(3*15000))
 				&&((highBidder==null)||(highBidder==invoker)))
 					setAbilityCode(STATE_RUNOUT);
 				else
@@ -68,6 +69,9 @@ public class Prop_Auction extends Property
 				break;
 			case STATE_TWICE:
 				V.addElement(bid+" gold for "+auctioning.displayName()+" going TWICE!");
+				break;
+			case STATE_THREE:
+				V.addElement(auctioning.displayName()+" going for "+bid+" gold! Last chance!");
 				break;
 			case STATE_CLOSED:
 				{
@@ -133,6 +137,11 @@ public class Prop_Auction extends Property
 			int b=0;
 			String sb="";
 			if(commands!=null){ sb=Util.combine(commands,0); b=Util.s_int(sb);}
+			if(sb.length()==0)
+			{
+				mob.tell("Up for auction: "+auctioning.displayName()+".  The current bid is "+bid+".");
+				return true;
+			}
 			
 			if(b>Money.totalMoney(mob))
 			{
