@@ -245,18 +245,12 @@ public class FrontDoor
 							mayCont=false;
 					}
 				}
-
+				mob.baseCharStats().setMyRace(newRace);
 
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("classes.txt").toString());
 
 				mob.session().print("\n\r^BPlease choose from the following Classes:\n\r");
 				mob.session().print("^H[" + listOfClasses.toString() + "]^N");
-				for(int c=0;c<CMClass.charClasses.size();c++)
-				{
-					CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-					if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
-						mob.session().print(thisClass.name()+" ");
-				}
 				CharClass newClass=null;
 				while(newClass==null)
 				{

@@ -416,7 +416,7 @@ public class TelnetSession extends Thread implements Session
 			}
 		}
 
-		if (currentColor != ((int)'N')) buf.append(makeEscape((int)'N'));
+		if ((currentColor != ((int)'N'))&&(termID>0)) buf.append(makeEscape((int)'N'));
 		
 		return buf.toString();
 
@@ -715,7 +715,7 @@ public class TelnetSession extends Thread implements Session
 		}
 
 		buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
-		if (currentColor != ((int)'N')) buf.append(makeEscape((int)'N'));
+		if ((currentColor != ((int)'N'))&&(termID>0)) buf.append(makeEscape((int)'N'));
 		
 		return buf.toString();
 	}
