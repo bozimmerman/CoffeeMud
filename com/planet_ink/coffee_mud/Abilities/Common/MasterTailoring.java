@@ -10,8 +10,7 @@ public class MasterTailoring extends CommonSkill
 {
 	public String ID() { return "MasterTailoring"; }
 	public String name(){ return "Master Tailoring";}
-	private static final String[] triggerStrings = 
-{"MASTERKNIT","MKNIT","MTAILOR","MTAILORING","MASTERTAILOR","MASTERTAILORING"};
+	private static final String[] triggerStrings = {"MASTERKNIT","MKNIT","MTAILOR","MTAILORING","MASTERTAILOR","MASTERTAILORING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
 	private static final int RCP_FINALNAME=0;
@@ -149,9 +148,9 @@ public class MasterTailoring extends CommonSkill
 		{
 			StringBuffer buf=new StringBuffer("");
 			int toggler=1;
-			int toggleTop=3;
+			int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(Util.padRight("Item",10)+" "+Util.padRight("Cloth",10)+" ");
+				buf.append(Util.padRight("Item",25)+" "+Util.padRight("Cloth",10)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -163,7 +162,7 @@ public class MasterTailoring extends CommonSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
 					{
-						buf.append(Util.padRight(item,10)+" "+Util.padRight(""+wood,10)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight(item,25)+" "+Util.padRight(""+wood,10)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
