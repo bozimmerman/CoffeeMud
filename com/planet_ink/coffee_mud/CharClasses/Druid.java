@@ -38,7 +38,7 @@ public class Druid extends StdCharClass
 
 	public boolean playerSelectable()
 	{
-		return true;
+		return false;
 	}
 
 	public String statQualifications(){return "Constitution 9+";}

@@ -191,20 +191,15 @@ public class Log
 	* @param Message The message to print
 	* @return String The header and message, formatted
 	*/
-	private static String getLogHeader(Object Obj, String Type, String Module, String Message)
-	{
-		StringBuffer Header=new StringBuffer((new IQCalendar(Calendar.getInstance()).d2String()+SPACES).substring(0,18));
-		if(Obj!=null)
-		{
-			Header.append(("*"+SPACES).substring(0,4));
-		}
-		else
-			Header.append(("*"+SPACES).substring(0,4));
-		Header.append((Type+SPACES).substring(0,6));
-		Header.append((Module+SPACES).substring(0,13));
-		Header.append(Message);
-		return Header.toString();
-	}
+    private static String getLogHeader(Object Obj, String Type, String Module, String Message)
+    {
+        StringBuffer Header=new StringBuffer((new IQCalendar(Calendar.getInstance()).d2String()+SPACES).substring(0,20));
+        Header.append((Type+SPACES).substring(0,6));
+        Header.append((Module+SPACES).substring(0,13));
+        Header.append(Message);
+        return Header.toString();
+    }
+
 
 	/**
 	* Handles standard logging entries.  Sends them to System.out,

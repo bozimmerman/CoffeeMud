@@ -109,6 +109,58 @@ public class MUD extends Thread implements Host
 	}
 	
 
+    // returns "(unknown/not set)" if property not set
+    private static String getCheckedProp(Properties sysprop,String id)
+    {
+        try
+        {
+            String s = (String)sysprop.get(id);
+            return (s == null)?"(unknown/not set)":s;
+        }
+        catch (SecurityException e)
+        {
+            return "(security exception: " + e.getMessage() + ")";
+        }
+    }
+ 
+    private static void logSystemCfg()
+    {
+        // GET SYSTEM PROPERTIES
+        ///////////////////////////////////
+        Properties sysprop = null;
+        try
+        {
+            sysprop = System.getProperties(); 
+        }
+        catch (SecurityException e)
+        {
+            System.err.println("Security exception - cannot get system properties: " + e.getMessage());
+            return;
+        }
+        
+        // PRINT SYSTEM PROPERTIES
+        ///////////////////////////////////
+        Log.sysOut("User",getCheckedProp(sysprop,"user.name"));
+        Log.sysOut("OS",getCheckedProp(sysprop,"os.name") 
+                    + " " + getCheckedProp(sysprop,"os.version") 
+                    + "/" + getCheckedProp(sysprop,"os.arch")
+                    + " (" + getCheckedProp(sysprop,"sun.cpu.endian") + " endian)");
+ 
+        Log.sysOut("Java", "version " + getCheckedProp(sysprop,"java.version"));
+        Log.sysOut("Java", getCheckedProp(sysprop,"java.runtime.name"));
+        Log.sysOut("Java", getCheckedProp(sysprop,"java.vendor") );
+ 
+        Log.sysOut("Java VM", getCheckedProp(sysprop,"java.vm.name")
+                            + " " + getCheckedProp(sysprop,"java.vm.version"));
+        Log.sysOut("Java VM", getCheckedProp(sysprop,"java.vm.vendor") );
+ 
+        // It's easier to use Locale.getDefault() and TimeZone.getDefault() than 
+        //  system properties user.region, user.timezone and user.language
+        Log.sysOut("Locale", Locale.getDefault().getDisplayName());
+        Log.sysOut("Timezone", TimeZone.getDefault().getDisplayName(true,TimeZone.LONG) );
+    }
+
+ 	
 	private boolean initHost()
 	{
 
