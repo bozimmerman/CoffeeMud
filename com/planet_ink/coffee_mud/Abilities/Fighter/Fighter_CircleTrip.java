@@ -77,6 +77,11 @@ public class Fighter_CircleTrip extends StdAbility
 			mob.tell("You are too far away to circle trip!");
 			return false;
 		}
+		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=1)
+		{
+			mob.tell("You need at least two legs to do this.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

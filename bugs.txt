@@ -1,0 +1,3 @@
+prayer Feed the Dead--cast on an undead MOB, with a secondary target of a body, the undead will gain XP equal to 10*lvl of the body they consume, if body is of higher level than the undead. This way, a necromancer can make his undead more powerful (even his lowly skeletons) Should be around 10th level.
+the armless can still monkey punch, and fight with parts they don't have.
+

@@ -39,6 +39,12 @@ public class Fighter_AxKick extends StdAbility
 			mob.tell("You are too far away to kick!");
 			return false;
 		}
+		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=0)
+		{
+			mob.tell("You need legs to do this.");
+			return false;
+		}
+		
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 

@@ -111,6 +111,12 @@ public class Fighter_LightningStrike extends StdAbility
 			mob.tell("You must be unarmed to perform the strike.");
 			return false;
 		}
+		if(mob.charStats().getBodyPart(Race.BODY_HAND)<2)
+		{
+			mob.tell("You need at least two hands to do this.");
+			return false;
+		}
+
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

@@ -30,6 +30,7 @@ public class Fighter_MonkeyPunch extends StdAbility
 			if((mob.isInCombat())
 			&&(Sense.aliveAwakeMobile(mob,true))
 			&&(mob.rangeToTarget()==0)
+			&&(mob.charStats().getBodyPart(Race.BODY_HAND)>1)
 			&&(!anyWeapons(mob)))
 			{
 				if(Dice.rollPercentage()>95)

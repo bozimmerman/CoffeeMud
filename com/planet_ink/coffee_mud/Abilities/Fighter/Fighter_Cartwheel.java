@@ -33,6 +33,12 @@ public class Fighter_Cartwheel extends StdAbility
 			mob.tell("You can not get any further away here!");
 			return false;
 		}
+		if((mob.charStats().getBodyPart(Race.BODY_LEG)<=1)
+		||(mob.charStats().getBodyPart(Race.BODY_ARM)<=1))
+		{
+			mob.tell("You need arms and legs to do this.");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

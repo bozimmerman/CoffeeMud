@@ -39,6 +39,7 @@ public class Fighter_CatchProjectile extends StdAbility
 		&&(!(affect.tool() instanceof Electronics))
 		&&(mob.rangeToTarget()>0)
 		&&(mob.fetchAffect("Fighter_ReturnProjectile")==null)
+		&&(mob.charStats().getBodyPart(Race.BODY_HAND)>0)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.DEXTERITY),false))
 		&&(mob.freeWearPositions(Item.HELD)>0))
 		{

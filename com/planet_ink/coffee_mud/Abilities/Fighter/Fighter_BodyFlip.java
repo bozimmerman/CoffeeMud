@@ -96,6 +96,11 @@ public class Fighter_BodyFlip extends StdAbility
 			mob.tell(target.name()+" is flying and can't be flipped over!");
 			return false;
 		}
+		if(mob.charStats().getBodyPart(Race.BODY_ARM)<=1)
+		{
+			mob.tell("You need at least two arms to do this.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

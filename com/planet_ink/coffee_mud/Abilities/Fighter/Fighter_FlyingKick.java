@@ -42,6 +42,11 @@ public class Fighter_FlyingKick extends StdAbility
 			mob.tell("You are too close away to do a flying kick!");
 			return false;
 		}
+		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=1)
+		{
+			mob.tell("You need at least two legs to do this.");
+			return false;
+		}
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 

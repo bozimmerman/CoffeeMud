@@ -59,6 +59,11 @@ public class Fighter_AtemiStrike extends StdAbility
 			mob.tell(target.name()+" is too powerful to strike!");
 			return false;
 		}
+		if(mob.charStats().getBodyPart(Race.BODY_HAND)<=0)
+		{
+			mob.tell("You need hands to do this.");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
