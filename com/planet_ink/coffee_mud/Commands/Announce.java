@@ -39,11 +39,6 @@ public class Announce extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return false;
-		}
 		if(commands.size()>1)
 		{
 			if(((String)commands.elementAt(1)).toUpperCase().equals("ALL"))
@@ -51,7 +46,9 @@ public class Announce extends StdCommand
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session S=Sessions.elementAt(s);
-					if((S.mob()!=null)&&(S.mob().location()!=null)&&(mob.isASysOp(S.mob().location())))
+					if((S.mob()!=null)
+					&&(S.mob().location()!=null)
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE")))
 						sendAnnounce((String)Util.combine(commands,2),S);
 				}
 			}
@@ -63,7 +60,7 @@ public class Announce extends StdCommand
 					Session S=Sessions.elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
-					&&(mob.isASysOp(S.mob().location()))
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE"))
 					&&(EnglishParser.containsString(S.mob().name(),(String)commands.elementAt(1))))
 					{
 						sendAnnounce(Util.combine(commands,2),S);
@@ -81,7 +78,7 @@ public class Announce extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"ANNOUNCE");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

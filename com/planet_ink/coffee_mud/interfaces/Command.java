@@ -6,7 +6,7 @@ public interface Command extends Comparable
 	public String[] getAccessWords();
 	public int ticksToExecute();
 	public boolean canBeOrdered();
-	public boolean arcCommand();
+	public boolean securityCheck(MOB mob);
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException;
 }

@@ -13,11 +13,6 @@ public class Beacon extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return false;
-		}
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
@@ -49,6 +44,11 @@ public class Beacon extends StdCommand
 				mob.tell(M.name()+" is already at their beacon.");
 				return false;
 			}
+			if(!CMSecurity.isAllowed(mob,M.location(),"BEACON"))
+			{
+				mob.tell("You cannot beacon "+M.name()+" there.");
+				return false;
+			}
 			M.setStartRoom(M.location());
 			mob.tell("You have modified "+M.name()+"'s beacon.");
 		}
@@ -56,7 +56,7 @@ public class Beacon extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"BEACON");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

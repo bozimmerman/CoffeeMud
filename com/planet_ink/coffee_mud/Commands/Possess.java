@@ -51,12 +51,6 @@ public class Possess extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return false;
-		}
-
 		commands.removeElementAt(0);
 		String MOBname=Util.combine(commands,0);
 		MOB target=getTarget(mob,commands,true);
@@ -81,6 +75,11 @@ public class Possess extends StdCommand
 			mob.tell("You can't possess '"+MOBname+"' right now.");
 			return false;
 		}
+		if(!CMSecurity.isAllowed(mob,target.location(),"POSSESS"))
+		{
+			mob.tell("You can not possess "+target.Name()+".");
+			return false;
+		}
 
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> get(s) a far away look, then seem(s) to fall limp.");
 
@@ -95,7 +94,7 @@ public class Possess extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"POSSESS");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -12,7 +12,6 @@ public class Create extends BaseGenerics
 	private String[] access={"CREATE"};
 	public String[] getAccessWords(){return access;}
 
-
 	public void exits(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -395,38 +394,43 @@ public class Create extends BaseGenerics
 		}
 	}
 
+	public boolean errorOut(MOB mob)
+	{
+		mob.tell("You are not allowed to do that here.");
+		return false;
+	}
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return false;
-		}
 		String commandType="";
 		if(commands.size()>1)
 			commandType=((String)commands.elementAt(1)).toUpperCase();
 
 		if(commandType.equals("EXIT"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			exits(mob,commands);
 		}
 		else
 		if(commandType.equals("RACE"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			races(mob,commands);
 		}
 		else
 		if(commandType.equals("CLASS"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			classes(mob,commands);
 		}
 		else
 		if(commandType.equals("AREA"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDAREAS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			areas(mob,commands);
 		}
@@ -439,30 +443,35 @@ public class Create extends BaseGenerics
 		else
 		if(commandType.equals("ITEM"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			items(mob,commands);
 		}
 		else
 		if(commandType.equals("ROOM"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			rooms(mob,commands);
 		}
 		else
 		if(commandType.equals("SOCIAL"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDSOCIALS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			socials(mob,commands);
 		}
 		else
 		if(commandType.equals("MOB"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs(mob,commands);
 		}
 		else
 		if(commandType.equals("QUEST"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 				mob.tell("You must specify a valid quest string.  Try AHELP QUESTS.");
@@ -555,7 +564,7 @@ public class Create extends BaseGenerics
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"CMD");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

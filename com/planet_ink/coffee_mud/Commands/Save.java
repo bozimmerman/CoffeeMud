@@ -13,11 +13,6 @@ public class Save extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("Your game is automatically being saved while you play.\n\r");
-			return false;
-		}
 		String commandType="";
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 		if(commands.size()>1)
@@ -25,6 +20,11 @@ public class Save extends StdCommand
 		
 		if(commandType.equals("USERS"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS"))
+			{
+				mob.tell("You are not allowed to save players.");
+				return false;
+			}
 			for(int s=0;s<Sessions.size();s++)
 			{
 				Session session=(Session)Sessions.elementAt(s);
@@ -40,6 +40,11 @@ public class Save extends StdCommand
 		else
 		if(commandType.equals("ITEMS"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
+			{
+				mob.tell("You are not allowed to save the mobs here.");
+				return false;
+			}
 			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("AREA")))
 			{
 				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every item in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
@@ -62,6 +67,11 @@ public class Save extends StdCommand
 		else
 		if(commandType.equals("ROOM"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
+			{
+				mob.tell("You are not allowed to save the contents here.");
+				return false;
+			}
 			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("AREA")))
 			{
 				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every mob and item in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
@@ -84,6 +94,11 @@ public class Save extends StdCommand
 		else
 		if(commandType.equals("MOBS"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
+			{
+				mob.tell("You are not allowed to save the mobs here.");
+				return false;
+			}
 			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("AREA")))
 			{
 				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every mob in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
@@ -107,6 +122,11 @@ public class Save extends StdCommand
 		else
 		if(commandType.equals("QUESTS"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS"))
+			{
+				mob.tell("You are not allowed to save the contents here.");
+				return false;
+			}
 			Quests.save();
 			mob.tell("Quest list saved.");
 		}
@@ -115,13 +135,13 @@ public class Save extends StdCommand
 			mob.tell(
 				"\n\rYou cannot save '"+commandType+"'. "
 				+"However, you might try "
-				+"ITEMS, USERS, MOBS, or ROOM.");
+				+"ITEMS, USERS, QUESTS, MOBS, or ROOM.");
 		}
 		return false;
 	}
 	public int ticksToExecute(){return 0;}
-	public boolean arcCommand(){return true;}
 	public boolean canBeOrdered(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"CMD");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

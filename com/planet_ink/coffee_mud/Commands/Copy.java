@@ -13,11 +13,6 @@ public class Copy extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return false;
-		}
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 		commands.removeElementAt(0); // copy
 		if(commands.size()<1)
@@ -99,6 +94,11 @@ public class Copy extends StdCommand
 		{
 			if(E instanceof MOB)
 			{
+				if(!CMSecurity.isAllowed(mob,mob.location(),"COPYMOBS"))
+				{
+					mob.tell("You are not allowed to copy "+E.name());
+					return false;
+				}
 				MOB newMOB=(MOB)E.copyOf();
 				newMOB.setSession(null);
 				newMOB.setStartRoom(room);
@@ -120,6 +120,11 @@ public class Copy extends StdCommand
 			else
 			if((E instanceof Item)&&(!(E instanceof ArchonOnly)))
 			{
+				if(!CMSecurity.isAllowed(mob,mob.location(),"COPYITEMS"))
+				{
+					mob.tell("You are not allowed to copy "+E.name());
+					return false;
+				}
 				Item newItem=(Item)E.copyOf();
 				newItem.setContainer(null);
 				newItem.wearAt(0);
@@ -145,6 +150,11 @@ public class Copy extends StdCommand
 			else
 			if((E instanceof Room)&&(dirCode>=0))
 			{
+				if(!CMSecurity.isAllowed(mob,mob.location(),"COPYROOMS"))
+				{
+					mob.tell("You are not allowed to copy "+E.name());
+					return false;
+				}
 				if(room.getRoomInDir(dirCode)!=null)
 				{
 					mob.tell("A room already exists "+Directions.getInDirectionName(dirCode)+"!");
@@ -201,7 +211,7 @@ public class Copy extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"COPY");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

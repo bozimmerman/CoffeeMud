@@ -13,11 +13,6 @@ public class Boot extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(null))
-		{
-			mob.tell("Only the Archons can do that.");
-			return false;
-		}
 		commands.removeElementAt(0);
 		if(mob.session()==null) return false;
 		if(commands.size()==0)
@@ -55,7 +50,7 @@ public class Boot extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"BOOT");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

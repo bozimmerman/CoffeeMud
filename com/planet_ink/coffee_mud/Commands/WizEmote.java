@@ -23,7 +23,9 @@ public class WizEmote extends StdCommand
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session S=Sessions.elementAt(s);
-					if((S.mob()!=null)&&(S.mob().location()!=null)&&(mob.isASysOp(S.mob().location())))
+					if((S.mob()!=null)
+					&&(S.mob().location()!=null)
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
 	  					S.stdPrintln("^w"+msg+"^?");
 				}
 			}
@@ -35,7 +37,7 @@ public class WizEmote extends StdCommand
 					Session S=Sessions.elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
-					&&(mob.isASysOp(S.mob().location()))
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE"))
 					&&(EnglishParser.containsString(S.mob().name(),who)
 						||EnglishParser.containsString(S.mob().location().getArea().name(),who)))
 					{
@@ -54,7 +56,7 @@ public class WizEmote extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"WIZEMOTE");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

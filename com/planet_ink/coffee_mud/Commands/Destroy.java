@@ -12,6 +12,12 @@ public class Destroy extends BaseItemParser
 	private String[] access={"DESTROY"};
 	public String[] getAccessWords(){return access;}
 
+	public boolean errorOut(MOB mob)
+	{
+		mob.tell("You are not allowed to do that here.");
+		return false;
+	}
+	
 	public boolean mobs(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -56,11 +62,6 @@ public class Destroy extends BaseItemParser
 	public static boolean players(MOB mob, Vector commands)
 		throws IOException
 	{
-		if(!mob.isASysOp(null))
-		{
-			mob.tell("Only Archons may destroy players.");
-			return false;
-		}
 		if(commands.size()<3)
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY USER [USER NAME]\n\r");
@@ -134,7 +135,7 @@ public class Destroy extends BaseItemParser
 		}
 		if(deadRoom!=null)
 		{
-			if(!mob.isASysOp(deadRoom))
+			if(!CMSecurity.isAllowed(mob,deadRoom,"CMDROOMS"))
 			{
 				mob.tell("Sorry Charlie! Not your room!");
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -293,6 +294,13 @@ public class Destroy extends BaseItemParser
 			return;
 		}
 		Area A=CMMap.getArea(areaName);
+		Room R=A.getRandomRoom();
+		if((R!=null)&&(!CMSecurity.isAllowed(mob,R,"CMDAREAS")))
+		{
+			errorOut(mob);
+			return;
+		}
+			
 		if((!mob.isASysOp(null))
 		&&(!A.amISubOp(mob.Name())))
 		{
@@ -482,7 +490,10 @@ public class Destroy extends BaseItemParser
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
+		if((!CMSecurity.isAllowedStartsWith(mob,"CMD"))
+		&&(!CMSecurity.isAllowedStartsWith(mob,mob.location(),"KILL"))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),"BAN"))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),"NOPURGE")))
 		{
 			commands.removeElementAt(0);
 			if(commands.size()==0)
@@ -579,17 +590,19 @@ public class Destroy extends BaseItemParser
 		}
 		if(commandType.equals("EXIT"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			exits(mob,commands);
 		}
 		else
 		if(commandType.equals("ITEM"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			items(mob,commands);
 		}
 		else
-		if((commandType.equals("AREA"))&&(mob.isASysOp(null)))
+		if(commandType.equals("AREA"))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			areas(mob,commands);
@@ -603,30 +616,35 @@ public class Destroy extends BaseItemParser
 		else
 		if(commandType.equals("RACE"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			races(mob,commands);
 		}
 		else
 		if(commandType.equals("CLASS"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			classes(mob,commands);
 		}
 		else
 		if((commandType.equals("USER"))&&(mob.isASysOp(null)))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			players(mob,commands);
 		}
 		else
 		if(commandType.equals("SOCIAL"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDSOCIALS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			socials(mob,commands);
 		}
 		else
 		if(commandType.equals("NOPURGE"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"NOPURGE")) return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
 				which=Util.s_int((String)commands.elementAt(2));
@@ -651,6 +669,7 @@ public class Destroy extends BaseItemParser
 		else
 		if(commandType.equals("BAN"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"BAN")) return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
 				which=Util.s_int((String)commands.elementAt(2));
@@ -675,6 +694,7 @@ public class Destroy extends BaseItemParser
 		else
 		if(commandType.equals("BUG"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"KILLBUGS")) return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
 				which=Util.s_int((String)commands.elementAt(2));
@@ -689,6 +709,7 @@ public class Destroy extends BaseItemParser
 		else
 		if(commandType.equals("IDEA"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"KILLIDEAS")) return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
 				which=Util.s_int((String)commands.elementAt(2));
@@ -703,6 +724,7 @@ public class Destroy extends BaseItemParser
 		else
 		if(commandType.equals("TYPO"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"KILLTYPOS")) return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
 				which=Util.s_int((String)commands.elementAt(2));
@@ -717,12 +739,14 @@ public class Destroy extends BaseItemParser
 		else
 		if(commandType.equals("MOB"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs(mob,commands);
 		}
 		else
 		if(commandType.equals("QUEST"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 				mob.tell("Destroy which quest?  Use list quests.");
@@ -742,6 +766,7 @@ public class Destroy extends BaseItemParser
 		else
 		if(commandType.equals("CLAN"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 				mob.tell("Destroy which clan?  Use clanlist.");
@@ -832,7 +857,6 @@ public class Destroy extends BaseItemParser
 	}
 	public int ticksToExecute(){return 1;}
 	public boolean canBeOrdered(){return false;}
-	public boolean arcCommand(){return false;}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

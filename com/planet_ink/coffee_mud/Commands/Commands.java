@@ -15,7 +15,7 @@ public class Commands extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			boolean arc=mob.isASysOp(mob.location());
+			boolean arc=CMSecurity.isStaff(mob);
 			StringBuffer commandList=(StringBuffer)Resources.getResource((arc?"ARC":"")+"COMMAND LIST");
 			if(commandList==null)
 			{
@@ -28,7 +28,7 @@ public class Commands extends StdCommand
 					if((access!=null)
 					&&(access.length>0)
 					&&(access[0].length()>0)
-					&&(arc||(!C.arcCommand())))
+					&&(arc||(C.securityCheck(mob))))
 					{
 						if(++col>3){ commandList.append("\n\r"); col=0;}
 						commandList.append(Util.padRight(access[0],19));

@@ -100,8 +100,9 @@ public class Prop_WizInvis extends Property
 				disabled=true;
 			else
 			if((msg.amISource((MOB)affected))
+			&&(Util.bset(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS))
 			&&(msg.source().location()!=null)
-			&&(!msg.source().isASysOp(msg.source().location())))
+			&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"SYSMSGS")))
 				msg.source().setBitmap(Util.unsetb(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS));
 		}
 		

@@ -13,12 +13,6 @@ public class DumpFile extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(null))
-		{
-			mob.tell("Only the Archons can do that.");
-			return false;
-		}
-
 		if(commands.size()<3)
 		{
 			mob.tell("dumpfile {raw} username|all {filename1 ...}");
@@ -82,6 +76,8 @@ public class DumpFile extends StdCommand
 
 				if (thisSession==null) continue;
 				if (thisSession.killFlag() || (thisSession.mob()==null)) continue;
+				if(!CMSecurity.isAllowed(mob,thisSession.mob().location(),"DUMPFILE"))
+					continue;
 				if (allFlag || thisSession.mob().name().equalsIgnoreCase(targetName))
 				{
 					if (rawMode)
@@ -97,7 +93,7 @@ public class DumpFile extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"DUMPFILE");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

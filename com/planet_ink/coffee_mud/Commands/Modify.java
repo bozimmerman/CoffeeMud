@@ -803,7 +803,7 @@ public class Modify extends BaseGenerics
 
 		if(!modMOB.isMonster())
 		{
-			players(mob,Util.parse("MODIFY USER \""+modMOB.Name()+"\""));
+			mob.tell(modMOB.Name()+" is a player! Try MODIFY USER!");
 			return;
 		}
 
@@ -861,55 +861,63 @@ public class Modify extends BaseGenerics
 		Log.sysOut("Mobs",mob.Name()+" modified mob "+modMOB.Name()+".");
 	}
 
+	public boolean errorOut(MOB mob)
+	{
+		mob.tell("You are not allowed to do that here.");
+		return false;
+	}
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("You are not powerful enough to do that.");
-			return false;
-		}
 		String commandType="";
 		if(commands.size()>1)
 			commandType=((String)commands.elementAt(1)).toUpperCase();
 		if(commandType.equals("ITEM"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			items(mob,commands);
 		}
 		else
 		if(commandType.equals("ROOM"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			rooms(mob,commands);
 		}
 		else
 		if(commandType.equals("RACE"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			races(mob,commands);
 		}
 		else
 		if(commandType.equals("CLASS"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			classes(mob,commands);
 		}
 		else
 		if(commandType.equals("AREA"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDAREAS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			areas(mob,commands);
 		}
 		else
 		if(commandType.equals("EXIT"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			exits(mob,commands);
 		}
 		else
 		if(commandType.equals("CLAN"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 				mob.tell("Modify the status of which clan?  Use clanlist.");
@@ -948,24 +956,28 @@ public class Modify extends BaseGenerics
 		else
 		if(commandType.equals("SOCIAL"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDSOCIALS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			socials(mob,commands);
 		}
 		else
 		if(commandType.equals("MOB"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs(mob,commands);
 		}
 		else
 		if((commandType.equals("USER"))&&(mob.isASysOp(null)))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			players(mob,commands);
 		}
 		else
 		if(commandType.equals("QUEST"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 				mob.tell("Start/Stop which quest?  Use list quests.");
@@ -998,6 +1010,7 @@ public class Modify extends BaseGenerics
 			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORN_REQ_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
+				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);
 				if(!thang.isGeneric())
 				{
 					int showFlag=-1;
@@ -1031,6 +1044,7 @@ public class Modify extends BaseGenerics
 			else
 			if((thang!=null)&&(thang instanceof MOB))
 			{
+				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
 					int showFlag=-1;
@@ -1056,7 +1070,22 @@ public class Modify extends BaseGenerics
 				}
 				else
 				if(!((MOB)thang).isMonster())
+				{
+					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
 					players(mob,Util.parse("MODIFY USER \""+thang.Name()+"\""));
+				}
+				else
+				if(thang instanceof Room)
+				{
+					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")) return errorOut(mob);
+					genMiscSet(mob,thang);
+				}
+				else
+				if(thang instanceof Exit)
+				{
+					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
+					genMiscSet(mob,thang);
+				}
 				else
 					genMiscSet(mob,thang);
 				thang.recoverEnvStats();
@@ -1071,6 +1100,7 @@ public class Modify extends BaseGenerics
 
 				if(thang!=null)
 				{
+					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
 					genMiscText(mob,thang,1,1);
 					thang.recoverEnvStats();
 					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
@@ -1108,7 +1138,7 @@ public class Modify extends BaseGenerics
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"CMD");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

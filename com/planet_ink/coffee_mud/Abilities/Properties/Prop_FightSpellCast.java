@@ -7,13 +7,14 @@ import java.util.*;
 
 public class Prop_FightSpellCast extends Property
 {
-	private boolean processing=false;
 	public String ID() { return "Prop_FightSpellCast"; }
 	public String name(){ return "Casting spells when properly used during combat";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	Prop_FightSpellCast BOB=new Prop_FightSpellCast();	BOB.setMiscText(text()); return BOB;}
 	protected Hashtable spellH=null;
 	protected Vector spellV=null;
+	private boolean processing=false;
+	
 	public Vector getMySpellsV()
 	{
 		if(spellV!=null) return spellV;
@@ -91,9 +92,9 @@ public class Prop_FightSpellCast extends Property
 		super.executeMsg(myHost,msg);
 
 		if(processing) return;
-		processing=true;
 
 		if(affected==null) return;
+		processing=true;
 
 		Item myItem=(Item)affected;
 

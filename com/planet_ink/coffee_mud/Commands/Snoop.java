@@ -24,11 +24,6 @@ public class Snoop extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(mob.location()))
-		{
-			mob.tell("Mind your own business!");
-			return false;
-		}
 		commands.removeElementAt(0);
 		if(mob.session()==null) return false;
 		boolean doneSomething=false;
@@ -64,7 +59,7 @@ public class Snoop extends StdCommand
 					return false;
 				}
 				else
-				if(mob.isASysOp(S.mob().location()))
+				if(CMSecurity.isAllowed(mob,S.mob().location(),"SNOOP"))
 					SnoopOn=S;
 			}
 		}
@@ -96,7 +91,7 @@ public class Snoop extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"SNOOP");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

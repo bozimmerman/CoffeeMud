@@ -29,7 +29,7 @@ public class Where extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(mob.isASysOp(mob.location()))
+		if(CMSecurity.isAllowed(mob,mob.location(),"WHERE"))
 		{
 			StringBuffer lines=new StringBuffer("^x");
 			lines.append(Util.padRight("Name",17)+"| ");
@@ -42,21 +42,17 @@ public class Where extends StdCommand
 					Session thisSession=(Session)Sessions.elementAt(s);
 					if(thisSession.mob() != null)
 					{
-						if(mob.isASysOp(thisSession.mob().location()))
+						lines.append("^!"+Util.padRight(thisSession.mob().Name(),17)+"^?| ");
+						if(thisSession.mob().location() != null )
 						{
-							lines.append("^!"+Util.padRight(thisSession.mob().Name(),17)+"^?| ");
-							if(thisSession.mob().location() != null )
-							{
-								lines.append(thisSession.mob().location().displayText());
-								lines.append(" ("+CMMap.getExtendedRoomID(thisSession.mob().location())+")");
-							}
-							else
-								lines.append("^!(no location)^?");
-							lines.append("\n\r");
+							lines.append(thisSession.mob().location().displayText());
+							lines.append(" ("+CMMap.getExtendedRoomID(thisSession.mob().location())+")");
 						}
+						else
+							lines.append("^!(no location)^?");
+						lines.append("\n\r");
 					}
 					else
-					if(mob.isASysOp(null))
 					{
 						lines.append(Util.padRight("NAMELESS",17)+"| ");
 						lines.append("NOWHERE");
@@ -76,7 +72,7 @@ public class Where extends StdCommand
 				for(;r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if((R!=null)&&(mob.isASysOp(R)))
+					if((R!=null)&&(CMSecurity.isAllowed(mob,R,"WHERE")))
 					{
 						if(EnglishParser.containsString(R.displayText(),who)
 						||EnglishParser.containsString(R.description(),who))

@@ -144,15 +144,15 @@ public class At extends StdCommand
 		Room room=findRoomLiberally(mob,new StringBuffer(cmd));
 		if(room==null)
 		{
-			if(mob.isASysOp(mob.location()))
+			if(CMSecurity.isAllowed(mob,"AT"))
 				mob.tell("At where? Try a Room ID, player name, area name, or room text!");
 			else
 				mob.tell("You aren't powerful enough to do that.");
 			return false;
 		}
-		if(!mob.isASysOp(room))
+		if(!CMSecurity.isAllowed(mob,room,"AT"))
 		{
-			mob.tell("You aren't powerful enough to do that.");
+			mob.tell("You aren't powerful enough to do that there.");
 			return false;
 		}
 		Room R=mob.location();
@@ -163,7 +163,7 @@ public class At extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,"AT");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

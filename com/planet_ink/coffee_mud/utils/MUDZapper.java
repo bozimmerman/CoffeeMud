@@ -359,8 +359,8 @@ public class MUDZapper
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if((C.ID().equals(C.baseClass())
-							&&(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
+							if((C.ID().equals(C.baseClass()))
+							&&(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim())))
 								buf.append(C.name()+" types, ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -557,8 +557,7 @@ public class MUDZapper
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if((C.ID().equals(C.baseClass())
-							&&(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
+							if(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
 								buf.append(C.name()+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -572,8 +571,7 @@ public class MUDZapper
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if((C.ID().equals(C.baseClass())
-							&&(fromHere(V,'-',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
+							if(fromHere(V,'-',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
 								buf.append(C.name()+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -748,7 +746,7 @@ public class MUDZapper
 							CharClass C=(CharClass)c.nextElement();
 							if((C.ID().equals(C.baseClass())
 							&&(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
-								entry.addElement(C.name());
+								entry.addElement(C.baseClass());
 						}
 					}
 					break;
@@ -783,6 +781,24 @@ public class MUDZapper
 							String cat=R.racialCategory().toUpperCase();
 							if((!cats.contains(R.racialCategory())
 							&&(fromHere(V,'+',v+1,cat))))
+							   cats.addElement(R.racialCategory());
+						}
+						for(int c=0;c<cats.size();c++)
+							entry.addElement(((String)cats.elementAt(c)));
+					}
+					break;
+				case 13: // +Racecats
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						Vector cats=new Vector();
+						for(Enumeration r=CMClass.races();r.hasMoreElements();)
+						{
+							Race R=(Race)r.nextElement();
+							String cat=R.racialCategory().toUpperCase();
+							if((!cats.contains(R.racialCategory())
+							&&(fromHere(V,'-',v+1,cat))))
 							   cats.addElement(R.racialCategory());
 						}
 						for(int c=0;c<cats.size();c++)
@@ -844,7 +860,6 @@ public class MUDZapper
 				case 8: // +Tattoos
 				case 15: // +Clan
 				case 16: // +Names
-				case 13: // +racecats
 				case 31: // +Area
 				case 33: // +Item
 					{
@@ -875,8 +890,7 @@ public class MUDZapper
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if((C.ID().equals(C.baseClass())
-							&&(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
+							if(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
 								entry.addElement(C.name());
 						}
 					}
@@ -889,8 +903,7 @@ public class MUDZapper
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if((C.ID().equals(C.baseClass())
-							&&(fromHere(V,'-',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
+							if(fromHere(V,'-',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
 								entry.addElement(C.name());
 						}
 					}
@@ -983,19 +996,282 @@ public class MUDZapper
 		return buf;
 	}
 
-	public static boolean zapperCheck(Vector cset, MOB mob)
+	public static boolean zapperCheckReal(Vector cset, MOB mob)
 	{
 		if(mob==null) return true;
-		if(mob.charStats()==null) return true;
 		if((cset==null)||(cset.size()==0)) return true;
 		getZapCodes();
-		for(int v=0;v<cset.size();v++)
+		for(int c=0;c<cset.size();c++)
 		{
-			Vector V=(Vector)cset.elementAt(v);
+			Vector V=(Vector)cset.elementAt(c);
 			if(V.size()>0)
 			switch(((Integer)V.firstElement()).intValue())
 			{
-				
+			case 0: // -class
+				if(!V.contains(mob.baseCharStats().getCurrentClass().name()))
+					return false;
+				break;
+			case 1: // -baseclass
+				if(!V.contains(mob.baseCharStats().getCurrentClass().baseClass()))
+					return false;
+				break;
+			case 2: // -race
+				if(!V.contains(mob.baseCharStats().getMyRace().name()))
+					return false;
+				break;
+			case 3: // -alignment
+				if(!V.contains(CommonStrings.shortAlignmentStr(mob.getAlignment())))
+					return false;
+				break;
+			case 4: // -gender
+				if(!V.contains(""+((char)mob.baseCharStats().getStat(CharStats.GENDER))))
+					return false;
+				break;
+			case 5: // -level
+				{
+					boolean found=false;
+					for(int v=1;v<V.size();v+=2)
+						if((v+1)<V.size())
+						switch(((Integer)V.elementAt(v)).intValue())
+						{
+							case 37: // +lvlgr
+								if((V.size()>1)&&(mob.baseEnvStats().level()>((Integer)V.elementAt(1)).intValue()))
+								   found=true;
+								break;
+							case 38: // +lvlge
+								if((V.size()>1)&&(mob.baseEnvStats().level()>=((Integer)V.elementAt(1)).intValue()))
+								   found=true;
+								break;
+							case 39: // +lvlt
+								if((V.size()>1)&&(mob.baseEnvStats().level()<((Integer)V.elementAt(1)).intValue()))
+								   found=true;
+								break;
+							case 40: // +lvlle
+								if((V.size()>1)&&(mob.baseEnvStats().level()<=((Integer)V.elementAt(1)).intValue()))
+								   found=true;
+								break;
+							case 41: // +lvleq
+								if((V.size()>1)&&(mob.baseEnvStats().level()==((Integer)V.elementAt(1)).intValue()))
+								   found=true;
+								break;
+						}
+					if(!found) return false;
+				}
+				break;
+			case 6: // -classlevel
+				{
+					boolean found=false;
+					int cl=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
+					for(int v=1;v<V.size();v+=2)
+						if((v+1)<V.size())
+						switch(((Integer)V.elementAt(v)).intValue())
+						{
+							case 37: // +lvlgr
+								if((V.size()>1)&&(cl>((Integer)V.elementAt(1)).intValue()))
+								   found=true;
+								break;
+							case 38: // +lvlge
+								if((V.size()>1)&&(cl>=((Integer)V.elementAt(1)).intValue()))
+								   found=true;
+								break;
+							case 39: // +lvlt
+								if((V.size()>1)&&(cl<((Integer)V.elementAt(1)).intValue()))
+								   found=true;
+								break;
+							case 40: // +lvlle
+								if((V.size()>1)&&(cl<=((Integer)V.elementAt(1)).intValue()))
+								   found=true;
+								break;
+							case 41: // +lvleq
+								if((V.size()>1)&&(cl==((Integer)V.elementAt(1)).intValue()))
+								   found=true;
+								break;
+						}
+					if(!found) return false;
+				}
+				break;
+			case 7: // -tattoo
+				{
+					boolean found=false;
+					for(int v=1;v<V.size();v++)
+						if(mob.fetchTattoo((String)V.elementAt(v))!=null)
+						{ found=true; break;}
+					if(!found) return false;
+				}
+				break;
+			case 8: // +tattoo
+				{
+					for(int v=1;v<V.size();v++)
+						if(mob.fetchTattoo((String)V.elementAt(v))!=null)
+						{ return false;}
+				}
+				break;
+			case 9: // -name
+				{
+					boolean found=false;
+					for(int v=1;v<V.size();v++)
+						if(mob.Name().equalsIgnoreCase((String)V.elementAt(v)))
+						{ found=true; break;}
+					if(!found) return false;
+				}
+				break;
+			case 10: // -player
+				if(!mob.isMonster()) return false;
+				break;
+			case 11: // -npc
+				if(mob.isMonster()) return false;
+				break;
+			case 12: // -racecat
+				if(!V.contains(mob.baseCharStats().getMyRace().racialCategory()))
+					return false;
+				break;
+			case 13: // +racecat
+				if(V.contains(mob.baseCharStats().getMyRace().racialCategory()))
+					return false;
+				break;
+			case 14: // -clan
+				{
+					if(mob.getClanID().length()==0) 
+						return false;
+					boolean found=false;
+					for(int v=1;v<V.size();v++)
+						if(mob.getClanID().equalsIgnoreCase((String)V.elementAt(v)))
+						{ found=true; break;}
+					if(!found) return false;
+				}
+				break;
+			case 15: // +clan
+				if(mob.getClanID().length()>0) 
+					for(int v=1;v<V.size();v++)
+						if(mob.getClanID().equalsIgnoreCase((String)V.elementAt(v)))
+						{ return false;}
+				break;
+			case 16: // +name
+				{
+					for(int v=1;v<V.size();v++)
+						if(mob.Name().equalsIgnoreCase((String)V.elementAt(v)))
+						{ return false;}
+				}
+				break;
+			case 17: // -anyclass
+				{
+					boolean found=false;
+					for(int v=1;v<V.size();v++)
+						if(mob.baseCharStats().getClassLevel((String)V.elementAt(v))>=0)
+						{ found=true; break;}
+					if(!found) return false;
+				}
+				break;
+			case 18: // +anyclass
+				for(int v=1;v<V.size();v++)
+					if(mob.baseCharStats().getClassLevel((String)V.elementAt(v))>=0)
+					{ return false;}
+				break;
+			case 19: // +str
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STRENGTH)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 20: // +int
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 21: // +wis
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.WISDOM)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 22: // +dex
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.DEXTERITY)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 23: // +con
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.CONSTITUTION)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 24: // +cha
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.CHARISMA)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 25: // -str
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STRENGTH)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 26: // -int
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 27: // -wis
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.WISDOM)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 28: // -dex
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.DEXTERITY)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 29: // -con
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 30: // -cha
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.CHARISMA)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 31: // -area
+				{
+					boolean found=false;
+					if(mob.location()!=null)
+						for(int v=1;v<V.size();v++)
+							if(mob.location().getArea().Name().equalsIgnoreCase((String)V.elementAt(v)))
+							{ found=true; break;}
+					if(!found) return false;
+				}
+				break;
+			case 32: // +area
+				if(mob.location()!=null)
+					for(int v=1;v<V.size();v++)
+						if(mob.location().getArea().Name().equalsIgnoreCase((String)V.elementAt(v)))
+						{ return false;}
+				break;
+			case 33: // +item
+				{
+					boolean found=false;
+					for(int v=1;v<V.size();v++)
+						if(mob.fetchInventory((String)V.elementAt(v))!=null)
+						{ found=true; break;}
+					if(!found) return false;
+				}
+				break;
+			case 34: // +class
+				if(V.contains(mob.baseCharStats().getCurrentClass().name()))
+					return false;
+				break;
+			case 35: // +alignment
+				if(V.contains(CommonStrings.shortAlignmentStr(mob.getAlignment())))
+					return false;
+				break;
+			case 36: // +gender
+				if(V.contains(""+((char)mob.baseCharStats().getStat(CharStats.GENDER))))
+					return false;
+				break;
+			case 37: // +lvlgr
+				if((V.size()>1)&&(mob.baseEnvStats().level()>((Integer)V.elementAt(1)).intValue()))
+				   return false;
+				break;
+			case 38: // +lvlge
+				if((V.size()>1)&&(mob.baseEnvStats().level()>=((Integer)V.elementAt(1)).intValue()))
+				   return false;
+				break;
+			case 39: // +lvlt
+				if((V.size()>1)&&(mob.baseEnvStats().level()<((Integer)V.elementAt(1)).intValue()))
+				   return false;
+				break;
+			case 40: // +lvlle
+				if((V.size()>1)&&(mob.baseEnvStats().level()<=((Integer)V.elementAt(1)).intValue()))
+				   return false;
+				break;
+			case 41: // +lvleq
+				if((V.size()>1)&&(mob.baseEnvStats().level()==((Integer)V.elementAt(1)).intValue()))
+				   return false;
+				break;
 			}
 		}
 		return true;

@@ -100,7 +100,7 @@ public class Link extends StdCommand
 	
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return false;}
-	public boolean arcCommand(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }
