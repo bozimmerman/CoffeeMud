@@ -51,29 +51,25 @@ public class Say extends StdCommand
 			mob.tell(theWord+" what?");
 			return false;
 		}
-		if(((String)commands.elementAt(1)).equalsIgnoreCase("to"))
-		{
-			commands.removeElementAt(1);
-			toFlag=true;
-		}
 		
+		String whom="";
 		Environmental target=null;
 		if(commands.size()>2)
 		{
-			String possibleTarget=((String)commands.elementAt(1)).toUpperCase();
+			whom=((String)commands.elementAt(1)).toUpperCase();
 			if(!toFlag)
 				for(int i=0;i<impossibleTargets.length;i++)
-					if(impossibleTargets[i].startsWith(possibleTarget))
-					{ possibleTarget=""; break;}
-			if(possibleTarget.length()>0)
+					if(impossibleTargets[i].startsWith(whom))
+					{ whom=""; break;}
+			if(whom.length()>0)
 			{
-				target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget,Item.WORN_REQ_ANY);
+				target=mob.location().fetchFromRoomFavorMOBs(null,whom,Item.WORN_REQ_ANY);
 				
 				if((!toFlag)&&(target!=null))
 				{
-					if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
+					if((target!=null)&&(!target.name().equalsIgnoreCase(whom))&&(whom.length()<4))
 						target=null;
-					if((target.name().toUpperCase().indexOf(possibleTarget.toUpperCase())<0)
+					if((target.name().toUpperCase().indexOf(whom.toUpperCase())<0)
 					||(!(target instanceof MOB)))
 						target=null;
 				}
@@ -94,6 +90,11 @@ public class Say extends StdCommand
 		if(combinedCommands.equals(""))
 		{
 			mob.tell(theWord+" what?");
+			return false;
+		}
+		if(toFlag&&((target==null)||(!Sense.canBeSeenBy(target,mob))))
+		{
+			mob.tell("You don't see '"+whom+"' here to speak to.");
 			return false;
 		}
 
