@@ -113,6 +113,8 @@ public class Chant_BlueMoon extends Chant
 				{
 					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Blue Moon Rises!");
 					beneficialAffect(mob,target,0);
+					Ability A=target.fetchAffect("Chant_RedMoon");
+					if(A!=null) A.unInvoke();
 				}
 			}
 		}

@@ -30,7 +30,7 @@ public class Decay extends ActiveTicker
 
 	public String getParms()
 	{
-		String s=getParms();
+		String s=parms;
 		int x=s.toUpperCase().indexOf("REMAIN=");
 		if(x<0) return "remain="+tickDown+" "+s;
 		int y=s.indexOf(" ",x+1);
