@@ -1,8 +1,11 @@
+I, Teal, just wished for point blank shot but its not working too great. Rapid shot doesnt work, and i still feel the need to remove my bow for the hell of it, it works sometimes and i get my one attack. If you dont want to fix it, then it would be great if you could just give me my two levels back and delete the skill. Pretty please!
+Unholy armament tells me that the gods can see I'm armed, but I only have an unholy vambrace on the left wrist. It doesn't seem to have noticed that I should have one for the right wrist as well.
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
 prop_hereadjuster, prop_here
 rob, disrobe, buffoonery, should piss mobs off.
 test innkeepers
 test randmonmonster locale restrictions
+take a look at WebIQ pregnancy.
 
 Skills:
 	soap recipe ash lime internal oragans.
