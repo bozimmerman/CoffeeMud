@@ -179,6 +179,7 @@ public class CommandSet extends Hashtable
 	public static final int ANNOUNCE=166;
 	public static final int WHISPER=167;
 	public static final int CONFIG=168;
+	public static final int LOAD=169;
 
 	private CommandSet()
 	{
@@ -305,6 +306,7 @@ public class CommandSet extends Hashtable
 		put("LIST",new Integer(LIST));
 			put("LI",new Integer(LIST));
 		put("LINK",new Integer(LINK));
+		put("LOAD",new Integer(LOAD));
 		put("LOCATE",new Integer(I3LOCATE));
 		put("LOCK",new Integer(LOCK));
 		put("LOOK",new Integer(LOOK));

@@ -19,6 +19,32 @@ public class SysOpSkills
 		A.tickTock(h);
 	}
 	
+	public static void load(MOB mob, Vector commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("LOAD what? Use LOAD RESOURCE/ABILITY/ITEM/WEAPON/ETC.. [CLASS NAME]");
+			return;
+		}
+		String what=(String)commands.elementAt(1);
+		String name=Util.combine(commands,2);
+		if(what.equalsIgnoreCase("RESOURCE"))
+		{
+			StringBuffer buf=Resources.getFileResource(name);
+			if((buf==null)||(buf.length()==0))
+				mob.tell("Resource '"+name+"' was not found.");
+			else
+				mob.tell("Resource '"+name+"' was loaded.");
+		}
+		else
+		if(CMClass.classCode(what)<0)
+			mob.tell("'"+what+"' is not a valid class type.");
+		else
+		if(CMClass.loadClass(what,name))
+			mob.tell(Util.capitalize(what)+" "+name+" was loaded.");
+		else
+			mob.tell(Util.capitalize(what)+" "+name+" was not loaded.");
+	}
 	
 	public static void unload(MOB mob, Vector commands)
 	{
@@ -26,6 +52,26 @@ public class SysOpSkills
 		if(str.length()==0)
 		{
 			mob.tell("UNLOAD what?");
+			return;
+		}
+		if(((String)commands.elementAt(1)).equalsIgnoreCase("CLASS"))
+		{
+			if(commands.size()<3)
+			{
+				mob.tell("Unload which class?");
+				return;
+			}
+			commands.removeElementAt(0);
+			commands.removeElementAt(0);
+			for(int i=0;i<commands.size();i++)
+			{
+				String name=(String)commands.elementAt(0);
+				Object O=CMClass.getClass(name);
+				if((O==null)||(!CMClass.delClass(O)))
+					mob.tell("Class '"+name+"' was not found in the library.");
+				else
+					mob.tell("Class '"+name+"' was unloaded.");
+			}
 			return;
 		}
 		if(str.equalsIgnoreCase("help"))

@@ -36,12 +36,12 @@ public class ExternalPlay
 	{
 		if(player!=null) player.postAttack(attacker,target,weapon);
 	}
-	public int radiatesFromDir(Room room, Vector rooms)
+	public static int radiatesFromDir(Room room, Vector rooms)
 	{
 		if(player!=null) return player.radiatesFromDir(room,rooms);
 		return -1;
 	}
-	public void getRadiantRooms(Room room, Vector rooms, boolean openOnly, int maxDepth)
+	public static void getRadiantRooms(Room room, Vector rooms, boolean openOnly, int maxDepth)
 	{
 		if(player!=null) player.getRadiantRooms(room,rooms,openOnly,maxDepth);
 	}

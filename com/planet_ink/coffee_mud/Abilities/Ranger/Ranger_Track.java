@@ -97,6 +97,7 @@ public class Ranger_Track extends StdAbility
 		}
 
 		Ability oldTrack=mob.fetchAffect("Ranger_Track");
+		if(oldTrack==null) oldTrack=mob.fetchAffect("Skill_Track");
 		if(oldTrack==null) oldTrack=mob.fetchAffect("Ranger_TrackAnimal");
 		if(oldTrack==null) oldTrack=mob.fetchAffect("Thief_Assassinate");
 		if(oldTrack!=null)

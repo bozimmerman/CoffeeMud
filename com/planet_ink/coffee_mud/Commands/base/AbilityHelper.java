@@ -562,6 +562,7 @@ public class AbilityHelper
 					Exit E=R1.getExitInDir(d);
 					if((R!=null)
 					&&(E!=null)
+					&&(R.getArea()==room.getArea())
 					&&((!openOnly)||(E.isOpen()))
 					&&(!rooms.contains(R)))
 						rooms.addElement(R);

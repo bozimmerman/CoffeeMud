@@ -2,7 +2,7 @@
 ^HCommands^N
 create copy destroy modify
 link unlink save sysmsgs
-take unload dumpfile
+take load unload dumpfile
 reset order ticktock list
 boot ban beacon announce
 ^HModules^N  

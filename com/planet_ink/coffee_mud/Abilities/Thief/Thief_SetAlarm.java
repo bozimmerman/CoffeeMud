@@ -50,44 +50,6 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		}
 	}
 
-	public void doRoom(int fromDir, Room room, Vector roomsDone, Vector mobsDone, int depth)
-	{
-		if(depth>=10) return;
-		if(room==null) return;
-		if(fromDir>=0)
-			for(int i=0;i<room.numInhabitants();i++)
-			{
-				MOB M=room.fetchInhabitant(i);
-				if((M!=null)
-				&&(M.isMonster())
-				&&(!M.isInCombat())
-				&&(Sense.isMobile(M))
-				&&(!mobsDone.contains(M))
-				&&(Sense.canHear(M))
-				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_MIND))
-				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_TRAPS)))
-				{
-					mobsDone.addElement(M);
-					ExternalPlay.move(M,fromDir,false,false);
-				}
-			}
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-		{
-			Room R=room.getRoomInDir(d);
-			Exit E=room.getExitInDir(d);
-			if((R!=null)
-			   &&(E!=null)
-			   &&(R.getArea()==room.getArea())
-			   &&(E.isOpen())
-			   &&(!roomsDone.contains(R)))
-			{
-				R.showHappens(Affect.MSG_NOISE,"You hear a loud alarm "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+".");
-				roomsDone.addElement(R);
-				doRoom(Directions.getOpDirectionCode(d),R,roomsDone,mobsDone,depth+1);
-			}
-		}
-	}
-	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -96,14 +58,41 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			return false;
 		if(sprung)
 		{
-			Vector roomsDone=new Vector();
-			roomsDone.addElement(room1);
-			roomsDone.addElement(room2);
+			Vector rooms=new Vector();
+			ExternalPlay.getRadiantRooms(room1,rooms,true,10);
+			ExternalPlay.getRadiantRooms(room2,rooms,true,10);
 			Vector mobsDone=new Vector();
 			room1.showHappens(Affect.MSG_NOISE,"A horrible alarm is going off here.");
-			doRoom(-1,room1,roomsDone,mobsDone,0);
 			room2.showHappens(Affect.MSG_NOISE,"A horrible alarm is going off here.");
-			doRoom(-1,room2,roomsDone,mobsDone,0);
+			for(int r=0;r<rooms.size();r++)
+			{
+				Room R=(Room)rooms.elementAt(r);
+				if((R!=room1)&&(R!=room2))
+				{
+					int dir=ExternalPlay.radiatesFromDir(R,rooms);
+					if(dir>=0)
+					{
+						R.showHappens(Affect.MSG_NOISE,"You hear a loud alarm "+Directions.getInDirectionName(dir)+".");
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							MOB M=R.fetchInhabitant(i);
+							if((M!=null)
+							&&(M.isMonster())
+							&&(!M.isInCombat())
+							&&(Sense.isMobile(M))
+							&&(!mobsDone.contains(M))
+							&&(Sense.canHear(M))
+							&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_MIND))
+							&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_TRAPS)))
+							{
+								mobsDone.addElement(M);
+								ExternalPlay.move(M,dir,false,false);
+							}
+						}
+					}
+				}
+					
+			}
 		}
 		return true;
 	}

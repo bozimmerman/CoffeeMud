@@ -24,6 +24,26 @@ public class CMClass extends ClassLoader
 	private static Vector miscMagic=new Vector();
 	private static Vector areaTypes=new Vector();
 	private static Hashtable extraCmds=new Hashtable();
+	private static final String[] names={
+		"RACE","CHARCLASS","MOB","ABILITY","LOCALE","EXIT","ITEM","BEHAVIOR",
+		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND"
+		};
+	private static final String[] ancestors={
+		"com.planet_ink.coffee_mud.interfaces.Race",
+		"com.planet_ink.coffee_mud.interfaces.CharClass",
+		"com.planet_ink.coffee_mud.interfaces.MOB",
+		"com.planet_ink.coffee_mud.interfaces.Ability",
+		"com.planet_ink.coffee_mud.interfaces.Room",
+		"com.planet_ink.coffee_mud.interfaces.Exit",
+		"com.planet_ink.coffee_mud.interfaces.Item",
+		"com.planet_ink.coffee_mud.interfaces.Behavior",
+		"com.planet_ink.coffee_mud.interfaces.Clan",
+		"com.planet_ink.coffee_mud.interfaces.Weapon",
+		"com.planet_ink.coffee_mud.interfaces.Armor",
+		"com.planet_ink.coffee_mud.interfaces.MiscMagic",
+		"com.planet_ink.coffee_mud.interfaces.Area",
+		"com.planet_ink.coffee_mud.interfaces.Command"
+		};
 
 	public static Enumeration races(){return races.elements();}
 	public static Race randomRace(){return (Race)races.elementAt((int)Math.round(Math.floor(Math.random()*new Integer(races.size()).doubleValue())));}
@@ -60,6 +80,95 @@ public class CMClass extends ClassLoader
 		return (Command)extraCmds.get(word.trim().toUpperCase());
 	}
 
+	
+	public static boolean delClass(Object O)
+	{
+		if(races.contains(O)){ races.removeElement(O); return true;}
+		if(charClasses.contains(O)){ charClasses.removeElement(O); return true;}
+		if(MOBs.contains(O)){ MOBs.removeElement(O); return true;}
+		if(abilities.contains(O)){ abilities.removeElement(O); return true;}
+		if(locales.contains(O)){ locales.removeElement(O); return true;}
+		if(exits.contains(O)){ exits.removeElement(O); return true;}
+		if(items.contains(O)){ items.removeElement(O); return true;}
+		if(behaviors.contains(O)){ behaviors.removeElement(O); return true;}
+		if(clantypes.contains(O)){ clantypes.removeElement(O); return true;}
+		if(weapons.contains(O)){ weapons.removeElement(O); return true;}
+		if(armor.contains(O)){ armor.removeElement(O); return true;}
+		if(miscMagic.contains(O)){ miscMagic.removeElement(O); return true;}
+		if(areaTypes.contains(O)){ areaTypes.removeElement(O); return true;}
+		return false;
+	}
+	
+	public static int classCode(String name)
+	{
+		for(int i=0;i<names.length;i++)
+		{
+			if(names[i].toUpperCase().startsWith(name.toUpperCase()))
+				return i;
+		}
+		return -1;
+	}
+	public static boolean loadClass(String name, String path)
+	{
+		Object set=null;
+		int code=classCode(name);
+		switch(code)
+		{
+		case 0: set=races; break;
+		case 1: set=charClasses; break;
+		case 2: set=MOBs; break;
+		case 3: set=abilities; break;
+		case 4: set=locales; break;
+		case 5: set=exits; break;
+		case 6: set=items; break;
+		case 7: set=behaviors; break;
+		case 8: set=clantypes; break;
+		case 9: set=weapons; break;
+		case 10: set=armor; break;
+		case 11: set=miscMagic; break;
+		case 12: set=areaTypes; break;
+		case 13: set=extraCmds; break;
+		}
+		if(set==null) return false;
+		
+		loadListToObj(set,path,"",(path.indexOf(File.separatorChar)>0),ancestors[code]);
+		switch(code)
+		{
+		case 0: races=new Vector(new TreeSet(races)); break;
+		case 1: charClasses=new Vector(new TreeSet(charClasses)); break;
+		case 2: MOBs=new Vector(new TreeSet(MOBs)); break;
+		case 3: abilities=new Vector(new TreeSet(abilities)); break;
+		case 4: locales=new Vector(new TreeSet(locales)); break;
+		case 5: exits=new Vector(new TreeSet(exits)); break;
+		case 6: items=new Vector(new TreeSet(items)); break;
+		case 7: behaviors=new Vector(new TreeSet(behaviors)); break;
+		case 8: clantypes=new Vector(new TreeSet(clantypes)); break;
+		case 9: weapons=new Vector(new TreeSet(weapons)); break;
+		case 10: armor=new Vector(new TreeSet(armor)); break;
+		case 11: miscMagic=new Vector(new TreeSet(miscMagic)); break;
+		case 12: areaTypes=new Vector(new TreeSet(areaTypes)); break;
+		}
+		return true;
+	}
+	
+	public static Object getClass(String calledThis)
+	{
+		Object thisItem=getGlobal(races,calledThis);
+		if(thisItem==null) thisItem=getGlobal(charClasses,calledThis);
+		if(thisItem==null) thisItem=getGlobal(MOBs,calledThis);
+		if(thisItem==null) thisItem=getGlobal(abilities,calledThis);
+		if(thisItem==null) thisItem=getGlobal(locales,calledThis);
+		if(thisItem==null) thisItem=getGlobal(exits,calledThis);
+		if(thisItem==null) thisItem=getGlobal(items,calledThis);
+		if(thisItem==null) thisItem=getGlobal(behaviors,calledThis);
+		if(thisItem==null) thisItem=getGlobal(clantypes,calledThis);
+		if(thisItem==null) thisItem=getGlobal(weapons,calledThis);
+		if(thisItem==null) thisItem=getGlobal(armor,calledThis);
+		if(thisItem==null) thisItem=getGlobal(miscMagic,calledThis);
+		if(thisItem==null) thisItem=getGlobal(areaTypes,calledThis);
+		return thisItem;
+	}
+	
 	public static Environmental getUnknown(String calledThis)
 	{
 		Environmental thisItem=getEnv(items,calledThis);
@@ -152,6 +261,7 @@ public class CMClass extends ClassLoader
 	{
 		return (MOB)getEnv(MOBs,calledThis);
 	}
+	
 	
 	public static Object getGlobal(Vector list, String ID)
 	{
@@ -459,9 +569,9 @@ public class CMClass extends ClassLoader
 		if(path.length()>0)
 		{
 			if(path.equalsIgnoreCase("%default%"))
-				loadListToObj(o,filePath,false, ancester);
+				loadListToObj(o,filePath,"",false, ancester);
 			else
-				loadListToObj(o,path,true, ancester);
+				loadListToObj(o,path,"",true, ancester);
 		}
 	}
 	
@@ -479,7 +589,7 @@ public class CMClass extends ClassLoader
 		loadObjectListToObj(v,filePath,auxPath,ancester);
 		return new Vector(new TreeSet(v));;
 	}
-	public static void loadListToObj(Object toThis, String filePath, boolean aux, String ancestor)
+	public static boolean loadListToObj(Object toThis, String filePath, String packageName, boolean aux, String ancestor)
 	{
 		StringBuffer objPathBuf=new StringBuffer(filePath);
 		String objPath=objPathBuf.toString();
@@ -507,59 +617,94 @@ public class CMClass extends ClassLoader
 		}
 		File directory=new File(filePath);
 		CMClass loader=new CMClass();
+		Vector fileList=new Vector();
 		if((directory.canRead())&&(directory.isDirectory()))
 		{
 			String[] list=directory.list();
 			for(int l=0;l<list.length;l++)
+				fileList.addElement(list[l]);
+		}
+		else
+		if(directory.canRead()&&(directory.isFile()))
+		{
+			String fileName=filePath;
+			int e=fileName.lastIndexOf(File.separatorChar);
+			if(e>0)
 			{
-				String item=list[l];
-				if((item!=null)&&(item.length()>0))
+				fileName=fileName.substring(e+1);
+				filePath=filePath.substring(0,e);
+			}
+			if(objPath.toUpperCase().endsWith(".CLASS"))
+			{
+				objPath=objPath.substring(0,objPath.length()-6);
+				e=objPath.lastIndexOf(File.separatorChar);
+				if(e>0)	objPath=objPath.substring(0,e+1);
+			}
+			fileList.addElement(fileName);
+		}
+		else
+		if(!aux)
+		{
+			fileList.addElement(objPath);
+			objPath="";
+		}
+		for(int l=0;l<fileList.size();l++)
+		{
+			String item=(String)fileList.elementAt(l);
+			if((item!=null)&&(item.length()>0))
+			{
+				if(item.toUpperCase().endsWith(".CLASS")&&(item.indexOf("$")<0))
 				{
-					if(item.toUpperCase().endsWith(".CLASS")&&(item.indexOf("$")<0))
+					String itemName=item.substring(0,item.length()-6);
+					try
 					{
-						String itemName=item.substring(0,item.length()-6);
-						try
+						Object O=null;
+						if(aux)
 						{
-							Object O=null;
-							if(aux)
+							File f=new File(objPath+item);
+							byte[] data=new byte[(int)f.length()];
+							new FileInputStream(f).read(data,0,(int)f.length());
+							try
 							{
-								File f=new File(objPath+item);
-								byte[] data=new byte[(int)f.length()];
-								new FileInputStream(f).read(data,0,(int)f.length());
-								Class C=loader.defineClass(itemName, data, 0, data.length);
+								Class C=loader.defineClass(packageName+itemName, data, 0, data.length);
 								loader.resolveClass(C);
 								if (!checkClass(C,ancestorCl))
 									O=null;
 								else
 									O=(Object)C.newInstance();
 							}
-							else
+							catch(Exception e)
 							{
-								Class C=Class.forName(objPath+itemName);
-								if (!checkClass(C,ancestorCl))
-									O=null;
-								else
-									O=(Object)C.newInstance();
-							}
-							if(O!=null)
-							{
-								if(toThis instanceof Hashtable)
-									((Hashtable)toThis).put(itemName.trim(),O);
-								else
-								if(toThis instanceof Vector)
-									((Vector)toThis).addElement(O);
+								Log.errOut("CMClass",e.getMessage());
 							}
 						}
-						catch(Exception e)
+						else
 						{
-							Log.errOut("CMCLASS",e);
-							if((!item.endsWith("Child"))&&(!item.endsWith("Room")))
-								Log.sysOut("CMClass","Couldn't load: "+objPath+item);
+							Class C=Class.forName(objPath+itemName);
+							if (!checkClass(C,ancestorCl))
+								O=null;
+							else
+								O=(Object)C.newInstance();
 						}
+						if(O!=null)
+						{
+							if(toThis instanceof Hashtable)
+								((Hashtable)toThis).put(itemName.trim(),O);
+							else
+							if(toThis instanceof Vector)
+								((Vector)toThis).addElement(O);
+						}
+					}
+					catch(Exception e)
+					{
+						Log.errOut("CMCLASS",e);
+						if((!item.endsWith("Child"))&&(!item.endsWith("Room")))
+							Log.sysOut("CMClass","Couldn't load: "+objPath+item);
 					}
 				}
 			}
 		}
+		return true;
 	}
 
 	public static String className(Object O)

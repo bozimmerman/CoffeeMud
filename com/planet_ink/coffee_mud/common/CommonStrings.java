@@ -7,7 +7,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_PKILL=0;
 	public static final int SYSTEM_MULTICLASS=1;
 	public static final int SYSTEM_PLAYERDEATH=2;
-	public static final int NUM_SYSTEM=3;
+	public static final int SYSTEM_PLAYERFLEE=3;
+	public static final int NUM_SYSTEM=4;
 	
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;

@@ -452,14 +452,44 @@ public class Movement extends Scriptable
 		int lostExperience=10;
 		if(mob.getVictim()!=null)
 		{
-			lostExperience=10+((mob.envStats().level()-mob.getVictim().envStats().level()))*5;
-			if(lostExperience<10) lostExperience=10;
+			String whatToDo=CommonStrings.getVar(CommonStrings.SYSTEM_PLAYERFLEE);
+			if(whatToDo.startsWith("UNL"))
+			{
+				Vector V=Util.parse(whatToDo);
+				int times=1;
+				if((V.size()>1)&&(Util.s_int((String)V.lastElement())>1))
+					times=Util.s_int((String)V.lastElement());
+				for(int t=0;t<times;t++)
+					mob.charStats().getCurrentClass().unLevel(mob);
+			}
+			else
+			if(whatToDo.startsWith("PUR"))
+			{
+				MOB deadMOB=(MOB)CMClass.getMOB("StdMOB");
+				boolean found=ExternalPlay.DBUserSearch(deadMOB,mob.ID());
+				if(found)
+				{
+					ExternalPlay.destroyUser(deadMOB);
+					return;
+				}
+			}
+			else
+			if((whatToDo.trim().equals("0"))||(Util.s_int(whatToDo)>0))
+				lostExperience=Util.s_int(whatToDo);
+			else
+			{
+				lostExperience=10+((mob.envStats().level()-mob.getVictim().envStats().level()))*5;
+				if(lostExperience<10) lostExperience=10;
+			}
 		}
 		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true,false,false))))
 		{
 			mob.makePeace();
-			mob.tell(getScr("Movement","fleeexp",""+lostExperience));
-			mob.charStats().getCurrentClass().loseExperience(mob,lostExperience);
+			if(lostExperience>0)
+			{
+				mob.tell(getScr("Movement","fleeexp",""+lostExperience));
+				mob.charStats().getCurrentClass().loseExperience(mob,lostExperience);
+			}
 		}
 	}
 

@@ -377,6 +377,12 @@ public class CommandProcessor
 					else
 						mob.tell("You lack the power to link rooms.\n\r");
 					break;
+				case CommandSet.LOAD:
+					if(mob.isASysOp(null))
+						SysOpSkills.load(mob,commands);
+					else
+						mob.tell("Only the Archons may load stuff!\n\r");
+					break;
 				case CommandSet.LOCK:
 					Movement.lock(mob,Util.combine(commands,1));
 					break;

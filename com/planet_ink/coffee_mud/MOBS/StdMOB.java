@@ -1483,6 +1483,7 @@ public class StdMOB implements MOB
 			case Affect.TYP_QUIT:
 				if(mob.isInCombat())
 				{
+					mob.getVictim().resetToMaxState();
 					ExternalPlay.flee(mob,"NOWHERE");
 					mob.makePeace();
 				}

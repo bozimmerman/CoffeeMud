@@ -1084,7 +1084,7 @@ public class Arrest extends StdBehavior
 								if(A!=null)A.unInvoke();
 								makePeace(officer.location());
 								ExternalPlay.standIfNecessary(W.criminal);
-								A=CMClass.getAbility("Ranger_Track");
+								A=CMClass.getAbility("Skill_Track");
 								if(A!=null)	A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
 								makePeace(officer.location());
 							}
@@ -1114,9 +1114,9 @@ public class Arrest extends StdBehavior
 							if(officer.location().fetchInhabitant((String)laws.get("JUDGE"))!=null)
 								W.state=STATE_REPORTING;
 							else
-							if(W.arrestingOfficer.fetchAffect("Ranger_Track")==null)
+							if(W.arrestingOfficer.fetchAffect("Skill_Track")==null)
 							{
-								Ability A=CMClass.getAbility("Ranger_Track");
+								Ability A=CMClass.getAbility("Skill_Track");
 								if(A!=null)	A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
 							}
 							else
@@ -1142,9 +1142,9 @@ public class Arrest extends StdBehavior
 							if(judge==null)
 							{
 								W.state=STATE_MOVING;
-								Ability A=W.arrestingOfficer.fetchAffect("Ranger_Track");
+								Ability A=W.arrestingOfficer.fetchAffect("Skill_Track");
 								if(A!=null) officer.delAffect(A);
-								A=CMClass.getAbility("Ranger_Track");
+								A=CMClass.getAbility("Skill_Track");
 								if(A!=null)	A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
 							}
 							else
@@ -1189,9 +1189,9 @@ public class Arrest extends StdBehavior
 							if(judge==null)
 							{
 								W.state=STATE_MOVING;
-								Ability A=W.arrestingOfficer.fetchAffect("Ranger_Track");
+								Ability A=W.arrestingOfficer.fetchAffect("Skill_Track");
 								if(A!=null) officer.delAffect(A);
-								A=CMClass.getAbility("Ranger_Track");
+								A=CMClass.getAbility("Skill_Track");
 								if(A!=null) A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
 							}
 							else
