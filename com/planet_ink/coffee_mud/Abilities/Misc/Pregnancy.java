@@ -301,7 +301,11 @@ public class Pregnancy extends StdAbility
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((tickID==MudHost.TICK_MOB)&&(affected!=null)&&(affected instanceof MOB))
+		if((tickID==MudHost.TICK_MOB)
+		&&(affected!=null)
+		&&(affected instanceof MOB)
+		&&(Sense.isInTheGame(affected))
+		&&(((MOB)affected).location().isInhabitant((MOB)affected)))
 		{
 			MOB mob=(MOB)affected;
 			int x=text().indexOf("/");

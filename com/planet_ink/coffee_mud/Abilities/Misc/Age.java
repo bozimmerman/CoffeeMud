@@ -73,7 +73,14 @@ public class Age extends StdAbility
 					Item I=(Item)affected;
 					MOB following=null;
 					if(I.owner() instanceof MOB)
+					{
 						following=((MOB)I.owner());
+						if((!Sense.isInTheGame(following))
+						||(following.location()==null)
+						||(!following.location().isInhabitant(following)))
+							return;
+					}
+							
 					CagedAnimal C=(CagedAnimal)affected;
 					MOB babe=C.unCageMe();
 					if((babe==null)||(babe.baseCharStats()==null))

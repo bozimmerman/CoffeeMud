@@ -865,6 +865,7 @@ public class BaseGenerics extends StdCommand
 		while(!c.equals("\n"))
 		{
 			char letter='A';
+			String letters="";
 			for(int i=0;i<disps.length;i++)
 			{
 				int mask=disps[i];
@@ -872,11 +873,12 @@ public class BaseGenerics extends StdCommand
 					if(mask==Util.pow(2,num))
 					{
 						mob.session().println("    "+letter+") "+Util.padRight(EnvStats.dispositionsDesc[num],20)+":"+((E.disposition()&mask)!=0));
+						letters+=letter;
 						break;
 					}
 				letter++;
 			}
-			c=mob.session().choose("Enter one to change, or ENTER when done: ","ABCDEFGHI\n","\n").toUpperCase();
+			c=mob.session().choose("Enter one to change, or ENTER when done: ",letters+"\n","\n").toUpperCase();
 			letter='A';
 			for(int i=0;i<disps.length;i++)
 			{
@@ -1030,18 +1032,20 @@ public class BaseGenerics extends StdCommand
 		while(!c.equals("\n"))
 		{
 			char letter='A';
+			String letters="";
 			for(int i=0;i<senses.length;i++)
 			{
 				int mask=senses[i];
 				for(int num=0;num<EnvStats.sensesDesc.length;num++)
 					if(mask==Util.pow(2,num))
 					{
+						letters+=letter;
 						mob.session().println("    "+letter+") "+Util.padRight(EnvStats.sensesDesc[num],20)+":"+((E.sensesMask()&mask)!=0));
 						break;
 					}
 				letter++;
 			}
-			c=mob.session().choose("Enter one to change, or ENTER when done: ","ABCDEFGHIJK\n","\n").toUpperCase();
+			c=mob.session().choose("Enter one to change, or ENTER when done: ",letters+"\n","\n").toUpperCase();
 			letter='A';
 			for(int i=0;i<senses.length;i++)
 			{
