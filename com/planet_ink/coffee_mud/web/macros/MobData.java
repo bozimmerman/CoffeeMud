@@ -378,17 +378,20 @@ public class MobData extends StdWebMacro
 				{
 					str.append("<INPUT TYPE=RADIO NAME=GENDER CHECKED VALUE=M>Male");
 					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
+					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
 				}
 				else
 				if(old.toUpperCase().startsWith("F"))
 				{
 					str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
 					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO CHECKED NAME=GENDER VALUE=F>Female");
+					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
 				}
 				else
 				{
 					str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
 					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
+					str.append("&nbsp;&nbsp;<INPUT CHECKED TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
 				}
 				break;
 			case 10: // height
