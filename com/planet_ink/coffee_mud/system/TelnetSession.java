@@ -954,7 +954,8 @@ public class TelnetSession extends Thread implements Session
 		killFlag=true;
 		waiting=false;
 		needPrompt=false;
-
+		snoops.clear();
+		
 		closeSocks();
 		
 		
