@@ -9,7 +9,7 @@ public class Spell_Timeport extends Spell
 {
 	public String ID() { return "Spell_Timeport"; }
 	public String name(){return "Timeport";}
-	public String displayText(){return "(Travelling through time)";}
+	public String displayText(){return "(Time Travelling)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Timeport();}

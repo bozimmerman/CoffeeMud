@@ -9,7 +9,7 @@ public class Spell_ReadMagic extends Spell
 {
 	public String ID() { return "Spell_ReadMagic"; }
 	public String name(){return "Read Magic";}
-	public String displayText(){return "(Ability to read magical markings)";}
+	public String displayText(){return "(Ability to read magic)";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_ReadMagic();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}

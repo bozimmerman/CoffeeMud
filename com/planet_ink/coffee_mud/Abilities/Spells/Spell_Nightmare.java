@@ -9,7 +9,7 @@ public class Spell_Nightmare extends Spell
 {
 	public String ID() { return "Spell_Nightmare"; }
 	public String name(){return "Nightmare";}
-	public String displayText(){return "(You are having a nightmare)";}
+	public String displayText(){return "(Having a nightmare)";}
 	public int maxRange(){return 1;}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}

@@ -9,7 +9,7 @@ public class Spell_MajorGlobe extends Spell
 {
 	public String ID() { return "Spell_MajorGlobe"; }
 	public String name(){return "Greater Globe";}
-	public String displayText(){return "(Greater Globe of Invulnerability)";}
+	public String displayText(){return "(Greater Globe/Invul.)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_MajorGlobe();}

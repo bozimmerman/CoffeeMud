@@ -10,7 +10,7 @@ public class Spell_WeaknessElectricity extends Spell
 {
 	public String ID() { return "Spell_WeaknessElectricity"; }
 	public String name(){return "Weakness to Electricity";}
-	public String displayText(){return "(Weakness to Electricity)";}
+	public String displayText(){return "(Weakness/Electricity)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){return new Spell_WeaknessElectricity();}
