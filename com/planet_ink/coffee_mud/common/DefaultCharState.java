@@ -157,7 +157,7 @@ public class DefaultCharState implements Cloneable, CharState
 				adjMovement(-mob.location().pointsPerMove(),maxState);
 
 			boolean annoy=adjThirst(-1,maxState);
-			annoy=annoy||adjHunger(-1,maxState);
+			annoy=adjHunger(-1,maxState)||annoy;
 			if(annoy)
 			{
 				if((--annoyanceTicker)<=0)

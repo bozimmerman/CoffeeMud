@@ -42,8 +42,17 @@ public class StdArmor extends StdItem implements Armor
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if((!this.amWearingAt(Item.INVENTORY))&&(!this.amWearingAt(Item.HELD)))
-			affectableStats.setArmor(affectableStats.armor()-envStats().armor()-(envStats().ability()*10));
+		if((!this.amWearingAt(Item.INVENTORY))&&((!this.amWearingAt(Item.HELD))||(this instanceof Shield)))
+		{
+			affectableStats.setArmor(affectableStats.armor()-envStats().armor());
+			if(this.amWearingAt(Item.ON_TORSO))
+				affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*10));
+			else
+			if((this.amWearingAt(Item.ON_HEAD))||(this.amWearingAt(Item.HELD)))
+				affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*5));
+			else
+				affectableStats.setArmor(affectableStats.armor()-envStats().ability());
+		}
 	}
 
 	public String secretIdentity()
