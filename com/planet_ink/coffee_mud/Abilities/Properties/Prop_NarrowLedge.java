@@ -27,8 +27,8 @@ public class Prop_NarrowLedge extends Property
 	
 	public void affect(Affect msg)
 	{
-		if((msg.targetMinor()==Affect.TYP_ENTER)
-		||(msg.targetMinor()==Affect.TYP_LEAVE))
+		if(((msg.targetMinor()==Affect.TYP_ENTER)||(msg.targetMinor()==Affect.TYP_LEAVE))
+		&&(!Sense.isFalling(msg.source())))
 		{
 			MOB mob=msg.source();
 			if(Sense.isInFlight(mob)) return;

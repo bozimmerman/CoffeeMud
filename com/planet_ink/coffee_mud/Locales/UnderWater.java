@@ -37,6 +37,15 @@ public class UnderWater extends StdRoom implements Drink
 		if(Sense.isSleeping(this)) 
 			return super.okAffect(affect);
 			 
+		if((affect.targetMinor()==affect.TYP_FIRE)
+		||(affect.targetMinor()==affect.TYP_GAS)
+		||(affect.sourceMinor()==affect.TYP_FIRE)
+		||(affect.sourceMinor()==affect.TYP_GAS))
+		{
+			affect.source().tell("That won't work underwater.");
+			return false;
+		}
+		else
 		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Weapon))
@@ -58,15 +67,6 @@ public class UnderWater extends StdRoom implements Drink
 							  affect.othersCode(),
 							  affect.othersMessage());
 			}
-		}
-		else
-		if((affect.targetMinor()==affect.TYP_FIRE)
-		||(affect.targetMinor()==affect.TYP_GAS)
-		||(affect.sourceMinor()==affect.TYP_FIRE)
-		||(affect.sourceMinor()==affect.TYP_GAS))
-		{
-			affect.source().tell("That won't work underwater.");
-			return false;
 		}
 		else
 		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))

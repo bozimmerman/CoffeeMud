@@ -237,8 +237,8 @@ public class SocialProcessor
 						Rider M=R.fetchRider(r);
 						if(M!=null)
 						{
-							msg=new FullMsg(mob,M,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'^?",
-											Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'^?",
+							msg=new FullMsg(mob,M,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'^?",
+											Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'^?",
 											Affect.NO_EFFECT,null);
 							if(mob.location().okAffect(msg))
 								mob.location().sendOthers(mob,msg);

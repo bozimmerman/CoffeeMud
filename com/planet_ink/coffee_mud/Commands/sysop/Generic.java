@@ -1946,6 +1946,7 @@ public class Generic
 			genDisposition(mob,me,showOnly);
 			genGettable(mob,me,showOnly);
 			genReadable(mob,me,showOnly);
+			genBehaviors(mob,me,showOnly);
 			genAffects(mob,me,showOnly);
 			ok=true;
 			me.recoverEnvStats();
@@ -1978,6 +1979,7 @@ public class Generic
 			genDrinkHeld(mob,me,showOnly);
 			genGettable(mob,(Item)me,showOnly);
 			genReadable(mob,(Item)me,showOnly);
+			genBehaviors(mob,me,showOnly);
 			genAffects(mob,me,showOnly);
 			genDisposition(mob,me,showOnly);
 			ok=true;

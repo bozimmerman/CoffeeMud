@@ -35,10 +35,9 @@ public class WaterCurrents extends ActiveTicker
 		if(dirs.length()==0)
 			dirs="NE";
 	}
-	public void applyCurrents(Room R)
+	public void applyCurrents(Room R, Vector mobsDone)
 	{
 		if(R.numInhabitants()==0) return;
-		Vector sweeps=new Vector();
 		for(int m=0;m<R.numInhabitants();m++)
 		{
 			MOB M=R.fetchInhabitant(m);
@@ -47,10 +46,10 @@ public class WaterCurrents extends ActiveTicker
 			&&(M.riding()==null)
 			&&((!(M instanceof Rideable))||(((Rideable)M).numRiders()==0))
 			&&(!M.isInCombat())
-			&&(!sweeps.contains(M)))
-				sweeps.addElement(M);
+			&&(!mobsDone.contains(M)))
+				mobsDone.addElement(M);
 		}
-		if(sweeps.size()>0)
+		if(mobsDone.size()>0)
 		{
 			int dir=-1;
 			Room R2=null;
@@ -74,15 +73,15 @@ public class WaterCurrents extends ActiveTicker
 					}
 				}
 			}
-			if(R2!=null);
-			for(int m=0;m<sweeps.size();m++)
-			{
-				MOB M=(MOB)sweeps.elementAt(m);
-				R.show(M,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
-				R2.bringMobHere(M,false);
-				R2.show(M,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
-				ExternalPlay.look(M,null,true);
-			}
+			if(R2!=null)
+				for(int m=0;m<mobsDone.size();m++)
+				{
+					MOB M=(MOB)mobsDone.elementAt(m);
+					R.show(M,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
+					R2.bringMobHere(M,false);
+					R2.showOthers(M,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
+					ExternalPlay.look(M,null,true);
+				}
 		}
 	}
 	
@@ -91,8 +90,9 @@ public class WaterCurrents extends ActiveTicker
 		super.tick(ticking,tickID);
 		if(canAct(ticking,tickID))
 		{
+			Vector sweeps=new Vector();
 			if(ticking instanceof Room)
-				applyCurrents((Room)ticking);
+				applyCurrents((Room)ticking,sweeps);
 			else
 			if(ticking instanceof Area)
 			{
@@ -103,7 +103,7 @@ public class WaterCurrents extends ActiveTicker
 					||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 					||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 					||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-						applyCurrents(R);
+						applyCurrents(R,sweeps);
 				}
 			}
 		}

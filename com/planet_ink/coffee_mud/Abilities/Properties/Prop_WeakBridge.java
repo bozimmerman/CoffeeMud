@@ -31,7 +31,7 @@ public class Prop_WeakBridge extends Property
 	public boolean okAffect(Affect msg)
 	{
 		if((msg.targetMinor()==Affect.TYP_ENTER)
-		||(msg.targetMinor()==Affect.TYP_LEAVE))
+		||((msg.targetMinor()==Affect.TYP_LEAVE)&&(affected instanceof Exit)))
 		{
 			MOB mob=msg.source();
 			if(Sense.isInFlight(mob)) return true;
@@ -45,8 +45,8 @@ public class Prop_WeakBridge extends Property
 	}
 	public void affect(Affect msg)
 	{
-		if((msg.targetMinor()==Affect.TYP_ENTER)
-		||(msg.targetMinor()==Affect.TYP_LEAVE))
+		if(((msg.targetMinor()==Affect.TYP_ENTER)||(msg.targetMinor()==Affect.TYP_LEAVE))
+		&&(!Sense.isFalling(msg.source())))
 		{
 			MOB mob=msg.source();
 			if(Sense.isInFlight(mob)) return;
@@ -58,7 +58,7 @@ public class Prop_WeakBridge extends Property
 					bridgeIsUp=false;
 					ExternalPlay.startTickDown(this,Host.SPELL_AFFECT,ticksDown);
 					affected.recoverEnvStats();
-					msg.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The bridge breaks under <S-NAMEPOSS> weight!"));
+					msg.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The bridge breaks under <S-YOUPOSS> weight!"));
 					if((affected instanceof Room)
 					&&((((Room)affected).domainType()==Room.DOMAIN_INDOORS_AIR)
 					   ||(((Room)affected).domainType()==Room.DOMAIN_OUTDOORS_AIR))

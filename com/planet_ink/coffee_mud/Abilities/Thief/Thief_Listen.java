@@ -31,17 +31,31 @@ public class Thief_Listen extends ThiefSkill
 		&&(!invoker().isInCombat())
 		&&(invoker().location()==sourceRoom))
 		{
+			if(invoker().location()==room)
+			{
+				if((msg.sourceMinor()==Affect.TYP_SPEAK)
+				&&(msg.othersCode()==Affect.NO_EFFECT)
+				&&(msg.othersMessage()==null)
+				&&(msg.sourceMessage()!=null)
+				&&(!msg.amISource(invoker()))
+				&&(!msg.amITarget(invoker()))
+				&&(!lastSaid.equals(msg.sourceMessage())))
+				{
+					lastSaid=msg.sourceMessage();
+					invoker().tell(msg.source(),msg.target(),msg.sourceMessage());
+				}
+			}
+			else
 			if((msg.sourceMinor()==Affect.TYP_SPEAK)
-			&&(msg.othersCode()==Affect.NO_EFFECT)
-			&&(msg.othersMessage()==null)
+			&&(msg.othersMinor()==Affect.TYP_SPEAK)
+			&&(msg.othersMessage()!=null)
 			&&(msg.sourceMessage()!=null)
-			&&(!msg.amISource(invoker()))
-			&&(!msg.amITarget(invoker()))
 			&&(!lastSaid.equals(msg.sourceMessage())))
 			{
 				lastSaid=msg.sourceMessage();
 				invoker().tell(msg.source(),msg.target(),msg.sourceMessage());
 			}
+				
 		}
 		else
 			unInvoke();

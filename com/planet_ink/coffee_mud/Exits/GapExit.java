@@ -49,7 +49,7 @@ public class GapExit extends StdExit
 		&&(!Sense.isInFlight(mob))
 		&&(!Sense.isFalling(mob)))
 		{
-			int chance=(int)Math.round(Util.div(mobWeight(mob),mob.maxCarry())*(75.0-new Integer(3*mob.charStats().getStat(CharStats.STRENGTH)).doubleValue()));
+			int chance=(int)Math.round(Util.div(mobWeight(mob),mob.maxCarry())*(100.0-new Integer(3*mob.charStats().getStat(CharStats.STRENGTH)).doubleValue()));
 			if(Dice.rollPercentage()<chance)
 			{
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to jump the crevasse, but miss(es) the far ledge!");

@@ -282,6 +282,7 @@ public class StdRideable extends StdContainer implements Rideable
 			if((riding()!=affect.source())
 			&&((rideBasis()==Rideable.RIDEABLE_SIT)
 			||(rideBasis()==Rideable.RIDEABLE_ENTERIN)
+			||(rideBasis()==Rideable.RIDEABLE_TABLE)
 			||(rideBasis()==Rideable.RIDEABLE_SLEEP)))
 			{
 				if(affect.amITarget(this)&&(numRiders()>=riderCapacity()))

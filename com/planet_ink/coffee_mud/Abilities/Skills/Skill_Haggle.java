@@ -19,7 +19,7 @@ public class Skill_Haggle extends StdAbility
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		affectCharStats(affectedMOB,affectableStats);
+		super.affectCharStats(affectedMOB,affectableStats);
 		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+10);
 	}
 	

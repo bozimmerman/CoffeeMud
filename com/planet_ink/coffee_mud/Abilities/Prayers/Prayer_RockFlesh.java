@@ -56,7 +56,7 @@ public class Prayer_RockFlesh extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" on <T-NAMEPOSS> behalf, but flub(s) it.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" on <T-YOUPOSS> behalf, but flub(s) it.");
 
 
 		// return whether it worked

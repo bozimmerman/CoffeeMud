@@ -71,7 +71,7 @@ public class Skill_Convert extends StdAbility
 				{
 					if(!target.session().confirm(mob.name()+" is trying to convert you to the worship of "+D.name()+".  Is this what you want (N/y)?","N"))
 					{
-						mob.location().show(mob,target,Affect.MSG_SPEAK,"<S-NAMEPOSS> attempt to convert <T-NAME> to the worship of "+D.name()+" is rejected.");
+						mob.location().show(mob,target,Affect.MSG_SPEAK,"<S-YOUPOSS> attempt to convert <T-NAME> to the worship of "+D.name()+" is rejected.");
 						return false;
 					}
 				}
