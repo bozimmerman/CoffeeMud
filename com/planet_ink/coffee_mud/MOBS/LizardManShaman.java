@@ -30,7 +30,7 @@ public class LizardManShaman extends LizardMan
 		baseEnvStats().setSpeed(3);
 		baseEnvStats().setLevel(3);
 		baseEnvStats().setArmor(30);
-		baseCharStats().setMyClass(CMClass.getCharClass("Cleric"));
+		baseCharStats().setCurrentClass(CMClass.getCharClass("Cleric"));
 
 		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 

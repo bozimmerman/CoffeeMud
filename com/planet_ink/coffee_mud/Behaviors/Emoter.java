@@ -71,7 +71,7 @@ public class Emoter extends ActiveTicker
 				if(!nonMOBfound) return;
 			}
 
-			String emote=(String)emotes.elementAt(Dice.roll(1,emotes.size(),0)-1);
+			String emote=(String)emotes.elementAt(Dice.roll(1,emotes.size(),-1));
 			if((mob!=null)&&(ticking instanceof MOB))
 			{
 				Vector V=new Vector();

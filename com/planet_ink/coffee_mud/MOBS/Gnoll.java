@@ -20,13 +20,13 @@ public class Gnoll extends StdMOB
 		setWimpHitPoint(0);
 
 		Weapon h=(Weapon)CMClass.getWeapon("MorningStar");
-      Random randomizer = new Random(System.currentTimeMillis());
-      int percentage = randomizer.nextInt() % 100;
-      if((percentage & 1) == 0)
-      {
-         h = (Weapon) CMClass.getWeapon("Longsword");
-      }
-      if(h!=null)
+		Random randomizer = new Random(System.currentTimeMillis());
+		int percentage = randomizer.nextInt() % 100;
+		if((percentage & 1) == 0)
+		{
+		   h = (Weapon) CMClass.getWeapon("Longsword");
+		}
+		if(h!=null)
 		{
 			h.wearAt(Item.WIELD);
 			addInventory(h);

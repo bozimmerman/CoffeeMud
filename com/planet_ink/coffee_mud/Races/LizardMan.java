@@ -7,22 +7,17 @@ import java.util.*;
 
 public class LizardMan extends StdRace
 {
+	public String ID(){	return "LizardMan"; }
+	public String name(){ return "Lizard Man"; }
+	protected int shortestMale(){return 72;}
+	protected int shortestFemale(){return 66;}
+	protected int heightVariance(){return 3;}
+	protected int lightestWeight(){return 200;}
+	protected int weightVariance(){return 50;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
+	public String racialCategory(){return "Lizard Man";}
+	
 	protected static Vector resources=new Vector();
-	public LizardMan()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=72;
-		shortestFemale=66;
-		heightVariance=3;
-		// pounds
-		lightestWeight=200;
-		weightVariance=50;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_EYES;
-	}
-	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -104,11 +99,11 @@ public class LizardMan extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" tongue",EnvResource.RESOURCE_SCALES));
+				("a "+name().toLowerCase()+" tongue",EnvResource.RESOURCE_SCALES));
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+				("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

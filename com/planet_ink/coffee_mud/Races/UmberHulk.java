@@ -7,22 +7,17 @@ import java.util.*;
 
 public class UmberHulk extends StdRace
 {
-	protected static Vector resources=new Vector();
-	public UmberHulk()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=96;
-		shortestFemale=90;
-		heightVariance=24;
-		// pounds
-		lightestWeight=800;
-		weightVariance=200;
-		forbiddenWornBits=0;
-	}
+	public String ID(){	return "UmberHulk"; }
+	public String name(){ return "Umber Hulk"; }
+	protected int shortestMale(){return 96;}
+	protected int shortestFemale(){return 90;}
+	protected int heightVariance(){return 24;}
+	protected int lightestWeight(){return 800;}
+	protected int weightVariance(){return 200;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
+	public String racialCategory(){return "Giant-kin";}
 	public boolean playerSelectable(){return false;}
+	protected static Vector resources=new Vector();
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -95,13 +90,13 @@ public class UmberHulk extends StdRace
 		{
 			if(resources.size()==0)
 			{
-				for(int i=0;i<4;i++)
-					resources.addElement(makeResource
-					("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
+			for(int i=0;i<4;i++)
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -8,7 +8,6 @@ public class Scripts
 	private static String language="en";
 	private static String country="TX";
 	private static Locale currentLocale;
-	private static Vector allScripts=null;
 	private static Hashtable scripts=null;
 	
 	public static void setLocale(String lang, String state)
@@ -19,41 +18,29 @@ public class Scripts
 			language=lang;
 		}
 		currentLocale = new Locale(language, country);
-		allScripts=Resources.getFileLineVector(Resources.getFile("resources/messages_"+language+"_"+country+".scripts"));
+		scripts=new Hashtable();
 	}
 
-	public static String[] load(String ID)
+	public static ResourceBundle load(String ID)
 	{
-		if(allScripts==null) setLocale(language,country);
-		if(scripts==null) scripts=new Hashtable();
+		if(scripts==null)
+			setLocale(language,country);
 		if(scripts.containsKey(ID))
-			return (String[])scripts.get(ID);
-		Vector script=new Vector();
-		boolean reading=false;
-		for(int i=0;i<allScripts.size();i++)
-		{
-			String str=(String)allScripts.elementAt(i);
-			if(str.startsWith("["))
-			{
-				reading=false;
-				if(str.substring(1).startsWith(ID+"]"))
-				   reading=true;
-			}
-			else
-			if(reading)
-				script.addElement(str);
-		}
-		String[] strings=new String[script.size()+1];
-		for(int i=0;i<script.size();i++)
-			strings[i]=(String)script.elementAt(i);
-		scripts.put(ID,strings);
-		return strings;
+			return (ResourceBundle)scripts.get(ID);
+		ResourceBundle buf=null;
+		try{
+			buf = ResourceBundle.getBundle("resources/scripts/"+language.toUpperCase()+"_"+country.toUpperCase()+"/"+ID,currentLocale);
+		}catch(Exception e){}
+		if(buf==null)
+			Log.errOut("Scripts","Unknown file: resources/scripts/"+language.toUpperCase()+"_"+country.toUpperCase()+"/"+ID+".ini");
+		else
+			scripts.put(ID,buf);
+		return buf;
 	}
 	
 	public static void clear()
 	{
 		scripts=null;
-		allScripts=null;
 	}
 	
 }

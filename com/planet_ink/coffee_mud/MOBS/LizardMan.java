@@ -25,7 +25,7 @@ public class LizardMan extends StdMOB
 
 		baseCharStats().setMyRace(CMClass.getRace("LizardMan"));
 		baseEnvStats().setAbility(0);
-      baseEnvStats().setDamage(6);
+		baseEnvStats().setDamage(6);
 		baseEnvStats().setSpeed(3);
 		baseEnvStats().setLevel(2);
 		baseEnvStats().setArmor(50);
