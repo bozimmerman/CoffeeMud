@@ -37,6 +37,37 @@ public class Scoring
 		}
 		return msg;
 	}
+	
+	public void retire(MOB mob)
+		throws IOException
+	{
+		if(mob.isMonster()) return;
+		String pwd=mob.session().prompt("Re-enter your password:","");
+		if(pwd.length()==0) return;
+		if(!pwd.equalsIgnoreCase(mob.password()))
+		{
+			mob.tell("Password incorrect.");
+			return;
+		}
+		mob.tell("^HThis will delete your player from the system FOREVER!");
+		pwd=mob.session().prompt("Are you absolutely SURE (y/N)?","N");
+		if(pwd.equalsIgnoreCase("Y"))
+		{
+			mob.tell("Fine!  Goodbye then!");
+			CMMap.MOBs.remove(mob.ID());
+			mob.destroy();
+			ExternalPlay.DBDeleteMOB(mob);
+			for(int m=0;m<CMMap.numRooms();m++)
+			{
+				Room R=CMMap.getRoom(m);
+				if(R!=null)
+					R.showOthers(mob,null,Affect.MSG_OK_ACTION,"A horrible death cry can be heard throughout the land.");
+			}
+		}
+		else
+			mob.tell("Whew.  Close one.");
+	}
+	
 	public void inventory(MOB mob)
 	{
 		StringBuffer msg=getInventory(mob,mob);

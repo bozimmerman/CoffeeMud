@@ -22,7 +22,7 @@ public class Fighter extends StdCharClass
 		name=myID;
 		practicesAtFirstLevel=3;
 		trainsAtFirstLevel=4;
-		damageBonusPerLevel=1;
+		levelsPerBonusDamage=1;
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;

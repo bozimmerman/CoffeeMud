@@ -19,7 +19,7 @@ public class Cleric extends StdCharClass
 		manaMultiplier=15;
 		attackAttribute=CharStats.WISDOM;
 		bonusAttackLevel=1;
-		damageBonusPerLevel=0;
+		levelsPerBonusDamage=6;
 		name=myID;
 		if(!abilitiesLoaded)
 		{

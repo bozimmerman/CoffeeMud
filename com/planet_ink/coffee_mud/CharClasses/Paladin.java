@@ -23,7 +23,7 @@ public class Paladin extends StdCharClass
 		name=myID;
 		practicesAtFirstLevel=3;
 		trainsAtFirstLevel=4;
-		damageBonusPerLevel=1;
+		levelsPerBonusDamage=1;
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;
@@ -88,14 +88,15 @@ public class Paladin extends StdCharClass
 	public String otherLimitations(){return "Must remain good to avoid spell/skill failure chance.";}
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
-		if(affect.amISource(myChar))
-		if(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			if(myChar.getAlignment() < 650)
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
-				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> angry god absorb <S-HIS-HER> magical energy!");
-					return false;
-				}
+		if((affect.amISource(myChar))
+		&&(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
+		&&(myChar.getAlignment() < 650)
+		&&((affect.tool()==null)||((affect.tool() instanceof Ability)&&(myChar.isMine(affect.tool()))))
+		&&(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2))
+		{
+			myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> angry god absorb <S-HIS-HER> magical energy!");
+			return false;
+		}
 		return super.okAffect(myChar, affect);
 	}
 

@@ -21,7 +21,7 @@ public class Mage extends StdCharClass
 		bonusAttackLevel=0;
 		name=myID;
 		practicesAtFirstLevel=6;
-		damageBonusPerLevel=0;
+		levelsPerBonusDamage=11;
 		trainsAtFirstLevel=3;
 		if(!abilitiesLoaded)
 		{
@@ -342,7 +342,8 @@ public class Mage extends StdCharClass
 	{
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
+			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
+			&&((affect.tool()==null)||((affect.tool() instanceof Ability)&&(myChar.isMine(affect.tool())))))
 			{
 				for(int i=0;i<myChar.inventorySize();i++)
 				{

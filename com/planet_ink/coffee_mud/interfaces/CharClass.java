@@ -48,7 +48,7 @@ public interface CharClass
 	public int getAttackAttribute();
 	public int getPracsFirstLevel();
 	public int getTrainsFirstLevel();
-	public int getDamageBonusLevel();
+	public int getLevelsPerBonusDamage();
 	public String weaponLimitations();
 	public String armorLimitations();
 	public String otherLimitations();

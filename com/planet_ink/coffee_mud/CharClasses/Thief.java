@@ -20,7 +20,7 @@ public class Thief extends StdCharClass
 		manaMultiplier=12;
 		attackAttribute=CharStats.DEXTERITY;
 		bonusAttackLevel=1;
-		damageBonusPerLevel=0;
+		levelsPerBonusDamage=5;
 		name=myID;
 		if(!abilitiesLoaded)
 		{

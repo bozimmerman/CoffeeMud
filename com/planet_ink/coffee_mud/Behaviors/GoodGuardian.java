@@ -115,6 +115,9 @@ public class GoodGuardian extends StdBehavior
 			if(monster.location().okAffect(msgs))
 			{
 				monster.location().send(monster,msgs);
+				source.makePeace();
+				if(target.getVictim()==source)
+					target.makePeace();
 				return false;
 			}
 		}

@@ -18,7 +18,7 @@ public class StdCharClass implements CharClass
 	protected int bonusAttackLevel=1;
 	protected int practicesAtFirstLevel=5;
 	protected int trainsAtFirstLevel=3;
-	protected int damageBonusPerLevel=1;
+	protected int levelsPerBonusDamage=1;
 
 	public String ID()
 	{
@@ -46,7 +46,7 @@ public class StdCharClass implements CharClass
 	public int getAttackAttribute(){return this.attackAttribute;}
 	public int getPracsFirstLevel(){return this.practicesAtFirstLevel;}
 	public int getTrainsFirstLevel(){return this.trainsAtFirstLevel;}
-	public int getDamageBonusLevel(){return this.damageBonusPerLevel;}
+	public int getLevelsPerBonusDamage(){ return this.levelsPerBonusDamage;}
 	public String weaponLimitations(){return "";}
 	public String armorLimitations(){return "";}
 	public String otherLimitations(){return "";}
@@ -230,8 +230,11 @@ public class StdCharClass implements CharClass
 		manaGain=manaGain*adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
 		theNews.append(manaGain+"^B " + (manaGain!=1?"points":"point") + " of mana,");
-
-		mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+(damageBonusPerLevel*adjuster));
+		if((adjuster<0)&&(((mob.baseEnvStats().level()+1)%levelsPerBonusDamage)==0))
+			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()-1);
+		else
+		if((adjuster>0)&&((mob.baseEnvStats().level()%levelsPerBonusDamage)==0))
+			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+1);
 		mob.recoverMaxState();
 		return theNews;
 	}

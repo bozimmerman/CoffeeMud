@@ -20,7 +20,7 @@ public class Druid extends StdCharClass
 		manaMultiplier=15;
 		attackAttribute=CharStats.CONSTITUTION;
 		bonusAttackLevel=1;
-		damageBonusPerLevel=0;
+		levelsPerBonusDamage=5;
 		name=myID;
 		if(!abilitiesLoaded)
 		{
@@ -126,7 +126,8 @@ public class Druid extends StdCharClass
 
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
+			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
+			&&((affect.tool()==null)||((affect.tool() instanceof Ability)&&(myChar.isMine(affect.tool())))))
 			{
 				for(int i=0;i<myChar.inventorySize();i++)
 				{

@@ -363,6 +363,9 @@ public class CommandProcessor
 					else
 						mob.tell("You are not powerful enough.\n\r");
 					break;
+				case CommandSet.RETIRE:
+					scoring.retire(mob);
+					break;
 				case CommandSet.SAVE:
 					if(mob.isASysOp(mob.location()))
 						createEdit.save(mob,commands);
