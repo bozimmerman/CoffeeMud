@@ -136,7 +136,8 @@ GIVE_PROG coins
 		IF (GOLDAMT($o >= '$<$i BJANTE>'))
 			IF (GOLDAMT($o > '$<$i BJMAXBET>'))
 				say "$n" I'm sorry, that is worth far too much for this table.  I will only wager as high as $<$i BJMAXBET>.
-				give "$o" "$n"
+				MPOLOAD $%GOLDAMT($o)%
+				give $%GOLDAMT($o)% $n
 			ELSE
 				MPSETVAR $n DEALT ''
 				MPSETVAR $n MYBJVALS ''

@@ -48,7 +48,7 @@ public class Tattooing extends CommonSkill
 				else
 				{
 					commonEmote(mob,"<S-NAME> complete(s) the tattoo on "+target.name()+".");
-				    mob.addTattoo(writing);
+				    target.addTattoo(writing);
 				}
 			}
 		}
@@ -140,7 +140,7 @@ public class Tattooing extends CommonSkill
 		if(!profficiencyCheck(mob,0,auto)) writing="";
 		int duration=30-mob.envStats().level();
 		if(duration<6) duration=6;
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) tattooing "+message+" on the "+wornName.toLowerCase()+" of "+target.name()+".");
+		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) tattooing "+message+" on the "+wornName.toLowerCase()+" of <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

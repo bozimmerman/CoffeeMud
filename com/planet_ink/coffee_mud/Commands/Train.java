@@ -163,6 +163,30 @@ public class Train extends StdCommand
 			mob.tell("You are refusing training at this time.");
 			return false;
 		}
+		if(Sense.isSleeping(mob)||Sense.isSitting(mob))
+		{
+		    mob.tell("You need to stand up for your training.");
+		    return false;
+		}
+		if(Sense.isSleeping(teacher)||Sense.isSitting(teacher))
+		{
+		    if(teacher.isMonster()) CommonMsgs.stand(teacher,true);
+			if(Sense.isSleeping(teacher)||Sense.isSitting(teacher))
+			{
+			    mob.tell(teacher.name()+" looks a bit too relaxed to train with you.");
+			    return false;
+			}
+		}
+		if(mob.isInCombat())
+		{
+		    mob.tell("Not while you are fighting!");
+		    return false;
+		}
+		if(teacher.isInCombat())
+		{
+		    mob.tell("Your teacher seems busy right now.");
+		    return false;
+		}
 
 		if((abilityCode==106)
 		&&(!teacher.charStats().getCurrentClass().baseClass().equals(mob.charStats().getCurrentClass().baseClass()))

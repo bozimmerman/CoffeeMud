@@ -106,6 +106,7 @@ public class Artisan extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),8,"Wainwrighting",true);
 
 			CMAble.addCharAbilityMapping(ID(),9,"PaperMaking",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Cobbling",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Distilling",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Farming",true);

@@ -62,6 +62,7 @@ public class Skill_Map extends StdAbility
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof Room)
+		&&(Sense.canBeSeenBy(msg.target(),msg.source()))
 		&&(!roomsMappedAlready.contains(msg.target())))
 		{
 			roomsMappedAlready.addElement(msg.target());

@@ -842,6 +842,18 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			student.tell(teacher.name()+" is refusing to teach right now.");
 			return false;
 		}
+		if(Sense.isSleeping(teacher)||Sense.isSitting(teacher))
+		{
+		    teacher.tell("You need to stand up to teach.");
+		    student.tell(teacher.name()+" needs to stand up to teach.");
+		    return false;
+		}
+		if(teacher.isInCombat())
+		{
+		    student.tell(teacher.name()+" seems busy right now.");
+		    teacher.tell("Not while you are fighting!");
+		    return false;
+		}
 		Ability yourAbility=teacher.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
@@ -982,7 +994,19 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			teacher.tell("You don't know that.");
 			return false;
 		}
+		if(student.isInCombat())
+		{
+		    teacher.tell(student.name()+" seems busy right now.");
+		    student.tell("Not while you are fighting!");
+		    return false;
+		}
 
+		if(Sense.isSleeping(student)||Sense.isSitting(student))
+		{
+			student.tell("You need to stand up and be alert to learn.");
+		    teacher.tell(student.name()+" needs to stand up to be taught about that.");
+		    return false;
+		}
 		return true;
 	}
 
@@ -1044,6 +1068,18 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			teacher.tell("You aren't profficient enough to teach '"+name()+"'.");
 			student.tell(teacher.name()+" isn't profficient enough to teach you '"+name()+"'.");
 			return false;
+		}
+		if(Sense.isSleeping(student)||Sense.isSitting(student))
+		{
+			student.tell("You need to stand up to practice.");
+		    teacher.tell(student.name()+" needs to stand up to practice that.");
+		    return false;
+		}
+		if(student.isInCombat())
+		{
+		    teacher.tell(student.name()+" seems busy right now.");
+		    student.tell("Not while you are fighting!");
+		    return false;
 		}
 
 		return true;

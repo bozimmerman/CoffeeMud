@@ -23,6 +23,7 @@
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Stat Adjustments</B></TD><TD>@RaceData?stats&trains&pracs@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Bonus Abilities</B></TD><TD>@RaceData?senses&dispositions&abilities@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Bonus Languages</B></TD><TD>@RaceData?langs@</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Life expectancy</B></TD><TD>@RaceData?expectancy@ years</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Starting Equipment</B></TD><TD>@RaceData?startingeq@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Qualifying Classes</B></TD>
 <TD>

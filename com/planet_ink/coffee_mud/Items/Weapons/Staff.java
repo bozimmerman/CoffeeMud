@@ -98,11 +98,12 @@ public class Staff extends StdWeapon implements Wand
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		MOB mob=msg.source();
+
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
 			if(msg.amITarget(this))
-				StdWand.waveIfAble(mob,msg.tool(),msg.targetMessage(),this);
+				waveIfAble(mob,msg.tool(),msg.targetMessage());
 			break;
 		case CMMsg.TYP_SPEAK:
 			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)

@@ -160,13 +160,13 @@ public class Gaoler extends StdCharClass
 	public String statQualifications(){return "Strength 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Strength to become a Gaoler.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
+		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Dexterity to become a Gaoler.");
