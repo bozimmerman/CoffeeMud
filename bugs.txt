@@ -1,6 +1,5 @@
 add reset MOBSTATS ROOM *, MOBSTATS AREA *, MOBSTATS WORLD *, 
 overview grid type thingy
-In StdRace, ReRoll doesn’t honor BASEMAXSTAT:
 ability to deposit a container and its contents.
 monetary tax rate on shopkeepers in controlled areas
 Can't type: gain paladin's goodness had to type gain goodness

@@ -96,6 +96,26 @@ public class Spell_Clone extends Spell
 	public MOB determineMonster(MOB caster)
 	{
 		MOB newMOB=(MOB)caster.copyOf();
+		for(int i=0;i<newMOB.inventorySize();i++)
+		{
+			Item I=(Item)newMOB.fetchInventory(i);
+			while(I.numEffects()>0)
+				I.delEffect(I.fetchEffect(0));
+			I.baseEnvStats().setAbility(0);
+			if(I instanceof Potion)
+				((Potion)I).setSpellList("");
+			else
+			if(I instanceof Pill)
+				((Pill)I).setSpellList("");
+			else
+			if(I instanceof Wand)
+			{
+				((Wand)I).setMaxUses(0);
+				((Wand)I).setUsesRemaining(0);
+			}
+			I.recoverEnvStats();
+			I.text();
+		}
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();

@@ -52,6 +52,12 @@ public class Spell_Scribe extends Spell
 			mob.tell("You don't know how to scribe '"+spellName+"'.");
 			return false;
 		}
+		if(CMAble.lowestQualifyingLevel(scrollThis.ID())>24)
+		{
+			mob.tell("That spell is too powerful to scribe.");
+			return false;
+		}
+		
 		int numSpells=(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this));
 		if(numSpells<0) numSpells=0;
 		if(scroll.numSpells()>numSpells)
