@@ -5,37 +5,79 @@
 <head>
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 	<title>CoffeeMUD MUDGrinder</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+	
+	//-->
+	</SCRIPT>
 </head>
 <BODY>
-	<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/editareadone.cmvp">
-	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-	<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
-	<CENTER>
-	<INPUT TYPE=TEXT NAME=NAME SIZE=80 VALUE="@AreaData?NAME@">
-	<P>
-	<TEXTAREA NAME=DESCRIPTION ROWS=2 SIZE=80>
-	@AreaData?DESCRIPTION@
-	</TEXTAREA>
-	<P>
-	<TEXTAREA NAME=TESTSTUFF ROWS=2 SIZE=80>
-	@AreaData?TESTSTUFF@
-	</TEXTAREA>
-	<P>
-	<SELECT NAME=CLIMATE MULTIPLE>
-	@AreaData?CLIMATES@
-	</SELECT>
-	<P>
+<CENTER>
+<h3>Modify Area Data for '@AreaName@'.</H3>
+<P><BR>
+<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/editareadone.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=ACTION VALUE="MODIFYAREA">
+<TABLE WIDTH=600 BORDER=1 CELLSPACING=0 CELLPADDIN=0>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Area Class:</B></FONT></TD>
+    <TD WIDTH=500 COLSPAN=2>
 	<SELECT NAME=CLASS>
 	@AreaData?CLASSES@
 	</SELECT>
-	<P>
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Area Name:</B></FONT></TD>
+    <TD WIDTH=500 COLSPAN=2><INPUT TYPE=TEXT NAME=NAME SIZE=20 VALUE="@AreaData?NAME@"></TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Description:</B></FONT></TD>
+    <TD WIDTH=500 COLSPAN=2><INPUT TYPE=TEXT NAME=DESCRIPTION SIZE=60 VALUE="@AreaData?DESCRIPTION@"></TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Climate:</B></FONT></TD>
+    <TD WIDTH=500 COLSPAN=2>
+	<SELECT NAME=CLIMATE MULTIPLE>
+	@AreaData?CLIMATES@
+	</SELECT>
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>SubOps:</B></FONT></TD>
+    <TD WIDTH=500 COLSPAN=2>
 	<SELECT NAME=SUBOPS MULTIPLE>
+	<OPTION VALUE="">Noone (Archons only)
 	@AreaData?SUBOPS@
 	</SELECT>
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Behaviors:</B></FONT>
+	<BR><A target=HELP href="../archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+    <TD WIDTH=500 COLSPAN=2>
+	@AreaData?BEHAVIORS@
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Affects:</B></FONT>
+	<BR><A target=HELP href="../archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+    <TD WIDTH=500 COLSPAN=2>
+	@AreaData?AFFECTS@
+	</TD>
+</TR>
+<TR>
+    <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
 	<INPUT TYPE=SUBMIT VALUE="Submit">
 	</CENTER>
-	</FORM>
+	</TD>
+</TR>
+</TABLE>
+</FORM>
+</CENTER>
 </BODY>
 </HTML>
 @endif@

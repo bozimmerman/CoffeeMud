@@ -64,6 +64,138 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("TESTSTUFF"))
 					str.append(A.text());
+				if(parms.containsKey("BEHAVIORS"))
+				{
+					Vector theclasses=new Vector();
+					Vector theparms=new Vector();
+					if(httpReq.getRequestParameters().containsKey("BEHAV1"))
+					{
+						int num=1;
+						String behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
+						String theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
+						while((behav!=null)&&(theparm!=null))
+						{
+							if(behav.length()>0)
+							{
+								theclasses.addElement(behav);
+								theparms.addElement(theparm);
+							}
+							num++;
+							behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
+							theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
+						}
+					}
+					else
+					for(int b=0;b<A.numBehaviors();b++)
+					{
+						Behavior B=A.fetchBehavior(b);
+						if(B!=null)
+						{
+							theclasses.addElement(CMClass.className(B));
+							theparms.addElement(B.getParms());
+						}
+					}
+					str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+					for(int i=0;i<theclasses.size();i++)
+					{
+						String theclass=(String)theclasses.elementAt(i);
+						String theparm=(String)theparms.elementAt(i);
+						str.append("<TR><TD WIDTH=50%>");
+						str.append("<SELECT NAME=BEHAV"+(i+1)+">");
+						str.append("<OPTION VALUE=\"\">Delete!");
+						for(int b=0;b<CMClass.behaviors.size();b++)
+						{
+							Behavior B=(Behavior)CMClass.behaviors.elementAt(b);
+							str.append("<OPTION VALUE=\""+CMClass.className(B)+"\"");
+							if(CMClass.className(B).equals(theclass))
+								str.append(" SELECTED");
+							str.append(">"+CMClass.className(B));
+						}
+						str.append("</SELECT>");
+						str.append("</TD><TD WIDTH=50%>");
+						str.append("<INPUT TYPE=TEXT SIZE=20 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\">");
+						str.append("</TD></TR>");
+					}
+					str.append("<TR><TD WIDTH=50%>");
+					str.append("<SELECT NAME=BEHAV"+(theclasses.size()+1)+">");
+					str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
+					for(int b=0;b<CMClass.behaviors.size();b++)
+					{
+						Behavior B=(Behavior)CMClass.behaviors.elementAt(b);
+						str.append("<OPTION VALUE=\""+CMClass.className(B)+"\">"+CMClass.className(B));
+					}
+					str.append("</SELECT>");
+					str.append("</TD><TD WIDTH=50%>");
+					str.append("<INPUT TYPE=TEXT SIZE=20 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\">");
+					str.append("</TD></TR>");
+					str.append("</TABLE>");
+				}
+				if(parms.containsKey("AFFECTS"))
+				{
+					Vector theclasses=new Vector();
+					Vector theparms=new Vector();
+					if(httpReq.getRequestParameters().containsKey("AFFECT1"))
+					{
+						int num=1;
+						String behav=(String)httpReq.getRequestParameters().get("AFFECT"+num);
+						String theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
+						while((behav!=null)&&(theparm!=null))
+						{
+							if(behav.length()>0)
+							{
+								theclasses.addElement(behav);
+								theparms.addElement(theparm);
+							}
+							num++;
+							behav=(String)httpReq.getRequestParameters().get("AFFECT"+num);
+							theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
+						}
+					}
+					else
+					for(int a=0;a<A.numAffects();a++)
+					{
+						Ability Able=A.fetchAffect(a);
+						if((Able!=null)&&(!Able.isBorrowed(A)))
+						{
+							theclasses.addElement(CMClass.className(Able));
+							theparms.addElement(Able.text());
+						}
+					}
+					str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+					for(int i=0;i<theclasses.size();i++)
+					{
+						String theclass=(String)theclasses.elementAt(i);
+						String theparm=(String)theparms.elementAt(i);
+						str.append("<TR><TD WIDTH=50%>");
+						str.append("<SELECT NAME=AFFECT"+(i+1)+">");
+						str.append("<OPTION VALUE=\"\">Delete!");
+						for(int b=0;b<CMClass.abilities.size();b++)
+						{
+							Ability B=(Ability)CMClass.abilities.elementAt(b);
+							str.append("<OPTION VALUE=\""+CMClass.className(B)+"\"");
+							if(CMClass.className(B).equals(theclass))
+								str.append(" SELECTED");
+							str.append(">"+CMClass.className(B));
+						}
+						str.append("</SELECT>");
+						str.append("</TD><TD WIDTH=50%>");
+						str.append("<INPUT TYPE=TEXT SIZE=20 NAME=ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
+						str.append("</TD></TR>");
+					}
+					str.append("<TR><TD WIDTH=50%>");
+					str.append("<SELECT NAME=AFFECT"+(theclasses.size()+1)+">");
+					str.append("<OPTION SELECTED VALUE=\"\">Select an Affect");
+					for(int b=0;b<CMClass.abilities.size();b++)
+					{
+						Ability B=(Ability)CMClass.abilities.elementAt(b);
+						str.append("<OPTION VALUE=\""+CMClass.className(B)+"\">"+CMClass.className(B));
+					}
+					str.append("</SELECT>");
+					str.append("</TD><TD WIDTH=50%>");
+					str.append("<INPUT TYPE=TEXT SIZE=20 NAME=ADATA"+(theclasses.size()+1)+" VALUE=\"\">");
+					str.append("</TD></TR>");
+					str.append("</TABLE>");
+				}
 				if(parms.containsKey("SUBOPS"))
 				{
 					String subOps=(String)httpReq.getRequestParameters().get("SUBOPS");

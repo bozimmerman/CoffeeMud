@@ -44,8 +44,6 @@ Players currently online: <b>@NUMPLAYERS@</B>
 					  <a href="ables.cmvp?ABILITYTYPE=CHANT">Chants</a>  
 					  <a href="skills.cmvp">Skills</a>
 					  <BR><BR>
-<LI><a href="guides/ArchonGuide.html">Archon's Guide (v1.2)</a>
-<LI><A href="archonables.cmvp">MOB Behaviors/Properties</a>
 </UL>
 </TD></TR>
 </body>
