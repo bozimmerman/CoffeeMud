@@ -179,6 +179,7 @@ public class Minstrel extends StdCharClass
 		{
 			boolean spellLike=((affect.tool()!=null)&&(myChar.fetchAbility(affect.tool().ID())!=null))&&(myChar.isMine(affect.tool()));
 			if((spellLike||((affect.sourceMajor()&Affect.MASK_DELICATE)>0))
+			&&(affect.tool()!=null)
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))

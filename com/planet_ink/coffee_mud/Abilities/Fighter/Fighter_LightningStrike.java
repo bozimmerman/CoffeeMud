@@ -100,9 +100,9 @@ public class Fighter_LightningStrike extends StdAbility
 			mob.tell("You are too far away from your target to strike!");
 			return false;
 		}
-		if((!auto)&&(mob.charStats().getStat(CharStats.DEXTERITY)<18))
+		if((!auto)&&(mob.charStats().getStat(CharStats.DEXTERITY)<CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)))
 		{
-			mob.tell("You need at least an 18 dexterity to do that.");
+			mob.tell("You need at least an "+CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)+" dexterity to do that.");
 			return false;
 		}
 

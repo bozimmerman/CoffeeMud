@@ -207,6 +207,10 @@ public class MUD extends Thread implements Host
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKYSIZE,page.getStr("SKYSIZE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MAXSTAT,page.getStr("MAXSTATS"));
+		if(page.getStr("BASEMAXSTAT").length()==0)
+			CommonStrings.setIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT,18);
+		else
+			CommonStrings.setIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT,page.getStr("BASEMAXSTAT"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MANACOST,page.getStr("MANACOST"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EDITORTYPE,0);
 		if(page.getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) CommonStrings.setIntVar(CommonStrings.SYSTEMI_EDITORTYPE,1);

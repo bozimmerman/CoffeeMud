@@ -425,13 +425,14 @@ public class DefaultCharStats implements Cloneable, CharStats
 
 	public StringBuffer getStats()
 	{
+		int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
 		StringBuffer statstr=new StringBuffer("");
-		statstr.append(Util.padRight("Strength",15)+": "+Util.padRight(Integer.toString(getStat(STRENGTH)),2)+"/"+(18+getStat(MAX_STRENGTH_ADJ))+"\n\r");
-		statstr.append(Util.padRight("Intelligence",15)+": "+Util.padRight(Integer.toString(getStat(INTELLIGENCE)),2)+"/"+(18+getStat(MAX_INTELLIGENCE_ADJ))+"\n\r");
-		statstr.append(Util.padRight("Dexterity",15)+": "+Util.padRight(Integer.toString(getStat(DEXTERITY)),2)+"/"+(18+getStat(MAX_DEXTERITY_ADJ))+"\n\r");
-		statstr.append(Util.padRight("Wisdom",15)+": "+Util.padRight(Integer.toString(getStat(WISDOM)),2)+"/"+(18+getStat(MAX_WISDOM_ADJ))+"\n\r");
-		statstr.append(Util.padRight("Constitution",15)+": "+Util.padRight(Integer.toString(getStat(CONSTITUTION)),2)+"/"+(18+getStat(MAX_CONSTITUTION_ADJ))+"\n\r");
-		statstr.append(Util.padRight("Charisma",15)+": "+Util.padRight(Integer.toString(getStat(CHARISMA)),2)+"/"+(18+getStat(MAX_CHARISMA_ADJ))+"\n\r");
+		statstr.append(Util.padRight("Strength",15)+": "+Util.padRight(Integer.toString(getStat(STRENGTH)),2)+"/"+(max+getStat(MAX_STRENGTH_ADJ))+"\n\r");
+		statstr.append(Util.padRight("Intelligence",15)+": "+Util.padRight(Integer.toString(getStat(INTELLIGENCE)),2)+"/"+(max+getStat(MAX_INTELLIGENCE_ADJ))+"\n\r");
+		statstr.append(Util.padRight("Dexterity",15)+": "+Util.padRight(Integer.toString(getStat(DEXTERITY)),2)+"/"+(max+getStat(MAX_DEXTERITY_ADJ))+"\n\r");
+		statstr.append(Util.padRight("Wisdom",15)+": "+Util.padRight(Integer.toString(getStat(WISDOM)),2)+"/"+(max+getStat(MAX_WISDOM_ADJ))+"\n\r");
+		statstr.append(Util.padRight("Constitution",15)+": "+Util.padRight(Integer.toString(getStat(CONSTITUTION)),2)+"/"+(max+getStat(MAX_CONSTITUTION_ADJ))+"\n\r");
+		statstr.append(Util.padRight("Charisma",15)+": "+Util.padRight(Integer.toString(getStat(CHARISMA)),2)+"/"+(max+getStat(MAX_CHARISMA_ADJ))+"\n\r");
 		return statstr;
 	}
 

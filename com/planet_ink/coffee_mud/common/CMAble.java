@@ -246,6 +246,20 @@ public class CMAble
 	}
 
 	
+	public static boolean qualifiesByCurrentClassAndLevel(MOB student, Ability A)
+	{
+		if(student==null) return false;
+		CharClass C=student.charStats().getCurrentClass();
+		int level=CMAble.getQualifyingLevel(C.ID(),A.ID());
+		if((level>=0)
+		&&(student.charStats().getClassLevel(C)>=level))
+			return true;
+		int level=CMAble.getQualifyingLevel(student.charStats().getMyRace().ID(),A.ID());
+		if((level>=0)&&(student.envStats().level()>=level))
+			return true;
+		return false;
+	}
+
 	public static boolean qualifiesByLevel(MOB student, Ability A)
 	{
 		if(student==null) return false;

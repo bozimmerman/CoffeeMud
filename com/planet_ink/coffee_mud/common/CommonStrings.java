@@ -47,7 +47,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_FOLLOWLEVELDIFF=16;
 	public static final int SYSTEMI_LASTPLAYERLEVEL=17;
 	public static final int SYSTEMI_CLANENCHCOST=18;
-	public static final int NUMI_SYSTEM=19;
+	public static final int SYSTEMI_BASEMAXSTAT=19;
+	public static final int NUMI_SYSTEM=20;
 	  
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;

@@ -743,7 +743,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						if(I instanceof Armor)
 						{
 							str.append("\n\rWear Info  : Worn on ");
-							for(int l=0;l<18;l++)
+							for(int l=0;l<20;l++)
 							{
 								int wornCode=1<<l;
 								if(Sense.wornLocation(wornCode).length()>0)
