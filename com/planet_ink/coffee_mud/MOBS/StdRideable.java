@@ -25,6 +25,11 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		return new StdRideable();
 	}
+	protected void cloneFix(MOB E)
+	{
+		super.cloneFix(E);
+		riders=new Vector();
+	}
 	public DeadBody killMeDead(boolean createBody)
 	{
 		while(riders.size()>0)

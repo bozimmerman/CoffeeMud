@@ -108,7 +108,7 @@ public class EnglishParser
 					switch(((String)chk.elementAt(ci)).charAt(1))
 					{
 					case 's':
-						if(ExternalPlay.FetchSocial((String)req.elementAt(ri),true)==null)
+						if(Socials.FetchSocial((String)req.elementAt(ri),true)==null)
 							reject=true;
 						else
 						{
@@ -122,21 +122,40 @@ public class EnglishParser
 					case 'i':
 						String code=(String)chk.elementAt(ci);
 						int remain=chk.size()-ci;
-						if(ri>=(req.size()-remain))
+						String str=(String)req.elementAt(ri);
+						ri++;
+						ci++;
+						reject=false;
+						while(ri<=(req.size()-remain))
 						{
-							map.put(code,req.elementAt(ri));
+							String nxt="";
+							if(ci<(chk.size()-1))
+							{
+								nxt=(String)chk.elementAt(ci+1);
+								if(nxt.startsWith("%"))
+									nxt="";
+							}
+							if((nxt.length()>0)
+							&&(ri<(req.size()-1))
+							&&(req.elementAt(ri+1).equals(nxt)))
+							   break;
 							ri++;
 							ci++;
-							reject=false;
+							if(ri<req.size())
+								str=str+" "+((String)req.elementAt(ri));
 						}
+						map.put(code,str);
+						break;
+					case 'k':
+						if((Resources.getResource("ABILITY WORDS")!=null)
+						&&(!(((Vector)Resources.getResource("ABILITY WORDS")).contains(((String)req.elementAt(ri)).toUpperCase()))))
+						   reject=true;
 						else
 						{
-							while(ri<=(req.size()-remain))
-							{
-								String nxt="";
-								if(ci<(chk.size()-1)) nxt=(String)chk.elementAt(ci+1);
-								
-							}
+							map.put("%k",req.elementAt(ri));
+							reject=false;
+							ci++;
+							ri++;
 						}
 						break;
 					default:

@@ -58,6 +58,11 @@ public class StdRideable extends StdContainer implements Rideable
 			riders.removeElement(mob);
 	}
 
+	protected void cloneFix(Item E)
+	{
+		super.cloneFix(E);
+		riders=new Vector();
+	}
 	public Hashtable getRideBuddies(Hashtable list)
 	{
 		if(list==null) return list;

@@ -5,7 +5,6 @@ import java.net.*;
 import java.util.*;
 import java.sql.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 // requires nothing to load
@@ -208,11 +207,10 @@ public class Socials
 			Vector V=new Vector();
 			for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
 			{
-				com.planet_ink.coffee_mud.Commands.base.Social S1=(com.planet_ink.coffee_mud.Commands.base.Social)e.nextElement();
+				Social S1=(Social)e.nextElement();
 				for(int i=0;i<V.size();i++)
 				{
-					com.planet_ink.coffee_mud.Commands.base.Social S2=(com.planet_ink.coffee_mud.Commands.base.Social)
-						V.elementAt(i);
+					Social S2=(Social)V.elementAt(i);
 					if(S1.equals(S2))
 					{
 						V.insertElementAt(S1,i);
@@ -224,8 +222,7 @@ public class Socials
 			}
 			for(int v=0;v<V.size();v++)
 			{
-				com.planet_ink.coffee_mud.Commands.base.Social
-					I=(com.planet_ink.coffee_mud.Commands.base.Social)V.elementAt(v);
+				Social I=(Social)V.elementAt(v);
 
 				switch(I.sourceCode())
 				{

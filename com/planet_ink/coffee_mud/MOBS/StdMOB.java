@@ -150,7 +150,7 @@ public class StdMOB implements MOB
 	}
 	public StdMOB(){}
 
-	private void cloneFix(MOB E)
+	protected void cloneFix(MOB E)
 	{
 
 		affects=new Vector();

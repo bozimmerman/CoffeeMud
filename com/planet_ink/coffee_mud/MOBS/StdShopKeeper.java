@@ -730,7 +730,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					Vector products=removeSellableProduct(affect.tool().Name(),mob);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
-					com.planet_ink.coffee_mud.utils.Money.subtractMoney(this,mob,yourValue(mob,product,false));
+					com.planet_ink.coffee_mud.utils.Money.subtractMoney(this,mob,yourValue(mob,product,true));
 					mob.recoverEnvStats();
 					if(product instanceof Item)
 					{
