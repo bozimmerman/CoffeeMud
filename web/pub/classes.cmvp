@@ -45,7 +45,7 @@
 	<TR><TD WIDTH=10%>@LevelNumber@</TD>
 	<TD WIDTH=90%>@AbilityNext?reset@
 	<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
-		@loop@ @AbilityNext?skill&spell&prayer&song&thief skill&chant@ 
+		@loop@ @AbilityNext?skill&common skill&spell&prayer&song&thief skill&chant@ 
 		<TR><TD WIDTH=35%>(@AbilityData?domain@)</TD>
 		<TD WIDTH=15% ALIGN=RIGHT>@AbilityData?qualifyQ@</TD>
 		<TD WIDTH=50%>&nbsp;

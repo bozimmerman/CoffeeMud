@@ -24,7 +24,7 @@
 	<TR><TD WIDTH=10% ALIGN=TOP BGCOLOR=GREEN><H1><FONT COLOR=WHITE>@LevelNumber@</FONT></H1></TD>
 	<TD WIDTH=90%>@AbilityNext?reset@
 	<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
-		@loop@ @AbilityNext?skill&thief skill@ 
+		@loop@ @AbilityNext?skill&common skill&thief skill@ 
 		<TR><TD WIDTH=35%><B>(@AbilityData?domain@)</B></TD>
 		<TD WIDTH=65%>&nbsp;
 		<a href="javascript:openUp('@AbilityID@');"><B>@AbilityName@</B></a> 
