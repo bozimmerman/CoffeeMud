@@ -153,11 +153,11 @@ public class RandomMonsters extends ActiveTicker
 				}
 				Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
 			}
-			int diff=((maxMonsters-minMonsters)/2);
-			int mean=diff+minMonsters;
-			if(mean>maxMonsters) mean=maxMonsters;
-			if(mean<minMonsters) mean=minMonsters;
-			while(maintained.size()<mean)
+			int num=minMonsters;
+			if(maintained.size()>=minMonsters) 
+				num=maintained.size()+1;
+			if(num>maxMonsters) num=maxMonsters;
+			while(maintained.size()<num)
 			{
 				MOB M=(MOB)monsters.elementAt(Dice.roll(1,monsters.size(),-1));
 				if(M!=null)
@@ -189,14 +189,19 @@ public class RandomMonsters extends ActiveTicker
 					{
 						Room room=null;
 						if(restrictedLocales==null)
-							room=((Area)ticking).getRandomRoom();
+						{
+							int tries=0;
+							while(((room==null)||(room.roomID().length()==0))&&((++tries)<100))
+								room=((Area)ticking).getRandomRoom();
+						}
 						else
 						{
 							Vector map=new Vector();
 							for(Enumeration e=((Area)ticking).getMap();e.hasMoreElements();)
 							{
 								Room R=(Room)e.nextElement();
-								if(okRoomForMe(R)) map.addElement(R);
+								if((okRoomForMe(R))&&(R.roomID().length()>0))
+									map.addElement(R);
 							}
 							if(map.size()>0)
 								room=(Room)map.elementAt(Dice.roll(1,map.size(),-1));
