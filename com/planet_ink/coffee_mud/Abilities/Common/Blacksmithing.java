@@ -181,6 +181,7 @@ public class Blacksmithing extends CommonSkill
 		else
 		if(firstWood.material()==EnvResource.RESOURCE_ADAMANTITE)
 			woodRequired=woodRequired/3;
+		if(woodRequired<1) woodRequired=1;
 		if(foundWood<woodRequired)
 		{
 			mob.tell("You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
@@ -222,7 +223,6 @@ public class Blacksmithing extends CommonSkill
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-		int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 		if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
 		{
 			try
