@@ -1,20 +1,14 @@
 Comprehend languages no longer translates TELLs in other languages.
-Casting Enchant Armor on an item with 0 protection does not increase the protection given by that item.
 Try out Artisans
 Test: ?holy day,  ?aura of intolerance, Vampirism, Cannibalism, ?Forgive, ?Divine Perspective
 Test: Infuse Holiness, Infuse Unholiness, Sense Traps, Hunt Evil, Hunt Good, Conviction
 Test: Benediction, Maladiction, Blood Hearth, Blessed Hearth, Guardian Hearth, Deaths Door
 Test: Consecrate Land, Desecrate Land, Neutralize Land, Condemnation, Heresy
-Test: Faithless, Preserve Body, Tithe, Daily Bread
+Test: Faithless, Preserve Body, Tithe, Daily Bread, Righteous Indignation
+Test: Feed The Dead, Behemoth, Position, Birds Eye, Bone Moon, Haunted
 
-Bone Moon 			1. This moon spell causes all bodies in the room to be animated into skeletons. The first skeleton will be raised as a level 1 skeleton. The second at level 2, the third at level 4, the fourth at level 8, etc.(2^(#-1)). Skeletons are hostile towards all. (unless they can't see you...) All skeletons created by a bone moon become uncreated at the end of the duration (nobody gains XP for their deaths). This is similar to Howler's moon. Unlike a necromancer's animate prayers, the skeletons should be able to attack the caster of this prayer. 	2. I think of this as a Doomsayer prayer...end of the world type stuff. 
-Birds Eye 			1. This missionary prayer creates a map of all rooms within 2 moves of the missionary. The map is autoread, and then autodestroyed, allowing a once-per-casting perusal. 
 Divine ally 		1. This prayer group (Holy/Divine/Unholy) summons a being of appropriate nature to assist the cleric. The being will require some sort of payment for each action it does, but should have various skill sets. Minor allies would have thiefness, moderate allies would have fighterness, and Major allies would have Mageness. Each casting requires something from the cleric. For minor it requires 1 gemresource. For moderate it requires 25lb metal resource (must be bundled). For Major, it requires an item of opposing alignment (or any alignment). (For example to summon a major holy ally, you must have an item with an EVIL aura, or EVIL zapper, to sacrifice.) 
 Peace ritual 		1. This prayer takes time to cast (like 5 minutes). It reduces a clan that is as war with the cleric's clan to HOSTILE. While casting this prayer, a CLANTALK to the enemy clan goes off every 30 seconds stating WHO is trying to affect their clan, WHERE exactly they are (room name, area name), and what clan. If the casting cleric is interrupted, in anyway, during the casting of this ritual, it is instantly terminated. (Tells, Gossips, etc shouldn't stop it...but SOCIALS targetting him should. Obviously attacking him will.) 
-Haunt room 			1. This wicked prayer will cause a room to be possessed by the SPIRITS of any killed in it. It should have a long duration, and a maximum number of spirits based on the level of the caster (1 per 8 levels of caster sounds good.) SPIRITS created by this spell will be POLTERGEISTS. They will have thiefness, and the ANIMATE ITEM spell. They should be invisible and immune to slash/pierce/blunt. They die instantly if removed from the HAUNTED room. (wave spell..etc.) 
-Giganticus 			1. Makes the Templar an enormous version of himself, with some xtra strength 
-Position 			1. Shows the walking trail from the casting place to the last place this prayer was cast (or recall) 
-Riteous Indignation	1. Enhances experience gained
 Marry/Divorce/Annul 1. Marriage is described better elsewhere. Annul, if done without a certain amount of time after the wedding, will return all property to previous owners. Divorce always splits 50-50. 
 Revival 			1. Mass Convert, plus bonuses for those who already believe in same god (-int, -wis, +cha, +str) 
 Doomspout 			1. Makes the target a raving spouter of doom messages. This is a contageous disease! 

@@ -118,7 +118,7 @@ public class Spell_TeleportationWard extends Spell
 				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
 					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
 				{
-					target.addNonUninvokableEffect(this);
+					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMClass.DBEngine().DBUpdateRoom((Room)target);
 				}
 				else

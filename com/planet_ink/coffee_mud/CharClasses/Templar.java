@@ -37,6 +37,7 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_InfuseUnholiness",true);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",false);
@@ -51,28 +52,29 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Deafness",true);
 
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Parry",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_Heresy",false);
 
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Curse",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Prayer_HuntGood",false);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Specialization_Polearm",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Paralyze",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",false);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_AttackHalf",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Prayer_DispelGood",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Prayer_Behemoth",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Specialization_Ranged",false);
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Prayer_DispelGood",false);
 
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Specialization_Hammer",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_SenseHidden",false);
 
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_Plague",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",false);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Prayer_DesecrateLand",false);
 
 			CMAble.addCharAbilityMapping(ID(),14,"Specialization_Axe",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Skill_Bash",false);
@@ -82,14 +84,16 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),15,"Specialization_Natural",false);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Anger",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Prayer_BloodHearth",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindness",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Haunted",false);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Attack2",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Prayer_Tithe",false);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Hellfire",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Maladiction",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_Absorption",false);
@@ -98,7 +102,7 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Corruption",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BoneMoon",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_BackStab",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_HealUndead",false);

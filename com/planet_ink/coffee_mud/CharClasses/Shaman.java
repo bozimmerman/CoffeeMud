@@ -54,24 +54,21 @@ public class Shaman extends Cleric
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CreateFood",true);
 
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CreateWater",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_EarthMud",false);
 
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Curse",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Prayer_EarthMud",false);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Freedom",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Paralyze",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_Earthshield",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
 
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_SenseHidden",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",true);
 
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",true);
@@ -83,13 +80,13 @@ public class Shaman extends Cleric
 			CMAble.addCharAbilityMapping(ID(),14,"Prayer_Fertilize",false);
 
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_Rockskin",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Prayer_GuardianHearth",false);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Tremor",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindness",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",false);
@@ -101,15 +98,16 @@ public class Shaman extends Cleric
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_DrunkenStupor",false);
-			CMAble.addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",false);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Skill_Meditation",false);
 
-			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Prayer_NeutralizeLand",false);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_SummonElemental",0,"EARTH",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_AcidHealing",false);

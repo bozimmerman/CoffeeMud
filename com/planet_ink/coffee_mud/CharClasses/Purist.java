@@ -38,23 +38,24 @@ public class Purist extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Extinguish",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_InfuseUnholiness",true);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_CreateWater",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_Purify",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",false);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",false);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
 
-			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CreateFood",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_ProtCold",false);
 
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CureSerious",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_RitegousIndignation",false);
 
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Prayer_HuntEvil",false);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Freedom",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
@@ -62,16 +63,12 @@ public class Purist extends Cleric
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_Gills",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",false);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Monolith",0,"ICE",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_SenseHidden",false);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Prayer_CureDisease",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_FountainLife",false);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",false);
@@ -83,6 +80,7 @@ public class Purist extends Cleric
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_FreezeMetal",false);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Calm",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Conviction",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 
@@ -90,10 +88,10 @@ public class Purist extends Cleric
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_Wave",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",false);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Prayer_AuraDivineEdict",true);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassMobility",false);
@@ -109,12 +107,11 @@ public class Purist extends Cleric
 
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_HolyWord",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Prayer_AuraDivineEdict",false);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_SummonElemental",0,"WATER",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_IceHealing",false);
 
-			CMAble.addCharAbilityMapping(ID(),30,"Prayer_AuraIntolerance",true);
+			CMAble.addCharAbilityMapping(ID(),30,"Prayer_AuraIntolerance",false);
 		}
 	}
 

@@ -45,10 +45,13 @@ public class Missionary extends Cleric
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Bury",true);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Prayer_Position",false);
 
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CreateFood",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Prayer_BirdsEye",false);
 
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CreateWater",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_SenseTraps",false);
 
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_ElectricStrike",false);
 
@@ -56,7 +59,6 @@ public class Missionary extends Cleric
 
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_AiryForm",false);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
 

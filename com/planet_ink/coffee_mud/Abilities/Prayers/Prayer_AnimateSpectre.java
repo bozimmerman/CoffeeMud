@@ -107,9 +107,14 @@ public class Prayer_AnimateSpectre extends Prayer
 					{
 						FullMsg msg2=new FullMsg(newMOB,body,item,CMMsg.MSG_GET,null);
 						newMOB.location().send(newMOB,msg2);
-						FullMsg msg3=new FullMsg(newMOB,item,null,CMMsg.MSG_GET,null);
+						FullMsg msg4=new FullMsg(newMOB,item,null,CMMsg.MSG_GET,null);
+						newMOB.location().send(newMOB,msg4);
+						FullMsg msg3=new FullMsg(newMOB,item,null,CMMsg.MSG_WEAR,null);
 						newMOB.location().send(newMOB,msg3);
-						it=0;
+						if(!newMOB.isMine(item))
+							it++;
+						else
+							it=0;
 					}
 					else
 						it++;
