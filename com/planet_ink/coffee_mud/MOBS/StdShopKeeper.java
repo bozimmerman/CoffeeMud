@@ -602,7 +602,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					{
 						if(mob.getClanID().length()==0)
 						{
-							CommonMsgs.say(this,mob,"I only sell land to clans.",true,false);
+							CommonMsgs.say(this,mob,"I only sell to clans.",true,false);
 							return false;
 						}
 					}
@@ -1107,17 +1107,30 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			HashSet roomsHandling=new HashSet();
 			Hashtable titles=new Hashtable();
 			if((whatISell==DEAL_CSHIPSELLER)||(whatISell==DEAL_SHIPSELLER))
+			{
+				Area myArea=(Area)getStartRoom().getArea();
 				for(Enumeration r=CMMap.areas();r.hasMoreElements();)
 				{
 					Area A=(Area)r.nextElement();
-					if((A instanceof SpaceObject)
-					&&(Sense.isHidden(A))
-					&&(A.ID().toUpperCase().indexOf("PLANET")<0))
+					if((A instanceof SpaceShip)
+					&&(Sense.isHidden(A)))
 					{
-						LandTitle LT=CoffeeUtensils.getLandTitle(A);
-						if(LT!=null) titles.put(A,LT);
+						boolean related=myArea.isChild(A.Name());
+						if(!related)
+							for(int p=0;p<myArea.getNumParents();p++)
+							{
+								Area P=myArea.getParent(p);
+								if((P!=null)&&(P!=myArea)&&((P==A)||(A.isParent(P))||(P.isChild(A))))
+								{ related=true; break;}
+							}
+						if(related)
+						{
+							LandTitle LT=CoffeeUtensils.getLandTitle(A);
+							if(LT!=null) titles.put(A,LT);
+						}
 					}
 				}
+			}
 			else
 				for(Enumeration r=getStartRoom().getArea().getMap();r.hasMoreElements();)
 				{

@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class StdSpaceShip implements Area, SpaceObject
+public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 {
 	public long[] coordinates=new long[3];
 	public long[] coordinates(){return coordinates;}
