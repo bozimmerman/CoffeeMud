@@ -119,9 +119,6 @@ ww 	PLEAD	You beg and plead to anyone who will listen.	<S-NAME> pleads <S-HIS-HE
 ot	FRENCH <T-NAME>	You give <T-NAMESELF> a long and passionate kiss, it seems to last forever...	<S-NAME> kisses <T-NAMESELF> passionately.	<S-NAME> gives you a long and passionate kiss, it seems to last forever...	Your heart is filled with despair as that person is not here.
 ot	FRENCH SELF	You gather yourself in your arms and try to kiss yourself.	<S-NAME> makes an attempt at kissing <S-HIM-HERSELF>.		
 mt	FRENCH	Kiss whom?			
-mo	UNDRESS SELF	A mirror would work better...			
-mo	UNDRESS	You start to undress in the shadows, waiting for someone to notice.	<S-NAME> begins to undress... <S-HE-SHE> is VERY sexy... *Pant*		
-mo	UNDRESS <T-NAME>	You undress <T-HIM-HER> with your eyes... Kinky.	You feel the temperature of the room rise as <S-NAME> lusts on <T-NAMESELF>...	Feeling exposed, you sense <S-NAME> undressing you with <S-HIS-HER> eyes...	They are not here...
 ov	SHAKE SELF	You are shaken by yourself.	<S-NAME> shakes <S-HIM-HERSELF>.		
 mt	SHAKE <T-NAME>	You shake <T-HIS-HER> hand.	<S-NAME> shakes <T-NAMESELF>'s hand.	<S-NAME> shakes your hand.	Sorry good buddy, but that person doesn't seem to be here.
 ov	SHAKE	You shake your head.	<S-NAME> shakes <S-HIS-HER> head.		
