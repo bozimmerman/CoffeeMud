@@ -101,7 +101,7 @@ public class JournalLoader
 					String datestr=(String)entry.elementAt(2);
 					long date=0;
 					if(datestr.indexOf("/")>=0)
-						date=Util.s_long(datestr.substring(datestr.indexOf("/")+1));
+						date=Util.s_long(datestr.substring(0,datestr.indexOf("/")));
 					else
 						date=Util.s_long(datestr);
 					
@@ -115,6 +115,11 @@ public class JournalLoader
 				{
 					oldJournal.removeElement(useEntry);
 					journal.addElement(useEntry);
+				}
+				else
+				{
+					journal.addElement(oldJournal.elementAt(0));
+					oldJournal.removeElementAt(0);
 				}
 			}
 		}
