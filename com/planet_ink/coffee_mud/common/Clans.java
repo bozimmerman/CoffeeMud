@@ -11,8 +11,24 @@ public class Clans implements Clan, Tickable
 {
 	private long tickStatus=Tickable.STATUS_NOT;
 	public long getTickStatus(){return tickStatus;}
-	private static Vector all=new Vector();
-
+	private static Hashtable all=new Hashtable();
+	String clanName="";
+	/**
+	  * String containing a short story on the Clan.
+	  * Clan's will have premises set in game so people can find out
+	  * about Clans via in-game functions and through the web-site.
+	  */
+	String clanPremise="";
+	String clanRecall="";
+	String clanDonationRoom="";
+	String AcceptanceSettings="";
+	int clanType=Clan.TYPE_CLAN;
+	int ClanStatus=0;
+	
+	//*****************
+	public Hashtable relations=new Hashtable();
+	public int government=Clan.GVT_DICTATORSHIP;
+	//*****************
 	
 	public static MOB getMOB(String last)
 	{
@@ -45,25 +61,47 @@ public class Clans implements Clan, Tickable
 	
 	public static void shutdownClans()
 	{
-		for(int i=0;i<all.size();i++)
+		for(Enumeration e=all.elements();e.hasMoreElements();)
 		{
-			Clan C=(Clan)all.elementAt(i);
+			Clan C=(Clan)e.nextElement();
 			ExternalPlay.deleteTick(C,Host.CLAN_TICK);
 		}
 		all.clear();
 	}
 	
-	public static Clan getClan(String name)
+	public static int getClanRelations(String id1, String id2)
 	{
-		for(int i=0;i<all.size();i++)
+		if((id1.length()==0)||(id2.length()==0)) return Clan.REL_NEUTRAL;
+		Clan C1=getClan(id1);
+		Clan C2=getClan(id2);
+		if((C1==null)||(C2==null)) return Clan.REL_NEUTRAL;
+		int i1=C1.getClanRelations(id2);
+		int i2=C2.getClanRelations(id1);
+		int rel=Clan.RELATIONSHIP_VECTOR[i1][i2];
+		if(rel==Clan.REL_WAR) return Clan.REL_WAR;
+		if(rel==Clan.REL_ALLY) return Clan.REL_ALLY;
+		for(Enumeration e=clans();e.hasMoreElements();)
 		{
-			Clan C=(Clan)all.elementAt(i);
-			if(C.ID().equalsIgnoreCase(name))
-			{
-				return C;
-			}
+			Clan C=(Clan)e.nextElement();
+			if((C!=C1)
+			&&(C!=C2)
+			&&(((C1.getClanRelations(C.ID())==Clan.REL_ALLY)&&(C2.getClanRelations(C.ID())==Clan.REL_WAR)))
+				||((C2.getClanRelations(C.ID())==Clan.REL_ALLY)&&(C1.getClanRelations(C.ID())==Clan.REL_WAR)))
+					return Clan.REL_WAR;
 		}
-		return null;
+		return rel;
+	}
+	
+	public int getClanRelations(String id)
+	{
+		Integer I=(Integer)relations.get(id.toUpperCase());
+		if(I!=null) return I.intValue();
+		return	Clan.REL_NEUTRAL;
+	}
+	
+	public static Clan getClan(String id)
+	{
+		return (Clan)all.get(id.toUpperCase());
 	}
 
 	public static Clan getClanType(int type)
@@ -77,6 +115,15 @@ public class Clans implements Clan, Tickable
 		}
 	}
 
+	public void setClanRelations(String id, int rel)
+	{
+		relations.remove(id.toUpperCase());
+		relations.put(id.toUpperCase(),new Integer(rel));
+	}
+	
+	public int getGovernment(){return government;}
+	public void setGovernment(int type){government=type;}
+	
 	public static String getRoleName(int role, boolean titleCase, boolean plural)
 	{
 		StringBuffer roleName=new StringBuffer();
@@ -107,9 +154,9 @@ public class Clans implements Clan, Tickable
 		}
 		if(titleCase)
 		{
-		  String titled=Util.capitalize(roleName.toString());
-		  roleName.setLength(0);
-		  roleName.append(titled);
+			String titled=Util.capitalize(roleName.toString());
+			roleName.setLength(0);
+			roleName.append(titled);
 		}
 		if(plural)
 		{
@@ -138,7 +185,7 @@ public class Clans implements Clan, Tickable
 	public static void createClan(Clan C)
 	{
 		ExternalPlay.DBCreateClan(C);
-		addElement(C);
+		addClan(C);
 	}
 
 	public static void updateClan(Clan C)
@@ -161,46 +208,28 @@ public class Clans implements Clan, Tickable
 			}
 		}
 		ExternalPlay.DBDeleteClan(C);
-		removeElement(C);
+		removeClan(C);
 	}
 
-	public static Clan elementAt(int x)
+	public static Enumeration clans()
 	{
-		return (Clan)all.elementAt(x);
+		return all.elements();
 	}
 	public static int size()
 	{
 		return all.size();
 	}
-	public static void addElement(Clan C)
+	public static void addClan(Clan C)
 	{
 		ExternalPlay.startTickDown(C,Host.CLAN_TICK,(int)Host.TICKS_PER_MUDDAY);
-		all.addElement(C);
+		all.put(C.ID().toUpperCase(),C);
 	}
-	public static void removeElementAt(int x)
-	{
-		removeElement(elementAt(x));
-	}
-	public static void removeElement(Clan C)
+	public static void removeClan(Clan C)
 	{
 		ExternalPlay.deleteTick(C,Host.CLAN_TICK);
-		all.removeElement(C);
+		all.remove(C.ID().toUpperCase());
 	}
 	
-	String clanName="";
-	/**
-	  * String containing a short story on the Clan.
-	  * Clan's will have premises set in game so people can find out
-	  * about Clans via in-game functions and through the web-site.
-	  */
-	String clanPremise="";
-	String clanRecall="";
-	String clanDonationRoom="";
-	String AcceptanceSettings="";
-	int clanType=Clan.TYPE_CLAN;
-	int ClanStatus=0;
-	String PoliticString="";
-
 	public String getDetail(MOB mob)
 	{
 		Clan C=this;
@@ -219,9 +248,7 @@ public class Clans implements Clan, Tickable
 			msg.append("-----------------------------------------------------------------\n\r"
 			          +Util.padRight(Clans.getRoleName(Clan.POS_MEMBER,true,true),16)
 					  +": "+crewList(C,Clan.POS_MEMBER)+"\n\r");
-			if((mob.getClanRole()==Clan.POS_BOSS)
-			||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-			||(mob.getClanRole()==Clan.POS_LEADER))
+			if(C.allowedToDoThis(mob,Clan.FUNC_CLANACCEPT)>=0)
 			{
 				msg.append("-----------------------------------------------------------------\n\r"
 				        +Util.padRight(Clans.getRoleName(Clan.POS_APPLICANT,true,true),16)+": "+crewList(C,Clan.POS_APPLICANT)+"\n\r");
@@ -262,6 +289,152 @@ public class Clans implements Clan, Tickable
 			return "Clan";
 		}
 		return "Clan";
+	}
+	
+	public int allowedToDoThis(MOB mob, int function)
+	{
+		if(mob==null) return -1;
+		int role=mob.getClanRole();
+		if(government==Clan.GVT_OLIGARCHY)
+		{
+			switch(function)
+			{
+			case FUNC_CLANACCEPT:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANASSIGN:
+				return 0;
+			case FUNC_CLANEXILE:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANHOMESET:
+				return 0;
+			case FUNC_CLANDONATESET:
+				return 0;
+			case FUNC_CLANREJECT:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANPREMISE:
+				return 0;
+			case FUNC_CLANPROPERTYOWNER:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANWITHDRAW:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_TREASURER))?1:-1;
+			case FUNC_CLANDEPOSITLIST:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_TREASURER))?1:-1;
+			case FUNC_CLANCANORDERUNDERLINGS:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF))?1:-1;
+			case FUNC_CLANCANORDERCONQUERED:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+			case FUNC_CLANVOTEASSIGN:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANVOTEOTHER:
+				return (role==Clan.POS_BOSS)?1:-1;
+			}
+		}
+		else
+		if(government==Clan.GVT_REPUBLIC)
+		{
+			switch(function)
+			{
+			case FUNC_CLANACCEPT:
+				return 0;
+			case FUNC_CLANASSIGN:
+				return 0;
+			case FUNC_CLANEXILE:
+				return 0;
+			case FUNC_CLANHOMESET:
+				return 0;
+			case FUNC_CLANDONATESET:
+				return 0;
+			case FUNC_CLANREJECT:
+				return 0;
+			case FUNC_CLANPREMISE:
+				return 0;
+			case FUNC_CLANPROPERTYOWNER:
+				return (role==Clan.POS_LEADER)?1:-1;
+			case FUNC_CLANWITHDRAW:
+				return (role==Clan.POS_TREASURER)?1:-1;
+			case FUNC_CLANDEPOSITLIST:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+			case FUNC_CLANCANORDERUNDERLINGS:
+				return -1;
+			case FUNC_CLANCANORDERCONQUERED:
+				return (role==Clan.POS_STAFF)?1:-1;
+			case FUNC_CLANVOTEASSIGN:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+			case FUNC_CLANVOTEOTHER:
+				return (role==Clan.POS_BOSS)?1:-1;
+			}
+		}
+		else
+		if(government==Clan.GVT_DEMOCRACY)
+		{
+			switch(function)
+			{
+			case FUNC_CLANACCEPT:
+				return 0;
+			case FUNC_CLANASSIGN:
+				return 0;
+			case FUNC_CLANEXILE:
+				return 0;
+			case FUNC_CLANHOMESET:
+				return 0;
+			case FUNC_CLANDONATESET:
+				return 0;
+			case FUNC_CLANREJECT:
+				return 0;
+			case FUNC_CLANPREMISE:
+				return 0;
+			case FUNC_CLANPROPERTYOWNER:
+				return 0;
+			case FUNC_CLANWITHDRAW:
+				return (role==Clan.POS_TREASURER)?1:-1;
+			case FUNC_CLANDEPOSITLIST:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+			case FUNC_CLANCANORDERUNDERLINGS:
+				return -1;
+			case FUNC_CLANCANORDERCONQUERED:
+				return (role==Clan.POS_STAFF)?1:-1;
+			case FUNC_CLANVOTEASSIGN:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+			case FUNC_CLANVOTEOTHER:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+			}
+		}
+		else
+		//if(government==Clan.GVT_DICTATORSHIP) or badly formed..
+		{
+			switch(function)
+			{
+			case FUNC_CLANACCEPT:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER))?1:-1;
+			case FUNC_CLANASSIGN:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANEXILE:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANHOMESET:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANDONATESET:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANREJECT:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER))?1:-1;
+			case FUNC_CLANPREMISE:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANPROPERTYOWNER:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANWITHDRAW:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_TREASURER))?1:-1;
+			case FUNC_CLANDEPOSITLIST:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_TREASURER))?1:-1;
+			case FUNC_CLANCANORDERUNDERLINGS:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER))?1:-1;
+			case FUNC_CLANCANORDERCONQUERED:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_STAFF)||(role==Clan.POS_TREASURER))?1:-1;
+			case FUNC_CLANVOTEASSIGN:
+				return -1;
+			case FUNC_CLANVOTEOTHER:
+				return -1;
+			}
+		}
+		return -1;
 	}
 	
 	public Vector getRealMemberList(int PosFilter)
@@ -325,8 +498,57 @@ public class Clans implements Clan, Tickable
 	public String getAcceptanceSettings() { return AcceptanceSettings; }
 	public void setAcceptanceSettings(String newSettings) { AcceptanceSettings=newSettings; }
 
-	public String getPolitics() { return PoliticString; }
-	public void setPolitics(String politics) { PoliticString=politics; }
+	public String getPolitics() { 
+		StringBuffer str=new StringBuffer("");
+		str.append("<POLITICS>");
+		str.append(XMLManager.convertXMLtoTag("GOVERNMENT",""+getGovernment()));
+		if(relations.size()==0)
+			str.append("<RELATIONS/>");
+		else
+		{
+			str.append("<RELATIONS>");
+			for(Enumeration e=relations.keys();e.hasMoreElements();)
+			{
+				String key=(String)e.nextElement();
+				str.append("<RELATION>");
+				str.append(XMLManager.convertXMLtoTag("CLAN",key));
+				str.append(XMLManager.convertXMLtoTag("STATUS",""+((Integer)relations.get(key)).intValue()));
+				str.append("</RELATION>");
+			}
+			str.append("</RELATIONS>");
+		}
+		str.append("</POLITICS>");
+		return str.toString(); 
+	}
+	public void setPolitics(String politics) 
+	{ 
+		relations.clear();
+		government=Clan.GVT_DICTATORSHIP;
+		if(politics.trim().length()==0) return;
+		Vector xml=XMLManager.parseAllXML(politics);
+		if(xml==null)
+		{
+			Log.errOut("Clans","Unable to parse: "+politics);
+			return;
+		}
+		Vector poliData=XMLManager.getRealContentsFromPieces(xml,"POLITICS");
+		if(poliData==null){	Log.errOut("Clans","Unable to get POLITICS data."); return;}
+		government=XMLManager.getIntFromPieces(poliData,"GOVERNMENT");
+		// now RESOURCES!
+		Vector xV=XMLManager.getRealContentsFromPieces(poliData,"RELATIONS");
+		if((xV!=null)&&(xV.size()>0))
+		{
+			for(int x=0;x<xV.size();x++)
+			{
+				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
+				if((!iblk.tag.equalsIgnoreCase("RELATION"))||(iblk.contents==null))
+					continue;
+				String relClanID=XMLManager.getValFromPieces(iblk.contents,"CLAN");
+				int rel=XMLManager.getIntFromPieces(iblk.contents,"STATUS");
+				setClanRelations(relClanID,rel);
+			}
+		}
+	}
 
 	public int getStatus() { return ClanStatus; }
 	public void setStatus(int newStatus) { ClanStatus=newStatus; }
@@ -381,9 +603,9 @@ public class Clans implements Clan, Tickable
 	
 	public static void tickAllClans()
 	{
-		for(int c=0;c<all.size();c++)
+		for(Enumeration e=clans();e.hasMoreElements();)
 		{
-			Clan C=(Clan)all.elementAt(c);
+			Clan C=(Clan)e.nextElement();
 			C.tick(C,Host.CLAN_TICK);
 		}
 	}

@@ -1,10 +1,14 @@
 make drunkenness longer
 prop_spelladder doesn't work?!
 clan vote system
-clan politics:
-	dictatorship - class boss assigns everyone, does everything
-	oligarchy - no leaders, bosses vote on everything, clan does nothing
-	republic - no bosses, leaders vote on everything, clan votes on leaders
-	democracy - no bosses, no leaders, clan votes on everything
 mpalarm should check if the mob is stil alive
+clanrequirements string should be settable
+oligarchy vote length is short is 1/10th of clan death INI setting, 100% quarom
+republic/democracy is is 1/4 of the clan death INI setting, quarom 66%/50%
+have setduration mean something for lights and smokes
+booting playerlist makes everyone appear at startroom.
+make it obvious that charclasses must be TRAINed for.
+doors only open from one side
+why does WHERE always show dup areas?!
+dont show name of unseen when showing health text
 

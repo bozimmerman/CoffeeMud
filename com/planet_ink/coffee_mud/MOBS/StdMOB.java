@@ -537,6 +537,9 @@ public class StdMOB implements MOB
 			return true;
 		if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("NEVER"))
 			return false;
+		if((clanID.length()>0)&&(mob.getClanID().length()>0)
+		&&(Clans.getClanRelations(clanID,mob.getClanID())==Clan.REL_WAR))
+			return true;
 		if(!Util.bset(getBitmap(),MOB.ATT_PLAYERKILL)) return false;
 		if(!Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)) return false;
 		return true;
@@ -2139,14 +2142,16 @@ public class StdMOB implements MOB
 		if(mob.isASysOp(mob.location())
 		||(amFollowing()==mob)
 		||(getLeigeID().equals(mob.Name()))
-		||((getClanID().length()>0)
-			&&(getClanID().equals(mob.getClanID()))
-		    &&(mob.getClanRole()!=getClanRole())
-		    &&(getClanRole()!=Clan.POS_BOSS)
-			&&((mob.getClanRole()==Clan.POS_LEADER)
-				||(mob.getClanRole()==Clan.POS_BOSS)))
 		||(ExternalPlay.doesOwnThisProperty(mob,getStartRoom())))
 			return true;
+		if((getClanID().length()>0)&&(getClanID().equals(mob.getClanID())))
+		{
+			Clan C=Clans.getClan(getClanID());
+			if((C!=null)
+			&&(C.allowedToDoThis(mob,Clans.FUNC_CLANCANORDERUNDERLINGS)>=0)
+			&&(mob.getClanRole()>getClanRole()))
+				return true;
+		}
 		return false;
 	}
 	public MOB amFollowing()

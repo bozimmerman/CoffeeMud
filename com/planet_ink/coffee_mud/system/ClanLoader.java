@@ -43,7 +43,7 @@ public class ClanLoader
 				C.setRecall(DBConnections.getRes(R,"CMRCLL"));
 				C.setDonation(DBConnections.getRes(R,"CMDNAT"));
 				C.setStatus(Util.s_int(DBConnections.getRes(R, "CMSTAT")));
-				Clans.addElement(C);
+				Clans.addClan(C);
 		        updateBootStatus(myHost,"Clans");
 			}
 			DBConnector.DBDone(D);

@@ -14,7 +14,7 @@ public class Backpack extends CloseableContainer
 		setDescription("The straps are a little worn, but it\\`s in nice shape!");
 		capacity=25;
 		baseGoldValue=5;
-		properWornBitmap=Item.ON_TORSO|Item.HELD;
+		properWornBitmap=Item.ON_BACK|Item.HELD;
 		recoverEnvStats();
 	}
 

@@ -22,8 +22,8 @@ public interface Clan extends Cloneable, Tickable
 {
 
 	public static final int POS_APPLICANT=0;
-	public static final int POS_STAFF=1;
-	public static final int POS_MEMBER=2;
+	public static final int POS_MEMBER=1;
+	public static final int POS_STAFF=2;
 	public static final int POS_TREASURER=4;
 	public static final int POS_LEADER=8;
 	public static final int POS_BOSS=16;
@@ -31,15 +31,55 @@ public interface Clan extends Cloneable, Tickable
 	public static final int CLANSTATUS_ACTIVE=0;
 	public static final int CLANSTATUS_PENDING=1;
 	public static final int CLANSTATUS_FADING=2;
+	
+	public static final int REL_NEUTRAL=0;
+	public static final int REL_WAR=1;
+	public static final int REL_HOSTILE=2;
+	public static final int REL_FRIENDLY=3;
+	public static final int REL_ALLY=4;
 
+	public static final int[][] RELATIONSHIP_VECTOR={
+{REL_NEUTRAL,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_FRIENDLY},
+{REL_WAR,		REL_WAR,		REL_WAR,		REL_WAR,		REL_WAR},
+{REL_HOSTILE,	REL_WAR,		REL_HOSTILE,	REL_HOSTILE,	REL_HOSTILE},
+{REL_FRIENDLY,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_FRIENDLY},
+{REL_FRIENDLY,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_ALLY},
+	};
+	
+	public static final String[] REL_DESCS={
+		"NEUTRAL","WAR","HOSTILE","FRIENDLY","ALLY"
+	};
+	
+	public static final int GVT_DICTATORSHIP=0;
+	public static final int GVT_OLIGARCHY=1;
+	public static final int GVT_REPUBLIC=2;
+	public static final int GVT_DEMOCRACY=3;
+	public static final String[] FVT_DESCS={
+		"DICTATORSHIP",
+		"OLIGARCHY",
+		"REPUBLIC",
+		"DEMOCRACY"
+	};
+	
 	public static final int TYPE_CLAN=1;
 
-	public static final int SETTING_RESTRICT_LEVEL=1;
-	public static final int SETTING_RESTRICT_RACE=2;
-	public static final int SETTING_RESTRICT_CLASS=4;
-	public static final int SETTING_RESTRICT_ALIGNMENT=8;
-	public static final int SETTING_RESTRICT_GENDER=16;
-
+	public static final int FUNC_CLANACCEPT=0;
+	public static final int FUNC_CLANASSIGN=1;
+	public static final int FUNC_CLANEXILE=2;
+	public static final int FUNC_CLANHOMESET=3;
+	public static final int FUNC_CLANDONATESET=4;
+	public static final int FUNC_CLANREJECT=5;
+	public static final int FUNC_CLANPREMISE=6;
+	public static final int FUNC_CLANPROPERTYOWNER=7;
+	public static final int FUNC_CLANWITHDRAW=8;
+	public static final int FUNC_CLANCANORDERUNDERLINGS=9;
+	public static final int FUNC_CLANCANORDERCONQUERED=10;
+	public static final int FUNC_CLANVOTEASSIGN=11;
+	public static final int FUNC_CLANVOTEOTHER=12;
+	public static final int FUNC_CLANDEPOSITLIST=13;
+	
+	public int allowedToDoThis(MOB mob, int function);
+	
 	public int getSize();
 
 	public String getName();
@@ -77,6 +117,12 @@ public interface Clan extends Cloneable, Tickable
 	public Vector getMemberList();
 	public Vector getMemberList(int PosFilter);
 
+	public int getClanRelations(String id);
+	public void setClanRelations(String id, int rel);
+	
+	public int getGovernment();
+	public void setGovernment(int type);
+		
 	public int getTopRank();
 
 	public void update();

@@ -532,14 +532,15 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 					{
 						thename=affect.source().getClanID();
+						Clan C=Clans.getClan(affect.source().getClanID());
 						if((affect.source().getClanID().length()==0)
-						  ||(Clans.getClan(affect.source().getClanID())==null))
+						  ||(C==null))
 						{
 							ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 							return false;
 						}
-						if((affect.source().getClanRole()!=Clans.POS_BOSS)
-						&&(affect.source().getClanRole()!=Clans.POS_TREASURER))
+						
+						if(C.allowedToDoThis(affect.source(),Clan.FUNC_CLANWITHDRAW)>=0)
 						{
 							ExternalPlay.quickSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 							return false;
@@ -592,14 +593,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 				{
 					thename=affect.source().getClanID();
+					Clan C=Clans.getClan(affect.source().getClanID());
 					if((affect.source().getClanID().length()==0)
-					  ||(Clans.getClan(affect.source().getClanID())==null))
+					  ||(C==null))
 					{
 						ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 						return false;
 					}
-					if((affect.source().getClanRole()!=Clans.POS_BOSS)
-					&&(affect.source().getClanRole()!=Clans.POS_TREASURER))
+					if(C.allowedToDoThis(affect.source(),Clan.FUNC_CLANDEPOSITLIST)>=0)
 					{
 						ExternalPlay.quickSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 						return false;
