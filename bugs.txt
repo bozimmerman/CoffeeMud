@@ -1,4 +1,5 @@
 prop_spelladder doesn't work?!
+require a duration for status change!
 no <> allowed in prompt cmd any more
 booting playerlist makes everyone appear at startroom.
 do the purge list -- have protected names list like ban, purge days by level
