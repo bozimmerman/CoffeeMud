@@ -69,7 +69,15 @@ public class Arrest extends StdBehavior
 		public int offenses=0;
 		public long lastOffense=0;
 		public String warnMsg=null;
-		public void setArrestingOfficer(MOB mob){ arrestingOfficer=mob;	}
+		public void setArrestingOfficer(MOB mob)
+		{ 
+			if((mob==null)&&(arrestingOfficer!=null))
+			{
+				Ability A=arrestingOfficer.fetchAffect("Skill_Track");
+				if(A!=null) A.unInvoke();
+			}
+			arrestingOfficer=mob;	
+		}
 	}
 
 	public boolean modifyBehavior(MOB mob, Object O)
@@ -81,16 +89,34 @@ public class Arrest extends StdBehavior
 				MOB framed=(MOB)O;
 				ArrestWarrant W=null;
 				for(int i=0;(W=getWarrant(mob,i))!=null;i++)
-					if(W.criminal==mob) W.criminal=framed;
+					if(W.criminal==mob) 
+						W.criminal=framed;
 				return true;
 			}
 			else
 			if((O!=null)&&(O instanceof Vector))
 			{
 				Vector V=(Vector)O;
+				ArrestWarrant W=getWarrant(mob,0);
+				if((V.size()>0)
+				&&((V.firstElement() instanceof MOB))
+				&&(W!=null))
+				{
+					MOB officer=(MOB)V.firstElement();
+					if(W.arrestingOfficer==null)
+					{
+						W.setArrestingOfficer(officer);
+						ExternalPlay.quickSay(W.arrestingOfficer,W.criminal,"You are under arrest "+restOfCharges(W.criminal)+"! Sit down on the ground immediately!",false,false);
+						W.state=STATE_ARRESTING;
+						return true;
+					}
+					else
+						return false;
+				}
+				else
 				for(int i=0;i<warrants.size();i++)
 				{
-					ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
+					W=(ArrestWarrant)warrants.elementAt(i);
 					if(isStillACrime(W))
 					{
 						Vector V2=new Vector();
@@ -215,9 +241,12 @@ public class Arrest extends StdBehavior
 		&&(officer.location()!=null)
 		&&(officer.getStartRoom()==officer.location()))
 			return;
-		CoffeeUtensils.wanderAway(officer,true);
-		if(officer.getStartRoom()!=null)
-			officer.getStartRoom().bringMobHere(officer,false);
+		if(officer.isMonster())
+		{
+			CoffeeUtensils.wanderAway(officer,true);
+			if(officer.getStartRoom()!=null)
+				officer.getStartRoom().bringMobHere(officer,false);
+		}
 	}
 	
 	public MOB getAWitnessHere(Room R)
@@ -1190,7 +1219,8 @@ public class Arrest extends StdBehavior
 							if(officer.curState().getMovement()<20)
 								officer.curState().setMovement(20);
 							makePeace(officer.location());
-							ExternalPlay.look(officer,null,true);
+							if(officer.isMonster())
+								ExternalPlay.look(officer,null,true);
 							if(officer.location().fetchInhabitant((String)laws.get("JUDGE"))!=null)
 								W.state=STATE_REPORTING;
 							else

@@ -100,7 +100,7 @@ public class Spell_StinkingCloud extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Hashtable h=null;
-		if((givenTarget!=null)&&(givenTarget!=null))
+		if(givenTarget!=null)
 		{
 			h=new Hashtable();
 			h.put(givenTarget,givenTarget);
