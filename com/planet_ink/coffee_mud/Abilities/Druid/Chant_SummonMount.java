@@ -105,7 +105,11 @@ public class Chant_SummonMount extends Chant
 				target.setStartRoom(null);
 				ExternalPlay.move(target,opDir,false,false);
 				if(target.location()==mob.location())
+				{
 					ExternalPlay.follow(target,mob,true);
+					if(target.amFollowing()!=mob)
+						mob.tell(target.name()+" seems unwilling to follow you.");
+				}
 				invoker=mob;
 				target.addNonUninvokableAffect((Ability)copyOf());
 			}

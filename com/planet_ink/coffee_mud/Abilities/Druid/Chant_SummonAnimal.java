@@ -89,6 +89,8 @@ public class Chant_SummonAnimal extends Chant
 				{
 					ExternalPlay.follow(target,mob,true);
 					beneficialAffect(mob,target,0);
+					if(target.amFollowing()!=mob)
+						mob.tell(target.name()+" seems unwilling to follow you.");
 				}
 				else
 				{

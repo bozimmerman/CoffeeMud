@@ -81,6 +81,8 @@ public class Spell_Clone extends Spell
 					B.startBehavior(myMonster);
 					myMonster.setVictim(mob.getVictim());
 					ExternalPlay.follow(myMonster,mob,true);
+					if(myMonster.amFollowing()!=mob)
+						mob.tell(myMonster.name()+" seems unwilling to follow you.");
 				}
 				invoker=mob;
 				beneficialAffect(mob,myMonster,0);

@@ -90,6 +90,8 @@ public class Spell_DemonGate extends Spell
 				{
 					myMonster.setVictim(mob.getVictim());
 					ExternalPlay.follow(myMonster,mob,true);
+					if(myMonster.amFollowing()!=mob)
+						mob.tell(myMonster.name()+" seems unwilling to follow you.");
 				}
 				invoker=mob;
 				beneficialAffect(mob,myMonster,0);

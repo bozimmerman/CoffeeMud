@@ -119,6 +119,8 @@ public class Spell_Phantasm extends Spell
 					myMonster.getVictim().setVictim(myMonster);
 				invoker=mob;
 				beneficialAffect(mob,myMonster,0);
+				if(myMonster.amFollowing()!=mob)
+					mob.tell(myMonster.name()+" seems unwilling to follow you.");
 			}
 		}
 		else

@@ -70,6 +70,8 @@ public class Prayer_SummonElemental extends Prayer
 				ExternalPlay.follow(myMonster,mob,true);
 				invoker=mob;
 				beneficialAffect(mob,myMonster,0);
+				if(myMonster.amFollowing()!=mob)
+					mob.tell(myMonster.name()+" seems unwilling to follow you.");
 			}
 		}
 		else

@@ -86,6 +86,8 @@ public class Spell_SummonFlyer extends Spell
 				ExternalPlay.follow(target,mob,true);
 				invoker=mob;
 				target.addNonUninvokableAffect((Ability)copyOf());
+				if(target.amFollowing()!=mob)
+					mob.tell(target.name()+" seems unwilling to follow you.");
 			}
 		}
 		else

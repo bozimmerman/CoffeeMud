@@ -86,6 +86,8 @@ public class Skill_ControlUndead extends StdAbility
 						ExternalPlay.follow(target,mob,false);
 						ExternalPlay.makePeaceInGroup(mob);
 						invoker=mob;
+						if(target.amFollowing()!=mob)
+							mob.tell(target.name()+" seems unwilling to follow you.");
 					}
 					else
 					{

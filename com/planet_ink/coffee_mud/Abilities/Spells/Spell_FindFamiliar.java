@@ -47,6 +47,8 @@ public class Spell_FindFamiliar extends Spell
 				MOB target = determineMonster(mob, mob.envStats().level());
 				ExternalPlay.follow(target,mob,true);
 				invoker=mob;
+				if(target.amFollowing()!=mob)
+					mob.tell(target.name()+" seems unwilling to follow you.");
 			}
 		}
 		else

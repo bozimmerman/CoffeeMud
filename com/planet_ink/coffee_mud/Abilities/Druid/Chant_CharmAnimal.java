@@ -108,6 +108,8 @@ public class Chant_CharmAnimal extends Chant
 					{
 						ExternalPlay.follow(target,mob,false);
 						ExternalPlay.makePeaceInGroup(mob);
+						if(target.amFollowing()!=mob)
+							mob.tell(target.name()+" seems unwilling to follow you.");
 					}
 				}
 			}

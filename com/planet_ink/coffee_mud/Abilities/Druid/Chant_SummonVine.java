@@ -117,7 +117,11 @@ public class Chant_SummonVine extends Chant
 				{
 					beneficialAffect(mob,target,0);
 					ExternalPlay.follow(target,mob,true);
+					if(target.amFollowing()!=mob)
+						mob.tell(target.name()+" seems unwilling to follow you.");
 				}
+				else
+					mob.tell("Nature seems unwilling to heed to your call.");
 			}
 		}
 		else

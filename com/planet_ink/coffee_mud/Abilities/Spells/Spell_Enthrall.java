@@ -125,6 +125,8 @@ public class Spell_Enthrall extends Spell
 					{
 						ExternalPlay.follow(target,mob,false);
 						ExternalPlay.makePeaceInGroup(mob);
+						if(target.amFollowing()!=mob)
+							mob.tell(target.name()+" seems unwilling to follow you.");
 					}
 				}
 			}
