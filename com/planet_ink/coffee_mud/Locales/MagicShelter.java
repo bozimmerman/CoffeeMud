@@ -24,15 +24,31 @@ public class MagicShelter extends StdRoom
 		{
 			A.setBorrowed(this,true);
 			addAffect(A);
-			A=CMClass.getAbility("Prop_NoRecall");
+		}
+		A=CMClass.getAbility("Prop_NoRecall");
+		if(A!=null)
+		{
 			A.setBorrowed(this,true);
 			addAffect(A);
-			A=CMClass.getAbility("Prop_RestrictSpells");
-			A.setBorrowed(this,true);
-			A.setMiscText(A.text()+" Spell_Summon Spell_SummonMonster Spell_Charm Song_Friendship ");
-			A.setMiscText(A.text()+text()+" Spell_Teleport Spell_Gate Spell_Portal Spell_Shelter");
 		}
-		this.addAffect(A);
+		A=CMClass.getAbility("Prop_NoSummon");
+		if(A!=null)
+		{
+			A.setBorrowed(this,true);
+			addAffect(A);
+		}
+		A=CMClass.getAbility("Prop_NoTeleport");
+		if(A!=null)
+		{
+			A.setBorrowed(this,true);
+			addAffect(A);
+		}
+		A=CMClass.getAbility("Prop_NoTeleportOut");
+		if(A!=null)
+		{
+			A.setBorrowed(this,true);
+			addAffect(A);
+		}
 	}
 
 	public Environmental newInstance()

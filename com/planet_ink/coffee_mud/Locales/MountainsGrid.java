@@ -9,7 +9,7 @@ public class MountainsGrid extends StdGrid
 	public MountainsGrid()
 	{
 		super();
-		name="the jungle";
+		name="the mountains";
 		baseEnvStats.setWeight(5);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_MOUNTAINS;
@@ -19,6 +19,6 @@ public class MountainsGrid extends StdGrid
 	{
 		return new MountainsGrid();
 	}
-	public String getChildLocaleID(){return "MountainSurface";}
+	public String getChildLocaleID(){return "Mountains";}
 	public Vector resourceChoices(){return Mountains.roomResources;}
 }
