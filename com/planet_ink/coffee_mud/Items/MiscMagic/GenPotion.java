@@ -37,6 +37,14 @@ public class GenPotion extends GenWater implements Potion
 	{
 		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),getSpells(this));
 	}
+	
+	public int value()
+	{
+		if(isDrunk()) 
+			return 0;
+		else 
+			return super.value();
+	}
 
 	public void drinkIfAble(MOB mob, Potion me)
 	{new StdPotion().drinkIfAble(mob,me);}

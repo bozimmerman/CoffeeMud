@@ -1,13 +1,13 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Prayers;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Spell_AnimateDead extends Spell
+public class Prayer_AnimateDead extends Prayer
 {
-	public Spell_AnimateDead()
+	public Prayer_AnimateDead()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -17,6 +17,9 @@ public class Spell_AnimateDead extends Spell
 		isAutoinvoked=false;
 
 		baseEnvStats().setLevel(24);
+		
+		holyQuality=Prayer.HOLY_EVIL;
+		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
@@ -25,11 +28,7 @@ public class Spell_AnimateDead extends Spell
 
 	public Environmental newInstance()
 	{
-		return new Spell_AnimateDead();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
+		return new Prayer_AnimateDead();
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -78,7 +77,7 @@ public class Spell_AnimateDead extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> chant(s) over <T-NAMESELF> hungrily.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> pray(s) over <T-NAMESELF> hungrily, calling on evil powers.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -123,7 +122,7 @@ public class Spell_AnimateDead extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) for dark powers, but fail(s) miserably.");
 
 
 		// return whether it worked

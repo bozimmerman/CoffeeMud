@@ -303,6 +303,13 @@ public class StdArmor extends StdItem implements Armor
 				affectableStats.setArmor(affectableStats.armor()-envStats().ability());
 		}
 	}
+	public int value()
+	{
+		if(usesRemaining()<100)
+			return (int)Math.round(Util.mul(super.value(),Util.div(usesRemaining(),100)));
+		else 
+			return super.value();
+	}
 
 	public String secretIdentity()
 	{

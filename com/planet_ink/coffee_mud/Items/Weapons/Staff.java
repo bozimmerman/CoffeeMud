@@ -55,7 +55,13 @@ public class Staff extends StdWeapon implements Wand
 	{
 		return CMClass.getAbility(text());
 	}
-
+	public int value()
+	{
+		if(usesRemaining()<=0) 
+			return 0;
+		else 
+			return super.value();
+	}
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();

@@ -76,6 +76,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_ResistAcid",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_FaerieFire",false);
 			// level 6
+			CMAble.addCharAbilityMapping(ID(),6,"Spell_Augury",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_Charm",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_Meld",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_DetectInvisible",false);
@@ -108,12 +109,14 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),10,"Spell_Teleport",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Spell_Mute",false);
 			// level 11
+			CMAble.addCharAbilityMapping(ID(),11,"Spell_Claireaudience",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_Feeblemind",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_Stoneskin",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_HeatMetal",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_Weaken",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_MirrorImage",false);
 			// level 12
+			CMAble.addCharAbilityMapping(ID(),11,"Spell_Clairevoyance",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Spell_ChangeSex",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Spell_Haste",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Spell_DestroyObject",false);
@@ -127,6 +130,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),13,"Spell_Frenzy",false);
 			// level 14
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_Alarm",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Spell_KnowValue",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_Silence",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_MassInvisibility",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_Scribe",false);
@@ -142,7 +146,6 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_Web",false);
 			// level 17
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_ClarifyScroll",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Spell_Drain",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_RechargeWand",false);
 			// level 18
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Delude",false);
@@ -162,7 +165,6 @@ public class Mage extends StdCharClass
 			// level 23
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_Dragonfire",false);
 			// level 24
-			CMAble.addCharAbilityMapping(ID(),24,"Spell_AnimateDead",false);
 			// level 25
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Disintegrate",false);
 			

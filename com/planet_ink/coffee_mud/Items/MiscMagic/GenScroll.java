@@ -38,6 +38,13 @@ public class GenScroll extends GenItem implements Scroll
 	{
 		return theSpells;
 	}
+	public int value()
+	{
+		if(usesRemaining()<=0) 
+			return 0;
+		else 
+			return super.value();
+	}
 
 	public String secretIdentity()
 	{

@@ -28,6 +28,13 @@ public class StdPotion extends StdDrink implements Potion
 	}
 
 	public boolean isDrunk(){return (miscText.toUpperCase().indexOf(";DRUNK")>=0);}
+	public int value()
+	{
+		if(isDrunk()) 
+			return 0;
+		else 
+			return super.value();
+	}
 
 	public void setDrunk(Potion me, boolean isTrue)
 	{

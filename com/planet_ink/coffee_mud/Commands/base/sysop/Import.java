@@ -396,7 +396,7 @@ public class Import
 		case 22: return "Prayer_DispelEvil";
 		case 23: return "Spell_Earthquake";
 		case 24: return "Spell_EnchantWeapon";
-		case 25: return "Spell_Drain";
+		case 25: return "Prayer_Drain";
 		case 26: return "Spell_Fireball";
 		case 27: return "Prayer_Harm";
 		case 28: return "Prayer_Heal";
@@ -418,7 +418,7 @@ public class Import
 		case 44: return "Spell_DetectHidden";
 		case 45: return "Prayer_CureDisease"; // not the real ###
 		case 53: return "Spell_IdentifyObject";
-		case 54: return "Spell_AnimateDead";
+		case 54: return "Prayer_AnimateDead";
 		case 55: return "Spell_Fear";
 		case 56: return "Spell_Fly";
 		case 57: return "Spell_Light";

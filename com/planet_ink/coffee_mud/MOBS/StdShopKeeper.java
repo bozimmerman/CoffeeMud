@@ -566,20 +566,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if(product==null)
 			return val;
 		if(product instanceof Item)
-		{
 			val=((Item)product).value();
-			if((product instanceof Potion)&&(((Potion)product).isDrunk()))
-				val=0;
-			else
-			if((product instanceof Wand)&&(((Wand)product).usesRemaining()<1))
-				val=0;
-			else
-			if((product instanceof Scroll)&&(((Scroll)product).usesRemaining()<1))
-				val=0;
-			else
-			if((product instanceof Armor)&&(((Item)product).usesRemaining()<100))
-				val=(int)Math.round(Util.mul(val,Util.div(((Item)product).usesRemaining(),100)));
-		}
 		else
 		if(product instanceof Ability)
 		{

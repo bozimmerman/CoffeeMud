@@ -47,7 +47,13 @@ public class StdWand extends StdItem implements Wand
 		mob.curState().adjMana(-manaRequired,mob.maxState());
 		return true;
 	}
-
+	public int value()
+	{
+		if(usesRemaining()<=0) 
+			return 0;
+		else 
+			return super.value();
+	}
 	public void setSpell(Ability theSpell)
 	{
 		miscText="";

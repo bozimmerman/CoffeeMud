@@ -44,6 +44,13 @@ public class GenWand extends GenItem implements Wand
 	{
 		return CMClass.getAbility(readableText());
 	}
+	public int value()
+	{
+		if(usesRemaining()<=0) 
+			return 0;
+		else 
+			return super.value();
+	}
 
 	public String secretIdentity()
 	{

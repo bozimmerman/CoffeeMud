@@ -42,6 +42,13 @@ public class GenStaff extends GenWeapon implements Wand
 	{
 		return new StdWand().useTheWand(A,mob);
 	}
+	public int value()
+	{
+		if(usesRemaining()<=0) 
+			return 0;
+		else 
+			return super.value();
+	}
 	public void setSpell(Ability theSpell)
 	{
 		readableText="";
