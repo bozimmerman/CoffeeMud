@@ -216,6 +216,34 @@ public class DataLoader
 		}
 		if(D!=null) DBConnector.DBDone(D);
 	}
+	public static void DBDeletePlayer(String playerID)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
+			{
+				Vector keys=new Vector();
+				ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'");
+				while(R.next())
+					keys.addElement(DBConnections.getRes(R,"CMPKEY"));
+				for(int i=0;i<keys.size();i++)
+				{
+					DBConnector.DBDone(D);
+					D=DBConnector.DBFetch();
+					D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+((String)keys.elementAt(i))+"'",0);
+				}
+			}
+			else
+				D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"'",0);
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		if(D!=null) DBConnector.DBDone(D);
+	}
 	public static void DBDelete(String playerID, String section, String key)
 	{
 		

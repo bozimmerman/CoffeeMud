@@ -421,11 +421,14 @@ public class LeatherWorking extends CraftingSkill
 			}
 			if(building instanceof Drink)
 			{
-				((Drink)building).setLiquidRemaining(0);
-				((Drink)building).setLiquidHeld(capacity*50);
-				((Drink)building).setThirstQuenched(250);
-				if((capacity*50)<250)
-					((Drink)building).setThirstQuenched(capacity*50);
+				if(Sense.isGettable(building))
+				{
+					((Drink)building).setLiquidRemaining(0);
+					((Drink)building).setLiquidHeld(capacity*50);
+					((Drink)building).setThirstQuenched(250);
+					if((capacity*50)<250)
+						((Drink)building).setThirstQuenched(capacity*50);
+				}
 			}
 			building.recoverEnvStats();
 			building.text();

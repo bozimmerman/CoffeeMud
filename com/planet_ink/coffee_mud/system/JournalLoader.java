@@ -190,6 +190,41 @@ public class JournalLoader
 		DBConnector.update("DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'");
 	}
 	
+	public static synchronized void DBDeletePlayerData(String name)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
+			{
+				Vector keys=new Vector();
+				ResultSet R=D.query("SELECT * FROM CMJNRL");
+				while(R.next())
+				{
+					String playerID2=DBConnections.getRes(R,"CMJKEY");
+					String section2=DBConnections.getRes(R,"CMTONM");
+					if(section2.equalsIgnoreCase(name))
+						keys.addElement(playerID2);
+				}
+				for(int i=0;i<keys.size();i++)
+				{
+					DBConnector.DBDone(D);
+					D=DBConnector.DBFetch();
+					D.update("DELETE FROM CMJNRL WHERE CMJKEY='"+((String)keys.elementAt(i))+"'",0);
+				}
+			}
+			else
+				D.update("DELETE FROM CMJNRL WHERE CMTONM='"+name+"'",0);
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("JournalLoader",sqle);
+		}
+		if(D!=null) DBConnector.DBDone(D);
+		
+	}
+	
 	public static synchronized void DBDelete(String Journal, int which)
 	{
 		if(which<0)

@@ -344,11 +344,14 @@ public class Carpentry extends CraftingSkill
 			}
 			if(building instanceof Drink)
 			{
-				((Drink)building).setLiquidHeld(capacity*50);
-				((Drink)building).setThirstQuenched(250);
-				if((capacity*50)<250)
-					((Drink)building).setThirstQuenched(capacity*50);
-				((Drink)building).setLiquidRemaining(0);
+				if(Sense.isGettable(building))
+				{
+					((Drink)building).setLiquidHeld(capacity*50);
+					((Drink)building).setThirstQuenched(250);
+					if((capacity*50)<250)
+						((Drink)building).setThirstQuenched(capacity*50);
+					((Drink)building).setLiquidRemaining(0);
+				}
 			}
 			if(building instanceof Rideable)
 			{

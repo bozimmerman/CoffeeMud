@@ -713,6 +713,8 @@ public class MOBloader
 				mob.delAbility(A);
 		}
 		DBUpdateAbilities(mob);
+		JournalLoader.DBDeletePlayerData(mob.Name());
+		DataLoader.DBDeletePlayer(mob.Name());
 	}
 
 	public static void DBUpdateAbilities(MOB mob)

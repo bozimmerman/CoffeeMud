@@ -307,7 +307,11 @@ public class Pregnancy extends StdAbility
 										}
 									}
 								}
-								catch(java.io.IOException e){};
+								catch(Throwable t)
+								{
+									ticksInLabor=0;
+									return true;
+								};
 							}
 							String desc="The "+sondat+" of "+mob.Name();
 							String race2=mob.baseCharStats().getMyRace().ID();

@@ -1623,8 +1623,11 @@ public class Arrest extends StdBehavior
 				if((laws.basicCrimes().containsKey("NUDITY"))
 				&&(!msg.source().isMonster())
 				&&(msg.source().fetchFirstWornItem(Item.ON_LEGS)==null)
+				&&(msg.source().getWearPositions(Item.ON_LEGS)>0)
 				&&(msg.source().fetchFirstWornItem(Item.ON_WAIST)==null)
-				&&(msg.source().fetchFirstWornItem(Item.ABOUT_BODY)==null))
+				&&(msg.source().getWearPositions(Item.ON_WAIST)>0)
+				&&(msg.source().fetchFirstWornItem(Item.ABOUT_BODY)==null)
+				&&(msg.source().getWearPositions(Item.ABOUT_BODY)>0))
 				{
 					String info[]=(String[])laws.basicCrimes().get("NUDITY");
 					fillOutWarrant(msg.source(),
