@@ -1,3 +1,10 @@
+!mpecho eating first word in scriptable
+!sex should look for numbers too in scriptable
+! add ispkill(i$)
+!add name function like isname
+! test construction, masonry
+characters are no longer have the infravsion tag turned on
+dont show falling for someone treading water 
 save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
 Pottery
 	BRICKS converts a clay resource to a stone

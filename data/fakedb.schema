@@ -143,8 +143,8 @@ CMQWINNS string NULL
 
 CMPDAT
 CMPLID string KEY
-CMSECT string KEY
-CMPKEY string KEY
+CMSECT string NULL
+CMPKEY string NULL
 CMPDAT string NULL
 
 CMGRAC
@@ -154,4 +154,3 @@ CMRDAT string NULL
 CMCCAC
 CMCCID string KEY
 CMCDAT string NULL
-

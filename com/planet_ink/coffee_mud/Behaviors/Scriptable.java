@@ -131,7 +131,9 @@ public class Scriptable extends StdBehavior
 		"ISWEATHER", // 51
 		"GSTAT", // 52
 		"INCONTAINER", //53
-		"ISALIVE" // 54
+		"ISALIVE", // 54
+		"ISPKILL", // 55
+		"NAME" // 56
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -391,30 +393,58 @@ public class Scriptable extends StdBehavior
 		return room;
 	}
 
-	private boolean simpleEval(String arg1, String arg2, String cmp, String cmdName)
+	private boolean simpleEvalStr(String arg1, String arg2, String cmp, String cmdName)
 	{
-		int val=Util.s_int(arg1);
-		int val2=Util.s_int(arg2);
+		int x=arg1.compareToIgnoreCase(arg2);
 		if(cmp.equalsIgnoreCase("=="))
-			return (val==val2);
+			return (x==0);
 		else
 		if(cmp.equalsIgnoreCase(">="))
-			return (val>=val2);
+			return (x==0)||(x>0);
 		else
 		if(cmp.equalsIgnoreCase("<="))
-			return (val<=val2);
+			return (x==0)||(x<0);
 		else
 		if(cmp.equalsIgnoreCase(">"))
-			return (val>val2);
+			return (x>0);
 		else
 		if(cmp.equalsIgnoreCase("<"))
-			return (val<val2);
+			return (x<0);
 		else
 		if(cmp.equalsIgnoreCase("!="))
-			return (val!=val2);
+			return (x!=0);
 		else
 		{
-			Log.errOut("Scriptable",cmdName+" Syntax -- "+val+" "+arg2+" "+val2);
+			Log.errOut("Scriptable",cmdName+" Syntax -- "+arg1+" "+cmp+" "+arg2);
+			return false;
+		}
+	}
+	
+	
+	private boolean simpleEval(String arg1, String arg2, String cmp, String cmdName)
+	{
+		long val1=Util.s_long(arg1);
+		long val2=Util.s_long(arg2);
+		if(cmp.equalsIgnoreCase("=="))
+			return (val1==val2);
+		else
+		if(cmp.equalsIgnoreCase(">="))
+			return val1>=val2;
+		else
+		if(cmp.equalsIgnoreCase("<="))
+			return val1<=val2;
+		else
+		if(cmp.equalsIgnoreCase(">"))
+			return (val1>val2);
+		else
+		if(cmp.equalsIgnoreCase("<"))
+			return (val1<val2);
+		else
+		if(cmp.equalsIgnoreCase("!="))
+			return (val1!=val2);
+		else
+		{
+			Log.errOut("Scriptable",cmdName+" Syntax -- "+val1+" "+cmp+" "+val2);
 			return false;
 		}
 	}
@@ -757,6 +787,19 @@ public class Scriptable extends StdBehavior
 					returnable=true;
 				break;
 			}
+			case 55: // ispkill
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				if(Util.bset(((MOB)E).getBitmap(),MOB.ATT_PLAYERKILL))
+					returnable=true;
+				else
+					returnable=false;
+				break;
+			}
 			case 7: // isname
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
@@ -766,6 +809,18 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				else
 					returnable=CoffeeUtensils.containsString(E.name(),arg2);
+				break;
+			}
+			case 56: // name
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E==null)
+					returnable=false;
+				else
+					returnable=simpleEvalStr(E.Name(),arg3,arg2,"NAME");
 				break;
 			}
 			case 14: // affected
@@ -1188,9 +1243,16 @@ public class Scriptable extends StdBehavior
 			}
 			case 18: // sex
 			{
-				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0).toUpperCase());
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase());
+				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
+				if(Util.isNumber(arg3))
+					switch(Util.s_int(arg3))
+					{
+					case 0: arg3="NEUTER"; break;
+					case 1: arg3="MALE"; break;
+					case 2: arg3="FEMALE"; break;
+					}
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -1849,6 +1911,19 @@ public class Scriptable extends StdBehavior
 					results.append(E.name()+" is dead.");
 				break;
 			}
+			case 55: // ispkill
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E==null)||(!(E instanceof MOB)))
+					results.append("false");
+				else
+				if(Util.bset(((MOB)E).getBitmap(),MOB.ATT_PLAYERKILL))
+					results.append("true");
+				else
+					results.append("false");
+				break;
+			}
 			case 10: // isfight
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
@@ -1883,6 +1958,7 @@ public class Scriptable extends StdBehavior
 					results.append(((MOB)E).amFollowing().name());
 				break;
 			}
+			case 56: // name
 			case 7: // isname
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
@@ -2795,7 +2871,7 @@ public class Scriptable extends StdBehavior
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				if(lastKnownLocation!=null)
 				{
-					if((newTarget!=null)||(m.startsWith("$")))
+					if(((newTarget!=null)&&(newTarget!=monster))||(m.startsWith("$")))
 						lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1)));
 					else
 						lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim()));
