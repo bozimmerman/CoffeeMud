@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.Commands.base.sysop.SysopItemUsage;
+import com.planet_ink.coffee_mud.Commands.base.sysop.CreateEdit;
 import com.planet_ink.coffee_mud.Commands.base.sysop.SysOpSkills;
 import java.io.*;
 import java.util.*;
@@ -229,19 +230,7 @@ public class TheFight
 				if(found)
 				{
 					Body=target.killMeDead();
-					if(CMMap.MOBs.get(deadMOB.ID())!=null)
-					{
-					   deadMOB=(MOB)CMMap.MOBs.get(deadMOB.ID());
-					   CMMap.MOBs.remove(deadMOB.ID());
-					}
-					for(int s=0;s<Sessions.size();s++)
-					{
-						Session S=(Session)Sessions.elementAt(s);
-						if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().ID().equals(deadMOB.ID())))
-						   deadMOB=S.mob();
-					}
-					deadMOB.destroy();
-					ExternalPlay.DBDeleteMOB(deadMOB);
+					ExternalPlay.destroyUser(deadMOB);
 				}
 			}
 			else

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Commands.base;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.Commands.base.sysop.*;
 import java.io.*;
 import java.util.*;
 public class Scoring
@@ -38,6 +39,43 @@ public class Scoring
 		return msg;
 	}
 	
+	public void destroyUser(MOB deadMOB)
+	{
+		if(CMMap.MOBs.get(deadMOB.ID())!=null)
+		{
+		   deadMOB=(MOB)CMMap.MOBs.get(deadMOB.ID());
+		   CMMap.MOBs.remove(deadMOB.ID());
+		}
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session S=(Session)Sessions.elementAt(s);
+			if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().ID().equals(deadMOB.ID())))
+			   deadMOB=S.mob();
+		}
+		FullMsg msg=new FullMsg(deadMOB,null,Affect.MSG_RETIRE,"A horrible death cry is heard throughout the land.");
+		for(int r=0;r<CMMap.numRooms();r++)
+		{
+			Room R=CMMap.getRoom(r);
+			if(R!=null)
+			{
+				if(R.okAffect(msg))
+					R.send(deadMOB,msg);
+				else
+				{
+					CMMap.MOBs.put(deadMOB.ID(),deadMOB);
+					return;
+				}
+			}
+		}
+		deadMOB.destroy();
+		ExternalPlay.DBDeleteMOB(deadMOB);
+		if(deadMOB.session()!=null)
+		{
+			deadMOB.session().setKillFlag(true);
+			deadMOB.session().setMob(null);
+		}
+	}
+
 	public void retire(MOB mob)
 		throws IOException
 	{
@@ -55,17 +93,7 @@ public class Scoring
 		if(pwd.equalsIgnoreCase("Y"))
 		{
 			mob.tell("Fine!  Goodbye then!");
-			CMMap.MOBs.remove(mob.ID());
-			mob.destroy();
-			ExternalPlay.DBDeleteMOB(mob);
-			for(int m=0;m<CMMap.numRooms();m++)
-			{
-				Room R=CMMap.getRoom(m);
-				if(R!=null)
-					R.showOthers(mob,null,Affect.MSG_OK_ACTION,"A horrible death cry can be heard throughout the land.");
-			}
-			mob.session().setKillFlag(true);
-			mob.session().setMob(null);
+			destroyUser(mob);
 		}
 		else
 			mob.tell("Whew.  Close one.");

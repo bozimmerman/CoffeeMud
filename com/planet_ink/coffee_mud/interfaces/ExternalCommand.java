@@ -45,5 +45,6 @@ public interface ExternalCommand
 	public String getOpenRoomID(String areaName);
 	public void obliterateArea(String areaName);
 	public void obliterateRoom(Room deadRoom);
+	public void destroyUser(MOB deadMOB);
 	
 }
