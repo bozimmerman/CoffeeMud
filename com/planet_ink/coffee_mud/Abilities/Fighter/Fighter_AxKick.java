@@ -70,6 +70,8 @@ public class Fighter_AxKick extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				if(msg.value()>0)
+					damage = (int)Math.round(Util.div(damage,2.0));
 				MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_BASHING,"^F<S-NAME> <DAMAGE> <T-NAME> with a ferocious AX KICK!^?");
 			}
 		}

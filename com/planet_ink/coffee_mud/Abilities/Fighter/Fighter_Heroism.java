@@ -26,7 +26,7 @@ public class Fighter_Heroism extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if((!Sense.isSitting(mob))
-		&&(Sense.isSleeping(mob))
+		&&(!Sense.isSleeping(mob))
 		&&(mob.isInCombat())
 		&&(Dice.rollPercentage()==1)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false))
