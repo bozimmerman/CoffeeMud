@@ -765,7 +765,7 @@ public class Clans implements Clan, Tickable
 				{
 					for(int i=0;i<members.size();i++)
 					{
-						if(((Integer)members.elementAt(i,2)).intValue()==highest)
+						if(getRoleOrder(((Integer)members.elementAt(i,2)).intValue())==highest)
 						{
 							String s=(String)members.elementAt(i,1);
 							clanAnnounce(s+" is now a "+Clans.getRoleName(getGovernment(),max,true,false));

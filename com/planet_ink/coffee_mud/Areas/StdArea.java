@@ -207,7 +207,9 @@ public class StdArea implements Area
 	public boolean canSeeTheSun(Room room)
 	{
 		if(((timeCode!=Area.TIME_DAY)&&(timeCode!=Area.TIME_DAWN))
-		   ||(!hasASky(room)))
+		||(!hasASky(room)))
+			return false;
+		
 		switch(weatherType(room))
 		{
 		case Area.WEATHER_BLIZZARD:
@@ -222,6 +224,7 @@ public class StdArea implements Area
 		default:
 			return true;
 		}
+		
 	}
 	public String timeDescription(MOB mob, Room room)
 	{

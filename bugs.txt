@@ -4,10 +4,15 @@ A young player had a follower, who had the skill kick and a decent amount of mov
 Re-conncting.  Anytime they reconnect for any reason (like link death), their followers are no longer following them, esp pets they bought or hirelings they had.  The latter is fine, but the former is a big problem.  Players with carts and horses find that their horses no longer will take their orders.
 A sengir Scholar was killed by one touch of my flameshield. It just said that it warmed him, but he died
 amputation does not affect wear position
-a modification to the charm spell to allow the names of players as parameters would do the trick.
+i think re targeting in combat needs work
+I have noticed this, Lothos has noticed it. Sometimes, at the expiration of a spell, you will suddenly die. Lothos died when his Mage armor wore off. I have died when haste wore off. The Sengir Scholar will sometimes die if you take his book away from him. I don't know what it is...maybe other affects interacting...but it is definitely a bug.
 packaging skill now
 book of laws can be crafted
-Helix wanted help on protection from good
-IN archon command to do delayed commands (in 5 ticks at hassan smile) (in 5 minutes shutdown noprompt)
+AFTER archon command to do delayed commands (after 5 ticks at hassan smile) (in 5 minutes shutdown noprompt)
 add noprompt shutdown
-
+Can we get some sorta little INI setting that after X connection attempts within Y minutes, auto-block that IP for Z minutes?
+mudchat shouldn't work if they can't see you.
+have a log for each channel that contains the last 20 or so messages on that channel.
+Coffins should prevent item decay on Body-type items.
+wood and herbs sink
+an archon with playerkill on should be able to override a players playerkill flag
