@@ -70,25 +70,6 @@ public class Spell_WeaknessAcid extends Spell
 		return true;
 	}
 	
-	public boolean tick(int tickID)
-	{
-		if(!super.tick(tickID)) return false;
-		if(tickID!=Host.MOB_TICK) return false;
-		if((affecting()!=null)&&(affecting() instanceof MOB))
-		{
-			MOB dummy=(MOB)affecting();
-			Room room=dummy.location();
-			if(room!=null)
-			{
-				if(((room.getArea().weatherType(room)==Area.WEATHER_RAIN)
-				||(room.getArea().weatherType(room)==Area.WEATHER_THUNDERSTORM))
-				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_ACID)))
-					ExternalPlay.postDamage(invoker,dummy,null,1,Affect.ACT_GENERAL|Affect.TYP_ACID,Weapon.TYPE_BURNING,"The biting rain dissolves and <DAMAGE> <T-NAME>!");
-			}
-		}
-		return true;
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
