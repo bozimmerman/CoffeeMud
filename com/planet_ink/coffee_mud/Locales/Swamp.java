@@ -28,7 +28,11 @@ public class Swamp extends StdRoom
 		   &&(Dice.rollPercentage()==1)
 		   &&(Dice.rollPercentage()==1))
 		{
-			Ability A=CMClass.getAbility("Disease_Chlamydia");
+			Ability A=null;
+			if(Dice.rollPercentage()>50)
+				A=CMClass.getAbility("Disease_Chlamydia");
+			else
+				A=CMClass.getAbility("Disease_Malaria");
 			if((A!=null)&&(msg.source().fetchAffect(A.ID())==null))
 				A.invoke(msg.source(),msg.source(),true);
 		}

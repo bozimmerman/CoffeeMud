@@ -8,7 +8,7 @@ import java.util.*;
 public class Trap_Ignition extends StdTrap
 {
 	public String ID() { return "Trap_Ignition"; }
-	public String name(){ return "ignition";}
+	public String name(){ return "ignition trap";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 8;}

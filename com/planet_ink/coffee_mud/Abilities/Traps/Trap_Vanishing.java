@@ -8,7 +8,7 @@ import java.util.*;
 public class Trap_Vanishing extends StdTrap
 {
 	public String ID() { return "Trap_Vanishing"; }
-	public String name(){ return "vanishing";}
+	public String name(){ return "vanishing trap";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 24;}
@@ -26,6 +26,7 @@ public class Trap_Vanishing extends StdTrap
 			{
 				super.spring(target);
 				affected.baseEnvStats().setDisposition(affected.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
+				affected.recoverEnvStats();
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

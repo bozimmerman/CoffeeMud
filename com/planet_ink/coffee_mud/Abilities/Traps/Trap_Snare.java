@@ -8,7 +8,7 @@ import java.util.*;
 public class Trap_Snare extends StdTrap
 {
 	public String ID() { return "Trap_Snare"; }
-	public String name(){ return "snare";}
+	public String name(){ return "snare trap";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 5;}

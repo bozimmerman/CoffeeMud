@@ -8,7 +8,7 @@ import java.util.*;
 public class Trap_Launcher extends StdTrap
 {
 	public String ID() { return "Trap_Launcher"; }
-	public String name(){ return "launcher";}
+	public String name(){ return "launcher trap";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 6;}

@@ -26,7 +26,6 @@ public class Disease extends StdAbility implements DiseaseAffect
 	public int abilityCode(){return 0;}
 	private boolean processing=false;
 	
-
 	protected int diseaseTick=DISEASE_DELAY();
 
 	protected boolean catchIt(MOB mob, Environmental target)

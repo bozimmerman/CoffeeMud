@@ -22,6 +22,8 @@ public class Arcanist extends Thief
 		if(!loaded())
 		{
 			setLoaded(true);
+			
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Apothecary",false);
