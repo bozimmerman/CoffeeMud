@@ -39,21 +39,51 @@ public class Chant_Reincarnation extends Chant
 
 	public boolean tick(int tickID)
 	{
-		if(tickDown<=0)
+		if((tickID==Host.MOB_TICK)
+		&&(tickDown!=Integer.MAX_VALUE)
+		&&((--tickDown)<0))
 		{
+			tickDown=-1;
+			
 			// undo the affects of this spell
 			if((affected==null)||(!(affected instanceof MOB)))
-				return;
+				return super.tick(tickID);
 			MOB mob=(MOB)affected;
-			if(canBeUninvoked())
+			mob.tell("Your reincarnation geis is lifted as your form solidifies.");
+			if(newRace!=null)
+				mob.baseCharStats().setMyRace(newRace);
+			mob.delAffect(this);
+			if(mob.location()!=null)
+				mob.location().recoverRoomStats();
+			else
 			{
-				mob.tell("Your reincarnation geis is lifted as your form solidifies.");
-				if(newRace!=null)
-					mob.baseCharStats().setMyRace(newRace);
+				mob.recoverEnvStats();
+				mob.recoverCharStats();
+				mob.recoverMaxState();
 			}
+			return false;
 		}
+		return super.tick(tickID);
 	}
 
+	public boolean okAffect(Affect msg)
+	{
+		if(!super.okAffect(msg))
+			return false;
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof MOB)))
+			return true;
+		MOB mob=(MOB)affected;
+		if((msg.sourceMinor()==Affect.TYP_DEATH)
+		   &&(msg.amISource(mob)))
+		{
+			newRace=(Race)CMClass.races.elementAt(Dice.roll(1,CMClass.races.size(),-1));
+			if(newRace!=null)
+				mob.tell("You are being reincarnated as a "+newRace.name()+"!!");
+		}
+		return true;	
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -67,10 +97,14 @@ public class Chant_Reincarnation extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		
+		
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) a reincarnation geis upon <T-NAMESELF>.^?");
+			int modifier=0;
+			if(target!=mob) modifier=Affect.MASK_MALICIOUS;
+			FullMsg msg=new FullMsg(mob,target,this,modifier|affectType(auto),"^S<S-NAME> chant(s) a reincarnation geis upon <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
