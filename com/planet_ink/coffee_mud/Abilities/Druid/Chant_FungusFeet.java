@@ -36,7 +36,8 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 					Ability A=CMClass.getAbility("Amputation");
 					if(A!=null)
 					{
-						while(A.invoke(mob,Util.parse("foot"),mob,true));
+						int x=100;
+						while(((--x)>0)&&A.invoke(mob,Util.parse("foot"),mob,true));
 						mob.recoverCharStats();
 						mob.recoverEnvStats();
 						mob.recoverMaxState();

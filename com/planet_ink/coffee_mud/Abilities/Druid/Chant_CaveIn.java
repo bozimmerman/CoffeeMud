@@ -51,8 +51,11 @@ public class Chant_CaveIn extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BOUND);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
+		if(affected instanceof MOB)
+		{
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BOUND);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
+		}
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

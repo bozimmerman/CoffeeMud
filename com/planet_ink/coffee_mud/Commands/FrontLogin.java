@@ -281,6 +281,12 @@ public class FrontLogin extends StdCommand
 					&&((S.mob().playerStats().getFriends().containsKey(mob.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
 						S.mob().tell("^X"+mob.Name()+" has logged on.^.^?");
 				}
+				if((CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ALWAYS"))
+				&&(!Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+					mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
+				if((CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("NEVER"))
+				&&(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+					mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
 				CommonMsgs.channel("WIZINFO","",mob.Name()+" has logged on.",true);
 			}
 			else
@@ -570,6 +576,12 @@ public class FrontLogin extends StdCommand
 					&&((S.mob().playerStats().getFriends().containsKey(mob.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
 						S.mob().tell("^X"+mob.Name()+" has just been created.^.^?");
 				}
+				if((CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ALWAYS"))
+				&&(!Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+					mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
+				if((CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("NEVER"))
+				&&(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+					mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
 				CMClass.DBEngine().DBUpdateMOB(mob);
 				CommonMsgs.channel("WIZINFO","",mob.Name()+" has just been created.",true);
 				CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);

@@ -2,26 +2,6 @@ package com.planet_ink.coffee_mud.interfaces;
 import java.util.*;
 public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListener, Comparable
 {
-	public static final int ARMOR_ANY=0;
-	public static final int ARMOR_CLOTH=1;
-	public static final int ARMOR_LEATHER=2;
-	public static final int ARMOR_NONMETAL=3;
-	public static final int ARMOR_VEGAN=4;
-	public static final int ARMOR_METALONLY=5;
-	public static final int ARMOR_OREONLY=6;
-	public static long ARMOR_WEARMASK=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
-	public static final String[] ARMOR_DESCS={
-		"ANY","CLOTH","LEATHER","NONMETAL","VEGAN","METALONLY","OREONLY"
-	};
-	public static final String[] ARMOR_LONGDESC={
-		"Any",
-		"Must wear cloth, vegetation, or paper based armor.",
-		"Must wear leather, cloth, or vegetation based armor.",
-		"Must wear non-metal armor.",
-		"Must wear wood or vegetation based armor.",
-		"Must wear metal armor"
-	};
-	
 	public String ID();
 	public String name();
 	public String baseClass();
@@ -42,7 +22,6 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public void unLevel(MOB mob);
 	public Vector outfit();
 	
-	public boolean armorCheck(MOB mob);
 	public int classDurationModifier(MOB myChar, Ability skill, int duration);
 
 	public MOB buildMOB(MOB mob, int level, int alignment, int weight, int wimp, char gender);
@@ -74,4 +53,29 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public String getStat(String code);
 	public void setStat(String code, String val);
 	public boolean sameAs(CharClass E);
+	
+	
+	public static final int ARMOR_ANY=0;
+	public static final int ARMOR_CLOTH=1;
+	public static final int ARMOR_LEATHER=2;
+	public static final int ARMOR_NONMETAL=3;
+	public static final int ARMOR_VEGAN=4;
+	public static final int ARMOR_METALONLY=5;
+	public static final int ARMOR_OREONLY=6;
+	public static long ARMOR_WEARMASK=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
+	public static final String[] ARMOR_DESCS={
+		"ANY","CLOTH","LEATHER","NONMETAL","VEGAN","METALONLY","OREONLY"
+	};
+	
+	public static final String[] ARMOR_LONGDESC={
+		"Any",
+		"Must wear cloth, vegetation, or paper based armor.",
+		"Must wear leather, cloth, or vegetation based armor.",
+		"Must wear non-metal armor.",
+		"Must wear wood or vegetation based armor.",
+		"Must wear metal armor"
+	};
+	
+	public static final int WEAPONS_ANY=0;
+	
 }

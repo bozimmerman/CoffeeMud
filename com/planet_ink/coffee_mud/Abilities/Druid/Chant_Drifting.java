@@ -53,15 +53,12 @@ public class Chant_Drifting extends Chant
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((affected instanceof MOB)
-		   &&(tickID==MudHost.TICK_MOB)
-		   &&(!Sense.isFalling((MOB)affected))
-		   &&(((MOB)affected).riding()==null)
-		   &&(((MOB)affected).location()!=null)
-		   &&((((MOB)affected).location().domainType()&Room.INDOORS)==0))
+		&&(tickID==MudHost.TICK_MOB)
+		&&(!Sense.isFalling((MOB)affected))
+		&&(((MOB)affected).riding()==null)
+		&&(((MOB)affected).location()!=null)
+		&&((((MOB)affected).location().domainType()&Room.INDOORS)==0))
 		{
-			((MOB)affected).makePeace();
-			if(Sense.isFlying(affected))
-				affected.envStats().setDisposition(affected.envStats().disposition()-EnvStats.IS_FLYING);
 			Ability A=CMClass.getAbility("Falling");
 			A.setAffectedOne(null);
 			A.setProfficiency(100);
@@ -74,7 +71,7 @@ public class Chant_Drifting extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(!Sense.isFalling(affected))
+		if((affected.fetchEffect("Falling")==null)&&(!Sense.isFalling(affected)))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 

@@ -89,8 +89,7 @@ public class StdAbility implements Ability, Cloneable
 		borrowed=true; // makes it so that the effect does not save!
 
 		if(invoker()!=null)
-			for(int c=0;c<invoker().charStats().numClasses();c++)
-				tickTime=invoker().charStats().getMyClass(c).classDurationModifier(invoker(),this,tickTime);
+			tickTime=invoker().charStats().getCurrentClass().classDurationModifier(invoker(),this,tickTime);
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
@@ -99,8 +98,7 @@ public class StdAbility implements Ability, Cloneable
 				affected.addEffect(this);
 			mob.location().recoverRoomStats();
 			if(invoker()!=affected)
-				for(int c=0;c<mob.charStats().numClasses();c++)
-					tickTime=mob.charStats().getMyClass(c).classDurationModifier(mob,this,tickTime);
+				tickTime=mob.charStats().getCurrentClass().classDurationModifier(mob,this,tickTime);
 		}
 		else
 		{

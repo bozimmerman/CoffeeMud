@@ -372,6 +372,9 @@ public class Amputation extends StdAbility
 					amputate(target,A,gone);
 					if(newOne==true)
 						target.addNonUninvokableEffect(A);
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
 					target.confirmWearability();
 				}
 			}

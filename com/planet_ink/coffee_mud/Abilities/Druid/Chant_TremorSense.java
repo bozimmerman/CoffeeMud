@@ -63,7 +63,7 @@ public class Chant_TremorSense extends Chant
 					invoker.tell("You feel footsteps around you.");
 				else
 				{
-					int dir=MUDTracker.radiatesFromDir(invoker.location(),rooms);
+					int dir=MUDTracker.radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
 						invoker.tell("You feel footsteps "+Directions.getInDirectionName(dir));
 				}
@@ -77,7 +77,7 @@ public class Chant_TremorSense extends Chant
 					invoker.tell("You feel a ferocious rumble.");
 				else
 				{
-					int dir=MUDTracker.radiatesFromDir(invoker.location(),rooms);
+					int dir=MUDTracker.radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
 						invoker.tell("You feel a ferocious rumble "+Directions.getInDirectionName(dir));
 				}
@@ -114,26 +114,25 @@ public class Chant_TremorSense extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"Long prickly thorns erupt all over <T-NAME>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"<T-NAME> gain(s) a sense of the earth!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				rooms.clear();
-				MUDTracker.getRadiantRooms(mob.location(),rooms,false,false,true,null,3);
+				MUDTracker.getRadiantRooms(mob.location(),rooms,false,false,true,null,5);
 				for(int r=0;r<rooms.size();r++)
 				{
 					Room R=(Room)rooms.elementAt(r);
 					if((R!=mob.location())
-					   &&(R.domainType()!=Room.DOMAIN_INDOORS_AIR)
-					   &&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-					   &&(R.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-					   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-					   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-					   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
+					&&(R.domainType()!=Room.DOMAIN_INDOORS_AIR)
+					&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+					&&(R.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
+					&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+					&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+					&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
 						beneficialAffect(mob,R,0);
 				}
 				beneficialAffect(mob,target,0);
-				mob.tell("You feel connected to the earth.");
 			}
 		}
 		else

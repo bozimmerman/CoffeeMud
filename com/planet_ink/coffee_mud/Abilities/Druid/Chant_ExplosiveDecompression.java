@@ -63,7 +63,6 @@ public class Chant_ExplosiveDecompression extends Chant
 							FullMsg msg2=new FullMsg(mob,M,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_GENERAL:0),null);
 							if(mob.location().okMessage(mob,msg2))
 							{
-								mob.location().send(mob,msg);
 								mob.location().send(mob,msg2);
 								invoker=mob;
 							    int numDice = adjustedLevel(mob);

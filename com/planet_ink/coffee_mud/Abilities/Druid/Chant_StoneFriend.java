@@ -13,7 +13,7 @@ public class Chant_StoneFriend extends Chant
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public long flags(){return Ability.FLAG_CHARMING;}
+	public long flags(){return 0;} // NOT charming because golems are resistant to that.
 
 	private MOB charmer=null;
 	private MOB getCharmer()
@@ -124,8 +124,8 @@ public class Chant_StoneFriend extends Chant
 		if(target==null) return false;
 
 		if((!target.charStats().getMyRace().racialCategory().equals("Earth Elemental"))
-		   ||(!target.charStats().getMyRace().racialCategory().equals("Stone Golem"))
-		   ||(!target.charStats().getMyRace().racialCategory().equals("Metal Golem")))
+		   &&(!target.charStats().getMyRace().racialCategory().equals("Stone Golem"))
+		   &&(!target.charStats().getMyRace().racialCategory().equals("Metal Golem")))
 		{
 			mob.tell(target.name()+" is not an stone/metal golem or earth elemental!");
 			return false;
@@ -153,7 +153,7 @@ public class Chant_StoneFriend extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
+					success=maliciousAffect(mob,target,0,-1);
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();

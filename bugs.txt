@@ -1,23 +1,17 @@
-Test: PK-ALWAYS-X
-Test: Sacred Earth, Labyrinth, Mass Fungal Growth, Distant Fungal Growth, Stone Friend
-Test: Unbreakable, Homeopathy, Snatch Light, Summon Rock Golem, Fungus Feet, Worms
-Test: Stonewalking, Drifting, Rust Curse, Volcanic Chasm, Explosive Decompression
-Test: Tremor Sense, Rockthought, Cave-In
 Could you set it to auto-detect based on the inventory of the shop whether the items will fit in one column or two?  With some shops, the item names are long enough that two columns are poor fits.
 put a conquered mob on a home property, quit, log back on, see if this error occurs.
 Have rooms generate their resources instead of skills
 Prop_Translator -- echos translations to the room, but on items, players.
 I have 2 walking arenedirs one day, and he doesn't leige, and he doesn't autoassist!
 add string control to decay
-look into cycling through classes on all stdmob recover/affect calls.
 Add ability to disable future logons.
 20. Effects: 'Prop_RideZapper(-male)'.
 clan -sysop -good -neutral not allowing evils to join.
+SMTP Server
 
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
 mutable body parts, with ability to grant powers
-SMTP Server
 POP3 Server
 POP3 Client

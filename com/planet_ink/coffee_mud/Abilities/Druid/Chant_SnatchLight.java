@@ -18,12 +18,13 @@ public class Chant_SnatchLight extends Chant
 	{
 		if((invoker!=null)
 		&&(invoker instanceof MOB)
-		&&Sense.isInTheGame(invoker))
+		&&Sense.isInTheGame(invoker)
+		&&(invoker.fetchEffect(ID())!=null))
 		   return ((MOB)invoker).location();
 		return null;
 	}
 	
-	public void affectEnvStats(MOB affected, EnvStats affectableStats)
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(CoffeeUtensils.roomLocation(affected)==snatchLocation())

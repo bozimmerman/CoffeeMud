@@ -103,7 +103,7 @@ public class Chant_SacredEarth extends Chant
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
-							beneficialAffect(mob,target,0);
+							beneficialAffect(mob,R,0);
 					}
 				}
 			}
