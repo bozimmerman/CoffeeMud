@@ -156,6 +156,9 @@ public class StdRoom
 		if((description==null)||(description.length==0))
 			return "";
 		else
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE))
+			return CMClass.DBEngine().DBReadRoomDesc(roomID());
+		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDCOMPRESS))
 			return Util.decompressString(description);
 		else

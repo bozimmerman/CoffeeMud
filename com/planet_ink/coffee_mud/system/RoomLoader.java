@@ -87,7 +87,10 @@ public class RoomLoader
 					}
 					newRoom.setArea(myArea);
 					newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
-					newRoom.setDescription(DBConnections.getRes(R,"CMDESC2"));
+					if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE))
+						newRoom.setDescription("");
+					else
+						newRoom.setDescription(DBConnections.getRes(R,"CMDESC2"));
 					newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
 					hash.put(roomID,newRoom);
 				}
@@ -177,6 +180,29 @@ public class RoomLoader
 
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 			((Area)a.nextElement()).getAreaStats();
+	}
+	public static String DBReadRoomDesc(String roomID)
+	{
+		DBConnection D=null;
+		// now grab the items
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+roomID+"'");
+			if(R.next())
+			{
+				String txt=DBConnections.getRes(R,"CMDESC2");
+				DBConnector.DBDone(D);
+				return txt;
+			}
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+		return null;
 	}
 	
 	public static String DBReadRoomMOBData(String roomID, String mobID)
@@ -355,7 +381,7 @@ public class RoomLoader
 					newMOB.setLocation(thisRoom);
 					if((CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBNOCACHE))
 					&&(NUMID.indexOf(MOBID+"@")>=0))
-						newMOB.setMiscText("%DBID>"+roomID+"/"+NUMID.substring(NUMID.indexOf("@")+1));
+						newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf("@")));
 					else
 						newMOB.setMiscText(DBConnections.getResQuietly(R,"CMCHTX"));
 					newMOB.baseEnvStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
@@ -510,6 +536,8 @@ public class RoomLoader
 			ride=""+thisMOB.amFollowing();
 		else
 			ride="";
+		String mobID=""+thisMOB;
+		
 		DBConnector.update(
 		"INSERT INTO CMROCH ("
 		+"CMROID, "
@@ -522,7 +550,7 @@ public class RoomLoader
 		+"CMCHRI "
 		+") values ("
 		+"'"+room.roomID()+"',"
-		+"'"+thisMOB+"',"
+		+"'"+mobID+"',"
 		+"'"+CMClass.className(thisMOB)+"',"
 		+"'"+thisMOB.text()+" ',"
 		+thisMOB.baseEnvStats().level()+","
@@ -532,6 +560,9 @@ public class RoomLoader
 		+")");
 		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Created mob "+thisMOB.name()+" for room "+room.roomID());
+		
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBNOCACHE))
+		   thisMOB.setMiscText("%DBID>"+room.roomID()+mobID.substring(mobID.indexOf("@")));
 	}
 	public static void DBUpdateTheseMOBs(Room room, Vector mobs)
 	{
@@ -588,6 +619,8 @@ public class RoomLoader
 		+"CMDESC2='"+room.description()+" ',"
 		+"CMROTX='"+room.text()+" '"
 		+"WHERE CMROID='"+room.roomID()+"'");
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE))
+			room.setDescription("");
 		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating room "+room.roomID());
 	}
@@ -598,11 +631,20 @@ public class RoomLoader
 		if(room.roomID().length()==0) return;
 		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Recreating room "+room.roomID());
+		
 		DBConnector.update(
 		"UPDATE CMROOM SET "
 		+"CMROID='"+room.roomID()+"', "
 		+"CMAREA='"+room.getArea().Name()+"' "
 		+"WHERE CMROID='"+oldID+"'");
+		
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBNOCACHE))
+			for(int m=0;m<room.numInhabitants();m++)
+			{
+				MOB M=room.fetchInhabitant(m);
+				if((M!=null)&&(M.isEligibleMonster()))
+					M.setMiscText(M.text());
+			}
 		
 		DBConnector.update(
 		"UPDATE CMROCH SET "

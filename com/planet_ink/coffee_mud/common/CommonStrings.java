@@ -69,10 +69,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMB_MUDSTARTED=4;
 	public static final int SYSTEMB_EMAILFORWARDING=5;
 	public static final int SYSTEMB_MOBNOCACHE=6;
-	public static final int SYSTEMB_ITEMDNOCACHE=7;
-	public static final int SYSTEMB_ROOMDNOCACHE=8;
-	public static final int SYSTEMB_MOBDNOCACHE=9;
-	public static final int NUMB_SYSTEM=10;
+	public static final int SYSTEMB_ROOMDNOCACHE=7;
+	public static final int NUMB_SYSTEM=8;
 
 	private static String[] sysVars=new String[NUM_SYSTEM];
 	private static Integer[] sysInts=new Integer[NUMI_SYSTEM];

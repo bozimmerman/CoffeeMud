@@ -19,9 +19,12 @@ public class CoffeeMaker
 		{
 			if(newText.startsWith("%DBID>"))
 			{
-				String dbstr=CMClass.DBEngine().DBReadRoomMOBData(newText.substring(6,newText.indexOf("/")),
-																  ((Object)mob).getClass().getName()+"@"+newText.substring(newText.indexOf("/")+1).trim());
-				setPropertiesStr(mob,dbstr,false);
+				String dbstr=CMClass.DBEngine().DBReadRoomMOBData(newText.substring(6,newText.indexOf("@")),
+																  ((Object)mob).getClass().getName()+newText.substring(newText.indexOf("@")).trim());
+				if(dbstr!=null)
+					setPropertiesStr(mob,dbstr,false);
+				else
+					Log.errOut("Unable to re-read mob data: "+newText);
 			}
 			else
 			{

@@ -18,6 +18,7 @@ public interface DatabaseEngine
 	public void DBReadContent(Room thisRoom, Hashtable rooms);
 	public void DBUpdateExits(Room room);
 	public String DBReadRoomMOBData(String roomID, String mobID);
+	public String DBReadRoomDesc(String roomID);
 	public void DBUpdateTheseMOBs(Room room, Vector mobs);
 	public void DBUpdateMOBs(Room room);
 	public void DBCreateRoom(Room room, String LocaleID);
