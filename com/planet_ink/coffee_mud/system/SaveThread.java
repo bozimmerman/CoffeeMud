@@ -136,11 +136,13 @@ public class SaveThread extends Thread
 			long time=System.currentTimeMillis()-S.lastLoopTime();
 			if(time>0)
 			{
-				if((S.mob()!=null)&&(S.getStatus()!=Session.STATUS_LOGIN))
+				if((S.mob()!=null))
 				{
 					long check=60000;
 					if(S.mob().isASysOp(null))
 						check=check*10;
+					if(S.getStatus()==Session.STATUS_LOGIN)
+						check=check*5;
 					if(time>(check*10))
 					{
 						Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().name())+", out for "+time);
