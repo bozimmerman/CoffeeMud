@@ -60,6 +60,7 @@ public final class IMC2Driver extends Thread {
     public siteinfo imc_siteinfo = new siteinfo();
     imc_statistics imc_stats = new imc_statistics();
     public int imc_active; /* Connection state */
+	public boolean initialed=false;
 
     long HeartBeat = 0; // elapsed heartbeats
 	call_out c_thread=null;
@@ -129,6 +130,18 @@ public final class IMC2Driver extends Thread {
 			MOB M=CMMap.getPlayer(name);
 			if(M!=null) M.tell(text);
 		}
+    }
+	
+    final public void ev_keepalive(Object param)
+    {
+        imc_send_keepalive();
+        imc_register_call_out(150, "ev_keepalive", null);
+    }
+
+    public void ev_request_keepalive(Object param)
+    {
+        imc_request_keepalive();
+        //imc_register_call_out(25, "ev_keepalive", null);
     }
 	
 	final public String[][] buildChannelMap(String s)
@@ -282,6 +295,7 @@ public final class IMC2Driver extends Thread {
         tracef(8, "IMC2 Network Initializing");
 
         imc_active = IA_UP;
+		initialed=false;
 
         imc_stats.start = imc_now;
         imc_stats.rx_pkts = 0;
@@ -293,11 +307,6 @@ public final class IMC2Driver extends Thread {
         /* Connect to Hub */
         if (!imc_connect_to())
             return false;
-
-        imc_register_call_out(5, "ev_keepalive", null);
-
-        imc_register_call_out(6, "ev_request_keepalive", null);
-
         return true;
     }
 
@@ -375,6 +384,7 @@ public final class IMC2Driver extends Thread {
 				return true;
 		  }
 		  imc_active = IA_NONE;
+		  initialed=false;
        }
        return false;
     }
@@ -1315,13 +1325,19 @@ public final class IMC2Driver extends Thread {
                             imc_getkey(p, "excluded", ""));
 
         }
+		
+		if(!initialed)
+		{
+			initialed=true;
+			imc_request_keepalive();
+		}
     }
 
-    final void check_password(String s) {
+    final boolean check_password(String s) {
         StringTokenizer st = new StringTokenizer(s, " ");
         if (st.countTokens() < 3) {
             tracef(0, "Password not found in Hub reply.");
-            return;
+            return false;
         }
 
         String c = st.nextToken();
@@ -1329,9 +1345,15 @@ public final class IMC2Driver extends Thread {
         String pwd = st.nextToken();
 
         if (pwd.equals(this_imcmud.serverpw))
+		{
             tracef(8, "Password OK.");
+			return true;
+		}
         else
+		{
             tracef(0, "Password incorrect.");
+			return false;
+		}
     }
 
     final public void imc_read_from_socket(DataInputStream in) {
@@ -1359,6 +1381,7 @@ public final class IMC2Driver extends Thread {
 			if(e.getMessage().toUpperCase().indexOf("CONNECTION")>=0)
 			{
 				imc_active = IA_NONE;
+				initialed=false;
 				tracef(0, "Waiting 20 seconds and try to reconnect.");
 				try 
 				{
@@ -1391,6 +1414,7 @@ public final class IMC2Driver extends Thread {
         catch (Exception e) {
             tracef(0, "write socket error: " + e.toString());
             imc_active = IA_NONE;
+			initialed=false;
             tracef(0, "Waiting 20 seconds and try to reconnect.");
             try {
                 sleep(20000);
@@ -1428,6 +1452,7 @@ public final class IMC2Driver extends Thread {
         imc_send(out);
     }
 
+	
     /* send a keepalive to everyone */
     final public void imc_request_keepalive() {
         PACKET out = new PACKET();
@@ -1437,12 +1462,11 @@ public final class IMC2Driver extends Thread {
 
         imc_initdata(out);
         out.type = "keepalive-request";
-        out.from = "*";
+        out.from = "*@"+imc_name;
         out.to = "*@*";
         imc_addkey(out, "versionid", IMC_VERSIONID);
         if (imc_siteinfo.flags != null && imc_siteinfo.flags != "")
             imc_addkey(out, "flags", imc_siteinfo.flags);
-
         imc_send(out);
     }
 
@@ -1507,7 +1531,8 @@ public final class IMC2Driver extends Thread {
     }
 
     /* send a ping with a given timestamp */
-    final public void imc_send_ping(String name, String to, int time_s, int time_u) {
+    final public void imc_send_ping(String name, String to, int time_s, int time_u) 
+	{
         PACKET out = new PACKET();
 
         if (imc_active < IA_UP)
@@ -1550,7 +1575,7 @@ public final class IMC2Driver extends Thread {
         test.invis = invis;
         imc_send_who(test, "@" + mudname, type);
     }
-
+	
     final public String imc_send_tell(String from, String to, String text, int level,
                                 int invis) {
         imc_char_data chr = new imc_char_data();
