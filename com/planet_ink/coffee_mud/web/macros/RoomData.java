@@ -8,9 +8,57 @@ import com.planet_ink.coffee_mud.utils.*;
 public class RoomData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	private static Vector mobs=new Vector();
-	private static Vector items=new Vector(); 
+	public static Vector mobs=new Vector();
+	public static Vector items=new Vector();
+
+	public static int getItemCardinality(Room R, Item I)
+	{
+		for(int i=0;i<R.numItems();i++)
+		{
+			Item Ir=R.fetchItem(i);
+			
+			if(Ir==I) return i;
+		}
+		return -1;
+	}
 	
+	public static int getItemCardinality(MOB M, Item I)
+	{
+		for(int i=0;i<M.inventorySize();i++)
+		{
+			Item Im=M.fetchInventory(i);
+			if(Im==I) return i;
+		}
+		return -1;
+	}
+	
+	public static int getMOBCardinality(Room R, MOB M)
+	{
+		int card=0;
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M2=R.fetchInhabitant(i);
+			if(M2==M) return card;
+			if(M2.isEligibleMonster())
+				card++;
+		}
+		return -1;
+	}
+	
+	public static MOB getMOBAtCardinality(Room R, int here)
+	{
+		int card=0;
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M2=R.fetchInhabitant(i);
+			if(M2.isEligibleMonster())
+			if(card==here)
+				return M2;
+			else
+				card++;
+		}
+		return null;
+	}
 	
 	public static boolean MOBSsame(MOB M, MOB M2)
 	{
@@ -53,6 +101,10 @@ public class RoomData extends StdWebMacro
 		&&(I.name().equals(I2.name()))
 		&&(I.baseEnvStats().height()==I2.baseEnvStats().height()))
 		{
+			boolean returning=true;
+			I=(Item)I.copyOf();
+			I.wearAt(Item.INVENTORY);
+			I.setContainer(null);
 			if(!I.text().equals(I2.text()))
 			{
 				String buf1=I.text();
@@ -61,16 +113,16 @@ public class RoomData extends StdWebMacro
 					for(int l=0, l2=0;((l!=buf1.length())&&(l2!=buf2.length()));l++,l2++)
 					{
 						if(buf1.charAt(l)!=buf2.charAt(l2))
-							return false;
+						{ returning=false; break;}
 						if(buf1.charAt(l)=='@')
 						{
 							while(buf1.charAt(++l)!='<');
 							while(buf2.charAt(++l2)!='<');
 						}
 					}
-				} catch(Exception e){return false;}
+				} catch(Exception e){returning=false;}
 			}
-			return true;
+			return returning;
 		}
 		else
 			return false;
@@ -89,7 +141,7 @@ public class RoomData extends StdWebMacro
 				{	found=true;	break;	}
 			}
 			if(!found)
-				mobs.addElement(M.copyOf());
+				mobs.addElement((MOB)M.copyOf());
 		}
 		return mobs;
 	}
@@ -107,7 +159,12 @@ public class RoomData extends StdWebMacro
 				{	found=true;	break;	}
 			}
 			if(!found)
+			{
+				Item I2=(Item)I.copyOf();
+				I.setContainer(null);
+				I.wearAt(Item.INVENTORY);
 				items.addElement(I.copyOf());
+			}
 		}
 		return items;
 	}
@@ -121,6 +178,7 @@ public class RoomData extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()==0) return "";
 		Room R=CMMap.getRoom(last);
+		ExternalPlay.resetRoom(R);
 		
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("NAME"))
@@ -165,25 +223,35 @@ public class RoomData extends StdWebMacro
 				for(int i=1;;i++)
 				{
 					String MATCHING=(String)httpReq.getRequestParameters().get("MOB"+i);
-					boolean found=false;
 					if(MATCHING==null)
 						break;
 					else
-					for(int m=0;m<moblist.size();m++)
+					if(Util.s_int(MATCHING)>0)
 					{
-						MOB M2=(MOB)moblist.elementAt(m);
-						if(MATCHING.equals(""+M2))
+						MOB M2=getMOBAtCardinality(R,Util.s_int(MATCHING)-1);
+						classes.addElement(M2);
+					}
+					else
+					if(MATCHING.indexOf("@")>0)
+					{
+						for(int m=0;m<moblist.size();m++)
 						{
-							found=true;
-							classes.addElement(M2);
-							break;
+							MOB M2=(MOB)moblist.elementAt(m);
+							if(MATCHING.equals(""+M2))
+							{	classes.addElement(M2);	break;	}
 						}
+					}
+					else
+					for(int m=0;m<CMClass.MOBs.size();m++)
+					{
+						MOB M2=(MOB)CMClass.MOBs.elementAt(m);
+						if(CMClass.className(M2).equals(MATCHING)&&(!M2.isGeneric()))
+						{	classes.addElement(M2.copyOf()); break;	}
 					}
 				}
 			}
 			else
 			{
-				ExternalPlay.resetRoom(R);
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB M=R.fetchInhabitant(m);
@@ -201,28 +269,40 @@ public class RoomData extends StdWebMacro
 				str.append("<TD WIDTH=90%>");
 				str.append("<SELECT ONCHANGE=\"DelMOB(this);\" NAME=MOB"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				for(int b=0;b<moblist.size();b++)
-				{
-					MOB M2=(MOB)moblist.elementAt(b);
-					str.append("<OPTION VALUE=\""+M2+"\"");
-					if(MOBSsame(M,M2))
-					{
-						TM=M2;
-						str.append(" SELECTED");
-					}
-					str.append(">"+M2.name()+" ("+CMClass.className(M2)+")");
-				}
+				if(R.isInhabitant(M))
+					str.append("<OPTION SELECTED VALUE=\""+(getMOBCardinality(R,M)+1)+"\">"+M.name()+" ("+CMClass.className(M)+")");
+				else
+				if(moblist.contains(M))
+					str.append("<OPTION SELECTED VALUE=\""+M+"\">"+M.name()+" ("+CMClass.className(M)+")");
+				else
+					str.append("<OPTION SELECTED VALUE=\""+CMClass.className(M)+"\">"+M.name()+" ("+CMClass.className(M)+")");
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
-				str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+i+" VALUE=EDIT ONCLICK=\"EditMOB('"+i+"');\">");
+				str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditMOB('"+i+"');\">");
 				str.append("</TD></TR>");
 			}
-			str.append("<TR><TD COLSPAN=2 WIDTH=90% ALIGN=RIGHT>");
-			str.append("<INPUT TYPE=BUTTON NAME=ADDMOB VALUE=ADD ONCLICK=\"AddMOB();\">");
+			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
+			str.append("<SELECT ONCHANGE=\"AddMOB(this);\" NAME=MOB"+(classes.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select a new MOB");
+			for(int i=0;i<moblist.size();i++)
+			{
+				MOB M=(MOB)moblist.elementAt(i);
+				str.append("<OPTION VALUE=\""+M+"\">"+M.name()+" ("+CMClass.className(M)+")");
+			}
+			for(int i=0;i<CMClass.MOBs.size();i++)
+			{
+				MOB M=(MOB)CMClass.MOBs.elementAt(i);
+				if(!M.isGeneric())
+				str.append("<OPTION VALUE=\""+CMClass.className(M)+"\">"+M.name()+" ("+CMClass.className(M)+")");
+			}
+			str.append("</SELECT>");
+			str.append("</TD>");
+			str.append("<TD WIDTH=10%>");
+			str.append("<INPUT TYPE=BUTTON NAME=ADDMOB VALUE=\"CREATE NEW\" ONCLICK=\"AddNewMOB();\">");
 			str.append("</TD></TR></TABLE>");
 		}
-		
+
 		if(parms.containsKey("ITEMLIST"))
 		{
 			Vector classes=new Vector();
@@ -233,30 +313,39 @@ public class RoomData extends StdWebMacro
 				for(int i=1;;i++)
 				{
 					String MATCHING=(String)httpReq.getRequestParameters().get("ITEM"+i);
-					boolean found=false;
 					if(MATCHING==null)
 						break;
 					else
-					for(int m=0;m<itemlist.size();m++)
+					if(Util.s_int(MATCHING)>0)
 					{
-						Item I2=(Item)itemlist.elementAt(m);
-						if(MATCHING.equals(""+I2))
+						Item I2=R.fetchItem(Util.s_int(MATCHING)-1);
+						classes.addElement(I2);
+					}
+					else
+					if(MATCHING.indexOf("@")>0)
+					{
+						for(int m=0;m<itemlist.size();m++)
 						{
-							found=true;
-							classes.addElement(I2);
-							break;
+							Item I2=(Item)itemlist.elementAt(m);
+							if(MATCHING.equals(""+I2))
+							{ classes.addElement(I2); break; }
 						}
+					}
+					else
+					for(int m=0;m<CMClass.items.size();m++)
+					{
+						Item I=(Item)CMClass.items.elementAt(m);
+						if(CMClass.className(I).equals(MATCHING))
+						{	classes.addElement(I); break;}
 					}
 				}
 			}
 			else
 			{
-				ExternalPlay.resetRoom(R);
 				for(int m=0;m<R.numItems();m++)
 				{
-					Item I=R.fetchItem(m);
-					if(I.container()==null)
-						classes.addElement(I);
+					Item I2=R.fetchItem(m);
+					classes.addElement(I2);
 				}
 				itemlist=contributeItems(classes);
 			}
@@ -269,25 +358,37 @@ public class RoomData extends StdWebMacro
 				str.append("<TD WIDTH=90%>");
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				for(int b=0;b<itemlist.size();b++)
-				{
-					Item I2=(Item)itemlist.elementAt(b);
-					str.append("<OPTION VALUE=\""+I2+"\"");
-					if(ItemsSame(I,I2))
-					{
-						TI=I2;
-						str.append(" SELECTED");
-					}
-					str.append(">"+I2.name()+" ("+CMClass.className(I2)+")");
-				}
+				if(R.isContent(I))
+					str.append("<OPTION SELECTED VALUE=\""+(getItemCardinality(R,I)+1)+"\">"+I.name()+" ("+CMClass.className(I)+")"+((I.container()==null)?"":(" in "+I.container().name())));
+				else
+				if(itemlist.contains(I))
+					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")"+((I.container()==null)?"":(" in "+I.container().name())));
+				else
+					str.append("<OPTION SELECTED VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
-				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+i+" VALUE=EDIT ONCLICK=\"EditItem('"+i+"');\">");
+				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+i+"');\">");
 				str.append("</TD></TR>");
 			}
-			str.append("<TR><TD COLSPAN=2 WIDTH=90% ALIGN=RIGHT>");
-			str.append("<INPUT TYPE=BUTTON NAME=ADDITEM VALUE=ADD ONCLICK=\"AddItem();\">");
+			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
+			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
+			for(int i=0;i<itemlist.size();i++)
+			{
+				Item I=(Item)itemlist.elementAt(i);
+				str.append("<OPTION VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
+			}
+			for(int i=0;i<CMClass.items.size();i++)
+			{
+				Item I=(Item)CMClass.items.elementAt(i);
+				if(!I.isGeneric())
+				str.append("<OPTION VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
+			}
+			str.append("</SELECT>");
+			str.append("</TD>");
+			str.append("<TD WIDTH=10%>");
+			str.append("<INPUT TYPE=BUTTON NAME=ADDITEM VALUE=\"CREATE NEW\" ONCLICK=\"AddNewItem();\">");
 			str.append("</TD></TR></TABLE>");
 		}
 		

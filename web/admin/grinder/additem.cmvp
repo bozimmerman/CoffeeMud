@@ -1,11 +1,17 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+@MUDGrinder?EDITROOM@
+
+@if?!CheckReqParm?ERRMSG=@ 
+	@AddFile?/grinder/editroom.cmvp@ 
+@else@ 
 <HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
-</BODY>
+	<FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/edititemform.cmvp?AREA=@ReqParameter?AREA@&ROOM=@ReqParameter?ROOM@" NAME=MAP>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu.cmvp?AREA=@ReqParameter?AREA@&ROOM=@ReqParameter?ROOM@" NAME=MENU>
+	</FRAMESET>
 </HTML>
+@endif@
+@endif@
+@endif@

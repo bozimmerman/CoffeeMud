@@ -9,29 +9,41 @@
 	<title>CoffeeMUD MUDGrinder</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
-		function AddItem()
+		function AddNewItem()
 		{
-			document.AREAEDIT.action='/grinder/additemform.cmvp';
-			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.action='/grinder/additem.cmvp';
+			document.AREAEDIT.target='_top';
 			document.AREAEDIT.submit();
+		}
+		function AddItem(ME)
+		{
+			if(ME.selectedIndex>0)
+				ReShow();
 		}
 		function EditItem(ME)
 		{
-			document.AREAEDIT.action='/grinder/edititemform.cmvp';
-			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.ITEM.value=ME.options[ME.selectedIndex].value;
+			document.AREAEDIT.action='/grinder/edititem.cmvp';
+			document.AREAEDIT.target='_top';
 			document.AREAEDIT.submit();
 		}
 		function EditMOB(ME)
 		{
-			document.AREAEDIT.action='/grinder/editmobform.cmvp';
-			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.MOB.value=ME.options[ME.selectedIndex].value;
+			document.AREAEDIT.action='/grinder/editmob.cmvp';
+			document.AREAEDIT.target='_top';
 			document.AREAEDIT.submit();
 		}
-		function AddMOB()
+		function AddNewMOB()
 		{
-			document.AREAEDIT.action='/grinder/addmobform.cmvp';
-			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.action='/grinder/addmob.cmvp';
+			document.AREAEDIT.target='_top';
 			document.AREAEDIT.submit();
+		}
+		function AddMOB(ME)
+		{
+			if(ME.selectedIndex>0)
+				ReShow();
 		}
 		function DelItem(ME)
 		{
@@ -81,6 +93,8 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=ITEM VALUE="">
+<INPUT TYPE=HIDDEN NAME=MOB VALUE="">
 <INPUT TYPE=HIDDEN NAME=ACTION VALUE="MODIFYROOM">
 <TABLE WIDTH=600 BORDER=1 CELLSPACING=0 CELLPADDIN=0>
 <TR>

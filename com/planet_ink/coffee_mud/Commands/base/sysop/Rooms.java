@@ -428,6 +428,16 @@ public class Rooms
 
 	public void obliterateRoom(Room deadRoom)
 	{
+		for(int a=deadRoom.numAffects()-1;a>=0;a--)
+		{
+			Ability A=deadRoom.fetchAffect(a);
+			if(A!=null)
+			{
+				A.unInvoke();
+				deadRoom.delAffect(A);
+			}
+		}
+		ExternalPlay.deleteTick(deadRoom,-1);
 		CMMap.delRoom(deadRoom);
 		for(int m=0;m<CMMap.numRooms();m++)
 		{

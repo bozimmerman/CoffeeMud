@@ -3,10 +3,31 @@ import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-
+import com.planet_ink.coffee_mud.web.macros.RoomData;
 
 public class GrinderRooms
 {
+	public static void happilyAddMob(MOB M, Room R)
+	{
+		M.setStartRoom(R);
+		M.setLocation(R);
+		M.envStats().setRejuv(5000);
+		M.recoverCharStats();
+		M.recoverEnvStats();
+		M.recoverMaxState();
+		M.resetToMaxState();
+		M.bringToLife(R);
+		R.recoverRoomStats();
+	}
+	public static void happilyAddItem(Item I, Room R)
+	{
+		if(I.subjectToWearAndTear())
+			I.setUsesRemaining(100);
+		I.recoverEnvStats();
+		R.addItem(I);
+		R.recoverRoomStats();
+	}
+	
 	public static String editRoom(ExternalHTTPRequests httpReq, Hashtable parms, Room R)
 	{
 		if(R==null) return "Old Room not defined!";
@@ -25,6 +46,16 @@ public class GrinderRooms
 			R=CMClass.getLocale(className);
 			if(R==null)
 				return "The class you chose does not exist.  Choose another.";
+			for(int a=oldR.numAffects()-1;a>=0;a--)
+			{
+				Ability A=oldR.fetchAffect(a);
+				if(A!=null)
+				{
+					A.unInvoke();
+					oldR.delAffect(A);
+				}
+			}
+			ExternalPlay.deleteTick(oldR,-1);
 			CMMap.delRoom(oldR);
 			CMMap.addRoom(R);
 			R.setArea(oldR.getArea());
@@ -33,14 +64,6 @@ public class GrinderRooms
 				R.rawDoors()[d]=oldR.rawDoors()[d];
 			for(int d=0;d<R.rawExits().length;d++)
 				R.rawExits()[d]=oldR.rawExits()[d];
-			for(int i=0;i<oldR.numInhabitants();i++)
-			{
-				MOB mob=oldR.fetchInhabitant(i);
-				if(mob.getStartRoom()==oldR) mob.setStartRoom(R);
-				R.addInhabitant(mob);
-			}
-			for(int i=0;i<oldR.numItems();i++)
-				R.addItem(oldR.fetchItem(i));
 			redoAllMyDamnRooms=true;
 		}
 		
@@ -59,6 +82,137 @@ public class GrinderRooms
 		String err=GrinderAreas.doAffectsNBehavs(R,httpReq,parms);
 		if(err.length()>0) return err;
 		
+		// here's where you resolve items and mobs
+		Vector allmobs=new Vector();
+		int skip=0;
+		while(oldR.numInhabitants()>(skip))
+		{
+			MOB M=oldR.fetchInhabitant(skip);
+			if(M.isEligibleMonster())
+			{
+				allmobs.addElement(M);
+				oldR.delInhabitant(M);
+			}
+			else
+			if(oldR!=R)
+			{
+				oldR.delInhabitant(M);
+				R.bringMobHere(M,true);
+			}
+			else
+				skip++;
+		}
+		Vector allitems=new Vector();
+		while(oldR.numItems()>0)
+		{
+			Item I=oldR.fetchItem(0);
+			allitems.addElement(I);
+			oldR.delItem(I);
+		}
+		
+		if(httpReq.getRequestParameters().containsKey("MOB1"))
+		{
+			for(int i=1;;i++)
+			{
+				String MATCHING=(String)httpReq.getRequestParameters().get("MOB"+i);
+				if(MATCHING==null)
+					break;
+				else
+				if(Util.s_int(MATCHING)>0)
+				{
+					if((Util.s_int(MATCHING)-1)<allmobs.size())
+						happilyAddMob((MOB)allmobs.elementAt(Util.s_int(MATCHING)-1),R);
+				}
+				else
+				if(MATCHING.indexOf("@")>0)
+				{
+					for(int m=0;m<RoomData.mobs.size();m++)
+					{
+						MOB M2=(MOB)RoomData.mobs.elementAt(m);
+						if(MATCHING.equals(""+M2))
+						{
+							happilyAddMob((MOB)M2.copyOf(),R);
+							break;
+						}
+					}
+				}
+				else
+				for(int m=0;m<CMClass.MOBs.size();m++)
+				{
+					MOB M2=(MOB)CMClass.MOBs.elementAt(m);
+					if(CMClass.className(M2).equals(MATCHING))
+					{	
+						happilyAddMob((MOB)M2.copyOf(),R);
+						break;	
+					}
+				}
+			}
+		}
+		else
+			return "No MOB Data!";
+			
+
+		if(httpReq.getRequestParameters().containsKey("ITEM1"))
+		{
+			for(int i=1;;i++)
+			{
+				String MATCHING=(String)httpReq.getRequestParameters().get("ITEM"+i);
+				if(MATCHING==null)
+					break;
+				else
+				if(Util.s_int(MATCHING)>0)
+				{
+					if((Util.s_int(MATCHING)-1)<allitems.size())
+						happilyAddItem((Item)allitems.elementAt(Util.s_int(MATCHING)-1),R);
+				}
+				else
+				if(MATCHING.indexOf("@")>0)
+				{
+					for(int m=0;m<RoomData.items.size();m++)
+					{
+						Item I2=(Item)RoomData.items.elementAt(m);
+						if(MATCHING.equals(""+I2))
+						{
+							happilyAddItem((Item)I2.copyOf(),R);
+							break;
+						}
+					}
+				}
+				else
+				for(int m=0;m<CMClass.items.size();m++)
+				{
+					Item I2=(Item)CMClass.items.elementAt(m);
+					if(CMClass.className(I2).equals(MATCHING))
+					{	
+						happilyAddItem((Item)I2.copyOf(),R);
+						break;
+					}
+				}
+			}
+		}
+		else
+			return "No Item Data!";
+		
+		
+		for(int i=0;i<R.numItems();i++)
+		{
+			Item I=R.fetchItem(i);
+			if((I.container()!=null)&&(!R.isContent(I.container())))
+				I.setContainer(null);
+		}
+		for(int i=0;i<allitems.size();i++)
+		{
+			Item I=(Item)allitems.elementAt(i);
+			if(!R.isContent(I))
+				I.destroyThis();
+		}
+		for(int m=0;m<allmobs.size();m++)
+		{
+			MOB M=(MOB)allmobs.elementAt(m);
+			if(!R.isInhabitant(M))
+				M.destroy();
+		}
+		
 		if(redoAllMyDamnRooms)
 		{
 			for(int r=0;r<CMMap.numRooms();r++)
@@ -75,27 +229,16 @@ public class GrinderRooms
 			R.getArea().clearMap();
 		}
 		ExternalPlay.DBUpdateRoom(R);
+		ExternalPlay.DBUpdateMOBs(R);
+		ExternalPlay.DBUpdateItems(R);
 		return "";
 	}
+	
+	
+	
 	public static String delRoom(Room R)
 	{
-		for(int r=0;r<CMMap.numRooms();r++)
-		{
-			Room R2=CMMap.getRoom(r);
-			for(int d=0;d<R2.rawDoors().length;d++)
-			{
-				if(R2.rawDoors()[d]==R)
-				{
-					R2.rawDoors()[d]=null;
-					R2.rawExits()[d]=null;
-					if(R2 instanceof GridLocale)
-						((GridLocale)R2).buildGrid();
-					ExternalPlay.DBUpdateExits(R2);
-				}
-			}
-		}
-		CMMap.delRoom(R);
-		ExternalPlay.DBDeleteRoom(R);
+		ExternalPlay.obliterateRoom(R);
 		return "";
 	}
 	public static String createRoom(Room R, int dir)
