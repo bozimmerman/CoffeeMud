@@ -17,7 +17,7 @@ public class Thief_Kamikaze extends ThiefSkill
 	public Environmental newInstance(){	return new Thief_Kamikaze();}
 	protected boolean exemptFromArmorReq(){return true;}
 
-	public boolean tick(Ticking ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
@@ -27,7 +27,6 @@ public class Thief_Kamikaze extends ThiefSkill
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item I=mob.fetchInventory(i);
-				Trap T=null;
 				if((I!=null)
 				&&(I.container()==null)
 				&&(CoffeeUtensils.getATrap(I)!=null))
@@ -42,9 +41,9 @@ public class Thief_Kamikaze extends ThiefSkill
 						if(I.owner() instanceof Room)
 						{
 							Room R=(Room)I.owner();
-							for(int i=0;i<R.numInhabitants();i++)
+							for(int i2=0;i2<R.numInhabitants();i2++)
 							{
-								MOB M=(MOB)R.fetchInhabitant(i);
+								MOB M=(MOB)R.fetchInhabitant(i2);
 								if(M!=null)
 									T.spring(M);
 							}
@@ -119,17 +118,12 @@ public class Thief_Kamikaze extends ThiefSkill
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
-			Trap T=null;
 			if((I!=null)
 			&&(I.container()==null)
 			&&(CoffeeUtensils.getATrap(I)!=null))
 			{
-				Trap T=CoffeeUtensils.getATrap(I);
-				if(T.isABomb())
-				{
-					bombsFound=true;
-					break;
-				}
+				bombsFound=true;
+				break;
 			}
 		}
 		if(!bombsFound)
