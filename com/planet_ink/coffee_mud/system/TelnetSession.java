@@ -31,8 +31,8 @@ public class TelnetSession extends Thread implements Session
 
 	private boolean lastWasCR=false;
 
-	public Calendar lastStart=Calendar.getInstance();
-	public Calendar lastStop=Calendar.getInstance();
+	public long lastStart=System.currentTimeMillis();
+	public long lastStop=System.currentTimeMillis();
 	public long milliTotal=0;
 	public long tickTotal=0;
 	
@@ -1237,7 +1237,7 @@ public class TelnetSession extends Thread implements Session
 						if(input!=null)
 							enque(0,Util.parse(input));
 						if(mob==null) break;
-						if((((MOB)mob).lastTickedDateTime().after(lastStop))||(!mob.isInCombat()))
+						if((((MOB)mob).lastTickedDateTime()>lastStop)||(!mob.isInCombat()))
 						{
 							CMDS=deque();
 							if(CMDS!=null)
@@ -1249,12 +1249,12 @@ public class TelnetSession extends Thread implements Session
 									if(snoops.size()>0)
 										for(int s=0;s<snoops.size();s++)
 											((Session)snoops.elementAt(s)).rawPrintln(Util.combine(CMDS,0));
-									milliTotal+=(lastStop.getTimeInMillis()-lastStart.getTimeInMillis());
+									milliTotal+=(lastStop-lastStart);
 									tickTotal++;
 									
-									lastStart=Calendar.getInstance();
+									lastStart=System.currentTimeMillis();
 									ExternalPlay.doCommand(mob,CMDS);
-									lastStop=Calendar.getInstance();
+									lastStop=System.currentTimeMillis();
 								}
 								needPrompt=true;
 							}
@@ -1328,7 +1328,7 @@ public class TelnetSession extends Thread implements Session
 				if(mob.location()!=null)
 					mob.location().send(mob,msg);
 			}
-			mob.setLastDateTime(Calendar.getInstance());
+			mob.setLastDateTime(System.currentTimeMillis());
 			Log.sysOut("Session","logout: "+mob.name());
 			mob.destroy();
 			mob.setSession(null);

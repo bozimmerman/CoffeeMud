@@ -26,7 +26,7 @@ public class StdItem implements Item
 	protected boolean	isRemovable=true;
 	protected int		material=EnvResource.RESOURCE_COTTON;
 	protected Environmental owner=null;
-	protected Calendar dispossessionTime=null;
+	protected long dispossessionTime=0;
 
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
@@ -118,14 +118,14 @@ public class StdItem implements Item
 	{
 		owner=E;
 		if((E!=null)&&(!(E instanceof Room)))
-			setDispossessionTime(null);
+			setDispossessionTime(0);
 		recoverEnvStats();
 	}
-	public Calendar dispossessionTime()
+	public long dispossessionTime()
 	{
 		return dispossessionTime;
 	}
-	public void setDispossessionTime(Calendar time)
+	public void setDispossessionTime(long time)
 	{
 		dispossessionTime=time;
 	}
@@ -434,9 +434,9 @@ public class StdItem implements Item
 	
 	protected String dispossessionTimeLeftString()
 	{
-		if(dispossessionTime()==null)
+		if(dispossessionTime()==0)
 			return "N/A";
-		return ""+(dispossessionTime().getTimeInMillis()-IQCalendar.getInstance().getTimeInMillis());
+		return ""+(dispossessionTime()-System.currentTimeMillis());
 	}
 	
 	private boolean alreadyWornMsg(MOB mob, Item thisItem)

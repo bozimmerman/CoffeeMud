@@ -52,9 +52,8 @@ public class MOBloader
 				mob.setWimpHitPoint(Util.s_int(DBConnections.getRes(R,"CMWIMP")));
 				mob.setQuestPoint(Util.s_int(DBConnections.getRes(R,"CMQUES")));
 				mob.setStartRoom(CMMap.getRoom(DBConnections.getRes(R,"CMROID")));
-				Calendar lastDateTime=(Calendar)new IQCalendar();
 				String dateTimeStr=DBConnections.getRes(R,"CMDATE");
-				lastDateTime=(Calendar)IQCalendar.string2Date(dateTimeStr);
+				long lastDateTime=IQCalendar.string2Millis(dateTimeStr);
 				mob.setLastDateTime(lastDateTime);
 				mob.setChannelMask((int)DBConnections.getLongRes(R,"CMCHAN"));
 				mob.setUserInfo(username,password);
@@ -275,7 +274,7 @@ public class MOBloader
 				head.append(Util.padRight((String)U.elementAt(1),10)+" ");
 				head.append(Util.padRight((String)U.elementAt(3),4)+" ");
 				head.append(Util.padRight((String)U.elementAt(4),5)+" ");
-				head.append(Util.padRight((new IQCalendar().string2Date((String)U.elementAt(5))).d2String(),18));
+				head.append(Util.padRight(IQCalendar.d2String(IQCalendar.string2Millis((String)U.elementAt(5))),18));
 				head.append("] "+Util.padRight((String)U.elementAt(0),15));
 				head.append("\n\r");
 			}
@@ -423,7 +422,7 @@ public class MOBloader
 			+", CMWIMP="+mob.getWimpHitPoint()
 			+", CMQUES="+mob.getQuestPoint()
 			+", CMROID='"+strStartRoomID+"'"
-			+", CMDATE='"+new IQCalendar(mob.lastDateTime()).d2mysqlString()+"'"
+			+", CMDATE='"+IQCalendar.d2mysqlString(mob.lastDateTime())+"'"
 			+", CMCHAN="+mob.getChannelMask()
 			+", CMATTA="+mob.baseEnvStats().attackAdjustment()
 			+", CMAMOR="+mob.baseEnvStats().armor()
@@ -695,7 +694,6 @@ public class MOBloader
 					if(mob!=null)
 					{
 						String password=DBConnector.getRes(R,"CMPASS");
-						//Calendar newCalendar=(Calendar)IQCalendar.string2Date(DBConnector.getRes(R,"CMDATE"));
 						mob.setUserInfo(username,password);
 					}
 					break;

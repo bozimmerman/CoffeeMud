@@ -12,7 +12,7 @@ public class Hireling extends StdBehavior
 	
 	private Hashtable partials=new Hashtable();
 	private String workingFor="";
-	private Calendar onTheJobUntil=null;
+	private long onTheJobUntil=0;
 	
 	private int price()
 	{
@@ -33,7 +33,7 @@ public class Hireling extends StdBehavior
 	public void allDone(MOB observer)
 	{
 		workingFor="";
-		onTheJobUntil=null;
+		onTheJobUntil=0;
 		ExternalPlay.follow(observer,null,false);
 		observer.setFollowing(null);
 		int direction=-1;
@@ -56,9 +56,9 @@ public class Hireling extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 		if(tickID!=Host.MOB_TICK) return;
-		if(onTheJobUntil==null) return;
+		if(onTheJobUntil==0) return;
 		MOB observer=(MOB)ticking;
-		if(onTheJobUntil.before(Calendar.getInstance()))
+		if(System.currentTimeMillis()>onTheJobUntil)
 		{
 			Integer I=(Integer)partials.get(workingFor);
 			partials.remove(workingFor);
@@ -66,7 +66,7 @@ public class Hireling extends StdBehavior
 			if(!canActAtAll(observer))
 			{
 				workingFor="";
-				onTheJobUntil=null;
+				onTheJobUntil=0;
 				observer.setFollowing(null);
 				if(observer.getStartRoom()!=null)
 					observer.getStartRoom().bringMobHere(observer,false);
@@ -92,7 +92,7 @@ public class Hireling extends StdBehavior
 			{
 				if(talkTo!=null)
 					ExternalPlay.quickSay(observer,talkTo,"Your base time is up, but you've paid for "+additional+" more minutes, so I'll hang around.",true,false);
-				onTheJobUntil.add(Calendar.MINUTE,additional);
+				onTheJobUntil+=(additional*IQCalendar.MILI_MINUTE);
 			}
 		}
 		else
@@ -131,12 +131,12 @@ public class Hireling extends StdBehavior
 		{
 			if(((affect.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
 				||(affect.sourceMessage().toUpperCase().indexOf("'HIRE")>0))
-			&&(onTheJobUntil==null))
+			&&(onTheJobUntil==0))
 				ExternalPlay.quickSay(observer,null,"I'm for hire.  Just give me "+price()+" and I'll work for you.",false,false);
 			else
 			if(((affect.sourceMessage().toUpperCase().indexOf(" FIRED")>0))
 			&&(affect.amITarget(observer))
-			&&(onTheJobUntil!=null))
+			&&(onTheJobUntil!=0))
 			{
 				ExternalPlay.quickSay(observer,affect.source(),"Suit yourself.  Goodbye.",false,false);
 				allDone(observer);
@@ -157,7 +157,7 @@ public class Hireling extends StdBehavior
 			}
 			if(given<price())
 			{
-				if(onTheJobUntil!=null)
+				if(onTheJobUntil!=0)
 				{
 					if(workingFor.equals(source.name()))
 						ExternalPlay.quickSay(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
@@ -170,7 +170,7 @@ public class Hireling extends StdBehavior
 			}
 			else
 			{
-				if(onTheJobUntil!=null)
+				if(onTheJobUntil!=0)
 				{
 					if(workingFor.equals(source.name()))
 						ExternalPlay.quickSay(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
@@ -191,8 +191,8 @@ public class Hireling extends StdBehavior
 						skills.append(", "+A.name());
 					}
 					workingFor=source.name();
-					onTheJobUntil=Calendar.getInstance();
-					onTheJobUntil.add(Calendar.MINUTE,minutes());
+					onTheJobUntil=System.currentTimeMillis();
+					onTheJobUntil+=(minutes()*IQCalendar.MILI_MINUTE);
 					ExternalPlay.follow(observer,source,false);
 					observer.setFollowing(source);
 					ExternalPlay.quickSay(observer,source,"Ok.  You've got me for at least "+minutes()+" minutes.  My skills include: "+skills.substring(2)+".  I'll follow you.  Just ORDER me to do what you want.",true,false);

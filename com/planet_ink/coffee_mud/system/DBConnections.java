@@ -469,12 +469,12 @@ public class DBConnections
 			catch(FileNotFoundException fnfe)
 			{
 				Log.errOut("DBConnections","Could not open queue?!?!");
-				Log.errOut("DBConnections",new IQCalendar(Calendar.getInstance()).d2String()+"\t"+SQLError+"\t"+SQLString);
+				Log.errOut("DBConnections",IQCalendar.d2String(System.currentTimeMillis())+"\t"+SQLError+"\t"+SQLString);
 			}
 					
 			if(out!=null)
 			{
-				out.println(SQLString+"\t!|!\t"+SQLError+"\t!|!\t"+new IQCalendar(Calendar.getInstance()).d2String());
+				out.println(SQLString+"\t!|!\t"+SQLError+"\t!|!\t"+IQCalendar.d2String(System.currentTimeMillis()));
 				out.close();
 			}
 			

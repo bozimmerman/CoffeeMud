@@ -114,11 +114,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);
-				if(I.dispossessionTime()==null)
+				if(I.dispossessionTime()==0)
 				{
-					Calendar C=new IQCalendar();
-					C.add(Calendar.HOUR,Item.REFUSE_PLAYER_DROP);
-					I.setDispossessionTime(C);
+					long now=System.currentTimeMillis();
+					now+=(IQCalendar.MILI_HOUR*Item.REFUSE_PLAYER_DROP);
+					I.setDispossessionTime(now);
 				}
 				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
 				&&(I.envStats().rejuv()!=0))
@@ -166,10 +166,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);
-				if((I.dispossessionTime()!=null)
+				if((I.dispossessionTime()!=0)
 				&&(!(I instanceof DeadBody)))
 				{
-					I.setDispossessionTime(null);
+					I.setDispossessionTime(0);
 					updateItems=true;
 				}
 				if((I.envStats().rejuv()!=Integer.MAX_VALUE)

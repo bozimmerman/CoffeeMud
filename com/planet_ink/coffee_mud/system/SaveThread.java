@@ -11,8 +11,8 @@ public class SaveThread extends Thread
 	private static boolean shutDown=false;
 	public boolean reset=true;
 	public int timeSaveTicker=0;
-	public Calendar lastStart=null;
-	public Calendar lastStop=null;
+	public long lastStart=0;
+	public long lastStop=0;
 	public static long milliTotal=0;
 	public static long tickTotal=0;
 
@@ -23,7 +23,7 @@ public class SaveThread extends Thread
 	
 	public void itemSweep()
 	{
-		Calendar itemKillTime=Calendar.getInstance();
+		long itemKillTime=System.currentTimeMillis();
 		for(int mn=0;mn<CMMap.numRooms();mn++)
 		{
 			Room room=CMMap.getRoom(mn);
@@ -38,9 +38,9 @@ public class SaveThread extends Thread
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item I=room.fetchItem(i);
-				if((I!=null)&&(I.dispossessionTime()!=null)&&(I.owner()==room))
+				if((I!=null)&&(I.dispossessionTime()!=0)&&(I.owner()==room))
 				{
-					if(itemKillTime.after(I.dispossessionTime()))
+					if(itemKillTime>I.dispossessionTime())
 					{
 						I.destroyThis();
 						i=i-1;
@@ -99,18 +99,18 @@ public class SaveThread extends Thread
 	
 	public void checkHealth()
 	{
-		Calendar lastDateTime=Calendar.getInstance();
-		lastDateTime.add(Calendar.MINUTE,-20); // 20 minutes without ticking is TOO LONG
+		long lastDateTime=System.currentTimeMillis();
+		lastDateTime-=(20*IQCalendar.MILI_MINUTE);
 		for(int mn=0;mn<CMMap.numRooms();mn++)
 		{
 			Room room=CMMap.getRoom(mn);
 			for(int m=0;m<room.numInhabitants();m++)
 			{
 				MOB mob=(MOB)room.fetchInhabitant(m);
-				if((mob!=null)&&(mob.lastTickedDateTime().before(lastDateTime)))
+				if((mob!=null)&&(mob.lastTickedDateTime()<lastDateTime))
 				{
 					boolean ticked=ServiceEngine.isTicking(mob,Host.MOB_TICK);
-					Log.errOut("SaveThread",mob.name()+" in room "+room.ID()+" unticked ("+(!ticked)+") since: "+new IQCalendar(mob.lastTickedDateTime()).d2String()+".");
+					Log.errOut("SaveThread",mob.name()+" in room "+room.ID()+" unticked ("+(!ticked)+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+".");
 				}
 			}
 		}
@@ -119,7 +119,7 @@ public class SaveThread extends Thread
 		{
 			Tick almostTock=(Tick)ServiceEngine.tickGroup.elementAt(v);
 			if((almostTock.awake)
-			&&(almostTock.lastStop.before(lastDateTime)))
+			&&(almostTock.lastStop<lastDateTime))
 			{
 				TockClient client=almostTock.lastClient;
 				if(client!=null)
@@ -198,7 +198,7 @@ public class SaveThread extends Thread
 
 	public void run()
 	{
-		lastStart=Calendar.getInstance();
+		lastStart=System.currentTimeMillis();
 		if(started)
 		{
 			System.out.println("DUPLICATE SAVETHREAD RUNNING!!");
@@ -213,11 +213,11 @@ public class SaveThread extends Thread
 				checkHealth();
 				tickTock();
 				int processed=0;
-				lastStop=Calendar.getInstance();
-				milliTotal+=(lastStop.getTimeInMillis()-lastStart.getTimeInMillis());
+				lastStop=System.currentTimeMillis();
+				milliTotal+=(lastStop-lastStart);
 				tickTotal++;
 				Thread.sleep(Host.TIME_TICK_DELAY);
-				lastStart=Calendar.getInstance();
+				lastStart=System.currentTimeMillis();
 				for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
 				{
 					MOB mob=(MOB)e.nextElement();
@@ -228,7 +228,7 @@ public class SaveThread extends Thread
 						processed++;
 					}
 					else
-					if((mob.lastUpdated()==null)||(mob.lastUpdated().before(mob.lastDateTime())))
+					if((mob.lastUpdated()==0)||(mob.lastUpdated()<mob.lastDateTime()))
 					{
 						MOBloader.DBUpdate(mob);
 						processed++;

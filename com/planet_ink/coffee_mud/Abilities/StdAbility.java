@@ -370,7 +370,7 @@ public class StdAbility implements Ability, Cloneable
 		Ability A=(Ability)mob.fetchAbility(ID());
 		if(A==null) return;
 		
-		if((Calendar.getInstance().getTime().getTime()
+		if((System.currentTimeMillis()
 		-((StdAbility)A).lastProfHelp)<60000)
 			return;
 
@@ -383,7 +383,7 @@ public class StdAbility implements Ability, Cloneable
 				if((this!=A)&&(profficiency()<100))
 				{
 					setProfficiency(profficiency()+1);
-					((StdAbility)A).lastProfHelp=Calendar.getInstance().getTime().getTime();
+					((StdAbility)A).lastProfHelp=System.currentTimeMillis();
 				}
 			}
 		}

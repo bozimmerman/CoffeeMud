@@ -21,7 +21,7 @@ public class Prop_NoPurge extends Property
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);
-				if(I!=null) I.setDispossessionTime(null);
+				if(I!=null) I.setDispossessionTime(0);
 			}
 		}
 	}

@@ -36,7 +36,7 @@ public class Paladin_HealingHands extends StdAbility
 			return false;
 		}
 		
-		long now=Calendar.getInstance().getTime().getTime();
+		long now=System.currentTimeMillis();
 		if((now-lastDone)<1000)
 		{
 			mob.tell("You need a second to regather your strength.");

@@ -326,7 +326,8 @@ public class Log
 	{
 		if(debugOutWriter!=null)
 		{
-			Message=Calendar.getInstance().get(Calendar.MINUTE)+":"+Calendar.getInstance().get(Calendar.SECOND)+":"+Calendar.getInstance().get(Calendar.MILLISECOND)+": "+Message;
+			Calendar C=Calendar.getInstance();
+			Message=C.get(Calendar.MINUTE)+":"+C.get(Calendar.SECOND)+":"+C.get(Calendar.MILLISECOND)+": "+Message;
 			debugOutWriter.println(getLogHeader(Obj,"-time-",Module, Message));
 			debugOutWriter.flush();
 			if(dbgMsgs.equalsIgnoreCase("BOTH"))

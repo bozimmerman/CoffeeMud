@@ -10,8 +10,8 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class Tick extends Thread
 {
-	public Calendar lastStart=null;
-	public Calendar lastStop=null;
+	public long lastStart=0;
+	public long lastStop=0;
 	public long milliTotal=0;
 	public long tickTotal=0;
 	
@@ -69,18 +69,18 @@ public class Tick extends Thread
 	
 	public void run()
 	{
-		lastStart=Calendar.getInstance();
+		lastStart=System.currentTimeMillis();
 		while(true)
 		{
 			try
 			{
-				lastStop=Calendar.getInstance();
-				milliTotal+=(lastStop.getTimeInMillis()-lastStart.getTimeInMillis());
+				lastStop=System.currentTimeMillis();
+				milliTotal+=(lastStop-lastStart);
 				tickTotal++;
 				awake=false;
 				Thread.sleep(Host.TICK_TIME);
 				awake=true;
-				lastStart=Calendar.getInstance();
+				lastStart=System.currentTimeMillis();
 				lastClient=null;
 				if(ExternalPlay.getSystemStarted())
 				{
@@ -89,15 +89,15 @@ public class Tick extends Thread
 					{
 						TockClient client=(TockClient)tickers.elementAt(i);
 						lastClient=client;
-						if((client.lastStart!=null)&&(client.lastStop!=null))
+						if((client.lastStart!=0)&&(client.lastStop!=0))
 						{
-							client.milliTotal+=(client.lastStop.getTimeInMillis()-client.lastStart.getTimeInMillis());
+							client.milliTotal+=(client.lastStop-client.lastStart);
 							client.tickTotal++;
 						}
-						client.lastStart=Calendar.getInstance();
+						client.lastStart=System.currentTimeMillis();
 						if(!tickTicker(client,tickers))
 							i++;
-						client.lastStop=Calendar.getInstance();
+						client.lastStop=System.currentTimeMillis();
 					}
 				}
 			}

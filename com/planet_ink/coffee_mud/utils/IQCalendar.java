@@ -6,11 +6,23 @@ import java.text.*;
 public class IQCalendar extends GregorianCalendar
 {
 
+	public final static long MILI_SECOND=1000;
+	public final static long MILI_MINUTE=MILI_SECOND*60;
+	public final static long MILI_HOUR=MILI_MINUTE*60;
+	public final static long MILI_DAY=MILI_HOUR*24;
+	
+	
 	public IQCalendar(Calendar C)
 	{
 		super();
 		this.setTime(C.getTime());
 		this.setTimeZone(C.getTimeZone());
+	}
+	
+	public IQCalendar(long time)
+	{
+		super();
+		this.setTimeInMillis(time);
 	}
 	
 	public IQCalendar()
@@ -105,6 +117,20 @@ public class IQCalendar extends GregorianCalendar
 		return "";
 	}
 	
+	
+	/**
+	 * Converts a string of some form into a IQCalendar object.
+	 * 
+  	 * <br><br><b>Usage:</b> IQCalendar.S2Date(GetRes(Results,"StartDateTime"));
+	 * @param TheDate The string to retrieve from
+	 * @return IQCalendar IQCalendar object
+	 */
+	public static long string2Millis(String TheDate)
+	{
+		IQCalendar C=string2Date(TheDate);
+		if(C!=null) return C.getTimeInMillis();
+		return 0;
+	}
 	
 	/**
 	 * Converts a string of some form into a IQCalendar object.
@@ -532,6 +558,19 @@ public class IQCalendar extends GregorianCalendar
 	 * @param NA
 	 * @return String Formatted date/time
 	 */
+	public static String d2String(long time)
+	{
+		return new IQCalendar(time).d2String();
+	}
+	
+	/**
+	 * Converts a given date into a string of form:
+	 * MM/DD/YYYY HH:MM AP
+	 * 
+  	 * <br><br><b>Usage:</b> d2String()
+	 * @param NA
+	 * @return String Formatted date/time
+	 */
 	public String d2String()
 	{
 		String MINUTE=Integer.toString(this.get(IQCalendar.MINUTE)).trim();
@@ -557,6 +596,11 @@ public class IQCalendar extends GregorianCalendar
 	}
 
 	
+	public static String d2mysqlString(long time)
+	{
+		return new IQCalendar(time).d2mysqlString();
+	}
+		
 	public String d2mysqlString()
 	{
 		String MINUTE=Integer.toString(this.get(IQCalendar.MINUTE)).trim();

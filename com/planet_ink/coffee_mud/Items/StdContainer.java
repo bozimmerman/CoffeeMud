@@ -515,7 +515,7 @@ public class StdContainer extends StdItem implements Container
 		if(bodyFlag)
 		{
 			mob.location().addItem(thisContainer);
-			thisContainer.setDispossessionTime(null);
+			thisContainer.setDispossessionTime(0);
 		}
 		else
 			mob.location().addItemRefuse(thisContainer,Item.REFUSE_PLAYER_DROP);

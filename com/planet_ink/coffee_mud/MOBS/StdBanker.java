@@ -155,14 +155,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 			// put stuff up for sale if the account runs out
 			synchronized(bankChain())
 			{
-				IQCalendar c=(IQCalendar)bankTimes.get(bankChain());
-				if((c==null)||(c.before(Calendar.getInstance())))
+				Long L=(Long)bankTimes.get(bankChain());
+				if((L==null)||(L.longValue()<System.currentTimeMillis()))
 				{	
-					c=IQCalendar.getIQInstance();
-					c.add(Calendar.MILLISECOND,allDown.intValue());
+					L=new Long(System.currentTimeMillis()+allDown.intValue());
 					proceed=true;
 					bankTimes.remove(bankChain());
-					bankTimes.put(bankChain(),c);
+					bankTimes.put(bankChain(),L);
 				}
 				if(proceed)
 				{

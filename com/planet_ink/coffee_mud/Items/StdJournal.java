@@ -55,7 +55,7 @@ public class StdJournal extends StdItem
 				int which=-1;
 				if(Util.s_long(affect.targetMessage())>0)
 					which=Util.s_int(affect.targetMessage());
-				long lastTime=mob.lastDateTime().getTimeInMillis();
+				long lastTime=mob.lastDateTime();
 				StringBuffer entry=DBRead(name(),mob.name(),which-1,lastTime);
 				boolean mineAble=false;
 				if(entry.charAt(0)=='#')
@@ -193,8 +193,6 @@ public class StdJournal extends StdItem
 				String subject=(String)entry.elementAt(4);
 				if(to.equals("ALL")||to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username))
 				{
-					IQCalendar theDate=IQCalendar.getIQInstance();
-					theDate.setTimeInMillis(Util.s_long(date));
 					if(Util.s_long(date)>lastTimeDate)
 						buf.append("*");
 					else
@@ -202,7 +200,7 @@ public class StdJournal extends StdItem
 					buf.append(Util.padRight((j+1)+"",3)+") "
 							   +Util.padRight(from,10)+" "
 							   +Util.padRight(to,10)+" "
-							   +Util.padRight(theDate.d2String(),19)+" "
+							   +Util.padRight(IQCalendar.d2String(Util.s_long(date)),19)+" "
 							   +Util.padRight(subject,25)+"\n\r");
 				}
 			}
@@ -215,8 +213,6 @@ public class StdJournal extends StdItem
 			String to=(String)entry.elementAt(3);
 			String subject=(String)entry.elementAt(4);
 			String message=(String)entry.elementAt(5);
-			IQCalendar theDate=IQCalendar.getIQInstance();
-			theDate.setTimeInMillis(Util.s_long(date));
 			boolean mineAble=to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username);
 			if(mineAble) buf.append("*");
 			else buf.append(" ");
@@ -224,7 +220,7 @@ public class StdJournal extends StdItem
 				buf.append("\n\r"+Util.padRight((which+1)+"",3)+")\n\r"
 						   +"FROM: "+from
 						   +"\n\rTO  : "+to
-						   +"\n\rDATE: "+theDate.d2String()
+						   +"\n\rDATE: "+IQCalendar.d2String(Util.s_long(date))
 						   +"\n\rSUBJ: "+subject
 						   +"\n\r"+message);
 		}

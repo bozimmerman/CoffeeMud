@@ -7,8 +7,8 @@ public class StdMOB implements MOB
 {
 	protected String Username="";
 	protected String Password="";
-	protected Calendar LastDateTime=Calendar.getInstance();
-	protected Calendar lastUpdated=null;
+	protected long LastDateTime=System.currentTimeMillis();
+	protected long lastUpdated=0;
 	protected int channelMask;
 	
 	private String colorStr=null;
@@ -86,8 +86,8 @@ public class StdMOB implements MOB
 	public CharState curState=new DefaultCharState();
 	public CharState maxState=new DefaultCharState();
 	public CharState baseState=new DefaultCharState();
-	private Calendar lastTickedDateTime=Calendar.getInstance();
-	public Calendar lastTickedDateTime(){return lastTickedDateTime;}
+	private long lastTickedDateTime=System.currentTimeMillis();
+	public long lastTickedDateTime(){return lastTickedDateTime;}
 
 	// mental characteristics
 	protected int Alignment=0;
@@ -263,10 +263,10 @@ public class StdMOB implements MOB
 		baseEnvStats=newBaseEnvStats.cloneStats();
 	}
 
-	public Calendar lastUpdated(){return lastUpdated;}
-	public void setUpdated(){lastUpdated=Calendar.getInstance();}
-	public Calendar lastDateTime(){return LastDateTime;}
-	public void setLastDateTime(Calendar C){ LastDateTime=C;}
+	public long lastUpdated(){return lastUpdated;}
+	public void setUpdated(){lastUpdated=System.currentTimeMillis();}
+	public long lastDateTime(){return LastDateTime;}
+	public void setLastDateTime(long C){ LastDateTime=C;}
 	public void setUserInfo(String newUsername,
 							String newPassword)
 	{
@@ -1744,7 +1744,7 @@ public class StdMOB implements MOB
 				if(B!=null) B.tick(this,tickID);
 			}
 		}
-		lastTickedDateTime=Calendar.getInstance();
+		lastTickedDateTime=System.currentTimeMillis();
 		return !pleaseDestroy;
 	}
 

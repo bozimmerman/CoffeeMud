@@ -24,10 +24,10 @@ public interface MOB
 	public static final int ATT_AUTODRAW=2048;
 	
 	/** When the USER last logged off */
-	public Calendar lastDateTime();
-	public Calendar lastUpdated();
+	public long lastDateTime();
+	public long lastUpdated();
 	public void setUpdated();
-	public void setLastDateTime(Calendar C);
+	public void setLastDateTime(long C);
 	/** User PASSWORD */
 	public String password();
 	/** update USER information */
@@ -129,7 +129,7 @@ public interface MOB
 	// location!
 	public Room getStartRoom();
 	public void setStartRoom(Room newVal);
-	public Calendar lastTickedDateTime();
+	public long lastTickedDateTime();
 	
 	/** Manipulation of inventory, which includes held,
 	 * worn, wielded, and contained items */

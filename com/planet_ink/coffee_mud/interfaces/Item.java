@@ -1,5 +1,4 @@
 package com.planet_ink.coffee_mud.interfaces;
-import java.util.Calendar;
 
 public interface Item extends Environmental
 {
@@ -133,6 +132,6 @@ public interface Item extends Environmental
 	
 	public Environmental owner();
 	public void setOwner(Environmental E);
-	public Calendar dispossessionTime();
-	public void setDispossessionTime(Calendar time);
+	public long dispossessionTime();
+	public void setDispossessionTime(long time);
 }

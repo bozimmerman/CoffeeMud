@@ -6,7 +6,7 @@ public class ExternalPlay
 {
 	private static ExternalCommand player=null;
 	private static ExternalSystem sysPlayer=null;
-	private static final Calendar startTime=Calendar.getInstance();
+	private static final long startTime=System.currentTimeMillis();
 	private static boolean systemStarted=false;
 	private static I3Interface i3interface=null;
 	
@@ -17,7 +17,7 @@ public class ExternalPlay
 		i3interface=i3;
 	}
 	
-	public static Calendar getStartTime()
+	public static long getStartTime()
 	{
 		return startTime;
 	}

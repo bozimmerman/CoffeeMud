@@ -31,7 +31,7 @@ public class StdRoom
 	// base move points and thirst points per round
 	protected int baseThirst=1;
 	protected int myResource=-1;
-	protected Calendar resourceFound=null;
+	protected long resourceFound=0;
 
 	protected boolean skyedYet=false;
 	public StdRoom()
@@ -247,11 +247,9 @@ public class StdRoom
 	public Vector resourceChoices(){return null;}
 	public int myResource()
 	{
-		if(resourceFound!=null)
+		if(resourceFound!=0)
 		{
-			Calendar C=Calendar.getInstance();
-			C.add(Calendar.MINUTE,-30);
-			if(resourceFound.before(C))
+			if(resourceFound<(System.currentTimeMillis()-(30*IQCalendar.MILI_MINUTE)))
 				myResource=-1;
 		}
 		if(myResource<0)
@@ -278,7 +276,7 @@ public class StdRoom
 					if(theRoll<=totalChance)
 					{
 						myResource=resource;
-						resourceFound=Calendar.getInstance();
+						resourceFound=System.currentTimeMillis();
 						break;
 					}
 				}
@@ -951,9 +949,7 @@ public class StdRoom
 	public void addItemRefuse(Item item, int survivalTime)
 	{
 		addItem(item);
-		Calendar C=Calendar.getInstance();
-		C.add(Calendar.HOUR,survivalTime);
-		item.setDispossessionTime(C);
+		item.setDispossessionTime(System.currentTimeMillis()+(survivalTime*IQCalendar.MILI_HOUR));
 	}
 	public void delItem(Item item)
 	{

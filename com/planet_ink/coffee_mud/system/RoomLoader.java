@@ -286,7 +286,7 @@ public class RoomLoader
 				Item thisItem=room.fetchItem(i);
 				if(thisItem!=null)
 				{
-					thisItem.setDispossessionTime(null); // saved items won't clear!
+					thisItem.setDispossessionTime(0); // saved items won't clear!
 					D=DBConnector.DBFetch();
 					sql=
 					"INSERT INTO CMROIT ("

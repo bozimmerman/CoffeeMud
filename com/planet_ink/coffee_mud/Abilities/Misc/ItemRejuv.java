@@ -89,7 +89,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 					boolean locked=C.hasALock();
 					C.setLidsNLocks(C.hasALid(),open,C.hasALock(),locked);
 				}
-				thisItem.setDispossessionTime(null);
+				thisItem.setDispossessionTime(0);
 				room.addItem(thisItem);
 			}
 			thisItem.setContainer(((Item)ccontents.elementAt(i)).container());

@@ -137,7 +137,7 @@ public class JournalLoader
 											String message, 
 											int which)
 	{
-		String date=new IQCalendar().getTime().getTime()+"";
+		String date=System.currentTimeMillis()+"";
 		if(which>=0)
 		{
 			Vector journal=DBRead(Journal);

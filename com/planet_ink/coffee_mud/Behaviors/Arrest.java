@@ -548,7 +548,7 @@ public class Arrest extends StdBehavior
 				if(str.endsWith("RECENTLY")&&(str.length()<10))
 				{
 					ArrestWarrant W=getOldWarrant(mob,crime,false);
-					long thisTime=Calendar.getInstance().getTime().getTime();
+					long thisTime=System.currentTimeMillis();
 					if((W!=null)&&((thisTime-W.lastOffense)<600000))
 					{
 						if(str.startsWith("!")) return false;
@@ -585,7 +585,7 @@ public class Arrest extends StdBehavior
 		W.crime=crime;
 		W.state=STATE_SEEKING;
 		W.witness=witness;
-		W.lastOffense=Calendar.getInstance().getTime().getTime();
+		W.lastOffense=System.currentTimeMillis();
 		W.warnMsg=warnMsg;
 		sentence=sentence.trim();
 		if(sentence.equalsIgnoreCase("warning"))

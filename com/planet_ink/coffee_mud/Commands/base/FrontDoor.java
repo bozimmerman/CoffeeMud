@@ -413,13 +413,11 @@ public class FrontDoor
 			String subject=(String)entry.elementAt(4);
 			String message=(String)entry.elementAt(5);
 			boolean mineAble=to.equalsIgnoreCase(mob.name())||from.equalsIgnoreCase(mob.name());
-			IQCalendar C=IQCalendar.getIQInstance();
-			C.setTimeInMillis(last);
-			if((C.after(mob.lastDateTime()))
+			if((last>mob.lastDateTime())
 			&&(to.equals("ALL")||mineAble))
 			{
 				buf.append("\n\r--------------------------------------\n\r");
-				buf.append("\n\rNews: "+C.d2String()+"\n\r"+"FROM: "+Util.padRight(from,15)+"\n\rTO  : "+Util.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
+				buf.append("\n\rNews: "+IQCalendar.d2String(last)+"\n\r"+"FROM: "+Util.padRight(from,15)+"\n\rTO  : "+Util.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
 			}
 		}
 		if((!mob.isMonster())&&(buf.length()>0))

@@ -48,8 +48,8 @@ public class GenWallpaper implements Item
 	public Environmental owner(){return owner;}
 	public void setOwner(Environmental E)
 	{ owner=E;}
-	public Calendar dispossessionTime(){return null;}
-	public void setDispossessionTime(Calendar time){}
+	public long dispossessionTime(){return 0;}
+	public void setDispossessionTime(long time){}
 
 	public boolean amDestroyed()
 	{return destroyed;}

@@ -22,7 +22,7 @@ public class Thief_Shadow extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public MOB shadowing=null;
 	private Room lastRoom=null;
-	private Calendar lastTogether=null;
+	private long lastTogether=0;
 	public Environmental newInstance(){	return new Thief_Shadow();}
 
 	public boolean stillAShadower()
@@ -95,12 +95,11 @@ public class Thief_Shadow extends ThiefSkill
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID)) return false;
-		if(lastTogether==null) return true;
+		if(lastTogether==0) return true;
 		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))
-			lastTogether=Calendar.getInstance();
-		Calendar C=Calendar.getInstance();
-		C.add(Calendar.SECOND,-5);
-		if(C.after(lastTogether))
+			lastTogether=System.currentTimeMillis();
+		long secondsago=lastTogether-(5*IQCalendar.MILI_SECOND);
+		if(lastTogether>secondsago)
 		{
 			if((invoker!=null)&&(shadowing!=null))
 			{
@@ -121,7 +120,7 @@ public class Thief_Shadow extends ThiefSkill
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 		}
 		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))
-			lastTogether=Calendar.getInstance();
+			lastTogether=System.currentTimeMillis();
 	}
 
 	public void unInvoke()

@@ -38,7 +38,7 @@ public class DBConnection
 	private String lastError=null;
 	
 	/** when this connection was put into use**/
-	private Calendar useTime=Calendar.getInstance();
+	private long useTime=System.currentTimeMillis();
 	
 	/** parent container of this connection **/
 	private DBConnections myParent=null;
@@ -146,7 +146,7 @@ public class DBConnection
 				// not a real error?!
 			}
 		
-			useTime=Calendar.getInstance();
+			useTime=System.currentTimeMillis();
 			inUse=true;
 			return true;
 		}
@@ -180,7 +180,7 @@ public class DBConnection
 				return false;
 			}
 		
-			useTime=Calendar.getInstance();
+			useTime=System.currentTimeMillis();
 			inUse=true;
 			return true;
 		}
@@ -278,7 +278,7 @@ public class DBConnection
 			lastError="DBConnection not ready.";
 		}
 		
-		useTime=Calendar.getInstance();
+		useTime=System.currentTimeMillis();
 		return R;
 	}
 	
@@ -348,7 +348,7 @@ public class DBConnection
 			}
 		}
 		
-		useTime=Calendar.getInstance();
+		useTime=System.currentTimeMillis();
 		return responseCode;
 	}
 	
@@ -389,9 +389,7 @@ public class DBConnection
 		if(communicationLinkFailure)
 			return true;
 		
-		Calendar C=Calendar.getInstance();
-		C.add(Calendar.MINUTE,-1);
-		if(useTime.before(C)&&inUse) 
+		if((useTime<(System.currentTimeMillis()-60000))&&inUse) 
 			return true;
 		else
 			return false;

@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.Races;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.Dice;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 public class StdRace implements Race
@@ -308,9 +308,7 @@ public class StdRace implements Race
 				{
 					Item newItem=(Item)thisItem.copyOf();
 					newItem.setContainer(null);
-					Calendar C=Calendar.getInstance();
-					C.add(Calendar.HOUR,Item.REFUSE_MONSTER_EQ);
-					newItem.setDispossessionTime(C);
+					newItem.setDispossessionTime(System.currentTimeMillis()+(Item.REFUSE_MONSTER_EQ*IQCalendar.MILI_HOUR));
 					newItem.recoverEnvStats();
 					thisItem=newItem;
 					i++;

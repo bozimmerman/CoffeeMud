@@ -76,7 +76,7 @@ public class Chant_SummonPlants extends Chant
 		newItem.setSecretIdentity(mob.name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
-		newItem.setDispossessionTime(null);
+		newItem.setDispossessionTime(0);
 		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
 		Chant_SummonPlants newChant=new Chant_SummonPlants();
 		newChant.PlantsLocation=room;
