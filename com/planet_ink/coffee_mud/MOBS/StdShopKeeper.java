@@ -270,7 +270,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			for(int r=0;r<rivals.size();r++)
 			{
 				Environmental E=(Environmental)rivals.elementAt(r);
-				if(Dice.rollPercentage()<E.baseEnvStats().rejuv())
+				if(Dice.rollPercentage()>E.baseEnvStats().rejuv())
 					delStoreInventory(E);
 				else
 				{

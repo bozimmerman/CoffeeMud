@@ -27,7 +27,6 @@ public class Farming extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-System.out.println(affected.name()+"/"+invoker().name()+"/"+tickUp+"/"+found);		
 		if((affected!=null)&&(affected instanceof Room))
 		{
 			MOB mob=(MOB)invoker();

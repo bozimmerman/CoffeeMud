@@ -139,7 +139,6 @@ public class DBUpgrade
 					line=reader.readLine().trim();
 					if(line!=null)
 					{
-						System.out.println("/"+line+"/");
 						if(line.trim().length()==0)
 							table=null;
 						else

@@ -1824,6 +1824,7 @@ public class CoffeeMaker
 
 			if(E instanceof ShopKeeper)
 			{
+				boolean variableEq=false;
 				ShopKeeper shopmob=(ShopKeeper)E;
 				shopmob.setWhatIsSold(XMLManager.getIntFromPieces(buf,"SELLCD"));
 				shopmob.setPrejudiceFactors(XMLManager.getValFromPieces(buf,"PREJFC"));
@@ -1872,6 +1873,8 @@ public class CoffeeMaker
 								LOCmap.put(ILOC,newOne);
 						}
 						setPropertiesStr(newOne,idat,true);
+						if((newOne.baseEnvStats().rejuv()>0)&&(newOne.baseEnvStats().rejuv()<Integer.MAX_VALUE))
+							variableEq=true;
 						shopmob.addStoreInventory(newOne,numStock,stockPrice);
 					}
 					for(int i=0;i<shopmob.getUniqueStoreInventory().size();i++)
@@ -1886,6 +1889,7 @@ public class CoffeeMaker
 						}
 					}
 				}
+				if(variableEq) ((MOB)E).flagVariableEq();
 			}
 		}
 	}
