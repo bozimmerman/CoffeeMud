@@ -30,17 +30,24 @@ public class Server {
     static public void start(String mud, 
 							 int port,
 							 ImudServices imud) 
-		throws ServerSecurityException {
-        if( started ) {
-            throw new ServerSecurityException("Illegal attempt to start Server.");
-        }
-        else {
-            started = true;
-        }
-		Log.sysOut("I3Server", "InterMud3 Server started on port "+port);
-		Log.sysOut("I3Server", "InterMud3 Core (c)1996 George Reese");
-        thread = new ServerThread(mud, port, imud);
-        thread.start();
+	{
+		try
+		{
+			if( started ) {
+			    throw new ServerSecurityException("Illegal attempt to start Server.");
+			}
+			else {
+			    started = true;
+			}
+			thread = new ServerThread(mud, port, imud);
+			Log.sysOut("I3Server", "InterMud3 Core (c)1996 George Reese");
+			thread.start();
+		}
+		catch(Exception e)
+		{
+			thread=null;
+			Log.errOut("I3Server",e.getMessage());
+		}
     }
 
     /**

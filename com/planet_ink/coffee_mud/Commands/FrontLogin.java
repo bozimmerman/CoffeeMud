@@ -9,6 +9,7 @@ import java.io.*;
 public class FrontLogin extends StdCommand
 {
 	public FrontLogin(){}
+	public Hashtable pendingLogins=new Hashtable();
 
 	private static boolean classOkForMe(MOB mob, CharClass thisClass)
 	{
@@ -176,6 +177,8 @@ public class FrontLogin extends StdCommand
 				{
 					mob.tell("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
 					mob.session().setKillFlag(true);
+					if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+					   pendingLogins.remove(mob.Name().toUpperCase());
 					return false;
 				}
 				if(((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
@@ -189,7 +192,17 @@ public class FrontLogin extends StdCommand
 					}
 					CMClass.DBEngine().DBUpdateEmail(mob);
 				}
-
+				
+				Long L=(Long)pendingLogins.get(mob.Name().toUpperCase());
+				if((L!=null)&&((System.currentTimeMillis()-L.longValue())<(10*60*1000)))
+				{
+					mob.session().println("A previous login is still pending.  Please be patient.");
+					return false;
+				}
+				if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+				   pendingLogins.remove(mob.Name().toUpperCase());
+				pendingLogins.put(mob.Name().toUpperCase(),new Long(System.currentTimeMillis()));
+				
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session thisSession=(Session)Sessions.elementAt(s);
@@ -207,10 +220,13 @@ public class FrontLogin extends StdCommand
 							thisSession.setKillFlag(true);
 							Log.sysOut("FrontDoor","Session swap for "+mob.session().mob().Name()+".");
 							mob.session().mob().bringToLife(oldRoom,false);
+							if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+							   pendingLogins.remove(mob.Name().toUpperCase());
 							return true;
 						}
 					}
 				}
+				
 				MOB oldMOB=mob;
 				if(CMMap.getPlayer(oldMOB.Name())!=null)
 				{
@@ -268,6 +284,8 @@ public class FrontLogin extends StdCommand
 				&&(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
 				CommonMsgs.channel("WIZINFO","",mob.Name()+" has logged on.",true);
+				if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+				   pendingLogins.remove(mob.Name().toUpperCase());
 			}
 			else
 			{
@@ -275,6 +293,8 @@ public class FrontLogin extends StdCommand
 				mob.setName("");
 				mob.setPlayerStats(null);
 				mob.session().println("\n\rInvalid password.\n\r");
+				if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+				   pendingLogins.remove(mob.Name().toUpperCase());
 				return false;
 			}
 		}
@@ -566,12 +586,18 @@ public class FrontLogin extends StdCommand
 				CommonMsgs.channel("WIZINFO","",mob.Name()+" has just been created.",true);
 				CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
 				CoffeeTables.bump(mob,CoffeeTables.STAT_NEWPLAYERS);
+				if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+				   pendingLogins.remove(mob.Name().toUpperCase());
 				return true;
 			}
+			if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+			   pendingLogins.remove(mob.Name().toUpperCase());
 			return false;
 		}
 		if((mob!=null)&&(mob.session()!=null))
 			mob.session().println("\n\r");
+		if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+		   pendingLogins.remove(mob.Name().toUpperCase());
 		return true;
 	}
 	public int ticksToExecute(){return 0;}

@@ -64,7 +64,9 @@ public class Who extends StdCommand
 		throws java.io.IOException
 	{
 		String mobName=Util.combine(commands,1);
-		if((mobName!=null)&&(mobName.startsWith("@")))
+		if((mobName!=null)
+		&&(mob!=null)
+		&&(mobName.startsWith("@")))
 		{
 			if((!(CMClass.I3Interface().i3online()))
 			&&(!CMClass.I3Interface().imc2online()))
@@ -73,9 +75,11 @@ public class Who extends StdCommand
 				CMClass.I3Interface().i3who(mob,mobName.substring(1));
 			return false;
 		}
-
+		boolean returnOnly=(mob==null);
+		
 		HashSet friends=null;
 		if((mobName!=null)
+		&&(mob!=null)
 		&&(mobName.equalsIgnoreCase("friends"))
 		&&(mob.playerStats()!=null))
 		{
@@ -109,7 +113,13 @@ public class Who extends StdCommand
 			head.append(Util.padRight("Class",12)+" ");
 			head.append(Util.padRight("Level",7));
 			head.append("] Character name^.^N\n\r");
-			mob.tell(head.toString()+msg.toString());
+			if(mob!=null)
+				mob.tell(head.toString()+msg.toString());
+			else
+			{
+				commands.clear();
+				commands.addElement(head.toString()+msg.toString());
+			}
 		}
 		return false;
 	}

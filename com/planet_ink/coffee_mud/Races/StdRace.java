@@ -329,6 +329,7 @@ public class StdRace implements Race
 		Body.setDisplayText("the body of "+mob.Name()+" lies here.");
 		if(room!=null)
 			room.addItem(Body);
+		Body.setDestroyAfterLooting(destroyBodyAfterUse());
 		Body.recoverEnvStats();
 		for(int i=0;i<mob.numEffects();i++)
 		{

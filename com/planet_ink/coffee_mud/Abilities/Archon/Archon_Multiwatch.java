@@ -182,7 +182,11 @@ public class Archon_Multiwatch extends ArchonSkill
 					{
 						MOB MN=(MOB)names.elementAt(n);
 						if(MN.fetchEffect(ID())==null)
-							MN.addNonUninvokableEffect((Ability)copyOf());
+						{
+							Ability A=(Ability)copyOf();
+							A.setBorrowed(MN,true);
+							MN.addNonUninvokableEffect(A);
+						}
 						rpt.append(MN.Name()+" ");
 					}
 					rpt.append("\n\r");
@@ -234,7 +238,11 @@ public class Archon_Multiwatch extends ArchonSkill
 				{
 					MOB MN=(MOB)V.elementAt(n);
 					if(MN.fetchEffect(ID())==null)
-						MN.addNonUninvokableEffect((Ability)copyOf());
+					{
+						Ability A=(Ability)copyOf();
+						A.setBorrowed(MN,true);
+						MN.addNonUninvokableEffect(A);
+					}
 				}
 				IPS.put("MANUAL"+(IPS.size()+1),V);
 				mob.tell("Manual Watch #"+IPS.size()+" added.");

@@ -310,7 +310,8 @@ public class MUD extends Thread implements MudHost
 		}
 		catch(Exception e)
 		{
-			Log.errOut("MUD",e);
+			if(imserver!=null) imserver.shutdown();
+			imserver=null;
 		}
 
 		
@@ -337,14 +338,12 @@ public class MUD extends Thread implements MudHost
 				{
 					CMClass.I3Interface().registerIMC2(imc2server);
 					imc2server.start();
-					Log.sysOut("IMC2 (C)1996-2002 Java by: Istvan David");
-					Log.sysOut("IMC2 Client of "+page.getStr("IMC2HUBNAME").trim()+".");
 				}
 			}
 		}
 		catch(Exception e)
 		{
-			Log.errOut("MUD",e);
+			Log.errOut("IMC2",e.getMessage());
 		}
 
 		for(int i=0;i<mudThreads.size();i++)

@@ -25,7 +25,7 @@ import java.util.Hashtable;
  * @see imaginary.server.Server
  */
 public class ServerThread extends Thread {
-    private java.util.Date      boot_time;
+    private java.util.Date      boot_time=null;
     private int                 count  = 1;
     private Hashtable           interactives;
     private String              mud_name;
@@ -33,7 +33,7 @@ public class ServerThread extends Thread {
     private int                 port;
     private boolean             running;
 	private ImudServices		intermuds;
-    private ListenThread listen_thread;
+    private ListenThread listen_thread=null;
 
     protected ServerThread(String mname, 
 						   int mport,
@@ -109,23 +109,19 @@ public class ServerThread extends Thread {
      *      interactive object for each.
      * </OL>
      */
-    public void run() {
+    public void run() 
+	{
 
         if( boot_time != null ) {
-            new ServerSecurityException("Illegal attempt to invoke run().");
-            return;
-        }
-        boot_time = new java.util.Date();
-        synchronized( this ) {
-            objects = new Hashtable(1000, 100);
-            interactives = new Hashtable(50, 20);
+            Log.errOut("I3Server","Illegal attempt to invoke run().");
+			return;
         }
         try {
             listen_thread = new ListenThread(port);
         }
         catch( java.io.IOException e ) {
-            Log.errOut("ServerThread",e.getMessage());
-            return;
+            Log.errOut("I3Server",e.getMessage());
+			return;
         }
 		
         try {
@@ -133,8 +129,19 @@ public class ServerThread extends Thread {
                            (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.i3.IMudPeer").newInstance());
         }
         catch( Exception e ) {
-            Log.errOut("ServerThread",e);
+            Log.errOut("I3Server",e.getMessage());
+			return;
         }
+		
+        boot_time = new java.util.Date();
+		Log.sysOut("I3Server", "InterMud3 Server started on port "+port);
+		
+        synchronized( this ) 
+		{
+            objects = new Hashtable(1000, 100);
+            interactives = new Hashtable(50, 20);
+        }
+		
         running = true;
         while( running ) {
             ServerObject[] things;
@@ -245,7 +252,9 @@ public class ServerThread extends Thread {
 		{
 			listen_thread.close();
 			listen_thread.interrupt();
+			listen_thread=null;
 		}
+		boot_time = null;
 		try{ Thread.sleep(100);}catch(Exception e){}
 	}
 	
