@@ -10,7 +10,7 @@
 ! Make mountable MOBS, and mountable Items. Mounted animals will take half of all combat damage, will add to attack ability, and increase movement and will act as a container for the purposes of cargo.  Mounted Items will not appear in inventory, and be restrained to a terrain type (air, water, etc).  More than one person can mount an item (a boat).  
 ! Armor damage/repair, especially cloth from fire, and metal armor from bludgeoning/leather armor from slashing.  
 
-banks! (Actually, you can diposit anything, but only withdraw it at a (small) price).
+banks! (Actually, you can diposit anything, and withdraw it).
 
 0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where  one could buy raw materials.  Facilities available there would be used, along with your skill, to  produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing,  Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and  remove rawness from Meat).
 
