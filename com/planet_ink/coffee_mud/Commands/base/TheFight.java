@@ -598,12 +598,13 @@ public class TheFight
 									"^F"+weapon.hitString(damageInt)+"^?");
 			msg.tagModified(true);
 			// why was there no okaffect here?
-			if(source.location().okAffect(msg))
+			Room room=source.location();
+			if((room!=null)&&(room.okAffect(msg)))
 			{
-				source.location().send(source,msg);
+				room.send(source,msg);
 				msg=new FullMsg(source,target,weapon,Affect.NO_EFFECT,Affect.MASK_HURT+damageInt,Affect.NO_EFFECT,null);
-				if(source.location().okAffect(msg))
-					source.location().send(source,msg);
+				if(room.okAffect(msg))
+					room.send(source,msg);
 			}
 		}
 		else
