@@ -423,12 +423,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				q = "[error]";
 			}
 			else
-			{
-				if(parms!=null)
-					q=W.runMacro(this,parms);
-				else
-					q=W.runMacro(this,getRequestEncodedParameters());
-			}
+				q=W.runMacro(this,parms);
 			if (q != null)
 				return q;
 			else
