@@ -1,5 +1,4 @@
 the idea of unique items
-Economy: BUDGET$, BUDGETPERIOD, QUANTITYBOUGHT, DEVRATE%, RESETRATE
 map command.  
 add damage for every hit -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.  You'll probably have to write your own spec on this one.
 ability to deposit a container and its contents.
