@@ -561,9 +561,18 @@ public class Scriptable extends StdBehavior
 					V=loadItemsFromFile(null,Util.getCleanBit(thisName,1));
 				if(V!=null)
 				{
-					areaThing=EnglishParser.fetchEnvironmental(V,Util.getPastBit(thisName,1),true);
-					if(areaThing==null)
-						areaThing=EnglishParser.fetchEnvironmental(V,Util.getPastBit(thisName,1),false);
+					String name=Util.getPastBit(thisName,1);
+					if(name.equalsIgnoreCase("ANY"))
+					{
+						if(V.size()>0)
+							areaThing=(Environmental)V.elementAt(Dice.roll(1,V.size(),-1));
+					}
+					else
+					{
+						areaThing=EnglishParser.fetchEnvironmental(V,name,true);
+						if(areaThing==null)
+							areaThing=EnglishParser.fetchEnvironmental(V,name,false);
+					}
 				}
 			}
 			catch(Exception e){}

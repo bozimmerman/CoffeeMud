@@ -20,7 +20,10 @@ public class Chant_Bury extends Chant
 		for(int i=0;i<R.numItems();i++)
 		{
 			Item I=R.fetchItem(i);
-			if((I!=null)&&(I instanceof DeadBody)&&(I.rawSecretIdentity().indexOf("/")>0))
+			if((I!=null)
+			&&(I instanceof DeadBody)
+			&&(!((DeadBody)I).playerCorpse())
+			&&(((DeadBody)I).mobName().length()>0))
 				return I;
 		}
 		return null;
@@ -48,12 +51,19 @@ public class Chant_Bury extends Chant
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
-		if((!(target instanceof DeadBody))||(((DeadBody)target).rawSecretIdentity().equalsIgnoreCase("FAKE")))
+		if((!(target instanceof DeadBody))
+		||(((DeadBody)target).rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
 			mob.tell("You may only feed the dead to the earth.");
 			return false;
 		}
 
+		if((((DeadBody)target).playerCorpse())&&(!((DeadBody)target).mobName().equals(mob.Name())))
+		{
+			mob.tell("You are not allowed to bury a players corpse.");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

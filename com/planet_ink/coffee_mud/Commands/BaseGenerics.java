@@ -25,6 +25,31 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
+	static void genCorpseData(MOB mob, DeadBody E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Corpse Data: '"+E.mobName()+"/"+E.killerName()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new name\n\r:","");
+		if(newName.length()>0)
+			E.setMobName(newName);
+		else
+			mob.tell("(no change)");
+		mob.tell("Dead MOB Description: '"+E.mobDescription()+"'.");
+		newName=mob.session().prompt("Enter a new description\n\r:","");
+		if(newName.length()>0)
+			E.setMobDescription(newName);
+		else
+			mob.tell("(no change)");
+		mob.tell("Killers Name: '"+E.killerName()+"'.");
+		newName=mob.session().prompt("Enter a new killer\n\r:","");
+		if(newName.length()>0)
+			E.setKillerName(newName);
+		else
+			mob.tell("(no change)");
+	}
+
 	static void genAuthor(MOB mob, Area A, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4318,6 +4343,8 @@ public class BaseGenerics extends StdCommand
 			genUses(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
+			if(me instanceof DeadBody)
+				genCorpseData(mob,(DeadBody)me,++showNumber,showFlag);
 			if(me instanceof ClanItem)
 				genClanItem(mob,(ClanItem)me,++showNumber,showFlag);
 			genGettable(mob,me,++showNumber,showFlag);

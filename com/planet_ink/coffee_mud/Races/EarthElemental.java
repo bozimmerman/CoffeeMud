@@ -18,6 +18,7 @@ public class EarthElemental extends StdRace
 	public String racialCategory(){return "Earth Elemental";}
 	public boolean fertile(){return false;}
 	public boolean uncharmable(){return true;}
+	protected boolean destroyBodyAfterUse(){return true;}
 
 	protected static Vector resources=new Vector();
 	public int availability(){return Race.AVAILABLE_MAGICONLY;}

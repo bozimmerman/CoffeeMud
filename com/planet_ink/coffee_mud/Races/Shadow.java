@@ -10,6 +10,7 @@ public class Shadow extends Spirit
 	public String ID(){	return "Shadow"; }
 	public String name(){ return "Shadow"; }
 	public long forbiddenWornBits(){return 0;}
+	protected boolean destroyBodyAfterUse(){return true;}
 
 	protected static Vector resources=new Vector();
 	public int availability(){return Race.AVAILABLE_MAGICONLY;}

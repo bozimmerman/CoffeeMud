@@ -16,9 +16,7 @@ public class Prayer_AnimateGhost extends Prayer
 
 	public static void makeGhostFrom(Room R, DeadBody body, MOB mob, int level)
 	{
-		int x=body.rawSecretIdentity().indexOf("/");
-		String description="";
-		if(x>=0)description=body.rawSecretIdentity().substring(x+1);
+		String description=body.mobDescription();
 		if(description.trim().length()==0)
 			description="It looks dead.";
 		else
@@ -114,9 +112,7 @@ public class Prayer_AnimateGhost extends Prayer
 		}
 
 		DeadBody body=(DeadBody)target;
-		int x=body.rawSecretIdentity().indexOf("/");
-
-		if((body.rawSecretIdentity().length()==0)||(x<=0))
+		if(body.playerCorpse()||(body.mobName().length()==0))
 		{
 			mob.tell("You can't animate that.");
 			return false;

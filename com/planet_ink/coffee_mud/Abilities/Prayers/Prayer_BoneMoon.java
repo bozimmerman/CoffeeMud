@@ -45,8 +45,8 @@ public class Prayer_BoneMoon extends Prayer
 				if((I!=null)
 				&&(I instanceof DeadBody)
 				&&(I.container()==null)
-				&&(I.rawSecretIdentity().length()>0)
-				&&(I.rawSecretIdentity().indexOf("/")>0))
+				&&(!((DeadBody)I).playerCorpse())
+				&&(((DeadBody)I).mobName().length()>0))
 				{
 					B=(DeadBody)I;
 					break;

@@ -438,10 +438,12 @@ public class MUDFight
 				if((item!=null)
 				&&(item.container()==Body)
 				&&(Sense.canBeSeenBy(Body,source))
+				&&((!Body.destroyAfterLooting())||(!(item instanceof EnvResource)))
 				&&(Sense.canBeSeenBy(item,source)))
 					CommonMsgs.get(source,Body,item,false);
 			}
-			deathRoom.recoverRoomStats();
+			if(Body.destroyAfterLooting())
+				deathRoom.recoverRoomStats();
 		}
 		
 		if((deadMoney>0)&&(myAmountOfDeadMoney>0))
@@ -462,6 +464,18 @@ public class MUDFight
 			else
 			if(Sense.canBeSeenBy(Body,mob))
 				CommonMsgs.get(mob,Body,C,false);
+		}
+		
+		if(Body.destroyAfterLooting())
+		{
+			for(int i=deathRoom.numItems()-1;i>=0;i--)
+			{
+				Item item=deathRoom.fetchItem(i);
+				if((item!=null)&&(item.container()==Body))
+					item.setContainer(null);
+			}
+			Body.destroy();
+			deathRoom.recoverEnvStats();
 		}
 	}
 

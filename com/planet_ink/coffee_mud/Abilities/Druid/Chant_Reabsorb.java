@@ -18,6 +18,13 @@ public class Chant_Reabsorb extends Chant
 	{
 		Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
+		if((target instanceof DeadBody)
+		&&(((DeadBody)target).playerCorpse())
+		&&(!((DeadBody)target).mobName().equals(mob.Name())))
+		{
+			mob.tell("You are not allowed to reabsorb a player corpse.");
+			return false;
+		}
 		if(!(target.owner() instanceof Room))
 		{
 			mob.tell("You need to put "+target.name()+" on the ground first.");

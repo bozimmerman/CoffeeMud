@@ -20,7 +20,15 @@ public class Spell_Disintegrate extends Spell
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
 		if(target==null) return false;
-
+		
+		if((target instanceof DeadBody)
+		&&(((DeadBody)target).playerCorpse())
+		&&(!((DeadBody)target).mobName().equals(mob.Name())))
+		{
+			mob.tell("You are not allowed to destroy a player corpse.");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

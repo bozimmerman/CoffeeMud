@@ -12,6 +12,7 @@ public class Spirit extends Undead
 	public int shortestMale(){return 64;}
 	public int shortestFemale(){return 60;}
 	public int heightVariance(){return 12;}
+	protected boolean destroyBodyAfterUse(){return true;}
 
 	protected static Vector resources=new Vector();
 

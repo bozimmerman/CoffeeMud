@@ -31,15 +31,13 @@ public class Prayer_AnimateDead extends Prayer
 		}
 
 		DeadBody body=(DeadBody)target;
-		int x=body.rawSecretIdentity().indexOf("/");
-
-		if((body.rawSecretIdentity().length()==0)||(x<=0))
+		if(body.playerCorpse()||(body.mobName().length()==0))
 		{
 			mob.tell("You can't animate that.");
 			return false;
 		}
-		String realName=body.rawSecretIdentity().substring(0,x);
-		String description=body.rawSecretIdentity().substring(x+1);
+		String realName=body.mobName();
+		String description=body.mobDescription();
 		if(description.trim().length()==0)
 			description="It looks dead.";
 		else

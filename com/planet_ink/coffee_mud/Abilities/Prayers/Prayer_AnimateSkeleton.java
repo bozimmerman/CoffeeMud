@@ -16,8 +16,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 
 	public static void makeSkeletonFrom(Room R, DeadBody body, MOB mob, int level)
 	{
-		int x=body.rawSecretIdentity().indexOf("/");
-		String description=body.rawSecretIdentity().substring(x+1);
+		String description=body.mobDescription();
 		if(description.trim().length()==0)
 			description="It looks dead.";
 		else
@@ -98,8 +97,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 		}
 
 		DeadBody body=(DeadBody)target;
-		int x=body.rawSecretIdentity().indexOf("/");
-		if((body.rawSecretIdentity().length()==0)||(x<=0))
+		if(body.playerCorpse()||(body.mobName().length()==0))
 		{
 			mob.tell("You can't animate that.");
 			return false;

@@ -42,13 +42,12 @@ public class Song_Rebirth extends Song
 				while(i<mob.location().numItems())
 				{
 					Item body=mob.location().fetchItem(i);
-					int x=body.rawSecretIdentity().indexOf("/");
 					if((body!=null)
 					&&(body instanceof DeadBody)
-					&&(x>0))
+					&&(((DeadBody)body).playerCorpse())
+					&&(((DeadBody)body).mobName().length()>0))
 					{
-						String mobName=body.rawSecretIdentity().substring(0,x).trim();
-						MOB rejuvedMOB=CMMap.getPlayer(mobName);
+						MOB rejuvedMOB=CMMap.getPlayer(((DeadBody)body).mobName());
 						if(rejuvedMOB!=null)
 						{
 							rejuvedMOB.tell("You are being resusitated.");

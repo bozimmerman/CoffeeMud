@@ -18,6 +18,7 @@ public class AirElemental extends StdRace
 	public String racialCategory(){return "Air Elemental";}
 	public boolean fertile(){return false;}
 	public boolean uncharmable(){return true;}
+	protected boolean destroyBodyAfterUse(){return true;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};

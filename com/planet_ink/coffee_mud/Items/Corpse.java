@@ -18,6 +18,7 @@ public class Corpse extends GenContainer implements DeadBody
 	protected Environmental killingTool=null;
 	protected boolean destroyAfterLooting=false;
 	protected boolean playerCorpse=false;
+	protected boolean mobPKFlag=false;
 
 	public Corpse()
 	{
@@ -92,6 +93,8 @@ public class Corpse extends GenContainer implements DeadBody
 	public void setMobName(String newName){mobName=newName;}
 	public String mobDescription(){return mobDescription;}
 	public void setMobDescription(String newDescription){mobDescription=newDescription;}
+	public boolean mobPKFlag(){return mobPKFlag;}
+	public void setMobPKFlag(boolean truefalse){mobPKFlag=truefalse;}
 	public String killerName(){return killerName;}
 	public void setKillerName(String newName){killerName=newName;}
 	public boolean killerPlayer(){return killerPlayer;}
@@ -117,7 +120,8 @@ public class Corpse extends GenContainer implements DeadBody
 				&&(!msg.tool().ID().equalsIgnoreCase("Song_Rebirth"))))
         &&((envStats().ability()>10)||(Sense.isABonusItems(this)))
 		&&(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).length()>0)
-        &&(rawSecretIdentity().indexOf("/")>=0))
+        &&(playerCorpse())
+		&&(mobName().length()>0))
         {
             if(((MOB)msg.source()).isASysOp((Room)myHost))
                 return true;
@@ -125,35 +129,26 @@ public class Corpse extends GenContainer implements DeadBody
                 return true;
             if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("ANY"))
                 return true;
-            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("SELFONLY")) 
+            if (mobName().equalsIgnoreCase(msg.source().Name())) 
+				return true;
+            else 
+            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
 			{
-                if (rawSecretIdentity().startsWith(msg.source().Name()+"/")) 
-					return true;
-                else 
-				{
-                    msg.source().tell("Hey - that's not yours!");
-                    return false;
-                }
+                msg.source().tell("You may not loot another players corpse.");
+                return false;
 	        }
-            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PLAYERKILL")) 
+			else
+            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PLAYERKILL"))
 			{
-                if((((rawSecretIdentity().startsWith(msg.source().Name()+"/")))
-                ||(Util.bset(envStats().ability(),64))
-                    &&(Util.bset(((MOB)msg.source()).getBitmap(), MOB.ATT_PLAYERKILL))))
-				{
-                    return true;
-                }
-                else 
                 if(!(Util.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL))) 
 				{
                     msg.source().tell("You can not get that.  You are not a player killer.");
                     return false;
                 }
 				else
-                if(!Util.bset(envStats().ability(),64))
+				if(mobPKFlag())
 				{
-					int x=rawSecretIdentity().indexOf("/");
-                    msg.source().tell("You can not get that.  "+rawSecretIdentity().substring(0,x)+" is not a player killer.");
+                    msg.source().tell("You can not get that.  "+mobName()+" was not a player killer.");
                     return false;
                 }
 			}

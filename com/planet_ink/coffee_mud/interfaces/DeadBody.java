@@ -20,6 +20,8 @@ public interface DeadBody extends Container
 	public void setDestroyAfterLooting(boolean truefalse);
 	public boolean playerCorpse();
 	public void setPlayerCorpse(boolean truefalse);
+	public boolean mobPKFlag();
+	public void setMobPKFlag(boolean truefalse);
 	
 	public void startTicker(Room thisRoom);
 }

@@ -23,9 +23,15 @@ public class Prayer_Bury extends Prayer
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
-		if((!(target instanceof DeadBody))||(target.rawSecretIdentity().equalsIgnoreCase("FAKE")))
+		if((!(target instanceof DeadBody))
+		   ||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
 			mob.tell("You may only bury the dead.");
+			return false;
+		}
+		if((((DeadBody)target).playerCorpse())&&(!((DeadBody)target).mobName().equals(mob.Name())))
+		{
+			mob.tell("You are not allowed to bury a players corpse.");
 			return false;
 		}
 

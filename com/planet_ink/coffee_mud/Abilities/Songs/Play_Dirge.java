@@ -22,7 +22,7 @@ public class Play_Dirge extends Play
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
-		if((!(target instanceof DeadBody))||(target.rawSecretIdentity().equalsIgnoreCase("FAKE")))
+		if((!(target instanceof DeadBody))||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
 			mob.tell("You may only play this for the dead.");
 			return false;

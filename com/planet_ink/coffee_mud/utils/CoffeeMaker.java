@@ -389,6 +389,7 @@ public class CoffeeMaker
 				text.append(XMLManager.convertXMLtoTag("MDLMSG",""+((DeadBody)E).lastMessage()));
 				text.append(XMLManager.convertXMLtoTag("MBREAL",""+((DeadBody)E).destroyAfterLooting()));
 				text.append(XMLManager.convertXMLtoTag("MPLAYR",""+((DeadBody)E).playerCorpse()));
+				text.append(XMLManager.convertXMLtoTag("MPKILL",""+((DeadBody)E).mobPKFlag()));
 				if(((DeadBody)E).killingTool()==null) text.append("<KLTOOL />");
 				else
 				{
@@ -1680,6 +1681,7 @@ public class CoffeeMaker
 					((DeadBody)E).setMobDescription(XMLManager.getValFromPieces(buf,"MDDESC"));
 					((DeadBody)E).setKillerName(XMLManager.getValFromPieces(buf,"MKNAME"));
 					((DeadBody)E).setKillerPlayer(XMLManager.getBoolFromPieces(buf,"MKPLAY"));
+					((DeadBody)E).setMobPKFlag(XMLManager.getBoolFromPieces(buf,"MPKILL"));
 					((DeadBody)E).setDestroyAfterLooting(XMLManager.getBoolFromPieces(buf,"MBREAL"));
 					((DeadBody)E).setLastMessage(XMLManager.getValFromPieces(buf,"MDLMSG"));
 					Vector dblk=XMLManager.getContentsFromPieces(buf,"KLTOOL");
