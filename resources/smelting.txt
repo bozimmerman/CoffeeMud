@@ -1,11 +1,4 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
-</BODY>
-</HTML>
+Bronze	1	40	1	1	GenEnvResource	TIN	COPPER
+Steel	6	120	1	1	GenEnvResource	IRON	COAL
+Brass	1	40	1	1	GenEnvResource	ZINC	COPPER
+Adamantium	12	250	1	1	GenEnvResource	MITHRIL	STEEL

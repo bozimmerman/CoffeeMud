@@ -2844,7 +2844,7 @@ public class Import
 
 						if(name.length()>0)
 						{
-							if(("aeiouAEIOU").indexOf(name.charAt(0))>=0)
+							if(new String("aeiou").indexOf(Character.toLowerCase(name.charAt(0)))>=0)
 								E.setName("an "+name);
 							else
 								E.setName("a "+name);

@@ -233,7 +233,7 @@ public class Carpentry extends CommonSkill
 			}
 			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
-			if(new String("aeiou").indexOf(itemName.charAt(0))>=0)
+			if(new String("aeiou").indexOf(Character.toLowerCase(itemName.charAt(0)))>=0)
 				itemName="an "+itemName;
 			else
 				itemName="a "+itemName;
