@@ -196,7 +196,7 @@ mo	HAND	Kiss whose hand?
 ww	COMFORT <T-NAME>	You comfort <T-HIM-HER>.	<S-NAME> comforts <T-NAMESELF>.	<S-NAME> comforts you.	Comfort who?
 ss	RASPBERRY	You stick your tongue out at ... well, no one.	<S-NAME> sticks <S-HIS-HER> tongue out, catching a few flies in the process.		
 ov	CHARGE <T-NAME>	With surprising dexterity, you head-butt <T-NAMESELF>!	<S-NAME> ducks down low, charges forward, and head-butts <T-NAMESELF>!	OOF!  <S-NAME> rammed <S-HIS-HER> head into your stomach!  That HURT.	Nobody 'round with that name, Mister!
-mo	STRIP SELF	You can't DO that in public!			
+mo	STRIPS SELF	You can't DO that in public!			
 mo	FROWN	You frown disapprovingly.	<S-NAME> frowns.		
 ss	AARGH SELF	You scream in frustration at your own stupidity!	<S-NAME> screams in frustration at <S-HIS-HER> own stupidity!		
 mo	ROLL <T-NAME>	You look at <T-NAMESELF> and roll your eyes in disgust.	<S-NAME> rolls <S-HIS-HER> eyes in disgust at <T-NAMESELF>.	<S-NAME> rolls <S-HIS-HER> eyes at you.	You should be disgusted with yourself because you look so foolish.
@@ -335,7 +335,7 @@ ww	WHINE SELF	You whine to yourself, probably the only one who will listen.	<S-N
 mo	THINK <T-NAME>	You think about what <T-NAME> has said.	<S-NAME> thinks about what <T-NAME> has said.	<S-NAME> thinks about what you have said.	
 ss	SOB <T-NAME>	You sob quietly to yourself because <T-NAMESELF> has hurt your feelings so badly.	<S-NAME> sobs quietly to <S-HIM-HERSELF> because <T-NAMESELF> was a jerk!	You feel like a cad because you've made <S-NAME> sob.	
 ms	APPLAUD <T-NAME>	You clap at <T-NAMESELF>'s actions.	<S-NAME> claps at <T-NAMESELF>'s actions.	<S-NAME> gives you a round of applause.  You MUST'VE done something good!	You give your imaginary round of applause to your imaginary friend.
-mo	STRIP	You do a slow strip tease for the people...	<S-NAME> begins a slow, erotic strip-tease act...		
+mo	STRIPS	You do a slow strip tease for the people...	<S-NAME> begins a slow, erotic strip-tease act...		
 ww	BEG SELF	Begging yourself for money doesn't help.			
 ot	RUFFLE <T-NAME>	You ruffle <T-NAMESELF>'s hair playfully.	<S-NAME> ruffles <T-NAMESELF>'s hair playfully.	<S-NAME> ruffles your hair playfully.	Might be a bit difficult.
 mo	EYEBROW	You raise an eyebrow at the notion.	<S-NAME> raises an eyebrow.		
@@ -456,7 +456,7 @@ mo	PEER	You peer around yourself intently.	<S-NAME> peers around <S-HIM-HERSELF>
 ms	CLAP	You clap your hands together.	<S-NAME> claps.		
 ot	TICKLE	Whom do you want to tickle?			
 ov	BEARHUG <T-NAME>	You overwhelm <T-NAMESELF> with a great, big, hulking bearhug.	<S-NAME> encompasses <T-NAMESELF> in an ENORMOUS bearhug!	<S-NAME> clutches you tightly in an overwhelming bearhug!	Perhaps you should shower your affections on someone who is here?
-mt	STRIP <T-NAME>	You start to undress <T-NAMESELF> ... one piece of clothing at a time...	<S-NAME> runs <S-HIS-HER> hands over <T-NAMESELF>s body, slowly stripping away the clothing...	<S-NAME> has started to strip you... woah BABY!	Your toy doesn't seem to be here...
+mt	STRIPS <T-NAME>	You start to undress <T-NAMESELF> ... one piece of clothing at a time...	<S-NAME> runs <S-HIS-HER> hands over <T-NAMESELF>s body, slowly stripping away the clothing...	<S-NAME> has started to strip you... woah BABY!	Your toy doesn't seem to be here...
 mo	WINK <T-NAME>	You wink suggestively at <T-NAMESELF>.	<S-NAME> winks at <T-NAMESELF>.	<S-NAME> winks suggestively at you.	No one with that name is present.
 ov	SILLY	You do the silly walk all around the room.	<S-NAME> does the silly walk all around the room.  <S-HE-SHE> *is* silly.		
 oo	SPANK	Spank whom?			

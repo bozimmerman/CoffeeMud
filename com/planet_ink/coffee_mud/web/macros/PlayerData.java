@@ -159,6 +159,9 @@ public class PlayerData extends StdWebMacro
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
+		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
+			return httpReq.getMUD().gameStatusStr();
+
 		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("PLAYER");
 		if(last==null) return " @break@";

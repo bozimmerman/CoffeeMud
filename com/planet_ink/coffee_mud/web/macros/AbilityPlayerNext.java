@@ -11,6 +11,9 @@ public class AbilityPlayerNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
+		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
+			return httpReq.getMUD().gameStatusStr();
+
 		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("ABILITY");
 		if(parms.containsKey("RESET"))

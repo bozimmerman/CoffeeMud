@@ -30,21 +30,37 @@ public class Spell_Mirage extends Spell
 		super.unInvoke();
 	}
 
+	private Room room()
+	{
+		if(newRoom==null)
+		{
+			newRoom=CMMap.getRoom(text());
+			if(newRoom==null)
+			{
+				if(!(affected instanceof Room))
+					return null;
+				newRoom=((Room)affected).getArea().getRandomRoom();
+			}
+		}
+		return newRoom;
+	}
+	
+	
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		&&(affected instanceof Room)
 		&&(affect.amITarget(affected))
-		&&(newRoom.fetchAffect(ID())==null)
+		&&(room().fetchAffect(ID())==null)
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
 		{
-			Affect msg=new FullMsg(affect.source(),newRoom,affect.tool(),
+			Affect msg=new FullMsg(affect.source(),room(),affect.tool(),
 						  affect.sourceCode(),affect.sourceMessage(),
 						  affect.targetCode(),affect.targetMessage(),
 						  affect.othersCode(),affect.othersMessage());
-			if(newRoom.okAffect(affect.source(),msg))
+			if(room().okAffect(affect.source(),msg))
 			{
-				newRoom.affect(affect.source(),msg);
+				room().affect(affect.source(),msg);
 				return false;
 			}
 		}
@@ -68,9 +84,6 @@ public class Spell_Mirage extends Spell
 
 		Environmental target = mob.location();
 		boolean success=profficiencyCheck(0,auto);
-		newRoom=mob.location();
-		while(newRoom==mob.location())
-			newRoom=mob.location().getArea().getRandomRoom();
 
 		if(success)
 		{

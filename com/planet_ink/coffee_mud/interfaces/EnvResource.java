@@ -113,12 +113,12 @@ public interface EnvResource extends Item
 	public final static int RESOURCE_COFFEEBEANS=MATERIAL_VEGETATION|75;
 	public final static int RESOURCE_COFFEE=MATERIAL_LIQUID|76;
 	public final static int RESOURCE_OPAL=MATERIAL_PRECIOUS|77;
-	public final static int RESOURCE_TOPAZ=MATERIAL_ROCK|78;
+	public final static int RESOURCE_TOPAZ=MATERIAL_PRECIOUS|78;
 	public final static int RESOURCE_AMETHYST=MATERIAL_PRECIOUS|79;
 	public final static int RESOURCE_GARNET=MATERIAL_PRECIOUS|80;
-	public final static int RESOURCE_AMBER=MATERIAL_ROCK|81;
+	public final static int RESOURCE_AMBER=MATERIAL_PRECIOUS|81;
 	public final static int RESOURCE_AQUAMARINE=MATERIAL_PRECIOUS|82;
-	public final static int RESOURCE_CRYSOBERYL=MATERIAL_ROCK|83;
+	public final static int RESOURCE_CRYSOBERYL=MATERIAL_PRECIOUS|83;
 	public final static int RESOURCE_IRONWOOD=MATERIAL_WOODEN|84;
 	public final static int RESOURCE_SILK=MATERIAL_CLOTH|85;
 	public final static int RESOURCE_COCOA=MATERIAL_VEGETATION|86;

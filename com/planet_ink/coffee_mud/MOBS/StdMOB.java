@@ -297,7 +297,11 @@ public class StdMOB implements MOB
 	public int maxCarry()
 	{
 		double str=new Integer(charStats().getStat(CharStats.STRENGTH)).doubleValue();
-		double bodyWeight=new Integer(baseEnvStats().weight()).doubleValue();
+		double bodyWeight=0.0;
+		if(charStats().getMyRace()==baseCharStats().getMyRace())
+			bodyWeight=new Integer(baseEnvStats().weight()).doubleValue();
+		else
+			bodyWeight=new Integer(charStats().getMyRace().getMaxWeight()).doubleValue();
 		return (int)Math.round(bodyWeight + ((str+10.0)*str*bodyWeight/150.0) + str*5.0);
 	}
 	public int maxFollowers()

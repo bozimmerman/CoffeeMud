@@ -11,6 +11,9 @@ public class PlayerNext extends StdWebMacro
 
 	public static MOB getMOB(String last)
 	{
+		if(!ExternalPlay.getSystemStarted())
+			return null;
+
 		MOB M=CMMap.getPlayer(last);
 		if((M==null)&&(ExternalPlay.DBUserSearch(null,last)))
 		{
@@ -25,6 +28,9 @@ public class PlayerNext extends StdWebMacro
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
+		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
+			return httpReq.getMUD().gameStatusStr();
+
 		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("PLAYER");
 		if(parms.containsKey("RESET"))

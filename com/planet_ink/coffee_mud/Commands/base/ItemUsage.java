@@ -667,7 +667,7 @@ public class ItemUsage
 			return;
 		}
 		commands.removeElementAt(0);
-		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
+		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,false);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
@@ -684,7 +684,7 @@ public class ItemUsage
 			return;
 		}
 		commands.removeElementAt(0);
-		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
+		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,false);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else

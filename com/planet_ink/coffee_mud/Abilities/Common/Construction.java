@@ -388,11 +388,14 @@ public class Construction extends CommonSkill
 			commonTell(mob,"There is no wood here to make anything from!  It might need to put it down first.");
 			return false;
 		}
-		if(firstWood.material()==EnvResource.RESOURCE_BALSA)
-			woodRequired=woodRequired/2;
-		else
-		if(firstWood.material()==EnvResource.RESOURCE_IRONWOOD)
-			woodRequired=woodRequired*2;
+		if(firstWood!=null)
+		{
+			if(firstWood.material()==EnvResource.RESOURCE_BALSA)
+				woodRequired=woodRequired/2;
+			else
+			if(firstWood.material()==EnvResource.RESOURCE_IRONWOOD)
+				woodRequired=woodRequired*2;
+		}
 		if(woodRequired<1) woodRequired=1;
 		if(foundWood<woodRequired)
 		{

@@ -7,6 +7,7 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public boolean playerSelectable();
 	public void startRacing(MOB mob, boolean verifyOnly);
 	public void setHeightWeight(EnvStats stats, char gender);
+	public int getMaxWeight();
 	public void outfit(MOB mob);
 	public Weapon myNaturalWeapon();
 	public String healthText(MOB mob);

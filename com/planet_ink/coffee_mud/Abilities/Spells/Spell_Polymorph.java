@@ -27,7 +27,7 @@ public class Spell_Polymorph extends Spell
 				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
-			newRace.setHeightWeight(((MOB)affected).baseEnvStats(),'M');
+			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
 		}
 	}
 

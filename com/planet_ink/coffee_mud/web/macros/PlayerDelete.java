@@ -12,6 +12,9 @@ public class PlayerDelete extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
+		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
+			return httpReq.getMUD().gameStatusStr();
+
 		String last=httpReq.getRequestParameter("PLAYER");
 		if(last==null) return " @break@";
 		MOB M=PlayerNext.getMOB(last);

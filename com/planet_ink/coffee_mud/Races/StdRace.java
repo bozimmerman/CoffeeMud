@@ -300,6 +300,10 @@ public class StdRace implements Race
  		else
 			stats.setHeight(shortestFemale()+heightModifier);
 	}
+	public int getMaxWeight()
+	{
+		return lightestWeight()+weightVariance();
+	}
 
 	public boolean canWear(Item item)
 	{

@@ -315,7 +315,7 @@ public class MOBloader
 				head.append(Util.padRight((String)U.elementAt(3),4)+" ");
 				head.append(Util.padRight((String)U.elementAt(4),5)+" ");
 				if(sortBy!=6)
-					head.append(Util.padRight(IQCalendar.d2String(IQCalendar.string2Millis((String)U.elementAt(5))),18)+" ");
+					head.append(Util.padRight(IQCalendar.d2String(Util.s_long((String)U.elementAt(5))),18)+" ");
 				else
 					head.append(Util.padRight((String)U.elementAt(6),23)+" ");
 				head.append("] "+Util.padRight((String)U.elementAt(0),15));

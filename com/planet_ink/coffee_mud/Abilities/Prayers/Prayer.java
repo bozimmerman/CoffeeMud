@@ -50,7 +50,7 @@ public class Prayer extends StdAbility
 	protected String inTheNameOf(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
-			return " in the name of "+mob.getMyDeity();
+			return " in the name of "+mob.getMyDeity().name();
 		return "";
 	}
 	protected String hisHerDiety(MOB mob)
@@ -62,7 +62,7 @@ public class Prayer extends StdAbility
 	protected String ofDiety(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
-			return " of "+mob.getMyDeity();
+			return " of "+mob.getMyDeity().name();
 		return "";
 	}
 	protected String prayingWord(MOB mob)
