@@ -43,9 +43,7 @@ public class Spell_TimeStop extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if(affected==null)
-			return;
-		if(canBeUninvoked)
+		if((affected!=null)&&(canBeUninvoked))
 		{
 			if(affected instanceof Room)
 			{

@@ -453,7 +453,7 @@ public class MOBloader
 			}
 			catch(SQLException sqle)
 			{
-				Log.errOut("MOB","UpdateItems"+sqle);
+				Log.errOut("MOB","UpdateItems"+sqle+"//"+updateString);
 			}
 		}
 		DBConnector.DBDone(D);
@@ -498,7 +498,7 @@ public class MOBloader
 			}
 			catch(SQLException sqle)
 			{
-				Log.errOut("MOB","UpdateFollowers"+sqle);
+				Log.errOut("MOB","UpdateFollowers"+sqle+"//"+updateString);
 			}
 		}
 		DBConnector.DBDone(D);
@@ -588,7 +588,7 @@ public class MOBloader
 			}
 			catch(SQLException sqle)
 			{
-				Log.errOut("MOB","UpdateAbilities"+sqle);
+				Log.errOut("MOB","UpdateAbilities"+sqle+"//"+updateString);
 			}
 		}
 		DBConnector.DBDone(D);

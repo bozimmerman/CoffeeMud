@@ -1926,11 +1926,19 @@ public class Generic
 	{
 		if(mob.isMonster())
 			return;
+		if(me.isMonster())
+			return;
 		boolean ok=false;
 		while(!ok)
 		{
-			String oldName=mob.ID();
+			String oldName=me.ID();
 			genName(mob,me);
+			while((!me.name().equals(oldName))&&(ExternalPlay.DBUserSearch(null,me.name())))
+			{
+				mob.tell("The name given cannot be chosen, as it is already being used.");
+				genName(mob,me);
+			}
+
 			genDescription(mob,me);
 			genLevel(mob,me);
 			genRace(mob,me);
@@ -1956,10 +1964,9 @@ public class Generic
 			me.resetToMaxState();
 			if(!oldName.equals(me.ID()))
 			{
-				String newName=me.ID();
-				me.setName(oldName);
-				ExternalPlay.DBDeleteMOB(me);
-				me.setName(newName);
+				MOB fakeMe=(MOB)me.copyOf();
+				fakeMe.setName(oldName);
+				ExternalPlay.DBDeleteMOB(fakeMe);
 				ExternalPlay.DBCreateCharacter(me);
 				ExternalPlay.DBUpdateMOB(me);
 			}
