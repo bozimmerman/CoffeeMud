@@ -2182,7 +2182,7 @@ public class CoffeeMaker
 				newFollower.recoverEnvStats();
 				newFollower.recoverMaxState();
 				newFollower.resetToMaxState();
-				mob.addFollower(newFollower);
+				mob.addFollower(newFollower,0);
 			}
 			
 			mob.recoverCharStats();

@@ -214,12 +214,12 @@ public interface MOB
 	public int numAllEffects();
 
 	/** Manipulation of followers */
-	public void addFollower(MOB follower);
+	public void addFollower(MOB follower, int order);
 	public void delFollower(MOB follower);
 	public int numFollowers();
+	public int fetchFollowerOrder(MOB thisOne);
+	public boolean isFollowedBy(MOB thisOne);
 	public MOB fetchFollower(int index);
-	public MOB fetchFollower(MOB thisOne);
-	public MOB fetchFollower(String ID);
 	public MOB amFollowing();
 	public boolean willFollowOrdersOf(MOB mob);
 	public void setFollowing(MOB mob);

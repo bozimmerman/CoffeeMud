@@ -302,6 +302,7 @@ public class MOBloader
 		try
 		{
 			D=DBConnector.DBFetch();
+			CharClass C=null;
 			ResultSet R=D.query("SELECT * FROM CMCHAR");
 			if(R!=null)
 			while(R.next())
@@ -312,7 +313,10 @@ public class MOBloader
 					String cclass=DBConnections.getRes(R,"CMCLAS");
 					int x=cclass.lastIndexOf(";");
 					if((x>0)&&(x<cclass.length()-2))
-						cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
+					{
+						C=CMClass.getCharClass(cclass.substring(x+1));
+						if(C!=null)	cclass=C.name();
+					}
 					thisUser.addElement(cclass);
 					String rrace=DBConnections.getRes(R,"CMRACE");
 					Race R2=CMClass.getRace(rrace);

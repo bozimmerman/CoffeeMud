@@ -51,7 +51,7 @@ public class StdMOB implements MOB
 	protected Vector inventory=new Vector();
 
 	/* instantiated creature types listed as followers*/
-	protected Vector followers=new Vector();
+	protected DVector followers=null;
 
 	/* All Ability codes, including languages*/
 	protected Vector abilities=new Vector();
@@ -208,7 +208,7 @@ public class StdMOB implements MOB
 		pleaseDestroy=false;
 
 		inventory=new Vector();
-		followers=new Vector();
+		followers=null;
 		abilities=new Vector();
 		affects=new Vector();
 		behaviors=new Vector();
@@ -477,14 +477,14 @@ public class StdMOB implements MOB
 				location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
 		}
 		setFollowing(null);
-		Vector oldFollowers=new Vector();
+		DVector oldFollowers=new DVector(2);
 		while(numFollowers()>0)
 		{
 			MOB follower=fetchFollower(0);
 			if(follower!=null)
 			{
 				if(follower.isMonster())
-					oldFollowers.addElement(follower);
+					oldFollowers.addElement(follower,new Integer(fetchFollowerOrder(follower)));
 				follower.setFollowing(null);
 				delFollower(follower);
 			}
@@ -494,14 +494,14 @@ public class StdMOB implements MOB
 		{
 			for(int f=0;f<oldFollowers.size();f++)
 			{
-				MOB follower=(MOB)oldFollowers.elementAt(f);
+				MOB follower=(MOB)oldFollowers.elementAt(f,1);
 				if(follower.location()!=null)
 				{
 					MOB newFol=(MOB)follower.copyOf();
 					newFol.baseEnvStats().setRejuv(0);
 					newFol.text();
 					follower.killMeDead(false);
-					addFollower(newFol);
+					addFollower(newFol, ((Integer)oldFollowers.elementAt(f,2)).intValue());
 				}
 			}
 			session().setKillFlag(true);
@@ -2711,45 +2711,55 @@ public class StdMOB implements MOB
 		if(item==null) item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,false);
 		return item;
 	}
-	public void addFollower(MOB follower)
+	public void addFollower(MOB follower, int order)
 	{
-		if((follower!=null)&&(!followers.contains(follower)))
+		if((follower!=null)&&(followers!=null)&&(!followers.contains(follower)))
 		{
-			followers.addElement(follower);
+			if(followers==null) followers=new DVector(2);
+			followers.addElement(follower,new Integer(order));
 		}
 	}
 
 	public void delFollower(MOB follower)
 	{
-		if((follower!=null)&&(followers.contains(follower)))
+		if((follower!=null)&&(followers!=null)&&(!followers.contains(follower)))
 		{
 			followers.removeElement(follower);
+			if(followers.size()==0) followers=null;
 		}
 	}
 	public int numFollowers()
 	{
+		if(followers==null) return 0;
 		return followers.size();
+	}
+	public int fetchFollowerOrder(MOB thisOne)
+	{
+		try
+		{
+			if(followers==null) return -1;
+			int x=followers.indexOf(thisOne);
+			if(x>0) return ((Integer)followers.elementAt(x,2)).intValue();
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		return -1;
 	}
 	public MOB fetchFollower(int index)
 	{
 		try
 		{
-			return (MOB)followers.elementAt(index);
+			if(followers==null) return null;
+			return (MOB)followers.elementAt(index,1);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	public MOB fetchFollower(MOB thisOne)
+	public boolean isFollowedBy(MOB thisOne)
 	{
+		if(followers==null) return false;
 		if(followers.contains(thisOne))
-			return thisOne;
-		return null;
-	}
-	public MOB fetchFollower(String ID)
-	{
-		MOB mob=(MOB)EnglishParser.fetchEnvironmental(followers,ID,true);
-		if (mob==null) mob=(MOB)EnglishParser.fetchEnvironmental(followers,ID,false);
-		return mob;
+			return true;
+		return false;
 	}
 	public boolean willFollowOrdersOf(MOB mob)
 	{
@@ -2772,7 +2782,7 @@ public class StdMOB implements MOB
 	{
 		if(amFollowing!=null)
 		{
-			if(amFollowing.fetchFollower(this)==null)
+			if(!amFollowing.isFollowedBy(this))
 				amFollowing=null;
 		}
 		return amFollowing;
@@ -2781,13 +2791,13 @@ public class StdMOB implements MOB
 	{
 		if((amFollowing!=null)&&(amFollowing!=mob))
 		{
-			if(amFollowing.fetchFollower(this)!=null)
+			if(amFollowing.isFollowedBy(this))
 				amFollowing.delFollower(this);
 		}
 		if(mob!=null)
 		{
-			if(mob.fetchFollower(this)==null)
-				mob.addFollower(this);
+			if(!mob.isFollowedBy(this))
+				mob.addFollower(this,0);
 		}
 		amFollowing=mob;
 	}
@@ -3182,7 +3192,8 @@ public class StdMOB implements MOB
 		else
 		if(env instanceof MOB)
 		{
-			if(followers.contains(env)) return true;
+			if((followers!=null)&&(followers.contains(env)))
+				return true;
 			return false;
 		}
 		else

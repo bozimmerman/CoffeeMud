@@ -1,5 +1,3 @@
-look into a mob with a limiteditems(1) prop .. kill the mob, get the sword.
-prop to give each mob a unique death message
 add that silly group ranging thing
 wind affects throws
 ?Shapeshifting into a cow lets people see the WIZ channel?!
