@@ -9,7 +9,7 @@ public class Prop_ReqTattoo extends Property
 {
 	public String ID() { return "Prop_ReqTattoo"; }
 	public String name(){ return "Tattoo Limitations";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	Prop_ReqTattoo newOne=new Prop_ReqTattoo();	newOne.setMiscText(text());	return newOne;}
 
 	public boolean passesMuster(MOB mob)
@@ -36,25 +36,31 @@ public class Prop_ReqTattoo extends Property
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
-		   &&(affect.target()!=null)
-		   &&(affect.target() instanceof Room)
-		   &&(affect.targetMinor()==Affect.TYP_ENTER)
-		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
+		&&(affect.target()!=null)
+		&&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
-			Hashtable H=new Hashtable();
-			if(text().toUpperCase().indexOf("NOFOL")>=0)
-				H.put(affect.source(),affect.source());
-			else
+			if(((affect.target() instanceof Room)&&(affect.targetMinor()==Affect.TYP_ENTER))
+			||((affect.target() instanceof Item)&&(affect.targetMinor()==Affect.TYP_GET)))
 			{
-				affect.source().getGroupMembers(H);
+				Hashtable H=new Hashtable();
+				if(text().toUpperCase().indexOf("NOFOL")>=0)
+					H.put(affect.source(),affect.source());
+				else
+				{
+					affect.source().getGroupMembers(H);
+					for(Enumeration e=H.elements();e.hasMoreElements();)
+						((MOB)e.nextElement()).getRideBuddies(H);
+				}
 				for(Enumeration e=H.elements();e.hasMoreElements();)
-					((MOB)e.nextElement()).getRideBuddies(H);
+					if(passesMuster((MOB)e.nextElement()))
+						return super.okAffect(affect);
+				if(affect.target() instanceof Room)
+					affect.source().tell("You have not been granted authorization to go that way.");
+				else
+				if(affect.source().location()!=null)
+					affect.source().location().show(mob,null,Affect.MSG_OK_ACTION,affected.name()+" flashes and flys out of <S-HIS-HER> hands!");
+				return false;
 			}
-			for(Enumeration e=H.elements();e.hasMoreElements();)
-				if(passesMuster((MOB)e.nextElement()))
-					return super.okAffect(affect);
-			affect.source().tell("You have not been granted authorization to go that way.");
-			return false;
 		}
 		return super.okAffect(affect);
 	}
