@@ -5,6 +5,13 @@ mpsetvar $i ROBBED  ''
 mpset $i MONEY 0
 ~
 
+QUEST_TIME_PROG robbed -1
+	mpsetvar $i ROBBED ''
+	mpsetvar * ROBBED ''
+	mpsetvar $i MONEY ''
+	mpsetvar * MONEY ''
+~
+
 SPEECH_PROG trouble problem robbed stole rob thief quest help trouble? problem? robbed? stole? rob? thief? quest? help?
 	IF VAR($i ROBBED == RECOVER)
 		say "$n" I've already been helped, thanks.

@@ -13,11 +13,12 @@ SPEECH_PROG mission problem secret quest help delivery deliver 'me to do' 'to do
 	endif
 ~
 
-QUEST_TIME_PROG delivery 1
+QUEST_TIME_PROG delivery -1
 	if !has($i 'a most secret note')
 		tell "$<$i DELIVERY>" "Never mind.  The information on that note doesn't matter any more.  Forget the mission.
-		mpquestend delivery
 	endif
+	mpsetvar $i DELIVERY ''
+	mpsetvar * DELIVERY ''
 ~
 
 

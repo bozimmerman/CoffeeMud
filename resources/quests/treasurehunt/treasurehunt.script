@@ -3,6 +3,11 @@ ONCE_PROG
 	mpsetvar i$ TREASUREHUNT  ''
 ~
 
+QUEST_TIME_PROG treasurehunt -1
+	mpsetvar $i TREASUREHUNT ''
+	mpsetvar * TREASUREHUNT ''
+~
+
 SPEECH_PROG missing bring quest reward coin find missing? bring? quest? reward? coin? find? missing?
 	say "$n" Find and bring me $[1 treasurehunt] and you shall be rewarded!
 endif

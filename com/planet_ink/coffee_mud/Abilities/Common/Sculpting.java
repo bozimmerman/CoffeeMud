@@ -160,6 +160,9 @@ public class Sculpting extends CommonSkill
 			startStr="<S-NAME> start(s) mending "+building.name()+".";
 			displayText="You are mending "+building.name();
 			verb="mending "+building.name();
+			
+			if(!super.invoke(mob,commands,givenTarget,auto))
+				return false;
 		}
 		else
 		{
@@ -203,18 +206,6 @@ public class Sculpting extends CommonSkill
 			{
 				commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
 				return false;
-			}
-			if(!super.invoke(mob,commands,givenTarget,auto))
-				return false;
-			int woodDestroyed=woodRequired;
-			for(int i=mob.location().numItems()-1;i>=0;i--)
-			{
-				Item I=mob.location().fetchItem(i);
-				if((I instanceof EnvResource)
-				&&(I.container()==null)
-				&&(I.material()==firstWood.material())
-				&&((--woodDestroyed)>=0))
-					I.destroy();
 			}
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
@@ -265,6 +256,14 @@ public class Sculpting extends CommonSkill
 			else
 			if(building instanceof Container)
 			{
+				if(building instanceof Drink)
+				{
+					((Drink)building).setLiquidHeld(capacity*50);
+					((Drink)building).setThirstQuenched(250);
+					if((capacity*50)<250)
+						((Drink)building).setThirstQuenched(capacity*50);
+					((Drink)building).setLiquidRemaining(0);
+				}
 				if(capacity>0)
 				{
 					((Container)building).setCapacity(capacity+woodRequired);
@@ -315,8 +314,21 @@ public class Sculpting extends CommonSkill
 			}
 			building.text();
 			building.recoverEnvStats();
+			
+			int woodDestroyed=woodRequired;
+			for(int i=mob.location().numItems()-1;i>=0;i--)
+			{
+				Item I=mob.location().fetchItem(i);
+				if((I instanceof EnvResource)
+				&&(I!=building)
+				&&(I.container()==null)
+				&&(I.material()==firstWood.material())
+				&&((--woodDestroyed)>=0))
+					I.destroy();
+			}
+			if(!super.invoke(mob,commands,givenTarget,auto))
+				return false;
 		}
-
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;

@@ -8,6 +8,11 @@ else
 endif
 ~
 
+QUEST_TIME_PROG stolen -1
+	mpsetvar $i LOLLY ''
+	mpsetvar * LOLLY ''
+~
+
 ONCE_PROG
 mpsetvar $i LOLLY ''
 ~

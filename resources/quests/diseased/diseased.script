@@ -4,6 +4,11 @@ ONCE_PROG
 	sleep
 ~
 
+QUEST_TIME_PROG diseased -1
+	mpsetvar $i DISEASED ''
+	mpsetvar * DISEASED ''
+~
+
 ALL_GREET_PROG 99
 	if var($i DISEASED == '') AND affected($i Disease_Plague)
 		if ispc($n)

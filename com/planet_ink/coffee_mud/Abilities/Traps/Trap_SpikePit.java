@@ -42,6 +42,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 				daggerDamages=new Vector();
 			daggerDamages.addElement(new Integer(I.baseEnvStats().damage()));
 			I.destroy();
+			I=getDagger(mob);
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}

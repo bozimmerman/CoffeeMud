@@ -7,6 +7,11 @@ ONCE_PROG
 	mpsetvar $i DROWNING ''
 ~
 
+QUEST_TIME_PROG drowning -1
+	mpsetvar $i DROWNING ''
+	mpsetvar * DROWNING ''
+~
+
 ALL_GREET_PROG 99
 	if var($i DROWNING == '') AND inlocale($i Water)
 		if ispc($n)

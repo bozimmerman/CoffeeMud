@@ -20,6 +20,41 @@ public class Scriptable extends StdBehavior
 	private Hashtable delayProgCounters=new Hashtable();
 	private Hashtable lastTimeProgsDone=new Hashtable();
 	private Hashtable lastDayProgsDone=new Hashtable();
+	private Quests myQuest=null;
+	
+	public boolean modifyBehavior(MOB mob, Object O)
+	{
+		if(O instanceof Quests)
+			myQuest=(Quests)O;
+		else
+		if(O instanceof String)
+		{
+			String s=(String)O;
+			if((s.toLowerCase().startsWith("endquest"))
+			&&(mob!=null))
+			{
+				String quest=s.substring(8).trim();
+				Vector scripts=getScripts();
+				if(!mob.amDead()) lastKnownLocation=mob.location();
+				for(int v=0;v<scripts.size();v++)
+				{
+					Vector script=(Vector)scripts.elementAt(v);
+					String trigger="";
+					if(script.size()>0)
+						trigger=((String)script.elementAt(0)).toUpperCase().trim();
+					if((getTriggerCode(trigger)==13) //questtimeprog
+					&&(!oncesDone.contains(script))
+					&&(Util.getCleanBit(trigger,1).equalsIgnoreCase(quest))
+					&&(Util.s_int(Util.getCleanBit(trigger,2))<0))
+					{
+						oncesDone.addElement(script);
+						execute(mob,mob,mob,null,null,script,null);
+					}
+				}
+			}
+		}
+		return false; 
+	}
 
 	private static final String[] progs={
 		"GREET_PROG", //1
@@ -2343,7 +2378,10 @@ public class Scriptable extends StdBehavior
 		}
 		if(H.containsKey(key))
 			H.remove(key);
-		H.put(key,val);
+		if(val.trim().length()>0)
+			H.put(key,val);
+		if(H.size()==0)
+			Resources.removeResource("SCRIPTVAR-"+name);
 	}
 	
 	

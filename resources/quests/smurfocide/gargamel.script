@@ -13,8 +13,12 @@ QUEST_TIME_PROG smurfocide 1
 	QUESTCHAT My patience grows THIN! One more minute people!
 ~
 
-QUEST_TIME_PROG smurfocide 0
+QUEST_TIME_PROG smurfocide -1
 	QUESTCHAT Ahh -- forget it! I have plans of my own...<evil grin>
+	mpsetvar $i SMURFOCIDE ''
+	mpsetvar * SMURFOCIDE ''
+	mpsetvar $i PAPASMURF ''
+	mpsetvar * PAPASMURF ''
 ~
 
 GIVE_PROG 'the body of papa smurf'

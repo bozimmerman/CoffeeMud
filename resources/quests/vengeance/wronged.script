@@ -4,6 +4,11 @@ ONCE_PROG
 	mpsetvar $i VENGEANCE  ''
 ~
 
+QUEST_TIME_PROG vengeance -1
+	mpsetvar $i VENGEANCE ''
+	mpsetvar * VENGEANCE ''
+~
+
 SPEECH_PROG trouble problem wronged quest help honor insult reward corpse enemy trouble? problem? wronged? quest? help? honor? insult? reward? corpse? enemy?
 	say "$n" ${2 vengeance} has insulted my honor!  Kill him dead and I'll have a reward.
 ~

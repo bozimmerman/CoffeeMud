@@ -1,3 +1,0 @@
-when I went to the city gate in midgard and typed 'open gate', it said 'you cant do that to the guard'...   I dont know if thats a bug or if I am supposed to do something else...
-invisible/hidden They both can't be found by search They both say "you can't go that way' when attempted that direction.
-java.lang.ArrayIndexOutOfBoundsException: 768 at com.planet_ink.coffee_mud.Abilities.Spells.Spell_Meld.invoke(Spell_Meld.java)

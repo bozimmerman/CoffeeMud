@@ -521,7 +521,7 @@ public class Movement extends Scriptable
 		int dir=findExitDir(mob,mob.location(),knockWhat);
 		if(dir<0)
 		{
-			Environmental getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,knockWhat,Item.WORN_REQ_UNWORNONLY);
+			Environmental getThis=mob.location().fetchFromMOBRoomItemExit(mob,null,knockWhat,Item.WORN_REQ_UNWORNONLY);
 			if(getThis==null)
 			{
 				mob.tell(getScr("Movement","youdontsee",knockWhat.toLowerCase()));
@@ -583,7 +583,7 @@ public class Movement extends Scriptable
 		if(dirCode>=0)
 			openThis=mob.location().getExitInDir(dirCode);
 		if(openThis==null)
-			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Item.WORN_REQ_ANY);
+			openThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatToOpen,Item.WORN_REQ_ANY);
 
 		if((openThis==null)||(!Sense.canBeSeenBy(openThis,mob)))
 		{
@@ -627,7 +627,7 @@ public class Movement extends Scriptable
 		if(dirCode>=0)
 			unlockThis=mob.location().getExitInDir(dirCode);
 		if(unlockThis==null)
-			unlockThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatTounlock,Item.WORN_REQ_ANY);
+			unlockThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatTounlock,Item.WORN_REQ_ANY);
 
 		if((unlockThis==null)||(!Sense.canBeSeenBy(unlockThis,mob)))
 		{
@@ -670,7 +670,7 @@ public class Movement extends Scriptable
 		if(dirCode>=0)
 			closeThis=mob.location().getExitInDir(dirCode);
 		if(closeThis==null)
-			closeThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToClose,Item.WORN_REQ_ANY);
+			closeThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatToClose,Item.WORN_REQ_ANY);
 
 		if((closeThis==null)||(!Sense.canBeSeenBy(closeThis,mob)))
 		{
@@ -756,7 +756,7 @@ public class Movement extends Scriptable
 		if(dirCode>=0)
 			lockThis=mob.location().getExitInDir(dirCode);
 		if(lockThis==null)
-			lockThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatTolock,Item.WORN_REQ_ANY);
+			lockThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatTolock,Item.WORN_REQ_ANY);
 
 		if((lockThis==null)||(!Sense.canBeSeenBy(lockThis,mob)))
 		{

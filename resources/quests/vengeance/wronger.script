@@ -3,4 +3,9 @@ DEATH_PROG
 	mpsetvar $n VENGEANCE KILLER
 	MPECHO $i gurgles 'Goodbye cruel world...'
 ~
-		
+	
+QUEST_TIME_PROG vengeance -1
+	mpsetvar $i VENGEANCE ''
+	mpsetvar * VENGEANCE ''
+~
+	

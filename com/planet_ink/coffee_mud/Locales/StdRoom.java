@@ -1067,6 +1067,40 @@ public class StdRoom
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode)
+	{
+		Environmental found=null;
+		if((mob!=null)&&(wornReqCode!=Item.WORN_REQ_WORNONLY))
+			found=mob.fetchCarried(goodLocation, thingName);
+		if(found==null)
+		{
+			if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,true);
+			if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
+			if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
+			if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
+			if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
+				return found;
+			else
+				found=null;
+		}
+		
+		if((found!=null) // the smurfy well/gate exception
+		&&(found instanceof Item)
+		&&(goodLocation==null)
+		&&(found.displayText().length()==0)
+		&&(thingName.indexOf(".")<0))
+		{
+			Environmental visibleItem=null;
+			visibleItem=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
+			if(visibleItem==null)
+				visibleItem=fetchFromMOBRoomItemExit(null,null,thingName+".2",wornReqCode);
+			if(visibleItem!=null)
+				found=visibleItem;
+		}
+		if((mob!=null)&&(found==null)&&(wornReqCode!=Item.WORN_REQ_UNWORNONLY))
+			found=mob.fetchWornItem(thingName);
+		return found;
+	}
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName, int wornReqCode)
 	{
 		// def was Item.WORN_REQ_UNWORNONLY;
