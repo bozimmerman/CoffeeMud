@@ -468,6 +468,7 @@ public class CoffeeUtensils
 	public static void wanderAway(MOB M, boolean mindPCs, boolean andGoHome)
 	{
 		Behavior B=CMClass.getBehavior("Mobile");
+		B.setParms("MIN=1 MAX=1 CHANCE=100 WANDER OPENDOORS");
 		Room R=M.location();
 		if(R==null) return;
 		int tries=0;
