@@ -9,18 +9,18 @@ public class Manticore extends GreatCat
 {
 	public String ID(){	return "Manticore"; }
 	public String name(){ return "Manticore"; }
-	protected int shortestMale(){return 69;}
-	protected int shortestFemale(){return 69;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 120;}
-	protected int weightVariance(){return 80;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 69;}
+	public int shortestFemale(){return 69;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 120;}
+	public int weightVariance(){return 80;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Feline";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
@@ -29,10 +29,10 @@ public class Manticore extends GreatCat
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)	
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 	}
-	
+
 	public Vector myResources()
 	{
 		synchronized(resources)

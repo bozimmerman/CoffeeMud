@@ -9,12 +9,12 @@ public class Giant extends StdRace
 {
 	public String ID(){	return "Giant"; }
 	public String name(){ return "Giant"; }
-	protected int shortestMale(){return 84;}
-	protected int shortestFemale(){return 80;}
-	protected int heightVariance(){return 24;}
-	protected int lightestWeight(){return 300;}
-	protected int weightVariance(){return 200;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 84;}
+	public int shortestFemale(){return 80;}
+	public int heightVariance(){return 24;}
+	public int lightestWeight(){return 300;}
+	public int weightVariance(){return 200;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Giant-kin";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

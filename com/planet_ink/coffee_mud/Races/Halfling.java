@@ -9,12 +9,12 @@ public class Halfling extends StdRace
 {
 	public String ID(){	return "Halfling"; }
 	public String name(){ return "Halfling"; }
-	protected int shortestMale(){return 40;}
-	protected int shortestFemale(){return 36;}
-	protected int heightVariance(){return 6;}
-	protected int lightestWeight(){return 80;}
-	protected int weightVariance(){return 50;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 40;}
+	public int shortestFemale(){return 36;}
+	public int heightVariance(){return 6;}
+	public int lightestWeight(){return 80;}
+	public int weightVariance(){return 50;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Halfling";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -9,12 +9,12 @@ public class SchoolMonster extends StdRace
 {
 	public String ID(){	return "SchoolMonster"; }
 	public String name(){ return "School Monster"; }
-	protected int shortestMale(){return 24;}
-	protected int shortestFemale(){return 24;}
-	protected int heightVariance(){return 52;}
-	protected int lightestWeight(){return 60;}
-	protected int weightVariance(){return 60;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 24;}
+	public int shortestFemale(){return 24;}
+	public int heightVariance(){return 52;}
+	public int lightestWeight(){return 60;}
+	public int weightVariance(){return 60;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Porcine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

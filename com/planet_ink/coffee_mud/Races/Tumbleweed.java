@@ -9,12 +9,12 @@ public class Tumbleweed extends StdRace
 {
 	public String ID(){	return "Tumbleweed"; }
 	public String name(){ return "Tumbleweed"; }
-	protected int shortestMale(){return 14;}
-	protected int shortestFemale(){return 10;}
-	protected int heightVariance(){return 5;}
-	protected int lightestWeight(){return 2;}
-	protected int weightVariance(){return 5;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public int shortestMale(){return 14;}
+	public int shortestFemale(){return 10;}
+	public int heightVariance(){return 5;}
+	public int lightestWeight(){return 2;}
+	public int weightVariance(){return 5;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Vegetation";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

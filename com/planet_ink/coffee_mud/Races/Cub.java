@@ -9,17 +9,17 @@ public class Cub extends Bear
 {
 	public String ID(){	return "Cub"; }
 	public String name(){ return "Cub"; }
-	protected int shortestMale(){return 24;}
-	protected int shortestFemale(){return 24;}
-	protected int heightVariance(){return 6;}
-	protected int lightestWeight(){return 45;}
-	protected int weightVariance(){return 10;}
+	public int shortestMale(){return 24;}
+	public int shortestFemale(){return 24;}
+	public int heightVariance(){return 6;}
+	public int lightestWeight(){return 45;}
+	public int weightVariance(){return 10;}
 	public String racialCategory(){return "Ursine";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 

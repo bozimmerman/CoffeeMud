@@ -9,12 +9,12 @@ public class Human extends StdRace
 {
 	public String ID(){	return "Human"; }
 	public String name(){ return "Human"; }
-	protected int shortestMale(){return 68;}
-	protected int shortestFemale(){return 64;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 100;}
-	protected int weightVariance(){return 100;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 68;}
+	public int shortestFemale(){return 64;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 100;}
+	public int weightVariance(){return 100;}
+	public long forbiddenWornBits(){return 0;}
 	protected int trainsAtFirstLevel(){return 2;}
 	public String racialCategory(){return "Human";}
 

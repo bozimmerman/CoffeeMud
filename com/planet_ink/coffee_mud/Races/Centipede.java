@@ -9,18 +9,18 @@ public class Centipede extends StdRace
 {
 	public String ID(){	return "Centipede"; }
 	public String name(){ return "Centipede"; }
-	protected int shortestMale(){return 1;}
-	protected int shortestFemale(){return 1;}
-	protected int heightVariance(){return 0;}
-	protected int lightestWeight(){return 1;}
-	protected int weightVariance(){return 0;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_TORSO;}
+	public int shortestMale(){return 1;}
+	public int shortestFemale(){return 1;}
+	public int heightVariance(){return 0;}
+	public int lightestWeight(){return 1;}
+	public int weightVariance(){return 0;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_TORSO;}
 	public String racialCategory(){return "Insect";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,99,99,0 ,0 ,1 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 

@@ -9,12 +9,12 @@ public class Bird extends StdRace
 {
 	public String ID(){	return "Bird"; }
 	public String name(){ return "Bird"; }
-	protected int shortestMale(){return 3;}
-	protected int shortestFemale(){return 3;}
-	protected int heightVariance(){return 2;}
-	protected int lightestWeight(){return 2;}
-	protected int weightVariance(){return 5;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
+	public int shortestMale(){return 3;}
+	public int shortestFemale(){return 3;}
+	public int heightVariance(){return 2;}
+	public int lightestWeight(){return 2;}
+	public int weightVariance(){return 5;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
 	public String racialCategory(){return "Avian";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -9,12 +9,12 @@ public class Bat extends StdRace
 {
 	public String ID(){	return "Bat"; }
 	public String name(){ return "Bat"; }
-	protected int shortestMale(){return 2;}
-	protected int shortestFemale(){return 2;}
-	protected int heightVariance(){return 2;}
-	protected int lightestWeight(){return 2;}
-	protected int weightVariance(){return 0;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_NECK-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	public int shortestMale(){return 2;}
+	public int shortestFemale(){return 2;}
+	public int heightVariance(){return 2;}
+	public int lightestWeight(){return 2;}
+	public int weightVariance(){return 0;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_NECK-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 	public String racialCategory(){return "Pteropine";}

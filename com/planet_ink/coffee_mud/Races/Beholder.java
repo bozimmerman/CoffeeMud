@@ -9,12 +9,12 @@ public class Beholder extends StdRace
 {
 	public String ID(){	return "Beholder"; }
 	public String name(){ return "Beholder"; }
-	protected int shortestMale(){return 64;}
-	protected int shortestFemale(){return 60;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 100;}
-	protected int weightVariance(){return 100;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 64;}
+	public int shortestFemale(){return 60;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 100;}
+	public int weightVariance(){return 100;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Unique";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -9,12 +9,12 @@ public class Wyvern extends StdRace
 {
 	public String ID(){	return "Wyvern"; }
 	public String name(){ return "Wyvern"; }
-	protected int shortestMale(){return 64;}
-	protected int shortestFemale(){return 58;}
-	protected int heightVariance(){return 40;}
-	protected int lightestWeight(){return 1500;}
-	protected int weightVariance(){return 500;}
-	protected long forbiddenWornBits(){return Item.HELD|Item.WIELD|Item.ON_WAIST;}
+	public int shortestMale(){return 64;}
+	public int shortestFemale(){return 58;}
+	public int heightVariance(){return 40;}
+	public int lightestWeight(){return 1500;}
+	public int weightVariance(){return 500;}
+	public long forbiddenWornBits(){return Item.HELD|Item.WIELD|Item.ON_WAIST;}
 	public String racialCategory(){return "Reptile";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -9,12 +9,12 @@ public class Spirit extends StdRace
 {
 	public String ID(){	return "Spirit"; }
 	public String name(){ return "Spirit"; }
-	protected int shortestMale(){return 64;}
-	protected int shortestFemale(){return 60;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 1;}
-	protected int weightVariance(){return 0;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 64;}
+	public int shortestFemale(){return 60;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 1;}
+	public int weightVariance(){return 0;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Undead";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -72,7 +72,7 @@ public class Spirit extends StdRace
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
@@ -87,7 +87,7 @@ public class Spirit extends StdRace
 		affectableStats.setStat(CharStats.SAVE_UNDEAD,affectableStats.getStat(CharStats.SAVE_UNDEAD)+200);
 		affectableStats.setStat(CharStats.SAVE_DISEASE,affectableStats.getStat(CharStats.SAVE_DISEASE)+200);
 	}
-	
+
 	public String healthText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

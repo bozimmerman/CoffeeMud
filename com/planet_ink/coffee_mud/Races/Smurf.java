@@ -9,12 +9,12 @@ public class Smurf extends StdRace
 {
 	public String ID(){	return "Smurf"; }
 	public String name(){ return "Smurf"; }
-	protected int shortestMale(){return 7;}
-	protected int shortestFemale(){return 7;}
-	protected int heightVariance(){return 1;}
-	protected int lightestWeight(){return 5;}
-	protected int weightVariance(){return 2;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 7;}
+	public int shortestFemale(){return 7;}
+	public int heightVariance(){return 1;}
+	public int lightestWeight(){return 5;}
+	public int weightVariance(){return 2;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Fairy-kin";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

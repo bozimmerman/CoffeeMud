@@ -8,12 +8,12 @@ public class Demon extends Unique
 {
 	public String ID(){	return "Demon"; }
 	public String name(){ return "Demon"; }
-	protected int shortestMale(){return 64;}
-	protected int shortestFemale(){return 60;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 100;}
-	protected int weightVariance(){return 100;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 64;}
+	public int shortestFemale(){return 60;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 100;}
+	public int weightVariance(){return 100;}
+	public long forbiddenWornBits(){return 0;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };

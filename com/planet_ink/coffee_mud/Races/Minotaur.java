@@ -9,18 +9,18 @@ public class Minotaur extends Cow
 {
 	public String ID(){	return "Minotaur"; }
 	public String name(){ return "Minotaur"; }
-	protected int shortestMale(){return 65;}
-	protected int shortestFemale(){return 64;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 450;}
-	protected int weightVariance(){return 100;}
-	protected long forbiddenWornBits(){return Item.ON_HEAD;}
+	public int shortestMale(){return 65;}
+	public int shortestFemale(){return 64;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 450;}
+	public int weightVariance(){return 100;}
+	public long forbiddenWornBits(){return Item.ON_HEAD;}
 	public String racialCategory(){return "Bovine";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public Weapon myNaturalWeapon()
 	{

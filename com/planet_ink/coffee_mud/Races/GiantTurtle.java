@@ -9,12 +9,12 @@ public class GiantTurtle extends StdRace
 {
 	public String ID(){	return "GiantTurtle"; }
 	public String name(){ return "Giant Turtle"; }
-	protected int shortestMale(){return 58;}
-	protected int shortestFemale(){return 58;}
-	protected int heightVariance(){return 20;}
-	protected int lightestWeight(){return 1500;}
-	protected int weightVariance(){return 200;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
+	public int shortestMale(){return 58;}
+	public int shortestFemale(){return 58;}
+	public int heightVariance(){return 20;}
+	public int lightestWeight(){return 1500;}
+	public int weightVariance(){return 200;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
 	public String racialCategory(){return "Reptile";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

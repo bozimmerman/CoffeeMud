@@ -9,12 +9,12 @@ public class Troll extends StdRace
 {
 	public String ID(){	return "Troll"; }
 	public String name(){ return "Troll"; }
-	protected int shortestMale(){return 74;}
-	protected int shortestFemale(){return 70;}
-	protected int heightVariance(){return 14;}
-	protected int lightestWeight(){return 200;}
-	protected int weightVariance(){return 200;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 74;}
+	public int shortestFemale(){return 70;}
+	public int heightVariance(){return 14;}
+	public int lightestWeight(){return 200;}
+	public int weightVariance(){return 200;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Troll-kin";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

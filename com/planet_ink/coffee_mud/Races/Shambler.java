@@ -9,12 +9,12 @@ public class Shambler extends StdRace
 {
 	public String ID(){	return "Shambler"; }
 	public String name(){ return "Shambler"; }
-	protected int shortestMale(){return 34;}
-	protected int shortestFemale(){return 30;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 140;}
-	protected int weightVariance(){return 30;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.HELD;}
+	public int shortestMale(){return 34;}
+	public int shortestFemale(){return 30;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 140;}
+	public int weightVariance(){return 30;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.HELD;}
 	public String racialCategory(){return "Vegetation";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

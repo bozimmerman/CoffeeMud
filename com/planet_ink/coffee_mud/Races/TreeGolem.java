@@ -9,12 +9,12 @@ public class TreeGolem extends StdRace
 {
 	public String ID(){	return "TreeGolem"; }
 	public String name(){ return "Tree Golem"; }
-	protected int shortestMale(){return 64;}
-	protected int shortestFemale(){return 60;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 400;}
-	protected int weightVariance(){return 100;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public int shortestMale(){return 64;}
+	public int shortestFemale(){return 60;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 400;}
+	public int weightVariance(){return 100;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Vegetation";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -9,12 +9,12 @@ public class Pachyderm extends StdRace
 {
 	public String ID(){	return "Pachyderm"; }
 	public String name(){ return "Pachyderm"; }
-	protected int shortestMale(){return 60;}
-	protected int shortestFemale(){return 60;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 850;}
-	protected int weightVariance(){return 300;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	public int shortestMale(){return 60;}
+	public int shortestFemale(){return 60;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 850;}
+	public int weightVariance(){return 300;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
 	public String racialCategory(){return "Pachyderm";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -78,7 +78,7 @@ public class Pachyderm extends StdRace
 		else
 			return "^c" + mob.name() + "^c is in perfect health^N";
 	}
-	
+
 	public Vector myResources()
 	{
 		synchronized(resources)

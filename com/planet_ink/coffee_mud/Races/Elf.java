@@ -9,12 +9,12 @@ public class Elf extends StdRace
 {
 	public String ID(){	return "Elf"; }
 	public String name(){ return "Elf"; }
-	protected int shortestMale(){return 59;}
-	protected int shortestFemale(){return 59;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 80;}
-	protected int weightVariance(){return 80;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 59;}
+	public int shortestFemale(){return 59;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 80;}
+	public int weightVariance(){return 80;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Elf";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -9,12 +9,12 @@ public class Deer extends StdRace
 {
 	public String ID(){	return "Deer"; }
 	public String name(){ return "Deer"; }
-	protected int shortestMale(){return 38;}
-	protected int shortestFemale(){return 38;}
-	protected int heightVariance(){return 6;}
-	protected int lightestWeight(){return 150;}
-	protected int weightVariance(){return 50;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
+	public int shortestMale(){return 38;}
+	public int shortestFemale(){return 38;}
+	public int heightVariance(){return 6;}
+	public int lightestWeight(){return 150;}
+	public int weightVariance(){return 50;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
 	public String racialCategory(){return "Equine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

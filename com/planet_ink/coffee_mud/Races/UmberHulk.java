@@ -9,12 +9,12 @@ public class UmberHulk extends StdRace
 {
 	public String ID(){	return "UmberHulk"; }
 	public String name(){ return "Umber Hulk"; }
-	protected int shortestMale(){return 96;}
-	protected int shortestFemale(){return 90;}
-	protected int heightVariance(){return 24;}
-	protected int lightestWeight(){return 800;}
-	protected int weightVariance(){return 200;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 96;}
+	public int shortestFemale(){return 90;}
+	public int heightVariance(){return 24;}
+	public int lightestWeight(){return 800;}
+	public int weightVariance(){return 200;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Giant-kin";}
 	public boolean playerSelectable(){return false;}
 	protected static Vector resources=new Vector();

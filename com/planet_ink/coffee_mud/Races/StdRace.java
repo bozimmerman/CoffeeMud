@@ -11,13 +11,14 @@ public class StdRace implements Race
 	public String name(){ return "StdRace"; }
 	protected int practicesAtFirstLevel(){return 0;}
 	protected int trainsAtFirstLevel(){return 0;}
-	protected int shortestMale(){return 24;}
-	protected int shortestFemale(){return 24;}
-	protected int heightVariance(){return 5;}
-	protected int lightestWeight(){return 60;}
-	protected int weightVariance(){return 10;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 24;}
+	public int shortestFemale(){return 24;}
+	public int heightVariance(){return 5;}
+	public int lightestWeight(){return 60;}
+	public int weightVariance(){return 10;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Unknown";}
+	public boolean isGeneric(){return false;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
@@ -111,7 +112,7 @@ public class StdRace implements Race
 				}
 				break;
 			}
-			
+
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_HOLD:
@@ -440,4 +441,6 @@ public class StdRace implements Race
 		}
 		return Body;
 	}
+	public String racialParms(){ return "";}
+	public void setRacialParms(String parms){}
 }

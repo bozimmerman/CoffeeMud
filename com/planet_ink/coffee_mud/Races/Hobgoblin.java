@@ -9,12 +9,12 @@ public class Hobgoblin extends StdRace
 {
 	public String ID(){	return "Hobgoblin"; }
 	public String name(){ return "Hobgoblin"; }
-	protected int shortestMale(){return 55;}
-	protected int shortestFemale(){return 50;}
-	protected int heightVariance(){return 8;}
-	protected int lightestWeight(){return 90;}
-	protected int weightVariance(){return 50;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 55;}
+	public int shortestFemale(){return 50;}
+	public int heightVariance(){return 8;}
+	public int lightestWeight(){return 90;}
+	public int weightVariance(){return 50;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Goblinoid";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

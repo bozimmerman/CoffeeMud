@@ -9,7 +9,7 @@ public class Shadow extends Spirit
 {
 	public String ID(){	return "Shadow"; }
 	public String name(){ return "Shadow"; }
-	protected long forbiddenWornBits(){return 0;}
+	public long forbiddenWornBits(){return 0;}
 
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

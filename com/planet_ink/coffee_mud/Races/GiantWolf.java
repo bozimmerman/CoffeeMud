@@ -5,18 +5,18 @@ public class GiantWolf extends Wolf
 {
 	public String ID(){	return "GiantWolf"; }
 	public String name(){ return "Giant Wolf"; }
-	protected int shortestMale(){return 26;}
-	protected int shortestFemale(){return 26;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 80;}
-	protected int weightVariance(){return 60;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
+	public int shortestMale(){return 26;}
+	public int shortestFemale(){return 26;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 80;}
+	public int weightVariance(){return 60;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
 	public String racialCategory(){return "Canine";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

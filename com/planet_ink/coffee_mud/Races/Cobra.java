@@ -5,17 +5,17 @@ public class Cobra extends Snake
 {
 	public String ID(){	return "Cobra"; }
 	public String name(){ return "Cobra"; }
-	protected int shortestMale(){return 6;}
-	protected int shortestFemale(){return 6;}
-	protected int heightVariance(){return 3;}
-	protected int lightestWeight(){return 15;}
-	protected int weightVariance(){return 20;}
+	public int shortestMale(){return 6;}
+	public int shortestFemale(){return 6;}
+	public int heightVariance(){return 3;}
+	public int lightestWeight(){return 15;}
+	public int weightVariance(){return 20;}
 	public String racialCategory(){return "Serpent";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

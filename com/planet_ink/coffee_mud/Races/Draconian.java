@@ -8,12 +8,12 @@ public class Draconian extends StdRace
 {
 	public String ID(){	return "Draconian"; }
 	public String name(){ return "Draconian"; }
-	protected int shortestMale(){return 64;}
-	protected int shortestFemale(){return 60;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 100;}
-	protected int weightVariance(){return 100;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 64;}
+	public int shortestFemale(){return 60;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 100;}
+	public int weightVariance(){return 100;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Dragon";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -22,8 +22,8 @@ public class Draconian extends StdRace
 
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
-	
-	
+
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -36,10 +36,10 @@ public class Draconian extends StdRace
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
 	}
-	
+
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
-	
+
 	public String healthText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -70,7 +70,7 @@ public class Draconian extends StdRace
 		else
 			return "^c" + mob.name() + "^c is in perfect health^N";
 	}
-	
+
 	public Vector myResources()
 	{
 		synchronized(resources)

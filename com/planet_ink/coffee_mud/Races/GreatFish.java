@@ -9,19 +9,19 @@ public class GreatFish extends GiantFish
 {
 	public String ID(){	return "GreatFish"; }
 	public String name(){ return "Great Fish"; }
-	protected int shortestMale(){return 30;}
-	protected int shortestFemale(){return 35;}
-	protected int heightVariance(){return 10;}
-	protected int lightestWeight(){return 55;}
-	protected int weightVariance(){return 15;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
+	public int shortestMale(){return 30;}
+	public int shortestFemale(){return 35;}
+	public int heightVariance(){return 10;}
+	public int lightestWeight(){return 55;}
+	public int weightVariance(){return 15;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
 	public String racialCategory(){return "Amphibian";}
 	protected static Vector resources=new Vector();
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

@@ -9,12 +9,12 @@ public class Toadstool extends StdRace
 {
 	public String ID(){	return "Toadstool"; }
 	public String name(){ return "Toadstool"; }
-	protected int shortestMale(){return 1;}
-	protected int shortestFemale(){return 1;}
-	protected int heightVariance(){return 1;}
-	protected int lightestWeight(){return 1;}
-	protected int weightVariance(){return 1;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public int shortestMale(){return 1;}
+	public int shortestFemale(){return 1;}
+	public int heightVariance(){return 1;}
+	public int lightestWeight(){return 1;}
+	public int weightVariance(){return 1;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Unique";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

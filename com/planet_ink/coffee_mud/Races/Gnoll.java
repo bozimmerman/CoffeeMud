@@ -9,12 +9,12 @@ public class Gnoll extends StdRace
 {
 	public String ID(){	return "Gnoll"; }
 	public String name(){ return "Gnoll"; }
-	protected int shortestMale(){return 72;}
-	protected int shortestFemale(){return 70;}
-	protected int heightVariance(){return 8;}
-	protected int lightestWeight(){return 180;}
-	protected int weightVariance(){return 80;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 72;}
+	public int shortestFemale(){return 70;}
+	public int heightVariance(){return 8;}
+	public int lightestWeight(){return 180;}
+	public int weightVariance(){return 80;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Gnoll";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -54,7 +54,7 @@ public class Gnoll extends StdRace
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
-	
+
 	public String healthText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

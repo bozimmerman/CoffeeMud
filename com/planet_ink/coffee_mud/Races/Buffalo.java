@@ -9,17 +9,17 @@ public class Buffalo extends Cow
 {
 	public String ID(){	return "Buffalo"; }
 	public String name(){ return "Buffalo"; }
-	protected int shortestMale(){return 48;}
-	protected int shortestFemale(){return 48;}
-	protected int heightVariance(){return 6;}
-	protected int lightestWeight(){return 350;}
-	protected int weightVariance(){return 100;}
+	public int shortestMale(){return 48;}
+	public int shortestFemale(){return 48;}
+	public int heightVariance(){return 6;}
+	public int lightestWeight(){return 350;}
+	public int weightVariance(){return 100;}
 	public String racialCategory(){return "Bovine";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public Weapon myNaturalWeapon()
 	{

@@ -9,18 +9,18 @@ public class Spider extends StdRace
 {
 	public String ID(){	return "Spider"; }
 	public String name(){ return "Spider"; }
-	protected int shortestMale(){return 2;}
-	protected int shortestFemale(){return 2;}
-	protected int heightVariance(){return 0;}
-	protected int lightestWeight(){return 1;}
-	protected int weightVariance(){return 0;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public int shortestMale(){return 2;}
+	public int shortestFemale(){return 2;}
+	public int heightVariance(){return 0;}
+	public int lightestWeight(){return 1;}
+	public int weightVariance(){return 0;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Arachnid";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 

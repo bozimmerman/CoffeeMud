@@ -9,12 +9,12 @@ public class Monkey extends StdRace
 {
 	public String ID(){	return "Monkey"; }
 	public String name(){ return "Monkey"; }
-	protected int shortestMale(){return 18;}
-	protected int shortestFemale(){return 18;}
-	protected int heightVariance(){return 6;}
-	protected int lightestWeight(){return 50;}
-	protected int weightVariance(){return 60;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.HELD-Item.WIELD-Item.ON_EARS-Item.ON_EYES;}
+	public int shortestMale(){return 18;}
+	public int shortestFemale(){return 18;}
+	public int heightVariance(){return 6;}
+	public int lightestWeight(){return 50;}
+	public int weightVariance(){return 60;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.HELD-Item.WIELD-Item.ON_EARS-Item.ON_EYES;}
 	public String racialCategory(){return "Primate";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -9,12 +9,12 @@ public class Doll extends StdRace
 {
 	public String ID(){	return "Doll"; }
 	public String name(){ return "Doll"; }
-	protected int shortestMale(){return 6;}
-	protected int shortestFemale(){return 6;}
-	protected int heightVariance(){return 3;}
-	protected int lightestWeight(){return 10;}
-	protected int weightVariance(){return 20;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 6;}
+	public int shortestFemale(){return 6;}
+	public int heightVariance(){return 3;}
+	public int lightestWeight(){return 10;}
+	public int weightVariance(){return 20;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Wood Golem";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

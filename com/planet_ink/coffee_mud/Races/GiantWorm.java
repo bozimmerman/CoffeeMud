@@ -9,18 +9,18 @@ public class GiantWorm extends StdRace
 {
 	public String ID(){	return "GiantWorm"; }
 	public String name(){ return "Giant Worm"; }
-	protected int shortestMale(){return 22;}
-	protected int shortestFemale(){return 22;}
-	protected int heightVariance(){return 0;}
-	protected int lightestWeight(){return 180;}
-	protected int weightVariance(){return 20;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public int shortestMale(){return 22;}
+	public int shortestFemale(){return 22;}
+	public int heightVariance(){return 0;}
+	public int lightestWeight(){return 180;}
+	public int weightVariance(){return 20;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Worm";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 

@@ -9,12 +9,12 @@ public class Vine extends StdRace
 {
 	public String ID(){	return "Vine"; }
 	public String name(){ return "Vine"; }
-	protected int shortestMale(){return 34;}
-	protected int shortestFemale(){return 30;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 50;}
-	protected int weightVariance(){return 100;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public int shortestMale(){return 34;}
+	public int shortestFemale(){return 30;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 50;}
+	public int weightVariance(){return 100;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Vegetation";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

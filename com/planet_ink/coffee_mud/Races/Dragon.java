@@ -9,12 +9,12 @@ public class Dragon extends StdRace
 {
 	public String ID(){	return "Dragon"; }
 	public String name(){ return "Dragon"; }
-	protected int shortestMale(){return 84;}
-	protected int shortestFemale(){return 78;}
-	protected int heightVariance(){return 80;}
-	protected int lightestWeight(){return 2000;}
-	protected int weightVariance(){return 500;}
-	protected long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST|Item.ON_BACK|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;}
+	public int shortestMale(){return 84;}
+	public int shortestFemale(){return 78;}
+	public int heightVariance(){return 80;}
+	public int lightestWeight(){return 2000;}
+	public int weightVariance(){return 500;}
+	public long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST|Item.ON_BACK|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;}
 	public String racialCategory(){return "Dragon";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

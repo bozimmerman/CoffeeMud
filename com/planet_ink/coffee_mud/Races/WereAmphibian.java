@@ -9,18 +9,18 @@ public class WereAmphibian extends StdRace
 {
 	public String ID(){	return "WereAmphibian"; }
 	public String name(){ return "WereAmphibian"; }
-	protected int shortestMale(){return 59;}
-	protected int shortestFemale(){return 59;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 80;}
-	protected int weightVariance(){return 80;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 59;}
+	public int shortestFemale(){return 59;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 80;}
+	public int weightVariance(){return 80;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Amphibian";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,1 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 
 	public Weapon myNaturalWeapon()

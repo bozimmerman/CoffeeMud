@@ -9,12 +9,12 @@ public class GiantLizard extends StdRace
 {
 	public String ID(){	return "GiantLizard"; }
 	public String name(){ return "Giant Lizard"; }
-	protected int shortestMale(){return 70;}
-	protected int shortestFemale(){return 70;}
-	protected int heightVariance(){return 20;}
-	protected int lightestWeight(){return 2500;}
-	protected int weightVariance(){return 500;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
+	public int shortestMale(){return 70;}
+	public int shortestFemale(){return 70;}
+	public int heightVariance(){return 20;}
+	public int lightestWeight(){return 2500;}
+	public int weightVariance(){return 500;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
 	public String racialCategory(){return "Reptile";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

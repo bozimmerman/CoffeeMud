@@ -9,12 +9,12 @@ public class Chicken extends StdRace
 {
 	public String ID(){	return "Chicken"; }
 	public String name(){ return "Chicken"; }
-	protected int shortestMale(){return 13;}
-	protected int shortestFemale(){return 13;}
-	protected int heightVariance(){return 6;}
-	protected int lightestWeight(){return 20;}
-	protected int weightVariance(){return 5;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
+	public int shortestMale(){return 13;}
+	public int shortestFemale(){return 13;}
+	public int heightVariance(){return 6;}
+	public int lightestWeight(){return 20;}
+	public int weightVariance(){return 5;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
 	public String racialCategory(){return "Avian";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

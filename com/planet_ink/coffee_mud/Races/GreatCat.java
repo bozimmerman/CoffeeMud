@@ -9,12 +9,12 @@ public class GreatCat extends StdRace
 {
 	public String ID(){	return "GreatCat"; }
 	public String name(){ return "Great Cat"; }
-	protected int shortestMale(){return 18;}
-	protected int shortestFemale(){return 18;}
-	protected int heightVariance(){return 10;}
-	protected int lightestWeight(){return 100;}
-	protected int weightVariance(){return 60;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
+	public int shortestMale(){return 18;}
+	public int shortestFemale(){return 18;}
+	public int heightVariance(){return 10;}
+	public int lightestWeight(){return 100;}
+	public int weightVariance(){return 60;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
 	public String racialCategory(){return "Feline";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

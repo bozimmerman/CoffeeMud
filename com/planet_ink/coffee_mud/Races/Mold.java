@@ -9,12 +9,12 @@ public class Mold extends StdRace
 {
 	public String ID(){	return "Mold"; }
 	public String name(){ return "Mold"; }
-	protected int shortestMale(){return 1;}
-	protected int shortestFemale(){return 1;}
-	protected int heightVariance(){return 1;}
-	protected int lightestWeight(){return 5;}
-	protected int weightVariance(){return 1;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public int shortestMale(){return 1;}
+	public int shortestFemale(){return 1;}
+	public int heightVariance(){return 1;}
+	public int lightestWeight(){return 5;}
+	public int weightVariance(){return 1;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Vegetation";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

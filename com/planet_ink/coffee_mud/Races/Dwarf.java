@@ -9,12 +9,12 @@ public class Dwarf extends StdRace
 {
 	public String ID(){	return "Dwarf"; }
 	public String name(){ return "Dwarf"; }
-	protected int shortestMale(){return 52;}
-	protected int shortestFemale(){return 48;}
-	protected int heightVariance(){return 8;}
-	protected int lightestWeight(){return 150;}
-	protected int weightVariance(){return 100;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 52;}
+	public int shortestFemale(){return 48;}
+	public int heightVariance(){return 8;}
+	public int lightestWeight(){return 150;}
+	public int weightVariance(){return 100;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Dwarf";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

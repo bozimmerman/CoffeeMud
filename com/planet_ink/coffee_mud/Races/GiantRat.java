@@ -9,18 +9,18 @@ public class GiantRat extends Rat
 {
 	public String ID(){	return "GiantRat"; }
 	public String name(){ return "Giant Rat"; }
-	protected int shortestMale(){return 12;}
-	protected int shortestFemale(){return 12;}
-	protected int heightVariance(){return 6;}
-	protected int lightestWeight(){return 25;}
-	protected int weightVariance(){return 10;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	public int shortestMale(){return 12;}
+	public int shortestFemale(){return 12;}
+	public int heightVariance(){return 6;}
+	public int lightestWeight(){return 25;}
+	public int weightVariance(){return 10;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
 	public String racialCategory(){return "Rodent";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 

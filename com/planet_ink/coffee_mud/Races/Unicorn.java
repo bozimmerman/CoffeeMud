@@ -9,12 +9,12 @@ public class Unicorn extends StdRace
 {
 	public String ID(){	return "Unicorn"; }
 	public String name(){ return "Unicorn"; }
-	protected int shortestMale(){return 60;}
-	protected int shortestFemale(){return 60;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 350;}
-	protected int weightVariance(){return 100;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	public int shortestMale(){return 60;}
+	public int shortestFemale(){return 60;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 350;}
+	public int weightVariance(){return 100;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
 	public String racialCategory(){return "Equine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

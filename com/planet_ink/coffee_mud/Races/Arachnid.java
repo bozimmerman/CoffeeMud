@@ -9,18 +9,18 @@ public class Arachnid extends StdRace
 {
 	public String ID(){	return "Arachnid"; }
 	public String name(){ return "Arachnid"; }
-	protected int shortestMale(){return 35;}
-	protected int shortestFemale(){return 35;}
-	protected int heightVariance(){return 10;}
-	protected int lightestWeight(){return 200;}
-	protected int weightVariance(){return 50;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public int shortestMale(){return 35;}
+	public int shortestFemale(){return 35;}
+	public int heightVariance(){return 10;}
+	public int lightestWeight(){return 200;}
+	public int weightVariance(){return 50;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Arachnid";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 

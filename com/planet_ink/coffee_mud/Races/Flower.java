@@ -9,12 +9,12 @@ public class Flower extends Vine
 {
 	public String ID(){	return "Flower"; }
 	public String name(){ return "Flower"; }
-	protected int shortestMale(){return 4;}
-	protected int shortestFemale(){return 4;}
-	protected int heightVariance(){return 5;}
-	protected int lightestWeight(){return 1;}
-	protected int weightVariance(){return 1;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public int shortestMale(){return 4;}
+	public int shortestFemale(){return 4;}
+	public int heightVariance(){return 5;}
+	public int lightestWeight(){return 1;}
+	public int weightVariance(){return 1;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Vegetation";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

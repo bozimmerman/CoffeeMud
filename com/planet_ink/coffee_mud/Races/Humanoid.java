@@ -9,12 +9,12 @@ public class Humanoid extends StdRace
 {
 	public String ID(){	return "Humanoid"; }
 	public String name(){ return "Humanoid"; }
-	protected int shortestMale(){return 64;}
-	protected int shortestFemale(){return 59;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 90;}
-	protected int weightVariance(){return 90;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 64;}
+	public int shortestFemale(){return 59;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 90;}
+	public int weightVariance(){return 90;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Humanoid";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -9,18 +9,18 @@ public class ManScorpion extends StdRace
 {
 	public String ID(){	return "ManScorpion"; }
 	public String name(){ return "Man-Scorpion"; }
-	protected int shortestMale(){return 58;}
-	protected int shortestFemale(){return 54;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 120;}
-	protected int weightVariance(){return 50;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 58;}
+	public int shortestFemale(){return 54;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 120;}
+	public int weightVariance(){return 50;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Arachnid";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 

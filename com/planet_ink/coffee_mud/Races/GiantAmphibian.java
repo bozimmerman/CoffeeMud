@@ -9,15 +9,15 @@ public class GiantAmphibian extends GreatAmphibian
 {
 	public String ID(){	return "GiantAmphibian"; }
 	public String name(){ return "Giant Amphibian"; }
-	protected int shortestMale(){return 50;}
-	protected int shortestFemale(){return 55;}
-	protected int heightVariance(){return 20;}
-	protected int lightestWeight(){return 1955;}
-	protected int weightVariance(){return 405;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
+	public int shortestMale(){return 50;}
+	public int shortestFemale(){return 55;}
+	public int heightVariance(){return 20;}
+	public int lightestWeight(){return 1955;}
+	public int weightVariance(){return 405;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
 	public String racialCategory(){return "Amphibian";}
 	protected static Vector resources=new Vector();
-	
+
 	public Vector myResources()
 	{
 		synchronized(resources)

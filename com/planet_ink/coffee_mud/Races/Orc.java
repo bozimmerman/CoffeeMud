@@ -9,12 +9,12 @@ public class Orc extends StdRace
 {
 	public String ID(){	return "Orc"; }
 	public String name(){ return "Orc"; }
-	protected int shortestMale(){return 60;}
-	protected int shortestFemale(){return 56;}
-	protected int heightVariance(){return 12;}
-	protected int lightestWeight(){return 150;}
-	protected int weightVariance(){return 100;}
-	protected long forbiddenWornBits(){return 0;}
+	public int shortestMale(){return 60;}
+	public int shortestFemale(){return 56;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 150;}
+	public int weightVariance(){return 100;}
+	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Porcine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
