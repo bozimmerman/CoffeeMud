@@ -211,21 +211,21 @@ public class Scoring
 		StringBuffer msg=new StringBuffer("");
 		String qual=Util.combine(commands,1);
 		if((qual.length()==0)||(qual.equalsIgnoreCase("SKILLS"))||(qual.equalsIgnoreCase("SKILL")))
-			msg.append("\n\r^HGeneral Skills:^? "+getQualifiedAbilities(mob,Ability.SKILL,-1)+"\n\r");
+			msg.append(getQualifiedAbilities(mob,Ability.SKILL,-1,"\n\r^HGeneral Skills:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("COMMON SKILLS"))||(qual.equalsIgnoreCase("COMMON")))
-			msg.append("\n\r^HCommon Skills:^? "+getQualifiedAbilities(mob,Ability.COMMON_SKILL,-1)+"\n\r");
+			msg.append(getQualifiedAbilities(mob,Ability.COMMON_SKILL,-1,"\n\r^HCommon Skills:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("THIEVES"))||(qual.equalsIgnoreCase("THIEF"))||(qual.equalsIgnoreCase("THIEF SKILLS")))
-			msg.append("\n\r^HThief Skills:^? "+getQualifiedAbilities(mob,Ability.THIEF_SKILL,-1)+"\n\r");
+			msg.append(getQualifiedAbilities(mob,Ability.THIEF_SKILL,-1,"\n\r^HThief Skills:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("SPELLS"))||(qual.equalsIgnoreCase("SPELL"))||(qual.equalsIgnoreCase("MAGE")))
-			msg.append("\n\r^HSpells:^? "+getQualifiedAbilities(mob,Ability.SPELL,-1)+"\n\r");
+			msg.append(getQualifiedAbilities(mob,Ability.SPELL,-1,"\n\r^HSpells:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("PRAYERS"))||(qual.equalsIgnoreCase("PRAYER"))||(qual.equalsIgnoreCase("CLERIC")))
-			msg.append("\n\r^HPrayers:^? "+getQualifiedAbilities(mob,Ability.PRAYER,-1)+"\n\r");
+			msg.append(getQualifiedAbilities(mob,Ability.PRAYER,-1,"\n\r^HPrayers:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("CHANTS"))||(qual.equalsIgnoreCase("CHANT"))||(qual.equalsIgnoreCase("DRUID")))
-			msg.append("\n\r^HDruidic Chants:^? "+getQualifiedAbilities(mob,Ability.CHANT,-1)+"\n\r");
+			msg.append(getQualifiedAbilities(mob,Ability.CHANT,-1,"\n\r^HDruidic Chants:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("SONGS"))||(qual.equalsIgnoreCase("SONG"))||(qual.equalsIgnoreCase("BARD")))
-			msg.append("\n\r^HSongs:^? "+getQualifiedAbilities(mob,Ability.SONG,-1)+"\n\r");
+			msg.append(getQualifiedAbilities(mob,Ability.SONG,-1,"\n\r^HSongs:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("LANGS"))||(qual.equalsIgnoreCase("LANG"))||(qual.equalsIgnoreCase("LANGUAGES")))
-			msg.append("\n\r^HLanguages:^? "+getQualifiedAbilities(mob,Ability.LANGUAGE,-1)+"\n\r");
+			msg.append(getQualifiedAbilities(mob,Ability.LANGUAGE,-1,"\n\r^HLanguages:^? "));
 		if(msg.length()==0)
 			mob.tell("Valid parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
 		else
@@ -366,7 +366,7 @@ public class Scoring
 	}
 
 
-	public StringBuffer getQualifiedAbilities(MOB able, int ofType, int ofDomain)
+	public StringBuffer getQualifiedAbilities(MOB able, int ofType, int ofDomain, String prefix)
 	{
 		Vector V=new Vector();
 		int mask=Ability.ALL_CODES;
@@ -376,10 +376,10 @@ public class Scoring
 			ofType=ofType|ofDomain;
 		}
 		V.addElement(new Integer(ofType));
-		return getQualifiedAbilities(able,V,mask);
+		return getQualifiedAbilities(able,V,mask,prefix);
 	}
 	
-	public StringBuffer getQualifiedAbilities(MOB able, Vector ofTypes, int mask)
+	public StringBuffer getQualifiedAbilities(MOB able, Vector ofTypes, int mask, String prefix)
 	{
 		int highestLevel=0;
 		int lowestLevel=able.envStats().level()+1;
@@ -389,9 +389,9 @@ public class Scoring
 			Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
 			int level=thisAbility.qualifyingLevel(able);
 			if((thisAbility.qualifiesByLevel(able))
-			&&(able.fetchAbility(thisAbility.ID())==null)
 			&&(level>highestLevel)
 			&&(level<lowestLevel)
+			&&(able.fetchAbility(thisAbility.ID())==null)
 			&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				highestLevel=level;
 		}
@@ -404,6 +404,7 @@ public class Scoring
 				Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
 				if((thisAbility.qualifiesByLevel(able))
 				   &&(thisAbility.qualifyingLevel(able)==l)
+				   &&(able.fetchAbility(thisAbility.ID())==null)
 				   &&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				{
 					if((++col)>3)
@@ -422,7 +423,9 @@ public class Scoring
 			}
 		}
 		if(msg.length()==0)
-			msg.append("None!");
+			return msg;
+		msg.insert(0,prefix);
+		msg.append("\n\r");
 		return msg;
 	}
 

@@ -70,7 +70,7 @@ public class Digging extends CommonSkill
 				for(int i=0;i<amount;i++)
 				{
 					Item newFound=(Item)found.copyOf();
-					mob.location().addItem(newFound);
+					mob.location().addItemRefuse(newFound);
 					ExternalPlay.get(mob,null,newFound,true);
 				}
 			}

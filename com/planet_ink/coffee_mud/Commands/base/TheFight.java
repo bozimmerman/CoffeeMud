@@ -225,9 +225,8 @@ public class TheFight
 						Item C=CMClass.getItem("StdCoins");
 						C.baseEnvStats().setAbility(myAmount);
 						C.setContainer(Body);
-						C.setPossessionTime(Calendar.getInstance());
 						C.recoverEnvStats();
-						deathRoom.addItem(C);
+						deathRoom.addItemRefuse(C);
 						deathRoom.recoverRoomStats();
 						if(Sense.canBeSeenBy(Body,mob))
 							ExternalPlay.get(mob,Body,C,false);

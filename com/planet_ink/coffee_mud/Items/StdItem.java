@@ -31,7 +31,6 @@ public class StdItem implements Item
 	protected Environmental owner=null;
 	protected Calendar possessionTime=null;
 
-
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
 
@@ -774,10 +773,7 @@ public class StdItem implements Item
 			{
 				mob.delInventory(this);
 				if(!mob.location().isContent(this))
-				{
-					mob.location().addItem(this);
-					setPossessionTime(Calendar.getInstance());
-				}
+					mob.location().addItemRefuse(this);
 				mob.location().recoverRoomStats();
 			}
 			remove();

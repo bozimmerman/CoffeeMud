@@ -91,7 +91,7 @@ public class Fletching extends CommonSkill
 					if(mending)
 						building.setUsesRemaining(100);
 					else
-						mob.location().addItem(building);
+						mob.location().addItemRefuse(building);
 				}
 			}
 			building=null;

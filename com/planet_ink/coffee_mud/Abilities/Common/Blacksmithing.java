@@ -80,7 +80,7 @@ public class Blacksmithing extends CommonSkill
 				if(messedUp)
 					mob.tell("You've ruined "+building.name()+"!");
 				else
-					mob.location().addItem(building);
+					mob.location().addItemRefuse(building);
 			}
 			building=null;
 		}

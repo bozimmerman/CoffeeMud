@@ -428,8 +428,7 @@ public class StdContainer extends StdItem implements Container
 			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
 		mob.delInventory(thisContainer);
 		thisContainer.remove();
-		mob.location().addItem(thisContainer);
-		thisContainer.setPossessionTime(Calendar.getInstance());
+		mob.location().addItemRefuse(thisContainer);
 		thisContainer.recoverEnvStats();
 		boolean nothingDone=true;
 		do

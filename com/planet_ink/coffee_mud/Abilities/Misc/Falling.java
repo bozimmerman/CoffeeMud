@@ -137,7 +137,7 @@ public class Falling extends StdAbility
 					{
 						Item thisItem=(Item)V.elementAt(v);
 						room.delItem(thisItem);
-						nextRoom.addItem(thisItem);
+						nextRoom.addItemRefuse(thisItem);
 					}
 					room=nextRoom;
 					nextRoom.show(invoker,null,Affect.MSG_OK_ACTION,item.name()+" falls in from "+(reversed()?"below":"above")+".");

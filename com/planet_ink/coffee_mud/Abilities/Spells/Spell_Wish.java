@@ -65,7 +65,7 @@ public class Spell_Wish extends Spell
 			item.remove();
 			item.setContainer(null);
 			item.removeThis();
-			here.addItem(item);
+			here.addItemRefuse(item);
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" appears out of the java plain!");
 		}
 	}
@@ -188,7 +188,7 @@ public class Spell_Wish extends Spell
 					Item newItem=(Item)foundThang.copyOf();
 					newItem.setContainer(null);
 					newItem.wearAt(0);
-					mob.location().addItem(newItem);
+					mob.location().addItemRefuse(newItem);
 					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 					mob.location().recoverRoomStats();
 					Log.sysOut("Wish",mob.ID()+" wished for item "+newItem.ID()+".");

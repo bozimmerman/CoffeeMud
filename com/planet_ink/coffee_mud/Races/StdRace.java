@@ -322,9 +322,8 @@ public class StdRace implements Race
 			Item C=(Item)CMClass.getItem("StdCoins");
 			C.baseEnvStats().setAbility(mob.getMoney());
 			C.recoverEnvStats();
-			C.setPossessionTime(Calendar.getInstance());
 			C.setContainer(Body);
-			room.addItem(C);
+			room.addItemRefuse(C);
 			mob.setMoney(0);
 		}
 		return Body;

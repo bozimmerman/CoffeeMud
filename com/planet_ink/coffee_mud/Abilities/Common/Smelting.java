@@ -86,7 +86,7 @@ public class Smelting extends CommonSkill
 					Item copy=(Item)building.copyOf();
 					copy.setMiscText(building.text());
 					copy.recoverEnvStats();
-					mob.location().addItem(copy);
+					mob.location().addItemRefuse(copy);
 				}
 			}
 			building=null;

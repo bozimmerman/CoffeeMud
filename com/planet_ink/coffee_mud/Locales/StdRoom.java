@@ -833,6 +833,11 @@ public class StdRoom
 		contents.addElement(item);
 		item.recoverEnvStats();
 	}
+	public void addItemRefuse(Item item)
+	{
+		addItem(item);
+		item.setPossessionTime(Calendar.getInstance());
+	}
 	public void delItem(Item item)
 	{
 		contents.removeElement(item);

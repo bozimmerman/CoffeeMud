@@ -480,7 +480,7 @@ public class Dragon extends StdMOB
 			Item PartiallyDigestedItem = Stomach.fetchItem(y);
 			if((PartiallyDigestedItem!=null)&&(location()!=null))
 			{
-				this.location().addItem(PartiallyDigestedItem);
+				this.location().addItemRefuse(PartiallyDigestedItem);
 				Stomach.delItem(PartiallyDigestedItem);
 			}
 		}

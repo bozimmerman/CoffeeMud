@@ -24,7 +24,7 @@ public class CommonSkill extends StdAbility
 		isAutoinvoked=false;
 		quality=Ability.INDIFFERENT;
 		trainsRequired=0;
-		practicesRequired=1;
+		practicesRequired=2;
 		practicesToPractice=1;
 
 		baseEnvStats().setLevel(20);

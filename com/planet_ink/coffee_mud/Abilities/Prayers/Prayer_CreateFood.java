@@ -38,7 +38,7 @@ public class Prayer_CreateFood extends Prayer
 			{
 				mob.location().send(mob,msg);
 				Item newItem=(Item)CMClass.getStdItem("StdFood");
-				mob.location().addItem(newItem);
+				mob.location().addItemRefuse(newItem);
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 				mob.location().recoverEnvStats();
 			}

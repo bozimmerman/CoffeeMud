@@ -79,7 +79,7 @@ public class GlassBlowing extends CommonSkill
 				if(messedUp)
 					mob.tell("A "+building.name()+" explodes!");
 				else
-					mob.location().addItem(building);
+					mob.location().addItemRefuse(building);
 			}
 			building=null;
 		}

@@ -177,11 +177,6 @@ public class MUD extends Thread implements Host
 		}
 
 		Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
-		System.out.println();
-		Log.sysOut("MUD",getVer());
-		Log.sysOut("MUD","(C) 2000-2002 Bo Zimmerman");
-		Log.sysOut("MUD","www.zimmers.net/home/mud.html");
-	
 		while (!serverIsRunning && isOK)
 		{
 		}
@@ -294,6 +289,12 @@ public class MUD extends Thread implements Host
 		serverIsRunning = false;
 
 		if (!isOK)	return;
+		
+		System.out.println();
+		Log.sysOut("MUD",getVer());
+		Log.sysOut("MUD","(C) 2000-2002 Bo Zimmerman");
+		Log.sysOut("MUD","www.zimmers.net/home/mud.html");
+		
 		if ((page == null) || (!page.loaded))
 		{
 			Log.errOut("MUD","ERROR: Host thread will not run with no properties.");

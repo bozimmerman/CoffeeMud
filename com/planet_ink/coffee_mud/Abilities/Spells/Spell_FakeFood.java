@@ -76,8 +76,7 @@ public class Spell_FakeFood extends Spell
 				{
 					Food F2=(Food)F.copyOf();
 					F2.recoverEnvStats();
-					F2.setPossessionTime(Calendar.getInstance());
-					mob.location().addItem(F2);
+					mob.location().addItemRefuse(F2);
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,F2.name()+" appears!");
 				}
 			}

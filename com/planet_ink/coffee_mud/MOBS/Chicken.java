@@ -61,8 +61,7 @@ public class Chicken extends StdMOB
 				{
 					location().show(this,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");
 					I.removeThis();
-					location().addItem(I);
-					I.setPossessionTime(Calendar.getInstance());
+					location().addItemRefuse(I);
 					location().recoverRoomStats();
 				}
 			}

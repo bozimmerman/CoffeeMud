@@ -88,10 +88,10 @@ public class Carpentry extends CommonSkill
 						building.setUsesRemaining(100);
 					else
 					{
-						mob.location().addItem(building);
+						mob.location().addItemRefuse(building);
 						if(key!=null)
 						{
-							mob.location().addItem(key);
+							mob.location().addItemRefuse(key);
 							key.setContainer(building);
 						}
 					}
