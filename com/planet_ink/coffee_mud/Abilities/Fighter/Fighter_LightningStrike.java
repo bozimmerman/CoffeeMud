@@ -77,14 +77,15 @@ public class Fighter_LightningStrike extends StdAbility
 
 	public boolean anyWeapons(MOB mob)
 	{
-		if(mob.fetchWieldedItem()!=null) return false;
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
-			if((I!=null)&&(I.amWearingAt(Item.HELD)))
-				return false;
+			if((I!=null)
+			   &&((I.amWearingAt(Item.WIELD))
+			      ||(I.amWearingAt(Item.HELD))))
+				return true;
 		}
-		return true;
+		return false;
 	}
 
 

@@ -9,6 +9,7 @@ public class Fighter_KiStrike extends StdAbility
 {
 	public String ID() { return "Fighter_KiStrike"; }
 	public String name(){ return "Ki Strike";}
+	public String displayText(){return "(Ki Strike)";}
 	private static final String[] triggerStrings = {"KISTRIKE","KI"};
 	public int quality(){return Ability.OK_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}

@@ -9,6 +9,7 @@ public class Fighter_Battlecry extends StdAbility
 {
 	public String ID() { return "Fighter_Battlecry"; }
 	public String name(){ return "Battle Cry";}
+	public String displayText(){return "(Battle Cry)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public Environmental newInstance(){	return new Fighter_Battlecry();}
 	private static final String[] triggerStrings = {"BATTLECRY"};

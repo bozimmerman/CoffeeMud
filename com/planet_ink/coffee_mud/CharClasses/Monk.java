@@ -125,14 +125,15 @@ public class Monk extends StdCharClass
 
 	public boolean anyWeapons(MOB mob)
 	{
-		if(mob.fetchWieldedItem()!=null) return false;
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
-			if((I!=null)&&(I.amWearingAt(Item.HELD)))
-				return false;
+			if((I!=null)
+			   &&((I.amWearingAt(Item.WIELD))
+			      ||(I.amWearingAt(Item.HELD))))
+				return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defense every level.  Receives 2%/lvl unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives 2%/level trap avoidance.";}
