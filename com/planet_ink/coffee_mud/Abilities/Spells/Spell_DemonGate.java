@@ -74,6 +74,7 @@ public class Spell_DemonGate extends Spell
 		affectableStats.setDamage(affectableStats.damage()+20);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100);
 		affectableStats.setArmor(affectableStats.armor()+20);
+		affectableStats.setSpeed(affectableStats.speed()+2);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

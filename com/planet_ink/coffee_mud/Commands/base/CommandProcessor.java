@@ -609,7 +609,7 @@ public class CommandProcessor
 			{
 				String ptop = (String)e.nextElement();
 				String thisTag=rHelpFile.getProperty(ptop);
-				if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=25)
+				if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
 					|| (rHelpFile.getProperty(thisTag)== null) )
 						reverseList.addElement(ptop);
 			}

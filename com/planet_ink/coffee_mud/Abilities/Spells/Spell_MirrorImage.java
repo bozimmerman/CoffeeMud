@@ -89,6 +89,7 @@ public class Spell_MirrorImage extends Spell
 				||(Util.bset(affect.othersCode(),Affect.OTH_SENSE_CONSUMPTION))
 				||(Util.bset(affect.othersCode(),Affect.OTH_SENSE_TOUCHING)))
 			&&(affect.othersMessage()!=null)
+			&&((affect.targetCode()&Affect.MASK_HURT)==0)
 			&&(affect.othersMessage().length()>0))
 			{
 				notAgain=true;

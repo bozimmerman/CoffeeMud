@@ -22,7 +22,8 @@ public class Utils
 			for(int m=0;m<CMMap.numRooms();m++)
 			{
 				Room room=CMMap.getRoom(m);
-				E=room.fetchFromRoomFavorMOBs(null,name);
+				E=room.fetchInhabitant(name);
+				if(E==null) E=room.fetchItem(null,name);
 				if(E!=null) break;
 			}
 		if(E==null)

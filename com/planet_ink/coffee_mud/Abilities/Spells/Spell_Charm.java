@@ -63,28 +63,16 @@ public class Spell_Charm extends Spell
 		return super.okAffect(affect);
 	}
 
-	public void affect(Affect affect)
+	public boolean tick(int tickID)
 	{
-		super.affect(affect);
-
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-		if((affect.amISource(mob))&&((mob.amFollowing()==null)||(mob.amFollowing()!=invoker)))
-			ExternalPlay.follow(mob,invoker,true);
-	}
-
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
-			return;
+			return false;
 		MOB mob=(MOB)affecting();
 		if((affected==mob)&&((mob.amFollowing()==null)||(mob.amFollowing()!=invoker)))
 			ExternalPlay.follow(mob,invoker,true);
+		return super.tick(tickID);
 	}
-
-
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -150,7 +138,7 @@ public class Spell_Charm extends Spell
 				if(!msg.wasModified())
 				{
 					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_VERBAL|Affect.TYP_MIND);
-					if(success);
+					if(success)
 						ExternalPlay.follow(target,mob,false);
 				}
 			}

@@ -652,6 +652,58 @@ public class StdMOB implements MOB
 		return ExternalPlay.standardMobCondition(this);
 	}
 
+	public void establishRange(MOB source, MOB target, Environmental tool)
+	{
+		// establish and enforce range
+		if((source.rangeToTarget()<0))
+		{
+			if(source.riding()!=null)
+			{
+				if((target==riding())||(source.riding().amRiding(target)))
+					source.setAtRange(0);
+				else
+				if((source.riding() instanceof MOB)
+				   &&(((MOB)source.riding()).isInCombat())
+				   &&(((MOB)source.riding()).getVictim()==target)
+				   &&(((MOB)source.riding()).rangeToTarget()>=0)
+				   &&(((MOB)source.riding()).rangeToTarget()<rangeToTarget()))
+				{
+					source.setAtRange(((MOB)source.riding()).rangeToTarget());
+					recoverEnvStats();
+					return;
+				}
+				else
+				for(int r=0;r<source.riding().numRiders();r++)
+				{
+					MOB otherMOB=source.riding().fetchRider(r);
+					if((otherMOB!=null)
+					   &&(otherMOB!=this)
+					   &&(otherMOB.isInCombat())
+					   &&(otherMOB.getVictim()==target)
+					   &&(otherMOB.rangeToTarget()>=0)
+					   &&(otherMOB.rangeToTarget()<rangeToTarget()))
+					{
+						source.setAtRange(otherMOB.rangeToTarget());
+						source.recoverEnvStats();
+						return;
+					}
+				}
+			}
+			
+			if(target.getVictim()==source)
+			{
+				if(target.rangeToTarget()>=0)
+					source.setAtRange(target.rangeToTarget());
+				else
+					source.setAtRange(maxRange(tool));
+			}
+			else
+				source.setAtRange(maxRange(tool));
+			recoverEnvStats();
+		}
+	}
+	
+	
 	public boolean okAffect(Affect affect)
 	{
 		// sneaking exception
@@ -728,55 +780,7 @@ public class StdMOB implements MOB
 						tell("You are serving '"+WorshipCharID+"'!");
 						return false;
 					}
-					
-					// establish and enforce range
-					if((rangeToTarget()<0)&&(riding()!=null))
-					{
-						if((target==riding())||(riding().amRiding(target)))
-							setAtRange(0);
-						else
-						if((riding() instanceof MOB)
-						   &&(((MOB)riding()).isInCombat())
-						   &&(((MOB)riding()).getVictim()==target)
-						   &&(((MOB)riding()).rangeToTarget()>=0)
-						   &&(((MOB)riding()).rangeToTarget()<rangeToTarget()))
-						{
-							setAtRange(((MOB)riding()).rangeToTarget());
-							recoverEnvStats();
-						}
-						else
-						for(int r=0;r<riding().numRiders();r++)
-						{
-							MOB otherMOB=riding().fetchRider(r);
-							if((otherMOB!=null)
-							   &&(otherMOB!=this)
-							   &&(otherMOB.isInCombat())
-							   &&(otherMOB.getVictim()==target)
-							   &&(otherMOB.rangeToTarget()>=0)
-							   &&(otherMOB.rangeToTarget()<rangeToTarget()))
-							{
-								setAtRange(otherMOB.rangeToTarget());
-								recoverEnvStats();
-								break;
-							}
-						}
-					}
-					if(rangeToTarget()<0)
-					{
-						if(target.getVictim()==null) 
-							setAtRange(maxRange(affect.tool()));
-						else
-						if(target.getVictim()==this)
-						{
-							if(target.rangeToTarget()>=0)
-								setAtRange(target.rangeToTarget());
-							else
-								setAtRange(maxRange(affect.tool()));
-						}
-						else
-							setAtRange(maxRange(affect.tool()));
-						recoverEnvStats();
-					}
+					establishRange(this,(MOB)affect.target(),affect.tool());
 				}
 			}
 
@@ -1055,9 +1059,6 @@ public class StdMOB implements MOB
 						setAtRange(0);
 					}
 				}
-				else
-				if(isMonster()) // playerkill check
-					setVictim((MOB)affect.source());
 				
 				if(affect.targetMinor()!=Affect.TYP_WEAPONATTACK)
 				{
@@ -1179,7 +1180,10 @@ public class StdMOB implements MOB
 		{
 			if(Util.bset(affect.sourceCode(),Affect.MASK_MALICIOUS))
 				if((affect.target() instanceof MOB)&&(getVictim()!=affect.target()))
+				{
+					establishRange(this,(MOB)affect.target(),affect.tool());
 					setVictim((MOB)affect.target());
+				}
 
 			switch(affect.sourceMinor())
 			{
@@ -1297,7 +1301,10 @@ public class StdMOB implements MOB
 			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 			{
 				if((!isInCombat())&&(location().isInhabitant((MOB)affect.source())))
-					setVictim((MOB)affect.source());
+				{
+					establishRange(this,affect.source(),affect.tool());
+					setVictim(affect.source());
+				}
 				if(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
 				{
 					if((isInCombat())&&(!amDead))

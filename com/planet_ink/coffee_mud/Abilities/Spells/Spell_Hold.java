@@ -69,7 +69,7 @@ public class Spell_Hold extends Spell
 		if(target==null) return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if(levelDiff>=3)
+		if(levelDiff>=4)
 		{
 			mob.tell(target.charStats().HeShe()+" looks too powerful.");
 			return false;
@@ -92,7 +92,7 @@ public class Spell_Hold extends Spell
 			return false;
 
 
-		boolean success=profficiencyCheck(-(target.envStats().level()*3),auto);
+		boolean success=profficiencyCheck(-(target.envStats().level()*2),auto);
 
 		if(success)
 		{

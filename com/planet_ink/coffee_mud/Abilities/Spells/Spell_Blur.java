@@ -16,7 +16,7 @@ public class Spell_Blur extends Spell
 		// what the affected mob sees when they
 		// bring up their affected list.
 		displayText="(Blur spell)";
-		quality=Ability.BENEFICIAL_SELF;
+		quality=Ability.BENEFICIAL_OTHERS;
 
 
 		baseEnvStats().setLevel(2);

@@ -46,7 +46,7 @@ public class Property implements Ability, Cloneable
 
 	public boolean qualifies(MOB student){return false;}
 	public int qualifyingLevel(MOB student){return -1;}
-	public void startTickDown(Environmental affected, long tickTime){}
+	public void startTickDown(Environmental affected, int tickTime){}
 
 	public int profficiency(){return 0;}
 	public void setProfficiency(int newProfficiency){}

@@ -35,7 +35,7 @@ public class StdAbility implements Ability, Cloneable
 
 	protected int quality=Ability.INDIFFERENT;
 	
-	protected long tickDown=-1;
+	protected int tickDown=-1;
 	public StdAbility()
 	{
 	}
@@ -56,7 +56,7 @@ public class StdAbility implements Ability, Cloneable
 	public void setBorrowed(Environmental toMe, boolean truefalse)
 	{ borrowed=truefalse; }
 
-	public void startTickDown(Environmental affected, long tickTime)
+	public void startTickDown(Environmental affected, int tickTime)
 	{
 		if(affected.fetchAffect(this.ID())==null)
 			affected.addAffect(this);
@@ -570,6 +570,8 @@ public class StdAbility implements Ability, Cloneable
 	}
 
 	public String accountForYourself(){return name;}
+	public int getTickDownRemaining(){return tickDown;}
+	public void setTickDownRemaining(int newTick){tickDown=newTick;}
 
 	public boolean canBeTaughtBy(MOB teacher, MOB student)
 	{

@@ -80,10 +80,12 @@ public class Spell_Feeblemind extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> chant(s) at <T-NAMESELF>.");
-			if(mob.location().okAffect(msg))
+			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND,null);
+			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				mob.location().send(mob,msg2);
+				if((!msg.wasModified())&&(!msg2.wasModified()))
 				{
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> begin(s) to feel a bit stupid.");
 					success=maliciousAffect(mob,target,0,-1);

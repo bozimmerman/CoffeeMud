@@ -1,5 +1,125 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 
-public class Spell_Forget
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Spell_Forget extends Spell
 {
+	public Spell_Forget()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="Forget";
+
+		// what the affected mob sees when they
+		// bring up their affected list.
+		displayText="(Forgetful)";
+
+		quality=Ability.MALICIOUS;
+
+
+		baseEnvStats().setLevel(6);
+
+		canBeUninvoked=true;
+		isAutoinvoked=false;
+
+		uses=Integer.MAX_VALUE;
+		recoverEnvStats();
+	}
+
+	public Environmental newInstance()
+	{
+		return new Spell_Forget();
+	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	public boolean okAffect(Affect affect)
+	{
+		if((affected==null)||(!(affected instanceof MOB)))
+			return true;
+
+		MOB mob=(MOB)affected;
+
+		// when this spell is on a MOBs Affected list,
+		// it should consistantly prevent the mob
+		// from trying to do ANYTHING except sleep
+		if((affect.amISource(mob))
+		&&(affect.tool()!=null)
+		&&(affect.tool() instanceof Ability)
+		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_MIND)))
+		{
+			mob.tell("You can't remember "+affect.tool().name()+"!");
+			return false;
+		}
+
+		return super.okAffect(affect);
+	}
+
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+		MOB mob=(MOB)affected;
+
+		super.unInvoke();
+
+		mob.tell("You start remembering things again.");
+	}
+
+
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		MOB target=this.getTarget(mob,commands,givenTarget);
+		if(target==null) return false;
+
+		int levelDiff=target.envStats().level()-mob.envStats().level();
+		if((!target.isMonster())||(levelDiff>=10))
+		{
+			mob.tell(target.charStats().HeShe()+" looks too powerful.");
+			return false;
+		}
+
+		// the invoke method for spells receives as
+		// parameters the invoker, and the REMAINING
+		// command line parameters, divided into words,
+		// and added as String objects to a vector.
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		// now see if it worked
+		boolean success=profficiencyCheck(-((target.charStats().getStat(CharStats.INTELLIGENCE)*2)+(levelDiff*5)),auto);
+		if(success)
+		{
+			// it worked, so build a copy of this ability,
+			// and add it to the affects list of the
+			// affected MOB.  Then tell everyone else
+			// what happened.
+			String str=auto?"":"<S-NAME> encant(s) confusingly at <T-NAMESELF>";
+			FullMsg msg=new FullMsg(mob,target,this,affectType,str);
+			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND,null);
+			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
+			{
+				mob.location().send(mob,msg);
+				mob.location().send(mob,msg2);
+				if((!msg.wasModified())&&(!msg2.wasModified()))
+				{
+					success=maliciousAffect(mob,target,0,-1);
+					if(success)
+						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) forgetful!");
+				}
+			}
+		}
+		if(!success)
+			return maliciousFizzle(mob,target,"<S-NAME> encant(s) confusingly at <T-NAMESELF>, but nothing happens.");
+
+		// return whether it worked
+		return success;
+	}
 }
