@@ -299,7 +299,13 @@ public class Sense
 			return true;
 
 		if(!canSee(seer)) return false;
-		if(!isSeen(seen)) return false;
+		if(!isSeen(seen))
+		{
+			if((!(seen instanceof MOB))
+			||(seen.envStats().level()>seer.envStats().level())
+			||(!CMSecurity.isASysOp(seer)))
+				return false;
+		}
 
 		if((isInvisible(seen))&&(!canSeeInvisible(seer)))
 		   return false;

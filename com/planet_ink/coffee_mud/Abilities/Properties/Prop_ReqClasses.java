@@ -51,8 +51,8 @@ public class Prop_ReqClasses extends Property
 	{
 		if((affected!=null)
 		   &&(msg.target()!=null)
-		   &&(msg.target() instanceof Room)
-		   &&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		   &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
+			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
 		   &&(!Sense.isFalling(msg.source()))
 		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{

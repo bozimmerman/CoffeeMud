@@ -121,15 +121,10 @@ public class Prop_EnterAdjuster extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((affected!=null)&&((affected instanceof Room)||(affected instanceof Exit)))
-		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_ENTER:
-				EATME(msg.source());
-				break;
-			}
-		}
+		if((affected!=null)
+		&&(((msg.targetMinor()==CMMsg.TYP_ENTER)&&((affected instanceof Room)||(affected instanceof Exit)))
+		   ||((msg.targetMinor()==CMMsg.TYP_SIT)&&(affected==msg.target())&&(affected instanceof Rideable))))
+			EATME(msg.source());
 		return super.okMessage(myHost,msg);
 	}
 }

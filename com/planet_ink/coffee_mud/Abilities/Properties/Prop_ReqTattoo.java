@@ -60,7 +60,7 @@ public class Prop_ReqTattoo extends Property
 		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			if(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
-			||((msg.target() instanceof Item)&&(msg.targetMinor()==CMMsg.TYP_GET)))
+			||((msg.target() instanceof Item)&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_SIT))))
 			{
 				HashSet H=new HashSet();
 				if(text().toUpperCase().indexOf("NOFOL")>=0)
