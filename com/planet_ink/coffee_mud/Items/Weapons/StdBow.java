@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Items.StdItem;
 
 public class StdBow extends StdWeapon
 {
+	public String ID(){	return "StdBow";}
 	public StdBow()
 	{
 		super();

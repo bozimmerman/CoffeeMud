@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class DrowDagger extends Dagger
 {
+	public String ID(){	return "DrowDagger";}
 	public DrowDagger()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a dagger";
 		displayText="a dagger with a dark metallic blade.";
 		miscText="";

@@ -7,11 +7,11 @@ import java.util.*;
 
 public class GenMap extends StdMap
 {
+	public String ID(){	return "GenMap";}
 	protected String	readableText="";
 	public GenMap()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic map";
 		baseEnvStats.setWeight(1);
 		displayText="a generic map sits here.";

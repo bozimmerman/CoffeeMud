@@ -6,10 +6,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Natural extends StdWeapon
 {
+	public String ID(){	return "Natural";}
 	public Natural()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="fingernails and teeth";
 		displayText="A set of claws and teeth are piled here.";
 		miscText="";

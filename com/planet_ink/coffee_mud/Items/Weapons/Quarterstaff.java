@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Quarterstaff extends StdWeapon
 {
+	public String ID(){	return "Quarterstaff";}
 	public Quarterstaff()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a wooden quarterstaff";
 		displayText="a wooden quarterstaff lies in the corner of the room.";
 		miscText="";

@@ -7,10 +7,10 @@ import java.util.*;
 
 public class GenMirror extends GenItem
 {
+	public String ID(){	return "GenMirror";}
 	public GenMirror()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic mirror";
 		baseEnvStats.setWeight(2);
 		displayText="a generic mirror sits here.";

@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Arquebus extends StdWeapon
 {
+	public String ID(){	return "Arquebus";}
 	public Arquebus()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="an arquebus";
 		displayText="an arquebus is on the ground.";
 		miscText="";

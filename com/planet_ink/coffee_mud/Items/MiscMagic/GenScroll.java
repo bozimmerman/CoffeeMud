@@ -7,13 +7,14 @@ import java.util.*;
 
 public class GenScroll extends GenItem implements Scroll
 {
+	public String ID(){	return "GenScroll";}
 	protected boolean readableScroll=false;
 	protected Vector theSpells=new Vector();
 
 	public GenScroll()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a scroll";
 		baseEnvStats.setWeight(1);
 		displayText="a scroll is rolled up here.";

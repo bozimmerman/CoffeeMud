@@ -9,7 +9,6 @@ public class TreeSurface extends ClimbableSurface
 	public TreeSurface()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the tree";
 		baseEnvStats.setWeight(4);
 		recoverEnvStats();

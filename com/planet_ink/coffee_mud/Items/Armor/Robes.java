@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class Robes extends StdArmor
 {
+	public String ID(){	return "Robes";}
 	public Robes()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a set of robes";
 		displayText="a set of robes is folded nice and neatly here.";
 		description="It is a finely crafted set of robes.";

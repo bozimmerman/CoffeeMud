@@ -7,10 +7,11 @@ import java.util.*;
 
 public class StdArmor extends StdItem implements Armor
 {
+	public String ID(){	return "StdArmor";}
 	public StdArmor()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a shirt of armor";
 		displayText="a thick armored shirt sits here.";
 		description="Thick padded leather with strips of metal interwoven.";

@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class HolyAvenger extends TwoHandedSword
 {
+	public String ID(){	return "HolyAvenger";}
 	public HolyAvenger()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="the holy avenger";
 		displayText="a beautiful two-handed sword has been left here";
 		miscText="";

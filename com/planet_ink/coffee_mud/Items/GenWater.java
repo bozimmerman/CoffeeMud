@@ -7,11 +7,11 @@ import java.util.*;
 
 public class GenWater extends StdDrink
 {
+	public String ID(){	return "GenWater";}
 	protected String	readableText="";
 	public GenWater()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic puddle of water";
 		baseEnvStats.setWeight(2);
 		displayText="a generic puddle of water sits here.";

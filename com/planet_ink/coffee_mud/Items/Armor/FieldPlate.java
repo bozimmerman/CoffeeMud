@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class FieldPlate extends StdArmor
 {
+	public String ID(){	return "FieldPlate";}
 	public FieldPlate()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="suit of Field Plate";
 		displayText="a suit of field plate Armor.";
 		description="A suit of field plate Armor including everything to protect the body, legs and arms.";

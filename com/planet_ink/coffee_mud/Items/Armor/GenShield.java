@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class GenShield extends GenArmor implements Shield
 {
+	public String ID(){	return "GenShield";}
 	public GenShield()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a shield";
 		displayText="a sturdy round shield sits here.";
 		description="";

@@ -7,7 +7,7 @@ import java.util.*;
 
 public class StdDrink extends StdContainer implements Drink,Item
 {
-
+	public String ID(){	return "StdDrink";}
 	protected int amountOfThirstQuenched=250;
 	protected int amountOfLiquidHeld=2000;
 	protected int amountOfLiquidRemaining=2000;
@@ -17,7 +17,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	public StdDrink()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a cup";
 		baseEnvStats.setWeight(10);
 		capacity=0;

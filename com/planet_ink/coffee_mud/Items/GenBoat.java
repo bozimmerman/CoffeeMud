@@ -7,13 +7,9 @@ import java.util.*;
 
 public class GenBoat extends Boat
 {
+	public String ID(){	return "GenBoat";}
+	
 	private String readableText = "";
-	public GenBoat()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
-
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
 	public String keyName()

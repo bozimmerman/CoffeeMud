@@ -7,12 +7,13 @@ import java.util.*;
 
 public class GenPotion extends GenWater implements Potion
 {
+	public String ID(){	return "GenPotion";}
 	protected Ability theSpell;
 
 	public GenPotion()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a flask";
 		baseEnvStats.setWeight(1);
 		displayText="A flask sits here.";

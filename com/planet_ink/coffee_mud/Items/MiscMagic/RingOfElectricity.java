@@ -7,6 +7,7 @@ import java.util.*;
 
 public class RingOfElectricity extends Ring_Protection implements MiscMagic
 {
+	public String ID(){	return "RingOfElectricity";}
 	public RingOfElectricity()
 	{
 		super();

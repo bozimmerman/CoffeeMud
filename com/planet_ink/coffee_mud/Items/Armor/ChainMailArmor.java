@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class ChainMailArmor extends StdArmor
 {
+	public String ID(){	return "ChainMailArmor";}
 	public ChainMailArmor()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a suit of chain mail armor";
 		displayText="a suit of chain mail armor sits here.";
 		description="This suit includes a fairly solid looking hauberk with leggings and a coif.";

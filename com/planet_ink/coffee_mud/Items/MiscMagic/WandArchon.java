@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class WandArchon extends StdWand
 {
+	public String ID(){	return "WandArchon";}
 	public WandArchon()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a flashy wand";
 		displayText="a flashy wand has been left here.";
 		description="A wand made out of sparkling energy.";

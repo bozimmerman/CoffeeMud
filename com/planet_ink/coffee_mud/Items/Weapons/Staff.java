@@ -6,12 +6,13 @@ import com.planet_ink.coffee_mud.Items.MiscMagic.StdWand;
 
 public class Staff extends StdWeapon implements Wand
 {
+	public String ID(){	return "Staff";}
 	private String secretWord=StdWand.words[Dice.roll(1,StdWand.words.length,0)-1];
 
 	public Staff()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a wooden staff";
 		displayText="a wooden staff lies in the corner of the room.";
 		miscText="";

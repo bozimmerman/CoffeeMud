@@ -7,10 +7,10 @@ import java.util.*;
 
 public class Waterskin extends StdDrink
 {
+	public String ID(){	return "Waterskin";}
 	public Waterskin()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a waterskin";
 		amountOfThirstQuenched=200;
 		amountOfLiquidHeld=1000;

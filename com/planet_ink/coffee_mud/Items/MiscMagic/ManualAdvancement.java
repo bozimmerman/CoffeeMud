@@ -8,10 +8,11 @@ import java.util.*;
 
 public class ManualAdvancement extends StdItem implements MiscMagic
 {
+	public String ID(){	return "ManualAdvancement";}
 	public ManualAdvancement()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a book";
 		baseEnvStats().setWeight(1);
 		displayText="an ornately bound book sits here.";

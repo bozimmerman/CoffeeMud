@@ -6,7 +6,7 @@ import java.util.*;
 
 public class StdExit implements Exit
 {
-	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+	public String ID(){	return "StdExit";}
 	protected String name="a walkway";
 	protected String description="Looks like an ordinary path from here to there.";
 	protected String displayText="";
@@ -37,11 +37,6 @@ public class StdExit implements Exit
 
 	public StdExit()
 	{
-	}
-
-	public String ID()
-	{
-		return myID;
 	}
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}

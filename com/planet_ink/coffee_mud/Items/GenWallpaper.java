@@ -7,7 +7,7 @@ import java.util.*;
 
 public class GenWallpaper implements Item
 {
-	protected String 	myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+	public String ID(){	return "GenWallpaper";}
 	protected String 	name="some wallpaper";
 	protected String 	description="Looks like it needs a new description";
 	protected String	readableText="";
@@ -18,10 +18,6 @@ public class GenWallpaper implements Item
 
 	public boolean isGeneric(){return true;}
 
-	public String ID()
-	{
-		return myID;
-	}
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}
 	public EnvStats envStats()

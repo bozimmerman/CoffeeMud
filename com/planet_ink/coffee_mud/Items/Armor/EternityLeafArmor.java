@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class EternityLeafArmor extends StdArmor
 {
+	public String ID(){	return "EternityLeafArmor";}
 	public EternityLeafArmor()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a suit of Eternity Tree Leaf Armor";
 		displayText="a suit of Eternity tree leaf armor sits here.";
 		description="This suit of armor is made from the leaves of the Eternity Tree, a true gift from the Fox god himself.  (armor:  50, grants a modest degree of stealth, and is as light as cloth.)";

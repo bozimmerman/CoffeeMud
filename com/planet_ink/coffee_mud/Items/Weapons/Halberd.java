@@ -5,6 +5,7 @@ import java.util.*;
 
 public class Halberd extends StdWeapon
 {
+	public String ID(){	return "Halberd";}
 	public final static int PLAIN					= 0;
 	public final static int QUALITY_WEAPON			= 1;
 	public final static int EXCEPTIONAL	  			= 2;
@@ -12,7 +13,7 @@ public class Halberd extends StdWeapon
 	public Halberd()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 
 		Random randomizer = new Random(System.currentTimeMillis());
 		int HalberdType = Math.abs(randomizer.nextInt() % 3);

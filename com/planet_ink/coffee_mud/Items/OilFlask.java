@@ -8,14 +8,13 @@ import java.util.*;
 
 public class OilFlask extends StdDrink
 {
-
+	public String ID(){	return "OilFlask";}
 	public int amountOfLiquidHeld=5;
 	public int amountOfLiquidRemaining=5;
 
 	public OilFlask()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="an oil flask";
 		baseEnvStats.setWeight(10);
 		capacity=0;

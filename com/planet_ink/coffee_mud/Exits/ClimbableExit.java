@@ -6,10 +6,10 @@ import java.util.*;
 
 public class ClimbableExit extends StdExit
 {
+	public String ID(){	return "ClimbableExit";}
 	public ClimbableExit()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a sheer surface";
 		description="Looks like you'll have to climb it.";
 		displayText="a sheer surface";

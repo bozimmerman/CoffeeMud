@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class MichaelsMithrilChain extends StdArmor
 {
+	public String ID(){	return "MichaelsMithrilChain";}
 	public MichaelsMithrilChain()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a chain mail vest made of mithril";
 		displayText="a chain mail vest made from the dwarven alloy mithril";
 		description="This chain mail vest is made from a dwarven alloy called mithril, making it very light.";

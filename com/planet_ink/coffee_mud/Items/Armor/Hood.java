@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class Hood extends StdArmor
 {
+	public String ID(){	return "Hood";}
 	public Hood()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a cloth hood";
 		displayText="a cloth hood sits here.";
 		description="This is a cloth hood that covers the head and shoulders.";

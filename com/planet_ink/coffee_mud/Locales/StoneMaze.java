@@ -9,7 +9,6 @@ public class StoneMaze extends StdMaze
 	public StoneMaze()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		domainType=Room.DOMAIN_INDOORS_STONE;
 		domainCondition=Room.CONDITION_NORMAL;
 		baseEnvStats.setWeight(1);

@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class LeatherGauntlets extends StdArmor
 {
+	public String ID(){	return "LeatherGauntlets";}
 	public LeatherGauntlets()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="Leather Gauntlets";
 		displayText="a pair of leather gauntlets.";
 		description="They look like they're made of doeskin.";

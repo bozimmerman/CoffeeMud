@@ -5,10 +5,10 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class NeedleChest extends LargeChest
 {
+	public String ID(){	return "NeedleChest";}
 	public NeedleChest()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		Trap t=(Trap)CMClass.getAbility("Trap_Open");
 		t.baseEnvStats().setAbility(Trap.TRAP_NEEDLE);
 		t.recoverEnvStats();

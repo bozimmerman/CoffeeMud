@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Glaive extends StdWeapon
 {
+	public String ID(){	return "Glaive";}
 	public Glaive()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a heavy glaive";
 		displayText="a glaive leans against the wall.";
 		miscText="";

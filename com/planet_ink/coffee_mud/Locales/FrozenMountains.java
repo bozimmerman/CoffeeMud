@@ -9,7 +9,6 @@ public class FrozenMountains extends Mountains
 	public FrozenMountains()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		recoverEnvStats();
 		domainCondition=Room.CONDITION_COLD;
 	}

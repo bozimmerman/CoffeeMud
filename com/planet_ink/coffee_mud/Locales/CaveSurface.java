@@ -10,7 +10,6 @@ public class CaveSurface extends ClimbableSurface
 	public CaveSurface()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
 		baseEnvStats.setWeight(4);
 		recoverEnvStats();

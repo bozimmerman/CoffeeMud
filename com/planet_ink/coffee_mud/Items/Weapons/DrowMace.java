@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class DrowMace extends Mace
 {
+	public String ID(){	return "DrowMace";}
 	public DrowMace()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a mace";
 		displayText="an ornate mace is on the ground.";
 		miscText="";

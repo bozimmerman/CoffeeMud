@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Shortsword extends Sword
 {
+	public String ID(){	return "Shortsword";}
 	public Shortsword()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a short sword";
 		displayText="a short sword has been dropped on the ground.";
 		miscText="";

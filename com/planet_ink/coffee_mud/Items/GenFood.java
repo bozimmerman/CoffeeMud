@@ -7,11 +7,12 @@ import java.util.*;
 
 public class GenFood extends StdFood
 {
+	public String ID(){	return "GenFood";}
 	protected String	readableText="";
 	public GenFood()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a generic blob of food";
 		baseEnvStats.setWeight(2);
 		displayText="a generic blob of food sits here.";

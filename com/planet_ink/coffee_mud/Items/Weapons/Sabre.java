@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Sabre extends StdWeapon
 {
+	public String ID(){	return "Sabre";}
 	public Sabre()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a sabre";
 		displayText="a sabre has been dropped by someone.";
 		miscText="";

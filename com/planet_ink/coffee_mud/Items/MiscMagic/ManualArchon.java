@@ -8,10 +8,11 @@ import java.util.*;
 
 public class ManualArchon extends StdItem implements MiscMagic
 {
+	public String ID(){	return "ManualArchon";}
 	public ManualArchon()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="an ornately decorated book";
 		baseEnvStats.setWeight(1);
 		displayText="an ornately decorated book has definitely been left behind by someone.";

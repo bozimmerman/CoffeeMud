@@ -10,7 +10,6 @@ public class UnderWaterGrid extends StdGrid
 	public UnderWaterGrid()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		baseEnvStats().setSensesMask(baseEnvStats().sensesMask()|EnvStats.CAN_BREATHE);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
 		baseEnvStats.setWeight(3);

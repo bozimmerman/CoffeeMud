@@ -8,6 +8,7 @@ import java.util.*;
 
 public class RingOfFortitude extends Ring_Protection implements MiscMagic
 {
+	public String ID(){	return "RingOfFortitude";}
 	public RingOfFortitude()
 	{
 		super();

@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class GreatHelm extends StdArmor
 {
+	public String ID(){	return "GreatHelm";}
 	public GreatHelm()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a steel Great Helm.";
 		displayText="a steel great helm sits here.";
 		description="This is a steel helmet that completely encloses the head.";

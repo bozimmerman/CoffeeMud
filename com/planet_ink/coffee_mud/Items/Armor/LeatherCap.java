@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class LeatherCap extends StdArmor
 {
+	public String ID(){	return "LeatherCap";}
 	public LeatherCap()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a leather cap";
 		displayText="a round leather cap sits here.";
 		description="It looks like its made of cured leather hide, with metal bindings.";

@@ -10,7 +10,6 @@ public class JungleGrid extends StdGrid
 	{
 		super();
 		name="the jungle";
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_JUNGLE;

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class ScrollSpell extends StdScroll
 {
+	public String ID(){	return "ScrollSpell";}
 	public ScrollSpell()
 	{
 		super();

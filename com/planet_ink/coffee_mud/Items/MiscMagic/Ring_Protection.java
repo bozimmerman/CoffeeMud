@@ -10,10 +10,11 @@ import java.util.*;
 
 public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 {
+	public String ID(){	return "Ring_Protection";}
 	public Ring_Protection()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		setIdentity();
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();

@@ -6,13 +6,13 @@ import java.util.*;
 
 public class GenCorpse extends GenContainer implements DeadBody
 {
+	public String ID(){	return "GenCorpse";}
 	protected Room roomLocation=null;
 	protected CharStats charStats=null;
 	
 	public GenCorpse()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="an anonymous corpse";
 		displayText="a corpse lies here.";
 		description="Looks dead.";

@@ -10,7 +10,6 @@ public class CaveRoom extends StdRoom
 	public CaveRoom()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the cave";
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
 		baseEnvStats.setWeight(2);

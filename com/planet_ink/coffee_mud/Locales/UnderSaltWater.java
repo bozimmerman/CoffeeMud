@@ -6,7 +6,6 @@ public class UnderSaltWater extends UnderWater
 	public UnderSaltWater()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	}
 
 	public Environmental newInstance()

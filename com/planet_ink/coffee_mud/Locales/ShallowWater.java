@@ -9,7 +9,6 @@ public class ShallowWater extends StdRoom implements Drink
 	public ShallowWater()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the water";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();

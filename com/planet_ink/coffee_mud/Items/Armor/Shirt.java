@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class Shirt extends GenArmor
 {
+	public String ID(){	return "Shirt";}
 	public Shirt()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a nice tunic";
 		displayText="a plain tunic is folded neatly here.";
 		description="It is a plain buttoned tunic.";

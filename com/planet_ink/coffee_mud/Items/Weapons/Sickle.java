@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Sickle extends StdWeapon
 {
+	public String ID(){	return "Sickle";}
 	public Sickle()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a sickle";
 		displayText="a sickle lies on the ground.";
 		miscText="";

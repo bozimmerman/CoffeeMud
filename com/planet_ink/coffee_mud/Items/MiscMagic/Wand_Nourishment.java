@@ -6,11 +6,11 @@ import java.util.*;
 
 public class Wand_Nourishment extends StdWand
 {
-
+	public String ID(){	return "Wand_Nourishment";}
 	public Wand_Nourishment()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a wooden wand";
 		displayText="a small wooden wand is here.";
 		description="A wand made out of wood";

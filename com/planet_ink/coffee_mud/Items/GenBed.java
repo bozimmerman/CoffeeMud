@@ -7,11 +7,12 @@ import java.util.*;
 
 public class GenBed extends GenRideable
 {
+	public String ID(){	return "GenBed";}
 	protected String	readableText="";
 	public GenBed()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a generic bed";
 		baseEnvStats.setWeight(150);
 		displayText="a generic bed sits here.";

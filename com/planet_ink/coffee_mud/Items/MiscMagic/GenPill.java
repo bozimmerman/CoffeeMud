@@ -7,12 +7,13 @@ import java.util.*;
 
 public class GenPill extends GenFood implements Pill
 {
+	public String ID(){	return "GenPill";}
 	protected Ability theSpell;
 
 	public GenPill()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a pill";
 		baseEnvStats.setWeight(1);
 		displayText="An strange pill lies here.";

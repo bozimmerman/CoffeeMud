@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Scimitar extends Sword
 {
+	public String ID(){	return "Scimitar";}
 	public Scimitar()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="an ornate scimitar";
 		displayText="a rather ornate looking Scimitar leans against the wall.";
 		miscText="";

@@ -7,11 +7,11 @@ import java.util.*;
 
 public class Bed extends GenRideable
 {
+	public String ID(){	return "Bed";}
 	protected String	readableText="";
 	public Bed()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a bed";
 		baseEnvStats.setWeight(150);
 		displayText="a bed is here.";

@@ -6,10 +6,10 @@ import java.util.*;
 
 public class StdCoins extends StdItem implements Coins
 {
+	public String ID(){	return "StdCoins";}
 	public StdCoins()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a pile of gold coins";
 		displayText="some gold coins sit here.";
 		myContainer=null;

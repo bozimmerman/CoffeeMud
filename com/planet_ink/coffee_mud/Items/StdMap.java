@@ -8,13 +8,13 @@ import java.util.*;
 
 public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfaces.Map
 {
+	public String ID(){	return "StdMap";}
 	private StringBuffer myMap=null;
 	private int oldLevel=0;
 
 	public StdMap()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a map";
 		displayText="a map sits here";
 		description="Looks like a map of some place.";

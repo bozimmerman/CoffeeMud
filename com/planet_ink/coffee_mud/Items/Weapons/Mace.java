@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Mace extends StdWeapon
 {
+	public String ID(){	return "Mace";}
 	public Mace()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a rather large mace";
 		displayText="a heavy mace is found in the center of the room.";
 		miscText="";

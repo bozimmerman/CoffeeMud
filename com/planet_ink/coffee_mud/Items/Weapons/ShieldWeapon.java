@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class ShieldWeapon extends com.planet_ink.coffee_mud.Items.Weapons.StdWeapon
 {
+	public String ID(){	return "ShieldWeapon";}
 	public ShieldWeapon()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a bashing shield";
 		displayText="A bashing shield has been left here.";
 		miscText="";
@@ -40,7 +41,7 @@ public class ShieldWeapon extends com.planet_ink.coffee_mud.Items.Weapons.StdWea
 	public ShieldWeapon(Item shield)
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		setShield(shield);
 	}
 

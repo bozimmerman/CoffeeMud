@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class GenShoes extends GenArmor
 {
+	public String ID(){	return "GenShoes";}
 	public GenShoes()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a pair of shoes";
 		displayText="a pair of shoes lies here";
 		description="a well tailored pair of walking shoes.";

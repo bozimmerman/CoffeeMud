@@ -8,13 +8,13 @@ import java.util.*;
 
 public class StdRideable extends StdContainer implements Rideable
 {
+	public String ID(){	return "StdRideable";}
 	protected int rideBasis=Rideable.RIDEABLE_WATER;
 	protected int mobCapacity=4;
 	protected Vector riders=new Vector();
 	public StdRideable()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a boat";
 		displayText="a boat is docked here.";
 		description="Looks like a boat";

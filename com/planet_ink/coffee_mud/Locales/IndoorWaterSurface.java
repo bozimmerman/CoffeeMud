@@ -11,7 +11,6 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 	public IndoorWaterSurface()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the water";
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_WATERSURFACE;

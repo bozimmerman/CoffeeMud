@@ -9,7 +9,6 @@ public class WaterSurface extends StdRoom implements Drink
 	public WaterSurface()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the water";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();

@@ -4,10 +4,10 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class PitOpen extends StdOpenDoorway
 {
+	public String ID(){	return "PitOpen";}
 	public PitOpen()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		Trap t=(Trap)CMClass.getAbility("Trap_Enter");
 		if(t!=null)
 		{

@@ -6,10 +6,10 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class LockedGate extends StdLockedDoorway
 {
+	public String ID(){	return "LockedGate";}
 	public LockedGate()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a barred gate";
 		description="A pair of study metal bar doors.";
 		displayText="an open gate";

@@ -8,10 +8,10 @@ import java.util.*;
 
 public class GenFoodResource extends GenFood implements EnvResource, Food
 {
+	public String ID(){	return "GenFoodResource";}
 	public GenFoodResource()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="an edible resource";
 		displayText="a pile of edible resource sits here.";
 		description="";

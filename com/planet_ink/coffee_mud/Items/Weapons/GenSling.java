@@ -7,11 +7,12 @@ import java.util.*;
 
 public class GenSling extends StdSling
 {
+	public String ID(){	return "GenSling";}
 	protected String	readableText="";
 	public GenSling()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a generic sling";
 		displayText="a generic sling sits here.";
 		description="";

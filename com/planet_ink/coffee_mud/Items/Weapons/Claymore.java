@@ -5,6 +5,7 @@ import java.util.*;
 
 public class Claymore extends Sword
 {
+	public String ID(){	return "Claymore";}
 	public final static int PLAIN					= 0;
 	public final static int QUALITY_WEAPON			= 1;
 	public final static int EXCEPTIONAL	  			= 2;
@@ -12,7 +13,7 @@ public class Claymore extends Sword
 	public Claymore()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 
 		Random randomizer = new Random(System.currentTimeMillis());
 		int claymoreType = Math.abs(randomizer.nextInt() % 3);

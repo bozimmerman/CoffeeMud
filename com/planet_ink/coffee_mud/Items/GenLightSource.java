@@ -7,6 +7,7 @@ import java.util.*;
 
 public class GenLightSource extends GenItem implements Light
 {
+	public String ID(){	return "GenLightSource";}
 	protected boolean lit=false;
 	protected boolean destroyedWhenBurnedOut=true;
 	protected boolean goesOutInTheRain=true;
@@ -15,7 +16,7 @@ public class GenLightSource extends GenItem implements Light
 	public GenLightSource()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a generic lightable thing";
 		displayText="a generic lightable thing sits here.";
 		description="";

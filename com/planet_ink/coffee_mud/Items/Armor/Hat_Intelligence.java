@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class Hat_Intelligence extends StdArmor
 {
+	public String ID(){	return "Hat_Intelligence";}
 	public Hat_Intelligence()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a feathered cap";
 		displayText="a feathered cap.";
 		description="It looks like a regular cap with long feather.";

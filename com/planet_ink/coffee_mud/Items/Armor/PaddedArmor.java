@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class PaddedArmor extends StdArmor
 {
+	public String ID(){	return "PaddedArmor";}
 	public PaddedArmor()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a suit of padded armor";
 		displayText="a suit of padded armor including everything needed to protect the torso, legs, and arms";
 		description="This is a fairly decent looking suit of padded armor";

@@ -7,10 +7,11 @@ import java.util.*;
 
 public class GenSuperPill extends GenPill
 {
+	public String ID(){	return "GenSuperPill";}
 	public GenSuperPill()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a pill";
 		baseEnvStats.setWeight(1);
 		displayText="An strange pill lies here.";

@@ -9,13 +9,14 @@ import java.util.*;
 
 public class StdScroll extends StdItem implements MiscMagic, Scroll
 {
+	public String ID(){	return "StdScroll";}
 	protected boolean readableScroll=false;
 	protected Vector theSpells=new Vector();
 
 	public StdScroll()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a scroll";
 		baseEnvStats.setWeight(1);
 		displayText="a scroll is rolled up here.";

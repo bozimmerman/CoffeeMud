@@ -6,10 +6,10 @@ import java.util.*;
 
 public class StdOpenDoorway extends StdExit
 {
+	public String ID(){	return "StdOpenDoorway";}
 	public StdOpenDoorway()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a walkway";
 		description="";
 		displayText="";

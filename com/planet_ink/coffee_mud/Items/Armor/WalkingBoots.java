@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class WalkingBoots extends StdArmor
 {
+	public String ID(){	return "WalkingBoots";}
 	public WalkingBoots()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a pair of nice hide walking boots";
 		displayText="a pair of hide walking boots sits here.";
 		description="They look like a rather nice pair of footwear.";

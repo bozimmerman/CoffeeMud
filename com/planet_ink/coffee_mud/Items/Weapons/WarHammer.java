@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class WarHammer extends StdWeapon
 {
+	public String ID(){	return "WarHammer";}
 	public WarHammer()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a warhammer";
 		displayText="a brutal warhammer sits here";
 		miscText="";

@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class ChainMailVest extends StdArmor
 {
+	public String ID(){	return "ChainMailVest";}
 	public ChainMailVest()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a chain mail vest";
 		displayText="a chain mail vest sits here.";
 		description="This is fairly solid looking vest made of chain mail.";

@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Items.StdItem;
 
 public class StdWeapon extends StdItem implements Weapon
 {
+	public String ID(){	return "StdWeapon";}
 	protected int weaponType=TYPE_NATURAL;
 	protected int weaponClassification=CLASS_NATURAL;
 	protected boolean useExtendedMissString=false;
@@ -15,7 +16,7 @@ public class StdWeapon extends StdItem implements Weapon
 	public StdWeapon()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="weapon";
 		displayText=" sits here.";
 		description="This is a deadly looking weapon.";

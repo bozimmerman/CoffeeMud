@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Katana extends Sword
 {
+	public String ID(){	return "Katana";}
 	public Katana()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a katana";
 		displayText="a very ornate katana rests in the room.";
 		miscText="";

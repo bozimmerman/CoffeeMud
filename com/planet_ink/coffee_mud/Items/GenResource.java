@@ -8,10 +8,10 @@ import java.util.*;
 
 public class GenResource extends GenItem implements EnvResource
 {
+	public String ID(){	return "GenResource";}
 	public GenResource()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a pile of resource thing";
 		displayText="a pile of resource sits here.";
 		description="";

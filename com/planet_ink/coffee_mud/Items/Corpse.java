@@ -7,13 +7,14 @@ import java.util.*;
 
 public class Corpse extends StdContainer implements DeadBody
 {
+	public String ID(){	return "Corpse";}
 	protected Room roomLocation=null;
 	protected CharStats charStats=null;
 
 	public Corpse()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="the body of someone";
 		displayText="the body of someone lies here.";
 		description="Bloody and bruised, obviously mistreated.";

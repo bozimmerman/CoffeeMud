@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class EternityLeafShield extends StdShield
 {
+	public String ID(){	return "EternityLeafShield";}
 	public EternityLeafShield()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a huge leaf";
 		displayText="a huge and very rigid leaf lays on the ground.";
 		description="a very huge and very rigid leaf";

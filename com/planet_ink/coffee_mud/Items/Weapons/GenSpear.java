@@ -7,11 +7,12 @@ import java.util.*;
 
 public class GenSpear extends StdSpear
 {
+	public String ID(){	return "GenSpear";}
 	protected String	readableText="";
 	public GenSpear()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a generic spear";
 		displayText="a generic spear sits here.";
 		description="";

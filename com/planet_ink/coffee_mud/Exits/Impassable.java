@@ -4,11 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.Util;
 public class Impassable extends GenExit
 {
-	public Impassable()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){	return "Impassable";}
 	public Environmental newInstance()
 	{
 		return new Impassable();

@@ -6,13 +6,14 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class ArchonStaff extends Staff implements Wand
 {
+	public String ID(){	return "ArchonStaff";}
 	private String secretWord="REFRESH, LEVEL UP, BURN!!";
 	private static Wand theWand=(Wand)CMClass.getMiscMagic("StdWand");
 
 	public ArchonStaff()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a wooden staff";
 		displayText="a wooden staff lies in the corner of the room.";
 		miscText="";

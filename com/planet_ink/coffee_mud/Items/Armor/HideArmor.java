@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class HideArmor extends StdArmor
 {
+	public String ID(){	return "HideArmor";}
 	public HideArmor()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="suit of Hide Armor";
 		displayText="a suit of armor made from animal hides";
 		description="A suit of armor made from animal hides including everything to protect the body, legs and arms.";

@@ -7,11 +7,11 @@ import java.util.*;
 
 public class GenContainer extends StdContainer
 {
+	public String ID(){	return "GenContainer";}
 	private String readableText = "";
 	public GenContainer()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic container";
 		baseEnvStats.setWeight(2);
 		displayText="a generic container sits here.";

@@ -7,11 +7,11 @@ import java.util.*;
 
 public class GenItem extends StdItem
 {
+	public String ID(){	return "GenItem";}
 	protected String	readableText="";
 	public GenItem()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic item";
 		baseEnvStats.setWeight(2);
 		displayText="a generic item sits here.";

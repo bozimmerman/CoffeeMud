@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Dirk extends Dagger
 {
+	public String ID(){	return "Dirk";}
 	public Dirk()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a dirk";
 		displayText="a pointy dirk is on the ground.";
 		miscText="";

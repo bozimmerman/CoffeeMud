@@ -10,7 +10,6 @@ public class Hills extends StdRoom
 	{
 		super();
 		name="the hills";
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_HILLS;

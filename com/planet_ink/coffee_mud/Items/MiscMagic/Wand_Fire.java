@@ -6,11 +6,11 @@ import java.util.*;
 
 public class Wand_Fire extends StdWand
 {
-
+	public String ID(){	return "Wand_Fire";}
 	public Wand_Fire()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a gold wand";
 		displayText="a golden wand is here.";
 		description="A wand made out of gold, with a deep red ruby at the tip";

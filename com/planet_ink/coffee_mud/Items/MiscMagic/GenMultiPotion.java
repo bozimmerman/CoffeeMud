@@ -7,12 +7,13 @@ import java.util.*;
 
 public class GenMultiPotion extends GenWater implements Potion
 {
+	public String ID(){	return "GenMultiPotion";}
 	protected Ability theSpell;
 
 	public GenMultiPotion()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		material=EnvResource.RESOURCE_GLASS;
 		name="a flask";
 		baseEnvStats.setWeight(1);

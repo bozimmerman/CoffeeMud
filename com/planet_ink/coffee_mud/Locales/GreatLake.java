@@ -9,7 +9,6 @@ public class GreatLake extends StdGrid
 	public GreatLake()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the lake";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();

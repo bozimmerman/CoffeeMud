@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class MetalBracers extends StdArmor
 {
+	public String ID(){	return "MetalBracers";}
 	public MetalBracers()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a pair of metal bracers";
 		displayText="a pair of metal bracers lie here.";
 		description="Good and solid protection for your arms.";

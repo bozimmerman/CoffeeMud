@@ -15,7 +15,6 @@ public class MagicShelter extends StdRoom
 		name="the shelter";
 		displayText="Magic Shelter";
 		description="You are in a domain of complete void and peace.";
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		baseEnvStats.setWeight(0);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_MAGIC;

@@ -7,11 +7,12 @@ import com.planet_ink.coffee_mud.system.*;
 
 public class Ingrediants extends BagOfHolding
 {
+	public String ID(){	return "Ingrediants";}
 	boolean alreadyFilled=false;
 	public Ingrediants()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		recoverEnvStats();
 	}
 

@@ -7,11 +7,12 @@ import java.util.*;
 
 public class GenBow extends StdBow
 {
+	public String ID(){	return "GenBow";}
 	protected String	readableText="";
 	public GenBow()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a generic short bow";
 		displayText="a generic short bow sits here.";
 		description="";

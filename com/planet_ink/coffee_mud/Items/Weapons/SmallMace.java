@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class SmallMace extends StdWeapon
 {
+	public String ID(){	return "SmallMace";}
 	public SmallMace()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a small mace";
 		displayText="a small mace has been left here.";
 		miscText="";

@@ -9,10 +9,11 @@ import java.util.*;
 
 public class StdPotion extends StdDrink implements Potion
 {
+	public String ID(){	return "StdPotion";}
 	public StdPotion()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a flask";
 		baseEnvStats.setWeight(1);
 		displayText="An empty flask sits here.";

@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class DrowChainMailArmor extends StdArmor
 {
+	public String ID(){	return "DrowChainMailArmor";}
 	public DrowChainMailArmor()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a suit of dark chain mail armor";
 		displayText="a suit of chain mail armor made of dark material sits here.";
 		description="This suit includes a fairly solid looking hauberk with leggings and a coif, all constructed from a strong, dark metal.";

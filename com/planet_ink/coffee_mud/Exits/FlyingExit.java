@@ -6,10 +6,10 @@ import java.util.*;
 
 public class FlyingExit extends StdExit
 {
+	public String ID(){	return "FlyingExit";}
 	public FlyingExit()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the open air";
 		description="Looks like you'll have to fly up there.";
 		displayText="";

@@ -7,10 +7,11 @@ import com.planet_ink.coffee_mud.Items.SmallSack;
 
 public class BagOfHolding extends SmallSack implements MiscMagic
 {
+	public String ID(){	return "BagOfHolding";}
 	public BagOfHolding()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a small sack";
 		displayText="a small black sack is crumpled up here.";
 		description="A nice silk sack to put your things in.";

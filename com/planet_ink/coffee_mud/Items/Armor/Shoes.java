@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class Shoes extends StdArmor
 {
+	public String ID(){	return "Shoes";}
 	public Shoes()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a pair of shoes";
 		displayText="a pair of shoes lies here";
 		description="a well tailored pair of walking shoes.";

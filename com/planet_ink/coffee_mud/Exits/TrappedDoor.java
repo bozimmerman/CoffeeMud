@@ -4,10 +4,10 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class TrappedDoor extends StdClosedDoorway
 {
+	public String ID(){	return "TrappedDoor";}
 	public TrappedDoor()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		Trap t=(Trap)CMClass.getAbility("Trap_Open");
 		if(t!=null) t.setTrapped(this,true);
 	}

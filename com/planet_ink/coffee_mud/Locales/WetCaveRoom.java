@@ -9,7 +9,6 @@ public class WetCaveRoom extends CaveRoom
 	public WetCaveRoom()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		domainCondition=Room.CONDITION_WET;
 		recoverEnvStats();
 	}

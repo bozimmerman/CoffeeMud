@@ -4,10 +4,10 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class LockableContainer extends StdContainer
 {
+	public String ID(){	return "LockableContainer";}
 	public LockableContainer()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		hasALid=true;
 		isOpen=false;
 		hasALock=true;

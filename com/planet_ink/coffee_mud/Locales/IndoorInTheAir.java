@@ -12,7 +12,6 @@ public class IndoorInTheAir extends StdRoom
 	public IndoorInTheAir()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the space";
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();

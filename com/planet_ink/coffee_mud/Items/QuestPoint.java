@@ -6,10 +6,10 @@ import java.util.*;
 
 public class QuestPoint extends StdItem
 {
+	public String ID(){	return "QuestPoint";}
 	public QuestPoint()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a quest point";
 		displayText="A shiny blue coin has been left here.";
 		myContainer=null;

@@ -7,13 +7,12 @@ import java.util.*;
 
 public class StdFood extends StdItem implements Food
 {
-
+	public String ID(){	return "StdFood";}
 	protected int amountOfNourishment=500;
 
 	public StdFood()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a bit of food";
 		baseEnvStats.setWeight(2);
 		displayText="a bit of food is here.";

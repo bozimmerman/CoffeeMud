@@ -9,7 +9,6 @@ public class Desert extends StdRoom
 	public Desert()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the desert";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();

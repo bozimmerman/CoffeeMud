@@ -7,10 +7,10 @@ import java.util.*;
 
 public class Spring extends StdDrink
 {
+	public String ID(){	return "Spring";}
 	public Spring()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a spring";
 		amountOfThirstQuenched=250;
 		amountOfLiquidHeld=999999;

@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class FlamingSword extends Longsword
 {
+	public String ID(){	return "FlamingSword";}
 	public FlamingSword()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a fancy longsword";
 		displayText="a fancy longsword has been dropped on the ground.";
 		miscText="";

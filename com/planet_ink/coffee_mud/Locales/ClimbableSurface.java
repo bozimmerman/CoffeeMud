@@ -10,7 +10,6 @@ public class ClimbableSurface extends StdRoom
 	public ClimbableSurface()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the surface";
 		baseEnvStats.setWeight(4);
 		recoverEnvStats();

@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Javelin extends StdWeapon
 {
+	public String ID(){	return "Javelin";}
 	public Javelin()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a steel javelin";
 		displayText="a steel javelin sticks out from the wall.";
 		miscText="";

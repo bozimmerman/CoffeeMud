@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Cestus extends StdWeapon
 {
+	public String ID(){	return "Cestus";}
 	public Cestus()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a mean looking cestus";
 		displayText="a cestus is on the gound.";
 		miscText="";

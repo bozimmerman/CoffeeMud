@@ -7,13 +7,12 @@ import java.util.*;
 
 public class StdInnKey extends StdKey implements InnKey
 {
-
+	public String ID(){	return "StdInnKey";}
 	public ShopKeeper myShopkeeper=null;
 
 	public StdInnKey()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a metal key";
 		displayText="a small metal key sits here.";
 		description="It says it goes to room 1.";

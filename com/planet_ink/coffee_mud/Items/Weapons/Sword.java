@@ -5,10 +5,11 @@ import java.util.*;
 
 public class Sword extends StdWeapon
 {
+	public String ID(){	return "Sword";}
 	public Sword()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a sword";
 		displayText="a rather plain looking sword leans against the wall.";
 		miscText="";

@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class EternityQuarterstaff extends Quarterstaff
 {
+	public String ID(){	return "EternityQuarterstaff";}
 	public EternityQuarterstaff()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a quarterstaff";
 		displayText="a wooden quarterstaff lies on the ground.";
 		miscText="";

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class RingOfMagicResistance extends Ring_Protection implements MiscMagic
 {
+	public String ID(){	return "RingOfMagicResistance";}
 	public RingOfMagicResistance()
 	{
 		super();

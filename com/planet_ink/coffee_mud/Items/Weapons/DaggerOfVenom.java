@@ -6,10 +6,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class DaggerOfVenom extends Dagger
 {
+	public String ID(){	return "DaggerOfVenom";}
 	public DaggerOfVenom()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a small dagger";
 		displayText="a sharp little dagger lies here.";
 		miscText="";

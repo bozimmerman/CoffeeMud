@@ -7,10 +7,10 @@ import java.util.*;
 
 public class Ration extends StdFood
 {
+	public String ID(){	return "Ration";}
 	public Ration()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a ration pack";
 		baseEnvStats.setWeight(10);
 		amountOfNourishment=500;

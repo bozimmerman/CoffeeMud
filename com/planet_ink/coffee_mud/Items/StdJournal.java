@@ -7,10 +7,10 @@ import java.io.*;
 
 public class StdJournal extends StdItem
 {
+	public String ID(){	return "StdJournal";}
 	public StdJournal()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a journal";
 		displayText="a journal sits here.";
 		description="Use the READ command to read the journal, and WRITE to add your own entries.";

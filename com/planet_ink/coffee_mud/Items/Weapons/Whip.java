@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Whip extends StdWeapon
 {
+	public String ID(){	return "Whip";}
 	public Whip()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a long leather whip";
 		displayText="a long leather whip has been dropped by someone.";
 		miscText="";

@@ -6,10 +6,10 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Grate extends StdClosedDoorway
 {
+	public String ID(){	return "Grate";}
 	public Grate()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a barred grate";
 		description="A metal grate of thick steel bars is inset here.";
 		displayText="a dark hole";

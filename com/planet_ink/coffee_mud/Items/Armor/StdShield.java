@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class StdShield extends StdArmor implements Armor, Shield
 {
+	public String ID(){	return "StdShield";}
 	public StdShield()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a shield";
 		displayText="a sturdy round shield sits here.";
 		description="Its made of steel, and looks in good shape.";

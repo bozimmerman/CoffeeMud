@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Stiletto extends Dagger
 {
+	public String ID(){	return "Stiletto";}
 	public Stiletto()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a cool stiletto";
 		displayText="a stiletto is in the corner.";
 		miscText="";

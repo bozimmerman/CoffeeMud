@@ -7,7 +7,8 @@ import java.util.*;
 
 public class StdItem implements Item
 {
-	protected String 	myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+	public String ID(){	return "StdItem";}
+	
 	protected String 	name="an ordinary item";
 	protected String	displayText="a nondescript item sits here doing nothing.";
 	protected String 	description="It looks like something.";
@@ -45,11 +46,6 @@ public class StdItem implements Item
 		baseEnvStats().setArmor(0);
 	}
 	public boolean isGeneric(){return false;}
-
-	public String ID()
-	{
-		return myID;
-	}
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}
 	public EnvStats envStats()

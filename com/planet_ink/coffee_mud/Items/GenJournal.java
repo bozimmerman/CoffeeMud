@@ -7,11 +7,11 @@ import java.io.*;
 
 public class GenJournal extends StdJournal
 {
+	public String ID(){	return "GenJournal";}
 	protected String readableText="";
 	public GenJournal()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		displayText="a journal sits here.";
 		description="Use the READ command to read the journal, and WRITE to add your own entries.";
 		isReadable=true;

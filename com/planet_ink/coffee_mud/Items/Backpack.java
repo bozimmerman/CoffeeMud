@@ -5,10 +5,10 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class Backpack extends CloseableContainer
 {
+	public String ID(){	return "Backpack";}
 	public Backpack()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a backpack";
 		displayText="a backpack sits here.";
 		description="The straps are a little worn, but it\\`s in nice shape!";

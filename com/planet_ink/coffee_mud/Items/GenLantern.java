@@ -8,10 +8,10 @@ import java.util.*;
 
 public class GenLantern extends GenLightSource
 {
+	public String ID(){	return "GenLantern";}
 	public GenLantern()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a hooded lantern";
 		displayText="a hooded lantern sits here.";
 		description="";

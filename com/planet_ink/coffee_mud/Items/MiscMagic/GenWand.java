@@ -7,11 +7,12 @@ import java.util.*;
 
 public class GenWand extends GenItem implements Wand
 {
+	public String ID(){	return "GenWand";}
 	private String secretWord=StdWand.words[Dice.roll(1,StdWand.words.length,0)-1];
 	public GenWand()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a wand";
 		displayText="a simple wand is here.";
 		description="A wand made out of wood.";

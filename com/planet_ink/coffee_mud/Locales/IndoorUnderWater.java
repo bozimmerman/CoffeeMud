@@ -11,7 +11,6 @@ public class IndoorUnderWater extends StdRoom implements Drink
 	public IndoorUnderWater()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		baseEnvStats.setWeight(3);
 		name="the water";
 		baseEnvStats().setSensesMask(baseEnvStats().sensesMask()|EnvStats.CAN_BREATHE);

@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class RingMail extends StdArmor
 {
+	public String ID(){	return "RingMail";}
 	public RingMail()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="suit of ring mail";
 		displayText="a suit of armor made with large metal rings fastened to leather";
 		description="A suit of ring mail including everything to protect the body, legs and arms.";

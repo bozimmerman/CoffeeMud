@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 public class LightSource extends StdItem implements Light
 {
+	public String ID(){	return "LightSource";}
 	protected boolean lit=false;
 	protected int durationTicks=50;
 	protected boolean destroyedWhenBurnedOut=true;
@@ -14,7 +15,6 @@ public class LightSource extends StdItem implements Light
 	public LightSource()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a light source";
 		displayText="an ordinary light source sits here doing nothing.";
 		description="It looks like a light source of some sort.  I'll bet it would help you see in the dark.";

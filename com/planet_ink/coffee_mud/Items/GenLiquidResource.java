@@ -8,10 +8,10 @@ import java.util.*;
 
 public class GenLiquidResource extends GenWater implements EnvResource, Drink
 {
+	public String ID(){	return "GenLiquidResource";}
 	public GenLiquidResource()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a puddle of resource thing";
 		displayText="a puddle of resource sits here.";
 		description="";

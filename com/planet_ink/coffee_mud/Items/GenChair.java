@@ -7,11 +7,11 @@ import java.util.*;
 
 public class GenChair extends GenRideable
 {
+	public String ID(){	return "GenChair";}
 	protected String	readableText="";
 	public GenChair()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic chair";
 		baseEnvStats.setWeight(150);
 		displayText="a generic chair is here.";

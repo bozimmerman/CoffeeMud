@@ -6,10 +6,10 @@ import java.util.*;
 
 public class StdLockedDoorway extends StdExit
 {
+	public String ID(){	return "StdLockedDoorway";}
 	public StdLockedDoorway()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a door";
 		description="An ordinary wooden door with swinging hinges and a latch.";
 		displayText="an open door, unlocked.";

@@ -9,7 +9,6 @@ public class MagicFreeRoom extends StdRoom
 	public MagicFreeRoom()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_STONE;

@@ -7,11 +7,12 @@ import java.util.*;
 
 public class GenArmor extends StdArmor
 {
+	public String ID(){	return "GenArmor";}
 	protected String	readableText="";
 	public GenArmor()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a generic armor piece";
 		baseEnvStats.setWeight(25);
 		displayText="a generic piece of armor sits here.";

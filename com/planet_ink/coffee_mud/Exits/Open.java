@@ -3,11 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class Open extends StdOpenDoorway
 {
-	public Open()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	}
+	public String ID(){	return "Open";}
 	public Environmental newInstance()
 	{
 		return new Open();

@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class GlovesSpeed extends StdArmor
 {
+	public String ID(){	return "GlovesSpeed";}
 	public GlovesSpeed()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a pair of gloves";
 		displayText="a pair of finely crafted gloves is found on the ground.";
 		description="This is a pair of very nice gloves.";

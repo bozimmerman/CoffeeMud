@@ -7,11 +7,11 @@ import java.util.*;
 
 public class Chair extends StdRideable
 {
+	public String ID(){	return "Chair";}
 	protected String	readableText="";
 	public Chair()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a chair";
 		baseEnvStats.setWeight(150);
 		displayText="a chair is here.";

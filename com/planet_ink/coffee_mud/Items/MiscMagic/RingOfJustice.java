@@ -7,6 +7,7 @@ import java.util.*;
 
 public class RingOfJustice extends Ring_Protection implements MiscMagic
 {
+	public String ID(){	return "RingOfJustice";}
 	public RingOfJustice()
 	{
 		super();

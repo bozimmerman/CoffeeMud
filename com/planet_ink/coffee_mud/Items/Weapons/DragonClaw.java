@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class DragonClaw extends Natural
 {
+	public String ID(){	return "DragonClaw";}
 	public DragonClaw()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a vicious dragons claw.";
 		displayText="a Dragons Claw";
 		miscText="";

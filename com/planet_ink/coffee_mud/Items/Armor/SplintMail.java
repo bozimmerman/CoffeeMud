@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class SplintMail extends StdArmor
 {
+	public String ID(){	return "SplintMail";}
 	public SplintMail()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="suit of splint mail";
 		displayText="a suit of splint mail.";
 		description="A suit of splint mail armor including everything to protect the body, legs and arms.";

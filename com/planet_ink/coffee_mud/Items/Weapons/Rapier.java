@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Rapier extends Sword
 {
+	public String ID(){	return "Rapier";}
 	public Rapier()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="an sleek rapier";
 		displayText="a sleek rapier sits on the ground.";
 		miscText="";

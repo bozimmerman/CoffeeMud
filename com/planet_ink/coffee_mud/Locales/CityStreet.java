@@ -9,7 +9,6 @@ public class CityStreet extends StdRoom
 	public CityStreet()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the street";
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();

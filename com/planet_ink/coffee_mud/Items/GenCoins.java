@@ -6,10 +6,10 @@ import java.util.*;
 
 public class GenCoins extends GenItem implements Coins
 {
+	public String ID(){	return "GenCoins";}
 	public GenCoins()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a pile of gold coins";
 		displayText="some gold coins sit here.";
 		myContainer=null;

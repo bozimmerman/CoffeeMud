@@ -7,11 +7,10 @@ import java.util.*;
 
 public class Ring extends StdItem
 {
-
+	public String ID(){	return "Ring";}
 	public Ring()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="an ordinary ring";
 		displayText="a nondescript ring sits here doing nothing.";
 		description="It looks like a ring you wear on your fingers.";

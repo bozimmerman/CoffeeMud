@@ -7,11 +7,12 @@ import java.util.*;
 
 public class GenWeapon extends StdWeapon
 {
+	public String ID(){	return "GenWeapon";}
 	protected String	readableText="";
 	public GenWeapon()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a generic weapon";
 		baseEnvStats.setWeight(2);
 		displayText="a generic weapon sits here.";

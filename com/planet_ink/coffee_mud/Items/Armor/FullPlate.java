@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class FullPlate extends StdArmor
 {
+	public String ID(){	return "FullPlate";}
 	public FullPlate()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="suit of Full Plate";
 		displayText="a suit of Full Plate Armor.";
 		description="A suit of Full Plate Armor including everything from head to toe.  Fine workmanship make this both very decorative and functional.";

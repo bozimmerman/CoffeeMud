@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class LeatherBracers extends StdArmor
 {
+	public String ID(){	return "LeatherBracers";}
 	public LeatherBracers()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a pair of leather bracers";
 		displayText="a pair of leather bracers are here.";
 		description="Strong enough to protect your forearms against the strongest of feathers...";

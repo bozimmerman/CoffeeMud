@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class Helmet extends StdArmor
 {
+	public String ID(){	return "Helmet";}
 	public Helmet()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a helmet";
 		displayText="a helmet sits here.";
 		description="This is fairly solid looking helmet.";

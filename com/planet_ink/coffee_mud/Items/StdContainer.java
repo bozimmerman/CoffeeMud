@@ -7,6 +7,7 @@ import java.util.*;
 
 public class StdContainer extends StdItem implements Container
 {
+	public String ID(){	return "StdContainer";}
 	protected boolean isLocked=false;
 	protected boolean hasALock=false;
 	protected boolean isOpen=true;
@@ -15,7 +16,6 @@ public class StdContainer extends StdItem implements Container
 	public StdContainer()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a container";
 		displayText="a nondescript container sits here.";
 		description="I'll bet you could put stuff in it!";

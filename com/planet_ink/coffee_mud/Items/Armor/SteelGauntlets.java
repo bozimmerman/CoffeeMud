@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class SteelGauntlets extends StdArmor
 {
+	public String ID(){	return "SteelGauntlets";}
 	public SteelGauntlets()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="some steel gauntlets";
 		displayText="a pair of steel gauntlets sit here.";
 		description="They look like they're made of steel.";

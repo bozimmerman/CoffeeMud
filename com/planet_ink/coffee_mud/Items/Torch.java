@@ -8,10 +8,10 @@ import java.util.*;
 
 public class Torch extends LightSource
 {
+	public String ID(){	return "Torch";}
 	public Torch()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a torch";
 		displayText="a small straw torch sits here.";
 		description="It looks like it is lightly covered in oil near the end.";

@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Items.StdItem;
 
 public class StdSpear extends StdWeapon
 {
+	public String ID(){	return "StdSpear";}
 	public StdSpear()
 	{
 		super();

@@ -7,13 +7,14 @@ import java.util.*;
 
 public class StdWand extends StdItem implements Wand
 {
+	public String ID(){	return "StdWand";}
 	public static final String[] words={"ZAP","ZAP","ZAP","ZOT","ZIT","ZEK","ZOM","ZUP","ZET","ZYT","ZVP","ZOP"};
 	protected String secretWord=words[Dice.roll(1,words.length,0)-1];
 
 	public StdWand()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a crooked stick";
 		baseEnvStats.setWeight(1);
 		displayText="a small crooked stick is here.";

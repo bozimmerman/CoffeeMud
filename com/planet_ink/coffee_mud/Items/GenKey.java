@@ -8,10 +8,10 @@ import java.util.*;
 
 public class GenKey extends GenItem implements Key
 {
+	public String ID(){	return "GenKey";}
 	public GenKey()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic key thing";
 		displayText="a generic key thing sits here.";
 		description="";

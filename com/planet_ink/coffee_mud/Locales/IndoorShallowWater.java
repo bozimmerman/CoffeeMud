@@ -9,7 +9,6 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 	public IndoorShallowWater()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the water";
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_CAVE;

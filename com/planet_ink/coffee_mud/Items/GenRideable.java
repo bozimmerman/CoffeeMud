@@ -8,11 +8,11 @@ import java.util.*;
 
 public class GenRideable extends StdRideable
 {
+	public String ID(){	return "GenRideable";}
 	protected String readableText="";
 	public GenRideable()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic boat";
 		displayText="a generic boat sits here.";
 		description="";

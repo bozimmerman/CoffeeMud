@@ -8,6 +8,7 @@ import java.util.*;
 
 public class Gem extends StdItem
 {
+	public String ID(){	return "Gem";}
 	public final static int QUARTZ 			= 0;
 	public final static int AZURITE			= 1;
 	public final static int BLOODSTONE		= 2;
@@ -25,7 +26,7 @@ public class Gem extends StdItem
 	public Gem()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 
 		Random randomizer = new Random(System.currentTimeMillis());
 		int ringType = Math.abs(randomizer.nextInt() % 12);

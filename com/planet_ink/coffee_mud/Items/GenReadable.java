@@ -8,10 +8,10 @@ import java.util.*;
 
 public class GenReadable extends GenItem
 {
+	public String ID(){	return "GenReadable";}
 	public GenReadable()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic readable thing";
 		displayText="a generic readable thing sits here.";
 		description="";

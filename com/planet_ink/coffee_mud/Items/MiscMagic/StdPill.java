@@ -9,12 +9,13 @@ import java.util.*;
 
 public class StdPill extends StdFood implements Pill
 {
+	public String ID(){	return "StdPill";}
 	protected Ability theSpell;
 
 	public StdPill()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a pill";
 		baseEnvStats.setWeight(1);
 		displayText="An strange pill lies here.";

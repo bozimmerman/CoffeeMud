@@ -4,10 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class TwoHandedSword extends Sword
 {
+	public String ID(){	return "TwoHandedSword";}
 	public TwoHandedSword()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a two-handed sword";
 		displayText="a heavy two-handed sword hangs on the wall.";
 		miscText="";

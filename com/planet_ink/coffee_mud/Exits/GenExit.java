@@ -7,11 +7,11 @@ import java.util.*;
 
 public class GenExit extends StdExit
 {
+	public String ID(){	return "GenExit";}
 	protected String keyName="";
 	public GenExit()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a walkway";
 		description="An ordinary looking way from here to there.";
 		displayText="";

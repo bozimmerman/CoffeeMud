@@ -8,7 +8,6 @@ public class SaltWaterSurface extends WaterSurface
 	public SaltWaterSurface()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	}
 
 	public Environmental newInstance()

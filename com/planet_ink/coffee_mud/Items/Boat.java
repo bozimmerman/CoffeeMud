@@ -8,10 +8,10 @@ import java.util.*;
 
 public class Boat extends StdRideable
 {
+	public String ID(){	return "Boat";}
 	public Boat()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a boat";
 		displayText="a boat is docked here.";
 		description="Looks like a boat";

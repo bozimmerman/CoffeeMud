@@ -6,10 +6,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class PortableHole extends BagOfHolding implements MiscMagic
 {
+	public String ID(){	return "PortableHole";}
 	public PortableHole()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a small disk";
 		displayText="a small black disk can be found up here.";
 		description="It looks like a small disk.";

@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class DrowQuarterstaff extends Mace
 {
+	public String ID(){	return "DrowQuarterstaff";}
 	public DrowQuarterstaff()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
 		name="a quarterstaff";
 		displayText="a quarterstaff is on the ground.";
 		miscText="";
