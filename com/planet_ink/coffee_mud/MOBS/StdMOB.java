@@ -202,7 +202,7 @@ public class StdMOB implements MOB
 		envStats=baseEnvStats.cloneStats();
 		if(location()!=null)
 			location().affectEnvStats(this,envStats);
-		envStats().setWeight(envStats().weight()+(int)Math.round(Util.div(getMoney(),10.0)));
+		envStats().setWeight(envStats().weight()+(int)Math.round(Util.div(getMoney(),100.0)));
 		if(charStats!=null)
 		{
 			if(charStats().getMyClass()!=null)

@@ -157,20 +157,30 @@ public class FrontDoor
 					{
 						String raceStr=mob.session().prompt("\n\r: ","");
 						newRace=CMClass.getRace(raceStr);
+						if((newRace!=null)&&(!newRace.playerSelectable()))
+							newRace=null;
 						if(newRace==null)
 							for(int r=0;r<CMClass.races.size();r++)
-								if(((Race)CMClass.races.elementAt(r)).name().equalsIgnoreCase(raceStr))
+							{
+								Race R=(Race)CMClass.races.elementAt(r);
+								if((R.name().equalsIgnoreCase(raceStr))
+								&&(R.playerSelectable()))
 								{
 									newRace=(Race)CMClass.races.elementAt(r);
 									break;
 								}
+							}
 						if(newRace==null)
 							for(int r=0;r<CMClass.races.size();r++)
-								if(((Race)CMClass.races.elementAt(r)).name().toUpperCase().startsWith(raceStr.toUpperCase()))
+							{
+								Race R=(Race)CMClass.races.elementAt(r);
+								if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
+								&&(R.playerSelectable()))
 								{
 									newRace=(Race)CMClass.races.elementAt(r);
 									break;
 								}
+							}
 						if(newRace!=null)
 							if(!mob.session().confirm("Is "+newRace.name()+" correct (Y/n)?","Y"))
 								newRace=null;
