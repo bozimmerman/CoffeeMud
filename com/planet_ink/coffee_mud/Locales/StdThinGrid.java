@@ -593,7 +593,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		    tickStatus=Tickable.STATUS_START;
 			Room R=null;
 		    Vector roomsToClear=new Vector();
-			try{
+			try
+			{
 				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 				{
 					R=(Room)e.nextElement();
@@ -634,7 +635,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					}
 				}
 			}
-			catch(java.util.NoSuchElementException  e){}
+			catch(java.util.NoSuchElementException  nse){}
 			tickStatus=Tickable.STATUS_MISC+5;
 			for(int i=0;i<roomsToClear.size();i++)
 			{

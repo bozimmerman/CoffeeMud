@@ -152,18 +152,21 @@ public class CMMap
 		int highest=Integer.MIN_VALUE;
 		int lowest=Integer.MAX_VALUE;
 		Hashtable allNums=new Hashtable();
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room R=(Room)r.nextElement();
-			if((R.getArea().Name().equals(AreaID))
-			&&(R.roomID().startsWith(AreaID+"#")))
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				int newnum=Util.s_int(R.roomID().substring(AreaID.length()+1));
-				if(newnum>=highest)	highest=newnum;
-				if(newnum<=lowest) lowest=newnum;
-				allNums.put(new Integer(newnum),R);
+				Room R=(Room)r.nextElement();
+				if((R.getArea().Name().equals(AreaID))
+				&&(R.roomID().startsWith(AreaID+"#")))
+				{
+					int newnum=Util.s_int(R.roomID().substring(AreaID.length()+1));
+					if(newnum>=highest)	highest=newnum;
+					if(newnum<=lowest) lowest=newnum;
+					allNums.put(new Integer(newnum),R);
+				}
 			}
-		}
+	    }catch(NoSuchElementException e){}
 		if((highest<0)&&(getRoom(AreaID+"#0"))==null)
 			return AreaID+"#0";
 		if(lowest>highest) lowest=highest+1;

@@ -41,24 +41,27 @@ public class Chant_GroveWalk extends Chant
 
 		Room newRoom=null;
 		boolean hereok=false;
-		for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+		try
 		{
-			Room R=(Room)e.nextElement();
-			if(Sense.canAccess(mob,R))
-				for(int i=0;i<R.numItems();i++)
-				{
-					Item I=R.fetchItem(i);
-					if((I!=null)&&(I.ID().equals("DruidicMonument")))
+			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+			{
+				Room R=(Room)e.nextElement();
+				if(Sense.canAccess(mob,R))
+					for(int i=0;i<R.numItems();i++)
 					{
-						if(R==mob.location())
-							hereok=true;
-						if(EnglishParser.containsString(R.displayText(),areaName))
-						   newRoom=R;
-						break;
+						Item I=R.fetchItem(i);
+						if((I!=null)&&(I.ID().equals("DruidicMonument")))
+						{
+							if(R==mob.location())
+								hereok=true;
+							if(EnglishParser.containsString(R.displayText(),areaName))
+							   newRoom=R;
+							break;
+						}
 					}
-				}
-			if((newRoom!=null)&&(hereok)) break;
-		}
+				if((newRoom!=null)&&(hereok)) break;
+			}
+	    }catch(NoSuchElementException e){}
 		if(!hereok)
 		{
 			mob.tell("There is no druidic monument here.  You can only use this chant in a druidic grove.");

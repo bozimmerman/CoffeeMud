@@ -181,16 +181,21 @@ public class Chant_FindMate extends Chant
 		}
 
 		if(rooms.size()<=0)
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
-			if(Sense.canAccess(mob,R))
-				for(int i=0;i<R.numInhabitants();i++)
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					MOB M=R.fetchInhabitant(i);
-					if(isSuitableMate(M,target))
-					{ rooms.addElement(R); break;}
+					Room R=(Room)r.nextElement();
+					if(Sense.canAccess(mob,R))
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							MOB M=R.fetchInhabitant(i);
+							if(isSuitableMate(M,target))
+							{ rooms.addElement(R); break;}
+						}
 				}
+		    }catch(NoSuchElementException e){}
 		}
 
 		if(rooms.size()>0)

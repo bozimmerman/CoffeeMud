@@ -74,30 +74,40 @@ public class Copy extends StdCommand
 
 		if(E==null)	E=mob.fetchInventory(name);
 		if(E==null)
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				E=R.fetchInhabitant(name);
-				if(E==null) E=R.fetchItem(null,name);
-				if(E!=null) break;
-			}
-		if(E==null)
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				for(int m=0;m<R.numInhabitants();m++)
+		{
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					MOB mob2=R.fetchInhabitant(m);
-					if(mob2!=null)
+					Room R=(Room)r.nextElement();
+					E=R.fetchInhabitant(name);
+					if(E==null) E=R.fetchItem(null,name);
+					if(E!=null) break;
+				}
+		    }catch(NoSuchElementException e){}
+		}
+		if(E==null)
+		{
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					for(int m=0;m<R.numInhabitants();m++)
 					{
-						E=mob2.fetchInventory(name);
-						if((E==null)&&(CoffeeUtensils.getShopKeeper(mob2)!=null))
-							E=CoffeeUtensils.getShopKeeper(mob2).getStock(name,null);
+						MOB mob2=R.fetchInhabitant(m);
+						if(mob2!=null)
+						{
+							E=mob2.fetchInventory(name);
+							if((E==null)&&(CoffeeUtensils.getShopKeeper(mob2)!=null))
+								E=CoffeeUtensils.getShopKeeper(mob2).getStock(name,null);
+						}
+						if(E!=null) break;
 					}
 					if(E!=null) break;
 				}
-				if(E!=null) break;
-			}
+		    }catch(NoSuchElementException e){}
+		}
 		if(E==null)
 		{
 			mob.tell("There's no such thing in the living world as a '"+name+"'.\n\r");

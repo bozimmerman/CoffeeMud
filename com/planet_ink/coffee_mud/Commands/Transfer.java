@@ -80,21 +80,26 @@ public class Transfer extends At
 					if((!allFlag)&&(V.size()>0)) break;
 				}
 			if(V.size()==0)
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					MOB M=null;
-					int num=1;
-					while((num<=1)||(M!=null))
+			{
+			    try
+			    {
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						M=R.fetchInhabitant(mobname+"."+num);
-						if((M!=null)&&(!V.contains(M)))
-							V.addElement(M);
-						num++;
+						Room R=(Room)r.nextElement();
+						MOB M=null;
+						int num=1;
+						while((num<=1)||(M!=null))
+						{
+							M=R.fetchInhabitant(mobname+"."+num);
+							if((M!=null)&&(!V.contains(M)))
+								V.addElement(M);
+							num++;
+							if((!allFlag)&&(V.size()>0)) break;
+						}
 						if((!allFlag)&&(V.size()>0)) break;
 					}
-					if((!allFlag)&&(V.size()>0)) break;
-				}
+			    }catch(NoSuchElementException nse){}
+			}
 		}
 
 		if(V.size()==0)

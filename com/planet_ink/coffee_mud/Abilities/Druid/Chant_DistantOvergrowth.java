@@ -41,20 +41,23 @@ public class Chant_DistantOvergrowth extends Chant
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
 		Room anyRoom=null;
 		Room newRoom=null;
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room R=(Room)r.nextElement();
-			if((EnglishParser.containsString(R.displayText(),areaName))
-			&&(Sense.canAccess(mob,R)))
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-			   anyRoom=R;
-				if((R.domainType()&Room.INDOORS)==0)
+				Room R=(Room)r.nextElement();
+				if((EnglishParser.containsString(R.displayText(),areaName))
+				&&(Sense.canAccess(mob,R)))
 				{
-				    newRoom=R;
-				    break;
+				   anyRoom=R;
+					if((R.domainType()&Room.INDOORS)==0)
+					{
+					    newRoom=R;
+					    break;
+					}
 				}
 			}
-		}
+	    }catch(NoSuchElementException e){}
 
 		if(newRoom==null)
 		{

@@ -605,12 +605,15 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		{
 			if(myRooms!=null) return;
 			Vector myMap=new Vector();
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			try
 			{
-				Room R=(Room)r.nextElement();
-				if(R.getArea()==this)
-					myMap.addElement(R);
-			}
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(R.getArea()==this)
+						myMap.addElement(R);
+				}
+		    }catch(NoSuchElementException nse){}
 			myRooms=myMap;
 		}
 	}

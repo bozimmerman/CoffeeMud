@@ -580,17 +580,20 @@ public class List extends StdCommand
 	private String reallyFindOneWays(MOB mob, Vector commands)
 	{
 		StringBuffer str=new StringBuffer("");
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room R=(Room)r.nextElement();
-			if(R.roomID().length()>0)
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				{
-					Room R2=R.rawDoors()[d];
-					if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(d)]!=R))
-						str.append(Util.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+R2.roomID()+"\n\r");
-				}
-		}
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if(R.roomID().length()>0)
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					{
+						Room R2=R.rawDoors()[d];
+						if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(d)]!=R))
+							str.append(Util.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+R2.roomID()+"\n\r");
+					}
+			}
+	    }catch(NoSuchElementException e){}
 		if(str.length()==0) str.append("None!");
 		if(Util.combine(commands,1).equalsIgnoreCase("log"))
 			Log.rawSysOut(str.toString());
@@ -601,17 +604,20 @@ public class List extends StdCommand
 	private String unlinkedExits(MOB mob, Vector commands)
 	{
 		StringBuffer str=new StringBuffer("");
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room R=(Room)r.nextElement();
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R2=R.rawDoors()[d];
-				Exit E2=R.rawExits()[d];
-				if((R2==null)&&(E2!=null))
-					str.append(Util.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+E2.temporaryDoorLink()+" ("+E2.displayText()+")\n\r");
+				Room R=(Room)r.nextElement();
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				{
+					Room R2=R.rawDoors()[d];
+					Exit E2=R.rawExits()[d];
+					if((R2==null)&&(E2!=null))
+						str.append(Util.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+E2.temporaryDoorLink()+" ("+E2.displayText()+")\n\r");
+				}
 			}
-		}
+	    }catch(NoSuchElementException e){}
 		if(str.length()==0) str.append("None!");
 		if(Util.combine(commands,1).equalsIgnoreCase("log"))
 			Log.rawSysOut(str.toString());

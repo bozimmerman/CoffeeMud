@@ -451,58 +451,70 @@ public class Scriptable extends StdBehavior
 		if((room!=null)&&(room.roomID().equalsIgnoreCase(thisName)))
 			return room;
 		Room inAreaRoom=null;
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room R=(Room)r.nextElement();
-			if((R.roomID().endsWith("#"+thisName))
-			||(R.roomID().endsWith(thisName)))
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
-					inAreaRoom=R;
-				else
-					room=R;
+				Room R=(Room)r.nextElement();
+				if((R.roomID().endsWith("#"+thisName))
+				||(R.roomID().endsWith(thisName)))
+				{
+					if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
+						inAreaRoom=R;
+					else
+						room=R;
+				}
 			}
-		}
+	    }catch(NoSuchElementException nse){}
 		if(inAreaRoom!=null) return inAreaRoom;
 		if(room!=null) return room;
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room R=(Room)r.nextElement();
-			if(EnglishParser.containsString(R.displayText(),thisName))
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
-					inAreaRoom=R;
-				else
-					room=R;
+				Room R=(Room)r.nextElement();
+				if(EnglishParser.containsString(R.displayText(),thisName))
+				{
+					if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
+						inAreaRoom=R;
+					else
+						room=R;
+				}
 			}
-		}
+	    }catch(NoSuchElementException nse){}
 		if(inAreaRoom!=null) return inAreaRoom;
 		if(room!=null) return room;
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room R=(Room)r.nextElement();
-			if(EnglishParser.containsString(R.description(),thisName))
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
-					inAreaRoom=R;
-				else
-					room=R;
+				Room R=(Room)r.nextElement();
+				if(EnglishParser.containsString(R.description(),thisName))
+				{
+					if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
+						inAreaRoom=R;
+					else
+						room=R;
+				}
 			}
-		}
+	    }catch(NoSuchElementException nse){}
 		if(inAreaRoom!=null) return inAreaRoom;
 		if(room!=null) return room;
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room R=(Room)r.nextElement();
-			if((R.fetchInhabitant(thisName)!=null)
-			||(R.fetchItem(null,thisName)!=null))
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
-					inAreaRoom=R;
-				else
-					room=R;
+				Room R=(Room)r.nextElement();
+				if((R.fetchInhabitant(thisName)!=null)
+				||(R.fetchItem(null,thisName)!=null))
+				{
+					if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
+						inAreaRoom=R;
+					else
+						room=R;
+				}
 			}
-		}
+	    }catch(NoSuchElementException nse){}
 		if(inAreaRoom!=null) return inAreaRoom;
 		return room;
 	}
@@ -680,34 +692,39 @@ public class Scriptable extends StdBehavior
 			catch(Exception e){}
 		}
 		else
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
-			Environmental E=null;
-			if(mob)
-				E=R.fetchInhabitant(thisName);
-			else
-			{
-				E=R.fetchItem(null,thisName);
-				if(E==null)
-				for(int i=0;i<R.numInhabitants();i++)
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					MOB M=R.fetchInhabitant(i);
-					if(M!=null)
+					Room R=(Room)r.nextElement();
+					Environmental E=null;
+					if(mob)
+						E=R.fetchInhabitant(thisName);
+					else
 					{
-						E=M.fetchInventory(null,thisName);
-						if((CoffeeUtensils.getShopKeeper(M)!=null)&&(E==null))
-							E=CoffeeUtensils.getShopKeeper(M).getStock(thisName,null);
+						E=R.fetchItem(null,thisName);
+						if(E==null)
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							MOB M=R.fetchInhabitant(i);
+							if(M!=null)
+							{
+								E=M.fetchInventory(null,thisName);
+								if((CoffeeUtensils.getShopKeeper(M)!=null)&&(E==null))
+									E=CoffeeUtensils.getShopKeeper(M).getStock(thisName,null);
+							}
+						}
+					}
+					if(E!=null)
+					{
+						if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
+							areaThing=E;
+						else
+							thing=E;
 					}
 				}
-			}
-			if(E!=null)
-			{
-				if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
-					areaThing=E;
-				else
-					thing=E;
-			}
+		    }catch(NoSuchElementException nse){}
 		}
 		if(areaThing!=null)
 			OBJS.addElement(areaThing);
@@ -1720,16 +1737,19 @@ public class Scriptable extends StdBehavior
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1));
 				int num=0;
-				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				try
 				{
-					Room R=(Room)e.nextElement();
-					for(int m=0;m<R.numInhabitants();m++)
+					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 					{
-						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
-							num++;
+						Room R=(Room)e.nextElement();
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							MOB M=R.fetchInhabitant(m);
+							if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
+								num++;
+						}
 					}
-				}
+			    }catch(NoSuchElementException nse){}
 				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMMOBS");
 				break;
 			}
@@ -1760,16 +1780,19 @@ public class Scriptable extends StdBehavior
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1));
 				int num=0;
-				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				try
 				{
-					Room R=(Room)e.nextElement();
-					for(int m=0;m<R.numInhabitants();m++)
+					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 					{
-						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
-							num++;
+						Room R=(Room)e.nextElement();
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							MOB M=R.fetchInhabitant(m);
+							if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
+								num++;
+						}
 					}
-				}
+			    }catch(NoSuchElementException nse){}
 				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMRACES");
 				break;
 			}
@@ -3161,16 +3184,19 @@ public class Scriptable extends StdBehavior
 			{
 				int num=0;
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z)));
-				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				try
 				{
-					Room R=(Room)e.nextElement();
-					for(int m=0;m<R.numInhabitants();m++)
+					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 					{
-						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
-							num++;
+						Room R=(Room)e.nextElement();
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							MOB M=R.fetchInhabitant(m);
+							if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
+								num++;
+						}
 					}
-				}
+			    }catch(NoSuchElementException nse){}
 				results.append(num);
 				break;
 			}
@@ -3199,16 +3225,19 @@ public class Scriptable extends StdBehavior
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z)));
 				Room R=null;
 				MOB M=null;
-				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				try
 				{
-					R=(Room)e.nextElement();
-					for(int m=0;m<R.numInhabitants();m++)
+					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 					{
-						M=R.fetchInhabitant(m);
-						if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
-							num++;
+						R=(Room)e.nextElement();
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							M=R.fetchInhabitant(m);
+							if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
+								num++;
+						}
 					}
-				}
+			    }catch(NoSuchElementException nse){}
 				results.append(num);
 				break;
 			}

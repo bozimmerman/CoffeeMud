@@ -165,17 +165,20 @@ public class Prop_ClosedDayNight extends Property
 					{ R=R2; break;}
 				}
 			if(R!=null) return R;
-			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+			try
 			{
-				Room R2=(Room)e.nextElement();
-				if((R2.roomID().indexOf(Home)>=0)
-				||EnglishParser.containsString(R2.name(),Home)
-				||EnglishParser.containsString(R2.displayText(),Home)
-				||EnglishParser.containsString(R2.description(),Home))
-				{ R=R2; break;}
-				if(R2.fetchInhabitant(Home)!=null)
-				{ R=R2; break;}
-			}
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				{
+					Room R2=(Room)e.nextElement();
+					if((R2.roomID().indexOf(Home)>=0)
+					||EnglishParser.containsString(R2.name(),Home)
+					||EnglishParser.containsString(R2.displayText(),Home)
+					||EnglishParser.containsString(R2.description(),Home))
+					{ R=R2; break;}
+					if(R2.fetchInhabitant(Home)!=null)
+					{ R=R2; break;}
+				}
+		    }catch(NoSuchElementException e){}
 		}
 		return R;
 	}

@@ -66,45 +66,48 @@ public class Prayer_Divorce extends Prayer
 				MOB M=CMMap.getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");
 				target.setLiegeID("");
-				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				try
 				{
-					Room R=(Room)e.nextElement();
-					LandTitle T=CoffeeUtensils.getLandTitle(R);
-					if((T!=null)&&(T.landOwner().equals(maleName)))
+					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 					{
-						T.setLandOwner(femaleName);
-						CMClass.DBEngine().DBUpdateRoom(R);
-					}
-					for(int i=0;i<R.numInhabitants();i++)
-					{
-						MOB M2=R.fetchInhabitant(i);
-						if((M2!=null)&&(M2 instanceof Banker))
+						Room R=(Room)e.nextElement();
+						LandTitle T=CoffeeUtensils.getLandTitle(R);
+						if((T!=null)&&(T.landOwner().equals(maleName)))
 						{
-							Banker B=(Banker)M2;
-							Vector V=B.getDepositInventory(maleName);
-							Item coins=B.findDepositInventory(femaleName,""+Integer.MAX_VALUE);
-							for(int v=0;v<V.size();v++)
+							T.setLandOwner(femaleName);
+							CMClass.DBEngine().DBUpdateRoom(R);
+						}
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							MOB M2=R.fetchInhabitant(i);
+							if((M2!=null)&&(M2 instanceof Banker))
 							{
-								Item I=(Item)V.elementAt(v);
-								if(I==null) break;
-								B.delDepositInventory(maleName,I);
-								if(I instanceof Coins)
+								Banker B=(Banker)M2;
+								Vector V=B.getDepositInventory(maleName);
+								Item coins=B.findDepositInventory(femaleName,""+Integer.MAX_VALUE);
+								for(int v=0;v<V.size();v++)
 								{
-									if(coins!=null)
-										B.delDepositInventory(femaleName,coins);
-									else
+									Item I=(Item)V.elementAt(v);
+									if(I==null) break;
+									B.delDepositInventory(maleName,I);
+									if(I instanceof Coins)
 									{
-										coins=CMClass.getItem("StdCoins");
-										((Coins)coins).setNumberOfCoins(0);
+										if(coins!=null)
+											B.delDepositInventory(femaleName,coins);
+										else
+										{
+											coins=CMClass.getItem("StdCoins");
+											((Coins)coins).setNumberOfCoins(0);
+										}
+										B.addDepositInventory(femaleName,coins);
 									}
-									B.addDepositInventory(femaleName,coins);
+									else
+										B.addDepositInventory(femaleName,I);
 								}
-								else
-									B.addDepositInventory(femaleName,I);
 							}
 						}
 					}
-				}
+			    }catch(NoSuchElementException e){}
 			}
 		}
 		else

@@ -742,12 +742,15 @@ public class StdArea implements Area
 		{
 			if(properRooms!=null) return;
 			Vector myMap=new Vector();
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			try
 			{
-				Room R=(Room)r.nextElement();
-				if(R.getArea()==this)
-					myMap.addElement(R);
-			}
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(R.getArea()==this)
+						myMap.addElement(R);
+				}
+		    }catch(NoSuchElementException nse){}
 			properRooms=myMap;
 		}
 	}

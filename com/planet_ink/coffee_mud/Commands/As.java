@@ -47,12 +47,18 @@ public class As extends StdCommand
 		if(M==null)
 			M=mob.location().fetchInhabitant(cmd);
 		if(M==null)
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				M=R.fetchInhabitant(cmd);
-				if(M!=null) break;
-			}
+		{
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					M=R.fetchInhabitant(cmd);
+					if(M!=null) break;
+				}
+		    }
+		    catch(NoSuchElementException e){}
+		}
 		if(M==null)
 		{
 			mob.tell("You don't know of anyone by that name.");

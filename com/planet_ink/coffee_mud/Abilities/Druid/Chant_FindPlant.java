@@ -218,12 +218,17 @@ public class Chant_FindPlant extends Chant
 				}
 			}
 			if(rooms.size()<=0)
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
-				if(Sense.canAccess(mob,R))
-					if(itsHere(target,R).length()>0)
-						rooms.addElement(R);
+			    try
+			    {
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					{
+						Room R=(Room)r.nextElement();
+						if(Sense.canAccess(mob,R))
+							if(itsHere(target,R).length()>0)
+								rooms.addElement(R);
+					}
+			    }catch(NoSuchElementException e){}
 			}
 		}
 

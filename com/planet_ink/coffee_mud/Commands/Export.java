@@ -294,12 +294,15 @@ public class Export extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Reading world mobs ...");
 				StringBuffer buf=new StringBuffer("<MOBS>");
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				try
 				{
-					Room R=(Room)r.nextElement();
-					if(mob.session()!=null) mob.session().rawPrint(".");
-					buf.append(CoffeeMaker.getRoomMobs(R,custom,files,found).toString());
-				}
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					{
+						Room R=(Room)r.nextElement();
+						if(mob.session()!=null) mob.session().rawPrint(".");
+						buf.append(CoffeeMaker.getRoomMobs(R,custom,files,found).toString());
+					}
+			    }catch(NoSuchElementException e){}
 				xml=buf.toString()+"</MOBS>";
 				if(mob.session()!=null)
 					mob.session().rawPrintln("!");
@@ -354,12 +357,15 @@ public class Export extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Reading world "+subType.toLowerCase()+" ...");
 				StringBuffer buf=new StringBuffer("<ITEMS>");
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				try
 				{
-					Room R=(Room)r.nextElement();
-					if(mob.session()!=null) mob.session().rawPrint(".");
-					buf.append(CoffeeMaker.getRoomItems(R,found,files,type).toString());
-				}
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					{
+						Room R=(Room)r.nextElement();
+						if(mob.session()!=null) mob.session().rawPrint(".");
+						buf.append(CoffeeMaker.getRoomItems(R,found,files,type).toString());
+					}
+			    }catch(NoSuchElementException e){}
 				xml=buf.toString()+"</ITEMS>";
 				if(mob.session()!=null)
 					mob.session().rawPrintln("!");

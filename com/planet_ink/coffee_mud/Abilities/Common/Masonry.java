@@ -199,26 +199,32 @@ public class Masonry extends CraftingSkill
 							}
 
 							R.startItemRejuv();
-							for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+							try
 							{
-								Room R2=(Room)r.nextElement();
-								for(int d=0;d<R2.rawDoors().length;d++)
-									if(R2.rawDoors()[d]==room)
-									{
-										R2.rawDoors()[d]=R;
-										if(R2 instanceof GridLocale)
-											((GridLocale)R2).buildGrid();
-									}
-							}
-							for(Enumeration e=CMMap.players();e.hasMoreElements();)
-							{
-								MOB M=(MOB)e.nextElement();
-								if(M.getStartRoom()==room)
-									M.setStartRoom(R);
-								else
-								if(M.location()==room)
-									M.setLocation(R);
-							}
+								for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+								{
+									Room R2=(Room)r.nextElement();
+									for(int d=0;d<R2.rawDoors().length;d++)
+										if(R2.rawDoors()[d]==room)
+										{
+											R2.rawDoors()[d]=R;
+											if(R2 instanceof GridLocale)
+												((GridLocale)R2).buildGrid();
+										}
+								}
+						    }catch(NoSuchElementException e){}
+						    try
+						    {
+								for(Enumeration e=CMMap.players();e.hasMoreElements();)
+								{
+									MOB M=(MOB)e.nextElement();
+									if(M.getStartRoom()==room)
+										M.setStartRoom(R);
+									else
+									if(M.location()==room)
+										M.setLocation(R);
+								}
+						    }catch(NoSuchElementException e){}
 							if(doingCode==BUILD_POOL)
 							{
 								Room R2=CMClass.getLocale("UnderWater");
@@ -427,17 +433,20 @@ public class Masonry extends CraftingSkill
 								for(int d=0;d<R.rawExits().length;d++)
 									R.rawExits()[d]=room.rawExits()[d];
 								R.startItemRejuv();
-								for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+								try
 								{
-									Room R3=(Room)r.nextElement();
-									for(int d=0;d<R3.rawDoors().length;d++)
-										if(R3.rawDoors()[d]==room)
-										{
-											R3.rawDoors()[d]=R;
-											if(R3 instanceof GridLocale)
-												((GridLocale)R3).buildGrid();
-										}
-								}
+									for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+									{
+										Room R3=(Room)r.nextElement();
+										for(int d=0;d<R3.rawDoors().length;d++)
+											if(R3.rawDoors()[d]==room)
+											{
+												R3.rawDoors()[d]=R;
+												if(R3 instanceof GridLocale)
+													((GridLocale)R3).buildGrid();
+											}
+									}
+							    }catch(NoSuchElementException e){}
 								R.getArea().clearMaps();
 								R.getArea().fillInAreaRoom(R);
 								CMClass.DBEngine().DBUpdateRoom(R);

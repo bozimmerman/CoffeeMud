@@ -56,12 +56,16 @@ public class ArchonSkill extends StdAbility
 		else
 		if(targetName.length()>0)
 		{
-			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
-			{
-				Room R=(Room)e.nextElement();
-				if(R!=mob.location())
-					target=R.fetchInhabitant(targetName);
-			}
+		    try
+		    {
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					if(R!=mob.location())
+						target=R.fetchInhabitant(targetName);
+				}
+		    }
+		    catch(NoSuchElementException e){}
 		}
 
 		if((target==null)||((playerOnly)&&(target.isMonster())))

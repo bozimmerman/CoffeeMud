@@ -216,32 +216,43 @@ public class Thief_Assassinate extends ThiefSkill
 		Vector rooms=new Vector();
 		if(tracking!=null)
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if((Sense.canAccess(mob,R))&&(R.isInhabitant(tracking)))
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					rooms.addElement(R);
-					break;
+					Room R=(Room)r.nextElement();
+					if((Sense.canAccess(mob,R))&&(R.isInhabitant(tracking)))
+					{
+						rooms.addElement(R);
+						break;
+					}
 				}
-			}
+		    }catch(NoSuchElementException nse){}
 		}
 		else
 		if(mobName.length()>0)
 		{
-			for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if(R.fetchInhabitant(mobName)!=null)
-					rooms.addElement(R);
-			}
+		    try
+		    {
+				for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(R.fetchInhabitant(mobName)!=null)
+						rooms.addElement(R);
+				}
+		    }catch(NoSuchElementException nse){}
 
 			if(rooms.size()<=0)
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
-				if((Sense.canAccess(mob,R))&&(R.fetchInhabitant(mobName)!=null))
-					rooms.addElement(R);
+			    try
+			    {
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					{
+						Room R=(Room)r.nextElement();
+						if((Sense.canAccess(mob,R))&&(R.fetchInhabitant(mobName)!=null))
+							rooms.addElement(R);
+					}
+			    }catch(NoSuchElementException nse){}
 			}
 		}
 

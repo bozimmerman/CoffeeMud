@@ -83,16 +83,21 @@ public class Spell_Portal extends Spell
 			}
 		}
 		if(newRoom==null)
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room room=(Room)r.nextElement();
-
-			if((Sense.canAccess(mob,room))
-			&&(EnglishParser.containsString(room.displayText(),areaName)))
-			{
-			   newRoom=room;
-			   break;
-			}
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room room=(Room)r.nextElement();
+		
+					if((Sense.canAccess(mob,room))
+					&&(EnglishParser.containsString(room.displayText(),areaName)))
+					{
+					   newRoom=room;
+					   break;
+					}
+				}
+		    }catch(NoSuchElementException nse){}
 		}
 
 		if(newRoom==null)

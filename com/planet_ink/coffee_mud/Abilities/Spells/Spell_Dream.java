@@ -44,21 +44,24 @@ public class Spell_Dream extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				try
 				{
-					Room R=(Room)r.nextElement();
-					if(Sense.canAccess(mob,R))
-					for(int i=0;i<R.numInhabitants();i++)
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						MOB inhab=R.fetchInhabitant(i);
-						if((inhab!=null)&&(Sense.isSleeping(inhab)))
+						Room R=(Room)r.nextElement();
+						if(Sense.canAccess(mob,R))
+						for(int i=0;i<R.numInhabitants();i++)
 						{
-							msg=new FullMsg(mob,inhab,this,affectType(auto),null);
-							if(R.okMessage(mob,msg))
-								inhab.tell("You dream "+Util.combine(commands,0)+".");
+							MOB inhab=R.fetchInhabitant(i);
+							if((inhab!=null)&&(Sense.isSleeping(inhab)))
+							{
+								msg=new FullMsg(mob,inhab,this,affectType(auto),null);
+								if(R.okMessage(mob,msg))
+									inhab.tell("You dream "+Util.combine(commands,0)+".");
+							}
 						}
 					}
-				}
+			    }catch(NoSuchElementException nse){}
 			}
 
 		}

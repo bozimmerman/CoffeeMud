@@ -55,12 +55,15 @@ public class TrailTo extends StdCommand
 		if(where.equalsIgnoreCase("everyroom"))
 		{
 			StringBuffer str=new StringBuffer("");
-			for(Enumeration a=CMMap.rooms();a.hasMoreElements();)
+			try
 			{
-				Room R=(Room)a.nextElement();
-				if((R!=R1)&&(R.roomID().length()>0))
-					str.append(Util.padRightPreserve(R.roomID(),30)+": "+trailTo(R1,set,R.roomID(),confirm)+"\n\r");
-			}
+				for(Enumeration a=CMMap.rooms();a.hasMoreElements();)
+				{
+					Room R=(Room)a.nextElement();
+					if((R!=R1)&&(R.roomID().length()>0))
+						str.append(Util.padRightPreserve(R.roomID(),30)+": "+trailTo(R1,set,R.roomID(),confirm)+"\n\r");
+				}
+		    }catch(NoSuchElementException nse){}
 			if(confirm) Log.rawSysOut(str.toString());
 			return str.toString();
 		}

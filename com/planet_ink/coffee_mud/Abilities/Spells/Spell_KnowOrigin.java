@@ -41,67 +41,79 @@ public class Spell_KnowOrigin extends Spell
 		if(meThang instanceof Item)
 		{
 			Item me=(Item)meThang;
-			// check mobs worn items first!
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			try
 			{
-				Room R=(Room)r.nextElement();
-				if(Sense.canAccess(mob,R))
+				// check mobs worn items first!
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					for(int s=0;s<R.numInhabitants();s++)
+					Room R=(Room)r.nextElement();
+					if(Sense.canAccess(mob,R))
 					{
-						MOB M=R.fetchInhabitant(s);
-						if((M!=null)
-						&&(M.isMonster())
-						&&(!(M instanceof ShopKeeper))
-						&&(M.fetchInventory(me.Name())!=null)
-						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
-							return M.getStartRoom();
-					}
-				}
-			}
-			// check shopkeepers second!
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if(Sense.canAccess(mob,R))
-				{
-					for(int s=0;s<R.numInhabitants();s++)
-					{
-						MOB M=R.fetchInhabitant(s);
-						if((M!=null)&&(CoffeeUtensils.getShopKeeper(M)!=null))
+						for(int s=0;s<R.numInhabitants();s++)
 						{
-							ShopKeeper S=CoffeeUtensils.getShopKeeper(M);
-							if(S.doIHaveThisInStock(me.Name(),null))
+							MOB M=R.fetchInhabitant(s);
+							if((M!=null)
+							&&(M.isMonster())
+							&&(!(M instanceof ShopKeeper))
+							&&(M.fetchInventory(me.Name())!=null)
+							&&(!M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
 								return M.getStartRoom();
 						}
 					}
 				}
-			}
-			// check mobs inventory items third!
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if(R!=null)
+		    }catch(NoSuchElementException nse){}
+		    try
+		    {
+				// check shopkeepers second!
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					for(int s=0;s<R.numInhabitants();s++)
+					Room R=(Room)r.nextElement();
+					if(Sense.canAccess(mob,R))
 					{
-						MOB M=R.fetchInhabitant(s);
-						if((M!=null)
-						&&(M.isMonster())
-						&&(!(M instanceof ShopKeeper))
-						&&(M.fetchInventory(me.Name())!=null)
-						&&(M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
-							return M.getStartRoom();
+						for(int s=0;s<R.numInhabitants();s++)
+						{
+							MOB M=R.fetchInhabitant(s);
+							if((M!=null)&&(CoffeeUtensils.getShopKeeper(M)!=null))
+							{
+								ShopKeeper S=CoffeeUtensils.getShopKeeper(M);
+								if(S.doIHaveThisInStock(me.Name(),null))
+									return M.getStartRoom();
+							}
+						}
 					}
 				}
-			}
-			// check room stuff last
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if((Sense.canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
-				   return R;
-			}
+		    }catch(NoSuchElementException nse){}
+		    try
+		    {
+				// check mobs inventory items third!
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(R!=null)
+					{
+						for(int s=0;s<R.numInhabitants();s++)
+						{
+							MOB M=R.fetchInhabitant(s);
+							if((M!=null)
+							&&(M.isMonster())
+							&&(!(M instanceof ShopKeeper))
+							&&(M.fetchInventory(me.Name())!=null)
+							&&(M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
+								return M.getStartRoom();
+						}
+					}
+				}
+		    }catch(NoSuchElementException nse){}
+		    try
+		    {
+				// check room stuff last
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if((Sense.canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
+					   return R;
+				}
+		    }catch(NoSuchElementException nse){}
 		}
 		return null;
 	}

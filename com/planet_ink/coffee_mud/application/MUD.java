@@ -523,11 +523,14 @@ public class MUD extends Thread implements MudHost
 		if(S!=null) mob=S.mob();
 		if(mob==null) mob=CMClass.getMOB("StdMOB");
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_SHUTDOWN,null);
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room R=(Room)r.nextElement();
-			R.send(mob,msg);
-		}
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				R.send(mob,msg);
+			}
+	    }catch(NoSuchElementException e){}
 		if(S!=null)S.println("done");
 		if((saveThread==null)||(utiliThread==null))
 		{
@@ -565,38 +568,44 @@ public class MUD extends Thread implements MudHost
 			}
 			if(CMSecurity.isSaveFlag("ROOMSHOPS")&&(!CMSecurity.isSaveFlag("ROOMMOBS")))
 			{
-				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
-				{
-				    Room R=(Room)e.nextElement();
-				    for(int m=0;m<R.numInhabitants();m++)
-				    {
-				        MOB M=R.fetchInhabitant(m);
-				        if((M instanceof ShopKeeper)
-				        &&(M.isEligibleMonster())
-				        &&(M.getStartRoom()!=R)
-				        &&(M.getStartRoom()!=null))
-				            M.getStartRoom().bringMobHere(M,false);
-				    }
-				}
+			    try
+			    {
+					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+					{
+					    Room R=(Room)e.nextElement();
+					    for(int m=0;m<R.numInhabitants();m++)
+					    {
+					        MOB M=R.fetchInhabitant(m);
+					        if((M instanceof ShopKeeper)
+					        &&(M.isEligibleMonster())
+					        &&(M.getStartRoom()!=R)
+					        &&(M.getStartRoom()!=null))
+					            M.getStartRoom().bringMobHere(M,false);
+					    }
+					}
+			    }catch(NoSuchElementException e){}
 			}
 			else
 			if(CMSecurity.isSaveFlag("ROOMMOBS"))
 			{
-				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
-				{
-				    Room R=(Room)e.nextElement();
-				    if(R.roomID().length()==0)
-				    for(int m=0;m<R.numInhabitants();m++)
-				    {
-				        MOB M=R.fetchInhabitant(m);
-				        if((M!=null)
-				        &&(M.isEligibleMonster())
-				        &&(M.getStartRoom()!=R)
-				        &&(M.getStartRoom()!=null)
-				        &&(M.getStartRoom().roomID().length()>0))
-				            M.getStartRoom().bringMobHere(M,false);
-				    }
-				}
+			    try
+			    {
+					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+					{
+					    Room R=(Room)e.nextElement();
+					    if(R.roomID().length()==0)
+					    for(int m=0;m<R.numInhabitants();m++)
+					    {
+					        MOB M=R.fetchInhabitant(m);
+					        if((M!=null)
+					        &&(M.isEligibleMonster())
+					        &&(M.getStartRoom()!=R)
+					        &&(M.getStartRoom()!=null)
+					        &&(M.getStartRoom().roomID().length()>0))
+					            M.getStartRoom().bringMobHere(M,false);
+					    }
+					}
+			    }catch(NoSuchElementException e){}
 			}
             Vector shopmobs=new Vector();
             Vector bodies=new Vector();

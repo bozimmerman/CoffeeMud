@@ -63,43 +63,46 @@ public class Prop_ItemTransporter extends Property
 			roomDestination=null;
 			mobDestination=null;
 			nextDestination=null;
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			try
 			{
-				Room room=(Room)r.nextElement();
-				Ability A=room.fetchEffect("Prop_ItemTransReceiver");
-				if((A!=null)&&(A.text().equalsIgnoreCase(text())))
-					possibilities.addElement(room);
-				for(int i=0;i<room.numItems();i++)
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Item item=room.fetchItem(i);
-					if((item!=null)&&(item!=affected))
+					Room room=(Room)r.nextElement();
+					Ability A=room.fetchEffect("Prop_ItemTransReceiver");
+					if((A!=null)&&(A.text().equalsIgnoreCase(text())))
+						possibilities.addElement(room);
+					for(int i=0;i<room.numItems();i++)
 					{
-						A=item.fetchEffect("Prop_ItemTransReceiver");
-						if((A!=null)&&(A.text().equalsIgnoreCase(text())))
-							possibilities.addElement(item);
-					}
-				}
-				for(int m=0;m<room.numInhabitants();m++)
-				{
-					MOB mob=room.fetchInhabitant(m);
-					if((mob!=null)&&(mob!=affected))
-					{
-						A=mob.fetchEffect("Prop_ItemTransReceiver");
-						if((A!=null)&&(A.text().equalsIgnoreCase(text())))
-							possibilities.addElement(mob);
-						for(int i=0;i<mob.inventorySize();i++)
+						Item item=room.fetchItem(i);
+						if((item!=null)&&(item!=affected))
 						{
-							Item item=mob.fetchInventory(i);
-							if((item!=null)&&(item!=affected))
+							A=item.fetchEffect("Prop_ItemTransReceiver");
+							if((A!=null)&&(A.text().equalsIgnoreCase(text())))
+								possibilities.addElement(item);
+						}
+					}
+					for(int m=0;m<room.numInhabitants();m++)
+					{
+						MOB mob=room.fetchInhabitant(m);
+						if((mob!=null)&&(mob!=affected))
+						{
+							A=mob.fetchEffect("Prop_ItemTransReceiver");
+							if((A!=null)&&(A.text().equalsIgnoreCase(text())))
+								possibilities.addElement(mob);
+							for(int i=0;i<mob.inventorySize();i++)
 							{
-								A=item.fetchEffect("Prop_ItemTransReceiver");
-								if((A!=null)&&(A.text().equalsIgnoreCase(text())))
-									possibilities.addElement(item);
+								Item item=mob.fetchInventory(i);
+								if((item!=null)&&(item!=affected))
+								{
+									A=item.fetchEffect("Prop_ItemTransReceiver");
+									if((A!=null)&&(A.text().equalsIgnoreCase(text())))
+										possibilities.addElement(item);
+								}
 							}
 						}
 					}
 				}
-			}
+		    }catch(NoSuchElementException e){}
 		}
 		if(possibilities.size()>0)
 		{

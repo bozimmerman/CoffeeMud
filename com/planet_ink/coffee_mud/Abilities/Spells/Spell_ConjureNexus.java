@@ -63,20 +63,23 @@ public class Spell_ConjureNexus extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-		{
-			Room R=(Room)r.nextElement();
-			if(Sense.canAccess(mob,R))
-			for(int a=0;a<R.numEffects();a++)
+	    try
+	    {
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Ability A=R.fetchEffect(a);
-				if((A!=null)&&(A.ID().equals(ID())))
+				Room R=(Room)r.nextElement();
+				if(Sense.canAccess(mob,R))
+				for(int a=0;a<R.numEffects();a++)
 				{
-					A.unInvoke();
-					break;
+					Ability A=R.fetchEffect(a);
+					if((A!=null)&&(A.ID().equals(ID())))
+					{
+						A.unInvoke();
+						break;
+					}
 				}
 			}
-		}
+	    }catch(NoSuchElementException nse){}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

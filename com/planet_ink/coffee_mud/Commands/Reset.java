@@ -229,17 +229,20 @@ public class Reset extends StdCommand
 					String oldID=R.roomID();
 					R.setRoomID(CMMap.getOpenRoomID(A.Name()));
 					CMClass.DBEngine().DBReCreate(R,oldID);
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					try
 					{
-						Room R2=(Room)r.nextElement();
-						if(R2!=R)
-						for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-							if(R2.rawDoors()[d]==R)
-							{
-								CMClass.DBEngine().DBUpdateExits(R2);
-								break;
-							}
-					}
+						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						{
+							Room R2=(Room)r.nextElement();
+							if(R2!=R)
+							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								if(R2.rawDoors()[d]==R)
+								{
+									CMClass.DBEngine().DBUpdateExits(R2);
+									break;
+								}
+						}
+				    }catch(NoSuchElementException nse){}
 					if(R instanceof GridLocale)
 						R.getArea().fillInAreaRoom(R);
 					somethingDone=true;
@@ -377,12 +380,22 @@ public class Reset extends StdCommand
 				rooms.addElement(mob.location());
 			else
 			if(s.toUpperCase().startsWith("AREA"))
-				for(Enumeration e=mob.location().getArea().getProperMap();e.hasMoreElements();)
-					rooms.addElement(e.nextElement());
+			{
+			    try
+			    {
+					for(Enumeration e=mob.location().getArea().getProperMap();e.hasMoreElements();)
+						rooms.addElement(e.nextElement());
+			    }catch(NoSuchElementException nse){}
+			}
 			else
 			if(s.toUpperCase().startsWith("WORLD"))
-				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
-					rooms.addElement(e.nextElement());
+			{
+			    try
+			    {
+					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+						rooms.addElement(e.nextElement());
+			    }catch(NoSuchElementException nse){}
+			}
 			else
 			{
 				mob.tell("Try ROOM, AREA, or WORLD.");
@@ -423,28 +436,31 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			try
 			{
-				Room R=(Room)r.nextElement();
-				boolean changed=false;
-				if(R.roomID().length()>0)
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Exit E=R.rawExits()[d];
-					if((E!=null)&&E.hasADoor()&&E.name().equalsIgnoreCase("the ground"))
+					Room R=(Room)r.nextElement();
+					boolean changed=false;
+					if(R.roomID().length()>0)
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
-						E.setName("a door");
-						E.setExitParams("door","close","open","a door, closed.");
-						changed=true;
+						Exit E=R.rawExits()[d];
+						if((E!=null)&&E.hasADoor()&&E.name().equalsIgnoreCase("the ground"))
+						{
+							E.setName("a door");
+							E.setExitParams("door","close","open","a door, closed.");
+							changed=true;
+						}
 					}
+					if(changed)
+					{
+						Log.sysOut("Reset","Groundly doors in "+R.roomID()+" fixed.");
+						CMClass.DBEngine().DBUpdateExits(R);
+					}
+					mob.session().print(".");
 				}
-				if(changed)
-				{
-					Log.sysOut("Reset","Groundly doors in "+R.roomID()+" fixed.");
-					CMClass.DBEngine().DBUpdateExits(R);
-				}
-				mob.session().print(".");
-			}
+		    }catch(NoSuchElementException nse){}
 			mob.session().println("done!");
 		}
 		else

@@ -68,16 +68,19 @@ public class Spell_Gate extends Spell
 
 		Vector candidates=new Vector();
 		MOB target=null;
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room room=(Room)r.nextElement();
-			if(Sense.canAccess(mob,room))
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				target=room.fetchInhabitant(areaName);
-				if(target!=null)
-					candidates.addElement(target);
+				Room room=(Room)r.nextElement();
+				if(Sense.canAccess(mob,room))
+				{
+					target=room.fetchInhabitant(areaName);
+					if(target!=null)
+						candidates.addElement(target);
+				}
 			}
-		}
+	    }catch(NoSuchElementException nse){}
 		Room newRoom=null;
 		if(candidates.size()>0)
 		{

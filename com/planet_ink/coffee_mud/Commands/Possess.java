@@ -92,17 +92,20 @@ public class Possess extends StdCommand
 		}
 		if((target==null)||((target!=null)&&(!target.isMonster())))
 		{
-			Enumeration r=CMMap.rooms();
-			for(;r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				MOB mob2=R.fetchInhabitant(MOBname);
-				if((mob2!=null)&&(mob2.isMonster())&&(CMSecurity.isAllowed(mob,R,"POSSESS")))
+		    try
+		    {
+				Enumeration r=CMMap.rooms();
+				for(;r.hasMoreElements();)
 				{
-					target=mob2;
-					break;
+					Room R=(Room)r.nextElement();
+					MOB mob2=R.fetchInhabitant(MOBname);
+					if((mob2!=null)&&(mob2.isMonster())&&(CMSecurity.isAllowed(mob,R,"POSSESS")))
+					{
+						target=mob2;
+						break;
+					}
 				}
-			}
+		    }catch(NoSuchElementException e){}
 		}
 		if((target==null)||(!target.isMonster()))
 		{

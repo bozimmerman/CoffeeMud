@@ -222,19 +222,29 @@ public class Skill_Track extends StdAbility
 		}
 
 		if(rooms.size()<=0)
-		for(Enumeration r=thisRoom.getArea().getProperMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
-			if(R.fetchInhabitant(mobName)!=null)
-				rooms.addElement(R);
+		    try
+		    {
+				for(Enumeration r=thisRoom.getArea().getProperMap();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(R.fetchInhabitant(mobName)!=null)
+						rooms.addElement(R);
+				}
+		    }catch(NoSuchElementException nse){}
 		}
 
 		if(rooms.size()<=0)
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
-			if(R.fetchInhabitant(mobName)!=null)
-				rooms.addElement(R);
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(R.fetchInhabitant(mobName)!=null)
+						rooms.addElement(R);
+				}
+		    }catch(NoSuchElementException nse){}
 		}
 
 		boolean success=profficiencyCheck(mob,0,auto);

@@ -3808,29 +3808,35 @@ public class Import extends StdCommand
 		}
 		else
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if(!R.getArea().Name().equalsIgnoreCase(areaName))
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-					{
-						Room dirR=R.rawDoors()[d];
-						if((dirR!=null)&&(dirR.getArea().Name().equalsIgnoreCase(areaName)))
-							reLinkTable.addElement(R.roomID()+"/"+d+"/"+dirR.roomID());
-					}
-			}
-			while(true)
-			{
-				Room foundOne=null;
+		    try
+		    {
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(R.getArea().Name().equalsIgnoreCase(areaName))
-					{
-						foundOne=R;
-						break;
-					}
+					if(!R.getArea().Name().equalsIgnoreCase(areaName))
+						for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+						{
+							Room dirR=R.rawDoors()[d];
+							if((dirR!=null)&&(dirR.getArea().Name().equalsIgnoreCase(areaName)))
+								reLinkTable.addElement(R.roomID()+"/"+d+"/"+dirR.roomID());
+						}
 				}
+		    }catch(NoSuchElementException e){}
+			while(true)
+			{
+				Room foundOne=null;
+				try
+				{
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					{
+						Room R=(Room)r.nextElement();
+						if(R.getArea().Name().equalsIgnoreCase(areaName))
+						{
+							foundOne=R;
+							break;
+						}
+					}
+			    }catch(NoSuchElementException e){}
 				if(foundOne==null)
 					break;
 				else
@@ -3988,15 +3994,20 @@ public class Import extends StdCommand
 						{
 							if(reLinkTable==null) reLinkTable=new Vector();
 							if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
-								for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-								{
-									Room R=(Room)r.nextElement();
-									if((R!=null)&&(!R.getArea().Name().equalsIgnoreCase(areaName)))
+							{
+							    try
+							    {
+									for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 									{
-										R.bringMobHere(mob,true);
-										break;
+										Room R=(Room)r.nextElement();
+										if((R!=null)&&(!R.getArea().Name().equalsIgnoreCase(areaName)))
+										{
+											R.bringMobHere(mob,true);
+											break;
+										}
 									}
-								}
+							    }catch(NoSuchElementException e){}
+							}
 							if(!localDeleteArea(mob,reLinkTable,areaName))
 								return false;
 						}
@@ -4091,17 +4102,20 @@ public class Import extends StdCommand
 					if(R!=null)
 					{
 						reLinkTable=new Vector();
-						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						try
 						{
-							Room R2=(Room)r.nextElement();
-							if(R2!=R)
-							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+							for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 							{
-								Room dirR=R2.rawDoors()[d];
-								if((dirR!=null)&&(dirR==R))
-									reLinkTable.addElement(R2.roomID()+"/"+d+"/"+dirR.roomID());
+								Room R2=(Room)r.nextElement();
+								if(R2!=R)
+								for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								{
+									Room dirR=R2.rawDoors()[d];
+									if((dirR!=null)&&(dirR==R))
+										reLinkTable.addElement(R2.roomID()+"/"+d+"/"+dirR.roomID());
+								}
 							}
-						}
+					    }catch(NoSuchElementException e){}
 						CoffeeUtensils.obliterateRoom(R);
 					}
 					error=CoffeeMaker.unpackRoomFromXML(buf.toString(),true);
@@ -4472,15 +4486,18 @@ public class Import extends StdCommand
 		{
 			// confirm area creation/overwrite
 			boolean exists=false;
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			try
 			{
-				Room R=(Room)r.nextElement();
-				if(R.getArea().Name().equalsIgnoreCase(areaName))
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					exists=true;
-					break;
+					Room R=(Room)r.nextElement();
+					if(R.getArea().Name().equalsIgnoreCase(areaName))
+					{
+						exists=true;
+						break;
+					}
 				}
-			}
+		    }catch(NoSuchElementException e){}
 			if(exists)
 			{
 				if((!prompt)
@@ -4907,33 +4924,36 @@ public class Import extends StdCommand
 						Exit opExit=null;
 						if(((linkRoom==null)||(linkRoom.getArea().Name()!=R.getArea().Name()))&&(linkRoomID>=0))
 						{
-							for(Enumeration r2=CMMap.rooms();r2.hasMoreElements();)
-							{
-								Room R2=(Room)r2.nextElement();
-								if((R2.roomID().endsWith("#"+linkRoomID))&&(R2!=R))
+						    try
+						    {
+								for(Enumeration r2=CMMap.rooms();r2.hasMoreElements();)
 								{
-									for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+									Room R2=(Room)r2.nextElement();
+									if((R2.roomID().endsWith("#"+linkRoomID))&&(R2!=R))
 									{
-										Exit E3=R2.rawExits()[d];
-										if((E3!=null)
-										&&(E3.temporaryDoorLink().length()>0)
-										&&(R.roomID().endsWith(E3.temporaryDoorLink())))
+										for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 										{
-											opExit=E3;
-											R2.rawDoors()[d]=R;
+											Exit E3=R2.rawExits()[d];
+											if((E3!=null)
+											&&(E3.temporaryDoorLink().length()>0)
+											&&(R.roomID().endsWith(E3.temporaryDoorLink())))
+											{
+												opExit=E3;
+												R2.rawDoors()[d]=R;
+											}
 										}
+										if(opExit==null)
+											if((prompt)&&
+											  (!mob.session().confirm(R.roomID()+" links to #"+linkRoomID+". Found "+R2.roomID()+". Link?","Y")))
+												continue;
+										linkRoom=R2;
+										if(opExit!=null) opExit.setTemporaryDoorLink("");
+										if((!doneRooms.containsValue(linkRoom))&&(!doneRooms.contains(linkRoom)))
+											CMClass.DBEngine().DBUpdateExits(linkRoom);
+										break;
 									}
-									if(opExit==null)
-										if((prompt)&&
-										  (!mob.session().confirm(R.roomID()+" links to #"+linkRoomID+". Found "+R2.roomID()+". Link?","Y")))
-											continue;
-									linkRoom=R2;
-									if(opExit!=null) opExit.setTemporaryDoorLink("");
-									if((!doneRooms.containsValue(linkRoom))&&(!doneRooms.contains(linkRoom)))
-										CMClass.DBEngine().DBUpdateExits(linkRoom);
-									break;
 								}
-							}
+						    }catch(NoSuchElementException e){}
 							if(linkRoom==null)
 								E.setTemporaryDoorLink("#"+linkRoomID);
 							else

@@ -276,19 +276,22 @@ public class Modify extends BaseGenerics
 				mob.location().setRoomID(checkID);
 				CMClass.DBEngine().DBReCreate(mob.location(),oldID);
 				CMMap.addRoom(mob.location());
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				try
 				{
-					Room R=(Room)r.nextElement();
-					for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						Room thatRoom=R.rawDoors()[dir];
-						if(thatRoom==mob.location())
+						Room R=(Room)r.nextElement();
+						for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
 						{
-							CMClass.DBEngine().DBUpdateExits(R);
-							break;
+							Room thatRoom=R.rawDoors()[dir];
+							if(thatRoom==mob.location())
+							{
+								CMClass.DBEngine().DBUpdateExits(R);
+								break;
+							}
 						}
 					}
-				}
+			    }catch(NoSuchElementException e){}
 			}
 		}
 		else
@@ -526,19 +529,22 @@ public class Modify extends BaseGenerics
 						CMClass.DBEngine().DBUpdateRoom(R);
 				}
 				myArea.clearMaps();
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				try
 				{
-					Room R=(Room)r.nextElement();
-					boolean doIt=false;
-					for(int d=0;d<R.rawDoors().length;d++)
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						Room R2=R.rawDoors()[d];
-						if((R2!=null)&&(R2.getArea()==myArea))
-						{ doIt=true; break;}
+						Room R=(Room)r.nextElement();
+						boolean doIt=false;
+						for(int d=0;d<R.rawDoors().length;d++)
+						{
+							Room R2=R.rawDoors()[d];
+							if((R2!=null)&&(R2.getArea()==myArea))
+							{ doIt=true; break;}
+						}
+						if(doIt)
+							CMClass.DBEngine().DBUpdateExits(R);
 					}
-					if(doIt)
-						CMClass.DBEngine().DBUpdateExits(R);
-				}
+			    }catch(NoSuchElementException e){}
 			}
 			else
 				myArea.setName(oldName);
@@ -617,21 +623,23 @@ public class Modify extends BaseGenerics
 			return;
 		}
 		
-
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room room=(Room)r.nextElement();
-			for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Exit exit=room.rawExits()[e2];
-				if((exit!=null)&&(exit==thisExit))
+				Room room=(Room)r.nextElement();
+				for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
 				{
-					CMClass.DBEngine().DBUpdateExits(room);
-					room.getArea().fillInAreaRoom(room);
-					break;
+					Exit exit=room.rawExits()[e2];
+					if((exit!=null)&&(exit==thisExit))
+					{
+						CMClass.DBEngine().DBUpdateExits(room);
+						room.getArea().fillInAreaRoom(room);
+						break;
+					}
 				}
 			}
-		}
+	    }catch(NoSuchElementException e){}
 		
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,thisExit.name()+" shake(s) under the transforming power.");
@@ -1150,19 +1158,22 @@ public class Modify extends BaseGenerics
 					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
 					genMiscText(mob,thang,1,1);
 					thang.recoverEnvStats();
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					try
 					{
-						Room room=(Room)r.nextElement();
-						for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
+						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 						{
-							Exit exit=room.rawExits()[e2];
-							if((exit!=null)&&(exit==thang))
+							Room room=(Room)r.nextElement();
+							for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
 							{
-								CMClass.DBEngine().DBUpdateExits(room);
-								break;
+								Exit exit=room.rawExits()[e2];
+								if((exit!=null)&&(exit==thang))
+								{
+									CMClass.DBEngine().DBUpdateExits(room);
+									break;
+								}
 							}
 						}
-					}
+				    }catch(NoSuchElementException e){}
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 					Log.sysOut("CreateEdit",mob.Name()+" modified exit "+thang.ID()+".");
 				}

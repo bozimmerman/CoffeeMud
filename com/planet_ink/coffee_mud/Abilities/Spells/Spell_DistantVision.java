@@ -36,16 +36,19 @@ public class Spell_DistantVision extends Spell
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
 		Room thisRoom=null;
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room room=(Room)r.nextElement();
-			if((Sense.canAccess(mob,room))
-			&&(EnglishParser.containsString(room.displayText(),areaName)))
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				thisRoom=room;
-				break;
+				Room room=(Room)r.nextElement();
+				if((Sense.canAccess(mob,room))
+				&&(EnglishParser.containsString(room.displayText(),areaName)))
+				{
+					thisRoom=room;
+					break;
+				}
 			}
-		}
+	    }catch(NoSuchElementException nse){}
 
 		if(thisRoom==null)
 		{

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.web.macros.grinder;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -235,26 +236,32 @@ public class GrinderRooms
 
 		if(redoAllMyDamnRooms)
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R2=(Room)r.nextElement();
-				for(int d=0;d<R2.rawDoors().length;d++)
-					if(R2.rawDoors()[d]==oldR)
-					{
-						R2.rawDoors()[d]=R;
-						if(R2 instanceof GridLocale)
-							((GridLocale)R2).buildGrid();
-					}
-			}
-			for(Enumeration e=CMMap.players();e.hasMoreElements();)
-			{
-				MOB M=(MOB)e.nextElement();
-				if(M.getStartRoom()==oldR)
-					M.setStartRoom(R);
-				else
-				if(M.location()==oldR)
-					M.setLocation(R);
-			}
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R2=(Room)r.nextElement();
+					for(int d=0;d<R2.rawDoors().length;d++)
+						if(R2.rawDoors()[d]==oldR)
+						{
+							R2.rawDoors()[d]=R;
+							if(R2 instanceof GridLocale)
+								((GridLocale)R2).buildGrid();
+						}
+				}
+		    }catch(NoSuchElementException e){}
+		    try
+		    {
+				for(Enumeration e=CMMap.players();e.hasMoreElements();)
+				{
+					MOB M=(MOB)e.nextElement();
+					if(M.getStartRoom()==oldR)
+						M.setStartRoom(R);
+					else
+					if(M.location()==oldR)
+						M.setLocation(R);
+				}
+		    }catch(NoSuchElementException e){}
 			R.getArea().clearMaps();
 		}
 		R.getArea().fillInAreaRoom(R);

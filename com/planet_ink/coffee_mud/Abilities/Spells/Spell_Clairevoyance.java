@@ -95,15 +95,18 @@ public class Spell_Clairevoyance extends Spell
 			target=mob.location().fetchInhabitant(mobName);
 		if(target==null)
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if(Sense.canAccess(mob,R))
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					MOB mob2=R.fetchInhabitant(mobName);
-					if(mob2!=null){ target=mob2; break;}
+					Room R=(Room)r.nextElement();
+					if(Sense.canAccess(mob,R))
+					{
+						MOB mob2=R.fetchInhabitant(mobName);
+						if(mob2!=null){ target=mob2; break;}
+					}
 				}
-			}
+		    }catch(NoSuchElementException nse){}
 		}
 		if(target instanceof Deity) target=null;
 		Room newRoom=mob.location();

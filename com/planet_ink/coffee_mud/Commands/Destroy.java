@@ -405,20 +405,23 @@ public class Destroy extends BaseItemParser
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+		try
 		{
-			Room room=(Room)e.nextElement();
-			for(int i=0;i<room.numInhabitants();i++)
+			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 			{
-				MOB M=room.fetchInhabitant(i);
-				if(M.baseCharStats().getMyRace()==R)
+				Room room=(Room)e.nextElement();
+				for(int i=0;i<room.numInhabitants();i++)
 				{
-					mob.tell("A MOB called '"+M.Name()+" in "+room.roomID()+" is this race, and must first be deleted.");
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-					return false;
+					MOB M=room.fetchInhabitant(i);
+					if(M.baseCharStats().getMyRace()==R)
+					{
+						mob.tell("A MOB called '"+M.Name()+" in "+room.roomID()+" is this race, and must first be deleted.");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						return false;
+					}
 				}
 			}
-		}
+	    }catch(NoSuchElementException e){}
 		CMClass.delRace(R);
 		CMClass.DBEngine().DBDeleteRace(R.ID());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just decreased!");
@@ -858,14 +861,19 @@ public class Destroy extends BaseItemParser
 			{
 				Room theRoom=null;
 				if(allWord.length()>0)
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Room room=(Room)r.nextElement();
-					if(room.roomID().equalsIgnoreCase(allWord))
-					{
-						theRoom=room;
-						break;
-					}
+				    try
+				    {
+						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						{
+							Room room=(Room)r.nextElement();
+							if(room.roomID().equalsIgnoreCase(allWord))
+							{
+								theRoom=room;
+								break;
+							}
+						}
+				    }catch(NoSuchElementException e){}
 				}
 				if(theRoom!=null)
 				{

@@ -196,34 +196,40 @@ public class Spell_Wish extends Spell
 			Environmental foundThang=null;
 			Environmental E=mob.location().fetchFromRoomFavorItems(null,objectWish,Item.WORN_REQ_UNWORNONLY);
 			foundThang=maybeAdd(E,thangsFound,foundThang);
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			try
 			{
-				Room room=(Room)r.nextElement();
-				if(Sense.canAccess(mob,room))
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					E=room.fetchFromRoomFavorMOBs(null,objectWish,Item.WORN_REQ_UNWORNONLY);
-					foundThang=maybeAdd(E,thangsFound,foundThang);
-				}
-			}
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room room=(Room)r.nextElement();
-				if(Sense.canAccess(mob,room))
-				for(int m=0;m<room.numInhabitants();m++)
-				{
-					MOB mob2=room.fetchInhabitant(m);
-					if(mob2!=null)
+					Room room=(Room)r.nextElement();
+					if(Sense.canAccess(mob,room))
 					{
-						E=mob2.fetchInventory(objectWish);
+						E=room.fetchFromRoomFavorMOBs(null,objectWish,Item.WORN_REQ_UNWORNONLY);
 						foundThang=maybeAdd(E,thangsFound,foundThang);
-						if(CoffeeUtensils.getShopKeeper(mob2)!=null)
+					}
+				}
+		    }catch(NoSuchElementException nse){}
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room room=(Room)r.nextElement();
+					if(Sense.canAccess(mob,room))
+					for(int m=0;m<room.numInhabitants();m++)
+					{
+						MOB mob2=room.fetchInhabitant(m);
+						if(mob2!=null)
 						{
-							E=CoffeeUtensils.getShopKeeper(mob2).getStock(objectWish,mob);
+							E=mob2.fetchInventory(objectWish);
 							foundThang=maybeAdd(E,thangsFound,foundThang);
+							if(CoffeeUtensils.getShopKeeper(mob2)!=null)
+							{
+								E=CoffeeUtensils.getShopKeeper(mob2).getStock(objectWish,mob);
+								foundThang=maybeAdd(E,thangsFound,foundThang);
+							}
 						}
 					}
 				}
-			}
+		    }catch(NoSuchElementException nse){}
 			if((thangsFound.size()>0)&&(foundThang!=null))
 			{
 				// yea, we get to DO something!
@@ -446,15 +452,20 @@ public class Spell_Wish extends Spell
 				if(dir>=0)
 					newRoom=mob.location().getRoomInDir(dir);
 				if(newRoom==null)
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Room room=(Room)r.nextElement();
-					if(Sense.canAccess(mob,room))
-					if(EnglishParser.containsString(room.displayText(),locationWish.trim()))
-					{
-					   newRoom=room;
-					   break;
-					}
+				    try
+				    {
+						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						{
+							Room room=(Room)r.nextElement();
+							if(Sense.canAccess(mob,room))
+							if(EnglishParser.containsString(room.displayText(),locationWish.trim()))
+							{
+							   newRoom=room;
+							   break;
+							}
+						}
+				    }catch(NoSuchElementException nse){}
 				}
 				if(newRoom!=null)
 				{

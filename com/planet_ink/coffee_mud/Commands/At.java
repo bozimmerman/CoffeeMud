@@ -71,13 +71,17 @@ public class At extends StdCommand
 				{
 					Vector candidates=new Vector();
 					MOB target=null;
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					try
 					{
-						Room R=(Room)r.nextElement();
-						target=R.fetchInhabitant(cmd.toString());
-						if(target!=null)
-							candidates.addElement(target);
-					}
+						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						{
+							Room R=(Room)r.nextElement();
+							target=R.fetchInhabitant(cmd.toString());
+							if(target!=null)
+								candidates.addElement(target);
+						}
+				    }
+				    catch(NoSuchElementException e){}
 					if(candidates.size()>0)
 					{
 						target=(MOB)candidates.elementAt(Dice.roll(1,candidates.size(),-1));
@@ -112,26 +116,34 @@ public class At extends StdCommand
 						}
 					}
 					if(room==null)
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.nextElement();
-						if(EnglishParser.containsString(R.description(),areaName))
-						{
-						   room=R;
-						   break;
-						}
+					    try
+					    {
+							for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+							{
+								Room R=(Room)r.nextElement();
+								if(EnglishParser.containsString(R.description(),areaName))
+								{
+								   room=R;
+								   break;
+								}
+							}
+					    }catch(NoSuchElementException e){}
 					}
 					if(room==null)
 					{
 						Vector candidates=new Vector();
 						Item target=null;
-						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						try
 						{
-							Room R=(Room)r.nextElement();
-							target=R.fetchItem(null,cmd.toString());
-							if(target!=null)
-								candidates.addElement(target);
-						}
+							for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+							{
+								Room R=(Room)r.nextElement();
+								target=R.fetchItem(null,cmd.toString());
+								if(target!=null)
+									candidates.addElement(target);
+							}
+					    }catch(NoSuchElementException e){}
 						if(candidates.size()>0)
 						{
 							target=(Item)candidates.elementAt(Dice.roll(1,candidates.size(),-1));

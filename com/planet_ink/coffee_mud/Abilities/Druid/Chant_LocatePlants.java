@@ -139,12 +139,17 @@ public class Chant_LocatePlants extends Chant
 		}
 
 		if(rooms.size()<=0)
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
-			if(Sense.canAccess(mob,R))
-				if(plantsHere(target,R).length()>0)
-					rooms.addElement(R);
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(Sense.canAccess(mob,R))
+						if(plantsHere(target,R).length()>0)
+							rooms.addElement(R);
+				}
+		    }catch(NoSuchElementException e){}
 		}
 
 		if(rooms.size()>0)

@@ -67,16 +67,19 @@ public class Prayer_Gateway extends Prayer
 			return false;
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room R=(Room)r.nextElement();
-			if(Sense.canAccess(mob,R))
-				if(EnglishParser.containsString(R.displayText(),areaName))
-				{
-				   newRoom=R;
-				   break;
-				}
-		}
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if(Sense.canAccess(mob,R))
+					if(EnglishParser.containsString(R.displayText(),areaName))
+					{
+					   newRoom=R;
+					   break;
+					}
+			}
+	    }catch(NoSuchElementException e){}
 
 		if(newRoom==null)
 		{

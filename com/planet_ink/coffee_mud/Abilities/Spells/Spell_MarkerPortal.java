@@ -54,23 +54,26 @@ public class Spell_MarkerPortal extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room newRoom=null;
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room R=(Room)r.nextElement();
-			if(Sense.canAccess(mob,R))
-			for(int a=0;a<R.numEffects();a++)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Ability A=R.fetchEffect(a);
-				if((A!=null)
-				&&(A.ID().equals("Spell_SummonMarker"))
-				&&(A.invoker()==mob))
+				Room R=(Room)r.nextElement();
+				if(Sense.canAccess(mob,R))
+				for(int a=0;a<R.numEffects();a++)
 				{
-					newRoom=R;
-					break;
+					Ability A=R.fetchEffect(a);
+					if((A!=null)
+					&&(A.ID().equals("Spell_SummonMarker"))
+					&&(A.invoker()==mob))
+					{
+						newRoom=R;
+						break;
+					}
 				}
+				if(newRoom!=null) break;
 			}
-			if(newRoom!=null) break;
-		}
+	    }catch(NoSuchElementException nse){}
 		if(newRoom==null)
 		{
 			mob.tell("You can't seem to focus on your marker.  Are you sure you've already summoned it?");

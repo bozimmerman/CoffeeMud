@@ -165,16 +165,19 @@ public class Thief_ContractHit extends ThiefSkill
 			return false;
 		}
 		Vector V=new Vector();
-		for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+		try
 		{
-			Room R=(Room)e.nextElement();
-			if(Sense.canAccess(mob,R))
+			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 			{
-				MOB M=R.fetchInhabitant(Util.combine(commands,0));
-				if(M!=null)
-					V.addElement(M);
+				Room R=(Room)e.nextElement();
+				if(Sense.canAccess(mob,R))
+				{
+					MOB M=R.fetchInhabitant(Util.combine(commands,0));
+					if(M!=null)
+						V.addElement(M);
+				}
 			}
-		}
+	    }catch(NoSuchElementException nse){}
 		MOB target=null;
 		if(V.size()>0)
 			target=(MOB)V.elementAt(Dice.roll(1,V.size(),-1));

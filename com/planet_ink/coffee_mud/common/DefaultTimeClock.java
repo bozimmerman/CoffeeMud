@@ -215,8 +215,7 @@ public class DefaultTimeClock implements TimeClock
 				}
 				R.recoverRoomStats();
 			}
-	    }
-	    catch(java.util.NoSuchElementException x){}
+	    }catch(java.util.NoSuchElementException x){}
 	}
 
 	public void tickTock(int howManyHours)

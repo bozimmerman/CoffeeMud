@@ -43,13 +43,16 @@ public class Spell_Teleport extends Spell
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
 		Vector candidates=new Vector();
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room room=(Room)r.nextElement();
-			if((room.getArea().name().toUpperCase().startsWith(areaName))
-			&&(Sense.canAccess(mob,room)))
-				candidates.addElement(room);
-		}
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room room=(Room)r.nextElement();
+				if((room.getArea().name().toUpperCase().startsWith(areaName))
+				&&(Sense.canAccess(mob,room)))
+					candidates.addElement(room);
+			}
+	    }catch(NoSuchElementException nse){}
 
 		if(candidates.size()==0)
 		{

@@ -56,19 +56,22 @@ public class Spell_Summon extends Spell
 
 		Room oldRoom=null;
 		MOB target=null;
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			Room room=(Room)r.nextElement();
-			if(Sense.canAccess(mob,room))
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				target=room.fetchInhabitant(areaName);
-				if(target!=null)
+				Room room=(Room)r.nextElement();
+				if(Sense.canAccess(mob,room))
 				{
-					oldRoom=room;
-					break;
+					target=room.fetchInhabitant(areaName);
+					if(target!=null)
+					{
+						oldRoom=room;
+						break;
+					}
 				}
 			}
-		}
+	    }catch(NoSuchElementException nse){}
 
 		if(oldRoom==null)
 		{

@@ -45,25 +45,28 @@ public class Spell_Flagportation extends Spell
 		Vector candidates=new Vector();
 		Room R=null;
 		Item I=null;
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		try
 		{
-			R=(Room)r.nextElement();
-			if(Sense.canAccess(mob,R))
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-			    for(int i=0;i<R.numItems();i++)
-			    {
-			        I=R.fetchItem(i);
-			        if((I!=null)
-			        &&(I instanceof ClanItem)
-			        &&(((ClanItem)I).clanID().equals(C.ID()))
-			        &&(((ClanItem)I).ciType()==ClanItem.CI_FLAG))
-			        {
-						candidates.addElement(R);
-						break;
-			        }
-			    }
+				R=(Room)r.nextElement();
+				if(Sense.canAccess(mob,R))
+				{
+				    for(int i=0;i<R.numItems();i++)
+				    {
+				        I=R.fetchItem(i);
+				        if((I!=null)
+				        &&(I instanceof ClanItem)
+				        &&(((ClanItem)I).clanID().equals(C.ID()))
+				        &&(((ClanItem)I).ciType()==ClanItem.CI_FLAG))
+				        {
+							candidates.addElement(R);
+							break;
+				        }
+				    }
+				}
 			}
-		}
+	    }catch(NoSuchElementException nse){}
 		if(candidates.size()==0)
 		{
 			mob.tell("You don't have any flags to flagportate to!");

@@ -242,14 +242,38 @@ public class Quests implements Cloneable, Quest
 							if(mobType.startsWith("-")) continue;
 							if(MG==null)
 							{
-								Enumeration e=CMMap.rooms();
-								if(A!=null) e=A.getMetroMap();
-								for(;e.hasMoreElements();)
-								{
-									Room R2=(Room)e.nextElement();
-									for(int i=0;i<R2.numInhabitants();i++)
+							    try
+							    {
+									Enumeration e=CMMap.rooms();
+									if(A!=null) e=A.getMetroMap();
+									for(;e.hasMoreElements();)
 									{
-										MOB M2=R2.fetchInhabitant(i);
+										Room R2=(Room)e.nextElement();
+										for(int i=0;i<R2.numInhabitants();i++)
+										{
+											MOB M2=R2.fetchInhabitant(i);
+											if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+											{
+												if(mobType.equalsIgnoreCase("any"))
+													choices.addElement(M2);
+												else
+												if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
+												||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
+												||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
+												||(M2.charStats().getCurrentClass().name().toUpperCase().indexOf(mobType)>=0))
+													choices.addElement(M2);
+											}
+										}
+									}
+							    }catch(NoSuchElementException e){}
+							}
+							else
+							{
+							    try
+							    {
+									for(Enumeration e=MG.elements();e.hasMoreElements();)
+									{
+										MOB M2=(MOB)e.nextElement();
 										if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
 										{
 											if(mobType.equalsIgnoreCase("any"))
@@ -262,23 +286,7 @@ public class Quests implements Cloneable, Quest
 												choices.addElement(M2);
 										}
 									}
-								}
-							}
-							else
-							for(Enumeration e=MG.elements();e.hasMoreElements();)
-							{
-								MOB M2=(MOB)e.nextElement();
-								if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
-								{
-									if(mobType.equalsIgnoreCase("any"))
-										choices.addElement(M2);
-									else
-									if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
-									||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
-									||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
-									||(M2.charStats().getCurrentClass().name().toUpperCase().indexOf(mobType)>=0))
-										choices.addElement(M2);
-								}
+							    }catch(NoSuchElementException e){}
 							}
 						}
 						if(choices!=null)
@@ -343,22 +351,25 @@ public class Quests implements Cloneable, Quest
 							mobName=mobName.substring(0,x).trim();
 						}
 						if(mobName.length()==0) mobName="ANY";
-						Enumeration e=CMMap.rooms();
-						if(A!=null) e=A.getMetroMap();
-						for(;e.hasMoreElements();)
+						try
 						{
-							Room R2=(Room)e.nextElement();
-							for(int i=0;i<R2.numInhabitants();i++)
+							Enumeration e=CMMap.rooms();
+							if(A!=null) e=A.getMetroMap();
+							for(;e.hasMoreElements();)
 							{
-								MOB M2=R2.fetchInhabitant(i);
-								if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+								Room R2=(Room)e.nextElement();
+								for(int i=0;i<R2.numInhabitants();i++)
 								{
-									if(!MUDZapper.zapperCheck(mask,M2))
-										continue;
-									choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+									MOB M2=R2.fetchInhabitant(i);
+									if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+									{
+										if(!MUDZapper.zapperCheck(mask,M2))
+											continue;
+										choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+									}
 								}
 							}
-						}
+					    }catch(NoSuchElementException e){}
 						if((choices!=null)&&(choices.size()>0))
 							MG=choices;
 						else
@@ -379,24 +390,27 @@ public class Quests implements Cloneable, Quest
 						{
 							String itemType=(String)itemTypes.elementAt(t);
 							if(itemType.startsWith("-")) continue;
-							Enumeration e=CMMap.rooms();
-							if(A!=null) e=A.getMetroMap();
-							for(;e.hasMoreElements();)
+							try
 							{
-								Room R2=(Room)e.nextElement();
-								for(int i=0;i<R2.numItems();i++)
+								Enumeration e=CMMap.rooms();
+								if(A!=null) e=A.getMetroMap();
+								for(;e.hasMoreElements();)
 								{
-									Item I2=R2.fetchItem(i);
-									if((I2!=null)&&(objectInUse(I2)==null))
+									Room R2=(Room)e.nextElement();
+									for(int i=0;i<R2.numItems();i++)
 									{
-										if(itemType.equalsIgnoreCase("any"))
-											choices.addElement(I2);
-										else
-										if(CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
-											choices.addElement(I2);
+										Item I2=R2.fetchItem(i);
+										if((I2!=null)&&(objectInUse(I2)==null))
+										{
+											if(itemType.equalsIgnoreCase("any"))
+												choices.addElement(I2);
+											else
+											if(CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
+												choices.addElement(I2);
+										}
 									}
 								}
-							}
+						    }catch(NoSuchElementException e){}
 						}
 						if(choices!=null)
 						for(int t=0;t<itemTypes.size();t++)
@@ -441,29 +455,32 @@ public class Quests implements Cloneable, Quest
 						if(p.size()<3) continue;
 						String localeName=Util.combine(p,2).toUpperCase();
 						Vector choices=new Vector();
-						Enumeration e=CMMap.rooms();
-						if(A!=null) e=A.getMetroMap();
-						for(;e.hasMoreElements();)
+						try
 						{
-							Room R2=(Room)e.nextElement();
-							if(localeName.equalsIgnoreCase("any"))
-								choices.addElement(R2);
-							else
-							if(CMClass.className(R2).toUpperCase().indexOf(localeName)>=0)
-								choices.addElement(R2);
-							else
+							Enumeration e=CMMap.rooms();
+							if(A!=null) e=A.getMetroMap();
+							for(;e.hasMoreElements();)
 							{
-								int dom=R2.domainType();
-								if((dom&Room.INDOORS)>0)
+								Room R2=(Room)e.nextElement();
+								if(localeName.equalsIgnoreCase("any"))
+									choices.addElement(R2);
+								else
+								if(CMClass.className(R2).toUpperCase().indexOf(localeName)>=0)
+									choices.addElement(R2);
+								else
 								{
-									if(Room.indoorDomainDescs[dom-Room.INDOORS].indexOf(localeName)>=0)
+									int dom=R2.domainType();
+									if((dom&Room.INDOORS)>0)
+									{
+										if(Room.indoorDomainDescs[dom-Room.INDOORS].indexOf(localeName)>=0)
+											choices.addElement(R2);
+									}
+									else
+									if(Room.outdoorDomainDescs[dom].indexOf(localeName)>=0)
 										choices.addElement(R2);
 								}
-								else
-								if(Room.outdoorDomainDescs[dom].indexOf(localeName)>=0)
-									choices.addElement(R2);
 							}
-						}
+					    }catch(NoSuchElementException e){}
 						if((choices!=null)&&(choices.size()>0))
 							R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(R==null)
@@ -486,45 +503,48 @@ public class Quests implements Cloneable, Quest
 						Vector choices1=new Vector();
 						Vector choices2=new Vector();
 						Vector choices3=new Vector();
-						Enumeration e=CMMap.rooms();
-						if(A!=null) e=A.getMetroMap();
-						for(;e.hasMoreElements();)
+						try
 						{
-							Room R2=(Room)e.nextElement();
-							String display=R2.displayText().toUpperCase();
-							String desc=R2.description().toUpperCase();
-							if(localeName.equalsIgnoreCase("any"))
+							Enumeration e=CMMap.rooms();
+							if(A!=null) e=A.getMetroMap();
+							for(;e.hasMoreElements();)
 							{
-								choices=choices0;
-								choices0.addElement(R2);
+								Room R2=(Room)e.nextElement();
+								String display=R2.displayText().toUpperCase();
+								String desc=R2.description().toUpperCase();
+								if(localeName.equalsIgnoreCase("any"))
+								{
+									choices=choices0;
+									choices0.addElement(R2);
+								}
+								else
+								if(R2.roomID().equalsIgnoreCase(localeName))
+								{
+									choices=choices0;
+									choices0.addElement(R2);
+								}
+								else
+								if(display.equals(localeName))
+								{
+									if((choices==null)||(choices==choices2)||(choices==choices3))
+										choices=choices1;
+									choices1.addElement(R2);
+								}
+								else
+								if(EnglishParser.containsString(display,localeName))
+								{
+									if((choices==null)||(choices==choices3))
+										choices=choices2;
+									choices2.addElement(R2);
+								}
+								else
+								if(EnglishParser.containsString(desc,localeName))
+								{
+									if(choices==null) choices=choices3;
+									choices3.addElement(R2);
+								}
 							}
-							else
-							if(R2.roomID().equalsIgnoreCase(localeName))
-							{
-								choices=choices0;
-								choices0.addElement(R2);
-							}
-							else
-							if(display.equals(localeName))
-							{
-								if((choices==null)||(choices==choices2)||(choices==choices3))
-									choices=choices1;
-								choices1.addElement(R2);
-							}
-							else
-							if(EnglishParser.containsString(display,localeName))
-							{
-								if((choices==null)||(choices==choices3))
-									choices=choices2;
-								choices2.addElement(R2);
-							}
-							else
-							if(EnglishParser.containsString(desc,localeName))
-							{
-								if(choices==null) choices=choices3;
-								choices3.addElement(R2);
-							}
-						}
+					    }catch(NoSuchElementException e){}
 						if((choices!=null)&&(choices.size()>0))
 							R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(R==null)
@@ -570,22 +590,25 @@ public class Quests implements Cloneable, Quest
 						}
 						else
 						{
-							Enumeration e=CMMap.rooms();
-							if(A!=null) e=A.getMetroMap();
-							for(;e.hasMoreElements();)
-							{
-								Room R2=(Room)e.nextElement();
-								for(int i=0;i<R2.numInhabitants();i++)
+						    try
+						    {
+								Enumeration e=CMMap.rooms();
+								if(A!=null) e=A.getMetroMap();
+								for(;e.hasMoreElements();)
 								{
-									MOB M2=R2.fetchInhabitant(i);
-									if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+									Room R2=(Room)e.nextElement();
+									for(int i=0;i<R2.numInhabitants();i++)
 									{
-										if(!MUDZapper.zapperCheck(mask,M2))
-											continue;
-										choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+										MOB M2=R2.fetchInhabitant(i);
+										if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+										{
+											if(!MUDZapper.zapperCheck(mask,M2))
+												continue;
+											choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+										}
 									}
 								}
-							}
+						    }catch(NoSuchElementException e){}
 						}
 						if((choices!=null)&&(choices.size()>0))
 							M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
@@ -620,18 +643,21 @@ public class Quests implements Cloneable, Quest
 						Vector choices2=new Vector();
 						Vector choices3=new Vector();
 						String itemName=Util.combine(p,2).toUpperCase();
-						Enumeration e=CMMap.rooms();
-						if(A!=null) e=A.getMetroMap();
-						for(;e.hasMoreElements();)
+						try
 						{
-							Room R2=(Room)e.nextElement();
-							for(int i=0;i<R2.numItems();i++)
+							Enumeration e=CMMap.rooms();
+							if(A!=null) e=A.getMetroMap();
+							for(;e.hasMoreElements();)
 							{
-								Item I2=R2.fetchItem(i);
-								if((I2!=null)&&(objectInUse(I2)==null))
-									choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
+								Room R2=(Room)e.nextElement();
+								for(int i=0;i<R2.numItems();i++)
+								{
+									Item I2=R2.fetchItem(i);
+									if((I2!=null)&&(objectInUse(I2)==null))
+										choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
+								}
 							}
-						}
+					    }catch(NoSuchElementException e){}
 						if((choices!=null)&&(choices.size()>0))
 							I=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(I==null)

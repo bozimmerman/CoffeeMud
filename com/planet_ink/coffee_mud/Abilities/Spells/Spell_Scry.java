@@ -102,15 +102,18 @@ public class Spell_Scry extends Spell
 			target=mob.location().fetchInhabitant(mobName);
 		if(target==null)
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room room=(Room)r.nextElement();
-				if(Sense.canAccess(mob,room))
+		    try
+		    {
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					MOB mob2=room.fetchInhabitant(mobName);
-					if(mob2!=null){ target=mob2; break;}
+					Room room=(Room)r.nextElement();
+					if(Sense.canAccess(mob,room))
+					{
+						MOB mob2=room.fetchInhabitant(mobName);
+						if(mob2!=null){ target=mob2; break;}
+					}
 				}
-			}
+		    }catch(NoSuchElementException nse){}
 		}
 		if(target instanceof Deity) target=null;
 		Room newRoom=mob.location();
