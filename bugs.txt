@@ -1,8 +1,17 @@
+Friends ALL doesn`t autonotify you when people log on.
+it has asked me for my email everytime i log on for about a week now. I keep puting it in, but then it asks for it again whenever i try and log on again.
+rangers don`t get woodland hide.
+I have turned on Silent AutoGold but Muse can see me loot corpses anyway
+Zenthlas I have noticed that sometimes that if you kill something... and it repops it can`t be trageted again
 destroy for players - player version does an action, like tears, or throws down, or rips, depending on item material.
 Prop_TattooAdder does this also: +-ToothFairySlayer if a player fights the affected and the player dies, a given tattoo is removed from the player
 ARCHON commands to CAGE and UNCAGE mobs
 Finish Taxidermy
-ability to MLOAD and OLOAD from a scriptable
+ability to MLOAD and OLOAD from a cmare file
+SET MOBGROUP quest command for narrowing mob selections, or applying stuff to more than one mob
+MPOLOAD ability to load item into a room
+mask_prog should translate <S-NAME> and so forth before checking -- fix docs
+add limb, wield dagger, hold dagger, hold twohandedsword ->bug
 big mouth should apply to more than just mobs, allow to eat anything, and see how works as an affect
 where - should do items and mobs, area, or world.
 Something to hunt multiplayers with 1. the closest (in milliseconds) commands were entered by tested players and 2. the frequency of information command entry, eating drinking, ordered vs real command entry, variation of commands, socials, speech

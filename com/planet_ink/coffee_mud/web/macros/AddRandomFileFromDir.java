@@ -27,7 +27,6 @@ public class AddRandomFileFromDir extends StdWebMacro
 			String filePath=(String)e.nextElement();
 			if(filePath.equalsIgnoreCase("LINKONLY")) continue;
 			File directory=httpReq.grabFile(filePath);
-			if(directory==null) continue;
 			if((!filePath.endsWith(""+File.separatorChar))&&(!filePath.endsWith("/")))
 				filePath+="/";
 			if((directory!=null)&&(directory.canRead())&&(directory.isDirectory()))
@@ -36,16 +35,15 @@ public class AddRandomFileFromDir extends StdWebMacro
 				for(int l=0;l<list.length;l++)
 					fileList.addElement(filePath+list[l]);
 			}
-		}
-		if(fileList.size()==0) return buf.toString();
-		String file=(String)fileList.elementAt(Dice.roll(1,fileList.size(),-1));
-		if((file!=null)&&(file.length()>0))
-		{
-			if(LINKONLY)
-				buf.append(file);
 			else
-				buf.append(httpReq.getPageContent(file));
+				Log.sysOut("AddRFDir","Directory error: "+filePath);
 		}
+		if(fileList.size()==0) 
+			return buf.toString();
+		if(LINKONLY)
+			buf.append((String)fileList.elementAt(Dice.roll(1,fileList.size(),-1)));
+		else
+			buf.append(httpReq.getPageContent((String)fileList.elementAt(Dice.roll(1,fileList.size(),-1))));
 		return buf.toString();
 	}
 }
