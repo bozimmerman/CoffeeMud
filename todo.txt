@@ -18,7 +18,6 @@ Thief skill ALERTNESS gives one random description from an item in the room upon
 can the death/morgue strings be specified by the player's deity?
 1) Can DEATH allow you to specify room by the god of the player, with a default room for unholy folks?
 2) Can MORGUE get a setting 'DEATH' so the body goes with the person
-hate to do it to you... some zapper for deity requests, if at all possible.... 
 Minimum stat requirements... like +CHA 17 for a requirement for the goddess of beauty type of thing
 And minimum gold on hand or item requirements... like +GOLD 2 +ITEM "IRON POT" for the God of Wealth
 clan boss deletion automatically votes for a new one
@@ -71,6 +70,7 @@ readables that can load text from a text file
 ability to have random formulaic weapons, armor -- do somehow with rejuv field
 PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
 Allergies - nuff said
+assemblies mixing item 1 with item 2 produces item 3, these are predefined by archons  
 msx support
 
 From Aereon:

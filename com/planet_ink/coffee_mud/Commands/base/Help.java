@@ -474,15 +474,7 @@ public class Help
 		// the area exception
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
 			if(CMMap.getArea(helpStr.trim())!=null)
-			{
-				StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+helpStr.trim().toUpperCase());
-				if(s==null)
-				{
-					s=CMMap.getArea(helpStr.trim()).getAreaStats();
-					Resources.submitResource("HELP_"+helpStr.trim().toUpperCase(),s);
-				}
-				return s;
-			}
+				return CMMap.getArea(helpStr.trim()).getAreaStats();
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
 			return null;
 		return new StringBuffer(fixHelp(helpStr,thisTag));

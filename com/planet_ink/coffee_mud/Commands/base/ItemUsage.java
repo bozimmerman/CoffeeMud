@@ -79,7 +79,14 @@ public class ItemUsage
 		String preWord="";
 		if(possibleContainerID.equalsIgnoreCase("all")) allFlag=true;
 		if((commands.size()>3)&&(!allFlag))
+		{
 			preWord=(String)commands.elementAt(commands.size()-2);
+			if(preWord.equalsIgnoreCase("from"))
+			{
+				commands.removeElementAt(commands.size()-2);
+				preWord="";
+			}
+		}
 
 		int maxContained=Integer.MAX_VALUE;
 		if(Util.s_int(preWord)>0)

@@ -44,6 +44,14 @@ public class Skeleton extends StdRace
 	}
 
 
+	public void affectCharState(MOB affectedMOB, CharState affectableState)
+	{
+		super.affectCharState(affectedMOB, affectableState);
+		affectableState.setHunger(999999);
+		affectedMOB.curState().setHunger(affectableState.getHunger());
+		affectableState.setThirst(999999);
+		affectedMOB.curState().setThirst(affectableState.getThirst());
+	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

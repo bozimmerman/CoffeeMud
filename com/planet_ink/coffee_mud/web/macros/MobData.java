@@ -139,6 +139,106 @@ public class MobData extends StdWebMacro
 		}
 		return str;
 	}
+	public static StringBuffer curses(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("CURSES"))
+		{
+			Vector theclasses=new Vector();
+			if(httpReq.isRequestParameter("CURSE1"))
+			{
+				int num=1;
+				String behav=httpReq.getRequestParameter("CURSE"+num);
+				while(behav!=null)
+				{
+					if(behav.length()>0)
+						theclasses.addElement(behav);
+					num++;
+					behav=httpReq.getRequestParameter("CURSE"+num);
+				}
+			}
+			else
+			for(int a=0;a<E.numCurses();a++)
+			{
+				Ability Able=E.fetchCurse(a);
+				if(Able!=null)
+					theclasses.addElement(CMClass.className(Able));
+			}
+			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			for(int i=0;i<theclasses.size();i++)
+			{
+				String theclass=(String)theclasses.elementAt(i);
+				str.append("<TR><TD WIDTH=100%>");
+				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=CURSE"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
+				str.append("</SELECT>");
+				str.append("</TD></TR>");
+			}
+			str.append("<TR><TD WIDTH=100%>");
+			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CURSE"+(theclasses.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select a Curse");
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			{
+				String cnam=((Ability)a.nextElement()).ID();
+				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+			}
+			str.append("</SELECT>");
+			str.append("</TD></TR>");
+			str.append("</TABLE>");
+		}
+		return str;
+	}
+	public static StringBuffer powers(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("POWERS"))
+		{
+			Vector theclasses=new Vector();
+			if(httpReq.isRequestParameter("POWER1"))
+			{
+				int num=1;
+				String behav=httpReq.getRequestParameter("POWER"+num);
+				while(behav!=null)
+				{
+					if(behav.length()>0)
+						theclasses.addElement(behav);
+					num++;
+					behav=httpReq.getRequestParameter("POWER"+num);
+				}
+			}
+			else
+			for(int a=0;a<E.numPowers();a++)
+			{
+				Ability Able=E.fetchPower(a);
+				if(Able!=null)
+					theclasses.addElement(CMClass.className(Able));
+			}
+			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			for(int i=0;i<theclasses.size();i++)
+			{
+				String theclass=(String)theclasses.elementAt(i);
+				str.append("<TR><TD WIDTH=100%>");
+				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=POWER"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
+				str.append("</SELECT>");
+				str.append("</TD></TR>");
+			}
+			str.append("<TR><TD WIDTH=100%>");
+			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CURSE"+(theclasses.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select a Granted Power");
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			{
+				String cnam=((Ability)a.nextElement()).ID();
+				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+			}
+			str.append("</SELECT>");
+			str.append("</TD></TR>");
+			str.append("</TABLE>");
+		}
+		return str;
+	}
 
 	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
@@ -400,7 +500,8 @@ public class MobData extends StdWebMacro
 						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
 						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
-						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT"};
+						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
+						  "CLESIN","WORSIN","CLEPOW"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -656,6 +757,21 @@ public class MobData extends StdWebMacro
 					old=((Deity)M).getWorshipRitual();
 				str.append(old);
 				break;
+			case 34: // cleric sin
+				if((firstTime)&&(M instanceof Deity))
+					old=((Deity)M).getClericSin();
+				str.append(old);
+				break;
+			case 35: // worshipper sin
+				if((firstTime)&&(M instanceof Deity))
+					old=((Deity)M).getWorshipSin();
+				str.append(old);
+				break;
+			case 36: // cleric power
+				if((firstTime)&&(M instanceof Deity))
+					old=((Deity)M).getClericPowerup();
+				str.append(old);
+				break;
 			}
 			if(firstTime)
 				httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
@@ -666,7 +782,11 @@ public class MobData extends StdWebMacro
 		str.append(AreaData.affectsNBehaves(M,httpReq,parms));
 		str.append(MobData.abilities(M,httpReq,parms));
 		if(M instanceof Deity)
+		{
 			str.append(MobData.blessings((Deity)M,httpReq,parms));
+			str.append(MobData.curses((Deity)M,httpReq,parms));
+			str.append(MobData.powers((Deity)M,httpReq,parms));
+		}
 		if(M instanceof ShopKeeper)
 			str.append(MobData.shopkeeper((ShopKeeper)M,httpReq,parms));
 

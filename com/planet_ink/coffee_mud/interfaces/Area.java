@@ -116,7 +116,6 @@ public interface Area extends Environmental
 	
 	public void forceWeatherTick();
 	public void tickControl(boolean start);
-	public StringBuffer getAreaStats();
 	public void tickTock(int howManyHours);
 	
 	public void fillInAreaRooms();
@@ -136,4 +135,16 @@ public interface Area extends Environmental
 	public String getSubOpList();
 	public void setSubOpList(String list);
 	public Vector getSubOpVectorList();
+	
+	public StringBuffer getAreaStats();
+	public int[] getAreaIStats();
+	public final static int AREASTAT_POPULATION=0;
+	public final static int AREASTAT_MINLEVEL=1;
+	public final static int AREASTAT_MAXLEVEL=2;
+	public final static int AREASTAT_AVGLEVEL=3;
+	public final static int AREASTAT_MEDLEVEL=4;
+	public final static int AREASTAT_AVGALIGN=5;
+	public final static int AREASTAT_MEDALIGN=6;
+	public final static int AREASTAT_NUMBER=7;
+	
 }

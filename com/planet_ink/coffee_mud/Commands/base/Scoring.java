@@ -319,12 +319,20 @@ public class Scoring
 				msg.append(D.getClericRequirementsDesc()+"\n\r");
 				if(D.numBlessings()>0)
 				{
-					msg.append("Blessings: ");
+					msg.append("\n\rBlessings: ");
 					for(int b=0;b<D.numBlessings();b++)
 						msg.append(D.fetchBlessing(b).name()+" ");
 					msg.append("\n\r");
 					msg.append(D.getWorshipTriggerDesc()+"\n\r");
 					msg.append(D.getClericTriggerDesc()+"\n\r");
+				}
+				if(D.numPowers()>0)
+				{
+					msg.append("\n\rGranted Powers: ");
+					for(int b=0;b<D.numPowers();b++)
+						msg.append(D.fetchPower(b).name()+" ");
+					msg.append("\n\r");
+					msg.append(D.getClericPowerupDesc()+"\n\r");
 				}
 			}
 			else
@@ -865,44 +873,24 @@ public class Scoring
 			Area A=(Area)a.nextElement();
 			if(Sense.canAccess(mob,A))
 			{
-				Vector V=Resources.getFileLineVector(A.getAreaStats());
-				for(int v=0;v<V.size();v++)
+				int median=A.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
+				int medianDiff=0;
+				int upperLimit=mob.envStats().level()/3;
+				if((median<(mob.envStats().level()+upperLimit))
+				&&((median>=(mob.envStats().level()-5))))
 				{
-					String s=((String)V.elementAt(v)).toUpperCase();
-					int x=s.indexOf(":");
-					if(x>=0)
-					{
-						if(s.indexOf("MEDIAN")>=0)
-						{
-							int median=Util.s_int(s.substring(x+1).trim());
-							int medianDiff=0;
-							int upperLimit=mob.envStats().level()/3;
-							if((median<(mob.envStats().level()+upperLimit))
-							&&((median>=(mob.envStats().level()-5))))
-							{
-								if(mob.envStats().level()>=median)
-									medianDiff=(int)Math.round(9.0*Util.div(median,mob.envStats().level()));
-								else
-									medianDiff=(int)Math.round(10.0*Util.div(mob.envStats().level(),median));
-							}
-							whereAdd(levelsVec,A.name(),medianDiff);
-						}
-						else
-						if(s.indexOf("POPULATION")>=0)
-							whereAdd(mobsVec,A.name(),Util.s_int(s.substring(x+1).trim()));
-						else
-						if(s.indexOf("ALIGN")>=0)
-						{
-							int y=s.indexOf("(",x+1);
-							if(y>=0)
-							{
-								int align=Util.s_int(s.substring(x+1,y).trim());
-								int alignDiff=((int)Math.abs(new Integer(mob.getAlignment()-align).doubleValue()));
-								whereAdd(alignVec,A.name(),alignDiff);
-							}
-						}
-					}
+					if(mob.envStats().level()>=median)
+						medianDiff=(int)Math.round(9.0*Util.div(median,mob.envStats().level()));
+					else
+						medianDiff=(int)Math.round(10.0*Util.div(mob.envStats().level(),median));
 				}
+				whereAdd(levelsVec,A.name(),medianDiff);
+				
+				whereAdd(mobsVec,A.name(),A.getAreaIStats()[Area.AREASTAT_POPULATION]);
+				
+				int align=A.getAreaIStats()[Area.AREASTAT_MEDALIGN];
+				int alignDiff=((int)Math.abs(new Integer(mob.getAlignment()-align).doubleValue()));
+				whereAdd(alignVec,A.name(),alignDiff);
 			}
 		}
 		StringBuffer msg=new StringBuffer("You are currently in: ^H"+mob.location().getArea().name()+"^?\n\r");

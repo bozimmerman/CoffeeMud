@@ -340,7 +340,8 @@ public class Reset
 				for(Enumeration l=CMClass.locales();l.hasMoreElements();)
 				{
 					Room R=(Room)l.nextElement();
-					if(R.resourceChoices().contains(matNum))
+					if((R.resourceChoices()!=null)
+					&&(R.resourceChoices().contains(matNum)))
 					{
 						found=true;
 						break;

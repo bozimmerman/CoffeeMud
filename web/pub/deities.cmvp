@@ -1,11 +1,73 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<P>&nbsp;</P>
+<html>
+<head>
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>CoffeeMUD Web Server</title>
+	<script language=JavaScript>
+	<!--
+		function openUp2(named)
+		{
+			var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/ability.cmvp?ABILITY="+named,
+			            "Ability",strFeatures, false);
+		}
+	//-->
+	</script>
+</head>
 
+<body BGCOLOR=#FFFFCC>
+<h3>CoffeeMud 4.0 Installed Deities Information</h3><P>
+<UL>
+@loop@
+@DeityNext@
+<LI><A href="#@RaceID@">@RaceName@</A>
+@back@
+</UL><P>
+@DeityNext?reset@
+@loop@
+@DeityNext@
+<TABLE WIDTH=100% BORDER=1>
+<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=#FFCCFF ALIGN=CENTER><a name="@DeityID@"><H3>@DeityID@</H3></a></TD></TR>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Description</B></TD><TD>@DeityData?description@</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Worshipper Requirements</B></TD><TD>@DeityData?worshipreq@</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Cleric Requirements</B></TD><TD>@DeityData?clericreq@</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Blessings</B></TD>
+<TD>
+@AbilityBlessingNext?reset@
+@loop@
+@AbilityBlessingNext@
+<a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=BLUE>@AbilityName@</FONT></a> <FONT COLOR=BLACK>/</FONT>
+@back@
+</TD>
+</TR>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Worshipper Ritual</B></TD><TD>@DeityData?worshiptrig@&nbsp;</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Cleric Ritual</B></TD><TD>@DeityData?clerictrig@&nbsp;</TD>
+<!--
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Curses</B></TD>
+<TD>
+@AbilityCursesNext?reset@
+@loop@
+@AbilityCursesNext@
+<a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=RED>@AbilityName@</FONT></a> <FONT COLOR=BLACK>/</FONT>
+@back@
+&nbsp;</TD>
+</TR>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Worshipper Sins</B></TD><TD>@DeityData?worshipsintrig@&nbsp;</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Cleric Sins</B></TD><TD>@DeityData?clericsintrig@&nbsp;</TD>
+-->
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Powers</B></TD>
+<TD>
+@AbilityPowersNext?reset@
+@loop@
+@AbilityPowersNext@
+<a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=PURPLE>@AbilityName@</FONT></a> <FONT COLOR=BLACK>/</FONT>
+@back@
+&nbsp;</TD>
+</TR>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Cleric Power Ritual</B></TD><TD>@DeityData?powertrig@&nbsp;</TD>
+</TABLE>
+<P>
+@back@
 </BODY>
 </HTML>

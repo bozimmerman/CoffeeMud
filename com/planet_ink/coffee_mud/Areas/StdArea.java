@@ -20,6 +20,7 @@ public class StdArea implements Area
 	protected boolean mobility=true;
 	protected long tickStatus=Tickable.STATUS_NOT;
 	private Boolean roomSemaphore=new Boolean(true);
+	private int[] statData=null;
 
 	protected static int year=1;
 	protected static int month=1;
@@ -1315,21 +1316,30 @@ public class StdArea implements Area
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
+	public int[] getAreaIStats()
+	{
+		getAreaStats();
+		return statData;
+	}
 	public StringBuffer getAreaStats()
 	{
-		StringBuffer s=new StringBuffer("");
+		StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+Name().toUpperCase());
+		if(s!=null) return s;
+		s=new StringBuffer("");
 		s.append(description()+"\n\r");
 		s.append("Number of rooms: "+numberOfIDedRooms()+"\n\r");
 
-		Vector mobRanges=new Vector();
-		int totalMOBs=0;
-		int lowestLevel=Integer.MAX_VALUE;
-		int highestLevel=Integer.MIN_VALUE;
+		Vector levelRanges=new Vector();
+		Vector alignRanges=new Vector();
+		statData=new int[Area.AREASTAT_NUMBER];
+		statData[Area.AREASTAT_POPULATION]=0;
+		statData[Area.AREASTAT_MINLEVEL]=Integer.MAX_VALUE;
+		statData[Area.AREASTAT_MAXLEVEL]=Integer.MIN_VALUE;
+		statData[Area.AREASTAT_AVGLEVEL]=0;
+		statData[Area.AREASTAT_MEDLEVEL]=0;
+		statData[Area.AREASTAT_AVGALIGN]=0;
 		int totalLevels=0;
-		int averageLevel=0;
-		int medianLevel=0;
 		long totalAlignments=0;
-		int averageAlignment=0;
 		for(Enumeration r=getMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
@@ -1339,29 +1349,40 @@ public class StdArea implements Area
 				if((mob!=null)&&(mob.isMonster()))
 				{
 					int lvl=mob.baseEnvStats().level();
-					mobRanges.addElement(new Integer(lvl));
+					levelRanges.addElement(new Integer(lvl));
+					alignRanges.addElement(new Integer(mob.getAlignment()));
 					totalAlignments+=mob.getAlignment();
-					totalMOBs++;
+					statData[Area.AREASTAT_POPULATION]++;
 					totalLevels+=lvl;
-					if(lvl<lowestLevel)
-						lowestLevel=lvl;
-					if(lvl>highestLevel)
-						highestLevel=lvl;
+					if(lvl<statData[Area.AREASTAT_MINLEVEL])
+						statData[Area.AREASTAT_MINLEVEL]=lvl;
+					if(lvl>statData[Area.AREASTAT_MAXLEVEL])
+						statData[Area.AREASTAT_MAXLEVEL]=lvl;
 				}
 			}
 		}
-		if(mobRanges.size()>0)
+		if((statData[Area.AREASTAT_POPULATION]==0)||(levelRanges.size()==0))
 		{
-			Collections.sort((List)mobRanges);
-			medianLevel=((Integer)mobRanges.elementAt((int)Math.round(Math.floor(Util.div(mobRanges.size(),2.0))))).intValue();
-			averageLevel=(int)Math.round(Util.div(totalLevels,totalMOBs));
-			averageAlignment=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(totalMOBs).doubleValue());
-			s.append("Population     : "+mobRanges.size()+"\n\r");
-			s.append("Level range    : "+lowestLevel+" to "+highestLevel+"\n\r");
-			s.append("Average level  : "+averageLevel+"\n\r");
-			s.append("Median level   : "+medianLevel+"\n\r");
-			s.append("Alignment avg. : "+averageAlignment+" ("+CommonStrings.alignmentStr(averageAlignment)+")\n\r");
+			statData[Area.AREASTAT_MINLEVEL]=0;
+			statData[Area.AREASTAT_MAXLEVEL]=0;
+			s.append("Population     : 0\n\r");
 		}
+		else
+		{
+			Collections.sort((List)levelRanges);
+			Collections.sort((List)alignRanges);
+			statData[Area.AREASTAT_MEDLEVEL]=((Integer)levelRanges.elementAt((int)Math.round(Math.floor(Util.div(levelRanges.size(),2.0))))).intValue();
+			statData[Area.AREASTAT_MEDALIGN]=((Integer)alignRanges.elementAt((int)Math.round(Math.floor(Util.div(alignRanges.size(),2.0))))).intValue();
+			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(Util.div(totalLevels,statData[Area.AREASTAT_POPULATION]));
+			statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(statData[Area.AREASTAT_POPULATION]).doubleValue());
+			s.append("Population     : "+statData[Area.AREASTAT_POPULATION]+"\n\r");
+			s.append("Level range    : "+statData[Area.AREASTAT_MINLEVEL]+" to "+statData[Area.AREASTAT_MAXLEVEL]+"\n\r");
+			s.append("Average level  : "+statData[Area.AREASTAT_AVGLEVEL]+"\n\r");
+			s.append("Median level   : "+statData[Area.AREASTAT_MEDLEVEL]+"\n\r");
+			s.append("Avg. Alignment : "+statData[Area.AREASTAT_AVGALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_AVGALIGN])+")\n\r");
+			s.append("Med. Alignment : "+statData[Area.AREASTAT_MEDALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_MEDALIGN])+")\n\r");
+		}
+		Resources.submitResource("HELP_"+Name().toUpperCase(),s);
 		return s;
 	}
 

@@ -17,7 +17,6 @@ public class MoneyChanger extends StdBehavior
 		if(forMe==null) return;
 		if(!(forMe instanceof MOB)) return;
 		((MOB)forMe).baseCharStats().setStat(CharStats.STRENGTH,100);
-		((MOB)forMe).baseEnvStats().setWeight(10);
 		super.startBehavior(forMe);
 	}
 	

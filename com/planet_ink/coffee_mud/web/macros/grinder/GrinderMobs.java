@@ -86,6 +86,60 @@ public class GrinderMobs
 		return "";
 	}
 
+	public static String curses(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		while(E.numCurses()>0)
+		{
+			Ability A=E.fetchCurse(0);
+			if(A!=null)
+				E.delCurse(A);
+		}
+		if(httpReq.isRequestParameter("CURSE1"))
+		{
+			int num=1;
+			String aff=httpReq.getRequestParameter("CURSE"+num);
+			while(aff!=null)
+			{
+				if(aff.length()>0)
+				{
+					Ability B=CMClass.getAbility(aff);
+					if(B==null) return "Unknown Curse '"+aff+"'.";
+					E.addCurse(B);
+				}
+				num++;
+				aff=httpReq.getRequestParameter("CURSE"+num);
+			}
+		}
+		return "";
+	}
+
+	public static String powers(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		while(E.numPowers()>0)
+		{
+			Ability A=E.fetchPower(0);
+			if(A!=null)
+				E.delPower(A);
+		}
+		if(httpReq.isRequestParameter("POWER1"))
+		{
+			int num=1;
+			String aff=httpReq.getRequestParameter("POWER"+num);
+			while(aff!=null)
+			{
+				if(aff.length()>0)
+				{
+					Ability B=CMClass.getAbility(aff);
+					if(B==null) return "Unknown Power '"+aff+"'.";
+					E.addPower(B);
+				}
+				num++;
+				aff=httpReq.getRequestParameter("POWER"+num);
+			}
+		}
+		return "";
+	}
+
 	public static String editMob(ExternalHTTPRequests httpReq, Hashtable parms, Room R)
 	{
 		String mobCode=httpReq.getRequestParameter("MOB");
@@ -134,7 +188,8 @@ public class GrinderMobs
 						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
 						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
-						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT","BLESSINGS"};
+						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
+						  "CLESIN","WORSIN","CLEPOW","CURSES","POWERS"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -260,6 +315,18 @@ public class GrinderMobs
 				if(M instanceof Deity)
 					((Deity)M).setWorshipRitual(old);
 				break;
+			case 34: // cleric sins
+				if(M instanceof Deity)
+					((Deity)M).setClericSin(old);
+				break;
+			case 35: // worshipper ritual
+				if(M instanceof Deity)
+					((Deity)M).setWorshipSin(old);
+				break;
+			case 36: // cleric power
+				if(M instanceof Deity)
+					((Deity)M).setClericPowerup(old);
+				break;
 			}
 		}
 
@@ -276,6 +343,10 @@ public class GrinderMobs
 			if(M instanceof Deity)
 			{
 				error=GrinderMobs.blessings((Deity)M,httpReq,parms);
+				if(error.length()>0) return error;
+				error=GrinderMobs.curses((Deity)M,httpReq,parms);
+				if(error.length()>0) return error;
+				error=GrinderMobs.powers((Deity)M,httpReq,parms);
 				if(error.length()>0) return error;
 			}
 

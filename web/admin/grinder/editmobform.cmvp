@@ -295,6 +295,32 @@
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Worship Ritual:</B></FONT></TD>
 		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=WORRIT SIZE=25 VALUE="@MobData?WORRIT@">
 	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Curses of Sin:</B></FONT>
+		<BR><A target=HELP HREF="/abilities.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+		@MobData?CURSES@
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Clerical Sins:</B></FONT></TD>
+		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CLERIT SIZE=25 VALUE="@MobData?CLERSIN@">
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Worshipper Sins:</B></FONT></TD>
+		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=WORRIT SIZE=25 VALUE="@MobData?WORRSIN@">
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Clerical Powers:</B></FONT>
+		<BR><A target=HELP HREF="/abilities.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+		@MobData?POWERS@
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Clerical Power Ritual:</B></FONT></TD>
+		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CLERIT SIZE=25 VALUE="@MobData?CLERPOW@">
+	</TR>
 @endif@
 @if?MobData?ISSHOPKEEPER@
 	<TR>

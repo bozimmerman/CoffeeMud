@@ -172,6 +172,21 @@ be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqPa
       valid player name, call it with MacParm RESET to clear ABILITY 
       ReqParm.&nbsp; Call it with MacParm NEXT to set ABILITY ReqParm to next 
       ability the player has.</TD></TR>
+<TR><TD>AbilityBlessingNext</TD><TD>This iterates through deity 
+      blessings.&nbsp; Set ReqParm DEITY to a 
+      valid deity name, call it with MacParm RESET to clear ABILITY 
+      ReqParm.&nbsp; Call it with MacParm NEXT to set ABILITY ReqParm to next 
+      blessing the deity has.</TD></TR>
+<TR><TD>AbilityCursesNext</TD><TD>This iterates through deity 
+      curses.&nbsp; Set ReqParm DEITY to a 
+      valid deity name, call it with MacParm RESET to clear ABILITY 
+      ReqParm.&nbsp; Call it with MacParm NEXT to set ABILITY ReqParm to next 
+      curse the deity has.</TD></TR>
+<TR><TD>AbilityPowersNext</TD><TD>This iterates through deity 
+      curses.&nbsp; Set ReqParm DEITY to a 
+      valid deity name, call it with MacParm RESET to clear ABILITY 
+      ReqParm.&nbsp; Call it with MacParm NEXT to set ABILITY ReqParm to next 
+      power the deity might give.</TD></TR>
 <TR><TD>AbilityTypeNext</TD><TD>Sets the ReqParm ABILITYTYPE to the 
       next&nbsp;Ability Type.&nbsp; Returns @break@ when the list has been 
       completed, or "" if MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm 
@@ -400,6 +415,16 @@ loops.</TD></TR>
       the given race.&nbsp; Returns @break@ when the list has been completed, or 
       "" if MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to 
       restart listing.</TD></TR>
+<TR><TD>DeityData</TD><TD>Requires ReqParm DEITY be set to a valid&nbsp;deity 
+      name.&nbsp; Returns information about that deity depending on MacParms 
+      found.&nbsp; Valid MacParms include: DESCRIPTION, WORSHIPREQ, CLERICREQ,
+      WORSHIPTRIG,CLERICTRIP,WORSHIPSINTRIG,CLERICSINTRIG,POWERTRIG</TD></TR>
+<TR><TD>DeityID</TD><TD>Requires ReqParm DEITY be set to a valid&nbsp;race 
+      name.&nbsp; Returns the id.</TD></TR>
+<TR><TD>DeityNext</TD><TD>Sets the ReqParm DEITY to the next&nbsp;deity 
+      found.&nbsp; Returns @break@ when the list has been completed, or "" if 
+      MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to restart 
+      listing.&nbsp;</TD></TR>
 <TR><TD>RaceData</TD><TD>Requires ReqParm RACE be set to a valid&nbsp;race 
       id.&nbsp; Returns information about that race depending on MacParms 
       found.&nbsp; Valid MacParms include: HELP, STATS, SENSES, TRAINS, PRACS, 

@@ -80,7 +80,7 @@ public class Skill_Swim extends StdAbility
 			else
 			{
 				if(mob.fetchAffect(ID())==null)
-					addAffect(this);
+					mob.addAffect(this);
 				mob.recoverEnvStats();
 
 				ExternalPlay.move(mob,dirCode,false,false);
@@ -100,10 +100,7 @@ public class Skill_Swim extends StdAbility
 		Ability myAbility=student.fetchAbility(ID());
 		if(myAbility.profficiency()<20)
 			return true;
-		if((student.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		 &&(student.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		 &&(student.location().domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-		 &&(student.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
+		if(!placeToSwim(student.location()))
 		{
 			student.tell("You need to be on or in the water to learn any more about swimming!");
 			teacher.tell("You need to be on or in the water to teach more about swimming!");

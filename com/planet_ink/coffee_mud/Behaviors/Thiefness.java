@@ -57,7 +57,7 @@ public class Thiefness extends CombatAbilities
 				   &&(Sense.canBeSeenBy(potentialVictim,mob)))
 					victim=potentialVictim;
 			}
-			if(victim!=null)
+			if((victim!=null)&&(!victim.isASysOp(victim.location())))
 			{
 				Vector V=new Vector();
 				Ability A=mob.fetchAbility("Thief_Steal");

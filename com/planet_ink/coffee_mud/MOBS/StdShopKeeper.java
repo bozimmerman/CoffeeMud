@@ -483,7 +483,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case Affect.TYP_VIEW:
 			{
 				if((affect.tool()!=null)
-				&&(doIHaveThisInStock(affect.tool().Name(),mob)))
+				&&(doIHaveThisInStock(affect.tool().Name()+"$",mob)))
 				{
 					if((affect.targetMinor()!=Affect.TYP_VIEW)
 					&&(yourValue(mob,affect.tool(),true)>com.planet_ink.coffee_mud.utils.Money.totalMoney(mob)))
@@ -698,7 +698,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			case Affect.TYP_VIEW:
 				super.affect(myHost,affect);
-				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().Name(),mob)))
+				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().Name()+"$",mob)))
 				{
 					StringBuffer str=new StringBuffer("");
 					str.append("Interested in "+affect.tool().name()+"?");
@@ -747,9 +747,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case Affect.TYP_BUY:
 				super.affect(myHost,affect);
 				if((affect.tool()!=null)
-				&&(doIHaveThisInStock(affect.tool().Name(),mob)))
+				&&(doIHaveThisInStock(affect.tool().Name()+"$",mob)))
 				{
-					Vector products=removeSellableProduct(affect.tool().Name(),mob);
+					Vector products=removeSellableProduct(affect.tool().Name()+"$",mob);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
 					com.planet_ink.coffee_mud.utils.Money.subtractMoney(this,mob,yourValue(mob,product,true));
@@ -869,6 +869,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			String bit=(String)V.elementAt(v);
 			if(Util.s_double(bit)!=0.0)
 				d=Util.s_double(bit);
+            if(bit.equalsIgnoreCase(mob.charStats().getCurrentClass().name() ))
+			{ yes=true; break;}
 			if(bit.equalsIgnoreCase(mob.charStats().getMyRace().racialCategory()))
 			{	yes=true; break;}
 			if(bit.equalsIgnoreCase(CommonStrings.shortAlignmentStr(mob.getAlignment())))

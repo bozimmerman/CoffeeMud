@@ -2193,6 +2193,177 @@ public class Generic
 		}
 	}
 
+	public static void genDeity6(MOB mob, Deity E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		String behave="NO";
+		while(behave.length()>0)
+		{
+			String abilitiestr="";
+			for(int a=0;a<E.numCurses();a++)
+			{
+				Ability A=E.fetchCurse(a);
+				if((A!=null)&&(!A.isBorrowed(E)))
+					abilitiestr+=A.ID()+", ";
+			}
+			if(abilitiestr.length()>0)
+				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
+			mob.tell(showNumber+". Curses: '"+abilitiestr+"'.");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			behave=mob.session().prompt("Enter an ability to add/remove (?)\n\r:","");
+			if(behave.length()>0)
+			{
+				if(behave.equalsIgnoreCase("?"))
+					mob.tell(Lister.reallyList(CMClass.abilities(),-1).toString());
+				else
+				{
+					Ability chosenOne=null;
+					for(int a=0;a<E.numCurses();a++)
+					{
+						Ability A=E.fetchCurse(a);
+						if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
+							chosenOne=A;
+					}
+					if(chosenOne!=null)
+					{
+						mob.tell(chosenOne.ID()+" removed.");
+						E.delCurse(chosenOne);
+					}
+					else
+					{
+						chosenOne=(Ability)CMClass.getAbility(behave);
+						if(chosenOne!=null)
+						{
+							boolean alreadyHasIt=false;
+							for(int a=0;a<E.numCurses();a++)
+							{
+								Ability A=E.fetchCurse(a);
+								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
+									alreadyHasIt=true;
+							}
+							if(!alreadyHasIt)
+								mob.tell(chosenOne.ID()+" added.");
+							else
+								mob.tell(chosenOne.ID()+" re-added.");
+							if(!alreadyHasIt)
+								E.addCurse((Ability)chosenOne.copyOf());
+						}
+						else
+						{
+							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
+						}
+					}
+				}
+			}
+			else
+				mob.tell("(no change)");
+		}
+	}
+
+	public static void genDeity7(MOB mob, Deity E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		String behave="NO";
+		while(behave.length()>0)
+		{
+			String abilitiestr="";
+			for(int a=0;a<E.numPowers();a++)
+			{
+				Ability A=E.fetchPower(a);
+				if((A!=null)&&(!A.isBorrowed(E)))
+					abilitiestr+=A.ID()+", ";
+			}
+			if(abilitiestr.length()>0)
+				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
+			mob.tell(showNumber+". Granted Powers: '"+abilitiestr+"'.");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			behave=mob.session().prompt("Enter an ability to add/remove (?)\n\r:","");
+			if(behave.length()>0)
+			{
+				if(behave.equalsIgnoreCase("?"))
+					mob.tell(Lister.reallyList(CMClass.abilities(),-1).toString());
+				else
+				{
+					Ability chosenOne=null;
+					for(int a=0;a<E.numPowers();a++)
+					{
+						Ability A=E.fetchPower(a);
+						if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
+							chosenOne=A;
+					}
+					if(chosenOne!=null)
+					{
+						mob.tell(chosenOne.ID()+" removed.");
+						E.delPower(chosenOne);
+					}
+					else
+					{
+						chosenOne=(Ability)CMClass.getAbility(behave);
+						if(chosenOne!=null)
+						{
+							boolean alreadyHasIt=false;
+							for(int a=0;a<E.numPowers();a++)
+							{
+								Ability A=E.fetchPower(a);
+								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
+									alreadyHasIt=true;
+							}
+							if(!alreadyHasIt)
+								mob.tell(chosenOne.ID()+" added.");
+							else
+								mob.tell(chosenOne.ID()+" re-added.");
+							if(!alreadyHasIt)
+								E.addPower((Ability)chosenOne.copyOf());
+						}
+						else
+						{
+							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
+						}
+					}
+				}
+			}
+			else
+				mob.tell("(no change)");
+		}
+	}
+	public static void genDeity8(MOB mob, Deity E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Cleric Sin: '"+E.getClericSin()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newValue=mob.session().prompt("Enter new sin ritual\n\r:","");
+		if(newValue.length()>0)
+			E.setClericSin(newValue);
+		else
+			mob.tell("(no change)");
+	}
+	public static void genDeity9(MOB mob, Deity E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Worshiper Sin: '"+E.getWorshipSin()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newValue=mob.session().prompt("Enter new sin ritual\n\r:","");
+		if(newValue.length()>0)
+			E.setWorshipSin(newValue);
+		else
+			mob.tell("(no change)");
+	}
+	public static void genDeity0(MOB mob, Deity E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Cleric Power Ritual: '"+E.getClericPowerup()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newValue=mob.session().prompt("Enter new power ritual\n\r:","");
+		if(newValue.length()>0)
+			E.setClericPowerup(newValue);
+		else
+			mob.tell("(no change)");
+	}
 	public static void genGridLocaleX(MOB mob, GridLocale E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -2809,6 +2980,11 @@ public class Generic
 				genDeity3(mob,(Deity)me,++showNumber,showFlag);
 				genDeity4(mob,(Deity)me,++showNumber,showFlag);
 				genDeity5(mob,(Deity)me,++showNumber,showFlag);
+				genDeity8(mob,(Deity)me,++showNumber,showFlag);
+				genDeity9(mob,(Deity)me,++showNumber,showFlag);
+				genDeity6(mob,(Deity)me,++showNumber,showFlag);
+				genDeity0(mob,(Deity)me,++showNumber,showFlag);
+				genDeity7(mob,(Deity)me,++showNumber,showFlag);
 			}
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}

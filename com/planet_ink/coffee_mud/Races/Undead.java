@@ -24,6 +24,14 @@ public class Undead extends StdRace
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
+	public void affectCharState(MOB affectedMOB, CharState affectableState)
+	{
+		super.affectCharState(affectedMOB, affectableState);
+		affectableState.setHunger(999999);
+		affectedMOB.curState().setHunger(affectableState.getHunger());
+		affectableState.setThirst(999999);
+		affectedMOB.curState().setThirst(affectableState.getThirst());
+	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);

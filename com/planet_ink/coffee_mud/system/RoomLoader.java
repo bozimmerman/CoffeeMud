@@ -173,11 +173,7 @@ public class RoomLoader
 		}
 
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
-		{
-			Area A=(Area)a.nextElement();
-			StringBuffer s=A.getAreaStats();
-			Resources.submitResource("HELP_"+A.Name().toUpperCase(),s);
-		}
+			((Area)a.nextElement()).getAreaStats();
 	}
 
 	private static void fixItemKeys(Hashtable itemLocs, Hashtable itemNums)

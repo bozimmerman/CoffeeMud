@@ -341,6 +341,9 @@ public class Generic
 				text.append(XMLManager.convertXMLtoTag("WORREQ",((Deity)E).getWorshipRequirements()));
 				text.append(XMLManager.convertXMLtoTag("CLERIT",((Deity)E).getClericRitual()));
 				text.append(XMLManager.convertXMLtoTag("WORRIT",((Deity)E).getWorshipRitual()));
+				text.append(XMLManager.convertXMLtoTag("CLERSIT",((Deity)E).getClericSin()));
+				text.append(XMLManager.convertXMLtoTag("WORRSIT",((Deity)E).getWorshipSin()));
+				text.append(XMLManager.convertXMLtoTag("CLERPOW",((Deity)E).getClericPowerup()));
 
 				StringBuffer itemstr=new StringBuffer("");
 				for(int b=0;b<((Deity)E).numBlessings();b++)
@@ -353,6 +356,30 @@ public class Generic
 					itemstr.append("</BLESS>");
 				}
 				text.append(XMLManager.convertXMLtoTag("BLESSINGS",itemstr.toString()));
+				
+				itemstr=new StringBuffer("");
+				for(int b=0;b<((Deity)E).numCurses();b++)
+				{
+					Ability A=((Deity)E).fetchCurse(b);
+					if(A==null) continue;
+					itemstr.append("<CURSE>");
+					itemstr.append(XMLManager.convertXMLtoTag("CUCLASS",CMClass.className(A)));
+					itemstr.append(XMLManager.convertXMLtoTag("CUDATA",getPropertiesStr(A,true)));
+					itemstr.append("</CURSE>");
+				}
+				text.append(XMLManager.convertXMLtoTag("CURSES",itemstr.toString()));
+				
+				itemstr=new StringBuffer("");
+				for(int b=0;b<((Deity)E).numPowers();b++)
+				{
+					Ability A=((Deity)E).fetchPower(b);
+					if(A==null) continue;
+					itemstr.append("<POWER>");
+					itemstr.append(XMLManager.convertXMLtoTag("POCLASS",CMClass.className(A)));
+					itemstr.append(XMLManager.convertXMLtoTag("PODATA",getPropertiesStr(A,true)));
+					itemstr.append("</POWER>");
+				}
+				text.append(XMLManager.convertXMLtoTag("POWERS",itemstr.toString()));
 			}
 			if(E instanceof ShopKeeper)
 			{
@@ -1303,8 +1330,14 @@ public class Generic
 					((ShopKeeper)E).delStoreInventory(((Environmental)V.elementAt(b)));
 			}
 			if(E instanceof Deity)
+			{
 				while(((Deity)E).numBlessings()>0)
 					((Deity)E).delBlessing(((Deity)E).fetchBlessing(0));
+				while(((Deity)E).numCurses()>0)
+					((Deity)E).delCurse(((Deity)E).fetchCurse(0));
+				while(((Deity)E).numPowers()>0)
+					((Deity)E).delPower(((Deity)E).fetchPower(0));
+			}
 		}
 		while(E.numAffects()>0)
 		{
@@ -1432,6 +1465,9 @@ public class Generic
 				godmob.setWorshipRequirements(XMLManager.getValFromPieces(buf,"WORREQ"));
 				godmob.setClericRitual(XMLManager.getValFromPieces(buf,"CLERIT"));
 				godmob.setWorshipRitual(XMLManager.getValFromPieces(buf,"WORRIT"));
+				godmob.setClericSin(XMLManager.getValFromPieces(buf,"CLERSIT"));
+				godmob.setWorshipSin(XMLManager.getValFromPieces(buf,"WORRSIT"));
+				godmob.setClericPowerup(XMLManager.getValFromPieces(buf,"CLERPOW"));
 
 				Vector V=XMLManager.getRealContentsFromPieces(buf,"BLESSINGS");
 				if(V==null)
@@ -1458,6 +1494,50 @@ public class Generic
 						}
 						setPropertiesStr(newOne,adat,true);
 						godmob.addBlessing(newOne);
+					}
+				}
+				V=XMLManager.getRealContentsFromPieces(buf,"CURSES");
+				if(V!=null)
+				{
+					for(int i=0;i<V.size();i++)
+					{
+						XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
+						if((!ablk.tag.equalsIgnoreCase("CURSE"))||(ablk.contents==null))
+						{
+							Log.errOut("Generic","Error parsing 'CURSE' of "+E.Name()+".  Load aborted");
+							return;
+						}
+						Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"CUCLASS"));
+						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"CUDATA");
+						if((adat==null)||(newOne==null))
+						{
+							Log.errOut("Generic","Error parsing 'CURSE DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
+							return;
+						}
+						setPropertiesStr(newOne,adat,true);
+						godmob.addCurse(newOne);
+					}
+				}
+				V=XMLManager.getRealContentsFromPieces(buf,"POWERS");
+				if(V!=null)
+				{
+					for(int i=0;i<V.size();i++)
+					{
+						XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
+						if((!ablk.tag.equalsIgnoreCase("POWER"))||(ablk.contents==null))
+						{
+							Log.errOut("Generic","Error parsing 'POWER' of "+E.Name()+".  Load aborted");
+							return;
+						}
+						Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"POCLASS"));
+						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"PODATA");
+						if((adat==null)||(newOne==null))
+						{
+							Log.errOut("Generic","Error parsing 'POWER DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
+							return;
+						}
+						setPropertiesStr(newOne,adat,true);
+						godmob.addPower(newOne);
 					}
 				}
 			}
