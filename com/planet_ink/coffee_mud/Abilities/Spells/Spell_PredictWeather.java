@@ -85,7 +85,7 @@ public class Spell_PredictWeather extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sensitivity to the weather!":"<S-NAME> chant(s) for weather sensitivity!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sensitivity to the weather!":"<S-NAME> invoke(s) weather sensitivity!");
 			if(mob.location().okAffect(msg))
 			{
 				lastPrediction="";
@@ -94,7 +94,7 @@ public class Spell_PredictWeather extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) into the sky, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) into the sky, but the spell fizzles.");
 
 		return success;
 	}

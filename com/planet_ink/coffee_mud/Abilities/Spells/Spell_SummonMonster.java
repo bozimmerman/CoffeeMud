@@ -48,7 +48,7 @@ public class Spell_SummonMonster extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> chant(s) and summon(s) help from the Java Plain.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> summon(s) help from the Java Plain.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -57,7 +57,7 @@ public class Spell_SummonMonster extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) and call(s), but chokes on the words.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> call(s) for magical help, but chokes on the words.");
 
 		// return whether it worked
 		return success;

@@ -79,7 +79,7 @@ public class Spell_MassHaste extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> wave(s) <S-HIS-HER> arms and chant(s) quickly.");
+			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly.");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -100,7 +100,7 @@ public class Spell_MassHaste extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms and chant(s) quickly, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly, but the spell fizzles.");
 
 
 		// return whether it worked

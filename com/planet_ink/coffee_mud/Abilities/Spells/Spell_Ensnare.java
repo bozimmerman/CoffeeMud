@@ -112,7 +112,7 @@ public class Spell_Ensnare extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> chant(s) and wave(s) <S-HIS-HER> fingers at the ground.");
+			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -138,7 +138,7 @@ public class Spell_Ensnare extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> chant(s) and wave(s) <S-HIS-HER> fingers, but the spell fizzles.");
+			return maliciousFizzle(mob,null,"<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers, but the spell fizzles.");
 
 
 		// return whether it worked

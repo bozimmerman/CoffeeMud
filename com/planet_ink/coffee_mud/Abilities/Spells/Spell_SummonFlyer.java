@@ -78,7 +78,7 @@ public class Spell_SummonFlyer extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> chant(s) and call(s) for a loyal steed.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> magically call(s) for a loyal steed.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -89,7 +89,7 @@ public class Spell_SummonFlyer extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) and call(s), but choke(s) on the words.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> call(s) for a steed, but choke(s) on the words.");
 
 		// return whether it worked
 		return success;

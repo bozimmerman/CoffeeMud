@@ -71,7 +71,7 @@ public class Spell_DetectHidden extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) keen vision!":"<S-NAME> chant(s) for keen vision!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) keen vision!":"<S-NAME> incant(s) softly and gain(s) keen vision!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -79,7 +79,7 @@ public class Spell_DetectHidden extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HIS-HER> keen eyes, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) and open(s) <S-HIS-HER> keen eyes, but the spell fizzles.");
 
 		return success;
 	}

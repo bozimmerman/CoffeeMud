@@ -98,7 +98,7 @@ public class Spell_MassInvisibility extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> wave(s) <S-HIS-HER> arms and chant(s) softly.");
+			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly.");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -119,7 +119,7 @@ public class Spell_MassInvisibility extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms and chant(s) softly, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly, but the spell fizzles.");
 
 
 		// return whether it worked

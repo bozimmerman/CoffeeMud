@@ -97,8 +97,8 @@ public class Spell_AcidFog extends Spell
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
-		{
-			mob.location().show(mob,null,affectType,auto?"A horrendous cloud of acid appears!":"<S-NAME> encant(s) and wave(s) <S-HIS-HER> arms around.");
+		{ 
+			mob.location().show(mob,null,affectType,auto?"A horrendous cloud of acid appears!":"<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -125,7 +125,7 @@ public class Spell_AcidFog extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> encant(s), but the spell fizzles.");
+			return maliciousFizzle(mob,null,"<S-NAME> incant(s), but the spell fizzles.");
 
 
 		// return whether it worked

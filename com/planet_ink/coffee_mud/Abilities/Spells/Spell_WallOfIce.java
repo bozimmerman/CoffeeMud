@@ -159,7 +159,7 @@ public class Spell_WallOfIce extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"A mighty wall of ice appears!":"<S-NAME> chant(s) and conjur(s) up a mighty wall of ice!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"A mighty wall of ice appears!":"<S-NAME> conjur(s) up a mighty wall of ice!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -178,7 +178,7 @@ public class Spell_WallOfIce extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s), but the conjuration fizzles.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s), but the magic fizzles.");
 
 		// return whether it worked
 		return success;

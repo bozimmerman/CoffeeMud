@@ -47,6 +47,11 @@ public class Prop_RestrictSpells extends Property
 				roomS.showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 			if(roomD!=null)
 				roomD.showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+			if((affect.source()!=null)
+			&&(affect.source().location()!=null)
+			&&(affect.source().location()!=roomS)
+			&&(affect.source().location()!=roomD))
+				affect.source().location().showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 			return false;
 		}
 		return true;

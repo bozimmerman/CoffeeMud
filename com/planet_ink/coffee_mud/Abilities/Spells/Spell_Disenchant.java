@@ -47,7 +47,7 @@ public class Spell_Disenchant extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> hold(s) <T-NAMESELF> and chant(s).");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -68,7 +68,7 @@ public class Spell_Disenchant extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> hold(s) <T-NAMESELF> and chant(s), looking very frustrated.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> hold(s) <T-NAMESELF> and whisper(s), but fail(s) to cast a spell.");
 
 
 		// return whether it worked

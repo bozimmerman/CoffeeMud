@@ -71,7 +71,7 @@ public class Spell_DetectMagic extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sparkling eyes!":"<S-NAME> chant(s) for sparkling eyes!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sparkling eyes!":"<S-NAME> incant(s) softly, and gain(s) sparkling eyes!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -79,7 +79,7 @@ public class Spell_DetectMagic extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HIS-HER> eyes sparkling, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes sparkling, but the spell fizzles.");
 
 		return success;
 	}

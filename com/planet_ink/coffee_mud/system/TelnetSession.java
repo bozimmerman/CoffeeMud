@@ -746,7 +746,7 @@ public class TelnetSession extends Thread implements Session
 										replacement="";
 									else
 									if(((source==target)||(target==null))&&(mob==regarding))
-										replacement="yourself";
+										replacement="your";
 									else
 									if(mob==regarding)
 										replacement="you";

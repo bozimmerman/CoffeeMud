@@ -147,7 +147,7 @@ public class Spell_WallOfStone extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"A mighty wall of stone appears!":"<S-NAME> chant(s) and conjur(s) up a mighty wall of stone!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"A mighty wall of stone appears!":"<S-NAME> conjur(s) up a mighty wall of stone!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -166,7 +166,7 @@ public class Spell_WallOfStone extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s), but the conjuration fizzles.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s), but the magic fizzles.");
 
 		// return whether it worked
 		return success;

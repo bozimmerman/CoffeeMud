@@ -148,7 +148,7 @@ public class Spell_ReverseGravity extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"G":"<S-NAME> chant(s) and wave(s) and g")+"ravity begins to reverse!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"G":"<S-NAME> speak(s) and wave(s) and g")+"ravity begins to reverse!");
 			if(mob.location().okAffect(msg))
 			{
 				childrenAffects=new Vector();
@@ -157,7 +157,7 @@ public class Spell_ReverseGravity extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) in reverse, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> speak(s) in reverse, but the spell fizzles.");
 
 		// return whether it worked
 		return success;

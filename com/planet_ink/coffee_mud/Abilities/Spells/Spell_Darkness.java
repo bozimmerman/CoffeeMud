@@ -93,7 +93,7 @@ public class Spell_Darkness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"D":"<S-NAME> chant(s) and gesture(s) and d")+"arkness envelopes everyone.");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"D":"<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -102,7 +102,7 @@ public class Spell_Darkness extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) for darkness, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s) darkly, but the spell fizzles.");
 
 		// return whether it worked
 		return success;

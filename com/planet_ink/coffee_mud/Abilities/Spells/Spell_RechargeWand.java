@@ -62,7 +62,7 @@ public class Spell_RechargeWand extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> chant(s) at <T-NAMESELF> as sweat beads form on <S-HIS-HER> forhead.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> incant(s) at <T-NAMESELF> as sweat beads form on <S-HIS-HER> forhead.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -73,7 +73,7 @@ public class Spell_RechargeWand extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) at <T-NAMESELF>, looking more frustrated every minute.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> incant(s) at <T-NAMESELF>, looking more frustrated every minute.");
 
 
 		// return whether it worked

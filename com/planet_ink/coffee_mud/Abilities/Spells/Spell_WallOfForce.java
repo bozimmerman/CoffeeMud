@@ -153,7 +153,7 @@ public class Spell_WallOfForce extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"An impenetrable wall of force appears!":"<S-NAME> chant(s) and conjur(s) up a impenetrable wall of force!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"An impenetrable wall of force appears!":"<S-NAME> conjur(s) up a impenetrable wall of force!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -170,7 +170,7 @@ public class Spell_WallOfForce extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s), but the conjuration fizzles.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s), but the magic fizzles.");
 
 		// return whether it worked
 		return success;

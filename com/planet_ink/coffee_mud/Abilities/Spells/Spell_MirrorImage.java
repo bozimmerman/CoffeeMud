@@ -163,7 +163,7 @@ public class Spell_MirrorImage extends Spell
 		else
 		{
 			numberOfImages = 0;
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) reflectively, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> speak(s) reflectively, but nothing more happens.");
 		}
 		// return whether it worked
 		return success;

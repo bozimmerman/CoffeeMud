@@ -85,7 +85,7 @@ public class Spell_FaerieFire extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"A ":"<S-NAME> chant(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.");
+			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"A ":"<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -93,7 +93,7 @@ public class Spell_FaerieFire extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) for a faerie fire, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> mutter(s) about a faerie fire, but the spell fizzles.");
 
 		// return whether it worked
 		return success;

@@ -186,7 +186,7 @@ public class Spell_Grease extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAMESELF>, but the spell fizzles.");
+			return maliciousFizzle(mob,target,"<S-NAME> cast(s) a spell on <T-NAMESELF>, but the spell fizzles.");
 
 		// return whether it worked
 		return success;

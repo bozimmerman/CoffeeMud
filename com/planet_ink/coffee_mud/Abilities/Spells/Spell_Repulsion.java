@@ -106,7 +106,7 @@ public class Spell_Repulsion extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> chant(s) and wave(s) <S-HIS-HER> arms.");
+			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -138,7 +138,7 @@ public class Spell_Repulsion extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> chant(s), but the spell fizzles.");
+			return maliciousFizzle(mob,null,"<S-NAME> incant(s), but the spell fizzles.");
 
 
 		// return whether it worked

@@ -107,7 +107,7 @@ public class Spell_GhostSound extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> chant(s) loudly, then fall(s) silent.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> scream(s) loudly, then fall(s) silent.");
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -123,7 +123,7 @@ public class Spell_GhostSound extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType,auto?"":"<S-NAME> chant(s) loudly, then fall(s) silent.");
+			FullMsg msg = new FullMsg(mob, target, this, affectType,auto?"":"<S-NAME> scream(s) loudly, then fall(s) silent.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -131,7 +131,7 @@ public class Spell_GhostSound extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) loudly, but then feel(s) disappointed.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> scream(s) loudly, but then feel(s) disappointed.");
 
 		// return whether it worked
 		return success;

@@ -138,7 +138,7 @@ public class Spell_TimeStop extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"T":"<S-NAME> chant(s) and gesture(s) and t")+"ime suddenly STOPS!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"T":"<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -159,7 +159,7 @@ public class Spell_TimeStop extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) for awhile, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s) for awhile, but the spell fizzles.");
 
 		// return whether it worked
 		return success;

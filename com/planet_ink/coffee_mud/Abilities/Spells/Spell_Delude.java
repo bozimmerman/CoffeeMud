@@ -75,7 +75,7 @@ public class Spell_Delude extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> chant(s) and meditate(s).");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> incant(s) and meditate(s).");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -112,7 +112,7 @@ public class Spell_Delude extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) and meditate(s), but fizzle(s) the spell.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s) and meditate(s), but fizzle(s) the spell.");
 
 
 		// return whether it worked

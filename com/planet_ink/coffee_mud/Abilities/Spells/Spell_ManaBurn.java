@@ -115,8 +115,8 @@ public class Spell_ManaBurn extends Spell
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
-			// what happened.
-			String str=auto?"":"<S-NAME> encant(s) confusingly at <T-NAMESELF>";
+			// what happened. 
+			String str=auto?"":"<S-NAME> incant(s) hotly at <T-NAMESELF>";
 			FullMsg msg=new FullMsg(mob,target,this,affectType,str);
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
@@ -134,7 +134,7 @@ public class Spell_ManaBurn extends Spell
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,"<S-NAME> encant(s) confusingly at <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,"<S-NAME> incant(s) hotly at <T-NAMESELF>, but nothing happens.");
 
 		// return whether it worked
 		return success;

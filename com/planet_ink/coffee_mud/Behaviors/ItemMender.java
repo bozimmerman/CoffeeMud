@@ -50,6 +50,12 @@ public class ItemMender extends StdBehavior
 				ExternalPlay.quickSay(observer,source,"Take this thing away from me.  It's so perfect, it's scary.",true,false);
 				return false;
 			}
+			else
+			if(tool.usesRemaining()==100)
+			{
+				ExternalPlay.quickSay(observer,source,tool.name()+" doesn't require repair.",true,false);
+				return false;
+			}
 			if(source.getMoney()<cost(tool))
 			{
 				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Item)affect.tool())+" gold coins to repair that.",true,false);

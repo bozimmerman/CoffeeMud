@@ -105,7 +105,7 @@ public class Spell_Forget extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			String str=auto?"":"<S-NAME> encant(s) confusingly at <T-NAMESELF>";
+			String str=auto?"":"<S-NAME> incant(s) confusingly at <T-NAMESELF>";
 			FullMsg msg=new FullMsg(mob,target,this,affectType,str);
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
@@ -119,9 +119,9 @@ public class Spell_Forget extends Spell
 						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) forgetful!");
 				}
 			}
-		}
+		} 
 		if(!success)
-			return maliciousFizzle(mob,target,"<S-NAME> encant(s) confusingly at <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,"<S-NAME> incant(s) confusingly at <T-NAMESELF>, but nothing happens.");
 
 		// return whether it worked
 		return success;

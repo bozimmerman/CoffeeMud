@@ -82,7 +82,7 @@ public class Spell_Haste extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> chant(s) to <T-NAMESELF>!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> cast(s) a spell on <T-NAMESELF>!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -94,7 +94,7 @@ public class Spell_Haste extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) quickly to <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> speak(s) quickly to <T-NAMESELF>, but nothing more happens.");
 
 		// return whether it worked
 		return success;

@@ -372,13 +372,14 @@ public class MudChat extends StdBehavior
 			&&(Sense.canBeHeardBy(mob,monster))
 			&&(myChatGroup!=null)
 			&&(lastReactedTo!=affect.source())
+			&&(affect.sourceMessage()!=null)
 			&&(affect.targetMessage()!=null))
 			{
-				int x=affect.targetMessage().indexOf("'");
-				int y=affect.targetMessage().lastIndexOf("'");
+				int x=affect.sourceMessage().indexOf("'");
+				int y=affect.sourceMessage().lastIndexOf("'");
 				if((x>=0)&&(y>x))
 				{
-					String msg=" "+affect.targetMessage().substring(x+1,y)+" ";
+					String msg=" "+affect.sourceMessage().substring(x+1,y)+" ";
 					int l=0;
 					for(int i=1;i<myChatGroup.size();i++)
 					{

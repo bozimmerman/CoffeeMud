@@ -82,7 +82,7 @@ public class Spell_MindFog extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> chant(s) at <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> invoke(s) a spell at <T-NAMESELF>.");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
@@ -96,7 +96,7 @@ public class Spell_MindFog extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the spell fizzles.");
+			return maliciousFizzle(mob,target,"<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles.");
 
 		// return whether it worked
 		return success;

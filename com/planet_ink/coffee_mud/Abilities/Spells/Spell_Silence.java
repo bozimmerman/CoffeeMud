@@ -91,7 +91,7 @@ public class Spell_Silence extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"S":"<S-NAME> chant(s) and gesture(s) and s")+"ilence falls like a blanket.");
+			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"S":"<S-NAME> whisper(s) and gesture(s) and s")+"ilence falls like a blanket.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -99,7 +99,7 @@ public class Spell_Silence extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) for silence, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> whisper(s) about silence, but the spell fizzles.");
 
 		// return whether it worked
 		return success;
