@@ -26,758 +26,849 @@ between a GenItem and a StdItem will not be explained.&nbsp;
 It is not explained in the Archons Guide either, but if you 
 have followed the Guide, you have discovered the differences on your 
 own.</FONT></P>
-<P align=left><FONT size=4>It is not expected that someone would wish to dive in 
-and make wholesale changes to the CoffeeMud system right away, but is more 
-likely wanting to fill in a functional gap in the system for their own 
-needs.&nbsp; For this reason, this document is not organized as a comprehensive 
-guide to programming CoffeeMud.&nbsp; Instead, it is designed to be a quick 
-reference for those who wish to create the spot MOB, Behavior, Item, or Property 
-for use on their maps.</FONT></P>
-<P align=left><FONT size=4>With this in mind then, and in no particular order, 
-the several essential object types in CoffeeMud are presented.</FONT></P>
-<P align=left><FONT size=4></FONT>&nbsp;</P>
-<IMG src="images/rainbow.jpg">
-<P align=left><FONT size=5 color=mediumslateblue><STRONG>Text:</STRONG></FONT></P>
-<P align=left><FONT size=4></FONT>Before we get started with objects, needs must
-the topic of text display be covered.  Throughout the system you will see text
-being sent to the user.  Since a mud is a text producing engine, this should be
-no great suprise.  However, within that text you will often see different kinds 
-of codes and tags which affect the output.  For instance, consider the following lines:</P>
-<PRE>	msg=new FullMsg(mob,target,this,affectType,"&lt;S-NAME&gt; reach(es) for &lt;T-NAMESELF&gt;.");
-	
-	mob.location().show(mob,null,Affect.MSG_OK_ACTION,&lt;	BR&gt;      
-	
-					"&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet.");
+<P align=left><FONT size=4>It is not 
+expected that someone would wish to dive in and make wholesale changes to the 
+CoffeeMud system right away, but is more likely wanting to fill in a functional 
+gap in the system for their own needs.&nbsp; For this reason, this document is 
+not organized as a comprehensive guide to programming CoffeeMud.&nbsp; Instead, 
+it is designed to be a quick reference for those who wish to create the spot 
+MOB, Behavior, Item, or Property for use on their maps.</FONT></P>
+<P align=left><FONT size=4>With this in 
+mind then, and in no particular order, the several essential object types in 
+CoffeeMud are presented.</FONT></P>
+<P align=left><FONT size=4></FONT>&nbsp;</P><IMG src="images/rainbow.jpg" > 
+<P align=left><FONT color=mediumslateblue size=5><STRONG>Text:</STRONG></FONT></P>
+<P align=left><FONT size=4>Before we get 
+started with objects, needs must the topic of text display be covered. 
+Throughout the system you will see text being sent to the user. Since a mud is a 
+text producing engine, this should be no great suprise. However, within that 
+text you will often see different kinds of codes and tags which affect the 
+output. For instance, consider the following lines:</FONT></P><PRE>msg=new FullMsg(mob,target,this,affectType,"&lt;S-NAME&gt; reach(es) for &lt;T-NAMESELF&gt;.");
+mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+				"&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet.");
 </PRE>
-<P align=left><FONT size=4>Focusing only on the text for a moment, you will notice a that tags are
-used to designate a player name, or the name of the target of a spell.  You will also notice that (s)
-and (es) is used to modify the proper form of a verb.  These are key features of the CoffeeMud
-text engine.  Here is a more complete list of available tage:</FONT>&nbsp;</P>
-<TABLE WIDTH="100%" BORDER=1>
-<TR><TD WIDTH="20%">&lt;S-HIS-HER&gt;</TD><TD>Outputs 'Your' if Observer=Source, otherwise 'His'/'Her'.</TD></TR>
-<TR><TD WIDTH="20%">&lt;S-HIM-HER&gt;</TD><TD>Outputs 'You' if Observer=Source, otherwise 'Him'/'Her'.</TD></TR>
-<TR><TD WIDTH="20%">&lt;S-NAME&gt;</TD><TD>Outputs 'You' if Observer=Source, otherwise the Name.</TD></TR>
-<TR><TD WIDTH="20%">&lt;S-NAMESELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Source, otherwise the Name</TD></TR>
-<TR><TD WIDTH="20%">&lt;S-HE-SHE&gt;</TD><TD>Outputs 'You' if Observer=Source, otherwise 'He'/'She'</TD></TR>
-<TR><TD WIDTH="20%">&lt;S-IS-ARE&gt;</TD><TD>Outputs 'Are' if Observer=Source, otherwise 'Is'.</TD></TR>
-<TR><TD WIDTH="20%">&lt;S-HAS-HAVE&gt;</TD><TD>Outputs 'Have' if Observer=Source, otherwise 'Has'.</TD></TR>
-<TR><TD WIDTH="20%">&lt;S-YOUPOSS&gt;</TD><TD>Outputs 'Your' if Observer=Source, otherwise the Name`s</TD></TR>
-<TR><TD WIDTH="20%">&lt;S-HIMHERSELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Source, otherwise the 'Himself'/'Herself'</TD></TR>
-<TR><TD WIDTH="20%">&lt;S-HISHERSELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Source, otherwise the 'Hisself'/'Herself'</TD></TR>
-<TR><TD WIDTH="20%">&lt;T-HIS-HER&gt;</TD><TD>Outputs 'You' if Observer=Target, otherwise 'His'/'Her'.</TD></TR>
-<TR><TD WIDTH="20%">&lt;T-HIM-HER&gt;</TD><TD>Outputs 'You' if Observer=Target, otherwise 'Him'/'Her'.</TD></TR>
-<TR><TD WIDTH="20%">&lt;T-NAME&gt;</TD><TD>Outputs 'You' if Observer=Target, otherwise the Name.</TD></TR>
-<TR><TD WIDTH="20%">&lt;T-NAMESELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Target, otherwise the Name</TD></TR>
-<TR><TD WIDTH="20%">&lt;T-HE-SHE&gt;</TD><TD>Outputs 'You' if Observer=Target, otherwise 'He'/'She'</TD></TR>
-<TR><TD WIDTH="20%">&lt;T-IS-ARE&gt;</TD><TD>Outputs 'Are' if Observer=Target, otherwise 'Is'.</TD></TR>
-<TR><TD WIDTH="20%">&lt;T-HAS-HAVE&gt;</TD><TD>Outputs 'Have' if Observer=Target, otherwise 'Has'.</TD></TR>
-<TR><TD WIDTH="20%">&lt;T-YOUPOSS&gt;</TD><TD>Outputs 'Your' if Observer=Target, otherwise the Name with an '`s'</TD></TR>
-<TR><TD WIDTH="20%">&lt;T-HIMHERSELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Source, otherwise the 'Himself'/'Herself'</TD></TR>
-<TR><TD WIDTH="20%">&lt;T-HISHERSELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Source, otherwise the 'Hisself'/'Herself'</TD></TR>
-</TABLE>
-<P align=left><FONT size=4>Occasionally, you will find color/font codes embedded in system strings.  For instance:
-</FONT>&nbsp;</P>
-<PRE>
-			msg.append("^!You are thirsty.^?\n\r");
+<P align=left><FONT size=4>Focusing only 
+on the text for a moment, you will notice a that tags are used to designate a 
+player name, or the name of the target of a spell. You will also notice that (s) 
+and (es) is used to modify the proper form of a verb. These are key features of 
+the CoffeeMud text engine. Here is a more complete list of available 
+tage:</FONT>&nbsp;</P>
+<TABLE width="100%" border=1>
+  
+  <TR>
+    <TD width="20%">&lt;S-HIS-HER&gt;</TD>
+    <TD>Outputs 'Your' if Observer=Source, otherwise 
+      'His'/'Her'.</TD></TR>
+  <TR>
+    <TD width="20%">&lt;S-HIM-HER&gt;</TD>
+    <TD>Outputs 'You' if Observer=Source, otherwise 
+      'Him'/'Her'.</TD></TR>
+  <TR>
+    <TD width="20%">&lt;S-NAME&gt;</TD>
+    <TD>Outputs 'You' if Observer=Source, otherwise the 
+      Name.</TD></TR>
+  <TR>
+    <TD width="20%">&lt;S-NAMESELF&gt;</TD>
+    <TD>Outputs 'Yourself' if Observer=Source, otherwise 
+      the Name</TD></TR>
+  <TR>
+    <TD width="20%">&lt;S-HE-SHE&gt;</TD>
+    <TD>Outputs 'You' if Observer=Source, otherwise 
+      'He'/'She'</TD></TR>
+  <TR>
+    <TD width="20%">&lt;S-IS-ARE&gt;</TD>
+    <TD>Outputs 'Are' if Observer=Source, otherwise 
+    'Is'.</TD></TR>
+  <TR>
+    <TD width="20%">&lt;S-HAS-HAVE&gt;</TD>
+    <TD>Outputs 'Have' if Observer=Source, otherwise 
+    'Has'.</TD></TR>
+  <TR>
+    <TD width="20%">&lt;S-YOUPOSS&gt;</TD>
+    <TD>Outputs 'Your' if Observer=Source, otherwise the 
+      Name`s</TD></TR>
+  <TR>
+    <TD width="20%">&lt;S-HIMHERSELF&gt;</TD>
+    <TD>Outputs 'Yourself' if Observer=Source, otherwise 
+      the 'Himself'/'Herself'</TD></TR>
+  <TR>
+    <TD width="20%">&lt;S-HISHERSELF&gt;</TD>
+    <TD>Outputs 'Yourself' if Observer=Source, otherwise 
+      the 'Hisself'/'Herself'</TD></TR>
+  <TR>
+    <TD width="20%">&lt;T-HIS-HER&gt;</TD>
+    <TD>Outputs 'You' if Observer=Target, otherwise 
+      'His'/'Her'.</TD></TR>
+  <TR>
+    <TD width="20%">&lt;T-HIM-HER&gt;</TD>
+    <TD>Outputs 'You' if Observer=Target, otherwise 
+      'Him'/'Her'.</TD></TR>
+  <TR>
+    <TD width="20%">&lt;T-NAME&gt;</TD>
+    <TD>Outputs 'You' if Observer=Target, otherwise the 
+      Name.</TD></TR>
+  <TR>
+    <TD width="20%">&lt;T-NAMESELF&gt;</TD>
+    <TD>Outputs 'Yourself' if Observer=Target, otherwise 
+      the Name</TD></TR>
+  <TR>
+    <TD width="20%">&lt;T-HE-SHE&gt;</TD>
+    <TD>Outputs 'You' if Observer=Target, otherwise 
+      'He'/'She'</TD></TR>
+  <TR>
+    <TD width="20%">&lt;T-IS-ARE&gt;</TD>
+    <TD>Outputs 'Are' if Observer=Target, otherwise 
+    'Is'.</TD></TR>
+  <TR>
+    <TD width="20%">&lt;T-HAS-HAVE&gt;</TD>
+    <TD>Outputs 'Have' if Observer=Target, otherwise 
+    'Has'.</TD></TR>
+  <TR>
+    <TD width="20%">&lt;T-YOUPOSS&gt;</TD>
+    <TD>Outputs 'Your' if Observer=Target, otherwise the 
+      Name with an '`s'</TD></TR>
+  <TR>
+    <TD width="20%">&lt;T-HIMHERSELF&gt;</TD>
+    <TD>Outputs 'Yourself' if Observer=Source, otherwise 
+      the 'Himself'/'Herself'</TD></TR>
+  <TR>
+    <TD width="20%">&lt;T-HISHERSELF&gt;</TD>
+    <TD>Outputs 'Yourself' if Observer=Source, otherwise 
+      the 'Hisself'/'Herself'</TD></TR></TABLE>
+<P align=left><FONT size=4>Occasionally, 
+you will find color/font codes embedded in system strings. For instance: 
+</FONT>&nbsp;</P><PRE>			msg.append("^!You are thirsty.^?\n\r");
 </PRE>
-<P align=left><FONT size=4>These codes, defined in the system.TelnetSession class, are as follows:
-</FONT>&nbsp;</P>
-<TABLE WIDTH="50%" BORDER=1>
-<TR><TD WIDTH="10%">^N</TD><TD>Normal</TD></TR>
-<TR><TD WIDTH="10%">^!</TD><TD>Bold</TD></TR>
-<TR><TD WIDTH="10%">^H</TD><TD>Highlight</TD></TR>
-<TR><TD WIDTH="10%">^_</TD><TD>Underline</TD></TR>
-<TR><TD WIDTH="10%">^*</TD><TD>Blink</TD></TR>
-<TR><TD WIDTH="10%">^/</TD><TD>Italics</TD></TR>
-<TR><TD WIDTH="10%">^.</TD><TD>Reset (turns off reverse)</TD></TR>
-<TR><TD WIDTH="10%">^^</TD><TD>Generates an untranslated "^" character</TD></TR>
-<TR><TD WIDTH="10%">^F</TD><TD>Fight (not in use, yet)</TD></TR>
-<TR><TD WIDTH="10%">^S</TD><TD>Spell (not in use, yet)</TD></TR>
-<TR><TD WIDTH="10%">^E</TD><TD>Emote (not in use, yet)</TD></TR>
-<TR><TD WIDTH="10%">^T</TD><TD>Talk (not in use, yet)</TD></TR>
-<TR><TD WIDTH="10%">^Q</TD><TD>Channel (not in use, yet)</TD></TR>
-<TR><TD WIDTH="10%">^x</TD><TD>Important message 1</TD></TR>
-<TR><TD WIDTH="10%">^X</TD><TD>Important message 2</TD></TR>
-<TR><TD WIDTH="10%">^Z</TD><TD>Important message 3</TD></TR>
-<TR><TD WIDTH="10%">^O</TD><TD>Room Title</TD></TR>
-<TR><TD WIDTH="10%">^L</TD><TD>Room Description</TD></TR>
-<TR><TD WIDTH="10%">^D</TD><TD>Direction</TD></TR>
-<TR><TD WIDTH="10%">^d</TD><TD>Door</TD></TR>
-<TR><TD WIDTH="10%">^I</TD><TD>Item</TD></TR>
-<TR><TD WIDTH="10%">^M</TD><TD>MOB</TD></TR>
-<TR><TD WIDTH="10%">^h</TD><TD>Prompt Color 1</TD></TR>
-<TR><TD WIDTH="10%">^m</TD><TD>Prompt Color 2</TD></TR>
-<TR><TD WIDTH="10%">^v</TD><TD>Prompt Color 3</TD></TR>
-<TR><TD WIDTH="10%">^w</TD><TD>White</TD></TR>
-<TR><TD WIDTH="10%">^g</TD><TD>Green</TD></TR>
-<TR><TD WIDTH="10%">^b</TD><TD>Brown</TD></TR>
-<TR><TD WIDTH="10%">^r</TD><TD>Red</TD></TR>
-<TR><TD WIDTH="10%">^y</TD><TD>Yellow</TD></TR>
-<TR><TD WIDTH="10%">^c</TD><TD>Cyan</TD></TR>
-<TR><TD WIDTH="10%">^p</TD><TD>Purple</TD></TR>
-<TR><TD WIDTH="10%">^W</TD><TD>Dark White</TD></TR>
-<TR><TD WIDTH="10%">^G</TD><TD>Dark Green</TD></TR>
-<TR><TD WIDTH="10%">^B</TD><TD>Dark Brown</TD></TR>
-<TR><TD WIDTH="10%">^R</TD><TD>Dark Red</TD></TR>
-<TR><TD WIDTH="10%">^Y</TD><TD>Dark Yellow</TD></TR>
-<TR><TD WIDTH="10%">^C</TD><TD>Dark Cyan</TD></TR>
-<TR><TD WIDTH="10%">^P</TD><TD>Dark Purple</TD></TR>
-</TABLE>
-<P align=left><FONT size=4>As you might have guessed, it is preferred that the system colors (the last
-16 codes) be used sparingly, in favor of the more customizable codes above.
-</FONT>&nbsp;
-  <P></P>
-<P align=left><FONT size=4></FONT>&nbsp;</P>
-<IMG src="images/smurf.jpg">
-<P align=left><FONT size=5 color=mediumslateblue><STRONG>MOBs:</STRONG></FONT></P>
-<P align=left><FONT size=4>MOBs, or "Moveable OBjects", are the creatures and 
-characters which the players fight.&nbsp; In CoffeeMud, they are among the 
-simpler objects to code.&nbsp; This is not because they are uncomplex.&nbsp; In 
-fact, they are the MOST complex.&nbsp; However, this complexity comes due to the 
-myriad of Items, Behaviors, Properties, and Abilities that are added to 
-them.&nbsp; Short of these numerous additions, a MOB by himself is rather 
-simple!</FONT></P>
-<P align=left><FONT size=4>This simplicity is important however, and should be 
-carefully considered before you run off to create new MOBs.&nbsp; If you are 
-creating a new MOB because you want a creature to have some new kind of ability, 
-then are you sure it is not a new Ability you want to write?&nbsp; If the new 
-MOBs behavior is complex and unique, are you sure it's not a new Behavior you 
-wish to code?</FONT></P>
-<P align=left><FONT size=4>If you are sure, then carry on!&nbsp; The directory 
-for your custom coded MOB objects should be specified using the "MOBS" entry in 
-the coffeemud.ini file.&nbsp; See the Installation Guide for more information on 
-your INI file.</FONT></P>
-<P align=left><FONT size=4 color=mediumslateblue><STRONG>Coding a new MOB:</STRONG></FONT></P>
-<P align=left><FONT size=4>A Custom MOB may or may not belong to any particular 
-package, though it is important that the NAME of the MOB be unique in the 
-system.&nbsp; A custom MOB must import the following packages:</FONT></P>
-<pre>
-import java.util.*;
+<P align=left><FONT size=4>These codes, 
+defined in the system.TelnetSession class, are as follows: </FONT>&nbsp;</P>
+<TABLE width="50%" border=1>
+  
+  <TR>
+    <TD width="10%">^N</TD>
+    <TD>Normal</TD></TR>
+  <TR>
+    <TD width="10%">^!</TD>
+    <TD>Bold</TD></TR>
+  <TR>
+    <TD width="10%">^H</TD>
+    <TD>Highlight</TD></TR>
+  <TR>
+    <TD width="10%">^_</TD>
+    <TD>Underline</TD></TR>
+  <TR>
+    <TD width="10%">^*</TD>
+    <TD>Blink</TD></TR>
+  <TR>
+    <TD width="10%">^/</TD>
+    <TD>Italics</TD></TR>
+  <TR>
+    <TD width="10%">^.</TD>
+    <TD>Reset (turns off reverse)</TD></TR>
+  <TR>
+    <TD width="10%">^^</TD>
+    <TD>Generates an untranslated "^" character</TD></TR>
+  <TR>
+    <TD width="10%">^F</TD>
+    <TD>Fight (not in use, yet)</TD></TR>
+  <TR>
+    <TD width="10%">^S</TD>
+    <TD>Spell (not in use, yet)</TD></TR>
+  <TR>
+    <TD width="10%">^E</TD>
+    <TD>Emote (not in use, yet)</TD></TR>
+  <TR>
+    <TD width="10%">^T</TD>
+    <TD>Talk (not in use, yet)</TD></TR>
+  <TR>
+    <TD width="10%">^Q</TD>
+    <TD>Channel (not in use, yet)</TD></TR>
+  <TR>
+    <TD width="10%">^x</TD>
+    <TD>Important message 1</TD></TR>
+  <TR>
+    <TD width="10%">^X</TD>
+    <TD>Important message 2</TD></TR>
+  <TR>
+    <TD width="10%">^Z</TD>
+    <TD>Important message 3</TD></TR>
+  <TR>
+    <TD width="10%">^O</TD>
+    <TD>Room Title</TD></TR>
+  <TR>
+    <TD width="10%">^L</TD>
+    <TD>Room Description</TD></TR>
+  <TR>
+    <TD width="10%">^D</TD>
+    <TD>Direction</TD></TR>
+  <TR>
+    <TD width="10%">^d</TD>
+    <TD>Door</TD></TR>
+  <TR>
+    <TD width="10%">^I</TD>
+    <TD>Item</TD></TR>
+  <TR>
+    <TD width="10%">^M</TD>
+    <TD>MOB</TD></TR>
+  <TR>
+    <TD width="10%">^h</TD>
+    <TD>Prompt Color 1</TD></TR>
+  <TR>
+    <TD width="10%">^m</TD>
+    <TD>Prompt Color 2</TD></TR>
+  <TR>
+    <TD width="10%">^v</TD>
+    <TD>Prompt Color 3</TD></TR>
+  <TR>
+    <TD width="10%">^w</TD>
+    <TD>White</TD></TR>
+  <TR>
+    <TD width="10%">^g</TD>
+    <TD>Green</TD></TR>
+  <TR>
+    <TD width="10%">^b</TD>
+    <TD>Brown</TD></TR>
+  <TR>
+    <TD width="10%">^r</TD>
+    <TD>Red</TD></TR>
+  <TR>
+    <TD width="10%">^y</TD>
+    <TD>Yellow</TD></TR>
+  <TR>
+    <TD width="10%">^c</TD>
+    <TD>Cyan</TD></TR>
+  <TR>
+    <TD width="10%">^p</TD>
+    <TD>Purple</TD></TR>
+  <TR>
+    <TD width="10%">^W</TD>
+    <TD>Dark White</TD></TR>
+  <TR>
+    <TD width="10%">^G</TD>
+    <TD>Dark Green</TD></TR>
+  <TR>
+    <TD width="10%">^B</TD>
+    <TD>Dark Brown</TD></TR>
+  <TR>
+    <TD width="10%">^R</TD>
+    <TD>Dark Red</TD></TR>
+  <TR>
+    <TD width="10%">^Y</TD>
+    <TD>Dark Yellow</TD></TR>
+  <TR>
+    <TD width="10%">^C</TD>
+    <TD>Dark Cyan</TD></TR>
+  <TR>
+    <TD width="10%">^P</TD>
+    <TD>Dark Purple</TD></TR></TABLE>
+<P align=left><FONT size=4>As you might 
+have guessed, it is preferred that the system colors (the last 16 codes) be used 
+sparingly, in favor of the more customizable codes above. </FONT>&nbsp; 
+<P></P>
+<P align=left><FONT size=4></FONT>&nbsp;</P><IMG src="images/smurf.jpg" > 
+<P align=left><FONT color=mediumslateblue size=5><STRONG>MOBs:</STRONG></FONT></P>
+<P align=left><FONT size=4>MOBs, or 
+"Moveable OBjects", are the creatures and characters which the players 
+fight.&nbsp; In CoffeeMud, they are among the simpler objects to code.&nbsp; 
+This is not because they are uncomplex.&nbsp; In fact, they are the MOST 
+complex.&nbsp; However, this complexity comes due to the myriad of Items, 
+Behaviors, Properties, and Abilities that are added to them.&nbsp; Short of 
+these numerous additions, a MOB by himself is rather simple!</FONT></P>
+<P align=left><FONT size=4>This 
+simplicity is important however, and should be carefully considered before you 
+run off to create new MOBs.&nbsp; If you are creating a new MOB because you want 
+a creature to have some new kind of ability, then are you sure it is not a new 
+Ability you want to write?&nbsp; If the new MOBs behavior is complex and unique, 
+are you sure it's not a new Behavior you wish to code?</FONT></P>
+<P align=left><FONT size=4>If you are 
+sure, then carry on!&nbsp; The directory for your custom coded MOB objects 
+should be specified using the "MOBS" entry in the coffeemud.ini file.&nbsp; See 
+the Installation Guide for more information on your INI file.</FONT></P>
+<P align=left><FONT color=mediumslateblue size=4><STRONG>Coding a new 
+MOB:</STRONG></FONT></P>
+<P align=left><FONT size=4>A Custom MOB 
+may or may not belong to any particular package, though it is important that the 
+NAME of the MOB be unique in the system.&nbsp; A custom MOB must import the 
+following packages:</FONT></P><pre>import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.*;
 import com.planet_ink.coffee_mud.common.*;
-</pre>
+</PRE>
 <P><FONT size=4>As well as any other 
 java.*,&nbsp;&nbsp;sun.*, or&nbsp;custom&nbsp;packages you may need.&nbsp; No 
 other packages in the CoffeeMud system should be imported, other than those 
 listed.</FONT> </P>
 <P><FONT size=4>A MOB class must extend 
-either <STRONG>StdMOB</STRONG> or GenMob, <STRONG>StdShopKeeper</STRONG> or 
-GenShopKeeper, <STRONG>StdRideable</STRONG>          
-   or GenRideable depending on the basic 
+either <STRONG>StdMOB</STRONG> or GenMob, <STRONG>StdShopKeeper</STRONG> or GenShopKeeper, <STRONG>StdRideable</STRONG> or GenRideable depending on the basic 
 capabilities, and customizability&nbsp;you would like.&nbsp; Although Generic 
 objects are more customizable at run-time, they also take a long time for the 
 system to load and build, and take up a lot of database disk space.&nbsp; For 
 this reason, using Standard instead of Generic whereever possible is always 
 good.&nbsp; </FONT></P>
-<P><FONT size=4>Each MOB must also have a custom "newInstance" method as shown 
-below.</FONT></P>
-<PRE>
-	public class MyNewMOB extends StdMOB 
+<P><FONT size=4>Each MOB must also have 
+a custom "newInstance" method as shown below.</FONT></P><PRE>public class MyNewMOB extends StdMOB 
+{ 
+	public MyNewMOB() 
 	{ 
-		public MyNewMOB() 
-		{ 
-			super(); 
-		}
-
-		public Environmental newInstance() 
-		{ 
-			return new MyNewMOB(); 
-		} 
+		super(); 
 	}
+
+	public Environmental newInstance() 
+	{ 
+		return new MyNewMOB(); 
+	} 
+}
 </PRE>
-<P><FONT size=4> All of your customizing will be done inside the constructor: 
-name, displayText, description, etc, etc.</FONT></P>
-<P><FONT size=4></FONT>&nbsp;</P>
-<pre>
-	public MyNewMOB()
-	{
-		super();
+<P><FONT size=4>All of your customizing 
+will be done inside the constructor: name, displayText, description, etc, 
+etc.</FONT></P>
+<P><FONT size=4></FONT>&nbsp;</P><pre>	
+public MyNewMOB()
+{
+	super();
 
-		setName("a new mob"); 
-		setDescription("It`s furry with 2 legs"); 
-		setDisplayText("My new mob is standing here.");
+	setName("a new mob"); 
+	setDescription("It`s furry with 2 legs"); 
+	setDisplayText("My new mob is standing here.");
 		
-		setAlignment(500);
-		setMoney(0);
-		setWimpHitPoint(2);
-		baseEnvStats().setDamage(4);
+	setAlignment(500);
+	setMoney(0);
+	setWimpHitPoint(2);
+	baseEnvStats().setDamage(4);
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setArmor(30);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setAttackAdjustment(30);
-		baseEnvStats().setWeight(85);
-		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INFRARED); <BR>		baseEnvStats().setDisposition(EnvStats.IS_FLYING);
-		baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
+	baseEnvStats().setAbility(0);
+	baseEnvStats().setLevel(1);
+	baseEnvStats().setArmor(30);
+	baseEnvStats().setSpeed(1.0);
+	baseEnvStats().setAttackAdjustment(30);
+	baseEnvStats().setWeight(85);
+	baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INFRARED); <BR>	baseEnvStats().setDisposition(EnvStats.IS_FLYING);
+	baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
 		
-		baseCharStats().setMyRace(CMClass.getRace("Dog"));
-		baseCharStats().getMyRace().startRacing(this,false);
-		baseCharStats().setStat(CharStats.GENDER,(int)'F');
-		baseCharStats().setStat(CharStats.STRENGTH,18); <BR>		baseCharStats().setStat(CharStats.INTELLIGENCE,14);
-		baseCharStats().setStat(CharStats.WISDOM,13);
-		baseCharStats().setStat(CharStats.DEXTERITY,15);
-		baseCharStats().setStat(CharStats.CONSTITUTION,12);
-		baseCharStats().setStat(CharStats.CHARISMA,13);
-		baseCharStats().setStat(CharStats.SAVE_COLD,50);<BR>
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,20));
-		baseState.setMana(Dice.roll(baseEnvStats().level(),50,100));
+	baseCharStats().setMyRace(CMClass.getRace("Dog"));
+	baseCharStats().getMyRace().startRacing(this,false);
+	baseCharStats().setStat(CharStats.GENDER,(int)'F');
+	baseCharStats().setStat(CharStats.STRENGTH,18); <BR>	baseCharStats().setStat(CharStats.INTELLIGENCE,14);
+	baseCharStats().setStat(CharStats.WISDOM,13);
+	baseCharStats().setStat(CharStats.DEXTERITY,15);
+	baseCharStats().setStat(CharStats.CONSTITUTION,12);
+	baseCharStats().setStat(CharStats.CHARISMA,13);
+	baseCharStats().setStat(CharStats.SAVE_COLD,50);<BR>
+	baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,20));
+	baseState.setMana(Dice.roll(baseEnvStats().level(),50,100));
 		
-		recoverMaxState();
-		resetToMaxState();
-		recoverEnvStats();
-		recoverCharStats();
-	}
-</pre>
-<P><FONT size=4>You can see here that the basic stats have 
-been filled out, from level to attack speed, alignment and 
+	recoverMaxState();
+	resetToMaxState();
+	recoverEnvStats();
+	recoverCharStats();
+}
+</PRE>
+<P><FONT size=4>You can see here that 
+the basic stats have been filled out, from level to attack speed, alignment and 
 weight.&nbsp;&nbsp;For&nbsp;numeric values, higher is always better, except for 
 Armor, which is always best low, and comes down from 100.&nbsp; You'll notice 
 above that two commands are required to set the Race of the creature.&nbsp; 
 Also, you should realize that the numerous saving throws, and senses as well as 
 dispositions (sneaking, hiding) are not represented above, but can easily be 
 added using the format shown.</FONT></P>
-<P><FONT size=4>It is very important to note the last four commands.&nbsp; These 
-commands "reset" the MOB, and "implement" the scores which are given in the 
-several areas.&nbsp; "recoverEnvStats()", for instance, must be called whenever 
-a change is made to the "baseEnvStats()" object.&nbsp; Ditto for "CharStats" and 
-"MaxState".&nbsp; </FONT></P>
+<P><FONT size=4>It is very important to 
+note the last four commands.&nbsp; These commands "reset" the MOB, and 
+"implement" the scores which are given in the several areas.&nbsp; 
+"recoverEnvStats()", for instance, must be called whenever a change is made to 
+the "baseEnvStats()" object.&nbsp; Ditto for "CharStats" and "MaxState".&nbsp; 
+</FONT></P>
 <P><FONT size=4>Now, suppose we wanted 
-to add an "Affect" or "Behavior" or "Ability" to your 
-<STRONG>StdMOB</STRONG>.&nbsp; The 
-proper place for such a statement would be in the same above constructor, among 
-the other commands.&nbsp; Preferably before the several "recover" commands, but 
-after the several stat definitions.  Of course, all of this is unnecesssary for a 
-new GenMOB object.</FONT></P>
-<pre>
+to add an "Affect" or "Behavior" or "Ability" to your <STRONG>StdMOB</STRONG>.&nbsp; The proper place for such a statement 
+would be in the same above constructor, among the other commands.&nbsp; 
+Preferably before the several "recover" commands, but after the several stat 
+definitions. Of course, all of this is unnecesssary for a new GenMOB 
+object.</FONT></P><pre>		
+addNonUninvokableAffect(CMClass.getAbility("Fighter_Berzerk"));
+addAbility(CMClass.getAbility("Poison"));
 		
-		addNonUninvokableAffect(CMClass.getAbility("Fighter_Berzerk"));
-		addAbility(CMClass.getAbility("Poison"));
-		
-		addBehavior(CMClass.getBehavior("MudChat"));
-		addBehavior(CMClass.getBehavior("Mobile"));
-		addBehavior(CMClass.getBehavior("CombatAbilities"));
-		
-</pre>
+addBehavior(CMClass.getBehavior("MudChat"));
+addBehavior(CMClass.getBehavior("Mobile"));
+addBehavior(CMClass.getBehavior("CombatAbilities"));
+</PRE>
 <P><FONT size=4></FONT></P>
 <P><FONT size=4>The commands above will 
 make the MOB permanently Berzerk, gives it the ability to Poison folks while in 
-combat, allows the MOB to Chat with other players, and&nbsp;to walk around 
-in its area. The last behavior 
-gives the MOB the wisdom to use its Poison ability while in 
-combat.</FONT></P>
+combat, allows the MOB to Chat with other players, and&nbsp;to walk around in 
+its area. The last behavior gives the MOB the wisdom to use its Poison ability 
+while in combat.</FONT></P>
 <P><FONT size=4>If your MOB extends 
-<STRONG>StdShopKeeper</STRONG>    , you will need to add your inventory manually.  You will also
-need to specify the type of ShopKeeper.
-</FONT></P>
-<pre>
-		setWhatIsSold(ShopKeeper.ONLYBASEINVENTORY);
+<STRONG>StdShopKeeper</STRONG> , you will need to add your 
+inventory manually. You will also need to specify the type of ShopKeeper. 
+</FONT></P><pre>setWhatIsSold(ShopKeeper.ONLYBASEINVENTORY);
 		
-		Weapon sword=(Weapon)CMClass.getWeapon("Longsword");
-		addStoreInventory(sword,35);
-		Armor mail=(Armor)CMClass.getArmor("FullPlate");
-		addStoreInventory(mail,35);
-		Item waterskin=(Item)CMClass.getItem("Waterskin");
-		addStoreInventory(waterskin,35);
-</pre>
-<P><FONT size=4>You'll recall from the Archon's Guide that there are many different types of ShopKeepers, 
-including trainers, pet sellers, weaponsmiths, and others. </FONT></P>
-<P><FONT size=4><STRONG>StdRideable</STRONG> MOBs will require a few other 
-settings as well!</FONT></P>
-<pre>
-		setRideBasis(Rideable.RIDEABLE_LAND);
-		setMobCapacity(2);
-</pre>
-<P><FONT size=4>The last thing is to give the MOB equipment, 
-armor, and weapons.&nbsp; The following commands will do the trick!</FONT></P>
-<pre>
-		Weapon sword=(Weapon)CMClass.getWeapon("Longsword");
-		addInventory(sword);
-		sword.wearIfPossible(this);
-		
-		Armor mail=(Armor)CMClass.getArmor("FullPlate");
-		addInventory(mail);
-		mail.wearIfPossible(this);
-		
-		Item sack=(Item)CMClass.getItem("StdContainer");
-		addInventory(sack);
-		
-		Item waterskin=(Item)CMClass.getItem("Waterskin");
-		addInventory(waterskin);
-		waterskin.setContainer(sack);
-</pre>
-<P><FONT size=4>And THAT's all there is to creating a new MOB.  Easy, huh?  Well, obviously, the real complexity of MOBs
-comes when the Behaviors and Abilities are programmed, but that is not covered here, of course.</FONT></P>
-<P><FONT size=4 color=mediumslateblue><STRONG>Bringing MOBs to Life, and Taking That Life 
-Away:</STRONG></FONT></P>
-<P><FONT color=black size=4>The 
-following instructions are supplemental, and unnecessary. Once  you have created your new MOB, modified your INI file, and
-rebooted your CoffeeMud server, you need only use the CREATE and other Archon commands to make use of him. If, 
-for some reason, you want to know HOW these commands do their work, however, here it is.</FONT></P>
-<P><FONT color=black size=4>To bring a MOB into existence, a MOB must have 
-somewhere to exist!&nbsp; Presumably, this is some room on your map.&nbsp; Rooms 
-on the map are classes which implement the interface "Room".&nbsp; If a MOB is 
-to have a permanent existence, it must also have a starting room, or a place to 
-rejuvinate into when necessary.&nbsp; If a MOB does not have a starting room, 
-then its death, when that death comes, &nbsp;will be forever.</FONT></P>
-<pre>
-	MOB mob=CMClass.getMOB("MyNewMOB");
-	Room room=CMMap.getRoom("Midgaard#3504");
-	
-	mob.setStartRoom(room); // this mob will rejuvinate into this room.
-	mob.baseEnvStats().setRejuv(500); // 30 minutes rejuvination time
-	mob.recoverEnvStats(); // remember this command?!
-	
-	mob.bringToLife(room,true); // tadah!
-</pre>
-<P><FONT size=4>And THAT's all there is to bring a standard mob to life.  
-Now, generic items require an additional step:  </FONT></P>
-<PRE>
-	Item item=CMClass.getItem("GenItem");
-	Room room=CMMap.getRoom("Midgaard#3504");
-	
-	item.text();
-	item.recoverEnvStats();
-	room.addItem(item);
-	room.recoverRoomStats();
+Weapon sword=(Weapon)CMClass.getWeapon("Longsword");
+addStoreInventory(sword,35);
+Armor mail=(Armor)CMClass.getArmor("FullPlate");
+addStoreInventory(mail,35);
+Item waterskin=(Item)CMClass.getItem("Waterskin");
+addStoreInventory(waterskin,35);
 </PRE>
-<P><FONT size=4>The call to the text() method and the seemingly redundant call
-to Item.recoverEnvStats() (which we know is already in the item constructor),
-ensures that some of the internal structures of the Generic MOB are properly set.
-Of course, you may want to save this room to the database to make the situation 
-permanent, but all of this is usually done from inside CoffeeMud using the
-CREATE, MODIFY, and DESTROY commands anyway.  Speaking of destroy, destroying 
-a mob for good is even easier than creating one:
-</FONT></P>
-<pre>
-	Room room=CMMap.getRoom("Midgaard#3504");
-	for(int i=0;i&lt;room.numInhabitants();i++)
-	{
-		MOB mob=room.fetchInhabitant(i);
-		mob.destroy();
-	}
-</pre>
+<P><FONT size=4>You'll recall from the 
+Archon's Guide that there are many different types of ShopKeepers, including 
+trainers, pet sellers, weaponsmiths, and others. </FONT></P>
+<P><FONT size=4><STRONG>StdRideable</STRONG> MOBs will require a few other settings 
+as well!</FONT></P><pre>setRideBasis(Rideable.RIDEABLE_LAND);
+setMobCapacity(2);
+</PRE>
+<P><FONT size=4>The last thing is to 
+give the MOB equipment, armor, and weapons.&nbsp; The following commands will do 
+the trick!</FONT></P><pre>Weapon sword=(Weapon)CMClass.getWeapon("Longsword");
+addInventory(sword);
+sword.wearIfPossible(this);
+		
+Armor mail=(Armor)CMClass.getArmor("FullPlate");
+addInventory(mail);
+mail.wearIfPossible(this);
+		
+Item sack=(Item)CMClass.getItem("StdContainer");
+addInventory(sack);
+		
+Item waterskin=(Item)CMClass.getItem("Waterskin");
+addInventory(waterskin);
+waterskin.setContainer(sack);
+</PRE>
+<P><FONT size=4>And THAT's all there is 
+to creating a new MOB. Easy, huh? Well, obviously, the real complexity of MOBs 
+comes when the Behaviors and Abilities are programmed, but that is not covered 
+here, of course.</FONT></P>
+<P><FONT color=mediumslateblue size=4><STRONG>Bringing MOBs to Life, and 
+Taking That Life Away:</STRONG></FONT></P>
+<P><FONT color=black size=4>The 
+following instructions are supplemental, and unnecessary. Once you have created 
+your new MOB, modified your INI file, and rebooted your CoffeeMud server, you 
+need only use the CREATE and other Archon commands to make use of him. If, for 
+some reason, you want to know HOW these commands do their work, however, here it 
+is.</FONT></P>
+<P><FONT color=black size=4>To bring a 
+MOB into existence, a MOB must have somewhere to exist!&nbsp; Presumably, this 
+is some room on your map.&nbsp; Rooms on the map are classes which implement the 
+interface "Room".&nbsp; If a MOB is to have a permanent existence, it must also 
+have a starting room, or a place to rejuvinate into when necessary.&nbsp; If a 
+MOB does not have a starting room, then its death, when that death comes, 
+&nbsp;will be forever.</FONT></P><pre>MOB mob=CMClass.getMOB("MyNewMOB");
+Room room=CMMap.getRoom("Midgaard#3504");
+	
+mob.setStartRoom(room); // this mob will rejuvinate into this room.
+mob.baseEnvStats().setRejuv(500); // 30 minutes rejuvination time
+mob.recoverEnvStats(); // remember this command?!
+	
+mob.bringToLife(room,true); // tadah!
+</PRE>
+<P><FONT size=4>And THAT's all there is 
+to bring a standard mob to life. Now, generic items require an additional step: 
+</FONT></P><PRE>Item item=CMClass.getItem("GenItem");
+Room room=CMMap.getRoom("Midgaard#3504");
+	
+item.text();
+item.recoverEnvStats();
+room.addItem(item);
+room.recoverRoomStats();
+</PRE>
+<P><FONT size=4>The call to the text() 
+method and the seemingly redundant call to Item.recoverEnvStats() (which we know 
+is already in the item constructor), ensures that some of the internal 
+structures of the Generic MOB are properly set. Of course, you may want to save 
+this room to the database to make the situation permanent, but all of this is 
+usually done from inside CoffeeMud using the CREATE, MODIFY, and DESTROY 
+commands anyway. Speaking of destroy, destroying a mob for good is even easier 
+than creating one: </FONT></P><pre>Room room=CMMap.getRoom("Midgaard#3504");
+for(int i=0;i&lt;room.numInhabitants();i++)
+{
+	MOB mob=room.fetchInhabitant(i);
+	mob.destroy();
+}
+</PRE>
 <P align=left></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/sword.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=crimson><STRONG>Items:</STRONG></FONT></P>
-<P align=left><FONT size=4>A Custom Item may or may not belong to any particular 
-package, though it is important that the NAME of the Item be unique in the 
-system.&nbsp; A custom Item must import the following packages:</FONT></P>
-<FONT size=3><PRE>
-	import java.util.*;
-	import com.planet_ink.coffee_mud.utils.*;
-	import com.planet_ink.coffee_mud.interfaces.*;
-	import com.planet_ink.coffee_mud.Items.*;
-	import com.planet_ink.coffee_mud.Items.Armor.*;
-	import com.planet_ink.coffee_mud.Items.Weapons.*;
-	import com.planet_ink.coffee_mud.Items.MiscMagic.*;
-	import com.planet_ink.coffee_mud.common.*;</FONT> 
- </PRE></FONT>
-<P><FONT size=4>As well as any other java.*,&nbsp;&nbsp;sun.*, 
-or&nbsp;custom&nbsp;packages you may need.&nbsp; No other packages in the 
-CoffeeMud system should be imported, other than those listed.</FONT> </P>
+<P align=left><FONT size=5><STRONG><IMG src="images/sword.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT color=crimson size=5><STRONG>Items:</STRONG></FONT></P>
+<P align=left><FONT size=4>A Custom Item 
+may or may not belong to any particular package, though it is important that the 
+NAME of the Item be unique in the system.&nbsp; A custom Item must import the 
+following packages:</FONT></P><FONT size=3><PRE>import java.util.*;
+import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.Items.*;
+import com.planet_ink.coffee_mud.Items.Armor.*;
+import com.planet_ink.coffee_mud.Items.Weapons.*;
+import com.planet_ink.coffee_mud.Items.MiscMagic.*;
+import com.planet_ink.coffee_mud.common.*;</FONT> 
+</PRE></FONT>
+<P><FONT size=4>As well as any other 
+java.*,&nbsp;&nbsp;sun.*, or&nbsp;custom&nbsp;packages you may need.&nbsp; No 
+other packages in the CoffeeMud system should be imported, other than those 
+listed.</FONT> </P>
 <P><FONT size=4>An Item&nbsp;class must 
-extend either <STRONG>StdItem</STRONG> or GenItem, <STRONG>StdWeapon</STRONG> or 
-GenWeapon, <STRONG>StdRideable</STRONG> or GenRideable, 
-<STRONG>StdArmor</STRONG> or GenArmor&nbsp;depending on the basic 
+extend either <STRONG>StdItem</STRONG> or GenItem, <STRONG>StdWeapon</STRONG> or GenWeapon, <STRONG>StdRideable</STRONG> or GenRideable, <STRONG>StdArmor</STRONG> or GenArmor&nbsp;depending on the basic 
 capabilities, and customizability&nbsp;you would like.&nbsp; Although Generic 
 objects are more customizable at run-time, they also take a long time for the 
 system to load and build, and take up a lot of database disk space.&nbsp; For 
 this reason, using Standard instead of Generic whereever possible is always 
 good.&nbsp; </FONT></P>
-<P><FONT size=4>Each Item must also have a custom newInstance() and ID() methods as shown 
-below.</FONT></P>
-<PRE>
-	public class MyNewSword extends StdWeapon 
+<P><FONT size=4>Each Item must also have 
+a custom newInstance() and ID() methods as shown below.</FONT></P><PRE>public class MyNewSword extends StdWeapon 
+{ 
+	public String ID(){	return "MyNewSword";}
+	public MyNewSword() 
 	{ 
-		public String ID(){	return "MyNewSword";}
-		public MyNewSword() 
-		{ 
-			super(); 
-		}
-		
-		public Environmental newInstance() 
-		{ 
-			return new MyNewSword(); 
-		} 
+		super(); 
 	}
+		
+	public Environmental newInstance() 
+	{ 
+		return new MyNewSword(); 
+	} 
+}
 </PRE>
-<P><FONT size=4>All of your customizing will be done inside the constructor: name, displayText, description, etc, 
-etc.</FONT></P>
-<pre>	
-	public MyNewSword()
-	{
-		super();
+<P><FONT size=4>All of your customizing 
+will be done inside the constructor: name, displayText, description, etc, 
+etc.</FONT></P><pre>	
+public MyNewSword()
+{
+	super();
 
-		setName("a super sword"); 
-		setDescription("A long super duper sword!"); 
-		setDisplayText("Someone left their super sword here."); 
-		setSecretIdentity("");
-		setMaterial(EnvResource.RESOURCE_STEEL);
-		setWeaponType(Weapon.TYPE_SLASHING);
-		setWeaponClassigication(Weapon.CLASS_SWORD);
+	setName("a super sword"); 
+	setDescription("A long super duper sword!"); 
+	setDisplayText("Someone left their super sword here."); 
+	setSecretIdentity("");
+	setMaterial(EnvResource.RESOURCE_STEEL);
+	setWeaponType(Weapon.TYPE_SLASHING);
+	setWeaponClassigication(Weapon.CLASS_SWORD);
 		
-		setBaseValue(500);
-		baseEnvStats().setDisposition(EnvStats.IS_GLOWING);
-		baseEnvStats.setWeight(25);
-		baseEnvStats.setAttackAdjustment(10);
-		baseEnvStats.setDamage(15);
-		recoverEnvStats();
-	}
-	
-</pre>
+	setBaseValue(500);
+	baseEnvStats().setDisposition(EnvStats.IS_GLOWING);
+	baseEnvStats.setWeight(25);
+	baseEnvStats.setAttackAdjustment(10);
+	baseEnvStats.setDamage(15);
+	recoverEnvStats();
+}
+</PRE>
 <P><FONT size=4>What is shown above is 
 entirely sufficient for the creation of a <STRONG>StdWeapon</STRONG> . The material, weight, attack and damage 
-describe it completely. You'll even notice that            by  setting a disposition flag,
-we have made the sword  glow!&nbsp;&nbsp;Now, what if we wanted a missile weapon?</FONT></P>
-<pre>	
-	public MyNewBow()
-	{
-		super();
+describe it completely. You'll even notice that by setting a disposition flag, 
+we have made the sword glow!&nbsp;&nbsp;Now, what if we wanted a missile 
+weapon?</FONT></P><pre>	
+public MyNewBow()
+{
+	super();
 
-		setName("a super bow");
-		setDescription("A long super duper bow!"); 
-		setDisplayText("Someone left their super bow here.");
-		setSecretIdentity("");
+	setName("a super bow");
+	setDescription("A long super duper bow!"); 
+	setDisplayText("Someone left their super bow here.");
+	setSecretIdentity("");
 		
-		setMaterial(EnvResource.RESOURCE_OAK);
-		setBaseValue(5000);
-		baseEnvStats.setWeight(15);
-		baseEnvStats.setAttackAdjustment(20);
-		baseEnvStats.setDamage(5);
-		setWeaponType(Weapon.TYPE_PIERCING);
-		setWeaponClassigication(Weapon.CLASS_RANGED);
-		setRanges(1,5);
-		setAmmunitionType("arrows");
-		recoverEnvStats();
-	}
-	
-</pre>
+	setMaterial(EnvResource.RESOURCE_OAK);
+	setBaseValue(5000);
+	baseEnvStats.setWeight(15);
+	baseEnvStats.setAttackAdjustment(20);
+	baseEnvStats.setDamage(5);
+	setWeaponType(Weapon.TYPE_PIERCING);
+	setWeaponClassigication(Weapon.CLASS_RANGED);
+	setRanges(1,5);
+	setAmmunitionType("arrows");
+	recoverEnvStats();
+}
+</PRE>
 <P><FONT size=4></FONT>&nbsp;</P>
 <P><FONT size=4>You'll notice we added 
 two new mathods, setRanges, and setAmmunitionType. With the former, we specify 
 that this is a ranged-only weapon, usable from range 1 (0=melee) to range 5. The 
 ammunition type specifies that it uses arrows. Other classes, however, have 
-different requirements altogether. For instance, <STRONG>StdArmor</STRONG>:</FONT></P>
-<pre>	
-	public MyNewArmor()
-	{
-		super();
+different requirements altogether. For instance, <STRONG>StdArmor</STRONG>:</FONT> </P><pre>	
+public MyNewArmor()
+{
+	super();
 
-		setName("a super bracer");
-		setDescription("A super duper bracer"); 
-		setDisplayText("Someone left their super bracer here.");
-		setSecretIdentity("");
+	setName("a super bracer");
+	setDescription("A super duper bracer"); 
+	setDisplayText("Someone left their super bracer here.");
+	setSecretIdentity("");
 		
-		setMaterial(EnvResource.RESOURCE_STEEL);
-		setBaseValue(100);
-		baseEnvStats.setWeight(5);
-		baseEnvStats.setArmor(5);
-		setRawProperLocationBitmap(Item.ON_LEFT_WRIST|Item.ON_RIGHT_WRIST);
-		setRawLogicalAnd(false);
-		recoverEnvStats();
-	}
-	
-</pre>
+	setMaterial(EnvResource.RESOURCE_STEEL);
+	setBaseValue(100);
+	baseEnvStats.setWeight(5);
+	baseEnvStats.setArmor(5);
+	setRawProperLocationBitmap(Item.ON_LEFT_WRIST|Item.ON_RIGHT_WRIST);
+	setRawLogicalAnd(false);
+	recoverEnvStats();
+}
+</PRE>
 <P><FONT size=4>In this case, we made a 
 bracer wearable on both left and right wrists. If it were something that could 
 only be worn on both wrists at the same time (like handcuffs), then the 
-RawLogicalAnd value would have been true. Now, a <STRONG>StdContainer</STRONG>:</FONT></P>
-<pre>	
-	public MyNewBag()
-	{
-		super();
+RawLogicalAnd value would have been true. Now, a <STRONG>StdContainer</STRONG>:</FONT></P><pre>	
+public MyNewBag()
+{
+	super();
 
-		setName("a super bag");
-		setDescription("A super duper bag"); 
-		setDisplayText("Someone left their super bag here.");
-		setSecretIdentity("");
+	setName("a super bag");
+	setDescription("A super duper bag"); 
+	setDisplayText("Someone left their super bag here.");
+	setSecretIdentity("");
 		
-		setBaseValue(50);
-		setLidsNLocks(false,true,false,false);
-		setKeyName("");
-		setMaterial(EnvResource.RESOURCE_LEATHER);
-		baseEnvStats.setWeight(1);
-		setCapacity(100);
-		recoverEnvStats();
-	}
-</pre>
+	setBaseValue(50);
+	setLidsNLocks(false,true,false,false);
+	setKeyName("");
+	setMaterial(EnvResource.RESOURCE_LEATHER);
+	baseEnvStats.setWeight(1);
+	setCapacity(100);
+	recoverEnvStats();
+}
+</PRE>
 <P><FONT size=4>When setting the 
 capacity of a container, remember that it must also be able to hold its own 
 weight! Also, note the lids and locks flags have made this container lidless and 
 lockless and always open.&nbsp; Of course, without a lock, setting a key would 
-be silly!&nbsp; Now, a <STRONG>StdDrink</STRONG> container:</FONT></P>
-<pre>	
-	public MyNewCup()
-	{
-		super();
+be silly!&nbsp; Now, a <STRONG>StdDrink</STRONG> 
+container:</FONT></P><pre>	
+public MyNewCup()
+{
+	super();
 
-		setName("a super cup");
-		setDescription("A super duper cup"); 
-		setDisplayText("Someone left their super bag here.");
-		setSecretIdentity("");
+	setName("a super cup");
+	setDescription("A super duper cup"); 
+	setDisplayText("Someone left their super bag here.");
+	setSecretIdentity("");
 		
-		setMaterial(EnvResource.RESOURCE_LEATHER);
-		setBaseValue(5);
-		setLiquidHeld(2000);
-		setLiquidRemaining(2000);
-		setThirstQuenched(500);
-		setLiquidType(EnvResource.RESOURCE_MILK);
-		baseEnvStats.setWeight(1);
-		setCapacity(0);
-		recoverEnvStats();
-	}
-</pre>
-<P><FONT size=4>The 
-<STRONG>StdDrink</STRONG> created above is an enormous cup of milk! You'll 
-notice the capacity is 0, meaning that mundane objects cannot be stored in it. 
-Now, a <STRONG>StdFood</STRONG>:</FONT></P>
-<pre>	
-	public MyNewFood()
-	{
-		super();
+	setMaterial(EnvResource.RESOURCE_LEATHER);
+	setBaseValue(5);
+	setLiquidHeld(2000);
+	setLiquidRemaining(2000);
+	setThirstQuenched(500);
+	setLiquidType(EnvResource.RESOURCE_MILK);
+	baseEnvStats.setWeight(1);
+	setCapacity(0);
+	recoverEnvStats();
+}
+</PRE>
+<P><FONT size=4>The <STRONG>StdDrink</STRONG> created above is an enormous cup of milk! 
+You'll notice the capacity is 0, meaning that mundane objects cannot be stored 
+in it. Now, a <STRONG>StdFood</STRONG>:</FONT></P><pre>	
+public MyNewFood()
+{
+	super();
 
-		setName("a super crumb");
-		setDescription("A super duper crumb");
-		setDisplayText("Someone left their super crumbs.");
-		setSecretIdentity("");
+	setName("a super crumb");
+	setDescription("A super duper crumb");
+	setDisplayText("Someone left their super crumbs.");
+	setSecretIdentity("");
 		
-		setBaseValue(1);
-		setMaterial(EnvResource.RESOURCE_MEAT);
-		setNourishment(500);
-		baseEnvStats.setWeight(1);
-		recoverEnvStats();
-	}
-</pre>
-<P><FONT size=4>Now, the 
-<STRONG>StdRideable</STRONG>   resembles the MOB of the same name, and thus, has identical modifications.</FONT></P>
-<pre>	
-	public MyNewBed()
-	{
-		super();
+	setBaseValue(1);
+	setMaterial(EnvResource.RESOURCE_MEAT);
+	setNourishment(500);
+	baseEnvStats.setWeight(1);
+	recoverEnvStats();
+}
+</PRE>
+<P><FONT size=4>Now, the <STRONG>StdRideable</STRONG> resembles the MOB of the same name, and 
+thus, has identical modifications.</FONT></P><pre>	
+public MyNewBed()
+{
+	super();
 
-		setName("a bed");
-		setDescription("A bed");
-		setDisplayText("A bed is here");
-		setSecretIdentity("");
+	setName("a bed");
+	setDescription("A bed");
+	setDisplayText("A bed is here");
+	setSecretIdentity("");
 		
-		setBaseValue(100);
-		setMobCapacity(2);
-		setRideBasis(Rideable.RIDEABLE_SLEEP);
-		baseEnvStats.setWeight(100);
-		recoverEnvStats();
-	}
-</pre>
-<P><FONT size=4>A pile of money, aka <STRONG>StdCoins</STRONG>, is simplest of all:</FONT></P>
-<pre>	
-	public MyNewMoney()
-	{
-		super();
+	setBaseValue(100);
+	setMobCapacity(2);
+	setRideBasis(Rideable.RIDEABLE_SLEEP);
+	baseEnvStats.setWeight(100);
+	recoverEnvStats();
+}
+</PRE>
+<P><FONT size=4>A pile of money, aka 
+<STRONG>StdCoins</STRONG>, is simplest of all:</FONT></P><pre>	
+public MyNewMoney()
+{
+	super();
 
-		setName("a pile of coins");
-		setDescription("A pile of coins");
-		setDisplayText("Someone left their money here.");
-		setSecretIdentity("");
+	setName("a pile of coins");
+	setDescription("A pile of coins");
+	setDisplayText("Someone left their money here.");
+	setSecretIdentity("");
 		
-		setBaseValue(0);
-		setMaterial(EnvResource.RESOURCE_GOLD);
-		baseEnvstats.setAbility(1000); // 1000 coins!
-		baseEnvStats.setWeight(1);
-		recoverEnvStats();
-	}
-</pre>
-<P><FONT size=4>    Notice that the base value of the coins is 0, 
-it's the Ability score that does all the work.&nbsp; 
-Now, to a magical <STRONG>StdPill</STRONG>:</FONT></P>
-<pre>	
-	public MyNewPill()
-	{
-		super();
+	setBaseValue(0);
+	setMaterial(EnvResource.RESOURCE_GOLD);
+	baseEnvstats.setAbility(1000); // 1000 coins!
+	baseEnvStats.setWeight(1);
+	recoverEnvStats();
+}
+</PRE>
+<P><FONT size=4>Notice that the base 
+value of the coins is 0, it's the Ability score that does all the work.&nbsp; 
+Now, to a magical <STRONG>StdPill</STRONG>:</FONT></P><pre>public MyNewPill()
+{
+	super();
 
-		setName("a super pill");
-		setDescription("A super duper pill");
-		setDisplayText("Someone left their super pill.");
-		setSecretIdentity("");
+	setName("a super pill");
+	setDescription("A super duper pill");
+	setDisplayText("Someone left their super pill.");
+	setSecretIdentity("");
 		
-		setBaseValue(1);
-		setMaterial(EnvResource.RESOURCE_MEAT);
-		setNourishment(500);
-		baseEnvStats.setWeight(1);
-		setSpellList("Spell_Sleep;Prayer_CureLightWounds");
-		recoverEnvStats();
-	}
-</pre>
+	setBaseValue(1);
+	setMaterial(EnvResource.RESOURCE_MEAT);
+	setNourishment(500);
+	baseEnvStats.setWeight(1);
+	setSpellList("Spell_Sleep;Prayer_CureLightWounds");
+	recoverEnvStats();
+}
+</PRE>
 <P><FONT size=4>The spells cast on the 
 eater are listed by their Class names, seperated by semicolons. The secret 
 identity is also trimmed out, since the system will handle that automatically. 
-Also notice that the <STRONG>StdPill</STRONG> resembles <STRONG>StdFood</STRONG> 
-except for the addition of the setSpellList method. In the exact same way, the 
-<STRONG>StdPotion</STRONG> class resembles the <STRONG>StdDrink</STRONG> class 
-except that it has an identical setSpellList method added to IT. So, in the 
-interests of saving a little sand for future generations, I would enumerate the 
-<STRONG>StdPotion</STRONG>. We can, however, show off a 
-<STRONG>StdScroll</STRONG>:</FONT></P>
-<pre>	
-	public MyNewScroll()
-	{
-		super();
+Also notice that the <STRONG>StdPill</STRONG> resembles 
+<STRONG>StdFood</STRONG> except for the addition of the 
+setSpellList method. In the exact same way, the <STRONG>StdPotion</STRONG> class resembles the <STRONG>StdDrink</STRONG> class except that it has an identical 
+setSpellList method added to IT. So, in the interests of saving a little sand 
+for future generations, I would enumerate the <STRONG>StdPotion</STRONG>. We can, however, show off a <STRONG>StdScroll</STRONG>:</FONT></P><pre>	
+public MyNewScroll()
+{
+	super();
 
-		setName("a super scroll");
-		setDescription("A super duper scroll"); 
-		setDisplayText("Someone	left their super scroll."); 
-		setSecretIdentity("");
-		setBaseValue(100);
+	setName("a super scroll");
+	setDescription("A super duper scroll"); 
+	setDisplayText("Someone	left their super scroll."); 
+	setSecretIdentity("");
+	setBaseValue(100);
 		
-		setMaterial(EnvResource.RESOURCE_PAPER);
-		setUsesRemaining(50);
-		baseEnvStats.setWeight(1);
-		setScrollSpells("Spell_Sleep;Prayer_CureLightWounds");
-		recoverEnvStats();
-	}
-</pre>
+	setMaterial(EnvResource.RESOURCE_PAPER);
+	setUsesRemaining(50);
+	baseEnvStats.setWeight(1);
+	setScrollSpells("Spell_Sleep;Prayer_CureLightWounds");
+	recoverEnvStats();
+}
+</PRE>
 <P><FONT size=4>Not too difficult, 
 right? Looks like the other two, but the spell setting method has a different 
-name. Now, let's look at a <STRONG>StdWand</STRONG>:</FONT></P>
-<pre>	
-	public MyNewWand()
-	{
-		super();
+name. Now, let's look at a <STRONG>StdWand</STRONG>:</FONT></P><pre>	
+public MyNewWand()
+{
+	super();
 
-		setName("a wand");
-		setDescription("A magic wand");
-		setDisplayText("Someone left their magic wand.");
-		setSecretIdentity("");
+	setName("a wand");
+	setDescription("A magic wand");
+	setDisplayText("Someone left their magic wand.");
+	setSecretIdentity("");
 		
-		setBaseValue(1000);
-		setMaterial(EnvResource.RESOURCE_OAK);
-		baseEnvStats.setWeight(1);
-		setSpell(CMClass.getAbility("Spell_Fireball"));
-		setUsesRemaining(50);
-		recoverEnvStats();
-	}
-</pre>
+	setBaseValue(1000);
+	setMaterial(EnvResource.RESOURCE_OAK);
+	baseEnvStats.setWeight(1);
+	setSpell(CMClass.getAbility("Spell_Fireball"));
+	setUsesRemaining(50);
+	recoverEnvStats();
+}
+</PRE>
 <P><FONT size=4>In this case, we made 
 use of the "uses remaining" field to set the number of charges for the wand. The 
 way the spell is set is also different. A wand may only have one spell, and the 
 actual Ability object for the spell must be passed in, instead of just the class 
-name as we did before. You will find that this is also how the 
-<STRONG>StdStaff</STRONG> works. The <STRONG>StdStaff</STRONG> resembles the 
-<STRONG>StdWeapon</STRONG> we did above, except that the additional
-setSpell and setUsesRemaining calls become appropriate to the constructor.  </FONT></P>
-<P><FONT size=4>The next thing we will look at is adding 
-affects and behaviors to Items.&nbsp; Behavior addition (despite the fact that 
-there is really only one behavior that works with Items) will look familiar.  The only
-difference between this and the MOB example above is the fact that we are setting a
-parameter on the Behavior before adding it. 
+name as we did before. You will find that this is also how the <STRONG>StdStaff</STRONG> works. The <STRONG>StdStaff</STRONG> resembles the <STRONG>StdWeapon</STRONG> we did above, except that the additional 
+setSpell and setUsesRemaining calls become appropriate to the constructor. 
 </FONT></P>
-<pre>	
-		Behavior B=CMClass.getBehavior("Emoter");
-		B.setParms("min=1 max=20 chance=75/makes strange sounds");
-		addBehavior(B);
-		
-</pre>
-<P><FONT size=4>Adding normal affects as properties is also similar to mobs...</FONT></P>
-<pre>	
-		Ability A=CMClass.getAbility("Prop_HaveResister");
-		A.setMiscText("fire acid 50%");
-		A.addNonUninvokableAffect(A);
-</pre>
+<P><FONT size=4>The next thing we will 
+look at is adding affects and behaviors to Items.&nbsp; Behavior addition 
+(despite the fact that there is really only one behavior that works with Items) 
+will look familiar. The only difference between this and the MOB example above 
+is the fact that we are setting a parameter on the Behavior before adding it. 
+</FONT></P><pre>	
+Behavior B=CMClass.getBehavior("Emoter");
+B.setParms("min=1 max=20 chance=75/makes strange sounds");
+addBehavior(B);
+</PRE>
+<P><FONT size=4>Adding normal affects as 
+properties is also similar to mobs...</FONT></P><pre>	
+Ability A=CMClass.getAbility("Prop_HaveResister");
+A.setMiscText("fire acid 50%");
+A.addNonUninvokableAffect(A);
+</PRE>
 <P><FONT size=4>The above affect will 
 allow anyone who owns the item to resist fire and acid at 50%!&nbsp; And again, 
-as with mobs, these commands are best put in the constructor of
-the item before the recoverEnvStats() call.</FONT></P>
+as with mobs, these commands are best put in the constructor of the item before 
+the recoverEnvStats() call.</FONT></P>
 <P><FONT color=mediumslateblue size=4><STRONG>Creating and Destroying 
 Items:</STRONG></FONT></P>
-<P><FONT color=black size=4>As with mobs, the following instructions are 
-supplemental, and unnecessary. Once you have created your new Item, modified 
-your INI file, and rebooted your CoffeeMud server, you need only use the CREATE 
-and other Archon commands to make use of it. If, for some reason, you want to 
-know HOW these commands do their work, however, here it is.</FONT></P>
-<P><FONT color=black size=4>To bring an&nbsp;Item into existence, an 
-item&nbsp;must have somewhere to exist!&nbsp; Items can belong to either Rooms, 
-as mobs are, or they can belong to mobs themselves.&nbsp; This means that Items 
-actually have two different creation mechanisms.&nbsp; Here is an example of 
-each, starting with the creation of an Item in a Room:</FONT></P>
-<PRE>
-	Item item=CMClass.getItem("MyNewItem");
-	Room room=CMMap.getRoom("Midgaard#3504");
+<P><FONT color=black size=4>As with 
+mobs, the following instructions are supplemental, and unnecessary. Once you 
+have created your new Item, modified your INI file, and rebooted your CoffeeMud 
+server, you need only use the CREATE and other Archon commands to make use of 
+it. If, for some reason, you want to know HOW these commands do their work, 
+however, here it is.</FONT></P>
+<P><FONT color=black size=4>To bring 
+an&nbsp;Item into existence, an item&nbsp;must have somewhere to exist!&nbsp; 
+Items can belong to either Rooms, as mobs are, or they can belong to mobs 
+themselves.&nbsp; This means that Items actually have two different creation 
+mechanisms.&nbsp; Here is an example of each, starting with the creation of an 
+Item in a Room:</FONT></P><PRE>Item item=CMClass.getItem("MyNewItem");
+Room room=CMMap.getRoom("Midgaard#3504");
 	
-	room.addItem(item);
-	room.recoverRoomStats();
+room.addItem(item);
+room.recoverRoomStats();
 </PRE>
-<P><FONT size=4>A room is grabbed off the 
-map, and the item is added to the room using the addItem() method. Then the room
-recover is called to  make the room react to the addition of the item.&nbsp;&nbsp;
-Now, generic items require an additional step:  </FONT></P>
-<PRE>
-	Item item=CMClass.getItem("GenItem");
-	Room room=CMMap.getRoom("Midgaard#3504");
+<P><FONT size=4>A room is grabbed off 
+the map, and the item is added to the room using the addItem() method. Then the 
+room recover is called to make the room react to the addition of the 
+item.&nbsp;&nbsp; Now, generic items require an additional step: </FONT></P><PRE>Item item=CMClass.getItem("GenItem");
+Room room=CMMap.getRoom("Midgaard#3504");
 	
-	item.text();
-	item.recoverEnvStats();
-	room.addItem(item);
-	room.recoverRoomStats();
+item.text();
+item.recoverEnvStats();
+room.addItem(item);
+room.recoverRoomStats();
 </PRE>
-<P><FONT size=4>The call to the text() method and the seemingly redundant call
-to Item.recoverEnvStats() (which we know is already in the item constructor),
-ensures that some of the internal structures of the Generic Item are properly set.
-Of course, these items are one-shot items, meaning that they are not generated
-to exist on the map forever and ever.
+<P><FONT size=4>The call to the text() 
+method and the seemingly redundant call to Item.recoverEnvStats() (which we know 
+is already in the item constructor), ensures that some of the internal 
+structures of the Generic Item are properly set. Of course, these items are 
+one-shot items, meaning that they are not generated to exist on the map forever 
+and ever. </FONT></P><PRE>Item item=CMClass.getItem("MyNewItem");
+Room room=CMMap.getRoom("Midgaard#3504");
+	
+item.baseEnvStats().setRejuv(500); // 30 minutes rejuvination time
+item.recoverEnvStats();
+room.addItem(item);
+room.recoverRoomStats();
+room.startItemRejuv();
+</PRE>
+<P><FONT size=4>In this case, we wanted 
+the item to be rejuvinating. That means that, when the item is removed from the 
+room by a player, the item will reset at some point in the future. If the rejuv 
+ticks count is set to 0, the item will not reset. In the example above, the 
+count is set to 500 so that the item will reset. However, the rejuvination is 
+not actually activated until the room item rejuvs are set. This is done with the 
+last method call to startItemRejuv(), which handles the rejuv resets on all 
+items in the room.</FONT> </P>
+<P><FONT size=4>In the previous section, 
+we saw how items are given to mobs by simply calling the addInventory() method, 
+so this will not be repeated. Regardless of where or how the item is created, 
+however, it is destroyed the same way. With a simple call to the destroyThis() 
+method on the item. Here is an example of destroying all the items in a room. 
 </FONT></P>
-<PRE>
-	Item item=CMClass.getItem("MyNewItem");
-	Room room=CMMap.getRoom("Midgaard#3504");
-	
-	item.baseEnvStats().setRejuv(500); // 30 minutes rejuvination time
-	item.recoverEnvStats();
-	room.addItem(item);
-	room.recoverRoomStats();
-	room.startItemRejuv();
-</PRE>
-<P><FONT size=4>
-In this case, we wanted the item to be
-rejuvinating.  That means that, when the item is removed from the room by
-a player, the item will reset at some point in the future.  If the rejuv ticks
-count is set to 0, the item will not reset.  In the example above, the count
-is set to 500 so that the item will reset.  However, the rejuvination is 
-not actually activated until the room item rejuvs are set.  This is done with
-the last method call to startItemRejuv(), which handles the rejuv resets on
-all items in the room.</FONT> </P>
-<P><FONT size=4>In the previous section, we saw how items are given to mobs by
-simply calling the addInventory() method, so this will not be repeated.  Regardless 
-of where or how the item is created, however, it is destroyed the same way.  With
-a simple call to the destroyThis() method on the item.  Here is an example of 
-destroying all the items in a room.
- </FONT> </P>
-<P><FONT size=4></FONT> </P>
-<PRE>	
-	
-	Room room=CMMap.getRoom("Midgaard#3504");
-	for(int i=0;i&lt;room.numItems();i++)
-	{
-		Item item=room.fetchItem(i);
-		item.destroyThis();
-	}
+<P><FONT size=4></FONT></P><PRE>	
+Room room=CMMap.getRoom("Midgaard#3504");
+for(int i=0;i&lt;room.numItems();i++)
+{
+	Item item=room.fetchItem(i);
+	item.destroyThis();
+}
 </PRE>
 <P align=left></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/kiss.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 ><STRONG><FONT 
-color=red>Digression 1: With 
-Great Affection:</FONT></STRONG></FONT></P>
+<P align=left><FONT size=5><STRONG><IMG src="images/kiss.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5><STRONG><FONT color=red>Digression 1: With Great 
+Affection:</FONT></STRONG></FONT></P>
 <P align=left><FONT size=4>CoffeeMud&nbsp;is essentially a distributed message passing 
 and handling system, where the actions and events that occur in the system are 
-represented as messages (Affects) which are then previewed, modified, cancelled, and/or reacted to by 
-handlers.&nbsp;&nbsp; Understanding this idea is key to fully understanding how 
-CoffeeMud really works, so let's take a second and peruse this 
-concept in more detail.</FONT></P>
+represented as messages (Affects) which are then previewed, modified, cancelled, 
+and/or reacted to by handlers.&nbsp;&nbsp; Understanding this idea is key to 
+fully understanding how CoffeeMud really works, so let's take a second and 
+peruse this concept in more detail.</FONT></P>
 <P align=left><FONT size=4>Messages in 
 CoffeeMud, at least as we are talking about them here, always represent 
 Events.&nbsp; Events such as a mob picking up an item, swinging a sword at an 
@@ -786,186 +877,187 @@ needle.&nbsp; These events can never actually occur in CoffeeMud unless a proper
 message is generated for them first.&nbsp; These messages, in the code, 
 implement the interface Affect, and are typically an instance of the class 
 FullMsg.&nbsp;</FONT></P>
-<P align=left><FONT size=4>Messages are created at the moment that the event 
-needs to occur.&nbsp; This moment can be triggered by the player entering a 
-command into their telnet client and pressing Enter.&nbsp; It can also by 
-triggered by the mindless algorithms which animate the mobs.&nbsp; Either way, 
-when the moment has come, a message is created, and it looks like this:</FONT></P>
-<pre>	
+<P align=left><FONT size=4>Messages are 
+created at the moment that the event needs to occur.&nbsp; This moment can be 
+triggered by the player entering a command into their telnet client and pressing 
+Enter.&nbsp; It can also by triggered by the mindless algorithms which animate 
+the mobs.&nbsp; Either way, when the moment has come, a message is created, and 
+it looks like this:</FONT></P><pre>	
 FullMsg msg=new FullMsg(mob,targetMOB,this,
 	Affect.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invoke a spell at &lt;T-NAME&gt;s feet..^?",
 	Affect.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invoke(s) a spell at your feet.^?",
 	Affect.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invokes a spell at &lt;T-NAME&gt;s feet.^?");
-</pre>
+</PRE>
 <P align=left><FONT size=4>The above 
 message was taken from the code for the Grease&nbsp;spell, and contains a 
 FullMsg constructor which utilizes every major component of the 
 message.&nbsp;&nbsp;These components&nbsp;are, in order:</FONT></P>
 <P align=left><FONT size=4>
 <UL>
-<LI>Source - The source of any message must always be a 
+  <LI>Source - The source of any message must always be a 
   valid reference to an instance of the MOB interface.&nbsp; In short, all 
-  events that occur in the system are a direct result of the activity of a MOB.&nbsp; This is on the theory that 
-  the universe is controlled and governed by sentience.&nbsp; In the extremely rare instances 
-  where a mob is not readily available to provide a message source, one should be instantiated 
-  -- even if it is just a blank, new StdMOB.
-<LI>Target - The target of a message may be null, or any 
+  events that occur in the system are a direct result of the activity of a 
+  MOB.&nbsp; This is on the theory that the universe is controlled and governed 
+  by sentience.&nbsp; In the extremely rare instances where a mob is not readily 
+  available to provide a message source, one should be instantiated -- even if 
+  it is just a blank, new StdMOB. 
+  <LI>Target - The target of a message may be null, or any 
   valid reference&nbsp;to an instance of&nbsp;the Environmental interface, which 
   includes Items, MOBs, Rooms, Exits, etc.&nbsp; The type and context of message 
   you wish to generate will typically tell you intuitively whether the source is 
   doing something to someone or something else, or is acting 
   independently.&nbsp; This is usually another mob or an item, but you will find 
-  examples of all kinds of targets in the code
-<LI>Tool - The tool of a message may be null, or any valid 
+  examples of all kinds of targets in the code 
+  <LI>Tool - The tool of a message may be null, or any valid 
   reference to an instance of&nbsp;the Environmental interface, which includes 
   Items, Abilities, MOBs, Rooms, Exits, etc.&nbsp; The tool represents something 
   which the source is utilizing to accomplish the task or generate the 
   event.&nbsp; This is typically either an Ability object (like a Spell or Skill 
-  being used), or an Item object (like a weapon in an attack event).
-<LI>Source Code - This is an encoded integer which 
+  being used), or an Item object (like a weapon in an attack event). 
+  <LI>Source Code - This is an encoded integer which 
   represents what the source MOB is actually doing.&nbsp; We'll break down this 
-  code below.
-<LI>Source Message - This is the string which the source 
-  MOB will see should the event occur successfully.&nbsp;
-<LI>Target Code - This is an encoded integer which 
+  code below. 
+  <LI>Source Message - This is the string which the source 
+  MOB will see should the event occur successfully.&nbsp; 
+  <LI>Target Code - This is an encoded integer which 
   represents what is happening to the target.&nbsp; If there is no target, this 
-  number will typically have the value of 0 (Affect.NOEFFECT).
-<LI>Target Message - This is the string which the target 
+  number will typically have the value of 0 (Affect.NOEFFECT). 
+  <LI>Target Message - This is the string which the target 
   MOB (if it is a MOB) will see should the event occur successfully.&nbsp; If 
-  there is no target, this string is null.
-<LI>Others Code - This is an encoded integer which 
+  there is no target, this string is null. 
+  <LI>Others Code - This is an encoded integer which 
   represents how any other objects (such as MOBs, Items, Rooms, Exits) other 
   than the source and target, in the same room, perceive the event.&nbsp; If the 
   event is completely imperceptable by anything other than the source, it may be 
-  0 (Affect.NOEFFECT)
-<LI>Others Message - This is the string which other MOBs 
+  0 (Affect.NOEFFECT) 
+  <LI>Others Message - This is the string which other MOBs 
   in the same room as the source and target MOBs will see should the event occur 
   successfully.&nbsp; If the event is completely imperceptable by other MOBs, it 
   may be null.</LI></UL>
-<P>The Source Code, Target Code, and Others Code is easily the most complicated 
-aspect of a Message.&nbsp; For this reason, numerous pre-configured message 
-codes have been created in the Affect interface, all of which begin with the 
-characters MSG_.&nbsp; Although we will not go into the meaning of each of these 
-messages (that will be left to the reader to search the code for instances of 
-messages which use the codes, and learn from the context in which they are 
-used), we can at least break down these codes so that they can be better 
-understood.</P>
-<P>These coded integers all have two parts, the Major aspect (or the Major Code) 
-and the Minor aspect (or the Minor Code).&nbsp; They may be referenced off of an 
-already constructed&nbsp;Affect object using such methods as sourceMajor() and 
-sourceMinor().&nbsp; These methods will automatically break down a sourceCode() 
-in the components we will discuss.</P>
-<P>The Major code is a series of significant bits in the integer, each of which 
-gives some new meaning to the message.&nbsp; These bits are as follows:</P>
+<P>The Source Code, Target Code, and Others Code is easily 
+the most complicated aspect of a Message.&nbsp; For this reason, numerous 
+pre-configured message codes have been created in the Affect interface, all of 
+which begin with the characters MSG_.&nbsp; Although we will not go into the 
+meaning of each of these messages (that will be left to the reader to search the 
+code for instances of messages which use the codes, and learn from the context 
+in which they are used), we can at least break down these codes so that they can 
+be better understood.</P>
+<P>These coded integers all have two parts, the Major aspect 
+(or the Major Code) and the Minor aspect (or the Minor Code).&nbsp; They may be 
+referenced off of an already constructed&nbsp;Affect object using such methods 
+as sourceMajor() and sourceMinor().&nbsp; These methods will automatically break 
+down a sourceCode() in the components we will discuss.</P>
+<P>The Major code is a series of significant bits in the 
+integer, each of which gives some new meaning to the message.&nbsp; These bits 
+are as follows:</P>
 <P>
 <TABLE cellSpacing=1 cellPadding=1 width="75%" border=1>
   
   <TR>
-    <TD WIDTH="15%"><STRONG>Bit mask</STRONG> </TD>
-    <TD WIDTH="35%">Affect Equate Variable(s)</TD>
-    <TD WIDTH="50%"><STRONG>Meaning</STRONG></TD></TR>
+    <TD width="15%"><STRONG>Bit 
+      mask</STRONG> </TD>
+    <TD width="35%">Affect Equate Variable(s)</TD>
+    <TD width="50%"><STRONG 
+      >Meaning</STRONG></TD></TR>
   <TR>
-    <TD WIDTH="15%">1024 + 65536</TD>
-    <TD WIDTH="35%">
+    <TD width="15%">1024 + 65536</TD>
+    <TD width="35%">
       <P>MASK_HURT</P></TD>
-    <TD WIDTH="50%">      
-                 *Special* Damage 
-      message.</TD></TR>
+    <TD width="50%">*Special* Damage message.</TD></TR>
   <TR>
-    <TD WIDTH="15%">2048</TD>
-    <TD WIDTH="35%">
+    <TD width="15%">2048</TD>
+    <TD width="35%">
       <P>MASK_HANDS</P></TD>
-    <TD WIDTH="50%">Message includes small 
-  movements.</TD></TR>
+    <TD width="50%">Message includes small 
+movements.</TD></TR>
   <TR>
-    <TD WIDTH="15%">4096</TD>
-    <TD WIDTH="35%">
+    <TD width="15%">4096</TD>
+    <TD width="35%">
       <P>MASK_MOVE</P></TD>
-    <TD WIDTH="50%">Message includes large, full-body 
+    <TD width="50%">Message includes large, full-body 
       movements.</TD></TR>
   <TR>
-    <TD WIDTH="15%">8192</TD>
-    <TD WIDTH="35%">MASK_EYES</TD>
-    <TD WIDTH="50%">Message includes visual 
-    information.</TD></TR>
+    <TD width="15%">8192</TD>
+    <TD width="35%">MASK_EYES</TD>
+    <TD width="50%">Message includes visual 
+  information.</TD></TR>
   <TR>
-    <TD WIDTH="15%">16384</TD>
-    <TD WIDTH="35%">MASK_MOUTH</TD>
-    <TD WIDTH="50%">Message include mouth movement, or 
+    <TD width="15%">16384</TD>
+    <TD width="35%">MASK_MOUTH</TD>
+    <TD width="50%">Message include mouth movement, or 
       consumption.</TD></TR>
   <TR>
-    <TD WIDTH="15%">32768</TD>
-    <TD WIDTH="35%">MASK_SOUND,<BR>MASK_SOUNDEDAT<BR></TD>
-    <TD WIDTH="50%">Message includes auditory information.</TD></TR>
+    <TD width="15%">32768</TD>
+    <TD width="35%">MASK_SOUND,<BR 
+      >MASK_SOUNDEDAT<BR></TD>
+    <TD width="50%">Message includes auditory 
+    information.</TD></TR>
   <TR>
-    <TD WIDTH="15%">65536</TD>
-    <TD WIDTH="35%">MASK_GENERAL</TD>
-    <TD WIDTH="50%">Override mask which flags the message 
-      as something which Must occur, regardless of the state of the source or target.</TD></TR>
+    <TD width="15%">65536</TD>
+    <TD width="35%">MASK_GENERAL</TD>
+    <TD width="50%">Override mask which flags the message 
+      as something which Must occur, regardless of the state of the source or 
+      target.</TD></TR>
   <TR>
-    <TD WIDTH="15%">131072</TD>
-    <TD WIDTH="35%">MASK_MAGIC</TD>
-    <TD WIDTH="50%">Message has a magical nature.</TD></TR>
+    <TD width="15%">131072</TD>
+    <TD width="35%">MASK_MAGIC</TD>
+    <TD width="50%">Message has a magical nature.</TD></TR>
   <TR>
-    <TD WIDTH="15%">262144</TD>
-    <TD WIDTH="35%">MASK_DELICATE</TD>
-    <TD WIDTH="50%">Message includes very fine, delicate 
+    <TD width="15%">262144</TD>
+    <TD width="35%">MASK_DELICATE</TD>
+    <TD width="50%">Message includes very fine, delicate 
       movements, such as thief skills.</TD></TR>
   <TR>
-    <TD WIDTH="15%">1048576</TD>
-    <TD WIDTH="35%">MASK_CHANNEL</TD>
-    <TD WIDTH="50%">Message is&nbsp;part of 
-      public&nbsp;channel conversation.</TD></TR>
-</TABLE></P>
-</FONT>
+    <TD width="15%">1048576</TD>
+    <TD width="35%">MASK_CHANNEL</TD>
+    <TD width="50%">Message is&nbsp;part of 
+      public&nbsp;channel conversation.</TD></TR></TABLE></P></FONT>
 <P align=left><FONT size=4>The above 
 masks can be quite confusing.&nbsp; It is best to examine the several MSG_ 
 equates in the Affect interface to see how they are properly or improperly 
 used.&nbsp; Remember a MSG_ equate is a completely constructed Code, complete 
 with the appropriate Major and Minor aspects.</FONT></P>
-<P align=left><FONT size=4>The Minor Code&nbsp;represents the more specific activity 
-being performed, and is a simple integer ranging from&nbsp;0 (NO EFFECT) 
-to 1023.&nbsp; The exception to this is&nbsp;any message with the MASK_HURT 
-bits set.&nbsp; In that case, the 16 bits from 0-1023 represent the amount 
-of damage being taken.&nbsp;&nbsp;Another exception is the CHANNEL&nbsp;Mask, 
-where the&nbsp;lower bits represent the CHANNEL number being chatted on.&nbsp; 
-In all other cases, however, the Minor Code is a unique&nbsp;integer 
-representing the specific task being performed.&nbsp; The officially recognized 
-Minor codes are exhaustively listed in the Affect interface, and all begin with 
-the prefix TYP_.&nbsp; These types cover every sort of major event which occurs 
-in the CoffeeMud engine, including getting items, casting spells, entering or 
-leaving rooms, etc, etc..</FONT></P>
-<pre>	
-FullMsg msg=new FullMsg(attacker,target,weapon,Affect.MSG_WEAPONATTACK,&lt;	
- BR&gt; "&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
-</pre>
-<P align=left><FONT size=4>The FullMsg class has many 
-different constructors to make message construction quick and painless.&nbsp; 
-The above is an example where only a single Code and a single message text are 
-provided.&nbsp; In constructors where only one Code or message text field are 
-provided, it is assumed that the code and message texts will be the same for 
-source, target (if any) and others.</FONT></P>
-<P align=left><FONT color=red size=4>Message 
-Previewing</FONT></P>
-<P align=left><FONT color=black><FONT size=4>     
- Once a Message has been constructed, it is time to actually put 
-the message out into the system.&nbsp; There is a standard form for the sending 
-of almost all messages.&nbsp; If the source of the message is a MOB called 
-"SourceMOB", this standard form looks like this:</FONT></FONT></P>
-<pre>	
-FullMsg msg=new FullMsg(SourceMOB,TargetMOB,weapon,Affect.MSG_WEAPONATTACK,&lt;	
- BR&gt; "&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
+<P align=left><FONT size=4>The Minor 
+Code&nbsp;represents the more specific activity being performed, and is a simple 
+integer ranging from&nbsp;0 (NO EFFECT) to 1023.&nbsp; The exception to this 
+is&nbsp;any message with the MASK_HURT bits set.&nbsp; In that case, the 16 bits 
+from 0-1023 represent the amount of damage being taken.&nbsp;&nbsp;Another 
+exception is the CHANNEL&nbsp;Mask, where the&nbsp;lower bits represent the 
+CHANNEL number being chatted on.&nbsp; In all other cases, however, the Minor 
+Code is a unique&nbsp;integer representing the specific task being 
+performed.&nbsp; The officially recognized Minor codes are exhaustively listed 
+in the Affect interface, and all begin with the prefix TYP_.&nbsp; These types 
+cover every sort of major event which occurs in the CoffeeMud engine, including 
+getting items, casting spells, entering or leaving rooms, etc, etc..</FONT></P><pre>	
+FullMsg msg=new FullMsg(attacker,target,weapon,Affect.MSG_WEAPONATTACK,
+						"&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
+</PRE>
+<P align=left><FONT size=4>The FullMsg 
+class has many different constructors to make message construction quick and 
+painless.&nbsp; The above is an example where only a single Code and a single 
+message text are provided.&nbsp; In constructors where only one Code or message 
+text field are provided, it is assumed that the code and message texts will be 
+the same for source, target (if any) and others.</FONT></P>
+<P align=left><FONT color=red size=4>Message Previewing</FONT></P>
+<P align=left><FONT color=black><FONT 
+size=4>Once a Message has been constructed, it is time to 
+actually put the message out into the system.&nbsp; There is a standard form for 
+the sending of almost all messages.&nbsp; If the source of the message is a MOB 
+called "SourceMOB", this standard form looks like this:</FONT></FONT></P><pre>	
+FullMsg msg=new FullMsg(SourceMOB,TargetMOB,weapon,Affect.MSG_WEAPONATTACK,
+						"&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
+						
 if(SourceMOB.location().okAffect(msg))
 	SourceMOB.location().send(SourceMOB,msg);
-</pre>
+</PRE>
 <P align=left><FONT size=4>The 
 location() field on a MOB refers to the Room in which the mob is. Room's are 
 always the top level at which messages are previewed, and then sent.&nbsp; The 
 first line (where the message is constructed) has already been examined.&nbsp; 
 The second line, in which the Room method "okAffect" is called, is&nbsp;the 
-Preview step.&nbsp; In this step, the message is evaluated 
-before it actually happens.&nbsp;  The third line, where the Room "send" method is called, 
-is the Execution step.  </FONT></P>
+Preview step.&nbsp; In this step, the message is evaluated before it actually 
+happens.&nbsp; The third line, where the Room "send" method is called, is the 
+Execution step. </FONT></P>
 <P align=left><FONT size=4>In the 
 Preview step, the Room object will examine the message to see if there is 
 anything which it might&nbsp;not like, wish to modify, or wish to flag about the 
@@ -985,110 +1077,106 @@ returns false, the Room okAffect method will also return false, ordering the
 Message to be totally canceled.&nbsp; For this reason, okAffect methods are 
 careful about returning true unless they have a really good reason not 
 to.</FONT></P>
-<P align=left><FONT size=4>Inside the "okAffect" methods of every Item, MOB, 
-Behavior, Ability (spell effect), Exit, and Room, the Messages may (as we 
-mentioned) be examined and modified, flagged, or cancelled.&nbsp; As we have 
-already covered how Messages are cancelled (by returning false).&nbsp; Let us 
-turn now to the manner in which Messages are modified or flagged.</FONT></P>
-<P align=left><FONT color=#ff0000 size=4>Message Flagging and 
-Modification</FONT></P>
-<P align=left><FONT size=4>Message modification is 
-very rare.&nbsp; When it happens though, it is done by calling the 
-"modify" method on the Affect (FullMsg) object.&nbsp; This method allows the source, target, 
-and all other fields to be updated.&nbsp;</FONT></P>
-<P align=left><FONT size=4>Message flagging is somewhat less rare.&nbsp; 
-Messages may be flagged when a combat strike is successful, or when a saving 
-throw is made against a spell affect, or for any other reason the Message 
-constructing code may wish.&nbsp; A Message defaults to unflagged, but is 
-flagged when the method "tagModified(true);" is called on the Affect (FullMsg) 
-object.&nbsp; Flagging has no other affect other than to let the code which 
-constructed the Messsage know that something significant with relation to the 
-Message has occurred.&nbsp; </FONT></P>
-<P align=left><FONT size=4>To prevent confusion, a couple of important points 
-need to be made about Flagging and Message modification.&nbsp; The first is that 
-modifying a Message with the "modify" method does NOT flag the Message.&nbsp; 
-The second is that calling the "tagModified" method flags the Message, but does 
-not modify it in any way other than to flag it.</FONT></P>
+<P align=left><FONT size=4>Inside the 
+"okAffect" methods of every Item, MOB, Behavior, Ability (spell effect), Exit, 
+and Room, the Messages may (as we mentioned) be examined and modified, flagged, 
+or cancelled.&nbsp; As we have already covered how Messages are cancelled (by 
+returning false).&nbsp; Let us turn now to the manner in which Messages are 
+modified or flagged.</FONT></P>
+<P align=left><FONT color=#ff0000 size=4>Message Flagging and Modification</FONT></P>
+<P align=left><FONT size=4>Message 
+modification is very rare.&nbsp; When it happens though, it is done by calling 
+the "modify" method on the Affect (FullMsg) object.&nbsp; This method allows the 
+source, target, and all other fields to be updated.&nbsp;</FONT></P>
+<P align=left><FONT size=4>Message 
+flagging is somewhat less rare.&nbsp; Messages may be flagged when a combat 
+strike is successful, or when a saving throw is made against a spell affect, or 
+for any other reason the Message constructing code may wish.&nbsp; A Message 
+defaults to unflagged, but is flagged when the method "tagModified(true);" is 
+called on the Affect (FullMsg) object.&nbsp; Flagging has no other affect other 
+than to let the code which constructed the Messsage know that something 
+significant with relation to the Message has occurred.&nbsp; </FONT></P>
+<P align=left><FONT size=4>To prevent 
+confusion, a couple of important points need to be made about Flagging and 
+Message modification.&nbsp; The first is that modifying a Message with the 
+"modify" method does NOT flag the Message.&nbsp; The second is that calling the 
+"tagModified" method flags the Message, but does not modify it in any way other 
+than to flag it.</FONT></P>
 <P align=left><FONT color=#ff0000 size=4>Message Execution</FONT></P>
-<P align=left><FONT color=black size=4>Once the "okAffect" method on a Room 
-object has returned true, and any code which may need to check or handle 
-modifications to the Message have executed, the Message is sent.&nbsp;&nbsp; The 
-proper way to send a Message is through the Room objects, by calling one of the 
-following Messages: Room.send(MOB SourceMOB, Affect msg) 
-or&nbsp;Room.sendOthers(MOB SourceMOB, Affect msg).&nbsp; The first method 
-handles a standard Execution, while the second allows every relevant object 
-except the SourceMOB to handle Execution.&nbsp; The first method should always 
-be called unless there are good reasons not to.&nbsp; </FONT></P>
+<P align=left><FONT color=black size=4>Once the "okAffect" method on a Room object has returned 
+true, and any code which may need to check or handle modifications to the 
+Message have executed, the Message is sent.&nbsp;&nbsp; The proper way to send a 
+Message is through the Room objects, by calling one of the following Messages: 
+Room.send(MOB SourceMOB, Affect msg) or&nbsp;Room.sendOthers(MOB SourceMOB, 
+Affect msg).&nbsp; The first method handles a standard Execution, while the 
+second allows every relevant object except the SourceMOB to handle 
+Execution.&nbsp; The first method should always be called unless there are good 
+reasons not to.&nbsp; </FONT></P>
 <P align=left><FONT color=black size=4>The "send" method will then begin calling other methods in 
-other objects.&nbsp; These other methods are called the 
-"affect" methods, and are usually of the form "public void affect(Affect 
-msg);".&nbsp; These methods are responsible for Executing the contents of the 
-message.&nbsp; The Room method will make "affect" method calls on itself, 
-and on every Exit, Item, MOB, spell affects (Ability object), and Behavior 
-associated with that Room.&nbsp; As in the "okAffect" case, the MOBs 
-will in turn call the "affect()" methods on their own Items and spell 
-effects.&nbsp; Items will then call the&nbsp;"affect" methods on their own spell effects.&nbsp; 
-</FONT></P>
-<P align=left><FONT size=4>Of course, not every object called handles Execution 
-for every Message sent.&nbsp; Most of the time, a given object will be ignoring 
-the Message altogether.&nbsp; However, each object knows precisely which 
-Messages are important for it, and watch carefully for them in both their 
-"okAffect" and "affect" methods.&nbsp; In general, every Message which is 
-previewed in an objects "okAffect" method is handled in the "affect"&nbsp; 
-method of the same object, though this is by no means always true.&nbsp; In 
-general, the following object types handle the following types of 
-Messages:</FONT></P>
-<P align=left><FONT size=4>MOBs - Any Message which has the mob instance as a 
-target is both Previewed and Executed.&nbsp; Any Message which has the mob as a 
-source is typically Previewed, and (lacking a target) may also be 
-Executed.&nbsp; </FONT></P>
-<P align=left><FONT size=4>Items - Any Message which has the item instance as a 
-target.</FONT></P>
-<P align=left><FONT size=4>Exits - Any Message which has the exit instance as a 
-target or tool.</FONT></P>
+other objects.&nbsp; These other methods are called the "affect" methods, and 
+are usually of the form "public void affect(Affect msg);".&nbsp; These methods 
+are responsible for Executing the contents of the message.&nbsp; The Room method 
+will make "affect" method calls on itself, and on every Exit, Item, MOB, spell 
+affects (Ability object), and Behavior associated with that Room.&nbsp; As in 
+the "okAffect" case, the MOBs will in turn call the "affect()" methods on their 
+own Items and spell effects.&nbsp; Items will then call the&nbsp;"affect" 
+methods on their own spell effects.&nbsp; </FONT></P>
+<P align=left><FONT size=4>Of course, 
+not every object called handles Execution for every Message sent.&nbsp; Most of 
+the time, a given object will be ignoring the Message altogether.&nbsp; However, 
+each object knows precisely which Messages are important for it, and watch 
+carefully for them in both their "okAffect" and "affect" methods.&nbsp; In 
+general, every Message which is previewed in an objects "okAffect" method is 
+handled in the "affect"&nbsp; method of the same object, though this is by no 
+means always true.&nbsp; In general, the following object types handle the 
+following types of Messages:</FONT></P>
+<P align=left><FONT size=4>MOBs - Any 
+Message which has the mob instance as a target is both Previewed and 
+Executed.&nbsp; Any Message which has the mob as a source is typically 
+Previewed, and (lacking a target) may also be Executed.&nbsp; </FONT></P>
+<P align=left><FONT size=4>Items - Any 
+Message which has the item instance as a target.</FONT></P>
+<P align=left><FONT size=4>Exits - Any 
+Message which has the exit instance as a target or tool.</FONT></P>
 <P align=left><FONT size=4>Rooms - Any 
 Message which has the room instance as a target.</FONT></P>
-<P align=left><FONT size=4>Ability (spell affects) - Any Message pertaining to 
-the MOB or Item which is affected by the spell or&nbsp;skill.</FONT></P>
-<P align=left><FONT size=4>Behavior - Any Message pertaining to the object 
-instance which has this behavior.</FONT></P>
-<P align=left><FONT size=4>Now that 
-you are completely confused, it will make you at least a bit happier to know 
-that Room objects have several short-cut methods for creating, previewing, and 
-executing messages.&nbsp; They include the following:<BR>         
-              
-          
-</FONT>	<BR>void 
-show(MOB source,Environmental target,int allCode,String allMessage);<BR>void 
-showHappens(int allCode, String allMessage);<BR>void showOthers(MOB 
-source,Environmental target,int allCode,String allMessage);<BR>void 
-showSource(MOB source,Environmental target,int allCode,String 
-allMessage);<BR></P>
-<P align=left><FONT size=4>The first method, most commonly used, constructs a
-message with the given source and target (no tool), and with the given Code
-and text message applying to source, target, and others.  The second method
-will do the same, but will also construct a MOB object to act as the source,
-for those instances where a source MOB is not readily available.  The third
-method behaves like the first, but does not allow the source MOB to preview
-or execute the message, while the fourth ONLY allows the source MOB to preview
-and execute the message.</FONT></P>
-<P align=left><FONT size=4>All four of those methods will construct a FullMsg
-object, give the Message to the Room object for previewing ("okAffect"), and
-then, if the Message is not cancelled, will call the Room "send" method for
-execution.</FONT></P>
+<P align=left><FONT size=4>Ability 
+(spell affects) - Any Message pertaining to the MOB or Item which is affected by 
+the spell or&nbsp;skill.</FONT></P>
+<P align=left><FONT size=4>Behavior - 
+Any Message pertaining to the object instance which has this 
+behavior.</FONT></P>
+<P align=left><FONT size=4>Now that you 
+are completely confused, it will make you at least a bit happier to know that 
+Room objects have several short-cut methods for creating, previewing, and 
+executing messages.&nbsp; They include the following:<BR></FONT><BR>void show(MOB 
+source,Environmental target,int allCode,String allMessage);<BR>void showHappens(int allCode, String allMessage);<BR>void showOthers(MOB source,Environmental target,int 
+allCode,String allMessage);<BR>void showSource(MOB 
+source,Environmental target,int allCode,String allMessage);<BR></P>
+<P align=left><FONT size=4>The first 
+method, most commonly used, constructs a message with the given source and 
+target (no tool), and with the given Code and text message applying to source, 
+target, and others. The second method will do the same, but will also construct 
+a MOB object to act as the source, for those instances where a source MOB is not 
+readily available. The third method behaves like the first, but does not allow 
+the source MOB to preview or execute the message, while the fourth ONLY allows 
+the source MOB to preview and execute the message.</FONT></P>
+<P align=left><FONT size=4>All four of 
+those methods will construct a FullMsg object, give the Message to the Room 
+object for previewing ("okAffect"), and then, if the Message is not cancelled, 
+will call the Room "send" method for execution.</FONT></P>
 <P align=left><FONT color=#ff0000 size=4>Message Trailers</FONT></P>
-<P align=left><FONT color=black size=4>The final subject we will discuss in the area 
-of Messages and Message handling regards another rare technique called Message 
-Trailer adding.&nbsp; Message Trailers are simply Affects (FullMsg objects) 
-which have been added to a FullMsg instance using the "addTrailerMsg(Affect 
-msg)" method.&nbsp; The Message passed to this method is constructed in the 
-usual way.&nbsp; </FONT><FONT color=black size=4>This&nbsp;method 
-may be properly 
-called&nbsp;at any point during the Preview or Execution stage of Message 
-handling, by any Previewing or Executing object.&nbsp; When it is performed 
-is not important, because any Messages added using this method are not Previewed 
-or Executed until after the Room object has completely finished sending 
-the host Message to all interested objects.&nbsp; </FONT></P>
+<P align=left><FONT color=black size=4>The final subject we will discuss in the area of Messages 
+and Message handling regards another rare technique called Message Trailer 
+adding.&nbsp; Message Trailers are simply Affects (FullMsg objects) which have 
+been added to a FullMsg instance using the "addTrailerMsg(Affect msg)" 
+method.&nbsp; The Message passed to this method is constructed in the usual 
+way.&nbsp; </FONT><FONT color=black size=4>This&nbsp;method 
+may be properly called&nbsp;at any point during the Preview or Execution stage 
+of Message handling, by any Previewing or Executing object.&nbsp; When it is 
+performed is not important, because any Messages added using this method are not 
+Previewed or Executed until after the Room object has completely finished 
+sending the host Message to all interested objects.&nbsp; </FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1099,266 +1187,263 @@ the host Message to all interested objects.&nbsp; </FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/temple.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 ><STRONG><FONT 
-color=red>Digression 2: The 
-State of Things:</FONT></STRONG></FONT></P>
+<P align=left><FONT size=5><STRONG><IMG src="images/temple.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5><STRONG><FONT color=red>Digression 2: The State 
+of Things:</FONT></STRONG></FONT></P>
 <P align=left><FONT size=4>CoffeeMud 
 provides for several state objects to describe a set of properties for those 
 objects.&nbsp; These state objects may be modified in a heiarchical way by 
 certain other objects which have a relationship with them.&nbsp; The state 
-object modifications are stacked on each other.&nbsp; Confused?&nbsp; Well, keep reading!</FONT></P>
-<P align=left><FONT size=4>Each instance of the several&nbsp;Environmental 
-objects (MOBs, Items, Exits, Rooms) have a state object called their 
-Environmental Stats.&nbsp; This state object implements the EnvStats interface, 
-and is typically an instance of the DefaultEnvStats class.&nbsp; Access to this 
-state object is available through each Environmental objects "baseEnvStats()" 
-and "envStats()" method calls.&nbsp; </FONT></P>
-<P align=left><FONT size=4>The fields available through the EnvStats state 
-object include the following:</FONT></P>
+object modifications are stacked on each other.&nbsp; Confused?&nbsp; Well, keep 
+reading!</FONT></P>
+<P align=left><FONT size=4>Each instance 
+of the several&nbsp;Environmental objects (MOBs, Items, Exits, Rooms) have a 
+state object called their Environmental Stats.&nbsp; This state object 
+implements the EnvStats interface, and is typically an instance of the 
+DefaultEnvStats class.&nbsp; Access to this state object is available through 
+each Environmental objects "baseEnvStats()" and "envStats()" method calls.&nbsp; 
+</FONT></P>
+<P align=left><FONT size=4>The fields 
+available through the EnvStats state object include the following:</FONT></P>
 <TABLE cellSpacing=1 cellPadding=1 width="75%" border=1>
   
   <TR>
-    <TD WIDTH="25%"><STRONG>Field name</STRONG> </TD>
-    <TD WIDTH="25%"><STRONG>Relevant objects</STRONG></TD>
-    <TD WIDTH="50%"><STRONG>Meaning</STRONG></TD></TR>
+    <TD width="25%"><STRONG>Field 
+      name</STRONG> </TD>
+    <TD width="25%"><STRONG>Relevant 
+      objects</STRONG></TD>
+    <TD width="50%"><STRONG 
+      >Meaning</STRONG></TD></TR>
   <TR>
-    <TD >level</TD>
-    <TD >Item, MOB, Exit</TD>
-    <TD >Experience level (see Archon's Guide)</TD></TR>
+    <TD>level</TD>
+    <TD>Item, MOB, Exit</TD>
+    <TD>Experience level (see Archon's Guide)</TD></TR>
   <TR>
-    <TD >ability</TD>
-    <TD >Item, MOB </TD>
-    <TD >  Magical level (see Archon's Guide)  </TD></TR>
+    <TD>ability</TD>
+    <TD>Item, MOB </TD>
+    <TD>Magical level (see Archon's Guide) </TD></TR>
   <TR>
-    <TD >rejuv</TD>
-    <TD >Item, MOB </TD>
-    <TD >  Rejuvination rate (see Archon's Guide)  </TD></TR>
+    <TD>rejuv</TD>
+    <TD>Item, MOB </TD>
+    <TD>Rejuvination rate (see Archon's Guide) </TD></TR>
   <TR>
-    <TD >weight</TD>
-    <TD >Item, MOB </TD>
-    <TD >  Weight of the object  </TD></TR>
+    <TD>weight</TD>
+    <TD>Item, MOB </TD>
+    <TD>Weight of the object </TD></TR>
   <TR>
-    <TD >height</TD>
-    <TD >Armor, MOB </TD>
-    <TD >  Size of the object  </TD></TR>
+    <TD>height</TD>
+    <TD>Armor, MOB </TD>
+    <TD>Size of the object </TD></TR>
   <TR>
-    <TD >armor</TD>
-    <TD >Item, MOB </TD>
-    <TD >  Protection level (see Archon's Guide)  </TD></TR>
+    <TD>armor</TD>
+    <TD>Item, MOB </TD>
+    <TD>Protection level (see Archon's Guide) </TD></TR>
   <TR>
-    <TD >damage</TD>
-    <TD >Item, MOB </TD>
-    <TD >  Damaging ability  </TD></TR>
+    <TD>damage</TD>
+    <TD>Item, MOB </TD>
+    <TD>Damaging ability </TD></TR>
   <TR>
-    <TD >speed</TD>
-    <TD >Item, MOB </TD>
-    <TD >  Attack speed  </TD></TR>
+    <TD>speed</TD>
+    <TD>Item, MOB </TD>
+    <TD>Attack speed </TD></TR>
   <TR>
-    <TD >attackAdjustment</TD>
-    <TD >Item, MOB </TD>
-    <TD >  Attack level  </TD></TR>
+    <TD>attackAdjustment</TD>
+    <TD>Item, MOB </TD>
+    <TD>Attack level </TD></TR>
   <TR>
-    <TD >replacementName</TD>
-    <TD >Item, MOB, Exit </TD>
-    <TD >  New displayable name of the object  </TD></TR>
+    <TD>replacementName</TD>
+    <TD>Item, MOB, Exit </TD>
+    <TD>New displayable name of the object </TD></TR>
   <TR>
-    <TD >sensesMask</TD>
-    <TD >Item, MOB, Exit, Room&nbsp; </TD>
-    <TD >  Bit mask of relevant sensory abilities.  </TD></TR>
+    <TD>sensesMask</TD>
+    <TD>Item, MOB, Exit, Room&nbsp; </TD>
+    <TD>Bit mask of relevant sensory abilities. </TD></TR>
   <TR>
-    <TD >disposition</TD>
-    <TD >Item, MOB, Exit, Room&nbsp; </TD>
-    <TD >  Bit mask of relevant disposition state  </TD></TR>
-</TABLE>
-<P align=left><FONT size=4>Although most of these fields 
-are better described in the Archon's Guide, there are two whose nature may not 
-be readily apparant: the sensesMask and the disposition.&nbsp; These two 
-integers are bitmaps.&nbsp; The value of each bit is assigned to equates in the 
-EnvStats interface.&nbsp; The equates of the significant bits for sensesMask all 
-begin with "CAN_", while the equates of the significant bits for disposition all 
-begin with "IS_".</FONT>     
-          
-           
-         
-</P>
-<P align=left><FONT size=4>Now, as mentioned previously, all Environmental 
-objects have two methods for accessing their EnvStats. One is "baseEnvStats" and 
-the other is "envStats".&nbsp; The difference between these two methods is 
-significant.&nbsp; </FONT><FONT size=4>The EnvStats state object returned by the 
-"baseEnvStats" method refers to the permanent, unmodified, "base" state of the 
-Environmental object.&nbsp; The "envStats" method, however, returns the 
-modified, less permanent, "current" state of the Environmental 
-object.&nbsp;&nbsp; The EnvStats object returned by the "envStats" method is 
-always derived from the "baseEnvStats" values, after all relevant modifications 
-have been made to it.&nbsp; How the current state object goes from its base 
-values to its current values is our next topic.</FONT></P>
-<P align=left><FONT size=4>We must now introduce&nbsp;two other methods 
-significant to this topic.&nbsp; One is the "recoverEnvStats()" method, while 
-the other is the "affectEnvStats(Environmental affected, EnvStats 
-affectableStats)" method.&nbsp; The "recoverEnvStats" method is the method call, 
-which is located on&nbsp;every Environmental (Item, MOB, Exit, etc) object, is 
-what turns the base EnvStats values into the current EnvStats values.&nbsp; This 
-method call works by copying the base values into the current values.&nbsp; 
-Next, the method allows certain other object instances to have an opportunity to 
-affect these current values.&nbsp; Only after all opportunities to affect the 
-current values of that Environmental objects state object have been exhausted, 
-does the method return.</FONT></P>
+    <TD>disposition</TD>
+    <TD>Item, MOB, Exit, Room&nbsp; </TD>
+    <TD>Bit mask of relevant disposition state 
+  </TD></TR></TABLE>
+<P align=left><FONT size=4>Although most 
+of these fields are better described in the Archon's Guide, there are two whose 
+nature may not be readily apparant: the sensesMask and the disposition.&nbsp; 
+These two integers are bitmaps.&nbsp; The value of each bit is assigned to 
+equates in the EnvStats interface.&nbsp; The equates of the significant bits for 
+sensesMask all begin with "CAN_", while the equates of the significant bits for 
+disposition all begin with "IS_".</FONT> </P>
+<P align=left><FONT size=4>Now, as 
+mentioned previously, all Environmental objects have two methods for accessing 
+their EnvStats. One is "baseEnvStats" and the other is "envStats".&nbsp; The 
+difference between these two methods is significant.&nbsp; </FONT><FONT size=4>The EnvStats state object returned by the "baseEnvStats" 
+method refers to the permanent, unmodified, "base" state of the Environmental 
+object.&nbsp; The "envStats" method, however, returns the modified, less 
+permanent, "current" state of the Environmental object.&nbsp;&nbsp; The EnvStats 
+object returned by the "envStats" method is always derived from the 
+"baseEnvStats" values, after all relevant modifications have been made to 
+it.&nbsp; How the current state object goes from its base values to its current 
+values is our next topic.</FONT></P>
+<P align=left><FONT size=4>We must now 
+introduce&nbsp;two other methods significant to this topic.&nbsp; One is the 
+"recoverEnvStats()" method, while the other is the "affectEnvStats(Environmental 
+affected, EnvStats affectableStats)" method.&nbsp; The "recoverEnvStats" method 
+is the method call, which is located on&nbsp;every Environmental (Item, MOB, 
+Exit, etc) object, is what turns the base EnvStats values into the current 
+EnvStats values.&nbsp; This method call works by copying the base values into 
+the current values.&nbsp; Next, the method allows certain other object instances 
+to have an opportunity to affect these current values.&nbsp; Only after all 
+opportunities to affect the current values of that Environmental objects state 
+object have been exhausted, does the method return.</FONT></P>
 <P align=left><FONT size=4>The way in 
-which&nbsp;the current&nbsp;EnvStats state object is modified by the "recoverEnvStats" method 
-call is by internal calls to the "affectEnvStats" methods on other relevant 
-objects.&nbsp; These methods will then have the opportunity to change the 
-values in the current state object however they wish.&nbsp; The relevant objects 
-which may change the state of an Environmental are as follows:</FONT></P>
+which&nbsp;the current&nbsp;EnvStats state object is modified by the 
+"recoverEnvStats" method call is by internal calls to the "affectEnvStats" 
+methods on other relevant objects.&nbsp; These methods will then have the 
+opportunity to change the values in the current state object however they 
+wish.&nbsp; The relevant objects which may change the state of an Environmental 
+are as follows:</FONT></P>
 <P align=left><FONT size=4>MOBs - Room 
 object being occupied, something being Ridden, the MOBs Character Class object, 
-the MOBs Race object, the Items in the MOBs inventory, and finally the 
-Ability objects which are affecting the MOB (spell effects).</FONT></P>
-<P align=left><FONT size=4>Items, Exits, Areas&nbsp;- Ability objects which are 
-affecting&nbsp;it (spell effects).</FONT></P>
-<P align=left><FONT size=4>Rooms - Area object which this room is a part of, 
-Ability objects which are affecting it (spell effects), Items in the Room, and 
-MOBs in the Room.</FONT></P>
-<P align=left><FONT size=4>Here is an example:</FONT></P>
-<P align=left><FONT size=4>Gunker the Thief wears Full Plate Armor (Item), and 
-has the Shield spell cast on him.&nbsp; His base Armor rating is 100.&nbsp; When 
-he puts on the Plate Armor, the "recoverEnvStats" method is called on Gunker's 
-MOB object.&nbsp; That method in turn calls the "affectEnvStats" method on the 
-Plate Armor and the Shield spell affect.&nbsp; Both of those methods improve the 
-Armor rating on Gunker's MOB object's current EnvStats by some number.&nbsp; 
-Thus, Gunker becomes harder to hit in combat.&nbsp; Also, when Gunker picked up 
-the Plate armor, the weight of the armor was added to Gunker's overall carried 
-weight by increasing the weight value in&nbsp;Gunker</FONT><FONT 
-size=4>'s&nbsp;current EnvStats object.</FONT></P>
-<P align=left><FONT size=4>       
-              
-             
-  I know, this is probably still confusing.&nbsp;</FONT></P>
-<P align=left><FONT size=4>Confusing or not, however, we still have to consider 
-two other state objects, both of which are only available from the MOB 
-object.&nbsp; One of which is the CharStats object, and the other of which is 
-the CharState object.</FONT></P>
+the MOBs Race object, the Items in the MOBs inventory, and finally the Ability 
+objects which are affecting the MOB (spell effects).</FONT></P>
+<P align=left><FONT size=4>Items, Exits, 
+Areas&nbsp;- Ability objects which are affecting&nbsp;it (spell 
+effects).</FONT></P>
+<P align=left><FONT size=4>Rooms - Area 
+object which this room is a part of, Ability objects which are affecting it 
+(spell effects), Items in the Room, and MOBs in the Room.</FONT></P>
+<P align=left><FONT size=4>Here is an 
+example:</FONT></P>
+<P align=left><FONT size=4>Gunker the 
+Thief wears Full Plate Armor (Item), and has the Shield spell cast on him.&nbsp; 
+His base Armor rating is 100.&nbsp; When he puts on the Plate Armor, the 
+"recoverEnvStats" method is called on Gunker's MOB object.&nbsp; That method in 
+turn calls the "affectEnvStats" method on the Plate Armor and the Shield spell 
+affect.&nbsp; Both of those methods improve the Armor rating on Gunker's MOB 
+object's current EnvStats by some number.&nbsp; Thus, Gunker becomes harder to 
+hit in combat.&nbsp; Also, when Gunker picked up the Plate armor, the weight of 
+the armor was added to Gunker's overall carried weight by increasing the weight 
+value in&nbsp;Gunker</FONT><FONT size=4>'s&nbsp;current 
+EnvStats object.</FONT></P>
+<P align=left><FONT size=4>I know, this 
+is probably still confusing.&nbsp;</FONT></P>
+<P align=left><FONT size=4>Confusing or 
+not, however, we still have to consider two other state objects, both of which 
+are only available from the MOB object.&nbsp; One of which is the CharStats 
+object, and the other of which is the CharState object.</FONT></P>
+<P align=left><FONT size=4>The CharStats 
+object is most closely analogous to the EnvStats object.&nbsp; For instance, it 
+has "baseCharStats" and "charStats" method calls from a MOB object, as well as a 
+"recoverCharStats" method call.&nbsp; All of these work similarly to the ones 
+described above for EnvStats.&nbsp; The fields on a CharStats object are 
+somewhat more straight forward however.&nbsp; Most of the fields of a CharStats 
+object are referenced using the "getStat" and "setStat" methods on a CharStats 
+object.&nbsp; Both of these methods require a parameter which corresponds to the 
+specific stat being set or read.&nbsp; These stat parameters are defined as 
+equates within the CharStat interface, and include:&nbsp;</FONT><FONT size=3>STRENGTH, INTELLIGENCE, DEXTERITY, CONSTITUTION, CHARISMA, 
+WISDOM, GENDER, SAVE_PARALYSIS, SAVE_FIRE, SAVE_COLD, SAVE_WATER, SAVE_GAS, 
+SAVE_MIND, SAVE_GENERAL, SAVE_JUSTICE,&nbsp; SAVE_ACID, SAVE_ELECTRIC, 
+SAVE_POISON, SAVE_UNDEAD, SAVE_MAGIC, and &nbsp;SAVE_DISEASE. </FONT><FONT 
+size=4>In addition to these equates defined and 
+read&nbsp;through the "getStat" and "setStat" methods, there is also the Race 
+object available through "getMyRace" and "setMyRace" methods, as well as the 
+Class levels entries.</FONT></P>
+<P align=left><FONT size=4>Like the 
+EnvStats above, those objects listed as able to modify the EnvStats current 
+state object are the same objects which are able to modify the CharStats current 
+state object.&nbsp; Rereading the section on EnvStats will make clear how the 
+CharStats objects are modified in the same heiarchical and stacked 
+manner.</FONT></P>
+<P align=left><FONT size=4>The last 
+state object to consider is the CharState object on MOBs.&nbsp; The CharState 
+object represents those fields which are constantly in flux: Hit Points, Mana, 
+Movement, Hunger, and Thirst.</FONT></P>
+<P align=left><FONT size=4>Unlike 
+EnvStats and CharStats, there are three CharState objects to consider for MOBs: 
+the base CharState object&nbsp;(available through "baseStats" and "setBaseState" 
+methods), the adjusted base&nbsp;CharState (or max state) object available 
+through the "maxStats" method and modified through the "recoverMaxState" method, 
+and lastly the current CharState object available through the "curStats()" and 
+refreshed using the "resetToMaxState" object.</FONT></P>
 <P align=left><FONT size=4>The 
-CharStats object is most closely analogous to the EnvStats object.&nbsp; For 
-instance, it has "baseCharStats" and "charStats" method calls from a MOB object, 
-as well as a "recoverCharStats" method call.&nbsp; All of these work similarly 
-to the ones described above for EnvStats.&nbsp; The fields on a CharStats object 
-are somewhat more straight forward however.&nbsp; Most of the fields of a 
-CharStats object 
-are referenced using the "getStat" and "setStat" methods on a CharStats object.&nbsp; 
-Both of these methods require a parameter which corresponds 
-to the specific stat being set or read.&nbsp; These stat parameters are 
-defined as equates within the CharStat interface, and include:&nbsp;</FONT><FONT size=3>STRENGTH, INTELLIGENCE, DEXTERITY, 
-CONSTITUTION, CHARISMA, WISDOM, GENDER, SAVE_PARALYSIS, SAVE_FIRE, SAVE_COLD, 
-SAVE_WATER, SAVE_GAS, SAVE_MIND, SAVE_GENERAL, SAVE_JUSTICE,&nbsp; SAVE_ACID, 
-SAVE_ELECTRIC, SAVE_POISON, SAVE_UNDEAD, SAVE_MAGIC, and &nbsp;SAVE_DISEASE. 
-</FONT><FONT size=4>In addition to these equates defined and read&nbsp;through 
-the "getStat" and "setStat" methods, there is also the Race object available 
-through "getMyRace" and "setMyRace" methods, as well as the Class levels 
-entries.</FONT></P>
-<P align=left><FONT size=4>Like the EnvStats above, those objects listed as able 
-to modify the EnvStats current state object are the same objects which are able 
-to modify the CharStats current state object.&nbsp; Rereading the section on 
-EnvStats will make clear how the CharStats objects are modified in the same 
-heiarchical and stacked manner.</FONT></P>
-<P align=left><FONT size=4>The last state object to consider is the CharState 
-object on MOBs.&nbsp; The CharState object represents those fields which are 
-constantly in flux: Hit Points, Mana, Movement, Hunger, and Thirst.</FONT></P>
-<P align=left><FONT size=4>Unlike EnvStats and CharStats, there are three 
-CharState objects to consider for MOBs: the base CharState 
-object&nbsp;(available through "baseStats" and "setBaseState" methods), the 
-adjusted base&nbsp;CharState (or max state) object available through the 
-"maxStats" method and modified through the "recoverMaxState" method, and lastly 
-the current CharState object available through the "curStats()" and refreshed 
-using the "resetToMaxState" object.</FONT></P>
-<P align=left><FONT size=4>The relationship between the above objects is as 
-follows: The base CharState object represents the maximum values for the state 
-variables before modification by magical armor or spells.&nbsp; The adjusted 
-base CharState object (Max State) represents the maximum values for the state 
-variables after modification by magical armor or spells.&nbsp; The current 
-CharState object (curState) represents the current hit points, mana points, etc 
-available to the MOB.</FONT></P>
-<P align=left><FONT size=4>In the case of the CharState objects, adjustment by 
-relevant objects is done through the "recoverMaxState" method.&nbsp; This method 
-allows the same objects who modify the EnvStats and CharStats above to modify 
-the maximum CharState values as well.&nbsp; </FONT></P>
-<P align=left><FONT size=4>Once again, to understand one of them fully is to 
-understand them all.</FONT></P>
+relationship between the above objects is as follows: The base CharState object 
+represents the maximum values for the state variables before modification by 
+magical armor or spells.&nbsp; The adjusted base CharState object (Max State) 
+represents the maximum values for the state variables after modification by 
+magical armor or spells.&nbsp; The current CharState object (curState) 
+represents the current hit points, mana points, etc available to the 
+MOB.</FONT></P>
+<P align=left><FONT size=4>In the case 
+of the CharState objects, adjustment by relevant objects is done through the 
+"recoverMaxState" method.&nbsp; This method allows the same objects who modify 
+the EnvStats and CharStats above to modify the maximum CharState values as 
+well.&nbsp; </FONT></P>
+<P align=left><FONT size=4>Once again, 
+to understand one of them fully is to understand them all.</FONT></P>
 <P align=left></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/time.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 ><STRONG><FONT 
-color=red>Digression 3: Tick Tock:</FONT></STRONG></FONT></P>
-<P align=left><FONT size=4>      
-              
-              
-  Our last 
+<P align=left><FONT size=5><STRONG><IMG src="images/time.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5><STRONG><FONT color=red>Digression 3: Tick 
+Tock:</FONT></STRONG></FONT></P>
+<P align=left><FONT size=4>Our last 
 digression will cover the ability of the mobs, items, exits, abilities, spell 
-effects, behaviors,      
-              
-              
-  and other objects to perform tasks on a 
-regular, timed, basis.&nbsp;The tasks to be performed are always located within 
-an method called "</FONT><FONT size=3>public boolean tick(int tickID)</FONT><FONT size=4>".&nbsp; All Environmental 
+effects, behaviors, and other objects to perform tasks on a regular, timed, 
+basis.&nbsp;The tasks to be performed are always located within an method called 
+"</FONT><FONT size=3>public boolean tick(int 
+tickID)</FONT><FONT size=4>".&nbsp; All Environmental 
 objects&nbsp;define this method, and Behavior objects have&nbsp;a similar method 
-called "<FONT size=3>public&nbsp;void tick(Environmental ticking, int 
-tickID)</FONT><FONT size=4>"</FONT> 
-         
- .</FONT></P>
-<P align=left><FONT size=4>These 
-methods are called on a regular, timed basis whenever the object instance in 
-question has been properly set up to do so, and at the 
-frequency defined.&nbsp; The "tickID" parameter describes what sort of regular timed event 
-is occurring.&nbsp; These events are defined as equates in the Host interface, and 
-include IDs such as MOB_TICK, AREA_TICK, EXIT_REOPEN and others.&nbsp;</FONT></P>
-<P align=left><FONT size=4>Before we get into the methods by which an object 
-instance are properly set up for regular calls to its "tick" method, it may be 
-worthwhile to discuss which regular ticks are setup by the system by 
-default.&nbsp; These tick events cover the most commonly used objects under the 
-most common circumstances, and so may be just the events you already 
-needed!&nbsp; They include:</FONT></P>
-<P align=left><FONT size=4>MOBs - All MOBs have their "tick" method called once 
-per Host.TICK_TIME (4 seconds), with the "tickID" defined by 
-Host.MOB_TICK.&nbsp;&nbsp;&nbsp; MOBs will, in turn, call the "tick" methods on 
-their own Behaviors, and Ability objects affecting them.&nbsp; If any of the 
-individual objects returns "false" from it's own tick method, then the object 
-will cease to receive any further tick method calls.</FONT></P>
-<P align=left><FONT size=4>Exits, Items, Rooms - Whenever a Behavior is added to 
-any of these objects, they will begin to have their tick methods called once per 
-Host.TICK_TIME (4 seconds), with the tickID defined by Host.ITEM_BEHAVIOR_TICK, 
-EXIT_BEHAVIOR_TICK, or ROOM_BEHAVIOR TICK.&nbsp; Deletion of the last behavior 
-will stop this tick event.</FONT></P>
-<P align=left><FONT size=4>Areas - All Area objects have their tick methods 
-called once per Host.TICK_TIME, with the tickID defined by 
-Host.AREA_TICK.</FONT></P>
-<P align=left><FONT size=4>Ability - Whenever an Ability object is added as an 
-affect (using the addAffect() Environmental method) to a non-MOB object by using 
-the proper Ability invoke procedure (see below), then the Ability object itself 
-will gain it's own regular calls to its tick method.&nbsp; The tickID for this 
-call is also Host.MOB_TICK, so as to make consistant the tickID for all spell 
-and similar effects.</FONT></P>
-<P align=left><FONT size=4>To sum up, MOBs have regular tick calls which they 
-use to perform their own periodic tasks, as well as to allow their Behavior and 
-spell effects to perform tasks.&nbsp; The other objects have circumstantial 
-ticks in certain instances.</FONT></P>
-<P align=left><FONT size=4>Now, to add a new periodic call to the "tick" method 
-on an Environmental object, one needs only to make a method call like 
-this:</FONT></P>
-<pre>	
+called "<FONT size=3>public&nbsp;void tick(Environmental 
+ticking, int tickID)</FONT><FONT size=4>"</FONT> 
+.</FONT></P>
+<P align=left><FONT size=4>These methods 
+are called on a regular, timed basis whenever the object instance in question 
+has been properly set up to do so, and at the frequency defined.&nbsp; The 
+"tickID" parameter describes what sort of regular timed event is 
+occurring.&nbsp; These events are defined as equates in the Host interface, and 
+include IDs such as MOB_TICK, AREA_TICK, EXIT_REOPEN and 
+others.&nbsp;</FONT></P>
+<P align=left><FONT size=4>Before we get 
+into the methods by which an object instance are properly set up for regular 
+calls to its "tick" method, it may be worthwhile to discuss which regular ticks 
+are setup by the system by default.&nbsp; These tick events cover the most 
+commonly used objects under the most common circumstances, and so may be just 
+the events you already needed!&nbsp; They include:</FONT></P>
+<P align=left><FONT size=4>MOBs - All 
+MOBs have their "tick" method called once per Host.TICK_TIME (4 seconds), with 
+the "tickID" defined by Host.MOB_TICK.&nbsp;&nbsp;&nbsp; MOBs will, in turn, 
+call the "tick" methods on their own Behaviors, and Ability objects affecting 
+them.&nbsp; If any of the individual objects returns "false" from it's own tick 
+method, then the object will cease to receive any further tick method 
+calls.</FONT></P>
+<P align=left><FONT size=4>Exits, Items, 
+Rooms - Whenever a Behavior is added to any of these objects, they will begin to 
+have their tick methods called once per Host.TICK_TIME (4 seconds), with the 
+tickID defined by Host.ITEM_BEHAVIOR_TICK, EXIT_BEHAVIOR_TICK, or ROOM_BEHAVIOR 
+TICK.&nbsp; Deletion of the last behavior will stop this tick event.</FONT></P>
+<P align=left><FONT size=4>Areas - All 
+Area objects have their tick methods called once per Host.TICK_TIME, with the 
+tickID defined by Host.AREA_TICK.</FONT></P>
+<P align=left><FONT size=4>Ability - 
+Whenever an Ability object is added as an affect (using the addAffect() 
+Environmental method) to a non-MOB object by using the proper Ability invoke 
+procedure (see below), then the Ability object itself will gain it's own regular 
+calls to its tick method.&nbsp; The tickID for this call is also Host.MOB_TICK, 
+so as to make consistant the tickID for all spell and similar 
+effects.</FONT></P>
+<P align=left><FONT size=4>To sum up, 
+MOBs have regular tick calls which they use to perform their own periodic tasks, 
+as well as to allow their Behavior and spell effects to perform tasks.&nbsp; The 
+other objects have circumstantial ticks in certain instances.</FONT></P>
+<P align=left><FONT size=4>Now, to add a 
+new periodic call to the "tick" method on an Environmental object, one needs 
+only to make a method call like this:</FONT></P><pre>	
 	ExternalPlay.startTickDown(theEnvObject,Host.MY_TICK_ID,NUM_TICKS);
-</pre>
-<P align=left><FONT size=4>The second parameter is the tickID which will be used
-when the "tick" method on the "theEnvObject" object is called.  The third parameter
-is the number of Host.TICK_TIME (4 second) intervals between each call.  
-Stopping these tick calls can be done by simply returning "false" from the tick
-method itself, or manually using the following:</FONT></P>
-<pre>	
+</PRE>
+<P align=left><FONT size=4>The second 
+parameter is the tickID which will be used when the "tick" method on the 
+"theEnvObject" object is called. The third parameter is the number of 
+Host.TICK_TIME (4 second) intervals between each call. Stopping these tick calls 
+can be done by simply returning "false" from the tick method itself, or manually 
+using the following:</FONT></P><pre>	
 	ExternalPlay.deleteTick(theEnvObject,Host.MY_TICK_ID);
-</pre>
+</PRE>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1369,12 +1454,10 @@ method itself, or manually using the following:</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left>&nbsp;</P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/clown.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 ><STRONG><FONT 
-color=blue>Behaviors:</FONT></STRONG></FONT></P>
-<P align=left><FONT size=4>How to code a Behavior.</FONT></P>
+<P align=left><FONT size=5><STRONG><IMG src="images/clown.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5><STRONG><FONT color=blue>Behaviors:</FONT></STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a 
+Behavior.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1385,18 +1468,15 @@ color=blue>Behaviors:</FONT></STRONG></FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/cloak.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=purple><STRONG>Character Classes:</STRONG></FONT></P>
-<P align=left><FONT size=4>A Character Class, in CoffeeMud, 
-is the carreer being followed by the player.&nbsp;&nbsp; Armor and weapon 
-choices, skill and spell access, as well as score advancements all depend on the 
-Character Class chosen by the player.&nbsp; Thankfully,&nbsp;despite all this 
-weighty responsibility, Character Classes are not difficult to code.&nbsp; Let's 
-take a look at a simple one here:</FONT></P>
-<pre>
-package com.planet_ink.coffee_mud.CharClasses;
+<P align=left><FONT size=5><STRONG><IMG src="images/cloak.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT color=purple size=5><STRONG>Character 
+Classes:</STRONG></FONT></P>
+<P align=left><FONT size=4>A Character 
+Class, in CoffeeMud, is the carreer being followed by the player.&nbsp;&nbsp; 
+Armor and weapon choices, skill and spell access, as well as score advancements 
+all depend on the Character Class chosen by the player.&nbsp; 
+Thankfully,&nbsp;despite all this weighty responsibility, Character Classes are 
+not difficult to code.&nbsp; Let's take a look at a simple one here:</FONT></P><pre>package com.planet_ink.coffee_mud.CharClasses;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -1405,242 +1485,213 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class NormalGuy extends StdCharClass
 {
-</pre>
-<P align=left><FONT size=4>Our Normal Guy character class will define all 
-of the basic elements of a filled-out character class.&nbsp;</FONT></P>
-<pre>
-	public String ID(){return "NormalGuy";}
-	public String name(){return "Normal Guy";}
-	public String baseClass(){return ID();}
-</pre>
-<P align=left><FONT size=4>The first methods above are the unique Character 
-Class ID and the displayable Name of the class.  The baseClass method takes 
-a bit of explaining.  If your CoffeeMud system is using the default SubClassing
-system, the baseClass will define which classes may be switched between by 
-a player, as well as which classes are available to choose from when a new 
-player is created.  Fighter, Monk, Paladin, Ranger, and Barbarian, for instance,
-all have a baseClass of "Fighter".  This means that the Fighter class is one of
-the classes which may be chosen by a new player (since it's ID() and baseClass() 
-are the same), and that any of the baseClass() "Fighter" classes may switch
-amongst each other.  If your CoffeeMud system is using the multi-class or single
-classing system, this method is irrelevant.</FONT></P>
-<pre>
-	public int getMinHitPointsLevel(){return 1;}
-	public int getMaxHitPointsLevel(){return 10;}
-</pre>
-<P align=left><FONT size=4>Next come the hit point ranges.&nbsp;&nbsp;When a player with this class 
-gains a level,&nbsp;a random roll between the min and max hit point values will 
-determine the bonus hit points, and any Constitution bonuses will be added 
-thereafter.</FONT></P>
-<pre>
-	public int getPracsFirstLevel(){return 3;}
-	public int getTrainsFirstLevel(){return 1;}
-	public int getBonusPracLevel(){return 0;}
-</pre>
-<P align=left><FONT size=4>The next two methods define the starting Training and Practice 
-points for this Character Class.  The BonusPracLevel method tells us how many 
-bonus practices (above the number determined the WISDOM/4 formula) which the 
-player will receive every level.</FONT></P>
-<pre>
-	public int getAttackAttribute(){return CharStats.STRENGTH;}
-	public int getBonusAttackLevel(){return 1;}
-</pre>
-<P align=left><FONT size=4>And here is an method 
-defining which of the 6 primary Character Attributes (Strength, Intelligence, 
-Wisdom, Dexterity, Constitution, or Charisma) are used to determine any attack 
-bonuses whenever the player gains a level.&nbsp; Usually this is 
-Strength.  The number of bonus attack points received by a player when a level
-is gained is determined by dividing the players score in this attribute by 6,
-and then adding the value returned by getBonusAttackLevel().
-</FONT></P>
-<pre>
-	public int getBonusManaLevel(){return 5;}
-</pre>
-<P align=left><FONT size=4>This method determines how much mana a player receives
-when they gain a level in this class.  The formula is determined by dividing the players
-intelligence score by 18, and then multiplying that result by this value.
-</FONT></P>
-<pre>
-	public int getLevelsPerBonusDamage(){ return 25;}
-</pre>
-<P align=left><FONT size=4>This score determines how many levels a player must
-make, in this class, before they will gain a bonus point of damage to all
-damage rolls.
-</FONT></P>
-<pre>
-	public int getMovementMultiplier(){return 2;}
-</pre>
-<P align=left><FONT size=4>And lastly for our scores, this method will determine
-how many movement points a player receives when they gain a level.  The formula
-is determined by dividing the player's strength score by 9, and multiplying the
-result by this value.
-</FONT></P>
-<pre>
-	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
-</pre>
-<P align=left><FONT size=4>The CharClass interface defines a method called "armorCheck"
-which returns true if the player is in compliance with armor requirements.  This
-method does its work by checking the allowedArmorLevel method.  This method returns
-an equate defined in the CharClass interface which may specify ANY armor, CLOTH level,
-armor, LEATHER (or worse) armor, or NON-METAL armor.
-</FONT></P>
-<pre>
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+</PRE>
+<P align=left><FONT size=4>Our Normal 
+Guy character class will define all of the basic elements of a filled-out 
+character class.&nbsp;</FONT></P><pre>public String ID(){return "NormalGuy";}
+public String name(){return "Normal Guy";}
+public String baseClass(){return ID();}
+</PRE>
+<P align=left><FONT size=4>The first 
+methods above are the unique Character Class ID and the displayable Name of the 
+class. The baseClass method takes a bit of explaining. If your CoffeeMud system 
+is using the default SubClassing system, the baseClass will define which classes 
+may be switched between by a player, as well as which classes are available to 
+choose from when a new player is created. Fighter, Monk, Paladin, Ranger, and 
+Barbarian, for instance, all have a baseClass of "Fighter". This means that the 
+Fighter class is one of the classes which may be chosen by a new player (since 
+it's ID() and baseClass() are the same), and that any of the baseClass() 
+"Fighter" classes may switch amongst each other. If your CoffeeMud system is 
+using the multi-class or single classing system, this method is 
+irrelevant.</FONT></P><pre>public int getMinHitPointsLevel(){return 1;}
+public int getMaxHitPointsLevel(){return 10;}
+</PRE>
+<P align=left><FONT size=4>Next come the 
+hit point ranges.&nbsp;&nbsp;When a player with this class gains a level,&nbsp;a 
+random roll between the min and max hit point values will determine the bonus 
+hit points, and any Constitution bonuses will be added thereafter.</FONT></P><pre>public int getPracsFirstLevel(){return 3;}
+public int getTrainsFirstLevel(){return 1;}
+public int getBonusPracLevel(){return 0;}
+</PRE>
+<P align=left><FONT size=4>The next two 
+methods define the starting Training and Practice points for this Character 
+Class. The BonusPracLevel method tells us how many bonus practices (above the 
+number determined the WISDOM/4 formula) which the player will receive every 
+level.</FONT></P><pre>public int getAttackAttribute(){return CharStats.STRENGTH;}
+public int getBonusAttackLevel(){return 1;}
+</PRE>
+<P align=left><FONT size=4>And here is 
+an method defining which of the 6 primary Character Attributes (Strength, 
+Intelligence, Wisdom, Dexterity, Constitution, or Charisma) are used to 
+determine any attack bonuses whenever the player gains a level.&nbsp; Usually 
+this is Strength. The number of bonus attack points received by a player when a 
+level is gained is determined by dividing the players score in this attribute by 
+6, and then adding the value returned by getBonusAttackLevel(). </FONT></P><pre>public int getBonusManaLevel(){return 5;}
+</PRE>
+<P align=left><FONT size=4>This method 
+determines how much mana a player receives when they gain a level in this class. 
+The formula is determined by dividing the players intelligence score by 18, and 
+then multiplying that result by this value. </FONT></P><pre>public int getLevelsPerBonusDamage(){ return 25;}
+</PRE>
+<P align=left><FONT size=4>This score 
+determines how many levels a player must make, in this class, before they will 
+gain a bonus point of damage to all damage rolls. </FONT></P><pre>public int getMovementMultiplier(){return 2;}
+</PRE>
+<P align=left><FONT size=4>And lastly 
+for our scores, this method will determine how many movement points a player 
+receives when they gain a level. The formula is determined by dividing the 
+player's strength score by 9, and multiplying the result by this value. 
+</FONT></P><pre>public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
+</PRE>
+<P align=left><FONT size=4>The CharClass 
+interface defines a method called "armorCheck" which returns true if the player 
+is in compliance with armor requirements. This method does its work by checking 
+the allowedArmorLevel method. This method returns an equate defined in the 
+CharClass interface which may specify ANY armor, CLOTH level, armor, LEATHER (or 
+worse) armor, or NON-METAL armor. </FONT></P><pre>private static boolean abilitiesLoaded=false;
+public boolean loaded(){return abilitiesLoaded;}
+public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
-	public NormalGuy()
+public NormalGuy()
+{
+	super();
+	maxStat[CharStats.CHARISMA]=10;
+	if(!loaded())
 	{
-		super();
-		maxStat[CharStats.CHARISMA]=10;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",0,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",0,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",0,false);
-		}
-	}
-</pre>
-<P align=left><FONT size=4>And now, after a few methods to flag our construction,
-work, we come to our constructer!  The Constructer
-for every class has a couple of important parts.  The first is to define any special 
-maximums for the primary attributes.  This is done by setting the appropriate
-value in the maxStat[] array for the class.  By default, 18 is the maximum score
-for all primary attributes.</FONT><P>
-<P align=left><FONT size=4>
-The second part establishes the qualifying and bonus skills for the class.  This is
-done through repeated calls to the CMAble.addCharAbilityMapping method.  The
-first parameter of the method is the ID() value of the Character Class itself, 
-followed by the level at which this class gains or qualifies for the skill.  Next is
-the ID() value of the Ability to allow this class to qualify for, followed by 
-the default profficiency which this class displays in the skill (typically 0).  
-The last parameter establishes whether the player will receive this skill 
-automatically when he or she gains the appropriate level, or whether they merely
-qualify for the skill.
-</FONT></P>
-<pre>
-
-	public boolean playerSelectable()
-	{
-		return true;
-	}
-</pre>
-<P align=left><FONT size=4>
-You should always have this method in your Character Class, and it should always
-return true.  Otherwise your players will never have access to the Class.
-</FONT></P>
-<pre>
-	public String statQualifications(){return "Warm body, breathe.";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(!Sense.canBreathe(mob))
-		{
-			if(!quiet)
-				mob.tell("You need to be breathing to be a normal guy.");
-			return false;
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
-</pre>
-<P align=left><FONT size=4>
-The next method is a display string, for the benefit of some of the web macros,
-which describes in plain english any attribute, or other numeric qualifications to
-become this class.  The qualifiesForThisClass method would actually check and enforce the
-qualifications described by statQualifications.  In our example above, there
-are no stat qualifications, only a check to see if the idiot is still breathing.
-Also note that a quiet boolean exists to allow qualifications to be checked 
-without sending any messages to the player in question.
-</FONT></P>
-<pre>
-
-	public String otherBonuses(){return "Receives a mortgage, but no home.";}
-</pre>
-<P align=left><FONT size=4>
-The next method, like statQualifications above, is for the benefit of the web macros.
-It describes any special bonuses received due to being this class.
-</FONT></P>
-<pre>
-	public void outfit(MOB mob)
-	{
-		Weapon w=(Weapon)CMClass.getWeapon("a mortgage");
-		if(mob.fetchInventory(w.ID())==null)
-			mob.addInventory(w);
-	}
-</pre>
-<P align=left><FONT size=4>
-The outfit method should give the character any Class-Specific equipment they
-may need.  Clothing and so forth is actually covered by Races.
-</FONT></P>
-<pre>	public String weaponLimitations(){return "Weapons?  What for?";}
-	public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
-	public boolean okAffect(MOB myChar, Affect affect)
-	{
-		if(affect.amISource(myChar)&amp;&amp;(!myChar.isMonster()))
-		{
-			if((affect.tool()!=
-			null) &amp;&amp;(affect.tool() instanceof
-			Ability)
-			&amp;&amp;(myChar.isMine(affect.tool()))
-			&amp;&amp;(!armorCheck(myChar)))
-				{if(Dice.rollPercentage()&gt;myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
-				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
-					return false;
-				}
-			}
-			else
-			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-			&amp;&amp;(affect.tool()!=null)
-			&amp;&amp;(affect.tool() instanceof Weapon))
-			{
-				int classification=
-				((Weapon)affect.tool()).weaponClassification();
-				switch(classification)
-				{ case
-				Weapon.CLASS_SWORD: case
-				Weapon.CLASS_RANGED: case
-				Weapon.CLASS_THROWN: case
-				Weapon.CLASS_NATURAL: case
-					Weapon.CLASS_DAGGER:
-					break;
-					default:if(Dice.rollPercentage()&gt;(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
-					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
-						return false;
-					}
-					break;
-				}
-			}
-		}
-		return super.okAffect(myChar,affect);
+		setLoaded(true);
+		CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+		CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",0,true);
+		CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",0,true);
+		CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",0,false);
 	}
 }
-</pre>
-<P align=left><FONT size=4>
-And lastly, just as I'm sure you were wondering how useful those three Digressions above
-woudl really be, we see them in active use.  Most classes contain methods such as these
-to describe and enforce armor and weapon restrictions for the class.  The first
-two methods are, like the others above, web macro descriptions of the facts.  The real
-work is done in the okAffect method which we discussed in the first Digression.  In it,
-we see messages messages containing the players Ability objects as tools 
-and messages for weapon attacks being intercepted.  In the for case, an armorCheck
-method call is made, as well as a last-ditch check of the ability scores, before
-the message is cancelled.  In the latter case, the weapon being wielded by the
-player during their attack is examined to see if it is allowed by the class before
-a fumble roll is made.
-</FONT></P>
-<P align=left><FONT size=4>
-And not least, although we won't go into it in detail here, there are two other methods 
-which may be of use for the advanced Character Class programmer.  They are the 
-level and unLevel methods.  These methods are called when a player gains or loses
-(respectively) a level in the class.  If there are any extra skills or bonus
-scores the player may wish to gain and lose with levels, that would be the place for such code.
-Also, in some cases (Mages and Clerics come to mind), the gaining of qualifying
-skills may be somewhat complex.  In those cases, overriding the gainAbilities
-method may be in order.  Check the Mage and Cleric classes for more information.
-</FONT></P>
+</PRE>
+<P align=left><FONT size=4>And now, 
+after a few methods to flag our construction, work, we come to our constructer! 
+The Constructer for every class has a couple of important parts. The first is to 
+define any special maximums for the primary attributes. This is done by setting 
+the appropriate value in the maxStat[] array for the class. By default, 18 is 
+the maximum score for all primary attributes.</FONT> 
+<P>
+<P align=left><FONT size=4>The second 
+part establishes the qualifying and bonus skills for the class. This is done 
+through repeated calls to the CMAble.addCharAbilityMapping method. The first 
+parameter of the method is the ID() value of the Character Class itself, 
+followed by the level at which this class gains or qualifies for the skill. Next 
+is the ID() value of the Ability to allow this class to qualify for, followed by 
+the default profficiency which this class displays in the skill (typically 0). 
+The last parameter establishes whether the player will receive this skill 
+automatically when he or she gains the appropriate level, or whether they merely 
+qualify for the skill. </FONT></P><pre>public boolean playerSelectable()
+{
+	return true;
+}
+</PRE>
+<P align=left><FONT size=4>You should 
+always have this method in your Character Class, and it should always return 
+true. Otherwise your players will never have access to the Class. </FONT></P><pre>public String statQualifications(){return "Warm body, breathe.";}
+public boolean qualifiesForThisClass(MOB mob, boolean quiet)
+{
+	if(!Sense.canBreathe(mob))
+	{
+		if(!quiet)
+			mob.tell("You need to be breathing to be a normal guy.");
+		return false;
+	}
+	return super.qualifiesForThisClass(mob,quiet);
+}
+</PRE>
+<P align=left><FONT size=4>The next 
+method is a display string, for the benefit of some of the web macros, which 
+describes in plain english any attribute, or other numeric qualifications to 
+become this class. The qualifiesForThisClass method would actually check and 
+enforce the qualifications described by statQualifications. In our example 
+above, there are no stat qualifications, only a check to see if the idiot is 
+still breathing. Also note that a quiet boolean exists to allow qualifications 
+to be checked without sending any messages to the player in question. 
+</FONT></P><pre>public String otherBonuses(){return "Receives a mortgage, but no home.";}
+</PRE>
+<P align=left><FONT size=4>The next 
+method, like statQualifications above, is for the benefit of the web macros. It 
+describes any special bonuses received due to being this class. </FONT></P><pre>public void outfit(MOB mob)
+{
+	Weapon w=(Weapon)CMClass.getWeapon("a mortgage");
+	if(mob.fetchInventory(w.ID())==null)
+		mob.addInventory(w);
+}
+</PRE>
+<P align=left><FONT size=4>The outfit 
+method should give the character any Class-Specific equipment they may need. 
+Clothing and so forth is actually covered by Races. </FONT></P><pre>public String weaponLimitations(){return "Weapons?  What for?";}
+public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
+public boolean okAffect(MOB myChar, Affect affect)
+{
+	if(affect.amISource(myChar)&amp;&amp;(!myChar.isMonster()))
+	{
+		if((affect.tool()!=null)
+		&amp;&amp;(affect.tool() instanceof	Ability)
+		&amp;&amp;(myChar.isMine(affect.tool()))
+		&amp;&amp;(!armorCheck(myChar)))
+		{
+			if(Dice.rollPercentage()&gt;myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
+			{
+				myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,
+					"<S-NAME> fumble(s) <S-HIS-HER> "
+					+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
+				return false;
+			}
+		}
+		else
+		if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+		&amp;&amp;(affect.tool()!=null)
+		&amp;&amp;(affect.tool() instanceof Weapon))
+		{
+			int classification=((Weapon)affect.tool()).weaponClassification();
+			switch(classification)
+			{ 
+			case Weapon.CLASS_SWORD: 
+			case Weapon.CLASS_RANGED: 
+			case Weapon.CLASS_THROWN: 
+			case Weapon.CLASS_NATURAL: 
+			case Weapon.CLASS_DAGGER:
+				break;
+			default:
+				if(Dice.rollPercentage()&gt;(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
+				{
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,
+						"<S-NAME> fumble(s) horribly with "
+						+affect.tool().name()+".");
+					return false;
+				}
+				break;
+			}
+		}
+	}
+	return super.okAffect(myChar,affect);
+}
+</PRE>
+<P align=left><FONT size=4>And lastly, 
+just as I'm sure you were wondering how useful those three Digressions above 
+woudl really be, we see them in active use. Most classes contain methods such as 
+these to describe and enforce armor and weapon restrictions for the class. The 
+first two methods are, like the others above, web macro descriptions of the 
+facts. The real work is done in the okAffect method which we discussed in the 
+first Digression. In it, we see messages messages containing the players Ability 
+objects as tools and messages for weapon attacks being intercepted. In the for 
+case, an armorCheck method call is made, as well as a last-ditch check of the 
+ability scores, before the message is cancelled. In the latter case, the weapon 
+being wielded by the player during their attack is examined to see if it is 
+allowed by the class before a fumble roll is made. </FONT></P>
+<P align=left><FONT size=4>And not 
+least, although we won't go into it in detail here, there are two other methods 
+which may be of use for the advanced Character Class programmer. They are the 
+level and unLevel methods. These methods are called when a player gains or loses 
+(respectively) a level in the class. If there are any extra skills or bonus 
+scores the player may wish to gain and lose with levels, that would be the place 
+for such code. Also, in some cases (Mages and Clerics come to mind), the gaining 
+of qualifying skills may be somewhat complex. In those cases, overriding the 
+gainAbilities method may be in order. Check the Mage and Cleric classes for more 
+information. </FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1651,17 +1702,13 @@ method may be in order.  Check the Mage and Cleric classes for more information.
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/dragon.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=green><STRONG>Races:</STRONG></FONT></P>
-<P align=left><FONT size=4>A Race, in CoffeeMud, 
-contributes very little to functionality, but quite a bit to the role
-playing and other "soft" aspects of the game..&nbsp;&nbsp; For this reason,
-everyone is encouraged to code as many races as humanly possible.  The more,
-the better!&nbsp; Let's take a look at a simple one here:</FONT></P>
-<pre>
-package com.planet_ink.coffee_mud.Races;
+<P align=left><FONT size=5><STRONG><IMG src="images/dragon.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT color=green size=5><STRONG>Races:</STRONG></FONT></P>
+<P align=left><FONT size=4>A Race, in 
+CoffeeMud, contributes very little to functionality, but quite a bit to the role 
+playing and other "soft" aspects of the game..&nbsp;&nbsp; For this reason, 
+everyone is encouraged to code as many races as humanly possible. The more, the 
+better!&nbsp; Let's take a look at a simple one here:</FONT></P><pre>package com.planet_ink.coffee_mud.Races;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -1670,16 +1717,15 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Grumbler extends StdRace
 {
-</pre>
-<P align=left><FONT size=4>Our Grumbler race will define all 
-of the basic elements of a filled-out race.&nbsp;</FONT></P>
-<pre>
-	public String ID(){	return "Dragon"; }
-	public String name(){ return "Dragon"; }
-	public String racialCategory(){return "Dragon";}
-	protected static Vector resources=new Vector();
-	public boolean playerSelectable(){return false;}
-</pre>
+</PRE>
+<P align=left><FONT size=4>Our Grumbler 
+race will define all of the basic elements of a filled-out 
+race.&nbsp;</FONT></P><pre>public String ID(){	return "Dragon"; }
+public String name(){ return "Dragon"; }
+public String racialCategory(){return "Dragon";}
+protected static Vector resources=new Vector();
+public boolean playerSelectable(){return false;}
+</PRE>
 <P align=left><FONT size=4>The first 
 methods return the unique ID of the Race (which must always match the java/class 
 file name) and the name() method is the displayable name of the Race.&nbsp; The 
@@ -1690,146 +1736,143 @@ include the Ranger Favored Enemy skill, as well as most of the race-based
 restrictions on doors and with shopkeepers.&nbsp; In many ways, the racial 
 category is more important than the name of the race itself, if functionality is 
 considered.&nbsp; Lastly, return true from playerSelectable if you want players 
-to be able to select this race when they create their characters.</FONT></P>
-<pre>
-	protected int shortestMale(){return 84;}
-	protected int shortestFemale(){return 78;}
-	protected int heightVariance(){return 80;}
-	protected int lightestWeight(){return 2000;}
-	protected int weightVariance(){return 500;}
-</pre>
+to be able to select this race when they create their characters.</FONT></P><pre>protected int shortestMale(){return 84;}
+protected int shortestFemale(){return 78;}
+protected int heightVariance(){return 80;}
+protected int lightestWeight(){return 2000;}
+protected int weightVariance(){return 500;}
+</PRE>
 <P align=left><FONT size=4>These 
 methods, as you might have guessed, establish parameters for the base height and 
 weight of a typical monster of this type.&nbsp; A random number from 
 0-heightVariance() will be added to the shortedMale/shortestFemale value to 
 determine height, while a random number from 0-weightVariance will be added to 
-lightestWeight to determine that.</FONT></P>
-<pre>
-	protected long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;}
-</pre>
+lightestWeight to determine that.</FONT></P><pre>protected long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST
+				   |Item.ABOUT_BODY|Item.ON_FEET
+				   |Item.ON_HANDS;}
+</PRE>
 <P align=left><FONT size=4>This method 
 establishes where a creature of this type may NOT wear something.&nbsp; In this 
 case, we forbid any wielded items, or anything worn around the waist, on hands 
 or feet,&nbsp;or about the body.&nbsp; Anywhere else is fine.&nbsp; Return 0 if 
-you do not wish any restrictions on wearing.</FONT></P>
-<pre>
-	 public void affectEnvStats(Environmental affected, EnvStats
-	affectableStats)
-		{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
-	}
-</pre>
+you do not wish any restrictions on wearing.</FONT></P><pre>public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+{
+	super.affectEnvStats(affected,affectableStats);
+	affectableStats.setSensesMask(affectableStats.sensesMask()
+					|EnvStats.CAN_SEE_INFRARED);
+}
+</PRE>
 <P align=left><FONT size=4>This sample 
 of the affectEnvStats method we discussed in the digressions above makes sure 
-that all creatures of this race can see in the infrared spectrum.</FONT></P>
-<pre>
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
-	{
-		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,15);
-		affectableStats.setStat(CharStats.DEXTERITY,25);
-		affectableStats.setStat(CharStats.INTELLIGENCE,5);
-	}
-</pre>
+that all creatures of this race can see in the infrared spectrum.</FONT></P><pre>public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+{
+	super.affectCharStats(affectedMOB, affectableStats);
+	affectableStats.setStat(CharStats.STRENGTH,15);
+	affectableStats.setStat(CharStats.DEXTERITY,25);
+	affectableStats.setStat(CharStats.INTELLIGENCE,5);
+}
+</PRE>
 <P align=left><FONT size=4>This sample 
 of the affectCharStats&nbsp;method we discussed in the digressions above 
 establishes a base strength, dexterity, and intelligence for all creatures of 
 this race.&nbsp; As this is the ONLY way to modify a MOBs stats short of magical 
-equipment, it should be used with care!</FONT></P>
-<pre>
-	public void startRacing(MOB mob, boolean verifyOnly)
+equipment, it should be used with care!</FONT></P><pre>	
+public void startRacing(MOB mob, boolean verifyOnly)
+{
+	super.startRacing(mob,verifyOnly);
+	Ability A=CMClass.getAbility("Draconic");
+	if(A!=null)
 	{
-		super.startRacing(mob,verifyOnly);
-		Ability A=CMClass.getAbility("Draconic");
-		if(A!=null)
-		{
-			mob.addAbility(A);
-			A.autoInvocation(mob);
-			if(mob.isMonster())
-				A.invoke(mob,mob,true);
-		}
+		mob.addAbility(A);
+		A.autoInvocation(mob);
+		if(mob.isMonster())
+			A.invoke(mob,mob,true);
 	}
-</pre>
+}
+</PRE>
 <P align=left><FONT size=4>The 
 startRacing method simply allows you to give creatures of this race any special 
 abilities for being the race.&nbsp; In this case, we give the creature a 
 language (Draconic), and if they are not a player, we automatically make them 
-speak the language (via the invoke method -- see below on Spell creation).</FONT></P>
-<pre>
-	public Weapon myNaturalWeapon()
+speak the language (via the invoke method -- see below on Spell 
+creation).</FONT></P><pre>	
+public Weapon myNaturalWeapon()
+{
+	if(naturalWeapon==null)
 	{
-		if(naturalWeapon==null)
-		{
-			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("huge claws");
-			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
-		}
-		return naturalWeapon;
+		naturalWeapon=CMClass.getWeapon("StdWeapon");
+		naturalWeapon.setName("huge claws");
+		naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
 	}
-</pre>
+	return naturalWeapon;
+}
+</PRE>
 <P align=left><FONT size=4>This method 
 allows you to create (see item creation above) a special weapon to serve the 
 creature whenever they are not wielding something.&nbsp; Since our Grumbler 
-cannot wield weapons anyway, it is important to give them some big piercing claws.</FONT></P>
-<pre>
-	  public String
-	healthText(MOB
-		mob) {double
-
-		pct=
-			     (Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints())); if(pct&lt;.10) return "^r" + mob.name()
-		+
-		"^ris
-			raging in bloody pain!^N"; else if(pct&lt;.20) return "^r" + mob.name()
-		+
-		"^ris
-			covered in blood.^N"; else if(pct&lt;.30) return "^r" + mob.name() + "^r is bleeding
-		badly
-		fromlots
-			of wounds.^N"; else if(pct&lt;.50) return "^y" + mob.name() + "^y has some bloody
-		wounds
-		andgashed
-			scales.^N"; else if(pct&lt;.60) return "^p" + mob.name() + "^p has a
-		few
-		bloodywounds.^N";
-			else if(pct&lt;.70) return "^p" + mob.name() + "^p is cut and
-		bruised
-		heavily.^N";else
-			if(pct&lt;.90) return "^g" + mob.name() + "^g has a few bruises and scratched
-		scales.^N";
-		elseif(pct&lt;.99)
-			return "^g" + mob.name() + "^g has a few small bruises.^N";
-		else
-			return "^c" + mob.name() + "^c is in perfect health^N";
-	}
-</pre>
-<P align=left><FONT size=4>Although 
-the programmer is welcome to skip the above method and use the defaults from the 
-StdRace class, this allows you to set special health messages for creatures of this type.</FONT></P>
-<pre>
-	public Vector myResources()
-	{
-		synchronized(resources)
-		{
-			if(resources.size()==
-			0)
-				{
-				resources.addElement(makeResource ("a "+name().toLowerCase()+"
-				claw",EnvResource.RESOURCE_BONE)); for(inti=
-					0;i&lt;10;i++)
-					resources.addElement(makeResource ("a strip of "+name().toLowerCase()+"
-				hide",EnvResource.RESOURCE_SCALES)); for(inti=0;i&lt;10;i++)
-					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
-				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
-			}
-		}
-		return resources;
-	}
+cannot wield weapons anyway, it is important to give them some big piercing 
+claws.</FONT></P><pre>	  
+public String healthText(MOB mob) 
+{
+	double pct=(Util.div(mob.curState().getHitPoints(),
+			     mob.maxState().getHitPoints())); 
+	if(pct&lt;.10) 
+		return "^r" + mob.name()+"^ris raging in bloody pain!^N"; 
+	else 
+	if(pct&lt;.20) 
+		return "^r" + mob.name()+"^ris covered in blood.^N"; 
+	else 
+	if(pct&lt;.30) 
+		return "^r" + mob.name() + "^r is bleeding badly from lots of wounds.^N"; 
+	else 
+	if(pct&lt;.50) 
+		return "^y" + mob.name() + "^y has some bloody wounds and gashed scales.^N"; 
+	else 
+	if(pct&lt;.60) 
+		return "^p" + mob.name() + "^p has a few bloody wounds.^N";
+	else 
+	if(pct&lt;.70) 
+		return "^p" + mob.name() + "^p is cut and bruised heavily.^N";
+	else 
+	if(pct&lt;.90) 
+		return "^g" + mob.name() + "^g has a few bruises and scratched scales.^N";
+	else 
+	if(pct&lt;.99)
+		return "^g" + mob.name() + "^g has a few small bruises.^N";
+	else
+		return "^c" + mob.name() + "^c is in perfect health^N";
 }
-</pre>
+</PRE>
+<P align=left><FONT size=4>Although the 
+programmer is welcome to skip the above method and use the defaults from the 
+StdRace class, this allows you to set special health messages for creatures of 
+this type.</FONT></P><pre>public Vector myResources()
+{
+	synchronized(resources)
+	{
+		if(resources.size()==0)
+		{
+		resources.addElement(makeResource("a "+name().toLowerCase()+"
+							 claw",EnvResource.RESOURCE_BONE)); 
+
+		for(int i=0;i&lt;10;i++)
+			resources.addElement(makeResource("a strip of "
+								+name().toLowerCase()+" hide",
+								EnvResource.RESOURCE_SCALES));
+
+		for(inti=0;i&lt;10;i++)
+			resources.addElement(makeResource("a pound of "
+								 +name().toLowerCase()+" meat",
+								 EnvResource.RESOURCE_MEAT));
+
+		resources.addElement(makeResource("some "
+								 +name().toLowerCase()+" blood",
+								 EnvResource.RESOURCE_BLOOD));
+		}
+	}
+	return resources;
+}
+</PRE>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1840,29 +1883,15 @@ StdRace class, this allows you to set special health messages for creatures of t
 <P align=left></P>
 <P align=left></P>
 <P align=left></P><FONT size=5>
-<P align=left><FONT size=4>And lastly, the above method allows you to determine 
-what sorts of materials are gotten from this creature whenever the dead corpse 
-is Butchered.</FONT></P>
+<P align=left><FONT size=4>And lastly, 
+the above method allows you to determine what sorts of materials are gotten from 
+this creature whenever the dead corpse is Butchered.</FONT></P>
 <P align=left><FONT size=4></FONT>&nbsp;</P>
-<P align=left><STRONG>
-<IMG src="images/chomper.jpg"> </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=navy><STRONG>Exits:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code an Exit.</FONT></P>
-<P align=left></P>
-<P align=left></P>
-<P align=left></P>
-<P align=left></P>
-<P align=left></P>
-<P align=left></P>
-<P align=left></P>
-<P align=left></P>
-<P align=left></P>
-<P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/scenery.jpg">
+<P align=left><STRONG><IMG src="images/chomper.jpg" > 
 </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=red><STRONG>Locales:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code a Locale.</FONT></P>
+<P align=left><FONT color=navy size=5><STRONG>Exits:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code 
+an Exit.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1873,11 +1902,10 @@ is Butchered.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/area.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=gray><STRONG>Areas:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code an Area.</FONT></P>
+<P align=left><FONT size=5><STRONG><IMG src="images/scenery.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT color=red size=5><STRONG>Locales:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a 
+Locale.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1888,11 +1916,10 @@ is Butchered.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/fireball.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=yellow style="BACKGROUND-COLOR: black"><STRONG>Spells:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code a Spell.</FONT></P>
+<P align=left><FONT size=5><STRONG><IMG src="images/area.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT color=gray size=5><STRONG>Areas:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code 
+an Area.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1903,12 +1930,12 @@ is Butchered.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
+<P align=left><FONT size=5><STRONG><IMG src="images/fireball.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT style="BACKGROUND-COLOR: black" 
+color=yellow size=5><STRONG>Spells:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a 
+Spell.</FONT></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/prayer.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=teal><STRONG>Prayers:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code a Prayer.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1919,12 +1946,11 @@ is Butchered.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
+<P align=left><FONT size=5><STRONG><IMG src="images/prayer.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT color=teal size=5><STRONG>Prayers:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a 
+Prayer.</FONT></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/elvis.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=lime><STRONG>Songs:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code a Song.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1935,12 +1961,11 @@ is Butchered.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
+<P align=left><FONT size=5><STRONG><IMG src="images/elvis.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT color=lime size=5><STRONG>Songs:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a 
+Song.</FONT></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/monk.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=aqua><STRONG>Chants:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code a Chant.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1951,12 +1976,11 @@ is Butchered.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
+<P align=left><FONT size=5><STRONG><IMG src="images/monk.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT color=aqua size=5><STRONG>Chants:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a 
+Chant.</FONT></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/house.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=olive><STRONG>Properties:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code a Property.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1967,12 +1991,26 @@ is Butchered.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
+<P align=left><FONT size=5><STRONG><IMG src="images/house.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT color=olive size=5><STRONG>Properties:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a 
+Property.</FONT></P>
 <P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/fun.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5 color=maroon><STRONG>Skills/Common Skills, Thief Skills:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code a Skill.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG><IMG src="images/fun.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT color=maroon size=5><STRONG>Skills/Common Skills, Thief 
+Skills:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a 
+Skill.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
