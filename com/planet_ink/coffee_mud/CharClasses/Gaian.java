@@ -157,7 +157,7 @@ public class Gaian extends StdCharClass
 		}
 	}
 
-	public int areaSelectablility(){return Area.THEME_FANTASY;}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	protected boolean isValidBeneficiary(MOB killer,
 									   MOB killed,

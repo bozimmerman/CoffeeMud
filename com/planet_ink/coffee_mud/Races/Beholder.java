@@ -48,7 +48,7 @@ public class Beholder extends StdRace
 	public int[] getAgingChart(){return agingChart;}
 	
 	protected static Vector resources=new Vector();
-	public boolean playerSelectable(){return false;}
+	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

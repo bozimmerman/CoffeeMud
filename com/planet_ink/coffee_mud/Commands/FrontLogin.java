@@ -409,7 +409,7 @@ public class FrontLogin extends StdCommand
 					    while((theme<0)&&(!mob.session().killFlag()))
 					    {
 							mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"themes.txt").toString());
-							mob.session().print("\n\r^!Please select from the following:^N"+selections+"\n\r");
+							mob.session().print("\n\r^!Please select from the following:^N "+selections.substring(1)+"\n\r");
 							String themeStr=mob.session().choose("\n\r: ",choices,"");
 							if(themeStr.toUpperCase().startsWith("F"))
 							    theme=Area.THEME_FANTASY;

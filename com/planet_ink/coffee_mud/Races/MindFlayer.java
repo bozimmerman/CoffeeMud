@@ -25,7 +25,7 @@ public class MindFlayer extends Humanoid
 	public String ID(){	return "MindFlayer"; }
 	public String name(){ return "MindFlayer"; }
 	protected static Vector resources=new Vector();
-	public boolean playerSelectable(){return false;}
+	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public String racialCategory(){return "Illithid";}
 	private String[]culturalAbilityNames={"Spell_MindFog","Spell_Charm"};
 	private int[]culturalAbilityProfficiencies={100,50};

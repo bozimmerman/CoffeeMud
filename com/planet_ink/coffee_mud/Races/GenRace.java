@@ -28,7 +28,7 @@ public class GenRace extends StdRace
 	public int practicesAtFirstLevel(){return 0;}
 	public int trainsAtFirstLevel(){return 0;}
 	public int availability=0;
-	public int availability(){return availability;}
+	public int availabilityCode(){return availability;}
 	public int[] agingChart=null;
 	public int[] getAgingChart()
 	{
@@ -339,7 +339,12 @@ public class GenRace extends StdRace
 			if(playerval.startsWith("F")) 
 				availability=0;
 			else
-				availability=Util.s_int(playerval);
+			switch(Util.s_int(playerval))
+			{
+			case 0: availability=Area.THEME_FANTASY; break;
+			case 1: availability=Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK; break;
+			case 2: availability=0; break;
+			}
 		}
 		String avail=XMLManager.getValFromPieces(raceData,"AVAIL").trim().toUpperCase();
 		if((avail!=null)&&(avail.length()>0)&&(Util.isNumber(avail)))

@@ -123,7 +123,7 @@ public class Apprentice extends StdCharClass
 		}
 	}
 
-	public int areaSelectablility(){return Area.THEME_FANTASY|Area.THEME_HEROIC|Area.THEME_TECHNOLOGY;}
+	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_HEROIC|Area.THEME_TECHNOLOGY;}
 
 	public String statQualifications(){return "Wisdom 5+, Intelligence 5+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)

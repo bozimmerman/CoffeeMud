@@ -134,7 +134,7 @@ public class Barbarian extends StdCharClass
 		}
 	}
 
-	public int areaSelectablility(){return Area.THEME_FANTASY;}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public String statQualifications(){return "Strength 9+, Constitution 9+";}
 	public String otherBonuses(){return "Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.";}

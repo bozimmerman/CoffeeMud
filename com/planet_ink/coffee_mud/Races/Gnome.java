@@ -44,7 +44,7 @@ public class Gnome extends StdRace
 	public int[] getAgingChart(){return agingChart;}
 	
 	protected static Vector resources=new Vector();
-	public int availability(){return Area.THEME_FANTASY;}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

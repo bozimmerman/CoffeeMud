@@ -113,7 +113,7 @@ public class StdCharClass implements CharClass, Cloneable
 	}
 	
 	public boolean isGeneric(){return false;}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	public int availabilityCode(){return 0;}
 	
 	public void cloneFix(CharClass C)
 	{

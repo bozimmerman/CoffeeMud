@@ -31,7 +31,7 @@ public class UmberHulk extends StdRace
 	public int weightVariance(){return 200;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Giant-kin";}
-	public boolean playerSelectable(){return false;}
+	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	protected static Vector resources=new Vector();
     private String[]racialAbilityNames={"Chant_StoneWalking","Spell_Confusion"};
 	private int[]racialAbilityLevels={1,10};
