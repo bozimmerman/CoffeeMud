@@ -64,6 +64,7 @@ public class View extends StdCommand
 				V.addElement(itemToDo);
 			if(addendum>=CoffeeUtensils.getShopKeeper(shopkeeper).numberInStock(itemToDo))
 				break;
+			addendum++;
 		}
 		while((allFlag)&&(addendum<=maxToDo));
 

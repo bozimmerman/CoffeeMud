@@ -104,6 +104,9 @@ public class BaseGenerics extends StdCommand
 		    if((newName.indexOf("=")<0)&&(BeanCounter.getAllCurrencies().contains(newName.trim().toUpperCase())))
 		        mob.tell("'"+newName+"' is not a known currency. Existing currencies include: "+Util.toStringList(BeanCounter.getAllCurrencies()));
 		    else
+		    if(newName.indexOf("=")>=0)
+		        A.setCurrency(newName.trim());
+		    else
 				A.setCurrency(newName.toUpperCase().trim());
 		}
 		else

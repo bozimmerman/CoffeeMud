@@ -114,11 +114,13 @@ public class Thief_Embezzle extends ThiefSkill
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay()*mob.location().getArea().getTimeObj().getDaysInMonth())/MudHost.TICK_TIME)).intValue());
 				bank.delDepositInventory(victim,hisCoins);
-				Coins newHisCoins=BeanCounter.makeBestCurrency(target,hisCoins.getTotalValue()-hisAmount);
-				bank.addDepositInventory(victim,hisCoins);
-				if(newHisCoins.getNumberOfCoins()>0)
-					bank.delDepositInventory(mob.Name(),newHisCoins);
-				bank.addDepositInventory(mob.Name(),myCoins);
+				hisCoins=BeanCounter.makeBestCurrency(target,hisCoins.getTotalValue()-hisAmount);
+				if(hisCoins.getNumberOfCoins()>0)
+					bank.addDepositInventory(victim,hisCoins);
+				bank.delDepositInventory(mob.Name(),myCoins);
+				myCoins=BeanCounter.makeBestCurrency(mob,((Coins)myCoins).getTotalValue()+hisAmount);
+				if(((Coins)myCoins).getNumberOfCoins()>0)
+					bank.addDepositInventory(mob.Name(),myCoins);
 			}
 		}
 		else

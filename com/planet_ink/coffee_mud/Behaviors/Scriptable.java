@@ -35,6 +35,7 @@ public class Scriptable extends StdBehavior
 	private Hashtable delayProgCounters=new Hashtable();
 	private Hashtable lastTimeProgsDone=new Hashtable();
 	private Hashtable lastDayProgsDone=new Hashtable();
+    private Vector xmlfiles=null;
 
 	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
 	{
@@ -71,6 +72,13 @@ public class Scriptable extends StdBehavior
 		return false;
 	}
 
+	public Vector externalFiles()
+	{
+		if(xmlfiles==null)
+		    getScripts();
+		return xmlfiles;
+	}
+	
 	private static final String[] progs={
 		"GREET_PROG", //1
 		"ALL_GREET_PROG", //2
@@ -291,6 +299,7 @@ public class Scriptable extends StdBehavior
 	{
 		newParms=Util.replaceAll(newParms,"'","`");
 		super.setParms(newParms);
+	    xmlfiles=null;
 		oncesDone.clear();
 	}
 
@@ -312,11 +321,17 @@ public class Scriptable extends StdBehavior
 				{
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
+					if(xmlfiles==null) xmlfiles=new Vector();
+					if(!xmlfiles.contains(filename))
+						xmlfiles.addElement(filename);
 					results.append(parseLoads(Resources.getFileResource(filename).toString(),depth+1));
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
+					if(xmlfiles==null) xmlfiles=new Vector();
+					if(!xmlfiles.contains(filename))
+						xmlfiles.addElement(filename);
 					results.append(parseLoads(Resources.getFileResource(filename).toString(),depth+1));
 					break;
 				}
@@ -545,6 +560,9 @@ public class Scriptable extends StdBehavior
 		filename=filename.trim();
 		Vector monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
 		if(monsters!=null) return monsters;
+		if(xmlfiles==null) xmlfiles=new Vector();
+		if(!xmlfiles.contains(filename))
+			xmlfiles.addElement(filename);
 		StringBuffer buf=Resources.getFile(filename);
 		if((buf==null)||((buf!=null)&&(buf.length()<20)))
 		{
@@ -577,6 +595,9 @@ public class Scriptable extends StdBehavior
 		filename=filename.trim();
 		Vector items=(Vector)Resources.getResource("RANDOMITEMS-"+filename);
 		if(items!=null) return items;
+		if(xmlfiles==null) xmlfiles=new Vector();
+		if(!xmlfiles.contains(filename))
+			xmlfiles.addElement(filename);
 		StringBuffer buf=Resources.getFile(filename);
 		if((buf==null)||((buf!=null)&&(buf.length()<20)))
 		{

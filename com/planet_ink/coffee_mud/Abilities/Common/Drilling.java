@@ -123,7 +123,8 @@ public class Drilling extends GatheringSkill
 		
 		Item I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(I==null) return false;
-		if((!(I instanceof Container))||(((Container)I).capacity()<=((Container)I).envStats().weight()))
+		if((!(I instanceof Container))
+		||(((Container)I).capacity()<=((Container)I).envStats().weight()))
 		{
 			commonTell(mob,I.name()+" doesn't look like it can hold anything.");
 			return false;

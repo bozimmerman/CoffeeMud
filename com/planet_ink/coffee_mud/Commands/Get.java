@@ -76,6 +76,7 @@ public class Get extends BaseItemParser
 		&&(!Sense.isOnFire(I))
 		&&(!Sense.enchanted(I)))
 		{
+		    Ability rott=I.fetchEffect("Poison_Rotten");
 			if(I.baseEnvStats().weight()>1)
 			{
 			    Environmental owner=I.owner();
@@ -87,6 +88,10 @@ public class Get extends BaseItemParser
 					E=CoffeeUtensils.makeResource(I.material(),-1,true);
 					if(E instanceof Item)
 					{
+					    if((E instanceof Food)&&(I instanceof Food))
+					        ((Food)E).setDecayTime(((Food)I).decayTime());
+					    if(rott!=null)
+					        E.addNonUninvokableEffect((Ability)rott.copyOf());
 					    if(owner instanceof Room)
 							((Room)owner).addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
 					    else

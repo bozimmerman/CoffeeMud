@@ -98,6 +98,9 @@ public class GatheringSkill extends CommonSkill
 	    int foundResource=-1;
 	    Item foundAnyway=null;
 	    Vector maskV=myresources();
+	    Hashtable foundAblesH=new Hashtable();
+	    Ability A=null;
+	    long lowestNonZeroFoodNumber=Long.MAX_VALUE;
 	    for(int i=0;i<R.numItems();i++)
 	    {
 	        Item I=R.fetchItem(i);
@@ -110,6 +113,18 @@ public class GatheringSkill extends CommonSkill
 				&&(I.container()==null)
 				&&((I.material()==foundResource)||(maskV.contains(new Integer(I.material())))))
 				{
+				    if((I instanceof Food)
+				    &&(((Food)I).decayTime()>0)
+				    &&(((Food)I).decayTime()<lowestNonZeroFoodNumber))
+				        lowestNonZeroFoodNumber=((Food)I).decayTime();
+				    for(int a=0;a<I.numEffects();a++)
+				    {
+				        A=I.fetchEffect(a);
+				        if((A!=null)
+				        &&(!A.canBeUninvoked())
+				        &&(!foundAblesH.containsKey(A.ID())))
+				            foundAblesH.put(A.ID(),A);
+				    }
 				    foundResource=I.material();
 				    numHere+=I.envStats().weight();
 				}
@@ -128,6 +143,8 @@ public class GatheringSkill extends CommonSkill
 	        commonTell(mob,"You only see "+numHere+" pounds of "+name+" on the ground here.");
 	        return false;
 	    }
+	    if(lowestNonZeroFoodNumber==Long.MAX_VALUE)
+	        lowestNonZeroFoodNumber=0;
 		Item I=(Item)CoffeeUtensils.makeResource(foundResource,mob.location().domainType(),true);
 		I.setName("a "+amount+"# "+EnvResource.RESOURCE_DESCS[foundResource&EnvResource.RESOURCE_MASK].toLowerCase()+" bundle");
 		I.setDisplayText(I.name()+" is here.");
@@ -141,8 +158,12 @@ public class GatheringSkill extends CommonSkill
 			if(I instanceof Drink)
 			    ((Drink)I).setLiquidHeld(((Drink)I).liquidHeld()*amount);
 			R.addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
-			R.recoverRoomStats();
 		}
+		if(I instanceof Food)
+		    ((Food)I).setDecayTime(lowestNonZeroFoodNumber);
+		for(Enumeration e=foundAblesH.keys();e.hasMoreElements();)
+		    I.addNonUninvokableEffect((Ability)((Environmental)foundAblesH.get(e.nextElement())).copyOf());
+		R.recoverRoomStats();
 	    return true;
 	}
 	

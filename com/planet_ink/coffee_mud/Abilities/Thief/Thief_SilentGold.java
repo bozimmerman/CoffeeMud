@@ -31,9 +31,10 @@ public class Thief_SilentGold extends ThiefSkill
 	private static final String[] triggerStrings = {"SILENTGOLD"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		super.executeMsg(myHost,msg);
+		if(!super.okMessage(myHost,msg))
+		    return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
@@ -41,29 +42,31 @@ public class Thief_SilentGold extends ThiefSkill
 			&&(Sense.canBeSeenBy(msg.source(),(MOB)affected))
 			&&(msg.source().location()==((MOB)affected).location()))
 			{
-			    double money=BeanCounter.getTotalAbsoluteNativeValue((MOB)affected);
+			    double money=BeanCounter.getTotalAbsoluteNativeValue(msg.source());
 				if((money/10.0)>0.0)
 				{
-					Coins C=BeanCounter.makeBestCurrency((MOB)affected,money/10.0);
+					Coins C=BeanCounter.makeBestCurrency(msg.source(),money/10.0);
 					if((C!=null)&&(C.getNumberOfCoins()>0))
 					{
-					    BeanCounter.subtractMoney((MOB)affected,C.getTotalValue());
+					    BeanCounter.subtractMoney(msg.source(),C.getTotalValue());
 						MOB mob=(MOB)affected;
 						mob.location().addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
 						mob.location().recoverRoomStats();
 						MOB victim=mob.getVictim();
 						mob.setVictim(null);
-						FullMsg msg2=new FullMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,"You silently autoloot "+C.name()+" from the corpse of "+msg.source().name(),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
+						FullMsg msg2=new FullMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
 						if(mob.location().okMessage(mob,msg2))
 						{
 							mob.location().send(mob,msg2);
-							CommonMsgs.get(mob,null,C,true);
+							msg2=new FullMsg(mob,C,null,CMMsg.MSG_GET,"You silently autoloot "+C.name()+" from the corpse of "+msg.source().name(),null,null);
+							msg.addTrailerMsg(msg2);
 						}
 						if(victim!=null) mob.setVictim(victim);
 					}
 				}
 			}
 		}
+		return true;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

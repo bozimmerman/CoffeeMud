@@ -34,12 +34,37 @@ public class Archon_Metacraft extends CraftingSkill
 	{
 		if(craftingSkills.size()==0)
 		{
+		    Vector V=new Vector();
 			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
 				if(((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
 				&&(Util.bset(A.flags(),Ability.FLAG_CRAFTING)))
-					craftingSkills.addElement(A.copyOf());
+					V.addElement(A.copyOf());
+			}
+			while(V.size()>0)
+			{
+				int lowest=Integer.MAX_VALUE;
+				Ability lowestA=null;
+				for(int i=0;i<V.size();i++)
+				{
+				    Ability A=(Ability)V.elementAt(i);
+				    int ii=CMAble.lowestQualifyingLevel(A.ID());
+				    if(ii<lowest)
+				    { 
+				        lowest=ii; 
+				        lowestA=A;
+				    }
+				}
+				if(lowestA==null) 
+				    lowestA=(Ability)V.firstElement();
+				if(lowestA!=null)
+				{
+				    V.removeElement(lowestA);
+				    craftingSkills.addElement(lowestA);
+				}
+				else
+				    break;
 			}
 		}
 		if(commands.size()<2)

@@ -62,6 +62,20 @@ public class MudChat extends StdBehavior
 		return rsc;
 	}
 
+	public Vector externalFiles()
+	{
+		int x=parms.indexOf("=");
+		if(x>0)
+		{
+		    Vector xmlfiles=new Vector();
+			String filename=parms.substring(0,x).trim();
+			if(filename.length()>0)
+			    xmlfiles.addElement(filename.trim());
+			return xmlfiles;
+		}
+		return null;
+	}
+	
 	private static Vector loadChatData(String resourceName, Vector chatGroups)
 	{
 		StringBuffer rsc=Resources.getFileResource(resourceName);

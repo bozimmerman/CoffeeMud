@@ -206,6 +206,10 @@ public class Resources
 		return buf;
 	}
 	
+	public static String makeFileResourceName(String filename)
+	{
+	    return "resources"+File.separatorChar+filename;
+	}
 	public static StringBuffer getFileResource(String filename)
 	{ return getFileResource(filename,true);}
 	public static StringBuffer getFileResource(String filename, boolean reportErrors)
@@ -220,7 +224,7 @@ public class Resources
 				return new StringBuffer((String)rsc);
 		}
 		
-		StringBuffer buf=getFile("resources"+File.separatorChar+filename,reportErrors);
+		StringBuffer buf=getFile(makeFileResourceName(filename));
 		if(buf==null) buf=new StringBuffer("");
 		submitResource(filename,buf);
 		return buf;

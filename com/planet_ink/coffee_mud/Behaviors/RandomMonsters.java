@@ -30,6 +30,27 @@ public class RandomMonsters extends ActiveTicker
 	protected int maxMonsters=1;
 	protected Vector restrictedLocales=null;
 	private boolean alreadyTriedLoad=false;
+	
+	public Vector externalFiles()
+	{
+        Vector xmlfiles=new Vector();
+        String theseparms=getParms();
+		int x=theseparms.indexOf(";");
+		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
+		if(filename.trim().length()==0)
+		    return null;
+		int start=filename.indexOf("<MOBS>");
+		if((start<0)||(start>20))
+		{
+			int extraSemicolon=filename.indexOf(";");
+			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
+			if(filename.trim().length()>0)
+			    xmlfiles.addElement(filename.trim());
+		    return xmlfiles;
+	    }
+		return null;
+	}
+	
 
 	public void setParms(String newParms)
 	{
@@ -185,6 +206,7 @@ public class RandomMonsters extends ActiveTicker
 					Log.errOut("RandomMonsters","No mobs loaded: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
 					return null;
 				}
+				
 				Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
 			}
 		}

@@ -87,7 +87,7 @@ public class MovingRoom extends ActiveTicker
 
 	private static synchronized String loadInfo()
 	{
-		StringBuffer str=new StringBuffer("");//Resources.getFile("resources"+File.separatorChar+"Moving.xml");
+		StringBuffer str=new StringBuffer("");
 		try
 		{
 			FileReader F=new FileReader("resources"+File.separatorChar+"movingroom.xml");

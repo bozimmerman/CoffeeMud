@@ -884,7 +884,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					BeanCounter.giveSomeoneMoney(this,mob,currency,val);
 					budgetRemaining=budgetRemaining-Math.round(val);
 					mob.recoverEnvStats();
-					mob.tell(name()+" pays you "+val+" for "+msg.tool().name()+".");
+					mob.tell(name()+" pays you "+BeanCounter.nameCurrencyShort(this,val)+" for "+msg.tool().name()+".");
 					if(msg.tool() instanceof LandTitle)
 					{
 						Object removeKey=null;
@@ -1195,12 +1195,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								price=yourValue(mob,E,true,true);
 								col=null;
 								if(price.questPointPrice>0)
-									col=Util.padRight("["+price.questPointPrice+"qp",5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
+									col=Util.padRight("["+price.questPointPrice+"qp",5+csize)+"] "+"^<SHOP^>"+Util.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
 								else
 								if(price.experiencePrice>0)
-									col=Util.padRight("["+price.experiencePrice+"xp",5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
+									col=Util.padRight("["+price.experiencePrice+"xp",5+csize)+"] "+"^<SHOP^>"+Util.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
 								else
-									col=Util.padRight("["+BeanCounter.abbreviatedPrice(this,price.absoluteGoldPrice),5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
+									col=Util.padRight("["+BeanCounter.abbreviatedPrice(this,price.absoluteGoldPrice),5+csize)+"] "+"^<SHOP^>"+Util.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
 								if((++colNum)>totalCols)
 								{
 									str.append("\n\r");

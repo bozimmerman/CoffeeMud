@@ -36,6 +36,7 @@ public class Prop_ClanEquipment extends Property
 	protected int TypeOfEffect = 0;
 	protected int WeaponType = 0;
 	protected int PowerLevel = 0;
+	private long LastChecked=0;
 	private boolean notAgain = false;
 	private String clanName = "";
 	private String clanType = "";
@@ -300,6 +301,14 @@ public class Prop_ClanEquipment extends Property
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
+		
+		if(((System.currentTimeMillis()-LastChecked)>IQCalendar.MILI_HOUR)
+		&&(affected!=null))
+		{
+		    if((clanName!=null)&&(clanName.length()>0)&&(Clans.getClan(clanName)==null))
+			    affected.delEffect(this);
+		}
+		
 		MOB mob = null;
 		MOB source = null;
 		if ( (affected != null) && (affected instanceof Item)) 

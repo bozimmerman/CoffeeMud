@@ -105,6 +105,7 @@ public class Export extends StdCommand
 		String fileName="";
 		int fileNameCode=-1; // -1=indetermined, 0=screen, 1=file, 2=path, 3=email
 		HashSet custom=new HashSet();
+		HashSet files=new HashSet();
 
 		commands.removeElementAt(0);
 		if(commands.size()>0)
@@ -201,7 +202,7 @@ public class Export extends StdCommand
 					if(M!=null)
 					{
 						x.append("\r\n<PLAYER>");
-						x.append(CoffeeMaker.getPlayerXML(M,custom));
+						x.append(CoffeeMaker.getPlayerXML(M,custom,files));
 						x.append("</PLAYER>");
 					}
 				}
@@ -213,7 +214,7 @@ public class Export extends StdCommand
 			else
 			if(commandType.equalsIgnoreCase("ROOM"))
 			{
-				xml=CoffeeMaker.getRoomXML(mob.location(),custom,true).toString();
+				xml=CoffeeMaker.getRoomXML(mob.location(),custom,files,true).toString();
 				if(fileNameCode==2) fileName=fileName+File.separatorChar+"room";
 			}
 			else
@@ -221,7 +222,7 @@ public class Export extends StdCommand
 			{
 				if(mob.session()!=null)
 					mob.session().rawPrint("Reading area '"+mob.location().getArea().Name()+"'...");
-				xml=CoffeeMaker.getAreaXML(mob.location().getArea(),mob.session(),custom,true).toString();
+				xml=CoffeeMaker.getAreaXML(mob.location().getArea(),mob.session(),custom,files,true).toString();
 				if(fileNameCode==2){
 					if(mob.location().getArea().getArchivePath().length()>0)
 						fileName=fileName+File.separatorChar+mob.location().getArea().getArchivePath();
@@ -247,7 +248,7 @@ public class Export extends StdCommand
 					{
 						if(mob.session()!=null)
 							mob.session().rawPrint("Reading area '"+A.name()+"'...");
-						buf.append(CoffeeMaker.getAreaXML(A,mob.session(),custom,true).toString());
+						buf.append(CoffeeMaker.getAreaXML(A,mob.session(),files,custom,true).toString());
 						if(mob.session()!=null)
 							mob.session().rawPrintln("!");
 						if(fileNameCode==2)
@@ -271,7 +272,7 @@ public class Export extends StdCommand
 			if(fileNameCode==2) fileName=fileName+File.separatorChar+"mobs";
 			Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
-				xml="<MOBS>"+CoffeeMaker.getRoomMobs(mob.location(),custom,found).toString()+"</MOBS>";
+				xml="<MOBS>"+CoffeeMaker.getRoomMobs(mob.location(),files,custom,found).toString()+"</MOBS>";
 			else
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
@@ -282,7 +283,7 @@ public class Export extends StdCommand
 				{
 					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");
-					buf.append(CoffeeMaker.getRoomMobs(R,custom,found).toString());
+					buf.append(CoffeeMaker.getRoomMobs(R,custom,files,found).toString());
 				}
 				xml=buf.toString()+"</MOBS>";
 				if(mob.session()!=null)
@@ -297,7 +298,7 @@ public class Export extends StdCommand
 				{
 					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");
-					buf.append(CoffeeMaker.getRoomMobs(R,custom,found).toString());
+					buf.append(CoffeeMaker.getRoomMobs(R,custom,files,found).toString());
 				}
 				xml=buf.toString()+"</MOBS>";
 				if(mob.session()!=null)
@@ -331,7 +332,7 @@ public class Export extends StdCommand
 
 			Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
-				xml="<ITEMS>"+CoffeeMaker.getRoomItems(mob.location(),found,type).toString()+"</ITEMS>";
+				xml="<ITEMS>"+CoffeeMaker.getRoomItems(mob.location(),found,files,type).toString()+"</ITEMS>";
 			else
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
@@ -342,7 +343,7 @@ public class Export extends StdCommand
 				{
 					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");
-					buf.append(CoffeeMaker.getRoomItems(R,found,type).toString());
+					buf.append(CoffeeMaker.getRoomItems(R,found,files,type).toString());
 				}
 				xml=buf.toString()+"</ITEMS>";
 				if(mob.session()!=null)
@@ -357,7 +358,7 @@ public class Export extends StdCommand
 				{
 					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");
-					buf.append(CoffeeMaker.getRoomItems(R,found,type).toString());
+					buf.append(CoffeeMaker.getRoomItems(R,found,files,type).toString());
 				}
 				xml=buf.toString()+"</ITEMS>";
 				if(mob.session()!=null)
@@ -377,6 +378,23 @@ public class Export extends StdCommand
 					str.append(((CharClass)o).classParms());
 			}
 			str.append("</CUSTOM>");
+			xml+=str.toString();
+		}
+		if(files.size()>0)
+		{
+			StringBuffer str=new StringBuffer("<FILES>");
+			for(Iterator i=files.iterator();i.hasNext();)
+			{
+				String filename=(String)i.next();
+				StringBuffer buf=Resources.getFileResource(filename);
+				if(buf!=null)
+				{
+					str.append("<FILE NAME=\">"+filename+"\">");
+					str.append(buf);
+					str.append("</FILE>");
+				}
+			}
+			str.append("</FILES>");
 			xml+=str.toString();
 		}
 		reallyExport(mob,fileName,xml);

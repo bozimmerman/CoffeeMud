@@ -31,7 +31,7 @@ public class Waterskin extends StdDrink
 		amountOfLiquidHeld=1000;
 		amountOfLiquidRemaining=1000;
 		baseEnvStats.setWeight(10);
-		capacity=5;
+		capacity=15;
 		setDisplayText("a tough little waterskin sits here.");
 		setDescription("Looks like it could hold quite a bit of drink.");
 		baseGoldValue=10;
