@@ -132,7 +132,7 @@ public final class IMC2Driver extends Thread {
 	
     final public void ev_keepalive(Object param)
     {
-        imc_send_keepalive();
+        imc_send_keepalive("*@*");
         imc_register_call_out(150, "ev_keepalive", null);
     }
 
@@ -303,6 +303,11 @@ public final class IMC2Driver extends Thread {
         /* Connect to Hub */
         if (!imc_connect_to())
             return false;
+
+        imc_register_call_out(5, "ev_keepalive", null);
+
+        imc_register_call_out(6, "ev_request_keepalive", null);
+		
         return true;
     }
 
@@ -1449,7 +1454,7 @@ public final class IMC2Driver extends Thread {
 
         imc_initdata(out);
         out.type = "keepalive-request";
-        out.from = "*@"+imc_name;
+        out.from = "*";
         out.to = "*@*";
         imc_addkey(out, "versionid", IMC_VERSIONID);
         if (imc_siteinfo.flags != null && imc_siteinfo.flags != "")
