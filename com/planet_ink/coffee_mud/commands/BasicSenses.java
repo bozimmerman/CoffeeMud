@@ -143,22 +143,45 @@ public class BasicSenses
 		}
 		commands.removeElementAt(0);
 
-		if(mob.getTrains()==0)
-		{
-			mob.tell("You don't seem to have enough training points to do that.");
-			return;
-		}
-
 		String abilityName=((String)commands.elementAt(0)).toUpperCase();
 		int abilityCode=mob.charStats().getAbilityCode(abilityName);
 
 		if(abilityCode<0)
 		{
-			mob.tell("You don't seem to have "+abilityName+".");
-			return;
+			if("HIT POINTS".startsWith(abilityName.toUpperCase()))
+				abilityCode=101;
+			else
+			if("MANA".startsWith(abilityName.toUpperCase()))
+				abilityCode=102;
+			else
+			if("MOVE".startsWith(abilityName.toUpperCase()))
+				abilityCode=103;
+			else
+			if("GAIN".startsWith(abilityName.toUpperCase()))
+				abilityCode=104;
+			else
+			if("PRACTICES".startsWith(abilityName.toUpperCase()))
+				abilityCode=105;
+			else
+			{
+				mob.tell("You don't seem to have "+abilityName+".");
+				return;
+			}
 		}
 		commands.removeElementAt(0);
 
+
+		if((abilityCode==104)&&(mob.getPractices()<7))
+		{
+			mob.tell("You don't seem to have enough practices to do that.");
+			return;
+		}
+		else
+		if(mob.getTrains()==0)
+		{
+			mob.tell("You don't seem to have enough training points to do that.");
+			return;
+		}
 
 		MOB teacher=null;
 		if(commands.size()>0)
@@ -187,19 +210,22 @@ public class BasicSenses
 			return;
 		}
 
-		int curStat=mob.baseCharStats().getCurStat(abilityCode);
-
-		if(!mob.baseCharStats().getMyClass().canAdvance(mob,abilityCode))
+		int curStat=-1;
+		if(abilityCode<100)
 		{
-			mob.tell("You cannot train that any further.");
-			return;
-		}
+			curStat=mob.baseCharStats().getCurStat(abilityCode);
+			if(!mob.baseCharStats().getMyClass().canAdvance(mob,abilityCode))
+			{
+				mob.tell("You cannot train that any further.");
+				return;
+			}
 
-		int teachStat=mob.baseCharStats().getCurStat(abilityCode);
-		if(curStat>teachStat)
-		{
-			mob.tell("You can only train with someone whose score is higher than yours.");
-			return;
+			int teachStat=mob.baseCharStats().getCurStat(abilityCode);
+			if(curStat>teachStat)
+			{
+				mob.tell("You can only train with someone whose score is higher than yours.");
+				return;
+			}
 		}
 
 		FullMsg msg=new FullMsg(teacher,mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> train(s) with <T-NAMESELF>.");
@@ -211,30 +237,71 @@ public class BasicSenses
 		case 0:
 			mob.tell("You feel stronger!");
 			mob.baseCharStats().setStrength(curStat+1);
+			mob.recoverCharStats();
+			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 1:
 			mob.tell("You feel smarter!");
 			mob.baseCharStats().setIntelligence(curStat+1);
+			mob.recoverCharStats();
+			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 2:
 			mob.tell("You feel more dextrous!");
 			mob.baseCharStats().setDexterity(curStat+1);
+			mob.recoverCharStats();
+			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 3:
 			mob.tell("You feel healthier!");
 			mob.baseCharStats().setConstitution(curStat+1);
+			mob.recoverCharStats();
+			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 4:
 			mob.tell("You feel more charismatic!");
 			mob.baseCharStats().setCharisma(curStat+1);
+			mob.recoverCharStats();
+			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 5:
 			mob.tell("You feel wiser!");
 			mob.baseCharStats().setWisdom(curStat+1);
+			mob.recoverCharStats();
+			mob.setTrains(mob.getTrains()-1);
+			break;
+		case 101:
+			mob.tell("You feel even healthier!");
+			mob.baseState().setHitPoints(mob.baseState().getHitPoints()+10);
+			mob.maxState().setHitPoints(mob.maxState().getHitPoints()+10);
+			mob.curState().setHitPoints(mob.curState().getHitPoints()+10);
+			mob.setTrains(mob.getTrains()-1);
+			break;
+		case 102:
+			mob.tell("You feel more powerful!");
+			mob.baseState().setMana(mob.baseState().getMana()+20);
+			mob.maxState().setMana(mob.maxState().getMana()+20);
+			mob.curState().setMana(mob.curState().getMana()+20);
+			mob.setTrains(mob.getTrains()-1);
+			break;
+		case 103:
+			mob.tell("You feel more rested!");
+			mob.baseState().setMovement(mob.baseState().getMovement()+20);
+			mob.maxState().setMovement(mob.maxState().getMovement()+20);
+			mob.curState().setMovement(mob.curState().getMovement()+20);
+			mob.setTrains(mob.getTrains()-1);
+			break;
+		case 104:
+			mob.tell("You feel more trainable!");
+			mob.setTrains(mob.getTrains()+1);
+			mob.setPractices(mob.getPractices()-7);
+			break;
+		case 105:
+			mob.tell("You feel more educatable!");
+			mob.setTrains(mob.getTrains()-1);
+			mob.setPractices(mob.getPractices()+5);
 			break;
 		}
-		mob.recoverCharStats();
-		mob.setTrains(mob.getTrains()-1);
 	}
 
 	public void outfit(MOB mob)

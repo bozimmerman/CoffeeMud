@@ -83,7 +83,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 	public void reRoll()
 	{
 		double avg=0.0;
-		while(avg!=AVG_VALUE)
+		while((avg<(AVG_VALUE-0.25))&&(avg>(AVG_VALUE+0.25)))
 		{
 			Strength=3+(int)Math.floor(Math.random()*16);
 			Intelligence=3+(int)Math.floor(Math.random()*16);
