@@ -56,7 +56,7 @@ public class Falling extends StdAbility
 				if(reversed())
 					return true;
 				unInvoke();
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground.");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CommonStrings.msp("splat.wav",50));
 				ExternalPlay.postDamage(mob,mob,this,damageToTake,Affect.NO_EFFECT,-1,null);
 				return false;
 			}
@@ -82,7 +82,7 @@ public class Falling extends StdAbility
 					if(reversed())
 						return true;
 					unInvoke();
-					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground.");
+					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CommonStrings.msp("splat.wav",50));
 					ExternalPlay.postDamage(mob,mob,this,damageToTake,Affect.NO_EFFECT,-1,null);
 					return false;
 				}

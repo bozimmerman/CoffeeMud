@@ -3287,7 +3287,7 @@ public class Import
 									{
 										Exit E3=R2.rawExits()[d];
 										if(E3!=null)
-											if(R.roomID().endsWith(E3.closeWord()))
+											if(R.roomID().endsWith(E3.temporaryDoorLink()))
 											{
 												opExit=E3;
 												R2.rawDoors()[d]=R;
@@ -3298,17 +3298,16 @@ public class Import
 										  (!mob.session().confirm(R.roomID()+" links to #"+linkRoomID+". Found "+R2.roomID()+". Link?","Y")))
 											continue;
 									linkRoom=R2;
-									if(opExit!=null)
-										opExit.setExitParams(opExit.doorName(),"close",opExit.openWord(),opExit.displayText());
+									if(opExit!=null) opExit.setTemporaryDoorLink("");
 									if((!doneRooms.containsValue(linkRoom)))
 										ExternalPlay.DBUpdateExits(linkRoom);
 									break;
 								}
 							}
 							if(linkRoom==null)
-								E.setExitParams(E.doorName(),"#"+linkRoomID,E.openWord(),E.closedText());
+								E.setTemporaryDoorLink("#"+linkRoomID);
 							else
-								E.setExitParams(E.doorName(),"close",E.openWord(),E.displayText());
+								E.setTemporaryDoorLink("");
 
 						}
 						R.rawDoors()[dirCode]=linkRoom;

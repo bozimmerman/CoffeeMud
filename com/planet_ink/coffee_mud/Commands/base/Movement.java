@@ -527,7 +527,7 @@ public class Movement extends Scriptable
 				mob.tell(getScr("Movement","youdontsee",knockWhat.toLowerCase()));
 				return;
 			}
-			FullMsg msg=new FullMsg(mob,getThis,null,Affect.MSG_KNOCK,Affect.MSG_KNOCK,Affect.MSG_KNOCK,getScr("Movement","knockmsg"));
+			FullMsg msg=new FullMsg(mob,getThis,null,Affect.MSG_KNOCK,Affect.MSG_KNOCK,Affect.MSG_KNOCK,getScr("Movement","knockmsg")+CommonStrings.msp("knock.wav",50));
 			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 			
@@ -540,14 +540,14 @@ public class Movement extends Scriptable
 				mob.tell(getScr("Movement","knockerr2",E.name()));
 				return;
 			}
-			FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_KNOCK,Affect.MSG_KNOCK,Affect.MSG_KNOCK,getScr("Movement","knockmsg"));
+			FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_KNOCK,Affect.MSG_KNOCK,Affect.MSG_KNOCK,getScr("Movement","knockmsg")+CommonStrings.msp("knock.wav",50));
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				E=mob.location().getPairedExit(dir);
 				Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)&&(E!=null)&&(E.hasADoor())
-				&&(R.showOthers(mob,E,null,Affect.MSG_KNOCK,getScr("Movement","knockmsg2")))
+				&&(R.showOthers(mob,E,null,Affect.MSG_KNOCK,getScr("Movement","knockmsg2")+CommonStrings.msp("knock.wav",50)))
 				&&((R.domainType()&Room.INDOORS)==Room.INDOORS))
 				{
 					Vector V=new Vector();
@@ -562,7 +562,7 @@ public class Movement extends Scriptable
 						{
 							Room R3=R2.getRoomInDir(dir2);
 							if((R3.domainType()&Room.INDOORS)==Room.INDOORS)
-								R2.showHappens(Affect.MASK_SOUND|Affect.TYP_KNOCK,getScr("Movement","knockmsg3",Directions.getInDirectionName(dir2)));
+								R2.showHappens(Affect.MASK_SOUND|Affect.TYP_KNOCK,getScr("Movement","knockmsg3",Directions.getInDirectionName(dir2))+CommonStrings.msp("knock.wav",50));
 						}
 					}
 				}

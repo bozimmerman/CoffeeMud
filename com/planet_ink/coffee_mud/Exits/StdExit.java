@@ -511,10 +511,10 @@ public class StdExit implements Exit
 	public String readableText(){ return (isReadable()?miscText:"");}
 	public boolean isReadable(){ return false;}
 	public void setReadable(boolean isTrue){}
-	public void setReadableText(String text) { miscText=text; }
+	public void setReadableText(String text) { miscText=temporaryDoorLink()+text; }
 	public void setExitParams(String newDoorName, String newCloseWord, String newOpenWord, String newClosedText){}
-	public String keyName()	{ return (hasALock()?text():""); }
-	public void setKeyName(String newKeyName){miscText=newKeyName;}
+	public String keyName()	{ return (hasALock()?miscText:""); }
+	public void setKeyName(String newKeyName){miscText=temporaryDoorLink()+newKeyName;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{}//exits will never be asked this, so this method should always do NOTHING
@@ -523,6 +523,26 @@ public class StdExit implements Exit
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}//exits will never be asked this, so this method should always do NOTHING
 
+	public String temporaryDoorLink(){
+		if(miscText.startsWith("{#"))
+		{
+			int x=miscText.indexOf("#}");
+			if(x>=0)
+				return miscText.substring(2,x);
+		}
+		return "";
+	}
+	public void setTemporaryDoorLink(String link)
+	{
+		if(miscText.startsWith("{#"))
+		{
+			int x=miscText.indexOf("#}");
+			if(x>=0) miscText=miscText.substring(x+2);
+		}
+		if(link.length()>0)
+			miscText="{#"+link+"#}"+miscText;
+	}
+	
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;

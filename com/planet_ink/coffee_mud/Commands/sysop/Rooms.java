@@ -537,7 +537,7 @@ public class Rooms
 					if((R.rawExits()[dir]!=null)&&(R.rawExits()[dir].isGeneric()))
 					{
 						Exit GE=(Exit)R.rawExits()[dir];
-						GE.setExitParams(GE.doorName(),deadRoom.roomID(),GE.openWord(),GE.closedText());
+						GE.setTemporaryDoorLink(deadRoom.roomID());
 					}
 				}
 			}

@@ -36,4 +36,6 @@ public interface Exit extends Environmental
 	
 	public int openDelayTicks();
 	public void setOpenDelayTicks(int numTicks);
+	public String temporaryDoorLink();
+	public void setTemporaryDoorLink(String link);
 }

@@ -414,7 +414,7 @@ public class Generic
 			String doorID=XMLManager.getValFromPieces(xblk.contents,"XDOOR");
 			Vector xxV=XMLManager.getContentsFromPieces(xblk.contents,"XEXIT");
 			if(xxV==null) return unpackErr("Room","null 'xxV'"+" in room "+newRoom.roomID());
-			Exit exit=CMClass.getExit("GenExit");
+			Exit exit=null;
 			if(xxV.size()>0)
 			{
 				exit=CMClass.getExit(XMLManager.getValFromPieces(xxV,"EXID"));
@@ -422,6 +422,8 @@ public class Generic
 				exit.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(xxV,"EXDAT")));
 				newRoom.rawExits()[dir]=exit;
 			}
+			else
+				exit=CMClass.getExit("GenExit");
 			exit.recoverEnvStats();
 			if(doorID.length()>0)
 			{
@@ -431,7 +433,7 @@ public class Generic
 				else
 				{
 					newRoom.rawExits()[dir]=exit; // get will get the fake one too!
-					exit.setExitParams(exit.doorName(),doorID,exit.openWord(),exit.closedText());
+					exit.setTemporaryDoorLink(doorID);
 				}
 			}
 		}
@@ -444,10 +446,9 @@ public class Generic
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
 				Exit exit=R.rawExits()[d];
-				if((exit!=null)&&(exit.closeWord().equalsIgnoreCase(newRoom.roomID())))
+				if((exit!=null)&&(exit.temporaryDoorLink().equalsIgnoreCase(newRoom.roomID())))
 				{
-					Exit newExit=(Exit)exit.newInstance();
-					exit.setExitParams(exit.doorName(),newExit.closeWord(),exit.openWord(),exit.closedText());
+					exit.setTemporaryDoorLink("");
 					R.rawDoors()[d]=newRoom;
 					changed=true;
 				}

@@ -37,5 +37,6 @@ Wild Mage: 50% of the time, a spell cast will end up higher level, different spe
 level and type and wear locations for weaponsmithing and armorsmithing
 possible to have NE SE SW NW directions?  Yes, but StdMap and MUDGrinder would get hit hard...
 LYING DOWN position?
+MorgueOverride behavior?
 Z-level for the GrinderMap (elevation?) how the heck would THAT work...
 group formations as an alternative way of determining range

@@ -1,1 +1,3 @@
 GAES still isn't done
+damn sort still broke
+ability to select a random item the way we do with a random mob in scriptable

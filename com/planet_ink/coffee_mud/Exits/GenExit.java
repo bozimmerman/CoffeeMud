@@ -58,7 +58,6 @@ public class GenExit extends StdExit
 
 	public void setMiscText(String newText)
 	{
-		miscText="";
 		Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 		isOpen=!doorDefaultsClosed;
@@ -109,11 +108,31 @@ public class GenExit extends StdExit
 	
 	public String readableText(){ return (isReadable?keyName:"");}
 	public void setReadable(boolean isTrue){isReadable=isTrue;}
-	public void setReadableText(String text) { keyName=text; }
+	public void setReadableText(String text) { keyName=temporaryDoorLink()+text; }
 
 	public String keyName()	{ return keyName; }
-	public void setKeyName(String newKeyName){keyName=newKeyName;}
+	public void setKeyName(String newKeyName){keyName=temporaryDoorLink()+newKeyName;}
 
 	public int openDelayTicks()	{ return openDelayTicks;}
 	public void setOpenDelayTicks(int numTicks){openDelayTicks=numTicks;}
+	
+	public String temporaryDoorLink(){
+		if(keyName.startsWith("{#"))
+		{
+			int x=keyName.indexOf("#}");
+			if(x>=0)
+				return keyName.substring(2,x);
+		}
+		return "";
+	}
+	public void setTemporaryDoorLink(String link)
+	{
+		if(keyName.startsWith("{#"))
+		{
+			int x=keyName.indexOf("#}");
+			if(x>=0) keyName=keyName.substring(x+2);
+		}
+		if(link.length()>0)
+			keyName="{#"+link+"#}"+keyName;
+	}
 }
