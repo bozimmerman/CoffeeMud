@@ -128,7 +128,7 @@ public class Lister
 		lines.append(Util.padRight("Valid",5)+"| ");
 		lines.append(Util.padRight("Name",17)+"| ");
 		lines.append(Util.padRight("Location",17)+"| ");
-		lines.append(Util.padRight("IP",17)+"^^^?\n\r");
+		lines.append(Util.padRight("IP",17)+"^^^N\n\r");
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session thisSession=(Session)Sessions.elementAt(s);

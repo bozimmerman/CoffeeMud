@@ -58,8 +58,8 @@ public class SocialProcessor
 				}
 				else
 				{
-					mob.tell(mob,target,"You tell "+targetName+" '"+text+"'.");
-					target.tell(mob,target,mob.name()+" tell(s) you '"+text+"'.");
+					mob.tell(mob,target,"You tell "+targetName+" '"+text+"'");
+					target.tell(mob,target,mob.name()+" tell(s) you '"+text+"'");
 					target.setReplyTo(mob);
 				}
 			}
@@ -123,12 +123,12 @@ public class SocialProcessor
 
 		FullMsg msg=null;
 		if(target==null)
-			msg=new FullMsg(mob,null,null,Affect.MSG_SPEAK,"^T<S-NAME> "+theWord.toLowerCase()+"(s) '"+combinedCommands+"'^?.");
+			msg=new FullMsg(mob,null,null,Affect.MSG_SPEAK,"^T<S-NAME> "+theWord.toLowerCase()+"(s) '"+combinedCommands+"'^?");
 		else
 		if(theWord.equalsIgnoreCase("ask"))
-			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> ask(s) <T-NAMESELF> '"+combinedCommands+"'^?.");
+			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> ask(s) <T-NAMESELF> '"+combinedCommands+"'^?");
 		else
-			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> "+theWord.toLowerCase()+"(s) to <T-NAMESELF> '"+combinedCommands+"'^?.");
+			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> "+theWord.toLowerCase()+"(s) to <T-NAMESELF> '"+combinedCommands+"'^?");
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}

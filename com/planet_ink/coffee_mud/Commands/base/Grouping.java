@@ -47,7 +47,7 @@ public class Grouping
 			head.append(Util.padRight("Race",8)+" ");
 			head.append(Util.padRight("Class",8)+" ");
 			head.append(Util.padRight("Lvl",4));
-			head.append("] Character name^?^^\n\r");
+			head.append("] Character name^N^^\n\r");
 			mob.tell(head.toString()+msg.toString());
 		}
 	}
@@ -82,7 +82,7 @@ public class Grouping
 			head.append(Util.padRight("Race",8)+" ");
 			head.append(Util.padRight("Class",8)+" ");
 			head.append(Util.padRight("Lvl",4));
-			head.append("] Character name^?^^\n\r");
+			head.append("] Character name^N^^\n\r");
 			mob.tell(head.toString()+msg.toString());
 		}
 	}
