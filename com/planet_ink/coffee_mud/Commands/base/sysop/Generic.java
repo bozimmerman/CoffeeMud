@@ -501,7 +501,7 @@ public class Generic
 			mob.session().println("2) Is Hidden      : "+((E.baseEnvStats().disposition()&EnvStats.IS_HIDDEN)!=0));
 			mob.session().println("3) Is Unseeable   : "+((E.baseEnvStats().disposition()&EnvStats.IS_SEEN)!=0));
 			mob.session().println("4) Is Magical     : "+((E.baseEnvStats().disposition()&EnvStats.IS_BONUS)!=0));
-			mob.session().println("5) Is Glowing     : "+((E.baseEnvStats().disposition()&EnvStats.IS_LIGHT)!=0));
+			mob.session().println("5) Is Glowing     : "+((E.baseEnvStats().disposition()&EnvStats.IS_GLOWING)!=0));
 			if(E instanceof MOB)
 			{
 			mob.session().println("6) Is Flying      : "+((E.baseEnvStats().disposition()&EnvStats.IS_FLYING)!=0));
@@ -525,7 +525,7 @@ public class Generic
 			case '2': toggleDispositionMask(E,EnvStats.IS_HIDDEN); break;
 			case '3': toggleDispositionMask(E,EnvStats.IS_SEEN); break;
 			case '4': toggleDispositionMask(E,EnvStats.IS_BONUS); break;
-			case '5': toggleDispositionMask(E,EnvStats.IS_LIGHT); break;
+			case '5': toggleDispositionMask(E,EnvStats.IS_GLOWING); break;
 			case '6': toggleDispositionMask(E,EnvStats.IS_FLYING); break;
 			case '7': toggleDispositionMask(E,EnvStats.IS_CLIMBING); break;
 			case '8': toggleDispositionMask(E,EnvStats.IS_SNEAKING); break;

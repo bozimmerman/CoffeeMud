@@ -91,7 +91,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setName("a fire elemental");
 			newMOB.setDisplayText("a fire elemental is flaming nearby.");
 			newMOB.setDescription("A large beast, wreathed in flame, with sparkling eyes and a hot temper.");
-			newMOB.baseEnvStats().setDisposition(newMOB.baseEnvStats().disposition()|EnvStats.IS_LIGHT);
+			newMOB.baseEnvStats().setDisposition(newMOB.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
 			newMOB.addAbility(CMClass.getAbility("Firebreath"));
 			break;
 		case 2:

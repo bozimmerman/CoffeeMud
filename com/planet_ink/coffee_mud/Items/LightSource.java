@@ -82,10 +82,10 @@ public class LightSource extends StdItem implements Light
 	public static void recoverMyEnvStats(Light myLight)
 	{
 		if((myLight.getDuration()>0)&&(myLight.isLit()))
-			myLight.baseEnvStats().setDisposition(myLight.baseEnvStats().disposition()|EnvStats.IS_LIGHT);
+			myLight.baseEnvStats().setDisposition(myLight.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
 		else
-		if((myLight.baseEnvStats().disposition()&EnvStats.IS_LIGHT)==EnvStats.IS_LIGHT)
-			myLight.baseEnvStats().setDisposition(myLight.baseEnvStats().disposition()-EnvStats.IS_LIGHT);
+		if((myLight.baseEnvStats().disposition()&EnvStats.IS_LIGHTSOURCE)==EnvStats.IS_LIGHTSOURCE)
+			myLight.baseEnvStats().setDisposition(myLight.baseEnvStats().disposition()-EnvStats.IS_LIGHTSOURCE);
 	}
 	public void recoverEnvStats()
 	{

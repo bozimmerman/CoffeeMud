@@ -112,7 +112,7 @@ public class RaceData extends StdWebMacro
 						str.append("darkness, ");
 					if(Sense.isInvisible(mob))
 						str.append("invisible, ");
-					if(Sense.isLight(mob))
+					if(Sense.isGlowing(mob))
 						str.append("glowing, ");
 					if(!Sense.isSeen(mob))
 						str.append("unseeable, ");

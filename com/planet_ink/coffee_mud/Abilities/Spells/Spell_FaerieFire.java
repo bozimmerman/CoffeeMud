@@ -57,7 +57,7 @@ public class Spell_FaerieFire extends Spell
 
 		if((affectableStats.disposition()&EnvStats.IS_INVISIBLE)==EnvStats.IS_INVISIBLE)
 			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_INVISIBLE);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHT);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GLOWING);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
 		affectableStats.setArmor(affectableStats.armor()+10);
 	}

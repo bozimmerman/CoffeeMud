@@ -37,9 +37,10 @@ public interface EnvStats extends Cloneable
 	public final static int IS_SITTING=1024;
 	public final static int IS_FLYING=2048;
 	public final static int IS_SWIMMING=4096;
-	public final static int IS_LIGHT=8192;
+	public final static int IS_GLOWING=8192;
 	public final static int IS_CLIMBING=16384;
 	public final static int IS_FALLING=32768;
+	public final static int IS_LIGHTSOURCE=65536;
 
 	public int sensesMask();
 	public int disposition();
@@ -100,7 +101,8 @@ public interface EnvStats extends Cloneable
 													"ISSITTING",
 													"ISFLYING",
 													"ISSWIMMING",
-													"ISLIGHT",
+													"ISGLOWING",
 													"ISCLIMBING",
-													"ISFALLING"};
+													"ISFALLING",
+													"ISLIGHT"};
 }

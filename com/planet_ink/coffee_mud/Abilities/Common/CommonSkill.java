@@ -69,7 +69,7 @@ public class CommonSkill extends StdAbility
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
 			MOB mob=(MOB)affected;
-			if((mob.isInCombat())||(mob.location()!=activityRoom))
+			if((mob.isInCombat())||(mob.location()!=activityRoom)||(!Sense.aliveAwakeMobile(mob,true)))
 			{aborted=true; unInvoke(); return false;}
 			if(tickDown==4)
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+".");

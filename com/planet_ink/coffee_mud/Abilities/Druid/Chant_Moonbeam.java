@@ -35,7 +35,7 @@ public class Chant_Moonbeam extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(!(affected instanceof Room))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHT);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
 		if(Sense.isInDark(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
 	}

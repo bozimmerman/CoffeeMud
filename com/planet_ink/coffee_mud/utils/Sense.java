@@ -83,8 +83,10 @@ public class Sense
 	{ return ((E.envStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS); }
 	public static boolean isInDark(Environmental E)
 	{ return ((E.envStats().disposition()&EnvStats.IS_DARK)==EnvStats.IS_DARK); }
-	public static boolean isLight(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_LIGHT)==EnvStats.IS_LIGHT); }
+	public static boolean isLightSource(Environmental E)
+	{ return ((E.envStats().disposition()&EnvStats.IS_LIGHTSOURCE)==EnvStats.IS_LIGHTSOURCE); }
+	public static boolean isGlowing(Environmental E)
+	{ return (isLightSource(E)||((E.envStats().disposition()&EnvStats.IS_GLOWING)==EnvStats.IS_GLOWING)); }
 	public static boolean isInfrared(Environmental E)
 	{ return ((E.envStats().disposition()&EnvStats.IS_INFRARED)==EnvStats.IS_INFRARED); }
 	public static boolean isSleeping(Environmental E)
@@ -169,7 +171,7 @@ public class Sense
 			MOB mob=(MOB)seer;
 			if((mob.location()!=null)&&(isInDark(mob.location())))
 			{
-				if((isLight(seen))||(isLight(seer)))
+				if((isGlowing(seen))||(isLightSource(seer)))
 					return true;
 				if(canSeeInDark(seer))
 					return true;
@@ -184,7 +186,7 @@ public class Sense
 		else
 		if(isInDark(seen))
 		{
-			if(isLight(seer))
+			if(isLightSource(seer))
 				return true;
 			if(canSeeInDark(seer))
 				return true;
@@ -226,7 +228,7 @@ public class Sense
 			Say.append(" (^pflying^?)");
 		if(isFalling(seen))
 			Say.append(" (^pfalling^?)");
-		if((isLight(seen))&&(seen instanceof Item))
+		if((isGlowing(seen))&&(seen instanceof Item))
 			Say.append(" (^gglowing^?)");
 		return Say;
 	}
@@ -249,7 +251,7 @@ public class Sense
 			return false;
 		if(Sense.isFalling(seen1)!=Sense.isFalling(seen2))
 			return false;
-		if(Sense.isLight(seen1)!=Sense.isLight(seen2))
+		if(Sense.isGlowing(seen1)!=Sense.isGlowing(seen2))
 			return false;
 		if(Sense.isInfrared(seen1)!=Sense.isInfrared(seen2))
 			return false;

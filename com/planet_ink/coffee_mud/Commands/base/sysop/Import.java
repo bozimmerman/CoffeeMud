@@ -1942,7 +1942,7 @@ public class Import
 			    I.setDescription("");
 
 			if(Util.isSet(extraFlag,0))
-				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_LIGHT);
+				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_GLOWING);
 
 			//if((extraFlag&2)==2) coffeemud has no hummers
 			if(Util.isSet(extraFlag,2))

@@ -25,3 +25,4 @@ Wizard: must memorize spells from book.  Profficiency check at memorize time (un
 
 Move time to its own class.
 
+Resources with special Properties.  Meat that makes you sick.  Bread that heals, etc.

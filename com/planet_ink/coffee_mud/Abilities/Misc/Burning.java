@@ -92,7 +92,7 @@ public class Burning extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHT);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto)
 	{

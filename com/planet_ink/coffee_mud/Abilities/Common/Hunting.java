@@ -53,6 +53,8 @@ public class Hunting extends CommonSkill
 	
 	public void moveFound()
 	{
+		if(found.location()==null) return;
+		
 		Vector possibilities=new Vector();
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
@@ -84,7 +86,10 @@ public class Hunting extends CommonSkill
 				unInvoke();
 			}
 			else
-			if((found!=null)&&(Sense.aliveAwakeMobile(found,true))&&(!found.isInCombat()))
+			if((found!=null)
+			&&(found.location()!=null)
+			&&(Sense.aliveAwakeMobile(found,true))
+			&&(!found.isInCombat()))
 			{
 				if(found.location()==mob.location())
 					moveFound();
@@ -98,6 +103,7 @@ public class Hunting extends CommonSkill
 					mob.tell("You need to find the "+foundShortName+" nearby before the trail goes cold!");
 					displayText="You are hunting for "+found.name();
 					verb="hunting for "+found.name();
+					found.bringToLife(nearByRoom());
 				}
 				else
 				{
@@ -145,7 +151,7 @@ public class Hunting extends CommonSkill
 		Room room=nearByRoom();
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(0,auto))
-		   &&(room!=null)
+		   &&(nearByRoom()!=null)
 		   &&(resourceType!=EnvResource.RESOURCE_FISH)
 		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
 		   ||(resourceType==EnvResource.RESOURCE_BLOOD)
@@ -164,7 +170,7 @@ public class Hunting extends CommonSkill
 			int x=0;
 			if((x=foundShortName.lastIndexOf(" "))>=0)
 				foundShortName=foundShortName.substring(x).trim().toLowerCase();
-			found.bringToLife(room);
+			found.setLocation(null);
 		}
 		int duration=10+(mob.envStats().level()/4);
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) hunting.");

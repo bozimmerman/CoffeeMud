@@ -75,7 +75,7 @@ public class Chant_Goodberry extends Chant
 						newItem.setDisplayText(newTarget.displayText());
 						newItem.setDescription(newTarget.description());
 						newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
-						newItem.baseEnvStats().setDisposition(EnvStats.IS_LIGHT);
+						newItem.baseEnvStats().setDisposition(EnvStats.IS_GLOWING);
 						newItem.setSpellList(";Prayer_CureLight;");
 						newItem.recoverEnvStats();
 						newItem.setMiscText(newItem.text());

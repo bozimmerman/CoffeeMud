@@ -19,7 +19,7 @@ public class FlamingSword extends Longsword
 		baseEnvStats().setWeight(4);
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(8);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_LIGHT | EnvStats.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE | EnvStats.IS_BONUS);
 		baseGoldValue=2500;
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_STEEL;
