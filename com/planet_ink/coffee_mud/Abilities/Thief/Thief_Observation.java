@@ -9,8 +9,6 @@ import java.util.*;
 public class Thief_Observation extends ThiefSkill
 {
 
-	public boolean successfulObservation=false;
-
 	public Thief_Observation()
 	{
 		super();
@@ -37,8 +35,7 @@ public class Thief_Observation extends ThiefSkill
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(successfulObservation)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_SNEAKERS);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_SNEAKERS);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -53,8 +50,6 @@ public class Thief_Observation extends ThiefSkill
 		}
 
 		boolean success=profficiencyCheck(0,auto);
-		successfulObservation=success;
-
 
 		FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.ACT_EYES),"<S-NAME> open(s) <S-HIS-HER> eyes and observe(s) <S-HIS-HER> surroundings carefully.");
 		if(!success)
