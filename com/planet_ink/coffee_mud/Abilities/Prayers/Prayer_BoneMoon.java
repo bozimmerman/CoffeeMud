@@ -13,7 +13,7 @@ public class Prayer_BoneMoon extends Prayer
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public int quality(){ return INDIFFERENT;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_MOONCHANGING;}
 	public Environmental newInstance(){	return new Prayer_BoneMoon();	}
 	protected int level=1;
 
@@ -72,6 +72,17 @@ public class Prayer_BoneMoon extends Prayer
 			mob.tell("This place is already under a bone moon.");
 			return false;
 		}
+		for(int a=0;a<target.numEffects();a++)
+		{
+			Ability A=target.fetchEffect(a);
+			if((A!=null)
+			&&(Util.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
+			{
+				mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
+				return false;
+			}
+		}
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

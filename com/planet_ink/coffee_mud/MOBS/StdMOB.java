@@ -1354,7 +1354,7 @@ public class StdMOB implements MOB
 					}
 					break;
 				case CMMsg.TYP_LEAVE:
-					if((isInCombat())&&(location()!=null))
+					if((isInCombat())&&(location()!=null)&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC)))
 						for(int i=0;i<location().numInhabitants();i++)
 						{
 							MOB M=location().fetchInhabitant(i);
@@ -1381,7 +1381,7 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_SELL:
 				case CMMsg.TYP_VIEW:
 				case CMMsg.TYP_READSOMETHING:
-					if(isInCombat())
+					if(isInCombat()&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC)))
 					{
 						tell("Not while you are fighting!");
 						return false;

@@ -77,6 +77,7 @@ public interface Ability  extends Environmental
 	public static final int FLAG_CURSE=32768;
 	public static final int FLAG_BLESSING=65536;
 	public static final int FLAG_CRAFTING=131072;
+	public static final int FLAG_MOONCHANGING=262144;
 	
 	public long flags();
 	// these are flags which deliver slightly more

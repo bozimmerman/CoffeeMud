@@ -1,16 +1,12 @@
 Test: High Marks, Imp. Distraction, Imp. Peek, Imp. Steal, Imp. Swipe
 Test: Far Shot, Body Shield, PK-ALWAYS-X, boulderbash, cave fishing, darkvision
 Test: Deep Darkness, Sense Metal, Tether, Endure Rust, Magnetic Field
-Test: Den, Rockfeet, Earthpocket
+Test: Den, Rockfeet, Earthpocket, Golem Form, Crystal Growth, 1 Moon Change
 Could you set it to auto-detect based on the inventory of the shop whether the items will fit in one column or two?  With some shops, the item names are long enough that two columns are poor fits.
 put a conquered mob on a home property, quit, log back on, see if this error occurs.
 MudChat should find ALL alternative answers and weigh them ALL against each other
-wish doesn't support wishing for gold very well. If there is a stack of gold out there, it will allow you to wish for it, but that doesn't seem a good option. Gold should cost 1xp per 100 gold.
-Document the <> for mask_prog -- see yahoo group
 Have rooms generate their resources instead of skills
-acid rain should affect caster
-one moon chant per room
-can not magically leave (plant pass) if in combat.. should be magical exception
+?can not magically leave (plant pass) if in combat.. should be magical exception
 
 
 Delver:

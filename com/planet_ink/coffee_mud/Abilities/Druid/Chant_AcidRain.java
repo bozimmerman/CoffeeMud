@@ -32,7 +32,7 @@ public class Chant_AcidRain extends Chant
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB M=R.fetchInhabitant(i);
-				if((M!=null)&&(M!=invoker())&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_ACID)))
+				if((M!=null)&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_ACID)))
 					MUDFight.postDamage(invoker(),M,this,Dice.roll(1,M.envStats().level(),1),CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid rain <DAMAGE> <T-NAME>!");
 			}
 		}

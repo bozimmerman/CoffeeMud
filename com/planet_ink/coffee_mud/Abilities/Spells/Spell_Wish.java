@@ -137,7 +137,38 @@ public class Spell_Wish extends Spell
 			while(i<redundantEnds.length){
 				if(objectWish.endsWith(" "+redundantEnds[i]+" "))
 				{	objectWish=objectWish.substring(0,objectWish.length()-(1+redundantEnds[i].length())); i=-1;}i++;}
+			String goldWish=objectWish.toUpperCase();
 			objectWish=objectWish.toLowerCase().trim();
+			
+			String[] redundantGoldStarts={"A PILE OF","A STACK OF","PILE OF","STACK OF"};
+			i=0;
+			while(i<redundantGoldStarts.length)
+			{
+				if(goldWish.startsWith(" "+redundantGoldStarts[i]+" "))
+				{	goldWish=goldWish.substring(1+redundantGoldStarts[i].length()); i=-1;}
+				i++;
+			}
+			Vector goldCheck=Util.parse(goldWish.trim().toLowerCase());
+			if((goldCheck.size()>1)
+			&&(Util.isNumber((String)goldCheck.firstElement()))
+			&&(Util.s_int((String)goldCheck.firstElement())>0)
+			&&(" coin gold coins ".indexOf(" "+Util.combine(goldCheck,1)+" ")>=0))
+			{
+				Item newItem=CMClass.getItem("StdCoins");
+				((Coins)newItem).setNumberOfCoins(Util.s_int((String)goldCheck.firstElement()));
+				newItem.setContainer(null);
+				newItem.wearAt(0);
+				newItem.recoverEnvStats();
+				mob.location().addItemRefuse(newItem,Item.REFUSE_PLAYER_DROP);
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
+				mob.location().recoverRoomStats();
+				int experienceRequired=((Coins)newItem).numberOfCoins()/100;
+				if(experienceRequired<=0)
+					experienceRequired=0;
+				wishDrain(mob,(baseLoss+experienceRequired),false);
+				return true;
+			}
+		   
 			Vector thangsFound=new Vector();
 			Environmental foundThang=null;
 			Environmental E=mob.location().fetchFromRoomFavorItems(null,objectWish,Item.WORN_REQ_UNWORNONLY);

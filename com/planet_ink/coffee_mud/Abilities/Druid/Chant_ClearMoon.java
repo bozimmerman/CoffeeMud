@@ -22,8 +22,8 @@ public class Chant_ClearMoon extends Chant
 		{
 			Ability A=E.fetchEffect(a);
 			if((A!=null)
-			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-			&&(A.Name().endsWith(" Moon")))
+			&&(Util.bset(A.flags(),Ability.FLAG_MOONCHANGING)
+			   ||Util.bset(A.flags(),Ability.FLAG_MOONSUMMONING)))
 				A.unInvoke();
 		}
 	}

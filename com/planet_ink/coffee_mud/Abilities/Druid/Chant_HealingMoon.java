@@ -13,8 +13,8 @@ public class Chant_HealingMoon extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
+	public long flags(){return FLAG_MOONCHANGING|Ability.FLAG_HEALING;}
 	public Environmental newInstance(){	return new Chant_HealingMoon();}
-	public long flags(){return Ability.FLAG_HEALING;}
 
 	public void unInvoke()
 	{
@@ -59,6 +59,17 @@ public class Chant_HealingMoon extends Chant
 		{
 			mob.tell("This place is already under the healing moon.");
 			return false;
+		}
+
+		for(int a=0;a<target.numEffects();a++)
+		{
+			Ability A=target.fetchEffect(a);
+			if((A!=null)
+			&&(Util.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
+			{
+				mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
+				return false;
+			}
 		}
 
 		// the invoke method for spells receives as
