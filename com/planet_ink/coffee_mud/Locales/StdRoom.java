@@ -747,7 +747,7 @@ public class StdRoom
 			if(exit!=null)
 				Say=exit.viewableText(mob, room);
 			if(Say.length()>0)
-				mob.tell("^D" + Util.padRight(Dir,5)+":^N ^d"+Say+"^N");
+				mob.tell("^D" + Util.padRight(Dir,5)+":^^^N ^d"+Say+"^N^^");
 		}
 	}
 

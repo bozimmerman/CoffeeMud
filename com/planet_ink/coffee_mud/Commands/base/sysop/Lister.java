@@ -128,7 +128,7 @@ public class Lister
 		lines.append(Util.padRight("Valid",5)+"| ");
 		lines.append(Util.padRight("Name",17)+"| ");
 		lines.append(Util.padRight("Location",17)+"| ");
-		lines.append(Util.padRight("IP",17)+"^?\n\r");
+		lines.append(Util.padRight("IP",17)+"^^^?\n\r");
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session thisSession=(Session)Sessions.elementAt(s);
@@ -189,7 +189,7 @@ public class Lister
 
 	public StringBuffer listThreads(MOB mob)
 	{
-		StringBuffer lines=new StringBuffer("^xStatus|Name                 ^?\n\r");
+		StringBuffer lines=new StringBuffer("^xStatus|Name                 ^^^?\n\r");
 		try
 		{
 			ThreadGroup topTG = Thread.currentThread().getThreadGroup();
@@ -233,7 +233,7 @@ public class Lister
 	{
 		StringBuffer lines=new StringBuffer("^x");
 		lines.append(Util.padRight("Name",17)+"| ");
-		lines.append(Util.padRight("Location",17)+"^?\n\r");
+		lines.append(Util.padRight("Location",17)+"^?^^\n\r");
 		String who=Util.combine(commands,1);
 		if(who.length()==0)
 		{
@@ -284,7 +284,7 @@ public class Lister
 				}
 			}
 		}
-		mob.tell(lines.toString());
+		mob.tell(lines.toString()+"^^");
 	}
 	
 	public StringBuffer listReports(MOB mob)

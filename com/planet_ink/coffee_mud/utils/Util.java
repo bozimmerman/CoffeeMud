@@ -29,6 +29,28 @@ public class Util
 		return thisStr;
 	}
 	
+	public static String removeColors(String s)
+	{
+		StringBuffer str=new StringBuffer(s);
+		int colorStart=-1;
+		for(int i=0;i<str.length();i++)
+		{
+			switch(str.charAt(i))
+			{
+			case 'm':
+				if(colorStart>=0)
+				{
+					str.delete(colorStart,i+1);
+					colorStart=-1;
+				}
+				break;
+			case (char)27: colorStart=i; break;
+			case '^': str.delete(i,i+2); break;
+			}
+		}
+		return str.toString();
+	}
+	
 	public static String returnTime(long millis, long ticks)
 	{
 		String avg="";

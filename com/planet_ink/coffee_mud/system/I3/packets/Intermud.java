@@ -341,13 +341,14 @@ public class Intermud implements Runnable, Persistent, Serializable {
                     try { Thread.sleep(120); }
                     catch( InterruptedException ignore ) { }
                     connect();
+					Log.errOut("InterMud",e);
                     return;
                 }
                 try {
                     data = (Vector)LPCData.getLPCData(str);
                 }
                 catch( I3Exception e ) {
-                    e.printStackTrace();
+					Log.errOut("InterMud",e);
                     continue;
                 }
             }
@@ -370,6 +371,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                 }
                 else if( type.equals("locate-reply") ) {
                     try {
+						Log.sysOut("InterMud","Got locate reply!");						
                         LocateReplyPacket p = new LocateReplyPacket(data);
 
                         intermud.receive(p);

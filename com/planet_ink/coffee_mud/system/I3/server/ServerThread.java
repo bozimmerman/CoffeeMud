@@ -6,6 +6,7 @@
 
 package com.planet_ink.coffee_mud.system.I3.server;
 import com.planet_ink.coffee_mud.system.I3.net.ListenThread;
+import com.planet_ink.coffee_mud.utils.Log;
 import com.planet_ink.coffee_mud.system.I3.packets.Intermud;
 import com.planet_ink.coffee_mud.system.I3.packets.ImudServices;
 import com.planet_ink.coffee_mud.system.I3.persist.PersistentPeer;
@@ -161,8 +162,7 @@ public class ServerThread extends Thread {
                         interactive.processInput();
                     }
                     catch( Exception e ) {
-                        System.out.println("Error in processing user input.");
-                        e.printStackTrace();
+						Log.errOut("InterMud",e);
                     }
                 }
             }
@@ -177,8 +177,7 @@ public class ServerThread extends Thread {
                             thing.processEvent();
                         }
                         catch( Exception e ) {
-                            System.out.println("Error in processing event.");
-                            e.printStackTrace();
+							Log.errOut("InterMud",e);
                         }
                     }
                 }

@@ -62,7 +62,7 @@ public class Chant_Farsight extends Chant
 
 						if((exit!=null)&&(room!=null)&&(Sense.canBeSeenBy(exit,mob)&&(exit.isOpen())))
 						{
-							mob.tell("^D" + Util.padRight(Directions.getDirectionName(d),5)+":^N ^d"+exit.viewableText(mob, room)+"^N");
+							mob.tell("^D" + Util.padRight(Directions.getDirectionName(d),5)+":^^^N ^d"+exit.viewableText(mob, room)+"^N");
 							exit=room.getExitInDir(d);
 							room=room.getRoomInDir(d);
 							if((exit!=null)&&(room!=null)&&(Sense.canBeSeenBy(exit,mob)&&(exit.isOpen())))

@@ -437,7 +437,7 @@ public class TelnetSession extends Thread implements Session
 			{
 				clookup=new String[256];
 				// N B H - normal bold highlight underline flash italic
-				clookup[(int)'N']="^w";
+				clookup[(int)'N']="^w\033[0m";
 				clookup[(int)'!']="\033[1m";
 				clookup[(int)'H']="^c";
 				clookup[(int)'_']="\033[4m";
@@ -447,27 +447,27 @@ public class TelnetSession extends Thread implements Session
 				clookup[(int)'^']="\033[0m";
 				// F S - fight spell
 				clookup[(int)'F']="^r";
-				clookup[(int)'S']="^b";
+				clookup[(int)'S']="^y";
 				// E T Q - emote talk channeltalk
 				clookup[(int)'E']="^p";
-				clookup[(int)'T']="^g";
+				clookup[(int)'T']="^b";
 				clookup[(int)'Q']="\033[0;36;44m";
 				// X Y Z - important messages
 				clookup[(int)'x']="\033[1;36;44m";
 				clookup[(int)'X']="\033[1;33;44m";
 				clookup[(int)'Z']="\033[1;33;41m";
 				//  R L D d - roomtitle roomdesc(look) Direction door
-				clookup[(int)'O']="^g";
-				clookup[(int)'L']="^G";
+				clookup[(int)'O']="^c";
+				clookup[(int)'L']="^w";
 				clookup[(int)'D']="\033[1;36;44m";
-				clookup[(int)'d']="^G";
+				clookup[(int)'d']="^b";
 				// I M - item, mob
-				clookup[(int)'I']="^C";
-				clookup[(int)'M']="^Y";
+				clookup[(int)'I']="^g";
+				clookup[(int)'M']="^p";
 				// h m v - prompt colors
-				clookup[(int)'h']="^g";
+				clookup[(int)'h']="^c";
 				clookup[(int)'m']="^c";
-				clookup[(int)'v']="^b";
+				clookup[(int)'v']="^c";
 				// fixed system colors, 1= bright, 0=dark
 				clookup[(int)'w']="\033[1;37m";
 				clookup[(int)'g']="\033[1;32m";
@@ -492,8 +492,11 @@ public class TelnetSession extends Thread implements Session
 			}
 			if (c != currentColor)
 			{
-				lastColor = currentColor;
-				currentColor = c;
+				if(c !='^')
+				{
+					lastColor = currentColor;
+					currentColor = c;
+				}
 				return clookup[c];
 			}
 		}
@@ -626,7 +629,7 @@ public class TelnetSession extends Thread implements Session
 						String lastWord="";
 						if(lastSp>lastSpace)
 						{
-							lastWord=buf.substring(lastSpace,lastSp).trim();
+							lastWord=Util.removeColors(buf.substring(lastSpace,lastSp)).trim().toUpperCase();
 							while((lastWord.length()>0)&&(!Character.isLetterOrDigit(lastWord.charAt(0))))
 								  lastWord=lastWord.substring(1);
 							while((lastWord.length()>0)&&(!Character.isLetterOrDigit(lastWord.charAt(lastWord.length()-1))))
@@ -636,8 +639,9 @@ public class TelnetSession extends Thread implements Session
 						{
 							for(int i=(lastSpace-1);((i>=0)&&(!Character.isLetterOrDigit(buf.charAt(i))));i--)
 								lastWord=buf.charAt(i)+lastWord;
+							lastWord=Util.removeColors(lastWord).trim().toUpperCase();
 						}
-						if((lastWord.equalsIgnoreCase("A")||lastWord.equalsIgnoreCase("YOU")||lastWord.equals("1")||doSagain))
+						if((lastWord.equals("A")||lastWord.equals("YOU")||lastWord.equals("1")||doSagain))
 						{
 							buf.delete(loop,lastParen+1);
 							doSagain=true;
