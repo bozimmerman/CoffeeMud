@@ -257,7 +257,7 @@ public class MasterTailoring extends CraftingSkill
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
-			int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_CLOTH};
+			int[] pm={EnvResource.MATERIAL_CLOTH};
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"cloth",pm,
 												0,null,null,

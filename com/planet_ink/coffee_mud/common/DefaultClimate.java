@@ -413,6 +413,13 @@ public class DefaultClimate implements Climate
 
 					if(coldChance>0)
 					{
+						if((R.domainConditions()&Room.CONDITION_COLD)>0) 
+						{
+							coldChance+=10;
+							fluChance+=5;
+						}
+						if((R.domainConditions()&Room.CONDITION_WET)>0)
+							coldChance+=5;
 						int save=(M.charStats().getStat(CharStats.SAVE_COLD)+M.charStats().getStat(CharStats.SAVE_WATER))/2;
 						if((Dice.rollPercentage()<(coldChance-save))
 						&&((weatherType(S.mob().location())!=Climate.WEATHER_CLEAR)))
@@ -459,6 +466,8 @@ public class DefaultClimate implements Climate
 					default:
 						break;
 					}
+					if((R.domainConditions()&Room.CONDITION_WET)>0) 
+						rustChance+=2;
 					if(Dice.rollPercentage()<rustChance)
 					{
 						int weatherType=weatherType(R);

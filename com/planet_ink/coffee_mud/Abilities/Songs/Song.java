@@ -39,9 +39,15 @@ public class Song extends StdAbility
 		super.executeMsg(host,msg);
 		if((affected==invoker)
 		&&(msg.amISource(invoker))
-		&&(!unInvoked)
-		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
-			unInvoke();
+		&&(!unInvoked))
+		{
+			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
+				unInvoke();
+			else
+			if((msg.target() instanceof Armor)
+			&&(msg.targetMinor()==CMMsg.TYP_WEAR))
+				unInvoke();
+		}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

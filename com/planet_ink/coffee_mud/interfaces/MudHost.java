@@ -10,6 +10,7 @@ public interface MudHost
 	public final static long TICKS_PER_RLMIN=(int)Math.round(60000.0/new Long(TICK_TIME).doubleValue());
 	public final static long TICKS_PER_MUDDAY=(TIME_UTILTHREAD_SLEEP*TimeClock.A_FULL_DAY)/TICK_TIME;
 
+	public final static int TICKMASK_SOLITARY=65536;
 	public final static int TICK_MOB=0;
 	public final static int TICK_ITEM_BEHAVIOR=1;
 	public final static int TICK_EXIT_REOPEN=2;
@@ -26,7 +27,7 @@ public interface MudHost
 	public final static int TICK_QUEST=13;
 	public final static int TICK_CLAN=14;
 	public final static int TICK_CLANITEM=15;
-	public final static int TICK_EMAIL=16;
+	public final static int TICK_EMAIL=TICKMASK_SOLITARY|16;
 	public final static int TICK_READYTOSTOP=17;
 
 	public final static int MAX_TICK_CLIENTS=32;

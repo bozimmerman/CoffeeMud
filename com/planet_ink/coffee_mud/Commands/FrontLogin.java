@@ -341,7 +341,7 @@ public class FrontLogin extends StdCommand
 				}
 				Log.sysOut("FrontDoor","Creating user: "+mob.Name());
 
-				mob.setBitmap(0);
+				mob.setBitmap(MOB.ATT_AUTOEXITS);
 				if(mob.session().confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
 

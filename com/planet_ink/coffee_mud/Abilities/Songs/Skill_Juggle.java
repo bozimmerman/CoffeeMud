@@ -230,6 +230,13 @@ public class Skill_Juggle extends BardSkill
 				if(juggles.size()==0)
 					unInvoke();
 			}
+			else
+			if((invoker()!=null)
+			&&(affected==invoker())
+			&&(msg.amISource(invoker()))
+			&&(msg.target() instanceof Armor)
+			&&(msg.targetMinor()==CMMsg.TYP_WEAR))
+				unInvoke();
 		}
 		super.executeMsg(myHost,msg);
 	}

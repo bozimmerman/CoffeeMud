@@ -15,6 +15,7 @@ public class Tick extends Thread
 	public long milliTotal=0;
 	public long tickTotal=0;
 	public ThreadEngine myEngine=null;
+	public boolean solitaryTicker=false;
 	
 	public Tick(ThreadEngine theEngine){myEngine=theEngine;}
 	

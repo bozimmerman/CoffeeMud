@@ -32,7 +32,7 @@ public class ServiceEngine implements ThreadEngine
 		for(Enumeration v=tickGroups();v.hasMoreElements();)
 		{
 			Tick almostTock=(Tick)v.nextElement();
-			if((tock==null)&&(almostTock.numTickers()<MudHost.MAX_TICK_CLIENTS))
+			if((tock==null)&&(!almostTock.solitaryTicker)&&(almostTock.numTickers()<MudHost.MAX_TICK_CLIENTS))
 				tock=almostTock;
 			for(Enumeration t=almostTock.tickers();t.hasMoreElements();)
 			{
@@ -53,15 +53,19 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	public void startTickDown(Tickable E,
-									 int tickID,
-									 int numTicks)
+							  int tickID,
+							  int numTicks)
 	{
 		Tick tock=confirmAndGetTickThread(E,tickID);
 		if(tock==null) return;
 
 		TockClient client=new TockClient(E,numTicks,tickID);
 		if(client!=null)
+		{
+			if((tickID&65536)==65536)
+				tock.solitaryTicker=true;
 			tock.addTicker(client);
+		}
 	}
 
 	public boolean deleteTick(Tickable E, int tickID)

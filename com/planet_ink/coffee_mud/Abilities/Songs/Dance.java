@@ -100,6 +100,17 @@ public class Dance extends StdAbility
 				A.unInvoke();
 		}
 	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if((invoker()!=null)
+		&&(affected==invoker())
+		&&(msg.amISource(invoker()))
+		&&(msg.target() instanceof Armor)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAR))
+			unInvoke();
+		super.executeMsg(host,msg);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
