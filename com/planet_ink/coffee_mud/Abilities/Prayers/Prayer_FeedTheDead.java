@@ -28,7 +28,7 @@ public class Prayer_FeedTheDead extends Prayer
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return OK_OTHERS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_NOORDERING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

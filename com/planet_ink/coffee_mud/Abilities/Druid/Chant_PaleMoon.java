@@ -26,7 +26,7 @@ public class Chant_PaleMoon extends Chant
 	public String ID() { return "Chant_PaleMoon"; }
 	public String name(){ return "Pale Moon";}
 	public String displayText(){return "(Pale Moon)";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return FLAG_MOONCHANGING;}

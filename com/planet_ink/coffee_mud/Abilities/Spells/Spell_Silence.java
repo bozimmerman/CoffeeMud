@@ -27,6 +27,7 @@ public class Spell_Silence extends Spell
 	public String displayText(){return "(Silence spell)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
+	public int quality(){ return MALICIOUS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public void unInvoke()

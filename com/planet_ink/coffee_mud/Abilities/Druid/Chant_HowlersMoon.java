@@ -26,7 +26,7 @@ public class Chant_HowlersMoon extends Chant
 	public String ID() { return "Chant_HowlersMoon"; }
 	public String name(){ return "Howlers Moon";}
 	public String displayText(){return "(Howlers Moon)";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return FLAG_MOONCHANGING;}

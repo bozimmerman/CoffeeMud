@@ -28,6 +28,7 @@ public class Spell_FindFamiliar extends Spell
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

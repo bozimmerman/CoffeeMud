@@ -26,7 +26,7 @@ public class Chant_ColdMoon extends Chant
 	public String ID() { return "Chant_ColdMoon"; }
 	public String name(){ return "Cold Moon";}
 	public String displayText(){return "(Cold Moon)";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return FLAG_MOONCHANGING;}

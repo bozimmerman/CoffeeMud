@@ -25,7 +25,7 @@ public class Spell_SummoningWard extends Spell
 	public String ID() { return "Spell_SummoningWard"; }
 	public String name(){return "Summoning Ward";}
 	public String displayText(){return "(Summoning Ward)";}
-	public int quality(){ return OK_OTHERS;}
+	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 

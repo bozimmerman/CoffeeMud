@@ -24,7 +24,7 @@ public class Prayer_NeutralizeLand extends Prayer
 {
 	public String ID() { return "Prayer_NeutralizeLand"; }
 	public String name(){ return "Neutralize Land";}
-	public int quality(){ return INDIFFERENT;}
+	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}

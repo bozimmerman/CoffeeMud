@@ -27,6 +27,7 @@ public class Prayer_EarthMud extends Prayer
 	public String name(){return "Earth to Mud";}
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	public void unInvoke()

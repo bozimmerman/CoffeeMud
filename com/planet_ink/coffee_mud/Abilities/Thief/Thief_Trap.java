@@ -27,7 +27,7 @@ public class Thief_Trap extends ThiefSkill
 	public String name(){ return "Lay Traps";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int quality(){ return MALICIOUS;}
 	private static final String[] triggerStrings = {"TRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

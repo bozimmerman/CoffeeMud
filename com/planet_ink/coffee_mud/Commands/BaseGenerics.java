@@ -837,20 +837,20 @@ public class BaseGenerics extends StdCommand
 					 EnvStats.IS_SWIMMING,
 					 EnvStats.IS_EVIL,
 					 EnvStats.IS_GOOD};
+		String[] briefs={"invisible",
+						 "hide",
+						 "unseen",
+						 "magical",
+						 "glowing",
+						 "lightsrc",
+						 "fly",
+						 "climb",
+						 "sneak",
+						 "swimmer",
+						 "evil",
+						 "good"};
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			String[] briefs={"invisible",
-							 "hide",
-							 "unseen",
-							 "magical",
-							 "glowing",
-							 "lightsrc",
-							 "fly",
-							 "climb",
-							 "sneak",
-							 "swimmer",
-							 "evil",
-							 "good"};
 			StringBuffer buf=new StringBuffer(showNumber+". Dispositions: ");
 			for(int i=0;i<disps.length;i++)
 			{

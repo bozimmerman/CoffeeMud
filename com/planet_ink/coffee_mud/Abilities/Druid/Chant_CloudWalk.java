@@ -27,7 +27,7 @@ public class Chant_CloudWalk extends Chant
 	public String name(){ return "Cloud Walk";}
 	public String displayText(){return "(Cloud Walk)";}
 	public int quality(){return Ability.INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
+	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 
 	public void unInvoke()

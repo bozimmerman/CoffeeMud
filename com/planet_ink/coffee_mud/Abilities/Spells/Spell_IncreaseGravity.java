@@ -25,6 +25,7 @@ public class Spell_IncreaseGravity extends Spell
 	public String ID() { return "Spell_IncreaseGravity"; }
 	public String name(){return "Increase Gravity";}
 	public String displayText(){return "(Gravity is Increased)";}
+	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	private Room theGravityRoom=null;

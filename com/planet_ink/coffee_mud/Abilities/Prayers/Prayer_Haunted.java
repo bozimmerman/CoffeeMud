@@ -28,7 +28,7 @@ public class Prayer_Haunted extends Prayer
 	public String displayText(){ return "(Haunted)";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public int quality(){ return INDIFFERENT;}
+	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int level=14;
 	protected int numDone=0;

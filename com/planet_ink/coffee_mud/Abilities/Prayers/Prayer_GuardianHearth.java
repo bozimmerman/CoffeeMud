@@ -26,7 +26,7 @@ public class Prayer_GuardianHearth extends Prayer
 	public String ID() { return "Prayer_GuardianHearth"; }
 	public String name(){return "Guardian Hearth";}
 	public String displayText(){return "(Guardian Hearth)";}
-	public int quality(){ return INDIFFERENT;}
+	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}

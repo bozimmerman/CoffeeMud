@@ -118,6 +118,24 @@ public class Scrapping extends CommonSkill
 			commonTell(mob,"You don't know how to scrap "+I.name()+".");
 			return false;
 		}
+		
+		if(I instanceof EnvResource)
+		{
+			commonTell(mob,I.name()+" already looks like scrap.");
+			return false;
+		}
+		
+		for(int i=0;i<I.numEffects();i++)
+		{
+			Ability A=I.fetchEffect(i);
+			if((A!=null)
+			&&(A.classificationCode()!=A.PROPERTY))
+			{
+				commonTell(mob,I.name()+" is enchanted, and can't be scrapped.");
+				return false;
+			}
+		}
+		
 		Vector V=new Vector();
 		int totalWeight=0;
 		for(int i=0;i<mob.location().numItems();i++)

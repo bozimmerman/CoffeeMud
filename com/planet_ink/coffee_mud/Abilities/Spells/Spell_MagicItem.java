@@ -27,6 +27,7 @@ public class Spell_MagicItem extends Spell
 	public String name(){return "Magic Item";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

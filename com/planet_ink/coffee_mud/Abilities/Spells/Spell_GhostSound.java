@@ -27,6 +27,7 @@ public class Spell_GhostSound extends Spell
 	public String displayText(){return "(Ghost Sound spell)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
+	public int quality(){ return MALICIOUS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean tick(Tickable ticking, int tickID)

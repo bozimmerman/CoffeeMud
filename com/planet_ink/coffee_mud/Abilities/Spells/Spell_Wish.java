@@ -26,6 +26,7 @@ public class Spell_Wish extends Spell
 	public String name(){return "Wish";}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	private Environmental maybeAdd(Environmental E, Vector foundAll, Environmental foundThang)

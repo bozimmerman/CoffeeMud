@@ -26,7 +26,7 @@ public class Chant_MoonCalf extends Chant
 	public String ID() { return "Chant_MoonCalf"; }
 	public String name(){ return "Moon Calf";}
 	public String displayText(){return "(Moon Calf)";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 

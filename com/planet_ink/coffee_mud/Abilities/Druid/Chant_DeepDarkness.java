@@ -26,6 +26,7 @@ public class Chant_DeepDarkness extends Chant
 	public String ID() { return "Chant_DeepDarkness"; }
 	public String name(){return "Deep Darkness";}
 	public String displayText(){return "(Deep Darkness spell)";}
+	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 

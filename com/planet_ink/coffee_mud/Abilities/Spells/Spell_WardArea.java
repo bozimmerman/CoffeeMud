@@ -27,6 +27,7 @@ public class Spell_WardArea extends Spell implements Trap
 	public String displayText(){return "(Ward Area spell)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
+	public int quality(){ return MALICIOUS;}
 	private Ability shooter=null;
 	private Vector parameters=null;
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}

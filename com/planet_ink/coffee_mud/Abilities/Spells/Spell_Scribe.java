@@ -27,6 +27,7 @@ public class Spell_Scribe extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
+	public long flags(){return Ability.FLAG_NOORDERING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

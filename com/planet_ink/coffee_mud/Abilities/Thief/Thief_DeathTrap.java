@@ -27,7 +27,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	public String name(){ return "Death Trap";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int quality(){ return MALICIOUS;}
 	private static final String[] triggerStrings = {"DEATHTRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

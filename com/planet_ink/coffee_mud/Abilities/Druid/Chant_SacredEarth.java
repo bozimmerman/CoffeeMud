@@ -26,7 +26,7 @@ public class Chant_SacredEarth extends Chant
 	public String ID() { return "Chant_SacredEarth"; }
 	public String name(){ return "Sacred Earth";}
 	public String displayText(){return "(Sacred Earth)";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 
