@@ -511,8 +511,7 @@ public class StdRoom
 		}
 	}
 
-
-	private void reallySend(MOB source, Affect msg)
+	private void reallyReallySend(MOB source, Affect msg)
 	{
 		if(Log.debugChannelOn())
 			Log.debugOut("StdRoom",((msg.source()!=null)?msg.source().ID():"null")+":"+msg.sourceCode()+":"+msg.sourceMessage()+"/"+((msg.target()!=null)?msg.target().ID():"null")+":"+msg.targetCode()+":"+msg.targetMessage()+"/"+((msg.tool()!=null)?msg.tool().ID():"null")+"/"+msg.othersCode()+":"+msg.othersMessage());
@@ -523,7 +522,11 @@ public class StdRoom
 				otherMOB.affect(msg);
 		}
 		affect(msg);
-
+	}
+	
+	private void reallySend(MOB source, Affect msg)
+	{
+		reallyReallySend(source,msg);
 		// now handle trailer msgs
 		if(msg.trailerMsgs()!=null)
 		{
@@ -535,7 +538,10 @@ public class StdRoom
 				   ||(!(affect.target() instanceof MOB))
 				   ||(!((MOB)affect.target()).amDead()))
 				&&(okAffect(affect)))
-					send(affect.source(),affect);
+				{
+					source.affect(affect);
+					reallyReallySend(source,affect);
+				}
 			}
 		}
 	}
