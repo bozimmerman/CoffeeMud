@@ -182,8 +182,7 @@ public class DrowPriestess extends DrowElf
 
     public boolean castSpell()
     {
-        //System.out.println("Casting a spell");
-        Ability prayer = null;
+	    Ability prayer = null;
         if(Dice.rollPercentage() < 70)
         {
             prayer = (Ability) this.fetchAbility(Dice.roll(1,numAbilities(),-1));

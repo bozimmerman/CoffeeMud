@@ -1,2 +1,1 @@
 The guildmaster teaches you 'Dwarven'.  The guildmaster says 'But you already know 'Dwarven'.' to you.
-can ride a horse indoors

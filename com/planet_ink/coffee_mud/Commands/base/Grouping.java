@@ -179,18 +179,25 @@ public class Grouping
 			mob.tell("Order them to do what?");
 			return;
 		}
-		String whomToFollow=(String)commands.elementAt(0);
-		MOB target=mob.fetchFollower(whomToFollow);
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		String whomToOrder=(String)commands.elementAt(0);
+		MOB target=null;
+		if(mob.isASysOp(mob.location()))
 		{
-			mob.tell("They don't seem to be following you.");
-			return;
+			target=mob.location().fetchInhabitant(whomToOrder);
+			if((target==null)||(!Sense.canBeSeenBy(target,mob))||(target.location()!=mob.location()))
+			{
+				mob.tell("'"+whomToOrder+"' doesn't seem to be here.");
+				return;
+			}
 		}
 		else
-		if(target.location()!=mob.location())
 		{
-			mob.tell("They are not here.");
-			return;
+			target=mob.fetchFollower(whomToOrder);
+			if((target==null)||(!Sense.canBeSeenBy(target,mob))||(target.location()!=mob.location()))
+			{
+				mob.tell("'"+whomToOrder+"' doesn't seem to be following you.");
+				return;
+			}
 		}
 		commands.removeElementAt(0);
 		Integer commandCodeObj=(Integer)(new CommandSet()).get((String)commands.elementAt(0));

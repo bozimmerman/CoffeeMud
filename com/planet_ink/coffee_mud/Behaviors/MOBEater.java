@@ -108,8 +108,6 @@ public class MOBEater extends ActiveTicker
 				if (Dice.rollPercentage()<5)
 				{
 					// ===== The player has been eaten.
-					//System.out.println("The Dragon swallowed " + TastyMorsel.name() + " WHOLE!!");
-
 					// ===== move the tasty morsel to the stomach
 					FullMsg EatMsg=new FullMsg(mob,
 											   TastyMorsel,

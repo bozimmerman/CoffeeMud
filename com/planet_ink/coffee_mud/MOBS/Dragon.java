@@ -143,7 +143,6 @@ public class Dragon extends StdMOB
 		Stomach=null;
 		if (baseEnvStats().level()>=ADULT)
 		{
-			//System.out.println("enabling swallow...");
 			Stomach = CMClass.getLocale("StdRoom");
 			if(Stomach!=null)
 			{
@@ -381,8 +380,6 @@ public class Dragon extends StdMOB
 				if (roll<2)
 				{
 					// ===== The player has been eaten.
-					//System.out.println("The Dragon swallowed " + TastyMorsel.name() + " WHOLE!!");
-
 					// ===== move the tasty morsel to the stomach
 					FullMsg EatMsg=new FullMsg(this,
 											   TastyMorsel,

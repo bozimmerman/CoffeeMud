@@ -567,6 +567,7 @@ public class StdMOB implements MOB
 		   ||(Sense.isSleeping(this))
 		   ||(Sense.isSitting(this))
 		   ||(riding()!=null)
+		   ||((this instanceof Rideable)&&(((Rideable)this).numRiders()>0))
 		   ||(isInCombat()))
 		{
 			StringBuffer sendBack=new StringBuffer(name());
@@ -577,6 +578,25 @@ public class StdMOB implements MOB
 			{
 				sendBack.append(" riding ");
 				sendBack.append(riding().name());
+			}
+			else
+			if((this instanceof Rideable)&&(((Rideable)this).numRiders()>0))
+			{
+				Rideable me=(Rideable)this;
+				sendBack.append(" being ridden by ");
+				for(int r=0;r<me.numRiders();r++)
+				{
+					MOB rider=me.fetchRider(r);
+					if(rider!=null)
+						if(r>0)
+						{
+							sendBack.append(", ");
+							if(r==me.numRiders()-1)
+								sendBack.append("and ");
+						}
+						sendBack.append(rider.name());
+					
+				}
 			}
 			if((isInCombat())&&(Sense.canMove(this))&&(!Sense.isSleeping(this)))
 			{

@@ -866,12 +866,7 @@ public class StdItem implements Item
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int a=0;a<numAffects();a++)
-		{
-			Ability A=fetchAffect(a);
-			if((A!=null)&&(A==to))
-				return;
-		}
+		if(affects.contains(to)) return;
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -880,12 +875,7 @@ public class StdItem implements Item
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int a=0;a<numAffects();a++)
-		{
-			Ability A=fetchAffect(a);
-			if((A!=null)&&(A==to))
-				return;
-		}
+		if(affects.contains(to)) return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}

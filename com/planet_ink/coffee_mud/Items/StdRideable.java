@@ -21,7 +21,6 @@ public class StdRideable extends StdContainer implements Rideable
 		baseEnvStats().setWeight(2000);
 		recoverEnvStats();
 		capacity=2000;
-		isGettable=false;
 		isReadable=false;
 	}
 	public Environmental newInstance()
@@ -160,10 +159,11 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		if((Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))&&(amRiding(affect.source())))
 		{
-			if(((affect.target()!=null)&&(affect.target() instanceof Item)&&(!affect.source().isMine(affect.target())))
-			|| ((affect.tool()!=null)&&(affect.tool() instanceof Item)&&(!affect.source().isMine(affect.tool())))
-			|| ((affect.sourceMinor()==Affect.TYP_GIVE)&&(affect.target()!=null)&&(affect.target() instanceof MOB)&&(!amRiding((MOB)affect.target()))))
+			if(((affect.target()!=null)&&(affect.target() instanceof Item)&&(affect.target()!=this)&&(affect.source().location()!=null)&&(affect.source().location().isContent((Item)affect.target())))
+			|| ((affect.tool()!=null)&&(affect.tool() instanceof Item)&&(affect.tool()!=this)&&(affect.source().location()!=null)&&(affect.source().location().isContent((Item)affect.tool())))
+			|| ((affect.sourceMinor()==Affect.TYP_GIVE)&&(affect.target()!=null)&&(affect.target() instanceof MOB)&&(affect.target()!=this)&&(!amRiding((MOB)affect.target()))))
 			{
+				
 				affect.source().tell("You cannot do that while riding "+name()+".");
 				return false;
 			}

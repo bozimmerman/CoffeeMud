@@ -479,7 +479,7 @@ public class Generic
 				if(E instanceof Exit)
 				{
 				mob.session().println("6) Requires Flight: "+((E.baseEnvStats().disposition()&Sense.IS_FLYING)!=0));
-				mob.session().println("7) Requires Climb : "+((E.baseEnvStats().disposition()&Sense.IS_SNEAKING)!=0));
+				mob.session().println("7) Requires Climb : "+((E.baseEnvStats().disposition()&Sense.IS_CLIMBING)!=0));
 				}
 				mob.session().println("E) Is Evil        : "+((E.baseEnvStats().disposition()&Sense.IS_EVIL)!=0));
 				mob.session().println("G) Is Good        : "+((E.baseEnvStats().disposition()&Sense.IS_GOOD)!=0));

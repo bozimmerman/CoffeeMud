@@ -374,8 +374,7 @@ public class Drowness extends StdBehavior
 
     public boolean castFemaleSpell(MOB mob)
     {
-        //System.out.println("Casting a spell");
-        Ability prayer = null;
+	    Ability prayer = null;
         if(Dice.rollPercentage() < 70)
         {
             prayer = mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));

@@ -29,7 +29,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 
 	public Environmental newInstance()
 	{
-		return new Thief_DetectTraps();
+		return new Thief_RemoveTraps();
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

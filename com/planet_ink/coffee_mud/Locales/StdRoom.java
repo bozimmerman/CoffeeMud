@@ -686,13 +686,7 @@ public class StdRoom
 	}
 	public boolean isInhabitant(MOB mob)
 	{
-		for(int i=0;i<numInhabitants();i++)
-		{
-			MOB mob2=fetchInhabitant(i);
-			if((mob2!=null)&&(mob==mob2))
-				return true;
-		}
-		return false;
+		return inhabitants.contains(mob);
 	}
 	public MOB fetchInhabitant(int i)
 	{
@@ -731,13 +725,7 @@ public class StdRoom
 	}
 	public boolean isContent(Item item)
 	{
-		for(int i=0;i<numItems();i++)
-		{
-			Item I=fetchItem(i);
-			if((I!=null)&&(item==I))
-				return true;
-		}
-		return false;
+		return contents.contains(item);
 	}
 	public Item fetchItem(int i)
 	{
@@ -823,24 +811,14 @@ public class StdRoom
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int i=0;i<numAffects();i++)
-		{
-			Ability A=fetchAffect(i);
-			if((A!=null)&&(A==to))
-				return;
-		}
+		if(affects.contains(to)) return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int i=0;i<numAffects();i++)
-		{
-			Ability A=fetchAffect(i);
-			if((A!=null)&&(A==to))
-				return;
-		}
+		if(affects.contains(to)) return;
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
