@@ -1,3 +1,4 @@
+RE: Springs. Druids have the chant summon water, which brings forth a spring. Clerics have create water, which fills a waterskin.
 When you fill a buffalo skin with the blood of a killed creature, the blood remains even though empty.
 construct list says i need 50 wood to make a fence, but construct fence XX returns you need 100
 If tagturf only applies to thieves, why does everyone have to see the tagging? Is there a way to make it HIDDEN, to where thieves have to look to see if a room is tagged?
