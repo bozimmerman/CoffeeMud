@@ -35,9 +35,6 @@ When Underwater, all slashing and Bludgeoning damage is reduced by a factor of 3
 'law' area, intelligent MOBs should cry out when they're being attacked, and officers should come to their rescue.
 random monster property class which reads stats from a resource file
 Taxidermy
-
-
-Guilds will have the ability to take on a character and make him or her the class sponsored by the 
 Assassin: Assassinate skill to auto-kill, lose something else though
 Prancers: Dancing bards who get special ability
 Alchemist: brew spells into potions, missile potions, transmute stuff to gold, cloth to metal, etc..
