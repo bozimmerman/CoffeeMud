@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -90,12 +91,32 @@ public class Burning extends StdAbility
 					case EnvResource.MATERIAL_UNKNOWN:
 						break;
 					default:
-						Item ash=CMClass.getItem("GenResource");
-						ash.setName("some ash");
-						ash.setDisplayText("a small pile of ash is here");
-						ash.setMaterial(EnvResource.RESOURCE_ASH);
-						room.addItemRefuse(ash,Item.REFUSE_MONSTER_EQ);
-						((Item)affected).destroy();
+					    if(Sense.isABonusItems(affected))
+					    {
+							if(invoker==null)
+							{
+								invoker=CMClass.getMOB("StdMOB");
+								invoker.setLocation(CMClass.getLocale("StdRoom"));
+								invoker.baseEnvStats().setLevel(affected.envStats().level());
+								invoker.envStats().setLevel(affected.envStats().level());
+							}
+					        room.showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" EXPLODES!!!");
+					        for(int i=0;i<room.numInhabitants();i++)
+					        {
+					            MOB target=room.fetchInhabitant(i);
+								MUDFight.postDamage(invoker(),target,null,Dice.roll(affected.envStats().level(),5,1),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
+					        }
+							((Item)affected).destroy();
+					    }
+					    else
+					    {
+							Item ash=CMClass.getItem("GenResource");
+							ash.setName("some ash");
+							ash.setDisplayText("a small pile of ash is here");
+							ash.setMaterial(EnvResource.RESOURCE_ASH);
+							room.addItemRefuse(ash,Item.REFUSE_MONSTER_EQ);
+							((Item)affected).destroy();
+					    }
 						break;
 					}
 					((Room)E).recoverRoomStats();

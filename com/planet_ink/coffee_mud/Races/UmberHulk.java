@@ -113,9 +113,9 @@ public class UmberHulk extends StdRace
 		{
 			if(resources.size()==0)
 			{
-			for(int i=0;i<4;i++)
-				resources.addElement(makeResource
-				("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
+				for(int i=0;i<4;i++)
+					resources.addElement(makeResource
+					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource

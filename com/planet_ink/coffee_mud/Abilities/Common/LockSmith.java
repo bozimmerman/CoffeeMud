@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.File;
 
@@ -83,9 +84,9 @@ public class LockSmith extends CraftingSkill
 						if(!((Exit)workingOn).hasALock())
 						{
 							int dir=-1;
-							for(int d=0;d<4;d++)
-								if(mob.location().getExitInDir(d)==workingOn)
-								{dir=d; break;}
+							for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
+								if(mob.location().getExitInDir(Directions.DIRECTIONS_BASE[d])==workingOn)
+								{dir=Directions.DIRECTIONS_BASE[d]; break;}
 							if((messedUp)||(dir<0))
 							{
 								commonTell(mob,"You've ruined the lock.");

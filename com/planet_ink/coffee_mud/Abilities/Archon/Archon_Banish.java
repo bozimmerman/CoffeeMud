@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Archon;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -165,18 +166,18 @@ public class Archon_Banish extends ArchonSkill
 						A.prison.setDescription("You are standing on an immense, grey stone floor that stretches as far as you can see in all directions.  Rough winds plunging from the dark, starless sky tear savagely at your fragile body.");
 						A.prison.setDisplayText("The Hall of Lost Souls");
 						A.prison.setRoomID("");
-						for(int d=0;d<4;d++)
+						for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
 						{
-							A.prison.rawExits()[d]=CMClass.getExit("Open");
-							A.prison.rawDoors()[d]=A.prison;
+							A.prison.rawExits()[Directions.DIRECTIONS_BASE[d]]=CMClass.getExit("Open");
+							A.prison.rawDoors()[Directions.DIRECTIONS_BASE[d]]=A.prison;
 						}
 						CMMap.addRoom(A.prison);
 					}
 					CommonMsgs.look(target,true);
-					for(int d=0;d<4;d++)
+					for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
 					{
-						A.prison.rawExits()[d]=CMClass.getExit("Open");
-						A.prison.rawDoors()[d]=A.prison;
+						A.prison.rawExits()[Directions.DIRECTIONS_BASE[d]]=CMClass.getExit("Open");
+						A.prison.rawDoors()[Directions.DIRECTIONS_BASE[d]]=A.prison;
 					}
 					CMMap.addRoom(A.prison);
 					A.prison.bringMobHere(target,false);

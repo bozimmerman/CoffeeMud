@@ -470,6 +470,22 @@ public class Import extends StdCommand
 		{((char)27)+"roomname"+((char)27),"^O"},
 		{((char)27)+"roomdesc"+((char)27),"^L"},
 		{((char)27)+"monster"+((char)27),"^M"},
+		{"_whi ","^w"},
+		{"_yel ","^y"},
+		{"_blu ","^b"},
+		{"_dbl ","^B"},
+		{"_lbl ","^C"},
+		{"_cya ","^c"},
+		{"_gre ","^g"},
+		{"_dgr ","^G"},
+		{"_cha ","^W"},
+		{"_dch ","^W"},
+		{"_pur ","^P"},
+		{"_red ","^r"},
+		{"_ora ","^Y"},
+		{"_bro ","^Y"},
+		{"_pin ","^p"},
+		{"_bla ",""},
 		{"&x",""},
 		{"&r","^R"},
 		{"&g","^G"},
@@ -651,6 +667,7 @@ public class Import extends StdCommand
 		if((s.indexOf(""+((char)27))>=0)
 		||(s.indexOf("&")>=0)
 		||(s.indexOf("{")>=0)
+		||(s.indexOf("_")>=0)
 		||(s.indexOf("@@")>=0))
 		{
 			for(int s1=0;s1<colors.length;s1++)

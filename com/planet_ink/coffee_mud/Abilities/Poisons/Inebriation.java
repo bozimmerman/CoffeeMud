@@ -29,4 +29,5 @@ public class Inebriation extends Poison_Alcohol
 	public String name(){ return "Inebriation";}
 	private static final String[] triggerStrings = {"INEBRIATE"};
 	public String[] triggerStrings(){return triggerStrings;}
+	protected int alchoholContribution(){return 6;}
 }

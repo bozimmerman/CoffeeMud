@@ -497,7 +497,10 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Closed Text: '"+E.closedText()+"'.");
+		if(E instanceof Item)
+			mob.tell(showNumber+". Exit Closed Text: '"+E.closedText()+"'.");
+		else
+			mob.tell(showNumber+". Closed Text: '"+E.closedText()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.equals("null"))
@@ -512,7 +515,10 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Door Name: '"+E.doorName()+"'.");
+		if(E instanceof Item)
+			mob.tell(showNumber+". Exit Direction: '"+E.doorName()+"'.");
+		else
+			mob.tell(showNumber+". Door Name: '"+E.doorName()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.length()>0)
@@ -1386,7 +1392,7 @@ public class BaseGenerics extends StdCommand
 				modifyPlayer(mob,(MOB)E);
 		}
 		else
-		if(E instanceof Exit)
+		if((E instanceof Exit)&&(!(E instanceof Item)))
 			modifyGenExit(mob,(Exit)E);
 		else
 		if(E instanceof com.planet_ink.coffee_mud.interfaces.Map)
@@ -4799,6 +4805,11 @@ public class BaseGenerics extends StdCommand
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+			}
+			if(me instanceof Exit) 
+			{
+				genDoorName(mob,(Exit)me,++showNumber,showFlag);
+				genClosedText(mob,(Exit)me,++showNumber,showFlag);
 			}
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}

@@ -5,6 +5,7 @@
 <!-- ********************************************************************* -->
 <!-- The next element is used to define a room exit link that sends the exit direction to the MUD if the user clicks on it -->
 <!ELEMENT EX '<SEND HREF="&text;|LOOK &text;|OPEN &text;|CLOSE &text;|LOCK &text;|UNLOCK &text;" hint="Right-mouse client to affect the exit|&text;|LOOK &text;|OPEN &text;|CLOSE &text;|LOCK &text;|UNLOCK &text;">'>
+<!ELEMENT MEX '<SEND HREF="ENTER &text;|LOOK &text;|OPEN &text;|CLOSE &text;|LOCK &text;|UNLOCK &text;" hint="Right-mouse client to affect the exit|ENTER &text;|LOOK &text;|OPEN &text;|CLOSE &text;|LOCK &text;|UNLOCK &text;">'>
 <!-- ********************************************************************* -->
 <!-- tags dealing with room items -->
 <!ELEMENT CRItem '<SEND HREF="GET &quot;&text;&quot; from &quot;&container;&quot;" hint="Right-mouse client to get from object|GET &text; from &container;">'>

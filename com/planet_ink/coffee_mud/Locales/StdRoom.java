@@ -973,6 +973,20 @@ public class StdRoom
 			if(Say.length()>0)
 				mob.tell("^D^<EX^>" + Util.padRight(Dir,5)+"^</EX^>:^.^N ^d"+Say+"^.^N");
 		}
+		Item I=null;
+		for(int i=0;i<numItems();i++)
+		{
+		    I=fetchItem(i);
+		    if(I instanceof Exit)
+		    {
+				StringBuffer Say=((Exit)I).viewableText(mob, this);
+				if(Say.length()>5)
+					mob.tell("^D^<MEX^>" + ((Exit)I).doorName()+"^</MEX^>:^.^N ^d"+Say+"^.^N");
+				else
+				if(Say.length()>0)
+					mob.tell("^D^<MEX^>" + Util.padRight(((Exit)I).doorName(),5)+"^</MEX^>:^.^N ^d"+Say+"^.^N");
+		    }
+		}
 	}
 	public void listShortExits(MOB mob)
 	{
@@ -982,7 +996,14 @@ public class StdRoom
 		{
 			Exit exit=getExitInDir(i);
 			if((exit!=null)&&(exit.viewableText(mob, getRoomInDir(i)).length()>0))
-				buf.append(Directions.getDirectionName(i)+" ");
+				buf.append("^<EX^>"+Directions.getDirectionName(i)+"^</EX^> ");
+		}
+		Item I=null;
+		for(int i=0;i<numItems();i++)
+		{
+		    I=fetchItem(i);
+		    if((I instanceof Exit)&&(((Exit)I).viewableText(mob, this).length()>0))
+		        buf.append("^<MEX^>"+((Exit)I).doorName()+"^</MEX^> ");
 		}
 		mob.tell(buf.toString().trim()+"]^.^N");
 	}

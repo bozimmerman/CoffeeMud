@@ -98,7 +98,7 @@ public class GrinderItems
 						  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER",
 						  "ISLIGHTSOURCE","DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES",
 						  "ISINSTRUMENT","INSTRUMENTTYPE","ISAMMO","ISMOBITEM",
-						  "ISDUST","ISPERFUME","SMELLS","IMAGE"};
+						  "ISDUST","ISPERFUME","SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -401,6 +401,16 @@ public class GrinderItems
 				break;
 			case 70:
 			    I.setImage(old);
+			    break;
+			case 71: // is exit
+			    break;
+			case 72: // exit name
+			    if(I instanceof Exit)
+			        ((Exit)I).setExitParams(old,((Exit)I).closeWord(),((Exit)I).openWord(),((Exit)I).closedText());
+			    break;
+			case 73: // exit closed text
+			    if(I instanceof Exit)
+			        ((Exit)I).setExitParams(((Exit)I).doorName(),((Exit)I).closeWord(),((Exit)I).openWord(),old);
 			    break;
 			}
 		}

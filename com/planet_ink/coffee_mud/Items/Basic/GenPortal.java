@@ -49,7 +49,7 @@ public class GenPortal extends StdPortal
 		recoverEnvStats();
 	}
 	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
-							  "CONTAINTYPES","RIDEBASIS","MOBSHELD"};
+							  "CONTAINTYPES","RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT"};
 	public String getStat(String code)
 	{
 		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
@@ -63,6 +63,8 @@ public class GenPortal extends StdPortal
 		case 3: return ""+containTypes();
 		case 4: return ""+rideBasis();
 		case 5: return ""+riderCapacity();
+		case 6: return ""+doorName();
+		case 7: return ""+closedText();
 		}
 		return "";
 	}
@@ -79,6 +81,8 @@ public class GenPortal extends StdPortal
 		case 3: setContainTypes(Util.s_long(val)); break;
 		case 4: break;
 		case 5: break;
+		case 6: setExitParams(val,closeWord(),openWord(),closedText()); break;
+		case 7: setExitParams(doorName(),closeWord(),openWord(),val); break;
 		}
 	}
 	protected int getCodeNum(String code){

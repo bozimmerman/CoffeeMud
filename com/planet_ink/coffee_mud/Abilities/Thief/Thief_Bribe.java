@@ -104,7 +104,7 @@ public class Thief_Bribe extends ThiefSkill
 				mob.location().send(mob,msg);
 				target.doCommand(commands);
 			}
-			target.setMoney(mob.getMoney()+amountRequired);
+			target.setMoney(target.getMoney()+amountRequired);
 			target.recoverEnvStats();
 		}
 		if(target==lastChecked)

@@ -3568,6 +3568,10 @@ public class Scriptable extends StdBehavior
 			String s=((String)script.elementAt(si)).trim();
 			String cmd=Util.getCleanBit(s,0).toUpperCase();
 			Integer methCode=(Integer)methH.get(cmd);
+			if((methCode==null)&&(cmd.startsWith("MP")))
+			    for(int i=0;i<methods.length;i++)
+			        if(methods[i].startsWith(cmd))
+			            methCode=new Integer(i);
 			if(methCode==null) methCode=new Integer(0);
 			if(cmd.length()==0)
 				continue;

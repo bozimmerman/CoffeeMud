@@ -4,6 +4,7 @@ package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +22,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdPortal extends StdContainer implements Rideable
+public class StdPortal extends StdContainer implements Rideable, Exit
 {
 	public String ID(){	return "StdPortal";}
 	public StdPortal()
@@ -162,4 +163,73 @@ public class StdPortal extends StdContainer implements Rideable
 			break;
 		}
 	}
+	
+	public boolean hasADoor(){return super.hasALid();}
+	public boolean defaultsLocked(){return super.hasALock();}
+	public boolean defaultsClosed(){return super.hasALid();}
+	public void setDoorsNLocks(boolean hasADoor,
+							   boolean isOpen,
+							   boolean defaultsClosed,
+							   boolean hasALock,
+							   boolean isLocked,
+							   boolean defaultsLocked)
+	{ super.setLidsNLocks(hasADoor,isOpen,hasALock,isLocked);}
+	 
+	public boolean isReadable(){return false;}
+	public void setReadable(boolean isTrue){}
+
+	private static final StringBuffer empty=new StringBuffer("");
+	
+	public StringBuffer viewableText(MOB mob, Room myRoom)
+	{
+		Vector V=Util.parseSemicolons(readableText(),true);
+		Room room=myRoom;
+		if(V.size()>0)
+		    room=CMMap.getRoom((String)V.elementAt(Dice.roll(1,V.size(),-1)));
+		if(room==null) return empty;
+		StringBuffer Say=new StringBuffer("");
+		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+		{
+			if(room==null)
+				Say.append("^Z(null)^.^? ");
+			else
+				Say.append("^H("+CMMap.getExtendedRoomID(room)+")^? "+room.roomTitle()+Sense.colorCodes(room,mob)+" ");
+			Say.append("via ^H("+ID()+")^? "+(isOpen()?name():closedText()));
+		}
+		else
+		if(((Sense.canBeSeenBy(this,mob))||(isOpen()&&hasADoor()))
+		&&(Sense.isSeen(this)))
+			if(isOpen())
+			{
+				if((room!=null)&&(!Sense.canBeSeenBy(room,mob)))
+					Say.append("darkness");
+				else
+					Say.append(name()+Sense.colorCodes(this,mob));
+			}
+			else
+			if((Sense.canBeSeenBy(this,mob))&&(closedText().trim().length()>0))
+				Say.append(closedText()+Sense.colorCodes(this,mob));
+		return Say;
+	}
+	
+	private String doorName="";
+	public String doorName(){return doorName;}
+	private String closedText="";
+	public String closedText(){return closedText;}
+	
+	public String closeWord(){return "";}
+	public String openWord(){return "";}
+	public void setExitParams(String newDoorName,
+							  String newCloseWord,
+							  String newOpenWord,
+							  String newClosedText){
+	    doorName=newDoorName;
+	    closedText=newClosedText;
+	}
+
+	
+	public int openDelayTicks(){return 0;}
+	public void setOpenDelayTicks(int numTicks){}
+	public String temporaryDoorLink(){return "";}
+	public void setTemporaryDoorLink(String link){}
 }

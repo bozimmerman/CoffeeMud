@@ -272,7 +272,7 @@ public class Poison_Alcohol extends Poison
 						for(int a=0;a<found.size();a++)
 						{
 							((Poison_Alcohol)found.elementAt(a)).drunkness=largest;
-							((Poison_Alcohol)found.elementAt(a)).tickDown+=POISON_TICKS();
+							((Poison_Alcohol)found.elementAt(a)).tickDown=POISON_TICKS();
 						}
 						R.recoverRoomStats();
 						return true;
@@ -289,7 +289,10 @@ public class Poison_Alcohol extends Poison
 		{
 			Ability A=givenTarget.fetchEffect(ID());
 			if(A instanceof Poison_Alcohol)
+			{
 				((Poison_Alcohol)A).drunkness=largest;
+				((Poison_Alcohol)A).drunkness=POISON_TICKS();
+			}
 			Room R=(((MOB)givenTarget).location()!=null)?((MOB)givenTarget).location():mob.location();
 			R.recoverRoomStats();
 		}

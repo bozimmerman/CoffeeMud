@@ -25,13 +25,11 @@ import java.util.*;
 public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 {
 	public String ID(){	return "Ring_Protection";}
+	private int lastLevel=-1;
+	
 	public Ring_Protection()
 	{
 		super();
-
-		setIdentity();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		recoverEnvStats();
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -43,8 +41,10 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 
 	public void recoverEnvStats()
 	{
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		super.recoverEnvStats();
-		setIdentity();
+		if(lastLevel!=baseEnvStats().level())
+		{ lastLevel=baseEnvStats().level(); setIdentity();}
 	}
 
 	private int correctTargetMinor()
@@ -110,7 +110,6 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 
 	private void setIdentity()
 	{
-		baseEnvStats().setAbility(0);
 		switch(this.envStats().level())
 		{
 			case SILVER_RING:
@@ -175,14 +174,16 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 				material=EnvResource.RESOURCE_PEARL;
 				break;
 			case GOLD_RING_EMERALD:
-				baseEnvStats().setAbility(50);
+			    if(baseEnvStats().ability()==0)
+					baseEnvStats().setAbility(50);
 				secretIdentity="Fox Guard. (Ring of Protection +50)";
 				baseGoldValue+=5000;
 				material=EnvResource.RESOURCE_GEM;
 				break;
 			default:
 				double pct=Math.random();
-				baseEnvStats().setAbility((int)Math.round(pct*49));
+			    if(baseEnvStats().ability()==0)
+					baseEnvStats().setAbility((int)Math.round(pct*49));
 				baseGoldValue+=baseEnvStats().ability()*100;
 				secretIdentity="A ring of protection + "+baseEnvStats().ability()+".";
 				material=EnvResource.RESOURCE_STEEL;

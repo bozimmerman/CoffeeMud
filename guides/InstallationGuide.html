@@ -39,12 +39,14 @@ FUTURE). Say&nbsp;<STRONG>y</STRONG> if you want to start your MUD now, and
 <STRONG>n</STRONG> if you don't. Hit enter after the nohup comes up.&nbsp; Send 
 an email to <A href="mailto:wrichter@att.net">wrichter@att.net</A>&nbsp;if you have any problems with 
 this script.</P>
+<P>If you are using Windows, or you are using UNIX/Linux and have completed the 
+above instructions...</P>
 <P align=center><STRONG><FONT size=6>Congratulations!</FONT></STRONG></P>
 <P align=left>You have successfully installed CoffeeMud.&nbsp; </P>
-<P align=left>You may wish, at this point, to investigate the settings and 
-components of the CoffeeMud server.&nbsp; If so, by all means, finish reading 
-this document.&nbsp; If you couldn't care less, then go into the your CoffeeMud 
-directory on a command line and enter:</P>
+<P align=left>You may wish, at this point, to investigate the settings and components 
+of the CoffeeMud server.&nbsp; If so, by all means, finish reading this 
+document.&nbsp; If you couldn't care less, then go into the your CoffeeMud directory 
+on a command line&nbsp;or DOS prompt&nbsp;and enter:</P>
 <P align=left><STRONG>java -classpath "." 
 -Xms25535000</STRONG> <STRONG>-Xmx85535000 
 com.planet_ink.coffee_mud.application.MUD&nbsp;"Your Muds Name"</STRONG></P>
@@ -448,10 +450,10 @@ includes such systems as Microsoft Access, Microsoft SQL Server, PostGRE
 SQL, MySQL, Oracle, and others.&nbsp; While this document cannot cover the 
 step by step installation instructions for each of these systems, it can 
 be pointed out that everything you need has been provided.&nbsp; Inside the "guides/database/" 
-directory of your CoffeeMud package, you will find&nbsp;six 
-files: "coffeemuddb.sql", "coffeemuddb2.sql", "coffeemuddbaccess.sql", "coffeemuddbmysql.sql", "coffeemuddbpsql.sql", and "fakedb.schema".&nbsp; The 
+directory of your CoffeeMud package, you will find&nbsp;several 
+files: "coffeemuddb.sql", "coffeemuddb2.sql", "coffeemuddbaccess.sql", "coffeemuddbmysql.sql", "coffeemuddbpsql.sql",  "coffeemuddbh.sql", "coffeemuddderby.sql", and "fakedb.schema".&nbsp; The 
 first&nbsp;five are SQL Scripts which can be used to create the necessary tables 
-in Microsoft SQL Server ("coffeemuddb2.sql"), MySQL ("coffeemuddbmysql.sql"),&nbsp;Access ("coffeemuddbaccess.sql"), PostGRE ("coffeemuddbpsql.sql"), and some of 
+in Microsoft SQL Server ("coffeemuddb2.sql"), MySQL ("coffeemuddbmysql.sql"),&nbsp;Access ("coffeemuddbaccess.sql"), PostGRE ("coffeemuddbpsql.sql"), Derby ("coffeemuddbderby.sql"), HSQLDB ("coffeemuddbh.sql"), and some of 
 the others.&nbsp; The last is a copy of the same fakedb file from your "data" 
 directory, in case it becomes corrupted.&nbsp; Although the manner in which the 
 SQL Scripts are used may differ from system to system, they cannot all be 
@@ -477,8 +479,9 @@ with the number of players which join your MUD.&nbsp; All of this growth can be
 managed, however, within CoffeeMud itself, by your Archon administrative 
 user.&nbsp; You should not need to, nor should you attempt to affect individual 
 rows in your database for any reason.</P>
-<P align=left><EM>Installing and using Microsoft Access with CoffeeMud 
-on a Windows machine</EM></P>
+<P align=left><EM><STRONG>Installing 
+and using Microsoft Access with CoffeeMud on a Windows machine</STRONG>       
+   </EM></P>
 <P align=left><STRONG>1.</STRONG> Open up Microsoft Access and select to create 
 a Blank Access Database.&nbsp; Give the database a name and save it on your hard 
 drive.</P>
@@ -532,8 +535,9 @@ face="Courier New, Courier, mono">jdbc:odbc:CoffeeMudData</FONT>", make sure the
 part after "<FONT face="Courier New, Courier, mono">jdbc:odbc:</FONT>" 
 matches the DNS name you made earlier.&nbsp; Make sure your DBCONNECTIONS is 
 never set above 1&nbsp;when using Microsoft&nbsp;Access.&nbsp; Now, reboot CoffeeMud, and you are done!</P>
-<P align=left><EM>Installing and using MySQL with CoffeeMud on a Windows 
-machine</EM></P>
+<P align=left><EM><STRONG>Installing 
+and using MySQL with CoffeeMud on a Windows machine</STRONG>         
+</EM></P>
 <P align=left><STRONG>1. </STRONG>  Go to <A class=moz-txt-link-abbreviated 
 href="http://www.mysql.com">www.mysql.com</A>, click on Downloads (one of the 
 tabs at the very top), scroll down under "MySQL database server &amp; Standard 
@@ -598,8 +602,9 @@ called <FONT face="Courier New">planet_ink</FONT>.</P>
 <P align=left><STRONG>9. </STRONG>  Now, with mysqld still running in the background, just 
 launch the mud.bat AS IT IS to start the mud..( I didnt have to make ANY changes 
 in there for this to work, hopefully the same for you...)<BR></P>
-<P><EM>Installing and using MySQL with CoffeeMud on a UN*X 
-or Linux machine</EM></P>
+<P><EM><STRONG>Installing and using 
+MySQL with CoffeeMud on a UN*X or Linux machine</STRONG>         
+  </EM></P>
 <P><STRONG>1.</STRONG> Download and install mysql from <A 
 href="http://www.mysql.com/downloads/index.html">http://www.mysql.com/downloads/index.html</A>. 
 Make sure mysqld is being run at boot time, and not by the root user. </P>
@@ -625,7 +630,38 @@ coffeemud). Then save the changes. </P>
 <BR>DBUSER=coffee <BR>DBPASS=password <BR>DBCONNECTIONS=4 </P>
 <P>(no quotes on the password here)<BR>Save your changes and fire up 
 CoffeeMud!</P>
-<P>&nbsp;</P>              
+<P><STRONG><EM>Installing and using HSQLDB</EM></STRONG> <STRONG><EM>with 
+CoffeeMud on a UN*X or Linux machine</EM></STRONG></P>
+<P><STRONG>1. </STRONG>First download hsqldb*.zip from <A 
+href="http://sourceforge.net/project/showfiles.php?group_id=23316&amp;package_id=16653&amp;release_id=287789">here</A>.</P>
+<P><STRONG>2.</STRONG> Copy the hsqldb/org directory into your Coffeemud/ </P>
+<P><STRONG>3.</STRONG> Modify your coffeemud to look like: 
+<BR>DBCLASS=org.hsqldb.jdbcDriver 
+<BR>DBSERVICE=jdbc:hsqldb:file:hsqldb/data/coffeemud <BR>DBUSER=sa 
+<BR>DBCONNECTIONS=4 </P>
+<P><STRONG>(notes)</STRONG>&nbsp;I used 6 DB connections, I don't know if that 
+sped things up. DBService is the location of the database, mine was in 
+Coffee/hsqldb/data/ and it was named coffeemud. dbuser=sa is the default user.. 
+I don't think this really NEEDS to be changed.. </P>
+<P><STRONG>4. </STRONG>The default database must be created first (just like 
+with mysql). do a mkdir Coffee/hsqldb/data/ </P>
+<P><STRONG>5. </STRONG>Run the runManager script in the hsqldb/demo's directory. 
+Set up the connection to use "HSQLDB Standalone" in the next prompt change where 
+it says &lt;<DIRECTORY filename>&gt; to coffeemud (Be sure to delete the 
+&lt;&lt;&gt;&gt;'s!!!!!!), just coffeemud, do not include the directory path. it 
+will make it in hsqldb/data. </P>
+<P><STRONG>6. </STRONG>Then select open script, and use coffeemuddbh.sql . </P>
+<P><STRONG>7. </STRONG>I used mmake to make a new makefile that used java to 
+compile the org/hsqldb directory.. it gave me a bunch of errors, but compiled 
+jdbcDriver.java just fine, so it's safe to ignore the errors. Once you have 
+compiled the driver Coffee/org/hsqldb/jdbcDriver.java in to jdbcDriver.class 
+</P>
+<P><STRONG>8. </STRONG>Start up coffeemud, and Viala, it should work. Once you 
+have built the main database, you can delete all the files in the Coffee/hsqldb/ 
+directory EXCEPT the data directory, where your world files are. And now when 
+coffeemud starts, it uses hsqldb internally, no need to start up an extra 
+server. Also, I experience nearly 2x faster load times than 
+mysql.</P>              
             
             
 </BODY>

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -78,15 +79,15 @@ public class Hireling extends StdBehavior
 		CommonMsgs.follow(observer,null,false);
 		observer.setFollowing(null);
 		int direction=-1;
-		for(int d=0;d<4;d++)
-			if(observer.location().getExitInDir(d)!=null)
-				if(observer.location().getExitInDir(d).isOpen())
+		for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
+			if(observer.location().getExitInDir(Directions.DIRECTIONS_BASE[d])!=null)
+				if(observer.location().getExitInDir(Directions.DIRECTIONS_BASE[d]).isOpen())
 				{
-					direction=d;
+					direction=Directions.DIRECTIONS_BASE[d];
 					break;
 				}
 				else
-					direction=d;
+					direction=Directions.DIRECTIONS_BASE[d];
 		if(direction>=0)
 			MUDTracker.move(observer,direction,false,false);
 		if(observer.getStartRoom()!=null)
