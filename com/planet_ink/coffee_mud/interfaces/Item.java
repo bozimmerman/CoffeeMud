@@ -72,11 +72,13 @@ public interface Item extends Environmental, Rider
 	public static final long ON_EYES=32768;
 	public static final long ON_EARS=65536;
 	public static final long ABOUT_BODY=131072;
+	public static final long ON_MOUTH=262144;
 	
 	public static final long[] wornOrder={
 		ON_HEAD,
 		ON_EYES,
 		ON_EARS,
+		ON_MOUTH,
 		ON_NECK,
 		ABOUT_BODY,
 		ON_TORSO,
@@ -95,24 +97,26 @@ public interface Item extends Environmental, Rider
 	};
 	
 	public static final double[] wornWeights={
+		0.0, //inventory
 		1.0, //ON_HEAD
-		0.0, //ON_EYES
-		0.0, //ON_EARS
 		0.5, //ON_NECK
-		1.0, //ABOUT_BODY
 		3.0, //ON_TORSO
 		1.0, //ON_ARMS
 		0.5, //ON_LEFT_WRIST
 		0.5, //ON_RIGHT_WRIST
-		0.5, //ON_HANDS
 		0.0, //ON_LEFT_FINGER
 		0.0, //ON_RIGHT_FINGER
-		1.0, //WIELD
+		0.5, //ON_FEET
 		1.0, //HELD
+		1.0, //WIELD
+		0.5, //ON_HANDS
+		0.0, //FLOATING_NEARBY
 		0.5, //ON_WAIST
 		2.0, //ON_LEGS
-		0.5, //ON_FEET
-		0.0 //FLOATING_NEARBY
+		0.0, //ON_EYES
+		0.0, //ON_EARS
+		1.0, //ABOUT_BODY
+		0.0  //ON_MOUTH
 	};
 	
 	public static final String[] wornLocation={
@@ -134,7 +138,8 @@ public interface Item extends Environmental, Rider
 		"legs",
 		"eyes",
 		"ears",
-		"body"};
+		"body",
+		"mouth"};
 	
 	/** If being worn, this code will show WHERE*/
 	public boolean amWearingAt(long wornCode);	// 0 means in inventory! see above

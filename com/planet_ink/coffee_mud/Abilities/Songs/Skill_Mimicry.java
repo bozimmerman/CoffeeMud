@@ -32,7 +32,7 @@ public class Skill_Mimicry extends StdAbility
 			return;
 		if(disabled) return;
 		if(((!(affecting instanceof MOB))||(!affect.amISource((MOB)affecting)))
-		&&((affect.sourceMinor()==Affect.TYP_EMOTE)
+		&&((affect.sourceMinor()!=Affect.TYP_EMOTE)
 		||((affect.tool()!=null)&&(affect.tool().ID().equals("Social")))))
 			lastMsg=affect;
 	}
@@ -152,7 +152,7 @@ public class Skill_Mimicry extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT|(auto?Affect.MASK_GENERAL:0),auto?"":"^F<S-NAME> begin(s) mimicing <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT|(auto?Affect.MASK_GENERAL:0),auto?"":"<S-NAME> begin(s) mimicing <T-NAMESELF>.");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

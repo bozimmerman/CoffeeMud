@@ -322,6 +322,11 @@ public class StdItem implements Item
 				if(Sense.isInDark(affected))
 					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
 			}
+			if((amWearingAt(Item.ON_MOUTH))&&(affected instanceof MOB))
+			{
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
+			}
 			if((!amWearingAt(Item.FLOATING_NEARBY))
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))
 				affectableStats.setWeight(affectableStats.weight()+envStats().weight());

@@ -262,6 +262,19 @@ public class Scriptable extends StdBehavior
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
+			if(CoffeeUtensils.containsString(R.description(),thisName))
+			{
+				if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
+					inAreaRoom=R;
+				else
+					room=R;
+			}
+		}
+		if(inAreaRoom!=null) return inAreaRoom;
+		if(room!=null) return room;
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
 			if((R.fetchInhabitant(thisName)!=null)
 			||(R.fetchItem(null,thisName)!=null))
 			{
@@ -1795,7 +1808,7 @@ public class Scriptable extends StdBehavior
 				if(lastKnownLocation!=null)
 				{
 					s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(7).trim());
-					Environmental E=lastKnownLocation.fetchFromRoomFavorItems(null,s,Item.WORN_REQ_UNWORNONLY);
+					Environmental E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,s,Item.WORN_REQ_UNWORNONLY);
 					if(E!=null)
 					{
 						if(E instanceof MOB)
@@ -1840,28 +1853,20 @@ public class Scriptable extends StdBehavior
 				String roomName=Util.getCleanBit(s,1);
 				if(roomName.length()>0)
 				{
-					s=Util.getPastBit(s,1).trim();
-					Room goHere=getRoom(roomName,lastKnownLocation);
-					if(goHere!=null)
+					s=varify(source,target,monster,primaryItem,secondaryItem,Util.getPastBit(s,1).trim());
+					Room newRoom=getRoom(roomName,lastKnownLocation);
+					if(newRoom!=null)
 					{
+						Vector V=new Vector();
 						if(s.equalsIgnoreCase("all"))
 						{
 							if(lastKnownLocation!=null)
 							{
-								MOB findOne=null;
-								while(true)
+								for(int x=0;x<lastKnownLocation.numInhabitants();x++)
 								{
-									for(int x=0;x<lastKnownLocation.numInhabitants();x++)
-									{
-										MOB m=lastKnownLocation.fetchInhabitant(x);
-										if((m!=null)&&(m!=monster)&&(!m.isMonster()))
-										{
-											findOne=m;
-											break;
-										}
-									}
-									if(findOne==null) break;
-									goHere.bringMobHere(findOne,true);
+									MOB m=lastKnownLocation.fetchInhabitant(x);
+									if((m!=null)&&(m!=monster)&&(!m.isMonster())&&(!V.contains(m)))
+										V.addElement(m);
 								}
 							}
 						}
@@ -1869,7 +1874,38 @@ public class Scriptable extends StdBehavior
 						{
 							MOB findOne=lastKnownLocation.fetchInhabitant(s);
 							if((findOne!=null)&&(findOne!=monster)&&(!findOne.isMonster()))
-								goHere.bringMobHere(findOne,true);
+								V.addElement(findOne);
+						}
+						for(int v=0;v<V.size();v++)
+						{
+							MOB mob=(MOB)V.elementAt(v);
+							Hashtable h=mob.getGroupMembers(new Hashtable());
+							for(Enumeration e=h.elements();e.hasMoreElements();)
+							{
+								MOB M=(MOB)e.nextElement();
+								if((!V.contains(M))&&(M.location()==mob.location()))
+								   V.addElement(M);
+							}
+						}
+						for(int v=0;v<V.size();v++)
+						{
+							MOB follower=(MOB)V.elementAt(v);
+							Room thisRoom=follower.location();
+							FullMsg enterMsg=new FullMsg(follower,newRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CommonStrings.msp("appear.wav",10));
+							FullMsg leaveMsg=new FullMsg(follower,thisRoom,null,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
+							if(thisRoom.okAffect(follower,leaveMsg)&&newRoom.okAffect(follower,enterMsg))
+							{
+								if(follower.isInCombat())
+								{
+									ExternalPlay.flee(follower,"NOWHERE");
+									follower.makePeace();
+								}
+								thisRoom.send(follower,leaveMsg);
+								newRoom.bringMobHere(follower,false);
+								newRoom.send(follower,enterMsg);
+								follower.tell("\n\r\n\r");
+								ExternalPlay.look(follower,null,true);
+							}
 						}
 					}
 

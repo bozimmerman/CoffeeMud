@@ -1,6 +1,15 @@
 Bard Subclasses
+Admin macros for the grinder (view logs, purge players, etc..)
+macros for command help
+One of our players commented that they'd like a config option 'AUTOIMPROVEMENT' that would be default off, but when on, tells you anytime an ability increases in proficiency... like 'You become better at Recall (65%).'
+Scriptable SPEECH_PROG match (* %d %s) -- only matches match, followed by %d, %s.. with () retained in a variable $1
 
 //****** next version ********************************************************
+Ability to manage Resources via web (table view much nicer)
+News (Journal) reading macro
+friends list, for filter who
+group formations as an alternative way of determining range
+ignore list, for ignoreing players/gossips/who/etc.. 
 Room descriptions varying by the time of day.
 Item Interactivity (Scriptable + socials that require an ITEM target) Tapping your broadsword.  Poking some strange item you found on the critter you just killed.  Licking, sniffing, tasting food.  
 Space ships as Locale types
