@@ -113,6 +113,7 @@ function showSelected() {
 }
 
 function showDiv(pass) { 
+  document.SELECTAREA.MAPLEVEL.value=pass;
   var divs = document.getElementsByTagName('div'); 
   for(i=0;i<divs.length;i++){ 
     if((divs[i].id.match(pass))||(divs[i].id.match('layersMenu'))){//if they are 'see' divs 
@@ -166,12 +167,17 @@ function checkLocation() {
 	</SCRIPT>
 </head>
 
+@if?!CheckReqParm?MAPLEVEL=@ 
+<BODY OnLoad="preloadImages();setVariables();checkLocation();setTimeout(showDiv('@RequestParameterEncoded?MAPLEVEL@'),1000)">
+@else@
 <BODY OnLoad="preloadImages();setVariables();checkLocation()">
+@endif@
 
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=MENU>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
 <INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
+<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="">
 <INPUT TYPE=HIDDEN NAME=ROOM VALUE="">
 <INPUT TYPE=HIDDEN NAME=LINK VALUE="">
 <INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="">

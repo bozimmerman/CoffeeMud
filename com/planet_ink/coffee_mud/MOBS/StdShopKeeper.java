@@ -917,8 +917,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			if(whatISell==DEAL_TRAINER)
 				val=CMAble.lowestQualifyingLevel(product.ID())*100;
 			else
-			if(whatISell==DEAL_CASTER)
-				val=CMAble.lowestQualifyingLevel(product.ID())*25;
+				val=CMAble.lowestQualifyingLevel(product.ID())*75;
 		}
 		else
 		if(product instanceof MOB)

@@ -630,7 +630,7 @@ public class Generic
 		newArea.setTechLevel(XMLManager.getIntFromPieces(aV,"ATECH"));
 		newArea.setSubOpList(XMLManager.getValFromPieces(aV,"ASUBS"));
 		newArea.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(aV,"ADATA")));
-		ExternalPlay.DBUpdateArea(newArea);
+		ExternalPlay.DBUpdateArea(newArea.Name(),newArea);
 		if(andRooms)
 		{
 			Vector rV=XMLManager.getRealContentsFromPieces(aV,"AROOMS");

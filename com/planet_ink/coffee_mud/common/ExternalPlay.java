@@ -290,9 +290,9 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBDeleteArea(A);
 	}
-	public static void DBUpdateArea(Area A)
+	public static void DBUpdateArea(String keyName, Area A)
 	{
-		if(sysPlayer!=null) sysPlayer.DBUpdateArea(A);
+		if(sysPlayer!=null) sysPlayer.DBUpdateArea(keyName,A);
 	}
 	public static void DBUpdateRoom(Room room)
 	{

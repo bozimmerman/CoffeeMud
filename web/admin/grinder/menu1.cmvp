@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+h<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
@@ -24,6 +24,8 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
 <INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
+<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
+
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
 <TABLE WIDTH=90% CELLSPACING=0 CELLPADDING=0 BORDER=0>
 <TR>

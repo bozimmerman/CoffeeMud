@@ -299,6 +299,44 @@ public class CMMap
 		bodyRooms=new Hashtable();
 		pageRooms(page,bodyRooms,"MORGUE");
 	}
+	
+	public static void renameRooms(Area A, String oldName, Vector allMyDamnRooms)
+	{
+		Vector onesToRenumber=new Vector();
+		for(int r=0;r<allMyDamnRooms.size();r++)
+		{
+			Room R=(Room)allMyDamnRooms.elementAt(r);
+			R.setArea(A);
+			if(oldName!=null)
+			{
+				if(R.roomID().startsWith(oldName+"#"))
+				{
+					Room R2=CMMap.getRoom(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
+					if((R2==null)||(!R2.roomID().startsWith(A.Name()+"#")))
+					{
+						String oldID=R.roomID();
+						R.setRoomID(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
+						ExternalPlay.DBReCreate(R,oldID);
+					}
+					else
+						onesToRenumber.addElement(R);
+				}
+				else
+					ExternalPlay.DBUpdateRoom(R);
+			}
+		}
+		A.clearMap();
+		if(oldName!=null)
+		{
+			for(int r=0;r<onesToRenumber.size();r++)
+			{
+				Room R=(Room)onesToRenumber.elementAt(r);
+				String oldID=R.roomID();
+				R.setRoomID(ExternalPlay.getOpenRoomID(A.Name()));
+				ExternalPlay.DBReCreate(R,oldID);
+			}
+		}
+	}
 
 	public static void unLoad()
 	{

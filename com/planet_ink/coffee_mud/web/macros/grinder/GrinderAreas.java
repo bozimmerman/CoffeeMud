@@ -167,42 +167,8 @@ public class GrinderAreas
 		if(err.length()>0) return err;
 
 		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
-		{
-			for(int r=0;r<allMyDamnRooms.size();r++)
-			{
-				Room R=(Room)allMyDamnRooms.elementAt(r);
-				R.setArea(A);
-				if(oldName!=null)
-				{
-					if((R.roomID().startsWith(oldName+"#"))
-					&&(CMMap.getRoom(A.Name()+"#"+R.roomID().substring(oldName.length()+1))==null))
-					{
-
-						String oldID=R.roomID();
-						R.setRoomID(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
-						ExternalPlay.DBReCreate(R,oldID);
-					}
-					else
-						ExternalPlay.DBUpdateRoom(R);
-				}
-			}
-			A.clearMap();
-			if(oldName!=null)
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				boolean doIt=false;
-				for(int d=0;d<R.rawDoors().length;d++)
-				{
-					Room R2=(Room)R.rawDoors()[d];
-					if((R2!=null)&&(R2.getArea()==A))
-					{ doIt=true; break;}
-				}
-				if(doIt)
-					ExternalPlay.DBUpdateExits(R);
-			}
-		}
-		ExternalPlay.DBUpdateArea(A);
+			CMMap.renameRooms(A,oldName,allMyDamnRooms);
+		ExternalPlay.DBUpdateArea(A.Name(),A);
 		return "";
 	}
 }

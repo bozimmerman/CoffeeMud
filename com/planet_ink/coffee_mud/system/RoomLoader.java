@@ -617,11 +617,19 @@ public class RoomLoader
 			DBConnector.DBDone(D);
 
 			D=DBConnector.DBFetch();
+
 			D.update("UPDATE CMROEX SET "
 					+"CMROID='"+room.roomID()+"' "
 					+"WHERE CMROID='"+oldID+"'");
+			
 			DBConnector.DBDone(D);
 
+			D=DBConnector.DBFetch();
+			D.update("UPDATE CMROEX SET "
+					+"CMNRID='"+room.roomID()+"' "
+					+"WHERE CMNRID='"+oldID+"'");
+			DBConnector.DBDone(D);
+			
 			D=DBConnector.DBFetch();
 			D.update("UPDATE CMROIT SET "
 					+"CMROID='"+room.roomID()+"' "
@@ -686,7 +694,7 @@ public class RoomLoader
 		return A;
 	}
 
-	public static void DBUpdate(Area A)
+	public static void DBUpdate(String keyName,Area A)
 	{
 		DBConnection D=null;
 		String str=null;
@@ -694,13 +702,14 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			str="UPDATE CMAREA SET "
+				+"CMAREA='"+A.Name()+"',"
 				+"CMTYPE='"+A.ID()+"',"
 				+"CMCLIM="+A.climateType()+","
 				+"CMSUBS='"+A.getSubOpList()+"',"
 				+"CMDESC='"+A.description()+" ',"
 				+"CMROTX='"+A.text()+" ',"
 				+"CMTECH="+A.getTechLevel()+" "
-				+"WHERE CMAREA='"+A.Name()+"'";
+				+"WHERE CMAREA='"+keyName+"'";
 			D.update(str);
 			DBConnector.DBDone(D);
 		}

@@ -38,7 +38,7 @@ public interface ExternalSystem
 	public void DBCreateCharacter(MOB mob);
 	public Area DBCreateArea(String areaName, String areaType);
 	public void DBDeleteArea(Area A);
-	public void DBUpdateArea(Area A);
+	public void DBUpdateArea(String keyName,Area A);
 	public Vector DBReadJournal(String Journal);
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which);
 	public void DBDeleteJournal(String Journal, int which);

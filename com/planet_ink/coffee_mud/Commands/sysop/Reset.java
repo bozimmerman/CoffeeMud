@@ -120,7 +120,7 @@ public class Reset
 		{
 			int x=I.description().trim().indexOf(" ");
 			int y=I.description().trim().lastIndexOf(" ");
-			if((x<0)||((x>0)&&(y<0)))
+			if((x<0)||((x>0)&&(y==x)))
 			{
 				String s=I.description().trim().toLowerCase();
 				if((mob!=null)&&(mob.session()!=null)&&(openOnly))
@@ -310,6 +310,7 @@ public class Reset
 			{
 				Room R=(Room)r.nextElement();
 				boolean changed=false;
+				if(R.roomID().length()>0)
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Exit E=R.rawExits()[d];
@@ -323,6 +324,42 @@ public class Reset
 				if(changed)
 				{
 					Log.sysOut("Reset","Groundly doors in "+R.roomID()+" fixed.");
+					ExternalPlay.DBUpdateExits(R);
+				}
+				mob.session().print(".");
+			}
+			mob.session().println("done!");
+		}
+		else
+		if(s.equalsIgnoreCase("smalleropendoors"))
+		{
+			if(mob.session()==null) return;
+			mob.session().print("working...");
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				boolean changed=false;
+				if(R.roomID().length()>0)
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				{
+					Exit E=R.rawExits()[d];
+					if((E!=null)
+					&&(E.isGeneric())
+					&&(!E.hasADoor())
+					&&E.name().equalsIgnoreCase("the ground")
+					&&(!E.isReadable())
+					&&(E.temporaryDoorLink().length()==0)
+					&&(E.displayText().equals(E.description())))
+					{
+						Exit E2=CMClass.getExit("OpenDescriptable");
+						E2.setMiscText(E.displayText());
+						R.rawExits()[d]=E2;
+						changed=true;
+					}
+				}
+				if(changed)
+				{
+					Log.sysOut("Reset","Fat doors in "+R.roomID()+" fixed.");
 					ExternalPlay.DBUpdateExits(R);
 				}
 				mob.session().print(".");
@@ -370,14 +407,14 @@ public class Reset
 						boolean changedMOBS=false;
 						boolean changedItems=false;
 						for(int i=0;i<R.numItems();i++)
-							changedItems=changedItems||rightImportMat(null,R.fetchItem(i),false)>=0;
+							changedItems=changedItems||(rightImportMat(null,R.fetchItem(i),false)>=0);
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							MOB M=R.fetchInhabitant(m);
 							if(M==mob) continue;
 							if(!M.isEligibleMonster()) continue;
 							for(int i=0;i<M.inventorySize();i++)
-								changedMOBS=changedMOBS||rightImportMat(null,M.fetchInventory(i),false)>=0;
+								changedMOBS=changedMOBS||(rightImportMat(null,M.fetchInventory(i),false)>=0);
 							ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
 							if(SK!=null)
 							{

@@ -179,6 +179,10 @@ public class Rooms
 		}
 
 		String oldName=myArea.Name();
+		Vector allMyDamnRooms=new Vector();
+		for(Enumeration e=myArea.getMap();e.hasMoreElements();)
+			allMyDamnRooms.addElement(e.nextElement());
+		
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
 		if(commands.size()==2)
 		{
@@ -346,7 +350,13 @@ public class Rooms
 		myArea.recoverEnvStats();
 		mob.location().recoverRoomStats();
 		mob.location().showHappens(Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
-		ExternalPlay.DBUpdateArea(myArea);
+		if(myArea.name().equals(oldName))
+			ExternalPlay.DBUpdateArea(myArea.Name(),myArea);
+		else
+		{
+			ExternalPlay.DBUpdateArea(oldName,myArea);
+			CMMap.renameRooms(myArea,oldName,allMyDamnRooms);
+		}
 	}
 	public static void modify(MOB mob, Vector commands)
 		throws Exception

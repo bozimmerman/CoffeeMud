@@ -10,8 +10,8 @@
 @else@ 
 <HTML>
 	<FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
-		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&ROOM=@RequestParameterEncoded?ROOM@&ITEM=NEW" NAME=MAP>
-		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu2.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&ROOM=@RequestParameterEncoded?ROOM@&ITEM=NEW" NAME=MENU>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&ITEM=NEW" NAME=MAP>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu2.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&ITEM=NEW" NAME=MENU>
 	</FRAMESET>
 </HTML>
 @endif@

@@ -141,9 +141,9 @@ public class ExternalSystems implements ExternalSystem
 	{
 		RoomLoader.DBDelete(A);
 	}
-	public void DBUpdateArea(Area A)
+	public void DBUpdateArea(String keyName, Area A)
 	{
-		RoomLoader.DBUpdate(A);
+		RoomLoader.DBUpdate(keyName,A);
 	}
 	
 	public void DBDeleteRoom(Room room)

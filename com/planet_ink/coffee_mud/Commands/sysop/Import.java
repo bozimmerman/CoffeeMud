@@ -20,14 +20,21 @@ public class Import
 		{"animal fur",""+EnvResource.RESOURCE_FUR},
 		{"stone",""+EnvResource.RESOURCE_STONE},
 		{"platinum",""+EnvResource.RESOURCE_PLATINUM},
-		{"soft leather",""+EnvResource.RESOURCE_HIDE},
+		{"soft leather",""+EnvResource.RESOURCE_LEATHER},
 		{"plant",""+EnvResource.RESOURCE_FLOWERS},
+		{"kid leather",""+EnvResource.RESOURCE_HIDE},
 		{"shell",""+EnvResource.RESOURCE_EGGS},
+		{"tin",""+EnvResource.RESOURCE_TIN},
 		{"bone",""+EnvResource.RESOURCE_BONE},
+		{"plastic",""+EnvResource.RESOURCE_PLASTIC},
+		{"kevlar",""+EnvResource.RESOURCE_PLASTIC},
+		{"Dew",""+EnvResource.RESOURCE_FRESHWATER},
+		{"dew",""+EnvResource.RESOURCE_FRESHWATER},
 		{"adamantite",""+EnvResource.RESOURCE_ADAMANTITE},
 		{"admantite",""+EnvResource.RESOURCE_ADAMANTITE},
 		{"marble",""+EnvResource.RESOURCE_MARBLE},
 		{"nothingness",""+EnvResource.RESOURCE_NOTHING},
+		{"hard leather",""+EnvResource.RESOURCE_LEATHER},
 		{"feathers",""+EnvResource.RESOURCE_FEATHERS},
 		{"ash",""+EnvResource.RESOURCE_DUST},
 		{"snakeskin",""+EnvResource.RESOURCE_SCALES},
@@ -36,6 +43,10 @@ public class Import
 		{"food",""+EnvResource.RESOURCE_MEAT},
 		{"unknown",""+EnvResource.RESOURCE_LEATHER},
 		{"onyx",""+EnvResource.RESOURCE_STONE},
+		{"A oldstyle",""+EnvResource.RESOURCE_WOOD},
+		{"a oldstyle",""+EnvResource.RESOURCE_WOOD},
+		{"Other",""+EnvResource.RESOURCE_WOOD},
+		{"other",""+EnvResource.RESOURCE_WOOD},
 		{"etherealness",""+EnvResource.RESOURCE_NOTHING},
 		{"target",""+EnvResource.RESOURCE_LEATHER},
 		{"pill",""+EnvResource.RESOURCE_CORN},
@@ -56,7 +67,15 @@ public class Import
 		{"air",""+EnvResource.RESOURCE_NOTHING},
 		{"hair",""+EnvResource.RESOURCE_FUR},
 		{"parchment",""+EnvResource.RESOURCE_PAPER},
+		{"grain",""+EnvResource.RESOURCE_WHEAT},
+		{"steele",""+EnvResource.RESOURCE_STEEL},
 		{"dragonskin",""+EnvResource.RESOURCE_SCALES},
+		{"granite",""+EnvResource.RESOURCE_GRANITE},
+		{"pottery",""+EnvResource.RESOURCE_CLAY},
+		{"pottery",""+EnvResource.RESOURCE_CLAY},
+		{"liqued",""+EnvResource.RESOURCE_FRESHWATER},
+		{"wax",""+EnvResource.RESOURCE_WAX},
+		{"drink",""+EnvResource.RESOURCE_FRESHWATER},
 		{"steel",""+EnvResource.RESOURCE_STEEL},
 		{"lead",""+EnvResource.RESOURCE_LEAD},
 		{"bronze",""+EnvResource.RESOURCE_BRONZE},
@@ -135,7 +154,66 @@ public class Import
 		{"tatamite",""+EnvResource.RESOURCE_ADAMANTITE},
 		{"velvet",""+EnvResource.RESOURCE_SILK},
 		{"wood-iron",""+EnvResource.RESOURCE_IRONWOOD},
-		{"soft leather",""+EnvResource.RESOURCE_LEATHER}
+		{"soft leather",""+EnvResource.RESOURCE_LEATHER},
+		{"balm",""+EnvResource.RESOURCE_WAX},
+		{"elastic",""+EnvResource.RESOURCE_PLASTIC},
+		{"hemp",""+EnvResource.RESOURCE_HEMP},
+		{"cork",""+EnvResource.RESOURCE_WOOD},
+		{"sponge",""+EnvResource.RESOURCE_WOOL},
+		{"rubber",""+EnvResource.RESOURCE_RUBBER},
+		{"unique",""+EnvResource.RESOURCE_WOOD},
+		{"satin",""+EnvResource.RESOURCE_SILK},
+		{"horn",""+EnvResource.RESOURCE_BONE},
+		{"bark",""+EnvResource.RESOURCE_WOOD},
+		{"Fabric",""+EnvResource.RESOURCE_COTTON},
+		{"Other",""+EnvResource.RESOURCE_WOOD},
+		{"Cord",""+EnvResource.RESOURCE_HEMP},
+		{"velum",""+EnvResource.RESOURCE_PAPER},
+		{"clothe",""+EnvResource.RESOURCE_COTTON},
+		{"beef",""+EnvResource.RESOURCE_BEEF},
+		{"dough",""+EnvResource.RESOURCE_BREAD},
+		{"chicken",""+EnvResource.RESOURCE_POULTRY},
+		{"bagel",""+EnvResource.RESOURCE_BREAD},
+		{"fries",""+EnvResource.RESOURCE_POTATOES},
+		{"chicken",""+EnvResource.RESOURCE_POULTRY},
+		{"cheese",""+EnvResource.RESOURCE_MILK},
+		{"chalk",""+EnvResource.RESOURCE_STONE},
+		{"cotton",""+EnvResource.RESOURCE_COTTON},
+		{"electrum",""+EnvResource.RESOURCE_SILVER},
+		{"wooden",""+EnvResource.RESOURCE_WOOD},
+		{"cardboard",""+EnvResource.RESOURCE_PAPER},
+		{"petals",""+EnvResource.RESOURCE_FLOWERS},
+		{"lace",""+EnvResource.RESOURCE_SILK},
+		{"fabric",""+EnvResource.RESOURCE_COTTON},
+		{"flannel",""+EnvResource.RESOURCE_WOOL},
+		{"Lightning",""+EnvResource.RESOURCE_ENERGY},
+		{"lightning",""+EnvResource.RESOURCE_ENERGY},
+		{"rawhide",""+EnvResource.RESOURCE_LEATHER},
+		{"pine",""+EnvResource.RESOURCE_PINE},
+		{"cream",""+EnvResource.RESOURCE_MILK},
+		{"cheeseskin",""+EnvResource.RESOURCE_PLASTIC},
+		{"fiberglass",""+EnvResource.RESOURCE_COTTON},
+		{"leopard",""+EnvResource.RESOURCE_HIDE},
+		{"tobacco",""+EnvResource.RESOURCE_PIPEWEED},
+		{"flowers",""+EnvResource.RESOURCE_FLOWERS},
+		{"emerald",""+EnvResource.RESOURCE_GEM},
+		{"coffee",""+EnvResource.RESOURCE_COFFEEBEANS},
+		{"turnip",""+EnvResource.RESOURCE_GREENS},
+		{"nickel",""+EnvResource.RESOURCE_SILVER},
+		{"yew",""+EnvResource.RESOURCE_WOOD},
+		{"mahogany",""+EnvResource.RESOURCE_WOOD},
+		{"alligator",""+EnvResource.RESOURCE_SCALES},
+		{"potatoes",""+EnvResource.RESOURCE_POTATOES},
+		{"yeast",""+EnvResource.RESOURCE_BREAD},
+		{"pork",""+EnvResource.RESOURCE_PORK},
+		{"turkey",""+EnvResource.RESOURCE_POULTRY},
+		{"stew",""+EnvResource.RESOURCE_MEAT},
+		{"chili",""+EnvResource.RESOURCE_MEAT},
+		{"wonton",""+EnvResource.RESOURCE_MEAT},
+		{"sandstone",""+EnvResource.RESOURCE_STONE},
+		{"vevet",""+EnvResource.RESOURCE_SILK},
+		{"lether",""+EnvResource.RESOURCE_LEATHER},
+		{"(null)",""+EnvResource.RESOURCE_NOTHING}
 	};
 
 
@@ -4980,6 +5058,26 @@ public class Import
 		{
 			Room saveRoom=(Room)e.nextElement();
 			ExternalPlay.DBCreateRoom(saveRoom,CMClass.className(saveRoom));
+			// final exit clean-up optomization
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				Exit E=saveRoom.rawExits()[d];
+				if((E!=null)
+				&&(E.isGeneric())
+				&&(!E.hasADoor())
+				&&(!E.hasALock())
+				&&(E.name().equalsIgnoreCase("the ground"))
+				&&(!E.isReadable())
+				&&(E.numAffects()==0)
+				&&(E.numBehaviors()==0)
+				&&(E.temporaryDoorLink().length()==0)
+				&&(E.displayText().equals(E.description())))
+				{
+					Exit E2=CMClass.getExit("OpenDescriptable");
+					E2.setMiscText(E.displayText());
+					saveRoom.rawExits()[d]=E2;
+				}
+			}
 			ExternalPlay.DBUpdateExits(saveRoom);
 			ExternalPlay.DBUpdateMOBs(saveRoom);
 			ExternalPlay.DBUpdateItems(saveRoom);
