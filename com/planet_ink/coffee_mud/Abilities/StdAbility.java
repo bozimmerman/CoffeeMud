@@ -555,8 +555,6 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(isAutoInvoked())
 		{
-			if(mob.charStats().getCurrentClass().ID().equals("Archon"))
-				return false;
 			if(CMAble.qualifiesByLevel(mob,this))
 			{
 				Ability thisAbility=mob.fetchAffect(this.ID());

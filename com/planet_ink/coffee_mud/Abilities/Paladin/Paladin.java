@@ -55,4 +55,11 @@ public class Paladin extends StdAbility
 			helpProfficiency(invoker);
 		return true;
 	}
+	
+	public boolean autoInvocation(MOB mob)
+	{
+		if(mob.charStats().getCurrentClass().ID().equals("Archon"))
+			return false;
+		return super.autoInvocation(mob);
+	}
 }
