@@ -53,7 +53,7 @@ public class Spell_Fireball extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A huge fireball appears and blazes towards <T-NAME>!":"<S-NAME> point(s) and chant(s) at <T-NAMESELF>, and shoot(s) forth a fireball!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A huge fireball appears and blazes towards <T-NAME>!":"<S-NAME> point(s) at <T-NAMESELF>, shooting forth a blazing fireball!");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_FIRE,null);
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{

@@ -27,7 +27,7 @@ public class Spell_Lightning extends Spell
 
 		baseEnvStats().setLevel(8);
 		maxRange=1;
-		minRange=1;
+		minRange=0;
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -59,7 +59,7 @@ public class Spell_Lightning extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A lightening bolt streaks through the air!":"<S-NAME> point(s) and chant(s) at <T-NAMESELF>, and shoot(s) forth a lightning bolt");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A lightening bolt streaks through the air!":"<S-NAME> point(s) encanting at <T-NAMESELF>, shooting forth a lightning bolt");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC,null);
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{
