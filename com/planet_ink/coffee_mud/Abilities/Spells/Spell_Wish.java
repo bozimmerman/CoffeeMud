@@ -269,7 +269,6 @@ public class Spell_Wish extends Spell
 			||(myWish.startsWith(" TO GO AWAY "))
 			||(myWish.startsWith(" TO GO TO HELL ")))
 			{
-				int experienceRequired=10*(target.envStats().level()-1);
 				if(target instanceof Item)
 				{
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" quietly vanishes.");

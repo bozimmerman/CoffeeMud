@@ -87,9 +87,9 @@ public class Spell_ReverseGravity extends Spell
 		{
 			Room room=(Room)affected;
 			room.show(invoker, null, Affect.MSG_OK_VISUAL, "Gravity returns to normal...");
-			if((invoker!=null)&&(invoker instanceof MOB))
+			if(invoker!=null)
 			{
-				Ability me=((MOB)invoker).fetchAffect(ID());
+				Ability me=invoker.fetchAffect(ID());
 				if(me!=null) me.setProfficiency(0);
 			}
 		}

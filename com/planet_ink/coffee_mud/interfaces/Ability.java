@@ -3,51 +3,6 @@ import java.util.*;
 
 public interface Ability  extends Environmental
 {
-	/** If it applies, the number of uses remaining
-	 * for this Ability */
-	public int usesRemaining();
-	public void setUsesRemaining(int newUses);
-	
-	public MOB invoker();
-	public Vector triggerStrings();
-	public boolean invoke(MOB mob, Environmental target, boolean auto);
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto);
-	public boolean autoInvocation(MOB mob);
-	
-	public void makeNonUninvokable();
-	public void unInvoke();
-	public boolean canBeUninvoked();
-	public boolean isAnAutoEffect();
-	public boolean isBorrowed(Environmental toMe);
-	public void setBorrowed(Environmental toMe, boolean truefalse);
-	
-	public boolean canBeTaughtBy(MOB teacher, MOB student);
-	public boolean canBePracticedBy(MOB teacher, MOB student);
-	public boolean canBeLearnedBy(MOB teacher, MOB student);
-	public void teach(MOB teacher, MOB student);
-	public void practice(MOB teacher, MOB student);
-	
-	public String accountForYourself();
-	
-	public boolean qualifies(MOB student);
-	public int qualifyingLevel(MOB student);
-	public boolean appropriateToMyAlignment(MOB mob);
-	
-	public void startTickDown(Environmental affected, long tickTime);
-	public void makeLongLasting();
-	
-	public int profficiency();
-	public void setProfficiency(int newProfficiency);
-	public boolean profficiencyCheck(int adjustment, boolean auto);
-	public void helpProfficiency(MOB mob);
-
-	public Environmental affecting();
-	public void setAffectedOne(Environmental being);
-	
-	public int classificationCode();
-	public boolean putInCommandlist();
-	public int quality();
-	
 	// general classifications
 	public static final int SKILL=0;
 	public static final int SPELL=1;
@@ -68,7 +23,9 @@ public interface Ability  extends Environmental
 	public static final int DOMAIN_TRANSMUTATION=6<<5;	
 	public static final int DOMAIN_ENCHANTMENT=7<<5;	
 	public static final int DOMAIN_CONJURATION=8<<5;	
-
+	// the classification incorporates the above
+	public int classificationCode();
+	
 	// qualities
 	public static final int MALICIOUS=0;
 	public static final int INDIFFERENT=1;
@@ -76,4 +33,85 @@ public interface Ability  extends Environmental
 	public static final int OK_OTHERS=3;
 	public static final int BENEFICIAL_SELF=4;
 	public static final int BENEFICIAL_OTHERS=5;
+	// the quality is used for more intelligent
+	// usage by mobs.  it returns one of the above
+	public int quality();
+
+	// who is responsible for initiating this affect?
+	public MOB invoker();
+	// who (or what) is being affected by the abilitys use?
+	public Environmental affecting();
+	public void setAffectedOne(Environmental being);
+	
+	// whether or not this ability is also a command
+	// most skills are, properties never are
+	public boolean putInCommandlist();
+	
+	// the initial command word to activate this ability
+	// or its brethren (cast, trip, etc..)
+	public Vector triggerStrings();
+	
+	// when a mob uses an ability manually, this is the method
+	// to make it happen.
+	public boolean invoke(MOB mob, Environmental target, boolean auto);
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto);
+	
+	// for affects which may be uninvoked, this will do the trick!
+	public void unInvoke();
+	public boolean canBeUninvoked();
+	public void makeNonUninvokable();
+
+	// for abilities which are on a timer, this method will 
+	// make those abilities last a very long time (until reboot perhaps)
+	public void makeLongLasting();
+	
+	// an autoinvocating effect is an ability which affects the 
+	// mob just by having the ability.  Dodge is an example of this.
+	// the autoinvacation method is called to initiate this.
+	// this method should be called WHENEVER an ability is 
+	// added to a MOB for the first time.
+	public boolean autoInvocation(MOB mob);
+	public boolean isAnAutoEffect();
+	
+	// a borrowed ability is one derived from some other source
+	// than the mobs knowledge, such as a magic item, or 
+	// a class behavior.  borrowed abilities are not saved, 
+	// and neither are borrowed properties or affects.
+	public boolean isBorrowed(Environmental toMe);
+	public void setBorrowed(Environmental toMe, boolean truefalse);
+	
+	/** If it applies, the number of uses remaining
+	 * for this Ability */
+	public int usesRemaining();
+	public void setUsesRemaining(int newUses);
+	
+	// methods to assist in teaching and learning the
+	// abilities
+	public boolean canBeTaughtBy(MOB teacher, MOB student);
+	public boolean canBePracticedBy(MOB teacher, MOB student);
+	public boolean canBeLearnedBy(MOB teacher, MOB student);
+	public void teach(MOB teacher, MOB student);
+	public void practice(MOB teacher, MOB student);
+	public boolean qualifies(MOB student);
+	public int qualifyingLevel(MOB student);
+
+	// for use by the identify spell, this should return a
+	// nice description of any properties incorporated
+	// by this affect
+	public String accountForYourself();
+
+	// For clerics, usually, whether this ability is
+	// appropriate for the mob using it
+	public boolean appropriateToMyAlignment(MOB mob);
+
+	// intelligently add this ability as an affect upon a target,
+	// and start a new clock (if necessary), setting the timer
+	// on the affect as needed.
+	public void startTickDown(Environmental affected, long tickTime);
+
+	// as an ability, how profficient the mob is at it.
+	public int profficiency();
+	public void setProfficiency(int newProfficiency);
+	public boolean profficiencyCheck(int adjustment, boolean auto);
+	public void helpProfficiency(MOB mob);
 }

@@ -45,9 +45,9 @@ public class Spell_TimeStop extends Spell
 		{
 			Room room=(Room)affected;
 			room.show(invoker, null, Affect.MSG_OK_VISUAL, "Time starts moving again...");
-			if((invoker!=null)&&(invoker instanceof MOB))
+			if(invoker!=null)
 			{
-				Ability me=((MOB)invoker).fetchAffect(ID());
+				Ability me=invoker.fetchAffect(ID());
 				if(me!=null)
 					me.unInvoke();
 			}

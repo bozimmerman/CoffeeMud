@@ -79,7 +79,7 @@ public class InTheAir extends StdRoom
 			Ability falling=CMClass.getAbility("Falling");
 			falling.setProfficiency(avg);
 			falling.setAffectedOne(room);
-			boolean kaplah=falling.invoke(null,null,E,true);
+			falling.invoke(null,null,E,true);
 		}
 		
 		if((affect.targetMinor()==affect.TYP_ENTER)
