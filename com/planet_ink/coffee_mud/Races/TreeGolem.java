@@ -37,6 +37,9 @@ public class TreeGolem extends StdRace
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,8 ,8 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
+	private int[] agingChart={0,10,20,50,65,75,100,150,160};
+	public int[] getAgingChart(){return agingChart;}
+	
 	protected static Vector resources=new Vector();
 	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 

@@ -37,6 +37,9 @@ public class Vine extends StdRace
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,8 ,8 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
+	private int[] agingChart={0,2,4,8,14,30,40,41,42};
+	public int[] getAgingChart(){return agingChart;}
+	
 	protected static Vector resources=new Vector();
 	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 

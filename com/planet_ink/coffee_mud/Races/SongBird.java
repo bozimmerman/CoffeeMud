@@ -45,8 +45,9 @@ public class SongBird extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
 	public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,2,20,110,175,263,350,390,430};
+	private int[] agingChart={0,1,2,4,5,5,6,7,8};
 	public int[] getAgingChart(){return agingChart;}
+	
 	
 	protected static Vector resources=new Vector();
 	public int availability(){return Race.AVAILABLE_MAGICONLY;}

@@ -44,6 +44,9 @@ public class Tarantula extends StdRace
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
+	private int[] agingChart={0,0,0,1,1,1,1,2,2};
+	public int[] getAgingChart(){return agingChart;}
+		
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 

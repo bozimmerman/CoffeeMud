@@ -44,6 +44,9 @@ public class Beholder extends StdRace
 	private static final int[] parts={-1,10,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public int[] bodyMask(){return parts;}
 
+	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
+	public int[] getAgingChart(){return agingChart;}
+	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
