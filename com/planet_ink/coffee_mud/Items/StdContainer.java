@@ -504,12 +504,12 @@ public class StdContainer extends StdItem implements Container
 					break;
 				case CONTAIN_CLOTHES:
 					if((E instanceof Armor)
-					&&(((Armor)E).canBeWornAt(Item.ABOUT_BODY)
-					   ||((Armor)E).canBeWornAt(Item.ON_ARMS)
-					   ||((Armor)E).canBeWornAt(Item.ON_LEGS)
-					   ||((Armor)E).canBeWornAt(Item.ON_HEAD)
-					   ||((Armor)E).canBeWornAt(Item.ON_TORSO)
-					   ||((Armor)E).canBeWornAt(Item.ON_WAIST)))
+					&&(((Armor)E).fitsOn(Item.ABOUT_BODY)
+					   ||((Armor)E).fitsOn(Item.ON_ARMS)
+					   ||((Armor)E).fitsOn(Item.ON_LEGS)
+					   ||((Armor)E).fitsOn(Item.ON_HEAD)
+					   ||((Armor)E).fitsOn(Item.ON_TORSO)
+					   ||((Armor)E).fitsOn(Item.ON_WAIST)))
 						return true;
 					break;
 				case CONTAIN_OTHERWEAPONS:

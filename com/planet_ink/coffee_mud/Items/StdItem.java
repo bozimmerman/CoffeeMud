@@ -167,25 +167,23 @@ public class StdItem implements Item
 			return false;
 		return (myWornCode & wornCode)==wornCode;
 	}
-	public boolean canBeWornAt(long wornCode)
+	public boolean fitsOn(long wornCode)
 	{
-		if(wornCode==0)
-			return true;
+		if(wornCode<=0)	return true;
 		return ((properWornBitmap & wornCode)==wornCode);
 	}
 	public void wearIfPossible(MOB mob)
 	{
-		if(canWear(mob))
-			for(int i=0;i<20;i++)
+		for(int i=0;i<20;i++)
+		{
+			long wornCode=1<<i;
+			if((fitsOn(wornCode))
+			&&(canWear(mob,wornCode)))
 			{
-				long wornCode=1<<i;
-				if((canBeWornAt(wornCode))
-				&&(mob.freeWearPositions(wornCode)>0))
-				{
-					wearAt(wornCode);
-					break;
-				}
+				wearAt(wornCode);
+				break;
 			}
+		}
 	}
 	public void wearAt(long wornCode)
 	{
@@ -228,12 +226,13 @@ public class StdItem implements Item
 		if(properWornBitmap==0)
 			return couldHaveBeenWornAt;
 
+		long wornCode=0;
 		if(!wornLogicalAnd)
 		{
 			for(int i=0;i<20;i++)
 			{
-				long wornCode=1<<i;
-				if(canBeWornAt(wornCode))
+				wornCode=1<<i;
+				if(fitsOn(wornCode))
 				{
 					couldHaveBeenWornAt=wornCode;
 					if(mob.freeWearPositions(wornCode)>0)
@@ -246,8 +245,8 @@ public class StdItem implements Item
 		{
 			for(int i=0;i<20;i++)
 			{
-				long wornCode=1<<i;
-				if((canBeWornAt(wornCode))
+				wornCode=1<<i;
+				if((fitsOn(wornCode))
 				&&(mob.freeWearPositions(wornCode)==0))
 					return wornCode;
 			}
@@ -255,11 +254,10 @@ public class StdItem implements Item
 		}
 	}
 
-	public boolean canWear(MOB mob)
+	public boolean canWear(MOB mob, long where)
 	{
-		if(whereCantWear(mob)==0)
-			return true;
-		return false;
+		if(where==0) return (whereCantWear(mob)==0);
+		return mob.freeWearPositions(where)>0;
 	}
 
 	public long rawWornCode()
@@ -567,10 +565,10 @@ public class StdItem implements Item
 		case Affect.TYP_HOLD:
 			if(!alreadyWornMsg(affect.source(),this))
 				return false;
-			if(!canBeWornAt(Item.HELD))
+			if(!fitsOn(Item.HELD))
 			{
 				StringBuffer msg=new StringBuffer("You can't hold "+name()+".");
-				if(canBeWornAt(Item.WIELD))
+				if(fitsOn(Item.WIELD))
 					msg.append("Try WIELDing it.");
 				else
 				if(properWornBitmap>0)
@@ -583,13 +581,13 @@ public class StdItem implements Item
 				mob.tell("That looks too advanced for you.");
 				return false;
 			}
-			if(!canWear(mob))
+			if(!canWear(mob,Item.HELD))
 			{
 				Item alreadyWearing=mob.fetchFirstWornItem(Item.HELD);
 				if(alreadyWearing!=null)
 				{
 					if((!ExternalPlay.remove(mob,alreadyWearing,false))
-					||(!canWear(mob)))
+					||(!canWear(mob,Item.HELD)))
 					{
 						mob.tell("Your hands are full.");
 						return false;
@@ -615,7 +613,7 @@ public class StdItem implements Item
 				mob.tell("That looks too advanced for you.");
 				return false;
 			}
-			if(!canWear(mob))
+			if(!canWear(mob,0))
 			{
 				long cantWearAt=whereCantWear(mob);
 				Item alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
@@ -624,7 +622,7 @@ public class StdItem implements Item
 					if((cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
 					{
 						if((!ExternalPlay.remove(mob,alreadyWearing,false))
-						||(!canWear(mob)))
+						||(!canWear(mob,0)))
 						{
 							mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
 							return false;
@@ -650,7 +648,7 @@ public class StdItem implements Item
 			}
 			return true;
 		case Affect.TYP_WIELD:
-			if(!canBeWornAt(Item.WIELD))
+			if(!fitsOn(Item.WIELD))
 			{
 				mob.tell("You can't wield "+name()+" as a weapon.");
 				return false;
@@ -662,7 +660,7 @@ public class StdItem implements Item
 				mob.tell("That looks too advanced for you.");
 				return false;
 			}
-			if(!canWear(mob))
+			if(!canWear(mob,Item.WIELD))
 			{
 				Item alreadyWearing=mob.fetchFirstWornItem(Item.WIELD);
 				if(alreadyWearing!=null)
@@ -900,7 +898,7 @@ public class StdItem implements Item
 			}
 			return;
 		case Affect.TYP_HOLD:
-			if((this.canWear(mob))&&(this.canBeWornAt(Item.HELD)))
+			if((canWear(mob,Item.HELD))&&(fitsOn(Item.HELD)))
 			{
 				wearAt(Item.HELD);
 				mob.recoverCharStats();
@@ -909,7 +907,7 @@ public class StdItem implements Item
 			}
 			break;
 		case Affect.TYP_WEAR:
-			if(this.canWear(mob))
+			if(canWear(mob,0))
 			{
 				wearIfPossible(mob);
 				mob.recoverCharStats();
@@ -918,7 +916,7 @@ public class StdItem implements Item
 			}
 			break;
 		case Affect.TYP_WIELD:
-			if((this.canWear(mob))&&(this.canBeWornAt(Item.WIELD)))
+			if((canWear(mob,Item.WIELD))&&(fitsOn(Item.WIELD)))
 			{
 				wearAt(Item.WIELD);
 				mob.recoverCharStats();

@@ -62,7 +62,7 @@ public class GenWallpaper implements Item
 	{return destroyed;}
 
 	public boolean amWearingAt(long wornCode){if(wornCode==Item.INVENTORY)return true; return false;}
-	public boolean canBeWornAt(long wornCode){return false;}
+	public boolean fitsOn(long wornCode){return false;}
 	public void wearIfPossible(MOB mob){}
 	public void wearAt(long wornCode){}
 	public long rawProperLocationBitmap(){return 0;}
@@ -71,7 +71,7 @@ public class GenWallpaper implements Item
 	public void setRawLogicalAnd(boolean newAnd){}
 	public boolean compareProperLocations(Item toThis){return true;}
 	public long whereCantWear(MOB mob){ return 0;}
-	public boolean canWear(MOB mob){ return false;}
+	public boolean canWear(MOB mob, long wornCode){ return false;}
 	public long rawWornCode(){return 0;}
 	public void setRawWornCode(long newValue){}
 	public void unWear(){}

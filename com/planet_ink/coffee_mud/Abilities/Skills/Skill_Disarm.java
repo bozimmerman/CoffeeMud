@@ -56,8 +56,8 @@ public class Skill_Disarm extends StdAbility
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(-levelDiff,auto)&&(hit);
 		if((success)&&(hisWeapon!=null)
-		   &&((hisWeapon.canBeWornAt(Item.WIELD))
-			  ||hisWeapon.canBeWornAt(Item.WIELD|Item.HELD)))
+		   &&((hisWeapon.fitsOn(Item.WIELD))
+			  ||hisWeapon.fitsOn(Item.WIELD|Item.HELD)))
 		{
 			if(mob.location().show(mob,mob.getVictim(),Affect.MSG_NOISYMOVEMENT,null))
 			{

@@ -146,7 +146,7 @@ public class CombatAbilities extends StdBehavior
 						backupWand=I;
 				}
 			}
-			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob)))
+			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob,Item.HELD)))
 			{
 				Vector V=new Vector();
 				V.addElement("hold");

@@ -2502,11 +2502,13 @@ public class StdMOB implements MOB
 			return Integer.MAX_VALUE;
 		int total;
 		int add=0;
+		boolean found=false;
 		for(int i=0;i<Race.BODY_WEARGRID.length;i++)
 		{
 			if((Race.BODY_WEARGRID[i][0]>0)
 			&&((Race.BODY_WEARGRID[i][0]&wornCode)==wornCode))
 			{
+				found=true;
 				total=charStats().getBodyPart(i);
 				if(Race.BODY_WEARGRID[i][1]<0)
 				{
@@ -2514,7 +2516,9 @@ public class StdMOB implements MOB
 				}
 				else
 				if(total<1)
+				{
 					return 0;
+				}
 				else
 				if(i==Race.BODY_HAND)
 				{
@@ -2538,7 +2542,8 @@ public class StdMOB implements MOB
 					case (int)Item.HELD:
 					case (int)Item.ON_LEFT_FINGER:
 					case (int)Item.ON_LEFT_WRIST:
-						add+=total-1; break;
+						add+=total-1;
+						break;
 					default:
 						add+=total; break;
 					}
@@ -2553,7 +2558,7 @@ public class StdMOB implements MOB
 				}
 			}
 		}
-		if(add==0) return 1;
+		if(!found) return 1;
 		return add;
 	}
 	

@@ -172,9 +172,9 @@ public interface Item extends Environmental, Rider
 	
 	/** If being worn, this code will show WHERE*/
 	public boolean amWearingAt(long wornCode);	// 0 means in inventory! see above
-	public boolean canBeWornAt(long wornCode);
+	public boolean fitsOn(long wornCode);
 	public long whereCantWear(MOB mob); // 0 == ok!
-	public boolean canWear(MOB mob);
+	public boolean canWear(MOB mob, long wornCode);
 	public void wearIfPossible(MOB mob);
 	public void wearAt(long wornCode);
 	public void unWear();

@@ -297,10 +297,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					&&(!(thisThang instanceof MiscMagic))
 					&&(((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
 					||((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
-					||((Item)thisThang).canBeWornAt(Item.ON_EARS)
-					||((Item)thisThang).canBeWornAt(Item.ON_NECK)
-					||((Item)thisThang).canBeWornAt(Item.ON_RIGHT_FINGER)
-					||((Item)thisThang).canBeWornAt(Item.ON_LEFT_FINGER)));
+					||((Item)thisThang).fitsOn(Item.ON_EARS)
+					||((Item)thisThang).fitsOn(Item.ON_NECK)
+					||((Item)thisThang).fitsOn(Item.ON_RIGHT_FINGER)
+					||((Item)thisThang).fitsOn(Item.ON_LEFT_FINGER)));
 		case DEAL_ALCHEMIST:
 			return (thisThang instanceof Potion);
 		case DEAL_LANDSELLER:

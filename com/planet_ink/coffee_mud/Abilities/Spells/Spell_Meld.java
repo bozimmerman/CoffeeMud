@@ -15,14 +15,14 @@ public class Spell_Meld extends Spell
 
 	public boolean shinBone(Item one, Item two, long locationOne, long locationTwo)
 	{
-		if((one.canBeWornAt(locationOne)&&two.canBeWornAt(locationTwo))
-		   &&(!one.canBeWornAt(locationTwo))
-		   &&(!two.canBeWornAt(locationOne)))
+		if((one.fitsOn(locationOne)&&two.fitsOn(locationTwo))
+		   &&(!one.fitsOn(locationTwo))
+		   &&(!two.fitsOn(locationOne)))
 			return true;
 		else
-		if((two.canBeWornAt(locationOne)&&one.canBeWornAt(locationTwo))
-		   &&(!two.canBeWornAt(locationTwo))
-		   &&(!one.canBeWornAt(locationOne)))
+		if((two.fitsOn(locationOne)&&one.fitsOn(locationTwo))
+		   &&(!two.fitsOn(locationTwo))
+		   &&(!one.fitsOn(locationOne)))
 			return true;
 		return false;
 	}
@@ -98,12 +98,12 @@ public class Spell_Meld extends Spell
 		else
 		if((itemOne instanceof Weapon)||(itemTwo instanceof Weapon))
 		{
-			if(!itemOne.canBeWornAt(Item.HELD))
+			if(!itemOne.fitsOn(Item.HELD))
 			{
 				mob.tell(itemOne.name()+" can't be held, and thus can't be melded with "+itemTwo.name()+".");
 				return false;
 			}
-			if(!itemTwo.canBeWornAt(Item.HELD))
+			if(!itemTwo.fitsOn(Item.HELD))
 			{
 				mob.tell(itemTwo.name()+" can't be held, and thus can't be melded with "+itemOne.name()+".");
 				return false;
