@@ -473,7 +473,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 		if(abilityCode<CharStats.NUM_BASE_STATS)
 		{
 			setStat(CharStats.MAX_STRENGTH_ADJ+abilityCode,
-					-CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)-value);
+					value-CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT));
 		}
 	}
 	public void setStat(int abilityCode, int value)
