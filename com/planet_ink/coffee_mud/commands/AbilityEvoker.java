@@ -68,11 +68,15 @@ public class AbilityEvoker
 					if(thisAbility.name().equalsIgnoreCase(secondWord))
 					{
 						evokableAbility=thisAbility;
+						foundMoreThanOne=false;
 						break;
 					}
 					else
 					if(evokableAbility!=null)
+					{
 						foundMoreThanOne=true;
+						break;
+					}
 					else
 						evokableAbility=thisAbility;
 						
