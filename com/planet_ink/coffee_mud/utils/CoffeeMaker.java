@@ -637,7 +637,7 @@ public class CoffeeMaker
 						if((iden!=null)&&(iden.length()>0)) identTable.put(iden,newItem);
 					}
 					String iloc=XMLManager.getValFromPieces(iblk.contents,"ILOCA");
-					if(iloc.length()>0) itemLocTable.put(iloc,newItem);
+					if(iloc.length()>0) itemLocTable.put(newItem,iloc);
 					newItem.baseEnvStats().setLevel(XMLManager.getIntFromPieces(iblk.contents,"ILEVL"));
 					newItem.baseEnvStats().setAbility(XMLManager.getIntFromPieces(iblk.contents,"IABLE"));
 					newItem.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(iblk.contents,"IREJV"));
@@ -650,8 +650,8 @@ public class CoffeeMaker
 				}
 				for(Enumeration e=itemLocTable.keys();e.hasMoreElements();)
 				{
-					String loc=(String)e.nextElement();
-					Item childI=(Item)itemLocTable.get(loc);
+					Item childI=(Item)e.nextElement();
+					String loc=(String)itemLocTable.get(childI);
 					Item parentI=(Item)identTable.get(loc);
 					if(parentI!=null)
 					{
