@@ -82,6 +82,7 @@ public class Scriptable extends StdBehavior
 		"ISDAY", // 39
 		"NUMBER", // 40
 		"EVAL", // 41
+		"RANDNUM", // 42
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -163,6 +164,43 @@ public class Scriptable extends StdBehavior
 		oncesDone.clear();
 	}
 
+	private String parseLoads(String text, int depth)
+	{
+		StringBuffer results=new StringBuffer("");
+		String parse=text;
+		if(depth>10) return "";  // no including off to infinity
+		while(parse.length()>0)
+		{
+			int y=parse.indexOf("LOAD=");
+			if(y>=0)
+			{
+				int z=parse.indexOf("~",y);
+				if(z>0)
+				{
+					depth+=1;
+					Log.sysOut("Scriptable","Loading -- "+text.substring(y+5,z)+", "+depth+", "+Resources.getFileResource(text.substring(y+5,z)).toString().length());
+					
+					results.append(parseLoads(Resources.getFileResource(text.substring(y+5,z)).toString(),depth));
+					parse=parse.substring(z+1);
+				}
+				else
+				{
+					depth+=1;
+					Log.sysOut("Scriptable","Loading -- "+text.substring(y+5)+", "+depth+", "+Resources.getFileResource(text.substring(y+5)).toString().length());
+					results.append(parseLoads(Resources.getFileResource(text.substring(y+5)).toString(),depth));
+					break;
+				}
+			}
+			else
+			{
+				results.append(parse);
+				break;
+			}
+		}
+		Log.sysOut("Scriptable","Parsed script length -- "+results.toString().length());
+		return results.toString();
+	}
+
 	private Vector parseScripts(String text)
 	{
 		synchronized(funcH)
@@ -178,11 +216,7 @@ public class Scriptable extends StdBehavior
 			}
 		}
 		Vector V=new Vector();
-		if(text.toUpperCase().startsWith("LOAD="))
-		{
-			StringBuffer buf=Resources.getFileResource(text.substring(5));
-			if(buf!=null) text=buf.toString();
-		}
+		text=parseLoads(text,0);
 		while((text!=null)&&(text.length()>0))
 		{
 			int y=text.indexOf("~");
@@ -552,16 +586,14 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				else
 				{
-					Ability A=((MOB)E).fetchAffect("Spell_Charm");
-					if(A==null) A=((MOB)E).fetchAffect("Spell_Enthrall");
-					if(A==null) A=((MOB)E).fetchAffect("Chant_CharmAnimal");
-					if(A==null) A=((MOB)E).fetchAffect("Spell_SummonMonster");
-					if(A==null) A=((MOB)E).fetchAffect("Spell_DemonGate");
-					if(A==null) A=((MOB)E).fetchAffect("Spell_SummonEnemy");
-					if(A==null) A=((MOB)E).fetchAffect("Spell_SummonSteed");
-					if(A==null) A=((MOB)E).fetchAffect("Spell_SummonFlyer");
-					if(A==null) A=((MOB)E).fetchAffect("Spell_SummonArmy");
-					returnable=(A!=null);
+					Ability charm=null;
+					for(int a=0;a<E.numAffects();a++)
+					{
+						Ability A=E.fetchAffect(a);
+						if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_CHARMING)))
+						{ charm=A; break;}
+					}
+					returnable=(charm!=null);
 				}
 				break;
 			}
@@ -1399,6 +1431,35 @@ public class Scriptable extends StdBehavior
 				returnable=isnumber;
 				break;
 			}
+			case 42: // randnum
+			{
+				int arg1=Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase());
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				int arg3=Dice.roll(1,Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2))),0);
+				if(arg2.equalsIgnoreCase("=="))
+					returnable=(arg1==arg3);
+				else
+				if(arg2.equalsIgnoreCase(">="))
+					returnable=(arg1>=arg3);
+				else
+				if(arg2.equalsIgnoreCase("<="))
+					returnable=(arg1<=arg3);
+				else
+				if(arg2.equalsIgnoreCase(">"))
+					returnable=(arg1>arg3);
+				else
+				if(arg2.equalsIgnoreCase("<"))
+					returnable=(arg1<arg3);
+				else
+				if(arg2.equalsIgnoreCase("!="))
+					returnable=(arg1!=arg3);
+				else
+				{
+					Log.errOut("Scriptable","RANDNUM Syntax -- "+monster.Name()+", "+evaluable);
+					return returnable;
+				}
+				break;
+			}
 			default:
 				Log.errOut("Scriptable","Unknown CMD -- "+monster.Name()+", "+evaluable);
 				return returnable;
@@ -1410,6 +1471,513 @@ public class Scriptable extends StdBehavior
 			}
 		}
 		return returnable;
+	}
+
+	public String functify(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, String msg, String evaluable)
+	{
+		String uevaluable=evaluable.toUpperCase().trim();
+		StringBuffer results = new StringBuffer("");
+		while(evaluable.length()>0)
+		{
+			int y=evaluable.indexOf("(");
+			int z=evaluable.indexOf(")");
+			String preFab=uevaluable.substring(0,y).trim();
+			Integer funcCode=(Integer)funcH.get(preFab);
+			if(funcCode==null) funcCode=new Integer(0);
+			if(y==0)
+			{
+				int depth=0;
+				int i=0;
+				while((++i)<evaluable.length())
+				{
+					char c=evaluable.charAt(i);
+					if((c==')')&&(depth==0))
+					{
+						String expr=evaluable.substring(1,i);
+						evaluable=evaluable.substring(i+1);
+						uevaluable=uevaluable.substring(i+1);
+						results.append(functify(source,target,monster,primaryItem,secondaryItem,msg,expr));
+						break;
+					}
+					else
+					if(c=='(') depth++;
+					else
+					if(c==')') depth--;
+				}
+				z=evaluable.indexOf(")");
+			}
+			else
+			if((y<0)||(z<y))
+			{
+				Log.errOut("Scriptable","() Syntax -- "+monster.Name()+", "+evaluable);
+				break;
+			}
+			else
+			switch(funcCode.intValue())
+			{
+			case 1: // rand
+			{
+				results.append(Dice.rollPercentage());
+				break;
+			}
+			case 2: // has
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				Vector choices=new Vector();
+				if(E==null)
+					choices=new Vector();
+				else
+				if(E instanceof MOB)
+				{
+					for(int i=0;i<((MOB)E).inventorySize();i++)
+					{
+						Item I=((MOB)E).fetchInventory(i);
+						if((I!=null)&&(I.amWearingAt(Item.INVENTORY))&&(I.container()==null))
+							choices.addElement(I);
+					}
+				}
+				else
+				if(E instanceof Item)
+				{
+					choices.addElement((Item)E);
+					if(E instanceof Container)
+						choices=((Container)E).getContents();
+				}
+				else
+				if(E instanceof Room)
+				{
+					for(int i=0;i<((Room)E).numItems();i++)
+					{
+						Item I=((Room)E).fetchItem(i);
+						if((I!=null)&&(I.container()==null))
+							choices.addElement(I);
+					}
+				}
+				if(choices.size()>0)
+					results.append(((Item)choices.elementAt(Dice.roll(1,choices.size(),-1))).name());
+				break;
+			}
+			case 3: // worn
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				Vector choices=new Vector();
+				if(E==null)
+					choices=new Vector();
+				else
+				if(E instanceof MOB)
+				{
+					for(int i=0;i<((MOB)E).inventorySize();i++)
+					{
+						Item I=((MOB)E).fetchInventory(i);
+						if((I!=null)&&(!I.amWearingAt(Item.INVENTORY))&&(I.container()==null))
+							choices.addElement(I);
+					}
+				}
+				else
+				if((E instanceof Item)&&(!(((Item)E).amWearingAt(Item.INVENTORY))))
+				{
+					choices.addElement((Item)E);
+					if(E instanceof Container)
+						choices=((Container)E).getContents();
+				}
+				if(choices.size()>0)
+					results.append(((Item)choices.elementAt(Dice.roll(1,choices.size(),-1))).name());
+				break;
+			}
+			case 4: // isnpc
+			case 5: // ispc
+				results.append("[unimplemented function]");
+				break;
+			case 6: // isgood
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&((E instanceof MOB)))
+					results.append(CommonStrings.alignmentStr(((MOB)E).getAlignment()));
+				break;
+			}
+			case 8: // isevil
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&((E instanceof MOB)))
+					results.append(CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()));
+				break;
+			}
+			case 9: // isneutral
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&((E instanceof MOB)))
+					results.append(((MOB)E).getAlignment());
+				break;
+			}
+			case 11: // isimmort
+				results.append("[unimplemented function]");
+				break;
+			case 10: // isfight
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&((E instanceof MOB))&&(((MOB)E).isInCombat()))
+					results.append(((MOB)E).getVictim().name());
+				break;
+			}
+			case 12: // ischarmed
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E!=null)
+				{
+					Ability charm=null;
+					for(int a=0;a<E.numAffects();a++)
+					{
+						Ability A=E.fetchAffect(a);
+						if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_CHARMING)))
+						{ charm=A; break;}
+					}
+					if(charm!=null) results.append(charm.name());										
+				}
+				break;
+			}
+			case 15: // isfollow
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(E instanceof MOB)&&(((MOB)E).amFollowing()!=null)
+				&&(((MOB)E).amFollowing().location()==lastKnownLocation))
+					results.append(((MOB)E).amFollowing().name());
+				break;
+			}
+			case 7: // isname
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E!=null)	results.append(E.name());
+				break;
+			}
+			case 14: // affected
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E.numAffects()>0)
+					results.append(E.fetchAffect(Dice.roll(1,E.numAffects(),-1)).name());
+				break;
+			}
+			case 28: // questwinner
+			case 29: // questmob
+			case 31: // isquestmobalive
+				results.append("[unimplemented function]");
+				break;
+			case 32: // nummobsinarea
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				int num=0;
+				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(CoffeeUtensils.containsString(M.name(),arg1)))
+							num++;
+					}
+				}
+				results.append(num);
+				break;
+			}
+			case 33: // nummobs
+			{
+				int num=0;
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(CoffeeUtensils.containsString(M.name(),arg1)))
+							num++;
+					}
+				}
+				results.append(num);
+				break;
+			}
+			case 34: // numracesinarea
+			{
+				int num=0;
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
+							num++;
+					}
+				}
+				results.append(num);
+				break;
+			}
+			case 35: // numraces
+			{
+				int num=0;
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
+							num++;
+					}
+				}
+				results.append(num);
+				break;
+			}
+			case 30: // questitem
+				results.append("[unimplemented function]");
+				break;
+			case 16: // hitprcnt
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(E instanceof MOB))
+				{
+					double hitPctD=Util.div(((MOB)E).curState().getHitPoints(),((MOB)E).maxState().getHitPoints());
+					int val1=(int)Math.round(hitPctD*100.0);
+					results.append(val1);
+				}
+				break;
+			}
+			case 38: // istime
+			{
+				if(lastKnownLocation!=null)
+					results.append(Area.TOD_DESC[lastKnownLocation.getArea().getTODCode()].toLowerCase());
+				break;
+			}
+			case 39: // isday
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().getDayOfMonth()==Util.s_int(arg1)))
+					results.append("day");
+				else
+					results.append("evening");
+				break;
+			}
+			case 36: // ishere
+			{
+				if(lastKnownLocation!=null)
+					results.append(lastKnownLocation.getArea().name());
+				break;
+			}
+			case 17: // inroom
+			{
+				if(lastKnownLocation!=null)
+					results.append(lastKnownLocation.displayText());
+				break;
+			}
+			case 37: // inlocale
+			{
+				if(lastKnownLocation!=null)
+					results.append(lastKnownLocation.name());
+				break;
+			}
+			case 18: // sex
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(E instanceof MOB))
+					results.append(((MOB)E).charStats().genderName());
+				break;
+			}
+			case 13: // stat
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E!=null)
+				{
+					boolean found=false;
+					for(int i=0;i<E.getStatCodes().length;i++)
+					{
+						if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
+						{
+							found=true; break;
+						}
+					}
+
+					if(!found)
+					{
+						Log.errOut("Scriptable","STAT Syntax -- "+monster.Name()+", unknown stat: "+arg2+" for "+E.name());
+						break;
+					}
+
+					results.append(E.getStat(arg2));
+					break;
+				}
+				break;
+			}
+			case 19: // position
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(E instanceof MOB))
+				{
+					String sex="STANDING";
+					if(Sense.isSleeping(E))
+						sex="SLEEPING";
+					else
+					if(Sense.isSitting(E))
+						sex="SITTING";
+					results.append(sex);
+					break;
+				}
+				break;
+			}
+			case 20: // level
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E!=null)
+					results.append(E.envStats().level());
+				break;
+			}
+			case 21: // class
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(E instanceof MOB))
+				{
+					String sex=((MOB)E).charStats().displayClassName().toUpperCase();
+					results.append(sex);
+				}
+				break;
+			}
+			case 22: // baseclass
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(E instanceof MOB))
+				{
+					String sex=((MOB)E).charStats().getCurrentClass().baseClass().toUpperCase();
+					results.append(sex);
+				}
+				break;
+			}
+			case 23: // race
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(E instanceof MOB))
+				{
+					String sex=((MOB)E).charStats().raceName().toUpperCase();
+					results.append(sex);
+				}
+				break;
+			}
+			case 24: //racecat
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(E instanceof MOB))
+				{
+					String sex=((MOB)E).charStats().getMyRace().racialCategory().toUpperCase();
+					results.append(sex);
+				}
+				break;
+			}
+			case 25: // goldamt
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E==null)
+					results.append(false);
+				else
+				{
+					int val1=0;
+					if(E instanceof MOB)
+						val1=((MOB)E).getMoney();
+					else
+					if(E instanceof Coins)
+						val1=((Coins)E).numberOfCoins();
+					else
+					if(E instanceof Item)
+						val1=((Item)E).value();
+					else
+					{
+						Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.Name()+", "+evaluable);
+						return results.toString();
+					}
+					results.append(val1);
+				}
+				break;
+			}
+			case 26: // objtype
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E!=null)
+				{
+					String sex=CMClass.className(E).toLowerCase();
+					results.append(sex);
+				}
+				break;
+			}
+			case 27: // var
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E!=null)
+				{
+					Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
+					String val="";
+					if(H!=null)
+					{
+						val=(String)H.get(arg2);
+						if(val==null) val="";
+					}
+					results.append(val);
+				}
+				break;
+			}
+			case 41: // eval
+				results.append("[unimplemented function]");
+				break;
+			case 40: // number
+			{
+				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).trim();
+				boolean isnumber=(val.length()>0);
+				for(int i=0;i<val.length();i++)
+					if(!Character.isDigit(val.charAt(i)))
+					{ isnumber=false; break;}
+				if(isnumber)
+					results.append(Util.s_long(val));
+				break;
+			}
+			case 42: // randnum
+			{
+				String arg1String=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				int arg1=Util.s_int(arg1String);
+				results.append(Dice.roll(1,arg1,0));
+				break;
+			}
+			default:
+				Log.errOut("Scriptable","Unknown CMD -- "+monster.Name()+", "+evaluable);
+				return results.toString();
+			}
+			if((z>=0)&&(z<=evaluable.length()))
+			{
+				evaluable=evaluable.substring(z+1).trim();
+				uevaluable=uevaluable.substring(z+1).trim();
+			}
+		}
+		return results.toString();
 	}
 
 	private MOB getRandomMOB(MOB monster, MOB randMOB, Room room)
@@ -1588,6 +2156,17 @@ public class Scriptable extends StdBehavior
 					}
 				}
 				break;
+			case '%':
+				{
+					middle="";
+					int x=back.indexOf("%");
+					if(x>=0)
+					{
+						middle=functify(source,target,monster,primaryItem,secondaryItem,msg,back.substring(0,x).trim());
+						back=back.substring(x+1);
+					}
+				}
+				break;
 			case 'a':
 			case 'A':
 				// unnecessary, since, in coffeemud, this is part of the name
@@ -1637,6 +2216,24 @@ public class Scriptable extends StdBehavior
 		{
 			String num=(String)H.get(key);
 			val=new Integer(Util.s_int(num)-1).toString();
+		}
+		else
+		if(val.startsWith("+"))
+		{
+			// add via +XXX form
+			val=val.substring(1);
+			int amount=new Integer(Util.s_int(val)).intValue();
+			String num=(String)H.get(key);
+			val=new Integer(Util.s_int(num)+amount).toString();
+		}
+		else
+		if(val.startsWith("-"))
+		{
+			// subtract -XXX form
+			val=val.substring(1);
+			int amount=new Integer(Util.s_int(val)).intValue();
+			String num=(String)H.get(key);
+			val=new Integer(Util.s_int(num)-amount).toString();
 		}
 		if(H.containsKey(key))
 			H.remove(key);

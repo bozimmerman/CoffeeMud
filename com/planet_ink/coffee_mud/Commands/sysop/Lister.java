@@ -571,7 +571,7 @@ public class Lister
 			s.rawPrintln(reallyList(CMClass.abilities(),Ability.DISEASE).toString());
 		else
 		if("POISONS".startsWith(listThis))
-			s.rawPrintln(reallyList(CMClass.abilities(),Ability.DISEASE).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.POISON).toString());
 		else
 		if("TICKS".startsWith(listWord))
 			mob.tell(listTicks(Util.combine(commands,1)).toString());
