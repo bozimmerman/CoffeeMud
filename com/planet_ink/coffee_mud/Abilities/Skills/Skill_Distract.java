@@ -7,8 +7,6 @@ import java.util.*;
 
 public class Skill_Distract extends StdAbility
 {
-	boolean doneTicking=false;
-
 	public Skill_Distract()
 	{
 		super();
@@ -37,7 +35,8 @@ public class Skill_Distract extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(!doneTicking) affectableStats.setArmor(affectableStats.armor()/2);
+		affectableStats.setArmor(affectableStats.armor()/2);
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()/2);
 	}
 
 	public int classificationCode()
@@ -116,7 +115,7 @@ public class Skill_Distract extends StdAbility
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				maliciousAffect(mob,target,10,-1);
+				maliciousAffect(mob,target,4,-1);
 			}
 		}
 		else
