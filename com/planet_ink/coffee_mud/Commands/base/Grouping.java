@@ -388,6 +388,11 @@ public class Grouping
 			mob.tell("Dress whom in what?");
 			return;
 		}
+		if(mob.isInCombat())
+		{
+			mob.tell("Not while you are in combat!");
+			return;
+		}
 		commands.removeElementAt(0);
 		String what=(String)commands.lastElement();
 		commands.removeElement(what);
@@ -409,6 +414,11 @@ public class Grouping
 			if(!item.amWearingAt(Item.INVENTORY))
 			{
 				mob.tell("You might want to remove that first.");
+				return;
+			}
+			if(target.isInCombat())
+			{
+				mob.tell("Not while "+target.name()+" is in combat!");
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,null);
@@ -445,6 +455,11 @@ public class Grouping
 			mob.tell("Undress whom? What would you like to remove?");
 			return;
 		}
+		if(mob.isInCombat())
+		{
+			mob.tell("Not while you are in combat!");
+			return;
+		}
 		commands.removeElementAt(0);
 		String what=(String)commands.lastElement();
 		commands.removeElement(what);
@@ -463,6 +478,11 @@ public class Grouping
 			   ||(item.amWearingAt(Item.INVENTORY)))
 			{
 				mob.tell(target.name()+" doesn't seem to be equipped with '"+what+"'.");
+				return;
+			}
+			if(target.isInCombat())
+			{
+				mob.tell("Not while "+target.name()+" is in combat!");
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,null);
@@ -507,6 +527,11 @@ public class Grouping
 			mob.tell("I don't see "+whom+" here.");
 			return;
 		}
+		if(mob.isInCombat())
+		{
+			mob.tell("Not while you are in combat!");
+			return;
+		}
 		if(target.willFollowOrdersOf(mob))
 		{
 			Item item=mob.fetchInventory(what);
@@ -523,6 +548,11 @@ public class Grouping
 			if((!(item instanceof Food))&&(!(item instanceof Drink)))
 			{
 				mob.tell("You might want to try feeding them something edibile or drinkable.");
+				return;
+			}
+			if(target.isInCombat())
+			{
+				mob.tell("Not while "+target.name()+" is in combat!");
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,target,item,Affect.MSG_NOISYMOVEMENT,"<S-NAME> feed(s) "+item.name()+" to <T-NAMESELF>.");

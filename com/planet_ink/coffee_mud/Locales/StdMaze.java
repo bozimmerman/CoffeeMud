@@ -7,8 +7,6 @@ import com.planet_ink.coffee_mud.utils.Directions;
 import java.util.*;
 public class StdMaze extends StdGrid
 {
-	protected int size=10;
-
 	public StdMaze()
 	{
 		super();
@@ -75,6 +73,7 @@ public class StdMaze extends StdGrid
 
 	protected void mazify(Hashtable visited, int x, int y)
 	{
+		
 		if(visited.get(subMap[x][y])!=null) return;
 		Room room=subMap[x][y];
 		visited.put(room,room);
@@ -118,8 +117,8 @@ public class StdMaze extends StdGrid
 	protected void buildMaze()
 	{
 		Hashtable visited=new Hashtable();
-		int x=size/2;
-		int y=size/2;
+		int x=xsize/2;
+		int y=ysize/2;
 		mazify(visited,x,y);
 	}
 
