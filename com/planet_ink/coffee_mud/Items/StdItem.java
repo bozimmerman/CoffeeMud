@@ -506,13 +506,14 @@ public class StdItem implements Item
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		// the order that these things are checked in should
+		// be holy, and etched in stone.
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
 			if((B!=null)&&(!B.okAffect(this,affect)))
 				return false;
 		}
-
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability A=fetchAffect(a);
@@ -683,16 +684,6 @@ public class StdItem implements Item
 					mob.tell(name()+" is too heavy.");
 					return false;
 				}
-				if((!amWearingAt(Item.INVENTORY))&&(!isRemovable))
-				{
-					if(amWearingAt(Item.WIELD)||amWearingAt(Item.HELD))
-					{
-						mob.tell("You can't seem to let go of "+name()+".");
-						return false;
-					}
-					mob.tell("You can't seem to remove "+name()+".");
-					return false;
-				}
 				if(!isGettable)
 				{
 					mob.tell("You can't get "+name()+".");
@@ -715,6 +706,44 @@ public class StdItem implements Item
 			case Affect.TYP_BUY:
 			case Affect.TYP_GET:
 			case Affect.TYP_GENERAL:
+			case Affect.TYP_REMOVE:
+			case Affect.TYP_SELL:
+			case Affect.TYP_VALUE:
+			case Affect.TYP_VIEW:
+			case Affect.TYP_GIVE:
+				return true;
+			}
+			break;
+		case Affect.TYP_REMOVE:
+			if((affect.tool()==null)||(affect.tool() instanceof MOB))
+			{
+				if((!Sense.canBeSeenBy(this,mob))
+				   &&((affect.sourceMajor()&Affect.MASK_GENERAL)==0)
+				   &&(amWearingAt(Item.INVENTORY)))
+				{
+					mob.tell("You can't see that.");
+					return false;
+				}
+				if((!amWearingAt(Item.INVENTORY))&&(!isRemovable))
+				{
+					if(amWearingAt(Item.WIELD)||amWearingAt(Item.HELD))
+					{
+						mob.tell("You can't seem to let go of "+name()+".");
+						return false;
+					}
+					mob.tell("You can't seem to remove "+name()+".");
+					return false;
+				}
+				return true;
+			}
+			if(this instanceof Container)
+				return true;
+			switch(affect.sourceMinor())
+			{
+			case Affect.TYP_BUY:
+			case Affect.TYP_GET:
+			case Affect.TYP_GENERAL:
+			case Affect.TYP_REMOVE:
 			case Affect.TYP_SELL:
 			case Affect.TYP_VALUE:
 			case Affect.TYP_VIEW:
@@ -800,6 +829,8 @@ public class StdItem implements Item
 
 	public void affect(Environmental myHost, Affect affect)
 	{
+		// the order that these things are checked in should
+		// be holy, and etched in stone.
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
@@ -888,6 +919,13 @@ public class StdItem implements Item
 					mob.location().delItem(this);
 				if(!mob.isMine(this))
 					mob.addInventory(this);
+				unWear();
+				mob.location().recoverRoomStats();
+			}
+			break;
+		case Affect.TYP_REMOVE:
+			if(!(this instanceof Container))
+			{
 				unWear();
 				mob.location().recoverRoomStats();
 			}

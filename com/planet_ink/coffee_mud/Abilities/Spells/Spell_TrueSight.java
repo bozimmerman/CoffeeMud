@@ -27,6 +27,18 @@ public class Spell_TrueSight extends Spell
 			mob.tell("You no longer have true sight.");
 	}
 
+	public void affect(Environmental E, Affect msg)
+	{
+		if((msg.targetMinor()==Affect.TYP_EXAMINESOMETHING)
+		&&(affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.target()!=null)
+		&&(!msg.target().name().equals(msg.target().Name())))
+			msg.source().tell(msg.target().name()+" is truely "+msg.target().Name()+".");
+	}
+	
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -983,7 +983,10 @@ public class StdMOB implements MOB
 				if(!(affect.target() instanceof Room))
 					if(!Sense.canBeSeenBy(affect.target(),this))
 					{
-						tell("You can't see that!");
+						if(affect.target() instanceof Item)
+							tell("You don't see "+affect.target()+" here.");
+						else
+							tell("You can't see that!");
 						return false;
 					}
 			}
@@ -1040,8 +1043,7 @@ public class StdMOB implements MOB
 				}
 				if(!Sense.aliveAwakeMobile(this,false))
 					return false;
-
-				
+			
 				if((Sense.isSitting(this))
 				&&(affect.sourceMinor()!=Affect.TYP_SITMOVE)
 				&&(affect.targetCode()!=Affect.MSG_OK_VISUAL)
@@ -1354,6 +1356,7 @@ public class StdMOB implements MOB
 			case Affect.TYP_FILL:
 			case Affect.TYP_GET:
 			case Affect.TYP_HOLD:
+			case Affect.TYP_REMOVE:
 			case Affect.TYP_LOCK:
 			case Affect.TYP_OPEN:
 			case Affect.TYP_PULL:

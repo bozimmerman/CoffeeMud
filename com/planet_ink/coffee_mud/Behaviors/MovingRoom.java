@@ -9,6 +9,7 @@ import java.io.*;
 public class MovingRoom extends ActiveTicker
 {
 	public String ID(){return "MovingRoom";}
+	protected int canImproveCode(){return Behavior.CAN_ROOMS;}
 
 	public Vector listOfRooms=new Vector();
 	protected Vector roomInfos=new Vector();

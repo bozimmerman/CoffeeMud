@@ -104,6 +104,8 @@ public class Thief_Swipe extends ThiefSkill
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();
+					if(mob.getVictim()==target)
+						mob.makePeace();
 				}
 				mob.setMoney(mob.getMoney()+goldTaken);
 				mob.recoverEnvStats();

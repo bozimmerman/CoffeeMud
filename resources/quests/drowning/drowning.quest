@@ -1,6 +1,10 @@
 #set the quest name
 set name drowning
 
+# this one runs every 30-60 mins
+set wait 30
+set interval 30
+
 set locale WaterSurface
 # select a random locale of some water surface type
 

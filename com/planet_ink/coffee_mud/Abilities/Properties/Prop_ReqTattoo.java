@@ -15,9 +15,10 @@ public class Prop_ReqTattoo extends Property
 	public boolean passesMuster(MOB mob)
 	{
 		if(mob==null) return false;
+		if(Sense.isATrackingMonster(mob))
+			return true;
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
-
 		int x=text().toUpperCase().indexOf("ALL");
 		Vector V=Prop_Tattoo.getTattoos(mob);
 		if(V.size()==0) V.addElement("NONE");

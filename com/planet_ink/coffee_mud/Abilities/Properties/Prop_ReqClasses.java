@@ -15,6 +15,9 @@ public class Prop_ReqClasses extends Property
 	public boolean passesMuster(MOB mob)
 	{
 		if(mob==null) return false;
+		if(Sense.isATrackingMonster(mob))
+			return true;
+		
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
 

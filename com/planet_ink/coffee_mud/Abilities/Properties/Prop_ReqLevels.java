@@ -15,6 +15,8 @@ public class Prop_ReqLevels extends Property
 	public boolean passesMuster(MOB mob, Room R)
 	{
 		if(mob==null) return false;
+		if(Sense.isATrackingMonster(mob))
+			return true;
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
 

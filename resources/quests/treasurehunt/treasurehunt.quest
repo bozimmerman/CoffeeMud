@@ -1,6 +1,10 @@
 #set the quest name
 set name treasurehunt
 
+# this one runs every 30-60 mins
+set wait 30
+set interval 30
+
 import items quests/treasurehunt/items.cmare
 # first command loads a set of items
 

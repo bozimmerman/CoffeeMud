@@ -10,9 +10,10 @@ style="FONT-SIZE: 18pt"><BR>to
 CoffeeMud 4.0</SPAN></B></P>
 <P style="TEXT-ALIGN: center" align=center><STRONG>By Archon Grothus Gallslanger 
 of the&nbsp;Free City of Maltan</STRONG></P>
-<P style="TEXT-ALIGN: center" align=center>&nbsp;</P>
-<P><STRONG><IMG src="images/mug.jpg"></STRONG> </P>
-<P><STRONG>World Construction and Destruction</STRONG></P>
+<P style="TEXT-ALIGN: center" align=left><STRONG><IMG src="images/mug.jpg"></STRONG></P>
+<P><STRONG><A 
+name=construct><STRONG>World Construction and 
+Destruction</STRONG></A>   </STRONG></P>
 <P>Causing buildings and towers to appear along paved streets, mountains to rise 
 from the dust, and then breathing life into this worlds denizens may seem like a 
 daunting task, but you will quickly discover that it is not so.&nbsp; All it 
@@ -26,7 +27,7 @@ of "CoffeeMud Administration" for your consideration.</P>
 <P align=left>       The administration of 
 your CoffeeMud server is done from within the game server itself, when you are 
 logged in as your Archon player.&nbsp;&nbsp; Some functions can be performed from the 
-<A href="MUDGrinder.html">MUDGrinder</a>.</P>
+<A href="MUDGrinder.html">MUDGrinder</A>.</P>
 <P align=left><EM>AHELP<BR></EM>This is the command that Archons will use to get help 
 on all of the commands in this section, on various administrative topics, and on 
 all of the various building "tools" discussed elsewhere in this document, 
@@ -214,9 +215,10 @@ area, but so can the bottom of a well, a stretch of rolling hills, the top of a
 tall mountain, or a dragon’s lair deep underground.&nbsp; Physical size does not 
 matter with rooms; only your imagination can determine that.</P>
 <P>Every room has a general foundational type that defines 
-it.&nbsp; That type determines the behavior of that room day to day, whether it 
-is outside or inside, made of wood or stone, a mountain or a plain, in darkness 
-or light, a cliffside or deep in the ocean.&nbsp; This foundational type of 
+it.&nbsp; That type determines the behavior of that room day to day, whether it is outside or inside, 
+made of wood or stone, a mountain or a plain, in darkness or light, 
+a cliffside or deep in the ocean.&nbsp; The type determines whether one breathes water or air,&nbsp;chops 
+wood or fishes, and how good the hunting is.&nbsp; This foundational type of 
 every room has a name: Locale.&nbsp;</P>
 <P>If you log into CoffeeMud right now, you can list the 
 available Locales with the command "list locales".&nbsp; This list should 
@@ -237,6 +239,9 @@ self-explanatory.&nbsp; They include:</P>
     <TD>CityStreet </TD>
     <TD>outside urban area</TD></TR>
   <TR>
+    <TD>ClimbableLedge</TD>
+    <TD>the edge you must climb up to</TD></TR>
+  <TR>
     <TD>ClimbableSurface </TD>
     <TD>an area that can only be climbed or flown 
     through</TD></TR>
@@ -244,8 +249,17 @@ self-explanatory.&nbsp; They include:</P>
     <TD>Desert </TD>
     <TD>a hot, dry, outside locale</TD></TR>
   <TR>
+    <TD>DesertGrid </TD>
+    <TD>a hot, dry, multi-room outside locale</TD></TR>
+  <TR>
+    <TD>DesertMaze </TD>
+    <TD>a hot, dry, multi-room outside maze</TD></TR>
+  <TR>
+    <TD>EndlessOcean </TD>
+    <TD> endless, ~3D, multi-room,&nbsp;locale below the ocean surface</TD></TR>
+  <TR>
     <TD>EndlessSky </TD>
-    <TD>an endless, multi-room,&nbsp;locale up in the 
+    <TD>an endless, ~3D, multi-room,&nbsp;locale up in the 
     sky</TD></TR>
   <TR>
     <TD>FrozenMountains </TD>
@@ -253,6 +267,9 @@ self-explanatory.&nbsp; They include:</P>
   <TR>
     <TD>FrozenPlains </TD>
     <TD>the cold snowy plans</TD></TR>
+  <TR>
+    <TD>GreatLake</TD>
+    <TD> endless, ~3D, multi-room,&nbsp;locale below the lake surface</TD></TR>
   <TR>
     <TD>Hills </TD>
     <TD>green rolling hills</TD></TR>
@@ -299,11 +316,20 @@ self-explanatory.&nbsp; They include:</P>
     <TD>Mountains</TD>
     <TD>an outside, mountanous region</TD></TR>
   <TR>
+    <TD>MountainsGrid</TD>
+    <TD>an outside, mountanous multi-room of rock</TD></TR>
+  <TR>
     <TD>MountainsMaze</TD>
     <TD>an outside, mountanous maze of rock</TD></TR>
   <TR>
     <TD>MountainSurface</TD>
     <TD>a climable mountainous place</TD></TR>
+  <TR>
+    <TD>MountainSurfaceGrid</TD>
+    <TD>a large, multi-room, climable mountainous place</TD></TR>
+  <TR>
+    <TD>OverTheLedge</TD>
+    <TD>a room you can walk into, but then fall doooowwwnn</TD></TR>
   <TR>
     <TD>Plains </TD>
     <TD>out in the open fields</TD></TR>
@@ -311,11 +337,20 @@ self-explanatory.&nbsp; They include:</P>
     <TD>PlainsGrid </TD>
     <TD>a huge multi-room, outdoor plains area</TD></TR>
   <TR>
+    <TD>Road </TD>
+    <TD>out in the open road</TD></TR>
+  <TR>
+    <TD>RoadGrid </TD>
+    <TD>a huge multi-room, outdoor stretch of road</TD></TR>
+  <TR>
     <TD>SaltWaterSurface</TD>
     <TD>the surface of the ocean</TD></TR>
   <TR>
     <TD>ShallowWater </TD>
     <TD>a wet, outdoor area</TD></TR>
+  <TR>
+    <TD>Shore</TD>
+    <TD>some solid ground to fish from, if water is nearby</TD></TR>
   <TR>
     <TD>StdGrid </TD>
     <TD>the basis for all of the Grid areas -- do not 
@@ -355,6 +390,12 @@ use!</TD></TR>
     <TD>UnderSaltWater</TD>
     <TD>beneath the ocean</TD></TR>
   <TR>
+    <TD>UnderSaltWaterGrid</TD>
+    <TD>a multi-room 2D place beneath the ocean</TD></TR>
+  <TR>
+    <TD>UnderSaltWaterMaze</TD>
+    <TD>a multi-room 2D maze beneath the ocean</TD></TR>
+  <TR>
     <TD>UnderWater </TD>
     <TD>as wet as it gets... unless you are a fish you 
       won't live long</TD></TR>
@@ -379,6 +420,14 @@ use!</TD></TR>
     <TD>well lit indoor room with wooden walls and 
     ceiling</TD></TR>
   <TR>
+    <TD>WoodRoomGrid </TD>
+    <TD>well lit multi-indoor-room with wooden walls and 
+    ceiling</TD></TR>
+  <TR>
+    <TD>WoodRoomMaze</TD>
+    <TD>well lit multi-indoor-maze with wooden walls and 
+    ceiling</TD></TR>
+  <TR>
     <TD>Woods </TD>
     <TD>thick with trees and life, the bright 
 forest</TD></TR>
@@ -393,7 +442,11 @@ forest</TD></TR>
 <P><BR>For each room you are drawing 
 on your graph parchment, you should note in the Locale type of the room from the 
 above list, or from the list you received when you entered "list locales" into 
-CoffeeMud.</P>
+CoffeeMud.&nbsp; Keep in mind that some rooms are multi-rooms.&nbsp; These Grids 
+and Mazes represent 2-Dimensional grids of rooms of a single sort.&nbsp; The 
+dimensions are entirely up to you, and can range from a thin 1x20 trail, to a 
+wide 15x15 block.&nbsp; The mazes expand on this by creating weaving paths through the 
+grids.</P>
 <P>The detailed properties of rooms are discussed further 
 in the section on creating rooms.</P>
 <P><STRONG>Understanding 
@@ -436,6 +489,9 @@ official list:</P>
   <TR>
     <TD>FlyingExit</TD>
     <TD>a passageway one must fly through</TD></TR>
+  <TR>
+    <TD>GapExit</TD>
+    <TD>an exit one must jump across or fall and DIE!</TD></TR>
   <TR>
     <TD>Gate</TD>
     <TD>an ordinary closed gate</TD></TR>
@@ -508,10 +564,10 @@ have such a short, ugly sounding name: MOB.&nbsp; If you are in CoffeeMud, you
 can list them: "list mobs".&nbsp; It will show you every creature that can 
 populate your cities, dwell in your dungeons, or hide in your pantries.&nbsp; 
 They are too numerous to list here. </P>
-<P>If a creature is not listed there that you require, 
-there is always the GenMob, that nasty formless being that can be shaped by the 
-Archon to appear and behave exactly as it should.&nbsp; A GenShopkeeper is also 
-available to provide valuable services for your community.&nbsp; GenDeitys give 
+<P>If a creature is not listed there that 
+you require, there is always the GenMob, that nasty formless being that can be shaped 
+by the Archon to appear and behave exactly as it should.&nbsp; GenShopkeepers and 
+GenBankers&nbsp;are&nbsp;available to provide valuable services for your community.&nbsp; GenDeitys give 
 your Clerics employment. GenRideable mobs provide transport.&nbsp; For more 
 devious spirits, however, the GenUndead is also available, to strike fear in the 
 hearts of the purest cleric.</P>
@@ -527,10 +583,10 @@ have enough gold for those bold enough to continuously risk their guardians.</P>
 command.&nbsp; Other items include weapons, which can be discovered through 
 "list weapons", armor from "list armor", and other miscellaneous enchanted items 
 through "list magic".&nbsp; </P>
-<P>For those items you need by are not present, there is 
-also the "GenItem",&nbsp;"GenBoat", "GenChair", "GenBed", "GenCoins", 
-"GenCorpse", "GenKey", "GenLantern", "GenLightSource", 
-"GenMap",&nbsp;&nbsp;"GenRideable", "GenWallpaper", "GenJournal", 
+<P>For those items you need by are not present, there is also the "GenItem",&nbsp;"GenBoat", 
+"GenChair", "GenBed", "GenCoins", "GenCorpse", "GenKey", "GenLantern", 
+"GenLightSource", "GenMap",&nbsp;&nbsp;"GenResource", "GenLiquidResource", "GenFoodResource", 
+"GenRideable", "GenWallpaper", "GenJournal", 
 "GenContainer", "GenFood", "GenWater", and "GenReadable".&nbsp; For the fighting 
 spirit there is the "GenWeapon", "GenStaff", and "GenArmor".&nbsp; Among 
 the&nbsp;formless magical items are "GenPill", "GenPotion", "GenScroll", 
@@ -613,20 +669,95 @@ creating a universe becomes a little bit too much work for one person.</P>
 Name</EM> are available on the area promptings.&nbsp;&nbsp; Don't worry about 
 these.&nbsp; The former is not very important at the moment, and the second is a 
 bit too obscure for these lessons.</P>
-<P>You will also be asked to add any <EM>behaviors </EM>and <EM>affects</EM> to 
-the&nbsp;area that you wish to.&nbsp; These may seem strange at first, and 
-usually you won't add any of these at all.&nbsp; After all, rarely does a plot 
-of dirt exibit any behavior, and what the heck is an affect?&nbsp; Well! To the 
-first, the wind blowing through the trees, the hoot of an owl, or a distant 
-cackling noise are all considerable behaviors.&nbsp; In fact, it is a behavior 
-called "Emoter".&nbsp; Enter "ahelp emoter" for more information about the 
-Emoter behavior.&nbsp; As for affects, well, affects are special properties 
-which you can attach to your new little holes in the ground.&nbsp; There are 
-lots of nice properties that one may add to an&nbsp;Area, which will affect 
-every room in it, such as "Prop_ReqNoMOB" to make your area a player-only place 
-to be.&nbsp; There is also "Prop_MagicFreedom" to fluster any spell-using folks 
-that happen along, or "Prop_NoChannel" for a place of quiet... you'll need 
-"Prop_PeaceMaker" to go with it if you want peace AND quiet.&nbsp; To learn more 
+<P>You will also be asked to add any <EM>behaviors </EM>and <EM>affects</EM>  
+            
+               
+               
+               
+            
+          
+          
+              
+       to the&nbsp;area that you wish to.&nbsp; 
+These may seem strange at first, and usually you won't add any of these 
+at all.&nbsp; After all, rarely does a plot of dirt exibit 
+any behavior, and what the heck is an affect?&nbsp; Well! To the 
+first, the wind blowing through the trees, the hoot of an owl, or a 
+distant cackling noise are all considerable behaviors.&nbsp; In fact, it is a behavior called "Emoter".&nbsp; 
+Enter "ahelp emoter" for more information about the Emoter behavior.&nbsp; There are 
+other behaviors that Areas may benefit from too. Here are some examples: </P>
+<P>"FasterRoom" makes everything happen twice as fast here 
+(or faster!)<BR>"InstantDeath" makes everything that comes here 
+DIE!!!!!<BR>"LinkedWeather" makes the weather in this area mimic the weather 
+from another area.<BR>"PuddleMaker" will scatter some puddles around after rain 
+or snow.<BR>"RandomMonsters" will populate the area with lots of hideously 
+random creatures that you choose.<BR>"ResetWhole" will cause the whole area to 
+re-boot every so often, thus supplementing the natural "rejuv" 
+process.<BR>  
+            
+               
+               
+               
+            
+          
+          
+              
+             
+              
+           
+            
+              
+               
+         "WaterCurrents" will make 
+those on the water bob and flow in the direction you specify. </P>
+<P>  
+            
+               
+               
+               
+            
+          
+          
+              
+             
+              
+           
+            
+            As for 
+affects, well, affects are special properties which you can attach to your new little holes 
+in the ground.&nbsp; There are lots of nice properties that one may 
+add to an&nbsp;Area, which will affect every room in it, such as: </P>
+<P>"Prop_ReqNoMOB" to make your area a player-only place to 
+be.&nbsp; <BR>"Prop_MagicFreedom" to fluster any spell-using folks that happen 
+along.<BR> "Prop_NoChannel" for a place of quiet.<BR>"Prop_PeaceMaker" to go 
+with it if you want peace AND quiet.&nbsp; <BR>"Prop_Hidden" will make the area 
+unlisted to normal players.<BR>"Prop_NoTeleport" keeps those silly mages from 
+teleporting in.<BR>"Prop_NoTeleportOut" keeps those silly mages IN. 
+<BR>"Prop_EnlargeRoom" makes crossing the area eat up more 
+Mana.<BR>"Prop_NoCharm" lets everyone remember who their REAL friends 
+are.<BR>"Prop_NoRecall" keeps folks from taking the easy way 
+out.<BR>"Prop_NoSummon" makes sure that everyone leaves of their own free 
+will.<BR>"Prop_ReqAlignments" lets you limit the alignment of all who 
+enter.<BR>"Prop_ReqCapacity" lets you limit the number of folks who may enter 
+each room.<BR>"Prop_ReqClasses" lets you limit the character class of those who 
+enter.<BR>"Prop_ReqEntry" lets you limit entry to folks by many different 
+criteria.<BR>"Prop_ReqHeight" keeps out tall people, or at least those unwilling 
+to crawl.<BR>"Prop_ReqLevels" lets you limit entry by levels.<BR>"Prop_ReqRaces" 
+lets you limit entry by race.<BR>"Prop_PKill" makes this a place that only the 
+bloodthirsty may enter.<BR>"Prop_NoPKill" keeps out the riffraff.<BR><BR>  
+            
+               
+               
+               
+            
+          
+          
+              
+             
+              
+           
+            
+           To learn more 
 about the properties you can add to areas and rooms, enter "ahelp" while you are 
 in CoffeeMud.&nbsp; Now, isn't this fun?&nbsp; Remember, if you make a mistake, 
 fear not, for the land does not grow weary of your molding.&nbsp; </P>
@@ -637,15 +768,49 @@ design the landscape of it.&nbsp; To do this, you should enter the room through
 the default Open exit that was created for you.&nbsp; You will find the room 
 plain and boring.&nbsp; </P>
 <P>To give the room a new name and description, utter the 
-invocation: "modify room" and follow the promptings.&nbsp; Like the area above, 
-rooms may have behaviors and affects added to them.&nbsp; In this case, the 
-behaviors and affects will only be active for this particular room. </P>
+invocation: "modify room" and follow the promptings.&nbsp; Like the area above, rooms may have the same behaviors and affects added to 
+them, including a few more.&nbsp; In this case, the behaviors and 
+affects above will only be active for this particular room. Aside from those 
+listed under Areas above, here are additional Behaviors you might enjoy: </P>
+<P>"DelayedTransporter" causes all those who enter to be 
+whisked elsewhere.<BR>"Emoter" - yea -- this was mentioned under Areas, but it's 
+just sooo cool.<BR>"Mime"&nbsp;causes the room to mimic players.&nbsp; Wierd.. 
+yea, I know.<BR>"MovingRoom" the fast train to somewhere.<BR>"ResourceOverride" 
+if you want fishing in the desert, or sand in your swap, this is the way to 
+go.<BR>           
+    Lots of other properties and affects are 
+also available for rooms.&nbsp; In addition to all the ones listed above under 
+Areas, here are a few more you might want to add: </P>
+<P>"Prop_ClosedDayNight" turns off the lights in a lit room 
+at nighttime.<BR>"Prop_ItemTransporter" drop it, and its gone -- 
+elsewhere.<BR>"Prop_ItemReceiver" is the elsewhere.<BR>"Prop_LotsForSale" puts 
+this room up for sale, and ensures that you never run out of new rooms to 
+buy.<BR>"Prop_NarrowLedge" makes this a room you can cross.. if you are very 
+very careful.<BR>"Prop_ReqTattoo" checks out a mobs forearm before letting them 
+in.<BR>"Prop_RestrictSpells" shuts down a list of spells that you 
+provide.<BR>"Prop_RoomDark" turns off the lights.<BR>"Prop_RoomForSale" puts 
+this one little room on the market.<BR>"Prop_RoomsForSale" designates that this 
+room, and all others like it nearby, are for sale as a group.<BR>"Prop_RoomView" 
+makes this room seem to be another...<BR>"Prop_SparringRoom" makes the 
+consequences of death more palatable.<BR>"Prop_SpellAdder" puts everyone who 
+enters under its spell.<BR>"Prop_TattooAdder" puts&nbsp;a little something on 
+all who enter.<BR>"Prop_Transporter" send those who enter to the room you 
+designate.<BR>"Prop_Trashcan" destroys stuff dropped on the 
+ground.<BR>"Prop_WeakBridge" makes cross this room very very 
+dangerous.<BR>"Spell_Silence" to quiet things down.<BR>And lots and lots of 
+traps to put in your rooms: "Thief_Caltrops", "Thief_DeathTrap", "Thief_Listen", 
+"Thief_MinorTrap", "Thief_Trap", "Trap_AcidPit", "Trap_Avalanche", 
+"Trap_BearTrap", "Trap_Boulders", "Trap_CaveIn", "Trap_CrushingRoom", "Trap_Darkfall", "Trap_DeepPit", "Trap_Enter", "Trap_EnterBlade", 
+"Trap_EnterGas", "Trap_EnterNeedle", "Trap_EnterSpell", "Trap_FloodRoom", "Trap_MonsterCage", "Trap_RatPit", "Trap_RoomPit", "Trap_SnakePit", "Trap_Snare", "Trap_SpikePit", "Trap_Tripline". </P>
+<P>           
+           
+             
+       Ok! Back to work! </P>
 <P>If you are ever wandering around, and wish to go 
-directly to a room you have created, you may utter the magic matra "goto 
-RoomID".&nbsp; For instance, entering "goto MyArea#123" would take you to the 
-room we created above.&nbsp; This will especially come in handy when we begin to 
-create and destroy the links between rooms, and there is no other way to get to 
-a room.</P>
+directly to a room you have created, you may utter the magic matra "goto RoomID".&nbsp; For instance, entering "goto MyArea#123" would take 
+you to the room we created above.&nbsp; This will especially come 
+in handy when we begin to create and destroy the links between rooms, 
+and there is no other way to get to a room. </P>
 <P><STRONG>Linking Two Rooms 
 Together</STRONG></P>
 <P>Now that&nbsp;you have created a room, and wish to link 
@@ -786,11 +951,6 @@ border=1>
       currently&nbsp;4 seconds) that will transpire before the exit is reset to 
       its default state. </TD></TR>
   <TR>
-    <TD><EM>Trapped </EM></TD>
-    <TD>The trap on an exit may range from a pit, to a 
-      needle in the lock, to a blade that swings down whenever one opens the 
-      door.</TD></TR>
-  <TR>
     <TD><EM>Closed Text </EM></TD>
     <TD>what one sees when the EXITS command is issued 
       and the way is CLOSED. </TD></TR>
@@ -815,23 +975,6 @@ Item</EM></TD>
     <TD><EM>Open&nbsp;Word</EM></TD>
     <TD>When you&nbsp;open it, are you really raising it, 
       or sliding it?&nbsp; Specify the correct verb here. </TD></TR>
-  <TR>
-    <TD><EM>Level 
-Restriction</EM></TD>
-    <TD>Exits without doors may be restricted by level, 
-      alignment,&nbsp;or by class.&nbsp; If by level, then the level specified 
-      above would be the minimum level required to pass through the exit. </TD></TR>
-  <TR>
-    <TD><EM>Class 
-Restriction</EM></TD>
-    <TD>a character class may also restrict Exits without 
-      doors.&nbsp; If so, you will be asked to enter the name of the class that 
-      may pass through the entryway.</TD></TR>
-  <TR>
-    <TD><EM>Alignment 
-      Restriction</EM></TD>
-    <TD>Oh yea, even the wicked may be kept back by 
-      restricting passage to those of the correct state of mine.</TD></TR>
   <TR>
     <TD><EM>Is.. flags</EM> </TD>
     <TD>
@@ -858,6 +1001,37 @@ For a standard&nbsp;exit, like Open or Door, this field represents the secret
 code that must also be specified in the StdKey item in order for you to unlock 
 this door without spells or thief picking.&nbsp; For a readable exit, this field 
 represents the text that is written on the door.</P>
+<P>Like rooms and areas, there are special properties that are great for 
+exits.&nbsp; They include:</P>
+<P>As for affects, well, affects are special properties which you can attach to 
+your new little holes in the ground.&nbsp; There are lots of nice properties 
+that one may add to an&nbsp;Area, which will affect every room in it, such as: 
+</P>
+<P>"Prop_ReqNoMOB" to make your exit a player-only place to be.&nbsp; 
+<BR>"Prop_ReqAlignments" lets you limit the alignment of all who 
+enter.<BR>"Prop_ReqCapacity" lets you limit the number of folks who may 
+enter.<BR>"Prop_ReqClasses" lets you limit the character class of those who 
+enter.<BR>"Prop_ReqHeight" keeps out tall people, or at least those unwilling to 
+crawl.<BR>"Prop_ReqLevels" lets you limit entry by levels.<BR>"Prop_ReqRaces" 
+lets you limit entry by race.<BR>"Prop_PKill" makes this a place that only the 
+bloodthirsty may enter.<BR>"Prop_NoPKill" keeps out the 
+riffraff.<BR>"Prop_ClosedDayNight" shuts and locks any doors at 
+night.<BR>"Prop_NarrowLedge" makes this an exit&nbsp;you can cross.. if you are 
+very very careful.<BR>"Prop_ReqTattoo" checks out a mobs forearm before letting 
+them in.<BR>"Prop_RoomView" makes looking at this exit more 
+revealing.<BR>"Prop_SpellAdder" puts everyone who enters under its 
+spell.<BR>"Prop_TattooAdder" puts&nbsp;a little something on all who 
+enter.<BR>"Prop_Transporter" send those who enter to the room you 
+designate.<BR>"Prop_WeakBridge" makes cross 
+this room very very dangerous.<BR>Popular traps for exits include: 
+Trap_AcidSpray", "Trap_ElectricShock", "Trap_Enter", "Trap_EnterGas", 
+"Trap_EnterNeedle", "Trap_EnterPit", "Trap_EnterSpell", "Trap_Launcher", 
+"Trap_Needle", "Trap_Noise", "Trap_Open", "Trap_OpenBlade", "Trap_OpenGas", 
+"Trap_OpenNeedle", "Trap_OpenSpell", "Trap_PoisonGas", "Trap_SleepGas", 
+"Trap_SpellBlast", "Trap_SporeTrap", "Trap_Unlock", "Trap_UnlockBlade", 
+"Trap_UnlockGas", "Trap_UnlockNeedle", "Trap_UnlockSpell", 
+"Trap_WeaponSwing"<BR><BR>To learn more about the properties 
+you can add to exits, enter "ahelp" while you are in CoffeeMud.</P>
 <P><STRONG>Creating Items</STRONG></P>
 <P>For our purposes, an item is any normal item, piece of 
 armor, a weapon, a container, or any magical item, armor, or weapon.&nbsp; To 
@@ -938,13 +1112,6 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
       of.&nbsp; This affects the classes with armor restrictions, and the 
       effects of certain spells.&nbsp; Choices include: cloth, metal, wood, 
       leather, glass, and mithril.</TD></TR>
-  <TR>
-    <TD><EM>Is This Item 
-    Trapped</EM></TD>
-    <TD>whether the item is trapped.&nbsp; For a simple 
-      item, a trap will be triggered when the item is retrieved from a 
-      room.&nbsp; For containers, armor, or other items, wearing, opening, or 
-      unlocking may be required to trigger the trap. </TD></TR>
   <TR>
     <TD><EM>Value</EM></TD>
     <TD>the items value in gold, for the purposes of 
@@ -1191,6 +1358,9 @@ everything listed under GenItem, plus a few more:</P>
       maximum amount of weight that can be placed in it.&nbsp; 0 is a typical 
       value, denoting that you cannot store items in this armor.</TD></TR>
   <TR>
+    <TD><EM>Can Contain</EM></TD>
+    <TD>For armor with capacity, this can help you limit what goes inside.</TD></TR>
+  <TR>
     <TD><EM>Condition</EM></TD>
     <TD>a number from 0 to 100 denoting the condition of 
       the armor.&nbsp; A 100 means that the armor is in top condition.&nbsp; A 0 
@@ -1222,6 +1392,9 @@ everything listed under GenItem, plus a few more:</P>
   <TR>
     <TD><EM>Has A Lock</EM></TD>
     <TD>If it has a lid, can you lock it?</TD></TR>
+  <TR>
+    <TD><EM>Can Contain</EM></TD>
+    <TD>This can help you limit what goes inside.</TD></TR>
   <TR>
     <TD><EM>Capacity</EM></TD>
     <TD>this denotes the maximum amount of weight that 
@@ -5041,24 +5214,22 @@ step.</P>
       <P align=center>&nbsp;</P></TD></TR></TABLE></P>
 <P>
 <P></P>
-<P class=MsoNormal><STRONG><FONT 
-size=5></FONT></STRONG>&nbsp;</P>
-<P class=MsoNormal><STRONG><FONT 
-size=5>Appendix D: Builder's FAQ</FONT></STRONG></P>
-<P align=left><FONT color=darkviolet size=4><STRONG>Q. How can I get mobs into 
-Grid areas?</STRONG></FONT></P>
-<P align=left><FONT color=black><STRONG>A.</STRONG> Locale types like 
-MountainsGrid, WoodsGrid, WoodsMaze, PlainsGrid, DesertMaze, etc.. can all 
-contain rejuvinating mobs in them.&nbsp; However, two rules need to be followed 
-for this to work properly.&nbsp; The first is that you can only save mobs which 
-are in the parent Grid room itself.&nbsp; If you have SYSMSGS on, you can tell 
-which room this is because it is the only one with a valid room ID 
-("MyArea#123") in the description.&nbsp; The child rooms will have blank () room 
-IDs.&nbsp; Since no one ever actually walks into the parent Grid room, the only 
-way to get to it to deposit mobs is using the Archon GOTO command.&nbsp; The 
-second of the two rules is that you must give the mob the Mobile behavior.&nbsp; 
-The mobile behavior is specially coded so that it will take the mob to a random 
-room inside the grid the first time the mob tries to move.&nbsp; </FONT></P>
+<P class=MsoNormal><STRONG><FONT size=5></FONT></STRONG>&nbsp;</P>
+<P class=MsoNormal><STRONG><FONT size=5>Appendix D: Builder's FAQ</FONT></STRONG></P>
+<P align=left><FONT color=darkviolet size=4><STRONG>Q. How can I get mobs into Grid 
+areas?</STRONG></FONT></P>
+<P align=left><FONT color=black><STRONG>A.</STRONG> Locale types like MountainsGrid, WoodsGrid, 
+WoodsMaze, PlainsGrid, DesertMaze, etc.. can all contain rejuvinating mobs in 
+them.&nbsp; However, two rules need to be followed for this to work 
+properly.&nbsp; The first is that you can only save mobs which are in the parent 
+Grid room itself.&nbsp; If you have SYSMSGS on, you can tell which room this is 
+because it is the only one with a valid room ID ("MyArea#123") in the 
+description.&nbsp; The child rooms will have blank () room IDs.&nbsp; Since no 
+one ever actually walks into the parent Grid room, the only way to get to it to 
+deposit mobs is using the Archon GOTO command.&nbsp; The second of the two rules 
+is that you must give the mob the Mobile behavior.&nbsp; The mobile behavior is 
+specially coded so that it will take the mob to a random room inside the grid 
+the first time the mob tries to move.&nbsp; </FONT></P>
 <P align=left><STRONG><FONT 
 color=#9400d3 size=4>Q. How does the CoffeeMud News feature 
 work?</FONT></STRONG></P>
@@ -5071,10 +5242,10 @@ available to players, or restricted to Archons as you like.</P>
 <P align=left><STRONG><FONT 
 color=#9400d3 size=4>Q. How to Clans 
 work?</FONT></STRONG></P>
-<P align=left><STRONG>A.</STRONG> 
-First, you need to make a StdClanMaster MOB somewhere in the world to create 
-clans. A player would see him, and use the 'clancreate' command to create their 
-new clan.&nbsp;The StdClanMaster then&nbsp;puts your clan into a pending state 
+<P align=left><STRONG>A.</STRONG> First, 
+you need to make a StdClanMaster MOB somewhere in the world to create clans. A 
+player would see him, and use the 'clancreate' command to create their new 
+clan.&nbsp;The StdClanMaster then&nbsp;puts your clan into a pending state 
 awaiting new members. You have to get at least MINCLANMEMBERS amount of new 
 members before it will activate you (Set in the INI file). Activation means you 
 will be visible in the listing, can buy land, can have bank accounts, and can 

@@ -220,7 +220,7 @@ public class Skill_Juggle extends StdAbility
 		if(!pause)
 		{
 			juggle();
-			if((affect.targetMinor()==Affect.TYP_GET)
+			if(((affect.targetMinor()==Affect.TYP_GET)||(affect.targetMinor()==Affect.TYP_REMOVE))
 			&&(affect.target()!=null)
 			&&(affect.target() instanceof Item)
 			&&(juggles.contains(affect.target())))

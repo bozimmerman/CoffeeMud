@@ -66,6 +66,22 @@ public class Sense
 		}
 		return false;
 	}
+	
+	public static boolean isATrackingMonster(Environmental E)
+	{
+		if(E==null) return false;
+		for(int a=0;a<E.numAffects();a++)
+		{
+			Ability A=E.fetchAffect(a);
+			if((A!=null)
+			&&(Util.bset(A.flags(),Ability.FLAG_TRACKING))
+			&&(E instanceof MOB)
+			&&(((MOB)E).isMonster()))
+				return true;
+		}
+		return false;
+	}
+	
 	public static boolean isGood(Environmental E)
 	{
 		if ((E.envStats().disposition()&EnvStats.IS_GOOD)==EnvStats.IS_GOOD)

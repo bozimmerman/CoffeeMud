@@ -5,12 +5,16 @@ ONCE_PROG
 ~
 
 SPEECH_PROG smurf hate kill all smurfocide quest dead want smurfs smurf? hate? kill? all? smurfocide? quest? dead? want? smurfs?
-	say "$n" Give me 19 dead smurfs, including papa smurfs own corpse, and you will be rewarded.
+	say "$n" GIVE me 19 dead smurfs, including papa smurfs own corpse, and you will be rewarded.
 endif
 ~
 
 QUEST_TIME_PROG smurfocide 1
 	QUESTCHAT My patience grows THIN! One more minute people!
+~
+
+QUEST_TIME_PROG smurfocide 0
+	QUESTCHAT Ahh -- forget it! I have plans of my own...<evil grin>
 ~
 
 GIVE_PROG 'the body of papa smurf'

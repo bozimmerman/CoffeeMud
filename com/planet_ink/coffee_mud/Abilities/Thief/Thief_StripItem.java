@@ -83,7 +83,7 @@ public class Thief_StripItem extends ThiefSkill
 					if(target.getVictim()==mob)
 						target.makePeace();
 				}
-				msg=new FullMsg(target,stolen,null,Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_NOISE,null);
+				msg=new FullMsg(target,stolen,null,Affect.MSG_REMOVE,Affect.MSG_REMOVE,Affect.MSG_NOISE,null);
 				if(target.location().okAffect(target,msg))
 					target.location().send(mob,msg);
 			}

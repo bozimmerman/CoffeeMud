@@ -94,6 +94,8 @@ public class Thief_Steal extends ThiefSkill
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();
+					if(mob.getVictim()==target)
+						mob.makePeace();
 				}
 				msg=new FullMsg(target,stolen,null,Affect.MSG_DROP,Affect.MSG_DROP,Affect.MSG_NOISE,null);
 				if(target.location().okAffect(target,msg))

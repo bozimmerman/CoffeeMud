@@ -47,6 +47,7 @@ public class Skill_Puppeteer extends StdAbility
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GET:
+			case Affect.TYP_REMOVE:
 				unInvoke();
 				break;
 			}

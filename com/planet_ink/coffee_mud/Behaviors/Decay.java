@@ -8,6 +8,7 @@ import java.util.*;
 public class Decay extends ActiveTicker
 {
 	public String ID(){return "Decay";}
+	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
 	public Decay()
 	{
 		minTicks=50;maxTicks=50;chance=100;

@@ -1,6 +1,10 @@
 #set the quest name
 set name smurfocide
 
+# this one runs every 30-60 mins
+set wait 30
+set interval 30
+
 set area Smurfville
 # inform the quest that it occurs in Smurfville
 
@@ -10,6 +14,6 @@ set mob Gargamel
 give behavior Scriptable LOAD=quests/smurfocide/gargamel.script
 # load the above behavior into the last mob (gargamel)
 
-set duration 150
-# the duration of the quest is 10 minutes (150 ticks).  The scripts on the mobs will
+set duration 400
+# the duration of the quest is 26 minutes (400 ticks).  The scripts on the mobs will
 # do the rest...

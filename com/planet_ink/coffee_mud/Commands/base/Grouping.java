@@ -558,7 +558,7 @@ public class Grouping
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,null);
 			if(mob.location().okAffect(mob,msg))
 			{
-				msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_GET,null);
+				msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_REMOVE,Affect.MSG_REMOVE,Affect.MSG_REMOVE,null);
 				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);

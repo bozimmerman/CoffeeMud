@@ -108,6 +108,7 @@ public class StdCoins extends StdItem implements Coins
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_GET:
+		case Affect.TYP_REMOVE:
 			if((affect.amITarget(this))||((affect.tool()==this)))
 			{
 				setContainer(null);

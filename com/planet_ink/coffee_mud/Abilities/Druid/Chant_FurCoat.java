@@ -48,7 +48,8 @@ public class Chant_FurCoat extends Chant
 		if(!affect.amITarget(theArmor))
 			return true;
 		else
-		if(affect.targetMinor()==Affect.TYP_GET)
+		if((affect.targetMinor()==Affect.TYP_REMOVE)
+		||(affect.targetMinor()==Affect.TYP_GET))
 		{
 			mob.tell("The fur coat cannot be removed from where it is.");
 			return false;

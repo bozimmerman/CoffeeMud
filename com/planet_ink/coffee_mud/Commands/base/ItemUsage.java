@@ -223,13 +223,20 @@ public class ItemUsage
 							  String getWord)
 	{
 		String theWhat="<T-NAME>";
-		Environmental target=getThis;
-		Environmental tool=null;
+		Item target=getThis;
+		Item tool=null;
 		if(container!=null)
 		{
 			tool=getThis;
 			target=container;
 			theWhat="<O-NAME> from <T-NAME>";
+		}
+		if(!target.amWearingAt(Item.INVENTORY))
+		{
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_REMOVE,null);
+			if(!mob.location().okAffect(mob,msg))
+				return false;
+			mob.location().send(mob,msg);
 		}
 		FullMsg msg=new FullMsg(mob,target,tool,Affect.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat+".");
 		if(!mob.location().okAffect(mob,msg))
@@ -895,7 +902,7 @@ public class ItemUsage
 
 	public static boolean remove(MOB mob, Item item, boolean quiet)
 	{
-		FullMsg newMsg=new FullMsg(mob,item,null,Affect.MSG_GET,quiet?null:"<S-NAME> remove(s) <T-NAME>.");
+		FullMsg newMsg=new FullMsg(mob,item,null,Affect.MSG_REMOVE,quiet?null:"<S-NAME> remove(s) <T-NAME>.");
 		if(mob.location().okAffect(mob,newMsg))
 		{
 			mob.location().send(mob,newMsg);

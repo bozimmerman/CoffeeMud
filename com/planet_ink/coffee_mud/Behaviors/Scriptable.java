@@ -344,22 +344,22 @@ public class Scriptable extends StdBehavior
 	{
 		int val=Util.s_int(arg1);
 		int val2=Util.s_int(arg2);
-		if(arg2.equalsIgnoreCase("=="))
+		if(cmp.equalsIgnoreCase("=="))
 			return (val==val2);
 		else
-		if(arg2.equalsIgnoreCase(">="))
+		if(cmp.equalsIgnoreCase(">="))
 			return (val>=val2);
 		else
-		if(arg2.equalsIgnoreCase("<="))
+		if(cmp.equalsIgnoreCase("<="))
 			return (val<=val2);
 		else
-		if(arg2.equalsIgnoreCase(">"))
+		if(cmp.equalsIgnoreCase(">"))
 			return (val>val2);
 		else
-		if(arg2.equalsIgnoreCase("<"))
+		if(cmp.equalsIgnoreCase("<"))
 			return (val<val2);
 		else
-		if(arg2.equalsIgnoreCase("!="))
+		if(cmp.equalsIgnoreCase("!="))
 			return (val!=val2);
 		else
 		{
@@ -1355,7 +1355,28 @@ public class Scriptable extends StdBehavior
 						val=(String)H.get(arg2);
 						if(val==null) val="";
 					}
-					returnable=simpleEval(val,arg4,arg3,"VAR");
+					if(arg3.equals("=="))
+						returnable=val.equals(arg4);
+					else
+					if(arg3.equals("!="))
+						returnable=!val.equals(arg4);
+					else
+					if(arg3.equals(">"))
+						returnable=Util.s_int(val)>Util.s_int(arg4);
+					else
+					if(arg3.equals("<"))
+						returnable=Util.s_int(val)<Util.s_int(arg4);
+					else
+					if(arg3.equals(">="))
+						returnable=Util.s_int(val)>=Util.s_int(arg4);
+					else
+					if(arg3.equals("<="))
+						returnable=Util.s_int(val)<=Util.s_int(arg4);
+					else
+					{
+						Log.errOut("Scriptable","VAR Syntax -- "+monster.Name()+", "+evaluable);
+						return returnable;
+					}
 				}
 				break;
 			}
@@ -1369,7 +1390,28 @@ public class Scriptable extends StdBehavior
 					Log.errOut("Scriptable","EVAL Syntax -- "+monster.Name()+", "+evaluable);
 					return returnable;
 				}
-				returnable=simpleEval(val,arg4,arg3,"EVAL");
+				if(arg3.equals("=="))
+					returnable=val.equals(arg4);
+				else
+				if(arg3.equals("!="))
+					returnable=!val.equals(arg4);
+				else
+				if(arg3.equals(">"))
+					returnable=Util.s_int(val)>Util.s_int(arg4);
+				else
+				if(arg3.equals("<"))
+					returnable=Util.s_int(val)<Util.s_int(arg4);
+				else
+				if(arg3.equals(">="))
+					returnable=Util.s_int(val)>=Util.s_int(arg4);
+				else
+				if(arg3.equals("<="))
+					returnable=Util.s_int(val)<=Util.s_int(arg4);
+				else
+				{
+					Log.errOut("Scriptable","EVAL Syntax -- "+monster.Name()+", "+evaluable);
+					return returnable;
+				}
 				break;
 			}
 			case 40: // number

@@ -98,6 +98,7 @@ public class GenCoins extends GenItem implements Coins
 		super.affect(myHost,affect);
 		switch(affect.targetMinor())
 		{
+		case Affect.TYP_REMOVE:
 		case Affect.TYP_GET:
 			if((affect.amITarget(this))||((affect.tool()==this)))
 			{

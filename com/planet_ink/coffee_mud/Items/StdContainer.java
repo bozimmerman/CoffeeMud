@@ -157,6 +157,35 @@ public class StdContainer extends StdItem implements Container
 					return false;
 				}
 				break;
+			case Affect.TYP_REMOVE:
+				if((affect.tool()!=null)
+				&&(affect.tool() instanceof Item))
+				{
+					Item newitem=(Item)affect.tool();
+					if(newitem.container()==this)
+					{
+						if((!Sense.canBeSeenBy(newitem,mob))
+						&&((affect.sourceMajor()&Affect.MASK_GENERAL)==0))
+						{
+							mob.tell("You can't see that.");
+							return false;
+						}
+						else
+						if(hasALid()&&(!isOpen()))
+						{
+							mob.tell(name()+" is closed.");
+							return false;
+						}
+						else
+							return true;
+					}
+					else
+					{
+						mob.tell("You don't see that here.");
+						return false;
+					}
+				}
+				break;
 			case Affect.TYP_CLOSE:
 				if(isOpen)
 				{
@@ -263,6 +292,7 @@ public class StdContainer extends StdItem implements Container
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GET:
+			case Affect.TYP_REMOVE:
 				if((affect.tool()!=null)
 				&&(affect.tool() instanceof Item))
 				{

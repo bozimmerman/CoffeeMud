@@ -61,6 +61,7 @@ public class GenLightSource extends GenItem implements Light
 			case Affect.TYP_DROP:
 			case Affect.TYP_THROW:
 			case Affect.TYP_GET:
+			case Affect.TYP_REMOVE:
 				if(affect.source()!=null)
 				{
 					affect.source().recoverEnvStats();

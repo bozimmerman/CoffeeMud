@@ -29,7 +29,7 @@ public class Prayer_FreezeMetal extends Prayer
 		MOB mob=(MOB)affected;
 		if(!mob.isMine(msg.target())) return true;
 		Item I=(Item)msg.target();
-		if(msg.targetMinor()==Affect.TYP_GET)
+		if(msg.targetMinor()==Affect.TYP_REMOVE)
 		{
 			if(I.amWearingAt(Item.INVENTORY))
 				msg.source().tell(affected.name()+" is too cold!");

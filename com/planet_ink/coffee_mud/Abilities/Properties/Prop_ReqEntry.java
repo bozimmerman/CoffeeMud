@@ -20,6 +20,8 @@ public class Prop_ReqEntry extends Property
 	public boolean passesMuster(MOB mob)
 	{
 		if(mob==null) return false;
+		if(Sense.isATrackingMonster(mob))
+			return true;
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
 		return SaucerSupport.zapperCheck(text(),mob);

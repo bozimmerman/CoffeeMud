@@ -74,6 +74,7 @@ public class Spell_AnimateWeapon extends Spell
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GET:
+			case Affect.TYP_REMOVE:
 				unInvoke();
 				break;
 			}

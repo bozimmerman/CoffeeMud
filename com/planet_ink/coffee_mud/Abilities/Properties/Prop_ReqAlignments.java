@@ -15,6 +15,8 @@ public class Prop_ReqAlignments extends Property
 	public boolean passesMuster(MOB mob)
 	{
 		if(mob==null) return false;
+		if(Sense.isATrackingMonster(mob))
+			return true;
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
 		int x=text().toUpperCase().indexOf("ALL");

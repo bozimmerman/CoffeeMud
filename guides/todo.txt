@@ -1,15 +1,15 @@
 Archons Guide updates
+	Finish documenting behaviors/affects for items, mobs, etc. Don't forget Emoter & Sounder!
 	How to use Grids/Mazes (goto and so forth)
 	How to create Homes
 	How to create Inns
 	How to create Deities (and sample ones)
 Programming.html update
-	Updates to Locales, Mobs, Items for misc. methods.
+	Updates misc. methods. Locales, 
+	Updates misc. methods. Mobs, 
+	Updates misc. methods. Items
 	
-	
-
 //****** next version ********************************************************
-when it is raining/snowing/etc it should emote that effect at least once per minute. I didn't even realize it was raining until it stopped
 putting a change bag into a changebag should combine your notes.
 GenRaces
 GenCharClasses
@@ -31,7 +31,6 @@ DEPRESSION.  -10 to Attack, Gets hungry faster (10% or so), reduced saves vs Jus
 YAWNS.  if you get too fatigued, you may get this disease, which is contagious.  No effect other than the occassionally yawning.
 Obessity.  It doesn't change your WEIGHT, per se.  It creates a unseeable undroppable item of FAT for the duration of the obessity.  You can get rid of Obessity with a cure disease, or by remaining hungry for a good while.  You contract obessity by overeatting.
 Alcoholism.  If you drink too much alcohol, you risk gaining this disease.  If you don't drink a glass of alcohol every 3 MUD hours, then you get a -10 to attack and defense.  This penalty is cummulative until you drink alcohol, or you go 5 MUD days without alcohol.  Staying logged off for 5 MUD isn't suffecient....I hope.
-WIZINFO type channel (shows logins, logoffs, creates, etc..)
 jewelmaking should allow you to add jewels to any item
 smokable stuff, mouth position pipes, smokable resources, etc.
 parse out all the commands into classes, so that access can be class based, and time req can be determined

@@ -66,7 +66,7 @@ public class Prayer_CurseItem extends Prayer
 		else
 		switch(affect.targetMinor())
 		{
-		case Affect.TYP_GET:
+		case Affect.TYP_REMOVE:
 			if(!item.amWearingAt(Item.INVENTORY))
 			{
 				if(item.amWearingAt(Item.WIELD)||item.amWearingAt(Item.HELD))

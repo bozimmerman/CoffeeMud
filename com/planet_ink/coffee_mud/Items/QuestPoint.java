@@ -33,7 +33,8 @@ public class QuestPoint extends StdItem
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GET:
-				{
+			case Affect.TYP_REMOVE:
+			{
 				setContainer(null);
 				destroy();
 				if(!mob.isMine(this))
@@ -41,7 +42,7 @@ public class QuestPoint extends StdItem
 				unWear();
 				mob.location().recoverRoomStats();
 				return;
-				}
+			}
 			default:
 				break;
 			}

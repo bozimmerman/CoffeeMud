@@ -15,6 +15,7 @@ public class StdArea implements Area
 	protected int currentWeather=Area.WEATHER_CLEAR;
 	protected int nextWeather=Area.WEATHER_CLEAR;
 	protected int techLevel=0;
+	protected int botherDown=Area.BOTHER_WEATHER_TICKS;
 	protected Vector myRooms=null;
 	protected boolean mobility=true;
 	protected long tickStatus=Tickable.STATUS_NOT;
@@ -454,6 +455,7 @@ public class StdArea implements Area
 				case Affect.TYP_PUT:
 				case Affect.TYP_SELL:
 				case Affect.TYP_VALUE:
+				case Affect.TYP_REMOVE:
 				case Affect.TYP_VIEW:
 				case Affect.TYP_WITHDRAW:
 					break;
@@ -680,8 +682,8 @@ public class StdArea implements Area
 					{
 						MOB mob=R.fetchInhabitant(i);
 						if((mob!=null)
-						   &&(!mob.isMonster())
-						   &&(Sense.canSee(mob)||(currentWeather!=oldWeather)))
+						&&(!mob.isMonster())
+						&&(Sense.canSee(mob)||(currentWeather!=oldWeather)))
 							mob.tell(say);
 					}
 				}
@@ -719,6 +721,33 @@ public class StdArea implements Area
 				}
 				else
 					a++;
+			}
+			if((--botherDown)<=0)
+			{
+				botherDown=Area.BOTHER_WEATHER_TICKS;
+				switch(weatherType(null))
+				{
+				case Area.WEATHER_BLIZZARD:
+				case Area.WEATHER_SLEET:
+				case Area.WEATHER_SNOW:
+				case Area.WEATHER_HAIL:
+				case Area.WEATHER_THUNDERSTORM:
+				case Area.WEATHER_RAIN:
+					for(Enumeration r=getMap();r.hasMoreElements();)
+					{
+						Room R=(Room)r.nextElement();
+						if((R.domainType()&Room.INDOORS)==0)
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							MOB mob=R.fetchInhabitant(i);
+							if((mob!=null)
+							&&(!mob.isMonster())
+							&&(Sense.aliveAwakeMobile(mob,true)))
+								mob.tell(getWeatherDescription());
+						}
+					}
+					break;
+				}
 			}
 			tickStatus=Tickable.STATUS_WEATHER;
 			weatherTick();

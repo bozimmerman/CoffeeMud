@@ -17,6 +17,7 @@ public interface Area extends Environmental
 	public final static int WEATHER_DROUGHT=11;
 	public final static int WEATHER_WINTER_COLD=12;
 	public final static int NUM_WEATHER=13;
+	public final static int BOTHER_WEATHER_TICKS=23; // 90 secs
 	
 	public final static int TECH_LOW=0;
 	public final static int TECH_MIXED=1;

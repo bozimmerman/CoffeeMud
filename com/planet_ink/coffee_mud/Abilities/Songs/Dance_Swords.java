@@ -32,6 +32,7 @@ public class Dance_Swords extends Dance
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GET:
+			case Affect.TYP_REMOVE:
 				if(affected instanceof MOB)
 					undance((MOB)affected);
 				else

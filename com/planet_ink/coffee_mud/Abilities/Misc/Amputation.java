@@ -116,6 +116,7 @@ public class Amputation extends StdAbility
 			case Affect.TYP_PULL:
 			case Affect.TYP_PUSH:
 			case Affect.TYP_GET:
+			case Affect.TYP_REMOVE:
 			case Affect.TYP_CLOSE:
 			case Affect.TYP_DROP:
 			case Affect.TYP_THROW:

@@ -1,6 +1,10 @@
 #set the quest name
 set name delivery
 
+# this one runs every 5 mins
+set wait 5
+set interval 1
+
 import items quests/delivery/note.cmare
 #import our secret note
 
@@ -31,6 +35,6 @@ set mobtype Human
 give behavior Scriptable LOAD=quests/delivery/deliveree.script
 # load the above behavior into the last mob (Human)
 
-set duration 75
-# the duration of the quest is 5 minutes (75 ticks).  The scripts on the mobs will
+set duration 175
+# the duration of the quest is 10 minutes (175 ticks).  The scripts on the mobs will
 # do the rest...
