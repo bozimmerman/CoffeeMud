@@ -432,10 +432,6 @@ public class CMClass extends ClassLoader
 			size+=tempV.size();
 			addV(tempV,abilities);
 			
-			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Bard"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size+=tempV.size();
-			addV(tempV,abilities);
-			
 			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Skills"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
 			size=tempV.size();
 			addV(tempV,abilities);

@@ -124,8 +124,62 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			if (command.equalsIgnoreCase("HEAD"))
 			{
 				headersOnly = true;
+				command = "GET";
 			}
-			else if (!command.equalsIgnoreCase("GET"))
+			else
+			if (command.equalsIgnoreCase("GET"))
+			{
+
+				try
+				{
+					request = inTok.nextToken();
+				}
+				catch (NoSuchElementException e)
+				{
+					request = "/";
+				}
+				int p = request.indexOf("?");
+				if (p == -1)
+				{
+					requestMain = request;
+				}
+				else
+				{
+					if (p == 0)
+					{
+						requestMain = "/";
+						requestParametersEncoded = request.substring(1);
+					}
+					else
+					{
+						requestMain = request.substring(0,p);
+						if (p < request.length())
+							requestParametersEncoded = request.substring(p+1);
+					}
+
+
+				}
+				try
+				{
+					requestMain = URLDecoder.decode(requestMain,"UTF-8");
+				}
+				catch(UnsupportedEncodingException e)
+				{
+					Log.errOut(getName(),"Received wrong encoding");
+				}
+			}
+			else
+			if (command.equalsIgnoreCase("POST"))
+			{
+				requestMain = inTok.nextToken();
+				String postText = "";
+				while(inTok.hasMoreTokens())
+				{
+					postText = inTok.nextToken();
+				}
+				requestParametersEncoded = postText;
+			}
+			else
 			{
 				// must reply with 501 if unsupported
 				status = S_501;
@@ -133,44 +187,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				return false;
 			}
 
-
-			try
-			{
-				request = inTok.nextToken();
-			}
-			catch (NoSuchElementException e)
-			{
-				request = "/";
-			}
-			int p = request.indexOf("?");
-			if (p == -1)
-			{
-				requestMain = request;
-			}
-			else
-			{
-				if (p == 0)
-				{
-					requestMain = "/";
-					requestParametersEncoded = request.substring(1);
-				}
-				else
-				{
-					requestMain = request.substring(0,p);
-					if (p < request.length())
-						requestParametersEncoded = request.substring(p+1);
-				}
-
-
-			}
-			try
-			{
-				requestMain = URLDecoder.decode(requestMain,"UTF-8");
-			}
-			catch(UnsupportedEncodingException e)
-			{
-				Log.errOut(getName(),"Received wrong encoding");
-			}
 			return true;
 		}
 		catch (Exception e)
@@ -199,6 +215,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			}
 		}
 		requestParametersEncoded=buf.toString();
+	}
+
+	public void addRequestParameters(String key, String value)
+	{
+		requestParametersTable.put(key,value);
+		resetRequestEncodedParameters();
 	}
 	
 	public Hashtable getRequestParameters()
@@ -401,7 +423,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				q = "[error]";
 			}
 			else
-				q=W.runMacro(this,parms);
+			{
+				if(parms!=null)
+					q=W.runMacro(this,parms);
+				else
+					q=W.runMacro(this,getRequestEncodedParameters());
+			}
 			if (q != null)
 				return q;
 			else
@@ -631,13 +658,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			//sout = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
 			sout = new DataOutputStream(sock.getOutputStream());
 			sin = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-			String inLine = sin.readLine();
 
 			GrabbedFile requestedFile;
 			headersOnly = false;
 
 			virtualPage = false;
-			boolean processOK = process(inLine);
+			boolean processOK = process(getHTTPRequest(sin));
 
 			if (processOK)
 			{
@@ -901,6 +927,47 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			}
 		}
 		return "";
+	}
+
+	public String getHTTPRequest(BufferedReader sin)
+	{
+		try
+		{
+			String inLine = sin.readLine();
+			//Log.sysOut("HTTP",inLine);
+			if((inLine.startsWith("GET")||inLine.startsWith("HEAD")))
+			{
+				return inLine;
+			}
+			StringBuffer inData = new StringBuffer("");
+			inData.append(inLine+" ");
+			int blanks=0;
+			
+			while(inLine.toUpperCase().indexOf("SUBMIT")<0)
+			{
+				inLine = sin.readLine();
+				//Log.sysOut("HTTP",inLine);
+			}
+			if(inLine.toUpperCase().indexOf("REFERER")>0)
+			{
+				int x = 0;
+				x = inLine.indexOf("?");
+				inLine = inLine.substring(x+1);
+			}
+			inData.append(inLine);
+			//Log.sysOut("HTTPParms",inData.toString());
+			return inData.toString();
+		}
+		catch (Exception e)
+		{
+			if((e.getMessage()==null)||(e.getMessage().indexOf("reset by peer")<0))
+			{
+				Log.errOut(getName(),"Exception: " + e.getMessage() );
+				if(!(e instanceof java.net.SocketException))
+					Log.errOut(getName(),e);
+			}
+		}
+		return "err";
 	}
 	
 	

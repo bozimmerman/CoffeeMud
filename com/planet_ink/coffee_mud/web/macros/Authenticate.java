@@ -56,7 +56,7 @@ public class Authenticate extends StdWebMacro
 		if(mob==null) return false;
 		boolean subOp=false;
 		boolean sysop=mob.isASysOp(null);
-		httpReq.getRequestParameters().put("SYSOP",""+sysop);
+		httpReq.addRequestParameters("SYSOP",""+sysop);
 		String AREA=(String)httpReq.getRequestParameters().get("AREA");
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
@@ -65,7 +65,7 @@ public class Authenticate extends StdWebMacro
 				if(A.amISubOp(mob.name()))
 				{ subOp=true; break;}
 		}
-		httpReq.getRequestParameters().put("SUBOP",""+(sysop||subOp));
+		httpReq.addRequestParameters("SUBOP",""+(sysop||subOp));
 		return mob.password().equalsIgnoreCase(password)&&(mob.name().trim().length()>0);
 	}
 	
