@@ -150,10 +150,8 @@ public class StdMOB implements MOB
 	{
 		return new StdMOB();
 	}
-	public StdMOB()
-	{
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_INFRARED);
-	}
+	public StdMOB(){}
+	
 	private void cloneFix(MOB E)
 	{
 

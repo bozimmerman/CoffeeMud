@@ -26,6 +26,10 @@ public class WaterElemental extends StdRace
 		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+100);
 		affectableStats.setStat(CharStats.SAVE_WATER,affectableStats.getStat(CharStats.SAVE_WATER)+100);
 	}
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
+	}
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)

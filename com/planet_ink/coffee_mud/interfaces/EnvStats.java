@@ -32,7 +32,7 @@ public interface EnvStats extends Cloneable
 	public final static int IS_SNEAKING=32;
 	public final static int IS_BONUS=64;
 	public final static int IS_DARK=128;
-	public final static int IS_INFRARED=256;
+	public final static int IS_GOLEM=256;
 	public final static int IS_SLEEPING=512;
 	public final static int IS_SITTING=1024;
 	public final static int IS_FLYING=2048;
@@ -118,7 +118,7 @@ public interface EnvStats extends Cloneable
 													"ISSNEAKING",
 													"ISBONUS",
 													"ISDARK",
-													"ISINFRARED",
+													"ISGOLEM",
 													"ISSLEEPING",
 													"ISSITTING",
 													"ISFLYING",
@@ -135,7 +135,7 @@ public interface EnvStats extends Cloneable
 													"Is sneaking",
 													"Is magical",
 													"Is dark",
-													"Is infrared",
+													"Is golem",
 													"Is sleeping",
 													"Is sitting",
 													"Is flying",

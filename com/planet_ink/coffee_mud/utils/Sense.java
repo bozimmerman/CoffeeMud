@@ -89,8 +89,8 @@ public class Sense
 	{ return ((E.envStats().disposition()&EnvStats.IS_LIGHTSOURCE)==EnvStats.IS_LIGHTSOURCE); }
 	public static boolean isGlowing(Environmental E)
 	{ return (isLightSource(E)||((E.envStats().disposition()&EnvStats.IS_GLOWING)==EnvStats.IS_GLOWING)); }
-	public static boolean isInfrared(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_INFRARED)==EnvStats.IS_INFRARED); }
+	public static boolean isGolem(Environmental E)
+	{ return ((E.envStats().disposition()&EnvStats.IS_GOLEM)==EnvStats.IS_GOLEM); }
 	public static boolean isSleeping(Environmental E)
 	{ return ((E.envStats().disposition()&EnvStats.IS_SLEEPING)==EnvStats.IS_SLEEPING); }
 	public static boolean isSitting(Environmental E)
@@ -194,7 +194,7 @@ public class Sense
 					return true;
 				if(canSeeInDark(seer))
 					return true;
-				if((isInfrared(seen))&&(canSeeInfrared(seer)))
+				if((!isGolem(seen))&&(canSeeInfrared(seer)))
 				   return true;
 				if((canSeeVictims(seer))&&(mob.getVictim()==seen))
 					return true;
@@ -209,7 +209,7 @@ public class Sense
 				return true;
 			if(canSeeInDark(seer))
 				return true;
-			if((isInfrared(seen))&&(canSeeInfrared(seer)))
+			if((isGolem(seen))&&(canSeeInfrared(seer)))
 			   return true;
 			return false;
 		}
@@ -229,7 +229,7 @@ public class Sense
 			Say.append(" (^ysneaking^?)");
 		if((Sense.isHidden(seen))&&(Sense.canSeeHidden(seer)))
 			Say.append(" (^yhidden^?)");
-		if((Sense.isInfrared(seen))
+		if((!Sense.isGolem(seen))
 		&&(Sense.canSeeInfrared(seer))
 		&&(seer instanceof MOB)
 		&&(isInDark(((MOB)seer).location())))
@@ -272,7 +272,7 @@ public class Sense
 			return false;
 		if(Sense.isGlowing(seen1)!=Sense.isGlowing(seen2))
 			return false;
-		if(Sense.isInfrared(seen1)!=Sense.isInfrared(seen2))
+		if(Sense.isGolem(seen1)!=Sense.isGolem(seen2))
 			return false;
 		if(Sense.canSeeMetal(seer)&&(seen1 instanceof Item)&&(seen2 instanceof Item)
 			&&((((Item)seen1).material()&EnvResource.MATERIAL_MASK)!=(((Item)seen2).material()&EnvResource.MATERIAL_MASK)))

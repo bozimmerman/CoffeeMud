@@ -32,6 +32,7 @@ public class Centipede extends StdRace
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
 	}
 	public String arriveStr()
 	{

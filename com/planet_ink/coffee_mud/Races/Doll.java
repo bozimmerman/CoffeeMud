@@ -27,6 +27,10 @@ public class Doll extends StdRace
 		affectableStats.setStat(CharStats.DEXTERITY,5);
 		affectableStats.setStat(CharStats.INTELLIGENCE,13);
 	}
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
+	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
 	

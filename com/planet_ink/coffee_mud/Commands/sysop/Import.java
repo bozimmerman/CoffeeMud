@@ -1409,8 +1409,7 @@ public class Import
 					else
 					if(special.equals("SPEC_CAST_UNDEAD"))
 					{
-						if((M.baseEnvStats().disposition()&EnvStats.IS_INFRARED)==EnvStats.IS_INFRARED)
-							M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()-EnvStats.IS_INFRARED);
+						M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|EnvStats.IS_GOLEM);
 						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
 						M.addAbility(CMClass.getAbility("Undead_ColdTouch"));
 						M.addAbility(CMClass.getAbility("Undead_LifeDrain"));

@@ -29,6 +29,7 @@ public class Toadstool extends StdRace
 		affectableStats.setSensesMask(affectableStats.sensesMask()
 			|EnvStats.CAN_NOT_MOVE|EnvStats.CAN_NOT_SPEAK|EnvStats.CAN_NOT_TASTE);
 		affectableStats.setDamage(0);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

@@ -20,6 +20,10 @@ public class AirElemental extends StdRace
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
+	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

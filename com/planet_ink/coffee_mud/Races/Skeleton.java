@@ -50,6 +50,10 @@ public class Skeleton extends StdRace
 		affectableStats.setStat(CharStats.SAVE_UNDEAD,affectableStats.getStat(CharStats.SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.SAVE_DISEASE,affectableStats.getStat(CharStats.SAVE_DISEASE)+100);
 	}
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
+	}
 	public Vector myResources()
 	{
 		synchronized(resources)

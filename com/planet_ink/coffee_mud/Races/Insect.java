@@ -24,6 +24,7 @@ public class Insect extends StdRace
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
 	}
 	public void affect(Environmental myHost, Affect msg)
 	{

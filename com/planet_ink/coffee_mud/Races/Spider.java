@@ -24,6 +24,7 @@ public class Spider extends StdRace
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
