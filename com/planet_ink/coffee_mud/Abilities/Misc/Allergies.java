@@ -59,18 +59,89 @@ public class Allergies extends StdAbility
 	{
 	    if(!super.tick(ticking,tickID))
 	        return false;
-	    if((++allergicCheckDown)>10)
+	    if(((++allergicCheckDown)>10)
+	    &&(affected instanceof MOB))
 	    {
-	        
+	        allergicCheckDown=0;
+	        MOB mob=(MOB)affected;
+	        if((Sense.aliveAwakeMobile(mob,true))&&(Sense.isInTheGame(mob,true)))
+	        {
+	            Room R=CoffeeUtensils.roomLocation(mob);
+	            if(raceAllergies.size()>0)
+	            {
+		            MOB M=null;
+		            for(int i=0;i<R.numInhabitants();i++)
+		            {
+		                M=R.fetchInhabitant(i);
+		                if((M!=null)&&(M!=mob)&&(raceAllergies.contains(M.charStats().getMyRace())))
+		                    R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,"<S-NAME> sneeze(s)! AAAAACHHHOOOO!");
+		            }
+	            }
+	            else
+	            if(resourceAllergies.size()>0)
+	            {
+		            Item I=null;
+		            for(int i=0;i<R.numItems();i++)
+		            {
+		                I=R.fetchItem(i);
+		                if((I!=null)
+		                &&(I.container()==null)
+		                &&(resourceAllergies.contains(new Integer(I.material()))))
+		                    R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,"<S-NAME> sneeze(s)! AAAAACHHHOOOO!");
+		            }
+		            if(R.numInhabitants()>0)
+		            {
+			            MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+			            if(M!=null)
+			            for(int i=0;i<M.inventorySize();i++)
+			            {
+			                I=M.fetchInventory(i);
+			                if((I!=null)
+			                &&(I.container()==null)
+			                &&(resourceAllergies.contains(new Integer(I.material()))))
+			                    R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,"<S-NAME> sneeze(s)! AAAAACHHHOOOO!");
+			            }
+		            }
+	            }
+	        }
 	    }
 	    return true;
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
-		return true;
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+		    if(msg.source()==affected)
+		    {
+		        if((msg.targetMinor()==CMMsg.TYP_EAT)
+		        &&(((msg.target() instanceof Item)&&(resourceAllergies.contains(new Integer(((Item)msg.target()).material()))))
+	                ||((msg.target() instanceof MOB)&&(raceAllergies.contains(((MOB)msg.target()).charStats().getMyRace())))))
+	            {
+	                Ability A=CMClass.getAbility("Poison_Heartstopper");
+	                if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
+	            }
+		        else
+		        if((msg.targetMinor()==CMMsg.TYP_GET)
+		        &&((msg.target() instanceof Item)&&(resourceAllergies.contains(new Integer(((Item)msg.target()).material())))))
+		        {
+	                Ability A=CMClass.getAbility("Poison_Hives");
+	                if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
+		        }
+		    }
+		    else
+		    if((msg.target()==affected)
+		    &&(raceAllergies.contains(msg.source().charStats().getMyRace()))
+			&&((Util.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
+			   ||(Util.bset(msg.targetMajor(),CMMsg.MASK_MOVE)))
+		    &&(((MOB)affected).location()!=null)
+		    &&(((MOB)affected).location().isInhabitant(msg.source())))
+		    {
+                Ability A=CMClass.getAbility("Poison_Hives");
+                if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
+		    }
+		}
+		super.executeMsg(myHost,msg);
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -102,7 +173,9 @@ public class Allergies extends StdAbility
 		{
 			Vector allChoices=new Vector();
 		    for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-		        allChoices.addElement(EnvResource.RESOURCE_DESCS[i]);
+		        if(((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LIQUID)
+		        &&((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ENERGY))
+			        allChoices.addElement(EnvResource.RESOURCE_DESCS[i]);
 		    Race R=null;
 	        for(Enumeration r=CMClass.races();r.hasMoreElements();)
 	        {

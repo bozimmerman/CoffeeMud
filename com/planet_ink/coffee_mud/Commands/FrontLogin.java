@@ -636,6 +636,12 @@ public class FrontLogin extends StdCommand
 
 				CoffeeUtensils.outfit(mob,mob.baseCharStats().getMyRace().outfit());
 
+				if(Dice.rollPercentage()>50)
+				{
+			        Ability A=CMClass.getAbility("Allergies");
+			        if(A!=null) A.invoke(mob,mob,true,0);
+				}
+				
 				mob.recoverCharStats();
 				mob.recoverEnvStats();
 				mob.recoverMaxState();

@@ -405,6 +405,20 @@ public class Pregnancy extends StdAbility
 							babe.baseState().setHitPoints(1);
 							babe.baseState().setMana(0);
 							babe.baseState().setMovement(0);
+							if(Dice.rollPercentage()>50)
+							{
+							    Ability A=mob.fetchEffect("Allergies");
+							    if(A!=null)
+							    {
+							        A=(Ability)A.copyOf();
+							        babe.addNonUninvokableEffect(A);
+							    }
+							    else
+							    {
+							        A=CMClass.getAbility("Allergies");
+							        if(A!=null) A.invoke(babe,babe,true,0);
+							    }
+							}
 							Ability STAT=CMClass.getAbility("Prop_StatTrainer");
 							if(STAT!=null)
 							{
