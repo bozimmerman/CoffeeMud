@@ -47,7 +47,7 @@ public class Disease_Cold extends Disease
 			catchIt(mob);
 			return true;
 		}
-		return false;
+		return true;
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

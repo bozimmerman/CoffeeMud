@@ -580,7 +580,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								String buf=findInnRoom(item, "", location());
 								if(buf==null) buf=findInnRoom(item, "upstairs", location().getRoomInDir(Directions.UP));
 								if(buf==null) buf=findInnRoom(item, "downstairs", location().getRoomInDir(Directions.DOWN));
-								if(buf!=null) ExternalPlay.quickSay(this,mob,"Your room is "+buf+".",false,false);
+								if(buf!=null) ExternalPlay.quickSay(this,mob,"Your room is "+buf+".",true,false);
 							}
 						}
 						else

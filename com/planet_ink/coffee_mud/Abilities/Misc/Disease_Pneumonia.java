@@ -39,7 +39,7 @@ public class Disease_Pneumonia extends Disease
 			A.catchIt(mob);
 			return true;
 		}
-		return false;
+		return true;
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

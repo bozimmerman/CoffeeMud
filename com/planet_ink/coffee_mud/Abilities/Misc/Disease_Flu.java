@@ -38,7 +38,7 @@ public class Disease_Flu extends Disease
 			catchIt(mob);
 			return true;
 		}
-		return false;
+		return true;
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

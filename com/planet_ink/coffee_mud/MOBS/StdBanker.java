@@ -258,7 +258,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		changeBag.setDescription("");
 		banker.addInventory(changeBag);
 		int totalWeight=0;
-		while(value>=100000)
+		while(value>=10000000)
 		{
 			value-=10000000;
 			Coins msliver=(Coins)CMClass.getItem("GenCoins");
@@ -435,7 +435,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 		changeBag.recoverEnvStats();
 		changeBag.text();
 		FullMsg newMsg=new FullMsg(banker,customer,changeBag,Affect.MSG_GIVE,"<S-NAME> give(s) "+changeBag.name()+" to <T-NAMESELF>.");
-		msg.addTrailerMsg(newMsg);
+		if(banker.location().okAffect(newMsg))
+			banker.location().send(banker,newMsg);
 	}
 	
 	
@@ -474,12 +475,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(old!=null)
 							delDepositInventory(affect.source().name(),old);
 						addDepositInventory(affect.source().name(),item);
-					    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+getBalance(affect.source())+" gold coins.",false,false);
+					    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+getBalance(affect.source())+" gold coins.",true,false);
 					}
 					else
 					{
 						addDepositInventory(affect.source().name(),(Item)affect.tool());
-					    ExternalPlay.quickSay(this,mob,"Thank you, "+affect.tool().name()+" is safe with us.",false,false);
+					    ExternalPlay.quickSay(this,mob,"Thank you, "+affect.tool().name()+" is safe with us.",true,false);
 					}
 				}
 				return;
@@ -498,22 +499,22 @@ public class StdBanker extends StdShopKeeper implements Banker
 							makeChange(mob,affect.source(),((Coins)old).numberOfCoins(),affect);
 							if(coins.numberOfCoins()<=0)
 							{
-								ExternalPlay.quickSay(this,mob,"I have closed your account. Thanks for your business.",false,false);
+								ExternalPlay.quickSay(this,mob,"I have closed your account. Thanks for your business.",true,false);
 								return;
 							}
 							else
 							{
 								addDepositInventory(affect.source().name(),item);
-							    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+((Coins)item).numberOfCoins()+" gold coins.",false,false);
+							    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
 							}
 						}
 						else
-						    ExternalPlay.quickSay(this,mob,"But, your balance is "+((Coins)item).numberOfCoins()+" gold coins.",false,false);
+						    ExternalPlay.quickSay(this,mob,"But, your balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
 					}
 					else
 					{
 						delDepositInventory(affect.source().name(),old);
-					    ExternalPlay.quickSay(this,mob,"Thank you for your trust.",false,false);
+					    ExternalPlay.quickSay(this,mob,"Thank you for your trust.",true,false);
 						if(location()!=null)
 							location().addItemRefuse(old,Item.REFUSE_PLAYER_DROP);
 						FullMsg msg=new FullMsg(mob,old,this,Affect.MSG_GET,null);
@@ -608,7 +609,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					int minbalance=minBalance(mob)+(((Item)affect.tool()).value()/2);
 					if(balance<minbalance)
 					{
-						ExternalPlay.quickSay(this,mob,"You'll need a total balance of "+minbalance+" for me to hold that.",false,false);
+						ExternalPlay.quickSay(this,mob,"You'll need a total balance of "+minbalance+" for me to hold that.",true,false);
 						return false;
 					}
 				}
@@ -617,13 +618,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 				{
 					if((affect.tool()==null)||(!(affect.tool() instanceof Item)))
 					{
-						ExternalPlay.quickSay(this,mob,"What do you want? I'm busy!",false,false);
+						ExternalPlay.quickSay(this,mob,"What do you want? I'm busy!",true,false);
 						return false;
 					}
 					if((!(affect.tool() instanceof Coins))
 					&&(findDepositInventory(affect.source().name(),affect.tool().name())==null))
 					{
-						ExternalPlay.quickSay(this,mob,"You want WHAT?",false,false);
+						ExternalPlay.quickSay(this,mob,"You want WHAT?",true,false);
 						return false;
 					}
 					int balance=getBalance(affect.source());
@@ -632,16 +633,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						if(((Coins)affect.tool()).numberOfCoins()>balance)
 						{
-							ExternalPlay.quickSay(this,mob,"I'm sorry, you have only "+balance+" gold coins in your account.",false,false);
+							ExternalPlay.quickSay(this,mob,"I'm sorry, you have only "+balance+" gold coins in your account.",true,false);
 							return false;
 						}
 						if(minbalance==0) return true;
 						if(((Coins)affect.tool()).numberOfCoins()>(balance-minbalance))
 						{
 							if((balance-minbalance)>0)
-								ExternalPlay.quickSay(this,mob,"I'm sorry, you may only withdraw "+(balance-minbalance)+" gold coins at this time.",false,false);
+								ExternalPlay.quickSay(this,mob,"I'm sorry, you may only withdraw "+(balance-minbalance)+" gold coins at this time.",true,false);
 							else
-								ExternalPlay.quickSay(this,mob,"I am holding other items in trust, so you may not withdraw funds at this time.",false,false);
+								ExternalPlay.quickSay(this,mob,"I am holding other items in trust, so you may not withdraw funds at this time.",true,false);
 							return false;
 						}
 					}
@@ -656,7 +657,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			{
 				if(numberDeposited(affect.source().name())==0)
 				{
-					ExternalPlay.quickSay(this,mob,"You don't have an account with us, I'm afraid.",false,false);
+					ExternalPlay.quickSay(this,mob,"You don't have an account with us, I'm afraid.",true,false);
 					return false;
 				}
 				else

@@ -61,14 +61,14 @@ public class Disease extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_DISEASE|Affect.ACT_GENERAL,"");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.ACT_HANDS|Affect.TYP_DISEASE|(auto?Affect.ACT_GENERAL:0),"");
 			if(target.location().okAffect(msg))
 			{
 			    target.location().send(target,msg);
 				if(!msg.wasModified())
 				{
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,DISEASE_START());
-				    success=maliciousAffect(mob,target,DISEASE_TICKS()+target.envStats().level(),-1);
+				    success=maliciousAffect(mob,target,DISEASE_TICKS(),-1);
 				}
 			}
 		}
