@@ -120,39 +120,16 @@ public class Prop_Retainable extends Property
 							mob.destroy();
 							return false;
 						}
+						boolean paid=MoneyUtils.modifyLocalBankGold(mob.location().getArea(), owner, -price);
+						if(paid)
+							CommonMsgs.say(mob,null,"Payday!",false,false);
 						else
 						{
-							Vector V=CMClass.DBEngine().DBReadAllPlayerData(owner);
-							boolean paid=false;
-							for(int v=0;v<V.size();v++)
-							{
-								Vector D=(Vector)V.elementAt(v);
-								String last=(String)D.elementAt(3);
-								if(last.startsWith("COINS;"))
-								{
-									Item I=CMClass.getItem("StdCoins");
-									CoffeeMaker.setPropertiesStr(I,last.substring(6),true);
-									I.recoverEnvStats();
-									I.text();
-									if(((Coins)I).numberOfCoins()>=price)
-									{
-										((Coins)I).setNumberOfCoins(((Coins)I).numberOfCoins()-price);
-										CommonMsgs.say(mob,null,"Payday!",false,false);
-										CMClass.DBEngine().DBDeleteData(owner,(String)D.elementAt(1),(String)D.elementAt(2));
-										CMClass.DBEngine().DBCreateData(owner,(String)D.elementAt(1),""+I+Math.random(),"COINS;"+CoffeeMaker.getPropertiesStr(I,true));
-										paid=true;
-										break;
-									}
-								}
-							}
-							if(!paid)
-							{
-								CommonMsgs.say(mob,null,"I don't work for free!  I quit!",false,false);
-								mob.setFollowing(null);
-								MUDTracker.wanderAway(mob,true,false);
-								mob.destroy();
-								return false;
-							}
+							CommonMsgs.say(mob,null,"I don't work for free!  I quit!",false,false);
+							mob.setFollowing(null);
+							MUDTracker.wanderAway(mob,true,false);
+							mob.destroy();
+							return false;
 						}
 					}
 				}

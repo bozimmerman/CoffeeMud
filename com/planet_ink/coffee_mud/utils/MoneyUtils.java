@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.utils;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+
 import java.util.*;
 import java.io.*;
 
@@ -284,6 +285,67 @@ public class MoneyUtils
 		return changeBag;
 	}
 
+	public static boolean modifyBankGold(String bankName, String owner, int amount)
+	{
+		Vector V=CMClass.DBEngine().DBReadAllPlayerData(owner);
+		for(int v=0;v<V.size();v++)
+		{
+			Vector D=(Vector)V.elementAt(v);
+			String last=(String)D.elementAt(3);
+			if(last.startsWith("COINS;"))
+			{
+				if((bankName==null)||(bankName.length()==0)||(bankName.equals(D.elementAt(1))))
+				{
+					Item I=CMClass.getItem("StdCoins");
+					CoffeeMaker.setPropertiesStr(I,last.substring(6),true);
+					I.recoverEnvStats();
+					I.text();
+					if((amount>0)||(((Coins)I).numberOfCoins()>=(-amount)))
+					{
+						((Coins)I).setNumberOfCoins(((Coins)I).numberOfCoins()+amount);
+						CMClass.DBEngine().DBDeleteData(owner,(String)D.elementAt(1),(String)D.elementAt(2));
+						CMClass.DBEngine().DBCreateData(owner,(String)D.elementAt(1),""+I+Math.random(),"COINS;"+CoffeeMaker.getPropertiesStr(I,true));
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean modifyThisAreaBankGold(Area A, HashSet triedBanks, String owner, int amount)
+	{
+		Room R=null;
+		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+		{
+			R=(Room)e.nextElement();
+			for(int m=0;m<R.numInhabitants();m++)
+			{
+				MOB M=R.fetchInhabitant(m);
+				if((M instanceof Banker)&&(!triedBanks.contains(((Banker)M).bankChain())))
+				{
+					if(modifyBankGold(((Banker)M).bankChain(),owner,amount))
+						return true;
+					triedBanks.add(((Banker)M).bankChain());
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static boolean modifyLocalBankGold(Area A, String owner, int amount)
+	{
+		HashSet triedBanks=new HashSet();
+		if(modifyThisAreaBankGold(A,triedBanks,owner,amount))
+			return true;
+		for(Enumeration e=A.getParents();e.hasMoreElements();)
+		{
+			Area A2=(Area)e.nextElement();
+			if(modifyThisAreaBankGold(A2,triedBanks,owner,amount))
+				return true;
+		}
+		return modifyBankGold(null,owner,amount);
+	}
 
 	public static void subtractMoney(MOB banker, MOB mob, int amount)
 	{
