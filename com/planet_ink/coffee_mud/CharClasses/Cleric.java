@@ -146,6 +146,7 @@ public class Cleric extends StdCharClass
 		return true;
 	}
 
+	public String statQualifications(){return "Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob)
 	{
 		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=8)
@@ -153,6 +154,8 @@ public class Cleric extends StdCharClass
 		return true;
 	}
 
+	public String otherLimitations(){return "Using prayers outside your alignment introduces failure chance.";}
+	public String weaponLimitations(){return "To avoid fumbling: Evil must use polearm, sword, axe, edged, or natural.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer.";}
 
 	public boolean okAffect(MOB myChar, Affect affect)
 	{

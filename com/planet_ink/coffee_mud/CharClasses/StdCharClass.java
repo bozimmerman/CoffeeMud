@@ -38,6 +38,20 @@ public class StdCharClass implements CharClass
 	{
 		return true;
 	}
+	public int getMinHitPointsLevel(){return this.minHitPointsPerLevel;}
+	public int getMaxHitPointsLevel(){return this.maxHitPointsPerLevel;}
+	public int getBonusPracLevel(){return this.bonusPracLevel;}
+	public int getBonusManaLevel(){return this.manaMultiplier;}
+	public int getBonusAttackLevel(){return this.bonusAttackLevel;}
+	public int getAttackAttribute(){return this.attackAttribute;}
+	public int getPracsFirstLevel(){return this.practicesAtFirstLevel;}
+	public int getTrainsFirstLevel(){return this.trainsAtFirstLevel;}
+	public int getDamageBonusLevel(){return this.damageBonusPerLevel;}
+	public String weaponLimitations(){return "";}
+	public String armorLimitations(){return "";}
+	public String otherLimitations(){return "";}
+	public String otherBonuses(){return "";}
+	public String statQualifications(){return "";}
 
 	protected void giveMobAbility(MOB mob, Ability A, int profficiency, String defaultParm, boolean isBorrowedClass)
 	{ giveMobAbility(mob,A,profficiency,defaultParm,isBorrowedClass,true);}

@@ -30,6 +30,7 @@ public class Elf extends StdRace
 		if(A!=null)
 		{
 			A=(Ability)A.newInstance();
+			A.setProfficiency(100);
 			mob.addAbility(A);
 			A.autoInvocation(mob);
 			if(mob.isMonster())

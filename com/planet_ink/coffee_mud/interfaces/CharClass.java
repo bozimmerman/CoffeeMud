@@ -40,5 +40,19 @@ public interface CharClass
 	public int getLevelAttack(MOB mob);
 	public int getLevelArmor(MOB mob);
 	public int getLevelDamage(MOB mob);
+	public int getMinHitPointsLevel();
+	public int getMaxHitPointsLevel();
+	public int getBonusPracLevel();
+	public int getBonusManaLevel();
+	public int getBonusAttackLevel();
+	public int getAttackAttribute();
+	public int getPracsFirstLevel();
+	public int getTrainsFirstLevel();
+	public int getDamageBonusLevel();
+	public String weaponLimitations();
+	public String armorLimitations();
+	public String otherLimitations();
+	public String otherBonuses();
+	public String statQualifications();
 	public int[] maxStat();
 }

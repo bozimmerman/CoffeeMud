@@ -1,11 +1,74 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<P>&nbsp;</P>
+<html>
+<head>
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>CoffeeMUD Web Server</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+	function openUp(named)
+	{
+		var strFeatures="top=200,left=50,resizeable=no,height=315,width=650,alwaysRaised=yes,dependent=yes";
+		w=window.open("ability.cmvp?ABILITY="+named,
+		            "Ability",strFeatures, false);
+	}
+	//-->
+	</SCRIPT>
+</head>
 
+<body BGCOLOR=#CCFFFF>
+<h3>CoffeeMud 3.0 Player Class Information</h3><P>
+<UL>
+@loop@
+@CharClassNext@
+<LI><A href="#@CharClassID@">@CharClassName@</A>
+@back@
+</UL>
+<P>
+@CharClassNext?reset@
+
+@loop@
+@CharClassNext@
+<CENTER><a name="@CharClassID@"><H3>@CharClassName@</H3></a></CENTER>
+<TABLE WIDTH=100% BORDER=1>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Description</B></TD><TD>@CharClassData?help@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Prime Statistic</B></TD><TD>@CharClassData?prime@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Qualifications</B></TD><TD>@CharClassData?quals@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Practices</B></TD><TD>@CharClassData?pracs@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Training Points</B></TD><TD>@CharClassData?trains@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Hit Points</B></TD><TD>@CharClassData?hitpoints@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Mana</B></TD><TD>@CharClassData?mana@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Movement</B></TD><TD>@CharClassData?movement@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Attack Skill</B></TD><TD>@CharClassData?attack@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Other Bonuses</B></TD><TD>@CharClassData?bonuses@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Weapons</B></TD><TD>@CharClassData?weapons@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Armor</B></TD><TD>@CharClassData?armor@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Other Limitations</B></TD><TD>@CharClassData?limits@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Starting Equipment</B></TD><TD>@CharClassData?startingeq@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Qualifying Races</B></TD><TD>@ClassRaceNext?reset@
+		 @loop@ @ClassRaceNext@ <a href="races.cmvp#@RaceID@">@RaceName@</a> @back@ </TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Languages</B></TD>
+<TD>@AbilityNext?reset@ @loop@ @AbilityNext?language@ @AbilityName@ @back@</TD>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Abilities</B></TD>
+<TD>
+	<TABLE WIDTH=100% BORDER=1> @LevelNext?reset@ 
+	@loop@ @LevelNext@
+	<TR><TD WIDTH=10%>@LevelNumber@</TD>
+	<TD WIDTH=90%>@AbilityNext?reset@
+	<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+		@loop@ @AbilityNext?skill&spell&prayer&song&thief skill&chant@ 
+		<TR><TD WIDTH=35%>(@AbilityData?domain@)</TD>
+		<TD WIDTH=15% ALIGN=RIGHT>@AbilityData?qualifyQ@</TD>
+		<TD WIDTH=50%>&nbsp;
+		<a href="javascript:openUp('@AbilityID@');">@AbilityName@</a> 
+		</TD></TR>
+		@back@
+		</TABLE>
+	</TD>
+	</TR>
+	@back@
+	</TABLE></TD></TR>
+</TABLE>
+@back@
 </BODY>
 </HTML>

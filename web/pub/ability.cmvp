@@ -1,11 +1,21 @@
 <HTML>
 <HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
+<TITLE>@AbilityData?domain@ @AbilityName@</TITLE>
 </HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+<BODY BGCOLOR=#000066 TEXT=#FFFFFF>
+<H3>@AbilityName@ (@AbilityData?domain@)</H3>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Quality</B></FONT></TD>
+	<TD><FONT SIZE=-1>@AbilityData?quality@</FONT></TD></TR>
+<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Target</B></FONT></TD>
+	<TD><FONT SIZE=-1>@AbilityData?target@</FONT></TD></TR>
+<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Range</B></FONT></TD>
+	<TD><FONT SIZE=-1>@AbilityData?ranges@</FONT></TD></TR>
+<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Alignment</B></FONT></TD>
+	<TD><FONT SIZE=-1>@AbilityData?alignment@</FONT></TD></TR>
+</TABLE>
+<BR><PRE>
+@AbilityData?help@
+</PRE>
 </BODY>
 </HTML>

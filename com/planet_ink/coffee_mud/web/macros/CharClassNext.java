@@ -13,6 +13,11 @@ public class CharClassNext extends StdWebMacro
 	{
 		Hashtable parms=parseParms(parm);
 		String last=(String)httpReq.getRequestParameters().get("CLASS");
+		if(parms.containsKey("RESET"))
+		{	
+			if(last!=null) httpReq.getRequestParameters().remove("CLASS");
+			return "";
+		}
 		String lastID="";
 		for(int c=0;c<CMClass.charClasses.size();c++)
 		{

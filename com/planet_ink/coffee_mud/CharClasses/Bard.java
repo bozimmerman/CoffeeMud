@@ -79,6 +79,7 @@ public class Bard extends StdCharClass
 		return true;
 	}
 
+	public String statQualifications(){return "Charisma 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob)
 	{
 		if(mob.baseCharStats().getStat(CharStats.CHARISMA) <= 8)
@@ -91,6 +92,9 @@ public class Bard extends StdCharClass
 
 		return true;
 	}
+	public String weaponLimitations(){return new Thief().weaponLimitations();}
+	public String armorLimitations(){return new Thief().armorLimitations();}
+	public String otherLimitations(){return new Thief().otherLimitations();}
 
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{

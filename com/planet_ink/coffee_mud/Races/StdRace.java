@@ -132,7 +132,7 @@ public class StdRace implements Race
 	{
 		if(!verifyOnly)
 		{
-			if(mob.baseEnvStats().level()==1)
+			if(mob.baseEnvStats().level()<=1)
 			{
 				mob.setPractices(mob.getPractices()+practicesAtFirstLevel);
 				mob.setTrains(mob.getTrains()+trainsAtFirstLevel);

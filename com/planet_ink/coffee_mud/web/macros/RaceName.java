@@ -13,6 +13,7 @@ public class RaceName extends StdWebMacro
 	{
 		Hashtable parms=parseParms(parm);
 		String last=(String)httpReq.getRequestParameters().get("RACE");
+		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
 			Race R=CMClass.getRace(last);

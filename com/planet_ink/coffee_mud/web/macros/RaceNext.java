@@ -13,6 +13,11 @@ public class RaceNext extends StdWebMacro
 	{
 		Hashtable parms=parseParms(parm);
 		String last=(String)httpReq.getRequestParameters().get("RACE");
+		if(parms.containsKey("RESET"))
+		{	
+			if(last!=null) httpReq.getRequestParameters().remove("RACE");
+			return "";
+		}
 		String lastID="";
 		for(int r=0;r<CMClass.races.size();r++)
 		{

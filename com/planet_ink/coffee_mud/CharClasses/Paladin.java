@@ -85,6 +85,7 @@ public class Paladin extends StdCharClass
 		return true;
 	}
 
+	public String otherLimitations(){return "Must remain good to avoid spell/skill failure chance.";}
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
 		if(affect.amISource(myChar))
@@ -98,6 +99,7 @@ public class Paladin extends StdCharClass
 		return super.okAffect(myChar, affect);
 	}
 
+	public String statQualifications(){return "Strength 9+, Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STRENGTH) <= 8)

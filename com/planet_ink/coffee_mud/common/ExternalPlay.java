@@ -114,6 +114,11 @@ public class ExternalPlay
 		if(player!=null) return player.drop(mob,dropThis);
 		return false;
 	}
+	public static StringBuffer getHelpText(String helpStr)
+	{
+		if(player!=null) return player.getHelpText(helpStr);
+		return null;
+	}
 	public static void read(MOB mob, Environmental thisThang, String theRest)
 	{
 		if(player!=null) player.read(mob,thisThang, theRest);

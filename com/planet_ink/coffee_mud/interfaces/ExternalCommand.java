@@ -29,6 +29,7 @@ public interface ExternalCommand
 	
 	// messages
 	public StringBuffer getInventory(MOB seer, MOB mob);
+	public StringBuffer getHelpText(String helpStr);
 	public StringBuffer getScore(MOB mob);
 	public StringBuffer niceLister(MOB mob, Vector items, boolean useName);
 	

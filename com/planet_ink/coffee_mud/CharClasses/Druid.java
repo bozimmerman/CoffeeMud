@@ -41,13 +41,21 @@ public class Druid extends StdCharClass
 		return true;
 	}
 
+	public String statQualifications(){return "Constitution 9+";}
 	public boolean qualifiesForThisClass(MOB mob)
 	{
 		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
 			return false;
+		if(!(mob.charStats().getMyRace().ID().equals("Human"))
+		&& !(mob.charStats().getMyRace().ID().equals("Elf"))
+		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
+			return(false);
 		return true;
 	}
 
+	public String weaponLimitations(){return "To avoid fumbling, must be Natural, Wooden, or Vegetation-based weapons.";}
+	public String armorLimitations(){return "Must wear cloth, paper, or vegetation armor to avoid chant failure.";}
+	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 
 	public boolean okAffect(MOB myChar, Affect affect)
 	{

@@ -259,6 +259,7 @@ public class Mage extends StdCharClass
 		return true;
 	}
 
+	public String statQualifications(){return "Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob)
 	{
 		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
@@ -334,6 +335,8 @@ public class Mage extends StdCharClass
 				w.wearAt(Item.WIELD);
 		}
 	}
+	public String weaponLimitations(){return "To avoid fumble chance, must use dagger, staff, or natural weapon.";}
+	public String armorLimitations(){return "Must wear cloth, vegetation, or paper based armor to avoid spell failure.";}
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))

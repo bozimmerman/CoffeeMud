@@ -28,11 +28,11 @@ public class Archon extends StdCharClass
 		return false;
 	}
 
+	public String statQualifications(){return "Must be granted by another Archon.";}
 	public boolean qualifiesForThisClass(MOB mob)
 	{
 		return false;
 	}
-
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("ArchonStaff");

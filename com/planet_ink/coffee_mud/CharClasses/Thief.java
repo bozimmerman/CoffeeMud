@@ -71,6 +71,7 @@ public class Thief extends StdCharClass
 		return true;
 	}
 
+	public String statQualifications(){return "Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob)
 	{
 		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)>8)
@@ -144,6 +145,8 @@ public class Thief extends StdCharClass
 		}
 		return true;
 	}
+	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
+	public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
 		if(!thiefOk(myChar,affect))
@@ -167,6 +170,7 @@ public class Thief extends StdCharClass
 		mob.recoverMaxState();
 	}
 
+	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defense every level after 1st.";}
 	public void level(MOB mob)
 	{
 		super.level(mob);

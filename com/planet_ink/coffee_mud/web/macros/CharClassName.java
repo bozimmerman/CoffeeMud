@@ -13,6 +13,7 @@ public class CharClassName extends StdWebMacro
 	{
 		Hashtable parms=parseParms(parm);
 		String last=(String)httpReq.getRequestParameters().get("CLASS");
+		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
 			CharClass C=CMClass.getCharClass(last);

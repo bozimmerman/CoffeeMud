@@ -198,6 +198,52 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			requestParameters=new Hashtable();
 		return requestParameters;
 	}
+
+	private String parseFoundMacro(StringBuffer s, int i)
+	{
+		String foundMacro=null;
+		boolean extend=false;
+		for(int x=i+1;x<s.length();x++)
+		{
+			if(s.charAt(x)=='@')
+			{
+				foundMacro=s.substring(i+1,x);
+				break;
+			}
+			else
+			if(s.charAt(x)=='?')
+				extend=true;
+			else
+			if(((x-i)>webServer.longestMacro)&&(!extend))
+				break;
+		}
+		return foundMacro;
+	}
+	private int myBack(StringBuffer s, int i)
+	{
+		int backsToFind=1;
+		for(;i<s.length();i++)
+		{
+			if(s.charAt(i)=='@')
+			{
+				String foundMacro=parseFoundMacro(s,i);
+				if(foundMacro!=null)
+				{
+					if(foundMacro.equalsIgnoreCase("loop"))
+					   backsToFind++;
+					else
+					if(foundMacro.equalsIgnoreCase("back"))
+					{
+						backsToFind--;
+						if(backsToFind<=0)
+							return i;
+					}
+				}
+			}
+		}
+		return -1;
+	}
+	
 	private byte [] doVirtualPage(byte [] data)
 	{
 		if((webServer.webMacros==null)
@@ -210,32 +256,17 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			{
 				if(s.charAt(i)=='@')
 				{
-					String foundMacro=null;
-					boolean extend=false;
-					for(int x=i+1;x<s.length();x++)
-					{
-						if(s.charAt(x)=='@')
-						{
-							foundMacro=s.substring(i+1,x);
-							break;
-						}
-						else
-						if(s.charAt(x)=='=')
-							extend=true;
-						else
-						if(((x-i)>webServer.longestMacro)&&(!extend))
-							break;
-					}
+					String foundMacro=parseFoundMacro(s,i);
 					if(foundMacro!=null)
 					{
 						if(foundMacro.equalsIgnoreCase("loop"))
 						{
-							int v=s.toString().toUpperCase().indexOf("@BACK@");
+							int v=myBack(s,i+6);
 							if(v<0)
 								s.replace(i,i+6, "[loop without back]" );
 							else
 							{
-								String s2=s.substring(i+7,v);
+								String s2=s.substring(i+6,v);
 								s.replace(i,v+6,"");
 								int ldex=i;
 								String s3=" ";
@@ -251,10 +282,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 						else
 						if(foundMacro.equalsIgnoreCase("break"))
 							return ("").getBytes();
+						if(foundMacro.equalsIgnoreCase("back"))
+							s.replace(i,i+6, "[back without loop]" );
 						else
 						{
 							int l=foundMacro.length();
-							int x=foundMacro.indexOf("=");
+							int x=foundMacro.indexOf("?");
 							String parms=null;
 							if(x>=0)
 							{

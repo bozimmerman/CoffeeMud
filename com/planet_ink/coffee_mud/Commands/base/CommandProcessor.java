@@ -567,7 +567,8 @@ public class CommandProcessor
 			arcHelpFile=new Properties();
 			try{arcHelpFile.load(new FileInputStream("resources"+File.separatorChar+"arc_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 		}
-		if(arcHelpFile==null) return false;
+		if(arcHelpFile==null)
+			return false;
 		return true;
 	}
 
@@ -652,60 +653,32 @@ public class CommandProcessor
 			mob.session().rawPrintln(topicBuffer.toString()+"\n\r\n\rEnter "+helpName+" (TOPIC NAME) for more information.");
 	}
 
-	public void help(MOB mob, String helpStr)
+	
+	public StringBuffer getHelpText(String helpStr)
 	{
-		if(helpStr.length()==0)
-		{
-			StringBuffer helpText=Resources.getFileResource("help.txt");
-			if((helpText!=null)&&(mob.session()!=null))
-				mob.session().unfilteredPrintln(helpText.toString());
-			return;
-		}
-		else
-		{
-			if(!getHelpFile())
-			{
-				mob.tell("No help is available.");
-				return;
-			}
-			// the area exception
-			if(CMMap.getArea(helpStr.trim())!=null)
-			{
-				StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+helpStr.trim().toUpperCase());
-				if(s==null)
-				{
-					s=CMMap.getArea(helpStr.trim()).getAreaStats();
-					Resources.submitResource("HELP_"+helpStr.trim().toUpperCase(),s);
-				}
-				mob.tell(s.toString());
-				return;
-			}
-		}
-		doHelp(mob,helpStr,helpFile);
+		if(!getHelpFile())
+			return null;
+		if(helpStr.length()==0) return null;
+		StringBuffer thisTag=getHelpText(helpStr,helpFile);
+		if(thisTag!=null) return thisTag;
+		if(!getArcHelpFile()) return null;
+		thisTag=getHelpText(helpStr,arcHelpFile);
+		return thisTag;
 	}
-
-	public void arcHelp(MOB mob, String helpStr)
+	
+	public StringBuffer getHelpText(String helpStr,Properties rHelpFile)
 	{
-		if(helpStr.length()==0)
+		// the area exception
+		if(CMMap.getArea(helpStr.trim())!=null)
 		{
-			StringBuffer helpText=Resources.getFileResource("arc_help.txt");
-			if((helpText!=null)&&(mob.session()!=null))
-				mob.session().unfilteredPrintln(helpText.toString());
-			return;
-		}
-		else
-		{
-			if(!getArcHelpFile())
+			StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+helpStr.trim().toUpperCase());
+			if(s==null)
 			{
-				mob.tell("No archon help is available.");
-				return;
+				s=CMMap.getArea(helpStr.trim()).getAreaStats();
+				Resources.submitResource("HELP_"+helpStr.trim().toUpperCase(),s);
 			}
+			return s;
 		}
-		doHelp(mob,helpStr,arcHelpFile);
-	}
-
-	private void doHelp(MOB mob, String helpStr, Properties rHelpFile)
-	{
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(" ")>=0)
 			helpStr=helpStr.replace(' ','_');
@@ -723,12 +696,46 @@ public class CommandProcessor
 				thisTag=thisOtherTag;
 		}
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+			return null;
+		return new StringBuffer(thisTag);
+	}
+	
+	public void help(MOB mob, String helpStr)
+	{
+		if(!getHelpFile())
 		{
-			mob.tell("No help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
+			mob.tell("No help is available.");
 			return;
 		}
+		StringBuffer thisTag=null;
+		if(helpStr.length()==0)
+			thisTag=Resources.getFileResource("help.txt");
+		else
+			thisTag=getHelpText(helpStr,helpFile);
+		if(thisTag==null)
+			mob.tell("No help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
+		else
 		if(!mob.isMonster())
-			mob.session().unfilteredPrintln(thisTag);
+			mob.session().unfilteredPrintln(thisTag.toString());
+	}
+
+	public void arcHelp(MOB mob, String helpStr)
+	{
+		if(!getArcHelpFile())
+		{
+			mob.tell("No archon help is available.");
+			return;
+		}
+		StringBuffer thisTag=null;
+		if(helpStr.length()==0)
+			thisTag=Resources.getFileResource("arc_help.txt");
+		else
+			thisTag=getHelpText(helpStr,arcHelpFile);
+		if(thisTag==null)
+			mob.tell("No archon help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
+		else
+		if(!mob.isMonster())
+			mob.session().unfilteredPrintln(thisTag.toString());
 	}
 
 	public void shutdown(MOB mob, Vector commands)

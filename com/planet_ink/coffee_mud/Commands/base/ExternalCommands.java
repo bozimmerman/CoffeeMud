@@ -89,6 +89,10 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.doCommand(mob,commands);
 	}
+	public StringBuffer getHelpText(String helpStr)
+	{
+		return processor.getHelpText(helpStr);
+	}
 	public StringBuffer getInventory(MOB seer, MOB mob)
 	{
 		return processor.scoring.getInventory(seer,mob);
