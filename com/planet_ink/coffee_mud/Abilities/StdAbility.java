@@ -519,7 +519,7 @@ public class StdAbility implements Ability, Cloneable
 			Ability newOne=(Ability)this.copyOf();
 			if(tickAdjustmentFromStandard<=0)
 			{
-				tickAdjustmentFromStandard=(adjustedLevel(mob)*3)+15;
+				tickAdjustmentFromStandard=(adjustedLevel(mob)*4)+25;
 
 				if(target!=null)
 					tickAdjustmentFromStandard-=(target.envStats().level()*2);
@@ -581,7 +581,7 @@ public class StdAbility implements Ability, Cloneable
 			Ability newOne=(Ability)this.copyOf();
 
 			if(tickAdjustmentFromStandard<=0)
-				tickAdjustmentFromStandard=(adjustedLevel(mob)*3)+30;
+				tickAdjustmentFromStandard=(adjustedLevel(mob)*7)+60;
 
 			newOne.startTickDown(target,tickAdjustmentFromStandard);
 		}
