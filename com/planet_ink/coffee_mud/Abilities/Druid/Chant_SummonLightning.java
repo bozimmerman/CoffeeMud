@@ -55,7 +55,7 @@ public class Chant_SummonLightning extends Chant
 				mob.location().send(mob,msg2);
 				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob)).doubleValue());
 				int damage = Dice.roll(maxDie,8,maxDie);
-				if((msg.wasModified())||(msg2.wasModified()))
+				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(Util.div(damage,2.0));
 				if(target.location()==mob.location())
 					ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");

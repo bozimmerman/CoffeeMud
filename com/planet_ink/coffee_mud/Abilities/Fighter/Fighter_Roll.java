@@ -32,8 +32,8 @@ public class Fighter_Roll extends StdAbility
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(Sense.aliveAwakeMobile(mob,true))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
-		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.value())>0)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
@@ -42,8 +42,8 @@ public class Fighter_Roll extends StdAbility
 		{
 			doneThisRound=true;
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
-			regain=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),pctRecovery));
-			SaucerSupport.adjustDamageMessage(msg,regain*-1);
+			regain=(int)Math.round(Util.mul((msg.value()),pctRecovery));
+			msg.setValue(msg.value()-regain);
 		}
 		return true;
 	}
@@ -64,7 +64,7 @@ public class Fighter_Roll extends StdAbility
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(regain>0))
 		{
 			msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> roll(s) with the hit."));

@@ -48,7 +48,7 @@ public class Poison_Slumberall extends Poison
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if(msg.amITarget(mob)&&(fallenYet)&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+		if(msg.amITarget(mob)&&(fallenYet)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			unInvoke();
 		else
 		if((msg.amISource(mob))

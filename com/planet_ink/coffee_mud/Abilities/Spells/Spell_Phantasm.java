@@ -68,7 +68,7 @@ public class Spell_Phantasm extends Spell
 			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 				unInvoke();
 			else
-			if(msg.amITarget(mob)&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+			if(msg.amITarget(mob)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 				msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_QUIT,msg.source().name()+"'s attack somehow went THROUGH "+mob.name()+"."));
 		}
 	}

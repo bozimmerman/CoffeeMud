@@ -25,7 +25,7 @@ public class Fighter_KiStrike extends StdAbility
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(!done)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			done=true;
 			MOB mob=(MOB)affected;

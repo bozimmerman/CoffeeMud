@@ -73,7 +73,7 @@ public class Spell_Hold extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					success=maliciousAffect(mob,target,8,-1);
 					if(success)

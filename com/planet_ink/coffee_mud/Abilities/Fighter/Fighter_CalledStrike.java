@@ -62,13 +62,13 @@ public class Fighter_CalledStrike extends StdAbility
 		MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(msg.amITarget(target))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
-			int hurtAmount=msg.targetCode()-CMMsg.MASK_HURT;
+			int hurtAmount=msg.value();
 			if(hurtAmount>=(target.baseState().getHitPoints()/hpReq))
 			{
 				hurtAmount=(target.baseState().getHitPoints()/hpReq);
-				SaucerSupport.adjustDamageMessage(msg,hurtAmount);
+				msg.setValue(msg.value()+hurtAmount);
 				amputate();
 			}
 			else

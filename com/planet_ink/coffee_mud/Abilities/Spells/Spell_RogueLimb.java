@@ -52,8 +52,8 @@ public class Spell_RogueLimb extends Spell
 		if(msg.amITarget(rogueLimb)
 		&&(Sense.aliveAwakeMobile(rogueLimb,true))
 		&&(Sense.aliveAwakeMobile((MOB)affected,true))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
-			ExternalPlay.postDamage(rogueLimb,(MOB)affected,this,msg.targetCode()-CMMsg.MASK_HURT,CMMsg.MASK_GENERAL|msg.sourceCode(),Weapon.TYPE_NATURAL,null);
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+			ExternalPlay.postDamage(rogueLimb,(MOB)affected,this,msg.value(),CMMsg.MASK_GENERAL|msg.sourceCode(),Weapon.TYPE_NATURAL,null);
 		if(msg.amISource(rogueLimb)
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
@@ -92,7 +92,7 @@ public class Spell_RogueLimb extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					Vector limbs=new Vector();
 					Race theRace=target.charStats().getMyRace();

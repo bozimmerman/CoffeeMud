@@ -39,7 +39,7 @@ public class Spell_Hunger extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					target.curState().adjHunger(-150 - (mob.envStats().level() * 5),target.maxState());
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) incredibly hungry!");

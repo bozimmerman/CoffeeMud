@@ -41,7 +41,7 @@ public class Prayer_Drain extends Prayer
 			{
 				mob.location().send(mob,msg2);
 				mob.location().send(mob,msg);
-				if((!msg.wasModified())&&(!msg2.wasModified()))
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int damage = 0;
 					int maxDie =  adjustedLevel(mob);

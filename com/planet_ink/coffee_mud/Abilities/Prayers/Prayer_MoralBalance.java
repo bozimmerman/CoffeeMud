@@ -34,7 +34,7 @@ public class Prayer_MoralBalance extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					target.tell("Your views on the world suddenly moderate.");
 					int targetAlignment = target.getAlignment();

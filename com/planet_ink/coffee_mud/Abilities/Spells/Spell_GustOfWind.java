@@ -91,7 +91,7 @@ public class Spell_GustOfWind extends Spell
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> get(s) blown back!");
 				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
-					if((!msg.wasModified())&&(target.location()==mob.location()))
+					if((msg.value()<=0)&&(target.location()==mob.location()))
 					{
 						MOB victim=target.getVictim();
 						if((victim!=null)&&(target.rangeToTarget()>=0))

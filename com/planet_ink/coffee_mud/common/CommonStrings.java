@@ -459,7 +459,7 @@ public class CommonStrings extends Scriptable
 	}
 	public static void resistanceMsgs(CMMsg msg, MOB source, MOB target)
 	{
-		if(msg.wasModified()) return;
+		if(msg.value()>0) return;
 
 		if(target.amDead()) return;
 
@@ -496,7 +496,7 @@ public class CommonStrings extends Scriptable
 		}
 		if(tackOn!=null)
 			msg.addTrailerMsg(new FullMsg(target,source,CMMsg.MSG_OK_ACTION,tackOn));
-		msg.tagModified(true);
+		msg.setValue(msg.value()+1);
 	}
 
 	// this is the sound support method.

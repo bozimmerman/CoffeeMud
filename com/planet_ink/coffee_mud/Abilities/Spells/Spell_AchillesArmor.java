@@ -42,8 +42,8 @@ public class Spell_AchillesArmor extends Spell
 		&&(msg.source()!=msg.target())
 		&&(mob.location()!=null)
 		&&(mob.location().isInhabitant(msg.source()))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
-		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.value())>0)
 		&&(!mob.amDead()))
 		{
 			int weaponType=-1;

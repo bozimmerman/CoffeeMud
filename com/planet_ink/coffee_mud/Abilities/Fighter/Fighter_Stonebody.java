@@ -31,15 +31,15 @@ public class Fighter_Stonebody extends StdAbility
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(Sense.aliveAwakeMobile(mob,true))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
-		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.value())>0)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.CONSTITUTION),false)))
 		{
 			int regain=(int)Math.round(Util.mul(Util.div(profficiency(),100.0),2.0));
-			SaucerSupport.adjustDamageMessage(msg,regain*-1);
+			msg.setValue(msg.value()-regain);
 		}
 		return true;
 	}
@@ -53,7 +53,7 @@ public class Fighter_Stonebody extends StdAbility
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(regain>0))
 		{
 			helpProfficiency(mob);

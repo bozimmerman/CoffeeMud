@@ -3774,7 +3774,7 @@ public class Scriptable extends StdBehavior
 
 		if(msg.amITarget(monster)
 		&&(!msg.amISource(monster))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.source()!=monster))
 			lastToHurtMe=msg.source();
 

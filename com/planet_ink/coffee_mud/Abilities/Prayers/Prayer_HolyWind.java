@@ -95,7 +95,7 @@ public class Prayer_HolyWind extends Prayer
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> get(s) blown back!");
 				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
-					if((!msg.wasModified())&&(target.location()==mob.location()))
+					if((msg.value()<=0)&&(target.location()==mob.location()))
 					{
 						int howLong=2;
 						if((mob.location().getArea().weatherType(mob.location())==Area.WEATHER_WINDY)

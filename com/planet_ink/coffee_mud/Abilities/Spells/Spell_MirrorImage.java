@@ -65,7 +65,7 @@ public class Spell_MirrorImage extends Spell
 				||(Util.bset(msg.othersCode(),CMMsg.MASK_MOUTH))
 				||(Util.bset(msg.othersCode(),CMMsg.MASK_HANDS)))
 			&&(msg.othersMessage()!=null)
-			&&((msg.targetCode()&CMMsg.MASK_HURT)==0)
+			&&(msg.targetMinor()!=CMMsg.TYP_DAMAGE)
 			&&(msg.othersMessage().length()>0))
 			{
 				notAgain=true;

@@ -17,7 +17,7 @@ public class Spell_SlowProjectiles extends Spell
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()!=null)
 		&&(msg.source().getVictim()==msg.target())
 		&&(msg.source().rangeToTarget()>0)
@@ -32,8 +32,8 @@ public class Spell_SlowProjectiles extends Spell
 				msg.source().location().show(msg.source(),null,msg.tool(),CMMsg.MSG_OK_VISUAL,"<O-NAME> flies slowly by.");
 			else
 				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,"The shot from "+msg.tool().name()+" flies slowly by.");
-			int damage=(msg.targetCode()-CMMsg.MASK_HURT)/2;
-			SaucerSupport.adjustDamageMessage(msg,damage*-1);
+			int damage=(msg.value())/2;
+			msg.setValue(damage);
 		}
 		return super.okMessage(myHost,msg);
 	}

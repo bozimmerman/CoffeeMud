@@ -117,7 +117,7 @@ public class Prayer_CurseItem extends Prayer
 				mob.location().send(mob,msg);
 				if(mobTarget!=null)
 					mob.location().send(mob,msg2);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					Prayer_Curse.endIt(target,0);
 					success=maliciousAffect(mob,target,0,-1);

@@ -97,7 +97,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			// from trying to do ANYTHING except sleep
 			if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_DAMAGE))
 			&&(msg.amISource(mob))
-			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon)
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
@@ -190,7 +190,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 				if(R.okMessage(target,msg))
 				{
 				    R.send(target,msg);
-					if(!msg.wasModified())
+					if(msg.value()<=0)
 					{
 
 						R.show(target,null,CMMsg.MSG_OK_VISUAL,DISEASE_START());

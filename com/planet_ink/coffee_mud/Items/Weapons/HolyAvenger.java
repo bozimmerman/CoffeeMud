@@ -71,8 +71,8 @@ public class HolyAvenger extends TwoHandedSword
 	{
 		super.executeMsg(myHost,msg);
 		if((msg.source().location()!=null)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
-		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.value())>0)
 		&&(msg.tool()==this)
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead())
@@ -83,10 +83,12 @@ public class HolyAvenger extends TwoHandedSword
 			{
 				msg.source().location().send(msg.source(), msg2);
 				int damage=Dice.roll(1,15,0);
-				if(msg.wasModified())
+				if(msg.value()>0)
 					damage=damage/2;
 				msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),CMMsg.MSG_OK_ACTION,name()+" dispels evil within <T-NAME> and "+CommonStrings.standardHitWord(Weapon.TYPE_BURSTING,damage)+" <T-HIM-HER>>!"));
-				msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),null,CMMsg.NO_EFFECT,CMMsg.MASK_HURT+damage,CMMsg.NO_EFFECT,null));
+				FullMsg msg3=new FullMsg(msg.source(),(MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
+				msg3.setValue(damage);
+				msg.addTrailerMsg(msg3);
 			}
 		}
 	}

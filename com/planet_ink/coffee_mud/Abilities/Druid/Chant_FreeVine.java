@@ -55,7 +55,7 @@ public class Chant_FreeVine extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> pull(s) <S-HIS-HER> roots up!");
 					beneficialAffect(mob,target,0);

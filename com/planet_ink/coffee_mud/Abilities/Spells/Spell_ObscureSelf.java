@@ -38,7 +38,7 @@ public class Spell_ObscureSelf extends Spell
 		String targetMessage=msg.targetMessage();
 		boolean somethingsChanged=false;
 		int x=0;
-		if((msg.amITarget(mob))&&((msg.targetCode()&CMMsg.MASK_HURT)==0))
+		if((msg.amITarget(mob))&&(msg.targetMinor()!=CMMsg.TYP_DAMAGE))
 		{
 			if((!msg.amISource(mob))&&((msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 										||(msg.targetMinor()==CMMsg.TYP_READSOMETHING)))

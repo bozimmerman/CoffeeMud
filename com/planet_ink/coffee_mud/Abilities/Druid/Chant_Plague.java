@@ -84,7 +84,7 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				if((!msg.wasModified())&&(!msg2.wasModified()))
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,88,-1);

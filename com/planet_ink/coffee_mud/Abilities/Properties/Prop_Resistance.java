@@ -48,7 +48,7 @@ public class Prop_Resistance extends Property
 
 		MOB mob=(MOB)affected;
 
-		if((msg.amITarget(mob))&&(!msg.wasModified())&&(mob.location()!=null))
+		if((msg.amITarget(mob))&&(msg.value()<=0)&&(mob.location()!=null))
 		{
 			if(!Prop_HaveResister.isOk(msg,this,mob))
 				return false;

@@ -91,7 +91,7 @@ public class Spell_CauseStink extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 					success=maliciousAffect(mob,target,0,-1);
 			}
 		}

@@ -62,13 +62,13 @@ public class Fighter_Cleave extends StdAbility
 		&&(msg.amITarget(mob.getVictim()))
 		&&(!msg.amITarget(mob))
 		&&(!mob.getVictim().amDead())
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 		{
 			MOB victim=mob.getVictim();
 			Weapon w=(Weapon)msg.tool();
-			int damAmount=msg.targetCode()-CMMsg.MASK_HURT;
+			int damAmount=msg.value();
 
 			if((damAmount>victim.curState().getHitPoints())
 			&&(w.weaponType()==Weapon.TYPE_SLASHING)

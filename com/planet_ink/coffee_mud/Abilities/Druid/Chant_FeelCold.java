@@ -37,11 +37,11 @@ public class Chant_FeelCold extends Chant
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((msg.amITarget(mob))&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.sourceMinor()==CMMsg.TYP_COLD))
 		{
-			int recovery=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),2.0));
-			SaucerSupport.adjustDamageMessage(msg,recovery);
+			int recovery=(int)Math.round(Util.mul((msg.value()),2.0));
+			msg.setValue(msg.value()+recovery);
 		}
 		return true;
 	}
@@ -121,7 +121,7 @@ public class Chant_FeelCold extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) very cold");
 					maliciousAffect(mob,target,0,-1);

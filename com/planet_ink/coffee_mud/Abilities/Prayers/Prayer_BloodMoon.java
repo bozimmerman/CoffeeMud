@@ -40,10 +40,10 @@ public class Prayer_BloodMoon extends Prayer
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
-			int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
-			SaucerSupport.adjustDamageMessage(msg,recovery);
+			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+			msg.setValue(msg.value()+recovery);
 		}
 		return true;
 	}

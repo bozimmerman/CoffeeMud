@@ -71,7 +71,7 @@ public class Skill_Conduct extends StdAbility
 						if(mob.location().okMessage(mob,msg2))
 						{
 							follower.location().send(follower,msg2);
-							if(!msg2.wasModified())
+							if(msg2.value()<=0)
 								SYMPHONY.invoke(follower,new Vector(),null,false);
 						}
 					}

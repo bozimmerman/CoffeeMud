@@ -161,7 +161,7 @@ public class UnderWater extends StdRoom implements Drink
 			return -1;
 		}
 		else
-		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 		{
@@ -169,10 +169,10 @@ public class UnderWater extends StdRoom implements Drink
 			if((w.weaponType()==Weapon.TYPE_SLASHING)
 			||(w.weaponType()==Weapon.TYPE_BASHING))
 			{
-				int damage=msg.targetCode()-CMMsg.MASK_HURT;
+				int damage=msg.value();
 				damage=damage/3;
 				damage=damage*2;
-				SaucerSupport.adjustDamageMessage(msg,damage*-1);
+				msg.setValue(msg.value()-damage);
 			}
 		}
 		else

@@ -46,7 +46,7 @@ public class Wolf extends StdRace
 		MOB mob=(MOB)myHost;
 		if(msg.amISource(mob)
 		&&(!msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(mob.fetchWieldedItem()==null)
@@ -55,7 +55,7 @@ public class Wolf extends StdRace
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
 		&&(!((MOB)msg.target()).isMonster())
 		&&(Dice.rollPercentage()==1)
-		&&(((msg.targetCode()-CMMsg.MASK_HURT)>(((MOB)msg.target()).maxState().getHitPoints()/20))))
+		&&(((msg.value())>(((MOB)msg.target()).maxState().getHitPoints()/20))))
 		{
 			Ability A=CMClass.getAbility("Disease_Lycanthropy");
 			if((A!=null)&&(msg.target().fetchEffect(A.ID())==null))

@@ -103,7 +103,7 @@ public class Spell_Web extends Spell
 				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
-					if(!msg.wasModified())
+					if(msg.value()<=0)
 					{
 						amountRemaining=160;
 						if(target.location()==mob.location())

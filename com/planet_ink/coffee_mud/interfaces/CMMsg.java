@@ -28,8 +28,8 @@ public interface CMMsg extends Cloneable
 	public boolean amITarget(Environmental thisOne);
 	public boolean amISource(MOB thisOne);
 
-	public boolean wasModified();
-	public void tagModified(boolean newStatus);
+	public int value();
+	public void setValue(int amount);
 
 	public void modify(MOB source,
 						Environmental target,
@@ -46,9 +46,7 @@ public interface CMMsg extends Cloneable
 
 	// 0-99 are message types
 	// 100-131 are channels
-	// 132-511 are undefined
-	// 512-1023 are healing
-	// 1023-2047 are harming
+	// 132-2047 are undefined
 	// flags are 2048, 4096, 8192, 16384,
 	// flags are 2048, 4096, 8192, 16384, 32768, 65536,
 	//131072, 262144, 524288, 1048576, and 2097152
@@ -70,8 +68,6 @@ public interface CMMsg extends Cloneable
 	public static final int MASK_MALICIOUS=524288; // for attacking
 	public static final int MASK_CHANNEL=1048576;  // for channel messages
 	public static final int MASK_OPTIMIZE=2097152; // to optomize a repeated msg
-	public static final int MASK_HURT=MASK_GENERAL|1024;
-	public static final int MASK_HEAL=MASK_GENERAL|512;
 
 	// minor messages
 	public static final int TYP_AREAAFFECT=1;
@@ -155,6 +151,8 @@ public interface CMMsg extends Cloneable
 	public static final int TYP_TEACH=79;
 	public static final int TYP_REMOVE=80;
 	public static final int TYP_EXPCHANGE=81;
+	public static final int TYP_DAMAGE=82;
+	public static final int TYP_HEALING=83;
 
 	public static final int TYP_CHANNEL=100; //(100-131 are channels)
 
@@ -243,4 +241,6 @@ public interface CMMsg extends Cloneable
 	public static final int MSG_PRACTICE=MASK_HANDS|MASK_SOUND|MASK_MOVE|TYP_PRACTICE;
 	public static final int MSG_TEACH=MASK_HANDS|MASK_SOUND|MASK_MOUTH|MASK_MOVE|TYP_TEACH;
 	public static final int MSG_REMOVE=MASK_HANDS|TYP_REMOVE;
+	public static final int MSG_DAMAGE=MASK_GENERAL|TYP_DAMAGE;
+	public static final int MSG_HEALING=MASK_GENERAL|TYP_HEALING;
 }

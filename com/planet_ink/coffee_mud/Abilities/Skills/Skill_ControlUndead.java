@@ -77,7 +77,7 @@ public class Skill_ControlUndead extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					if((mob.envStats().level()-target.envStats().level())>6)
 					{

@@ -273,6 +273,7 @@ public class Dragon extends StdMOB
 		// ===== the text to post
 		MOB target = null;
 		int AffectCode = CMMsg.TYP_JUSTICE;
+		int WeaponType= Weapon.TYPE_BURNING;
 		String msgText = "";
 
 		// ===== if we are following don't Breath, we might
@@ -289,49 +290,60 @@ public class Dragon extends StdMOB
 		case WHITE:
 			msgText = "The dragon breathes frost at <T-NAME>.";
 			AffectCode = CMMsg.TYP_COLD;
+			WeaponType= Weapon.TYPE_FROSTING;
 			break;
 		case BLACK:
 			msgText = "The dragon spits acid at <T-NAME>.";
 			AffectCode = CMMsg.TYP_ACID;
+			WeaponType= Weapon.TYPE_MELTING;
 			break;
 		case BLUE:
 			msgText = "Lightning shoots forth from the dragons mouth striking <T-NAME>.";
 			AffectCode = CMMsg.TYP_ELECTRIC;
+			WeaponType= Weapon.TYPE_STRIKING;
 			break;
 		case GREEN:
 			msgText = "The dragon breathes a cloud of noxious vapors choking <T-NAME>.";
 			AffectCode = CMMsg.TYP_GAS;
+			WeaponType= Weapon.TYPE_GASSING;
 			break;
 		case RED:
 			msgText = "The dragon torches <T-NAME> with fiery breath!.";
 			AffectCode = CMMsg.TYP_FIRE;
+			WeaponType= Weapon.TYPE_BURNING;
 			break;
 		case BRASS:
 			msgText = "The dragon cooks <T-NAME> with a blast of pure heat!.";
 			AffectCode = CMMsg.TYP_FIRE;
+			WeaponType= Weapon.TYPE_BURNING;
 			break;
 		case COPPER:
 			msgText = "The dragon spits acid at <T-NAME>.";
 			AffectCode = CMMsg.TYP_ACID;
+			WeaponType= Weapon.TYPE_MELTING;
 			break;
 		case BRONZE:
 			msgText = "Lightning shoots forth from the dragons mouth striking <T-NAME>.";
 			AffectCode = CMMsg.TYP_ELECTRIC;
+			WeaponType= Weapon.TYPE_STRIKING;
 			break;
 		case SILVER:
 			msgText = "The dragon breathes frost at <T-NAME>.";
 			AffectCode = CMMsg.TYP_COLD;
+			WeaponType= Weapon.TYPE_FROSTING;
 			break;
 		case GOLD:
 			if ((int)Math.round(Math.random())==1)
 			{
 				msgText = "The dragon torches <T-NAME> with fiery breath!.";
 				AffectCode = CMMsg.TYP_FIRE;
+				WeaponType= Weapon.TYPE_BURNING;
 			}
 			else
 			{
 				msgText = "The dragon breathes a cloud of noxious vapors choking <T-NAME>.";
 				AffectCode = CMMsg.TYP_GAS;
+				WeaponType= Weapon.TYPE_GASSING;
 			}
 			break;
 		default:
@@ -358,11 +370,9 @@ public class Dragon extends StdMOB
 				{
 					room.send(this,Message);
 					int damage=((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge),2.0)));
-					if(!Message.wasModified())
+					if(Message.value()<=0)
 						damage=((short)Math.round(Math.random()*7)*DragonAge);
-					FullMsg msg=new FullMsg(this,target,null,CMMsg.NO_EFFECT,CMMsg.MASK_HURT+(damage),CMMsg.NO_EFFECT,null);
-					if(room.okMessage(this,msg))
-						room.send(this,msg);
+					ExternalPlay.postDamage(this,target,null,damage,CMMsg.MASK_GENERAL|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>");
 				}
 			}
 		}

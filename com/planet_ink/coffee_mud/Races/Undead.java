@@ -44,9 +44,9 @@ public class Undead extends StdRace
 		if((myHost!=null)&&(myHost instanceof MOB))
 		{
 			MOB mob=(MOB)myHost;
-			if(msg.amITarget(mob)&&Util.bset(msg.targetCode(),CMMsg.MASK_HEAL))
+			if(msg.amITarget(mob)&&(msg.targetMinor()==CMMsg.TYP_HEALING))
 			{
-				int amount=msg.targetCode()-CMMsg.MASK_HEAL;
+				int amount=msg.value();
 				if((amount>0)
 				&&(msg.tool()!=null)
 				&&(msg.tool() instanceof Ability)
@@ -61,13 +61,13 @@ public class Undead extends StdRace
 			}
 			else
 			if((msg.amITarget(mob))
-			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
 			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
 			&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
 			{
-				int amount=msg.targetCode()-CMMsg.MASK_HURT;
+				int amount=msg.value();
 				if(amount>0)
 				{
 					ExternalPlay.postHealing(msg.source(),mob,msg.tool(),CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,"The harming magic heals <T-NAMESELF>.");
@@ -77,13 +77,19 @@ public class Undead extends StdRace
 			else
 			if((msg.amITarget(mob))
 			&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)
-				||Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+				||(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			&&((msg.targetMinor()==CMMsg.TYP_DISEASE)
 				||(msg.targetMinor()==CMMsg.TYP_GAS)
 				||(msg.targetMinor()==CMMsg.TYP_MIND)
 				||(msg.targetMinor()==CMMsg.TYP_PARALYZE)
 				||(msg.targetMinor()==CMMsg.TYP_POISON)
-				||(msg.targetMinor()==CMMsg.TYP_UNDEAD))
+				||(msg.targetMinor()==CMMsg.TYP_UNDEAD)
+				||(msg.sourceMinor()==CMMsg.TYP_DISEASE)
+				||(msg.sourceMinor()==CMMsg.TYP_GAS)
+				||(msg.sourceMinor()==CMMsg.TYP_MIND)
+				||(msg.sourceMinor()==CMMsg.TYP_PARALYZE)
+				||(msg.sourceMinor()==CMMsg.TYP_POISON)
+				||(msg.sourceMinor()==CMMsg.TYP_UNDEAD))
 			&&(!mob.amDead()))
 			{
 				String immunityName="certain";

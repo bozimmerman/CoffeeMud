@@ -24,10 +24,10 @@ public class Spell_Frailty extends Spell
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((msg.amITarget(mob))&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
-			int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
-			SaucerSupport.adjustDamageMessage(msg,recovery);
+			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+			msg.setValue(msg.value()+recovery);
 		}
 		return true;
 	}
@@ -72,7 +72,7 @@ public class Spell_Frailty extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) frail!");
 					maliciousAffect(mob,target,10,-1);

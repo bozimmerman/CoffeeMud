@@ -38,11 +38,11 @@ public class Spell_WeaknessElectricity extends Spell
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((msg.amITarget(mob))&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.sourceMinor()==CMMsg.TYP_ELECTRIC))
 		{
-			int recovery=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),1.5));
-			SaucerSupport.adjustDamageMessage(msg,recovery);
+			int recovery=(int)Math.round(Util.mul((msg.value()),1.5));
+			msg.setValue(msg.value()+recovery);
 		}
 		return true;
 	}

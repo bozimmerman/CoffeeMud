@@ -96,7 +96,7 @@ public class Spell_Laughter extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				if((!msg.wasModified())&&(!msg2.wasModified()))
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					success=maliciousAffect(mob,target,8,-1);
 					if(success)

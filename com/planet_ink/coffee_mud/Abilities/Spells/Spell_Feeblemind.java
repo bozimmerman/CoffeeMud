@@ -63,7 +63,7 @@ public class Spell_Feeblemind extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				if((!msg.wasModified())&&(!msg2.wasModified()))
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to feel a bit stupid.");
 					success=maliciousAffect(mob,target,0,-1);

@@ -50,7 +50,7 @@ public class Spell_FutureDeath extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				if((!msg.wasModified())&&(!msg2.wasModified()))
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					str=null;
 					switch(Dice.roll(1,10,0))

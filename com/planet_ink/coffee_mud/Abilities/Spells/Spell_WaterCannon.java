@@ -57,7 +57,7 @@ public class Spell_WaterCannon extends Spell
 				int maxDie=(int)Math.round(Util.div(adjustedLevel(mob),2.0));
 				damage += Dice.roll(maxDie,8,15);
 				mob.location().send(mob,msg2);
-				if((msg2.wasModified())||(msg.wasModified()))
+				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(Util.div(damage,2.0));
 
 				if(target.location()==mob.location())

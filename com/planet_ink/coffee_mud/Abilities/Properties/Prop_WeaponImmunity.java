@@ -22,7 +22,7 @@ public class Prop_WeaponImmunity extends Property
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if((affected!=null)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			MOB M=null;
 			if(affected instanceof MOB)
@@ -116,8 +116,7 @@ public class Prop_WeaponImmunity extends Property
 						break;
 					}
 				}
-				if(immune)
-					msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),CMMsg.MASK_HURT,msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+				if(immune) msg.setValue(0);
 			}
 
 		}

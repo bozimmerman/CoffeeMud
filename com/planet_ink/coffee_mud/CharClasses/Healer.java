@@ -244,20 +244,20 @@ public class Healer extends Cleric
 			}
 			else
 			if((msg.amITarget(myChar))
-			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&((msg.sourceMinor()==CMMsg.TYP_COLD)
 				||(msg.sourceMinor()==CMMsg.TYP_WATER)))
 			{
 				int recovery=myChar.charStats().getClassLevel(this);
-				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
+				msg.setValue(msg.value()-recovery);
 			}
 			else
 			if((msg.amITarget(myChar))
-			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.sourceMinor()==CMMsg.TYP_FIRE))
 			{
-				int recovery=msg.targetCode()-CMMsg.MASK_HURT;
-				SaucerSupport.adjustDamageMessage(msg,recovery);
+				int recovery=msg.value();
+				msg.setValue(msg.value()+recovery);
 			}
 		}
 		return true;

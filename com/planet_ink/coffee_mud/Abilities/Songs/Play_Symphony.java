@@ -560,7 +560,7 @@ public class Play_Symphony extends Play
 
 	public void executeMsg(Environmental E, CMMsg msg)
 	{
-		if(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		switch(toDoCode)
 		{
 		case CODE_DOWNDAMAGEPER5:
@@ -568,7 +568,7 @@ public class Play_Symphony extends Play
 		&&(msg.target()==affected))
 		{
 			int dmg=(invokerLevel()/5);
-			SaucerSupport.adjustDamageMessage(msg,dmg*-1);
+			msg.setValue(msg.value()-dmg);
 			break;
 		}
 		case CODE_UPDAMAGEPER3:
@@ -584,7 +584,7 @@ public class Play_Symphony extends Play
 				dmg=dmg+(invokerLevel()/3);
 			else
 				dmg=dmg+(invokerLevel()/5);
-			SaucerSupport.adjustDamageMessage(msg,dmg);
+			msg.setValue(msg.value()+dmg);
 			break;
 		}
 		default:

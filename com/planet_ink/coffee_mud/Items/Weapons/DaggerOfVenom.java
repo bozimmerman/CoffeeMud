@@ -36,8 +36,8 @@ public class DaggerOfVenom extends Dagger
 	{
 		super.executeMsg(myHost,msg);
 		if((msg.source().location()!=null)
-		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
-		   &&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		   &&((msg.value())>0)
 		   &&(msg.tool()==this)
 		   &&(msg.target() instanceof MOB))
 		{

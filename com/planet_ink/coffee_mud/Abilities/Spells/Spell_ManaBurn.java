@@ -98,7 +98,7 @@ public class Spell_ManaBurn extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				if((!msg.wasModified())&&(!msg2.wasModified()))
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					target.curState().adjMana(-50,target.maxState());
 					curMana=target.curState().getMana();

@@ -35,7 +35,7 @@ public class Prayer_Godstrike extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob),adjustedLevel(mob));
 					if(undead) harming=harming*2;

@@ -163,8 +163,8 @@ public class StdArmor extends StdContainer implements Armor
 		&&(Dice.rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.DEXTERITY))))
 		{
 			int weaponType=-1;
-			if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
-			&&((msg.targetCode()-CMMsg.MASK_HURT)>0))
+			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			&&((msg.value())>0))
 			{
 				if((msg.tool()!=null)
 				&&(msg.tool() instanceof Weapon))
@@ -306,7 +306,7 @@ public class StdArmor extends StdContainer implements Armor
 						if((rawWornCode()==Armor.ON_HEAD)
 						&&(Dice.rollPercentage()==1)
 						&&(Dice.rollPercentage()==1)
-						&&((msg.targetCode()-CMMsg.MASK_HURT)>10))
+						&&((msg.value())>10))
 						{
 							Ability A=CMClass.getAbility("Disease_Tinnitus");
 							if((A!=null)&&(owner().fetchEffect(A.ID())==null))

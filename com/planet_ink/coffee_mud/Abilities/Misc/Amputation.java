@@ -334,7 +334,7 @@ public class Amputation extends StdAbility
 			if(target.location().okMessage(target,msg))
 			{
 			    target.location().send(target,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					amputate(target,A,gone);
 					if(newOne==true)

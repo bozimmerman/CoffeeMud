@@ -90,7 +90,7 @@ public class Spell_AcidFog extends Spell
 				{
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);
-					if((!msg.wasModified())&&(!msg2.wasModified())&&(target.location()==mob.location()))
+					if((msg.value()<=0)&&(msg2.value()<=0)&&(target.location()==mob.location()))
 					{
 						castingLocation=mob.location();
 						success=maliciousAffect(mob,target,(mob.envStats().level()*10),-1);

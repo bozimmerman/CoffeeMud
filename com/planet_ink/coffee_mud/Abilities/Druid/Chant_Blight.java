@@ -67,13 +67,13 @@ public class Chant_Blight extends Chant
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).charStats().getMyRace().racialCategory().equals("Vegetation")))
 		{
-			int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
-			SaucerSupport.adjustDamageMessage(msg,recovery);
+			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+			msg.setValue(msg.value()+recovery);
 		}
 		return true;
 	}
@@ -107,7 +107,7 @@ public class Chant_Blight extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The soil is blighted!");
 					beneficialAffect(mob,target,0);

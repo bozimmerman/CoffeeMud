@@ -87,7 +87,7 @@ public class Chant_SummonInsects extends Chant
 				   &&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
-					if((!msg.wasModified())&&(target.location()==mob.location()))
+					if((msg.value()<=0)&&(target.location()==mob.location()))
 					{
 						castingLocation=mob.location();
 						success=maliciousAffect(mob,target,(mob.envStats().level()*10),-1);

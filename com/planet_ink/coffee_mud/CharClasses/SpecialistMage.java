@@ -85,30 +85,30 @@ public class SpecialistMage extends Mage
 				}
 			}
 			if((myChar.charStats().getClassLevel(this)>=5)
-			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==domain()))
 			{
-				int recovery=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),Util.mul(0.02,myChar.charStats().getClassLevel(this))));
-				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
+				int recovery=(int)Math.round(Util.mul((msg.value()),Util.mul(0.02,myChar.charStats().getClassLevel(this))));
+				msg.setValue(msg.value()-recovery);
 			}
 		}
 		else
 		if((msg.amITarget(myChar))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability))
 		{
 			if((domain==domain())
 			&&(myChar.charStats().getClassLevel(this)>=5))
 			{
-				int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),1.0+Util.mul(0.02,myChar.charStats().getClassLevel(this))));
-				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
+				int recovery=(int)Math.round(Util.div((msg.value()),1.0+Util.mul(0.02,myChar.charStats().getClassLevel(this))));
+				msg.setValue(msg.value()-recovery);
 			}
 			else
 			if(domain==opposed())
 			{
-				int recovery=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),1.0+Util.mul(0.02,30-myChar.charStats().getClassLevel(this))));
-				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
+				int recovery=(int)Math.round(Util.mul((msg.value()),1.0+Util.mul(0.02,30-myChar.charStats().getClassLevel(this))));
+				msg.setValue(msg.value()-recovery);
 			}
 		}
 

@@ -33,6 +33,7 @@ public class Disease_Yawning extends Disease
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
 		if((getTickDownRemaining()==1)
+		&&(!Sense.isSleeping(mob))
 		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE)))
 		{
 			mob.delEffect(this);
@@ -40,7 +41,8 @@ public class Disease_Yawning extends Disease
 			A.invoke(diseaser,mob,true);
 		}
 		else
-		if((--diseaseTick)<=0)
+		if(((--diseaseTick)<=0)
+		&&(!Sense.isSleeping(mob)))
 		{
 			diseaseTick=DISEASE_DELAY();
 			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISE,DISEASE_AFFECT());

@@ -82,7 +82,7 @@ public class Prayer_UnholyWord extends Prayer
 				if(room.okMessage(mob,msg))
 				{
 					room.send(mob,msg);
-					if(!msg.wasModified())
+					if(msg.value()<=0)
 					{
 						if(Sense.canBeHeardBy(mob,target))
 						{

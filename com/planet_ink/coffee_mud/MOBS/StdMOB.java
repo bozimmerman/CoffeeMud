@@ -1158,7 +1158,6 @@ public class StdMOB implements MOB
 				}
 
 				// limb check
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 				switch(msg.targetMinor())
 				{
 				case CMMsg.TYP_PULL:
@@ -1458,14 +1457,14 @@ public class StdMOB implements MOB
 					}
 				}
 
-				if(msg.targetMinor()!=CMMsg.TYP_WEAPONATTACK)
+				if((msg.targetMinor()!=CMMsg.TYP_WEAPONATTACK)&&(msg.value()<=0))
 				{
 					int chanceToFail=Integer.MIN_VALUE;
 					int saveCode=-1;
 					for(int c=0;c<CharStats.affectTypeMap.length;c++)
 						if(msg.targetMinor()==CharStats.affectTypeMap[c])
 						{	saveCode=c; chanceToFail=charStats().getSave(c); break;}
-					if((chanceToFail>Integer.MIN_VALUE)&&(!msg.wasModified()))
+					if(chanceToFail>Integer.MIN_VALUE)
 					{
 						chanceToFail+=(envStats().level()-msg.source().envStats().level());
 						if(chanceToFail<5)
@@ -1477,7 +1476,7 @@ public class StdMOB implements MOB
 						if(Dice.rollPercentage()<chanceToFail)
 						{
 							CommonStrings.resistanceMsgs(msg,msg.source(),this);
-							msg.tagModified(true);
+							msg.setValue(msg.value()+1);
 						}
 					}
 				}
@@ -1602,16 +1601,16 @@ public class StdMOB implements MOB
 		if((msg.targetCode()!=CMMsg.NO_EFFECT)&&(msg.amITarget(this)))
 		{
 			// healing by itself is pure happy
-			if(Util.bset(msg.targetCode(),CMMsg.MASK_HEAL))
+			if(msg.targetMinor()==CMMsg.TYP_HEALING)
 			{
-				int amt=msg.targetCode()-CMMsg.MASK_HEAL;
+				int amt=msg.value();
 				if(amt>0)
 					curState().adjHitPoints(amt,maxState());
 			}
 			else
-			if(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			{
-				int dmg=msg.targetCode()-CMMsg.MASK_HURT;
+				int dmg=msg.value();
 				synchronized(this)
 				{
 					if((dmg>0)&&(!amDead))
@@ -1784,8 +1783,7 @@ public class StdMOB implements MOB
 			int targetMajor=msg.targetMajor();
 
 			// two special cases were already handled above
-			if((!Util.bset(msg.targetCode(),CMMsg.MASK_HEAL))
-			&&(!Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+			if((msg.targetMinor()!=CMMsg.TYP_HEALING)&&(msg.targetMinor()!=CMMsg.TYP_DAMAGE))
 			{
 				// but there might still be a few more...
 				if(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
@@ -1808,7 +1806,7 @@ public class StdMOB implements MOB
 							{
 								boolean isHit=(CoffeeUtensils.normalizeAndRollLess(msg.source().adjustedAttackBonus(this)+adjustedArmor()));
 								ExternalPlay.postWeaponDamage(msg.source(),this,weapon,isHit);
-								msg.tagModified(true);
+								msg.setValue(1);
 							}
 						}
 						else
@@ -1872,8 +1870,8 @@ public class StdMOB implements MOB
 			}
 			else
 			if((Util.bset(targetMajor,CMMsg.MASK_GENERAL))
-			||(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
-			||(Util.bset(msg.targetCode(),CMMsg.MASK_HEAL)))
+			||(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			||(msg.targetMinor()==CMMsg.TYP_HEALING))
 				tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 			else
 			if((Util.bset(targetMajor,CMMsg.MASK_EYES))

@@ -89,35 +89,26 @@ public class Mold extends StdRace
 				}
 			}
 			else
-			if(msg.amITarget(myHost)&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+			if(msg.amITarget(myHost)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			{
-				int dmg=msg.targetCode()-CMMsg.MASK_HURT;
 				switch(msg.sourceMinor())
 				{
 				case CMMsg.TYP_FIRE:
 					{
-						msg.modify(msg.source(),msg.target(),msg.tool(),
-									  msg.sourceCode(),msg.sourceMessage(),
-									  CMMsg.MASK_HURT+1,msg.targetMessage(),
-									  msg.othersCode(),msg.othersMessage());
-						((MOB)myHost).curState().setHitPoints(((MOB)myHost).curState().getHitPoints()+dmg);
+						((MOB)myHost).curState().setHitPoints(((MOB)myHost).curState().getHitPoints()+msg.value());
+						msg.setValue(1);
 					}
 					break;
 				case CMMsg.TYP_WEAPONATTACK:
 					if((msg.tool()!=null)
-					   &&(msg.tool() instanceof Weapon)
-					   &&((((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_SLASHING)
-						||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_PIERCING)
-						||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_BASHING)))
-					{
-						msg.modify(msg.source(),msg.target(),msg.tool(),
-									  msg.sourceCode(),msg.sourceMessage(),
-									  CMMsg.MASK_HURT+1,msg.targetMessage(),
-									  msg.othersCode(),msg.othersMessage());
-					}
+				   &&(msg.tool() instanceof Weapon)
+				   &&((((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_SLASHING)
+					||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_PIERCING)
+					||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_BASHING)))
+						msg.setValue(1);
 					break;
 				case CMMsg.TYP_COLD:
-					SaucerSupport.adjustDamageMessage(msg,dmg);
+					msg.setValue(msg.value()*2);
 					break;
 				}
 			}

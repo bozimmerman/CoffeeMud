@@ -112,7 +112,7 @@ public class Spell_FlamingEnsnarement extends Spell
 				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
-					if(!msg.wasModified())
+					if(msg.value()<=0)
 					{
 						amountRemaining=60;
 						if(target.location()==mob.location())

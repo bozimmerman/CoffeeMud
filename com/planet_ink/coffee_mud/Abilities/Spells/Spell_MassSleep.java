@@ -53,7 +53,7 @@ public class Spell_MassSleep extends Spell
 					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);
-						if(!msg.wasModified())
+						if(msg.value()<=0)
 						{
 							Spell_Sleep spell=new Spell_Sleep();
 							spell.setProfficiency(profficiency());

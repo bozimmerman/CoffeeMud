@@ -32,14 +32,14 @@ public class Chant_RedMoon extends Chant
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.target()!=null)
 		   &&(msg.target() instanceof MOB))
 		{
 			MOB mob=(MOB)msg.target();
-			int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
+			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
 			if(Sense.isEvil(mob)) recovery=recovery*-1;
-			SaucerSupport.adjustDamageMessage(msg,recovery);
+			msg.setValue(msg.value()+recovery);
 		}
 		return true;
 	}
@@ -91,7 +91,7 @@ public class Chant_RedMoon extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Red Moon Rises!");
 					beneficialAffect(mob,target,0);

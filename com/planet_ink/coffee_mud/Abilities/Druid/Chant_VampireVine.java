@@ -19,9 +19,9 @@ public class Chant_VampireVine extends Chant_SummonVine
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(msg.amISource(mob)&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+			if(msg.amISource(mob)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			{
-				int amount=msg.targetCode()-CMMsg.MASK_HURT;
+				int amount=msg.value();
 				if(amount>3)
 				{
 					amount=amount/4;

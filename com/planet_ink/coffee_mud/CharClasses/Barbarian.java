@@ -114,10 +114,10 @@ public class Barbarian extends StdCharClass
 		if((msg.amITarget(myChar))
 		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Weapon)
-		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			int recovery=(myChar.charStats().getClassLevel(this)/5);
-			SaucerSupport.adjustDamageMessage(msg,recovery*-1);
+			msg.setValue(msg.value()-recovery);
 		}
 		else
 		if((msg.amITarget(myChar))

@@ -589,7 +589,7 @@ public class StdAbility implements Ability, Cloneable
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				ok=(!msg.wasModified());
+				ok=(msg.value()<=0);
 			}
 			else
 				ok=false;

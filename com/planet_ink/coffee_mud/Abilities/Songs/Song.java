@@ -141,10 +141,10 @@ public class Song extends StdAbility
 						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
 						{
 							follower.location().send(follower,msg2);
-							if(!msg2.wasModified())
+							if(msg2.value()<=0)
 							{
 								follower.location().send(follower,msg3);
-								if((!msg3.wasModified())&&(follower.fetchEffect(newOne.ID())==null))
+								if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
 								{
 									if(follower!=mob)
 										follower.addEffect((Ability)newOne.copyOf());

@@ -63,7 +63,7 @@ public class Regeneration extends StdAbility
 			}
 			else
 			if((msg.amITarget(M))
-			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.tool()!=null)
 			&&(text().length()>0))
 			{
@@ -115,7 +115,7 @@ public class Regeneration extends StdAbility
 				}
 				if(hurts)
 				{
-					permanentDamage+=(msg.targetCode()-msg.MASK_HURT);
+					permanentDamage+=msg.value();
 					M.recoverMaxState();
 				}
 			}

@@ -34,7 +34,7 @@ public class Chant_Poison extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					invoker=mob;
 					Ability A=CMClass.getAbility("Poison_Venom");

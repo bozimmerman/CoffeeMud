@@ -30,7 +30,7 @@ public class Fighter_CritStrike extends StdAbility
 		MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(Sense.aliveAwakeMobile(mob,true))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target()!=null)
 		&&(mob.getVictim()==msg.target())
 		&&(mob.rangeToTarget()==0)
@@ -41,8 +41,8 @@ public class Fighter_CritStrike extends StdAbility
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck((-90)+mob.charStats().getStat(CharStats.STRENGTH),false)))
 		{
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
-			int bonus=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),pctRecovery));
-			SaucerSupport.adjustDamageMessage(msg,bonus);
+			int bonus=(int)Math.round(Util.mul((msg.value()),pctRecovery));
+			msg.setValue(msg.value()+bonus);
 			helpProfficiency(mob);
 		}
 		return true;

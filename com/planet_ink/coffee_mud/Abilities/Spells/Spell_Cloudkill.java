@@ -86,7 +86,7 @@ public class Spell_Cloudkill extends Spell
 					if(midLevel<target.envStats().level())
 						damage-=(int)Math.round(Util.div(damage,2.0));
 
-					if((msg.wasModified())||(msg2.wasModified()))
+					if((msg.value()>0)||(msg2.value()>0))
 						damage = (int)Math.round(Util.div(damage,2.0));
 
 					if(damage<=0) damage=1;

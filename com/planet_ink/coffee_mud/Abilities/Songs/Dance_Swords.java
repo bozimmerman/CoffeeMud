@@ -185,7 +185,7 @@ public class Dance_Swords extends Dance
 					if(mob.location().okMessage(mob,msg2))
 					{
 						follower.location().send(follower,msg2);
-						if((!msg2.wasModified())&&(follower.fetchEffect(newOne.ID())==null))
+						if((msg2.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
 							follower.addEffect(newOne);
 					}
 				}

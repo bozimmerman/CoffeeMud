@@ -13,7 +13,7 @@ public class FullMsg implements CMMsg
 	private MOB myAgent=null;
 	private Environmental myTarget=null;
 	private Environmental myTool=null;
-	private boolean modified=false;
+	private int value=0;
 	private Vector trailMsgs=null;
 
 	public FullMsg(MOB source,
@@ -92,14 +92,9 @@ public class FullMsg implements CMMsg
 		return new FullMsg(source(),target(),tool(),sourceCode(),sourceMessage(),targetCode(),targetMessage(),othersCode(),othersMessage());
 	}
 
-	public boolean wasModified()
-	{
-		return modified;
-	}
-	public void tagModified(boolean newStatus)
-	{
-		modified=newStatus;
-	}
+	public int value(){return value;}
+	public void setValue(int amount){value=amount;}
+	
 	public Vector trailerMsgs()
 	{	return trailMsgs;}
 	public void addTrailerMsg(CMMsg msg)

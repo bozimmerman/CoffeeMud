@@ -33,7 +33,7 @@ public class Prayer_Corruption extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					target.tell("Evil, vile thoughts fill your head.");
 					int evilness=Dice.roll(10,adjustedLevel(mob),0);

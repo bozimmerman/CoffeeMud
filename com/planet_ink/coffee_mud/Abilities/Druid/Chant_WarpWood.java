@@ -65,7 +65,7 @@ public class Chant_WarpWood extends Chant
 				mob.location().send(mob,msg);
 				if(mobTarget!=null)
 					mob.location().send(mob,msg2);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					int damage=100+mob.envStats().level()-target.envStats().level();
 					if(Sense.isABonusItems(target))

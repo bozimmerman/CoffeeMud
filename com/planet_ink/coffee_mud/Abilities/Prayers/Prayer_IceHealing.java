@@ -42,9 +42,9 @@ public class Prayer_IceHealing extends Prayer
 		if((msg.amITarget(mob))
 		   &&((msg.sourceMinor()==CMMsg.TYP_COLD)
 			   ||(msg.sourceMinor()==CMMsg.TYP_WATER))
-		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
-			int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
+			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The icey attack heals <S-NAME> "+recovery+" points.");
 			ExternalPlay.postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,recovery,null);
 			return false;

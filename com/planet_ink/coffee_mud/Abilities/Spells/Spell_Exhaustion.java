@@ -36,7 +36,7 @@ public class Spell_Exhaustion extends Spell
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				if(msg.wasModified())
+				if(msg.value()>0)
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> become(s) exhausted!");
 					target.curState().setMovement(0);

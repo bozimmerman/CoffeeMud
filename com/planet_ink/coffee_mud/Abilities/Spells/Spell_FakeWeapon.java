@@ -31,18 +31,8 @@ public class Spell_FakeWeapon extends Spell
 		if((affected!=null)
 		&&(affected instanceof Item)
 		&&(msg.tool()==affected)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
-		{
-			msg.modify(msg.source(),
-						  msg.target(),
-						  msg.tool(),
-						  msg.sourceCode(),
-						  msg.sourceMessage(),
-						  CMMsg.MASK_HURT,
-						  msg.targetMessage(),
-						  msg.othersCode(),
-						  msg.othersMessage());
-		}
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+			msg.setValue(0);
 		return super.okMessage(myHost,msg);
 
 	}

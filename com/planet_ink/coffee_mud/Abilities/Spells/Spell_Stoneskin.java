@@ -51,7 +51,7 @@ public class Spell_Stoneskin extends Spell
 		&&(msg.tool()!=null)
 		&&(!mob.amDead())
 		&&(Dice.rollPercentage()>75)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)&&((msg.targetCode()-CMMsg.MASK_HURT)>0)&&(msg.tool() instanceof Weapon)))
+		&&((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&((msg.value())>0)&&(msg.tool() instanceof Weapon)))
 		{
 			msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			msg.addTrailerMsg(new FullMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,"The stone skin around <S-NAME> absorbs the attack from <T-NAME>."));

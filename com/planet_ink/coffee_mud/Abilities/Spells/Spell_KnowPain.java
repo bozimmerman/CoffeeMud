@@ -46,7 +46,7 @@ public class Spell_KnowPain extends Spell
 				int maxDie = (target.envStats().level()+adjustedLevel(mob))/2;
 				damage += Dice.roll(maxDie,6,target.charStats().getStat(CharStats.INTELLIGENCE));
 				mob.location().send(mob,msg2);
-				if((msg2.wasModified())||(msg.wasModified()))
+				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(Util.div(damage,2.0));
 
 				if(target.location()==mob.location())

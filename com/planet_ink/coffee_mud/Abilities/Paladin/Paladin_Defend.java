@@ -46,7 +46,7 @@ public class Paladin_Defend extends StdAbility
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return;
 		if((msg.amITarget(affected))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 			fullRound=false;

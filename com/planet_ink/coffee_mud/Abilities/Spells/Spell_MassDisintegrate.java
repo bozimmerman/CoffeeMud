@@ -58,7 +58,7 @@ public class Spell_MassDisintegrate extends Spell
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					if(!msg.wasModified())
+					if(msg.value()<=0)
 					{
 						if(((MOB)target).curState().getHitPoints()>0)
 							ExternalPlay.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CommonStrings.msp("spelldam2.wav",40));

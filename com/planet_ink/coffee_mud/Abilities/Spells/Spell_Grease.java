@@ -155,7 +155,7 @@ public class Spell_Grease extends Spell
 				if(Sense.isInFlight(target))
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
 				else
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					if(target.location()==mob.location())
 					{

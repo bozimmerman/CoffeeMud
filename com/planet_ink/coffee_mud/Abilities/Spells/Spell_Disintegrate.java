@@ -43,7 +43,7 @@ public class Spell_Disintegrate extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					Hashtable V=new Hashtable();
 					for(int i=0;i<mob.location().numItems();i++)

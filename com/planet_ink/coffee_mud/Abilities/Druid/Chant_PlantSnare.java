@@ -112,7 +112,7 @@ public class Chant_PlantSnare extends Chant
 				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
-					if(!msg.wasModified())
+					if(msg.value()<=0)
 					{
 						amountRemaining=400;
 						if(target.location()==mob.location())

@@ -57,7 +57,7 @@ public class Spell_Shove extends Spell
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> get(s) shoved back!":"<S-NAME> incant(s) and shove(s) at <T-NAMESELF>.");
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
-				if((!msg.wasModified())&&(target.location()==mob.location()))
+				if((msg.value()<=0)&&(target.location()==mob.location()))
 				{
 					mob.location().send(mob,msg);
 					target.makePeace();

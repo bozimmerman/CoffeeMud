@@ -65,7 +65,7 @@ public class Skill_FireBreathing extends StdAbility
 				mob.location().send(mob,msg2);
                 int numDice = (int)Math.round(Util.div(adjustedLevel(mob),2.0))+1;
 				int damage = Dice.roll(3, numDice, 0);
-				if(msg2.wasModified())
+				if(msg2.value()>0)
 					damage = (int)Math.round(Util.div(damage,2.0));
 
 				if(target.location()==mob.location())

@@ -18,15 +18,10 @@ public class Prop_NoDamage extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(affected !=null)
 		&&((msg.source()==affected)||(msg.tool()==affected)))
-		{
-			msg.modify(msg.source(),msg.target(),msg.tool(),
-					   msg.sourceCode(),msg.sourceMessage(),
-					   CMMsg.MASK_HURT,msg.targetMessage(),
-					   msg.othersCode(),msg.othersMessage());
-		}
+			msg.setValue(0);
 		return true;
 	}
 }

@@ -38,7 +38,7 @@ public class Spell_MagicMissile extends Spell
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					if(!msg.wasModified())
+					if(msg.value()<=0)
 					{
 						int damage = 0;
 						damage += Dice.roll(1,11,11/numMissiles);

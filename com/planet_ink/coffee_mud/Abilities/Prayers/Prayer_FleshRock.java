@@ -161,7 +161,7 @@ public class Prayer_FleshRock extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					int a=0;
 					while(a<target.numEffects())

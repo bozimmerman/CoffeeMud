@@ -63,7 +63,7 @@ public class Poison_Firebreather extends Poison_Liquor
 						if (maxDie > 10)
 							maxDie = 10;
 						damage += Dice.roll(maxDie,6,1);
-						if(msg.wasModified())
+						if(msg.value()>0)
 							damage = (int)Math.round(Util.div(damage,2.0));
 						ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"^FThe fire <DAMAGE> <T-NAME>!^?");
 					}

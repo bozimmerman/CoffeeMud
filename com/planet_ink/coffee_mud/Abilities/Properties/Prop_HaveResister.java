@@ -116,12 +116,12 @@ public class Prop_HaveResister extends Property
 		if(mob.amDead()) return;
 		if(!msg.amITarget(mob)) return;
 
-		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
-		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.value())>0)
 		&&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Weapon))
 		{
-			int recovery=msg.targetCode()-CMMsg.MASK_HURT;
+			int recovery=msg.value();
 			recovery=(int)Math.round(Util.mul(recovery,Math.random()));
 			if(recovery<=0) recovery=0;
 			if(Prop_HaveResister.checkProtection(me,"weapons"))
@@ -189,7 +189,7 @@ public class Prop_HaveResister extends Property
 		&&(((Item)affected).owner() instanceof MOB))
 		{
 			MOB mob=(MOB)((Item)affected).owner();
-			if((msg.amITarget(mob))&&(!msg.wasModified())&&(mob.location()!=null))
+			if((msg.amITarget(mob))&&(msg.value()<=0)&&(mob.location()!=null))
 			{
 				if(!Prop_HaveResister.isOk(msg,this,mob))
 					return false;

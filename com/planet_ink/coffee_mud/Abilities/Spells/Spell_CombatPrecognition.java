@@ -45,7 +45,7 @@ public class Spell_CombatPrecognition extends Spell
 					lastTime=false;
 			}
 			else
-			if((!msg.wasModified())
+			if((msg.value()<=0)
 			   &&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			   &&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-50,false)))
 			{

@@ -159,10 +159,10 @@ public class Song_Friendship extends Song
 						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
 						{
 							mob.location().send(mob,msg2);
-							if(!msg2.wasModified())
+							if(msg2.value()<=0)
 							{
 								mob.location().send(mob,msg3);
-								if((!msg3.wasModified())&&(follower.fetchEffect(newOne.ID())==null))
+								if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
 								{
 									if((follower.amFollowing()!=mob)&&(follower!=mob))
 									{

@@ -69,7 +69,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					if(target.location().okMessage(target,msg))
 					{
 						target.location().send(target,msg);
-						if(msg.wasModified())
+						if(msg.value()>0)
 							dmg=(int)Math.round(Util.div(dmg,2.0));
 						ExternalPlay.postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
 					}
@@ -83,7 +83,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				if(target.location().okMessage(target,msg))
 				{
 					target.location().send(target,msg);
-					if(msg.wasModified())
+					if(msg.value()>0)
 						dmg=(int)Math.round(Util.div(dmg,2.0));
 					ExternalPlay.postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
 				}
@@ -103,7 +103,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
-				if(msg.wasModified())
+				if(msg.value()>0)
 					dmg=(int)Math.round(Util.div(dmg,2.0));
 				ExternalPlay.postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
 
@@ -126,7 +126,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
-				if(msg.wasModified())
+				if(msg.value()>0)
 					dmg=(int)Math.round(Util.div(dmg,2.0));
 				Ability P=CMClass.getAbility("Poison");
 				if(P!=null) P.invoke(invoker(),target,true);

@@ -160,7 +160,7 @@ public class Poison extends StdAbility
 			if(R.okMessage(mob,msg))
 			{
 			    R.send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					if(target instanceof MOB)
 						R.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,POISON_START());

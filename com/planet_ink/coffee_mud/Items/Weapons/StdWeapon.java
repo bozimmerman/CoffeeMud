@@ -85,19 +85,19 @@ public class StdWeapon extends StdItem implements Weapon
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
 			msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_DROP,null));
-		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()==this)
 		&&(amWearingAt(Item.WIELD))
 		&&(weaponClassification()!=Weapon.CLASS_NATURAL)
 		&&(weaponType()!=Weapon.TYPE_NATURAL)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
-		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&((msg.value())>0)
 		&&(owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(msg.amISource((MOB)owner())))
 		{
-			int hurt=(msg.targetCode()-CMMsg.MASK_HURT);
+			int hurt=(msg.value());
 			MOB tmob=(MOB)msg.target();
 			if((hurt>(tmob.maxState().getHitPoints()/10)||(hurt>50))
 			&&(tmob.curState().getHitPoints()>hurt))

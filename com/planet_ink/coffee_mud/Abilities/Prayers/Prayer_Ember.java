@@ -33,7 +33,7 @@ public class Prayer_Ember extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					int harming=Dice.roll(1,adjustedLevel(mob)+3,3);
 					ExternalPlay.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The unholy ember <DAMAGE> <T-NAME>!");

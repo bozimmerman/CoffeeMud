@@ -34,7 +34,7 @@ public class Prayer_Thunderbolt extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob),adjustedLevel(mob));
 					ExternalPlay.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_STRIKING,"^SThe STRIKE of the gods <DAMAGE> <T-NAME>!^?");

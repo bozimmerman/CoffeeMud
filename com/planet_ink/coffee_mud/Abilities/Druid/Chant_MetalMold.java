@@ -63,7 +63,7 @@ public class Chant_MetalMold extends Chant
 				mob.location().send(mob,msg);
 				if(mobTarget!=null)
 					mob.location().send(mob,msg2);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					int damage=2;
 					for(int i=0;i<(mob.envStats().level()/2);i++)

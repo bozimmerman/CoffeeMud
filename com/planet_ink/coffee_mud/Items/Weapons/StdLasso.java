@@ -38,7 +38,7 @@ public class StdLasso extends StdWeapon
 			//msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_DROP,null));
 		else
 		if((msg.tool()==this)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target() !=null)
 		&&(msg.target() instanceof MOB)
 		&&(weaponClassification()==Weapon.CLASS_THROWN))

@@ -64,8 +64,8 @@ public class Prayer_Stasis extends Prayer
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((msg.amITarget(mob))&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
-			msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),CMMsg.MASK_HURT,msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+			msg.setValue(0);
 		else
 		if((msg.amITarget(mob))&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
 		{
@@ -95,7 +95,7 @@ public class Prayer_Stasis extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					success=beneficialAffect(mob,target,10);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is surrounded by a stasis field!");

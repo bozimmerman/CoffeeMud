@@ -34,8 +34,8 @@ public class FlamingSword extends Longsword
 	{
 		super.executeMsg(myHost,msg);
 		if((msg.source().location()!=null)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
-		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.value())>0)
 		&&(msg.tool()==this)
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead()))
@@ -44,7 +44,7 @@ public class FlamingSword extends Longsword
 			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
 				msg.source().location().send(msg.source(), msg2);
-				if(!msg2.wasModified())
+				if(msg2.value()<=0)
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();

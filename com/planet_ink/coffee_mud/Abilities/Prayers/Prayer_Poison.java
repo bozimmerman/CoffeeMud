@@ -35,7 +35,7 @@ public class Prayer_Poison extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					Ability A=CMClass.getAbility("Poison");
 					A.invoke(mob,target,true);

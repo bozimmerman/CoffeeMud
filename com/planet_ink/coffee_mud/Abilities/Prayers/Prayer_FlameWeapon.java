@@ -32,8 +32,8 @@ public class Prayer_FlameWeapon extends Prayer
 	{
 		super.executeMsg(myHost,msg);
 		if((msg.source().location()!=null)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
-		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.value())>0)
 		&&(msg.tool()==affected)
 		&&(!notAgain)
 		&&(msg.target() instanceof MOB)
@@ -44,12 +44,14 @@ public class Prayer_FlameWeapon extends Prayer
 			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
 				msg.source().location().send(msg.source(), msg2);
-				if(!msg2.wasModified())
+				if(msg2.value()<=0)
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
 					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),CMMsg.MSG_OK_ACTION,"The flame around "+affected.name()+" "+CommonStrings.standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
-					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),null,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,CMMsg.MASK_HURT+flameDamage,CMMsg.NO_EFFECT,null));
+					FullMsg msg3=new FullMsg(msg.source(),(MOB)msg.target(),null,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
+					msg3.setValue(flameDamage);
+					msg.addTrailerMsg(msg3);
 				}
 			}
 			notAgain=false;

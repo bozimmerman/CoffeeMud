@@ -87,7 +87,7 @@ public class Wyvern extends StdMOB
 				if(location().okMessage(target,msg))
 				{
 					this.location().send(target,msg);
-					if(!msg.wasModified())
+					if(msg.value()<=0)
 					{
 						Ability poison = CMClass.getAbility("Poison");
 						if(poison!=null) poison.invoke(this, target, true);

@@ -242,21 +242,6 @@ public class SaucerSupport
 		return false;
 	}
 
-	public static void adjustDamageMessage(CMMsg msg, int adjustment)
-	{
-		if((msg!=null)&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
-		{
-			int amount=msg.targetCode()-CMMsg.MASK_HURT;
-			amount+=adjustment;
-			if(amount>1023) amount=1023;
-			if(amount<0) amount=0;
-			msg.modify(msg.source(),msg.target(),msg.tool(),
-					   msg.sourceCode(),msg.sourceMessage(),
-					   CMMsg.MASK_HURT+amount,msg.targetMessage(),
-					   msg.othersCode(),msg.othersMessage());
-		}
-	}
-
 	public static StringBuffer levelHelp(String str, char c, String append)
 	{
 		if(str.startsWith(c+">="))

@@ -117,7 +117,7 @@ public class Chant_ManicMoon extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Manic Moon Rises!");
 					beneficialAffect(mob,target,0);

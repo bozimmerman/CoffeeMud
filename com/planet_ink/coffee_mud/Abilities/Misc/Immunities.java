@@ -44,11 +44,11 @@ public class Immunities extends StdAbility
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)||Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)||(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		&&(!mob.amDead()))
 		{
 			for(int i=0;i<immunityTypes.length;i++)
-				if((msg.targetMinor()==((Integer)immunityTypes[i][0]).intValue())
+				if(((msg.targetMinor()==((Integer)immunityTypes[i][0]).intValue())||(msg.sourceMinor()==((Integer)immunityTypes[i][0]).intValue()))
 				&&((text().toUpperCase().indexOf((String)immunityTypes[i][1])>=0)||(text().toUpperCase().equals("ALL"))))
 			{
 				String immunityName="certain";

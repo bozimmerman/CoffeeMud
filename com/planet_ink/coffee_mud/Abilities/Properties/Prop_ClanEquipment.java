@@ -316,8 +316,8 @@ public class Prop_ClanEquipment extends Property
 		 */
 		}
 		if ( (msg.source().location() != null)
-		  && (Util.bset(msg.targetCode(), CMMsg.MASK_HURT))
-		  && ( (msg.targetCode() - CMMsg.MASK_HURT) > 0)
+		  && (msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		  && (msg.value() > 0)
 		  && (msg.tool() == affected)
 		  && (!notAgain)
 		  && (msg.target()instanceof MOB)
@@ -357,10 +357,12 @@ public class Prop_ClanEquipment extends Property
 			                      CommonStrings.standardHitWord(WeaponType,
 			    flameDamage) + ( (showDamn) ? " (" + flameDamage + ")" : "") +
 			                      " <T-NAME>!^?"));
-			msg.addTrailerMsg(new FullMsg(msg.source(), (MOB) msg.target(), null,
+			FullMsg msg3=new FullMsg(msg.source(), (MOB) msg.target(), null,
 			                                 CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect,
-			                                 CMMsg.MASK_HURT + flameDamage,
-			                                 CMMsg.NO_EFFECT, null));
+			                                 CMMsg.MSG_DAMAGE,
+			                                 CMMsg.NO_EFFECT, null);
+			msg3.setValue(flameDamage);
+			msg.addTrailerMsg(msg3);
 			notAgain = false;
 		}
 
@@ -387,7 +389,7 @@ public class Prop_ClanEquipment extends Property
 				if (source.location().okMessage(source, msg2))
 				{
 					source.location().send(source, msg2);
-					if (!msg2.wasModified())
+					if (msg2.value()<=0)
 					{
 					    int damage = Dice.roll(1, 3, 0);
 					    damage *= PowerLevel;

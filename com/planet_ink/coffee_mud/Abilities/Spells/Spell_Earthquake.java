@@ -111,7 +111,7 @@ public class Spell_Earthquake extends Spell
 				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
-					if(!msg.wasModified())
+					if(msg.value()<=0)
 					{
 						if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
 						{

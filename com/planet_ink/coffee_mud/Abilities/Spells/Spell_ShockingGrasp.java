@@ -38,10 +38,10 @@ public class Spell_ShockingGrasp extends Spell
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					mob.location().send(mob,msg2);
-					if(!msg2.wasModified())
+					if(msg2.value()<=0)
 					{
 						invoker=mob;
 						int damage = Dice.roll(1,8,adjustedLevel(mob));

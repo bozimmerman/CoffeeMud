@@ -57,7 +57,7 @@ public class Chant_MeteorStrike extends Chant
 					int damage = 0;
 					int maxDie=adjustedLevel(mob);
 					damage = Dice.roll(maxDie,6,30);
-					if(!msg.wasModified())
+					if(msg.value()<=0)
 						damage = (int)Math.round(Util.div(damage,2.0));
 					if(target.location()==mob.location())
 						ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");

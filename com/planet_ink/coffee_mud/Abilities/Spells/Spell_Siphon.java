@@ -65,8 +65,8 @@ public class Spell_Siphon extends Spell
 
 		if((msg.amITarget(mob))
 		&&(!msg.amISource(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
-		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.value())>0)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(Dice.rollPercentage()>50)

@@ -47,12 +47,12 @@ public class Prayer_LinkedHealth extends Prayer
 			return true;
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			if((msg.tool()==null)||(!msg.tool().ID().equals(ID())))
 			{
-				int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
-				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
+				int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+				msg.setValue(recovery);
 				ExternalPlay.postDamage(msg.source(),buddy,this,recovery,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BURSTING,"<T-NAME> absorb(s) damage from the harm to "+msg.target().name()+".");
 			}
 		}

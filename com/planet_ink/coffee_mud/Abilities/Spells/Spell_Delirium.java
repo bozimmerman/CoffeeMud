@@ -220,7 +220,7 @@ public class Spell_Delirium extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				if(!msg.wasModified())
+				if(msg.value()<=0)
 				{
 					amountRemaining=300;
 					maliciousAffect(mob,target,0,-1);

@@ -44,7 +44,7 @@ public class Disease_Lepresy extends Disease
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
 		if((msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.targetMessage()!=null))
 		{
 			if(msg.targetMessage().indexOf("<DAMAGE>")>=0)

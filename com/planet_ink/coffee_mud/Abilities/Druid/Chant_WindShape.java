@@ -40,12 +40,12 @@ public class Chant_WindShape extends Chant
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Item))
 		{
-			int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
-			SaucerSupport.adjustDamageMessage(msg,recovery*-1);
+			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+			msg.setValue(msg.value()-recovery);
 		}
 		return true;
 	}
