@@ -90,7 +90,24 @@ public class Throw extends StdCommand
 			if(mob.location().okMessage(mob,newMsg))
 			{
 				mob.location().send(mob,newMsg);
-				FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_THROW,CMMsg.MSG_WEAPONATTACK,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
+				int targetMsg=CMMsg.MSG_THROW;
+				if(target instanceof MOB)
+				{
+					if(item instanceof Weapon)
+						targetMsg=CMMsg.MSG_WEAPONATTACK;
+					else
+					if(item instanceof SpellHolder)
+					{
+						Vector V=((SpellHolder)item).getSpells();
+						for(int v=0;v<V.size();v++)
+							if(((Ability)V.elementAt(v)).quality()==Ability.MALICIOUS)
+							{ 
+								targetMsg=CMMsg.MSG_WEAPONATTACK; 
+								break;
+							}
+					}
+				}
+				FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_THROW,targetMsg,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
