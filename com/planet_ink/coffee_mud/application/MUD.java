@@ -151,8 +151,10 @@ public class MUD extends Thread implements Host
 			Room room=CMClass.getLocale("StdRoom");
 			room.setID(id);
 			room.setDisplayText("New Room");
-			room.setDescription("Brand new database room! You need to change this text with the MODIFY ROOM command.");
+			room.setDescription("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!");
 			RoomLoader.DBCreate(room,"CoffeeMud");
+			Item I=CMClass.getMiscMagic("ManualArchon");
+			room.addItem(I);
 			CMMap.map.addElement(room);
 		}
 
