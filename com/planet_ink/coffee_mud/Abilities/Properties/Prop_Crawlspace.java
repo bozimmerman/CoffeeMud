@@ -24,16 +24,27 @@ public class Prop_Crawlspace extends Property
 
 	public boolean okAffect(Affect affect)
 	{
-		if((affected!=null)
-		   &&((affected instanceof Room)||(affected instanceof Exit))
-		   &&(affect.amITarget(affected))
-		   &&((affect.targetMinor()==Affect.TYP_ENTER)
-			  ||(affect.targetMinor()==Affect.TYP_FLEE)
-			  ||(affect.targetMinor()==Affect.TYP_LEAVE))
-		   &&(!Sense.isSitting(affect.source())))
+		if((affected!=null)&&((affected instanceof Room)||(affected instanceof Exit)))
 		{
-			affect.source().tell("You must crawl that way");
-			return false;
+			switch(affect.targetMinor())
+			{
+			case Affect.TYP_ENTER:
+			case Affect.TYP_LEAVE:
+			case Affect.TYP_FLEE:
+				if(((affect.amITarget(affected))||(affect.tool()==affected))
+				&&(!Sense.isSitting(affect.source())))
+				{
+					affect.source().tell("You must crawl that way.");
+					return false;
+				}
+				break;
+			case Affect.TYP_STAND:
+				if(affected instanceof Room)
+				{
+					affect.source().tell("You cannot stand up here.");
+					return false;
+				}
+			}
 		}
 		return super.okAffect(affect);
 	}

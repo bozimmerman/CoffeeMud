@@ -13,20 +13,7 @@
 ! exp from sac/des also based on level of the body.  Set body levels based on char level.
 ! Serve and Rebuke commands.  Any character may take on a leige. A Leige receives 10% of all experience gained by the vassels, providing incentive to assist the vassel.
 ! Weapon condition, sharpness, and bluntness Weapon repair and sharpening/blunting.
-
-Crawl command, is_crawling, and crawling requirements for exits
-
-Convert some properties to work with the new areas. Prop_NOMOB, etc..
-
-0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where  one could buy raw materials.  Facilities available there would be used, along with your skill, to  produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing,  Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and  remove rawness from Meat).  The LeatherWorker ability can mend leather items, Tailor cloth items, etc..
-
-Furniture.. chairs to sit in, beds to lie in, tables to put things on?
-
-Two-handed fighting
-
-ranger skills: find water, hunt (finds a huntable animal)
-
-target commmand to switch among targets fighting you
+! Crawl command, and crawlspace property for rooms and exits
 
 Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it 
 will send the items to the appropriate GateObject.  The GateObject can be either a container or not. 
@@ -36,6 +23,18 @@ will have identical MiscText fields to establish the Keys between them.
 A Multi-Room Gate would work the same way.  An Entry, Exit, and TwoWay type would be constructed.  The 
 Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course.  The 
 Following thing would be automatic, if an Exit and Direction extensions are used.
+
+Convert some properties to work with the new areas. Prop_NOMOB, etc..
+
+Furniture.. chairs to sit in, beds to lie in, tables to put things on?
+
+ranger skills: find water, hunt (finds a huntable animal)
+
+target commmand to switch among targets fighting you
+
+Two-handed fighting
+
+0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where  one could buy raw materials.  Facilities available there would be used, along with your skill, to  produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing,  Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and  remove rawness from Meat).  The LeatherWorker ability can mend leather items, Tailor cloth items, etc..
 
 Add last-call date/time string to the "list users" command
 
@@ -57,10 +56,6 @@ appraise skill to give weight, base value, and material of an item
 
 HuntableAnimals that produce pieces of raw meat in inventory when killed.  Poisoned and poisoning 
 animals will produce poisoned meat, of course.
-
-For trade skills, and to make spells more realistic, perfect the delay of these abilities, and
-allow some message to be displayed as they are put in Que.  For example "You start whittling" (delay)
-"You have completed your piece of art". (Combat should cancel this!)
 
 Meditation for Mage should be like Endurance for Fighter.
 
