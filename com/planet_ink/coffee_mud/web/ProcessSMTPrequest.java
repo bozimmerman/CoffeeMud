@@ -132,7 +132,7 @@ public class ProcessSMTPrequest extends Thread
 								if(s2.startsWith("Subject: "))
 									subject=s2.substring(9).trim();
 								else
-								if(s2.startsWith("Content Type: "))
+								if(s2.startsWith("Content Type: ")||s2.startsWith("Content-type: ")||s2.startsWith("Content-Type: "))
 								{
 									if(!s2.substring(14).toUpperCase().startsWith("TEXT/PLAIN"));
 									{
@@ -145,11 +145,10 @@ public class ProcessSMTPrequest extends Thread
 						}
 						catch(IOException e){}
 							
-						if((finalData.length()==0)
-						&&(!startBuffering))
+						if((finalData.length()==0)&&(!startBuffering))
 						{
 							finalData=new StringBuffer(data.toString());
-							subject="";
+							if(subject==null) subject="";
 						}
 							
 						if((finalData.length()>0)&&(subject!=null))

@@ -1,4 +1,3 @@
-I noticed when I cast mute on spell casting mobs they can still incant and cast spells and use wands with key words.
 Something to hunt multiplayers with 1. the closest (in milliseconds) commands were entered by tested players and 2. the frequency of information command entry, eating drinking, ordered vs real command entry, variation of commands, socials, speech
 A little thing, but it would come in handy - importing and exporting users.  It would help me for some particular scenarios and I bet it'll help folks that don't have high-powered databases to do backups with.
 TEST SMTP Server

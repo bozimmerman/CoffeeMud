@@ -515,7 +515,9 @@ public class SMTPserver extends Thread implements Tickable
 			long date=Util.s_long((String)mail.elementAt(DatabaseEngine.JOURNAL_DATE));
 			String subj=((String)mail.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
 			String msg=((String)mail.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
+			
 			if(to.equalsIgnoreCase("ALL")) continue;
+			
 			if(!rightTimeToSendEmail(date)) continue;
 			
 			// check for valid recipient
@@ -548,8 +550,10 @@ public class SMTPserver extends Thread implements Tickable
 					continue;
 				}
 			}
+			
 			if(Util.bset(toM.getBitmap(),MOB.ATT_AUTOFORWARD)) // forwarding OFF
 				continue;
+
 			if((toM.playerStats()==null)
 			||(toM.playerStats().getEmail().length()==0)) // no email addy to forward TO
 				continue;
