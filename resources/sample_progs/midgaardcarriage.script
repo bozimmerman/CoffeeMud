@@ -1,11 +1,100 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+# Here is a sample script that demonstrates a carriage driver
+# that pulls a carriage from Midgaard to New Thalos and back again.
 
-<P>&nbsp;</P>
+ONCE_PROG 100
+mount carriage "a draft horse"
+~
 
-</BODY>
-</HTML>
+# here is the nitty gritty
+# a Random program does everything on ticks, so its the best way
+# to go for recurring events
+RANG_PROG 100
+	mount carriage "a draft horse"
+	IF VAR($n COMEORGO == '') OR VAR($n COMEORGO == 'GO2')
+		IF INROOM('#3014')
+			MPSETVAR $n COMEORGO ARRIVE1
+			MPSETVAR $n COUNT 0
+		ENDIF
+		IF INROOM('#3053')
+			pick west
+			open west
+		ENDIF
+		IF INROOM('#9669') OR INROOM('#9523') OR INROOM('#9524') OR INROOM('#9525') OR INROOM('#9526') OR INROOM('#9509')
+			west
+		ENDIF
+		IF INROOM('#3525') OR INROOM('#3526') OR INROOM('#3527') OR INROOM('#3528') OR INROOM('#3529') OR INROOM('#3530') OR INROOM('#3531') OR INROOM('#3532')
+			west
+		ENDIF
+		IF INROOM('#3015') OR INROOM('#3053') OR INROOM('#3016') OR INROOM('#3503')  OR INROOM('#3502')  OR INROOM('#3041') 
+			west
+		ENDIF
+	ENDIF
+	
+	IF VAR($n COMEORGO == GO1)
+		IF INROOM('#9506')
+			MPSETVAR ($n COMEORGO ARRIVE2)
+		ENDIF
+		IF INROOM('#3041')
+			pick east
+			open east
+		ENDIF
+		IF INROOM('#9669') OR INROOM('#9523') OR INROOM('#9524') OR INROOM('#9525') OR INROOM('#9526') OR INROOM('#9509')
+			east
+		ENDIF
+		IF INROOM('#3525') OR INROOM('#3526') OR INROOM('#3527') OR INROOM('#3528') OR INROOM('#3529') OR INROOM('#3530') OR INROOM('#3531') OR INROOM('#3532')
+			east
+		ENDIF
+		IF INROOM('#3014') OR INROOM('#3015') OR INROOM('#3016') OR INROOM('#3053') OR INROOM('#3503')  OR INROOM('#3502')  OR INROOM('#3041') 
+			east
+		ENDIF
+	ENDIF
+	
+	IF VAR($n COMEORGO == ARRIVE1)
+		IF VAR($n COUNT > 30)
+			MPSETVAR $n COMEORGO GO1
+			MPSETVAR $n COUNT 0
+			say "We're OFF!"
+			east
+		ELSE
+			MPSETVAR $n COUNT ++
+			IF VAR($n COUNT > 29)
+				yell "Carriage to New Thalos preparing to leave! All Aboard!"
+			ELSE
+				IF VAR($n COUNT > 20)
+					IF RAND(25)
+						yell "Carriage to New Thalos leaving soon!"
+					ENDIF
+				ELSE
+					IF RAND(25)
+						yell "Carriage to New Thalos taking passengers!"
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	IF VAR($n COMEORGO == ARRIVE2)
+		IF VAR($n COUNT > 30)
+			MPSETVAR $n COMEORGO GO2
+			MPSETVAR $n COUNT 0
+			say "We're OFF!"
+			east
+		ELSE
+			MPSETVAR $n COUNT ++
+			IF VAR($n COUNT > 29)
+				yell "Carriage to Midgaard preparing to leave! All Aboard!"
+			ELSE
+				IF VAR($n COUNT > 20)
+					IF RAND(25)
+						yell "Carriage to Midgaard leaving soon!"
+					ENDIF
+				ELSE
+					IF RAND(25)
+						yell "Carriage to Midgaard taking passengers!"
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+~
+

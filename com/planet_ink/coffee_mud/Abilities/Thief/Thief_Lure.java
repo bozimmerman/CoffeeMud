@@ -36,6 +36,11 @@ public class Thief_Lure extends ThiefSkill implements Trap
 			mob.tell("Lure whom which direction?");
 			return false;
 		}
+		if(mob.isInCombat())
+		{
+			mob.tell("Not while you are fighting!");
+			return false;
+		}
 		String str=(String)commands.lastElement();
 		commands.removeElementAt(commands.size()-1);
 		int dirCode=Directions.getGoodDirectionCode(str);

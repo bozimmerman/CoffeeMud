@@ -1816,15 +1816,15 @@ public class StdMOB implements MOB
 				{
 					minuteCounter=0;
 					setAgeHours(AgeHours+1);
-					if(AgeHours>1000)
+					if(AgeHours>60000)
 					{
-						if(((AgeHours%10)==0)&&(Dice.rollPercentage()==1))
+						if(((AgeHours%60)==0)&&(Dice.rollPercentage()==1))
 						{
 							Ability A=CMClass.getAbility("Disease_Cancer");
 							if(A!=null) A.invoke(this,this,true);
 						}
 						else
-						if((AgeHours%100)==0)
+						if((AgeHours%600)==0)
 						{
 							Ability A=CMClass.getAbility("Disease_Arthritis");
 							if(A!=null) A.invoke(this,this,true);

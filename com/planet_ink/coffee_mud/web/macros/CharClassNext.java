@@ -13,6 +13,7 @@ public class CharClassNext extends StdWebMacro
 	{
 		Hashtable parms=parseParms(parm);
 		String last=(String)httpReq.getRequestParameters().get("CLASS");
+		String base=(String)httpReq.getRequestParameters().get("BASECLASS");
 		if(parms.containsKey("RESET"))
 		{	
 			if(last!=null) httpReq.getRequestParameters().remove("CLASS");
@@ -22,7 +23,8 @@ public class CharClassNext extends StdWebMacro
 		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			CharClass C=(CharClass)c.nextElement();
-			if((C.playerSelectable())||(parms.containsKey("ALL")))
+			if(((C.playerSelectable())||(parms.containsKey("ALL")))
+			&&((base==null)||(base.length()==0)||(C.baseClass().equalsIgnoreCase(base))))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))
 				{

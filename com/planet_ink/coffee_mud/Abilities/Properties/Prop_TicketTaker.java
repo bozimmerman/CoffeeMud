@@ -5,18 +5,17 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_ConductorMOB extends Property
+public class Prop_TicketTaker extends Property
 {
-	public String ID() { return "Prop_ConductorMOB"; }
-	public String name(){ return "Conductor MOB";}
+	public String ID() { return "Prop_TicketTaker"; }
+	public String name(){ return "Ticket Taker";}
 	public String displayText() {return "";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	Prop_ConductorMOB BOB=new Prop_ConductorMOB();	BOB.setMiscText(text());return BOB;	}
-	private Vector paid=new Vector();
+	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	public Environmental newInstance(){	Prop_TicketTaker BOB=new Prop_TicketTaker();	BOB.setMiscText(text());return BOB;	}
 
 	public String accountForYourself()
 	{
-		return "is a MOB who acts as a conductor";
+		return "one who acts as a ticket taker";
 	}
 
 	private int cost(){
@@ -25,43 +24,48 @@ public class Prop_ConductorMOB extends Property
 		return amount;
 	}
 
-	private boolean isMine(MOB mob, Rideable R)
+	private boolean isMine(Environmental host, Rideable R)
 	{
-		if(mob.riding()==null) return false;
-		if(mob.riding()==R) return true;
-		if((R instanceof Rider)&&(((Rider)R).riding()==mob.riding()))
-			return true;
-		if((mob.riding() instanceof Rider)&&(((Rider)mob.riding()).riding()==R))
-			return true;
+		if(host instanceof Rider)
+		{
+			Rider mob=(Rider)host;
+			if(R==mob) return true;
+			if(mob.riding()==null) return false;
+			if(mob.riding()==R) return true;
+			if((R instanceof Rider)&&(((Rider)R).riding()==mob.riding()))
+				return true;
+			if((mob.riding() instanceof Rider)&&(((Rider)mob.riding()).riding()==R))
+				return true;
+		}
+		else
+		if(host instanceof Rideable)
+			return host==R;
 		return false;
 	}
 	
 	public void affect(Environmental myHost, Affect msg)
 	{
 		super.affect(myHost,msg);
-		if((myHost instanceof MOB)&&(((MOB)myHost).riding()!=null))
+		if(((myHost instanceof Rider)&&(((Rider)myHost).riding()!=null))
+		   ||(myHost instanceof Rideable))
 		{
-			MOB monster=(MOB)myHost;
 			MOB mob=msg.source();
 			if((msg.target()!=null)
+			&&(myHost!=mob)
+			&&(!mob.isMonster())
 			&&(msg.target() instanceof Rideable)
-			&&(msg.targetMinor()==Affect.TYP_DISMOUNT)
-			&&(isMine(monster,(Rideable)msg.target())))
+			&&(isMine(myHost,(Rideable)msg.target())))
 			{
-				if(paid.contains(mob))
-					paid.removeElement(mob);
-			}
-			else
-			if(msg.amITarget(monster)
-			   &&(msg.targetMinor()==Affect.TYP_GIVE)
-			   &&(msg.tool() instanceof Coins))
-			{
-				int val=((Coins)msg.tool()).numberOfCoins();
-				if(val>=cost())
+				switch(msg.sourceMinor())
 				{
-					ExternalPlay.quickSay(monster,mob,"Thank you! Now climb aboard!",false,false);
-					if(!paid.contains(mob))
-						paid.addElement(mob);
+				case Affect.TYP_MOUNT:
+				case Affect.TYP_SIT:
+				case Affect.TYP_SLEEP:
+					if(mob.getMoney()>=cost())
+					{
+						mob.location().show(mob,myHost,Affect.MSG_NOISYMOVEMENT,"<S-NAME> give(s) "+cost()+" gold to <T-NAME>.");
+						mob.setMoney(mob.getMoney()-cost());
+					}
 				}
 			}
 		}
@@ -69,23 +73,26 @@ public class Prop_ConductorMOB extends Property
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if(!super.okAffect(myHost,msg)) return false;
-		if((myHost instanceof MOB)&&(((MOB)myHost).riding()!=null))
+		if(((myHost instanceof Rider)&&(((Rider)myHost).riding()!=null))
+		   ||(myHost instanceof Rideable))
 		{
-			MOB monster=(MOB)myHost;
 			MOB mob=msg.source();
 			if((msg.target()!=null)
-			&&(monster!=mob)
+			&&(myHost!=mob)
 			&&(!mob.isMonster())
 			&&(msg.target() instanceof Rideable)
-			&&(isMine(monster,(Rideable)msg.target())))
+			&&(isMine(myHost,(Rideable)msg.target())))
 				switch(msg.sourceMinor())
 				{
 				case Affect.TYP_MOUNT:
 				case Affect.TYP_SIT:
 				case Affect.TYP_SLEEP:
-					if(!paid.contains(mob))
+					if(mob.getMoney()<cost())
 					{
-						ExternalPlay.quickSay(monster,mob,"You'll need to give me "+cost()+" gold to board.",false,false);
+						if(myHost instanceof MOB)
+							ExternalPlay.quickSay((MOB)myHost,mob,"You'll need "+cost()+" gold to board.",false,false);
+						else
+							mob.tell("You'll need "+cost()+" gold to board.");
 						return false;
 					}
 					break;

@@ -226,6 +226,7 @@ public class Scriptable extends StdBehavior
 			Room R=(Room)r.nextElement();
 			if((CoffeeUtensils.containsString(R.name(),thisName))
 			||(R.ID().endsWith("#"+thisName))
+			||(R.ID().endsWith(thisName))
 			||(R.fetchFromRoomFavorMOBs(null,thisName,Item.WORN_REQ_UNWORNONLY)!=null))
 			{
 				if((imHere!=null)&&(imHere.getArea().name().equals(R.getArea().name())))
@@ -824,7 +825,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 17: // inroom
 			{
-				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				Environmental E=monster;		
 				Room R=getRoom(arg2,lastKnownLocation);
 				if((E==null)||(!(E instanceof MOB)))
@@ -844,7 +845,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 37: // inlocale
 			{
-				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				Environmental E=monster;		
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
