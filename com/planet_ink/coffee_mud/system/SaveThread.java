@@ -18,6 +18,7 @@ public class SaveThread extends Thread
 	public SaveThread()
 	{
 		super("SaveThread");
+		setName("SaveThread");
 	}
 
 	public void itemSweep()

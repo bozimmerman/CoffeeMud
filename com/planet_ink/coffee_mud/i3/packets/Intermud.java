@@ -752,6 +752,7 @@ class SaveThread extends Thread {
 
     public SaveThread(Intermud imud) {
         super("Intermud save");
+		setName("Intermud save");
         intermud = imud;
     }
 

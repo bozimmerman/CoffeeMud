@@ -1,3 +1,5 @@
+Recall works, flawlessly, everytime, even at 1% skill.  I think this might be broken :)
+MPGSET $n CONSTITUTION $<$n HOLD>
 imc2 causing login problems?!?!
 i3 shake shows $N to others.
 Morris Cox (yahoo ) probs 

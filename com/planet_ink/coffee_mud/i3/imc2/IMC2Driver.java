@@ -1443,6 +1443,8 @@ public final class IMC2Driver extends Thread {
         int seq = 0;
 
         public call_out(IMC2Driver _imc_client) {
+			super("IMC2-call_out");
+			setName("IMC2-call_out");
             imc_client = _imc_client;
         }
 
@@ -1473,6 +1475,8 @@ public final class IMC2Driver extends Thread {
         IMC2Driver imc_client;
 
         public call_in(IMC2Driver _imc_client) {
+			super("IMC2-call_in");
+			setName("IMC2-call_in");
             imc_client = _imc_client;
         }
 

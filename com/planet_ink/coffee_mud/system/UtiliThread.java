@@ -18,6 +18,7 @@ public class UtiliThread extends Thread
 	public UtiliThread()
 	{
 		super("UtiliThread");
+		setName("UtiliThread");
 	}
 
 	public void itemSweep()

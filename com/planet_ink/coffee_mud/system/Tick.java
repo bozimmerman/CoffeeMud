@@ -16,8 +16,14 @@ public class Tick extends Thread
 	public long tickTotal=0;
 	public ThreadEngine myEngine=null;
 	public boolean solitaryTicker=false;
+	private static int tickObjCounter=0;
 	
-	public Tick(ThreadEngine theEngine){myEngine=theEngine;}
+	public Tick(ThreadEngine theEngine)
+	{
+		super("Tick."+tickObjCounter);
+		tickObjCounter++;
+		myEngine=theEngine;
+	}
 	
 	private Vector tickers=new Vector();
 
@@ -45,7 +51,6 @@ public class Tick extends Thread
 	}
 
 
-	private static int tickObjCounter=0;
 	public Tick()
 	{
 		super("Tick."+tickObjCounter);
