@@ -258,11 +258,7 @@ public class RoomLoader
 			String location=(String)itemLocs.get(keyItem);
 			Item container=(Item)itemNums.get(location);
 			if(container!=null)
-			{
 				keyItem.setContainer(container);
-				keyItem.recoverEnvStats();
-				container.recoverEnvStats();
-			}
 		}
 	}
 
@@ -442,14 +438,21 @@ public class RoomLoader
 				{
 					Environmental E=(Environmental)i.nextElement();
 					if(E instanceof Item)
+					{
 						room.addItem((Item)E);
+					}
 					else
 						((MOB)E).bringToLife(room,true);
 				}
 				itemLocs=(Hashtable)stuff.get("LOCSFOR"+room.roomID());
 				mobRides=(Hashtable)stuff.get("RIDESFOR"+room.roomID());
 				if(itemLocs!=null)
+				{
 					fixItemKeys(itemLocs,itemNums);
+					room.recoverRoomStats();
+					room.recoverRoomStats();
+				}
+					
 				if(mobRides!=null)
 					fixMOBRides(mobRides,itemNums);
 			}

@@ -486,4 +486,13 @@ public class CMMap
 		startRooms=new Hashtable();
 		deathRooms=new Hashtable();
 	}
+	
+	public static class CrossExit
+	{
+		public int x;
+		public int y;
+		public int dir;
+		public String destRoomID="";
+		public boolean out=false;
+	}
 }

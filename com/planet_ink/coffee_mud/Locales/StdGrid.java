@@ -23,10 +23,10 @@ import java.util.*;
 public class StdGrid extends StdRoom implements GridLocale
 {
 	public String ID(){return "StdGrid";}
-	protected Room[] alts=new Room[Directions.NUM_DIRECTIONS];
 	protected Room[][] subMap=null;
 	protected Vector descriptions=new Vector();
 	protected Vector displayTexts=new Vector();
+	protected Vector gridexits=new Vector();
 	protected int xsize=5;
 	protected int ysize=5;
 
@@ -75,6 +75,10 @@ public class StdGrid extends StdRoom implements GridLocale
 			displayTexts.addElement(newDisplayText);
 	}
 
+	public Vector outerExits(){return (Vector)gridexits.clone();}
+	public void addOuterExit(CMMap.CrossExit x){gridexits.remove(x);}
+	public void delOuterExit(CMMap.CrossExit x){gridexits.addElement(x);}
+	
 	public Room getAltRoomFrom(Room loc, int direction)
 	{
 		if((loc==null)||(direction<0))
@@ -82,13 +86,30 @@ public class StdGrid extends StdRoom implements GridLocale
 		int opDirection=Directions.getOpDirectionCode(direction);
 		
 		getBuiltGrid();
+		Vector V=outerExits();
+		Room[][] grid=null;
+		if(V.size()>0)
+		{
+			grid=getBuiltGrid();
+			String roomID=CMMap.getExtendedRoomID(loc);
+			if(grid!=null)
+				for(int d=0;d<V.size();d++)
+				{
+					CMMap.CrossExit EX=(CMMap.CrossExit)V.elementAt(d);
+					if((!EX.out)
+					&&(EX.destRoomID.equalsIgnoreCase(roomID))
+					&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<ySize())&&(EX.y<ySize())
+					&&(grid[EX.x][EX.y]!=null))
+						return grid[EX.x][EX.y];
+				}
+		}
 
 		Room oldLoc=loc;
 		if(loc.getGridParent()!=null)
 			loc=loc.getGridParent();
 		if((oldLoc!=loc)&&(loc instanceof GridLocale))
 		{
-			Room[][] grid=getBuiltGrid();
+			if(grid==null) grid=getBuiltGrid();
 			if(grid!=null)
 			{
 				int y=((GridLocale)loc).getChildY(oldLoc);
@@ -115,7 +136,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				}
 			}
 		}
-		return alts[opDirection];
+		return findMyCenter(opDirection);
 	}
 
 	private Room[][] getBuiltGrid()
@@ -166,6 +187,11 @@ public class StdGrid extends StdRoom implements GridLocale
 		loc.rawExits()[opCode]=ao;
 	}
 
+	protected Room findMyCenter(int d)
+	{
+		return findCenterRoom(d);
+	}
+	
 	protected Room findCenterRoom(int dirCode)
 	{
 		int x=0;
@@ -243,7 +269,6 @@ public class StdGrid extends StdRoom implements GridLocale
 				dirExit=ox;
 			if(dirRoom!=null)
 			{
-				alts[d]=findCenterRoom(d);
 				Exit altExit=dirRoom.rawExits()[Directions.getOpDirectionCode(d)];
 				if(altExit==null) altExit=ox;
 				switch(d)
@@ -366,7 +391,6 @@ public class StdGrid extends StdRoom implements GridLocale
 			subMap=null;
 		}
 		catch(Exception e){}
-		alts=new Room[Directions.NUM_DIRECTIONS];
 	}
 
 	public String getChildCode(Room loc)

@@ -29,19 +29,20 @@ public class StdMaze extends StdGrid
 	}
 
 
-	protected void buildFinalLinks()
+	protected Room findMyCenter(int d)
 	{
-		Exit ox=CMClass.getExit("Open");
-		for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
+		Room dirRoom=rawDoors()[d];
+		if(dirRoom!=null)
 		{
-			Room dirRoom=rawDoors()[d];
-			if(dirRoom!=null)
+			Room altR=findCenterRoom(d);
+			if(altR!=null)
 			{
-				alts[d]=findCenterRoom(d);
-				if(alts[d]!=null)
-					linkRoom(alts[d],dirRoom,d,ox,ox);
+				Exit ox=CMClass.getExit("Open");
+				linkRoom(altR,dirRoom,d,ox,ox);
+				return altR;
 			}
 		}
+		return null;
 	}
 
 	protected boolean goodDir(int x, int y, int dirCode)

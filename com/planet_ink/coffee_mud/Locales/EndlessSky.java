@@ -53,6 +53,14 @@ public class EndlessSky extends StdGrid
 	}
 	public String getChildLocaleID(){return "InTheAir";}
 
+	public Room findMyCenter(int d)
+	{
+		if(d!=Directions.DOWN)
+			return findCenterRoom(d);
+		else
+			return subMap[subMap.length-1][subMap[0].length-1];
+	}
+	
 	protected void buildFinalLinks()
 	{
 		Exit ox=CMClass.getExit("Open");
@@ -64,10 +72,6 @@ public class EndlessSky extends StdGrid
 				dirExit=ox;
 			if(dirRoom!=null)
 			{
-				if(d!=Directions.DOWN)
-					alts[d]=findCenterRoom(d);
-				else
-					alts[d]=subMap[subMap.length-1][subMap[0].length-1];
 				Exit altExit=dirRoom.rawExits()[Directions.getOpDirectionCode(d)];
 				if(altExit==null) altExit=ox;
 				switch(d)

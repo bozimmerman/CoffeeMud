@@ -157,7 +157,7 @@
 	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=CALENDAR@BGCOLOR=BLACK@endif@><a href="javascript:inipage('CALENDAR')"><FONT @if?CheckReqParm?INIPAGE=CALENDAR@COLOR=WHITE@else@COLOR=BLACK@endif@>Calendar</FONT></a></TD>
 	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=MISC@BGCOLOR=BLACK@endif@><a href="javascript:inipage('MISC')"><FONT @if?CheckReqParm?INIPAGE=MISC@COLOR=WHITE@else@COLOR=BLACK@endif@>Miscellanous</FONT></a></TD>
 	</TR>
-	<TR><TD WIDTH=100% COLSPAN=11VALIGN=TOP>
+	<TR><TD WIDTH=100% COLSPAN=11 VALIGN=TOP>
 	@if?CheckReqParm?INIPAGE=@
 	<BR><BR>
 	<FONT COLOR=WHITE><B>Instructions: Select a tab above to view a new page.  

@@ -28,6 +28,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	protected Vector descriptions=new Vector();
 	protected Vector displayTexts=new Vector();
+	protected Vector gridexits=new Vector();
 	
 	protected int xsize=5;
 	protected int ysize=5;
@@ -260,11 +261,27 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 	}
 	
+	public Vector outerExits(){return (Vector)gridexits.clone();}
+	public void addOuterExit(CMMap.CrossExit x){gridexits.remove(x);}
+	public void delOuterExit(CMMap.CrossExit x){gridexits.addElement(x);}
+	
 	public Room getAltRoomFrom(Room loc, int direction)
 	{
 		if((loc==null)||(direction<0))
 			return null;
 		int opDirection=Directions.getOpDirectionCode(direction);
+		
+		Vector V=outerExits();
+		String roomID=CMMap.getExtendedRoomID(loc);
+		for(int d=0;d<V.size();d++)
+		{
+			CMMap.CrossExit EX=(CMMap.CrossExit)V.elementAt(d);
+			if((!EX.out)
+			&&(EX.destRoomID.equalsIgnoreCase(roomID))
+			&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<ySize())&&(EX.y<ySize())
+			&&(grid[EX.x][EX.y]!=null))
+				return getMakeGridRoom(EX.x,EX.y);
+		}
 		
 		Room oldLoc=loc;
 		if(loc.getGridParent()!=null)
@@ -649,7 +666,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 
 		public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-
+		
 		public void setMiscText(String newMiscText)
 		{ miscText=newMiscText;}
 		public String text()

@@ -54,6 +54,17 @@ public class UnderWaterGrid extends StdGrid
 	}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 
+	protected Room findMyCenter(int d)
+	{
+		if(d==Directions.UP)
+			return subMap[0][0];
+		else
+		if(d!=Directions.DOWN)
+			return findCenterRoom(d);
+		else
+			return subMap[subMap.length-1][subMap[0].length-1];
+	}
+	
 	protected void buildFinalLinks()
 	{
 		Exit ox=CMClass.getExit("Open");
@@ -65,13 +76,6 @@ public class UnderWaterGrid extends StdGrid
 				dirExit=ox;
 			if(dirRoom!=null)
 			{
-				if(d==Directions.UP)
-					alts[d]=subMap[0][0];
-				else
-				if(d!=Directions.DOWN)
-					alts[d]=findCenterRoom(d);
-				else
-					alts[d]=subMap[subMap.length-1][subMap[0].length-1];
 				Exit altExit=dirRoom.rawExits()[Directions.getOpDirectionCode(d)];
 				if(altExit==null) altExit=ox;
 

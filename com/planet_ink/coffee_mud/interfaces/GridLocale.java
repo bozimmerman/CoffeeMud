@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.interfaces;
 
 import java.util.Vector;
+import com.planet_ink.coffee_mud.common.CMMap;
 
 /* 
    Copyright 2000-2004 Bo Zimmerman
@@ -34,4 +35,7 @@ public interface GridLocale extends Room
 	public int ySize();
 	public void setXSize(int x);
 	public void setYSize(int y);
+	public Vector outerExits();
+	public void addOuterExit(CMMap.CrossExit x);
+	public void delOuterExit(CMMap.CrossExit x);
 }
