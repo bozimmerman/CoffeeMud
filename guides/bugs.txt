@@ -1,16 +1,33 @@
-? gain spellname gives two messages, one for the teaching, and one saying you already have it
-! rescueing an enemy crashes your connection. (Fighter.Fighter_Rescue.invoke(Fighter_Rescue.java)) NULL POINTER
-! com.planet_ink.coffee_mud.utils.CoffeeUtensils.fetchAvailableItem(CoffeeUtensils.java) (2>=2)
-! com.planet_ink.coffee_mud.Locales.StdRoom.recoverRoomStats(StdRoom.java) (2>=2)
-! if you kill someone wearing mage armor, you can loot their body for the mage armor, but you can not get it. Then it says n he ground is this is sitting around somewhere, something is wrong!
-! aggressives should not attack statues. I don`t know if they can do any damage, but they just shouldn`t attack statues
-! The cast light bug
-  change sex should NOT be a lvl 12 spell. And worse, it shouldn`t be the LVL 12 spell you got at random
-  why do wizards only get one spell per level after level 10, when clerics continue to get 2? especially considering that there are at least twice as many wizard spells....
-! com.planet_ink.coffee_mud.Behaviors.Aggressive.startFight(Aggressive.java) (NULL POINTER)
-! StdRoom.fetchInhabitant(StdRoom.java) (0>=0)
-! if you try to remove something from a container while overburdened, it won`t let you
-! com.planet_ink.coffee_mud.Locales.StdRoom.okAffect(StdRoom.java) (0>=0)
-! com.planet_ink.coffee_mud.Locales.StdRoom.reallyReallySend(StdRoom.java) 3>=3
-? com.planet_ink.coffee_mud.Abilities.Spells.Spell_Meld.invoke(Spell_Meld.java) GenShield class cast exception (melding with gloves)
+X can't eat sesame seed -- not supposed to, its a KEY!
+X Look for "about the body" importables -- nah, too much work
+c a safe pet can be attacked if already in combat?!  Or cant attack at all..
+c ignore follower pets for no-mob areas?
+c "open the ground" south of midgaard
+c be able to open doors while in battle, for fleeing
+c And they should stay open longer!
+c Track -- make it smarter
+c Are we able to cast spells on the invisible? Malicious?  Benevolent?
+c Under guildmaster should take you to sewer -- Import bug!  Do a room "checkup" before and room link "restore" after import to reattach to olde rooms.
+c consider consider, it is inaccurate
+! edged, hammer, dagger import bug
+! dark horseman -- don't hide WHILE in combat?  They sneak when fleeing -- thats ok.
+X where IS there dirt? -- Where there ought to be.
+X Look for inside-outside Locales --- (done, looks ok on spot check)
+c Flying across water surface doesn't put out a torch
+c Train stat should only take base score into account!
+c Wands for a fighter.  As early as other classes?
+c Train hit points, Train mana, Train move, Train practices, Train gain (10 prac=train)
+c Protection good/evil too damaging when mismatched
+c Plague should be contageous
+c Choke can't kill you?!
+? Fix the Grinder for Tim.
+c You can't buy field plate in New Thalos.
+c No disarm for melded weapons, weaponbreak, heat metal, or grease drops
+c Max limit for text on the EQ command!
+X The bar S. of midgaard has a sky -- area file SAYS it does.
+c while thedragon was fighting the knigt templar, the knight healed thedragon....(mass heal?)
+X charm may be too powerful. It brings my 8 cha up to 25. bard is only lvl 8.  4 points too much?!
+c if your charisma is over 18, you can buy things at a significantly lower price. Selling them is also at this lower price.
+c Lower the starting stats for newbies to avg 10 from avg 12.
+c when you drink a potion of true.. chat for sparkling...
   

@@ -68,12 +68,6 @@ public class StdWeapon extends StdItem implements Weapon
 			return "PIERCING";
 		case TYPE_BASHING:
 			return "BASHING";
-		case TYPE_SHOOT:
-			return "SHOOTING";
-		case TYPE_BURSTING:
-			return "BURSTING";
-		case TYPE_BURNING:
-			return "BURNING";
 		}
 		return "";
 	}

@@ -50,7 +50,7 @@ public class CreateEdit
 			items.destroy(mob,commands);
 		}
 		else
-		if((commandType.equals("AREA"))&&(mob.isASysOp(null)))
+		if(commandType.equals("AREA"))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
 			rooms.destroyArea(mob,commands);
@@ -62,7 +62,7 @@ public class CreateEdit
 			rooms.destroy(mob,commands);
 		}
 		else
-		if((commandType.equals("USER"))&&(mob.isASysOp(null)))
+		if(commandType.equals("USER"))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
 			mobs.destroyUser(mob,commands);
@@ -164,7 +164,7 @@ public class CreateEdit
 				Session session=(Session)Sessions.elementAt(s);
 				if(session.mob()!=null)
 				{
-					ExternalPlay.DBUpdateMOB(session.mob());
+					ExternalPlay.DBUpdate(session.mob());
 					ExternalPlay.DBUpdateFollowers(session.mob());
 				}
 			}
@@ -174,21 +174,18 @@ public class CreateEdit
 		if(commandType.equals("ITEMS"))
 		{
 			rooms.clearDebriAndRestart(mob.location(),1);
-			Resources.removeResource("HELP_"+mob.location().name().toUpperCase());
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 		}
 		else
 		if(commandType.equals("ROOM"))
 		{
 			rooms.clearDebriAndRestart(mob.location(),0);
-			Resources.removeResource("HELP_"+mob.location().name().toUpperCase());
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 		}
 		else
 		if(commandType.equals("MOBS"))
 		{
 			rooms.clearDebriAndRestart(mob.location(),2);
-			Resources.removeResource("HELP_"+mob.location().name().toUpperCase());
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 		}
 		else
@@ -216,12 +213,6 @@ public class CreateEdit
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
 			rooms.modify(mob,commands);
-		}
-		else
-		if(commandType.equals("AREA"))
-		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
-			rooms.modifyArea(mob,commands);
 		}
 		else
 		if(commandType.equals("EXIT"))
@@ -332,12 +323,6 @@ public class CreateEdit
 			exits.create(mob,commands);
 		}
 		else
-		if(commandType.equals("AREA"))
-		{
-			mob.tell("To create a new Area, you must first create a new room, then give that new room a new Area name.");
-			return;
-		}
-		else
 		if(commandType.equals("ITEM"))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
@@ -397,8 +382,6 @@ public class CreateEdit
 					E=CMClass.getLocale(allWord);
 					if(E==null)
 						E=CMClass.getExit(allWord);
-					if(E==null)
-						E=CMClass.getAreaType(allWord);
 					if((E!=null)&&(E instanceof Room))
 					{
 						commands=new Vector();
@@ -418,9 +401,6 @@ public class CreateEdit
 						commands.addElement(allWord);
 						create(mob,commands);
 					}
-					else
-					if((E!=null)&&(E instanceof Area))
-						mob.tell("To create a new Area, you must first create a new room, then give that new room a new Area name.");
 					else
 						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, MOB, ROOM, or a NEW copy of something.");
 				}

@@ -173,60 +173,60 @@ public class Archon_CharGen extends ArchonSkill
 	{
 		if(mob.isMonster())
 			return false;
-		try
+		CharClass C=null;
+		int level=-1;
+		String ClassName="";
+		if(commands.size()>0)
 		{
-			CharClass C=null;
-			int level=-1;
-			String ClassName="";
-			if(commands.size()>0)
-			{
-				ClassName=(String)commands.elementAt(0);
-				C=CMClass.getCharClass(ClassName);
-				level=Util.s_int(Util.combine(commands,1));
-			}
+			ClassName=(String)commands.elementAt(0);
+			C=CMClass.getCharClass(ClassName);
+			level=Util.s_int(Util.combine(commands,1));
+		}
 
-			if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
+		if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
+		{
+			mob.tell("Enter 'ALL' for all classes.");
+			try
 			{
-				mob.tell("Enter 'ALL' for all classes.");
 				ClassName=mob.session().prompt("Enter a class name: ");
-
-				C=CMClass.getCharClass(ClassName);
-				if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
-					return false;
 			}
+			catch(Exception e){return false;}
 
-			if(level<=0)
+			C=CMClass.getCharClass(ClassName);
+			if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
+				return false;
+		}
+
+		if(level<=0)
+		{
+			try
 			{
 				level=Util.s_int(mob.session().prompt("Enter a level (1-25): "));
-				if(level<=0)
-					return false;
 			}
-
-			if(C!=null)
-				mob.session().print("\n\rAverage "+C.name()+"...");
-			else
-				mob.session().print("\n\rAverage MOB stats, across all classes...");
-
-			MOB avgMob=null;
-			if(C!=null)
-				avgMob=AverageClassMOB(mob, level,C, 300);
-			else
-				avgMob=AverageAllClassMOB(mob,level, 20, 50);
-
-			mob.session().println("\n\r");
-
-			if(avgMob!=null)
-			{
-				avgMob.setSession(mob.session());
-				ExternalPlay.score(avgMob);
-				avgMob.setSession(null);
-			}
-			return true;
+			catch(Exception e){return false;}
+			if(level<=0)
+				return false;
 		}
-		catch(IOException e)
+
+		if(C!=null)
+			mob.session().print("\n\rAverage "+C.name()+"...");
+		else
+			mob.session().print("\n\rAverage MOB stats, across all classes...");
+
+		MOB avgMob=null;
+		if(C!=null)
+			avgMob=AverageClassMOB(mob, level,C, 300);
+		else
+			avgMob=AverageAllClassMOB(mob,level, 20, 50);
+
+		mob.session().println("\n\r");
+
+		if(avgMob!=null)
 		{
-			Log.errOut("CHARGEN",e);
-			return false;
+			avgMob.setSession(mob.session());
+			ExternalPlay.score(avgMob);
+			avgMob.setSession(null);
 		}
+		return true;
 	}
 }

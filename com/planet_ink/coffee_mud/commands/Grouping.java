@@ -67,7 +67,7 @@ public class Grouping
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB follower=mob.fetchFollower(f);
-			if((follower!=null)&&(toThis.get(follower)==null))
+			if(toThis.get(follower)==null)
 			{
 				toThis.put(follower,follower);
 				addFollowers(follower,toThis);
@@ -217,9 +217,7 @@ public class Grouping
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB recipient=mob.fetchFollower(f);
-			if((recipient!=null)
-			   &&(recipient.amFollowing()==mob)
-			   &&(!recipient.isMonster()))
+			if((recipient.amFollowing()==mob)&&(!recipient.isMonster()))
 				num++;
 		}
 
@@ -234,9 +232,7 @@ public class Grouping
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB recipient=mob.fetchFollower(f);
-			if((recipient!=null)
-			   &&(recipient.amFollowing()==mob)
-			   &&(!recipient.isMonster()))
+			if((recipient.amFollowing()==mob)&&(!recipient.isMonster()))
 			{
 				mob.setMoney(mob.getMoney()-gold);
 				Item C=(Item)CMClass.getItem("Coins");

@@ -71,8 +71,7 @@ public class Property implements Ability, Cloneable
 		if((mob==null)||(me==null)) return false;
 		for(int a=0;a<mob.numAffects();a++)
 		{
-			Ability aff=mob.fetchAffect(a);
-			if((aff!=null)&&(aff==me))
+			if(mob.fetchAffect(a)==me)
 				return true;
 		}
 		return false;

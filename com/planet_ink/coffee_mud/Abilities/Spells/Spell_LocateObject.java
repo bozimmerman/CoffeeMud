@@ -70,8 +70,6 @@ public class Spell_LocateObject extends Spell
 					for(int i=0;i<room.numInhabitants();i++)
 					{
 						MOB inhab=room.fetchInhabitant(i);
-						if(inhab==null) break;
-						
 						item=inhab.fetchInventory(what);
 						if((item==null)&&(inhab instanceof ShopKeeper))
 							item=((ShopKeeper)inhab).getStock(what);

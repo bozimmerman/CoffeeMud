@@ -27,6 +27,18 @@ public class Archon_GOTO extends ArchonSkill
 	{
 		return new Archon_GOTO();
 	}
+	
+	private static Room findRoom(String roomID)
+	{	
+		for(int m=0;m<CMMap.map.size();m++)
+		{
+			Room thisRoom=(Room)CMMap.map.elementAt(m);
+			if(thisRoom.ID().equalsIgnoreCase(roomID))
+			   return thisRoom;
+		}
+		return null;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 
@@ -36,24 +48,53 @@ public class Archon_GOTO extends ArchonSkill
 		else
 		if(commands.size()<1)
 		{
-			mob.tell("Go where?  You need the Room ID!");
+			mob.tell("Go where?  You need the Room ID or a player name!");
 			return false;
 		}
-		for(int m=0;m<CMMap.map.size();m++)
+		
+		Room curRoom=mob.location();
+		StringBuffer cmd = new StringBuffer(Util.combine(commands,0));
+
+		room = findRoom(cmd.toString());
+		if(room==null)
 		{
-			Room thisRoom=(Room)CMMap.map.elementAt(m);
-			if(thisRoom.ID().equalsIgnoreCase(Util.combine(commands,0)))
+			if((cmd.charAt(0)=='#')&&(curRoom!=null))
 			{
-			   room=thisRoom;
-			   break;
+				cmd.insert(0,curRoom.getAreaID());
+				room = findRoom(cmd.toString());
+			}
+			else
+			{
+				for(int s=0;s<Sessions.size();s++)
+				{
+					Session thisSession=(Session)Sessions.elementAt(s);
+					if((thisSession.mob()!=null) && (!thisSession.killFlag()) 
+					&&(thisSession.mob().location()!=null)
+					&&(thisSession.mob().name().equalsIgnoreCase(cmd.toString())))
+					{
+						room = thisSession.mob().location();
+						break;
+					}
+				}
+				if(room==null)
+					for(int s=0;s<Sessions.size();s++)
+					{
+						Session thisSession=(Session)Sessions.elementAt(s);
+						if((thisSession.mob()!=null)&&(!thisSession.killFlag()) 
+						&&(thisSession.mob().location()!=null)
+						&&(CoffeeUtensils.containsString(thisSession.mob().name(),cmd.toString())))
+						{
+							room = thisSession.mob().location();
+							break;
+						}
+					}
 			}
 		}
 		if(room==null)
 		{
-			mob.tell("Go where?  You need the Room ID!");
+			mob.tell("Go where?  You need the Room ID or a player name!");
 			return false;
 		}
-		Room curRoom=mob.location();
 		if(curRoom==room)
 		{
 			mob.tell("Done.");

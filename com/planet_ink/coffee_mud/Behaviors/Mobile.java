@@ -39,20 +39,14 @@ public class Mobile extends ActiveTicker
 				{
 					Exit opExit=otherRoom.exits()[Directions.getOpDirectionCode(direction)];
 					for(int a=0;a<otherExit.numAffects();a++)
-					{
-						Ability aff=otherExit.fetchAffect(a);
-						if((aff!=null)&&(aff instanceof Trap))
+						if(otherExit.fetchAffect(a) instanceof Trap)
 							direction=-1;
-					}
 
 					if(opExit!=null)
 					{
 						for(int a=0;a<opExit.numAffects();a++)
-						{
-							Ability aff=opExit.fetchAffect(a);
-							if((aff!=null)&&(aff instanceof Trap))
+							if(opExit.fetchAffect(a) instanceof Trap)
 								direction=-1;
-						}
 					}
 
 					if((!otherRoom.getAreaID().equals(thisRoom.getAreaID()))&&(this.getParms().toUpperCase().indexOf("WANDER")<0))
@@ -69,11 +63,8 @@ public class Mobile extends ActiveTicker
 
 			boolean move=true;
 			for(int m=0;m<thisRoom.numInhabitants();m++)
-			{
-				MOB inhab=thisRoom.fetchInhabitant(m);
-				if((inhab!=null)&&(inhab.isASysOp()))
+				if(thisRoom.fetchInhabitant(m).isASysOp())
 					move=false;
-			}
 			if(move)
 			{
 				Ability A=mob.fetchAbility("Thief_Sneak");

@@ -89,17 +89,12 @@ public class Prayer_BlessItem extends Prayer
 				while(a<target.numAffects())
 				{
 					Ability A=target.fetchAffect(a);
-					if(A!=null)
-					{
-						int b=target.numAffects();
-						if(A instanceof Prayer_CurseItem)
-							A.unInvoke();
-						if(A instanceof Prayer_Curse)
-							A.unInvoke();
-						if(b==target.numAffects())
-							a++;
-					}
-					else
+					int b=target.numAffects();
+					if(A instanceof Prayer_CurseItem)
+						A.unInvoke();
+					if(A instanceof Prayer_Curse)
+						A.unInvoke();
+					if(b==target.numAffects())
 						a++;
 				}
 				target.recoverEnvStats();

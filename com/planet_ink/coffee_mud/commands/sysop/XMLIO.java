@@ -53,8 +53,16 @@ public class XMLIO
 				else
 				if(newList.equalsIgnoreCase("AREA"))
 				{
-					for(int a=0;a<CMMap.AREAS.size();a++)
-						roomXML.append(((Area)CMMap.AREAS.elementAt(a)).name()+";");
+					Hashtable h=new Hashtable();
+					for(int m=0;m<CMMap.map.size();m++)
+					{
+						Room R=(Room)CMMap.map.elementAt(m);
+						if(h.get(R.getAreaID())==null)
+						{
+							roomXML.append(R.getAreaID()+";");
+							h.put(R.getAreaID(),R.getAreaID());
+						}
+					}
 				}
 				else
 				if(newList.equalsIgnoreCase("LOCALE"))
@@ -139,7 +147,7 @@ public class XMLIO
 					for(int m=0;m<CMMap.map.size();m++)
 					{
 						Room R=(Room)CMMap.map.elementAt(m);
-						if((R.ID().length()>0)&&(R.getArea().name().equalsIgnoreCase(newList)))
+						if((R.ID().length()>0)&&(R.getAreaID().equalsIgnoreCase(newList)))
 							roomXML.append(R.ID()+";");
 					}
 				}
@@ -280,7 +288,7 @@ public class XMLIO
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB mob2=room.fetchInhabitant(i);
-				if((mob2!=null)&&(CoffeeUtensils.isEligibleMonster(mob2)))
+				if(CoffeeUtensils.isEligibleMonster(mob2))
 				{
 					num++;
 					roomXML.append("<ROOMMOB"+num+">");
@@ -299,30 +307,26 @@ public class XMLIO
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item item=room.fetchItem(i);
-				if(item!=null)
-				{
-					num++;
-					roomXML.append("<ROOMITEM"+num+">");
-					roomXML.append(XMLManager.convertXMLtoTag("ITEMCLASS",CMClass.className(item)));
-					roomXML.append(XMLManager.convertXMLtoTag("ITEMTEXT",""+item.text()));
-					roomXML.append(XMLManager.convertXMLtoTag("ITEMLEVEL",""+item.baseEnvStats().level()));
-					roomXML.append(XMLManager.convertXMLtoTag("ITEMABILITY",""+item.baseEnvStats().ability()));
-					roomXML.append(XMLManager.convertXMLtoTag("ITEMREJUV",""+item.baseEnvStats().rejuv()));
-					roomXML.append(XMLManager.convertXMLtoTag("ITEMUSES",""+item.usesRemaining()));
-					int locationNum=0;
-					if(item.location()!=null)
-						for(int num2=0;num2<room.numItems();num2++)
+				num++;
+				roomXML.append("<ROOMITEM"+num+">");
+				roomXML.append(XMLManager.convertXMLtoTag("ITEMCLASS",CMClass.className(item)));
+				roomXML.append(XMLManager.convertXMLtoTag("ITEMTEXT",""+item.text()));
+				roomXML.append(XMLManager.convertXMLtoTag("ITEMLEVEL",""+item.baseEnvStats().level()));
+				roomXML.append(XMLManager.convertXMLtoTag("ITEMABILITY",""+item.baseEnvStats().ability()));
+				roomXML.append(XMLManager.convertXMLtoTag("ITEMREJUV",""+item.baseEnvStats().rejuv()));
+				roomXML.append(XMLManager.convertXMLtoTag("ITEMUSES",""+item.usesRemaining()));
+				int locationNum=0;
+				if(item.location()!=null)
+					for(int num2=0;num2<room.numItems();num2++)
+					{
+						if(room.fetchItem(num2)==item.location())
 						{
-							Item fitem=room.fetchItem(num2);
-							if((fitem!=null)&&(fitem==item.location()))
-							{
-								locationNum=num2+1;
-								break;
-							}
+							locationNum=num2+1;
+							break;
 						}
-					roomXML.append(XMLManager.convertXMLtoTag("ITEMLOCATION",""+locationNum));
-					roomXML.append("</ROOMITEM"+num+">");
-				}
+					}
+				roomXML.append(XMLManager.convertXMLtoTag("ITEMLOCATION",""+locationNum));
+				roomXML.append("</ROOMITEM"+num+">");
 			}
 
 			roomXML.append("</ROOMITEMS>");
@@ -480,7 +484,7 @@ public class XMLIO
 			roomXML.append("<ROOM>");
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMID",room.ID()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMCLASS",CMClass.className(room)));
-			roomXML.append(XMLManager.convertXMLtoTag("ROOMAREA",room.getArea().name()));
+			roomXML.append(XMLManager.convertXMLtoTag("ROOMAREA",room.getAreaID()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMDISPLAYTEXT",room.displayText()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMDESCRIPTION",room.description()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMTEXT",room.text()));
@@ -502,7 +506,7 @@ public class XMLIO
 				{
 					roomXML.append(XMLManager.convertXMLtoTag("EXITCLASS",CMClass.className(exit)));
 					roomXML.append(XMLManager.convertXMLtoTag("EXITTEXT",exit.text()));
-					roomXML.append(XMLManager.convertXMLtoTag("EXITSAME",""+(room.getPairedExit(d)==opExit)));
+					roomXML.append(XMLManager.convertXMLtoTag("EXITSAME",""+(exit==opExit)));
 					roomXML.append(XMLManager.convertXMLtoTag("EXITDOOR",""+exit.hasADoor()));
 				}
 				roomXML.append("</EXIT>");
@@ -519,14 +523,10 @@ public class XMLIO
 			if(roomBlock.length()<10) return;
 			String newID=XMLManager.returnXMLValue(roomBlock,"ROOMID");
 			String newRoomClass=XMLManager.returnXMLValue(roomBlock,"ROOMCLASS");
-			String newAreaStr=XMLManager.returnXMLValue(roomBlock,"ROOMAREA");
+			String newArea=XMLManager.returnXMLValue(roomBlock,"ROOMAREA");
 			String newDisplay=XMLManager.returnXMLValue(roomBlock,"ROOMDISPLAYTEXT");
 			String newDescription=XMLManager.returnXMLValue(roomBlock,"ROOMDESCRIPTION");
 
-			Area newArea=CMMap.getArea(newAreaStr);
-			if(newArea==null)
-				newArea=ExternalPlay.DBCreateArea(newAreaStr,"StdArea");
-			
 			boolean isNewRoom=false;
 			if(newID.equalsIgnoreCase("NEW"))
 			{
@@ -534,10 +534,10 @@ public class XMLIO
 				if(newRoom==null) return;
 				isNewRoom=true;
 				room=(Room)newRoom.newInstance();
-				room.setID(myRooms.getOpenRoomID(newArea.name()));
-				room.setArea(newArea);
+				room.setID(myRooms.getOpenRoomID(newArea));
+				room.setAreaID(newArea);
 				newID=room.ID();
-				ExternalPlay.DBCreateRoom(room,newRoomClass);
+				ExternalPlay.DBCreate(room,newRoomClass);
 				CMMap.map.addElement(room);
 				response=newID;
 				Log.sysOut("ROOMXML",mob.name()+" created room "+room.ID()+".");
@@ -564,7 +564,7 @@ public class XMLIO
 			room.setID(newID);
 			room.setDisplayText(newDisplay);
 			room.setDescription(newDescription);
-			room.setArea(newArea);
+			room.setAreaID(newArea);
 
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{

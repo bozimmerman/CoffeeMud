@@ -71,17 +71,14 @@ public class Prop_HaveSpellCast extends Property
 		while(x<lastMOB.numAffects())
 		{
 			Ability thisAffect=lastMOB.fetchAffect(x);
-			if(thisAffect!=null)
+			String ID=(String)h.get(thisAffect.ID());
+			if((ID!=null)&&(thisAffect.invoker()==lastMOB))
 			{
-				String ID=(String)h.get(thisAffect.ID());
-				if((ID!=null)&&(thisAffect.invoker()==lastMOB))
-				{
-					thisAffect.unInvoke();
-					x=-1;
-				}
+				thisAffect.unInvoke();
+				x=0;
 			}
-			x++;
-			
+			else
+				x++;
 		}
 		lastMOB=null;
 	}

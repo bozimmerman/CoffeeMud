@@ -36,17 +36,14 @@ public class Prayer_MassFreedom extends Prayer
 		for(int a=0;a<fromMe.numAffects();a++)
 		{
 			Ability A=fromMe.fetchAffect(a);
-			if(A!=null)
-			{
-				newMOB.recoverEnvStats();
-				A.affectEnvStats(newMOB,newMOB.envStats());
-				if((!Sense.aliveAwakeMobile(newMOB,true))
-				   ||(!A.okAffect(msg)))
-				if((A.invoker()==null)
-				   ||((A.invoker()!=null)
-					  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
-						offenders.addElement(A);
-			}
+			newMOB.recoverEnvStats();
+			A.affectEnvStats(newMOB,newMOB.envStats());
+			if((!Sense.aliveAwakeMobile(newMOB,true))
+			   ||(!A.okAffect(msg)))
+			if((A.invoker()==null)
+			   ||((A.invoker()!=null)
+				  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
+					offenders.addElement(A);
 		}
 		return offenders;
 	}
@@ -61,15 +58,12 @@ public class Prayer_MassFreedom extends Prayer
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"A feeling of freedom flows through the air":"<S-NAME> pray(s) for freedom, and the area begins to fill with divine glory.");
-			Room room=mob.location();
-			if((room!=null)&&(room.okAffect(msg)))
+			if(mob.location().okAffect(msg))
 			{
-				room.send(mob,msg);
-				for(int i=0;i<room.numInhabitants();i++)
+				mob.location().send(mob,msg);
+				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
-					MOB target=room.fetchInhabitant(i);
-					if(target==null) break;
-					
+					MOB target=mob.location().fetchInhabitant(i);
 					Vector offensiveAffects=returnOffensiveAffects(mob,target);
 
 					if(offensiveAffects.size()>0)

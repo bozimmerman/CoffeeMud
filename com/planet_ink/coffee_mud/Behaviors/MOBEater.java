@@ -43,8 +43,7 @@ public class MOBEater extends ActiveTicker
 		{
 			// ===== get the tasty morsels
 			MOB TastyMorsel = Stomach.fetchInhabitant(x);
-			if(TastyMorsel!=null)
-				lastKnownLocation.bringMobHere(TastyMorsel,false);
+			lastKnownLocation.bringMobHere(TastyMorsel,false);
 		}
 
 		// =====move the inventory of the stomach to the room

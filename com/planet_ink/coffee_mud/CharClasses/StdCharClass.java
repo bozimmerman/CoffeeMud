@@ -253,10 +253,7 @@ public class StdCharClass implements CharClass
 			mob.recoverMaxState();
 		}
 		while(mob.inventorySize()>0)
-		{
-			Item I=mob.fetchInventory(0);
-			if(I!=null) mob.delInventory(I);
-		}
+			mob.delInventory(mob.fetchInventory(0));
 		mob.resetToMaxState();
 	}
 
@@ -280,12 +277,8 @@ public class StdCharClass implements CharClass
 		
 		// check for autoinvoking abilities
 		for(int a=0;a<mob.numAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
-			if((A!=null)
-			&&(A.envStats().level()==mob.envStats().level()))
-				A.autoInvocation(mob);
-		}
+			if(mob.fetchAbility(a).envStats().level()==mob.envStats().level())
+				mob.fetchAbility(a).autoInvocation(mob);
 		
 		// wrap it all up
 		mob.recoverEnvStats();

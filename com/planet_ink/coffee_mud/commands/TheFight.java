@@ -104,8 +104,7 @@ public class TheFight
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
-			if((inhab!=null)
-			&&(inhab!=mob)
+			if((inhab!=mob)
 			&&(h1.get(inhab)==null)
 			&&((!mob.isMonster())||(!inhab.isMonster())))
 				h.put(inhab,inhab);
@@ -138,12 +137,11 @@ public class TheFight
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
-			if((inhab!=null)
-			   &&((inhab==mob.getVictim())
-				||((inhab!=mob)
-				  &&(inhab.getVictim()!=mob.getVictim())
-				  &&(h1.get(inhab)==null))))
-					h.put(inhab,inhab);
+			if((inhab==mob.getVictim())
+			||((inhab!=mob)
+			  &&(inhab.getVictim()!=mob.getVictim())
+			  &&(h1.get(inhab)==null)))
+				h.put(inhab,inhab);
 		}
 		return h;
 
@@ -247,8 +245,7 @@ public class TheFight
 			for(int m=0;m<deathRoom.numInhabitants();m++)
 			{
 				MOB mob=deathRoom.fetchInhabitant(m);
-				if((mob!=null)
-				&&(!mob.amDead())
+				if((!mob.amDead())
 				&&(mob.charStats().getMyClass()!=null)
 				&&(beneficiaries.get(mob)==null)
 				&&(mob!=target))
@@ -274,11 +271,7 @@ public class TheFight
 				}
 			}
 			while(target.numFollowers()>0)
-			{
-				MOB follower=target.fetchFollower(0);
-				if(follower!=null)
-					follower.setFollowing(null);
-			}
+				target.fetchFollower(0).setFollowing(null);
 			target.setFollowing(null);
 			deathRoom.delInhabitant(target);
 			deathRoom.show(target,null,Affect.MSG_OK_ACTION,target.name()+" is DEAD!!!\n\r");
@@ -301,25 +294,22 @@ public class TheFight
 			for(int i=0;i<target.inventorySize();)
 			{
 				Item thisItem=target.fetchInventory(i);
-				if((thisItem!=null)&&(thisItem.savable()))
+				if(target.isMonster())
 				{
-					if(target.isMonster())
-					{
-						Item newItem=(Item)thisItem.copyOf();
-						newItem.setLocation(null);
-						newItem.setPossessionTime(Calendar.getInstance());
-						newItem.recoverEnvStats();
-						thisItem=newItem;
-						i++;
-					}
-					else
-						target.delInventory(thisItem);
-					thisItem.remove();
-					if(thisItem.location()==null)
-						thisItem.setLocation(Body);
-					deathRoom.addItem(thisItem);
-					items.addElement(thisItem);
+					Item newItem=(Item)thisItem.copyOf();
+					newItem.setLocation(null);
+					newItem.setPossessionTime(Calendar.getInstance());
+					newItem.recoverEnvStats();
+					thisItem=newItem;
+					i++;
 				}
+				else
+					target.delInventory(thisItem);
+				thisItem.remove();
+				if(thisItem.location()==null)
+					thisItem.setLocation(Body);
+				deathRoom.addItem(thisItem);
+				items.addElement(thisItem);
 			}
 			target.kill();
 			
@@ -331,7 +321,7 @@ public class TheFight
 				// and the person this mob is fighting is either fighting noone, or the victim
 				// then he should fight this mob!
 				// otherwise, if the mob is still fighting the target, stop him!
-				if((inhab!=null)&&(inhab.getVictim()!=null))
+				if(inhab.getVictim()!=null)
 				{
 					if(inhab.getVictim()!=target)
 					{

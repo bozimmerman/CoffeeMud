@@ -83,11 +83,7 @@ public class Skill_ScrollCopy extends StdAbility
 		T.setName(target.name());
 		T.charStats().setGender('N');
 		while(T.numAbilities()>0)
-		{
-			Ability A=T.fetchAbility(0);
-			if(A!=null)
-				T.delAbility(A);
-		}
+			T.delAbility(T.fetchAbility(0));
 		thisSpell.setProfficiency(50);
 		T.addAbility(thisSpell);
 		if(!thisSpell.canBeLearnedBy(T,mob))

@@ -59,14 +59,11 @@ public class Emoter extends ActiveTicker
 
 			boolean nonMOBfound=false;
 			for(int i=0;i<room.numInhabitants();i++)
-			{
-				MOB inhab=room.fetchInhabitant(i);
-				if((inhab!=null)&&(!inhab.isMonster()))
+				if(!room.fetchInhabitant(i).isMonster())
 				{
 					nonMOBfound=true;
 					break;
 				}
-			}
 			if(!nonMOBfound) return;
 
 			String emote=(String)emotes.elementAt(Dice.roll(1,emotes.size(),0)-1);

@@ -352,9 +352,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						for(int i=0;i<mob.inventorySize();i++)
 						{
 							Item I=mob.fetchInventory(i);
-							if((I!=null)
-							&&(I instanceof Key)
-							&&(((Key)I).getKey().equals(((Container)affect.tool()).keyName()))&&(I.location()==affect.tool()))
+							if((I instanceof Key)&&(((Key)I).getKey().equals(((Container)affect.tool()).keyName()))&&(I.location()==affect.tool()))
 								return true;
 						}
 						ExternalPlay.quickSay(this,mob,"I won't buy that back unless you put the key in it.",true,false);
@@ -442,7 +440,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							{
 								int a=mob.inventorySize();
 								Item I=mob.fetchInventory(i);
-								if((I!=null)&&(I.location()==affect.tool()))
+								if(I.location()==affect.tool())
 								{
 									I.remove();
 									storeInventory.addElement(I);

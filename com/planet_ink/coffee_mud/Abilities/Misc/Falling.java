@@ -124,7 +124,7 @@ public class Falling extends StdAbility
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item newItem=room.fetchItem(i);
-			if((newItem!=null)&&(newItem.location()==item))
+			if(newItem.location()==item)
 				recursiveRoomItems(V,newItem,room);
 		}
 	}

@@ -42,7 +42,7 @@ public class Prayer_Plague extends Prayer
 			if(invoker==null) invoker=mob;
 			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level());
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
-			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
+			if((target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
 				if(Dice.rollPercentage()>(target.charStats().getConstitution()*4))
 					maliciousAffect(invoker,target,48,-1);
 		}

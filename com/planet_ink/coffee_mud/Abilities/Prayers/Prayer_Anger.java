@@ -37,11 +37,8 @@ public class Prayer_Anger extends Prayer
 
 		boolean someoneIsFighting=false;
 		for(int i=0;i<mob.location().numInhabitants();i++)
-		{
-			MOB inhab=mob.location().fetchInhabitant(i);
-			if((inhab!=null)&&(inhab.isInCombat()))
+			if(mob.location().fetchInhabitant(i).isInCombat())
 				someoneIsFighting=true;
-		}
 
 		if((success)&&(!someoneIsFighting)&&(mob.location().numInhabitants()>3))
 		{
@@ -64,17 +61,14 @@ public class Prayer_Anger extends Prayer
 						{
 							int which=(int)Math.round(Math.random()*new Integer(mob.location().numInhabitants()).doubleValue());
 							target=mob.location().fetchInhabitant(which);
-							if(target!=null)
-							{
-								if(target==inhab) target=null;
-								if(target==mob) target=null;
-							}
+							if(target==inhab) target=null;
+							if(target==mob) target=null;
 							tries++;
 						}
 						FullMsg amsg=new FullMsg(mob,inhab,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND,null);
 						if((target!=null)&&(mob.location().okAffect(amsg)))
 						{
-							inhab.tell("You feel angry.");
+							mob.location().fetchInhabitant(i).tell("You feel angry.");
 							inhab.setVictim(target);
 						}
 					}

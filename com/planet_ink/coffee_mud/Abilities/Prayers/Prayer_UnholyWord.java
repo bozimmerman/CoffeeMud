@@ -70,12 +70,9 @@ public class Prayer_UnholyWord extends Prayer
 		String str=auto?"The unholy word is spoken.":"<S-NAME> speak(s) the unholy word of <S-HIS-HER> god to <T-NAMESELF>.";
 		String missStr="<S-NAME> speak(s) the unholy word of <S-HIS-HER> god, but nothing happens.";
 
-		Room room=mob.location();
-		if(room!=null)
-		for(int i=0;i<room.numInhabitants();i++)
+		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB target=room.fetchInhabitant(i);
-			if(target==null) break;
+			MOB target=mob.location().fetchInhabitant(i);
 			affectType=Affect.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|Affect.ACT_GENERAL;
 			if(target.getAlignment()>650)
@@ -88,9 +85,9 @@ public class Prayer_UnholyWord extends Prayer
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType,str);
-				if(room.okAffect(msg))
+				if(mob.location().okAffect(msg))
 				{
-					room.send(mob,msg);
+					mob.location().send(mob,msg);
 					if(!msg.wasModified())
 					{
 						if(Sense.canBeHeardBy(mob,target))
@@ -100,30 +97,25 @@ public class Prayer_UnholyWord extends Prayer
 							while(a<target.numAffects())
 							{
 								Ability A=target.fetchAffect(a);
-								if(A!=null)
-								{
-									int b=target.numAffects();
-									if(A instanceof Prayer_Bless)
-										A.unInvoke();
-									else
-									if(A instanceof Prayer_Sanctuary)
-										A.unInvoke();
-									else
-									if(A instanceof Prayer_HolyAura)
-										A.unInvoke();
-									else
-									if(A instanceof Prayer_HolyWord)
-										A.unInvoke();
-									else
-									if(A instanceof Prayer_Curse)
-										A.unInvoke();
-									else
-									if(A instanceof Prayer_GreatCurse)
-										A.unInvoke();
-									if(b==target.numAffects())
-										a++;
-								}
+								int b=target.numAffects();
+								if(A instanceof Prayer_Bless)
+									A.unInvoke();
 								else
+								if(A instanceof Prayer_Sanctuary)
+									A.unInvoke();
+								else
+								if(A instanceof Prayer_HolyAura)
+									A.unInvoke();
+								else
+								if(A instanceof Prayer_HolyWord)
+									A.unInvoke();
+								else
+								if(A instanceof Prayer_Curse)
+									A.unInvoke();
+								else
+								if(A instanceof Prayer_GreatCurse)
+									A.unInvoke();
+								if(b==target.numAffects())
 									a++;
 							}
 							target.recoverEnvStats();

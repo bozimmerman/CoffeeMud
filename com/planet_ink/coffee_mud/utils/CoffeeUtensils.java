@@ -78,47 +78,35 @@ public class CoffeeUtensils
 		int myOccurrance=occurrance;
 		if(exactOnly)
 		{
-			try
+			for(int i=0;i<list.size();i++)
 			{
-				for(int i=0;i<list.size();i++)
-				{
-					Environmental thisThang=(Environmental)list.elementAt(i);
-					if(thisThang.ID().equalsIgnoreCase(srchStr)||thisThang.name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||(thisThang.displayText().length()>0))
-							if((--myOccurrance)<=0)
-								return thisThang;
-				}
+				Environmental thisThang=(Environmental)list.elementAt(i);
+				if(thisThang.ID().equalsIgnoreCase(srchStr)||thisThang.name().equalsIgnoreCase(srchStr))
+					if((!allFlag)||(thisThang.displayText().length()>0))
+						if((--myOccurrance)<=0)
+							return thisThang;
 			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		}
 		else
 		{
 			myOccurrance=occurrance;
-			try
+			for(int i=0;i<list.size();i++)
 			{
-				for(int i=0;i<list.size();i++)
-				{
-					Environmental thisThang=(Environmental)list.elementAt(i);
-					if(containsString(thisThang.name(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0)))
-						if((--myOccurrance)<=0)
-							return thisThang;
-				}
+				Environmental thisThang=(Environmental)list.elementAt(i);
+				if(containsString(thisThang.name(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0)))
+					if((--myOccurrance)<=0)
+						return thisThang;
 			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
 			myOccurrance=occurrance;
-			try
+			for(int i=0;i<list.size();i++)
 			{
-				for(int i=0;i<list.size();i++)
-				{
-					Environmental thisThang=(Environmental)list.elementAt(i);
-					if((!(thisThang instanceof Ability))
-					&&(thisThang.displayText().length()>0)
-					&&(containsString(thisThang.displayText(),srchStr)))
-						if((--myOccurrance)<=0)
-							return thisThang;
-				}
+				Environmental thisThang=(Environmental)list.elementAt(i);
+				if((!(thisThang instanceof Ability))
+				&&(thisThang.displayText().length()>0)
+				&&(containsString(thisThang.displayText(),srchStr)))
+					if((--myOccurrance)<=0)
+						return thisThang;
 			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		}
 		return null;
 	}
@@ -269,56 +257,44 @@ public class CoffeeUtensils
 		int myOccurrance=occurrance;
 		if(exactOnly)
 		{
-			try
+			for(int i=0;i<list.size();i++)
 			{
-				for(int i=0;i<list.size();i++)
-				{
-					Item thisThang=(Item)list.elementAt(i);
-					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+				Item thisThang=(Item)list.elementAt(i);
+				boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
 
-					if((thisThang.location()==goodLocation)
-					&&((beingWorn&wornOnly)||((!beingWorn)&&(unwornOnly))||((!wornOnly)&&(!unwornOnly)))
-					&&(thisThang.ID().equalsIgnoreCase(srchStr)||(thisThang.name().equalsIgnoreCase(srchStr))))
-						if((!allFlag)||(thisThang.displayText().length()>0))
-							if((--myOccurrance)<=0)
-								return thisThang;
-				}
+				if((thisThang.location()==goodLocation)
+				&&((beingWorn&wornOnly)||((!beingWorn)&&(unwornOnly))||((!wornOnly)&&(!unwornOnly)))
+				&&(thisThang.ID().equalsIgnoreCase(srchStr)||(thisThang.name().equalsIgnoreCase(srchStr))))
+					if((!allFlag)||(thisThang.displayText().length()>0))
+						if((--myOccurrance)<=0)
+							return thisThang;
 			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		}
 		else
 		{
-			try
+			for(int i=0;i<list.size();i++)
 			{
-				for(int i=0;i<list.size();i++)
-				{
-					Item thisThang=(Item)list.elementAt(i);
-					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+				Item thisThang=(Item)list.elementAt(i);
+				boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
 
-					if((thisThang.location()==goodLocation)
-					&&((beingWorn&wornOnly)||((!beingWorn)&&(unwornOnly))||((!wornOnly)&&(!unwornOnly)))
-					&&(containsString(thisThang.name(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0))))
-						if((--myOccurrance)<=0)
-							return thisThang;
-				}
+				if((thisThang.location()==goodLocation)
+				&&((beingWorn&wornOnly)||((!beingWorn)&&(unwornOnly))||((!wornOnly)&&(!unwornOnly)))
+				&&(containsString(thisThang.name(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0))))
+					if((--myOccurrance)<=0)
+						return thisThang;
 			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
 			myOccurrance=occurrance;
-			try
+			for(int i=0;i<list.size();i++)
 			{
-				for(int i=0;i<list.size();i++)
-				{
-					Item thisThang=(Item)list.elementAt(i);
-					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
-					if((thisThang.location()==goodLocation)
-					&&(thisThang.displayText().length()>0)
-					&&((beingWorn&wornOnly)||((!beingWorn)&&(unwornOnly))||((!wornOnly)&&(!unwornOnly)))
-					&&(containsString(thisThang.displayText(),srchStr)))
-						if((--myOccurrance)<=0)
-							return thisThang;
-				}
+				Item thisThang=(Item)list.elementAt(i);
+				boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+				if((thisThang.location()==goodLocation)
+				&&(thisThang.displayText().length()>0)
+				&&((beingWorn&wornOnly)||((!beingWorn)&&(unwornOnly))||((!wornOnly)&&(!unwornOnly)))
+				&&(containsString(thisThang.displayText(),srchStr)))
+					if((--myOccurrance)<=0)
+						return thisThang;
 			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		}
 		return null;
 	}
@@ -334,4 +310,5 @@ public class CoffeeUtensils
 		return true;
 
 	}
+
 }

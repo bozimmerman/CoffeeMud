@@ -41,32 +41,26 @@ public class Fighter_Rescue extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob==null) return false;
-		MOB imfighting=mob.getVictim();
 		MOB target=null;
-		
 		if((commands.size()==0)
-		&&(imfighting!=null)
-		&&(imfighting!=mob)
-		&&(imfighting.getVictim()!=null)
-		&&(imfighting.getVictim()!=mob))
-			target=imfighting.getVictim();
-		
+		&&(mob.isInCombat())
+		&&(mob.getVictim().getVictim()!=mob))
+			target=mob.getVictim().getVictim();
 		if(target==null)
-			target=getTarget(mob,commands,givenTarget);
-		
+			target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		MOB monster=target.getVictim();
 
-		if((target.amDead())||(monster==null)||(monster.amDead()))
+		if((target.amDead())||(!target.isInCombat()))
 		{
 			mob.tell(target.charStats().HeShe()+" isn't fighting anyone!");
 			return false;
 		}
 
+		MOB monster=target.getVictim();
+
 		if(monster.getVictim()==mob)
 		{
-			mob.tell("You are already taking the blows from "+monster.name()+".");
+			mob.tell("You are already taking the blows from "+mob.getVictim().name()+".");
 			return false;
 		}
 

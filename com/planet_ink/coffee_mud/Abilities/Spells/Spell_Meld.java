@@ -305,27 +305,15 @@ public class Spell_Meld extends Spell
 				if(melded!=null)
 				{
 					for(int a=0;a<itemOne.numAffects();a++)
-					{
-						Ability aff=itemOne.fetchAffect(a);
-						if((aff!=null)&&(melded.fetchAffect(aff.ID())==null))
-							melded.addAffect(aff);
-					}
+						if(melded.fetchAffect(itemOne.fetchAffect(a).ID())==null)
+							melded.addAffect(itemOne.fetchAffect(a));
 					for(int a=0;a<itemTwo.numAffects();a++)
-					{
-						Ability aff=itemTwo.fetchAffect(a);
-						if((aff!=null)&&(melded.fetchAffect(aff.ID())==null))
-							melded.addAffect(aff);
-					}
+						if(melded.fetchAffect(itemTwo.fetchAffect(a).ID())==null)
+							melded.addAffect(itemTwo.fetchAffect(a));
 					for(int a=0;a<itemOne.numBehaviors();a++)
-					{
-						Behavior B=itemOne.fetchBehavior(a);
-						if(B!=null)	melded.addBehavior(B);
-					}
+						melded.addBehavior(itemOne.fetchBehavior(a));
 					for(int a=0;a<itemTwo.numBehaviors();a++)
-					{
-						Behavior B=itemTwo.fetchBehavior(a);
-						if(B!=null)	melded.addBehavior(B);
-					}
+						melded.addBehavior(itemTwo.fetchBehavior(a));
 					melded.recoverEnvStats();
 				}
 				itemOne.destroyThis();

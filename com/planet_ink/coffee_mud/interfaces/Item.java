@@ -30,7 +30,7 @@ public interface Item extends Environmental
 	
 	public void destroyThis();
 	public void removeThis();
-	public boolean savable();
+	public boolean amDestroyed();
 	
 	public int value();
 	public void setBaseValue(int newValue);

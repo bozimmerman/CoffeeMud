@@ -47,7 +47,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			for(int r=0;r<room.numItems();r++)
 			{
 				Item content=room.fetchItem(r);
-				if((content!=null)&&(content.location()==item))
+				if(content.location()==item)
 					loadContent(ability,content,room);
 			}
 		}

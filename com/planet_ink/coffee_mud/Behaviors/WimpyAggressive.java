@@ -22,7 +22,7 @@ public class WimpyAggressive extends Aggressive
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
 			MOB mob=observer.location().fetchInhabitant(i);
-			if((mob!=null)&&(mob!=observer)&&(Sense.isSleeping(mob)))
+			if((mob!=observer)&&(Sense.isSleeping(mob)))
 			{
 				startFight(observer,mob,false);
 				if(observer.isInCombat()) break;

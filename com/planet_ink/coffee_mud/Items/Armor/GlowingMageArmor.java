@@ -10,7 +10,7 @@ public class GlowingMageArmor extends StdArmor
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a glowing breast plate of mystical energy";
-		displayText="If this is sitting around somewhere, something is wrong!";
+		displayText="is this is sitting around somewhere, something is wrong!";
 		description="This suit of armor is made from magical energy, but looks sturdy and protective.";
 		properWornBitmap=Item.ON_TORSO;
 		wornLogicalAnd=false;
@@ -25,9 +25,6 @@ public class GlowingMageArmor extends StdArmor
 	{
 		return new GlowingMageArmor();
 	}
-	
-	public boolean savable(){return false;}
-	
 	public boolean okAffect(Affect affect)
 	{
 		if(!super.okAffect(affect))

@@ -22,17 +22,12 @@ public class CombatAbilities extends StdBehavior
 	{
 		Vector oldAbilities=new Vector();
 		for(int a=0;a<mob.numAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
-			if(A!=null)
-				oldAbilities.addElement(A);
-		}
+			oldAbilities.addElement(mob.fetchAbility(a));
 		mob.charStats().getMyClass().newCharacter(mob,true);
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability newOne=mob.fetchAbility(a);
-			if((newOne!=null)
-			&&(!oldAbilities.contains(newOne))
+			if((!oldAbilities.contains(newOne))
 			&&(newOne.qualifyingLevel(mob)>mob.baseEnvStats().level()))
 			{
 				mob.delAbility(newOne);
@@ -83,7 +78,7 @@ public class CombatAbilities extends StdBehavior
 		for(int b=0;b<mob.numBehaviors();b++)
 		{
 			Behavior B=mob.fetchBehavior(b);
-			if((B==null)||(B==this))
+			if(B==this)
 				break;
 			else
 			if(B instanceof CombatAbilities)
@@ -99,7 +94,7 @@ public class CombatAbilities extends StdBehavior
 
 		while((tryThisOne==null)&&(tries<100)&&(mob.numAbilities()>0))
 		{
-			tryThisOne=mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
+			tryThisOne=mob.fetchAbility((int)Math.round(Math.random()*mob.numAbilities()));
 			if((tryThisOne!=null)&&(mob.fetchAffect(tryThisOne.ID())==null))
 			{
 				if(!((tryThisOne.quality()==Ability.MALICIOUS)
@@ -139,10 +134,10 @@ public class CombatAbilities extends StdBehavior
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item I=mob.fetchInventory(i);
-				if((I!=null)&&(I instanceof Wand)&&(!I.amWearingAt(Item.INVENTORY)))
+				if((I instanceof Wand)&&(!I.amWearingAt(Item.INVENTORY)))
 					myWand=I;
 				else
-				if((I!=null)&&(I instanceof Wand))
+				if(I instanceof Wand)
 					backupWand=I;
 			}
 			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob)))
@@ -167,7 +162,7 @@ public class CombatAbilities extends StdBehavior
 					Vector V=new Vector();
 					V.addElement("say");
 					V.addElement(mob.getVictim().name());
-					V.addElement(((Wand)myWand).magicWord());
+					V.addElement("zap");
 					try{ExternalPlay.doCommand(mob,V);}catch(Exception e){Log.errOut("CombatAbilities",e);}
 				}
 			}

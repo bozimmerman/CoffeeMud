@@ -205,13 +205,10 @@ public class Generic
 			for(int b=0;b<((MOB)E).inventorySize();b++)
 			{
 				Item I=((MOB)E).fetchInventory(b);
-				if(I!=null)
-				{
-					itemstr.append("<ITEM>");
-					itemstr.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(I)));
-					itemstr.append(XMLManager.convertXMLtoTag("IDATA",getPropertiesStr(I,true)));
-					itemstr.append("</ITEM>");
-				}
+				itemstr.append("<ITEM>");
+				itemstr.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(I)));
+				itemstr.append(XMLManager.convertXMLtoTag("IDATA",getPropertiesStr(I,true)));
+				itemstr.append("</ITEM>");
 			}
 			text.append(XMLManager.convertXMLtoTag("INVEN",itemstr.toString()));
 
@@ -219,7 +216,7 @@ public class Generic
 			for(int b=0;b<((MOB)E).numAbilities();b++)
 			{
 				Ability A=((MOB)E).fetchAbility(b);
-				if((A!=null)&&(!A.isBorrowed(E)))
+				if(!A.isBorrowed(E))
 				{
 					abilitystr.append("<ABLTY>");
 					abilitystr.append(XMLManager.convertXMLtoTag("ACLASS",CMClass.className(A)));
@@ -341,17 +338,9 @@ public class Generic
 		if(E instanceof MOB)
 		{
 			while(((MOB)E).numAbilities()>0)
-			{
-				Ability A=((MOB)E).fetchAbility(0);
-				if(A!=null)
-					((MOB)E).delAbility(A);
-			}
+				((MOB)E).delAbility(((MOB)E).fetchAbility(0));
 			while(((MOB)E).inventorySize()>0)
-			{
-				Item I=((MOB)E).fetchInventory(0);
-				if(I!=null)
-					((MOB)E).delInventory(I);
-			}
+				((MOB)E).delInventory(((MOB)E).fetchInventory(0));
 			if(E instanceof ShopKeeper)
 			{
 				Vector V=((ShopKeeper)E).getUniqueStoreInventory();
@@ -360,17 +349,9 @@ public class Generic
 			}
 		}
 		while(E.numAffects()>0)
-		{
-			Ability aff=E.fetchAffect(0);
-			if(aff!=null)
-				E.delAffect(aff);
-		}
+			E.delAffect(E.fetchAffect(0));
 		while(E.numBehaviors()>0)
-		{
-			Behavior behav=E.fetchBehavior(0);
-			if(behav!=null)
-				E.delBehavior(behav);
-		}
+			E.delBehavior(E.fetchBehavior(0));
 
 		setEnvProperties(E,buf);
 
@@ -465,12 +446,9 @@ public class Generic
 				for(int i=0;i<mob.inventorySize();i++)
 				{
 					Item item=mob.fetchInventory(i);
-					if(item!=null)
-					{
-						String ILOC=(String)LOCmap.get(item);
-						if(ILOC!=null)
-							item.setLocation((Item)IIDmap.get(ILOC));
-					}
+					String ILOC=(String)LOCmap.get(item);
+					if(ILOC!=null)
+						item.setLocation((Item)IIDmap.get(ILOC));
 				}
 			}
 
@@ -576,13 +554,11 @@ public class Generic
 		for(int b=0;b<E.numBehaviors();b++)
 		{
 			Behavior B=E.fetchBehavior(b);
-			if(B!=null)
-			{
-				behaviorstr.append("<BHAVE>");
-				behaviorstr.append(XMLManager.convertXMLtoTag("BCLASS",CMClass.className(B)));
-				behaviorstr.append(XMLManager.convertXMLtoTag("BPARMS",B.getParms()));
-				behaviorstr.append("</BHAVE>");
-			}
+
+			behaviorstr.append("<BHAVE>");
+			behaviorstr.append(XMLManager.convertXMLtoTag("BCLASS",CMClass.className(B)));
+			behaviorstr.append(XMLManager.convertXMLtoTag("BPARMS",B.getParms()));
+			behaviorstr.append("</BHAVE>");
 		}
 		text.append(XMLManager.convertXMLtoTag("BEHAVES",behaviorstr.toString()));
 
@@ -590,7 +566,7 @@ public class Generic
 		for(int a=0;a<E.numAffects();a++)
 		{
 			Ability A=E.fetchAffect(a);
-			if((A!=null)&&(!A.isBorrowed(E)))
+			if(!A.isBorrowed(E))
 			{
 				affectstr.append("<AFF>");
 				affectstr.append(XMLManager.convertXMLtoTag("ACLASS",CMClass.className(A)));

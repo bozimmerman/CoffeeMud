@@ -87,7 +87,7 @@ public class Import
 		}
 		R2=(Room)R2.newInstance();
 		R2.setID(R.ID());
-		R2.setArea(R.getArea());
+		R2.setAreaID(R.getAreaID());
 		R2.setDescription(R.description());
 		R2.setDisplayText(R.displayText());
 		R2.setName(R.name());
@@ -1143,7 +1143,7 @@ public class Import
 					for(int b=M.numBehaviors()-1;b>=0;b--)
 					{
 						Behavior B=M.fetchBehavior(b);
-						if((B!=null)&&(B.grantsMobility()))
+						if(B.grantsMobility())
 						{
 							if(guardian.ID().equals("GoodGuardian"))
 								guardian=CMClass.getBehavior("MobileGoodGuardian");
@@ -1406,11 +1406,7 @@ public class Import
 					returnAnError(mob,"Special line: "+s);
 			}
 			for(int a=0;a<M.numAbilities();a++)
-			{
-				Ability A=M.fetchAbility(a);
-				if(A!=null)
-					A.autoInvocation(M);
-			}
+				M.fetchAbility(a).autoInvocation(M);
 			int rejuv=(int)Math.round(Util.div(60000,Host.TICK_TIME)*2.0);
 			M.baseEnvStats().setRejuv(rejuv*M.baseEnvStats().level());
 			return M;
@@ -2242,7 +2238,7 @@ public class Import
 			for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
 			{
 				Room r=(Room)e.nextElement();
-				if(r.getArea().name().equalsIgnoreCase(areaName))
+				if(r.getAreaID().equalsIgnoreCase(areaName))
 				{
 					exists=true;
 					break;
@@ -2253,7 +2249,7 @@ public class Import
 				if((!prompt)
 				||(mob.session().confirm("Area: \""+areaName+"\" exists, obliterate first?","N")))
 				{
-					if(mob.location().getArea().name().equalsIgnoreCase(areaName))
+					if(mob.location().getAreaID().equalsIgnoreCase(areaName))
 					{
 						mob.tell("You dip!  You are IN that area!  Leave it first...");
 						return;
@@ -2264,11 +2260,11 @@ public class Import
 						for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
 						{
 							Room r=(Room)e.nextElement();
-							if(!r.getArea().name().equalsIgnoreCase(areaName))
+							if(!r.getAreaID().equalsIgnoreCase(areaName))
 								for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 								{
 									Room dirR=r.doors()[d];
-									if((dirR!=null)&&(dirR.getArea().name().equalsIgnoreCase(areaName)))
+									if((dirR!=null)&&(dirR.getAreaID().equalsIgnoreCase(areaName)))
 										reLinkTable.addElement(r.ID()+"/"+d+"/"+dirR.ID());
 								}
 						}
@@ -2278,7 +2274,7 @@ public class Import
 							for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
 							{
 								Room r=(Room)e.nextElement();
-								if(r.getArea().name().equalsIgnoreCase(areaName))
+								if(r.getAreaID().equalsIgnoreCase(areaName))
 								{
 									foundOne=r;
 									break;
@@ -2321,15 +2317,11 @@ public class Import
 				else
 					continue;
 
-				Area A=CMMap.getArea(areaName);
-				if(A==null)
-					A=ExternalPlay.DBCreateArea(areaName,"StdArea");
-				
 				Room R=CMClass.getLocale("StdRoom");
 				R.setID(eatNextLine(roomV));
 				R.setDisplayText(Util.safetyFilter(eatLineSquiggle(roomV)));
 				R.setDescription(Util.safetyFilter(eatLineSquiggle(roomV)));
-				R.setArea(A);
+				R.setAreaID(areaName);
 				String codeLine=eatNextLine(roomV);
 				if((!R.ID().startsWith("#"))
 				||(R.displayText().length()==0)
@@ -2912,7 +2904,7 @@ public class Import
 				for(int i=0;i<shopRoom.numInhabitants();i++)
 				{
 					MOB sk=shopRoom.fetchInhabitant(i);
-					if((sk!=null)&&(sk instanceof ShopKeeper))
+					if(sk instanceof ShopKeeper)
 					{ shopKeeper=(ShopKeeper)sk; break;	}
 				}
 				if(shopKeeper==null)
@@ -2922,12 +2914,9 @@ public class Import
 				{
 					shopKeeper.setWhatIsSold(ShopKeeper.PETS);
 					MOB pet=storeRoom.fetchInhabitant(0);
-					if(pet!=null)
-					{
-						shopKeeper.addStoreInventory(pet,20);
-						pet.setFollowing(null);
-						pet.destroy();
-					}
+					shopKeeper.addStoreInventory(pet,20);
+					pet.setFollowing(null);
+					pet.destroy();
 				}
 			}
 			// now fix the smurfy wells
@@ -2937,13 +2926,12 @@ public class Import
 				for(int ei=0;ei<smurfRoom.numItems();ei++)
 				{
 					Item lookItem=smurfRoom.fetchItem(ei);
-					if((lookItem!=null)&&(lookItem.displayText().length()==0))
+					if(lookItem.displayText().length()==0)
 					{
 						for(int i=0;i<smurfRoom.numItems();i++)
 						{
 							Item I=smurfRoom.fetchItem(i);
-							if((I!=null)
-							&&(I.displayText().length()>0)
+							if((I.displayText().length()>0)
 							&&(I.displayText().indexOf(lookItem.name())>=0))
 							{
 								String description=lookItem.description();
@@ -2990,7 +2978,7 @@ public class Import
 			for(int r=0;r<newRooms.size();r++)
 			{
 				Room saveRoom=(Room)newRooms.elementAt(r);
-				ExternalPlay.DBCreateRoom(saveRoom,CMClass.className(saveRoom));
+				ExternalPlay.DBCreate(saveRoom,CMClass.className(saveRoom));
 				ExternalPlay.DBUpdateExits(saveRoom);
 				myRooms.clearDebriAndRestart(saveRoom,0);
 				saveRoom.recoverRoomStats();

@@ -25,7 +25,7 @@ public class GoodGuardian extends StdBehavior
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
 			MOB inhab=observer.location().fetchInhabitant(i);
-			if((inhab!=null)&&(inhab.isInCombat()))
+			if(inhab.isInCombat())
 			{
 				if((inhab.getAlignment()>350)&&(inhab.getVictim().getAlignment()<350))
 				{
@@ -49,12 +49,10 @@ public class GoodGuardian extends StdBehavior
 		if(anythingToDo)
 		{
 			boolean didSomething=true;
-			Room room=observer.location();
-			for(int i=0;i<room.numInhabitants();i++)
+			for(int i=0;i<observer.location().numInhabitants();i++)
 			{
-				MOB inhab=room.fetchInhabitant(i);
-				if((inhab!=null)
-				&&(inhab.isInCombat())
+				MOB inhab=observer.location().fetchInhabitant(i);
+				if((inhab.isInCombat())
 				&&(inhab.getVictim().isInCombat())
 				&&((observer.envStats().level()>(inhab.envStats().level()+5))
 				&&(observer.getAlignment()>350)))

@@ -89,9 +89,7 @@ public class Movement
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB follower=mob.fetchFollower(f);
-			if((follower!=null)
-			&&(follower.amFollowing()==mob)
-			&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
+			if((follower.amFollowing()==mob)&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
 			{
 				if(follower.location()==thisRoom)
 				{

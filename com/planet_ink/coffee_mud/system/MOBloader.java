@@ -306,9 +306,7 @@ public class MOBloader
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item thisItem=mob.fetchInventory(i);
-				if((thisItem!=null)
-				&&(thisItem.savable())
-				&&(thisItem.location()==item))
+				if(thisItem.location()==item)
 				{
 					D=DBConnector.DBFetch();
 					str="INSERT INTO CMCHIT ("
@@ -389,7 +387,7 @@ public class MOBloader
 			for(int f=0;f<mob.numFollowers();f++)
 			{
 				MOB thisMOB=mob.fetchFollower(f);
-				if((thisMOB!=null)&&(thisMOB.isMonster()))
+				if(thisMOB.isMonster())
 				{
 					D=DBConnector.DBFetch();
 					str="INSERT INTO CMCHFO ("
@@ -443,28 +441,17 @@ public class MOBloader
 		while(mob.inventorySize()>0)
 		{
 			Item thisItem=mob.fetchInventory(0);
-			if(thisItem!=null)
-			{
-				thisItem.setLocation(null);
-				mob.delInventory(thisItem);
-			}
+			thisItem.setLocation(null);
+			mob.delInventory(thisItem);
 		}
 		DBUpdateItems(mob);
 
 		while(mob.numFollowers()>0)
-		{
-			MOB follower=mob.fetchFollower(0);
-			if(follower!=null)
-				follower.setFollowing(null);
-		}
+			mob.fetchFollower(0).setFollowing(null);
 		DBUpdateFollowers(mob);
 
 		while(mob.numAbilities()>0)
-		{
-			Ability A=mob.fetchAbility(0);
-			if(A!=null)
-				mob.delAbility(A);
-		}
+			mob.delAbility(mob.fetchAbility(0));
 		DBUpdateAbilities(mob);
 	}
 
@@ -487,7 +474,7 @@ public class MOBloader
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability thisAbility=mob.fetchAbility(a);
-				if((thisAbility!=null)&&(!thisAbility.isBorrowed(mob)))
+				if(!thisAbility.isBorrowed(mob))
 				{
 					D=DBConnector.DBFetch();
 					str="INSERT INTO CMCHAB ("

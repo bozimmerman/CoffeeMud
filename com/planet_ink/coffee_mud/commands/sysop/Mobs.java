@@ -26,9 +26,9 @@ public class Mobs
 		}
 
 		MOB deadMOB=(MOB)CMClass.getMOB("StdMOB").newInstance();
-		boolean found=ExternalPlay.DBUserSearch(deadMOB,Util.combine(commands,2));
+		ExternalPlay.DBUserSearch(deadMOB,Util.combine(commands,2));
 
-		if(!found)
+		if(deadMOB.ID().length()==0)
 		{
 			mob.tell("The user '"+Util.combine(commands,2)+"' does not exist!\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -51,7 +51,7 @@ public class Mobs
 		if(mob.session().confirm("This will complete OBLITERATE the user '"+deadMOB.ID()+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
 			deadMOB.destroy();
-			ExternalPlay.DBDeleteMOB(deadMOB);
+			ExternalPlay.DBDelete(deadMOB);
 			mob.tell("The user '"+Util.combine(commands,2)+"' is no more!\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"A horrible death cry can be heard throughout the land.");
 		}

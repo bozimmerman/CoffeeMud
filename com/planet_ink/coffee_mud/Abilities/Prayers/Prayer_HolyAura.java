@@ -77,24 +77,19 @@ public class Prayer_HolyAura extends Prayer
 				while(a<target.numAffects())
 				{
 					Ability A=target.fetchAffect(a);
-					if(A!=null)
-					{
-						int b=target.numAffects();
-						if(A instanceof Prayer_Curse)
-							A.unInvoke();
-						else
-						if(A instanceof Prayer_Bless)
-							A.unInvoke();
-						else
-						if(A instanceof Prayer_GreatCurse)
-							A.unInvoke();
-						else
-						if(A instanceof Prayer_HolyWord)
-							A.unInvoke();
-						if(b==target.numAffects())
-							a++;
-					}
+					int b=target.numAffects();
+					if(A instanceof Prayer_Curse)
+						A.unInvoke();
 					else
+					if(A instanceof Prayer_Bless)
+						A.unInvoke();
+					else
+					if(A instanceof Prayer_GreatCurse)
+						A.unInvoke();
+					else
+					if(A instanceof Prayer_HolyWord)
+						A.unInvoke();
+					if(b==target.numAffects())
 						a++;
 				}
 				target.recoverEnvStats();

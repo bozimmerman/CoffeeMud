@@ -72,7 +72,7 @@ public class Thief_Listen extends ThiefSkill
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB inhab=room.fetchInhabitant(i);
-				if((inhab!=null)&&(!Sense.isSneaking(inhab))&&(!Sense.isHidden(inhab))&&(inhab!=mob))
+				if((!Sense.isSneaking(inhab))&&(!Sense.isHidden(inhab))&&(inhab!=mob))
 					numberHeard++;
 			}
 			if((success)&&(numberHeard>0))

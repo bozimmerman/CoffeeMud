@@ -22,24 +22,19 @@ public class SysopItemUsage
 			return;
 		}
 
-		MOB victim=mob.location().fetchInhabitant((String)commands.lastElement());
+		MOB victim=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
 
 		if((victim==null)||((victim!=null)&&(!Sense.canBeSeenBy(victim,mob))))
 		{
-			mob.tell("I don't see "+(String)commands.lastElement()+" here.");
+			mob.tell("I don't see "+(String)commands.elementAt(commands.size()-1)+" here.");
 			return;
 		}
-		commands.removeElement(commands.lastElement());
-		String itemName=Util.combine(commands,0);
-		Item I=victim.fetchInventory(itemName);
-		if((I==null)||((I!=null)&&(!Sense.canBeSeenBy(I,mob))))
-		{
-			mob.tell(victim.name()+" doesn't seem to have a '"+itemName+"'.");
-			return;
-		}
-		I.remove();
-		FullMsg newMsg=new FullMsg(victim,mob,I,Affect.MSG_GIVE,"<T-NAME> take(s) "+I.name()+" from <S-NAMESELF>.");
-		if(victim.location().okAffect(newMsg))
-			victim.location().send(victim,newMsg);
+		commands.removeElementAt(commands.size()-1);
+
+
+		commands.insertElementAt("give",0);
+		commands.insertElementAt(mob.name(),commands.size());
+
+		new SocialProcessor().give(victim,commands,true);
 	}
 }

@@ -39,8 +39,7 @@ public class AbilityEvoker
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability thisAbility=mob.fetchAbility(a);
-			if((thisAbility!=null)
-			   &&(evokedBy(thisAbility,evokeWord)))
+			if(evokedBy(thisAbility,evokeWord))
 				if(evokableAbility!=null)
 				{
 					foundMoreThanOne=true;
@@ -62,23 +61,20 @@ public class AbilityEvoker
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability thisAbility=mob.fetchAbility(a);
-				if((thisAbility!=null)
-				   &&(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase())))
-				{
-					if(thisAbility.name().equalsIgnoreCase(secondWord))
+				if(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase()))
+					if(evokableAbility!=null)
 					{
-						evokableAbility=thisAbility;
+						if(!evokableAbility.name().equalsIgnoreCase(secondWord))
+						{
+							evokableAbility=null;
+							foundMoreThanOne=true;
+						}
 						break;
 					}
 					else
-					if(evokableAbility!=null)
-						foundMoreThanOne=true;
-					else
 						evokableAbility=thisAbility;
-						
-				}
 			}
-			if((evokableAbility!=null)&&(!foundMoreThanOne))
+			if(evokableAbility!=null)
 				commands.removeElementAt(0);
 			else
 			if((foundMoreThanOne)&&(commands.size()>1))
@@ -88,8 +84,7 @@ public class AbilityEvoker
 				for(int a=0;a<mob.numAbilities();a++)
 				{
 					Ability thisAbility=mob.fetchAbility(a);
-					if((thisAbility!=null)
-					   &&(evokedBy(thisAbility,evokeWord,secondAndThirdWord.toUpperCase())))
+					if(evokedBy(thisAbility,evokeWord,secondAndThirdWord.toUpperCase()))
 					{
 						evokableAbility=thisAbility;
 						break;
@@ -106,8 +101,7 @@ public class AbilityEvoker
 				for(int a=0;a<mob.numAbilities();a++)
 				{
 					Ability thisAbility=mob.fetchAbility(a);
-					if((thisAbility!=null)
-					&&(evokedBy(thisAbility,evokeWord))
+					if((evokedBy(thisAbility,evokeWord))
 					&&(thisAbility.name().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
 					{
 						evokableAbility=thisAbility;
@@ -198,7 +192,7 @@ public class AbilityEvoker
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
 			MOB possTeach=mob.location().fetchInhabitant(i);
-			if((possTeach!=null)&&(possTeach.fetchAbility(abilityName)!=null)&&(possTeach!=mob))
+			if((possTeach.fetchAbility(abilityName)!=null)&&(possTeach!=mob))
 			{
 				teacher=possTeach;
 				break;

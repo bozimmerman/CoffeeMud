@@ -11,13 +11,13 @@ public class Rooms
 	public String getOpenRoomID(String AreaID)
 	{
 		int highest=0;
+		AreaID+="#";
 		for(int m=0;m<CMMap.map.size();m++)
 		{
 			Room thisRoom=(Room)CMMap.map.elementAt(m);
-			if((thisRoom.getArea().name().equals(AreaID))
-			&&(thisRoom.ID().startsWith(AreaID+"#")))
+			if(thisRoom.ID().startsWith(AreaID))
 			{
-				int newnum=Util.s_int(thisRoom.ID().substring(AreaID.length()+1));
+				int newnum=Util.s_int(thisRoom.ID().substring(AreaID.length()));
 				if(newnum>=highest)
 					highest=newnum+1;
 			}
@@ -87,11 +87,11 @@ public class Rooms
 		else
 		{
 			thisRoom=(Room)thisRoom.newInstance();
-			thisRoom.setArea(mob.location().getArea());
-			thisRoom.setID(getOpenRoomID(mob.location().getArea().name()));
+			thisRoom.setAreaID(mob.location().getAreaID());
+			thisRoom.setID(getOpenRoomID(mob.location().getAreaID()));
 			thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.ID());
 			thisRoom.setDescription("");
-			ExternalPlay.DBCreateRoom(thisRoom,Locale);
+			ExternalPlay.DBCreate(thisRoom,Locale);
 			CMMap.map.addElement(thisRoom);
 		}
 
@@ -147,138 +147,6 @@ public class Rooms
 		mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
 
-	private void flunkCmd2(MOB mob)
-	{
-		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB] [TEXT]\n\r");
-		mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-	}
-	public void modifyArea(MOB mob, Vector commands)
-		throws Exception
-	{
-		if(mob.location()==null) return;
-		if(mob.location().getArea()==null) return;
-		Area myArea=mob.location().getArea();
-		
-		String oldName=myArea.name();
-		Resources.removeResource("HELP_"+myArea.name().toUpperCase());
-		if(commands.size()==2)
-		{
-			new Generic().genName(mob,myArea);
-			new Generic().genDescription(mob,myArea);
-			new Generic().genClimateType(mob,myArea);
-			new Generic().genSubOps(mob,myArea);
-			new Generic().genBehaviors(mob,myArea);
-			new Generic().genAffects(mob,myArea);
-		}
-		else
-		{
-			if(commands.size()<3) { flunkCmd1(mob); return;}
-
-			String command=((String)commands.elementAt(2)).toUpperCase();
-			String restStr="";
-			if(commands.size()>=3)
-				restStr=Util.combine(commands,3);
-
-			if(command.equalsIgnoreCase("NAME"))
-			{
-				if(commands.size()<4) { flunkCmd2(mob); return;}
-				mob.location().setName(restStr);
-			}
-			else
-			if(command.equalsIgnoreCase("DESC"))
-			{
-				if(commands.size()<4) { flunkCmd2(mob); return;}
-				mob.location().setDescription(restStr);
-			}
-			else
-			if(command.equalsIgnoreCase("CLIMATE"))
-			{
-				if(commands.size()<4) { flunkCmd2(mob); return;}
-				int newClimate=0;
-				for(int i=0;i<restStr.length();i++)
-					switch(Character.toUpperCase(restStr.charAt(i)))
-					{
-					case 'R':
-						newClimate=newClimate|Area.CLIMASK_WET;
-						break;
-					case 'H':
-						newClimate=newClimate|Area.CLIMASK_HOT;
-						break;
-					case 'C':
-						newClimate=newClimate|Area.CLIMASK_COLD;
-						break;
-					case 'W':
-						newClimate=newClimate|Area.CLIMATE_WINDY;
-						break;
-					case 'D':
-						newClimate=newClimate|Area.CLIMATE_WINDY;
-						break;
-					case 'N':
-						// do nothing
-						break;
-					default:
-						mob.tell("Invalid CLIMATE code: '"+restStr.charAt(i)+"'.  Valid codes include: R)AINY, H)OT, C)OLD, D)RY, W)INDY, N)ORMAL.\n\r");
-						mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-						return;
-					}
-				myArea.setClimateType(newClimate);
-			}
-			else
-			if(command.equalsIgnoreCase("ADDSUB"))
-			{
-				if((commands.size()<4)||(!ExternalPlay.DBUserSearch(null,restStr)))
-				{ 
-					mob.tell("Unknown or invalid username given.\n\r");
-					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-				}
-				myArea.addSubOp(restStr);
-			}
-			else
-			if(command.equalsIgnoreCase("DELSUB"))
-			{
-				if((commands.size()<4)||(!myArea.amISubOp(restStr)))
-				{ 
-					mob.tell("Unknown or invalid subOp name given.  Valid names are: "+myArea.getSubOpList()+".\n\r");
-					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-				}
-				myArea.delSubOp(restStr);
-			}
-			else
-			if(command.equalsIgnoreCase("AFFECTS"))
-			{
-				new Generic().genAffects(mob,mob.location());
-				myArea.recoverEnvStats();
-			}
-			else
-			if(command.equalsIgnoreCase("BEHAVIORS"))
-			{
-				new Generic().genBehaviors(mob,mob.location());
-				myArea.recoverEnvStats();
-			}
-			else
-			{
-				flunkCmd2(mob);
-				return;
-			}
-			Log.sysOut("Rooms",mob.ID()+" modified area "+myArea.name()+".");
-		}
-		
-		if((!myArea.name().equals(oldName))&&(!mob.isMonster()))
-		{
-			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
-			{
-				Vector areaMap=myArea.getMyMap();
-				for(int r=0;r<areaMap.size();r++)
-					ExternalPlay.DBUpdateRoom((Room)areaMap.elementAt(r));
-			}
-			else
-				myArea.setName(oldName);
-		}
-		else
-			myArea.setName(oldName);
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
-		ExternalPlay.DBUpdateArea(myArea);
-	}
 	public void modify(MOB mob, Vector commands)
 		throws Exception
 	{
@@ -304,29 +172,16 @@ public class Rooms
 		if(command.equalsIgnoreCase("AREA"))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
-			Area A=CMMap.getArea(restStr);
+
 			String checkID=getOpenRoomID(restStr);
-			if(A==null)
+			if(checkID.endsWith("#0"))
 			{
 				if(!mob.isMonster())
 				{
 					if(mob.session().confirm("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '"+restStr+"'.  Are you SURE (y/N)?","N"))
 					{
-						String areaType="";
-						int tries=0;
-						while((areaType.length()==0)&&((++tries)<10))
-						{
-							areaType=mob.session().prompt("Enter an area type to create (default=StdArea): ","StdArea");
-							if(CMClass.getAreaType(areaType)==null)
-							{
-								mob.session().println("Invalid area type! Valid ones are:");
-								mob.session().println(new Lister().reallyList(CMClass.areaTypes,-1,null).toString());
-								areaType="";
-							}
-						}
-						if(areaType.length()==0) areaType="StdArea";
-						A=ExternalPlay.DBCreateArea(restStr,areaType);
-						mob.location().setArea(A);
+						Resources.removeResource("areasList");
+						mob.location().setAreaID(restStr);
 						CMMap.map.remove(mob.location());
 						String oldID=mob.location().ID();
 						mob.location().setID(checkID);
@@ -358,7 +213,7 @@ public class Rooms
 			}
 			else
 			{
-				mob.location().setArea(A);
+				mob.location().setAreaID(restStr);
 				ExternalPlay.DBUpdateRoom(mob.location());
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"This area twitches.\n\r");
 			}
@@ -397,8 +252,8 @@ public class Rooms
 		}
 		else
 		{
-			flunkCmd1(mob); 
-			return;
+			mob.tell("You have failed to specify an aspect.  Try AREA, NAME, AFFECTS, BEHAVIORS, or DESCRIPTION.\n\r");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 		}
 		Log.sysOut("Rooms",mob.ID()+" modified room "+mob.location().ID()+".");
 	}
@@ -430,31 +285,25 @@ public class Rooms
 		for(int mb=deadRoom.numInhabitants()-1;mb>=0;mb--)
 		{
 			MOB mob2=deadRoom.fetchInhabitant(mb);
-			if(mob2!=null)
+			if((mob2.getStartRoom()!=deadRoom)&&(mob2.getStartRoom()!=null)&&(CMMap.getRoom(mob2.getStartRoom().ID())!=null))
+				mob2.getStartRoom().bringMobHere(mob2,true);
+			else
 			{
-				if((mob2.getStartRoom()!=deadRoom)&&(mob2.getStartRoom()!=null)&&(CMMap.getRoom(mob2.getStartRoom().ID())!=null))
-					mob2.getStartRoom().bringMobHere(mob2,true);
-				else
-				{
-					ExternalPlay.deleteTick(mob2,-1);
-					mob2.destroy();
-				}
+				ExternalPlay.deleteTick(mob2,-1);
+				mob2.destroy();
 			}
 		}
 		for(int i=deadRoom.numItems()-1;i>=0;i--)
 		{
 			Item item2=deadRoom.fetchItem(i);
-			if(item2!=null)
-			{
-				ExternalPlay.deleteTick(item2,-1);
-				item2.destroyThis();
-			}
+			ExternalPlay.deleteTick(item2,-1);
+			item2.destroyThis();
 		}
 		clearTheRoom(deadRoom);
 		Resources.removeResource("areasList");
 		if(deadRoom instanceof GridLocale)
 			((GridLocale)deadRoom).clearGrid();
-		ExternalPlay.DBDeleteRoom(deadRoom);
+		ExternalPlay.DBDelete(deadRoom);
 	}
 
 	public void destroy(MOB mob, Vector commands)
@@ -547,7 +396,17 @@ public class Rooms
 		}
 
 		String areaName=Util.combine(commands,2);
-		if(CMMap.getArea(areaName)==null)
+		Room foundOne=null;
+		for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
+		{
+			Room r=(Room)e.nextElement();
+			if(r.getAreaID().equalsIgnoreCase(areaName))
+			{
+				foundOne=r;
+				break;
+			}
+		}
+		if(foundOne==null)
 		{
 			mob.tell("There is no such area as '"+areaName+"'");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
@@ -558,7 +417,7 @@ public class Rooms
 		if(!confirmed);
 		if(mob.session().confirm("Area: \""+areaName+"\", OBLITERATE IT???","N"))
 		{
-			if(mob.location().getArea().name().equalsIgnoreCase(areaName))
+			if(mob.location().getAreaID().equalsIgnoreCase(areaName))
 			{
 				mob.tell("You dip!  You are IN that area!  Leave it first...");
 				mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
@@ -567,15 +426,14 @@ public class Rooms
 			else
 				confirmed=true;
 		}
-		
-		Room foundOne=mob.location();
+		foundOne=CMClass.getLocale("StdRoom");
 		while(foundOne!=null)
 		{
 			foundOne=null;
 			for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
 			{
 				Room r=(Room)e.nextElement();
-				if(r.getArea().name().equalsIgnoreCase(areaName))
+				if(r.getAreaID().equalsIgnoreCase(areaName))
 				{
 					foundOne=r;
 					break;
@@ -584,11 +442,6 @@ public class Rooms
 			if(foundOne!=null)
 				new Rooms().obliterateRoom(mob,foundOne);
 		}
-		
-		Area A=CMMap.getArea(areaName);
-		ExternalPlay.DBDeleteArea(A);
-		CMMap.AREAS.removeElement(A);
-		
 		if(confirmed)
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");
@@ -602,7 +455,7 @@ public class Rooms
 		for(int m=room.numInhabitants()-1;m>=0;m--)
 		{
 			MOB mob2=room.fetchInhabitant(m);
-			if((mob2!=null)&&(CoffeeUtensils.isEligibleMonster(mob2)))
+			if(CoffeeUtensils.isEligibleMonster(mob2))
 			{
 				if(mob2.getStartRoom()==room)
 					mob2.destroy();
@@ -612,11 +465,7 @@ public class Rooms
 			}
 		}
 		for(int i=room.numItems()-1;i>=0;i--)
-		{
-			Item item=room.fetchItem(i);
-			if(item!=null)
-				room.delItem(item);
-		}
+			room.delItem(room.fetchItem(i));
 		ExternalPlay.clearDebri(room,0);
 	}
 

@@ -191,28 +191,22 @@ public class StdRoom
 			}
 		}
 
-		for(int i=0;i<numInhabitants();i++)
-		{
-			MOB inhab=fetchInhabitant(i);
-			if((inhab!=null)&&(!inhab.okAffect(affect)))
+		for(int i=0;i<inhabitants.size();i++)
+			if(!((MOB)inhabitants.elementAt(i)).okAffect(affect))
 				return false;
-		}
-		for(int i=0;i<numItems();i++)
-		{
-			Item content=fetchItem(i);
-			if((content!=null)&&(!content.okAffect(affect)))
+
+		for(int i=0;i<contents.size();i++)
+			if(!((Item)contents.elementAt(i)).okAffect(affect))
 				return false;
-		}
-		for(int i=0;i<numAffects();i++)
-		{
-			Ability A=fetchAffect(i);
-			if((A!=null)&&(!A.okAffect(affect)))
+
+		for(int i=0;i<affects.size();i++)
+			if(!((Ability)fetchAffect(i)).okAffect(affect))
 				return false;
-		}
-		for(int b=0;b<numBehaviors();b++)
+
+		for(int b=0;b<behaviors.size();b++)
 		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(!B.okAffect(this,affect)))
+			Behavior B=(Behavior)behaviors.elementAt(b);
+			if(!B.okAffect(this,affect))
 				return false;
 		}
 
@@ -273,41 +267,32 @@ public class StdRoom
 			}
 		}
 
-		for(int i=0;i<numItems();i++)
-		{
-			Item content=fetchItem(i);
-			if(content!=null)
-				content.affect(affect);
-		}
+		for(int i=0;i<contents.size();i++)
+			((Item)contents.elementAt(i)).affect(affect);
 
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 		{
-			Exit thisExit=exits()[d];
+			Exit thisExit=exits()[i];
 			if(thisExit!=null)
 				thisExit.affect(affect);
 		}
 
-		for(int b=0;b<numBehaviors();b++)
+		for(int b=0;b<behaviors.size();b++)
 		{
-			Behavior B=fetchBehavior(b);
-			if(B!=null)
-				B.affect(this,affect);
+			Behavior B=(Behavior)behaviors.elementAt(b);
+			B.affect(this,affect);
 		}
 
-		for(int a=0;a<numAffects();a++)
-		{
-			Ability A=fetchAffect(a);
-			if(A!=null)
-				A.affect(affect);
-		}
+		for(int i=0;i<affects.size();i++)
+			((Ability)fetchAffect(i)).affect(affect);
 	}
 
 	public void startItemRejuv()
 	{
-		for(int c=0;c<numItems();c++)
+		for(int c=0;c<contents.size();c++)
 		{
-			Item item=fetchItem(c);
-			if((item!=null)&&(item.location()==null))
+			Item item=(Item)contents.elementAt(c);
+			if(item.location()==null)
 			{
 				ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
 				I.unloadIfNecessary(item);
@@ -322,27 +307,23 @@ public class StdRoom
 		if(tickID==Host.ROOM_BEHAVIOR_TICK)
 		{
 			if(behaviors.size()==0) return false;
-			for(int b=0;b<numBehaviors();b++)
+
+			for(int b=0;b<behaviors.size();b++)
 			{
-				Behavior B=fetchBehavior(b);
-				if(B!=null) B.tick(this,tickID);
+				Behavior B=(Behavior)behaviors.elementAt(b);
+				B.tick(this,tickID);
 			}
 		}
 		else
 		{
 			int a=0;
-			while(a<numAffects())
+			while(a<affects.size())
 			{
-				Ability A=fetchAffect(a);
-				if(A!=null)
-				{
-					int s=affects.size();
-					if(!A.tick(tickID))
-						A.unInvoke();
-					if(affects.size()==s)
-						a++;
-				}
-				else
+				Ability A=(Ability)affects.elementAt(a);
+				int s=affects.size();
+				if(!A.tick(tickID))
+					A.unInvoke();
+				if(affects.size()==s)
 					a++;
 			}
 		}
@@ -360,43 +341,36 @@ public class StdRoom
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<affects.size();a++)
 		{
-			Ability affect=fetchAffect(a);
-			if(affect!=null)
-				affect.affectEnvStats(this,envStats);
+			Ability affect=(Ability)affects.elementAt(a);
+			affect.affectEnvStats(this,envStats);
 		}
-		for(int i=0;i<numItems();i++)
+		for(int i=0;i<contents.size();i++)
 		{
-			Item item=fetchItem(i);
-			if(item!=null)
-				item.affectEnvStats(this,envStats);
+			Item item=(Item)contents.elementAt(i);
+			item.affectEnvStats(this,envStats);
 		}
-		for(int m=0;m<numInhabitants();m++)
+		for(int b=0;b<inhabitants.size();b++)
 		{
-			MOB mob=fetchInhabitant(m);
-			if(mob!=null)
-				mob.affectEnvStats(this,envStats);
+			MOB mob=(MOB)inhabitants.elementAt(b);
+			mob.affectEnvStats(this,envStats);
 		}
 	}
 	public void recoverRoomStats()
 	{
 		recoverEnvStats();
-		for(int m=0;m<numInhabitants();m++)
+		for(int b=0;b<inhabitants.size();b++)
 		{
-			MOB mob=fetchInhabitant(m);
-			if(mob!=null)
-			{
-				mob.recoverCharStats();
-				mob.recoverEnvStats();
-				mob.recoverMaxState();
-			}
+			MOB mob=(MOB)inhabitants.elementAt(b);
+			mob.recoverCharStats();
+			mob.recoverEnvStats();
+			mob.recoverMaxState();
 		}
-		for(int i=0;i<numItems();i++)
+		for(int i=0;i<contents.size();i++)
 		{
-			Item item=fetchItem(i);
-			if(item!=null)
-				item.recoverEnvStats();
+			Item item=(Item)contents.elementAt(i);
+			item.recoverEnvStats();
 		}
 	}
 
@@ -436,11 +410,10 @@ public class StdRoom
 			Say.append("^R" + displayText()+Sense.colorCodes(this,mob)+"^L\n\r");
 			Say.append("^L" + description()+"^N\n\r\n\r");
 		}
-		
-		for(int c=0;c<numItems();c++)
+		for(int c=0;c<contents.size();c++)
 		{
-			Item item=fetchItem(c);
-			if((item!=null)&&(item.location()==null))
+			Item item=(Item)contents.elementAt(c);
+			if(item.location()==null)
 				if((Sense.canBeSeenBy(item,mob))&&((item.displayText().length()>0)||(mob.readSysopMsgs())))
 				{
 					Say.append("     ");
@@ -455,10 +428,10 @@ public class StdRoom
 					Say.append(" "+Sense.colorCodes(item,mob)+"^N\n\r");
 				}
 		}
-		for(int i=0;i<numInhabitants();i++)
+		for(int i=0;i<inhabitants.size();i++)
 		{
-			MOB mob2=fetchInhabitant(i);
-			if((mob2!=null)&&(mob2!=mob)&&((Sense.canBeSeenBy(mob2,mob)))&&((mob2.displayText().length()>0)||(mob.readSysopMsgs())))
+			MOB mob2=(MOB)inhabitants.elementAt(i);
+			if((mob2!=mob)&&((Sense.canBeSeenBy(mob2,mob)))&&((mob2.displayText().length()>0)||(mob.readSysopMsgs())))
 			{
 				if(mob.readSysopMsgs())
 					Say.append("^H("+CMClass.className(mob2)+")^N ");
@@ -471,7 +444,6 @@ public class StdRoom
 				Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");
 			}
 		}
-		
 		if(Say.length()==0)
 			mob.tell("You can't see anything!");
 		else
@@ -492,13 +464,10 @@ public class StdRoom
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB fol=mob.fetchFollower(f);
-			if(fol!=null)
-			{
-				if(fol.location()==oldRoom)
-					oldRoom.delInhabitant(fol);
-				addInhabitant(fol);
-				fol.setLocation(this);
-			}
+			if(fol.location()==oldRoom)
+				oldRoom.delInhabitant(fol);
+			addInhabitant(fol);
+			fol.setLocation(this);
 		}
 		oldRoom.recoverRoomStats();
 		recoverRoomStats();
@@ -551,10 +520,10 @@ public class StdRoom
 	{
 		if(Log.debugChannelOn())
 			Log.debugOut("StdRoom",((msg.source()!=null)?msg.source().ID():"null")+":"+msg.sourceCode()+":"+msg.sourceMessage()+"/"+((msg.target()!=null)?msg.target().ID():"null")+":"+msg.targetCode()+":"+msg.targetMessage()+"/"+((msg.tool()!=null)?msg.tool().ID():"null")+"/"+msg.othersCode()+":"+msg.othersMessage());
-		for(int i=0;i<numInhabitants();i++)
+		for(int i=0;i<inhabitants.size();i++)
 		{
-			MOB otherMOB=fetchInhabitant(i);
-			if((otherMOB!=null)&&(otherMOB!=source))
+			MOB otherMOB=(MOB)inhabitants.elementAt(i);
+			if(otherMOB!=source)
 				otherMOB.affect(msg);
 		}
 		affect(msg);
@@ -646,48 +615,32 @@ public class StdRoom
 	{
 		int numUsers=0;
 		for(int i=0;i<numInhabitants();i++)
-		{
-			MOB inhab=fetchInhabitant(i);
-			if((inhab!=null)
-			&&(!inhab.isMonster()))
+			if(!fetchInhabitant(i).isMonster())
 				numUsers++;
-		}
 		return numUsers;
 	}
 	public MOB fetchPCInhabitant(int which)
 	{
 		int numUsers=0;
 		for(int i=0;i<numInhabitants();i++)
-		{
-			MOB inhab=fetchInhabitant(i);
-			if((inhab!=null)
-			&&(!inhab.isMonster()))
-			{
+			if(!fetchInhabitant(i).isMonster())
 				if(numUsers==which)
-					return inhab;
+					return fetchInhabitant(i);
 				else
 					numUsers++;
-			}
-		}
 		return null;
 	}
 	public boolean isInhabitant(MOB mob)
 	{
-		for(int i=0;i<numInhabitants();i++)
-		{
-			MOB mob2=fetchInhabitant(i);
-			if((mob2!=null)&&(mob==mob2))
+		for(int i=0;i<inhabitants.size();i++)
+			if(mob==inhabitants.elementAt(i))
 				return true;
-		}
 		return false;
 	}
 	public MOB fetchInhabitant(int i)
 	{
-		try
-		{
+		if(i<inhabitants.size())
 			return (MOB)inhabitants.elementAt(i);
-		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public void delInhabitant(MOB mob)
@@ -718,21 +671,15 @@ public class StdRoom
 	}
 	public boolean isContent(Item item)
 	{
-		for(int i=0;i<numItems();i++)
-		{
-			Item I=fetchItem(i);
-			if((I!=null)&&(item==I))
+		for(int i=0;i<contents.size();i++)
+			if(item==contents.elementAt(i))
 				return true;
-		}
 		return false;
 	}
 	public Item fetchItem(int i)
 	{
-		try
-		{
+		if(i<contents.size())
 			return (Item)contents.elementAt(i);
-		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName)
@@ -799,24 +746,18 @@ public class StdRoom
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int i=0;i<numAffects();i++)
-		{
-			Ability A=fetchAffect(i);
-			if((A!=null)&&(A==to))
+		for(int i=0;i<affects.size();i++)
+			if(affects.elementAt(i)==to)
 				return;
-		}
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int i=0;i<numAffects();i++)
-		{
-			Ability A=fetchAffect(i);
-			if((A!=null)&&(A==to))
+		for(int i=0;i<affects.size();i++)
+			if(affects.elementAt(i)==to)
 				return;
-		}
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -835,21 +776,15 @@ public class StdRoom
 	}
 	public Ability fetchAffect(int index)
 	{
-		try
-		{
+		if(index <numAffects())
 			return (Ability)affects.elementAt(index);
-		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Ability fetchAffect(String ID)
 	{
-		for(int a=0;a<numAffects();a++)
-		{
-			Ability A=fetchAffect(a);
-			if((A!=null)&&(A.ID().equals(ID)))
-			   return A;
-		}
+		for(int a=0;a<affects.size();a++)
+			if(((Ability)affects.elementAt(a)).ID().equals(ID))
+			   return (Ability)affects.elementAt(a);
 		return null;
 	}
 
@@ -858,12 +793,9 @@ public class StdRoom
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(B.ID().equals(to.ID())))
-			   return;
-		}
+		for(int i=0;i<behaviors.size();i++)
+			if(((Behavior)behaviors.elementAt(i)).ID().equals(to.ID()))
+				return;
 		if(behaviors.size()==0)
 			ExternalPlay.startTickDown(this,Host.ROOM_BEHAVIOR_TICK,1);
 		to.startBehavior(this);
@@ -881,11 +813,8 @@ public class StdRoom
 	}
 	public Behavior fetchBehavior(int index)
 	{
-		try
-		{
+		if(index <numBehaviors())
 			return (Behavior)behaviors.elementAt(index);
-		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 }

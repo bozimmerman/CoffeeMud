@@ -54,7 +54,7 @@ public class Lister
 			}
 			if((likeRoom!=null)&&(thisThang instanceof Room))
 			{
-				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getArea().name().equals(likeRoom.getArea().name())))
+				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getAreaID().equals(likeRoom.getAreaID())))
 				   ok=false;
 			}
 			if(ok)
@@ -90,7 +90,7 @@ public class Lister
 			}
 			if(likeRoom!=null)
 			{
-				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getArea().name().equals(likeRoom.getArea().name())))
+				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getAreaID().equals(likeRoom.getAreaID())))
 				   ok=false;
 			}
 			if(ok)
@@ -115,7 +115,7 @@ public class Lister
 		{
 			Room thisThang=(Room)these.elementAt(m);
 			String thisOne=(String)thisThang.ID();
-			if((thisOne.length()>0)&&(thisThang.getArea().name().equals(likeRoom.getArea().name())))
+			if((thisOne.length()>0)&&(thisThang.getAreaID().equals(likeRoom.getAreaID())))
 				lines.append(Util.padRight(thisOne,24)+": "+thisThang.displayText()+"\n\r");
 		}
 		lines.append("\n\r");
@@ -211,7 +211,6 @@ public class Lister
 		}
 
 		String listThis=Util.combine(commands,0).toUpperCase();
-		String listWord=((String)commands.firstElement()).toUpperCase();
 
 		if("ITEMS".startsWith(listThis))
 			mob.tell(reallyList(CMClass.items).toString());
@@ -265,10 +264,7 @@ public class Lister
 			mob.tell(reallyList(CMClass.abilities,Ability.SKILL).toString());
 		else
 		if("TICKS".startsWith(listThis))
-			mob.tell(ExternalPlay.listTicks(-1).toString());
-		else
-		if("TICKS".startsWith(listWord))
-			mob.tell(ExternalPlay.listTicks(Util.s_int(Util.combine(commands,1))).toString());
+			mob.tell(ExternalPlay.listTicks().toString());
 		else
 		if("MAGIC".startsWith(listThis))
 			mob.tell(reallyList(CMClass.miscMagic).toString());

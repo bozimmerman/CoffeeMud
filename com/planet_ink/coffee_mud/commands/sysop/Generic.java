@@ -10,6 +10,7 @@ import java.io.*;
 
 public class Generic
 {
+
 	public final long maxLength=65535;
 	public Lister myLister=new Lister();
 
@@ -48,30 +49,22 @@ public class Generic
 				}
 				for(int x=0;x<R.numInhabitants();x++)
 				{
-					MOB inhab=R.fetchInhabitant(x);
-					if(inhab!=null)
-					{
-						newRoom.addInhabitant(inhab);
-						inhab.setLocation(newRoom);
-					}
+					newRoom.addInhabitant(R.fetchInhabitant(x));
+					R.fetchInhabitant(x).setLocation(newRoom);
 				}
 				for(int x=0;x<R.numItems();x++)
-				{
-					Item I=R.fetchItem(x);
-					if(I!=null)
-						newRoom.addItem(I);
-				}
+					newRoom.addItem(R.fetchItem(x));
 				for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
 				{
 					MOB mob2=(MOB)e.nextElement();
 					if(mob2.getStartRoom()==R)
 					{
 						mob2.setStartRoom(newRoom);
-						ExternalPlay.DBUpdateMOB(mob2);
+						ExternalPlay.DBUpdate(mob2);
 					}
 				}
 				newRoom.setID(R.ID());
-				newRoom.setArea(R.getArea());
+				newRoom.setAreaID(R.getAreaID());
 				newRoom.setDisplayText(R.displayText());
 				newRoom.setDescription(R.description());
 				for(int r=0;r<CMMap.map.size();r++)
@@ -90,7 +83,7 @@ public class Generic
 					for(int i=0;i<room.numInhabitants();i++)
 					{
 						MOB mob2=room.fetchInhabitant(i);
-						if((mob2!=null)&&(mob2.getStartRoom()==room))
+						if(mob2.getStartRoom()==room)
 							mob2.setStartRoom(newRoom);
 					}
 				}
@@ -161,34 +154,6 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
-	
-	void genSubOps(MOB mob, Area A)
-		throws IOException
-	{
-		String newName="Q";
-		while(newName.length()>0)
-		{
-			mob.tell("\n\rArea SubOperator user names: "+A.getSubOpList());
-			newName=mob.session().prompt("Enter a name to add or remove\n\r:","");
-			if(newName.length()>0)
-			{
-				if(A.amISubOp(newName))
-				{
-					A.delSubOp(newName);
-					mob.tell("SubOperator removed.");
-				}
-				else
-				if(ExternalPlay.DBUserSearch(null,newName))
-				{
-					A.addSubOp(newName);
-					mob.tell("SubOperator added.");
-				}
-				else
-					mob.tell("'"+newName+"' is not recognized as a valid user name.");
-			}
-		}
-	}
-	
 	void genCloseWord(MOB mob, Exit E)
 		throws IOException
 	{
@@ -505,41 +470,7 @@ public class Generic
 		else
 			E.baseEnvStats().setSensesMask(current&((int)(Sense.ALLMASK-mask)));
 	}
-	void toggleClimateMask(Area A, int mask)
-	{
-		int current=A.climateType();
-		if((current&mask)==0)
-			A.setClimateType(current|mask);
-		else
-			A.setClimateType(current&((int)(Sense.ALLMASK-mask)));
-	}
 
-	
-	
-	void genClimateType(MOB mob, Area A)
-		throws IOException
-	{
-		String c="Q";
-		while(!c.equals("\n"))
-		{
-			mob.session().println(" ");
-			mob.session().println("R) Wet and Rainy    : "+((A.climateType()&Area.CLIMASK_WET)>0));
-			mob.session().println("H) Excessively hot  : "+((A.climateType()&Area.CLIMASK_HOT)>0));
-			mob.session().println("C) Excessively cold : "+((A.climateType()&Area.CLIMASK_COLD)>0));
-			mob.session().println("W) Very windy       : "+((A.climateType()&Area.CLIMATE_WINDY)>0));
-			mob.session().println("D) Very dry         : "+((A.climateType()&Area.CLIMASK_DRY)>0));
-			c=mob.session().choose("Enter one to change, or ENTER when done: ","RHCWD\n","\n").toUpperCase();
-			switch(c.charAt(0))
-			{
-			case 'C': toggleClimateMask(A,Area.CLIMASK_COLD); break;
-			case 'H': toggleClimateMask(A,Area.CLIMASK_HOT); break;
-			case 'R': toggleClimateMask(A,Area.CLIMASK_WET); break;
-			case 'W': toggleClimateMask(A,Area.CLIMATE_WINDY); break;
-			case 'D': toggleClimateMask(A,Area.CLIMASK_DRY); break;
-			}
-		}
-	}
-	
 	void genSensesMask(MOB mob, Environmental E)
 		throws IOException
 	{
@@ -905,7 +836,7 @@ public class Generic
 	void genAlignment(MOB mob, MOB E)
 		throws IOException
 	{
-		mob.tell("\n\rAlignment: '"+new Scoring().alignmentStr(E.getAlignment())+"'.");
+		mob.tell("\n\rAlignment: '"+new Scoring().alignmentStr(E)+"'.");
 		String newType=mob.session().choose("Enter a new alignment (G/N/E)\n\r:","GNE","");
 		int newValue=-1;
 		if(newType.length()>0)
@@ -1024,15 +955,12 @@ public class Generic
 			String behaviorstr="";
 			for(int b=0;b<E.numBehaviors();b++)
 			{
-				Behavior B=E.fetchBehavior(b);
-				if(B!=null)
-				{
-					behaviorstr+=B.ID();
-					if(B.getParms().trim().length()>0)
-						behaviorstr+="("+B.getParms().trim()+"), ";
-					else
-						behaviorstr+=", ";
-				}
+				behaviorstr+=E.fetchBehavior(b).ID();
+				if(E.fetchBehavior(b).getParms().trim().length()>0)
+					behaviorstr+="("+E.fetchBehavior(b).getParms().trim()+"), ";
+				else
+					behaviorstr+=", ";
+
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
@@ -1048,7 +976,7 @@ public class Generic
 					for(int b=0;b<E.numBehaviors();b++)
 					{
 						Behavior B=E.fetchBehavior(b);
-						if((B!=null)&&(B.ID().equalsIgnoreCase(behave)))
+						if(B.ID().equalsIgnoreCase(behave))
 							chosenOne=B;
 					}
 					if(chosenOne!=null)
@@ -1067,7 +995,7 @@ public class Generic
 							for(int b=0;b<E.numBehaviors();b++)
 							{
 								Behavior B=E.fetchBehavior(b);
-								if((B!=null)&&(B.ID().equals(chosenOne.ID())))
+								if(B.ID().equals(chosenOne.ID()))
 								{
 									alreadyHasIt=true;
 									chosenOne=B;
@@ -1106,7 +1034,7 @@ public class Generic
 			for(int b=0;b<E.numAffects();b++)
 			{
 				Ability A=E.fetchAffect(b);
-				if((A!=null)&&(!A.isBorrowed(E)))
+				if(!A.isBorrowed(E))
 				{
 					affectstr+=A.ID();
 					if(A.text().trim().length()>0)
@@ -1130,7 +1058,7 @@ public class Generic
 					for(int a=0;a<E.numAffects();a++)
 					{
 						Ability A=E.fetchAffect(a);
-						if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
+						if(A.ID().equalsIgnoreCase(behave))
 							chosenOne=A;
 					}
 					if(chosenOne!=null)
@@ -1263,12 +1191,9 @@ public class Generic
 		while(behave.length()>0)
 		{
 			String abilitiestr="";
-			for(int a=0;a<E.numAbilities();a++)
-			{
-				Ability A=E.fetchAbility(a);
-				if((A!=null)&&(!A.isBorrowed(E)))
-					abilitiestr+=A.ID()+", ";
-			}
+			for(int b=0;b<E.numAbilities();b++)
+				if(!E.fetchAbility(b).isBorrowed(E))
+					abilitiestr+=E.fetchAbility(b).ID()+", ";
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
 			mob.tell("\n\rAbilities: '"+abilitiestr+"'.");
@@ -1280,11 +1205,11 @@ public class Generic
 				else
 				{
 					Ability chosenOne=null;
-					for(int a=0;a<E.numAbilities();a++)
+					for(int b=0;b<E.numAbilities();b++)
 					{
-						Ability A=E.fetchAbility(a);
-						if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
-							chosenOne=A;
+						Ability B=E.fetchAbility(b);
+						if(B.ID().equalsIgnoreCase(behave))
+							chosenOne=B;
 					}
 					if(chosenOne!=null)
 					{
@@ -1299,10 +1224,10 @@ public class Generic
 						if(chosenOne!=null)
 						{
 							boolean alreadyHasIt=false;
-							for(int a=0;a<E.numAbilities();a++)
+							for(int b=0;b<E.numAbilities();b++)
 							{
-								Ability A=E.fetchAbility(a);
-								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
+								Ability B=E.fetchAbility(b);
+								if(B.ID().equals(chosenOne.ID()))
 									alreadyHasIt=true;
 							}
 							if(!alreadyHasIt)

@@ -56,11 +56,10 @@ public class StdExit implements Exit
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<affects.size();a++)
 		{
-			Ability A=fetchAffect(a);
-			if(A!=null)
-				A.affectEnvStats(this,envStats);
+			Ability affect=(Ability)affects.elementAt(a);
+			affect.affectEnvStats(this,envStats);
 		}
 	}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
@@ -80,12 +79,8 @@ public class StdExit implements Exit
 
 		affects=new Vector();
 		behaviors=new Vector();
-		for(int b=0;b<E.numBehaviors();b++)
-		{
-			Behavior B=E.fetchBehavior(b);
-			if(B!=null)
-				behaviors.addElement(B);
-		}
+		for(int i=0;i<E.numBehaviors();i++)
+			behaviors.addElement(E.fetchBehavior(i));
 
 	}
 	public Environmental copyOf()
@@ -119,18 +114,15 @@ public class StdExit implements Exit
 
 	public boolean okAffect(Affect affect)
 	{
-		for(int b=0;b<numBehaviors();b++)
+		for(int b=0;b<behaviors.size();b++)
 		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(!B.okAffect(this,affect)))
-				return false;
+			Behavior B=(Behavior)behaviors.elementAt(b);
+			if(!B.okAffect(this,affect)) return false;
 		}
-		for(int a=0;a<numAffects();a++)
-		{
-			Ability A=fetchAffect(a);
-			if((A!=null)&&(!A.okAffect(affect)))
+
+		for(int i=0;i<affects.size();i++)
+			if(!((Ability)fetchAffect(i)).okAffect(affect))
 				return false;
-		}
 
 		MOB mob=affect.source();
 		if((!affect.amITarget(this))&&(affect.tool()!=this))
@@ -278,8 +270,7 @@ public class StdExit implements Exit
 					for(int i=0;i<mob.inventorySize();i++)
 					{
 						Item item=mob.fetchInventory(i);
-						if((item!=null)
-						&&(item instanceof Key)
+						if((item instanceof Key)
 						&&(item.location()==null)
 						&&(Sense.canBeSeenBy(item,mob)))
 						{
@@ -334,18 +325,14 @@ public class StdExit implements Exit
 
 	public void affect(Affect affect)
 	{
-		for(int b=0;b<numBehaviors();b++)
+		for(int b=0;b<behaviors.size();b++)
 		{
-			Behavior B=fetchBehavior(b);
-			if(B!=null)
-				B.affect(this,affect);
+			Behavior B=(Behavior)behaviors.elementAt(b);
+			B.affect(this,affect);
 		}
-		for(int a=0;a<numAffects();a++)
-		{
-			Ability A=fetchAffect(a);
-			if(A!=null)
-				A.affect(affect);
-		}
+
+		for(int i=0;i<affects.size();i++)
+			((Ability)fetchAffect(i)).affect(affect);
 
 		MOB mob=affect.source();
 		if((!affect.amITarget(this))&&(affect.tool()!=this))
@@ -434,26 +421,20 @@ public class StdExit implements Exit
 		}
 		else
 		{
-			for(int b=0;b<numBehaviors();b++)
+			for(int b=0;b<behaviors.size();b++)
 			{
-				Behavior B=fetchBehavior(b);
-				if(B!=null)
-					B.tick(this,tickID);
+				Behavior B=(Behavior)behaviors.elementAt(b);
+				B.tick(this,tickID);
 			}
 
 			int a=0;
-			while(a<numAffects())
+			while(a<affects.size())
 			{
-				Ability A=fetchAffect(a);
-				if(A!=null)
-				{
-					int s=affects.size();
-					if(!A.tick(tickID))
-						A.unInvoke();
-					if(affects.size()==s)
-						a++;
-				}
-				else
+				Ability A=(Ability)affects.elementAt(a);
+				int s=affects.size();
+				if(!A.tick(tickID))
+					A.unInvoke();
+				if(affects.size()==s)
 					a++;
 			}
 			return true;
@@ -531,12 +512,9 @@ public class StdExit implements Exit
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int a=0;a<numAffects();a++)
-		{
-			Ability A=fetchAffect(a);
-			if((A!=null)&&(A==to))
+		for(int i=0;i<affects.size();i++)
+			if(((Ability)affects.elementAt(i))==to)
 				return;
-		}
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -545,12 +523,9 @@ public class StdExit implements Exit
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int a=0;a<numAffects();a++)
-		{
-			Ability A=fetchAffect(a);
-			if((A!=null)&&(A==to))
+		for(int i=0;i<affects.size();i++)
+			if(affects.elementAt(i)==to)
 				return;
-		}
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
@@ -567,21 +542,15 @@ public class StdExit implements Exit
 	}
 	public Ability fetchAffect(int index)
 	{
-		try
-		{
+		if(index <numAffects())
 			return (Ability)affects.elementAt(index);
-		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Ability fetchAffect(String ID)
 	{
-		for(int a=0;a<numAffects();a++)
-		{
-			Ability A=fetchAffect(a);
-			if((A!=null)&&(A.ID().equals(ID)))
-			   return A;
-		}
+		for(int a=0;a<affects.size();a++)
+			if(((Ability)affects.elementAt(a)).ID().equals(ID))
+			   return (Ability)affects.elementAt(a);
 		return null;
 	}
 
@@ -590,12 +559,9 @@ public class StdExit implements Exit
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(B.ID().equals(to.ID())))
+		for(int i=0;i<behaviors.size();i++)
+			if(((Behavior)behaviors.elementAt(i)).ID().equals(to.ID()))
 				return;
-		}
 		behaviors.addElement(to);
 	}
 	public void delBehavior(Behavior to)
@@ -608,11 +574,8 @@ public class StdExit implements Exit
 	}
 	public Behavior fetchBehavior(int index)
 	{
-		try
-		{
+		if(index <numBehaviors())
 			return (Behavior)behaviors.elementAt(index);
-		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public int openDelayTicks()	{ return openDelayTicks;}

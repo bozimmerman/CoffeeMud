@@ -193,7 +193,7 @@ public class BasicSenses
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
 			MOB possTeach=mob.location().fetchInhabitant(i);
-			if((possTeach!=null)&&(possTeach!=mob))
+			if(possTeach!=mob)
 			{
 				teacher=possTeach;
 				break;

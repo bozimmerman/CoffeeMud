@@ -101,7 +101,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		for(int a=0;a<myThang.numAffects();a++)
 		{
 			Ability A=myThang.fetchAffect(a);
-			if((A!=null)&&(A instanceof  Trap))
+			if(A instanceof  Trap)
 				return (Trap)A;
 		}
 		return null;
@@ -119,7 +119,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		for(int a=0;a<myThang.numAffects();a++)
 		{
 			Ability A=myThang.fetchAffect(a);
-			if((A!=null)&&(A instanceof Trap))
+			if(A instanceof Trap)
 				A.unInvoke();
 		}
 
@@ -136,8 +136,6 @@ public class Trap_Trap extends StdAbility implements Trap
 			for(int i=0;i<mob.location().numInhabitants();i++)
 			{
 				MOB target=mob.location().fetchInhabitant(i);
-				if(target==null) break;
-				
 				int dmg=Dice.roll(target.envStats().level(),10,1);
 				FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_GAS,Affect.MSG_NOISYMOVEMENT,null);
 				if(target.location().okAffect(msg))

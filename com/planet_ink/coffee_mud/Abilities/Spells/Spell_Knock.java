@@ -66,7 +66,7 @@ public class Spell_Knock extends Spell
 			for(int a=0;a<openThis.numAffects();a++)
 			{
 				Ability A=openThis.fetchAffect(a);
-				if((A!=null)&&(A.ID().equalsIgnoreCase("Spell_WizardLock"))&&(A.invoker()!=null)&&(A.invoker().envStats().level()<mob.envStats().level()+3))
+				if((A instanceof Spell_WizardLock)&&(A.invoker()!=null)&&(A.invoker().envStats().level()<mob.envStats().level()+3))
 				{
 					A.unInvoke();
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"A spell around "+openThis.name()+" seems to fade.");

@@ -104,7 +104,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-						if((this.recursiveRoomWeight(mob,newitem)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
+						if(this.recursiveRoomWeight(mob,newitem)>(mob.maxCarry()-mob.envStats().weight()))
 						{
 							mob.tell(newitem.name()+" is too heavy.");
 							return false;
@@ -200,8 +200,7 @@ public class StdContainer extends StdItem implements Container
 						for(int i=0;i<mob.inventorySize();i++)
 						{
 							Item item=mob.fetchInventory(i);
-							if((item!=null)
-							&&(item instanceof Key)
+							if((item instanceof Key)
 							&&(item.location()==null)
 							&&(Sense.canBeSeenBy(item,mob)))
 							{
@@ -287,18 +286,16 @@ public class StdContainer extends StdItem implements Container
 							for(int i=0;i<mob.inventorySize();i++)
 							{
 								Item item=mob.fetchInventory(i);
-								if((item!=null)&&(item.location()==this))
+								if(item.location()==this)
 									buf.append(item.name()+"\n\r");
 							}
 						}
 						else
 						{
-							Room room=mob.location();
-							if(room!=null)
-							for(int i=0;i<room.numItems();i++)
+							for(int i=0;i<mob.location().numItems();i++)
 							{
-								Item item=room.fetchItem(i);
-								if((item!=null)&&(item.location()==this))
+								Item item=mob.location().fetchItem(i);
+								if(item.location()==this)
 									buf.append(item.name()+"\n\r");
 							}
 						}
@@ -341,7 +338,7 @@ public class StdContainer extends StdItem implements Container
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item thisItem=mob.location().fetchItem(i);
-			if((thisItem!=null)&&(thisItem.location()==thisContainer))
+			if(thisItem.location()==thisContainer)
 				weight+=recursiveRoomWeight(mob,thisItem);
 		}
 		return weight;
@@ -379,7 +376,7 @@ public class StdContainer extends StdItem implements Container
 			for(int i=0;i<mob.location().numItems();i++)
 			{
 				Item thisItem=mob.location().fetchItem(i);
-				if((thisItem!=null)&&(thisItem.location()==thisContainer))
+				if(thisItem.location()==thisContainer)
 				{
 					recursiveGetRoom(mob,thisItem);
 					nothingDone=false;
@@ -421,7 +418,7 @@ public class StdContainer extends StdItem implements Container
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item thisItem=mob.fetchInventory(i);
-				if((thisItem!=null)&&(thisItem.location()==thisContainer))
+				if(thisItem.location()==thisContainer)
 				{
 					recursiveDropMOB(mob,thisItem);
 					nothingDone=false;

@@ -295,7 +295,7 @@ public class Scriptable extends ActiveTicker
 			case 'r':
 			case 'R':
 				while((room!=null)&&(monster!=null)&&(room.numInhabitants()>1)&&(room.isInhabitant(monster))&&((randMOB==null)||(randMOB==monster)))
-					randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
+					randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),0)-1);
 				if(randMOB!=null)
 					middle=randMOB.name();
 				break;
@@ -313,7 +313,7 @@ public class Scriptable extends ActiveTicker
 				break;
 			case 'J':
 				while((room!=null)&&(monster!=null)&&(room.numInhabitants()>1)&&(room.isInhabitant(monster))&&((randMOB==null)||(randMOB==monster)))
-					randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
+					randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),0)-1);
 				if(randMOB!=null)
 					middle=randMOB.charStats().hisher()+"s";
 				break;
@@ -331,7 +331,7 @@ public class Scriptable extends ActiveTicker
 				break;
 			case 'K':
 				while((room!=null)&&(monster!=null)&&(room.numInhabitants()>1)&&(room.isInhabitant(monster))&&((randMOB==null)||(randMOB==monster)))
-					randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
+					randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),0)-1);
 				if(randMOB!=null)
 					middle=randMOB.charStats().hisher()+"s";
 				break;
@@ -411,10 +411,7 @@ public class Scriptable extends ActiveTicker
 				if(s.equalsIgnoreCase("all"))
 				{
 					while(monster.inventorySize()>0)
-					{
-						Item I=monster.fetchInventory(0);
-						if(I!=null) I.destroyThis();
-					}
+						monster.fetchInventory(0).destroyThis();
 				}
 				else
 				{
@@ -466,7 +463,7 @@ public class Scriptable extends ActiveTicker
 				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
-					lastKnownLocation.showSource(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s.substring(8).trim()));
+				lastKnownLocation.showSource(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s.substring(8).trim()));
 			}
 			else
 			if(cmd.equals("MPECHOAROUND"))
@@ -474,7 +471,7 @@ public class Scriptable extends ActiveTicker
 				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
-					lastKnownLocation.showOthers(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s.substring(8).trim()));
+				lastKnownLocation.showOthers(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s.substring(8).trim()));
 			}
 			else
 			if(cmd.equals("MPCAST"))
@@ -752,11 +749,8 @@ public class Scriptable extends ActiveTicker
 	{
 		if(room==null) return false;
 		for(int m=0;m<room.numInhabitants();m++)
-		{
-			MOB inhab=room.fetchInhabitant(m);
-			if((inhab!=null)&&(!inhab.isMonster()))
+			if(!room.fetchInhabitant(m).isMonster())
 				return true;
-		}
 		return false;
 	}
 

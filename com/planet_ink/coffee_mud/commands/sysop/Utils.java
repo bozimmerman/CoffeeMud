@@ -32,12 +32,9 @@ public class Utils
 				for(int m=0;m<room.numInhabitants();m++)
 				{
 					MOB mob2=room.fetchInhabitant(m);
-					if(mob2!=null)
-					{
-						E=mob2.fetchInventory(name);
-						if((E==null)&&(mob2 instanceof ShopKeeper))
-							E=((ShopKeeper)mob2).getStock(name);
-					}
+					E=mob2.fetchInventory(name);
+					if((E==null)&&(mob2 instanceof ShopKeeper))
+						E=((ShopKeeper)mob2).getStock(name);
 				}
 				if(E!=null) break;	
 			}
@@ -77,5 +74,4 @@ public class Utils
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 		}
 	}
-	
 }
