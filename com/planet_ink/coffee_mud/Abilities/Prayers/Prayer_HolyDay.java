@@ -48,7 +48,7 @@ public class Prayer_HolyDay extends Prayer
 			return false;
 		}
 		else
-		if(((msg.sourceCode()==CMMsg.TYP_BUY)||(msg.sourceCode()==CMMsg.TYP_SELL))
+		if(((msg.sourceMinor()==CMMsg.TYP_BUY)||(msg.sourceMinor()==CMMsg.TYP_SELL))
 		&&(msg.source()!=invoker()))
 		{
 			msg.source().tell("You are not allowed to work on the holy day of "+godName+".");
@@ -109,7 +109,7 @@ public class Prayer_HolyDay extends Prayer
 					godName=mob.getWorshipCharID();
 					if((godName.length()==0)||(CMMap.getDeity(godName)==null))
 						godName="the gods";
-					R.show(mob,null,CMMsg.MSG_OK_VISUAL,"A holy day of "+godName+" has begun!");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,"A holy day of "+godName+" has begun!");
 				}
 				beneficialAffect(mob,target,(int)MudHost.TICKS_PER_MUDDAY);
 			}

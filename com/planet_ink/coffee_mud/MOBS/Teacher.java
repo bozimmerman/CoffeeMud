@@ -18,8 +18,12 @@ public class Teacher extends StdMOB
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(200);
 
-		addBehavior(CMClass.getBehavior("MudChat"));
-		addBehavior(CMClass.getBehavior("CombatAbilities"));
+		Behavior B=CMClass.getBehavior("MOBTeacher");
+		if(B!=null) addBehavior(B);
+		B=CMClass.getBehavior("MudChat");
+		if(B!=null) addBehavior(B);
+		B=CMClass.getBehavior("CombatAbilities");
+		if(B!=null) addBehavior(B);
 
 		baseCharStats().setStat(CharStats.INTELLIGENCE,25);
 		baseCharStats().setStat(CharStats.WISDOM,25);
@@ -33,18 +37,6 @@ public class Teacher extends StdMOB
 		baseEnvStats().setAbility(10);
 		baseEnvStats().setLevel(25);
 		baseEnvStats().setArmor(-500);
-
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-		{
-			Ability A=(Ability)a.nextElement();
-			A=(Ability)A.copyOf();
-			A.setProfficiency(100);
-			A.setBorrowed(this,true);
-			this.addAbility(A);
-		}
-
-
-
 
 		baseState.setHitPoints(4999);
 		baseState.setMana(4999);

@@ -41,7 +41,7 @@ public class Chant_PlantSnare extends Chant
 			{
 				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the snaring plants."))
 				{
-					amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
+					amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)*4);
 					if(amountRemaining<0)
 						unInvoke();
 				}

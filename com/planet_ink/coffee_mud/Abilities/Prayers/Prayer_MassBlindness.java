@@ -33,8 +33,7 @@ public class Prayer_MassBlindness extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(Sense.canSee(mob)))
-			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell("Your vision returns.");
+			mob.tell("Your vision returns.");
 	}
 
 

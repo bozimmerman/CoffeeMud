@@ -42,6 +42,31 @@ six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","tren
 		}
 		return wordLists;
 	}
+	public String tup(String msg)
+	{
+		if(msg==null) return msg;
+		return msg.toUpperCase();
+	}
+	
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if((beingSpoken())
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.sourceMessage()!=null)
+		&&(msg.tool()==null)
+		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+		{
+			msg.modify(msg.source(),msg.target(),msg.tool(),
+					   msg.sourceCode(),tup(msg.sourceMessage()),
+					   msg.targetCode(),tup(msg.targetMessage()),
+					   msg.othersCode(),tup(msg.othersMessage()));
+		}
+		return super.okMessage(myHost,msg);
+	}
+	
 	private static final Hashtable hashwords=new Hashtable();
 	public Hashtable translationHash()
 	{
@@ -69,8 +94,8 @@ six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","tren
 		hashwords.put("BADLY","spatnoje");
 		hashwords.put("BE","ta jast");
 		hashwords.put("BEAUTY","kresno");
-		hashwords.put("BEAUTIFUL"","kresnoje");
-		hashwords.put("BEAUTIFULLY"","nakresnoje");
+		hashwords.put("BEAUTIFUL","kresnoje");
+		hashwords.put("BEAUTIFULLY","nakresnoje");
 		hashwords.put("BREAD","vodanet");
 		hashwords.put("BUT","ola");
 		hashwords.put("COME","kralestvo");

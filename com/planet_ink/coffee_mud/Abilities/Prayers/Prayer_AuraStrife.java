@@ -30,6 +30,19 @@ public class Prayer_AuraStrife extends Prayer
 		}
 	}
 
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+		MOB M=(MOB)affected;
+
+		super.unInvoke();
+
+		if((canBeUninvoked())&&(M!=null)&&(!M.amDead())&&(M.location()!=null))
+			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,"The aura of strife around <S-NAME> fades.");
+	}
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;

@@ -28,7 +28,7 @@ public class Prayer_HolyShield extends Prayer
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.target()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_UNDEAD)
+		&&((msg.sourceMinor()==CMMsg.TYP_UNDEAD)||(msg.targetMinor()==CMMsg.TYP_UNDEAD))
 		&&(msg.source().location()!=null))
 		{
 			msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> holy shield block(s) the unholy magic from <T-NAMESELF>.");

@@ -8,7 +8,7 @@ import java.util.*;
 public class Prayer_Cannibalism extends Prayer
 {
 	public String ID() { return "Prayer_Cannibalism"; }
-	public String name(){ return "Cannibalism";}
+	public String name(){ return "Inflict Cannibalism";}
 	public String displayText(){ return "(Cannibalism)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -79,8 +79,8 @@ public class Prayer_Cannibalism extends Prayer
 		MOB M=(MOB)affected;
 		if((M.location()!=null)&&(!Sense.isSleeping(M)))
 		{
-			M.curState().adjThirst(-M.location().thirstPerRound(M),M.maxState());
-			M.curState().adjHunger(-1,M.maxState());
+			M.curState().adjThirst(-(M.location().thirstPerRound(M)*2),M.maxState());
+			M.curState().adjHunger(-2,M.maxState());
 			if((M.isMonster())
 			&&((M.curState().getThirst()<0)||(M.curState().getHunger()<0))
 			&&(Dice.rollPercentage()<10)
@@ -159,7 +159,9 @@ public class Prayer_Cannibalism extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> gain(s) cannibalistic urges!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> inflicted with cannibalistic urges!");
+					target.curState().setHunger(0);
+					target.curState().setThirst(0);
 					maliciousAffect(mob,target,0,-1);
 				}
 			}

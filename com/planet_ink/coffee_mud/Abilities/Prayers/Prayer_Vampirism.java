@@ -8,7 +8,7 @@ import java.util.*;
 public class Prayer_Vampirism extends Prayer
 {
 	public String ID() { return "Prayer_Vampirism"; }
-	public String name(){ return "Vampirism";}
+	public String name(){ return "Inflict Vampirism";}
 	public String displayText(){ return "(Vampirism)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -27,9 +27,46 @@ public class Prayer_Vampirism extends Prayer
 
 		if((canBeUninvoked())&&(Sense.canSee(mob)))
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell("Your vampiric hunger fades.");
+				mob.tell("Your vampirism fades.");
 	}
 
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		if(!(affected instanceof MOB)) return;
+		if(!((MOB)affected).isMonster())
+		{
+			if(((MOB)affected).location()==null) return;
+			if(Sense.isInDark(((MOB)affected).location()))
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
+			else
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
+		}
+	}
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+			MOB mob=(MOB)affected;
+			if(msg.amISource(mob)
+			   &&(msg.tool()!=null)
+			   &&(msg.tool().ID().equals("Skill_Swim")))
+			{
+				mob.tell("You can't swim!");
+				return false;
+			}
+		}
+		return super.okMessage(myHost,msg);
+	}
+
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		if(affected==null) return;
+		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+1);
+	}
+	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -77,8 +114,8 @@ public class Prayer_Vampirism extends Prayer
 		MOB M=(MOB)affected;
 		if((M.location()!=null)&&(!Sense.isSleeping(M)))
 		{
-			M.curState().adjThirst(-M.location().thirstPerRound(M),M.maxState());
-			M.curState().adjHunger(-1,M.maxState());
+			M.curState().adjThirst(-(M.location().thirstPerRound(M)*2),M.maxState());
+			M.curState().adjHunger(-2,M.maxState());
 			if((M.isMonster())
 			&&((M.curState().getThirst()<0)||(M.curState().getHunger()<0))
 			&&(Dice.rollPercentage()<10)
@@ -155,7 +192,9 @@ public class Prayer_Vampirism extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> gain(s) vampiric hunger!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> inflicted with vampiric hunger!");
+					target.curState().setHunger(0);
+					target.curState().setThirst(0);
 					maliciousAffect(mob,target,0,-1);
 				}
 			}

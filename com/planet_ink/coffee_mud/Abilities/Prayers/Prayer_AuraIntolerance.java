@@ -20,14 +20,14 @@ public class Prayer_AuraIntolerance extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof Room)))
+		if((affected==null)||(!(affected instanceof MOB)))
 			return;
-		Room R=(Room)affected;
+		MOB M=(MOB)affected;
 
 		super.unInvoke();
 
-		if(canBeUninvoked())
-			R.showHappens(CMMsg.MSG_OK_VISUAL,"The intolerant aura around you fades.");
+		if((canBeUninvoked())&&(M!=null)&&(!M.amDead())&&(M.location()!=null))
+			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,"The intolerant aura around <S-NAME> fades.");
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -38,7 +38,7 @@ public class Prayer_AuraIntolerance extends Prayer
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
-		if((msg.source()==invoker())
+		if((msg.source()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target() instanceof MOB)
 		&&(msg.source().getWorshipCharID().length()>0)
@@ -59,18 +59,20 @@ public class Prayer_AuraIntolerance extends Prayer
 		
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(invoker()==null) return true;
 		
-		Room R=invoker().location();
+		Room R=((MOB)affected).location();
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			MOB M=R.fetchInhabitant(i);
-			if((M!=null)&&(invoker().getWorshipCharID().length()>0)&&(!M.getWorshipCharID().equals(invoker().getWorshipCharID())))
+			if((M!=null)
+			&&(M!=((MOB)affected))
+			&&((M.getWorshipCharID().length()==0)
+				||(((MOB)affected).getWorshipCharID().length()>0)&&(!M.getWorshipCharID().equals(invoker().getWorshipCharID()))))
 			{
 				if(M.getWorshipCharID().length()>0)
-					MUDFight.postDamage(invoker(),M,this,3,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGE> <T-NAMESELF>!");
+					MUDFight.postDamage(((MOB)affected),M,this,3,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGE> <T-NAMESELF>!");
 				else
-					MUDFight.postDamage(invoker(),M,this,1,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGE> <T-NAMESELF>!");
+					MUDFight.postDamage(((MOB)affected),M,this,1,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGE> <T-NAMESELF>!");
 			}
 		}
 		return true;

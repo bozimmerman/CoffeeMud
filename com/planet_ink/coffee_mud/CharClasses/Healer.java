@@ -45,6 +45,7 @@ public class Healer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Prayer_RemoveDeathMark",false);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
 
@@ -56,6 +57,7 @@ public class Healer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Freedom",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Forgive",false);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_DispelEvil",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_GodLight",false);
@@ -83,7 +85,6 @@ public class Healer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_DispelUndead",false);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Godstrike",false);
-			CMAble.addCharAbilityMapping(ID(),19,"Prayer_DivineResistance",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",true);
 
@@ -96,6 +97,7 @@ public class Healer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_MassCureDisease",false);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_HolyWord",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Prayer_DivineResistance",false);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
 

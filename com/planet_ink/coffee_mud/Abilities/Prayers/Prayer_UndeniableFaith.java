@@ -108,7 +108,7 @@ public class Prayer_UndeniableFaith extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
-			FullMsg msg2=new FullMsg(target,D,this,CMMsg.MSG_SERVE,"<T-NAME> BELIEVES!!!");
+			FullMsg msg2=new FullMsg(target,D,this,CMMsg.MSG_SERVE,"<S-NAME> BELIEVES!!!");
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

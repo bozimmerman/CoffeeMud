@@ -14,6 +14,7 @@ public class Prayer_DivinePerspective extends Prayer
 	protected int overrideMana(){return 100;}
 	public Environmental newInstance(){	return new Prayer_DivinePerspective();}
 	public String mobName="";
+	public boolean noRecurse=false;
 
 	public void unInvoke()
 	{
@@ -31,6 +32,8 @@ public class Prayer_DivinePerspective extends Prayer
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
+		if(noRecurse)return;
+		
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING)
@@ -38,6 +41,7 @@ public class Prayer_DivinePerspective extends Prayer
 		&&(msg.target()!=null)
 		&&((((MOB)invoker).location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
 		{
+			noRecurse=true;
 			FullMsg newAffect=new FullMsg(invoker,msg.target(),CMMsg.TYP_EXAMINESOMETHING,null);
 			msg.target().executeMsg(msg.target(),newAffect);
 		}
@@ -48,7 +52,11 @@ public class Prayer_DivinePerspective extends Prayer
 		&&(((MOB)invoker).location()!=((MOB)affected).location())
 		&&(msg.othersCode()!=CMMsg.NO_EFFECT)
 		&&(msg.othersMessage()!=null))
+		{
+			noRecurse=true;
 			((MOB)invoker).executeMsg(invoker,msg);
+		}
+		noRecurse=false;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

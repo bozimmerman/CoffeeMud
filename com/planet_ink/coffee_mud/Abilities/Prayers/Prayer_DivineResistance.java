@@ -46,27 +46,25 @@ public class Prayer_DivineResistance extends Prayer
 		
 		if((msg.target()==affected)
 		&&(affected instanceof MOB)
-		&&(!msg.amISource((MOB)affected))
 		&&((msg.tool()==null)||(!permProts.contains(msg.tool())))
 		&&(prots>0)
 		&&(msg.source().location()!=null))
 		{
-			int targetMinor=msg.targetMinor();
-			if(targetMinor>0)
+			boolean proceed=false;
+			int sm=msg.sourceMinor();
+			int tm=msg.targetMinor();
+			for(int i=0;i<CharStats.affectTypeMap.length;i++)
+				if((CharStats.affectTypeMap[i]>=0)
+				&&((sm==CharStats.affectTypeMap[i])||(tm==CharStats.affectTypeMap[i])))
+					proceed=true;
+			if((msg.tool() instanceof Trap)||(proceed))
 			{
-				boolean proceed=false;
-				for(int i=0;i<CharStats.affectTypeMap.length;i++)
-					if(msg.targetMinor()==i)
-						proceed=true;
-				if((msg.tool() instanceof Trap)||(proceed))
-				{
-					if(msg.tool()!=null)
-						permProts.add(msg.tool());
-					prots--;
-					msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> divine protection glows!");
-					if(prots==0)
-						unInvoke();
-				}
+				if(msg.tool()!=null)
+					permProts.add(msg.tool());
+				prots--;
+				msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> divine protection glows!");
+				if(prots==0)
+					unInvoke();
 			}
 		}
 		return super.okMessage(host,msg);

@@ -35,6 +35,8 @@ public class Prayer_CureVampirism extends Prayer
 				mob.location().send(mob,msg);
 				Ability A=target.fetchEffect("Prayer_Vampirism");
 				if(A!=null) A.unInvoke();
+				A=target.fetchEffect("Disease_Vampirism");
+				if(A!=null) A.unInvoke();
 			}
 		}
 		else

@@ -31,7 +31,7 @@ public class Prayer_RemoveDeathMark extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^SA glow surrounds <T-NAME>.^?":"^S<S-NAME> call(s) on "+hisHerDiety(mob)+" for <T-NAME> to be released from <S-HIS-HER> death mark.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^SA glow surrounds <T-NAME>.^?":"^S<S-NAME> call(s) on "+hisHerDiety(mob)+" for <T-NAME> to be released from <T-HIS-HER> death mark.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -40,6 +40,16 @@ public class Prayer_RemoveDeathMark extends Prayer
 				E=target.fetchEffect("Thief_ContractHit");
 				if(E!=null) E.unInvoke();
 				target.recoverEnvStats();
+				for(Enumeration e=CMMap.players();e.hasMoreElements();)
+				{
+					MOB M=(MOB)e.nextElement();
+					if((M!=null)&&(M!=target))
+					{
+						E=target.fetchEffect("Thief_Mark");
+						if((E!=null)&&(E.text().startsWith(target.Name()+"/")))
+							E.unInvoke();
+					}
+				}
 			}
 		}
 		else

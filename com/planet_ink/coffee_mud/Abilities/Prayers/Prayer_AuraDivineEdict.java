@@ -16,20 +16,20 @@ public class Prayer_AuraDivineEdict extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_AuraDivineEdict();	}
 	private String godName="the gods";
+	private boolean noRecurse=false;
 
 
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof Room)))
+		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
-		if(canBeUninvoked())
-			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell("The divine edict aura around you fades.");
+		if((canBeUninvoked())&&(mob.location()!=null)&&(!mob.amDead()))
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The divine edict aura around <S-NAME> fades.");
 	}
 
 	protected String getMsgFromAffect(String msg)
@@ -47,7 +47,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if((affected==null)||(!(affected instanceof MOB))||(noRecurse))
 			return true;
 
 		if(Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS)
@@ -64,12 +64,15 @@ public class Prayer_AuraDivineEdict extends Prayer
 		&&(msg.target().envStats().level()<invoker().envStats().level())
 		&&(getMsgFromAffect(msg.sourceMessage().toUpperCase()).equals(getMsgFromAffect(msg.sourceMessage()))))
 		{
+			noRecurse=true;
 			String oldLeige=((MOB)msg.target()).getLeigeID();
 			((MOB)msg.target()).setLeigeID(msg.source().Name());
 			msg.source().doCommand(Util.parse("ORDER \""+msg.target().Name()+"\" "+getMsgFromAffect(msg.sourceMessage())));
 			((MOB)msg.target()).setLeigeID(oldLeige);
+			noRecurse=false;
 			return false;
 		}
+		noRecurse=false;
 		return true;
 	}
 	

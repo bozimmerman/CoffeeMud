@@ -33,8 +33,7 @@ public class Prayer_MassDeafness extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(Sense.canHear(mob)))
-			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell("Your hearing returns.");
+			mob.tell("Your hearing returns.");
 	}
 
 

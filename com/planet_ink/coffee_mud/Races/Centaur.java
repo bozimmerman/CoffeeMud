@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Centaur extends Equine
+public class Centaur extends StdRace
 {
 	public String ID(){	return "Centaur"; }
 	public String name(){ return "Centaur"; }

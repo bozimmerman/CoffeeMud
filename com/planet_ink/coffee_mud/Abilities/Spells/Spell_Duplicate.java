@@ -33,7 +33,7 @@ public class Spell_Duplicate extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int multiPlier=5;
+		int multiPlier=5+target.envStats().weight();
 		multiPlier+=(target.numEffects()*10);
 		multiPlier+=(target instanceof Potion)?10:0;
 		multiPlier+=(target instanceof Pill)?10:0;
