@@ -277,6 +277,9 @@ public class Export extends StdCommand
 				Object o=i.next();
 				if(o instanceof Race)
 					str.append(((Race)o).racialParms());
+				else
+				if(o instanceof CharClass)
+					str.append(((CharClass)o).classParms());
 			}
 			str.append("</CUSTOM>");
 			xml=str.toString()+xml;

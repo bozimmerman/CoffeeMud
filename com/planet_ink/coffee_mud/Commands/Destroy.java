@@ -341,6 +341,35 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
+	public boolean classes(MOB mob, Vector commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY CLASS [CLASS ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+
+		String classID=Util.combine(commands,2);
+		CharClass C=CMClass.getCharClass(classID);
+		if(C==null)
+		{
+			mob.tell("'"+classID+"' is an invalid class id.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		if(!(C.isGeneric()))
+		{
+			mob.tell("'"+C.ID()+"' is not generic, and may not be deleted.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		CMClass.delCharClass(C);
+		CMClass.DBEngine().DBDeleteClass(C.ID());
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just decreased!");
+		return true;
+	}
+
 	public void socials(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -427,6 +456,12 @@ public class Destroy extends StdCommand
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			races(mob,commands);
+		}
+		else
+		if(commandType.equals("CLASS"))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			classes(mob,commands);
 		}
 		else
 		if((commandType.equals("USER"))&&(mob.isASysOp(null)))

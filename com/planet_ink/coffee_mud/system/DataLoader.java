@@ -33,6 +33,31 @@ public class DataLoader
 		// log comment 
 		return rows;
 	}
+	public static Vector DBReadClasses()
+	{
+		DBConnection D=null;
+		Vector rows=new Vector();
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCCAC");
+			while(R.next())
+			{
+				Vector V=new Vector();
+				V.addElement(DBConnections.getRes(R,"CMCCID"));
+				V.addElement(DBConnections.getRes(R,"CMCDAT"));
+				rows.addElement(V);
+			}
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+		// log comment 
+		return rows;
+	}
 	public static Vector DBRead(String playerID, String section)
 	{
 		DBConnection D=null;
@@ -203,6 +228,21 @@ public class DataLoader
 			if(D!=null) DBConnector.DBDone(D);
 		}
 	}
+	public static void DBDeleteClass(String classID)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			D.update("DELETE FROM CMCCAC WHERE CMCCID='"+classID+"'",0);
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+	}
 	public static void DBDelete(String section)
 	{
 		DBConnection D=null;
@@ -240,6 +280,31 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",str);
 			Log.errOut("DataLoader","DBCreateRace"+sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+	}
+	public static void DBCreateClass(String classID, String data)
+	{
+		DBConnection D=null;
+		String str=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			str=
+			 "INSERT INTO CMCCAC ("
+			 +"CMCCID, "
+			 +"CMCDAT "
+			 +") values ("
+			 +"'"+classID+"',"
+			 +"'"+data+" '"
+			 +")";
+			D.update(str,0);
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("DataLoader",str);
+			Log.errOut("DataLoader","DBCreateClass"+sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
 	}

@@ -49,4 +49,7 @@ public interface DatabaseEngine
 	public Vector DBReadRaces();
 	public void DBDeleteRace(String raceID);
 	public void DBCreateRace(String raceID,String data);
+	public Vector DBReadClasses();
+	public void DBDeleteClass(String classID);
+	public void DBCreateClass(String classID,String data);
 }

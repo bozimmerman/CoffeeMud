@@ -9,13 +9,27 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public static final int ARMOR_VEGAN=4;
 	public static final int ARMOR_METALONLY=5;
 	public static long ARMOR_WEARMASK=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
+	public static final String[] ARMOR_DESCS={
+		"ANY","CLOTH","LEATHER","NONMETAL","VEGAN","METALONLY"
+	};
+	public static final String[] ARMOR_LONGDESC={
+		"Any",
+		"Must wear cloth, vegetation, or paper based armor.",
+		"Must wear leather, cloth, or vegetation based armor.",
+		"Must wear non-metal armor.",
+		"Must wear wood or vegetation based armor.",
+		"Must wear metal armor"
+	};
 	
 	public String ID();
 	public String name();
 	public String baseClass();
 	public boolean playerSelectable();
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet);
+	public String classParms();
+	public void setClassParms(String parms);
 	public CharClass copyOf();
+	public boolean isGeneric();
 
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly);
 	public void gainExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
@@ -52,4 +66,9 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public String otherBonuses();
 	public String statQualifications();
 	public int[] maxStatAdjustments();
+	
+	public String[] getStatCodes();
+	public String getStat(String code);
+	public void setStat(String code, String val);
+	public boolean sameAs(CharClass E);
 }

@@ -188,13 +188,13 @@ public class GenRace extends StdRace
 			}
 			str.append("</RESOURCES>");
 		}
-		if(myResources().size()==0)	str.append("<OUTFIT/>");
+		if((outfit()==null)||(outfit().size()==0))	str.append("<OUTFIT/>");
 		else
 		{
 			str.append("<OUTFIT>");
-			for(int i=0;i<myResources().size();i++)
+			for(int i=0;i<outfit().size();i++)
 			{
-				Item I=(Item)myResources().elementAt(i);
+				Item I=(Item)outfit().elementAt(i);
 				str.append("<OFTITEM>");
 				str.append(XMLManager.convertXMLtoTag("OFCLASS",CMClass.className(I)));
 				str.append(XMLManager.convertXMLtoTag("OFDATA",CoffeeMaker.parseOutAngleBrackets(I.text())));

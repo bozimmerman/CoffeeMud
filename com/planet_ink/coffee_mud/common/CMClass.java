@@ -589,6 +589,23 @@ public class CMClass extends ClassLoader
 			if(loaded>0)
 				Log.sysOut("MUD","GenRaces loaded   : "+loaded);
 		}
+		Vector genClasses=CMClass.DBEngine().DBReadClasses();
+		if(genClasses.size()>0)
+		{
+			int loaded=0;
+			for(int r=0;r<genClasses.size();r++)
+			{
+				CharClass CR=((CharClass)CMClass.getCharClass("GenClass").copyOf());
+				CR.setClassParms((String)((Vector)genClasses.elementAt(r)).elementAt(1));
+				if(!CR.ID().equals("GenClass"))
+				{
+					addCharClass(CR);
+					loaded++;
+				}
+			}
+			if(loaded>0)
+				Log.sysOut("MUD","GenClasses loaded : "+loaded);
+		}
 		return true;
 	}
 
@@ -604,6 +621,23 @@ public class CMClass extends ClassLoader
 			}
 		}
 		races.addElement(GR);
+	}
+	public static void addCharClass(CharClass CR)
+	{
+		for(int i=0;i<charClasses.size();i++)
+		{
+			CharClass C=(CharClass)charClasses.elementAt(i);
+			if(C.ID().compareToIgnoreCase(CR.ID())>=0)
+			{
+				charClasses.insertElementAt(CR,i);
+				return;
+			}
+		}
+		charClasses.addElement(CR);
+	}
+	public static void delCharClass(CharClass C)
+	{
+		races.removeElement(C);
 	}
 	public static void delRace(Race R)
 	{

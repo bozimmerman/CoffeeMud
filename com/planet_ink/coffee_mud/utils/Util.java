@@ -193,7 +193,20 @@ public class Util
 		}
 		String[] s=new String[V.size()];
 		for(int v=0;v<V.size();v++)
-			s[v]=(String)V.elementAt(v);
+			s[v]=V.elementAt(v).toString();
+		return s;
+	}
+	
+	public static String[] toStringArray(HashSet V)
+	{
+		if((V==null)||(V.size()==0)){
+			String[] s=new String[0];
+			return s;
+		}
+		String[] s=new String[V.size()];
+		int v=0;
+		for(Iterator i=V.iterator();i.hasNext();)
+			s[v++]=(i.next()).toString();
 		return s;
 	}
 	
@@ -216,7 +229,19 @@ public class Util
 		}
 		StringBuffer s=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
-			s.append(", "+((String)V.elementAt(v)));
+			s.append(", "+V.elementAt(v).toString());
+		if(s.length()==0) return "";
+		return s.toString().substring(2);
+	}
+	
+	public static String toStringList(HashSet V)
+	{
+		if((V==null)||(V.size()==0)){
+			return "";
+		}
+		StringBuffer s=new StringBuffer("");
+		for(Iterator i=V.iterator();i.hasNext();)
+			s.append(", "+i.next().toString());
 		if(s.length()==0) return "";
 		return s.toString().substring(2);
 	}

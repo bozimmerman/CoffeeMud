@@ -262,6 +262,37 @@ public class Create extends BaseGenerics
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just increased!");
 	}
 
+	public void classes(MOB mob, Vector commands)
+		throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE CLASS [CLASS ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		String classD=Util.combine(commands,2);
+		CharClass C=CMClass.getCharClass(classD);
+		if((C!=null)&&(C.isGeneric()))
+		{
+			mob.tell("A generic class with the ID '"+C.ID()+"' already exists!");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		if(classD.indexOf(" ")>=0)
+		{
+			mob.tell("'"+classD+"' is an invalid class id, because it contains a space.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		CharClass CR=CMClass.getCharClass("GenCharClass").copyOf();
+		CR.setClassParms("<CCLASS><ID>"+Util.capitalize(classD)+"</ID><NAME>"+Util.capitalize(classD)+"</NAME></CCLASS>");
+		CMClass.addCharClass(CR);
+		modifyGenClass(mob,CR);
+		CMClass.DBEngine().DBCreateClass(CR.ID(),CR.classParms());
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just increased!");
+	}
+
 	public void socials(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -317,6 +348,12 @@ public class Create extends BaseGenerics
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			races(mob,commands);
+		}
+		else
+		if(commandType.equals("CLASS"))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			classes(mob,commands);
 		}
 		else
 		if(commandType.equals("AREA"))

@@ -601,6 +601,37 @@ public class Modify extends BaseGenerics
 		return true;
 	}
 
+	public boolean classes(MOB mob, Vector commands)
+		throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY CLASS [CLASS ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+
+		String classID=Util.combine(commands,2);
+		CharClass C=CMClass.getCharClass(classID);
+		if(C==null)
+		{
+			mob.tell("'"+classID+"' is an invalid class id.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		if(!(C.isGeneric()))
+		{
+			mob.tell("'"+C.ID()+"' is not generic, and may not be modified.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		modifyGenClass(mob,C);
+		CMClass.DBEngine().DBDeleteClass(C.ID());
+		CMClass.DBEngine().DBCreateClass(C.ID(),C.classParms());
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,C.name()+"'s everywhere shake under the transforming power!");
+		return true;
+	}
+
 	public void socials(MOB mob, Vector commands)
 		throws IOException
 	{

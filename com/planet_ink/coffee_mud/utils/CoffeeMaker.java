@@ -685,6 +685,17 @@ public class CoffeeMaker
 				}
 			}
 			else
+			if(ablk.tag.equalsIgnoreCase("CCLASS"))
+			{
+				CharClass C=CMClass.getCharClass("GenCharClass");
+				if(C!=null)
+				{
+					C.setClassParms(ablk.value);
+					if(!C.ID().equals("GenCharClass"))
+						custom.addElement(C);
+				}
+			}
+			else
 				return unpackErr("Custom","??"+ablk.tag);
 		}
 		return "";

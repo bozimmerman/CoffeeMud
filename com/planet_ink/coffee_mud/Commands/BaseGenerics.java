@@ -2664,7 +2664,160 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
+	static void genText(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		if(newName.length()>0)
+			E.setStat(Field,newName);
+		else
+			mob.tell("(no change)");
+	}
+	static void genAttackAttribute(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". "+FieldDisp+": '"+CharStats.TRAITS[Util.s_int(E.getStat(Field))]+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newStat="";
+		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+			if(newName.equalsIgnoreCase(CharStats.TRAITS[i]))
+				newStat=""+i;
+		if(newStat.length()>0)
+			E.setStat(Field,newStat);
+		else
+			mob.tell("(no change)");
+	}
+	static void genArmorCode(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". "+FieldDisp+": '"+CharClass.ARMOR_LONGDESC[Util.s_int(E.getStat(Field))]+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter ("+Util.toStringList(CharClass.ARMOR_DESCS)+")\n\r:","");
+		String newStat="";
+		for(int i=0;i<CharClass.ARMOR_DESCS.length;i++)
+			if(newName.equalsIgnoreCase(CharClass.ARMOR_DESCS[i]))
+				newStat=""+i;
+		if(newStat.length()>0)
+			E.setStat(Field,newStat);
+		else
+			mob.tell("(no change)");
+	}
+	static void genQualifications(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". "+FieldDisp+": '"+MUDZapper.zapperDesc(E.getStat(Field))+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName="?";
+		while(!newName.equals("?"))
+		{
+			newName=mob.session().prompt("Enter a new mask (?)\n\r:","");
+			if(newName.equals("?"))
+				mob.tell(MUDZapper.zapperInstructions("\n","Allows"));
+		}
+		if((newName.length()>0)&&(!newName.equals("?")))
+			E.setStat(Field,newName);
+		else
+			mob.tell("(no change)");
+	}
+	static void genWeaponRestr(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		Vector set=Util.parseCommas(E.getStat(Field),true);
+		StringBuffer str=new StringBuffer("");
+		for(int v=0;v<set.size();v++)
+			str.append(" "+Weapon.classifictionDescription[Util.s_int((String)set.elementAt(v))].toLowerCase());
+		
+		mob.tell(showNumber+". "+FieldDisp+": '"+str.toString()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName="?";
+		boolean setChanged=false;
+		while(!newName.equals("?"))
+		{
+			newName=mob.session().prompt("Enter a weapon class to add/remove (?)\n\r:","");
+			if(newName.equals("?"))
+				mob.tell(Util.toStringList(Weapon.classifictionDescription));
+			else
+			if(newName.length()>0)
+			{
+				int foundCode=-1;
+				for(int i=0;i<Weapon.classifictionDescription.length;i++)
+					if(Weapon.classifictionDescription[i].equalsIgnoreCase(newName))
+						foundCode=i;
+				if(foundCode<0)
+				{
+					mob.tell("'"+newName+"' is not recognized.  Try '?'");
+					newName="?";
+				}
+				else
+				{
+					int x=set.indexOf(""+foundCode);
+					if(x>=0)
+					{
+						setChanged=true;
+						set.removeElementAt(x);
+						mob.tell("'"+newName+"' removed.");
+						newName="?";
+					}
+					else
+					{
+						set.addElement(""+foundCode);
+						setChanged=true;
+						mob.tell("'"+newName+"' added.");
+						newName="?";
+					}
+				}
+			}
+		}
+		if(setChanged)
+			E.setStat(Field,Util.toStringList(set));
+		else
+			mob.tell("(no change)");
+	}
+	static void genInt(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		if((newName.length()>0)&&((newName.trim().equals("0"))||(Util.s_int(newName)!=0)))
+			E.setStat(Field,""+Util.s_int(newName));
+		else
+			mob.tell("(no change)");
+	}
+	static void genInt(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		if((newName.length()>0)&&((newName.trim().equals("0"))||(Util.s_int(newName)!=0)))
+			E.setStat(Field,""+Util.s_int(newName));
+		else
+			mob.tell("(no change)");
+	}
 	static void genBool(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new true/false\n\r:","");
+		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
+			E.setStat(Field,newName.toLowerCase());
+		else
+			mob.tell("(no change)");
+	}
+	static void genBool(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2958,6 +3111,175 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
+	static void genEStats(MOB mob, CharClass R, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		EnvStats S=new DefaultEnvStats(0);
+		CoffeeMaker.setEnvStats(S,R.getStat("ESTATS"));
+		StringBuffer parts=new StringBuffer("");
+		for(int i=0;i<S.getCodes().length;i++)
+			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
+				parts.append(Util.capitalize(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
+		mob.tell(showNumber+". EStat Adjustments: "+parts.toString()+".");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a stat name\n\r:","");
+		if(newName.length()>0)
+		{
+			String partName=null;
+			for(int i=0;i<S.getCodes().length;i++)
+				if(newName.equalsIgnoreCase(S.getCodes()[i]))
+				{ partName=S.getCodes()[i]; break;}
+			if(partName==null)
+			{
+				StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+				for(int i=0;i<S.getCodes().length;i++)
+					str.append(S.getCodes()[i]+", ");
+				mob.tell(str.toString().substring(0,str.length()-2)+".");
+			}
+			else
+			{
+				boolean checkChange=false;
+				if(partName.equals("DISPOSITION"))
+				{
+					genDisposition(mob,S,0,0);
+					checkChange=true;
+				}
+				else
+				if(partName.equals("SENSES"))
+				{
+					genSensesMask(mob,S,0,0);
+					checkChange=true;
+				}
+				else
+				{
+					newName=mob.session().prompt("Enter a value\n\r:","");
+					if(newName.length()>0)
+					{
+						S.setStat(partName,newName);
+						checkChange=true;
+					}
+					else
+						mob.tell("(no change)");
+				}
+				if(checkChange)
+				{
+					boolean zereoed=true;
+					for(int i=0;i<S.getCodes().length;i++)
+					{
+						if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
+						{ zereoed=false; break;}
+					}
+					if(zereoed)
+						R.setStat("ESTATS","");
+					else
+						R.setStat("ESTATS",CoffeeMaker.getEnvStatsStr(S));
+				}
+			}
+		}
+		else
+			mob.tell("(no change)");
+	}
+	static void genAState(MOB mob, CharClass R, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		CharState S=new DefaultCharState(0);
+		CoffeeMaker.setCharState(S,R.getStat("ASTATE"));
+		StringBuffer parts=new StringBuffer("");
+		for(int i=0;i<S.getCodes().length;i++)
+			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
+				parts.append(Util.capitalize(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
+		mob.tell(showNumber+". State Adjustments: "+parts.toString()+".");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a stat name\n\r:","");
+		if(newName.length()>0)
+		{
+			String partName=null;
+			for(int i=0;i<S.getCodes().length;i++)
+				if(newName.equalsIgnoreCase(S.getCodes()[i]))
+				{ partName=S.getCodes()[i]; break;}
+			if(partName==null)
+			{
+				StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+				for(int i=0;i<S.getCodes().length;i++)
+					str.append(S.getCodes()[i]+", ");
+				mob.tell(str.toString().substring(0,str.length()-2)+".");
+			}
+			else
+			{
+				newName=mob.session().prompt("Enter a value\n\r:","");
+				if(newName.length()>0)
+				{
+					S.setStat(partName,newName);
+					boolean zereoed=true;
+					for(int i=0;i<S.getCodes().length;i++)
+					{
+						if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
+						{ zereoed=false; break;}
+					}
+					if(zereoed)
+						R.setStat("ASTATE","");
+					else
+						R.setStat("ASTATE",CoffeeMaker.getCharStateStr(S));
+				}
+				else
+					mob.tell("(no change)");
+			}
+		}
+		else
+			mob.tell("(no change)");
+	}
+	static void genAStats(MOB mob, CharClass R, String Field, String FieldName, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		CharStats S=new DefaultCharStats(0);
+		CoffeeMaker.setCharStats(S,R.getStat(Field));
+		StringBuffer parts=new StringBuffer("");
+		for(int i=0;i<S.TRAITS.length;i++)
+			if(S.getStat(i)!=0)
+				parts.append(Util.capitalize(S.TRAITS[i])+"("+S.getStat(i)+") ");
+		mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a stat name\n\r:","");
+		if(newName.length()>0)
+		{
+			int partNum=-1;
+			for(int i=0;i<S.TRAITS.length;i++)
+				if(newName.equalsIgnoreCase(S.TRAITS[i]))
+				{ partNum=i; break;}
+			if(partNum<0)
+			{
+				StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+				for(int i=0;i<S.TRAITS.length;i++)
+					str.append(S.TRAITS[i]+", ");
+				mob.tell(str.toString().substring(0,str.length()-2)+".");
+			}
+			else
+			{
+				newName=mob.session().prompt("Enter a value\n\r:","");
+				if(newName.length()>0)
+				{
+					S.setStat(partNum,Util.s_int(newName));
+					boolean zereoed=true;
+					for(int i=0;i<S.TRAITS.length;i++)
+					{
+						if(S.getStat(i)!=0)
+						{ zereoed=false; break;}
+					}
+					if(zereoed)
+						R.setStat(Field,"");
+					else
+						R.setStat(Field,CoffeeMaker.getCharStatsStr(S));
+				}
+				else
+					mob.tell("(no change)");
+			}
+		}
+		else
+			mob.tell("(no change)");
+	}
 	static void genResources(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -3031,6 +3353,78 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 	static void genOutfit(MOB mob, Race E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		while(true)
+		{
+			StringBuffer parts=new StringBuffer("");
+			int numResources=Util.s_int(E.getStat("NUMOFT"));
+			Vector V=new Vector();
+			for(int v=0;v<numResources;v++)
+			{
+				Item I=CMClass.getItem(E.getStat("GETOFTID"+v));
+				if(I!=null)
+				{
+					I.setMiscText(E.getStat("GETOFTPARM"+v));
+					I.recoverEnvStats();
+					parts.append(I.name()+", ");
+					V.addElement(I);
+				}
+			}
+			if(parts.toString().endsWith(", "))
+			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
+			mob.tell(showNumber+". Outfit: "+parts.toString()+".");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			String newName=mob.session().prompt("Enter an item name to remove or\n\rthe word new and an item name to add from your inventory\n\r:","");
+			if(newName.length()>0)
+			{
+				int partNum=-1;
+				for(int i=0;i<V.size();i++)
+					if(EnglishParser.containsString(((Item)V.elementAt(i)).name(),newName))
+					{ partNum=i; break;}
+				boolean updateList=false;
+				if(partNum<0)
+				{
+					if(!newName.toLowerCase().startsWith("new "))
+						mob.tell("That is neither an existing item name, or the word new followed by a valid item name.");
+					else
+					{
+						Item I=mob.fetchCarried(null,newName.substring(4).trim());
+						if(I!=null)
+						{
+							I=(Item)I.copyOf();
+							V.addElement(I);
+							mob.tell(I.name()+" added.");
+							updateList=true;
+						}
+
+					}
+				}
+				else
+				{
+					Item I=(Item)V.elementAt(partNum);
+					V.removeElementAt(partNum);
+					mob.tell(I.name()+" removed.");
+					updateList=true;
+				}
+				if(updateList)
+				{
+					E.setStat("NUMOFT","");
+					for(int i=0;i<V.size();i++)
+						E.setStat("GETOFTID"+i,((Item)V.elementAt(i)).ID());
+					for(int i=0;i<V.size();i++)
+						E.setStat("GETOFTPARM"+i,((Item)V.elementAt(i)).text());
+				}
+			}
+			else
+			{
+				mob.tell("(no change)");
+				return;
+			}
+		}
+	}
+	static void genOutfit(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3240,6 +3634,102 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
+	static void genClassAbilities(MOB mob, CharClass E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		while(true)
+		{
+			StringBuffer parts=new StringBuffer("");
+			int numResources=Util.s_int(E.getStat("NUMCABLE"));
+			Vector ables=new Vector();
+			Vector data=new Vector();
+			for(int v=0;v<numResources;v++)
+			{
+				Ability A=CMClass.getAbility(E.getStat("GETCABLE"+v));
+				if(A!=null)
+				{
+					parts.append("("+A.ID()+"/"+E.getStat("GETCABLELVL"+v)+"/"+E.getStat("GETCABLEQUAL"+v)+"/"+E.getStat("GETCABLEPROF"+v)+"), ");
+					ables.addElement(A);
+					data.addElement(A.ID()+";"+E.getStat("GETCABLELVL"+v)+";"+E.getStat("GETCABLEPROF"+v)+";"+E.getStat("GETCABLEGAIN"+v)+";"+E.getStat("GETCABLESECR"+v)+";"+E.getStat("GETCABLEPARM"+v));
+				}
+			}
+			if(parts.toString().endsWith(", "))
+			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
+			mob.tell(showNumber+". Class Abilities: "+parts.toString()+".");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			String newName=mob.session().prompt("Enter an ability name to add or remove\n\r:","");
+			if(newName.equalsIgnoreCase("?"))
+				mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+			else
+			if(newName.length()>0)
+			{
+				int partNum=-1;
+				for(int i=0;i<ables.size();i++)
+					if(EnglishParser.containsString(((Ability)ables.elementAt(i)).ID(),newName))
+					{ partNum=i; break;}
+				boolean updateList=false;
+				if(partNum<0)
+				{
+					Ability A=CMClass.getAbility(newName);
+					if(A==null)
+						mob.tell("That is neither an existing ability name, nor a valid one to add.  Use ? for a list.");
+					else
+					{
+						StringBuffer str=new StringBuffer(A.ID()+";");
+						String level=mob.session().prompt("Enter the level of this skill (1): ","1");
+						str.append((""+Util.s_int(level))+";");
+						String prof=mob.session().prompt("Enter the (default) profficiency level (0): ","0");
+						str.append((""+Util.s_int(prof))+";");
+						if(mob.session().confirm("Is this skill automatically gained (Y/n)?","Y"))
+							str.append("false;");
+						else
+							str.append("true;");
+						if(mob.session().confirm("Is this skill secret (N/y)?","N"))
+							str.append("false;");
+						else
+							str.append("true;");
+						String parm=mob.session().prompt("Enter any properties (): ","");
+						str.append(parm);
+						data.addElement(str.toString());
+						ables.addElement(A);
+						mob.tell(A.name()+" added.");
+						updateList=true;
+					}
+				}
+				else
+				{
+					Ability A=(Ability)ables.elementAt(partNum);
+					ables.removeElementAt(partNum);
+					data.removeElementAt(partNum);
+					updateList=true;
+					mob.tell(A.name()+" removed.");
+				}
+				if(updateList)
+				{
+					if(data.size()>0)
+						E.setStat("NUMCABLE",""+data.size());
+					else
+						E.setStat("NUMCABLE","");
+					for(int i=0;i<data.size();i++)
+					{
+						Vector V=Util.parseSemicolons((String)data.elementAt(i),false);
+						E.setStat("GETCABLE"+i,((String)V.elementAt(0)));
+						E.setStat("GETCABLELVL"+i,((String)V.elementAt(1)));
+						E.setStat("GETCABLEPROF"+i,((String)V.elementAt(2)));
+						E.setStat("GETCABLEGAIN"+i,((String)V.elementAt(3)));
+						E.setStat("GETCABLESECR"+i,((String)V.elementAt(4)));
+						E.setStat("GETCABLEPARM"+i,((String)V.elementAt(5)));
+					}
+				}
+			}
+			else
+			{
+				mob.tell("(no change)");
+				return;
+			}
+		}
+	}
 	static void genCulturalAbilities(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -3320,6 +3810,54 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
+	public static void modifyGenClass(MOB mob, CharClass me)
+		throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
+		while(!ok)
+		{
+			int showNumber=0;
+			
+			genText(mob,me,++showNumber,showFlag,"Name","NAME");
+			genText(mob,me,++showNumber,showFlag,"Base Class","BASE");
+			genBool(mob,me,++showNumber,showFlag,"Player Class","PLAYER");
+			genInt(mob,me,++showNumber,showFlag,"Min HP/Level","LVLMINHP");
+			genInt(mob,me,++showNumber,showFlag,"Max HP/Level","LVLMAXHP");
+			genInt(mob,me,++showNumber,showFlag,"Prac/Level","LVLPRAC");
+			genInt(mob,me,++showNumber,showFlag,"Mana/Level","LVLMANA");
+			genInt(mob,me,++showNumber,showFlag,"Attack/Level","LVLATT");
+			//genAttackAttribute(mob,me,++showNumber,showFlag,"ATTATT");
+			genInt(mob,me,++showNumber,showFlag,"Practices/1stLvl","FSTPRAC");
+			genInt(mob,me,++showNumber,showFlag,"Trains/1stLvl","FSTTRAN");
+			genInt(mob,me,++showNumber,showFlag,"Levels/Dmg Pt","LVLDAM");
+			genInt(mob,me,++showNumber,showFlag,"Moves/Level","LVLMOVE");
+			//genArmorCode(mob,me,++showNumber,showFlag,"ARMOR");
+			genText(mob,me,++showNumber,showFlag,"Limitations","STRLMT");
+			genText(mob,me,++showNumber,showFlag,"Bonuses","STRBON");
+			//genQualifications(mob,me,++showNumber,showFlag,"QUAL");
+			genEStats(mob,me,++showNumber,showFlag);
+			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
+			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
+			genAState(mob,me,++showNumber,showFlag);
+			//genWeaponRestr(mob,me,++showNumber,showFlag,"NUMWEP","GETWEP");
+			genOutfit(mob,me,++showNumber,showFlag);
+			genClassAbilities(mob,me,++showNumber,showFlag);
+			if(showFlag<-900){ ok=true; break;}
+			if(showFlag>0){ showFlag=-1; continue;}
+			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+			}
+		}
+	}
+
 	public static void modifyGenRace(MOB mob, Race me)
 		throws IOException
 	{
@@ -3334,11 +3872,11 @@ public class BaseGenerics extends StdCommand
 			int showNumber=0;
 			genText(mob,me,++showNumber,showFlag,"Name","NAME");
 			genCat(mob,me,++showNumber,showFlag);
-			genText(mob,me,++showNumber,showFlag,"Base Weight","BWEIGHT");
-			genText(mob,me,++showNumber,showFlag,"Weight Variance","VWEIGHT");
-			genText(mob,me,++showNumber,showFlag,"Base Male Height","MHEIGHT");
-			genText(mob,me,++showNumber,showFlag,"Base Female Height","FHEIGHT");
-			genText(mob,me,++showNumber,showFlag,"Height Variance","VHEIGHT");
+			genInt(mob,me,++showNumber,showFlag,"Base Weight","BWEIGHT");
+			genInt(mob,me,++showNumber,showFlag,"Weight Variance","VWEIGHT");
+			genInt(mob,me,++showNumber,showFlag,"Base Male Height","MHEIGHT");
+			genInt(mob,me,++showNumber,showFlag,"Base Female Height","FHEIGHT");
+			genInt(mob,me,++showNumber,showFlag,"Height Variance","VHEIGHT");
 			genBool(mob,me,++showNumber,showFlag,"Player Race","PLAYER");
 			genText(mob,me,++showNumber,showFlag,"Leaving text","LEAVE");
 			genText(mob,me,++showNumber,showFlag,"Arriving text","ARRIVE");

@@ -3543,6 +3543,32 @@ public class Import extends StdCommand
 					CMClass.DBEngine().DBCreateRace(R.ID(),R.racialParms());
 				}
 			}
+			else
+			if(custom.elementAt(c) instanceof CharClass)
+			{
+				CharClass C=(CharClass)custom.elementAt(c);
+				if(customBother.contains(C.ID()))
+				   continue;
+
+				CharClass C2=CMClass.getCharClass(C.ID());
+				if(C2==null)
+				{
+					if(!noPrompt)
+						if(!mob.session().confirm("Custom Char Class '"+C.ID()+"' found, import (Y/n)?","Y"))
+							continue;
+					CMClass.addCharClass(C);
+					CMClass.DBEngine().DBCreateClass(C.ID(),C.classParms());
+				}
+				else
+				if(!C2.isGeneric())
+				{
+					if(!noPrompt)
+						if(!mob.session().confirm("Custom Char Class '"+C.ID()+"' found which would override your standard class.  Import anyway (Y/n)?","Y"))
+							continue;
+					CMClass.addCharClass(C);
+					CMClass.DBEngine().DBCreateClass(C.ID(),C.classParms());
+				}
+			}
 		}
 	}
 

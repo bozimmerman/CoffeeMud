@@ -159,4 +159,10 @@ public class DBInterface implements DatabaseEngine
 	{ DataLoader.DBDeleteRace(raceID);}
 	public void DBCreateRace(String raceID,String data)
 	{ DataLoader.DBCreateRace(raceID,data);}
+	public Vector DBReadClasses()
+	{ return DataLoader.DBReadClasses();}
+	public void DBDeleteClass(String classID)
+	{ DataLoader.DBDeleteClass(classID);}
+	public void DBCreateClass(String classID,String data)
+	{ DataLoader.DBCreateClass(classID,data);}
 }

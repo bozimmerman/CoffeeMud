@@ -24,6 +24,7 @@ public class StdCharClass implements CharClass, Cloneable
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	protected Vector outfitChoices=null;
 
+	public boolean isGeneric(){return false;}
 	public boolean playerSelectable()
 	{
 		return false;
@@ -591,5 +592,38 @@ public class StdCharClass implements CharClass, Cloneable
 				MUDFight.postExperience(mob,killed,"",myAmount,false);
 			}
 		return beneficiaries;
+	}
+	public String classParms(){ return "";}
+	public void setClassParms(String parms){}
+	protected static String[] CODES={"CLASS","PARMS"};
+	public String getStat(String code){
+		switch(getCodeNum(code))
+		{
+		case 0: return ID();
+		case 1: return ""+classParms();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return;
+		case 1: setClassParms(val); break;
+		}
+	}
+	public String[] getStatCodes(){return CODES;}
+	protected int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public boolean sameAs(CharClass E)
+	{
+		if(!(E instanceof StdCharClass)) return false;
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+				return false;
+		return true;
 	}
 }

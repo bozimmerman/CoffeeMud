@@ -119,7 +119,8 @@ public class CMAble
 			{
 				String key=(String)e.nextElement();
 				CMAble able=(CMAble)ableMap.get(key);
-				if(able.qualLevel==level)
+				if((able.qualLevel==level)
+				&&(!V.contains(key)))
 					V.addElement(key);
 			}
 		}
@@ -151,6 +152,7 @@ public class CMAble
 				String key=(String)e.nextElement();
 				CMAble able=(CMAble)ableMap.get(key);
 				if((able.qualLevel<=level)
+				&&(!V.contains(key))
 				&&((!gainedOnly)||(able.autoGain)))
 					V.addElement(key);
 			}

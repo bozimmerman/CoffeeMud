@@ -603,7 +603,7 @@ public class StdAbility implements Ability, Cloneable
 		if(ok)
 		{
 			invoker=mob;
-			Ability newOne=(Ability)this.copyOf();
+			Ability newOne=(Ability)copyOf();
 			((StdAbility)newOne).canBeUninvoked=true;
 			if(tickAdjustmentFromStandard<=0)
 			{
