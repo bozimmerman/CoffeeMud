@@ -2754,7 +2754,7 @@ public class StdMOB implements MOB
 
 	public void delFollower(MOB follower)
 	{
-		if((follower!=null)&&(followers!=null)&&(!followers.contains(follower)))
+		if((follower!=null)&&(followers!=null)&&(followers.contains(follower)))
 		{
 			followers.removeElement(follower);
 			if(followers.size()==0) followers=null;
