@@ -1,5 +1,6 @@
 auction system (see mailing list)
 Improve maps to divide area into sections
+Common Skill: Weaving (Rope, Lasso, Whip, Basket, Mat, Quilt, Hammock, Net) Lasso (R1 weapon, 0 DMG, immobilizes ticks based on level, (RAND(20)+STR)-(RAND(20)+STR2)>0.  No Flee). Net (R1 Weapon) 0 DMG, no Fly, same as Rope, but DEX, not STR)
 Bard Subclasses
 
 //****** next version ********************************************************

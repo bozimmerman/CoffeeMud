@@ -1,5 +1,15 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
 
-public class Skill_Prayercraft
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Skill_Prayercraft extends Skill_Spellcraft
 {
+	public String ID() { return "Skill_Prayercraft"; }
+	public String name(){ return "Prayercraft";}
+	public Environmental newInstance(){	return new Skill_Prayercraft();}
+	public int craftType(){return Ability.PRAYER;}
 }

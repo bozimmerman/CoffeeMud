@@ -14,7 +14,7 @@ public class Bard extends StdCharClass
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusManaLevel(){return 8;}
 	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.DEXTERITY;}
+	public int getAttackAttribute(){return CharStats.CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 4;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	private static boolean abilitiesLoaded=false;
@@ -123,19 +123,13 @@ public class Bard extends StdCharClass
 		return true;
 	}
 
-	public String statQualifications(){return "Charisma 9+, Dexterity 9+";}
+	public String statQualifications(){return "Charisma 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.CHARISMA) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Charisma to become a Bard.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY) <= 8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Dexterity to become a Bard.");
 			return false;
 		}
 		if(!(mob.charStats().getMyRace().ID().equals("Human"))
