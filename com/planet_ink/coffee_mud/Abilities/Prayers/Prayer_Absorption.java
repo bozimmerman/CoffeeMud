@@ -63,6 +63,9 @@ public class Prayer_Absorption extends Prayer
 			else
 			if(absorbed.isAutoInvoked())
 				absorbed=null;
+			else
+			if(CMAble.qualifyingLevel(mob,absorbed)>0)
+				absorbed=null;
 		}
 		
 		if(!super.invoke(mob,commands,givenTarget,auto))

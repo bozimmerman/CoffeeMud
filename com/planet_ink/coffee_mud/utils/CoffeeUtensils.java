@@ -171,6 +171,9 @@ public class CoffeeUtensils
 	public static Room roomLocation(Environmental E)
 	{
 		if(E==null) return null;
+		if(E instanceof Room)
+			return (Room)E;
+		else
 		if(E instanceof MOB)
 			return ((MOB)E).location();
 		else

@@ -131,12 +131,12 @@ public class Prop_RideSpellCast extends Property
 					if((!lastRiders.contains(M))&&(RI.amRiding(M)))
 						addMeIfNeccessary(M);
 				}
-				for(int i=lastRiders.size()-1;i>=0;i--)
-				{
-					MOB M=(MOB)lastRiders.elementAt(i);
-					if(!RI.amRiding(M))
-						removeMyAffectsFromRider(M);
-				}
+			}
+			for(int i=lastRiders.size()-1;i>=0;i--)
+			{
+				MOB M=(MOB)lastRiders.elementAt(i);
+				if(!RI.amRiding(M))
+					removeMyAffectsFromRider(M);
 			}
 		}
 		super.affectEnvStats(affectedMOB,affectableStats);
