@@ -4,8 +4,12 @@ webmacro ANNOUNCE Make announcements without having to log into the game, makes 
 webmacro DUMPFILE To view some text file on your computer through the MUD without  having to log on or ebing on the host PC.
 webmacro LIST Maybe a system for the command LIST, wouldnt be as easy implemented  as some of the above (SHUTDOWN for example could just be a button on  a .cmvp page)
 
+pets dont go away when players quit
+loading a new command doesn't appear to work
+
+I'd also like to tie commands to particular items and locations,which I'm presuming is possible in this codebase.
+
 If there is no TELL LAST thing, just take this as an IDEA then.
-Might just be our system, but, in combat, if you type ‘laugh’ you get the whole social list.
 
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 In the Archon's Guide, small arrangement of links to various parts of the webpage 

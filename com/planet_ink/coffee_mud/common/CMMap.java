@@ -182,13 +182,8 @@ public class CMMap
 		if(R.roomID().length()>0) return R.roomID();
 		Area A=R.getArea();
 		if(A==null) return "";
-		for(Enumeration e=A.getMap();e.hasMoreElements();)
-		{
-			Room anyR=(Room)e.nextElement();
-			if((anyR instanceof GridLocale)
-			&&(((GridLocale)anyR).isMyChild(R)))
-				return ((GridLocale)anyR).getChildCode(R);
-		}
+		if(R.getGridParent()!=null)
+			return R.getGridParent().getChildCode(R);
 		return R.roomID();
 	}
 

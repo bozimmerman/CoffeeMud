@@ -77,6 +77,8 @@ public interface Room extends Environmental
 
 	public Area getArea();
 	public void setArea(Area newArea);
+	public void setGridParent(GridLocale room);
+	public GridLocale getGridParent();
 
 	public Exit[] rawExits();
 	public Room[] rawDoors();

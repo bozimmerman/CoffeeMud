@@ -26,6 +26,7 @@ public class StdRoom
 	protected int domainCondition=Room.CONDITION_NORMAL;
 	protected int maxRange=-1; // -1 = use indoor/outdoor algorithm
 	protected boolean mobility=true;
+	protected GridLocale gridParent=null;
 	protected long tickStatus=Tickable.STATUS_NOT;
 
 	// base move points and thirst points per round
@@ -215,6 +216,9 @@ public class StdRoom
 		myArea=newArea;
 	}
 
+	public void setGridParent(GridLocale room){gridParent=room;}
+	public GridLocale getGridParent(){return gridParent;}
+	
 	public void giveASky(int depth)
 	{
 		if(skyedYet) return;

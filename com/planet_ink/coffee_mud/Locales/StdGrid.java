@@ -69,30 +69,8 @@ public class StdGrid extends StdRoom implements GridLocale
 		getBuiltGrid();
 
 		Room oldLoc=loc;
-		if(loc.roomID().length()==0) // might be a child of an adjacent grid!
-		{
-			if((doors[opDirection] instanceof GridLocale)&&(((GridLocale)doors[opDirection]).isMyChild(loc)))
-				loc=doors[opDirection];
-			else
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				if((doors[d] instanceof GridLocale)&&(((GridLocale)doors[d]).isMyChild(loc)))
-				{	loc=doors[d]; break;}
-			if(loc==oldLoc)
-				for(Enumeration e=loc.getArea().getMap();e.hasMoreElements();)
-				{
-					Room R=(Room)e.nextElement();
-					if((R instanceof GridLocale)&&(((GridLocale)R).isMyChild(loc)))
-					{	loc=R; break;}
-				}
-			if(loc==oldLoc)
-				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
-				{
-					Room R=(Room)e.nextElement();
-					if((R instanceof GridLocale)&&(((GridLocale)R).isMyChild(loc)))
-					{	loc=R; break;}
-				}
-		}
-
+		if(loc.getGridParent()!=null)
+			loc=loc.getGridParent();
 		if((oldLoc!=loc)&&(loc instanceof GridLocale))
 		{
 			Room[][] grid=getBuiltGrid();
@@ -350,6 +328,7 @@ public class StdGrid extends StdRoom implements GridLocale
 						}
 					}
 					CMMap.delRoom(room);
+					room.setGridParent(null);
 				}
 			subMap=null;
 		}
@@ -415,6 +394,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if((x<0)||(y<0)||(y>=subMap[0].length)||(x>=subMap.length)) return null;
 		Room gc=CMClass.getLocale(getChildLocaleID());
 		gc.setRoomID("");
+		gc.setGridParent(this);
 		gc.setArea(getArea());
 		gc.setDisplayText(displayText());
 		gc.setDescription(description());
