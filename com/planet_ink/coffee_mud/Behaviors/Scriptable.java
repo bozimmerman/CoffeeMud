@@ -5,19 +5,13 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Scriptable extends ActiveTicker
+public class Scriptable extends StdBehavior
 {
 	public String ID(){return "Scriptable";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	private Vector scripts=null;
-	private boolean wasDeadBefore=false;
+	private MOB lastToHurtMe=null;
 	private Room lastKnownLocation=null;
-
-	public Scriptable()
-	{
-		minTicks=10; maxTicks=30; chance=50;
-		tickReset();
-	}
 
 	public Behavior newInstance()
 	{
@@ -34,7 +28,12 @@ public class Scriptable extends ActiveTicker
 	private Vector parseScripts(String text)
 	{
 		Vector V=new Vector();
-		while(text.length()>0)
+		if(text.startsWith("LOAD="))
+		{
+			StringBuffer buf=Resources.getFileResource(text.substring(5));
+			if(buf!=null) text=buf.toString();
+		}
+		while((text!=null)&&(text.length()>0))
 		{
 			int y=text.indexOf("~");
 			if(y<0)
@@ -326,7 +325,7 @@ public class Scriptable extends ActiveTicker
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
 				if((E==null)||(!(E instanceof MOB))||(!(((MOB)E).location()==null)))
 					break;
-				returnable=(((MOB)E).amFollowing()==null)||(((MOB)E).amFollowing().location()!=lastKnownLocation);
+				returnable=!(((MOB)E).amFollowing()==null)||(((MOB)E).amFollowing().location()!=lastKnownLocation);
 			}
 			else
 			if(preFab.equals("HITPRCNT"))
@@ -370,9 +369,8 @@ public class Scriptable extends ActiveTicker
 			else
 			if(preFab.equals("INROOM"))
 			{
-				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=monster;
 				if((E==null)||(!(E instanceof MOB))||(!(((MOB)E).location()==null))||(arg2.length()==0))
 					break;
 				returnable=((MOB)E).location().ID().equalsIgnoreCase(arg2);
@@ -673,25 +671,25 @@ public class Scriptable extends ActiveTicker
 				while((room!=null)&&(monster!=null)&&(room.numInhabitants()>1)&&(room.isInhabitant(monster))&&((randMOB==null)||(randMOB==monster)))
 					randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
 				if(randMOB!=null)
-					middle=randMOB.charStats().hisher()+"s";
+					middle=randMOB.charStats().heshe();
 				break;
 			case 'k':
 				if(monster!=null)
-					middle=monster.charStats().hisher()+"s";
+					middle=monster.charStats().hisher();
 				break;
 			case 'm':
 				if(source!=null)
-					middle=source.charStats().hisher()+"s";
+					middle=source.charStats().hisher();
 				break;
 			case 'M':
 				if((target!=null)&&(target instanceof MOB))
-					middle=((MOB)target).charStats().hisher()+"s";
+					middle=((MOB)target).charStats().hisher();
 				break;
 			case 'K':
 				while((room!=null)&&(monster!=null)&&(room.numInhabitants()>1)&&(room.isInhabitant(monster))&&((randMOB==null)||(randMOB==monster)))
 					randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
 				if(randMOB!=null)
-					middle=randMOB.charStats().hisher()+"s";
+					middle=randMOB.charStats().hisher();
 				break;
 			case 'o':
 			case 'O':
@@ -824,7 +822,10 @@ public class Scriptable extends ActiveTicker
 				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
-					lastKnownLocation.showSource(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s.substring(8).trim()));
+				{
+					s=s.substring(s.indexOf(Util.getBit(s,1))+Util.getBit(s,1).length()).trim();
+					lastKnownLocation.showSource(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s));
+				}
 			}
 			else
 			if(cmd.equals("MPECHOAROUND"))
@@ -832,11 +833,24 @@ public class Scriptable extends ActiveTicker
 				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
-					lastKnownLocation.showOthers(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s.substring(8).trim()));
+				{
+					s=s.substring(s.indexOf(Util.getBit(s,1))+Util.getBit(s,1).length()).trim();
+					lastKnownLocation.showOthers(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s));
+				}
 			}
 			else
 			if(cmd.equals("MPCAST"))
 			{
+				String cast=Util.getBit(s,1);
+				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,2));
+				Ability A=null;
+				if(cast!=null) A=CMClass.findAbility(cast);
+				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				if((newTarget!=null)&&(A!=null))
+				{
+					A.setProfficiency(100);
+					A.invoke(monster,newTarget,false);
+				}
 			}
 			else
 			if(cmd.equals("MPKILL"))
@@ -878,7 +892,7 @@ public class Scriptable extends ActiveTicker
 				String roomName=Util.getBit(s,1);
 				if(roomName.length()>0)
 				{
-					s=s.substring(s.indexOf(roomName)+roomName.length()).trim();
+					s=s.substring(s.indexOf(Util.getBit(s,1))+Util.getBit(s,1).length()).trim();
 					Room goHere=getRoom(roomName,lastKnownLocation);
 					if(goHere!=null)
 					{
@@ -902,7 +916,7 @@ public class Scriptable extends ActiveTicker
 				String roomName=Util.getBit(s,1);
 				if(roomName.length()>0)
 				{
-					s=s.substring(s.indexOf(roomName)+roomName.length()).trim();
+					s=s.substring(s.indexOf(Util.getBit(s,1))+Util.getBit(s,1).length()).trim();
 					Room goHere=getRoom(roomName,lastKnownLocation);
 					if(goHere!=null)
 					{
@@ -981,11 +995,7 @@ public class Scriptable extends ActiveTicker
 		if(!(affecting instanceof MOB)) return;
 		MOB monster=(MOB)affecting;
 		if(!monster.amDead())
-		{
-			if(wasDeadBefore)
-				wasDeadBefore=false;
 			lastKnownLocation=monster.location();
-		}
 		else
 			return;
 
@@ -1024,6 +1034,21 @@ public class Scriptable extends ActiveTicker
 
 			}
 
+			if(affect.amISource(monster)
+			&&(affect.sourceMinor()==Affect.TYP_DEATH)
+			&&(trigger.startsWith("DEATH_PROG")))
+			{
+				MOB src=lastToHurtMe;
+				if((src==null)||(src.location()!=monster.location()))
+				   src=monster;
+				execute(src,monster,monster,null,null,script);
+			}
+			
+			if(affect.amITarget(monster)
+			&&((affect.targetCode()&Affect.MASK_HURT)>0)
+			&&(affect.source()!=monster))
+				lastToHurtMe=affect.source();
+				
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_SPEAK:
@@ -1122,18 +1147,14 @@ public class Scriptable extends ActiveTicker
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
+		if(ticking instanceof MOB)
 		{
 			MOB mob=(MOB)ticking;
 			if(scripts==null)
 				scripts=parseScripts(getParms());
 
 			if(!mob.amDead())
-			{
-				if(wasDeadBefore)
-					wasDeadBefore=false;
 				lastKnownLocation=mob.location();
-			}
 
 			for(int v=0;v<scripts.size();v++)
 			{
@@ -1160,12 +1181,6 @@ public class Scriptable extends ActiveTicker
 					int floor=(int)Math.round(Util.mul(Util.div(Util.s_int(Util.getBit(trigger,1)),100.0),mob.maxState().getHitPoints()));
 					if(mob.curState().getHitPoints()<=floor)
 						execute(mob.getVictim(),mob,mob,null,null,script);
-				}
-				else
-				if((trigger.startsWith("DEATH_PROG"))&&(mob.amDead())&&(!wasDeadBefore))
-				{
-					wasDeadBefore=true;
-					execute(mob,mob,mob,null,null,script);
 				}
 			}
 		}

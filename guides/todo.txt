@@ -1,6 +1,3 @@
-Deadly weak-bridge exit.  If too much weight, you fall and die.
-Deadly rope-bridge or narrow ledge exit.  Balance required not to fall and die.  Dex check for most, or Balance skill for thieves.  
-add grid dimensions fields and to the grinder and editor
 Behavior -- Rejuv -- for total area/room rejuv rates.
 Law against being undead
 problems flying during storms
@@ -15,6 +12,8 @@ add fountain, pit to the mason skill.
 add Arch to mason, that modifies an open passageway with a Majestic Arch
 possible to have NE SE SW NW directions?
 rain/snow/swim causes some metals to rust (take minute damage).
+Deadly weak-bridge exit.  If too much weight, you fall and die.
+Deadly rope-bridge or narrow ledge exit.  Balance required not to fall and die.  Dex check for most, or Balance skill for thieves.  
 Amnesia as a disease
 prop_reflecting to reflect spell damage back to the caster, put on shield items
 eggs that hatch
