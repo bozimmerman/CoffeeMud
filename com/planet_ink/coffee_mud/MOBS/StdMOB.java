@@ -1001,6 +1001,14 @@ public class StdMOB implements MOB
 
 			switch(affect.sourceMinor())
 			{
+			case Affect.TYP_JUSTICE:
+				if((affect.target()!=null)
+				&&(affect.target() instanceof Item))
+				{
+					tell("Not while you are fighting!");
+					return false;
+				}
+				break;
 			case Affect.TYP_BUY:
 			case Affect.TYP_CLOSE:
 			case Affect.TYP_DELICATE_HANDS_ACT:

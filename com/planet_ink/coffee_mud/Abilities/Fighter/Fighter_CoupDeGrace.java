@@ -69,7 +69,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 		else 
 			levelDiff=0;
 		mob.curState().adjMovement(-150,mob.maxState());
-		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.CONSTITUTION)*2));
+		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.CONSTITUTION)*3));
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(chance,auto)&&(hit);
 		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/2))))
@@ -78,7 +78,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				if(dmg<50) target.curState().setHitPoints(0);
+				target.curState().setHitPoints(0);
 				ExternalPlay.postDamage(mob,target,ww,dmg,Affect.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"<S-NAME> rear(s) back and Coup de Graces <T-NAME>!");
 				mob.location().recoverRoomStats();
 			}

@@ -153,6 +153,7 @@ public class Amputation extends StdAbility
 				}
 				break;
 			case Affect.TYP_DELICATE_HANDS_ACT:
+			case Affect.TYP_JUSTICE:
 			case Affect.TYP_FILL:
 			case Affect.TYP_GIVE:
 			case Affect.TYP_HANDS:

@@ -61,6 +61,7 @@ public class Chant_WhisperWard extends Chant
 			&&((affect.targetMinor()==Affect.TYP_OPEN)
 				 ||(affect.targetMinor()==Affect.TYP_GIVE)
 				 ||(affect.targetMinor()==Affect.TYP_DELICATE_HANDS_ACT)
+				 ||(affect.targetMinor()==Affect.TYP_JUSTICE)
 				 ||(affect.targetMinor()==Affect.TYP_GENERAL)
 				 ||(affect.targetMinor()==Affect.TYP_LOCK)
 				 ||(affect.targetMinor()==Affect.TYP_PULL)

@@ -75,16 +75,22 @@ public class Thief_Swipe extends ThiefSkill
 				else
 					str="<S-NAME> attempt(s) to pick <T-HIS-HER> pocket, but nothing was found to steal!";
 
+			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
-			int hisCode=Affect.MSG_DELICATE_HANDS_ACT;
+			int hisCode=Affect.MSG_THIEF_ACT| ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
-			else
-				hisCode=hisCode | ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
+				
+			
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
+				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))
+				{
+					if(target.getVictim()==mob)
+						target.makePeace();
+				}
 				mob.setMoney(mob.getMoney()+goldTaken);
 				mob.recoverEnvStats();
 				target.setMoney(target.getMoney()-goldTaken);

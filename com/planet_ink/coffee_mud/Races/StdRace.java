@@ -60,6 +60,15 @@ public class StdRace implements Race
 		{
 			switch(affect.sourceMinor())
 			{
+			case Affect.TYP_JUSTICE:
+				if((affect.target()!=null)
+				&&(affect.target() instanceof Item)
+				&&(forbiddenWornBits()&Item.HELD)>0)
+				{
+					myChar.tell("Your anatomy prevents you from doing that.");
+					return false;
+				}
+				break;
 			case Affect.TYP_CLOSE:
 			case Affect.TYP_DELICATE_HANDS_ACT:
 			case Affect.TYP_DROP:

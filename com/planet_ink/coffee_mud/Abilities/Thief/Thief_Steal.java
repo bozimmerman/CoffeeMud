@@ -70,17 +70,21 @@ public class Thief_Steal extends ThiefSkill
 				else
 					str="<S-NAME> attempt(s) to steal from <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
 
+			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
-			int hisCode=Affect.MSG_DELICATE_HANDS_ACT;
+			int hisCode=Affect.MSG_THIEF_ACT | ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
-			else
-				hisCode=Affect.MSG_THIEF_ACT | ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
 			
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
+				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))
+				{
+					if(target.getVictim()==mob)
+						target.makePeace();
+				}
 				msg=new FullMsg(target,stolen,null,Affect.MSG_DROP,Affect.MSG_DROP,Affect.MSG_NOISE,null);
 				if(target.location().okAffect(msg))
 				{

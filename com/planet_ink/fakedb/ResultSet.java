@@ -8,6 +8,7 @@ class ResultSet implements java.sql.ResultSet
    private Statement statement;
    private Backend.Relation relation;
    private java.util.Iterator iter;
+   private int currentRow=0;
    private int conditionIndex;
    private String conditionValue;
    private final String[] values;
@@ -19,6 +20,7 @@ class ResultSet implements java.sql.ResultSet
       relation=r;
       conditionIndex=ci;
       conditionValue=cv;
+	  currentRow=0;
       values=new String[r.attributes.length];
       nullIndicators=new boolean[values.length];
 
@@ -38,13 +40,16 @@ class ResultSet implements java.sql.ResultSet
          if ((conditionIndex<0)&&(conditionValue!=null)) {
             String key=(String)iter.next();
             if(!key.startsWith(conditionValue+"\n")) continue;
+			currentRow++;
 	        return relation.getRecord(nullIndicators,values,(Backend.RecordInfo)relation.index.get(key));
          } else {
-            if (!relation.getRecord(nullIndicators,values,(Backend.RecordInfo)iter.next())) return false;
+            if (!relation.getRecord(nullIndicators,values,(Backend.RecordInfo)iter.next())) 
+				return false;
             if (conditionIndex>=0) {
                if (nullIndicators[conditionIndex]) continue;
                if (!conditionValue.equals(values[conditionIndex])) continue;
             }
+			currentRow++;
             return true;
          }
       }
@@ -378,13 +383,29 @@ class ResultSet implements java.sql.ResultSet
    public void cancelRowUpdates() throws java.sql.SQLException { throw new java.sql.SQLException(); }
    public void insertRow() throws java.sql.SQLException { throw new java.sql.SQLException(); }
    public void refreshRow() throws java.sql.SQLException { throw new java.sql.SQLException(); }
-   public int getRow() { return 0; }
+   public int getRow()  { 	return currentRow;  }
    public boolean first() { return false; }
-   public boolean previous() { return false; }
+   public boolean previous() {  return false;  }
    public boolean isFirst() { return false; }
-   public boolean last() { return false; }
+   public boolean last() 
+   { 
+	   try{
+		   while(next());
+	   }
+	   catch(java.sql.SQLException sqle){}
+	   return true;
+   }
    public boolean isLast() { return false; }
-   public void beforeFirst() throws java.sql.SQLException { throw new java.sql.SQLException(); }
+   public void beforeFirst() throws java.sql.SQLException 
+   { 
+	   if(relation==null)
+		   throw new java.sql.SQLException(); 
+      if ((conditionIndex<0)&&(conditionValue!=null)) {
+         iter=relation.index.keySet().iterator();
+      } else {
+         iter=relation.index.values().iterator();
+      }
+   }
    public boolean isBeforeFirst() { return false; }
    public void afterLast() throws java.sql.SQLException { throw new java.sql.SQLException(); }
    public boolean isAfterLast() { return false; }

@@ -220,6 +220,7 @@ public class TheFight
 						   String allDisplayMessage)
 	{
 		if((attacker==null)||(target==null)||(target.location()==null)) return;
+		if(damage>=1024) damage=1023;
 		if(allDisplayMessage!=null) allDisplayMessage="^F"+allDisplayMessage+"^?";
 		FullMsg msg=new FullMsg(attacker,target,weapon,messageCode,Affect.MASK_HURT+damage,messageCode,allDisplayMessage);
 		if(target.location().okAffect(msg))
@@ -228,6 +229,7 @@ public class TheFight
 			if(Util.bset(targetCode,Affect.MASK_HURT))
 			{
 				damage=targetCode-Affect.MASK_HURT;
+				if(damage>=1024) damage=1023;
 				targetCode=Affect.MASK_HURT+damage;
 			}
 			
@@ -826,6 +828,7 @@ public class TheFight
 		if(source==null) return;
 		if(!source.mayIFight(target)) return;
 		int damageInt=source.adjustedDamage(weapon,target);
+		if(damageInt>=1024) damageInt=1023;
 		if(success)
 		{
             // calculate Base Damage (with Strength bonus)
@@ -841,13 +844,15 @@ public class TheFight
 			{
 				if((msg.targetCode()&Affect.MASK_HURT)==Affect.MASK_HURT)
 				{
-					String newMsg="^F"+weapon.hitString(msg.targetCode()-Affect.MASK_HURT)+"^?";
+					damageInt=msg.targetCode()-Affect.MASK_HURT;
+					if(damageInt>=1024) damageInt=1023;
+					String newMsg="^F"+weapon.hitString(damageInt)+"^?";
 					msg.modify(msg.source(),
 							   msg.target(),
 							   msg.tool(),
 							   msg.sourceCode(),
 							   newMsg,
-							   msg.targetCode(),
+							   Affect.MASK_HURT+damageInt,
 							   newMsg,
 							   msg.othersCode(),
 							   newMsg);

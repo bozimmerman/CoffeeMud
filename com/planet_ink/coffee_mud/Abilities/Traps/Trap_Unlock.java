@@ -27,6 +27,7 @@ public class Trap_Unlock extends Trap_Trap
 		if(affect.amITarget(affected))
 		{
 			if((affect.targetMinor()==Affect.TYP_UNLOCK)
+			||(affect.targetMinor()==Affect.TYP_JUSTICE)
 			||(affect.targetMinor()==Affect.TYP_DELICATE_HANDS_ACT))
 			{
 				spring(affect.source());
