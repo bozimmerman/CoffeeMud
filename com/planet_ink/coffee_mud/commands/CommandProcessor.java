@@ -58,13 +58,13 @@ public class CommandProcessor
 					if(mob.isASysOp(mob.location()))
 						arcHelp(mob,Util.combine(commands,1));
 					else
-						mob.tell("Only an Archon should even care...\n\r");
+						mob.tell("You are not powerful enough to even care.\n\r");
 					break;
 				case CommandSet.ARCTOPICS:
 					if(mob.isASysOp(mob.location()))
 						arcTopics(mob);
 					else
-						mob.tell("Only an Archon should even care...\n\r");
+						mob.tell("You are not powerful enough to even care.\n\r");
 					break;
 				case CommandSet.AREAS:
 					scoring.areas(mob);
@@ -116,7 +116,7 @@ public class CommandProcessor
 					if(mob.isASysOp(mob.location()))
 						createEdit.create(mob,commands);
 					else
-						mob.tell("Only the Archons may create.\n\r");
+						mob.tell("You lack the power of creation.\n\r");
 					break;
 				case CommandSet.CREDITS:
 					credits(mob);
@@ -128,7 +128,7 @@ public class CommandProcessor
 					if(mob.isASysOp(mob.location()))
 						createEdit.destroy(mob,commands);
 					else
-						mob.tell("Only the Archons may destroy things this way.  Did you mean kill?\n\r");
+						mob.tell("You lack the power to destroy things this way.  Did you mean kill?\n\r");
 					break;
 				case CommandSet.DOWN:
 					movement.move(mob,Directions.DOWN,false);
@@ -215,7 +215,7 @@ public class CommandProcessor
 					if(mob.isASysOp(mob.location()))
 						createEdit.link(mob,commands);
 					else
-						mob.tell("Only the Archons may link rooms.\n\r");
+						mob.tell("You lack the power to link rooms.\n\r");
 					break;
 				case CommandSet.LOCK:
 					movement.lock(mob,Util.combine(commands,1));
@@ -227,7 +227,7 @@ public class CommandProcessor
 					if(mob.isASysOp(mob.location()))
 						createEdit.edit(mob,commands);
 					else
-						mob.tell("Only the Archons may modify things.\n\r");
+						mob.tell("You lack the power to modify things.\n\r");
 					break;
 				case CommandSet.NOANSI:
 					if(!mob.isMonster())
