@@ -13,6 +13,16 @@ public class DoorwayGuardian extends StdBehavior
 		return new DoorwayGuardian();
 	}
 
+	public Exit getParmExit(MOB monster)
+	{
+		if(getParms().length()==0) return null;
+		int dir=Directions.getGoodDirectionCode(getParms());
+		if(dir<0) return null;
+		if(monster.location()==null) return null;
+		return monster.location().getExitInDir(dir);
+	}
+	
+	
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
@@ -26,34 +36,41 @@ public class DoorwayGuardian extends StdBehavior
 		if(affect.target()==null) return true;
 		if(!Sense.canBeSeenBy(affect.source(),oking))
 			return true;
-		if(affect.target() instanceof Exit)
+		if(mob.location()==monster.location())
 		{
-			Exit exit=(Exit)affect.target();
-			if(!exit.hasADoor()) return true;
-
-			if(affect.targetMinor()!=Affect.TYP_CLOSE)
+			if(affect.target() instanceof Exit)
 			{
-				FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> leave.");
+				Exit exit=(Exit)affect.target();
+				if(!exit.hasADoor()) return true;
+				Exit texit=getParmExit(monster);
+				if((texit!=null)&&(texit!=exit)) return true;
+
+				if(affect.targetMinor()!=Affect.TYP_CLOSE)
+				{
+					FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
+					if(monster.location().okAffect(msgs))
+					{
+						monster.location().send(monster,msgs);
+						return false;
+					}
+				}
+			}
+			else
+			if((affect.tool()!=null)
+			&&(affect.target() instanceof Room)
+			&&(affect.tool() instanceof Exit))
+			{
+				Exit exit=(Exit)affect.tool();
+				if(!exit.hasADoor()) return true;
+				Exit texit=getParmExit(monster);
+				if((texit!=null)&&(texit!=exit)) return true;
+				
+				FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
 				if(monster.location().okAffect(msgs))
 				{
 					monster.location().send(monster,msgs);
 					return false;
 				}
-			}
-		}
-		else
-		if((affect.tool()!=null)
-		&&(affect.target() instanceof Room)
-		&&(affect.tool() instanceof Exit))
-		{
-			Exit exit=(Exit)affect.tool();
-			if(!exit.hasADoor())
-				return true;
-			FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> leave.");
-			if(monster.location().okAffect(msgs))
-			{
-				monster.location().send(monster,msgs);
-				return false;
 			}
 		}
 		return true;

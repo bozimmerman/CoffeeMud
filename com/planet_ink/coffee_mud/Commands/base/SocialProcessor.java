@@ -12,6 +12,8 @@ public class SocialProcessor
 	{
 		if(itemID.toUpperCase().trim().endsWith(" COINS"))
 			itemID=itemID.substring(0,itemID.length()-6);
+		if(itemID.toUpperCase().trim().endsWith(" GOLD"))
+			itemID=itemID.substring(0,itemID.length()-5);
 		int gold=Util.s_int(itemID);
 		if(gold>0)
 		{
@@ -325,10 +327,7 @@ public class SocialProcessor
 				mob.location().send(mob,newMsg);
 			else
 			if(giveThis instanceof Coins)
-			{
-				mob.setMoney(mob.getMoney()+((Coins)giveThis).numberOfCoins());
-				((Coins)giveThis).destroyThis();
-			}
+				((Coins)giveThis).putCoinsBack();
 		}
 	}
 

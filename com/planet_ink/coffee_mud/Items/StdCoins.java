@@ -52,6 +52,57 @@ public class StdCoins extends StdItem implements Coins
 		envStats=baseEnvStats.cloneStats();
 		goldValue=envStats().ability();
 	}
+	
+	public boolean putCoinsBack()
+	{
+		Coins alternative=null;
+		if(owner() instanceof Room)
+		{
+			Room R=(Room)owner();
+			for(int i=0;i<R.numItems();i++)
+			{
+				Item I=R.fetchItem(i);
+				if((I!=null)
+				   &&(I!=this)
+				   &&(I instanceof Coins)
+				   &&(I.container()==container()))
+				{
+					alternative=(Coins)I;
+					break;
+				}
+			}
+		}
+		else
+		if(owner() instanceof MOB)
+		{
+			MOB M=(MOB)owner();
+			if(container()==null)
+			{
+				M.setMoney(M.getMoney()+numberOfCoins());
+				destroyThis();
+				return true;
+			}
+			for(int i=0;i<M.inventorySize();i++)
+			{
+				Item I=M.fetchInventory(i);
+				if((I!=null)
+				   &&(I!=this)
+				   &&(I instanceof Coins)
+				   &&(I.container()==container()))
+				{
+					alternative=(Coins)I;
+					break;
+				}
+			}
+		}
+		if(alternative!=null)
+		{
+			alternative.setNumberOfCoins(alternative.numberOfCoins()+numberOfCoins());
+			destroyThis();
+			return true;
+		}
+		return false;
+	}
 
 	public void affect(Affect affect)
 	{

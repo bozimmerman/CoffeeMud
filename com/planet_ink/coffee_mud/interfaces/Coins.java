@@ -4,4 +4,5 @@ public interface Coins extends Item
 {
 	public int numberOfCoins();
 	public void setNumberOfCoins(int number);
+	public boolean putCoinsBack();
 }

@@ -19,16 +19,20 @@ public class Construction extends CommonSkill
 	private final static int BUILD_GATE=3;
 	private final static int BUILD_FENCE=4;
 	private final static int BUILD_DEMOLISH=5;
-	private final static int BUILD_STAIRS=6;
+	private final static int BUILD_TITLE=6;
+	private final static int BUILD_DESC=7;
+	private final static int BUILD_STAIRS=8;
 	
-	private final static String[] names={"Wall","Door","Roof","Gate","Fence","Demolish","Stairs"};
-	private final static int[] woodReq={100,125,500,50,50,0,350};
+	private final static String[] names={"Wall","Door","Roof","Gate","Fence","Demolish","Title","Description","Stairs"};
+	private final static int[] woodReq={100,125,350,50,50,0,0,0,350};
 	
 	private Room room=null;
 	private int dir=-1;
 	private int doingCode=-1;
 	private boolean messedUp=false;
 	private static boolean mapped=false;
+	private String designTitle="";
+	private String designDescription="";
 	
 	public Construction()
 	{
@@ -67,6 +71,12 @@ public class Construction extends CommonSkill
 						break;
 					case BUILD_GATE:
 						commonTell(mob,"You've ruined the gate!");
+						break;
+					case BUILD_TITLE:
+						commonTell(mob,"You've ruined the titling!");
+						break;
+					case BUILD_DESC:
+						commonTell(mob,"You've ruined the describing!");
 						break;
 					case BUILD_DEMOLISH:
 					default:
@@ -147,6 +157,18 @@ public class Construction extends CommonSkill
 							ExternalPlay.DBUpdateExits(room);
 						}
 						break;
+					case BUILD_TITLE:
+						{
+							room.setDisplayText(designTitle);
+							ExternalPlay.DBUpdateRoom(room);
+						}
+						break;
+					case BUILD_DESC:
+						{
+							room.setDisplayText(designTitle);
+							ExternalPlay.DBUpdateRoom(room);
+						}
+						break;
 					case BUILD_GATE:
 						{
 							Exit X=CMClass.getExit("GenExit");
@@ -221,6 +243,8 @@ public class Construction extends CommonSkill
 			return true;
 		}
 			
+		designTitle="";
+		designDescription="";
 		String startStr=null;
 		int completion=35;
 		doingCode=-1;
@@ -242,7 +266,8 @@ public class Construction extends CommonSkill
 		}
 		String dirName=(String)commands.lastElement();
 		dir=Directions.getGoodDirectionCode(dirName);
-		if(((dir<0)||(dir>3))&&(doingCode!=BUILD_ROOF))
+		if(((dir<0)||(dir>3))
+		   &&(doingCode!=BUILD_ROOF)&&(doingCode!=BUILD_DESC)&&(doingCode!=BUILD_TITLE))
 		{
 			commonTell(mob,"A valid direction in which to build must also be specified.");
 			return false;
@@ -259,6 +284,35 @@ public class Construction extends CommonSkill
 		{
 			commonTell(mob,"That can only be built outdoors!");
 			return false;
+		}
+		
+		if(doingCode==BUILD_TITLE)
+		{
+			String title=Util.combine(commands,1);
+			if(title.length()==0)
+			{
+				commonTell(mob,"A title must be specified.");
+				return false;
+			}
+			Vector rooms=mob.location().getArea().getMyMap();
+			for(int r=0;r<rooms.size();r++)
+				if(((Room)rooms.elementAt(r)).displayText().equalsIgnoreCase(title))
+				{
+					commonTell(mob,"That title has already been taken.  Choose another.");
+					return false;
+				}
+			designTitle=title;
+		}
+		else
+		if(doingCode==BUILD_DESC)
+		{
+			String title=Util.combine(commands,1);
+			if(title.length()==0)
+			{
+				commonTell(mob,"A description must be specified.");
+				return false;
+			}
+			designDescription=title;
 		}
 		
 		Item firstWood=null;
@@ -299,7 +353,7 @@ public class Construction extends CommonSkill
 		if(!(titleInName.equals(mob.name())
 		   ||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().name())))))
 		{
-			if(doingCode!=BUILD_ROOF)
+			if((doingCode!=BUILD_ROOF)&&(doingCode!=BUILD_TITLE)&&(doingCode!=BUILD_DESC))
 				R2=mob.location().getRoomInDir(dir);
 			if(R2!=null)
 			for(int a=0;a<R2.numAffects();a++)
@@ -351,6 +405,12 @@ public class Construction extends CommonSkill
 			break;
 		case BUILD_DOOR:
 			verb="building the "+Directions.getDirectionName(dir)+" door";
+			break;
+		case BUILD_TITLE:
+			verb="giving this place a title";
+			break;
+		case BUILD_DESC:
+			verb="giving this place a description";
 			break;
 		case BUILD_DEMOLISH:
 		default:

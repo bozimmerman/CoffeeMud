@@ -7,6 +7,37 @@ import java.io.*;
 import java.util.*;
 public class ItemUsage
 {
+	public Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
+	{
+		if(itemID.toUpperCase().trim().endsWith(" COINS"))
+			itemID=itemID.substring(0,itemID.length()-6);
+		if(itemID.toUpperCase().trim().endsWith(" GOLD"))
+			itemID=itemID.substring(0,itemID.length()-5);
+		int gold=Util.s_int(itemID);
+		if(gold>0)
+		{
+			for(int i=0;i<room.numItems();i++)
+			{
+				Item I=room.fetchItem(i);
+				if((I.container()==container)
+				&&(I instanceof Coins)
+				&&(Sense.canBeSeenBy(I,seer)))
+				{
+					if(((Coins)I).numberOfCoins()<=gold)
+						return I;
+					((Coins)I).setNumberOfCoins(((Coins)I).numberOfCoins()-gold);
+					Item C=(Item)CMClass.getItem("StdCoins");
+					C.baseEnvStats().setAbility(gold);
+					C.recoverEnvStats();
+					room.addItem(C);
+					C.setDispossessionTime(I.dispossessionTime());
+					return C;
+				}
+			}
+		}
+		return null;
+	}
+
 	public Item possibleContainer(MOB mob, Vector commands, int wornReqCode)
 	{
 		if(commands.size()==1)
@@ -183,7 +214,12 @@ public class ItemUsage
 				if((container!=null)&&(mob.isMine(container)))
 				   getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,(Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
 				else
-				   getThis=mob.location().fetchFromRoomFavorItems((Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
+				{
+					if(!allFlag)
+						getThis=possibleRoomGold(mob,mob.location(),container,whatToGet);
+					if(getThis==null)
+						getThis=mob.location().fetchFromRoomFavorItems((Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
+				}
 				if(getThis==null) break;
 				if((getThis instanceof Item)&&(Sense.canBeSeenBy(getThis,mob)))
 					V.addElement(getThis);
@@ -194,7 +230,9 @@ public class ItemUsage
 			for(int i=0;i<V.size();i++)
 			{
 				Item getThis=(Item)V.elementAt(i);
-				get(mob,container,(Item)getThis,false);
+				if(!get(mob,container,(Item)getThis,false))
+					if(getThis instanceof Coins)
+						((Coins)getThis).putCoinsBack();
 				doneSomething=true;
 			}
 			
@@ -272,6 +310,8 @@ public class ItemUsage
 		{
 			Item dropThis=(Item)V.elementAt(i);
 			drop(mob,dropThis,false);
+			if(dropThis instanceof Coins)
+				((Coins)dropThis).putCoinsBack();
 		}
 	}
 
@@ -344,12 +384,8 @@ public class ItemUsage
 			FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> put(s) "+putThis.name()+" in <T-NAME>");
 			if(mob.location().okAffect(putMsg))
 				mob.location().send(mob,putMsg);
-			else
 			if(putThis instanceof Coins)
-			{
-				mob.setMoney(mob.getMoney()+((Coins)putThis).numberOfCoins());
-				((Coins)putThis).destroyThis();
-			}
+				((Coins)putThis).putCoinsBack();
 		}
 	}
 
