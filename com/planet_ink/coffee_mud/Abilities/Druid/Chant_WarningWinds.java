@@ -55,31 +55,37 @@ public class Chant_WarningWinds extends Chant
 						MOB M=(MOB)R.fetchInhabitant(i);
 						if((M!=null)&&(M!=affected))
 						{
-							if(M.isInCombat()) fighting=true;
+							if(M.isInCombat()) 
+							{
+								fighting=true;
+								break;
+							}
+							else
 							for(int b=0;b<M.numBehaviors();b++)
 							{
 								Behavior B=M.fetchBehavior(b);
-								if((B!=null)&&(B.grantsAggressivenessTo(M)))
+								if((B!=null)&&(B.grantsAggressivenessTo((MOB)affected)))
 									enemy=true;
 							}
 						}
-						if(enemy||fighting) break;
+						if(enemy||fighting) 
+							break;
 					}
-				}
-				if(enemy||fighting)
-				{
-					int dir=ExternalPlay.radiatesFromDir(R,V);
-					if(dir>=0)
+					if(enemy||fighting)
 					{
-						String far="far ";
-						for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-							if(lastRoom.getRoomInDir(d)==R) far="";
-						dir=Directions.getOpDirectionCode(dir);
-						if(fighting)
-							((MOB)affected).tell("The winds tell of fighting "+far+Directions.getInDirectionName(dir)+".");
-						else
-						if(enemy)
-							((MOB)affected).tell("The winds tell of enemies "+far+Directions.getInDirectionName(dir)+".");
+						int dir=ExternalPlay.radiatesFromDir(R,V);
+						if(dir>=0)
+						{
+							String far="far ";
+							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								if(lastRoom.getRoomInDir(d)==R) far="";
+							dir=Directions.getOpDirectionCode(dir);
+							if(fighting)
+								((MOB)affected).tell("The winds tell of fighting "+far+Directions.getInDirectionName(dir)+".");
+							else
+							if(enemy)
+								((MOB)affected).tell("The winds tell of enemies "+far+Directions.getInDirectionName(dir)+".");
+						}
 					}
 				}
 			}
