@@ -105,7 +105,7 @@ public class Prayer_AnimateDead extends Prayer
 				while(it<newMOB.location().numItems())
 				{
 					Item item=newMOB.location().fetchItem(it);
-					if((item!=null)&&(item.location()==body))
+					if((item!=null)&&(item.container()==body))
 					{
 						FullMsg msg2=new FullMsg(newMOB,body,item,Affect.MSG_GET,null);
 						newMOB.location().send(newMOB,msg2);

@@ -159,9 +159,9 @@ public class StdArmor extends StdItem implements Armor
 			affect.source().tell(armorHealth());
 		else
 		if((!amWearingAt(Item.INVENTORY))
-		&&(myOwner()!=null)
-		&&(myOwner() instanceof MOB)
-		&&(affect.amITarget(myOwner()))
+		&&(owner()!=null)
+		&&(owner() instanceof MOB)
+		&&(affect.amITarget(owner()))
 		&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*2))
 		&&(subjectToWearAndTear()))
 		{
@@ -344,12 +344,12 @@ public class StdArmor extends StdItem implements Armor
 			}
 			
 			if((usesRemaining()<=0)
-			&&(myOwner()!=null)
-			&&(myOwner() instanceof MOB))
+			&&(owner()!=null)
+			&&(owner() instanceof MOB))
 			{
-				MOB owner=(MOB)myOwner();
+				MOB owner=(MOB)owner();
 				setUsesRemaining(100);
-				affect.addTrailerMsg(new FullMsg(((MOB)myOwner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being worn by <S-NAME> is destroyed!"));
+				affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being worn by <S-NAME> is destroyed!"));
 				remove();
 				destroyThis();
 				owner.recoverEnvStats();
@@ -365,8 +365,8 @@ public class StdArmor extends StdItem implements Armor
 		super.recoverEnvStats();
 		if((baseEnvStats().height()==0)
 		   &&(!amWearingAt(Item.INVENTORY))
-		   &&(myOwner() instanceof MOB))
-			baseEnvStats().setHeight(((MOB)myOwner()).baseEnvStats().height());
+		   &&(owner() instanceof MOB))
+			baseEnvStats().setHeight(((MOB)owner()).baseEnvStats().height());
 	}
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -11,7 +11,7 @@ public class StdItem implements Item
 	protected String 	name="an ordinary item";
 	protected String	displayText="a nondescript item sits here doing nothing.";
 	protected String 	description="It looks like something.";
-	protected Item 		myLocation=null;
+	protected Item 		myContainer=null;
 	protected int 		myUses=Integer.MAX_VALUE;
 	protected long 		myWornCode=Item.INVENTORY;
 	protected String 	miscText="";
@@ -127,7 +127,7 @@ public class StdItem implements Item
 		}
 	}
 
-	public Environmental myOwner(){return owner;}
+	public Environmental owner(){return owner;}
 	public void setOwner(Environmental E)
 	{
 		owner=E;
@@ -365,14 +365,14 @@ public class StdItem implements Item
 		return true;
 	}
 	
-	public Item ultimateLocation()
+	public Item ultimateContainer()
 	{
-		if(location()==null) return this;
-		return location().ultimateLocation();
+		if(container()==null) return this;
+		return container().ultimateContainer();
 	}
-	public Item location()
+	public Item container()
 	{
-		return myLocation;
+		return myContainer;
 	}
 	public String rawSecretIdentity(){return ((secretIdentity==null)?"":secretIdentity);}
 	public String secretIdentity()
@@ -408,9 +408,9 @@ public class StdItem implements Item
 	{
 		description=newDescription;
 	}
-	public void setLocation(Item newLocation)
+	public void setContainer(Item newContainer)
 	{
-		myLocation=newLocation;
+		myContainer=newContainer;
 	}
 	public int usesRemaining()
 	{
@@ -753,7 +753,7 @@ public class StdItem implements Item
 		case Affect.TYP_GET:
 			if(!(this instanceof Container))
 			{
-				setLocation(null);
+				setContainer(null);
 				if(Sense.isHidden(this))
 					baseEnvStats().setDisposition(baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
 				if(mob.location().isContent(this))
@@ -776,7 +776,7 @@ public class StdItem implements Item
 				mob.location().recoverRoomStats();
 			}
 			remove();
-			setLocation(null);
+			setContainer(null);
 			break;
 		case Affect.TYP_WRITE:
 			if(this.isReadable())
@@ -792,7 +792,7 @@ public class StdItem implements Item
 
 	public void destroyThis()
 	{
-		myLocation=null;
+		myContainer=null;
 		if(owner==null) return;
 		for(int a=this.numAffects()-1;a>=0;a--)
 		{
@@ -810,8 +810,8 @@ public class StdItem implements Item
 			{
 				Item thisItem = thisRoom.fetchItem(r);
 				if((thisItem!=null)
-				   &&(thisItem.location()!=null)
-				   &&(thisItem.location()==this))
+				   &&(thisItem.container()!=null)
+				   &&(thisItem.container()==this))
 					thisItem.destroyThis();
 			}
 			thisRoom.delItem(this);
@@ -823,7 +823,7 @@ public class StdItem implements Item
 			for(int r=mob.inventorySize()-1;r>=0;r--)
 			{
 				Item thisItem = mob.fetchInventory(r);
-				if((thisItem!=null)&&(thisItem.location()!=null)&&(thisItem.location()==this))
+				if((thisItem!=null)&&(thisItem.container()!=null)&&(thisItem.container()==this))
 					thisItem.destroyThis();
 			}
 			mob.delInventory(this);
@@ -833,7 +833,7 @@ public class StdItem implements Item
 
 	public void removeThis()
 	{
-		myLocation=null;
+		myContainer=null;
 
 		if(owner==null) return;
 		for(int a=this.numAffects()-1;a>=0;a--)
@@ -850,8 +850,8 @@ public class StdItem implements Item
 			{
 				Item thisItem = thisRoom.fetchItem(r);
 				if((thisItem!=null)
-				&&(thisItem.location()!=null)
-				&&(thisItem.location()==this))
+				&&(thisItem.container()!=null)
+				&&(thisItem.container()==this))
 					thisItem.removeThis();
 			}
 			thisRoom.delItem(this);
@@ -864,8 +864,8 @@ public class StdItem implements Item
 			{
 				Item thisItem = mob.fetchInventory(r);
 				if((thisItem!=null)
-				&&(thisItem.location()!=null)
-				&&(thisItem.location()==this))
+				&&(thisItem.container()!=null)
+				&&(thisItem.container()==this))
 					thisItem.removeThis();
 			}
 			mob.delInventory(this);

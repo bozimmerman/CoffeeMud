@@ -307,11 +307,11 @@ public class XMLIO
 					roomXML.append(XMLManager.convertXMLtoTag("ITEMREJUV",""+item.baseEnvStats().rejuv()));
 					roomXML.append(XMLManager.convertXMLtoTag("ITEMUSES",""+item.usesRemaining()));
 					int locationNum=0;
-					if(item.location()!=null)
+					if(item.container()!=null)
 						for(int num2=0;num2<room.numItems();num2++)
 						{
 							Item fitem=room.fetchItem(num2);
-							if((fitem!=null)&&(fitem==item.location()))
+							if((fitem!=null)&&(fitem==item.container()))
 							{
 								locationNum=num2+1;
 								break;
@@ -417,7 +417,7 @@ public class XMLIO
 					newItem.baseEnvStats().setAbility(newAbility);
 					newItem.baseEnvStats().setRejuv(newRejuv);
 					newItem.setUsesRemaining(newUses);
-					newItem.setLocation(null);
+					newItem.setContainer(null);
 					newItem.recoverEnvStats();
 
 					room.addItem(newItem);
@@ -434,7 +434,7 @@ public class XMLIO
 					Item item=(Item)e.nextElement();
 					int loc=((Integer)itemMap.get(item)).intValue();
 					if((loc>0)&&(loc<=itemVec.size()))
-						item.setLocation((Item)itemVec.elementAt(loc-1));
+						item.setContainer((Item)itemVec.elementAt(loc-1));
 				}
 			}
 

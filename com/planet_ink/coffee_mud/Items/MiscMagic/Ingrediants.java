@@ -38,18 +38,18 @@ public class Ingrediants extends BagOfHolding
 		I.setBaseValue(EnvResource.RESOURCE_DATA[type&EnvResource.RESOURCE_MASK][1]);
 		I.baseEnvStats().setWeight(1);
 		I.recoverEnvStats();
-		I.setLocation(this);
-		if(myOwner() instanceof Room)
-			((Room)myOwner()).addItem(I);
+		I.setContainer(this);
+		if(owner() instanceof Room)
+			((Room)owner()).addItem(I);
 		else
-		if(myOwner() instanceof MOB)
-			((MOB)myOwner()).addInventory(I);
+		if(owner() instanceof MOB)
+			((MOB)owner()).addInventory(I);
 		return I;
 	}
 	
 	public void affect(Affect affect)
 	{
-		if((!alreadyFilled)&&(myOwner()!=null))
+		if((!alreadyFilled)&&(owner()!=null))
 		{
 			alreadyFilled=true;
 			if(getContents().size()==0)

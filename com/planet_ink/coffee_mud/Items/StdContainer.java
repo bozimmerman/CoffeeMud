@@ -85,7 +85,7 @@ public class StdContainer extends StdItem implements Container
 				&&(affect.tool() instanceof Item))
 				{
 					Item newitem=(Item)affect.tool();
-					if(newitem.location()==this)
+					if(newitem.container()==this)
 					{
 						if(!Sense.canBeSeenBy(newitem,mob))
 						{
@@ -203,7 +203,7 @@ public class StdContainer extends StdItem implements Container
 							Item item=mob.fetchInventory(i);
 							if((item!=null)
 							&&(item instanceof Key)
-							&&(item.location()==null)
+							&&(item.container()==null)
 							&&(Sense.canBeSeenBy(item,mob)))
 							{
 								if(((Key)item).getKey().equals(keyName()))
@@ -235,20 +235,20 @@ public class StdContainer extends StdItem implements Container
 				&&(affect.tool() instanceof Item))
 				{
 					Item newitem=(Item)affect.tool();
-					if(newitem.location()==this)
-						newitem.setLocation(null);
+					if(newitem.container()==this)
+						newitem.setContainer(null);
 					remove();
 				}
 				else
 				if(!mob.isMine(this))
 				{
-					this.setLocation(null);
+					this.setContainer(null);
 					recursiveGetRoom(mob,this);
 					mob.location().recoverRoomStats();
 				}
 				else
 				{
-					this.setLocation(null);
+					this.setContainer(null);
 					remove();
 					mob.location().recoverRoomStats();
 				}
@@ -258,13 +258,13 @@ public class StdContainer extends StdItem implements Container
 				&&(affect.tool() instanceof Item))
 				{
 					Item newitem=(Item)affect.tool();
-					newitem.setLocation(this);
+					newitem.setContainer(this);
 				}
 				break;
 			case Affect.TYP_DROP:
 				if(mob.isMine(this))
 				{
-					this.setLocation(null);
+					this.setContainer(null);
 					recursiveDropMOB(mob,this);
 					mob.location().recoverRoomStats();
 				}
@@ -289,7 +289,7 @@ public class StdContainer extends StdItem implements Container
 							for(int i=0;i<mob.inventorySize();i++)
 							{
 								Item item=mob.fetchInventory(i);
-								if((item!=null)&&(item.location()==this))
+								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
 							buf.append(ExternalPlay.niceLister(mob,newItems,true));
@@ -302,7 +302,7 @@ public class StdContainer extends StdItem implements Container
 							for(int i=0;i<room.numItems();i++)
 							{
 								Item item=room.fetchItem(i);
-								if((item!=null)&&(item.location()==this))
+								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
 							buf.append(ExternalPlay.niceLister(mob,newItems,true));
@@ -346,7 +346,7 @@ public class StdContainer extends StdItem implements Container
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item thisItem=mob.location().fetchItem(i);
-			if((thisItem!=null)&&(thisItem.location()==thisContainer))
+			if((thisItem!=null)&&(thisItem.container()==thisContainer))
 				weight+=recursiveRoomWeight(mob,thisItem);
 		}
 		return weight;
@@ -384,7 +384,7 @@ public class StdContainer extends StdItem implements Container
 			for(int i=0;i<mob.location().numItems();i++)
 			{
 				Item thisItem=mob.location().fetchItem(i);
-				if((thisItem!=null)&&(thisItem.location()==thisContainer))
+				if((thisItem!=null)&&(thisItem.container()==thisContainer))
 				{
 					recursiveGetRoom(mob,thisItem);
 					nothingDone=false;
@@ -426,7 +426,7 @@ public class StdContainer extends StdItem implements Container
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item thisItem=mob.fetchInventory(i);
-				if((thisItem!=null)&&(thisItem.location()==thisContainer))
+				if((thisItem!=null)&&(thisItem.container()==thisContainer))
 				{
 					recursiveDropMOB(mob,thisItem);
 					nothingDone=false;
@@ -444,7 +444,7 @@ public class StdContainer extends StdItem implements Container
 			for(int i=0;i<((MOB)own).inventorySize();i++)
 			{
 				Item I=((MOB)own).fetchInventory(i);
-				if((I.location()==container)
+				if((I.container()==container)
 				&&(!V.contains(I)))
 				{
 					V.addElement(I);
@@ -458,7 +458,7 @@ public class StdContainer extends StdItem implements Container
 			for(int i=0;i<((Room)own).numItems();i++)
 			{
 				Item I=((Room)own).fetchItem(i);
-				if((I.location()==container)
+				if((I.container()==container)
 				&&(!V.contains(I)))
 				{
 					V.addElement(I);
@@ -471,8 +471,8 @@ public class StdContainer extends StdItem implements Container
 	public Vector getContents()
 	{
 		Vector V=new Vector();
-		if(myOwner()!=null)
-			reallyGetContents(this,myOwner(),V);
+		if(owner()!=null)
+			reallyGetContents(this,owner(),V);
 		return V;
 	}
 }

@@ -51,8 +51,8 @@ public class Prayer_BlessItem extends Prayer
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
-			if((affected instanceof Item)&&(((Item)affected).myOwner()!=null)&&(((Item)affected).myOwner() instanceof MOB))
-				((MOB)((Item)affected).myOwner()).tell("The blessing on "+((Item)affected).name()+" fades.");
+			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
+				((MOB)((Item)affected).owner()).tell("The blessing on "+((Item)affected).name()+" fades.");
 			super.unInvoke();
 			return;
 		}
@@ -74,7 +74,7 @@ public class Prayer_BlessItem extends Prayer
 			{
 				Item item=mobTarget.fetchInventory(i);
 				if((item!=null)
-				   &&(item.location()==null))
+				   &&(item.container()==null))
 				{
 					if(item.amWearingAt(Item.INVENTORY))
 						possibilities.addElement(item);

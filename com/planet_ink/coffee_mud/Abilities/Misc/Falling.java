@@ -108,14 +108,14 @@ public class Falling extends StdAbility
 		{
 			Item item=(Item)affected;
 			if((room==null)
-			   &&(item.myOwner()!=null)
-			   &&(item.myOwner() instanceof Room))
-				room=(Room)item.myOwner();
+			   &&(item.owner()!=null)
+			   &&(item.owner() instanceof Room))
+				room=(Room)item.owner();
 				
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
 			||(!item.isGettable())
-			||(Sense.isFlying(item.ultimateLocation())))
+			||(Sense.isFlying(item.ultimateContainer())))
 			{
 				unInvoke();
 				return false;
@@ -160,7 +160,7 @@ public class Falling extends StdAbility
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item newItem=room.fetchItem(i);
-			if((newItem!=null)&&(newItem.location()==item))
+			if((newItem!=null)&&(newItem.container()==item))
 				recursiveRoomItems(V,newItem,room);
 		}
 	}

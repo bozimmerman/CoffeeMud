@@ -32,10 +32,10 @@ public class StdInnKey extends StdKey implements InnKey
 		if(tickID==Host.ITEM_BOUNCEBACK)
 		{
 			this.destroyed=false;
-			this.setLocation(null);
-			if((myOwner()!=null)&&(myOwner()==myShopkeeper))
+			this.setContainer(null);
+			if((owner()!=null)&&(owner()==myShopkeeper))
 				return false;
-			if(myOwner()!=null)
+			if(owner()!=null)
 				removeThis();
 			if(myShopkeeper!=null)
 				myShopkeeper.addStoreInventory(this);

@@ -48,8 +48,8 @@ public class Druid_MyPlants extends StdAbility
 			Item I=R.fetchItem(i);
 			if((I!=null)
 			&&(I.rawSecretIdentity().equals(mob.name()))
-			&&(I.myOwner()!=null)
-			&&(I.myOwner() instanceof Room))
+			&&(I.owner()!=null)
+			&&(I.owner() instanceof Room))
 			{
 				Ability A=I.fetchAffect("Chant_SummonPlants");
 				if((A!=null)&&(A.invoker()==mob))

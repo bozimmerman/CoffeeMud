@@ -33,7 +33,7 @@ public class SaveThread extends Thread
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item I=room.fetchItem(i);
-				if((I!=null)&&(I.possessionTime()!=null)&&(I.myOwner()==room))
+				if((I!=null)&&(I.possessionTime()!=null)&&(I.owner()==room))
 				{
 					if(itemKillTime.after(I.possessionTime()))
 					{

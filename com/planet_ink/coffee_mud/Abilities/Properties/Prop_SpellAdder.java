@@ -94,8 +94,8 @@ public class Prop_SpellAdder extends Property
 		if((target!=null)&&(target instanceof MOB))
 			return (MOB)target;
 
-		if((target instanceof Item)&&(((Item)target).myOwner()!=null)&&(((Item)target).myOwner() instanceof MOB))
-			return (MOB)((Item)target).myOwner();
+		if((target instanceof Item)&&(((Item)target).owner()!=null)&&(((Item)target).owner() instanceof MOB))
+			return (MOB)((Item)target).owner();
 		MOB mob=CMClass.getMOB("StdMOB");
 		mob.setLocation(CMClass.getLocale("StdRoom"));
 		return mob;

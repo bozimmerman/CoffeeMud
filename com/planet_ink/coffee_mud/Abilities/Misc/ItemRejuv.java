@@ -41,13 +41,13 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			ability.contents.addElement(item);
 
 			Item newItem=(Item)item.copyOf();
-			newItem.setLocation(item.location());
+			newItem.setContainer(item.container());
 			ability.ccontents.addElement(newItem);
 
 			for(int r=0;r<room.numItems();r++)
 			{
 				Item content=room.fetchItem(r);
-				if((content!=null)&&(content.location()==item))
+				if((content!=null)&&(content.container()==item))
 					loadContent(ability,content,room);
 			}
 		}
@@ -91,8 +91,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 				for(int c=0;c<ccontents.size();c++)
 				{
 					Item thatItem=(Item)ccontents.elementAt(c);
-					if(thatItem.location()==thisItem)
-						thatItem.setLocation(newThisItem);
+					if(thatItem.container()==thisItem)
+						thatItem.setContainer(newThisItem);
 				}
 				thisItem=newThisItem;
 				if(thisItem instanceof Container)
@@ -105,7 +105,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 				thisItem.setPossessionTime(null);
 				room.addItem(thisItem);
 			}
-			thisItem.setLocation(((Item)ccontents.elementAt(i)).location());
+			thisItem.setContainer(((Item)ccontents.elementAt(i)).container());
 		}
 	}
 	public boolean tick(int tickID)

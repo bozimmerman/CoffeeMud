@@ -134,8 +134,8 @@ public class Cook extends CommonSkill
 					Item food=((Item)finalDish.copyOf());
 					food.setMiscText(finalDish.text());
 					food.recoverEnvStats();
-					((MOB)cooking.myOwner()).addInventory(food);
-					food.setLocation(cooking);
+					((MOB)cooking.owner()).addInventory(food);
+					food.setContainer(cooking);
 				}
 			}
 		}
@@ -166,9 +166,9 @@ public class Cook extends CommonSkill
 			else
 				h.put(EnvResource.RESOURCE_DESCS[((Drink)pot).liquidType()&EnvResource.RESOURCE_MASK],new Integer(((Drink)pot).liquidRemaining()/10));
 		}
-		if(pot.myOwner()==null) return h;
-		if(!(pot.myOwner() instanceof MOB)) return h;
-		MOB mob=(MOB)pot.myOwner();
+		if(pot.owner()==null) return h;
+		if(!(pot.owner() instanceof MOB)) return h;
+		MOB mob=(MOB)pot.owner();
 		Vector V=pot.getContents();
 		for(int v=0;v<V.size();v++)
 		{
@@ -345,7 +345,7 @@ public class Cook extends CommonSkill
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I2=mob.location().fetchItem(i);
-			if((I2!=null)&&(I2.location()==null)&&(Sense.isOnFire(I2)))
+			if((I2!=null)&&(I2.container()==null)&&(Sense.isOnFire(I2)))
 			{
 				fire=I2;
 				break;

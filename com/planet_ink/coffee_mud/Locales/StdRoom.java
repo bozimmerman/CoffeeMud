@@ -344,7 +344,7 @@ public class StdRoom
 		for(int c=0;c<numItems();c++)
 		{
 			Item item=fetchItem(c);
-			if((item!=null)&&(item.location()==null))
+			if((item!=null)&&(item.container()==null))
 			{
 				ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
 				I.unloadIfNecessary(item);
@@ -484,7 +484,7 @@ public class StdRoom
 		for(int c=0;c<numItems();c++)
 		{
 			Item item=fetchItem(c);
-			if((item!=null)&&(item.location()==null))
+			if((item!=null)&&(item.container()==null))
 				viewItems.addElement(item);
 		}
 		Say.append(ExternalPlay.niceLister(mob,viewItems,false));

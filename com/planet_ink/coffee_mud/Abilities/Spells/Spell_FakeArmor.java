@@ -46,7 +46,7 @@ public class Spell_FakeArmor extends Spell
 		&&(affect.target()!=null)
 		&&((affect.targetCode()&Affect.MASK_HURT)>0)
 		&&(affected instanceof Item)
-		&&(affect.amITarget(((Item)affected).myOwner()))
+		&&(affect.amITarget(((Item)affected).owner()))
 		&&(affect.target() instanceof MOB))
 		{
 			notAgainThisRound=true;

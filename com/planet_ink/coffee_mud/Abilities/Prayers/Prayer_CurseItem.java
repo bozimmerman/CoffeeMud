@@ -49,8 +49,8 @@ public class Prayer_CurseItem extends Prayer
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
-			if((affected instanceof Item)&&(((Item)affected).myOwner()!=null)&&(((Item)affected).myOwner() instanceof MOB))
-				((MOB)((Item)affected).myOwner()).tell("The curse on "+((Item)affected).name()+" is lifted.");
+			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
+				((MOB)((Item)affected).owner()).tell("The curse on "+((Item)affected).name()+" is lifted.");
 			super.unInvoke();
 			return;
 		}
@@ -106,7 +106,7 @@ public class Prayer_CurseItem extends Prayer
 			{
 				Item item=mobTarget.fetchInventory(i);
 				if((item!=null)
-				   &&(item.location()==null))
+				   &&(item.container()==null))
 				{
 					if(item.amWearingAt(Item.INVENTORY))
 						possibilities.addElement(item);

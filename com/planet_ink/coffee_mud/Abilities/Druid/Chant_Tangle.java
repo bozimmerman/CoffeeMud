@@ -45,7 +45,7 @@ public class Chant_Tangle extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
-		if((thePlants==null)||(thePlants.myOwner()==null)||(!(thePlants.myOwner() instanceof Room)))
+		if((thePlants==null)||(thePlants.owner()==null)||(!(thePlants.owner() instanceof Room)))
 		{
 			unInvoke();
 			return super.okAffect(affect);

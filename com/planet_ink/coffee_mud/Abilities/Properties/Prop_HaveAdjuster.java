@@ -235,13 +235,13 @@ public class Prop_HaveAdjuster extends Property
 			if(affectedMOB instanceof Item)
 			{
 				myItem=(Item)affectedMOB;
-				if(myItem.myOwner() instanceof MOB)
+				if(myItem.owner() instanceof MOB)
 				{
-					if((lastMOB!=null)&&(myItem.myOwner()!=lastMOB))
+					if((lastMOB!=null)&&(myItem.owner()!=lastMOB))
 					{	Prop_HaveAdjuster.removeMyAffectFromLastMob(this,lastMOB,adjCharState); lastMOB=null;}
-					if(myItem.myOwner() !=null)
+					if(myItem.owner() !=null)
 					{
-						lastMOB=(MOB)myItem.myOwner();
+						lastMOB=(MOB)myItem.owner();
 						if(!lastMOB.isMine(this))
 							addMe(lastMOB,adjCharState,this);
 					}
@@ -250,8 +250,8 @@ public class Prop_HaveAdjuster extends Property
 			else
 			if(affectedMOB instanceof MOB)
 			{
-				if((myItem.myOwner() instanceof MOB)
-				   &&(myItem.myOwner()==affectedMOB))
+				if((myItem.owner() instanceof MOB)
+				   &&(myItem.owner()==affectedMOB))
 				{
 					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
 					{	Prop_HaveAdjuster.removeMyAffectFromLastMob(this,lastMOB,adjCharState); lastMOB=null;}
@@ -259,7 +259,7 @@ public class Prop_HaveAdjuster extends Property
 					envStuff(affectableStats,baseEnvStats());
 				}
 				else
-				if((affectedMOB!=null)&&(affectedMOB!=myItem.myOwner()))
+				if((affectedMOB!=null)&&(affectedMOB!=myItem.owner()))
 				{
 					Prop_HaveAdjuster.removeMyAffectFromLastMob(this,(MOB)affectedMOB,adjCharState);
 				}

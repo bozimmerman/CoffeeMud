@@ -12,7 +12,7 @@ public class GenCoins extends GenItem implements Coins
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a pile of gold coins";
 		displayText="some gold coins sit here.";
-		myLocation=null;
+		myContainer=null;
 		setMaterial(EnvResource.RESOURCE_GOLD);
 		description="Looks like someone left some gold sitting around.";
 		isReadable=false;
@@ -49,7 +49,7 @@ public class GenCoins extends GenItem implements Coins
 		case Affect.TYP_GET:
 			if((affect.amITarget(this))||((affect.tool()==this)))
 			{
-				setLocation(null);
+				setContainer(null);
 				remove();
 				destroyThis();
 				affect.source().setMoney(affect.source().getMoney()+envStats().ability());

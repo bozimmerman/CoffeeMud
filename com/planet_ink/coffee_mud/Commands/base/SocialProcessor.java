@@ -231,7 +231,7 @@ public class SocialProcessor
 				giveThis=mob.fetchCarried(null,itemID+addendumStr);
 				if((giveThis!=null)&&(mob.isMine(giveThis)))
 				{
-					((Item)giveThis).setLocation(null);
+					((Item)giveThis).setContainer(null);
 					((Item)giveThis).remove();
 				}
 			}

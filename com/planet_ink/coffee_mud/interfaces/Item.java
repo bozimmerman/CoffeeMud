@@ -10,9 +10,9 @@ public interface Item extends Environmental
 	/** Where the item is located.  Either null for
 	 * plain site (or contained on person), or will
 	 * point to the container object*/
-	public Item location();
-	public void setLocation(Item newLocation);
-	public Item ultimateLocation();
+	public Item container();
+	public void setContainer(Item newLocation);
+	public Item ultimateContainer();
 	
 	public String secretIdentity();
 	public String rawSecretIdentity();
@@ -106,7 +106,7 @@ public interface Item extends Environmental
 	public void setRawLogicalAnd(boolean newAnd);
 	public boolean compareProperLocations(Item toThis);
 	
-	public Environmental myOwner();
+	public Environmental owner();
 	public void setOwner(Environmental E);
 	public Calendar possessionTime();
 	public void setPossessionTime(Calendar time);

@@ -35,7 +35,7 @@ public class Chant_Goodberry extends Chant
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
-		Environmental owner=target.myOwner();
+		Environmental owner=target.owner();
 		if(owner==null) return false;
 		
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -64,7 +64,7 @@ public class Chant_Goodberry extends Chant
 					&&(newTarget instanceof Food)
 					&&(!(newTarget instanceof Pill))
 					&&(((Food)newTarget).material()==EnvResource.RESOURCE_BERRIES)
-					&&(newTarget.location()==target.location())
+					&&(newTarget.container()==target.container())
 					&&(newTarget.name().equals(target.name())))
 					{
 						Pill newItem=(Pill)CMClass.getItem("GenPill");
@@ -76,14 +76,14 @@ public class Chant_Goodberry extends Chant
 						newItem.setSpellList(";Prayer_CureLight;");
 						newItem.recoverEnvStats();
 						newItem.setMiscText(newItem.text());
-						Item location=newTarget.location();
+						Item location=newTarget.container();
 						newTarget.destroyThis();
 						if(owner instanceof MOB)
 							((MOB)owner).addInventory(newItem);
 						else
 						if(owner instanceof Room)
 							((Room)owner).addItem(newItem);
-						newItem.setLocation(location);
+						newItem.setContainer(location);
 						if((--numAffected)==0)
 							break;
 						i=-1;

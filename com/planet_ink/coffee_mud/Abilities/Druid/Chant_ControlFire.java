@@ -54,7 +54,7 @@ public class Chant_ControlFire extends Chant
 		for(int i=0;i<target.inventorySize();i++)
 		{
 			Item I=target.fetchInventory(i);
-			if((Sense.isOnFire(I))&&(I.location()==null))
+			if((Sense.isOnFire(I))&&(I.container()==null))
 			{
 				fireSource=I;
 				break;
@@ -65,7 +65,7 @@ public class Chant_ControlFire extends Chant
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I=mob.location().fetchItem(i);
-			if((Sense.isOnFire(I))&&(I.location()==null))
+			if((Sense.isOnFire(I))&&(I.container()==null))
 			{
 				fireSource=I;
 				break;

@@ -65,7 +65,7 @@ public class Utils
 		if(E instanceof Item)
 		{
 			Item newItem=(Item)E.copyOf();
-			newItem.setLocation(null);
+			newItem.setContainer(null);
 			newItem.wearAt(0);
 			mob.location().addItem(newItem);
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");

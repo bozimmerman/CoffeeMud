@@ -94,13 +94,13 @@ public class Prop_HaveSpellCast extends Property
 		{
 			myItem=(Item)affectedMOB;
 
-			if((lastMOB!=null)&&(myItem.myOwner()!=lastMOB)
+			if((lastMOB!=null)&&(myItem.owner()!=lastMOB)
 			&&(lastMOB.location()!=null))
 				removeMyAffectsFromLastMob();
 
-			if((lastMOB==null)&&(myItem.myOwner()!=null)
-			&&(myItem.myOwner() instanceof MOB)&&(((MOB)myItem.myOwner()).location()!=null))
-				addMeIfNeccessary((MOB)myItem.myOwner());
+			if((lastMOB==null)&&(myItem.owner()!=null)
+			&&(myItem.owner() instanceof MOB)&&(((MOB)myItem.owner()).location()!=null))
+				addMeIfNeccessary((MOB)myItem.owner());
 		}
 		super.affectEnvStats(affectedMOB,affectableStats);
 		processing=false;

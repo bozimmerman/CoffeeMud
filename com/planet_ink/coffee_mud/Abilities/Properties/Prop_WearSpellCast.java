@@ -94,15 +94,15 @@ public class Prop_WearSpellCast extends Property
 
 			if((lastMOB!=null)
 			&&(lastMOB.location()!=null)
-			&&((myItem.myOwner()!=lastMOB)||(myItem.amWearingAt(Item.INVENTORY))))
+			&&((myItem.owner()!=lastMOB)||(myItem.amWearingAt(Item.INVENTORY))))
 				removeMyAffectsFromLastMob();
 
 			if((lastMOB==null)
 			&&(!myItem.amWearingAt(Item.INVENTORY))
-			&&(myItem.myOwner()!=null)
-			&&(myItem.myOwner() instanceof MOB)
-			&&(((MOB)myItem.myOwner()).location()!=null))
-				addMeIfNeccessary((MOB)myItem.myOwner());
+			&&(myItem.owner()!=null)
+			&&(myItem.owner() instanceof MOB)
+			&&(((MOB)myItem.owner()).location()!=null))
+				addMeIfNeccessary((MOB)myItem.owner());
 		}
 		super.affectEnvStats(affectedMOB,affectableStats);
 		processing=false;

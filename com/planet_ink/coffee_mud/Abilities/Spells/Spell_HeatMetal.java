@@ -77,7 +77,7 @@ public class Spell_HeatMetal extends Spell
 			if((item!=null)
 			   &&(!item.amWearingAt(Item.INVENTORY))
 			   &&((item.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-			   &&(item.location()==null)
+			   &&(item.container()==null)
 			   &&(!mob.amDead()))
 			{
 				int damage=Dice.roll(1,6,1);

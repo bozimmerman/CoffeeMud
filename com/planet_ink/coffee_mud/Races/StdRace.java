@@ -297,7 +297,7 @@ public class StdRace implements Race
 				if(mob.isMonster())
 				{
 					Item newItem=(Item)thisItem.copyOf();
-					newItem.setLocation(null);
+					newItem.setContainer(null);
 					newItem.setPossessionTime(Calendar.getInstance());
 					newItem.recoverEnvStats();
 					thisItem=newItem;
@@ -306,8 +306,8 @@ public class StdRace implements Race
 				else
 					mob.delInventory(thisItem);
 				thisItem.remove();
-				if(thisItem.location()==null)
-					thisItem.setLocation(Body);
+				if(thisItem.container()==null)
+					thisItem.setContainer(Body);
 				room.addItem(thisItem);
 				items.addElement(thisItem);
 			}
@@ -323,7 +323,7 @@ public class StdRace implements Race
 			C.baseEnvStats().setAbility(mob.getMoney());
 			C.recoverEnvStats();
 			C.setPossessionTime(Calendar.getInstance());
-			C.setLocation(Body);
+			C.setContainer(Body);
 			room.addItem(C);
 			mob.setMoney(0);
 		}

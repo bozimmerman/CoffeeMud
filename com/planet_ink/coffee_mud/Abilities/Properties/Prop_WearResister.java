@@ -57,13 +57,13 @@ public class Prop_WearResister extends Property
 			{
 				myItem=(Item)affectedMOB;
 				if((!myItem.amWearingAt(Item.INVENTORY))
-				   &&(myItem.myOwner() instanceof MOB))
+				   &&(myItem.owner() instanceof MOB))
 				{
-					if((lastMOB!=null)&&(myItem.myOwner()!=lastMOB))
+					if((lastMOB!=null)&&(myItem.owner()!=lastMOB))
 					{	Prop_HaveResister.removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
-					if(myItem.myOwner() !=null)
+					if(myItem.owner() !=null)
 					{
-						lastMOB=(MOB)myItem.myOwner();
+						lastMOB=(MOB)myItem.owner();
 						if(!lastMOB.isMine(this))
 							Prop_HaveResister.addMe(lastMOB,this);
 					}
@@ -73,15 +73,15 @@ public class Prop_WearResister extends Property
 			if(affectedMOB instanceof MOB)
 			{
 				if((!myItem.amWearingAt(Item.INVENTORY))
-				   &&(myItem.myOwner() instanceof MOB)
-				   &&(myItem.myOwner()==affectedMOB))
+				   &&(myItem.owner() instanceof MOB)
+				   &&(myItem.owner()==affectedMOB))
 				{
 					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
 					{	Prop_HaveResister.removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
 					lastMOB=(MOB)affectedMOB;
 				}
 				else
-				if((affectedMOB!=null)&&(affectedMOB!=myItem.myOwner()))
+				if((affectedMOB!=null)&&(affectedMOB!=myItem.owner()))
 				{
 					Prop_HaveResister.removeMyAffectFromLastMob(this,(MOB)affectedMOB);
 				}

@@ -61,7 +61,7 @@ public class Spell_Wish extends Spell
 			Item item=(Item)target;
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is teleport to "+here.displayText()+"!");
 			item.remove();
-			item.setLocation(null);
+			item.setContainer(null);
 			item.removeThis();
 			here.addItem(item);
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" appears out of the java plain!");
@@ -184,7 +184,7 @@ public class Spell_Wish extends Spell
 				   &&((foundThang.name().toUpperCase().indexOf("ARCHON")<0)))
 				{
 					Item newItem=(Item)foundThang.copyOf();
-					newItem.setLocation(null);
+					newItem.setContainer(null);
 					newItem.wearAt(0);
 					mob.location().addItem(newItem);
 					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");

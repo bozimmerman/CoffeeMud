@@ -224,7 +224,7 @@ public class Ranger_FindWater extends StdAbility
 	public String waterCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{
 		if(I==null) return "";
-		if(I.location()==container)
+		if(I.container()==container)
 		{
 			if(((I instanceof Drink))
 			&&(((Drink)I).containsDrink())
@@ -232,9 +232,9 @@ public class Ranger_FindWater extends StdAbility
 				msg.append(I.name()+" contains some sort of liquid.\n\r");
 		}
 		else
-		if((I.location()!=null)&&(I.location().location()==container))
-			if(msg.toString().indexOf(I.location().name()+" contains some sort of liquid.")<0)
-				msg.append(I.location().name()+" contains some sort of liquid.\n\r");
+		if((I.container()!=null)&&(I.container().container()==container))
+			if(msg.toString().indexOf(I.container().name()+" contains some sort of liquid.")<0)
+				msg.append(I.container().name()+" contains some sort of liquid.\n\r");
 		return msg.toString();
 	}
 	
@@ -282,7 +282,7 @@ public class Ranger_FindWater extends StdAbility
 		if((E instanceof Item)&&(Sense.canBeSeenBy(E,mob)))
 		{
 			waterCheck(mob,(Item)E,container,msg);
-			msg.append(waterHere(mob,((Item)E).myOwner(),(Item)E));
+			msg.append(waterHere(mob,((Item)E).owner(),(Item)E));
 		}
 		else
 		if((E instanceof MOB)&&(Sense.canBeSeenBy(E,mob)))

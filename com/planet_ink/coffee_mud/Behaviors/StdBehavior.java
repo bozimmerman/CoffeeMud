@@ -52,9 +52,9 @@ public class StdBehavior implements Behavior
 			return (MOB)ticking;
 		else
 		if(ticking instanceof Item)
-			if(((Item)ticking).myOwner() != null)
-				if(((Item)ticking).myOwner() instanceof MOB)
-					return (MOB)((Item)ticking).myOwner();
+			if(((Item)ticking).owner() != null)
+				if(((Item)ticking).owner() instanceof MOB)
+					return (MOB)((Item)ticking).owner();
 
 		return null;
 	}
@@ -71,9 +71,9 @@ public class StdBehavior implements Behavior
 			return mob.location();
 
 		if(ticking instanceof Item)
-			if(((Item)ticking).myOwner() != null)
-				if(((Item)ticking).myOwner() instanceof Room)
-					return (Room)((Item)ticking).myOwner();
+			if(((Item)ticking).owner() != null)
+				if(((Item)ticking).owner() instanceof Room)
+					return (Room)((Item)ticking).owner();
 
 		return null;
 	}

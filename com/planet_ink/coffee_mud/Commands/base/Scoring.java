@@ -16,7 +16,7 @@ public class Scoring
 		{
 			Item thisItem=mob.fetchInventory(i);
 			if((thisItem!=null)
-			&&(thisItem.location()==null)
+			&&(thisItem.container()==null)
 			&&(thisItem.amWearingAt(Item.INVENTORY)))
 			{
 				viewItems.addElement(thisItem);
@@ -438,7 +438,7 @@ public class Scoring
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item thisItem=mob.fetchInventory(i);
-				if((thisItem.location()==null)&&(thisItem.amWearingAt(wornCode)))
+				if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
 				{
 					if(Sense.canBeSeenBy(thisItem,seer))
 					{

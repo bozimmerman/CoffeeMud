@@ -48,16 +48,16 @@ public class Spell_DetectGold extends Spell
 	public String metalCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{
 		if(I==null) return "";
-		if(I.location()==container)
+		if(I.container()==container)
 		{
 			if((I.material()==EnvResource.RESOURCE_GOLD)
 			&&(Sense.canBeSeenBy(I,mob)))
 				msg.append(I.name()+" glows golden.\n\r");
 		}
 		else
-		if((I.location()!=null)&&(I.location().location()==container))
-			if(msg.toString().indexOf(I.location().name()+" contains some sort of gold.")<0)
-				msg.append(I.location().name()+" contains some sort of gold.\n\r");
+		if((I.container()!=null)&&(I.container().container()==container))
+			if(msg.toString().indexOf(I.container().name()+" contains some sort of gold.")<0)
+				msg.append(I.container().name()+" contains some sort of gold.\n\r");
 		return msg.toString();
 	}
 	public String metalHere(MOB mob, Environmental E, Item container)
@@ -76,7 +76,7 @@ public class Spell_DetectGold extends Spell
 		if((E instanceof Item)&&(Sense.canBeSeenBy(E,mob)))
 		{
 			metalCheck(mob,(Item)E,container,msg);
-			msg.append(metalHere(mob,((Item)E).myOwner(),(Item)E));
+			msg.append(metalHere(mob,((Item)E).owner(),(Item)E));
 		}
 		else
 		if((E instanceof MOB)&&(Sense.canBeSeenBy(E,mob)))

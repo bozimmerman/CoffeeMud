@@ -34,7 +34,7 @@ public class Burning extends StdAbility
 		{
 			if(affected instanceof Item)
 			{
-				Environmental E=((Item)affected).myOwner();
+				Environmental E=((Item)affected).owner();
 				((Item)affected).destroyThis();
 				if(E instanceof Room)
 					((Room)E).recoverRoomStats();
@@ -52,10 +52,10 @@ public class Burning extends StdAbility
 		if(affected==null)
 			return false;
 
-		if((affected instanceof Item)&&(((Item)affected).myOwner() instanceof MOB))
+		if((affected instanceof Item)&&(((Item)affected).owner() instanceof MOB))
 		{
-			if(!ouch((MOB)((Item)affected).myOwner()))
-				ExternalPlay.drop((MOB)((Item)affected).myOwner(),(Item)affected);
+			if(!ouch((MOB)((Item)affected).owner()))
+				ExternalPlay.drop((MOB)((Item)affected).owner(),(Item)affected);
 		}
 		
 		// might want to add the ability for it to spread
@@ -101,12 +101,12 @@ public class Burning extends StdAbility
 			target.recoverEnvStats();
 			if(target instanceof Item)
 			{
-				((Item)target).myOwner().recoverEnvStats();
-				if(((Item)target).myOwner() instanceof Room)
-					((Room)((Item)target).myOwner()).recoverRoomStats();
+				((Item)target).owner().recoverEnvStats();
+				if(((Item)target).owner() instanceof Room)
+					((Room)((Item)target).owner()).recoverRoomStats();
 				else
-				if(((Item)target).myOwner() instanceof MOB)
-					((MOB)((Item)target).myOwner()).location().recoverRoomStats();
+				if(((Item)target).owner() instanceof MOB)
+					((MOB)((Item)target).owner()).location().recoverRoomStats();
 			}
 		}
 		return true;

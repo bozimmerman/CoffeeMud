@@ -12,7 +12,7 @@ public class StdCoins extends StdItem implements Coins
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a pile of gold coins";
 		displayText="some gold coins sit here.";
-		myLocation=null;
+		myContainer=null;
 		description="Looks like someone left some gold sitting around.";
 		myUses=Integer.MAX_VALUE;
 		material=EnvResource.RESOURCE_GOLD;
@@ -63,7 +63,7 @@ public class StdCoins extends StdItem implements Coins
 		case Affect.TYP_GET:
 			if((affect.amITarget(this))||((affect.tool()==this)))
 			{
-				setLocation(null);
+				setContainer(null);
 				remove();
 				destroyThis();
 				affect.source().setMoney(affect.source().getMoney()+envStats().ability());

@@ -39,6 +39,29 @@ public class Spell_FleshStone extends Spell
 		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
 	}
 
+	public boolean tick(int tickID)
+	{
+		if((tickID==Host.MOB_TICK)
+		&&(affected!=null)
+		&&(statue!=null)
+		&&(affected instanceof MOB))
+		{
+			MOB mob=(MOB)affected;
+			if((statue.owner()!=null)&&(statue.owner()!=mob.location()))
+			{
+				Room room=null;
+				if(statue.owner() instanceof MOB)
+					room=((MOB)statue.owner()).location();
+				else
+				if(statue.owner() instanceof Room)
+					room=(Room)statue.owner();
+				if((room!=null)&&(room!=mob.location()))
+					room.bringMobHere(mob,false);
+			}
+		}
+		return super.tick(tickID);
+	}
+	
 	public boolean okAffect(Affect affect)
 	{
 		if(affected instanceof MOB)

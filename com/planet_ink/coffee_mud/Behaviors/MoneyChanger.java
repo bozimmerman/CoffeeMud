@@ -84,7 +84,7 @@ public class MoneyChanger extends StdBehavior
 					msliver.setDescription("This note convertable to 10,000,000 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
-					msliver.setLocation(changeBag);
+					msliver.setContainer(changeBag);
 					msliver.text();
 					msliver.recoverEnvStats();
 				}
@@ -99,7 +99,7 @@ public class MoneyChanger extends StdBehavior
 					msliver.setDescription("This note convertable to 1,000,000 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
-					msliver.setLocation(changeBag);
+					msliver.setContainer(changeBag);
 					msliver.text();
 					msliver.recoverEnvStats();
 				}
@@ -114,7 +114,7 @@ public class MoneyChanger extends StdBehavior
 					msliver.setDescription("This note convertable to 100,000 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
-					msliver.setLocation(changeBag);
+					msliver.setContainer(changeBag);
 					msliver.text();
 					msliver.recoverEnvStats();
 				}
@@ -129,7 +129,7 @@ public class MoneyChanger extends StdBehavior
 					msliver.setDescription("This note convertable to 10,000 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
-					msliver.setLocation(changeBag);
+					msliver.setContainer(changeBag);
 					msliver.text();
 					msliver.recoverEnvStats();
 				}
@@ -144,7 +144,7 @@ public class MoneyChanger extends StdBehavior
 					msliver.setDescription("This note convertable to 5,000 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
-					msliver.setLocation(changeBag);
+					msliver.setContainer(changeBag);
 					msliver.text();
 					msliver.recoverEnvStats();
 				}
@@ -159,7 +159,7 @@ public class MoneyChanger extends StdBehavior
 					msliver.setDescription("This note convertable to 1000 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
-					msliver.setLocation(changeBag);
+					msliver.setContainer(changeBag);
 					msliver.text();
 					msliver.recoverEnvStats();
 				}
@@ -174,7 +174,7 @@ public class MoneyChanger extends StdBehavior
 					msliver.setDescription("This note convertable to 500 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
-					msliver.setLocation(changeBag);
+					msliver.setContainer(changeBag);
 					msliver.text();
 					msliver.recoverEnvStats();
 				}
@@ -189,7 +189,7 @@ public class MoneyChanger extends StdBehavior
 					msliver.setDescription("This note convertable to 100 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
-					msliver.setLocation(changeBag);
+					msliver.setContainer(changeBag);
 					msliver.text();
 					msliver.recoverEnvStats();
 				}
@@ -204,7 +204,7 @@ public class MoneyChanger extends StdBehavior
 					msliver.setDescription("This note convertable to 50 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
-					msliver.setLocation(changeBag);
+					msliver.setContainer(changeBag);
 					msliver.text();
 					msliver.recoverEnvStats();
 				}
@@ -219,7 +219,7 @@ public class MoneyChanger extends StdBehavior
 					msliver.setDescription("This note convertable to 10 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
-					msliver.setLocation(changeBag);
+					msliver.setContainer(changeBag);
 					msliver.text();
 					msliver.recoverEnvStats();
 				}
@@ -234,7 +234,7 @@ public class MoneyChanger extends StdBehavior
 					msliver.setDescription("This note convertable to 10 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
-					msliver.setLocation(changeBag);
+					msliver.setContainer(changeBag);
 					msliver.text();
 					msliver.recoverEnvStats();
 				}
@@ -244,7 +244,7 @@ public class MoneyChanger extends StdBehavior
 					Coins rest=(Coins)CMClass.getItem("StdCoins");
 					rest.setNumberOfCoins(value);
 					observer.addInventory(rest);
-					rest.setLocation(changeBag);
+					rest.setContainer(changeBag);
 				}
 				changeBag.setCapacity(value);
 				changeBag.recoverEnvStats();

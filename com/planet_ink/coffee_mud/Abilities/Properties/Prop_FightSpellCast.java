@@ -67,12 +67,12 @@ public class Prop_FightSpellCast extends Property
 			myItem=(Item)affected;
 		if((myItem!=null)
 		&&(!myItem.amWearingAt(Item.INVENTORY))
-		&&(myItem.myOwner()!=null)
-		&&(myItem.myOwner() instanceof MOB)
+		&&(myItem.owner()!=null)
+		&&(myItem.owner() instanceof MOB)
 		&&(affect.target()!=null)
 		&&(affect.target() instanceof MOB))
 		{
-			MOB mob=(MOB)myItem.myOwner();
+			MOB mob=(MOB)myItem.owner();
 			if((mob.isInCombat())
 			&&(mob.location()!=null)
 			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))

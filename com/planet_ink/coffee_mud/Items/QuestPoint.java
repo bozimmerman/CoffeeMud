@@ -12,7 +12,7 @@ public class QuestPoint extends StdItem
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a quest point";
 		displayText="A shiny blue coin has been left here.";
-		myLocation=null;
+		myContainer=null;
 		description="A shiny blue coin with magical script around the edges.";
 		myUses=Integer.MAX_VALUE;
 		myWornCode=0;
@@ -37,7 +37,7 @@ public class QuestPoint extends StdItem
 			{
 			case Affect.TYP_GET:
 				{
-				setLocation(null);
+				setContainer(null);
 				destroyThis();
 				if(!mob.isMine(this))
 					mob.setQuestPoint(mob.getQuestPoint()+1);

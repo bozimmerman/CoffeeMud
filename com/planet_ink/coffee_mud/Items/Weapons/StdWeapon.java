@@ -89,20 +89,20 @@ public class StdWeapon extends StdItem implements Weapon
 		&&(affect.tool()==this)
 		&&(subjectToWearAndTear())
 		&&(Dice.rollPercentage()<10)
-		&&(myOwner()!=null)
+		&&(owner()!=null)
 		&&(amWearingAt(Item.WIELD))
-		&&(myOwner() instanceof MOB)
-		&&(affect.amISource((MOB)myOwner()))
+		&&(owner() instanceof MOB)
+		&&(affect.amISource((MOB)owner()))
 		&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*4)))
 		{
 			setUsesRemaining(usesRemaining()-1);
 			if((usesRemaining()<=0)
-			&&(myOwner()!=null)
-			&&(myOwner() instanceof MOB))
+			&&(owner()!=null)
+			&&(owner() instanceof MOB))
 			{
-				MOB owner=(MOB)myOwner();
+				MOB owner=(MOB)owner();
 				setUsesRemaining(100);
-				affect.addTrailerMsg(new FullMsg(((MOB)myOwner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being wielded by <S-NAME> is destroyed!"));
+				affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being wielded by <S-NAME> is destroyed!"));
 				remove();
 				destroyThis();
 				owner.recoverEnvStats();
@@ -140,7 +140,7 @@ public class StdWeapon extends StdItem implements Weapon
 						   ||(I instanceof Weapon)
 						   ||(I.usesRemaining()==0)
 						   ||(I.usesRemaining()==Integer.MAX_VALUE)
-						   ||(I.location()!=null)
+						   ||(I.container()!=null)
 						   ||(!I.rawSecretIdentity().equalsIgnoreCase(ammunitionType()))))
 						{
 							mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) "+ammunitionType()+" from "+I.name()+".");

@@ -83,11 +83,11 @@ public class Spell_WallOfAir extends Spell
 		super.unInvoke();
 		if((theWall!=null)
 		&&(invoker!=null)
-		&&(theWall.myOwner()!=null)
-		&&(theWall.myOwner() instanceof Room)
-		&&(((Room)theWall.myOwner()).isContent(theWall)))
+		&&(theWall.owner()!=null)
+		&&(theWall.owner() instanceof Room)
+		&&(((Room)theWall.owner()).isContent(theWall)))
 		{
-			((Room)theWall.myOwner()).show(invoker,null,Affect.MSG_OK_VISUAL,"The wall of air dissipates.");
+			((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,"The wall of air dissipates.");
 			Item wall=theWall;
 			theWall=null;
 			wall.destroyThis();

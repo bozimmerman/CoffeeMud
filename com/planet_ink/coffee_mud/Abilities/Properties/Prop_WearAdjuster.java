@@ -85,14 +85,14 @@ public class Prop_WearAdjuster extends Property
 			{
 				myItem=(Item)affectedMOB;
 				if((!myItem.amWearingAt(Item.INVENTORY))
-				   &&(myItem.myOwner() instanceof MOB))
+				   &&(myItem.owner() instanceof MOB))
 				{
-					if((lastMOB!=null)&&(myItem.myOwner()!=lastMOB))
+					if((lastMOB!=null)&&(myItem.owner()!=lastMOB))
 					{	Prop_HaveAdjuster.removeMyAffectFromLastMob(this,lastMOB,adjCharState); lastMOB=null;}
 
-					if(myItem.myOwner() !=null)
+					if(myItem.owner() !=null)
 					{
-						lastMOB=(MOB)myItem.myOwner();
+						lastMOB=(MOB)myItem.owner();
 						if(!lastMOB.isMine(this))
 							Prop_HaveAdjuster.addMe(lastMOB,adjCharState,this);
 					}
@@ -102,8 +102,8 @@ public class Prop_WearAdjuster extends Property
 			if(affectedMOB instanceof MOB)
 			{
 				if((!myItem.amWearingAt(Item.INVENTORY))
-				   &&(myItem.myOwner() instanceof MOB)
-				   &&(myItem.myOwner()==affectedMOB))
+				   &&(myItem.owner() instanceof MOB)
+				   &&(myItem.owner()==affectedMOB))
 				{
 					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
 					{	Prop_HaveAdjuster.removeMyAffectFromLastMob(this,lastMOB,adjCharState); lastMOB=null;}
@@ -111,7 +111,7 @@ public class Prop_WearAdjuster extends Property
 					Prop_HaveAdjuster.envStuff(affectableStats,baseEnvStats());
 				}
 				else
-				if((affectedMOB!=null)&&((affectedMOB!=myItem.myOwner())||(myItem.amWearingAt(Item.INVENTORY))))
+				if((affectedMOB!=null)&&((affectedMOB!=myItem.owner())||(myItem.amWearingAt(Item.INVENTORY))))
 				{
 					Prop_HaveAdjuster.removeMyAffectFromLastMob(this,(MOB)affectedMOB,adjCharState);
 				}

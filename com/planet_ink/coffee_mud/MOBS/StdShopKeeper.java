@@ -354,7 +354,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							Item I=mob.fetchInventory(i);
 							if((I!=null)
 							&&(I instanceof Key)
-							&&(((Key)I).getKey().equals(((Container)affect.tool()).keyName()))&&(I.location()==affect.tool()))
+							&&(((Key)I).getKey().equals(((Container)affect.tool()).keyName()))&&(I.container()==affect.tool()))
 								return true;
 						}
 						ExternalPlay.quickSay(this,mob,"I won't buy that back unless you put the key in it.",true,false);
@@ -432,7 +432,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					storeInventory.addElement(affect.tool());
 					if(affect.tool() instanceof Item)
 					{
-						((Item)affect.tool()).setLocation(null);
+						((Item)affect.tool()).setContainer(null);
 						((Item)affect.tool()).remove();
 						mob.delInventory((Item)affect.tool());
 						if(affect.tool() instanceof Container)
@@ -442,12 +442,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							{
 								int a=mob.inventorySize();
 								Item I=mob.fetchInventory(i);
-								if((I!=null)&&(I.location()==affect.tool()))
+								if((I!=null)&&(I.container()==affect.tool()))
 								{
 									I.remove();
 									storeInventory.addElement(I);
 									mob.delInventory(I);
-									((Item)I).setLocation((Item)affect.tool());
+									((Item)I).setContainer((Item)affect.tool());
 								}
 								if(a==mob.inventorySize())
 									i++;
@@ -487,14 +487,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							{
 								int a=storeInventory.size();
 								Environmental I=(Environmental)storeInventory.elementAt(i);
-								if((I instanceof Item)&&(((Item)I).location()==product))
+								if((I instanceof Item)&&(((Item)I).container()==product))
 								{
 									if((I instanceof Key)&&(((Key)I).getKey().equals(C.keyName())))
 										foundKey=(Key)I;
 									((Item)I).remove();
 									mob.location().addItem((Item)I);
 									storeInventory.removeElement(I);
-									((Item)I).setLocation((Item)product);
+									((Item)I).setContainer((Item)product);
 								}
 								if(a==storeInventory.size())
 									i++;
@@ -506,7 +506,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								C.setLidsNLocks(C.hasALid(),true,C.hasALock(),false);
 								Key key=(Key)CMClass.getItem("StdKey");
 								key.setKey(keyName);
-								key.setLocation(C);
+								key.setContainer(C);
 								mob.location().addItem(key);
 							}
 						}
@@ -612,7 +612,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		{
 			Environmental E=(Environmental)inventory.elementAt(i);
 
-			if(!((E instanceof Item)&&((((Item)E).location()!=null)||(!Sense.canBeSeenBy(E,mob)))))
+			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
 			{
 				String col=null;
 				int val=yourValue(mob,E,true);

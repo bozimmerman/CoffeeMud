@@ -276,7 +276,7 @@ public class CoffeeUtensils
 					Item thisThang=(Item)list.elementAt(i);
 					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
 
-					if((thisThang.location()==goodLocation)
+					if((thisThang.container()==goodLocation)
 					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
 					&&(thisThang.ID().equalsIgnoreCase(srchStr)||(thisThang.name().equalsIgnoreCase(srchStr))))
 						if((!allFlag)||(thisThang.displayText().length()>0))
@@ -295,7 +295,7 @@ public class CoffeeUtensils
 					Item thisThang=(Item)list.elementAt(i);
 					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
 
-					if((thisThang.location()==goodLocation)
+					if((thisThang.container()==goodLocation)
 					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
 					&&(containsString(thisThang.name(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0))))
 						if((--myOccurrance)<=0)
@@ -310,7 +310,7 @@ public class CoffeeUtensils
 				{
 					Item thisThang=(Item)list.elementAt(i);
 					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
-					if((thisThang.location()==goodLocation)
+					if((thisThang.container()==goodLocation)
 					&&(thisThang.displayText().length()>0)
 					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
 					&&(containsString(thisThang.displayText(),srchStr)))
@@ -329,11 +329,11 @@ public class CoffeeUtensils
 		if(E instanceof MOB)
 			return ((MOB)E).location();
 		else
-		if((E instanceof Item)&&(((Item)E).myOwner() instanceof Room))
-			return (Room)((Item)E).myOwner();
+		if((E instanceof Item)&&(((Item)E).owner() instanceof Room))
+			return (Room)((Item)E).owner();
 		else
-		if((E instanceof Item)&&(((Item)E).myOwner() instanceof MOB))
-		   return ((MOB)((Item)E).myOwner()).location();
+		if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
+		   return ((MOB)((Item)E).owner()).location();
 		return null;
 	}
 	

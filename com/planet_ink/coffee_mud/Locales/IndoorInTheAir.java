@@ -97,7 +97,7 @@ public class IndoorInTheAir extends StdRoom
 		{
 			Environmental E=(Environmental)needToFall.elementAt(i);
 			if(((E instanceof MOB)&&(!Sense.isInFlight(E)))
-			||((E instanceof Item)&&(!Sense.isFlying(((Item)E).ultimateLocation()))))
+			||((E instanceof Item)&&(!Sense.isFlying(((Item)E).ultimateContainer()))))
 			{
 				Ability falling=CMClass.getAbility("Falling");
 				falling.setProfficiency(avg);

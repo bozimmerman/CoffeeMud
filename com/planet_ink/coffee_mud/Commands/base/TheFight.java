@@ -224,7 +224,7 @@ public class TheFight
 					{
 						Item C=CMClass.getItem("StdCoins");
 						C.baseEnvStats().setAbility(myAmount);
-						C.setLocation(Body);
+						C.setContainer(Body);
 						C.setPossessionTime(Calendar.getInstance());
 						C.recoverEnvStats();
 						deathRoom.addItem(C);
@@ -238,7 +238,7 @@ public class TheFight
 				{
 					Item item=deathRoom.fetchItem(i);
 					if((item!=null)
-					&&(item.location()==Body)
+					&&(item.container()==Body)
 					&&(Sense.canBeSeenBy(Body,source))
 					&&(Sense.canBeSeenBy(item,source)))
 						ExternalPlay.get(source,Body,item,false);

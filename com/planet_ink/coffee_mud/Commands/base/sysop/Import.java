@@ -3084,14 +3084,14 @@ public class Import
 						if(C==null)
 							returnAnError(mob,"Reset error (no container) on line: "+s+", area="+areaName);
 						else
-						if(C.myOwner()==null)
+						if(C.owner()==null)
 							returnAnError(mob,"Reset error (no container owner) on line: "+s+", area="+areaName);
 						else
-						if(C.myOwner() instanceof Room)
+						if(C.owner() instanceof Room)
 						{
-							Room RR=(Room)C.myOwner();
+							Room RR=(Room)C.owner();
 							RR.addItem(I);
-							I.setLocation(C);
+							I.setContainer(C);
 							if(I.isGettable())
 								I.baseEnvStats().setRejuv(1000);
 							I.recoverEnvStats();
@@ -3099,11 +3099,11 @@ public class Import
 								containerHash.put(itemID,I);
 						}
 						else
-						if(C.myOwner() instanceof MOB)
+						if(C.owner() instanceof MOB)
 						{
-							MOB MM=(MOB)C.myOwner();
+							MOB MM=(MOB)C.owner();
 							MM.addInventory(I);
-							I.setLocation(C);
+							I.setContainer(C);
 							M.text();
 							I.recoverEnvStats();
 							if(I instanceof Container)

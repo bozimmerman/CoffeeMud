@@ -181,7 +181,7 @@ public class RoomLoader
 					{
 						Item container=(Item)itemNums.get(loc);
 						if(container!=null)
-							newItem.setLocation(container);
+							newItem.setContainer(container);
 						else
 							itemLocs.put(newItem,loc);
 					}
@@ -203,7 +203,7 @@ public class RoomLoader
 				Item container=(Item)itemNums.get(location);
 				if(container!=null)
 				{
-					keyItem.setLocation(container);
+					keyItem.setContainer(container);
 					keyItem.recoverEnvStats();
 					container.recoverEnvStats();
 				}
@@ -280,7 +280,7 @@ public class RoomLoader
 					+"'"+room.ID()+"',"
 					+"'"+thisItem+"',"
 					+"'"+thisItem.ID()+"',"
-					+"'"+((thisItem.location()!=null)?(""+thisItem.location()):"")+"',"
+					+"'"+((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"
 					+"'"+thisItem.text()+" ',"
 					+thisItem.baseEnvStats().rejuv()+","
 					+thisItem.usesRemaining()+","
@@ -659,7 +659,7 @@ public class RoomLoader
 				Item thisItem=room.fetchItem(0);
 				if(thisItem!=null)
 				{
-					thisItem.setLocation(null);
+					thisItem.setContainer(null);
 					room.delItem(thisItem);
 				}
 			}

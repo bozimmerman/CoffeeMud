@@ -102,7 +102,7 @@ public class MOBloader
 					{
 						Item container=(Item)itemNums.get(loc);
 						if(container!=null)
-							newItem.setLocation(container);
+							newItem.setContainer(container);
 						else
 							itemLocs.put(newItem,loc);
 					}
@@ -123,7 +123,7 @@ public class MOBloader
 				Item container=(Item)itemNums.get(location);
 				if(container!=null)
 				{
-					keyItem.setLocation(container);
+					keyItem.setContainer(container);
 					keyItem.recoverEnvStats();
 					container.recoverEnvStats();
 				}
@@ -426,7 +426,7 @@ public class MOBloader
 					+"'"+(thisItem)+"',"
 					+"'"+thisItem.ID()+"',"
 					+"'"+thisItem.text()+" ',"
-					+"'"+((thisItem.location()!=null)?(""+thisItem.location()):"")+"',"
+					+"'"+((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"
 					+thisItem.rawWornCode()+","
 					+thisItem.usesRemaining()+","
 					+thisItem.baseEnvStats().level()+","
@@ -544,7 +544,7 @@ public class MOBloader
 			Item thisItem=mob.fetchInventory(0);
 			if(thisItem!=null)
 			{
-				thisItem.setLocation(null);
+				thisItem.setContainer(null);
 				mob.delInventory(thisItem);
 			}
 		}

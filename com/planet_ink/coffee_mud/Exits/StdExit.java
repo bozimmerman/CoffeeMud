@@ -287,7 +287,7 @@ public class StdExit implements Exit
 						Item item=mob.fetchInventory(i);
 						if((item!=null)
 						&&(item instanceof Key)
-						&&(item.location()==null)
+						&&(item.container()==null)
 						&&(Sense.canBeSeenBy(item,mob)))
 						{
 							if(((Key)item).getKey().equals(keyName()))

@@ -43,13 +43,13 @@ public class Prop_HaveResister extends Property
 			if(affectedMOB instanceof Item)
 			{
 				myItem=(Item)affectedMOB;
-				if(myItem.myOwner() instanceof MOB)
+				if(myItem.owner() instanceof MOB)
 				{
-					if((lastMOB!=null)&&(myItem.myOwner()!=lastMOB))
+					if((lastMOB!=null)&&(myItem.owner()!=lastMOB))
 					{	removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
-					if(myItem.myOwner() !=null)
+					if(myItem.owner() !=null)
 					{
-						lastMOB=(MOB)myItem.myOwner();
+						lastMOB=(MOB)myItem.owner();
 						if(!lastMOB.isMine(this))
 							addMe(lastMOB,this);
 					}
@@ -58,15 +58,15 @@ public class Prop_HaveResister extends Property
 			else
 			if(affectedMOB instanceof MOB)
 			{
-				if((myItem.myOwner() instanceof MOB)
-				   &&(myItem.myOwner()==affectedMOB))
+				if((myItem.owner() instanceof MOB)
+				   &&(myItem.owner()==affectedMOB))
 				{
 					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
 					{	removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
 					lastMOB=(MOB)affectedMOB;
 				}
 				else
-				if((affectedMOB!=null)&&(affectedMOB!=myItem.myOwner()))
+				if((affectedMOB!=null)&&(affectedMOB!=myItem.owner()))
 				{
 					removeMyAffectFromLastMob(this,(MOB)affectedMOB);
 				}

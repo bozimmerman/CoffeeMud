@@ -103,30 +103,30 @@ public class LightSource extends StdItem implements Light
 	{
 		if(tickID==Host.LIGHT_FLICKERS)
 		{
-			if((myLight.myOwner()!=null)
+			if((myLight.owner()!=null)
 			&&(myLight.isLit())
 			&&(myLight.getDuration()>0))
 			{
-				if(myLight.myOwner() instanceof Room)
+				if(myLight.owner() instanceof Room)
 				{
-					if(((Room)myLight.myOwner()).numInhabitants()>0)
+					if(((Room)myLight.owner()).numInhabitants()>0)
 					{
-						MOB mob=((Room)myLight.myOwner()).fetchInhabitant(0);
+						MOB mob=((Room)myLight.owner()).fetchInhabitant(0);
 						if(mob!=null)
-							((Room)myLight.myOwner()).show(mob,null,Affect.MSG_OK_VISUAL,myLight.name()+" flickers and burns out.");
+							((Room)myLight.owner()).show(mob,null,Affect.MSG_OK_VISUAL,myLight.name()+" flickers and burns out.");
 					}
 					if(myLight.destroyedWhenBurnedOut())
 						myLight.destroyThis();
-					((Room)myLight.myOwner()).recoverRoomStats();
+					((Room)myLight.owner()).recoverRoomStats();
 				}
 				else
-				if(myLight.myOwner() instanceof MOB)
+				if(myLight.owner() instanceof MOB)
 				{
-					((MOB)myLight.myOwner()).tell(((MOB)myLight.myOwner()),null,myLight.name()+" flickers and burns out.");
+					((MOB)myLight.owner()).tell(((MOB)myLight.owner()),null,myLight.name()+" flickers and burns out.");
 					myLight.setDuration(0);
 					if(myLight.destroyedWhenBurnedOut())
 						myLight.destroyThis();
-					((MOB)myLight.myOwner()).location().recoverRoomStats();
+					((MOB)myLight.owner()).location().recoverRoomStats();
 				}
 			}
 			myLight.light(false);

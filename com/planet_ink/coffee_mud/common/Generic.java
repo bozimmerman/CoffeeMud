@@ -163,7 +163,7 @@ public class Generic
 			String xml=
 				 XMLManager.convertXMLtoTag("IID",""+E)
 				+XMLManager.convertXMLtoTag("IWORN",""+item.rawWornCode())
-				+XMLManager.convertXMLtoTag("ILOC",""+((item.location()!=null)?(""+item.location()):""))
+				+XMLManager.convertXMLtoTag("ILOC",""+((item.container()!=null)?(""+item.container()):""))
 				+XMLManager.convertXMLtoTag("IUSES",""+item.usesRemaining())
 				+XMLManager.convertXMLtoTag("ILEVL",""+E.baseEnvStats().level())
 				+XMLManager.convertXMLtoTag("IABLE",""+E.baseEnvStats().ability())
@@ -437,7 +437,7 @@ public class Generic
 					newItem.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(iblk.contents,"IREJV"));
 					newItem.setUsesRemaining(XMLManager.getIntFromPieces(iblk.contents,"IUSES"));
 					newItem.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(iblk.contents,"ITEXT")));
-					newItem.setLocation(null);
+					newItem.setContainer(null);
 					newItem.recoverEnvStats();
 					newRoom.addItem(newItem);
 					newItem.recoverEnvStats();
@@ -447,7 +447,7 @@ public class Generic
 					String loc=(String)e.nextElement();
 					Item childI=(Item)itemLocTable.get(loc);
 					Item parentI=(Item)identTable.get(loc);
-					childI.setLocation(parentI);
+					childI.setContainer(parentI);
 					childI.recoverEnvStats();
 					parentI.recoverEnvStats();
 				}
@@ -610,10 +610,10 @@ public class Generic
 					Item item=(Item)items.elementAt(i);
 					buf.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(item)));
 					buf.append(XMLManager.convertXMLtoTag("IIDEN",""+item));
-					if(item.location()==null)
+					if(item.container()==null)
 						buf.append("<ILOCA />");
 					else
-						buf.append(XMLManager.convertXMLtoTag("ILOCA",""+item.location()));
+						buf.append(XMLManager.convertXMLtoTag("ILOCA",""+item.container()));
 					buf.append(XMLManager.convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
 					buf.append(XMLManager.convertXMLtoTag("IUSES",item.usesRemaining()));
 					buf.append(XMLManager.convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
@@ -858,7 +858,7 @@ public class Generic
 					{
 						String ILOC=(String)LOCmap.get(item);
 						if(ILOC!=null)
-							item.setLocation((Item)IIDmap.get(ILOC));
+							item.setContainer((Item)IIDmap.get(ILOC));
 					}
 				}
 			}
@@ -948,7 +948,7 @@ public class Generic
 							Item item=(Item)stE;
 							String ILOC=(String)LOCmap.get(item);
 							if(ILOC!=null)
-								item.setLocation((Item)IIDmap.get(ILOC));
+								item.setContainer((Item)IIDmap.get(ILOC));
 						}
 					}
 				}

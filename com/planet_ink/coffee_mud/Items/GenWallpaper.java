@@ -49,7 +49,7 @@ public class GenWallpaper implements Item
 		}
 	}
 
-	public Environmental myOwner(){return owner;}
+	public Environmental owner(){return owner;}
 	public void setOwner(Environmental E)
 	{ owner=E;}
 	public Calendar possessionTime(){return null;}
@@ -116,8 +116,8 @@ public class GenWallpaper implements Item
 		if(destroyed) return false;
 		return true;
 	}
-	public Item location(){return null;}
-	public Item ultimateLocation(){return this;}
+	public Item container(){return null;}
+	public Item ultimateContainer(){return this;}
 	public String rawSecretIdentity(){return "";}
 	public String secretIdentity(){return "";}
 	public void setSecretIdentity(String newIdentity){}
@@ -127,7 +127,7 @@ public class GenWallpaper implements Item
 	{ return description; }
 	public void setDescription(String newDescription)
 	{ description=newDescription; }
-	public void setLocation(Item newLocation){}
+	public void setContainer(Item newContainer){}
 	public int usesRemaining(){return Integer.MAX_VALUE;}
 	public void setUsesRemaining(int newUses){}
 	public boolean savable(){return true;}

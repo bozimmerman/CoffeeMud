@@ -105,13 +105,13 @@ public class ServiceEngine
 			return true;
 		else
 		if((E2 instanceof Item)
-		&&(((Item)E2).myOwner()==here))
+		&&(((Item)E2).owner()==here))
 			return true;
 		else
 		if((E2 instanceof Item)
-		&&(((Item)E2).myOwner()!=null)
-		&&(((Item)E2).myOwner() instanceof MOB)
-		&&(((MOB)((Item)E2).myOwner()).location()==here))
+		&&(((Item)E2).owner()!=null)
+		&&(((Item)E2).owner() instanceof MOB)
+		&&(((MOB)((Item)E2).owner()).location()==here))
 			return true;
 		else
 		if(E2 instanceof Exit)

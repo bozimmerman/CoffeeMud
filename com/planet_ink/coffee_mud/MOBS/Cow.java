@@ -70,13 +70,13 @@ public class Cow extends StdMOB implements Drink
 			I.setBaseValue(EnvResource.RESOURCE_DATA[EnvResource.RESOURCE_MILK&EnvResource.RESOURCE_MASK][1]);
 			I.baseEnvStats().setWeight(1);
 			I.recoverEnvStats();
-			I.setLocation(container);
-			if(container.myOwner()!=null)
-				if(container.myOwner() instanceof MOB)
-					((MOB)container.myOwner()).addInventory(I);
+			I.setContainer(container);
+			if(container.owner()!=null)
+				if(container.owner() instanceof MOB)
+					((MOB)container.owner()).addInventory(I);
 				else
-				if(container.myOwner() instanceof Room)
-					((Room)container.myOwner()).addItem(I);
+				if(container.owner() instanceof Room)
+					((Room)container.owner()).addItem(I);
 		}
 	}
 	public int thirstQuenched(){return 100;}

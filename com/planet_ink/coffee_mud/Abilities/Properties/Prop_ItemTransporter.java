@@ -30,12 +30,12 @@ public class Prop_ItemTransporter extends Property
 	public Item ultimateParent(Item item)
 	{
 		if(item==null) return null;
-		if(item.location()==null) return item;
-		if(item.location().location()==item)
-			item.location().setLocation(null);
-		if(item.location()==item)
-			item.setLocation(null);
-		return ultimateParent(item.location());
+		if(item.container()==null) return item;
+		if(item.container().container()==item)
+			item.container().setContainer(null);
+		if(item.container()==item)
+			item.setContainer(null);
+		return ultimateParent(item.container());
 	}
 
 	private synchronized boolean setDestination()
@@ -107,13 +107,13 @@ public class Prop_ItemTransporter extends Property
 			if(E instanceof Item)
 			{
 				nextDestination=(Item)E;
-				if((nextDestination!=null)&&(nextDestination.myOwner()!=null))
+				if((nextDestination!=null)&&(nextDestination.owner()!=null))
 				{
-					if(nextDestination.myOwner() instanceof Room)
-						roomDestination=(Room)nextDestination.myOwner();
+					if(nextDestination.owner() instanceof Room)
+						roomDestination=(Room)nextDestination.owner();
 					else
-					if(nextDestination.myOwner() instanceof MOB)
-						mobDestination=(MOB)nextDestination.myOwner();
+					if(nextDestination.owner() instanceof MOB)
+						mobDestination=(MOB)nextDestination.owner();
 				}
 				else
 					nextDestination=null;
@@ -173,11 +173,11 @@ public class Prop_ItemTransporter extends Property
 			if(affected instanceof Item)
 			{
 				container=(Item)affected;
-				if((container.myOwner()!=null)&&(container.myOwner() instanceof Room))
-					roomMover=(Room)container.myOwner();
+				if((container.owner()!=null)&&(container.owner() instanceof Room))
+					roomMover=(Room)container.owner();
 				else
-				if((container.myOwner()!=null)&&(container.myOwner() instanceof MOB))
-					mobMover=(MOB)container.myOwner();
+				if((container.owner()!=null)&&(container.owner() instanceof MOB))
+					mobMover=(MOB)container.owner();
 			}
 			Vector itemsToMove=new Vector();
 			if(roomMover!=null)
@@ -188,7 +188,7 @@ public class Prop_ItemTransporter extends Property
 					if((item!=null)
 					   &&(item!=container)
 					   &&(item.amWearingAt(Item.INVENTORY))
-					   &&((item.location()==container)||(ultimateParent(item)==container)))
+					   &&((item.container()==container)||(ultimateParent(item)==container)))
 					   itemsToMove.addElement(item);
 				}
 				for(int i=0;i<itemsToMove.size();i++)
@@ -204,7 +204,7 @@ public class Prop_ItemTransporter extends Property
 					if((item!=null)
 					   &&(item!=container)
 					   &&(item.amWearingAt(Item.INVENTORY))
-					   &&((item.location()==container)||(ultimateParent(item)==container)))
+					   &&((item.container()==container)||(ultimateParent(item)==container)))
 					   itemsToMove.addElement(item);
 				}
 				for(int i=oldNum;i<itemsToMove.size();i++)
@@ -218,16 +218,16 @@ public class Prop_ItemTransporter extends Property
 					for(int i=0;i<itemsToMove.size();i++)
 					{
 						Item item=(Item)itemsToMove.elementAt(i);
-						if((item.location()==null)||(item.location()==container))
-							item.setLocation(nextDestination);
+						if((item.container()==null)||(item.container()==container))
+							item.setContainer(nextDestination);
 						room.addItem(item);
 					}
 				if(mob!=null)
 					for(int i=0;i<itemsToMove.size();i++)
 					{
 						Item item=(Item)itemsToMove.elementAt(i);
-						if((item.location()==null)||(item.location()==container))
-							item.setLocation(nextDestination);
+						if((item.container()==null)||(item.container()==container))
+							item.setContainer(nextDestination);
 						if(mob instanceof ShopKeeper)
 							((ShopKeeper)mob).addStoreInventory(item);
 						else

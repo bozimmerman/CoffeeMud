@@ -195,7 +195,7 @@ public class ItemUsage
 				allFlag=false;
 			else
 				dropThis=mob.fetchCarried(container,whatToDrop+addendumStr);
-			if((dropThis==null)||(dropThis.location()!=container)||(!Sense.canBeSeenBy(dropThis,mob)))
+			if((dropThis==null)||(dropThis.container()!=container)||(!Sense.canBeSeenBy(dropThis,mob)))
 			{
 				if((!doneSomething)&&(Util.s_int(whatToDrop)<=0))
 					mob.tell("You aren't carrying that.");

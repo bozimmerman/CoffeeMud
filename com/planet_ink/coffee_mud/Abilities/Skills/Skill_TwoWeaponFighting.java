@@ -41,7 +41,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 		if((lastWeapon!=null)
 		&&(lastWeapon.amWearingAt(Item.HELD))
 		&&(!lastWeapon.amWearingAt(Item.WIELD))
-		&&(lastWeapon.location()==null))
+		&&(lastWeapon.container()==null))
 			return lastWeapon;
 		Weapon weapon=null;
 		for(int i=0;i<mob.inventorySize();i++)
@@ -50,7 +50,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 			if((item instanceof Weapon)
 			    &&(item.amWearingAt(Item.HELD))
 				&&(!item.amWearingAt(Item.WIELD))
-			    &&(item.location()==null))
+			    &&(item.container()==null))
 			{ weapon=(Weapon)item; break; }
 		}
 		lastWeapon=weapon;

@@ -81,7 +81,7 @@ public class Song_Rebirth extends Song
 							while(it<rejuvedMOB.location().numItems())
 							{
 								Item item=rejuvedMOB.location().fetchItem(it);
-								if((item!=null)&&(item.location()==body))
+								if((item!=null)&&(item.container()==body))
 								{
 									FullMsg msg2=new FullMsg(rejuvedMOB,body,item,Affect.MSG_GET,null);
 									rejuvedMOB.location().send(rejuvedMOB,msg2);
