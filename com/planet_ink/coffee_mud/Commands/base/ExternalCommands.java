@@ -14,6 +14,10 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.itemUsage.wear(mob,item);
 	}
+	public boolean remove(MOB mob, Item item)
+	{
+		return processor.itemUsage.remove(mob,item);
+	}
 
 	public void postAttack(MOB attacker, MOB target, Item weapon)
 	{

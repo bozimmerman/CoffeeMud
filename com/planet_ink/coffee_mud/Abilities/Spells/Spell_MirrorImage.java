@@ -85,6 +85,7 @@ public class Spell_MirrorImage extends Spell
 			&&(affect.othersMessage().length()>0))
 			{
 				notAgain=true;
+				if(numberOfImages<0) unInvoke();
 				for(int x=0;x<numberOfImages;x++)
 					affect.addTrailerMsg(new FullMsg(mob,affect.target(),Affect.MSG_OK_VISUAL,affect.othersMessage()));
 			}

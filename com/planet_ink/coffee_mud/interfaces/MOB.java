@@ -48,6 +48,8 @@ public interface MOB
 	public void makePeace();
 	public void bringToLife(Room newLocation);
 	public void destroy();
+	public void setAtRange(int newRange);
+	public int rangeToTarget();
 	
 	/** Where this MOB is currently*/
 	public Room location();

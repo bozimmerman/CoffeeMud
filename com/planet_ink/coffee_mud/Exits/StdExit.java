@@ -116,6 +116,8 @@ public class StdExit implements Exit
 	{ return description;}
 	public void setDescription(String newDescription)
 	{ description=newDescription;}
+	public int maxRange(){return Integer.MAX_VALUE;}
+	public int minRange(){return Integer.MIN_VALUE;}
 
 	public boolean okAffect(Affect affect)
 	{

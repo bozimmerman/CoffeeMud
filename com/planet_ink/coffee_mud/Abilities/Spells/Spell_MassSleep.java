@@ -29,6 +29,7 @@ public class Spell_MassSleep extends Spell
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
+		maxRange=0;
 	}
 
 	public Environmental newInstance()

@@ -812,7 +812,8 @@ public class StdRoom
 		else
 			return 3;
 	}
-	public int getMaxRange()
+	public int minRange(){return Integer.MIN_VALUE;}
+	public int maxRange()
 	{
 		if(maxRange>=0)
 			return maxRange;

@@ -29,6 +29,8 @@ public class Dragonbreath extends StdAbility
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		minRange=0;
+		maxRange=10;
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -21,6 +21,7 @@ public class Spell extends StdAbility
 		triggerStrings.addElement("C");
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		maxRange=1;
 	}
 
 	public int classificationCode()

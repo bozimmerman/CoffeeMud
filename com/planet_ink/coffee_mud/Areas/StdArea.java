@@ -768,6 +768,8 @@ public class StdArea implements Area
 	{
 		return behaviors.size();
 	}
+	public int maxRange(){return Integer.MAX_VALUE;}
+	public int minRange(){return Integer.MIN_VALUE;}
 	
 	public StringBuffer getAreaStats()
 	{

@@ -24,6 +24,7 @@ public class Skill_Revoke extends StdAbility
 		baseEnvStats().setLevel(1);
 
 		recoverEnvStats();
+		maxRange=10;
 	}
 
 	public Environmental newInstance()

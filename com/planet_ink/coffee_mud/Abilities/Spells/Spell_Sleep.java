@@ -26,7 +26,7 @@ public class Spell_Sleep extends Spell
 		isAutoinvoked=false;
 
 		baseEnvStats().setLevel(3);
-
+		maxRange=0;
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

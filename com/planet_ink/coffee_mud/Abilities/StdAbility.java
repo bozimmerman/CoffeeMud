@@ -18,6 +18,8 @@ public class StdAbility implements Ability, Cloneable
 	protected int uses=Integer.MAX_VALUE;
 	protected int profficiency=0;
 	protected boolean isAnAutoEffect=false;
+	protected int maxRange=0;
+	protected int minRange=0;
 
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
@@ -71,6 +73,9 @@ public class StdAbility implements Ability, Cloneable
 		tickDown=tickTime;
 	}
 
+	public int maxRange(){return maxRange;}
+	public int minRange(){return minRange;}
+	
 	public boolean putInCommandlist()
 	{
 		return putInCommandlist;

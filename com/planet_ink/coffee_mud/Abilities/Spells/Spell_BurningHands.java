@@ -26,6 +26,7 @@ public class Spell_BurningHands extends Spell
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		maxRange=0;
 
 		baseEnvStats().setLevel(4);
 

@@ -29,6 +29,8 @@ public class Prayer extends StdAbility
 		quality=Ability.INDIFFERENT;
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		minRange=0;
+		maxRange=2;
 	}
 
 	public int classificationCode()

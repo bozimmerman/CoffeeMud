@@ -45,5 +45,17 @@ public class GenWeapon extends StdWeapon
 		Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
+	public int minRange()
+	{
+		if(weaponClassification()==Weapon.CLASS_RANGED)
+			return 1;
+		return 0;
+	}
+	public int maxRange()
+	{
+		if(weaponClassification()==Weapon.CLASS_RANGED)
+			return 3;
+		return 0;
+	}
 }
 

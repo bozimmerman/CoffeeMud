@@ -28,6 +28,7 @@ public class Song extends StdAbility
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		maxRange=1;
 	}
 
 	public int classificationCode()

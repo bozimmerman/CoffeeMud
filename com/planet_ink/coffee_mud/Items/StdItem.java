@@ -946,6 +946,9 @@ public class StdItem implements Item
 		return identity;
 	}
 
+	public int maxRange(){return 0;}
+	public int minRange(){return 0;}
+	
 	public String materialDescription()
 	{
 		switch(material)

@@ -27,6 +27,8 @@ public class Skill_Dirt extends StdAbility
 		baseEnvStats().setLevel(6);
 
 		recoverEnvStats();
+		minRange=0;
+		maxRange=1;
 	}
 
 	public Environmental newInstance()

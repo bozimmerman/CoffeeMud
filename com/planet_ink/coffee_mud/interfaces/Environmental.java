@@ -82,4 +82,10 @@ public interface Environmental extends Cloneable
 	 * of service being requested.
 	 */
 	public boolean tick(int tickID);
+	
+	/**
+	 * Parameters for using in 3 dimensional space
+	 */
+	public int maxRange();
+	public int minRange();
 }

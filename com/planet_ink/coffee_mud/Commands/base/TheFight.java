@@ -347,7 +347,10 @@ public class TheFight
 							if((inhab.amFollowing()!=null)&&(victim.amFollowing()!=null)&&(inhab.amFollowing()==victim.amFollowing()))
 								inhab.setVictim(null);
 							else
+							{
+								victim.setAtRange(-1);
 								victim.setVictim(inhab);
+							}
 						}
 
 					}

@@ -36,6 +36,11 @@ public class ExternalPlay
 		return "";
 	}
 
+	public static boolean remove(MOB mob, Item item)
+	{
+		if(player!=null) return player.remove(mob,item);
+		return false;
+	}
 	public static boolean wear(MOB mob, Item item)
 	{
 		if(player!=null) return player.wear(mob,item);

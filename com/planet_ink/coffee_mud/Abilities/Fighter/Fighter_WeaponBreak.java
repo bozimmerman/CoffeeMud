@@ -25,6 +25,8 @@ public class Fighter_WeaponBreak extends StdAbility
 
 		baseEnvStats().setLevel(14);
 
+		minRange=0;
+		maxRange=1;
 		recoverEnvStats();
 	}
 

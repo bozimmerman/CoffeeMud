@@ -42,7 +42,10 @@ public class Skill_Parry extends StdAbility
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amITarget(mob)&&(Sense.aliveAwakeMobile(mob,true))&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK))
+		if(affect.amITarget(mob)
+		   &&(Sense.aliveAwakeMobile(mob,true))
+		   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+		   &&(mob.rangeToTarget()==0))
 		{
 			if((affect.tool()!=null)&&(affect.tool() instanceof Item))
 			{
@@ -57,7 +60,7 @@ public class Skill_Parry extends StdAbility
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_NATURAL))
 				{
-					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parry(s) "+affect.source().fetchWieldedItem().name()+" attack from <T-NAME>!");
+					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parry(s) "+attackerWeapon.name()+" attack from <T-NAME>!");
 					if((profficiencyCheck(mob.charStats().getDexterity()-70,false))
 					&&(!lastTime)
 					&&(mob.location().okAffect(msg)))

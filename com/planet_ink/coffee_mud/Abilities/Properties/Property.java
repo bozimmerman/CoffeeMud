@@ -41,6 +41,8 @@ public class Property implements Ability, Cloneable
 	public boolean canBeLearnedBy(MOB teacher, MOB student){return false;}
 	public void teach(MOB teacher, MOB student){}
 	public void practice(MOB teacher, MOB student){}
+	public int maxRange(){return Integer.MAX_VALUE;}
+	public int minRange(){return Integer.MIN_VALUE;}
 
 	public boolean qualifies(MOB student){return false;}
 	public int qualifyingLevel(MOB student){return -1;}

@@ -115,7 +115,7 @@ public class StdMOB implements MOB
 	protected MOB amFollowing=null;
 	protected MOB soulMate=null;
 	private double speeder=0.0;
-	protected int rangeToTarget=0;
+	protected int atRange=-1;
 
 	public String ID()
 	{
@@ -439,6 +439,24 @@ public class StdMOB implements MOB
 		}
 		return true;
 	}
+	public void setAtRange(int newRange){atRange=newRange;}
+	public int rangeToTarget(){return atRange;}
+	public int maxRange(){return maxRange(null);}
+	public int minRange(){return maxRange(null);}
+	public int maxRange(Environmental tool)
+	{
+		int max=0;
+		if(tool!=null)
+			max=tool.maxRange();
+		if((location()!=null)&&(location().maxRange()<max))
+			max=location().maxRange();
+		return max;
+	}
+	public int minRange(Environmental tool)
+	{
+		if(tool!=null) return tool.minRange();
+		return 0;
+	}
 
 	public void makePeace()
 	{
@@ -460,6 +478,7 @@ public class StdMOB implements MOB
 
 	public void setVictim(MOB mob)
 	{
+		if(mob==null) atRange=-1;
 		if(victim==mob) return;
 		if(mob==this) return;
 		victim=mob;
@@ -643,16 +662,87 @@ public class StdMOB implements MOB
 			}
 			if(Util.bset(affect.sourceCode(),Affect.MASK_MALICIOUS))
 			{
-				if(affect.target()!=this)
+				if((affect.target()!=this)&&(affect.target()!=null)&&(affect.target() instanceof MOB))
 				{
-					if((amFollowing()!=null)&&(affect.target()==amFollowing()))
+					MOB target=(MOB)affect.target();
+					if((amFollowing()!=null)&&(target==amFollowing()))
 					{
 						tell("You like "+amFollowing().charStats().himher()+" too much.");
 						return false;
 					}
+					// establish and enforce range
+					if(atRange<0)
+					{
+						if(target.getVictim()==null) 
+							atRange=maxRange(affect.tool());
+						else
+						if(target.getVictim()==this)
+						{
+							if(target.rangeToTarget()>=0)
+								atRange=target.rangeToTarget();
+							else
+								atRange=maxRange(affect.tool());
+						}
+						else
+							atRange=maxRange(affect.tool());
+					}
+						
+					// and now, the consequences of range
+					if((location()!=null)
+					   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+					   &&(atRange>maxRange(affect.tool())))
+					{
+						atRange--;
+						String newstr="<S-NAME> advance(s) at <T-NAMESELF>.";
+						affect.modify(this,affect.target(),affect.tool(),Affect.MSG_NOISYMOVEMENT,newstr,Affect.MSG_OK_VISUAL,newstr,Affect.MSG_NOISYMOVEMENT,newstr);
+						if(location().okAffect(affect))
+							return true;
+						location().send(this,affect);
+						return false;
+					}
+					else
+					{
+						int useRange=atRange;
+						if(getVictim()!=null)
+						{
+							if(getVictim()==target)
+							{
+								useRange=atRange;
+								if(target.getVictim()==this)
+									target.setAtRange(atRange);
+							}
+							else
+							{
+								if(target.getVictim()==this)
+									useRange=target.rangeToTarget();
+								else
+									useRange=maxRange(affect.tool());
+							}
+						}
+						if((useRange>=0)&&(maxRange(affect.tool())<useRange))
+						{
+							if((affect.tool()!=null)&&(target!=null))
+								mob.tell("You are far away from "+target.name()+" to use "+affect.tool().name()+".");
+							return false;
+						}
+						else
+						if((useRange>=0)&&(minRange(affect.tool())>useRange))
+						{
+							if((affect.tool()!=null)&&(target!=null))
+							{
+								mob.tell("You are too close to "+target.name()+" to use "+affect.tool().name()+".");
+								if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+								&&(affect.tool() instanceof Weapon)
+								&&(!((Weapon)affect.tool()).amWearingAt(Item.INVENTORY)))
+									ExternalPlay.remove(this,(Weapon)affect.tool());
+							}
+							return false;
+						}
+					}
 				}
 			}
 
+			
 			if(Util.bset(srcMajor,Affect.ACT_EYES))
 			{
 				if(Sense.isSleeping(this))
@@ -809,7 +899,7 @@ public class StdMOB implements MOB
 				}
 				if(this.amFollowing()==mob)
 					setFollowing(null);
-				if((!isInCombat())&&(isMonster()))
+				if((!isInCombat())&&(isMonster())) // playerkill check
 					setVictim((MOB)affect.source());
 			}
 
