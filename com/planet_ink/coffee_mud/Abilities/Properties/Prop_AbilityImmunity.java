@@ -69,7 +69,7 @@ public class Prop_AbilityImmunity extends Property
 						if(s.length()>0)
 							msg.source().tell(msg.source(),msg.target(),msg.tool(),s);
 						else
-							msg.source().tell("<T-NAME> seems immune to <O-NAME>.");
+							msg.source().tell(msg.source(),msg.target(),msg.tool(),"<T-NAME> seem(s) immune to <O-NAME>.");
 					}
 					return false;
 				}

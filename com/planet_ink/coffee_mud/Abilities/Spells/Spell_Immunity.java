@@ -58,7 +58,7 @@ public class Spell_Immunity extends Spell
 		&&(!mob.amDead())
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 		{
-			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attack from <T-NAME>.");
+			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+immunityName+" attack from <T-NAME>.");
 			return false;
 		}
 		return true;

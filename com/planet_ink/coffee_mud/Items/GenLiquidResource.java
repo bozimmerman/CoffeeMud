@@ -33,6 +33,7 @@ public class GenLiquidResource extends GenDrink implements EnvResource, Drink
 		setMaterial(EnvResource.RESOURCE_FRESHWATER);
 		disappearsAfterDrinking=true;
 		baseEnvStats().setWeight(0);
+		setCapacity(0);
 		recoverEnvStats();
 	}
 	private int domainSource=-1;

@@ -30,7 +30,7 @@ public class Typo extends StdCommand
 	{
 		if((Util.combine(commands,1).length()>0)&&(mob.location()!=null))
 		{
-			CMClass.DBEngine().DBWriteJournal("SYSTEM_TYPOS",mob.Name(),"ALL","TYPOS","("+mob.location().roomID()+") "+Util.combine(commands,1),-1);
+			CMClass.DBEngine().DBWriteJournal("SYSTEM_TYPOS",mob.Name(),"ALL","TYPOS","("+CMMap.getExtendedRoomID(mob.location())+") "+Util.combine(commands,1),-1);
 			mob.tell("Thank you for your assistance!");
 		}
 		else

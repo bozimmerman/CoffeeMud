@@ -113,9 +113,9 @@ public class Undead extends StdRace
 				if(msg.tool()!=null)
 					immunityName=msg.tool().name();
 				if(mob!=msg.source())
-					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attacks from <T-NAME>.");
+					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+immunityName+" attacks from <T-NAME>.");
 				else
-					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+".");
+					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+immunityName+".");
 				return false;
 			}
 		}

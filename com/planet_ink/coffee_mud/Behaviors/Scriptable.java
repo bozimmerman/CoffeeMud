@@ -2337,6 +2337,7 @@ public class Scriptable extends StdBehavior
 					scriptableError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
 				else
 					results.append(found);
+				break;
 			}
 			case 61: // strin
 			{
