@@ -8,11 +8,6 @@
 <P align=center><STRONG><FONT 
 size=6>Programming</FONT></STRONG></P>
 <P align=center><STRONG><FONT size=6>for CoffeeMud 3.0</FONT></STRONG></P>
-<P align=left><FONT size=5><EM>MEMO: How 
-to code a non-generic item.&nbsp; How to code a generic item.&nbsp; How to 
-properly create and destroy areas, rooms, mobs, items, spells, chants, 
-etc.&nbsp; How to invoke abilities and affects.&nbsp; Event model.&nbsp; This 
-should be as useful to YOU as to others, Bo.</EM></FONT></P>
 <P align=left><FONT size=5><STRONG>
 <IMG src="images/mug.jpg">
 </STRONG><FONT 
@@ -73,7 +68,7 @@ import com.planet_ink.coffee_mud.common.*;
 <P><FONT size=4>As well as any other 
 java.*,&nbsp;&nbsp;sun.*, or&nbsp;custom&nbsp;packages you may need.&nbsp; No 
 other packages in the CoffeeMud system should be imported, other than those 
-listed.</FONT> 
+listed.</FONT> </P>
 <P><FONT size=4>A MOB class must extend 
 either <STRONG>StdMOB</STRONG> or GenMob, <STRONG>StdShopKeeper</STRONG> or 
 GenShopKeeper, <STRONG>StdRideable</STRONG>          
@@ -82,13 +77,25 @@ capabilities, and customizability&nbsp;you would like.&nbsp; Although Generic
 objects are more customizable at run-time, they also take a long time for the 
 system to load and build, and take up a lot of database disk space.&nbsp; For 
 this reason, using Standard instead of Generic whereever possible is always 
-good.&nbsp; </FONT>
+good.&nbsp; </FONT></P>
 <P><FONT size=4>Each MOB must also have a custom "newInstance" method as shown 
-below.</FONT><PRE>public class MyNewMOB extends StdMOB <BR>{ <BR>	public MyNewMOB() <BR>	{ <BR>		super(); <BR>	}</PRE><PRE>	public Environmental newInstance() <BR>	{ <BR>		return new MyNewMOB(); <BR>	} <BR>}</PRE>
-<P><FONT size=4>     
-    All of 
-your customizing will be done inside the constructor: name, displayText, description, etc, 
-etc.</FONT>
+below.</FONT></P>
+<PRE>
+	public class MyNewMOB extends StdMOB 
+	{ 
+		public MyNewMOB() 
+		{ 
+			super(); 
+		}
+
+		public Environmental newInstance() 
+		{ 
+			return new MyNewMOB(); 
+		} 
+	}
+</PRE>
+<P><FONT size=4> All of your customizing will be done inside the constructor: 
+name, displayText, description, etc, etc.</FONT></P>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>
 	public MyNewMOB()
@@ -138,18 +145,19 @@ Armor, which is always best low, and comes down from 100.&nbsp; You'll notice
 above that two commands are required to set the Race of the creature.&nbsp; 
 Also, you should realize that the numerous saving throws, and senses as well as 
 dispositions (sneaking, hiding) are not represented above, but can easily be 
-added using the format shown.</FONT>
+added using the format shown.</FONT></P>
 <P><FONT size=4>It is very important to note the last four commands.&nbsp; These 
 commands "reset" the MOB, and "implement" the scores which are given in the 
 several areas.&nbsp; "recoverEnvStats()", for instance, must be called whenever 
 a change is made to the "baseEnvStats()" object.&nbsp; Ditto for "CharStats" and 
-"MaxState".&nbsp; </FONT>
+"MaxState".&nbsp; </FONT></P>
 <P><FONT size=4>Now, suppose we wanted 
 to add an "Affect" or "Behavior" or "Ability" to your 
-<STRONG>StdMOB</STRONG>              .&nbsp; The 
+<STRONG>StdMOB</STRONG>.&nbsp; The 
 proper place for such a statement would be in the same above constructor, among 
 the other commands.&nbsp; Preferably before the several "recover" commands, but 
-after the several stat definitions.  Of course, all of this is unnecesssary for a new GenMOB object.</FONT>
+after the several stat definitions.  Of course, all of this is unnecesssary for a 
+new GenMOB object.</FONT></P>
 <pre>
 		
 		addNonUninvokableAffect(CMClass.getAbility("Fighter_Berzerk"));
@@ -160,7 +168,7 @@ after the several stat definitions.  Of course, all of this is unnecesssary for 
 		addBehavior(CMClass.getBehavior("CombatAbilities"));
 		
 </pre>
-<P><FONT size=4></FONT>
+<P><FONT size=4></FONT></P>
 <P><FONT size=4>The commands above will 
 make the MOB permanently Berzerk, gives it the ability to Poison folks while in 
 combat, allows the MOB to Chat with other players, and&nbsp;to walk around 
@@ -182,8 +190,9 @@ need to specify the type of ShopKeeper.
 		addStoreInventory(waterskin,35);
 </pre>
 <P><FONT size=4>You'll recall from the Archon's Guide that there are many different types of ShopKeepers, 
-including trainers, pet sellers, weaponsmiths, and others. </FONT>
-<P><FONT size=4><STRONG>StdRideable</STRONG> MOBs will require a few other settings as well!</FONT></P>
+including trainers, pet sellers, weaponsmiths, and others. </FONT></P>
+<P><FONT size=4><STRONG>StdRideable</STRONG> MOBs will require a few other 
+settings as well!</FONT></P>
 <pre>
 		setRideBasis(Rideable.RIDEABLE_LAND);
 		setMobCapacity(2);
@@ -199,11 +208,15 @@ armor, and weapons.&nbsp; The following commands will do the trick!</FONT></P>
 		addInventory(mail);
 		mail.wearIfPossible(this);
 		
+		Item sack=(Item)CMClass.getItem("StdContainer");
+		addInventory(sack);
+		
 		Item waterskin=(Item)CMClass.getItem("Waterskin");
 		addInventory(waterskin);
+		waterskin.setContainer(sack);
 </pre>
 <P><FONT size=4>And THAT's all there is to creating a new MOB.  Easy, huh?  Well, obviously, the real complexity of MOBs
-comes when the Behaviors and Abilities are programmed, but that is not covered here, of course.</FONT>
+comes when the Behaviors and Abilities are programmed, but that is not covered here, of course.</FONT></P>
 <P><FONT size=4 color=mediumslateblue><STRONG>Bringing MOBs to Life, and Taking That Life 
 Away:</STRONG></FONT></P>
 <P><FONT color=black size=4>The 
@@ -226,9 +239,25 @@ then its death, when that death comes, &nbsp;will be forever.</FONT></P>
 	
 	mob.bringToLife(room); // tadah!
 </pre>
-<P><FONT size=4>And THAT's all there is to bring a mob to life.  Of course, you may want to save this room to the
-database to REALLY make the situation permanent, but all of this is usually done from inside CoffeeMud using the
-CREATE, MODIFY, and DESTROY commands anyway.  Speaking of destroy, destroying one for good is even easier:</FONT>
+<P><FONT size=4>And THAT's all there is to bring a standard mob to life.  
+Now, generic items require an additional step:  </FONT></P>
+<PRE>
+	Item item=CMClass.getItem("GenItem");
+	Room room=CMMap.getRoom("Midgaard#3504");
+	
+	item.text();
+	item.recoverEnvStats();
+	room.addItem(item);
+	room.recoverRoomStats();
+</PRE>
+<P><FONT size=4>The call to the text() method and the seemingly redundant call
+to Item.recoverEnvStats() (which we know is already in the item constructor),
+ensures that some of the internal structures of the Generic MOB are properly set.
+Of course, you may want to save this room to the database to make the situation 
+permanent, but all of this is usually done from inside CoffeeMud using the
+CREATE, MODIFY, and DESTROY commands anyway.  Speaking of destroy, destroying 
+a mob for good is even easier than creating one:
+</FONT></P>
 <pre>
 	Room room=CMMap.getRoom("Midgaard#3504");
 	for(int i=0;i&lt;room.numInhabitants();i++)
@@ -236,17 +265,18 @@ CREATE, MODIFY, and DESTROY commands anyway.  Speaking of destroy, destroying on
 		MOB mob=room.fetchInhabitant(i);
 		mob.destroy();
 	}
-</pre><PRE>
-</PRE><P><P>
+</pre>
+<P align=left></P>
+<P align=left></P>
 <P align=left><FONT size=5><STRONG>
 <IMG src="images/sword.jpg">
-</STRONG><FONT 
-size=3>&nbsp;</FONT></FONT></P>
-<P align=left><FONT size=5 color=crimson><STRONG>Items:</STRONG></FONT></P><FONT size=4>
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=crimson><STRONG>Items:</STRONG></FONT></P>
 <P align=left><FONT size=4>A Custom MOB may or may not belong to any particular 
 package, though it is important that the NAME of the MOB be unique in the 
 system.&nbsp; A custom MOB must import the following packages:</FONT></P>
-<FONT size=3><PRE>	import java.util.*;
+<FONT size=3><PRE>
+	import java.util.*;
 	import com.planet_ink.coffee_mud.utils.*;
 	import com.planet_ink.coffee_mud.interfaces.*;
 	import com.planet_ink.coffee_mud.Items.*;
@@ -257,35 +287,43 @@ system.&nbsp; A custom MOB must import the following packages:</FONT></P>
  </PRE></FONT>
 <P><FONT size=4>As well as any other java.*,&nbsp;&nbsp;sun.*, 
 or&nbsp;custom&nbsp;packages you may need.&nbsp; No other packages in the 
-CoffeeMud system should be imported, other than those listed.</FONT> 
+CoffeeMud system should be imported, other than those listed.</FONT> </P>
 <P><FONT size=4>An Item&nbsp;class must 
 extend either <STRONG>StdItem</STRONG> or GenItem, <STRONG>StdWeapon</STRONG> or 
 GenWeapon, <STRONG>StdRideable</STRONG> or GenRideable, 
-<STRONG>StdArmor</STRONG>           
-    or GenArmor&nbsp;depending on the basic 
+<STRONG>StdArmor</STRONG> or GenArmor&nbsp;depending on the basic 
 capabilities, and customizability&nbsp;you would like.&nbsp; Although Generic 
 objects are more customizable at run-time, they also take a long time for the 
 system to load and build, and take up a lot of database disk space.&nbsp; For 
 this reason, using Standard instead of Generic whereever possible is always 
-good.&nbsp; </FONT>
+good.&nbsp; </FONT></P>
 <P><FONT size=4>Each MOB must also have a custom "newInstance" method as shown 
-below.</FONT><PRE>public class MyNewSword extends StdWeapon <BR>{ <BR>	public MyNewWeapon() <BR>	{ <BR>		super(); <BR>	}</PRE><PRE>	public Environmental newInstance() <BR>	{ <BR>		return new MyNewWeapon(); <BR>	} <BR>}</PRE>
+below.</FONT></P>
+<PRE>
+	public class MyNewSword extends StdWeapon 
+	{ 
+		public MyNewWeapon() 
+		{ 
+			super(); 
+		}
+		
+		public Environmental newInstance() 
+		{ 
+			return new MyNewWeapon(); 
+		} 
+	}
+</PRE>
 <P><FONT size=4>All of your customizing will be done inside the constructor: name, displayText, description, etc, 
-etc.</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+etc.</FONT></P>
 <pre>	
 	public MyNewWeapon()
 	{
 		super();
 
-		Username=	
-	 
-	
-		
-
-		"asuper sword"; setDescription("A
-		long super duper sword!"); setDisplayText("Someone 
-		left their super sword here."); setSecretIdentity(description());
+		Username="a super sword"; 
+		setDescription("A long super duper sword!"); 
+		setDisplayText("Someone left their super sword here."); 
+		setSecretIdentity("");
 		setMaterial(EnvResource.RESOURCE_STEEL);
 		
 		setBaseValue(500);
@@ -297,12 +335,10 @@ etc.</FONT>
 	}
 	
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
 <P><FONT size=4>What is shown above is 
 entirely sufficient for the creation of a <STRONG>StdWeapon</STRONG> . The material, weight, attack and damage 
 describe it completely. You'll even notice that            by  setting a disposition flag,
-we have made the sword  glow!&nbsp;&nbsp;Now, what if we wanted a missile weapon?</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+we have made the sword  glow!&nbsp;&nbsp;Now, what if we wanted a missile weapon?</FONT></P>
 <pre>	
 	public MyNewBow()
 	{
@@ -311,7 +347,7 @@ we have made the sword  glow!&nbsp;&nbsp;Now, what if we wanted a missile weapon
 		Username="a super bow";
 		setDescription("A long super duper bow!"); 
 		setDisplayText("Someone left their super bow here.");
-		setSecretIdentity(description());
+		setSecretIdentity("");
 		
 		setMaterial(EnvResource.RESOURCE_OAK);
 		setBaseValue(5000);
@@ -329,11 +365,7 @@ we have made the sword  glow!&nbsp;&nbsp;Now, what if we wanted a missile weapon
 two new mathods, setRanges, and setAmmunitionType. With the former, we specify 
 that this is a ranged-only weapon, usable from range 1 (0=melee) to range 5. The 
 ammunition type specifies that it uses arrows. Other classes, however, have 
-different requirements altogether. For instance, 
-<STRONG>StdArmor</STRONG>     
-            
-     :</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+different requirements altogether. For instance, <STRONG>StdArmor</STRONG>:</FONT></P>
 <pre>	
 	public MyNewArmor()
 	{
@@ -342,7 +374,7 @@ different requirements altogether. For instance,
 		Username="a super bracer";
 		setDescription("A super duper bracer"); 
 		setDisplayText("Someone left their super bracer here.");
-		setSecretIdentity(description());
+		setSecretIdentity("");
 		
 		setMaterial(EnvResource.RESOURCE_STEEL);
 		setBaseValue(100);
@@ -354,15 +386,10 @@ different requirements altogether. For instance,
 	}
 	
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
 <P><FONT size=4>In this case, we made a 
 bracer wearable on both left and right wrists. If it were something that could 
 only be worn on both wrists at the same time (like handcuffs), then the 
-RawLogicalAnd value would have been true. Now, a 
-<STRONG>StdContainer</STRONG>                   
-                   
-    :</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+RawLogicalAnd value would have been true. Now, a <STRONG>StdContainer</STRONG>:</FONT></P>
 <pre>	
 	public MyNewBag()
 	{
@@ -371,7 +398,7 @@ RawLogicalAnd value would have been true. Now, a
 		Username="a super bag";
 		setDescription("A super duper bag"); 
 		setDisplayText("Someone left their super bag here.");
-		setSecretIdentity(description());
+		setSecretIdentity("");
 		
 		setBaseValue(50);
 		setLidsNLocks(false,true,false,false);
@@ -382,16 +409,11 @@ RawLogicalAnd value would have been true. Now, a
 		recoverEnvStats();
 	}
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
 <P><FONT size=4>When setting the 
 capacity of a container, remember that it must also be able to hold its own 
 weight! Also, note the lids and locks flags have made this container lidless and 
 lockless and always open.&nbsp; Of course, without a lock, setting a key would 
-be silly!&nbsp; Now, a <STRONG>StdDrink</STRONG>   
-               
-                           
-     container:</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+be silly!&nbsp; Now, a <STRONG>StdDrink</STRONG> container:</FONT></P>
 <pre>	
 	public MyNewCup()
 	{
@@ -400,7 +422,7 @@ be silly!&nbsp; Now, a <STRONG>StdDrink</STRONG>
 		Username="a super cup";
 		setDescription("A super duper cup"); 
 		setDisplayText("Someone left their super bag here.");
-		setSecretIdentity(description());
+		setSecretIdentity("");
 		
 		setMaterial(EnvResource.RESOURCE_LEATHER);
 		setBaseValue(5);
@@ -413,13 +435,10 @@ be silly!&nbsp; Now, a <STRONG>StdDrink</STRONG>
 		recoverEnvStats();
 	}
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
 <P><FONT size=4>The 
 <STRONG>StdDrink</STRONG> created above is an enormous cup of milk! You'll 
 notice the capacity is 0, meaning that mundane objects cannot be stored in it. 
-Now, a <STRONG>StdFood</STRONG>                  
-           :</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+Now, a <STRONG>StdFood</STRONG>:</FONT></P>
 <pre>	
 	public MyNewFood()
 	{
@@ -428,7 +447,7 @@ Now, a <STRONG>StdFood</STRONG>
 		Username="a super crumb";
 		setDescription("A super duper crumb");
 		setDisplayText("Someone left their super crumbs.");
-		setSecretIdentity(description());
+		setSecretIdentity("");
 		
 		setBaseValue(1);
 		setMaterial(EnvResource.RESOURCE_MEAT);
@@ -437,10 +456,8 @@ Now, a <STRONG>StdFood</STRONG>
 		recoverEnvStats();
 	}
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
 <P><FONT size=4>Now, the 
-<STRONG>StdRideable</STRONG>   resembles the MOB of the same name, and thus, has identical modifications.</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+<STRONG>StdRideable</STRONG>   resembles the MOB of the same name, and thus, has identical modifications.</FONT></P>
 <pre>	
 	public MyNewBed()
 	{
@@ -449,7 +466,7 @@ Now, a <STRONG>StdFood</STRONG>
 		Username="a bed";
 		setDescription("A bed");
 		setDisplayText("A bed is here");
-		setSecretIdentity(description());
+		setSecretIdentity("");
 		
 		setBaseValue(100);
 		setMobCapacity(2);
@@ -458,10 +475,7 @@ Now, a <STRONG>StdFood</STRONG>
 		recoverEnvStats();
 	}
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>A pile of money, aka 
-<STRONG>StdCoins</STRONG>     , is simplest of all:</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>A pile of money, aka <STRONG>StdCoins</STRONG>, is simplest of all:</FONT></P>
 <pre>	
 	public MyNewMoney()
 	{
@@ -470,7 +484,7 @@ Now, a <STRONG>StdFood</STRONG>
 		Username="a pile of coins";
 		setDescription("A pile of coins");
 		setDisplayText("Someone left their money here.");
-		setSecretIdentity(description());
+		setSecretIdentity("");
 		
 		setBaseValue(0);
 		setMaterial(EnvResource.RESOURCE_GOLD);
@@ -479,12 +493,9 @@ Now, a <STRONG>StdFood</STRONG>
 		recoverEnvStats();
 	}
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>    Notice that the base 
-value of the coins is 0, it's the Ability score that does all the work.&nbsp; 
-Now, to a magical <STRONG>StdPill</STRONG>                  
-           :</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>    Notice that the base value of the coins is 0, 
+it's the Ability score that does all the work.&nbsp; 
+Now, to a magical <STRONG>StdPill</STRONG>:</FONT></P>
 <pre>	
 	public MyNewPill()
 	{
@@ -503,7 +514,6 @@ Now, to a magical <STRONG>StdPill</STRONG>
 		recoverEnvStats();
 	}
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
 <P><FONT size=4>The spells cast on the 
 eater are listed by their Class names, seperated by semicolons. The secret 
 identity is also trimmed out, since the system will handle that automatically. 
@@ -513,14 +523,7 @@ except for the addition of the setSpellList method. In the exact same way, the
 except that it has an identical setSpellList method added to IT. So, in the 
 interests of saving a little sand for future generations, I would enumerate the 
 <STRONG>StdPotion</STRONG>. We can, however, show off a 
-<STRONG>StdScroll</STRONG>            
-              
-             
-              
-               
-              
-        :</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+<STRONG>StdScroll</STRONG>:</FONT></P>
 <pre>	
 	public MyNewScroll()
 	{
@@ -538,12 +541,9 @@ interests of saving a little sand for future generations, I would enumerate the
 		recoverEnvStats();
 	}
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
 <P><FONT size=4>Not too difficult, 
 right? Looks like the other two, but the spell setting method has a different 
-name. Now, let's look at a <STRONG>StdWand</STRONG>             
-           :</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+name. Now, let's look at a <STRONG>StdWand</STRONG>:</FONT></P>
 <pre>	
 	public MyNewWand()
 	{
@@ -562,42 +562,295 @@ name. Now, let's look at a <STRONG>StdWand</STRONG>
 		recoverEnvStats();
 	}
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
 <P><FONT size=4>In this case, we made 
 use of the "uses remaining" field to set the number of charges for the wand. The 
 way the spell is set is also different. A wand may only have one spell, and the 
 actual Ability object for the spell must be passed in, instead of just the class 
 name as we did before. You will find that this is also how the 
 <STRONG>StdStaff</STRONG> works. The <STRONG>StdStaff</STRONG> resembles the 
-<STRONG>StdWeapon</STRONG>              
-                    
-                
-                   
-       we did above, except that the additional
-setSpell and setUsesRemaining calls become appropriate to the constructor.  </FONT>
+<STRONG>StdWeapon</STRONG> we did above, except that the additional
+setSpell and setUsesRemaining calls become appropriate to the constructor.  </FONT></P>
 <P><FONT size=4>The next thing we will look at is adding 
 affects and behaviors to Items.&nbsp; Behavior addition (despite the fact that 
 there is really only one behavior that works with Items) will look familiar.  The only
 difference between this and the MOB example above is the fact that we are setting a
 parameter on the Behavior before adding it. 
-</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+</FONT></P>
 <pre>	
 		Behavior B=CMClass.getBehavior("Mobile");
 		B.setParms("min=1 max=20 chance=75/makes strange sounds");
 		addBehavior(B);
 		
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>Adding normal affects as properties is also similar to mobs...</FONT>
-<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>Adding normal affects as properties is also similar to mobs...</FONT></P>
 <pre>	
 		Ability A=CMClass.getAbility("Prop_HaveResister");
 		A.setMiscText("fire acid 50%");
 		A.addNonUninvokableAffect(A);
 </pre>
-<P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>The above affect will allow anyone who owns the item to
-resist fire and acid at 50%!</FONT></P>
+<P><FONT size=4>The above affect will 
+allow anyone who owns the item to resist fire and acid at 50%!&nbsp; And again, 
+as with mobs, these commands are best put in the constructor of
+the item before the recoverEnvStats() call.</FONT></P>
+<P><FONT color=mediumslateblue size=4><STRONG>Creating and Destroying 
+Items:</STRONG></FONT></P>
+<P><FONT color=black size=4>As with mobs, the following instructions are 
+supplemental, and unnecessary. Once you have created your new Item, modified 
+your INI file, and rebooted your CoffeeMud server, you need only use the CREATE 
+and other Archon commands to make use of it. If, for some reason, you want to 
+know HOW these commands do their work, however, here it is.</FONT></P>
+<P><FONT color=black size=4>To bring an&nbsp;Item into existence, an 
+item&nbsp;must have somewhere to exist!&nbsp; Items can belong to either Rooms, 
+as mobs are, or they can belong to mobs themselves.&nbsp; This means that Items 
+actually have two different creation mechanisms.&nbsp; Here is an example of 
+each, starting with the creation of an Item in a Room:</FONT></P>
+<PRE>
+	Item item=CMClass.getItem("MyNewItem");
+	Room room=CMMap.getRoom("Midgaard#3504");
+	
+	room.addItem(item);
+	room.recoverRoomStats();
+</PRE>
+<P><FONT size=4>A room is grabbed off the 
+map, and the item is added to the room using the addItem() method. Then the room
+recover is called to  make the room react to the addition of the item.&nbsp;&nbsp;
+Now, generic items require an additional step:  </FONT></P>
+<PRE>
+	Item item=CMClass.getItem("GenItem");
+	Room room=CMMap.getRoom("Midgaard#3504");
+	
+	item.text();
+	item.recoverEnvStats();
+	room.addItem(item);
+	room.recoverRoomStats();
+</PRE>
+<P><FONT size=4>The call to the text() method and the seemingly redundant call
+to Item.recoverEnvStats() (which we know is already in the item constructor),
+ensures that some of the internal structures of the Generic Item are properly set.
+Of course, these items are one-shot items, meaning that they are not generated
+to exist on the map forever and ever.
+</FONT></P>
+<PRE>
+	Item item=CMClass.getItem("MyNewItem");
+	Room room=CMMap.getRoom("Midgaard#3504");
+	
+	item.baseEnvStats().setRejuv(500); // 30 minutes rejuvination time
+	item.recoverEnvStats();
+	room.addItem(item);
+	room.recoverRoomStats();
+	room.startItemRejuv();
+</PRE>
+<P><FONT size=4>
+In this case, we wanted the item to be
+rejuvinating.  That means that, when the item is removed from the room by
+a player, the item will reset at some point in the future.  If the rejuv ticks
+count is set to 0, the item will not reset.  In the example above, the count
+is set to 500 so that the item will reset.  However, the rejuvination is 
+not actually activated until the room item rejuvs are set.  This is done with
+the last method call to startItemRejuv(), which handles the rejuv resets on
+all items in the room.</FONT> </P>
+<P><FONT size=4>In the previous section, we saw how items are given to mobs by
+simply calling the addInventory() method, so this will not be repeated.  Regardless 
+of where or how the item is created, however, it is destroyed the same way.  With
+a simple call to the destroyThis() method on the item.  Here is an example of 
+destroying all the items in a room.
+ </FONT> </P>
+<P><FONT size=4></FONT> </P>
+<PRE>	
+	
+	Room room=CMMap.getRoom("Midgaard#3504");
+	for(int i=0;i&lt;room.numItems();i++)
+	{
+		Item item=room.fetchItem(i);
+		item.destroyThis();
+	}
+</PRE>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/clown.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 ><STRONG><FONT 
+color=blue><FONT>Behaviors</FONT>:</FONT></STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a Behavior.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/cloak.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=purple><STRONG>Character Classes:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a Character Class.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/dragon.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=green><STRONG>Races:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a Race.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/chomper.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=navy><STRONG>Exits:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code an Exit.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/temple.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=red><STRONG>Locales:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a Locale.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/area.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=gray><STRONG>Areas:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code an Area.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/fireball.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=yellow style="BACKGROUND-COLOR: black"><STRONG>Spells:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a Spell.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/prayer.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=teal><STRONG>Prayers:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a Prayer.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/elvis.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=lime><STRONG>Songs:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a Song.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/monk.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=aqua><STRONG>Chants:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a Chant.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/house.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=olive><STRONG>Properties:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a Property.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/fun.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 color=maroon><STRONG>Skills/Common Skills, Thief Skills:</STRONG></FONT></P>
+<P align=left><FONT size=4>How to code a Skill.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P></EM></FONT>
+<P></P>
 </BODY>
 </HTML>
