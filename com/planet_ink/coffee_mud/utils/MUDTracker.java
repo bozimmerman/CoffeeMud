@@ -120,35 +120,39 @@ public class MUDTracker extends Scriptable
 		if(location==theTrail.elementAt(0))
 			return 999;
 
-		int bestDirection=-1;
-		int trailLength=Integer.MAX_VALUE;
+		Hashtable doors=new Hashtable();
+		Room R=null;
+		Exit E=null;
 		for(int dirs=0;dirs<Directions.NUM_DIRECTIONS;dirs++)
 		{
-			Room thisRoom=location.getRoomInDir(dirs);
-			Exit thisExit=location.getExitInDir(dirs);
-			if((thisRoom!=null)
-			&&(thisExit!=null)
-			&&((!noWaterOrAir)||(
-			 	  (thisRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-			 	&&(thisRoom.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-			 	&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-			 	&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			 	&&(thisRoom.domainType()!=Room.DOMAIN_INDOORS_AIR)
-			 	&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_AIR))))
+	        R=location.getRoomInDir(dirs);
+			E=location.getExitInDir(dirs);
+			if((R!=null)
+			&&(E!=null)
+			&&((!noWaterOrAir)
+			||((R.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
+			 	&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+			 	&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+			 	&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			 	&&(R.domainType()!=Room.DOMAIN_INDOORS_AIR)
+			 	&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR))))
+				    doors.put(R,new Integer(dirs));
+		}
+		Integer dir=null;
+		if(doors.size()>0)
+		{
+		    int max=theTrail.size();
+		    for(int trail=0;trail<theTrail.size();trail++)
+		        if(theTrail.elementAt(trail)==location)
+		        { max=trail; break;}
+			for(int trail=0;trail<max;trail++)
 			{
-				for(int trail=0;trail<theTrail.size();trail++)
-				{
-					if((theTrail.elementAt(trail)==thisRoom)
-					&&(trail<trailLength))
-					{
-						bestDirection=dirs;
-						trailLength=trail;
-						break;
-					}
-				}
+			    R=(Room)theTrail.elementAt(trail);
+			    dir=(Integer)doors.get(R);
+			    if(dir!=null) return dir.intValue();
 			}
 		}
-		return bestDirection;
+		return -1;
 	}
 
 	public static int radiatesFromDir(Room room, Vector rooms)

@@ -1149,6 +1149,10 @@ public class Arrest extends StdBehavior
 				return false;
 			if(msg.sourceMessage().indexOf("<T-NAME>")<0)
 				return false;
+			if((criminal.name().toUpperCase().equals(criminal.Name().toUpperCase()))
+		        ||(criminal.name().toUpperCase().startsWith(criminal.Name().toUpperCase()+" "))
+		        ||(criminal.name().toUpperCase().endsWith(" "+criminal.Name().toUpperCase())))
+			    return true;
 		}
 		return true;
 	}

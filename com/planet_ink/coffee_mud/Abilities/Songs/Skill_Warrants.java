@@ -50,7 +50,7 @@ public class Skill_Warrants extends BardSkill
 				Vector V=new Vector();
 				if(B!=null)
 				{
-					V.addElement(new Integer(2));
+					V.addElement(new Integer(Law.MOD_WARRANTINFO));
 					B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),mob,V);
 				}
 				if(V.size()==0)

@@ -82,7 +82,7 @@ public class Thief_FrameMark extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			Vector V=new Vector();
-			V.addElement(new Integer(0));
+			V.addElement(new Integer(Law.MOD_FRAME));
 			V.addElement(target);
 			B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),mob,V);
 		}
