@@ -679,7 +679,7 @@ public class StdItem implements Item
 				if(Sense.canBeSeenBy(this,mob))
 				{
 					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
-						mob.tell(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rUses :"+usesRemaining()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\r"+description()+"\n\r");
+						mob.tell(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight:"+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rMisc  :'"+text()+"\n\r"+description()+"\n\r");
 					else
 					if(description().length()==0)
 						mob.tell("You don't see anything special about "+this.name());

@@ -43,7 +43,9 @@ CMATTA integer NULL,
 CMAMOR integer NULL,
 CMDAMG integer NULL,
 CMBTMP integer NULL,
-CMLEIG varchar (50) NULL
+CMLEIG varchar (50) NULL,
+CMHEIT integer NULL,
+CMWEIT integer NULL,
 PRIMARY KEY (CMUSERID)
 );
 
@@ -67,6 +69,7 @@ CMITWO integer NULL,
 CMITUR integer NULL,
 CMITLV integer NULL,
 CMITAB integer NULL,
+CMHEIT integer NULL,
 PRIMARY KEY (CMUSERID, CMITNM)
 );
 
@@ -100,6 +103,7 @@ CMITRE integer NULL,
 CMITUR integer NULL,
 CMITLV integer NULL,
 CMITAB integer NULL,
+CMHEIT integer NULL,
 PRIMARY KEY (CMROID, CMITNM)
 );
 

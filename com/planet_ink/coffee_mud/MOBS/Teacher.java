@@ -28,6 +28,7 @@ public class Teacher extends StdMOB
 		baseCharStats().setStat(CharStats.STRENGTH,25);
 		baseCharStats().setStat(CharStats.CONSTITUTION,25);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
+		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
 
 		baseEnvStats().setAbility(10);
 		baseEnvStats().setLevel(25);

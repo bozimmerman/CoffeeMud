@@ -12,6 +12,13 @@ public class SchoolMonster extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="School Monster";
+		// inches
+		shortestMale=24;
+		shortestFemale=24;
+		heightVariance=12;
+		// pounds
+		lightestWeight=60;
+		weightVariance=60;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -21,12 +28,6 @@ public class SchoolMonster extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,1);
 		affectableStats.setStat(CharStats.DEXTERITY,1);
 		affectableStats.setStat(CharStats.INTELLIGENCE,3);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(30+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

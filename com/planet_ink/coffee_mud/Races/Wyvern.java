@@ -11,6 +11,13 @@ public class Wyvern extends StdRace
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		// inches
+		shortestMale=64;
+		shortestFemale=58;
+		heightVariance=40;
+		// pounds
+		lightestWeight=1500;
+		weightVariance=500;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -19,12 +26,6 @@ public class Wyvern extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,18);
 		affectableStats.setStat(CharStats.DEXTERITY,13);
 		affectableStats.setStat(CharStats.INTELLIGENCE,8);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(1650+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

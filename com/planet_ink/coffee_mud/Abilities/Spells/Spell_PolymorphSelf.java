@@ -43,10 +43,13 @@ public class Spell_PolymorphSelf extends Spell
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(newRace!=null)
-		if(affected.name().indexOf(" ")>0)
-			affectableStats.setReplacementName("a "+newRace.name()+" called "+affected.name());
-		else
-			affectableStats.setReplacementName(affected.name()+" the "+newRace.name());
+		{
+			if(affected.name().indexOf(" ")>0)
+				affectableStats.setReplacementName("a "+newRace.name()+" called "+affected.name());
+			else
+				affectableStats.setReplacementName(affected.name()+" the "+newRace.name());
+			newRace.setHeightWeight(affectableStats,'M');
+		}
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

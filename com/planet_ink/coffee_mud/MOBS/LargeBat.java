@@ -26,6 +26,7 @@ public class LargeBat extends StdMOB
 		baseCharStats().setStat(CharStats.STRENGTH,12);
 		baseCharStats().setStat(CharStats.DEXTERITY,17);
 		baseCharStats().setMyRace(CMClass.getRace("Bat"));
+		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
 
 		baseEnvStats().setDamage(5);
 		baseEnvStats().setSpeed(1.0);

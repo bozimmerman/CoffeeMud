@@ -12,6 +12,13 @@ public class Orc extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=60;
+		shortestFemale=56;
+		heightVariance=12;
+		// pounds
+		lightestWeight=150;
+		weightVariance=100;
 	}
 	public boolean playerSelectable(){return false;}
 

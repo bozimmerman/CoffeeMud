@@ -81,7 +81,6 @@ public class ROMPatrolman extends StdBehavior
 		
 		if(makePeace)
 		{
-			boolean didSomething=true;
 			Room room=observer.location();
 			for(int i=0;i<room.numInhabitants();i++)
 			{

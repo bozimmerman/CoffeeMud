@@ -118,6 +118,35 @@ public class StdArmor extends StdItem implements Armor
 		}
 	}
 
+	public boolean okAffect(Affect affect)
+	{
+		if(!super.okAffect(affect)) 
+			return false;
+		if((affect.amITarget(this))
+		&&(envStats().height()>0)
+		&&(affect.targetMinor()==Affect.TYP_WEAR))
+		{
+			int devianceAllowed=200;
+			if(((rawProperLocationBitmap()&Item.ON_TORSO)>0)
+			||((rawProperLocationBitmap()&Item.ON_LEGS)>0)
+			||((rawProperLocationBitmap()&Item.ON_WAIST)>0)
+			||((rawProperLocationBitmap()&Item.ON_ARMS)>0)
+			||((rawProperLocationBitmap()&Item.ON_HANDS)>0)
+			||((rawProperLocationBitmap()&Item.ON_FEET)>0))
+				devianceAllowed=10;
+			if(affect.source().envStats().height()<(envStats().height()-devianceAllowed))
+			{
+				affect.source().tell(name()+" doesn't fit you -- it's too big.");
+				return false;
+			}
+			if(affect.source().envStats().height()>(envStats().height()+devianceAllowed))
+			{
+				affect.source().tell(name()+" doesn't fit you -- it's too small.");
+				return false;
+			}
+		}
+		return true;
+	}
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
@@ -132,9 +161,9 @@ public class StdArmor extends StdItem implements Armor
 		if((!amWearingAt(Item.INVENTORY))
 		&&(myOwner()!=null)
 		&&(myOwner() instanceof MOB)
+		&&(affect.amITarget(myOwner()))
 		&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*2))
-		&&(subjectToWearAndTear())
-		&&(affect.amITarget(myOwner())))
+		&&(subjectToWearAndTear()))
 		{
 			if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&(affect.tool()!=null)
@@ -306,6 +335,15 @@ public class StdArmor extends StdItem implements Armor
 				owner.location().recoverRoomStats();
 			}
 		}
+	}
+	
+	public void recoverEnvStats()
+	{
+		super.recoverEnvStats();
+		if((baseEnvStats().height()==0)
+		   &&(!amWearingAt(Item.INVENTORY))
+		   &&(myOwner() instanceof MOB))
+			baseEnvStats().setHeight(((MOB)myOwner()).baseEnvStats().height());
 	}
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

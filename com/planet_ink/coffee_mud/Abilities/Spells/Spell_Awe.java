@@ -42,7 +42,6 @@ public class Spell_Awe extends Spell
 		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
 		&&((affect.amITarget(affected))))
 		{
-			MOB source=(MOB)affect.source();
 			MOB target=(MOB)affect.target();
 			if((!target.isInCombat())&&(affect.source().getVictim()!=target))
 			{

@@ -12,6 +12,11 @@ public class Owl extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Owl";
+		shortestMale=8;
+		shortestFemale=8;
+		heightVariance=5;
+		lightestWeight=5;
+		weightVariance=5;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -34,12 +39,6 @@ public class Owl extends StdRace
 	public String leaveStr()
 	{
 		return "soars";
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10);
-		mob.baseEnvStats().setWeight(10+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

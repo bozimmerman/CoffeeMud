@@ -274,7 +274,7 @@ public class StdContainer extends StdItem implements Container
 					StringBuffer buf=new StringBuffer("");
 					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 					{
-						buf.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rUses :"+usesRemaining()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\r"+description()+"'\n\r");
+						buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight: "+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rMisc  :'"+text()+"\n\r"+description()+"'\n\r");
 						buf.append("Key  : "+keyName()+"\n\r");
 					}
 					else

@@ -207,6 +207,7 @@ public class FrontDoor
 					Gender=mob.session().choose("\n\r^BWhat is your gender (M/F)?^N","MF","");
 
 				mob.baseCharStats().setStat(CharStats.GENDER,(int)Gender.toUpperCase().charAt(0));
+				mob.baseCharStats().getMyRace().setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
 
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("stats.txt").toString());
 

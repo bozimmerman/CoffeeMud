@@ -75,6 +75,14 @@ public class Items
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
+		if(command.equals("HEIGHT"))
+		{
+			int newAbility=Util.s_int(restStr);
+			modItem.baseEnvStats().setHeight(newAbility);
+			modItem.recoverEnvStats();
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
+		}
+		else
 		if(command.equals("REJUV"))
 		{
 			int newRejuv=Util.s_int(restStr);
@@ -113,7 +121,7 @@ public class Items
 		}
 		else
 		{
-			mob.tell("...but failed to specify an aspect.  Try LEVEL, ABILITY, REJUV, USES, or MISC.");
+			mob.tell("...but failed to specify an aspect.  Try LEVEL, ABILITY, HEIGHT, REJUV, USES, or MISC.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 		}
 		Log.sysOut("Items",mob.ID()+" modified item "+modItem.ID()+".");

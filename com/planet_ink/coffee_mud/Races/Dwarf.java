@@ -12,6 +12,13 @@ public class Dwarf extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=52;
+		shortestFemale=48;
+		heightVariance=8;
+		// pounds
+		lightestWeight=150;
+		weightVariance=100;
 	}
 	public boolean playerSelectable(){return true;}
 
@@ -41,17 +48,6 @@ public class Dwarf extends StdRace
 		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)+1);
 		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)-1);
 		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+10);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = (char)mob.baseCharStats().getStat(CharStats.GENDER);
-
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		if (gender == 'M')
-			mob.baseEnvStats().setWeight(130+weightModifier);
- 		else
-			mob.baseEnvStats().setWeight(105+weightModifier);
 	}
 	public void outfit(MOB mob)
 	{

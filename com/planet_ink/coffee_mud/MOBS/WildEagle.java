@@ -26,6 +26,7 @@ public class WildEagle extends StdMOB
 		baseCharStats().setStat(CharStats.STRENGTH,11);
 		baseCharStats().setStat(CharStats.DEXTERITY,17);
 		baseCharStats().setMyRace(CMClass.getRace("GreatBird"));
+		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
 
 		baseEnvStats().setDamage(2);
 		baseEnvStats().setSpeed(3.0);

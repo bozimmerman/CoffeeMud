@@ -12,6 +12,11 @@ public class GreatBird extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Great Bird";
+		shortestMale=8;
+		shortestFemale=8;
+		heightVariance=10;
+		lightestWeight=20;
+		weightVariance=10;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -25,13 +30,6 @@ public class GreatBird extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,8);
 		affectableStats.setStat(CharStats.DEXTERITY,10);
 		affectableStats.setStat(CharStats.INTELLIGENCE,4);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-
-		int weightModifier = Math.abs(randomizer.nextInt() % 3);
-		mob.baseEnvStats().setWeight(2+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

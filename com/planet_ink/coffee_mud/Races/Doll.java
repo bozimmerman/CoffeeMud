@@ -12,6 +12,13 @@ public class Doll extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=6;
+		shortestFemale=6;
+		heightVariance=3;
+		// pounds
+		lightestWeight=10;
+		weightVariance=20;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -21,12 +28,6 @@ public class Doll extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,5);
 		affectableStats.setStat(CharStats.DEXTERITY,5);
 		affectableStats.setStat(CharStats.INTELLIGENCE,13);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 5);
-		mob.baseEnvStats().setWeight(3+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}

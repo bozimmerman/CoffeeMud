@@ -42,7 +42,6 @@ public class Ranger_FindWater extends StdAbility
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
-		MOB mob=(MOB)affected;
 		lastRoom=null;
 		super.unInvoke();
 	}
@@ -182,7 +181,6 @@ public class Ranger_FindWater extends StdAbility
 	{
 		
 		Vector trailArray[] = new Vector[TRACK_ATTEMPTS];
-		MOB trackArray[] = new MOB[TRACK_ATTEMPTS];
 		
 		for(int t=0;t<TRACK_ATTEMPTS;t++)
 		{

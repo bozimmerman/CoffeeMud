@@ -129,6 +129,7 @@ public class Spell_PhantomHound extends Spell
 				beast.baseEnvStats().setLevel(mob.envStats().level());
 				beast.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_HIDDEN|EnvStats.CAN_SEE_INVISIBLE|EnvStats.CAN_SEE_SNEAKERS);
 				beast.baseCharStats().setMyRace(CMClass.getRace("Dog"));
+				beast.baseCharStats().getMyRace().setHeightWeight(beast.baseEnvStats(),'M');
 				beast.baseCharStats().setStat(CharStats.SAVE_MAGIC,200);
 				beast.baseCharStats().setStat(CharStats.SAVE_MIND,200);
 				beast.baseCharStats().setStat(CharStats.SAVE_JUSTICE,200);

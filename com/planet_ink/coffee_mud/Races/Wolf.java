@@ -12,6 +12,13 @@ public class Wolf extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=15;
+		shortestFemale=15;
+		heightVariance=12;
+		// pounds
+		lightestWeight=10;
+		weightVariance=60;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -26,12 +33,6 @@ public class Wolf extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,10);
 		affectableStats.setStat(CharStats.DEXTERITY,10);
 		affectableStats.setStat(CharStats.INTELLIGENCE,3);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10);
-		mob.baseEnvStats().setWeight(65+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

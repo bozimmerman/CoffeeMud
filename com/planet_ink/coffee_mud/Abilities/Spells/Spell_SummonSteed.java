@@ -87,6 +87,7 @@ public class Spell_SummonSteed extends Spell
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+		newMOB.baseCharStats().getMyRace().setHeightWeight(newMOB.baseEnvStats(),(char)newMOB.baseCharStats().getStat(CharStats.GENDER));
 		if(level<4)
 		{
 			newMOB.setName("a pony");

@@ -12,6 +12,13 @@ public class Undead extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=64;
+		shortestFemale=60;
+		heightVariance=12;
+		// pounds
+		lightestWeight=100;
+		weightVariance=100;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -19,8 +26,6 @@ public class Undead extends StdRace
 	{
 		super.newCharacter(mob);
 	}
-	public void setWeight(MOB mob)
-	{	super.setWeight(mob);}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

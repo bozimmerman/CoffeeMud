@@ -12,6 +12,13 @@ public class GreatCat extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Great Cat";
+		// inches
+		shortestMale=18;
+		shortestFemale=18;
+		heightVariance=10;
+		// pounds
+		lightestWeight=100;
+		weightVariance=60;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -34,12 +41,6 @@ public class GreatCat extends StdRace
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(300+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

@@ -41,6 +41,8 @@ CMAMOR integer NULL
 CMDAMG integer NULL
 CMBTMP integer NULL
 CMLEIG string NULL
+CMHEIT integer NULL
+CMWEIT integer NULL
 
 CMCHFO
 CMUSERID string KEY
@@ -60,6 +62,7 @@ CMITWO integer NULL
 CMITUR integer NULL
 CMITLV integer NULL
 CMITAB integer NULL
+CMHEIT integer NULL
 
 CMROCH
 CMROID string KEY
@@ -87,6 +90,7 @@ CMITRE integer NULL
 CMITUR integer NULL
 CMITLV integer NULL
 CMITAB integer NULL
+CMHEIT integer NULL
 
 CMROOM
 CMROID string KEY

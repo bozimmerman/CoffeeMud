@@ -877,6 +877,7 @@ public class Import
 			M.setStartRoom(putInRoom);
 			M.setLocation(putInRoom);
 			M.baseCharStats().setMyRace(R);
+			M.baseCharStats().getMyRace().setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.GENDER));
 
 			Behavior behavior=CMClass.getBehavior("Mobile");
 			if(Util.isSet(actFlag,5))
@@ -1350,6 +1351,7 @@ public class Import
 						M.addAbility(CMClass.getAbility("Undead_ColdTouch"));
 						M.addAbility(CMClass.getAbility("Undead_LifeDrain"));
 						M.baseCharStats().setMyRace(CMClass.getRace("Undead"));
+						M.baseCharStats().getMyRace().setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.GENDER));
 					}
 					else
 					if(special.equals("SPEC_GUARD"))

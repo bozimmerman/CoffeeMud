@@ -46,6 +46,7 @@ public class DrowWarrior extends DrowElf
 		baseCharStats().setStat(CharStats.CHARISMA,13 + Dice.roll(1,6,0));
 		baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
 		baseCharStats().setMyRace(CMClass.getRace("Elf"));
+		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
 
 
         addNaturalAbilities();

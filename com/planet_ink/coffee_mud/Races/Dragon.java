@@ -12,6 +12,13 @@ public class Dragon extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=84;
+		shortestFemale=78;
+		heightVariance=80;
+		// pounds
+		lightestWeight=2000;
+		weightVariance=500;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -27,12 +34,6 @@ public class Dragon extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,25);
 		affectableStats.setStat(CharStats.DEXTERITY,25);
 		affectableStats.setStat(CharStats.INTELLIGENCE,25);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(2300+weightModifier);
 	}
 	public void newCharacter(MOB mob)
 	{

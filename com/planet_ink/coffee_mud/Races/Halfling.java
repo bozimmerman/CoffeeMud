@@ -12,6 +12,13 @@ public class Halfling extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=40;
+		shortestFemale=36;
+		heightVariance=6;
+		// pounds
+		lightestWeight=80;
+		weightVariance=50;
 	}
 	public boolean playerSelectable(){return true;}
 
@@ -44,17 +51,6 @@ public class Halfling extends StdRace
 		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+1);
 		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-1);
 		affectableStats.setStat(CharStats.SAVE_PARALYSIS,affectableStats.getStat(CharStats.SAVE_PARALYSIS)+10);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = (char)mob.baseCharStats().getStat(CharStats.GENDER);
-
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		if (gender == 'M')
-			mob.baseEnvStats().setWeight(52+weightModifier);
- 		else
-			mob.baseEnvStats().setWeight(48+weightModifier);
 	}
 	public void outfit(MOB mob)
 	{

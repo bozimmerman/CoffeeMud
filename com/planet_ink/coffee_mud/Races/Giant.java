@@ -12,6 +12,13 @@ public class Giant extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=84;
+		shortestFemale=80;
+		heightVariance=24;
+		// pounds
+		lightestWeight=300;
+		weightVariance=200;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -29,12 +36,6 @@ public class Giant extends StdRace
 	public String leaveStr()
 	{
 		return "storms";
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(800+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

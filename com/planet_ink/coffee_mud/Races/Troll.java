@@ -12,6 +12,13 @@ public class Troll extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=74;
+		shortestFemale=70;
+		heightVariance=14;
+		// pounds
+		lightestWeight=200;
+		weightVariance=100;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -29,12 +36,6 @@ public class Troll extends StdRace
 	public String leaveStr()
 	{
 		return "leaves";
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(430+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

@@ -12,6 +12,13 @@ public class Rabbit extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=6;
+		shortestFemale=6;
+		heightVariance=3;
+		// pounds
+		lightestWeight=10;
+		weightVariance=10;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -34,12 +41,6 @@ public class Rabbit extends StdRace
 	public String leaveStr()
 	{
 		return "hops";
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10);
-		mob.baseEnvStats().setWeight(20+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

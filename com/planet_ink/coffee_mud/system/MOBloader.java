@@ -58,6 +58,8 @@ public class MOBloader
 				mob.baseEnvStats().setDamage(Util.s_int(DBConnections.getRes(R,"CMDAMG")));
 				mob.setBitmap(Util.s_int(DBConnections.getRes(R,"CMBTMP")));
 				mob.setLeigeID(DBConnections.getRes(R,"CMLEIG"));
+				mob.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
+				mob.baseEnvStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
 			}
 			DBConnector.DBDone(D);
 		}
@@ -98,6 +100,7 @@ public class MOBloader
 					newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
 					newItem.baseEnvStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
 					newItem.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
+					newItem.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 					newItem.recoverEnvStats();
 					mob.addInventory(newItem);
 				}
@@ -152,7 +155,6 @@ public class MOBloader
 			Log.errOut("MOB",sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
-		mob.baseCharStats().getMyRace().setWeight(mob);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
@@ -275,7 +277,6 @@ public class MOBloader
 					newMOB.baseEnvStats().setLevel(((int)DBConnections.getLongRes(R,"CMFOLV")));
 					newMOB.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMFOAB"));
 					newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-					newMOB.baseCharStats().getMyRace().setWeight(newMOB);
 					newMOB.recoverEnvStats();
 					newMOB.recoverCharStats();
 					newMOB.recoverMaxState();
@@ -342,8 +343,10 @@ public class MOBloader
 			+", CMAMOR="+mob.baseEnvStats().armor()
 			+", CMDAMG="+mob.baseEnvStats().damage()
 			+", CMBTMP="+mob.getBitmap()
-			+", CMLEIG='"+mob.getLeigeID()
-			+"' WHERE CMUSERID='"+mob.ID()+"'";
+			+", CMLEIG='"+mob.getLeigeID()+"'"
+			+", CMHEIT="+mob.baseEnvStats().height()
+			+", CMWEIT="+mob.baseEnvStats().weight()
+			+"  WHERE CMUSERID='"+mob.ID()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);
 
@@ -384,7 +387,8 @@ public class MOBloader
 					+"CMITWO, "
 					+"CMITUR, "
 					+"CMITLV, "
-					+"CMITAB"
+					+"CMITAB, "
+					+"CMHEIT"
 					+") values ("
 					+"'"+mob.ID()+"',"
 					+"'"+(thisItem)+"',"
@@ -394,7 +398,8 @@ public class MOBloader
 					+thisItem.rawWornCode()+","
 					+thisItem.usesRemaining()+","
 					+thisItem.baseEnvStats().level()+","
-					+thisItem.baseEnvStats().ability()+")";
+					+thisItem.baseEnvStats().ability()+","
+					+thisItem.baseEnvStats().height()+")";
 					D.update(str);
 					DBConnector.DBDone(D);
 				}

@@ -12,6 +12,13 @@ public class Rodent extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=2;
+		shortestFemale=2;
+		heightVariance=3;
+		// pounds
+		lightestWeight=1;
+		weightVariance=5;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -34,12 +41,6 @@ public class Rodent extends StdRace
 	public String leaveStr()
 	{
 		return "scurries";
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10);
-		mob.baseEnvStats().setWeight(2+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

@@ -825,6 +825,30 @@ public class Generic
 	}
 
 
+	void genHeight(MOB mob, Environmental E)
+		throws IOException
+	{
+		mob.tell("\n\rHeight: '"+E.baseEnvStats().height()+"'.");
+		int newValue=Util.s_int(mob.session().prompt("Enter a new height\n\r:",""));
+		if(newValue>0)
+			E.baseEnvStats().setHeight(newValue);
+		else
+			mob.tell("(no change)");
+	}
+
+
+	void genSize(MOB mob, Armor E)
+		throws IOException
+	{
+		mob.tell("\n\rSize: '"+E.baseEnvStats().height()+"'.");
+		int newValue=Util.s_int(mob.session().prompt("Enter a new size\n\r:",""));
+		if(newValue>0)
+			E.baseEnvStats().setHeight(newValue);
+		else
+			mob.tell("(no change)");
+	}
+
+
 	void genCapacity(MOB mob, Item E)
 		throws IOException
 	{
@@ -1117,7 +1141,10 @@ public class Generic
 			{
 				Race R=CMClass.getRace(raceID);
 				if(R!=null)
+				{
 					E.baseCharStats().setMyRace(R);
+					E.baseCharStats().getMyRace().setHeightWeight(E.baseEnvStats(),(char)E.baseCharStats().getStat(CharStats.GENDER));
+				}
 				else
 					mob.tell("Unknown race! Try 'LIST'.");
 			}
@@ -1767,6 +1794,7 @@ public class Generic
 			genReadable(mob,me);
 			genValue(mob,me);
 			genWeight(mob,me);
+			genSize(mob,me);
 			genDisposition(mob,me);
 			genBehaviors(mob,me);
 			genAffects(mob,me);
@@ -1831,6 +1859,8 @@ public class Generic
 			genRejuv(mob,me);
 			genRace(mob,me);
 			genGender(mob,me);
+			genHeight(mob,me);
+			genWeight(mob,me);
 			genSpeed(mob,me);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
 				me.baseEnvStats().setDamage((int)Math.round(Util.div(me.baseEnvStats().damage(),me.baseEnvStats().speed())));
@@ -1840,7 +1870,6 @@ public class Generic
 			genHitPoints(mob,me);
 			genAlignment(mob,me);
 			genMoney(mob,me);
-			genWeight(mob,me);
 			genAbilities(mob,me);
 			genBehaviors(mob,me);
 			genAffects(mob,me);
@@ -1879,6 +1908,8 @@ public class Generic
 				me.baseCharStats().getMyClass().buildMOB(me,me.baseEnvStats().level(),mob.getAlignment(),mob.baseEnvStats().weight(),mob.getWimpHitPoint(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
 			genRejuv(mob,me);
 			genRace(mob,me);
+			genHeight(mob,me);
+			genWeight(mob,me);
 			genGender(mob,me);
 			genSpeed(mob,me);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
@@ -1889,7 +1920,6 @@ public class Generic
 			genHitPoints(mob,me);
 			genAlignment(mob,me);
 			genMoney(mob,me);
-			genWeight(mob,me);
 			genAbilities(mob,me);
 			genBehaviors(mob,me);
 			genAffects(mob,me);

@@ -12,6 +12,11 @@ public class SongBird extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Song Bird";
+		shortestMale=3;
+		shortestFemale=3;
+		heightVariance=2;
+		lightestWeight=2;
+		weightVariance=5;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -25,12 +30,6 @@ public class SongBird extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,3);
 		affectableStats.setStat(CharStats.DEXTERITY,3);
 		affectableStats.setStat(CharStats.INTELLIGENCE,3);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 3);
-		mob.baseEnvStats().setWeight(2+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

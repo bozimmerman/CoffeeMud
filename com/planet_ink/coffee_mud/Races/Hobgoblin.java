@@ -12,6 +12,13 @@ public class Hobgoblin extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=55;
+		shortestFemale=50;
+		heightVariance=8;
+		// pounds
+		lightestWeight=90;
+		weightVariance=50;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -26,12 +33,6 @@ public class Hobgoblin extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,6);
 		affectableStats.setStat(CharStats.DEXTERITY,10);
 		affectableStats.setStat(CharStats.INTELLIGENCE,8);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(90+weightModifier);
 	}
 	public void newCharacter(MOB mob)
 	{

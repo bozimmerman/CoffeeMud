@@ -12,6 +12,13 @@ public class Lizard extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=2;
+		shortestFemale=2;
+		heightVariance=3;
+		// pounds
+		lightestWeight=5;
+		weightVariance=15;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -29,12 +36,6 @@ public class Lizard extends StdRace
 	public String leaveStr()
 	{
 		return "crawls";
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10);
-		mob.baseEnvStats().setWeight(5+weightModifier);
 	}
 	public void newCharacter(MOB mob)
 	{

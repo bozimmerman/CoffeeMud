@@ -151,6 +151,7 @@ public class Spell_FindFamiliar extends Spell
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Raven"));
 			break;
 		}
+		newMOB.baseCharStats().getMyRace().setHeightWeight(newMOB.baseEnvStats(),(char)newMOB.baseCharStats().getStat(CharStats.GENDER));
 		newMOB.setAlignment(1000);
 		newMOB.setStartRoom(null);
 		newMOB.recoverCharStats();

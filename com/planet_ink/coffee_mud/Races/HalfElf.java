@@ -12,6 +12,13 @@ public class HalfElf extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Half Elf";
+		// inches
+		shortestMale=59;
+		shortestFemale=55;
+		heightVariance=12;
+		// pounds
+		lightestWeight=90;
+		weightVariance=90;
 	}
 	public boolean playerSelectable(){return true;}
 
@@ -41,17 +48,6 @@ public class HalfElf extends StdRace
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+5);
 		affectableStats.setStat(CharStats.SAVE_JUSTICE,affectableStats.getStat(CharStats.SAVE_JUSTICE)+5);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = (char)mob.baseCharStats().getStat(CharStats.GENDER);
-
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		if (gender == 'M')
-			mob.baseEnvStats().setWeight(110+weightModifier);
- 		else
-			mob.baseEnvStats().setWeight(85+weightModifier);
 	}
 	public void outfit(MOB mob)
 	{

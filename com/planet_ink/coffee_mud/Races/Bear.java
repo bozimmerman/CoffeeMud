@@ -12,6 +12,11 @@ public class Bear extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		shortestMale=72;
+		shortestFemale=65;
+		heightVariance=10;
+		lightestWeight=350;
+		weightVariance=10;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -21,13 +26,6 @@ public class Bear extends StdRace
 		affectableStats.setStat(CharStats.DEXTERITY,10);
 		affectableStats.setStat(CharStats.INTELLIGENCE,4);
 	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(350+weightModifier);
-	}
-	
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)

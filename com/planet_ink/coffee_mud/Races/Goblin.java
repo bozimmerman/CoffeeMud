@@ -12,6 +12,13 @@ public class Goblin extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=45;
+		shortestFemale=40;
+		heightVariance=6;
+		// pounds
+		lightestWeight=70;
+		weightVariance=50;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -26,13 +33,6 @@ public class Goblin extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,6);
 		affectableStats.setStat(CharStats.DEXTERITY,10);
 		affectableStats.setStat(CharStats.INTELLIGENCE,8);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(70+weightModifier);
 	}
 	public void newCharacter(MOB mob)
 	{

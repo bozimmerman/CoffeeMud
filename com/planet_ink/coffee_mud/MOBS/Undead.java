@@ -21,6 +21,7 @@ public class Undead extends StdMOB
 		setWimpHitPoint(0);
 
 		baseCharStats().setMyRace(CMClass.getRace("Undead"));
+		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
 		baseEnvStats().setDamage(8);
 
 		baseEnvStats().setAbility(0);

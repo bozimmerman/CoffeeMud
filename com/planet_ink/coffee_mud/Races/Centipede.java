@@ -12,6 +12,13 @@ public class Centipede extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=1;
+		shortestFemale=1;
+		heightVariance=0;
+		// pounds
+		lightestWeight=1;
+		weightVariance=0;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -29,12 +36,6 @@ public class Centipede extends StdRace
 	public String leaveStr()
 	{
 		return "crawls";
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 1);
-		mob.baseEnvStats().setWeight(weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

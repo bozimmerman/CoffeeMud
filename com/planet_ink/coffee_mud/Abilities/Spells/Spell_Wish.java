@@ -487,6 +487,7 @@ public class Spell_Wish extends Spell
 				{
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					((MOB)target).baseCharStats().setMyRace(R);
+					((MOB)target).baseCharStats().getMyRace().setHeightWeight(target.baseEnvStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.GENDER));
 					((MOB)target).recoverCharStats();
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now a "+R.name()+"!");
 					return true;

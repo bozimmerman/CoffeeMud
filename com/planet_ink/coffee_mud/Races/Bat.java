@@ -12,6 +12,11 @@ public class Bat extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		shortestMale=2;
+		shortestFemale=2;
+		heightVariance=2;
+		lightestWeight=2;
+		weightVariance=0;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -27,12 +32,6 @@ public class Bat extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,3);
 		affectableStats.setStat(CharStats.DEXTERITY,13);
 		affectableStats.setStat(CharStats.INTELLIGENCE,3);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 5);
-		mob.baseEnvStats().setWeight(10+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

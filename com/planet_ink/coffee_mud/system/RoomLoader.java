@@ -193,6 +193,7 @@ public class RoomLoader
 					newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
 					newItem.baseEnvStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
 					newItem.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
+					newItem.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 					newItem.recoverEnvStats();
 					thisRoom.addItem(newItem);
 				}
@@ -237,7 +238,6 @@ public class RoomLoader
 					newMOB.baseEnvStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
 					newMOB.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
 					newMOB.baseEnvStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
-					newMOB.baseCharStats().getMyRace().setWeight(newMOB);
 					newMOB.recoverCharStats();
 					newMOB.recoverEnvStats();
 					newMOB.recoverMaxState();
@@ -278,7 +278,8 @@ public class RoomLoader
 					+"CMITRE, "
 					+"CMITUR, "
 					+"CMITLV, "
-					+"CMITAB"
+					+"CMITAB, "
+					+"CMHEIT"
 					+") values ("
 					+"'"+room.ID()+"',"
 					+"'"+thisItem+"',"
@@ -288,7 +289,8 @@ public class RoomLoader
 					+thisItem.baseEnvStats().rejuv()+","
 					+thisItem.usesRemaining()+","
 					+thisItem.baseEnvStats().level()+","
-					+thisItem.baseEnvStats().ability()+")";
+					+thisItem.baseEnvStats().ability()+","
+					+thisItem.baseEnvStats().height()+")";
 					D.update(sql);
 					DBConnector.DBDone(D);
 				}

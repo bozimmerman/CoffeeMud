@@ -12,6 +12,11 @@ public class WaterFowl extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Water Fowl";
+		shortestMale=8;
+		shortestFemale=8;
+		heightVariance=5;
+		lightestWeight=5;
+		weightVariance=5;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -28,12 +33,6 @@ public class WaterFowl extends StdRace
 	public String leaveStr()
 	{
 		return "waddles";
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10);
-		mob.baseEnvStats().setWeight(10+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

@@ -51,7 +51,6 @@ public class GoodGuardian extends StdBehavior
 		else
 		if(anythingToDo)
 		{
-			boolean didSomething=true;
 			Room room=observer.location();
 			for(int i=0;i<room.numInhabitants();i++)
 			{

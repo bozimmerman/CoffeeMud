@@ -12,6 +12,13 @@ public class Pig extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=12;
+		shortestFemale=12;
+		heightVariance=12;
+		// pounds
+		lightestWeight=100;
+		weightVariance=60;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -21,12 +28,6 @@ public class Pig extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,10);
 		affectableStats.setStat(CharStats.DEXTERITY,4);
 		affectableStats.setStat(CharStats.INTELLIGENCE,3);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(150+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

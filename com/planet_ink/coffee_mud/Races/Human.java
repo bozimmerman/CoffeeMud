@@ -13,6 +13,13 @@ public class Human extends StdRace
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
 		trainsAtFirstLevel=2;
+		// inches
+		shortestMale=64;
+		shortestFemale=60;
+		heightVariance=12;
+		// pounds
+		lightestWeight=100;
+		weightVariance=100;
 	}
 
 	public boolean playerSelectable(){return true;}
@@ -23,17 +30,6 @@ public class Human extends StdRace
 
 		if(!mob.isMonster())
 			outfit(mob);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = (char)mob.baseCharStats().getStat(CharStats.GENDER);
-
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		if (gender == 'M')
-			mob.baseEnvStats().setWeight(140+weightModifier);
- 		else
-			mob.baseEnvStats().setWeight(100+weightModifier);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

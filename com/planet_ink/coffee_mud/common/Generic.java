@@ -1014,6 +1014,7 @@ public class Generic
 			E.baseEnvStats().rejuv()+"|"+
 			E.baseEnvStats().speed()+"|"+
 			E.baseEnvStats().weight()+"|"+
+			E.baseEnvStats().height()+"|"+
 			E.baseEnvStats().sensesMask()+"|"));
 
 		text.append(getExtraEnvPropertiesStr(E));
@@ -1050,7 +1051,8 @@ public class Generic
 		E.baseEnvStats().setRejuv((int)Math.round(nums[6]));
 		E.baseEnvStats().setSpeed(nums[7]);
 		E.baseEnvStats().setWeight((int)Math.round(nums[8]));
-		E.baseEnvStats().setSensesMask((int)Math.round(nums[9]));
+		E.baseEnvStats().setHeight((int)Math.round(nums[9]));
+		E.baseEnvStats().setSensesMask((int)Math.round(nums[10]));
 
 		setExtraEnvProperties(E,buf);
 	}

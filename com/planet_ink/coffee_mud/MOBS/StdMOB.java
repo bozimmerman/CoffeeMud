@@ -1225,6 +1225,7 @@ public class StdMOB implements MOB
 					if(!isMonster())
 						myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a level "+envStats().level()+" "+charStats().getMyClass().name()+".\n\r");
 					myDescription.append(healthText()+"\n\r\n\r");
+					myDescription.append(mob.charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
 					myDescription.append(description()+"\n\r\n\r");
 					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(affect.source(),this));
 					tell(myDescription.toString());

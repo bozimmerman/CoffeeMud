@@ -13,6 +13,13 @@ public class StdRace implements Race
 	protected int trainsAtFirstLevel=0;
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
+	
+	protected int shortestMale=24;
+	protected int shortestFemale=24;
+	protected int heightVariance=5;
+	protected int lightestWeight=60;
+	protected int weightVariance=10;
+	
 	public String ID()
 	{
 		return myID;
@@ -145,17 +152,18 @@ public class StdRace implements Race
 		}
 		return (Weapon)naturalWeaponChoices.elementAt(Dice.roll(1,naturalWeaponChoices.size(),0)-1);
 	}
-	public void setWeight(MOB mob)
+	public void setHeightWeight(EnvStats stats, char gender)
 	{
-		if(mob.baseEnvStats().weight()>5) return;
-
-		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = (char)mob.baseCharStats().getStat(CharStats.GENDER);
-
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
+		int weightModifier=0;
+		if(weightVariance>0)
+			weightModifier=Dice.roll(1,weightVariance,0);
+		stats.setWeight(lightestWeight+weightModifier);
+		int heightModifier=0;
+		if(heightVariance>0)
+			heightModifier=Dice.roll(1,heightVariance,0);
 		if (gender == 'M')
-			mob.baseEnvStats().setWeight(130+weightModifier);
+			stats.setHeight(shortestMale+heightModifier);
  		else
-			mob.baseEnvStats().setWeight(105+weightModifier);
+			stats.setHeight(shortestFemale+heightModifier);
 	}
 }

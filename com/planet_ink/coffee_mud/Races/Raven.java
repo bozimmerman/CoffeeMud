@@ -12,6 +12,11 @@ public class Raven extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Raven";
+		shortestMale=6;
+		shortestFemale=6;
+		heightVariance=5;
+		lightestWeight=2;
+		weightVariance=5;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -33,12 +38,6 @@ public class Raven extends StdRace
 	public String leaveStr()
 	{
 		return "flys";
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10);
-		mob.baseEnvStats().setWeight(10+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{
