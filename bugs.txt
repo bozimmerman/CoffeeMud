@@ -1,8 +1,10 @@
 ake the class editor for players more flexible in the future..
 light thing is happening (pikel can't see anything (not blind), and ivan can w/ infravision'
-mobteacher allows pcts on classes/spells
-add clans to zapper check
+! mobteacher allows pcts on classes/spells
+! add clans to zapper check
 someone throws something at someone -- the target someone is never properly named in the text.. see throwit(
 ! climbed out of a pit, and fell right back in.
-behavior to randomly trap
 clan deletions happening!
+! prop_stattrainer allows stat changes
+doppleganger behavior changes level
+behavior to randomly trap

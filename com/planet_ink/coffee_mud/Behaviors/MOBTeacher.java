@@ -34,86 +34,90 @@ public class MOBTeacher extends CombatAbilities
 		mob.recoverCharStats();
 	}
 
-	private void classAbles(MOB mob, Hashtable myAbles)
+	private void classAbles(MOB mob, Hashtable myAbles, int pct)
 	{
 		boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
 		String className=mob.charStats().getCurrentClass().ID();
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			Ability A2=(Ability)myAbles.get(A.ID());
-			if(A2==null)
-			{
-				if(((stdCharClass&&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
-				   ||(CMAble.qualifiesByLevel(mob,A)&&(!CMAble.getSecretSkill(className,A.ID()))))
-				{
-					A=(Ability)A.copyOf();
-					A.setBorrowed(myMOB,true);
-					A.setProfficiency(100);
-					myAbles.put(A.ID(),A);
-					mob.addAbility(A);
-				}
-			}
-			else
-				A2.setProfficiency(100);
+			if(((stdCharClass&&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
+			   ||(CMAble.qualifiesByLevel(mob,A)&&(!CMAble.getSecretSkill(className,A.ID()))))
+				addAbility(mob,A,pct,myAbles);
 		}
 	}
 
-	private void ensureCharClass()
+	public void addAbility(MOB mob, Ability A, int pct, Hashtable myAbles)
 	{
-		setTheCharClass(myMOB,CMClass.getCharClass("StdCharClass"));
-		myMOB.recoverCharStats();
-		Ability A=null;
-
-		A=(Ability)CMClass.getAbility(getParms());
-		if(A!=null)
+		if(Dice.rollPercentage()<pct)
 		{
-			Ability A2=myMOB.fetchAbility(A.ID());
+			Ability A2=(Ability)myAbles.get(A.ID());
 			if(A2==null)
 			{
 				A=(Ability)A.copyOf();
 				A.setBorrowed(myMOB,true);
 				A.setProfficiency(100);
-				myMOB.addAbility(A);
+				myAbles.put(A.ID(),A);
+				mob.addAbility(A);
 			}
 			else
 				A2.setProfficiency(100);
 		}
-		else
+	}
+	
+	private void ensureCharClass()
+	{
+		setTheCharClass(myMOB,CMClass.getCharClass("StdCharClass"));
+		myMOB.recoverCharStats();
+		Hashtable myAbles=new Hashtable();
+		Ability A=null;
+		for(int a=0;a<myMOB.numAbilities();a++)
 		{
-			Hashtable myAbles=new Hashtable();
-			for(int a=0;a<myMOB.numAbilities();a++)
-			{
-				A=myMOB.fetchAbility(a);
-				if(A!=null) myAbles.put(A.ID(),A);
-			}
-			myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
-			myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
-			String parm=getParms().toUpperCase();
-			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
-			{
-				CharClass C=(CharClass)c.nextElement();
-				int x=parm.indexOf(C.ID().toUpperCase());
-				if(x>=0)
-				{
-					setTheCharClass(myMOB,C);
-					classAbles(myMOB,myAbles);
-					myMOB.recoverCharStats();
-				}
-			}
-			myMOB.recoverCharStats();
-			if(myMOB.charStats().getCurrentClass().ID().equals("StdCharClass"))
-				classAbles(myMOB,myAbles);
-			int lvl=myMOB.envStats().level()/myMOB.baseCharStats().numClasses();
-			if(lvl<1) lvl=1;
-			for(int i=0;i<myMOB.baseCharStats().numClasses();i++)
-			{
-				CharClass C=myMOB.baseCharStats().getMyClass(i);
-				if((C!=null)&&(myMOB.baseCharStats().getClassLevel(C)>=0))
-					myMOB.baseCharStats().setClassLevel(C,lvl);
-			}
-			myMOB.recoverCharStats();
+			A=myMOB.fetchAbility(a);
+			if(A!=null) myAbles.put(A.ID(),A);
 		}
+		myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
+		myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
+		Vector V=Util.parse(getParms());
+		
+		int pct=100;
+		
+		A=(Ability)CMClass.getAbility(getParms());
+		if(A!=null)
+			addAbility(myMOB,A,pct,myAbles);
+		else
+		for(int v=0;v<V.size();v++)
+		{
+			String s=(String)V.elementAt(v);
+			if(s.endsWith("%"))
+			{
+				pct=Util.s_int(s.substring(0,s.length()-1));
+				continue;
+			}
+			A=(Ability)CMClass.getAbility(s);
+			CharClass C=CMClass.getCharClass(s);
+			if(A!=null)
+				addAbility(myMOB,A,pct,myAbles);
+			else
+			if(C!=null)
+			{
+				setTheCharClass(myMOB,C);
+				classAbles(myMOB,myAbles,pct);
+				myMOB.recoverCharStats();
+			}
+		}
+		myMOB.recoverCharStats();
+		if(myMOB.charStats().getCurrentClass().ID().equals("StdCharClass"))
+			classAbles(myMOB,myAbles,pct);
+		int lvl=myMOB.envStats().level()/myMOB.baseCharStats().numClasses();
+		if(lvl<1) lvl=1;
+		for(int i=0;i<myMOB.baseCharStats().numClasses();i++)
+		{
+			CharClass C=myMOB.baseCharStats().getMyClass(i);
+			if((C!=null)&&(myMOB.baseCharStats().getClassLevel(C)>=0))
+				myMOB.baseCharStats().setClassLevel(C,lvl);
+		}
+		myMOB.recoverCharStats();
 	}
 
 	public void setParms(String newParms)

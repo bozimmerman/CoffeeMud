@@ -42,11 +42,17 @@ public class SaucerSupport
 			zapCodes.put("-RACECATS",new Integer(12));
 			zapCodes.put("+RACECAT",new Integer(13));
 			zapCodes.put("+RACECATS",new Integer(13));
+			zapCodes.put("-CLAN",new Integer(14));
+			zapCodes.put("-CLANS",new Integer(14));
+			zapCodes.put("+CLAN",new Integer(15));
+			zapCodes.put("+CLANS",new Integer(15));
+			zapCodes.put("+NAME",new Integer(16));
+			zapCodes.put("+NAMES",new Integer(16));
 		}
 		return zapCodes;
 	}
 
-	private static final String ZAP ="+sysop (allow archons or area subops to bypass the rules)  <BR> "
+	private static final String ZAP ="+sysop (allow archons or area subops to bypass the rules)  <BR>"
 									+"-sysop (always <WORD> archons and area subops)  <BR>"
 									+"-player (<WORD> all players) <BR>"
 									+"-mob (<WORD> all mobs/npcs)  <BR>"
@@ -75,8 +81,13 @@ public class SaucerSupport
 									+"+=1 +>5 +>=7 +<13 +<=20 (create exceptions to -level using level ranges)  <BR>"
 									+"-=1 ->5 ->=7 -<13 -<=20 (<WORD> only listed levels range) <BR>"
 									+"-names (<WORD> everyone) <BR>"
-									+"+bob \"+my name\" etc.. (create exceptions to -names) <BR>"
-									+"-bob \"-my name\" etc.. (<WORD> those with the given name)";
+									+"+bob \"+my name\" etc.. (create name exceptions to -names) <BR>"
+									+"+names (do not <WORD> anyone who has a name) <BR>"
+									+"-bob \"-my name\" etc.. (create name exceptions to +names) "
+									+"-clan (<WORD> anyone, even no clan) <BR>"
+									+"+Killers \"+Holy Avengers\" etc.. (create clan exceptions to -clan) <BR>"
+									+"+clan (do not <WORD> anyone, even non clan people) <BR>"
+									+"-Killers \"-Holy Avengers\" etc.. (create clan exceptions to +clan) ";
 
 	public static String zapperInstructions(String CR, String word)
 	{
@@ -342,9 +353,51 @@ public class SaucerSupport
 						buf.append(".  ");
 					}
 					break;
+				case 14: // -Clan 
+					{
+						buf.append("Requires membership in the following clan(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str.startsWith("+")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				case 8: // +Tattoos
 					{
 						buf.append("Disallows the following tattoo(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str2.startsWith("-")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 15: // +Clan
+					{
+						buf.append("Disallows the following clan(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str2.startsWith("-")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 16: // +Names
+					{
+						buf.append("Disallows the following mob/player name(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v);
@@ -509,6 +562,18 @@ public class SaucerSupport
 					if(fromHere(V,'-',v+1,mobRaceCat)) 
 						return false;
 					break;
+				case 14: // -Clan
+					if(!fromHere(V,'+',v+1,mob.getClanID())) 
+						return false;
+					break;
+				case 15: // +Clan
+					if(fromHere(V,'-',v+1,mob.getClanID())) 
+						return false;
+					break;
+				case 16: // +names
+					if(nameCheck(V,'-',v+1,mob)) 
+						return false;
+					break;
 				}
 			else
 			if(str.startsWith("-"+mobClass)) return false;
@@ -518,8 +583,6 @@ public class SaucerSupport
 			if(str.startsWith("-"+mobAlign)) return false;
 			else
 			if(str.startsWith("-"+mobGender)) return false;
-			else
-			if(str.startsWith("-"+mob.name().toUpperCase())) return false;
 			else
 			if(levelCheck(str,'-',0,level)) return false;
 		}
