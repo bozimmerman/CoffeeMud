@@ -40,12 +40,6 @@ public class Chant_SummonSapling extends Chant
 		&&(affected instanceof MOB)
 		&&(affect.amISource((MOB)affected)))
 		{
-			if(affect.targetMinor()==Affect.TYP_LEAVE)
-			{
-				affect.source().tell("You can't really go anywhere -- you are rooted!");
-				return false;
-			}
-			
 			if(affect.sourceMinor()==Affect.TYP_DEATH)
 			{
 				unInvoke();
@@ -136,7 +130,7 @@ public class Chant_SummonSapling extends Chant
 		int level=adjustedLevel(caster)/4;
 		if(level<1) level=1;
 		newMOB.baseEnvStats().setLevel(level);
-		newMOB.baseCharStats().setMyRace(CMClass.getRace("WoodGolem"));
+		newMOB.baseCharStats().setMyRace(CMClass.getRace("TreeGolem"));
 		String resourceName=EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK].toLowerCase();
 		String name=resourceName+" sapling";
 		name=Util.startWithAorAn(name).toLowerCase();
@@ -148,6 +142,7 @@ public class Chant_SummonSapling extends Chant
 		A.setProfficiency(100);
 		newMOB.addAbility(A);
 		newMOB.setVictim(victim);
+		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'N');
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		newMOB.setLocation(caster.location());
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);

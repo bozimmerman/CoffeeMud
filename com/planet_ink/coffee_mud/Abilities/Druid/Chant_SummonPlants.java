@@ -11,8 +11,8 @@ public class Chant_SummonPlants extends Chant
 	public String name(){ return "Summon Plants";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	private Room PlantsLocation=null;
-	private Item littlePlants=null;
+	protected Room PlantsLocation=null;
+	protected Item littlePlants=null;
 	public Environmental newInstance(){	return new Chant_SummonPlants();}
 
 	public void unInvoke()
@@ -86,6 +86,11 @@ public class Chant_SummonPlants extends Chant
 		return newItem;
 	}
 
+	public Item buildMyPlant(MOB mob, Room room)
+	{
+		return buildPlant(mob,room);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
@@ -105,7 +110,7 @@ public class Chant_SummonPlants extends Chant
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				buildPlant(mob,mob.location());
+				buildMyPlant(mob,mob.location());
 			}
 		}
 		else

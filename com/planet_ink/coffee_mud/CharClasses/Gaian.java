@@ -43,16 +43,16 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
 			
-CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonFlower",true);
-CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonHerb",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonFlower",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonHerb",true);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocatePlants",true);
 			
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_SummonFood",true);
-CMAble.addCharAbilityMapping(ID(),3,"Chant_SummonIvy",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Chant_SummonIvy",true);
 
-CMAble.addCharAbilityMapping(ID(),4,"Chant_SummonVine",true);
-CMAble.addCharAbilityMapping(ID(),4,"Chant_FreeVine",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Chant_SummonVine",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Chant_FreeVine",false);
 			
 			CMAble.addCharAbilityMapping(ID(),5,"Specialization_BluntWeapon",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_FortifyFood",false);
@@ -63,12 +63,12 @@ CMAble.addCharAbilityMapping(ID(),4,"Chant_FreeVine",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_Goodberry",false);
 			
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_GrowClub",true);
-CMAble.addCharAbilityMapping(ID(),8,"Chant_Root",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Chant_Root",true);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_PlantPass",true);
-CMAble.addCharAbilityMapping(ID(),9,"Chant_KillerVine",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_KillerVine",true);
 
-CMAble.addCharAbilityMapping(ID(),10,"Chant_Plantform",true);
+CMAble.addCharAbilityMapping(ID(),10,"Druid_PlantForm",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Herbalism",false);
 CMAble.addCharAbilityMapping(ID(),10,"Chant_SummonTree",false);
 
@@ -110,7 +110,7 @@ CMAble.addCharAbilityMapping(ID(),21,"Chant_VineMass",true);
 CMAble.addCharAbilityMapping(ID(),22,"Chant_GrowForest",false);
 CMAble.addCharAbilityMapping(ID(),22,"Chant_GrowFood",true);
 
-CMAble.addCharAbilityMapping(ID(),23,"Chant_DistantFungalgrowth",true);
+CMAble.addCharAbilityMapping(ID(),23,"Chant_DistantFungus",true);
 CMAble.addCharAbilityMapping(ID(),23,"Chant_FungalBloom",true);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_CharmArea",false);

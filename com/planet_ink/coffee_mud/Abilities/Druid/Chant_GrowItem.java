@@ -260,6 +260,11 @@ public class Chant_GrowItem extends Chant
 					if(building instanceof Container)
 						((Container)building).setCapacity(0);
 				}
+				
+				Behavior B=CMClass.getBehavior("Decay");
+				B.setParms("min=490 max=490 chance=100");
+				building.addBehavior(B);
+				
 				building.recoverEnvStats();
 				building.text();
 				building.recoverEnvStats();

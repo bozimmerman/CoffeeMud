@@ -106,10 +106,13 @@ public class Chant_FurCoat extends Chant
 				theArmor.setDescription("The coat is made of thick black fur.");
 				theArmor.setMaterial(EnvResource.RESOURCE_FUR);
 				theArmor.baseEnvStats().setArmor(2*CMAble.qualifyingClassLevel(mob,this));
+				long wornCode=(Item.ON_TORSO|Item.ON_ARMS|Item.ON_FEET|Item.ON_WAIST|Item.ON_LEGS);
+				theArmor.setRawProperLocationBitmap(wornCode);
+				theArmor.setRawLogicalAnd(true);
 				for(int i=mob.inventorySize()-1;i>=0;i--)
 				{
 					Item I=mob.fetchInventory(i);
-					if((I.rawWornCode()&(Item.ON_TORSO|Item.ON_ARMS|Item.ON_FEET|Item.ON_WAIST|Item.ON_LEGS))>0)
+					if((I.rawWornCode()&wornCode)>0)
 						I.removeThis();
 				}
 				Ability A=CMClass.getAbility("Prop_WearResister");
@@ -118,7 +121,7 @@ public class Chant_FurCoat extends Chant
 				theArmor.recoverEnvStats();
 				theArmor.text();
 				mob.addInventory(theArmor);
-				theArmor.wearAt(Item.ON_TORSO|Item.ON_ARMS|Item.ON_FEET|Item.ON_WAIST|Item.ON_LEGS);
+				theArmor.wearAt(wornCode);
 				success=beneficialAffect(mob,target,0);
 				mob.location().recoverRoomStats();
 			}
