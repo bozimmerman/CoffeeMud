@@ -24,6 +24,7 @@ public class CommandProcessor
 	public CreateEdit createEdit=new CreateEdit(socials);
 	public Import importer=new Import();
 	public SysopItemUsage sysopItemUsage=new SysopItemUsage();
+	public SysOpSkills sysopSkills=new SysOpSkills();
 	public XMLIO xmlIO=new XMLIO();
 	public Reset reset=new Reset();
 	public Properties helpFile=null;

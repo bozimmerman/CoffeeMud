@@ -3,4 +3,4 @@ have the tick confirm someones victim -- fighting the wolf for all of zaras pets
 (related to bug above) when they fight someone else, it says they are fighting him as their description, but then they revert to the peaceful description of fighting the wolf
 areas -- make possess, goto, and WizInv into commands  so that subops can do them.
 areas -- finish weather
-areas -- really should tick
+areas -- really should tick, and handle ticking for its rooms?
