@@ -62,12 +62,12 @@ public class Song_Friendship extends Song
 		}
 
 		boolean success=profficiencyCheck(0,auto);
+		unsing(mob);
 		if(success)
 		{
 			String str=auto?"The song of "+name()+" begins to play!":"<S-NAME> begin(s) to sing the Song of "+name()+".";
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
 				str="<S-NAME> start(s) the Song of "+name()+" over again.";
-			unsing(mob);
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType,str);
 			if(mob.location().okAffect(msg))
