@@ -46,7 +46,7 @@ public class Skill_Bash extends StdAbility
 		Item thisSheild=mob.fetchWornItem(Item.HELD);
 		if((thisSheild==null)||((thisSheild!=null)&&(!(thisSheild instanceof Shield))))
 		{
-			mob.tell("You must have a sheild to perform a bash.");
+			mob.tell("You must have a shield to perform a bash.");
 			return false;
 		}
 

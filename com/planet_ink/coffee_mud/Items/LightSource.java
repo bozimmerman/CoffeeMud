@@ -186,7 +186,10 @@ public class LightSource extends StdItem implements Light
 			case Affect.TYP_HOLD:
 				if(myLight.getDuration()>0)
 				{
-					affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> light(s) up "+myLight.name()+"."));
+					if(!myLight.isLit())
+						affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> light(s) up "+myLight.name()+"."));
+					else
+						mob.tell(myLight.name()+" is already lit.");
 					myLight.light(true);
 					ExternalPlay.startTickDown(myLight,Host.LIGHT_FLICKERS,myLight.getDuration());
 					myLight.recoverEnvStats();

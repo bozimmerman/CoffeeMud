@@ -49,7 +49,7 @@ public class StdJournal extends StdItem
 					which=Util.s_int(affect.targetMessage());
 				StringBuffer entry=DBRead(name(),mob.name(),which-1,Util.s_long(readableText().trim()));
 				boolean mineAble=false;
-				if(entry.charAt(0)=='*')
+				if((entry.charAt(0)=='*')||(mob.isASysOp(null)))
 				{
 					mineAble=true;
 					entry.setCharAt(0,' ');
