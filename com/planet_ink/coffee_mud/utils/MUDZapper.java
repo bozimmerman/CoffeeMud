@@ -685,7 +685,7 @@ public class MUDZapper
 			else mobRaceCat=mob.charStats().raceName().toUpperCase();
 		}
 		if(mobRaceCat.length()>6) mobRaceCat=mobRaceCat.substring(0,6);
-		String mobRace=mob.charStats().raceName();
+		String mobRace=mob.charStats().raceName().toUpperCase();
 		if(mobRace.length()>6) mobRace=mobRace.substring(0,6);
 		String mobAlign=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase().substring(0,3);
 		String mobGender=mob.charStats().genderName().toUpperCase();

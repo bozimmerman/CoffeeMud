@@ -123,7 +123,9 @@ public class Decay extends ActiveTicker
 			{
 				if((msg.targetMinor()==CMMsg.TYP_GET)
 				&&(MUDZapper.zapperCheck(getParms(),msg.source())))
+				{
 					activated=true;
+				}
 			}
 		}
 	}

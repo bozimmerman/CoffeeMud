@@ -426,7 +426,17 @@ public class SMTPserver extends Thread implements Tickable
 										mylist.addElement(from);
 										updatedMailingLists=true;
 										if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_EMAILFORWARDING))
-											CMClass.DBEngine().DBWriteJournal(name,name,from,"Subscribed","You are now subscribed to "+name+". To unsubscribe, send an email with a subject of unsubscribe.",-1);
+										{
+											String subscribeTitle=page.getStr("SUBSCRIBEDTITLE");
+											if((subscribeTitle==null)||(subscribeTitle.length()==0))
+												subscribeTitle="Subscribed";
+											String subscribedMsg=page.getStr("SUBSCRIBEDMSG");
+											if((subscribedMsg==null)||(subscribedMsg.length()==0))
+												subscribedMsg="You are now subscribed to "+name+". To unsubscribe, send an email with a subject of unsubscribe.";
+											subscribeTitle=CoffeeFilter.fullInFilter(Util.replaceAll(subscribeTitle,"<NAME>",name));
+											subscribedMsg=CoffeeFilter.fullInFilter(Util.replaceAll(subscribedMsg,"<NAME>",name));
+											CMClass.DBEngine().DBWriteJournal(name,name,from,subscribeTitle,subscribedMsg,-1);
+										}
 									}
 								}
 							}
@@ -446,7 +456,17 @@ public class SMTPserver extends Thread implements Tickable
 										mylist.removeElementAt(l);
 										updatedMailingLists=true;
 										if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_EMAILFORWARDING))
-											CMClass.DBEngine().DBWriteJournal(name,name,from,"Subscribed","You are now unsubscribed from "+name+". To subscribe again, send another email with a subject of subscribe.",-1);
+										{
+											String unsubscribeTitle=page.getStr("UNSUBSCRIBEDTITLE");
+											if((unsubscribeTitle==null)||(unsubscribeTitle.length()==0))
+												unsubscribeTitle="Subscribed";
+											String unsubscribedMsg=page.getStr("UNSUBSCRIBEDMSG");
+											if((unsubscribedMsg==null)||(unsubscribedMsg.length()==0))
+												unsubscribedMsg="You are no longer subscribed to "+name+". To subscribe again, send an email with a subject of subscribe.";
+											unsubscribeTitle=CoffeeFilter.fullInFilter(Util.replaceAll(unsubscribeTitle,"<NAME>",name));
+											unsubscribedMsg=CoffeeFilter.fullInFilter(Util.replaceAll(unsubscribedMsg,"<NAME>",name));
+											CMClass.DBEngine().DBWriteJournal(name,name,from,unsubscribeTitle,unsubscribedMsg,-1);
+										}
 									}
 							}
 							else
