@@ -54,8 +54,7 @@ public class Butchering extends CommonSkill
 									diseases.addElement(A);
 							}
 						}
-						if(body instanceof Container)
-							((Container)body).emptyPlease();
+						body.emptyPlease();
 						body.destroyThis();
 						for(int y=0;y<abilityCode();y++)
 						{

@@ -18,7 +18,6 @@ public class Pregnancy extends StdAbility
 			int y=text().indexOf("/",x+1);
 			if(y<0) return "";
 			long start=Util.s_long(text().substring(0,x));			
-			long end=Util.s_long(text().substring(x+1,y));
 			long days=((System.currentTimeMillis()-start)/Host.TICK_TIME)/Host.TICKS_PER_DAY; // down to days;
 			long months=days/30;
 			if(days<1)
@@ -57,7 +56,6 @@ public class Pregnancy extends StdAbility
 				if(y>x)
 				{
 					int z=text().indexOf("/",y+1);
-					long start=Util.s_long(text().substring(0,x));
 					long end=Util.s_long(text().substring(x+1,y));
 					long days=((end-System.currentTimeMillis())/Host.TICK_TIME)/Host.TICKS_PER_DAY; // down to days
 					long months=days/30; // down to months

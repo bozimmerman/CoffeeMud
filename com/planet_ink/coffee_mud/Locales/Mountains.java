@@ -29,6 +29,7 @@ public class Mountains extends StdRoom
 		new Integer(EnvResource.RESOURCE_AMETHYST),
 		new Integer(EnvResource.RESOURCE_GARNET),
 		new Integer(EnvResource.RESOURCE_AMBER),
+		new Integer(EnvResource.RESOURCE_HERBS),
 		new Integer(EnvResource.RESOURCE_OPAL),
 		new Integer(EnvResource.RESOURCE_TOPAZ),
 		new Integer(EnvResource.RESOURCE_AQUAMARINE),

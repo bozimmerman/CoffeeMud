@@ -36,8 +36,6 @@ public class Thief_MakeBomb extends ThiefSkill
 		else
 		if(Util.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			Exit E=CMClass.getExit("StdExit");
-			Item I=CMClass.getItem("StdItem");
 			StringBuffer buf=new StringBuffer(Util.padRight("Bomb Name",15)+" Requires\n\r");
 			for(int r=0;r<traps.size();r++)
 			{
@@ -69,7 +67,6 @@ public class Thief_MakeBomb extends ThiefSkill
 				return false;
 			}
 		
-			String whatToTrap=Util.combine(commands,0);
 			trapThis=this.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 			if(trapThis==null) return false;
 			if((!auto)&&(!theTrap.canSetTrapOn(mob,trapThis)))

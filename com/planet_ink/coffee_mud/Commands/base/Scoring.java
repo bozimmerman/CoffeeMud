@@ -546,7 +546,7 @@ public class Scoring
 		if(msg.length()==0)
 			msg.append("^!None!^?");
 		else
-			msg.append("\n\r\n\rUse QUALIFY to see additional skills you can gain.");
+			msg.append("\n\r\n\rUse QUALIFY to see additional skills you can GAIN.");
 		return msg;
 	}
 

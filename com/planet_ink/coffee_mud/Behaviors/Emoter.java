@@ -43,11 +43,7 @@ public class Emoter extends ActiveTicker
 		char c=';';
 		int x=newParms.indexOf(c);
 		if(x<0){ c='/'; x=newParms.indexOf(c);}
-		if(x>0)
-		{
-			String parmText=newParms.substring(0,x);
-			newParms=newParms.substring(x+1);
-		}
+		if(x>0)	newParms=newParms.substring(x+1);
 		while(newParms.length()>0)
 		{
 			Vector thisEmoteV=new Vector();
