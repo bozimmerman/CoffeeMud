@@ -196,8 +196,9 @@ public class CommonSkill extends StdAbility
 				||(myResource==EnvResource.RESOURCE_HIDE)
 				||(myResource==EnvResource.RESOURCE_FUR))
 				   material=EnvResource.MATERIAL_LEATHER;
-				if(myResource==EnvResource.RESOURCE_FISH)
-					material=EnvResource.MATERIAL_VEGETATION;
+				for(int i=0;i<EnvResource.FISHES.length;i++)
+					if(EnvResource.FISHES[i]==myResource)
+					{ material=EnvResource.MATERIAL_VEGETATION; break;}
 				if((material==EnvResource.MATERIAL_LEATHER)
 				||(material==EnvResource.MATERIAL_FLESH))
 				{

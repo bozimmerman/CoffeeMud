@@ -1,5 +1,4 @@
-Test: High Marks, Imp. Distraction, Imp. Peek, Imp. Steal, Imp. Swipe
-Test: Far Shot, Body Shield, PK-ALWAYS-X, boulderbash, cave fishing, darkvision
+Test: PK-ALWAYS-X
 Test: Deep Darkness, Sense Metal, Tether, Endure Rust, Magnetic Field
 Test: Den, Rockfeet, Earthpocket, Golem Form, Crystal Growth, 1 Moon Change
 Test: Sacred Earth, Labyrinth, Mass Fungal Growth, Distant Fungal Growth, Stone Friend
@@ -15,7 +14,17 @@ I have 2 walking arenedirs one day, and he doesn't leige, and he doesn't autoass
 add string control to decay
 look into cycling through classes on all stdmob recover/affect calls.
 Add ability to disable future logons.
+20. Effects: 'Prop_RideZapper(-male)'.
+clan -sysop -good -neutral not allowing evils to join.
 
+
+Trying to create a unicorn, males can ride it.
+Also tried with (-alignment +good) Evil can ride
+and (-evil -neutral) and evil can still ride it.
+
+Do I have the syntax wrong or is this a bug?
+
+Kelthan
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?

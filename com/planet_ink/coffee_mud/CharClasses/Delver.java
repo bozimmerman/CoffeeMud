@@ -39,6 +39,7 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonFungus",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonPool",50,true);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_Tether",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",false);
@@ -70,7 +71,7 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_CaveIn",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantPass",false);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_RockThought",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_Rockthought",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_SnatchLight",false);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_Drifting",false);
@@ -88,7 +89,7 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_MagneticEarth",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",false);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_Labrynth",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_Labyrinth",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_FungusFeet",false);
 
 			
@@ -104,10 +105,10 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_Unbreakable",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_Homeopathy",false);
 
-			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindOres",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindOre",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_MassFungalGrowth",false);
 			
-			CMAble.addCharAbilityMapping(ID(),24,"Chant_FindGems",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_FindGem",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_VolcanicChasm",false);
 			
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonRockGolem",false);

@@ -76,30 +76,34 @@ public class Fishing extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((mob.location()!=null)&&(mob.location().resourceChoices()!=null))
+		int foundFish=-1;
+		boolean maybeFish=false;
+		if(mob.location()!=null)
 		{
-			boolean found=false;
 			for(int i=0;i<EnvResource.FISHES.length;i++)
-				if(mob.location().myResource()==i)
-					found=true;
+				if(mob.location().myResource()==EnvResource.FISHES[i])
+				{
+					foundFish=EnvResource.FISHES[i];
+					maybeFish=true;
+				}
 				else
-				if(mob.location().resourceChoices().contains(new Integer(i)))
-					found=true;
-			if(!found)
-			{
-				commonTell(mob,"This fishing doesn't look too good around here.");
-				return false;
-			}
+				if((mob.location().resourceChoices()!=null)
+				&&(mob.location().resourceChoices().contains(new Integer(EnvResource.FISHES[i]))))
+					maybeFish=true;
+		}
+		if(!maybeFish)
+		{
+			commonTell(mob,"This fishing doesn't look too good around here.");
+			return false;
 		}
 		verb="fishing";
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(mob,0,auto))
-		   &&(resourceType==EnvResource.RESOURCE_FISH))
+		   &&(foundFish>0))
 		{
-			found=(Item)makeResource(resourceType,false);
+			found=(Item)makeResource(foundFish,false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();

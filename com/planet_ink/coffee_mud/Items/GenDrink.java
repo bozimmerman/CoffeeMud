@@ -51,8 +51,6 @@ public class GenDrink extends StdDrink
 		miscText="";
 		CoffeeMaker.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
-if(displayText().indexOf("beautiful large marble fountain")>=0)
-	System.out.println(name()+"/"+baseEnvStats().sensesMask()+"/"+Sense.isGettable(this));
 	}
 	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE"};
