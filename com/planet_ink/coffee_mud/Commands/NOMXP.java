@@ -19,26 +19,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class NoSounds extends StdCommand
+public class NOMXP extends StdCommand
 {
-	public NoSounds(){}
+	public NOMXP(){}
 
-	private String[] access={"NOSOUNDS","NOMSP"};
+	private String[] access={"NOMXP"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(!mob.isMonster())
 		{
-			if(Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
-			{
-				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_SOUND));
-				mob.tell("MSP Sound/Music disabled.\n\r");
-			}
-			else
-			{
-				mob.tell("MSP Sound/Music is already disabled.\n\r");
-			}
+			if(Util.bset(mob.getBitmap(),MOB.ATT_MCP))
+				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_MCP));
+			mob.tell("MXP codes are disabled.\033[3z \033[7z\n\r");
 		}
 		return false;
 	}
