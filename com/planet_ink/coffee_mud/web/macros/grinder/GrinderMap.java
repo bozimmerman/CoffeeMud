@@ -262,7 +262,51 @@ public class GrinderMap
 						case 1: // west, east
 							{
 							buf.append("<TD WIDTH=24>"+getDoorLabelGif(Directions.WEST,GR,httpReq)+"</TD>");
-							buf.append("<TD WIDTH=90 COLSPAN=3 ROWSPAN=3 BGCOLOR=#CCCCFF VALIGN=TOP>");
+							buf.append("<TD WIDTH=90 COLSPAN=3 ROWSPAN=3 VALIGN=TOP ");
+							switch(GR.room.domainType())
+							{
+							case Room.DOMAIN_INDOORS_AIR:
+								buf.append("BGCOLOR=\"#FFFFFF\""); break;
+							case Room.DOMAIN_INDOORS_MAGIC:
+								buf.append("BGCOLOR=\"#996600\""); break;
+							case Room.DOMAIN_INDOORS_CAVE:
+								buf.append("BGCOLOR=\"#CC99FF\""); break;
+							case Room.DOMAIN_INDOORS_STONE:
+								buf.append("BGCOLOR=\"#CC00FF\""); break;
+							case Room.DOMAIN_INDOORS_UNDERWATER:
+								buf.append("BGCOLOR=\"#6666CC\""); break;
+							case Room.DOMAIN_INDOORS_WATERSURFACE:
+								buf.append("BGCOLOR=\"#3399CC\""); break;
+							case Room.DOMAIN_INDOORS_WOOD:
+								buf.append("BGCOLOR=\"#999900\""); break;
+							case Room.DOMAIN_OUTDOORS_AIR:
+								buf.append("BGCOLOR=\"#FFFFFF\""); break;
+							case Room.DOMAIN_OUTDOORS_CITY:
+								buf.append("BGCOLOR=\"#CCCCCC\""); break;
+							case Room.DOMAIN_OUTDOORS_DESERT:
+								buf.append("BGCOLOR=\"#FFFF66\""); break;
+							case Room.DOMAIN_OUTDOORS_HILLS:
+								buf.append("BGCOLOR=\"#99CC33\""); break;
+							case Room.DOMAIN_OUTDOORS_JUNGLE:
+								buf.append("BGCOLOR=\"#669966\""); break;
+							case Room.DOMAIN_OUTDOORS_MOUNTAINS:
+								buf.append("BGCOLOR=\"#996600\""); break;
+							case Room.DOMAIN_OUTDOORS_PLAINS:
+								buf.append("BGCOLOR=\"#00FF00\""); break;
+							case Room.DOMAIN_OUTDOORS_ROCKS:
+								buf.append("BGCOLOR=\"#996600\""); break;
+							case Room.DOMAIN_OUTDOORS_SWAMP:
+								buf.append("BGCOLOR=\"#006600\""); break;
+							case Room.DOMAIN_OUTDOORS_UNDERWATER:
+								buf.append("BGCOLOR=\"#6666CC\""); break;
+							case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+								buf.append("BGCOLOR=\"#3399CC\""); break;
+							case Room.DOMAIN_OUTDOORS_WOODS:
+								buf.append("BGCOLOR=\"#009900\""); break;
+							default:
+								buf.append("BGCOLOR=\"#CCCCFF\""); break;
+							}
+							buf.append(">");
 							String roomID=GR.roomID;
 							if(roomID.startsWith(area.name()+"#"))
 							    roomID=roomID.substring(roomID.indexOf("#"));
