@@ -1203,7 +1203,9 @@ public class Arrest extends StdBehavior
 			try{ W=(ArrestWarrant)warrants.elementAt(w);
 			} catch(Exception e){ continue;}
 
-			if(!handled.contains(W.criminal))
+			if((!handled.contains(W.criminal))
+			&&(W.criminal!=null)
+			&&(W.criminal.location()!=null))
 			{
 				if(!isStillACrime(W))
 				{
@@ -1734,7 +1736,6 @@ public class Arrest extends StdBehavior
 				case STATE_RELEASE:
 					{
 						if((W.criminal.fetchAffect("Prisoner")==null)
-						&&(W.criminal.location()!=null)
 						&&(W.jail!=null))
 						{
 							if(W.criminal.location()==W.jail)

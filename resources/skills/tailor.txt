@@ -1,3 +1,4 @@
+name,level,ticks,wood,value,class,misc,capacity,armordmg,containermask,spell
 % Skullcap	1	10	5	1	GenArmor	HEAD	0	1	0
 % Bonnet	1	10	2	2	GenArmor	HEAD	0	0	0
 % Sombrero	2	20	7	8	GenArmor	HEAD	0	1	0
@@ -34,5 +35,10 @@
 % Hose	1	10	5	13	GenArmor	LEGS	0	0	0
 % Slippers	1	10	5	5	GenArmor	FEET	0	0	0
 % Socks	1	10	2	5	GenArmor	FEET	0	0	0
-% Sleeping Bag	5	30	15	10	GenRideable	ENTER	2	0	0
+% Sleeping Bag	5	30	15	10	GenRideable	ENTER		0	0
 % Tent	10	60	25	25	GenRideable	ENTER	5	0	0
+% Blanket	5	10	15	5	GenRideable	ENTER		0	0
+% Sheet	5	10	5	3	GenRideable	ENTER		0	0
+% Cushion	5	10	5	1	GenRideable	CHAIR		0	0
+% Pillow	1	10	5	1	GenBoffWeapon	BASHING		0	0	Prop_NoDamage
+Large % Pillow	10	10	5	1	GenBoffWeapon	BASHING		0	0	Prop_NoDamage

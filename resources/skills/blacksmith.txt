@@ -1,3 +1,4 @@
+name,level,ticks,wood,value,class,misc,capacity,armordmg,spell
 % Cup	1	20	1	1	GenWater		5	
 % Key Ring	1	10	1	1	GenContainer	1024	100
 % Mug	1	20	1	1	GenWater		5	
@@ -11,3 +12,7 @@
 % Lantern	6	40	7	100	GenLantern		0	
 % Bowl	1	20	1	1	GenWater		5	
 % Statue	12	120	450	100	GenItem	STATUE	0	
+% Chain	12	20	20	5	GenRideable	LADDER	1	0	
+% Trashcan	6	20	20	5	GenContainer		250	Prop_Trashcan
+% Drum	3	10	20	1	GenContainer		250	
+% Can	1	5	5	1	GenContainer		10	

@@ -29,6 +29,7 @@ public class TelnetSession extends Thread implements Session
 	private int spamStack=0;
 	private int pageBreak=-1;
 	private long lastOutput=0;
+	private int restlessCommands=0;
 	private Vector cmdQ=new Vector();
 	private Vector snoops=new Vector();
 	private final static String hexStr="0123456789ABCDEF";

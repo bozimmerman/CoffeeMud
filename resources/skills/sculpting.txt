@@ -1,3 +1,4 @@
+name,level,ticks,wood,value,classtype,misctype,capacity,containmask,spell
 % Plaque	1	10	10	50	GenItem		0	0
 % Toy	1	10	5	1	GenItem		0	0
 % Chessboard	1	80	30	250	GenItem		0	0
@@ -26,3 +27,6 @@
 % Stove	3	40	100	20	GenRideable	TABLE	100	0	Burning
 % Oven	6	60	500	50	GenContainer	LID	50	0	Burning
 % Wand	28	10	20	1	GenItem		0	0
+% Tub	10	60	400	75	GenTub	CHAIR	2000	0	
+% Jacuzzi	15	80	600	75	GenTub	CHAIR	2600	0	
+% Roman Tub	15	60	500	75	GenTub	CHAIR	2400	0	
