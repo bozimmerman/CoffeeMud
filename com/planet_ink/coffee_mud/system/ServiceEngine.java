@@ -221,7 +221,6 @@ public class ServiceEngine
 	
 	public static void tickAllTickers(Room here)
 	{
-		Vector tickers=new Vector();
 		for(int v=0;v<tickGroup.size();v++)
 		{
 			Tick almostTock=(Tick)tickGroup.elementAt(v);

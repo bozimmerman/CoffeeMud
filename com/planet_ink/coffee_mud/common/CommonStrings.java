@@ -17,7 +17,6 @@ public class CommonStrings
 		else if(damage<=65) damnCode=7;
 		else if(damage<=95) damnCode=8;
 		
-		int stringCode=0;
 		switch(type)
 		{
 		case Weapon.TYPE_NATURAL:

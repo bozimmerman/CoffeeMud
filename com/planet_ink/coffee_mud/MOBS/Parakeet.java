@@ -10,8 +10,6 @@ public class Parakeet extends StdMOB
 	public Parakeet()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a parakeet";
 		setDescription("a small colorful bird.");
 		setDisplayText("A parakeet flies nearby.");

@@ -49,7 +49,6 @@ public class RoomData extends StdWebMacro
 	{
 		if(Util.s_int(MATCHING)>0)
 		{
-			Item I2=null;
 			if(allitems instanceof Room)
 				return ((Room)allitems).fetchItem(Util.s_int(MATCHING)-1);
 			else
@@ -220,7 +219,6 @@ public class RoomData extends StdWebMacro
 				}
 				if(!found)
 				{
-					Item I2=(Item)I.copyOf();
 					I.setContainer(null);
 					I.wearAt(Item.INVENTORY);
 					items.addElement(I.copyOf());
@@ -264,8 +262,6 @@ public class RoomData extends StdWebMacro
 				name=R.displayText();
 			str.append(name);
 		}
-		boolean classChanged=(((String)httpReq.getRequestParameters().get("CLASSCHANGED")!=null)
-							 &&(((String)httpReq.getRequestParameters().get("CLASSCHANGED")).equals("true")));
 		if(parms.containsKey("CLASSES"))
 		{
 			String className=(String)httpReq.getRequestParameters().get("CLASSES");
@@ -347,7 +343,6 @@ public class RoomData extends StdWebMacro
 			for(int i=0;i<classes.size();i++)
 			{
 				MOB M=(MOB)classes.elementAt(i);
-				MOB TM=null;
 				str.append("<TR>");
 				str.append("<TD WIDTH=90%>");
 				str.append("<SELECT ONCHANGE=\"DelMOB(this);\" NAME=MOB"+(i+1)+">");
@@ -419,7 +414,6 @@ public class RoomData extends StdWebMacro
 			for(int i=0;i<classes.size();i++)
 			{
 				Item I=(Item)classes.elementAt(i);
-				Item TI=null;
 				str.append("<TR>");
 				str.append("<TD WIDTH=90%>");
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");

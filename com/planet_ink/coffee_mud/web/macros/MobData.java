@@ -44,7 +44,6 @@ public class MobData extends StdWebMacro
 		if(parms.containsKey("ABILITIES"))
 		{
 			Vector theclasses=new Vector();
-			Vector theparms=new Vector();
 			if(httpReq.getRequestParameters().containsKey("ABLES1"))
 			{
 				int num=1;
@@ -284,7 +283,6 @@ public class MobData extends StdWebMacro
 		if(M==null)
 			return "No MOB?!";
 		
-		MOB oldM=M;
 		// important generic<->non generic swap!
 		String newClassID=(String)reqs.get("CLASSES");
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(M))))
@@ -329,7 +327,6 @@ public class MobData extends StdWebMacro
 		if(parms.containsKey(okparms[o]))
 		{
 			String old=(String)reqs.get(okparms[o]);
-			String oldold=old;
 			if(old==null) old="";
 			switch(o)
 			{
@@ -504,10 +501,13 @@ public class MobData extends StdWebMacro
 					old=""+((ShopKeeper)M).whatIsSold();
 				for(int r=0;r<ShopKeeper.SOLDCODES.length;r++)
 				{
-					str.append("<OPTION VALUE=\""+r+"\"");
-					if(r==Util.s_int(old))
-						str.append(" SELECTED");
-					str.append(">"+ShopKeeper.SOLDCODES[r]);
+					if((M instanceof Banker)||(r!=ShopKeeper.BANKER))
+					{
+						str.append("<OPTION VALUE=\""+r+"\"");
+						if(r==Util.s_int(old))
+							str.append(" SELECTED");
+						str.append(">"+ShopKeeper.SOLDCODES[r]);
+					}
 				}
 				break;
 			case 23:
@@ -576,7 +576,6 @@ public class MobData extends StdWebMacro
 			for(int i=0;i<classes.size();i++)
 			{
 				Item I=(Item)classes.elementAt(i);
-				Item TI=null;
 				str.append("<TR>");
 				str.append("<TD WIDTH=90%>");
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");

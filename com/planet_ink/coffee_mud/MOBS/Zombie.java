@@ -11,8 +11,6 @@ public class Zombie extends Undead
 	{
 
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a zombie";
 		setDescription("decayed and rotting, a dead body has been brought back to life...");
 		setDisplayText("a skeleton slowly moves about.");

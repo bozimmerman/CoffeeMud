@@ -478,7 +478,6 @@ public class Scoring
 	public StringBuffer getEquipment(MOB seer, MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		boolean foundButUnseen=false;
 		if(Sense.isSleeping(seer))
 			return new StringBuffer("(nothing you can see right now)");
 		

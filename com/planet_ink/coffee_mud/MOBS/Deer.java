@@ -10,8 +10,6 @@ public class Deer extends StdMOB
 	public Deer()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a deer";
 		setDescription("A nervous, but beautifully graceful creation.");
 		setDisplayText("A deer looks up as you happen along.");

@@ -10,8 +10,6 @@ public class Chicken extends StdMOB
 	public Chicken()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a chicken";
 		setDescription("a fat, short winged bird");
 		setDisplayText("A chicken is here, not flying.");

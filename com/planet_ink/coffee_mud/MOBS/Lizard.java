@@ -10,8 +10,6 @@ public class Lizard extends StdMOB
 	public Lizard()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a lizard";
 		setDescription("A small unobtrusize reptile with rough green skin.");
 		setDisplayText("A lizard scurries by.");

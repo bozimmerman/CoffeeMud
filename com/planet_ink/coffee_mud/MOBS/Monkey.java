@@ -10,8 +10,6 @@ public class Monkey extends StdMOB
 	public Monkey()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a monkey";
 		setDescription("The monkey is brown with a big pink butt.");
 		setDisplayText("A silly monkey lops around here.");

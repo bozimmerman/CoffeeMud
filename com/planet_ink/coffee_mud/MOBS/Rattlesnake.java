@@ -10,8 +10,6 @@ public class Rattlesnake extends StdMOB
 	public Rattlesnake()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a rattlesnake";
 		setDescription("A fearsome creature with long fangs and an effective warning for the unwary.");
 		setDisplayText("A rattlesnake shakes his tale at you furiously");

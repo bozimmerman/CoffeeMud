@@ -10,8 +10,6 @@ public class Sheep extends StdMOB
 	public Sheep()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a sheep";
 		setDescription("She looks warm in that big fluffy coat of wool, but is nervous that you are so close.");
 		setDisplayText("A sheep has wandered away from the herd.");

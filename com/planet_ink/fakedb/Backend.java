@@ -375,7 +375,8 @@ class Backend
          return true;
       } catch (IOException e) { e.printStackTrace(); return false; }
    }
-   ResultSet constructScan(Statement s,String relationName,String conditionVar,String conditionValue,String orderVar) throws java.sql.SQLException
+   
+   java.sql.ResultSet constructScan(Statement s,String relationName,String conditionVar,String conditionValue,String orderVar) throws java.sql.SQLException
    {
       Relation relation=(Relation)relations.get(relationName);
       if (relation==null) throw new java.sql.SQLException("unknown relation "+relationName);

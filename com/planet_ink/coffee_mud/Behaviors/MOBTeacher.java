@@ -93,7 +93,6 @@ public class MOBTeacher extends CombatAbilities
 	{
 		super.setParms(newParms);
 		if(myMOB==null) return;
-		MOB monster=myMOB;
 		ensureCharClass();
 	}
 

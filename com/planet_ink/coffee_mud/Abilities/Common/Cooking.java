@@ -91,7 +91,6 @@ public class Cooking extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
 				if((cooking!=null)&&(!aborted)&&(finalRecipe!=null)&&(finalDish!=null))
 				{
 					Vector V=cooking.getContents();
@@ -139,7 +138,6 @@ public class Cooking extends CommonSkill
 		}
 		if(pot.owner()==null) return h;
 		if(!(pot.owner() instanceof MOB)) return h;
-		MOB mob=(MOB)pot.owner();
 		Vector V=pot.getContents();
 		for(int v=0;v<V.size();v++)
 		{
@@ -343,8 +341,6 @@ public class Cooking extends CommonSkill
 		for(int v=0;v<allRecipes.size();v++)
 		{
 			Vector Vr=(Vector)allRecipes.elementAt(v);
-			String FoodDrink=(String)Vr.elementAt(RCP_FOODDRINK);
-			String recName=(String)Vr.elementAt(this.RCP_FINALFOOD);
 			if(oldContents.containsKey(((String)Vr.elementAt(RCP_MAININGR)).toUpperCase()))
 			   closeRecipes.addElement(Vr);
 			if((missingIngrediantsFromOldContents(Vr).size()==0)

@@ -382,7 +382,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	private String runMacro(String foundMacro)
 		throws HTTPRedirectException, HTTPServerException
 	{
-		int l=foundMacro.length();
 		int x=foundMacro.indexOf("?");
 		String parms=null;
 		if(x>=0)

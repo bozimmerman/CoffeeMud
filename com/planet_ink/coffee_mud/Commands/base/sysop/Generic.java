@@ -1382,11 +1382,23 @@ public class Generic
 	void genShopkeeper(MOB mob, ShopKeeper E)
 		throws IOException
 	{
-		mob.tell("\n\rShopekeeper type: '"+E.storeKeeperString()+"'.");
-		String newType=mob.session().choose("Enter a new value (*/G/A/M/W/P/L/O/T/C)\n\r:","*GAMWPLOTC","");
+		mob.tell("\n\rShopkeeper type: '"+E.storeKeeperString()+"'.");
+		StringBuffer buf=new StringBuffer("");
+		StringBuffer codes=new StringBuffer("");
+		String codeStr=new String("0123456789ABCDEFGHIJKLMNOP");
+		for(int r=0;r<ShopKeeper.SOLDCODES.length;r++)
+		{
+			if((E instanceof Banker)||(r!=ShopKeeper.BANKER))
+			{
+				char c=codeStr.charAt(r);
+				codes.append(c);
+				buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
+			}
+		}
+		String newType=mob.session().choose("Enter a new value\n\r:",codes.toString(),"");
 		int newValue=-1;
 		if(newType.length()>0)
-			newValue=("*GAMWPLOTC").indexOf(newType.toUpperCase());
+			newValue=codeStr.indexOf(newType.toUpperCase());
 		if(newValue>=0)
 		{
 			if(E.whatIsSold()!=newValue)

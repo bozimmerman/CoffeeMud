@@ -10,8 +10,6 @@ public class Mouse extends StdMOB
 	public Mouse()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a mouse";
 		setDescription("The little mouse is a small white rodent.");
 		setDisplayText("A little mouse tries to scurry out of your way.");

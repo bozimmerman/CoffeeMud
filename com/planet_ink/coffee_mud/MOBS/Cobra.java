@@ -10,8 +10,6 @@ public class Cobra extends StdMOB
 	public Cobra()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a cobra";
 		setDescription("A fearsome creature with long fangs and a menacing head.");
 		setDisplayText("A cobra is hissing at you.");

@@ -11,8 +11,6 @@ public class Ogre extends StdMOB
 	{
 
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="an Ogre";
 		setDescription("Nine foot tall and with skin that is a covered in bumps and dead yellow in color..");
 		setDisplayText("An ogre stares at you while he clenches his fists.");

@@ -10,8 +10,6 @@ public class Pig extends StdMOB
 	public Pig()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a pig";
 		setDescription("A large pink hairless animal with hooved feet.");
 		setDisplayText("A pig snorts at you.");

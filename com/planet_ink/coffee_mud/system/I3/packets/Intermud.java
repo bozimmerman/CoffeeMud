@@ -334,7 +334,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                     byte[] tmp = new byte[len];
 
                     input.readFully(tmp);
-                    str = new String(tmp, 0);
+					str=new String(tmp);
                 }
                 catch( java.io.IOException e ) {
                     data = null;

@@ -10,8 +10,6 @@ public class GardenSnake extends StdMOB
 	public GardenSnake()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a garden snake";
 		setDescription("A harmless little green string.");
 		setDisplayText("A little garden snake slithers around looking for bugs.");

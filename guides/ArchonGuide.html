@@ -1264,10 +1264,11 @@ GenMob cannot.&nbsp;&nbsp;The properties include:</P>
       just fine without me enumerating them.&nbsp;</TD></TR>
 </TABLE><STRONG>
 <P>The "GenShopKeeper"</P></STRONG>
-<P>Whenever a GenShopKeeper is created, much like the GenMob above, you are 
-presented with a list of properties to fill in.&nbsp; Pressing enter will leave 
-the property unchanged.&nbsp; The properties include all of the fields listed 
-above under GenMob, plus&nbsp;one&nbsp;more:</P>
+<P>ShopKeepers are folks that buy and sell equipement that 
+is given to them by Archons.&nbsp; Whenever a GenShopKeeper is created, much like the GenMob above, you are presented with 
+a list of properties to fill in.&nbsp; Pressing enter will leave the property 
+unchanged.&nbsp; The properties include all of the fields listed above under 
+GenMob, plus&nbsp;a few more:</P>
 <P><STRONG>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -1275,17 +1276,46 @@ above under GenMob, plus&nbsp;one&nbsp;more:</P>
     <TD width="25%"><STRONG>Property</STRONG></TD>
     <TD width="75%"><STRONG>Description</STRONG></TD></TR>
   <TR>
-    <TD><EM> Inventory</EM></TD>
-    <TD>this is where you would "stock" your 
-      shopkeeper.&nbsp; A shopkeeper can sell *)Anything, G)eneral items, 
+    <TD><EM> Type</EM></TD>
+    <TD>a shopkeeper can sell *)Anything, G)eneral items, 
       A)rmor, M)iscellanous magic items not included amongst armor or weapons, 
       W)eapons, P)ets, L)eather items, O)nly buys the things he also sells (but 
       sells whatever you give him to sell), T)rains players in spells, prayers, 
       skills, or songs, C)asts prayers, spells, or songs on the buyer.&nbsp; All 
       shopkeepers can also buy what they sell, excluding Trainers and 
   Casters.</TD></TR>
-</TABLE></STRONG><BR></P>
-<P><STRONG>The "GenRideable"</STRONG></P>
+  <TR>
+    <TD><EM> Inventory</EM></TD>
+    <TD>this is where you would "stock" your shopkeeper with items that match their type.</TD></TR>
+</TABLE></STRONG><BR></P><STRONG>
+<P>The "GenBanker"</P></STRONG>
+<P>A Banker is a special type of ShopKeeper that holds money and items in a 
+special private account for players.&nbsp; Bankers can pay interest on money 
+left in the account, and charge interest on items left with them.&nbsp; Whenever 
+a GenBanker is created, much like the GenShopKeeper above, you are presented 
+with a list of properties to fill in.&nbsp; Pressing enter will leave the 
+property unchanged.&nbsp; The properties include all of the fields listed above 
+under GenMob and GenShopKeeper, plus&nbsp;one&nbsp;more:</P>
+<P><STRONG>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG>Property</STRONG></TD>
+    <TD width="75%"><STRONG>Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Coin Interest</EM></TD>
+    <TD>This is the amount of interest paid every game week (about once a real day) on 
+    gold money left in a players account.</TD></TR>
+  <TR>
+    <TD><EM>Item Interest</EM></TD>
+    <TD>This is the amount of interest paid (or CHARGED if negative) every game week 
+    (about once a real day) on items left in a users account.</TD></TR>
+  <TR>
+    <TD><EM>Bank Name</EM></TD>
+    <TD>This is a unique identifier for the bank chain.  All GenBankers with the same
+    Bank Name will offer the same accounts to players.</TD></TR>
+    </TABLE></STRONG><BR></P>
+<P>The "GenRideable"</STRONG></P>
 <P>Whenever a GenRideable is created, much like the GenMob above, you are 
 presented with a list of properties to fill in.&nbsp; Pressing enter will leave 
 the property unchanged.&nbsp; The properties include all of the fields listed 
@@ -1513,8 +1543,13 @@ Items</STRONG></P>
 <P class=MsoNormal>Goblin</P>
 <UL>
   <LI>
-<DIV class=MsoNormal>ability - The type of goblin being dealt with.&nbsp; Ranges 
-  0-1000</DIV></LI></UL>
+  <DIV class=MsoNormal>ability - The type of goblin being dealt with.&nbsp; 
+  Ranges 0-1000</DIV></LI></UL>
+<P class=MsoNormal>StdBanker</P>
+<UL>
+  <LI>
+  <DIV class=MsoNormal>misc tex &nbsp;- The name of the bank 
+chain</DIV></LI></UL>
 
 </BODY>
 </HTML>

@@ -114,7 +114,6 @@ public class Song_Babble extends Song
 				int numToMess=numChars(msg);
 				if(numToMess>0)
 					smsg=messChars(smsg,numChars(msg));
-				StringBuffer newStr=new StringBuffer("");
 				affect.modify(affect.source(),
 							  affect.target(),
 							  null,

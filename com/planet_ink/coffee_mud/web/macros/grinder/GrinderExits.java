@@ -9,7 +9,6 @@ public class GrinderExits
 	public static String dispositions(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		E.baseEnvStats().setDisposition(0);
-		StringBuffer str=new StringBuffer("");
 		for(int d=0;d<EnvStats.dispositionsDescs.length;d++)
 		{
 			String parm=(String)httpReq.getRequestParameters().get(EnvStats.dispositionsDescs[d]);
@@ -32,7 +31,6 @@ public class GrinderExits
 			R.rawExits()[dir]=E;
 		}
 		
-		StringBuffer str=new StringBuffer("");
 		String[] okparms={"NAME"," CLASSES","DISPLAYTEXT","DESCRIPTION",
 						  "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
 						  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
@@ -123,7 +121,6 @@ public class GrinderExits
 				break;
 			case 20: // restrictedalignments
 				String mask=((String)httpReq.getRequestParameters().get("RESTRICTEDALIGNMENTS"))+" ";
-				String[] alignments={"GOOD","NEUTRAL","EVIL"};
 				for(int i=1;;i++)
 				{
 					String selection=(String)httpReq.getRequestParameters().get("RESTRICTEDALIGNMENTS"+i);

@@ -10,8 +10,6 @@ public class Rat extends StdMOB
 	public Rat()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a rat";
 		setDescription("The rat is an ungly long rodent with a long tail.");
 		setDisplayText("A rat is here nibbling on something.");

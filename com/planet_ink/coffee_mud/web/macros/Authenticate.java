@@ -87,7 +87,7 @@ public class Authenticate extends StdWebMacro
 	{
 		StringBuffer INTOME=new StringBuffer("");
 		INTOME.setLength(ENCRYPTME.length());
-		for(int S=0, D=0; S<ENCRYPTME.length();S++)
+		for(int S=0; S<ENCRYPTME.length();S++)
 		{
 			INTOME.setCharAt(S,ABCeq(ENCRYPTME.charAt(S)));
 			if (INTOME.charAt(S)==(char)0)
@@ -109,7 +109,7 @@ public class Authenticate extends StdWebMacro
 	{
 		StringBuffer INTOME=new StringBuffer("");
 		INTOME.setLength(DECRYPTME.length());
-		for(int S=0, D=0; S<DECRYPTME.length();S++)
+		for(int S=0; S<DECRYPTME.length();S++)
 		{
 			INTOME.setCharAt(S,ABCeq(DECRYPTME.charAt(S)));
 			if (INTOME.charAt(S)==(char)0)

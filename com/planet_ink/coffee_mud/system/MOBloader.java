@@ -649,7 +649,7 @@ public class MOBloader
 					if(mob!=null)
 					{
 						String password=DBConnector.getRes(R,"CMPASS");
-						Calendar newCalendar=(Calendar)IQCalendar.string2Date(DBConnector.getRes(R,"CMDATE"));
+						//Calendar newCalendar=(Calendar)IQCalendar.string2Date(DBConnector.getRes(R,"CMDATE"));
 						mob.setUserInfo(username,password);
 					}
 					break;

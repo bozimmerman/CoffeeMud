@@ -166,8 +166,6 @@ public class Smelting extends CommonSkill
 			mob.tell("You don't know how to make '"+recipeName+"'.  Try \"smelt list\" for a list.");
 			return false;
 		}
-		Item firstWood=null;
-		int foundWood=0;
 		String doneResourceDesc=(String)foundRecipe.elementAt(RCP_FINALNAME);
 		String resourceDesc1=(String)foundRecipe.elementAt(RCP_METALONE);
 		String resourceDesc2=(String)foundRecipe.elementAt(RCP_METALTWO);

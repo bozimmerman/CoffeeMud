@@ -253,7 +253,7 @@ public class ItemUsage
 			else
 				dropThis=mob.fetchCarried(container,whatToDrop+addendumStr);
 			if(dropThis==null) break;
-			if((dropThis instanceof Item)&&(Sense.canBeSeenBy(dropThis,mob)))
+			if(Sense.canBeSeenBy(dropThis,mob))
 				V.addElement(dropThis);
 			addendumStr="."+(++addendum);
 		}

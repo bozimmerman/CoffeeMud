@@ -78,8 +78,7 @@ public class Spell_PassDoor extends Spell
 				mob.tell("You can't see anywhere to pass that way.");
 				return false;
 			}
-			Exit opExit=room.getPairedExit(dirCode);
-
+			//Exit opExit=room.getPairedExit(dirCode);
 			if(exit.isOpen())
 			{
 				mob.tell("But it looks free and clear that way!");

@@ -253,7 +253,7 @@ public class JewelMaking extends CommonSkill
 		}
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
-		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+		//int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 
 		if(building instanceof Armor)

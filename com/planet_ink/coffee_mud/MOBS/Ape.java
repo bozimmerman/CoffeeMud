@@ -10,8 +10,6 @@ public class Ape extends StdMOB
 	public Ape()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="an ape";
 		setDescription("The ape is big, the ape is black, the ape means business..");
 		setDisplayText("An ape sits here watching you.");

@@ -20,17 +20,20 @@ public class Channels
 		int col=0;
 		for(int x=0;x<channelNames.size();x++)
 		{
-			if((++col)>3)
-			{
-				buf.append("\n\r");
-				col=1;
-			}
-			String channelName=(String)channelNames.elementAt(x);
 			int minLevel=((Integer)channelLevels.elementAt(x)).intValue();
-			String onoff="";
-			if(Util.isSet((int)mob.getChannelMask(),x))
-				onoff=" (OFF)";
-			buf.append(Util.padRight(channelName+onoff,24));
+			if(mob.envStats().level()>=minLevel)
+			{
+				if((++col)>3)
+				{
+					buf.append("\n\r");
+					col=1;
+				}
+				String channelName=(String)channelNames.elementAt(x);
+				String onoff="";
+				if(Util.isSet((int)mob.getChannelMask(),x))
+					onoff=" (OFF)";
+				buf.append(Util.padRight(channelName+onoff,24));
+			}
 		}
 		if(channelNames.size()==0) buf.append("None!");
 		mob.tell(buf.toString());

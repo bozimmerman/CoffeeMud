@@ -643,7 +643,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
 			{
-				String col=null;
 				int val=yourValue(mob,E,true);
 				if((""+val).length()>(4+csize))
 					csize=(""+val).length()-4;

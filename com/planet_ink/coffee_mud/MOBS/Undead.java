@@ -10,8 +10,6 @@ public class Undead extends StdMOB
 	public Undead()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="an undead being";
 		setDescription("decayed and rotting, a dead body has been brought back to life...");
 		setDisplayText("an undead thing slowly moves about.");

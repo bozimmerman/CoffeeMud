@@ -151,7 +151,6 @@ public class Hunting extends CommonSkill
 		activityRoom=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		Room room=nearByRoom();
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(0,auto))
 		   &&(nearByRoom()!=null)

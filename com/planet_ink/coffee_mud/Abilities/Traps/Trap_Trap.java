@@ -204,7 +204,6 @@ public class Trap_Trap extends StdAbility implements Trap
 	public void victimOfSpell(MOB mob)
 	{
 		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in "+affected.name()+"!");
-		MOB target=mob;
 		String spell=text();
 		int x=spell.indexOf(";");
 		Vector V=new Vector();

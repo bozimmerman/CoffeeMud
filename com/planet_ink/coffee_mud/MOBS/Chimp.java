@@ -10,7 +10,6 @@ public class Chimp extends StdMOB
 	public Chimp()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
 
 		Username="a chimp";
 		setDescription("The chimp is reddish brown with a big pink butt.");

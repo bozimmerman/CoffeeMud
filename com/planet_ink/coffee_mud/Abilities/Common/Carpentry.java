@@ -48,7 +48,6 @@ public class Carpentry extends CommonSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
-			MOB mob=(MOB)affected;
 			if(building==null)
 				unInvoke();
 		}

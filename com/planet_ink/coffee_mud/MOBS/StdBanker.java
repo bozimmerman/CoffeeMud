@@ -70,7 +70,6 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public void delAllDeposits(String mob)
 	{
 		Vector V=ExternalPlay.DBReadJournal(bankChain());
-		int num=0;
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			Vector V2=(Vector)V.elementAt(v);
@@ -104,7 +103,6 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		Vector V=ExternalPlay.DBReadJournal(bankChain());
 		Vector mine=new Vector();
-		int num=0;
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);

@@ -72,7 +72,6 @@ public class ExitData extends StdWebMacro
 		if(parms.containsKey(okparms[o]))
 		{
 			String old=(String)reqs.get(okparms[o]);
-			String oldold=old;
 			if(old==null) old="";
 			switch(o)
 			{

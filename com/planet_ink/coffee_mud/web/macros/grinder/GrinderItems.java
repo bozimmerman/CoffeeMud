@@ -43,7 +43,6 @@ public class GrinderItems
 			I=CMClass.getItem(newClassID);
 		
 		
-		StringBuffer str=new StringBuffer("");
 		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
 						  " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
 						  "MATERIALS","ISGENERIC","ISREADABLE","READABLETEXT",

@@ -219,9 +219,9 @@ public class Lister
 			{
 				Vector entry=(Vector)V.elementAt(j);
 				String from=(String)entry.elementAt(1);
-				String date=(String)entry.elementAt(2);
-				String to=(String)entry.elementAt(3);
-				String subject=(String)entry.elementAt(4);
+				//String date=(String)entry.elementAt(2);
+				//String to=(String)entry.elementAt(3);
+				//String subject=(String)entry.elementAt(4);
 				String message=(String)entry.elementAt(5);
 				buf.append(Util.padRight((j+1)+"",3)+") "+Util.padRight(from,10)+" "+message+"\n\r");
 			}

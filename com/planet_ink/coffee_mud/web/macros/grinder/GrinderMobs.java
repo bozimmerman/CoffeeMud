@@ -10,7 +10,6 @@ public class GrinderMobs
 	public static String senses(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		E.baseEnvStats().setSensesMask(0);
-		StringBuffer str=new StringBuffer("");
 		for(int d=0;d<EnvStats.sensesDescs.length;d++)
 		{
 			String parm=(String)httpReq.getRequestParameters().get(EnvStats.sensesDescs[d]);
@@ -91,7 +90,6 @@ public class GrinderMobs
 			oldM.delInventory(I);
 		}
 		
-		StringBuffer str=new StringBuffer("");
 		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
 						  " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
 						  "RACE","GENDER","HEIGHT","WEIGHT",
