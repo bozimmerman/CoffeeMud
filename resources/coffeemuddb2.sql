@@ -57,10 +57,10 @@ PRIMARY KEY (CMUSERID, CMFONM)
 
 CREATE TABLE CMCHIT (
 CMUSERID varchar (50),
-CMITNM integer,
+CMITNM varchar (50),
 CMITID varchar (50) NULL,
 CMITTX text NULL,
-CMITLO integer NULL,
+CMITLO varchar (50) NULL,
 CMITWO integer NULL,
 CMITUR integer NULL,
 CMITLV integer NULL,
@@ -90,9 +90,9 @@ PRIMARY KEY (CMROID, CMDIRE)
 
 CREATE TABLE CMROIT (
 CMROID varchar (50),
-CMITNM integer,
+CMITNM varchar (50),
 CMITID varchar (50) NULL,
-CMITLO integer NULL,
+CMITLO varchar (50) NULL,
 CMITTX text NULL,
 CMITRE integer NULL,
 CMITUR integer NULL,

@@ -70,31 +70,50 @@ public class MOBloader
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+mob.ID()+"' order by CMITNM");
+			ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+mob.ID()+"'");
 			Hashtable itemNums=new Hashtable();
+			Hashtable itemLocs=new Hashtable();
 			while(R.next())
 			{
-				int itemNumber=(int)DBConnections.getLongRes(R,"CMITNM");
+				String itemNum=DBConnections.getRes(R,"CMITNM");
 				String itemID=DBConnections.getRes(R,"CMITID");
 				Item newItem=(Item)CMClass.getItem(itemID);
 				if(newItem==null)
 					Log.errOut("MOB","Couldn't find item '"+itemID+"'");
 				else
 				{
-					newItem=(Item)newItem.newInstance();
+					itemNums.put(itemNum,newItem);
 					newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
-					int locationNumber=(int)DBConnections.getLongRes(R,"CMITLO");
-					newItem.setLocation((Item)itemNums.get(new Integer(locationNumber)));
+					String loc=DBConnections.getResQuietly(R,"CMITLO");
+					if(loc.length()>0) 
+					{
+						Item container=(Item)itemNums.get(loc);
+						if(container!=null)
+							newItem.setLocation(container);
+						else
+							itemLocs.put(newItem,loc);
+					}
 					newItem.wearAt((int)DBConnections.getLongRes(R,"CMITWO"));
 					newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
 					newItem.baseEnvStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
 					newItem.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
 					newItem.recoverEnvStats();
 					mob.addInventory(newItem);
-					itemNums.put(new Integer(itemNumber),newItem);
 				}
 			}
 			DBConnector.DBDone(D);
+			for(Enumeration e=itemLocs.keys();e.hasMoreElements();)
+			{
+				Item keyItem=(Item)e.nextElement();
+				String location=(String)itemLocs.get(keyItem);
+				Item container=(Item)itemNums.get(location);
+				if(container!=null)
+				{
+					keyItem.setLocation(container);
+					keyItem.recoverEnvStats();
+					container.recoverEnvStats();
+				}
+			}
 		}
 		catch(SQLException sqle)
 		{
@@ -102,6 +121,7 @@ public class MOBloader
 			if(D!=null) DBConnector.DBDone(D);
 		}
 
+		
 		// now grab the abilities
 		try
 		{
@@ -184,7 +204,7 @@ public class MOBloader
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+mob.ID()+"' order by CMFONM");
+			ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+mob.ID()+"'");
 			while(R.next())
 			{
 				String MOBID=DBConnections.getRes(R,"CMFOID");
@@ -294,12 +314,9 @@ public class MOBloader
 		DBUpdateItems(mob);
 		DBUpdateAbilities(mob);
 	}
-	private static int DBUpdateContents(MOB mob,
-										Item item,
-										int itemNumber)
+	private static void DBUpdateContents(MOB mob)
 	{
 		DBConnection D=null;
-		int newItemNumber=itemNumber;
 		String str=null;
 		try
 		{
@@ -307,8 +324,7 @@ public class MOBloader
 			{
 				Item thisItem=mob.fetchInventory(i);
 				if((thisItem!=null)
-				&&(thisItem.savable())
-				&&(thisItem.location()==item))
+				&&(thisItem.savable()))
 				{
 					D=DBConnector.DBFetch();
 					str="INSERT INTO CMCHIT ("
@@ -323,17 +339,16 @@ public class MOBloader
 					+"CMITAB"
 					+") values ("
 					+"'"+mob.ID()+"',"
-					+(++newItemNumber)+","
+					+"'"+(thisItem)+"',"
 					+"'"+thisItem.ID()+"',"
 					+"'"+thisItem.text()+" ',"
-					+Integer.toString(itemNumber)+","
+					+"'"+((thisItem.location()!=null)?(""+thisItem.location()):"")+"',"
 					+thisItem.rawWornCode()+","
 					+thisItem.usesRemaining()+","
 					+thisItem.baseEnvStats().level()+","
 					+thisItem.baseEnvStats().ability()+")";
 					D.update(str);
 					DBConnector.DBDone(D);
-					newItemNumber=DBUpdateContents(mob,thisItem,newItemNumber);
 				}
 			}
 		}
@@ -342,7 +357,6 @@ public class MOBloader
 			Log.errOut("MOB","UpdateItems"+sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
-		return newItemNumber;
 	}
 
 	public static void DBUpdateItems(MOB mob)
@@ -367,7 +381,7 @@ public class MOBloader
 			if(D!=null) DBConnector.DBDone(D);
 		}
 		if(mob.inventorySize()>0)
-			DBUpdateContents(mob,null,-1);
+			DBUpdateContents(mob);
 	}
 
 	public static void DBUpdateFollowers(MOB mob)

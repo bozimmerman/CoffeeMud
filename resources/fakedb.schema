@@ -51,10 +51,10 @@ CMFOAB integer NULL
 
 CMCHIT
 CMUSERID string KEY
-CMITNM integer KEY
+CMITNM string KEY
 CMITID string NULL
 CMITTX string NULL
-CMITLO integer NULL
+CMITLO string NULL
 CMITWO integer NULL
 CMITUR integer NULL
 CMITLV integer NULL
@@ -78,9 +78,9 @@ CMNRID string NULL
 
 CMROIT
 CMROID string KEY
-CMITNM integer KEY
+CMITNM string KEY
 CMITID string NULL
-CMITLO integer NULL
+CMITLO string NULL
 CMITTX string NULL
 CMITRE integer NULL
 CMITUR integer NULL

@@ -166,19 +166,28 @@ public class RoomLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMROIT WHERE CMROID='"+thisRoom.ID()+"' order by CMITNM");
+			ResultSet R=D.query("SELECT * FROM CMROIT WHERE CMROID='"+thisRoom.ID()+"'");
 			Hashtable itemNums=new Hashtable();
+			Hashtable itemLocs=new Hashtable();
 			while(R.next())
 			{
-				int itemNumber=(int)DBConnections.getLongRes(R,"CMITNM");
+				String itemNum=DBConnections.getRes(R,"CMITNM");
 				String itemID=DBConnections.getRes(R,"CMITID");
 				Item newItem=(Item)CMClass.getItem(itemID);
 				if(newItem==null)
 					Log.errOut("Room","Couldn't find item '"+itemID+"'");
 				else
 				{
-					newItem=(Item)newItem.newInstance();
-					int locationNumber=(int)DBConnections.getLongRes(R,"CMITLO");
+					itemNums.put(itemNum,newItem);
+					String loc=DBConnections.getResQuietly(R,"CMITLO");
+					if(loc.length()>0) 
+					{
+						Item container=(Item)itemNums.get(loc);
+						if(container!=null)
+							newItem.setLocation(container);
+						else
+							itemLocs.put(newItem,loc);
+					}
 					newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
 					newItem.baseEnvStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
 					newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
@@ -186,11 +195,21 @@ public class RoomLoader
 					newItem.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
 					newItem.recoverEnvStats();
 					thisRoom.addItem(newItem);
-					newItem.setLocation((Item)itemNums.get(new Integer(locationNumber)));
-					itemNums.put(new Integer(itemNumber),newItem);
 				}
 			}
 			DBConnector.DBDone(D);
+			for(Enumeration e=itemLocs.keys();e.hasMoreElements();)
+			{
+				Item keyItem=(Item)e.nextElement();
+				String location=(String)itemLocs.get(keyItem);
+				Item container=(Item)itemNums.get(location);
+				if(container!=null)
+				{
+					keyItem.setLocation(container);
+					keyItem.recoverEnvStats();
+					container.recoverEnvStats();
+				}
+			}
 		}
 		catch(SQLException sqle)
 		{
@@ -202,7 +221,7 @@ public class RoomLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMROCH WHERE CMROID='"+thisRoom.ID()+"' order by CMCHNM");
+			ResultSet R=D.query("SELECT * FROM CMROCH WHERE CMROID='"+thisRoom.ID()+"'");
 			while(R.next())
 			{
 				String MOBID=DBConnections.getRes(R,"CMCHID");
@@ -235,13 +254,10 @@ public class RoomLoader
 		}
 	}
 
-	private static int DBUpdateContents(Room room,
-										Item item,
-										int itemNumber)
+	private static void DBUpdateContents(Room room)
 		throws SQLException
 	{
 		DBConnection D=null;
-		int newItemNumber=itemNumber;
 		String sql=null;
 		try
 		{
@@ -251,34 +267,30 @@ public class RoomLoader
 				if(thisItem!=null)
 				{
 					thisItem.setPossessionTime(null); // saved items won't clear!
-					if(thisItem.location()==item)
-					{
-						D=DBConnector.DBFetch();
-						sql=
-						"INSERT INTO CMROIT ("
-						+"CMROID, "
-						+"CMITNM, "
-						+"CMITID, "
-						+"CMITLO, "
-						+"CMITTX, "
-						+"CMITRE, "
-						+"CMITUR, "
-						+"CMITLV, "
-						+"CMITAB"
-						+") values ("
-						+"'"+room.ID()+"',"
-						+(++newItemNumber)+","
-						+"'"+thisItem.ID()+"',"
-						+Integer.toString(itemNumber)+","
-						+"'"+thisItem.text()+" ',"
-						+thisItem.baseEnvStats().rejuv()+","
-						+thisItem.usesRemaining()+","
-						+thisItem.baseEnvStats().level()+","
-						+thisItem.baseEnvStats().ability()+")";
-						D.update(sql);
-						DBConnector.DBDone(D);
-						newItemNumber=DBUpdateContents(room,thisItem,newItemNumber);
-					}
+					D=DBConnector.DBFetch();
+					sql=
+					"INSERT INTO CMROIT ("
+					+"CMROID, "
+					+"CMITNM, "
+					+"CMITID, "
+					+"CMITLO, "
+					+"CMITTX, "
+					+"CMITRE, "
+					+"CMITUR, "
+					+"CMITLV, "
+					+"CMITAB"
+					+") values ("
+					+"'"+room.ID()+"',"
+					+"'"+thisItem+"',"
+					+"'"+thisItem.ID()+"',"
+					+"'"+((thisItem.location()!=null)?(""+thisItem.location()):"")+"',"
+					+"'"+thisItem.text()+" ',"
+					+thisItem.baseEnvStats().rejuv()+","
+					+thisItem.usesRemaining()+","
+					+thisItem.baseEnvStats().level()+","
+					+thisItem.baseEnvStats().ability()+")";
+					D.update(sql);
+					DBConnector.DBDone(D);
 				}
 			}
 		}
@@ -288,7 +300,6 @@ public class RoomLoader
 			Log.errOut("Room","UpdateItems"+sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
-		return newItemNumber;
 	}
 
 	public static void DBUpdateItems(Room room)
@@ -306,7 +317,7 @@ public class RoomLoader
 					Log.errOut("DBUpdateItems","Delete Failed.");
 			}
 			DBConnector.DBDone(D);
-			DBUpdateContents(room,null,-1);
+			DBUpdateContents(room);
 		}
 		catch(SQLException sqle)
 		{
