@@ -134,6 +134,25 @@ public class CreateEdit
 			Mobs.destroy(mob,commands);
 		}
 		else
+		if(commandType.equals("QUEST"))
+		{
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			if(commands.size()<3)
+				mob.tell("Destroy which quest?  Use list quests.");
+			else
+			{
+				String name=Util.combine(commands,2);
+				Quest Q=Quests.fetchQuest(name);
+				if(Q==null)
+					mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
+				else
+				{
+					mob.tell("Quest '"+Q.name()+"' destroyed!");
+					Quests.delQuest(Q);
+				}
+			}
+		}
+		else
 		{
 			String allWord=Util.combine(commands,1);
 			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORN_REQ_ANY);
@@ -198,7 +217,7 @@ public class CreateEdit
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, USER, MOB, SOCIAL, BAN, BUG, TYPO, IDEA, or a ROOM.");
+						+"EXIT, ITEM, USER, MOB, QUEST, SOCIAL, BAN, BUG, TYPO, IDEA, or a ROOM.");
 				}
 			}
 		}
@@ -244,6 +263,12 @@ public class CreateEdit
 			Rooms.clearDebriAndRestart(mob.location(),2);
 			Resources.removeResource("HELP_"+mob.location().name().toUpperCase());
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
+		}
+		else
+		if(commandType.equals("QUESTS"))
+		{
+			Quests.save();
+			mob.tell("Quest list saved.");
 		}
 		else
 		{
@@ -294,6 +319,35 @@ public class CreateEdit
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			Mobs.modify(mob,commands);
+		}
+		else
+		if(commandType.equals("QUEST"))
+		{
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			if(commands.size()<3)
+				mob.tell("Start/Stop which quest?  Use list quests.");
+			else
+			{
+				String name=Util.combine(commands,2);
+				Quest Q=Quests.fetchQuest(name);
+				if(Q==null)
+					mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
+				else
+				if(!mob.isMonster())
+				{
+					if((Q.running())&&(mob.session().confirm("Stop quest '"+Q.name()+"' (y/N)?","N")))
+					{
+						Q.stopQuest();
+						mob.tell("Quest '"+Q.name()+"' stopped.");
+					}
+					else
+					if((!Q.running())&&(mob.session().confirm("Start quest '"+Q.name()+"' (Y/n)?","Y")))
+					{
+						Q.startQuest();
+						mob.tell("Quest '"+Q.name()+"' started.");
+					}
+				}
+			}
 		}
 		else
 		{
@@ -397,7 +451,7 @@ public class CreateEdit
 				edit(mob,commands);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, EXIT, MOB, SOCIAL, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, EXIT, QUEST, MOB, SOCIAL, or ROOM.");
 		}
 	}
 
@@ -457,6 +511,29 @@ public class CreateEdit
 			Mobs.create(mob,commands);
 		}
 		else
+		if(commandType.equals("QUEST"))
+		{
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			if(commands.size()<3)
+				mob.tell("You must specify a valid quest string.  Try HELP QUESTS.");
+			else
+			{
+				String script=Util.combine(commands,2);
+				Quest Q=new Quests();
+				Q.setScript(script);
+				if((Q.name().length()==0)||(Q.duration()<0))
+					mob.tell("You must specify a VALID quest string.  This one contained errors.  Try HELP QUESTS.");
+				else
+				if(Quests.fetchQuest(Q.name())!=null)
+					mob.tell("That quest is already loaded.  Try list quests.");
+				else
+				{
+					mob.tell("Quest added.");
+					Quests.addQuest(Q);
+				}
+			}
+		}
+		else
 		{
 			String allWord=Util.combine(commands,1);
 			String lastWord=null;
@@ -511,10 +588,10 @@ public class CreateEdit
 					if((E!=null)&&(E instanceof Area))
 						mob.tell("To create a new Area, you must first create a new room, then give that new room a new Area name.");
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, MOB, or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, MOB, or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, MOB, or ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, MOB, or ROOM.");
 			}
 		}
 	}

@@ -1138,6 +1138,16 @@ public class StdRoom
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	public Behavior fetchBehavior(String ID)
+	{
+		for(int b=0;b<numBehaviors();b++)
+		{
+			Behavior B=fetchBehavior(b);
+			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
+				return B;
+		}
+		return null;
+	}
 	private static final String[] CODES={"CLASS","DISPLAY","DESCRIPTION","TEXT"};
 	public String[] getStatCodes(){return CODES;}
 	private int getCodeNum(String code){

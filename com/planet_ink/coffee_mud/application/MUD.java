@@ -264,6 +264,10 @@ public class MUD extends Thread implements Host
 			ExternalPlay.DBUpdateItems(room);
 		}
 
+		ExternalPlay.DBReadQuests((Host)mudThreads.firstElement());
+		if(Quests.numQuests()>0)
+			Log.sysOut("MUD","Quests loaded     : "+Quests.numQuests());
+		
 		offlineReason="Booting: readying for connections.";
 		try
 		{
@@ -460,6 +464,9 @@ public class MUD extends Thread implements Host
 		Log.sysOut("MUD","Host will now reject new connections.");
 		S.println("Host will now reject new connections.");
 
+		offlineReason="Shutting down...Quests";
+		Quests.shutdown();
+		
 		offlineReason="Shutting down...Save Thread";
 		saveThread.shutdown();
 		saveThread.interrupt();

@@ -4,11 +4,19 @@ import java.util.*;
 import java.io.IOException;
 public class ExternalSystems implements ExternalSystem
 {
-	public void startTickDown(Environmental E,
-									 int tickID,
-									 int numTicks)
+	public void startTickDown(Tickable E,
+							  int tickID,
+							  int numTicks)
 	{
 		ServiceEngine.startTickDown(E,tickID,numTicks);
+	}
+	public void suspendTicking(Tickable E, int tickID)
+	{
+		ServiceEngine.suspendTicking(E,tickID);
+	}
+	public void resumeTicking(Tickable E, int tickID)
+	{
+		ServiceEngine.resumeTicking(E,tickID);
 	}
 	public void vassals(MOB mob, String leigeID)
 	{
@@ -19,7 +27,7 @@ public class ExternalSystems implements ExternalSystem
 		return MOBloader.userList();
 	}
 	
-	public boolean deleteTick(Environmental E, int tickID)
+	public boolean deleteTick(Tickable E, int tickID)
 	{
 		return ServiceEngine.deleteTick(E,tickID);
 	}
@@ -47,6 +55,11 @@ public class ExternalSystems implements ExternalSystem
 	public void DBUpdateExits(Room room)
 	{
 		RoomLoader.DBUpdateExits(room);
+	}
+	public void DBReadQuests(Host myHost){QuestLoader.DBRead(myHost);}
+	public void DBUpdateQuests(Vector quests)
+	{
+		QuestLoader.DBUpdateQuests(quests);
 	}
 	public void DBUpdateTheseMOBs(Room room, Vector mobs)
 	{
@@ -87,14 +100,6 @@ public class ExternalSystems implements ExternalSystem
 	public void DBReCreate(Room room, String oldID)
 	{
 		RoomLoader.DBReCreate(room,oldID);
-	}
-	public void suspendTicking(Environmental E, int tickID)
-	{
-		ServiceEngine.suspendTicking(E,tickID);
-	}
-	public void resumeTicking(Environmental E, int tickID)
-	{
-		ServiceEngine.resumeTicking(E,tickID);
 	}
 	public void clearDebri(Room room, int taskCode)
 	{

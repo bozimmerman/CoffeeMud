@@ -348,6 +348,7 @@ public class CMClass extends ClassLoader
 			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Traps"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
 			Log.sysOut("MUD","Traps loaded      : "+tempH.size());
 			addH(tempH,abilities);
+			
 		}
 
 		items=loadVectorListToObj(prefix+"Items"+File.separatorChar,page.getStr("ITEMS"),"com.planet_ink.coffee_mud.interfaces.Item");

@@ -356,6 +356,35 @@ public class Lister
 		}
 		ExternalPlay.listUsers(mob,sortBy);
 	}
+
+	public static StringBuffer listQuests()
+	{
+		StringBuffer buf=new StringBuffer("");
+		if(Quests.numQuests()==0)
+			buf.append("No quests loaded.");
+		else
+		{
+			buf.append("\n\r^xQuest Report:^.^N\n\r");
+			buf.append("\n\r^x"+Util.padRight("#",5)+Util.padRight("Name",20)+" Status^.^N\n\r");
+			for(int i=0;i<Quests.numQuests();i++)
+			{
+				Quest Q=Quests.fetchQuest(i);
+				if(Q!=null)
+				{
+					buf.append(Util.padRight(""+(i+1),5)+Util.padRight(Q.name(),20)+" ");
+					if(Q.running())
+						buf.append("running ("+Q.minsRemaining()+" mins left)");
+					else
+					if(Q.waiting())
+						buf.append("waiting ("+Q.waitRemaining()+" ticks left)");
+					else
+						buf.append("loaded");
+					buf.append("^N\n\r");
+				}
+			}
+		}
+		return buf;
+	}
 	
 	public static void list(MOB mob, Vector commands)
 	{
@@ -421,6 +450,9 @@ public class Lister
 		else
 		if("SKILLS".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.abilities(),Ability.SKILL).toString());
+		else
+		if("QUESTS".startsWith(listThis))
+			mob.tell(listQuests().toString());
 		else
 		if("DISEASES".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.abilities(),Ability.DISEASE).toString());

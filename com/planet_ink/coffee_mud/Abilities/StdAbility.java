@@ -833,6 +833,7 @@ public class StdAbility implements Ability, Cloneable
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}
 	public Behavior fetchBehavior(int index){return null;}
+	public Behavior fetchBehavior(String ID){return null;}
 	public boolean isGeneric(){return false;}
 
 	private static final String[] CODES={"CLASS","TEXT"};

@@ -1048,7 +1048,7 @@ called "SourceMOB", this standard form looks like this:</FONT></FONT></P><pre>
 FullMsg msg=new FullMsg(SourceMOB,TargetMOB,weapon,Affect.MSG_WEAPONATTACK,
 						"&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
 						
-if(Sourcemob.location().okAffect(mob,msg))
+if(SourceMOB.location().okAffect(mob,msg))
 	SourceMOB.location().send(SourceMOB,msg);
 </PRE>
 <P align=left><FONT size=4>The 
@@ -1057,8 +1057,12 @@ always the top level at which messages are previewed, and then sent.&nbsp; The
 first line (where the message is constructed) has already been examined.&nbsp; 
 The second line, in which the Room method "okAffect" is called, is&nbsp;the 
 Preview step.&nbsp; In this step, the message is evaluated before it actually 
-happens.&nbsp; The third line, where the Room "send" method is called, is the 
-Execution step. </FONT></P>
+happens.&nbsp; The first parameter to "okAffect" is called the "host" object, 
+and it refers to the object to which the one you are sending the message should 
+refer back to.&nbsp; This parameter is rarely used, except by Behaviors, and it 
+is always safe to use the source of your message as this value.&nbsp; The second 
+parameter to "okAffect"&nbsp;is the message we constructed.&nbsp; The third 
+line, where the Room "send" method is called, is the Execution step. </FONT></P>
 <P align=left><FONT size=4>In the 
 Preview step, the Room object will examine the message to see if there is 
 anything which it might&nbsp;not like, wish to modify, or wish to flag about the 
@@ -1115,13 +1119,13 @@ Execution.&nbsp; The first method should always be called unless there are good
 reasons not to.&nbsp; </FONT></P>
 <P align=left><FONT color=black size=4>The "send" method will then begin calling other methods in 
 other objects.&nbsp; These other methods are called the "affect" methods, and 
-are usually of the form "public void affect(Environmental myHost, Affect msg);".&nbsp; These methods 
-are responsible for Executing the contents of the message.&nbsp; The Room method 
-will make "affect" method calls on itself, and on every Exit, Item, MOB, spell 
-affects (Ability object), and Behavior associated with that Room.&nbsp; As in 
-the "okAffect" case, the MOBs will in turn call the "affect()" methods on their 
-own Items and spell effects.&nbsp; Items will then call the&nbsp;"affect" 
-methods on their own spell effects.&nbsp; </FONT></P>
+are usually of the form "public void affect(Environmental myHost, Affect 
+msg);".&nbsp; These methods are responsible for Executing the contents of the 
+message.&nbsp; The Room method will make "affect" method calls on itself, and on 
+every Exit, Item, MOB, spell affects (Ability object), and Behavior associated 
+with that Room.&nbsp; As in the "okAffect" case, the MOBs will in turn call the 
+"affect()" methods on their own Items and spell effects.&nbsp; Items will then 
+call the&nbsp;"affect" methods on their own spell effects.&nbsp; </FONT></P>
 <P align=left><FONT size=4>Of course, 
 not every object called handles Execution for every Message sent.&nbsp; Most of 
 the time, a given object will be ignoring the Message altogether.&nbsp; However, 
@@ -1388,10 +1392,9 @@ Tock:</FONT></STRONG></FONT></P>
 digression will cover the ability of the mobs, items, exits, abilities, spell 
 effects, behaviors, and other objects to perform tasks on a regular, timed, 
 basis.&nbsp;The tasks to be performed are always located within an method called 
-"</FONT><FONT size=3>public boolean tick(Tickable ticking, int 
-tickID)</FONT><FONT size=4>".&nbsp; All Environmental 
-objects&nbsp;define this method, and Behavior as well.</FONT> 
-.</FONT></P>
+"</FONT><FONT size=3>public boolean tick(Tickable ticking, 
+int tickID)</FONT><FONT size=4>".&nbsp; All Environmental 
+objects&nbsp;define this method, and Behavior as well.</FONT> .</FONT></P>
 <P align=left><FONT size=4>These 
 methods are called on a regular, timed basis whenever the object instance in 
 question has been properly set up to do so, and at the frequency defined.&nbsp; 
@@ -1628,7 +1631,7 @@ Clothing and so forth is actually covered by Races. </FONT></P><pre>public Strin
 public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
 public boolean okAffect(Environmental myChar, Affect affect)
 {
-	if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+	if(!(myHost instanceof MOB)) return super.okAffect(myChar,affect);
 	MOB myChar=(MOB)myHost;
 	if(affect.amISource(myChar)&amp;&amp;(!myChar.isMonster()))
 	{

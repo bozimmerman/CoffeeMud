@@ -216,14 +216,14 @@ public class ExternalPlay
 		return -1;
 	}
 	
-	public static void startTickDown(Environmental E,
+	public static void startTickDown(Tickable E,
 									 int tickID,
 									 int numTicks)
 	{
 		if(sysPlayer!=null) sysPlayer.startTickDown(E,tickID,numTicks);
 	}
 	
-	public static boolean deleteTick(Environmental E, int tickID)
+	public static boolean deleteTick(Tickable E, int tickID)
 	{
 		if(sysPlayer!=null) return sysPlayer.deleteTick(E,tickID);
 		return false;
@@ -231,6 +231,14 @@ public class ExternalPlay
 	public static void DBUpdateFollowers(MOB mob)
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateFollowers(mob);
+	}
+	public static void DBUpdateQuests(Vector quests)
+	{
+		if(sysPlayer!=null) sysPlayer.DBUpdateQuests(quests);
+	}
+	public static void DBReadQuests(Host myHost)
+	{
+		if(sysPlayer!=null) sysPlayer.DBReadQuests(myHost);
 	}
 	public static boolean login(MOB mob)
 		throws IOException
@@ -333,11 +341,11 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.clearDebri(room,taskCode);
 	}
-	public static void suspendTicking(Environmental E, int tickID)
+	public static void suspendTicking(Tickable E, int tickID)
 	{
 		if(sysPlayer!=null) sysPlayer.suspendTicking(E,tickID);
 	}
-	public static void resumeTicking(Environmental E, int tickID)
+	public static void resumeTicking(Tickable E, int tickID)
 	{
 		if(sysPlayer!=null) sysPlayer.resumeTicking(E,tickID);
 	}

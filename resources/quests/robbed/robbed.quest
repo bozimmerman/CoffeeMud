@@ -1,5 +1,5 @@
 #set the quest name
-quest=robbed
+set name robbed
 
 set area Midgaard
 # inform the quest that it occurs in Midgaard
@@ -7,20 +7,20 @@ set area Midgaard
 set mobtype ShopKeeper
 # load up any mob from the above area of type shopkeeper. Will set a room!
 
-give behavior Scriptable("LOAD=quests/robbed/shopkeeper.script")
+give behavior Scriptable LOAD=quests/robbed/shopkeeper.script
 # load the above behavior into the last mob (in this case, the shopkeeper)
 
 set locale CityStreet 
-# find any locate in Midgaard of type CityStreet
+# find any locale in Midgaard of type CityStreet
 
 set mob "the thief"
-# load up any mob from are with that name.  If mob not in the last set room, 
-# the mob will be moved there!
+# load up any mob from area with that name.  Since a room was set above, this will
+# move the mob into the room (locale CityStreet)
 
-give behavior Scriptable("LOAD=quests/robbed/thief.script")
+give behavior Scriptable "LOAD=quests/robbed/thief.script"
 # load the above behavior into the last mob (in this case, the thief)
 
-duration 30
-# the duration of the quest is 30 minutes.  The scripts on the mobs will
+set duration 450
+# the duration of the quest is 30 minutes (450 ticks).  The scripts on the mobs will
 # do the rest...
 

@@ -46,6 +46,18 @@ public class CMMap
 			return (Area) areas().nextElement();
 		return null;
 	}
+	public static Area getRandomArea()
+	{
+		Area A=null;
+		while((numAreas()>0)&&(A==null))
+		{
+			try{
+				A=(Area)areasList.elementAt(Dice.roll(1,numAreas(),-1));
+			}catch(Exception e){}
+		}
+		return A;
+	}
+	
 	
 	public static int numRooms() { return roomsList.size(); }
 	public static void addRoom(Room newOne)

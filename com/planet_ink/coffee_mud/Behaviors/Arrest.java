@@ -162,20 +162,24 @@ public class Arrest extends StdBehavior
 		&&(officer.location()!=null)
 		&&(officer.getStartRoom()==officer.location()))
 			return;
-		Behavior B=null;
-		for(int i=0;i<officer.numBehaviors();i++)
+		Behavior B=officer.fetchBehavior("Mobile");
+		if(officer.location().numPCInhabitants()>0)
 		{
-			Behavior B2=officer.fetchBehavior(i);
-			if(B2 instanceof Mobile)
+			if(B==null);
+			for(int i=0;i<officer.numBehaviors();i++)
 			{
-				B=B2;
-				if(B2.ID().equalsIgnoreCase("Mobile"))
+				Behavior B2=officer.fetchBehavior(i);
+				if(B2 instanceof Mobile)
+				{	B=B2; break;}
+			}
+			if(B!=null)
+			for(int i=0;i<100;i++)
+			{
+				B.tick(officer,Host.MOB_TICK);
+				if((officer.location()!=null)&&(officer.location().numPCInhabitants()==0))
 					break;
 			}
 		}
-		if(B!=null)
-		for(int i=0;i<20;i++)
-			B.tick(officer,Host.MOB_TICK);
 		if(officer.getStartRoom()!=null)
 			officer.getStartRoom().bringMobHere(officer,false);
 	}

@@ -3,10 +3,12 @@ import java.util.*;
 public interface ExternalSystem
 {
 	// tick related
-	public void startTickDown(Environmental E,
-									 int tickID,
-									 int numTicks);
-	public boolean deleteTick(Environmental E, int tickID);
+	public void startTickDown(Tickable E,
+							  int tickID,
+							  int numTicks);
+	public boolean deleteTick(Tickable E, int tickID);
+	public void suspendTicking(Tickable E, int tickID);
+	public void resumeTicking(Tickable E, int tickID);
 	
 	public void DBUpdateFollowers(MOB mob);
 	public void DBReadContent(Room thisRoom, Hashtable rooms);
@@ -17,6 +19,8 @@ public interface ExternalSystem
 	public void DBUpdateRoom(Room room);
 	public void DBUpdateMOB(MOB mob);
 	public void DBUpdateItems(Room room);
+	public void DBUpdateQuests(Vector quests);
+	public void DBReadQuests(Host myHost);
 	public void DBReCreate(Room room, String oldID);
 	public void DBDeleteRoom(Room room);
 	public void DBReadMOB(MOB mob);
@@ -34,8 +38,6 @@ public interface ExternalSystem
 	public Vector DBReadJournal(String Journal);
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which);
 	public void DBDeleteJournal(String Journal, int which);
-	public void suspendTicking(Environmental E, int tickID);
-	public void resumeTicking(Environmental E, int tickID);
 	public void clearDebri(Room room, int taskCode);
 	public StringBuffer listTicks(int whichTick);
 	public boolean DBReadUserOnly(MOB mob);

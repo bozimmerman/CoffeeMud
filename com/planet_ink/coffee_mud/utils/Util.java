@@ -233,6 +233,16 @@ public class Util
 			return num;
 	}
 	
+	public static String getCleanBit(String s, int which)
+	{
+		s=getBit(s,which);
+		if(s.startsWith("'"))
+			s=s.substring(1);
+		if(s.endsWith("'"))
+			s=s.substring(0,s.length()-1);
+		return s;
+	}
+	
 	public static String getBit(String s, int which)
 	{
 		int i=0;
@@ -280,6 +290,7 @@ public class Util
 		else
 			return "";
 	}
+	
 	/**
 	 * Returns the long value of a string without crashing
  	 * 

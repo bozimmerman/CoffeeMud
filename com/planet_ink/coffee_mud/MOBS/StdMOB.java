@@ -2160,7 +2160,16 @@ public class StdMOB implements MOB
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-
+	public Behavior fetchBehavior(String ID)
+	{
+		for(int b=0;b<numBehaviors();b++)
+		{
+			Behavior B=fetchBehavior(b);
+			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
+				return B;
+		}
+		return null;
+	}
 	public boolean amWearingSomethingHere(long wornCode)
 	{
 		for(int i=0;i<inventorySize();i++)

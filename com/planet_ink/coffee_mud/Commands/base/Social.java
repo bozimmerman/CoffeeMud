@@ -167,5 +167,6 @@ public class Social implements Environmental
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}
 	public Behavior fetchBehavior(int index){return null;}
+	public Behavior fetchBehavior(String ID){return null;}
 	public boolean isGeneric(){return false;}
 }

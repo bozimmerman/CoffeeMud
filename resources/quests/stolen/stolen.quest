@@ -1,15 +1,15 @@
 #set the quest name
-set quest stolen
+set name stolen
 
 import mobs quests/stolen/mobs.cmare
 # first command loads a set of mobs
 
 set area Midgaard
 set room
-# now, inform the quest that it occurs in Midgaard
+# now, inform the quest that it occurs in Midgaard, but dont set a room
 
 set locale CityStreet
-# now, find any locale of type CityStreet in Midgaard
+# now, find any locale of type CityStreet in Midgaard.
 
 load mob "outlaw"
 # load up any mob from the mobs list called "outlaw" into the CityStreet above
@@ -20,7 +20,7 @@ set room "pub"
 load mob "little"
 # load up any mob from the mobs list called "little" into the pub
 
-set duration 30
-# the duration of the quest is 30 minutes.  The scripts on the mobs will
+set duration 450
+# the duration of the quest is 30 minutes (450 ticks).  The scripts on the mobs will
 # do the rest...
 

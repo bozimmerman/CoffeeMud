@@ -5,7 +5,7 @@ mpsetvar $i ROBBED
 mpset $i MONEY 0
 ~
 
-SPEECH_PROG trouble problem robbed stole rob thief quest help
+SPEECH_PROG trouble problem robbed stole rob thief quest help trouble? problem? robbed? stole? rob? thief? quest? help?
 	IF VAR($i ROBBED == RECOVER)
 		say "$n" I've already been helped, thanks.
 	ELSE
@@ -21,8 +21,8 @@ GIVE_PROG gold
 			say "$n" You've already helped me.  Find someone else.
 		ELSE
 			IF GOLDAMT($o >= 5000)
-				mpset $i ROBBED RECOVER
-				mpset $n ROBBED RECOVER
+				mpsetvar $i ROBBED RECOVER
+				mpsetvar $n ROBBED RECOVER
 				say "$n" Thank you very much.  I hope he didn't give you too much trouble.  Here is your reward:
 				mpexp $n 100
 				mpoload QuestPoint

@@ -64,6 +64,7 @@ public interface Environmental extends Cloneable, Tickable, StatsAffecting, MsgL
 	public void delBehavior(Behavior to);
 	public int numBehaviors();
 	public Behavior fetchBehavior(int index);
+	public Behavior fetchBehavior(String ID);
 
 	/**
 	 * Parameters for using in 3 dimensional space

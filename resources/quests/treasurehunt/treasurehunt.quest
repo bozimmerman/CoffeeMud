@@ -1,5 +1,5 @@
 #set the quest name
-set quest treasurehunt
+set name treasurehunt
 
 import items quests/treasurehunt/items.cmare
 # first command loads a set of items
@@ -7,16 +7,17 @@ import items quests/treasurehunt/items.cmare
 set mobtype Human
 # load up any mob from the any area of race human. Will set a room!
 
-give behavior Scriptable("LOAD=quests/treasurehunt/treasurehunt.script")
+give behavior Scriptable LOAD=quests/treasurehunt/treasurehunt.script
 # load the above behavior into the last mob (in this case, the human)
 
 set room any
-# sets any OTHER room on the map.  Since area was was cleared, will be same area
+# sets any OTHER room on the map.  Since area was not cleared, will be same area as the
+# room in which the Human was found.
 
 load item any
 # loads any item into the above room
 
-set duration 30
-# the duration of the quest is 30 minutes.  The scripts on the mobs will
+set duration 450
+# the duration of the quest is 30 minutes (450 ticks).  The scripts on the mobs will
 # do the rest...
 

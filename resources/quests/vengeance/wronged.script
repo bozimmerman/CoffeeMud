@@ -1,12 +1,13 @@
 # this script is for the shopkeeper chosen to be robbed
 ONCE_PROG
-	if VAR(i$ WRONGED != )
-		gossip Vengence! I have been wronged!
-		mpsetvar $i VENGEANCE 
-	else
+	gossip Vengence! I have been wronged!
+	mpsetvar $i VENGEANCE 
+~
+
+MASK_PROG 'IT WAS I!'
+	IF VAR($n VENGEANCE != MINE)
 		gossip Naive! You will pay for this! A reward for the death of my enemy!
-		mpsetvar $i VENGEANCE 
-	endif
+	ENDIF
 ~
 
 SPEECH_PROG trouble problem wronged quest help honor insult reward corpse enemy trouble? problem? wronged? quest? help? honor? insult? reward? corpse? enemy?
@@ -16,8 +17,8 @@ say "$n" That dirty so-and-so has insulted my honor!  Give me his corpse and I'l
 GIVE_PROG body of
 	IF VAR($i VENGEANCE != MINE)
 		IF VAR($n WRONGED == '$<$i WRONGED>')
-			mpset $i VENGEANCE MINE
-			mpset $n VENGEANCE MINE
+			mpsetvar $i VENGEANCE MINE
+			mpsetvar $n VENGEANCE MINE
 			say "$n" Thank you.  I will mount his head on my wall.  Here is your reward:
 			mpexp $n 100
 			mpoload QuestPoint

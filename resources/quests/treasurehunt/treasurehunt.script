@@ -1,6 +1,6 @@
 ONCE_PROG
 	gossip Find and bring me my missing coin and you shall be rewarded!
-	mpset i$ TREASUREHUNT 
+	mpsetvar i$ TREASUREHUNT 
 ~
 
 SPEECH_PROG missing bring quest reward coin find missing? bring? quest? reward? coin? find? missing?
@@ -15,8 +15,8 @@ GIVE_PROG 'a silver coin' 'a copper coin' 'a quest coin' 'a platinum coin'
 		if var($i TREASUREHUNT == FOUND)
 			say "$n" Sorry, the quest is over!
 		else
-			mpset $i TREASUREHUNT FOUND
-			mpset $n TREASUREHUNT FOUND
+			mpsetvar $i TREASUREHUNT FOUND
+			mpsetvar $n TREASUREHUNT FOUND
 			say "$n" Congratulations!
 			shake $n
 			mpexp $n 100
