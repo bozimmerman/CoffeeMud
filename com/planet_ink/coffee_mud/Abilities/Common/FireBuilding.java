@@ -96,6 +96,11 @@ public class FireBuilding extends CommonSkill
 		{
 			lighting=getTarget(mob,mob.location(),givenTarget,commands);
 			if(lighting==null) return false;
+			if((!lighting.isGettable())||(lighting.displayText().length()==0))
+			{
+				mob.tell("For some reason, "+lighting.name()+" just won't catch.");
+				return false;
+			}
 			if(lighting instanceof Light)
 			{
 				Light l=(Light)lighting;

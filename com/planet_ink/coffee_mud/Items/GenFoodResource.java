@@ -12,11 +12,12 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="a pile of resource thing";
-		displayText="a pile of resource sits here.";
-		description="Looks like resource";
+		name="an edible resource";
+		displayText="a pile of edible resource sits here.";
+		description="Looks like something you can eat";
 		isReadable=false;
-		setMaterial(EnvResource.RESOURCE_IRON);
+		setMaterial(EnvResource.RESOURCE_BERRIES);
+		setNourishment(200);
 		baseEnvStats().setWeight(0);
 		recoverEnvStats();
 	}
