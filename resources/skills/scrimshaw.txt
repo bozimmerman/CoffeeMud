@@ -15,7 +15,7 @@ name,level,ticks,wood,value,class,misc,capacity
 % Club	1	10	10	218	GenWeapon	BLUNT	3
 % Great Club	21	20	30	1752	GenWeapon	BLUNT	24
 % Sliver	24	10	1	668	GenWeapon	EDGED	18
-% Flail	13	40	15	692	GenWeapon	BLUNT	14
+% Flail	13	40	15	692	GenWeapon	FLAIL	14
 % Skull mace	50	80	12	3602	GenWeapon	BLUNT	41
 % Altar	10	100	100	200	GenRideable	TABLE	1000
 Sacrificial % Altar	30	200	150	500	GenRideable TABLE	1000

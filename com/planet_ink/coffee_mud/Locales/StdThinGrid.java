@@ -427,63 +427,71 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return false;
 	}
 
-	protected void clearRoom(Room room, Room bringBackHere)
+	protected static void clearRoom(Room room, Room bringBackHere, ThinGridVacuum cleaner)
 	{
 		room.setGridParent(null);
-	    tickStatus=Tickable.STATUS_MISC+7;
-		while(room.numInhabitants()>0)
+		if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+7;
+		Vector inhabs=new Vector();
+		MOB M=null;
+		for(int m=0;m<room.numInhabitants();m++)
 		{
-			MOB M=room.fetchInhabitant(0);
-			if(M!=null)
-			{
-				if(bringBackHere!=null)
-				{
-				    tickStatus=Tickable.STATUS_MISC+8;
-					bringBackHere.bringMobHere(M,false);
-				}
-				else
-				if((M.getStartRoom()==null)
-				||(M.getStartRoom()==room)
-				||(M.getStartRoom().ID().length()==0))
-				{
-				    tickStatus=Tickable.STATUS_MISC+9;
-					M.destroy();
-				}
-				else
-				{
-				    tickStatus=Tickable.STATUS_MISC+10;
-					M.getStartRoom().bringMobHere(M,false);
-				}
-			    tickStatus=Tickable.STATUS_MISC+11;
-			}
+		    M=room.fetchInhabitant(m);
+		    if(M!=null) inhabs.addElement(M);
 		}
-		while(room.numItems()>0)
+		for(int m=0;m<inhabs.size();m++)
 		{
-			Item I=room.fetchItem(0);
-			if(I!=null) 
+			M=(MOB)inhabs.elementAt(m);
+			if(bringBackHere!=null)
 			{
-				if(bringBackHere!=null)
-				{
-				    tickStatus=Tickable.STATUS_MISC+12;
-					bringBackHere.bringItemHere(I,Item.REFUSE_PLAYER_DROP);
-				}
-				else
-				{
-				    tickStatus=Tickable.STATUS_MISC+13;
-					I.destroy();
-				}
-			    tickStatus=Tickable.STATUS_MISC+14;
+			    if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+8;
+				bringBackHere.bringMobHere(M,false);
 			}
+			else
+			if((M.getStartRoom()==null)
+			||(M.getStartRoom()==room)
+			||(M.getStartRoom().ID().length()==0))
+			{
+			    if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+9;
+				M.destroy();
+			}
+			else
+			{
+			    if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+10;
+				M.getStartRoom().bringMobHere(M,false);
+			}
+			if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+11;
 		}
-	    tickStatus=Tickable.STATUS_MISC+15;
+		Item I=null;
+		inhabs.clear();
+		for(int i=0;i<room.numItems();i++)
+		{
+		    I=room.fetchItem(i);
+		    if(I!=null) inhabs.addElement(I);
+		}
+		for(int i=0;i<inhabs.size();i++)
+		{
+			I=(Item)inhabs.elementAt(i);
+			if(bringBackHere!=null)
+			{
+			    if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+12;
+				bringBackHere.bringItemHere(I,Item.REFUSE_PLAYER_DROP);
+			}
+			else
+			{
+			    if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+13;
+				I.destroy();
+			}
+			if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+14;
+		}
+		if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+15;
 		room.clearSky();
-	    tickStatus=Tickable.STATUS_MISC+16;
+		if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+16;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			room.rawDoors()[d]=null;
 			room.rawExits()[d]=null;
 		}
-	    tickStatus=Tickable.STATUS_MISC+17;
+		if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+17;
 		CMMap.delRoom(room);
 	}
 	
@@ -495,7 +503,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			{
 				Room room=(Room)rooms.elementAt(0,1);
 				rooms.removeElementAt(0);
-				clearRoom(room,bringBackHere);
+				clearRoom(room,bringBackHere,null);
 			}
 		}
 		catch(Exception e){}
@@ -665,7 +673,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			{
 			    R=(Room)roomsToClear.elementAt(i);
 			    tickStatus=Tickable.STATUS_MISC+6;
-			    STG.clearRoom(R,null);
+			    clearRoom(R,null,this);
 			}
 			tickStatus=Tickable.STATUS_NOT;
 			return true;

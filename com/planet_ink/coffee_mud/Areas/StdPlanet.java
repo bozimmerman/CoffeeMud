@@ -45,6 +45,8 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	public long velocity=0;
 	public long velocity(){return velocity;}
 	public void setVelocity(long v){velocity=v;}
+	public long accelleration(){return 0;}
+	public void setAccelleration(long x){}
 	protected TimeClock myClock=new DefaultTimeClock();
 	public TimeClock getTimeObj(){return myClock;}
 	public void setName(String newName)

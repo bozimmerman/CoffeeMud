@@ -99,6 +99,9 @@ public class ChannelSet
 		||(M.location()==null)
 		||(M.playerStats()==null))
 		    return false;
+		String senderName=sender.Name();
+		int x=senderName.indexOf("@");
+		if(x>0) senderName=senderName.substring(0,x);
 		
 		if(getChannelName(i).equalsIgnoreCase("CLANTALK")
 		&&((!sender.getClanID().equals("ALL"))||(M.getClanID().length()==0))
@@ -107,7 +110,7 @@ public class ChannelSet
 		
 		
 		if((!ses.killFlag())
-		&&(!M.playerStats().getIgnored().contains(sender.Name()))
+		&&(!M.playerStats().getIgnored().contains(senderName))
 		&&(MUDZapper.zapperCheck(getChannelMask(i),M))
 		&&((!areaReq)
 		   ||(M.location().getArea()==sender.location().getArea()))
