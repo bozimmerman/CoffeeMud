@@ -102,7 +102,7 @@ Throughout the system you will see text being sent to the user. Since a mud is a
 text producing engine, this should be no great suprise. However, within that 
 text you will often see different kinds of codes and tags which affect the 
 output. For instance, consider the following lines:</FONT></P><PRE>msg=new FullMsg(mob,target,this,affectType,"&lt;S-NAME&gt; reach(es) for &lt;T-NAMESELF&gt;.");
-mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 				"&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet.");
 </PRE>
 <P align=left><FONT size=4>Focusing 
@@ -437,12 +437,12 @@ to note the last four commands.&nbsp; These commands "reset" the MOB, and
 the "baseEnvStats()" object.&nbsp; Ditto for "CharStats" and "MaxState".&nbsp; 
 </FONT></P>
 <P><FONT size=4>Now, suppose we wanted 
-to add an "Affect" or "Behavior" or "Ability" to your <STRONG>StdMOB</STRONG>.&nbsp; The proper place for such a 
+to add an "Effect" or "Behavior" or "Ability" to your <STRONG>StdMOB</STRONG>.&nbsp; The proper place for such a 
 statement would be in the same above constructor, among the other 
 commands.&nbsp; Preferably before the several "recover" commands, but after the 
 several stat definitions. Of course, all of this is unnecesssary for a new 
 GenMOB object.</FONT></P><pre>		
-addNonUninvokableAffect(CMClass.getAbility("Fighter_Berzerk"));
+addNonUninvokableEffect(CMClass.getAbility("Fighter_Berzerk"));
 addAbility(CMClass.getAbility("Poison"));
 		
 addBehavior(CMClass.getBehavior("MudChat"));
@@ -835,7 +835,7 @@ name as we did before. You will find that this is also how the <STRONG>StdStaff<
 setSpell and setUsesRemaining calls become appropriate to the constructor. 
 </FONT></P>
 <P><FONT size=4>The next thing we will 
-look at is adding affects and behaviors to Items.&nbsp; Behavior addition 
+look at is adding effects and behaviors to Items.&nbsp; Behavior addition 
 (despite the fact that there is really only one behavior that works with Items) 
 will look familiar. The only difference between this and the MOB example above 
 is the fact that we are setting a parameter on the Behavior before adding it. 
@@ -844,13 +844,13 @@ Behavior B=CMClass.getBehavior("Emoter");
 B.setParms("min=1 max=20 chance=75/makes strange sounds");
 addBehavior(B);
 </pre>
-<P><FONT size=4>Adding normal affects 
+<P><FONT size=4>Adding normal effects 
 as properties is also similar to mobs...</FONT></P><pre>	
 Ability A=CMClass.getAbility("Prop_HaveResister");
 A.setMiscText("fire acid 50%");
-A.addNonUninvokableAffect(A);
+A.addNonUninvokableEffect(A);
 </pre>
-<P><FONT size=4>The above affect will 
+<P><FONT size=4>The above Effect will 
 allow anyone who owns the item to resist fire and acid at 50%!&nbsp; And again, 
 as with mobs, these commands are best put in the constructor of the item before 
 the recoverEnvStats() call.</FONT></P>
@@ -922,11 +922,10 @@ Room room=
 <P align=left></P>
 <P align=left></P>
 <P align=left><FONT size=5><STRONG><IMG src="images/kiss.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><FONT size=5><STRONG><FONT color=red>Digression 1: With Great 
-Affection:</FONT></STRONG></FONT></P>
+<P align=left><FONT size=5><STRONG><FONT color=red>Digression 1: Getting the Message:</FONT></STRONG></FONT></P>
 <P align=left><FONT size=4>CoffeeMud&nbsp;is essentially a distributed message passing 
 and handling system, where the actions and events that occur in the system are 
-represented as messages (Affects) which are then previewed, modified, cancelled, 
+represented as messages (CMMsgs) which are then previewed, modified, cancelled, 
 and/or reacted to by handlers.&nbsp;&nbsp; Understanding this idea is key to 
 fully understanding how CoffeeMud really works, so let's take a second and 
 peruse this concept in more detail.</FONT></P>
@@ -936,7 +935,7 @@ Events.&nbsp; Events such as a mob picking up an item, swinging a sword at an
 opponent, taking damage from a fireball, or getting pricked by a poisonous 
 needle.&nbsp; These events can never actually occur in CoffeeMud unless a proper 
 message is generated for them first.&nbsp; These messages, in the code, 
-implement the interface Affect, and are typically an instance of the class 
+implement the interface CMMsg, and are typically an instance of the class 
 FullMsg.&nbsp;</FONT></P>
 <P align=left><FONT size=4>Messages are 
 created at the moment that the event needs to occur.&nbsp; This moment can be 
@@ -945,9 +944,9 @@ Enter.&nbsp; It can also by triggered by the mindless algorithms which animate
 the mobs.&nbsp; Either way, when the moment has come, a message is created, and 
 it looks like this:</FONT></P><pre>	
 FullMsg msg=new FullMsg(mob,targetMOB,this,
-	Affect.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invoke a spell at &lt;T-NAME&gt;s feet..^?",
-	Affect.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invoke(s) a spell at your feet.^?",
-	Affect.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invokes a spell at &lt;T-NAME&gt;s feet.^?");
+	CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invoke a spell at &lt;T-NAME&gt;s feet..^?",
+	CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invoke(s) a spell at your feet.^?",
+	CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invokes a spell at &lt;T-NAME&gt;s feet.^?");
 </pre>
 <P align=left><FONT size=4>The above 
 message was taken from the code for the Grease&nbsp;spell, and contains a 
@@ -982,7 +981,7 @@ message.&nbsp;&nbsp;These components&nbsp;are, in order:</FONT></P>
   MOB will see should the event occur successfully.&nbsp; 
   <LI>Target Code - This is an encoded integer which 
   represents what is happening to the target.&nbsp; If there is no target, this 
-  number will typically have the value of 0 (Affect.NOEFFECT). 
+  number will typically have the value of 0 (CMMsg.NOEFFECT). 
   <LI>Target Message - This is the string which the target 
   MOB (if it is a MOB) will see should the event occur successfully.&nbsp; If 
   there is no target, this string is null. 
@@ -990,14 +989,14 @@ message.&nbsp;&nbsp;These components&nbsp;are, in order:</FONT></P>
   represents how any other objects (such as MOBs, Items, Rooms, Exits) other 
   than the source and target, in the same room, perceive the event.&nbsp; If the 
   event is completely imperceptable by anything other than the source, it may be 
-  0 (Affect.NOEFFECT) 
+  0 (CMMsg.NOEFFECT) 
   <LI>Others Message - This is the string which other MOBs 
   in the same room as the source and target MOBs will see should the event occur 
   successfully.&nbsp; If the event is completely imperceptable by other MOBs, it 
   may be null.</LI></UL>
 <P>The Source Code, Target Code, and Others Code is easily 
 the most complicated aspect of a Message.&nbsp; For this reason, numerous 
-pre-configured message codes have been created in the Affect interface, all of 
+pre-configured message codes have been created in the CMMsg interface, all of 
 which begin with the characters MSG_.&nbsp; Although we will not go into the 
 meaning of each of these messages (that will be left to the reader to search the 
 code for instances of messages which use the codes, and learn from the context 
@@ -1005,7 +1004,7 @@ in which they are used), we can at least break down these codes so that they can
 be better understood.</P>
 <P>These coded integers all have two parts, the Major 
 aspect (or the Major Code) and the Minor aspect (or the Minor Code).&nbsp; They 
-may be referenced off of an already constructed&nbsp;Affect object using such 
+may be referenced off of an already constructed&nbsp;CMMsg object using such 
 methods as sourceMajor() and sourceMinor().&nbsp; These methods will 
 automatically break down a sourceCode() in the components we will discuss.</P>
 <P>The Major code is a series of significant bits in the 
@@ -1017,7 +1016,7 @@ are as follows:</P>
   <TR>
     <TD width="15%"><STRONG>Bit 
       mask</STRONG> </TD>
-    <TD width="35%">Affect Equate Variable(s)</TD>
+    <TD width="35%">CMMsg Equate Variable(s)</TD>
     <TD width="50%"><STRONG 
       >Meaning</STRONG></TD></TR>
   <TR>
@@ -1081,7 +1080,7 @@ are as follows:</P>
 </TABLE></P></FONT>
 <P align=left><FONT size=4>The above 
 masks can be quite confusing.&nbsp; It is best to examine the several MSG_ 
-equates in the Affect interface to see how they are properly or improperly 
+equates in the CMMsg interface to see how they are properly or improperly 
 used.&nbsp; Remember a MSG_ equate is a completely constructed Code, complete 
 with the appropriate Major and Minor aspects.</FONT></P>
 <P align=left><FONT size=4>The Minor 
@@ -1093,10 +1092,10 @@ exception is the CHANNEL&nbsp;Mask, where the&nbsp;lower bits represent the
 CHANNEL number being chatted on.&nbsp; In all other cases, however, the Minor 
 Code is a unique&nbsp;integer representing the specific task being 
 performed.&nbsp; The officially recognized Minor codes are exhaustively listed 
-in the Affect interface, and all begin with the prefix TYP_.&nbsp; These types 
+in the CMMsg interface, and all begin with the prefix TYP_.&nbsp; These types 
 cover every sort of major event which occurs in the CoffeeMud engine, including 
 getting items, casting spells, entering or leaving rooms, etc, etc..</FONT></P><pre>	
-FullMsg msg=new FullMsg(attacker,target,weapon,Affect.MSG_WEAPONATTACK,
+FullMsg msg=new FullMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,
 						"&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
 </pre>
 <P align=left><FONT size=4>The FullMsg 
@@ -1111,45 +1110,45 @@ size=4>Once a Message has been constructed, it is time to
 actually put the message out into the system.&nbsp; There is a standard form for 
 the sending of almost all messages.&nbsp; If the source of the message is a MOB 
 called "SourceMOB", this standard form looks like this:</FONT></FONT></P><pre>	
-FullMsg msg=new FullMsg(SourceMOB,TargetMOB,weapon,Affect.MSG_WEAPONATTACK,
+FullMsg msg=new FullMsg(SourceMOB,TargetMOB,weapon,CMMsg.MSG_WEAPONATTACK,
 						"&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
 						
-if(SourceMOB.location().okAffect(SourceMOB,msg))
+if(SourceMOB.location().okMessage(SourceMOB,msg))
 	SourceMOB.location().send(SourceMOB,msg);
 </pre>
 <P align=left><FONT size=4>The 
 location() field on a MOB refers to the Room in which the mob is. Room's are 
 always the top level at which messages are previewed, and then sent.&nbsp; The 
 first line (where the message is constructed) has already been examined.&nbsp; 
-The second line, in which the Room method "okAffect" is called, is&nbsp;the 
+The second line, in which the Room method "okMessage" is called, is&nbsp;the 
 Preview step.&nbsp; In this step, the message is evaluated before it actually 
-happens.&nbsp; The first parameter to "okAffect" is called the "host" object, 
+happens.&nbsp; The first parameter to "okMessage" is called the "host" object, 
 and it refers to the object to which the one you are sending the message should 
 refer back to.&nbsp; This parameter is rarely used, except by Behaviors, and it 
 is always safe to use the source of your message as this value.&nbsp; The second 
-parameter to "okAffect"&nbsp;is the message we constructed.&nbsp; The third 
+parameter to "okMessage"&nbsp;is the message we constructed.&nbsp; The third 
 line, where the Room "send" method is called, is the Execution step. </FONT></P>
 <P align=left><FONT size=4>In the 
 Preview step, the Room object will examine the message to see if there is 
 anything which it might&nbsp;not like, wish to modify, or wish to flag about the 
 Message it has been handed.&nbsp; If the Room object does not like the Message, 
-it will return false.&nbsp; Returning false from "okAffect" is always an order 
+it will return false.&nbsp; Returning false from "okMessage" is always an order 
 to cancel, and not Execute the Message.&nbsp; Under any other circumstances, 
 true may be returned to allow the Message to go forward.&nbsp; The Room will 
-also make calls to the "okAffect" methods on every other MOB in the room, Exit 
+also make calls to the "okMessage" methods on every other MOB in the room, Exit 
 from the Room, Item in the room, spell effects which may be on the Room, and 
-Behaviors of the Room.&nbsp; The MOB who receives the "okAffect" call will, in 
-turn, pass the Message to the "okAffect" methods in every Item the&nbsp;MOB is 
-carrying or wearing, every spell affect on the MOB, and every Behavior of the 
-MOB.&nbsp; Items wills also make "okAffect" calls on their spell affects.&nbsp; 
+Behaviors of the Room.&nbsp; The MOB who receives the "okMessage" call will, in 
+turn, pass the Message to the "okMessage" methods in every Item the&nbsp;MOB is 
+carrying or wearing, every spell Effect on the MOB, and every Behavior of the 
+MOB.&nbsp; Items wills also make "okMessage" calls on their spell effects.&nbsp; 
 Any of these calls may modify or flag the Message they receive.&nbsp; Any of 
 these calls may also return false.&nbsp; If any object which previews a Message 
-returns false, the Room okAffect method will also return false, ordering the 
-Message to be totally canceled.&nbsp; For this reason, okAffect methods are 
+returns false, the Room okMessage method will also return false, ordering the 
+Message to be totally canceled.&nbsp; For this reason, okMessage methods are 
 careful about returning true unless they have a really good reason not 
 to.</FONT></P>
 <P align=left><FONT size=4>Inside the 
-"okAffect" methods of every Item, MOB, Behavior, Ability (spell effect), Exit, 
+"okMessage" methods of every Item, MOB, Behavior, Ability (spell effect), Exit, 
 and Room, the Messages may (as we mentioned) be examined and modified, flagged, 
 or cancelled.&nbsp; As we have already covered how Messages are cancelled (by 
 returning false).&nbsp; Let us turn now to the manner in which Messages are 
@@ -1157,14 +1156,14 @@ modified or flagged.</FONT></P>
 <P align=left><FONT color=#ff0000 size=4>Message Flagging and Modification</FONT></P>
 <P align=left><FONT size=4>Message 
 modification is very rare.&nbsp; When it happens though, it is done by calling 
-the "modify" method on the Affect (FullMsg) object.&nbsp; This method allows the 
+the "modify" method on the CMMsg (FullMsg) object.&nbsp; This method allows the 
 source, target, and all other fields to be updated.&nbsp;</FONT></P>
 <P align=left><FONT size=4>Message 
 flagging is somewhat less rare.&nbsp; Messages may be flagged when a combat 
-strike is successful, or when a saving throw is made against a spell affect, or 
+strike is successful, or when a saving throw is made against a spell Effect, or 
 for any other reason the Message constructing code may wish.&nbsp; A Message 
 defaults to unflagged, but is flagged when the method "tagModified(true);" is 
-called on the Affect (FullMsg) object.&nbsp; Flagging has no other affect other 
+called on the CMMsg (FullMsg) object.&nbsp; Flagging has no other affect other 
 than to let the code which constructed the Messsage know that something 
 significant with relation to the Message has occurred.&nbsp; </FONT></P>
 <P align=left><FONT size=4>To prevent 
@@ -1174,31 +1173,31 @@ Message modification.&nbsp; The first is that modifying a Message with the
 "tagModified" method flags the Message, but does not modify it in any way other 
 than to flag it.</FONT></P>
 <P align=left><FONT color=#ff0000 size=4>Message Execution</FONT></P>
-<P align=left><FONT color=black size=4>Once the "okAffect" method on a Room object has returned 
+<P align=left><FONT color=black size=4>Once the "okMessage" method on a Room object has returned 
 true, and any code which may need to check or handle modifications to the 
 Message have executed, the Message is sent.&nbsp;&nbsp; The proper way to send a 
 Message is through the Room objects, by calling one of the following Messages: 
-Room.send(MOB SourceMOB, Affect msg) or&nbsp;Room.sendOthers(MOB SourceMOB, 
-Affect msg).&nbsp; The first method handles a standard Execution, while the 
+Room.send(MOB SourceMOB, CMMsg msg) or&nbsp;Room.sendOthers(MOB SourceMOB, 
+CMMsg msg).&nbsp; The first method handles a standard Execution, while the 
 second allows every relevant object except the SourceMOB to handle 
 Execution.&nbsp; The first method should always be called unless there are good 
 reasons not to.&nbsp; </FONT></P>
 <P align=left><FONT color=black size=4>The "send" method will then begin calling other methods in 
-other objects.&nbsp; These other methods are called the "affect" methods, and 
-are usually of the form "public void affect(Environmental myHost, Affect 
+other objects.&nbsp; These other methods are called the "executeMsg" methods, and 
+are usually of the form "public void executeMsg(Environmental myHost, CMMsg 
 msg);".&nbsp; These methods are responsible for Executing the contents of the 
-message.&nbsp; The Room method will make "affect" method calls on itself, and on 
-every Exit, Item, MOB, spell affects (Ability object), and Behavior associated 
-with that Room.&nbsp; As in the "okAffect" case, the MOBs will in turn call the 
-"affect()" methods on their own Items and spell effects.&nbsp; Items will then 
-call the&nbsp;"affect" methods on their own spell effects.&nbsp; </FONT></P>
+message.&nbsp; The Room method will make "executeMsg" method calls on itself, and on 
+every Exit, Item, MOB, spell effects (Ability object), and Behavior associated 
+with that Room.&nbsp; As in the "okMessage" case, the MOBs will in turn call the 
+"executeMsg()" methods on their own Items and spell effects.&nbsp; Items will then 
+call the&nbsp;"executeMsg" methods on their own spell effects.&nbsp; </FONT></P>
 <P align=left><FONT size=4>Of course, 
 not every object called handles Execution for every Message sent.&nbsp; Most of 
 the time, a given object will be ignoring the Message altogether.&nbsp; However, 
 each object knows precisely which Messages are important for it, and watch 
-carefully for them in both their "okAffect" and "affect" methods.&nbsp; In 
-general, every Message which is previewed in an objects "okAffect" method is 
-handled in the "affect"&nbsp; method of the same object, though this is by no 
+carefully for them in both their "okMessage" and "executeMsg" methods.&nbsp; In 
+general, every Message which is previewed in an objects "okMessage" method is 
+handled in the "executeMsg"&nbsp; method of the same object, though this is by no 
 means always true.&nbsp; In general, the following object types handle the 
 following types of Messages:</FONT></P>
 <P align=left><FONT size=4>MOBs - Any 
@@ -1212,7 +1211,7 @@ Message which has the exit instance as a target or tool.</FONT></P>
 <P align=left><FONT size=4>Rooms - Any 
 Message which has the room instance as a target.</FONT></P>
 <P align=left><FONT size=4>Ability 
-(spell affects) - Any Message pertaining to the MOB or Item which is affected by 
+(spell effects) - Any Message pertaining to the MOB or Item which is affected by 
 the spell or&nbsp;skill.</FONT></P>
 <P align=left><FONT size=4>Behavior - 
 Any Message pertaining to the object instance which has this 
@@ -1234,14 +1233,14 @@ the source MOB to preview or execute the message, while the fourth ONLY allows
 the source MOB to preview and execute the message.</FONT></P>
 <P align=left><FONT size=4>All four of 
 those methods will construct a FullMsg object, give the Message to the Room 
-object for previewing ("okAffect"), and then, if the Message is not cancelled, 
+object for previewing ("okMessage"), and then, if the Message is not cancelled, 
 will call the Room "send" method for execution and return true.&nbsp; If the 
 Message was cancelled, false will be returned.</FONT></P>
 <P align=left><FONT color=#ff0000 size=4>Message Trailers</FONT></P>
 <P align=left><FONT color=black size=4>The final subject we will discuss in the area of Messages 
 and Message handling regards another rare technique called Message Trailer 
-adding.&nbsp; Message Trailers are simply Affects (FullMsg objects) which have 
-been added to a FullMsg instance using the "addTrailerMsg(Affect msg)" 
+adding.&nbsp; Message Trailers are simply CMMsgs (FullMsg objects) which have 
+been added to a FullMsg instance using the "addTrailerMsg(CMMsg msg)" 
 method.&nbsp; The Message passed to this method is constructed in the usual 
 way.&nbsp; </FONT><FONT color=black size=4>This&nbsp;method 
 may be properly called&nbsp;at any point during the Preview or Execution stage 
@@ -1388,7 +1387,7 @@ Thief wears Full Plate Armor (Item), and has the Shield spell cast on him.&nbsp;
 His base Armor rating is 100.&nbsp; When he puts on the Plate Armor, the 
 "recoverEnvStats" method is called on Gunker's MOB object.&nbsp; That method in 
 turn calls the "affectEnvStats" method on the Plate Armor and the Shield spell 
-affect.&nbsp; Both of those methods improve the Armor rating on Gunker's MOB 
+Effect.&nbsp; Both of those methods improve the Armor rating on Gunker's MOB 
 object's current EnvStats by some number.&nbsp; Thus, Gunker becomes harder to 
 hit in combat.&nbsp; Also, when Gunker picked up the Plate armor, the weight of 
 the armor was added to Gunker's overall carried weight by increasing the weight 
@@ -1492,7 +1491,7 @@ event.</FONT></P>
 Area objects have their tick methods called once per Host.TICK_TIME, with the 
 tickID defined by Host.AREA_TICK.</FONT></P>
 <P align=left><FONT size=4>Ability - 
-Whenever an Ability object is added as an affect (using the addAffect() 
+Whenever an Ability object is added as an Effect (using the addEffect() 
 Environmental method) to a non-MOB object by using the proper Ability invoke 
 procedure (see below), then the Ability object itself will gain it's own regular 
 calls to its tick method.&nbsp; The tickID for this call is also Host.MOB_TICK, 
@@ -1674,9 +1673,9 @@ food.&nbsp; If not, we return true and try again on the next tick.</FONT></P><PR
 since we have picked a random mob in the room, and seen that he has food, we 
 will ask him for it!&nbsp; If it's a player, then perhaps he might even give us 
 some.&nbsp; If we are given food, we will eat it on the next tick for 
-sure!</FONT></P><PRE>	public void affect(Environmental affecting, Affect affect)
+sure!</FONT></P><PRE>	public void executeMsg(Environmental affecting, CMMsg msg)
 	{}
-	public boolean okAffect(Environmental oking, Affect affect)
+	public boolean okMessage(Environmental oking, CMMsg msg)
 	{	return true; }
 }
 </PRE><FONT size=4>
@@ -1861,31 +1860,31 @@ describes any special bonuses received due to being this class. </FONT></P><pre>
 method should give the character any Class-Specific equipment they may need. 
 Clothing and so forth is actually covered by Races. </FONT></P><pre>public String weaponLimitations(){return "Weapons?  What for?";}
 public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
-public boolean okAffect(Environmental myHost, Affect affect)
+public boolean okMessage(Environmental myHost, CMMsg msg)
 {
-	if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+	if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 	MOB myChar=(MOB)myHost;
-	if(affect.amISource(myChar)&amp;&amp;(!myChar.isMonster()))
+	if(msg.amISource(myChar)&amp;&amp;(!myChar.isMonster()))
 	{
-		if((affect.tool()!=null)
-		&amp;&amp;(affect.tool() instanceof	Ability)
-		&amp;&amp;(myChar.isMine(affect.tool()))
+		if((msg.tool()!=null)
+		&amp;&amp;(msg.tool() instanceof	Ability)
+		&amp;&amp;(myChar.isMine(msg.tool()))
 		&amp;&amp;(!armorCheck(myChar)))
 		{
 			if(Dice.rollPercentage()&gt;myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
 			{
-				myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,
+				myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,
 					"<S-NAME> fumble(s) <S-HIS-HER> "
-					+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
+					+msg.tool().name()+" attempt due to <S-HIS-HER> armor!");
 				return false;
 			}
 		}
 		else
-		if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-		&amp;&amp;(affect.tool()!=null)
-		&amp;&amp;(affect.tool() instanceof Weapon))
+		if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+		&amp;&amp;(msg.tool()!=null)
+		&amp;&amp;(msg.tool() instanceof Weapon))
 		{
-			int classification=((Weapon)affect.tool()).weaponClassification();
+			int classification=((Weapon)msg.tool()).weaponClassification();
 			switch(classification)
 			{ 
 			case Weapon.CLASS_SWORD: 
@@ -1897,16 +1896,16 @@ public boolean okAffect(Environmental myHost, Affect affect)
 			default:
 				if(Dice.rollPercentage()&gt;(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> fumble(s) horribly with "
-						+affect.tool().name()+".");
+						+msg.tool().name()+".");
 					return false;
 				}
 				break;
 			}
 		}
 	}
-	return super.okAffect(myChar,affect);
+	return super.okMessage(myChar,msg);
 }
 </PRE>
 <P align=left><FONT size=4>And lastly, 
@@ -1914,7 +1913,7 @@ just as I'm sure you were wondering how useful those three Digressions above
 would really be, we see them in active use. Most classes contain methods such as 
 these to describe and enforce armor and weapon restrictions for the class. The 
 first two methods are, like the others above, web macro descriptions of the 
-facts. The real work is done in the okAffect method which we discussed in the 
+facts. The real work is done in the okMessage method which we discussed in the 
 first Digression. In it, we see messages messages containing the players Ability 
 objects as tools and messages for weapon attacks being intercepted. In the for 
 case, an armorCheck method call is made, as well as a last-ditch check of the 
@@ -2209,7 +2208,7 @@ public class SlidingDoor extends StdExit
 		super();
 		Ability A=CMClass.getAbility("Prop_ReqHeight"));
 		A.setMiscText("30");
-		addNonUninvokableAffect(A);
+		addNonUninvokableEffect(A);
 	}
 	public String name(){return "a sliding door";}
 	public String displayText(){return "";}
@@ -2289,7 +2288,7 @@ public class RoadGrid extends StdGrid
 }
 </PRE>
 <P align=left><FONT size=4>Here we see 
-the standard RoadGrid.&nbsp; It's affects, behaviors, displaytext, description, 
+the standard RoadGrid.&nbsp; It's effects, behaviors, displaytext, description, 
 and (since it is a grid type) size in the x and y are all defined by the 
 builder.&nbsp; The features (and they aren't many) which are available to the 
 coder can be seen here.&nbsp; We see the base weight being set to "1" 
@@ -2327,7 +2326,7 @@ and description&nbsp;into a proper displayable format.&nbsp; They draw on the
 values of the room object&nbsp;displayText() and description() methods 
 respectively, then parse that data&nbsp;for any&nbsp;special display codes, 
 though often that data is simply&nbsp;passed through.&nbsp;</FONT></P></FONT>
-<P align=left>The affect, and okAffect methods on rooms are 
+<P align=left>The executeMsg, and okMessage methods on rooms are 
 also available, as they are in all Environmental objects, for customized message 
 handling&nbsp;as described in the digressions above.</P>
 <P align=left>&nbsp;</P></FONT>
@@ -2501,11 +2500,11 @@ Areas.</FONT></P>
 <P align=left><FONT color=olive size=5><STRONG>Properties:</STRONG></FONT></P>
 <P align=left><FONT size=4>Properties 
 are the simplest of the objects which implement the Ability interface, and are 
-defined as affects which can be permanently tacked-on to items, mobs, and other 
+defined as effects which can be permanently tacked-on to items, mobs, and other 
 Environmental objects.&nbsp; Properties are Abilities, but they are never 
 qualified for by classes, never gained as skills, and never wear off or 
 disappear when a mob dies.&nbsp; They are always added to a mob, item, room, etc 
-using the Environmental interface method "addNonUninvokableAffect(Ability)" 
+using the Environmental interface method "addNonUninvokableEffect(Ability)" 
 method either inside a custom coded Environmental object, or at run-time to a 
 GenMob, GenItem, Room, or similar&nbsp;type object.</FONT></P>
 <P align=left><FONT size=4>Properties 
@@ -2564,30 +2563,30 @@ method is a string which is returned whenever this property appears on an Item
 which is Identified.&nbsp; This string would appear in addition to any 
 secretIdentity defined for the item.</FONT></P><PRE><P align=left><FONT size=4></FONT></P>   /** this method defines how this thing responds
     * to environmental changes.  It may handle any
-    * and every affect listed in the Affect class
+    * and every msg listed in the CMMsg class
     * from the given Environmental source */
-   public boolean okAffect(Environmental myHost, Affect affect)
+   public boolean okMessage(Environmental myHost, CMMsg msg)
    {
       if((affected==null)||(!(affected instanceof MOB)))
          return true;
       MOB mob=(MOB)affected;
 
-      if((affect.amISource(mob))&amp;&amp;(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL)))
+      if((msg.amISource(mob))&amp;&amp;(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
       {
-         if((affect.tool()!=null)&amp;&amp;(affect.tool().ID().equalsIgnoreCase("Skill_Revoke")))
-            return super.okAffect(myHost,affect);
+         if((msg.tool()!=null)&amp;&amp;(msg.tool().ID().equalsIgnoreCase("Skill_Revoke")))
+            return super.okMessage(myHost,msg);
          else
-         if(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+         if(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
          {
             mob.tell("You are unable to attack in this incorporeal form.");
             peaceAt(mob);
             return false;
          }
          else
-         if((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
-         ||(Util.bset(affect.sourceMajor(),Affect.MASK_MOUTH)))
+         if((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+         ||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
          {
-            if(Util.bset(affect.sourceMajor(),Affect.MASK_SOUND))
+            if(Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
                mob.tell("You are unable to make sounds in this incorporeal form.");
             else
                mob.tell("You are unable to do that this incorporeal form.");
@@ -2596,8 +2595,8 @@ secretIdentity defined for the item.</FONT></P><PRE><P align=left><FONT size=4><
          }
       }
       else
-      if((affect.amITarget(mob))&amp;&amp;(!affect.amISource(mob))
-         &amp;&amp;(!Util.bset(affect.targetMajor(),Affect.MASK_GENERAL)))
+      if((msg.amITarget(mob))&amp;&amp;(!msg.amISource(mob))
+         &amp;&amp;(!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))
       {
          mob.tell(mob.name()+" doesn't seem to be here.");
          return false;
@@ -2608,7 +2607,7 @@ secretIdentity defined for the item.</FONT></P><PRE><P align=left><FONT size=4><
 </PRE>
 <P></P>
 <P align=left><FONT size=4>As 
-discussed in the digressions above, here is an example of an okAffect 
+discussed in the digressions above, here is an example of an okMessage 
 method.&nbsp; In this case, we intercept attack and other vocal or hand movement 
 messages where the source of the action is the mob whose property this is.&nbsp; 
 We then return false, effectively cancelling those messages, after telling the 
@@ -2655,7 +2654,7 @@ is known in the mud as any of the following: A Spell, Song, Dance, Skill, Common
 Skill, Thief Skill, Poison, Disease, Prayer, Chant, or Trap.&nbsp; They all 
 implement the Ability interface, which in turn extends the Environmental 
 interface discussed throughout the rest of this document.&nbsp; Abilities make 
-extensive use of the okAffect and affect, tick, and stat affecting methods 
+extensive use of the okMessage and executeMsg, tick, and stat affecting methods 
 discussed above in the Digressions.&nbsp; If you have not read the digressions, 
 you should do so now.</FONT></P>
 <P align=left><FONT size=4>Abilities 
@@ -2666,7 +2665,7 @@ standard CoffeeMud distribution packages.&nbsp; </FONT></P>
 <P align=left><FONT size=4>Abilities 
 are added to mob objects using the addAbility method on MOBs.&nbsp; From there, 
 through casting or by autoInvocation (discussed below), they may end up in the 
-affects list of a mob, item, room, area, or exit via the addAffect method.&nbsp; 
+effects list of a mob, item, room, area, or exit via the addEffect method.&nbsp; 
 </FONT></P>
 <P align=left><FONT size=4>A Custom 
 ability may or may not belong to any particular package, though it is important 
@@ -2717,10 +2716,10 @@ methods assist the MUDGrinder, and the HELP files in classifying the several
 skills and spells.&nbsp; </FONT></P>
 <P align=left><FONT size=4>The first 
 method, canAffectCode(), returns what type of objects, if any, this ability 
-class may find itself in the affects list of.&nbsp; Since our Trip skill affects 
+class may find itself in the effects list of.&nbsp; Since our Trip skill effects 
 the tripped mob, we list mobs.&nbsp; Other possible values include any 
 combination of CAN_ROOMS, CAN_EXITS, CAN_ITEMS, or CAN_AREAS.&nbsp; If a skill 
-may affect more than one, they can be combined using the | operator.&nbsp; An 
+may Effect more than one, they can be combined using the | operator.&nbsp; An 
 example skill that affects both mobs and items might return CAN_MOBS|CAN_ITEMS, 
 for instance.</FONT></P>
 <P align=left><FONT size=4>The second 
@@ -2856,23 +2855,23 @@ which may be used alone or together in any combination, include:</FONT></P>
 <P align=left><FONT size=4>This is an 
 example of the affectEnvStats method described in the digressions.&nbsp; In the 
 case of our Trip skill, it forces the affected target into a sitting 
-position.</FONT></P><PRE>   public boolean okAffect(Environmental myHost, Affect affect)
+position.</FONT></P><PRE>   public boolean okMessage(Environmental myHost, CMMsg msg)
    {
       if((affected==null)||(!(affected instanceof MOB)))
          return true;
 
       MOB mob=(MOB)affected;
-      if((doneTicking)&amp;&amp;(affect.amISource(mob)))
+      if((doneTicking)&amp;&amp;(msg.amISource(mob)))
          unInvoke();
       else
-      if(affect.amISource(mob)&amp;&amp;(affect.sourceMinor()==Affect.TYP_STAND))
+      if(msg.amISource(mob)&amp;&amp;(msg.sourceMinor()==CMMsg.TYP_STAND))
          return false;
       return true;
    }
 </PRE>
 <P></P>
 <P align=left><FONT size=4>This is an 
-example of the okAffect method described in the digressions.&nbsp; In this case, 
+example of the okMessage method described in the digressions.&nbsp; In this case, 
 it intercepts messages where the affected mob is trying to stand and cancels the 
 message, without comment, by returning false.</FONT></P><PRE>   public void unInvoke()
    {
@@ -2886,8 +2885,8 @@ message, without comment, by returning false.</FONT></P><PRE>   public void unIn
       {
          if(mob.location()!=null)
          {
-            FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet.");
-            if(mob.location().okAffect(mob,msg))
+            FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet.");
+            if(mob.location().okMessage(mob,msg))
             {
                mob.location().send(mob,msg);
                ExternalPlay.standIfNecessary(mob);
@@ -2900,10 +2899,10 @@ message, without comment, by returning false.</FONT></P><PRE>   public void unIn
 </PRE>
 <P></P>
 <P align=left><FONT size=4>All 
-standard abilities include an unInvoke() method, which is called when the affect 
+standard abilities include an unInvoke() method, which is called when the Effect 
 caused by the ability is dispelled, or the duration of the ability 
 expires.&nbsp; The super.unInvoke() method, which is located in StdAbility.java, 
-actually does the work of removing the affect from the affected object (stored 
+actually does the work of removing the Effect from the affected object (stored 
 in the variable affected), and then setting affected to null.&nbsp; In this 
 particular unInvoke() method, we also see the code trying to force the mob back 
 to his feet.</FONT></P><PRE>   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -2997,8 +2996,8 @@ target.&nbsp; We store whether or not the profficiency check failed or passed
 into the variable success.</FONT></P><PRE>      success=success&amp;&amp;(target.charStats().getBodyPart(Race.BODY_LEG)&gt;0);
       if(success)
       {
-         FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"&lt;T-NAME&gt; trip(s)!":"^F&lt;S-NAME&gt; trip(s) &lt;T-NAMESELF&gt;!^?");
-         if(mob.location().okAffect(mob,msg))
+         FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"&lt;T-NAME&gt; trip(s)!":"^F&lt;S-NAME&gt; trip(s) &lt;T-NAMESELF&gt;!^?");
+         if(mob.location().okMessage(mob,msg))
          {
             mob.location().send(mob,msg);
             int durationTicks=mas.wasModified()?1:2;
@@ -3024,7 +3023,7 @@ TYP_JUSTICE message (meaning an attack on dignity), with the malicious and
 movement flags set.&nbsp; If this message gets sent,&nbsp;a call to 
 maliciousAffect is made. The first parameter is the invoker, and the second 
 parameter is the one its being invoked upon.&nbsp; The third parameter is the 
-duration of the affect in ticks, which you can see is dependent in this case 
+duration of the Effect in ticks, which you can see is dependent in this case 
 upon whether the message came back modified (meaning the saving throw was 
 made).&nbsp; If the third parameter is 0, then the default duration formula will 
 be used.&nbsp; All other positive values, such as in this case, denote a number 
@@ -3130,7 +3129,7 @@ domains include: </FONT></P>
       if(success)
       {
          FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"&lt;T-NAME&gt; feel(s) cooly protected.":"^S&lt;S-NAME&gt; invoke(s) a cool field of protection around &lt;T-NAMESELF&gt;.^?");
-         if(mob.location().okAffect(mob,msg))
+         if(mob.location().okMessage(mob,msg))
          {
             mob.location().send(mob,msg);
             beneficialAffect(mob,target,0);
@@ -3188,11 +3187,11 @@ public class Prayer_Anger extends Prayer
       if((success)&amp;&amp;(!someoneIsFighting)&amp;&amp;(mob.location().numInhabitants()&gt;3))
       {
          // it worked, so build a copy of this ability,
-         // and add it to the affects list of the
+         // and add it to the effects list of the
          // affected MOB.  Then tell everyone else
          // what happened.
          FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of anger descends":"^S&lt;S-NAME&gt; rage(s) for anger.^?");
-         if(mob.location().okAffect(mob,msg))
+         if(mob.location().okMessage(mob,msg))
          {
             mob.location().send(mob,msg);</PRE><PRE>[.......]
 }
@@ -3247,19 +3246,19 @@ public class Chant_AlterTime extends Chant
       if(success)
       {
          // it worked, so build a copy of this ability,
-         // and add it to the affects list of the
+         // and add it to the effects list of the
          // affected MOB.  Then tell everyone else
          // what happened.
          FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S&lt;S-NAME&gt; chant(s), and reality seems to start blurring.^?");
-         if(mob.location().okAffect(mob,msg))
+         if(mob.location().okMessage(mob,msg))
          {
             mob.location().send(mob,msg);
             int x=Util.s_int(text());
             while(x==0)   x=Dice.roll(1,3,-2);
             if(x&gt;0)
-               mob.location().showHappens(Affect.MSG_OK_VISUAL,"Time moves forwards!");
+               mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Time moves forwards!");
             else
-               mob.location().showHappens(Affect.MSG_OK_VISUAL,"Time moves backwards!");
+               mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Time moves backwards!");
             if(CMMap.numAreas()&gt;0) CMMap.getFirstArea().tickTock(x);
          }
       }

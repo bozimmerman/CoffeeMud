@@ -460,7 +460,7 @@ public class Dragon extends StdMOB
 				Stomach.send(this,DigestMsg);
 				int damage=((int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2)));
 				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-				ExternalPlay.postDamage(this,TastyMorsel,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

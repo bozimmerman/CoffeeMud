@@ -81,13 +81,12 @@ public class StdLawBook extends StdItem
 					{
 						Clan C=Clans.getClan(clanID);
 						if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANCANORDERCONQUERED)==1))
-						{
 							allowedToModify=true;
-							if(!theLaw.lawIsActivated())
-								changeTheLaw(A,B,mob,theLaw,"ACTIVATED","TRUE");
-						}
 					}
 				}
+				
+				if((allowedToModify)&&(!theLaw.lawIsActivated()))
+					changeTheLaw(A,B,mob,theLaw,"ACTIVATED","TRUE");
 				
 				try{
 					if(which<1)

@@ -391,7 +391,7 @@ public class Prop_ClanEquipment extends Property
 					{
 					    int damage = Dice.roll(1, 3, 0);
 					    damage *= PowerLevel;
-					    ExternalPlay.postDamage(mob, source, affected, damage,
+					    ExternalPlay.postDamage(mob, source, this, damage,
 					                            CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL| TypeOfEffect
 												, WeaponType,
 					                            "^FThe magic of " + clanType + " " +

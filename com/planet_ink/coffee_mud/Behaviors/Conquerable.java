@@ -80,7 +80,10 @@ public class Conquerable extends Arrest
 						if(C!=null)
 							str.append("This area is currently controlled by "+C.typeName()+" "+C.name()+".\n\r");
 						else
+						{
+							endClanRule();
 							str.append("This area is laid waste by "+holdingClan+".\n\r");
+						}
 					}
 					str.append("This area requires "+totalControlPoints+" points to control.\n\r");
 					if(clanControlPoints.size()==0)
@@ -419,6 +422,11 @@ public class Conquerable extends Arrest
 		&&(((MOB)msg.target()).getClanID().equals(holdingClan)))
 		{
 			Clan C=Clans.getClan(holdingClan);
+			if(C==null)
+			{
+				endClanRule();
+				return true;
+			}
 			MOB target=(MOB)msg.target();
 			msg.source().tell(target.name()+" is your leader, and you must obey "+target.charStats().himher()+".");
 			if(C.allowedToDoThis(target,Clan.FUNC_CLANCANORDERCONQUERED)==1)
@@ -610,7 +618,10 @@ public class Conquerable extends Arrest
 			&&(((Room)msg.target()).getArea()==myArea))
 			{
 				Clan C=Clans.getClan(holdingClan);
-				if((C!=null)&&(C.getClanRelations(msg.source().getClanID())==Clan.REL_WAR))
+				if(C==null)
+					endClanRule();
+				else
+				if(C.getClanRelations(msg.source().getClanID())==Clan.REL_WAR)
 				{
 					Room R=(Room)msg.target();
 					for(int i=0;i<R.numInhabitants();i++)
