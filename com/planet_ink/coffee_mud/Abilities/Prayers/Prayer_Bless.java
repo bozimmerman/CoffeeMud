@@ -95,9 +95,9 @@ public class Prayer_Bless extends Prayer
 
 	public static boolean isCursed(Item item)
 	{
-		if(!item.isRemovable())
+		if(!Sense.isRemovable(item))
 			return true;
-		if(!item.isDroppable())
+		if(!Sense.isDroppable(item))
 			return true;
 		return Sense.flaggedAffects(item,Ability.FLAG_CURSE).size()>0;
 	}

@@ -16,7 +16,7 @@ public class GenReadable extends GenItem
 		setDisplayText("a generic readable thing sits here.");
 		setDescription("");
 		setMaterial(EnvResource.RESOURCE_WOOD);
-		isReadable=true;
+		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
 		baseEnvStats().setWeight(1);
 		recoverEnvStats();
 	}

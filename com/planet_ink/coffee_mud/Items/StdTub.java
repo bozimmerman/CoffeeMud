@@ -25,7 +25,6 @@ public class StdTub extends StdRideable implements Drink
 		setDisplayText("a tub sits here.");
 		setDescription("A porcelin bath tub.");
 		baseGoldValue=500;
-		isReadable=false;
 		material=EnvResource.RESOURCE_CLAY;
 		rideBasis=Rideable.RIDEABLE_SIT;
 		riderCapacity=4;
@@ -54,7 +53,7 @@ public class StdTub extends StdRideable implements Drink
 	{
 		if((liquidRemaining()<1)
 		||
-		 ((!isGettable())
+		 ((!Sense.isGettable(this))
 		&&(owner()!=null)
 		&&(owner() instanceof Room)
 		&&(((Room)owner()).getArea()!=null)
@@ -152,7 +151,7 @@ public class StdTub extends StdRideable implements Drink
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DRINK:
-				if((mob.isMine(this))||(envStats().weight()>1000)||(!this.isGettable()))
+				if((mob.isMine(this))||(envStats().weight()>1000)||(!Sense.isGettable(this)))
 				{
 					if(!containsDrink())
 					{

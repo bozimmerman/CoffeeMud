@@ -344,7 +344,7 @@ public class ClanCrafting extends CommonSkill
 			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)
 			{
 				building.setMaterial(EnvResource.MATERIAL_PAPER);
-				building.setReadable(true);
+				Sense.setReadable(building,true);
 				building.setReadableText("Read the glorious propaganda of "+C.typeName()+" "+C.name().toLowerCase()+"! Join and fight for us today!");
 			}
 		}

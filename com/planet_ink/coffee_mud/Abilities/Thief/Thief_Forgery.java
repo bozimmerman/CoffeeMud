@@ -33,7 +33,7 @@ public class Thief_Forgery extends ThiefSkill
 
 		if((target==null)
 		   ||(!target.isGeneric())
-		   ||((!(target instanceof Scroll))&&(!target.isReadable())))
+		   ||((!(target instanceof Scroll))&&(!Sense.isReadable(target))))
 		{
 			mob.tell("You can't forge anything on that.");
 			return false;

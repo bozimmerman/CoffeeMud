@@ -20,7 +20,6 @@ public class GenRideable extends StdRideable
 		rideBasis=Rideable.RIDEABLE_WATER;
 		setMaterial(EnvResource.RESOURCE_OAK);
 		recoverEnvStats();
-		isReadable=false;
 	}
 	public Environmental newInstance()
 	{

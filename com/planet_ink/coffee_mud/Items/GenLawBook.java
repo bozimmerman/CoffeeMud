@@ -16,7 +16,8 @@ public class GenLawBook extends StdLawBook
 		setDisplayText("a law book sits here.");
 		setDescription("Enter `READ [PAGE NUMBER] \"law book\"` to read an entry.%0D%0AUse your WRITE skill to add new entries. ");
 		material=EnvResource.RESOURCE_PAPER;
-		isReadable=true;
+		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
+		recoverEnvStats();
 	}
 
 	public Environmental newInstance()

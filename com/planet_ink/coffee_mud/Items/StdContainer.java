@@ -143,7 +143,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-						if(!newitem.isGettable())
+						if(!Sense.isGettable(newitem))
 						{
 							mob.tell("You can't get "+newitem.name()+".");
 							return false;
@@ -543,7 +543,7 @@ public class StdContainer extends StdItem implements Container
 					break;
 				case CONTAIN_READABLES:
 					if((E instanceof Item)
-					&&(((Item)E).isReadable()))
+					&&(Sense.isReadable(((Item)E))))
 						return true;
 					break;
 				case CONTAIN_SCROLLS:

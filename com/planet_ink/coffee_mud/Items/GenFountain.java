@@ -20,7 +20,7 @@ public class GenFountain extends GenWater
 		setDisplayText("a little fountain flows here.");
 		setDescription("The water looks pure and clean.");
 		baseGoldValue=10;
-		isGettable=false;
+		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
 		material=EnvResource.RESOURCE_FRESHWATER;
 		recoverEnvStats();
 	}

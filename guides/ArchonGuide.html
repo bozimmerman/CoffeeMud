@@ -7,7 +7,7 @@
 <P style="TEXT-ALIGN: center" align=center><STRONG><SPAN 
 style="FONT-SIZE: 18pt"><FONT 
 size=6>The Novice Archon's Guide</FONT>   </SPAN></STRONG><B><SPAN 
-style="FONT-SIZE: 18pt"><BR><FONT size=6>to CoffeeMud 4.1</FONT> 
+style="FONT-SIZE: 18pt"><BR><FONT size=6>to CoffeeMud 4.2</FONT> 
  </SPAN></B></P>
 <P style="TEXT-ALIGN: center" align=center><STRONG>By Archon Grothus Gallslanger 
 of the&nbsp;Free City of Maltan</STRONG></P>
@@ -1050,11 +1050,11 @@ limit the number of folks who may enter.<BR>"Prop_ReqClasses" lets you limit the
 those who enter.<BR>"Prop_ReqHeight" keeps out tall people, 
 or at least those unwilling to crawl.<BR>"Prop_ReqLevels" 
 lets you limit entry by levels.<BR>"Prop_ReqRaces" lets you 
-limit entry by race.<BR>"Prop_PKill" makes this a place 
-that only the bloodthirsty may enter.<BR>"Prop_NoPKill" 
-keeps out the riffraff.<BR>"Prop_ClosedDayNight" shuts and 
-locks any doors at night.<BR>"Prop_NarrowLedge" makes this 
-an exit&nbsp;you can cross.. if you are very very careful.<BR>"Prop_ReqTattoo" checks out a mobs forearm before letting 
+limit entry by race.<BR>"Prop_PKill" makes this a place that 
+only the bloodthirsty may enter.<BR>"Prop_NoPKill" keeps out 
+the riffraff.<BR>"Prop_ClosedDayNight" shuts and locks any 
+doors at night.<BR>"Prop_NarrowLedge" makes this an 
+exit&nbsp;you can cross.. if you are very very careful.<BR>"Prop_ReqTattoo" checks out a mobs forearm before letting 
 them in.<BR>"Prop_AbilityImmunity" protects the exitfrom 
 specified targeted spells.<BR>"Prop_RoomView" makes looking 
 at this exit more revealing.<BR>"Prop_SpellAdder" puts 
@@ -1099,15 +1099,15 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
   <TR>
     <TD><EM>Name</EM></TD>
     <TD>the name of the item, like "a stone", or "a 
-      pencil"</TD></TR>
+    pencil"</TD></TR>
   <TR>
     <TD><EM>Description</EM></TD>
     <TD>what one sees when one looks at the item. </TD></TR>
   <TR>
     <TD><EM>Display Text</EM></TD>
-    <TD>what one sees when an item is laying in a room. 
-      if you enter 'null' here, the item becomes blended, meaning that it does 
-      not show up in the listing of room contents, but may still be "looked" at, 
+    <TD>what one sees when an item is laying in a room. if 
+      you enter 'null' here, the item becomes blended, meaning that it does not 
+      show up in the listing of room contents, but may still be "looked" at, 
       "read", or (if allowed) picked up!</TD></TR>
   <TR>
     <TD><EM>Secret Identity</EM></TD>
@@ -1132,22 +1132,22 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
       "How to Save a Room".</TD></TR>
   <TR>
     <TD><EM>Is This Item 
-      Droppable</EM></TD>
+    Droppable</EM></TD>
     <TD>whether the item can be dropped into a room. 
-  </TD></TR>
+</TD></TR>
   <TR>
     <TD><EM>Is This Item 
-      Removable</EM></TD>
+    Removable</EM></TD>
     <TD>whether the item, once held or worn, can be 
       removed. </TD></TR>
   <TR>
     <TD><EM>Is This Item 
-      Readable</EM></TD>
+    Readable</EM></TD>
     <TD>whether there are any readable markings on the 
-      item</TD></TR>
+    item</TD></TR>
   <TR>
     <TD><EM>Assigned Readable 
-      Text</EM></TD>
+    Text</EM></TD>
     <TD>if this item is marked, what those markings say. 
       If this text begins with FILE=, then a text file from the resources 
       directory will be displayed. For example: FILE=text/intro.txt</TD></TR>
@@ -1183,9 +1183,9 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
       them all. </TD></TR>
   <TR>
     <TD><EM>Uses Remaining</EM></TD>
-    <TD>A few items, notably wands, scrolls, and 
-      ammutiion can only be used a few times. For all other items, this may be 
-      left unchanged.</TD></TR>
+    <TD>A few items, notably wands, scrolls, and ammutiion 
+      can only be used a few times. For all other items, this may be left 
+      unchanged.</TD></TR>
   <TR>
     <TD><EM>Magical Ability</EM></TD>
     <TD>although meaningless for most Generic Items, and 
@@ -1196,9 +1196,9 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
       number of coins in the pile!</TD></TR></TABLE></P>
 <P><STRONG>The "GenLightSource" 
 and&nbsp;"GenLantern"&nbsp;</STRONG><BR><BR></P>
-<P>A GenLightSource and GenLantern provide light for 
-players whenever they are HELD.&nbsp; GenLightSources will burn away after a 
-time, while GenLanterns can be refilled with oil from an oil flask.</P>
+<P>A GenLightSource and GenLantern provide light for players 
+whenever they are HELD.&nbsp; GenLightSources will burn away after a time, while 
+GenLanterns can be refilled with oil from an oil flask.</P>
 <P>Whenever a GenLightSource is created, much like the 
 GenItem above, you are presented with a list of properties to fill in.&nbsp; 
 Pressing enter will leave the property unchanged.&nbsp; The properties include 
@@ -1240,11 +1240,11 @@ entries remain "new" longer than normal ones.&nbsp; These are created by
 starting off an entry subject with the letters MOTD (for message of the day), 
 MOTM, or MOTY.&nbsp; If a subject starts with those letters, in uppercase, the 
 entry will persist as new for a day, month, or year respectively.</P>
-<P>Archons can also make use of the Web Macros system 
-inside the body or message part of a journal entry.&nbsp; To do so, the message 
-must start with the characters &lt;cmvp&gt;.&nbsp; If those six characters start 
-the message, then the message may contain web macros.&nbsp; See the WebServer 
-Guide for more information on this feature.</P>
+<P>Archons can also make use of the Web Macros system inside 
+the body or message part of a journal entry.&nbsp; To do so, the message must 
+start with the characters &lt;cmvp&gt;.&nbsp; If those six characters start the 
+message, then the message may contain web macros.&nbsp; See the WebServer Guide 
+for more information on this feature.</P>
 <P>Whenever a GenJournal is created, much like the GenItem 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include all of the 
@@ -1260,7 +1260,7 @@ differently than described above:</P>
       >Description</STRONG></TD></TR>
   <TR>
     <TD><EM>Assigned Readable 
-      Text</EM></TD>
+    Text</EM></TD>
     <TD>A Journal is always readable, so this field is 
       really redundant to the journal. Therefore, it is now used as a field 
       where you may set requirements for reading from and writing to the 
@@ -1278,10 +1278,10 @@ differently than described above:</P>
         <LI>-MOB (disallow all mobs/npcs) 
         <LI>-CLASS (disallow all classes) 
         <LI>-BASECLASS (disallow all base classes) 
-        <LI>+thief +bard +ranger etc.. (create exceptions 
-        to -class and -baseclass) 
-        <LI>-paladin -bard -mage etc.. (disallow only 
-        listed classes) 
+        <LI>+thief +bard +ranger etc.. (create exceptions to 
+        -class and -baseclass) 
+        <LI>-paladin -bard -mage etc.. (disallow only listed 
+        classes) 
         <LI>-RACECAT (disallow all racial categories) 
         <LI>+elf +dwarf +humanoid +gnome (create exceptions 
         to -racecat) 
@@ -1306,10 +1306,10 @@ differently than described above:</P>
         <LI>-LEVEL (disallow all levels) 
         <LI>+=10 +&gt;10 +&gt;=10 +&lt;10 +&lt;=10 (create 
         exceptions to -level, put your level for 10) 
-        <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 
-        (disallow only listed levels, put your level for 10) 
-        <LI>-TATTOOS (disallow all tattoos, even a lack of 
-        a tatoo) 
+        <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 (disallow 
+        only listed levels, put your level for 10) 
+        <LI>-TATTOOS (disallow all tattoos, even a lack of a 
+        tatoo) 
         <LI>+mytatto +thistattoo +anytattoo etc.. (create 
         exceptions to -tattoos) 
         <LI>+TATTOOS (allow any or no tattoos) 
@@ -1331,8 +1331,8 @@ differently than described above:</P>
         multi-class combinations) 
         <LI>+thief +mage +ranger (exceptions -anyclass, 
         allow any levels) 
-        <LI>+ANYCLASS (do not <WORD 
-        >all multi-class combinations) 
+        <LI>+ANYCLASS (do not <WORD>all 
+        multi-class combinations) 
         <LI>-thief -mage -ranger (exceptions to +anyclass, 
         disallow any levels) 
         <LI>-STR X (<WORD> those with 
@@ -1359,20 +1359,21 @@ differently than described above:</P>
         dexterity less than X) 
         <LI>+DEX X (<WORD> those with 
         dexterity greater than X)</LI></UL></TD></TR></TABLE></P>
-<P><BR><STRONG>The "GenWeapon", "GenBow", "GenLasso", "GenNet", 
-"GenSling", "GenSpear", "GenBoffWeapon"</STRONG></P>
+<P><BR><STRONG>The 
+"GenWeapon", "GenBow", "GenLasso", "GenNet", "GenSling", "GenSpear", 
+"GenBoffWeapon"</STRONG></P>
 <P>These are the assorted weapons players and mobs use to 
 attack each other.&nbsp; They are typically worn in the WIELD position, though 
 some may also go in the HOLD position, either as a requirement (for two handed 
 weapons) or as an option (for those with two-weapon fighting).&nbsp;&nbsp;&nbsp; 
 </P>
-<P>Weapons can be anything from swords to daggers, from 
-bows you shoot ammunition at, to spears that you throw.&nbsp; It all depends on 
-how you design them.&nbsp; The GenBow, GenSling, and GenSpear classes don't 
-actually offer any functionality you couldn't get out of a properly molded 
-GenWeapon, but are provided as good examples of how to make them.&nbsp; 
-The&nbsp;GenBoffWeapon is another form of GenWeapon, but it provides some 
-silly&nbsp;and random hit messages during combat.&nbsp; </P>
+<P>Weapons can be anything from swords to daggers, from bows 
+you shoot ammunition at, to spears that you throw.&nbsp; It all depends on how 
+you design them.&nbsp; The GenBow, GenSling, and GenSpear classes don't actually 
+offer any functionality you couldn't get out of a properly molded GenWeapon, but 
+are provided as good examples of how to make them.&nbsp; The&nbsp;GenBoffWeapon 
+is another form of GenWeapon, but it provides some silly&nbsp;and random hit 
+messages during combat.&nbsp; </P>
 <P>The GenNet and GenLasso, however, are quite 
 different.&nbsp; Each of those are capable of ensnaring someone who is hit by 
 them when they are thrown.&nbsp; They do default to thrown weapons.</P>
@@ -1390,20 +1391,19 @@ include all of the fields listed above under GenItem, plus a few more:</P>
     <TD width="75%"><STRONG 
       >Description</STRONG></TD></TR>
   <TR>
-    <TD><EM>Attack 
-Adjustment</EM></TD>
+    <TD><EM>Attack Adjustment</EM></TD>
     <TD>a number representing the quality of the 
       weapon.&nbsp; The most common value is zero, representing a normal quality 
       item.&nbsp; Typical ranges include -10 for a poor quality weapon up to 10 
       for an exceptional quality weapon.</TD></TR>
   <TR>
     <TD><EM>Damage</EM></TD>
-    <TD>the highest amount of damage this weapon does 
-      when used in a fight.&nbsp; Typical range is&nbsp;2 - 8 for low level 
-      weapons, up to 20 or 30 for high-level weapons.</TD></TR>
+    <TD>the highest amount of damage this weapon does when 
+      used in a fight.&nbsp; Typical range is&nbsp;2 - 8 for low level weapons, 
+      up to 20 or 30 for high-level weapons.</TD></TR>
   <TR>
     <TD><EM>Weapon Attack Type - 
-      </EM></TD>
+    </EM></TD>
     <TD>this dictates how the weapon is used in combat, 
       whether in a bashing manner, slicing, piercing, or as a natural (fingers 
       and claws) item.</TD></TR>
@@ -1437,13 +1437,13 @@ Adjustment</EM></TD>
       a minimum range of 1 pace is required.</TD></TR>
   <TR>
     <TD><EM>Maximum range</EM></TD>
-    <TD>this is the farthese position required to use 
-      this weapon.&nbsp; When combat begins, it will denote how far away the 
-      wielder is from their foe.&nbsp; The same values as above apply, though 
-      the maximum range must always equal or exceed the minimum range.</TD></TR>
+    <TD>this is the farthese position required to use this 
+      weapon.&nbsp; When combat begins, it will denote how far away the wielder 
+      is from their foe.&nbsp; The same values as above apply, though the 
+      maximum range must always equal or exceed the minimum range.</TD></TR>
   <TR>
     <TD><EM>Requires 
-    Ammunition</EM></TD>
+Ammunition</EM></TD>
     <TD>whether this weapon requires ammunition in order 
       to use.</TD></TR>
   <TR>
@@ -1455,7 +1455,7 @@ Adjustment</EM></TD>
     0.</TD></TR>
   <TR>
     <TD><EM>Ammunition 
-    Capacity</EM></TD>
+Capacity</EM></TD>
     <TD>This is the amount of the ammunition which can be 
       held by the weapon at one time.&nbsp; Usually this is only 
 1.</TD></TR></TABLE></P>
@@ -1491,8 +1491,8 @@ everything listed under GenItem, plus a few more:</P>
     <TD>This can help you limit what goes inside.</TD></TR>
   <TR>
     <TD><EM>Capacity</EM></TD>
-    <TD>this denotes the maximum amount of weight that 
-      can be placed in the container.</TD></TR></TABLE></P>
+    <TD>this denotes the maximum amount of weight that can 
+      be placed in the container.</TD></TR></TABLE></P>
 <P>One more thing to keep in mind.&nbsp; Always make the 
 weight of a container less than its capacity.&nbsp; A container must be able to 
 hold its own weight in addition to anything put in it!<BR><STRONG></P></STRONG>
@@ -1517,12 +1517,11 @@ include everything listed under GenItem and GenContainer, plus a few more:</P>
       >Description</STRONG></TD></TR>
   <TR>
     <TD><EM>Worn Locations</EM></TD>
-    <TD>this little menu allows you to describe either 
-      all the different places a piece of armor MAY be worn, or to describe ALL 
-      the places that a piece of armor MUST be worn.&nbsp; Entering the 
-      specified numbers will toggle the locations.&nbsp; Entering '1' will 
-      toggle whether it is a MAY or MUST situation.&nbsp; Enter '0' when 
-  done.</TD></TR>
+    <TD>this little menu allows you to describe either all 
+      the different places a piece of armor MAY be worn, or to describe ALL the 
+      places that a piece of armor MUST be worn.&nbsp; Entering the specified 
+      numbers will toggle the locations.&nbsp; Entering '1' will toggle whether 
+      it is a MAY or MUST situation.&nbsp; Enter '0' when done.</TD></TR>
   <TR>
     <TD><EM>Armor Protection</EM></TD>
     <TD>the base amount of protection provided when 
@@ -1591,8 +1590,9 @@ plus&nbsp;a few more:</P><STRONG>
     <TD><EM>MOBs Held</EM></TD>
     <TD>th emaximum number of mobs which may occupy this 
       piece of furniture at once.</TD></TR></TABLE></STRONG>
-<P><BR><STRONG>The "GenFood", "GenWater", "GenFoodResource", 
-"GenLiquidResource", "GenFountain", "GenTub"</STRONG></STRONG></P>
+<P><BR><STRONG>The 
+"GenFood", "GenWater", "GenFoodResource", "GenLiquidResource", "GenFountain", 
+"GenTub"</STRONG></STRONG></P>
 <P>These items represent the edibles and drinkables on 
 CoffeeMud.&nbsp; The GenFood is a simple edible food, while a GenFoodResource is 
 a raw edible material that can be used for cooking or other resource-requiring 
@@ -1600,11 +1600,11 @@ skills.&nbsp; GenWater and GenFountain are both the same drinkable containers,
 with a GenFountain differing only in a lack of need to ever fill it.&nbsp; A 
 GenLiquidResource represents a liquid resource for potion making or other 
 skills.</P>
-<P>Whenever a GenFood or GenWater&nbsp;is created, much 
-like the GenItem above, you are presented with a list of properties to fill 
-in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties 
-include everything listed under GenItem, plus GenContainer for the drinkables, 
-plus a few more:</P>
+<P>Whenever a GenFood or GenWater&nbsp;is created, much like 
+the GenItem above, you are presented with a list of properties to fill in.&nbsp; 
+Pressing enter will leave the property unchanged.&nbsp; The properties include 
+everything listed under GenItem, plus GenContainer for the drinkables, plus a 
+few more:</P>
 <P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -1625,7 +1625,7 @@ plus a few more:</P>
       100 would represent a full glass</TD></TR>
   <TR>
     <TD><EM>Amount of Drink Held 
-      </EM></TD>
+    </EM></TD>
     <TD>the amount of total drink held by the 
       container.&nbsp; Each time the item is drunk, the amount represented by 
       Quenched/Drink is subtracted from this.&nbsp; When this number reaches 0, 
@@ -1685,9 +1685,9 @@ listed under Genitem, plus one more:</P>
       assigned key code for the door or container lid which this key 
   opens.</TD></TR></TABLE></P>
 <P><STRONG>The "GenStaff"</STRONG></P>
-<P>A GenStaff is a type of GenWeapon which also behaves 
-like a wand.&nbsp; This means that it has an invocation word which must be 
-spoken to activate the spell inside it.</P>
+<P>A GenStaff is a type of GenWeapon which also behaves like 
+a wand.&nbsp; This means that it has an invocation word which must be spoken to 
+activate the spell inside it.</P>
 <P>Whenever a GenStaff is created, much like the GenWeapon 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include everything 
@@ -1735,7 +1735,8 @@ listed under GenItem, plus one more:</P>
       don't forget to set the "Uses Remaining" field to give the&nbsp;wand some 
       charges!</TD></TR></TABLE></P>
 <P>The GenWand, like the GenStaff above, is activated by 
-first holding it in ones hand, and then by <EM>speaking</EM> or <EM>saying</EM>&nbsp;the magical triggerword&nbsp;to the 
+first holding it in ones hand, and then by <EM>speaking</EM> 
+or <EM>saying</EM>&nbsp;the magical triggerword&nbsp;to the 
 target.&nbsp;</P>
 <P><STRONG>The "GenPill", "GenPotion", 
 and "GenMultiPotion"</STRONG></P>
@@ -1744,10 +1745,10 @@ eating.&nbsp; GenPotions and GenMultiPotions do the same when they are
 drank.&nbsp; The difference between them is that GenPills and GenPotions vanish 
 after drinking/eating. GenMultiPotions may be drank from many times to receive 
 their magic.</P>
-<P>Whenever a GenPill or GenPotion is created, much like 
-the GenArmor above, you are presented with a list of properties to fill 
-in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties 
-include everything listed under GenItem, plus a few more:</P>
+<P>Whenever a GenPill or GenPotion is created, much like the 
+GenArmor above, you are presented with a list of properties to fill in.&nbsp; 
+Pressing enter will leave the property unchanged.&nbsp; The properties include 
+everything listed under GenItem, plus a few more:</P>
 <P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -1779,7 +1780,7 @@ include everything listed under GenItem, plus a few more:</P>
       this apply.</TD></TR>
   <TR>
     <TD><EM>Amount of Drink Held 
-      </EM></TD>
+    </EM></TD>
     <TD>the amount of total drink held by the 
       potion.&nbsp; Each time the&nbsp;contents of the potion&nbsp;is drunk, the 
       amount represented by Quenched/Drink is subtracted from this.&nbsp; When 
@@ -1789,10 +1790,10 @@ include everything listed under GenItem, plus a few more:</P>
 "GenSuperPill"</STRONG></STRONG></P>
 <P>The GenSuperPill is a special kind of GenPill which does 
 not create a spell effect, but has other, more permanent benefits!</P>
-<P>Whenever a GenSuperPill is created, much like the 
-GenPill above, you are presented with a list of properties to fill in.&nbsp; 
-Pressing enter will leave the property unchanged.&nbsp; The properties include 
-everything listed under GenItem, plus two more:</P>
+<P>Whenever a GenSuperPill is created, much like the GenPill 
+above, you are presented with a list of properties to fill in.&nbsp; Pressing 
+enter will leave the property unchanged.&nbsp; The properties include everything 
+listed under GenItem, plus two more:</P>
 <P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -1824,8 +1825,8 @@ everything listed under GenItem, plus two more:</P>
   snack.</TD></TR></TABLE></P>
 <P><STRONG>The 
 "GenScroll"</STRONG></STRONG></P>
-<P>A GenScroll is a readable item that has spells written 
-on it.&nbsp; These spells may be discovered through the "Read Magic" spell, and 
+<P>A GenScroll is a readable item that has spells written on 
+it.&nbsp; These spells may be discovered through the "Read Magic" spell, and 
 written on using Scribe.&nbsp; Spells can be learned from scrolls using Scroll 
 Copy.&nbsp;</P>
 <P>Whenever a GenScroll is created, much like the GenPill 
@@ -1928,26 +1929,24 @@ Pressing enter will leave the property unchanged:</P>
     <TD width="75%"><STRONG 
       >Description</STRONG></TD></TR>
   <TR>
-    <TD><EM>Assigned Room 
-IDs</EM></TD>
-    <TD>This field is the room ID of the room to which 
-      the portal will take you, or a list of rooms (separated by semicolons) to 
+    <TD><EM>Assigned Room IDs</EM></TD>
+    <TD>This field is the room ID of the room to which the 
+      portal will take you, or a list of rooms (separated by semicolons) to 
       which the portal might take you.</TD></TR></TABLE></P>
 <P><STRONG>The "GenClanItem", 
 "GenClanCommonContainer", "GenClanCommonItem", "GenClanContainer", 
 "GenClanFlag", "GenClanPamphlet", and 
 "GenClanSpecialItem"</STRONG></STRONG></STRONG></P>
-<P>The above are all basis for the items created by the 
-Clan Crafting skill.&nbsp; The GenClanItem and GenClanContainer are standard 
-holdable items assignable to clans, usually for the purpose of use with the 
-Conquerable behavior on Areas.&nbsp; They are only gettable the clan to whom 
-they are assigned, and have properties to allow them to be captured by other 
-clans as well.&nbsp; The GenClanCommonItem and GenClanCommonContainer cause 
-their mob holders to perform tasks. The GenClanFlag holds a conquered area in 
-place, and provides Conquerable behavior information. The GenClanPamphlet makes 
-the holder a dissident and&nbsp;multiplies in rival clan areas, and the 
-GenClanSpecialItem performs miscellaneous tasks when found in a conquered 
-area.</P>
+<P>The above are all basis for the items created by the Clan 
+Crafting skill.&nbsp; The GenClanItem and GenClanContainer are standard holdable 
+items assignable to clans, usually for the purpose of use with the Conquerable 
+behavior on Areas.&nbsp; They are only gettable the clan to whom they are 
+assigned, and have properties to allow them to be captured by other clans as 
+well.&nbsp; The GenClanCommonItem and GenClanCommonContainer cause their mob 
+holders to perform tasks. The GenClanFlag holds a conquered area in place, and 
+provides Conquerable behavior information. The GenClanPamphlet makes the holder 
+a dissident and&nbsp;multiplies in rival clan areas, and the GenClanSpecialItem 
+performs miscellaneous tasks when found in a conquered area.</P>
 <P>Clan items all have a Clan Item type, which must usually 
 be matched with the proper GenClan class type from the list above in order to 
 work effectively.&nbsp; Here is a proper mapping:</P>
@@ -1957,8 +1956,8 @@ work effectively.&nbsp; Here is a proper mapping:</P>
   <TR>
     <TD width="25%"><STRONG>Class 
       Name</STRONG></TD>
-    <TD width="75%"><STRONG>Clan 
-      Item Types</STRONG></TD></TR>
+    <TD width="75%"><STRONG>Clan Item 
+      Types</STRONG></TD></TR>
   <TR>
     <TD>GenClanItem, GenClanContainer</TD>
     <TD>"BANNER", "GAVEL"</TD></TR>
@@ -2007,8 +2006,8 @@ not be&nbsp;noticed otherwise.&nbsp;</P>
 seen, and whether or not it is also readable.</P>
 <P><STRONG>The "GenInstrument" and 
 "GenPiano"</STRONG></STRONG></P>
-<P>The GenInstrument represents a musical instrument for 
-the purposes of the several Minstrel spells.&nbsp; They differ only in that the 
+<P>The GenInstrument represents a musical instrument for the 
+purposes of the several Minstrel spells.&nbsp; They differ only in that the 
 GenPiano is also like a GenRideable mentioned above, in that it must be sat on 
 to play.</P>
 <P>Whenever a GenInstrument is created, much like the 
@@ -2043,9 +2042,9 @@ Behaviors you may choose for items.&nbsp; Here are our favorites:</P>
 <P>"Decay" for items that are only around for a limited 
 time.<BR>"DelayedTransporter" to make an item that moves 
 people around.<BR>"Emoter" to make items behave in random 
-and cute manners.<BR>"InstantDeath" to cause an item to 
-kill someone.<BR>"Mime" to make an item mimic the socials 
-that players do.<BR>"Scriptable" allows you to script the 
+and cute manners.<BR>"InstantDeath" to cause an item to kill 
+someone.<BR>"Mime" to make an item mimic the socials that 
+players do.<BR>"Scriptable" allows you to script the 
 behavior of the item based on triggers.<BR>"Sounder" to add 
 new color to item usage.</P>
 <P>Items also benefit from effects, just like rooms, areas, 
@@ -2056,16 +2055,18 @@ night.<BR>"Prop_FightSpellCast" makes a weapon cast a spell
 when it hits.<BR>"Prop_HaveAdjuster" modifies the owners 
 stats.<BR>"Prop_HaveResister" modifies the owners saving 
 throws.<BR>"Prop_HaveSpellCast" gives a spell effect to the 
-owner.<BR>"Prop_HaveZapper" restricts ownership.<BR>"Prop_Hidden" makes an item hidden, temporarily.<BR>"Prop_Invisibility" makes an item invisible.<BR>"Prop_AbilityImmunity" protects the&nbsp;item from 
-specified targeted spells.<BR>"Prop_ItemTransporter" makes 
-an item that transports things.<BR>"Prop_ItemTransReceiver" 
-makes an item receives transported things.<BR>"Prop_ModExperience" modifies experience gained when 
-holding/wielding/wearing this.<BR>"Prop_NoPurge" makes the 
-item a permanent piece of garbage.<BR>"Prop_OpenPassword" 
-gives a container a secret opening word.<BR>"Prop_RideAdjuster" modifies the mounted persons stats.<BR>"Prop_RideResister" modifies the mounted persons saving 
-throws.<BR>"Prop_RideSpellCast" gives a spell effect to the 
-mounter.<BR>"Prop_RideZapper" restricts mounting.<BR>"Prop_RoomView" makes an item that gives you a view of 
-something else.&nbsp; A window maker!<BR>"Prop_SpellReflecting"&nbsp;helps make&nbsp;a shield that 
+owner.<BR>"Prop_HaveZapper" restricts ownership.<BR>"Prop_Hidden" makes an item hidden, temporarily.<BR>"Prop_Invisibility" makes an item invisible.<BR>"Prop_AbilityImmunity" protects the&nbsp;item from specified 
+targeted spells.<BR>"Prop_ItemTransporter" makes an item 
+that transports things.<BR>"Prop_ItemTransReceiver" makes an 
+item receives transported things.<BR>"Prop_ModExperience" 
+modifies experience gained when holding/wielding/wearing this.<BR>"Prop_NoPurge" makes the item a permanent piece of 
+garbage.<BR>"Prop_OpenPassword" gives a container a secret 
+opening word.<BR>"Prop_RideAdjuster" modifies the mounted 
+persons stats.<BR>"Prop_RideResister" modifies the mounted 
+persons saving throws.<BR>"Prop_RideSpellCast" gives a spell 
+effect to the mounter.<BR>"Prop_RideZapper" restricts 
+mounting.<BR>"Prop_RoomView" makes an item that gives you a 
+view of something else.&nbsp; A window maker!<BR>"Prop_SpellReflecting"&nbsp;helps make&nbsp;a shield that 
 reflects magic.<BR>"Prop_TattooAdder" makes an item that 
 grants one a tattoo.<BR>"Prop_TicketTaker" makes a rideable 
 that requires money to board.<BR>"Prop_Trashcan" makes a 
@@ -2076,13 +2077,12 @@ immunities.<BR>"Prop_WearAdjuster" modifies the wearers
 stats.<BR>"Prop_WearResister" modifies the wearers saving 
 throws.<BR>"Prop_WearSpellCast" gives a spell effect to the 
 wearer.<BR>"Prop_WearZapper" restricts 
-wearing/wielding/holding.<BR>"Spell_Boomerang" makes an 
-item very loyal to the owner.<BR>"Spell_ContinualLight" 
-makes an item shine!<BR>"Spell_Fly" makes an item fly 
-around.<BR>"Spell_LightenItem" makes an item lighter.<BR>"Spell_MagicalAura" gives an item a magical aura.<BR>"Spell_Shrink" makes an item smaller.<BR>"Spell_WizardLock" makes a container harder to open.<BR>"Prayer_BlessItem" makes a weapon harder hitting.<BR>"Prayer_CurseItem" makes a weapon&nbsp;worse 
+wearing/wielding/holding.<BR>"Spell_Boomerang" makes an item 
+very loyal to the owner.<BR>"Spell_ContinualLight" makes an 
+item shine!<BR>"Spell_Fly" makes an item fly around.<BR>"Spell_LightenItem" makes an item lighter.<BR>"Spell_MagicalAura" gives an item a magical aura.<BR>"Spell_Shrink" makes an item smaller.<BR>"Spell_WizardLock" makes a container harder to open.<BR>"Prayer_BlessItem" makes a weapon harder hitting.<BR>"Prayer_CurseItem" makes a weapon&nbsp;worse 
 at&nbsp;hitting.<BR>"Prayer_FlameWeapon" makes a weapon 
-flame striking.<BR><BR>Lots of traps 
-are available to make items more perilous: "Bomb_AcidBurst", "Bomb_Explosive", 
+flame striking.<BR><BR>Lots of traps are 
+available to make items more perilous: "Bomb_AcidBurst", "Bomb_Explosive", 
 "Bomb_FlameBurst", "Bomb_Noxious", "Bomb_Pepper", "Bomb_Poison", "Bomb_Smoke", 
 "Bomb_Spores", "Bomb_Water", "Trap_AcidSpray", "Trap_Boomerang", 
 "Trap_ElectricShock", "Trap_Get", "Trap_GetBlade", "Trap_GetGas", 
@@ -2179,11 +2179,11 @@ with hellish fire.</P>
 (CREATE ITEM WANDARCHON) - the Wand of the Archons is the one-handed alternative 
 to the Archon Staff.&nbsp; It is also available only to true Archons.&nbsp; To 
 use the powers of the wand, it must first be held. Once held, numerous magical 
-words invoke the power: s<EM>ay targetname</EM> <EM>"refresh" </EM>will rejuvinate the targets mana, hit 
-points, and movement; <EM>say targetname "level up" 
-</EM>will give the target a free level of experience; <EM>say targetname "level all up" </EM>will level the target up 
-to 30; <EM>say targetname "burn" </EM>will blast the target 
-with hellish fire.</P>
+words invoke the power: s<EM>ay targetname</EM> <EM>"refresh" </EM>will rejuvinate the targets mana, hit points, 
+and movement; <EM>say targetname "level up" </EM>will give 
+the target a free level of experience; <EM>say targetname 
+"level all up" </EM>will level the target up to 30; <EM>say 
+targetname "burn" </EM>will blast the target with hellish fire.</P>
 <P><EM>The Goody Bag </EM>(CREATE ITEM 
 GOODYBAG) - The Goody Bag is full of fabulous prizes which Archons may dispense 
 to players.&nbsp; What's better, an item that is removed is always replaced, so 
@@ -2216,12 +2216,11 @@ that&nbsp;they will take the&nbsp;monster to a random room inside the grid the
 first time the thing tries to move.&nbsp; </P>
 <P><STRONG>The "GenMob"&nbsp;and 
 "GenUndead"</STRONG></P>
-<P>Whenever a GenMob&nbsp;or GenUndead is created, much 
-like the GenItem above, you are presented with a list of properties to fill 
-in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The only 
-difference between the GenMob and GenUndead is that the GenUndead can 
-be&nbsp;TURNed by a Cleric, while a GenMob cannot.&nbsp;&nbsp;The properties 
-include:</P>
+<P>Whenever a GenMob&nbsp;or GenUndead is created, much like 
+the GenItem above, you are presented with a list of properties to fill in.&nbsp; 
+Pressing enter will leave the property unchanged.&nbsp; The only difference 
+between the GenMob and GenUndead is that the GenUndead can be&nbsp;TURNed by a 
+Cleric, while a GenMob cannot.&nbsp;&nbsp;The properties include:</P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
   <TR>
@@ -2238,8 +2237,8 @@ include:</P>
     <TD>what one sees when one looks at the mob</TD></TR>
   <TR>
     <TD><EM>Display Text</EM></TD>
-    <TD>what one sees when&nbsp;the mob&nbsp;is lurking 
-      in a room.</TD></TR>
+    <TD>what one sees when&nbsp;the mob&nbsp;is lurking in 
+      a room.</TD></TR>
   <TR>
     <TD><EM>Race</EM></TD>
     <TD>the race of your creature.</TD></TR>
@@ -2262,19 +2261,18 @@ include:</P>
       higher level, or "too tough" for a lower level.&nbsp;</TD></TR>
   <TR>
     <TD><EM>Attacks/Round</EM></TD>
-    <TD>this represents the number of attacks the 
-      creature receives every round.&nbsp;&nbsp;1 is perfect.</TD></TR>
+    <TD>this represents the number of attacks the creature 
+      receives every round.&nbsp;&nbsp;1 is perfect.</TD></TR>
   <TR>
-    <TD><EM>Attack 
-Adjustment</EM></TD>
+    <TD><EM>Attack Adjustment</EM></TD>
     <TD>this represents the MOBs ability to slay other 
       beings.&nbsp; At first level, this should be a 0.&nbsp; At 25th level, 
       this may be as much as 150-200.&nbsp; You should keep the default, either 
       way.</TD></TR>
   <TR>
     <TD><EM>Damage/Hit</EM></TD>
-    <TD>this represents the maximum amount of damage a 
-      MOB does when striking its opponents.&nbsp; At first level, 4-8 is 
+    <TD>this represents the maximum amount of damage a MOB 
+      does when striking its opponents.&nbsp; At first level, 4-8 is 
       plenty.&nbsp; At 25th level, 20-50 is a good range, depending upon the 
       monsters speed.&nbsp; Just keep the default.</TD></TR>
   <TR>
@@ -2292,8 +2290,8 @@ Adjustment</EM></TD>
       at default.</TD></TR>
   <TR>
     <TD><EM>Alignment </EM></TD>
-    <TD>aside from the creatures experience level, this 
-      is the most important determinate of whether a player gets experience for 
+    <TD>aside from the creatures experience level, this is 
+      the most important determinate of whether a player gets experience for 
       killing it.&nbsp; You should make the alignment reflect the creature’s 
       obvious disposition.&nbsp; Making children evil, or a good orc doesn't do 
       anyone any good.</TD></TR>
@@ -2389,10 +2387,10 @@ change that a ShopKeeper might have given them.&nbsp; These change bags will
 often contain the high-denomination notes mentioned before (such as a Golden 
 Note, or a Half Note).&nbsp; Each of these notes are convertable into loose gold 
 merely by GETting them from the change bag.&nbsp; </P>
-<P>Whenever a GenShopKeeper is created, much like the 
-GenMob above, you are presented with a list of properties to fill in.&nbsp; 
-Pressing enter will leave the property unchanged.&nbsp; The properties include 
-all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
+<P>Whenever a GenShopKeeper is created, much like the GenMob 
+above, you are presented with a list of properties to fill in.&nbsp; Pressing 
+enter will leave the property unchanged.&nbsp; The properties include all of the 
+fields listed above under GenMob, plus&nbsp;a few more:</P>
 <P><STRONG>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -2425,15 +2423,15 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
       the item.&nbsp; You may also specify a price for the 
       item.&nbsp;&nbsp;There are many different values you can put in the price 
       field.&nbsp; </P>
-      <P>* A given price of 0 or higher will ensure that 
-      the item will have that price in gold.&nbsp; For example.&nbsp; A price 
-      value of 20 will mean that the item costs 20 gold to buy, before adjusting 
-      for charisma and other factors.<BR>* A given price of 
-      -1 means that you are allowing CoffeeMud to price the item for you.&nbsp; 
+      <P>* A given price of 0 or higher will ensure that the 
+      item will have that price in gold.&nbsp; For example.&nbsp; A price value 
+      of 20 will mean that the item costs 20 gold to buy, before adjusting for 
+      charisma and other factors.<BR>* A given price of -1 
+      means that you are allowing CoffeeMud to price the item for you.&nbsp; 
       This should be the recommended entry unless you know what you are 
       doing.<BR>* A given price between -2 and -100, or 
-      -1000&nbsp;is invalid!<BR>* A given price between 
-      -101 and -999 will designate some number of Quest Points to charge for the 
+      -1000&nbsp;is invalid!<BR>* A given price between -101 
+      and -999 will designate some number of Quest Points to charge for the 
       item.&nbsp; The number of quest points is determined by taking the 
       absolute value of your given price and subtracting 100.&nbsp; So a given 
       price of -135 would mean that the item costs 35 quest points.<BR 
@@ -2444,8 +2442,7 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
       that the item costs 1 experience point, while a price of -9876 would mean 
       that the item costs 8876 experience points.</P></TD></TR>
   <TR>
-    <TD><EM>Prejudice 
-Factors</EM></TD>
+    <TD><EM>Prejudice Factors</EM></TD>
     <TD>
       <P>This complicated field is where you can adjust the 
       prices the ShopKeeper sells from the programmed normal.&nbsp; An 
@@ -2461,8 +2458,8 @@ Factors</EM></TD>
       (like 0.3 or 0.75) will lower prices.&nbsp; Values of 0.0 are NOT 
       allowed.&nbsp; If you need to all but not allow buying and selling, a 
       value of 0.000000001 should do.&nbsp; </P>
-      <P>Each adjustment may also contain the name of one 
-      or more Racial Categories (Elf, Dwarf, Gnome, Halfing, etc..).&nbsp; If a 
+      <P>Each adjustment may also contain the name of one or 
+      more Racial Categories (Elf, Dwarf, Gnome, Halfing, etc..).&nbsp; If a 
       Racial Category is specified, then the adjustment will ONLY apply to that 
       race.&nbsp; The adjustments are read from left to right, so adjustments 
       without any racial categories should be listed LAST.&nbsp; In the above 
@@ -2479,11 +2476,11 @@ Factors</EM></TD>
       prejudice&nbsp;functionality -- its just 
 bonus.</P></TD></TR></TABLE></STRONG><BR></P><STRONG>
 <P>The "GenBanker"</P></STRONG>
-<P>A Banker is a special type of ShopKeeper that holds 
-money and items in a special private account for players.&nbsp; Bankers can pay 
-or charge interest on money left in the account, and charge interest on items 
-left with them.&nbsp; A Banker may also be designated as a Clan Banker, meaning 
-that it will only deal with Clan Treasurers.</P>
+<P>A Banker is a special type of ShopKeeper that holds money 
+and items in a special private account for players.&nbsp; Bankers can pay or 
+charge interest on money left in the account, and charge interest on items left 
+with them.&nbsp; A Banker may also be designated as a Clan Banker, meaning that 
+it will only deal with Clan Treasurers.</P>
 <P>Whenever a GenBanker is created, much like the 
 GenShopKeeper above, you are presented with a list of properties to fill 
 in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties 
@@ -2499,14 +2496,14 @@ plus&nbsp;one&nbsp;more:</P>
       >Description</STRONG></TD></TR>
   <TR>
     <TD><EM>Coin Interest</EM></TD>
-    <TD>This is the amount of interest paid (or CHARGED 
-      if negative)&nbsp;every game week (about once a real day) on gold money 
-      left in a players account.</TD></TR>
+    <TD>This is the amount of interest paid (or CHARGED if 
+      negative)&nbsp;every game week (about once a real day) on gold money left 
+      in a players account.</TD></TR>
   <TR>
     <TD><EM>Item Interest</EM></TD>
-    <TD>This is the amount of interest paid (or CHARGED 
-      if negative) every game week (about once a real day) on items left in a 
-      users account.</TD></TR>
+    <TD>This is the amount of interest paid (or CHARGED if 
+      negative) every game week (about once a real day) on items left in a users 
+      account.</TD></TR>
   <TR>
     <TD><EM>Bank Name</EM></TD>
     <TD>This is a unique identifier for the bank chain. 
@@ -2579,10 +2576,10 @@ fields listed above under GenMob, plus&nbsp;a few more:</P>
       >Description</STRONG></TD></TR>
   <TR>
     <TD><EM>Cleric 
-    Requirements</EM></TD>
-    <TD>This field describes the requirements for a 
-      cleric to work for this deity. The value in this field include the 
-      following masks: 
+Requirements</EM></TD>
+    <TD>This field describes the requirements for a cleric 
+      to work for this deity. The value in this field include the following 
+      masks: 
       <P>
       <UL>
         <LI>+SYSOP (allow archons or area subops to bypass 
@@ -2593,10 +2590,10 @@ fields listed above under GenMob, plus&nbsp;a few more:</P>
         <LI>-MOB (disallow all mobs/npcs) 
         <LI>-CLASS (disallow all classes) 
         <LI>-BASECLASS (disallow all base classes) 
-        <LI>+thief +bard +ranger etc.. (create exceptions 
-        to -class and -baseclass) 
-        <LI>-paladin -bard -mage etc.. (disallow only 
-        listed classes) 
+        <LI>+thief +bard +ranger etc.. (create exceptions to 
+        -class and -baseclass) 
+        <LI>-paladin -bard -mage etc.. (disallow only listed 
+        classes) 
         <LI>-RACECAT (disallow all racial categories) 
         <LI>+elf +dwarf +humanoid +gnome (create exceptions 
         to -racecat) 
@@ -2621,10 +2618,10 @@ fields listed above under GenMob, plus&nbsp;a few more:</P>
         <LI>-LEVEL (disallow all levels) 
         <LI>+=10 +&gt;10 +&gt;=10 +&lt;10 +&lt;=10 (create 
         exceptions to -level, put your level for 10) 
-        <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 
-        (disallow only listed levels, put your level for 10) 
-        <LI>-TATTOOS (disallow all tattoos, even a lack of 
-        a tatoo) 
+        <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 (disallow 
+        only listed levels, put your level for 10) 
+        <LI>-TATTOOS (disallow all tattoos, even a lack of a 
+        tatoo) 
         <LI>+mytatto +thistattoo +anytattoo etc.. (create 
         exceptions to -tattoos) 
         <LI>+TATTOOS (allow any or no tattoos) 
@@ -2646,8 +2643,8 @@ fields listed above under GenMob, plus&nbsp;a few more:</P>
         multi-class combinations) 
         <LI>+thief +mage +ranger (exceptions -anyclass, 
         allow any levels) 
-        <LI>+ANYCLASS (do not <WORD 
-        >all multi-class combinations) 
+        <LI>+ANYCLASS (do not <WORD>all 
+        multi-class combinations) 
         <LI>-thief -mage -ranger (exceptions to +anyclass, 
         disallow any levels) 
         <LI>-STR X (<WORD> those with 
@@ -2701,8 +2698,8 @@ fields listed above under GenMob, plus&nbsp;a few more:</P>
         the player. For example: SAY "Allah is Great" 
         <LI>TIME [HOUR] - the other tasks must be performed 
         at the specified hour. For example: TIME 3 
-        <LI>PUTTHING [THING NAME] [CONTAINER NAME] - an 
-        item of the type must be placed in the specified container. For example: 
+        <LI>PUTTHING [THING NAME] [CONTAINER NAME] - an item 
+        of the type must be placed in the specified container. For example: 
         PUTTHING dagger pit 
         <LI>BURNTHING [THING NAME] - an item of the type 
         given must be burnt or set afire. This is typically done with the 
@@ -2711,14 +2708,14 @@ fields listed above under GenMob, plus&nbsp;a few more:</P>
         eaten. For example: EAT holy pie. 
         <LI>READ [ITEM NAME] - the specified item must be 
         eaten.&nbsp; For example: READ holy book. 
-        <LI>DRINK [DRINK NAME] - the specified drink must 
-        be consumed. For example: DRINK holy fountain 
+        <LI>DRINK [DRINK NAME] - the specified drink must be 
+        consumed. For example: DRINK holy fountain 
         <LI>INROOM - the player must be in the specified 
         room number. For example: INROOM NewArea#123 
         <LI>RIDING - the player must be on the specified 
         mount. For example: RIDING holy altar 
-        <LI>CAST - the player must cast the specified 
-        spell. For example: CAST Prayer_Bless 
+        <LI>CAST - the player must cast the specified spell. 
+        For example: CAST Prayer_Bless 
         <LI>EMOTE - the player must emote the following 
         thing. For example: EMOTE kneels before the throan 
         <LI>PUTVALUE [MINIMUM VALUE] [CONTAINER NAME] - an 
@@ -2739,15 +2736,14 @@ fields listed above under GenMob, plus&nbsp;a few more:</P>
         care.&nbsp; This allows masks to be entered which the player must 
         meet.&nbsp; The mask is of the same format as described in Cleric 
         Requirements above. 
-        <LI>SITTING 0 - the player must be sitting (the 0 
-        is required!) 
+        <LI>SITTING 0 - the player must be sitting (the 0 is 
+        required!) 
         <LI>STANDING 0 - the player must be standing (the 0 
         is required!) 
         <LI>SLEEPING 0 - the player must be sleeping (the 0 
         is required!) </LI></UL></TD></TR>
   <TR>
-    <TD><EM>Worshipper 
-Ritual</EM></TD>
+    <TD><EM>Worshipper Ritual</EM></TD>
     <TD>For a worshipper to receive one of the blessings 
       of the deity, the player must perform a particular ritual consisting of 
       one or more actions. This field will list the tasks in the ritual which 
@@ -2780,16 +2776,16 @@ Ritual</EM></TD>
       from to give to clerics who perform the clerical power ritual.</TD></TR>
   <TR>
     <TD><EM>Clerical Power 
-      ritual</EM></TD>
-    <TD>For a cleric to receive one of the above powers 
-      of the deity, the player must perform a particular ritual consisting of 
-      one or more actions. This field will list the tasks in the ritual which 
-      must be performed, and uses the exact same format as the Cleric Ritual 
-      field above. </TD></TR></TABLE></STRONG>
+    ritual</EM></TD>
+    <TD>For a cleric to receive one of the above powers of 
+      the deity, the player must perform a particular ritual consisting of one 
+      or more actions. This field will list the tasks in the ritual which must 
+      be performed, and uses the exact same format as the Cleric Ritual field 
+      above. </TD></TR></TABLE></STRONG>
 <P><STRONG><BR></P><BR><FONT color=blue size=5>Modifying MOBs</FONT></STRONG> 
 <P></P>
-<P>There are properties of&nbsp;mobs that can be modified 
-by the Archon.&nbsp; If one wishes to modify a goblin,&nbsp;the&nbsp;goblin must 
+<P>There are properties of&nbsp;mobs that can be modified by 
+the Archon.&nbsp; If one wishes to modify a goblin,&nbsp;the&nbsp;goblin must 
 be&nbsp;present in the room.&nbsp; The Archon can then issue the command "modify 
 goblin".&nbsp; If the&nbsp;mob modified&nbsp;is a GenMob or GenUndead, then the 
 same properties as above will be presented.&nbsp; .&nbsp; </P>
@@ -2804,34 +2800,30 @@ street.<BR>"Bardness" makes the mob fight with bard
 skills.<BR>"Beggar" makes the mob beg for money.<BR>"BribeGateGuard" makes the mob a gate guard who can be 
 bribed.<BR>"BrotherHelper" makes the mob defend similar 
 mobs.<BR>"ClanHelper" makes the mob defend clan buddies.<BR>"Clericness" makes the mob fight with cleric skills 
-appropriate to alignment.<BR>"CombatAbilities" makes the 
-mob use its abilities in combat.<BR>"CombatAssister" makes 
-the mob assist specific other mobs in combat.<BR>"CommonSpeaker" makes the mob speak common, even if it 
-doesn't want to.<BR>"CorpseEater" makes the mob eat corpses 
-it comes across.<BR>"CorpseLooter" makes the mob loot 
-corpses it kills.<BR>"Decay" makes the mob go away after a 
-time.<BR>"DelayedTransporter" makes a mob that randomly 
-zaps around the place.<BR>"DoorwayGuardian" makes a mob 
-that won't let anyone pass.<BR>"Drowness" provides certain 
-drow-like behavior to genmobs.<BR>"Druidness" makes the mob 
-fight with druid skills.<BR>"Emoter" makes the mob do 
-the&nbsp;silly things you think of.<BR>"FaithHelper" makes 
-the mob defend those of the same faith.<BR>"FightFlee" 
-makes an annoying mob that runs away.<BR>"Fighterness" 
-makes a mob that fights with fighter skills.<BR>"Follower" 
-makes the mob follow folks around.<BR>"GateGuard" makes a 
-mob that opens, closes, unlocks, and locks a door.<BR>"GoldLooter" makes&nbsp; a mob that takes the loot from the 
-vanquished.<BR>"GoodExecutioner" makes&nbsp; a mob that 
-kills evil and thief mobs.<BR>"GoodGuardian" makes a mob 
-that stops fights and defends the helpless.<BR>"Guard" 
-always defends the attacked.<BR>"Healer" makes&nbsp;the mob 
-a random friendly healer.<BR>"Hireling" puts the mobs 
-abilities up for hire.<BR>"InstantDeath" kills everyone in 
-the room with the mob, after a time.<BR>"ItemIdentifier" 
-makes the mob an identifier for hire.<BR>"ItemMender" makes 
-the mob a mender for hire.<BR>"ItemRefitter" makes the mob 
-a refitter for hire.<BR>"MOBEater" makes the mob eat its 
-enemies.<BR>"MOBHelper" makes the mob assist other mobs.<BR>"MOBHunter" makes the mob&nbsp;hunt other mobs.<BR>"MOBTeacher" makes the mob a teacher of class skills.<BR>"Mageness" makes the mob use mage skills in combat.<BR>"Mime" makes the mob mime the socials of other mobs.<BR>"Mobile" makes the mob mobile.<BR>"MobileAggressive" makes the mob mobile and aggressive.<BR>"MobileGoodGuardian" makes the mob mobile and 
+appropriate to alignment.<BR>"CombatAbilities" makes the mob 
+use its abilities in combat.<BR>"CombatAssister" makes the 
+mob assist specific other mobs in combat.<BR>"CommonSpeaker" 
+makes the mob speak common, even if it doesn't want to.<BR>"CorpseEater" makes the mob eat corpses it comes across.<BR>"CorpseLooter" makes the mob loot corpses it kills.<BR>"Decay" makes the mob go away after a time.<BR>"DelayedTransporter" makes a mob that randomly zaps around 
+the place.<BR>"DoorwayGuardian" makes a mob that won't let 
+anyone pass.<BR>"Drowness" provides certain drow-like 
+behavior to genmobs.<BR>"Druidness" makes the mob fight with 
+druid skills.<BR>"Emoter" makes the mob do the&nbsp;silly 
+things you think of.<BR>"FaithHelper" makes the mob defend 
+those of the same faith.<BR>"FightFlee" makes an annoying 
+mob that runs away.<BR>"Fighterness" makes a mob that fights 
+with fighter skills.<BR>"Follower" makes the mob follow 
+folks around.<BR>"GateGuard" makes a mob that opens, closes, 
+unlocks, and locks a door.<BR>"GoldLooter" makes&nbsp; a mob 
+that takes the loot from the vanquished.<BR>"GoodExecutioner" makes&nbsp; a mob that kills evil and 
+thief mobs.<BR>"GoodGuardian" makes a mob that stops fights 
+and defends the helpless.<BR>"Guard" always defends the 
+attacked.<BR>"Healer" makes&nbsp;the mob a random friendly 
+healer.<BR>"Hireling" puts the mobs abilities up for 
+hire.<BR>"InstantDeath" kills everyone in the room with the 
+mob, after a time.<BR>"ItemIdentifier" makes the mob an 
+identifier for hire.<BR>"ItemMender" makes the mob a mender 
+for hire.<BR>"ItemRefitter" makes the mob a refitter for 
+hire.<BR>"MOBEater" makes the mob eat its enemies.<BR>"MOBHelper" makes the mob assist other mobs.<BR>"MOBHunter" makes the mob&nbsp;hunt other mobs.<BR>"MOBTeacher" makes the mob a teacher of class skills.<BR>"Mageness" makes the mob use mage skills in combat.<BR>"Mime" makes the mob mime the socials of other mobs.<BR>"Mobile" makes the mob mobile.<BR>"MobileAggressive" makes the mob mobile and aggressive.<BR>"MobileGoodGuardian" makes the mob mobile and 
 peacemaking.<BR>"MOBReSave" keeps the mob updated in the 
 database at all times.<BR>"MoneyChanger" makes the mob 
 exchange coins for notes.<BR>"MudChat" makes the mob 
@@ -2839,18 +2831,19 @@ chatty.<BR>"NiceAbilities" makes the mob a random caster of
 friendly spells.<BR>"NoCombatAssist" makes the mob never 
 assist group members in combat.<BR>"ObjectGuardian" makes 
 the mob forbid getting items in its room.<BR>"Patroller" 
-makes the mob walk a patrol.<BR>"PlayerHelper" makes the 
-mob assist players.<BR>"ProtectedCitizen" makes the mob 
-scream for help!<BR>"ROMGangMember" makes the mob a gang 
-member.<BR>"ROMPatrolman" makes the mob a patrolman for 
-gang members.<BR>"RandomTransporter" makes the mob zip 
-around the map.<BR>"RaceHelper" makes the mob assist those 
-of the same race.<BR>"Scavenger" makes the mob a scavenger 
-of stuff on the ground.<BR>"Scriptable" makes the mob run 
-scripts that you write!<BR>"Sounder" makes the mob emote 
-the silly things you want it to.<BR>"TaxCollector" makes 
-the mob a collector of money from players and or mobs.<BR>"Thiefness" makes the mob use thief skills in combat.<BR>"Vagrant" makes the mob sleepy.<BR>"VeryAggressive" makes the mob willing to jump rooms to 
-fight.<BR>"Wimpy" makes the mob run away.<BR>"WimpyAggressive" makes the mob only fight sleeping 
+makes the mob walk a patrol.<BR>"PlayerHelper" makes the mob 
+assist players.<BR>"ProtectedCitizen" makes the mob scream 
+for help!<BR>"ROMGangMember" makes the mob a gang member.<BR>"ROMPatrolman" makes the mob a patrolman for gang 
+members.<BR>"RandomTransporter" makes the mob zip around the 
+map.<BR>"RaceHelper" makes the mob assist those of the same 
+race.<BR>"Scavenger" makes the mob a scavenger of stuff on 
+the ground.<BR>"Scriptable" makes the mob run scripts that 
+you write!<BR>"Sounder" makes the mob emote the silly things 
+you want it to.<BR>"TaxCollector" makes the mob a collector 
+of money from players and or mobs.<BR>"Thiefness" makes the 
+mob use thief skills in combat.<BR>"Vagrant" makes the mob 
+sleepy.<BR>"VeryAggressive" makes the mob willing to jump 
+rooms to fight.<BR>"Wimpy" makes the mob run away.<BR>"WimpyAggressive" makes the mob only fight sleeping 
 folks.<BR></P>
 <P>Mobs&nbsp;also benefit from effects, just like rooms, 
 areas, items, and exits.&nbsp; Here are some important effects you may consider 
@@ -2858,28 +2851,25 @@ for your mobs:</P>
 <P>"Chant_Fertility" makes the mob fertile.<BR>"Chant_PrayerWard" resists prayers.<BR>"Chant_Shapelessness" makes the mob very light.<BR>"Chant_SongWard" resists songs.<BR>"Chant_SpellWard" resist spells.<BR>"Chant_Thorns" makes those fighting the mob get pricked!<BR>"Chant_Treemind" resist mind effects.<BR>"Chant_WindShape" takes less damage.<BR>"Chant_WindSnatcher" makes the mob resist the wind.<BR>"Immunities" gives the mob immunities you pick.<BR>"Inebriation" makes the mob drunk.<BR>"Paladin_Aura" protects the mob from evil.<BR>"Paladin_Goodness" assaults all evil!<BR>"Prayer_AcidHealing" heals from acid attacks.<BR>"Prayer_AiryForm" takes less damage.<BR>"Prayer_BladeBarrier" hits back!<BR>"Prayer_Bless" a holy aura.<BR>"Prayer_Demonshield" flames back!<BR>"Prayer_ElectricHealing" heals from electric hits.<BR>"Prayer_Etherealness" allows him to walk through doors.<BR>"Prayer_FireHealing" heals from fire attacks<BR>"Prayer_IceHealing" heals from cold attacks.<BR>"Prayer_ProtEvil" protects from evil.<BR>"Prayer_ProtGood" protects from good.<BR>"Prayer_ProtParalyzation" protects from paralysis.<BR>"Prayer_ProtUndead" protects from the undead.<BR>"Prayer_Sanctuary" takes less damage.<BR>"Prop_ClosedDayNight" makes the mob go home at night, or 
 just disappear.<BR>"Prop_Doppleganger" makes the mob change 
 its level and skill to match opponents.<BR>"Prop_Hidden" 
-makes the mob hidden.<BR>"Prop_AbilityImmunity" protects 
-the mob from specified targeted spells.<BR>"Prop_Invisibility" makes the mob invisible.<BR>"Prop_ItemTransporter" makes the mob a transporter of 
-items.<BR>"Prop_ItemTransReceiver" makes the mob a receiver 
-of transported items.<BR>"Prop_NoCharm" protects from 
-charms.<BR>"Prop_NoSummon" protects from summoning.<BR>"Prop_PracticeDummy" makes into an unkillable unhitting 
+makes the mob hidden.<BR>"Prop_AbilityImmunity" protects the 
+mob from specified targeted spells.<BR>"Prop_Invisibility" 
+makes the mob invisible.<BR>"Prop_ItemTransporter" makes the 
+mob a transporter of items.<BR>"Prop_ItemTransReceiver" 
+makes the mob a receiver of transported items.<BR>"Prop_NoCharm" protects from charms.<BR>"Prop_NoSummon" protects from summoning.<BR>"Prop_PracticeDummy" makes into an unkillable unhitting 
 dummy.<BR>"Prop_Resistance" gives resistances which you 
 pick.<BR>"Prop_RestrictSpells" restricts spells from being 
 cast.<BR>"Prop_Retainable" changes its price to 
 shopkeepers.<BR>"Prop_RideAdjuster" adjusts stats when 
-ridden.<BR>"Prop_RideResister" adjusts saves when 
-ridden.<BR>"Prop_RideSpellCast" gives spell-affects when 
-ridden.<BR>"Prop_RideZapper" restricts riding.<BR>"Prop_SafePet" makes unattackable.<BR>"Prop_SpellReflecting" makes spell reflecting.<BR>"Prop_ModExperience" modified experience gained from 
-killing him.<BR>"Prop_StatTrainer" gives good stats.<BR>"Prop_TattooAdder" gives a tattoo upon death.<BR>"Prop_TicketTaker" requires a price to ride.<BR>"Prop_WeaponImmunity" gives immunities to certain attacks 
+ridden.<BR>"Prop_RideResister" adjusts saves when ridden.<BR>"Prop_RideSpellCast" gives spell-affects when ridden.<BR>"Prop_RideZapper" restricts riding.<BR>"Prop_SafePet" makes unattackable.<BR>"Prop_SpellReflecting" makes spell reflecting.<BR>"Prop_ModExperience" modified experience gained from killing 
+him.<BR>"Prop_StatTrainer" gives good stats.<BR>"Prop_TattooAdder" gives a tattoo upon death.<BR>"Prop_TicketTaker" requires a price to ride.<BR>"Prop_WeaponImmunity" gives immunities to certain attacks 
 from low level weapons.<BR>"Regeneration" regenerates hit 
 points during combat.<BR>"Skill_AllBreathing" makes them a 
 fish.<BR>"Skill_Resistance" gives resistances that you 
-pick.<BR>"Spell_Awe" makes them too awesome to attack.<BR>"Spell_Blink" makes them blink around during combat.<BR>"Spell_Blur" makes them hard to make out.<BR>"Spell_ChantShield" protects from chants.<BR>"Spell_Confusion"<BR>"Spell_FeatherFall" makes them float when falling.<BR>"Spell_Flameshield" flames back to attackers.<BR>"Spell_IllusoryDisease" gives them a fake disease.<BR>"Spell_IronGrip" makes them undisarmable.<BR>"Spell_Levitate" makes them levitate.<BR>"Spell_Light" makes them bright.<BR>"Spell_MajorGlobe" protects from great spells.<BR>"Spell_MinorGlobe" protects from ok spells.<BR>"Spell_ObscureSelf" makes them hard to discern.<BR>"Spell_ResistArrows" protects from arrows.<BR>"Spell_ResistMagicMissiles" protects from magic 
-missiles.<BR>"Spell_ResistPetrification" protects from 
-flesh to stone.<BR>"Spell_SpellTurning" turns spells 
-around.<BR>"Spell_TeleportationWard" protects from 
-teleporting.<BR>"Spell_Tourettes" gives them a dirty 
-mouth.</P>
+pick.<BR>"Spell_Awe" makes them too awesome to attack.<BR>"Spell_Blink" makes them blink around during combat.<BR>"Spell_Blur" makes them hard to make out.<BR>"Spell_ChantShield" protects from chants.<BR>"Spell_Confusion"<BR>"Spell_FeatherFall" 
+makes them float when falling.<BR>"Spell_Flameshield" flames 
+back to attackers.<BR>"Spell_IllusoryDisease" gives them a 
+fake disease.<BR>"Spell_IronGrip" makes them 
+undisarmable.<BR>"Spell_Levitate" makes them levitate.<BR>"Spell_Light" makes them bright.<BR>"Spell_MajorGlobe" protects from great spells.<BR>"Spell_MinorGlobe" protects from ok spells.<BR>"Spell_ObscureSelf" makes them hard to discern.<BR>"Spell_ResistArrows" protects from arrows.<BR>"Spell_ResistMagicMissiles" protects from magic missiles.<BR>"Spell_ResistPetrification" protects from flesh to stone.<BR>"Spell_SpellTurning" turns spells around.<BR>"Spell_TeleportationWard" protects from teleporting.<BR>"Spell_Tourettes" gives them a dirty mouth.</P>
 <P>And don't forget how much fun it is to make your 
 creatures permanently&nbsp;SICK!<BR>"Disease_Aids", 
 "Disease_Amnesia", "Disease_Anthrax", "Disease_Arthritis", "Disease_Asthma", 
@@ -2901,9 +2891,9 @@ will be presented for modification (See Appendix B for more information):</P>
       >Description</STRONG></TD></TR>
   <TR>
     <TD><EM>Level</EM></TD>
-    <TD>this is the level of the mob.&nbsp; Please see 
-      the Level entry under GenMob for more information.&nbsp; On some mobs, 
-      such as Dragons, this can have a profound impact.</TD></TR>
+    <TD>this is the level of the mob.&nbsp; Please see the 
+      Level entry under GenMob for more information.&nbsp; On some mobs, such as 
+      Dragons, this can have a profound impact.</TD></TR>
   <TR>
     <TD><EM>Magical Ability</EM></TD>
     <TD>This number represents an adjustment to the base 
@@ -2933,9 +2923,9 @@ will be presented for modification (See Appendix B for more information):</P>
 you need only issue the destroy command.&nbsp;&nbsp;If an orc, for instance, no 
 longer requires his existence: "destroy mob orc" will take that existence 
 away.</P>
-<P>Once destroyed, MOBs that have been set to rejuv will 
-not do so.&nbsp; If the&nbsp;MOB was a permanently saved&nbsp;MOB in the room, 
-you must re-save the room in order to make the MOBs destruction permanent.</P>
+<P>Once destroyed, MOBs that have been set to rejuv will not 
+do so.&nbsp; If the&nbsp;MOB was a permanently saved&nbsp;MOB in the room, you 
+must re-save the room in order to make the MOBs destruction permanent.</P>
 <P><STRONG><FONT color=blue size=5>Equipping MOBs</FONT></STRONG></P>
 <P>You may give a MOB equipment to wear or carry as 
 treasure, if this is done properly.&nbsp; First off, you can ONLY equip a 
@@ -2974,28 +2964,27 @@ of those options:</P>
     <TD>the displayable name of the race.</TD></TR>
   <TR>
     <TD><EM>Racial Category</EM></TD>
-    <TD>the category into which the race fits.&nbsp; Use 
-      ? to get a list of existing ones.</TD></TR>
+    <TD>the category into which the race fits.&nbsp; Use ? 
+      to get a list of existing ones.</TD></TR>
   <TR>
     <TD><EM>Base Weight</EM></TD>
     <TD>the minimum weight of a mob of this race</TD></TR>
   <TR>
     <TD><EM>Weight Variance</EM></TD>
-    <TD>the amount by which the weight of the mob may 
-      vary above the base.</TD></TR>
+    <TD>the amount by which the weight of the mob may vary 
+      above the base.</TD></TR>
   <TR>
     <TD><EM>Base Male Height</EM></TD>
     <TD>the minimum height of a male mob of this 
-  race</TD></TR>
+race</TD></TR>
   <TR>
-    <TD><EM>Base Female 
-    Height</EM></TD>
+    <TD><EM>Base Female Height</EM></TD>
     <TD>the minimum height of a female mob of this 
   race</TD></TR>
   <TR>
     <TD><EM>Height Variance</EM></TD>
-    <TD>the amount by which the height of the mob may 
-      vary above the base.</TD></TR>
+    <TD>the amount by which the height of the mob may vary 
+      above the base.</TD></TR>
   <TR>
     <TD><EM>Player Race</EM></TD>
     <TD>whether or not players may choose this race</TD></TR>
@@ -3005,8 +2994,8 @@ of those options:</P>
       the room</TD></TR>
   <TR>
     <TD><EM>Arriving Text</EM></TD>
-    <TD>the word displayed when a mob of this race 
-      arrives into&nbsp;a room</TD></TR>
+    <TD>the word displayed when a mob of this race arrives 
+      into&nbsp;a room</TD></TR>
   <TR>
     <TD><EM>Health Race</EM></TD>
     <TD>the name of a standard race which will be used as 
@@ -3018,8 +3007,7 @@ creating.</TD></TR>
     <TD>the number and type of body parts available for 
       amputation</TD></TR>
   <TR>
-    <TD><EM>EStat 
-Adjustments</EM></TD>
+    <TD><EM>EStat Adjustments</EM></TD>
     <TD>adjustments, positive or negative, to attack, 
       defense, and other stats.&nbsp; Use ? for a list.</TD></TR>
   <TR>
@@ -3028,13 +3016,11 @@ Adjustments</EM></TD>
     <TD>adjustments, positive or negative, to strength, 
       saving throws, and other stats.&nbsp; Use ? for a list.</TD></TR>
   <TR>
-    <TD><EM>CharStat 
-Settings</EM></TD>
+    <TD><EM>CharStat Settings</EM></TD>
     <TD>hard settings for strength, saving throws, and 
       other stats.&nbsp; Use ? for a list.</TD></TR>
   <TR>
-    <TD><EM>State 
-Adjustments</EM></TD>
+    <TD><EM>State Adjustments</EM></TD>
     <TD>adjustments, positive or negative, to hit points, 
       mana, and other stats.&nbsp; Use ? for a list.</TD></TR>
   <TR>
@@ -3043,13 +3029,13 @@ Adjustments</EM></TD>
       race when it is Butchered.&nbsp; </TD></TR>
   <TR>
     <TD><EM>Outfit</EM></TD>
-    <TD>list of items automatically equipped and word 
-      when the OUTFIT command is used, or a player of this race is 
-      created.&nbsp; </TD></TR>
+    <TD>list of items automatically equipped and word when 
+      the OUTFIT command is used, or a player of this race is created.&nbsp; 
+  </TD></TR>
   <TR>
     <TD><EM>Natural Weapon</EM></TD>
     <TD>the weapon used by this race when it is 
-    unarmed.</TD></TR>
+  unarmed.</TD></TR>
   <TR>
     <TD><EM>Racial Abilities</EM></TD>
     <TD>a list of abilities available to members of this 
@@ -3058,13 +3044,12 @@ Adjustments</EM></TD>
       cannot be modified.&nbsp; the level referred to is in player levels as 
       opposed to class levels.</TD></TR>
   <TR>
-    <TD><EM>Cultural 
-    Abilities</EM></TD>
-    <TD>a list of abilities granted automatically to 
-      those who are born this race.&nbsp; it is assumed these abilities are 
-      learned because of the races culture.&nbsp; the profficiency given is the 
-      default profficiency which players/mobs of this race start out 
-  with.</TD></TR></TABLE></P>
+    <TD><EM>Cultural Abilities</EM></TD>
+    <TD>a list of abilities granted automatically to those 
+      who are born this race.&nbsp; it is assumed these abilities are learned 
+      because of the races culture.&nbsp; the profficiency given is the default 
+      profficiency which players/mobs of this race start out 
+with.</TD></TR></TABLE></P>
 <P><STRONG><FONT color=blue size=5>Creating Classes</FONT></STRONG></P>
 <P>Creating customized player or mob classes can be fun and 
 exciting! These classes can be used as skill templates for mobs created using 
@@ -3089,11 +3074,10 @@ options:</P>
     <TD>the displayable name of the class.</TD></TR>
   <TR>
     <TD><EM>Base Class</EM></TD>
-    <TD>the category into which the class fits.&nbsp; 
-      Make this the same as your ID usually.</TD></TR>
+    <TD>the category into which the class fits.&nbsp; Make 
+      this the same as your ID usually.</TD></TR>
   <TR>
-    <TD><EM>Player 
-Selectable</EM></TD>
+    <TD><EM>Player Selectable</EM></TD>
     <TD>whether or not players may choose this 
       class.&nbsp; Remember that, if you are using a subclass system, make the 
       base class name the same as the ID to define a top-level (or base class), 
@@ -3101,31 +3085,31 @@ Selectable</EM></TD>
       way, this would need to be true for players to have access.</TD></TR>
   <TR>
     <TD><EM>Minimum HP</EM></TD>
-    <TD>minimum hit points gained by this class per 
-      level, adjusted by the mobs charisma.</TD></TR>
+    <TD>minimum hit points gained by this class per level, 
+      adjusted by the mobs charisma.</TD></TR>
   <TR>
     <TD><EM>Maximum HP</EM></TD>
-    <TD>maximum hit points gained by this class per 
-      level, adjusted by the mobs charisma.</TD></TR>
+    <TD>maximum hit points gained by this class per level, 
+      adjusted by the mobs charisma.</TD></TR>
   <TR>
     <TD><EM>Practices/Level</EM></TD>
-    <TD>the number of practice points gained by this 
-      class per level.</TD></TR>
+    <TD>the number of practice points gained by this class 
+      per level.</TD></TR>
   <TR>
     <TD><EM>Mana/Level</EM></TD>
     <TD>the amount of mana, multiplied by a formula based 
       on the mobs intelligence, gained per level.</TD></TR>
   <TR>
     <TD><EM>Attack/Level</EM></TD>
-    <TD>the number of attack points, modified by a 
-      formula based on the mobs attack attribute, gained per level.</TD></TR>
+    <TD>the number of attack points, modified by a formula 
+      based on the mobs attack attribute, gained per level.</TD></TR>
   <TR>
     <TD><EM>Attack Attribute</EM></TD>
     <TD>the primary attribute used with the above to 
       determine the number of attack points gained per level.</TD></TR>
   <TR>
     <TD><EM>Practices/1st 
-    Level</EM></TD>
+Level</EM></TD>
     <TD>the number of practice points received by this 
       class at first level.</TD></TR>
   <TR>
@@ -3142,8 +3126,8 @@ Selectable</EM></TD>
       formula based on the mobs strength, gained per level.</TD></TR>
   <TR>
     <TD><EM>Armor Restr.</EM></TD>
-    <TD>the type of armor restrictions for using skills 
-      in this class, if any.</TD></TR>
+    <TD>the type of armor restrictions for using skills in 
+      this class, if any.</TD></TR>
   <TR>
     <TD><EM>Limitations</EM></TD>
     <TD>This is an open text field. Mention any special 
@@ -3158,8 +3142,7 @@ Selectable</EM></TD>
       for it. List any racial, or stat requirements to becomming this class. Use 
       ? for more information on the mask.</TD></TR>
   <TR>
-    <TD><EM>EStat 
-Adjustments</EM></TD>
+    <TD><EM>EStat Adjustments</EM></TD>
     <TD>adjustments, positive or negative, to attack, 
       defense, and other stats.&nbsp; Use ? for a list.</TD></TR>
   <TR>
@@ -3168,19 +3151,17 @@ Adjustments</EM></TD>
     <TD>adjustments, positive or negative, to strength, 
       saving throws, and other stats.&nbsp; Use ? for a list.</TD></TR>
   <TR>
-    <TD><EM>CharStat 
-Settings</EM></TD>
+    <TD><EM>CharStat Settings</EM></TD>
     <TD>hard settings for strength, saving throws, and 
       other stats.&nbsp; Use ? for a list.</TD></TR>
   <TR>
-    <TD><EM>State 
-Adjustments</EM></TD>
+    <TD><EM>State Adjustments</EM></TD>
     <TD>adjustments, positive or negative, to hit points, 
       mana, and other stats.&nbsp; Use ? for a list.</TD></TR>
   <TR>
     <TD><EM>Weapon Restr.</EM></TD>
-    <TD>This is a list of the weapon classes which 
-      players of this class will fumble using.</TD></TR>
+    <TD>This is a list of the weapon classes which players 
+      of this class will fumble using.</TD></TR>
   <TR>
     <TD><EM>Outfit</EM></TD>
     <TD>This is a list of any equipment outfitted to 
@@ -3237,8 +3218,8 @@ Items</FONT></STRONG></P>
 LockableContainer, etc</P>
 <UL>
   <LI>
-  <DIV class=MsoNormal>misc text - The name of the key 
-  which will open this container.</DIV></LI></UL>
+  <DIV class=MsoNormal>misc text - The name of the key which 
+  will open this container.</DIV></LI></UL>
 <P class=MsoNormal>StdJournal</P>
 <UL>
   <LI>
@@ -3291,10 +3272,9 @@ item)</P>
 Weapons)</P>
 <UL>
   <LI>
-  <DIV class=MsoNormal>ability - Equates to a 5 point 
-  attack bonus, and 1 point damage bonus for every ability point above 0.&nbsp; 
-  Makes the weapon magical. Negative ability points do the 
-opposite.</DIV></LI></UL>
+  <DIV class=MsoNormal>ability - Equates to a 5 point attack 
+  bonus, and 1 point damage bonus for every ability point above 0.&nbsp; Makes 
+  the weapon magical. Negative ability points do the opposite.</DIV></LI></UL>
 <P class=MsoNormal>ScrollSpell</P>
 <UL>
   <LI>
@@ -3355,8 +3335,7 @@ etc.</P>
   <LI>
   <DIV class=MsoNormal>usesRemaining - The number of types 
   the manual may be read before becomming ineffective.</DIV></LI></UL>
-<P class=MsoNormal><STRONG><FONT 
-size=5></FONT></STRONG>&nbsp;</P>
+<P class=MsoNormal><STRONG><FONT size=5></FONT></STRONG>&nbsp;</P>
 <P class=MsoNormal><STRONG><FONT 
 color=green size=5>Appendix B: Special Standard 
 MOBs</FONT></STRONG></P>
@@ -3553,8 +3532,7 @@ weapons that do a specific amount of damage which are balanced with the
 WEAPONSMITHING skills, use the following formula:</P>
 <P>Level= ((2*D)/(H+1) + (A-W)/5 +R)*((R/W)+2)+1</P>
 <P>where</P>
-<P>D=base DAMAGE of the weapon before material 
-modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
+<P>D=base DAMAGE of the weapon before material modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
 weapon</P>
 <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 Round the final number down, to a minimum level of 1.&nbsp; Some general 
@@ -3904,8 +3882,7 @@ following formula:
 <P>where 
 <P>L=Level required to use weapon,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
 weapon 
-<P>Round the final number down, to a minimum level of 
-1.</P>
+<P>Round the final number down, to a minimum level of 1.</P>
 <P><U>Determining Weapon Cost</U> 
 <P>
 <P></P>
@@ -3913,11 +3890,10 @@ weapon
 To compute the weapon’s base value use the following equation: 
 <P>Cost of Item= 2*(W*V+(5*D+A+R*10)*D)/(H+1) 
 <P>where 
-<P>D=base DAMAGE of the weapon before material 
-modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
+<P>D=base DAMAGE of the weapon before material modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
 weapon<BR>V=VALUE of the material the weapon is made from 
-<P><U>Determining Weapon Damage 
-Type</U> 
+<P><U>Determining Weapon Damage Type</U> 
+
 <P>
 <P></P>
 <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 

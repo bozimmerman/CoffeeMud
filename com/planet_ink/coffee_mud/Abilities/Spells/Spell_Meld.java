@@ -269,7 +269,7 @@ public class Spell_Meld extends Spell
 					gc.setName(newName);
 					gc.setDisplayText(newName+" sits here.");
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
-					gc.setGettable(itemOne.isGettable()&&itemTwo.isGettable());
+					Sense.setGettable(gc,Sense.isGettable(itemOne)&&Sense.isGettable(itemTwo));
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.baseEnvStats().setWeight(itemOne.baseEnvStats().weight()+itemTwo.baseEnvStats().weight());
 					gc.setCapacity(((Container)itemOne).capacity()+((Container)itemTwo).capacity());

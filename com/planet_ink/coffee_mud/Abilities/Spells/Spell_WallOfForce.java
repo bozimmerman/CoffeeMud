@@ -136,7 +136,7 @@ public class Spell_WallOfForce extends Spell
 				I.setDisplayText("an impenetrable wall of force surrounds "+mob.name());
 				I.setDescription("It`s tough, that's for sure.");
 				I.setMaterial(EnvResource.RESOURCE_NOTHING);
-				I.setGettable(false);
+				Sense.setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;

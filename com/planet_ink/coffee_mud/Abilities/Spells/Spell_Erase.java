@@ -24,7 +24,7 @@ public class Spell_Erase extends Spell
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
-		if((target==null)||((target!=null)&&(!(target instanceof Scroll))&&(!target.isReadable())))
+		if((target==null)||((target!=null)&&(!(target instanceof Scroll))&&(!Sense.isReadable(target))))
 		{
 			mob.tell("You can't erase that.");
 			return false;

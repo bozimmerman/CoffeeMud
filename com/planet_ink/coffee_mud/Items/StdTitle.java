@@ -26,7 +26,7 @@ public class StdTitle extends StdItem implements LandTitle
 		setName("a standard title");
 		setDescription("Give or Sell this title to transfer ownership. **DON'T LOSE THIS!**");
 		baseGoldValue=10000;
-		isReadable=true;
+		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
 		setMaterial(EnvResource.RESOURCE_PAPER);
 		recoverEnvStats();
 	}
@@ -129,7 +129,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return new Vector();
 	}
 
-	public boolean isReadable(){return true;}
+	public void recoverEnvStats(){Sense.setReadable(this,true); super.recoverEnvStats();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

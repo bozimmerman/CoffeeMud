@@ -58,7 +58,7 @@ public class Chant_PlantBed extends Chant
 				newItem.setMaterial(EnvResource.RESOURCE_HEMP);
 				newItem.baseEnvStats().setWeight(1000);
 				newItem.setBaseValue(0);
-				newItem.setGettable(false);
+				Sense.setGettable(newItem,false);
 				Ability A=CMClass.getAbility("Prop_RideResister");
 				A.setMiscText("disease poison");
 				newItem.addNonUninvokableEffect(A);

@@ -77,7 +77,7 @@ public class Spell_FakeSpring extends Spell
 				W.setDisplayText(newItem.displayText());
 				W.setDescription(newItem.description());
 				W.baseEnvStats().setWeight(newItem.baseEnvStats().weight());
-				((Item)W).setGettable(false);
+				Sense.setGettable(((Item)W),false);
 				W.setThirstQuenched(0);
 				W.recoverEnvStats();
 				mob.location().addItem((Item)W);

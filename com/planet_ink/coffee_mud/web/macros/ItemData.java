@@ -377,7 +377,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 29: // is gettable
 					if(firstTime)
-						old=I.isGettable()?"checked":"";
+						old=Sense.isGettable(I)?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";
@@ -385,7 +385,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 30: // is removable
 					if(firstTime)
-						old=I.isRemovable()?"checked":"";
+						old=Sense.isRemovable(I)?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";
@@ -393,7 +393,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 31: // is droppable
 					if(firstTime)
-						old=I.isDroppable()?"checked":"";
+						old=Sense.isDroppable(I)?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";
@@ -479,7 +479,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 41: // is readable
 					if(firstTime)
-						old=I.isReadable()?"checked":"";
+						old=Sense.isReadable(I)?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";

@@ -31,7 +31,8 @@ public class GenWallpaper implements Item
 	{return envStats;}
 	public EnvStats baseEnvStats()
 	{ return envStats; }
-	public void recoverEnvStats(){}
+	public void recoverEnvStats()
+	{ envStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public boolean isAContainer(){return false;}
 	public Environmental newInstance()
@@ -84,17 +85,6 @@ public class GenWallpaper implements Item
 	public void setBaseValue(int newValue){}
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
-	public boolean isReadable(){return isReadable;}
-	public void setReadable(boolean isTrue){isReadable=isTrue;}
-	public boolean isGettable(){return false;}
-	public void setGettable(boolean isTrue){}
-	public boolean isDroppable(){return true;}
-	public boolean isUltimatelyDroppable(){return true;}
-	public void setDroppable(boolean isTrue){}
-	public boolean isRemovable(){return true;}
-	public void setRemovable(boolean isTrue){}
-	public boolean isTrapped(){return false;}
-	public void setTrapped(boolean isTrue){}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats){}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState){}
@@ -294,7 +284,7 @@ public class GenWallpaper implements Item
 		case 0: return ID();
 		case 1: return name();
 		case 2: return description();
-		case 3: return ""+isReadable();
+		case 3: return ""+Sense.isReadable(this);
 		case 4: return readableText();
 		}
 		return "";
@@ -306,7 +296,8 @@ public class GenWallpaper implements Item
 		case 0: return;
 		case 1: setName(val); break;
 		case 2: setDescription(val); break;
-		case 3: setReadable(Util.s_bool(val)); break;
+		case 3: Sense.setReadable(this,Util.s_bool(val));
+				break;
 		case 4: setReadableText(val); break;
 		}
 	}

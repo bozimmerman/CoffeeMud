@@ -149,7 +149,7 @@ public class Sinking extends StdAbility
 
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
-			||(!item.isGettable())
+			||(!Sense.isGettable(item))
 			||Sense.isInFlight(item.ultimateContainer())
 			||(Sense.isWaterWorthy(item.ultimateContainer()))
 			||(item.envStats().weight()<1))

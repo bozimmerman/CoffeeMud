@@ -118,7 +118,7 @@ public class Spell_WallOfFire extends Spell
 				I.setDescription("The flames are high and hot.");
 				I.setMaterial(EnvResource.RESOURCE_NOTHING);
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
-				I.setGettable(false);
+				Sense.setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;

@@ -103,9 +103,9 @@ public class Prayer_Etherealness extends Prayer
 				for(int i=0;i<target.inventorySize();i++)
 				{
 					Item I=(Item)target.fetchInventory(i);
-					if((I.isDroppable())
+					if((Sense.isDroppable(I))
 					&&(I.container()==null)
-					&&(I.amWearingAt(Item.INVENTORY)||(I.isRemovable())))
+					&&(I.amWearingAt(Item.INVENTORY)||(Sense.isRemovable(I))))
 						allInv.addElement(I);
 				}
 				if(allInv.size()>0)

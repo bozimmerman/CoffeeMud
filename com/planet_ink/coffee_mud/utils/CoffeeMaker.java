@@ -86,16 +86,16 @@ public class CoffeeMaker
 	public static int envFlags(Environmental E)
 	{
 		int f=0;
-		if(E instanceof Item)
-		{
+		if(E instanceof Item) 
+		{// deprecated, but unfortunately, its here to stay.
 			Item item=(Item)E;
-			if(item.isDroppable())
+			if(Sense.isDroppable(item))
 				f=f|1;
-			if(item.isGettable())
+			if(Sense.isGettable(item))
 				f=f|2;
-			if(item.isReadable())
+			if(Sense.isReadable(item))
 				f=f|4;
-			if(item.isRemovable())
+			if(Sense.isRemovable(item))
 				f=f|8;
 		}
 		if(E instanceof Container)
@@ -140,10 +140,11 @@ public class CoffeeMaker
 		if(E instanceof Item)
 		{
 			Item item=(Item)E;
-			item.setDroppable(get(f,1));
-			item.setGettable(get(f,2));
-			item.setReadable(get(f,4));
-			item.setRemovable(get(f,8));
+			// deprecated, but unfortunately, its here to stay.
+			Sense.setDroppable(item,get(f,1));
+			Sense.setGettable(item,get(f,2));
+			Sense.setReadable(item,get(f,4));
+			Sense.setRemovable(item,get(f,8));
 		}
 		if(E instanceof Container)
 		{
@@ -1524,7 +1525,6 @@ public class CoffeeMaker
 		}
 
 		setEnvProperties(E,buf);
-
 		setEnvFlags(E,Util.s_int(XMLManager.getValFromPieces(buf,"FLAG")));
 
 		if(E instanceof Exit)
@@ -2020,9 +2020,9 @@ public class CoffeeMaker
 		case 8: return ""+I.rawProperLocationBitmap();
 		case 9: return ""+I.rawLogicalAnd();
 		case 10: return ""+I.baseGoldValue();
-		case 11: return ""+I.isReadable();
-		case 12: return ""+I.isDroppable();
-		case 13: return ""+I.isRemovable();
+		case 11: return ""+Sense.isReadable(I);
+		case 12: return ""+Sense.isDroppable(I);
+		case 13: return ""+Sense.isRemovable(I);
 		case 14: return ""+I.material();
 		case 15: return getExtraEnvPropertiesStr(I);
 		case 16: return ""+I.baseEnvStats().disposition();
@@ -2049,9 +2049,9 @@ public class CoffeeMaker
 		case 8: I.setRawProperLocationBitmap(Util.s_long(val)); break;
 		case 9: I.setRawLogicalAnd(Util.s_bool(val)); break;
 		case 10: I.setBaseValue(Util.s_int(val)); break;
-		case 11: I.setReadable(Util.s_bool(val)); break;
-		case 12: I.setDroppable(Util.s_bool(val)); break;
-		case 13: I.setRemovable(Util.s_bool(val)); break;
+		case 11: Sense.setReadable(I,Util.s_bool(val)); break;
+		case 12: Sense.setDroppable(I,Util.s_bool(val)); break;
+		case 13: Sense.setRemovable(I,Util.s_bool(val)); break;
 		case 14: I.setMaterial(Util.s_int(val)); break;
 		case 15: {
 					 while(I.numEffects()>0)

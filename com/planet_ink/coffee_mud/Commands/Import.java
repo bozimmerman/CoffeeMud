@@ -2871,7 +2871,7 @@ public class Import extends StdCommand
 			case 23: I=CMClass.getStdItem("GenCorpse"); break;
 			case 24: I=CMClass.getStdItem("GenCorpse"); break;
 			case 25: I=CMClass.getStdItem("GenWater");
-					 I.setGettable(false);
+					 Sense.setGettable(I,false);
 					 ((Drink)I).setLiquidHeld(Integer.MAX_VALUE-5000);
 					 ((Drink)I).setLiquidRemaining(((Drink)I).liquidHeld());
 					 break;
@@ -2893,7 +2893,7 @@ public class Import extends StdCommand
 			}
 
 			if(!Util.isSet(wearFlag,0))
-				I.setGettable(false);
+				Sense.setGettable(I,false);
 			if(Util.isSet(wearFlag,1))
 				I.setRawProperLocationBitmap(Item.ON_LEFT_FINGER|Item.ON_RIGHT_FINGER|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,2))
@@ -2942,12 +2942,12 @@ public class Import extends StdCommand
 				{
 					long wear=I.rawProperLocationBitmap();
 					boolean bool=I.rawLogicalAnd();
-					boolean gettable=I.isGettable();
+					boolean gettable=Sense.isGettable(I);
 					I=(Item)CMClass.getArmor("GenArmor");
 					I.setRawProperLocationBitmap(wear);
 					I.setRawLogicalAnd(bool);
 					I.baseEnvStats().setArmor(0);
-					I.setGettable(gettable);
+					Sense.setGettable(I,gettable);
 				}
 			}
 
@@ -3044,7 +3044,7 @@ public class Import extends StdCommand
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_BONUS);
 
 			if(Util.isSet(extraFlag,7))
-				I.setDroppable(false);
+				Sense.setDroppable(I,false);
 
 			if(Util.isSet(extraFlag,8))
 				I.addNonUninvokableEffect(CMClass.getAbility("Prayer_Bless"));
@@ -3064,12 +3064,12 @@ public class Import extends StdCommand
 				I.addNonUninvokableEffect(prop_WearZapper);
 
 			if(Util.isSet(extraFlag,12))
-				I.setRemovable(false);
+				Sense.setRemovable(I,false);
 
 			//if(extraFlag&4096)==4096) coffeemud doesn't support rotting cargo
 
 			if(Util.isSet(extraFlag,14))
-				I.setGettable(false);
+				Sense.setGettable(I,false);
 
 			//if(extraFlag&16384)==16384) coffeemud doesn't support rotting cargo
 
@@ -4430,7 +4430,7 @@ public class Import extends StdCommand
 						if(hasReadableContent(nameString))
 						{
 							I=CMClass.getStdItem("GenWallpaper");
-							I.setReadable(true);
+							Sense.setReadable(I,true);
 							I.setReadableText(fixReadableContent(descString));
 						}
 						else
@@ -4883,7 +4883,7 @@ public class Import extends StdCommand
 						else
 						{
 							R.addItem(I);
-							if(I.isGettable())
+							if(Sense.isGettable(I))
 							{
 								int rejuv=(int)Math.round(Util.div((long)60000,MudHost.TICK_TIME)*4.0);
 								I.baseEnvStats().setRejuv(rejuv*I.baseEnvStats().level());
@@ -4930,7 +4930,7 @@ public class Import extends StdCommand
 						Room RR=(Room)C.owner();
 						RR.addItem(I);
 						I.setContainer(C);
-						if(I.isGettable())
+						if(Sense.isGettable(I))
 							I.baseEnvStats().setRejuv(1000);
 						I.recoverEnvStats();
 						if(I instanceof Container)

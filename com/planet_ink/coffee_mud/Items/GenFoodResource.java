@@ -15,7 +15,6 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 		setName("an edible resource");
 		setDisplayText("a pile of edible resource sits here.");
 		setDescription("");
-		isReadable=false;
 		setMaterial(EnvResource.RESOURCE_BERRIES);
 		setNourishment(200);
 		baseEnvStats().setWeight(0);

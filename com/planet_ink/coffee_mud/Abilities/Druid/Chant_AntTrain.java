@@ -61,7 +61,7 @@ public class Chant_AntTrain extends Chant
 		Environmental target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 		if((!(target instanceof Item))
-		||(!((Item)target).isGettable()))
+		||(!Sense.isGettable(((Item)target))))
 		{
 			mob.tell("The ants can't carry "+target.name()+"!");
 			return false;

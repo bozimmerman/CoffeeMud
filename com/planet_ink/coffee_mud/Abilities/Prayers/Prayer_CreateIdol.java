@@ -115,8 +115,8 @@ public class Prayer_CreateIdol extends Prayer
 				newItem.baseEnvStats().setWeight(10);
 				newItem.setMaterial(material);
 				newItem.recoverEnvStats();
-				newItem.setRemovable(false);
-				newItem.setDroppable(false);
+				Sense.setRemovable(newItem,false);
+				Sense.setDroppable(newItem,false);
 				newItem.addNonUninvokableEffect((Ability)copyOf());
 				mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" grows out of the ground.");

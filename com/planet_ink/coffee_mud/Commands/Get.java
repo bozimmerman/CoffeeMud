@@ -149,7 +149,7 @@ public class Get extends BaseItemParser
 				if(getThis==null) break;
 				if((getThis instanceof Item)
 				&&(Sense.canBeSeenBy(getThis,mob))
-				&&((!allFlag)||((Item)getThis).isGettable()||(getThis.displayText().length()>0))
+				&&((!allFlag)||Sense.isGettable(((Item)getThis))||(getThis.displayText().length()>0))
 				&&(!V.contains(getThis)))
 					V.addElement(getThis);
 				addendumStr="."+(++addendum);

@@ -325,7 +325,7 @@ public class Sculpting extends CommonSkill
 					((Container)building).setCapacity(0);
 			}
 			building.recoverEnvStats();
-			if((!building.isGettable())
+			if((!Sense.isGettable(building))
 			&&(!CoffeeUtensils.doesOwnThisProperty(mob,mob.location())))
 			{
 				commonTell(mob,"You are not allowed to build that here.");

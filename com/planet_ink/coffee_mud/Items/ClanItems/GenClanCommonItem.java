@@ -19,7 +19,6 @@ public class GenClanCommonItem extends StdClanCommonItem
 		baseEnvStats().setWeight(2);
 		setMaterial(EnvResource.RESOURCE_COTTON);
 		recoverEnvStats();
-		isReadable=false;
 	}
 	
 	public Environmental newInstance()

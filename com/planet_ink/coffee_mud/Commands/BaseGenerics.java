@@ -499,16 +499,16 @@ public class BaseGenerics extends StdCommand
 		 ||(E instanceof Light)
 		 ||(E instanceof Container)
 		 ||(E instanceof Key))
-			E.setReadable(false);
+			Sense.setReadable(E,false);
 		else
 		if((CMClass.className(E).endsWith("Readable"))
 		 ||(E instanceof com.planet_ink.coffee_mud.interfaces.Map))
-			E.setReadable(true);
+			Sense.setReadable(E,true);
 		else
 		if((showFlag!=showNumber)&&(showFlag>-999))
-			mob.tell(showNumber+". Item is readable: "+E.isReadable());
+			mob.tell(showNumber+". Item is readable: "+Sense.isReadable(E));
 		else
-			E.setReadable(genGenericPrompt(mob,showNumber+". Is this item readable",E.isReadable()));
+			Sense.setReadable(E,genGenericPrompt(mob,showNumber+". Is this item readable",Sense.isReadable(E)));
 	}
 
 	public static void genReadable2(MOB mob, Item E, int showNumber, int showFlag)
@@ -516,7 +516,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 
-		if((E.isReadable())
+		if((Sense.isReadable(E))
 		 ||(E instanceof Wand)
 		 ||(E instanceof Scroll)
 		 ||(E instanceof Pill)
@@ -674,9 +674,9 @@ public class BaseGenerics extends StdCommand
 		String c="Q";
 		while(!c.equals("\n"))
 		{
-			mob.session().println(showNumber+". A) Is Gettable   : "+E.isGettable());
-			mob.session().println("    B) Is Droppable  : "+E.isDroppable());
-			mob.session().println("    C) Is Removable  : "+E.isRemovable());
+			mob.session().println(showNumber+". A) Is Gettable   : "+Sense.isGettable(E));
+			mob.session().println("    B) Is Droppable  : "+Sense.isDroppable(E));
+			mob.session().println("    C) Is Removable  : "+Sense.isRemovable(E));
 			mob.session().println("    D) Non-Locatable : "+(((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)?"true":"false"));
 			if(E instanceof Weapon)
 				mob.session().println("    E) Is Two-Handed : "+E.rawLogicalAnd());
@@ -684,9 +684,9 @@ public class BaseGenerics extends StdCommand
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","ABCDE\n","\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
 			{
-			case 'A': E.setGettable(!E.isGettable()); break;
-			case 'B': E.setDroppable(!E.isDroppable()); break;
-			case 'C': E.setRemovable(!E.isRemovable()); break;
+			case 'A': Sense.setGettable(E,!Sense.isGettable(E)); break;
+			case 'B': Sense.setDroppable(E,!Sense.isDroppable(E)); break;
+			case 'C': Sense.setRemovable(E,!Sense.isRemovable(E)); break;
 			case 'D': if((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)
 						  E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()-EnvStats.SENSE_UNLOCATABLE);
 					  else

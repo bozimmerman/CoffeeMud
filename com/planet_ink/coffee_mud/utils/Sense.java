@@ -40,6 +40,97 @@ public class Sense
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_BREATHE)==0); }
 	public static boolean canSeeMetal(Environmental E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_METAL)==EnvStats.CAN_SEE_METAL); }
+	public static boolean isReadable(Item I)
+	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMREADABLE)==EnvStats.SENSE_ITEMREADABLE); }
+	public static boolean isGettable(Item I)
+	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMNOTGET)==0); }
+	public static boolean isDroppable(Item I)
+	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMNODROP)==0); }
+	public static boolean isRemovable(Item I)
+	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMNOREMOVE)==0); }
+	public static void setReadable(Item I, boolean truefalse)
+	{
+		if(I==null) return;
+		if(isReadable(I))
+		{
+			if(!truefalse)
+			{
+				I.baseEnvStats().setSensesMask(Util.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+				I.envStats().setSensesMask(Util.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+			}
+		}
+		else
+		if(truefalse)
+		{
+			I.baseEnvStats().setSensesMask(Util.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+			I.envStats().setSensesMask(Util.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+		}
+	}
+	public static void setGettable(Item I, boolean truefalse)
+	{
+		if(I==null) return;
+		if(isGettable(I))
+		{
+			if(!truefalse)
+			{
+				I.baseEnvStats().setSensesMask(Util.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
+				I.envStats().setSensesMask(Util.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
+			}
+		}
+		else
+		if(truefalse)
+		{
+			I.baseEnvStats().setSensesMask(Util.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
+			I.envStats().setSensesMask(Util.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
+		}
+	}
+	public static void setDroppable(Item I, boolean truefalse)
+	{
+		if(I==null) return;
+		if(isDroppable(I))
+		{
+			if(!truefalse)
+			{
+				I.baseEnvStats().setSensesMask(Util.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+				I.envStats().setSensesMask(Util.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+			}
+		}
+		else
+		if(truefalse)
+		{
+			I.baseEnvStats().setSensesMask(Util.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+			I.envStats().setSensesMask(Util.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+		}
+	}
+	public static void setRemovable(Item I, boolean truefalse)
+	{
+		if(I==null) return;
+		if(isRemovable(I))
+		{
+			if(!truefalse)
+			{
+				I.baseEnvStats().setSensesMask(Util.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+				I.envStats().setSensesMask(Util.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+			}
+		}
+		else
+		if(truefalse)
+		{
+			I.baseEnvStats().setSensesMask(Util.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+			I.envStats().setSensesMask(Util.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+		}
+	}
+	public static boolean isUltimatelyDroppable(Item I)
+	{
+		if(I instanceof Container)
+		{
+			Vector V=((Container)I).getContents();
+			for(int v=0;v<V.size();v++)
+				if(!isDroppable((Item)V.elementAt(v)))
+					return false;
+		}
+		return isDroppable(I);
+	}
 
 	public static boolean isSeen(Environmental E)
 	{ return (E!=null)&&(((E.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0) || isSleeping(E)); }

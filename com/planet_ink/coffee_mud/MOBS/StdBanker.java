@@ -654,8 +654,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 				else
 				if((numberDeposited(thename)==0)
 				&&((whatISell==ShopKeeper.DEAL_CLANBANKER)
-				   ||(!msg.source().isMarriedToLeige()))
-				   ||(numberDeposited(msg.source().getLeigeID())==0))
+				   ||(!msg.source().isMarriedToLeige())
+				   ||(numberDeposited(msg.source().getLeigeID())==0)))
 				{
 					StringBuffer str=new StringBuffer("");
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)

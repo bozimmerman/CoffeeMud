@@ -18,7 +18,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		setName("a map");
 		setDisplayText("a map sits here");
 		setDescription("Looks like a map of some place.");
-		isReadable=true;
+		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
 		baseGoldValue=10;
 		material=EnvResource.RESOURCE_PAPER;
 		recoverEnvStats();
@@ -519,7 +519,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				StringBuffer map[][]=getMyMappedRoom();
-				if((isReadable)
+				if((Sense.isReadable(this))
 				&&(map!=null)
 				&&(map.length>0)
 				&&(map[0].length>0)

@@ -130,7 +130,7 @@ public class Spell_WallOfStone extends Spell
 				I.setDisplayText("a mighty wall of stone has been erected here");
 				I.setDescription("The bricks are sold and sturdy.");
 				I.setMaterial(EnvResource.RESOURCE_STONE);
-				I.setGettable(false);
+				Sense.setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;

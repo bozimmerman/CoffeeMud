@@ -131,7 +131,7 @@ public class Spell_WallOfDarkness extends Spell
 				I.setDisplayText("an eerie wall of darkness lingers here");
 				I.setDescription("It`s black.");
 				I.setMaterial(EnvResource.RESOURCE_NOTHING);
-				I.setGettable(false);
+				Sense.setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;

@@ -68,7 +68,7 @@ public class Chant_Treeform extends Chant
 				item.setDescription(mob.description());
 				item.setDisplayText(mob.displayText());
 				item.setMaterial(EnvResource.RESOURCE_WOOD);
-				item.setGettable(false);
+				Sense.setGettable(item,false);
 				item.envStats().setWeight(2000);
 				FullMsg msg2=new FullMsg(msg.source(),item,msg.targetCode(),null);
 				if(!okMessage(msg.source(),msg2))

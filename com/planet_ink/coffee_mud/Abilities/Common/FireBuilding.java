@@ -116,7 +116,7 @@ public class FireBuilding extends CommonSkill
 					commonTell(mob,l.name()+" is already lit!");
 					return false;
 				}
-				if(lighting.isGettable())
+				if(Sense.isGettable(lighting))
 					commonTell(mob,"Just hold this item to light it.");
 				else
 				{

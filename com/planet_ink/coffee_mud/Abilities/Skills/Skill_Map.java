@@ -77,7 +77,7 @@ public class Skill_Map extends StdAbility
 		if(target==null)return false;
 
 		Item item=target;
-		if((item==null)||((item!=null)&&(!item.isReadable())))
+		if((item==null)||((item!=null)&&(!Sense.isReadable(item))))
 		{
 			mob.tell("You can't map on that.");
 			return false;
@@ -124,13 +124,11 @@ public class Skill_Map extends StdAbility
 					B.setBaseValue(item.baseGoldValue()*2);
 					B.setDescription(item.description());
 					B.setDisplayText(item.displayText());
-					B.setDroppable(item.isDroppable());
-					B.setGettable(item.isGettable());
 					B.setMaterial(item.material());
 					B.setRawLogicalAnd(item.rawLogicalAnd());
 					B.setRawProperLocationBitmap(item.rawProperLocationBitmap());
 					B.setSecretIdentity(item.secretIdentity());
-					B.setRemovable(item.isRemovable());
+					Sense.setRemovable(B,Sense.isRemovable(item));
 					B.setUsesRemaining(item.usesRemaining());
 					item.destroy();
 					mob.addInventory(B);

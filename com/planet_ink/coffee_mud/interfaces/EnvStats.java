@@ -25,10 +25,10 @@ public interface EnvStats extends Cloneable
 	public final static int SENSE_UNLOCATABLE=1;
 	public final static int SENSE_ITEMNOMINRANGE=2;
 	public final static int SENSE_ITEMNOMAXRANGE=4;
-	public final static int SENSE_UNUSEDMASK4=8;
-	public final static int SENSE_UNUSEDMASK5=16;
-	public final static int SENSE_UNUSEDMASK6=32;
-	public final static int SENSE_UNUSEDMASK7=64;
+	public final static int SENSE_ITEMREADABLE=8;
+	public final static int SENSE_ITEMNOTGET=16;
+	public final static int SENSE_ITEMNODROP=32;
+	public final static int SENSE_ITEMNOREMOVE=64;
 	public final static int SENSE_UNUSEDMASK8=128;
 	public final static int SENSE_UNUSEDMASK9=256;
 	public final static int SENSE_UNUSEDMASK10=512;

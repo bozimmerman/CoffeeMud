@@ -27,8 +27,8 @@ public class Trap_Gluey extends StdTrap
 				super.spring(target);
 				if(affected instanceof Item)
 				{
-					((Item)affected).setRemovable(false);
-					((Item)affected).setDroppable(false);
+					Sense.setRemovable(((Item)affected),false);
+					Sense.setDroppable(((Item)affected),false);
 				}
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();

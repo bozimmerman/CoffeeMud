@@ -127,7 +127,7 @@ public class GrinderItems
 			case 9: // is generic
 				break;
 			case 10: // isreadable
-				I.setReadable(old.equals("on"));
+				Sense.setReadable(I,old.equals("on"));
 				break;
 			case 11: // readable text
 				I.setReadableText(old);
@@ -203,13 +203,13 @@ public class GrinderItems
 				I.setSecretIdentity(old);
 				break;
 			case 29: // is gettable
-				I.setGettable(old.equals("on"));
+				Sense.setGettable(I,old.equals("on"));
 				break;
 			case 30: // is removable
-				I.setRemovable(old.equals("on"));
+				Sense.setRemovable(I,old.equals("on"));
 				break;
 			case 31: // is droppable
-				I.setDroppable(old.equals("on"));
+				Sense.setDroppable(I,old.equals("on"));
 				break;
 			case 32: // is two handed
 				if((I instanceof Weapon)||(I instanceof Armor))
@@ -264,7 +264,7 @@ public class GrinderItems
 								break;
 					}
 					old=old+";";
-					I.setReadable(false);
+					Sense.setReadable(I,false);
 					I.setReadableText(old);
 				}
 				break;

@@ -65,13 +65,13 @@ public class PuddleMaker extends StdBehavior
 		{
 			Item I=R.fetchItem(i);
 			if((I instanceof Drink)
-			   &&(!I.isGettable())
+			   &&(!Sense.isGettable(I))
 			   &&((I.name().toLowerCase().indexOf("puddle")>=0)
 				  ||(I.name().toLowerCase().indexOf("snow")>=0)))
 					return;
 		}
 		Item I=CMClass.getItem("GenLiquidResource");
-		I.setGettable(false);
+		Sense.setGettable(I,false);
 		((Drink)I).setLiquidHeld(100);
 		((Drink)I).setLiquidRemaining(100);
 		((Drink)I).setLiquidType(EnvResource.RESOURCE_FRESHWATER);

@@ -95,6 +95,6 @@ public class GenCaged extends GenItem implements CagedAnimal
 	public void setCageText(String text)
 	{
 		setReadableText(CoffeeMaker.parseOutAngleBrackets(text));
-		setReadable(false);
+		Sense.setReadable(this,false);
 	}
 }

@@ -18,7 +18,7 @@ public class DruidicMonument extends StdItem implements MiscMagic
 		secretIdentity="DRUIDIC STONES";
 		baseEnvStats().setLevel(1);
 		setMaterial(EnvResource.RESOURCE_STONE);
-		setGettable(false);
+		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
 		baseEnvStats().setWeight(1000);
 		baseGoldValue=0;
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);

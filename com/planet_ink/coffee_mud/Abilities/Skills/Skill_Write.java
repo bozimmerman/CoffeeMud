@@ -36,7 +36,7 @@ public class Skill_Write extends StdAbility
 		if(target==null)
 		{
 			target=mob.location().fetchItem(null,(String)commands.elementAt(0));
-			if((target!=null)&&(target.isGettable()))
+			if((target!=null)&&(Sense.isGettable(target)))
 			{
 				mob.tell("You don't have that.");
 				return false;
@@ -49,7 +49,7 @@ public class Skill_Write extends StdAbility
 		}
 
 		Item item=target;
-		if((item==null)||((item!=null)&&(!item.isReadable())))
+		if((item==null)||((item!=null)&&(!Sense.isReadable(item))))
 		{
 			mob.tell("You can't write on that.");
 			return false;

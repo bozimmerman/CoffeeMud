@@ -105,7 +105,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			if((I==null)||(!I.ID().equals("GenWallpaper")))
 			{
 				I=CMClass.getItem("GenWallpaper");
-				I.setReadable(true);
+				Sense.setReadable(I,true);
 				I.setName("id");
 				I.setReadableText("This room is "+CMMap.getExtendedRoomID(R));
 				I.setDescription("This room is "+CMMap.getExtendedRoomID(R));

@@ -26,7 +26,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
 		newItem.baseEnvStats().setWeight(10000);
-		newItem.setGettable(false);
+		Sense.setGettable(newItem,false);
 		newItem.setMaterial(material);
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());

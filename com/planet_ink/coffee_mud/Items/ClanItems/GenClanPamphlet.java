@@ -19,7 +19,6 @@ public class GenClanPamphlet extends StdClanPamphlet
 		baseEnvStats().setWeight(2);
 		setMaterial(EnvResource.RESOURCE_PAPER);
 		recoverEnvStats();
-		isReadable=false;
 	}
 	
 	public Environmental newInstance()

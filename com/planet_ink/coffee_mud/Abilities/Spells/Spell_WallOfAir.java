@@ -132,7 +132,7 @@ public class Spell_WallOfAir extends Spell
 				I.setDisplayText("");
 				I.setDescription("The air is swirling dangerously.");
 				I.setMaterial(EnvResource.RESOURCE_NOTHING);
-				I.setGettable(false);
+				Sense.setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;

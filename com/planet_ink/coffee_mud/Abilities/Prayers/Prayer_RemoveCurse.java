@@ -46,8 +46,8 @@ public class Prayer_RemoveCurse extends Prayer
 					}
 					else
 					{
-						I.setRemovable(true);
-						I.setDroppable(true);
+						Sense.setRemovable(I,true);
+						Sense.setDroppable(I,true);
 					}
 					Prayer_Bless.endLowerCurses(I,adjustedLevel(mob));
 					I.recoverEnvStats();

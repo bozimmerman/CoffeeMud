@@ -21,7 +21,7 @@ public class Read extends StdCommand
 		if(thisThang instanceof Item)
 		{
 			Item thisItem=(Item)thisThang;
-			if((thisItem.isGettable())&&(!mob.isMine(thisItem)))
+			if((Sense.isGettable(thisItem))&&(!mob.isMine(thisItem)))
 			{
 				mob.tell("You don't seem to be carrying that.");
 				return;

@@ -20,7 +20,7 @@ public class GenWand extends GenItem implements Wand
 		setUsesRemaining(0);
 		baseGoldValue=20000;
 		baseEnvStats().setLevel(12);
-		setReadable(false);
+		Sense.setReadable(this,false);
 		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
 	}

@@ -161,7 +161,7 @@ public class Chant_PlantWall extends Chant
 				I.setDisplayText("a writhing plant wall has grown here");
 				I.setDescription("The wall is thick and stringy.");
 				I.setMaterial(EnvResource.RESOURCE_GREENS);
-				I.setGettable(false);
+				Sense.setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;

@@ -20,10 +20,6 @@ public class StdItem implements Item
 	protected boolean	wornLogicalAnd=false;
 	protected long 		properWornBitmap=Item.HELD;
 	protected int		baseGoldValue=0;
-	protected boolean	isReadable=false;
-	protected boolean	isGettable=true;
-	protected boolean	isDroppable=true;
-	protected boolean	isRemovable=true;
 	protected int		material=EnvResource.RESOURCE_COTTON;
 	protected Environmental owner=null;
 	protected long dispossessionTime=0;
@@ -298,25 +294,6 @@ public class StdItem implements Item
 
 	public String readableText(){return miscText;}
 	public void setReadableText(String text){miscText=text;}
-	public boolean isReadable(){return isReadable;}
-	public void setReadable(boolean isTrue){isReadable=isTrue;}
-	public boolean isGettable(){return isGettable;}
-	public void setGettable(boolean isTrue){isGettable=isTrue;}
-	public boolean isDroppable(){return isDroppable;}
-	public boolean isUltimatelyDroppable()
-	{
-		if(this instanceof Container)
-		{
-			Vector V=((Container)this).getContents();
-			for(int v=0;v<V.size();v++)
-				if(!((Item)V.elementAt(v)).isDroppable())
-					return false;
-		}
-		return isDroppable();
-	}
-	public void setDroppable(boolean isTrue){isDroppable=isTrue;}
-	public boolean isRemovable(){return isRemovable;}
-	public void setRemovable(boolean isTrue){isRemovable=isTrue;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -542,7 +519,7 @@ public class StdItem implements Item
 			return true;
 		else
 		if((Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
-		&&(!isGettable())
+		&&(!Sense.isGettable(this))
 		&&((displayText().length()==0)
 		   ||((msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
@@ -701,7 +678,7 @@ public class StdItem implements Item
 					mob.tell(name()+" is too heavy.");
 					return false;
 				}
-				if(!isGettable)
+				if(!Sense.isGettable(this))
 				{
 					mob.tell("You can't get "+name()+".");
 					return false;
@@ -741,7 +718,7 @@ public class StdItem implements Item
 					mob.tell("You can't see that.");
 					return false;
 				}
-				if((!amWearingAt(Item.INVENTORY))&&(!isRemovable))
+				if((!amWearingAt(Item.INVENTORY))&&(!Sense.isRemovable(this)))
 				{
 					if(amWearingAt(Item.WIELD)||amWearingAt(Item.HELD))
 					{
@@ -774,7 +751,7 @@ public class StdItem implements Item
 				mob.tell("You don't have that.");
 				return false;
 			}
-			if(!isUltimatelyDroppable())
+			if(!Sense.isUltimatelyDroppable(this))
 			{
 				mob.tell("You can't seem to let go of "+name()+".");
 				return false;
@@ -786,7 +763,7 @@ public class StdItem implements Item
 				mob.tell(name()+" is too heavy to throw.");
 				return false;
 			}
-			if(!isUltimatelyDroppable())
+			if(!Sense.isUltimatelyDroppable(this))
 			{
 				mob.tell("You can't seem to let go of "+name()+".");
 				return false;
@@ -827,7 +804,7 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_WRITE:
-			if((this.isReadable())&&(!(this instanceof Scroll)))
+			if((Sense.isReadable(this))&&(!(this instanceof Scroll)))
 			{
 				if(msg.targetMessage().trim().length()==0)
 				{
@@ -891,7 +868,7 @@ public class StdItem implements Item
 			{
 				if(Sense.canBeSeenBy(this,mob))
 				{
-					if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
+					if((Sense.isReadable(this))&&(readableText()!=null)&&(readableText().length()>0))
 					{
 						if(readableText().startsWith("FILE=")
 							||readableText().startsWith("FILE="))
@@ -997,7 +974,7 @@ public class StdItem implements Item
 			setContainer(null);
 			break;
 		case CMMsg.TYP_WRITE:
-			if(this.isReadable())
+			if(Sense.isReadable(this))
 				setReadableText((readableText()+" "+msg.targetMessage()).trim());
 			break;
 		case CMMsg.TYP_DEATH:

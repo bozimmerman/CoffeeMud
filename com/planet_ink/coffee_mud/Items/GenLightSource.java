@@ -20,7 +20,6 @@ public class GenLightSource extends GenItem implements Light
 		setName("a generic lightable thing");
 		setDisplayText("a generic lightable thing sits here.");
 		setDescription("");
-		isReadable=false;
 		destroyedWhenBurnedOut=true;
 		setMaterial(EnvResource.RESOURCE_OAK);
 		setDuration(200);

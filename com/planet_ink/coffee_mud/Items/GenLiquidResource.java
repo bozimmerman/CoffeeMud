@@ -15,7 +15,6 @@ public class GenLiquidResource extends GenWater implements EnvResource, Drink
 		setName("a puddle of resource thing");
 		setDisplayText("a puddle of resource sits here.");
 		setDescription("");
-		isReadable=false;
 		setMaterial(EnvResource.RESOURCE_FRESHWATER);
 		disappearsAfterDrinking=true;
 		baseEnvStats().setWeight(0);

@@ -260,7 +260,7 @@ public class RandomTraps extends ActiveTicker
 					for(int i=0;i<R.numItems();i++)
 					{
 						Item I=R.fetchItem(i);
-						if((I.isGettable())
+						if((Sense.isGettable(I))
 						&&(!elligible.contains(I))
 						&&(!I.ID().endsWith("Wallpaper")))
 						{

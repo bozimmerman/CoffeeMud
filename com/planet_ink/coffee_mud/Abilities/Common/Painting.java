@@ -129,7 +129,7 @@ public class Painting extends CommonSkill
 					I=mob.location().fetchItem(i);
 					if((I!=null)
 					&&(I.displayText().length()==0)
-					&&(!I.isGettable())
+					&&(!Sense.isGettable(I))
 					&&((" "+I.name().toUpperCase()+" ").indexOf(vstr)>=0))
 					{
 						if(S.confirm("'"+I.name()+"' already shares one of these key words ('"+vstr.trim().toLowerCase()+"').  Would you like to destroy it (y/N)? ","N"))

@@ -51,7 +51,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	{
 		if((liquidRemaining()<1)
 		||
-		 ((!isGettable())
+		 ((!Sense.isGettable(this))
 		&&(owner()!=null)
 		&&(owner() instanceof Room)
 		&&(((Room)owner()).getArea()!=null)
@@ -70,7 +70,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DRINK:
-				if((mob.isMine(this))||(envStats().weight()>1000)||(!this.isGettable()))
+				if((mob.isMine(this))||(envStats().weight()>1000)||(!Sense.isGettable(this)))
 				{
 					if(!containsDrink())
 					{

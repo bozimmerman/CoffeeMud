@@ -19,7 +19,6 @@ public class GenClanItem extends StdClanItem
 		baseEnvStats().setWeight(2);
 		setMaterial(EnvResource.RESOURCE_OAK);
 		recoverEnvStats();
-		isReadable=false;
 	}
 	
 	public Environmental newInstance()

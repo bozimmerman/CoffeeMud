@@ -16,7 +16,6 @@ public class GenCoins extends GenItem implements Coins
 		myContainer=null;
 		setMaterial(EnvResource.RESOURCE_GOLD);
 		setDescription("");
-		isReadable=false;
 	}
 
 	public Environmental newInstance()

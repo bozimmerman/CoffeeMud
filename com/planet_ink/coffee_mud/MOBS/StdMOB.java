@@ -358,7 +358,7 @@ public class StdMOB implements MOB
 		if(getLeigeID().equals(Name())) return false;
 		MOB M=CMMap.getLoadPlayer(getLeigeID());
 		if(M==null){ setLeigeID(""); return false;}
-		if(M.getLeigeID().equals(getLeigeID()))
+		if(M.getLeigeID().equals(Name()))
 			return true;
 		return false;
 	}

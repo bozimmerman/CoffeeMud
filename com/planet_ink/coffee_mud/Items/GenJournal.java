@@ -14,7 +14,8 @@ public class GenJournal extends StdJournal
 		super();
 		setDisplayText("a journal sits here.");
 		setDescription("Enter `READ [NUMBER] [JOURNAL]` to read an entry.%0D%0AUse your WRITE skill to add new entries. ");
-		isReadable=true;
+		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
+		recoverEnvStats();
 		setMaterial(EnvResource.RESOURCE_PAPER);
 	}
 

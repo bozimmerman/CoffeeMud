@@ -19,7 +19,6 @@ public class StdPortal extends StdContainer implements Rideable
 		recoverEnvStats();
 		capacity=10000;
 		material=EnvResource.RESOURCE_NOTHING;
-		isReadable=false;
 	}
 	public Environmental newInstance()
 	{
@@ -35,8 +34,7 @@ public class StdPortal extends StdContainer implements Rideable
 	public Rider fetchRider(int which){return null;}
 	public void addRider(Rider mob){}
 	public void delRider(Rider mob){}
-	public boolean isReadable(){return false;}
-	public void setReadable(boolean isTrue){}
+	public void recoverEnvStats(){Sense.setReadable(this,false); super.recoverEnvStats();}
 
 	public Hashtable getRideBuddies(Hashtable list){return list;}
 

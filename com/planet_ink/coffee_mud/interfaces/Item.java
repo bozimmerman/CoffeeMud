@@ -43,15 +43,6 @@ public interface Item extends Environmental, Rider
 
 	public String readableText();
 	public void setReadableText(String text);
-	public boolean isReadable();
-	public void setReadable(boolean isTrue);
-	public boolean isGettable();
-	public void setGettable(boolean isTrue);
-	public boolean isDroppable();
-	public boolean isUltimatelyDroppable();
-	public void setDroppable(boolean isTrue);
-	public boolean isRemovable();
-	public void setRemovable(boolean isTrue);
 	
 	/**
 	 * constants for worn items
