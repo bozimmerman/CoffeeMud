@@ -15,6 +15,23 @@ public class Chant_CharmAnimal extends Chant
 	protected int canTargetCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_CHARMING;}
 
+	private MOB charmer=null;
+	private MOB getCharmer()
+	{
+		if(charmer!=null) return charmer;
+		if((invoker!=null)&&(invoker!=affected))
+			charmer=invoker;
+		else
+		if((text().length()>0)&&(affected instanceof MOB))
+		{
+			Room R=((MOB)affected).location();
+			if(R!=null)
+				charmer=R.fetchInhabitant(text());
+		}
+		if(charmer==null) return invoker;
+		return charmer;
+	}
+	
 	public Environmental newInstance(){	return new Chant_CharmAnimal();}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
@@ -66,8 +83,8 @@ public class Chant_CharmAnimal extends Chant
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;
 		MOB mob=(MOB)affecting();
-		if((affected==mob)&&((mob.amFollowing()==null)||(mob.amFollowing()!=invoker)))
-			ExternalPlay.follow(mob,invoker,true);
+		if((affected==mob)&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer())))
+			ExternalPlay.follow(mob,getCharmer(),true);
 		return super.tick(ticking,tickID);
 	}
 

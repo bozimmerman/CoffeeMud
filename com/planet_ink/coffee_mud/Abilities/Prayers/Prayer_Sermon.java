@@ -16,6 +16,23 @@ public class Prayer_Sermon extends Prayer
 	public long flags(){return Ability.FLAG_CHARMING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
+	private MOB charmer=null;
+	private MOB getCharmer()
+	{
+		if(charmer!=null) return charmer;
+		if((invoker!=null)&&(invoker!=affected))
+			charmer=invoker;
+		else
+		if((text().length()>0)&&(affected instanceof MOB))
+		{
+			Room R=((MOB)affected).location();
+			if(R!=null)
+				charmer=R.fetchInhabitant(text());
+		}
+		if(charmer==null) return invoker;
+		return charmer;
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

@@ -16,6 +16,23 @@ public class Spell_Enthrall extends Spell
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_CHARMING;}
 
+	private MOB charmer=null;
+	private MOB getCharmer()
+	{
+		if(charmer!=null) return charmer;
+		if((invoker!=null)&&(invoker!=affected))
+			charmer=invoker;
+		else
+		if((text().length()>0)&&(affected instanceof MOB))
+		{
+			Room R=((MOB)affected).location();
+			if(R!=null)
+				charmer=R.fetchInhabitant(text());
+		}
+		if(charmer==null) return invoker;
+		return charmer;
+	}
+	
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -68,8 +85,8 @@ public class Spell_Enthrall extends Spell
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;
 		MOB mob=(MOB)affecting();
-		if((affected==mob)&&((mob.amFollowing()==null)||(mob.amFollowing()!=invoker)))
-			ExternalPlay.follow(mob,invoker,true);
+		if((affected==mob)&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer())))
+			ExternalPlay.follow(mob,getCharmer(),true);
 		return super.tick(ticking,tickID);
 	}
 
