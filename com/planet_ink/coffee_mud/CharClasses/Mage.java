@@ -72,6 +72,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_FloatingDisc",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_DetectGold",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_Spook",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_Mend",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_DispelMagic",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_MageArmor",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_ResistAcid",false);
@@ -94,6 +95,7 @@ public class Mage extends StdCharClass
 			// level 8
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_FaerieFog",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_Lightning",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Spell_Shatter",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_Fear",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_ResistElectricity",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_IdentifyObject",false);

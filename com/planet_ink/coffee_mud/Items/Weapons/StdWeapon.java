@@ -100,14 +100,15 @@ public class StdWeapon extends StdItem implements Weapon
 			&&(myOwner()!=null)
 			&&(myOwner() instanceof MOB))
 			{
+				MOB owner=(MOB)myOwner();
 				setUsesRemaining(100);
 				affect.addTrailerMsg(new FullMsg(((MOB)myOwner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being wielded by <S-NAME> is destroyed!"));
 				remove();
 				destroyThis();
-				((MOB)myOwner()).recoverEnvStats();
-				((MOB)myOwner()).recoverCharStats();
-				((MOB)myOwner()).recoverMaxState();
-				((MOB)myOwner()).location().recoverRoomStats();
+				owner.recoverEnvStats();
+				owner.recoverCharStats();
+				owner.recoverMaxState();
+				owner.location().recoverRoomStats();
 			}
 		}
 	}
