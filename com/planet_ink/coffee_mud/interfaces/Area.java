@@ -4,10 +4,12 @@ import java.util.Vector;
 public interface Area extends Environmental
 {
 	public int weatherType(Room room);
+	public String weatherDescription(Room room);
 	public int climateType();
 	public void setClimateType(int newClimateType);
-	public void tickControl(boolean start);
+	public String getWeatherDescription();
 	
+	public void tickControl(boolean start);
 	public StringBuffer getAreaStats();
 	public Vector getMyMap();
 	
