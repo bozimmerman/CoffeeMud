@@ -135,7 +135,7 @@ public class ClanCrafting extends CommonSkill
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer("");
-			buf.append(Util.padRight("Item",34)+" "
+			buf.append(Util.padRight("Item",24)+" "
 					   +Util.padRight("Exp",9)+" "
 					   +Util.padRight("Material#1",14)+" "
 					   +Util.padRight("Amt#1",4)+" "
@@ -161,13 +161,13 @@ public class ClanCrafting extends CommonSkill
 							amt1=mat1.substring(m1+1);
 							mat1=mat1.substring(0,m1).toLowerCase();
 						}
-						int m2=mat1.indexOf("/");
+						int m2=mat2.indexOf("/");
 						if(m2>=0)
 						{
 							amt2=mat2.substring(m2+1);
 							mat2=mat2.substring(0,m2).toLowerCase();
 						}
-						buf.append(Util.padRight(item,34)+" "
+						buf.append(Util.padRight(item,24)+" "
 								   +Util.padRight(""+exp,9)+" "
 								   +Util.padRight(mat1,14)+" "
 								   +Util.padRight(amt1,4)+" "
@@ -226,7 +226,7 @@ public class ClanCrafting extends CommonSkill
 				}
 			}
 		}
-		int m2=mat1.indexOf("/");
+		int m2=mat2.indexOf("/");
 		if(m2>=0)
 		{
 			amt2=Util.s_int(mat2.substring(m2+1));
@@ -308,10 +308,7 @@ public class ClanCrafting extends CommonSkill
 			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+mob.location().getArea().name()).toLowerCase();
 			building.setReadableText(mob.location().getArea().name());
 		}
-		if(itemName.endsWith("s"))
-			itemName="some "+itemName;
-		else
-			itemName=Util.startWithAorAn(itemName);
+		itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) crafting "+building.name()+".";
 		displayText="You are crafting "+building.name();
@@ -331,6 +328,7 @@ public class ClanCrafting extends CommonSkill
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 		if(building instanceof ClanItem)
 		{
+			building.baseEnvStats().setSensesMask(EnvStats.CAN_NOT_SEE);
 			((ClanItem)building).setClanID(mob.getClanID());
 			((ClanItem)building).setCIType(Util.s_int((String)foundRecipe.elementAt(RCP_CITYPE)));
 			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)

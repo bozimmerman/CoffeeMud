@@ -26,24 +26,29 @@ public class StdClanSpecialItem extends StdClanItem
 		recoverEnvStats();
 	}
 	
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		if((ciType()==ClanItem.CI_SPECIALSCALES)
+		if(((ciType()==ClanItem.CI_SPECIALSCALES)||(ciType()==ClanItem.CI_SPECIALTAXER))
 		&&(owner() instanceof MOB)
 		&&(clanID().length()>0)
 		&&(((MOB)owner()).isMonster())
 		&&((((MOB)owner()).getClanID().equals(clanID()))
 		&&(Sense.aliveAwakeMobile((MOB)owner(),true))
-		&&(!Sense.isAnimalIntelligence((MOB)owner()))))
-		{
-			if(B==null) B=CMClass.getBehavior("GoodExecutioner");
-			if(B!=null) B.executeMsg(owner(),msg);
-		}
+		&&(!Sense.isAnimalIntelligence((MOB)owner())))
+		&&(B!=null))
+			B.executeMsg(owner(),msg);
+	}
+	public boolean okMessage(Environmental affecting, CMMsg msg)
+	{
+		if(!super.okMessage(affecting,msg))
+			return false;
+		if((ciType()==ClanItem.CI_SPECIALTAXER)
+		&&(B!=null)
+		&&(owner() instanceof MOB))
+			return B.okMessage((MOB)owner(),msg);
+		else
+			return true;
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
@@ -74,6 +79,15 @@ public class StdClanSpecialItem extends StdClanItem
 				}
 			case ClanItem.CI_SPECIALSCALES:
 				{
+					if((B==null)||(!B.ID().equals("GoodExecutioner")))
+						B=CMClass.getBehavior("GoodExecutioner");
+					break;
+				}
+			case ClanItem.CI_SPECIALTAXER:
+				{
+					if((B==null)||(!B.ID().equals("TaxCollector")))
+						B=CMClass.getBehavior("TaxCollector");
+					if(B!=null) B.tick((MOB)owner(),Host.TICK_MOB);
 					break;
 				}
 			}

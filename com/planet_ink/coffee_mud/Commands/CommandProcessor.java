@@ -868,12 +868,6 @@ public class CommandProcessor
 		else
 			Log.errOut("CommandProcessor",mob.Name()+" starts system restart...");
 		mob.tell("Starting shutdown...");
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_SHUTDOWN,null);
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-		{
-			Room R=(Room)r.nextElement();
-			R.send(mob,msg);
-		}
 		if(myHost!=null)
 			myHost.shutdown(mob.session(),keepItDown,externalCommand);
 		else

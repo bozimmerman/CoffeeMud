@@ -279,6 +279,7 @@ public class StdCharClass implements CharClass, Cloneable
 				{
 					amount-=clanshare;
 					C.adjExp(clanshare);
+					C.update();
 				}
 			}
 		}
@@ -500,7 +501,10 @@ public class StdCharClass implements CharClass, Cloneable
             {
                 int clanshare=(int)Math.round(Util.mul(amount,C.getTaxes()));
                 if(clanshare>0)
+				{
                     C.adjExp(clanshare*-1);
+					C.update();
+				}
             }
         }
 		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))

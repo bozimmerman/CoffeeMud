@@ -117,7 +117,7 @@ public class Clans implements Clan, Tickable
 	public void adjExp(int howMuch)
 	{
 		exp=exp+howMuch;
-		if(howMuch<0) exp=0;
+		if(exp<0) exp=0;
 	}
 
 	public void setTaxes(double rate){

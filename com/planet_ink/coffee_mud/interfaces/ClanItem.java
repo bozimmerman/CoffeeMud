@@ -11,6 +11,7 @@ public interface ClanItem extends Environmental
 	public final static int CI_SPECIALSCALES=6;
 	public final static int CI_SPECIALSCAVENGER=7;
 	public final static int CI_SPECIALOTHER=8;
+	public final static int CI_SPECIALTAXER=9;
 	
 	public final static String[] CI_DESC={
 		"FLAG",
@@ -21,7 +22,8 @@ public interface ClanItem extends Environmental
 		"CRAFTITEM",
 		"SPECIALSCALES",
 		"SPECIALSCAVENGER",
-		"SPECIALOTHER"
+		"SPECIALOTHER",
+		"SPECIALTAXER"
 	};
 	
 	public String clanID();

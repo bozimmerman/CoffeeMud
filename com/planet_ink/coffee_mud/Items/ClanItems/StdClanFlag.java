@@ -36,8 +36,10 @@ public class StdClanFlag extends StdItem implements ClanItem
 	{
 		if(StdClanItem.stdExecuteMsg(this,msg))
 		{
+			super.executeMsg(myHost,msg);
 			if((msg.amITarget(this))
-			&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
+			&&((msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+			   ||((msg.targetMinor()==CMMsg.TYP_DROP)&&(owner() instanceof MOB))))
 			{
 				Room R=msg.source().location();
 				Area A=null;
@@ -49,22 +51,11 @@ public class StdClanFlag extends StdItem implements ClanItem
 				if(B!=null)
 				{
 					V.clear();
-					V.addElement(new Integer(Law.MOD_RULINGCLAN));
-					String rulingClan="";
+					V.addElement(new Integer(Law.MOD_WARINFO));
 					if((B.modifyBehavior(A,msg.source(),V))
 					&&(V.size()>0)
 					&&(V.firstElement() instanceof String))
-					{
-						rulingClan=(String)V.firstElement();
-						if(rulingClan.length()==0)
-							msg.source().tell("This area is presently neutral.");
-						else
-						{
-							msg.source().tell("This area is presently controlled by "+rulingClan+".");
-						}
-						V.clear();
-						V.addElement(new Integer(Law.MOD_WARINFO));
-					}
+						msg.source().tell((String)V.firstElement());
 					else
 						msg.source().tell("This area is under the control of the Archons.");
 				}
@@ -72,7 +63,6 @@ public class StdClanFlag extends StdItem implements ClanItem
 					msg.source().tell("This area is under the control of the Archons.");
 				return;
 			}
-			super.executeMsg(myHost,msg);
 		}
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -484,8 +484,10 @@ public class CMClass extends ClassLoader
 		Log.sysOut("MUD","Armor loaded      : "+armor.size());
 
 		miscMagic=loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscMagic"+File.separatorChar,page.getStr("MISCMAGIC"),"com.planet_ink.coffee_mud.interfaces.MiscMagic");
+		Log.sysOut("MUD","Magic Items loaded: "+miscMagic.size());
+		
 		clanItems=loadVectorListToObj(prefix+"Items"+File.separatorChar+"ClanItems"+File.separatorChar,page.getStr("CLANITEMS"),"com.planet_ink.coffee_mud.interfaces.ClanItem");
-		Log.sysOut("MUD","Misc Items loaded: "+miscMagic.size()+clanItems.size());
+		Log.sysOut("MUD","Clan Items loaded : "+clanItems.size());
 		
 		if((items.size()+weapons.size()+armor.size()+miscMagic.size()+clanItems.size())==0) 
 			return false;

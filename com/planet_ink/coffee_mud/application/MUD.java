@@ -563,10 +563,22 @@ public class MUD extends Thread implements Host
 	}
 	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
 	{
-		Log.sysOut("MUD","Started shutdown");
+		offlineReason="Shutting down" + (keepItDown? "..." : " and restarting...");
+		Log.sysOut("MUD","Started shutdown, notifying all objects...");
+		if(S!=null)S.print("Notifying all objects of shutdown...");
+		offlineReason="Shutting down...Notifying Objects";
+		MOB mob=null;
+		if(S!=null) mob=S.mob();
+		if(mob==null) mob=CMClass.getMOB("StdMOB");
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_SHUTDOWN,null);
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			R.send(mob,msg);
+		}
+		if(S!=null)S.println("done");
 		if((saveThread==null)||(utiliThread==null)) return;
 		if(S!=null)S.println("Closing MUD listeners to new connections...");
-		offlineReason="Shutting down" + (keepItDown? "..." : " and restarting...");
 		for(int i=0;i<mudThreads.size();i++)
 			((MUD)mudThreads.elementAt(i)).acceptConnections=false;
 		Log.sysOut("MUD","New Connections are now closed");

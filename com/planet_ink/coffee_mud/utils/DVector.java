@@ -25,6 +25,12 @@ public class DVector implements Cloneable
 		}
 	}
 	
+	public int indexOf(Object O)
+	{
+		if(stuff==null) return -1;
+		return stuff[0].indexOf(O);
+	}
+	
 	public DVector copyOf()
 	{
 		try{

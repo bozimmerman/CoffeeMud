@@ -86,7 +86,15 @@ public class Hunting extends CommonSkill
 			&&(!found.isInCombat()))
 			{
 				if(found.location()==mob.location())
-					moveFound();
+				{
+					if((mob.isMonster())
+					&&(Sense.aliveAwakeMobile(mob,true))
+					&&(Sense.canBeSeenBy(found,mob))
+					&&(!mob.isInCombat()))
+						ExternalPlay.postAttack(mob,found,mob.fetchWieldedItem());
+					else
+						moveFound();
+				}
 			}
 
 			if(tickUp==0)
@@ -112,6 +120,20 @@ public class Hunting extends CommonSkill
 					unInvoke();
 				}
 
+			}
+			else
+			if(mob.isMonster()
+			&&(Dice.rollPercentage()>50)
+			&&(Sense.isMobile(mob))
+			&&(Sense.aliveAwakeMobile(mob,true))
+			&&(Sense.canSenseMoving(found,mob)))
+			{
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				{
+					Room R=mob.location().getRoomInDir(d);
+					if((R!=null)&&(R==found.location()))
+					{ ExternalPlay.move(mob,d,false,false); break;}
+				}
 			}
 		}
 		return super.tick(ticking,tickID);
