@@ -1,8 +1,8 @@
 #set the quest name
 set name stolen
 
-# this one runs every 240-480 mins
-set wait 3600
+# this one runs every 8-12 hours (7200+(3600*rand))*4 secpertick /60 secs /60 mins.
+set wait 7200
 set interval 3600
 
 import mobs quests/stolen/mobs.cmare
