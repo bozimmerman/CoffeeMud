@@ -152,7 +152,7 @@ public interface Affect
 	public static final int MSG_AREAAFFECT=ACT_GENERAL|TYP_AREAAFFECT;
 	public static final int MSG_PUSH=ACT_HANDS|TYP_AREAAFFECT;
 	public static final int MSG_PULL=ACT_HANDS|TYP_PULL;
-	public static final int MSG_RECALL=ACT_MOUTH|ACT_SOUND|ACT_HANDS|TYP_RECALL;
+	public static final int MSG_RECALL=ACT_MOUTH|ACT_SOUND|TYP_RECALL;
 	public static final int MSG_OPEN=ACT_HANDS|TYP_OPEN;
 	public static final int MSG_CLOSE=ACT_HANDS|TYP_CLOSE;
 	public static final int MSG_PUT=ACT_HANDS|TYP_PUT;
