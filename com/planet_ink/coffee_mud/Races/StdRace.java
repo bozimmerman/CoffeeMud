@@ -379,28 +379,38 @@ public class StdRace implements Race
 
 	public void reRoll(MOB mob, CharStats C)
 	{
-		int avg=0;
-		int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT);
-		int baseMax=CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
-		if(max<(3*6)) max=3*6;
-		if(max>(baseMax*6)) max=baseMax*6;
-		int tries=0;
-		double baseMaxDouble=new Integer(baseMax).doubleValue()-2.0;
-		while((avg!=max)&&((++tries)<100000000))
-		{
-			C.setStat(CharStats.STRENGTH,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			C.setStat(CharStats.INTELLIGENCE,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			C.setStat(CharStats.DEXTERITY,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			C.setStat(CharStats.WISDOM,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			C.setStat(CharStats.CONSTITUTION,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			C.setStat(CharStats.CHARISMA,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			avg=(C.getStat(CharStats.STRENGTH)
-				 +C.getStat(CharStats.INTELLIGENCE)
-				 +C.getStat(CharStats.DEXTERITY)
-				 +C.getStat(CharStats.WISDOM)
-				 +C.getStat(CharStats.CONSTITUTION)
-				 +C.getStat(CharStats.CHARISMA));
-		}
+	    // from Ashera
+        int basemax = CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
+        int basemin = 3;
+
+        int points = CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT);
+        // Make sure there are enough points
+        if (points < ((basemin + 1) * CharStats.NUM_BASE_STATS))
+            points = (basemin + 1) * CharStats.NUM_BASE_STATS;
+        
+        // Make sure there aren't too many points
+        if (points > (basemax - 1) * CharStats.NUM_BASE_STATS) 
+            	points = (basemax - 1) * CharStats.NUM_BASE_STATS;
+       
+        int[] stats=new int[CharStats.NUM_BASE_STATS];
+        for(int i=0;i<stats.length;i++)
+            stats[i]=basemin;
+       
+        // Subtract stat minimums from point total to get distributable points
+        int pointsLeft = points - (basemin * CharStats.NUM_BASE_STATS);
+
+        while (pointsLeft > 0)
+        {
+            int whichStat = Dice.roll(1,CharStats.NUM_BASE_STATS,-1);
+            if(stats[whichStat]<basemax)
+            {
+                stats[whichStat]++;
+                --pointsLeft;
+            }
+        }
+
+        for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+            C.setStat(i,stats[i]);
 	}
 
 	public DeadBody getCorpseContainer(MOB mob, Room room)
