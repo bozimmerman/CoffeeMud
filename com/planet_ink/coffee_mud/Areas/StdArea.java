@@ -19,6 +19,7 @@ public class StdArea implements Area
 	protected Vector myRooms=null;
 	protected boolean mobility=true;
 	protected long tickStatus=Tickable.STATUS_NOT;
+	private Boolean roomSemaphore=new Boolean(true);
 
 	protected static int year=1;
 	protected static int month=1;
@@ -1239,24 +1240,27 @@ public class StdArea implements Area
 
 	public void fillInAreaRooms()
 	{
-		for(Enumeration r=getMap();r.hasMoreElements();)
+		synchronized(roomSemaphore)
 		{
-			Room R=(Room)r.nextElement();
-			R.clearSky();
-			if(R.roomID().length()>0)
+			for(Enumeration r=getMap();r.hasMoreElements();)
 			{
-				if(R instanceof GridLocale)
-					((GridLocale)R).buildGrid();
+				Room R=(Room)r.nextElement();
+				R.clearSky();
+				if(R.roomID().length()>0)
+				{
+					if(R instanceof GridLocale)
+						((GridLocale)R).buildGrid();
+				}
 			}
+			myRooms=null;
+			for(Enumeration r=getMap();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				R.clearSky();
+				R.giveASky(0);
+			}
+			myRooms=null;
 		}
-		myRooms=null;
-		for(Enumeration r=getMap();r.hasMoreElements();)
-		{
-			Room R=(Room)r.nextElement();
-			R.clearSky();
-			R.giveASky(0);
-		}
-		myRooms=null;
 	}
 
 	public void fillInAreaRoom(Room R)
@@ -1319,7 +1323,7 @@ public class StdArea implements Area
 		StringBuffer s=new StringBuffer("");
 		s.append(description()+"\n\r");
 		getMap();
-		s.append("Number of rooms: "+myRooms.size()+"\n\r");
+		s.append("Number of rooms: "+mapSize()+"\n\r");
 
 		Vector mobRanges=new Vector();
 		int totalMOBs=0;
@@ -1384,30 +1388,49 @@ public class StdArea implements Area
 		return null;
 	}
 
-	public void clearMap(){myRooms=null;}
+	public void clearMap()
+	{
+		synchronized(roomSemaphore)
+		{
+			myRooms=null;
+		}
+	}
 
 	public int mapSize()
 	{
-		getMap();
-		return myRooms.size();
+		synchronized(roomSemaphore)
+		{
+			if(myRooms!=null) return myRooms.size();
+		}
+		synchronized(roomSemaphore)
+		{
+			getMap();
+			return myRooms.size();
+		}
 	}
 	public Room getRandomRoom()
 	{
-		if(mapSize()==0) return null;
-		return (Room)myRooms.elementAt(Dice.roll(1,mapSize(),-1));
-	}
-	public synchronized Enumeration getMap()
-	{
-		if(myRooms!=null) return myRooms.elements();
-		Vector myMap=new Vector();
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		synchronized(roomSemaphore)
 		{
-			Room R=(Room)r.nextElement();
-			if(R.getArea()==this)
-				myMap.addElement(R);
+			if(mapSize()==0) return null;
+			return (Room)myRooms.elementAt(Dice.roll(1,mapSize(),-1));
 		}
-		myRooms=myMap;
-		return myMap.elements();
+	}
+	public Enumeration getMap()
+	{
+		synchronized(roomSemaphore)
+		{
+			if(myRooms!=null) return myRooms.elements();
+			Vector myMap=new Vector();
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if(R.getArea()==this)
+					myMap.addElement(R);
+			}
+			myRooms=myMap;
+			return myMap.elements();
+		}
 	}
 
 	public int nextWeatherType(Room room)

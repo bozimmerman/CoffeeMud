@@ -100,9 +100,10 @@ public class RandomMonsters extends ActiveTicker
 		return new RandomMonsters();
 	}
 
-	public boolean okRoomForMe(Room newRoom)
+	public boolean okRoomForMe(MOB M, Room newRoom)
 	{
 		if(newRoom==null) return false;
+		if(M==null) return false;
 		if(restrictedLocales==null) return true;
 		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
 	}
@@ -200,7 +201,11 @@ public class RandomMonsters extends ActiveTicker
 							for(Enumeration e=((Area)ticking).getMap();e.hasMoreElements();)
 							{
 								Room R=(Room)e.nextElement();
-								if((okRoomForMe(R))&&(R.roomID().length()>0))
+								if((okRoomForMe(M,R))
+								&&((Sense.isFlying(M))
+								  ||(((R.domainType()&Room.DOMAIN_INDOORS_AIR)==0)
+								    &&((R.domainType()&Room.DOMAIN_OUTDOORS_AIR)==0)))
+								&&(R.roomID().trim().length()>0))
 									map.addElement(R);
 							}
 							if(map.size()>0)
