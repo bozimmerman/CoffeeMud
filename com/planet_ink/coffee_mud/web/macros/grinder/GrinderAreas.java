@@ -117,8 +117,8 @@ public class GrinderAreas
 				allMyDamnRooms.addElement(r.nextElement());
 			CMMap.delArea(A);
 			oldName=A.Name();
-			ExternalPlay.DBDeleteArea(A);
-			A=ExternalPlay.DBCreateArea(name,CMClass.className(A));
+			CMClass.DBEngine().DBDeleteArea(A);
+			A=CMClass.DBEngine().DBCreateArea(name,CMClass.className(A));
 			A.setName(name);
 			redoAllMyDamnRooms=true;
 			httpReq.addRequestParameters("AREA",A.Name());
@@ -254,7 +254,7 @@ public class GrinderAreas
 		for(int i=0;i<areasNeedingUpdates.size();i++) // will always include A
 		{
 		    Area A2=(Area)areasNeedingUpdates.elementAt(i);
-			ExternalPlay.DBUpdateArea(A2.Name(),A2);
+			CMClass.DBEngine().DBUpdateArea(A2.Name(),A2);
 		}
 		return "";
 	}

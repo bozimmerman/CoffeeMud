@@ -34,7 +34,7 @@ public class Spell_Duplicate extends Spell
 			return false;
 
 		mob.tell("You lose "+(target.envStats().level()*5)+" experience points.");
-		ExternalPlay.postExperience(mob,null,null,-target.envStats().level()*5,false);
+		MUDFight.postExperience(mob,null,null,-target.envStats().level()*5,false);
 
 		boolean success=profficiencyCheck(0,auto);
 

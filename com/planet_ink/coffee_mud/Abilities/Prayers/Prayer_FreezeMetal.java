@@ -69,7 +69,7 @@ public class Prayer_FreezeMetal extends Prayer
 				int damage=Dice.roll(1,3,1);
 				if(item.subjectToWearAndTear())
 					item.setUsesRemaining(item.usesRemaining()-1);
-				ExternalPlay.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

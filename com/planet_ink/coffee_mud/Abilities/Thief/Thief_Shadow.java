@@ -87,9 +87,9 @@ public class Thief_Shadow extends ThiefSkill
 				MOB mob=(MOB)invoker;
 				lastRoom=msg.source().location();
 				if(!mob.isMonster())
-					mob.session().enque(0,Util.parse(directionWent));
+					mob.enqueCommand(Util.parse(directionWent),0);
 				else
-					ExternalPlay.move(mob,dir,false,false);
+					MUDTracker.move(mob,dir,false,false);
 			}
 		}
 		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))

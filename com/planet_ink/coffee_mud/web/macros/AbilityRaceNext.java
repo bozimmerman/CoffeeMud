@@ -11,8 +11,8 @@ public class AbilityRaceNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
-			return httpReq.getMUD().gameStatusStr();
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			return CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS);
 
 		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("ABILITY");

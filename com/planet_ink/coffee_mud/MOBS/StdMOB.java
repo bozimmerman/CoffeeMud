@@ -46,6 +46,7 @@ public class StdMOB implements MOB
 
 	protected Vector behaviors=new Vector();
 
+	protected DVector commandQue=new DVector(2);
 
 	// gained attributes
 	protected int Experience=0;
@@ -468,9 +469,9 @@ public class StdMOB implements MOB
 		if((miscText!=null)&&(resetStats)&&(isGeneric()))
 		{
 			if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-				Generic.resetGenMOB(this,Util.decompressString(miscText));
+				CoffeeMaker.resetGenMOB(this,Util.decompressString(miscText));
 			else
-				Generic.resetGenMOB(this,new String(miscText));
+				CoffeeMaker.resetGenMOB(this,new String(miscText));
 		}
 		if(getStartRoom()==null)
 			setStartRoom(isMonster()?newLocation:CMMap.getStartRoom(this));
@@ -489,7 +490,7 @@ public class StdMOB implements MOB
 		pleaseDestroy=false;
 
 		// will ensure no duplicate ticks, this obj, this id
-		ExternalPlay.startTickDown(this,MudHost.TICK_MOB,1);
+		CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_MOB,1);
 		if(tickStatus==Tickable.STATUS_NOT)
 			tick(this,MudHost.TICK_MOB); // slap on the butt
 		for(int a=0;a<numLearnedAbilities();a++)
@@ -505,7 +506,7 @@ public class StdMOB implements MOB
 		if(Sense.isSleeping(this))
 			tell("(You are asleep)");
 		else
-			ExternalPlay.look(this,null,true);
+			CommonMsgs.look(this,true);
 	}
 
 	public boolean isInCombat()
@@ -715,6 +716,7 @@ public class StdMOB implements MOB
 		amDead=true;
 		makePeace();
 		setRiding(null);
+		commandQue.clear();
 		for(int a=numEffects()-1;a>=0;a--)
 		{
 			Ability A=fetchEffect(a);
@@ -916,6 +918,81 @@ public class StdMOB implements MOB
 		if((charStats()!=null)&&(charStats().getMyRace()!=null))
 			return charStats().getMyRace().healthText(this);
 		return CommonStrings.standardMobCondition(this);
+	}
+
+	public void dequeCommand()
+	{
+		Vector returnable=null;
+		synchronized(commandQue)
+		{
+			if(commandQue.size()>0)
+			{
+				Vector topCMD=(Vector)commandQue.elementAt(0,1);
+				int topTick=((Integer)commandQue.elementAt(0,2)).intValue();
+				commandQue.removeElement(topCMD);
+				if(topTick<2)
+					returnable=topCMD;
+				else
+					commandQue.insertElementAt(0,topCMD,new Integer(topTick-1));
+			}
+		}
+		if(returnable!=null)
+			doCommand(EnglishParser.findCommand(this,returnable),returnable);
+	}
+
+	public void doCommand(Vector commands)
+	{
+		Object O=EnglishParser.findCommand(this,commands);
+		if(O!=null) doCommand(O,commands);
+	}
+
+	private void doCommand(Object O, Vector commands)
+	{
+		try
+		{
+			if(O instanceof Command)
+				((Command)O).execute(this,commands);
+			else
+			if(O instanceof Social)
+				((Social)O).invoke(this,commands,null,false);
+			else
+			if(O instanceof Ability)
+				EnglishParser.evoke(this,commands);
+			else
+				tell("Wha? Huh?");
+		}
+		catch(Exception e)
+		{
+			Log.errOut("StdMOB",Util.toStringList(commands));
+			Log.errOut("StdMOB",e);
+			tell("Oops!");
+		}
+	}
+
+	public void enqueCommand(Vector commands, int tickDelay)
+	{
+		if(commands==null) return;
+		int tickDown=1;
+		if(tickDelay<1)
+		{
+			Object O=EnglishParser.findCommand(this,commands);
+			if(O==null){ tell("Huh?!"); return;}
+
+			if((O instanceof Command)&&(((Command)O).ticksToExecute()>0))
+				tickDown=((Command)O).ticksToExecute();
+
+			if(!isInCombat())
+			{
+				doCommand(O,commands);
+				return;
+			}
+		}
+
+		synchronized(commandQue)
+		{
+			if((tickDelay+1)>tickDown) tickDown=tickDelay+1;
+			commandQue.addElement(commands,new Integer(tickDown));
+		}
 	}
 
 	public void establishRange(MOB source, MOB target, Environmental tool)
@@ -1405,7 +1482,7 @@ public class StdMOB implements MOB
 					if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 					&&(tool instanceof Weapon)
 					&&(!((Weapon)tool).amWearingAt(Item.INVENTORY)))
-						ExternalPlay.remove(this,(Item)tool,false);
+						CommonMsgs.remove(this,(Weapon)msg.tool(),false);
 					return false;
 				}
 			}
@@ -1621,10 +1698,10 @@ public class StdMOB implements MOB
 						if((!curState().adjHitPoints(-dmg,maxState()))
 						&&(curState().getHitPoints()<1)
 						&&(location()!=null))
-							ExternalPlay.postDeath(msg.source(),this,msg);
+							MUDFight.postDeath(msg.source(),this,msg);
 						else
 						if((curState().getHitPoints()<getWimpHitPoint())&&(isInCombat()))
-							ExternalPlay.postPanic(this,msg);
+							MUDFight.postPanic(this,msg);
 					}
 				}
 			}
@@ -1643,7 +1720,7 @@ public class StdMOB implements MOB
 			switch(msg.sourceMinor())
 			{
 			case CMMsg.TYP_PANIC:
-				ExternalPlay.flee(mob,"");
+				CommonMsgs.flee(this,"");
 				break;
 			case CMMsg.TYP_EXPCHANGE:
 				{
@@ -1663,9 +1740,9 @@ public class StdMOB implements MOB
 				break;
 			case CMMsg.TYP_DEATH:
 				if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-					ExternalPlay.justDie((MOB)msg.tool(),this);
+					MUDFight.justDie((MOB)msg.tool(),this);
 				else
-					ExternalPlay.justDie(null,this);
+					MUDFight.justDie(null,this);
 				tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 				break;
 			case CMMsg.TYP_REBUKE:
@@ -1694,7 +1771,7 @@ public class StdMOB implements MOB
 						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
 					myDescription.append(healthText()+"\n\r\n\r");
 					myDescription.append(description()+"\n\r\n\r");
-					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(msg.source(),this));
+					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+CommonMsgs.getEquipment(msg.source(),this));
 					tell(myDescription.toString());
 				}
 				break;
@@ -1727,7 +1804,7 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_QUIT:
 				if(mob.isInCombat())
 				{
-					ExternalPlay.flee(mob,"NOWHERE");
+					CommonMsgs.flee(mob,"NOWHERE");
 					mob.makePeace();
 				}
 				tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
@@ -1754,7 +1831,7 @@ public class StdMOB implements MOB
 					recoverEnvStats();
 					recoverCharStats();
 					recoverMaxState();
-					ExternalPlay.look(mob,new Vector(),true);
+					CommonMsgs.look(mob,true);
 				}
 				break;
 			case CMMsg.TYP_FOLLOW:
@@ -1787,16 +1864,15 @@ public class StdMOB implements MOB
 			if((msg.targetMinor()!=CMMsg.TYP_HEALING)&&(msg.targetMinor()!=CMMsg.TYP_DAMAGE))
 			{
 				// but there might still be a few more...
-				if(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+				if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+				&&(!amDead))
 				{
-					if((!isInCombat())
-					&&(!amDead)
-					&&(location().isInhabitant((MOB)msg.source())))
+					if((!isInCombat())&&(location().isInhabitant((MOB)msg.source())))
 					{
 						establishRange(this,msg.source(),msg.tool());
 						setVictim(msg.source());
 					}
-					if((isInCombat())&&(!amDead))
+					if(isInCombat())
 					{
 						if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 						{
@@ -1805,17 +1881,19 @@ public class StdMOB implements MOB
 								weapon=(Weapon)msg.tool();
 							if(weapon!=null)
 							{
-								boolean isHit=(CoffeeUtensils.normalizeAndRollLess(msg.source().adjustedAttackBonus(this)+adjustedArmor()));
-								ExternalPlay.postWeaponDamage(msg.source(),this,weapon,isHit);
+								boolean isHit=(Dice.normalizeAndRollLess(msg.source().adjustedAttackBonus(this)+(adjustedArmor()-50)));
+								MUDFight.postWeaponDamage(msg.source(),this,weapon,isHit);
 								msg.setValue(1);
 							}
 						}
 						else
 						if((msg.tool()!=null)
 						&&(msg.tool() instanceof Weapon))
-							ExternalPlay.postWeaponDamage(msg.source(),this,(Weapon)msg.tool(),true);
+							MUDFight.postWeaponDamage(msg.source(),this,(Weapon)msg.tool(),true);
 					}
-					ExternalPlay.standIfNecessary(this);
+					if(Sense.isSitting(this)||Sense.isSleeping(this))
+						CommonMsgs.stand(this,true);
+
 				}
 				else
 				if((msg.targetMinor()==CMMsg.TYP_GIVE)
@@ -1843,7 +1921,7 @@ public class StdMOB implements MOB
 						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
 					myDescription.append(healthText()+"\n\r\n\r");
 					myDescription.append(description()+"\n\r\n\r");
-					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(msg.source(),this));
+					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+CommonMsgs.getEquipment(msg.source(),this));
 					mob.tell(myDescription.toString());
 				}
 				else
@@ -2014,16 +2092,20 @@ public class StdMOB implements MOB
 				if((!Sense.canBreathe(this))&&(!Sense.isGolem(this)))
 				{
 					location().show(this,this,CMMsg.MSG_OK_VISUAL,("^Z<S-NAME> can't breathe!^.^?")+CommonStrings.msp("choke.wav",10));
-					ExternalPlay.postDamage(this,this,null,(int)Math.round(Util.mul(Math.random(),baseEnvStats().level()+2)),CMMsg.MSG_OK_VISUAL,-1,null);
+					MUDFight.postDamage(this,this,null,(int)Math.round(Util.mul(Math.random(),baseEnvStats().level()+2)),CMMsg.MSG_OK_VISUAL,-1,null);
 				}
 				if(isInCombat())
 				{
 					tickStatus=Tickable.STATUS_FIGHT;
 					peaceTime=0;
-					if(Util.bset(getBitmap(),MOB.ATT_AUTODRAW))
-					 	ExternalPlay.drawIfNecessary(this,false);
+					Item weapon=fetchWieldedItem();
 
-					Item weapon=this.fetchWieldedItem();
+					if((Util.bset(getBitmap(),MOB.ATT_AUTODRAW))&&(weapon==null))
+					{
+						CommonMsgs.draw(this,false,true);
+						weapon=fetchWieldedItem();
+					}
+
 					double curSpeed=Math.floor(speeder);
 					speeder+=Sense.isSitting(this)?(envStats().speed()/2.0):envStats().speed();
 					int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
@@ -2039,7 +2121,7 @@ public class StdMOB implements MOB
 								if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
 									weapon=this.fetchWieldedItem();
 								if((!Util.bset(getBitmap(),MOB.ATT_AUTOMELEE)))
-									ExternalPlay.postAttack(this,victim,weapon);
+									MUDFight.postAttack(this,victim,weapon);
 								else
 								{
 									boolean inminrange=(rangeToTarget()>=minRange(weapon));
@@ -2052,7 +2134,7 @@ public class StdMOB implements MOB
 									}
 									else
 									if((weapon!=null)&&inminrange&&inmaxrange)
-										ExternalPlay.postAttack(this,victim,weapon);
+										MUDFight.postAttack(this,victim,weapon);
 								}
 							}
 							else
@@ -2077,8 +2159,9 @@ public class StdMOB implements MOB
 					if(Util.bset(getBitmap(),MOB.ATT_AUTODRAW)
 					&&(peaceTime>=SHEATH_TIME)
 					&&(Sense.aliveAwakeMobile(this,true)))
-						ExternalPlay.sheathIfPossible(this);
+						CommonMsgs.sheath(this,true);
 				}
+				dequeCommand();
 				tickStatus=Tickable.STATUS_OTHER;
 				if(!isMonster())
 				{
@@ -2286,26 +2369,26 @@ public class StdMOB implements MOB
 	}
 	public Item fetchInventory(String itemName)
 	{
-		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,true);
-		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,false);
+		Item item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,true);
+		if(item==null) item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,false);
 		return item;
 	}
 	public Item fetchInventory(Item goodLocation, String itemName)
 	{
-		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,true);
-		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,false);
+		Item item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,true);
+		if(item==null) item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,false);
 		return item;
 	}
 	public Item fetchCarried(Item goodLocation, String itemName)
 	{
-		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
-		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
+		Item item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
+		if(item==null) item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
 		return item;
 	}
 	public Item fetchWornItem(String itemName)
 	{
-		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,true);
-		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,false);
+		Item item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,true);
+		if(item==null) item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,false);
 		return item;
 	}
 	public void addFollower(MOB follower)
@@ -2344,8 +2427,8 @@ public class StdMOB implements MOB
 	}
 	public MOB fetchFollower(String ID)
 	{
-		MOB mob=(MOB)CoffeeUtensils.fetchEnvironmental(followers,ID,true);
-		if (mob==null) mob=(MOB)CoffeeUtensils.fetchEnvironmental(followers,ID,false);
+		MOB mob=(MOB)EnglishParser.fetchEnvironmental(followers,ID,true);
+		if (mob==null) mob=(MOB)EnglishParser.fetchEnvironmental(followers,ID,false);
 		return mob;
 	}
 	public boolean willFollowOrdersOf(MOB mob)
@@ -2353,7 +2436,7 @@ public class StdMOB implements MOB
 		if(mob.isASysOp(mob.location())
 		||(amFollowing()==mob)
 		||(getLeigeID().equals(mob.Name()))
-		||(ExternalPlay.doesOwnThisProperty(mob,getStartRoom())))
+		||(CoffeeUtensils.doesOwnThisProperty(mob,getStartRoom())))
 			return true;
 		if((getClanID().length()>0)&&(getClanID().equals(mob.getClanID())))
 		{
@@ -2503,8 +2586,8 @@ public class StdMOB implements MOB
 			&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		A=(Ability)CoffeeUtensils.fetchEnvironmental(abilities,ID,false);
-		if(A==null) A=(Ability)CoffeeUtensils.fetchEnvironmental(charStats().getMyRace().racialAbilities(this),ID,false);
+		A=(Ability)EnglishParser.fetchEnvironmental(abilities,ID,false);
+		if(A==null) A=(Ability)EnglishParser.fetchEnvironmental(charStats().getMyRace().racialAbilities(this),ID,false);
 		return A;
 	}
 
@@ -2797,12 +2880,12 @@ public class StdMOB implements MOB
 		if((amFollowing()==target)
 		||(target.amFollowing()==this)
 		||((target.amFollowing()!=null)&&(target.amFollowing()==this.amFollowing())))
-			setVictim(source);//ExternalPlay.postAttack(this,source,fetchWieldedItem());
+			setVictim(source);//MUDFight.postAttack(this,source,fetchWieldedItem());
 		else
 		if((amFollowing()==source)
 		||(source.amFollowing()==this)
 		||((source.amFollowing()!=null)&&(source.amFollowing()==this.amFollowing())))
-			setVictim(target);//ExternalPlay.postAttack(this,target,fetchWieldedItem());
+			setVictim(target);//MUDFight.postAttack(this,target,fetchWieldedItem());
 	}
 
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};

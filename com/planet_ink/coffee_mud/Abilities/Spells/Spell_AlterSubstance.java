@@ -51,7 +51,7 @@ public class Spell_AlterSubstance extends Spell
 		int newMaterial=-1;
 		for(int m=0;m<EnvResource.MATERIAL_DESCS.length;m++)
 		{
-			if(CoffeeUtensils.containsString(EnvResource.MATERIAL_DESCS[m],material))
+			if(EnglishParser.containsString(EnvResource.MATERIAL_DESCS[m],material))
 			{
 				for(int r=0;r<EnvResource.RESOURCE_DESCS.length;r++)
 				{
@@ -74,7 +74,7 @@ public class Spell_AlterSubstance extends Spell
 		if(newMaterial<0)
 		for(int r=0;r<EnvResource.RESOURCE_DESCS.length;r++)
 		{
-			if(CoffeeUtensils.containsString(EnvResource.RESOURCE_DESCS[r],material))
+			if(EnglishParser.containsString(EnvResource.RESOURCE_DESCS[r],material))
 			{
 				newMaterial=EnvResource.RESOURCE_DATA[r][0];
 				material=EnvResource.RESOURCE_DESCS[r];

@@ -14,7 +14,7 @@ public class Prop_ReqEntry extends Property
 
 	public String accountForYourself()
 	{
-		return "Entry restricted as follows: "+SaucerSupport.zapperDesc(miscText);
+		return "Entry restricted as follows: "+MUDZapper.zapperDesc(miscText);
 	}
 
 	public boolean passesMuster(MOB mob)
@@ -24,7 +24,7 @@ public class Prop_ReqEntry extends Property
 			return true;
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
-		return SaucerSupport.zapperCheck(text(),mob);
+		return MUDZapper.zapperCheck(text(),mob);
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

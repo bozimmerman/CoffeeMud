@@ -133,7 +133,7 @@ public class Chant_Treeform extends Chant
 				mob.curState().setHunger(0);
 				mob.curState().setThirst(0);
 			}
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 	}
 
@@ -190,7 +190,7 @@ public class Chant_Treeform extends Chant
 							a++;
 					}
 					target.makePeace();
-					ExternalPlay.standIfNecessary(target);
+					CommonMsgs.stand(target,true);
 					oldState=target.curState().cloneCharState();
 					success=beneficialAffect(mob,target,mob.envStats().level()*50);
 					if(success)

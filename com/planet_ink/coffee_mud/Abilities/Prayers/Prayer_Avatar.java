@@ -105,10 +105,10 @@ public class Prayer_Avatar extends Prayer
 						}
 					}
 					if(dir>=0)
-						ExternalPlay.move(mob,dir,false,false);
+						MUDTracker.move(mob,dir,false,false);
 				}
 				if(attack!=null)
-					ExternalPlay.postAttack(mob,attack,mob.fetchWieldedItem());
+					MUDFight.postAttack(mob,attack,mob.fetchWieldedItem());
 			}
 		}
 		return super.tick(ticking,tickID);

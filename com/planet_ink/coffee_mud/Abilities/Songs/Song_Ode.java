@@ -346,7 +346,7 @@ public class Song_Ode extends Song
 		for(Enumeration e=H.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
-			if(CoffeeUtensils.containsString(key,name))
+			if(EnglishParser.containsString(key,name))
 			{
 				name=key;
 				song=(String)H.get(name);

@@ -70,7 +70,7 @@ public class Mining extends CommonSkill
 					{
 						Item newFound=(Item)found.copyOf();
 						mob.location().addItemRefuse(newFound,Item.REFUSE_RESOURCE);
-						//ExternalPlay.get(mob,null,newFound,true);
+						//CommonMsgs.get(mob,null,newFound,true);
 					}
 				}
 			}

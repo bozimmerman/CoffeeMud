@@ -23,8 +23,8 @@ public class Trap_DeepPit extends Trap_RoomPit
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(trapLevel(),15,1);
-			ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
+			MUDFight.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 		}
-		ExternalPlay.look(target,null,true);
+		CommonMsgs.look(target,true);
 	}
 }

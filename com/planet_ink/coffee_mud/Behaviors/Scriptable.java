@@ -359,7 +359,7 @@ public class Scriptable extends StdBehavior
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(CoffeeUtensils.containsString(R.displayText(),thisName))
+			if(EnglishParser.containsString(R.displayText(),thisName))
 			{
 				if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
 					inAreaRoom=R;
@@ -372,7 +372,7 @@ public class Scriptable extends StdBehavior
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(CoffeeUtensils.containsString(R.description(),thisName))
+			if(EnglishParser.containsString(R.description(),thisName))
 			{
 				if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
 					inAreaRoom=R;
@@ -647,7 +647,7 @@ public class Scriptable extends StdBehavior
 					returnable=(((MOB)E).fetchInventory(arg2)!=null);
 				else
 				if(E instanceof Item)
-					returnable=CoffeeUtensils.containsString(E.name(),arg2);
+					returnable=EnglishParser.containsString(E.name(),arg2);
 				else
 				if(E instanceof Room)
 					returnable=(((Room)E).fetchItem(null,arg2)!=null);
@@ -672,7 +672,7 @@ public class Scriptable extends StdBehavior
 					returnable=(((MOB)E).fetchWornItem(arg2)!=null);
 				else
 				if(E instanceof Item)
-					returnable=(CoffeeUtensils.containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Item.INVENTORY)));
+					returnable=(EnglishParser.containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Item.INVENTORY)));
 				else
 					returnable=false;
 				break;
@@ -804,7 +804,7 @@ public class Scriptable extends StdBehavior
 				if(E==null)
 					returnable=false;
 				else
-					returnable=CoffeeUtensils.containsString(E.name(),arg2);
+					returnable=EnglishParser.containsString(E.name(),arg2);
 				break;
 			}
 			case 56: // name
@@ -887,7 +887,7 @@ public class Scriptable extends StdBehavior
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(CoffeeUtensils.containsString(M.name(),arg1)))
+						if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
 							num++;
 					}
 				}
@@ -906,7 +906,7 @@ public class Scriptable extends StdBehavior
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(CoffeeUtensils.containsString(M.name(),arg1)))
+						if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
 							num++;
 					}
 				}
@@ -1089,9 +1089,9 @@ public class Scriptable extends StdBehavior
 				if(which==null)
 					returnable=false;
 				else
-					returnable=(CoffeeUtensils.containsString(which.name(),arg3)
-								||CoffeeUtensils.containsString(which.Name(),arg3)
-								||CoffeeUtensils.containsString(which.displayText(),arg3));
+					returnable=(EnglishParser.containsString(which.name(),arg3)
+								||EnglishParser.containsString(which.Name(),arg3)
+								||EnglishParser.containsString(which.displayText(),arg3));
 				break;
 			}
 			case 49: // hastattoo
@@ -1146,9 +1146,9 @@ public class Scriptable extends StdBehavior
 				if(which==null)
 					returnable=false;
 				else
-					returnable=(CoffeeUtensils.containsString(which.name(),arg2)
-								||CoffeeUtensils.containsString(which.Name(),arg2)
-								||CoffeeUtensils.containsString(which.displayText(),arg2));
+					returnable=(EnglishParser.containsString(which.name(),arg2)
+								||EnglishParser.containsString(which.Name(),arg2)
+								||EnglishParser.containsString(which.displayText(),arg2));
 				break;
 			}
 			case 44: // roomitem
@@ -1171,9 +1171,9 @@ public class Scriptable extends StdBehavior
 				if(which==null)
 					returnable=false;
 				else
-					returnable=(CoffeeUtensils.containsString(which.name(),arg2)
-								||CoffeeUtensils.containsString(which.Name(),arg2)
-								||CoffeeUtensils.containsString(which.displayText(),arg2));
+					returnable=(EnglishParser.containsString(which.name(),arg2)
+								||EnglishParser.containsString(which.Name(),arg2)
+								||EnglishParser.containsString(which.displayText(),arg2));
 				break;
 			}
 			case 36: // ishere
@@ -1365,11 +1365,11 @@ public class Scriptable extends StdBehavior
 					String val="";
 					if(E instanceof MOB)
 					{
-						for(int i=0;i<Generic.GENMOBCODES.length;i++)
+						for(int i=0;i<CoffeeMaker.GENMOBCODES.length;i++)
 						{
-							if(Generic.GENMOBCODES[i].equalsIgnoreCase(arg2))
+							if(CoffeeMaker.GENMOBCODES[i].equalsIgnoreCase(arg2))
 							{
-								val=Generic.getGenMobStat((MOB)E,Generic.GENMOBCODES[i]);
+								val=CoffeeMaker.getGenMobStat((MOB)E,CoffeeMaker.GENMOBCODES[i]);
 								found=true; break;
 							}
 						}
@@ -1404,11 +1404,11 @@ public class Scriptable extends StdBehavior
 					else
 					if(E instanceof Item)
 					{
-						for(int i=0;i<Generic.GENITEMCODES.length;i++)
+						for(int i=0;i<CoffeeMaker.GENITEMCODES.length;i++)
 						{
-							if(Generic.GENITEMCODES[i].equalsIgnoreCase(arg2))
+							if(CoffeeMaker.GENITEMCODES[i].equalsIgnoreCase(arg2))
 							{
-								val=Generic.getGenItemStat((Item)E,Generic.GENITEMCODES[i]);
+								val=CoffeeMaker.getGenItemStat((Item)E,CoffeeMaker.GENITEMCODES[i]);
 								found=true; break;
 							}
 						}
@@ -2038,7 +2038,7 @@ public class Scriptable extends StdBehavior
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(CoffeeUtensils.containsString(M.name(),arg1)))
+						if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
 							num++;
 					}
 				}
@@ -2055,7 +2055,7 @@ public class Scriptable extends StdBehavior
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(CoffeeUtensils.containsString(M.name(),arg1)))
+						if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
 							num++;
 					}
 				}
@@ -2318,11 +2318,11 @@ public class Scriptable extends StdBehavior
 					String val="";
 					if(E instanceof MOB)
 					{
-						for(int i=0;i<Generic.GENMOBCODES.length;i++)
+						for(int i=0;i<CoffeeMaker.GENMOBCODES.length;i++)
 						{
-							if(Generic.GENMOBCODES[i].equalsIgnoreCase(arg2))
+							if(CoffeeMaker.GENMOBCODES[i].equalsIgnoreCase(arg2))
 							{
-								val=Generic.getGenMobStat((MOB)E,Generic.GENMOBCODES[i]);
+								val=CoffeeMaker.getGenMobStat((MOB)E,CoffeeMaker.GENMOBCODES[i]);
 								found=true; break;
 							}
 						}
@@ -2357,11 +2357,11 @@ public class Scriptable extends StdBehavior
 					else
 					if(E instanceof Item)
 					{
-						for(int i=0;i<Generic.GENITEMCODES.length;i++)
+						for(int i=0;i<CoffeeMaker.GENITEMCODES.length;i++)
 						{
-							if(Generic.GENITEMCODES[i].equalsIgnoreCase(arg2))
+							if(CoffeeMaker.GENITEMCODES[i].equalsIgnoreCase(arg2))
 							{
-								val=Generic.getGenItemStat((Item)E,Generic.GENITEMCODES[i]);
+								val=CoffeeMaker.getGenItemStat((Item)E,CoffeeMaker.GENITEMCODES[i]);
 								found=true; break;
 							}
 						}
@@ -2992,7 +2992,7 @@ public class Scriptable extends StdBehavior
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
-					ExternalPlay.postDeath((MOB)newTarget,monster,null);
+					MUDFight.postDeath((MOB)newTarget,monster,null);
 				break;
 			}
 			case 16: // mpset
@@ -3059,11 +3059,11 @@ public class Scriptable extends StdBehavior
 					boolean found=false;
 					if(newTarget instanceof MOB)
 					{
-						for(int i=0;i<Generic.GENMOBCODES.length;i++)
+						for(int i=0;i<CoffeeMaker.GENMOBCODES.length;i++)
 						{
-							if(Generic.GENMOBCODES[i].equalsIgnoreCase(arg2))
+							if(CoffeeMaker.GENMOBCODES[i].equalsIgnoreCase(arg2))
 							{
-								Generic.setGenMobStat((MOB)newTarget,Generic.GENMOBCODES[i],arg3);
+								CoffeeMaker.setGenMobStat((MOB)newTarget,CoffeeMaker.GENMOBCODES[i],arg3);
 								found=true; break;
 							}
 						}
@@ -3099,11 +3099,11 @@ public class Scriptable extends StdBehavior
 					else
 					if(newTarget instanceof Item)
 					{
-						for(int i=0;i<Generic.GENITEMCODES.length;i++)
+						for(int i=0;i<CoffeeMaker.GENITEMCODES.length;i++)
 						{
-							if(Generic.GENITEMCODES[i].equalsIgnoreCase(arg2))
+							if(CoffeeMaker.GENITEMCODES[i].equalsIgnoreCase(arg2))
 							{
-								Generic.setGenItemStat((Item)newTarget,Generic.GENITEMCODES[i],arg3);
+								CoffeeMaker.setGenItemStat((Item)newTarget,CoffeeMaker.GENITEMCODES[i],arg3);
 								found=true; break;
 							}
 						}
@@ -3130,7 +3130,7 @@ public class Scriptable extends StdBehavior
 					{
 						MOB M=(MOB)e.nextElement();
 						if(M.location()==lastKnownLocation)
-							ExternalPlay.postExperience(M,null,M.getLeigeID(),t,false);
+							MUDFight.postExperience(M,null,M.getLeigeID(),t,false);
 					}
 				}
 				break;
@@ -3421,14 +3421,14 @@ public class Scriptable extends StdBehavior
 							{
 								if(follower.isInCombat())
 								{
-									ExternalPlay.flee(follower,"NOWHERE");
+									CommonMsgs.flee(follower,("NOWHERE"));
 									follower.makePeace();
 								}
 								thisRoom.send(follower,leaveMsg);
 								newRoom.bringMobHere(follower,false);
 								newRoom.send(follower,enterMsg);
 								follower.tell("\n\r\n\r");
-								ExternalPlay.look(follower,null,true);
+								CommonMsgs.look(follower,true);
 							}
 						}
 					}
@@ -3477,15 +3477,8 @@ public class Scriptable extends StdBehavior
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1));
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
-					try
-					{
-						Vector V=Util.parse(s);
-						ExternalPlay.doCommand((MOB)newTarget,V);
-					}
-					catch(Exception e)
-					{
-						Log.errOut("Scriptable",e);
-					}
+					Vector V=Util.parse(s);
+					((MOB)newTarget).doCommand(V);
 				}
 			}
 			case 20: // mpsetvar
@@ -3511,8 +3504,8 @@ public class Scriptable extends StdBehavior
 						val=(String)H.get(arg2);
 						if(val==null) val="";
 					}
-					ExternalPlay.DBDeleteData(E.Name(),"SCRIPTABLEVARS",arg2);
-					ExternalPlay.DBCreateData(E.Name(),"SCRIPTABLEVARS",arg2,val);
+					CMClass.DBEngine().DBDeleteData(E.Name(),"SCRIPTABLEVARS",arg2);
+					CMClass.DBEngine().DBCreateData(E.Name(),"SCRIPTABLEVARS",arg2,val);
 				}
 				break;
 			}
@@ -3523,7 +3516,7 @@ public class Scriptable extends StdBehavior
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&(arg2.length()==0))
 				{
-					Vector V=ExternalPlay.DBReadData(E.Name(),"SCRIPTABLEVARS",arg2);
+					Vector V=CMClass.DBEngine().DBReadData(E.Name(),"SCRIPTABLEVARS",arg2);
 					if((V!=null)&&(V.size()>3))
 						mpsetvar(E.Name(),arg2,(String)V.elementAt(3));
 				}
@@ -3547,7 +3540,7 @@ public class Scriptable extends StdBehavior
 						if((dmg>=E.curState().getHitPoints())&&(!arg4.equalsIgnoreCase("kill")))
 							dmg=E.curState().getHitPoints()-1;
 						if(dmg>0)
-							ExternalPlay.postDamage(E,E,null,dmg,CMMsg.MSG_OK_VISUAL,-1,null);
+							MUDFight.postDamage(E,E,null,dmg,CMMsg.MSG_OK_VISUAL,-1,null);
 					}
 				}
 				break;
@@ -3711,16 +3704,9 @@ public class Scriptable extends StdBehavior
 			default:
 				if(cmd.length()>0)
 				{
-					try
-					{
-						Vector V=Util.parse(varify(source,target,monster,primaryItem,secondaryItem,msg,s));
-						if(V.size()>0)
-							ExternalPlay.doCommand(monster,V);
-					}
-					catch(Exception e)
-					{
-						Log.errOut("Scriptable",e);
-					}
+					Vector V=Util.parse(varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+					if(V.size()>0)
+						monster.doCommand(V);
 				}
 				break;
 			}

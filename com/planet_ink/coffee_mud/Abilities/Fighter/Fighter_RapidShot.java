@@ -37,7 +37,7 @@ public class Fighter_RapidShot extends StdAbility
 			{
 				helpProfficiency(mob);
 				for(int i=0;i<(adjustedLevel(mob)/7);i++)
-					ExternalPlay.postAttack(mob,mob.getVictim(),w);
+					MUDFight.postAttack(mob,mob.getVictim(),w);
 			}
 		}
 		return true;

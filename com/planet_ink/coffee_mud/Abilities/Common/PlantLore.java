@@ -56,7 +56,7 @@ public class PlantLore extends CommonSkill
 					{
 						StringBuffer str=new StringBuffer("");
 						Vector V=new Vector();
-						SaucerSupport.getRadiantRooms(room,V,true,true,false,null,2);
+						MUDTracker.getRadiantRooms(room,V,true,true,false,null,2);
 						for(int v=0;v<V.size();v++)
 						{
 							Room R=(Room)V.elementAt(v);
@@ -82,7 +82,7 @@ public class PlantLore extends CommonSkill
 									str.append("There looks like "+resourceStr.toLowerCase()+" "+Directions.getInDirectionName(isAdjacent)+".\n\r");
 								else
 								{
-									int d=SaucerSupport.radiatesFromDir(R,V);
+									int d=MUDTracker.radiatesFromDir(R,V);
 									if(d>=0)
 									{
 										d=Directions.getOpDirectionCode(d);

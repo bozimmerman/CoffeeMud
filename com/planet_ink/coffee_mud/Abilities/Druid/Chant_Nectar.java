@@ -62,9 +62,7 @@ public class Chant_Nectar extends Chant
 			Vector commands=new Vector();
 			commands.addElement("DRINK");
 			commands.addElement(littleSpring.name()+"$");
-			try{
-				ExternalPlay.doCommand(M,commands);
-			}catch(Exception e){}
+			M.enqueCommand(commands,0);
 		}
 		return true;
 	}
@@ -80,7 +78,7 @@ public class Chant_Nectar extends Chant
 				{
 					MOB M=(MOB)msg.source();
 					int hp=Dice.roll(1,M.charStats().getStat(CharStats.CONSTITUTION),0);
-					ExternalPlay.postHealing(M,M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,hp,null);
+					MUDFight.postHealing(M,M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,hp,null);
 					int mana=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
 					M.curState().adjMana(mana,M.maxState());
 					int move=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);

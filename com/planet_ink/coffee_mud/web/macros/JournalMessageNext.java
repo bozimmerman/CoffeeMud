@@ -17,7 +17,7 @@ public class JournalMessageNext extends StdWebMacro
 		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+journal);
 		if(info==null)
 		{
-			info=ExternalPlay.DBReadJournal(journal);
+			info=CMClass.DBEngine().DBReadJournal(journal);
 			httpReq.getRequestObjects().put("JOURNAL: "+journal,info);
 		}
 		String last=httpReq.getRequestParameter("JOURNALMESSAGE");

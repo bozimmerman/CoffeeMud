@@ -128,7 +128,7 @@ public class RandomMonsters extends ActiveTicker
 			monsters=(Vector)Resources.getResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode());
 			if(monsters!=null) return monsters;
 			monsters=new Vector();
-			String error=com.planet_ink.coffee_mud.common.Generic.addMOBsFromXML(filename.toString(),monsters,null);
+			String error=CoffeeMaker.addMOBsFromXML(filename.toString(),monsters,null);
 			if(error.length()>0)
 			{
 				Log.errOut("RandomMonsters","Error on import of xml for '"+((thang!=null)?thang.name():"null")+"': "+error+".");
@@ -160,7 +160,7 @@ public class RandomMonsters extends ActiveTicker
 				return null;
 			}
 			monsters=new Vector();
-			String error=com.planet_ink.coffee_mud.common.Generic.addMOBsFromXML(buf.toString(),monsters,null);
+			String error=CoffeeMaker.addMOBsFromXML(buf.toString(),monsters,null);
 			if(error.length()>0)
 			{
 				Log.errOut("RandomMonsters","Error on import of: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"': "+error+".");

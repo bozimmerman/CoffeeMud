@@ -117,7 +117,7 @@ public class Skill_Disguise extends StdAbility
 				myDescription.append(mob.charStats().HeShe()+" is "+height+" inches tall and weighs "+weight+" pounds.\n\r");
 			myDescription.append(mob.healthText()+"\n\r\n\r");
 			myDescription.append(mob.description()+"\n\r\n\r");
-			myDescription.append(mob.charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(msg.source(),mob));
+			myDescription.append(mob.charStats().HeShe()+" is wearing:\n\r"+CommonMsgs.getEquipment(msg.source(),mob));
 			msg.source().tell(myDescription.toString());
 		}
 	}

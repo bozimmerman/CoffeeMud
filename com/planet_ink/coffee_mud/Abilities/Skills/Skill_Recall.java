@@ -30,7 +30,7 @@ public class Skill_Recall extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				if(mob.isInCombat())
-					ExternalPlay.flee(mob,"NOWHERE");
+					CommonMsgs.flee(mob,"NOWHERE");
 				mob.location().send(mob,msg);
 				for(int f=0;f<mob.numFollowers();f++)
 				{
@@ -40,7 +40,8 @@ public class Skill_Recall extends StdAbility
 						FullMsg msg2=new FullMsg(follower,mob.getStartRoom(),this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
 						if(follower.location().okMessage(follower,msg2))
 						{
-							if(follower.isInCombat()) ExternalPlay.flee(follower,"NOWHERE");
+							if(follower.isInCombat())
+								CommonMsgs.flee(follower,("NOWHERE"));
 							follower.location().send(follower,msg2);
 						}
 					}

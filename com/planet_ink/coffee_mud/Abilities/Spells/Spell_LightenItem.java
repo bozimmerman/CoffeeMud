@@ -35,9 +35,9 @@ public class Spell_LightenItem extends Spell
 				if((mob.envStats().weight()+item.baseEnvStats().weight())>mob.maxCarry())
 				{
 					if(!item.amWearingAt(Item.INVENTORY))
-						ExternalPlay.remove(mob,item,false);
+						CommonMsgs.remove(mob,item,false);
 					if(item.amWearingAt(Item.INVENTORY))
-						ExternalPlay.drop(mob,item,false,false);
+						CommonMsgs.drop(mob,item,false,false);
 				}
 			}
 		}

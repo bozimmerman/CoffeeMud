@@ -61,7 +61,7 @@ public class Spell_Portal extends Spell
 			Room room=(Room)r.nextElement();
 
 			if(Sense.canAccess(mob,room))
-			if(CoffeeUtensils.containsString(room.displayText(),areaName))
+			if(EnglishParser.containsString(room.displayText(),areaName))
 			{
 			   newRoom=room;
 			   break;

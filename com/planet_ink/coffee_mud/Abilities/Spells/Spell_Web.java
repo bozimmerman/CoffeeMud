@@ -66,7 +66,7 @@ public class Spell_Web extends Spell
 		{
 			if(!mob.amDead())
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the web.");
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 	}
 

@@ -38,7 +38,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		StringBuffer itemstr=new StringBuffer("");
 		itemstr.append("<MOBITEM>");
 		itemstr.append(XMLManager.convertXMLtoTag("MICLASS",CMClass.className(M)));
-		itemstr.append(XMLManager.convertXMLtoTag("MIDATA",Generic.getPropertiesStr(M,true)));
+		itemstr.append(XMLManager.convertXMLtoTag("MIDATA",CoffeeMaker.getPropertiesStr(M,true)));
 		itemstr.append("</MOBITEM>");
 		setCageText(itemstr.toString());
 		recoverEnvStats();
@@ -82,7 +82,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 			Log.errOut("Caged","Error parsing 'MOBITEM' data.");
 			return M;
 		}
-		Generic.setPropertiesStr(newOne,idat,true);
+		CoffeeMaker.setPropertiesStr(newOne,idat,true);
 		M=(MOB)newOne;
 		M.baseEnvStats().setRejuv(0);
 		M.setStartRoom(null);
@@ -91,10 +91,10 @@ public class GenCaged extends GenItem implements CagedAnimal
 		M.resetToMaxState();
 		return M;
 	}
-	public String cageText(){ return Generic.restoreAngleBrackets(readableText());}
+	public String cageText(){ return CoffeeMaker.restoreAngleBrackets(readableText());}
 	public void setCageText(String text)
 	{
-		setReadableText(Generic.parseOutAngleBrackets(text));
+		setReadableText(CoffeeMaker.parseOutAngleBrackets(text));
 		setReadable(false);
 	}
 }

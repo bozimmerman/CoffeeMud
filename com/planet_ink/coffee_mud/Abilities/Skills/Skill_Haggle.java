@@ -36,7 +36,7 @@ public class Skill_Haggle extends StdAbility
 			return false;
 		}
 
-		MOB shopkeeper=ExternalPlay.parseShopkeeper(mob,commands,Util.capitalize(cmd)+" what to whom?");
+		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,Util.capitalize(cmd)+" what to whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
@@ -57,11 +57,9 @@ public class Skill_Haggle extends StdAbility
 				invoker=mob;
 				mob.addEffect(this);
 				mob.recoverCharStats();
-				try{
-					commands.insertElementAt(Util.capitalize(cmd),0);
-					ExternalPlay.doCommand(mob,commands);
-					commands.addElement(shopkeeper.name());
-				}catch(Exception e){Log.errOut("Skill_Haggle",e);}
+				commands.insertElementAt(Util.capitalize(cmd),0);
+				mob.doCommand(commands);
+				commands.addElement(shopkeeper.name());
 				mob.delEffect(this);
 				mob.recoverCharStats();
 			}

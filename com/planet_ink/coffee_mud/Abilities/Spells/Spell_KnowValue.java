@@ -38,7 +38,7 @@ public class Spell_KnowValue extends Spell
 				else
 					str=target.name()+" is worth "+target.value()+" gold pieces";
 				if(mob.isMonster())
-					ExternalPlay.quickSay(mob,null,str,false,false);
+					CommonMsgs.say(mob,null,str,false,false);
 				else
 					mob.tell(str);
 			}

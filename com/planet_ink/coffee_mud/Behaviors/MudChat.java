@@ -483,17 +483,10 @@ public class MudChat extends StdBehavior
 				{
 					que.removeElementAt(0);
 					responseQue.removeElementAt(t);
-					try
-					{
-						ExternalPlay.doCommand((MOB)ticking,que);
-						lastReactedTo=null;
-						// you've done one, so get out before doing another!
-						break;
-					}
-					catch(Exception e)
-					{
-						Log.errOut("MudChat",e);
-					}
+					((MOB)ticking).doCommand(que);
+					lastReactedTo=null;
+					// you've done one, so get out before doing another!
+					break;
 				}
 			}
 		}

@@ -40,7 +40,7 @@ public class Fighter_MonkeyPunch extends StdAbility
 				naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 				naturalWeapon.recoverEnvStats();
 				helpProfficiency(mob);
-				ExternalPlay.postAttack(mob,mob.getVictim(),naturalWeapon);
+				MUDFight.postAttack(mob,mob.getVictim(),naturalWeapon);
 			}
 		}
 		return true;

@@ -47,8 +47,8 @@ public class Fighter_ReturnProjectile extends StdAbility
 			&&(msg.source().isMine(w)))
 			{
 				if(!w.amWearingAt(Item.INVENTORY))
-					ExternalPlay.remove(msg.source(),w,true);
-				ExternalPlay.drop(msg.source(),w,true,false);
+					CommonMsgs.remove(msg.source(),w,true);
+				CommonMsgs.drop(msg.source(),w,true,false);
 			}
 			else
 			if(((Weapon)w).requiresAmmunition())
@@ -82,7 +82,7 @@ public class Fighter_ReturnProjectile extends StdAbility
 				{
 					mob.location().send(mob,msg2);
 					if(mob.isMine(w))
-						ExternalPlay.postAttack(mob,msg.source(),w);
+						MUDFight.postAttack(mob,msg.source(),w);
 					doneThisRound=true;
 					helpProfficiency(mob);
 					return false;

@@ -35,7 +35,7 @@ public class MoneyChanger extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(!(msg.tool() instanceof Coins)))
 		{
-			ExternalPlay.quickSay(observer,source,"I'm sorry, I can only accept gold coins.",true,false);
+			CommonMsgs.say(observer,source,"I'm sorry, I can only accept gold coins.",true,false);
 			return false;
 		}
 		return true;
@@ -68,12 +68,12 @@ public class MoneyChanger extends StdBehavior
 			observer.recoverEnvStats();
 			if(value>0)
 			{
-				Money.giveMoney(observer,source,value);
+				MoneyUtils.giveMoney(observer,source,value);
 				FullMsg newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
 				msg.addTrailerMsg(newMsg);
 			}
 			else
-				ExternalPlay.quickSay(observer,source,"Gee, thanks. :)",true,false);
+				CommonMsgs.say(observer,source,"Gee, thanks. :)",true,false);
 		}
 	}
 }

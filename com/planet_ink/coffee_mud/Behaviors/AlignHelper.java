@@ -39,7 +39,7 @@ public class AlignHelper extends StdBehavior
 		&&(CommonStrings.shortAlignmentStr(target.getAlignment()).equals(CommonStrings.shortAlignmentStr(observer.getAlignment()))))
 		{
 			boolean yep=Aggressive.startFight(observer,source,true);
-			if(yep)	ExternalPlay.quickSay(observer,null,CommonStrings.shortAlignmentStr(observer.getAlignment()).toUpperCase()+" PEOPLE UNITE! CHARGE!",false,false);
+			if(yep)	CommonMsgs.say(observer,null,CommonStrings.shortAlignmentStr(observer.getAlignment()).toUpperCase()+" PEOPLE UNITE! CHARGE!",false,false);
 		}
 	}
 }

@@ -109,7 +109,7 @@ public class Disease_Lycanthropy extends Disease
 		if(M!=null)
 		{
 			deathTrail=null;
-			ExternalPlay.postAttack(mob,M,mob.fetchWieldedItem());
+			MUDFight.postAttack(mob,M,mob.fetchWieldedItem());
 			return;
 		}
 		if((deathTrail!=null)&&(!deathTrail.contains(mob.location())))
@@ -119,14 +119,14 @@ public class Disease_Lycanthropy extends Disease
 			Vector rooms=new Vector();
 			if((findVictim(mob,mob.location(),rooms,0))&&(rooms.size()>0))
 			{
-				deathTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,true);
+				deathTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true);
 				if(deathTrail!=null)
 					deathTrail.addElement(mob.location());
 			}
 		}
 		if(deathTrail!=null)
 		{
-			int nextDirection=SaucerSupport.trackNextDirectionFromHere(deathTrail,mob.location(),true);
+			int nextDirection=MUDTracker.trackNextDirectionFromHere(deathTrail,mob.location(),true);
 			if((nextDirection==999)
 			||(nextDirection==-1))
 				deathTrail=null;
@@ -137,7 +137,7 @@ public class Disease_Lycanthropy extends Disease
 				if((nextRoom!=null)
 				&&((nextRoom.getArea()==mob.location().getArea()))||(!mob.isMonster()))
 				{
-					if(!ExternalPlay.move(mob,nextDirection,false,false))
+					if(!MUDTracker.move(mob,nextDirection,false,false))
 						deathTrail=null;
 					else
 					if(Dice.rollPercentage()<15)

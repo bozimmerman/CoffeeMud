@@ -74,7 +74,7 @@ public class Spell_FlamingEnsnarement extends Spell
 		{
 			MOB vic=(MOB)affected;
 			if((!vic.amDead())&&(vic.location()!=null))
-				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(2,4,0),CMMsg.TYP_FIRE,-1,"<T-NAME> get(s) singed from <T-HIS-HER> flaming ensnarement!");
+				MUDFight.postDamage(invoker,vic,this,Dice.roll(2,4,0),CMMsg.TYP_FIRE,-1,"<T-NAME> get(s) singed from <T-HIS-HER> flaming ensnarement!");
 		}
 		return super.tick(ticking,tickID);
 	}

@@ -41,7 +41,7 @@ public class Disease_Anthrax extends Disease
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int damage=Dice.roll(1,6,0);
 			if(damage>1)
-				ExternalPlay.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+				MUDFight.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
 			if((--conTickDown)<=0)
 			{
 				conTickDown=60;
@@ -64,7 +64,7 @@ public class Disease_Anthrax extends Disease
 			conDown=-1;
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
-			ExternalPlay.postDeath(diseaser,affected,null);
+			MUDFight.postDeath(diseaser,affected,null);
 		}
 	}
 }

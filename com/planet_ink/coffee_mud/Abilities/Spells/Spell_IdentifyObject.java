@@ -31,7 +31,7 @@ public class Spell_IdentifyObject extends Spell
 				mob.location().send(mob,msg);
 				String identity=((Item)target).secretIdentity();
 				if(mob.isMonster())
-					ExternalPlay.quickSay(mob,null,identity,false,false);
+					CommonMsgs.say(mob,null,identity,false,false);
 				else
 					mob.tell(identity);
 			}

@@ -30,22 +30,22 @@ public class GenMob extends StdMOB
 	public String text()
 	{
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-			miscText=Util.compressString(Generic.getPropertiesStr(this,false));
+			miscText=Util.compressString(CoffeeMaker.getPropertiesStr(this,false));
 		else
-			miscText=Generic.getPropertiesStr(this,false).getBytes();
+			miscText=CoffeeMaker.getPropertiesStr(this,false).getBytes();
 		return super.text();
 	}
 
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		Generic.resetGenMOB(this,newText);
+		CoffeeMaker.resetGenMOB(this,newText);
 	}
 	public String getStat(String code)
-	{ return Generic.getGenMobStat(this,code);}
+	{ return CoffeeMaker.getGenMobStat(this,code);}
 	public void setStat(String code, String val)
-	{ Generic.setGenMobStat(this,code,val);}
-	public String[] getStatCodes(){return Generic.GENMOBCODES;}
+	{ CoffeeMaker.setGenMobStat(this,code,val);}
+	public String[] getStatCodes(){return CoffeeMaker.GENMOBCODES;}
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenMob)) return false;

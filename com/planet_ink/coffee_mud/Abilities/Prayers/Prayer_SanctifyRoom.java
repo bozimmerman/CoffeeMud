@@ -49,8 +49,8 @@ public class Prayer_SanctifyRoom extends Prayer
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((target instanceof Room)
-				&&((ExternalPlay.doesOwnThisProperty(mob,((Room)target)))
-					||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
+				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
+					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
 					target.addNonUninvokableEffect(this);
 				else
 					beneficialAffect(mob,target,0);

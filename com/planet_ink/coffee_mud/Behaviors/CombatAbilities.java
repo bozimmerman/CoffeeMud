@@ -235,7 +235,7 @@ public class CombatAbilities extends StdBehavior
 				Vector V=new Vector();
 				V.addElement("hold");
 				V.addElement(backupWand.name());
-				try{ExternalPlay.doCommand(mob,V);}catch(Exception e){Log.errOut("CombatAbilities",e);}
+				mob.doCommand(V);
 			}
 			else
 			if(myWand!=null)
@@ -252,7 +252,7 @@ public class CombatAbilities extends StdBehavior
 					V.addElement("say");
 					V.addElement(victim.name());
 					V.addElement(((Wand)myWand).magicWord());
-					try{ExternalPlay.doCommand(mob,V);}catch(Exception e){Log.errOut("CombatAbilities",e);}
+					mob.doCommand(V);
 				}
 			}
 		}

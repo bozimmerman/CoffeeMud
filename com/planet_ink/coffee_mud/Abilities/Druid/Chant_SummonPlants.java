@@ -90,8 +90,8 @@ public class Chant_SummonPlants extends Chant
 		Chant_SummonPlants newChant=new Chant_SummonPlants();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
-		if((ExternalPlay.doesOwnThisProperty(mob,room))
-		||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),room))))
+		if((CoffeeUtensils.doesOwnThisProperty(mob,room))
+		||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),room))))
 			newItem.addNonUninvokableEffect(newChant);
 		else
 			newChant.beneficialAffect(mob,newItem,(newChant.adjustedLevel(mob)*240)+450);

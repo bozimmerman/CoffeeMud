@@ -38,18 +38,18 @@ public class ItemRefitter extends StdBehavior
 			Item tool=(Item)msg.tool();
 			if(!(tool instanceof Armor))
 			{
-				ExternalPlay.quickSay(observer,source,"I'm sorry, I can't refit that.",true,false);
+				CommonMsgs.say(observer,source,"I'm sorry, I can't refit that.",true,false);
 				return false;
 			}
 
 			if(tool.baseEnvStats().height()==0)
 			{
-				ExternalPlay.quickSay(observer,source,"This already looks your size!",true,false);
+				CommonMsgs.say(observer,source,"This already looks your size!",true,false);
 				return false;
 			}
 			if(source.getMoney()<cost(tool))
 			{
-				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Item)msg.tool())+" gold coins to refit that.",true,false);
+				CommonMsgs.say(observer,source,"You'll need "+cost((Item)msg.tool())+" gold coins to refit that.",true,false);
 				return false;
 			}
 			return true;

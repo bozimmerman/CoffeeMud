@@ -79,7 +79,7 @@ public class Spell_AnalyzeDweomer extends Spell
 				}
 				str.append("It is made of "+EnvResource.RESOURCE_DESCS[target.material()&EnvResource.RESOURCE_MASK].toLowerCase()+"  ");
 				if(mob.isMonster())
-					ExternalPlay.quickSay(mob,null,str.toString(),false,false);
+					CommonMsgs.say(mob,null,str.toString(),false,false);
 				else
 					mob.tell(str.toString());
 			}

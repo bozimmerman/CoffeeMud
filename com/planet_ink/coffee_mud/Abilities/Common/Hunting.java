@@ -63,7 +63,7 @@ public class Hunting extends CommonSkill
 		if(possibilities.size()>0)
 		{
 			int dir=((Integer)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1))).intValue();
-			ExternalPlay.move(found,dir,true,false);
+			MUDTracker.move(found,dir,true,false);
 		}
 	}
 
@@ -91,7 +91,7 @@ public class Hunting extends CommonSkill
 					&&(Sense.aliveAwakeMobile(mob,true))
 					&&(Sense.canBeSeenBy(found,mob))
 					&&(!mob.isInCombat()))
-						ExternalPlay.postAttack(mob,found,mob.fetchWieldedItem());
+						MUDFight.postAttack(mob,found,mob.fetchWieldedItem());
 					else
 						moveFound();
 				}
@@ -132,7 +132,7 @@ public class Hunting extends CommonSkill
 				{
 					Room R=mob.location().getRoomInDir(d);
 					if((R!=null)&&(R==found.location()))
-					{ ExternalPlay.move(mob,d,false,false); break;}
+					{ MUDTracker.move(mob,d,false,false); break;}
 				}
 			}
 		}

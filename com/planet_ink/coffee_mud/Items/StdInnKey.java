@@ -67,7 +67,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(msg.target()==myShopkeeper)
 		&&(msg.tool()==this))
 		{
-			ExternalPlay.deleteTick(this,MudHost.TICK_ITEM_BOUNCEBACK);
+			CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_ITEM_BOUNCEBACK);
 			myShopkeeper.addStoreInventory(this); //makes a copy
 			destroy();
 		}
@@ -84,7 +84,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(msg.target()!=myShopkeeper)
 		&&(msg.tool()==this))
 		{
-			ExternalPlay.quickSay((MOB)msg.target(),msg.source(),"I'm not interested.",false,false);
+			CommonMsgs.say((MOB)msg.target(),msg.source(),"I'm not interested.",false,false);
 			return false;
 		}
 		else
@@ -92,7 +92,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(myShopkeeper!=null)
 		&&(msg.tool()==myShopkeeper)
 		&&(msg.target()==this))
-			ExternalPlay.startTickDown(this,MudHost.TICK_ITEM_BOUNCEBACK,(int)MudHost.TICKS_PER_MUDDAY);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_ITEM_BOUNCEBACK,(int)MudHost.TICKS_PER_MUDDAY);
 		return true;
 	}
 }

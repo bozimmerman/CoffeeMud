@@ -78,7 +78,7 @@ public class Prop_Transporter extends Property
 			else
 			{
 				otherRoom.bringMobHere(msg.source(),true);
-				ExternalPlay.look(msg.source(),null,true);
+				CommonMsgs.look(msg.source(),true);
 				if(affected instanceof Rideable)
 					msg.addTrailerMsg(new FullMsg(msg.source(),affected,CMMsg.TYP_DISMOUNT,null));
 			}

@@ -41,7 +41,8 @@ public class Thief_BackStab extends ThiefSkill
 			return false;
 		}
 
-		ExternalPlay.drawIfNecessary(mob,false);
+		CommonMsgs.draw(mob,false,true);
+
 		Item I=mob.fetchWieldedItem();
 		Weapon weapon=null;
 		if((I!=null)&&(I instanceof Weapon))
@@ -78,7 +79,7 @@ public class Thief_BackStab extends ThiefSkill
 				mob.addEffect(this);
 				mob.recoverEnvStats();
 			}
-			ExternalPlay.postAttack(mob,target,weapon);
+			MUDFight.postAttack(mob,target,weapon);
 			mob.delEffect(this);
 			mob.recoverEnvStats();
 		}

@@ -4,9 +4,9 @@ import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 import java.io.*;
 
-public class Money
+public class MoneyUtils
 {
-
+	private MoneyUtils(){};
 	public static Coins makeNote(int value, Environmental owner, Item container)
 	{
 		Coins msliver=null;
@@ -238,7 +238,7 @@ public class Money
 				banker.location().send(banker,newMsg);
 			else
 			{
-				ExternalPlay.drop(banker,changeBag,true,false);
+				CommonMsgs.drop(banker,changeBag,true,false);
 				return null;
 			}
 		}
@@ -265,7 +265,7 @@ public class Money
 			}
 		}
 		else
-			ExternalPlay.drop(banker,changeBag,true,false);
+			CommonMsgs.drop(banker,changeBag,true,false);
 		return changeBag;
 	}
 

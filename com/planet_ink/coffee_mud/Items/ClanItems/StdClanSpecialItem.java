@@ -73,7 +73,7 @@ public class StdClanSpecialItem extends StdClanItem
 					{
 						Item I=R.fetchItem(Dice.roll(1,R.numItems(),-1));
 						if((I!=null)&&(I.container()==null))
-							ExternalPlay.get(mob,null,I,false);
+							CommonMsgs.get(mob,null,I,false);
 					}
 					break;
 				}

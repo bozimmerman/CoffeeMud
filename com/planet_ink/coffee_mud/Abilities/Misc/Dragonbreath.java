@@ -46,11 +46,11 @@ public class Dragonbreath extends StdAbility
 		{
 			int color=-1;
 			for(int i=0;i<DragonColors.length;i++)
-				if(CoffeeUtensils.containsString(mob.Name(),DragonColors[i][0]))
+				if(EnglishParser.containsString(mob.Name(),DragonColors[i][0]))
 				{ color=i; break;}
 			if(color<0)
 			for(int i=0;i<DragonColors.length;i++)
-				if(CoffeeUtensils.containsString(mob.displayText(),DragonColors[i][0]))
+				if(EnglishParser.containsString(mob.displayText(),DragonColors[i][0]))
 				{ color=i; break;}
 			if(color<0)
 				colorc='f';
@@ -144,7 +144,7 @@ public class Dragonbreath extends StdAbility
 					damage += Dice.roll(maxDie,6,1);
 					if(msg.value()>0)
 						damage = (int)Math.round(Util.div(damage,2.0));
-					ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|strikeType,WeaponType,"^FThe "+stuffWord+" <DAMAGE> <T-NAME>!^?");
+					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|strikeType,WeaponType,"^FThe "+stuffWord+" <DAMAGE> <T-NAME>!^?");
 				}
 			}
 		}

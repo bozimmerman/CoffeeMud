@@ -45,7 +45,7 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("STATUS"))
 					str.append(Util.capitalize(Clans.CLANSTATUS_DESC[C.getStatus()].toLowerCase())+", ");
 				if(parms.containsKey("ACCEPTANCE"))
-					str.append(SaucerSupport.zapperDesc(C.getAcceptanceSettings())+", ");
+					str.append(MUDZapper.zapperDesc(C.getAcceptanceSettings())+", ");
 				if(parms.containsKey("TYPE"))
 					str.append(C.typeName()+", ");
 				if(parms.containsKey("CLANIDRELATIONS"))

@@ -68,7 +68,7 @@ public class Prayer_SummonElemental extends Prayer
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob, mob.envStats().level());
 				if(myMonster.isInCombat()) myMonster.makePeace();
-				ExternalPlay.follow(myMonster,mob,true);
+				CommonMsgs.follow(myMonster,mob,true);
 				invoker=mob;
 				beneficialAffect(mob,myMonster,0);
 				if(myMonster.amFollowing()!=mob)

@@ -51,7 +51,7 @@ public class Spell_IceLance extends Spell
 					damage = (int)Math.round(Util.div(damage,2.0));
 
 				if(target.location()==mob.location())
-					ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The lance <DAMAGE> <T-NAME>!");
+					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The lance <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

@@ -35,7 +35,7 @@ public class Prayer_MassHeal extends Prayer
 				{
 					mob.location().send(mob,msg);
 					int healing=Dice.roll(adjustedLevel(mob),5,adjustedLevel(mob));
-					ExternalPlay.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+					MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 					target.tell("You feel tons better!");
 				}
 			}

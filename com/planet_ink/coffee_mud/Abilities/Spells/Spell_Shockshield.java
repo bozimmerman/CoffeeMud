@@ -59,7 +59,7 @@ public class Spell_Shockshield extends Spell
 						if(msg2.value()<=0)
 						{
 							int damage = Dice.roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/3.0),1);
-							ExternalPlay.postDamage(mob,source,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock shield around <S-NAME> sparks and <DAMAGE> <T-NAME>!");
+							MUDFight.postDamage(mob,source,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock shield around <S-NAME> sparks and <DAMAGE> <T-NAME>!");
 						}
 					}
 				}

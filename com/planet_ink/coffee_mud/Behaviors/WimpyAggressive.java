@@ -20,7 +20,7 @@ public class WimpyAggressive extends Aggressive
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		return ((M!=null)&&(Sense.isSleeping(M)))&&
-			SaucerSupport.zapperCheck(getParms(),M);
+			MUDZapper.zapperCheck(getParms(),M);
 	}
 	public void setParms(String newParms)
 	{

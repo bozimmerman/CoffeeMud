@@ -61,8 +61,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if(sprung)
 		{
 			Vector rooms=new Vector();
-			SaucerSupport.getRadiantRooms(room1,rooms,true,true,false,null,10);
-			SaucerSupport.getRadiantRooms(room2,rooms,true,true,false,null,10);
+			MUDTracker.getRadiantRooms(room1,rooms,true,true,false,null,10);
+			MUDTracker.getRadiantRooms(room2,rooms,true,true,false,null,10);
 			Vector mobsDone=new Vector();
 			room1.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
 			room2.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
@@ -71,7 +71,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 				Room R=(Room)rooms.elementAt(r);
 				if((R!=room1)&&(R!=room2))
 				{
-					int dir=SaucerSupport.radiatesFromDir(R,rooms);
+					int dir=MUDTracker.radiatesFromDir(R,rooms);
 					if(dir>=0)
 					{
 						R.showHappens(CMMsg.MSG_NOISE,"You hear a loud alarm "+Directions.getInDirectionName(dir)+".");
@@ -88,7 +88,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 							&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_TRAPS)))
 							{
 								mobsDone.addElement(M);
-								ExternalPlay.move(M,dir,false,false);
+								MUDTracker.move(M,dir,false,false);
 							}
 						}
 					}

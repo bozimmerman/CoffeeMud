@@ -50,7 +50,7 @@ public class ManualAdvancement extends StdItem implements MiscMagic,ArchonOnly
 							if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 								mob.charStats().getCurrentClass().level(mob);
 							else
-								ExternalPlay.postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+								MUDFight.postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
 						}
 					}
 					else

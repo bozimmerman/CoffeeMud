@@ -53,7 +53,7 @@ public class Trap_ElectricShock extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> set(s) off an shocking trap!"))
 			{
 				super.spring(target);
-				ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),8,1),CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock <DAMAGE> <T-NAME>!"+CommonStrings.msp("shock.wav",30));
+				MUDFight.postDamage(invoker(),target,null,Dice.roll(trapLevel(),8,1),CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock <DAMAGE> <T-NAME>!"+CommonStrings.msp("shock.wav",30));
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

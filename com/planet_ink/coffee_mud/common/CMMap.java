@@ -81,13 +81,13 @@ public class CMMap
 			thisExit=CMClass.getExit("StdOpenDoorway");
 			from.rawExits()[direction]=thisExit;
 		}
-		ExternalPlay.DBUpdateExits(from);
+		CMClass.DBEngine().DBUpdateExits(from);
 
 		if(room.rawDoors()[Directions.getOpDirectionCode(direction)]==null)
 		{
 			room.rawDoors()[Directions.getOpDirectionCode(direction)]=from;
 			room.rawExits()[Directions.getOpDirectionCode(direction)]=thisExit;
-			ExternalPlay.DBUpdateExits(room);
+			CMClass.DBEngine().DBUpdateExits(room);
 		}
 		return "";
 	}
@@ -133,7 +133,7 @@ public class CMMap
 		roomsList.remove(oneToDel);
 		theWorldChanged();
 	}
-	
+
 	public static String getExtendedRoomID(Room R)
 	{
 		if(R==null) return "";
@@ -149,7 +149,7 @@ public class CMMap
 		}
 		return R.roomID();
 	}
-	
+
 	public static Room getRoom(String calledThis)
 	{
 		Room R = null;
@@ -242,29 +242,29 @@ public class CMMap
 		}
 		return null;
 	}
-	
+
 	public static MOB getLoadPlayer(String last)
 	{
-		if(!ExternalPlay.getSystemStarted())
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return null;
 
 		MOB M=getPlayer(last);
 		if(M!=null) return M;
-		
+
 		for(Enumeration p=players();p.hasMoreElements();)
 		{
 			MOB mob2=(MOB)p.nextElement();
 			if(mob2.Name().equalsIgnoreCase(last))
 			{ return mob2;}
 		}
-		
+
 		MOB TM=CMClass.getMOB("StdMOB");
-		if(ExternalPlay.DBUserSearch(TM,last))
+		if(CMClass.DBEngine().DBUserSearch(TM,last))
 		{
 			M=CMClass.getMOB("StdMOB");
 			M.setName(TM.Name());
-			ExternalPlay.DBReadMOB(M);
-			ExternalPlay.DBReadFollowers(M,false);
+			CMClass.DBEngine().DBReadMOB(M);
+			CMClass.DBEngine().DBReadFollowers(M,false);
 			if(M.playerStats()!=null)
 				M.playerStats().setUpdated(M.playerStats().lastDateTime());
 			M.recoverEnvStats();
@@ -272,7 +272,7 @@ public class CMMap
 		}
 		return M;
 	}
-	
+
 	public static Enumeration players() { return playersList.elements(); }
 
 	public static Room getStartRoom(MOB mob)
@@ -384,7 +384,7 @@ public class CMMap
 		bodyRooms=new Hashtable();
 		pageRooms(page,bodyRooms,"MORGUE");
 	}
-	
+
 	public static void renameRooms(Area A, String oldName, Vector allMyDamnRooms)
 	{
 		Vector onesToRenumber=new Vector();
@@ -401,13 +401,13 @@ public class CMMap
 					{
 						String oldID=R.roomID();
 						R.setRoomID(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
-						ExternalPlay.DBReCreate(R,oldID);
+						CMClass.DBEngine().DBReCreate(R,oldID);
 					}
 					else
 						onesToRenumber.addElement(R);
 				}
 				else
-					ExternalPlay.DBUpdateRoom(R);
+					CMClass.DBEngine().DBUpdateRoom(R);
 			}
 		}
 		A.clearMap();
@@ -417,8 +417,8 @@ public class CMMap
 			{
 				Room R=(Room)onesToRenumber.elementAt(r);
 				String oldID=R.roomID();
-				R.setRoomID(ExternalPlay.getOpenRoomID(A.Name()));
-				ExternalPlay.DBReCreate(R,oldID);
+				R.setRoomID(CMMap.getOpenRoomID(A.Name()));
+				CMClass.DBEngine().DBReCreate(R,oldID);
 			}
 		}
 	}

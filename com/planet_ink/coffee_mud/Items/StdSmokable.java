@@ -190,7 +190,7 @@ public class StdSmokable extends StdContainer implements Light
 				if(isLit())
 				{
 					light(false);
-					ExternalPlay.deleteTick(this,MudHost.TICK_LIGHT_FLICKERS);
+					CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_LIGHT_FLICKERS);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}
@@ -206,7 +206,7 @@ public class StdSmokable extends StdContainer implements Light
 					}
 
 					light(true);
-					ExternalPlay.startTickDown(this,MudHost.TICK_LIGHT_FLICKERS,1);
+					CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_LIGHT_FLICKERS,1);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}

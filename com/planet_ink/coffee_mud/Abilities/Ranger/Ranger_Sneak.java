@@ -76,7 +76,7 @@ public class Ranger_Sneak extends StdAbility
 				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_SNEAKING);
 				mob.recoverEnvStats();
 			}
-			ExternalPlay.move(mob,dirCode,false,false);
+			MUDTracker.move(mob,dirCode,false,false);
 			if(success)
 			{
 

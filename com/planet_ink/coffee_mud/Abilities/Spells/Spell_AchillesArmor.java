@@ -95,7 +95,7 @@ public class Spell_AchillesArmor extends Spell
 				return false;
 			}
 			else
-				ExternalPlay.postDeath(msg.source(),mob,msg);
+				MUDFight.postDeath(msg.source(),mob,msg);
 		}
 		return super.okMessage(myHost,msg);
 	}

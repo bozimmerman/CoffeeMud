@@ -38,24 +38,24 @@ public class ItemMender extends StdBehavior
 			Item tool=(Item)msg.tool();
 			if(!tool.subjectToWearAndTear())
 			{
-				ExternalPlay.quickSay(observer,source,"I'm sorry, I can't work on these.",true,false);
+				CommonMsgs.say(observer,source,"I'm sorry, I can't work on these.",true,false);
 				return false;
 			}
 			else
 			if(tool.usesRemaining()>100)
 			{
-				ExternalPlay.quickSay(observer,source,"Take this thing away from me.  It's so perfect, it's scary.",true,false);
+				CommonMsgs.say(observer,source,"Take this thing away from me.  It's so perfect, it's scary.",true,false);
 				return false;
 			}
 			else
 			if(tool.usesRemaining()==100)
 			{
-				ExternalPlay.quickSay(observer,source,tool.name()+" doesn't require repair.",true,false);
+				CommonMsgs.say(observer,source,tool.name()+" doesn't require repair.",true,false);
 				return false;
 			}
 			if(source.getMoney()<cost(tool))
 			{
-				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Item)msg.tool())+" gold coins to repair that.",true,false);
+				CommonMsgs.say(observer,source,"You'll need "+cost((Item)msg.tool())+" gold coins to repair that.",true,false);
 				return false;
 			}
 			return true;

@@ -13,6 +13,7 @@ public class HTTPserver extends Thread
 	public static final float HOST_VERSION_MAJOR=(float)1.0;
 	public static final float HOST_VERSION_MINOR=(float)0.3;
 	public static Hashtable webMacros=null;
+	public static INI webCommon=null;
 
 	// this gets sent in HTTP response
 	//  also used by @WEBSERVERVERSION@
@@ -54,6 +55,17 @@ public class HTTPserver extends Thread
 	public MudHost getMUD()	{return mud;}
 	public String getServerDir() {return serverDir;}
 	public String getServerTemplateDir() {return serverTemplateDir;}
+
+	public Properties getCommonPropPage()
+	{
+		if (webCommon==null || !webCommon.loaded)
+		{
+			webCommon=new INI("web" + File.separatorChar + "common.ini");
+			if(!webCommon.loaded)
+				Log.errOut("HTTPserver","Unable to load common.ini!");
+		}
+		return webCommon;
+	}
 
 	private boolean initServer()
 	{
@@ -170,7 +182,7 @@ public class HTTPserver extends Thread
 		if (page==null || !page.loaded)
 		{
 			String fn = "web" + File.separatorChar + getPartialName() + ".ini";
-			page=new INI( mud.getCommonPropPage(), fn);
+			page=new INI(getCommonPropPage(), fn);
 			if(!page.loaded)
 			{
 				Log.errOut(getName(),"failed to load " + fn);

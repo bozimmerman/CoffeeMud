@@ -175,7 +175,7 @@ public class Masonry extends CommonSkill
 									M.setLocation(R);
 								}
 							}
-							ExternalPlay.deleteTick(room,-1);
+							CMClass.ThreadEngine().deleteTick(room,-1);
 							CMMap.delRoom(room);
 							CMMap.addRoom(R);
 							for(int d=0;d<R.rawDoors().length;d++)
@@ -204,8 +204,8 @@ public class Masonry extends CommonSkill
 							}
 							R.getArea().clearMap();
 							R.getArea().fillInAreaRoom(R);
-							ExternalPlay.DBUpdateRoom(R);
-							ExternalPlay.DBUpdateExits(R);
+							CMClass.DBEngine().DBUpdateRoom(R);
+							CMClass.DBEngine().DBUpdateExits(R);
 						}
 						break;
 					case BUILD_PORTCULIS:
@@ -224,9 +224,9 @@ public class Masonry extends CommonSkill
 							if(room.rawDoors()[dir]!=null)
 							{
 								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
-								ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+								CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
 							}
-							ExternalPlay.DBUpdateExits(room);
+							CMClass.DBEngine().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_ARCH:
@@ -241,9 +241,9 @@ public class Masonry extends CommonSkill
 							if(room.rawDoors()[dir]!=null)
 							{
 								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
-								ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+								CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
 							}
-							ExternalPlay.DBUpdateExits(room);
+							CMClass.DBEngine().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_WALL:
@@ -252,15 +252,15 @@ public class Masonry extends CommonSkill
 							if(room.rawDoors()[dir]!=null)
 							{
 								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=null;
-								ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+								CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
 							}
-							ExternalPlay.DBUpdateExits(room);
+							CMClass.DBEngine().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_TITLE:
 						{
 							room.setDisplayText(designTitle);
-							ExternalPlay.DBUpdateRoom(room);
+							CMClass.DBEngine().DBUpdateRoom(room);
 						}
 						break;
 					case BUILD_DESC:
@@ -274,12 +274,12 @@ public class Masonry extends CommonSkill
 									room.rawExits()[workingOn]=E;
 								}
 								E.setDescription(designDescription);
-								ExternalPlay.DBUpdateExits(room);
+								CMClass.DBEngine().DBUpdateExits(room);
 							}
 							else
 							{
 								room.setDescription(designDescription);
-								ExternalPlay.DBUpdateRoom(room);
+								CMClass.DBEngine().DBUpdateRoom(room);
 							}
 						}
 						break;
@@ -302,7 +302,7 @@ public class Masonry extends CommonSkill
 								}
 								Ability A=CMClass.getAbility("Prop_Crawlspace");
 								if(A!=null) E.addNonUninvokableEffect(A);
-								ExternalPlay.DBUpdateExits(room);
+								CMClass.DBEngine().DBUpdateExits(room);
 							}
 						}
 						break;
@@ -326,7 +326,7 @@ public class Masonry extends CommonSkill
 										E.addNonUninvokableEffect(A);
 									}
 								}
-								ExternalPlay.DBUpdateExits(room);
+								CMClass.DBEngine().DBUpdateExits(room);
 							}
 						}
 						break;
@@ -365,7 +365,7 @@ public class Masonry extends CommonSkill
 										M.setLocation(R);
 									}
 								}
-								ExternalPlay.deleteTick(room,-1);
+								CMClass.ThreadEngine().deleteTick(room,-1);
 								CMMap.delRoom(room);
 								CMMap.addRoom(R);
 								for(int d=0;d<R.rawDoors().length;d++)
@@ -386,8 +386,8 @@ public class Masonry extends CommonSkill
 								}
 								R.getArea().clearMap();
 								R.getArea().fillInAreaRoom(R);
-								ExternalPlay.DBUpdateRoom(R);
-								ExternalPlay.DBUpdateExits(R);
+								CMClass.DBEngine().DBUpdateRoom(R);
+								CMClass.DBEngine().DBUpdateExits(R);
 							}
 							else
 							{
@@ -395,9 +395,9 @@ public class Masonry extends CommonSkill
 								if(room.rawDoors()[dir]!=null)
 								{
 									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("Open");
-									ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+									CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
 								}
-								ExternalPlay.DBUpdateExits(room);
+								CMClass.DBEngine().DBUpdateExits(room);
 							}
 						}
 						break;
@@ -572,16 +572,16 @@ public class Masonry extends CommonSkill
 			return false;
 		}
 
-		boolean canBuild=(ExternalPlay.doesOwnThisProperty(mob,mob.location())
-		   ||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))));
+		boolean canBuild=(CoffeeUtensils.doesOwnThisProperty(mob,mob.location())
+		   ||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))));
 		if(!canBuild)
 		{
 			if((dir>=0)&&(data[doingCode][DAT_REQDIR].equals("1")))
 			{
 				Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)
-				&&((ExternalPlay.doesOwnThisProperty(mob,R))
-					||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),R)))))
+				&&((CoffeeUtensils.doesOwnThisProperty(mob,R))
+					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R)))))
 					canBuild=true;
 			}
 		}

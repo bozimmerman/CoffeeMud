@@ -34,7 +34,7 @@ public class Poison_Slumberall extends Poison
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 		super.unInvoke();
 	}

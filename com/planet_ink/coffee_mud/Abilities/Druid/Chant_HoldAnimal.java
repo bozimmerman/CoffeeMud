@@ -34,7 +34,7 @@ public class Chant_HoldAnimal extends Chant
 		if(canBeUninvoked())
 		{
 			mob.tell("You can move again!");
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 	}
 

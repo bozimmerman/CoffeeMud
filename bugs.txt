@@ -4,3 +4,4 @@ I tried using broadcast sound in an emoter.  and the sound works for the room ye
 code something to coffeemudify all the beds 
 GenCharClasses -- zappercheck on quals 
 Some solution for variable eq on mobs -- use rejuv! But how to edit?!
+venders should be nonsummonable and nonkillable

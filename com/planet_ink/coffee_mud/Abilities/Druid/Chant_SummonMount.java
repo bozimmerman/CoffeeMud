@@ -105,11 +105,11 @@ public class Chant_SummonMount extends Chant
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat()) target.makePeace();
-				ExternalPlay.move(target,opDir,false,false);
+				MUDTracker.move(target,opDir,false,false);
 				if(target.location()==mob.location())
 				{
 					if(target.isInCombat()) target.makePeace();
-					ExternalPlay.follow(target,mob,true);
+					CommonMsgs.follow(target,mob,true);
 					if(target.amFollowing()!=mob)
 						mob.tell(target.name()+" seems unwilling to follow you.");
 				}

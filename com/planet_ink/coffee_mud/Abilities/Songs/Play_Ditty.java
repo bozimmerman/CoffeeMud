@@ -23,7 +23,7 @@ public class Play_Ditty extends Play
 		{
 			MOB mob=(MOB)affected;
 			int healing=invoker().charStats().getStat(CharStats.CHARISMA)/4;
-			ExternalPlay.postHealing(invoker(),mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+			MUDFight.postHealing(invoker(),mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 		}
 		return true;
 	}

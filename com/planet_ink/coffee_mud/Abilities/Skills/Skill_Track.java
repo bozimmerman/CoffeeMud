@@ -81,7 +81,7 @@ public class Skill_Track extends StdAbility
 								{
 									relock=true;
 									msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
-									ExternalPlay.roomAffectFully(msg,oldRoom,nextDirection);
+									CoffeeUtensils.roomAffectFully(msg,oldRoom,nextDirection);
 								}
 							}
 							FullMsg msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
@@ -89,7 +89,7 @@ public class Skill_Track extends StdAbility
 							{
 								reclose=true;
 								msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.openWord()+"(s) <T-NAMESELF>.");
-								ExternalPlay.roomAffectFully(msg,oldRoom,nextDirection);
+								CoffeeUtensils.roomAffectFully(msg,oldRoom,nextDirection);
 							}
 						}
 						if(!nextExit.isOpen())
@@ -98,7 +98,7 @@ public class Skill_Track extends StdAbility
 						{
 							int dir=nextDirection;
 							nextDirection=-2;
-							ExternalPlay.move(mob,dir,false,false);
+							MUDTracker.move(mob,dir,false,false);
 							if((reclose)&&(mob.location()==nextRoom))
 							{
 								Exit opExit=nextRoom.getExitInDir(opDirection);
@@ -110,7 +110,7 @@ public class Skill_Track extends StdAbility
 									if(nextRoom.okMessage(mob,msg))
 									{
 										msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
-										ExternalPlay.roomAffectFully(msg,nextRoom,opDirection);
+										CoffeeUtensils.roomAffectFully(msg,nextRoom,opDirection);
 									}
 									if((opExit.hasALock())&&(relock))
 									{
@@ -118,7 +118,7 @@ public class Skill_Track extends StdAbility
 										if(nextRoom.okMessage(mob,msg))
 										{
 											msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
-											ExternalPlay.roomAffectFully(msg,nextRoom,opDirection);
+											CoffeeUtensils.roomAffectFully(msg,nextRoom,opDirection);
 										}
 									}
 								}
@@ -147,7 +147,7 @@ public class Skill_Track extends StdAbility
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
 		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
-			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
+			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -225,7 +225,7 @@ public class Skill_Track extends StdAbility
 			if((cacheCode==1)&&(rooms.size()==1))
 				theTrail=(Vector)cachedPaths.get(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()));
 			if(theTrail==null)
-				theTrail=SaucerSupport.findBastardTheBestWay(thisRoom,rooms,false);
+				theTrail=MUDTracker.findBastardTheBestWay(thisRoom,rooms,false);
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
 				cachedPaths.put(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);
 		}
@@ -247,7 +247,7 @@ public class Skill_Track extends StdAbility
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,thisRoom,false);
+				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,thisRoom,false);
 			}
 		}
 		else

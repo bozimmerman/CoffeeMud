@@ -279,7 +279,7 @@ public class Alchemy extends CommonSkill
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
 
-			ExternalPlay.postExperience(mob,null,null,-experienceToLose,false);
+			MUDFight.postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroy();

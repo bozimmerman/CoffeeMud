@@ -43,11 +43,11 @@ public class Prayer_HealUndead extends Prayer
 				int healing=Dice.roll(5,adjustedLevel(mob),10);
 				if(undead)
 				{
-					ExternalPlay.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+					MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 					target.tell("You feel tons better!");
 				}
 				else
-					ExternalPlay.postDamage(mob,target,this,healing,
+					MUDFight.postDamage(mob,target,this,healing,
 											CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,
 											Weapon.TYPE_BURNING,
 											"The unholy spell <DAMAGE> <T-NAME>!");

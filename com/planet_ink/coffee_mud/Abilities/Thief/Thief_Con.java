@@ -84,14 +84,7 @@ public class Thief_Con extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				try
-				{
-					ExternalPlay.doCommand(target,commands);
-				}
-				catch(Exception e)
-				{
-					mob.tell(target.charStats().HeShe()+" smiles, saying '"+e.getMessage()+"'.");
-				}
+				target.enqueCommand(commands,0);
 			}
 			target.recoverEnvStats();
 		}

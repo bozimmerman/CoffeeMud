@@ -192,20 +192,20 @@ public class MOBTeacher extends CombatAbilities
 				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
 				if(s.trim().equalsIgnoreCase("LIST"))
 				{
-					ExternalPlay.quickSay(monster,mob,"Try the QUALIFY command.",true,false);
+					CommonMsgs.say(monster,mob,"Try the QUALIFY command.",true,false);
 					return;
 				}
 				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),mob.charStats());
 				if(myAbility==null)
 				{
-					ExternalPlay.quickSay(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
+					CommonMsgs.say(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
 					return;
 				}
 				//ensureCharClass();
 				myAbility=monster.fetchAbility(myAbility.ID());
 				if(myAbility==null)
 				{
-					ExternalPlay.quickSay(monster,mob,"I'm sorry, I don't know "+s,true,false);
+					CommonMsgs.say(monster,mob,"I'm sorry, I don't know "+s,true,false);
 					return;
 				}
 				if(giveABonus)
@@ -217,7 +217,7 @@ public class MOBTeacher extends CombatAbilities
 
 				if(mob.fetchAbility(myAbility.ID())!=null)
 				{
-					ExternalPlay.quickSay(monster,mob,"But you already know '"+myAbility.name()+"'.",true,false);
+					CommonMsgs.say(monster,mob,"But you already know '"+myAbility.name()+"'.",true,false);
 					return;
 				}
 				myAbility.setProfficiency(75);

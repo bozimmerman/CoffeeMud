@@ -56,7 +56,7 @@ public class Thief_Pick extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				msg=new FullMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> pick(s) the lock on "+unlockThis.name()+".");
-				ExternalPlay.roomAffectFully(msg,mob.location(),dirCode);
+				CoffeeUtensils.roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}
 

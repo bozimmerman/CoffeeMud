@@ -344,16 +344,16 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 	public boolean doIHaveThisInStock(String name, MOB mob)
 	{
-		Environmental item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,true);
+		Environmental item=EnglishParser.fetchEnvironmental(storeInventory,name,true);
 		if(item==null)
-			item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,false);
+			item=EnglishParser.fetchEnvironmental(storeInventory,name,false);
 		if((item==null)
 		   &&(mob!=null)
 		   &&((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER)))
 		{
-			item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
+			item=EnglishParser.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
 			if(item==null)
-				item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,false);
+				item=EnglishParser.fetchEnvironmental(addRealEstate(new Vector(),mob),name,false);
 		}
 		if(item!=null)
 		   return true;
@@ -399,16 +399,16 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 	public Environmental getStock(String name, MOB mob)
 	{
-		Environmental item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,true);
+		Environmental item=EnglishParser.fetchEnvironmental(storeInventory,name,true);
 		if(item==null)
-			item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,false);
+			item=EnglishParser.fetchEnvironmental(storeInventory,name,false);
 		if((item==null)
 		   &&((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER))
 		   &&(mob!=null))
 		{
-			item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
+			item=EnglishParser.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
 			if(item==null)
-				item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,false);
+				item=EnglishParser.fetchEnvironmental(addRealEstate(new Vector(),mob),name,false);
 		}
 		return item;
 	}
@@ -453,19 +453,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					if(yourValue(mob,msg.tool(),false)[0]<2)
 					{
-						ExternalPlay.quickSay(this,mob,"I'm not interested.",true,false);
+						CommonMsgs.say(this,mob,"I'm not interested.",true,false);
 						return false;
 					}
 					if(msg.tool() instanceof Ability)
 					{
-						ExternalPlay.quickSay(this,mob,"I'm not interested.",true,false);
+						CommonMsgs.say(this,mob,"I'm not interested.",true,false);
 						return false;
 					}
 					int numInStock=numberInStock(msg.tool());
 					if(((!(msg.tool() instanceof EnvResource))&&(numInStock>=maximumDuplicatesBought))
 					||(numInStock>=(maximumDuplicatesBought*100)))
 					{
-						ExternalPlay.quickSay(this,mob,"I'm sorry, I'm not buying any more of those.",true,false);
+						CommonMsgs.say(this,mob,"I'm sorry, I'm not buying any more of those.",true,false);
 						return false;
 					}
 					if((msg.tool() instanceof Container)&&(((Container)msg.tool()).hasALock()))
@@ -478,7 +478,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							&&(((Key)I).getKey().equals(((Container)msg.tool()).keyName()))&&(I.container()==msg.tool()))
 								return true;
 						}
-						ExternalPlay.quickSay(this,mob,"I won't buy that back unless you put the key in it.",true,false);
+						CommonMsgs.say(this,mob,"I won't buy that back unless you put the key in it.",true,false);
 						return false;
 					}
 					if((msg.tool() instanceof Item)&&(msg.source().isMine(msg.tool())))
@@ -489,7 +489,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					}
 					return super.okMessage(myHost,msg);
 				}
-				ExternalPlay.quickSay(this,mob,"I'm sorry, I'm not buying those.",true,false);
+				CommonMsgs.say(this,mob,"I'm sorry, I'm not buying those.",true,false);
 				return false;
 			}
 			case CMMsg.TYP_BUY:
@@ -503,17 +503,17 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						int[] val=yourValue(mob,msg.tool(),true);
 						if((val[2]>0)&&(val[2]>mob.getExperience()))
 						{
-							ExternalPlay.quickSay(this,mob,"You aren't experienced enough to buy "+msg.tool().name()+".",false,false);
+							CommonMsgs.say(this,mob,"You aren't experienced enough to buy "+msg.tool().name()+".",false,false);
 							return false;
 						}
 						if((val[1]>0)&&(val[1]>mob.getQuestPoint()))
 						{
-							ExternalPlay.quickSay(this,mob,"You don't have enough quest points to buy "+msg.tool().name()+".",false,false);
+							CommonMsgs.say(this,mob,"You don't have enough quest points to buy "+msg.tool().name()+".",false,false);
 							return false;
 						}
-						if((val[0]>0)&&(val[0]>com.planet_ink.coffee_mud.utils.Money.totalMoney(mob)))
+						if((val[0]>0)&&(val[0]>MoneyUtils.totalMoney(mob)))
 						{
-							ExternalPlay.quickSay(this,mob,"You can't afford to buy "+msg.tool().name()+".",false,false);
+							CommonMsgs.say(this,mob,"You can't afford to buy "+msg.tool().name()+".",false,false);
 							return false;
 						}
 					}
@@ -521,7 +521,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					{
 						if(((Item)msg.tool()).envStats().level()>mob.envStats().level())
 						{
-							ExternalPlay.quickSay(this,mob,"That's too advanced for you, I'm afraid.",true,false);
+							CommonMsgs.say(this,mob,"That's too advanced for you, I'm afraid.",true,false);
 							return false;
 						}
 					}
@@ -530,7 +530,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					{
 						if(mob.getClanID().length()==0)
 						{
-							ExternalPlay.quickSay(this,mob,"I only sell land to clans.",true,false);
+							CommonMsgs.say(this,mob,"I only sell land to clans.",true,false);
 							return false;
 						}
 					}
@@ -538,7 +538,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					{
 						if(msg.source().totalFollowers()>=msg.source().maxFollowers())
 						{
-							ExternalPlay.quickSay(this,mob,"You can't accept any more followers.",true,false);
+							CommonMsgs.say(this,mob,"You can't accept any more followers.",true,false);
 							return false;
 						}
 					}
@@ -558,20 +558,20 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								if(I==null) I=mob.fetchFirstWornItem(Item.HELD);
 								if(I==null)
 								{
-									ExternalPlay.quickSay(this,mob,"You need to be wielding or holding the item you want this cast on.",true,false);
+									CommonMsgs.say(this,mob,"You need to be wielding or holding the item you want this cast on.",true,false);
 									return false;
 								}
 							}
 							else
 							{
-								ExternalPlay.quickSay(this,mob,"I don't know how to sell that spell.",true,false);
+								CommonMsgs.say(this,mob,"I don't know how to sell that spell.",true,false);
 								return false;
 							}
 						}
 					}
 					return super.okMessage(myHost,msg);
 				}
-				ExternalPlay.quickSay(this,mob,"I don't have that in stock.  Ask for my LIST.",true,false);
+				CommonMsgs.say(this,mob,"I don't have that in stock.  Ask for my LIST.",true,false);
 				return false;
 			}
 			case CMMsg.TYP_LIST:
@@ -664,7 +664,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			case CMMsg.TYP_VALUE:
 				super.executeMsg(myHost,msg);
-				ExternalPlay.quickSay(this,mob,"I'll give you "+yourValue(mob,msg.tool(),false)[0]+" for "+msg.tool().name()+".",true,false);
+				CommonMsgs.say(this,mob,"I'll give you "+yourValue(mob,msg.tool(),false)[0]+" for "+msg.tool().name()+".",true,false);
 				break;
 			case CMMsg.TYP_SELL:
 				super.executeMsg(myHost,msg);
@@ -768,7 +768,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						}
 					}
 					str.append("\n\rDescription: "+msg.tool().description());
-					ExternalPlay.quickSay(this,msg.source(),str.toString(),true,false);
+					CommonMsgs.say(this,msg.source(),str.toString(),true,false);
 				}
 				break;
 			case CMMsg.TYP_BUY:
@@ -780,9 +780,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
 					int[] val=yourValue(mob,product,true);
-					if(val[0]>0) com.planet_ink.coffee_mud.utils.Money.subtractMoney(this,mob,val[0]);
+					if(val[0]>0) MoneyUtils.subtractMoney(this,mob,val[0]);
 					if(val[1]>0) mob.setQuestPoint(mob.getQuestPoint()-val[1]);
-					if(val[2]>0) ExternalPlay.postExperience(mob,null,null,-val[2],false);
+					if(val[2]>0) MUDFight.postExperience(mob,null,null,-val[2],false);
 					mob.recoverEnvStats();
 					if(product instanceof Item)
 					{
@@ -802,7 +802,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								String buf=findInnRoom(item, "", location());
 								if(buf==null) buf=findInnRoom(item, "upstairs", location().getRoomInDir(Directions.UP));
 								if(buf==null) buf=findInnRoom(item, "downstairs", location().getRoomInDir(Directions.DOWN));
-								if(buf!=null) ExternalPlay.quickSay(this,mob,"Your room is "+buf+".",true,false);
+								if(buf!=null) CommonMsgs.say(this,mob,"Your room is "+buf+".",true,false);
 							}
 						}
 						else
@@ -815,7 +815,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						product.recoverEnvStats();
 						product.setMiscText(product.text());
 						((MOB)product).bringToLife(mob.location(),true);
-						ExternalPlay.follow((MOB)product,mob,false);
+						CommonMsgs.follow((MOB)product,mob,false);
 						if(((MOB)product).amFollowing()==null)
 							mob.tell("You cannot accept any more followers!");
 					}
@@ -868,10 +868,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					{
 						if((whatISell!=DEAL_BANKER)
 						&&(whatISell!=DEAL_CLANBANKER))
-							ExternalPlay.quickSay(this,mob,"I have nothing for sale.",false,false);
+							CommonMsgs.say(this,mob,"I have nothing for sale.",false,false);
 					}
 					else
-						ExternalPlay.quickSay(this,mob,"\n\r"+str+"^T",true,false);
+						CommonMsgs.say(this,mob,"\n\r"+str+"^T",true,false);
 				}
 				break;
 			default:

@@ -38,7 +38,7 @@ public class Disease_Plague extends Disease
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int dmg=mob.envStats().level()/2;
 			if(dmg<1) dmg=1;
-			ExternalPlay.postDamage(diseaser,mob,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+			MUDFight.postDamage(diseaser,mob,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
 			catchIt(mob);
 			return true;
 		}

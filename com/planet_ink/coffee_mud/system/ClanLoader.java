@@ -15,12 +15,12 @@ public class ClanLoader
 	private static int currentRecordPos=1;
 	private static int recordCount=0;
 
-	public static void updateBootStatus(MudHost myHost, String loading)
+	public static void updateBootStatus(String loading)
 	{
-		myHost.setGameStatusStr("Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
+		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
 	}
 
-	public static void DBRead(MudHost myHost)
+	public static void DBRead()
 	{
 		DBConnection D=null;
 	    Clan C=null;
@@ -44,7 +44,7 @@ public class ClanLoader
 				C.setDonation(DBConnections.getRes(R,"CMDNAT"));
 				C.setStatus(Util.s_int(DBConnections.getRes(R, "CMSTAT")));
 				Clans.addClan(C);
-		        updateBootStatus(myHost,"Clans");
+		        updateBootStatus("Clans");
 			}
 			DBConnector.DBDone(D);
 		}

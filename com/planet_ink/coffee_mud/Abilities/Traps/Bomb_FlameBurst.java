@@ -37,7 +37,7 @@ public class Bomb_FlameBurst extends StdBomb
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,(affected.name()+" flames all over <T-NAME>!")+CommonStrings.msp("fireball.wav",30)))
 			{
 				super.spring(target);
-				ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),12,1),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flames <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(invoker(),target,null,Dice.roll(trapLevel(),12,1),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flames <DAMAGE> <T-NAME>!");
 			}
 		}
 	}

@@ -54,7 +54,7 @@ public class MobileGoodGuardian extends Mobile
 		}
 		if(dirCode>=0)
 		{
-			ExternalPlay.move(mob,dirCode,false,false);
+			MUDTracker.move(mob,dirCode,false,false);
 			GoodGuardian.keepPeace(mob,victim);
 		}
 		return true;

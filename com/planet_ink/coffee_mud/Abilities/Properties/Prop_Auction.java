@@ -78,23 +78,23 @@ public class Prop_Auction extends Property
 					if((highBidder!=null)&&(highBidder!=invoker()))
 					{
 						V.addElement(auctioning.name()+" SOLD to "+highBidder.name()+" for "+bid+" gold.");
-						try{ExternalPlay.doCommand(M,V);}catch(Exception e){}
-						if(Money.totalMoney(highBidder)<bid)
+						M.doCommand(V);
+						if(MoneyUtils.totalMoney(highBidder)<bid)
 						{
 							highBidder.tell("You can no longer cover your bid.  Please contact "+M.name()+" about this matter immediately.");
 							M.tell(highBidder.name()+" can not cover the bid any longer! Please contact "+highBidder.charStats().himher()+" immediately.");
 						}
 						else
 						{
-							Money.subtractMoney(highBidder,highBidder,bid);
-							Money.giveMoney(M,M,bid);
+							MoneyUtils.subtractMoney(highBidder,highBidder,bid);
+							MoneyUtils.giveMoney(M,M,bid);
 							if((auctioning instanceof Item)
 							   &&(highBidder.location()!=null)
 							   &&(highBidder.location().isInhabitant(highBidder)))
 							{
 								((Item)auctioning).unWear();
 								highBidder.location().bringItemHere((Item)auctioning,Item.REFUSE_PLAYER_DROP);
-								ExternalPlay.get(highBidder,null,(Item)auctioning,false);
+								CommonMsgs.get(highBidder,null,(Item)auctioning,false);
 								M.tell(bid+" gold has been transferred to you as payment from "+highBidder.name()+".  The goods have also been transferred in exchange.");
 								highBidder.tell(bid+" gold has been transferred to "+M.name()+".  You should have received the auctioned goods.  This auction is complete.");
 							}
@@ -106,11 +106,11 @@ public class Prop_Auction extends Property
 						}
 					}
 				}
-				try{ExternalPlay.doCommand(M,V);}catch(Exception e){}
+				M.doCommand(V);
 				setInvoker(null);
 				return false;
 			}
-			try{ExternalPlay.doCommand(M,V);}catch(Exception e){}
+			M.doCommand(V);
 		}
 		return true;
 	}
@@ -128,7 +128,7 @@ public class Prop_Auction extends Property
 			highBid=bid-1;
 			auctionStart=System.currentTimeMillis();
 			setAbilityCode(STATE_START);
-			ExternalPlay.startTickDown(this,MudHost.TICK_QUEST,1);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_QUEST,1);
 			V.addElement("New lot: "+auctioning.name()+".  The opening bid is "+bid+".");
 		}
 		else
@@ -143,7 +143,7 @@ public class Prop_Auction extends Property
 				return true;
 			}
 
-			if(b>Money.totalMoney(mob))
+			if(b>MoneyUtils.totalMoney(mob))
 			{
 				mob.tell("You don't have enough total money on hand to cover that bid.");
 				return false;
@@ -185,7 +185,7 @@ public class Prop_Auction extends Property
 				bid=b;
 			V.addElement("A new bid has been entered for "+auctioning.name()+". The current bid is "+bid+".");
 		}
-		try{ExternalPlay.doCommand(invoker(),V);}catch(Exception e){}
+		if(invoker()!=null) invoker().doCommand(V);
 		return true;
 	}
 }

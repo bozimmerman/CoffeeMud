@@ -264,7 +264,7 @@ public class StdCharClass implements CharClass, Cloneable
 				if(sireShare<=0) sireShare=1;
 				amount-=sireShare;
 				if(sire.charStats()!=null)
-					ExternalPlay.postExperience(sire,null," from "+mob.name(),sireShare,quiet);
+					MUDFight.postExperience(sire,null," from "+mob.name(),sireShare,quiet);
 			}
 			else
 				mob.setLeigeID("");
@@ -305,7 +305,7 @@ public class StdCharClass implements CharClass, Cloneable
 		if(mob.baseEnvStats().level()<2) return;
 		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CommonStrings.msp("doh.wav",60));
 		if(!mob.isMonster())
-			ExternalPlay.channel("WIZINFO","",mob.Name()+" has just lost a level.",true);
+			CommonMsgs.channel("WIZINFO","",mob.Name()+" has just lost a level.",true);
 
 		levelAdjuster(mob,-1);
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
@@ -358,8 +358,11 @@ public class StdCharClass implements CharClass, Cloneable
 		mob.recoverEnvStats();
 		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
 
+		int conStat=mob.charStats().getStat(CharStats.CONSTITUTION);
+		int maxConStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.CONSTITUTION));
 		int newHitPointGain=getMinHitPointsLevel()+(int)Math.floor(Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()));
-		newHitPointGain+=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.CONSTITUTION),2.0))-4;
+		newHitPointGain+=(int)Math.floor(Util.div(conStat,2.0))-4;
 		if(newHitPointGain<=0) newHitPointGain=1;
 		newHitPointGain=newHitPointGain*adjuster;
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
@@ -370,23 +373,37 @@ public class StdCharClass implements CharClass, Cloneable
 
 		double lvlMul=1.0;//-Util.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
-		int mvGain=(int)Math.round(lvlMul*Util.mul(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0),getMovementMultiplier()));
-
+		int mvStat=mob.charStats().getStat(CharStats.STRENGTH);
+		int maxMvStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.STRENGTH));
+		int mvGain=(int)Math.round(lvlMul*Util.mul(Util.div(mvStat,9.0),getMovementMultiplier()));
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
 		theNews.append(mvGain+"^N move " + (mvGain!=1?"points":"point") + ", ^H");
 
-		int attGain=(int)Math.round(Util.div(mob.charStats().getStat(getAttackAttribute()),6.0))+getBonusAttackLevel();
+
+
+		int attStat=mob.charStats().getStat(getAttackAttribute());
+		int maxAttStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+getAttackAttribute()));
+		if(attStat>=maxAttStat) attStat=maxAttStat;
+		int attGain=(int)Math.round(Util.div(attStat,6.0))+getBonusAttackLevel();
 		attGain=attGain*adjuster;
 		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+attGain);
 		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
 		theNews.append(attGain+"^N attack " + (attGain!=1?"points":"point") + ", ^H");
 
-		int manaGain=(int)Math.round(Util.mul(Util.div(mob.charStats().getStat(CharStats.INTELLIGENCE),18.0),getBonusManaLevel()));
+		int manStat=mob.charStats().getStat(CharStats.INTELLIGENCE);
+		int maxManStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.INTELLIGENCE));
+		int manaGain=(int)Math.round(Util.mul(Util.div(manStat,18.0),getBonusManaLevel()));
 		manaGain=manaGain*adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
 		theNews.append(manaGain+"^N " + (manaGain!=1?"points":"point") + " of mana,");
+
+
+
 		if((adjuster<0)&&(((classLevel+1)%getLevelsPerBonusDamage())==0))
 			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()-1);
 		else
@@ -459,7 +476,7 @@ public class StdCharClass implements CharClass, Cloneable
 			if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 				mob.charStats().getCurrentClass().level(mob);
 			else
-				ExternalPlay.postExperience(mob,null,null,mob.getExpNeededLevel()+1,true);
+				MUDFight.postExperience(mob,null,null,mob.getExpNeededLevel()+1,true);
 			int newAttack=mob.baseEnvStats().attackAdjustment()-oldattack;
 			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-newAttack);
 			mob.recoverEnvStats();
@@ -515,7 +532,7 @@ public class StdCharClass implements CharClass, Cloneable
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CommonStrings.msp("level_gain.wav",60));
 		theNews.append(levelAdjuster(mob,1));
 		if(!mob.isMonster())
-			ExternalPlay.channel("WIZINFO","",mob.Name()+" has just gained a level.",true);
+			CommonMsgs.channel("WIZINFO","",mob.Name()+" has just gained a level.",true);
 
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
@@ -560,7 +577,8 @@ public class StdCharClass implements CharClass, Cloneable
 
 	public int getLevelArmor(MOB mob)
 	{
-		return 75-((mob.baseEnvStats().level()-1)*3);
+
+		return 100-(mob.baseEnvStats().level()*7);
 	}
 
 	public int getLevelDamage(MOB mob)
@@ -627,7 +645,7 @@ public class StdCharClass implements CharClass, Cloneable
 				MOB mob=(MOB)e.nextElement();
 				int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level(),totalLevels)));
 				if(myAmount>100) myAmount=100;
-				ExternalPlay.postExperience(mob,killed,"",myAmount,false);
+				MUDFight.postExperience(mob,killed,"",myAmount,false);
 			}
 		return beneficiaries;
 	}

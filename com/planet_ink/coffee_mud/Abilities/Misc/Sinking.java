@@ -111,7 +111,7 @@ public class Sinking extends StdAbility
 					}
 				}
 				mob.tell("\n\r\n\rYOU ARE SINKING "+addStr.toUpperCase()+"!!\n\r\n\r");
-				ExternalPlay.move(mob,direction,false,false);
+				MUDTracker.move(mob,direction,false,false);
 				if(!canSinkFrom(mob.location(),direction))
 				{
 					return stopSinking(mob);
@@ -218,7 +218,7 @@ public class Sinking extends StdAbility
 			F.setBorrowed(E,true);
 			F.makeLongLasting();
 			if(!(E instanceof MOB))
-				ExternalPlay.startTickDown(F,MudHost.TICK_MOB,1);
+				CMClass.ThreadEngine().startTickDown(F,MudHost.TICK_MOB,1);
 			E.recoverEnvStats();
 		}
 		return true;

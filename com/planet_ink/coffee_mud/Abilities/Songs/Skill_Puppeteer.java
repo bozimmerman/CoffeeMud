@@ -65,13 +65,13 @@ public class Skill_Puppeteer extends StdAbility
 		{
 			if(invoker().isInCombat())
 			{
-				boolean isHit=(CoffeeUtensils.normalizeAndRollLess(invoker().adjustedAttackBonus(invoker().getVictim())
+				boolean isHit=(Dice.normalizeAndRollLess(invoker().adjustedAttackBonus(invoker().getVictim())
 																   +((Item)affected).envStats().attackAdjustment()
 																   +invoker().getVictim().adjustedArmor()));
 				if(!isHit)
 					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
-					ExternalPlay.postDamage(invoker(),invoker().getVictim(),(Item)affected,
+					MUDFight.postDamage(invoker(),invoker().getVictim(),(Item)affected,
 											Dice.roll(1,affected.envStats().level(),1),
 											CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,
 											Weapon.TYPE_BASHING,affected.name()+" attacks and <DAMAGE> <T-NAME>!");

@@ -62,7 +62,7 @@ public class Spell_Levitate extends Spell
 		if(canBeUninvoked())
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) back down.");
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 	}
 

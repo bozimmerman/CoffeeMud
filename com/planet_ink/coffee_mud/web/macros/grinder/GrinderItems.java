@@ -17,7 +17,7 @@ public class GrinderItems
 		String mobNum=httpReq.getRequestParameter("MOB");
 		String newClassID=httpReq.getRequestParameter("CLASSES");
 
-		ExternalPlay.resetRoom(R);
+		CoffeeUtensils.resetRoom(R);
 
 		Item I=null;
 		MOB M=null;
@@ -433,7 +433,7 @@ public class GrinderItems
 		}
 		if(M==null)
 		{
-			ExternalPlay.DBUpdateItems(R);
+			CMClass.DBEngine().DBUpdateItems(R);
 			httpReq.addRequestParameters("ITEM",RoomData.getItemCode(R,I));
 			R.startItemRejuv();
 		}
@@ -447,7 +447,7 @@ public class GrinderItems
 			}
 			else
 				I.wearAt(Item.INVENTORY);
-			ExternalPlay.DBUpdateMOBs(R);
+			CMClass.DBEngine().DBUpdateMOBs(R);
 			httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
 			httpReq.addRequestParameters("ITEM",RoomData.getItemCode(M,I));
 		}

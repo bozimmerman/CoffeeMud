@@ -38,7 +38,7 @@ public class Prayer_Restoration extends Prayer
 				int healing=target.maxState().getHitPoints()-target.curState().getHitPoints();
 				if(healing>0)
 				{
-					ExternalPlay.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+					MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) much healthier!");
 					target.recoverCharStats();
 					target.recoverEnvStats();

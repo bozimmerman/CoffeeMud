@@ -113,15 +113,12 @@ public class ProtectedCitizen extends ActiveTicker
 		if(assistance>=maxAssistance)
 			return false;
 
-		try{
-			String claim=getClaims()[Dice.roll(1,getClaims().length,-1)];
-		ExternalPlay.doCommand(mob,Util.parse("YELL \""+claim+"\""));
-		}catch(Exception e){}
-
+		String claim=getClaims()[Dice.roll(1,getClaims().length,-1)];
+		mob.doCommand(Util.parse("YELL \""+claim+"\""));
 
 		Room thisRoom=mob.location();
 		Vector V=new Vector();
-		SaucerSupport.getRadiantRooms(thisRoom,V,true,!wander,false,null,radius);
+		MUDTracker.getRadiantRooms(thisRoom,V,true,!wander,false,null,radius);
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.elementAt(v);
@@ -135,7 +132,7 @@ public class ProtectedCitizen extends ActiveTicker
 					&&(Sense.aliveAwakeMobile(M2,true)
 					&&(!M2.isInCombat())
 					&&(Sense.isMobile(M2))
-					&&(SaucerSupport.zapperCheck(getCityguardName(),M2))
+					&&(MUDZapper.zapperCheck(getCityguardName(),M2))
 					&&(!BrotherHelper.isBrother(mob.getVictim(),M2))
 					&&(BrotherHelper.canFreelyBehaveNormal(M2))
 					&&(M2.fetchEffect("Skill_Track")==null)
@@ -147,12 +144,12 @@ public class ProtectedCitizen extends ActiveTicker
 			if(M!=null)
 			{
 				if(R==mob.location())
-					ExternalPlay.postAttack(M,mob.getVictim(),M.fetchWieldedItem());
+					MUDFight.postAttack(M,mob.getVictim(),M.fetchWieldedItem());
 				else
 				{
-					int dir=SaucerSupport.radiatesFromDir(R,V);
+					int dir=MUDTracker.radiatesFromDir(R,V);
 					if(dir>=0)
-						ExternalPlay.move(M,dir,false,false);
+						MUDTracker.move(M,dir,false,false);
 				}
 			}
 		}

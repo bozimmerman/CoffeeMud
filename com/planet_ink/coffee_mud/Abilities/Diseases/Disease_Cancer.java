@@ -52,7 +52,7 @@ public class Disease_Cancer extends Disease
 			conDown=-1;
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
-			ExternalPlay.postDeath(diseaser,affected,null);
+			MUDFight.postDeath(diseaser,affected,null);
 		}
 	}
 

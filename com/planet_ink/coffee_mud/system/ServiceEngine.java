@@ -5,18 +5,19 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
-public class ServiceEngine
+public class ServiceEngine implements ThreadEngine
 {
-	private static Vector tickGroup=new Vector();
-	public static Enumeration tickGroups(){return ((Vector)tickGroup.clone()).elements();}
-	public static void delTickGroup(Tick tock)
+	private Vector tickGroup=new Vector();
+	public Enumeration tickGroups(){return ((Vector)tickGroup.clone()).elements();}
+	
+	public void delTickGroup(Tick tock)
 	{
 		synchronized(tickGroup)
 		{
 			tickGroup.removeElement(tock);
 		}
 	}
-	public static void addTickGroup(Tick tock)
+	public void addTickGroup(Tick tock)
 	{
 		synchronized(tickGroup)
 		{
@@ -24,7 +25,7 @@ public class ServiceEngine
 		}
 	}
 
-	public static Tick confirmAndGetTickThread(Tickable E, int tickID)
+	public Tick confirmAndGetTickThread(Tickable E, int tickID)
 	{
 		Tick tock=null;
 
@@ -51,7 +52,7 @@ public class ServiceEngine
 		}
 	}
 
-	public static void startTickDown(Tickable E,
+	public void startTickDown(Tickable E,
 									 int tickID,
 									 int numTicks)
 	{
@@ -63,7 +64,7 @@ public class ServiceEngine
 			tock.addTicker(client);
 	}
 
-	public static boolean deleteTick(Tickable E, int tickID)
+	public boolean deleteTick(Tickable E, int tickID)
 	{
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
@@ -83,7 +84,7 @@ public class ServiceEngine
 		return false;
 	}
 
-	public static boolean isTicking(Tickable E, int tickID)
+	public boolean isTicking(Tickable E, int tickID)
 	{
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
@@ -99,9 +100,9 @@ public class ServiceEngine
 		return false;
 	}
 
-	public static void suspendTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,true);}
-	public static void resumeTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,false);}
-	private static boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
+	public void suspendTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,true);}
+	public void resumeTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,false);}
+	private boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
 	{
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
@@ -117,7 +118,7 @@ public class ServiceEngine
 		return false;
 	}
 
-	public static boolean isHere(Tickable E2, Room here)
+	public boolean isHere(Tickable E2, Room here)
 	{
 		if(E2==null)
 			return false;
@@ -149,7 +150,7 @@ public class ServiceEngine
 	}
 
 
-	public static String report(String itemCode)
+	public String systemReport(String itemCode)
 	{
 		long totalMOBMillis=0;
 		long totalMOBTicks=0;
@@ -243,10 +244,10 @@ public class ServiceEngine
 			return ""+(Runtime.getRuntime().totalMemory()/1000);
 		else
 		if(itemCode.equalsIgnoreCase("totalTime"))
-			return ""+Util.returnTime(System.currentTimeMillis()-ExternalPlay.getStartTime(),0);
+			return ""+Util.returnTime(System.currentTimeMillis()-CommonStrings.getStartTime(),0);
 		else
 		if(itemCode.equalsIgnoreCase("startTime"))
-			return IQCalendar.d2String(ExternalPlay.getStartTime());
+			return IQCalendar.d2String(CommonStrings.getStartTime());
 		else
 		if(itemCode.equalsIgnoreCase("currentTime"))
 			return IQCalendar.d2String(System.currentTimeMillis());
@@ -341,7 +342,7 @@ public class ServiceEngine
 		return "";
 	}
 
-	public static void tickAllTickers(Room here)
+	public void tickAllTickers(Room here)
 	{
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
@@ -366,7 +367,7 @@ public class ServiceEngine
 		}
 	}
 
-	public static String tickInfo(String which)
+	public String tickInfo(String which)
 	{
 		int grpstart=-1;
 		for(int i=0;i<which.length();i++)
@@ -446,7 +447,7 @@ public class ServiceEngine
 		return "";
 	}
 
-	public static void shutdownAll()
+	public void shutdownAll()
 	{
 		Log.sysOut("ServiceEngine","Shutting down all ticks...");
 		while(tickGroup.size()>0)
@@ -459,7 +460,7 @@ public class ServiceEngine
 		Log.sysOut("ServiceEngine","Shutdown complete.");
 	}
 
-	public synchronized static void clearDebri(Room room, int taskCode)
+	public synchronized void clearDebri(Room room, int taskCode)
 	{
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{

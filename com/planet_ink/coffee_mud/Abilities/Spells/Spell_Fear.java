@@ -54,7 +54,7 @@ public class Spell_Fear extends Spell
 						if(msg2.value()<=0)
 						{
 							invoker=mob;
-							ExternalPlay.flee(target,"");
+							CommonMsgs.flee(target,"");
 						}
 					}
 				}

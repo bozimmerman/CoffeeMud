@@ -44,8 +44,8 @@ public class ExitData extends StdWebMacro
 		}
 		if(R==null) return "@break@";
 
-		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
-			return httpReq.getMUD().gameStatusStr();
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			return CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS);
 
 		String linkdir=httpReq.getRequestParameter("LINK");
 		if(linkdir==null) return "@break@";

@@ -43,7 +43,7 @@ public class Prayer_CurseMind extends Prayer
 		super.unInvoke();
 		if(canBeUninvoked())
 			mob.tell("Your mind feels less cursed.");
-		ExternalPlay.standIfNecessary(mob);
+		CommonMsgs.stand(mob,true);
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

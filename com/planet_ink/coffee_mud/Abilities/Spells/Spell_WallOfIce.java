@@ -54,7 +54,7 @@ public class Spell_WallOfIce extends Spell
 							&&(M.rangeToTarget()>0)
 							&&(M.rangeToTarget()<3)
 							&&(!M.amDead()))
-								ExternalPlay.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+								MUDFight.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
 						}
 						((Item)affected).destroy();
 					}

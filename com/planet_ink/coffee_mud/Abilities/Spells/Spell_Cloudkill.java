@@ -39,7 +39,7 @@ public class Spell_Cloudkill extends Spell
 		if(canBeUninvoked())
 		{
 			mob.tell("You feel less intoxicated.");
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 	}
 
@@ -94,7 +94,7 @@ public class Spell_Cloudkill extends Spell
 					&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 					{
 						maliciousAffect(mob,target,2,-1);
-						ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
+						MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
 					}
 				}
 			}

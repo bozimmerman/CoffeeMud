@@ -64,7 +64,7 @@ public class Fishing extends CommonSkill
 						mob.location().addItemRefuse(newFound,Item.REFUSE_PLAYER_DROP);
 						if((mob.riding()!=null)&&(mob.riding() instanceof Container))
 							newFound.setContainer((Container)mob.riding());
-						ExternalPlay.get(mob,null,newFound,true);
+						CommonMsgs.get(mob,null,newFound,true);
 					}
 				}
 			}

@@ -71,7 +71,7 @@ public class Fighter_LightningStrike extends StdAbility
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> seem(s) less drowsy.");
 				else
 					mob.tell("You feel less drowsy.");
-				ExternalPlay.standIfNecessary(mob);
+				CommonMsgs.stand(mob,true);
 			}
 		}
 	}
@@ -145,7 +145,7 @@ public class Fighter_LightningStrike extends StdAbility
 				mob.location().send(mob,msg);
 				for(int i=0;i<CMAble.qualifyingClassLevel(mob,this);i++)
 					if(!target.amDead())
-						ExternalPlay.postAttack(mob,target,null);
+						MUDFight.postAttack(mob,target,null);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> collapse(s) in exhaustion.");
 				success=maliciousAffect(mob,mob,7,-1);
 			}

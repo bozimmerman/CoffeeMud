@@ -48,7 +48,7 @@ public class Spell_Timeport extends Spell
 		{
 			mob=(MOB)affected;
 			room=mob.location();
-			ExternalPlay.resumeTicking(mob,-1);
+			CMClass.ThreadEngine().resumeTicking(mob,-1);
 		}
 		super.unInvoke();
 		if(room!=null)
@@ -103,10 +103,10 @@ public class Spell_Timeport extends Spell
 						M.makePeace();
 				}
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es)!");
-				ExternalPlay.suspendTicking(target,-1);
+				CMClass.ThreadEngine().suspendTicking(target,-1);
 				beneficialAffect(mob,target,3);
 				Ability A=target.fetchEffect(ID());
-				if(A!=null)	ExternalPlay.startTickDown(A,MudHost.TICK_MOB,1);
+				if(A!=null)	CMClass.ThreadEngine().startTickDown(A,MudHost.TICK_MOB,1);
 			}
 		}
 		else

@@ -48,7 +48,7 @@ public class Spell_BurningHands extends Spell
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(Util.div(damage,2.0));
 				if(target.location()==mob.location())
-					ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flaming hands <DAMAGE> <T-NAME>!");
+					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flaming hands <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

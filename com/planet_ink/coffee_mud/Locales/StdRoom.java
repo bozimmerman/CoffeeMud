@@ -173,12 +173,12 @@ public class StdRoom
 	}
 	public String text()
 	{
-		return Generic.getPropertiesStr(this,true);
+		return CoffeeMaker.getPropertiesStr(this,true);
 	}
 	public void setMiscText(String newMiscText)
 	{
 		if(newMiscText.trim().length()>0)
-			Generic.setPropertiesStr(this,newMiscText,true);
+			CoffeeMaker.setPropertiesStr(this,newMiscText,true);
 	}
 	public void setRoomID(String newID)
 	{
@@ -728,7 +728,7 @@ public class StdRoom
 			if((item!=null)&&(item.container()==null))
 				viewItems.addElement(item);
 		}
-		Say.append(ExternalPlay.niceLister(mob,viewItems,false));
+		Say.append(CMLister.niceLister(mob,viewItems,false));
 
 		for(int i=0;i<numInhabitants();i++)
 		{
@@ -1069,14 +1069,14 @@ public class StdRoom
 		if(this instanceof GridLocale)
 			((GridLocale)this).clearGrid();
 		clearSky();
-		ExternalPlay.deleteTick(this,-1);
+		CMClass.ThreadEngine().deleteTick(this,-1);
 	}
 
 	public MOB fetchInhabitant(String inhabitantID)
 	{
-		MOB mob=(MOB)CoffeeUtensils.fetchEnvironmental(inhabitants,inhabitantID,true);
+		MOB mob=(MOB)EnglishParser.fetchEnvironmental(inhabitants,inhabitantID,true);
 		if(mob==null)
-			mob=(MOB)CoffeeUtensils.fetchEnvironmental(inhabitants,inhabitantID, false);
+			mob=(MOB)EnglishParser.fetchEnvironmental(inhabitants,inhabitantID, false);
 		return mob;
 	}
 	public void addInhabitant(MOB mob)
@@ -1136,14 +1136,14 @@ public class StdRoom
 
 	public Item fetchAnyItem(String itemID)
 	{
-		Item item=(Item)CoffeeUtensils.fetchEnvironmental(contents,itemID,true);
-		if(item==null) item=(Item)CoffeeUtensils.fetchEnvironmental(contents,itemID,false);
+		Item item=(Item)EnglishParser.fetchEnvironmental(contents,itemID,true);
+		if(item==null) item=(Item)EnglishParser.fetchEnvironmental(contents,itemID,false);
 		return item;
 	}
 	public Item fetchItem(Item goodLocation, String itemID)
 	{
-		Item item=(Item)CoffeeUtensils.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
-		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
+		Item item=(Item)EnglishParser.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
+		if(item==null) item=(Item)EnglishParser.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
 		return item;
 	}
 	public void addItem(Item item)
@@ -1186,10 +1186,10 @@ public class StdRoom
 			found=mob.fetchCarried(goodLocation, thingName);
 		if(found==null)
 		{
-			if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,true);
-			if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
-			if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
-			if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
+			if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,true);
+			if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
+			if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,false);
+			if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
 			if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
 				return found;
 			else
@@ -1203,7 +1203,7 @@ public class StdRoom
 		&&(thingName.indexOf(".")<0))
 		{
 			Environmental visibleItem=null;
-			visibleItem=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
+			visibleItem=EnglishParser.fetchEnvironmental(exits,thingName,false);
 			if(visibleItem==null)
 				visibleItem=fetchFromMOBRoomItemExit(null,null,thingName+".2",wornReqCode);
 			if(visibleItem!=null)
@@ -1217,12 +1217,12 @@ public class StdRoom
 	{
 		// def was Item.WORN_REQ_UNWORNONLY;
 		Environmental found=null;
-		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
-		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,true);
-		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,true);
-		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
-		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
-		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,false);
+		if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
+		if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,true);
+		if(found==null)	found=EnglishParser.fetchEnvironmental(inhabitants,thingName,true);
+		if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
+		if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,false);
+		if(found==null)	found=EnglishParser.fetchEnvironmental(inhabitants,thingName,false);
 
 		if((found!=null) // the smurfy well exception
 		&&(found instanceof Item)
@@ -1241,12 +1241,12 @@ public class StdRoom
 	{
 		// def was Item.WORN_REQ_UNWORNONLY;
 		Environmental found=null;
-		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,true);
-		if(found==null)	found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
-		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,true);
-		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,false);
-		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
-		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
+		if(found==null)	found=EnglishParser.fetchEnvironmental(inhabitants,thingName,true);
+		if(found==null)	found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
+		if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,true);
+		if(found==null)	found=EnglishParser.fetchEnvironmental(inhabitants,thingName,false);
+		if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
+		if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,false);
 		return found;
 	}
 
@@ -1359,7 +1359,7 @@ public class StdRoom
 			   return;
 		}
 		if(behaviors.size()==0)
-			ExternalPlay.startTickDown(this,MudHost.TICK_ROOM_BEHAVIOR,1);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_ROOM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1368,7 +1368,7 @@ public class StdRoom
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			ExternalPlay.deleteTick(this,MudHost.TICK_ROOM_BEHAVIOR);
+			CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_ROOM_BEHAVIOR);
 	}
 	public int numBehaviors()
 	{

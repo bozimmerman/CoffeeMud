@@ -71,7 +71,7 @@ public class Thief_RunningFight extends ThiefSkill
 			}
 			if(dir<0) return super.okMessage(myHost,msg);
 			mob.makePeace();
-			if(ExternalPlay.move(M,dir,false,false))
+			if(MUDTracker.move(M,dir,false,false))
 			{
 				M.setVictim(mob);
 				lastOpponent=M;

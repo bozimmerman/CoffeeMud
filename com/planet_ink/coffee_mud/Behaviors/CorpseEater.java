@@ -34,8 +34,8 @@ public class CorpseEater extends ActiveTicker
 				{
 					if(getParms().length()>0)
 					{
-						MOB mob2=CoffeeUtensils.makeMOBfromCorpse((DeadBody)I,null);
-						if(!SaucerSupport.zapperCheck(getParms(),mob2))
+						MOB mob2=CoffeeMaker.makeMOBfromCorpse((DeadBody)I,null);
+						if(!MUDZapper.zapperCheck(getParms(),mob2))
 							continue;
 					}
 					if(I instanceof Container)

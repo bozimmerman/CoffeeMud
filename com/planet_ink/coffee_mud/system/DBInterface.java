@@ -2,22 +2,8 @@ package com.planet_ink.coffee_mud.system;
 import com.planet_ink.coffee_mud.interfaces.*;
 import java.util.*;
 import java.io.IOException;
-public class ExternalSystems implements ExternalSystem
+public class DBInterface implements DatabaseEngine
 {
-	public void startTickDown(Tickable E,
-							  int tickID,
-							  int numTicks)
-	{
-		ServiceEngine.startTickDown(E,tickID,numTicks);
-	}
-	public void suspendTicking(Tickable E, int tickID)
-	{
-		ServiceEngine.suspendTicking(E,tickID);
-	}
-	public void resumeTicking(Tickable E, int tickID)
-	{
-		ServiceEngine.resumeTicking(E,tickID);
-	}
 	public void vassals(MOB mob, String leigeID)
 	{
 		MOBloader.vassals(mob,leigeID);
@@ -25,11 +11,6 @@ public class ExternalSystems implements ExternalSystem
 	public Vector userList()
 	{
 		return MOBloader.userList();
-	}
-
-	public boolean deleteTick(Tickable E, int tickID)
-	{
-		return ServiceEngine.deleteTick(E,tickID);
 	}
 
 	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
@@ -51,14 +32,9 @@ public class ExternalSystems implements ExternalSystem
 		MOBloader.DBUpdateFollowers(mob);
 	}
 
-	public String systemReport(String itemCode)
-	{
-		return ServiceEngine.report(itemCode);
-	}
-
 	public void DBReadContent(Room thisRoom, Hashtable rooms)
 	{
-		RoomLoader.DBReadContent(thisRoom, rooms);
+		RoomLoader.DBReadContent(thisRoom, rooms,false);
 	}
 	public void DBUpdateExits(Room room)
 	{
@@ -117,10 +93,6 @@ public class ExternalSystems implements ExternalSystem
 	{
 		RoomLoader.DBReCreate(room,oldID);
 	}
-	public void clearDebri(Room room, int taskCode)
-	{
-		ServiceEngine.clearDebri(room,taskCode);
-	}
 	public boolean DBUserSearch(MOB mob, String Login)
 	{
 		return MOBloader.DBUserSearch(mob,Login);
@@ -128,14 +100,6 @@ public class ExternalSystems implements ExternalSystem
 	public boolean DBReadUserOnly(MOB mob)
 	{
 		return MOBloader.DBReadUserOnly(mob);
-	}
-	public void tickAllTickers(Room here)
-	{
-		ServiceEngine.tickAllTickers(here);
-	}
-	public String tickInfo(String which)
-	{
-		return ServiceEngine.tickInfo(which);
 	}
 	public Area DBCreateArea(String areaName, String areaType)
 	{

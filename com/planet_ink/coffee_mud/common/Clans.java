@@ -31,7 +31,7 @@ public class Clans implements Clan, Tickable
 
 	public void updateVotes()
 	{
-		ExternalPlay.DBDeleteData(ID(),"CLANVOTES",ID()+"/CLANVOTES");
+		CMClass.DBEngine().DBDeleteData(ID(),"CLANVOTES",ID()+"/CLANVOTES");
 		StringBuffer str=new StringBuffer("");
 		for(Enumeration e=votes();e.hasMoreElements();)
 		{
@@ -53,7 +53,7 @@ public class Clans implements Clan, Tickable
 			}
 		}
 		if(str.length()>0)
-			ExternalPlay.DBCreateData(ID(),"CLANVOTES",ID()+"/CLANVOTES","<BALLOTS>"+str.toString()+"</BALLOTS>");
+			CMClass.DBEngine().DBCreateData(ID(),"CLANVOTES",ID()+"/CLANVOTES","<BALLOTS>"+str.toString()+"</BALLOTS>");
 	}
 	public void addVote(Object CV)
 	{
@@ -102,7 +102,7 @@ public class Clans implements Clan, Tickable
 	{
 		if(voteList==null)
 		{
-			Vector V=ExternalPlay.DBReadData(ID(),"CLANVOTES",ID()+"/CLANVOTES");
+			Vector V=CMClass.DBEngine().DBReadData(ID(),"CLANVOTES",ID()+"/CLANVOTES");
 			voteList=new Vector();
 			for(int v=0;v<V.size();v++)
 			{
@@ -160,7 +160,7 @@ public class Clans implements Clan, Tickable
 		for(Enumeration e=all.elements();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
-			ExternalPlay.deleteTick(C,MudHost.TICK_CLAN);
+			CMClass.ThreadEngine().deleteTick(C,MudHost.TICK_CLAN);
 		}
 		all.clear();
 	}
@@ -279,13 +279,13 @@ public class Clans implements Clan, Tickable
 
 	public void create()
 	{
-		ExternalPlay.DBCreateClan(this);
+		CMClass.DBEngine().DBCreateClan(this);
 		addClan(this);
 	}
 
 	public void update()
 	{
-		ExternalPlay.DBUpdateClan(this);
+		CMClass.DBEngine().DBUpdateClan(this);
 	}
 
 	public void destroyClan()
@@ -299,10 +299,10 @@ public class Clans implements Clan, Tickable
 			{
 				M.setClanID("");
 				M.setClanRole(0);
-				ExternalPlay.DBUpdateClanMembership(M.Name(), "", 0);
+				CMClass.DBEngine().DBUpdateClanMembership(M.Name(), "", 0);
 			}
 		}
-		ExternalPlay.DBDeleteClan(this);
+		CMClass.DBEngine().DBDeleteClan(this);
 		removeClan(this);
 	}
 
@@ -316,12 +316,12 @@ public class Clans implements Clan, Tickable
 	}
 	public static void addClan(Clan C)
 	{
-		ExternalPlay.startTickDown(C,MudHost.TICK_CLAN,(int)MudHost.TICKS_PER_MUDDAY);
+		CMClass.ThreadEngine().startTickDown(C,MudHost.TICK_CLAN,(int)MudHost.TICKS_PER_MUDDAY);
 		all.put(C.ID().toUpperCase(),C);
 	}
 	public static void removeClan(Clan C)
 	{
-		ExternalPlay.deleteTick(C,MudHost.TICK_CLAN);
+		CMClass.ThreadEngine().deleteTick(C,MudHost.TICK_CLAN);
 		all.remove(C.ID().toUpperCase());
 	}
 
@@ -333,7 +333,7 @@ public class Clans implements Clan, Tickable
 		          +getPremise()+"\n\r"
 		          +"-----------------------------------------------------------------\n\r"
 				  +"^xType            :^.^N "+Util.capitalize(Clan.GVT_DESCS[getGovernment()])+"\n\r"
-				  +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":SaucerSupport.zapperDesc(getAcceptanceSettings()))+"\n\r");
+				  +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":MUDZapper.zapperDesc(getAcceptanceSettings()))+"\n\r");
 		if((mob.getClanID().equalsIgnoreCase(ID()))
 		||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 		{
@@ -629,7 +629,7 @@ public class Clans implements Clan, Tickable
 			String member=(String)members.elementAt(i,1);
 			if(CMMap.getPlayer(member)!=null)
 				continue;
-			if(ExternalPlay.DBUserSearch(null,member))
+			if(CMClass.DBEngine().DBUserSearch(null,member))
 				continue;
 			members.removeElementAt(i);
 		}
@@ -644,7 +644,7 @@ public class Clans implements Clan, Tickable
 
 	public int getSize(Vector members)
 	{
-		ExternalPlay.DBClanFill(this.ID(), members, new Vector(), new Vector());
+		CMClass.DBEngine().DBClanFill(this.ID(), members, new Vector(), new Vector());
 		return members.size();
 	}
 
@@ -737,7 +737,7 @@ public class Clans implements Clan, Tickable
 		Vector members=new Vector();
 		Vector roles=new Vector();
 		Vector lastDates=new Vector();
-		ExternalPlay.DBClanFill(this.ID(), members, roles, lastDates);
+		CMClass.DBEngine().DBClanFill(this.ID(), members, roles, lastDates);
 		for(int s=0;s<members.size();s++)
 		{
 			int posFilter=((Integer)roles.elementAt(s)).intValue();
@@ -839,7 +839,7 @@ public class Clans implements Clan, Tickable
 							Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+getRoleName(getGovernment(),max,true,false)+".");
 							MOB M2=CMMap.getPlayer(s);
 							if(M2!=null) M2.setClanRole(max);
-							ExternalPlay.DBUpdateClanMembership(s, ID(), max);
+							CMClass.DBEngine().DBUpdateClanMembership(s, ID(), max);
 							break;
 						}
 					}
@@ -962,11 +962,8 @@ public class Clans implements Clan, Tickable
 										if(mob.location()==null)
 											mob.setLocation(CMMap.getRandomRoom());
 									}
-									try{
-										Vector V=Util.parse(CV.matter);
-										ExternalPlay.doCommand(mob,V);
-									}
-									catch(Exception x){}
+									Vector V=Util.parse(CV.matter);
+									mob.doCommand(V);
 								}
 							}
 						}
@@ -994,7 +991,7 @@ public class Clans implements Clan, Tickable
 
 	public void clanAnnounce(String msg)
 	{
-		ExternalPlay.channel("CLANTALK",ID(),msg,true);
+		CommonMsgs.channel("CLANTALK",ID(),msg,true);
 	}
 
 	public static class ClanVote

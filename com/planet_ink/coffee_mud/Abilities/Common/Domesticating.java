@@ -55,7 +55,7 @@ public class Domesticating extends CommonSkill
 							commonTell(mob,taming.name()+" is already domesticated.");
 						else
 						{
-							ExternalPlay.follow(taming,mob,true);
+							CommonMsgs.follow(taming,mob,true);
 							if(taming.amFollowing()==mob)
                                 mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT," manage(s) to domesticate "+taming.name()+".");
 						}

@@ -86,7 +86,7 @@ public class GenSuperPill extends GenPill
 		mob.setQuestPoint(mob.getQuestPoint()+Util.getParmPlus(readableText,"ques"));
 		mob.setMoney(mob.getMoney()+Util.getParmPlus(readableText,"coin"));
 		int exp=Util.getParmPlus(readableText,"expe");
-		if(exp>0) ExternalPlay.postExperience(mob,null,mob.getLeigeID(),exp,false);
+		if(exp>0) MUDFight.postExperience(mob,null,mob.getLeigeID(),exp,false);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();

@@ -50,7 +50,7 @@ public class Disease_Tetnus extends Disease
 		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
 		{
 			dexDown=-1;
-			ExternalPlay.postDeath(invoker(),affected,null);
+			MUDFight.postDeath(invoker(),affected,null);
 		}
 	}
 }

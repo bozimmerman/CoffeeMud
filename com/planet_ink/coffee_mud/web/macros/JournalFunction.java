@@ -17,7 +17,7 @@ public class JournalFunction extends StdWebMacro
 		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+last);
 		if(info==null)
 		{
-			info=ExternalPlay.DBReadJournal(last);
+			info=CMClass.DBEngine().DBReadJournal(last);
 			httpReq.getRequestObjects().put("JOURNAL: "+last,info);
 		}
 		MOB M=CMMap.getLoadPlayer(Authenticate.getLogin(httpReq));
@@ -29,7 +29,7 @@ public class JournalFunction extends StdWebMacro
 			if((to==null)||(M==null)||(to.equalsIgnoreCase("all"))) to="ALL";
 			if(!to.equals("ALL"))
 			{
-				if(!ExternalPlay.DBUserSearch(null,to))
+				if(!CMClass.DBEngine().DBUserSearch(null,to))
 					return "Post not submitted -- TO user does not exist.  Try 'All'.";
 			}
 			String subject=httpReq.getRequestParameter("SUBJECT");
@@ -38,7 +38,7 @@ public class JournalFunction extends StdWebMacro
 			String text=httpReq.getRequestParameter("NEWTEXT");
 			if(text.length()==0)
 				return "Post not submitted -- No text!";
-			ExternalPlay.DBWriteJournal(last,from,to,subject,text,-1);
+			CMClass.DBEngine().DBWriteJournal(last,from,to,subject,text,-1);
 			httpReq.getRequestObjects().remove("JOURNAL: "+last);
 			return "Post submitted.";
 		}
@@ -53,7 +53,7 @@ public class JournalFunction extends StdWebMacro
 			if(parms.containsKey("DELETE"))
 			{
 				if(M==null)	return "Can not delete -- required logged in user.";
-				ExternalPlay.DBDeleteJournal(last,num);
+				CMClass.DBEngine().DBDeleteJournal(last,num);
 				httpReq.addRequestParameters("JOURNALMESSAGE","");
 				httpReq.getRequestObjects().remove("JOURNAL: "+last);
 				return "Message #"+num+" deleted.";
@@ -64,7 +64,7 @@ public class JournalFunction extends StdWebMacro
 				String text=httpReq.getRequestParameter("NEWTEXT");
 				if(text.length()==0)
 					return "Reply not submitted -- No text!";
-				ExternalPlay.DBWriteJournal(last,from,"","",text,num);
+				CMClass.DBEngine().DBWriteJournal(last,from,"","",text,num);
 				httpReq.getRequestObjects().remove("JOURNAL: "+last);
 				return "Reply submitted";
 			}

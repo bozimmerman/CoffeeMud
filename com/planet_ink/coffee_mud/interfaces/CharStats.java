@@ -11,7 +11,6 @@ public interface CharStats extends Cloneable
 
 	public static final int GENDER=6;
 
-
 	public static final int NUM_SAVE_START=7;
 	public static final int SAVE_PARALYSIS=7;
 	public static final int SAVE_FIRE=8;

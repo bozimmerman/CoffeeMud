@@ -53,7 +53,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 				A.setLandOwner(landOwner());
 				A.setLandPrice(landPrice());
 			}
-			ExternalPlay.DBUpdateRoom(R);
+			CMClass.DBEngine().DBUpdateRoom(R);
 		}
 	}
 

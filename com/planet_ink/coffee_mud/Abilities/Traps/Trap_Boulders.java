@@ -66,7 +66,7 @@ public class Trap_Boulders extends StdTrap
 			{
 				super.spring(target);
 				int damage=Dice.roll(trapLevel(),20,1);
-				ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_BASHING,"Dozens of boulders <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_BASHING,"Dozens of boulders <DAMAGE> <T-NAME>!");
 			}
 		}
 	}

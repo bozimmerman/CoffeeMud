@@ -217,7 +217,7 @@ public class IMudInterface implements ImudServices, Serializable
 					if((!ses.killFlag())&&(M!=null)
 					&&(!M.amDead())
 					&&(M!=null)
-					&&(SaucerSupport.zapperCheck(mask,M))
+					&&(MUDZapper.zapperCheck(mask,M))
 					&&(ses.mob().okMessage(ses.mob(),msg)))
 						ses.mob().executeMsg(ses.mob(),msg);
 				}
@@ -241,7 +241,7 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 				if(smob==null)
 				{
-					if(ExternalPlay.DBUserSearch(null,lk.user_name))
+					if(CMClass.DBEngine().DBUserSearch(null,lk.user_name))
 					{
 						stat="exists, but is not online";
 						smob=CMClass.getMOB("StdMOB");
@@ -330,7 +330,7 @@ public class IMudInterface implements ImudServices, Serializable
 					&&(!M.amDead())
 					&&(M.location()!=null)
 					&&(M.playerStats()!=null)
-					&&(SaucerSupport.zapperCheck(mask,M))
+					&&(MUDZapper.zapperCheck(mask,M))
 					&&(!Util.isSet(M.playerStats().getChannelMask(),channelInt)))
 						whoV.addElement(ses.mob().name());
 				}
@@ -381,7 +381,7 @@ public class IMudInterface implements ImudServices, Serializable
 				MOB smob=findSessMob(tk.target_name);
 				if(smob!=null)
 				{
-					ExternalPlay.quickSay(mob,smob,fixColors(tk.message),true,true);
+					CommonMsgs.say(mob,smob,fixColors(tk.message),true,true);
 					break;
 				}
 			}

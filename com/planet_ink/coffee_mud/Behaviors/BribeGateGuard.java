@@ -109,7 +109,7 @@ public class BribeGateGuard extends StdBehavior
 		// return the balance in int form
 		if(surviveReboot)
 		{
-			Vector V =ExternalPlay.DBReadJournal(gates());
+			Vector V =CMClass.DBEngine().DBReadJournal(gates());
 			Vector mine = new Vector();
 			for (int v = 0; v < V.size(); v++)
 			{
@@ -128,7 +128,7 @@ public class BribeGateGuard extends StdBehavior
 					Coins item = (Coins) CMClass.getItem("StdCoins");
 					if (item != null)
 					{
-						Generic.setPropertiesStr(item, ( (String) V2.elementAt(5)), true);
+						CoffeeMaker.setPropertiesStr(item, ( (String) V2.elementAt(5)), true);
 						item.recoverEnvStats();
 						item.text();
 					}
@@ -178,7 +178,7 @@ public class BribeGateGuard extends StdBehavior
 		// kill the journal entries for that mob
 		if(surviveReboot)
 		{
-			Vector V = ExternalPlay.DBReadJournal(gates());
+			Vector V = CMClass.DBEngine().DBReadJournal(gates());
 			Vector mine = new Vector();
 			for (int v = 0; v < V.size(); v++)
 			{
@@ -192,7 +192,7 @@ public class BribeGateGuard extends StdBehavior
 				Vector V2 = (Vector) mine.elementAt(v);
 				String fullName = ( (String) V2.elementAt(4));
 				if (fullName.equals("COINS")) {
-				  ExternalPlay.DBDeleteJournal( ( (String) V2.elementAt(0)),
+				  CMClass.DBEngine().DBDeleteJournal( ( (String) V2.elementAt(0)),
 				                               Integer.MAX_VALUE);
 				}
 			}
@@ -212,8 +212,8 @@ public class BribeGateGuard extends StdBehavior
 		// write an entry for that mob
 		if(surviveReboot)
 		{
-			ExternalPlay.DBWriteJournal(gates(), mob.Name(), CMClass.className(balance),
-			                            "COINS", Generic.getPropertiesStr(balance, true),
+			CMClass.DBEngine().DBWriteJournal(gates(), mob.Name(), CMClass.className(balance),
+			                            "COINS", CoffeeMaker.getPropertiesStr(balance, true),
 			                            -1);
 		}
 		else
@@ -287,7 +287,7 @@ public class BribeGateGuard extends StdBehavior
 	{
 		if (!super.okMessage(oking, msg)) {
 		  if (debug) {
-		    //ExternalPlay.quickSay( (MOB) oking, msg.source(),
+		    //CommonMsgs.say( (MOB) oking, msg.source(),
 		    //                      "super FALSE", true, true);
 		  }
 		  return false;
@@ -299,14 +299,14 @@ public class BribeGateGuard extends StdBehavior
 		MOB monster = (MOB) oking;
 		if (msg.target() == null) {
 		  if (debug) {
-		    //ExternalPlay.quickSay( (MOB) oking, msg.source(),
+		    //CommonMsgs.say( (MOB) oking, msg.source(),
 		    //                      "Effect Target null", true, true);
 		  }
 		  return true;
 		}
 		if (!Sense.canBeSeenBy(msg.source(), oking)) {
 		  if (debug) {
-		    ExternalPlay.quickSay( (MOB) oking, msg.source(),
+		    CommonMsgs.say( (MOB) oking, msg.source(),
 		                          "can't be seen", true, true);
 		  }
 		  return true;
@@ -314,7 +314,7 @@ public class BribeGateGuard extends StdBehavior
 		if (mob.location() == monster.location()) {
 		  if (msg.target()instanceof Exit) {
 		    if (debug) {
-		      ExternalPlay.quickSay( (MOB) oking, msg.source(),
+		      CommonMsgs.say( (MOB) oking, msg.source(),
 		                            "okAffect triggered.  Not Charging " + price() +
 		                            " from balance " + getBalance(msg.source()) +
 		                            ".", true, true);
@@ -323,7 +323,7 @@ public class BribeGateGuard extends StdBehavior
 		      if ( (msg.targetMinor() != CMMsg.TYP_CLOSE)){
 		          //|| (msg.target() instanceof Room) ) {
 		        if (debug) {
-		          ExternalPlay.quickSay( (MOB) oking, msg.source(),
+		          CommonMsgs.say( (MOB) oking, msg.source(),
 		                                "Close or Leave", true, true);
 		        }
 		        if (checkBalance(price(), mob)) {
@@ -334,33 +334,33 @@ public class BribeGateGuard extends StdBehavior
 		              "<S-NAME> won't let <T-NAME> through there.");
 		          if (monster.location().okMessage(monster, msgs)) {
 		            monster.location().send(monster, msgs);
-		            ExternalPlay.quickSay(monster, mob,
+		            CommonMsgs.say(monster, mob,
 		                "I'll let you through here if you pay the fee of " + price() +
 		                " gold.", true, false);
 		            if (debug) // debugging
-		              ExternalPlay.quickSay(monster, mob,
+		              CommonMsgs.say(monster, mob,
 		                                    "I'm telling you this from okAffect", true, false);
 		            return false;
 		          }
 		          if (debug) // debugging
-		            ExternalPlay.quickSay(monster, mob,
+		            CommonMsgs.say(monster, mob,
 		                                  "I'm telling you this from okAffect (2)", true, false);
 		          return false;
 		        }
 		      }
 		      if (msg.target() instanceof Room) {
 		        if (debug) // debugging
-		          ExternalPlay.quickSay(monster, mob,
+		          CommonMsgs.say(monster, mob,
 		                                "I'm telling you this from okAffect (3)", true, false);
 		      }
 		      if (debug) {
-		        ExternalPlay.quickSay( (MOB) oking, msg.source(),
+		        CommonMsgs.say( (MOB) oking, msg.source(),
 		                              "tarMin " + msg.targetMinor() + " ? " +
 		                              CMMsg.TYP_CLOSE, true, true);
-		        ExternalPlay.quickSay( (MOB) oking, msg.source(),
+		        CommonMsgs.say( (MOB) oking, msg.source(),
 		                              "srcMin " + msg.sourceMinor() + " ? " +
 		                              CMMsg.TYP_LEAVE, true, true);
-		        ExternalPlay.quickSay( (MOB) oking, msg.source(),
+		        CommonMsgs.say( (MOB) oking, msg.source(),
 		                              "source Monster? " +
 		                              msg.source().isMonster(), true, true);
 		      }
@@ -371,14 +371,14 @@ public class BribeGateGuard extends StdBehavior
 		  }
 		}
 		if (debug) {
-		  //ExternalPlay.quickSay((MOB)oking,msg.source(),"okAffect triggered.  WRONG LOCATION TO FIRE.", true,true);
+		  //CommonMsgs.say((MOB)oking,msg.source(),"okAffect triggered.  WRONG LOCATION TO FIRE.", true,true);
 		}
 		if ( (mob.location() == monster.location())
 		    && (mob != monster)
 		    && (msg.target() != null)
 		    && (!BrotherHelper.isBrother(mob, monster))
 		    && (Sense.canSenseMoving(mob, monster))
-		    && (!SaucerSupport.zapperCheck(getParms(), mob))) {
+		    && (!MUDZapper.zapperCheck(getParms(), mob))) {
 		  if ( (msg.tool() != null)
 		     && (msg.target()instanceof Room)
 		     && (msg.tool()instanceof Exit)) {
@@ -420,7 +420,7 @@ public class BribeGateGuard extends StdBehavior
 		        charge(price(), source);
 		        if(debug)
 		        {
-		          ExternalPlay.quickSay(observer,source,"Charging " + price() + ", balance " + getBalance(source) + ".", true,true);
+		          CommonMsgs.say(observer,source,"Charging " + price() + ", balance " + getBalance(source) + ".", true,true);
 		        }
 		      }
 		    }
@@ -438,23 +438,22 @@ public class BribeGateGuard extends StdBehavior
 		    && (msg.tool() != null)
 		    && (msg.tool()instanceof Coins)) {
 		  payment( (Coins) msg.tool(), msg.source());
-		  ExternalPlay.quickSay(observer, source, "Thank you very much.", true, false);
+		  CommonMsgs.say(observer, source, "Thank you very much.", true, false);
 		  if(getBalance(source) > price())
 		  {
-		    ExternalPlay.quickSay(observer, source,
+		    CommonMsgs.say(observer, source,
 		                          "I'll hang on to the additional " +
 		                          (getBalance(source) - price()) + " for you", true, false);
 		    paidPlayers.addElement(source);
 		    toldAlready.put(source.Name(),new Boolean(false));
 		    if (debug)  // debugging
-		      ExternalPlay.quickSay(observer, source,
+		      CommonMsgs.say(observer, source,
 		                            "I'm telling you this from execute", true, false);
 		    try {
 		      if (dir >= 0)
-		        ExternalPlay.doCommand(observer,
-		                               Util.parse("OPEN " +
+		        observer.doCommand(Util.parse("OPEN " +
 		                                          Directions.getDirectionName(dir)));
-		      ExternalPlay.doCommand(observer, Util.parse("BOW " + source.Name()));
+		      observer.doCommand(Util.parse("BOW " + source.Name()));
 		    }
 		    catch (Exception e1) {}
 		  }
@@ -465,10 +464,9 @@ public class BribeGateGuard extends StdBehavior
 		    toldAlready.put(source.Name(),new Boolean(false));
 		    try {
 		      if (dir >= 0)
-		        ExternalPlay.doCommand(observer,
-		                               Util.parse("OPEN " +
+		        observer.doCommand(Util.parse("OPEN " +
 		                                          Directions.getDirectionName(dir)));
-		      ExternalPlay.doCommand(observer, Util.parse("BOW " + source.Name()));
+		      observer.doCommand(Util.parse("BOW " + source.Name()));
 		    }
 		    catch (Exception e1) {}
 		  }
@@ -499,7 +497,7 @@ public class BribeGateGuard extends StdBehavior
 		MOB mob = (MOB) ticking;
 		dir = findGate(mob);
 		if (dir < 0) {
-		  ExternalPlay.quickSay(mob, null,
+		  CommonMsgs.say(mob, null,
 		                        "I'd shut the gate, but there isn't one...", false, false);
 		  return true;
 		}
@@ -510,29 +508,25 @@ public class BribeGateGuard extends StdBehavior
 		    if ( (paidPlayers.contains(M)) && (toldAlready.containsKey(M.Name()))) {
 		      Boolean B = (Boolean) toldAlready.get(M.Name());
 		      if (!B.booleanValue())
-		        ExternalPlay.quickSay(mob, M,
+		        CommonMsgs.say(mob, M,
 		                              "We still have record that you gave us " +
 		                              getBalance(M) +
 		                              " before if you're heading through", true, false);
 		      toldAlready.put(M.Name(), new Boolean(true));
-		      try {
-		        if (dir >= 0)
-		          ExternalPlay.doCommand(mob,
-		                                 Util.parse("OPEN " +
-		                                            Directions.
-		                                            getDirectionName(dir)));
-		      }
-		      catch (Exception e1) {}
+		    if (dir >= 0)
+				mob.doCommand(Util.parse("OPEN " +
+				                Directions.
+				                getDirectionName(dir)));
 		    }
 		    else {
 		      if(toldAlready.containsKey(M.Name()))
 		         continue;
-		      ExternalPlay.quickSay(mob, M,
+		      CommonMsgs.say(mob, M,
 		          "I'll let you through here if you pay the fee of " + price() +
 		          " gold.", true, false);
 		      toldAlready.put(M.Name(), new Boolean(true));
 		      if (debug)  // debugging
-		        ExternalPlay.quickSay(mob, M,
+		        CommonMsgs.say(mob, M,
 		                              "I'm telling you this from tick", true, false);
 		    }
 		  }
@@ -545,7 +539,7 @@ public class BribeGateGuard extends StdBehavior
 		      FullMsg msg = new FullMsg(mob, e, CMMsg.MSG_LOCK,
 		                                "<S-NAME> lock(s) <T-NAME>.");
 		      if (mob.location().okMessage(mob, msg)) {
-		        ExternalPlay.roomAffectFully(msg, mob.location(), dir);
+		        CoffeeUtensils.roomAffectFully(msg, mob.location(), dir);
 		      }
 		    }
 		  }
@@ -556,7 +550,7 @@ public class BribeGateGuard extends StdBehavior
 		    FullMsg msg = new FullMsg(mob, e, CMMsg.MSG_UNLOCK,
 		                              "<S-NAME> unlock(s) <T-NAME>.");
 		    if (mob.location().okMessage(mob, msg)) {
-		      ExternalPlay.roomAffectFully(msg, mob.location(), dir);
+		      CoffeeUtensils.roomAffectFully(msg, mob.location(), dir);
 		    }
 		  }
 		}
@@ -564,12 +558,8 @@ public class BribeGateGuard extends StdBehavior
 		if (tickTock > 2) {
 		  tickTock = 0;
 		  if ( (e.isOpen()) && (paidPlayers.isEmpty())) {
-		    try {
-		      ExternalPlay.doCommand(mob,
-		                             Util.parse("CLOSE " +
+		      mob.doCommand(Util.parse("CLOSE " +
 		                                        Directions.getDirectionName(dir)));
-		    }
-		    catch (Exception e1) {}
 		  }
 		}
 		return true;

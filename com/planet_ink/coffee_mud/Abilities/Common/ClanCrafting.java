@@ -69,7 +69,7 @@ public class ClanCrafting extends CommonSkill
 					else
 					{
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
-						ExternalPlay.get(mob,null,building,true);
+						CommonMsgs.get(mob,null,building,true);
 					}
 				}
 				building=null;

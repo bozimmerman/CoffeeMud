@@ -435,8 +435,8 @@ public class MobData extends StdWebMacro
 		String mobCode=httpReq.getRequestParameter("MOB");
 		if(mobCode==null) return "@break@";
 
-		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
-			return httpReq.getMUD().gameStatusStr();
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			return CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS);
 
 		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
@@ -444,7 +444,7 @@ public class MobData extends StdWebMacro
 			R=CMMap.getRoom(last);
 			if(R==null)
 				return "No Room?!";
-			ExternalPlay.resetRoom(R);
+			CoffeeUtensils.resetRoom(R);
 			httpReq.getRequestObjects().put(last,R);
 		}
 

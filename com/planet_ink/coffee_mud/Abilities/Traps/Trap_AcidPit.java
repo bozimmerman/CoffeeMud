@@ -29,10 +29,10 @@ public class Trap_AcidPit extends Trap_RoomPit
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(trapLevel(),6,1);
-			ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,-1,null);
+			MUDFight.postDamage(invoker(),target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,-1,null);
 			target.location().showHappens(CMMsg.MSG_OK_VISUAL,"Acid starts pouring into the room!");
 		}
-		ExternalPlay.look(target,null,true);
+		CommonMsgs.look(target,true);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -53,7 +53,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 					if((M!=null)&&(M!=invoker()))
 					{
 						int damage=Dice.roll(trapLevel(),6,1);
-						ExternalPlay.postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
+						MUDFight.postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
 					}
 				}
 				return super.tick(ticking,tickID);

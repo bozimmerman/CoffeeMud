@@ -118,7 +118,7 @@ public class Chant_SummonSapling extends Chant
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, material);
 				beneficialAffect(mob,target,0);
-				ExternalPlay.follow(target,mob,true);
+				CommonMsgs.follow(target,mob,true);
 				if(target.amFollowing()!=mob)
 					mob.tell(target.name()+" seems unwilling to follow you.");
 			}

@@ -3,6 +3,8 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 public class CommonStrings extends Scriptable
 {
+	private static final long startTime=System.currentTimeMillis();
+	
 	public static String[] clookup=null;
 	public static final int SYSTEM_PKILL=0;
 	public static final int SYSTEM_MULTICLASS=1;
@@ -26,7 +28,11 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_CLANVOTER=19;
 	public static final int SYSTEM_CLANVOTED=20;
 	public static final int SYSTEM_AUTOPURGE=21;
-	public static final int NUM_SYSTEM=22;
+	public static final int SYSTEM_MUDNAME=22;
+	public static final int SYSTEM_MUDVER=23;
+	public static final int SYSTEM_MUDSTATUS=24;
+	public static final int SYSTEM_MUDPORTS=24;
+	public static final int NUM_SYSTEM=26;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -58,7 +64,9 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
 	public static final int SYSTEMB_ROOMDCOMPRESS=2;
 	public static final int SYSTEMB_MOBDCOMPRESS=3;
-	public static final int NUMB_SYSTEM=4;
+	public static final int SYSTEMB_ACCEPTINGCONNECTIONS=4;
+	public static final int SYSTEMB_MUDSTARTED=5;
+	public static final int NUMB_SYSTEM=6;
 
 	private static String[] sysVars=new String[NUM_SYSTEM];
 	private static Integer[] sysInts=new Integer[NUMI_SYSTEM];
@@ -68,6 +76,8 @@ public class CommonStrings extends Scriptable
 
 	public static int getPKillLevelDiff(){return pkillLevelDiff;}
 
+	public static long getStartTime(){return startTime;}
+	
 	public static String getVar(int varNum)
 	{
 		if((varNum<0)||(varNum>=NUM_SYSTEM)) return "";

@@ -70,8 +70,8 @@ public class Thief_Lure extends ThiefSkill implements Trap
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			if((success)&&(ExternalPlay.move(mob,dirCode,false,false))&&(Sense.canBeHeardBy(target,mob)))
-				ExternalPlay.move(target,dirCode,false,false);
+			if((success)&&(MUDTracker.move(mob,dirCode,false,false))&&(Sense.canBeHeardBy(target,mob)))
+				MUDTracker.move(target,dirCode,false,false);
 		}
 		return success;
 	}

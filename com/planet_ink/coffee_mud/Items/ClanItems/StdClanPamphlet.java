@@ -86,7 +86,7 @@ public class StdClanPamphlet extends StdClanItem
 					&&(Sense.canBeSeenBy(M,mob))
 					&&(Sense.canBeHeardBy(M,mob)))
 					{
-						ExternalPlay.quickSay(mob,M,"Hey, take a look at this.",false,false);
+						CommonMsgs.say(mob,M,"Hey, take a look at this.",false,false);
 						ClanItem I=(ClanItem)copyOf();
 						mob.addInventory((Item)I);
 						FullMsg newMsg=new FullMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");

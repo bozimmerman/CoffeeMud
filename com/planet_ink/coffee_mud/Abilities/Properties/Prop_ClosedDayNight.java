@@ -113,7 +113,7 @@ public class Prop_ClosedDayNight extends Property
 		{
 			ShopKeeper sk=CoffeeUtensils.getShopKeeper((MOB)affected);
 			if(sk!=null)
-				ExternalPlay.quickSay((MOB)affected,msg.source(),(shopMsg!=null)?shopMsg:"Sorry, I'm off right now.  Try me tomorrow.",false,false);
+				CommonMsgs.say((MOB)affected,msg.source(),(shopMsg!=null)?shopMsg:"Sorry, I'm off right now.  Try me tomorrow.",false,false);
 			return false;
 		}
 		return true;
@@ -132,9 +132,9 @@ public class Prop_ClosedDayNight extends Property
 				{
 					Room R2=(Room)e.nextElement();
 					if((R2.roomID().indexOf(Home)>=0)
-					||CoffeeUtensils.containsString(R2.name(),Home)
-					||CoffeeUtensils.containsString(R2.displayText(),Home)
-					||CoffeeUtensils.containsString(R2.description(),Home))
+					||EnglishParser.containsString(R2.name(),Home)
+					||EnglishParser.containsString(R2.displayText(),Home)
+					||EnglishParser.containsString(R2.description(),Home))
 					{ R=R2; break;}
 					if(R2.fetchInhabitant(Home)!=null)
 					{ R=R2; break;}
@@ -144,9 +144,9 @@ public class Prop_ClosedDayNight extends Property
 			{
 				Room R2=(Room)e.nextElement();
 				if((R2.roomID().indexOf(Home)>=0)
-				||CoffeeUtensils.containsString(R2.name(),Home)
-				||CoffeeUtensils.containsString(R2.displayText(),Home)
-				||CoffeeUtensils.containsString(R2.description(),Home))
+				||EnglishParser.containsString(R2.name(),Home)
+				||EnglishParser.containsString(R2.displayText(),Home)
+				||EnglishParser.containsString(R2.description(),Home))
 				{ R=R2; break;}
 				if(R2.fetchInhabitant(Home)!=null)
 				{ R=R2; break;}
@@ -166,7 +166,7 @@ public class Prop_ClosedDayNight extends Property
 			MOB mob=(MOB)affected;
 			if(closed())
 			{
-				ExternalPlay.standIfNecessary(mob);
+				CommonMsgs.stand(mob,true);
 				if(!Sense.aliveAwakeMobile(mob,true)||(mob.isInCombat()))
 					return true;
 
@@ -185,7 +185,7 @@ public class Prop_ClosedDayNight extends Property
 								if(R2.okMessage(mob,msg))
 								{
 									msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+E.closeWord()+"(s) <T-NAMESELF>.");
-									ExternalPlay.roomAffectFully(msg,mob.location(),d);
+									CoffeeUtensils.roomAffectFully(msg,mob.location(),d);
 								}
 							}
 							if(!E.isLocked())
@@ -194,7 +194,7 @@ public class Prop_ClosedDayNight extends Property
 								if(R2.okMessage(mob,msg))
 								{
 									msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
-									ExternalPlay.roomAffectFully(msg,mob.location(),d);
+									CoffeeUtensils.roomAffectFully(msg,mob.location(),d);
 								}
 							}
 						}
@@ -210,7 +210,7 @@ public class Prop_ClosedDayNight extends Property
 							return true;
 						ShopKeeper sk=CoffeeUtensils.getShopKeeper((MOB)affected);
 						if(sk!=null)
-							ExternalPlay.quickSay((MOB)affected,null,(shopMsg!=null)?shopMsg:"Sorry, I'm off right now.  Try me tomorrow.",false,false);
+							CommonMsgs.say((MOB)affected,null,(shopMsg!=null)?shopMsg:"Sorry, I'm off right now.  Try me tomorrow.",false,false);
 						Ability A=CMClass.getAbility("Skill_Track");
 						if(A!=null)
 						{
@@ -221,19 +221,16 @@ public class Prop_ClosedDayNight extends Property
 					}
 				}
 
-				try{
-					if(sleepFlag)
-						ExternalPlay.doCommand(mob,Util.parse("SLEEP"));
-					else
-					if(sitFlag)
-						ExternalPlay.doCommand(mob,Util.parse("SIT"));
-				}
-				catch(Exception e){}
+				if(sleepFlag)
+					mob.doCommand(Util.parse("SLEEP"));
+				else
+				if(sitFlag)
+					mob.doCommand(Util.parse("SIT"));
 				lastClosed=1;
 			}
 			else
 			{
-				ExternalPlay.standIfNecessary(mob);
+				CommonMsgs.stand(mob,true);
 				if(!Sense.aliveAwakeMobile(mob,true)||(mob.isInCombat()))
 					return true;
 				if(Home!=null)
@@ -269,7 +266,7 @@ public class Prop_ClosedDayNight extends Property
 								if(R2.okMessage(mob,msg))
 								{
 									msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
-									ExternalPlay.roomAffectFully(msg,mob.location(),d);
+									CoffeeUtensils.roomAffectFully(msg,mob.location(),d);
 								}
 							}
 							if((!E.isOpen())&&(!E.defaultsClosed()))
@@ -278,7 +275,7 @@ public class Prop_ClosedDayNight extends Property
 								if(R2.okMessage(mob,msg))
 								{
 									msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+E.openWord()+"(s) <T-NAMESELF>.");
-									ExternalPlay.roomAffectFully(msg,mob.location(),d);
+									CoffeeUtensils.roomAffectFully(msg,mob.location(),d);
 								}
 							}
 						}

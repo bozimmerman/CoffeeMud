@@ -256,8 +256,8 @@ public class RoomData extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()==0) return "";
 
-		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
-			return httpReq.getMUD().gameStatusStr();
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			return CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS);
 
 		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
@@ -265,7 +265,7 @@ public class RoomData extends StdWebMacro
 			R=CMMap.getRoom(last);
 			if(R==null)
 				return "No Room?!";
-			ExternalPlay.resetRoom(R);
+			CoffeeUtensils.resetRoom(R);
 			httpReq.getRequestObjects().put(last,R);
 		}
 		

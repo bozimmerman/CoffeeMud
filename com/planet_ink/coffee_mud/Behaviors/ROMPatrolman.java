@@ -99,7 +99,7 @@ public class ROMPatrolman extends StdBehavior
 		}
 		else
 		if(fight)
-			ExternalPlay.postAttack(observer,victim,weapon);
+			MUDFight.postAttack(observer,victim,weapon);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

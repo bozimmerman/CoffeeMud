@@ -94,7 +94,7 @@ public class Skill_Swim extends StdAbility
 					mob.addEffect(this);
 				mob.recoverEnvStats();
 
-				ExternalPlay.move(mob,dirCode,false,false);
+				MUDTracker.move(mob,dirCode,false,false);
 			}
 			mob.delEffect(this);
 			mob.recoverEnvStats();

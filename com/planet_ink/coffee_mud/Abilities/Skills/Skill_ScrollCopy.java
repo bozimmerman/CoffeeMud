@@ -49,7 +49,7 @@ public class Skill_ScrollCopy extends StdAbility
 		for(int a=0;a<theSpells.size();a++)
 		{
 			Ability A=(Ability)theSpells.elementAt(a);
-			if(CoffeeUtensils.containsString(A.name(),((String)commands.elementAt(0))))
+			if(EnglishParser.containsString(A.name(),((String)commands.elementAt(0))))
 			{
 				thisSpell=A;
 				break;

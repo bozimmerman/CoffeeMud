@@ -29,7 +29,7 @@ public class Chant_SpeedTime extends Chant
 				int mana=mob.curState().getMana();
 				mob.location().send(mob,msg);
 				for(int i=0;i<(adjustedLevel(mob)/2);i++)
-					ExternalPlay.tickAllTickers(mob.location());
+					CMClass.ThreadEngine().tickAllTickers(mob.location());
 				if(mob.curState().getMana()>mana)
 					mob.curState().setMana(mana);
 				mob.location().show(mob,null,this,affectType(auto),auto?"It stops.":"^S<S-NAME> stop(s) chanting.^?");

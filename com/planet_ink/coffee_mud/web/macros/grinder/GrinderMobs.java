@@ -147,7 +147,7 @@ public class GrinderMobs
 
 		String newClassID=httpReq.getRequestParameter("CLASSES");
 
-		ExternalPlay.resetRoom(R);
+		CoffeeUtensils.resetRoom(R);
 
 		MOB M=null;
 		if(mobCode.equals("NEW"))
@@ -476,7 +476,7 @@ public class GrinderMobs
 			M.bringToLife(R,true);
 		}
 		R.recoverRoomStats();
-		ExternalPlay.DBUpdateMOBs(R);
+		CMClass.DBEngine().DBUpdateMOBs(R);
 		String newMobCode=RoomData.getMOBCode(R,M);
 		httpReq.addRequestParameters("MOB",newMobCode);
 		return "";

@@ -65,7 +65,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
 		{
 			conDown=-1;
-			ExternalPlay.postDeath(invoker(),affected,null);
+			MUDFight.postDeath(invoker(),affected,null);
 		}
 	}
 

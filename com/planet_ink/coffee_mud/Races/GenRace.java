@@ -163,16 +163,16 @@ public class GenRace extends StdRace
 		str.append(XMLManager.convertXMLtoTag("LEAVE",leaveStr()));
 		if(adjEStats==null) str.append("<ESTATS/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("ESTATS",Generic.getEnvStatsStr(adjEStats)));
+			str.append(XMLManager.convertXMLtoTag("ESTATS",CoffeeMaker.getEnvStatsStr(adjEStats)));
 		if(adjStats==null) str.append("<ASTATS/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("ASTATS",Generic.getCharStatsStr(adjStats)));
+			str.append(XMLManager.convertXMLtoTag("ASTATS",CoffeeMaker.getCharStatsStr(adjStats)));
 		if(setStats==null) str.append("<CSTATS/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("CSTATS",Generic.getCharStatsStr(setStats)));
+			str.append(XMLManager.convertXMLtoTag("CSTATS",CoffeeMaker.getCharStatsStr(setStats)));
 		if(adjState==null) str.append("<ASTATE/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("ASTATE",Generic.getCharStateStr(adjState)));
+			str.append(XMLManager.convertXMLtoTag("ASTATE",CoffeeMaker.getCharStateStr(adjState)));
 		
 		if(myResources().size()==0)	str.append("<RESOURCES/>");
 		else
@@ -183,7 +183,7 @@ public class GenRace extends StdRace
 				Item I=(Item)myResources().elementAt(i);
 				str.append("<RSCITEM>");
 				str.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(I)));
-				str.append(XMLManager.convertXMLtoTag("IDATA",Generic.parseOutAngleBrackets(I.text())));
+				str.append(XMLManager.convertXMLtoTag("IDATA",CoffeeMaker.parseOutAngleBrackets(I.text())));
 				str.append("</RSCITEM>");
 			}
 			str.append("</RESOURCES>");
@@ -193,7 +193,7 @@ public class GenRace extends StdRace
 		{
 			str.append("<WEAPON>");
 			str.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(naturalWeapon)));
-			str.append(XMLManager.convertXMLtoTag("IDATA",Generic.parseOutAngleBrackets(naturalWeapon.text())));
+			str.append(XMLManager.convertXMLtoTag("IDATA",CoffeeMaker.parseOutAngleBrackets(naturalWeapon.text())));
 			str.append("</WEAPON>");
 		}
 		if((racialAbilityNames==null)||(racialAbilityNames.length==0))
@@ -265,16 +265,16 @@ public class GenRace extends StdRace
 				bodyMask()[v]=Util.s_int((String)V.elementAt(v));
 		adjEStats=null;
 		String eStats=XMLManager.getValFromPieces(raceData,"ESTATS");
-		if(eStats.length()>0){ adjEStats=new DefaultEnvStats(); Generic.setEnvStats(adjEStats,eStats);}
+		if(eStats.length()>0){ adjEStats=new DefaultEnvStats(); CoffeeMaker.setEnvStats(adjEStats,eStats);}
 		adjStats=null;
 		String aStats=XMLManager.getValFromPieces(raceData,"ASTATS");
-		if(aStats.length()>0){ adjStats=new DefaultCharStats(); Generic.setCharStats(adjStats,aStats);}
+		if(aStats.length()>0){ adjStats=new DefaultCharStats(); CoffeeMaker.setCharStats(adjStats,aStats);}
 		setStats=null;
 		String cStats=XMLManager.getValFromPieces(raceData,"CSTATS");
-		if(cStats.length()>0){ setStats=new DefaultCharStats(); Generic.setCharStats(setStats,cStats);}
+		if(cStats.length()>0){ setStats=new DefaultCharStats(); CoffeeMaker.setCharStats(setStats,cStats);}
 		adjState=null;
 		String aState=XMLManager.getValFromPieces(raceData,"ASTATE");
-		if(aState.length()>0){ adjState=new DefaultCharState(); Generic.setCharState(adjState,aState);}
+		if(aState.length()>0){ adjState=new DefaultCharState(); CoffeeMaker.setCharState(adjState,aState);}
 
 		// now RESOURCES!
 		Vector xV=XMLManager.getRealContentsFromPieces(raceData,"RESOURCES");
@@ -289,7 +289,7 @@ public class GenRace extends StdRace
 					continue;
 				Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"ICLASS"));
 				String idat=XMLManager.getValFromPieces(iblk.contents,"IDATA");
-				newOne.setMiscText(Generic.restoreAngleBrackets(idat));
+				newOne.setMiscText(CoffeeMaker.restoreAngleBrackets(idat));
 				newOne.recoverEnvStats();
 				resourceChoices.addElement(newOne);
 			}
@@ -302,7 +302,7 @@ public class GenRace extends StdRace
 			String idat=XMLManager.getValFromPieces(wblk,"IDATA");
 			if((idat!=null)&&(naturalWeapon!=null))
 			{
-				naturalWeapon.setMiscText(Generic.restoreAngleBrackets(idat));
+				naturalWeapon.setMiscText(CoffeeMaker.restoreAngleBrackets(idat));
 				naturalWeapon.recoverEnvStats();
 			}
 		}
@@ -383,10 +383,10 @@ public class GenRace extends StdRace
 				bbody.append((""+bodyMask()[i])+";");
 			return bbody.toString();
 		}
-		case 14: return (adjEStats==null)?"":Generic.getEnvStatsStr(adjEStats);
-		case 15: return (adjStats==null)?"":Generic.getCharStatsStr(adjStats);
-		case 16: return (setStats==null)?"":Generic.getCharStatsStr(setStats);
-		case 17: return (adjState==null)?"":Generic.getCharStateStr(adjState);
+		case 14: return (adjEStats==null)?"":CoffeeMaker.getEnvStatsStr(adjEStats);
+		case 15: return (adjStats==null)?"":CoffeeMaker.getCharStatsStr(adjStats);
+		case 16: return (setStats==null)?"":CoffeeMaker.getCharStatsStr(setStats);
+		case 17: return (adjState==null)?"":CoffeeMaker.getCharStateStr(adjState);
 		case 18: return ""+myResources().size();
 		case 19: return ""+((Item)myResources().elementAt(num)).ID();
 		case 20: return ""+((Item)myResources().elementAt(num)).text();
@@ -434,10 +434,10 @@ public class GenRace extends StdRace
 					bodyMask()[v]=Util.s_int((String)V.elementAt(v));
 			break;
 		}
-		case 14: adjEStats=null;if(val.length()>0){adjEStats=new DefaultEnvStats(0); Generic.setEnvStats(adjEStats,val);}break;
-		case 15: adjStats=null;if(val.length()>0){adjStats=new DefaultCharStats(0); Generic.setCharStats(adjStats,val);}break;
-		case 16: setStats=null;if(val.length()>0){setStats=new DefaultCharStats(0); Generic.setCharStats(setStats,val);}break;
-		case 17: adjState=null;if(val.length()>0){adjState=new DefaultCharState(0); Generic.setCharState(adjState,val);}break;
+		case 14: adjEStats=null;if(val.length()>0){adjEStats=new DefaultEnvStats(0); CoffeeMaker.setEnvStats(adjEStats,val);}break;
+		case 15: adjStats=null;if(val.length()>0){adjStats=new DefaultCharStats(0); CoffeeMaker.setCharStats(adjStats,val);}break;
+		case 16: setStats=null;if(val.length()>0){setStats=new DefaultCharStats(0); CoffeeMaker.setCharStats(setStats,val);}break;
+		case 17: adjState=null;if(val.length()>0){adjState=new DefaultCharState(0); CoffeeMaker.setCharState(adjState,val);}break;
 		case 18: if(Util.s_int(val)==0) resourceChoices=null; break;
 		case 19: {   if(resourceChoices==null) resourceChoices=new Vector();
 					 if(num>=resourceChoices.size())

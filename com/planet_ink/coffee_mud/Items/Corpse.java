@@ -39,7 +39,7 @@ public class Corpse extends GenContainer implements DeadBody
 	public void startTicker(Room thisRoom)
 	{
 		roomLocation=thisRoom;
-		ExternalPlay.startTickDown(this,MudHost.TICK_DEADBODY_DECAY,envStats().rejuv());
+		CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_DEADBODY_DECAY,envStats().rejuv());
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{

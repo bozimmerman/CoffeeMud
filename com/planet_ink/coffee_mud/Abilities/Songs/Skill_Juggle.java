@@ -163,7 +163,7 @@ public class Skill_Juggle extends StdAbility
 				else
 				{
 					unJuggle(I);
-					ExternalPlay.drop(M,I,false,false);
+					CommonMsgs.drop(M,I,false,false);
 					break;
 				}
 			}
@@ -258,7 +258,7 @@ public class Skill_Juggle extends StdAbility
 							Item I=(Item)copy.elementAt(Dice.roll(1,copy.size(),-1));
 							I.unWear();
 							mob.giveItem(I);
-							if((mob.isMine(I))&&(ExternalPlay.drop(mob,I,true,false)))
+							if((mob.isMine(I))&&(CommonMsgs.drop(mob,I,true,false)))
 							{
 								Weapon w=(Weapon)CMClass.getWeapon("StdWeapon");
 								w.setName(I.name());
@@ -275,7 +275,7 @@ public class Skill_Juggle extends StdAbility
 								w.baseEnvStats().setDamage(Dice.roll(1,adjustedLevel(mob),0));
 								w.baseEnvStats().setWeight(I.baseEnvStats().weight());
 								w.recoverEnvStats();
-								ExternalPlay.postAttack(mob,mob.getVictim(),w);
+								MUDFight.postAttack(mob,mob.getVictim(),w);
 								w.destroy();
 							}
 							else
@@ -355,7 +355,7 @@ public class Skill_Juggle extends StdAbility
 					continue;
 				}
 				else
-				if(!ExternalPlay.remove(mob,juggleThis,true))
+				if(!CommonMsgs.remove(mob,juggleThis,true))
 					return false;
 			}
 			if(juggleThis==null) break;

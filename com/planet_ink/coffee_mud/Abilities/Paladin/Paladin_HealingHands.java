@@ -63,7 +63,7 @@ public class Paladin_HealingHands extends StdAbility
 				mob.location().send(mob,msg);
 				mob.curState().adjMana(-(1+(int)Math.round(Util.div(adjustedLevel(mob),5.0))),mob.maxState());
 				int healing=1+(int)Math.round(Util.div(adjustedLevel(mob),5.0));
-				ExternalPlay.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+				MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel a little better!");
 			}
 		}

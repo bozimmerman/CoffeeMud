@@ -11,7 +11,7 @@ public class AbilityBlessingNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return " @break@";
 
 		Hashtable parms=parseParms(parm);

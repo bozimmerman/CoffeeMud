@@ -908,7 +908,7 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P7"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while(true)
 		{
-			mob.tell("1. Trespassers : "+SaucerSupport.zapperDesc(theLaw.getInternalStr("TRESPASSERS")));
+			mob.tell("1. Trespassers : "+MUDZapper.zapperDesc(theLaw.getInternalStr("TRESPASSERS")));
 			mob.tell("2. Law         : "+shortLawDesc((String[])theLaw.basicCrimes().get("TRESPASSING")));
 			if(!theLaw.hasModifiableLaws())
 				return;
@@ -923,7 +923,7 @@ public class StdLawBook extends StdItem
 				{
 					s=mob.session().prompt("Enter a new mask, ? for help, or RETURN=["+theLaw.getInternalStr("TRESPASSERS")+"]\n\r: ",theLaw.getInternalStr("TRESPASSERS"));
 					if(s.trim().equals("?"))
-						mob.tell(SaucerSupport.zapperInstructions("\n\r","arrests"));
+						mob.tell(MUDZapper.zapperInstructions("\n\r","arrests"));
 					else
 					if(!s.equals(theLaw.getInternalStr("TRESPASSERS")))
 					{
@@ -959,7 +959,7 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P3"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		mob.tell("Protected victims: "+SaucerSupport.zapperDesc(theLaw.getInternalStr("PROTECTED")));
+		mob.tell("Protected victims: "+MUDZapper.zapperDesc(theLaw.getInternalStr("PROTECTED")));
 		if(theLaw.hasModifiableLaws())
 		{
 			String s="?";
@@ -967,7 +967,7 @@ public class StdLawBook extends StdItem
 			{
 				s=mob.session().prompt("Enter a new mask, ? for help, or RETURN=["+theLaw.getInternalStr("PROTECTED")+"]\n\r: ",theLaw.getInternalStr("PROTECTED"));
 				if(s.trim().equals("?"))
-					mob.tell(SaucerSupport.zapperInstructions("\n\r","protects"));
+					mob.tell(MUDZapper.zapperInstructions("\n\r","protects"));
 				else
 				if(!s.equals(theLaw.getInternalStr("PROTECTED")))
 				{

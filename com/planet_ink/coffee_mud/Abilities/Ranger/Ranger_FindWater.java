@@ -71,7 +71,7 @@ public class Ranger_FindWater extends StdAbility
 					{
 						int dir=nextDirection;
 						nextDirection=-2;
-						ExternalPlay.move(mob,dir,false,false);
+						MUDTracker.move(mob,dir,false,false);
 					}
 					else
 						unInvoke();
@@ -96,7 +96,7 @@ public class Ranger_FindWater extends StdAbility
 		&&(msg.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
 		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
-			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),false);
+			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),false);
 		else
 		if((affected!=null)
 		   &&(affected instanceof MOB)
@@ -250,7 +250,7 @@ public class Ranger_FindWater extends StdAbility
 		}
 
 		if(rooms.size()>0)
-			theTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,false);
+			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,false);
 
 		if((success)&&(theTrail!=null))
 		{
@@ -262,7 +262,7 @@ public class Ranger_FindWater extends StdAbility
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
+				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
 			}
 		}
 		else

@@ -29,7 +29,7 @@ public class Paladin_Aura extends Paladin
 				if((mob.getAlignment()<350)&&(pass))
 				{
 					int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
-					ExternalPlay.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGE> <T-NAME>!^?");
+					MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGE> <T-NAME>!^?");
 				}
 			}
 			catch(java.lang.ArrayIndexOutOfBoundsException e)

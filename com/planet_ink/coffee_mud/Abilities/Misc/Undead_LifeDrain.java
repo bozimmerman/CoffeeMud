@@ -48,7 +48,7 @@ public class Undead_LifeDrain extends StdAbility
 				mob.curState().adjMana(-much,mob.maxState());
 				if(msg.value()>0)
 					much = (int)Math.round(Util.div(much,2.0));
-				ExternalPlay.postDamage(mob,target,this,much,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_GASSING,"The drain <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(mob,target,this,much,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_GASSING,"The drain <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

@@ -87,8 +87,8 @@ public class Painting extends CommonSkill
 		Item I=null;
 		if(str.equalsIgnoreCase("wall"))
 		{
-			if((!ExternalPlay.doesOwnThisProperty(mob,mob.location()))
-			&&((mob.amFollowing()==null)||(!ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+			if((!CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+			&&((mob.amFollowing()==null)||(!CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
 			{
 				commonTell(mob,"You need the owners permission to paint the walls here.");
 				return false;

@@ -33,11 +33,11 @@ public class Spell_TimeStop extends Spell
 					if(me!=null)
 						me.unInvoke();
 				}
-				ExternalPlay.resumeTicking(room,-1);
+				CMClass.ThreadEngine().resumeTicking(room,-1);
 				for(int i=0;i<fixed.size();i++)
 				{
 					MOB mob2=(MOB)fixed.elementAt(i);
-					ExternalPlay.resumeTicking(mob2,-1);
+					CMClass.ThreadEngine().resumeTicking(mob2,-1);
 				}
 				fixed=new Vector();
 			}
@@ -45,7 +45,7 @@ public class Spell_TimeStop extends Spell
 			if(affected instanceof MOB)
 			{
 				MOB mob=(MOB)affected;
-				ExternalPlay.resumeTicking(mob,-1);
+				CMClass.ThreadEngine().resumeTicking(mob,-1);
 				if(mob.location()!=null)
 				{
 					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, "Time starts moving again...");
@@ -120,14 +120,14 @@ public class Spell_TimeStop extends Spell
 				mob.location().send(mob,msg);
 				Room room=mob.location();
 				fixed=new Vector();
-				ExternalPlay.suspendTicking(room,-1);
+				CMClass.ThreadEngine().suspendTicking(room,-1);
 				for(int m=0;m<mob.location().numInhabitants();m++)
 				{
 					MOB mob2=mob.location().fetchInhabitant(m);
 					if(mob2!=mob)
 					{
 						fixed.addElement(mob2);
-						ExternalPlay.suspendTicking(mob2,-1);
+						CMClass.ThreadEngine().suspendTicking(mob2,-1);
 					}
 				}
 				beneficialAffect(mob,room,3);

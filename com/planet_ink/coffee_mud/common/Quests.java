@@ -47,12 +47,12 @@ public class Quests implements Cloneable, Quest
 	public void autostartup()
 	{
 		if((minWait()<0)||(waitInterval()<0))
-			ExternalPlay.deleteTick(this,MudHost.TICK_QUEST);
+			CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_QUEST);
 		else
 		if(!running())
 		{
 			waitRemaining=minWait+(Dice.roll(1,maxWait,0));
-			ExternalPlay.startTickDown(this,MudHost.TICK_QUEST,1);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_QUEST,1);
 		}
 	}
 	protected void setVars(Vector script)
@@ -156,7 +156,7 @@ public class Quests implements Cloneable, Quest
 							for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 							{
 								Area A2=(Area)e.nextElement();
-								if(CoffeeUtensils.containsString(A2.Name(),areaName))
+								if(EnglishParser.containsString(A2.Name(),areaName))
 								{
 									A=A2; break;
 								}
@@ -388,14 +388,14 @@ public class Quests implements Cloneable, Quest
 								choices1.addElement(R2);
 							}
 							else
-							if(CoffeeUtensils.containsString(display,localeName))
+							if(EnglishParser.containsString(display,localeName))
 							{
 								if((choices==null)||(choices==choices3))
 									choices=choices2;
 								choices2.addElement(R2);
 							}
 							else
-							if(CoffeeUtensils.containsString(desc,localeName))
+							if(EnglishParser.containsString(desc,localeName))
 							{
 								if(choices==null) choices=choices3;
 								choices3.addElement(R2);
@@ -444,7 +444,7 @@ public class Quests implements Cloneable, Quest
 									String mname=M2.name().toUpperCase();
 									String mdisp=M2.displayText().toUpperCase();
 									String mdesc=M2.description().toUpperCase();
-									if(!SaucerSupport.zapperCheck(mask,M2))
+									if(!MUDZapper.zapperCheck(mask,M2))
 										continue;
 									if(mobName.equalsIgnoreCase("any"))
 									{
@@ -458,21 +458,21 @@ public class Quests implements Cloneable, Quest
 										choices0.addElement(M2);
 									}
 									else
-									if(CoffeeUtensils.containsString(mname,mobName))
+									if(EnglishParser.containsString(mname,mobName))
 									{
 										if((choices==null)||(choices==choices2)||(choices==choices3))
 											choices=choices1;
 										choices1.addElement(M2);
 									}
 									else
-									if(CoffeeUtensils.containsString(mdisp,mobName))
+									if(EnglishParser.containsString(mdisp,mobName))
 									{
 										if((choices==null)||(choices==choices3))
 											choices=choices2;
 										choices2.addElement(M2);
 									}
 									else
-									if(CoffeeUtensils.containsString(mdesc,mobName))
+									if(EnglishParser.containsString(mdesc,mobName))
 									{
 										if(choices==null) choices=choices3;
 										choices3.addElement(M2);
@@ -538,21 +538,21 @@ public class Quests implements Cloneable, Quest
 										choices0.addElement(I2);
 									}
 									else
-									if(CoffeeUtensils.containsString(iname,itemName))
+									if(EnglishParser.containsString(iname,itemName))
 									{
 										if((choices==null)||(choices==choices2)||(choices==choices3))
 											choices=choices1;
 										choices1.addElement(I2);
 									}
 									else
-									if(CoffeeUtensils.containsString(idisp,itemName))
+									if(EnglishParser.containsString(idisp,itemName))
 									{
 										if((choices==null)||(choices==choices3))
 											choices=choices2;
 										choices2.addElement(I2);
 									}
 									else
-									if(CoffeeUtensils.containsString(idesc,itemName))
+									if(EnglishParser.containsString(idesc,itemName))
 									{
 										if(choices==null) choices=choices3;
 										choices3.addElement(I2);
@@ -628,7 +628,7 @@ public class Quests implements Cloneable, Quest
 							error=true; break;
 						}
 						loadedMobs=new Vector();
-						String errorStr=com.planet_ink.coffee_mud.common.Generic.addMOBsFromXML(buf.toString(),loadedMobs,null);
+						String errorStr=CoffeeMaker.addMOBsFromXML(buf.toString(),loadedMobs,null);
 						if(errorStr.length()>0)
 						{
 							if(!isQuiet)
@@ -665,7 +665,7 @@ public class Quests implements Cloneable, Quest
 							error=true; break;
 						}
 						loadedItems=new Vector();
-						String errorStr=com.planet_ink.coffee_mud.common.Generic.addItemsFromXML(buf.toString(),loadedItems,null);
+						String errorStr=CoffeeMaker.addItemsFromXML(buf.toString(),loadedItems,null);
 						if(errorStr.length()>0)
 						{
 							if(!isQuiet)
@@ -723,12 +723,12 @@ public class Quests implements Cloneable, Quest
 						for(int i=0;i<loadedMobs.size();i++)
 						{
 							MOB M2=(MOB)loadedMobs.elementAt(i);
-							if(!SaucerSupport.zapperCheck(mask,M2))
+							if(!MUDZapper.zapperCheck(mask,M2))
 								continue;
 							if((mobName.equalsIgnoreCase("any"))
-							||(CoffeeUtensils.containsString(M2.name(),mobName))
-							||(CoffeeUtensils.containsString(M2.displayText(),mobName))
-							||(CoffeeUtensils.containsString(M2.description(),mobName)))
+							||(EnglishParser.containsString(M2.name(),mobName))
+							||(EnglishParser.containsString(M2.displayText(),mobName))
+							||(EnglishParser.containsString(M2.description(),mobName)))
 								choices.addElement(M2.copyOf());
 						}
 						if(choices.size()==0)
@@ -781,9 +781,9 @@ public class Quests implements Cloneable, Quest
 						{
 							Item I2=(Item)loadedItems.elementAt(i);
 							if((itemName.equalsIgnoreCase("any"))
-							||(CoffeeUtensils.containsString(I2.name(),itemName))
-							||(CoffeeUtensils.containsString(I2.displayText(),itemName))
-							||(CoffeeUtensils.containsString(I2.description(),itemName)))
+							||(EnglishParser.containsString(I2.name(),itemName))
+							||(EnglishParser.containsString(I2.displayText(),itemName))
+							||(EnglishParser.containsString(I2.description(),itemName)))
 								choices.addElement(I2.copyOf());
 						}
 						if(choices.size()==0)
@@ -856,9 +856,9 @@ public class Quests implements Cloneable, Quest
 							{
 								MOB M2=(MOB)E2;
 								if((mobName.equalsIgnoreCase("any"))
-								||(CoffeeUtensils.containsString(M2.name(),mobName))
-								||(CoffeeUtensils.containsString(M2.displayText(),mobName))
-								||(CoffeeUtensils.containsString(M2.description(),mobName)))
+								||(EnglishParser.containsString(M2.name(),mobName))
+								||(EnglishParser.containsString(M2.displayText(),mobName))
+								||(EnglishParser.containsString(M2.description(),mobName)))
 									choices.addElement(M2);
 							}
 						}
@@ -1052,7 +1052,7 @@ public class Quests implements Cloneable, Quest
 		{
 			waitRemaining=-1;
 			ticksRemaining=duration();
-			ExternalPlay.startTickDown(this,MudHost.TICK_QUEST,1);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_QUEST,1);
 		}
 	}
 
@@ -1076,14 +1076,14 @@ public class Quests implements Cloneable, Quest
 					MOB M=(MOB)E;
 					Behavior B=((MOB)E).fetchBehavior("Scriptable");
 					if(B!=null)	B.modifyBehavior(E,M,"endquest "+name());
-					CoffeeUtensils.wanderAway(M,true,false);
+					MUDTracker.wanderAway(M,true,false);
 					if(M.getStartRoom()!=null)
 					{
 						if(M.location()!=null)
 							M.location().delInhabitant(M);
 						M.setLocation(null);
 						M.destroy();
-						ExternalPlay.resetRoom(M.getStartRoom());
+						CoffeeUtensils.resetRoom(M.getStartRoom());
 					}
 					else
 					{
@@ -1152,7 +1152,7 @@ public class Quests implements Cloneable, Quest
 		{
 			ticksRemaining=-1;
 			if((minWait()<0)||(maxWait<0))
-				ExternalPlay.deleteTick(this,MudHost.TICK_QUEST);
+				CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_QUEST);
 			else
 				waitRemaining=minWait+(Dice.roll(1,maxWait,0));
 		}
@@ -1174,7 +1174,7 @@ public class Quests implements Cloneable, Quest
 		if(!wasWinner(name))
 		{
 			getWinners().addElement(name);
-			ExternalPlay.DBUpdateQuest(this);
+			CMClass.DBEngine().DBUpdateQuest(this);
 		}
 	}
 	public String getWinnerStr()
@@ -1442,12 +1442,12 @@ public class Quests implements Cloneable, Quest
 		if(quests.contains(Q))
 		{
 			Q.stopQuest();
-			ExternalPlay.deleteTick(Q,MudHost.TICK_QUEST);
+			CMClass.ThreadEngine().deleteTick(Q,MudHost.TICK_QUEST);
 			quests.removeElement(Q);
 		}
 	}
 	public static void save()
 	{
-		ExternalPlay.DBUpdateQuests(quests);
+		CMClass.DBEngine().DBUpdateQuests(quests);
 	}
 }

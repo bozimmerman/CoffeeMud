@@ -75,7 +75,7 @@ public class Thief_Trap extends ThiefSkill
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
-				if(CoffeeUtensils.containsString(T.name(),name))
+				if(EnglishParser.containsString(T.name(),name))
 					theTrap=T;
 			}
 			if(theTrap==null)

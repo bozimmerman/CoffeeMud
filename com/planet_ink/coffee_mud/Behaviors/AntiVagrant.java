@@ -39,28 +39,28 @@ public class AntiVagrant extends ActiveTicker
 			if(target!=null)
 			if(Sense.isSleeping(target)&&(target!=observer))
 			{
-				ExternalPlay.quickSay(observer,target,"Damn lazy good for nothing!",false,false);
+				CommonMsgs.say(observer,target,"Damn lazy good for nothing!",false,false);
 				FullMsg msg=new FullMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> shake(s) <T-NAME> awake.");
 				if(observer.location().okMessage(observer,msg))
 				{
 					observer.location().send(observer,msg);
 					target.tell(observer.name()+" shakes you awake.");
-					ExternalPlay.standIfNecessary(target);
+					CommonMsgs.stand(target,true);
 					if((kickout)&&(!Sense.isSitting(target))&&(!Sense.isSleeping(target)))
-						SaucerSupport.beMobile(target,true,false,false,false,null);
+						MUDTracker.beMobile(target,true,false,false,false,null);
 				}
 			}
 			else
 			if((Sense.isSitting(target)&&(target!=observer)))
 			{
-				ExternalPlay.quickSay(observer,target,"Get up and move along!",false,false);
+				CommonMsgs.say(observer,target,"Get up and move along!",false,false);
 				FullMsg msg=new FullMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stand(s) <T-NAME> up.");
 				if(observer.location().okMessage(observer,msg))
 				{
 					observer.location().send(observer,msg);
-					ExternalPlay.standIfNecessary(target);
+					CommonMsgs.stand(target,true);
 					if((kickout)&&(!Sense.isSitting(target))&&(!Sense.isSleeping(target)))
-						SaucerSupport.beMobile(target,true,false,false,false,null);
+						MUDTracker.beMobile(target,true,false,false,false,null);
 				}
 			}
 			target=null;

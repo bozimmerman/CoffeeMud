@@ -35,7 +35,7 @@ public class Chant_SnuffFlame extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				SaucerSupport.extinguish(mob,target,false);
+				CoffeeUtensils.extinguish(mob,target,false);
 				target.recoverEnvStats();
 				mob.location().recoverRoomStats();
 			}

@@ -118,7 +118,7 @@ public class Chant_SummonVine extends Chant
 				{
 					beneficialAffect(mob,target,0);
 					if(target.isInCombat()) target.makePeace();
-					ExternalPlay.follow(target,mob,true);
+					CommonMsgs.follow(target,mob,true);
 					if(target.amFollowing()!=mob)
 						mob.tell(target.name()+" seems unwilling to follow you.");
 				}

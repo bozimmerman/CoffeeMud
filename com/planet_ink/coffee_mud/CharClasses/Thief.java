@@ -162,7 +162,7 @@ public class Thief extends StdCharClass
 			   &&(msg.tool().ID().equals("Thief_Steal")
 				  ||msg.tool().ID().equals("Thief_Robbery")
 				  ||msg.tool().ID().equals("Thief_Swipe")))
-				ExternalPlay.postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),10,false);
+				MUDFight.postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),10,false);
 		}
 		super.executeMsg(myHost,msg);
 	}

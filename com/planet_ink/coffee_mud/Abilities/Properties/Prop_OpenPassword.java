@@ -45,9 +45,9 @@ public class Prop_OpenPassword extends Property
 							if(dirCode>=0)
 							{
 								FullMsg msg2=new FullMsg(mob,E,null,CMMsg.MSG_UNLOCK,null);
-								ExternalPlay.roomAffectFully(msg2,R,dirCode);
+								CoffeeUtensils.roomAffectFully(msg2,R,dirCode);
 								msg2=new FullMsg(mob,E,null,CMMsg.MSG_OPEN,"<T-NAME> opens.");
-								ExternalPlay.roomAffectFully(msg2,R,dirCode);
+								CoffeeUtensils.roomAffectFully(msg2,R,dirCode);
 							}
 						}
 					}

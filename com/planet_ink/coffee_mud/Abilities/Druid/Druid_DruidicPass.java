@@ -69,7 +69,7 @@ public class Druid_DruidicPass extends StdAbility
 		if(!success)
 		{
 			if(exit.isOpen())
-				ExternalPlay.move(mob,dirCode,false,false);
+				MUDTracker.move(mob,dirCode,false,false);
 			else
 				beneficialVisualFizzle(mob,null,"<S-NAME> walk(s) "+Directions.getDirectionName(dirCode)+", but go(es) no further.");
 		}
@@ -82,7 +82,7 @@ public class Druid_DruidicPass extends StdAbility
 				mob.recoverEnvStats();
 			}
 
-			ExternalPlay.move(mob,dirCode,false,false);
+			MUDTracker.move(mob,dirCode,false,false);
 			mob.delEffect(this);
 			mob.recoverEnvStats();
 		}
@@ -103,7 +103,7 @@ public class Druid_DruidicPass extends StdAbility
 					mob.addEffect(this);
 					mob.recoverEnvStats();
 				}
-				ExternalPlay.move(mob,dirCode,false,false);
+				MUDTracker.move(mob,dirCode,false,false);
 				mob.delEffect(this);
 				mob.recoverEnvStats();
 				exit.setDoorsNLocks(exit.hasADoor(),open,exit.defaultsClosed(),exit.hasALock(),locked,exit.defaultsLocked());

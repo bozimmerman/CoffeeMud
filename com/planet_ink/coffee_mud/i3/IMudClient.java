@@ -276,7 +276,7 @@ public class IMudClient implements I3Interface
 			for(Enumeration e=l.elements();e.hasMoreElements();)
 			{
 				Mud m=(Mud)e.nextElement();
-				if((m.state<0)&&(CoffeeUtensils.containsString(m.mud_name,parms)))
+				if((m.state<0)&&(EnglishParser.containsString(m.mud_name,parms)))
 				{
 					buf.append(Util.padRight("Name",10)+": "+m.mud_name+"\n\r");
 					buf.append(Util.padRight("Address",10)+": "+m.address+"\n\r");

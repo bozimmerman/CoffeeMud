@@ -50,7 +50,7 @@ public class Thief_Assassinate extends ThiefSkill
 						A.invoke(mob,tracking,false);
 				}
 				else
-					ExternalPlay.postAttack(mob,tracking,mob.fetchWieldedItem());
+					MUDFight.postAttack(mob,tracking,mob.fetchWieldedItem());
 				return false;
 			}
 
@@ -104,14 +104,14 @@ public class Thief_Assassinate extends ThiefSkill
 							{
 								int dir=nextDirection;
 								nextDirection=-2;
-								ExternalPlay.move(mob,dir,false,false);
+								MUDTracker.move(mob,dir,false,false);
 							}
 						}
 						else
 						{
 							int dir=nextDirection;
 							nextDirection=-2;
-							ExternalPlay.move(mob,dir,false,false);
+							MUDTracker.move(mob,dir,false,false);
 						}
 					}
 					else
@@ -137,7 +137,7 @@ public class Thief_Assassinate extends ThiefSkill
 		&&(msg.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
 		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
-			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
+			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -188,7 +188,7 @@ public class Thief_Assassinate extends ThiefSkill
 			MOB M=mob.location().fetchInhabitant(mobName);
 			if(M!=null)
 			{
-				ExternalPlay.postAttack(mob,M,mob.fetchWieldedItem());
+				MUDFight.postAttack(mob,M,mob.fetchWieldedItem());
 				return false;
 			}
 		}
@@ -232,7 +232,7 @@ public class Thief_Assassinate extends ThiefSkill
 		}
 
 		if(rooms.size()>0)
-			theTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,true);
+			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true);
 
 		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
 			tracking=((Room)theTrail.firstElement()).fetchInhabitant(mobName);
@@ -255,7 +255,7 @@ public class Thief_Assassinate extends ThiefSkill
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
+				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
 			}
 		}
 		else

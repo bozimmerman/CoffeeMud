@@ -30,7 +30,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 		if(affectableStats.level()<=0)
 		{
 			levelsDown=-1;
-			ExternalPlay.postDeath(invoker(),(MOB)affected,null);
+			MUDFight.postDeath(invoker(),(MOB)affected,null);
 		}
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(attacklevel*levelsDown));
 	}

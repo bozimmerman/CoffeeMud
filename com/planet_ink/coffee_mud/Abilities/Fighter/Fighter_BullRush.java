@@ -62,9 +62,9 @@ public class Fighter_BullRush extends StdAbility
 			MOB M2=target.getVictim();
 			mob.makePeace();
 			target.makePeace();
-			if((success)&&(ExternalPlay.move(mob,dirCode,false,false))&&(Sense.canBeHeardBy(target,mob)))
+			if((success)&&(MUDTracker.move(mob,dirCode,false,false))&&(Sense.canBeHeardBy(target,mob)))
 			{
-				ExternalPlay.move(target,dirCode,false,false);
+				MUDTracker.move(target,dirCode,false,false);
 				mob.setVictim(M1);
 				target.setVictim(M2);
 			}

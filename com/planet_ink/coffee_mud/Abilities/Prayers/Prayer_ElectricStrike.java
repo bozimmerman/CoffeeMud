@@ -37,7 +37,7 @@ public class Prayer_ElectricStrike extends Prayer
 				if(msg.value()<=0)
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob),5);
-					ExternalPlay.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_STRIKING,"^SThe ELECTRIC STRIKE <DAMAGE> <T-NAME>!^?");
+					MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_STRIKING,"^SThe ELECTRIC STRIKE <DAMAGE> <T-NAME>!^?");
 				}
 			}
 		}

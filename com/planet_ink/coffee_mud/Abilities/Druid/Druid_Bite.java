@@ -61,7 +61,7 @@ public class Druid_Bite extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_PIERCING,"^F<S-NAME> <DAMAGE> <T-NAME> with a piercing BITE!^?");
+				MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_PIERCING,"^F<S-NAME> <DAMAGE> <T-NAME> with a piercing BITE!^?");
 			}
 		}
 		else

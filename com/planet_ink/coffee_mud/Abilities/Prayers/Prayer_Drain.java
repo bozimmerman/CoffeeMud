@@ -47,9 +47,9 @@ public class Prayer_Drain extends Prayer
 					int maxDie =  adjustedLevel(mob);
 					damage += Dice.roll(maxDie,6,20);
 
-					ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,auto?"<T-NAME> shudder(s) in a draining magical wake.":"The draining grasp <DAMAGE> <T-NAME>.");
+					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,auto?"<T-NAME> shudder(s) in a draining magical wake.":"The draining grasp <DAMAGE> <T-NAME>.");
 					if(mob!=target)
-						ExternalPlay.postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,damage,null);
+						MUDFight.postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,damage,null);
 				}
 			}
 		}

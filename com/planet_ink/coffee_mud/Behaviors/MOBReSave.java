@@ -30,7 +30,7 @@ public class MOBReSave extends ActiveTicker
 		&&(tickID==MudHost.TICK_MOB)
 		&&(!((MOB)ticking).amDead())
 		&&(!noRecurse)
-		&&(ExternalPlay.getSystemStarted())
+		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 		&&(((MOB)ticking).getStartRoom()!=null)
 		&&(((MOB)ticking).getStartRoom().roomID().length()>0))
 		{
@@ -43,12 +43,12 @@ public class MOBReSave extends ActiveTicker
 					if(mob.location()!=mob.getStartRoom())
 						mob.getStartRoom().bringMobHere(mob,false);
 					roomsReset.put(mob.getStartRoom().roomID(),mob.getStartRoom());
-					ExternalPlay.resetRoom(mob.getStartRoom());
-					ExternalPlay.DBUpdateMOBs(mob.getStartRoom());
+					CoffeeUtensils.resetRoom(mob.getStartRoom());
+					CMClass.DBEngine().DBUpdateMOBs(mob.getStartRoom());
 				}
 			}
 			if(canAct(ticking,tickID))
-				ExternalPlay.DBUpdateRoomMOB(""+mob,mob.getStartRoom(),mob);
+				CMClass.DBEngine().DBUpdateRoomMOB(""+mob,mob.getStartRoom(),mob);
 		}
 		noRecurse=false;
 		return true;

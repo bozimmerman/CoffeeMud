@@ -116,7 +116,7 @@ public class ProtectedCitizens extends ActiveTicker
 			return false;
 		}
 
-		if(!SaucerSupport.zapperCheck(getProtectedZapper(),mob))
+		if(!MUDZapper.zapperCheck(getProtectedZapper(),mob))
 			return false;
 
 		int assistance=0;
@@ -131,10 +131,8 @@ public class ProtectedCitizens extends ActiveTicker
 		if(assistance>=maxAssistance)
 			return true;
 
-		try{
-			String claim=getClaims()[Dice.roll(1,getClaims().length,-1)];
-		ExternalPlay.doCommand(mob,Util.parse("YELL \""+claim+"\""));
-		}catch(Exception e){}
+		String claim=getClaims()[Dice.roll(1,getClaims().length,-1)];
+		mob.doCommand(Util.parse("YELL \""+claim+"\""));
 
 		Room thisRoom=mob.location();
 		Vector rooms=new Vector();
@@ -144,7 +142,7 @@ public class ProtectedCitizens extends ActiveTicker
 			assMOBS=new Vector();
 			assisters.put(mob,assMOBS);
 		}
-		SaucerSupport.getRadiantRooms(thisRoom,rooms,true,true,false,null,radius);
+		MUDTracker.getRadiantRooms(thisRoom,rooms,true,true,false,null,radius);
 		for(int a=0;a<assMOBS.size();a++)
 		{
 			MOB M=(MOB)assMOBS.elementAt(a);
@@ -159,12 +157,12 @@ public class ProtectedCitizens extends ActiveTicker
 			&&(Sense.canHear(M))))
 			{
 				if(M.location()==thisRoom)
-					ExternalPlay.postAttack(M,mob.getVictim(),M.fetchWieldedItem());
+					MUDFight.postAttack(M,mob.getVictim(),M.fetchWieldedItem());
 				else
 				{
-					int dir=SaucerSupport.radiatesFromDir(M.location(),rooms);
+					int dir=MUDTracker.radiatesFromDir(M.location(),rooms);
 					if(dir>=0)
-						ExternalPlay.move(M,dir,false,false);
+						MUDTracker.move(M,dir,false,false);
 				}
 				assistance++;
 			}
@@ -188,7 +186,7 @@ public class ProtectedCitizens extends ActiveTicker
 					&&(!assMOBS.contains(M))
 					&&(BrotherHelper.canFreelyBehaveNormal(M))
 					&&(!BrotherHelper.isBrother(mob.getVictim(),M))
-					&&(SaucerSupport.zapperCheck(getCityguardZapper(),M))
+					&&(MUDZapper.zapperCheck(getCityguardZapper(),M))
 					&&(M.fetchEffect("Skill_Track")==null)
 					&&(Sense.canHear(M))))
 					{
@@ -203,12 +201,12 @@ public class ProtectedCitizens extends ActiveTicker
 						{
 							assMOBS.addElement(M);
 							if(M.location()==thisRoom)
-								ExternalPlay.postAttack(M,mob.getVictim(),M.fetchWieldedItem());
+								MUDFight.postAttack(M,mob.getVictim(),M.fetchWieldedItem());
 							else
 							{
-								int dir=SaucerSupport.radiatesFromDir(M.location(),rooms);
+								int dir=MUDTracker.radiatesFromDir(M.location(),rooms);
 								if(dir>=0)
-									ExternalPlay.move(M,dir,false,false);
+									MUDTracker.move(M,dir,false,false);
 							}
 							assistance++;
 						}

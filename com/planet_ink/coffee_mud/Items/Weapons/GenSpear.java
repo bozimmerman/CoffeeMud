@@ -27,7 +27,7 @@ public class GenSpear extends StdSpear
 
 	public String text()
 	{
-		return Generic.getPropertiesStr(this,false);
+		return CoffeeMaker.getPropertiesStr(this,false);
 	}
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
@@ -35,7 +35,7 @@ public class GenSpear extends StdSpear
 	public void setMiscText(String newText)
 	{
 		miscText="";
-		Generic.setPropertiesStr(this,newText,false);
+		CoffeeMaker.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
 }

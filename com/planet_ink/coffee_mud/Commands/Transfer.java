@@ -1,0 +1,111 @@
+package com.planet_ink.coffee_mud.Commands.extra;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Transfer extends At
+{
+	public Transfer(){}
+
+	private String[] access={"TRANSFER"};
+	public String[] getAccessWords(){return access;}
+	public boolean execute(MOB mob, Vector commands)
+		throws java.io.IOException
+	{
+		Room room=null;
+		if(commands.size()<3)
+		{
+			mob.tell("Transfer whom where? Try all or a mob name, followerd by a Room ID, target player name, area name, or room text!");
+			return false;
+		}
+		commands.removeElementAt(0);
+		String mobname=(String)commands.elementAt(0);
+		Room curRoom=mob.location();
+		Vector V=new Vector();
+		if(mobname.equalsIgnoreCase("all"))
+		{
+			for(int i=0;i<curRoom.numInhabitants();i++)
+			{
+				MOB M=(MOB)curRoom.fetchInhabitant(i);
+				if(M!=null)
+					V.addElement(M);
+			}
+		}
+		else
+		{
+			for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				MOB M=null;
+				int num=1;
+				while((num<=1)||(M!=null))
+				{
+					M=R.fetchInhabitant(mobname+"."+num);
+					if((M!=null)&&(!V.contains(M)))
+					   V.addElement(M);
+					num++;
+				}
+			}
+			if(V.size()==0)
+			{
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					MOB M=null;
+					int num=1;
+					while((num<=1)||(M!=null))
+					{
+						M=R.fetchInhabitant(mobname+"."+num);
+						if((M!=null)&&(!V.contains(M)))
+						   V.addElement(M);
+						num++;
+					}
+				}
+			}
+		}
+
+		if(V.size()==0)
+		{
+			mob.tell("Transfer whom?  '"+mobname+"' is unknown to you.");
+			return false;
+		}
+
+		StringBuffer cmd = new StringBuffer(Util.combine(commands,1));
+		if(cmd.equals("here")||cmd.equals("."))
+			room=mob.location();
+		else
+			room=findRoomLiberally(mob,cmd);
+
+		if(room==null)
+		{
+			if(mob.isASysOp(mob.location()))
+				mob.tell("Goto where? Try a Room ID, player name, area name, or room text!");
+			else
+				mob.tell("You aren't powerful enough to do that. Try 'GO'.");
+			return false;
+		}
+		if(!mob.isASysOp(room))
+		{
+			mob.tell("You aren't powerful enough to do that. Try 'GO'.");
+			return false;
+		}
+		for(int i=0;i<V.size();i++)
+		{
+			MOB M=(MOB)V.elementAt(i);
+			if(!room.isInhabitant(M))
+			{
+				room.bringMobHere(M,true);
+				if(!M.isMonster())
+					CommonMsgs.look(M,true);
+			}
+		}
+		mob.tell("Done.");
+		return false;
+	}
+	public int ticksToExecute(){return 0;}
+	public boolean canBeOrdered(){return true;}
+	public boolean arcCommand(){return true;}
+
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+}

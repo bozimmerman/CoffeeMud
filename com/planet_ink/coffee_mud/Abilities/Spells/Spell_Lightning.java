@@ -48,7 +48,7 @@ public class Spell_Lightning extends Spell
 					damage = (int)Math.round(Util.div(damage,2.0));
 
 				if(target.location()==mob.location())
-					ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
+					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

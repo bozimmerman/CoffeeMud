@@ -73,7 +73,7 @@ public class Foraging extends CommonSkill
 					{
 						Item newFound=(Item)found.copyOf();
 						mob.location().addItemRefuse(newFound,Item.REFUSE_PLAYER_DROP);
-						ExternalPlay.get(mob,null,newFound,true);
+						CommonMsgs.get(mob,null,newFound,true);
 					}
 				}
 			}

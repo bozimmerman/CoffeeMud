@@ -40,10 +40,10 @@ public class Play_LoveSong extends Play
 				if(Dice.rollPercentage()==1)
 				{
 					Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
-					if(I!=null)	ExternalPlay.remove(mob,I,false);
+					if(I!=null)	CommonMsgs.remove(mob,I,false);
 					I=mob.fetchFirstWornItem(Item.ON_LEGS);
-					if(I!=null)	ExternalPlay.remove(mob,I,false);
-					ExternalPlay.doCommand(mob,Util.parse("MATE "+M.name()));
+					if(I!=null)	CommonMsgs.remove(mob,I,false);
+					mob.doCommand(Util.parse("MATE "+M.name()));
 				}
 				else
 				if(Dice.rollPercentage()>10)

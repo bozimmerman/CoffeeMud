@@ -61,7 +61,7 @@ public class Prayer_Monolith extends Prayer
 							&&(M.rangeToTarget()>0)
 							&&(M.rangeToTarget()<3)
 							&&(!M.amDead()))
-								ExternalPlay.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+								MUDFight.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
 						}
 						((Item)affected).destroy();
 					}
@@ -89,11 +89,11 @@ public class Prayer_Monolith extends Prayer
 				M.setName("The monolith of air");
 				M.setVictim(mob);
 				M.setAtRange(mob.rangeToTarget());
-				ExternalPlay.postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
+				MUDFight.postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
 				M.setLocation(null);
 				M.setVictim(null);
 				if(mob.isMonster())
-					ExternalPlay.remove(mob,(Item)msg.tool(),false);
+					CommonMsgs.remove(mob,(Weapon)msg.tool(),true);
 				return false;
 			}
 			break;
@@ -192,7 +192,7 @@ public class Prayer_Monolith extends Prayer
 						&&(mob.rangeToTarget()==1))
 						{
 							int damage = Dice.roll((int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/4.0),6,1);
-							ExternalPlay.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The monolith of fire flares and <DAMAGE> <T-NAME>!");
+							MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The monolith of fire flares and <DAMAGE> <T-NAME>!");
 						}
 					}
 				}

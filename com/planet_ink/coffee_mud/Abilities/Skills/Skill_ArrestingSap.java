@@ -70,7 +70,7 @@ public class Skill_ArrestingSap extends StdAbility
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> regain(s) consciousness.");
-				ExternalPlay.standIfNecessary(mob);
+				CommonMsgs.stand(mob,true);
 			}
 			else
 				mob.tell("You regain consciousness.");

@@ -63,7 +63,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 							if(target.getExpNeededLevel()==Integer.MAX_VALUE)
 								target.charStats().getCurrentClass().level(target);
 							else
-								ExternalPlay.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+								MUDFight.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 						}
 
 					}

@@ -43,7 +43,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(!canBeUninvoked())
 		{
 			tickDown=getReset();
-			ExternalPlay.startTickDown(this,MudHost.TICK_TRAP_RESET,1);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
 		}
 		else
 			unInvoke();
@@ -105,7 +105,7 @@ public class StdTrap extends StdAbility implements Trap
 			tickDown=getReset();
 			sprung=false;
 			disabled=false;
-			ExternalPlay.startTickDown(this,MudHost.TICK_TRAP_RESET,1);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
 		}
 	}
 
@@ -234,7 +234,7 @@ public class StdTrap extends StdAbility implements Trap
 		T.setBorrowed(E,true);
 		E.addEffect(T);
 		if(!isABomb())
-			ExternalPlay.startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
+			CMClass.ThreadEngine().startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
 		return T;
 	}
 
@@ -294,7 +294,7 @@ public class StdTrap extends StdAbility implements Trap
 		disabled=false;
 		tickDown=getReset();
 		if(!isABomb())
-			ExternalPlay.startTickDown(this,MudHost.TICK_TRAP_RESET,1);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
 	}
 
 	protected Item findFirstResource(Room room, String other)

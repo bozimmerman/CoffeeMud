@@ -14,7 +14,10 @@ public class Tick extends Thread
 	public long lastStop=0;
 	public long milliTotal=0;
 	public long tickTotal=0;
-
+	public ThreadEngine myEngine=null;
+	
+	public Tick(ThreadEngine theEngine){myEngine=theEngine;}
+	
 	private Vector tickers=new Vector();
 
 	public Enumeration tickers(){return ((Vector)tickers.clone()).elements();}
@@ -101,7 +104,7 @@ public class Tick extends Thread
 				awake=true;
 				lastStart=System.currentTimeMillis();
 				lastClient=null;
-				if(ExternalPlay.getSystemStarted())
+				if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 				{
 					for(Enumeration e=tickers();e.hasMoreElements();)
 					{
@@ -125,7 +128,8 @@ public class Tick extends Thread
 			}
 			if(tickers.size()==0)
 			{
-				ServiceEngine.delTickGroup(this);
+				if(CMClass.ThreadEngine() instanceof ServiceEngine)
+					((ServiceEngine)CMClass.ThreadEngine()).delTickGroup(this);
 				break;
 			}
 		}

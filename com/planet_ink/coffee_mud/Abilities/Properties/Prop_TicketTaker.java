@@ -92,7 +92,7 @@ public class Prop_TicketTaker extends Property
 					if(mob.getMoney()<cost())
 					{
 						if(myHost instanceof MOB)
-							ExternalPlay.quickSay((MOB)myHost,mob,"You'll need "+cost()+" gold to board.",false,false);
+							CommonMsgs.say((MOB)myHost,mob,"You'll need "+cost()+" gold to board.",false,false);
 						else
 							mob.tell("You'll need "+cost()+" gold to board.");
 						return false;

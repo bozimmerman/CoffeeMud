@@ -35,7 +35,7 @@ public class CombatAssister extends StdBehavior
 		&&(Sense.canBeSeenBy(mob,monster))
 		&&(Sense.canBeSeenBy(target,monster))
 		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		&&(SaucerSupport.zapperCheck(getParms(),target)))
+		&&(MUDZapper.zapperCheck(getParms(),target)))
 			Aggressive.startFight(monster,mob,true);
 	}
 }

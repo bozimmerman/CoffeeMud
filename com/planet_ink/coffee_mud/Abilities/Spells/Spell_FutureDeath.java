@@ -87,7 +87,7 @@ public class Spell_FutureDeath extends Spell
 						break;
 					}
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,str);
-					ExternalPlay.postDeath(mob,target,null);
+					MUDFight.postDeath(mob,target,null);
 				}
 			}
 		}

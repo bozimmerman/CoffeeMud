@@ -159,8 +159,8 @@ public class AreaData extends StdWebMacro
 		String last=httpReq.getRequestParameter("AREA");
 		if(last==null) return " @break@";
 
-		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
-			return httpReq.getMUD().gameStatusStr();
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			return CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS);
 
 		if(last.length()>0)
 		{
@@ -170,8 +170,8 @@ public class AreaData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuffer s=ExternalPlay.getHelpText("AREA_"+A.Name(),null);
-					if(s==null)	s=ExternalPlay.getHelpText(A.Name(),null);
+					StringBuffer s=MUDHelp.getHelpText("AREA_"+A.Name(),null);
+					if(s==null)	s=MUDHelp.getHelpText(A.Name(),null);
 					str.append(helpHelp(s));
 				}
 				if(parms.containsKey("CLIMATES"))
@@ -257,7 +257,7 @@ public class AreaData extends StdWebMacro
 							subOps+=";"+httpReq.getRequestParameter("SUBOPS"+(new Integer(i).toString()));
 						else
 							break;
-					Vector V=ExternalPlay.userList();
+					Vector V=CMClass.DBEngine().userList();
 					for(int v=0;v<V.size();v++)
 					{
 						String cnam=(String)V.elementAt(v);

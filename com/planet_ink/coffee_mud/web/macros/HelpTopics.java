@@ -14,7 +14,7 @@ public class HelpTopics extends StdWebMacro
 		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("HELPTOPIC");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeRequestParameter("HELPTOPIC");
 			httpReq.removeRequestParameter("HELPFIRSTLETTER");
 			return "";
@@ -24,7 +24,7 @@ public class HelpTopics extends StdWebMacro
 		{
 			if((last!=null)&&(last.length()>0))
 			{
-				StringBuffer s=ExternalPlay.getHelpText(last,null);
+				StringBuffer s=MUDHelp.getHelpText(last,null);
 				if(s!=null)
 					return helpHelp(s).toString();
 			}
@@ -51,18 +51,18 @@ public class HelpTopics extends StdWebMacro
 		{
 			Vector topics=null;
 			if(parms.containsKey("ARCHON"))
-				topics=ExternalPlay.getTopics(true,false);
+				topics=MUDHelp.getTopics(true,false);
 			else
 			if(parms.containsKey("BOTH"))
-				topics=ExternalPlay.getTopics(true,true);
+				topics=MUDHelp.getTopics(true,true);
 			else
-				topics=ExternalPlay.getTopics(false,true);
-		
+				topics=MUDHelp.getTopics(false,true);
+
 			boolean noables=parms.containsKey("SHORT");
 			String fletter=(String)parms.get("FIRSTLETTER");
 			if(fletter==null) fletter=httpReq.getRequestParameter("FIRSTLETTER");
 			if(fletter==null) fletter="";
-		
+
 			String lastID="";
 			for(int h=0;h<topics.size();h++)
 			{

@@ -29,22 +29,22 @@ public class GenRideable extends StdRideable
 	public String text()
 	{
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-			miscText=Util.compressString(Generic.getPropertiesStr(this,false));
+			miscText=Util.compressString(CoffeeMaker.getPropertiesStr(this,false));
 		else
-			miscText=Generic.getPropertiesStr(this,false).getBytes();
+			miscText=CoffeeMaker.getPropertiesStr(this,false).getBytes();
 		return super.text();
 	}
 
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		Generic.resetGenMOB(this,newText);
+		CoffeeMaker.resetGenMOB(this,newText);
 	}
 	private static String[] MYCODES={"RIDEBASIS","MOBSHELD"};
 	public String getStat(String code)
 	{
-		if(Generic.getGenMobCodeNum(code)>=0)
-			return Generic.getGenMobStat(this,code);
+		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
+			return CoffeeMaker.getGenMobStat(this,code);
 		else
 		switch(getCodeNum(code))
 		{
@@ -55,8 +55,8 @@ public class GenRideable extends StdRideable
 	}
 	public void setStat(String code, String val)
 	{ 
-		if(Generic.getGenMobCodeNum(code)>=0)
-			Generic.setGenMobStat(this,code,val);
+		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
+			CoffeeMaker.setGenMobStat(this,code,val);
 		else
 		switch(getCodeNum(code))
 		{
@@ -73,7 +73,7 @@ public class GenRideable extends StdRideable
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] superCodes=Generic.GENMOBCODES;
+		String[] superCodes=CoffeeMaker.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)

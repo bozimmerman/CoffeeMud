@@ -30,7 +30,7 @@ public class Chant_HowlersMoon extends Chant
 
 		MOB mob=(MOB)affected;
 		if(mob.amFollowing()==null)
-			CoffeeUtensils.wanderAway(mob,true,false);
+			MUDTracker.wanderAway(mob,true,false);
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null)&&(mob.amFollowing()==null))
 		{
@@ -83,13 +83,13 @@ public class Chant_HowlersMoon extends Chant
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
-				ExternalPlay.move(target,opDir,false,false);
+				MUDTracker.move(target,opDir,false,false);
 				if(target.location()==room)
 				{
 					int d=Dice.rollPercentage();
 					if((d<33)&&(invoker()!=null)&&(invoker().location()==room))
 					{
-						ExternalPlay.follow(target,invoker(),true);
+						CommonMsgs.follow(target,invoker(),true);
 						beneficialAffect(invoker(),target,0);
 						if(target.amFollowing()!=invoker())
 							target.setVictim(invoker());

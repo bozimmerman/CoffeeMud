@@ -32,7 +32,7 @@ public class Chant_AstralProjection extends Chant
 		}
 		super.unInvoke();
 		if(mob!=null)
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -44,7 +44,7 @@ public class Chant_AstralProjection extends Chant
 		&&(tickDown!=Integer.MAX_VALUE)
 		&&(canBeUninvoked())
 		&&(tickDown==1))
-			ExternalPlay.postDeath(null,(MOB)affected,null);
+			MUDFight.postDeath(null,(MOB)affected,null);
 		return super.tick(ticking,tickID);
 	}
 

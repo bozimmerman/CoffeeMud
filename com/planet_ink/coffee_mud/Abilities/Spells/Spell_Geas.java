@@ -39,7 +39,7 @@ public class Spell_Geas extends Spell
 			&&(!mob.amDead())
 			&&(mob.location()!=null)
 			&&(mob.location()!=mob.getStartRoom()))
-				CoffeeUtensils.wanderAway(mob,true,true);
+				MUDTracker.wanderAway(mob,true,true);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class Spell_Geas extends Spell
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0))
-			ExternalPlay.postPanic(mob,msg);
+			MUDFight.postPanic(mob,msg);
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(STEP!=null)
 		&&(msg.sourceMessage()!=null)
@@ -87,7 +87,7 @@ public class Spell_Geas extends Spell
 		if(mob.isMonster())
 		{
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sigh(s).");
-			ExternalPlay.quickSay(mob,null,"You know, if I had any ambitions, I would put the geas on myself!",false,false);
+			CommonMsgs.say(mob,null,"You know, if I had any ambitions, I would put the geas on myself!",false,false);
 			return false;
 		}
 

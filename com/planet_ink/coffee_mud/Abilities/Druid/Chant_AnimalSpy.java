@@ -88,15 +88,7 @@ public class Chant_AnimalSpy extends Chant
 				{
 					String msg2=msg.sourceMessage().substring(start+1,end).trim();
 					if(msg2.length()>0)
-					{
-						try{
-							ExternalPlay.doCommand(spy,Util.parse(msg2.trim()));
-						}
-						catch(Exception e)
-						{
-							invoker.tell("Your command to the spy has failed.");
-						}
-					}
+						spy.enqueCommand(Util.parse(msg2.trim()),0);
 				}
 			}
 		}

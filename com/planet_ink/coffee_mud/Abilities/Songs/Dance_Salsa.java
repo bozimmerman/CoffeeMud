@@ -37,14 +37,13 @@ public class Dance_Salsa extends Dance
 		if(choices.size()>0)
 		{
 			MOB M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
-			try{
 			if(Dice.rollPercentage()==1)
 			{
 				Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
-				if(I!=null)	ExternalPlay.remove(mob,I,false);
+				if(I!=null)	CommonMsgs.remove(mob,I,false);
 				I=mob.fetchFirstWornItem(Item.ON_LEGS);
-				if(I!=null)	ExternalPlay.remove(mob,I,false);
-				ExternalPlay.doCommand(mob,Util.parse("MATE "+M.name()));
+				if(I!=null)	CommonMsgs.remove(mob,I,false);
+				mob.doCommand(Util.parse("MATE "+M.name()));
 			}
 			else
 			if(Dice.rollPercentage()>10)
@@ -66,7 +65,6 @@ public class Dance_Salsa extends Dance
 					mob.tell("You feel lovingly towards "+M.name()+".");
 					break;
 				}
-			}catch(Exception e){}
 		}
 		
 		return true;

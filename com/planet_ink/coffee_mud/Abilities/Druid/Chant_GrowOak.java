@@ -56,7 +56,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 					dmg=dmg/2;
 				if(dmg>0)
 				{
-					if(ExternalPlay.postHealing(invoker,invoker,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,dmg,null))
+					if(MUDFight.postHealing(invoker,invoker,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,dmg,null))
 						invoker.tell("Your oak absorbs "+dmg+" points of your damage!");
 				}
 				hpRemaining-=dmg;
@@ -73,11 +73,11 @@ public class Chant_GrowOak extends Chant_SummonPlants
 				int dmg=Dice.roll(1,50,50);
 				hpRemaining-=dmg;
 				if(invoker!=null) invoker.tell("Your oak is being chopped down!");
-				ExternalPlay.postDamage(invoker,invoker,null,dmg/2,CMMsg.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
+				MUDFight.postDamage(invoker,invoker,null,dmg/2,CMMsg.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
 				if(hpRemaining<0)
 				{
 					if(invoker!=null)
-						ExternalPlay.postDeath(invoker,null,null);
+						MUDFight.postDeath(invoker,null,null);
 					unInvoke();
 				}
 			}

@@ -50,7 +50,7 @@ public class Disease_Malaria extends Disease
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			int damage=Dice.roll(2,diseaser.envStats().level()+1,1);
-			ExternalPlay.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+			MUDFight.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
 			catchIt(mob);
 			if(Dice.rollPercentage()==1)
 			{
@@ -74,7 +74,7 @@ public class Disease_Malaria extends Disease
 			conDown=-1;
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
-			ExternalPlay.postDeath(diseaser,affected,null);
+			MUDFight.postDeath(diseaser,affected,null);
 		}
 	}
 

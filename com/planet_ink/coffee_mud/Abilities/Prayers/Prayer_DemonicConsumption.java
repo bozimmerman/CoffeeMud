@@ -55,7 +55,7 @@ public class Prayer_DemonicConsumption extends Prayer
 					if(target instanceof MOB)
 					{
 						if(((MOB)target).curState().getHitPoints()>0)
-							ExternalPlay.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe evil <DAMAGE> <T-NAME>!^?");
+							MUDFight.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe evil <DAMAGE> <T-NAME>!^?");
 						if(((MOB)target).amDead())
 							mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> <T-IS-ARE> consumed!");
 						else

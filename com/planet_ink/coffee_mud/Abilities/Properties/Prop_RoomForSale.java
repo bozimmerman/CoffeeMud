@@ -52,7 +52,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		Room R=CMMap.getRoom(landRoomID());
 		if(R==null) return;
-		ExternalPlay.DBUpdateRoom(R);
+		CMClass.DBEngine().DBUpdateRoom(R);
 	}
 
 	public String landRoomID(){
@@ -91,7 +91,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
 					mobs.addElement(M);
 			}
-			ExternalPlay.DBUpdateTheseMOBs(R,mobs);
+			CMClass.DBEngine().DBUpdateTheseMOBs(R,mobs);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				R.setDescription("");
 			}
 			R.setDescription(R.description()+theStr);
-			ExternalPlay.DBUpdateRoom(R);
+			CMClass.DBEngine().DBUpdateRoom(R);
 
 			Item I=R.fetchItem(null,"id$");
 			if((I==null)||(!I.ID().equals("GenWallpaper")))
@@ -116,7 +116,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				I.setReadableText("This room is "+CMMap.getExtendedRoomID(R));
 				I.setDescription("This room is "+CMMap.getExtendedRoomID(R));
 				R.addItem(I);
-				ExternalPlay.DBUpdateItems(R);
+				CMClass.DBEngine().DBUpdateItems(R);
 			}
 		}
 	}
@@ -164,7 +164,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			if(!confirmedUser)
 			{
 				confirmedUser=true;
-				if((!ExternalPlay.DBUserSearch(null,landOwner()))
+				if((!CMClass.DBEngine().DBUserSearch(null,landOwner()))
 				&&(Clans.getClan(landOwner())==null))
 				{
 					T.setLandOwner("");
@@ -177,7 +177,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			if(x>=0)
 			{
 				R.setDescription(R.description().substring(0,x));
-				ExternalPlay.DBUpdateRoom(R);
+				CMClass.DBEngine().DBUpdateRoom(R);
 			}
 
 			// this works on the priciple that
@@ -208,7 +208,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 			}
 			if(updateItems)
-				ExternalPlay.DBUpdateItems(R);
+				CMClass.DBEngine().DBUpdateItems(R);
 		}
 	}
 }

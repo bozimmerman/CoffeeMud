@@ -36,7 +36,7 @@ public class Prayer_DispelUndead extends Prayer
 				int harming=Dice.roll(1,30,10);
 				if(msg.value()>0)
 					harming=(int)Math.round(Util.div(harming,2.0));
-				ExternalPlay.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The holy spell <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The holy spell <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

@@ -86,7 +86,7 @@ public class Spell_ChainLightening extends Spell
 							dmg = (int)Math.round(Util.div(dmg,2.0));
 						if(target.location()==mob.location())
 						{
-							ExternalPlay.postDamage(mob,target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
+							MUDFight.postDamage(mob,target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
 							damage = (int)Math.round(Util.div(damage,2.0));
 							if(damage<5){ damage=0; break;}
 						}

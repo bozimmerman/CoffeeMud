@@ -150,7 +150,7 @@ public class Mobile extends ActiveTicker
 				}
 			}
 			Room oldRoom=mob.location();
-			SaucerSupport.beMobile((MOB)ticking,dooropen,wander,false,objections!=null,objections);
+			MUDTracker.beMobile((MOB)ticking,dooropen,wander,false,objections!=null,objections);
 			if(mob.location()==oldRoom)
 				tickDown=0;
 		}

@@ -44,11 +44,11 @@ public class Spell_WallOfAir extends Spell
 			M.setName("The wall of air");
 			M.setVictim(mob);
 			M.setAtRange(mob.rangeToTarget());
-			ExternalPlay.postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
+			MUDFight.postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
 			M.setLocation(null);
 			M.setVictim(null);
 			if(mob.isMonster())
-				ExternalPlay.remove(mob,(Item)msg.tool(),false);
+				CommonMsgs.remove(mob,(Item)msg.tool(),true);
 			return false;
 		}
 

@@ -47,7 +47,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		T.setInvoker(mob);
 		E.addEffect(T);
 		T.setBorrowed(E,true);
-		ExternalPlay.startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,mob.envStats().level()*30);
+		CMClass.ThreadEngine().startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,mob.envStats().level()*30);
 		return T;
 	}
 	public void gas(MOB mob)
@@ -71,7 +71,7 @@ public class Trap_Trap extends StdAbility implements Trap
 						target.location().send(target,msg);
 						if(msg.value()>0)
 							dmg=(int)Math.round(Util.div(dmg,2.0));
-						ExternalPlay.postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
+						MUDFight.postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
 					}
 				}
 			}
@@ -85,7 +85,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					target.location().send(target,msg);
 					if(msg.value()>0)
 						dmg=(int)Math.round(Util.div(dmg,2.0));
-					ExternalPlay.postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
+					MUDFight.postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
 				}
 			}
 	}
@@ -105,7 +105,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				target.location().send(target,msg);
 				if(msg.value()>0)
 					dmg=(int)Math.round(Util.div(dmg,2.0));
-				ExternalPlay.postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
 
 				Ability P=CMClass.getAbility("Poison");
 				if(P!=null) P.invoke(invoker(),target,true);
@@ -130,7 +130,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					dmg=(int)Math.round(Util.div(dmg,2.0));
 				Ability P=CMClass.getAbility("Poison");
 				if(P!=null) P.invoke(invoker(),target,true);
-				ExternalPlay.postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
 			}
 		}
 	}
@@ -211,9 +211,9 @@ public class Trap_Trap extends StdAbility implements Trap
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 				int damage=Dice.roll(mob.envStats().level(),3,1);
-				ExternalPlay.postDamage(invoker(),mob,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
+				MUDFight.postDamage(invoker(),mob,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 			}
-			ExternalPlay.look(mob,null,true);
+			CommonMsgs.look(mob,true);
 		}
 	}
 
@@ -258,7 +258,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 
 		if((getReset()>0)&&(getReset()<Integer.MAX_VALUE))
-			ExternalPlay.startTickDown(this,MudHost.TICK_TRAP_RESET,getReset());
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_TRAP_RESET,getReset());
 		else
 			unInvoke();
 	}

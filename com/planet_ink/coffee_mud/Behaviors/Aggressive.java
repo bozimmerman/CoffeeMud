@@ -19,7 +19,7 @@ public class Aggressive extends StdBehavior
 	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		return SaucerSupport.zapperCheck(getParms(),M);
+		return MUDZapper.zapperCheck(getParms(),M);
 	}
 
 	public void setParms(String newParms)
@@ -56,7 +56,7 @@ public class Aggressive extends StdBehavior
 			}
 
 			// normal attack
-			ExternalPlay.postAttack(monster,mob,monster.fetchWieldedItem());
+			MUDFight.postAttack(monster,mob,monster.fetchWieldedItem());
 			return true;
 		}
 		return false;
@@ -75,7 +75,7 @@ public class Aggressive extends StdBehavior
 					return false;
 
 				if((startItWith==null)
-				&&(SaucerSupport.zapperCheck(zapStr,mob)))
+				&&(MUDZapper.zapperCheck(zapStr,mob)))
 					 startItWith=mob;
 			}
 		}

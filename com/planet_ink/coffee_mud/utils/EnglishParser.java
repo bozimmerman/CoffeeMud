@@ -3,17 +3,17 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
-public class EnglishParser implements Tickable
+public class EnglishParser extends Scriptable implements Tickable
 {
 	private EnglishParser(){};
 	public String ID(){return "EnglishParser";}
-	public String name(){return "THE English Parser";}
+	public String name(){return "CoffeeMuds English Parser";}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		return true;
 	}
-	
+
 	// these should be checked after pmap prelim check.
 	private static String[] universalStarters={
 		"go ",
@@ -25,7 +25,7 @@ public class EnglishParser implements Tickable
 		"please ",
 		"to ",
 	    "you are ordered to "};
-	
+
 	private static String[] responseStarters={
 		"try at the",
 		"its at the",
@@ -70,7 +70,7 @@ public class EnglishParser implements Tickable
 		"dont",
 		"no"
 	};
-	
+
 	//codes:
 	//%m mob name (anyone)
 	//%i item name (anything)
@@ -166,13 +166,13 @@ public class EnglishParser implements Tickable
 		{"stand up","stand"},
 		{"wear %i","itemfind %i;wear %i"},
 		{"wield %i","itemfind %i;wield %i"},
-		// below are sit x sleep x mount x enter x 
+		// below are sit x sleep x mount x enter x
 		{"sit %i","itemfind %i;sit %i"},
 		{"sleep %i","itemfind %i;sleep %i"},
 		{"mount %i","itemfind %i;mount %i"},
 		{"mount %m","mobfind %m;mount %m"},
 		// below are learns, practices, teaches, etc..
-		// below are tells, say tos, report tos, 
+		// below are tells, say tos, report tos,
 		{"tell %m %g","mobfind %m;say %m %g"},
 		{"say %g to %m","mobfind %m;say %m %g"},
 		{"tell %g to %m","mobfind %m;say %m %g"},
@@ -188,7 +188,7 @@ public class EnglishParser implements Tickable
 		{"what %*","say You want me to answer what? I don't know what!"},
 		{"why %*","say You want me to answer why? I don't know why!"}
 	};
-	
+
 	private static Vector findMatch(Vector req)
 	{
 		Vector possibilities=new Vector();
@@ -243,7 +243,7 @@ public class EnglishParser implements Tickable
 							   break;
 							if(ri<req.size())
 								str=str+" "+((String)req.elementAt(ri));
-							ri++; 
+							ri++;
 						}
 						map.put(code,str);
 						break;
@@ -277,7 +277,7 @@ public class EnglishParser implements Tickable
 		}
 		return possibilities;
 	}
-	
+
 	private static String cleanWord(String s)
 	{
 		String chars=".,;!?'";
@@ -291,7 +291,7 @@ public class EnglishParser implements Tickable
 			}
 		return s;
 	}
-	
+
 	private static String cleanArticles(String s)
 	{
 		String[] articles={"a","an","all of","some one","a pair of","one of","all","the","some"};
@@ -307,17 +307,17 @@ public class EnglishParser implements Tickable
 		}
 		return s;
 	}
-	
+
 	private static boolean foundIn(Vector V, String that)
 	{
 		for(int v=0;v<V.size();v++)
 		{
-			if(CoffeeUtensils.containsString((String)V.elementAt(v),that))
+			if(containsString((String)V.elementAt(v),that))
 				return true;
 		}
 		return false;
 	}
-	
+
 	public static geasStep processRequest(MOB you, MOB me, String req)
 	{
 		Vector REQ=Util.parse(req.toLowerCase().trim());
@@ -467,7 +467,7 @@ public class EnglishParser implements Tickable
 		}
 		return g;
 	}
-	
+
 	public final static int STEP_EVAL=0;
 	public final static int STEP_INT1=1;
 	public final static int STEP_INT2=2;
@@ -483,7 +483,7 @@ public class EnglishParser implements Tickable
 		public MOB bothering=null;
 		public MOB you=null;
 		public MOB me=null;
-		
+
 		public void botherOrMove(String msgOrQ, int moveCode)
 		{
 			bothering=null;
@@ -494,7 +494,7 @@ public class EnglishParser implements Tickable
 					MOB M=me.location().fetchInhabitant(m);
 					if((M!=null)&&(M!=me)&&(!bothered.contains(M)))
 					{
-						ExternalPlay.quickSay(me,M,msgOrQ,false,false);
+						CommonMsgs.say(me,M,msgOrQ,false,false);
 						bothering=M;
 						bothered.addElement(M);
 						return;
@@ -504,16 +504,16 @@ public class EnglishParser implements Tickable
 				bothered.addElement(me.location());
 			if(moveCode==0)
 			{
-				if(!SaucerSupport.beMobile(me,true,true,false,true,bothered))
-					SaucerSupport.beMobile(me,true,true,false,false,null);
+				if(!MUDTracker.beMobile(me,true,true,false,true,bothered))
+					MUDTracker.beMobile(me,true,true,false,false,null);
 			}
 			else
 			{
-				if(!SaucerSupport.beMobile(me,true,true,true,false,bothered))
-					SaucerSupport.beMobile(me,true,true,false,false,null);
+				if(!MUDTracker.beMobile(me,true,true,true,false,bothered))
+					MUDTracker.beMobile(me,true,true,false,false,null);
 			}
 		}
-		
+
 		public void sayResponse(MOB speaker, MOB target, String response)
 		{
 			if((speaker!=null)
@@ -525,9 +525,9 @@ public class EnglishParser implements Tickable
 			{
 				for(int s=0;s<universalRejections.length;s++)
 				{
-					if(CoffeeUtensils.containsString(response,universalRejections[s]))
+					if(containsString(response,universalRejections[s]))
 					{
-						ExternalPlay.quickSay(me,speaker,"Ok, thanks anyway.",false,false);
+						CommonMsgs.say(me,speaker,"Ok, thanks anyway.",false,false);
 						return;
 					}
 				}
@@ -551,7 +551,7 @@ public class EnglishParser implements Tickable
 				step=STEP_EVAL;
 			}
 		}
-		
+
 		public void step()
 		{
 			if(que.size()==0)
@@ -576,12 +576,12 @@ public class EnglishParser implements Tickable
 					{
 						step=STEP_EVAL;
 						que.removeElementAt(0);
-						ExternalPlay.quickSay(me,null,"I got the money!",false,false);
+						CommonMsgs.say(me,null,"I got the money!",false,false);
 						return;
 					}
 					item="coins";
 				}
-					
+
 				// do I already have it?
 				Item I=me.fetchInventory(item);
 				if((I!=null)&&(Sense.canBeSeenBy(I,me)))
@@ -589,16 +589,16 @@ public class EnglishParser implements Tickable
 					step=STEP_EVAL;
 					if(!I.amWearingAt(Item.INVENTORY))
 					{
-						ExternalPlay.remove(me,I,false);
+						CommonMsgs.remove(me,I,false);
 						return;
 					}
 					if(I.container()!=null)
 					{
-						ExternalPlay.get(me,I.container(),I,false);
+						CommonMsgs.get(me,I.container(),I,false);
 						return;
 					}
 					que.removeElementAt(0);
-					ExternalPlay.quickSay(me,null,"I got "+I.name()+"!",false,false);
+					CommonMsgs.say(me,null,"I got "+I.name()+"!",false,false);
 					return;
 				}
 				// is it just sitting around?
@@ -606,7 +606,7 @@ public class EnglishParser implements Tickable
 				if((I!=null)&&(Sense.canBeSeenBy(I,me)))
 				{
 					step=STEP_EVAL;
-					ExternalPlay.get(me,null,I,false);
+					CommonMsgs.get(me,null,I,false);
 					return;
 				}
 				// is it in a container?
@@ -616,7 +616,7 @@ public class EnglishParser implements Tickable
 				   &&(((Container)I.container()).isOpen()))
 				{
 					step=STEP_EVAL;
-					ExternalPlay.get(me,I.container(),I,false);
+					CommonMsgs.get(me,I.container(),I,false);
 					return;
 				}
 				// is it up for sale?
@@ -630,7 +630,7 @@ public class EnglishParser implements Tickable
 						{
 							if(step==STEP_EVAL)
 							{
-								ExternalPlay.quickSay(me,M,"I must have '"+I.name()+".  Give it to me now.",false,false);
+								CommonMsgs.say(me,M,"I must have '"+I.name()+".  Give it to me now.",false,false);
 								step=STEP_INT1;
 								return;
 							}
@@ -643,7 +643,7 @@ public class EnglishParser implements Tickable
 							else
 							if(step==STEP_INT2)
 							{
-								ExternalPlay.quickSay(me,M,"I MUST HAVE '"+I.name().toUpperCase()+".  GIVE IT TO ME NOW!!!!",false,false);
+								CommonMsgs.say(me,M,"I MUST HAVE '"+I.name().toUpperCase()+".  GIVE IT TO ME NOW!!!!",false,false);
 								step=STEP_INT3;
 								return;
 							}
@@ -656,7 +656,7 @@ public class EnglishParser implements Tickable
 							else
 							if(step==STEP_INT4)
 							{
-								ExternalPlay.postAttack(me,M,me.fetchWieldedItem());
+								MUDFight.postAttack(me,M,me.fetchWieldedItem());
 								step=STEP_EVAL;
 								return;
 							}
@@ -668,17 +668,17 @@ public class EnglishParser implements Tickable
 							if((E!=null)&&(E instanceof Item))
 							{
 								int price=sk.yourValue(me,E,true)[0];
-								if(price<=Money.totalMoney(me))
+								if(price<=MoneyUtils.totalMoney(me))
 								{
-									try{ExternalPlay.doCommand(me,Util.parse("BUY \""+E.name()+"\""));}catch(Exception e){}
+									me.enqueCommand(Util.parse("BUY \""+E.name()+"\""),0);
 									step=STEP_EVAL;
 									return;
 								}
 								else
 								{
-									price=price-Money.totalMoney(me);
+									price=price-MoneyUtils.totalMoney(me);
 									que.insertElementAt(Util.parse("itemfind "+sk.yourValue(me,E,true)),0);
-									ExternalPlay.quickSay(me,null,"Damn, I need "+price+" gold.",false,false);
+									CommonMsgs.say(me,null,"Damn, I need "+price+" gold.",false,false);
 									step=STEP_EVAL;
 									return;
 								}
@@ -705,7 +705,7 @@ public class EnglishParser implements Tickable
 					if(name.equals("myself")) name=you.name();
 					if(name.equals("my")) name=you.name();
 				}
-					
+
 				MOB M=me.location().fetchInhabitant(name);
 				if((M!=null)&&(M!=me)&&(Sense.canBeSeenBy(M,me)))
 				{
@@ -713,7 +713,7 @@ public class EnglishParser implements Tickable
 					que.removeElementAt(0);
 					return;
 				}
-				
+
 				// if asked someone something, give them time to respond.
 				if((step>STEP_EVAL)&&(bothering!=null)&&((step<=STEP_INT4)||(bothering.isMonster())))
 				{	step++; return;}
@@ -742,13 +742,13 @@ public class EnglishParser implements Tickable
 					if(Util.parse(name).size()>1)
 						cur.setElementAt(Util.combine(Util.parse(name),1),1);
 					step=STEP_EVAL;
-					ExternalPlay.move(me,dirCode,false,false);
+					MUDTracker.move(me,dirCode,false,false);
 					return;
 				}
-				
-				if(CoffeeUtensils.containsString(me.location().name(),name)
-				   ||CoffeeUtensils.containsString(me.location().displayText(),name)
-				   ||CoffeeUtensils.containsString(me.location().description(),name))
+
+				if(containsString(me.location().name(),name)
+				   ||containsString(me.location().displayText(),name)
+				   ||containsString(me.location().description(),name))
 				{
 					step=STEP_EVAL;
 					que.removeElementAt(0);
@@ -766,7 +766,7 @@ public class EnglishParser implements Tickable
 				if((I!=null)&&(Sense.canBeSeenBy(I,me)))
 				{
 					step=STEP_EVAL;
-					ExternalPlay.get(me,null,I,false);
+					CommonMsgs.get(me,null,I,false);
 					return;
 				}
 				if((s.length()>4)&&(Util.isNumber(s.substring(4))))
@@ -780,7 +780,7 @@ public class EnglishParser implements Tickable
 					}
 					cur.setElementAt("find"+x,0);
 				}
-				
+
 				// if asked someone something, give them time to respond.
 				if((step>STEP_EVAL)&&(bothering!=null)&&((step<=STEP_INT4)||(bothering.isMonster())))
 				{	step++; return;}
@@ -805,11 +805,657 @@ public class EnglishParser implements Tickable
 			{
 				step=STEP_EVAL;
 				que.removeElementAt(0);
-				try{ ExternalPlay.doCommand(me,cur);
-				} catch(Exception e){}
+				me.enqueCommand(cur,0);
 				return;
 			}
 		}
 	}
-	
+	public static Object findCommand(MOB mob, Vector commands)
+	{
+		if((mob==null)
+		||(commands==null)
+		||(mob.location()==null)
+		||(commands.size()==0))
+			return null;
+
+		String firstWord=((String)commands.elementAt(0)).toUpperCase();
+		if((firstWord.length()>1)&&(!Character.isLetterOrDigit(firstWord.charAt(0))))
+		{
+			commands.insertElementAt(((String)commands.elementAt(0)).substring(1),1);
+			commands.setElementAt(""+firstWord.charAt(0),0);
+			firstWord=""+firstWord.charAt(0);
+		}
+
+		// first, exacting pass
+		Command C=CMClass.findCommandByTrigger(firstWord,true);
+		if(C!=null) return C;
+
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability A=mob.fetchAbility(a);
+			if(A.triggerStrings()!=null)
+				for(int t=0;t<A.triggerStrings().length;t++)
+					if(A.triggerStrings()[t].equalsIgnoreCase(firstWord))
+						return A;
+		}
+
+		Social social=Socials.FetchSocial(commands,true);
+		if(social!=null) return social;
+
+		// second, inexacting pass
+		// first, exacting pass
+		C=CMClass.findCommandByTrigger(firstWord,false);
+		if(C!=null) return C;
+
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability A=mob.fetchAbility(a);
+			if(A.triggerStrings()!=null)
+				for(int t=0;t<A.triggerStrings().length;t++)
+					if(A.triggerStrings()[t].toUpperCase().startsWith(firstWord))
+						return A;
+		}
+
+		social=Socials.FetchSocial(commands,false);
+		if(social!=null) return social;
+		return null;
+	}
+
+	private static boolean evokedBy(Ability thisAbility, String thisWord)
+	{
+		for(int i=0;i<thisAbility.triggerStrings().length;i++)
+		{
+			if(((String)thisAbility.triggerStrings()[i]).equalsIgnoreCase(thisWord))
+				return true;
+		}
+		return false;
+	}
+
+	private static boolean evokedBy(Ability thisAbility, String thisWord, String secondWord)
+	{
+		for(int i=0;i<thisAbility.triggerStrings().length;i++)
+		{
+			if(((String)thisAbility.triggerStrings()[i]).equalsIgnoreCase(thisWord))
+			{
+				if((thisAbility.name().toUpperCase().startsWith(secondWord)))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public static Ability getToEvoke(MOB mob, Vector commands)
+	{
+		String evokeWord=((String)commands.elementAt(0)).toUpperCase();
+
+		boolean foundMoreThanOne=false;
+		Ability evokableAbility=null;
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability thisAbility=mob.fetchAbility(a);
+			if((thisAbility!=null)
+			&&(evokedBy(thisAbility,evokeWord)))
+				if(evokableAbility!=null)
+				{
+					foundMoreThanOne=true;
+					evokableAbility=null;
+					break;
+				}
+				else
+					evokableAbility=thisAbility;
+		}
+
+		if((evokableAbility!=null)&&(commands.size()>1))
+		{
+			int classCode=evokableAbility.classificationCode()&Ability.ALL_CODES;
+			switch(classCode)
+			{
+			case Ability.SPELL:
+			case Ability.SONG:
+			case Ability.PRAYER:
+			case Ability.CHANT:
+				evokableAbility=null;
+				foundMoreThanOne=true;
+				break;
+			default:
+				break;
+			}
+		}
+
+		if(evokableAbility!=null)
+			commands.removeElementAt(0);
+		else
+		if((foundMoreThanOne)&&(commands.size()>1))
+		{
+			commands.removeElementAt(0);
+			foundMoreThanOne=false;
+			String secondWord=((String)commands.elementAt(0)).toUpperCase();
+			for(int a=0;a<mob.numAbilities();a++)
+			{
+				Ability thisAbility=mob.fetchAbility(a);
+				if((thisAbility!=null)
+				&&(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase())))
+				{
+					if(thisAbility.name().equalsIgnoreCase(secondWord))
+					{
+						evokableAbility=thisAbility;
+						foundMoreThanOne=false;
+						break;
+					}
+					else
+					if(evokableAbility!=null)
+						foundMoreThanOne=true;
+					else
+						evokableAbility=thisAbility;
+				}
+			}
+			if((evokableAbility!=null)&&(!foundMoreThanOne))
+				commands.removeElementAt(0);
+			else
+			if((foundMoreThanOne)&&(commands.size()>1))
+			{
+				String secondAndThirdWord=secondWord+" "+((String)commands.elementAt(1)).toUpperCase();
+
+				for(int a=0;a<mob.numAbilities();a++)
+				{
+					Ability thisAbility=mob.fetchAbility(a);
+					if((thisAbility!=null)
+					   &&(evokedBy(thisAbility,evokeWord,secondAndThirdWord.toUpperCase())))
+					{
+						evokableAbility=thisAbility;
+						break;
+					}
+				}
+				if(evokableAbility!=null)
+				{
+					commands.removeElementAt(0);
+					commands.removeElementAt(0);
+				}
+			}
+			else
+			{
+				for(int a=0;a<mob.numAbilities();a++)
+				{
+					Ability thisAbility=mob.fetchAbility(a);
+					if((thisAbility!=null)
+					&&(evokedBy(thisAbility,evokeWord))
+					&&(thisAbility.name().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
+					{
+						evokableAbility=thisAbility;
+						commands.removeElementAt(0);
+						break;
+					}
+				}
+			}
+		}
+		return evokableAbility;
+	}
+
+	public static void evoke(MOB mob, Vector commands)
+	{
+		Ability evokableAbility=getToEvoke(mob,commands);
+		if(evokableAbility==null)
+		{
+			mob.tell(getScr("AbilityEvoker","evokeerr1"));
+			return;
+		}
+		if((CMAble.qualifyingLevel(mob,evokableAbility)>=0)
+		&&(!CMAble.qualifiesByLevel(mob,evokableAbility)))
+		{
+			mob.tell(getScr("AbilityEvoker","evokeerr2"));
+			return;
+		}
+		evokableAbility.invoke(mob,commands,null,false);
+	}
+
+	public static boolean containsString(String toSrchStr, String srchStr)
+	{
+		if(srchStr.equalsIgnoreCase("all")) return true;
+		int tos=0;
+		int tolen=toSrchStr.length();
+		int srlen=srchStr.length();
+		boolean found=false;
+		while((!found)&&(tos<tolen))
+		{
+			for(int x=0;x<srlen;x++)
+			{
+				if(tos>=tolen)
+				{
+					if(srchStr.charAt(x)=='$')
+						found=true;
+					break;
+				}
+
+				switch(toSrchStr.charAt(tos))
+				{
+				case '^':
+					tos=tos+2;
+					break;
+				case ',':
+				case '?':
+				case '!':
+				case '.':
+				case ';':
+					tos++;
+					break;
+				}
+				switch(srchStr.charAt(x))
+				{
+				case '^': x=x+2;
+					break;
+				case ',':
+				case '?':
+				case '!':
+				case '.':
+				case ';': x++;
+					break;
+				}
+				if(x<srlen)
+				{
+					if(tos<tolen)
+					{
+						if(Character.toUpperCase(srchStr.charAt(x))!=Character.toUpperCase(toSrchStr.charAt(tos)))
+							break;
+						else
+						if(x==(srlen-1))
+						   found=true;
+						else
+							tos++;
+					}
+					else
+					if(srchStr.charAt(x)=='$')
+						found=true;
+					else
+						break;
+				}
+				else
+				{
+					found=true;
+					break;
+				}
+			}
+			while((!found)&&(tos<tolen)&&(Character.isLetter(toSrchStr.charAt(tos))))
+				tos++;
+			tos++;
+		}
+		return found;
+	}
+
+	public static Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly)
+	{
+		if(srchStr.length()==0) return null;
+		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
+		   return null;
+
+		boolean allFlag=false;
+		if(srchStr.toUpperCase().startsWith("ALL "))
+		{
+			srchStr=srchStr.substring(4);
+			allFlag=true;
+		}
+		else
+		if(srchStr.equalsIgnoreCase("ALL"))
+			allFlag=true;
+
+		int dot=srchStr.lastIndexOf(".");
+		int occurrance=0;
+		if(dot>0)
+		{
+			String sub=srchStr.substring(dot+1);
+			occurrance=Util.s_int(sub);
+			if(occurrance>0)
+				srchStr=srchStr.substring(0,dot);
+			else
+			{
+				dot=srchStr.indexOf(".");
+				sub=srchStr.substring(0,dot);
+				occurrance=Util.s_int(sub);
+				if(occurrance>0)
+					srchStr=srchStr.substring(dot+1);
+				else
+					occurrance=0;
+			}
+		}
+
+		int myOccurrance=occurrance;
+		if(exactOnly)
+		{
+			try
+			{
+				for(int i=0;i<list.size();i++)
+				{
+					Environmental thisThang=(Environmental)list.elementAt(i);
+					if(thisThang.ID().equalsIgnoreCase(srchStr)
+					   ||thisThang.name().equalsIgnoreCase(srchStr)
+					   ||thisThang.Name().equalsIgnoreCase(srchStr))
+						if((!allFlag)||(thisThang.displayText().length()>0))
+							if((--myOccurrance)<=0)
+								return thisThang;
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		else
+		{
+			myOccurrance=occurrance;
+			try
+			{
+				for(int i=0;i<list.size();i++)
+				{
+					Environmental thisThang=(Environmental)list.elementAt(i);
+					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
+					   &&((!allFlag)||(thisThang.displayText().length()>0)))
+						if((--myOccurrance)<=0)
+							return thisThang;
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			myOccurrance=occurrance;
+			try
+			{
+				for(int i=0;i<list.size();i++)
+				{
+					Environmental thisThang=(Environmental)list.elementAt(i);
+					if((!(thisThang instanceof Ability))
+					&&(thisThang.displayText().length()>0)
+					&&(containsString(thisThang.displayText(),srchStr)))
+						if((--myOccurrance)<=0)
+							return thisThang;
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		return null;
+	}
+
+	public static Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly)
+	{
+		if(srchStr.length()==0) return null;
+		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
+		   return null;
+		boolean allFlag=false;
+		if(srchStr.toUpperCase().startsWith("ALL "))
+		{
+			srchStr=srchStr.substring(4);
+			allFlag=true;
+		}
+		else
+		if(srchStr.equalsIgnoreCase("ALL"))
+			allFlag=true;
+
+		int dot=srchStr.lastIndexOf(".");
+		int occurrance=0;
+		if(dot>0)
+		{
+			String sub=srchStr.substring(dot+1);
+			occurrance=Util.s_int(sub);
+			if(occurrance>0)
+				srchStr=srchStr.substring(0,dot);
+			else
+			{
+				dot=srchStr.indexOf(".");
+				sub=srchStr.substring(0,dot);
+				occurrance=Util.s_int(sub);
+				if(occurrance>0)
+					srchStr=srchStr.substring(dot+1);
+				else
+					occurrance=0;
+			}
+		}
+
+		if(list.get(srchStr)!=null)
+			return (Environmental)list.get(srchStr);
+		int myOccurrance=occurrance;
+		if(exactOnly)
+		{
+			for(Enumeration e=list.elements();e.hasMoreElements();)
+			{
+				Environmental thisThang=(Environmental)e.nextElement();
+				if(thisThang.ID().equalsIgnoreCase(srchStr)
+				||thisThang.Name().equalsIgnoreCase(srchStr)
+				||thisThang.name().equalsIgnoreCase(srchStr))
+					if((!allFlag)||(thisThang.displayText().length()>0))
+						if((--myOccurrance)<=0)
+							return thisThang;
+			}
+		}
+		else
+		{
+			myOccurrance=occurrance;
+			for(Enumeration e=list.elements();e.hasMoreElements();)
+			{
+				Environmental thisThang=(Environmental)e.nextElement();
+				if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
+				&&((!allFlag)||(thisThang.displayText().length()>0)))
+					if((--myOccurrance)<=0)
+						return thisThang;
+			}
+			myOccurrance=occurrance;
+			for(Enumeration e=list.elements();e.hasMoreElements();)
+			{
+				Environmental thisThang=(Environmental)e.nextElement();
+				if((thisThang.displayText().length()>0)&&(containsString(thisThang.displayText(),srchStr)))
+					if((--myOccurrance)<=0)
+						return thisThang;
+			}
+		}
+		return null;
+	}
+
+	public static Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)
+	{
+		if(srchStr.length()==0) return null;
+		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
+		   return null;
+		boolean allFlag=false;
+		if(srchStr.toUpperCase().startsWith("ALL "))
+		{
+			srchStr=srchStr.substring(4);
+			allFlag=true;
+		}
+		else
+		if(srchStr.equalsIgnoreCase("ALL"))
+			allFlag=true;
+
+		int dot=srchStr.lastIndexOf(".");
+		int occurrance=0;
+		if(dot>0)
+		{
+			String sub=srchStr.substring(dot+1);
+			occurrance=Util.s_int(sub);
+			if(occurrance>0)
+				srchStr=srchStr.substring(0,dot);
+			else
+			{
+				dot=srchStr.indexOf(".");
+				sub=srchStr.substring(0,dot);
+				occurrance=Util.s_int(sub);
+				if(occurrance>0)
+					srchStr=srchStr.substring(dot+1);
+				else
+					occurrance=0;
+			}
+		}
+
+		int myOccurrance=occurrance;
+		if(exactOnly)
+		{
+			for(int i=0;i<list.length;i++)
+			{
+				Environmental thisThang=(Environmental)list[i];
+				if(thisThang!=null)
+					if(thisThang.ID().equalsIgnoreCase(srchStr)
+					||thisThang.Name().equalsIgnoreCase(srchStr)
+					||thisThang.name().equalsIgnoreCase(srchStr))
+						if((!allFlag)||(thisThang.displayText().length()>0))
+							if((--myOccurrance)<=0)
+								return thisThang;
+			}
+		}
+		else
+		{
+			myOccurrance=occurrance;
+			for(int i=0;i<list.length;i++)
+			{
+				Environmental thisThang=(Environmental)list[i];
+				if(thisThang!=null)
+					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
+					   &&((!allFlag)||(thisThang.displayText().length()>0)))
+						if((--myOccurrance)<=0)
+							return thisThang;
+			}
+			myOccurrance=occurrance;
+			for(int i=0;i<list.length;i++)
+			{
+				Environmental thisThang=(Environmental)list[i];
+				if((thisThang!=null)&&(thisThang.displayText().length()>0))
+					if(containsString(thisThang.displayText(),srchStr))
+						if((--myOccurrance)<=0)
+							return thisThang;
+			}
+		}
+		return null;
+	}
+
+	public static Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	{
+		if(srchStr.length()==0) return null;
+		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
+		   return null;
+		boolean allFlag=false;
+		if(srchStr.toUpperCase().startsWith("ALL "))
+		{
+			srchStr=srchStr.substring(4);
+			allFlag=true;
+		}
+		else
+		if(srchStr.equalsIgnoreCase("ALL"))
+			allFlag=true;
+
+		int dot=srchStr.lastIndexOf(".");
+		int occurrance=0;
+		if(dot>0)
+		{
+			String sub=srchStr.substring(dot+1);
+			occurrance=Util.s_int(sub);
+			if(occurrance>0)
+				srchStr=srchStr.substring(0,dot);
+			else
+			{
+				dot=srchStr.indexOf(".");
+				sub=srchStr.substring(0,dot);
+				occurrance=Util.s_int(sub);
+				if(occurrance>0)
+					srchStr=srchStr.substring(dot+1);
+				else
+					occurrance=0;
+			}
+		}
+		int myOccurrance=occurrance;
+		if(exactOnly)
+		{
+			try
+			{
+				for(int i=0;i<list.size();i++)
+				{
+					Item thisThang=(Item)list.elementAt(i);
+					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+
+					if((thisThang.container()==goodLocation)
+					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+					&&(thisThang.ID().equalsIgnoreCase(srchStr)
+					   ||(thisThang.Name().equalsIgnoreCase(srchStr))
+					   ||(thisThang.name().equalsIgnoreCase(srchStr))))
+						if((!allFlag)||(thisThang.displayText().length()>0))
+							if((--myOccurrance)<=0)
+								return thisThang;
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		else
+		{
+			try
+			{
+				for(int i=0;i<list.size();i++)
+				{
+					Item thisThang=(Item)list.elementAt(i);
+					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+
+					if((thisThang.container()==goodLocation)
+					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+					&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
+					   &&((!allFlag)||(thisThang.displayText().length()>0))))
+						if((--myOccurrance)<=0)
+							return thisThang;
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			myOccurrance=occurrance;
+			try
+			{
+				for(int i=0;i<list.size();i++)
+				{
+					Item thisThang=(Item)list.elementAt(i);
+					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+					if((thisThang.container()==goodLocation)
+					&&(thisThang.displayText().length()>0)
+					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+					&&(containsString(thisThang.displayText(),srchStr)))
+						if((--myOccurrance)<=0)
+							return thisThang;
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		return null;
+	}
+
+	public static MOB parseShopkeeper(MOB mob, Vector commands, String error)
+	{
+		if(commands.size()==0)
+		{
+			mob.tell(error);
+			return null;
+		}
+		commands.removeElementAt(0);
+
+		Vector V=CoffeeUtensils.shopkeepers(mob.location(),mob);
+		if(V.size()==0)
+		{
+			mob.tell(error);
+			return null;
+		}
+		if(V.size()>1)
+		{
+			if(commands.size()<2)
+			{
+				mob.tell(error);
+				return null;
+			}
+			MOB shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+				commands.removeElementAt(commands.size()-1);
+			else
+			{
+				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' here buying or selling.");
+				return null;
+			}
+			return shopkeeper;
+		}
+		else
+		{
+			MOB shopkeeper=(MOB)V.firstElement();
+			if(commands.size()>1)
+			{
+				MOB M=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+				if((M!=null)&&(CoffeeUtensils.getShopKeeper(M)!=null)&&(Sense.canBeSeenBy(M,mob)))
+				{
+					shopkeeper=M;
+					commands.removeElementAt(commands.size()-1);
+				}
+			}
+			return shopkeeper;
+		}
+	}
 }

@@ -16,7 +16,7 @@ public class Play_Retreat extends Play
 	protected boolean persistantSong(){return false;}
 	protected String songOf(){return "a "+name();}
 	int directionCode=-1;
-	
+
 	protected void inpersistantAffect(MOB mob)
 	{
 		if(directionCode<0)
@@ -25,9 +25,9 @@ public class Play_Retreat extends Play
 			return;
 		}
 		mob.makePeace();
-		ExternalPlay.move(mob,directionCode,true,false);
+		MUDTracker.move(mob,directionCode,true,false);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 
@@ -57,10 +57,9 @@ public class Play_Retreat extends Play
 			else
 				directionCode=Directions.getGoodDirectionCode(where);
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		return true;
 	}
 }
-	

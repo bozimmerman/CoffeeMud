@@ -49,8 +49,8 @@ public class Fighter_DeflectProjectile extends StdAbility
 			&&(msg.source().isMine(w)))
 			{
 				if(!w.amWearingAt(Item.INVENTORY))
-					ExternalPlay.remove(msg.source(),w,true);
-				ExternalPlay.drop(msg.source(),w,true,false);
+					CommonMsgs.remove(msg.source(),w,true);
+				CommonMsgs.drop(msg.source(),w,true,false);
 				if(!mob.location().isContent(w))
 					return true;
 			}

@@ -24,7 +24,7 @@ public class Chant_SweetScent extends Chant
 			{
 				Room room=(Room)I.owner();
 				Vector rooms=new Vector();
-				SaucerSupport.getRadiantRooms(room,rooms,true,true,false,null,10);
+				MUDTracker.getRadiantRooms(room,rooms,true,true,false,null,10);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					MOB M=room.fetchInhabitant(i);
@@ -38,7 +38,7 @@ public class Chant_SweetScent extends Chant
 					Room R=(Room)rooms.elementAt(r);
 					if(R!=room)
 					{
-						int dir=SaucerSupport.radiatesFromDir(R,rooms);
+						int dir=MUDTracker.radiatesFromDir(R,rooms);
 						if(dir>=0)
 						{
 							for(int i=0;i<R.numInhabitants();i++)
@@ -52,7 +52,7 @@ public class Chant_SweetScent extends Chant
 								{
 									M.tell(M,null,null,"You smell something irresistable "+Directions.getInDirectionName(dir)+".");
 									if(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_MIND))
-										ExternalPlay.move(M,dir,false,false);
+										MUDTracker.move(M,dir,false,false);
 								}
 							}
 						}

@@ -44,10 +44,10 @@ public class Prayer_Sermon extends Prayer
 
 		if(canBeUninvoked())
 		{
-			ExternalPlay.follow(mob,null,false);
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.follow(mob,null,false);
+			CommonMsgs.stand(mob,true);
 			if((mob.isMonster())&&(!Sense.isMobile(mob)))
-				CoffeeUtensils.wanderAway(mob,true,true);
+				MUDTracker.wanderAway(mob,true,true);
 		}
 	}
 
@@ -146,7 +146,7 @@ public class Prayer_Sermon extends Prayer
 							if(target.getVictim()==mob)
 								target.makePeace();
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) nodding and shouting praises to "+hisHerDiety(mob)+".");
-							ExternalPlay.follow(target,mob,true);
+							CommonMsgs.follow(target,mob,true);
 						}
 					}
 				}

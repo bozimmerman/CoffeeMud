@@ -89,7 +89,7 @@ public class Fighter_Pin extends StdAbility
 					else
 						mob.tell("You are released from the pin.");
 				}
-				ExternalPlay.standIfNecessary(mob);
+				CommonMsgs.stand(mob,true);
 			}
 		}
 	}
@@ -126,7 +126,7 @@ public class Fighter_Pin extends StdAbility
 		else
 			levelDiff=0;
 		// now see if it worked
-		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus(target)+target.adjustedArmor()));
+		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(target)+target.adjustedArmor()));
 		boolean success=profficiencyCheck((-levelDiff)+(-(((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH))*5))),auto)&&(hit);
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)

@@ -59,7 +59,7 @@ public class Thief_Detection extends ThiefSkill
 			beneficialAffect(mob,target,0);
 			target.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 			target.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_SNEAKERS);
-			ExternalPlay.look(target,null,false);
+			CommonMsgs.look(target,false);
 			target.recoverEnvStats();
 		}
 		return success;

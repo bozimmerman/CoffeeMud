@@ -145,7 +145,7 @@ public class CommonSkill extends StdAbility
 			if(str.startsWith("You")) str="I"+str.substring(3);
 			if(target!=null) str=Util.replaceAll(str,"<T-NAME>",target.name());
 			if(tool!=null)  str=Util.replaceAll(str,"<O-NAME>",tool.name());
-			ExternalPlay.quickSay(mob,null,str,false,false);
+			CommonMsgs.say(mob,null,str,false,false);
 		}
 		else
 			mob.tell(mob,target,tool,str);
@@ -156,7 +156,7 @@ public class CommonSkill extends StdAbility
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
 			if(str.startsWith("You")) str="I"+str.substring(3);
-			ExternalPlay.quickSay(mob,null,str,false,false);
+			CommonMsgs.say(mob,null,str,false,false);
 		}
 		else
 			mob.tell(str);
@@ -313,7 +313,7 @@ public class CommonSkill extends StdAbility
 			commands.addElement((String)randomRecipe.firstElement());
 		}
 	}
-	
+
 	protected Vector matchingRecipeNames(Vector recipes, String recipeName)
 	{
 		Vector matches=new Vector();
@@ -355,7 +355,7 @@ public class CommonSkill extends StdAbility
 		}
 		return matches;
 	}
-	
+
 	protected int findNumberOfResource(Room room, int resource)
 	{
 		int foundWood=0;

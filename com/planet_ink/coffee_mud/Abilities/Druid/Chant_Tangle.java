@@ -67,7 +67,7 @@ public class Chant_Tangle extends Chant
 		{
 			if(!mob.amDead())
 				mob.location().show(mob,null,thePlants,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of <O-NAME>.");
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 	}
 

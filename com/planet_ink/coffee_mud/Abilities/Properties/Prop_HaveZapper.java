@@ -14,7 +14,7 @@ public class Prop_HaveZapper extends Property
 
 	public String accountForYourself()
 	{
-		return "Ownership restricted as follows: "+SaucerSupport.zapperDesc(miscText);
+		return "Ownership restricted as follows: "+MUDZapper.zapperDesc(miscText);
 	}
 
 
@@ -39,7 +39,7 @@ public class Prop_HaveZapper extends Property
 		case CMMsg.TYP_WIELD:
 			break;
 		case CMMsg.TYP_GET:
-			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> flashes and flies out of <S-HIS-HER> hands!");
 				return false;

@@ -19,9 +19,9 @@ public class SystemInfo extends StdWebMacro
 			String key=(String)e.nextElement();
 			if(key.length()>0)
 			{
-				String answer=ExternalPlay.tickInfo(key);
+				String answer=CMClass.ThreadEngine().tickInfo(key);
 				if(answer.length()==0)
-					answer=ExternalPlay.systemReport(key);
+					answer=CMClass.ThreadEngine().systemReport(key);
 				str.append(answer+", ");
 			}
 		}

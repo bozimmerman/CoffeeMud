@@ -42,11 +42,11 @@ public class Wimpy extends StdBehavior
 			for(int m=0;m<monster.location().numInhabitants();m++)
 			{
 				MOB M=(MOB)monster.location().fetchInhabitant(m);
-				if((M!=null)&&(M!=monster)&&(SaucerSupport.zapperCheck(getParms(),monster)))
+				if((M!=null)&&(M!=monster)&&(MUDZapper.zapperCheck(getParms(),monster)))
 				{
 					if((monster.getVictim()==M)||(M.getVictim()==monster))
 					{
-						ExternalPlay.flee(monster,"");
+						CommonMsgs.flee(monster,"");
 						return true;
 					}
 					else
@@ -65,7 +65,7 @@ public class Wimpy extends StdBehavior
 								return true;
 						}
 						if(oldRoom==monster)
-							SaucerSupport.beMobile(monster,false,false,false,false,null);
+							MUDTracker.beMobile(monster,false,false,false,false,null);
 					}
 				}
 			}

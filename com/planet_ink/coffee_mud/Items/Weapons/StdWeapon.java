@@ -213,7 +213,7 @@ public class StdWeapon extends StdItem implements Weapon
 				{
 					setAmmoRemaining(0);
 					msg.source().tell("You have no more "+ammunitionType()+".");
-					ExternalPlay.remove(msg.source(),this,false);
+					CommonMsgs.remove(msg.source(),this,false);
 					return false;
 				}
 			}

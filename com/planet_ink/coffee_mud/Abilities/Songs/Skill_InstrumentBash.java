@@ -52,7 +52,7 @@ public class Skill_InstrumentBash extends StdAbility
 					w.setDisplayText(instrument.displayText());
 					w.setDescription(instrument.description());
 					w.baseEnvStats().setDamage(instrument.envStats().level()+5);
-					ExternalPlay.postAttack(mob,target,w);
+					MUDFight.postAttack(mob,target,w);
 				}
 			}
 		}

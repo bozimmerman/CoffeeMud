@@ -60,12 +60,12 @@ public class Skill_TurnUndead extends StdAbility
 					if((mob.envStats().level()-target.envStats().level())>6)
 					{
 						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> wither(s)"+(auto?".":" under <S-HIS-HER> holy power!"));
-						ExternalPlay.postDamage(mob,target,this,target.curState().getHitPoints(),CMMsg.MSG_OK_VISUAL,-1,null);
+						MUDFight.postDamage(mob,target,this,target.curState().getHitPoints(),CMMsg.MSG_OK_VISUAL,-1,null);
 					}
 					else
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shake(s) in fear!");
-						ExternalPlay.flee(target,"");
+						CommonMsgs.flee(target,"");
 					}
 					invoker=mob;
 				}

@@ -61,7 +61,7 @@ public class Spell_ElementalStorm extends Spell
 						int damage = 0;
 						damage += Dice.roll(1,3,0);
 						if(target.location()==mob.location())
-							ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|types[i],dames[i],"^S"+ds[i]+" <DAMAGE> <T-NAME>!^?");
+							MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|types[i],dames[i],"^S"+ds[i]+" <DAMAGE> <T-NAME>!^?");
 					}
 				}
 				if(target.amDead())

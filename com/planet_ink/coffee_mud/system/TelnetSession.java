@@ -30,7 +30,6 @@ public class TelnetSession extends Thread implements Session
 	private int pageBreak=-1;
 	private long lastOutput=0;
 	private int restlessCommands=0;
-	private Vector cmdQ=new Vector();
 	private Vector snoops=new Vector();
 	private final static String hexStr="0123456789ABCDEF";
 	private final static String[] maskErrMsgs={
@@ -137,35 +136,6 @@ public class TelnetSession extends Thread implements Session
 		return(snoops.contains(S));
 	}
 
-	public Vector deque()
-	{
-		Vector returnable=null;
-
-		synchronized(cmdQ)
-		{
-			if(cmdQ.size()>0)
-			{
-				Vector topCMD=(Vector)cmdQ.elementAt(0);
-				cmdQ.removeElement(topCMD);
-				int topTick=0;
-				if(topCMD.size()>0)
-				{
-					topTick=((Integer)topCMD.elementAt(0)).intValue();
-					topCMD.removeElementAt(0);
-				}
-				if(topTick==0)
-					returnable=topCMD;
-				else
-				{
-					topTick--;
-					topCMD.insertElementAt(new Integer(topTick),0);
-					cmdQ.insertElementAt(topCMD,0);
-				}
-			}
-		}
-		return returnable;
-	}
-
 	public void setPreviousCmd(Vector cmds)
 	{
 		if(cmds==null) return;
@@ -176,19 +146,6 @@ public class TelnetSession extends Thread implements Session
 		previousCmd.removeAllElements();
 		for(int i=0;i<cmds.size();i++)
 			previousCmd.addElement(((String)cmds.elementAt(i)).toString());
-	}
-
-	public void enque(int tickDown, Vector commands)
-	{
-		if(commands==null)
-			return;
-		synchronized(cmdQ)
-		{
-			if((commands.size()>0)&&(commands.elementAt(0) instanceof Integer))
-				commands.removeElementAt(0);
-			commands.insertElementAt(new Integer(tickDown),0);
-			cmdQ.addElement(commands);
-		}
 	}
 
 	public boolean afkFlag(){return afkFlag;}
@@ -1309,7 +1266,8 @@ public class TelnetSession extends Thread implements Session
 				newMob.setSession(this);
 				mob=newMob;
 				status=Session.STATUS_LOGIN;
-				if(ExternalPlay.login(newMob))
+				Command C=CMClass.getCommand("FrontLogin");
+				if((C!=null)&&(C.execute(mob,null)))
 				{
 					status=Session.STATUS_LOGIN2;
 					if((!killFlag)&&(mob!=null))
@@ -1326,7 +1284,22 @@ public class TelnetSession extends Thread implements Session
 						{
 							lastKeystroke=System.currentTimeMillis();
 							setAfkFlag(false);
-							enque(0,Util.parse(input));
+							CMDS=Util.parse(input);
+							if(CMDS.size()>0)
+							{
+								waiting=false;
+								setPreviousCmd(CMDS);
+								milliTotal+=(lastStop-lastStart);
+								
+								if(snoops.size()>0)
+									for(int s=0;s<snoops.size();s++)
+										((Session)snoops.elementAt(s)).rawPrintln(input);
+								
+								lastStart=System.currentTimeMillis();
+								mob.enqueCommand(CMDS,0);
+								lastStop=System.currentTimeMillis();
+								needPrompt=true;
+							}
 						}
 						if(mob==null) break;
 
@@ -1336,30 +1309,6 @@ public class TelnetSession extends Thread implements Session
 						if((!afkFlag())&&(getIdleMillis()>=600000))
 							setAfkFlag(true);
 
-						if((((MOB)mob).lastTickedDateTime()>lastStop)
-						||(!mob.isInCombat()))
-						{
-							CMDS=deque();
-							if(CMDS!=null)
-							{
-								waiting=false;
-								if(CMDS.size()>0)
-								{
-									setPreviousCmd(CMDS);
-									if(snoops.size()>0)
-										for(int s=0;s<snoops.size();s++)
-											((Session)snoops.elementAt(s)).rawPrintln(Util.combine(CMDS,0));
-									milliTotal+=(lastStop-lastStart);
-									tickTotal++;
-
-									lastStart=System.currentTimeMillis();
-									ExternalPlay.doCommand(mob,CMDS);
-									lastStop=System.currentTimeMillis();
-								}
-								needPrompt=true;
-							}
-
-						}
 						if((needPrompt)&&(waiting))
 						{
 							showPrompt();
@@ -1379,10 +1328,6 @@ public class TelnetSession extends Thread implements Session
 			}
 			status=Session.STATUS_LOGOUT3;
 		}
-		catch(InterruptedException x)
-		{
-			Log.sysOut("Session","Interrupted!");
-		}
 		catch(SocketException e)
 		{
 			if(!isMaskedErrMsg(e.getMessage()))
@@ -1400,7 +1345,7 @@ public class TelnetSession extends Thread implements Session
 		status=Session.STATUS_LOGOUT4;
 		if(mob!=null)
 		{
-			ExternalPlay.channel("WIZINFO","",mob.Name()+" has logged out.",true);
+			CommonMsgs.channel("WIZINFO","",mob.Name()+" has logged out.",true);
 			// the player quit message!
 			if(mob.location()!=null)
 			{

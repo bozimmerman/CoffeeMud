@@ -34,7 +34,7 @@ public class Spell_Hold extends Spell
 		if(canBeUninvoked())
 		{
 			mob.tell("You can move again!");
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 	}
 

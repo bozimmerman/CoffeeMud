@@ -55,7 +55,7 @@ public class Chant_WindGust extends Chant
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					ExternalPlay.standIfNecessary(mob);
+					CommonMsgs.stand(mob,true);
 				}
 			}
 			else

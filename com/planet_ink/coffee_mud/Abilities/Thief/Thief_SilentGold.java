@@ -43,7 +43,7 @@ public class Thief_SilentGold extends ThiefSkill
 				if(mob.location().okMessage(mob,msg2))
 				{
 					mob.location().send(mob,msg2);
-					ExternalPlay.get(mob,null,C,true);
+					CommonMsgs.get(mob,null,C,true);
 				}
 				if(victim!=null) mob.setVictim(victim);
 			}

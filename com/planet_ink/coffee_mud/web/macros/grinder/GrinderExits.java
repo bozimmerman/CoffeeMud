@@ -139,7 +139,7 @@ public class GrinderExits
 		if(!E.hasADoor())
 			E.setDoorsNLocks(false,true,false,false,false,false);
 				
-		ExternalPlay.DBUpdateExits(R);
+		CMClass.DBEngine().DBUpdateExits(R);
 		String makeSame=httpReq.getRequestParameter("MAKESAME");
 		if((makeSame!=null)&&(makeSame.equalsIgnoreCase("on")))
 		{
@@ -153,7 +153,7 @@ public class GrinderExits
 				E2=(Exit)E.copyOf();
 				E2.setDisplayText(oldE2.displayText());
 				R2.rawExits()[Directions.getOpDirectionCode(dir)]=E2;
-				ExternalPlay.DBUpdateExits(R2);
+				CMClass.DBEngine().DBUpdateExits(R2);
 				R.getArea().fillInAreaRoom(R2);
 			}
 			R.getArea().fillInAreaRoom(R);
@@ -164,7 +164,7 @@ public class GrinderExits
 	{
 		R.rawDoors()[dir]=null;
 		R.rawExits()[dir]=null;
-		ExternalPlay.DBUpdateExits(R);
+		CMClass.DBEngine().DBUpdateExits(R);
 		if(R instanceof GridLocale)
 			((GridLocale)R).buildGrid();
 		return "";
@@ -187,8 +187,8 @@ public class GrinderExits
 		if(R2.rawExits()[dir2]==null)
 			R2.rawExits()[dir2]=CMClass.getExit("StdOpenDoorway");
 		
-		ExternalPlay.DBUpdateExits(R);
-		ExternalPlay.DBUpdateExits(R2);
+		CMClass.DBEngine().DBUpdateExits(R);
+		CMClass.DBEngine().DBUpdateExits(R2);
 			
 		R.getArea().fillInAreaRoom(R);
 		R.getArea().fillInAreaRoom(R2);

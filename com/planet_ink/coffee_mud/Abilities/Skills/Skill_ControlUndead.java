@@ -83,8 +83,8 @@ public class Skill_ControlUndead extends StdAbility
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is now controlled.");
 						target.makePeace();
-						ExternalPlay.follow(target,mob,false);
-						ExternalPlay.makePeaceInGroup(mob);
+						CommonMsgs.follow(target,mob,false);
+						MUDFight.makePeaceInGroup(mob);
 						invoker=mob;
 						if(target.amFollowing()!=mob)
 							mob.tell(target.name()+" seems unwilling to follow you.");

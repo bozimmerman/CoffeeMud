@@ -29,7 +29,7 @@ public class Song_Disgust extends Song
 			if(newMOB!=mob)
 			{
 				room.show(mob,newMOB,CMMsg.MSG_OK_ACTION,"<S-NAME> appear(s) disgusted with <T-NAMESELF>.");
-				ExternalPlay.postAttack(mob,newMOB,mob.fetchWieldedItem());
+				MUDFight.postAttack(mob,newMOB,mob.fetchWieldedItem());
 			}
 		}
 		return true;

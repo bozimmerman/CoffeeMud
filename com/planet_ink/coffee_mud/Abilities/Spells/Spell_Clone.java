@@ -80,7 +80,7 @@ public class Spell_Clone extends Spell
 					myMonster.addBehavior(B);
 					B.startBehavior(myMonster);
 					myMonster.setVictim(mob.getVictim());
-					ExternalPlay.follow(myMonster,mob,true);
+					CommonMsgs.follow(myMonster,mob,true);
 					if(myMonster.amFollowing()!=mob)
 						mob.tell(myMonster.name()+" seems unwilling to follow you.");
 				}

@@ -89,7 +89,7 @@ public class Spell_SummonFlyer extends Spell
                 if(squabble==null)
 				{
                     if (target.isInCombat()) target.makePeace();
-                    ExternalPlay.follow(target, mob, true);
+					CommonMsgs.follow(target,mob,true);
                     invoker=mob;
                     if (target.amFollowing() != mob)
                         mob.tell(target.name() + " seems unwilling to follow you.");

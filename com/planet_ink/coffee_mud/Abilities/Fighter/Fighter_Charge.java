@@ -86,7 +86,7 @@ public class Fighter_Charge extends StdAbility
 					if(notInCombat)
 					{
 						done=true;
-						ExternalPlay.postAttack(mob,target,mob.fetchWieldedItem());
+						MUDFight.postAttack(mob,target,mob.fetchWieldedItem());
 					}
 					else
 						done=false;

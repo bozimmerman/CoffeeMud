@@ -57,7 +57,7 @@ public class Fighter_BodyFlip extends StdAbility
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					ExternalPlay.standIfNecessary(mob);
+					CommonMsgs.stand(mob,true);
 				}
 			}
 			else

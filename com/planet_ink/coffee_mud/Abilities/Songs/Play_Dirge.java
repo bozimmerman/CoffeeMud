@@ -63,7 +63,7 @@ public class Play_Dirge extends Play
 
 					// malicious songs must not affect the invoker!
 					if(Sense.canBeHeardBy(invoker,follower)&&(expGained>0))
-						ExternalPlay.postExperience(follower,null,follower.getLeigeID(),expGained,false);
+						MUDFight.postExperience(follower,null,follower.getLeigeID(),expGained,false);
 				}
 				mob.location().recoverRoomStats();
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" fades away.");

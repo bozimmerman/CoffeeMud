@@ -76,7 +76,7 @@ public class Trap_WeaponSwing extends StdTrap
 			{
 				super.spring(target);
 				int damage=Dice.roll(trapLevel(),dam,1);
-				ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.NO_EFFECT,-1,null);
+				MUDFight.postDamage(invoker(),target,this,damage,CMMsg.NO_EFFECT,-1,null);
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

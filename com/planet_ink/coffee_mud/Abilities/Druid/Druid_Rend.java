@@ -41,7 +41,7 @@ public class Druid_Rend extends StdAbility
 			mob.tell("You rend your way out of the pin!");
 			A.unInvoke();
 			mob.delEffect(A);
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 			return true;
 		}
 
@@ -76,7 +76,7 @@ public class Druid_Rend extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_PIERCING,"^F<S-NAME> <DAMAGE> <T-NAME> by rending <T-HIM-HER> with <S-HIS-HER> feet!^?");
+				MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_PIERCING,"^F<S-NAME> <DAMAGE> <T-NAME> by rending <T-HIM-HER> with <S-HIS-HER> feet!^?");
 			}
 		}
 		else

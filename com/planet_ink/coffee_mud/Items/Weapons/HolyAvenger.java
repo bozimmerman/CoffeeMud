@@ -54,7 +54,7 @@ public class HolyAvenger extends TwoHandedSword
 				unWear();
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,name()+" flashes and flies out of <S-HIS-HER> hands!");
 				if(msg.source().isMine(this))
-					ExternalPlay.drop(msg.source(),this,true,false);
+					CommonMsgs.drop(msg.source(),this,true,false);
 				return false;
 			}
 			break;

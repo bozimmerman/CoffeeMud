@@ -67,7 +67,7 @@ public class Thief_Sap extends ThiefSkill
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> regain(s) consciousness.");
-				ExternalPlay.standIfNecessary(mob);
+				CommonMsgs.stand(mob,true);
 			}
 			else
 				mob.tell("You regain consciousness.");
@@ -115,7 +115,7 @@ public class Thief_Sap extends ThiefSkill
 		else
 			levelDiff=0;
 		// now see if it worked
-		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus(target)+target.adjustedArmor()));
+		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(target)+target.adjustedArmor()));
 		boolean success=profficiencyCheck((-levelDiff)+(-((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH)))),auto)&&(hit);
 		if(success)
 		{

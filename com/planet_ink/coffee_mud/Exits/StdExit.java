@@ -441,7 +441,7 @@ public class StdExit implements Exit
 		case CMMsg.TYP_OPEN:
 			if((!hasADoor())||(isOpen())||(isLocked())) return;
 			if(defaultsClosed()||defaultsLocked())
-				ExternalPlay.startTickDown(this,MudHost.TICK_EXIT_REOPEN,openDelayTicks());
+				CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_EXIT_REOPEN,openDelayTicks());
 			isLocked=false;
 			isOpen=true;
 			break;
@@ -635,7 +635,7 @@ public class StdExit implements Exit
 		}
 		// first one! so start ticking...
 		if(behaviors.size()==0)
-			ExternalPlay.startTickDown(this,MudHost.TICK_EXIT_BEHAVIOR,1);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_EXIT_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -644,7 +644,7 @@ public class StdExit implements Exit
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			ExternalPlay.deleteTick(this,MudHost.TICK_EXIT_BEHAVIOR);
+			CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_EXIT_BEHAVIOR);
 	}
 
 	public int numBehaviors()

@@ -197,7 +197,7 @@ public class LightSource extends StdItem implements Light
 				if(myLight.isLit())
 				{
 					myLight.light(false);
-					ExternalPlay.deleteTick(myLight,MudHost.TICK_LIGHT_FLICKERS);
+					CMClass.ThreadEngine().deleteTick(myLight,MudHost.TICK_LIGHT_FLICKERS);
 					myLight.recoverEnvStats();
 					room.recoverRoomStats();
 				}
@@ -210,7 +210,7 @@ public class LightSource extends StdItem implements Light
 					else
 						mob.tell(myLight.name()+" is already lit.");
 					myLight.light(true);
-					ExternalPlay.startTickDown(myLight,MudHost.TICK_LIGHT_FLICKERS,myLight.getDuration());
+					CMClass.ThreadEngine().startTickDown(myLight,MudHost.TICK_LIGHT_FLICKERS,myLight.getDuration());
 					myLight.recoverEnvStats();
 					room.recoverRoomStats();
 				}

@@ -136,9 +136,9 @@ public class Trap_RoomPit extends StdTrap
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(trapLevel(),6,1);
-			ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
+			MUDFight.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 		}
-		ExternalPlay.look(target,null,true);
+		CommonMsgs.look(target,true);
 	}
 
 	public void spring(MOB target)

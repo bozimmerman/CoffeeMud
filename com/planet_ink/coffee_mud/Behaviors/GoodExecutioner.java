@@ -44,7 +44,7 @@ public class GoodExecutioner  extends StdBehavior
 			source.setFollowing(null);
 			boolean yep=Aggressive.startFight(observer,source,true);
 			if(yep)
-				ExternalPlay.quickSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
+				CommonMsgs.say(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
 			else
 			if(oldFollowing!=null)
 				source.setFollowing(oldFollowing);

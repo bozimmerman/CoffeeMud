@@ -57,7 +57,7 @@ public class UtiliThread extends Thread
 				MOB mob=(MOB)R.fetchInhabitant(m);
 				if((mob!=null)&&(mob.lastTickedDateTime()<lastDateTime))
 				{
-					boolean ticked=ServiceEngine.isTicking(mob,MudHost.TICK_MOB);
+					boolean ticked=CMClass.ThreadEngine().isTicking(mob,MudHost.TICK_MOB);
 					boolean isDead=mob.amDead();
 					String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
 					if(CMMap.getPlayer(mob.Name())==null)
@@ -77,7 +77,8 @@ public class UtiliThread extends Thread
 
 		status="checking tick groups.";
 		Vector tryToKill=new Vector();
-		for(Enumeration v=ServiceEngine.tickGroups();v.hasMoreElements();)
+		Vector tickGroups=null;
+		for(Enumeration v=CMClass.ThreadEngine().tickGroups();v.hasMoreElements();)
 		{
 			Tick almostTock=(Tick)v.nextElement();
 			if((almostTock.awake)
@@ -127,11 +128,12 @@ public class UtiliThread extends Thread
 			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
 				objs.addElement(e.nextElement());
 			almostTock.shutdown();
-			ServiceEngine.delTickGroup(almostTock);
+			if(CMClass.ThreadEngine() instanceof ServiceEngine)
+				((ServiceEngine)CMClass.ThreadEngine()).delTickGroup(almostTock);
 			for(int i=0;i<objs.size();i++)
 			{
 				TockClient c=(TockClient)objs.elementAt(i);
-				ServiceEngine.startTickDown(c.clientObject,c.tickID,c.reTickDown);
+				CMClass.ThreadEngine().startTickDown(c.clientObject,c.tickID,c.reTickDown);
 			}
 		}
 

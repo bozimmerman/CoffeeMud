@@ -41,16 +41,8 @@ public class GetsAllEquipped extends ActiveTicker
 			Vector V1=new Vector();
 			V1.addElement("WEAR");
 			V1.addElement("ALL");
-			try
-			{
-				ExternalPlay.doCommand(mob,V);
-				ExternalPlay.doCommand(mob,V1);
-			}
-			catch(Exception e)
-			{
-
-			}
-
+			mob.doCommand(V);
+			mob.doCommand(V1);
 		}
 		return true;
 	}

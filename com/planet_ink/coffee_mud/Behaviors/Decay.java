@@ -97,7 +97,7 @@ public class Decay extends ActiveTicker
 					||(msg.targetMinor()==CMMsg.TYP_MOUNT)
 					||(msg.targetMinor()==CMMsg.TYP_ENTER))
 				&&(!msg.source().isMonster())
-				&&(SaucerSupport.zapperCheck(getParms(),msg.source())))
+				&&(MUDZapper.zapperCheck(getParms(),msg.source())))
 					activated=true;
 			}
 			else
@@ -105,7 +105,7 @@ public class Decay extends ActiveTicker
 			{
 				if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 				&&(!msg.source().isMonster())
-				&&(SaucerSupport.zapperCheck(getParms(),msg.source())))
+				&&(MUDZapper.zapperCheck(getParms(),msg.source())))
 					activated=true;
 			}
 			else
@@ -115,14 +115,14 @@ public class Decay extends ActiveTicker
 				if(((msg.targetMinor()==CMMsg.TYP_WEAR)
 					||(msg.targetMinor()==CMMsg.TYP_HOLD)
 					||(msg.targetMinor()==CMMsg.TYP_WIELD))
-				&&(SaucerSupport.zapperCheck(getParms(),msg.source())))
+				&&(MUDZapper.zapperCheck(getParms(),msg.source())))
 					activated=true;
 			}
 			else
 			if(affecting instanceof Item)
 			{
 				if((msg.targetMinor()==CMMsg.TYP_GET)
-				&&(SaucerSupport.zapperCheck(getParms(),msg.source())))
+				&&(MUDZapper.zapperCheck(getParms(),msg.source())))
 					activated=true;
 			}
 		}

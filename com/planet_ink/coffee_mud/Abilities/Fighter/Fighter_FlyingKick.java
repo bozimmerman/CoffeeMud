@@ -72,7 +72,7 @@ public class Fighter_FlyingKick extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_BASHING,"^F<S-NAME> <DAMAGE> <T-NAME> with a flying KICK!^?"+CommonStrings.msp("bashed1.wav",30));
+				MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_BASHING,"^F<S-NAME> <DAMAGE> <T-NAME> with a flying KICK!^?"+CommonStrings.msp("bashed1.wav",30));
 				if(mob.getVictim()==target)
 				{
 					mob.setAtRange(0);

@@ -50,7 +50,7 @@ public class Spell_Confusion extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			mob.tell("You feel less confused.");
-		ExternalPlay.standIfNecessary(mob);
+		CommonMsgs.stand(mob,true);
 	}
 
 

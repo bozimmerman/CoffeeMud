@@ -73,7 +73,7 @@ public class ROMGangMember extends StdBehavior
 			break;
 		}
 
-		ExternalPlay.postAttack(observer,victim,weapon);
+		MUDFight.postAttack(observer,victim,weapon);
 	}
 
 

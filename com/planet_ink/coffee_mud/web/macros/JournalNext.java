@@ -22,7 +22,7 @@ public class JournalNext extends StdWebMacro
 		Vector journals=(Vector)httpReq.getRequestObjects().get("JOURNALLIST");
 		if(journals==null)
 		{
-			journals=ExternalPlay.DBReadJournal(null);
+			journals=CMClass.DBEngine().DBReadJournal(null);
 			httpReq.getRequestObjects().put("JOURNALLIST",journals);
 		}
 		String lastID="";

@@ -35,7 +35,7 @@ public class Prayer_CureCritical extends Prayer
 			{
 				mob.location().send(mob,msg);
 				int healing=Dice.roll(4,adjustedLevel(mob),6);
-				ExternalPlay.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+				MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel much better!");
 			}
 		}

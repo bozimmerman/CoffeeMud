@@ -85,13 +85,13 @@ public class Song_Friendship extends Song
 			if(mob!=invoker)
 			{
 				mob.setFollowing(null);
-				ExternalPlay.standIfNecessary(mob);
+				CommonMsgs.stand(mob,true);
 				if(mob.isMonster())
 				{
 					if(Dice.rollPercentage()>50)
 					{
 						if(!Sense.isMobile(mob))
-							CoffeeUtensils.wanderAway(mob,true,true);
+							MUDTracker.wanderAway(mob,true,true);
 					}
 					else
 					if((invoker!=null)&&(invoker!=mob))
@@ -166,14 +166,14 @@ public class Song_Friendship extends Song
 								{
 									if((follower.amFollowing()!=mob)&&(follower!=mob))
 									{
-										ExternalPlay.follow(follower,mob,false);
+										CommonMsgs.follow(follower,mob,false);
 										if(follower.amFollowing()==mob)
 										{
 											if(follower!=mob)
 												follower.addEffect((Ability)newOne.copyOf());
 											else
 												follower.addEffect(newOne);
-											ExternalPlay.makePeaceInGroup(mob);
+											MUDFight.makePeaceInGroup(mob);
 										}
 									}
 								}

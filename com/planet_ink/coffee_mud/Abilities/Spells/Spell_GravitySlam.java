@@ -63,7 +63,7 @@ public class Spell_GravitySlam extends Spell
 					mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> is hurled even higher into the air and **SLAMMED** back down!");
 
 				if(target.location()==mob.location())
-					ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"The fall <DAMAGE> <T-NAME>!");
+					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"The fall <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

@@ -41,7 +41,7 @@ public class GapExit extends StdExit
 			{
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to jump the crevasse, but miss(es) the far ledge!");
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s)!!!!");
-				ExternalPlay.postDeath(null,mob,null);
+				MUDFight.postDeath(null,mob,null);
 				return false;
 			}
 		}

@@ -12,15 +12,15 @@ public class PlayerDelete extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
-			return httpReq.getMUD().gameStatusStr();
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			return CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS);
 
 		String last=httpReq.getRequestParameter("PLAYER");
 		if(last==null) return " @break@";
 		MOB M=CMMap.getLoadPlayer(last);
 		if(M==null) return " @break@";
 
-		ExternalPlay.destroyUser(M,true);
+		CoffeeUtensils.obliteratePlayer(M,true);
 		Log.sysOut("PlayerDelete","Someone destroyed the user "+M.Name()+".");
 		return "";
 	}

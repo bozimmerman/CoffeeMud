@@ -39,7 +39,7 @@ public class Prayer_MassHarm extends Prayer
 					{
 						mob.location().send(mob,msg);
 						int harming=Dice.roll(4,adjustedLevel(mob)/numEnemies,numEnemies);
-						ExternalPlay.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
+						MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
 					}
 				}
 				else

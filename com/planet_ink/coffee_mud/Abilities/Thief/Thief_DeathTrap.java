@@ -36,14 +36,14 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		Trap T=(Trap)copyOf();
 		T.setInvoker(mob);
 		E.addEffect(T);
-		ExternalPlay.startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,new Long(MudHost.TICKS_PER_MUDDAY).intValue());
+		CMClass.ThreadEngine().startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,new Long(MudHost.TICKS_PER_MUDDAY).intValue());
 		return T;
 	}
 
 	public void spring(MOB M)
 	{
 		if((!sprung)&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_TRAPS)))
-			ExternalPlay.postDeath(invoker(),M,null);
+			MUDFight.postDeath(invoker(),M,null);
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -55,7 +55,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		&&(invoker()!=null)
 		&&(invoker().mayIFight(msg.source()))
 		&&(Dice.rollPercentage()>msg.source().charStats().getSave(CharStats.SAVE_TRAPS)))
-			ExternalPlay.postDeath(invoker(),msg.source(),msg);
+			MUDFight.postDeath(invoker(),msg.source(),msg);
 		super.executeMsg(myHost,msg);
 	}
 

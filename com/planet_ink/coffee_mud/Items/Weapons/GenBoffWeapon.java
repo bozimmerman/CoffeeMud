@@ -36,7 +36,7 @@ public class GenBoffWeapon extends StdBoffWeapon
 
 	public String text()
 	{
-		return Generic.getPropertiesStr(this,false);
+		return CoffeeMaker.getPropertiesStr(this,false);
 	}
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
@@ -44,15 +44,15 @@ public class GenBoffWeapon extends StdBoffWeapon
 	public void setMiscText(String newText)
 	{
 		miscText="";
-		Generic.setPropertiesStr(this,newText,false);
+		CoffeeMaker.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
 	private static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
 							  "AMMOTYPE","AMMOCAPACITY"};
 	public String getStat(String code)
 	{
-		if(Generic.getGenItemCodeNum(code)>=0)
-			return Generic.getGenItemStat(this,code);
+		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
+			return CoffeeMaker.getGenItemStat(this,code);
 		else
 		switch(getCodeNum(code))
 		{
@@ -67,8 +67,8 @@ public class GenBoffWeapon extends StdBoffWeapon
 	}
 	public void setStat(String code, String val)
 	{
-		if(Generic.getGenItemCodeNum(code)>=0)
-			Generic.setGenItemStat(this,code,val);
+		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
+			CoffeeMaker.setGenItemStat(this,code,val);
 		else
 		switch(getCodeNum(code))
 		{
@@ -89,7 +89,7 @@ public class GenBoffWeapon extends StdBoffWeapon
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] superCodes=Generic.GENITEMCODES;
+		String[] superCodes=CoffeeMaker.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)

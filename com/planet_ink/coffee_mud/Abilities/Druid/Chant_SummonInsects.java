@@ -29,7 +29,7 @@ public class Chant_SummonInsects extends Chant
 				unInvoke();
 			else
 			if((!vic.amDead())&&(vic.location()!=null))
-				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(1,3,0),CMMsg.TYP_OK_VISUAL,-1,"<T-NAME> <T-IS-ARE> stung by the swarm!");
+				MUDFight.postDamage(invoker,vic,this,Dice.roll(1,3,0),CMMsg.TYP_OK_VISUAL,-1,"<T-NAME> <T-IS-ARE> stung by the swarm!");
 		}
 		return super.tick(ticking,tickID);
 	}

@@ -53,7 +53,7 @@ public class Spell_RogueLimb extends Spell
 		&&(Sense.aliveAwakeMobile(rogueLimb,true))
 		&&(Sense.aliveAwakeMobile((MOB)affected,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
-			ExternalPlay.postDamage(rogueLimb,(MOB)affected,this,msg.value(),CMMsg.MASK_GENERAL|msg.sourceCode(),Weapon.TYPE_NATURAL,null);
+			MUDFight.postDamage(rogueLimb,(MOB)affected,this,msg.value(),CMMsg.MASK_GENERAL|msg.sourceCode(),Weapon.TYPE_NATURAL,null);
 		if(msg.amISource(rogueLimb)
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{

@@ -106,7 +106,7 @@ public class GenWallpaper implements Item
 		{
 			setName(XMLManager.getValFromPieces(V,"NAME"));
 			setDescription(XMLManager.getValFromPieces(V,"DESC"));
-			Generic.setEnvFlags(this,Util.s_int(XMLManager.getValFromPieces(V,"FLAG")));
+			CoffeeMaker.setEnvFlags(this,Util.s_int(XMLManager.getValFromPieces(V,"FLAG")));
 			setReadableText(XMLManager.getValFromPieces(V,"READ"));
 		}
 	}
@@ -114,7 +114,7 @@ public class GenWallpaper implements Item
 	{	StringBuffer text=new StringBuffer("");
 		text.append(XMLManager.convertXMLtoTag("NAME",Name()));
 		text.append(XMLManager.convertXMLtoTag("DESC",description()));
-		text.append(XMLManager.convertXMLtoTag("FLAG",Generic.envFlags(this)));
+		text.append(XMLManager.convertXMLtoTag("FLAG",CoffeeMaker.envFlags(this)));
 		text.append(XMLManager.convertXMLtoTag("READ",readableText()));
 		return text.toString();
 	}

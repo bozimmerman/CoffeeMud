@@ -52,7 +52,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		if(item.fetchEffect(ability.ID())==null)
 			item.addEffect(ability);
 		loadContent(ability,item,room);
-		ExternalPlay.startTickDown(ability,MudHost.TICK_ROOM_ITEM_REJUV,item.envStats().rejuv());
+		CMClass.ThreadEngine().startTickDown(ability,MudHost.TICK_ROOM_ITEM_REJUV,item.envStats().rejuv());
 	}
 
 	public void unloadIfNecessary(Item item)

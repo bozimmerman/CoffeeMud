@@ -420,7 +420,7 @@ public class Arrest extends StdBehavior
 						if(W.arrestingOfficer()==null)
 						{
 							W.setArrestingOfficer(officer);
-							ExternalPlay.quickSay(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
+							CommonMsgs.say(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
 							W.setState(Law.STATE_ARRESTING);
 							return true;
 						}
@@ -488,8 +488,8 @@ public class Arrest extends StdBehavior
 					if(getLawParms().equalsIgnoreCase("custom")
 					&&(hostObj!=null))
 					{
-						ExternalPlay.DBDeleteData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST");
-						ExternalPlay.DBCreateData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST",laws.rawLawString());
+						CMClass.DBEngine().DBDeleteData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST");
+						CMClass.DBEngine().DBCreateData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST",laws.rawLawString());
 					}
 				}
 				break;
@@ -544,7 +544,7 @@ public class Arrest extends StdBehavior
 			{
 				if((lawName.equalsIgnoreCase("custom"))&&(what!=null))
 				{
-					Vector data=ExternalPlay.DBReadData(what.Name(),"ARREST",what.Name()+"/ARREST");
+					Vector data=CMClass.DBEngine().DBReadData(what.Name(),"ARREST",what.Name()+"/ARREST");
 					if((data!=null)&&(data.size()>0))
 					{
 						data=(Vector)data.firstElement();
@@ -560,7 +560,7 @@ public class Arrest extends StdBehavior
 							lawprops.load(new ByteArrayInputStream(s.getBytes()));
 							s=Util.replaceAll(s,"\n","~");
 							s=Util.replaceAll(s,"'","`");
-							ExternalPlay.DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",s);
+							CMClass.DBEngine().DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",s);
 						}
 					}
 					else
@@ -570,7 +570,7 @@ public class Arrest extends StdBehavior
 						s=Util.replaceAll(s,"\n","~");
 						s=Util.replaceAll(s,"\r","~");
 						s=Util.replaceAll(s,"'","`");
-						ExternalPlay.DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",s);
+						CMClass.DBEngine().DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",s);
 					}
 				}
 				if(lawprops.isEmpty())
@@ -610,7 +610,7 @@ public class Arrest extends StdBehavior
 		&&(officer.getStartRoom()==officer.location()))
 			return;
 		if(officer.isMonster())
-			CoffeeUtensils.wanderAway(officer,true,true);
+			MUDTracker.wanderAway(officer,true,true);
 	}
 
 	public MOB getAWitnessHere(Room R)
@@ -657,8 +657,8 @@ public class Arrest extends StdBehavior
 			   return false;
 			else
 			for(int i=0;i<laws.officerNames().size();i++)
-				if((CoffeeUtensils.containsString(M.displayText(),(String)laws.officerNames().elementAt(i))
-				||(CoffeeUtensils.containsString(M.Name(),(String)laws.officerNames().elementAt(i)))))
+				if((EnglishParser.containsString(M.displayText(),(String)laws.officerNames().elementAt(i))
+				||(EnglishParser.containsString(M.Name(),(String)laws.officerNames().elementAt(i)))))
 					return true;
 		}
 		return false;
@@ -738,7 +738,7 @@ public class Arrest extends StdBehavior
 				if(M!=null)
 				{
 					int direction=Directions.getOpDirectionCode(d);
-					ExternalPlay.move(M,direction,false,false);
+					MUDTracker.move(M,direction,false,false);
 					if(M.location()==R) return M;
 				}
 			}
@@ -856,8 +856,8 @@ public class Arrest extends StdBehavior
 			else
 			for(int i=0;i<laws.judgeNames().size();i++)
 			{
-				if((CoffeeUtensils.containsString(M.displayText(),(String)laws.judgeNames().elementAt(i)))
-				||(CoffeeUtensils.containsString(M.Name(),(String)laws.judgeNames().elementAt(i))))
+				if((EnglishParser.containsString(M.displayText(),(String)laws.judgeNames().elementAt(i)))
+				||(EnglishParser.containsString(M.Name(),(String)laws.judgeNames().elementAt(i))))
 					return true;
 			}
 		}
@@ -954,14 +954,14 @@ public class Arrest extends StdBehavior
 		for(Enumeration r=A.getMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(CoffeeUtensils.containsString(R.displayText(),which))
+			if(EnglishParser.containsString(R.displayText(),which))
 			{ jail=R; break; }
 		}
 		if(jail==null)
 		for(Enumeration r=A.getMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(CoffeeUtensils.containsString(R.description(),which))
+			if(EnglishParser.containsString(R.description(),which))
 			{ jail=R; break; }
 		}
 		return jail;
@@ -1034,7 +1034,7 @@ public class Arrest extends StdBehavior
 			}
 			if(laws.getMessage(Law.MSG_WARNING).length()>0)
 				str.append(laws.getMessage(Law.MSG_WARNING)+"  ");
-			ExternalPlay.quickSay(judge,criminal,str.toString(),false,false);
+			CommonMsgs.say(judge,criminal,str.toString(),false,false);
 			}
 			return true;
 		case Law.ACTION_THREATEN:
@@ -1056,16 +1056,16 @@ public class Arrest extends StdBehavior
 			}
 			if(laws.getMessage(Law.MSG_THREAT).length()>0)
 				str.append(laws.getMessage(Law.MSG_THREAT)+"  ");
-			ExternalPlay.quickSay(judge,criminal,str.toString(),false,false);
+			CommonMsgs.say(judge,criminal,str.toString(),false,false);
 			}
 			return true;
 		case Law.ACTION_PAROLE1:
 			if(judge!=null)
 			{
 				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
+					CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.paroleMessages(0).length()>0)
-					ExternalPlay.quickSay(judge,criminal,laws.paroleMessages(0),false,false);
+					CommonMsgs.say(judge,criminal,laws.paroleMessages(0),false,false);
 				W.setJailTime(laws.paroleTimes(0));
 				W.setState(Law.STATE_PAROLING);
 			}
@@ -1074,9 +1074,9 @@ public class Arrest extends StdBehavior
 			if(judge!=null)
 			{
 				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
+					CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.paroleMessages(1).length()>0)
-					ExternalPlay.quickSay(judge,criminal,laws.paroleMessages(1),false,false);
+					CommonMsgs.say(judge,criminal,laws.paroleMessages(1),false,false);
 				W.setJailTime(laws.paroleTimes(1));
 				W.setState(Law.STATE_PAROLING);
 			}
@@ -1085,9 +1085,9 @@ public class Arrest extends StdBehavior
 			if(judge!=null)
 			{
 				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
+					CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.paroleMessages(2).length()>0)
-					ExternalPlay.quickSay(judge,criminal,laws.paroleMessages(2),false,false);
+					CommonMsgs.say(judge,criminal,laws.paroleMessages(2),false,false);
 				W.setJailTime(laws.paroleTimes(2));
 				W.setState(Law.STATE_PAROLING);
 			}
@@ -1096,9 +1096,9 @@ public class Arrest extends StdBehavior
 			if(judge!=null)
 			{
 				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
+					CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.paroleMessages(3).length()>0)
-					ExternalPlay.quickSay(judge,criminal,laws.paroleMessages(3),false,false);
+					CommonMsgs.say(judge,criminal,laws.paroleMessages(3),false,false);
 				W.setJailTime(laws.paroleTimes(3));
 				W.setState(Law.STATE_PAROLING);
 			}
@@ -1107,9 +1107,9 @@ public class Arrest extends StdBehavior
 			if(judge!=null)
 			{
 				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
+					CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.jailMessages(0).length()>0)
-					ExternalPlay.quickSay(judge,criminal,laws.jailMessages(0),false,false);
+					CommonMsgs.say(judge,criminal,laws.jailMessages(0),false,false);
 				W.setJailTime(laws.jailTimes(0));
 				W.setState(Law.STATE_JAILING);
 			}
@@ -1118,9 +1118,9 @@ public class Arrest extends StdBehavior
 			if(judge!=null)
 			{
 				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
+					CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.jailMessages(1).length()>0)
-					ExternalPlay.quickSay(judge,criminal,laws.jailMessages(1),false,false);
+					CommonMsgs.say(judge,criminal,laws.jailMessages(1),false,false);
 				W.setJailTime(laws.jailTimes(1));
 				W.setState(Law.STATE_JAILING);
 			}
@@ -1129,9 +1129,9 @@ public class Arrest extends StdBehavior
 			if(judge!=null)
 			{
 				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
+					CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.jailMessages(2).length()>0)
-					ExternalPlay.quickSay(judge,criminal,laws.jailMessages(2),false,false);
+					CommonMsgs.say(judge,criminal,laws.jailMessages(2),false,false);
 				W.setJailTime(laws.jailTimes(2));
 				W.setState(Law.STATE_JAILING);
 			}
@@ -1140,9 +1140,9 @@ public class Arrest extends StdBehavior
 			if(judge!=null)
 			{
 				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
+					CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.jailMessages(3).length()>0)
-					ExternalPlay.quickSay(judge,criminal,laws.jailMessages(3),false,false);
+					CommonMsgs.say(judge,criminal,laws.jailMessages(3),false,false);
 				W.setJailTime(laws.jailTimes(3));
 				W.setState(Law.STATE_JAILING);
 			}
@@ -1151,9 +1151,9 @@ public class Arrest extends StdBehavior
 			if(judge!=null)
 			{
 				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
+					CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.getMessage(Law.MSG_EXECUTE).length()>0)
-					ExternalPlay.quickSay(judge,criminal,laws.getMessage(Law.MSG_EXECUTE),false,false);
+					CommonMsgs.say(judge,criminal,laws.getMessage(Law.MSG_EXECUTE),false,false);
 				W.setState(Law.STATE_EXECUTING);
 			}
 			return false;
@@ -1228,10 +1228,10 @@ public class Arrest extends StdBehavior
 					aCrime=true;
 				}
 				else
-				if(str.startsWith("!")&&(CoffeeUtensils.containsString(display,str.substring(1))))
+				if(str.startsWith("!")&&(EnglishParser.containsString(display,str.substring(1))))
 					return false;
 				else
-				if(CoffeeUtensils.containsString(display,str))
+				if(EnglishParser.containsString(display,str))
 				{ aCrime=true; break;}
 			}
 			if(!aCrime) return false;
@@ -1282,7 +1282,7 @@ public class Arrest extends StdBehavior
 		// is the victim a protected race?
 		if(victim!=null)
 		{
-			if(!SaucerSupport.zapperCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),victim))
+			if(!MUDZapper.zapperCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),victim))
 			   return false;
 		}
 
@@ -1397,7 +1397,7 @@ public class Arrest extends StdBehavior
 				for(int i=warrs.size()-1;i>=0;i--)
 				{
 					LegalWarrant W=(LegalWarrant)warrs.elementAt(i);
-					if((W.criminal()!=null)&&(CoffeeUtensils.containsString(W.criminal().Name(),name)))
+					if((W.criminal()!=null)&&(EnglishParser.containsString(W.criminal().Name(),name)))
 					{
 						Ability A=W.criminal().fetchEffect("Prisoner");
 						if(A!=null) A.unInvoke();
@@ -1595,7 +1595,7 @@ public class Arrest extends StdBehavior
 				}
 
 				if((laws.basicCrimes().containsKey("TRESPASSING"))
-				&&(SaucerSupport.zapperCheck(laws.getMessage(Law.MSG_TRESPASSERMASK),msg.source())))
+				&&(MUDZapper.zapperCheck(laws.getMessage(Law.MSG_TRESPASSERMASK),msg.source())))
 				{
 					String[] info=(String[])laws.basicCrimes().get("TRESPASSING");
 					fillOutWarrant(msg.source(),
@@ -1614,7 +1614,7 @@ public class Arrest extends StdBehavior
 				Vector V=(Vector)laws.otherCrimes().elementAt(i);
 				for(int v=0;v<V.size();v++)
 				{
-					if(CoffeeUtensils.containsString(msg.othersMessage(),(String)V.elementAt(v)))
+					if(EnglishParser.containsString(msg.othersMessage(),(String)V.elementAt(v)))
 					{
 						String[] info=(String[])laws.otherBits().elementAt(i);
 						fillOutWarrant(msg.source(),
@@ -1695,7 +1695,7 @@ public class Arrest extends StdBehavior
 					{
 						if(W.criminal().isASysOp(W.criminal().location()))
 						{
-							ExternalPlay.quickSay(officer,W.criminal(),"Damn, I can't arrest you.",false,false);
+							CommonMsgs.say(officer,W.criminal(),"Damn, I can't arrest you.",false,false);
 							if(W.criminal().isASysOp(null))
 							{
 								fileAllWarrants(laws,W.criminal());
@@ -1721,7 +1721,7 @@ public class Arrest extends StdBehavior
 						else
 						{
 							W.setArrestingOfficer(officer);
-							ExternalPlay.quickSay(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
+							CommonMsgs.say(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
 							W.setState(Law.STATE_ARRESTING);
 						}
 					}
@@ -1741,7 +1741,7 @@ public class Arrest extends StdBehavior
 						{
 							if(officer.getVictim()==W.criminal())
 							{
-								ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_RESISTFIGHT),false,false);
+								CommonMsgs.say(officer,W.criminal(),laws.getMessage(Law.MSG_RESISTFIGHT),false,false);
 								W.setState(Law.STATE_SUBDUEING);
 							}
 							else
@@ -1764,12 +1764,12 @@ public class Arrest extends StdBehavior
 							&&(!Sense.isSitting(W.criminal())))
 							{
 								W.criminal().makePeace();
-								try{ExternalPlay.doCommand(W.criminal(),Util.parse("SIT"));}catch(Exception e){}
+								W.criminal().doCommand(Util.parse("SIT"));
 							}
 							if(Sense.isSitting(W.criminal())||Sense.isSleeping(W.criminal()))
-								ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_NORESIST),false,false);
+								CommonMsgs.say(officer,W.criminal(),laws.getMessage(Law.MSG_NORESIST),false,false);
 							else
-								ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_RESISTWARN),false,false);
+								CommonMsgs.say(officer,W.criminal(),laws.getMessage(Law.MSG_RESISTWARN),false,false);
 							W.setState(Law.STATE_SUBDUEING);
 						}
 					}
@@ -1795,7 +1795,7 @@ public class Arrest extends StdBehavior
 						&&(!Sense.isSitting(W.criminal())))
 						{
 							W.criminal().makePeace();
-							try{ExternalPlay.doCommand(W.criminal(),Util.parse("SIT"));}catch(Exception e){}
+							W.criminal().doCommand(Util.parse("SIT"));
 						}
 						if(W.crime().equalsIgnoreCase("pardoned"))
 						{
@@ -1807,7 +1807,7 @@ public class Arrest extends StdBehavior
 						if(!Sense.isSitting(W.criminal())&&(!Sense.isSleeping(W.criminal())))
 						{
 							if(!W.arrestingOfficer().isInCombat())
-								ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_RESIST),false,false);
+								CommonMsgs.say(officer,W.criminal(),laws.getMessage(Law.MSG_RESIST),false,false);
 
 							Ability A=CMClass.getAbility("Skill_ArrestingSap");
 							if(A!=null){
@@ -1819,7 +1819,7 @@ public class Arrest extends StdBehavior
 									A=CMClass.getAbility("Skill_Trip");
 									A.setAbilityCode(30);
 									if(!A.invoke(officer,W.criminal(),(curPoints<=50)))
-										ExternalPlay.postAttack(officer,W.criminal(),officer.fetchWieldedItem());
+										MUDFight.postAttack(officer,W.criminal(),officer.fetchWieldedItem());
 								}
 							}
 						}
@@ -1844,14 +1844,14 @@ public class Arrest extends StdBehavior
 							A=W.criminal().fetchEffect("Skill_Trip");
 							if(A!=null)A.unInvoke();
 							makePeace(officer.location());
-							ExternalPlay.standIfNecessary(W.criminal());
+							CommonMsgs.stand(W.criminal(),true);
 							W.setTravelAttemptTime(System.currentTimeMillis());
 							if(trackTheJudge(officer,myArea,laws))
 								makePeace(officer.location());
 							else
 							{
 								makePeace(officer.location());
-								ExternalPlay.quickSay(officer,W.criminal(),"Since there is no judge, you may go.",false,false);
+								CommonMsgs.say(officer,W.criminal(),"Since there is no judge, you may go.",false,false);
 								W.setTravelAttemptTime(0);
 								fileAllWarrants(laws,W.criminal());
 								unCuff(W.criminal());
@@ -1863,7 +1863,7 @@ public class Arrest extends StdBehavior
 					else
 					{
 						if(officer!=null)
-							ExternalPlay.quickSay(officer,null,"Darn.",false,false);
+							CommonMsgs.say(officer,null,"Darn.",false,false);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(null);
@@ -1887,8 +1887,7 @@ public class Arrest extends StdBehavior
 						if(officer.curState().getMovement()<50)
 							officer.curState().setMovement(50);
 						makePeace(officer.location());
-						if(officer.isMonster())
-							ExternalPlay.look(officer,null,true);
+						if(officer.isMonster()) CommonMsgs.look(officer,true);
 						if(getTheJudgeHere(laws,officer.location())!=null)
 							W.setState(Law.STATE_REPORTING);
 						else
@@ -1896,7 +1895,7 @@ public class Arrest extends StdBehavior
 						{
 							if(!trackTheJudge(officer,myArea,laws))
 							{
-								ExternalPlay.quickSay(officer,null,"Now where was that court?.",false,false);
+								CommonMsgs.say(officer,null,"Now where was that court?.",false,false);
 								W.setTravelAttemptTime(0);
 								unCuff(W.criminal());
 								W.setArrestingOfficer(null);
@@ -1905,12 +1904,12 @@ public class Arrest extends StdBehavior
 						}
 						else
 						if((Dice.rollPercentage()>75)&&(laws.chitChat().size()>0))
-							ExternalPlay.quickSay(officer,W.criminal(),(String)laws.chitChat().elementAt(Dice.roll(1,laws.chitChat().size(),-1)),false,false);
+							CommonMsgs.say(officer,W.criminal(),(String)laws.chitChat().elementAt(Dice.roll(1,laws.chitChat().size(),-1)),false,false);
 					}
 					else
 					{
 						if(officer!=null)
-							ExternalPlay.quickSay(officer,null,"Lost!",false,false);
+							CommonMsgs.say(officer,null,"Lost!",false,false);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(null);
@@ -1933,7 +1932,7 @@ public class Arrest extends StdBehavior
 							W.setState(Law.STATE_MOVING);
 							if(!trackTheJudge(officer,myArea,laws))
 							{
-								ExternalPlay.quickSay(officer,null,"Where was that darn court!",false,false);
+								CommonMsgs.say(officer,null,"Where was that darn court!",false,false);
 								W.setTravelAttemptTime(0);
 								unCuff(W.criminal());
 								W.setArrestingOfficer(null);
@@ -1948,18 +1947,18 @@ public class Arrest extends StdBehavior
 							String sirmaam="Sir";
 							if(Character.toString((char)judge.charStats().getStat(CharStats.GENDER)).equalsIgnoreCase("F"))
 								sirmaam="Ma'am";
-							ExternalPlay.quickSay(officer,judge,sirmaam+", "+W.criminal().name()+" has been arrested "+restOfCharges(laws,W.criminal())+".",false,false);
+							CommonMsgs.say(officer,judge,sirmaam+", "+W.criminal().name()+" has been arrested "+restOfCharges(laws,W.criminal())+".",false,false);
 							for(int w2=0;w2<laws.warrants().size();w2++)
 							{
 								LegalWarrant W2=(LegalWarrant)laws.warrants().elementAt(w2);
 								if(W2.criminal()==W.criminal())
-									ExternalPlay.quickSay(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".",false,false);
+									CommonMsgs.say(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".",false,false);
 							}
 							W.setState(Law.STATE_WAITING);
 						}
 						else
 						{
-							ExternalPlay.quickSay(officer,W.criminal(),"I guess court is not in session today.",false,false);
+							CommonMsgs.say(officer,W.criminal(),"I guess court is not in session today.",false,false);
 							W.setTravelAttemptTime(0);
 							unCuff(W.criminal());
 							W.setArrestingOfficer(null);
@@ -1969,7 +1968,7 @@ public class Arrest extends StdBehavior
 					else
 					{
 						if(officer!=null)
-							ExternalPlay.quickSay(officer,null,"Wha? Where'd he go?",false,false);
+							CommonMsgs.say(officer,null,"Wha? Where'd he go?",false,false);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(null);
@@ -1992,7 +1991,7 @@ public class Arrest extends StdBehavior
 							W.setState(Law.STATE_MOVING);
 							if(!trackTheJudge(officer,myArea,laws))
 							{
-								ExternalPlay.quickSay(officer,null,"Where was that darn court?!",false,false);
+								CommonMsgs.say(officer,null,"Where was that darn court?!",false,false);
 								W.setTravelAttemptTime(0);
 								unCuff(W.criminal());
 								W.setArrestingOfficer(null);
@@ -2015,7 +2014,7 @@ public class Arrest extends StdBehavior
 						}
 						else
 						{
-							ExternalPlay.quickSay(officer,W.criminal(),"Court is not in session today.",false,false);
+							CommonMsgs.say(officer,W.criminal(),"Court is not in session today.",false,false);
 							W.setTravelAttemptTime(0);
 							unCuff(W.criminal());
 							W.setArrestingOfficer(null);
@@ -2025,7 +2024,7 @@ public class Arrest extends StdBehavior
 					else
 					{
 						if(officer!=null)
-							ExternalPlay.quickSay(officer,null,"Wha? Huh?",false,false);
+							CommonMsgs.say(officer,null,"Wha? Huh?",false,false);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(null);
@@ -2055,7 +2054,7 @@ public class Arrest extends StdBehavior
 							A.startTickDown(judge,W.criminal(),W.jailTime());
 							W.criminal().recoverEnvStats();
 							W.criminal().recoverCharStats();
-							ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PAROLEDISMISS),false,false);
+							CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PAROLEDISMISS),false,false);
 							dismissOfficer(officer);
 							W.setArrestingOfficer(null);
 							W.criminal().tell("\n\r\n\r");
@@ -2063,7 +2062,7 @@ public class Arrest extends StdBehavior
 						else
 						{
 							if(officer!=null)
-								ExternalPlay.quickSay(officer,null,"No court today.",false,false);
+								CommonMsgs.say(officer,null,"No court today.",false,false);
 							unCuff(W.criminal());
 							if(W.arrestingOfficer()!=null)
 								dismissOfficer(W.arrestingOfficer());
@@ -2074,7 +2073,7 @@ public class Arrest extends StdBehavior
 					else
 					{
 						if(officer!=null)
-							ExternalPlay.quickSay(officer,null,"That was wierd.",false,false);
+							CommonMsgs.say(officer,null,"That was wierd.",false,false);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(null);
 						W.setState(Law.STATE_SEEKING);
@@ -2102,7 +2101,7 @@ public class Arrest extends StdBehavior
 							if(A!=null)	A.invoke(officer,W.criminal(),true);
 							W.criminal().makePeace();
 							makePeace(officer.location());
-							ExternalPlay.standIfNecessary(W.criminal());
+							CommonMsgs.stand(W.criminal(),true);
 							stopTracking(officer);
 							A=CMClass.getAbility("Skill_Track");
 							if(A!=null)
@@ -2116,7 +2115,7 @@ public class Arrest extends StdBehavior
 								W.setTravelAttemptTime(0);
 								fileAllWarrants(laws,W.criminal());
 								unCuff(W.criminal());
-								ExternalPlay.quickSay(officer,W.criminal(),"I can't find the jail, you are free to go.",false,false);
+								CommonMsgs.say(officer,W.criminal(),"I can't find the jail, you are free to go.",false,false);
 								dismissOfficer(officer);
 								W.setArrestingOfficer(null);
 							}
@@ -2127,7 +2126,7 @@ public class Arrest extends StdBehavior
 							W.setTravelAttemptTime(0);
 							fileAllWarrants(laws,W.criminal());
 							unCuff(W.criminal());
-							ExternalPlay.quickSay(W.arrestingOfficer(),W.criminal(),"But since there IS no jail, I will let you go.",false,false);
+							CommonMsgs.say(W.arrestingOfficer(),W.criminal(),"But since there IS no jail, I will let you go.",false,false);
 							dismissOfficer(officer);
 							W.setArrestingOfficer(null);
 						}
@@ -2135,7 +2134,7 @@ public class Arrest extends StdBehavior
 					else
 					{
 						if(officer!=null)
-							ExternalPlay.quickSay(officer,null,"Crazy.",false,false);
+							CommonMsgs.say(officer,null,"Crazy.",false,false);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(null);
 						W.setState(Law.STATE_SEEKING);
@@ -2165,14 +2164,14 @@ public class Arrest extends StdBehavior
 							A.startTickDown(judge,W.criminal(),100);
 							W.criminal().recoverEnvStats();
 							W.criminal().recoverCharStats();
-							ExternalPlay.postAttack(judge,W.criminal(),judge.fetchWieldedItem());
+							MUDFight.postAttack(judge,W.criminal(),judge.fetchWieldedItem());
 							W.setArrestingOfficer(null);
 							W.setTravelAttemptTime(0);
 						}
 						else
 						{
 							if(officer!=null)
-								ExternalPlay.quickSay(officer,null,"Looks like court is not in session.",false,false);
+								CommonMsgs.say(officer,null,"Looks like court is not in session.",false,false);
 							W.setTravelAttemptTime(0);
 							unCuff(W.criminal());
 							if(W.arrestingOfficer()!=null)
@@ -2184,7 +2183,7 @@ public class Arrest extends StdBehavior
 					else
 					{
 						if(officer!=null)
-							ExternalPlay.quickSay(officer,null,"Didn't see that coming.",false,false);
+							CommonMsgs.say(officer,null,"Didn't see that coming.",false,false);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(null);
@@ -2207,7 +2206,7 @@ public class Arrest extends StdBehavior
 						if(officer.curState().getMovement()<50)
 							officer.curState().setMovement(50);
 						makePeace(officer.location());
-						ExternalPlay.look(officer,null,true);
+						CommonMsgs.look(officer,true);
 						if(W.jail()==W.criminal().location())
 						{
 							unCuff(W.criminal());
@@ -2239,14 +2238,14 @@ public class Arrest extends StdBehavior
 								W.setTravelAttemptTime(0);
 								fileAllWarrants(laws,W.criminal());
 								unCuff(W.criminal());
-								ExternalPlay.quickSay(officer,W.criminal(),"I lost the jail, so you are free to go.",false,false);
+								CommonMsgs.say(officer,W.criminal(),"I lost the jail, so you are free to go.",false,false);
 								dismissOfficer(officer);
 								W.setArrestingOfficer(null);
 							}
 						}
 						else
 						if((Dice.rollPercentage()>75)&&(laws.chitChat2().size()>0))
-							ExternalPlay.quickSay(officer,W.criminal(),(String)laws.chitChat2().elementAt(Dice.roll(1,laws.chitChat2().size(),-1)),false,false);
+							CommonMsgs.say(officer,W.criminal(),(String)laws.chitChat2().elementAt(Dice.roll(1,laws.chitChat2().size(),-1)),false,false);
 					}
 					else
 					{
@@ -2294,7 +2293,7 @@ public class Arrest extends StdBehavior
 								W.setTravelAttemptTime(0);
 								fileAllWarrants(laws,W.criminal());
 								unCuff(W.criminal());
-								ExternalPlay.quickSay(officer,W.criminal(),"Well, you can always recall.",false,false);
+								CommonMsgs.say(officer,W.criminal(),"Well, you can always recall.",false,false);
 								dismissOfficer(officer);
 								W.setArrestingOfficer(null);
 							}
@@ -2312,7 +2311,7 @@ public class Arrest extends StdBehavior
 								{
 									if((Sense.aliveAwakeMobile(officer,true))
 									&&(W.criminal().location().isInhabitant(officer)))
-										ExternalPlay.quickSay(officer,null,laws.getMessage(Law.MSG_LAWFREE),false,false);
+										CommonMsgs.say(officer,null,laws.getMessage(Law.MSG_LAWFREE),false,false);
 									dismissOfficer(officer);
 								}
 								W.setTravelAttemptTime(0);
@@ -2324,7 +2323,7 @@ public class Arrest extends StdBehavior
 								&&(W.criminal().location().isInhabitant(officer))
 								&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000))))
 								{
-									ExternalPlay.look(officer,null,true);
+									CommonMsgs.look(officer,true);
 									if(W.criminal().curState().getMovement()<20)
 										W.criminal().curState().setMovement(20);
 									if(officer.curState().getMovement()<20)
@@ -2339,7 +2338,7 @@ public class Arrest extends StdBehavior
 											W.setTravelAttemptTime(0);
 											fileAllWarrants(laws,W.criminal());
 											unCuff(W.criminal());
-											ExternalPlay.quickSay(W.arrestingOfficer(),W.criminal(),"Don't worry, you can always recall.",false,false);
+											CommonMsgs.say(W.arrestingOfficer(),W.criminal(),"Don't worry, you can always recall.",false,false);
 											dismissOfficer(W.arrestingOfficer());
 											W.setArrestingOfficer(null);
 										}
@@ -2348,7 +2347,7 @@ public class Arrest extends StdBehavior
 								else
 								{
 									if(officer!=null)
-										ExternalPlay.quickSay(officer,null,"There's always recall.",false,false);
+										CommonMsgs.say(officer,null,"There's always recall.",false,false);
 									W.setTravelAttemptTime(0);
 									fileAllWarrants(laws,W.criminal());
 									unCuff(W.criminal());
@@ -2360,7 +2359,7 @@ public class Arrest extends StdBehavior
 						else
 						{
 							if(W.arrestingOfficer()!=null)
-								ExternalPlay.quickSay(W.arrestingOfficer(),null,"Well, he can always recall.",false,false);
+								CommonMsgs.say(W.arrestingOfficer(),null,"Well, he can always recall.",false,false);
 							W.setTravelAttemptTime(0);
 							fileAllWarrants(laws,W.criminal());
 							unCuff(W.criminal());

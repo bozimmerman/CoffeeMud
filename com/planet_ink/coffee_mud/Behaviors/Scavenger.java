@@ -41,14 +41,7 @@ public class Scavenger extends ActiveTicker
 			Vector V=new Vector();
 			V.addElement("GET");
 			V.addElement("ALL");
-			try
-			{
-				ExternalPlay.doCommand(mob,V);
-			}
-			catch(Exception e)
-			{
-
-			}
+			mob.doCommand(V);
 		}
 		return true;
 	}

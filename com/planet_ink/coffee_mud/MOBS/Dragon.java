@@ -70,7 +70,9 @@ public class Dragon extends StdMOB
 		birthAge=8*DragonAge;
 		birthColor=colorValue;
 
-		if(!ExternalPlay.getSystemStarted()) return;
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			return;
+		
 		// ===== is it a male or female
 		short gend = (short)Math.round(Math.random());
 		if (gend == 0)
@@ -372,7 +374,7 @@ public class Dragon extends StdMOB
 					int damage=((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge),2.0)));
 					if(Message.value()<=0)
 						damage=((short)Math.round(Math.random()*7)*DragonAge);
-					ExternalPlay.postDamage(this,target,null,damage,CMMsg.MASK_GENERAL|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>");
+					MUDFight.postDamage(this,target,null,damage,CMMsg.MASK_GENERAL|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>");
 				}
 			}
 		}
@@ -470,7 +472,7 @@ public class Dragon extends StdMOB
 				Stomach.send(this,DigestMsg);
 				int damage=((int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2)));
 				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-				ExternalPlay.postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

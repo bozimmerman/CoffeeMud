@@ -43,7 +43,7 @@ public class Chant_SummonDustdevil extends Chant
 					{
 						Item I=(Item)V.elementAt(i);
 						if(mob.maxCarry()>=mob.envStats().weight()+I.envStats().weight())
-							ExternalPlay.get(mob,null,I,false);
+							CommonMsgs.get(mob,null,I,false);
 						else
 							giveUp=true;
 					}
@@ -160,7 +160,7 @@ public class Chant_SummonDustdevil extends Chant
 				{
 					if(target.isInCombat()) target.makePeace();
 					beneficialAffect(mob,target,0);
-					ExternalPlay.follow(target,mob,true);
+					CommonMsgs.follow(target,mob,true);
 					if(target.amFollowing()!=mob)
 						mob.tell(target.name()+" seems unwilling to follow you.");
 				}

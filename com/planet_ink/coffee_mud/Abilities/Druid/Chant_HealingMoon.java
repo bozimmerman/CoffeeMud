@@ -39,7 +39,7 @@ public class Chant_HealingMoon extends Chant
 			{
 				MOB M=room.fetchInhabitant(i);
 				int healing=M.charStats().getStat(CharStats.CONSTITUTION);
-				ExternalPlay.postHealing(M,M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+				MUDFight.postHealing(M,M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 			}
 		}
 		return true;

@@ -52,7 +52,7 @@ public class Spell_GustOfWind extends Spell
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> regain(s) <S-HIS-HER> feet.");
-				ExternalPlay.standIfNecessary(mob);
+				CommonMsgs.stand(mob,true);
 			}
 			else
 				mob.tell("You regain your feet.");

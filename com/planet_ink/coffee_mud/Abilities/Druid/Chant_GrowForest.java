@@ -37,7 +37,7 @@ public class Chant_GrowForest extends Chant
 			&&(code!=EnvResource.RESOURCE_WOOD))
 			{
 				choices.addElement(new Integer(code));
-				if((s.length()>0)&&(CoffeeUtensils.containsString(EnvResource.RESOURCE_DESCS[i],s)))
+				if((s.length()>0)&&(EnglishParser.containsString(EnvResource.RESOURCE_DESCS[i],s)))
 					material=code;
 			}
 		}

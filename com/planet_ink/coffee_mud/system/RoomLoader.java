@@ -12,7 +12,7 @@ public class RoomLoader
 	private static int updateBreak=1;
 	private final static String zeroes="000000000000";
 
-	public static void DBRead(MudHost myHost)
+	public static void DBRead()
 	{
 		Hashtable hash=new Hashtable();
 		while(CMMap.numAreas()>0)CMMap.delArea(CMMap.getFirstArea());
@@ -45,7 +45,7 @@ public class RoomLoader
 				A.setTechLevel((int)DBConnections.getLongRes(R,"CMTECH"));
 				A.tickControl(true);
 				if((currentRecordPos%updateBreak)==0)
-					myHost.setGameStatusStr("Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
+					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
 			}
 			DBConnector.DBDone(D);
 		}
@@ -90,7 +90,7 @@ public class RoomLoader
 					hash.put(roomID,newRoom);
 				}
 				if((currentRecordPos%updateBreak)==0)
-					myHost.setGameStatusStr("Booting: Loading Rooms ("+currentRecordPos+" of "+recordCount+")");
+					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Rooms ("+currentRecordPos+" of "+recordCount+")");
 			}
 			DBConnector.DBDone(D);
 		}
@@ -149,7 +149,7 @@ public class RoomLoader
 					thisRoom.rawExits()[direction]=newExit;
 				}
 				if((currentRecordPos%updateBreak)==0)
-					myHost.setGameStatusStr("Booting: Loading Exits ("+currentRecordPos+" of "+recordCount+")");
+					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Exits ("+currentRecordPos+" of "+recordCount+")");
 			}
 			DBConnector.DBDone(D);
 		}
@@ -159,9 +159,9 @@ public class RoomLoader
 			if(D!=null) DBConnector.DBDone(D);
 		}
 
-		DBReadContent(null,hash,myHost);
+		DBReadContent(null,hash,true);
 
-		myHost.setGameStatusStr("Booting: Finalizing room data)");
+		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Finalizing room data)");
 
 		while(CMMap.numRooms()>0) CMMap.delRoom(CMMap.getFirstRoom());
 		for(Enumeration r=hash.elements();r.hasMoreElements();)
@@ -213,12 +213,7 @@ public class RoomLoader
 		}
 	}
 
-	public static void DBReadContent(Room thisRoom, Hashtable rooms)
-	{
-		DBReadContent(thisRoom,rooms,null);
-	}
-
-	public static void DBReadContent(Room thisRoom, Hashtable rooms, MudHost myHost)
+	public static void DBReadContent(Room thisRoom, Hashtable rooms, boolean setStatus)
 	{
 
 		Hashtable stuff=new Hashtable();
@@ -275,8 +270,8 @@ public class RoomLoader
 					newItem.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 					newItem.recoverEnvStats();
 				}
-				if(((currentRecordPos%updateBreak)==0)&&(myHost!=null))
-					myHost.setGameStatusStr("Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");
+				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
+					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");
 			}
 			DBConnector.DBDone(D);
 		}
@@ -333,8 +328,8 @@ public class RoomLoader
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 				}
-				if(((currentRecordPos%updateBreak)==0)&&(myHost!=null))
-					myHost.setGameStatusStr("Booting: Loading MOBs ("+currentRecordPos+" of "+recordCount+")");
+				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
+					CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading MOBs ("+currentRecordPos+" of "+recordCount+")");
 			}
 			DBConnector.DBDone(D);
 		}
@@ -353,8 +348,8 @@ public class RoomLoader
 		currentRecordPos=0;
 		for(Enumeration e=rooms.elements();e.hasMoreElements();)
 		{
-			if((((++currentRecordPos)%updateBreak)==0)&&(myHost!=null))
-				myHost.setGameStatusStr("Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
+			if((((++currentRecordPos)%updateBreak)==0)&&(setStatus))
+				CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
 			Room room=(Room)e.nextElement();
 			itemNums=(Hashtable)stuff.get("NUMSFOR"+room.roomID());
 			if(itemNums!=null)

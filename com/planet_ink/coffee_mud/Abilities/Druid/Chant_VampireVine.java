@@ -25,9 +25,9 @@ public class Chant_VampireVine extends Chant_SummonVine
 				if(amount>3)
 				{
 					amount=amount/4;
-					ExternalPlay.postHealing(((MOB)affected),((MOB)affected),this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,null);
+					MUDFight.postHealing(((MOB)affected),((MOB)affected),this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,null);
 					if(invoker!=null)
-						ExternalPlay.postHealing(invoker,invoker,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,null);
+						MUDFight.postHealing(invoker,invoker,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,null);
 				}
 			}
 		}

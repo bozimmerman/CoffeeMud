@@ -71,7 +71,7 @@ public class Falling extends StdAbility
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CommonStrings.msp("splat.wav",50));
 		else
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CommonStrings.msp("splat.wav",50));
-		ExternalPlay.postDamage(mob,mob,this,damageToTake,CMMsg.MSG_OK_VISUAL,-1,null);
+		MUDFight.postDamage(mob,mob,this,damageToTake,CMMsg.MSG_OK_VISUAL,-1,null);
 		mob.delEffect(this);
 		return false;
 	}
@@ -122,7 +122,7 @@ public class Falling extends StdAbility
 						damageToTake+=Dice.roll(1,6,0);
 				}
 				temporarilyDisable=true;
-				ExternalPlay.move(mob,direction,false,false);
+				MUDTracker.move(mob,direction,false,false);
 				temporarilyDisable=false;
 				if(!canFallFrom(mob.location(),direction))
 					return stopFalling(mob);
@@ -249,7 +249,7 @@ public class Falling extends StdAbility
 			F.makeLongLasting();
 			E.addEffect(F);
 			if(!(E instanceof MOB))
-				ExternalPlay.startTickDown(F,MudHost.TICK_MOB,1);
+				CMClass.ThreadEngine().startTickDown(F,MudHost.TICK_MOB,1);
 			E.recoverEnvStats();
 
 		}

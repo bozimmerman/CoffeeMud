@@ -25,7 +25,7 @@ public class Trap_AcidSpray extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> set(s) off an acid spraying trap!"))
 			{
 				super.spring(target);
-				ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),6,1),CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(invoker(),target,null,Dice.roll(trapLevel(),6,1),CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

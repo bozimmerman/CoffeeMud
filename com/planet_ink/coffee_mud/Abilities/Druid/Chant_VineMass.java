@@ -57,14 +57,14 @@ public class Chant_VineMass extends Chant_SummonVine
 			if((i+1)<limit)
 			{
 				beneficialAffect(caster,newMOB,0);
-				ExternalPlay.follow(newMOB,caster,true);
+				CommonMsgs.follow(newMOB,caster,true);
 				if(newMOB.amFollowing()!=caster)
 				{
 					A=newMOB.fetchEffect(ID());
 					if(A!=null) A.unInvoke();
 					return null;
 				}
-				ExternalPlay.postAttack(newMOB,victim,newMOB.fetchWieldedItem());
+				MUDFight.postAttack(newMOB,victim,newMOB.fetchWieldedItem());
 			}
 		}
 		return(newMOB);

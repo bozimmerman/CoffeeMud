@@ -28,7 +28,7 @@ public class FightFlee extends ActiveTicker
 			if(mob.isInCombat()
 			   &&(mob.getVictim()!=null)
 			   &&(mob.getVictim().getVictim()==mob))
-				ExternalPlay.flee(mob,"");
+				CommonMsgs.flee(mob,"");
 		}
 		return true;
 	}

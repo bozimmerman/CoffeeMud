@@ -33,7 +33,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 
 		String where=Util.combine(commands,0);
 		if(!success)
-			ExternalPlay.flee(mob,where);
+			CommonMsgs.flee(mob,where);
 		else
 		{
 			int directionCode=-1;
@@ -66,7 +66,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 					return false;
 				}
 				mob.makePeace();
-				ExternalPlay.move(mob,directionCode,true,false);
+				MUDTracker.move(mob,directionCode,true,false);
 			}
 		}
 		return success;

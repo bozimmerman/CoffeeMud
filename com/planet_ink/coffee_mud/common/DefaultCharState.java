@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.Util;
-import com.planet_ink.coffee_mud.utils.Sense;
+import com.planet_ink.coffee_mud.utils.*;
+
 public class DefaultCharState implements Cloneable, CharState
 {
 	protected int HitPoints=10;
@@ -16,7 +16,7 @@ public class DefaultCharState implements Cloneable, CharState
 	protected int ticksThirsty=0;
 
 	protected int annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
-	
+
 	public DefaultCharState(){}
 	public DefaultCharState(int def)
 	{
@@ -27,7 +27,7 @@ public class DefaultCharState implements Cloneable, CharState
 		Thirst=def;
 		Fatigue=def;
 	}
-	
+
 
 	public int getHitPoints(){return HitPoints;}
 	public void setHitPoints(int newVal){HitPoints=newVal;}
@@ -153,14 +153,14 @@ public class DefaultCharState implements Cloneable, CharState
 		}
 		if(getFatigue()>FATIGUED_MILLIS)
 			man=man*.5;
-		
+
 		double lvl=new Integer(mob.envStats().level()).doubleValue();
 		double lvlby2=Util.div(lvl,2.0);
 
 		double hpGain=(con>1.0)?((con/25.0)*lvlby2)+(con/4.5)+1.0:1.0;
 		double manaGain=(man>2.0)?((man/50.0)*lvl)+(man/4.5)+1.0:1.0;
 		double moveGain=(str>1.0)?((str/25.0)*lvl)+(str/2.0)+4.0:1.0;
-		
+
 		if(Sense.isSleeping(mob))
 		{
 			hpGain+=(hpGain/2.0);
@@ -198,7 +198,7 @@ public class DefaultCharState implements Cloneable, CharState
 				moveGain-=(moveGain/2.0);
 			}
 		}
-		
+
 		if((!mob.isInCombat())
 		&&(!Sense.isClimbing(mob)))
 		{
@@ -237,7 +237,7 @@ public class DefaultCharState implements Cloneable, CharState
 			{
 				if(thirsty)ticksThirsty++;
 				if(hungry)ticksHungry++;
-			
+
 				if((ticksThirsty>this.DEATH_THIRST_TICKS)
 				||(ticksHungry>this.DEATH_HUNGER_TICKS))
 				{
@@ -245,7 +245,7 @@ public class DefaultCharState implements Cloneable, CharState
 						mob.tell("YOU ARE DYING OF THIRST!");
 					if(hungry)
 						mob.tell("YOU ARE DYING OF HUNGER!");
-					ExternalPlay.postDeath(null,mob,null);
+					MUDFight.postDeath(null,mob,null);
 				}
 				else
 				if(ticksThirsty>DEATH_THIRST_TICKS-30)
@@ -257,8 +257,8 @@ public class DefaultCharState implements Cloneable, CharState
 				if((--annoyanceTicker)<=0)
 				{
 					annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
-						
-					if(thirsty)	
+
+					if(thirsty)
 					{
 						if(ticksThirsty>((DEATH_THIRST_TICKS/2)+(DEATH_THIRST_TICKS/4)))
 							mob.tell("You are dehydrated! Drink something!");
@@ -299,7 +299,7 @@ public class DefaultCharState implements Cloneable, CharState
 			   return false;
 		return true;
 	}
-	
+
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code)){

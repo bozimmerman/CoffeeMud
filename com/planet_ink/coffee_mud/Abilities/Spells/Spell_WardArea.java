@@ -135,7 +135,7 @@ public class Spell_WardArea extends Spell implements Trap
 			return false;
 		}
 		commands.insertElementAt("CAST",0);
-		shooter=ExternalPlay.getToEvoke(mob,commands);
+		shooter=EnglishParser.getToEvoke(mob,commands);
 		parameters=commands;
 		if((shooter==null)||((shooter.classificationCode()&Ability.ALL_CODES)!=Ability.SPELL))
 		{
@@ -184,8 +184,8 @@ public class Spell_WardArea extends Spell implements Trap
 			{
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
-				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
-				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+				if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
 					mob.location().addNonUninvokableEffect((Ability)copyOf());
 				else
 					beneficialAffect(mob,mob.location(),9999);

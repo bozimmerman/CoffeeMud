@@ -167,7 +167,7 @@ public class Construction extends CommonSkill
 									M.setLocation(R);
 								}
 							}
-							ExternalPlay.deleteTick(room,-1);
+							CMClass.ThreadEngine().deleteTick(room,-1);
 							CMMap.delRoom(room);
 							CMMap.addRoom(R);
 							for(int d=0;d<R.rawDoors().length;d++)
@@ -197,8 +197,8 @@ public class Construction extends CommonSkill
 							}
 							R.getArea().clearMap();
 							R.getArea().fillInAreaRoom(R);
-							ExternalPlay.DBUpdateRoom(R);
-							ExternalPlay.DBUpdateExits(R);
+							CMClass.DBEngine().DBUpdateRoom(R);
+							CMClass.DBEngine().DBUpdateExits(R);
 						}
 						break;
 					case BUILD_STAIRS:
@@ -210,15 +210,15 @@ public class Construction extends CommonSkill
 							if(room.rawDoors()[dir]!=null)
 							{
 								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=null;
-								ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+								CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
 							}
-							ExternalPlay.DBUpdateExits(room);
+							CMClass.DBEngine().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_TITLE:
 						{
 							room.setDisplayText(designTitle);
-							ExternalPlay.DBUpdateRoom(room);
+							CMClass.DBEngine().DBUpdateRoom(room);
 						}
 						break;
 					case BUILD_DESC:
@@ -232,12 +232,12 @@ public class Construction extends CommonSkill
 									room.rawExits()[workingOn]=E;
 								}
 								E.setDescription(designDescription);
-								ExternalPlay.DBUpdateExits(room);
+								CMClass.DBEngine().DBUpdateExits(room);
 							}
 							else
 							{
 								room.setDescription(designDescription);
-								ExternalPlay.DBUpdateRoom(room);
+								CMClass.DBEngine().DBUpdateRoom(room);
 							}
 						}
 						break;
@@ -253,7 +253,7 @@ public class Construction extends CommonSkill
 								}
 								Ability A=CMClass.getAbility("Prop_Crawlspace");
 								if(A!=null) E.addNonUninvokableEffect(A);
-								ExternalPlay.DBUpdateExits(room);
+								CMClass.DBEngine().DBUpdateExits(room);
 							}
 						}
 						break;
@@ -277,7 +277,7 @@ public class Construction extends CommonSkill
 										E.addNonUninvokableEffect(A);
 									}
 								}
-								ExternalPlay.DBUpdateExits(room);
+								CMClass.DBEngine().DBUpdateExits(room);
 							}
 						}
 						break;
@@ -296,9 +296,9 @@ public class Construction extends CommonSkill
 							{
 								Exit X2=(Exit)X.copyOf();
 								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=X2;
-								ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+								CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
 							}
-							ExternalPlay.DBUpdateExits(room);
+							CMClass.DBEngine().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_DOOR:
@@ -321,9 +321,9 @@ public class Construction extends CommonSkill
 								if(doingCode==BUILD_SECRETDOOR)
 									X2.baseEnvStats().setDisposition(EnvStats.IS_HIDDEN);
 								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=X2;
-								ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+								CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
 							}
-							ExternalPlay.DBUpdateExits(room);
+							CMClass.DBEngine().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_DEMOLISH:
@@ -361,7 +361,7 @@ public class Construction extends CommonSkill
 										M.setLocation(R);
 									}
 								}
-								ExternalPlay.deleteTick(room,-1);
+								CMClass.ThreadEngine().deleteTick(room,-1);
 								CMMap.delRoom(room);
 								CMMap.addRoom(R);
 								for(int d=0;d<R.rawDoors().length;d++)
@@ -382,8 +382,8 @@ public class Construction extends CommonSkill
 								}
 								R.getArea().clearMap();
 								R.getArea().fillInAreaRoom(R);
-								ExternalPlay.DBUpdateRoom(R);
-								ExternalPlay.DBUpdateExits(R);
+								CMClass.DBEngine().DBUpdateRoom(R);
+								CMClass.DBEngine().DBUpdateExits(R);
 							}
 							else
 							{
@@ -391,9 +391,9 @@ public class Construction extends CommonSkill
 								if(room.rawDoors()[dir]!=null)
 								{
 									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("Open");
-									ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+									CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
 								}
-								ExternalPlay.DBUpdateExits(room);
+								CMClass.DBEngine().DBUpdateExits(room);
 							}
 						}
 						break;
@@ -566,16 +566,16 @@ public class Construction extends CommonSkill
 			return false;
 		}
 
-		boolean canBuild=(ExternalPlay.doesOwnThisProperty(mob,mob.location())
-		   ||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))));
+		boolean canBuild=(CoffeeUtensils.doesOwnThisProperty(mob,mob.location())
+		   ||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))));
 		if(!canBuild)
 		{
 			if((dir>=0)&&(data[doingCode][DAT_REQDIR].equals("1")))
 			{
 				Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)
-				&&((ExternalPlay.doesOwnThisProperty(mob,R))
-					||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),R)))))
+				&&((CoffeeUtensils.doesOwnThisProperty(mob,R))
+					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R)))))
 					canBuild=true;
 			}
 		}

@@ -63,7 +63,7 @@ public class Chant_PlantSnare extends Chant
 		{
 			if(!mob.amDead())
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the plants.");
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 	}
 

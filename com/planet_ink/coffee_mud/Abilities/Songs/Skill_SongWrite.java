@@ -83,7 +83,7 @@ public class Skill_SongWrite extends StdAbility
 		if(!auto)mob.curState().setMana(0);
 
 		int experienceToLose=20*CMAble.lowestQualifyingLevel(scrollThis.ID());
-		ExternalPlay.postExperience(mob,null,null,-experienceToLose,false);
+		MUDFight.postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
 		boolean success=profficiencyCheck(0,auto);

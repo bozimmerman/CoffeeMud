@@ -64,7 +64,7 @@ public class Ranger_Track extends StdAbility
 					{
 						int dir=nextDirection;
 						nextDirection=-2;
-						ExternalPlay.move(mob,dir,false,false);
+						MUDTracker.move(mob,dir,false,false);
 					}
 					else
 						unInvoke();
@@ -89,7 +89,7 @@ public class Ranger_Track extends StdAbility
 		&&(msg.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
 		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
-			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
+			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -150,7 +150,7 @@ public class Ranger_Track extends StdAbility
 		}
 
 		if(rooms.size()>0)
-			theTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,true);
+			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true);
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
@@ -174,7 +174,7 @@ public class Ranger_Track extends StdAbility
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
+				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
 			}
 		}
 		else

@@ -67,7 +67,7 @@ public class BrotherHelper extends StdBehavior
 			boolean yep=true;
 			if((numAllowed==0)||(numInFray<numAllowed))
 				yep=Aggressive.startFight(observer,source,true);
-			if(yep)	ExternalPlay.quickSay(observer,null,"DON'T HURT MY FRIEND!",false,false);
+			if(yep)	CommonMsgs.say(observer,null,"DON'T HURT MY FRIEND!",false,false);
 		}
 	}
 

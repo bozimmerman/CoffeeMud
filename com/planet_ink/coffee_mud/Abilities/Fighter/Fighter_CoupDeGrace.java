@@ -71,7 +71,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 			levelDiff=0;
 		mob.curState().adjMovement(-150,mob.maxState());
 		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.CONSTITUTION)*2));
-		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
+		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(chance,auto)&&(hit);
 		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/5))))
 		{
@@ -80,7 +80,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(0);
-				ExternalPlay.postDamage(mob,target,ww,dmg,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"<S-NAME> rear(s) back and Coup de Graces <T-NAME>!"+CommonStrings.msp("decap.wav",30));
+				MUDFight.postDamage(mob,target,ww,dmg,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"<S-NAME> rear(s) back and Coup de Graces <T-NAME>!"+CommonStrings.msp("decap.wav",30));
 				mob.location().recoverRoomStats();
 			}
 		}

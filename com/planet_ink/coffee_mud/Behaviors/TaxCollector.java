@@ -62,13 +62,13 @@ public class TaxCollector extends StdBehavior
 		&&((demanded!=null)&&(paid!=null))
 		&&(demanded.contains(msg.source())))
 		{
-			int money=Money.totalMoney(msg.source());
+			int money=MoneyUtils.totalMoney(msg.source());
 			int coins=((Coins)msg.tool()).numberOfCoins();
 			int owed=money/10;
 			if(owed<1) owed=1;
 			if(coins<owed)
 			{
-				ExternalPlay.quickSay(mob,msg.source(),"That's not enough.  You owe "+owed+".  Try again.",false,false);
+				CommonMsgs.say(mob,msg.source(),"That's not enough.  You owe "+owed+".  Try again.",false,false);
 				return false;
 			}
 		}
@@ -107,22 +107,22 @@ public class TaxCollector extends StdBehavior
 			&&(!Sense.isAnimalIntelligence(M))
 			&&(Sense.canBeSeenBy(M,mob))))
 			{
-				int money=Money.totalMoney(M);
+				int money=MoneyUtils.totalMoney(M);
 				if(money>0)
 				{
 					int demandDex=demanded.indexOf(M);
 					if((demandDex>=0)
 					&&((System.currentTimeMillis()-((Long)demanded.elementAt(demandDex,2)).longValue())>waitTime))
 					{
-						ExternalPlay.quickSay(mob,M,"You know what they say about death and taxes, so if you won't pay ... DIE!!!!",false,false);
-						ExternalPlay.postAttack(mob,M,mob.fetchWieldedItem());
+						CommonMsgs.say(mob,M,"You know what they say about death and taxes, so if you won't pay ... DIE!!!!",false,false);
+						MUDFight.postAttack(mob,M,mob.fetchWieldedItem());
 						demanded.removeElementAt(demandDex);
 					}
 					if((!paid.contains(M))&&(demandDex<0))
 					{
 						int amount=money/10;
 						if(amount<1) amount=1;
-						ExternalPlay.quickSay(mob,M,"You owe "+amount+" gold in taxes.  You must pay me immediately or face the consequences.",false,false);
+						CommonMsgs.say(mob,M,"You owe "+amount+" gold in taxes.  You must pay me immediately or face the consequences.",false,false);
 						demanded.addElement(M,new Long(System.currentTimeMillis()));
 						if(M.isMonster())
 						{
@@ -130,7 +130,7 @@ public class TaxCollector extends StdBehavior
 							V.addElement("GIVE");
 							V.addElement(""+amount);
 							V.addElement(mob.name());
-							try{ExternalPlay.doCommand(M,V);}catch(Exception e){}
+							M.doCommand(V);
 						}
 
 					}
@@ -139,7 +139,7 @@ public class TaxCollector extends StdBehavior
 
 			Item I=R.fetchItem(Dice.roll(1,R.numItems(),-1));
 			if((I!=null)&&(I instanceof Coins))
-				ExternalPlay.get(mob,I.container(),I,false);
+				CommonMsgs.get(mob,I.container(),I,false);
 		}
 		return true;
 	}

@@ -132,14 +132,14 @@ public class Patroller extends ActiveTicker
 						if(mob.location().okMessage(mob,msg))
 						{
 							msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
-							ExternalPlay.roomAffectFully(msg,thisRoom,direction);
+							CoffeeUtensils.roomAffectFully(msg,thisRoom,direction);
 						}
 					}
 					FullMsg msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 					if(mob.location().okMessage(mob,msg))
 					{
 						msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+E.openWord()+"(s) <T-NAMESELF>.");
-						ExternalPlay.roomAffectFully(msg,thisRoom,direction);
+						CoffeeUtensils.roomAffectFully(msg,thisRoom,direction);
 					}
 				}
 				if(!E.isOpen()) return true;
@@ -162,7 +162,7 @@ public class Patroller extends ActiveTicker
 					mob.curState().setMovement(oldState.getMovement());
 				}
 				else
-					ExternalPlay.move(mob,direction,false,false);
+					MUDTracker.move(mob,direction,false,false);
 
 				if(mob.location()==thatRoom)
 					step++;

@@ -71,7 +71,7 @@ public class Spell_Shove extends Spell
 						newRoom.bringMobHere(target,false);
 						newRoom.send(target,enterMsg);
 						target.tell("\n\r\n\r");
-						ExternalPlay.look(target,null,true);
+						CommonMsgs.look(target,true);
 					}
 				}
 			}

@@ -37,7 +37,7 @@ public class Prayer_CauseLight extends Prayer
 				if(msg.value()<=0)
 				{
 					int harming=Dice.roll(1,adjustedLevel(mob)+3,3);
-					ExternalPlay.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
+					MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

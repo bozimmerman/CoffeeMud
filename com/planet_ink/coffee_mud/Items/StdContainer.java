@@ -104,7 +104,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						if((!msg.source().isMine(this))&&(msg.source().isMine(newitem)))
-							if(!ExternalPlay.drop(msg.source(),newitem,true,true))
+							if(!CommonMsgs.drop(msg.source(),newitem,true,true))
 								return false;
 						return true;
 					}
@@ -395,7 +395,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(ExternalPlay.niceLister(mob,newItems,true));
+							buf.append(CMLister.niceLister(mob,newItems,true));
 						}
 						else
 						{
@@ -407,7 +407,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(ExternalPlay.niceLister(mob,newItems,true));
+							buf.append(CMLister.niceLister(mob,newItems,true));
 						}
 					}
 					else

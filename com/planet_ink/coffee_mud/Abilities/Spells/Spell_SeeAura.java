@@ -33,7 +33,7 @@ public class Spell_SeeAura extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuffer str=ExternalPlay.getScore(target);
+				StringBuffer str=CommonMsgs.getScore(target);
 				if(!mob.isMonster())
 					mob.session().unfilteredPrintln(str.toString());
 			}

@@ -65,7 +65,7 @@ public class Spell_SummonArmy extends Spell
 					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 					newMOB.setStartRoom(null);
 					newMOB.setVictim(mob.getVictim());
-					ExternalPlay.follow(newMOB,mob,true);
+					CommonMsgs.follow(newMOB,mob,true);
 					if(newMOB.amFollowing()!=mob)
 						newMOB.setFollowing(mob);
 					if(newMOB.getVictim()!=null)

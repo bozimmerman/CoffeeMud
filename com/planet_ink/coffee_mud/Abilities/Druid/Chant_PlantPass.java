@@ -36,7 +36,7 @@ public class Chant_PlantPass extends Chant
 		for(int m=0;m<candidates.size();m++)
 		{
 			Room room=(Room)candidates.elementAt(m);
-			if(CoffeeUtensils.containsString(room.displayText(),areaName))
+			if(EnglishParser.containsString(room.displayText(),areaName))
 			{
 			   newRoom=room;
 			   break;
@@ -72,14 +72,14 @@ public class Chant_PlantPass extends Chant
 					{
 						if(follower.isInCombat())
 						{
-							ExternalPlay.flee(follower,"NOWHERE");
+							CommonMsgs.flee(follower,("NOWHERE"));
 							follower.makePeace();
 						}
 						thisRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						ExternalPlay.look(follower,null,true);
+						CommonMsgs.look(follower,true);
 					}
 				}
 			}

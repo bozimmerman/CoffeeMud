@@ -317,7 +317,7 @@ public class Sculpting extends CommonSkill
 			}
 			building.recoverEnvStats();
 			if((!building.isGettable())
-			&&(!ExternalPlay.doesOwnThisProperty(mob,mob.location())))
+			&&(!CoffeeUtensils.doesOwnThisProperty(mob,mob.location())))
 			{
 				commonTell(mob,"You are not allowed to build that here.");
 				return false;

@@ -54,8 +54,8 @@ public class Prayer_CreateWater extends Prayer
 
 				mob.location().addItem(newItem);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
-				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
-				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+				if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
 				{
 					Ability A=(Ability)copyOf();
 					A.setInvoker(mob);

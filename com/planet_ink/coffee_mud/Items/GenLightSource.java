@@ -92,10 +92,10 @@ public class GenLightSource extends GenItem implements Light
 		return super.tick(ticking,tickID);
 	}
 	public String getStat(String code)
-	{ return Generic.getGenItemStat(this,code);}
+	{ return CoffeeMaker.getGenItemStat(this,code);}
 	public void setStat(String code, String val)
-	{ Generic.setGenItemStat(this,code,val);}
-	public String[] getStatCodes(){return Generic.GENITEMCODES;}
+	{ CoffeeMaker.setGenItemStat(this,code,val);}
+	public String[] getStatCodes(){return CoffeeMaker.GENITEMCODES;}
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenLightSource)) return false;

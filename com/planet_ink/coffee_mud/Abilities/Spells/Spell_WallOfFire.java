@@ -44,7 +44,7 @@ public class Spell_WallOfFire extends Spell
 					&&(mob.rangeToTarget()==1))
 					{
 						int damage = Dice.roll((int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/4.0),6,1);
-						ExternalPlay.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The wall of fire flares and <DAMAGE> <T-NAME>!");
+						MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The wall of fire flares and <DAMAGE> <T-NAME>!");
 					}
 				}
 			}

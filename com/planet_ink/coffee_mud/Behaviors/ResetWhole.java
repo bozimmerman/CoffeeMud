@@ -57,17 +57,17 @@ public class ResetWhole extends StdBehavior
 						if((B!=null)&&(B.ID().equals(ID())))
 						{ R=null; break;}
 					}
-					if(R!=null)	ExternalPlay.resetRoom(R);
+					if(R!=null)	CoffeeUtensils.resetRoom(R);
 				}
 			}
 			else
 			if(ticking instanceof Room)
-				ExternalPlay.resetRoom((Room)ticking);
+				CoffeeUtensils.resetRoom((Room)ticking);
 			else
 			{
 				Room room=super.getBehaversRoom(ticking);
 				if(room!=null)
-					ExternalPlay.resetRoom(room);
+					CoffeeUtensils.resetRoom(room);
 			}
 			lastAccess=System.currentTimeMillis();
 		}

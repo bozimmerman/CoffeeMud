@@ -44,7 +44,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 		I.setCapacity(1);
 		I.setContainTypes(Container.CONTAIN_COINS);
 		putInBag(I);
-		Coins money=Money.makeNote(value,this.owner(),I);
+		Coins money=MoneyUtils.makeNote(value,this.owner(),I);
 		I.setName(money.Name()+" sleeve");
 		I.setDisplayText(money.Name()+" sleeve has been left here.");
 		I.recoverEnvStats();

@@ -132,9 +132,9 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						if(spellName.length()>0)
 						{
 							spellName=spellName.trim();
-							thisOne=(Ability)CoffeeUtensils.fetchEnvironmental(Spells,spellName,true);
+							thisOne=(Ability)EnglishParser.fetchEnvironmental(Spells,spellName,true);
 							if(thisOne==null)
-								thisOne=(Ability)CoffeeUtensils.fetchEnvironmental(Spells,spellName,false);
+								thisOne=(Ability)EnglishParser.fetchEnvironmental(Spells,spellName,false);
 							while((thisOne==null)&&(spellName.length()>0))
 							{
 
@@ -145,9 +145,9 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 								{
 									params.insertElementAt(spellName.substring(t).trim(),0);
 									spellName=spellName.substring(0,t);
-									thisOne=(Ability)CoffeeUtensils.fetchEnvironmental(Spells,spellName,true);
+									thisOne=(Ability)EnglishParser.fetchEnvironmental(Spells,spellName,true);
 									if(thisOne==null)
-										thisOne=(Ability)CoffeeUtensils.fetchEnvironmental(Spells,spellName,false);
+										thisOne=(Ability)EnglishParser.fetchEnvironmental(Spells,spellName,false);
 								}
 							}
 						}

@@ -40,7 +40,7 @@ public class Skill_Explosive extends StdAbility
 				int damage=Dice.roll(1,90+mob.envStats().level(),30);
 				if(msg.value()>0)
 					damage=damage/2;
-				ExternalPlay.postDamage(mob,target,this,damage,CMMsg.TYP_OK_VISUAL,Weapon.TYPE_BURSTING,"The blast <DAMAGE> <T-NAME>!!!");
+				MUDFight.postDamage(mob,target,this,damage,CMMsg.TYP_OK_VISUAL,Weapon.TYPE_BURSTING,"The blast <DAMAGE> <T-NAME>!!!");
 			}
 		}
 		else

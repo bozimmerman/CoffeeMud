@@ -115,11 +115,11 @@ public class ClimbableSurface extends StdRoom
 						ladder=findALadder(mob,getRoomInDir(Directions.DOWN));
 						if(ladder!=null)
 						{
-							ExternalPlay.look(mob,null,false);
+							CommonMsgs.look(mob,false);
 							mountLadder(mob,ladder);
 						}
 						if(Sense.isClimbing(mob))
-							ExternalPlay.move(mob,Directions.DOWN,false,true);
+							MUDTracker.move(mob,Directions.DOWN,false,true);
 						else
 							InTheAir.makeFall(mob,this,0);
 					}

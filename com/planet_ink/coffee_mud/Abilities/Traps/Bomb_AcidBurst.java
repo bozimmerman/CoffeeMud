@@ -35,7 +35,7 @@ public class Bomb_AcidBurst extends StdBomb
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,affected.name()+" sprays acid all over <T-NAME>!"))
 			{
 				super.spring(target);
-				ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),24,1),CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(invoker(),target,null,Dice.roll(trapLevel(),24,1),CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
 			}
 		}
 	}

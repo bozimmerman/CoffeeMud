@@ -40,7 +40,7 @@ public class Fighter_Cleave extends StdAbility
 			if(w==null) w=mob.myNaturalWeapon();
 			if(mob.location().show(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> CLEAVE(S) INTO <T-NAME>!!"))
 			{
-				ExternalPlay.postAttack(mob,nextTarget,w);
+				MUDFight.postAttack(mob,nextTarget,w);
 				helpProfficiency(mob);
 			}
 		}

@@ -49,7 +49,7 @@ public class StdCage extends StdContainer
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(ExternalPlay.niceLister(mob,newItems,true));
+					buf.append(CMLister.niceLister(mob,newItems,true));
 				}
 				else
 				{
@@ -61,7 +61,7 @@ public class StdCage extends StdContainer
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(ExternalPlay.niceLister(mob,newItems,true));
+					buf.append(CMLister.niceLister(mob,newItems,true));
 				}
 				mob.tell(buf.toString());
 			}

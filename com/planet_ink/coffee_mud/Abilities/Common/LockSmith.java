@@ -91,7 +91,7 @@ public class LockSmith extends CommonSkill
 							((Exit)workingOn).recoverEnvStats();
 							((Exit)workingOn).setDoorsNLocks(true,false,true,true,true,true);
 							((Exit)workingOn).setKeyName(((Key)building).getKey());
-							ExternalPlay.DBUpdateExits(mob.location());
+							CMClass.DBEngine().DBUpdateExits(mob.location());
 							if((exit2!=null)
 							   &&(!boltlock)
 							   &&(exit2.hasADoor())
@@ -100,7 +100,7 @@ public class LockSmith extends CommonSkill
 							{
 								((Exit)exit2).setDoorsNLocks(true,false,true,true,true,true);
 								((Exit)exit2).setKeyName(((Key)building).getKey());
-								ExternalPlay.DBUpdateExits(room2);
+								CMClass.DBEngine().DBUpdateExits(room2);
 							}
 						}
 					}

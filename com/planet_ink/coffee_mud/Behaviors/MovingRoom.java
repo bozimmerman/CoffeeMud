@@ -288,8 +288,8 @@ public class MovingRoom extends ActiveTicker
 								subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]=null;
 								subwayRoom.rawExits()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]=null;
 							}
-							ExternalPlay.DBUpdateExits(subwayRoom);
-							ExternalPlay.DBUpdateExits(currentStopRoom);
+							CMClass.DBEngine().DBUpdateExits(subwayRoom);
+							CMClass.DBEngine().DBUpdateExits(currentStopRoom);
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(currentStopRoom);
 							removeStubs(subwayRoom,currentStopRoom);
@@ -328,8 +328,8 @@ public class MovingRoom extends ActiveTicker
 								subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]=null;
 								subwayRoom.rawExits()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]=null;
 							}
-							ExternalPlay.DBUpdateExits(subwayRoom);
-							ExternalPlay.DBUpdateExits(currentStopRoom);
+							CMClass.DBEngine().DBUpdateExits(subwayRoom);
+							CMClass.DBEngine().DBUpdateExits(currentStopRoom);
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(currentStopRoom);
 							removeStubs(subwayRoom,currentStopRoom);
@@ -363,8 +363,8 @@ public class MovingRoom extends ActiveTicker
 							subwayRoom.rawExits()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]=thisNewExit;
 							nextStopRoom.rawDoors()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]=subwayRoom;
 							nextStopRoom.rawExits()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]=thisNewExit;
-							ExternalPlay.DBUpdateExits(subwayRoom);
-							ExternalPlay.DBUpdateExits(nextStopRoom);
+							CMClass.DBEngine().DBUpdateExits(subwayRoom);
+							CMClass.DBEngine().DBUpdateExits(nextStopRoom);
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(nextStopRoom);
 							removeStubs(subwayRoom,nextStopRoom);
@@ -395,8 +395,8 @@ public class MovingRoom extends ActiveTicker
 							subwayRoom.rawExits()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]=thisNewExit;
 							nextStopRoom.rawDoors()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]=subwayRoom;
 							nextStopRoom.rawExits()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]=thisNewExit;
-							ExternalPlay.DBUpdateExits(subwayRoom);
-							ExternalPlay.DBUpdateExits(nextStopRoom);
+							CMClass.DBEngine().DBUpdateExits(subwayRoom);
+							CMClass.DBEngine().DBUpdateExits(nextStopRoom);
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(nextStopRoom);
 							removeStubs(subwayRoom,nextStopRoom);

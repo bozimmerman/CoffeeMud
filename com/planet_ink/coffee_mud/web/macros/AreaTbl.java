@@ -14,7 +14,7 @@ public class AreaTbl extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		// have to check, otherwise we'll be stuffing a blank string into resources
-		if (!httpReq.getMUD().isGameRunning())
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 		{
 			return "<TR><TD colspan=\"" + AT_MAX_COL + "\" class=\"cmAreaTblEntry\"><I>Game is not running - unable to get area list!</I></TD></TR>";
 		}

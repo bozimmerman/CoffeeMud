@@ -98,7 +98,7 @@ public class Artisan extends StdCharClass
 					exp++;
 			}
 			if(exp>0)
-				ExternalPlay.postExperience(mob,null,mob.getLeigeID(),exp,false);
+				MUDFight.postExperience(mob,null,mob.getLeigeID(),exp,false);
 		}
 		return super.tick(ticking,tickID);
 	}

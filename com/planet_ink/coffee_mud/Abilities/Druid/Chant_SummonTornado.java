@@ -167,7 +167,7 @@ public class Chant_SummonTornado extends Chant
 							int damage = Dice.roll(maxDie,7,1);
 							if((msg.value()>0)||(msg2.value()>0))
 								damage = (int)Math.round(Util.div(damage,2.0));
-							ExternalPlay.postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
+							MUDFight.postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
 							if(R!=mob.location()) M.tell("Wait a minute! Where are you?");
 						}
 					}

@@ -52,7 +52,7 @@ public class Chant_SummonFear extends Chant
 						if(msg2.value()<=0)
 						{
 							invoker=mob;
-							ExternalPlay.flee(target,"");
+							CommonMsgs.flee(target,"");
 						}
 					}
 				}

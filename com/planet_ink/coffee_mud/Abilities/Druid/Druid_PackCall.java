@@ -165,7 +165,7 @@ public class Druid_PackCall extends StdAbility
 					newMOB.setStartRoom(null);
 					int dir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
 					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> arrive(s) "+Directions.getFromDirectionName(dir)+" and attack(s) "+victim.name()+"!");
-					ExternalPlay.follow(newMOB,mob,true);
+					CommonMsgs.follow(newMOB,mob,true);
 					if(newMOB.amFollowing()!=mob)
 					{
 						newMOB.destroy();

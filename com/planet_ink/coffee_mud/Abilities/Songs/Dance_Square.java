@@ -31,13 +31,10 @@ public class Dance_Square extends Dance
 				MOB M=(MOB)affected;
 				if(!cmd.toUpperCase().startsWith("FOL"))
 				{
-					try{
-						if(Sense.canBeHeardBy(invoker(),M)
-						&&Sense.canBeSeenBy(invoker(),M)
-						&&(M.location()==invoker().location()))
-							ExternalPlay.doCommand(M,Util.parse(cmd));
-					}
-					catch(Exception e){}
+					if(Sense.canBeHeardBy(invoker(),M)
+					&&Sense.canBeSeenBy(invoker(),M)
+					&&(M.location()==invoker().location()))
+						M.enqueCommand(Util.parse(cmd),0);
 				}
 			}
 		}

@@ -38,7 +38,7 @@ public class Disease_Asthma extends Disease
 				int damage=mob.curState().getHitPoints()/2;
 				MOB diseaser=invoker;
 				if(diseaser==null) diseaser=mob;
-				ExternalPlay.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,"<S-NAME> <S-HAS-HAVE> an asthma attack! It <DAMAGE> <S-NAME>!");
+				MUDFight.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,"<S-NAME> <S-HAS-HAVE> an asthma attack! It <DAMAGE> <S-NAME>!");
 			}
 			else
 				mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());

@@ -71,14 +71,7 @@ public class Spell_Command extends Spell
 					{
 						invoker=mob;
 						target.makePeace();
-						try
-						{
-							ExternalPlay.doCommand(target,commands);
-						}
-						catch(Exception e)
-						{
-							mob.tell(target.charStats().HeShe()+" smiles, saying '"+e.getMessage()+"'.");
-						}
+						target.enqueCommand(commands,0);
 					}
 				}
 			}

@@ -28,10 +28,10 @@ public class Thief_Bribe extends ThiefSkill
 
 		if(canBeUninvoked())
 		{
-			ExternalPlay.follow(mob,null,false);
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.follow(mob,null,false);
+			CommonMsgs.stand(mob,true);
 			if((mob.isMonster())&&(!Sense.isMobile(mob)))
-				CoffeeUtensils.wanderAway(mob,true,true);
+				MUDTracker.wanderAway(mob,true,true);
 		}
 	}
 
@@ -87,15 +87,7 @@ public class Thief_Bribe extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				try
-				{
-					ExternalPlay.doCommand(target,commands);
-					beneficialAffect(mob,target,0);
-				}
-				catch(Exception e)
-				{
-					mob.tell(target.charStats().HeShe()+" takes your money and smiles, saying '"+e.getMessage()+"'.");
-				}
+				target.doCommand(commands);
 			}
 			target.setMoney(mob.getMoney()+amountRequired);
 			target.recoverEnvStats();

@@ -31,7 +31,7 @@ public class Fighter_AtemiStrike extends StdAbility
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				ExternalPlay.postDeath(invoker,mob,null);
+				MUDFight.postDeath(invoker,mob,null);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class Fighter_AtemiStrike extends StdAbility
 		else
 			levelDiff=0;
 		// now see if it worked
-		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus(target)+target.adjustedArmor()));
+		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(target)+target.adjustedArmor()));
 		boolean success=profficiencyCheck((-levelDiff)+(-((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH)))),auto)&&(hit);
 		if(success)
 		{

@@ -170,7 +170,9 @@ public class Conquerable extends Arrest
 
 	private synchronized void endClanRule()
 	{
-		if((holdingClan.length()==0)||(!ExternalPlay.getSystemStarted()))
+		if(holdingClan.length()==0)
+			return;
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return;
 
 		for(int v=0;v<clanItems.size();v++)
@@ -208,16 +210,16 @@ public class Conquerable extends Arrest
 				}
 			}
 
-			ExternalPlay.channel("CLANTALK","ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
+			CommonMsgs.channel("CLANTALK","ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
 			if(journalName.length()>0)
-				ExternalPlay.DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.",-1);
+				CMClass.DBEngine().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.",-1);
 			Law laws=getLaws(myArea,false);
 			if(laws.lawIsActivated())
 			{
 				laws.setInternalStr("ACTIVATED","FALSE");
 				laws.resetLaw();
-				ExternalPlay.DBDeleteData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST");
-				ExternalPlay.DBCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
+				CMClass.DBEngine().DBDeleteData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST");
+				CMClass.DBEngine().DBCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
 			}
 
 		}
@@ -227,7 +229,7 @@ public class Conquerable extends Arrest
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!ExternalPlay.getSystemStarted())
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return true;
 
 		if(!super.tick(ticking,tickID))
@@ -252,7 +254,7 @@ public class Conquerable extends Arrest
 		if((totalControlPoints<0)&&(myArea!=null))
 		{
 			HashSet doneMOBs=new HashSet();
-			Vector itemSet=ExternalPlay.DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
+			Vector itemSet=CMClass.DBEngine().DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 			if((itemSet!=null)&&(itemSet.size()>0)&&(((Vector)itemSet.firstElement()).size()>3))
 			{
 				String data=(String)((Vector)itemSet.firstElement()).elementAt(3);
@@ -282,7 +284,7 @@ public class Conquerable extends Arrest
 									newItem.baseEnvStats().setAbility(XMLManager.getIntFromPieces(roomData,"IABLE"));
 									newItem.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(roomData,"IREJV"));
 									newItem.setUsesRemaining(XMLManager.getIntFromPieces(roomData,"IUSES"));
-									newItem.setMiscText(Generic.restoreAngleBrackets(XMLManager.getValFromPieces(roomData,"ITEXT")));
+									newItem.setMiscText(CoffeeMaker.restoreAngleBrackets(XMLManager.getValFromPieces(roomData,"ITEXT")));
 									newItem.recoverEnvStats();
 									MOB foundMOB=null;
 									if(MOBname.length()>0)
@@ -409,8 +411,8 @@ public class Conquerable extends Arrest
 								Vector V=new Vector();
 								V.addElement("YELL");
 								V.addElement(warCrys[Dice.roll(1,warCrys.length,-1)]);
-								try{ExternalPlay.doCommand(M1,V);}catch(Exception e){}
-								ExternalPlay.postAttack(M1,M2,M1.fetchWieldedItem());
+								M1.doCommand(V);
+								MUDFight.postAttack(M1,M2,M1.fetchWieldedItem());
 							}
 							assaults.removeElementAt(0);
 						}
@@ -499,9 +501,9 @@ public class Conquerable extends Arrest
 						M.setClanID(holdingClan);
 				}
 			}
-			ExternalPlay.channel("CLANTALK","ALL",holdingClan+" gains control of "+myArea.name()+".",false);
+			CommonMsgs.channel("CLANTALK","ALL",holdingClan+" gains control of "+myArea.name()+".",false);
 			if(journalName.length()>0)
-				ExternalPlay.DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" gains control of "+myArea.name()+".","See the subject line.",-1);
+				CMClass.DBEngine().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" gains control of "+myArea.name()+".","See the subject line.",-1);
 		}
 	}
 
@@ -582,7 +584,7 @@ public class Conquerable extends Arrest
 	{
 		super.executeMsg(myHost,msg);
 		if((myHost instanceof Area)
-		&&(ExternalPlay.getSystemStarted())
+		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 		&&(totalControlPoints>0))
 		{
 			// first look for kills and follows and register the points
@@ -671,7 +673,7 @@ public class Conquerable extends Arrest
 			&&(myArea!=null)
 			&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
 			{
-				ExternalPlay.DBDeleteData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
+				CMClass.DBEngine().DBDeleteData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 				StringBuffer data=new StringBuffer("");
 				data.append(XMLManager.convertXMLtoTag("CLANID",holdingClan));
 				data.append("<ACITEMS>");
@@ -706,13 +708,13 @@ public class Conquerable extends Arrest
 							data.append(XMLManager.convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
 							data.append(XMLManager.convertXMLtoTag("ILEVL",I.baseEnvStats().level()));
 							data.append(XMLManager.convertXMLtoTag("IABLE",I.baseEnvStats().ability()));
-							data.append(XMLManager.convertXMLtoTag("ITEXT",Generic.parseOutAngleBrackets(I.text())));
+							data.append(XMLManager.convertXMLtoTag("ITEXT",CoffeeMaker.parseOutAngleBrackets(I.text())));
 							data.append("</ACITEM>");
 						}
 					}
 				}
 				data.append("</ACITEMS>");
-				ExternalPlay.DBCreateData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
+				CMClass.DBEngine().DBCreateData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
 			}
 		}
 	}
@@ -721,7 +723,7 @@ public class Conquerable extends Arrest
 	{
 		if((holdingClan.length()==0)
 		||(!allowLaw)
-		||(!ExternalPlay.getSystemStarted()))
+		||(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)))
 			return false;
 		Clan C=Clans.getClan(holdingClan);
 		if(C==null){ endClanRule(); return false;}
@@ -732,7 +734,7 @@ public class Conquerable extends Arrest
 	{
 		if((holdingClan.length()==0)
 		||(!allowLaw)
-		||(!ExternalPlay.getSystemStarted()))
+		||(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)))
 			return false;
 		if(flagFound(null,holdingClan))
 			return true;

@@ -52,17 +52,17 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					R.rawDoors()[d]=null;
 					R.rawExits()[d]=null;
 					updateExits=true;
-					ExternalPlay.obliterateRoom(R2);
+					CoffeeUtensils.obliterateRoom(R2);
 					R2.getArea().fillInAreaRoom(R2);
 				}
 			}
 			if(!foundOne)
 			{
-				ExternalPlay.obliterateRoom(R);
+				CoffeeUtensils.obliterateRoom(R);
 				return;
 			}
 			if(updateExits)
-				ExternalPlay.DBUpdateExits(R);
+				CMClass.DBEngine().DBUpdateExits(R);
 		}
 		else
 		{
@@ -73,7 +73,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				if(R2==null)
 				{
 					R2=CMClass.getLocale(CMClass.className(R));
-					R2.setRoomID(ExternalPlay.getOpenRoomID(R.getArea().Name()));
+					R2.setRoomID(CMMap.getOpenRoomID(R.getArea().Name()));
 					R2.setArea(R.getArea());
 					Ability newTitle=null;
 					for(int a=0;a<R.numEffects();a++)
@@ -96,15 +96,15 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					R2.rawExits()[Directions.getOpDirectionCode(d)]=CMClass.getExit("Open");
 					updateExits=true;
 
-					ExternalPlay.DBCreateRoom(R2,CMClass.className(R2));
+					CMClass.DBEngine().DBCreateRoom(R2,CMClass.className(R2));
 					CMMap.addRoom(R2);
 					colorForSale(R2,true);
 					R2.getArea().fillInAreaRoom(R2);
-					ExternalPlay.DBUpdateExits(R2);
+					CMClass.DBEngine().DBUpdateExits(R2);
 				}
 			}
 			if(updateExits)
-				ExternalPlay.DBUpdateExits(R);
+				CMClass.DBEngine().DBUpdateExits(R);
 			R.getArea().fillInAreaRoom(R);
 		}
 	}

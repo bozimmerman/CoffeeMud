@@ -27,7 +27,7 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 			plagueDown=4;
 			if(invoker==null) invoker=mob;
 			int dmg=(mob.envStats().level()/2)+1;
-			ExternalPlay.postDamage(invoker,mob,this,dmg,CMMsg.TYP_DISEASE,-1,"<T-NAME> watch(es) <T-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
+			MUDFight.postDamage(invoker,mob,this,dmg,CMMsg.TYP_DISEASE,-1,"<T-NAME> watch(es) <T-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
 			if(mob.location()==null) return false;
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchEffect(ID())==null))

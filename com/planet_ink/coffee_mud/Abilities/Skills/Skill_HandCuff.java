@@ -124,7 +124,7 @@ public class Skill_HandCuff extends StdAbility
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> released from the handcuffs.");
 			if(!oldAssist)
 				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 	}
 
@@ -169,8 +169,8 @@ public class Skill_HandCuff extends StdAbility
 							oldAssist=Util.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
 							if(!oldAssist)
 								target.setBitmap(Util.setb(target.getBitmap(),MOB.ATT_AUTOASSIST));
-							ExternalPlay.unfollow(target,true);
-							ExternalPlay.follow(target,mob,true);
+							CommonMsgs.doStandardCommand(target,"NoFollow",Util.makeVector("UNFOLLOW","QUIETLY"));
+							CommonMsgs.follow(target,mob,true);
 							target.setFollowing(mob);
 						}
 					}

@@ -60,7 +60,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		String name=thisThang.ID();
 		if(thisThang instanceof Coins) name="COINS";
-		ExternalPlay.DBCreateData(mob,bankChain(),""+thisThang+Math.random(),name+";"+Generic.getPropertiesStr(thisThang,true));
+		CMClass.DBEngine().DBCreateData(mob,bankChain(),""+thisThang+Math.random(),name+";"+CoffeeMaker.getPropertiesStr(thisThang,true));
 	}
 
 	protected Item makeItem(String data)
@@ -74,7 +74,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			I=CMClass.getItem(data.substring(0,x));
 		if(I!=null)
 		{
-			Generic.setPropertiesStr(I,data.substring(x+1),true);
+			CoffeeMaker.setPropertiesStr(I,data.substring(x+1),true);
 			I.recoverEnvStats();
 			I.text();
 			return I;
@@ -91,7 +91,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			Vector V2=(Vector)V.elementAt(v);
 			if(money&&((String)V2.elementAt(DATA_DATA)).startsWith("COINS;"))
 			{
-				ExternalPlay.DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_BANK)),((String)V2.elementAt(DATA_KEY)));
+				CMClass.DBEngine().DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_BANK)),((String)V2.elementAt(DATA_KEY)));
 				break;
 			}
 
@@ -99,14 +99,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 			if(I==null) continue;
 			if(thisThang.sameAs(I))
 			{
-				ExternalPlay.DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_BANK)),((String)V2.elementAt(DATA_KEY)));
+				CMClass.DBEngine().DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_BANK)),((String)V2.elementAt(DATA_KEY)));
 				break;
 			}
 		}
 	};
 	public void delAllDeposits(String mob)
 	{
-		ExternalPlay.DBDeleteData(mob,bankChain());
+		CMClass.DBEngine().DBDeleteData(mob,bankChain());
 	};
 	public int numberDeposited(String mob)
 	{
@@ -129,11 +129,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 	}
 	public Vector getDepositInventory(String mob)
 	{
-		return ExternalPlay.DBReadData(mob,bankChain());
+		return CMClass.DBEngine().DBReadData(mob,bankChain());
 	};
 	public Vector getAccountNames()
 	{
-		Vector V=ExternalPlay.DBReadData(bankChain());
+		Vector V=CMClass.DBEngine().DBReadData(bankChain());
 		HashSet h=new HashSet();
 		Vector mine=new Vector();
 		for(int v=0;v<V.size();v++)
@@ -160,7 +160,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 			Item I=makeItem((String)V2.elementAt(DATA_DATA));
 			if(I==null) continue;
-			if(CoffeeUtensils.containsString(I.Name(),likeThis))
+			if(EnglishParser.containsString(I.Name(),likeThis))
 				return I;
 		}
 		return null;
@@ -195,7 +195,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				if(proceed)
 				{
-					Vector V=ExternalPlay.DBReadData(bankChain());
+					Vector V=CMClass.DBEngine().DBReadData(bankChain());
 					Vector userNames=new Vector();
 					for(int v=0;v<V.size();v++)
 					{
@@ -203,7 +203,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						String name=(String)V2.elementAt(0);
 						if(!userNames.contains(name))
 						{
-							if(!ExternalPlay.DBUserSearch(null,name))
+							if(!CMClass.DBEngine().DBUserSearch(null,name))
 							{
 								if((Clans.getClan(name))==null)
 									delAllDeposits(name);
@@ -338,9 +338,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 							recoverEnvStats();
 						}
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-						    ExternalPlay.quickSay(this,mob,"Ok, Clan "+mob.getClanID()+" now has a balance of "+getBalance(msg.source())+" gold coins.",true,false);
+						    CommonMsgs.say(this,mob,"Ok, Clan "+mob.getClanID()+" now has a balance of "+getBalance(msg.source())+" gold coins.",true,false);
 						else
-						    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+getBalance(msg.source())+" gold coins.",true,false);
+						    CommonMsgs.say(this,mob,"Ok, your new balance is "+getBalance(msg.source())+" gold coins.",true,false);
 					}
 					else
 					{
@@ -348,7 +348,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							addDepositInventory(msg.source().getClanID(),(Item)msg.tool());
 						else
 							addDepositInventory(msg.source().Name(),(Item)msg.tool());
-					    ExternalPlay.quickSay(this,mob,"Thank you, "+msg.tool().name()+" is safe with us.",true,false);
+					    CommonMsgs.say(this,mob,"Thank you, "+msg.tool().name()+" is safe with us.",true,false);
 						((Item)msg.tool()).destroy();
 					}
 				}
@@ -372,13 +372,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 								delDepositInventory(msg.source().getClanID(),item);
 							else
 								delDepositInventory(msg.source().Name(),item);
-							com.planet_ink.coffee_mud.utils.Money.giveMoney(mob,msg.source(),((Coins)old).numberOfCoins());
+							MoneyUtils.giveMoney(mob,msg.source(),((Coins)old).numberOfCoins());
 							if(coins.numberOfCoins()<=0)
 							{
 								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-									ExternalPlay.quickSay(this,mob,"I have closed the account for Clan "+mob.getClanID()+". Thanks for your business.",true,false);
+									CommonMsgs.say(this,mob,"I have closed the account for Clan "+mob.getClanID()+". Thanks for your business.",true,false);
 								else
-									ExternalPlay.quickSay(this,mob,"I have closed your account. Thanks for your business.",true,false);
+									CommonMsgs.say(this,mob,"I have closed your account. Thanks for your business.",true,false);
 								return;
 							}
 							else
@@ -386,17 +386,17 @@ public class StdBanker extends StdShopKeeper implements Banker
 								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 								{
 									addDepositInventory(msg.source().getClanID(),item);
-								    ExternalPlay.quickSay(this,mob,"Ok, Clan "+msg.source().getClanID()+" now has a balance of "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
+								    CommonMsgs.say(this,mob,"Ok, Clan "+msg.source().getClanID()+" now has a balance of "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
 								}
 								else
 								{
 									addDepositInventory(msg.source().Name(),item);
-								    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
+								    CommonMsgs.say(this,mob,"Ok, your new balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
 								}
 							}
 						}
 						else
-						    ExternalPlay.quickSay(this,mob,"But, your balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
+						    CommonMsgs.say(this,mob,"But, your balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
 					}
 					else
 					{
@@ -404,7 +404,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							delDepositInventory(msg.source().getClanID(),old);
 						else
 							delDepositInventory(msg.source().Name(),old);
-					    ExternalPlay.quickSay(this,mob,"Thank you for your trust.",true,false);
+					    CommonMsgs.say(this,mob,"Thank you for your trust.",true,false);
 						if(location()!=null)
 							location().addItemRefuse(old,Item.REFUSE_PLAYER_DROP);
 						FullMsg msg2=new FullMsg(mob,old,this,CMMsg.MSG_GET,null);
@@ -479,7 +479,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				if(bankChain().length()>0)
 					str.append("\n\rI am a banker for "+bankChain()+".");
-				ExternalPlay.quickSay(this,mob,str.toString()+"^T",true,false);
+				CommonMsgs.say(this,mob,str.toString()+"^T",true,false);
 				return;
 			}
 			default:
@@ -509,7 +509,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					&&((msg.source().getClanID().length()==0)
 					  ||(Clans.getClan(msg.source().getClanID())==null)))
 					{
-						ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
+						CommonMsgs.say(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 						return false;
 					}
 					if(!(msg.tool() instanceof Item))
@@ -522,9 +522,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(balance<minbalance)
 					{
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-							ExternalPlay.quickSay(this,mob,"Clan "+msg.source().getClanID()+" will need a total balance of "+minbalance+" for me to hold that.",true,false);
+							CommonMsgs.say(this,mob,"Clan "+msg.source().getClanID()+" will need a total balance of "+minbalance+" for me to hold that.",true,false);
 						else
-							ExternalPlay.quickSay(this,mob,"You'll need a total balance of "+minbalance+" for me to hold that.",true,false);
+							CommonMsgs.say(this,mob,"You'll need a total balance of "+minbalance+" for me to hold that.",true,false);
 						return false;
 					}
 				}
@@ -539,25 +539,25 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if((msg.source().getClanID().length()==0)
 						  ||(C==null))
 						{
-							ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
+							CommonMsgs.say(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 							return false;
 						}
 
 						if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANWITHDRAW)<0)
 						{
-							ExternalPlay.quickSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
+							CommonMsgs.say(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 							return false;
 						}
 					}
 					if((msg.tool()==null)||(!(msg.tool() instanceof Item)))
 					{
-						ExternalPlay.quickSay(this,mob,"What do you want? I'm busy!",true,false);
+						CommonMsgs.say(this,mob,"What do you want? I'm busy!",true,false);
 						return false;
 					}
 					if((!(msg.tool() instanceof Coins))
 					&&(findDepositInventory(thename,msg.tool().Name())==null))
 					{
-						ExternalPlay.quickSay(this,mob,"You want WHAT?",true,false);
+						CommonMsgs.say(this,mob,"You want WHAT?",true,false);
 						return false;
 					}
 					int balance=getBalance(msg.source());
@@ -567,18 +567,18 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(((Coins)msg.tool()).numberOfCoins()>balance)
 						{
 							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-								ExternalPlay.quickSay(this,mob,"I'm sorry, Clan "+thename+" has only "+balance+" gold coins in its account.",true,false);
+								CommonMsgs.say(this,mob,"I'm sorry, Clan "+thename+" has only "+balance+" gold coins in its account.",true,false);
 							else
-								ExternalPlay.quickSay(this,mob,"I'm sorry, you have only "+balance+" gold coins in your account.",true,false);
+								CommonMsgs.say(this,mob,"I'm sorry, you have only "+balance+" gold coins in your account.",true,false);
 							return false;
 						}
 						if(minbalance==0) return true;
 						if(((Coins)msg.tool()).numberOfCoins()>(balance-minbalance))
 						{
 							if((balance-minbalance)>0)
-								ExternalPlay.quickSay(this,mob,"I'm sorry, you may only withdraw "+(balance-minbalance)+" gold coins at this time.",true,false);
+								CommonMsgs.say(this,mob,"I'm sorry, you may only withdraw "+(balance-minbalance)+" gold coins at this time.",true,false);
 							else
-								ExternalPlay.quickSay(this,mob,"I am holding other items in trust, so you may not withdraw funds at this time.",true,false);
+								CommonMsgs.say(this,mob,"I am holding other items in trust, so you may not withdraw funds at this time.",true,false);
 							return false;
 						}
 					}
@@ -600,12 +600,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if((msg.source().getClanID().length()==0)
 					  ||(C==null))
 					{
-						ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
+						CommonMsgs.say(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 						return false;
 					}
 					if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANDEPOSITLIST)<0)
 					{
-						ExternalPlay.quickSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
+						CommonMsgs.say(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 						return false;
 					}
 				}
@@ -630,7 +630,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					if(bankChain().length()>0)
 						str.append("\n\rI am a banker for "+bankChain()+".");
-					ExternalPlay.quickSay(this,mob,str.toString()+"^T",true,false);
+					CommonMsgs.say(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
 				else

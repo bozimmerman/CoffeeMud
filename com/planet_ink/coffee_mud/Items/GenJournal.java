@@ -26,7 +26,7 @@ public class GenJournal extends StdJournal
 
 	public String text()
 	{
-		return Generic.getPropertiesStr(this,false);
+		return CoffeeMaker.getPropertiesStr(this,false);
 	}
 
 	public String readableText(){return readableText;}
@@ -34,14 +34,14 @@ public class GenJournal extends StdJournal
 	public void setMiscText(String newText)
 	{
 		miscText="";
-		Generic.setPropertiesStr(this,newText,false);
+		CoffeeMaker.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
 	public String getStat(String code)
-	{ return Generic.getGenItemStat(this,code);}
+	{ return CoffeeMaker.getGenItemStat(this,code);}
 	public void setStat(String code, String val)
-	{ Generic.setGenItemStat(this,code,val);}
-	public String[] getStatCodes(){return Generic.GENITEMCODES;}
+	{ CoffeeMaker.setGenItemStat(this,code,val);}
+	public String[] getStatCodes(){return CoffeeMaker.GENITEMCODES;}
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenJournal)) return false;

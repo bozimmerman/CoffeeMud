@@ -35,7 +35,7 @@ public class Prayer_CureLight extends Prayer
 			{
 				mob.location().send(mob,msg);
 				int healing=Dice.roll(2,adjustedLevel(mob),4);
-				ExternalPlay.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+				MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel a little better!");
 			}
 		}

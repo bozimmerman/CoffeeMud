@@ -73,8 +73,6 @@ public interface Session
 						 String msg,
 						 boolean wrapOnly);
 
-	public void enque(int tickDown, Vector commands);
-	public Vector deque();
 	public Vector previousCMD();
 	
 	public MOB mob();

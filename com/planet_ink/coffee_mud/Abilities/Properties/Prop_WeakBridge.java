@@ -87,7 +87,7 @@ public class Prop_WeakBridge extends Property
 								falling.setAffectedOne(msg.target());
 								falling.invoke(null,null,mob,true);
 							}
-							ExternalPlay.startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
+							CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
 						}
 					}
 				}
@@ -159,14 +159,14 @@ public class Prop_WeakBridge extends Property
 					}
 					if(affected instanceof Room)
 						((Room)affected).recoverEnvStats();
-					ExternalPlay.deleteTick(this,MudHost.TICK_SPELL_AFFECT);
-					ExternalPlay.startTickDown(this,MudHost.TICK_SPELL_AFFECT,ticksDown);
+					CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_SPELL_AFFECT);
+					CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_SPELL_AFFECT,ticksDown);
 				}
 			}
 			else
 			{
 				bridgeIsUp=true;
-				ExternalPlay.deleteTick(this,MudHost.TICK_SPELL_AFFECT);
+				CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_SPELL_AFFECT);
 				if(affected instanceof Room)
 					((Room)affected).recoverEnvStats();
 			}

@@ -32,7 +32,7 @@ public class Prop_NarrowLedge extends Property
 		{
 			synchronized(mobsToKill)
 			{
-				ExternalPlay.deleteTick(this,MudHost.TICK_SPELL_AFFECT);
+				CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_SPELL_AFFECT);
 				Vector V=((Vector)mobsToKill.clone());
 				mobsToKill.clear();
 				for(int v=0;v<V.size();v++)
@@ -80,7 +80,7 @@ public class Prop_NarrowLedge extends Property
 						falling.setProfficiency(0);
 						falling.setAffectedOne(msg.target());
 						falling.invoke(null,null,mob,true);
-						ExternalPlay.startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
+						CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
 					}
 				}
 			}

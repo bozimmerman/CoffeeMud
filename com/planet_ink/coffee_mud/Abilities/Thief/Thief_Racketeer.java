@@ -72,7 +72,7 @@ public class Thief_Racketeer extends ThiefSkill
 				C.setNumberOfCoins(amount);
 				C.recoverEnvStats();
 				mob.location().addItemRefuse(C,Item.REFUSE_PLAYER_DROP);
-				ExternalPlay.get(mob,null,C,true);
+				CommonMsgs.get(mob,null,C,true);
 			}
 		}
 		else

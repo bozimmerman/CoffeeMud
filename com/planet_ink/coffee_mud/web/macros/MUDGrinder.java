@@ -14,8 +14,8 @@ public class MUDGrinder extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
-			return httpReq.getMUD().gameStatusStr();
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			return CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS);
 
 		if(parms!=null)
 		if(parms.containsKey("AREAMAP"))
@@ -93,7 +93,7 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null) return "@break@";
 			Area A=getLoggedArea(httpReq,mob);
 			if(A==null) return "@break@";
-			ExternalPlay.obliterateArea(A.Name());
+			CoffeeUtensils.obliterateArea(A.Name());
 			Log.sysOut("Grinder",mob.Name()+" obliterated area "+A.Name());
 			return "The area "+A.Name()+" has been successfully deleted.";
 		}
@@ -106,7 +106,7 @@ public class MUDGrinder extends StdWebMacro
 			if(AREA.length()==0) return "false";
 			Area A=CMMap.getArea(AREA);
 			if(A==null)
-				A=ExternalPlay.DBCreateArea(AREA,"StdArea");
+				A=CMClass.DBEngine().DBCreateArea(AREA,"StdArea");
 			else
 				return "false";
 			Log.sysOut("Grinder",mob.Name()+" added area "+A.Name());

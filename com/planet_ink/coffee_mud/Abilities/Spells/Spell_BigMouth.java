@@ -30,7 +30,7 @@ public class Spell_BigMouth extends Spell
 			MOB target=(MOB)msg.target();
 			if(target.envStats().weight()<(mob.envStats().weight()/2))
 			{
-				boolean isHit=(CoffeeUtensils.normalizeAndRollLess(msg.source().adjustedAttackBonus(target)+target.adjustedArmor()));
+				boolean isHit=(Dice.normalizeAndRollLess(msg.source().adjustedAttackBonus(target)+target.adjustedArmor()));
 				if(!isHit)
 					mob.tell("You fail to eat "+target.name());
 				else
@@ -111,7 +111,7 @@ public class Spell_BigMouth extends Spell
 					Stomach.send(mob,DigestMsg);
 					int damage=(int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2));
 					if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-					ExternalPlay.postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
+					MUDFight.postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

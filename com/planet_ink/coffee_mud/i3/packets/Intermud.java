@@ -214,13 +214,13 @@ public class Intermud implements Runnable, Persistent, Serializable {
 		if(thread.name_servers.size()==0) return null;
         return (NameServer)thread.name_servers.elementAt(0);
 	}
-	
+
     private synchronized void connect() {
 		if(shutdown) return;
         attempts++;
         try {
             NameServer n = (NameServer)name_servers.elementAt(0);
-			
+
             connection = new Socket(n.ip, n.port);
             output = new DataOutputStream(connection.getOutputStream());
             send("({\"startup-req-3\",5,\"" + intermud.getMudName() + "\",0,\"" +
@@ -232,7 +232,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
 			/* for my amusement
 			({"startup-req-3",5,"TESTMUD",0,"TESTMUD",0,*gjs,0,0,27766,0,0,","3","3",
 			"CoffeeMud","OK","bo@zimmers.net",(["who":1,]),([]),})
-			({"channel-listen",5,"diku_chat",0,"TESTMUD",0,"diku_chat",1,})			
+			({"channel-listen",5,"diku_chat",0,"TESTMUD",0,"diku_chat",1,})
 			*/
             connected = true;
             input_thread = new Thread(this);
@@ -252,11 +252,11 @@ public class Intermud implements Runnable, Persistent, Serializable {
         catch( Exception e ) {
             try { Thread.sleep(attempts * 10); }
             catch( InterruptedException ignore )
-			{ 
+			{
 				if(shutdown)
 				{
 					Log.sysOut("Intermud","Shutdown!");
-					return; 
+					return;
 				}
 			}
             connect();
@@ -330,7 +330,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
 		if(thread==null) return false;
 		return thread.connected;
 	}
-	
+
     public void run() {
 
         try {
@@ -344,12 +344,12 @@ public class Intermud implements Runnable, Persistent, Serializable {
             Vector data;
 
             try { Thread.sleep(100); }
-            catch( InterruptedException e ) 
-			{ 
+            catch( InterruptedException e )
+			{
 				if(shutdown)
 				{
 					Log.sysOut("Intermud","Shutdown!!");
-					return; 
+					return;
 				}
 			}
             // Read a packet from the router
@@ -369,11 +369,11 @@ public class Intermud implements Runnable, Persistent, Serializable {
                     connected = false;
                     try { Thread.sleep(120); }
 					catch (InterruptedException ee)
-					{ 
+					{
 						if(shutdown)
 						{
 							Log.sysOut("Intermud","Shutdown!!!");
-							return; 
+							return;
 						}
 					}
                     connect();
@@ -577,7 +577,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
      * reconnecting.
      * @see java.lang.Runnable#stop
      */
-    public void stop() 
+    public void stop()
 	{
 		connected = false;
 		shutdown=true;
@@ -595,8 +595,8 @@ public class Intermud implements Runnable, Persistent, Serializable {
         catch( PersistenceException e ) { }
 		shutdown=false;
     }
-	
-	
+
+
 
     /**
      * Adds a channel to the channel list.
@@ -685,7 +685,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
         muds = list;
     }
 
-    private String getMudNameFor(String mud) 
+    private String getMudNameFor(String mud)
 	{
         Enumeration list = muds.getMuds().keys();
         mud = mud.toLowerCase().replace('.', ' ');
@@ -699,7 +699,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
         list = muds.getMuds().keys();
         while( list.hasMoreElements() ) {
             String str = (String)list.nextElement();
-            if( CoffeeUtensils.containsString(str,mud) ) {
+            if( EnglishParser.containsString(str,mud) ) {
                 return str;
             }
         }
@@ -720,20 +720,20 @@ public class Intermud implements Runnable, Persistent, Serializable {
     public void setPassword(int pass) {
         password = pass;
     }
-	
+
 	public static void shutdown()
 	{
 		if(thread!=null)
 			thread.stop();
 		thread=null;
 	}
-	
+
 }
 
 class SaveThread extends Thread {
     private Intermud intermud;
 	private boolean closed=false;
-	
+
     public SaveThread(Intermud imud) {
         super("Intermud save");
         intermud = imud;
@@ -741,7 +741,7 @@ class SaveThread extends Thread {
 
 	public void close()
 	{ closed=true; }
-	
+
     public void run() {
         while( !closed ) {
             try {
@@ -749,12 +749,12 @@ class SaveThread extends Thread {
                 if(!closed) intermud.save();
             }
 			catch (InterruptedException e)
-			{ 
+			{
 				Log.sysOut("Intermud","Save Thread Shutdown!");
-				return; 
+				return;
 			}
             catch( PersistenceException e ) {
-                
+
             }
         }
     }

@@ -49,14 +49,14 @@ public class MOBHunter extends ActiveTicker
 	{
 		MOB prey=null;
 		Vector rooms=new Vector();
-		SaucerSupport.getRadiantRooms(mob.location(),rooms,true,true,true,null,radius);
+		MUDTracker.getRadiantRooms(mob.location(),rooms,true,true,true,null,radius);
 		for(int r=0;r<rooms.size();r++)
 		{
 			Room R=(Room)rooms.elementAt(r);
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB M=R.fetchInhabitant(i);
-				if(SaucerSupport.zapperCheck(getParms(),M))
+				if(MUDZapper.zapperCheck(getParms(),M))
 				{
 					prey=M;
 					break;

@@ -63,7 +63,7 @@ public class Skill_Bash extends StdAbility
 					w.setDisplayText(thisSheild.displayText());
 					w.setDescription(thisSheild.description());
 					w.baseEnvStats().setDamage(thisSheild.envStats().level()+5);
-					ExternalPlay.postAttack(mob,target,w);
+					MUDFight.postAttack(mob,target,w);
 				}
 			}
 		}

@@ -24,7 +24,7 @@ public class MobileAggressive extends Mobile
 	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		return SaucerSupport.zapperCheck(getParms(),M);
+		return MUDZapper.zapperCheck(getParms(),M);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

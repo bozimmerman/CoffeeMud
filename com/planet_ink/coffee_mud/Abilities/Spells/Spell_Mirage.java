@@ -97,8 +97,8 @@ public class Spell_Mirage extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The appearance of this place changes...");
-				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
-				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+				if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
 				{
 					Ability A=(Ability)copyOf();
 					A.setInvoker(mob);

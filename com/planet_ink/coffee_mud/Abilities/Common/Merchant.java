@@ -44,7 +44,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				itemstr.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(I)));
 				itemstr.append(XMLManager.convertXMLtoTag("INUM",""+numberInStock(I)));
 				itemstr.append(XMLManager.convertXMLtoTag("IVAL",""+stockPrice(I)));
-				itemstr.append(XMLManager.convertXMLtoTag("IDATA",Generic.getPropertiesStr(I,true)));
+				itemstr.append(XMLManager.convertXMLtoTag("IDATA",CoffeeMaker.getPropertiesStr(I,true)));
 				itemstr.append("</INV>");
 			}
 			text=itemstr.toString()+"</INVS>";
@@ -91,7 +91,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					Log.errOut("Merchant","Error parsing 'INV' data.");
 					return;
 				}
-				Generic.setPropertiesStr(newOne,idat,true);
+				CoffeeMaker.setPropertiesStr(newOne,idat,true);
 				Item I=(Item)newOne;
 				I.recoverEnvStats();
 				V.addElement(I);
@@ -282,8 +282,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public Environmental getStock(String name, MOB mob)
 	{
 		Vector V=getUniqueStoreInventory();
-		Environmental item=CoffeeUtensils.fetchEnvironmental(V,name,true);
-		if(item==null) item=CoffeeUtensils.fetchEnvironmental(V,name,false);
+		Environmental item=EnglishParser.fetchEnvironmental(V,name,true);
+		if(item==null) item=EnglishParser.fetchEnvironmental(V,name,false);
 		if(item==null) return null;
 		return (Environmental)item;
 	}
@@ -359,22 +359,22 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				&&(doIHaveThisInStock(msg.tool().Name(),mob)))
 				{
 					if((msg.targetMinor()!=CMMsg.TYP_VIEW)
-					&&(yourValue(mob,msg.tool(),true)[0]>Money.totalMoney(mob)))
+					&&(yourValue(mob,msg.tool(),true)[0]>MoneyUtils.totalMoney(mob)))
 					{
-						ExternalPlay.quickSay(M,mob,"You can't afford to buy "+msg.tool().name()+".",false,false);
+						CommonMsgs.say(M,mob,"You can't afford to buy "+msg.tool().name()+".",false,false);
 						return false;
 					}
 					if(msg.tool() instanceof Item)
 					{
 						if(((Item)msg.tool()).envStats().level()>mob.envStats().level())
 						{
-							ExternalPlay.quickSay(M,mob,"That's too advanced for you, I'm afraid.",true,false);
+							CommonMsgs.say(M,mob,"That's too advanced for you, I'm afraid.",true,false);
 							return false;
 						}
 					}
 					return super.okMessage(myHost,msg);
 				}
-				ExternalPlay.quickSay(M,mob,"I don't have that in stock.  Ask for my LIST.",true,false);
+				CommonMsgs.say(M,mob,"I don't have that in stock.  Ask for my LIST.",true,false);
 				return false;
 			}
 			case CMMsg.TYP_LIST:
@@ -414,7 +414,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
 				if((msg.tool()!=null)&&(doIHaveThisInStock(msg.tool().Name(),mob)))
-					ExternalPlay.quickSay(M,msg.source(),"Interested in "+msg.tool().name()+"? Here is some information for you:\n\rLevel "+msg.tool().envStats().level()+"\n\rDescription: "+msg.tool().description(),true,false);
+					CommonMsgs.say(M,msg.source(),"Interested in "+msg.tool().name()+"? Here is some information for you:\n\rLevel "+msg.tool().envStats().level()+"\n\rDescription: "+msg.tool().description(),true,false);
 				break;
 			case CMMsg.TYP_BUY:
 				super.executeMsg(myHost,msg);
@@ -425,7 +425,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					Vector products=removeSellableProduct(msg.tool().Name(),mob);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
-					Money.subtractMoney(M,mob,price);
+					MoneyUtils.subtractMoney(M,mob,price);
 					M.setMoney(M.getMoney()+price);
 					mob.recoverEnvStats();
 					if(product instanceof Item)
@@ -449,9 +449,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					super.executeMsg(myHost,msg);
 					StringBuffer str=listInventory(mob);
 					if(str.length()==0)
-						ExternalPlay.quickSay(M,mob,"I have nothing for sale.",false,false);
+						CommonMsgs.say(M,mob,"I have nothing for sale.",false,false);
 					else
-						ExternalPlay.quickSay(M,mob,"\n\r"+str+"^T",true,false);
+						CommonMsgs.say(M,mob,"\n\r"+str+"^T",true,false);
 				}
 				break;
 			default:

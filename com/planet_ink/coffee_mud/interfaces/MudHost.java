@@ -28,13 +28,6 @@ public interface MudHost
 
 	public final static int MAX_TICK_CLIENTS=32;
 
-	public String getVer();
-	public boolean isGameRunning();
-	public void shutdown(Session S, boolean keepItDown, String externalCommand);
 	public int getPort();
-	public String getPortStr();
-	public String gameStatusStr();
-	public String ServerVersionString();
-	public Properties getCommonPropPage();
-	public void setGameStatusStr(String str);
+	public void shutdown(Session S, boolean keepItDown, String externalCommand);
 }

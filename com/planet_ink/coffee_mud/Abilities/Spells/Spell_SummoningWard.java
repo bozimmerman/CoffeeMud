@@ -82,9 +82,9 @@ public class Spell_SummoningWard extends Spell
 			if(s.equalsIgnoreCase("here"))
 				target=mob.location();
 			else
-			if(CoffeeUtensils.containsString(mob.location().ID(),s)
-			||CoffeeUtensils.containsString(mob.location().name(),s)
-			||CoffeeUtensils.containsString(mob.location().displayText(),s))
+			if(EnglishParser.containsString(mob.location().ID(),s)
+			||EnglishParser.containsString(mob.location().name(),s)
+			||EnglishParser.containsString(mob.location().displayText(),s))
 				target=mob.location();
 		}
 		if(target==null)
@@ -102,8 +102,8 @@ public class Spell_SummoningWard extends Spell
 			{
 				mob.location().send(mob,msg);
 				if((target instanceof Room)
-				&&((ExternalPlay.doesOwnThisProperty(mob,((Room)target)))
-					||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
+				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
+					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
 					target.addNonUninvokableEffect(this);
 				else
 					beneficialAffect(mob,target,0);

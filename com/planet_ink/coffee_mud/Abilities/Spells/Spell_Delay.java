@@ -61,7 +61,7 @@ public class Spell_Delay extends Spell
 			return false;
 		}
 		commands.insertElementAt("CAST",0);
-		shooter=ExternalPlay.getToEvoke(mob,commands);
+		shooter=EnglishParser.getToEvoke(mob,commands);
 		parameters=commands;
 		if((shooter==null)||((shooter.classificationCode()&Ability.ALL_CODES)!=Ability.SPELL))
 		{

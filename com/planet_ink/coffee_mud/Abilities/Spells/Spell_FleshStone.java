@@ -127,7 +127,7 @@ public class Spell_FleshStone extends Spell
 			mob.curState().setMovement(0);
 			mob.curState().setHunger(0);
 			mob.curState().setThirst(0);
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 	}
 
@@ -182,7 +182,7 @@ public class Spell_FleshStone extends Spell
 							a++;
 					}
 					target.makePeace();
-					ExternalPlay.standIfNecessary(target);
+					CommonMsgs.stand(target,true);
 					statue=CMClass.getItem("GenItem");
 					String name=target.name();
 					if(name.startsWith("A ")) name="a "+name.substring(2);

@@ -114,7 +114,7 @@ public class Burning extends StdAbility
 		{
 			Item I=(Item)affected;
 			if(!ouch((MOB)I.owner()))
-				ExternalPlay.drop((MOB)I.owner(),I,false,false);
+				CommonMsgs.drop((MOB)I.owner(),I,false,false);
 			if(I.subjectToWearAndTear())
 			{
 				if((I.usesRemaining()<1000)
@@ -146,7 +146,7 @@ public class Burning extends StdAbility
 				mob.tell("Ouch!! "+Util.capitalize(affected.name())+" is on fire!");
 				break;
 			}
-			ExternalPlay.postDamage(invoker,mob,this,Dice.roll(1,5,5),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,null);
+			MUDFight.postDamage(invoker,mob,this,Dice.roll(1,5,5),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,null);
 			return false;
 		}
 		return true;

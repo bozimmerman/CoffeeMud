@@ -50,7 +50,7 @@ public class Disease_Gangrene extends Disease
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int damage=1;
-			ExternalPlay.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+			MUDFight.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
 			if(Dice.rollPercentage()==1)
 			{
 				Ability A=CMClass.getAbility("Disease_Fever");
@@ -72,7 +72,7 @@ public class Disease_Gangrene extends Disease
 			{
 				MOB diseaser=invoker;
 				if(diseaser==null) diseaser=affected;
-				ExternalPlay.postDeath(diseaser,affected,null);
+				MUDFight.postDeath(diseaser,affected,null);
 			}
 		}
 	}

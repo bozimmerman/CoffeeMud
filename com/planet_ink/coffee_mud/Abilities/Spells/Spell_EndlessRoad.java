@@ -25,7 +25,7 @@ public class Spell_EndlessRoad extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			mob.tell("You feel like you are finally getting somewhere.");
-		ExternalPlay.standIfNecessary(mob);
+		CommonMsgs.stand(mob,true);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

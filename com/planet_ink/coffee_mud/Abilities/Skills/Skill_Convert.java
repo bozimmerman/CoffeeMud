@@ -93,7 +93,7 @@ public class Skill_Convert extends StdAbility
 				if(dRoom!=null)
 					dRoom.send(target,msg2);
 				if(mob!=target)
-					ExternalPlay.postExperience(mob,null,null,200,false);
+					MUDFight.postExperience(mob,null,null,200,false);
 			}
 		}
 		else

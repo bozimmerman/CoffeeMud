@@ -59,7 +59,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 							if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 								mob.charStats().getCurrentClass().level(mob);
 							else
-								ExternalPlay.postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+								MUDFight.postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
 						}
 						mob.recoverCharStats();
 						mob.recoverEnvStats();
@@ -68,7 +68,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						mob.charStats().getCurrentClass().startCharacter(mob,true,false);
 						mob.charStats().getCurrentClass().outfit(mob);
 						mob.setSession(session);
-						ExternalPlay.DBUpdateMOB(mob);
+						CMClass.DBEngine().DBUpdateMOB(mob);
 					}
 				}
 				mob.tell("The book vanishes out of your hands.");

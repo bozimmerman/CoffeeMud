@@ -49,7 +49,7 @@ public class GoodGuardian extends StdBehavior
 			if(!BrotherHelper.isBrother(victim,observer))
 			{
 				boolean yep=Aggressive.startFight(observer,victim,true);
-				if(yep)	ExternalPlay.quickSay(observer,null,"PROTECT THE INNOCENT!",false,false);
+				if(yep)	CommonMsgs.say(observer,null,"PROTECT THE INNOCENT!",false,false);
 			}
 		}
 		else

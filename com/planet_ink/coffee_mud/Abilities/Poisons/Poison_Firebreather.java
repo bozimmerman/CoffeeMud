@@ -27,7 +27,7 @@ public class Poison_Firebreather extends Poison_Liquor
 				if((A!=null)&&(mob.fetchEffect(A.ID())==null))
 					A.invoke(mob,mob,true);
 			}
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 		super.unInvoke();
 	}
@@ -65,7 +65,7 @@ public class Poison_Firebreather extends Poison_Liquor
 						damage += Dice.roll(maxDie,6,1);
 						if(msg.value()>0)
 							damage = (int)Math.round(Util.div(damage,2.0));
-						ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"^FThe fire <DAMAGE> <T-NAME>!^?");
+						MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"^FThe fire <DAMAGE> <T-NAME>!^?");
 					}
 				}
 			}

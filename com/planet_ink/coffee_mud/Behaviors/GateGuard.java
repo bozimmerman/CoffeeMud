@@ -91,7 +91,7 @@ public class GateGuard extends StdBehavior
 			if((M!=null)
 			&&(!M.isMonster())
 			&&(Sense.canBeSeenBy(M,mob))
-			&&(SaucerSupport.zapperCheck(getParms(),M)))
+			&&(MUDZapper.zapperCheck(getParms(),M)))
 				num++;
 		}
 		return num;
@@ -112,7 +112,7 @@ public class GateGuard extends StdBehavior
 			{
 				int dir=findGate(mob);
 				if((dir>=0)
-				&&(SaucerSupport.zapperCheck(getParms(),msg.source())))
+				&&(MUDZapper.zapperCheck(getParms(),msg.source())))
 				{
 					Exit e=mob.location().getExitInDir(dir);
 					if(msg.amITarget(e))
@@ -145,7 +145,7 @@ public class GateGuard extends StdBehavior
 					{
 						FullMsg msg=new FullMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
 						if(mob.location().okMessage(mob,msg))
-							ExternalPlay.roomAffectFully(msg,mob.location(),dir);
+							CoffeeUtensils.roomAffectFully(msg,mob.location(),dir);
 					}
 				}
 			}
@@ -157,16 +157,16 @@ public class GateGuard extends StdBehavior
 					{
 						FullMsg msg=new FullMsg(mob,e,CMMsg.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAME>.");
 						if(mob.location().okMessage(mob,msg))
-							ExternalPlay.roomAffectFully(msg,mob.location(),dir);
+							CoffeeUtensils.roomAffectFully(msg,mob.location(),dir);
 					}
 				}
 				if((numPlayers>0)&&(!e.isOpen())&&(!e.isLocked()))
 				{
-					try{ExternalPlay.doCommand(mob,Util.parse("OPEN "+Directions.getDirectionName(dir)));}catch(Exception e1){}
+					mob.doCommand(Util.parse("OPEN "+Directions.getDirectionName(dir)));
 				}
 				if((numPlayers==0)&&(e.isOpen()))
 				{
-					try{ExternalPlay.doCommand(mob,Util.parse("CLOSE "+Directions.getDirectionName(dir)));}catch(Exception e1){}
+					mob.doCommand(Util.parse("CLOSE "+Directions.getDirectionName(dir)));
 				}
 				if((numPlayers==0)&&(!e.isOpen())&&(!e.isLocked())&&(e.hasALock())&&(keepLocked))
 				{
@@ -174,7 +174,7 @@ public class GateGuard extends StdBehavior
 					{
 						FullMsg msg=new FullMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
 						if(mob.location().okMessage(mob,msg))
-							ExternalPlay.roomAffectFully(msg,mob.location(),dir);
+							CoffeeUtensils.roomAffectFully(msg,mob.location(),dir);
 					}
 				}
 			}

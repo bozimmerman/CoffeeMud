@@ -46,7 +46,7 @@ public class Chant_DeathMoon extends Chant
 			{
 				MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(M!=invoker))
-					ExternalPlay.postDamage(invoker,M,this,Dice.roll(1,M.envStats().level(),0),CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The gaze of the death moon <DAMAGE> <T-NAME>!");
+					MUDFight.postDamage(invoker,M,this,Dice.roll(1,M.envStats().level(),0),CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The gaze of the death moon <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

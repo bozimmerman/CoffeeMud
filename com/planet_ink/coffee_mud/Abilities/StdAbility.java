@@ -105,7 +105,7 @@ public class StdAbility implements Ability, Cloneable
 				((Room)affected).recoverRoomStats();
 			else
 				affected.recoverEnvStats();
-			ExternalPlay.startTickDown(this,MudHost.TICK_MOB,1);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_MOB,1);
 		}
 		tickDown=tickTime;
 	}
@@ -566,7 +566,7 @@ public class StdAbility implements Ability, Cloneable
 
 	public Hashtable properTargets(MOB mob, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+		Hashtable h=MUDFight.properTargets(this,mob,auto);
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 		{
 			if(h==null) h=new Hashtable();

@@ -31,7 +31,7 @@ public class Spell_KnowBliss extends Spell
 			   &&(!mob.amDead())
 			   &&(mob.location()!=null)
 			   &&(mob.location()!=mob.getStartRoom()))
-					CoffeeUtensils.wanderAway(mob,true,true);
+					MUDTracker.wanderAway(mob,true,true);
 		}
 	}
 
@@ -55,7 +55,7 @@ public class Spell_KnowBliss extends Spell
 			if((affected==null)||(!(affected instanceof MOB)))
 				return super.tick(ticking,tickID);
 			MOB mob=(MOB)affected;
-			CoffeeUtensils.wanderAway(mob,false,true);
+			MUDTracker.wanderAway(mob,false,true);
 		}
 		return super.tick(ticking,tickID);
 	}

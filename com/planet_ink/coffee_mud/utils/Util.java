@@ -211,6 +211,18 @@ public class Util
 		return s.toString().substring(2);
 	}
 	
+	public static Vector makeVector()
+	{ return new Vector();}
+	public static Vector makeVector(Object O)
+	{ Vector V=new Vector(); V.addElement(O); return V;}
+	public static Vector makeVector(Object O, Object O2)
+	{ Vector V=new Vector(); V.addElement(O); V.addElement(O2); return V;}
+	public static Vector makeVector(Object O, Object O2, Object O3)
+	{ Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); return V;}
+	public static Vector makeVector(Object O, Object O2, Object O3, Object O4)
+	{ Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); V.addElement(O4); return V;}
+		
+	
 	public static String[] toStringArray(Hashtable V)
 	{
 		if((V==null)||(V.size()==0)){

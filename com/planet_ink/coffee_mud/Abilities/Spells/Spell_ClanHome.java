@@ -57,14 +57,14 @@ public class Spell_ClanHome extends Spell
 					{
 						if(follower.isInCombat())
 						{
-							ExternalPlay.flee(follower,"NOWHERE");
+							CommonMsgs.flee(follower,("NOWHERE"));
 							follower.makePeace();
 						}
 						thisRoom.send(follower,leaveMsg);
 						clanHomeRoom.bringMobHere(follower,false);
 						clanHomeRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						ExternalPlay.look(follower,null,true);
+						CommonMsgs.look(follower,true);
 					}
 				}
 			}

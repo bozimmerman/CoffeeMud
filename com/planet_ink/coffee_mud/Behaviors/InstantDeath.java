@@ -36,7 +36,7 @@ public class InstantDeath extends ActiveTicker
 		for(int v=0;v<V.size();v++)
 		{
 			MOB M=(MOB)V.elementAt(v);
-			ExternalPlay.postDeath(null,M,null);
+			MUDFight.postDeath(null,M,null);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class InstantDeath extends ActiveTicker
 				Room room=getBehaversRoom(ticking);
 				if(room==null) return true;
 				if(E instanceof MOB)
-					ExternalPlay.postDeath(null,(MOB)E,null);
+					MUDFight.postDeath(null,(MOB)E,null);
 				else
 				if(E instanceof Room)
 					killEveryoneHere(null,(Room)E);

@@ -259,9 +259,9 @@ public class Druid_ShapeShift extends StdAbility
 					else
 					{
 						list.append(Util.padLeft(""+(i+1),2)+") "+A.raceName+" ("+forms[A.myRaceCode]+")\n\r");
-						if(CoffeeUtensils.containsString(A.raceName,parm))
+						if(EnglishParser.containsString(A.raceName,parm))
 							return A.invoke(mob,new Vector(),givenTarget,auto);
-						if(CoffeeUtensils.containsString(forms[A.myRaceCode],parm))
+						if(EnglishParser.containsString(forms[A.myRaceCode],parm))
 							return A.invoke(mob,new Vector(),givenTarget,auto);
 					}
 				}

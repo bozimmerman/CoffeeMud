@@ -74,7 +74,7 @@ public class Trap_Avalanche extends StdTrap
 							if(invoker().mayIFight(M))
 							{
 								int damage=Dice.roll(trapLevel(),20,1);
-								ExternalPlay.postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_BASHING,"The avalanche <DAMAGE> <T-NAME>!");
+								MUDFight.postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_BASHING,"The avalanche <DAMAGE> <T-NAME>!");
 							}
 					}
 				}

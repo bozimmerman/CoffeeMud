@@ -32,7 +32,7 @@ public class Spell_AcidFog extends Spell
 			if((!vic.amDead())&&(vic.location()!=null))
 			{
 				int damage=vic.envStats().level();
-				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(1,damage,0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
+				MUDFight.postDamage(invoker,vic,this,Dice.roll(1,damage,0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
 			}
 		}
 		return super.tick(ticking,tickID);

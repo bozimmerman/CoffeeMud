@@ -76,8 +76,8 @@ public class Trap_SpikePit extends Trap_RoomPit
 			}
 			else
 				damage+=Dice.roll(5,4,0);
-			ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"Spikes on the pit floor <DAMAGE> <T-NAME>!");
+			MUDFight.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"Spikes on the pit floor <DAMAGE> <T-NAME>!");
 		}
-		ExternalPlay.look(target,null,true);
+		CommonMsgs.look(target,true);
 	}
 }

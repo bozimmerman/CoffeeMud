@@ -61,7 +61,7 @@ public class Skill_Climb extends StdAbility
 				mob.recoverEnvStats();
 			}
 
-			ExternalPlay.move(mob,dirCode,false,false);
+			MUDTracker.move(mob,dirCode,false,false);
 			mob.delEffect(this);
 			mob.recoverEnvStats();
 			if(!success)

@@ -32,8 +32,8 @@ public class Prop_AbilityImmunity extends Property
 			Ability d = (Ability)msg.tool();
 			for(int i = 0; i < diseases.size(); i++)
 			{
-				if((CoffeeUtensils.containsString(d.ID(),((String)diseases.elementAt(i))))
-				||(CoffeeUtensils.containsString(d.name(),((String)diseases.elementAt(i)))))
+				if((EnglishParser.containsString(d.ID(),((String)diseases.elementAt(i))))
+				||(EnglishParser.containsString(d.name(),((String)diseases.elementAt(i)))))
 				{
 					if(msg.target() instanceof MOB)
 						((MOB)msg.target()).tell("You are immune to "+msg.tool().name()+".");

@@ -11,6 +11,20 @@ public class Dice
         randomizer = new Random(System.currentTimeMillis());
     }
 	
+	public static boolean normalizeAndRollLess(int score)
+	{
+		return (rollPercentage()<normalizeBy5(score));
+	}
+	public static int normalizeBy5(int score)
+	{
+		if(score>95)
+			return 95;
+		else
+		if(score<5)
+			return 5;
+		return score;
+	}
+
 	public static int rollHP(int level, int code)
 	{
 		int mul=1;

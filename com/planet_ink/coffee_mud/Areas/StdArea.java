@@ -401,13 +401,13 @@ public class StdArea implements Area
 
 	public String text()
 	{
-		return Generic.getPropertiesStr(this,true);
+		return CoffeeMaker.getPropertiesStr(this,true);
 	}
 	public void setMiscText(String newMiscText)
 	{
 		miscText="";
 		if(newMiscText.trim().length()>0)
-			Generic.setPropertiesStr(this,newMiscText,true);
+			CoffeeMaker.setPropertiesStr(this,newMiscText,true);
 	}
 
 	public String description()
@@ -530,7 +530,7 @@ public class StdArea implements Area
 		if(start)
 		{
 			stopTicking=false;
-			ExternalPlay.startTickDown(this,MudHost.TICK_AREA,1);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_AREA,1);
 		}
 		else
 			stopTicking=true;
@@ -1363,14 +1363,14 @@ public class StdArea implements Area
 
 	public int[] getAreaIStats()
 	{
-		if(!ExternalPlay.getSystemStarted())
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return null;
 		getAreaStats();
 		return statData;
 	}
 	public StringBuffer getAreaStats()
 	{
-		if(!ExternalPlay.getSystemStarted())
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return new StringBuffer("");
 		StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+Name().toUpperCase());
 		if(s!=null) return s;

@@ -84,7 +84,7 @@ public class Chant_CharmAnimal extends Chant
 			return false;
 		MOB mob=(MOB)affecting();
 		if((affected==mob)&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer())))
-			ExternalPlay.follow(mob,getCharmer(),true);
+			CommonMsgs.follow(mob,getCharmer(),true);
 		return super.tick(ticking,tickID);
 	}
 
@@ -100,14 +100,14 @@ public class Chant_CharmAnimal extends Chant
 		if(canBeUninvoked())
 		{
 			mob.tell("Your free-will returns.");
-			ExternalPlay.follow(mob,null,false);
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.follow(mob,null,false);
+			CommonMsgs.stand(mob,true);
 			if(mob.isMonster())
 			{
 				if(Dice.rollPercentage()>50)
 				{
 					if(!Sense.isMobile(mob))
-						CoffeeUtensils.wanderAway(mob,true,true);
+						MUDTracker.wanderAway(mob,true,true);
 				}
 				else
 				if((invoker!=null)&&(invoker!=mob))
@@ -155,8 +155,8 @@ public class Chant_CharmAnimal extends Chant
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();
-						ExternalPlay.follow(target,mob,false);
-						ExternalPlay.makePeaceInGroup(mob);
+						CommonMsgs.follow(target,mob,false);
+						MUDFight.makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)
 							mob.tell(target.name()+" seems unwilling to follow you.");
 					}

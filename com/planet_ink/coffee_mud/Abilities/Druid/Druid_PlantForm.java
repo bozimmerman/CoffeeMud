@@ -172,7 +172,7 @@ public class Druid_PlantForm extends StdAbility
 					choices.addElement(s);
 					buf.append(s+"\n\r");
 				}
-				if(CoffeeUtensils.containsString(s,choice))
+				if(EnglishParser.containsString(s,choice))
 				{
 					classLevel=i;
 					break;

@@ -27,7 +27,7 @@ public class Dance_Jingledress extends Dance
 		if(invoker()!=null)
 		{
 			int healing=Dice.roll(2,adjustedLevel(invoker()),4);
-			ExternalPlay.postHealing(invoker(),mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+			MUDFight.postHealing(invoker(),mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 		}
 		return true;
 	}

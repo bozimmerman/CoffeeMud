@@ -36,7 +36,7 @@ public class Bomb_Water extends StdBomb
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,affected.name()+" explodes water all over <T-NAME>!"))
 			{
 				super.spring(target);
-				SaucerSupport.extinguish(invoker(),target,true);
+				CoffeeUtensils.extinguish(invoker(),target,true);
 			}
 		}
 	}

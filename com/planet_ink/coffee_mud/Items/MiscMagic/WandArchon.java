@@ -97,7 +97,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 						if(target.getExpNeededLevel()==Integer.MAX_VALUE)
 							target.charStats().getCurrentClass().level(target);
 						else
-							ExternalPlay.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+							MUDFight.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 					}
 				}
 				else
@@ -107,7 +107,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					if(target.getExpNeededLevel()==Integer.MAX_VALUE)
 						target.charStats().getCurrentClass().level(target);
 					else
-						ExternalPlay.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+						MUDFight.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 					return;
 				}
 				else
@@ -125,7 +125,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,me.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= 3;
-					ExternalPlay.postDamage(mob,target,null,(++flameDamage),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,(me.name()+" <DAMAGE> <T-NAME>!")+CommonStrings.msp("fireball.wav",30));
+					MUDFight.postDamage(mob,target,null,(++flameDamage),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,(me.name()+" <DAMAGE> <T-NAME>!")+CommonStrings.msp("fireball.wav",30));
 					return;
 				}
 			}

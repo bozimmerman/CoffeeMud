@@ -94,9 +94,9 @@ public class Spell_Knock extends Spell
 					}
 				}
 				msg=new FullMsg(mob,openThis,null,CMMsg.MSG_UNLOCK,null);
-				ExternalPlay.roomAffectFully(msg,mob.location(),dirCode);
+				CoffeeUtensils.roomAffectFully(msg,mob.location(),dirCode);
 				msg=new FullMsg(mob,openThis,null,CMMsg.MSG_OPEN,"<T-NAME> opens.");
-				ExternalPlay.roomAffectFully(msg,mob.location(),dirCode);
+				CoffeeUtensils.roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}
 

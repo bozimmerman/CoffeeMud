@@ -53,12 +53,12 @@ public class GenExit extends StdExit
 	public boolean isGeneric(){return true;}
 	public String text()
 	{
-		return Generic.getPropertiesStr(this,false);
+		return CoffeeMaker.getPropertiesStr(this,false);
 	}
 
 	public void setMiscText(String newText)
 	{
-		Generic.setPropertiesStr(this,newText,false);
+		CoffeeMaker.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 		isOpen=!doorDefaultsClosed;
 		isLocked=doorDefaultsLocked;

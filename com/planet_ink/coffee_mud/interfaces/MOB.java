@@ -100,14 +100,16 @@ public interface MOB
 	public long peaceTime();
 
 
-	/** If the MOB is controlled by a USER, this
-	 * will point to the controlling session object*/
-	public Session session();
+	/** Primary mob communication */
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);
 	public void tell(String msg);
-	public void setSession(Session newSession);
+	public void enqueCommand(Vector commands, int tickDelay);
+	public void dequeCommand();
+	public void doCommand(Vector commands);
 
 	/** Whether a sessiob object is attached to this MOB */
+	public Session session();
+	public void setSession(Session newSession);
 	public boolean isMonster();
 	public boolean isASysOp(Room of);
 	public MOB soulMate();

@@ -37,7 +37,7 @@ public class Prop_PeaceMaker extends Property
 							Vector V=Util.parseSemicolons(text(),true);
 							t=(String)V.elementAt(Dice.roll(1,V.size(),-1));
 						}
-						ExternalPlay.quickSay(mob,msg.source(),t,false,false);
+						CommonMsgs.say(mob,msg.source(),t,false,false);
 					}
 					else
 						return super.okMessage(myHost,msg);

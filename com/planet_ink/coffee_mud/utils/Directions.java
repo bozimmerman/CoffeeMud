@@ -1,7 +1,5 @@
 package com.planet_ink.coffee_mud.utils;
 
-
-import com.planet_ink.coffee_mud.interfaces.Room;
 public class Directions
 {
 	public final static int NUM_DIRECTIONS=7;

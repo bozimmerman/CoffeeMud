@@ -61,7 +61,7 @@ public class Hireling extends StdBehavior
 	{
 		workingFor="";
 		onTheJobUntil=0;
-		ExternalPlay.follow(observer,null,false);
+		CommonMsgs.follow(observer,null,false);
 		observer.setFollowing(null);
 		int direction=-1;
 		for(int d=0;d<4;d++)
@@ -74,7 +74,7 @@ public class Hireling extends StdBehavior
 				else
 					direction=d;
 		if(direction>=0)
-			ExternalPlay.move(observer,direction,false,false);
+			MUDTracker.move(observer,direction,false,false);
 		if(observer.getStartRoom()!=null)
 			observer.getStartRoom().bringMobHere(observer,false);
 	}
@@ -89,7 +89,7 @@ public class Hireling extends StdBehavior
 		{
 			Integer I=(Integer)partials.get(workingFor);
 			partials.remove(workingFor);
-			ExternalPlay.standIfNecessary(observer);
+			CommonMsgs.stand(observer,true);
 			if(!canActAtAll(observer))
 			{
 				workingFor="";
@@ -112,13 +112,13 @@ public class Hireling extends StdBehavior
 			if(additional<=0)
 			{
 				if(talkTo!=null)
-					ExternalPlay.quickSay(observer,talkTo,"Your time is up.  Goodbye!",true,false);
+					CommonMsgs.say(observer,talkTo,"Your time is up.  Goodbye!",true,false);
 				allDone(observer);
 			}
 			else
 			{
 				if(talkTo!=null)
-					ExternalPlay.quickSay(observer,talkTo,"Your base time is up, but you've paid for "+additional+" more minutes, so I'll hang around.",true,false);
+					CommonMsgs.say(observer,talkTo,"Your base time is up, but you've paid for "+additional+" more minutes, so I'll hang around.",true,false);
 				onTheJobUntil+=(additional*IQCalendar.MILI_MINUTE);
 			}
 		}
@@ -131,7 +131,7 @@ public class Hireling extends StdBehavior
 			MOB talkTo=observer.location().fetchInhabitant(workingFor);
 			if(talkTo!=null)
 			{
-				ExternalPlay.follow(observer,talkTo,false);
+				CommonMsgs.follow(observer,talkTo,false);
 				observer.setFollowing(talkTo);
 			}
 		}
@@ -149,10 +149,10 @@ public class Hireling extends StdBehavior
 			&&(!msg.amISource(observer))
 			&&(msg.targetMinor() == CMMsg.TYP_GIVE)
 			&&(msg.tool() != null)
-			&&(!SaucerSupport.zapperCheck(zapper(),source))
+			&&(!MUDZapper.zapperCheck(zapper(),source))
 			&&(msg.tool()instanceof Coins))
 			{
-				ExternalPlay.quickSay(observer,null,"I wouldn't work for the likes of you.",false,false);
+				CommonMsgs.say(observer,null,"I wouldn't work for the likes of you.",false,false);
 				return false;
 			}
 
@@ -163,7 +163,7 @@ public class Hireling extends StdBehavior
 			{
 				if((msg.target() instanceof MOB)
 				&&(!((MOB)msg.target()).isASysOp(source.location())))
-					ExternalPlay.quickSay(observer,null,"I don't think so.",false,false);
+					CommonMsgs.say(observer,null,"I don't think so.",false,false);
 				return false;
 			}
 		}
@@ -193,14 +193,14 @@ public class Hireling extends StdBehavior
 			if(((msg.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
 				||(msg.sourceMessage().toUpperCase().indexOf("'HIRE")>0))
 			&&(onTheJobUntil==0))
-				ExternalPlay.quickSay(observer,null,"I'm for hire.  Just give me "+price()+" and I'll work for you.",false,false);
+				CommonMsgs.say(observer,null,"I'm for hire.  Just give me "+price()+" and I'll work for you.",false,false);
 			else
 			if(((msg.sourceMessage().toUpperCase().indexOf(" FIRED")>0))
 			&&((workingFor!=null)&&(msg.source().Name().equals(workingFor)))
 			&&(msg.amITarget(observer))
 			&&(onTheJobUntil!=0))
 			{
-				ExternalPlay.quickSay(observer,msg.source(),"Suit yourself.  Goodbye.",false,false);
+				CommonMsgs.say(observer,msg.source(),"Suit yourself.  Goodbye.",false,false);
 				allDone(observer);
 			}
 			else
@@ -215,7 +215,7 @@ public class Hireling extends StdBehavior
 					skills.append(", " + A.name());
 				}
 				if(skills.length()>2)
-					ExternalPlay.quickSay(observer, source, "My skills include: " + skills.substring(2) + ".",false,false);
+					CommonMsgs.say(observer, source, "My skills include: " + skills.substring(2) + ".",false,false);
 			}
 		}
 		else
@@ -236,12 +236,12 @@ public class Hireling extends StdBehavior
 				if(onTheJobUntil!=0)
 				{
 					if(workingFor.equals(source.Name()))
-						ExternalPlay.quickSay(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
+						CommonMsgs.say(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
 					else
-						ExternalPlay.quickSay(observer,source,"Sorry, I'm on the job right now.  Give me "+(price()-given)+" more later on and I'll work.",true,false);
+						CommonMsgs.say(observer,source,"Sorry, I'm on the job right now.  Give me "+(price()-given)+" more later on and I'll work.",true,false);
 				}
 				else
-					ExternalPlay.quickSay(observer,source,"My price is "+price()+".  Give me "+(price()-given)+" more and I'll work.",true,false);
+					CommonMsgs.say(observer,source,"My price is "+price()+".  Give me "+(price()-given)+" more and I'll work.",true,false);
 				partials.put(msg.source().Name(),new Integer(given));
 			}
 			else
@@ -249,9 +249,9 @@ public class Hireling extends StdBehavior
 				if(onTheJobUntil!=0)
 				{
 					if(workingFor.equals(source.Name()))
-						ExternalPlay.quickSay(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
+						CommonMsgs.say(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
 					else
-						ExternalPlay.quickSay(observer,source,"Sorry, I'm on the job right now.  Give me 1 more coin later on and I'll work.",true,false);
+						CommonMsgs.say(observer,source,"Sorry, I'm on the job right now.  Give me 1 more coin later on and I'll work.",true,false);
 					partials.put(msg.source().Name(),new Integer(given));
 				}
 				else
@@ -269,9 +269,9 @@ public class Hireling extends StdBehavior
 					workingFor=source.Name();
 					onTheJobUntil=System.currentTimeMillis();
 					onTheJobUntil+=(minutes()*IQCalendar.MILI_MINUTE);
-					ExternalPlay.follow(observer,source,false);
+					CommonMsgs.follow(observer,source,false);
 					observer.setFollowing(source);
-					ExternalPlay.quickSay(observer,source,"Ok.  You've got me for at least "+minutes()+" minutes.  My skills include: "+skills.substring(2)+".  I'll follow you.  Just ORDER me to do what you want.",true,false);
+					CommonMsgs.say(observer,source,"Ok.  You've got me for at least "+minutes()+" minutes.  My skills include: "+skills.substring(2)+".  I'll follow you.  Just ORDER me to do what you want.",true,false);
 				}
 			}
 		}

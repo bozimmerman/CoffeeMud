@@ -58,7 +58,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			ExternalPlay.postAttack(mob,target,w);
+			MUDFight.postAttack(mob,target,w);
 			if(success)
 			{
 				MOB oldVictim=target.getVictim();

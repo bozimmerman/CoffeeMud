@@ -46,7 +46,7 @@ public class RaceHelper extends StdBehavior
 				if((observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
 				&&(!observer.charStats().getMyRace().ID().equals(source.charStats().getMyRace().ID())))
 					reason=observer.charStats().getMyRace().ID().toUpperCase()+"s UNITE! CHARGE!";
-				if(yep)	ExternalPlay.quickSay(observer,null,reason,false,false);
+				if(yep)	CommonMsgs.say(observer,null,reason,false,false);
 			}
 		}
 	}

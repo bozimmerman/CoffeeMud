@@ -163,7 +163,7 @@ public class Chant_PlantMaze extends Chant
 						newerRoom.bringMobHere(follower,false);
 						newerRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						ExternalPlay.look(follower,null,true);
+						CommonMsgs.look(follower,true);
 					}
 				}
 			}

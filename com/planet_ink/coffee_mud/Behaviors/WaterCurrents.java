@@ -81,7 +81,7 @@ public class WaterCurrents extends ActiveTicker
 					R.show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
 					R2.bringMobHere(M,false);
 					R2.showOthers(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
-					ExternalPlay.look(M,null,true);
+					CommonMsgs.look(M,true);
 				}
 		}
 	}

@@ -29,7 +29,7 @@ public class AnimalTrading extends CommonSkill
 		Item cage=null;
 
 		commands.insertElementAt("SELL",0);
-		MOB shopkeeper=ExternalPlay.parseShopkeeper(mob,commands,"Sell what to whom?");
+		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Sell what to whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{

@@ -47,7 +47,7 @@ public class Poison_Alcohol extends Poison
 				if((A!=null)&&(mob.fetchEffect(A.ID())==null))
 					A.invoke(mob,mob,true);
 			}
-			ExternalPlay.standIfNecessary(mob);
+			CommonMsgs.stand(mob,true);
 		}
 		super.unInvoke();
 	}

@@ -587,7 +587,7 @@ public class StdItem implements Item
 				Item alreadyWearing=mob.fetchFirstWornItem(Item.HELD);
 				if(alreadyWearing!=null)
 				{
-					if((!ExternalPlay.remove(mob,alreadyWearing,false))
+					if((!CommonMsgs.remove(mob,alreadyWearing,false))
 					||(!canWear(mob,Item.HELD)))
 					{
 						mob.tell("Your hands are full.");
@@ -622,7 +622,7 @@ public class StdItem implements Item
 				{
 					if((cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
 					{
-						if((!ExternalPlay.remove(mob,alreadyWearing,false))
+						if((!CommonMsgs.remove(mob,alreadyWearing,false))
 						||(!canWear(mob,0)))
 						{
 							mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
@@ -666,7 +666,7 @@ public class StdItem implements Item
 				Item alreadyWearing=mob.fetchFirstWornItem(Item.WIELD);
 				if(alreadyWearing!=null)
 				{
-					if(!ExternalPlay.remove(mob,alreadyWearing,false))
+					if(!CommonMsgs.remove(mob,alreadyWearing,false))
 					{
 						mob.tell("You are already wielding "+alreadyWearing.name()+".");
 						return false;
@@ -1153,7 +1153,7 @@ public class StdItem implements Item
 
 		// first one! so start ticking...
 		if(behaviors.size()==0)
-			ExternalPlay.startTickDown(this,MudHost.TICK_ITEM_BEHAVIOR,1);
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_ITEM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1162,7 +1162,7 @@ public class StdItem implements Item
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			ExternalPlay.deleteTick(this,MudHost.TICK_ITEM_BEHAVIOR);
+			CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_ITEM_BEHAVIOR);
 	}
 	public int numBehaviors()
 	{

@@ -14,7 +14,7 @@ public class Prop_WearZapper extends Property
 
 	public String accountForYourself()
 	{
-		return "Wearing restricted as follows: "+SaucerSupport.zapperDesc(miscText);
+		return "Wearing restricted as follows: "+MUDZapper.zapperDesc(miscText);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -34,21 +34,21 @@ public class Prop_WearZapper extends Property
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_HOLD:
-			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WEAR:
-			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WIELD:
-			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
 				return false;

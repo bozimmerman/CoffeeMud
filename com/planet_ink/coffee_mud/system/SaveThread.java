@@ -121,7 +121,7 @@ public class SaveThread extends Thread
 
 		}
 		status="autopurge process";
-		Vector allUsers=ExternalPlay.getUserList();
+		Vector allUsers=CMClass.DBEngine().getUserList();
 		Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if(protectedOnes==null) protectedOnes=new Vector();
 
@@ -154,7 +154,7 @@ public class SaveThread extends Thread
 					MOB M=CMMap.getLoadPlayer(name);
 					if(M!=null)
 					{
-						ExternalPlay.destroyUser(M,true);
+						CoffeeUtensils.obliteratePlayer(M,true);
 						Log.sysOut("SaveThread","AutoPurged user "+name+". Last logged in "+(new IQCalendar(last).d2String())+".");
 					}
 				}

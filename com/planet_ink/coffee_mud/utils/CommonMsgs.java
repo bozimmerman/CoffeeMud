@@ -1,15 +1,167 @@
-package com.planet_ink.coffee_mud.common;
+package com.planet_ink.coffee_mud.utils;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.common.*;
+import java.util.*;
+import java.io.IOException;
 
 public class CommonMsgs
 {
 	private CommonMsgs(){};
+
+	public static boolean doStandardCommand(MOB mob, String command, Vector parms)
+	{
+		try
+		{
+			Command C=CMClass.getCommand(command);
+			if(C!=null)
+				return C.execute(mob,parms);
+		}
+		catch(IOException e)
+		{
+			Log.errOut("CommonMsgs",e);
+		}
+		return false;
+	}
+
+	public static StringBuffer getScore(MOB mob)
+	{
+		Vector V=new Vector();
+		doStandardCommand(mob,"Score",V);
+		if((V.size()==1)&&(V.firstElement() instanceof StringBuffer))
+			return (StringBuffer)V.firstElement();
+		return new StringBuffer("");
+	}
+	public static StringBuffer getEquipment(MOB mob, MOB viewer)
+	{
+		Vector V=new Vector();
+		V.addElement(viewer);
+		doStandardCommand(mob,"Equipment",V);
+		if((V.size()>1)&&(V.elementAt(1) instanceof StringBuffer))
+			return (StringBuffer)V.elementAt(1);
+		return new StringBuffer("");
+	}
+	public static StringBuffer getInventory(MOB mob, MOB viewer)
+	{
+		Vector V=new Vector();
+		V.addElement(viewer);
+		doStandardCommand(mob,"Inventory",V);
+		if((V.size()>1)&&(V.elementAt(1) instanceof StringBuffer))
+			return (StringBuffer)V.elementAt(1);
+		return new StringBuffer("");
+	}
 	
-	public static void say(MOB mob, 
-						   MOB target, 
-						   String text, 
-						   boolean isPrivate, 
+	public static void channel(MOB mob, 
+							   String channelName, 
+							   String message, 
+							   boolean systemMsg)
+	{
+		doStandardCommand(mob,"Channel",
+						  Util.makeVector(new Boolean(systemMsg),channelName,message));
+	}
+	
+	private static MOB talker=null;
+	public static void channel(String channelName, 
+							   String clanID, 
+							   String message, 
+							   boolean systemMsg)
+	{
+		
+		if(talker==null)
+		{
+			talker=CMClass.getMOB("StdMOB");
+			talker.setName("^?");
+			talker.setLocation(CMMap.getRandomRoom());
+			talker.baseEnvStats().setDisposition(EnvStats.IS_GOLEM);
+			if(talker==null) return;
+		}
+		talker.setClanID(clanID);
+		channel(talker,channelName,message,systemMsg);
+	}
+
+	public static boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized)
+	{
+		return doStandardCommand(mob,"Drop",Util.makeVector(dropThis,new Boolean(quiet),new Boolean(optimized)));
+	}
+	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
+	{
+		if(container==null)
+			return doStandardCommand(mob,"Get",Util.makeVector(getThis,new Boolean(quiet)));
+		else
+			return doStandardCommand(mob,"Get",Util.makeVector(getThis,container,new Boolean(quiet)));
+	}
+	
+	public static boolean remove(MOB mob, Item item, boolean quiet)
+	{
+		if(quiet)
+			return doStandardCommand(mob,"Remove",Util.makeVector("REMOVE",item,"QUIETLY"));
+		else
+			return doStandardCommand(mob,"Remove",Util.makeVector("REMOVE",item));
+	}
+	
+	public static void look(MOB mob, boolean quiet)
+	{
+		if(quiet)
+			doStandardCommand(mob,"Look",Util.makeVector("LOOK","UNOBTRUSIVELY"));
+		else
+			doStandardCommand(mob,"Look",Util.makeVector("LOOK"));
+	}
+
+	public static void flee(MOB mob, String whereTo)
+	{
+		doStandardCommand(mob,"Flee",Util.makeVector("FLEE",whereTo));
+	}
+
+	public static void sheath(MOB mob, boolean ifPossible)
+	{
+		if(ifPossible)
+			doStandardCommand(mob,"Sheath",Util.makeVector("SHEATH","IFPOSSIBLE"));
+		else
+			doStandardCommand(mob,"Sheath",Util.makeVector("SHEATH"));
+	}
+	
+	public static void draw(MOB mob, boolean doHold, boolean ifNecessary)
+	{
+		if(ifNecessary)
+		{
+			if(doHold)
+				doStandardCommand(mob,"Draw",Util.makeVector("DRAW","HELD","IFNECESSARY"));
+			else
+				doStandardCommand(mob,"Draw",Util.makeVector("DRAW","IFNECESSARY"));
+		}
+		else
+			doStandardCommand(mob,"Draw",Util.makeVector("DRAW"));
+	}
+	
+	public static void stand(MOB mob, boolean ifNecessary)
+	{
+		if(ifNecessary)
+			doStandardCommand(mob,"Stand",Util.makeVector("STAND","IFNECESSARY"));
+		else
+			doStandardCommand(mob,"Stand",Util.makeVector("STAND"));
+	}
+
+	public static void follow(MOB follower, MOB leader, boolean quiet)
+	{
+		if(leader!=null)
+		{
+			if(quiet)
+				doStandardCommand(follower,"Follow",Util.makeVector("FOLLOW",leader,"UNOBTRUSIVELY"));
+			else
+				doStandardCommand(follower,"Follow",Util.makeVector("FOLLOW",leader));
+		}
+		else
+		{
+			if(quiet)
+				doStandardCommand(follower,"Follow",Util.makeVector("FOLLOW","SELF","UNOBTRUSIVELY"));
+			else
+				doStandardCommand(follower,"Follow",Util.makeVector("FOLLOW","SELF"));
+		}
+	}
+
+	public static void say(MOB mob,
+						   MOB target,
+						   String text,
+						   boolean isPrivate,
 						   boolean tellFlag)
 	{
 		Room location=mob.location();
@@ -25,10 +177,10 @@ public class CommonMsgs
 				{
 					String mudName=targetName.substring(targetName.indexOf("@")+1);
 					targetName=targetName.substring(0,targetName.indexOf("@"));
-					if(!(ExternalPlay.i3().i3online()))
+					if(!(CMClass.I3Interface().i3online()))
 						mob.tell("I3 is unavailable.");
 					else
-						ExternalPlay.i3().i3tell(mob,targetName,mudName,text);
+						CMClass.I3Interface().i3tell(mob,targetName,mudName,text);
 				}
 				else
 				{
@@ -74,5 +226,4 @@ public class CommonMsgs
 				location.send(mob,msg);
 		}
 	}
-
 }

@@ -96,7 +96,7 @@ public class Chant_Hibernation extends Chant
 			if(!Sense.isGolem(mob))
 			{
 				double hp=new Integer(mob.charStats().getStat(CharStats.CONSTITUTION)).doubleValue();
-				ExternalPlay.postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,(int)Math.round((hp*.1)+(mob.envStats().level()/2)),null);
+				MUDFight.postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,(int)Math.round((hp*.1)+(mob.envStats().level()/2)),null);
 			}
 			double move=new Integer(mob.charStats().getStat(CharStats.STRENGTH)).doubleValue();
 			mob.curState().adjMovement((int)Math.round((move*.1)+(mob.envStats().level()/2)),mob.maxState());

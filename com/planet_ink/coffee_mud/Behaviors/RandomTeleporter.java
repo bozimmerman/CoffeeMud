@@ -123,7 +123,7 @@ public class RandomTeleporter extends ActiveTicker
 					R=null;
 			}
 			Room oldRoom=mob.location();
-			CoffeeUtensils.wanderAway(mob,true,false);
+			MUDTracker.wanderAway(mob,true,false);
 			R.bringMobHere(mob,true);
 			if(mob.location()==oldRoom)
 				tickDown=0;

@@ -56,7 +56,7 @@ public class Prayer_Gateway extends Prayer
 		{
 			Room R=(Room)r.nextElement();
 			if(Sense.canAccess(mob,R))
-				if(CoffeeUtensils.containsString(R.displayText(),areaName))
+				if(EnglishParser.containsString(R.displayText(),areaName))
 				{
 				   newRoom=R;
 				   break;

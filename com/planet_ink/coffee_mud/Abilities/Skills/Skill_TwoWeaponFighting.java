@@ -90,7 +90,8 @@ public class Skill_TwoWeaponFighting extends StdAbility
 			if(mob.isInCombat())
 			{
 				if(Util.bset(mob.getBitmap(),MOB.ATT_AUTODRAW))
-					ExternalPlay.drawIfNecessary(mob,true);
+					CommonMsgs.draw(mob,true,true);
+				
 				Item primaryWeapon=getFirstWeapon(mob);
 				Item weapon=getSecondWeapon(mob);
 				if((weapon!=null) // try to wield anything!
@@ -108,7 +109,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 					primaryWeapon.setRawWornCode(Item.HELD);
 					weapon.setRawWornCode(Item.WIELD);
 					mob.recoverEnvStats();
-					ExternalPlay.postAttack(mob,mob.getVictim(),weapon);
+					MUDFight.postAttack(mob,mob.getVictim(),weapon);
 					weapon.setRawWornCode(Item.HELD);
 					primaryWeapon.setRawWornCode(Item.WIELD);
 					mob.recoverEnvStats();

@@ -17,8 +17,8 @@ public class ItemData extends StdWebMacro
 		String itemCode=httpReq.getRequestParameter("ITEM");
 		if(itemCode==null) return "@break@";
 
-		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
-			return httpReq.getMUD().gameStatusStr();
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			return CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS);
 
 		String mobNum=httpReq.getRequestParameter("MOB");
 
@@ -28,7 +28,7 @@ public class ItemData extends StdWebMacro
 			R=CMMap.getRoom(last);
 			if(R==null)
 				return "No Room?!";
-			ExternalPlay.resetRoom(R);
+			CoffeeUtensils.resetRoom(R);
 			httpReq.getRequestObjects().put(last,R);
 		}
 
@@ -125,14 +125,14 @@ public class ItemData extends StdWebMacro
 				int wclass=Util.s_int(httpReq.getRequestParameter("WEAPONCLASS"));
 				int reach=Util.s_int(httpReq.getRequestParameter("MINRANGE"));
 
-				vals=SaucerSupport.timsItemAdjustments(I,
-													   level,
-													   material,
-													   weight,
-													   hands,
-													   wclass,
-													   reach,
-													   0);
+				vals=CoffeeMaker.timsItemAdjustments(I,
+													level,
+													material,
+													weight,
+													hands,
+													wclass,
+													reach,
+													0);
 			}
 			else
 			{
@@ -146,14 +146,14 @@ public class ItemData extends StdWebMacro
 						else
 							break;
 				}
-				vals=SaucerSupport.timsItemAdjustments(I,
-													   level,
-													   material,
-													   weight,
-													   hands,
-													   0,
-													   0,
-													   worndata);
+				vals=CoffeeMaker.timsItemAdjustments(I,
+													level,
+													material,
+													weight,
+													hands,
+													0,
+													0,
+													worndata);
 			}
 			for(Enumeration e=vals.keys();e.hasMoreElements();)
 			{

@@ -93,7 +93,7 @@ public class Trap_BearTrap extends StdTrap
 				int damage=Dice.roll(trapLevel(),6,1);
 				trapped=target;
 				amountRemaining=250+(trapLevel()*10);
-				ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The bear trap <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The bear trap <DAMAGE> <T-NAME>!");
 			}
 		}
 	}

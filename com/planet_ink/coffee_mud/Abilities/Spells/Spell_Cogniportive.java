@@ -118,14 +118,14 @@ public class Spell_Cogniportive extends Spell
 					{
 						if(follower.isInCombat())
 						{
-							ExternalPlay.flee(follower,"NOWHERE");
+							CommonMsgs.flee(follower,("NOWHERE"));
 							follower.makePeace();
 						}
 						thisRoom.send(follower,leaveMsg);
 						home.bringMobHere(follower,false);
 						home.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						ExternalPlay.look(follower,null,true);
+						CommonMsgs.look(follower,true);
 					}
 				}
 			}
@@ -158,8 +158,8 @@ public class Spell_Cogniportive extends Spell
 				String str=(String)V.firstElement();
 				if(!str.equalsIgnoreCase("HOME")) break;
 				str=Util.combine(V,1);
-				if(CoffeeUtensils.containsString(affected.name(),str)
-				||CoffeeUtensils.containsString(affected.displayText(),str))
+				if(EnglishParser.containsString(affected.name(),str)
+				||EnglishParser.containsString(affected.displayText(),str))
 					msg.addTrailerMsg(new FullMsg(msg.source(),affected,msg.target(),msg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.sourceMessage(),msg.NO_EFFECT,null));
 			}
 			break;

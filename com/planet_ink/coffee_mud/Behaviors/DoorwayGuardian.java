@@ -58,7 +58,7 @@ public class DoorwayGuardian extends StdBehavior
 		&&(msg.target()!=null)
 		&&(!BrotherHelper.isBrother(mob,monster))
 		&&(Sense.canSenseMoving(mob,monster))
-		&&(!SaucerSupport.zapperCheck(getParms(),mob)))
+		&&(!MUDZapper.zapperCheck(getParms(),mob)))
 		{
 			if(msg.target() instanceof Exit)
 			{

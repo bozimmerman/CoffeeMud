@@ -17,7 +17,7 @@ public class JournalInfo extends StdWebMacro
 		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+last);
 		if(info==null)
 		{
-			info=ExternalPlay.DBReadJournal(last);
+			info=CMClass.DBEngine().DBReadJournal(last);
 			httpReq.getRequestObjects().put("JOURNAL: "+last,info);
 		}
 		if(parms.containsKey("COUNT"))

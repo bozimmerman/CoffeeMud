@@ -240,7 +240,7 @@ public class Prop_ClanEquipment extends Property
 						                    me.name() + " glows brightly.");
 						int flameDamage = Dice.roll(1, 6, 0);
 						flameDamage *= PowerLevel;
-						ExternalPlay.postDamage(mob,target,null,flameDamage, CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect, WeaponType,
+						MUDFight.postDamage(mob,target,null,flameDamage, CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect, WeaponType,
 												   "^FThe magic of " +
 						                           clanType + " " + clanName +
 						                           " coarses through " + me.name() +
@@ -393,7 +393,7 @@ public class Prop_ClanEquipment extends Property
 					{
 					    int damage = Dice.roll(1, 3, 0);
 					    damage *= PowerLevel;
-					    ExternalPlay.postDamage(mob, source, this, damage,
+					    MUDFight.postDamage(mob, source, this, damage,
 					                            CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL| TypeOfEffect
 												, WeaponType,
 					                            "^FThe magic of " + clanType + " " +

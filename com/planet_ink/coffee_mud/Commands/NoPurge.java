@@ -1,0 +1,56 @@
+package com.planet_ink.coffee_mud.Commands.extra;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class NoPurge extends StdCommand
+{
+	public NoPurge(){}
+
+	private String[] access={"NOPURGE"};
+	public String[] getAccessWords(){return access;}
+	public boolean execute(MOB mob, Vector commands)
+		throws java.io.IOException
+	{
+		if(!mob.isASysOp(null))
+		{
+			mob.tell("Only the Archons can do that.");
+			return false;
+		}
+		commands.removeElementAt(0);
+		String protectMe=Util.combine(commands,0);
+		if(protectMe.length()==0)
+		{
+			mob.tell("Protect whom?  Enter a player name to protect from autopurge.");
+			return false;
+		}
+		if(!CMClass.DBEngine().DBUserSearch(null,protectMe))
+		{
+			mob.tell("Protect whom?  '"+protectMe+"' is not a known player.");
+			return false;
+		}
+		Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+		if((protectedOnes!=null)&&(protectedOnes.size()>0))
+		for(int b=0;b<protectedOnes.size();b++)
+		{
+			String B=(String)protectedOnes.elementAt(b);
+			if(B.equalsIgnoreCase(protectMe))
+			{
+				mob.tell("That player already protected.  Do LIST NOPURGE and check out #"+(b+1)+".");
+				return false;
+			}
+		}
+		mob.tell("The player '"+protectMe+"' is now protected from autopurge.");
+		StringBuffer str=Resources.getFileResource("protectedplayers.ini",false);
+		str.append(protectMe+"\n\r");
+		Resources.updateResource("protectedplayers.ini",str);
+		Resources.saveFileResource("protectedplayers.ini");
+		return false;
+	}
+	public int ticksToExecute(){return 0;}
+	public boolean canBeOrdered(){return true;}
+	public boolean arcCommand(){return true;}
+
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+}

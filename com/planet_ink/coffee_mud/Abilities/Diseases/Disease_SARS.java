@@ -39,7 +39,7 @@ public class Disease_SARS extends Disease
 			int damage=Dice.roll(2,diseaser.envStats().level()+1,1);
 			if(Dice.rollPercentage()==1)
 				damage+=Dice.roll(10,10,1);
-			ExternalPlay.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+			MUDFight.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
 			catchIt(mob);
 			return true;
 		}

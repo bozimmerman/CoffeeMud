@@ -36,7 +36,7 @@ public class Spell_ReadMagic extends Spell
 		{
 			Ability thisNewOne=(Ability)this.copyOf();
 			mob.addEffect(thisNewOne);
-			ExternalPlay.read(mob,target,"");
+			CommonMsgs.doStandardCommand(mob,"Read",Util.makeVector("READ",target));
 			mob.delEffect(thisNewOne);
 		}
 		else

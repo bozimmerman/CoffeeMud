@@ -35,7 +35,7 @@ public class GenArmor extends StdArmor
 
 	public String text()
 	{
-		return Generic.getPropertiesStr(this,false);
+		return CoffeeMaker.getPropertiesStr(this,false);
 	}
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
@@ -43,14 +43,14 @@ public class GenArmor extends StdArmor
 	public void setMiscText(String newText)
 	{
 		miscText="";
-		Generic.setPropertiesStr(this,newText,false);
+		CoffeeMaker.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
 	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES"};
 	public String getStat(String code)
 	{
-		if(Generic.getGenItemCodeNum(code)>=0)
-			return Generic.getGenItemStat(this,code);
+		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
+			return CoffeeMaker.getGenItemStat(this,code);
 		else
 		switch(getCodeNum(code))
 		{
@@ -63,8 +63,8 @@ public class GenArmor extends StdArmor
 	}
 	public void setStat(String code, String val)
 	{
-		if(Generic.getGenItemCodeNum(code)>=0)
-			Generic.setGenItemStat(this,code,val);
+		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
+			CoffeeMaker.setGenItemStat(this,code,val);
 		else
 		switch(getCodeNum(code))
 		{
@@ -83,7 +83,7 @@ public class GenArmor extends StdArmor
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] superCodes=Generic.GENITEMCODES;
+		String[] superCodes=CoffeeMaker.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)

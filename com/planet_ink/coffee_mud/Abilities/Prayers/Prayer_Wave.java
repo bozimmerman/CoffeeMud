@@ -53,11 +53,11 @@ public class Prayer_Wave extends Prayer
 					{
 						mob.location().send(mob,msg);
 						int harming=Dice.roll(4,adjustedLevel(mob)/numEnemies,numEnemies);
-						ExternalPlay.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,"A crashing wave <DAMAGE> <T-NAME>!");
+						MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,"A crashing wave <DAMAGE> <T-NAME>!");
 						int chanceToStay=10+(target.charStats().getStat(CharStats.STRENGTH)-mob.envStats().level()*4);
 						int roll=Dice.rollPercentage();
 						if((roll!=1)&&(roll>chanceToStay))
-							ExternalPlay.move(target,dir,true,false);
+							MUDTracker.move(target,dir,true,false);
 					}
 				}
 				else

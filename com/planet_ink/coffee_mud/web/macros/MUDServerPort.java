@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.web.macros;
 import java.util.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 
 public class MUDServerPort extends StdWebMacro
@@ -9,7 +10,7 @@ public class MUDServerPort extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		return httpReq.getMUD().getPortStr();
+		return CommonStrings.getVar(CommonStrings.SYSTEM_MUDPORTS);
 	}
 
 }

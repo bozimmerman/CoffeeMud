@@ -36,7 +36,7 @@ public class ItemIdentifier extends StdBehavior
 			Item tool=(Item)msg.tool();
 			if(source.getMoney()<cost(tool))
 			{
-				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Item)msg.tool())+" gold coins for me to identify that.",true,false);
+				CommonMsgs.say(observer,source,"You'll need "+cost((Item)msg.tool())+" gold coins for me to identify that.",true,false);
 				return false;
 			}
 			return true;

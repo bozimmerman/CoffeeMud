@@ -35,7 +35,7 @@ public class Bomb_Explosive extends StdBomb
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,(affected.name()+" explodes all over <T-NAME>!")+CommonStrings.msp("explode.wav",30)))
 			{
 				super.spring(target);
-				ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),10,1),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(invoker(),target,null,Dice.roll(trapLevel(),10,1),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
 			}
 		}
 	}

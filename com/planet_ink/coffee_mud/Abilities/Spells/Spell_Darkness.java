@@ -72,8 +72,8 @@ public class Spell_Darkness extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
-				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+				if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
 					mob.location().addNonUninvokableEffect(this);
 				else
 					beneficialAffect(mob,mob.location(),0);

@@ -67,7 +67,7 @@ public class Thief_Snatch extends StdAbility
 			levelDiff=levelDiff*6;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
+		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(-levelDiff,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
@@ -83,7 +83,7 @@ public class Thief_Snatch extends StdAbility
 				mob.location().show(mob,mob.getVictim(),CMMsg.MSG_OK_VISUAL,"<S-NAME> disarm(s) <T-NAMESELF>!");
 				if(mob.location().isContent(hisWeapon))
 				{
-					ExternalPlay.get(mob,null,hisWeapon,true);
+					CommonMsgs.get(mob,null,hisWeapon,true);
 					if(mob.isMine(hisWeapon))
 					{
 						msg=new FullMsg(mob,hisWeapon,null,CMMsg.MSG_HOLD,"<S-NAME> snatch(es) the <T-NAME> out of mid-air!");

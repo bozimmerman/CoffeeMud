@@ -96,8 +96,8 @@ public class Thief_Forgery extends ThiefSkill
 			int[] coins={5,10,50,100,500,1000,5000,10000,100000,1000000,10000000};
 			for(int i=0;i<coins.length;i++)
 			{
-				Item note=Money.makeNote(coins[i],null,null);
-				if(CoffeeUtensils.containsString(note.name(),forgeWhat))
+				Item note=MoneyUtils.makeNote(coins[i],null,null);
+				if(EnglishParser.containsString(note.name(),forgeWhat))
 				{
 					newName=note.name();
 					newDisplay=note.displayText();

@@ -10,6 +10,7 @@ public class Spell_PhantomHound extends Spell
 	public String name(){return "Phantom Hound";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
+	public int quality(){ return MALICIOUS;}
 	private MOB victim=null;
 	private int pointsLeft=0;
 	public Environmental newInstance(){	return new Spell_PhantomHound();}

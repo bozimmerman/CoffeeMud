@@ -14,6 +14,7 @@ public class Spell_SummonEnemy extends Spell
 	public Environmental newInstance(){	return new Spell_SummonEnemy();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public void unInvoke()
 	{

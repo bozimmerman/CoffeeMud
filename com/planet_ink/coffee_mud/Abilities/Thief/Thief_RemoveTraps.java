@@ -46,7 +46,9 @@ public class Thief_RemoveTraps extends ThiefSkill
 		Trap opTrap=null;
 		if(unlockThis instanceof Exit)
 		{
-			dirCode=ExternalPlay.getMyDirCode((Exit)unlockThis,mob.location(),dirCode);
+			if(dirCode<0)
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				if(mob.location().getExitInDir(d)==unlockThis){ dirCode=d; break;}
 			if(dirCode>=0)
 			{
 				Exit exit=mob.location().getReverseExit(dirCode);

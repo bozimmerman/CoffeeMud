@@ -25,7 +25,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 			Ability A=littlePlants.fetchEffect(ID());
 			if(A!=null)
 			{
-				ExternalPlay.deleteTick(A,-1);
+				CMClass.ThreadEngine().deleteTick(A,-1);
 				littlePlants.delEffect(A);
 				littlePlants.setSecretIdentity("");
 			}

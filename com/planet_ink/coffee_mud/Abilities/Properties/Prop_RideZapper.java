@@ -14,7 +14,7 @@ public class Prop_RideZapper extends Property
 
 	public String accountForYourself()
 	{
-		return "Mounting restricted as follows: "+SaucerSupport.zapperDesc(miscText);
+		return "Mounting restricted as follows: "+MUDZapper.zapperDesc(miscText);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -35,7 +35,7 @@ public class Prop_RideZapper extends Property
 		case CMMsg.TYP_SLEEP:
 		case CMMsg.TYP_MOUNT:
 		case CMMsg.TYP_ENTER:
-			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_VISUAL,"<O-NAME> zaps <S-NAME>, making <S-HIS-HER> jump up!");
 				return false;

@@ -24,7 +24,7 @@ public class VeryAggressive extends Aggressive
 	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		return SaucerSupport.zapperCheck(getParms(),M);
+		return MUDZapper.zapperCheck(getParms(),M);
 	}
 
 	public static void tickVeryAggressively(Tickable ticking,
@@ -74,7 +74,7 @@ public class VeryAggressive extends Aggressive
 						if((inhab!=null)
 						&&((!inhab.isMonster())||(mobKiller))
 						&&(Sense.canSenseMoving(inhab,mob))
-						&&(SaucerSupport.zapperCheck(zapStr,inhab))
+						&&(MUDZapper.zapperCheck(zapStr,inhab))
 						&&((zapStr.length()==0)
 						   ||((inhab.envStats().level()<(mob.envStats().level()+15))
 							  &&(inhab.envStats().level()>(mob.envStats().level()-15)))))
@@ -89,7 +89,7 @@ public class VeryAggressive extends Aggressive
 		}
 		if(dirCode>=0)
 		{
-			ExternalPlay.move(mob,dirCode,false,false);
+			MUDTracker.move(mob,dirCode,false,false);
 			pickAFight(mob,zapStr,mobKiller);
 		}
 	}

@@ -28,7 +28,7 @@ public class Spell_EnchantWeapon extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		ExternalPlay.postExperience(mob,null,null,-50,false);
+		MUDFight.postExperience(mob,null,null,-50,false);
 
 		boolean success=profficiencyCheck(0,auto);
 

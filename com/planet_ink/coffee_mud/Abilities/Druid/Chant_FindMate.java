@@ -46,16 +46,14 @@ public class Chant_FindMate extends Chant
 					mob.tell("You peer longingly at "+mate.name()+".");
 
 					Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
-					if(I!=null)	ExternalPlay.remove(mob,I,false);
+					if(I!=null)	CommonMsgs.remove(mob,I,false);
 					I=mob.fetchFirstWornItem(Item.ON_LEGS);
-					if(I!=null)	ExternalPlay.remove(mob,I,false);
+					if(I!=null)	CommonMsgs.remove(mob,I,false);
 
 					if((mob.fetchFirstWornItem(Item.ON_WAIST)!=null)
 					||(mob.fetchFirstWornItem(Item.ON_LEGS)!=null))
 						unInvoke();
-					try{
-						ExternalPlay.doCommand(mob,Util.parse("MATE \""+mate.name()+"$\""));
-					}catch(Exception e){}
+					mob.doCommand(Util.parse("MATE \""+mate.name()+"$\""));
 					unInvoke();
 				}
 			}
@@ -85,7 +83,7 @@ public class Chant_FindMate extends Chant
 				{
 					int dir=nextDirection;
 					nextDirection=-2;
-					ExternalPlay.move(mob,dir,false,false);
+					MUDTracker.move(mob,dir,false,false);
 				}
 				else
 					unInvoke();
@@ -106,7 +104,7 @@ public class Chant_FindMate extends Chant
 		&&(msg.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
 		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
-			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
+			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
 	public boolean isSuitableMate(MOB mate, MOB forMe)
@@ -181,7 +179,7 @@ public class Chant_FindMate extends Chant
 		}
 
 		if(rooms.size()>0)
-			theTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,true);
+			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true);
 
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{
@@ -201,7 +199,7 @@ public class Chant_FindMate extends Chant
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> yearn(s) for a mate!");
 					A.makeLongLasting();
-					A.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
+					A.nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
 					target.recoverEnvStats();
 				}
 			}

@@ -201,7 +201,7 @@ public class Herbalism extends CommonSkill
 					for(int v=0;v<V.size();v++)
 					{
 						Item I=(Item)V.elementAt(v);
-						if(CoffeeUtensils.containsString(I.Name(),ingredient)
+						if(EnglishParser.containsString(I.Name(),ingredient)
 						||(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
 						{ ok=true; break;}
 					}
@@ -221,7 +221,7 @@ public class Herbalism extends CommonSkill
 				{
 					String ingredient=((String)recipe.elementAt(i)).trim();
 					if(ingredient.length()>0)
-						if(CoffeeUtensils.containsString(I.Name(),ingredient)
+						if(EnglishParser.containsString(I.Name(),ingredient)
 						||(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
 						{ ok=true; break;}
 				}
@@ -237,7 +237,7 @@ public class Herbalism extends CommonSkill
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
 
-			ExternalPlay.postExperience(mob,null,null,-experienceToLose,false);
+			MUDFight.postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroy();

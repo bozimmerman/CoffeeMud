@@ -67,7 +67,7 @@ public class Prayer_Tremor extends Prayer
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					ExternalPlay.standIfNecessary(mob);
+					CommonMsgs.stand(mob,true);
 				}
 			}
 			else
@@ -120,7 +120,7 @@ public class Prayer_Tremor extends Prayer
 							if(success)
 							{
 								if(target.location()==mob.location())
-									ExternalPlay.postDamage(mob,target,this,10,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
+									MUDFight.postDamage(mob,target,this,10,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
 							}
 						}
 						else

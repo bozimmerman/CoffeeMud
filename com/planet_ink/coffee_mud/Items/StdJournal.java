@@ -28,7 +28,7 @@ public class StdJournal extends StdItem
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WRITE:
-			if((!SaucerSupport.zapperCheck(getWriteReq(),msg.source()))&&(!msg.source().isASysOp(null)))
+			if((!MUDZapper.zapperCheck(getWriteReq(),msg.source()))&&(!msg.source().isASysOp(null)))
 			{
 				msg.source().tell("You are not allowed to write on "+name());
 				return false;
@@ -52,7 +52,7 @@ public class StdJournal extends StdItem
 			&&(mob.playerStats()!=null))
 			{
 				long lastTime=mob.playerStats().lastDateTime();
-				if(!SaucerSupport.zapperCheck(getReadReq(),mob))
+				if(!MUDZapper.zapperCheck(getReadReq(),mob))
 				{
 					mob.tell("You are not allowed to read "+name()+".");
 					return;
@@ -76,7 +76,7 @@ public class StdJournal extends StdItem
 				mob.tell(entry.toString()+"\n\r");
 				if((entry.toString().trim().length()>0)
 				&&(which>0)
-				&&(SaucerSupport.zapperCheck(getWriteReq(),mob)||(mob.isASysOp(null))))
+				&&(MUDZapper.zapperCheck(getWriteReq(),mob)||(mob.isASysOp(null))))
 				{
 					try
 					{
@@ -89,7 +89,7 @@ public class StdJournal extends StdItem
 							else
 							if(s.equalsIgnoreCase("D"))
 							{
-								ExternalPlay.DBDeleteJournal(name(),which-1);
+								CMClass.DBEngine().DBDeleteJournal(name(),which-1);
 								mob.tell("Entry deleted.");
 							}
 						}
@@ -100,7 +100,7 @@ public class StdJournal extends StdItem
 							String replyMsg=mob.session().prompt("Enter your response\n\r: ");
 							if(replyMsg.trim().length()>0)
 							{
-								ExternalPlay.DBWriteJournal(Name(),mob.Name(),"","",replyMsg,which-1);
+								CMClass.DBEngine().DBWriteJournal(Name(),mob.Name(),"","",replyMsg,which-1);
 								mob.tell("Reply added.");
 							}
 							else
@@ -129,7 +129,7 @@ public class StdJournal extends StdItem
 				   &&(!mob.isMonster()))
 				{
 					if(mob.session().confirm("Delete all journal entries? Are you sure (y/N)?","N"))
-						ExternalPlay.DBDeleteJournal(name(),-1);
+						CMClass.DBEngine().DBDeleteJournal(name(),-1);
 				}
 				else
 				if(!mob.isMonster())
@@ -141,7 +141,7 @@ public class StdJournal extends StdItem
 					if(mob.session().confirm("Is this a private message (y/N)?","N"))
 					{
 						to=mob.session().prompt("To whom:");
-						if(!ExternalPlay.DBUserSearch(null,to))
+						if(!CMClass.DBEngine().DBUserSearch(null,to))
 						{
 							mob.tell("I'm sorry, there is no such user.");
 							return;
@@ -168,8 +168,8 @@ public class StdJournal extends StdItem
 						mob.tell("Illegal code, aborted.");
 						return;
 					}
-				   
-					ExternalPlay.DBWriteJournal(Name(),mob.Name(),to,subject,message,-1);
+
+					CMClass.DBEngine().DBWriteJournal(Name(),mob.Name(),to,subject,message,-1);
 					mob.tell("Journal entry added.");
 				}
 				return;
@@ -186,7 +186,7 @@ public class StdJournal extends StdItem
 	public StringBuffer DBRead(String Journal, String username, int which, long lastTimeDate)
 	{
 		StringBuffer buf=new StringBuffer("");
-		Vector journal=ExternalPlay.DBReadJournal(Journal);
+		Vector journal=CMClass.DBEngine().DBReadJournal(Journal);
 		boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
@@ -236,13 +236,17 @@ public class StdJournal extends StdItem
 			String message=(String)entry.elementAt(5);
 			String compdate=(String)entry.elementAt(6);
 			boolean mineAble=to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username);
-			if(mineAble) 
+			if(mineAble)
 				buf.append("*");
-			else 
+			else
 				buf.append(" ");
-			if(message.startsWith("<cmvp>"))
-				message=new String(ExternalPlay.doVirtualPage(message.substring(6).getBytes()));
-			
+			try
+			{
+				if(message.startsWith("<cmvp>"))
+					message=new String(CMClass.httpUtils().doVirtualPage(message.substring(6).getBytes()));
+			}
+			catch(HTTPRedirectException e){}
+
 			if(to.equals("ALL")||mineAble)
 				buf.append("\n\r"+Util.padRight((which+1)+"",3)+")\n\r"
 						   +"FROM: "+from

@@ -20,6 +20,22 @@ public class CoffeeUtensils
 		return null;
 	}
 
+	public static Vector shopkeepers(Room here, MOB notMOB)
+	{
+		Vector V=new Vector();
+		if(here!=null)
+		for(int i=0;i<here.numInhabitants();i++)
+		{
+			MOB thisMOB=here.fetchInhabitant(i);
+			if((thisMOB!=null)
+			&&(thisMOB!=notMOB)
+			&&(getShopKeeper(thisMOB)!=null)
+			&&((notMOB==null)||(Sense.canBeSeenBy(thisMOB,notMOB))))
+				V.addElement(thisMOB);
+		}
+		return V;
+	}
+	
 	public static Trap getATrap(Environmental unlockThis)
 	{
 		Trap theTrap=null;
@@ -112,79 +128,6 @@ public class CoffeeUtensils
 			myThang.addEffect(theTrap);
 	}
 
-	public static boolean containsString(String toSrchStr, String srchStr)
-	{
-		if(srchStr.equalsIgnoreCase("all")) return true;
-		int tos=0;
-		int tolen=toSrchStr.length();
-		int srlen=srchStr.length();
-		boolean found=false;
-		while((!found)&&(tos<tolen))
-		{
-			for(int x=0;x<srlen;x++)
-			{
-				if(tos>=tolen)
-				{
-					if(srchStr.charAt(x)=='$')
-						found=true;
-					break;
-				}
-
-				switch(toSrchStr.charAt(tos))
-				{
-				case '^':
-					tos=tos+2;
-					break;
-				case ',':
-				case '?':
-				case '!':
-				case '.':
-				case ';':
-					tos++;
-					break;
-				}
-				switch(srchStr.charAt(x))
-				{
-				case '^': x=x+2;
-					break;
-				case ',':
-				case '?':
-				case '!':
-				case '.':
-				case ';': x++;
-					break;
-				}
-				if(x<srlen)
-				{
-					if(tos<tolen)
-					{
-						if(Character.toUpperCase(srchStr.charAt(x))!=Character.toUpperCase(toSrchStr.charAt(tos)))
-							break;
-						else
-						if(x==(srlen-1))
-						   found=true;
-						else
-							tos++;
-					}
-					else
-					if(srchStr.charAt(x)=='$')
-						found=true;
-					else
-						break;
-				}
-				else
-				{
-					found=true;
-					break;
-				}
-			}
-			while((!found)&&(tos<tolen)&&(Character.isLetter(toSrchStr.charAt(tos))))
-				tos++;
-			tos++;
-		}
-		return found;
-	}
-
 	public static boolean reachableItem(MOB mob, Environmental I)
 	{
 		if((I==null)||(!(I instanceof Item)))
@@ -195,347 +138,6 @@ public class CoffeeUtensils
 								  ||(((Item)I).ultimateContainer()==mob.riding()))))
 		   return true;
 		return false;
-	}
-
-	public static Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly)
-	{
-		if(srchStr.length()==0) return null;
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
-		   return null;
-
-		boolean allFlag=false;
-		if(srchStr.toUpperCase().startsWith("ALL "))
-		{
-			srchStr=srchStr.substring(4);
-			allFlag=true;
-		}
-		else
-		if(srchStr.equalsIgnoreCase("ALL"))
-			allFlag=true;
-
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			String sub=srchStr.substring(dot+1);
-			occurrance=Util.s_int(sub);
-			if(occurrance>0)
-				srchStr=srchStr.substring(0,dot);
-			else
-			{
-				dot=srchStr.indexOf(".");
-				sub=srchStr.substring(0,dot);
-				occurrance=Util.s_int(sub);
-				if(occurrance>0)
-					srchStr=srchStr.substring(dot+1);
-				else
-					occurrance=0;
-			}
-		}
-
-		int myOccurrance=occurrance;
-		if(exactOnly)
-		{
-			try
-			{
-				for(int i=0;i<list.size();i++)
-				{
-					Environmental thisThang=(Environmental)list.elementAt(i);
-					if(thisThang.ID().equalsIgnoreCase(srchStr)
-					   ||thisThang.name().equalsIgnoreCase(srchStr)
-					   ||thisThang.Name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||(thisThang.displayText().length()>0))
-							if((--myOccurrance)<=0)
-								return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		else
-		{
-			myOccurrance=occurrance;
-			try
-			{
-				for(int i=0;i<list.size();i++)
-				{
-					Environmental thisThang=(Environmental)list.elementAt(i);
-					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-					   &&((!allFlag)||(thisThang.displayText().length()>0)))
-						if((--myOccurrance)<=0)
-							return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-			myOccurrance=occurrance;
-			try
-			{
-				for(int i=0;i<list.size();i++)
-				{
-					Environmental thisThang=(Environmental)list.elementAt(i);
-					if((!(thisThang instanceof Ability))
-					&&(thisThang.displayText().length()>0)
-					&&(containsString(thisThang.displayText(),srchStr)))
-						if((--myOccurrance)<=0)
-							return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		return null;
-	}
-
-	public static Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly)
-	{
-		if(srchStr.length()==0) return null;
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
-		   return null;
-		boolean allFlag=false;
-		if(srchStr.toUpperCase().startsWith("ALL "))
-		{
-			srchStr=srchStr.substring(4);
-			allFlag=true;
-		}
-		else
-		if(srchStr.equalsIgnoreCase("ALL"))
-			allFlag=true;
-
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			String sub=srchStr.substring(dot+1);
-			occurrance=Util.s_int(sub);
-			if(occurrance>0)
-				srchStr=srchStr.substring(0,dot);
-			else
-			{
-				dot=srchStr.indexOf(".");
-				sub=srchStr.substring(0,dot);
-				occurrance=Util.s_int(sub);
-				if(occurrance>0)
-					srchStr=srchStr.substring(dot+1);
-				else
-					occurrance=0;
-			}
-		}
-
-		if(list.get(srchStr)!=null)
-			return (Environmental)list.get(srchStr);
-		int myOccurrance=occurrance;
-		if(exactOnly)
-		{
-			for(Enumeration e=list.elements();e.hasMoreElements();)
-			{
-				Environmental thisThang=(Environmental)e.nextElement();
-				if(thisThang.ID().equalsIgnoreCase(srchStr)
-				||thisThang.Name().equalsIgnoreCase(srchStr)
-				||thisThang.name().equalsIgnoreCase(srchStr))
-					if((!allFlag)||(thisThang.displayText().length()>0))
-						if((--myOccurrance)<=0)
-							return thisThang;
-			}
-		}
-		else
-		{
-			myOccurrance=occurrance;
-			for(Enumeration e=list.elements();e.hasMoreElements();)
-			{
-				Environmental thisThang=(Environmental)e.nextElement();
-				if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-				&&((!allFlag)||(thisThang.displayText().length()>0)))
-					if((--myOccurrance)<=0)
-						return thisThang;
-			}
-			myOccurrance=occurrance;
-			for(Enumeration e=list.elements();e.hasMoreElements();)
-			{
-				Environmental thisThang=(Environmental)e.nextElement();
-				if((thisThang.displayText().length()>0)&&(containsString(thisThang.displayText(),srchStr)))
-					if((--myOccurrance)<=0)
-						return thisThang;
-			}
-		}
-		return null;
-	}
-
-	public static Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)
-	{
-		if(srchStr.length()==0) return null;
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
-		   return null;
-		boolean allFlag=false;
-		if(srchStr.toUpperCase().startsWith("ALL "))
-		{
-			srchStr=srchStr.substring(4);
-			allFlag=true;
-		}
-		else
-		if(srchStr.equalsIgnoreCase("ALL"))
-			allFlag=true;
-
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			String sub=srchStr.substring(dot+1);
-			occurrance=Util.s_int(sub);
-			if(occurrance>0)
-				srchStr=srchStr.substring(0,dot);
-			else
-			{
-				dot=srchStr.indexOf(".");
-				sub=srchStr.substring(0,dot);
-				occurrance=Util.s_int(sub);
-				if(occurrance>0)
-					srchStr=srchStr.substring(dot+1);
-				else
-					occurrance=0;
-			}
-		}
-
-		int myOccurrance=occurrance;
-		if(exactOnly)
-		{
-			for(int i=0;i<list.length;i++)
-			{
-				Environmental thisThang=(Environmental)list[i];
-				if(thisThang!=null)
-					if(thisThang.ID().equalsIgnoreCase(srchStr)
-					||thisThang.Name().equalsIgnoreCase(srchStr)
-					||thisThang.name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||(thisThang.displayText().length()>0))
-							if((--myOccurrance)<=0)
-								return thisThang;
-			}
-		}
-		else
-		{
-			myOccurrance=occurrance;
-			for(int i=0;i<list.length;i++)
-			{
-				Environmental thisThang=(Environmental)list[i];
-				if(thisThang!=null)
-					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-					   &&((!allFlag)||(thisThang.displayText().length()>0)))
-						if((--myOccurrance)<=0)
-							return thisThang;
-			}
-			myOccurrance=occurrance;
-			for(int i=0;i<list.length;i++)
-			{
-				Environmental thisThang=(Environmental)list[i];
-				if((thisThang!=null)&&(thisThang.displayText().length()>0))
-					if(containsString(thisThang.displayText(),srchStr))
-						if((--myOccurrance)<=0)
-							return thisThang;
-			}
-		}
-		return null;
-	}
-
-	public static Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
-	{
-		if(srchStr.length()==0) return null;
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
-		   return null;
-		boolean allFlag=false;
-		if(srchStr.toUpperCase().startsWith("ALL "))
-		{
-			srchStr=srchStr.substring(4);
-			allFlag=true;
-		}
-		else
-		if(srchStr.equalsIgnoreCase("ALL"))
-			allFlag=true;
-
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			String sub=srchStr.substring(dot+1);
-			occurrance=Util.s_int(sub);
-			if(occurrance>0)
-				srchStr=srchStr.substring(0,dot);
-			else
-			{
-				dot=srchStr.indexOf(".");
-				sub=srchStr.substring(0,dot);
-				occurrance=Util.s_int(sub);
-				if(occurrance>0)
-					srchStr=srchStr.substring(dot+1);
-				else
-					occurrance=0;
-			}
-		}
-		int myOccurrance=occurrance;
-		if(exactOnly)
-		{
-			try
-			{
-				for(int i=0;i<list.size();i++)
-				{
-					Item thisThang=(Item)list.elementAt(i);
-					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
-
-					if((thisThang.container()==goodLocation)
-					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
-					&&(thisThang.ID().equalsIgnoreCase(srchStr)
-					   ||(thisThang.Name().equalsIgnoreCase(srchStr))
-					   ||(thisThang.name().equalsIgnoreCase(srchStr))))
-						if((!allFlag)||(thisThang.displayText().length()>0))
-							if((--myOccurrance)<=0)
-								return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		else
-		{
-			try
-			{
-				for(int i=0;i<list.size();i++)
-				{
-					Item thisThang=(Item)list.elementAt(i);
-					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
-
-					if((thisThang.container()==goodLocation)
-					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
-					&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-					   &&((!allFlag)||(thisThang.displayText().length()>0))))
-						if((--myOccurrance)<=0)
-							return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-			myOccurrance=occurrance;
-			try
-			{
-				for(int i=0;i<list.size();i++)
-				{
-					Item thisThang=(Item)list.elementAt(i);
-					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
-					if((thisThang.container()==goodLocation)
-					&&(thisThang.displayText().length()>0)
-					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
-					&&(containsString(thisThang.displayText(),srchStr)))
-						if((--myOccurrance)<=0)
-							return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		return null;
-	}
-
-	public static void wanderAway(MOB M, boolean mindPCs, boolean andGoHome)
-	{
-		Room R=M.location();
-		if(R==null) return;
-		int tries=0;
-		while((M.location()==R)&&((++tries)<100)&&((!mindPCs)||(M.location().numPCInhabitants()>0)))
-			SaucerSupport.beMobile(M,true,true,false,false,null);
-		if((M.getStartRoom()!=null)&&(andGoHome))
-			M.getStartRoom().bringMobHere(M,true);
 	}
 
 	public static Room roomLocation(Environmental E)
@@ -550,47 +152,6 @@ public class CoffeeUtensils
 		if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
 		   return ((MOB)((Item)E).owner()).location();
 		return null;
-	}
-
-	//int attChance=(int)(adjArmor+adjAttack);
-	public static boolean normalizeAndRollLess(int score)
-	{
-		return (Dice.rollPercentage()<normalizeBy5(score));
-	}
-
-	public static int normalizeBy5(int score)
-	{
-		if(score>95)
-			return 95;
-		else
-		if(score<5)
-			return 5;
-		return score;
-	}
-
-	public static MOB makeMOBfromCorpse(DeadBody corpse, String type)
-	{
-		if((type==null)||(type.length()==0))
-			type="StdMOB";
-		MOB mob=CMClass.getMOB(type);
-		if(corpse!=null)
-		{
-			mob.setName(corpse.name());
-			mob.setDisplayText(corpse.displayText());
-			mob.setDescription(corpse.description());
-			mob.setBaseCharStats(corpse.charStats().cloneCharStats());
-			mob.setBaseEnvStats(corpse.baseEnvStats().cloneStats());
-			mob.recoverCharStats();
-			mob.recoverEnvStats();
-			int level=mob.baseEnvStats().level();
-			mob.baseState().setHitPoints(Dice.rollHP(level,mob.baseEnvStats().ability()));
-			mob.baseState().setMana(mob.baseCharStats().getCurrentClass().getLevelMana(mob));
-			mob.baseState().setMovement(mob.baseCharStats().getCurrentClass().getLevelMove(mob));
-			mob.recoverMaxState();
-			mob.resetToMaxState();
-			mob.baseCharStats().getMyRace().startRacing(mob,false);
-		}
-		return mob;
 	}
 
     public static double memoryUse ( Environmental E, int number )
@@ -617,162 +178,271 @@ public class CoffeeUtensils
 		catch(Exception e){return -1;}
 		return s;
     }
-	
-	public static StringBuffer reallyList(Hashtable these, int ofType)
+
+	public static void extinguish(MOB source, Environmental target, boolean mundane)
 	{
-		return reallyList(these,ofType,null);
-	}
-	public static StringBuffer reallyList(Hashtable these)
-	{
-		return reallyList(these,-1,null);
-	}
-	public static StringBuffer reallyList(Hashtable these, Room likeRoom)
-	{
-		return reallyList(these,-1,likeRoom);
-	}
-	public static StringBuffer reallyList(Vector these, int ofType)
-	{
-		return reallyList(these.elements(),ofType,null);
-	}
-	public static StringBuffer reallyList(Enumeration these, int ofType)
-	{
-		return reallyList(these,ofType,null);
-	}
-	public static StringBuffer reallyList(Vector these)
-	{
-		return reallyList(these.elements(),-1,null);
-	}
-	public static StringBuffer reallyList(Enumeration these)
-	{
-		return reallyList(these,-1,null);
-	}
-	public static StringBuffer reallyList(Vector these, Room likeRoom)
-	{
-		return reallyList(these.elements(),-1,likeRoom);
-	}
-	public static StringBuffer reallyList(Hashtable these, int ofType, Room likeRoom)
-	{
-		StringBuffer lines=new StringBuffer("");
-		if(these.size()==0) return lines;
-		int column=0;
-		for(Enumeration e=these.keys();e.hasMoreElements();)
+		if(target instanceof Room)
 		{
-			String thisOne=(String)e.nextElement();
-			Object thisThang=these.get(thisOne);
-			String list=null;
-			if(thisThang instanceof String)
-				list=(String)thisThang;
-			else
-				list=CMClass.className(thisThang);
-			if(ofType>=0)
+			Room R=(Room)target;
+			for(int m=0;m<R.numInhabitants();m++)
 			{
-				if((thisThang!=null)&&(thisThang instanceof Ability))
-				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_CODES)!=ofType)
-						list=null;
-				}
+				MOB M=R.fetchInhabitant(m);
+				if(M!=null) extinguish(source,M,mundane);
 			}
-			if((likeRoom!=null)&&(thisThang instanceof Room))
+			for(int i=0;i<R.numItems();i++)
 			{
-				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
-				   list=null;
+				Item I=R.fetchItem(i);
+				if(I!=null) extinguish(source,I,mundane);
 			}
-			if(list!=null)
+			return;
+		}
+		for(int a=target.numEffects()-1;a>=0;a--)
+		{
+			Ability A=target.fetchEffect(a);
+			if((A!=null)&&((!mundane)||(A.classificationCode()==Ability.PROPERTY)))
 			{
-				if(++column>3)
-				{
-					lines.append("\n\r");
-					column=1;
-				}
-				lines.append(Util.padRight(list,24)+" ");
+				if((Util.bset(A.flags(),Ability.FLAG_HEATING)&&(!mundane))
+				||(Util.bset(A.flags(),Ability.FLAG_BURNING))
+				||((A.ID().equalsIgnoreCase("Spell_SummonElemental")&&A.text().toUpperCase().indexOf("FIRE")>=0)))
+					A.unInvoke();
 			}
 		}
-		lines.append("\n\r");
-		return lines;
+		if((target instanceof MOB)&&(!mundane))
+		{
+			MOB tmob=(MOB)target;
+			if(tmob.charStats().getMyRace().ID().equals("FireElemental"))
+				MUDFight.postDeath(source,(MOB)target,null);
+			for(int i=0;i<tmob.inventorySize();i++)
+			{
+				Item I=tmob.fetchInventory(i);
+				if(I!=null) extinguish(tmob,I,mundane);
+			}
+		}
+		if((target instanceof Light)&&(((Light)target).isLit()))
+		{
+			((Light)target).tick(target,MudHost.TICK_LIGHT_FLICKERS);
+			((Light)target).light(false);
+		}
 	}
 
-	public static StringBuffer reallyList(Vector these, int ofType, Room likeRoom)
-	{ return reallyList(these.elements(),ofType,likeRoom);}
-	public static StringBuffer reallyList(Enumeration these, Room likeRoom)
-	{ return reallyList(these,-1,likeRoom);}
-	public static StringBuffer reallyList(Enumeration these, int ofType, Room likeRoom)
+	public static void obliterateRoom(Room deadRoom)
 	{
-		StringBuffer lines=new StringBuffer("");
-		if(!these.hasMoreElements()) return lines;
-		int column=0;
-		for(Enumeration e=these;e.hasMoreElements();)
+		for(int a=deadRoom.numEffects()-1;a>=0;a--)
 		{
-			Object thisThang=e.nextElement();
-			String list=null;
-			if(thisThang instanceof String)
-				list=(String)thisThang;
-			else
-				list=CMClass.className(thisThang);
-			if(ofType>=0)
+			Ability A=deadRoom.fetchEffect(a);
+			if(A!=null)
 			{
-				if((thisThang!=null)&&(thisThang instanceof Ability))
-				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_CODES)!=ofType)
-						list=null;
-				}
-			}
-			if((likeRoom!=null)&&(thisThang instanceof Room))
-			{
-				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
-				   list=null;
-			}
-			if(list!=null)
-			{
-				if(++column>3)
-				{
-					lines.append("\n\r");
-					column=1;
-				}
-				lines.append(Util.padRight(list,24)+" ");
+				A.unInvoke();
+				deadRoom.delEffect(A);
 			}
 		}
-		lines.append("\n\r");
-		return lines;
+		CMMap.delRoom(deadRoom);
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			boolean changes=false;
+			for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
+			{
+				Room thatRoom=R.rawDoors()[dir];
+				if(thatRoom==deadRoom)
+				{
+					R.rawDoors()[dir]=null;
+					changes=true;
+					if((R.rawExits()[dir]!=null)&&(R.rawExits()[dir].isGeneric()))
+					{
+						Exit GE=(Exit)R.rawExits()[dir];
+						GE.setTemporaryDoorLink(deadRoom.roomID());
+					}
+				}
+			}
+			if(changes)
+				CMClass.DBEngine().DBUpdateExits(R);
+		}
+		for(int mb=deadRoom.numInhabitants()-1;mb>=0;mb--)
+		{
+			MOB mob2=deadRoom.fetchInhabitant(mb);
+			if(mob2!=null)
+			{
+				if((mob2.getStartRoom()!=deadRoom)&&(mob2.getStartRoom()!=null)&&(CMMap.getRoom(mob2.getStartRoom().roomID())!=null))
+					mob2.getStartRoom().bringMobHere(mob2,true);
+				else
+				{
+					CMClass.ThreadEngine().deleteTick(mob2,-1);
+					mob2.destroy();
+				}
+			}
+		}
+		for(int i=deadRoom.numItems()-1;i>=0;i--)
+		{
+			Item item2=deadRoom.fetchItem(i);
+			if(item2!=null)
+			{
+				CMClass.ThreadEngine().deleteTick(item2,-1);
+				item2.destroy();
+			}
+		}
+		clearTheRoom(deadRoom);
+		deadRoom.destroyRoom();
+		if(deadRoom instanceof GridLocale)
+			((GridLocale)deadRoom).clearGrid();
+		CMClass.DBEngine().DBDeleteRoom(deadRoom);
 	}
-	public static StringBuffer reallyList2Cols(Enumeration these, int ofType, Room likeRoom)
+
+	public static void roomAffectFully(CMMsg msg, Room room, int dirCode)
 	{
-		StringBuffer lines=new StringBuffer("");
-		if(!these.hasMoreElements()) return lines;
-		int column=0;
-		for(Enumeration e=these;e.hasMoreElements();)
+		room.send(msg.source(),msg);
+		if((msg.target()==null)||(!(msg.target() instanceof Exit)))
+			return;
+		if(dirCode<0)
 		{
-			Object thisThang=e.nextElement();
-			String list=null;
-			if(thisThang instanceof String)
-				list=(String)thisThang;
-			else
-				list=CMClass.className(thisThang);
-			if(ofType>=0)
-			{
-				if((thisThang!=null)&&(thisThang instanceof Ability))
-				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_CODES)!=ofType)
-						list=null;
-				}
-			}
-			if((likeRoom!=null)&&(thisThang instanceof Room))
-			{
-				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
-				   list=null;
-			}
-			if(list!=null)
-			{
-				if(++column>2)
-				{
-					lines.append("\n\r");
-					column=1;
-				}
-				lines.append(Util.padRight(list,37)+" ");
-			}
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				if(room.getExitInDir(d)==msg.target()){ dirCode=d; break;}
 		}
-		lines.append("\n\r");
-		return lines;
+		if(dirCode<0) return;
+		Exit pair=room.getPairedExit(dirCode);
+		if(pair!=null)
+		{
+			FullMsg altMsg=null;
+			if((msg.targetCode()==CMMsg.MSG_OPEN)&&(pair.isLocked()))
+			{
+				altMsg=new FullMsg(msg.source(),pair,msg.tool(),CMMsg.MSG_UNLOCK,null,CMMsg.MSG_UNLOCK,null,CMMsg.MSG_UNLOCK,null);
+				pair.executeMsg(msg.source(),altMsg);
+			}
+			altMsg=new FullMsg(msg.source(),pair,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
+			pair.executeMsg(msg.source(),altMsg);
+		}
 	}
 	
+	public static void obliteratePlayer(MOB deadMOB, boolean quiet)
+	{
+		if(CMMap.getPlayer(deadMOB.Name())!=null)
+		{
+		   deadMOB=(MOB)CMMap.getPlayer(deadMOB.Name());
+		   CMMap.delPlayer(deadMOB);
+		}
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session S=(Session)Sessions.elementAt(s);
+			if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
+			   deadMOB=S.mob();
+		}
+		FullMsg msg=new FullMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
+		if(deadMOB.location()!=null)
+			deadMOB.location().send(deadMOB,msg);
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			if((R!=null)&&(R!=deadMOB.location()))
+			{
+				if(R.okMessage(deadMOB,msg))
+					R.sendOthers(deadMOB,msg);
+				else
+				{
+					CMMap.addPlayer(deadMOB);
+					return;
+				}
+			}
+		}
+		deadMOB.destroy();
+		CMClass.DBEngine().DBDeleteMOB(deadMOB);
+		if(deadMOB.session()!=null)
+		{
+			deadMOB.session().setKillFlag(true);
+			deadMOB.session().setMob(null);
+		}
+		Log.sysOut("Scoring",deadMOB.name()+" has been deleted.");
+	}
+
+	public static void resetRoom(Room room)
+	{
+		if(room==null) return;
+		boolean mobile=room.getMobility();
+		room.toggleMobility(false);
+		CoffeeUtensils.clearTheRoom(room);
+		CMClass.DBEngine().DBReadContent(room,null);
+		room.toggleMobility(mobile);
+	}
+	
+	public static void clearTheRoom(Room room)
+	{
+		for(int m=room.numInhabitants()-1;m>=0;m--)
+		{
+			MOB mob2=room.fetchInhabitant(m);
+			if((mob2!=null)&&(mob2.isEligibleMonster()))
+			{
+				if(mob2.getStartRoom()==room)
+					mob2.destroy();
+				else
+				if(mob2.getStartRoom()!=null)
+					mob2.getStartRoom().bringMobHere(mob2,true);
+			}
+		}
+		while(room.numItems()>0)
+		{
+			Item I=room.fetchItem(0);
+			I.destroy();
+		}
+		CMClass.ThreadEngine().clearDebri(room,0);
+	}
+
+
+	public static void clearDebriAndRestart(Room room, int taskCode)
+	{
+		CMClass.ThreadEngine().clearDebri(room,0);
+		if(taskCode<2)
+		{
+			CMClass.DBEngine().DBUpdateItems(room);
+			room.startItemRejuv();
+		}
+		if((taskCode==0)||(taskCode==2))
+			CMClass.DBEngine().DBUpdateMOBs(room);
+	}
+
+	public static void obliterateArea(String areaName)
+	{
+		Room foundOne=CMMap.getFirstRoom();
+		while(foundOne!=null)
+		{
+			foundOne=null;
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if(R.getArea().Name().equalsIgnoreCase(areaName))
+				{
+					foundOne=R;
+					break;
+				}
+			}
+			if(foundOne!=null)
+				obliterateRoom(foundOne);
+		}
+
+		Area A=CMMap.getArea(areaName);
+		CMClass.DBEngine().DBDeleteArea(A);
+		CMMap.delArea(A);
+	}
+
+	public static boolean doesOwnThisProperty(MOB mob, Room room)
+	{
+		String titleInName="";
+		if((room==null)||(mob==null)) return false;
+		for(int a=0;a<room.numEffects();a++)
+		{
+			Ability A=room.fetchEffect(a);
+			if((A!=null)&&(A instanceof LandTitle))
+			{ titleInName=((LandTitle)A).landOwner(); break;}
+		}
+		if(titleInName==null) return false;
+		if(titleInName.length()==0) return false;
+		if(titleInName.equals(mob.Name())) return true;
+		if(titleInName.equals(mob.getClanID()))
+		{
+			Clan C=Clans.getClan(mob.getClanID());
+			if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANPROPERTYOWNER)>=0))
+				return true;
+		}
+		return false;
+	}
+
 }
 

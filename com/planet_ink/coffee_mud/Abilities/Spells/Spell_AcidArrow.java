@@ -25,7 +25,7 @@ public class Spell_AcidArrow extends Spell
 		{
 			MOB vic=(MOB)affected;
 			if((!vic.amDead())&&(vic.location()!=null))
-				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(2,4,0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) from the acid arrow residue!");
+				MUDFight.postDamage(invoker,vic,this,Dice.roll(2,4,0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) from the acid arrow residue!");
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -56,7 +56,7 @@ public class Spell_AcidArrow extends Spell
 				int damage = Dice.roll(1, numDice+10, 5);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(Util.div(damage,2.0));
-				ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acidic blast <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acidic blast <DAMAGE> <T-NAME>!");
 				maliciousAffect(mob,target,3,-1);
 			}
 		}
