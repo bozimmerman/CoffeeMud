@@ -29,3 +29,5 @@ X The bar S. of midgaard has a sky -- area file SAYS it does.
 X charm may be too powerful. It brings my 8 cha up to 25. bard is only lvl 8.  4 points too much?!
 ! if your charisma is over 18, you can buy things at a significantly lower price. Selling them is also at this lower price.
 ! Lower the starting stats for newbies to avg 11 from avg 12.
+! when you drink a potion of true.. chat for sparkling...
+  

@@ -69,7 +69,7 @@ public class Spell_DetectMagic extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> chant(s) for sparkling eyes!");
+		FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sparkling eyes!":"<S-NAME> chant(s) for sparkling eyes!");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
