@@ -623,8 +623,15 @@ public class StdItem implements Item
 				return true;
 			break;
 		case Affect.TYP_WRITE:
-			if((this.isReadable())||(this instanceof Scroll))
+			if((this.isReadable())&&(!(this instanceof Scroll)))
+			{
+				if(affect.targetMessage().trim().length()==0)
+				{
+					mob.tell("What what on "+name()+"?");
+					return false;
+				}
 				return true;
+			}
 			mob.tell("You can't write on "+name()+".");
 			return false;
 		default:

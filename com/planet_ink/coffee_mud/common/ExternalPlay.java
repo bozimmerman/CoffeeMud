@@ -252,6 +252,15 @@ public class ExternalPlay
 		if(sysPlayer!=null) return sysPlayer.DBUserSearch(mob,Login);
 		return false;
 	}
+	public static Vector DBReadJournal(String Journal)
+	{
+		if(sysPlayer!=null) return sysPlayer.DBReadJournal(Journal);
+		return new Vector();
+	}
+	public static void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which)
+	{
+		if(sysPlayer!=null) sysPlayer.DBWriteJournal(Journal,from,to,subject,message,which);
+	}
 	public static void follow(MOB mob, MOB tofollow, boolean quiet)
 	{
 		if(player!=null) player.follow(mob,tofollow,quiet);

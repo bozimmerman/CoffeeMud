@@ -44,9 +44,9 @@ public class Skill_Write extends StdAbility
 			mob.tell("You are too stupid to actually write anything.");
 			return false;
 		}
-		if(commands.size()<2)
+		if(commands.size()<1)
 		{
-			mob.tell("You must specify what you want to write on and then what you want to write.");
+			mob.tell("What would you like to write on?");
 			return false;
 		}
 		Item target=mob.fetchCarried(null,(String)commands.elementAt(0));
@@ -76,7 +76,7 @@ public class Skill_Write extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> write(s) on <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> write(s) on <T-NAMESELF>.");
 			FullMsg msg2=new FullMsg(mob,target,null,Affect.MSG_WRITE,null,Affect.MSG_WRITE,Util.combine(commands,1),Affect.MSG_WRITE,null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

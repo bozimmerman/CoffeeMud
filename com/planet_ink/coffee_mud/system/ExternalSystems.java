@@ -32,6 +32,14 @@ public class ExternalSystems implements ExternalSystem
 	{
 		RoomLoader.DBUpdateMOBs(room);
 	}
+	public Vector DBReadJournal(String Journal)
+	{
+		return JournalLoader.DBRead(Journal);
+	}
+	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which)
+	{
+		JournalLoader.DBWrite(Journal,from,to,subject,message,which);
+	}
 	public void DBCreateRoom(Room room, String LocaleID)
 	{
 		RoomLoader.DBCreate(room,LocaleID);

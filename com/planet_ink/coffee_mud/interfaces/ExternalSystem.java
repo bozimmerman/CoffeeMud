@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.interfaces;
+import java.util.Vector;
 public interface ExternalSystem
 {
 	// tick related
@@ -25,6 +26,9 @@ public interface ExternalSystem
 	public Area DBCreateArea(String areaName, String areaType);
 	public void DBDeleteArea(Area A);
 	public void DBUpdateArea(Area A);
+	public Vector DBReadJournal(String Journal);
+	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which);
+	
 	public void clearDebri(Room room, int taskCode);
 	public StringBuffer listTicks(int whichTick);
 	public boolean DBUserSearch(MOB mob, String Login);
