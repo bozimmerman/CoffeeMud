@@ -415,9 +415,10 @@ public class Arrest extends StdBehavior
 				{
 					MOB officer=(MOB)V.elementAt(1);
 					LegalWarrant W=(laws!=null)?laws.getWarrant(mob,0):null;
+System.out.println(mob.name()+"/"+officer.name()+"/"+laws+"/"+W);
 					if(W!=null)
 					{
-						if(W.arrestingOfficer()==null)
+						if((W.arrestingOfficer()==null)||(W.arrestingOfficer().location()!=mob.location()))
 						{
 							W.setArrestingOfficer(officer);
 							CommonMsgs.say(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
@@ -427,6 +428,7 @@ public class Arrest extends StdBehavior
 						else
 							return false;
 					}
+					return false;
 				}
 				break;
 			case Law.MOD_WARRANTINFO: // warrant info
@@ -2099,7 +2101,8 @@ public class Arrest extends StdBehavior
 							// cuff him!
 							W.setState(Law.STATE_MOVING2);
 							Ability A=CMClass.getAbility("Skill_HandCuff");
-							if(A!=null)	A.invoke(officer,W.criminal(),true);
+							if((A!=null)&&(!Sense.isBoundOrHeld(W.criminal())))
+								A.invoke(officer,W.criminal(),true);
 							W.criminal().makePeace();
 							makePeace(officer.location());
 							CommonMsgs.stand(W.criminal(),true);
@@ -2207,7 +2210,7 @@ public class Arrest extends StdBehavior
 						if(officer.curState().getMovement()<50)
 							officer.curState().setMovement(50);
 						makePeace(officer.location());
-						CommonMsgs.look(officer,true);
+						if(officer.isMonster()) CommonMsgs.look(officer,true);
 						if(W.jail()==W.criminal().location())
 						{
 							unCuff(W.criminal());
@@ -2277,7 +2280,8 @@ public class Arrest extends StdBehavior
 								W.jail().bringMobHere(officer,false);
 								W.jail().show(officer,W.criminal(),CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> arrive(s) to release <T-NAME>.");
 								Ability A=CMClass.getAbility("Skill_HandCuff");
-								if(A!=null)	A.invoke(officer,W.criminal(),true);
+								if((A!=null)&&(!Sense.isBoundOrHeld(W.criminal())))
+									A.invoke(officer,W.criminal(),true);
 							}
 							W.setReleaseRoom(setReleaseRoom(laws,myArea,W.criminal()));
 							W.criminal().makePeace();
@@ -2324,7 +2328,7 @@ public class Arrest extends StdBehavior
 								&&(W.criminal().location().isInhabitant(officer))
 								&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000))))
 								{
-									CommonMsgs.look(officer,true);
+									if(officer.isMonster()) CommonMsgs.look(officer,true);
 									if(W.criminal().curState().getMovement()<20)
 										W.criminal().curState().setMovement(20);
 									if(officer.curState().getMovement()<20)

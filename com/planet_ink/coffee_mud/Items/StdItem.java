@@ -947,7 +947,11 @@ public class StdItem implements Item
 				if(mob.location().isContent(this))
 					mob.location().delItem(this);
 				if(!mob.isMine(this))
+				{
 					mob.addInventory(this);
+					if(Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+						mob.envStats().setWeight(mob.envStats().weight()+envStats().weight());
+				}
 				unWear();
 				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();

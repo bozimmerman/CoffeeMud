@@ -45,8 +45,10 @@ public class Skill_FalseArrest extends BardSkill
 		if(mob.location()!=null)
 		{
 			B=getArrest(mob.location().getArea());
-			if((B==null)||(!B.modifyBehavior(mob.location().getArea(),target,new Integer(6))))
+			if((B==null)||(!B.modifyBehavior(mob.location().getArea(),target,new Integer(Law.MOD_HASWARRANT))))
 				B=null;
+			else
+				A=mob.location().getArea();
 		}
 
 		if(B==null)
@@ -56,7 +58,8 @@ public class Skill_FalseArrest extends BardSkill
 			if(Sense.canAccess(mob,A))
 			{
 				B=getArrest(A);
-				if((B!=null)&&(B.modifyBehavior(A,target,new Integer(6))))
+				if((B!=null)
+				&&(B.modifyBehavior(A,target,new Integer(Law.MOD_HASWARRANT))))
 					break;
 			}
 			B=null;
@@ -84,8 +87,9 @@ public class Skill_FalseArrest extends BardSkill
 		{
 			mob.location().send(mob,msg);
 			Vector V=new Vector();
-			V.addElement(new Integer(1));
+			V.addElement(new Integer(Law.MOD_ARREST));
 			V.addElement(mob);
+System.out.println("!"+B.name());			
 			if(!B.modifyBehavior(A,target,V))
 			{
 				mob.tell("You are not able to arrest "+target.name()+" at this time.");

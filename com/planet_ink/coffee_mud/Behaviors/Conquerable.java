@@ -83,7 +83,7 @@ public class Conquerable extends Arrest
 				{
 					V.clear();
 					StringBuffer str=new StringBuffer("");
-					if(holdingClan.length()==0)
+					if((holdingClan.length()==0)||(totalControlPoints<0))
 						str.append("This area is not currently controlled by any clan.\n\r");
 					else
 					{
@@ -375,6 +375,7 @@ public class Conquerable extends Arrest
 
 				// make sure holding clan still holds
 				if((holdingClan.length()>0)
+				&&(totalControlPoints>=0)
 				&&(!flagFound(A,holdingClan)))
 					endClanRule();
 			}
@@ -477,7 +478,7 @@ public class Conquerable extends Arrest
 
 	private void declareWinner(String clanID)
 	{
-		if(holdingClan.equals(clanID))
+		if((holdingClan.equals(clanID))||(totalControlPoints<0))
 			return;
 		Clan C=Clans.getClan(clanID);
 		if(C==null) return;
@@ -609,7 +610,7 @@ public class Conquerable extends Arrest
 		if((myHost instanceof Area)
 		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)
 		&&(!CommonStrings.isDisabled("CONQUEST")))
-		&&(totalControlPoints>0))
+		&&(totalControlPoints>=0))
 		{
 			// first look for kills and follows and register the points
 			// from those events.  Protect against multi-follows using
@@ -747,6 +748,7 @@ public class Conquerable extends Arrest
 	{
 		if((holdingClan.length()==0)
 		||(!allowLaw)
+		||(totalControlPoints<0)
 		||(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)))
 			return false;
 		Clan C=Clans.getClan(holdingClan);
@@ -758,6 +760,7 @@ public class Conquerable extends Arrest
 	{
 		if((holdingClan.length()==0)
 		||(!allowLaw)
+		||(totalControlPoints<0)
 		||(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 		||(CommonStrings.isDisabled("ARREST")))
 			return false;

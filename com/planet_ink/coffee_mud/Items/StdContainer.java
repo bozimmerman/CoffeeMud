@@ -316,6 +316,8 @@ public class StdContainer extends StdItem implements Container
 					mob.giveItem(this);
 					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
+					else
+						mob.envStats().setWeight(mob.envStats().weight()+recursiveWeight(this));
 				}
 				else
 				{

@@ -464,6 +464,7 @@ public class StdArmor extends StdContainer implements Armor
 			if((this.amWearingAt(Item.ON_HEAD))||(this.amWearingAt(Item.HELD)))
 				affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*5));
 			else
+			if(!this.amWearingAt(Item.FLOATING_NEARBY))
 				affectableStats.setArmor(affectableStats.armor()-envStats().ability());
 		}
 	}

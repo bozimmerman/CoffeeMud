@@ -100,6 +100,7 @@ public class Burglar extends Thief
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_ComprehendLangs",false);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Thief_Embezzle",true);
+			
 			CMAble.addCharAbilityMapping(ID(),30,"Thief_ContractHit",true);
 		}
 	}
