@@ -1,0 +1,1 @@
+When grouped, if the leader goes a way, the followers will also go that direction, even if they are not in the same room.
