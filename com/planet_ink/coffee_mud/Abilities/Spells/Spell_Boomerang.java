@@ -55,14 +55,21 @@ public class Spell_Boomerang extends Spell
 		if((affected instanceof Item)&&(text().length()>0))
 		{
 			Item I=(Item)affected;
-			if((owner==null)&&(I.owner()!=null)
-			&&(I.owner() instanceof MOB)
-			&&(I.owner().Name().equals(text())))
-				owner=(MOB)I.owner();
+			if(owner==null)
+			{
+			    if((I.owner()!=null)
+				&&(I.owner() instanceof MOB)
+				&&(I.owner().Name().equals(text())))
+					owner=(MOB)I.owner();
+			    else
+			        owner=CMMap.getPlayer(text());
+			}
 			if((owner!=null)&&(I.owner()!=null)&&(I.owner()!=owner))
 			{
-				if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.target()==I))
+				if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.target()==I)||(msg.tool()==I))
+				{
 					msg.addTrailerMsg(new FullMsg(owner,null,CMMsg.NO_EFFECT,null));
+				}
 				else
 				if(!owner.isMine(I))
 				{
@@ -72,7 +79,10 @@ public class Spell_Boomerang extends Spell
 					owner.giveItem(I);
 				}
 				else
+				{
+					owner.giveItem(I);
 					I.setOwner(owner);
+				}
 			}
 		}
 	}
