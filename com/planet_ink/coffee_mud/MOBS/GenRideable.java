@@ -80,7 +80,7 @@ public class GenRideable extends StdRideable
 		String[] superCodes=Generic.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
-		for(;i<=superCodes.length;i++)
+		for(;i<superCodes.length;i++)
 			codes[i]=superCodes[i];
 		for(int x=0;x<MYCODES.length;i++,x++)
 			codes[i]=MYCODES[x];
