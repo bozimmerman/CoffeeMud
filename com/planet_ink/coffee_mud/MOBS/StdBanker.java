@@ -138,6 +138,19 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return 0;
 	}
 	
+	protected int minBalance(MOB mob)
+	{
+		Vector V=getDepositInventory(mob);
+		int min=0;
+		for(int v=0;v<V.size();v++)
+		{
+			Item I=(Item)V.elementAt(v);
+			if(I instanceof Coins) continue;
+			min+=(I.value()/2);
+		}
+		return min;
+	}
+	
 	public void affect(Affect affect)
 	{
 		MOB mob=affect.source();
@@ -179,7 +192,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(old!=null)
 							delDepositInventory(affect.source(),old);
 						addDepositInventory(affect.source(),item);
-					    ExternalPlay.quickSay(this,mob,"Ok, your new balance is: "+getBalance(affect.source())+" gold coins.",false,false);
+					    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+getBalance(affect.source())+" gold coins.",false,false);
 					}
 					else
 					{
@@ -194,11 +207,25 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(old instanceof Coins)
 					{
 						Item item=findDepositInventory(affect.source(),""+Integer.MAX_VALUE);
-						if(item!=null)
+						if((item!=null)&&(item instanceof Coins))
+						{
+							Coins coins=(Coins)item;
+							coins.setNumberOfCoins(coins.numberOfCoins()-((Coins)old).numberOfCoins());
+							coins.recoverEnvStats();
 							delDepositInventory(affect.source(),item);
-						((Coins)item).setNumberOfCoins(((Coins)item).numberOfCoins()-((Coins)old).numberOfCoins());
-						addDepositInventory(affect.source(),item);
-					    ExternalPlay.quickSay(this,mob,"Ok, your new balance is: "+getBalance(affect.source())+" gold coins.",false,false);
+							if(coins.numberOfCoins()<=0)
+							{
+								ExternalPlay.quickSay(this,mob,"I have closed your account. Thanks for your business.",false,false);
+								return;
+							}
+							else
+							{
+								addDepositInventory(affect.source(),item);
+							    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+((Coins)item).numberOfCoins()+" gold coins.",false,false);
+							}
+						}
+						else
+						    ExternalPlay.quickSay(this,mob,"But, your balance is "+((Coins)item).numberOfCoins()+" gold coins.",false,false);
 					}
 					else
 					{
@@ -228,10 +255,15 @@ public class StdBanker extends StdShopKeeper implements Banker
 				String c="^x[Item                ] ";
 				msg.append(c+c+"^^^N\n\r");
 				int colNum=0;
+				Coins coins=null;
 				for(int i=0;i<V.size();i++)
 				{
 					Item I=(Item)inventory.elementAt(i);
-					if(I instanceof Coins) continue;
+					if(I instanceof Coins)
+					{
+						coins=(Coins)I;
+						continue;
+					}
 					String col=null;
 					col="["+Util.padRight(I.name(),20)+"] ";
 					if((++colNum)>2)
@@ -241,7 +273,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					msg.append(col);
 				}
-				msg.append("\n\r^^^NYour balance with us is: ^H"+getBalance(affect.source())+".");
+				if(coins!=null)
+				msg.append("\n\r^^^NYour balance with us is ^H"+coins.numberOfCoins()+" gold coins.");
 				ExternalPlay.quickSay(this,mob,"\n\r"+msg.toString()+"^T",true,false);
 				return;
 			}
@@ -265,31 +298,55 @@ public class StdBanker extends StdShopKeeper implements Banker
 				&&(!mob.isASysOp(mob.location())))
 					return true;
 			case Affect.TYP_DEPOSIT:
-				if(affect.tool()==null) return false;
-				if(affect.tool() instanceof Coins)
-					return true;
-				if(!(affect.tool() instanceof Item))
 				{
-					mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
-					return false;
-				}
-				int balance=getBalance(affect.source());
-				if(balance<((Item)affect.tool()).value())
-				{
-					ExternalPlay.quickSay(this,mob,"You'll need a balance of "+((Item)affect.tool()).value()+" for me to hold that.",false,false);
-					return false;
+					if(affect.tool()==null) return false;
+					if(affect.tool() instanceof Coins)
+						return true;
+					if(!(affect.tool() instanceof Item))
+					{
+						mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
+						return false;
+					}
+					int balance=getBalance(mob);
+					int minbalance=minBalance(mob)+(((Item)affect.tool()).value()/2);
+					if(balance<minbalance)
+					{
+						ExternalPlay.quickSay(this,mob,"You'll need a total balance of "+minbalance+" for me to hold that.",false,false);
+						return false;
+					}
 				}
 				return true;
 			case Affect.TYP_WITHDRAW:
-				if((affect.tool()==null)||(!(affect.tool() instanceof Item)))
 				{
-					ExternalPlay.quickSay(this,mob,"What do you want? I'm busy!",false,false);
-					return false;
-				}
-				if(findDepositInventory(affect.source(),affect.tool().name())==null)
-				{
-					ExternalPlay.quickSay(this,mob,"You want WHAT?",false,false);
-					return false;
+					if((affect.tool()==null)||(!(affect.tool() instanceof Item)))
+					{
+						ExternalPlay.quickSay(this,mob,"What do you want? I'm busy!",false,false);
+						return false;
+					}
+					if(findDepositInventory(affect.source(),affect.tool().name())==null)
+					{
+						ExternalPlay.quickSay(this,mob,"You want WHAT?",false,false);
+						return false;
+					}
+					int balance=getBalance(affect.source());
+					int minbalance=minBalance(mob);
+					if(affect.tool() instanceof Coins)
+					{
+						if(((Coins)affect.tool()).numberOfCoins()>balance)
+						{
+							ExternalPlay.quickSay(this,mob,"I'm sorry, you have only "+balance+" gold coins in your account.",false,false);
+							return false;
+						}
+						if(minbalance==0) return true;
+						if(((Coins)affect.tool()).numberOfCoins()>(balance-minbalance))
+						{
+							if((balance-minbalance)>0)
+								ExternalPlay.quickSay(this,mob,"I'm sorry, you may only withdraw "+(balance-minbalance)+" gold coins at this time.",false,false);
+							else
+								ExternalPlay.quickSay(this,mob,"I am holding other items in trust, so you may not withdraw funds at this time.",false,false);
+							return false;
+						}
+					}
 				}
 				return true;
 			case Affect.TYP_VALUE:
@@ -301,7 +358,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			{
 				if(numberDeposited(affect.source())==0)
 				{
-					ExternalPlay.quickSay(this,mob,"You are not presently a customer with us, I'm afraid.",false,false);
+					ExternalPlay.quickSay(this,mob,"You don't have an account with us, I'm afraid.",false,false);
 					return false;
 				}
 				else

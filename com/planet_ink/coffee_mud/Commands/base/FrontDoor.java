@@ -37,6 +37,12 @@ public class FrontDoor
 			if((" YOU SHIT FUCK CUNT FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP ADMIN SYSOP ").indexOf(" "+str+" ")>=0)
 				return false;
 		}
+		for(int c=0;c<login.length();c++)
+		{
+			char C=Character.toUpperCase(login.charAt(c));
+			if(("ABCDEFGHIJKLMNOPQRSTUVWXYZ ").indexOf(C)<0)
+				return false;
+		}
 		for(int m=0;m<CMClass.MOBs.size();m++)
 		{
 			MOB tm=(MOB)CMClass.MOBs.elementAt(m);

@@ -992,6 +992,26 @@ public class TelnetSession extends Thread implements Session
 				c = -1;
 				break;
 			}
+			case 241:
+			case 242:
+			case 243:
+			case 244:
+			case 245:
+			case 246:
+			case 247:
+			case 248:
+			case 249:
+			case 250:
+			case 251:
+			case 252:
+			case 253:
+			case 254:
+			case 255:
+			{
+				// don't let them enter telnet codes...
+				c = -1;
+				break;
+			}
 			default:
 			{
 				lastWasCR = false;
