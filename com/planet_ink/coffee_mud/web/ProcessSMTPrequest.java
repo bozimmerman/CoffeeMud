@@ -91,91 +91,6 @@ public class ProcessSMTPrequest extends Thread
 					{	s=input.substring(0,input.length()-1); break;}
 					input.append((char)c);
 				}
-				if(dataMode)
-				{
-					if(s.equals("."))
-					{
-						dataMode=false;
-						/*When the SMTP server accepts a message either for relaying or for final delivery, it inserts a trace record (also referred to interchangeably as a "time stamp line" or "Received" line) at the top of the mail data. This trace record indicates the identity of the host that sent the message, the identity of the host that received the message (and is inserting this time stamp), and the date and time the message was received.*/
-						if(data.length()>=server.getMaxMsgSize())
-							replyData=("552 Message exceeds size limit."+cr).getBytes();
-						else
-						{
-							replyData=("250 Message accepted for delivery."+cr).getBytes();
-							boolean startBuffering=false;
-							StringBuffer finalData=new StringBuffer("");
-							String subject=null;
-							try
-							{
-								BufferedReader lineR=new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.toString().getBytes())));
-								while(true)
-								{
-									String s2=lineR.readLine();
-									if(s2==null) break;
-									if(startBuffering)
-										finalData.append(s2+cr);
-									else
-									if(s2.length()==0)
-										startBuffering=true;
-									else
-									if(s2.startsWith("Subject: "))
-										subject=s2.substring(9).trim();
-									else
-									if(s2.startsWith("Content Type: "))
-									{
-										if(!s2.substring(14).toUpperCase().startsWith("TEXT/PLAIN"));
-										{
-											replyData=("552 Message content type '"+s2.substring(14)+"' not accepted."+cr).getBytes();
-											subject=null;
-											break;
-										}
-									}
-								}
-							}
-							catch(IOException e){}
-							
-							if((finalData.length()==0)
-							&&(!startBuffering))
-							{
-								finalData=new StringBuffer(data.toString());
-								subject="";
-							}
-							
-							if((finalData.length()>0)&&(subject!=null))
-								for(int i=0;i<to.size();i++)
-									if(server.isAnEmailJournal((String)to.elementAt(i)))
-									{
-										CMClass.DBEngine().DBWriteJournal((String)to.elementAt(i),
-																		  from,
-																		  "ALL",
-																		  subject,
-																		  finalData.toString(),-1);
-									}
-									else
-									{
-										CMClass.DBEngine().DBWriteJournal(server.mailboxName(),
-																		  from,
-																		  (String)to.elementAt(i),
-																		  subject,
-																		  finalData.toString(),-1);
-									}
-						}
-						if ((replyData != null))
-						{
-							sout.write(replyData);
-							sout.flush();
-							replyData=null;
-						}
-					}
-					else
-					{
-						if(data==null) data=new StringBuffer("");
-						if(data.length()<server.getMaxMsgSize())
-							data.append(s+cr);
-					}
-					continue;
-				}
-				
 				String cmd=s.toUpperCase();
 				String parm="";
 				int cmdindex=s.indexOf(" ");
@@ -185,6 +100,103 @@ public class ProcessSMTPrequest extends Thread
 					parm=s.substring(cmdindex+1);
 				}
 				
+				
+				if((dataMode)&&(s.equals(".")))
+				{
+					dataMode=false;
+					/*When the SMTP server accepts a message either for relaying or for final delivery, it inserts a trace record (also referred to interchangeably as a "time stamp line" or "Received" line) at the top of the mail data. This trace record indicates the identity of the host that sent the message, the identity of the host that received the message (and is inserting this time stamp), and the date and time the message was received.*/
+					if(data.length()>=server.getMaxMsgSize())
+						replyData=("552 Message exceeds size limit."+cr).getBytes();
+					else
+					{
+						replyData=("250 Message accepted for delivery."+cr).getBytes();
+						boolean startBuffering=false;
+						StringBuffer finalData=new StringBuffer("");
+						String subject=null;
+						try
+						{
+							BufferedReader lineR=new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.toString().getBytes())));
+							while(true)
+							{
+								String s2=lineR.readLine();
+								if(s2==null) break;
+								if(startBuffering)
+									finalData.append(s2+cr);
+								else
+								if(s2.length()==0)
+									startBuffering=true;
+								else
+								if(s2.startsWith("Subject: "))
+									subject=s2.substring(9).trim();
+								else
+								if(s2.startsWith("Content Type: "))
+								{
+									if(!s2.substring(14).toUpperCase().startsWith("TEXT/PLAIN"));
+									{
+										replyData=("552 Message content type '"+s2.substring(14)+"' not accepted."+cr).getBytes();
+										subject=null;
+										break;
+									}
+								}
+							}
+						}
+						catch(IOException e){}
+							
+						if((finalData.length()==0)
+						&&(!startBuffering))
+						{
+							finalData=new StringBuffer(data.toString());
+							subject="";
+						}
+							
+						if((finalData.length()>0)&&(subject!=null))
+						{
+							for(int i=0;i<to.size();i++)
+							{
+								if(server.isAnEmailJournal((String)to.elementAt(i)))
+								{
+									String fdat=finalData.toString().trim();
+									if(server.isASubscribeOnlyJournal((String)to.elementAt(1)))
+									{
+										if(!subject.trim().equalsIgnoreCase("subscribe")
+										&&(!subject.trim().equalsIgnoreCase("unsubscribe"))
+										&&(!fdat.trim().equalsIgnoreCase("subscribe"))
+										&&(!fdat.trim().equalsIgnoreCase("unsubscribe")))
+										{
+											MOB M=CMMap.getLoadPlayer(from);
+											if((M==null)||(!M.isASysOp(null)))
+											{
+												replyData=("552 Mailbox '"+((String)to.elementAt(i))+"' only accepts subscribe/unsubscribe."+cr).getBytes();
+												break;
+											}
+										}
+									}
+									CMClass.DBEngine().DBWriteJournal((String)to.elementAt(i),
+																	  from,
+																	  "ALL",
+																	  subject,
+																	  fdat,-1);
+								}
+								else
+								{
+									CMClass.DBEngine().DBWriteJournal(server.mailboxName(),
+																	  from,
+																	  (String)to.elementAt(i),
+																	  subject,
+																	  finalData.toString(),-1);
+								}
+							}
+						}
+					}
+				}
+				else
+				if(dataMode)
+				{
+					if(data==null) data=new StringBuffer("");
+					if(data.length()<server.getMaxMsgSize())
+						data.append(s+cr);
+				}
+				else
 				if(cmd.equals("HELP"))
 				{
 					parm=parm.toUpperCase();

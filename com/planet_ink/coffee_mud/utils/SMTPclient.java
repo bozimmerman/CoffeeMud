@@ -1,12 +1,11 @@
-package com.planet_ink.coffee_mud.web;
+package com.planet_ink.coffee_mud.utils;
 import java.net.*;
 import java.io.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 
 
-public class SMTPclient implements SMTPInterface
+public class SMTPclient
 {
 	/** Default port number */
     static final int DEFAULT_PORT = 25;

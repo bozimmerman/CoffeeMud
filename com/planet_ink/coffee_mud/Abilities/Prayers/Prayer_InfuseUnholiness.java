@@ -11,7 +11,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 	public String ID() { return "Prayer_InfuseUnholiness"; }
 	public String name(){return "Infuse Unholiness";}
 	public String displayText(){return "(Infused Unholiness)";}
-	public long flags(){return Ability.FLAG_HOLY;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	public int quality(){return INDIFFERENT;};
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
