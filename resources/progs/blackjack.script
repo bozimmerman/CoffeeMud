@@ -1,0 +1,291 @@
+ONCE_PROG
+	MPSETVAR $i ANTE $%LEVEL($i)%
+	MPSETVAR $i MAXBET '20'
+	MPSETVAR $i MAXBET '*$%LEVEL($i)%'
+~
+
+GREET_PROG 100
+	say "$n" Hello $n. I'm dealing blackjack.
+    say "$n" My ante is $<$i ANTE>. If you want to join in, give me $<$i ANTE> gold.
+~
+
+FUNCTION_PROG RandomCard
+	MPSETVAR $n CARDVAL '$%RANDNUM(13)%'
+	MPSETVAR $n CARDNAME '$<$n CARDVAL>'
+	MPSETVAR $n CARDSUIT '$%RANDNUM(4)%'
+	IF VAR($n CARDSUIT == '1')
+		MPSETVAR $n CARDSUIT Hearts
+	ENDIF
+	IF VAR($n CARDSUIT == '2')
+		MPSETVAR $n CARDSUIT Clubs
+	ENDIF
+	IF VAR($n CARDSUIT == '3')
+		MPSETVAR $n CARDSUIT Spades
+	ENDIF
+	IF VAR($n CARDSUIT == '4')
+		MPSETVAR $n CARDSUIT Diamonds
+	ENDIF
+	IF VAR($n CARDNAME == '1')
+		MPSETVAR $n CARDNAME Ace
+		MPSETVAR $n CARDVAL 11
+	ENDIF
+	IF VAR($n CARDNAME == '11')
+		MPSETVAR $n CARDNAME Jack
+		MPSETVAR $n CARDVAL 10
+	ENDIF
+	IF VAR($n CARDNAME == '12')
+		MPSETVAR $n CARDNAME Queen
+		MPSETVAR $n CARDVAL 10
+	ENDIF
+	IF VAR($n CARDNAME == '13')
+		MPSETVAR $n CARDNAME King
+		MPSETVAR $n CARDVAL 10
+	ENDIF
+	MPSETVAR $n CARDCODE '$<$n CARDNAME>$<$n CARDSUIT>'
+~
+
+FUNCTION_PROG AddToTotal
+	MPSETVAR $n TOTAL '0'
+	MPSETVAR $n TOTAL +$g.0
+	MPSETVAR $n TOTAL +$g.1
+	MPSETVAR $n TOTAL +$g.2
+	MPSETVAR $n TOTAL +$g.3
+	MPSETVAR $n TOTAL +$g.4
+~
+
+FUNCTION_PROG DealOut
+	MPCALLFUNC RandomCard
+	MPWHILE (STRIN('$<$n DEALT>' '$<$n CARDCODE>'))	MPCALLFUNC RandomCard $n
+	MPSETVAR $n DEALT $<$n DEALT> $<$n CARDCODE>
+	MPSETVAR $n LIST $g $<$n CARDVAL>
+	MPCALLFUNC AddToTotal $<$n LIST>
+	IF VAR($n TOTAL > 21) AND EVAL('$<$n LIST>.0' == '11')
+		MPSETVAR $n LIST 1 $<$n LIST>.1 $<$n LIST>.2 $<$n LIST>.3 $<$n LIST>.4 $<$n LIST>.5
+		MPCALLFUNC AddToTotal $<$n LIST>
+	ENDIF
+	IF VAR($n TOTAL > 21) AND EVAL('$<$n LIST>.1' == '11')
+		MPSETVAR $n LIST $<$n LIST>.0 1 $<$n LIST>.2 $<$n LIST>.3 $<$n LIST>.4 $<$n LIST>.5
+		MPCALLFUNC AddToTotal $<$n LIST>
+	ENDIF
+	IF VAR($n TOTAL > 21) AND EVAL('$<$n LIST>.2' == '11')
+		MPSETVAR $n LIST $<$n LIST>.0 $<$n LIST>.1 1 $<$n LIST>.3 $<$n LIST>.4 $<$n LIST>.5
+		MPCALLFUNC AddToTotal $<$n LIST>
+	ENDIF
+	IF VAR($n TOTAL > 21) AND EVAL('$<$n LIST>.3' == '11')
+		MPSETVAR $n LIST $<$n LIST>.0 $<$n LIST>.1 $<$n LIST>.2 1 $<$n LIST>.4 $<$n LIST>.5
+		MPCALLFUNC AddToTotal $<$n LIST>
+	ENDIF
+	IF VAR($n TOTAL > 21) AND EVAL('$<$n LIST>.4' == '11')
+		MPSETVAR $n LIST $<$n LIST>.0 $<$n LIST>.1 $<$n LIST>.2 $<$n LIST>.3 1 $<$n LIST>.5
+		MPCALLFUNC AddToTotal $<$n LIST>
+	ENDIF
+	IF VAR($n TOTAL > 21) AND EVAL('$<$n LIST>.5' == '11')
+		MPSETVAR $n LIST $<$n LIST>.0 $<$n LIST>.1 $<$n LIST>.2 $<$n LIST>.3 $<$n LIST>.4 1
+		MPCALLFUNC AddToTotal $<$n LIST>
+	ENDIF
+~
+
+FUNCTION_PROG GameOver
+	MPSETVAR $n DEALT
+	MPSETVAR $n MYVALS
+	MPSETVAR $n MYTOTAL
+	MPSETVAR $n LIST
+	MPSETVAR $n TOTAL
+	MPSETVAR $n CARDNAME
+	MPSETVAR $n CARDVAL
+	MPSETVAR $n CARDSUIT
+	MPSETVAR $n DEALERVALS
+	MPSETVAR $n TOTALBET 
+~
+
+FUNCTION_PROG GameWinOver
+	say "$n" $g
+	MPSETVAR $n TOTALBET '*2'
+	MPOLOAD $<$n TOTALBET>
+	give $<$n TOTALBET> $n
+	MPCALLFUNC GameOver
+~
+
+FUNCTION_PROG GameTieOver
+	say "$n" $g
+	MPOLOAD $<$n TOTALBET>
+	give $<$n TOTALBET> $n
+	MPCALLFUNC GameOver
+~
+
+FUNCTION_PROG GameWin2Over
+	say "$n" $g
+	MPSETVAR $n TOTALBET '*3'
+	MPOLOAD $<$n TOTALBET>
+	give $<$n TOTALBET> $n
+	MPCALLFUNC GameOver
+~
+
+FUNCTION_PROG GameLoseOver
+	say "$n" $g
+	MPCALLFUNC GameOver
+~
+
+GIVE_PROG coins
+	MPGSET $i MONEY 0
+	IF VAR($n MYVALS == '')
+		IF (GOLDAMT($o >= '$<$i ANTE>'))
+			IF (GOLDAMT($o > '$<$i MAXBET>'))
+				say "$n" I'm sorry, that is worth far too much for this table.  I will only wager as high as $<$i MAXBET>.
+				give "$o" "$n"
+			ELSE
+				MPSETVAR $n DEALT ''
+				MPSETVAR $n MYVALS ''
+				MPSETVAR $n DEALERVALS ''
+				MPSETVAR $n TOTALBET $%GOLDAMT($o)%
+				say "$n" That's the ante.  Here we go!
+				
+				MPCALLFUNC DealOut $<$n MYVALS>
+				MPSETVAR $n MYVALS $<$n LIST>
+				MPSETVAR $n CARD1 $<$n CARDNAME> of $<$n CARDSUIT>
+				MPCALLFUNC DealOut $<$n MYVALS>
+				MPSETVAR $n MYVALS $<$n LIST>
+				say $n You draw the $<$n CARD1> and the $<$n CARDNAME> of $<$n CARDSUIT>, for a total of $<$n TOTAL>.
+				IF VAR($n TOTAL == 21)
+					MPCALLFUNC GameWin2Over You have blackjack!  You win!
+				ELSE
+					MPCALLFUNC DealOut $<$n DEALERVALS>
+					MPSETVAR $n DEALERVALS $<$n LIST>
+					MPSETVAR $n CARD1 $<$n CARDNAME> of $<$n CARDSUIT>
+					MPCALLFUNC DealOut $<$n DEALERVALS>
+					MPSETVAR $n DEALERVALS $<$n LIST>
+					say $n The dealer draws the $<$n CARD1> and the $<$n CARDNAME> of $<$n CARDSUIT>, for a total of $<$n TOTAL>.
+					IF VAR($n TOTAL == 21)
+						MPCALLFUNC GameLoseOver The dealer draws blackjack.  You lose!
+					ELSE
+						say $n Would you like to 'HIT' or 'STAY'?
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+~
+
+SPEECH_PROG hit
+	IF VAR($n MYVALS == '')
+		say "$n" You are not currently playing.  Ante up $<$i ANTE> gold and we'll start up a game.
+	ENDIF
+	
+	MPCALLFUNC DealOut $<$n MYVALS>
+	MPSETVAR $n MYVALS $<$n LIST>
+	say $n You draw the $<$n CARDNAME> of $<$n CARDSUIT>, for a total of $<$n TOTAL>.
+		
+	IF VAR($n TOTAL > 21)
+		MPCALLFUNC GameLoseOver You went bust. Sorry, you lose!
+	ELSE
+		IF EVAL('$<$n MYVALS>.4' > 0)
+			MPCALLFUNC GameWinOver Thats five cards without a bust! You win!
+		ELSE
+			MPCALLFUNC AddToTotal $<$n DEALERVALS>
+			IF VAR($n TOTAL < 17)
+				MPCALLFUNC DealOut $<$n DEALERVALS>
+				MPSETVAR $n DEALERVALS $<$n LIST>
+				say $n The dealer draws the $<$n CARDNAME> of $<$n CARDSUIT>, for a total of $<$n TOTAL>.
+				IF VAR($n TOTAL > 21)
+					MPCALLFUNC GameWinOver I went bust. You win!
+				ELSE
+					IF EVAL('$<$n DEALERVALS>.4' > 0)
+						MPCALLFUNC GameLoseOver The dealer drew five cards without a bust.  You lose.
+					ELSE
+						say $n Would you like to 'HIT' or 'STAY'?
+					ENDIF
+				ENDIF
+			ELSE
+				say $n Would you like to 'HIT' or 'STAY'?
+			ENDIF
+		ENDIF
+	ENDIF
+~
+
+FUNCTION_PROG DoStay
+	MPCALLFUNC AddToTotal $<$n MYVALS>
+	MPSETVAR $n MYTOTAL $<$n TOTAL>
+	MPCALLFUNC AddToTotal $<$n DEALERVALS>
+	
+	IF EVAL('$<$n TOTAL>' > '$<$n MYTOTAL>')
+		MPCALLFUNC GameLoseOver The house has $<$n TOTAL> to your $<$n MYTOTAL>.  You lose.
+	ELSE
+		IF EVAL('$<$n TOTAL>' == '$<$n MYTOTAL>')
+			IF VAR($n TOTAL < 17)
+				MPCALLFUNC DoStay
+			ELSE
+				MPCALLFUNC GameLoseOver The house has $<$n TOTAL> to your $<$n MYTOTAL>.  We have a tie.
+			ENDIF
+		ELSE
+			MPCALLFUNC DealOut $<$n DEALERVALS>
+			MPSETVAR $n DEALERVALS $<$n LIST>
+			say $n The dealer draws the $<$n CARDNAME> of $<$n CARDSUIT>, for a total of $<$n TOTAL>.
+			IF VAR($n TOTAL > 21)
+				MPCALLFUNC GameWinOver The house went bust. You win!
+			ELSE
+				IF EVAL('$<$n DEALERVALS>.4' > 0)
+					MPCALLFUNC GameLoseOver The house drew five cards without a bust.  You lose.
+				ELSE
+					IF VAR($n TOTAL > '$<$n MYTOTAL>')
+						MPCALLFUNC GameLoseOver The house has $<$n TOTAL> to your $<$n MYTOTAL>.  You lose.
+					ELSE
+						IF VAR($n TOTAL < '$<$n MYTOTAL>')
+							MPCALLFUNC DoStay
+						ELSE
+							IF VAR($n TOTAL < 17)
+								MPCALLFUNC DoStay
+							ELSE
+								MPCALLFUNC GameTieOver The house has $<$n TOTAL> to your $<$n MYTOTAL>.  We have a tie.
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+~
+
+SPEECH_PROG stay stand
+	IF VAR($n MYVALS == '')
+		say "$n" You are not currently playing.  Ante up $<$i ANTE> gold and we'll start up a game.
+	ENDIF
+	MPCALLFUNC DoStay	
+~
+
+SPEECH_PROG round? round
+
+IF VAR($n MYVALS == '')
+	say "$n" You are not currently playing.
+ELSE
+	IF EVAL('$<$n MYVALS>.5' >0)
+		say "$n" You are in round 5.
+	ELSE
+		IF EVAL('$<$n MYVALS>.4' >0)
+			say "$n" You are in round 4.
+		ELSE
+			IF EVAL('$<$n MYVALS>.3' >0)
+				say "$n" You are in round 3.
+			ELSE
+				IF EVAL('$<$n MYVALS>.2' >0)
+					say "$n" You are in round 2.
+				ELSE
+					say "$n" You are playing, I think.
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+
+~
+SPEECH_PROG ante
+    say "$n" My ante is $<$i ANTE>.
+~
+SPEECH_PROG cheat cheater cheating
+	say "$n" I do have to use a separate deck for each player, if that's what you mean.  Otherwise, I have no idea what you're talking about.
+	innocent
+~
+
+# pretty please leave this
+SPEECH_PROG wrote credit design credits author
+	say "$n" I was written by Bo Zimmerman, inspired by code from Jeremy Vyska of False Realities MUD
+~
