@@ -88,32 +88,36 @@ public class Prayer_MassMobility extends Prayer
 		boolean success=profficiencyCheck(0,auto);
 
 		Room room=mob.location();
-		if(room!=null)
-		for(int i=0;i<room.numInhabitants();i++)
+		affectType=Affect.MSG_CAST_VERBAL_SPELL;
+		if(auto) affectType=affectType|Affect.ACT_GENERAL;
+		if((success)&&(room!=null))
 		{
-			MOB target=room.fetchInhabitant(i);
-			if(target==null) break;
-			
-			affectType=Affect.MSG_CAST_VERBAL_SPELL;
-			if(auto) affectType=affectType|Affect.ACT_GENERAL;
-			if(success)
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> pray(s) to <S-HIS-HER> god for an aura of mobility!");
+			if(mob.location().okAffect(msg))
 			{
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"Mobility is invoked upon <T-NAME>.":"<S-NAME> pray(s) to <S-HIS-HER> god for an aura of mobility!");
-				if(mob.location().okAffect(msg))
+				mob.location().send(mob,msg);
+				for(int i=0;i<room.numInhabitants();i++)
 				{
-					mob.location().send(mob,msg);
-					beneficialAffect(mob,target,0);
+					MOB target=room.fetchInhabitant(i);
+					if(target==null) break;
+					
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					msg=new FullMsg(mob,target,this,affectType,"Mobility is invoked upon <T-NAME>.");
+					if(mob.location().okAffect(msg))
+					{
+						mob.location().send(mob,msg);
+						beneficialAffect(mob,target,0);
+					}
 				}
 			}
-			else
-			{
-				beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) to <S-HIS-HER> god, but nothing happens.");
-				return false;
-			}
+		}
+		else
+		{
+			beneficialWordsFizzle(mob,null,"<S-NAME> pray(s) to <S-HIS-HER> god, but nothing happens.");
+			return false;
 		}
 		return success;
 	}
