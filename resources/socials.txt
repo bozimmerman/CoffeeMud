@@ -98,3 +98,12 @@ ss	SIGH <T-NAME>	You sigh as you think of <T-HIM-HER>.	<S-NAME> sighs at the sig
 ss	LAUGH <T-NAME>	You laugh at <T-NAME> mercilessly.	<S-NAME> laughs at <T-NAME> mercilessly.	<S-NAME> laughs at you mercilessly.	
 ov	DANCE SELF	You skip and dance around by yourself.	<S-NAME> does the Macarena.		
 ss	CHUCKLE	You chuckle.	<S-NAME> chuckles.		
+mo	THINK	You think about it.	<S-NAME> sits down and thinks deeply.		
+mo	THINK <T-NAME>	You think about what <T-NAME> has said.	<S-NAME> thinks about what <T-NAME> has said.	<S-NAME> thinks about what you have said.	
+ot	POKE <T-NAME>	You poke <T-NAME>.	<S-NAME> pokes <T-NAME>.	<S-NAME> pokes you.	
+ss	GIGGLE SELF	You giggle to yourself.	<S-NAME> giggles to <T-HIM-HER>self.		
+ss	GIGGLE <T-NAME>	You giggle at <T-HIM-HER>.	<S-NAME> giggles at <T-NAME>.	<S-NAME> giggles at you.	
+ss	GIGGLE	You giggle.	<S-NAME> giggles.		
+ss	SNICKER SELF	You snicker to yourself.	<S-NAME> snickers to <T-HIM-HER>self.		
+ss	SNICKER <T-NAME>	You snicker at <T-HIM-HER>.	<S-NAME> snickers at <T-NAME>.	<S-NAME> snickers at you.	
+ss	SNICKER	You snicker.	<S-NAME> snickers.		

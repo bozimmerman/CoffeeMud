@@ -108,8 +108,7 @@ public class Thief extends StdCharClass
 				{
 					Item I=myChar.fetchInventory(i);
 					if(I==null) break;
-					if((((I.rawWornCode()&wearMask)>0)&&(I instanceof Armor))
-					 ||(I.amWearingAt(Item.HELD)&&(I instanceof Shield)))
+					if((!I.amWearingAt(Item.INVENTORY))&&((I instanceof Armor)||(I instanceof Shield)))
 					{
 						switch(I.material()&EnvResource.MATERIAL_MASK)
 						{

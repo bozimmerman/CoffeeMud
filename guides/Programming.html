@@ -275,9 +275,11 @@ etc.</FONT>
 		setDisplayText("Someone left their super sword here.");
 		
 		setMaterial(EnvResource.RESOURCE_STEEL);
+		setBaseValue(500);
 		baseEnvStats.setWeight(25);
 		baseEnvStats.setAttackAdjustment(10);
 		baseEnvStats.setDamage(15);
+		recoverEnvStats();
 	}
 	
 </pre>
@@ -295,10 +297,12 @@ and damage describe it completely.  Other classes, however, have different requi
 		setDisplayText("Someone left their super bracer here.");
 		
 		setMaterial(EnvResource.RESOURCE_STEEL);
+		setBaseValue(100);
 		baseEnvStats.setWeight(5);
 		baseEnvStats.setArmor(5);
 		setRawProperLocationBitmap(Item.ON_LEFT_WRIST|Item.ON_RIGHT_WRIST);
 		setRawLogicalAnd(false);
+		recoverEnvStats();
 	}
 	
 </pre>
@@ -316,14 +320,20 @@ true.  Now, a StdContainer:</FONT>
 		setDescription("A super duper bag"); 
 		setDisplayText("Someone left their super bag here.");
 		
+		setBaseValue(50);
+		setLidsNLocks(false,true,false,false);
+		setKeyName("");
 		setMaterial(EnvResource.RESOURCE_LEATHER);
 		baseEnvStats.setWeight(1);
 		setCapacity(100);
+		recoverEnvStats();
 	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>When setting the capacity of a container, remember that it must also be able to hold its own
-weight!  Now, a StdDrink container:</FONT>
+<P><FONT size=4>When setting the 
+capacity of a container, remember that it must also be able to hold its own 
+weight! Also, note the lids and locks flags have made this container lidless and lockless and always open.&nbsp; Of course, without a lock, setting a key would be
+silly!&nbsp;  Now, a StdDrink container:</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewCup()
@@ -335,12 +345,14 @@ weight!  Now, a StdDrink container:</FONT>
 		setDisplayText("Someone left their super bag here.");
 		
 		setMaterial(EnvResource.RESOURCE_LEATHER);
+		setBaseValue(5);
 		setLiquidHeld(2000);
 		setLiquidRemaining(2000);
 		setThirstQuenched(500);
 		setLiquidType(EnvResource.RESOURCE_MILK);
 		baseEnvStats.setWeight(1);
 		setCapacity(0);
+		recoverEnvStats();
 	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
@@ -352,14 +364,73 @@ that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
 	{
 		super();
 
-		Username= "a super
-		crumb"; setDescription("A super duper 
-		crumb"); setDisplayText("Someone left their super crumbs
+		Username="a super crumb";
+		setDescription("A super duper crumb");
+		setDisplayText("Someone left their super crumbs.");
 		
-		here.");
+		setBaseValue(1);
 		setMaterial(EnvResource.RESOURCE_MEAT);
 		setNourishment(500);
 		baseEnvStats.setWeight(1);
+		recoverEnvStats();
+	}
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>Now, the StdRideable resembles the MOB of the same name, and thus, has identical modifications.</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+	public MyNewBed()
+	{
+		super();
+
+		Username="a bed";
+		setDescription("A bed");
+		setDisplayText("A bed is here");
+		
+		setBaseValue(100);
+		setMobCapacity(2);
+		setRideBasis(Rideable.RIDEABLE_SLEEP);
+		baseEnvStats.setWeight(100);
+		recoverEnvStats();
+	}
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>A pile of money, aka StdCoins, is simplest of all:</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+	public MyNewMoney()
+	{
+		super();
+
+		Username="a pile of coins";
+		setDescription("A pile of coins");
+		setDisplayText("Someone left their money here.");
+		
+		setBaseValue(0);
+		setMaterial(EnvResource.RESOURCE_GOLD);
+		baseEnvstats.setAbility(1000); // 1000 coins!
+		baseEnvStats.setWeight(1);
+		recoverEnvStats();
+	}
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>The StdDrink created above is an enormous cup of milk!  You'll notice the capacity is 0, meaning 
+that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+	public MyNewFood()
+	{
+		super();
+
+		Username="a super crumb";
+		setDescription("A super duper crumb");
+		setDisplayText("Someone left their super crumbs.");
+		
+		setBaseValue(1);
+		setMaterial(EnvResource.RESOURCE_MEAT);
+		setNourishment(500);
+		baseEnvStats.setWeight(1);
+		recoverEnvStats();
 	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>

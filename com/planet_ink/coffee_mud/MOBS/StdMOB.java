@@ -971,8 +971,6 @@ public class StdMOB implements MOB
 			case Affect.TYP_BUY:
 			case Affect.TYP_CLOSE:
 			case Affect.TYP_DELICATE_HANDS_ACT:
-			case Affect.TYP_DRINK:
-			case Affect.TYP_EAT:
 			case Affect.TYP_LEAVE:
 			case Affect.TYP_FILL:
 			case Affect.TYP_LIST:
