@@ -1,8 +1,8 @@
 code something to examine all items and make sure they aren't overboard.
 code something to coffeemudify all the beds 
+do tims readable with pages
 GenCharClasses -- zappercheck on quals 
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when 
 	entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
-
