@@ -367,7 +367,7 @@ public class Spell_Wish extends Spell
 				{
 					Room room=(Room)r.nextElement();
 					if(Sense.canAccess(mob,room))
-					if(CoffeeUtensils.containsString(room.displayText().toUpperCase(),locationWish.trim()))
+					if(CoffeeUtensils.containsString(room.displayText(),locationWish.trim()))
 					{
 					   newRoom=room;
 					   break;

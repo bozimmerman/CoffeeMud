@@ -498,10 +498,10 @@ public class Movement extends Scriptable
 			if((e!=null)&&(r!=null))
 			{
 				if((Sense.canBeSeenBy(e,mob))
-				&&(((CoffeeUtensils.containsString(e.name().toUpperCase(),desc))
-				||(CoffeeUtensils.containsString(e.displayText().toUpperCase(),desc))
-				||(CoffeeUtensils.containsString(r.displayText().toUpperCase(),desc))
-				||(CoffeeUtensils.containsString(e.description().toUpperCase(),desc)))))
+				&&(((CoffeeUtensils.containsString(e.name(),desc))
+				||(CoffeeUtensils.containsString(e.displayText(),desc))
+				||(CoffeeUtensils.containsString(r.displayText(),desc))
+				||(CoffeeUtensils.containsString(e.description(),desc)))))
 				{
 					dir=d; break;
 				}

@@ -37,7 +37,7 @@ public class Chant_GroveWalk extends Chant
 					{
 						if(R==mob.location())
 							hereok=true;
-						if(CoffeeUtensils.containsString(R.displayText().toUpperCase(),areaName))
+						if(CoffeeUtensils.containsString(R.displayText(),areaName))
 						   newRoom=R;
 						break;
 					}

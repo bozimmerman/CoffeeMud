@@ -115,20 +115,74 @@ public class CoffeeUtensils
 	public static boolean containsString(String toSrchStr, String srchStr)
 	{
 		if(srchStr.equalsIgnoreCase("all")) return true;
-		if(srchStr.endsWith("$")
-		&&(Util.removeColors(toSrchStr.toUpperCase()).endsWith(srchStr.toUpperCase().substring(0,srchStr.length()-1))))
-		   return true;
-		int x=Util.removeColors(toSrchStr.toUpperCase()).indexOf(srchStr.toUpperCase());
-		if(x<0) return false;
-
-		if(x==0)
-			return true;
-		else
+		int tos=0;
+		int tolen=toSrchStr.length();
+		int srlen=srchStr.length();
+		boolean found=false;
+		while((!found)&&(tos<tolen))
 		{
-			if(Character.isLetter(Util.removeColors(toSrchStr.toUpperCase()).charAt(x-1)))
-			   return false;
-			return true;
+			for(int x=0;x<srlen;x++)
+			{
+				if(tos>=tolen)
+				{
+					if(srchStr.charAt(x)=='$')
+						found=true;
+					break;
+				}
+					
+				switch(toSrchStr.charAt(tos))
+				{
+				case '^':
+					tos=tos+2;
+					break;
+				case ',':
+				case '?':
+				case '!':
+				case '.':
+				case ';':
+					tos++;
+					break;
+				}
+				switch(srchStr.charAt(x))
+				{
+				case '^': x=x+2;
+					break;
+				case ',':
+				case '?':
+				case '!':
+				case '.':
+				case ';': x++;
+					break;
+				}
+				if(x<srlen)
+				{
+					if(tos<tolen)
+					{
+						if(Character.toUpperCase(srchStr.charAt(x))!=Character.toUpperCase(toSrchStr.charAt(tos)))
+							break;
+						else
+						if(x==(srlen-1))
+						   found=true;
+						else
+							tos++;
+					}
+					else
+					if(srchStr.charAt(x)=='$')
+						found=true;
+					else
+						break;
+				}
+				else
+				{
+					found=true;
+					break;
+				}
+			}
+			while((!found)&&(tos<tolen)&&(Character.isLetter(toSrchStr.charAt(tos))))
+				tos++;
+			tos++;
 		}
+		return found;
 	}
 	
 	public static boolean reachableItem(MOB mob, Environmental I)
@@ -146,12 +200,11 @@ public class CoffeeUtensils
 	public static Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly)
 	{
 		if(srchStr.length()==0) return null;
-		srchStr=srchStr.toUpperCase();
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
 		   return null;
 
 		boolean allFlag=false;
-		if(srchStr.startsWith("ALL "))
+		if(srchStr.toUpperCase().startsWith("ALL "))
 		{
 			srchStr=srchStr.substring(4);
 			allFlag=true;
@@ -234,11 +287,10 @@ public class CoffeeUtensils
 	public static Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly)
 	{
 		if(srchStr.length()==0) return null;
-		srchStr=srchStr.toUpperCase();
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
 		   return null;
 		boolean allFlag=false;
-		if(srchStr.startsWith("ALL "))
+		if(srchStr.toUpperCase().startsWith("ALL "))
 		{
 			srchStr=srchStr.substring(4);
 			allFlag=true;
@@ -309,12 +361,10 @@ public class CoffeeUtensils
 	public static Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)
 	{
 		if(srchStr.length()==0) return null;
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("the")))
-		srchStr=srchStr.toUpperCase();
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
 		   return null;
 		boolean allFlag=false;
-		if(srchStr.startsWith("ALL "))
+		if(srchStr.toUpperCase().startsWith("ALL "))
 		{
 			srchStr=srchStr.substring(4);
 			allFlag=true;
@@ -386,11 +436,10 @@ public class CoffeeUtensils
 	public static Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
 	{
 		if(srchStr.length()==0) return null;
-		srchStr=srchStr.toUpperCase();
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
 		   return null;
 		boolean allFlag=false;
-		if(srchStr.startsWith("ALL "))
+		if(srchStr.toUpperCase().startsWith("ALL "))
 		{
 			srchStr=srchStr.substring(4);
 			allFlag=true;

@@ -336,10 +336,15 @@ public class SocialProcessor
 			mob.tell(pstats.replyTo().Name()+" is no longer logged in.");
 			return;
 		}
+		if(Util.combine(commands,1).length()==0)
+		{
+			mob.tell("Tell '"+pstats.replyTo().Name()+" what?");
+			return;
+		}
 		quickSay(mob,pstats.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(pstats.replyTo()));
 		if((pstats.replyTo().session()!=null)
 		&&(pstats.replyTo().session().afkFlag()))
-			mob.tell(pstats.replyTo().name()+" is AFK at the moment.");
+			mob.tell("Note: "+pstats.replyTo().name()+" is AFK at the moment.");
 	}
 
 	public static void tell(MOB mob, Vector commands)

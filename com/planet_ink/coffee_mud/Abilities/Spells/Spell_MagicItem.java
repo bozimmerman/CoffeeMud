@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
@@ -54,6 +55,15 @@ public class Spell_MagicItem extends Spell
 			return false;
 		}
 
+		if((wandThis.ID().equals("Spell_Stoneskin"))
+		||(wandThis.ID().equals("Spell_MirrorImage"))
+		||(CMAble.lowestQualifyingLevel(wandThis.ID())>25)
+		||((wandThis instanceof StdAbility)&&(((StdAbility)wandThis).manaCost(null)>45)))
+		{
+			mob.tell("That spell is too powerful to enchant into anything.");
+			return false;
+		}
+		
 		if((wand.numAffects()>0)||(!wand.isGeneric()))
 		{
 			mob.tell("You can't enchant '"+wand.name()+"'.");

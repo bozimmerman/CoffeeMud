@@ -2644,7 +2644,7 @@ public class Import
 					commands.addElement(filePrefix+fn);
 				continue;
 			}
-			if(buf.substring(0,20).indexOf("<AREAS>")>=0)
+			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AREAS>")>=0))
 			{
 				Vector areas=new Vector();
 				if(mob.session()!=null)
@@ -2705,7 +2705,7 @@ public class Import
 				continue;
 			}
 			else
-			if(buf.substring(0,20).indexOf("<AREA>")>=0)
+			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AREA>")>=0))
 			{
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area from file: '"+areaFileName+"'...");
@@ -2744,7 +2744,7 @@ public class Import
 				}
 			}
 			else
-			if(buf.substring(0,20).indexOf("<AROOM>")>=0)
+			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AROOM>")>=0))
 			{
 				mob.tell("Unpacking room from file: '"+areaFileName+"'...");
 				String error=com.planet_ink.coffee_mud.common.Generic.unpackRoomFromXML(buf.toString(),true);
@@ -2783,7 +2783,7 @@ public class Import
 				}
 			}
 			else
-			if(buf.substring(0,20).indexOf("<MOBS>")>=0)
+			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 			{
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking mobs from file: '"+areaFileName+"'...");
@@ -2812,7 +2812,7 @@ public class Import
 				}
 			}
 			else
-			if(buf.substring(0,20).indexOf("<ITEMS>")>=0)
+			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
 			{
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking items from file: '"+areaFileName+"'...");
@@ -4183,7 +4183,7 @@ public class Import
 		Vector allKnownFields=new Vector();
 		Vector things=new Vector();
 		boolean aremobs=false;
-		if(buf.substring(0,20).indexOf("<MOBS>")>=0)
+		if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 		{
 			if(mob.session()!=null)
 				mob.session().rawPrint("Unpacking mobs from file: '"+filename+"'...");
@@ -4198,7 +4198,7 @@ public class Import
 			aremobs=true;
 		}
 		else
-		if(buf.substring(0,20).indexOf("<ITEMS>")>=0)
+		if((buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
 		{
 			if(mob.session()!=null)
 				mob.session().rawPrint("Unpacking items from file: '"+filename+"'...");

@@ -1666,10 +1666,12 @@ public class StdMOB implements MOB
 				tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 			}
 			else
-			if(((Util.bset(targetMajor,Affect.MASK_EYES))
-			  ||(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-			  ||(Util.bset(targetMajor,Affect.MASK_GENERAL)))
-			&&(!asleep)&&(canseesrc))
+			if((Util.bset(targetMajor,Affect.MASK_GENERAL))
+			||(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+				tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
+			else
+			if((Util.bset(targetMajor,Affect.MASK_EYES))
+			&&((!asleep)&&(canseesrc)))
 				tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 			else
 			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))

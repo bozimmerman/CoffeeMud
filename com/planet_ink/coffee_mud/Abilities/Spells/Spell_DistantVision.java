@@ -26,7 +26,7 @@ public class Spell_DistantVision extends Spell
 		{
 			Room room=(Room)r.nextElement();
 			if((Sense.canAccess(mob,room))
-			&&(CoffeeUtensils.containsString(room.displayText().toUpperCase(),areaName)))
+			&&(CoffeeUtensils.containsString(room.displayText(),areaName)))
 			{
 				thisRoom=room;
 				break;

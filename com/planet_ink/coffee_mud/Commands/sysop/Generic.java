@@ -1832,7 +1832,13 @@ public class Generic
 			String inventorystr="";
 			Vector V=E.getUniqueStoreInventory();
 			for(int b=0;b<V.size();b++)
-				inventorystr+=CMClass.className(V.elementAt(b))+" ("+E.numberInStock((Environmental)V.elementAt(b))+"), ";
+			{
+				Environmental E2=(Environmental)V.elementAt(b);
+				if(E2.isGeneric())
+					inventorystr+=E2.name()+" ("+E.numberInStock(E2)+"), ";
+				else
+					inventorystr+=CMClass.className(E2)+" ("+E.numberInStock(E2)+"), ";
+			}
 			if(inventorystr.length()>0)
 				inventorystr=inventorystr.substring(0,inventorystr.length()-2);
 			mob.tell(showNumber+". Inventory: '"+inventorystr+"'.");
@@ -1848,6 +1854,8 @@ public class Generic
 					mob.tell(Lister.reallyList(CMClass.miscMagic(),-1).toString());
 					mob.tell(Lister.reallyList(CMClass.items(),-1).toString());
 					mob.tell(Lister.reallyList(CMClass.mobTypes(),-1).toString());
+					mob.tell("* Plus! Any items on the ground.");
+					mob.tell("* Plus! Any mobs hanging around in the room.");
 				}
 				else
 				{
@@ -1860,8 +1868,21 @@ public class Generic
 					else
 					{
 						item=CMClass.getUnknown(itemstr);
+						if((item==null)&&(mob.location()!=null))
+						{
+							Room R=mob.location();
+							item=R.fetchItem(null,itemstr);
+							if(item==null)
+							{	
+								item=R.fetchInhabitant(itemstr);
+								if((item instanceof MOB)&&(!((MOB)item).isMonster()))
+									item=null;
+							}
+						}
 						if(item!=null)
 						{
+							item=item.copyOf();
+							item.recoverEnvStats();
 							boolean ok=E.doISellThis(item);
 							if((item instanceof Ability)
 							   &&((E.whatIsSold()==E.DEAL_TRAINER)||(E.whatIsSold()==E.DEAL_CASTER)))

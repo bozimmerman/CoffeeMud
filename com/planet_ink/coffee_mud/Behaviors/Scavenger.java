@@ -9,6 +9,7 @@ public class Scavenger extends ActiveTicker
 {
 	public String ID(){return "Scavenger";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	
 	public Scavenger()
 	{
 		minTicks=10; maxTicks=30; chance=25;
@@ -34,6 +35,8 @@ public class Scavenger extends ActiveTicker
 				if((thisItem!=null)&&(thisItem instanceof DeadBody))
 					return true;
 			}
+			if(thisRoom.numPCInhabitants()>0)
+				return true;
 
 			Vector V=new Vector();
 			V.addElement("GET");

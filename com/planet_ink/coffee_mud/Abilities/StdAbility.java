@@ -407,6 +407,8 @@ public class StdAbility implements Ability, Cloneable
 
 	public int manaCost(MOB mob)
 	{
+		if(mob==null) return overrideMana();
+		
 		int diff=0;
 		for(int c=0;c<mob.charStats().numClasses();c++)
 		{

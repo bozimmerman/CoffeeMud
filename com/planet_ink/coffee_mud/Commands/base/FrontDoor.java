@@ -71,6 +71,20 @@ public class FrontDoor
 			if((" YOU SHIT FUCK CUNT FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP ADMIN SYSOP ").indexOf(" "+str+" ")>=0)
 				return false;
 		}
+		Vector V2=Util.parseCommas(CommonStrings.getVar(CommonStrings.SYSTEM_BADNAMES));
+		for(int v2=0;v2<V2.size();v2++)
+		{
+			String str2=(String)V2.elementAt(v2);
+			if(str2.length()>0)
+			for(int v=0;v<V.size();v++)
+			{
+				String str=(String)V.elementAt(v);
+				if((str.length()>0)
+				&&(str.equalsIgnoreCase(str2)))
+					return false;
+			}
+		}
+		
 		for(int c=0;c<login.length();c++)
 		{
 			char C=Character.toUpperCase(login.charAt(c));

@@ -178,6 +178,7 @@ public class MUD extends Thread implements Host
 		}
 
 		offlineReason=new String("Booting: connecting to database");
+		CommonStrings.setVar(CommonStrings.SYSTEM_BADNAMES,page.getStr("BADNAMES"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_MULTICLASS,page.getStr("CLASSSYSTEM"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_PKILL,page.getStr("PLAYERKILL"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_PLAYERDEATH,page.getStr("PLAYERDEATH"));

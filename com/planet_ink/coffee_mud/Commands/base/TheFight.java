@@ -593,7 +593,8 @@ public class TheFight
 			if((I!=null)
 			&&(!I.amWearingAt(Item.INVENTORY))
 			&&(I instanceof Container)
-			&&(((Container)I).capacity()>0))
+			&&(((Container)I).capacity()>0)
+			&&(((Container)I).containTypes()!=Container.CONTAIN_ANYTHING))
 			{
 				if(withWeapons)
 				{
@@ -645,6 +646,7 @@ public class TheFight
 		Vector sheaths=getSheaths(mob,false);
 		Vector items=new Vector();
 		Vector containers=new Vector();
+		Item sheathable=null;
 		if(commands.size()==0)
 		{
 			if(item2==item1) item2=null;
@@ -678,6 +680,9 @@ public class TheFight
 					containers.addElement(sheath);
 				}
 			}
+			if(item1!=null)	sheathable=item1;
+			else
+			if(item2!=null)	sheathable=item2;
 		}
 		else
 		{
@@ -699,6 +704,7 @@ public class TheFight
 				{
 					if(Sense.canBeSeenBy(putThis,mob)&&(!items.contains(putThis)))
 					{
+						sheathable=putThis;
 						items.addElement(putThis);
 						if((container!=null)&&(container.canContain(putThis)))
 							containers.addElement(container);
@@ -726,6 +732,12 @@ public class TheFight
 		if(items.size()==0)
 		{
 			if(!noerrors)
+				if(sheaths.size()==0)
+					mob.tell("You are not wearing an appropriate sheath.");
+				else
+				if(sheathable!=null)
+					mob.tell("You aren't wearing anything you can sheath "+sheathable.name()+" in.");
+				else
 				if(commands.size()==0)
 					mob.tell("You don't seem to be wielding anything you can sheath.");
 				else

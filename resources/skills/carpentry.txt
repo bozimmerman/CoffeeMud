@@ -22,8 +22,8 @@ Small % Chair	1	15	15	5	GenChair	CHAIR	1		0
 Small % Bench	1	20	20	10	GenChair	CHAIR	2	 	0
 Small % Bed	1	25	30	15	GenBed	BED	1	 	0
 Small % Box	1	15	15	5	GenContainer		5	 	0
-Sabots	3	20	10	15	GenShoes	FEET	0	2	0
-Clogs	3	30	10	15	GenShoes	FEET	0	2	0
+a Pair of % Sabots	3	20	10	15	GenShoes	FEET	0	2	0
+a Pair of % Clogs	3	30	10	15	GenShoes	FEET	0	2	0
 % Quarterstaff	3	15	10	97	GenWeapon	STAFF	2	5	0
 % Staff	3	20	15	140	GenWeapon	STAFF	2	6	0
 % Club	3	15	10	65	GenWeapon	BLUNT	1	3	0

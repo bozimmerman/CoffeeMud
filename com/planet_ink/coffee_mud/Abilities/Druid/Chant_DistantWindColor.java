@@ -29,7 +29,7 @@ public class Chant_DistantWindColor extends Chant
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if((CoffeeUtensils.containsString(R.displayText().toUpperCase(),areaName))
+			if((CoffeeUtensils.containsString(R.displayText(),areaName))
 			&&(Sense.canAccess(mob,R)))
 			{
 				anyRoom=R;

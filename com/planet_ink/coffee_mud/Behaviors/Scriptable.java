@@ -2489,7 +2489,12 @@ public class Scriptable extends StdBehavior
 			}
 			case 2: // mpecho
 			{
-				lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim()));
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getBit(s,1));
+				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				if((newTarget!=null)||(m.startsWith("$")))
+					lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1)));
+				else
+					lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim()));
 				break;
 			}
 			case 13: // mpunaffect

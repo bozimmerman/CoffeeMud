@@ -36,7 +36,7 @@ public class Chant_PlantPass extends Chant
 		for(int m=0;m<candidates.size();m++)
 		{
 			Room room=(Room)candidates.elementAt(m);
-			if(CoffeeUtensils.containsString(room.displayText().toUpperCase(),areaName))
+			if(CoffeeUtensils.containsString(room.displayText(),areaName))
 			{
 			   newRoom=room;
 			   break;
