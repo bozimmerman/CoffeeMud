@@ -89,6 +89,8 @@ public class Digging extends CommonSkill
 		   &&((resourceType==EnvResource.RESOURCE_CRYSTAL)
 		   ||(resourceType==EnvResource.RESOURCE_DIAMOND)
 		   ||(resourceType==EnvResource.RESOURCE_GEM)
+		   ||(resourceType==EnvResource.RESOURCE_SAND)
+		   ||(resourceType==EnvResource.RESOURCE_GRANITE)
 		   ||(resourceType==EnvResource.RESOURCE_AMETHYST)
 		   ||(resourceType==EnvResource.RESOURCE_GARNET)
 		   ||(resourceType==EnvResource.RESOURCE_AMBER)
