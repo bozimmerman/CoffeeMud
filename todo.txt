@@ -1,5 +1,4 @@
 Programming.html update
-	Do Abilities/Spells/etc.
 	need special section for languages
 	need special section for poisons
 	need special section for diseases

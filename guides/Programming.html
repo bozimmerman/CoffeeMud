@@ -2961,26 +2961,26 @@ maliciousAffect to give the target one more saving throw, against any of the
 valid saving throw type messages, such as TYP_FIRE, TYP_ACID, TYP_GAS, 
 etc.&nbsp; The value of -1 means not to make any further saving throw attempts 
 before affecting the target.</FONT></P>
-<P align=left><FONT size=4>If this skill had not been malicious, we could have 
-made a call to the beneficialAffect method instead.&nbsp; That method has the 
-same parameters as maliciousAffect, though it lacks the final parameter for a 
-further saving throw, since beneficial affects require no saving 
-throw.</FONT></P>
-<P align=left><FONT size=4>Now, if the success variable had been false, then we 
-made a call to the maliciousFizzle method.&nbsp; In addition to a display in the 
-room, this method will make sure the target knows that the invoking mob was 
-trying to do something bad to him or her, so that the target will get angry and 
-start fighting.&nbsp; Had this not been a malicious ability, we would have made 
-calls instead to either the beneficialWordsFizzle method, or the 
-beneficialVisualFizzle method, depending upon whether the skill is verbal or 
-somantic based.&nbsp; Most spells are verbal based, for instance, while most 
-skills are somantic.</FONT></P>
-<P align=left><FONT size=4>Finally, we return the results of the success 
-variable from the invoke() method, to let the system know whether or not the 
-ability succeeded.&nbsp; If it did, the target will now be affected by this 
-ability, and will have to stay on the ground for a few ticks while the source 
-mob pounds on him or her.</FONT></P>
-<P align=left><FONT size=4></FONT>&nbsp;</P></FONT><FONT size=5>
+<P align=left><FONT size=4>If this skill 
+had not been malicious, we could have made a call to the beneficialAffect method 
+instead.&nbsp; That method has the same parameters as maliciousAffect, though it 
+lacks the final parameter for a further saving throw, since beneficial affects 
+require no saving throw.</FONT></P>
+<P align=left><FONT size=4>Now, if the 
+success variable had been false, then we made a call to the maliciousFizzle 
+method.&nbsp; In addition to a display in the room, this method will make sure 
+the target knows that the invoking mob was trying to do something bad to him or 
+her, so that the target will get angry and start fighting.&nbsp; Had this not 
+been a malicious ability, we would have made calls instead to either the 
+beneficialWordsFizzle method, or the beneficialVisualFizzle method, depending 
+upon whether the skill is verbal or somantic based.&nbsp; Most spells are verbal 
+based, for instance, while most skills are somantic.</FONT></P>
+<P align=left><FONT size=4>Finally, we 
+return the results of the success variable from the invoke() method, to let the 
+system know whether or not the ability succeeded.&nbsp; If it did, the target 
+will now be affected by this ability, and will have to stay on the ground for a 
+few ticks while the source mob pounds on him or her.</FONT></P>
+<P align=left><FONT size=4></FONT>&nbsp;</P></FONT>
 <P align=left><STRONG><IMG src="images/fireball.jpg" >&nbsp;</STRONG><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT style="BACKGROUND-COLOR: black" 
 color=yellow size=5><STRONG>Spells, 
@@ -2991,6 +2991,235 @@ it is required that you go back and read the previous section on Skill Abilities
 before proceeding.&nbsp; You will also be required to poke through the 
 Digressions elsewhere in this document as well.</FONT></P>
 <P align=left><FONT size=4><STRONG>Spells</STRONG></FONT></P>
+<P align=left><FONT size=4>Spells will 
+follow all the rules mentioned above in the Skill Abilities section, with a few 
+differences:</FONT></P><PRE>import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.utils.Abilities.Spells.Spell;
+import java.util.*;
+
+public class Spell_ResistFire extends Spell
+{
+   public String ID() { return "Spell_ResistFire"; }
+   public String name(){return "Resist Fire";}
+   public String displayText(){return "(Resist Fire)";}
+   public int quality(){ return BENEFICIAL_OTHERS;}
+   protected int canAffectCode(){return CAN_MOBS;}
+   public Environmental newInstance(){	return new Spell_ResistFire();}
+   public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+
+</PRE></FONT>
+<P align=left><FONT size=4>The first 
+difference you will notice above is that spells extend the base class Spell.java 
+found in the Abilities/Spells directory instead of StdAbility.&nbsp; Spell.java 
+also extends StdAbility as well.&nbsp; The second difference is in the 
+classificationCode() method.&nbsp; You will notice that the domain of the spell 
+is also specified.&nbsp; In addition to the normal classification code of 
+Ability.SPELL, the domain may be added using the | symbol.&nbsp; Possible 
+domains include: </FONT></P>
+<P align=left>
+<TABLE cellSpacing=1 cellPadding=1 width="75%" border=1>
+  
+  <TR>
+    <TD>DOMAIN_DIVINATION</TD>
+    <TD>Spells that grant knowledge.</TD></TR>
+  <TR>
+    <TD>DOMAIN_ABJURATION</TD>
+    <TD>Spells that protect.</TD></TR>
+  <TR>
+    <TD>DOMAIN_ILLUSION</TD>
+    <TD>Spells that fool the senses.</TD></TR>
+  <TR>
+    <TD>DOMAIN_EVOCATION</TD>
+    <TD>Spells that bring forth the elements.</TD></TR>
+  <TR>
+    <TD>DOMAIN_ALTERATION</TD>
+    <TD>Spells that change things.</TD></TR>
+  <TR>
+    <TD>DOMAIN_TRANSMUTATION</TD>
+    <TD>Spells that change people.</TD></TR>
+  <TR>
+    <TD>DOMAIN_ENCHANTMENT</TD>
+    <TD>Spells that enchant items or the mind.</TD></TR>
+  <TR>
+    <TD>DOMAIN_CONJURATION</TD>
+    <TD>Spells that transport people or items.</TD></TR></TABLE></P>
+<P align=left><FONT size=4></FONT>&nbsp;</P></FONT><PRE>   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+   {
+      MOB target=getTarget(mob,commands,givenTarget);
+      if(target==null) return false;
+
+      if(!super.invoke(mob,commands,givenTarget,auto))
+         return false;
+
+      boolean success=profficiencyCheck(0,auto);
+      if(success)
+      {
+         FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"&lt;T-NAME&gt; feel(s) cooly protected.":"^S&lt;S-NAME&gt; invoke(s) a cool field of protection around &lt;T-NAMESELF&gt;.^?");
+         if(mob.location().okAffect(mob,msg))
+         {
+            mob.location().send(mob,msg);
+            beneficialAffect(mob,target,0);
+         }
+      }
+      else
+         beneficialWordsFizzle(mob,target,"&lt;S-NAME&gt; attempt(s) to invoke fire protection, but fail(s).");
+
+      return success;
+   }
+}
+</PRE></FONT>
+<P align=left><FONT size=4>The Invoke() 
+method above follows the one in Skill_Abilities very closely.&nbsp; You will see 
+that no adjustment is made to the profficiency check, and that, since this is 
+not a MALICIOUS ability, calls are made to beneficialAffect and 
+beneficialWordsFizzle instead of maliciousAffect and maliciousFizzle.&nbsp; The 
+main difference to notice here, however, is the line constructing the evoking 
+message.&nbsp; You will notice that where the message code should be specified, 
+a method call to affectType(, which is a method located in Spell.java, is 
+made.&nbsp; This call will automatically construct the proper message type for a 
+spell, taking into account MALICIOUSness, and whether the auto flag is 
+set.&nbsp; You will also notice that different message strings are constructed 
+depending upon whether the auto flag is set.</FONT></P></FONT>
+<P align=left><FONT size=4><STRONG>Prayers</STRONG></FONT></P>
+<P align=left><FONT size=4>Prayers&nbsp;will follow all the rules mentioned above in 
+the Skill Abilities section, with a few differences:</FONT></P><PRE>import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;<BR>import com.planet_ink.coffee_mud.Abilities.Prayers.Prayer;
+import java.util.*;
+
+public class Prayer_Anger extends Prayer
+{
+   public String ID() { return "Prayer_Anger"; }
+   public String name(){ return "Anger";}
+   public int quality(){ return MALICIOUS;}
+   public long flags(){return Ability.FLAG_UNHOLY;}
+   public Environmental newInstance(){   return new Prayer_Anger();}
+
+   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+   {
+      if(!super.invoke(mob,commands,givenTarget,auto))
+         return false;
+
+      boolean success=profficiencyCheck(0,auto);
+
+      boolean someoneIsFighting=false;
+      for(int i=0;i&lt;mob.location().numInhabitants();i++)
+      {
+         MOB inhab=mob.location().fetchInhabitant(i);
+         if((inhab!=null)&amp;&amp;(inhab.isInCombat()))
+            someoneIsFighting=true;
+      }
+
+      if((success)&amp;&amp;(!someoneIsFighting)&amp;&amp;(mob.location().numInhabitants()&gt;3))
+      {
+         // it worked, so build a copy of this ability,
+         // and add it to the affects list of the
+         // affected MOB.  Then tell everyone else
+         // what happened.
+         FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of anger descends":"^S&lt;S-NAME&gt; rage(s) for anger.^?");
+         if(mob.location().okAffect(mob,msg))
+         {
+            mob.location().send(mob,msg);</PRE><PRE>[.......]
+}
+</PRE></FONT>
+<P align=left><FONT size=4>The first 
+difference you may notice between this and the Skill Ability discussed in the 
+previous section is that this skill extends the Prayer.java class instead of 
+StdAbility.&nbsp; Prayer.java will make sure that the classificationCode() 
+method returns the proper value.&nbsp;&nbsp; </FONT></P>
+<P align=left><FONT size=4>You should also take note of the flags() 
+method.&nbsp; All Prayers must return a value from flags() where either the 
+FLAG_UNHOLY is set (meaning the Prayer is EVIL aligned), FLAG_HOLY is set 
+(meaning the Prayer is GOOD aligned), or BOTH are set, in which case the Prayer 
+is NEUTRAL.</FONT></P>
+<P align=left><FONT size=4>The last special note is down in the message 
+construction in the invoke() method.&nbsp; <FONT size=4>The Invoke() method 
+above follows the one in Skill_Abilities very closely.&nbsp; You will see that 
+no adjustment is made to the profficiency check, for instance.&nbsp; The main 
+difference to notice here, however, is the line constructing the evoking 
+message.&nbsp; You will notice that where the message code should be specified, 
+a method call to affectType(, which is a method located in Prayer.java, is 
+made.&nbsp; This call will automatically construct the proper message type for a 
+prayer, taking into account MALICIOUSness, and whether the auto flag is 
+set.&nbsp; You will also notice that different message strings are constructed 
+depending upon whether the auto flag is set.</FONT></P></FONT></FONT>
+<P align=left><FONT size=4><STRONG>Chants</STRONG></FONT></P>
+<P align=left><FONT size=4>Chants will 
+follow all the rules mentioned above in the Skill Abilities section, with a few 
+differences:</FONT></P><PRE>import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;<BR>import com.planet_ink.coffee_mud.Abilities.Druid.Chant;
+import java.util.*;
+
+public class Chant_AlterTime extends Chant
+{
+   public String ID() { return "Chant_AlterTime"; }
+   public String name(){ return "Alter Time";}
+   public String displayText(){return "";}
+   public int overrideMana(){return 100;}
+   public int quality(){return Ability.INDIFFERENT;}
+   protected int canAffectCode(){return 0;}
+   protected int canTargetCode(){return 0;}
+   public Environmental newInstance(){   return new Chant_AlterTime();}
+
+   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+   {
+      if(!super.invoke(mob,commands,givenTarget,auto))
+         return false;
+
+      boolean success=profficiencyCheck(0,auto);
+      if(success)
+      {
+         // it worked, so build a copy of this ability,
+         // and add it to the affects list of the
+         // affected MOB.  Then tell everyone else
+         // what happened.
+         FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S&lt;S-NAME&gt; chant(s), and reality seems to start blurring.^?");
+         if(mob.location().okAffect(mob,msg))
+         {
+            mob.location().send(mob,msg);
+            int x=Util.s_int(text());
+            while(x==0)   x=Dice.roll(1,3,-2);
+            if(x&gt;0)
+               mob.location().showHappens(Affect.MSG_OK_VISUAL,"Time moves forwards!");
+            else
+               mob.location().showHappens(Affect.MSG_OK_VISUAL,"Time moves backwards!");
+            if(CMMap.numAreas()&gt;0) CMMap.getFirstArea().tickTock(x);
+         }
+      }
+      else
+         return beneficialWordsFizzle(mob,null,"&lt;S-NAME&gt; chant(s), but the magic fades");
+
+
+      // return whether it worked
+      return success;
+   }
+}</PRE></FONT><FONT size=4>
+<P align=left><FONT size=4>The first difference you may notice between this and 
+the Skill Ability discussed in the previous section is that this skill extends 
+the Chant.java class instead of StdAbility.&nbsp; Chant.java will make sure that 
+the classificationCode() method returns the proper value.&nbsp;&nbsp; 
+</FONT></P>
+<P align=left><FONT size=4>You should also take note that the overrideMana() 
+method is actually returning a value here of 100.&nbsp; This method allows your 
+ability to always cost the same amount of mana, regardless of the invokers 
+level.&nbsp; This method may be used in any ability, not just chants.&nbsp; 
+Also, this is not a method that is normally found in chants.&nbsp; This 
+particular chant, being deamed to be especially powerful, happens to return a 
+value for it.&nbsp; Normally this method would not be found.</FONT></P>
+<P align=left><FONT size=4>The last special note is down in the message 
+construction in the invoke() method.&nbsp; <FONT size=4>The Invoke() method 
+above follows the one in Skill_Abilities very closely.&nbsp; You will see that 
+no adjustment is made to the profficiency check, for instance.&nbsp; The main 
+difference to notice here, however, is the line constructing the evoking 
+message.&nbsp; You will notice that where the message code should be specified, 
+a method call to affectType(, which is a method located in Chant.java, is 
+made.&nbsp; This call will automatically construct the proper message type for a 
+chant, taking into account MALICIOUSness, and whether the auto flag is 
+set.&nbsp; You will also notice that different message strings are constructed 
+depending upon whether the auto flag is set.</FONT></FONT></P></FONT></FONT>
 <P align=left>&nbsp;</P>
 <P align=left></FONT><IMG src="images/elvis.jpg" > </P>
 <P></P>
