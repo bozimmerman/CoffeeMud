@@ -16,7 +16,7 @@
   <target name="make" depends="init"
         description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}"/>
+    <javac srcdir="${src}" fork="yes" memoryInitialSize="512M" memoryMaximumSize="512M" destdir="${build}"/>
   </target>
 
   <target name="deploy" depends="make"
