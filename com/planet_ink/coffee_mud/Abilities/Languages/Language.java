@@ -132,9 +132,8 @@ public class Language extends StdAbility
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 		{
-			String str=msg.othersMessage();
-			if(str==null) str=msg.targetMessage();
-			if(str!=null) str=getMsgFromAffect(str);
+			String str=getMsgFromAffect(msg.othersMessage());
+			if(str==null) str=getMsgFromAffect(msg.targetMessage());
 			if(str!=null)
 			{
 				String smsg=getMsgFromAffect(msg.sourceMessage());
@@ -220,6 +219,7 @@ public class Language extends StdAbility
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
+		
 		if((affected instanceof MOB)
 		&&(!msg.amISource((MOB)affected))
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
@@ -239,14 +239,16 @@ public class Language extends StdAbility
 				if(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
 					msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
 				else
-				if(msg.amITarget(null)&&(msg.targetMessage()!=null))
+				if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
 					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+ID()+")"));
 				else
-				if(msg.amITarget((MOB)affected)&&(msg.targetMessage()!=null))
-					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+ID()+")"));
-				else
-				if((!msg.amITarget(null))&&(msg.othersMessage()!=null))
-					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
+				if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf("'")>0))
+				{
+					String otherMes=msg.othersMessage();
+					if(msg.target()!=null)
+						otherMes=CoffeeFilter.fullOutFilter(((MOB)affected).session(),(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
+					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(otherMes,str)+" (translated from "+ID()+")"));
+				}
 			}
 		}
 	}

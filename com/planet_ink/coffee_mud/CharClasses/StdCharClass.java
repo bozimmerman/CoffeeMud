@@ -686,6 +686,7 @@ public class StdCharClass implements CharClass, Cloneable
 		int expAmount=100;
 
 		if(deathRoom!=null)
+		{
 			for(int m=0;m<deathRoom.numInhabitants();m++)
 			{
 				MOB mob=deathRoom.fetchInhabitant(m);
@@ -697,15 +698,19 @@ public class StdCharClass implements CharClass, Cloneable
 					expAmount+=25;
 				}
 			}
+		}
 
 		if(beneficiaries.size()>0)
+		{
+			totalLevels=totalLevels*totalLevels;
 			for(Iterator i=beneficiaries.iterator();i.hasNext();)
 			{
 				MOB mob=(MOB)i.next();
-				int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level(),totalLevels)));
+				int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level()*mob.envStats().level(),totalLevels)));
 				if(myAmount>100) myAmount=100;
 				MUDFight.postExperience(mob,killed,"",myAmount,false);
 			}
+		}
 		return beneficiaries;
 	}
 	public String classParms(){ return "";}

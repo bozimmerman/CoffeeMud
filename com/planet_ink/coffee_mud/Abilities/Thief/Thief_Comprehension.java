@@ -85,11 +85,16 @@ public class Thief_Comprehension extends ThiefSkill
 				if(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
 					queue.addElement(new FullMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
 				else
-				if(msg.amITarget(null)&&(msg.targetMessage()!=null))
+				if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
 					queue.addElement(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
 				else
-				if(msg.othersMessage()!=null)
-					queue.addElement(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(msg.othersMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
+				if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf("'")>0))
+				{
+					String otherMes=msg.othersMessage();
+					if(msg.target()!=null)
+						otherMes=CoffeeFilter.fullOutFilter(((MOB)affected).session(),(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
+					queue.addElement(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(otherMes,str)+" (translated from "+ID()+")"));
+				}
 			}
 		}
 	}

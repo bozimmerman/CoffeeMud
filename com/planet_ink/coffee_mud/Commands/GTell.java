@@ -24,7 +24,7 @@ public class GTell extends StdCommand
 		for(Iterator e=group.iterator();e.hasNext();)
 		{
 			MOB target=(MOB)e.next();
-			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_TELL,"^T<S-NAME> tell(s) the group '"+text+"'^?^.",CMMsg.MSG_TELL,"^T<S-NAME> tell(s) the group '"+text+"'^?^.",CMMsg.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_TELL,"^t<S-NAME> tell(s) the group '"+text+"'^?^.",CMMsg.MSG_TELL,"^t<S-NAME> tell(s) the group '"+text+"'^?^.",CMMsg.NO_EFFECT,null);
 			if((mob.location().okMessage(mob,msg))
 			&&(target.okMessage(target,msg)))
 			{

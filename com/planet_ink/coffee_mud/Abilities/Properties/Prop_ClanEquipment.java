@@ -326,44 +326,17 @@ public class Prop_ClanEquipment extends Property
 		  && (TypeOfEffect < 1000)
 		  && (! ( (MOB) msg.target()).amDead()))
 		{
-			notAgain = true;
-			boolean showDamn = CommonStrings.getVar(CommonStrings.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES");
-			int flameDamage = Dice.roll(1, 6, 0);
-			flameDamage *= PowerLevel;
-			msg.addTrailerMsg(new FullMsg
-			                     (msg.source(), (MOB) msg.target(), null,
-			                      CMMsg.MSG_OK_ACTION,
-			// Source Message
-			                      "^FYour " + clanType + "'s " + type.toLowerCase() +
-			                      " magic courses through "
-			                      + affected.name() +
-			                      " and " +
-			                      CommonStrings.standardHitWord(WeaponType,
-			    flameDamage) + ( (showDamn) ? " (" + flameDamage + ")" : "") +
-			                      " <T-NAME>!^?",
-			// Target Message
-			                      "^FThe magic of " +
-			                      clanType + " " + clanName +
-			                      " courses through " + affected.name() +
-			                      " and " +
-			                      CommonStrings.standardHitWord(WeaponType,
-			    flameDamage) + ( (showDamn) ? " (" + flameDamage + ")" : "") +
-			                      " <T-NAME>!^?",
-			// Other Message
-			                      "^FThe magic of " +
-			                      clanType + " " + clanName +
-			                      " courses through " + affected.name() +
-			                      " and " +
-			                      CommonStrings.standardHitWord(WeaponType,
-			    flameDamage) + ( (showDamn) ? " (" + flameDamage + ")" : "") +
-			                      " <T-NAME>!^?"));
-			FullMsg msg3=new FullMsg(msg.source(), (MOB) msg.target(), null,
-			                                 CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect,
-			                                 CMMsg.MSG_DAMAGE,
-			                                 CMMsg.NO_EFFECT, null);
-			msg3.setValue(flameDamage);
-			msg.addTrailerMsg(msg3);
-			notAgain = false;
+			double flameDamage = new Integer(Dice.roll(1, 6, 0)).doubleValue();
+			for(int i=0;i<PowerLevel;i++)
+				flameDamage=flameDamage*1.5;
+			String str="^FThe magic of " +
+			            clanType + " " + clanName +
+			            " courses through " + affected.name() +
+			            " and <DAMAGE> <T-NAME>!^?";
+			MUDFight.postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
+								CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect,
+								WeaponType,
+								str);
 		}
 
 		/*
