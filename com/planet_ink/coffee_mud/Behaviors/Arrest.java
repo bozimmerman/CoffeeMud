@@ -1635,9 +1635,6 @@ public class Arrest extends StdBehavior
 					CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.getMessage(Law.MSG_EXECUTE).length()>0)
 					CommonMsgs.say(judge,criminal,laws.getMessage(Law.MSG_EXECUTE),false,false);
-				String channel=ChannelSet.getDefaultChannelName();
-				if((channel.length()>0)&&(judge.location()!=null))
-					CommonMsgs.channel(judge,channel,W.criminal().Name()+" is being executed at "+judge.location().displayText()+" for "+W.criminal().charStats().hisher()+" crimes.",true);
 				W.setState(Law.STATE_EXECUTING);
 			}
 			return false;
@@ -2609,6 +2606,12 @@ public class Arrest extends StdBehavior
 									CommonMsgs.say(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".",false,false);
 							}
 							W.setState(Law.STATE_WAITING);
+							if(highestCrimeAction(laws,W.criminal())==Law.ACTION_EXECUTE)
+							{
+								String channel=ChannelSet.getDefaultChannelName();
+								if((channel.length()>0)&&(judge.location()!=null))
+									CommonMsgs.channel(judge,channel,W.criminal().Name()+" is being executed at "+judge.location().displayText()+" for "+W.criminal().charStats().hisher()+" crimes.",true);
+							}
 						}
 						else
 						{

@@ -103,6 +103,8 @@ public class Chant_Drifting extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
+			Ability A=mob.fetchEffect("Falling");
+			if(A!=null) A.unInvoke();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) back down.");
 			CommonMsgs.stand(mob,true);
 		}

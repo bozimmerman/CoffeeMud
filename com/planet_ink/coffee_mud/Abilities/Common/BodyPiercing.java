@@ -75,20 +75,34 @@ public class BodyPiercing extends CommonSkill
 			commonTell(mob,"You must specify whom you want to pierce, and what body part to pierce.");
 			return false;
 		}
-		String part=(String)commands.lastElement();
-		commands.removeElementAt(commands.size()-1);
+		String name=(String)commands.firstElement();
+		String part=Util.combine(commands,1);
+		
+		MOB target=super.getTarget(mob,Util.makeVector(name),givenTarget);
+		if(target==null) return false;
 		
 		int partNum=-1;
 		StringBuffer allParts=new StringBuffer("");
-		long[] piercable={Item.ON_HEAD,Item.ON_EARS,Item.ON_EYES,Item.ON_TORSO};
+		String[][] piercables={{"lip", "nose"},
+				 			   {"ears","left ear","right ear"},
+							   {"eyebrows"},
+							   {"nipples","belly button"}};
+		long[] piercable={Item.ON_HEAD,
+		        		  Item.ON_EARS,
+		        		  Item.ON_EYES,
+		        		  Item.ON_TORSO};
+		String fullPartName=null;
 		for(int i=0;i<Item.wornLocation.length;i++)
 		{
 		    for(int ii=0;ii<piercable.length;ii++)
 		        if(Item.wornCodes[i]==piercable[ii])
 		        {
-				    if(Item.wornLocation[i].equalsIgnoreCase(part))
-				        partNum=i;
-				    allParts.append(", "+Util.capitalize(Item.wornLocation[i].toLowerCase()));
+				    for(int iii=0;iii<piercables[ii].length;iii++)
+				    {
+				        if(piercables[ii][iii].startsWith(part.toLowerCase()))
+				        {    partNum=i; fullPartName=piercables[ii][iii];}
+					    allParts.append(", "+Util.capitalize(piercables[ii][iii]));
+				    }
 				    break;
 			    }
 		}
@@ -98,41 +112,34 @@ public class BodyPiercing extends CommonSkill
 		    return false;
 		}
 		long wornCode=Item.wornCodes[partNum];
-		String wornName=Item.wornLocation[partNum];
-		
-		MOB target=super.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		String wornName=fullPartName;
 
-		if(target.getWearPositions(wornCode)<=0)
+		if((target.getWearPositions(wornCode)<=0)
+		||(target.freeWearPositions(wornCode)<=0))
 		{
 		    commonTell(mob,"That location is not available for piercing.");
-		    return false;
-		}
-		if(target.freeWearPositions(wornCode)<=0)
-		{
-		    commonTell(mob,"That location is currently covered by something.");
 		    return false;
 		}
 		
 	    int numTattsDone=0;
 		for(int i=0;i<target.numTattoos();i++)
 		{
-		    String tat=mob.fetchTattoo(i);
+		    String tat=target.fetchTattoo(i);
 		    if(tat.toUpperCase().startsWith(wornName.toUpperCase()+":"))
 	            numTattsDone++;
 		}
 		if(numTattsDone>=target.getWearPositions(Item.wornCodes[partNum]))
 		{
-		    commonTell(mob,"That location is already completely decorated.");
+		    commonTell(mob,"That location is already decorated.");
 		    return false;
 		}
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if(wornName.toLowerCase().endsWith("s"))
-			writing=wornName.toUpperCase()+":Pierced "+wornName.toLowerCase();
+			writing=Item.wornLocation[partNum].toUpperCase()+":Pierced "+wornName.toLowerCase();
 		else
-			writing=wornName.toUpperCase()+":A pierced "+wornName.toLowerCase();
+			writing=Item.wornLocation[partNum].toUpperCase()+":A pierced "+wornName.toLowerCase();
 		verb="piercing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
 		if(!profficiencyCheck(mob,0,auto)) writing="";

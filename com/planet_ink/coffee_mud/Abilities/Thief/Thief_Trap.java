@@ -50,7 +50,15 @@ public class Thief_Trap extends ThiefSkill
 		}
 		Environmental trapThis=givenTarget;
 		if(trapThis!=null)
-			theTrap=(Trap)traps.elementAt(Dice.roll(1,traps.size(),-1));
+		{
+		    int cuts=0;
+		    while(((++cuts)<100)&&(theTrap==null))
+		    {
+				theTrap=(Trap)traps.elementAt(Dice.roll(1,traps.size(),-1));
+				if(!theTrap.canSetTrapOn(mob,trapThis))
+				    theTrap=null;
+		    }
+		}
 		else
 		if(Util.combine(commands,0).equalsIgnoreCase("list"))
 		{

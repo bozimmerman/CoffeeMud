@@ -72,7 +72,7 @@ public class Tattooing extends CommonSkill
 	{
 		if(commands.size()<3)
 		{
-			commonTell(mob,"You must specify whom you want to tattoo, what body part to tattoo, and what the tattoo looks like.");
+			commonTell(mob,"You must specify whom you want to tattoo, what body part to tattoo, and what the tattoo looks like. Use 'REMOVE' as the description to remove a tattoo.");
 			return false;
 		}
 		String whom=(String)commands.firstElement();
@@ -85,7 +85,15 @@ public class Tattooing extends CommonSkill
 		
 		int partNum=-1;
 		StringBuffer allParts=new StringBuffer("");
-		long[] tattoable={Item.ON_ARMS,Item.ON_LEGS,Item.ON_HANDS,Item.ON_HEAD,Item.ON_FEET,Item.ON_LEFT_WRIST,Item.ON_RIGHT_WRIST,Item.ON_NECK,Item.ON_TORSO};
+		long[] tattoable={Item.ON_ARMS,
+		        		  Item.ON_LEGS,
+		        		  Item.ON_HANDS,
+		        		  Item.ON_HEAD,
+		        		  Item.ON_FEET,
+		        		  Item.ON_LEFT_WRIST,
+		        		  Item.ON_RIGHT_WRIST,
+		        		  Item.ON_NECK,
+		        		  Item.ON_TORSO};
 		for(int i=0;i<Item.wornLocation.length;i++)
 		{
 		    for(int ii=0;ii<tattoable.length;ii++)
@@ -120,12 +128,26 @@ public class Tattooing extends CommonSkill
 		}
 		
 	    int numTattsDone=0;
+	    int tatToRemove=-1;
 		for(int i=0;i<target.numTattoos();i++)
 		{
-		    String tat=mob.fetchTattoo(i);
+		    String tat=target.fetchTattoo(i);
 		    if(tat.toUpperCase().startsWith(wornName.toUpperCase()+":"))
+		    {
 	            numTattsDone++;
+	            if(tat.toUpperCase().substring(wornName.length()+1).toUpperCase().startsWith("A TATTOO OF"))
+		            tatToRemove=i;
+		    }
 		}
+		if("REMOVE".startsWith(message.toUpperCase()))
+		{
+		    if(tatToRemove<0)
+		    {
+			    commonTell(mob,"There is no tattoo there to remove.");
+			    return false;
+		    }
+		}
+		else
 		if(numTattsDone>=target.getWearPositions(Item.wornCodes[partNum]))
 		{
 		    commonTell(mob,"That location is already completely decorated.");
@@ -140,13 +162,22 @@ public class Tattooing extends CommonSkill
 		if(!profficiencyCheck(mob,0,auto)) writing="";
 		int duration=30-mob.envStats().level();
 		if(duration<6) duration=6;
-		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) tattooing "+message+" on the "+wornName.toLowerCase()+" of <T-NAMESELF>.");
+		String str="<S-NAME> start(s) tattooing "+message+" on <T-YOUPOSS> "+wornName.toLowerCase()+".";
+		if("REMOVE".startsWith(message.toUpperCase()))
+		    str="<S-NAME> remove(s) the tattoo on <T-YOUPOSS> "+wornName.toLowerCase()+".";
+		
+		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,asLevel,duration);
-			Tattooing A=(Tattooing)mob.fetchEffect(ID());
-			if(A!=null) A.target=target;
+			if("REMOVE".startsWith(message.toUpperCase()))
+			    target.delTattoo(target.fetchTattoo(tatToRemove));
+			else
+			{
+				beneficialAffect(mob,mob,asLevel,duration);
+				Tattooing A=(Tattooing)mob.fetchEffect(ID());
+				if(A!=null) A.target=target;
+			}
 		}
 		return true;
 	}

@@ -404,7 +404,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 
-	private void cloneFix(Ability E){}
+	protected void cloneFix(Ability E){}
 	public Environmental copyOf()
 	{
 		try

@@ -49,6 +49,12 @@ public class Skill_Disguise extends BardSkill
 	private final static int[] levels={2,10,4,14,6,8,0,18,12};
 	protected String[] values=new String[whats.length];
 
+	protected void cloneFix(Ability E)
+	{
+	    values=new String[whats.length];
+	    for(int i=0;i<values.length;i++)
+	        values[i]=null;
+	}
 	public void affectEnvStats(Environmental myHost, EnvStats affectableStats)
 	{
 		if(values[5]!=null)
@@ -307,7 +313,7 @@ public class Skill_Disguise extends BardSkill
 				mob.location().send(mob,msg);
 				if(A==null)	beneficialAffect(mob,mob,asLevel,0);
 				if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
-				A.values[which]=how;
+				if(A!=null) A.values[which]=how;
 				mob.recoverCharStats();
 				mob.recoverEnvStats();
 				mob.location().recoverRoomStats();

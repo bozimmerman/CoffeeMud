@@ -62,8 +62,8 @@ public class Thief_RunningFight extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Exit)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false))
-		&&(Dice.rollPercentage()>mob.getVictim().charStats().getSave(CharStats.SAVE_TRAPS))
-		&&(Dice.rollPercentage()>mob.getVictim().charStats().getSave(CharStats.SAVE_MIND)))
+		&&((Dice.rollPercentage()+mob.envStats().level())>mob.getVictim().charStats().getSave(CharStats.SAVE_TRAPS))
+		&&((Dice.rollPercentage()+mob.envStats().level())>mob.getVictim().charStats().getSave(CharStats.SAVE_MIND)))
 		{
 			MOB M=mob.getVictim();
 			if((M==null)||(M.getVictim()!=mob))

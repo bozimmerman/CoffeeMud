@@ -42,6 +42,7 @@ public class Equipment extends StdCommand
 	    int numWears=0;
 		for(int l=0;l<Item.wornOrder.length;l++)
 		{
+		    found=0;
 			wornCode=Item.wornOrder[l];
 			wornName=Sense.wornLocation(wornCode);
 			header="^N(^H"+wornName+"^?)";
