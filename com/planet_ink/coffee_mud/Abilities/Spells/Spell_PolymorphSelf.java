@@ -82,7 +82,7 @@ public class Spell_PolymorphSelf extends Spell
 			return false;
 		}
 		String race=Util.combine(commands,0);
-		MOB target=null;
+		MOB target=mob;
 		Race R=CMClass.getRace(race);
 		if(R==null)
 		{

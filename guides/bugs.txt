@@ -1,2 +1,4 @@
-Move time to its own class.
-it sucks being a dragon. I can't get anything, anymore...
+cant create the first room in a new area
+cant link to external areas.
+
+Prop_ReqLevel doesn't allow ranges (5-10)

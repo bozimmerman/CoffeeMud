@@ -1,60 +1,4 @@
-! Add Area objects and Tables and Affect/Properties!
-! Allow classes and directories to be assigned in the INI file in addition to the default path.
-! Create a custom command ability, include ability to override existing commands!
-! Add Notes abilities -- really need for bug fix reporting!  Done this way: a Journal can be read, it will list the posts for a given Journal.  
-! hit and miss strings in the Weapon.  Natural Weapons can also be retreived from MOBs, or from Races by default.
-! From Maree: (Game/Heath Texts), the descriptions for the health of a MOB should be moved to a text file (A resource?), that is loaded.  The descriptions would be assigned to the MOB at build time, and should be assignable to GENMOBS via a new tag.
-! ranged combat?! Yes! And thrown weapons! And ranged pole-arms!
-! Add CoffeeMud area files! can import and export rooms or areas
-! Languages!  Affects says and replies if you don't know a language spoken by the speaker.
-! Make mountable MOBS, and mountable Items. Mounted animals will take half of all combat damage, will add to attack ability, and increase movement and will act as a container for the purposes of cargo.  Mounted Items will not appear in inventory, and be restrained to a terrain type (air, water, etc).  More than one person can mount an item (a boat).  
-! Armor damage/repair, especially cloth from fire, and metal armor from bludgeoning/leather armor from slashing.  
-! banks! (Well, the moneychanger behavior is good enough).
-! exp from sac/des also based on level of the body.  Set body levels based on char level.
-! Serve and Rebuke commands.  Any character may take on a leige. A Leige receives 10% of all experience gained by the vassels, providing incentive to assist the vassel.
-! Weapon condition, sharpness, and bluntness Weapon repair and sharpening/blunting.
-! Crawl command, and crawlspace property for rooms and exits
-! Furniture.. chairs to sit in, beds to lie in, tables to put things on?  It's all riding...
-! Convert some properties to work with the new areas. Prop_NOMOB, etc..
-! make room properties also work for exits
-! Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it will send the items to the appropriate GateObject.  The GateObject can be either a container or not. If not, the GateObject will drop its cargo on the floor.  The TeleportingContainer and the GateObject will have identical MiscText fields to establish the Keys between them.
-! Forget spell to make someone forget a skill they try, at random!
-! Predict Weather spell! 
-! Multi-Room Gate would work the same way.  An Entry, Exit, and TwoWay type would be constructed.  The Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course.  The  Following thing would be automatic, if an Exit and Direction extensions are used. 
-! genbed, gentable
-! ranger skills: find water
-! kill commmand to switch among targets fighting you
-! Two-handed fighting
-! NonVagrant behavior to wake up those sleeping on the streets
-! Meditation for Mage should be like Endurance for Fighter.
-! Add last-call date/time string to the "list users" command
-! be able to drink or fill waterskin from freshwater locales
-! PlayerKill flag, properties for nopkill areas, rooms, etc.. (and pkill ONLY areas, room, etc..)
-! vassels command to list the ones who serve you (even those which are online)
-! Distract ability (can't fight during) to make an enemies scores worse...
-! Finish implementing height -- make armor that doesn't fit! Armor can init at height 0, and adjust to the very first wearer.
-! random monster property class which reads stats from a resource file
-! make sure you can create pills that generate experience points
-! thieves skills -- silent autoloot, silent autogold (thief will autoloot and autogold "off the top")
-! die of hunger, thirst
-! appraise skill to give weight, base value, and material of an item
-! Lore skill for Bards.. allows an identify for them.
-! Exit/Area/Room property to only let in mobs with certain tatoos (a property that keeps track of one or more tatoos). A property to grant a tatoo when a mob is killed, or an item picked up.
-! add parameter to spells command to list by school
-! More stuff for Fighters, especially Paladins and Rangers, who must use their trains for spells.  Perhaps fill in Paladin and Ranger gaps with spells!  Sweep would make a good Fighter ability, as would cleave!
-! iron grip spell to thwart disarm
-! Buy command for standard mobs, to facilitate trades.
-! race based wearing restrictions, and a "become" method to enforce them (and clothing size);
-! resources property for rooms
-! HuntableAnimals that produce pieces of raw meat in inventory when killed.  
-! Hunt ability for rangers to find them.
-
-BUG! I was able to put the leggings I was wearing into a container!  They are LOST!
-
-QUAL should only list what you DON'T have -- it's too long.
-Also, give everyone fire building.
-
-0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where  one could buy raw materials.  Facilities available there would be used, along with your skill, to  produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing,  Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and  remove rawness from Meat).  The LeatherWorker ability can mend leather items, Tailor cloth items, etc..
+random monster property class which reads stats from a resource file
 
 Map skill for bards.  The map "document" expands as the bard travels, but consumes mana 
 on each room mapped.
@@ -67,10 +11,6 @@ for most, or Balance skill for thieves.
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 skill available all for help.
 
-Sap skill for thieves to knock someone out who can't see them.
-
-Binding skill for thieves to bind someone who is asleep (knocked out).
-
 Guilds will have the ability to take on a character and make him or her the class sponsored by the 
 guild.  These will be special Sub-Classes (derivatives of existing classes).  SubClasses: 
 Wild Mage: 50% chance similar (diff) spell is cast (higher level, perhaps)
@@ -82,8 +22,6 @@ Prancers: Dancing bards who get special ability
 Illusionist: Illusion spells at 100%, get all of them
 Alchemist: brew spells into potions, missile potions, transmute stuff to gold, cloth to metal, etc..
 Wizard: must memorize spells from book.  Profficiency check at memorize time (unerring in casting).  No memorizing duplicates.  Mana is consumed at memorize time.
-Druid : a good new base class
 
-Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard.  Please just create new MUDGrinder 
-derivatives of the standard Interfaces.
+Move time to its own class.
 

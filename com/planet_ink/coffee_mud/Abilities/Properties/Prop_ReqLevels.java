@@ -40,36 +40,55 @@ public class Prop_ReqLevels extends Property
 			}
 
 			int lvl=affect.source().envStats().level();
-			int x=text().indexOf(">=");
-			if(x<0)	x=text().indexOf(">");
-			if(x<0)	x=text().indexOf("<=");
-			if(x<0)	x=text().indexOf("<");
-			if(x<0)	x=text().indexOf("=");
-			if(x>=0)
+			
+			int lastPlace=0;
+			int x=0;
+			while(x>=0)
 			{
-				char c=text().charAt(x);
-				int y=Util.s_int(text().substring(x+1).trim());
-				if(text().length()>(x+1))
-					if(text().charAt(x+1)=='=')
-					{
-						y=Util.s_int(text().substring(x+2).trim());
-						if(lvl==y) return super.okAffect(affect);
-					}
-
-				switch(c)
+				x=text().indexOf(">",lastPlace);
+				if(x<0)	x=text().indexOf("<",lastPlace);
+				if(x<0)	x=text().indexOf("=",lastPlace);
+				if(x>=0)
 				{
-				case '>':
-					if(lvl>y) return super.okAffect(affect);
-					break;
-				case '<':
-					if(lvl<y) return super.okAffect(affect);
-					break;
-				case '=':
-					if(lvl==y) return super.okAffect(affect);
-					break;
+					char primaryChar=text().charAt(x);
+					x++;
+					boolean ok=false;
+					boolean andEqual=false;
+					if(text().charAt(x)=='=')
+					{
+						andEqual=true;
+						x++;
+					}
+					lastPlace=x;
+					
+					String cmpString="";
+					while((x<text().length())&&
+						  (((text().charAt(x)==' ')&&(cmpString.length()==0))
+						   ||(Character.isDigit(text().charAt(x)))))
+					{
+						if(Character.isDigit(text().charAt(x)))
+							cmpString+=text().charAt(x);
+						x++;
+					}
+					if(cmpString.length()>0)
+					{
+						int cmpLevel=Util.s_int(cmpString);
+						if((cmpLevel==lvl)&&(andEqual))
+							ok=true;
+						else
+						switch(primaryChar)
+						{
+						case '>': ok=(lvl>cmpLevel); break;
+						case '<': ok=(lvl<cmpLevel); break;
+						case '=': ok=(lvl==cmpLevel); break;
+						}
+					}
+					if(!ok)
+					{
+						affect.source().tell("You can not go that way.");
+						return false;
+					}
 				}
-				affect.source().tell("You can not go that way.");
-				return false;
 			}
 		}
 		return super.okAffect(affect);

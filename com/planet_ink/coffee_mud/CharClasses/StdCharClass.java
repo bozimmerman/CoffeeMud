@@ -161,7 +161,7 @@ public class StdCharClass implements CharClass
 		if(amount>0)
 			mob.tell("^BYou gain ^H"+amount+"^? experience point"+homage+".^N");
 			
-		while(mob.getExperience()>mob.getExpNextLevel())
+		while(mob.getExperience()>=mob.getExpNextLevel())
 			level(mob);
 	}
 

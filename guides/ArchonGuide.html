@@ -7,7 +7,7 @@
 <P style="TEXT-ALIGN: center" align=center><STRONG><SPAN 
 style="FONT-SIZE: 18pt">The Novice Archon's Guide</SPAN></STRONG><B><SPAN 
 style="FONT-SIZE: 18pt"><BR><STRONG>to World Construction and Destruction 
-v1.2</STRONG></SPAN></B></P>
+v3.0</STRONG></SPAN></B></P>
 <P style="TEXT-ALIGN: center" align=center><STRONG>By Archon Grothus Gallslanger 
 of the&nbsp;Free City of Maltan</STRONG></P>
 <P style="TEXT-ALIGN: center" align=center>&nbsp;</P>
@@ -45,44 +45,161 @@ name: Locale.&nbsp;</P>
 <P>If you log into CoffeeMud right now, you can list the available Locales with 
 the command "list locales".&nbsp; This list should include many different types 
 of locales, most of which are self-explanatory.&nbsp; They include:</P>
-<P>CaveMaze -- a dark, dank, multi-room maze of 
-caves<BR>CaveRoom -- dark and dank<BR>CaveSurface -- dark and dank 
-ClimbableSurface<BR>CityStreet -- 
-outside urban area<BR>ClimbableSurface -- an area that can only be climbed or flown 
-through<BR>DarkCityStreet -- a dark, outside urban 
-area<BR>DarkIceRoom -- a cold, dark, indoor place<BR>DarkStoneGrid -- a large, 
-dark, indoor, multi-room locale<BR>DarkStoneMaze -- a large, dark, indoor, 
-multi-room maze<BR>DarkStoneRoom -- dark StoneRoom<BR>DarkUnderWater -- a dark place beneath the 
-water<BR>DarkWoodRoom -- dark WoodRoom<BR>DarkWoods -- a dark wooden area 
-outside<BR>DarkWoodsMaze -- a dark, wooded, ouside, multi-room maze<BR>Desert -- 
-a hot, dry, outside locale<BR>EndlessSky -- an endless, multi-room,&nbsp;locale 
-up in the sky<BR>FrozenMountains -- a cold, outside, mountanous 
-room<BR>FrozenPlains -- the cold snowy plans<BR>Grid -- the basis for all of the 
-Grid areas -- do not use.<BR>HotRoom -- a hot, stone, indoor place<BR>IceRoom -- 
-a cold, icey, indoor place<BR>InTheAir -- a place up among the 
-clouds<BR>MagicFreeRoom -- an indoor, stone place where magic always 
-fails<BR>MagicShelter -- the basis for the mage "Shelter" spell -- do not 
-use.<BR>Maze -- the basis for the maze locales -- do not use<BR>Mountains -- an 
-outside, mountanous region<BR>MountainsMaze -- an outside, mountanous maze of 
-rock<BR>MountainSurface -- a climable mountainous place<BR>Plains -- out in the 
-open fields<BR>PlainsGrid -- a huge multi-room, outdoor plains 
-area<BR>ShallowWater -- a wet, outdoor area<BR>StdRoom -- the basis for all 
-other Locales, do not use!<BR>StoneMaze -- well lit indoor multi-room maze with stone walls and 
-ceiling<BR>StoneGrid -- 
-well lit indoor multi-room&nbsp;locale with stone walls and 
-ceiling<BR>StoneRoom -- well lit indoor room with stone walls and 
-ceiling<BR>TreeSurface -- a wooden ClimbableSurface, such as the trunk of a 
-tree<BR>UnderWater -- as wet as it gets... 
-unless you are a fish you won't live long<BR>UnderWaterGrid -- a huge multi-room 
-underwater locale<BR>UnderWaterMaze -- a huge multi-room maze of underwater 
-locales -- be careful!<BR>WetCaveMaze -- as CaveMaze, but extremely wet and 
-nasty<BR>WetCaveRoom -- a wet and nasty CaveRoom<BR>WoodRoom -- well lit indoor room 
-with wooden walls and ceiling<BR>Woods -- thick with trees and life, the bright 
-forest<BR>WoodsGrid -- thick with trees and life, multi-room 
-expanse<BR>WoodsMaze -- thick with trees and life, a multi-room maze of 
-woodlands<BR><BR>For each room you are drawing on your graph 
-parchment, you should note in the Locale type of the room from the above list, or from the list you received when you entered "list locales" 
-into CoffeeMud.</P>
+<TABLE cellSpacing=1 cellPadding=1 width="75%" border=1>
+  
+  <TR>
+    <TD style="WIDTH: 20%" width="20%">CaveMaze </TD>
+    <TD>a dark, dank, multi-room maze of caves</TD></TR>
+  <TR>
+    <TD>CaveRoom </TD>
+    <TD>dark and dank</TD></TR>
+  <TR>
+    <TD>CaveSurface </TD>
+    <TD>dark and dank ClimbableSurface</TD></TR>
+  <TR>
+    <TD>CityStreet </TD>
+    <TD>outside urban area</TD></TR>
+  <TR>
+    <TD>ClimbableSurface </TD>
+    <TD>an area that can only be climbed or flown through</TD></TR>
+  <TR>
+    <TD>Desert </TD>
+    <TD>a hot, dry, outside locale</TD></TR>
+  <TR>
+    <TD>EndlessSky </TD>
+    <TD>an endless, multi-room,&nbsp;locale up in the sky</TD></TR>
+  <TR>
+    <TD>FrozenMountains </TD>
+    <TD>a cold, outside, mountanous room</TD></TR>
+  <TR>
+    <TD>FrozenPlains </TD>
+    <TD>the cold snowy plans</TD></TR>
+  <TR>
+    <TD>Hills </TD>
+    <TD>green rolling hills</TD></TR>
+  <TR>
+    <TD>HillsGrid </TD>
+    <TD>a huge multi-room rolling hilly area</TD></TR>
+  <TR>
+    <TD>HotRoom </TD>
+    <TD>a hot, stone, indoor place</TD></TR>
+  <TR>
+    <TD>IceRoom </TD>
+    <TD>a cold, icey, indoor place</TD></TR>
+  <TR>
+    <TD>IndoorInTheAir </TD>
+    <TD>such as a gap in a cave, or midway down a pit.</TD></TR>
+  <TR>
+    <TD>IndoorShallowWater </TD>
+    <TD>a layer of underground water perhaps</TD></TR>
+  <TR>
+    <TD>IndoorUnderWater</TD>
+    <TD>under an underground lake</TD></TR>
+  <TR>
+    <TD>IndoorWaterSurface</TD>
+    <TD>on the surface of an underground lake</TD></TR>
+  <TR>
+    <TD>InTheAir </TD>
+    <TD>a place up among the clouds</TD></TR>
+  <TR>
+    <TD>Jungle</TD>
+    <TD>a&nbsp;thick hot overgrown forest</TD></TR>
+  <TR>
+    <TD>JungleGrid</TD>
+    <TD>a large multi-room overgrown hot forest</TD></TR>
+  <TR>
+    <TD>MagicFreeRoom</TD>
+    <TD>an indoor, stone place where magic always fails</TD></TR>
+  <TR>
+    <TD>MagicShelter </TD>
+    <TD>the basis for the mage "Shelter" spell -- do not use.</TD></TR>
+  <TR>
+    <TD>Mountains</TD>
+    <TD>an outside, mountanous region</TD></TR>
+  <TR>
+    <TD>MountainsMaze</TD>
+    <TD>an outside, mountanous maze of rock</TD></TR>
+  <TR>
+    <TD>MountainSurface</TD>
+    <TD>a climable mountainous place</TD></TR>
+  <TR>
+    <TD>Plains </TD>
+    <TD>out in the open fields</TD></TR>
+  <TR>
+    <TD>PlainsGrid </TD>
+    <TD>a huge multi-room, outdoor plains area</TD></TR>
+  <TR>
+    <TD>SaltWaterSurface</TD>
+    <TD>the surface of the ocean</TD></TR>
+  <TR>
+    <TD>ShallowWater </TD>
+    <TD>a wet, outdoor area</TD></TR>
+  <TR>
+    <TD>StdGrid </TD>
+    <TD>the basis for all of the Grid areas -- do not use.</TD></TR>
+  <TR>
+    <TD>StdMaze </TD>
+    <TD>the basis for the maze locales -- do not use</TD></TR>
+  <TR>
+    <TD>StdRoom </TD>
+    <TD>the basis for all other Locales, do not use!</TD></TR>
+  <TR>
+    <TD>StoneGrid </TD>
+    <TD>well lit indoor multi-room&nbsp;locale with stone walls and 
+  ceiling</TD></TR>
+  <TR>
+    <TD>StoneMaze </TD>
+    <TD>well lit indoor multi-room maze with stone walls and ceiling</TD></TR>
+  <TR>
+    <TD>StoneRoom </TD>
+    <TD>well lit indoor room with stone walls and ceiling</TD></TR>
+  <TR>
+    <TD>Swamp</TD>
+    <TD>damp outdoor swampy region</TD></TR>
+  <TR>
+    <TD>SwampGrid</TD>
+    <TD>a large multi-room damp outdoor swampy region</TD></TR>
+  <TR>
+    <TD>TreeSurface </TD>
+    <TD>a wooden ClimbableSurface, such as the trunk of a tree</TD></TR>
+  <TR>
+    <TD>UnderSaltWater</TD>
+    <TD>beneath the ocean</TD></TR>
+  <TR>
+    <TD>UnderWater </TD>
+    <TD>as wet as it gets... unless you are a fish you won't live long</TD></TR>
+  <TR>
+    <TD>UnderWaterGrid </TD>
+    <TD>a huge multi-room underwater locale</TD></TR>
+  <TR>
+    <TD>UnderWaterMaze </TD>
+    <TD>a huge multi-room maze of underwater locales -- be careful!</TD></TR>
+  <TR>
+    <TD>WaterSurface</TD>
+    <TD>the surface of a lake or river</TD></TR>
+  <TR>
+    <TD>WetCaveMaze </TD>
+    <TD>as CaveMaze, but extremely wet and nasty</TD></TR>
+  <TR>
+    <TD>WetCaveRoom </TD>
+    <TD>a wet and nasty CaveRoom</TD></TR>
+  <TR>
+    <TD>WoodRoom </TD>
+    <TD>well lit indoor room with wooden walls and ceiling</TD></TR>
+  <TR>
+    <TD>Woods </TD>
+    <TD>thick with trees and life, the bright forest</TD></TR>
+  <TR>
+    <TD>WoodsGrid </TD>
+    <TD>thick with trees and life, multi-room expanse</TD></TR>
+  <TR>
+    <TD>WoodsMaze </TD>
+    <TD>thick with trees and life, a multi-room maze of 
+woodlands</TD></TR></TABLE>
+<P><BR>For each room you are drawing on your graph 
+parchment, you should note in the Locale type of the room from the above list, 
+or from the list you received when you entered "list locales" into 
+CoffeeMud.</P>
 <P>The detailed properties of rooms are discussed further in the section on 
 creating rooms.</P>
 <P><STRONG>Understanding Exits</STRONG></P>
@@ -104,13 +221,73 @@ represents the open sky.&nbsp; If it is another "StoneRoom", however, it probabl
 represents a flight of stairs.&nbsp; The Down direction may represent falling off 
 a cliff, but it may also represent a ladder down to the basement.&nbsp; 
 Either way is fine.&nbsp;&nbsp; </P>
-<P>Exits, like rooms, can be of many different types.&nbsp; If you are still in 
-CoffeeMud, enter the command "list exits".&nbsp; The list you receive describes 
-the many connectors that can be mixed and matched between rooms.&nbsp; Some 
-include doors, and some include doors with locks.&nbsp; There are walkways with 
-pits, doors with needle traps, and many others.&nbsp; By far the most common of 
-these Exits is called "Open".&nbsp; It describes a completely free and clear 
-path between the two rooms you are creating.</P>
+<P>Exits, like rooms, can be of many different types.&nbsp; If you are still in CoffeeMud, enter the command "list 
+exits".&nbsp; The list you receive describes the many connectors that can 
+be mixed and matched between rooms.&nbsp; Some include doors, and some include 
+doors with locks.&nbsp; There are walkways with pits, doors with needle traps, 
+and many others.&nbsp; By far the most common of these Exits is called "Open".&nbsp; 
+It describes a completely free and clear path between the two rooms 
+you are creating.&nbsp; Here is the official list:</P>
+<P>
+<TABLE cellSpacing=1 cellPadding=1 width="75%" border=1>
+  
+  <TR>
+    <TD style="WIDTH: 25%" width="25%">ClimbableExit</TD>
+    <TD>a passageway one must climb through</TD></TR>
+  <TR>
+    <TD>Door</TD>
+    <TD>an ordinary closed door</TD></TR>
+  <TR>
+    <TD>FlyingExit</TD>
+    <TD>a passageway one must fly through</TD></TR>
+  <TR>
+    <TD>Gate</TD>
+    <TD>an ordinary closed gate</TD></TR>
+  <TR>
+    <TD>GenExit</TD>
+    <TD>the maleable generic exit</TD></TR>
+  <TR>
+    <TD>Grate</TD>
+    <TD>an ordinary closed grate in the street</TD></TR>
+  <TR>
+    <TD>HiddenClosedDoorway</TD>
+    <TD>the venerable secret door</TD></TR>
+  <TR>
+    <TD>Impassable</TD>
+    <TD>noone may go that way</TD></TR>
+  <TR>
+    <TD>LockedDoor</TD>
+    <TD>an ordinary locked door</TD></TR>
+  <TR>
+    <TD>LockedGate</TD>
+    <TD>an ordinary locked gate</TD></TR>
+  <TR>
+    <TD>NeedleDoor</TD>
+    <TD>a door trapped with a needle</TD></TR>
+  <TR>
+    <TD>Open</TD>
+    <TD>a normal walkable passageway</TD></TR>
+  <TR>
+    <TD>PitOpen</TD>
+    <TD>a walkable passageway with a pit!</TD></TR>
+  <TR>
+    <TD>StdClosedDoorway</TD>
+    <TD>base class for closed doors</TD></TR>
+  <TR>
+    <TD>StdExit</TD>
+    <TD>base class for all exits, do not use!</TD></TR>
+  <TR>
+    <TD>StdLockedDoorway</TD>
+    <TD>base class for locked doors</TD></TR>
+  <TR>
+    <TD>StdOpenDoorway</TD>
+    <TD>base class for open walkways</TD></TR>
+  <TR>
+    <TD>TrappedDoor</TD>
+    <TD>a trapped and closed door</TD></TR>
+  <TR>
+    <TD>TrappedLockedDoor</TD>
+    <TD>a trapped and locked and closed door</TD></TR></TABLE></P>
 <P>As you finish your graph parchment drawing, be sure to note those places 
 where there are doors, locked doors, pit traps, and open walkways.&nbsp; If a 
 door is one way, or if a door leads to one place when one enters, but does not 
@@ -127,14 +304,14 @@ other features of exits, are discussed further in the section on creating exits.
 claim.&nbsp; From the lowly cooks in your kitchens to the great beasts in the 
 darkest dungeons, it is they who will be remembered by those who visit your 
 realm.&nbsp;</P>
-<P>Funny then that for things so important, they should have such a short, ugly 
-sounding name: MOB.&nbsp; If you are in CoffeeMud, you can list them: "list 
-mobs".&nbsp; It will show you every creature that can populate your cities, 
-dwell in your dungeons, or hide in your pantries.&nbsp; </P>
-<P>If a creature is not listed there that you require, there 
-is always the GenMob, that nasty formless being that can be shaped by the Archon to 
-appear and behave exactly as it should.&nbsp; A GenShopkeeper is also available to provide valuable 
-services for your community.&nbsp; For more devious spirits, however, the GenUndead is 
+<P>Funny then that for things so important, they should have such a short, ugly sounding name: MOB.&nbsp; If you are in 
+CoffeeMud, you can list them: "list mobs".&nbsp; It will show you every creature 
+that can populate your cities, dwell in your dungeons, or hide in 
+your pantries.&nbsp; They are too numerous to list here. </P>
+<P>If a creature is not listed there that you require, there is always the GenMob, 
+that nasty formless being that can be shaped by the Archon to appear and behave exactly 
+as it should.&nbsp; A GenShopkeeper is also available to provide valuable services for your community.&nbsp; 
+GenRideable mobs provide transport.&nbsp; For more devious spirits, however, the GenUndead is 
 also available, to strike fear in the hearts of the purest cleric.</P>
 <P>GenMobs, as well as the features of MOBs, are discussed further in the 
 section on creating MOBs.</P>
@@ -147,8 +324,8 @@ for those bold enough to continuously risk their guardians.</P>
 include weapons, which can be discovered through "list weapons", armor from 
 "list armor", and other miscellaneous enchanted items through "list 
 magic".&nbsp; </P>
-<P>For those items you need by are not present, there is also the "GenItem",&nbsp;"GenBoat", "GenCoins", "GenCorpse", "GenKey", "GenLantern", 
-"GenLightSource", "GenMap",&nbsp;&nbsp;"GenContainer", "GenFood", "GenWater", and "GenReadable".&nbsp; For the 
+<P>For those items you need by are not present, there is also the "GenItem",&nbsp;"GenBoat", "GenChair", "GenBed", "GenCoins", "GenCorpse", "GenKey", "GenLantern", "GenLightSource", "GenMap",&nbsp;&nbsp;"GenRideable", "GenWallpaper", 
+"GenJournal", "GenContainer", "GenFood", "GenWater", and "GenReadable".&nbsp; For the 
 fighting spirit there is 
 the "GenWeapon", "GenStaff", and "GenArmor".&nbsp; Among the&nbsp;formless magical items are 
 "GenPill", "GenPotion", "GenScroll", "GenWand", and "GenSuperPill".&nbsp; 
@@ -198,44 +375,81 @@ is still there, and it still leads back to where you are standing -- a one way
 exit.</P>
 <P><IMG alt="" 
 src="createroom2.gif"></P>
+<P><STRONG>Creating and Modifying Areas </STRONG></P>
+<P>A town or village, country or demesnes can hardly come to be without the 
+careful demarcation of their borders.&nbsp; What seperates the town from the 
+country, or one country from another?&nbsp; Like everything else, this is the 
+decision of the Archon as he groups his rooms into Areas.&nbsp; </P>
+<P>The best way to create your areas is to do so right from the start.&nbsp; The 
+moment you create the first plot of land in your new area, or lay down the first 
+building in your new town, you should designate it as such.&nbsp; Enter the new 
+room in your new area and utter the mystic chant "modify room area New Area 
+Name".&nbsp; Of course, where "New Area Name" can be anything you wish.&nbsp; 
+Call it "Newarea Land" or "Goldfish Villiage" or "The Fruity Phantasm" or 
+whatever strikes your fancy.&nbsp; </P>
+<P>Now that you have designated your new room as belonging to a new area, it is 
+important to remember to create all future rooms by&nbsp;doing so 
+from&nbsp;rooms that already belong to the new area.&nbsp; Any future rooms that 
+you build by standing in your new area room will bear its area mark, as well as 
+any rooms created from any other room bearing the new area mark.&nbsp; If you 
+fail then, you may be forced to invoke the power of the "modify room area..." 
+command again to re-group the rooms you are creating.<BR><BR>Areas also contain 
+important properties which may be modified.&nbsp; Enter the secret code "modify 
+area" to go through a list of these modifiable properties.&nbsp; The name and 
+description of the area may be changed by following the promptings.&nbsp; You 
+may also tinker with the climate of your area, which will affect the types of 
+weather that will blow through it, and how mild or severe the winters and 
+summers may be.&nbsp; You will also be asked to add any "behaviors" and 
+"affects" to the&nbsp;area that you wish to.&nbsp; These may seem strange at 
+first, and usually you won't add any of these at all.&nbsp; After all, rarely 
+does a plot of dirt exibit any behavior, and what the heck is an affect?&nbsp; 
+Well! To the first, the wind blowing through the trees, the hoot of an owl, or a 
+distant cackling noise are all considerable behaviors.&nbsp; In fact, it is a 
+behavior called "Emoter".&nbsp; Enter "ahelp emoter" for more information about 
+the Emoter behavior.&nbsp; As for affects, well, affects are special properties 
+which you can attach to your new little holes in the ground.&nbsp; There are 
+lots of nice properties that one may add to an&nbsp;Area, which will affect 
+every room in it, such as "Prop_ReqNoMOB" to make your area a player-only place 
+to be.&nbsp; There is also "Prop_MagicFreedom" to fluster any spell-using folks 
+that happen along, or "Prop_NoChannel" for a place of quiet... you'll need 
+"Prop_PeaceMaker" to go with it if you want peace AND quiet.&nbsp; To learn more 
+about the properties you can add to areas and rooms, enter "ahelp" while you are 
+in CoffeeMud.&nbsp; Now, isn't this fun?&nbsp; Remember, if you make a mistake, 
+fear not, for the land does not grow weary of your molding.&nbsp; </P>
 <P><STRONG>Modifying Rooms</STRONG></P>
-<P> For now, once you have created the new room, it is time to design 
+<P> For now, once you have created a new room, it is time to design 
 the landscape of it.&nbsp; To do this, you should enter the room through the 
 default Open exit that was created for you.&nbsp; You will find the room plain 
 and boring.&nbsp; </P>
-<P>To give the room a new name and description, utter the 
-invocation: "modify room" and follow the promptings.&nbsp; You will also be 
-asked to add any "behaviors" and "affects" to the room that you wish to.&nbsp; 
-These may seem strange at first, and usually you won't add any of these at 
-all.&nbsp; After all, rarely does a plot of dirt exibit any behavior, and what 
-the heck is an affect?&nbsp; Well! To the first, the wind blowing through the 
-trees, the hoot of an owl, or a distant cackling noise are all considerable 
-behaviors.&nbsp; In fact, it is a behavior called "Emoter".&nbsp; Enter "help 
-behaviors" for more information about the Emoter behavior.&nbsp; As for affects, 
-well, affects are special properties which you can attach to your new little 
-hole in the ground.&nbsp; There are lots of nice properties that one may add to 
-a Room, such as "Prop_ReqNoMOB" to make your room a player-only place to 
-be.&nbsp; There is also "Prop_MagicFreedom" to fluster any spell-using folks 
-that happen along, or "Prop_NoChannel" for a place of quiet... you'll need 
-"Prop_PeaceMaker" to go with it if you want peace AND quiet.&nbsp; To learn more 
-about the properties you can add to rooms, enter "help properties" while you are in CoffeeMud.&nbsp; Now, isn't this fun?&nbsp; 
-Remember, if you make a mistake, fear not, for the land does not grow weary 
-of your molding.&nbsp; </P>
-<P>* IMPORTANT * If this room is the first room in the new area you are 
-embarking upon, you should change its Area ID to that of the new one.&nbsp; 
-Create NO FURTHER ROOMS until this is done, and ensure that all future rooms in 
-the area are created out of this new one.&nbsp; To change the Area that a room 
-belongs to, enter the command: "modify room area newareaname".&nbsp; Where I 
-have entered "newareaname", you should enter the name of the area you are 
-creating.&nbsp; Now, any future rooms that you build by standing in this room 
-will bear its area mark, as well as any rooms created from any room bearing your 
-new area mark.&nbsp; </P>
+<P>           
+           
+              
+               
+              
+              
+              
+           
+           
+             
+               
+             
+          
+            
+      To give the room a new name and 
+description, utter the invocation: "modify room" and follow the promptings.&nbsp; Like the area above, rooms may have behaviors and affects 
+added to them.&nbsp; In this case, the behaviors and affects will only be active for 
+this particular room. </P>
+<P>If you are ever wandering around, and wish to go directly to a room you have 
+created, you may utter the magic matra "goto RoomID".&nbsp; For instance, 
+entering "goto MyArea#123" would take you to the room we created above.&nbsp; 
+This will especially come in handy when we begin to create and destroy the links 
+between rooms, and there is no other way to get to a room.</P>
 <P><STRONG>Linking Two Rooms Together</STRONG></P>
-<P>If you have created an area, and wish to link one of the rooms in your area 
-with one of another, you can use a command that utilizes the Room IDs mentioned 
-above.&nbsp; If you would like to create a northerly link from room "MyArea#123" 
-to a room whose room ID is "MyArea#124", then you need only stand in room 
-"MyArea#123", and utter the invocation:&nbsp; "link MyArea#124 north".&nbsp; 
+<P>Now that&nbsp;you have created a room, and wish to link one of the rooms in your area with one of another, you can use 
+a command that utilizes the Room IDs mentioned above.&nbsp; If you would like to create 
+a northerly link from room "MyArea#123" to a room whose room ID is 
+"MyArea#124", then you need only stand in room "MyArea#123" (use the "goto" command if you 
+must), and utter the invocation:&nbsp; "link MyArea#124 north".&nbsp; 
 This will create an Open exit between the room you are standing in, and the room 
 whose ID is born out.&nbsp; </P>
 <P><IMG alt="" 
@@ -244,8 +458,8 @@ src="linkroom.gif"></P>
 to create one-way exits to existing rooms.</P>
 <P>&nbsp;</P>
 <P><STRONG>Unlinking Two Rooms</STRONG></P>
-<P>If you wish to detach two rooms from each other, you need only learn the 
-wicked "destroy command".&nbsp; If you are standing in the room to the south of 
+<P> If you wish to detach two rooms from each other, you need only learn 
+the "unlink" command.&nbsp; If you are standing in the room to the south of 
 the one you wish to unlink, and the room you wish to detach from is to the 
 north, utter the command: "unlink north".&nbsp; It will do the trick!</P>
 <P><IMG alt="" 
@@ -253,7 +467,7 @@ src="destroyroom.gif"></P>
 <P>Keep in mind that just because there is no longer a route from the room you 
 are in to the other via a northerly path, it does not mean that there is no path 
 from the detached room back to here again.&nbsp; You may have to conjure 
-yourself into the&nbsp;other place and enter a "destroy south" command to 
+yourself into the&nbsp;other place and enter a "unlink south" command to 
 completely detach them forever.</P>
 <P><STRONG>Destroying a Room</STRONG></P>
 <P>        Sometimes the pain born from a failed or 
@@ -325,7 +539,7 @@ will be presented with a series of properties to change.&nbsp; Hitting return
 will leave most of these&nbsp;properties without modification.&nbsp; Entering 
 new values will replace the old values.&nbsp; These properties include:</P>
 <P>
-<TABLE cellSpacing=1 cellPadding=1 width="100%" border=1 style="WIDTH: 100%">
+<TABLE cellSpacing=1 cellPadding=1 width="100%" border=1 style="WIDTH: 100%" id=TABLE1>
   
   <TR>
     <TD WIDTH="25%"><STRONG>Property</STRONG></TD>
@@ -404,10 +618,24 @@ also restrict Exits without doors.&nbsp; If so, you will be asked to enter the
 name of the class that may pass through the entryway.</TD></TR>
 <TR><TD><EM>Alignment Restriction</EM></TD><TD>Oh yea, even the wicked may be kept back by 
       restricting passage to those of the correct state of mine.</TD></TR>
-<TR><TD><EM>Is.. flags</EM> </TD><TD>I think thou doest grok most of these 
-      flags.&nbsp; You may also require a little climbing or flying for this 
-      exit, in case it is a mere gulf the player must traverse, instead of the 
-      wide expanse that a climable room entails.</TD></TR>
+<TR><TD><EM>Is.. flags</EM> </TD><TD>
+      <P>I think thou doest grok most of these flags.&nbsp; You may also require 
+      a little climbing or flying for this exit, in case it is a mere gulf the 
+      player must traverse, instead of the wide expanse that a climable room 
+      entails.</P>        
+                  
+                     
+            </TD></TR>
+<TR>
+<TD><EM>Behaviors</EM></TD>
+<TD>Like mentioned above when we talked about Rooms, there are not many 
+behaviors that one can give to an item, but "Emoter" works with exits very 
+well.</TD></TR>
+<TR>
+<TD><EM>Affects</EM></TD>
+<TD>As mentioned in the section on Rooms, there are many properties that one may attach to items. Use "list properties" 
+to see them all, and "ahelp propertyname" for more information. 
+</TD></TR>
 </TABLE>
 
 <BR><BR><STRONG>Modifying 
@@ -427,8 +655,8 @@ things into the world, you have only to call its true name using the create
 command.&nbsp; To create a Longsword, for instance, issue the command "create 
 Longsword".&nbsp; It will then fall from the sky onto the floor or ground before 
 you.</P>
-<P><STRONG>The "GenItem", 
-"GenLightSource", "GenLantern",&nbsp;and "GenReadable"</STRONG></P>
+<P><STRONG> The "GenItem", 
+"GenCoins", and "GenReadable"</STRONG></P>
 <P>Whenever a GenItem is created, much like the GenExit above, you are presented 
 with a list of properties to fill in.&nbsp; Pressing enter will leave the 
 property unchanged.&nbsp; The properties include:</P>
@@ -458,8 +686,8 @@ character must attain to possess or hold it.  </TD></TR>
 <TR>
     <TD><EM>Uses Remaining</EM></TD><TD>This property applies especially to GenWand, GenStaff, and GenScroll, discussed below.  This tells how many times the magic in the item may be reused before requiring a recharge.</TD></TR>
 <TR>
-    <TD><EM>Rejuv</EM></TD><TD>If this item rejuvinates after being removed from 
-      its default location, this is the number of ticks between the removal 
+    <TD><EM>Rejuv</EM></TD><TD>If this item rejuvinates after being removed from its default 
+      location, this is the number of ticks (4 second intervals)&nbsp;between the removal 
       time, and the time the item rejuvinates. For more information on making the RejuvTicks property take effect after changing it, see below under Rejuvenating Items and Mobs" or "How to Save a Room".</TD></TR>
 <TR>
     <TD><EM>Is This Item Droppable</EM></TD><TD>whether the item can be dropped into a room.  </TD></TR>
@@ -486,16 +714,38 @@ from and selling to shopkeepers.  </TD></TR>
 <TR>
     <TD><EM>Is Flags...</EM></TD><TD>most these flags, my faith tells me, thou canst discern. To clarify, however, a glowing item gives off light.  An invisible item can not be seen, except by magic.  An unseen item cannot be seen at all.</TD></TR>
   <TR>
-    <TD><EM>Behaviors</EM></TD><TD>Like mentioned above when we talked about Rooms, there are not many behaviors that one can give to an item, but "Emoter" works with items very well.</TD></TR>
+    <TD><EM>Behaviors</EM></TD><TD>Like mentioned above when we talked about Areas, there are not many behaviors that one can give to an item, but "Emoter" works with items very well.</TD></TR>
   <TR>
-    <TD><EM>Affects</EM></TD><TD>As mentioned in the section on Rooms, there are many properties that one may attach to items.  Use "list properties" to see them all. </TD></TR>
+    <TD><EM>Affects</EM></TD><TD>As mentioned in the section on Areas, there are many properties that one may attach to items.  Use "list properties" to see them all. </TD></TR>
   <TR>
-    <TD><EM>Uses Remaining</EM></TD><TD>A few items, notably wands and scrolls, can only be used a few times.  For all other items, this may be left unchanged.</TD></TR>
+    <TD><EM>Uses Remaining</EM></TD><TD>A few items, notably wands, scrolls, and ammutiion can only be used a few times.  For all other items, this may be left unchanged.</TD></TR>
+	<TR><TD><EM>Magical Ability</EM></TD>
+	<TD>although meaningless for most Generic Items, and absent on others, this property does have meaning for
+	specific items described below. In general, items which a magical ability above 0 are considered magical.  The
+	exception to this is the <B>GenCoins</B> object.  For coins, this denotes the number of coins in the pile!</TD></TR>
 </TABLE>
 </P>
 
 
-<P><BR><STRONG>The "GenWeapon"</STRONG></P>
+<P><STRONG>The "GenLightSource" 
+and&nbsp;"GenLantern",&nbsp;</STRONG><BR><BR></P>
+<P>Whenever a GenLightSource is created, much like the GenItem above, you are 
+presented with a list of properties to fill in.&nbsp; Pressing enter will leave 
+the property unchanged.&nbsp; The properties include all of the fields listed 
+above under GenItem, plus&nbsp;one&nbsp;more:</P>
+<P><STRONG>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG>Property</STRONG></TD>
+    <TD width="75%"><STRONG>Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Light Duration</EM></TD>
+    <TD>the number of ticks (4 second intervals) which will transpire before 
+      the light source will burn out.&nbsp; In the case of a GenLantern, the 
+      object may be refilled with oil to continue.&nbsp; For a GenLightSource, 
+      the object will vanish.</TD></TR></TABLE><BR>The 
+"GenWeapon"</STRONG></P>
 <P>Whenever a GenWeapon is created, much like the GenItem 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing enter will 
 leave the property unchanged.&nbsp; The properties include all of the fields listed above 
@@ -523,7 +773,28 @@ held position when used.</TD></TR><TR><TD><EM>Magical
 Ability</EM></TD><TD>This number represents an adjustment 
 to both attack adjustment and damage, denoting whether the weapon is 
 magical.&nbsp; Typical ranges include -2 for a badly cursed item, up to 5 for an 
-extremely high level magical item.</TD></TR></TABLE>
+extremely high level magical item.</TD></TR>
+<TR><TD><EM>Condition</EM></TD><TD>a number from 0 to 100 denoting the condition of 
+      the weapon.&nbsp; A 100 means that the weapon is in top condition.&nbsp; A 
+      0 means that it is all but destroyed and worthless as a weapon.</TD></TR>
+<TR><TD><EM>Minimum range</EM></TD><TD>this is the closest position required to use the 
+      weapon.&nbsp; 0 means the weapon may be used in melee, where 1 means that 
+      a minimum range of 1 pace is required.</TD></TR>
+<TR><TD><EM>Maximum range</EM></TD><TD>this is the farthese position required to use 
+      this weapon.&nbsp; When combat begins, it will denote how far away the 
+      wielder is from their foe.&nbsp; The same values as above apply, though 
+      the maximum range must always equal or exceed the minimum range.</TD></TR>
+<TR><TD><EM>Requires Ammunition</EM></TD><TD>whether this weapon requires ammunition in order 
+      to use.</TD></TR>
+<TR><TD><EM>Ammunition Type</EM></TD><TD>This is the secret identity of the ammunition 
+      required by this weapon.&nbsp; Ammunition is a special kind of GenItem 
+      which has a secret identity matching that of its intended weapon (such as 
+      "arrows" or "bolts" or "rocks") and has a Uses Remaining property above 
+    0.</TD></TR>
+<TR><TD><EM>Ammunition Capacity</EM></TD><TD>This is the amount of the ammunition which can be 
+      held by the weapon at one time.&nbsp; Usually this is only 
+1.</TD></TR>
+</TABLE>
 <BR></P>
 
 
@@ -551,7 +822,16 @@ armor protection, denoting whether the&nbsp;armor is magical.&nbsp; Typical
 ranges include -2 for a badly cursed item, up to 5 for an extremely high level 
 magical item.</TD></TR><TR><TD><EM>Capacity</EM></TD><TD>if the armor piece has pockets, this 
 denotes the maximum amount of weight that can be placed in it.&nbsp; 0 is a 
-typical value, denoting that you cannot store items in this armor.</TD></TR></TABLE>
+typical value, denoting that you cannot store items in this armor.</TD></TR>
+<TR><TD><EM>Condition</EM></TD><TD>a number from 0 to 100 denoting the condition of 
+      the armor.&nbsp; A 100 means that the armor is in top condition.&nbsp; A 0 
+      means that it is all but destroyed and is not longer providing any 
+      protection at all.</TD></TR>
+<TR><TD><EM>Size</EM></TD><TD>the size of the piece of armor. 0 means that the 
+      piece has a variable size, and will fit anyone until it is worn for the 
+      first time.&nbsp; Any other number means that the wearer must be near to 
+      the size in inches to wear it.</TD></TR>      
+</TABLE>
 
 
 <P><STRONG>The "GenContainer"</STRONG></P>
@@ -577,7 +857,32 @@ under GenItem, plus a few more:</P>
       container.</TD></TR></TABLE></P>
 <P>One more thing to keep in mind.&nbsp; Always make the 
 weight of a container less than its capacity.&nbsp; A container must be able to 
-hold its own weight in addition to anything put in it!<BR><BR><STRONG>The "GenFood" and "GenWater"</STRONG></P>
+hold its own weight in addition to anything put in it!<BR><BR><STRONG></P>
+<P>The "GenBed" "GenChair",&nbsp;"GenBoat"</STRONG></P>
+<P>Whenever a GenChair is created, much like the GenItem above, you are 
+presented with a list of properties to fill in.&nbsp; Pressing enter will leave 
+the property unchanged.&nbsp; The properties include all of the fields listed 
+above under GenItem, plus&nbsp;one&nbsp;more:</P><STRONG>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG>Property</STRONG></TD>
+    <TD width="75%"><STRONG>Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Rideable Type</EM></TD>
+    <TD>           
+                   
+         the type of rideable item this is, from 
+      sittable, to sleepable, etc.</TD></TR>
+        <TR>
+    <TD><EM>MOBs Held</EM></TD>
+    <TD>           
+                   
+       th emaximum number of mobs which may occupy this piece 
+      of furniture at once.</TD></TR>
+      </TABLE>
+<P></STRONG><BR><STRONG>The "GenFood" 
+and "GenWater"</STRONG></STRONG></P>
 <P>Whenever a GenFood or GenWater&nbsp;is created, much like 
 the GenItem above, you are presented with a list of properties 
 to fill in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties include 
@@ -603,7 +908,15 @@ everything listed under Getntem, plus a few more:</P>
     <TD>the amount of total drink held by the container.&nbsp; Each time the 
       item is drunk, the amount represented by Quenched/Drink is subtracted from 
       this.&nbsp; When this number reaches 0, the container is empty and must be 
-      refilled.</TD></TR></TABLE></P>
+      refilled.</TD></TR>
+  <TR>
+    <TD><EM>Liquid Type</EM></TD>
+    <TD>for GenWater only, this denotes what kind of 
+      liquid it is, whether fresh water, salt water, or even BLOOD!&nbsp; This 
+      may differ from the GenItem material type, so that the archon may 
+      differentiate between the material of the container from whats inside 
+    it.</TD></TR>      
+      </TABLE></P>
 <P><STRONG>The "GenMap"</STRONG></P>
 <P>Whenever a GenMap is created, much like the 
 GenArmor above, you are presented with a list of properties to fill 
@@ -829,7 +1142,7 @@ Room".</TD>
   </TR>
   <TR>
     <TD><EM>UsesRemaining</EM></TD>
-    <TD>for scrolls, lanterns, staves, and wands, this 
+    <TD>for scrolls, lanterns, ammunition, staves, and wands, this 
 represents the number of times the item may be used again before expiring.&nbsp; 
 For all other items, this field has no purpose whatsoever.</TD>
   </TR>
@@ -858,13 +1171,13 @@ ability to conjure beasts into caverns and townspeople on to streets.&nbsp; To
 do this, the Archon need only issue the create command once again.&nbsp; 
 Summoning a goblin is as simple as entering "create Goblin".</P>
 <P><STRONG>The 
-"GenMob",&nbsp;"GenShopkeeper",&nbsp;and "GenUndead"</STRONG></P>
-<P>Whenever a GenMob, GenShopkeeper,&nbsp;or GenUndead is 
-created, much like the GenItem above, you are presented with a list of properties to fill in.&nbsp; Pressing enter will leave 
-the property unchanged.&nbsp; The only difference between the GenMob and GenUndead is that 
-the GenUndead can be&nbsp;TURNed by a Cleric, while a GenMob cannot. 
-&nbsp;A GenShopkeeper, of course, has buying and selling abilities the other two do 
-not.&nbsp; The properties include:</P>
+"GenMob"&nbsp;and "GenUndead"</STRONG></P>
+<P>      
+          Whenever a GenMob&nbsp;or GenUndead is created, much like the GenItem above, 
+you are presented with a list of properties to fill in.&nbsp; Pressing enter 
+will leave the property unchanged.&nbsp; The only difference between the GenMob 
+and GenUndead is that the GenUndead can be&nbsp;TURNed by a Cleric, while a 
+GenMob cannot.&nbsp;&nbsp;The properties include:</P>
 <TABLE cellSpacing=1 cellPadding=1 width="100%" border=1 style="WIDTH: 100%">
   
   <TR>
@@ -875,7 +1188,7 @@ not.&nbsp; The properties include:</P>
     <TR><TD><EM>Description</EM></TD><TD>what one sees when one looks at the mob</TD></TR>
     <TR><TD><EM>Display Text</EM></TD><TD>what one sees when&nbsp;the mob&nbsp;is lurking 
       in a room.</TD></TR>
-    <TR><TD><EM>Rejuv Ticks</EM></TD><TD>the number of ticks, after the mob has been 
+    <TR><TD><EM>Rejuv Ticks</EM></TD><TD>the number of ticks (4 second intervals), after the mob has been 
       killed, that will transpire before the mob reappears in its home room. For 
       more information on making the RejuvTicks property take effect after changing it, see 
       below under Rejuvenating Items and Mobs" or "How to Save a 
@@ -916,19 +1229,19 @@ not.&nbsp; The properties include:</P>
     <TR><TD><EM>Weight </EM></TD><TD>this is only important in determining whether it 
       can be WHOMPed by a fighter.&nbsp; You should make this number reflect the 
       monsters true weight.&nbsp; Ignore the default and do so.</TD></TR>
-    <TR><TD><EM>Abilities&nbsp;</EM></TD><TD>grants the opportunity to give your new MOB 
-      spells, prayers, skills, and other abilities.&nbsp; Enter 'list'&nbsp; to 
-      see a list of the proper names of the CoffeeMud abilities.&nbsp;&nbsp;For 
-      more information, you may enter 'topics' at the main prompt&nbsp;to see a list of the common names of spells, 
-      skills, prayers, and songs to use.&nbsp;You may also enter 
-      'help abilities'&nbsp;from the main prompt to show some of the more 
+    <TR><TD><EM>Abilities&nbsp;</EM></TD><TD> grants the opportunity to give your new 
+      MOB spells, prayers, skills, and other abilities.&nbsp; Enter 'list'&nbsp; 
+      to see a list of the proper names of the CoffeeMud 
+      abilities.&nbsp;&nbsp;For more information, you may enter 'atopics' at the main prompt&nbsp;to see a list of the common names of 
+      spells, skills, prayers, and songs to use.&nbsp;You may also 
+      enter 'ahelp'&nbsp;from the main prompt to show some of the more 
       secret affects available.&nbsp; You may add new ones by entering the&nbsp;ability's proper 
       name only.&nbsp; Entering it again will remove it.&nbsp; Keep in mind that 
       placing properties here is absolutely useless, even though they 
       are classified as abilities; they belong under affects below.</TD></TR>
-    <TR><TD><EM>Behaviors </EM></TD><TD>the list of standard behaviors that can be attached to MOBs is growing 
-      daily.&nbsp; Enter 'list' to see a list of them.&nbsp;&nbsp;You&nbsp;may also, from a normal 
-      prompt, enter&nbsp;'help behaviors' for more information on 
+    <TR><TD><EM>Behaviors </EM></TD><TD> the list of standard behaviors that can be attached to MOBs is 
+      growing daily.&nbsp; Enter 'list' to see a list of them.&nbsp;&nbsp;You&nbsp;may also, from a 
+      normal prompt, enter&nbsp;'ahelp' for more information on 
       the available behaviors.&nbsp; Either way, you may add new 
       ones by entering the behaviors proper names here, followed by any behavior 
       parameters.&nbsp; Entering it again will remove it.&nbsp; If you gave your MOB 
@@ -936,14 +1249,6 @@ not.&nbsp; The properties include:</P>
       behavior so that it will use them in combat.&nbsp; However, some 
       behaviors, such as Mageness, Clericness, etc.. come fully-loaded with 
       abilities.</TD></TR>
-    <TR><TD><EM>Inventory</EM></TD><TD>for GenShopkeepers only, this is where you would 
-      "stock" your shopkeeper.&nbsp; A shopkeeper can sell *)Anything, G)eneral 
-      items, A)rmor, M)iscellanous magic items not included amongst armor or 
-      weapons, W)eapons, P)ets, L)eather items, O)nly buys the things he also 
-      sells (but sells whatever you give him to sell), T)rains players in 
-      spells, prayers, skills, or songs, C)asts prayers, spells, or songs on the 
-      buyer.&nbsp; All shopkeepers can also buy what they sell, excluding 
-      Trainers and Casters.</TD></TR>
     <TR><TD><EM>Affects</EM></TD><TD>This may refer to a property, as discussed above 
       in the section on rooms, or it may refer to a permanent spell 
       effect.&nbsp;&nbsp;After all, it is one thing to be able to pray for 
@@ -957,9 +1262,50 @@ not.&nbsp; The properties include:</P>
     <TR><TD><EM>Is .. flags</EM></TD><TD>Most of these are self explanatory.</TD></TR>
     <TR><TD><EM>Can See... flags</EM></TD><TD>Again, methinks thou canst fathom most of these 
       just fine without me enumerating them.&nbsp;</TD></TR>
-</TABLE>
-<P><STRONG>Modifying MOBs</STRONG>      
-           </P>
+</TABLE><STRONG>
+<P>The "GenShopKeeper"</P></STRONG>
+<P>Whenever a GenShopKeeper is created, much like the GenMob above, you are 
+presented with a list of properties to fill in.&nbsp; Pressing enter will leave 
+the property unchanged.&nbsp; The properties include all of the fields listed 
+above under GenMob, plus&nbsp;one&nbsp;more:</P>
+<P><STRONG>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG>Property</STRONG></TD>
+    <TD width="75%"><STRONG>Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM> Inventory</EM></TD>
+    <TD>this is where you would "stock" your 
+      shopkeeper.&nbsp; A shopkeeper can sell *)Anything, G)eneral items, 
+      A)rmor, M)iscellanous magic items not included amongst armor or weapons, 
+      W)eapons, P)ets, L)eather items, O)nly buys the things he also sells (but 
+      sells whatever you give him to sell), T)rains players in spells, prayers, 
+      skills, or songs, C)asts prayers, spells, or songs on the buyer.&nbsp; All 
+      shopkeepers can also buy what they sell, excluding Trainers and 
+  Casters.</TD></TR>
+</TABLE></STRONG><BR></P>
+<P><STRONG>The "GenRideable"</STRONG></P>
+<P>Whenever a GenRideable is created, much like the GenMob above, you are 
+presented with a list of properties to fill in.&nbsp; Pressing enter will leave 
+the property unchanged.&nbsp; The properties include all of the fields listed 
+above under GenMob, plus&nbsp;a&nbsp;few&nbsp;more:</P>
+<P><STRONG>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG>Property</STRONG></TD>
+    <TD width="75%"><STRONG>Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Rideable Type</EM></TD>
+    <TD>the type of rideable item this is, from a floater to a flyer, 
+  etc.</TD></TR>
+  <TR>
+    <TD><EM>MOBs Held</EM></TD>
+    <TD>th emaximum number of mobs which may ride this animal at 
+      once.</TD></TR></TABLE></STRONG>
+      
+ <BR>Modifying MOBs</STRONG></P>
 <P>There are properties of&nbsp;mobs that can be modified by the Archon.&nbsp; If one wishes to modify a 
 goblin,&nbsp;the&nbsp;goblin must be&nbsp;present in the room.&nbsp; The Archon can then 
 issue the command "modify goblin".&nbsp; If the item is a GenMob or 
@@ -990,8 +1336,8 @@ not likely become evident until after the beastie has reloaded.</TD>
   <TR>
     <TD><EM>RejuvTicks</EM></TD>
     <TD>             
- This number represents the number of ticks (where a tick is roughly 
-4 seconds) before a MOB&nbsp;that has been&nbsp;killed rejuvenates or resets to 
+     This number represents the number of ticks (4 
+second intervals) before a MOB&nbsp;that has been&nbsp;killed rejuvenates or resets to 
 its proper state.&nbsp; The value '2147483647' or '0'&nbsp;means that the&nbsp;MOB never rejuvenates, but once killed, is 
 gone forever.&nbsp; Any other value will represent a number of ticks.&nbsp; This 
 property does not take effect until the room is saved.&nbsp; For more 
@@ -1014,7 +1360,31 @@ Room".</TD>
 the destroy command.&nbsp;&nbsp;MOBs that have been set to rejuv will not do 
 so.&nbsp; If the&nbsp;MOB was a permanently saved&nbsp;MOB in the room, you must 
 re-save the room in order to make the MOBs destruction permanent.</P>
-<P><STRONG>"Rejuvenating Items and Mobs" or "How to Save a Room"</STRONG></P>
+<P><STRONG>Equipping MOBs</STRONG></P>
+<P>You may give a MOB equipment to wear or carry as 
+treasure, if this is done properly.&nbsp; First off, you can ONLY equip a 
+Generic MOB.&nbsp; This includes the GenMob, GenUndead, and GenShopKeeper.&nbsp; 
+No other creature may be saved with equipment.&nbsp; Generic or non-Generic 
+Items may be used as equipment.&nbsp; To equip the MOB, first create the items 
+you wish to give to your new creature using the procedure described above under 
+"Creating Items".&nbsp; Now, you may use the Archon "possess" skill to take 
+temporary control of your monster, allowing them to pick up the items you 
+created and wear or wield them as necessary.&nbsp; Another way is to "order" the 
+mob to pick up the items you created, and then "order" them again to wear or 
+wield the items.&nbsp; Either way will accomplish the 
+purpose.<BR><BR><STRONG>Practical Affects, MOB 
+Behaviors<BR><BR></STRONG>Although there are exceptions, MOBs will be the 
+primary beneficiary of Behaviors (see above under Creating MOBs), and Items (and 
+occasionally Rooms) will benefit from Affects.&nbsp; Some of the useful Affects 
+for Rooms are already described above under Creating Rooms.&nbsp; For Generic 
+Items, Prop_HaveAdjuster, Prop_WearAdjuster, Prop_HaveZapper and others are 
+commonly used.&nbsp; For Generic MOBs, you will find many useful Behaviors which 
+will add great depth to your MUD.&nbsp; The MudChat behavior may be added to ANY 
+Mob to add an extra dimension. "Aggressive", "MOBTeacher", and "Mobile" are also 
+extremely common behaviors to give to your MOBs.&nbsp; It is highly recommended 
+that any Archon wishing to create a rich and wonderous universe spend time 
+perusing the help files to learn of the wonders of the Behaviors and Affects.<BR><BR><STRONG>"Rejuvenating Items and 
+Mobs" or "How to Save a Room"</STRONG></P>
 <P>MOBs and Items that are created in rooms, even those which have had the Rejuv 
 Ticks property set to some reasonable number, will not actually begin to 
 rejuvenate, and will not reappear in the room when CoffeeMud is rebooted, until 
@@ -1034,7 +1404,7 @@ Items</STRONG></P>
   access to any indoor rooms or areas behind&nbsp;only secret exits.&nbsp; A 
   value of 1 means the map will be built with both indoor and outdoor rooms, but 
   without secret rooms.&nbsp; Any other value will display each and every room, 
-  regardless.&nbsp; A room that is classified as in the air will never be placed 
+  regardless.&nbsp; A room that is classified as "in the air" will never be placed 
   on a map.</DIV>
   <LI>
   <DIV class=MsoNormal>misc text - The names of the areas, seperated by 

@@ -68,7 +68,7 @@ public class Prayer_HolyAura extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> become(s) clothed in holyness.":"<S-NAME> call(s) on <S-HIS-HER> god for <T-NAME> to be clothed in holyness.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> become(s) clothed in holiness.":"<S-NAME> call(s) on <S-HIS-HER> god for <T-NAME> to be clothed in holiness.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

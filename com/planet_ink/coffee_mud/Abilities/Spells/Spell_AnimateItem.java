@@ -61,8 +61,9 @@ public class Spell_AnimateItem extends Spell
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> "+Util.combine(commands,1)+".");
 			}
-
 		}
+		else
+			mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> twitch(es) oddly, but does nothing more.");
 
 
 		// return whether it worked

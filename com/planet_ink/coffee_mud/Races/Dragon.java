@@ -20,7 +20,7 @@ public class Dragon extends StdRace
 		// pounds
 		lightestWeight=2000;
 		weightVariance=500;
-		forbiddenWornBits=Item.HELD|Item.WIELD|Item.ON_WAIST;
+		forbiddenWornBits=Item.WIELD|Item.ON_WAIST|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;
 	}
 	public boolean playerSelectable(){return false;}
 

@@ -89,7 +89,7 @@ The options are:
 			it's also good manners to specify <code>MIME.CLASS=application/octet-stream</code> if you 
 			intend to be running java applets on the web pages.
 			Normally these would be placed in <I>web/common.ini</I>.
-	<li><b>ADMIN</b>=true : allows admin macros to run on this server (see below). [NOT IMPLEMENTED YET]
+	<li><b>ADMIN</b>=   true : allows admin macros to run on this server (see below).
 	<li><b>BASEDIRECTORY</b>=path : allows you to override the web-page directory that this server 
 			uses - default is <i>web/(servername)</i>. Servers can share base directories.
 	<li><b>TEMPLATEDIRECTORY</b>=path : allows you to override the web-page template directory that this server 
@@ -110,11 +110,11 @@ e.g., instead of ../index.cmvp specify /index.cmvp.
 </p>
 
 <p><b>CoffeeMUD Virtual Pages:</b><br>
-Kind of misnamed (these pages in their original, very different incarnation didn't exist at all), 
-this is typically a HTML or plaintext file that is preprocessed by the server before being 
-dispatched to the browser.  Preprocessing is a simple search-and-replace; NO ACCOUNT is taken of where the macro appears within the file
-(ie, macros within comments or quoted strings will be replaced).  The following macros are currently
-defined (nb: CASE SENSITIVE!):</p>
+  Kind of misnamed (these pages in their original, very different incarnation didn't exist 
+at all), this is typically a HTML or plaintext file that is preprocessed by the server 
+before being dispatched to  the browser. Preprocessing is a simple search-and-replace; NO ACCOUNT is taken of where the macro appears within
+the file (ie, macros within comments or quoted strings will  be replaced). Some examples of
+macros already defined include:</p>
 <ul>
 	<li><b>@MUDSERVERVERSION@</b>: Returns the name and version of the mud server.
 	<li><b>@WEBSERVERVERSION@</b>: Returns the name and version of the web server.
@@ -122,10 +122,27 @@ defined (nb: CASE SENSITIVE!):</p>
 	<li><b>@MUDSERVERPORT@</b>: Returns the port number the mud server is running on.
 	<li><b>@WEBSERVERPORT@</b>: Returns the port number the web server is running on.
 
-	<li><b>@MUDSERVERSTATUS@</b>: Returns a string showing the status of the mud server (note that
-		there's no @WEB equivalent - if it wasn't running, you wouldn't be able to see it!)
+	<li><b>@MUDSERVERSTATUS@</b>: Returns 
+  a string showing the status of the mud server (note that there's no @WEB 
+  equivalent - if it wasn't running, you wouldn't be able to see it!) 
+  <LI><STRONG>@MUDGRINDER@: </STRONG>  
+      The main processing macro for the MUDGrinder area-editing tool.&nbsp; This 
+  macro runs as an admin macro.&nbsp; See the MUDGrinder guide for more information. 
+  <LI><STRONG>@ADDFILE?filename@: </STRONG>Insert the contents of the file 
+  "filename" into the current document.
+  <LI><STRONG>@IF?macroName@: </STRONG>Removes the content between this macro 
+  and the corresponding @else@ or @endif@ unless the macro "macroName" specified 
+  evaluates to the string "true".&nbsp; 
+  <LI><STRONG>@REQUESTPARAMETER?parmname@: </STRONG>Inserts the value of GET 
+  request parameter specified by "parmname".
+  <LI><STRONG>@LOOP@: </STRONG>Repeatedly inserts into the page the contents 
+  between this macro and the corresponding @back@ until a @break@ macro located 
+  inside the block is processed.&nbsp; This @break@ string is most often 
+  returned by a macro processed within the block.
+  <LI><STRONG>@CHECKREQPARM?parmname=value@: </STRONG>            Evaluates
+		to the string "true" if the specified GET request parameters is equal to the value given.
 
-	<li><b>@NUMPLAYERS@</b>: Returns the number of players online.
+	<li><STRONG>@NUMPLAYERS@</STRONG>: Returns the number of players online.
 	<li><b>@PLAYERLIST@</b>: Returns a series of HTML &lt;LI&gt; elements;
 		the enclosing list elements (&lt;UL&gt;..&lt;/UL&gt; or &lt;OL&gt;..&lt;/OL&gt;) are not
 		part of this string and so must be defined in the surronding page.  Additionally, each
@@ -173,13 +190,13 @@ Example: this is the complete code for the <B>@HTTPCLIENTIP@</B> macro (HTTPclie
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-public class
 
-HTTPclientIP extends StdWebMacro { public
-String
-	name() {return "HTTPclientIP";}	public String
+public class HTTPclientIP extends StdWebMacro 
+{
 
-	runMacro(ExternalHTTPRequests httpReq, String parms)
+	public String name() {return "HTTPclientIP";}	
+	
+	public String runMacro(ExternalHTTPRequests httpReq, String parms)
 	{
 		return httpReq.getHTTPclientIP();
 	}
@@ -190,13 +207,15 @@ The <code>.getHTTPclientIP()</code> member of ProcessWebRequest essentially just
 <pre>
 	return sock.getInetAddress().getHostAddress();
 </pre>
+<P>
 (don't be confused by the name <code>.getHostAddress()</code> - this just returns the 
 dotted quad notation form of the address, whereas 
-<code>.toString()</code> would attempt to do a reverse DNS(?) 
-and return a meaningful name as well)
-<br>
+<code>.toString()</code> would attempt to do a reverse DNS(?) and 
+return a meaningful name as well) </P>
+<P>
 If your macro is intended to be for the admin server only, you can override the
-<code>.isAdminMacro()</code> member to return <code>true</code>; nb: not implemented.
+<code>.isAdminMacro()</code> member to return <code>true.</code></P>
+<P><CODE></CODE>&nbsp;</P>   
 
 
 </body>
