@@ -360,7 +360,7 @@ public class StdExit implements Exit
 					Say.append(room.displayText()+Sense.colorCodes(room,mob));
 			}
 			else
-			if(Sense.canBeSeenBy(this,mob))
+			if((Sense.canBeSeenBy(this,mob))&&(closedText().trim().length()>0))
 				Say.append(closedText()+Sense.colorCodes(this,mob));
 		return Say;
 	}
