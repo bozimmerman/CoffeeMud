@@ -2723,7 +2723,68 @@ Factors</EM></TD>
       maximum number of rows of inventory the shopkeeper will display whenever a 
       LIST is done.&nbsp; This feature has no relation with the above 
       prejudice&nbsp;functionality -- its just 
-bonus.</P></TD></TR></TABLE></STRONG><BR></P><STRONG>
+bonus.</P></TD></TR>
+  <TR>
+    <TD><EM>Budget</EM></TD>
+    <TD>
+      <P>This field is used to define the maximum amount of money, per a defined
+		 time period, which shopkeepers will spend when buying equipment from 
+		 players.  The format of the field is an amount of gold followed by
+		 the name of period (HOUR, DAY, WEEK, MONTH, YEAR).  All of these time
+		 periods are **MUD** time periods, where one hour is about 10 minutes of
+		 real life time.  For example, a value of "200 DAY" means that the
+		 shopkeeper will not buy more than 200 gold per day of any equipment from
+		 players.
+</P></TD></TR>
+  <TR>
+    <TD><EM>Devalue Rate</EM></TD>
+    <TD>
+      <P>This field is used to limit the number of EACH PARTICULAR item
+      that a shopkeeper will keep in his inventory.  This provides a ceiling
+      therefore on the number of unique items of a kind which a shopkeeper
+      will purchase from players.  The way this field works is by defining
+      how far the price drops, in percentage, every time the player sells an
+      item to a shopkeeper.  Decimals (real numbers) are allowed in this field.
+      This field may also be used to differentiate between the rate of devaluation
+      of raw resources and other finished items.  A single integer field would represent
+      the devaluation percentage of all items, while a field with two integers 
+      seperated by a space would represent the devaluation of finished items and
+      raw resources respectively.  For example, a value of "20" would mean that
+      the shopkeepers value price drops by 20% every time this shopkeeper buys 
+      a particular item.  If the shopkeeper buys two, it would be 20%.  Three would
+      be 60% and so forth.  This effectively limits the shopkeeper to buying to more
+      than 5 of any item (5 * 20) == 100%.  A value of "20 0.5" would mean a 
+      devaluation rate of 20% for finished items, and 0.5% (1/2%) for raw resources.
+</P></TD></TR>
+  <TR>
+    <TD><EM>Devalue Rate</EM></TD>
+    <TD>
+      <P>This field is used to limit the number of EACH PARTICULAR item
+      that a shopkeeper will keep in his inventory.  This provides a ceiling
+      therefore on the number of unique items of a kind which a shopkeeper
+      will purchase from players.  The way this field works is by defining
+      how far the price drops, in percentage, every time the player sells an
+      item to a shopkeeper.  Decimals (real numbers) are allowed in this field.
+      This field may also be used to differentiate between the rate of devaluation
+      of raw resources and other finished items.  A single integer field would represent
+      the devaluation percentage of all items, while a field with two integers 
+      seperated by a space would represent the devaluation of finished items and
+      raw resources respectively.  For example, a value of "20" would mean that
+      the shopkeepers value price drops by 20% every time this shopkeeper buys 
+      a particular item.  If the shopkeeper buys two, it would be 20%.  Three would
+      be 60% and so forth.  This effectively limits the shopkeeper to buying to more
+      than 5 of any item (5 * 20) == 100%.  A value of "20 0.5" would mean a 
+      devaluation rate of 20% for finished items, and 0.5% (1/2%) for raw resources.
+</P></TD></TR>
+  <TR>
+    <TD><EM>Inventory Reset Rate</EM></TD>
+    <TD>
+      <P>This is the rate, in ticks (4 second periods) at which the shopkeeper
+      totally resets his inventory back to the last saved "stock" items.  Leave
+      this field empty to use the INI default, or not to have a reset rate
+      depending.
+</P></TD></TR>
+</TABLE></STRONG><BR></P><STRONG>
 <P>The "GenBanker"</P></STRONG>
 <P>A Banker is a special type of ShopKeeper that holds 
 money and items in a special private account for players.&nbsp; Bankers can pay 

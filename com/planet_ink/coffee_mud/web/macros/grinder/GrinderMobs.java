@@ -205,7 +205,8 @@ public class GrinderMobs
 						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
 						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
 						  "CLESIN","WORSIN","CLEPOW","CURSES","POWERS",
-						  "CLANID","TATTOOS","EDUCATIONS"};
+						  "CLANID","TATTOOS","EDUCATIONS",
+						  "BUDGET","DEVALRATE","INVRESETRATE"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -366,6 +367,18 @@ public class GrinderMobs
 					for(int v=0;v<V.size();v++)
 						M.addEducation((String)V.elementAt(v));
 				}
+				break;
+			case 42: // budget
+				if(M instanceof ShopKeeper)
+					((ShopKeeper)M).setBudget(old);
+				break;
+			case 43: // devaluation rate
+				if(M instanceof ShopKeeper)
+					((ShopKeeper)M).setDevalueRate(old);
+				break;
+			case 44: // inventory reset rate
+				if(M instanceof ShopKeeper)
+					((ShopKeeper)M).setInvResetRate(Util.s_int(old));
 				break;
 			}
 		}

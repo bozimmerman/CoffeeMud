@@ -143,25 +143,58 @@
 	<INPUT TYPE=HIDDEN NAME=CONTROL VALUE="">
 	<TABLE WIDTH=100% BORDER=1>
 	<TR>
-	<TR><TD WIDTH=100% COLSPAN=10 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>INI Settings</B></FONT></TD></TR>
+	<TR><TD WIDTH=100% COLSPAN=11 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>INI Settings</B></FONT></TD></TR>
 	<TR BGCOLOR=WHITE>
-	<TD WIDTH=10% @if?CheckReqParm?INIPAGE=SECURITY@BGCOLOR=BLACK@endif@><a href="javascript:inipage('SECURITY')"><FONT @if?CheckReqParm?INIPAGE=SECURITY@COLOR=WHITE@else@COLOR=BLACK@endif@>Security</FONT></a></TD>
-	<TD WIDTH=10% @if?CheckReqParm?INIPAGE=START@BGCOLOR=BLACK@endif@><a href="javascript:inipage('START')"><FONT @if?CheckReqParm?INIPAGE=START@COLOR=WHITE@else@COLOR=BLACK@endif@>Start Rooms</FONT></a></TD>
-	<TD WIDTH=10% @if?CheckReqParm?INIPAGE=DEATH@BGCOLOR=BLACK@endif@><a href="javascript:inipage('DEATH')"><FONT @if?CheckReqParm?INIPAGE=DEATH@COLOR=WHITE@else@COLOR=BLACK@endif@>Death Rooms</FONT></a></TD>
-	<TD WIDTH=10% @if?CheckReqParm?INIPAGE=MORGUE@BGCOLOR=BLACK@endif@><a href="javascript:inipage('MORGUE')"><FONT @if?CheckReqParm?INIPAGE=MORGUE@COLOR=WHITE@else@COLOR=BLACK@endif@>Morgue Rooms</FONT></a></TD>
-	<TD WIDTH=10% @if?CheckReqParm?INIPAGE=CHANNELS@BGCOLOR=BLACK@endif@><a href="javascript:inipage('CHANNELS')"><FONT @if?CheckReqParm?INIPAGE=CHANNELS@COLOR=WHITE@else@COLOR=BLACK@endif@>Channels</FONT></a></TD>
-	<TD WIDTH=10% @if?CheckReqParm?INIPAGE=ABILITIES@BGCOLOR=BLACK@endif@><a href="javascript:inipage('ABILITIES')"><FONT @if?CheckReqParm?INIPAGE=ABILITIES@COLOR=WHITE@else@COLOR=BLACK@endif@>Abilities</FONT></a></TD>
-	<TD WIDTH=10% @if?CheckReqParm?INIPAGE=CLAN@BGCOLOR=BLACK@endif@><a href="javascript:inipage('CLAN')"><FONT @if?CheckReqParm?INIPAGE=CLAN@COLOR=WHITE@else@COLOR=BLACK@endif@>Clan</FONT></a></TD>
-	<TD WIDTH=10% @if?CheckReqParm?INIPAGE=PLAYER@BGCOLOR=BLACK@endif@><a href="javascript:inipage('PLAYER')"><FONT @if?CheckReqParm?INIPAGE=PLAYER@COLOR=WHITE@else@COLOR=BLACK@endif@>Player Settings</FONT></a></TD>
-	<TD WIDTH=10% @if?CheckReqParm?INIPAGE=CALENDAR@BGCOLOR=BLACK@endif@><a href="javascript:inipage('CALENDAR')"><FONT @if?CheckReqParm?INIPAGE=CALENDAR@COLOR=WHITE@else@COLOR=BLACK@endif@>Calendar</FONT></a></TD>
-	<TD WIDTH=10% @if?CheckReqParm?INIPAGE=MISC@BGCOLOR=BLACK@endif@><a href="javascript:inipage('MISC')"><FONT @if?CheckReqParm?INIPAGE=MISC@COLOR=WHITE@else@COLOR=BLACK@endif@>Miscellanous</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=SECURITY@BGCOLOR=BLACK@endif@><a href="javascript:inipage('SECURITY')"><FONT @if?CheckReqParm?INIPAGE=SECURITY@COLOR=WHITE@else@COLOR=BLACK@endif@>Security</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=START@BGCOLOR=BLACK@endif@><a href="javascript:inipage('START')"><FONT @if?CheckReqParm?INIPAGE=START@COLOR=WHITE@else@COLOR=BLACK@endif@>Start Rooms</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=DEATH@BGCOLOR=BLACK@endif@><a href="javascript:inipage('DEATH')"><FONT @if?CheckReqParm?INIPAGE=DEATH@COLOR=WHITE@else@COLOR=BLACK@endif@>Death Rooms</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=MORGUE@BGCOLOR=BLACK@endif@><a href="javascript:inipage('MORGUE')"><FONT @if?CheckReqParm?INIPAGE=MORGUE@COLOR=WHITE@else@COLOR=BLACK@endif@>Morgue Rooms</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=CHANNELS@BGCOLOR=BLACK@endif@><a href="javascript:inipage('CHANNELS')"><FONT @if?CheckReqParm?INIPAGE=CHANNELS@COLOR=WHITE@else@COLOR=BLACK@endif@>Channels</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=ABILITIES@BGCOLOR=BLACK@endif@><a href="javascript:inipage('ABILITIES')"><FONT @if?CheckReqParm?INIPAGE=ABILITIES@COLOR=WHITE@else@COLOR=BLACK@endif@>Abilities</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=CLAN@BGCOLOR=BLACK@endif@><a href="javascript:inipage('CLAN')"><FONT @if?CheckReqParm?INIPAGE=CLAN@COLOR=WHITE@else@COLOR=BLACK@endif@>Clan</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=PLAYER@BGCOLOR=BLACK@endif@><a href="javascript:inipage('PLAYER')"><FONT @if?CheckReqParm?INIPAGE=PLAYER@COLOR=WHITE@else@COLOR=BLACK@endif@>Player Settings</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=ECONOMY@BGCOLOR=BLACK@endif@><a href="javascript:inipage('ECONOMY')"><FONT @if?CheckReqParm?INIPAGE=ECONOMY@COLOR=WHITE@else@COLOR=BLACK@endif@>Economy</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=CALENDAR@BGCOLOR=BLACK@endif@><a href="javascript:inipage('CALENDAR')"><FONT @if?CheckReqParm?INIPAGE=CALENDAR@COLOR=WHITE@else@COLOR=BLACK@endif@>Calendar</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=MISC@BGCOLOR=BLACK@endif@><a href="javascript:inipage('MISC')"><FONT @if?CheckReqParm?INIPAGE=MISC@COLOR=WHITE@else@COLOR=BLACK@endif@>Miscellanous</FONT></a></TD>
 	</TR>
-	<TR><TD WIDTH=100% COLSPAN=10 VALIGN=TOP>
+	<TR><TD WIDTH=100% COLSPAN=11VALIGN=TOP>
 	@if?CheckReqParm?INIPAGE=@
 	<BR><BR>
 	<FONT COLOR=WHITE><B>Instructions: Select a tab above to view a new page.  
 	Click the button below to submit your changes before moving to a new page.<P>
 	<BR><BR>
+	@endif@
+	@if?CheckReqParm?INIPAGE=ECONOMY@
+		<TABLE WIDTH=100% BORDER=1>
+		<TR><TD WIDTH=20% VALIGN=TOP><FONT COLOR=WHITE>PREJUDICE</FONT>
+		</TD><TD WIDTH=80% VALIGN=TOP>
+		<INPUT TYPE=TEXT NAME=EDITORTYPE SIZE=60 VALUE="@INIValue?MASK=PREJUDICE&VALUE@">
+		<BR>
+		<FONT COLOR=WHITE>@INIValue?MASK=PREJUDICE&INIHELP@
+		</TD></TR>
+		
+		<TR><TD WIDTH=20% VALIGN=TOP><FONT COLOR=WHITE>BUDGET</FONT>
+		</TD><TD WIDTH=80% VALIGN=TOP>
+		<INPUT TYPE=TEXT NAME=DOMAIN SIZE=20 VALUE="@INIValue?MASK=BUDGET&VALUE@">
+		<BR>
+		<FONT COLOR=WHITE>@INIValue?MASK=BUDGET&INIHELP@
+		</TD></TR>
+		
+		<TR><TD WIDTH=20% VALIGN=TOP><FONT COLOR=WHITE>DEVALUERATE</FONT>
+		</TD><TD WIDTH=80% VALIGN=TOP>
+		<INPUT TYPE=TEXT NAME=DOMAIN SIZE=10 VALUE="@INIValue?MASK=DEVALUERATE&VALUE@">
+		<BR>
+		<FONT COLOR=WHITE>@INIValue?MASK=DEVALUERATE&INIHELP@
+		</TD></TR>
+		
+		<TR><TD WIDTH=20% VALIGN=TOP><FONT COLOR=WHITE>INVRESETRATE</FONT>
+		</TD><TD WIDTH=80% VALIGN=TOP>
+		<INPUT TYPE=TEXT NAME=DOMAIN SIZE=10 VALUE="@INIValue?MASK=INVRESETRATE&VALUE@">
+		<BR>
+		<FONT COLOR=WHITE>@INIValue?MASK=INVRESETRATE&INIHELP@
+		</TD></TR>
+		
+		</TABLE>
 	@endif@
 	@if?CheckReqParm?INIPAGE=CALENDAR@
 		<TABLE WIDTH=100% BORDER=1>

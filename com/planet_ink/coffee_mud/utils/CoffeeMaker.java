@@ -28,7 +28,7 @@ public class CoffeeMaker
 		return (x&m)==m;
 	}
 
-	public static void resetGenMOB(MOB mob, String newText)
+	public static String getGenMOBTextUnpacked(MOB mob, String newText)
 	{
 		if((newText!=null)&&((newText.length()>10)||newText.startsWith("%DBID>")))
 		{
@@ -37,15 +37,25 @@ public class CoffeeMaker
 				String dbstr=CMClass.DBEngine().DBReadRoomMOBData(newText.substring(6,newText.indexOf("@")),
 																  ((Object)mob).getClass().getName()+newText.substring(newText.indexOf("@")).trim());
 				if(dbstr!=null)
-					setPropertiesStr(mob,dbstr,false);
+					return dbstr;
 				else
+				{
 					Log.errOut("Unable to re-read mob data: "+newText);
+					return null;
+				}
 			}
 			else
-			{
-				setPropertiesStr(mob,newText,false);
-			}
+				return newText;
 		}
+		return null;
+	}
+	
+	public static void resetGenMOB(MOB mob, String newText)
+	{
+		newText=getGenMOBTextUnpacked(mob,newText);
+		if(newText!=null)
+			setPropertiesStr(mob,newText,false);
+
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
 		mob.baseState().setHitPoints(Dice.rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));
@@ -495,6 +505,9 @@ public class CoffeeMaker
 			{
 				text.append(XMLManager.convertXMLtoTag("SELLCD",((ShopKeeper)E).whatIsSold()));
 				text.append(XMLManager.convertXMLtoTag("PREJFC",((ShopKeeper)E).prejudiceFactors()));
+				text.append(XMLManager.convertXMLtoTag("BUDGET",((ShopKeeper)E).budget()));
+				text.append(XMLManager.convertXMLtoTag("DEVALR",((ShopKeeper)E).devalueRate()));
+				text.append(XMLManager.convertXMLtoTag("INVRER",((ShopKeeper)E).invResetRate()));
 
 				Vector V=((ShopKeeper)E).getUniqueStoreInventory();
 				StringBuffer itemstr=new StringBuffer("");
@@ -1552,6 +1565,83 @@ public class CoffeeMaker
 		}
 		if(variableEq) M.flagVariableEq();
 	}
+	
+	public static void populateShops(Environmental E, Vector buf)
+	{
+		boolean variableEq=false;
+		ShopKeeper shopmob=(ShopKeeper)E;
+		shopmob.setWhatIsSold(XMLManager.getIntFromPieces(buf,"SELLCD"));
+		shopmob.setPrejudiceFactors(XMLManager.getValFromPieces(buf,"PREJFC"));
+		shopmob.setBudget(XMLManager.getValFromPieces(buf,"BUDGET"));
+		shopmob.setDevalueRate(XMLManager.getValFromPieces(buf,"DEVALR"));
+		shopmob.setInvResetRate(XMLManager.getIntFromPieces(buf,"INVRER"));
+
+		Vector V=XMLManager.getRealContentsFromPieces(buf,"STORE");
+		if(V==null)
+		{
+			Log.errOut("CoffeeMaker","Error parsing 'STORE' of "+E.Name()+".  Load aborted");
+			return;
+		}
+		else
+		{
+			Hashtable IIDmap=new Hashtable();
+			Hashtable LOCmap=new Hashtable();
+			for(int i=0;i<V.size();i++)
+			{
+				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)V.elementAt(i);
+				if((!iblk.tag.equalsIgnoreCase("SHITEM"))||(iblk.contents==null))
+				{
+					Log.errOut("CoffeeMaker","Error parsing 'SHITEM' of "+E.Name()+".  Load aborted");
+					continue;
+				}
+				String itemi=XMLManager.getValFromPieces(iblk.contents,"SICLASS");
+				int numStock=XMLManager.getIntFromPieces(iblk.contents,"SISTOCK");
+				String prc=XMLManager.getValFromPieces(iblk.contents,"SIPRICE");
+				int stockPrice=-1;
+				if((prc!=null)&&(prc.length()>0))
+					stockPrice=Util.s_int(prc);
+				Environmental newOne=null;
+				Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"SIDATA");
+				if((iblk.value.indexOf("<ABLTY>")>=0)||(iblk.value.indexOf("&lt;ABLTY&gt;")>=0))
+					newOne=CMClass.getMOB(itemi);
+				if(newOne==null) newOne=CMClass.getUnknown(itemi);
+				if(newOne==null)
+				{
+					Log.errOut("CoffeeMaker","Unknown item "+itemi+" on "+E.name()+", skipping.");
+					continue;
+				}
+				if((idat==null)||(newOne==null))
+				{
+					Log.errOut("CoffeeMaker","Error parsing 'SHOP DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
+					continue;
+				}
+				if(newOne instanceof Item)
+				{
+					if(newOne instanceof Container)
+						IIDmap.put(XMLManager.getValFromPieces(idat,"IID"),newOne);
+					String ILOC=XMLManager.getValFromPieces(idat,"ILOC");
+					if(ILOC.length()>0)
+						LOCmap.put(ILOC,newOne);
+				}
+				setPropertiesStr(newOne,idat,true);
+				if((newOne.baseEnvStats().rejuv()>0)&&(newOne.baseEnvStats().rejuv()<Integer.MAX_VALUE))
+					variableEq=true;
+				shopmob.addStoreInventory(newOne,numStock,stockPrice);
+			}
+			for(int i=0;i<shopmob.getUniqueStoreInventory().size();i++)
+			{
+				Environmental stE=(Environmental)shopmob.getUniqueStoreInventory().elementAt(i);
+				if(stE instanceof Item)
+				{
+					Item item=(Item)stE;
+					String ILOC=(String)LOCmap.get(item);
+					if(ILOC!=null)
+						item.setContainer((Item)IIDmap.get(ILOC));
+				}
+			}
+		}
+		if(variableEq) ((MOB)E).flagVariableEq();
+	}
 
 	private static void setGenPropertiesStr(Environmental E, Vector buf)
 	{
@@ -1881,79 +1971,7 @@ public class CoffeeMaker
 			for(int v=0;v<V9.size();v++) ((MOB)E).addEducation((String)V9.elementAt(v));
 
 			if(E instanceof ShopKeeper)
-			{
-				boolean variableEq=false;
-				ShopKeeper shopmob=(ShopKeeper)E;
-				shopmob.setWhatIsSold(XMLManager.getIntFromPieces(buf,"SELLCD"));
-				shopmob.setPrejudiceFactors(XMLManager.getValFromPieces(buf,"PREJFC"));
-
-
-				Vector V=XMLManager.getRealContentsFromPieces(buf,"STORE");
-				if(V==null)
-				{
-					Log.errOut("CoffeeMaker","Error parsing 'STORE' of "+E.Name()+".  Load aborted");
-					return;
-				}
-				else
-				{
-					Hashtable IIDmap=new Hashtable();
-					Hashtable LOCmap=new Hashtable();
-					for(int i=0;i<V.size();i++)
-					{
-						XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)V.elementAt(i);
-						if((!iblk.tag.equalsIgnoreCase("SHITEM"))||(iblk.contents==null))
-						{
-							Log.errOut("CoffeeMaker","Error parsing 'SHITEM' of "+E.Name()+".  Load aborted");
-							return;
-						}
-						String itemi=XMLManager.getValFromPieces(iblk.contents,"SICLASS");
-						int numStock=XMLManager.getIntFromPieces(iblk.contents,"SISTOCK");
-						String prc=XMLManager.getValFromPieces(iblk.contents,"SIPRICE");
-						int stockPrice=-1;
-						if((prc!=null)&&(prc.length()>0))
-							stockPrice=Util.s_int(prc);
-						Environmental newOne=null;
-						Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"SIDATA");
-						if((iblk.value.indexOf("<ABLTY>")>=0)||(iblk.value.indexOf("&lt;ABLTY&gt;")>=0))
-							newOne=CMClass.getMOB(itemi);
-						if(newOne==null) newOne=CMClass.getUnknown(itemi);
-						if(newOne==null)
-						{
-							Log.errOut("CoffeeMaker","Unknown item "+itemi+" on "+E.name()+", skipping.");
-							continue;
-						}
-						if((idat==null)||(newOne==null))
-						{
-							Log.errOut("CoffeeMaker","Error parsing 'SHOP DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
-							return;
-						}
-						if(newOne instanceof Item)
-						{
-							if(newOne instanceof Container)
-								IIDmap.put(XMLManager.getValFromPieces(idat,"IID"),newOne);
-							String ILOC=XMLManager.getValFromPieces(idat,"ILOC");
-							if(ILOC.length()>0)
-								LOCmap.put(ILOC,newOne);
-						}
-						setPropertiesStr(newOne,idat,true);
-						if((newOne.baseEnvStats().rejuv()>0)&&(newOne.baseEnvStats().rejuv()<Integer.MAX_VALUE))
-							variableEq=true;
-						shopmob.addStoreInventory(newOne,numStock,stockPrice);
-					}
-					for(int i=0;i<shopmob.getUniqueStoreInventory().size();i++)
-					{
-						Environmental stE=(Environmental)shopmob.getUniqueStoreInventory().elementAt(i);
-						if(stE instanceof Item)
-						{
-							Item item=(Item)stE;
-							String ILOC=(String)LOCmap.get(item);
-							if(ILOC!=null)
-								item.setContainer((Item)IIDmap.get(ILOC));
-						}
-					}
-				}
-				if(variableEq) ((MOB)E).flagVariableEq();
-			}
+				populateShops(E,buf);
 		}
 	}
 	

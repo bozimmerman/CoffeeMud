@@ -487,7 +487,8 @@ public class MobData extends StdWebMacro
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
 						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
 						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
-						  "CLESIN","WORSIN","CLEPOW","CLANID","TATTOOS","EDUCATIONS"};
+						  "CLESIN","WORSIN","CLEPOW","CLANID","TATTOOS","EDUCATIONS",
+						  "BUDGET","DEVALRATE","INVRESETRATE"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -778,6 +779,21 @@ public class MobData extends StdWebMacro
 					for(int i=0;i<M.numEducations();i++)
 						old+=M.fetchEducation(i)+";";
 				}
+				str.append(old);
+				break;
+			case 40: // budget
+				if((firstTime)&&(M instanceof ShopKeeper))
+					old=((ShopKeeper)M).budget();
+				str.append(old);
+				break;
+			case 41: // devaluation rate
+				if((firstTime)&&(M instanceof ShopKeeper))
+					old=((ShopKeeper)M).devalueRate();
+				str.append(old);
+				break;
+			case 42: // inventory reset rate
+				if((firstTime)&&(M instanceof ShopKeeper))
+					old=((ShopKeeper)M).invResetRate();
 				str.append(old);
 				break;
 			}

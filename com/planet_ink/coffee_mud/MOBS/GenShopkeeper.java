@@ -51,7 +51,7 @@ public class GenShopkeeper extends StdShopKeeper
 		super.setMiscText(newText);
 		CoffeeMaker.resetGenMOB(this,newText);
 	}
-	private static String[] MYCODES={"WHATISELL","PREJUDICE"};
+	private static String[] MYCODES={"WHATISELL","PREJUDICE","BUDGET","DEVALRATE","INVRESETRATE"};
 	public String getStat(String code)
 	{
 		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
@@ -61,6 +61,9 @@ public class GenShopkeeper extends StdShopKeeper
 		{
 		case 0: return ""+whatIsSold();
 		case 1: return prejudiceFactors();
+		case 2: return budget();
+		case 3: return devalueRate();
+		case 4: return ""+invResetRate();
 		}
 		return "";
 	}
@@ -73,6 +76,9 @@ public class GenShopkeeper extends StdShopKeeper
 		{
 		case 0: setWhatIsSold(Util.s_int(val)); break;
 		case 1: setPrejudiceFactors(val); break;
+		case 2: setBudget(val); break;
+		case 3: setDevalueRate(val); break;
+		case 4: setInvResetRate(Util.s_int(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){

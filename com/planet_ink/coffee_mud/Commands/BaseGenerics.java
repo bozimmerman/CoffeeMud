@@ -2445,6 +2445,44 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
+	public static void genShopkeeper4(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Budget: '"+E.budget()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newValue=mob.session().prompt("Enter a new string\n\r:","");
+		if(newValue.length()>0)
+			E.setBudget(newValue);
+		else
+			mob.tell("(no change)");
+	}
+	
+	public static void genShopkeeper5(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Devaluation rate(s): '"+E.devalueRate()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newValue=mob.session().prompt("Enter a new string\n\r:","");
+		if(newValue.length()>0)
+			E.setDevalueRate(newValue);
+		else
+			mob.tell("(no change)");
+	}
+	public static void genShopkeeper6(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Inventory reset rate: "+E.invResetRate()+" ticks.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newValue=mob.session().prompt("Enter a new number\n\r:","");
+		if(newValue.equals("0")||(Util.s_int(newValue)!=0))
+			E.setInvResetRate(Util.s_int(newValue));
+		else
+			mob.tell("(no change)");
+	}
+	
 	public static void genAbilities(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4963,6 +5001,12 @@ public class BaseGenerics extends StdCommand
 				genBanker1(mob,(Banker)me,++showNumber,showFlag);
 				genBanker2(mob,(Banker)me,++showNumber,showFlag);
 				genBanker3(mob,(Banker)me,++showNumber,showFlag);
+			}
+			else
+			{
+				genShopkeeper4(mob,me,++showNumber,showFlag);
+				genShopkeeper5(mob,me,++showNumber,showFlag);
+				genShopkeeper6(mob,me,++showNumber,showFlag);
 			}
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genSensesMask(mob,me.baseEnvStats(),++showNumber,showFlag);

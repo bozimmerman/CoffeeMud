@@ -25,8 +25,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected Vector storeInventory=new Vector();
 	protected Vector baseInventory=new Vector();
 	protected Hashtable duplicateInventory=new Hashtable();
-	protected int maximumDuplicatesBought=5;
 	protected Hashtable prices=new Hashtable();
+	protected int invResetRate=-1;
+	protected int invResetTickDown=0;
+	protected String budget="";
+	protected long budgetRemaining=Integer.MAX_VALUE/2;
+	protected long budgetMax=Integer.MAX_VALUE/2;
+	protected int budgetTickDown=0;
+	protected String devalueRate="";
 
 	private final static Hashtable titleSets=new Hashtable();
 
@@ -53,8 +59,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		recoverEnvStats();
 		recoverCharStats();
 	}
-
-
 
 	public int whatIsSold(){return whatISell;}
 	public void setWhatIsSold(int newSellCode){whatISell=newSellCode;}
@@ -263,8 +267,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		{
 			Environmental copy=thisThang.copyOf();
 			storeInventory.addElement(copy);
-			if(number>maximumDuplicatesBought)
-				maximumDuplicatesBought=number;
 			if(number>1)
 				duplicateInventory.put(copy,new Integer(number));
 		}
@@ -440,6 +442,76 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return false;
 	}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+		if((tickID==MudHost.TICK_MOB)&&(isGeneric()))
+		{
+			if(invResetRate()<0)
+				invResetRate=Util.s_int(CommonStrings.getVar(CommonStrings.SYSTEM_INVRESETRATE));
+			else
+			if(invResetTickDown<=0)
+				invResetTickDown=invResetRate();
+			else
+			if((--invResetTickDown)<=0)
+			{
+				Vector INV=getUniqueStoreInventory();
+				for(int b=0;b<INV.size();b++)
+					delStoreInventory(((Environmental)INV.elementAt(b)));
+				invResetTickDown=invResetRate();
+				String newText=CoffeeMaker.getGenMOBTextUnpacked(this,text());
+				if(newText!=null)
+				{
+					Vector xml=XMLManager.parseAllXML(newText);
+					if(xml!=null)
+					{
+						CoffeeMaker.populateShops(this,xml);
+						recoverEnvStats();
+						recoverCharStats();
+					}
+				}
+			}
+			if((--budgetTickDown)<=0)
+			{
+				budgetTickDown=Integer.MAX_VALUE;
+				budgetRemaining=Integer.MAX_VALUE/2;
+				String s=budget();
+				if(s.length()==0) s=CommonStrings.getVar(CommonStrings.SYSTEM_BUDGET);
+				Vector V=Util.parse(s.trim().toUpperCase());
+				if(V.size()>0)
+				{
+					if(((String)V.firstElement()).equals("0"))
+						budgetRemaining=0;
+					else
+					{
+						budgetRemaining=Util.s_int((String)V.firstElement());
+						if(budgetRemaining==0)
+							budgetRemaining=Integer.MAX_VALUE/2;
+					}
+					s="DAY";
+					if(V.size()>1) s=((String)V.lastElement()).toUpperCase();
+					if(s.startsWith("DAY"))
+						budgetTickDown=CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+					else
+					if(location()!=null)
+					{
+						if(s.startsWith("WEEK"))
+							budgetTickDown=location().getArea().getTimeObj().getDaysInWeek()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+						else
+						if(s.startsWith("MONTH"))
+							budgetTickDown=location().getArea().getTimeObj().getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+						else
+						if(s.startsWith("YEAR"))
+							budgetTickDown=location().getArea().getTimeObj().getDaysInMonth()*location().getArea().getTimeObj().getMonthsInYear()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+					}
+				}
+				budgetMax=budgetRemaining;
+			}
+		}
+		return true;
+	}
+
 	public int stockPrice(Environmental likeThis)
 	{
 		if(prices.containsKey(likeThis.ID()+"/"+likeThis.name()))
@@ -535,21 +607,23 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				if((msg.tool()!=null)&&(doISellThis(msg.tool())))
 				{
-					if(yourValue(mob,msg.tool(),false)[0]<2)
+					int yourValue=yourValue(mob,msg.tool(),false)[0];
+					if(yourValue<1)
 					{
 						CommonMsgs.say(this,mob,"I'm not interested.",true,false);
+						return false;
+					}
+					if((msg.targetMinor()==CMMsg.TYP_SELL)&&(yourValue>budgetRemaining))
+					{
+						if(yourValue>budgetMax)
+							CommonMsgs.say(this,mob,"That's way out of my price range! Try AUCTIONing it.",true,false);
+						else
+							CommonMsgs.say(this,mob,"Sorry, I can't afford that right now.  Try back later.",true,false);
 						return false;
 					}
 					if(msg.tool() instanceof Ability)
 					{
 						CommonMsgs.say(this,mob,"I'm not interested.",true,false);
-						return false;
-					}
-					int numInStock=numberInStock(msg.tool());
-					if(((!(msg.tool() instanceof EnvResource))&&(numInStock>=maximumDuplicatesBought))
-					||(numInStock>=(maximumDuplicatesBought*100)))
-					{
-						CommonMsgs.say(this,mob,"I'm sorry, I'm not buying any more of those.",true,false);
 						return false;
 					}
 					if((msg.tool() instanceof Container)&&(((Container)msg.tool()).hasALock()))
@@ -759,6 +833,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					int val=yourValue(mob,msg.tool(),false)[0];
 					mob.setMoney(mob.getMoney()+val);
+					budgetRemaining=budgetRemaining-val;
 					mob.recoverEnvStats();
 					mob.tell(name()+" pays you "+val+" for "+msg.tool().name()+".");
 					if(msg.tool() instanceof LandTitle)
@@ -1031,14 +1106,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	}
 	protected double prejudiceFactor(MOB mob, boolean sellTo)
 	{
-		if(prejudiceFactors().length()==0) return 1.0;
-		if(prejudiceFactors().indexOf("=")<0)
+		String factors=prejudiceFactors().toUpperCase();
+		if(factors.length()==0) 
 		{
-			if(Util.s_double(prejudiceFactors())!=0.0)
-				return Util.s_double(prejudiceFactors());
+			factors=CommonStrings.getVar(CommonStrings.SYSTEM_PREJUDICE).trim();
+			if(factors.length()==0)
+				return 1.0;
+		}
+		if(factors.indexOf("=")<0)
+		{
+			if(Util.s_double(factors)!=0.0)
+				return Util.s_double(factors);
 			return 1.0;
 		}
-		String factors=prejudiceFactors().toUpperCase();
 		int x=factors.indexOf(";");
 		while(x>=0)
 		{
@@ -1053,6 +1133,34 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return 1.0;
 	}
 
+	public double devalue(Environmental product)
+	{
+		int num=numberInStock(product);
+		if(num<=0) return 0.0;
+		double resourceRate=0.0;
+		double itemRate=0.0;
+		String s=devalueRate();
+		if(s.length()==0) s=CommonStrings.getVar(CommonStrings.SYSTEM_DEVALUERATE);
+		Vector V=Util.parse(s.trim());
+		if(V.size()<=0)
+			return 0.0;
+		else
+		if(V.size()==1)
+		{
+			resourceRate=Util.div(Util.s_double((String)V.firstElement()),100.0);
+			itemRate=resourceRate;
+		}
+		else
+		{
+			itemRate=Util.div(Util.s_double((String)V.firstElement()),100.0);
+			resourceRate=Util.div(Util.s_double((String)V.lastElement()),100.0);
+		}
+		if(product instanceof EnvResource)
+			return resourceRate;
+		else
+			return itemRate;
+	}
+	
 	public int[] yourValue(MOB mob, Environmental product, boolean sellTo)
 	{
 		int[] val=new int[3];
@@ -1105,11 +1213,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		// gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 30
 		int buyPrice=(int)Math.round(Util.div(Util.mul(val[0],mob.charStats().getStat(CharStats.CHARISMA)),60.0));
 
-		if((product instanceof EnvResource)&&(numberInStock(product)!=0))
-			buyPrice=(int)Math.round(Util.mul(buyPrice,Util.div(((maximumDuplicatesBought*100)-numberInStock(product)),maximumDuplicatesBought*100)));
+		if(product instanceof EnvResource)
+			buyPrice-=(int)Math.round(Util.mul(buyPrice,1.0-devalue(product)));
 		else
-        if((!(product instanceof Ability)&&(numberInStock(product)!=0)))
-			buyPrice=(int)Math.round(Util.mul(buyPrice,Util.div((maximumDuplicatesBought-numberInStock(product)),maximumDuplicatesBought)));
+        if(!(product instanceof Ability))
+			buyPrice-=(int)Math.round(Util.mul(buyPrice,1.0-devalue(product)));
 
 		// the price is 200% at 0 charisma, and 100% at 30
 		int sellPrice=(int)Math.round(val[0]+val[0]-Util.mul(val[0],Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
@@ -1240,9 +1348,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		return V;
 	}
+	
 	public String prejudiceFactors(){return Util.decompressString(miscText);}
 	public void setPrejudiceFactors(String factors){miscText=Util.compressString(factors);}
 
+	public String budget(){return budget;}
+	public void setBudget(String factors){budget=factors;}
+	
+	public String devalueRate(){return devalueRate;}
+	public void setDevalueRate(String factors){devalueRate=factors;}
+	
+	public int invResetRate(){return invResetRate;}
+	public void setInvResetRate(int ticks){invResetRate=ticks;}
+	
 	protected StringBuffer listInventory(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");

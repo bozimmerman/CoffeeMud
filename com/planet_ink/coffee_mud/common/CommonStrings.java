@@ -54,7 +54,11 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_MUDBINDADDRESS=28;
 	public static final int SYSTEM_MUDDOMAIN=29;
 	public static final int SYSTEM_I3EMAIL=30;
-	public static final int NUM_SYSTEM=31;
+	public static final int SYSTEM_PREJUDICE=31;
+	public static final int SYSTEM_BUDGET=32;
+	public static final int SYSTEM_DEVALUERATE=33;
+	public static final int SYSTEM_INVRESETRATE=34;
+	public static final int NUM_SYSTEM=35;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -83,7 +87,7 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_MUDBACKLOG=24;
 	public static final int SYSTEMI_TICKSPERMUDDAY=25;
 	public static final int SYSTEMI_COMBATSYSTEM=26;
-	public static final int NUMI_SYSTEM=27;
+	public static final int NUMI_SYSTEM=28;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -199,6 +203,10 @@ public class CommonStrings extends Scriptable
         setVar(SYSTEM_CORPSEGUARD,page.getStr("CORPSEGUARD"));
 		setVar(SYSTEM_MUDDOMAIN,page.getStr("DOMAIN"));
 		setVar(SYSTEM_I3EMAIL,page.getStr("I3EMAIL"));
+		setVar(SYSTEM_PREJUDICE,page.getStr("PREJUDICE"));
+		setVar(SYSTEM_BUDGET,page.getStr("BUDGET"));
+		setVar(SYSTEM_DEVALUERATE,page.getStr("DEVALUERATE"));
+		setIntVar(SYSTEM_INVRESETRATE,page.getStr("INVRESETRATE"));
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
 		else

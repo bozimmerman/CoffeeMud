@@ -74,4 +74,11 @@ public interface ShopKeeper extends Environmental
 	public String prejudiceFactors();
 	public void setPrejudiceFactors(String factors);
 	public int[] yourValue(MOB mob, Environmental product, boolean sellTo);
+	public String budget();
+	public void setBudget(String factors);
+	public String devalueRate();
+	public void setDevalueRate(String factors);
+	public int invResetRate();
+	public void setInvResetRate(int ticks);
+	
 }

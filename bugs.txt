@@ -2,9 +2,9 @@ the idea of unique items
 Economy: BUDGET$, BUDGETPERIOD, QUANTITYBOUGHT, DEVRATE%, RESETRATE
 map command.  its moronic, but there you go.
 add damage for every hit -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.  You'll probably have to write your own spec on this one.
-overview grid type thingy -- thin grid
 ability to deposit a container and its contents.
 INI entry to limit shopkeepers to one bought item of any one kind
+ability to intermingle id rooms with grids somehow -- use CMROEX table, LINK/CREATE cmd, 
 
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
 Install ship battery

@@ -365,6 +365,22 @@
 		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ITEMINT SIZE=7 VALUE="@MobData?ITEMINT@">
 		    </TD>
 		</TR>
+	@else@
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Budget:</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=BUDGET SIZE=30 VALUE="@MobData?BUDGET@">
+		    </TD>
+		</TR>
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Devaluation Rate(s):</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DEVALRATE SIZE=7 VALUE="@MobData?DEVALRATE@">
+		    </TD>
+		</TR>
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Inventory Reset (Ticks):</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=INVRESETRATE SIZE=7 VALUE="@MobData?INVRESETRATE@">
+		    </TD>
+		</TR>
 	@endif@
 @endif@
 <TR>
