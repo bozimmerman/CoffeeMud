@@ -6,19 +6,11 @@ import java.util.*;
 
 public class Prop_Tattoo extends Property
 {
-	public Prop_Tattoo()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="A Tattoo";
-		canAffectCode=Ability.CAN_MOBS;
-	}
-	public Environmental newInstance()
-	{
-		Prop_Tattoo BOB=new Prop_Tattoo();
-		BOB.setMiscText(text());
-		return BOB;
-	}
+	public String ID() { return "Prop_Tattoo"; }
+	public String name(){ return "A Tattoo";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	Prop_Tattoo BOB=new Prop_Tattoo();	BOB.setMiscText(text());return BOB;}
+	
 	public static Vector getTattoos(MOB mob)
 	{
 		Vector tattos=new Vector();

@@ -7,20 +7,10 @@ import java.util.*;
 
 public class Prop_ReqRaces extends Property
 {
-	public Prop_ReqRaces()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Room/Exit Race Limitations";
-		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_ReqRaces newOne=new Prop_ReqRaces();
-		newOne.setMiscText(text());
-		return newOne;
-	}
+	public String ID() { return "Prop_ReqRaces"; }
+	public String name(){ return "Room/Exit Race Limitations";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	public Environmental newInstance(){	Prop_ReqRaces newOne=new Prop_ReqRaces(); newOne.setMiscText(text());return newOne;}
 
 	public boolean okAffect(Affect affect)
 	{

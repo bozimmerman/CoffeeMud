@@ -7,23 +7,15 @@ import java.util.*;
 
 public class Prop_ItemTransporter extends Property
 {
-	Room roomDestination=null;
-	MOB mobDestination=null;
-	Item nextDestination=null;
+	public String ID() { return "Prop_ItemTransporter"; }
+	public String name(){ return "Item Transporter";}
+	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	protected Room roomDestination=null;
+	protected MOB mobDestination=null;
+	protected Item nextDestination=null;
 	private static Hashtable possiblePossibilities=new Hashtable();
 	private static Hashtable lastLooks=new Hashtable();
-	public Prop_ItemTransporter()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Item Transporter";
-		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_ItemTransporter();
-	}
+	public Environmental newInstance(){	Prop_ItemTransporter BOB=new Prop_ItemTransporter();	BOB.setMiscText(text()); return BOB;}
 
 	public String accountForYourself()
 	{ return "Item Transporter";	}

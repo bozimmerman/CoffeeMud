@@ -7,6 +7,9 @@ import java.util.*;
 
 public class Prop_WearAdjuster extends Property
 {
+	public String ID() { return "Prop_WearAdjuster"; }
+	public String name(){ return "Adjustments to stats when worn";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private Item myItem=null;
 	private MOB lastMOB=null;
 	private CharStats adjCharStats=null;
@@ -14,14 +17,8 @@ public class Prop_WearAdjuster extends Property
 	boolean gotClass=false;
 	boolean gotRace=false;
 	boolean gotSex=false;
-
-	public Prop_WearAdjuster()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Adjustments to stats when worn";
-		canAffectCode=Ability.CAN_ITEMS;
-	}
+	
+	public Environmental newInstance(){	Prop_WearAdjuster BOB=new Prop_WearAdjuster();	BOB.setMiscText(text()); return BOB;}
 
 	public boolean isBorrowed(Environmental toMe)
 	{
@@ -52,13 +49,6 @@ public class Prop_WearAdjuster extends Property
 			if(Character.isDigit(id.charAt(x)))
 				break;
 		return id;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_WearAdjuster BOB=new Prop_WearAdjuster();
-		BOB.setMiscText(text());
-		return BOB;
 	}
 
 	public void setMiscText(String newText)

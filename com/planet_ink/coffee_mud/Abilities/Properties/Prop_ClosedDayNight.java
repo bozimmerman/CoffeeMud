@@ -7,21 +7,12 @@ import java.util.*;
 
 public class Prop_ClosedDayNight extends Property
 {
+	public String ID() { return "Prop_ClosedDayNight"; }
+	public String name(){ return "Day/Night Visibility";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	private boolean doneToday=false;
-	public Prop_ClosedDayNight()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Day/Night Visibility";
-		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
-	}
-
 	public Environmental newInstance()
-	{
-		Prop_ClosedDayNight newOne=new Prop_ClosedDayNight();
-		newOne.setMiscText(text());
-		return newOne;
-	}
+	{	Prop_ClosedDayNight newOne=new Prop_ClosedDayNight(); newOne.setMiscText(text());return newOne; }
 
 	public String accountForYourself()
 	{ return "";	}

@@ -7,18 +7,10 @@ import java.util.*;
 
 public class Prop_NoPurge extends Property
 {
-	public Prop_NoPurge()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Prevents automatic purging";
-		canAffectCode=Ability.CAN_ROOMS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_NoPurge();
-	}
+	public String ID() { return "Prop_NoPurge"; }
+	public String name(){ return "Prevents automatic purging";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	public Environmental newInstance(){	return new Prop_NoPurge();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -7,20 +7,10 @@ import java.util.*;
 
 public class Prop_ReqClasses extends Property
 {
-	public Prop_ReqClasses()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Class Limitations";
-		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_ReqClasses newOne=new Prop_ReqClasses();
-		newOne.setMiscText(text());
-		return newOne;
-	}
+	public String ID() { return "Prop_ReqClasses"; }
+	public String name(){ return "Class Limitations";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	public Environmental newInstance(){	Prop_ReqClasses newOne=new Prop_ReqClasses();	newOne.setMiscText(text());	return newOne;}
 
 	public boolean okAffect(Affect affect)
 	{

@@ -6,18 +6,11 @@ import java.util.*;
 
 public class Prop_EnterAdjuster extends Property
 {
-	public Prop_EnterAdjuster()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Room entering adjuster";
-		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ROOMS;
-	}
-
+	public String ID() { return "Prop_EnterAdjuster"; }
+	public String name(){ return "Room entering adjuster";}
+	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	public Environmental newInstance()
-	{
-		return new Prop_EnterAdjuster();
-	}
+	{	Prop_EnterAdjuster newOne=new Prop_EnterAdjuster(); newOne.setMiscText(text());return newOne; }
 
 	public String accountForYourself()
 	{ return "Goodies for entry.";	}

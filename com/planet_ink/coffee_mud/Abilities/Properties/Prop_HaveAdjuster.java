@@ -10,6 +10,9 @@ import java.util.*;
 // again when it will.  Don't lothe the HaveAdjuster, LOVE IT.
 public class Prop_HaveAdjuster extends Property
 {
+	public String ID() { return "Prop_HaveAdjuster"; }
+	public String name(){ return "Adjustments to stats when owned";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private Item myItem=null;
 	private MOB lastMOB=null;
 	private CharStats adjCharStats=null;
@@ -17,21 +20,7 @@ public class Prop_HaveAdjuster extends Property
 	boolean gotClass=false;
 	boolean gotRace=false;
 	boolean gotSex=false;
-
-	public Prop_HaveAdjuster()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Adjustments to stats when owned";
-		canAffectCode=Ability.CAN_ITEMS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_HaveAdjuster BOB=new Prop_HaveAdjuster();
-		BOB.setMiscText(text());
-		return BOB;
-	}
+	public Environmental newInstance(){	Prop_HaveAdjuster BOB=new Prop_HaveAdjuster();	BOB.setMiscText(text()); return BOB;}
 
 	public boolean isBorrowed(Environmental toMe)
 	{

@@ -7,19 +7,11 @@ import java.util.*;
 
 public class Prop_Hidden extends Property
 {
+	public String ID() { return "Prop_Hidden"; }
+	public String name(){ return "Persistant Hiddenness";}
+	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	private int ticksSinceLoss=100;
-	public Prop_Hidden()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Persistant Hiddenness";
-		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_Hidden();
-	}
+	public Environmental newInstance(){	return new Prop_Hidden();}
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

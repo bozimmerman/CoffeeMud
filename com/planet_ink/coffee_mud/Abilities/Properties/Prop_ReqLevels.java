@@ -7,20 +7,10 @@ import java.util.*;
 
 public class Prop_ReqLevels extends Property
 {
-	public Prop_ReqLevels()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Level Limitations";
-		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_ReqLevels newOne=new Prop_ReqLevels();
-		newOne.setMiscText(text());
-		return newOne;
-	}
+	public String ID() { return "Prop_ReqLevels"; }
+	public String name(){ return "Level Limitations";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	public Environmental newInstance(){	Prop_ReqLevels newOne=new Prop_ReqLevels();	newOne.setMiscText(text());	return newOne;}
 
 	public boolean okAffect(Affect affect)
 	{

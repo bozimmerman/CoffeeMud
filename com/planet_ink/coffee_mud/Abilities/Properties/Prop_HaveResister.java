@@ -10,24 +10,13 @@ import java.util.*;
 // again when it will.  Don't lothe the HaveResister, LOVE IT.
 public class Prop_HaveResister extends Property
 {
+	public String ID() { return "Prop_HaveResister"; }
+	public String name(){ return "Resistance due to ownership";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private Item myItem=null;
 	private MOB lastMOB=null;
 	private CharStats adjCharStats=null;
-
-	public Prop_HaveResister()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Resistance due to ownership";
-		canAffectCode=Ability.CAN_ITEMS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_HaveResister BOB=new Prop_HaveResister();
-		BOB.setMiscText(text());
-		return BOB;
-	}
+	public Environmental newInstance(){	Prop_HaveResister BOB=new Prop_HaveResister();	BOB.setMiscText(text());return BOB;}
 	
 	public boolean isBorrowed(Environmental toMe)
 	{

@@ -6,14 +6,10 @@ import java.util.*;
 
 public class Prop_TattooAdder extends Property
 {
+	public String ID() { return "Prop_TattooAdder"; }
+	public String name(){ return "A Tattoo";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_EXITS;}
 	int tattooCode=-1;
-	public Prop_TattooAdder()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="A Tattoo";
-		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_EXITS;
-	}
 	public Environmental newInstance()
 	{
 		Prop_TattooAdder BOB=new Prop_TattooAdder();

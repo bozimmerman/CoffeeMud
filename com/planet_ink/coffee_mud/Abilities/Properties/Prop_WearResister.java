@@ -6,24 +6,14 @@ import java.util.*;
 
 public class Prop_WearResister extends Property
 {
+	public String ID() { return "Prop_WearResister"; }
+	public String name(){ return "Resistance due to worn";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private Item myItem=null;
 	private MOB lastMOB=null;
 	private CharStats adjCharStats=null;
 
-	public Prop_WearResister()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Resistance due to wearing";
-		canAffectCode=Ability.CAN_ITEMS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_WearResister BOB=new Prop_WearResister();
-		BOB.setMiscText(text());
-		return BOB;
-	}
+	public Environmental newInstance(){	Prop_WearResister BOB=new Prop_WearResister();	BOB.setMiscText(text()); return BOB;}
 
 	public String accountForYourself()
 	{

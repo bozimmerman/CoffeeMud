@@ -7,18 +7,10 @@ import java.util.*;
 
 public class Prop_MagicFreedom extends Property
 {
-	public Prop_MagicFreedom()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Magic Neutralizing";
-		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_MagicFreedom();
-	}
+	public String ID() { return "Prop_MagicFreedom"; }
+	public String name(){ return "Magic Neutralizing";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	public Environmental newInstance(){	return new Prop_MagicFreedom();}
 
 	public String accountForYourself()
 	{ return "Anti-Magic Field";	}

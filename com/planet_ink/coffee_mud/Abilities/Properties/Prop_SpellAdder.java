@@ -7,24 +7,13 @@ import java.util.*;
 
 public class Prop_SpellAdder extends Property
 {
+	public String ID() { return "Prop_SpellAdder"; }
+	public String name(){ return "Casting spells on oneself";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 	private Item myItem=null;
 	private Environmental lastMOB=null;
 	boolean processing=false;
-
-	public Prop_SpellAdder()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Casting spells on oneself";
-		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_SpellAdder BOB=new Prop_SpellAdder();
-		BOB.setMiscText(text());
-		return BOB;
-	}
+	public Environmental newInstance(){	Prop_SpellAdder BOB=new Prop_SpellAdder(); BOB.setMiscText(text());	return BOB;}
 
 	public static Vector getMySpellsV(Ability spellHolder)
 	{

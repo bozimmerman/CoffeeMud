@@ -6,21 +6,13 @@ import java.util.*;
 
 public class Prop_Transporter extends Property
 {
+	public String ID() { return "Prop_Transporter"; }
+	public String name(){ return "Room entering adjuster";}
+	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	private Hashtable zapList=new Hashtable();
 	private Room room=null;
 	int tattooCode=-1;
-	public Prop_Transporter()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Room entering adjuster";
-		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ROOMS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_Transporter();
-	}
+	public Environmental newInstance(){	return new Prop_Transporter();}
 
 	public String accountForYourself()
 	{ return "Zap them elsewhere";	}

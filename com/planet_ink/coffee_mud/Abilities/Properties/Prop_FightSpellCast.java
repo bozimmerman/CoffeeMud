@@ -9,21 +9,10 @@ public class Prop_FightSpellCast extends Property
 {
 	private Item myItem=null;
 	private boolean processing=false;
-
-	public Prop_FightSpellCast()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Casting spells when properly used";
-		canAffectCode=Ability.CAN_ITEMS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_FightSpellCast BOB=new Prop_FightSpellCast();
-		BOB.setMiscText(text());
-		return BOB;
-	}
+	public String ID() { return "Prop_FightSpellCast"; }
+	public String name(){ return "Casting spells when properly used";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	public Environmental newInstance(){	Prop_FightSpellCast BOB=new Prop_FightSpellCast();	BOB.setMiscText(text()); return BOB;}
 
 	public void addMeIfNeccessary(MOB sourceMOB, MOB newMOB)
 	{

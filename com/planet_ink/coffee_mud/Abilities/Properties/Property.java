@@ -6,30 +6,24 @@ import java.util.Vector;
 
 public class Property implements Ability, Cloneable
 {
+	public String ID() { return "Property"; }
+	public String name(){ return "a Property";}
+	public String description(){return "";}
+	public String displayText(){return "";}
 	protected boolean borrowed=false;
-	protected String myID="";
-	protected String name="";
-	protected String displayText="";
 	protected String miscText="";
-	protected String description="";
 	protected Environmental affected=null;
-	protected EnvStats envStats=new DefaultEnvStats();
-	protected EnvStats baseEnvStats=new DefaultEnvStats();
-	protected int canAffectCode=0;
-
-	public Property()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="A special property or affect";
-		displayText="";
-		miscText="";
-	}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
 	public int usesRemaining(){return 0;}
 	public void setUsesRemaining(int newUses){}
 
+	public void setName(String newName){}
+	public void setDescription(String newDescription){}
+	public void setDisplayText(String newDisplayText){}
 	public MOB invoker(){return null;}
-	public Vector triggerStrings(){return new Vector();}
+	public static final String[] empty={};
+	public String[] triggerStrings(){return empty;}
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto){return false;}
 	public boolean invoke(MOB mob, Environmental target, boolean auto){return false;}
 	public boolean autoInvocation(MOB mob){return false;}
@@ -61,49 +55,19 @@ public class Property implements Ability, Cloneable
 	public boolean putInCommandlist(){return false;}
 	public int quality(){return Ability.INDIFFERENT;}
 
-	public int classificationCode()
-	{
-		return Ability.PROPERTY;
-	}
-	public String ID()
-	{
-		return myID;
-	}
+	public int classificationCode(){ return Ability.PROPERTY;}
+	public boolean isBorrowed(Environmental toMe){ return borrowed;	}
+	public void setBorrowed(Environmental toMe, boolean truefalse)	{ borrowed=truefalse; }
 
-	public String name(){ return name;}
-	public void setName(String newName){name=newName;}
-
-	public boolean isBorrowed(Environmental toMe)
-	{ return borrowed;	}
-	public void setBorrowed(Environmental toMe, boolean truefalse)
-	{ borrowed=truefalse; }
-
-	public EnvStats envStats()
-	{
-		return envStats;
-	}
-	public EnvStats baseEnvStats()
-	{
-		return baseEnvStats;
-	}
-	public void recoverEnvStats()
-	{
-		envStats=baseEnvStats.cloneStats();
-	}
-	public void setBaseEnvStats(EnvStats newBaseEnvStats)
-	{
-		baseEnvStats=newBaseEnvStats.cloneStats();
-	}
-
+	public EnvStats envStats(){ return new DefaultEnvStats();}
+	public EnvStats baseEnvStats(){ return new DefaultEnvStats();}
+	public void recoverEnvStats(){}
+	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public Environmental newInstance()
-	{
-		return new Property();
-	}
-	private void cloneFix(Ability E)
-	{
-		baseEnvStats=E.baseEnvStats().cloneStats();
-		envStats=E.envStats().cloneStats();
-	}
+	{ return new Property();}
+	
+	private void cloneFix(Ability E){}
+	
 	public Environmental copyOf()
 	{
 		try
@@ -118,18 +82,10 @@ public class Property implements Ability, Cloneable
 			return this.newInstance();
 		}
 	}
-	public String displayText()
-	{ return displayText;}
-	public void setDisplayText(String newDisplayText)
-	{ displayText=newDisplayText;}
 	public void setMiscText(String newMiscText)
 	{ miscText=newMiscText;}
 	public String text()
 	{ return miscText;}
-	public String description()
-	{ return description;}
-	public void setDescription(String newDescription)
-	{ description=newDescription;}
 	public boolean appropriateToMyAlignment(int alignment){return true;}
 	public String accountForYourself(){return "";}
 	public int affectType(){return 0;}
@@ -137,13 +93,13 @@ public class Property implements Ability, Cloneable
 
 	public boolean canAffect(Environmental E)
 	{
-		if((E==null)&&(canAffectCode==0)) return true;
+		if((E==null)&&(canAffectCode()==0)) return true;
 		if(E==null) return false;
-		if((E instanceof MOB)&&((canAffectCode&Ability.CAN_MOBS)>0)) return true;
-		if((E instanceof Item)&&((canAffectCode&Ability.CAN_ITEMS)>0)) return true;
-		if((E instanceof Exit)&&((canAffectCode&Ability.CAN_EXITS)>0)) return true;
-		if((E instanceof Room)&&((canAffectCode&Ability.CAN_ROOMS)>0)) return true;
-		if((E instanceof Area)&&((canAffectCode&Ability.CAN_AREAS)>0)) return true;
+		if((E instanceof MOB)&&((canAffectCode()&Ability.CAN_MOBS)>0)) return true;
+		if((E instanceof Item)&&((canAffectCode()&Ability.CAN_ITEMS)>0)) return true;
+		if((E instanceof Exit)&&((canAffectCode()&Ability.CAN_EXITS)>0)) return true;
+		if((E instanceof Room)&&((canAffectCode()&Ability.CAN_ROOMS)>0)) return true;
+		if((E instanceof Area)&&((canAffectCode()&Ability.CAN_AREAS)>0)) return true;
 		return false;
 	}
 	

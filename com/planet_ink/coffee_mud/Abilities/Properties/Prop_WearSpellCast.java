@@ -7,24 +7,14 @@ import java.util.*;
 
 public class Prop_WearSpellCast extends Property
 {
+	public String ID() { return "Prop_WearSpellCast"; }
+	public String name(){ return "Casting spells when worn";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private Item myItem=null;
 	private MOB lastMOB=null;
 	private boolean processing=false;
 
-	public Prop_WearSpellCast()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Casting spells when worn";
-		canAffectCode=Ability.CAN_ITEMS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_WearSpellCast BOB=new Prop_WearSpellCast();
-		BOB.setMiscText(text());
-		return BOB;
-	}
+	public Environmental newInstance(){	Prop_WearSpellCast BOB=new Prop_WearSpellCast(); BOB.setMiscText(text()); return BOB;}
 
 	public String accountForYourself()
 	{

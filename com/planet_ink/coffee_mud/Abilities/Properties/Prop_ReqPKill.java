@@ -7,21 +7,10 @@ import java.util.*;
 
 public class Prop_ReqPKill extends Property
 {
-	public Prop_ReqPKill()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Playerkill ONLY Zone";
-		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_ReqPKill newOne=new Prop_ReqPKill();
-		newOne.setMiscText(text());
-		return newOne;
-	}
-
+	public String ID() { return "Prop_ReqPKill"; }
+	public String name(){ return "Playerkill ONLY Zone";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	public Environmental newInstance(){ return new Prop_ReqPKill();}
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)

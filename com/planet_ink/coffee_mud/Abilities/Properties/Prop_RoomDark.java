@@ -7,18 +7,10 @@ import java.util.*;
 
 public class Prop_RoomDark extends Property
 {
-	public Prop_RoomDark()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Darkening Property";
-		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_RoomDark();
-	}
+	public String ID() { return "Prop_RoomDark"; }
+	public String name(){ return "Darkening Property";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	public Environmental newInstance(){	return new Prop_RoomDark();}
 
 	public String accountForYourself()
 	{ return "Darkened";	}

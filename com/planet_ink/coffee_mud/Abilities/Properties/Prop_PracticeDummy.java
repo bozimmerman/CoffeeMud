@@ -8,19 +8,10 @@ import java.util.*;
 public class Prop_PracticeDummy extends Property
 {
 	boolean disabled=false;
-	
-	public Prop_PracticeDummy()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Practice Dummy";
-		canAffectCode=Ability.CAN_MOBS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_PracticeDummy();
-	}
+	public String ID() { return "Prop_PracticeDummy"; }
+	public String name(){ return "Practice Dummy";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Prop_PracticeDummy();}
 
 	public String accountForYourself()
 	{ return "Undefeatable";	}

@@ -7,24 +7,13 @@ import java.util.*;
 
 public class Prop_WearZapper extends Property
 {
+	public String ID() { return "Prop_WearZapper"; }
+	public String name(){ return "Restrictions to wielding/wearing/holding";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private Item myItem=null;
 	private MOB lastMOB=null;
 	private Prop_HaveZapper WA=new Prop_HaveZapper();
-
-	public Prop_WearZapper()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Restrictions to wielding/wearing/holding";
-		canAffectCode=Ability.CAN_ITEMS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_WearZapper BOB=new Prop_WearZapper();
-		BOB.setMiscText(text());
-		return BOB;
-	}
+	public Environmental newInstance(){	Prop_WearZapper BOB=new Prop_WearZapper();	BOB.setMiscText(text()); return BOB;}
 
 	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
 	{

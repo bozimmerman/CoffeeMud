@@ -7,19 +7,11 @@ import java.util.*;
 
 public class Prop_Invisibility extends Property
 {
+	public String ID() { return "Prop_Invisibility"; }
+	public String name(){ return "Persistant Invisibility";}
+	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	private int ticksSinceLoss=100;
-	public Prop_Invisibility()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Persistant Invisibility";
-		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_Invisibility();
-	}
+	public Environmental newInstance(){	return new Prop_Invisibility();}
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

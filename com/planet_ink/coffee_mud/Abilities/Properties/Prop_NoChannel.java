@@ -7,18 +7,10 @@ import java.util.*;
 
 public class Prop_NoChannel extends Property
 {
-	public Prop_NoChannel()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Channel Neutralizing";
-		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_NoChannel();
-	}
+	public String ID() { return "Prop_NoChannel"; }
+	public String name(){ return "Channel Neutralizing";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	public Environmental newInstance(){	return new Prop_NoChannel();}
 
 	public String accountForYourself()
 	{ return "No Channeling Field";	}

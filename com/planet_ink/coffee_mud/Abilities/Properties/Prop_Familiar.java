@@ -7,6 +7,11 @@ import java.util.*;
 
 public class Prop_Familiar extends Property
 {
+	public String ID() { return "Prop_Familiar"; }
+	public String name(){ return "Find Familiar Property";}
+	private String displayText="Familiarity with an animal";
+	public String displayText() {return displayText;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	private final static int DOG=0;
 	private final static int TURTLE=1;
 	private final static int CAT=2;
@@ -24,20 +29,7 @@ public class Prop_Familiar extends Property
 	private boolean imthedaddy=false;
 	private int familiarType=0;
 
-	public Prop_Familiar()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Find Familiar Property";
-		canAffectCode=Ability.CAN_MOBS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_Familiar BOB=new Prop_Familiar();
-		BOB.setMiscText(text());
-		return BOB;
-	}
+	public Environmental newInstance(){	Prop_Familiar BOB=new Prop_Familiar();	BOB.setMiscText(text());return BOB;	}
 
 	public String accountForYourself()
 	{

@@ -8,19 +8,10 @@ import java.util.*;
 public class Prop_SafePet extends Property
 {
 	boolean disabled=false;
-	
-	public Prop_SafePet()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Unattackable Pets";
-		canAffectCode=Ability.CAN_MOBS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_SafePet();
-	}
+	public String ID() { return "Prop_SafePet"; }
+	public String name(){ return "Unattackable Pets";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Prop_SafePet();}
 
 	public String accountForYourself()
 	{ return "Unattackable";	}

@@ -7,19 +7,10 @@ import java.util.*;
 
 public class Prop_Crawlspace extends Property
 {
-	public Prop_Crawlspace()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Room navigation limitation";
-		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_Crawlspace();
-	}
-
+	public String ID() { return "Prop_Crawlspace"; }
+	public String name(){ return "Room navigation limitation";}
+	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	public Environmental newInstance(){	return new Prop_Crawlspace();}
 	public String accountForYourself()
 	{ return "Must be crawled through.";	}
 

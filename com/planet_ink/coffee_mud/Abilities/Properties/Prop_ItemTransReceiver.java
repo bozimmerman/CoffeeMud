@@ -7,19 +7,10 @@ import java.util.*;
 
 public class Prop_ItemTransReceiver extends Property
 {
-	public Prop_ItemTransReceiver()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Item Transporter Receiver";
-		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_ItemTransReceiver();
-	}
-
+	public String ID() { return "Prop_ItemTransReceiver"; }
+	public String name(){ return "Item Transporter Receiver";}
+	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	public String accountForYourself()
 	{ return "Item Transporter Receiver";	}
+	public Environmental newInstance(){	Prop_ItemTransReceiver BOB=new Prop_ItemTransReceiver();	BOB.setMiscText(text()); return BOB;}
 }

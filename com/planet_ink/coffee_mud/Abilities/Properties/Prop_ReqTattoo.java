@@ -7,20 +7,10 @@ import java.util.*;
 
 public class Prop_ReqTattoo extends Property
 {
-	public Prop_ReqTattoo()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Tattoo Limitations";
-		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_ReqTattoo newOne=new Prop_ReqTattoo();
-		newOne.setMiscText(text());
-		return newOne;
-	}
+	public String ID() { return "Prop_ReqTattoo"; }
+	public String name(){ return "Tattoo Limitations";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	public Environmental newInstance(){	Prop_ReqTattoo newOne=new Prop_ReqTattoo();	newOne.setMiscText(text());	return newOne;}
 
 	public boolean okAffect(Affect affect)
 	{

@@ -7,19 +7,10 @@ import java.util.*;
 
 public class Prop_PeaceMaker extends Property
 {
-	public Prop_PeaceMaker()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Strike Neuralizing";
-		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_PeaceMaker();
-	}
-
+	public String ID() { return "Prop_PeaceMaker"; }
+	public String name(){ return "Strike Neuralizing";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	public Environmental newInstance(){	return new Prop_PeaceMaker();}
 	public String accountForYourself()
 	{ return "Peace Maker";	}
 

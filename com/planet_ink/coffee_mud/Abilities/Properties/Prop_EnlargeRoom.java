@@ -7,18 +7,11 @@ import java.util.*;
 
 public class Prop_EnlargeRoom extends Property
 {
-	public Prop_EnlargeRoom()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Change a rooms movement requirements";
-		canAffectCode=Ability.CAN_ROOMS;
-	}
-
+	public String ID() { return "Prop_EnlargeRoom"; }
+	public String name(){ return "Change a rooms movement requirements";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	public Environmental newInstance()
-	{
-		return new Prop_EnlargeRoom();
-	}
+	{	Prop_EnlargeRoom newOne=new Prop_EnlargeRoom(); newOne.setMiscText(text());return newOne; }
 
 	public String accountForYourself()
 	{ return "Enlarged";	}

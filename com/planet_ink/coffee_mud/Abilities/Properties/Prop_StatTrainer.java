@@ -7,18 +7,10 @@ import java.util.*;
 
 public class Prop_StatTrainer extends Property
 {
-	public Prop_StatTrainer()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Good training MOB";
-		canAffectCode=Ability.CAN_MOBS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_StatTrainer();
-	}
+	public String ID() { return "Prop_StatTrainer"; }
+	public String name(){ return "Good training MOB";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Prop_StatTrainer();}
 
 	public String accountForYourself()
 	{ return "Stats Trainer";	}

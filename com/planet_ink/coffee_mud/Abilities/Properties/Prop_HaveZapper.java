@@ -7,23 +7,12 @@ import java.util.*;
 
 public class Prop_HaveZapper extends Property
 {
+	public String ID() { return "Prop_HaveZapper"; }
+	public String name(){ return "Restrictions to ownership";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private Item myItem=null;
 	private MOB lastMOB=null;
-
-	public Prop_HaveZapper()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Restrictions to ownership";
-		canAffectCode=Ability.CAN_ITEMS;
-	}
-
-	public Environmental newInstance()
-	{
-		Prop_HaveZapper BOB=new Prop_HaveZapper();
-		BOB.setMiscText(text());
-		return BOB;
-	}
+	public Environmental newInstance(){	Prop_HaveZapper BOB=new Prop_HaveZapper();	BOB.setMiscText(text());return BOB;}
 
 	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
 	{

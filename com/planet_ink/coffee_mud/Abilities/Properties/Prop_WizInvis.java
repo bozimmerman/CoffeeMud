@@ -7,21 +7,12 @@ import java.util.*;
 
 public class Prop_WizInvis extends Property
 {
-	
+	public String ID() { return "Prop_WizInvis"; }
+	public String displayText() {return "(Wizard Invisibility)";}
+	public String name(){ return "Wizard Invisibility";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	boolean disabled=false;
-	public Prop_WizInvis()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Wizard Invisibility";
-		displayText="(Wizard Invisibility)";
-		canAffectCode=Ability.CAN_MOBS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_WizInvis();
-	}
+	public Environmental newInstance(){	return new Prop_WizInvis();}
 
 	public String accountForYourself()
 	{ return "Wizard Invisibile";	}

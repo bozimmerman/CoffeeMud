@@ -6,20 +6,11 @@ import java.util.*;
 
 public class Prop_Resistance extends Property
 {
+	public String ID() { return "Prop_Resistance"; }
+	public String name(){ return "Stuff Neutralizing";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	private CharStats adjCharStats=null;
-	public Prop_Resistance()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Stuff Neutralizing";
-		canAffectCode=Ability.CAN_MOBS;
-	}
-	public Environmental newInstance()
-	{
-		Prop_Resistance BOB=new Prop_Resistance();
-		BOB.setMiscText(text());
-		return BOB;
-	}
+	public Environmental newInstance(){	Prop_Resistance BOB=new Prop_Resistance();BOB.setMiscText(text());return BOB;}
 
 	private void ensureStarted()
 	{

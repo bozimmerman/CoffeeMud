@@ -7,18 +7,11 @@ import java.util.*;
 
 public class Prop_RestrictSpells extends Property
 {
-	public Prop_RestrictSpells()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Specific Spell Neutralizing";
-		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prop_RestrictSpells();
-	}
+	public String ID() { return "Prop_RestrictSpells"; }
+	public String name(){ return "Specific Spell Neutralizing";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
+	private CharStats adjCharStats=null;
+	public Environmental newInstance(){	return new Prop_RestrictSpells();}
 
 	public boolean okAffect(Affect affect)
 	{
