@@ -422,8 +422,8 @@ public class Scriptable extends StdBehavior
 					if((c==')')&&(depth==0))
 					{
 						String expr=evaluable.substring(1,i);
-						evaluable=evaluable.substring(i+1);
-						uevaluable=uevaluable.substring(i+1);
+						evaluable=evaluable.substring(i+1).trim();
+						uevaluable=uevaluable.substring(i+1).trim();
 						returnable=eval(source,target,monster,primaryItem,secondaryItem,msg,expr);
 						break;
 					}
@@ -450,6 +450,7 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 			else
+			{
 			switch(funcCode.intValue())
 			{
 			case 1: // rand
@@ -1470,6 +1471,7 @@ public class Scriptable extends StdBehavior
 				uevaluable=uevaluable.substring(z+1).trim();
 			}
 		}
+		}
 		return returnable;
 	}
 
@@ -2222,7 +2224,7 @@ public class Scriptable extends StdBehavior
 		{
 			// add via +XXX form
 			val=val.substring(1);
-			int amount=new Integer(Util.s_int(val)).intValue();
+			int amount=Util.s_int(val);
 			String num=(String)H.get(key);
 			val=new Integer(Util.s_int(num)+amount).toString();
 		}
@@ -2231,7 +2233,7 @@ public class Scriptable extends StdBehavior
 		{
 			// subtract -XXX form
 			val=val.substring(1);
-			int amount=new Integer(Util.s_int(val)).intValue();
+			int amount=Util.s_int(val);
 			String num=(String)H.get(key);
 			val=new Integer(Util.s_int(num)-amount).toString();
 		}
@@ -2240,7 +2242,7 @@ public class Scriptable extends StdBehavior
 		{
 			// multiply via *XXX form
 			val=val.substring(1);
-			int amount=new Integer(Util.s_int(val)).intValue();
+			int amount=Util.s_int(val);
 			String num=(String)H.get(key);
 			val=new Integer(Util.s_int(num)*amount).toString();
 		}
@@ -2249,7 +2251,7 @@ public class Scriptable extends StdBehavior
 		{
 			// divide /XXX form
 			val=val.substring(1);
-			int amount=new Integer(Util.s_int(val)).intValue();
+			int amount=Util.s_int(val);
 			String num=(String)H.get(key);
 			val=new Integer(Util.s_int(num)/amount).toString();
 		}
@@ -2453,7 +2455,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 6: // mpoload
 			{
-				s=s.substring(7).trim();
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(7).trim());
 				if(Util.s_int(s)>0)
 					monster.setMoney(monster.getMoney()+Util.s_int(s));
 				else
@@ -2678,7 +2680,7 @@ public class Scriptable extends StdBehavior
 			case 18: // mpforce
 			{
 				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s);
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
 				{

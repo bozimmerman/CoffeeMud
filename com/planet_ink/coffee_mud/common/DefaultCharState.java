@@ -139,6 +139,8 @@ public class DefaultCharState implements Cloneable, CharState
 			man=man*.75;
 			str=str*.85;
 		}
+		if(getFatigue()>FATIGUED_MILLIS)
+			man=man*.5;
 		
 		double lvl=new Integer(mob.envStats().level()).doubleValue();
 		double lvlby2=Util.div(lvl,2.0);

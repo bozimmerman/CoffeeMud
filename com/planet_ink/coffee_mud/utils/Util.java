@@ -514,7 +514,7 @@ public class Util
 		if(s.length()==0) return false;
 		s=s.trim();
 		for(int i=0;i<s.length();i++)
-			if("0123456789-.".indexOf(s.charAt(i))<0)
+			if("0123456789-.,".indexOf(s.charAt(i))<0)
 				return false;
 		return true;
 	}

@@ -888,14 +888,15 @@ differently than described above:</P>
         exceptions to -tattoos) 
         <LI>+tattoos (allow any or no tattoos) 
         <LI>-mytattoo -thistattoo etc.. (create exceptions 
-        to +tattoos, requires +tattoos)</LI>   
+        to +tattoos, requires +tattoos)   
         <LI>-names (disallow everyone)
         <LI>+bob +sally +myname (create exceptions to -names, 
         requires -names)
-        <LI>"-bob the orc" disallow mobs with this name.
+        <LI>"-bob the orc" disallow mobs with this name.</LI>       
             
         </UL></TD></TR>
-</TABLE></P><BR>The "GenWeapon"</STRONG> 
+</TABLE></P><BR>The 
+"GenWeapon"</STRONG> 
 <P></P>
 <P>Whenever a GenWeapon is created, much like the GenItem 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
@@ -1530,7 +1531,8 @@ include all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
     <TD>this is where you would "stock" your shopkeeper 
       with items that match their type.</TD></TR>
   <TR>
-    <TD><EM>Prejudice Factors</EM></TD>
+    <TD><EM>Prejudice 
+Factors</EM></TD>
     <TD>
       <P>This complicated field is where you can adjust the 
       prices the ShopKeeper sells from the programmed normal.&nbsp; An 
@@ -1667,12 +1669,12 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
         exceptions to -tattoos) 
         <LI>+tattoos (allow any or no tattoos) 
         <LI>-mytattoo -anytatto etc.. (create exceptions to 
-        +tattoos, requires +tattoos) </LI>
-        <LI>-names (disallow everyone)
-        <LI>+bob +sally +myname (create exceptions to -names, 
-        requires -names)
-        <LI>"-bob the orc" disallow mobs with this name.
-        </UL></TD></TR>
+        +tattoos, requires +tattoos) 
+        <LI>-names (disallow everyone) 
+        <LI>+bob +sally +myname (create exceptions to 
+        -names, requires -names) 
+        <LI>"-bob the orc" disallow mobs with this name. 
+        </LI></UL></TD></TR>
   <TR>
     <TD><EM>Worship 
     Requirements</EM></TD>
@@ -3051,11 +3053,10 @@ level, it will increase the COST of the armor.</P>
 <P>
 <P></P>
 <P>The formula for the cost of the armor is: 
-<P>COST = (A*A + V) * ( W/2)
+<P>COST = (A*A + V) * ( W/2) 
 <P>where</P>
 <P>W = Weight of Armor<BR>A&nbsp; = 
 Armor Points<BR>V = material Value</P>
-
 <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 So our example of an iron Banded Shirt would cost 2173.5 (round up to 2174): 
 (7*7+20)*(63/2). 
@@ -3273,15 +3274,17 @@ level requirement by 2, and for every class restricted reduce the level by
 item.&nbsp; Still others may be difficult to determine their effects, reducing 
 the value of the item.&nbsp; Use your judgment, or request the system owner’s 
 advice for particularly complicated works of magic. </P>
-<P align=left><U>Cost of Magical and Miscelaneous Properties</U>&nbsp;</P>
-<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-For determining the added monetary value of an item based on its magical properties,
-you must first determine how prevelant magic items will be in your world.  Choose a
-cost Index between *10 for a magic rich world, to *100 for a magic poor world.  Each
-level above the base level is multiplied by this Index and then added to the base cost
-to determine its final value.</P>
+<P align=left><U>Cost of Magical and 
+Miscelaneous Properties</U>&nbsp;</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+For determining the added monetary value of an item based on its magical 
+properties, you must first determine how prevelant magic items will be in your 
+world. Choose a cost Index between *10 for a magic rich world, to *100 for a 
+magic poor world. Each level above the base level is multiplied by this Index 
+and then added to the base cost to determine its final value.</P>
 <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-Final Cost = Base Cost + (Total Level Increase)*(cost Index)</P><P></P>
+Final Cost = Base Cost + (Total Level Increase)*(cost Index)</P>
+<P></P>
 <P align=left><U>Material 
 Modifiers</U>&nbsp;</P>
 <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -4888,7 +4891,7 @@ size=5></FONT></STRONG>&nbsp;</P>
 size=5>Appendix D: Builder's FAQ</FONT></STRONG></P>
 <P align=left><FONT color=darkviolet size=4><STRONG>Q. How can I get mobs into 
 Grid areas?</STRONG></FONT></P>
-<P align=left><FONT color=black><STRONG>A</STRONG>. Locale types like 
+<P align=left><FONT color=black><STRONG>A.</STRONG> Locale types like 
 MountainsGrid, WoodsGrid, WoodsMaze, PlainsGrid, DesertMaze, etc.. can all 
 contain rejuvinating mobs in them.&nbsp; However, two rules need to be followed 
 for this to work properly.&nbsp; The first is that you can only save mobs which 
@@ -4903,7 +4906,7 @@ room inside the grid the first time the mob tries to move.&nbsp; </FONT></P>
 <P align=left><STRONG><FONT 
 color=#9400d3 size=4>Q. How does the CoffeeMud News feature 
 work?</FONT></STRONG></P>
-<P align=left><STRONG>A</STRONG>. 
+<P align=left><STRONG>A.</STRONG> 
 Messages can be posted that will appear automatically at login time for those 
 who have not yet read them.&nbsp; This is done by creating a "GenJournal" item 
 and giving it the name "CoffeeMud News".&nbsp; Any messages posted to such a 
@@ -4938,15 +4941,23 @@ thing is, as long as there is at least one ClanMaster in the world, if
 MINCLANMEMBERS don't at least login in DAYSCLANDEATH days, then the clan will be 
 purged automatically. </P>
 <P align=left><STRONG><FONT 
-color=#9400d3 size=4>Q. What does Hunger/Thirst affect? 
-</FONT></STRONG></P>
-<P align=left><STRONG>A</STRONG>. 
+color=#9400d3 size=4>Q. What does Hunger/Thirst/Fatigue 
+affect? </FONT></STRONG></P>
+<P align=left><STRONG>A.</STRONG> 
 Neglecting to eat or drink can put a player into a state of hunger or thirst 
-respectively.&nbsp; Each of Hunger and Thirst will lower attack rating, armor 
-rating,&nbsp;and damage capabilities.&nbsp; Hunger and Thirst will also decrease 
-the rate at which hit points, movement, and mana are regained.&nbsp; Lastly, 
-remaining Hungry or Thirsty for too long will result in death, though there will 
-be plenty of warnings from the system before it happens.</P>
+respectively.&nbsp; Failing to sleep for days on end can cause fatigue. Each of 
+these will lower attack rating, armor rating,&nbsp;and damage 
+capabilities.&nbsp; Hunger and Thirst will also decrease the rate at which hit 
+points, movement, and mana are regained.&nbsp; Lastly, remaining Hungry or 
+Thirsty for too long will result in death, though there will be plenty of 
+warnings from the system before it happens.</P>
+<P align=left><STRONG><FONT 
+color=#9400d3 size=4>Q. How can I make mobs talk/answer 
+questions? </FONT></STRONG></P>
+<P align=left><STRONG>A.</STRONG> 
+Luckily, a great document has already been provided for the useful things which 
+can be accomplished with the MudChat behavior. <A href="MudChat.html" >Here it is.</A> </P>
+<P align=left>&nbsp;</P>
 <P align=left>&nbsp;</P> 
 </BODY>
 </HTML>
