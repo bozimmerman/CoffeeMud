@@ -33,7 +33,7 @@
 	</TD>
 	<TD WIDTH=40% ALIGN=RIGHT>
 		<INPUT TYPE=BUTTON NAME=EDITAREA VALUE="Edit Area" ONCLICK="Clicked('/grinder/editarea.cmvp');">
-		<INPUT TYPE=BUTTON NAME=MENU VALUE="Log Out" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+		<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Main Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
 	</TD>
 </TR>
 </TABLE>
