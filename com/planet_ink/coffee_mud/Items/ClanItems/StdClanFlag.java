@@ -89,7 +89,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 		{
 			if(!msg.source().getClanID().equals(clanID()))
 			{
-				if(msg.targetMinor()==CMMsg.TYP_GET)
+				if((msg.targetMinor()==CMMsg.TYP_GET)
+				||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 				{
 					Room R=CoffeeUtensils.roomLocation(this);
 					if(msg.source().getClanID().length()==0)

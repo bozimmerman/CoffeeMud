@@ -568,14 +568,21 @@ public class Destroy extends BaseItemParser
 			}
 			while((allFlag)&&(addendum<=maxToDrop));
 
-			if(V.size()==0)
-				mob.tell("You don't seem to be carrying that.");
-			else
+			boolean didAnything=false;
 			for(int i=0;i<V.size();i++)
 			{
-				destroyItem(mob,(Item)V.elementAt(i),false,true);
+				if(destroyItem(mob,(Item)V.elementAt(i),false,true))
+					didAnything=true;
+				else
 				if(V.elementAt(i) instanceof Coins)
 					((Coins)V.elementAt(i)).putCoinsBack();
+			}
+			if(!didAnything)
+			{
+				if(V.size()==0)
+					mob.tell("You don't seem to be carrying that.");
+				else
+					mob.tell("You can't destroy that easily...");
 			}
 			mob.location().recoverRoomStats();
 			mob.location().recoverRoomStats();

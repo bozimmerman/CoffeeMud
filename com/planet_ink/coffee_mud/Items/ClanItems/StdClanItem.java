@@ -183,7 +183,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		else
 		if((msg.amITarget(myHost))
-		&&(msg.targetMinor()==CMMsg.TYP_GET)
+		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 		&&(((ClanItem)myHost).clanID().length()>0))
 		{
 			if(msg.source().getClanID().length()==0)

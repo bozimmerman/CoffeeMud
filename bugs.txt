@@ -1,3 +1,5 @@
+merge, export, import security
+no disintegrate clan items
 preload shows spells being invoked on people
 parolled mobs should wander off after being sentenced
 add days of week, months, and years to scripts
