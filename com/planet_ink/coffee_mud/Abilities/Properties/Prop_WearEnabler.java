@@ -5,16 +5,14 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_WearSpellCast extends Property
+public class Prop_WearEnabler extends Property
 {
-	public String ID() { return "Prop_WearSpellCast"; }
-	public String name(){ return "Casting spells when worn";}
+	public String ID() { return "Prop_WearEnabler"; }
+	public String name(){ return "Granting skills when worn/wielded";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private Item myItem=null;
 	private MOB lastMOB=null;
-	private boolean processing=false;
-
-	protected Hashtable spellH=null;
+	boolean processing=false;
 	protected Vector spellV=null;
 	public Vector getMySpellsV()
 	{
@@ -22,18 +20,11 @@ public class Prop_WearSpellCast extends Property
 		spellV=Prop_SpellAdder.getMySpellsV(this);
 		return spellV;
 	}
-	public Hashtable getMySpellsH()
-	{
-		if(spellH!=null) return spellH;
-		spellH=Prop_SpellAdder.getMySpellsH(this);
-		return spellH;
-	}
 
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		spellV=null;
-		spellH=null;
 	}
 
 
@@ -53,25 +44,40 @@ public class Prop_WearSpellCast extends Property
 				id+=A.name()+", ";
 		}
 		if(V.size()>0)
-			id="Casts "+id+" on the wearer.";
+			id="Grants "+id+" to the wearer/wielder.";
 		return id;
 	}
 
 	public void addMeIfNeccessary(MOB newMOB)
 	{
 		Vector V=getMySpellsV();
+		int proff=100;
+		int x=text().indexOf("%");
+		if(x>0)
+		{
+			int mul=1;
+			int tot=0;
+			while((--x)>=0)
+			{
+				if(Character.isDigit(text().charAt(x)))
+					tot+=Util.s_int(""+text().charAt(x))*mul;
+				else
+					x=-1;
+				mul=mul*10;
+			}
+			proff=tot;
+		}
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			Ability EA=newMOB.fetchEffect(A.ID());
-			if(EA==null)
+			if(newMOB.fetchAbility(A.ID())==null)
 			{
 				String t=A.text();
 				A=(Ability)A.copyOf();
 				Vector V2=new Vector();
 				if(t.length()>0)
 				{
-					int x=t.indexOf("/");
+					x=t.indexOf("/");
 					if(x<0)
 					{
 						V2=Util.parse(t);
@@ -83,32 +89,21 @@ public class Prop_WearSpellCast extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(newMOB,V2,newMOB,true);
-				EA=newMOB.fetchEffect(A.ID());
+				A.setProfficiency(proff);
+				newMOB.addAbility(A);
+				A.setBorrowed(newMOB,true);
 			}
-			if(EA!=null)
-				EA.makeLongLasting();
 		}
 		lastMOB=newMOB;
 	}
 
 	public void removeMyAffectsFromLastMob()
 	{
-		Hashtable h=getMySpellsH();
-		int x=0;
-		while(x<lastMOB.numEffects())
+		Vector V=getMySpellsV();
+		for(int v=0;v<V.size();v++)
 		{
-			Ability thisAffect=lastMOB.fetchEffect(x);
-			if(thisAffect!=null)
-			{
-				String ID=(String)h.get(thisAffect.ID());
-				if((ID!=null)&&(thisAffect.invoker()==lastMOB))
-				{
-					thisAffect.unInvoke();
-					x=-1;
-				}
-			}
-			x++;
+			Ability A=(Ability)V.elementAt(v);
+			lastMOB.delAbility(A);
 		}
 		lastMOB=null;
 	}

@@ -268,7 +268,6 @@ public class CMClass extends ClassLoader
 		}
 		if(set==null) return false;
 
-		loadListToObj(set,path,"",(path.indexOf(File.separatorChar)>0),ancestors[code]);
 		switch(code)
 		{
 		case 0: races=new Vector(new TreeSet(races)); break;

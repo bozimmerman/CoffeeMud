@@ -22,8 +22,33 @@ public class Compare extends StdCommand
 		Item compareThis=mob.fetchInventory((String)commands.elementAt(0));
 		if((compareThis==null)||((compareThis!=null)&&(!Sense.canBeSeenBy(compareThis,mob))))
 		{
-			mob.tell("You don't have a "+((String)commands.elementAt(0))+".");
-			return false;
+            Vector V=CoffeeUtensils.shopkeepers(mob.location(),mob);
+            if(V.size()>0) 
+			{
+                for(int i=0;i<V.size();i++) 
+				{
+                    MOB shopkeeper=(MOB)V.elementAt(i);
+                    Environmental itemToDo=CoffeeUtensils.getShopKeeper(shopkeeper).getStock((String)commands.elementAt(0),mob);
+                    if((itemToDo==null)||(!(itemToDo instanceof Item))) 
+					{
+                        continue; // next shopkeeper
+                    }
+                    else
+                    {
+                        compareThis=(Item)itemToDo;
+                    }
+                }
+                if((compareThis==null)||((compareThis!=null)&&(!Sense.canBeSeenBy(compareThis,mob)))) 
+				{
+                    mob.tell("You don't have a " + ( (String) commands.elementAt(0)) + ".");
+                    return false;
+                }
+            }
+            else 
+			{
+                mob.tell("You don't have a " + ( (String) commands.elementAt(0)) + ".");
+                return false;
+            }
 		}
 		long compareThisCode = compareThis.rawProperLocationBitmap();
 		if(Util.bset(compareThisCode,Item.HELD)

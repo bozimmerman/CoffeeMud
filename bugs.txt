@@ -4,21 +4,20 @@ webmacro ANNOUNCE Make announcements without having to log into the game, makes 
 webmacro DUMPFILE To view some text file on your computer through the MUD without  having to log on or ebing on the host PC.
 webmacro LIST Maybe a system for the command LIST, wouldnt be as easy implemented  as some of the above (SHUTDOWN for example could just be a button on  a .cmvp page)
 
+!OK....now I have seen it all. Myrddhin has just use floating disc to float a ton of armor nearby, to gain benefits from it all.
+!And you should only gain bonus effects from something in the floating nearby area if that is where it is supposed to be worn.
 leash in mobile broke
-wimpy zappercheck (very?) broken
-loading a new command doesn't appear to work
+!gtell last 10
+!wimpy behavior -race +dwarf zappercheck (very?) broken -- should have protected dwarves from fighting each other
 you can not deposit a container with contents in it. (According to badmonkey--the actual typo said I HATE HAVING TO DEPOSIT A PACK OF THIRTY THINGS SEPERATELY.)
-sounders should have triggers for damage and starting a fight.
-Teleport should have a smaller chance of putting you in an In the Air room, or an underwater room. And while you are at it, could you make there be some special effects that go off while you teleport, like Smoke, Sparks, Flames, voices from other planes, tentacles, etc (picks one randomly) while the system is looking for your destination (maybe a small chance every 20 rooms it searchs, or something?)
-trappers should GAIN lay traps....considering that is why they are trappers
-could you add a mask to the INVENTORY command so that you can display just a part of your inventory. For example INV mith.all to view all items in your inventory with mith in them.
-if you add someone to the nopurge list, and they self delete, there name is not removed from the nopurge list, nor can you remove their name from the list. (Aerwen).
-When a wooden item gets damaged slightly, there is a typo in the phrasing....it says a (ITEM) has a few smell splinters (98%). It should say SMALL instead of SMELL.
-Prop WillFollow allows a mob to follow someone who enters the room and meets the appropriate masks. For ex..gnome slave has a willfollow towards -race +gnome +player.
-skillaggressive makes mob aggressive if they see you using a particular skill, or under the effect of a particular skill.
-Prop_HaveEnabler, Prop_WearEnabler, Prop_RideEnabler, I'd also like to tie commands to particular items and locations, 
-	which I'm presuming is possible in this codebase.
-If there is no TELL LAST thing, just take this as an IDEA then.
+!sounders should have triggers for damage and starting a fight.
+?Teleport should have a smaller chance of putting you in an In the Air room, or an underwater room. And while you are at it, could you make there be some special effects that go off while you teleport, like Smoke, Sparks, Flames, voices from other planes, tentacles, etc (picks one randomly) while the system is looking for your destination (maybe a small chance every 20 rooms it searchs, or something?)
+!could you add a mask to the INVENTORY command so that you can display just a part of your inventory. For example INV mith.all to view all items in your inventory with mith in them.
+!if you add someone to the nopurge list, and they self delete, there name is not removed from the nopurge list, nor can you remove their name from the list. (Aerwen).
+!When a wooden item gets damaged slightly, there is a typo in the phrasing....it says a (ITEM) has a few smell splinters (98%). It should say SMALL instead of SMELL.
+!Follower allows a mob to follow someone who enters the room and meets the appropriate masks. For ex..gnome slave has a willfollow towards -race +gnome +player.
+!skillaggressive makes mob aggressive if they see you using a particular skill, or under the effect of a particular skill.
+!Prop_HaveEnabler, Prop_WearEnabler, Prop_RideEnabler
 
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 In the Archon's Guide, small arrangement of links to various parts of the webpage 

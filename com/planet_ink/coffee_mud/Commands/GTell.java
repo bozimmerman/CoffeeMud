@@ -19,6 +19,25 @@ public class GTell extends StdCommand
 			mob.tell("Tell the group what?");
 			return false;
 		}
+		
+		if((commands.size()>2)
+		&&((((String)commands.elementAt(1)).equalsIgnoreCase("last"))
+		&&(Util.isNumber(Util.combine(commands,2))))
+		&&(mob.playerStats()!=null))
+		{
+			Vector V=mob.playerStats().getGTellStack();
+			if(V.size()==0)
+				mob.tell("No telling.");
+			else
+			{
+				int num=Util.s_int((String)Util.combine(commands,2));
+				if(num>V.size()) num=V.size();
+				for(int i=V.size()-num;i<V.size();i++)
+					mob.tell((String)V.elementAt(i));
+			}
+			return false;
+		}
+								 
 
 		HashSet group=mob.getGroupMembers(new HashSet());
 		for(Iterator e=group.iterator();e.hasNext();)
@@ -28,6 +47,10 @@ public class GTell extends StdCommand
 			if((mob.location().okMessage(mob,msg))
 			&&(target.okMessage(target,msg)))
 			{
+				if(mob.playerStats()!=null) 
+					mob.playerStats().addGTellStack(Util.replaceAll(msg.sourceMessage(),"<S-NAME>",mob.name()));
+				if((target!=mob)&&(target.playerStats()!=null))
+					target.playerStats().addGTellStack(Util.replaceAll(msg.sourceMessage(),"<S-NAME>",mob.name()));
 				target.executeMsg(target,msg);
 				if(msg.trailerMsgs()!=null)
 				{

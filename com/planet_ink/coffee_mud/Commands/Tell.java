@@ -26,6 +26,23 @@ public class Tell extends StdCommand
 		}
 		commands.removeElementAt(0);
 		
+		if(((String)commands.firstElement()).equalsIgnoreCase("last")
+		   &&(Util.isNumber(Util.combine(commands,1)))
+		   &&(mob.playerStats()!=null))
+		{
+			Vector V=mob.playerStats().getTellStack();
+			if(V.size()==0)
+				mob.tell("No telling.");
+			else
+			{
+				int num=Util.s_int((String)Util.combine(commands,1));
+				if(num>V.size()) num=V.size();
+				for(int i=V.size()-num;i<V.size();i++)
+					mob.tell((String)V.elementAt(i));
+			}
+			return false;
+		}
+		
 		MOB target=null;
 		String targetName=((String)commands.elementAt(0)).toUpperCase();
 		for(int s=0;s<Sessions.size();s++)

@@ -84,6 +84,10 @@ public class MUDZapper
 			zapCodes.put("+LVLLT",new Integer(39));  // for compiled use ONLY
 			zapCodes.put("+LVLLE",new Integer(40));  // for compiled use ONLY
 			zapCodes.put("+LVLEQ",new Integer(41));  // for compiled use ONLY
+			zapCodes.put("+EFFECTS",new Integer(42));
+			zapCodes.put("+EFFECT",new Integer(42));
+			zapCodes.put("-EFFECTS",new Integer(43));
+			zapCodes.put("-EFFECT",new Integer(43));
 		}
 		return zapCodes;
 	}
@@ -144,7 +148,11 @@ public class MUDZapper
 									+"\"+my areaname\" etc.. (create exceptions to +area) <BR>"
 									+"+AREA (do not <WORD> any areas) <BR>"
 									+"\"-my areaname\" etc.. (create exceptions to -area) <BR>"
-									+"+ITEM \"+item name\" etc... (<WORD> only those with an item name)";
+									+"+ITEM \"+item name\" etc... (<WORD> only those with an item name) <BR>"
+									+"-EFFECTS (<WORD> anyone, even no effects) <BR>"
+									+"+Sleep \"+Chopping\" etc.. (create name exceptions to -effects) <BR>"
+									+"+EFFECTS (do not <WORD> anyone, even non effected people) <BR>"
+									+"-Sleep \"-Chopping\" etc.. (create name exceptions to +effects) ";
 
 	public static String zapperInstructions(String CR, String word)
 	{
@@ -669,6 +677,34 @@ public class MUDZapper
 						buf.append(".  ");
 					}
 					break;
+				case 42: // +Effects
+					{
+						buf.append("Disallows the following activities/effects(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str2.startsWith("-")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 43: // -Effects
+					{
+						buf.append("Requires participation in the following activities/effects(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str.startsWith("+")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				}
 			else
 			{
@@ -843,6 +879,7 @@ public class MUDZapper
 					break;
 				case 7: // -Tattoos
 				case 14: // -Clan
+				case 43: // -Effect
 				case 9: // -Names
 				case 32: // -Area
 					{
@@ -859,6 +896,7 @@ public class MUDZapper
 					break;
 				case 8: // +Tattoos
 				case 15: // +Clan
+				case 42: // +Effect
 				case 16: // +Names
 				case 31: // +Area
 				case 33: // +Item
@@ -1145,6 +1183,33 @@ public class MUDZapper
 					for(int v=1;v<V.size();v++)
 						if(mob.getClanID().equalsIgnoreCase((String)V.elementAt(v)))
 						{ return false;}
+				break;
+			case 43: // -effects
+				{
+					if(mob.numEffects()==0) 
+						return false;
+					boolean found=false;
+					for(int a=0;a<mob.numEffects();a++)
+					{
+						Ability A=mob.fetchEffect(a);
+						if(A!=null)
+						for(int v=1;v<V.size();v++)
+							if(A.Name().equalsIgnoreCase((String)V.elementAt(v)))
+							{ found=true; break;}
+					}
+					if(!found) return false;
+				}
+				break;
+			case 42: // +effects
+				if(mob.numEffects()>0) 
+				for(int a=0;a<mob.numEffects();a++)
+				{
+					Ability A=mob.fetchEffect(a);
+					if(A!=null)
+					for(int v=1;v<V.size();v++)
+						if(A.Name().equalsIgnoreCase((String)V.elementAt(v)))
+						{ return false;}
+				}
 				break;
 			case 16: // +name
 				{
@@ -1460,6 +1525,25 @@ public class MUDZapper
 					break;
 				case 33: // +item
 					if(!itemCheck(V,'+',v+1,mob)) return false;
+					break;
+				case 43: // -Effects
+					if(mob.numEffects()==0) return false;
+					boolean found=false;
+					for(int a=0;a<mob.numEffects();a++)
+					{
+						Ability A=mob.fetchEffect(a);
+						if((A!=null)&&(fromHere(V,'+',v+1,A.Name().toUpperCase())))
+						{ found=true; break;}
+					}
+					if(!found) return false;
+					break;
+				case 42: // +Effects
+					for(int a=0;a<mob.numEffects();a++)
+					{
+						Ability A=mob.fetchEffect(a);
+						if((A!=null)&&(fromHere(V,'-',v+1,A.Name().toUpperCase())))
+							return false;
+					}
 					break;
 				}
 			else

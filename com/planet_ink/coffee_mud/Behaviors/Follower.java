@@ -8,12 +8,22 @@ import java.util.*;
 public class Follower extends StdBehavior
 {
 	public String ID(){return "Follower";}
+    private int followChance = 100;
+	private boolean realFollow=false;
+	private int lastNumPeople=-1;
+	
 	public Follower()
 	{
 		direction=-1;
 	}
-
-
+	
+    public void setParms(String newParms) 
+	{
+        super.setParms(newParms);
+        followChance = Util.getParmInt(newParms, "chance", 100);
+		realFollow=Util.parse(newParms.toUpperCase()).contains("GROUP");
+    }
+	
 
 	int direction=-1;
 
@@ -25,7 +35,7 @@ public class Follower extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 
-		if(!canFreelyBehaveNormal(affecting)) return;
+		if((!canFreelyBehaveNormal(affecting))||(realFollow)) return;
 
 		MOB mob=msg.source();
 		if(mob.amDead()) return;
@@ -37,11 +47,13 @@ public class Follower extends StdBehavior
 		&&(Sense.canBeSeenBy(mob,(MOB)affecting))
 		&&(msg.othersMessage()!=null)
 		&&((msg.targetMinor()==CMMsg.TYP_LEAVE)
-		 ||(msg.targetMinor()==CMMsg.TYP_FLEE)))
+		 ||(msg.targetMinor()==CMMsg.TYP_FLEE))
+        &&(followChance>Dice.rollPercentage())
+		&&(MUDZapper.zapperCheck(getParms(),mob)))
 		{
 			String directionWent=msg.othersMessage();
 			int x=directionWent.lastIndexOf(" ");
-			if((x>=0)&&((Dice.rollPercentage()*10)<msg.source().getAlignment()))
+			if(x>=0)
 			{
 				directionWent=directionWent.substring(x+1);
 				direction=Directions.getDirectionCode(directionWent);
@@ -56,9 +68,36 @@ public class Follower extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 		if(tickID!=MudHost.TICK_MOB) return true;
+		if((realFollow)&&(ticking instanceof MOB))
+		{
+			if(!canFreelyBehaveNormal(ticking)) 
+				return true;
+			MOB mob=(MOB)ticking;
+			Room room=mob.location();
+			if(room.numInhabitants()!=lastNumPeople)
+			{
+				for(int i=0;i<room.numInhabitants();i++)
+				{
+					MOB M=room.fetchInhabitant(i);
+					if((M!=null)
+					&&(M!=ticking)
+					&&(!CMSecurity.isAllowed(M,room,"CMDMOBS"))
+					&&(!CMSecurity.isAllowed(M,room,"CMDROOMS"))
+					&&(MUDZapper.zapperCheck(getParms(),mob))
+					&&(followChance>Dice.rollPercentage()))
+					{
+						CommonMsgs.follow(mob,M,false);
+						break;
+					}
+				}
+				lastNumPeople=room.numInhabitants();
+			}
+		}
+		else
 		if((direction>=0)&&(ticking instanceof MOB))
 		{
-			if(!canFreelyBehaveNormal(ticking)) return true;
+			if(!canFreelyBehaveNormal(ticking)) 
+				return true;
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
 			Room otherRoom=(Room)thisRoom.getRoomInDir(direction);

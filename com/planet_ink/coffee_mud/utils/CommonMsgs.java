@@ -204,9 +204,15 @@ public class CommonMsgs
 								msg.trailerMsgs().clear();
 							}
 							if(mob.playerStats()!=null)
+							{
 								mob.playerStats().setReplyTo(target);
+								mob.playerStats().addTellStack(msg.sourceMessage());
+							}
 							if(target.playerStats()!=null)
+							{
 								target.playerStats().setReplyTo(mob);
+								target.playerStats().addTellStack(msg.targetMessage());
+							}
 						}
 					}
 				}

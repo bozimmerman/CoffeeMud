@@ -26,6 +26,7 @@ public class GenCloak extends GenArmor
 
 	public void affectEnvStats(Environmental host, EnvStats stats)
 	{
-		stats.setName(readableText());
+		if(!amWearingAt(Item.INVENTORY))
+			stats.setName(readableText());
 	}
 }

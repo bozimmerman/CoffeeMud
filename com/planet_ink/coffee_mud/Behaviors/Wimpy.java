@@ -39,9 +39,9 @@ public class Wimpy extends StdBehavior
 			for(int m=0;m<monster.location().numInhabitants();m++)
 			{
 				MOB M=(MOB)monster.location().fetchInhabitant(m);
-				if((M!=null)&&(M!=monster)&&(MUDZapper.zapperCheck(getParms(),monster)))
+				if((M!=null)&&(M!=monster)&&(MUDZapper.zapperCheck(getParms(),M)))
 				{
-					if((monster.getVictim()==M)||(M.getVictim()==monster))
+					if(M.getVictim()==monster)
 					{
 						CommonMsgs.flee(monster,"");
 						return true;

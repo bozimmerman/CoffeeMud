@@ -70,6 +70,7 @@ public class Dress extends StdCommand
 							item.wearAt(Item.HELD);
 					}
 				}
+				target.location().recoverRoomStats();
 			}
 			else
 			{

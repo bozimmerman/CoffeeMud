@@ -27,6 +27,14 @@ public class Sword extends StdWeapon
 
 	public Environmental newInstance()
 	{
+		if(!ID().equals("Sword"))
+		{
+			try{
+				return (Environmental)this.getClass().newInstance();
+			}
+			catch(Exception e){}
+			return new Sword();
+		}
 		Random randomizer = new Random(System.currentTimeMillis());
 		int swordType = Math.abs(randomizer.nextInt() % 6);
 		switch (swordType)

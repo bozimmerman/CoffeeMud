@@ -6,8 +6,13 @@ import java.util.*;
 
 public class DefaultPlayerStats implements PlayerStats
 {
+	private final static int TELL_STACK_MAX_SIZE=50;
+	private final static int GTELL_STACK_MAX_SIZE=50;
+	
 	private HashSet friends=new HashSet();
 	private HashSet ignored=new HashSet();
+	private Vector tellStack=new Vector();
+	private Vector gtellStack=new Vector();
 	private String lastIP="";
 	private long LastDateTime=System.currentTimeMillis();
 	private long lastUpdated=0;
@@ -69,6 +74,29 @@ public class DefaultPlayerStats implements PlayerStats
 		return h;
 	}
 
+	public void addTellStack(String msg)
+	{
+		if(tellStack.size()>TELL_STACK_MAX_SIZE)
+			tellStack.removeElementAt(0);
+		tellStack.addElement(msg);
+	}
+	
+	public Vector getTellStack()
+	{
+		return (Vector)tellStack.clone();
+	}
+	public void addGTellStack(String msg)
+	{
+		if(gtellStack.size()>GTELL_STACK_MAX_SIZE)
+			gtellStack.removeElementAt(0);
+		gtellStack.addElement(msg);
+	}
+	
+	public Vector getGTellStack()
+	{
+		return (Vector)gtellStack.clone();
+	}
+	
 	public HashSet getFriends(){return friends;}
 	public HashSet getIgnored(){return ignored;}
 	

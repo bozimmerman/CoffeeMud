@@ -48,7 +48,8 @@ public class Prop_WearAdjuster extends Property
 		&&(affectedMOB instanceof MOB)
 		&&(affected !=null)
 		&&(affected instanceof Item)
-		&&(!((Item)affected).amWearingAt(Item.INVENTORY)))
+		&&(!((Item)affected).amWearingAt(Item.INVENTORY))
+		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY))))
 			Prop_HaveAdjuster.envStuff(affectableStats,adjEnvStats);
 		super.affectEnvStats(affectedMOB,affectableStats);
 	}
@@ -58,7 +59,8 @@ public class Prop_WearAdjuster extends Property
 		ensureStarted();
 		if((affected !=null)
 		&&(affected instanceof Item)
-		&&(!((Item)affected).amWearingAt(Item.INVENTORY)))
+		&&(!((Item)affected).amWearingAt(Item.INVENTORY))
+		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY))))
 			Prop_HaveAdjuster.adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
@@ -67,7 +69,8 @@ public class Prop_WearAdjuster extends Property
 		ensureStarted();
 		if((affected !=null)
 		&&(affected instanceof Item)
-		&&(!((Item)affected).amWearingAt(Item.INVENTORY)))
+		&&(!((Item)affected).amWearingAt(Item.INVENTORY))
+		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY))))
 			Prop_HaveAdjuster.adjCharState(affectedState,adjCharState);
 		super.affectCharState(affectedMOB,affectedState);
 	}
