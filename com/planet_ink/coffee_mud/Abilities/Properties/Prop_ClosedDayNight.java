@@ -20,7 +20,7 @@ public class Prop_ClosedDayNight extends Property
 
 	private boolean closed()
 	{
-		boolean closed=(CMMap.getArea(0).getTODCode()==Area.TIME_NIGHT);
+		boolean closed=(CMMap.getFirstArea().getTODCode()==Area.TIME_NIGHT);
 		if(text().equalsIgnoreCase("DAY")) closed=!closed;
 		return closed;
 	}

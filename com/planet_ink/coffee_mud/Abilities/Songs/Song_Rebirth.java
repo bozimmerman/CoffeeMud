@@ -47,7 +47,7 @@ public class Song_Rebirth extends Song
 					if((body!=null)&&(body instanceof DeadBody)&&((x=body.name().toUpperCase().indexOf("BODY OF"))>=0))
 					{
 						String mobName=body.name().substring(x+7).trim();
-						MOB rejuvedMOB=(MOB)CMMap.MOBs.get(mobName);
+						MOB rejuvedMOB=CMMap.getPlayer(mobName);
 						if(rejuvedMOB!=null)
 						{
 							rejuvedMOB.tell(rejuvedMOB,null,"You are being resusitated.");

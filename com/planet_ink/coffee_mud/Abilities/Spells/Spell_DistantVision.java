@@ -22,9 +22,9 @@ public class Spell_DistantVision extends Spell
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
 		Room thisRoom=null;
-		for(int m=0;m<CMMap.numRooms();m++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room room=CMMap.getRoom(m);
+			Room room=(Room)r.next();
 			if(CoffeeUtensils.containsString(room.displayText().toUpperCase(),areaName))
 			{
 				thisRoom=room;

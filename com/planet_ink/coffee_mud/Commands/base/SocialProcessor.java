@@ -186,7 +186,7 @@ public class SocialProcessor
 			return;
 		}
 		if((mob.replyTo().name().indexOf("@")<0)
-		&&(CMMap.MOBs.get(mob.replyTo().name())==null))
+		&&(CMMap.getPlayer(mob.replyTo().name())==null))
 		{
 			mob.tell(mob.replyTo().name()+" is no longer logged in.");
 			return;

@@ -9,9 +9,9 @@ public class GrinderAreas
 	public static String getAreaList(Area pickedA, MOB mob)
 	{
 		StringBuffer AreaList=new StringBuffer("");
-		for(int a=0;a<CMMap.numAreas();a++)
+		for(Iterator a=CMMap.areas();a.hasNext();)
 		{
-			Area A=(Area)CMMap.getArea(a);
+			Area A=(Area)a.next();
 			if((A.amISubOp(mob.name()))||(mob.isASysOp(null)))
 				if((pickedA!=null)&&(pickedA==A))
 					AreaList.append("<OPTION SELECTED VALUE=\""+A.name()+"\">"+A.name());
@@ -179,9 +179,9 @@ public class GrinderAreas
 			}
 			A.clearMap();
 			if(oldName!=null)
-			for(int r=0;r<CMMap.numRooms();r++)
+			for(Iterator r=CMMap.rooms();r.hasNext();)
 			{
-				Room R=(Room)CMMap.getRoom(r);
+				Room R=(Room)r.next();
 				boolean doIt=false;
 				for(int d=0;d<R.rawDoors().length;d++)
 				{

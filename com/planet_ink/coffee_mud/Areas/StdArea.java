@@ -1139,9 +1139,9 @@ public class StdArea implements Area
 	{
 		if(myRooms!=null) return myRooms;
 		Vector myMap=new Vector();
-		for(int m=0;m<CMMap.numRooms();m++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room R=CMMap.getRoom(m);
+			Room R=(Room)r.next();
 			if(R.getArea()==this)
 				myMap.addElement(R);
 		}

@@ -19,9 +19,9 @@ public class AreaNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(int a=0;a<CMMap.numAreas();a++)
+		for(Iterator a=CMMap.areas();a.hasNext();)
 		{
-			Area A=(Area)CMMap.getArea(a);
+			Area A=(Area)a.next();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.name().equals(lastID))))
 			{
 				httpReq.getRequestParameters().put("AREA",A.name());

@@ -117,18 +117,10 @@ public class StdMOB implements MOB
 	public Deity getMyDeity()
 	{
 		if(getWorshipCharID().length()==0) return null;
-		Deity bob=CMMap.getDeity(getWorshipCharID(),DeityIndex);
-		if((bob==null)||(DeityIndex<0))
-			DeityIndex=CMMap.getDeityIndex(getWorshipCharID());
-		else
-		if(bob==this)
-		{
-			DeityIndex=-1;
-			return null;
-		}
-		else
-			return bob;
-		return CMMap.getDeity(getWorshipCharID(),DeityIndex);
+		Deity bob=CMMap.getDeity(getWorshipCharID());
+		if(bob==null) 
+			setWorshipCharID("");
+		return bob;
 	}
 
 	// location!

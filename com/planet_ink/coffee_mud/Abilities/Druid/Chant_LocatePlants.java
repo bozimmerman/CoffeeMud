@@ -117,9 +117,12 @@ public class Chant_LocatePlants extends Chant
 				rooms.addElement((Room)localMap.elementAt(r));
 		
 		if(rooms.size()<=0)
-		for(int r=0;r<CMMap.numRooms();r++)
-			if(plantsHere(target,(Room)CMMap.getRoom(r)).length()>0)
-				rooms.addElement(CMMap.getRoom(r));
+		for(Iterator r=CMMap.rooms();r.hasNext();)
+		{
+			Room R=(Room)r.next();
+			if(plantsHere(target,R).length()>0)
+				rooms.addElement(R);
+		}
 		
 		if(rooms.size()>0)
 			theTrail=ExternalPlay.findBastardTheBestWay(target.location(),rooms,false);

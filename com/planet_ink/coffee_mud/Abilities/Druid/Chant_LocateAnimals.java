@@ -114,9 +114,12 @@ public class Chant_LocateAnimals extends Chant
 				rooms.addElement((Room)localMap.elementAt(r));
 		
 		if(rooms.size()<=0)
-		for(int r=0;r<CMMap.numRooms();r++)
-			if(animalHere((Room)CMMap.getRoom(r))!=null)
-				rooms.addElement(CMMap.getRoom(r));
+		for(Iterator r=CMMap.rooms();r.hasNext();)
+		{
+			Room R=(Room)r.next();
+			if(animalHere(R)!=null)
+				rooms.addElement(R);
+		}
 		
 		if(rooms.size()>0)
 			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,false);

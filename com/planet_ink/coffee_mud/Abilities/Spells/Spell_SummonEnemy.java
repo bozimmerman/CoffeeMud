@@ -74,7 +74,7 @@ public class Spell_SummonEnemy extends Spell
 		int tries=10000000;
 		while((monster==null)&&((--tries)>0))
 		{
-			Room room=CMMap.getRoom(Dice.roll(1,CMMap.numRooms(),-1));
+			Room room=CMMap.getRandomRoom();
 			if((room!=null)&&(room.numInhabitants()>0))
 			{
 				MOB mob=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));

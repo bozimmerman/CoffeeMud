@@ -706,9 +706,9 @@ public class CommandProcessor
 		else
 			Log.errOut("CommandProcessor",mob.name()+" starts system restart...");
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_SHUTDOWN,null);
-		for(int r=0;r<CMMap.numRooms();r++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room R=CMMap.getRoom(r);
+			Room R=(Room)r.next();
 			R.send(mob,msg);
 		}
 		if(myHost!=null)

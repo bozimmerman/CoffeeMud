@@ -30,9 +30,9 @@ public class Spell_Dream extends Spell
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				for(int r=0;r<CMMap.numRooms();r++)
+				for(Iterator r=CMMap.rooms();r.hasNext();)
 				{
-					Room R=CMMap.getRoom(r);
+					Room R=(Room)r.next();
 					for(int i=0;i<R.numInhabitants();i++)
 					{
 						MOB inhab=R.fetchInhabitant(i);

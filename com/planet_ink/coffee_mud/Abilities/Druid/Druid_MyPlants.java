@@ -47,9 +47,9 @@ public class Druid_MyPlants extends StdAbility
 	public static Vector myPlantRooms(MOB mob)
 	{
 		Vector V=new Vector();
-		for(int r=0;r<CMMap.numRooms();r++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room R=CMMap.getRoom(r);
+			Room R=(Room)r.next();
 			if((myPlant(R,mob,0)!=null)&&(!V.contains(R)))
 				V.addElement(R);
 		}

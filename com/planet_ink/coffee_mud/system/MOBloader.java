@@ -177,8 +177,8 @@ public class MOBloader
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 
-		if(CMMap.MOBs.get(mob.ID())==null)
-			CMMap.MOBs.put(mob.ID(),mob);
+		if(CMMap.getPlayer(mob.ID())==null)
+			CMMap.addPlayer(mob);
 	}
 
 	public static Vector userList()
@@ -435,7 +435,7 @@ public class MOBloader
 	{
 		DBConnection D=null;
 		String str=null;
-		MOB M=(MOB)CMMap.MOBs.get(name);
+		MOB M=CMMap.getPlayer(name);
 		if(M!=null)
 		{
 			M.setClanID(clan);

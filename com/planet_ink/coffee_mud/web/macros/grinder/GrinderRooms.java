@@ -204,9 +204,9 @@ public class GrinderRooms
 		
 		if(redoAllMyDamnRooms)
 		{
-			for(int r=0;r<CMMap.numRooms();r++)
+			for(Iterator r=CMMap.rooms();r.hasNext();)
 			{
-				Room R2=CMMap.getRoom(r);
+				Room R2=(Room)r.next();
 				for(int d=0;d<R2.rawDoors().length;d++)
 					if(R2.rawDoors()[d]==oldR)
 					{

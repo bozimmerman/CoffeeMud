@@ -24,21 +24,21 @@ public class SaveThread extends Thread
 	public void itemSweep()
 	{
 		long itemKillTime=System.currentTimeMillis();
-		for(int mn=0;mn<CMMap.numRooms();mn++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room room=CMMap.getRoom(mn);
+			Room R=(Room)r.next();
 			LandTitle T=null;
-			for(int a=0;a<room.numAffects();a++)
+			for(int a=0;a<R.numAffects();a++)
 			{
-				Ability A=room.fetchAffect(a);
+				Ability A=R.fetchAffect(a);
 				if((A!=null)&&(A instanceof LandTitle))
 					T=(LandTitle)A;
 			}
-			if(T!=null)	T.updateLot(room,T);
-			for(int i=0;i<room.numItems();i++)
+			if(T!=null)	T.updateLot(R,T);
+			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=room.fetchItem(i);
-				if((I!=null)&&(I.dispossessionTime()!=0)&&(I.owner()==room))
+				Item I=R.fetchItem(i);
+				if((I!=null)&&(I.dispossessionTime()!=0)&&(I.owner()==R))
 				{
 					if(itemKillTime>I.dispossessionTime())
 					{
@@ -54,7 +54,7 @@ public class SaveThread extends Thread
 	{
 		if(CMMap.numAreas()<=0)
 			return;
-		Area A=CMMap.getArea(0);
+		Area A=CMMap.getFirstArea();
 		if(reset)
 		{
 			reset=false;
@@ -101,16 +101,16 @@ public class SaveThread extends Thread
 	{
 		long lastDateTime=System.currentTimeMillis();
 		lastDateTime-=(20*IQCalendar.MILI_MINUTE);
-		for(int mn=0;mn<CMMap.numRooms();mn++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room room=CMMap.getRoom(mn);
-			for(int m=0;m<room.numInhabitants();m++)
+			Room R=(Room)r.next();
+			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB mob=(MOB)room.fetchInhabitant(m);
+				MOB mob=(MOB)R.fetchInhabitant(m);
 				if((mob!=null)&&(mob.lastTickedDateTime()<lastDateTime))
 				{
 					boolean ticked=ServiceEngine.isTicking(mob,Host.MOB_TICK);
-					Log.errOut("SaveThread",mob.name()+" in room "+room.ID()+" unticked ("+(!ticked)+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+".");
+					Log.errOut("SaveThread",mob.name()+" in room "+R.ID()+" unticked ("+(!ticked)+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+".");
 				}
 			}
 		}
@@ -175,19 +175,19 @@ public class SaveThread extends Thread
 	{
 		if(CMMap.numAreas()==0) return;
 		
-		Area A=CMMap.getArea(0);
-		for(int r=0;r<CMMap.numRooms();r++)
+		Area A=CMMap.getFirstArea();
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room room=CMMap.getRoom(r);
-			if((room!=null)&&((room.numInhabitants()>0)||(room.numItems()>0)))
+			Room R=(Room)r.next();
+			if((R!=null)&&((R.numInhabitants()>0)||(R.numItems()>0)))
 			{
-				room.recoverEnvStats();
-				for(int m=0;m<room.numInhabitants();m++)
+				R.recoverEnvStats();
+				for(int m=0;m<R.numInhabitants();m++)
 				{
-					MOB mob=room.fetchInhabitant(m);
+					MOB mob=R.fetchInhabitant(m);
 					if(!mob.isMonster())
 					{
-						if(((room.domainType()&Room.INDOORS)==0)
+						if(((R.domainType()&Room.INDOORS)==0)
 						&&(!Sense.isSleeping(mob))
 						&&(Sense.canSee(mob)))
 						{
@@ -222,7 +222,7 @@ public class SaveThread extends Thread
 					}
 				}
 			}
-			room.recoverRoomStats();
+			R.recoverRoomStats();
 		}
 	}
 
@@ -254,9 +254,9 @@ public class SaveThread extends Thread
 				tickTotal++;
 				Thread.sleep(Host.TIME_TICK_DELAY);
 				lastStart=System.currentTimeMillis();
-				for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
+				for(Iterator p=CMMap.players();p.hasNext();)
 				{
-					MOB mob=(MOB)e.nextElement();
+					MOB mob=(MOB)p.next();
 					if(!mob.isMonster())
 					{
 						MOBloader.DBUpdate(mob);

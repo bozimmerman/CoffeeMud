@@ -234,10 +234,10 @@ public class MUD extends Thread implements Host
 		
 		Log.sysOut("MUD","Loading map...");
 		offlineReason="Booting: loading rooms (0% completed).";
-		RoomLoader.DBRead((Host)mudThreads.firstElement(), CMMap.getAreaVector(),CMMap.getRoomVector());
+		RoomLoader.DBRead((Host)mudThreads.firstElement());
 		offlineReason="Booting: filling map.";
-		for(int a=0;a<CMMap.numAreas();a++)
-			CMMap.getArea(a).fillInAreaRooms();
+		for(Iterator a=CMMap.areas();a.hasNext();)
+			((Area)a.next()).fillInAreaRooms();
 		Log.sysOut("MUD","Mapped rooms      : "+CMMap.numRooms()+" in "+CMMap.numAreas()+" areas");
 		CMMap.initStartRooms(page);
 		CMMap.initDeathRooms(page);

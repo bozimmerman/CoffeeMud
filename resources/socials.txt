@@ -615,3 +615,9 @@ ss	GACK SELF	*GACK!*	Appalled, <S-NAME> gacks at <S-HIM-HERSELF>!
 mo	CONFIG	Try `autoexits`, `autogold`, `autoloot`, or `ansi on/off`			
 mo	SAGE	You nod sagely.	<S-NAME> nods sagely.		
 ss	BRB	Hope to see you soon!	<S-NAME> will be right back!		
+oo	PILLOW <T-NAME>	You *WHACK* <T-NAMESELF> over the head with a pillow.	<S-NAME> *WHACKS* you over the head with a pillow.	<S-NAME> *WHACKS* <T-NAMESELF> over the head with a pillow.
+oo	PILLOW SELF	You bop yourself on the head with a pillow.	<S-NAME> bop(s) <S-HIM-HERSELF> over the head with a pillow.		
+oo	PILLOW	You raise a pillow over your head and look around savagely.	<S-NAME> raises a pillow over <S-HIS-HER> head and looks around savagely.		
+ss	SMURF	Who would you like to smurf?			
+ss	SMURF SELF	You smurf.	<S-NAME> smurfs.		
+ss	SMURF <T-NAME>	You smurf <T-NAMESELF>.	<S-NAME> smurf(s) <T-NAMESELF>.	<S-NAME> smurfs you!	That's not smurfy! They left!

@@ -56,11 +56,11 @@ public class FrontDoor
 			if(("ABCDEFGHIJKLMNOPQRSTUVWXYZ ").indexOf(C)<0)
 				return false;
 		}
-		for(int m=0;m<CMMap.numDeities();m++)
+		for(Iterator d=CMMap.deities();d.hasNext();)
 		{
-			MOB tm=(MOB)CMMap.getDeity(m);
-			if((CoffeeUtensils.containsString(tm.ID(),login))
-			||(CoffeeUtensils.containsString(tm.name(),login)))
+			MOB D=(MOB)d.next();
+			if((CoffeeUtensils.containsString(D.ID(),login))
+			||(CoffeeUtensils.containsString(D.name(),login)))
 				return false;
 		}
 		for(int m=0;m<CMClass.MOBs.size();m++)
@@ -70,9 +70,9 @@ public class FrontDoor
 			||(CoffeeUtensils.containsString(tm.name(),login)))
 				return false;
 		}
-		for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
+		for(Iterator e=CMMap.players();e.hasNext();)
 		{
-			MOB tm=(MOB)e.nextElement();
+			MOB tm=(MOB)e.next();
 			if((CoffeeUtensils.containsString(tm.ID(),login))
 			||(CoffeeUtensils.containsString(tm.name(),login)))
 				return false;
@@ -147,9 +147,9 @@ public class FrontDoor
 					}
 				}
 				MOB oldMOB=mob;
-				if(CMMap.MOBs.get(oldMOB.ID())!=null)
+				if(CMMap.getPlayer(oldMOB.ID())!=null)
 				{
-					oldMOB.session().setMob((MOB)CMMap.MOBs.get(oldMOB.ID()));
+					oldMOB.session().setMob((MOB)CMMap.getPlayer(oldMOB.ID()));
 					mob=oldMOB.session().mob();
 					mob.setSession(oldMOB.session());
 					if(mob!=oldMOB)
@@ -414,8 +414,8 @@ public class FrontDoor
 				mob.setStartRoom(CMMap.getStartRoom(mob));
 				mob.bringToLife(mob.getStartRoom(),true);
 				ExternalPlay.DBCreateCharacter(mob);
-				if(CMMap.MOBs.get(mob.ID())==null)
-					CMMap.MOBs.put(mob.ID(),mob);
+				if(CMMap.getPlayer(mob.ID())==null)
+					CMMap.addPlayer(mob);
 
 				Log.sysOut("FrontDoor","Created user: "+mob.name());
 				return true;

@@ -84,17 +84,17 @@ public class Scriptable extends ActiveTicker
 		Room room=CMMap.getRoom(thisName);
 		if(room!=null) return room;
 		Room inAreaRoom=null;
-		for(int m=0;m<CMMap.numRooms();m++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room r=(Room)CMMap.getRoom(m);
-			if((CoffeeUtensils.containsString(r.name(),thisName))
-			||(r.ID().endsWith("#"+thisName))
-			||(r.fetchFromRoomFavorMOBs(null,thisName,Item.WORN_REQ_UNWORNONLY)!=null))
+			Room R=(Room)r.next();
+			if((CoffeeUtensils.containsString(R.name(),thisName))
+			||(R.ID().endsWith("#"+thisName))
+			||(R.fetchFromRoomFavorMOBs(null,thisName,Item.WORN_REQ_UNWORNONLY)!=null))
 			{
-				if((imHere!=null)&&(imHere.getArea().name().equals(r.getArea().name())))
-					inAreaRoom=r;
+				if((imHere!=null)&&(imHere.getArea().name().equals(R.getArea().name())))
+					inAreaRoom=R;
 				else
-					room=r;
+					room=R;
 			}
 		}
 		if(inAreaRoom!=null) return inAreaRoom;
@@ -106,17 +106,17 @@ public class Scriptable extends ActiveTicker
 		if(thisName.length()==0) return null;
 		Environmental thing=null;
 		Environmental areaThing=null;
-		for(int m=0;m<CMMap.numRooms();m++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room r=CMMap.getRoom(m);
+			Room R=(Room)r.next();
 			Environmental E=null;
 			if(mob)
-				E=r.fetchInhabitant(thisName);
+				E=R.fetchInhabitant(thisName);
 			else
-				E=r.fetchItem(null,thisName);
+				E=R.fetchItem(null,thisName);
 			if(E!=null)
 			{
-				if((imHere!=null)&&(imHere.getArea().name().equals(r.getArea().name())))
+				if((imHere!=null)&&(imHere.getArea().name().equals(R.getArea().name())))
 					areaThing=E;
 				else
 					thing=E;

@@ -43,10 +43,10 @@ public class Scoring
 	
 	public static void destroyUser(MOB deadMOB)
 	{
-		if(CMMap.MOBs.get(deadMOB.ID())!=null)
+		if(CMMap.getPlayer(deadMOB.ID())!=null)
 		{
-		   deadMOB=(MOB)CMMap.MOBs.get(deadMOB.ID());
-		   CMMap.MOBs.remove(deadMOB.ID());
+		   deadMOB=(MOB)CMMap.getPlayer(deadMOB.ID());
+		   CMMap.delPlayer(deadMOB);
 		}
 		for(int s=0;s<Sessions.size();s++)
 		{
@@ -57,16 +57,16 @@ public class Scoring
 		FullMsg msg=new FullMsg(deadMOB,null,Affect.MSG_RETIRE,"A horrible death cry is heard throughout the land.");
 		if(deadMOB.location()!=null)
 			deadMOB.location().send(deadMOB,msg);
-		for(int r=0;r<CMMap.numRooms();r++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room R=CMMap.getRoom(r);
+			Room R=(Room)r.next();
 			if((R!=null)&&(R!=deadMOB.location()))
 			{
 				if(R.okAffect(msg))
 					R.sendOthers(deadMOB,msg);
 				else
 				{
-					CMMap.MOBs.put(deadMOB.ID(),deadMOB);
+					CMMap.addPlayer(deadMOB);
 					return;
 				}
 			}
@@ -295,9 +295,9 @@ public class Scoring
 	public static void gods(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("\n\r^HThe known deities:^? \n\r");
-		for(int d=0;d<CMMap.numDeities();d++)
+		for(Iterator d=CMMap.deities();d.hasNext();)
 		{
-			Deity D=CMMap.getDeity(d);
+			Deity D=(Deity)d.next();
 			msg.append("\n\r^x"+D.name()+"^.^?\n\r");
 			msg.append(D.description()+"\n\r");
 			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
@@ -767,9 +767,9 @@ public class Scoring
 	public static void areas(MOB mob)
 	{
 		Vector areasVec=new Vector();
-		for(int a=0;a<CMMap.numAreas();a++)
+		for(Iterator a=CMMap.areas();a.hasNext();)
 		{
-			Area A=CMMap.getArea(a);
+			Area A=(Area)a.next();
 			if((!Sense.isHidden(A))||(mob.isASysOp(null)))
 				areasVec.addElement(A.name());
 		}

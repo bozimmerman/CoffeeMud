@@ -5,76 +5,135 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 public class CMMap
 {
-	protected static Vector AREAS=new Vector();
-	protected static Vector map=new Vector();
-	
-	public static Hashtable MOBs=new Hashtable();
-	public static Vector Deities=new Vector();
-
+	protected static java.util.Map areasMap = Collections.synchronizedMap(new LinkedHashMap(16, 0.75f, true));
+	protected static java.util.Map roomsMap = Collections.synchronizedMap(new LinkedHashMap(1000, 0.75f, true));
+	protected static List playersList = Collections.synchronizedList(new LinkedList());
+	protected static List deitiesList = Collections.synchronizedList(new LinkedList());
 	private static Hashtable startRooms=new Hashtable();
 	private static Hashtable deathRooms=new Hashtable();
 
-
-	public static int numRooms(){return map.size();}
-	public static void addRoom(Room newOne){map.addElement(newOne);theWorldChanged();}
-	public static void setRoomAt(Room newOne, int place)
+	private static void theWorldChanged()
 	{
-		try
-		{
-			Room olderOne=(Room)map.elementAt(place);
-			if(olderOne instanceof GridLocale)
-				((GridLocale)olderOne).clearGrid();
-			map.setElementAt(newOne,place);
-			theWorldChanged();
-		}
-		catch(Exception e)
-		{
-		}
+		for (Iterator a=areas(); a.hasNext();)
+			((Area)a.next()).clearMap();
 	}
-	public static void delRoom(Room oneToDel){
-		try
-		{
-			if(oneToDel instanceof GridLocale)
-				((GridLocale)oneToDel).clearGrid();
-			map.removeElement(oneToDel);
-			theWorldChanged();
-		}
-		catch(Exception e)
-		{
-		}
+	// areas
+	public static int numAreas() { return areasMap.size(); }
+	public static void addArea(Area newOne) 
+	{ 
+		areasMap.put(newOne.name(), newOne); 
 	}
-	public static Room getRoom(int x){try{return (Room)map.elementAt(x);}catch(Exception e){};return null;}
-	public static Vector getRoomVector(){return map;}
-	
-	public static int numDeities(){return Deities.size();}
-	public static void addDeity(Deity newOne){if(!Deities.contains(newOne))Deities.addElement(newOne);}
-	public static void delDeity(Deity oneToDel){try{Deities.removeElement(oneToDel);}catch(Exception e){}}
-	public static Deity getDeity(int x){try{return (Deity)Deities.elementAt(x);}catch(Exception e){};return null;}
-	public static int getDeityIndex(String named)
+	public static void delArea(Area oneToDel) 
+	{ 
+		areasMap.remove(oneToDel); 
+	}
+	public static Area getArea(String calledThis) 
+	{ 
+		return (Area)areasMap.get(calledThis); 
+	}
+	public static Iterator areas(){ return areasMap.values().iterator(); }
+	public static Area getFirstArea()
 	{
-		Deity bob=getDeity(named);
-		if(bob==null) return -1;
-		return Deities.indexOf(bob);
-	}
-	public static Deity getDeity(String named, int index)
-	{
-		Deity bob=getDeity(index);
-		if((bob!=null)&&(bob.name().equals(named)))
-			return bob;
+		if (areas().hasNext()) 
+			return (Area) areas().next();
 		return null;
 	}
-	public static Deity getDeity(String named)
+	
+	public static int numRooms() { return roomsMap.size(); }
+	public static void addRoom(Room newOne)
 	{
-		Deity bob=(Deity)CoffeeUtensils.fetchEnvironmental(Deities,named,true);
-		if(bob==null) bob=(Deity)CoffeeUtensils.fetchEnvironmental(Deities,named,false);
-		return bob;
+		roomsMap.put(newOne.ID(), newOne);
+		theWorldChanged();
+	}
+	public static void delRoom(Room oneToDel)
+	{
+		if(oneToDel instanceof GridLocale)
+			((GridLocale)oneToDel).clearGrid();
+		roomsMap.remove(oneToDel);
+		theWorldChanged();
+	}
+	public static Room getRoom(String calledThis)
+	{
+		Room R = null;
+
+		for (Iterator i=rooms(); i.hasNext();)
+		{
+			R = (Room)i.next();
+			if (R.ID().equalsIgnoreCase(calledThis)) break;
+		}
+
+		return R;
+	}
+	public static Iterator rooms() { return roomsMap.values().iterator(); }
+	public static Vector makeRoomVector()
+	{
+		Vector V=new Vector();
+		for(Iterator r=rooms();r.hasNext();)
+			V.addElement((Room)r.next());
+		return V;
+	}
+	public static void replaceRoom(Room newOne, Room oldOne)
+	{
+		if(oldOne instanceof GridLocale)
+		  ((GridLocale)oldOne).clearGrid();
+		roomsMap.remove(oldOne);
+		roomsMap.put(newOne.ID(), newOne);
+		theWorldChanged();
+	}
+	public static Room getFirstRoom()
+	{
+		if (rooms().hasNext()) 
+			return (Room) rooms().next();
+		return null;
+	}
+	public static Room getRandomRoom()
+	{
+		Object[] rooms = roomsMap.values().toArray();
+		int num = Dice.roll(1,numRooms(),-1);
+
+		return (Room)rooms[num];
 	}
 	
-	public static int numAreas(){return AREAS.size();}
-	public static void addArea(Area newOne){AREAS.addElement(newOne);}
-	public static void delArea(Area oneToDel){try{AREAS.removeElement(oneToDel);}catch(Exception e){}}
-	public static Area getArea(int x){try{return (Area)AREAS.elementAt(x);}catch(Exception e){};return null;}
-	public static Vector getAreaVector(){return AREAS;}
+	public static int numDeities() { return deitiesList.size(); }
+	public static void addDeity(Deity newOne) 
+	{ 
+		if (!deitiesList.contains(newOne)) 
+			deitiesList.add(newOne); 
+	}
+	public static void delDeity(Deity oneToDel) 
+	{ 
+		deitiesList.remove(oneToDel); 
+	}
+	public static Deity getDeity(String calledThis)
+	{
+		Deity D = null;
+
+		for (Iterator i=deities(); i.hasNext();)
+		{
+			D = (Deity)i.next();
+			if (D.name().equalsIgnoreCase(calledThis)) break;
+		}
+
+		return D;
+	}
+	public static Iterator deities() { return deitiesList.iterator(); }
+	
+	public static int numPlayers() { return playersList.size(); }
+	public static void addPlayer(MOB newOne) { playersList.add(newOne); }
+	public static void delPlayer(MOB oneToDel) { playersList.remove(oneToDel); }
+	public static MOB getPlayer(String calledThis)
+	{
+		MOB M = null;
+
+		for (Iterator p=players(); p.hasNext();)
+		{
+			M = (MOB)p.next();
+			if (M.name().equalsIgnoreCase(calledThis)) break;
+		}
+
+		return M;
+	}
+	public static Iterator players() { return playersList.iterator(); }
 	
 	public static Room getStartRoom(MOB mob)
 	{
@@ -92,8 +151,8 @@ public class CMMap
 			room=getRoom(roomID);
 		if(room==null)
 			room=getRoom("START");
-		if((room==null)&&(map.size()>0))
-			room=(Room)map.firstElement();
+		if((room==null)&&(numRooms()>0))
+			room=getFirstRoom();
 		return room;
 	}
 	
@@ -115,8 +174,8 @@ public class CMMap
 			room=getRoom(roomID);
 		if(room==null)
 			room=mob.getStartRoom();
-		if((room==null)&&(map.size()>0))
-			room=(Room)map.firstElement();
+		if((room==null)&&(numRooms()>0))
+			room=getFirstRoom();
 		return room;
 	}
 	
@@ -164,44 +223,13 @@ public class CMMap
 		pageRooms(page,deathRooms,"DEATH");
 	}
 
-	public static Room getRoom(String calledThis)
-	{
-		for(int i=0;i<map.size();i++)
-		{
-			Room R=(Room)map.elementAt(i);
-			if(R.ID().equalsIgnoreCase(calledThis))
-				return R;
-		}
-		return null;
-	}
-	
 	public static void unLoad()
 	{
-		map=new Vector();
-		AREAS=new Vector();
-		MOBs=new Hashtable();
-		Deities=new Vector();
+		areasMap.clear();
+		roomsMap.clear();
+		deitiesList.clear();
+		playersList.clear();
 		startRooms=new Hashtable();
 		deathRooms=new Hashtable();
-	}
-	
-	private static void theWorldChanged()
-	{
-		for(int a=0;a<AREAS.size();a++)
-		{
-			Area A=(Area)AREAS.elementAt(a);
-			A.clearMap();
-		}
-	}
-	
-	public static Area getArea(String areaName)
-	{
-		for(int a=0;a<AREAS.size();a++)
-		{
-			Area A=(Area)AREAS.elementAt(a);
-			if(A.name().equalsIgnoreCase(areaName))
-				return A;
-		}
-		return null;
 	}
 }

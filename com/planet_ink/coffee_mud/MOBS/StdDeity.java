@@ -465,9 +465,9 @@ public class StdDeity extends StdMOB implements Deity
 		&&((--checkDown)<0))
 		{
 			checkDown=10;
-			for(Enumeration m=CMMap.MOBs.elements();m.hasMoreElements();)
+			for(Iterator p=CMMap.players();p.hasNext();)
 			{
-				MOB M=(MOB)m.nextElement();
+				MOB M=(MOB)p.next();
 				if((!M.isMonster())&&(M.getWorshipCharID().equals(name())))
 				{
 					if(M.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))

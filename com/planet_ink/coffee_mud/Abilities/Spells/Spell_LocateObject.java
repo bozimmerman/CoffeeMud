@@ -42,9 +42,9 @@ public class Spell_LocateObject extends Spell
 			{
 				mob.location().send(mob,msg);
 				Vector itemsFound=new Vector();
-				for(int m=0;m<CMMap.numRooms();m++)
+				for(Iterator r=CMMap.rooms();r.hasNext();)
 				{
-					Room room=CMMap.getRoom(m);
+					Room room=(Room)r.next();
 					Environmental item=room.fetchItem(null,what);
 					if((item!=null)&&(Sense.canSee(item)))
 					{

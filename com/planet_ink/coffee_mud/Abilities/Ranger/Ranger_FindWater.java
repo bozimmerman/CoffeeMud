@@ -231,9 +231,12 @@ public class Ranger_FindWater extends StdAbility
 				rooms.addElement((Room)localMap.elementAt(r));
 		
 		if(rooms.size()<=0)
-		for(int r=0;r<CMMap.numRooms();r++)
-			if(waterHere(mob,(Room)CMMap.getRoom(r),null).length()>0)
-				rooms.addElement(CMMap.getRoom(r));
+		for(Iterator r=CMMap.rooms();r.hasNext();)
+		{
+			Room R=(Room)r.next();
+			if(waterHere(mob,R,null).length()>0)
+				rooms.addElement(R);
+		}
 		
 		if(rooms.size()>0)
 			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,false);

@@ -39,7 +39,7 @@ public class ClanCommands
 					}
 					if(found)
 					{
-						MOB M=(MOB)CMMap.MOBs.get(Util.capitalize(qual));
+						MOB M= CMMap.getPlayer(Util.capitalize(qual));
 						if(M==null)
 						{
 							M=CMClass.getMOB("StdMOB");
@@ -167,7 +167,7 @@ public class ClanCommands
 					}
 					if(found)
 					{
-						MOB M=(MOB)CMMap.MOBs.get(Util.capitalize(qual));
+						MOB M=CMMap.getPlayer(Util.capitalize(qual));
 						if(M==null)
 						{
 							M=CMClass.getMOB("StdMOB");
@@ -365,7 +365,7 @@ public class ClanCommands
 					}
 					if(found)
 					{
-						MOB M=(MOB)CMMap.MOBs.get(Util.capitalize(qual));
+						MOB M=CMMap.getPlayer(Util.capitalize(qual));
 						if(M==null)
 						{
 							M=CMClass.getMOB("StdMOB");
@@ -520,7 +520,7 @@ public class ClanCommands
 					}
 					if(found)
 					{
-						MOB M=(MOB)CMMap.MOBs.get(Util.capitalize(qual));
+						MOB M=CMMap.getPlayer(Util.capitalize(qual));
 						if(M==null)
 						{
 							M=CMClass.getMOB("StdMOB");

@@ -233,17 +233,17 @@ public class MovingRoom extends ActiveTicker
                           Room firstRoom = null;
                           Room secondRoom = null;
                           Room thisRooma = null;
-				for(int m=0;m<CMMap.numRooms();m++)
+				for(Iterator r=CMMap.rooms();r.hasNext();)
 				{
-					thisRooma=CMMap.getRoom(m);
+					thisRooma=(Room)r.next();
 					if(thisRooma.ID().equalsIgnoreCase(currentStopS)){
 					   firstRoom = thisRooma;
                                            break;}
 				}
                        		Room thisRoomb = null;
-				for(int m=0;m<CMMap.numRooms();m++)
+				for(Iterator r=CMMap.rooms();r.hasNext();)
 				{
-					thisRoomb=CMMap.getRoom(m);
+					thisRoomb=(Room)r.next();
 					if(thisRoomb.ID().equalsIgnoreCase(nextStopS)){
 					   secondRoom = thisRoomb;
 					   break;}

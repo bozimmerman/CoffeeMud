@@ -381,7 +381,7 @@ public class Generic
 		if(CMMap.getRoom(newRoom.ID())!=null) return "Room Exists: "+newRoom.ID();
 		newRoom.setArea(myArea);
 		ExternalPlay.DBCreateRoom(newRoom,roomClass);
-		CMMap.map.addElement(newRoom);
+		CMMap.addRoom(newRoom);
 		newRoom.setDisplayText(XMLManager.getValFromPieces(xml,"RDISP"));
 		newRoom.setDescription(XMLManager.getValFromPieces(xml,"RDESC"));
 		newRoom.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(xml,"RTEXT")));
@@ -423,28 +423,28 @@ public class Generic
 		}
 		
 		// find any mis-linked exits and fix them!
-		for(int m=0;m<CMMap.map.size();m++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
+			Room R=(Room)r.next();
 			boolean changed=false;
-			Room room=(Room)CMMap.map.elementAt(m);
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
-				Exit exit=room.rawExits()[d];
+				Exit exit=R.rawExits()[d];
 				if((exit!=null)&&(exit.closeWord().equalsIgnoreCase(newRoom.ID())))
 				{
 					Exit newExit=(Exit)exit.newInstance();
 					exit.setExitParams(exit.doorName(),newExit.closeWord(),exit.openWord(),exit.closedText());
-					room.rawDoors()[d]=newRoom;
+					R.rawDoors()[d]=newRoom;
 					changed=true;
 				}
 				else
-				if((room.rawDoors()[d]!=null)&&(room.rawDoors()[d].ID().equals(newRoom.ID())))
+				if((R.rawDoors()[d]!=null)&&(R.rawDoors()[d].ID().equals(newRoom.ID())))
 				{
-					room.rawDoors()[d]=newRoom;
+					R.rawDoors()[d]=newRoom;
 					changed=true;
 				}
 			}
-			if(changed) ExternalPlay.DBUpdateExits(room);
+			if(changed) ExternalPlay.DBUpdateExits(R);
 		}
 		ExternalPlay.DBUpdateRoom(newRoom);
 		ExternalPlay.DBUpdateExits(newRoom);

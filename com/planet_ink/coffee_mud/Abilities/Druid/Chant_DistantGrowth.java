@@ -26,17 +26,17 @@ public class Chant_DistantGrowth extends Chant
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
 		Room anyRoom=null;
 		Room newRoom=null;
-		for(int m=0;m<CMMap.numRooms();m++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room room=CMMap.getRoom(m);
-			if((CoffeeUtensils.containsString(room.displayText().toUpperCase(),areaName))
-			&&(((!Sense.isHidden(room.getArea()))&&(!Sense.isHidden(room)))
-			   ||(mob.isASysOp(room))))
+			Room R=(Room)r.next();
+			if((CoffeeUtensils.containsString(R.displayText().toUpperCase(),areaName))
+			&&(((!Sense.isHidden(R.getArea()))&&(!Sense.isHidden(R)))
+			   ||(mob.isASysOp(R))))
 			{
-			   anyRoom=room;
-			   if((room.domainType()&Room.INDOORS)==0)
+			   anyRoom=R;
+			   if((R.domainType()&Room.INDOORS)==0)
 			   {
-				   newRoom=room;
+				   newRoom=R;
 				   break;
 			   }
 			}

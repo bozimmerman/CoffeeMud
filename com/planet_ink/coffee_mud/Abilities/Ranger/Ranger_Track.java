@@ -136,9 +136,9 @@ public class Ranger_Track extends StdAbility
 		}
 		
 		if(rooms.size()<=0)
-		for(int r=0;r<CMMap.numRooms();r++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room R=(Room)CMMap.getRoom(r);
+			Room R=(Room)r.next();
 			if((R!=null)&&(R.fetchInhabitant(mobName)!=null))
 				rooms.addElement(R);
 		}

@@ -49,9 +49,12 @@ public class WebHelper
 	
 		Vector areasVec=new Vector();
 
-		for(int a=0;a<CMMap.numAreas();a++)
-			if(!Sense.isHidden(CMMap.getArea(a)))
-				areasVec.addElement(((Area)CMMap.getArea(a)).name());
+		for(Iterator a=CMMap.areas();a.hasNext();)
+		{
+			Area A=(Area)a.next();
+			if(!Sense.isHidden(A))
+				areasVec.addElement(A.name());
+		}
 
 		Collections.sort((List)areasVec);
 		StringBuffer msg=new StringBuffer("\n\r");

@@ -24,9 +24,9 @@ public class Spell_SummonMarker extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		for(int r=0;r<CMMap.numRooms();r++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room R=CMMap.getRoom(r);
+			Room R=(Room)r.next();
 			if(R!=null)
 			for(int a=0;a<R.numAffects();a++)
 			{

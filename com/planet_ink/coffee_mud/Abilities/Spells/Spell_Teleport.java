@@ -23,9 +23,9 @@ public class Spell_Teleport extends Spell
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
 		Vector candidates=new Vector();
-		for(int m=0;m<CMMap.numRooms();m++)
+		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
-			Room room=CMMap.getRoom(m);
+			Room room=(Room)r.next();
 			if((room.getArea().name().toUpperCase().startsWith(areaName))
 			&&(((!Sense.isHidden(room.getArea()))&&(!Sense.isHidden(room)))
 			   ||(mob.isASysOp(room))))

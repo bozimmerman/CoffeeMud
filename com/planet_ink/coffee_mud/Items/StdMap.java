@@ -9,8 +9,8 @@ import java.util.*;
 public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfaces.Map
 {
 	public String ID(){	return "StdMap";}
-	private StringBuffer myMap=null;
-	private int oldLevel=0;
+	protected StringBuffer myMap=null;
+	protected int oldLevel=0;
 
 	public StdMap()
 	{
@@ -29,7 +29,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		return new StdMap();
 	}
 
-	private class MapRoom
+	protected class MapRoom
 	{
 		Room r=null;
 		int x=0;
@@ -151,26 +151,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		return grid;
     }
 
-	public StringBuffer getMyMappedRoom()
+	public Vector makeMapRooms()
 	{
-		if(oldLevel!=envStats().level())
-		{
-			myMap=null;
-			oldLevel=envStats().level();
-		}
-
-		if(myMap!=null)
-			return myMap;
-
-		Object o=Resources.getResource("map"+envStats().level()+":"+getMapArea());
-		if((o!=null)&&(o instanceof StringBuffer))
-			myMap=(StringBuffer)o;
-
-		if(myMap!=null)
-			return myMap;
-
 		Vector mapAreas=new Vector();
-		myMap=null;
 		String newText=getMapArea();
 		while(newText.length()>0)
 		{
@@ -194,18 +177,24 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		for(int a=0;a<mapAreas.size();a++)
 		{
 			String area=(String)mapAreas.elementAt(a);
-			for(int m=0;m<CMMap.numRooms();m++)
+			for(Iterator r=CMMap.rooms();r.hasNext();)
 			{
-				Room room=CMMap.getRoom(m);
-				if(room.getArea().name().trim().equalsIgnoreCase(area))
+				Room R=(Room)r.next();
+				if(R.getArea().name().trim().equalsIgnoreCase(area))
 				{
 					MapRoom mr=new MapRoom();
-					mr.r=room;
+					mr.r=R;
 					mapRooms.addElement(mr);
 				}
 			}
 		}
 
+		return mapRooms;
+	}
+	
+	public StringBuffer finishMapMaking()
+	{
+		Vector mapRooms=makeMapRooms();
 		StringBuffer map=new StringBuffer("");
 		if(mapRooms.size()>0)
 		{
@@ -245,10 +234,28 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 				}
 				map.append(line1+"\r\n"+line2+"\r\n"+line3+"\r\n"+line4+"\r\n"+line5+"\r\n"+line6+"\r\n");
 			}
-
+		}
+		return map;
+	}
+	
+	public StringBuffer getMyMappedRoom()
+	{
+		if(oldLevel!=envStats().level())
+		{
+			myMap=null;
+			oldLevel=envStats().level();
 		}
 
-		myMap=map;
+		if(myMap!=null)
+			return myMap;
+
+		Object o=Resources.getResource("map"+envStats().level()+":"+getMapArea());
+		if((o!=null)&&(o instanceof StringBuffer))
+			myMap=(StringBuffer)o;
+
+		if(myMap!=null)
+			return myMap;
+		myMap=finishMapMaking();
 		Resources.submitResource("map"+envStats().level()+":"+getMapArea(),myMap);
 		return myMap;
 	}

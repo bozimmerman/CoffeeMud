@@ -126,9 +126,9 @@ public class Construction extends CommonSkill
 							for(int d=0;d<R.rawExits().length;d++)
 								R.rawExits()[d]=room.rawExits()[d];
 							R.startItemRejuv();
-							for(int r=0;r<CMMap.numRooms();r++)
+							for(Iterator r=CMMap.rooms();r.hasNext();)
 							{
-								Room R2=CMMap.getRoom(r);
+								Room R2=(Room)r.next();
 								for(int d=0;d<R2.rawDoors().length;d++)
 									if(R2.rawDoors()[d]==room)
 									{
@@ -250,9 +250,9 @@ public class Construction extends CommonSkill
 								for(int d=0;d<R.rawExits().length;d++)
 									R.rawExits()[d]=room.rawExits()[d];
 								R.startItemRejuv();
-								for(int r=0;r<CMMap.numRooms();r++)
+								for(Iterator r=CMMap.rooms();r.hasNext();)
 								{
-									Room R2=CMMap.getRoom(r);
+									Room R2=(Room)r.next();
 									for(int d=0;d<R2.rawDoors().length;d++)
 										if(R2.rawDoors()[d]==room)
 										{

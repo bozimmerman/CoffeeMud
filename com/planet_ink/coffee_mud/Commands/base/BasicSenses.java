@@ -478,9 +478,9 @@ public class BasicSenses
 		if((commands.size()>1)&&((room.domainType()&Room.INDOORS)==0)&&(((String)commands.elementAt(1)).equalsIgnoreCase("WORLD")))
 		{
 			StringBuffer tellMe=new StringBuffer("");
-			for(int a=0;a<CMMap.numAreas();a++)
+			for(Iterator a=CMMap.areas();a.hasNext();)
 			{
-				Area A=(Area)CMMap.getArea(a);
+				Area A=(Area)a.next();
 				if(!Sense.isHidden(A))
 					tellMe.append(Util.padRight(A.name(),20)+": "+A.weatherDescription(room)+"\n\r");
 			}

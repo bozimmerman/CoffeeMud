@@ -12,9 +12,11 @@ public class RoomLoader
 	private static int updateBreak=1;
 	private final static String zeroes="000000000000";
 
-	public static void DBRead(Host myHost, Vector areas, Vector h)
+	public static void DBRead(Host myHost)
 	{
 		Hashtable hash=new Hashtable();
+		while(CMMap.numAreas()>0)CMMap.delArea(CMMap.getFirstArea());
+		Vector h=new Vector();
 		
 		DBConnection D=null;
 		try
@@ -36,7 +38,7 @@ public class RoomLoader
 					return;
 				}
 				A.setName(areaName);
-				areas.addElement(A);
+				CMMap.addArea(A);
 				A.setClimateType((int)DBConnections.getLongRes(R,"CMCLIM"));
 				A.setSubOpList(DBConnections.getRes(R,"CMSUBS"));
 				A.setDescription(DBConnections.getRes(R,"CMDESC"));
@@ -160,18 +162,20 @@ public class RoomLoader
 		
 		DBReadContent(null,hash,myHost);
 		
-		myHost.setGameStatusStr("Booting: Done loading room data)");
+		myHost.setGameStatusStr("Booting: Finalizing room data)");
+		
+		while(CMMap.numRooms()>0) CMMap.delRoom(CMMap.getFirstRoom());
 		for(Enumeration r=hash.elements();r.hasMoreElements();)
 		{
 			Room thisRoom=(Room)r.nextElement();
 			thisRoom.startItemRejuv();
+			CMMap.addRoom(thisRoom);
 			thisRoom.recoverRoomStats();
-			h.addElement(thisRoom);
 		}
 		
-		for(int a=0;a<areas.size();a++)
+		for(Iterator a=CMMap.areas();a.hasNext();)
 		{
-			Area A=(Area)areas.elementAt(a);
+			Area A=(Area)a.next();
 			StringBuffer s=A.getAreaStats();
 			Resources.submitResource("HELP_"+A.name().toUpperCase(),s);
 		}

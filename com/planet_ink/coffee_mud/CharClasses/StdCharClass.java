@@ -227,7 +227,7 @@ public class StdCharClass implements CharClass, Cloneable
 		}
 		if((homage!=null)&&(mob.getLeigeID().length()>0)&&(amount>2))
 		{
-			MOB sire=(MOB)CMMap.MOBs.get(mob.getLeigeID());
+			MOB sire=CMMap.getPlayer(mob.getLeigeID());
 			if(sire!=null)
 			{
 				int sireShare=(int)Math.round(Util.div(amount,10.0));
