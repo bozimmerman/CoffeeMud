@@ -20,6 +20,7 @@ public class Enchanter extends SpecialistMage
 		if(!myAbilitiesLoaded)
 		{
 			myAbilitiesLoaded=true;
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_ManaBurn",25,true);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_Alarm",25,true);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_MindFog",25,true);

@@ -20,6 +20,7 @@ public class Abjurer extends SpecialistMage
 		if(!myAbilitiesLoaded)
 		{
 			myAbilitiesLoaded=true;
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_SongWard",25,true);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_ResistBludgeoning",25,true);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_Counterspell",25,true);

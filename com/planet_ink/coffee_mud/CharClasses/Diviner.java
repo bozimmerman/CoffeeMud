@@ -20,6 +20,7 @@ public class Diviner extends SpecialistMage
 		if(!myAbilitiesLoaded)
 		{
 			myAbilitiesLoaded=true;
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_AnalyzeDweomer",25,true);
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_KnowOrigin",25,true);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_DetectScrying",25,true);

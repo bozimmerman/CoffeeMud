@@ -36,6 +36,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_ScrollCopy",false);
 			// level 1
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_MagicMissile",true);

@@ -20,6 +20,7 @@ public class Transmuter extends SpecialistMage
 		if(!myAbilitiesLoaded)
 		{
 			myAbilitiesLoaded=true;
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_CauseStink",25,true);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_Sonar",25,true);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_Grow",25,true);

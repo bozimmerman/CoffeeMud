@@ -20,6 +20,7 @@ public class Conjurer extends SpecialistMage
 		if(!myAbilitiesLoaded)
 		{
 			myAbilitiesLoaded=true;
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_SummonMarker",25,true);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_MarkerSummoning",25,true);
 			CMAble.addCharAbilityMapping(ID(),20,"Spell_MarkerPortal",25,true);

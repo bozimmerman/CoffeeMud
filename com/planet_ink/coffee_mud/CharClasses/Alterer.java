@@ -20,6 +20,7 @@ public class Alterer extends SpecialistMage
 		if(!myAbilitiesLoaded)
 		{
 			myAbilitiesLoaded=true;
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Spell_IncreaseGravity",25,true);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_SlowProjectiles",25,true);
 			CMAble.addCharAbilityMapping(ID(),20,"Spell_Timeport",25,true);

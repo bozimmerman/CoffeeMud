@@ -20,6 +20,7 @@ public class Illusionist extends SpecialistMage
 		if(!myAbilitiesLoaded)
 		{
 			myAbilitiesLoaded=true;
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_IllusoryDisease",25,true);
 			CMAble.addCharAbilityMapping(ID(),21,"Spell_Phantasm",25,true);
 			CMAble.addCharAbilityMapping(ID(),22,"Spell_GreaterInvisibility",25,true);

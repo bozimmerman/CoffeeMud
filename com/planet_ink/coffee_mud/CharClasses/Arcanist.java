@@ -121,13 +121,13 @@ CMAble.addCharAbilityMapping(ID(),30,"Spell_EnchantedItem",true);
 	}
 	public String otherBonuses()
 	{
-		return "Magic resistance, 1%/level.  Huge discounts when buying potions.";
+		return "Magic resistance, 1%/level.  Huge discounts when buying potions after 5th level.  Ability to memorize spells learned through SpellCraft.";
 	}
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if((myHost==null)||(!(myHost instanceof MOB))) return super.okAffect(myHost,msg);
 		MOB mob=(MOB)myHost;
-		if(msg.amISource(mob))
+		if((msg.amISource(mob))&&(mob.charStats().getClassLevel(this)>4))
 		{
 			if(((msg.sourceMinor()==Affect.TYP_BUY)||(msg.sourceMinor()==Affect.TYP_VALUE))
 			&&(msg.tool()!=null)
@@ -137,7 +137,7 @@ CMAble.addCharAbilityMapping(ID(),30,"Spell_EnchantedItem",true);
 				mob.recoverEnvStats();
 			}
 			else
-			if(Sense.isABonusItems(mob))
+			if((mob.baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS)
 			{
 				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()-EnvStats.IS_BONUS);
 				mob.recoverEnvStats();
@@ -173,7 +173,7 @@ CMAble.addCharAbilityMapping(ID(),30,"Spell_EnchantedItem",true);
 						A.setProfficiency(0);
 						A.setBorrowed(mob,true);
 						mob.addAbility(A);
-						if(otherChoices.size()>3)
+						if(otherChoices.size()>(mob.charStats().getClassLevel(this)/3))
 							mob.delAbility((Ability)otherChoices.elementAt(Dice.roll(1,otherChoices.size(),-1)));
 					}
 				}
@@ -198,7 +198,8 @@ CMAble.addCharAbilityMapping(ID(),30,"Spell_EnchantedItem",true);
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((ticking instanceof MOB)&&(Sense.isABonusItems((MOB)ticking)))
+		if((ticking instanceof MOB)
+		&&((((MOB)ticking).baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS))
 		{
 			((MOB)ticking).baseEnvStats().setDisposition(((MOB)ticking).baseEnvStats().disposition()-EnvStats.IS_BONUS);
 			((MOB)ticking).recoverEnvStats();
@@ -210,7 +211,7 @@ CMAble.addCharAbilityMapping(ID(),30,"Spell_EnchantedItem",true);
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+(affectableStats.getClassLevel(this)));
-		if(Sense.isABonusItems(affected))
+		if((affected.baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS)
 			affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+30);
 	}
 }
