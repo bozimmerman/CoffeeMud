@@ -75,6 +75,7 @@ public class Necromancer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
 
 			CMAble.addCharAbilityMapping(ID(),14,"Prayer_AnimateSpectre",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Prayer_HealUndead",false);
 
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_FeignLife",false);
@@ -90,7 +91,6 @@ public class Necromancer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Prayer_HealUndead",false);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_AnimateMummy",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Vampirism",false);
