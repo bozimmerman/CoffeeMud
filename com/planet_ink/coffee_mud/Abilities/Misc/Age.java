@@ -109,6 +109,8 @@ public class Age extends StdAbility
 						babe.recoverMaxState();
 						Age A=(Age)babe.fetchEffect(ID());
 						if(A!=null) A.setMiscText(text());
+						Ability B=I.fetchEffect(ID());
+						if(B!=null)	I.delEffect(B);
 						Ability STAT=babe.fetchEffect("Prop_StatTrainer");
 						if(STAT!=null)
 							STAT.setMiscText("CHA=10 CON=7 DEX=3 INT=3 STR=2 WIS=2");
@@ -117,7 +119,7 @@ public class Age extends StdAbility
 						babe.setMoney(0);
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
-						((Item)affected).destroy();
+						I.destroy();
 					}
 				}
 			}
@@ -255,7 +257,12 @@ public class Age extends StdAbility
 					liege.tell(newMan.Name()+" has just grown up! "+Util.capitalize(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
 					CMClass.DBEngine().DBUpdateMOB(newMan);
 					newMan.removeFromGame();
+					babe.setFollowing(null);
 					babe.destroy();
+					MOB fol=newMan.amFollowing();
+					newMan.setFollowing(null);
+					CMClass.DBEngine().DBUpdateFollowers(liege);
+					newMan.setFollowing(fol);
 				}
 				else
 				{

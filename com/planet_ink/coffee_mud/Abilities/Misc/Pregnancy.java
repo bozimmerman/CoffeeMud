@@ -55,7 +55,7 @@ public class Pregnancy extends StdAbility
 	private static final String[] triggerStrings = {"IMPREGNATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
-	public boolean isAutoInvoked(){return true;}
+	public boolean isAutoInvoked(){return false;}
 	public int classificationCode(){return Ability.PROPERTY;}
 	private boolean labor=false;
 	private int ticksInLabor=0;
@@ -459,9 +459,18 @@ public class Pregnancy extends StdAbility
 		long end=start+add;
 		if(success)
 		{
+			if(!auto)
+			{
+				end=start;
+				start-=add;
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> imgregnate(s) <T-NAMESELF>.");
+			}
 			setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
 			target.addNonUninvokableEffect(this);
 		}
+		else
+		if(!auto)
+			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to impregnate <T-NAMESELF>, but fail(s)!");
 		return success;
 	}
 }

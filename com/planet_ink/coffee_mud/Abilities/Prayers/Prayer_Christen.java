@@ -57,13 +57,13 @@ public class Prayer_Christen extends Prayer
 			return false;
 		}
 
+		name=Util.capitalize(name);
+
 		if(CMClass.DBEngine().DBUserSearch(null,name))
 		{
 			mob.tell("That name is already taken.  Please choose another.");
 			return false;
 		}
-
-		name=Util.capitalize(name);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
