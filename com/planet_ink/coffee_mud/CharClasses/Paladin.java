@@ -18,17 +18,19 @@ public class Paladin extends StdCharClass
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
-	private static boolean abilitiesLoaded=false;
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	private static boolean abilitiesLoaded=false;
+	public boolean loaded(){return abilitiesLoaded;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
 	public Paladin()
 	{
 		super();
 		maxStat[CharStats.STRENGTH]=22;
 		maxStat[CharStats.WISDOM]=22;
-		if(!abilitiesLoaded)
+		if(!loaded())
 		{
-			abilitiesLoaded=true;
+			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);

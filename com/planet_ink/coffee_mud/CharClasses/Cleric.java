@@ -16,16 +16,18 @@ public class Cleric extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.WISDOM;}
 	public int getLevelsPerBonusDamage(){ return 5;}
-	private static boolean abilitiesLoaded=false;
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	private static boolean abilitiesLoaded=false;
+	public boolean loaded(){return abilitiesLoaded;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
 	public Cleric()
 	{
 		super();
 		maxStat[CharStats.WISDOM]=25;
-		if(!abilitiesLoaded)
+		if(!loaded())
 		{
-			abilitiesLoaded=true;
+			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",false);

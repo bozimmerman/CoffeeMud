@@ -16,16 +16,18 @@ public class Thief extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 5;}
-	private static boolean abilitiesLoaded=false;
 	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
+	private static boolean abilitiesLoaded=false;
+	public boolean loaded(){return abilitiesLoaded;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
 	public Thief()
 	{
 		super();
 		maxStat[CharStats.DEXTERITY]=25;
-		if(!abilitiesLoaded)
+		if(!loaded())
 		{
-			abilitiesLoaded=true;
+			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Edged",50,true);

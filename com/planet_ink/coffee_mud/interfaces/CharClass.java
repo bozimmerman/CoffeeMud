@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.interfaces;
 import java.util.*;
-public interface CharClass
+public interface CharClass extends Cloneable
 {
 	public static final int ARMOR_ANY=0;
 	public static final int ARMOR_CLOTH=1;
@@ -12,6 +12,7 @@ public interface CharClass
 	public String baseClass();
 	public boolean playerSelectable();
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet);
+	public CharClass copyOf();
 
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly);
 	public void gainExperience(MOB mob, MOB victim, String homage, int amount);

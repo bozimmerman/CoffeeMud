@@ -16,16 +16,18 @@ public class Bard extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 4;}
-	private static boolean abilitiesLoaded=false;
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
+	private static boolean abilitiesLoaded=false;
+	public boolean loaded(){return abilitiesLoaded;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
 	public Bard()
 	{
 		super();
 		maxStat[CharStats.CHARISMA]=25;
-		if(!abilitiesLoaded)
+		if(!loaded())
 		{
-			abilitiesLoaded=true;
+			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Edged",true);

@@ -17,16 +17,18 @@ public class Druid extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.CONSTITUTION;}
 	public int getLevelsPerBonusDamage(){ return 6;}
-	private static boolean abilitiesLoaded=false;
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
+	private static boolean abilitiesLoaded=false;
+	public boolean loaded(){return abilitiesLoaded;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
 	public Druid()
 	{
 		super();
 		maxStat[CharStats.CONSTITUTION]=25;
-		if(!abilitiesLoaded)
+		if(!loaded())
 		{
-			abilitiesLoaded=true;
+			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",false);

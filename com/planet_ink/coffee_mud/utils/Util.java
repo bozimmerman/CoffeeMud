@@ -6,6 +6,11 @@ public class Util
 {
 	public final static String SPACES="                                                                     ";
 	
+	public static String capitalize(String name)
+	{
+		return Character.toUpperCase(name.charAt(0))+name.substring(1).toLowerCase().trim();
+	}
+	
 	/**
 	 * Returns the integer value of a string without crashing
  	 * 

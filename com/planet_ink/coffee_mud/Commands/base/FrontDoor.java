@@ -79,11 +79,6 @@ public class FrontDoor
 		return true;
 	}
 
-	public String nameFixer(String name)
-	{
-		return Character.toUpperCase(name.charAt(0))+name.substring(1).trim();
-	}
-	
 	public boolean login(MOB mob)
 		throws IOException
 	{
@@ -168,9 +163,9 @@ public class FrontDoor
 				mob.setUserInfo("","");
 			}
 			else
-			if(mob.session().confirm("\n\r'"+nameFixer(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
+			if(mob.session().confirm("\n\r'"+Util.capitalize(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
 			{
-				login=nameFixer(login.trim());
+				login=Util.capitalize(login.trim());
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("newchar.txt").toString());
 
 				String password="";

@@ -115,8 +115,11 @@ public class CMClass extends ClassLoader
 		if((thisItem==null)&&(charClasses.size()>0))
 		{
 			for(int i=0;i<charClasses.size();i++)
-				if(((CharClass)(charClasses.elementAt(i))).name().equalsIgnoreCase(calledThis))
-					return (CharClass)charClasses.elementAt(i);
+			{
+				CharClass C=(CharClass)charClasses.elementAt(i);
+				if(C.name().equalsIgnoreCase(calledThis))
+					return C;
+			}
 			//Log.sysOut("CMClass","Unknown CharClass '"+calledThis+"'.");
 		}
 		return thisItem;
@@ -384,6 +387,18 @@ public class CMClass extends ClassLoader
 					extraCmds.put(word.trim().toUpperCase(),C);
 				}
 			}
+		}
+		
+		// misc startup stuff
+		for(int c=0;c<charClasses.size();c++)
+		{
+			CharClass C=(CharClass)charClasses.elementAt(c);
+			C.copyOf();
+		}
+		for(int r=0;r<races.size();r++)
+		{
+			Race R=(Race)races.elementAt(r);
+			R.copyOf();
 		}
 		return true;
 	}

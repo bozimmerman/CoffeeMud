@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
-public class StdCharClass implements CharClass
+public class StdCharClass implements CharClass, Cloneable
 {
 	public String ID(){return "StdCharClass";}
 	public String name(){return "mob";}
@@ -27,6 +27,29 @@ public class StdCharClass implements CharClass
 	{
 		return false;
 	}
+	
+	public void cloneFix(CharClass C)
+	{
+	}
+	
+	public CharClass copyOf()
+	{
+		try
+		{
+			StdCharClass E=(StdCharClass)this.clone();
+			E.cloneFix(this);
+			return E;
+
+		}
+		catch(CloneNotSupportedException e)
+		{
+			return this;
+		}
+	}
+	
+	public boolean loaded(){return true;}
+	public void setLoaded(boolean truefalse){};
+	
 	public int classDurationModifier(MOB myChar, Ability skill, int duration)
 	{ return duration;}
 

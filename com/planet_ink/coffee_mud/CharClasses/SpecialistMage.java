@@ -10,46 +10,49 @@ public class SpecialistMage extends Mage
 	public String ID(){return "SpecialistMage";}
 	public String name(){return "Specialist Mage";}
 	public String baseClass(){return "Mage";}
-	public static int domain(){return Ability.DOMAIN_ABJURATION;}
-	public static int opposed(){return Ability.DOMAIN_ENCHANTMENT;}
-	public static boolean myAbilitiesLoaded=false;
-	public SpecialistMage()
+	public int domain(){return Ability.DOMAIN_ABJURATION;}
+	public int opposed(){return Ability.DOMAIN_ENCHANTMENT;}
+	
+	public void cloneFix(CharClass C)
 	{
-		super();
-		if((!myAbilitiesLoaded)&&(CMClass.abilities.size()>0))
+		super.cloneFix(C);
+		for(int a=0;a<CMClass.abilities.size();a++)
 		{
-			boolean doneOne=false;
-			myAbilitiesLoaded=true;
-			for(int a=0;a<CMClass.abilities.size();a++)
+			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			int level=CMAble.getQualifyingLevel(ID(),A.ID());
+			if((A!=null)
+			&&(level>0)
+			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 			{
-				Ability A=(Ability)CMClass.abilities.elementAt(a);
-				int level=CMAble.getQualifyingLevel(baseClass(),A.ID());
-				if((A!=null)
-				&&(level>=0)   
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-				&&((A.classificationCode()&Ability.ALL_DOMAINS)!=opposed()))
+				if((A.classificationCode()&Ability.ALL_DOMAINS)==opposed())
 				{
-					if((A.classificationCode()&Ability.ALL_DOMAINS)==domain())
-					{
-						doneOne=true;
-						CMAble.addCharAbilityMapping(ID(),level,A.ID(),25,false);
-					}
-					else
+					if(CMAble.getDefaultGain(baseClass(),A.ID()))
 						CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,false);
+					else
+						CMAble.delCharAbilityMapping(ID(),A.ID());
 				}
+				else
+				if((A.classificationCode()&Ability.ALL_DOMAINS)==domain())
+					CMAble.addCharAbilityMapping(ID(),level,A.ID(),25,true);
+				else
+					CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,false);
 			}
-			if(!doneOne)
-				myAbilitiesLoaded=false;
 		}
 	}
-
-
+	
 	public boolean playerSelectable(){	return false;}
 	public String otherBonuses()
 	{
-		String chosen="chosen school";
-		String opposed="opposed school";
-		return "Unable to cast "+opposed+" spells.  Receives 2%/lvl bonus damage from "+chosen+", 2%/lvl penalty damage from "+opposed+".  Receives double duration on your "+chosen+" magic and from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";}
+		String chosen=Util.capitalize(Ability.DOMAIN_DESCS[domain()>>5]);
+		String opposed=Util.capitalize(Ability.DOMAIN_DESCS[opposed()>>5]);
+		return "Receives 2%/lvl bonus damage from "+chosen+".  Receives double duration on your "+chosen+" magic.";
+	}
+	public String otherLimitations()
+	{
+		String chosen=Util.capitalize(Ability.DOMAIN_DESCS[domain()>>5]);
+		String opposed=Util.capitalize(Ability.DOMAIN_DESCS[opposed()>>5]);
+		return "Unable to cast "+opposed+" spells.  Receives 2%/lvl penalty damage from "+opposed+".  Receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
+	}
 
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -124,47 +127,5 @@ public class SpecialistMage extends Mage
 				return duration/2;
 		}
 		return duration;
-	}
-	
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
-	{
-		super.grantAbilities(mob,isBorrowedClass);
-		Vector grantable=new Vector();
-		
-		int level=mob.charStats().getClassLevel(this);
-		for(int a=0;a<CMClass.abilities.size();a++)
-		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
-			&&((CMAble.getQualifyingLevel(ID(),A.ID())<=25)
-			&&(!CMAble.getDefaultGain(ID(),A.ID()))
-			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-			&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain())))
-			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}
-		}
-		int numSpells=1;
-		for(int a=0;a<mob.numAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
-			if(grantable.contains(A.ID()))
-			{
-				grantable.remove(A.ID());
-				numSpells--;
-			}
-		}
-		if(grantable.size()>0)
-		for(int i=0;i<numSpells;i++)
-		{
-			String AID=(String)grantable.elementAt(Dice.roll(1,grantable.size(),-1));
-			if(AID!=null)
-			{
-				grantable.removeElement(AID);
-				giveMobAbility(mob,
-							   CMClass.getAbility(AID),
-							   CMAble.getDefaultProfficiency(ID(),AID),
-							   CMAble.getDefaultParm(ID(),AID),
-							   isBorrowedClass);
-			}
-		}
 	}
 }

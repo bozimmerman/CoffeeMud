@@ -28,6 +28,16 @@ public class CMAble
 	{
 		addCharAbilityMapping(charClass,qualLevel,ability,0,"",autoGain);
 	}
+	
+	public static void delCharAbilityMapping(String charClass,
+											 String ability)
+	{
+		if(!classAbleMap.containsKey(charClass))
+			classAbleMap.put(charClass,new Hashtable());
+		Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+		if(ableMap.containsKey(ability))
+			ableMap.remove(ability);
+	}
 	public static void addCharAbilityMapping(String charClass, 
 											 int qualLevel,
 											 String ability, 
@@ -35,11 +45,8 @@ public class CMAble
 											 String defaultParam,
 											 boolean autoGain)
 	{
-		if(!classAbleMap.containsKey(charClass))
-			classAbleMap.put(charClass,new Hashtable());
+		delCharAbilityMapping(charClass,ability);
 		Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
-		if(ableMap.containsKey(ability))
-			ableMap.remove(ableMap.get(ability));
 		CMAble able=new CMAble();
 		able.qualLevel=qualLevel;
 		able.autoGain=autoGain;

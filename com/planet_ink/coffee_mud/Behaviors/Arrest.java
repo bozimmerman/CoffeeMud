@@ -733,7 +733,10 @@ public class Arrest extends StdBehavior
 				&&(w instanceof Weapon)
 				&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_NATURAL)
 				&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_HAMMER)
-				&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_STAFF))
+				&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_STAFF)
+				&&(Sense.isSeen(w))
+				&&(!Sense.isHidden(w))
+				&&(!Sense.isInvisible(w)))
 					fillOutWarrant(affect.source(),
 								   myArea,
 								   null,

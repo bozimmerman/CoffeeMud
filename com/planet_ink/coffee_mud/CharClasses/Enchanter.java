@@ -5,7 +5,10 @@ public class Enchanter extends SpecialistMage
 {
 	public String ID(){return "Enchanter";}
 	public String name(){return "Enchanter";}
-	public static int domain(){return Ability.DOMAIN_ENCHANTMENT;}
-	public static int opposed(){return Ability.DOMAIN_ABJURATION;}
+	public int domain(){return Ability.DOMAIN_ENCHANTMENT;}
+	public int opposed(){return Ability.DOMAIN_ABJURATION;}
 	public boolean playerSelectable(){	return true;}
+	private static boolean abilitiesLoaded=false;
+	public boolean loaded(){return abilitiesLoaded;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 }

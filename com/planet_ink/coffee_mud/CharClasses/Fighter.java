@@ -10,7 +10,6 @@ public class Fighter extends StdCharClass
 	public String ID(){return "Fighter";}
 	public String name(){return "Fighter";}
 	public String baseClass(){return ID();}
-	private static boolean abilitiesLoaded=false;
 	public int getMaxHitPointsLevel(){return 24;}
 	public int getBonusPracLevel(){return -1;}
 	public int getBonusManaLevel(){return 8;}
@@ -20,13 +19,17 @@ public class Fighter extends StdCharClass
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	private static boolean abilitiesLoaded=false;
+	public boolean loaded(){return abilitiesLoaded;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	
 	public Fighter()
 	{
 		super();
 		maxStat[CharStats.STRENGTH]=25;
-		if(!abilitiesLoaded)
+		if(!loaded())
 		{
-			abilitiesLoaded=true;
+			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Axe",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);

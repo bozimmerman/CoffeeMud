@@ -24,6 +24,20 @@ public class StdRace implements Race
 	
 	public boolean playerSelectable(){return false;}
 
+	public Race copyOf()
+	{
+		try
+		{
+			StdRace E=(StdRace)this.clone();
+			return E;
+
+		}
+		catch(CloneNotSupportedException e)
+		{
+			return this;
+		}
+	}
+	
 	/** some general statistics about such an item
 	 * see class "EnvStats" for more information. */
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

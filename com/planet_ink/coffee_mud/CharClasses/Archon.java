@@ -10,17 +10,18 @@ public class Archon extends StdCharClass
 	public String ID(){return "Archon";}
 	public String name(){return "Archon";}
 	public String baseClass(){return ID();}
-								  
 	private static boolean abilitiesLoaded=false;
+	public boolean loaded(){return abilitiesLoaded;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
 	public Archon()
 	{
 		super();
 		for(int i=0;i<=5;i++)
 			maxStat[i]=25;
-		if(!abilitiesLoaded)
+		if(!loaded())
 		{
-			abilitiesLoaded=true;
+			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Resistance",true);
 		}
 	}

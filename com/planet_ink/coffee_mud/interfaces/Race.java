@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.interfaces;
 import java.util.Vector;
-public interface Race
+public interface Race extends Cloneable
 {
 	public String ID();
 	public String name();
@@ -13,6 +13,7 @@ public interface Race
 	public DeadBody getCorpse(MOB mob, Room room);
 	public Vector myResources();
 	public String racialCategory();
+	public Race copyOf();
 	
 	public String arriveStr();
 	public String leaveStr();

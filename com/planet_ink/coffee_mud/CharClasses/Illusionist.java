@@ -5,7 +5,10 @@ public class Illusionist extends SpecialistMage
 {
 	public String ID(){return "Illusionist";}
 	public String name(){return "Illusionist";}
-	public static int domain(){return Ability.DOMAIN_ILLUSION;}
-	public static int opposed(){return Ability.DOMAIN_DIVINATION;}
+	public int domain(){return Ability.DOMAIN_ILLUSION;}
+	public int opposed(){return Ability.DOMAIN_DIVINATION;}
 	public boolean playerSelectable(){	return true;}
+	private static boolean abilitiesLoaded=false;
+	public boolean loaded(){return abilitiesLoaded;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 }

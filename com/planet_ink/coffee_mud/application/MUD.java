@@ -625,7 +625,7 @@ public class MUD extends Thread implements Host
 				if (!loadPropPage())
 				{
 					Log.errOut("MUD","ERROR: Unable to read ini file.");
-					System.out.println("MUD","ERROR: Unable to read ini file.");
+					System.out.println("MUD/ERROR: Unable to read ini file.");
 					offlineReason=new String("A terminal error has occured!");
 				}
 				else
@@ -641,7 +641,7 @@ public class MUD extends Thread implements Host
 				Log.sysOut("MUD","(C) 2000-2003 Bo Zimmerman");
 				Log.sysOut("MUD","www.zimmers.net/home/mud.html");
 		
-				if(isOk)
+				if(MUD.isOK)
 				{
 					mudThreads=new Vector();
 					String ports=page.getProperty("PORT");
