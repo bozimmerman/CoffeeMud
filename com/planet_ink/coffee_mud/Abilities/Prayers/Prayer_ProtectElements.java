@@ -44,6 +44,7 @@ public class Prayer_ProtectElements extends Prayer
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
+		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> protection from elements.");

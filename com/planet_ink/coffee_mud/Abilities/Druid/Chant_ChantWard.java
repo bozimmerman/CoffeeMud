@@ -55,6 +55,7 @@ public class Chant_ChantWard extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
+		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already affected by "+name()+".");

@@ -1,7 +1,5 @@
 Either change the cr/lf encoding of the InstallUNIX.sh file in  CoffeeMud.zip, or add a step in the install instructions that the file  should be converted with dos2unix (or like tool), before running the shell  script.
-imc2 causing login problems?!?!
 randommonsters is broke
-i3 shake shows $N to others.
 cmstat table in ms access
 [ca, geas, troll, kill, hassan]
 racial affects

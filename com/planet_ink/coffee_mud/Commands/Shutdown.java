@@ -32,6 +32,9 @@ public class Shutdown extends StdCommand
 		if((!noPrompt)
 		&&(!mob.session().confirm("Are you fully aware of the consequences of this act (y/N)?","N")))
 			return false;
+		
+		for(int s=0;s<Sessions.size();s++)
+			Sessions.elementAt(s).colorOnlyPrintln("^xShutting Down!^.^?");
 
 		if(keepItDown)
 			Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");

@@ -40,6 +40,7 @@ public class Prayer_ProtCold extends Prayer
 		MOB target=getTarget(mob,commands,givenTarget);
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
+		if(target==null) return false;
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
