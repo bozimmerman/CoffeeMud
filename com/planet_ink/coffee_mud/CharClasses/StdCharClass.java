@@ -27,6 +27,8 @@ public class StdCharClass implements CharClass
 	{
 		return false;
 	}
+	public int classDurationModifier(MOB myChar, Ability skill, int duration)
+	{ return duration;}
 
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

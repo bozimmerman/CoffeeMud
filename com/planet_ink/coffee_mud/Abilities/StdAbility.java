@@ -79,11 +79,14 @@ public class StdAbility implements Ability, Cloneable
 
 	public void startTickDown(Environmental affected, int tickTime)
 	{
+		if(invoker()!=null)
+			tickTime=invoker().charStats().getCurrentClass().classDurationModifier(invoker(),this,tickTime);
 		if(affected instanceof MOB)
 		{
 			if(((MOB)affected).location()==null) return;
 			if(affected.fetchAffect(this.ID())==null) affected.addAffect(this);
 			((MOB)affected).location().recoverRoomStats();
+			((MOB)affected).charStats().getCurrentClass().classDurationModifier(((MOB)affected),this,tickTime);
 		}
 		else
 		{

@@ -22,6 +22,7 @@ public interface CharClass
 	public void outfit(MOB mob);
 	
 	public boolean armorCheck(MOB mob);
+	public int classDurationModifier(MOB myChar, Ability skill, int duration);
 
 	/** some general statistics about such an item
 	 * see class "EnvStats" for more information. */
