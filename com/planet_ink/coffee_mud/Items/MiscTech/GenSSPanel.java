@@ -68,6 +68,10 @@ public class GenSSPanel extends GenShipContainer
 				return E instanceof ShipComponent.ShipWeapon;
 			case ShipComponent.ShipPanel.COMPONENT_PANEL_COMPUTER:
 				return E instanceof Software;
+			case ShipComponent.ShipPanel.COMPONENT_PANEL_ENVIRO:
+				return E instanceof ShipComponent.ShipEnviroControl;
+			default:
+			    return true;
 			}
 		}
 		return true;
