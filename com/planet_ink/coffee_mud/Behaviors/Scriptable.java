@@ -110,7 +110,8 @@ public class Scriptable extends StdBehavior
 		"MPSTARTQUEST", //23
 		"MPCALLFUNC", // 24
 		"MPBEACON", // 25
-		"MPALARM" // 26
+		"MPALARM", // 26
+		"MPWHILE" // 27
 	};
 
 	public Behavior newInstance()
@@ -174,20 +175,20 @@ public class Scriptable extends StdBehavior
 			int y=parse.indexOf("LOAD=");
 			if(y>=0)
 			{
+				results.append(parse.substring(0,y).trim()+"\n");
 				int z=parse.indexOf("~",y);
 				if(z>0)
 				{
 					depth+=1;
-					Log.sysOut("Scriptable","Loading -- "+text.substring(y+5,z)+", "+depth+", "+Resources.getFileResource(text.substring(y+5,z)).toString().length());
-					
-					results.append(parseLoads(Resources.getFileResource(text.substring(y+5,z)).toString(),depth));
+					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
+					results.append(parseLoads(Resources.getFileResource(filename).toString(),depth));
 				}
 				else
 				{
 					depth+=1;
-					Log.sysOut("Scriptable","Loading -- "+text.substring(y+5)+", "+depth+", "+Resources.getFileResource(text.substring(y+5)).toString().length());
-					results.append(parseLoads(Resources.getFileResource(text.substring(y+5)).toString(),depth));
+					String filename=parse.substring(y+5).trim();
+					results.append(parseLoads(Resources.getFileResource(filename).toString(),depth));
 					break;
 				}
 			}
@@ -197,7 +198,6 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 		}
-		Log.sysOut("Scriptable","Parsed script length -- "+results.toString().length());
 		return results.toString();
 	}
 
@@ -2235,6 +2235,24 @@ public class Scriptable extends StdBehavior
 			String num=(String)H.get(key);
 			val=new Integer(Util.s_int(num)-amount).toString();
 		}
+		else
+		if(val.startsWith("*"))
+		{
+			// multiply via *XXX form
+			val=val.substring(1);
+			int amount=new Integer(Util.s_int(val)).intValue();
+			String num=(String)H.get(key);
+			val=new Integer(Util.s_int(num)*amount).toString();
+		}
+		else
+		if(val.startsWith("-"))
+		{
+			// divide /XXX form
+			val=val.substring(1);
+			int amount=new Integer(Util.s_int(val)).intValue();
+			String num=(String)H.get(key);
+			val=new Integer(Util.s_int(num)/amount).toString();
+		}
 		if(H.containsKey(key))
 			H.remove(key);
 		H.put(key,val);
@@ -2736,6 +2754,47 @@ public class Scriptable extends StdBehavior
 				}
 				if(!found)
 					Log.errOut("Scriptable","MPCALLFUNC -- "+monster.Name()+", no function: "+named);
+				break;
+			}
+			case 27: // MPWHILE
+			{
+				String conditionStr=(s.substring(2).trim());
+				int x=conditionStr.indexOf("(");
+				if(x<0) 
+				{
+					Log.errOut("Scriptable","MPWHILE -- "+monster.Name()+", no condition: "+s);
+					break;
+				}
+				conditionStr=conditionStr.substring(x+1);
+				x=-1;
+				int depth=0;
+				for(int i=0;i<conditionStr.length();i++)
+					if(conditionStr.charAt(i)=='(')
+						depth++;
+					else
+					if((conditionStr.charAt(i)==')')&&((--depth)<0))
+					{
+						x=i;
+						break;
+					}
+				if(x<0)
+				{
+					Log.errOut("Scriptable","MPWHILE -- "+monster.Name()+", no closing ')': "+s);
+					break;
+				}
+				String cmd2=conditionStr.substring(x+1).trim();
+				conditionStr=conditionStr.substring(0,x);
+				Vector vscript=new Vector();
+				vscript.addElement("FUNCTION_PROG MPWHILE_"+Math.random());
+				vscript.addElement(cmd2);
+				long time=System.currentTimeMillis();
+				while((eval(source,target,monster,primaryItem,secondaryItem,msg,conditionStr))&&((System.currentTimeMillis()-time)<4000))
+					execute(source,target,monster,primaryItem,secondaryItem,vscript,msg);
+				if((System.currentTimeMillis()-time)>=4000)
+				{
+					Log.errOut("Scriptable","MPWHILE -- "+monster.Name()+", 4 second limit exceeded: "+conditionStr);
+					break;
+				}
 				break;
 			}
 			case 26: // MPALARM

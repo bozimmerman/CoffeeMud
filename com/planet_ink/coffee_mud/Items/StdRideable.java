@@ -285,7 +285,9 @@ public class StdRideable extends StdContainer implements Rideable
 			||(rideBasis()==Rideable.RIDEABLE_TABLE)
 			||(rideBasis()==Rideable.RIDEABLE_SLEEP)))
 			{
-				if(affect.amITarget(this)&&(numRiders()>=riderCapacity()))
+				if(affect.amITarget(this)
+				&&(numRiders()>=riderCapacity())
+				&&(!amRiding(affect.source())))
 				{
 					// for items
 					affect.source().tell(name()+" is full.");
@@ -316,7 +318,9 @@ public class StdRideable extends StdContainer implements Rideable
 			&&((rideBasis()==Rideable.RIDEABLE_SLEEP)
 			||(rideBasis()==Rideable.RIDEABLE_ENTERIN)))
 			{
-				if(affect.amITarget(this)&&(numRiders()>=riderCapacity()))
+				if(affect.amITarget(this)
+				&&(numRiders()>=riderCapacity())
+				&&(!amRiding(affect.source())))
 				{
 					// for items
 					affect.source().tell(name()+" is full.");
@@ -357,7 +361,8 @@ public class StdRideable extends StdContainer implements Rideable
 			{
 				if(affect.amITarget(this))
 				{
-					if(numRiders()>=riderCapacity())
+					if((numRiders()>=riderCapacity())
+					&&(!amRiding(affect.source())))
 					{
 						// for items
 						affect.source().tell(name()+" is full.");

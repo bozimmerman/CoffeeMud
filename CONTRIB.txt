@@ -15,7 +15,7 @@ Thomas Neumann for the fakedb package, and debugging assistance.
 
 George Reese for kindly providing his I3 java implementation.
 
-Jeremy Vyska for Clan, HTTP Post, and debugging support.
+Jeremy Vyska for Clan support, numerous Enhancements, and debugging support.
 
 Sky for the Moving Behavior.
 

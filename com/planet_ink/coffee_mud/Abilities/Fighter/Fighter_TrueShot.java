@@ -17,6 +17,7 @@ public class Fighter_TrueShot extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Fighter_TrueShot();}
+	private boolean gettingBonus=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -26,9 +27,12 @@ public class Fighter_TrueShot extends StdAbility
 		if((((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
 		||(((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN))
 		{
+			gettingBonus=true;
 			int bonus=(int)Math.round(Util.mul(affectableStats.attackAdjustment(),(Util.div(profficiency(),200.0))));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+bonus);
 		}
+		else
+			gettingBonus=false;
 	}
 	public void affect(Environmental myHost, Affect affect)
 	{
@@ -40,6 +44,7 @@ public class Fighter_TrueShot extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if((affect.amISource(mob))
+		&&(gettingBonus)
 		&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
 		&&(Dice.rollPercentage()>95)
 		&&(mob.isInCombat())

@@ -214,7 +214,8 @@ public class StdRideable extends StdMOB implements Rideable
 			if((riding()!=affect.source())
 			&&(affect.amITarget(this)))
 			{
-				if(numRiders()>=riderCapacity())
+				if((numRiders()>=riderCapacity())
+				&&(!amRiding(affect.source())))
 				{
 					// for items
 					//affect.source().tell(name()+" is full.");
