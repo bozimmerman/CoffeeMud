@@ -1563,6 +1563,7 @@ public class Arrest extends StdBehavior
 
 		if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(msg.target()!=null)
+		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&((msg.tool()==null)||(msg.source().isMine(msg.tool())))
 		&&(msg.target()!=msg.source())
 		&&(!msg.target().name().equals(msg.source().name()))

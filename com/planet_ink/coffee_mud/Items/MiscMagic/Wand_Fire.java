@@ -44,7 +44,7 @@ public class Wand_Fire extends StdWand
 		MOB mob=msg.source();
 		switch(msg.sourceMinor())
 		{
-		case CMMsg.TYP_SPEAK:
+		case CMMsg.TYP_WAND_USE:
 			if((mob.isMine(this))
 			   &&(!amWearingAt(Item.INVENTORY))
 			   &&(msg.target() instanceof MOB)
