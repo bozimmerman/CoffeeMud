@@ -135,6 +135,12 @@ public class Minstrel extends StdCharClass
 		return true;
 	}
 
+	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
+	{
+		if(E instanceof MusicalInstrument)
+			return true;
+		return super.weaponCheck(mob,sourceCode,E);
+	}
 	public String statQualifications(){return "Charisma 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

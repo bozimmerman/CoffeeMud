@@ -5,10 +5,13 @@ public interface Session
 {
 	public String[] clookup();
 	
+	public void onlyPrint(String msg, int pageBreak);
 	public void onlyPrint(String msg);
 	
 	public void rawPrintln(String msg);
+	public void rawPrintln(String msg, int pageBreak);
 	public void rawPrint(String msg);
+	public void rawPrint(String msg, int pageBreak);
 	
 	public void stdPrint(String msg);
 	public void stdPrint(Environmental Source,
@@ -38,6 +41,8 @@ public interface Session
 	public void unfilteredPrintln(String msg);
 	public void unfilteredPrint(String msg);
 	
+	public void colorOnlyPrintln(String msg, int pageBreak);
+	public void colorOnlyPrint(String msg, int pageBreak);
 	public void colorOnlyPrintln(String msg);
 	public void colorOnlyPrint(String msg);
 	

@@ -27,7 +27,6 @@ public class TelnetSession extends Thread implements Session
 	private String lastColorStr="";
 	private String lastStr=null;
 	private int spamStack=0;
-	private int pageBreak=-1;
 	private long lastOutput=0;
 	private int restlessCommands=0;
 	private Vector snoops=new Vector();
@@ -168,14 +167,15 @@ public class TelnetSession extends Thread implements Session
 		killFlag=true;
 	}
 
-	public synchronized void onlyPrint(String msg)
+	public void onlyPrint(String msg){onlyPrint(msg,-1);}
+	public synchronized void onlyPrint(String msg, int pageBreak)
 	{
 		if((out==null)||(msg==null)) return;
 		try
 		{
 			if(snoops.size()>0)
 				for(int s=0;s<snoops.size();s++)
-					((Session)snoops.elementAt(s)).onlyPrint(msg);
+					((Session)snoops.elementAt(s)).onlyPrint(msg,0);
 
 			lastOutput=System.currentTimeMillis();
 
@@ -198,8 +198,8 @@ public class TelnetSession extends Thread implements Session
 				lastStr=msg.substring(2);
 			else
 				lastStr=msg;
-			if(pageBreak<0)
-				pageBreak=CommonStrings.getIntVar(CommonStrings.SYSTEMI_PAGEBREAK);
+			
+			if(pageBreak<0)	pageBreak=CommonStrings.getIntVar(CommonStrings.SYSTEMI_PAGEBREAK);
 			if(pageBreak>0)
 			{
 				int lines=0;
@@ -231,23 +231,25 @@ public class TelnetSession extends Thread implements Session
 		catch(java.lang.NullPointerException e){}
 	}
 
-	public void rawPrint(String msg)
+	public void rawPrint(String msg){rawPrint(msg,-1);}
+	public void rawPrint(String msg, int pageBreak)
 	{ if(msg==null)return;
-	  onlyPrint((needPrompt?"":"\n\r")+msg);
+	  onlyPrint((needPrompt?"":"\n\r")+msg,pageBreak);
 	  needPrompt=true;
 	}
 
 	public void print(String msg)
-	{ onlyPrint(filter(mob,mob,null,msg,false)); }
+	{ onlyPrint(filter(mob,mob,null,msg,false),-1); }
 
-	public void rawPrintln(String msg)
-	{ if(msg==null)return; rawPrint(msg+"\n\r");}
+	public void rawPrintln(String msg){rawPrintln(msg,-1);}
+	public void rawPrintln(String msg, int pageBreak)
+	{ if(msg==null)return; rawPrint(msg+"\n\r",pageBreak);}
 
 	public void stdPrint(String msg)
 	{ rawPrint(filter(mob,mob,null,msg,false)); }
 
 	public void print(Environmental src, Environmental trg, Environmental tol, String msg)
-	{ onlyPrint((filter(src,trg,tol,msg,false)));}
+	{ onlyPrint((filter(src,trg,tol,msg,false)),-1);}
 
 	public void stdPrint(Environmental src, Environmental trg, Environmental tol, String msg)
 	{ rawPrint(filter(src,trg,trg,msg,false)); }
@@ -257,23 +259,27 @@ public class TelnetSession extends Thread implements Session
 
 	public void unfilteredPrintln(String msg)
 	{ if(msg==null)return;
-	  onlyPrint(filter(mob,mob,null,msg,true)+"\n\r");
+	  onlyPrint(filter(mob,mob,null,msg,true)+"\n\r",-1);
 	  needPrompt=true;
 	}
 
 	public void unfilteredPrint(String msg)
-	{ onlyPrint(filter(mob,mob,null,msg,true));
+	{ onlyPrint(filter(mob,mob,null,msg,true),-1);
 	  needPrompt=true;
 	}
 
 	public void colorOnlyPrintln(String msg)
+	{ colorOnlyPrint(msg,-1);}
+	public void colorOnlyPrintln(String msg, int pageBreak)
 	{ if(msg==null)return;
-	  onlyPrint(colorOnlyFilter(msg)+"\n\r");
+	  onlyPrint(colorOnlyFilter(msg)+"\n\r",pageBreak);
 	  needPrompt=true;
 	}
 
 	public void colorOnlyPrint(String msg)
-	{ onlyPrint(colorOnlyFilter(msg));
+	{ colorOnlyPrint(msg,-1);}
+	public void colorOnlyPrint(String msg, int pageBreak)
+	{ onlyPrint(colorOnlyFilter(msg),pageBreak);
 	  needPrompt=true;
 	}
 
@@ -284,7 +290,7 @@ public class TelnetSession extends Thread implements Session
 
 	public void println(Environmental src, Environmental trg, Environmental tol, String msg)
 	{ if(msg==null)return;
-	  onlyPrint(filter(src,trg,tol,msg,false)+"\n\r");
+	  onlyPrint(filter(src,trg,tol,msg,false)+"\n\r",-1);
 	}
 
 	public void stdPrintln(Environmental src,Environmental trg, Environmental tol, String msg)
@@ -1398,7 +1404,7 @@ public class TelnetSession extends Thread implements Session
 						if(mob==null) break;
 
 						if((spamStack>0)&&((lastOutput-System.currentTimeMillis())>100))
-							onlyPrint("");
+							onlyPrint("",0);
 
 						if((!afkFlag())&&(getIdleMillis()>=600000))
 							setAfkFlag(true);

@@ -3,8 +3,6 @@ importing and exporting users.  It would help me for some particular scenarios a
 Abilility to do Archon commands in Scriptable.
 MOBReSave doesn't work? Creates dups?
 crafting info parm
-Hi, I wrote some time back, that I have problems with lags when  snooping players. Actually this lag is caused whenever a message  from one person is passed to another one in case the receiver is  reading long texts that require enter to show it completely (more). Seems then all participants have to wait until everyone is ready to  receive new messages. Quite nasty.
-AUTOPAUSE the help file overflows my GMUD display buffer. We really need to break it down into sections (Traps, Skills, Spells, Chants, Prayers, Commonskills, Socials, Commands, etc)
 The blessing of a healer will make you drop things that are in containers. I don`t think that`s very logical, do they jump out of the bag?
 Several of my playtesters have pointed out that fletch bullets doesn't seem to work. I had them try fletch Pack of 50 Bullets with no results. Everything else in fletch works cept th
 compressing genmob data would be really great!

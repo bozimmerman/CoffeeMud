@@ -130,6 +130,12 @@ public class Bard extends StdCharClass
 		return true;
 	}
 
+	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
+	{
+		if(E instanceof MusicalInstrument)
+			return true;
+		return super.weaponCheck(mob,sourceCode,E);
+	}
 	public String statQualifications(){return "Charisma 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

@@ -58,7 +58,7 @@ public class Prayer_Bless extends Prayer
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
-			if((!cursedOnly)||(isCursed(I)))
+			if((I.container()==null)&&((!cursedOnly)||(isCursed(I))))
 				if(I.amWearingAt(Item.INVENTORY))
 					good.addElement(I);
 				else
