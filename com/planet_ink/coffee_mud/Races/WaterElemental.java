@@ -16,6 +16,10 @@ public class WaterElemental extends StdRace
 	public int weightVariance(){return 100;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Water Elemental";}
+	protected String[] racialAbilityNames={"Skill_Swim"};
+	protected int[] racialAbilityLevels={1};
+	protected int[] racialAbilityProfficiencies={100};
+	protected boolean[] racialAbilityQuals={false};
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};

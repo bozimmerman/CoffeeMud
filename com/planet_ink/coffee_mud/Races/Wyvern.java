@@ -18,6 +18,10 @@ public class Wyvern extends StdRace
 	public String racialCategory(){return "Reptile";}
 	protected String[] culturalAbilityNames={"Draconic"};
 	protected int[] culturalAbilityProfficiencies={50};
+	protected String[] racialAbilityNames={"WingedFlying"};
+	protected int[] racialAbilityLevels={1};
+	protected int[] racialAbilityProfficiencies={100};
+	protected boolean[] racialAbilityQuals={false};
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,2 };
