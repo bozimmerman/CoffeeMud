@@ -1587,7 +1587,9 @@ public class Import
 				if(obj.equalsIgnoreCase("pipe")) objType=32;
 				else
 				if(obj.toUpperCase().endsWith("CORPSE")) objType=99;
-
+				else
+				if(obj.equalsIgnoreCase("jukebox")) 
+					continue;// NO JUKE BOXES!
 			}
 			else
 				objType=Util.s_int(obj);
@@ -1762,6 +1764,7 @@ public class Import
 					 break;
 			case 29: I=CMClass.getStdItem("GenItem"); break;
 			case 99: I=CMClass.getStdItem("GenCorpse"); break;
+			case -1: I=CMClass.getStdItem("GenWallpaper"); break;
 			default:
 					I=CMClass.getStdItem("GenItem"); break;
 			}
