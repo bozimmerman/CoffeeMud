@@ -365,59 +365,62 @@ public class Lister
 			return;
 		}
 
+		Session s=mob.session();
+		if(s==null) return;
+		
 		String listThis=Util.combine(commands,0).toUpperCase();
 		String listWord=((String)commands.firstElement()).toUpperCase();
 
 		if("ITEMS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.items()).toString());
+			s.rawPrintln(reallyList(CMClass.items()).toString());
 		else
 		if("ARMOR".startsWith(listThis))
-			mob.tell(reallyList(CMClass.armor()).toString());
+			s.rawPrintln(reallyList(CMClass.armor()).toString());
 		else
 		if("WEAPONS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.weapons()).toString());
+			s.rawPrintln(reallyList(CMClass.weapons()).toString());
 		else
 		if("MOBS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.mobTypes()).toString());
+			s.rawPrintln(reallyList(CMClass.mobTypes()).toString());
 		else
 		if("ROOMS".startsWith(listThis))
-			mob.tell(roomDetails(CMMap.rooms(),mob.location()).toString());
+			s.rawPrintln(roomDetails(CMMap.rooms(),mob.location()).toString());
 		else
 		if("AREA".startsWith(listThis))
-			mob.tell(reallyList(CMMap.rooms(),mob.location()).toString());
+			s.rawPrintln(reallyList(CMMap.rooms(),mob.location()).toString());
 		else
 		if("LOCALES".startsWith(listThis))
-			mob.tell(reallyList(CMClass.locales()).toString());
+			s.rawPrintln(reallyList(CMClass.locales()).toString());
 		else
 		if("BEHAVIORS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.behaviors()).toString());
+			s.rawPrintln(reallyList(CMClass.behaviors()).toString());
 		else
 		if("EXITS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.exits()).toString());
+			s.rawPrintln(reallyList(CMClass.exits()).toString());
 		else
 		if("RACES".startsWith(listThis))
-			mob.tell(reallyList(CMClass.races()).toString());
+			s.rawPrintln(reallyList(CMClass.races()).toString());
 		else
 		if("CLASSES".startsWith(listThis))
-			mob.tell(reallyList(CMClass.charClasses()).toString());
+			s.rawPrintln(reallyList(CMClass.charClasses()).toString());
 		else
 		if("SPELLS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities(),Ability.SPELL).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.SPELL).toString());
 		else
 		if("SONGS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities(),Ability.SONG).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.SONG).toString());
 		else
 		if("PRAYERS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities(),Ability.PRAYER).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.PRAYER).toString());
 		else
 		if("PROPERTIES".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities(),Ability.PROPERTY).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.PROPERTY).toString());
 		else
 		if("THIEFSKILLS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities(),Ability.THIEF_SKILL).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.THIEF_SKILL).toString());
 		else
 		if("SKILLS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities(),Ability.SKILL).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.SKILL).toString());
 		else
 		if("TICKS".startsWith(listThis))
 			mob.tell(ExternalPlay.listTicks(-1).toString());
@@ -426,7 +429,7 @@ public class Lister
 			mob.tell(ExternalPlay.listTicks(Util.s_int(Util.combine(commands,1))).toString());
 		else
 		if("MAGIC".startsWith(listThis))
-			mob.tell(reallyList(CMClass.miscMagic()).toString());
+			s.rawPrintln(reallyList(CMClass.miscMagic()).toString());
 		else
 		if("BUGS".startsWith(listThis))
 			mob.tell(journalList("SYSTEM_BUGS").toString());
@@ -441,14 +444,14 @@ public class Lister
 			if((banned!=null)&&(banned.size()>0))
 			for(int b=0;b<banned.size();b++)
 				str.append((b+1)+") "+((String)banned.elementAt(b))+"\n\r");
-			mob.tell(str.toString());
+			s.rawPrintln(str.toString());
 		}
 		else
 		if("TYPOS".startsWith(listThis))
 			mob.tell(journalList("SYSTEM_TYPOS").toString());
 		else
 		if("LOG".startsWith(listThis))
-			mob.tell(Log.getLog().toString());
+			s.rawPrintln(Log.getLog().toString());
 		else
 		if("USERS".startsWith(listWord))
 			listUsers(mob,commands);
@@ -463,8 +466,8 @@ public class Lister
 			mob.tell(listThreads(mob).toString());
 		else
 		if("RESOURCES".startsWith(listThis))
-			mob.tell(reallyList(Resources.findResourceKeys("")).toString());
+			s.rawPrintln(reallyList(Resources.findResourceKeys("")).toString());
 		else
-			mob.tell("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, RESOURCES, or AREA.");
+			s.rawPrintln("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, RESOURCES, or AREA.");
 	}
 }
