@@ -1,11 +1,15 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+#set the quest name
+set name smurfocide
 
-<P>&nbsp;</P>
+set area Smurville
+# inform the quest that it occurs in Smurville
 
-</BODY>
-</HTML>
+set mob Gargamel
+# load up any mob from the above area.  Will set a room!
+
+give behavior Scriptable LOAD=quests/smurfocide/gargamel.script
+# load the above behavior into the last mob (gargamel)
+
+set duration 75
+# the duration of the quest is 5 minutes (75 ticks).  The scripts on the mobs will
+# do the rest...
