@@ -3713,8 +3713,12 @@ public class Scriptable extends StdBehavior
 		}
 	}
 
+	private static final Vector empty=new Vector();
+	
 	protected Vector getScripts()
 	{
+		if(CommonStrings.isDisabled("MOBILITY"))
+			return empty;
 		Vector scripts=null;
 		if(getParms().length()>100)
 			scripts=(Vector)Resources.getResource("PARSED SCRIPTS: "+getParms().substring(0,100)+getParms().length()+getParms().hashCode());

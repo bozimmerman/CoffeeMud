@@ -155,14 +155,14 @@ public class CoffeeMaker
 		{
 			Exit exit=(Exit)E;
 			exit.setReadable(get(f,4));
-			if(get(f,16)) Log.errOut("Generic","Exit has deprecated trap flag set!");
+			if(get(f,16)) Log.errOut("CoffeeMaker","Exit has deprecated trap flag set!");
 			boolean HasDoor=get(f,32);
 			boolean HasLock=get(f,64);
 			boolean DefaultsClosed=get(f,128);
 			boolean DefaultsLocked=get(f,256);
-			if(get(f,512)) Log.errOut("Generic","Exit has deprecated level restriction flag set!");
-			if(get(f,1024)) Log.errOut("Generic","Exit has deprecated class restriction flag set!");
-			if(get(f,2048)) Log.errOut("Generic","Exit has deprecated alignment restriction flag set!");
+			if(get(f,512)) Log.errOut("CoffeeMaker","Exit has deprecated level restriction flag set!");
+			if(get(f,1024)) Log.errOut("CoffeeMaker","Exit has deprecated class restriction flag set!");
+			if(get(f,2048)) Log.errOut("CoffeeMaker","Exit has deprecated alignment restriction flag set!");
 			exit.setDoorsNLocks(HasDoor,(!HasDoor)||(!DefaultsClosed),DefaultsClosed,HasLock,HasLock&&DefaultsLocked,DefaultsLocked);
 		}
 	}
@@ -171,7 +171,7 @@ public class CoffeeMaker
 	{
 		if(E==null)
 		{
-			Log.errOut("Generic","getPropertiesStr: null 'E'");
+			Log.errOut("CoffeeMaker","getPropertiesStr: null 'E'");
 			return "";
 		}
 		else
@@ -452,7 +452,7 @@ public class CoffeeMaker
 
 	public static String unpackErr(String where, String msg)
 	{
-		Log.errOut("Generic","unpack"+where+"FromXML: "+msg);
+		Log.errOut("CoffeeMaker","unpack"+where+"FromXML: "+msg);
 		return msg;
 	}
 
@@ -857,7 +857,8 @@ public class CoffeeMaker
 			if(!item.text().equals(dup.text()))
 				str.append(logTextDiff(item.text(),dup.text()));
 		}
-		Log.sysOut("Generic",str.toString());
+		if(Log.debugChannelOn())
+			Log.debugOut("CoffeeMaker",str.toString());
 	}
 
 	public static StringBuffer getRoomMobs(Room room, HashSet custom, Hashtable found)
@@ -916,7 +917,8 @@ public class CoffeeMaker
 							dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
 							dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 							dup.baseCharStats().setStat(CharStats.GENDER,mob.baseCharStats().getStat(CharStats.GENDER));
-							//logDiff(mob,dup);
+							if(Log.debugChannelOn()&&CommonStrings.isDebugging("EXPORT"))
+								logDiff(mob,dup);
 							dup.baseEnvStats().setHeight(oldHeight);
 							dup.baseEnvStats().setWeight(oldWeight);
 							dup.baseCharStats().setStat(CharStats.GENDER,oldGender);
@@ -983,7 +985,8 @@ public class CoffeeMaker
 					Item dup=(Item)dups.elementAt(v);
 					int oldHeight=item.baseEnvStats().height();
 					item.baseEnvStats().setHeight(dup.baseEnvStats().height());
-					//logDiff(item,dup);
+					if(Log.debugChannelOn()&&CommonStrings.isDebugging("EXPORT"))
+						logDiff(item,dup);
 					item.baseEnvStats().setHeight(oldHeight);
 				}
 				dups.addElement(item);
@@ -1232,10 +1235,10 @@ public class CoffeeMaker
 	{
 		Vector V=XMLManager.parseAllXML(buf);
 		if(V==null)
-			Log.errOut("Generic","setPropertiesStr: null 'V': "+((E==null)?"":E.Name()));
+			Log.errOut("CoffeeMaker","setPropertiesStr: null 'V': "+((E==null)?"":E.Name()));
 		else
 		if(E==null)
-			Log.errOut("Generic","setPropertiesStr: null 'E': "+((E==null)?"":E.Name()));
+			Log.errOut("CoffeeMaker","setPropertiesStr: null 'E': "+((E==null)?"":E.Name()));
 		else
 		{
 			if(E.isGeneric())
@@ -1261,7 +1264,7 @@ public class CoffeeMaker
 	public static void setPropertiesStr(Environmental E, Vector V, boolean fromTop)
 	{
 		if(E==null)
-			Log.errOut("Generic","setPropertiesStr2: null 'E'");
+			Log.errOut("CoffeeMaker","setPropertiesStr2: null 'E'");
 		else
 		{
 			if(E.isGeneric())
@@ -1276,7 +1279,7 @@ public class CoffeeMaker
 	{
 		if(V==null)
 		{
-			Log.errOut("Generic","null XML returned on "+E.ID()+" parse. Load aborted.");
+			Log.errOut("CoffeeMaker","null XML returned on "+E.ID()+" parse. Load aborted.");
 			return;
 		}
 
@@ -1301,7 +1304,7 @@ public class CoffeeMaker
                     XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)VP.elementAt(i);
                     if((!ablk.tag.equalsIgnoreCase("PARENT"))||(ablk.contents==null))
                     {
-                        Log.errOut("Generic","Error parsing 'PARENT' of "+E.name()+" ("+E.ID()+").  Load aborted");
+                        Log.errOut("CoffeeMaker","Error parsing 'PARENT' of "+E.name()+" ("+E.ID()+").  Load aborted");
                         return;
                     }
                     ((Area)E).addParentToLoad(XMLManager.getValFromPieces(ablk.contents,"PARENTNAMED"));
@@ -1315,7 +1318,7 @@ public class CoffeeMaker
                     XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)VC.elementAt(i);
                     if((!ablk.tag.equalsIgnoreCase("CHILD"))||(ablk.contents==null))
                     {
-                        Log.errOut("Generic","Error parsing 'CHILD' of "+E.name()+" ("+E.ID()+").  Load aborted");
+                        Log.errOut("CoffeeMaker","Error parsing 'CHILD' of "+E.name()+" ("+E.ID()+").  Load aborted");
                         return;
                     }
                     ((Area)E).addChildToLoad(XMLManager.getValFromPieces(ablk.contents,"CHILDNAMED"));
@@ -1353,7 +1356,7 @@ public class CoffeeMaker
 		Vector V=XMLManager.getRealContentsFromPieces(buf,"ABLTYS");
 		if(V==null)
 		{
-			Log.errOut("Generic","Error parsing 'ABLTYS' of "+M.Name()+".  Load aborted");
+			Log.errOut("CoffeeMaker","Error parsing 'ABLTYS' of "+M.Name()+".  Load aborted");
 			return;
 		}
 		else
@@ -1363,14 +1366,14 @@ public class CoffeeMaker
 				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
 				if((!ablk.tag.equalsIgnoreCase("ABLTY"))||(ablk.contents==null))
 				{
-					Log.errOut("Generic","Error parsing 'ABLTY' of "+M.Name()+".  Load aborted");
+					Log.errOut("CoffeeMaker","Error parsing 'ABLTY' of "+M.Name()+".  Load aborted");
 					return;
 				}
 				Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"ACLASS"));
 				Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"ADATA");
 				if((adat==null)||(newOne==null))
 				{
-					Log.errOut("Generic","Error parsing 'ABLTY DATA' of "+M.name()+" ("+M.ID()+").  Load aborted");
+					Log.errOut("CoffeeMaker","Error parsing 'ABLTY DATA' of "+M.name()+" ("+M.ID()+").  Load aborted");
 					return;
 				}
 				newOne.setProfficiency(100);
@@ -1389,7 +1392,7 @@ public class CoffeeMaker
 		Vector V=XMLManager.getRealContentsFromPieces(buf,"INVEN");
 		if(V==null)
 		{
-			Log.errOut("Generic","Error parsing 'INVEN' of "+M.Name()+".  Load aborted");
+			Log.errOut("CoffeeMaker","Error parsing 'INVEN' of "+M.Name()+".  Load aborted");
 			return;
 		}
 		else
@@ -1401,14 +1404,14 @@ public class CoffeeMaker
 				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)V.elementAt(i);
 				if((!iblk.tag.equalsIgnoreCase("ITEM"))||(iblk.contents==null))
 				{
-					Log.errOut("Generic","Error parsing 'ITEM' of "+M.Name()+".  Load aborted");
+					Log.errOut("CoffeeMaker","Error parsing 'ITEM' of "+M.Name()+".  Load aborted");
 					return;
 				}
 				Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"ICLASS"));
 				Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"IDATA");
 				if((idat==null)||(newOne==null))
 				{
-					Log.errOut("Generic","Error parsing 'ITEM DATA' of "+M.name()+" ("+M.ID()+").  Load aborted");
+					Log.errOut("CoffeeMaker","Error parsing 'ITEM DATA' of "+M.name()+" ("+M.ID()+").  Load aborted");
 					return;
 				}
 				int wornCode=XMLManager.getIntFromPieces(idat,"IWORN");
@@ -1438,7 +1441,7 @@ public class CoffeeMaker
 	{
 		if(buf==null)
 		{
-			Log.errOut("Generic","null XML returned on "+E.ID()+" parse.  Load aborted.");
+			Log.errOut("CoffeeMaker","null XML returned on "+E.ID()+" parse.  Load aborted.");
 			return;
 		}
 
@@ -1490,6 +1493,8 @@ public class CoffeeMaker
 			MOB mob=(MOB)E;
 			if(XMLManager.getValFromPieces(buf,"GENDER").length()>0)
 				mob.baseCharStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
+			else
+				Log.errOut("CoffeeMaker",E.name()+" has a null GENDER.");
 			mob.setClanID(XMLManager.getValFromPieces(buf,"CLAN"));
 			if(mob.getClanID().length()>0) mob.setClanRole(Clan.POS_MEMBER);
 			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
@@ -1614,7 +1619,7 @@ public class CoffeeMaker
 				Vector V=XMLManager.getRealContentsFromPieces(buf,"BLESSINGS");
 				if(V==null)
 				{
-					Log.errOut("Generic","Error parsing 'BLESSINGS' of "+E.Name()+".  Load aborted");
+					Log.errOut("CoffeeMaker","Error parsing 'BLESSINGS' of "+E.Name()+".  Load aborted");
 					return;
 				}
 				else
@@ -1624,14 +1629,14 @@ public class CoffeeMaker
 						XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
 						if((!ablk.tag.equalsIgnoreCase("BLESS"))||(ablk.contents==null))
 						{
-							Log.errOut("Generic","Error parsing 'BLESS' of "+E.Name()+".  Load aborted");
+							Log.errOut("CoffeeMaker","Error parsing 'BLESS' of "+E.Name()+".  Load aborted");
 							return;
 						}
 						Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"BLCLASS"));
 						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"BLDATA");
 						if((adat==null)||(newOne==null))
 						{
-							Log.errOut("Generic","Error parsing 'BLESS DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
+							Log.errOut("CoffeeMaker","Error parsing 'BLESS DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
 							return;
 						}
 						setPropertiesStr(newOne,adat,true);
@@ -1646,14 +1651,14 @@ public class CoffeeMaker
 						XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
 						if((!ablk.tag.equalsIgnoreCase("CURSE"))||(ablk.contents==null))
 						{
-							Log.errOut("Generic","Error parsing 'CURSE' of "+E.Name()+".  Load aborted");
+							Log.errOut("CoffeeMaker","Error parsing 'CURSE' of "+E.Name()+".  Load aborted");
 							return;
 						}
 						Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"CUCLASS"));
 						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"CUDATA");
 						if((adat==null)||(newOne==null))
 						{
-							Log.errOut("Generic","Error parsing 'CURSE DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
+							Log.errOut("CoffeeMaker","Error parsing 'CURSE DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
 							return;
 						}
 						setPropertiesStr(newOne,adat,true);
@@ -1668,14 +1673,14 @@ public class CoffeeMaker
 						XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
 						if((!ablk.tag.equalsIgnoreCase("POWER"))||(ablk.contents==null))
 						{
-							Log.errOut("Generic","Error parsing 'POWER' of "+E.Name()+".  Load aborted");
+							Log.errOut("CoffeeMaker","Error parsing 'POWER' of "+E.Name()+".  Load aborted");
 							return;
 						}
 						Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"POCLASS"));
 						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"PODATA");
 						if((adat==null)||(newOne==null))
 						{
-							Log.errOut("Generic","Error parsing 'POWER DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
+							Log.errOut("CoffeeMaker","Error parsing 'POWER DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
 							return;
 						}
 						setPropertiesStr(newOne,adat,true);
@@ -1693,7 +1698,7 @@ public class CoffeeMaker
 				Vector V=XMLManager.getRealContentsFromPieces(buf,"STORE");
 				if(V==null)
 				{
-					Log.errOut("Generic","Error parsing 'STORE' of "+E.Name()+".  Load aborted");
+					Log.errOut("CoffeeMaker","Error parsing 'STORE' of "+E.Name()+".  Load aborted");
 					return;
 				}
 				else
@@ -1705,7 +1710,7 @@ public class CoffeeMaker
 						XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)V.elementAt(i);
 						if((!iblk.tag.equalsIgnoreCase("SHITEM"))||(iblk.contents==null))
 						{
-							Log.errOut("Generic","Error parsing 'SHITEM' of "+E.Name()+".  Load aborted");
+							Log.errOut("CoffeeMaker","Error parsing 'SHITEM' of "+E.Name()+".  Load aborted");
 							return;
 						}
 						String itemi=XMLManager.getValFromPieces(iblk.contents,"SICLASS");
@@ -1721,7 +1726,7 @@ public class CoffeeMaker
 						if(newOne==null) newOne=CMClass.getUnknown(itemi);
 						if((idat==null)||(newOne==null))
 						{
-							Log.errOut("Generic","Error parsing 'SHOP DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
+							Log.errOut("CoffeeMaker","Error parsing 'SHOP DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
 							return;
 						}
 						if(newOne instanceof Item)
@@ -1913,7 +1918,7 @@ public class CoffeeMaker
 		Vector V=XMLManager.getRealContentsFromPieces(buf,"BEHAVES");
 		if(V==null)
 		{
-			Log.errOut("Generic","Error parsing 'BEHAVES' of "+E.name()+" ("+E.ID()+").  Load aborted");
+			Log.errOut("CoffeeMaker","Error parsing 'BEHAVES' of "+E.name()+" ("+E.ID()+").  Load aborted");
 			return;
 		}
 		else
@@ -1923,14 +1928,14 @@ public class CoffeeMaker
 				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
 				if((!ablk.tag.equalsIgnoreCase("BHAVE"))||(ablk.contents==null))
 				{
-					Log.errOut("Generic","Error parsing 'BHAVE' of "+E.name()+" ("+E.ID()+").  Load aborted");
+					Log.errOut("CoffeeMaker","Error parsing 'BHAVE' of "+E.name()+" ("+E.ID()+").  Load aborted");
 					return;
 				}
 				Behavior newOne=CMClass.getBehavior(XMLManager.getValFromPieces(ablk.contents,"BCLASS"));
 				String bparms=XMLManager.getValFromPieces(ablk.contents,"BPARMS");
 				if(newOne==null)
 				{
-					Log.errOut("Generic","Error parsing 'BHAVE DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
+					Log.errOut("CoffeeMaker","Error parsing 'BHAVE DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
 					return;
 				}
 				newOne.setParms(restoreAngleBrackets(bparms));
@@ -1941,7 +1946,7 @@ public class CoffeeMaker
 		V=XMLManager.getRealContentsFromPieces(buf,"AFFECS");
 		if(V==null)
 		{
-			Log.errOut("Generic","Error parsing 'AFFECS' of "+E.name()+" ("+E.ID()+").  Load aborted");
+			Log.errOut("CoffeeMaker","Error parsing 'AFFECS' of "+E.name()+" ("+E.ID()+").  Load aborted");
 			return;
 		}
 		else
@@ -1951,14 +1956,14 @@ public class CoffeeMaker
 				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
 				if((!ablk.tag.equalsIgnoreCase("AFF"))||(ablk.contents==null))
 				{
-					Log.errOut("Generic","Error parsing 'AFF' of "+E.name()+" ("+E.ID()+").  Load aborted");
+					Log.errOut("CoffeeMaker","Error parsing 'AFF' of "+E.name()+" ("+E.ID()+").  Load aborted");
 					return;
 				}
 				Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"ACLASS"));
 				String aparms=XMLManager.getValFromPieces(ablk.contents,"ATEXT");
 				if(newOne==null)
 				{
-					Log.errOut("Generic","Error parsing 'AFF DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
+					Log.errOut("CoffeeMaker","Error parsing 'AFF DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
 					return;
 				}
 				newOne.setMiscText(restoreAngleBrackets(aparms));

@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
 public class CommonStrings extends Scriptable
 {
 	private static final long startTime=System.currentTimeMillis();
@@ -70,6 +72,8 @@ public class CommonStrings extends Scriptable
 	private static String[] sysVars=new String[NUM_SYSTEM];
 	private static Integer[] sysInts=new Integer[NUMI_SYSTEM];
 	private static Boolean[] sysBools=new Boolean[NUMB_SYSTEM];
+	private static HashSet disVars=new HashSet();
+	private static HashSet dbgVars=new HashSet();
 
 	public static int pkillLevelDiff=26;
 
@@ -140,6 +144,28 @@ public class CommonStrings extends Scriptable
 		}
 	}
 
+	public static void setDebugVars(String vars)
+	{
+		Vector V=Util.parseCommas(vars.toUpperCase(),true);
+		dbgVars.clear();
+		for(int v=0;v<V.size();v++)
+			dbgVars.add(((String)V.elementAt(v)).trim());
+	}
+	
+	public static void setDisableVars(String vars)
+	{
+		Vector V=Util.parseCommas(vars.toUpperCase(),true);
+		disVars.clear();
+		for(int v=0;v<V.size();v++)
+			disVars.add((String)V.elementAt(v));
+	}
+	
+	public static boolean isDebugging(String key)
+	{ return (dbgVars.size()>0)&&dbgVars.contains(key);}
+	
+	public static boolean isDisabled(String key)
+	{ return (disVars.size()>0)&&disVars.contains(key);}
+	
 	public static String[] standardColorLookups()
 	{
 		if(clookup==null)

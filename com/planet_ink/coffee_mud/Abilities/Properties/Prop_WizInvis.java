@@ -94,8 +94,17 @@ public class Prop_WizInvis extends Property
 			return false;
 		}
 		else
-		if((affected!=null)&&(affected instanceof MOB)&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))&&(msg.amISource((MOB)affected)))
-			disabled=true;
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+			if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))&&(msg.amISource((MOB)affected)))
+				disabled=true;
+			else
+			if((msg.amISource((MOB)affected))
+			&&(msg.source().location()!=null)
+			&&(!msg.source().isASysOp(msg.source().location())))
+				msg.source().setBitmap(Util.unsetb(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS));
+		}
+		
 		return super.okMessage(myHost,msg);
 	}
 }

@@ -230,7 +230,8 @@ public class Conquerable extends Arrest
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		if((!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		||(CommonStrings.isDisabled("CONQUEST")))
 			return true;
 
 		if(!super.tick(ticking,tickID))
@@ -426,7 +427,8 @@ public class Conquerable extends Arrest
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((holdingClan.length()>0)
-		&&(msg.source().getClanID().equals(holdingClan)))
+		&&(msg.source().getClanID().equals(holdingClan))
+		&&(!CommonStrings.isDisabled("CONQUEST")))
 		{
 			if((msg.source().isMonster())
 			&&(msg.target() instanceof MOB)
@@ -604,7 +606,8 @@ public class Conquerable extends Arrest
 	{
 		super.executeMsg(myHost,msg);
 		if((myHost instanceof Area)
-		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)
+		&&(!CommonStrings.isDisabled("CONQUEST")))
 		&&(totalControlPoints>0))
 		{
 			// first look for kills and follows and register the points
@@ -753,7 +756,8 @@ public class Conquerable extends Arrest
 	{
 		if((holdingClan.length()==0)
 		||(!allowLaw)
-		||(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)))
+		||(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		||(CommonStrings.isDisabled("ARREST")))
 			return false;
 		if(flagFound(null,holdingClan))
 			return true;

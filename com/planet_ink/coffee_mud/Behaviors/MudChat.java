@@ -343,7 +343,8 @@ public class MudChat extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 
-		if(!canFreelyBehaveNormal(affecting))
+		if((!canFreelyBehaveNormal(affecting))
+		||(CommonStrings.isDisabled("MUDCHAT")))
 			return;
 		MOB mob=msg.source();
 		MOB monster=(MOB)affecting;
@@ -455,7 +456,9 @@ public class MudChat extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if((tickID==MudHost.TICK_MOB)&&(ticking instanceof MOB))
+		if((tickID==MudHost.TICK_MOB)
+		&&(ticking instanceof MOB)
+		&&(!CommonStrings.isDisabled("MUDCHAT")))
 		{
 			if(!canFreelyBehaveNormal(ticking))
 			{

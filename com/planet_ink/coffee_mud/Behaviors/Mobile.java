@@ -136,7 +136,9 @@ public class Mobile extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
+		if((canAct(ticking,tickID))
+		&&(ticking instanceof MOB)
+		&&(!CommonStrings.isDisabled("MOBILITY")))
 		{
 			Vector objections=null;
 			MOB mob=(MOB)ticking;

@@ -912,8 +912,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					Log.errOut(getName(),e);
 			}
 		}
-		Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
-				":" + status);
+		
+		if((Log.debugChannelOn())&&(CommonStrings.isDebugging("HTTPREQ")))
+			Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
+					":" + status);
 
 
 		try

@@ -81,6 +81,7 @@ public class Mime extends ActiveTicker
 		if(msg==null) return true;
 		lastMsg=null;
 		if(((ticking instanceof MOB)&&(!canFreelyBehaveNormal(ticking)))
+		||(CommonStrings.isDisabled("EMOTERS"))
 		||(!canAct(ticking,tickID)))
 			return true;
 		msg=(CMMsg)msg.copyOf();

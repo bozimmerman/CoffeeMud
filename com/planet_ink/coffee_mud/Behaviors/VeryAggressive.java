@@ -87,7 +87,8 @@ public class VeryAggressive extends Aggressive
 			}
 			if(dirCode>=0) break;
 		}
-		if(dirCode>=0)
+		if((dirCode>=0)
+		&&(!CommonStrings.isDisabled("MOBILITY")))
 		{
 			MUDTracker.move(mob,dirCode,false,false);
 			pickAFight(mob,zapStr,mobKiller);

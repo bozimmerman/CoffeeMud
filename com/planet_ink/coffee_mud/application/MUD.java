@@ -222,6 +222,11 @@ public class MUD extends Thread implements MudHost
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MOBDCOMPRESS,compress.contains("MOBDESC"));
 		Resources.setCompression(compress.contains("RESOURCES"));
 
+		CommonStrings.setDisableVars(page.getStr("DISABLE"));
+		if(page.getStr("DISABLE").trim().length()>0)
+			Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));
+		CommonStrings.setDebugVars(page.getStr("DEBUG"));
+		
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();
 		if(DBerrors.length()==0)
@@ -305,13 +310,16 @@ public class MUD extends Thread implements MudHost
 		try
 		{
 			saveThread=new SaveThread();
-			if(Util.parseCommas(page.getStr("DISABLE").toUpperCase(),true).contains("SAVETHREAD"))
+			if(CommonStrings.isDisabled("SAVETHREAD"))
 				Log.sysOut("MUD","** SAVE THREAD NOT STARTED.");
 			else
 				saveThread.start();
 
 			utiliThread=new UtiliThread();
-			utiliThread.start();
+			if(CommonStrings.isDisabled("UTILITHREAD"))
+				Log.sysOut("MUD","** UTILITY THREAD NOT STARTED.");
+			else
+				utiliThread.start();
 
 			Log.sysOut("MUD","Utility threads started");
 		}

@@ -388,7 +388,7 @@ public class Reset extends StdCommand
 						MOB M=(MOB)R.fetchInhabitant(i);
 						if((M.isMonster())
 						&&(M.getStartRoom()==R)
-						&&(M.baseEnvStats().armor()>M.baseCharStats().getCurrentClass().getLevelArmor(M)))
+						&&(M.baseEnvStats().armor()==((100-(M.baseEnvStats().level()*7)))))
 						{
 							int oldArmor=M.baseEnvStats().armor();
 							M.baseEnvStats().setArmor(M.baseCharStats().getCurrentClass().getLevelArmor(M));

@@ -521,7 +521,7 @@ public class StdCharClass implements CharClass, Cloneable
 
 	public int getLevelArmor(MOB mob)
 	{
-		return 100-(mob.baseEnvStats().level()*(3+getBonusAttackLevel()));
+		return 100-(mob.baseEnvStats().level()*(4+getBonusAttackLevel()));
 	}
 
 	public int getLevelDamage(MOB mob)

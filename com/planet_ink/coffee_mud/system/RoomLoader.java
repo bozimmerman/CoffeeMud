@@ -215,7 +215,9 @@ public class RoomLoader
 
 	public static void DBReadContent(Room thisRoom, Hashtable rooms, boolean setStatus)
 	{
-
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Reading content of "+((thisRoom!=null)?thisRoom.roomID():"ALL"));
+		
 		Hashtable stuff=new Hashtable();
 		Hashtable itemNums=null;
 		Hashtable itemLocs=null;
@@ -370,6 +372,8 @@ public class RoomLoader
 					fixMOBRides(mobRides,itemNums);
 			}
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done reading content of "+((thisRoom!=null)?thisRoom.roomID():"ALL"));
 	}
 
 	private static void DBUpdateContents(Room room)
@@ -427,6 +431,8 @@ public class RoomLoader
 	public static void DBUpdateItems(Room room)
 	{
 		if(room.roomID().length()==0) return;
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROIT")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
 		DBConnection D=null;
 		try
 		{
@@ -440,12 +446,18 @@ public class RoomLoader
 			Log.errOut("Room","UpdateItems"+sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROIT")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Continue item update for room "+room.roomID());
 		DBUpdateContents(room);
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROIT")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Finished item update for room "+room.roomID());
 	}
 
 	public static void DBUpdateExits(Room room)
 	{
 		if(room.roomID().length()==0) return;
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROEX")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
 		DBConnection D=null;
 		String str=null;
 		try
@@ -484,10 +496,14 @@ public class RoomLoader
 			Log.errOut("Room","UpdateExits"+sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROEX")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Finished exit update for room "+room.roomID());
 	}
 
 	private static void DBCreateThisMOB(Room room, MOB thisMOB)
 	{
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Creating mob "+thisMOB.name()+" for room "+room.roomID());
 		DBConnection D=null;
 		String str=null;
 		String ride=null;
@@ -530,10 +546,14 @@ public class RoomLoader
 			Log.errOut("Room","CrRoomMOB"+sqle.getMessage());
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Created mob "+thisMOB.name()+" for room "+room.roomID());
 	}
 	public static void DBUpdateTheseMOBs(Room room, Vector mobs)
 	{
 		if(room.roomID().length()==0) return;
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Updating mobs for room "+room.roomID());
 		if(mobs==null) mobs=new Vector();
 		DBConnection D=null;
 		String str=null;
@@ -550,11 +570,15 @@ public class RoomLoader
 			Log.errOut("Room","UpdateMOBs"+sqle.getMessage());
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Continue updating mobs for room "+room.roomID());
 		for(int m=0;m<mobs.size();m++)
 		{
 			MOB thisMOB=(MOB)mobs.elementAt(m);
 			DBCreateThisMOB(room,thisMOB);
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done updating mobs for room "+room.roomID());
 	}
 
 	public static void DBUpdateMOBs(Room room)
@@ -584,6 +608,8 @@ public class RoomLoader
 	public static void DBUpdateRoom(Room room)
 	{
 		if(room.roomID().length()==0) return;
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Start updating room "+room.roomID());
 		DBConnection D=null;
 		try
 		{
@@ -604,12 +630,16 @@ public class RoomLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done updating room "+room.roomID());
 	}
 
 
 	public static void DBReCreate(Room room, String oldID)
 	{
 		if(room.roomID().length()==0) return;
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Recreating room "+room.roomID());
 		DBConnection D=null;
 		try
 		{
@@ -658,10 +688,14 @@ public class RoomLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done recreating room "+room.roomID());
 	}
 
 	public static Area DBCreate(String areaName, String areaType)
 	{
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Creating area "+areaName);
 		Area A=CMClass.getAreaType(areaType);
 		if(A==null) A=CMClass.getAreaType("StdArea");
 		if((A==null)||(areaName.length()==0)) return null;
@@ -701,11 +735,15 @@ public class RoomLoader
 		}
 		if(A==null) return null;
 		A.tickControl(true);
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done creating area "+areaName);
 		return A;
 	}
 
 	public static void DBUpdate(String keyName,Area A)
 	{
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Updating area "+A.name());
 		DBConnection D=null;
 		String str=null;
 		try
@@ -730,10 +768,16 @@ public class RoomLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done updating area "+A.name());
 	}
 
 	public static void DBUpdateRoomMOB(String keyName, Room room, MOB mob)
 	{
+		if((room==null)||(room.roomID().length()==0)) return;
+		
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+room.roomID());
 		DBConnection D=null;
 		String str=null;
 		try
@@ -752,12 +796,18 @@ public class RoomLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Continue updating mob "+mob.name()+" in room "+room.roomID());
 		DBCreateThisMOB(room,mob);
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+room.roomID());
 	}
 
 	public static void DBDelete(Area A)
 	{
 		if(A==null) return;
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Destroying area "+A.name());
 		A.tickControl(false);
 		DBConnection D=null;
 		try
@@ -772,12 +822,16 @@ public class RoomLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done destroying area "+A.name()+".");
 	}
 
 
 	public static void DBCreate(Room room, String LocaleID)
 	{
 		if(room.roomID().length()==0) return;
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Creating new room "+room.roomID());
 		DBConnection D=null;
 		String str=null;
 		try
@@ -807,12 +861,15 @@ public class RoomLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
-
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done creating new room "+room.roomID());
 	}
 
 	public static void DBDelete(Room room)
 	{
 		if(room.roomID().length()==0) return;
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Destroying room "+room.roomID());
 		DBConnection D=null;
 		try
 		{
@@ -852,5 +909,7 @@ public class RoomLoader
 			Log.errOut("Room","Delete"+sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done gestroying room "+room.roomID());
 	}
 }

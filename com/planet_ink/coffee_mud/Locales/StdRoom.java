@@ -703,10 +703,15 @@ public class StdRoom
 		StringBuffer Say=new StringBuffer("");
 		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
-			if(myArea!=null)
-				Say.append("^!Area  :^N("+myArea.Name()+")"+"\n\r");
-			Say.append("^!Locale:^N("+ID()+")"+"\n\r");
-			Say.append("^H("+CMMap.getExtendedRoomID(this)+")^N ");
+			if(!mob.isASysOp(this))
+				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
+			else
+			{
+				if(myArea!=null)
+					Say.append("^!Area  :^N("+myArea.Name()+")"+"\n\r");
+				Say.append("^!Locale:^N("+ID()+")"+"\n\r");
+				Say.append("^H("+CMMap.getExtendedRoomID(this)+")^N ");
+			}
 		}
 		if(Sense.canBeSeenBy(this,mob))
 		{
@@ -913,7 +918,7 @@ public class StdRoom
 
 	private void reallyReallySend(MOB source, CMMsg msg)
 	{
-		if(Log.debugChannelOn())
+		if((Log.debugChannelOn())&&(CommonStrings.isDebugging("MESSAGES")))
 			Log.debugOut("StdRoom",((msg.source()!=null)?msg.source().ID():"null")+":"+msg.sourceCode()+":"+msg.sourceMessage()+"/"+((msg.target()!=null)?msg.target().ID():"null")+":"+msg.targetCode()+":"+msg.targetMessage()+"/"+((msg.tool()!=null)?msg.tool().ID():"null")+"/"+msg.othersCode()+":"+msg.othersMessage());
 		Vector inhabs=(Vector)inhabitants.clone();
 		for(int i=0;i<inhabs.size();i++)

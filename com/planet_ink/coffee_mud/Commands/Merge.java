@@ -421,6 +421,7 @@ public class Merge extends StdCommand
 		for(int r=0;r<placesToDo.size();r++)
 		{
 			Room R=(Room)placesToDo.elementAt(r);
+			if(R.roomID().length()==0) continue;
 			boolean oldMobility=R.getArea().getMobility();
 			R.getArea().toggleMobility(false);
 			CoffeeUtensils.resetRoom(R);

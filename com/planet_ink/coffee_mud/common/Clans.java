@@ -316,7 +316,8 @@ public class Clans implements Clan, Tickable
 	}
 	public static void addClan(Clan C)
 	{
-		CMClass.ThreadEngine().startTickDown(C,MudHost.TICK_CLAN,(int)MudHost.TICKS_PER_MUDDAY);
+		if(!CommonStrings.isDisabled("CLANTICKS"))
+			CMClass.ThreadEngine().startTickDown(C,MudHost.TICK_CLAN,(int)MudHost.TICKS_PER_MUDDAY);
 		all.put(C.ID().toUpperCase(),C);
 	}
 	public static void removeClan(Clan C)

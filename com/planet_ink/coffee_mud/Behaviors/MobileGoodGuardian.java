@@ -52,7 +52,8 @@ public class MobileGoodGuardian extends Mobile
 			}
 			if(dirCode>=0) break;
 		}
-		if(dirCode>=0)
+		if((dirCode>=0)
+		&&(!CommonStrings.isDisabled("MOBILITY")))
 		{
 			MUDTracker.move(mob,dirCode,false,false);
 			GoodGuardian.keepPeace(mob,victim);
