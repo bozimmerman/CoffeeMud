@@ -1,0 +1,123 @@
+#This script is an exercise of the speech program, creating an annoying;
+#mob that shows off his knowledge of you.;
+SPEECH_PROG sex gender male female;
+IF RAND(50);
+	IF SEX($i) == M);
+		yell "I have a penis!";
+		MPECHOAROUND A loud gong sound can be heard.;
+	ENDIF;
+	IF SEX($i) == F);
+		say "I have a vagina!";
+	ELSE;
+		say "I don't have a penis, or a vagina!";
+	ENDIF;
+ELSE;
+	IF SEX($n) == M);
+		say $n "You have a penis!";
+		MPECHO A light gong sound can be heard.;
+	ENDIF;
+	IF SEX($n) == F);
+		say $n "You have a vagina!";
+	ELSE;
+		say $n "You don't have a penis, or a vagina!";
+	ENDIF;
+ENDIF~
+
+SPEECH_PROG good alignment;
+IF RAND(50);
+	IF(ISGOOD($i));
+		say "I am very good!";
+	ENDIF;
+ELSE;
+	IF(ISGOOD($n));
+		say $n "You are very good!";
+	ENDIF;
+ENDIF~
+
+SPEECH_PROG evil alignment;
+IF RAND(50);
+	IF(ISEVIL($i));
+		say "I am eeevvviiiillll!";
+		MPECHO $i looks very wicked.
+	ENDIF;
+ELSE;
+	IF(ISEVIL($n));
+		say $n "You are evil!";
+	ENDIF;
+ENDIF~
+
+SPEECH_PROG neutral alignment;
+IF RAND(50);
+	IF(ISNEUTRAL($i));
+		say "I am neutral.";
+	ENDIF;
+ELSE;
+	IF(ISNEUTRAL($n));
+		say $n "You are neutral.";
+	ENDIF;
+ENDIF~
+
+SPEECH_PROG weapon sword mace quarterstaff;
+IF WORN($n sword);
+	say $n "You are wielding a sword!";
+ELSE;
+	IF HAS($n sword);
+		say $n "You have a sword!";
+	ENDIF;
+ENDIF;
+IF WORN($n mace);
+	say $n "You are wielding a mace!";
+ELSE;
+	IF HAS($n mace);
+		say $n "You have a mace!";
+	ENDIF;
+ENDIF;
+IF WORN($n quarterstaff);
+	say $n "You are wielding a quarterstaff!";
+ELSE;
+	IF HAS($n quarterstaff);
+		say $n "You have a quarterstaff!";
+	ENDIF;
+ENDIF~
+
+SPEECH_PROG sitting standing sleeping sit stand sleep;
+IF RAND(50);
+	IF POSITION($n SITTING);
+		say $n "You are sitting!";
+	ENDIF;
+	IF POSITION($n STANDING);
+		say $n "You are standing!";
+	ENDIF;
+	IF POSITION($n SLEEPING);
+		say $n "You are sleeping!";
+	ENDIF;
+ELSE;
+	IF POSITION($i SITTING);
+		say "I am sitting!";
+	ENDIF;
+	IF POSITION($i STANDING);
+		say "I am standing!";
+	ENDIF;
+	IF POSITION($i SLEEPING);
+		say "I am sleeping!";
+	ENDIF;
+ENDIF~
+
+SPEECH_PROG level advancement experience;
+IF LEVEL($n == 1);
+	say $n "You are lowly 1st level!";
+ENDIF;
+IF LEVEL($n != 1) AND LEVEL($n < 5);
+	say $n "You are lowly leveled!";
+ENDIF;
+IF LEVEL($n >= 5) AND LEVEL($n < 10);
+	say $n "You are ok leveled!";
+ENDIF;
+IF LEVEL($n >= 10) AND LEVEL($n < 15);
+	say $n "You are mid leveled!";
+ENDIF;
+IF LEVEL($n > 15) OR LEVEL($n == 2);
+	say $n "You are WAY leveled!";
+ENDIF;
+ENDIF~
+
