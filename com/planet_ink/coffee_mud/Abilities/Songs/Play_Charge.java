@@ -9,7 +9,7 @@ import java.util.*;
 public class Play_Charge extends Play
 {
 	public String ID() { return "Play_Charge"; }
-	public String name(){ return "Charge";}
+	public String name(){ return "Charge!";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	public Environmental newInstance(){	return new Play_Charge();}
