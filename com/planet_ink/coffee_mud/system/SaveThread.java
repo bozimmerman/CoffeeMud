@@ -103,7 +103,11 @@ public class SaveThread extends Thread
 					}
 					else
 					if(time>check)
+					{
 						Log.errOut("SaveThread","Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().name())+", out for "+time);
+						Log.errOut("SaveThread","STATUS  was :"+S.getStatus());
+						Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+					}
 				}
 				else
 				if(time>(60000))

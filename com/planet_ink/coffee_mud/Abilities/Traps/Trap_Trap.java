@@ -26,6 +26,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			benefactor=(MOB)CMClass.getMOB("StdMOB");
 	}
 
+	public boolean isABomb(){return false;}
 	public boolean sprung(){return sprung;}
 	public boolean disabled(){return sprung;}
 	public void disable(){ sprung=true;}

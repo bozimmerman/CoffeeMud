@@ -24,6 +24,33 @@ public interface MOB
 	public static final int ATT_AUTODRAW=2048;
 	public static final int ATT_AUTOGUARD=4096;
 	
+	public static final boolean[] AUTOREV={false,
+										   false,
+										   false,
+										   true,
+										   false,
+										   false,
+										   true,
+										   false,
+										   false,
+										   false,
+										   false,
+										   false,
+										   false};
+	public static final String[] AUTODESC={"AUTOGOLD",
+										   "AUTOLOOT",
+										   "AUTOEXITS",
+										   "AUTOASSIST",
+										   "ANSI COLOR",
+										   "SYSMSGS",
+										   "AUTOMELEE",
+										   "PLAYERKILL",
+										   "BRIEF",
+										   "NOFOLLOW",
+										   "AUTOWEATHER",
+										   "AUTODRAW",
+										   "AUTOGUARD"};
+	
 	/** When the USER last logged off */
 	public long lastDateTime();
 	public long lastUpdated();

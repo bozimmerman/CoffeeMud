@@ -787,6 +787,20 @@ public class Scoring
 		}
 	}
 
+	public static void config(MOB mob, Vector commands)
+	{
+		StringBuffer msg=new StringBuffer("^HYour configuration flags:^?\n\r");
+		for(int i=0;i<MOB.AUTODESC.length;i++)
+		{
+			msg.append(Util.padRight(MOB.AUTODESC[i],15)+": ");
+			boolean set=Util.isSet(mob.getBitmap(),i);
+			if(MOB.AUTOREV[i]) set=!set;
+			msg.append(set?"ON":"OFF");
+			msg.append("\n\r");
+		}
+		mob.tell(msg.toString());
+	}
+	
 	public static void areas(MOB mob)
 	{
 		Vector areasVec=new Vector();

@@ -83,7 +83,7 @@ public class Fighter_Rallycry extends StdAbility
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,auto?"":"<S-NAME> mumbles(s) a weak rally cry.");
+			beneficialWordsFizzle(mob,null,auto?"":"<S-NAME> mumble(s) a weak rally cry.");
 
 		// return whether it worked
 		return success;

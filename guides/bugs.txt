@@ -1,4 +1,10 @@
 GAES still isn't done
 MovingRoom behavior?
-need to add thief subclass descs to help files
-need to make new thief things illegal
+test traps!
+way to extinguish lightsource
+timer on help proff still broke
+export world bug?
+
+
+
+

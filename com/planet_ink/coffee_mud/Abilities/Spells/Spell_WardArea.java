@@ -18,6 +18,7 @@ public class Spell_WardArea extends Spell implements Trap
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	private boolean sprung=false;
 	
+	public boolean isABomb(){return false;}
 	public boolean disabled(){return sprung;}
 	public void disable(){unInvoke();}
 	public void setReset(int Reset){}

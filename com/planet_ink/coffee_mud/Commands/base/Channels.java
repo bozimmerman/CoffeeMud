@@ -46,6 +46,8 @@ public class Channels
 			}
 		}
 		if(channelNames.size()==0) buf.append("None!");
+		else
+			buf.append("\n\rUse NOCHANNELNAME (ex: NOGOSSIP) to turn a channel off.");
 		mob.tell(buf.toString());
 	}
 
@@ -235,7 +237,7 @@ public class Channels
 		if(Util.isSet(mob.getChannelMask(),channelInt))
 		{
 			mob.setChannelMask(mob.getChannelMask()&(mob.getChannelMask()-channelNum));
-			mob.tell(channelName+" has been turned back on.");
+			mob.tell(channelName+" has been turned on.  Use `NO"+channelName.toUpperCase()+"` to turn it off again.");
 			return;
 		}
 
@@ -313,7 +315,7 @@ public class Channels
 		if(!Util.isSet(mob.getChannelMask(),channelNum))
 		{
 			mob.setChannelMask(mob.getChannelMask()|(1<<channelNum));
-			mob.tell("The "+channelName+" channel has been turned off.");
+			mob.tell("The "+channelName+" channel has been turned off.  Use `"+channelName.toUpperCase()+"` to turn it back on.");
 		}
 		else
 			mob.tell("The "+channelName+" channel is already off.");

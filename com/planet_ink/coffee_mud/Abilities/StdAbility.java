@@ -597,6 +597,39 @@ public class StdAbility implements Ability, Cloneable
 		return false;
 	}
 
+	protected boolean ableOk(MOB mob, MOB target, Affect msg)
+	{
+		if((mob==null)||(mob.location()==null))
+			return false;
+		
+		if((target==null)
+		||(target.location()==null)
+		||(target.location()==mob.location())) 
+			return mob.location().okAffect(mob,msg);
+		
+		boolean ok=mob.location().okAffect(mob,msg);
+		if(!ok) return false;
+		return target.okAffect(mob,msg);
+	}
+	
+	protected void ableSend(MOB mob, MOB target, Affect msg)
+	{
+		if((mob==null)||(mob.location()==null))
+			return;
+		
+		if((target==null)
+		||(target.location()==null)
+		||(target.location()==mob.location())) 
+		{
+			mob.location().send(mob,msg);
+			return;
+		}
+		
+		mob.location().send(mob,msg);
+		target.affect(mob,msg);
+	}
+	
+	
 	public String requirements()
 	{
 		String returnable="";

@@ -56,5 +56,5 @@ public interface ExternalCommand
 	public int trackNextDirectionFromHere(Vector theTrail,Room location,boolean noWater);
 	public boolean zapperCheck(String text, MOB mob);
 	public String zapperDesc(String text);
-	
+	public void extinguish(MOB source, Environmental target, int level);
 }

@@ -255,6 +255,10 @@ public class ExternalPlay
 		if(player!=null) return player.get(mob,container,getThis,quiet);
 		return false;
 	}
+	public static void extinguish(MOB source, Environmental target, int level)
+	{
+		if(player!=null) player.extinguish(source,target, level);
+	}
 	
 	public static void DBReadContent(Room thisRoom, Hashtable rooms)
 	{

@@ -6,6 +6,8 @@ public interface Trap extends Ability
 	public final static int TRAP_PIT_BLADE=1;
 	public final static int TRAP_GAS=2;
 	public final static int TRAP_SPELL=3;
+	
+	public boolean isABomb();
 
 	public boolean disabled();
 	public void disable();

@@ -99,7 +99,14 @@ public class Spell_StinkingCloud extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+		Hashtable h=null;
+		if((givenTarget!=null)&&(givenTarget!=null))
+		{
+			h=new Hashtable();
+			h.put(givenTarget,givenTarget);
+		}
+		else
+			h=ExternalPlay.properTargets(this,mob,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth casting this on.");
@@ -117,7 +124,7 @@ public class Spell_StinkingCloud extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,affectType(auto),auto?"A stinking cloud of orange and green gas appears!":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?"))
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?"))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

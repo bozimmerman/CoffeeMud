@@ -26,6 +26,11 @@ public class ExternalCommands implements ExternalCommand
 		return ItemUsage.wear(mob,item,quiet);
 	}
 	
+	public void extinguish(MOB source, Environmental target, int level)
+	{
+		AbilityHelper.extinguish(source,target,level);
+	}
+	
 	public Vector findBastardTheBestWay(Room location, 
 										Vector destRooms,
 										boolean noWater)

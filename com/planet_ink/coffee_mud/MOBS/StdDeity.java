@@ -237,6 +237,13 @@ public class StdDeity extends StdMOB implements Deity
 		mob.location().bringMobHere(this,false);
 		Blessing.invoke(this,mob,true);
 		prevRoom.bringMobHere(this,false);
+		if(mob.location()!=prevRoom)
+		{
+			if(mob.getVictim()==this)
+				mob.makePeace();
+			if(getVictim()==mob)
+				makePeace();
+		}
 	}
 
 	public synchronized void bestowBlessings(MOB mob)

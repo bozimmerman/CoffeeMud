@@ -16,6 +16,7 @@ public class Thief_Lure extends ThiefSkill implements Trap
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Lure();}
 
+	public boolean isABomb(){return false;}
 	public boolean disabled(){return false;}
 	public boolean sprung(){return false;}
 	public void disable(){ unInvoke();}

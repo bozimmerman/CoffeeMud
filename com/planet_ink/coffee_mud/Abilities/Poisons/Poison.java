@@ -153,13 +153,16 @@ public class Poison extends StdAbility
 		{
 			String str=auto?"":POISON_CAST();
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON|(auto?Affect.MASK_GENERAL:0),str);
-			if(mob.location().okAffect(mob,msg))
+			Room R=mob.location();
+			if((target instanceof MOB)&&(((MOB)target).location()!=null))
+				R=((MOB)target).location();
+			if(R.okAffect(mob,msg))
 			{
-			    mob.location().send(mob,msg);
+			    R.send(mob,msg);
 				if(!msg.wasModified())
 				{
 					if(target instanceof MOB)
-						mob.location().show((MOB)target,null,Affect.MSG_OK_VISUAL,POISON_START());
+						R.show((MOB)target,null,Affect.MSG_OK_VISUAL,POISON_START());
 				    success=maliciousAffect(mob,target,POISON_TICKS(),-1);
 				}
 			}

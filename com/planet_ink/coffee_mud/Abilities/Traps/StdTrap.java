@@ -12,6 +12,7 @@ public class StdTrap extends StdAbility implements Trap
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return -1;}
+	public boolean isABomb(){return false;}
 	public String requiresToSet(){return "";}
 	public Environmental newInstance(){	return new StdTrap();}
 	
@@ -82,6 +83,22 @@ public class StdTrap extends StdAbility implements Trap
 		else
 		if(Util.bset(canAffectCode(),Ability.CAN_ITEMS))
 		{
+			if(isABomb())
+			{
+				if(affect.amITarget(affected))
+				{
+					if((affect.targetMinor()==Affect.TYP_HOLD)
+					&&(affect.source().isMine(affected)))
+					{
+						affect.source().tell(affect.source(),affected,null,"You activate <T-NAME>.");
+						tickDown=getReset();
+						sprung=false;
+						disabled=false;
+						ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
+					}
+				}
+			}
+			else
 			if(affect.amITarget(affected))
 			{
 				if((affect.targetMinor()==Affect.TYP_GET)
@@ -155,7 +172,8 @@ public class StdTrap extends StdAbility implements Trap
 		T.setInvoker(mob);
 		T.setBorrowed(E,true);
 		E.addAffect(T);
-		ExternalPlay.startTickDown(T,Host.TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
+		if(!isABomb())
+			ExternalPlay.startTickDown(T,Host.TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
 		return T;
 	}
 	
@@ -175,7 +193,31 @@ public class StdTrap extends StdAbility implements Trap
 		{
 			if((--tickDown)<=0)
 			{
-				sprung=false;
+				if((isABomb())
+				&&(affected instanceof Item)
+				&&(((Item)affected).owner()!=null))
+				{
+					Item I=(Item)affected;
+					if(I.owner() instanceof MOB)
+						spring((MOB)I.owner());
+					else
+					if(I.owner() instanceof Room)
+					{
+						Room R=(Room)I.owner();
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							MOB M=(MOB)R.fetchInhabitant(i);
+							if(M!=null)
+								spring(M);
+						}
+					}
+					disable();
+					unInvoke();
+					I.destroyThis();
+					return false;
+				}
+				else
+					sprung=false;
 				disabled=false;
 				return false;
 			}
@@ -190,7 +232,8 @@ public class StdTrap extends StdAbility implements Trap
 		sprung=true;
 		disabled=false;
 		tickDown=getReset();
-		ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
+		if(!isABomb())
+			ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
 	}
 	
 	protected Item findFirstResource(Room room, String other)

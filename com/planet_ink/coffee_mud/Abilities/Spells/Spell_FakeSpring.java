@@ -38,6 +38,8 @@ public class Spell_FakeSpring extends Spell
 		{
 			if(affect.targetMinor()==Affect.TYP_DRINK)
 			{
+				if(affect.othersMessage()!=null)
+					affect.source().location().show(affect.source(),affect.target(),affect.tool(),Affect.MSG_QUIETMOVEMENT,affect.othersMessage());
 				affect.source().tell("You have drunk all you can.");
 				return false;
 			}

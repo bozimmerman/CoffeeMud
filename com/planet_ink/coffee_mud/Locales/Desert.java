@@ -24,6 +24,7 @@ public class Desert extends StdRoom
 		new Integer(EnvResource.RESOURCE_CACTUS),
 		new Integer(EnvResource.RESOURCE_SAND),
 		new Integer(EnvResource.RESOURCE_LAMPOIL),
+		new Integer(EnvResource.RESOURCE_PEPPERS),
 		new Integer(EnvResource.RESOURCE_SCALES),
 		new Integer(EnvResource.RESOURCE_DATES)
 	};

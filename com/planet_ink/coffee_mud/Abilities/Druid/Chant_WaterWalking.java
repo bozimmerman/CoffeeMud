@@ -19,7 +19,10 @@ public class Chant_WaterWalking extends Chant
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(triggerNow||((mob.location()!=null)&&(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)))
+			if(triggerNow||
+			   ((mob.location()!=null)
+				&&((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+				   ||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))))
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 		}
 	}
@@ -36,7 +39,8 @@ public class Chant_WaterWalking extends Chant
 		&&(affect.target() instanceof Room))
 		{
 			if((affect.sourceMinor()==Affect.TYP_ENTER)
-			&&(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			&&((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+				||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 			&&(affect.target()==mob.location().getRoomInDir(Directions.UP)))
 			{
 				affect.source().tell("Your water walking magic prevents you from ascending from the water surface.");
@@ -45,6 +49,7 @@ public class Chant_WaterWalking extends Chant
 			else
 			if((affect.sourceMinor()==Affect.TYP_LEAVE)
 			&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
 			&&(affect.tool()!=null)
 			&&(affect.tool() instanceof Exit))
 			{
@@ -52,18 +57,13 @@ public class Chant_WaterWalking extends Chant
 				{
 					Room R=mob.location().getRoomInDir(d);
 					if((R!=null)
-					&&(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+					&&(mob.location().getReverseExit(d)==affect.tool())
+					&&((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+					||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 					{
-						for(int dx=0;dx<Directions.NUM_DIRECTIONS;dx++)
-						{
-							Exit E=R.getExitInDir(dx);
-							if((E!=null)&&(E==affect.tool()))
-							{
-								triggerNow=true;
-								affect.source().recoverEnvStats();
-								return true;
-							}
-						}
+						triggerNow=true;
+						affect.source().recoverEnvStats();
+						return true;
 					}
 				}
 			}

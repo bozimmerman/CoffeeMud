@@ -18,6 +18,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	boolean waitingForLook=false;
 	public Environmental newInstance(){	return new Chant_WhisperWard();	}
 
+	public boolean isABomb(){return false;}
 	public void setReset(int Reset){}
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}

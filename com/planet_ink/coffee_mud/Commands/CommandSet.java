@@ -178,6 +178,7 @@ public class CommandSet extends Hashtable
 	public static final int UNDRESS=165;
 	public static final int ANNOUNCE=166;
 	public static final int WHISPER=167;
+	public static final int CONFIG=168;
 
 	private CommandSet()
 	{
@@ -227,6 +228,7 @@ public class CommandSet extends Hashtable
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));
 			put("COMP",new Integer(COMPARE));
+		put("CONFIG",new Integer(CONFIG));
 		put("CONSIDER",new Integer(CONSIDER));
 			put("CO",new Integer(CONSIDER));
 		put("COPY",new Integer(COPY));

@@ -75,7 +75,7 @@ public class Fighter_Battlecry extends StdAbility
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,auto?"":"<S-NAME> mumbles(s) a weak battle cry.");
+			beneficialWordsFizzle(mob,null,auto?"":"<S-NAME> mumble(s) a weak battle cry.");
 
 		// return whether it worked
 		return success;

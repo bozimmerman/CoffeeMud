@@ -2,7 +2,7 @@
 
 ^xFighter :^.^? Fighters are brutish weapon masters, skilled in the art of killing, and invaluable in a close melee.  This also include Rangers, Paladins, Barbarians, and Monks.
 
-^xThief   :^.^? Thieves are skillful, sly, and devious, skilled at swiping, stealing, hiding, sneaking, trapping, poisoning, and more.
+^xThief   :^.^? Thieves are skillful, sly, and devious, skilled at swiping, stealing, hiding, sneaking, trapping, poisoning, and more.  This also includes Assassins, Arcanists, Burglars, and Trappers.
 
 ^xBard    :^.^? Bards are traveling singers, whose "songs" can possess powerful magic, who also qualify for many thief skills.
 

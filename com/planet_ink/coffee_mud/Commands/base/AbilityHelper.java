@@ -510,4 +510,81 @@ public class AbilityHelper
 		}
 		return bestDirection;
 	}
+	
+	
+	public static final String[] fireSpells={
+		"Burning", 
+		"Chant_SummonFire",
+		"Prayer_FlameWeapon",
+		"Spell_HeatMetal",
+		"Spell_Flameshield",
+		"Spell_WallOfFire",
+		"Prayer_Demonshield",
+		"Prayer_ProtCold",
+		"Spell_ResistCold",
+		"Spell_ColdWard",
+		"Prayer_CurseMetal",
+		};
+	
+	
+	public static void extinguish(MOB source, Environmental target, int level)
+	{
+		if(target instanceof Room)
+		{
+			Room R=(Room)target;
+			for(int m=0;m<R.numInhabitants();m++)
+			{
+				MOB M=R.fetchInhabitant(m);
+				if(M!=null) ExternalPlay.extinguish(source,M,level);
+			}
+			for(int i=0;i<R.numItems();i++)
+			{
+				Item I=R.fetchItem(i);
+				if(I!=null) ExternalPlay.extinguish(source,I,level);
+			}
+			return;
+		}
+		int top=fireSpells.length;
+		if((level>=0)&&(level<fireSpells.length))
+			top=level;
+		for(int a=target.numAffects()-1;a>=0;a--)
+		{
+			Ability A=target.fetchAffect(a);
+			if(A!=null)
+			{
+				boolean notOne=true;
+				for(int i=0;i<top;i++)
+					if(A.ID().equalsIgnoreCase(fireSpells[i]))
+					{
+						A.unInvoke();
+						notOne=false;
+						break;
+					}
+				if(notOne)
+				if(A.ID().equalsIgnoreCase("Spell_SummonElemental")
+				&&(A.text().toUpperCase().indexOf("FIRE")>=0))
+				{
+					A.unInvoke();
+					notOne=false;
+				}
+			}
+		}
+		if(target instanceof MOB)
+		{
+			MOB tmob=(MOB)target;
+			if(tmob.charStats().getMyRace().ID().equals("FireElemental"))
+				ExternalPlay.postDeath(source,(MOB)target,null);
+			for(int i=0;i<tmob.inventorySize();i++)
+			{
+				Item I=tmob.fetchInventory(i);
+				if(I!=null) extinguish(tmob,I,level);
+			}
+		}
+		if((target instanceof Light)&&(((Light)target).isLit()))
+		{
+			((Light)target).tick(target,Host.LIGHT_FLICKERS);
+			((Light)target).light(false);
+		}
+	}
+
 }

@@ -2250,7 +2250,10 @@ public class StdMOB implements MOB
 	private void fightingFollowers(MOB target, MOB source)
 	{
 		if((source==null)||(target==null)) return;
+		if(source==target) return;
 		if((target==this)||(source==this)) return;
+		if((target.location()!=location())||(target.location()!=source.location()))
+			return;
 		if((Util.bset(getBitmap(),MOB.ATT_AUTOASSIST))) return;
 		if(isInCombat()) return;
 
@@ -2264,6 +2267,7 @@ public class StdMOB implements MOB
 		||((source.amFollowing()!=null)&&(source.amFollowing()==this.amFollowing())))
 			setVictim(target);//ExternalPlay.postAttack(this,target,fetchWieldedItem());
 	}
+	
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
 	public String getStat(String code){
 		switch(getCodeNum(code))

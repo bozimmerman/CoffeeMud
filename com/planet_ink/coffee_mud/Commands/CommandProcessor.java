@@ -191,6 +191,9 @@ public class CommandProcessor
 				case CommandSet.COMMANDS:
 					Scoring.commands(mob,commandSet);
 					break;
+				case CommandSet.CONFIG:
+					Scoring.config(mob,commands);
+					break;
 				case CommandSet.COPY:
 					if(mob.isASysOp(mob.location()))
 						CreateEdit.copy(mob,commands);
