@@ -612,27 +612,6 @@ public class Import
 			Log.sysOut("Import","Ate "+helpsToEat.size()+" help lines.");
 	}
 
-	private static int getDRoll(String str)
-	{
-		int i=str.indexOf("d");
-		if(i<0) return 0;
-		int x=Util.s_int(str.substring(0,i).trim());
-		str=str.substring(i+1).trim();
-
-		i=str.indexOf("+");
-		if(i<0)
-			i=str.indexOf("-");
-		else
-			i++;
-		
-		if(i<0)
-			i=str.length()-1;
-
-		int y=Util.s_int(str.substring(0,i).trim());
-		int z=Util.s_int(str.substring(i));
-		return (x*y)+z;
-	}
-
 	private static void doWeapon(Weapon I, String name, int val1, String str1, int val2, int val3, int val4, String str4)
 	{
 		if((str1.trim().length()>0)&&((Character.isLetter(str1.trim().charAt(0)))||(str1.trim().startsWith("'"))))
@@ -1092,14 +1071,10 @@ public class Import
 				M.baseEnvStats().setLevel(Util.s_int(Util.getBit(codeStr2,0)));
 				if(M.baseEnvStats().level()==0)
 					M.baseEnvStats().setLevel(1);
-				int baseHP=11;
 				if(circleFormat)
-					baseHP=getDRoll(Util.getBit(codeStr2,2));
+					M.baseEnvStats().setAbility(Dice.getHPCode(Util.getBit(codeStr2,2)));
 				else
-					baseHP=getDRoll(Util.getBit(codeStr2,3));
-				baseHP=baseHP-(M.baseEnvStats().level()*M.baseEnvStats().level());
-				baseHP=baseHP/M.baseEnvStats().level();
-				M.baseEnvStats().setAbility(baseHP);
+					M.baseEnvStats().setAbility(Dice.getHPCode(Util.getBit(codeStr2,3)));
 				
 				if(circleFormat)
 				{

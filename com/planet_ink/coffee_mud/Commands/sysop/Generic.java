@@ -1088,19 +1088,22 @@ public class Generic
 		E.baseEnvStats().setAbility(getNumericData(mob,"Enter a new value (0=no magic)\n\r:",E.baseEnvStats().ability()));
 	}
 
-	public static void genHitPoints(MOB mob, Environmental E, int showNumber, int showFlag)
+	public static void genHitPoints(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		if(E.baseEnvStats().ability()<1) E.baseEnvStats().setAbility(11);
-		mob.tell(showNumber+". Hit Points/Level Modifier (hp=((level*level) + (random*level*THIS))) : '"+E.baseEnvStats().ability()+"'.");
+		if(E.baseEnvStats().ability()==0) E.baseEnvStats().setAbility(11);
+		int set[]=Dice.getHPBreakup(E.baseEnvStats().level(),E.baseEnvStats().ability());
+		mob.tell(showNumber+". Hit Points : '"+set[0]+"d"+set[1]+((set[2]<0)?"":"+")+set[2]+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newLevelStr=mob.session().prompt("Enter a new value\n\r:","");
-		int newLevel=Util.s_int(newLevelStr);
-		if(newLevel>0)
-			E.baseEnvStats().setAbility(newLevel);
-		else
+		String str=mob.session().prompt("Enter a new value\n\r:","");
+		int i=str.indexOf("d");
+		if(i<0)
+		{
 			mob.tell("(no change)");
+			return;
+		}
+		E.baseEnvStats().setAbility(Dice.getHPCode(str));
 	}
 
 	public static void genValue(MOB mob, Item E, int showNumber, int showFlag)
@@ -2844,7 +2847,8 @@ public class Generic
 			genAttack(mob,me,++showNumber,showFlag);
 			genDamage(mob,me,++showNumber,showFlag);
 			genArmor(mob,me,++showNumber,showFlag);
-			genHitPoints(mob,me,++showNumber,showFlag);
+			if(me instanceof MOB)
+				genHitPoints(mob,(MOB)me,++showNumber,showFlag);
 			genAlignment(mob,mme,++showNumber,showFlag);
 			genMoney(mob,mme,++showNumber,showFlag);
 			genAbilities(mob,mme,++showNumber,showFlag);

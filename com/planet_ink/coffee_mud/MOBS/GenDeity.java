@@ -41,7 +41,7 @@ public class GenDeity extends StdDeity
 			Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 		recoverCharStats();
-		baseState().setHitPoints((baseEnvStats().level()*baseEnvStats().level())+Dice.roll(baseEnvStats().level(),baseEnvStats().ability(),1));
+		baseState().setHitPoints(Dice.rollHP(baseEnvStats().level(),baseEnvStats().ability()));
 		baseState().setMana(baseCharStats().getCurrentClass().getLevelMana(this));
 		baseState().setMovement(baseCharStats().getCurrentClass().getLevelMove(this));
 		recoverMaxState();

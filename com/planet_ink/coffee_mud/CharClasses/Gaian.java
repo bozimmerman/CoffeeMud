@@ -82,12 +82,12 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_Shillelagh",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_PlantWall",true);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantGrowth",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantGrowth",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonFlyTrap",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonSeaweed",true);
 
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Observation",false);
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_PlantMaze",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_PlantMaze",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_Thorns",true);
 
 			CMAble.addCharAbilityMapping(ID(),15,"PlantLore",false);

@@ -39,7 +39,7 @@ public class GenShopkeeper extends StdShopKeeper
 		super.setMiscText(newText);
 		if((newText!=null)&&(newText.length()>0))
 			Generic.setPropertiesStr(this,newText,false);
-		baseState().setHitPoints((baseEnvStats().level()*baseEnvStats().level())+Dice.roll(baseEnvStats().level(),baseEnvStats().ability(),1));
+		baseState().setHitPoints(Dice.rollHP(baseEnvStats().level(),baseEnvStats().ability()));
 		recoverEnvStats();
 		recoverCharStats();
 		recoverMaxState();

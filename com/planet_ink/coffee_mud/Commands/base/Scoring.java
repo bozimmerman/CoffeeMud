@@ -732,14 +732,14 @@ public class Scoring
 						   {"MOBs","M"},
 						   {"Channel Foreground","q"}
 		};
-		String[][] theColors={{"White","W"},
+		String[][] theColors={{"White","w"},
 							  {"Green","g"},
 							  {"Blue","b"},
 							  {"Red","r"},
 							  {"Yellow","y"},
 							  {"Cyan","c"},
 							  {"Purple","p"},
-							  {"Grey","w"},
+							  {"Grey","W"},
 							  {"Dark Green","G"},
 							  {"Dark Blue","B"},
 							  {"Dark Red","R"},
