@@ -44,6 +44,8 @@ CMBTMP integer NULL,
 CMLEIG varchar (50) NULL,
 CMHEIT integer NULL,
 CMWEIT integer NULL,
+CMPRPT char (250) NULL,
+CMCOLR char (50) NULL,
 PRIMARY KEY (CMUSERID)
 );
 

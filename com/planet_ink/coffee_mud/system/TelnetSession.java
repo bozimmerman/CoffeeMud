@@ -22,6 +22,8 @@ public class TelnetSession extends Thread implements Session
 	private boolean waiting=false;
 	private static final int SOTIMEOUT=300;
 	private Vector previousCmd=new Vector();
+	private String lastColorStr="";
+	private String[] clookup=null;
 
 	private Vector cmdQ=new Vector();
 	private Vector snoops=new Vector();
@@ -33,7 +35,6 @@ public class TelnetSession extends Thread implements Session
 	public long milliTotal=0;
 	public long tickTotal=0;
 	
-	public static String[] clookup=null;
 	private int termID = 0;	//0 = NOANSI, 1 = ANSI
 	public int currentColor=(int)'N';
 	public int lastColor=-1;
@@ -437,67 +438,39 @@ public class TelnetSession extends Thread implements Session
 		return (int)c;
 	}
 	
+	public String[] clookup(){
+		if(clookup==null)
+			clookup=CommonStrings.standardColorLookups();
+			
+		if((mob()!=null)
+		&&(mob().getColorStr()!=null)
+		&&(!mob().getColorStr().equals(lastColorStr)))
+		{
+			String changes=mob().getColorStr();
+			lastColorStr=changes;
+			clookup=(String[])CommonStrings.standardColorLookups().clone();
+			int x=changes.indexOf("#");
+			while(x>0)
+			{
+				String sub=changes.substring(0,x);
+				changes=changes.substring(x+1);
+				clookup[(int)sub.charAt(0)]=sub.substring(1);
+				x=changes.indexOf("#");
+			}
+			for(int i=0;i<clookup.length;i++)
+			{
+				String s=clookup[i];
+				if((s!=null)&&(s.startsWith("^")))
+					clookup[i]=clookup[(int)s.charAt(1)];
+			}
+		}
+		return clookup;
+	}
+	
 	public final String makeEscape(int c)
 	{
 		if (termID == 1 && c != -1)
 		{
-			if(clookup==null)
-			{
-				clookup=new String[256];
-				// N B H - normal bold highlight underline flash italic
-				clookup[(int)'N']="^w\033[0m";
-				clookup[(int)'!']="\033[1m";
-				clookup[(int)'H']="^c";
-				clookup[(int)'_']="\033[4m";
-				clookup[(int)'*']="\033[5m";
-				clookup[(int)'/']="\033[6m";
-				// reset
-				clookup[(int)'^']="\033[0m";
-				// F S - fight spell
-				clookup[(int)'F']="^r";
-				clookup[(int)'S']="^y";
-				// E T Q - emote talk channeltalk
-				clookup[(int)'E']="^p";
-				clookup[(int)'T']="^b";
-				clookup[(int)'Q']="\033[0;36;44m";
-				// X Y Z - important messages
-				clookup[(int)'x']="\033[1;36;44m";
-				clookup[(int)'X']="\033[1;33;44m";
-				clookup[(int)'Z']="\033[1;33;41m";
-				//  R L D d - roomtitle roomdesc(look) Direction door
-				clookup[(int)'O']="^c";
-				clookup[(int)'L']="^w";
-				clookup[(int)'D']="\033[1;36;44m";
-				clookup[(int)'d']="^b";
-				// I M - item, mob
-				clookup[(int)'I']="^g";
-				clookup[(int)'M']="^p";
-				// h m v - prompt colors
-				clookup[(int)'h']="^c";
-				clookup[(int)'m']="^c";
-				clookup[(int)'v']="^c";
-				// fixed system colors, 1= bright, 0=dark
-				clookup[(int)'w']="\033[1;37m";
-				clookup[(int)'g']="\033[1;32m";
-				clookup[(int)'b']="\033[1;34m";
-				clookup[(int)'r']="\033[1;31m";
-				clookup[(int)'y']="\033[1;33m";
-				clookup[(int)'c']="\033[1;36m";
-				clookup[(int)'p']="\033[1;35m";
-				clookup[(int)'W']="\033[0;37m";
-				clookup[(int)'G']="\033[0;32m";
-				clookup[(int)'B']="\033[0;34m";
-				clookup[(int)'R']="\033[0;31m";
-				clookup[(int)'Y']="\033[0;33m";
-				clookup[(int)'C']="\033[0;36m";
-				clookup[(int)'P']="\033[0;35m";
-				for(int i=0;i<clookup.length;i++)
-				{
-					String s=clookup[i];
-					if((s!=null)&&(s.startsWith("^")))
-						clookup[i]=clookup[(int)s.charAt(1)];
-				}
-			}
 			if (c != currentColor)
 			{
 				if(c !='^')
@@ -505,7 +478,7 @@ public class TelnetSession extends Thread implements Session
 					lastColor = currentColor;
 					currentColor = c;
 				}
-				return clookup[c];
+				return clookup()[c];
 			}
 		}
 		else
@@ -1148,6 +1121,57 @@ public class TelnetSession extends Thread implements Session
 		try{Thread.sleep(1000);}catch(Exception i){}
 	}
 
+	public void showPrompt()
+	{
+		if(mob()==null) return;
+		StringBuffer buf=new StringBuffer("\n\r");
+		String prompt=mob().getPrompt();
+		int c=0;
+		while(c<prompt.length())
+			if((prompt.charAt(c)=='%')&&(c<(prompt.length()-1)))
+			{
+				switch(prompt.charAt(++c))
+				{
+				case 'h': { buf.append("^h"+mob().curState().getHitPoints()); c++; break;}
+				case 'H': { buf.append("^h"+mob().maxState().getHitPoints()); c++; break;}
+				case 'm': { buf.append("^m"+mob().curState().getMana()); c++; break;}
+				case 'M': { buf.append("^m"+mob().maxState().getMana()); c++; break;}
+				case 'v': { buf.append("^v"+mob().curState().getMovement()); c++; break;}
+				case 'V': { buf.append("^v"+mob().maxState().getMovement()); c++; break;}
+				case 'x': { buf.append("^h"+mob().getExperience()); c++; break;}
+				case 'X': { buf.append("^h"+mob().getExpNeededLevel()); c++; break;}
+				case 'g': { buf.append("^h"+mob().getMoney()); c++; break;}
+				case 'a': { buf.append("^h"+mob().getAlignment()); c++; break;}
+				case 'A': { buf.append("^h"+CommonStrings.alignmentStr(mob().getAlignment())); c++; break;}
+				case 'w': { buf.append("^h"+mob().envStats().weight()); c++; break;}
+				case 'W': { buf.append("^h"+mob().maxCarry()); c++; break;}
+				case 'r': {   if(mob().location()!=null)
+								  buf.append("^h"+mob().location().displayText()); 
+							  c++; break; }
+				case 'R': {   if((mob().location()!=null)&&(mob().isASysOp(mob().location())))
+								  buf.append("^h"+mob().location().ID()); 
+							  c++; break; }
+				case 'e': {	  MOB victim=mob().getVictim();
+							  if((mob().isInCombat())&&(victim!=null))
+								  buf.append("^h"+victim.name()); 
+							  c++; break; }
+				case 'E': {	  MOB victim=mob().getVictim();
+							  if((mob().isInCombat())&&(victim!=null))
+								  buf.append("^h"+victim.charStats().getMyRace().healthText(victim));
+							  c++; break; }
+				case 'B': { buf.append("\n\r"); c++; break;}
+				case 'd': {	  MOB victim=mob().getVictim();
+							  if((mob().isInCombat())&&(victim!=null))
+								  buf.append(""+mob().rangeToTarget()); 
+							  c++; break; }
+				default:{ buf.append("%"+prompt.charAt(c)); c++; break;}
+				}
+			}
+			else
+				buf.append(prompt.charAt(c++));
+		print(buf.toString()+"^N");
+	}
+	
 	public void setTermID(int tid)
 	{
 		if (tid != 0)
@@ -1226,7 +1250,7 @@ public class TelnetSession extends Thread implements Session
 						}
 						if((needPrompt)&&(waiting))
 						{
-							print("\n\r^N<^h"+mob.curState().getHitPoints()+"hp^N ^m"+mob.curState().getMana()+"m^N ^v"+mob.curState().getMovement()+"mv^N>");
+							showPrompt();
 							if((input==null)&&(this.input!=null)&&(this.input.length()>0))
 								this.rawPrint(this.input.toString());
 							needPrompt=false;

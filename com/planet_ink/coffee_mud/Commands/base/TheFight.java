@@ -130,6 +130,12 @@ public class TheFight
 	public void postAttack(MOB attacker, MOB target, Item weapon)
 	{
 		if((attacker==null)||(!attacker.mayPhysicallyAttack(target))) return;
+		if((weapon==null)
+		&&((attacker.getBitmap()&MOB.ATT_AUTODRAW)==MOB.ATT_AUTODRAW))
+		{
+			draw(attacker,new Vector(),true,false);
+			weapon=attacker.fetchWieldedItem();
+		}
 		FullMsg msg=new FullMsg(attacker,target,weapon,Affect.MSG_WEAPONATTACK,null);
 		if(target.location().okAffect(msg))
 			target.location().send(attacker,msg);
@@ -344,6 +350,20 @@ public class TheFight
 		}
 	}
 
+	public void autoDraw(MOB mob)
+	{
+		if((mob.getBitmap()&MOB.ATT_AUTODRAW)==0)
+		{
+			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTODRAW);
+			mob.tell("Auto weapon drawing has been turned on.  You will now draw a weapon when one is handy.");
+		}
+		else
+		{
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTODRAW);
+			mob.tell("Auto weapon drawing has been turned off.  You will no longer draw your weapon automatically.");
+		}
+	}
+
 	public Vector getSheaths(MOB mob, boolean withWeapons)
 	{
 		Vector sheaths=new Vector();
@@ -478,7 +498,13 @@ public class TheFight
 		}
 	}
 	
-	public void draw(MOB mob, Vector commands)
+	public void drawIfNecessary(MOB mob)
+	{
+		if(mob.fetchWieldedItem()==null)
+			draw(mob,new Vector(),true,true);
+	}
+	
+	public void draw(MOB mob, Vector commands, boolean noerrors, boolean quiet)
 	{
 		boolean allFlag=false;
 		Vector containers=new Vector();
@@ -486,7 +512,8 @@ public class TheFight
 		String whatToGet="";
 		int c=0;
 		Vector sheaths=getSheaths(mob,true);
-		commands.removeElementAt(0);
+		if(commands.size()>0)
+			commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
 			if(sheaths.size()>0)
@@ -552,7 +579,7 @@ public class TheFight
 				Item getThis=(Item)V.elementAt(i);
 				long wearCode=0;
 				if(container!=null)	wearCode=container.rawWornCode();
-				if(new ItemUsage().get(mob,container,(Item)getThis,false,"draw"))
+				if(new ItemUsage().get(mob,container,(Item)getThis,quiet,"draw"))
 				{
 					if(getThis.container()==null)
 					{
@@ -568,7 +595,7 @@ public class TheFight
 			
 			if(containers.size()==0) break;
 		}
-		if(!doneSomething)
+		if((!doneSomething)&&(!noerrors))
 		{
 			if(containers.size()>0)
 			{

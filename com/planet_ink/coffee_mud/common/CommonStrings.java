@@ -3,6 +3,71 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 public class CommonStrings
 {
+	public static String[] clookup=null;
+	
+	public static String[] standardColorLookups()
+	{
+		if(clookup==null)
+		{
+			clookup=new String[256];
+			// N B H - normal bold highlight underline flash italic
+			clookup[(int)'N']="^w\033[0m";
+			clookup[(int)'!']="\033[1m";
+			clookup[(int)'H']="^c";
+			clookup[(int)'_']="\033[4m";
+			clookup[(int)'*']="\033[5m";
+			clookup[(int)'/']="\033[6m";
+			// reset
+			clookup[(int)'^']="\033[0m";
+			// F S - fight spell
+			clookup[(int)'F']="^r";
+			clookup[(int)'S']="^y";
+			// E T Q - emote talk channeltalk
+			clookup[(int)'E']="^p";
+			clookup[(int)'T']="^b";
+			clookup[(int)'Q']="\033[0;36;44m";
+			// X Y Z - important messages
+			clookup[(int)'x']="\033[1;36;44m";
+			clookup[(int)'X']="\033[1;33;44m";
+			clookup[(int)'Z']="\033[1;33;41m";
+			//  R L D d - roomtitle roomdesc(look) Direction door
+			clookup[(int)'O']="^c";
+			clookup[(int)'L']="^w";
+			clookup[(int)'D']="\033[1;36;44m";
+			clookup[(int)'d']="^b";
+			// I M - item, mob
+			clookup[(int)'I']="^g";
+			clookup[(int)'M']="^p";
+			// h m v - prompt colors
+			clookup[(int)'h']="^c";
+			clookup[(int)'m']="^c";
+			clookup[(int)'v']="^c";
+			// fixed system colors, 1= bright, 0=dark
+			clookup[(int)'w']="\033[1;37m";
+			clookup[(int)'g']="\033[1;32m";
+			clookup[(int)'b']="\033[1;34m";
+			clookup[(int)'r']="\033[1;31m";
+			clookup[(int)'y']="\033[1;33m";
+			clookup[(int)'c']="\033[1;36m";
+			clookup[(int)'p']="\033[1;35m";
+			clookup[(int)'W']="\033[0;37m";
+			clookup[(int)'G']="\033[0;32m";
+			clookup[(int)'B']="\033[0;34m";
+			clookup[(int)'R']="\033[0;31m";
+			clookup[(int)'Y']="\033[0;33m";
+			clookup[(int)'C']="\033[0;36m";
+			clookup[(int)'P']="\033[0;35m";
+			for(int i=0;i<clookup.length;i++)
+			{
+				String s=clookup[i];
+				if((s!=null)&&(s.startsWith("^")))
+					clookup[i]=clookup[(int)s.charAt(1)];
+			}
+		}
+		return clookup;
+	}
+	
+	
 	public static String standardHitWord(int type, int damage)
 	{
 		if(type<0) type=Weapon.TYPE_BURSTING;

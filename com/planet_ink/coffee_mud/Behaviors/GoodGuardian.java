@@ -23,14 +23,20 @@ public class GoodGuardian extends StdBehavior
 			if((inhab!=null)&&(inhab.isInCombat()))
 			{
 				if(BrotherHelper.isBrother(inhab,observer))
-				{
-					victim=observer.getVictim();
-					break;
-				}
+					return observer.getVictim();
 				else
+				for(int b=0;b<inhab.numBehaviors();b++)
+				{
+					Behavior B=inhab.fetchBehavior(b);
+					if((B!=null)&&(B instanceof Aggressive))
+						return inhab;
+				}
 				if((inhab.getAlignment()<350)
 				||(inhab.charStats().getMyClass().ID().equalsIgnoreCase("Thief")))
+				{
 					victim=inhab;
+					break;
+				}
 			}
 		}
 		return victim;

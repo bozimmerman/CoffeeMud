@@ -41,6 +41,8 @@ CMBTMP integer NULL
 CMLEIG string NULL
 CMHEIT integer NULL
 CMWEIT integer NULL
+CMPRPT string NULL
+CMCOLR string NULL
 
 CMCHFO
 CMUSERID string KEY

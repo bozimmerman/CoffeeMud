@@ -10,7 +10,9 @@ public class StdMOB implements MOB
 	protected Calendar LastDateTime=Calendar.getInstance();
 	protected Calendar lastUpdated=null;
 	protected int channelMask;
-
+	
+	private String colorStr=null;
+	private String prompt=null;
 	protected int termID = 0;	//0:plain, 1:ansi
 	
 	protected CharStats baseCharStats=new DefaultCharStats();
@@ -394,10 +396,18 @@ public class StdMOB implements MOB
 			session().setKillFlag(true);
 	}
 
-	public MOB replyTo()
-	{	return replyTo;	}
-	public void setReplyTo(MOB mob)
-	{	replyTo=mob;	}
+	public MOB replyTo(){	return replyTo;	}
+	public void setReplyTo(MOB mob){	replyTo=mob;	}
+	public String getPrompt()
+	{
+		if((prompt==null)||(prompt.length()==0))
+			return Session.defaultPrompt;
+		else
+			return prompt;
+	}
+	public void setPrompt(String newPrompt){prompt=newPrompt;}
+	public String getColorStr(){return colorStr;}
+	public void setColorStr(String newColors){colorStr=newColors;}
 	
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
@@ -559,6 +569,7 @@ public class StdMOB implements MOB
 		if(mob==null) setAtRange(-1);
 		if(victim==mob) return;
 		if(mob==this) return;
+		
 		victim=mob;
 		recoverEnvStats();
 		recoverCharStats();
@@ -1601,23 +1612,10 @@ public class StdMOB implements MOB
 				}
 				if(isInCombat())
 				{
+					if((getBitmap()&MOB.ATT_AUTODRAW)==MOB.ATT_AUTODRAW)
+					 	ExternalPlay.drawIfNecessary(this);
+					
 					Item weapon=this.fetchWieldedItem();
-					if(weapon==null) // try to wield anything!
-					{
-						for(int i=0;i<inventorySize();i++)
-						{
-							Item thisItem=fetchInventory(i);
-							if((thisItem!=null)
-							 &&(thisItem.canBeWornAt(Item.WIELD))
-							 &&(thisItem.canWear(this))
-							 &&(!thisItem.amWearingAt(Item.INVENTORY)))
-							{
-								thisItem.wearAt(Item.WIELD);
-								weapon=thisItem;
-								break;
-							}
-						}
-					}
 					if(((getBitmap()&MOB.ATT_AUTOMELEE)==0)
 					   ||(rangeToTarget()<=minRange(weapon)))
 					{

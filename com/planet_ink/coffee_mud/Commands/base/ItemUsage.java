@@ -82,7 +82,8 @@ public class ItemUsage
 			if((thisThang!=null)
 			&&(thisThang instanceof Item)
 			&&(Sense.canBeSeenBy(thisThang,mob))
-			&&(((Item)thisThang) instanceof Container))
+			&&(((Item)thisThang) instanceof Container)
+			&&(((Container)thisThang).getContents().size()>0))
 			{
 				V.addElement(thisThang);
 				if(V.size()==1)

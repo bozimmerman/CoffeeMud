@@ -35,6 +35,11 @@ public class ExternalPlay
 	{
 		if(player!=null) player.postDamage(attacker,target,weapon,damage,messageCode,damageType,allDisplayMessage);
 	}
+	public static void drawIfNecessary(MOB mob)
+	{
+		if(player!=null) player.drawIfNecessary(mob);
+	}
+
 	public static String getOpenRoomID(String areaName)
 	{
 		if(player!=null) return player.getOpenRoomID(areaName);

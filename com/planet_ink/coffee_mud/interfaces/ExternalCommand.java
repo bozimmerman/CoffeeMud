@@ -9,6 +9,7 @@ public interface ExternalCommand
 	public void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success);
 	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless);
 	public void die(MOB source, MOB target);
+	public void drawIfNecessary(MOB mob);
 
 	// other actions
 	public boolean wear(MOB mob, Item item, boolean quiet);

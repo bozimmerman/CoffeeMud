@@ -1,16 +1,15 @@
 package com.planet_ink.coffee_mud.Behaviors;
 
-import com.planet_ink.coffee_mud.Commands.base.sysop.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Locales.StdRoom;
-import com.planet_ink.coffee_mud.Exits.StdExit;
 import java.util.*;
 import java.io.*;
 
 public class Moving extends ActiveTicker
 {
+	public String ID(){return "Moving";}
+	
 	public Vector listOfRooms=new Vector();
 	protected Vector roomInfos=new Vector();
 	public Vector messageInfo=new Vector();
@@ -21,12 +20,12 @@ public class Moving extends ActiveTicker
         private int nextStop = 0;
         private int currentStatus = 1;
         private boolean isReversed = false;
-	private String savedStringInside = "";
+		private String savedStringInside = "";
         private String savedStringOutside = "";
 
 	public Moving()
 	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		super();
 		minTicks=10;maxTicks=30;chance=100;
 		tickReset();
 	}

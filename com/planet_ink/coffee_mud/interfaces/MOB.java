@@ -21,6 +21,7 @@ public interface MOB
 	public static final int ATT_BRIEF=256;
 	public static final int ATT_NOFOLLOW=512;
 	public static final int ATT_AUTOWEATHER=1024;
+	public static final int ATT_AUTODRAW=2048;
 	
 	/** When the USER last logged off */
 	public Calendar lastDateTime();
@@ -76,6 +77,10 @@ public interface MOB
 	public void setSession(Session newSession);
 	public void setReplyTo(MOB mob);
 	public MOB replyTo();
+	public String getColorStr();
+	public void setColorStr(String color);
+	public String getPrompt();
+	public void setPrompt(String prompt);
 
 	/** Whether a sessiob object is attached to this MOB */
 	public boolean isMonster();

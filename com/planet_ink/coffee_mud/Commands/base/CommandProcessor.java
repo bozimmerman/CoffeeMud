@@ -105,6 +105,9 @@ public class CommandProcessor
 				case CommandSet.AUTOWEATHER:
 					basicSenses.autoweather(mob);
 					break;
+				case CommandSet.AUTODRAW:
+					theFight.autoDraw(mob);
+					break;
 				case CommandSet.BEACON:
 					if(mob.isASysOp(mob.location()))
 						sysopSkills.beacon(mob);
@@ -153,6 +156,9 @@ public class CommandProcessor
 				case CommandSet.COMPARE:
 					itemUsage.compare(mob,commands);
 					break;
+				case CommandSet.COLORSET:
+					scoring.colorSet(mob,commands);
+					break;
 				case CommandSet.COMMANDS:
 					scoring.commands(mob,commandSet);
 					break;
@@ -187,7 +193,7 @@ public class CommandProcessor
 					movement.standAndGo(mob,Directions.DOWN);
 					break;
 				case CommandSet.DRAW:
-					theFight.draw(mob,commands);
+					theFight.draw(mob,commands,false,false);
 					break;
 				case CommandSet.DRINK:
 					itemUsage.drink(mob,commands);
@@ -381,6 +387,9 @@ public class CommandProcessor
 				case CommandSet.PREVIOUS_CMD:
 					if(!mob.isMonster())
 						doCommand(mob,Util.copyVector(mob.session().previousCMD()));
+					break;
+				case CommandSet.PROMPT:
+					scoring.prompt(mob,commands);
 					break;
 				case CommandSet.PULL:
 					itemUsage.pull(mob,Util.combine(commands,1));

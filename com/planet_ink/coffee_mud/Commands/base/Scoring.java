@@ -525,6 +525,128 @@ public class Scoring
 		if(!mob.isMonster())
 			mob.session().colorOnlyPrintln("^HComplete socials list:^?\n\r"+socials.getSocialsList());
 	}
+	
+	public void prompt(MOB mob, Vector commands)
+	{
+		if(mob.session()==null) return;
+		if(commands.size()==1)
+			mob.session().rawPrintln("Your prompt is currently set at:\n\r"+mob.getPrompt());
+		else
+		{
+			mob.setPrompt(Util.combine(commands,1));
+			mob.session().rawPrintln("Your prompt is currently now set at:\n\r"+mob.getPrompt());
+		}
+	}
+	
+	public void colorSet(MOB mob, Vector commands)
+		throws IOException
+	{
+		if(mob.session()==null) return;
+		String[] clookup=(String[])mob.session().clookup().clone();
+		if((commands.size()>1)
+		   &&("DEFAULT".startsWith(Util.combine(commands,1).toUpperCase())))
+		{
+			mob.setColorStr("");
+			mob.tell("Your colors have been changed back to default.");
+			return;
+		}
+		if(clookup==null) return;
+		String[][] theSet={{"Normal Text","N"},
+						   {"Highlighted Text","H"},
+						   {"Fight Text","F"},
+						   {"Spells","S"},
+						   {"Emotes","F"},
+						   {"Talks","S"},
+						   {"Room Titles","O"},
+						   {"Room Descriptions","L"},
+						   {"Doors","d"},
+						   {"Items","I"},
+						   {"MOBs","M"},
+						   {"Prompt Color","h"},
+						   {"Prompt Mana","m"},
+						   {"Prompt Move","v"}};
+		String[][] theColors={{"White","w"},
+							  {"Green","g"},
+							  {"Blue","b"},
+							  {"Red","r"},
+							  {"Yellow","y"},
+							  {"Cyan","c"},
+							  {"Purple","p"},
+							  {"Grey","W"},
+							  {"Dark Green","G"},
+							  {"Dark Blue","B"},
+							  {"Dark Red","R"},
+							  {"Dark Yellow","Y"},
+							  {"Dark Cyan","C"},
+							  {"Dark Purple","P"}};
+		String numToChange="!";
+		while(numToChange.length()>0)
+		{
+			StringBuffer buf=new StringBuffer("");
+			for(int i=0;i<theSet.length;i++)
+			{
+				buf.append("\n\r^H"+Util.padLeft(""+(i+1),2)+"^N) "+Util.padRight(theSet[i][0],20)+": ");
+				String what=clookup[(int)theSet[i][1].charAt(0)];
+				if(what!=null)
+				for(int ii=0;ii<theColors.length;ii++)
+					if(what.equals(clookup[(int)theColors[ii][1].charAt(0)]))
+						buf.append("^"+theColors[ii][1]+theColors[ii][0]);
+				buf.append("^N");
+			}
+			mob.session().println(buf.toString());
+			numToChange=mob.session().prompt("Enter Number or RETURN: ","");
+			int num=Util.s_int(numToChange);
+			if(numToChange.length()==0) break;
+			if((num<=0)||(num>=theSet.length))
+				mob.tell("That is not a valid entry!");
+			else
+			{
+				num--;
+				buf=new StringBuffer("");
+				buf.append("\n\r^h"+Util.padLeft(""+(num+1),2)+"^N)"+Util.padRight(theSet[num][0],20)+":");
+				String what=clookup[(int)theSet[num][1].charAt(0)];
+				if(what!=null)
+				for(int ii=0;ii<theColors.length;ii++)
+					if(what.equals(clookup[(int)theColors[ii][1].charAt(0)]))
+						buf.append("^"+theColors[ii][1]+theColors[ii][0]);
+				buf.append("^N\n\rAvailable Colors:");
+				for(int ii=0;ii<theColors.length;ii++)
+					buf.append("\n\r^"+theColors[ii][1]+theColors[ii][0]);
+				mob.session().println(buf.toString()+"^N");
+				String newColor=mob.session().prompt("Enter Name of New Color: ","");
+				if(newColor.length()>0)
+				{
+					int colorNum=-1;
+					for(int ii=0;ii<theColors.length;ii++)
+						if(theColors[ii][0].toUpperCase().startsWith(newColor.toUpperCase()))
+						{
+							colorNum=ii; break;
+						}
+					if(colorNum<0)
+						mob.tell("That is not a valid color!");
+					else
+					{
+						clookup[(int)theSet[num][1].charAt(0)]=clookup[(int)theColors[colorNum][1].charAt(0)];
+						String newChanges="";
+						String[] common=CommonStrings.standardColorLookups();
+						for(int i=0;i<theSet.length;i++)
+						{
+							char c=theSet[i][1].charAt(0);
+							if(!clookup[(int)c].equals(common[(int)c]))
+								for(int ii=0;ii<theColors.length;ii++)
+									if(common[(int)theColors[ii][1].charAt(0)].equals(clookup[(int)c]))
+									{
+										newChanges+=c+"^"+theColors[ii][1]+"#";
+										break;
+									}
+						}
+						mob.setColorStr(newChanges);
+						clookup=(String[])mob.session().clookup().clone();
+					}
+				}
+			}
+		}
+	}
 
 	public void areas(MOB mob)
 	{

@@ -154,6 +154,9 @@ public class CommandSet extends Hashtable
 	public static final int FIRE=142;
 	public static final int SHEATH=143;
 	public static final int DRAW=144;
+	public static final int PROMPT=145;
+	public static final int COLORSET=146;
+	public static final int AUTODRAW=147;
 
 	public CommandSet()
 	{
@@ -173,6 +176,7 @@ public class CommandSet extends Hashtable
 		put("AUTOMELEE",new Integer(AUTOMELEE));
 		put("AUTOASSIST",new Integer(AUTOASSIST));
 		put("AUTOWEATHER",new Integer(AUTOWEATHER));
+		put("AUTODRAW",new Integer(AUTODRAW));
 		put("BEACON",new Integer(BEACON));
 		put("BRIEF",new Integer(BRIEF));
 		put("PUSH",new Integer(PUSH));
@@ -186,6 +190,7 @@ public class CommandSet extends Hashtable
 		put("CHANTS",new Integer(CHANTS));
 		put("CHANWHO",new Integer(CHANWHO));
 		put("CHARGEN",new Integer(CHARGEN));
+		put("COLORSET",new Integer(COLORSET));
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));
 			put("COMP",new Integer(COMPARE));
@@ -291,6 +296,7 @@ public class CommandSet extends Hashtable
 		put("PRACTICE",new Integer(PRACTICE));
 			put("PRAC",new Integer(PRACTICE));
 		put("PRAYERS",new Integer(PRAYERS));
+		put("PROMPT",new Integer(PROMPT));
 		put("!",new Integer(PREVIOUS_CMD));
 		put("PUT",new Integer(PUT));
 			put("P",new Integer(PUT));

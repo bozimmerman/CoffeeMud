@@ -62,6 +62,8 @@ public class MOBloader
 				mob.setLeigeID(DBConnections.getRes(R,"CMLEIG"));
 				mob.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 				mob.baseEnvStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
+				mob.setPrompt(DBConnections.getRes(R,"CMPRPT"));
+				mob.setColorStr(DBConnections.getRes(R,"CMCOLR"));
 				found=true;
 			}
 			DBConnector.DBDone(D);
@@ -380,6 +382,8 @@ public class MOBloader
 			+", CMLEIG='"+mob.getLeigeID()+"'"
 			+", CMHEIT="+mob.baseEnvStats().height()
 			+", CMWEIT="+mob.baseEnvStats().weight()
+			+", CMPRPT='"+mob.getPrompt()+"'"
+			+", CMCOLR='"+mob.getColorStr()+"'"
 			+"  WHERE CMUSERID='"+mob.ID()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);
