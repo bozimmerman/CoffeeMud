@@ -5,8 +5,8 @@ CMABPF integer NULL
 CMABTX string NULL
 
 CMSTAT
-CMSTRT string KEY
-CMENDT string NULL
+CMSTRT integer KEY
+CMENDT integer NULL
 CMDATA string NULL
 
 CMCHAR

@@ -156,7 +156,7 @@ CMCCID string KEY
 CMCDAT string NULL
 
 CMSTAT
-CMSTRT string KEY
-CMENDT string NULL
+CMSTRT integer KEY
+CMENDT integer NULL
 CMDATA string NULL
 

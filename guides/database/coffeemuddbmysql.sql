@@ -20,8 +20,8 @@ ALTER TABLE CMCHAB
 	);
 
 CREATE TABLE CMSTAT (
-	CMSTRT char (50) NULL ,
-	CMENDT char (50) NULL ,
+	CMSTRT bigint,
+	CMENDT bigint,
 	CMDATA text NULL
 );
 

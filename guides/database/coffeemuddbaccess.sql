@@ -8,9 +8,9 @@ PRIMARY KEY (CMUSERID, CMABID)
 );
 
 CREATE TABLE CMSTAT (
-	CMSTRT varchar (50) ,
-	CMENDT varchar (50) ,
-	CMDATA memo NULL,
+CMSTRT integer,
+CMENDT integer,
+CMDATA memo NULL,
 PRIMARY KEY (CMSTRT)
 );
 
