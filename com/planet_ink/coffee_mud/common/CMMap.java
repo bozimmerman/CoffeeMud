@@ -5,10 +5,10 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 public class CMMap
 {
-	protected static java.util.Map areasMap = Collections.synchronizedMap(new LinkedHashMap(16, 0.75f, true));
-	protected static java.util.Map roomsMap = Collections.synchronizedMap(new LinkedHashMap(1000, 0.75f, true));
-	protected static List playersList = Collections.synchronizedList(new LinkedList());
-	protected static List deitiesList = Collections.synchronizedList(new LinkedList());
+	protected static Vector areasList = new Vector();
+	protected static Vector roomsList = new Vector();
+	protected static Vector playersList = new Vector();
+	protected static Vector deitiesList = new Vector();
 	private static Hashtable startRooms=new Hashtable();
 	private static Hashtable deathRooms=new Hashtable();
 
@@ -18,20 +18,28 @@ public class CMMap
 			((Area)a.next()).clearMap();
 	}
 	// areas
-	public static int numAreas() { return areasMap.size(); }
+	public static int numAreas() { return areasList.size(); }
 	public static void addArea(Area newOne) 
 	{ 
-		areasMap.put(newOne.name(), newOne); 
+		areasList.addElement(newOne);
 	}
 	public static void delArea(Area oneToDel) 
 	{ 
-		areasMap.remove(oneToDel); 
+		areasList.remove(oneToDel); 
 	}
 	public static Area getArea(String calledThis) 
 	{ 
-		return (Area)areasMap.get(calledThis); 
+		for(Iterator a=areas();a.hasNext();)
+		{
+			Area A=(Area)a.next();
+			if(A.name().equalsIgnoreCase(calledThis))
+				return A;
+		}
+		return null;
 	}
-	public static Iterator areas(){ return areasMap.values().iterator(); }
+	public static Iterator areas(){ 
+		return ((Vector)areasList.clone()).iterator();
+	}
 	public static Area getFirstArea()
 	{
 		if (areas().hasNext()) 
@@ -39,17 +47,17 @@ public class CMMap
 		return null;
 	}
 	
-	public static int numRooms() { return roomsMap.size(); }
+	public static int numRooms() { return roomsList.size(); }
 	public static void addRoom(Room newOne)
 	{
-		roomsMap.put(newOne.ID(), newOne);
+		roomsList.addElement(newOne);
 		theWorldChanged();
 	}
 	public static void delRoom(Room oneToDel)
 	{
 		if(oneToDel instanceof GridLocale)
 			((GridLocale)oneToDel).clearGrid();
-		roomsMap.remove(oneToDel);
+		roomsList.remove(oneToDel);
 		theWorldChanged();
 	}
 	public static Room getRoom(String calledThis)
@@ -64,7 +72,9 @@ public class CMMap
 
 		return R;
 	}
-	public static Iterator rooms() { return roomsMap.values().iterator(); }
+	public static Iterator rooms() { 
+		return ((Vector)roomsList.clone()).iterator();
+	}
 	public static Vector makeRoomVector()
 	{
 		Vector V=new Vector();
@@ -76,8 +86,8 @@ public class CMMap
 	{
 		if(oldOne instanceof GridLocale)
 		  ((GridLocale)oldOne).clearGrid();
-		roomsMap.remove(oldOne);
-		roomsMap.put(newOne.ID(), newOne);
+		roomsList.remove(oldOne);
+		roomsList.addElement(newOne);
 		theWorldChanged();
 	}
 	public static Room getFirstRoom()
@@ -88,10 +98,14 @@ public class CMMap
 	}
 	public static Room getRandomRoom()
 	{
-		Object[] rooms = roomsMap.values().toArray();
-		int num = Dice.roll(1,numRooms(),-1);
-
-		return (Room)rooms[num];
+		Room R=null;
+		while((numRooms()>0)&&(R==null))
+		{
+			try{
+				R=(Room)roomsList.elementAt(Dice.roll(1,numRooms(),-1));
+			}catch(Exception e){}
+		}
+		return R;
 	}
 	
 	public static int numDeities() { return deitiesList.size(); }
@@ -133,7 +147,7 @@ public class CMMap
 
 		return M;
 	}
-	public static Iterator players() { return playersList.iterator(); }
+	public static Iterator players() { return ((Vector)playersList.clone()).iterator(); }
 	
 	public static Room getStartRoom(MOB mob)
 	{
@@ -225,8 +239,8 @@ public class CMMap
 
 	public static void unLoad()
 	{
-		areasMap.clear();
-		roomsMap.clear();
+		areasList.clear();
+		roomsList.clear();
 		deitiesList.clear();
 		playersList.clear();
 		startRooms=new Hashtable();
