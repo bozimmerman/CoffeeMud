@@ -608,7 +608,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		{
 			Environmental E=(Environmental)inventory.elementAt(i);
 
-			if(!((E instanceof Item)&&(((Item)E).location()!=null)))
+			if(!((E instanceof Item)&&((((Item)E).location()!=null)||(!Sense.canBeSeenBy(E,mob)))))
 			{
 				String col=null;
 				int val=yourValue(mob,E,true);
