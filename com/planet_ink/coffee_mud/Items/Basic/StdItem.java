@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -939,13 +940,17 @@ public class StdItem implements Item
 			{
 				if(Sense.canBeSeenBy(this,mob))
 				{
+				    StringBuffer response=new StringBuffer("");
 					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-						mob.tell(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight:"+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rTime  : "+dispossessionTimeLeftString()+"\n\r"+description()+"\n\r"+"\n\rMisc  :'"+text());
+						response.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight:"+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rTime  : "+dispossessionTimeLeftString()+"\n\r"+description()+"\n\r"+"\n\rMisc  :'"+text());
 					else
 					if(description().length()==0)
-						mob.tell("You don't see anything special about "+this.name());
+						response.append("You don't see anything special about "+this.name());
 					else
-						mob.tell(description());
+						response.append(description());
+					//if(msg.source().charStats().getStat(CharStats.INTELLIGENCE)>=10)
+				    //    response.append("\n\r"+Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_DESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase());
+				    mob.tell(response.toString());
 				}
 				else
 					mob.tell("You can't see that!");
