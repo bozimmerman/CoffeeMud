@@ -66,9 +66,14 @@ public class Farming extends CommonSkill
 			}
 		}
 		super.unInvoke();
-		if((canBeUninvoked)&&(aff!=null)&&(aff instanceof MOB)&&(aff!=room)&&(room!=null))
+		if((canBeUninvoked)
+		   &&(aff!=null)
+		   &&(aff instanceof MOB)
+		   &&(aff!=room)
+		   &&(room!=null))
 		{
 			unInvoked=false;
+			tickUp=0;
 			startTickDown(room,50);
 		}
 	}
@@ -121,7 +126,7 @@ public class Farming extends CommonSkill
 		}
 		if(mine==null)
 		{
-			commonTell(mob,"You'll need to have some to seed from on the ground first.");
+			commonTell(mob,"You'll need to have some "+foundShortName+" to seed from on the ground first.");
 			return false;
 		}
 		found=null;
@@ -136,6 +141,7 @@ public class Farming extends CommonSkill
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) planting "+foundShortName+".");
 		verb="planting "+foundShortName;
 		displayText="You are planting "+foundShortName;
+		room=mob.location();
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
