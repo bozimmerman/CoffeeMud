@@ -27,8 +27,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public String name(){ return "Putting a room up for sale";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 
-	private final static String theStr=" This lot is for sale (look id).";
+	private final static String SALESTR=" This lot is for sale (look id).";
+	private final static String RENTSTR=" This lot (look id) is for rent on a monthly basis.";
 	protected int lastItemNums=-1;
+	protected int lastDayDone=-1;
 
 	public String accountForYourself()
 	{ return "For Sale";	}
@@ -37,23 +39,27 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		if(text().length()==0)
 		    return 100000;
-		int price=0;
-		int index=text().length();
+		String s=text();
+		int index=s.length();
 		while((--index)>=0)
 		{
-			if(Character.isDigit(text().charAt(index)))
-			    price=(price*10)+Util.s_int(""+text().charAt(index));
-			else
-			if(!Character.isWhitespace(text().charAt(index)))
+			if((!Character.isDigit(s.charAt(index)))
+			&&(!Character.isWhitespace(s.charAt(index))))
 			    break;
 		}
+		int price=Util.s_int(s.substring(index+1).trim());
 			    
 		if(price<=0) price=100000;
 		return price;
 	}
 	
 	public void setLandPrice(int price)
-	{   setMiscText(landOwner()+"/"+(rentalProperty()?"RENTAL ":"")+price); }
+	{   
+	    setMiscText(landOwner()+"/"
+	        +(rentalProperty()?"RENTAL ":"")
+	        +((backTaxes()>0)?"TAX"+backTaxes()+"X ":"")
+	        +price);
+	}
 	
 	public String landOwner()
 	{
@@ -62,15 +68,41 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	public void setLandOwner(String owner)
-	{   setMiscText(owner+"/"+(rentalProperty()?"RENTAL ":"")+landPrice()); }
+	{   
+	    setMiscText(owner+"/"
+		        +(rentalProperty()?"RENTAL ":"")
+		        +((backTaxes()>0)?"TAX"+backTaxes()+"X ":"")
+		        +landPrice());
+    }
 
+	public int backTaxes()
+	{
+		if(text().indexOf("/")<0) return 0;
+		int x=text().indexOf("TAX",text().indexOf("/"));
+		if(x<0) return 0;
+		String s=(String)Util.parse(text().substring(x+3)).firstElement();
+		return Util.s_int(s.substring(0,s.length()-1));
+    }
+	public void setBackTaxes(int tax)
+	{	
+	    setMiscText(landOwner()+"/"
+		        +(rentalProperty()?"RENTAL ":"")
+		        +((backTaxes()>0)?"TAX"+tax+"X ":"")
+		        +landPrice());
+	}
+	
 	public boolean rentalProperty()
 	{
-		if(text().indexOf("/")<0) return false;
+		if(text().indexOf("/")<0) return text().indexOf("RENTAL")>=0;
 	    return text().indexOf("RENTAL",text().indexOf("/"))>0;
     }
 	public void setRentalProperty(boolean truefalse)
-	{	setMiscText(landOwner()+"/"+(truefalse?"RENTAL ":"")+landPrice());}
+	{	
+	    setMiscText(landOwner()+"/"
+		        +(truefalse?"RENTAL ":"")
+		        +((backTaxes()>0)?"X"+backTaxes()+"X ":"")
+		        +landPrice());
+	}
 
 	// update title, since it may affect clusters, worries about ALL involved
 	public void updateTitle()
@@ -121,17 +153,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					MOB D=null;
 				    Clan C=Clans.getClan(A.landOwner());
 				    if(C!=null)
-				    {
-				        DVector DV=C.getMemberList();
-				        int newPos=-1;
-						for(int i=0;i<DV.size();i++)
-							if(((Integer)DV.elementAt(i,2)).intValue()>newPos)
-							{    
-							    D=CMMap.getLoadPlayer((String)DV.elementAt(i,1));
-							    if(D!=null)
-							        break;
-							}
-				    }
+				        D=C.getResponsibleMember();
 				    else
 				        D=CMMap.getLoadPlayer(A.landOwner());
 				    if(D==null) return true;
@@ -174,9 +196,17 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
-	public static void colorForSale(Room R, boolean reset)
+	public static void colorForSale(Room R, boolean rental, boolean reset)
 	{
-		if(R.description().indexOf(theStr)<0)
+	    String theStr=rental?RENTSTR:SALESTR;
+	    String otherStr=rental?SALESTR:RENTSTR;
+		int x=R.description().indexOf(otherStr);
+		if(x>=0)
+		{
+			R.setDescription(R.description().substring(0,x));
+			CMClass.DBEngine().DBUpdateRoom(R);
+		}
+		if(R.description().indexOf(theStr.trim())<0)
 		{
 			if(reset)
 			{
@@ -236,7 +266,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					I.recoverEnvStats();
 				}
 			}
-			colorForSale(R,clearRoomIfUnsold);
+			colorForSale(R,T.rentalProperty(),clearRoomIfUnsold);
 			return -1;
 		}
 		else
@@ -253,13 +283,19 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 			}
 
-			int x=R.description().indexOf(theStr);
+			int x=R.description().indexOf(SALESTR);
 			if(x>=0)
 			{
 				R.setDescription(R.description().substring(0,x));
 				CMClass.DBEngine().DBUpdateRoom(R);
 			}
-
+			x=R.description().indexOf(RENTSTR);
+			if(x>=0)
+			{
+				R.setDescription(R.description().substring(0,x));
+				CMClass.DBEngine().DBUpdateRoom(R);
+			}
+			
 			// this works on the priciple that
 			// 1. if an item has ONLY been removed, the lastNumItems will be != current # items
 			// 2. if an item has ONLY been added, the dispossessiontime will be != null
@@ -292,10 +328,131 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
+	public static boolean doRentalProperty(Area A, String ID, String owner, int rent)
+	{
+	    if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+	        return false;
+	    int month=A.getTimeObj().getMonth();
+	    int day=A.getTimeObj().getDayOfMonth();
+	    int year=A.getTimeObj().getYear();
+	    Object O=Resources.getResource("RENTAL INFO/"+owner);
+	    Vector V=null;
+	    if(O instanceof Vector)
+	        V=(Vector)O;
+	    else
+	        V=CMClass.DBEngine().DBReadData(owner,"RENTAL INFO");
+	    if(V==null)
+	        V=new Vector();
+	    if(V.size()==0)
+	    {
+		    V=new Vector();
+	        V.addElement(owner);
+	        V.addElement("RENTAL INFO");
+	        V.addElement("RENTAL INFO/"+owner);
+	        V.addElement(ID+"|~>|"+day+" "+month+" "+year+"|~;|");
+	        CMClass.DBEngine().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,(String)V.lastElement());
+	        Vector V2=new Vector();
+	        V2.addElement(V);
+	        Resources.submitResource("RENTAL INFO/"+owner,V2);
+	        return false;
+	    }
+	    else
+	    if(V.firstElement() instanceof Vector)
+	    {
+	        V=(Vector)V.firstElement();
+	        if(V.size()>2)
+	        {
+		        String parse=(String)V.lastElement();
+		        int x=parse.indexOf("|~;|");
+		        StringBuffer reparse=new StringBuffer("");
+		        boolean changesMade=false;
+                boolean needsToPay=false;
+		        while(x>=0)
+		        {
+		            String thisOne=parse.substring(0,x);
+		            if(thisOne.startsWith(ID+"|~>|"))
+		            {
+		                thisOne=thisOne.substring((ID+"|~>|").length());
+		                V=Util.parse(thisOne);
+		                if(V.size()==3)
+		                {
+		                    int lastYear=Util.s_int((String)V.lastElement());
+		                    int lastMonth=Util.s_int((String)V.elementAt(1));
+		                    int lastDay=Util.s_int((String)V.firstElement());
+		                    while(!needsToPay)
+		                    {
+			                    if(lastYear<year) 
+			                        needsToPay=true;
+			                    else
+			                    if((lastYear==year)&&(lastMonth<month)&&(day>=lastDay)) 
+			                        needsToPay=true;
+			                    if(needsToPay)
+			                    {
+			                        if(MoneyUtils.modifyLocalBankGold(A,owner,CoffeeUtensils.getFormattedDate(A)+":Withdrawl of "+rent+": Rent for "+ID,-rent))
+			                        {
+			                            lastMonth++;
+			                            if(lastMonth>A.getTimeObj().getMonthsInYear())
+			                            {
+			                                lastMonth=1;
+			                                lastYear++;
+			                            }
+			                            changesMade=true;
+					                    needsToPay=false;
+			                        }
+			                    }
+			                    else
+			                        break;
+		                    }
+		                    if(changesMade)
+		                        reparse.append(ID+"|~>|"+lastDay+" "+lastMonth+" "+lastYear+"|~;|");
+		                    if(needsToPay&&(!changesMade))
+		                        return true;
+		                }
+		            }
+		            else
+		                reparse.append(thisOne+"|~;|");
+		            parse=parse.substring(x+4);
+		            x=parse.indexOf("|~;|");
+		        }
+		        if(changesMade)
+		        {
+			        CMClass.DBEngine().DBDeleteData(owner,"RENTAL INFO","RENTAL INFO/"+owner);
+			        CMClass.DBEngine().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
+				    V=new Vector();
+			        V.addElement(owner);
+			        V.addElement("RENTAL INFO");
+			        V.addElement("RENTAL INFO/"+owner);
+			        V.addElement(reparse.toString());
+			        Vector V2=new Vector();
+			        V2.addElement(V);
+			        Resources.updateResource("RENTAL INFO/"+owner,V2);
+		        }
+			    return needsToPay;
+	        }
+		    return false;
+	    }
+	    return false;
+	}
+	
 	// update lot, since its called by the savethread, ONLY worries about itself
 	public void updateLot()
 	{
 		if(affected instanceof Room)
+		{
 			lastItemNums=updateLotWithThisData((Room)affected,this,false,lastItemNums);
+			if((lastDayDone!=((Room)affected).getArea().getTimeObj().getDayOfMonth())
+			&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)))
+			{
+			    Room R=(Room)affected;
+			    lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
+			    if((landOwner().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
+			        if(doRentalProperty(R.getArea(),R.roomID(),landOwner(),landPrice()))
+			        {
+			            setLandOwner("");
+						CMClass.DBEngine().DBUpdateRoom(R);
+						lastItemNums=updateLotWithThisData((Room)affected,this,false,lastItemNums);
+			        }
+			}
+		}
 	}
 }

@@ -184,6 +184,18 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return mine;
 	}
 
+	public void bankLedger(MOB mob, String msg)
+	{
+	    String date=CoffeeUtensils.getFormattedDate(mob);
+		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+		{
+			if(mob.getClanID().length()==0) return;
+		    MoneyUtils.bankLedger(bankChain(),mob.getClanID(),date+": "+msg);
+		}
+		else
+		    MoneyUtils.bankLedger(bankChain(),mob.Name(),date+": "+msg);
+	}
+	
 	public Item findDepositInventory(MOB mob, String likeThis)
 	{
 		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
@@ -298,6 +310,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 						else
 						if((coinItem==null)||(newBalance!=coinItem.numberOfCoins()))
 						{
+						    if(newBalance>coinItem.numberOfCoins())
+						        MoneyUtils.bankLedger(bankChain(),name,CoffeeUtensils.getFormattedDate(this)+": Deposit of "+(newBalance-coinItem.numberOfCoins())+": Interest paid.");
+						    else
+						        MoneyUtils.bankLedger(bankChain(),name,CoffeeUtensils.getFormattedDate(this)+": Withdrawl of "+(coinItem.numberOfCoins()-newBalance)+": Interest charged.");
 							if(coinItem!=null)
 								delDepositInventory(name,coinItem);
 							coinItem=(Coins)CMClass.getItem("StdCoins");
@@ -371,6 +387,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if((old!=null)&&(old instanceof Coins))
 							newNum+=((Coins)old).numberOfCoins();
 						item.setNumberOfCoins(newNum);
+					    bankLedger(owner,"Deposit of "+newNum+": "+msg.source().Name());
 						if(old!=null) delDepositInventory(owner,old);
 						addDepositInventory(owner,item);
 						setMoney(getMoney()-((Coins)msg.tool()).numberOfCoins());
@@ -409,6 +426,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						}
 						if((item!=null)&&(item instanceof Coins))
 						{
+						    bankLedger(owner,"Withdrawl of "+((Coins)old).numberOfCoins()+": "+msg.source().Name());
 							Coins coins=(Coins)item;
 							coins.setNumberOfCoins(coins.numberOfCoins()-((Coins)old).numberOfCoins());
 							coins.recoverEnvStats();

@@ -208,6 +208,7 @@ public class Thief extends StdCharClass
 			   &&(msg.tool() instanceof Ability)
 			   &&(msg.tool().ID().equals("Thief_Steal")
 				  ||msg.tool().ID().equals("Thief_Robbery")
+				  ||msg.tool().ID().equals("Thief_Embezzle")
 				  ||msg.tool().ID().equals("Thief_Mug")
 				  ||msg.tool().ID().equals("Thief_Swipe")))
 				MUDFight.postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),10,false);

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.common;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 /**
  * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
@@ -858,6 +859,21 @@ public class Clans implements Clan, Tickable
 			Clan C=(Clan)e.nextElement();
 			C.tick(C,MudHost.TICK_CLAN);
 		}
+	}
+	
+	public MOB getResponsibleMember()
+	{
+	    MOB mob=null;
+        DVector DV=getMemberList();
+        int newPos=-1;
+		for(int i=0;i<DV.size();i++)
+			if(((Integer)DV.elementAt(i,2)).intValue()>newPos)
+			{    
+			    mob=CMMap.getLoadPlayer((String)DV.elementAt(i,1));
+			    if(mob!=null)
+			        break;
+			}
+	    return mob;
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

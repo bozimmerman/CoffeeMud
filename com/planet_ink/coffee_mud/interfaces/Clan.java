@@ -202,6 +202,8 @@ public interface Clan extends Cloneable, Tickable
 	
 	public DVector getMemberList();
 	public DVector getMemberList(int PosFilter);
+	
+	public MOB getResponsibleMember();
 
 	public int getClanRelations(String id);
 	public long getLastRelationChange(String id);

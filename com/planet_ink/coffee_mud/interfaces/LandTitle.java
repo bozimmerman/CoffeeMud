@@ -29,4 +29,6 @@ public interface LandTitle extends Environmental
 	public Vector getPropertyRooms();
 	public boolean rentalProperty();
 	public void setRentalProperty(boolean truefalse);
+	public void setBackTaxes(int amount);
+	public int backTaxes();
 }

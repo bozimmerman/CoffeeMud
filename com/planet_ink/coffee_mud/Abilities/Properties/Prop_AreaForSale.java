@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -30,28 +31,33 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	{ return "For Sale";	}
 	private long lastCall=0;
 	private long lastMobSave=0;
+	private int lastDayDone=-1;
 
 	public int landPrice()
 	{
 		if(text().length()==0)
 		    return 100000;
-		int price=0;
-		int index=text().length();
+		String s=text();
+		int index=s.length();
 		while((--index)>=0)
 		{
-			if(Character.isDigit(text().charAt(index)))
-			    price=(price*10)+Util.s_int(""+text().charAt(index));
-			else
-			if(!Character.isWhitespace(text().charAt(index)))
+			if((!Character.isDigit(s.charAt(index)))
+			&&(!Character.isWhitespace(s.charAt(index))))
 			    break;
 		}
+		int price=Util.s_int(s.substring(index+1).trim());
 			    
 		if(price<=0) price=100000;
 		return price;
 	}
 	
 	public void setLandPrice(int price)
-	{   setMiscText(landOwner()+"/"+(rentalProperty()?"RENTAL ":"")+price); }
+	{   
+	    setMiscText(landOwner()+"/"
+	        +(rentalProperty()?"RENTAL ":"")
+	        +((backTaxes()>0)?"TAX"+backTaxes()+"X ":"")
+	        +price);
+	}
 	
 	public String landOwner()
 	{
@@ -60,15 +66,41 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 
 	public void setLandOwner(String owner)
-	{   setMiscText(owner+"/"+(rentalProperty()?"RENTAL ":"")+landPrice()); }
+	{   
+	    setMiscText(owner+"/"
+		        +(rentalProperty()?"RENTAL ":"")
+		        +((backTaxes()>0)?"TAX"+backTaxes()+"X ":"")
+		        +landPrice());
+    }
 
+	public int backTaxes()
+	{
+		if(text().indexOf("/")<0) return 0;
+		int x=text().indexOf("TAX",text().indexOf("/"));
+		if(x<0) return 0;
+		String s=(String)Util.parse(text().substring(x+3)).firstElement();
+		return Util.s_int(s.substring(0,s.length()-1));
+    }
+	public void setBackTaxes(int tax)
+	{	
+	    setMiscText(landOwner()+"/"
+		        +(rentalProperty()?"RENTAL ":"")
+		        +((backTaxes()>0)?"TAX"+tax+"X ":"")
+		        +landPrice());
+	}
+	
 	public boolean rentalProperty()
 	{
-		if(text().indexOf("/")<0) return false;
+		if(text().indexOf("/")<0) return text().indexOf("RENTAL")>=0;
 	    return text().indexOf("RENTAL",text().indexOf("/"))>0;
     }
 	public void setRentalProperty(boolean truefalse)
-	{	setMiscText(landOwner()+"/"+(truefalse?"RENTAL ":"")+landPrice());}
+	{	
+	    setMiscText(landOwner()+"/"
+		        +(truefalse?"RENTAL ":"")
+		        +((backTaxes()>0)?"X"+backTaxes()+"X ":"")
+		        +landPrice());
+	}
 	
 	// update title, since it may affect clusters, worries about ALL involved
 	public void updateTitle()
@@ -138,7 +170,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	// update lot, since its called by the savethread, ONLY worries about itself
 	public void updateLot()
 	{
-		if((System.currentTimeMillis()-lastCall)>360000)
+		if(((System.currentTimeMillis()-lastCall)>360000)
+		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)))
 		{
 			Vector V=getPropertyRooms();
 			for(int v=0;v<V.size();v++)
@@ -149,6 +182,22 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				lastItemNums.put(R,new Integer(Prop_RoomForSale.updateLotWithThisData(R,this,false,(lastItemNum==null)?-1:lastItemNum.intValue())));
 			}
 			lastCall=System.currentTimeMillis();
+			Area A=null;
+			if(affected instanceof Area)
+				A=(Area)affected;
+			else
+				A=CMMap.getArea(landPropertyID());
+			if(lastDayDone!=A.getTimeObj().getDayOfMonth())
+			{
+			    Room R=(Room)affected;
+			    lastDayDone=A.getTimeObj().getDayOfMonth();
+			    if((landOwner().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
+			        if(Prop_RoomForSale.doRentalProperty(A,A.Name(),landOwner(),landPrice()))
+			        {
+			            setLandOwner("");
+						CMClass.DBEngine().DBUpdateArea(A.Name(),A);
+			        }
+			}
 		}
 	}
 }

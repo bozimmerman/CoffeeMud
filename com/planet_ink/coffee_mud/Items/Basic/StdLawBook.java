@@ -578,9 +578,9 @@ public class StdLawBook extends StdItem
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
-			str.append("1. PROPERTY TAX   : "+(Util.s_int(theLaw.getInternalStr("PROPERTYTAX")))+"%\n\r");
-			str.append("2. SALES TAX      : "+(Util.s_int(theLaw.getInternalStr("SALESTAX")))+"%\n\r");
-			str.append("3. TAX EVASION    : "+shortLawDesc((String[])theLaw.basicCrimes().get("TAXEVASION"))+"\n\r");
+			str.append("1. PROPERTY TAX   : "+(Util.s_double(theLaw.getInternalStr("PROPERTYTAX")))+"%\n\r");
+			str.append("2. SALES TAX      : "+(Util.s_double(theLaw.getInternalStr("SALESTAX")))+"%\n\r");
+			str.append("3. TAX EVASION    : "+shortLawDesc((String[])theLaw.taxLaws().get("TAXEVASION"))+"\n\r");
 			str.append("4. TREASURY       : ");
 			String S=theLaw.getInternalStr("TREASURY").trim();
 			String room="*";
@@ -593,16 +593,19 @@ public class StdLawBook extends StdItem
 				room=(String)V.firstElement();
 				if(V.size()>1) item=Util.combine(V,1);
 				if(room.equalsIgnoreCase("*")) 
-					str.append("Any");
+					str.append("Any (*)");
 				else
 				{
 					Room R=CMMap.getRoom(room);
 					if(R==null)
 						str.append("Unknown");
 					else
-						str.append(R.displayText());
+						str.append(R.displayText()+" ("+R.roomID()+")");
 				}
-				str.append(item+"\n\r");
+				if(item.length()>0)
+					str.append(". Container: "+item+"\n\r");
+				else
+					str.append("\n\r");
 			}
 			mob.session().colorOnlyPrintln(str.toString());
 			if(!theLaw.hasModifiableLaws())
@@ -630,7 +633,7 @@ public class StdLawBook extends StdItem
 				break;
 			case 3:
 				{
-					String[] oldLaw=(String[])theLaw.basicCrimes().get("TAXEVASION");
+					String[] oldLaw=(String[])theLaw.taxLaws().get("TAXEVASION");
 					String[] newValue=modifyLaw(A,B,theLaw,mob,oldLaw);
 					if(newValue!=oldLaw)
 					{
@@ -648,14 +651,18 @@ public class StdLawBook extends StdItem
 					break;
 				}
 			case 4:
-				String room2=mob.session().prompt("Enter a new room ID (RETURN="+room+", *=any): ",room);
-				String item2=mob.session().prompt("Enter an optional container name (RETURN="+item+"): ",item);
-				if((!room.equalsIgnoreCase(room2))||(!item.equalsIgnoreCase(item2)))
 				{
-					changeTheLaw(A,B,mob,theLaw,"TREASURY",""+room2+";"+item2);
-					mob.tell("Changed.");
+				    String room2="/";
+					while((room2.equals("/"))||(!room2.equals("*"))&&(room2.length()>0)&&(CMMap.getRoom(room2)==null))
+					    room2=mob.session().prompt("Enter a new room ID (RETURN="+room+", *=any): ",room);
+					String item2=mob.session().prompt("Enter an optional container name (RETURN="+item+"): ",item);
+					if((!room.equalsIgnoreCase(room2))||(!item.equalsIgnoreCase(item2)))
+					{
+						changeTheLaw(A,B,mob,theLaw,"TREASURY",""+room2+";"+item2);
+						mob.tell("Changed.");
+					}
+					break;
 				}
-				break;
 			}
 		}
 	}

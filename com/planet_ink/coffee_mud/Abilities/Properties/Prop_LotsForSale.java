@@ -95,6 +95,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					{
 						newTitle=(LandTitle)((Ability)newTitle).copyOf();
 						newTitle.setLandOwner("");
+						newTitle.setBackTaxes(0);
 						R2.addNonUninvokableEffect((Ability)newTitle);
 					}
 					R.rawDoors()[d]=R2;
@@ -105,7 +106,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 					CMClass.DBEngine().DBCreateRoom(R2,CMClass.className(R2));
 					CMMap.addRoom(R2);
-					colorForSale(R2,true);
+					colorForSale(R2,newTitle.rentalProperty(),true);
 					R2.getArea().fillInAreaRoom(R2);
 					CMClass.DBEngine().DBUpdateExits(R2);
 				}

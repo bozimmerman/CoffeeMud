@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,7 +51,7 @@ public class StdTitle extends StdItem implements LandTitle
 	{
 		LandTitle A=fetchALandTitle();
 		if(A==null)	return 0;
-		return A.landPrice();
+		return A.landPrice()+A.backTaxes();
 	}
 	
 	public void setLandPrice(int price)
@@ -61,6 +62,19 @@ public class StdTitle extends StdItem implements LandTitle
 		A.updateTitle();
 	}
 	
+	public void setBackTaxes(int amount)
+	{
+		LandTitle A=fetchALandTitle();
+		if(A==null)	return;
+		A.setBackTaxes(amount);
+		A.updateTitle();
+	}
+	public int backTaxes()
+	{
+		LandTitle A=fetchALandTitle();
+		if(A==null)	return 0;
+		return A.backTaxes();
+	}
 	public boolean rentalProperty()
 	{
 		LandTitle A=fetchALandTitle();
@@ -229,10 +243,33 @@ public class StdTitle extends StdItem implements LandTitle
 				return;
 			}
 			A.setLandOwner(msg.target().Name());
+			A.setBackTaxes(0);
 			updateTitle();
 			updateLot();
 			recoverEnvStats();
 			msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");
+			if(A.rentalProperty())
+			    msg.source().tell("This property is a rental.  Your rent will be paid every mud-month out of your bank account.");
+			else
+			{
+			    Vector allRooms=getPropertyRooms();
+			    if((allRooms!=null)&&(allRooms.size()>0))
+			    {
+			        Room R=(Room)allRooms.firstElement();
+				    Behavior B=CoffeeUtensils.getLegalBehavior(R);
+				    if(B!=null)
+				    {
+						Vector VB=new Vector();
+						Area A2=CoffeeUtensils.getLegalObject(R);
+						VB.addElement(new Integer(Law.MOD_LEGALINFO));
+						B.modifyBehavior(A2,(MOB)msg.target(),VB);
+						Law theLaw=(Law)VB.firstElement();
+						String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
+						if((taxs!=null)&&(taxs.length()==0)&&(Util.s_double(taxs)>0.0))
+						    msg.source().tell("A property tax of "+Util.s_double(taxs)+"% of "+A.landPrice()+" will be paid monthly out of your bank account.");
+				    }
+			    }
+			}
 		}
 		else
 		if((msg.targetMinor()==CMMsg.TYP_GET)
@@ -325,6 +362,7 @@ public class StdTitle extends StdItem implements LandTitle
 					A.setLandOwner(msg.source().getClanID());
 				else
 					A.setLandOwner(msg.source().Name());
+				A.setBackTaxes(0);
 				updateTitle();
 				updateLot();
 				msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");

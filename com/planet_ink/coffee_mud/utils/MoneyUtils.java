@@ -285,7 +285,29 @@ public class MoneyUtils
 		return changeBag;
 	}
 
-	public static boolean modifyBankGold(String bankName, String owner, int amount)
+	public static void bankLedger(String bankName, String owner, String explanation)
+	{
+		Vector V=CMClass.DBEngine().DBReadData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner);
+		if((V!=null)&&(V.size()>0))
+		{
+			Vector D=(Vector)V.firstElement();
+			String last=(String)D.elementAt(3);
+			if(last.length()>4096)
+			{
+			    int x=last.indexOf(";|;",1024);
+			    if(x>=0) last=last.substring(x+3);
+			}
+			CMClass.DBEngine().DBDeleteData(owner,(String)D.elementAt(1),(String)D.elementAt(2));
+			CMClass.DBEngine().DBCreateData(owner,(String)D.elementAt(1),(String)D.elementAt(2),last+explanation+";|;");
+		}
+		else
+			CMClass.DBEngine().DBCreateData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner,explanation+";|;");
+	}
+	
+	public static boolean modifyBankGold(String bankName, 
+	        							 String owner,
+	        							 String explanation,
+	        							 int amount)
 	{
 		Vector V=CMClass.DBEngine().DBReadAllPlayerData(owner);
 		for(int v=0;v<V.size();v++)
@@ -305,6 +327,7 @@ public class MoneyUtils
 						((Coins)I).setNumberOfCoins(((Coins)I).numberOfCoins()+amount);
 						CMClass.DBEngine().DBDeleteData(owner,(String)D.elementAt(1),(String)D.elementAt(2));
 						CMClass.DBEngine().DBCreateData(owner,(String)D.elementAt(1),""+I+Math.random(),"COINS;"+CoffeeMaker.getPropertiesStr(I,true));
+						bankLedger(bankName,owner,explanation);
 						return true;
 					}
 				}
@@ -313,7 +336,11 @@ public class MoneyUtils
 		return false;
 	}
 
-	public static boolean modifyThisAreaBankGold(Area A, HashSet triedBanks, String owner, int amount)
+	public static boolean modifyThisAreaBankGold(Area A, 
+	        									 HashSet triedBanks, 
+	        									 String owner,
+	        									 String explanation,
+	        									 int amount)
 	{
 		Room R=null;
 		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
@@ -324,7 +351,7 @@ public class MoneyUtils
 				MOB M=R.fetchInhabitant(m);
 				if((M instanceof Banker)&&(!triedBanks.contains(((Banker)M).bankChain())))
 				{
-					if(modifyBankGold(((Banker)M).bankChain(),owner,amount))
+					if(modifyBankGold(((Banker)M).bankChain(),owner,explanation,amount))
 						return true;
 					triedBanks.add(((Banker)M).bankChain());
 				}
@@ -333,18 +360,21 @@ public class MoneyUtils
 		return false;
 	}
 	
-	public static boolean modifyLocalBankGold(Area A, String owner, int amount)
+	public static boolean modifyLocalBankGold(Area A, 
+	        								  String owner,
+	        								  String explanation,
+	        								  int amount)
 	{
 		HashSet triedBanks=new HashSet();
-		if(modifyThisAreaBankGold(A,triedBanks,owner,amount))
+		if(modifyThisAreaBankGold(A,triedBanks,owner,explanation,amount))
 			return true;
 		for(Enumeration e=A.getParents();e.hasMoreElements();)
 		{
 			Area A2=(Area)e.nextElement();
-			if(modifyThisAreaBankGold(A2,triedBanks,owner,amount))
+			if(modifyThisAreaBankGold(A2,triedBanks,owner,explanation,amount))
 				return true;
 		}
-		return modifyBankGold(null,owner,amount);
+		return modifyBankGold(null,owner,explanation,amount);
 	}
 
 	public static void subtractMoney(MOB banker, MOB mob, int amount)

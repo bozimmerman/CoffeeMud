@@ -76,11 +76,33 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			}
 		}
 	}
-
-	// update lot, since its called for all rooms by savethread, ONLY worries about itself
+	// update lot, since its called by the savethread, ONLY worries about itself
 	public void updateLot()
 	{
 		if(affected instanceof Room)
+		{
 			lastItemNums=updateLotWithThisData((Room)affected,this,false,lastItemNums);
+			if((lastDayDone!=((Room)affected).getArea().getTimeObj().getDayOfMonth())
+			&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)))
+			{
+			    Room R=(Room)affected;
+			    lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
+			    Vector V=getPropertyRooms();
+			    for(int v=0;v<V.size();v++)
+			    {
+			        Room R2=(Room)V.elementAt(v);
+			        Prop_RoomForSale PRFS=(Prop_RoomForSale)R2.fetchEffect(ID());
+			        if(PRFS!=null)
+			            PRFS.lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
+			    }
+			    if((landOwner().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
+			        if(doRentalProperty(R.getArea(),R.roomID(),landOwner(),landPrice()))
+			        {
+			            setLandOwner("");
+			            updateTitle();
+						lastItemNums=updateLotWithThisData((Room)affected,this,false,lastItemNums);
+			        }
+			}
+		}
 	}
 }

@@ -314,6 +314,8 @@ public class SaveThread extends Thread
 			return;
 		}
 		started=true;
+		while(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			try{Thread.sleep(1000);}catch(Exception e){}
 		while(true)
 		{
 			try

@@ -294,6 +294,19 @@ public class CoffeeUtensils
 		}
 		return null;
 	}
+	
+	public static String getFormattedDate(Environmental E)
+	{
+	    String date=Util.padRight("Unknown",11);
+	    if(E!=null)
+	    {
+		    TimeClock C=(E instanceof Area)?((Area)E).getTimeObj():
+		        CoffeeUtensils.roomLocation(E).getArea().getTimeObj();
+		    if(C!=null)
+		        date=Util.padRight(C.getDayOfMonth()+"-"+C.getMonth()+"-"+C.getYear(),11);
+	    }
+	    return date;
+	}
 
 	public static Item makeItemResource(int type)
 	{
