@@ -52,7 +52,7 @@ public class HolyAvenger extends TwoHandedSword
 			||(affect.source().getAlignment()<650))
 			{
 				unWear();
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,name()+" flashes and flys out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,name()+" flashes and flies out of <S-HIS-HER> hands!");
 				if(affect.source().isMine(this))
 					ExternalPlay.drop(affect.source(),this,true);
 				return false;

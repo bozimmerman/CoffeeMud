@@ -33,7 +33,7 @@ public class Spell_ArcanePossession extends Spell
 		   ||(msg.targetMinor()==Affect.TYP_WIELD))
 		&&(msg.source()!=owner))
 		{
-			msg.source().location().show(msg.source(),null,affected,Affect.MSG_OK_ACTION,"<O-NAME> flashes and flys out of <S-HIS-HER> hands!");
+			msg.source().location().show(msg.source(),null,affected,Affect.MSG_OK_ACTION,"<O-NAME> flashes and flies out of <S-HIS-HER> hands!");
 			ExternalPlay.drop(msg.source(),affected,true);
 			return false;
 		}

@@ -9,7 +9,7 @@ public class Spell_ClanDonate extends Spell
 {
 	public String ID() { return "Spell_ClanDonate"; }
 	public String name(){return "Clan Donate";}
-	protected int canTargetCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public Environmental newInstance(){return new Spell_ClanDonate();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	protected int overrideMana(){return 5;}

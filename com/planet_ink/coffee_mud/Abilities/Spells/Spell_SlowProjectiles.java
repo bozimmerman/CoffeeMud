@@ -29,9 +29,9 @@ public class Spell_SlowProjectiles extends Spell
 		&&(!affect.source().amDead()))
 		{
 			if(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_THROWN)
-				affect.source().location().show(affect.source(),null,affect.tool(),Affect.MSG_OK_VISUAL,"<O-NAME> flys slowly by.");
+				affect.source().location().show(affect.source(),null,affect.tool(),Affect.MSG_OK_VISUAL,"<O-NAME> flies slowly by.");
 			else
-				affect.source().location().show(affect.source(),null,Affect.MSG_OK_VISUAL,"The shot from "+affect.tool().name()+" flys slowly by.");
+				affect.source().location().show(affect.source(),null,Affect.MSG_OK_VISUAL,"The shot from "+affect.tool().name()+" flies slowly by.");
 			int damage=(affect.targetCode()-Affect.MASK_HURT)/2;
 			affect.modify(affect.source(),
 						  affect.target(),

@@ -200,7 +200,7 @@ public class Generic
 			String xml=
 				 XMLManager.convertXMLtoTag("MLEVL",""+E.baseEnvStats().level())
 				+XMLManager.convertXMLtoTag("MABLE",""+E.baseEnvStats().ability())
-				+XMLManager.convertXMLtoTag("MREJUV",""+E.baseEnvStats().rejuv())
+				+XMLManager.convertXMLtoTag("MREJV",""+E.baseEnvStats().rejuv())
 				+((E.isGeneric()?"":XMLManager.convertXMLtoTag("ITEXT",""+E.text())));
 			return xml;
 		}
@@ -805,7 +805,7 @@ public class Generic
 				buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
 				buf.append(XMLManager.convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
 				buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
-				buf.append(XMLManager.convertXMLtoTag("MREJUV",mob.baseEnvStats().rejuv()));
+				buf.append(XMLManager.convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
 				buf.append(XMLManager.convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
 				buf.append("</MOB>\n\r");
 			}
@@ -865,7 +865,7 @@ public class Generic
 			buf.append(XMLManager.convertXMLtoTag("IUSES",item.usesRemaining()));
 			buf.append(XMLManager.convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
 			buf.append(XMLManager.convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
-			buf.append(XMLManager.convertXMLtoTag("IREJUV",item.baseEnvStats().rejuv()));
+			buf.append(XMLManager.convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
 			buf.append(XMLManager.convertXMLtoTag("ITEXT",parseOutAngleBrackets(item.text())));
 			buf.append("</ITEM>\n\r");
 		}
@@ -891,7 +891,7 @@ public class Generic
 			if(newItem==null) return unpackErr("Items","null 'iClass': "+itemClass);
 			newItem.baseEnvStats().setLevel(XMLManager.getIntFromPieces(iblk.contents,"ILEVL"));
 			newItem.baseEnvStats().setAbility(XMLManager.getIntFromPieces(iblk.contents,"IABLE"));
-			newItem.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(iblk.contents,"IREJUV"));
+			newItem.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(iblk.contents,"IREJV"));
 			newItem.setUsesRemaining(XMLManager.getIntFromPieces(iblk.contents,"IUSES"));
 			newItem.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(iblk.contents,"ITEXT")));
 			newItem.setContainer(null);
@@ -1182,7 +1182,7 @@ public class Generic
 		{
 			E.baseEnvStats().setLevel(XMLManager.getIntFromPieces(V,"MLEVL"));
 			E.baseEnvStats().setAbility(XMLManager.getIntFromPieces(V,"MABLE"));
-			E.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(V,"MREJUV"));
+			E.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(V,"MREJV"));
 			if(!E.isGeneric())
 				E.setMiscText(XMLManager.getValFromPieces(V,"MTEXT"));
 		}

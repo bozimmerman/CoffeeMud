@@ -333,7 +333,7 @@ public class Sense
 		}
 		else
 		if(isFlying(seen))
-			type="flys";
+			type="flies";
 		else
 		if(isFalling(seen))
 			type="falls";

@@ -103,7 +103,7 @@ public class RaceData extends StdWebMacro
 					if(Sense.isFalling(mob))
 						str.append("falling, ");
 					if(Sense.isFlying(mob))
-						str.append("flys, ");
+						str.append("flies, ");
 					if((mob.envStats().disposition()&EnvStats.IS_GOOD)>0)
 						str.append("good, ");
 					if(Sense.isHidden(mob))

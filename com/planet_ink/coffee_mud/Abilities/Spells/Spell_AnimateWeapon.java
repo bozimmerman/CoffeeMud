@@ -120,7 +120,7 @@ public class Spell_AnimateWeapon extends Spell
 				mob.location().send(mob,msg);
 				target.unWear();
 				if(mob.isMine(target))
-					mob.location().show(mob,target,Affect.MSG_DROP,"<T-NAME> flys out of <S-YOUPOSS> hands!");
+					mob.location().show(mob,target,Affect.MSG_DROP,"<T-NAME> flies out of <S-YOUPOSS> hands!");
 				else
 					mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> starts flying around!");
 				if(mob.location().isContent(target))

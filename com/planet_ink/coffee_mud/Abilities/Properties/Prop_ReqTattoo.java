@@ -62,7 +62,7 @@ public class Prop_ReqTattoo extends Property
 					affect.source().tell("You have not been granted authorization to go that way.");
 				else
 				if(affect.source().location()!=null)
-					affect.source().location().show(affect.source(),null,affected,Affect.MSG_OK_ACTION,"<O-NAME> flashes and flys out of <S-HIS-HER> hands!");
+					affect.source().location().show(affect.source(),null,affected,Affect.MSG_OK_ACTION,"<O-NAME> flashes and flies out of <S-HIS-HER> hands!");
 				return false;
 			}
 		}

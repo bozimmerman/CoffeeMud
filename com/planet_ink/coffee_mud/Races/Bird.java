@@ -37,11 +37,11 @@ public class Bird extends StdRace
 	}
 	public String arriveStr()
 	{
-		return "flys in";
+		return "flies in";
 	}
 	public String leaveStr()
 	{
-		return "flys";
+		return "flies";
 	}
 	public Weapon myNaturalWeapon()
 	{
