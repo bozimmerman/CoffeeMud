@@ -36,4 +36,3 @@
 % Socks	1	10	2	5	GenArmor	FEET	0	0	0
 % Sleeping Bag	5	30	15	10	GenRideable	ENTER	2	0	0
 % Tent	10	60	25	25	GenRideable	ENTER	5	0	0
-% Rope	5	20	10	15	GenRideable	LADDER	1	0	0

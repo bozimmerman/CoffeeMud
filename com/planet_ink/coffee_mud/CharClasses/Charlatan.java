@@ -50,6 +50,7 @@ public class Charlatan extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Songcraft",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_FalseArrest",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Thief_Distract",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Skill_Imitation",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Skill_Dodge",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Song_Comprehension",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Ranger_Track",false);

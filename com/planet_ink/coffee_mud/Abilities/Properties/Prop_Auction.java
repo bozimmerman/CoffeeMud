@@ -45,7 +45,7 @@ public class Prop_Auction extends Property
 	{
 		if((--tickDown)<=0)
 		{
-			if((state==STATE_START)&&((System.currentTimeMillis()-auctionStart)<(5*60000)))
+			if((state==STATE_START)&&((System.currentTimeMillis()-auctionStart)<(5*15000)))
 			{
 				if(((System.currentTimeMillis()-auctionStart)>(3*15000))
 				&&((highBidder==null)||(highBidder==invoker)))

@@ -1,11 +1,9 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
-</BODY>
-</HTML>
+% Rope	5	20	10	15	GenRideable	LADDER	1	0	0
+% Lasso	5	30	10	20	GenLasso		0	0	0
+% Net	10	50	20	15	GenNet		0	0	0
+% Basket	1	10	5	5	GenContainer		20	0	0
+% Bag	1	10	5	5	GenContainer		30	0	0
+% Mat	1	5	5	0	GenItem		0	0	0
+% Quilt	1	20	30	5	GenArmor	BODY	0	1	0
+% Hammock	5	40	30	10	GenRideable	BED	50	0	0
+% Whip	1	10	10	5	GenWeapon	FLAILED	0	3	0

@@ -29,7 +29,7 @@ public class Trap_Snare extends StdTrap
 		if(!super.canSetTrapOn(mob,E)) return false;
 		Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_CLOTH);
 		if((I==null)
-		||(super.findNumberOfResource(mob.location(),I.material())<5))
+		||(findNumberOfResource(mob.location(),I.material())<5))
 		{
 			mob.tell("You'll need to set down at least 5 pounds of cloth first.");
 			return false;
@@ -50,7 +50,10 @@ public class Trap_Snare extends StdTrap
 				target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()|EnvStats.IS_SITTING);
 				target.recoverEnvStats();
 				Ability A=CMClass.getAbility("Thief_Bind");
-				A.startTickDown(invoker(),target,99999);
+				Item I=CMClass.getItem("StdItem");
+				I.setName("the snare");
+				A.setAffectedOne(I);
+				A.invoke(invoker(),target,true);
 			}
 		}
 	}

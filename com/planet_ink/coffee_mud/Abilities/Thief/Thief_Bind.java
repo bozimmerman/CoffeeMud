@@ -9,13 +9,18 @@ public class Thief_Bind extends ThiefSkill
 {
 	public String ID() { return "Thief_Bind"; }
 	public String name(){ return "Bind";}
-	public String displayText(){ return "(Bound)";}
+	public String displayText(){ return "(Bound by "+ropeName+")";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"BIND"};
 	public String[] triggerStrings(){return triggerStrings;}
+	private int maxRange=0;
+	public int maxRange(){return maxRange;}
+	public int minRange(){return 0;}
+	
 	public int amountRemaining=500;
+	public String ropeName="the ropes";
 
 	public Environmental newInstance(){	return new Thief_Bind();}
 
@@ -34,7 +39,7 @@ public class Thief_Bind extends ThiefSkill
 			&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
 			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
 			{
-				if(mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the ropes binding <S-HIM-HER>."))
+				if(mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against "+ropeName+" binding <S-HIM-HER>."))
 				{
 					amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
 					if(amountRemaining<0)
@@ -46,6 +51,15 @@ public class Thief_Bind extends ThiefSkill
 		return super.okAffect(myHost,affect);
 	}
 
+	
+	public void setAffectedOne(Environmental E)
+	{
+		if(!(E instanceof Item))
+			super.setAffectedOne(E);
+		else
+			ropeName=E.displayName();
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -57,7 +71,7 @@ public class Thief_Bind extends ThiefSkill
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the ropes.");
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of "+ropeName+".");
 			ExternalPlay.standIfNecessary(mob);
 		}
 	}
@@ -68,12 +82,12 @@ public class Thief_Bind extends ThiefSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!Sense.isSleeping(target))
+		if((!Sense.isSleeping(target))&&(!auto))
 		{
 			mob.tell(target.displayName()+" doesn't look willing to cooperate.");
 			return false;
 		}
-		if(mob.isInCombat())
+		if((mob.isInCombat())&&(!auto))
 		{
 			mob.tell("Not while you are fighting!");
 			return false;
@@ -89,17 +103,29 @@ public class Thief_Bind extends ThiefSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT|Affect.MASK_SOUND|Affect.MASK_MALICIOUS,"<S-NAME> bind(s) <T-NAME> with strong ropes.");
-			if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
+			if(auto) maxRange=10;
+			String str=auto?"<T-NAME> become(s) bound by "+ropeName+".":"<S-NAME> bind(s) <T-NAME> with "+ropeName+".";
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT|Affect.MASK_SOUND|Affect.MASK_MALICIOUS,auto?"":str,str,str);
+			if((target.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
 			{
-				mob.location().send(mob,msg);
+				target.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					amountRemaining=adjustedLevel(mob)*25;
-					if(target.location()==mob.location())
+					if(auto)
+					{
+						maxRange=0;
+						double prof=0.0;
+						Ability A=mob.fetchAbility("Specialization_Ranged");
+						if(A!=null) prof=Util.div(A.profficiency(),20);
+						amountRemaining=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level())*((int)Math.round(5.0+prof));
+					}
+					else
+						amountRemaining=adjustedLevel(mob)*25;
+					if((target.location()==mob.location())||(auto))
 						success=maliciousAffect(mob,target,Integer.MAX_VALUE-1000,-1);
 				}
-				if(mob.getVictim()==target) mob.setVictim(null);
+				if((mob.getVictim()==target)&&(!auto))
+					mob.setVictim(null);
 			}
 		}
 		else
