@@ -35,7 +35,7 @@ public class Prisoner extends StdAbility
 			if((affect.tool()!=null)&&(affect.tool() instanceof Ability)
 			   &&(affect.targetMinor()==Affect.TYP_LEAVE))
 			{
-				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape patrole, but a geas prevents <S-HIM-HER>.");
+				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>.");
 				return false;
 			}
 			else
@@ -45,7 +45,7 @@ public class Prisoner extends StdAbility
 			   &&(affect.source().location()!=null)
 			   &&(!affect.source().location().getArea().name().equals(((Room)affect.target()).getArea().name())))
 			{
-				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape patrole, but a geas prevents <S-HIM-HER>.");
+				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>.");
 				return false;
 			}
 		return super.okAffect(myHost,affect);

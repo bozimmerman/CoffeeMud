@@ -1,1 +1,0 @@
-Are there web macros to get and set player gold and inventory so this could happen automatically? If not, could they be added?

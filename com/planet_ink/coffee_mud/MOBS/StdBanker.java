@@ -60,7 +60,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		String name=thisThang.ID();
 		if(thisThang instanceof Coins) name="COINS";
-		ExternalPlay.DBCreateData(mob,bankChain(),""+thisThang,name+";"+Generic.getPropertiesStr(thisThang,true));
+		ExternalPlay.DBCreateData(mob,bankChain(),""+thisThang+Math.random(),name+";"+Generic.getPropertiesStr(thisThang,true));
 	}
 	
 	protected Item makeItem(String data)
