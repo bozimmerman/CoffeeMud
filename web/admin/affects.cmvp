@@ -1,11 +1,85 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<title>Affects Information</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+	function openUp2(named)
+	{
+		var strFeatures="top=200,left=50,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+		w=window.open("property.cmvp?ABILITY="+named,
+		            "Ability",strFeatures, false);
+	}
+	//-->
+	</SCRIPT>
+</head>
 
-<P>&nbsp;</P>
+<body BGCOLOR=#FFCCCC>
+<h3>CoffeeMud 3.0 Affects Information</h3><P>
 
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Property Affects</H2></TD></TR>
+	@AbilityAffectNext?reset@
+	@loop@
+	<TR>
+	@AbilityAffectNext?PROPERTY@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&PROPERTY@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&PROPERTY@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&PROPERTY@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	</TR>
+	@back@
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Skill Affects</H2></TD></TR>
+	@AbilityAffectNext?reset@
+	@loop@
+	<TR>
+	@AbilityAffectNext?SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	</TR>
+	@back@
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Disease Affects</H2></TD></TR>
+	@AbilityAffectNext?reset@
+	@loop@
+	<TR>
+	@AbilityAffectNext?DISEASE@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&DISEASE@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&DISEASE@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&DISEASE@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	</TR>
+	@back@
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Poison Affects</H2></TD></TR>
+	@AbilityAffectNext?reset@
+	@loop@
+	<TR>
+	@AbilityAffectNext?POISON@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&POISON@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&POISON@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&POISON@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	</TR>
+	@back@
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Trap Affects</H2></TD></TR>
+	@AbilityAffectNext?reset@
+	@loop@
+	<TR>
+	@AbilityAffectNext?TRAP@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&TRAP@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&TRAP@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityAffectNext?EMPTYOK&TRAP@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	</TR>
+	@back@
+	</TABLE>
 </BODY>
 </HTML>

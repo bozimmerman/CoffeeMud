@@ -160,14 +160,14 @@
 @endif@
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Behaviors:</B></FONT>
-	<BR><A target=HELP HREF="/archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+	<BR><A target=HELP HREF="/behaviors.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
     <TD WIDTH=450 COLSPAN=2>
 	@ExitData?BEHAVIORS@
 	</TD>
 </TR>
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Affects:</B></FONT>
-	<BR><A target=HELP href="/archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+	<BR><A target=HELP href="/affects.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
     <TD WIDTH=450 COLSPAN=2>
 	@ExitData?AFFECTS@
 	</TD>

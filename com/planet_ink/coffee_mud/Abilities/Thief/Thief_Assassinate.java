@@ -16,7 +16,6 @@ public class Thief_Assassinate extends ThiefSkill
 	public int quality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"ASSASSINATE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Thief_Assassinate();}
 	private Vector theTrail=null;
 	public int nextDirection=-2;

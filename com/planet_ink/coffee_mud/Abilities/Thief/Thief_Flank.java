@@ -25,11 +25,6 @@ public class Thief_Flank extends ThiefSkill
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+50);
 	}
 
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(target==null))

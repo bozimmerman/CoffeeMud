@@ -24,11 +24,6 @@ public class Thief_Distract extends ThiefSkill
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/2));
 	}
 
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
-
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))

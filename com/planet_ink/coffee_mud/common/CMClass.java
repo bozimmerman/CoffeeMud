@@ -14,6 +14,7 @@ public class CMClass extends ClassLoader
 	private static Vector charClasses=new Vector();
 	private static Vector MOBs=new Vector();
 	private static Hashtable abilities=new Hashtable();
+	private static Vector sortedAbilities=new Vector();
 	private static Vector locales=new Vector();
 	private static Vector exits=new Vector();
 	private static Vector items=new Vector();
@@ -41,6 +42,17 @@ public class CMClass extends ClassLoader
 	public static Enumeration areaTypes(){return areaTypes.elements();}
 	public static Enumeration extraCmds(){return extraCmds.elements();}
 	public static Enumeration abilities(){return abilities.elements();}
+	public static synchronized Enumeration sortedAbilities()
+	{
+		if(sortedAbilities==null)
+		{
+			sortedAbilities=new Vector();
+			Object[] sorted=(Object[])(new TreeSet(abilities.keySet())).toArray();
+			for(int i=0;i<sorted.length;i++)
+				sortedAbilities.addElement(abilities.get((String)sorted[i]));
+		}
+		return sortedAbilities.elements();
+	}
 	public static Ability randomAbility()
 	{ return (Ability)new Vector(abilities.values()).elementAt((int)Math.round(Math.floor(Math.random()*new Integer(abilities.size()).doubleValue())));	}
 	
@@ -449,6 +461,7 @@ public class CMClass extends ClassLoader
 		miscMagic=new Vector();
 		clantypes=new Vector();
 		areaTypes=new Vector();
+		sortedAbilities=null;
 	}
 
 	public static Hashtable loadHashListToObj(String filePath, String auxPath, String ancester)

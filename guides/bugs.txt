@@ -5,6 +5,6 @@ journal date bug? (SQL Server 2000) Single QUOTE in journal
 When I boot a player, they're still listed according to the website and archon command 'where', but not to 'who'.. Plus, after having done it,t he CPU time is way up.
 WEB WHO shows dead connections, mucked up when archon wizinv
 For armor, give material and wear location; for weapons, give material and weapon type.  Basically, I'm thinking it would be really nice if the shopkeepers gave most of the intel that would prohibit wearing/using.. this could also include weight.  Just including level is a very big teaser of information.
-sorting on the properties/mob skills on the web page and in-game?
-I don't suppose the help loading engine could be designed to load all the > files in the help directory?  Then we can make as many little > help files as
 fetch new classes from files and load them in?
+bugs w/ maze and grid editing?
+

@@ -354,13 +354,9 @@ public class ItemData extends StdWebMacro
 									break;
 						}
 						old=old.toUpperCase()+";";
-						Vector sortMe=new Vector();
-						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-							sortMe.addElement(CMClass.className(a.nextElement()));
-						Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
-						for(int r=0;r<sorted.length;r++)
+						for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 						{
-							String cnam=(String)sorted[r];
+							String cnam=((Ability)a.nextElement()).ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
 							if(old.indexOf(";"+cnam.toUpperCase()+";")>=0) 
 								str.append(" SELECTED");
@@ -453,13 +449,9 @@ public class ItemData extends StdWebMacro
 					{
 						if((firstTime)&&(I instanceof Wand))
 							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
-						Vector sortMe=new Vector();
-						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-							sortMe.addElement(CMClass.className(a.nextElement()));
-						Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
-						for(int r=0;r<sorted.length;r++)
+						for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 						{
-							String cnam=(String)sorted[r];
+							String cnam=((Ability)a.nextElement()).ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
 							if(old.equals(cnam))
 								str.append(" SELECTED");

@@ -15,7 +15,14 @@ public class Distilling extends Cooking
 	protected static String cookWordShort(){return "distill";};
 	protected static String cookWord(){return "distilling";};
 	public Environmental newInstance(){	return new Distilling();}
+	private static boolean myMapped=false;
 
+	public Distilling()
+	{
+		super();
+		if(ID().equals("Distilling")&&(!myMapped))
+		{myMapped=true; CMAble.addCharAbilityMapping("All",10,ID(),false);}
+	}
 	
 	protected synchronized Vector loadRecipes()
 	{

@@ -119,14 +119,6 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
-			Vector sortMeA=new Vector();
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-			{
-				Ability A=(Ability)a.nextElement();
-				if(A.canAffect(E))
-					sortMeA.addElement(CMClass.className(A));
-			}
-			Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -134,9 +126,11 @@ public class AreaData extends StdWebMacro
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=AFFECT"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				for(int r=0;r<sortedA.length;r++)
+				for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 				{
-					String cnam=(String)sortedA[r];
+					Ability A=(Ability)a.nextElement();
+					if(!A.canAffect(E)) continue;
+					String cnam=A.ID();
 					str.append("<OPTION VALUE=\""+cnam+"\"");
 					if(theclass.equals(cnam))
 						str.append(" SELECTED");
@@ -150,9 +144,11 @@ public class AreaData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=AFFECT"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Affect");
-			for(int r=0;r<sortedA.length;r++)
+			for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 			{
-				String cnam=(String)sortedA[r];
+				Ability A=(Ability)a.nextElement();
+				if(!A.canAffect(E)) continue;
+				String cnam=A.ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");

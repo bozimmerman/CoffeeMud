@@ -92,14 +92,14 @@
 </TR>
 <TR>
 	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Behaviors:</B></FONT>
-	<BR><A target=HELP HREF="/archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+	<BR><A target=HELP HREF="/behaviors.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
     <TD WIDTH=500 COLSPAN=2>
 	@AreaData?BEHAVIORS@
 	</TD>
 </TR>
 <TR>
 	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Affects:</B></FONT>
-	<BR><A target=HELP href="/archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+	<BR><A target=HELP href="/affects.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
     <TD WIDTH=500 COLSPAN=2>
 	@AreaData?AFFECTS@
 	</TD>

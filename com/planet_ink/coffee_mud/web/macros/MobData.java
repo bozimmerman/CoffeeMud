@@ -64,19 +64,15 @@ public class MobData extends StdWebMacro
 					theclasses.addElement(CMClass.className(Able));
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
-			Vector sortMeA=new Vector();
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-				sortMeA.addElement(CMClass.className(a.nextElement()));
-			Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=ABLES"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				for(int r=0;r<sortedA.length;r++)
+				for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 				{
-					String cnam=(String)sortedA[r];
+					String cnam=((Ability)a.nextElement()).ID();
 					str.append("<OPTION VALUE=\""+cnam+"\"");
 					if(theclass.equals(cnam))
 						str.append(" SELECTED");
@@ -88,9 +84,9 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=100%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=ABLES"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-			for(int r=0;r<sortedA.length;r++)
+			for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 			{
-				String cnam=(String)sortedA[r];
+				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");
@@ -126,19 +122,15 @@ public class MobData extends StdWebMacro
 					theclasses.addElement(CMClass.className(Able));
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
-			Vector sortMeA=new Vector();
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-				sortMeA.addElement(CMClass.className(a.nextElement()));
-			Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=BLESS"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				for(int r=0;r<sortedA.length;r++)
+				for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 				{
-					String cnam=(String)sortedA[r];
+					String cnam=((Ability)a.nextElement()).ID();
 					str.append("<OPTION VALUE=\""+cnam+"\"");
 					if(theclass.equals(cnam))
 						str.append(" SELECTED");
@@ -150,9 +142,9 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=100%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=BLESS"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Blessing");
-			for(int r=0;r<sortedA.length;r++)
+			for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 			{
-				String cnam=(String)sortedA[r];
+				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");

@@ -1,5 +1,4 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
 <html>
 <head>
 	<title>MOB Stuff -- Behaviors/Properties</title>
@@ -38,7 +37,7 @@
 	</TABLE>
 	<P>
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Properties/MOB skills</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Property Affects</H2></TD></TR>
 	@AbilityAffectNext?reset@
 	@loop@
 	<TR>
@@ -49,7 +48,5 @@
 	</TR>
 	@back@
 	</TABLE>
-	<P>
-	
 </BODY>
 </HTML>

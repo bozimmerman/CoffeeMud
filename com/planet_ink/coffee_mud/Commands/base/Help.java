@@ -418,7 +418,7 @@ public class Help
 				{
 					Vector V=new Vector();
 					theRest=new StringBuffer("\n\rProperties:\n\r");
-					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+					for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PROPERTY))
@@ -427,7 +427,7 @@ public class Help
 					theRest.append(fourColumns(V));
 					V=new Vector();
 					theRest=new StringBuffer("\n\rDiseases:\n\r");
-					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+					for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE))
@@ -435,7 +435,7 @@ public class Help
 					}
 					theRest.append(fourColumns(V));
 					theRest=new StringBuffer("\n\rPoisons:\n\r");
-					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+					for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))

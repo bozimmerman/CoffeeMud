@@ -26,7 +26,7 @@ public class AbilityNext extends StdWebMacro
 			parms.put("DOMAIN",domainType);
 		
 		String lastID="";
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;

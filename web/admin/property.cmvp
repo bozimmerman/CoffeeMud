@@ -6,7 +6,6 @@
 <BODY BGCOLOR=#000066 TEXT=#FFFFFF>
 <H3>@AbilityName@</H3>
 <PRE>
-Invocation : @AbilityData?auto@
 @AbilityData?help@
 </PRE>
 </BODY>
