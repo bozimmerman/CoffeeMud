@@ -77,6 +77,7 @@ public class CoffeeTableRows extends StdWebMacro
 				numberOnlineTotal+=T.numberOnlineTotal();
 				numberOnlineCounter+=T.numberOnlineCounter();
 			}
+			int minsOnline=(totals[CoffeeTables.STAT_TICKSONLINE]*MudHost.TICK_TIME)/((long)(1000*60));
 			totals[CoffeeTables.STAT_TICKSONLINE]=(totals[CoffeeTables.STAT_TICKSONLINE]*MudHost.TICK_TIME)/((long)(1000*60*60));
 			double avgOnline=(numberOnlineCounter>0)?Util.div(numberOnlineTotal,numberOnlineCounter):0.0;
 			avgOnline=Util.div(Math.round(avgOnline*10.0),10.0);
@@ -90,7 +91,7 @@ public class CoffeeTableRows extends StdWebMacro
 				else if(key.equalsIgnoreCase("LOGINS")) table.append("<TD>"+header+totals[CoffeeTables.STAT_LOGINS]+footer+"</TD>");
 				else if(key.equalsIgnoreCase("MOSTONLINE")) table.append("<TD>"+header+highestOnline+footer+"</TD>");
 				else if(key.equalsIgnoreCase("AVERAGEONLINE")) table.append("<TD>"+header+avgOnline+footer+"</TD>");
-				else if(key.equalsIgnoreCase("AVERAGETICKS")) table.append("<TD>"+header+((totals[CoffeeTables.STAT_LOGINS]>0)?(totals[CoffeeTables.STAT_TICKSONLINE]/totals[CoffeeTables.STAT_LOGINS]):0)+"</TD>");
+				else if(key.equalsIgnoreCase("AVERAGETICKS")) table.append("<TD>"+header+((totals[CoffeeTables.STAT_LOGINS]>0)?(minsOnline/totals[CoffeeTables.STAT_LOGINS]):0)+"</TD>");
 				else if(key.equalsIgnoreCase("TOTALHOURS")) table.append("<TD>"+header+totals[CoffeeTables.STAT_TICKSONLINE]+footer+"</TD>");
 				else if(key.equalsIgnoreCase("NEWPLAYERS")) table.append("<TD>"+header+totals[CoffeeTables.STAT_NEWPLAYERS]+footer+"</TD>");
 				else if(key.equalsIgnoreCase("DEATHS")) table.append("<TD>"+header+totals[CoffeeTables.STAT_DEATHS]+footer+"</TD>");
