@@ -30,7 +30,6 @@ public class Herbalism extends CraftingSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
-	protected String supportedResourceString(){return "HERBS";}
 
 	private Item building=null;
 	String oldName="";

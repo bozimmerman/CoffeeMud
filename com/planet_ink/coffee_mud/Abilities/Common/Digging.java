@@ -20,7 +20,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Digging extends CommonSkill
+public class Digging extends GatheringSkill
 {
 	public String ID() { return "Digging"; }
 	public String name(){ return "Gem Digging";}
@@ -99,6 +99,16 @@ public class Digging extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		if((!auto)
+		&&(commands.size()>0)
+		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+		{
+			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+			    return super.bundle(mob,commands);
+			else
+			    return false;
+		}
+		
 		verb="digging";
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

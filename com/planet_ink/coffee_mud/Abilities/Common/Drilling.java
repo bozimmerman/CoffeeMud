@@ -20,7 +20,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Drilling extends CommonSkill
+public class Drilling extends GatheringSkill
 {
 	public String ID() { return "Drilling"; }
 	public String name(){ return "Drilling";}
@@ -111,6 +111,16 @@ public class Drilling extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		if((!auto)
+		&&(commands.size()>0)
+		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+		{
+			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+			    return super.bundle(mob,commands);
+			else
+			    return false;
+		}
+		
 		Item I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(I==null) return false;
 		if((!(I instanceof Container))||(((Container)I).capacity()<=((Container)I).envStats().weight()))

@@ -29,7 +29,6 @@ public class Costuming extends CraftingSkill
 	public String name(){ return "Costuming";}
 	private static final String[] triggerStrings = {"COSTUME","COSTUMING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected String supportedResourceString(){return "CLOTH";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

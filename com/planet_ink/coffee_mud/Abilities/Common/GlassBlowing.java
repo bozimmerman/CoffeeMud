@@ -29,7 +29,6 @@ public class GlassBlowing extends CraftingSkill
 	public String name(){ return "Glass Blowing";}
 	private static final String[] triggerStrings = {"GLASSBLOW","GLASSBLOWING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected String supportedResourceString(){return "GLASS";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

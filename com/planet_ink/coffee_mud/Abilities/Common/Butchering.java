@@ -20,7 +20,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Butchering extends CommonSkill
+public class Butchering extends GatheringSkill
 {
 	public String ID() { return "Butchering"; }
 	public String name(){ return "Butchering";}
@@ -93,7 +93,10 @@ public class Butchering extends CommonSkill
 		&&(commands.size()>0)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
 		{
-		    return super.bundle(mob,commands);
+			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+			    return super.bundle(mob,commands);
+			else
+			    return false;
 		}
 		
 		

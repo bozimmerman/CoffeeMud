@@ -120,7 +120,7 @@ public class Archon extends StdCharClass
 		{
 			Ability A=(Ability)a.nextElement();
 			int lvl=CMAble.getQualifyingLevel(ID(),true,A.ID());
-			if((lvl>0)
+			if((lvl>=0)
 			&&(!alreadyAble.containsKey(A.ID())))
 				giveMobAbility(mob,A,100,"",true,false);
 		}

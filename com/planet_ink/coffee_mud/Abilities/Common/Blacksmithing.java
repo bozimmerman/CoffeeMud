@@ -29,7 +29,6 @@ public class Blacksmithing extends CraftingSkill
 	public String name(){ return "Blacksmithing";}
 	private static final String[] triggerStrings = {"BLACKSMITH","BLACKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected String supportedResourceString(){return "METAL|MITHRIL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

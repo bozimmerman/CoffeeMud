@@ -20,7 +20,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fishing extends CommonSkill
+public class Fishing extends GatheringSkill
 {
 	public String ID() { return "Fishing"; }
 	public String name(){ return "Fishing";}
@@ -89,6 +89,16 @@ public class Fishing extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		if((!auto)
+		&&(commands.size()>0)
+		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+		{
+			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+			    return super.bundle(mob,commands);
+			else
+			    return false;
+		}
+		
 		int foundFish=-1;
 		boolean maybeFish=false;
 		if(mob.location()!=null)

@@ -20,7 +20,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Chopping extends CommonSkill
+public class Chopping extends GatheringSkill
 {
 	public String ID() { return "Chopping"; }
 	public String name(){ return "Wood Chopping";}
@@ -97,6 +97,16 @@ public class Chopping extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		if((!auto)
+		&&(commands.size()>0)
+		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+		{
+			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+			    return super.bundle(mob,commands);
+			else
+			    return false;
+		}
+		
 		verb="chopping";
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -30,7 +30,6 @@ public class Alchemy extends CraftingSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
-	protected String supportedResourceString(){return "GLASS";}
 
 	private boolean requiresFire=false;
 	private Item building=null;
