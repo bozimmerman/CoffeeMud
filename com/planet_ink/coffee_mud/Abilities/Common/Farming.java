@@ -112,7 +112,9 @@ public class Farming extends CommonSkill
 		{
 			String str=EnvResource.RESOURCE_DESCS[i];
 			if((str.toUpperCase().equalsIgnoreCase(Util.combine(commands,0)))
-			&&((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
+			&&(((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
+			  ||(EnvResource.RESOURCE_DATA[i][0]==EnvResource.RESOURCE_COTTON)
+			  ||((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)))
 			{
 				code=EnvResource.RESOURCE_DATA[i][0];
 				foundShortName=Util.capitalize(str);

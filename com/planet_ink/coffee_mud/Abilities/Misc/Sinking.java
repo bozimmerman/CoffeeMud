@@ -65,6 +65,22 @@ public class Sinking extends StdAbility
 		return false;
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		MOB mob=msg.source();
+		if((affected!=null)&&(affected instanceof MOB)&&(msg.amISource((MOB)affected)))
+		{
+			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
+				stopSinking(mob);
+			else
+			if((msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+				stopSinking(mob);
+		}
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

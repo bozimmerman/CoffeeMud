@@ -12,6 +12,16 @@ public class Util
 	private static Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
 	private static Inflater decompresser = new Inflater();
 	
+	
+	public static String repeat(String str1, int times)
+	{
+		if(times<=0) return "";
+		StringBuffer str=new StringBuffer("");
+		for(int i=0;i<times;i++)
+			str.append(str1);
+		return str1.toString();
+	}
+	
 	public static String startWithAorAn(String str)
 	{
 		if(str.length()==0) 

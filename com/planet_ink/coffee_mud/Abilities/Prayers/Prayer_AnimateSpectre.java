@@ -46,7 +46,7 @@ public class Prayer_AnimateSpectre extends Prayer
 
 		if(body.baseEnvStats().level()<10)
 		{
-			mob.tell("This creature is too weak to create a ghast from.");
+			mob.tell("This creature is too weak to create a spectre from.");
 			return false;
 		}
 

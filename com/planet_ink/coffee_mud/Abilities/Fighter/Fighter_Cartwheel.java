@@ -59,7 +59,8 @@ public class Fighter_Cartwheel extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(mob.rangeToTarget()<mob.location().maxRange())
+				int tries=10;
+				while(((--tries)>=0)&&(mob.rangeToTarget()<mob.location().maxRange()))
 				{
 					msg=new FullMsg(mob,victim,this,CMMsg.MSG_RETREAT,null);
 					if(mob.location().okMessage(mob,msg))

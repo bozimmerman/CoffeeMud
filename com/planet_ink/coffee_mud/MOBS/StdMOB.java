@@ -2180,6 +2180,7 @@ public class StdMOB implements MOB
 					if(Sense.isSleeping(this))
 						curState().adjFatigue(-CharState.REST_PER_TICK,maxState());
 					else
+					if(!isASysOp(location()))
 					{
 						curState().adjFatigue(MudHost.TICK_TIME,maxState());
 				        if((curState().getFatigue()>CharState.FATIGUED_MILLIS)
@@ -2198,7 +2199,7 @@ public class StdMOB implements MOB
 				{
 					minuteCounter=0;
 					setAgeHours(AgeHours+1);
-					if(AgeHours>60000)
+					if((AgeHours>60000)&&(!isASysOp(location())))
 					{
 						if(((AgeHours%120)==0)&&(Dice.rollPercentage()==1))
 						{
