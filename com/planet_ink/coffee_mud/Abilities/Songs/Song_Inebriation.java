@@ -34,6 +34,13 @@ public class Song_Inebriation extends Song
 		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-3));
 	}
 
+	public void show(MOB mob, int code, String text)
+	{
+		FullMsg msg=new FullMsg(mob,null,this,code,code,code,text);
+		if((mob.location()!=null)&&(mob.location().okAffect(msg)))
+			mob.location().send(mob,msg);
+	}
+	
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID))
@@ -45,12 +52,12 @@ public class Song_Inebriation extends Song
 		if((Dice.rollPercentage()<25)&&(Sense.canMove(mob)))
 		{
 			if(mob.getAlignment()<350)
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
 			else
 			if(mob.getAlignment()<650)
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
 			else
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");
 
 		}
 		return true;

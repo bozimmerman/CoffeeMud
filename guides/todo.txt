@@ -1,6 +1,5 @@
 Title enchantment to take you to that room.
 Law against nudity in public
-Law against Inebriation on city streets.
 Law against unsheathed weapons in public
 Ability to save riding status in the database.
 Chain Lightning is wrong.  It is actually FORKED Lightning.  Chain Does max damage to first target, then goes to nearest enemy, and does reduced damage, then bounces to next enemy, and does a little less, etc until it is reduced to 0 damage.

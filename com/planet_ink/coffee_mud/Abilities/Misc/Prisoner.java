@@ -10,19 +10,10 @@ public class Prisoner extends StdAbility
 {
 	public String ID() { return "Prisoner"; }
 	public String name(){ return "Prisoner";}
-	public String displayText(){ return "";}
+	public String displayText(){ return "(Prisoner's Geis)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	private Room jail=null;
 	public Environmental newInstance(){	return new Prisoner();}
-
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
-		if(jail==null) jail=((MOB)affected).location();
-	}
 
 	public boolean okAffect(Affect affect)
 	{

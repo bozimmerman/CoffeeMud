@@ -30,6 +30,13 @@ public class Inebriation extends StdAbility
 		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-3));
 	}
 
+	public void show(MOB mob, int code, String text)
+	{
+		FullMsg msg=new FullMsg(mob,null,this,code,code,code,text);
+		if((mob.location()!=null)&&(mob.location().okAffect(msg)))
+			mob.location().send(mob,msg);
+	}
+	
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID))
@@ -44,32 +51,31 @@ public class Inebriation extends StdAbility
 			switch(Dice.roll(1,9,-1))
 			{
 			case 0:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
 				break;
 			case 1:
-				mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> belch(es) grotesquely.");
+				show(mob,Affect.MSG_NOISE,"<S-NAME> belch(es) grotesquely.");
 				break;
 			case 2:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> spin(s) <S-HIS-HER> head around.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> spin(s) <S-HIS-HER> head around.");
 				break;
 			case 3:
-				mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> can't stop snarling.");
+				show(mob,Affect.MSG_NOISE,"<S-NAME> can't stop snarling.");
 				break;
 			case 4:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> just fell over!");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> just fell over!");
 				break;
 			case 5:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
 				break;
 			case 6:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
 				break;
 			case 7:
-				mob.location().showSource(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> are definitely sh** faced!");
-				mob.location().showOthers(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> is definitely sh** faced!");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> <S-IS-ARE> definitely sh** faced!");
 				break;
 			case 8:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly at the ground.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly at the ground.");
 				break;
 			}
 			else
@@ -77,64 +83,62 @@ public class Inebriation extends StdAbility
 			switch(Dice.roll(1,9,-1))
 			{
 			case 0:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
 				break;
 			case 1:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> burp(s) noncommitally.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> burp(s) noncommitally.");
 				break;
 			case 2:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
 				break;
 			case 3:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
 				break;
 			case 4:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> almost fell over.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> almost fell over.");
 				break;
 			case 5:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> hiccup(s) and almost smile(s).");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> hiccup(s) and almost smile(s).");
 				break;
 			case 6:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> belch(es)!");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> belch(es)!");
 				break;
 			case 7:
-				mob.location().showSource(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> are definitely drunk!");
-				mob.location().showOthers(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> is definitely drunk!");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> <S-IS-ARE> definitely drunk!");
 				break;
 			case 8:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly ahead.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly ahead.");
 				break;
 			}
 			else
 			switch(Dice.roll(1,9,-1))
 			{
 			case 0:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");
 				break;
 			case 1:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> hiccup(s) and smile(s).");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> hiccup(s) and smile(s).");
 				break;
 			case 2:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> bob(s) <S-HIS-HER> head back and forth.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> bob(s) <S-HIS-HER> head back and forth.");
 				break;
 			case 3:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't stop smiling.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't stop smiling.");
 				break;
 			case 4:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> lean(s) slightly to one side.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> lean(s) slightly to one side.");
 				break;
 			case 5:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
 				break;
 			case 6:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
 				break;
 			case 7:
-				mob.location().showSource(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> are definitely a bit tipsy!");
-				mob.location().showOthers(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> is definitely a bit tipsy!");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> <S-IS-ARE> definitely a bit tipsy!");
 				break;
 			case 8:
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly at <S-HIS-HER> eyelids.");
+				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly at <S-HIS-HER> eyelids.");
 				break;
 			}
 
