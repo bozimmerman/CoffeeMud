@@ -146,6 +146,9 @@ public class CommandSet extends Hashtable
 	public static final int I3LOCATE=134;
 	public static final int I3LIST=135;
 	public static final int I3CHANNELS=136;
+	public static final int CHANWHO=137;
+	public static final int DEPOSIT=138;
+	public static final int WITHDRAW=139;
 
 	public CommandSet()
 	{
@@ -176,6 +179,7 @@ public class CommandSet extends Hashtable
 			put("CLO",new Integer(CLOSE));
 		put("CHANNELS",new Integer(CHANNELS));
 		put("CHANTS",new Integer(CHANTS));
+		put("CHANWHO",new Integer(CHANWHO));
 		put("CHARGEN",new Integer(CHARGEN));
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));
@@ -186,6 +190,7 @@ public class CommandSet extends Hashtable
 			put("CR",new Integer(CRAWL));
 		put("CREATE",new Integer(CREATE));
 		put("CREDITS",new Integer(CREDITS));
+		put("DEPOSIT",new Integer(DEPOSIT));
 		put("DESTROY",new Integer(DESTROY));
 		put("DESCRIPTION",new Integer(DESCRIPTION));
 		put("DISMOUNT",new Integer(DISMOUNT));
@@ -354,6 +359,7 @@ public class CommandSet extends Hashtable
 		put("WIELD",new Integer(WIELD));
 		put("WIMPY",new Integer(WIMPY));
 			put("WIMP",new Integer(WIMPY));
+		put("WITHDRAW",new Integer(WITHDRAW));
 		put("WIZINV",new Integer(WIZINV));
 		put("XML",new Integer(XML));
 		put("YELL",new Integer(YELL));

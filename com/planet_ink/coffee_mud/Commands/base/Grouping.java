@@ -9,14 +9,50 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Grouping
 {
-	public void who(MOB mob, String mobName)
+	public void whois(MOB mob, String mobName)
 	{
-		if((mobName!=null)&&(mobName.length()==0))
+		if((mobName==null)||(mobName.length()==0))
 		{
 			mob.tell("whois whom?");
 			return;
 		}
 		
+		if(mobName.startsWith("@"))
+		{
+			if(!(ExternalPlay.i3().i3online()))
+				mob.tell("I3 is unavailable.");
+			else
+				ExternalPlay.i3().i3who(mob,mobName.substring(1));
+			return;
+		}
+		
+		StringBuffer msg=new StringBuffer("");
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session thisSession=(Session)Sessions.elementAt(s);
+			MOB mob2=thisSession.mob();
+			if((mob2!=null)
+			&&(!thisSession.killFlag())
+			&&((Sense.isSeen(mob2)||(mob.isASysOp(null))))
+			&&(mob2.envStats().level()>0)
+			&&(mob2.name().toUpperCase().startsWith(mobName.toUpperCase())))
+				msg.append(showWho(mob2,true));
+		}
+		if((mobName!=null)&&(msg.length()==0))
+			msg.append("That person doesn't appear to be online.\n\r");
+		else
+		{
+			StringBuffer head=new StringBuffer("");
+			head.append("^x[");
+			head.append(Util.padRight("Race",8)+" ");
+			head.append(Util.padRight("Class",8)+" ");
+			head.append(Util.padRight("Lvl",4));
+			head.append("] Character name^?^^\n\r");
+			mob.tell(head.toString()+msg.toString());
+		}
+	}
+	public void who(MOB mob, String mobName)
+	{
 		if((mobName!=null)&&(mobName.startsWith("@")))
 		{
 			if(!(ExternalPlay.i3().i3online()))
@@ -34,8 +70,7 @@ public class Grouping
 			if((mob2!=null)
 			&&(!thisSession.killFlag())
 			&&((Sense.isSeen(mob2)||(mob.isASysOp(null))))
-			&&(mob2.envStats().level()>0)
-			&&((mobName==null)||(mob2.name().toUpperCase().startsWith(mobName.toUpperCase()))))
+			&&(mob2.envStats().level()>0))
 				msg.append(showWho(mob2,true));
 		}
 		if((mobName!=null)&&(msg.length()==0))
@@ -43,11 +78,11 @@ public class Grouping
 		else
 		{
 			StringBuffer head=new StringBuffer("");
-			head.append("[");
+			head.append("^x[");
 			head.append(Util.padRight("Race",8)+" ");
 			head.append(Util.padRight("Class",8)+" ");
 			head.append(Util.padRight("Lvl",4));
-			head.append("] Character name\n\r");
+			head.append("] Character name^?^^\n\r");
 			mob.tell(head.toString()+msg.toString());
 		}
 	}

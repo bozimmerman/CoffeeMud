@@ -215,7 +215,7 @@ public class IMudInterface implements ImudServices, Serializable
 				else
 				{
 					String msgs=socialFix(fixColors(ck.message));
-					String str="^Q("+channelName+") "+msgs+"^?";
+					String str="^Q("+channelName+") "+msgs+"^?^^";
 					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,str);
 				}
 				
@@ -278,6 +278,50 @@ public class IMudInterface implements ImudServices, Serializable
 					smob.session().unfilteredPrintln(buf.toString());
 					break;
 				}
+			}
+			break;
+		case Packet.CHAN_WHO_REP:
+			{
+				ChannelWhoReply wk=(ChannelWhoReply)packet;
+				MOB smob=findSessMob(wk.target_name);
+				if(smob!=null)
+				{
+					StringBuffer buf=new StringBuffer("\n\rListening on "+wk.channel+"@"+fixColors(wk.sender_mud)+":\n\r");
+					Vector V=wk.who;
+					if(V.size()==0)
+						buf.append("Nobody!");
+					else
+					for(int v=0;v<V.size();v++)
+					{
+						String nom = fixColors((String)V.elementAt(0));
+						buf.append("["+Util.padRight(nom,20)+"]\n\r");
+					}
+					smob.session().unfilteredPrintln(buf.toString());
+					break;
+				}
+			}
+			break;
+		case Packet.CHAN_WHO_REQ:
+			{
+				ChannelWhoRequest wk=(ChannelWhoRequest)packet;
+				ChannelWhoReply wkr=new ChannelWhoReply();
+				wkr.target_name=wk.sender_name;
+				wkr.target_mud=wk.sender_mud;
+				int channelInt=ExternalPlay.channelInt(wk.channel);
+				Vector whoV=new Vector();
+				for(int s=0;s<Sessions.size();s++)
+				{
+					Session ses=(Session)Sessions.elementAt(s);
+					if((!ses.killFlag())&&(ses.mob()!=null)
+					&&(!ses.mob().amDead())
+					&&(ses.mob().location()!=null)
+					&&(!Util.isSet(ses.mob().getChannelMask(),channelInt)))
+						whoV.addElement(ses.mob().name());
+				}
+				wkr.who=whoV;
+				try{
+				wkr.send();
+				}catch(Exception e){Log.errOut("IMudClient",e);}
 			}
 			break;
 		case Packet.WHO_REQUEST:

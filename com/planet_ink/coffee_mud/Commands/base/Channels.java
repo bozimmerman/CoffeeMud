@@ -35,6 +35,52 @@ public class Channels
 		if(channelNames.size()==0) buf.append("None!");
 		mob.tell(buf.toString());
 	}
+
+	public void channelWho(MOB mob, String channel)
+	{
+		if((channel==null)||(channel.length()==0))
+		{
+			mob.tell("You must specify a channel name. Try CHANNELS for a list.");
+			return;
+		}
+		int x=channel.indexOf("@");
+		String mud=null;
+		if(x>0)
+		{
+			mud=channel.substring(x+1);
+			channel=getChannelName(channel.substring(0,x).toUpperCase()).toUpperCase();
+			if((channel.length()==0)||(getChannelInt(channel)<0))
+			{
+				mob.tell("You must specify a valid channel name. Try CHANNELS for a list.");
+				return;
+			}
+			ExternalPlay.i3().i3chanwho(mob,channel,mud);
+			return;
+		}
+		channel=getChannelName(channel.toUpperCase()).toUpperCase();
+		int channelInt=getChannelInt(channel);
+		if(channelInt<0)
+		{
+			mob.tell("You must specify a valid channel name. Try CHANNELS for a list.");
+			return;
+		}
+		String head=new String("\n\rListening on "+channel+":\n\r");
+		StringBuffer buf=new StringBuffer("");
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session ses=(Session)Sessions.elementAt(s);
+			if((!ses.killFlag())&&(ses.mob()!=null)
+			&&(!ses.mob().amDead())
+			&&(ses.mob().location()!=null)
+			&&(!Util.isSet(ses.mob().getChannelMask(),channelInt)))
+				buf.append("["+Util.padRight(ses.mob().name(),20)+"]\n\r");
+		}
+		if(buf.length()==0)
+			mob.tell(head+"Nobody!");
+		else
+			mob.tell(head+buf.toString());
+	}
+	
 	
 	public int getChannelInt(String channelName)
 	{

@@ -39,6 +39,33 @@ public class IMudClient implements I3Interface
 		return Intermud.isConnected();
 	}
 	
+	public void i3chanwho(MOB mob, String channel, String mudName)
+	{
+		if((mob==null)||(!i3online())) return;
+		if((mudName==null)||(mudName.length()==0))
+		{
+			mob.tell("You must specify a mud name.");
+			return;
+		}
+		if((channel==null)||(channel.length()==0)||(Intermud.getRemoteChannel(channel).length()==0))
+		{
+			mob.tell("You must specify an InterMud 3 channel name.");
+			return;
+		}
+		if(!Intermud.isUp(Intermud.translateName(mudName)))
+		{
+			mob.tell(mudName+" is not available.");
+			return;
+		}
+		ChannelWhoRequest ck=new ChannelWhoRequest();
+		ck.sender_name=mob.name();
+		ck.target_mud=Intermud.translateName(mudName);
+		ck.channel=channel;
+		try{
+		ck.send();
+		}catch(Exception e){Log.errOut("IMudClient",e);}
+	}
+	
 	public void i3tell(MOB mob, String tellName, String mudName, String message)
 	{
 		if((mob==null)||(!i3online())) return;

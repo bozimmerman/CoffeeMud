@@ -366,6 +366,26 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         e.printStackTrace();
                     }
                 }
+                else if( type.equals("chan-who-req") ) {
+                    try {
+                        ChannelWhoRequest p = new ChannelWhoRequest(data);
+
+                        intermud.receive(p);
+                    }
+                    catch( InvalidPacketException e ) {
+                        e.printStackTrace();
+                    }
+                }
+                else if( type.equals("chan-who-reply") ) {
+                    try {
+                        ChannelWhoReply p = new ChannelWhoReply(data);
+
+                        intermud.receive(p);
+                    }
+                    catch( InvalidPacketException e ) {
+                        e.printStackTrace();
+                    }
+                }
                 else if( type.equals("chanlist-reply") ) {
                     channelList(data);
                 }

@@ -132,6 +132,9 @@ public class CommandProcessor
 				case CommandSet.CHANTS:
 					scoring.chants(mob);
 					break;
+				case CommandSet.CHANWHO:
+					channels.channelWho(mob,Util.combine(commands,1));
+					break;
 				case CommandSet.CHARGEN:
 					if(mob.isASysOp(mob.location()))
 						sysopSkills.chargen(mob,commands);
@@ -546,10 +549,10 @@ public class CommandProcessor
 						mob.tell("Only the Archons may divine that.");
 					break;
 				case CommandSet.WHOIS:
-					grouping.who(mob,Util.combine(commands,1));
+					grouping.whois(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.WHO:
-					grouping.who(mob,null);
+					grouping.who(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.WIELD:
 					itemUsage.wield(mob,commands);

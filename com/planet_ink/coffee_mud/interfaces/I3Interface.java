@@ -9,5 +9,6 @@ public interface I3Interface
 	public void giveMudList(MOB mob);
 	public boolean isI3channel(String channelName);
 	public boolean i3online();
+	public void i3chanwho(MOB mob, String channel, String mudName);
 	public void giveChannelsList(MOB mob);
 }
