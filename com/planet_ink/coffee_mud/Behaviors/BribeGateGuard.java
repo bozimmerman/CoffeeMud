@@ -479,7 +479,7 @@ public class BribeGateGuard extends StdBehavior
 		  else
 		  if(getBalance(source) < price())
 		  {
-		    FullMsg msg2=new FullMsg(observer,null,msg.tool(),CMMsg.MSG_EMOTE,"^E<S-NAME> look(s) carefully at <O-NAME>.");
+		    FullMsg msg2=new FullMsg(observer,null,msg.tool(),CMMsg.MSG_EMOTE,"^E<S-NAME> look(s) carefully at <O-NAME>.^?");
 		    msg.addTrailerMsg(msg2);
 		    msg2=new FullMsg(observer,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'I'm afraid that this is insufficient.'^?.");
 		    msg.addTrailerMsg(msg2);

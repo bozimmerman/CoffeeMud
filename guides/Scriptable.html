@@ -157,30 +157,30 @@ don’t do this your larger sum bribe_progs will never be triggered.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">consume_prog<O:P></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>consume_prog [keyword list]<BR>consume_prog p [keyword list]<BR>consume_prog all</EM></P>
-<P class=MsoNormal>This type of mobprog is triggered by the 
-mob&nbsp;eating or drinking from an object. If the object&nbsp;used&nbsp;by the 
-mob matches the keywords of the consume_prog, the prog is triggered. If there is 
-a ‘p’ placed before the keyword list, the keywords of the object must exactly 
-match that of the consume_prog. If there is not, then any object with any of the 
-keywords in the list in it will trigger it. If a consume_prog all is used, then 
-the consume_prog will trigger from any object at all being&nbsp;used by&nbsp;the 
-mob. This type of prog is usually used for in-zone quests and special mob 
+<P class=MsoNormal>        
+This type of mobprog is triggered eating or drinking from 
+an object. If the object&nbsp;used&nbsp;matches the keywords of the consume_prog, the prog is triggered. 
+If there is a ‘p’ placed before the keyword list, the keywords of the 
+object must exactly match that of the consume_prog. If there is not, then any object with 
+any of the keywords in the list in it will trigger it. If a consume_prog all 
+is used, then the consume_prog will trigger from any object at 
+all. This type of prog is usually used for in-zone quests and special mob 
 behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>consume_prog 
-orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
-eaten by the mob has any of the keywords orange, apple, or banana. This means 
+orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>   (This will trigger 
+if the object eaten has any of the keywords orange, apple, or banana. This means 
 that it would be triggered by&nbsp;eating a banana, an apple pie, or even an 
 orange shield.)</P>
 <P class=MsoNormal><EM>consume_prog p 
-apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;eaten by&nbsp;the mob has the exact keywords apple pie delicious. 
+apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>  (This will trigger 
+if the object&nbsp;eaten has the exact keywords apple pie delicious. 
 The prog would not be triggered by eating an object with keywords red apple or 
 blackberry pie or anything except the exact order and wording of the keyword 
 list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>consume_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
-</SPAN>(This will trigger if any object is ate or drank by the mob.)</P>
+</SPAN>   (This will trigger if any object is ate or drank.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one consume_prog on a mob. Generally it is best not to have consume_progs with 
 the same keywords in them, unless they are a consume_prog p with different 
@@ -243,30 +243,29 @@ delay_prog will be triggered after 1-11 ticks have elapsed.)&nbsp;</P>
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">drop_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>drop_prog [keyword list]<BR>drop_prog 
 p [keyword list]<BR>drop_prog all</EM></P>
-<P class=MsoNormal>This type of mobprog is triggered by the 
-mob&nbsp;dropping an object. If the object&nbsp;dropped by&nbsp;the mob matches 
+<P class=MsoNormal>This type of mobprog is triggered by dropping an object. If the object&nbsp;dropped matches 
 the keywords of the drop_prog, the prog is triggered. If there is a ‘p’ placed 
 before the keyword list, the keywords of the object must exactly match that of 
 the drop_prog. If there is not, then any object with any of the keywords in the 
 list in it will trigger it. If a drop_prog all is used, then the drop_prog will 
-trigger from any object at all being&nbsp;dropped by&nbsp;the mob. This type of 
+trigger from any object at all being&nbsp;dropped. This type of 
 prog is usually used for in-zone quests and special mob behavior, and has a 
 variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>drop_prog 
 orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
-dropped by the mob has any of the keywords orange, apple, or banana. This means 
+dropped has any of the keywords orange, apple, or banana. This means 
 that it would be triggered by dropping a banana, an apple pie, or even an orange 
 shield.)</P>
 <P class=MsoNormal><EM>drop_prog p 
 apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;dropped by&nbsp;the mob has the exact keywords apple pie delicious. 
+object&nbsp;dropped has the exact keywords apple pie delicious. 
 The prog would not be triggered by&nbsp;dropping an object with keywords red 
 apple or blackberry pie or anything except the exact order and wording of the 
 keyword list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>drop_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
-</SPAN>(This will trigger if any object is&nbsp;dropped by&nbsp;the mob.)</P>
+</SPAN>(This will trigger if any object is&nbsp;dropped.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one drop_prog on a mob. Generally it is best not to have drop_progs with the 
 same keywords in them, unless they are a drop_prog p with different keyword 
@@ -341,30 +340,30 @@ called by MPCALLFUNC)</P>
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">get_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>get_prog [keyword list]<BR>get_prog p 
 [keyword list]<BR>get_prog all</EM></P>
-<P class=MsoNormal>This type of mobprog is triggered by the 
-mob&nbsp;getting an object. If the object picked up&nbsp;by the mob matches the 
+<P class=MsoNormal> This type of mobprog is triggered by 
+getting an object. If the object picked up&nbsp; matches the 
 keywords of the get_prog, the prog is triggered. If there is a ‘p’ placed before 
 the keyword list, the keywords of the object must exactly match that of the 
 get_prog. If there is not, then any object with any of the keywords in the list 
 in it will trigger it. If a get_prog all is used, then the get_prog will trigger 
-from any object at all being&nbsp;picked up by&nbsp;the mob. This type of prog 
+from any object at all being&nbsp;picked up. This type of prog 
 is usually used for in-zone quests and special mob behavior, and has a variety 
 of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>get_prog orange 
 apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
-picked up&nbsp;by the mob has any of the keywords orange, apple, or banana. This 
+picked up&nbsp; has any of the keywords orange, apple, or banana. This 
 means that it would be triggered by&nbsp;getting a banana, an apple pie, or even 
 an orange shield.)</P>
 <P class=MsoNormal><EM>get_prog p apple 
 pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;picked up by&nbsp;the mob has the exact keywords apple pie 
+object&nbsp;picked up has the exact keywords apple pie 
 delicious. The prog would not be triggered by getting an object with keywords 
 red apple or blackberry pie or anything except the exact order and wording of 
 the keyword list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>get_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
-</SPAN>(This will trigger if any object is&nbsp;picked up by&nbsp;the mob.)</P>
+</SPAN>(This will trigger if any object is&nbsp;picked up.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one get_prog on a mob. Generally it is best not to have get_progs with the same 
 keywords in them, unless they are a get_prog p with different keyword lists but 
@@ -490,30 +489,30 @@ triggered on the final minute of the quest 'that quest'.)&nbsp;</P>
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">put_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>put_prog [keyword list]<BR>put_prog p 
 [keyword list]<BR>put_prog all</EM></P>
-<P class=MsoNormal>This type of mobprog is triggered by the 
-mob&nbsp;putting something in a container. If the&nbsp;container being 
-used&nbsp;by the mob matches the keywords of the put_prog, the prog is 
+<P class=MsoNormal> This type of mobprog is triggered by 
+putting something in a container. If the&nbsp;container being 
+used&nbsp; matches the keywords of the put_prog, the prog is 
 triggered. If there is a ‘p’ placed before the keyword list, the keywords of the 
 object must exactly match that of the put_prog. If there is not, then any 
 container with any of the keywords in the list in it will trigger it. If a 
 put_prog all is used, then the put_prog will trigger from any container at all 
-being&nbsp;used by&nbsp;the mob. This type of prog is usually used for in-zone 
+being&nbsp;used. This type of prog is usually used for in-zone 
 quests and special mob behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>put_prog orange 
 apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-container&nbsp;used&nbsp;by the mob has any of the keywords orange, apple, or 
+container&nbsp;used&nbsp; has any of the keywords orange, apple, or 
 banana. This means that it would be triggered by putting something into a 
 banana, an apple pie, or even an orange shield.)</P>
 <P class=MsoNormal><EM>put_prog p 
 apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-container used up by&nbsp;the mob has the exact keywords apple pie delicious. 
+container used up has the exact keywords apple pie delicious. 
 The prog would not be triggered by putting anything into a&nbsp;container with 
 keywords red apple or blackberry pie or anything except the exact order and 
 wording of the keyword list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>put_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
-</SPAN>(This will trigger if any container is&nbsp;used by&nbsp;the mob.)</P>
+</SPAN>(This will trigger if any container is&nbsp;used.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one put_prog on a mob. Generally it is best not to have put_progs with the same 
 keywords in them, unless they are a put_prog p with different keyword lists but 
@@ -547,8 +546,8 @@ themselves afterwards.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">remove_prog<O:P></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>remove_prog [keyword list]<BR>remove_prog p [keyword list]<BR>remove_prog all</EM></P>
-<P class=MsoNormal>This type of mobprog is triggered by the 
-mob&nbsp;removing an object. If the object removed&nbsp;&nbsp;by the mob matches 
+<P class=MsoNormal>   This type of mobprog is 
+triggered by&nbsp;removing an object. If the object removed&nbsp;&nbsp;matches 
 the keywords of the remove_prog, the prog is triggered. If there is a ‘p’ placed 
 before the keyword list, the keywords of the object must exactly match that of 
 the remove_prog. If there is not, then any object with any of the keywords in 
@@ -559,18 +558,18 @@ behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>remove_prog 
 orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;removed&nbsp;by the mob has any of the keywords orange, apple, or 
+object&nbsp;removed&nbsp; has any of the keywords orange, apple, or 
 banana. This means that it would be triggered by&nbsp;removing a banana, an 
 apple pie, or even an orange shield.)</P>
 <P class=MsoNormal><EM>remove_prog p 
 apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
-removed by the mob has the exact keywords apple pie delicious. The prog would 
+removed has the exact keywords apple pie delicious. The prog would 
 not be triggered by removing an object with keywords red apple or blackberry pie 
 or anything except the exact order and wording of the keyword list.)<SPAN 
 style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>remove_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
-</SPAN>(This will trigger if any object is&nbsp;removed by&nbsp;the mob.)</P>
+</SPAN>(This will trigger if any object is&nbsp;removed.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one remove_prog on a mob. Generally it is best not to have remove_progs with the 
 same keywords in them, unless they are a remove_prog p with different keyword 
@@ -618,30 +617,30 @@ the&nbsp;3rd&nbsp;hour of every month .)&nbsp;</P><o:p></O:P>
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">wear_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>wear_prog [keyword list]<BR>wear_prog 
 p [keyword list]<BR>wear_prog all</EM></P>
-<P class=MsoNormal>This type of mobprog is triggered by the 
-mob&nbsp;wearing, wielding, or holding an item. If the object&nbsp;worn&nbsp;by 
-the mob matches the keywords of the wear_prog, the prog is triggered. If there 
+<P class=MsoNormal> This type of mobprog is triggered by 
+wearing, wielding, or holding an item. If the object&nbsp;worn matches 
+the keywords of the wear_prog, the prog is triggered. If there 
 is a ‘p’ placed before the keyword list, the keywords of the object must exactly 
 match that of the wear_prog. If there is not, then any object with any of the 
 keywords in the list in it will trigger it. If a wear_prog all is used, then the 
-wear_prog will trigger from any object at all worn by&nbsp;the mob. This type of 
+wear_prog will trigger from any object at all worn. This type of 
 prog is usually used for in-zone quests and special mob behavior, and has a 
 variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>wear_prog 
 orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;worn&nbsp;by the mob has any of the keywords orange, apple, or 
+object&nbsp;worn&nbsp; has any of the keywords orange, apple, or 
 banana. This means that it would be triggered by&nbsp;wearing a banana, an apple 
 pie, or even an orange shield.)</P>
 <P class=MsoNormal><EM>wear_prog p 
 apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;worn by&nbsp;the mob has the exact keywords apple pie delicious. The 
+object&nbsp;worn has the exact keywords apple pie delicious. The 
 prog would not be triggered by wearing an object with keywords red apple or 
 blackberry pie or anything except the exact order and wording of the keyword 
 list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>wear_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
-</SPAN>(This will trigger if any object is&nbsp;worn by&nbsp;the mob.)</P>
+</SPAN>(This will trigger if any object is&nbsp;worn.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one wear_prog on a mob. Generally it is best not to have wear_progs with the 
 same keywords in them, unless they are a wear_prog p with different keyword 
@@ -861,6 +860,10 @@ useless. </P>
     <TD>BASECLASS([code])</TD>
     <TD>Returns the base class of the given mob.</TD></TR>
   <TR>
+    <TD>CALLFUNC([function name] [parms])</TD>
+    <TD>Calls the FUNCTION_PROG of the given name, with the given parameters, 
+    and returns the value returned by the program using the RETURN statement.</TD></TR>
+  <TR>
     <TD>CLASS([code])</TD>
     <TD>Returns the class of the given mob.</TD></TR>
   <TR>
@@ -1069,7 +1072,8 @@ value.</TD></TR>
   <TR>
     <TD>WORN([code])</TD>
     <TD>The name of a random worn item in the given mobs 
-      inventory.</TD></TR></TABLE></P>
+      inventory.</TD></TR>
+</TABLE></P>
 <P class=MsoNormal>&nbsp;</P>
 <P class=MsoNormal>&nbsp;</P>
 <P class=MsoNormal><FONT color=#4169e1 size=6>Scripting Commands</FONT></P>
@@ -1128,8 +1132,10 @@ if the condition is true.&nbsp; Either way,&nbsp;statements after an endif
 statement are executed regardless.</FONT></P>
 <P class=MsoNormal><FONT size=3>Every 
 if statement MUST have a corresponding endif statement somewhere after it.&nbsp; 
-The else statement is completely optional, but if it is used, it must be between 
-the if statement and the endif statement.</FONT></P>
+The else statement is completely optional, 
+but if it is used, it must be between the if 
+statement and the endif statement.&nbsp; A BREAK statement may be included inside an IF..ENDIF block 
+to skip the&nbsp;remaining statements in that block.</FONT></P>
 <P class=MsoNormal><FONT size=3>Of 
 course, everything that happens or doesn't happen in an if condition depends on 
 the condition itself.&nbsp;&nbsp;Every condition consists of a valid function 
@@ -1922,6 +1928,17 @@ execute more than one command during a loop cycle.
 <P class=MsoNormal><O:P></O:P></P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpwhile (VAR($n bittlock &lt; 1)) 
 MPCALLFUNC myprogram $&lt;$n bittlock&gt;</EM></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">return</SPAN></P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal>Usage: <BR><EM>return ([string])<BR></EM></P>
+<P class=MsoNormal>This&nbsp;command&nbsp;causes the 
+current script block to immediately cease executing.&nbsp; If this statement is 
+used inside of a FUNCTION_PROG triggered script, it will return a value from the 
+function.&nbsp; This value can be accessed only if the FUNCTION_PROG was called 
+using the CALLFUNC scripting function (see below).&nbsp; 
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>return<BR>return $&lt;$n myvariable&gt;</EM></P>
 <P class=MsoNormal><A name=MPFunc><FONT color=blue size=6>Scripting 
 Functions</FONT></A></P>
 <DIV class=Section1>
@@ -1973,10 +1990,29 @@ baseclass($n&nbsp;==&nbsp;Archon)<BR><SPAN
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
 triggering me is an Archon.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho The actor triggering me is not an Archon.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">callfunc</SPAN></B></P>
+<P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>callfunc(myfunctionname parm1 parm2...parmn)</EM></P>
+<P class=MsoNormal>This function, similar to the MPCALLFUNC 
+statement above, will cause the script block with the trigger type FUNCTION_PROG 
+and the given name to execute.&nbsp; The parameters passed into the callfunc can 
+be referenced using the $g and $G codes.&nbsp; See the MPCALLFUNC statement 
+above for more information on creating functions.</P>
+<P class=MsoNormal>The callfunc function returns true ONLY if the FUNCTION_PROG 
+includes a RETURN statement that includes a non-empty string parameter.</P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>function_prog 
+myfunc<BR></EM><EM>&nbsp; return $g<BR>~</EM></P>
+<P class=MsoNormal><EM>once_prog<BR></EM><EM>&nbsp; if callfunc(myfunc 
+ASTRING)<BR><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>mpecho This callfunc function 
+will always return true.<BR>&nbsp;&nbsp;&nbsp; mpecho This is because myfunc 
+just returns the parameter it is given.<BR>&nbsp;&nbsp;&nbsp; mpecho And this 
+callfunc is passing in a non-empty string as a parameter.<BR>&nbsp; endif<BR></EM><EM><BR>&nbsp; if !callfunc(myfunc)<BR><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>mpecho This callfunc function 
+will always return false, since my parmeters are empty.<BR>&nbsp; endif<BR>~</EM></P>
 <P class=MsoNormal><B><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><O:P><EM></EM></O:P></SPAN></B></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">class<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">class<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>class(character == classname)</EM></P>
 <P class=MsoNormal>This checks the class of the character 
 variable.&nbsp; For players, this is their class, or in the case of a 
@@ -2004,9 +2040,9 @@ see all the different things you can evaluate.</P>
 <P class=MsoNormal><EM>if eval($n == 
 an orc) or eval('$&lt;$i VAR&gt;'&nbsp; !=&nbsp; 7)&nbsp;<BR></EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">goldamt<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">goldamt<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>goldamt(character &gt; amount)</EM></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>This&nbsp;evaluates the amount of gold 
 that the character variable has on hand. Where '==' may be any other logical 
 operator from&nbsp;above.&nbsp;</P>
@@ -2094,7 +2130,7 @@ InTheAir)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor eith
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor is 
 not up in the air.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">inroom<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">inroom<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>inroom(target == roomcode)</EM></P>
 <P class=MsoNormal>This checks to see if the target is 
 in&nbsp;the room specified by the room code.&nbsp; The room code may be a room 
@@ -2130,7 +2166,7 @@ alive.</P>
 <P class=MsoNormal><EM>if 
 isalive($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am NOT dead!<BR>end<BR></EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ischarmed<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ischarmed<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>ischarmed(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable is charmed. </P>
@@ -2158,7 +2194,7 @@ evil.</P>
 isevil($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am evil!<BR>else<BR>&nbsp; mpecho I am either 
 neutral or good.</EM><EM><BR>end</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfight<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfight<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isfight(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable is in combat.</P>
@@ -2168,7 +2204,7 @@ isfight($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am fightin
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am not 
 fighting.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfollow<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfollow<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isfollow(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable’s master (the person they are following) is in the room.</P>
@@ -2188,7 +2224,7 @@ good.</P>
 isgood($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am good!<BR>else<BR>&nbsp; mpecho I am either 
 neutral or evil.</EM><EM><BR>end</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></o:p></SPAN></B></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>ishere</STRONG></SPAN></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>ishere(name)</EM></P>
@@ -2201,7 +2237,7 @@ literal string.</P>
 happy frog)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho A happy frog is in the room.<BR>else<BR>&nbsp; mpecho A happy frog is 
 not in the room.</EM><EM><BR>end</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isimmort<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isimmort<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isimmort(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable is immortal.&nbsp; In CoffeeMud, that means they have the security code 
@@ -2267,7 +2303,7 @@ color=black><SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>isneutral(char
 color=black size=3>if isneutral($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho I am neutral!<BR>else<BR>&nbsp; mpecho I am either&nbsp;good or evil.</FONT></EM><EM><BR><FONT color=black size=3>end</FONT></EM></P></SPAN>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isnpc<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isnpc<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: </P>
 <P class=MsoNormal><EM>isnpc(character)</EM></P>
 <P class=MsoNormal>This checks to see if a character 
@@ -2290,7 +2326,7 @@ chest)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The chest is open
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The chest is 
 not open.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ispc<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ispc<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>ispc(character)</EM></P>
 <P class=MsoNormal>This checks to see if a character 
 variable is a player character.</P>
@@ -2360,7 +2396,7 @@ isweather(rain)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Rain, ra
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho We can play! 
 No Rain!<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">level<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">level<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>level(character == number)</EM></P>
 <P class=MsoNormal>This checks the total level of the 
 character variable.&nbsp; Where '==' may be any of the logical operators 
@@ -2389,7 +2425,7 @@ cardinality is represented by the code $g.1 is a sword.<BR>else<BR><SPAN
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Neither of 
 those items is a sword.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">number<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">number<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>number(string)</EM></P>
 <P class=MsoNormal>This function returns whether the string 
 given is a number.</P>
@@ -2487,7 +2523,7 @@ style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10
 or less&nbsp;goblins in this area.<BR>endif</EM></P>
 <P class=MsoNormal>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">position<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">position<o:p></o:p></SPAN></B></P>
 <P></P>
 <P class=MsoNormal>Usage: <BR><EM>position(character == posword)</EM></P>
 <P class=MsoNormal>This checks the position of the 
@@ -2538,9 +2574,9 @@ winner of the quest myquest.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp;
 </SPAN>mpecho This means the&nbsp;the actor&nbsp;hss not&nbsp;been a winner of 
 the&nbsp;quest myquest.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></o:p></SPAN></B></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">race<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">race<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>race(character == race)</EM></P>
 <P class=MsoNormal>This function compares the race of the 
 character variable with the race name given. For a list of race names, do LIST 
@@ -2550,7 +2586,7 @@ the logical operators from above.</P>
 </SPAN>mpecho The actor is a goblin.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho The actor is not a goblin.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">racecat<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">racecat<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>race(character == category)</EM></P>
 <P class=MsoNormal>This function compares the racial 
 category of the race&nbsp;of the character variable with the racial category 
@@ -2561,9 +2597,9 @@ above.</P>
 </SPAN>mpecho The actor is an Elf, or Elf-kin.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho The actor is not an Elf-Kin.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></O:P><EM></EM></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></o:p><EM></EM></SPAN></B></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">rand<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">rand<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>rand(integer)</EM></P>
 <P class=MsoNormal>This generates a random number and 
 checks to see if it is under the integer. This is best used for random events 
@@ -2574,7 +2610,7 @@ where there are only two outcomes.</P>
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Not under 
 40%.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">randnum<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">randnum<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>rand(integer == integer)</EM></P>
 <P class=MsoNormal>This generates a random number from 1 to 
 the first integer given, and checks to see if it is under the value give in the 
@@ -2612,7 +2648,7 @@ the code $g.1 is joe.<BR>else<BR><SPAN
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Neither of 
 those mobs is joe.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">sex<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">sex<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>sex(character == letter)</EM></P>
 <P class=MsoNormal>This compares the sex of the character 
 variable to the letter given.&nbsp; The letter may be "M", "F", or "N".&nbsp; 
@@ -2655,7 +2691,7 @@ words.<BR>else<BR><SPAN
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Since no 
 variables were used in the example, this is technically impossible.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">var<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">var<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>var(character variable == value)</EM></P>
 <P class=MsoNormal>This function compares the variable 
 belonging to the character to the given value.&nbsp; The character is almost 

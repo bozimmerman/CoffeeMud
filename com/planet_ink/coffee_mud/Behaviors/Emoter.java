@@ -140,7 +140,7 @@ public class Emoter extends ActiveTicker
 		if(emoter.location()!=room) emoter.setLocation(room);
 		if(Wrapper)
 		{
-			msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,"^E<S-NAME> "+(String)emote.elementAt(2)+"^?");
+			msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,"^E<S-NAME> "+(String)emote.elementAt(2)+" ^?");
 		}
 		else
 		{

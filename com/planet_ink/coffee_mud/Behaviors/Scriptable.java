@@ -161,6 +161,7 @@ public class Scriptable extends StdBehavior
 		"ISOPEN", // 59
 		"ISLOCKED", // 60
 		"STRIN", // 61 
+		"CALLFUNC", // 62
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -209,7 +210,8 @@ public class Scriptable extends StdBehavior
 		"MPOPEN", // 44
 		"MPCLOSE", // 45
 		"MPLOCK", // 46
-		"MPUNLOCK" // 47
+		"MPUNLOCK", // 47
+		"RETURN" // 48
 	};
 
 
@@ -1057,6 +1059,41 @@ public class Scriptable extends StdBehavior
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
 				Vector V=Util.parse(arg1.toUpperCase());
 				returnable=V.contains(arg2.toUpperCase());
+				break;
+			}
+			case 62: // callfunc
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
+				String found=null;
+				Vector scripts=getScripts();
+				for(int v=0;v<scripts.size();v++)
+				{
+					Vector script2=(Vector)scripts.elementAt(v);
+					if(script2.size()<1) continue;
+					String trigger=((String)script2.elementAt(0)).toUpperCase().trim();
+					if(getTriggerCode(trigger)==17)
+					{
+						String fnamed=Util.getCleanBit(trigger,1);
+						if(fnamed.equalsIgnoreCase(arg1))
+						{
+							found=
+							execute(scripted,
+									source,
+									target,
+									monster,
+									primaryItem,
+									secondaryItem,
+									script2,
+									varify(source,target,monster,primaryItem,secondaryItem,msg,arg2));
+							break;
+						}
+					}
+				}
+				if(found==null)
+					scriptableError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
+				else
+					returnable=!(found.trim().length()==0);
 				break;
 			}
 			case 14: // affected
@@ -2267,6 +2304,40 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 62: // callfunc
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
+				String found=null;
+				Vector scripts=getScripts();
+				for(int v=0;v<scripts.size();v++)
+				{
+					Vector script2=(Vector)scripts.elementAt(v);
+					if(script2.size()<1) continue;
+					String trigger=((String)script2.elementAt(0)).toUpperCase().trim();
+					if(getTriggerCode(trigger)==17)
+					{
+						String fnamed=Util.getCleanBit(trigger,1);
+						if(fnamed.equalsIgnoreCase(arg1))
+						{
+							found=
+							execute(scripted,
+									source,
+									target,
+									monster,
+									primaryItem,
+									secondaryItem,
+									script2,
+									varify(source,target,monster,primaryItem,secondaryItem,msg,arg2));
+							break;
+						}
+					}
+				}
+				if(found==null)
+					scriptableError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
+				else
+					results.append(found);
+			}
 			case 61: // strin
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
@@ -3268,14 +3339,14 @@ public class Scriptable extends StdBehavior
 	}
 
 
-	public void execute(Environmental scripted,
-						MOB source,
-						Environmental target,
-						MOB monster,
-						Item primaryItem,
-						Item secondaryItem,
-						Vector script,
-						String msg)
+	public String execute(Environmental scripted,
+						  MOB source,
+						  Environmental target,
+						  MOB monster,
+						  Item primaryItem,
+						  Item secondaryItem,
+						  Vector script,
+					  	  String msg)
 	{
 		for(int si=1;si<script.size();si++)
 		{
@@ -3331,7 +3402,7 @@ public class Scriptable extends StdBehavior
 				if(!foundendif)
 				{
 					scriptableError(scripted,"IF","Syntax"," Without ENDIF!");
-					return;
+					return "";
 				}
 				if(V.size()>1)
 				{
@@ -3344,7 +3415,7 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 			case 50: // break;
-				return;
+				return "";
 			case 1: // mpasound
 			{
 				String echo=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(8).trim());
@@ -3745,6 +3816,8 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 48: // mpreturn
+				return varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
 			case 7: // mpechoat
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
@@ -4271,7 +4344,7 @@ public class Scriptable extends StdBehavior
 				for(int v=0;v<scripts.size();v++)
 				{
 					Vector script2=(Vector)scripts.elementAt(v);
-					if(script.size()<1) continue;
+					if(script2.size()<1) continue;
 					String trigger=((String)script2.elementAt(0)).toUpperCase().trim();
 					if(getTriggerCode(trigger)==17)
 					{
@@ -4393,6 +4466,7 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 		}
+		return "";
 	}
 
 	private static final Vector empty=new Vector();
@@ -4565,7 +4639,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 20: // get_prog
 				if((msg.targetMinor()==CMMsg.TYP_GET)
-				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
+				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
@@ -4598,7 +4672,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 22: // drop_prog
 				if((msg.targetMinor()==CMMsg.TYP_DROP)
-				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
+				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
@@ -4631,7 +4705,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 24: // remove_prog
 				if((msg.targetMinor()==CMMsg.TYP_REMOVE)
-				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
+				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
@@ -4664,7 +4738,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 25: // consume_prog
 				if(((msg.targetMinor()==CMMsg.TYP_EAT)||(msg.targetMinor()==CMMsg.TYP_DRINK))
-				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
+				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
@@ -4697,7 +4771,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 21: // put_prog
 				if((msg.targetMinor()==CMMsg.TYP_PUT)
-				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
+				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(msg.tool() instanceof Item)
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
@@ -4733,7 +4807,7 @@ public class Scriptable extends StdBehavior
 				if(((msg.targetMinor()==CMMsg.TYP_WEAR)
 					||(msg.targetMinor()==CMMsg.TYP_HOLD)
 					||(msg.targetMinor()==CMMsg.TYP_WIELD))
-				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
+				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{

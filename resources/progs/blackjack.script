@@ -173,34 +173,34 @@ GIVE_PROG coins
 SPEECH_PROG hit
 	IF VAR($n MYBJVALS == '')
 		say "$n" You are not currently playing.  Ante up $<$i BJANTE> gold and we'll start up a game.
-	ENDIF
-	
-	MPCALLFUNC DealOut $<$n MYBJVALS>
-	MPSETVAR $n MYBJVALS $<$n BJLIST>
-	say $n You draw the $<$n BJCARDNAME> of $<$n BJCARDSUIT>, for a total of $<$n BJTOTAL>.
-		
-	IF VAR($n BJTOTAL > 21)
-		MPCALLFUNC GameLoseOver You went bust. Sorry, you lose!
 	ELSE
-		IF EVAL('$<$n MYBJVALS>.4' > 0)
-			MPCALLFUNC GameWinOver Thats five cards without a bust! You win!
+		MPCALLFUNC DealOut $<$n MYBJVALS>
+		MPSETVAR $n MYBJVALS $<$n BJLIST>
+		say $n You draw the $<$n BJCARDNAME> of $<$n BJCARDSUIT>, for a total of $<$n BJTOTAL>.
+			
+		IF VAR($n BJTOTAL > 21)
+			MPCALLFUNC GameLoseOver You went bust. Sorry, you lose!
 		ELSE
-			MPCALLFUNC AddToTotal $<$n DEALERBJVALS>
-			IF VAR($n BJTOTAL < 17)
-				MPCALLFUNC DealOut $<$n DEALERBJVALS>
-				MPSETVAR $n DEALERBJVALS $<$n BJLIST>
-				say $n The dealer draws the $<$n BJCARDNAME> of $<$n BJCARDSUIT>, for a total of $<$n BJTOTAL>.
-				IF VAR($n BJTOTAL > 21)
-					MPCALLFUNC GameWinOver The house goes bust. You win!
-				ELSE
-					IF EVAL('$<$n DEALERBJVALS>.4' > 0)
-						MPCALLFUNC GameLoseOver The house drew five cards without a bust.  You lose.
-					ELSE
-						say $n Would you like to 'HIT' or 'STAY'?
-					ENDIF
-				ENDIF
+			IF EVAL('$<$n MYBJVALS>.4' > 0)
+				MPCALLFUNC GameWinOver Thats five cards without a bust! You win!
 			ELSE
-				say $n Would you like to 'HIT' or 'STAY'?
+				MPCALLFUNC AddToTotal $<$n DEALERBJVALS>
+				IF VAR($n BJTOTAL < 17)
+					MPCALLFUNC DealOut $<$n DEALERBJVALS>
+					MPSETVAR $n DEALERBJVALS $<$n BJLIST>
+					say $n The dealer draws the $<$n BJCARDNAME> of $<$n BJCARDSUIT>, for a total of $<$n BJTOTAL>.
+					IF VAR($n BJTOTAL > 21)
+						MPCALLFUNC GameWinOver The house goes bust. You win!
+					ELSE
+						IF EVAL('$<$n DEALERBJVALS>.4' > 0)
+							MPCALLFUNC GameLoseOver The house drew five cards without a bust.  You lose.
+						ELSE
+							say $n Would you like to 'HIT' or 'STAY'?
+						ENDIF
+					ENDIF
+				ELSE
+					say $n Would you like to 'HIT' or 'STAY'?
+				ENDIF
 			ENDIF
 		ENDIF
 	ENDIF
@@ -256,14 +256,14 @@ FUNCTION_PROG DoStay
 SPEECH_PROG stay stand
 	IF VAR($n MYBJVALS == '')
 		say "$n" You are not currently playing.  Ante up $<$i BJANTE> gold and we'll start up a game.
+	ELSE
+		MPCALLFUNC DoStay	
 	ENDIF
-	MPCALLFUNC DoStay	
 ~
 
 SPEECH_PROG round? round
-
 IF VAR($n MYBJVALS == '')
-	say "$n" You are not currently playing.
+	say "$n" You are not currently playing.  Ante up $<$i BJANTE> gold and we'll start up a game.
 ELSE
 	IF EVAL('$<$n MYBJVALS>.5' > 0)
 		say "$n" You are in round 5.
