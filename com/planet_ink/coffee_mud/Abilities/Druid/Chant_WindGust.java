@@ -101,9 +101,12 @@ public class Chant_WindGust extends Chant
 						||(mob.location().getArea().weatherType(mob.location())==Area.WEATHER_DUSTSTORM)
 						||(mob.location().getArea().weatherType(mob.location())==Area.WEATHER_THUNDERSTORM))
 							howLong=4;
+						
 						MOB victim=target.getVictim();
 						if((victim!=null)&&(target.rangeToTarget()>=0))
 							target.setAtRange(target.rangeToTarget()+(howLong/2));
+						if(target.rangeToTarget()>target.location().maxRange())
+							target.setAtRange(target.location().maxRange());
 						mob.location().send(mob,msg);
 						if((!Sense.isFlying(target))
 						&&(Dice.rollPercentage()>(((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level()))-(5*howLong)))
