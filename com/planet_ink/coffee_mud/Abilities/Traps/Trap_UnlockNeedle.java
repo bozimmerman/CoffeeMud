@@ -6,18 +6,10 @@ import java.util.*;
 
 public class Trap_UnlockNeedle extends Trap_Unlock
 {
-	public Trap_UnlockNeedle()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ITEMS;
-		baseEnvStats().setAbility(Trap.TRAP_NEEDLE);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Trap_UnlockNeedle();
-	}
+	public String ID() { return "Trap_UnlockNeedle"; }
+	public String name(){ return "Unlock Needle Trap";}
+	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
+	protected int trapType(){return TRAP_NEEDLE;}
+	public Environmental newInstance(){	return new Trap_UnlockNeedle();}
 }

@@ -7,25 +7,24 @@ import java.util.*;
 
 public class Trap_Trap extends StdAbility implements Trap
 {
+	public String ID() { return "Trap_Trap"; }
+	public String name(){ return "a Trap!";}
+	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
+	
 	protected static MOB benefactor=(MOB)CMClass.getMOB("StdMOB");
 	protected boolean sprung=false;
 	protected Room myPit=null;
 	protected Room myPitUp=null;
+	protected int reset=0;
+	protected int trapType(){return Dice.roll(1,3,-1);}
 
 	public Trap_Trap()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="a Trap!";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-		invoker=benefactor;
-		baseEnvStats().setAbility(Dice.roll(1,3,0)-1);
-		recoverEnvStats();
 		if(benefactor==null)
 			benefactor=(MOB)CMClass.getMOB("StdMOB");
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;
+		invoker=benefactor;
 	}
 
 	public boolean sprung()
@@ -36,7 +35,9 @@ public class Trap_Trap extends StdAbility implements Trap
 	{
 		sprung=isSprung;
 	}
-
+	public void setReset(int Reset){reset=Reset;}
+	public int getReset(){return reset;}
+	
 	public Trap getATrap(Environmental unlockThis)
 	{
 		Trap theTrap=null;
@@ -100,6 +101,7 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	public Trap fetchMyTrap(Environmental myThang)
 	{
+		if(myThang==null) return null;
 		for(int a=0;a<myThang.numAffects();a++)
 		{
 			Ability A=myThang.fetchAffect(a);
@@ -112,8 +114,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	public void setTrapped(Environmental myThang, boolean isTrapped)
 	{
 		Trap t=getATrap(myThang);
-		t.baseEnvStats().setRejuv(50);
-		t.recoverEnvStats();
+		t.setReset(50);
 		setTrapped(myThang,t,isTrapped);
 	}
 	public void setTrapped(Environmental myThang, Trap theTrap, boolean isTrapped)
@@ -284,7 +285,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		benefactor.recoverEnvStats();
 		if(invoker==null)
 			invoker=benefactor;
-		switch(envStats().ability())
+		switch(trapType())
 		{
 		case TRAP_GAS:
 			gas(target);
@@ -306,8 +307,8 @@ public class Trap_Trap extends StdAbility implements Trap
 			break;
 		}
 
-		if((envStats().rejuv()>0)&&(envStats().rejuv()<Integer.MAX_VALUE))
-			ExternalPlay.startTickDown(this,Host.TRAP_RESET,envStats().rejuv());
+		if((getReset()>0)&&(getReset()<Integer.MAX_VALUE))
+			ExternalPlay.startTickDown(this,Host.TRAP_RESET,getReset());
 		else
 			unInvoke();
 	}

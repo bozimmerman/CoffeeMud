@@ -6,19 +6,15 @@ import java.util.*;
 
 public class Trap_UnlockSpell extends Trap_Unlock
 {
+	public String ID() { return "Trap_UnlockSpell"; }
+	public String name(){ return "Unlock Spell Trap";}
+	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
+	protected int trapType(){return TRAP_SPELL;}
 	public Trap_UnlockSpell()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_EXITS;
-		baseEnvStats().setAbility(Trap.TRAP_SPELL);
 		setMiscText("Spell_Sleep");
-		recoverEnvStats();
 	}
-
-	public Environmental newInstance()
-	{
-		return new Trap_UnlockSpell();
-	}
+	public Environmental newInstance(){	return new Trap_UnlockSpell();}
 }

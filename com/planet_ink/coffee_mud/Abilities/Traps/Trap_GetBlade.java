@@ -5,18 +5,10 @@ import java.util.*;
 
 public class Trap_GetBlade extends Trap_Get
 {
-	public Trap_GetBlade()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_ITEMS;
-		baseEnvStats().setAbility(Trap.TRAP_PIT_BLADE);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Trap_GetBlade();
-	}
+	public String ID() { return "Trap_GetBlade"; }
+	public String name(){ return "Get Blade Trap";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
+	protected int trapType(){return TRAP_PIT_BLADE;}
+	public Environmental newInstance(){	return new Trap_GetBlade();}
 }

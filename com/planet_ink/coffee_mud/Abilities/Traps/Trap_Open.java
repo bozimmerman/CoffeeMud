@@ -6,18 +6,11 @@ import java.util.*;
 
 public class Trap_Open extends Trap_Trap
 {
-	public Trap_Open()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ITEMS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Trap_Open();
-	}
+	public String ID() { return "Trap_Open"; }
+	public String name(){ return "Open Trap";}
+	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Trap_Open();}
 
 	public void affect(Affect affect)
 	{

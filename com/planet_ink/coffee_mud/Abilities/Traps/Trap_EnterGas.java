@@ -6,18 +6,10 @@ import java.util.*;
 
 public class Trap_EnterGas extends Trap_Enter
 {
-	public Trap_EnterGas()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ROOMS;
-		baseEnvStats().setAbility(Trap.TRAP_GAS);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Trap_EnterGas();
-	}
+	public String ID() { return "Trap_EnterGas"; }
+	public String name(){ return "Entry Gas Trap";}
+	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	protected int canTargetCode(){return 0;}
+	protected int trapType(){return TRAP_GAS;}
+	public Environmental newInstance(){	return new Trap_EnterGas();}
 }
