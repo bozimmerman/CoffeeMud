@@ -76,7 +76,7 @@ public class Cow extends StdMOB implements Drink
 					((MOB)container.owner()).addInventory(I);
 				else
 				if(container.owner() instanceof Room)
-					((Room)container.owner()).addItemRefuse(I);
+					((Room)container.owner()).addItemRefuse(I,Item.REFUSE_RESOURCE);
 		}
 	}
 	public int thirstQuenched(){return 100;}

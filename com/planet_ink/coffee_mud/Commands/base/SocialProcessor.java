@@ -480,6 +480,32 @@ public class SocialProcessor
 		mob.location().send(mob,newMsg);
 	}
 
+	public int relativeLevelDiff(MOB mob1, MOB mob2)
+	{
+		if((mob1==null)||(mob2==null)) return 0;
+		int mob2Armor=(int)mob2.adjustedArmor();
+		int mob1Armor=(int)mob1.adjustedArmor();
+		int mob2Attack=(int)mob2.adjustedAttackBonus();
+		int mob1Attack=(int)mob1.adjustedAttackBonus();
+		int mob2Dmg=(int)mob2.envStats().damage();
+		int mob1Dmg=(int)mob1.envStats().damage();
+		int mob2Hp=(int)mob2.baseState().getHitPoints();
+		int mob1Hp=(int)mob1.baseState().getHitPoints();
+
+		
+		double mob2HitRound=(((Util.div(CoffeeUtensils.normalizeBy5((mob2Attack+mob1Armor)),100.0))*Util.div(mob2Dmg,2.0))+1.0)*Util.mul(mob2.envStats().speed(),1.0);
+		double mob1HitRound=(((Util.div(CoffeeUtensils.normalizeBy5((mob1Attack+mob2Armor)),100.0))*Util.div(mob1Dmg,2.0))+1.0)*Util.mul(mob1.envStats().speed(),1.0);
+		double mob2SurvivalRounds=Util.div(mob2Hp,mob1HitRound);
+		double mob1SurvivalRounds=Util.div(mob1Hp,mob2HitRound);
+		
+		//int levelDiff=(int)Math.round(Util.div((mob1SurvivalRounds-mob2SurvivalRounds),1));
+		double levelDiff=mob1SurvivalRounds-mob2SurvivalRounds;
+		int levelDiffed=(int)Math.round(Math.sqrt(Math.abs(levelDiff)));
+
+		return levelDiffed*(levelDiff<0.0?-1:1);
+	}
+	
+	
 	public void consider(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
@@ -496,8 +522,9 @@ public class SocialProcessor
 			return;
 		}
 
-		int realDiff=//relativeLevelDiff(target,mob);
-			target.envStats().level()-mob.envStats().level();
+		int relDiff=relativeLevelDiff(target,mob);
+		int lvlDiff=(target.envStats().level()-mob.envStats().level());
+		int realDiff=(relDiff+lvlDiff)/2;
 
 		int levelDiff=Math.abs(realDiff);
 		if(levelDiff<2)

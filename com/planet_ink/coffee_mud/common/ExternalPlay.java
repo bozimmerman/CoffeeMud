@@ -251,6 +251,14 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.clearDebri(room,taskCode);
 	}
+	public static void suspendTicking(Environmental E, int tickID)
+	{
+		if(sysPlayer!=null) sysPlayer.suspendTicking(E,tickID);
+	}
+	public static void resumeTicking(Environmental E, int tickID)
+	{
+		if(sysPlayer!=null) sysPlayer.resumeTicking(E,tickID);
+	}
 	public static void tickAllTickers(Room here)
 	{
 		if(sysPlayer!=null) sysPlayer.tickAllTickers(here);

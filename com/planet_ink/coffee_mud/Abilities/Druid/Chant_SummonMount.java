@@ -65,6 +65,7 @@ public class Chant_SummonMount extends Chant
 			Exit opExit=mob.location().getPairedExit(d);
 			if((room!=null)
 			&&((room.domainType()&Room.INDOORS)==0)
+			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 			&&((exit!=null)&&(exit.isOpen()))
 			&&(opExit!=null)&&(opExit.isOpen()))
 				choices.addElement(new Integer(d));

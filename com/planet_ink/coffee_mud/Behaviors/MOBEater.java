@@ -61,7 +61,7 @@ public class MOBEater extends ActiveTicker
 			Item PartiallyDigestedItem = Stomach.fetchItem(y);
 			if (PartiallyDigestedItem!=null)
 			{
-				lastKnownLocation.addItemRefuse(PartiallyDigestedItem);
+				lastKnownLocation.addItemRefuse(PartiallyDigestedItem,Item.REFUSE_PLAYER_DROP);
 				Stomach.delItem(PartiallyDigestedItem);
 			}
 		}

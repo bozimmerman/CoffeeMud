@@ -8,6 +8,7 @@ public class TockClient
 	public int tickID=0;
 	public int reTickDown=0;
 	public int tickDown=0;
+	public boolean suspended=false;
 	
 	public TockClient(Environmental newClientObject,
 					  int newTickDown,

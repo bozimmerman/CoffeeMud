@@ -489,7 +489,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					mob.setMoney(mob.getMoney()-yourValue(mob,product,true));
 					if(product instanceof Item)
 					{
-						mob.location().addItemRefuse((Item)product);
+						mob.location().addItemRefuse((Item)product,Item.REFUSE_PLAYER_DROP);
 						if(product instanceof Container)
 						{
 							int i=0;
@@ -504,7 +504,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 									if((I instanceof Key)&&(((Key)I).getKey().equals(C.keyName())))
 										foundKey=(Key)I;
 									((Item)I).remove();
-									mob.location().addItemRefuse((Item)I);
+									mob.location().addItemRefuse((Item)I,Item.REFUSE_PLAYER_DROP);
 									storeInventory.removeElement(I);
 									((Item)I).setContainer((Item)product);
 								}
@@ -519,7 +519,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								Key key=(Key)CMClass.getItem("StdKey");
 								key.setKey(keyName);
 								key.setContainer(C);
-								mob.location().addItemRefuse(key);
+								mob.location().addItemRefuse(key,Item.REFUSE_PLAYER_DROP);
 							}
 						}
 						FullMsg msg=new FullMsg(mob,product,this,Affect.MSG_GET,null);

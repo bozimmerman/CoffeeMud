@@ -83,7 +83,7 @@ public class JewelMaking extends CommonSkill
 					if(messedUp)
 						mob.tell("You've ruined "+building.name()+"!");
 					else
-						mob.location().addItemRefuse(building);
+						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}
 				building=null;
 			}

@@ -65,7 +65,7 @@ public class Fishing extends CommonSkill
 					for(int i=0;i<amount;i++)
 					{
 						Item newFound=(Item)found.copyOf();
-						mob.location().addItemRefuse(newFound);
+						mob.location().addItemRefuse(newFound,Item.REFUSE_PLAYER_DROP);
 						ExternalPlay.get(mob,null,newFound,true);
 					}
 				}

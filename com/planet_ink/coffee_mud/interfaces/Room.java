@@ -87,7 +87,7 @@ public interface Room extends Environmental
 	
 	public Item fetchItem(Item goodLocation, String itemID);
 	public void addItem(Item item);
-	public void addItemRefuse(Item item);
+	public void addItemRefuse(Item item, int survivalTime);
 	public void delItem(Item item);
 	public int numItems();
 	public boolean isContent(Item item);

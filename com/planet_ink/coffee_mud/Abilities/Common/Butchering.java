@@ -54,7 +54,7 @@ public class Butchering extends CommonSkill
 						{
 							Item newFound=(Item)((Item)resources.elementAt(i)).copyOf();
 							newFound.recoverEnvStats();
-							mob.location().addItemRefuse(newFound);
+							mob.location().addItemRefuse(newFound,Item.REFUSE_RESOURCE);
 							mob.location().recoverRoomStats();
 						}
 					}

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Spell_TimeStop extends Spell
 {
+	protected Vector fixed=new Vector();
 	public Spell_TimeStop()
 	{
 		super();
@@ -55,11 +56,19 @@ public class Spell_TimeStop extends Spell
 					if(me!=null)
 						me.unInvoke();
 				}
+				ExternalPlay.resumeTicking(room,-1);
+				for(int i=0;i<fixed.size();i++)
+				{
+					MOB mob2=(MOB)fixed.elementAt(i);
+					ExternalPlay.resumeTicking(mob2,-1);
+				}
+				fixed=new Vector();
 			}
 			else
 			if(affected instanceof MOB)
 			{
 				MOB mob=(MOB)affected;
+				ExternalPlay.resumeTicking(mob,-1);
 				if(mob.location()!=null)
 				{
 					mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "Time starts moving again...");
@@ -132,7 +141,19 @@ public class Spell_TimeStop extends Spell
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),7);
+				Room room=mob.location();
+				fixed=new Vector();
+				ExternalPlay.suspendTicking(room,-1);
+				for(int m=0;m<mob.location().numInhabitants();m++)
+				{
+					MOB mob2=mob.location().fetchInhabitant(m);
+					if(mob2!=mob)
+					{
+						fixed.addElement(mob2);
+						ExternalPlay.suspendTicking(mob2,-1);
+					}
+				}
+				beneficialAffect(mob,room,7);
 				//beneficialAffect(mob,mob,0);
 			}
 		}

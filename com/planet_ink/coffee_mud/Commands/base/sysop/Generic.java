@@ -714,11 +714,7 @@ public class Generic
 		if(E.baseEnvStats().level()<0)
 			E.baseEnvStats().setLevel(1);
 		mob.tell("\n\rLevel: '"+E.baseEnvStats().level()+"'.");
-		int newLevel=Util.s_int(mob.session().prompt("Enter a new one\n\r:",""));
-		if(newLevel>0)
-			E.baseEnvStats().setLevel(newLevel);
-		else
-			mob.tell("(no change)");
+		E.baseEnvStats().setLevel(getNumericData(mob,"Enter a new level\n\r:",E.baseEnvStats().level()));
 	}
 
 	void genRejuv(MOB mob, Environmental E)
@@ -744,22 +740,14 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rUses Remaining: '"+E.usesRemaining()+"'.");
-		int newLevel=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
-		if(newLevel>0)
-			E.setUsesRemaining(newLevel);
-		else
-			mob.tell("(no change)");
+		E.setUsesRemaining(getNumericData(mob,"Enter a new value\n\r:",E.usesRemaining()));
 	}
 
 	void genCondition(MOB mob, Item E)
 		throws IOException
 	{
 		mob.tell("\n\rCondition: '"+E.usesRemaining()+"'.");
-		int newLevel=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
-		if(newLevel>0)
-			E.setUsesRemaining(newLevel);
-		else
-			mob.tell("(no change)");
+		E.setUsesRemaining(getNumericData(mob,"Enter a new value\n\r:",E.usesRemaining()));
 	}
 
 	void genMiscSet(MOB mob, Environmental E)
@@ -804,6 +792,20 @@ public class Generic
 		}
 	}
 
+	
+	int getNumericData(MOB mob, String prompt, int oldValue)
+		throws IOException
+	{
+		String value=mob.session().prompt(prompt,"");
+		int numValue=Util.s_int(value);
+		if((numValue==0)&&(!value.trim().equals("0")))
+		{
+			mob.tell("(no change)");
+			return oldValue;
+		}
+		return numValue;
+	}
+	
 	void genMiscText(MOB mob, Environmental E)
 		throws IOException
 	{
@@ -829,14 +831,7 @@ public class Generic
 	{
 		mob.tell("\n\rMagical Ability: '"+E.baseEnvStats().ability()+"'.");
 		String newLevelStr=mob.session().prompt("Enter a new one (0=no magic)\n\r:","");
-		int newLevel=Util.s_int(newLevelStr);
-		if(newLevel>0)
-			E.baseEnvStats().setAbility(newLevel);
-		else
-		if((newLevelStr.length()>0)&&(newLevelStr.indexOf("0")>=0))
-			E.baseEnvStats().setAbility(0);
-		else
-			mob.tell("(no change)");
+		E.baseEnvStats().setAbility(getNumericData(mob,"Enter a new value (0=no magic)\n\r:",E.baseEnvStats().ability()));
 	}
 
 	void genHitPoints(MOB mob, Environmental E)
@@ -856,22 +851,14 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rBase Value: '"+E.baseGoldValue()+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
-		if(newValue>0)
-			E.setBaseValue(newValue);
-		else
-			mob.tell("(no change)");
+		E.setBaseValue(getNumericData(mob,"Enter a new value\n\r:",E.baseGoldValue()));
 	}
 
 	void genWeight(MOB mob, Environmental E)
 		throws IOException
 	{
 		mob.tell("\n\rWeight: '"+E.baseEnvStats().weight()+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new weight\n\r:",""));
-		if(newValue>0)
-			E.baseEnvStats().setWeight(newValue);
-		else
-			mob.tell("(no change)");
+		E.baseEnvStats().setWeight(getNumericData(mob,"Enter a new weight\n\r:",E.baseEnvStats().weight()));
 	}
 
 
@@ -879,11 +866,7 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rHeight: '"+E.baseEnvStats().height()+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new height\n\r:",""));
-		if(newValue>0)
-			E.baseEnvStats().setHeight(newValue);
-		else
-			mob.tell("(no change)");
+		E.baseEnvStats().setHeight(getNumericData(mob,"Enter a new height\n\r:",E.baseEnvStats().height()));
 	}
 
 
@@ -891,11 +874,7 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rSize: '"+E.baseEnvStats().height()+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new size\n\r:",""));
-		if(newValue>0)
-			E.baseEnvStats().setHeight(newValue);
-		else
-			mob.tell("(no change)");
+		E.baseEnvStats().setHeight(getNumericData(mob,"Enter a new size\n\r:",E.baseEnvStats().height()));
 	}
 
 
@@ -903,45 +882,28 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rCapacity: '"+E.capacity()+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new capacity\n\r:",""));
-		if(newValue>0)
-			E.setCapacity(newValue);
-		else
-			mob.tell("(no change)");
-
+		E.setCapacity(getNumericData(mob,"Enter a new capacity\n\r:",E.capacity()));
 	}
 
 	void genAttack(MOB mob, Environmental E)
 		throws IOException
 	{
 		mob.tell("\n\rAttackAdjustment: '"+E.envStats().attackAdjustment()+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
-		if(newValue>0)
-			E.baseEnvStats().setAttackAdjustment(newValue);
-		else
-			mob.tell("(no change)");
+		E.baseEnvStats().setAttackAdjustment(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().attackAdjustment()));
 	}
 
 	void genDamage(MOB mob, Environmental E)
 		throws IOException
 	{
 		mob.tell("\n\rDamage/Hit: '"+E.baseEnvStats().damage()+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
-		if(newValue>0)
-			E.baseEnvStats().setDamage(newValue);
-		else
-			mob.tell("(no change)");
+		E.baseEnvStats().setDamage(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().damage()));
 	}
 
 	void genSpeed(MOB mob, Environmental E)
 		throws IOException
 	{
 		mob.tell("\n\rAttacks/Round: '"+((int)Math.round(E.baseEnvStats().speed()))+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
-		if(newValue>0)
-			E.baseEnvStats().setSpeed(newValue);
-		else
-			mob.tell("(no change)");
+		E.baseEnvStats().setSpeed(getNumericData(mob,"Enter a new value\n\r:",(int)Math.round(E.baseEnvStats().speed())));
 	}
 
 	void genArmor(MOB mob, Environmental E)
@@ -951,22 +913,14 @@ public class Generic
 			mob.tell("\n\rArmor (lower-better): '"+E.baseEnvStats().armor()+"'.");
 		else
 			mob.tell("\n\rArmor (higher-better): '"+E.baseEnvStats().armor()+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
-		if(newValue>0)
-			E.baseEnvStats().setArmor(newValue);
-		else
-			mob.tell("(no change)");
+		E.baseEnvStats().setArmor(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().armor()));
 	}
 
 	void genMoney(MOB mob, MOB E)
 		throws IOException
 	{
 		mob.tell("\n\rMoney: '"+E.getMoney()+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
-		if(newValue>0)
-			E.setMoney(newValue);
-		else
-			mob.tell("(no change)");
+		E.setMoney(getNumericData(mob,"Enter a new value\n\r:",E.getMoney()));
 	}
 
 	void genWeaponAmmo(MOB mob, Weapon E)
@@ -1593,11 +1547,7 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rQuenched/Drink: '"+E.thirstQuenched()+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new amount\n\r:",""));
-		if(newValue>0)
-			E.setThirstQuenched(newValue);
-		else
-			mob.tell("(no change)");
+		E.setThirstQuenched(getNumericData(mob,"Enter a new amount\n\r:",E.thirstQuenched()));
 	}
 
 	void genDrinkHeld(MOB mob, Drink E)
@@ -1605,13 +1555,8 @@ public class Generic
 	{
 		mob.tell("\n\rAmount of Drink Held: '"+E.liquidHeld()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new amount\n\r:",""));
-		if(newValue>0)
-		{
-			E.setLiquidHeld(newValue);
-			E.setLiquidRemaining(newValue);
-		}
-		else
-			mob.tell("(no change)");
+		E.setLiquidHeld(getNumericData(mob,"Enter a new amount\n\r:",E.liquidHeld()));
+		E.setLiquidRemaining(E.liquidHeld());
 	}
 
 

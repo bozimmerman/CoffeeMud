@@ -88,10 +88,10 @@ public class Sculpting extends CommonSkill
 							building.setUsesRemaining(100);
 						else
 						{
-							mob.location().addItemRefuse(building);
+							mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 							if(key!=null)
 							{
-								mob.location().addItemRefuse(key);
+								mob.location().addItemRefuse(key,Item.REFUSE_PLAYER_DROP);
 								key.setContainer(building);
 							}
 						}

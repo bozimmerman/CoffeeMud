@@ -255,9 +255,13 @@ public class StdRoom
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_LEAVE:
+				if(!Sense.canMove(this))
+					return false;
 				break;
 			case Affect.TYP_FLEE:
 			case Affect.TYP_ENTER:
+				if(!Sense.canMove(this))
+					return false;
 				if((!skyedYet)&&(!mob.isMonster()))
 					giveASky(this);
 				break;
@@ -841,10 +845,12 @@ public class StdRoom
 		contents.addElement(item);
 		item.recoverEnvStats();
 	}
-	public void addItemRefuse(Item item)
+	public void addItemRefuse(Item item, int survivalTime)
 	{
 		addItem(item);
-		item.setPossessionTime(Calendar.getInstance());
+		Calendar C=Calendar.getInstance();
+		C.add(Calendar.HOUR,survivalTime);
+		item.setDispossessionTime(C);
 	}
 	public void delItem(Item item)
 	{

@@ -81,7 +81,7 @@ public class Pottery extends CommonSkill
 					if(messedUp)
 						mob.tell("You completely mess up "+building.name()+".");
 					else
-						mob.location().addItemRefuse(building);
+						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}
 				building=null;
 			}

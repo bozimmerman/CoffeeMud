@@ -233,7 +233,7 @@ public class TheFight
 						C.baseEnvStats().setAbility(myAmount);
 						C.setContainer(Body);
 						C.recoverEnvStats();
-						deathRoom.addItemRefuse(C);
+						deathRoom.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
 						deathRoom.recoverRoomStats();
 						if(Sense.canBeSeenBy(Body,mob))
 							ExternalPlay.get(mob,Body,C,false);

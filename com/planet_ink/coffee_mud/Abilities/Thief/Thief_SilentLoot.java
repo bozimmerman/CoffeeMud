@@ -64,7 +64,7 @@ public class Thief_SilentLoot extends ThiefSkill
 					item.remove();
 					item.removeThis();
 					item.setContainer(null);
-					mob.location().addItemRefuse(item);
+					mob.location().addItemRefuse(item,Item.REFUSE_PLAYER_DROP);
 					ExternalPlay.get(mob,null,item,true);
 				}
 				else

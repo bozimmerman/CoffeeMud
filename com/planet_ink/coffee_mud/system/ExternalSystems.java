@@ -73,6 +73,14 @@ public class ExternalSystems implements ExternalSystem
 	{
 		RoomLoader.DBReCreate(room,oldID);
 	}
+	public void suspendTicking(Environmental E, int tickID)
+	{
+		ServiceEngine.suspendTicking(E,tickID);
+	}
+	public void resumeTicking(Environmental E, int tickID)
+	{
+		ServiceEngine.resumeTicking(E,tickID);
+	}
 	public void clearDebri(Room room, int taskCode)
 	{
 		ServiceEngine.clearDebri(room,taskCode);

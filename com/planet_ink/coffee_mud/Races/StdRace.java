@@ -298,7 +298,9 @@ public class StdRace implements Race
 				{
 					Item newItem=(Item)thisItem.copyOf();
 					newItem.setContainer(null);
-					newItem.setPossessionTime(Calendar.getInstance());
+					Calendar C=Calendar.getInstance();
+					C.add(Calendar.HOUR,Item.REFUSE_MONSTER_EQ);
+					newItem.setDispossessionTime(C);
 					newItem.recoverEnvStats();
 					thisItem=newItem;
 					i++;
@@ -323,7 +325,7 @@ public class StdRace implements Race
 			C.baseEnvStats().setAbility(mob.getMoney());
 			C.recoverEnvStats();
 			C.setContainer(Body);
-			room.addItemRefuse(C);
+			room.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
 			mob.setMoney(0);
 		}
 		return Body;

@@ -342,12 +342,17 @@ public class CoffeeUtensils
 	//int attChance=(int)(adjArmor+adjAttack);
 	public static boolean normalizeAndRollLess(int score)
 	{
+		return (Dice.rollPercentage()<normalizeBy5(score));
+	}
+	
+	public static int normalizeBy5(int score)
+	{
 		if(score>95) 
-			score=95;
+			return 95;
 		else
 		if(score<5)
-			score=5;
-		return (Dice.rollPercentage()<score);
+			return 5;
+		return score;
 	}
 }
 

@@ -22,17 +22,15 @@ public class SaveThread extends Thread
 	public void itemSweep()
 	{
 		Calendar itemKillTime=Calendar.getInstance();
-		itemKillTime.add(Calendar.HOUR,-20);
-		
 		for(int mn=0;mn<CMMap.numRooms();mn++)
 		{
 			Room room=CMMap.getRoom(mn);
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item I=room.fetchItem(i);
-				if((I!=null)&&(I.possessionTime()!=null)&&(I.owner()==room))
+				if((I!=null)&&(I.dispossessionTime()!=null)&&(I.owner()==room))
 				{
-					if(itemKillTime.after(I.possessionTime()))
+					if(itemKillTime.after(I.dispossessionTime()))
 					{
 						I.destroyThis();
 						i=i-1;

@@ -39,6 +39,9 @@ public class Tick extends Thread
 
 	public static boolean tickTicker(TockClient C, Vector tickers)
 	{
+		if(C.suspended) 
+			return false;
+		
 		if((--C.tickDown)<1)
 		{
 			C.tickDown=C.reTickDown;

@@ -7,6 +7,10 @@ public interface Item extends Environmental
 	public static int WORN_REQ_UNWORNONLY=1;
 	public static int WORN_REQ_ANY=2;
 	
+	public static int REFUSE_MONSTER_EQ=1;
+	public static int REFUSE_PLAYER_DROP=20;
+	public static int REFUSE_RESOURCE=1;
+	
 	/** Where the item is located.  Either null for
 	 * plain site (or contained on person), or will
 	 * point to the container object*/
@@ -115,6 +119,6 @@ public interface Item extends Environmental
 	
 	public Environmental owner();
 	public void setOwner(Environmental E);
-	public Calendar possessionTime();
-	public void setPossessionTime(Calendar time);
+	public Calendar dispossessionTime();
+	public void setDispossessionTime(Calendar time);
 }

@@ -275,7 +275,7 @@ public class StdContainer extends StdItem implements Container
 				{
 					StringBuffer buf=new StringBuffer("");
 					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
-						buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight: "+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rTime  : "+possessionTimeLeftString()+"\n\r"+description()+"'\n\rKey  : "+keyName()+"\n\rMisc  :'"+text());
+						buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight: "+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rDeath : "+dispossessionTimeLeftString()+"\n\r"+description()+"'\n\rKey  : "+keyName()+"\n\rMisc  :'"+text());
 					else
 						buf.append(description()+"\n\r");
 					if(this.isOpen)
@@ -425,7 +425,7 @@ public class StdContainer extends StdItem implements Container
 			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
 		mob.delInventory(thisContainer);
 		thisContainer.remove();
-		mob.location().addItemRefuse(thisContainer);
+		mob.location().addItemRefuse(thisContainer,Item.REFUSE_PLAYER_DROP);
 		thisContainer.recoverEnvStats();
 		boolean nothingDone=true;
 		do

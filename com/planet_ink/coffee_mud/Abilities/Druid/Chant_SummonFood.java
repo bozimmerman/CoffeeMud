@@ -59,7 +59,7 @@ public class Chant_SummonFood extends Chant
 					newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
 					newItem.setNourishment(150);
 					newItem.setMiscText(newItem.text());
-					mob.location().addItemRefuse(newItem);
+					mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
 				}
 				mob.location().showHappens(Affect.MSG_OK_ACTION,"Some berries quickly begin to grow here.");
 				mob.location().recoverEnvStats();

@@ -97,6 +97,23 @@ public class ServiceEngine
 		return false;
 	}
 	
+	public static void suspendTicking(Environmental E, int tickID){suspendResumeTicking(E,tickID,true);}
+	public static void resumeTicking(Environmental E, int tickID){suspendResumeTicking(E,tickID,false);}
+	private static boolean suspendResumeTicking(Environmental E, int tickID, boolean suspend)
+	{
+		for(int v=0;v<tickGroup.size();v++)
+		{
+			Tick almostTock=(Tick)tickGroup.elementAt(v);
+			for(int t=0;t<almostTock.tickers.size();t++)
+			{
+				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
+				Environmental E2=C.clientObject;
+				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
+					C.suspended=suspend;
+			}
+		}
+		return false;
+	}
 
 	public static boolean isHere(Environmental E2, Room here)
 	{
@@ -182,7 +199,7 @@ public class ServiceEngine
 					msg.append("\n\r");
 					col=1;
 				}
-				msg.append(Util.padRight(""+v,4)+Util.padRight(E.name(),18)+" "+Util.padRight(id+"",5)+Util.padRight(pr+"/"+oo,10));
+				msg.append(Util.padRight(""+v,4)+Util.padRight(E.name(),18)+" "+Util.padRight(id+"",5)+Util.padRight(pr+"/"+(C.suspended?"??":""+oo),10));
 			}
 		}
 		return msg;

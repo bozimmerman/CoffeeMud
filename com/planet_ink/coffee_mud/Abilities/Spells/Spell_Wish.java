@@ -65,7 +65,7 @@ public class Spell_Wish extends Spell
 			item.remove();
 			item.setContainer(null);
 			item.removeThis();
-			here.addItemRefuse(item);
+			here.addItemRefuse(item,Item.REFUSE_PLAYER_DROP);
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" appears out of the java plain!");
 		}
 	}
@@ -188,7 +188,7 @@ public class Spell_Wish extends Spell
 					Item newItem=(Item)foundThang.copyOf();
 					newItem.setContainer(null);
 					newItem.wearAt(0);
-					mob.location().addItemRefuse(newItem);
+					mob.location().addItemRefuse(newItem,Item.REFUSE_PLAYER_DROP);
 					mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 					mob.location().recoverRoomStats();
 					Log.sysOut("Wish",mob.ID()+" wished for item "+newItem.ID()+".");
@@ -458,6 +458,69 @@ public class Spell_Wish extends Spell
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now male!");
 				return true;
 			}
+			
+			if((target instanceof MOB)
+			&&((myWish.indexOf(" BECOME ")>=0)
+			||(myWish.indexOf(" WAS ")>=0))
+			&&((myWish.indexOf(" LIGHTER ")>=0)
+			||(myWish.indexOf(" LOSE WEIGHT ")>=0)))
+			{
+				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				int weight=((MOB)target).baseEnvStats().weight();
+				weight-=50;
+				if(weight<=0) weight=1;
+				((MOB)target).baseEnvStats().setWeight(weight);
+				((MOB)target).recoverEnvStats();
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now lighter!");
+				return true;
+			}
+			if((target instanceof MOB)
+			&&((myWish.indexOf(" BECOME ")>=0)
+			||(myWish.indexOf(" WAS ")>=0))
+			&&((myWish.indexOf(" HEAVIER ")>=0)
+			||(myWish.indexOf(" GAIN WEIGHT ")>=0)))
+			{
+				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				int weight=((MOB)target).baseEnvStats().weight();
+				weight+=50;
+				((MOB)target).baseEnvStats().setWeight(weight);
+				((MOB)target).recoverEnvStats();
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now heavier!");
+				return true;
+			}
+			
+			if((target instanceof MOB)
+			&&((myWish.indexOf(" BECOME ")>=0)
+			||(myWish.indexOf(" WAS ")>=0))
+			&&((myWish.indexOf(" SMALL ")>=0)
+			||(myWish.indexOf(" SHORT ")>=0)
+			||(myWish.indexOf(" LITTLE ")>=0)))
+			{
+				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				int weight=((MOB)target).baseEnvStats().height();
+				weight-=12;
+				if(weight<=0) weight=5;
+				((MOB)target).baseEnvStats().setHeight(weight);
+				((MOB)target).recoverEnvStats();
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now shorter!");
+				return true;
+			}
+			if((target instanceof MOB)
+			&&((myWish.indexOf(" BECOME ")>=0)
+			||(myWish.indexOf(" WAS ")>=0))
+			&&((myWish.indexOf(" LARGE ")>=0)
+			||(myWish.indexOf(" BIG ")>=0)
+			||(myWish.indexOf(" TALL ")>=0)))
+			{
+				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				int weight=((MOB)target).baseEnvStats().height();
+				weight+=12;
+				((MOB)target).baseEnvStats().setHeight(weight);
+				((MOB)target).recoverEnvStats();
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now taller!");
+				return true;
+			}
+			
 			if((target instanceof MOB)
 			&&(((MOB)target).charStats().getStat(CharStats.GENDER)!=(int)'F')
 			&&((myWish.indexOf(" BECOME ")>=0)
@@ -529,8 +592,10 @@ public class Spell_Wish extends Spell
 			{
 				int code=-1;
 				int x=myWish.indexOf(" KNOW "); if((x>=0)&&(x+5>code)) code=x+5;
+				x=myWish.indexOf(" KNEW "); if((x>=0)&&(x+5>code)) code=x+5;
 				x=myWish.indexOf(" LEARN "); if((x>=0)&&(x+6>code)) code=x+6;
 				x=myWish.indexOf(" COULD "); if((x>=0)&&(x+6>code)) code=x+6;
+				x=myWish.indexOf(" GAIN "); if((x>=0)&&(x+5>code)) code=x+5;
 				x=myWish.indexOf(" BE TAUGHT "); if((x>=0)&&(x+10>code)) code=x+10;
 				x=myWish.indexOf(" HOW TO "); if((x>=0)&&(x+7>code)) code=x+7;
 				x=myWish.indexOf(" ABLE TO "); if((x>=0)&&(x+8>code)) code=x+8;
@@ -540,9 +605,9 @@ public class Spell_Wish extends Spell
 				if((code>=0)&&(code<myWish.length()))
 				{
 					MOB tm=(MOB)target;
-					Ability A=CMClass.getAbility(myWish.substring(code).trim());
+					Ability A=CMClass.findAbility(myWish.substring(code).trim());
 					if((A!=null)
-					&&(CMAble.getQualifyingLevel("Archon",A.ID())>0))
+					&&(CMAble.lowestQualifyingLevel(A.ID())>0))
 					{
 						if(tm.fetchAbility(A.ID())!=null)
 						{
@@ -648,7 +713,7 @@ public class Spell_Wish extends Spell
 					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)-1);
 				else
 					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)-33);
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,target.name()+" has gained "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,target.name()+" has lost "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
 				return true;
 			}
 			
@@ -669,7 +734,7 @@ public class Spell_Wish extends Spell
 					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)+1);
 				else
 					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)+33);
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,target.name()+" has lost "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,target.name()+" has gained "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
 				return true;
 			}
 			

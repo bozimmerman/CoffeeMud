@@ -29,7 +29,7 @@ public class StdItem implements Item
 	protected int		goldValue=0;
 	protected int		material=EnvResource.RESOURCE_COTTON;
 	protected Environmental owner=null;
-	protected Calendar possessionTime=null;
+	protected Calendar dispossessionTime=null;
 
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
@@ -131,16 +131,16 @@ public class StdItem implements Item
 	{
 		owner=E;
 		if((E!=null)&&(!(E instanceof Room)))
-			setPossessionTime(null);
+			setDispossessionTime(null);
 		recoverEnvStats();
 	}
-	public Calendar possessionTime()
+	public Calendar dispossessionTime()
 	{
-		return possessionTime;
+		return dispossessionTime;
 	}
-	public void setPossessionTime(Calendar time)
+	public void setDispossessionTime(Calendar time)
 	{
-		possessionTime=time;
+		dispossessionTime=time;
 	}
 
 	public boolean amDestroyed()
@@ -427,11 +427,11 @@ public class StdItem implements Item
 	
 	public boolean savable(){return true;}
 	
-	protected String possessionTimeLeftString()
+	protected String dispossessionTimeLeftString()
 	{
-		if(possessionTime()==null)
+		if(dispossessionTime()==null)
 			return "N/A";
-		return ""+(possessionTime().getTimeInMillis()-IQCalendar.getInstance().getTimeInMillis());
+		return ""+(dispossessionTime().getTimeInMillis()-IQCalendar.getInstance().getTimeInMillis());
 	}
 	
 	public boolean okAffect(Affect affect)
@@ -716,7 +716,7 @@ public class StdItem implements Item
 				if(Sense.canBeSeenBy(this,mob))
 				{
 					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
-						mob.tell(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight:"+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rTime  : "+possessionTimeLeftString()+"\n\r"+description()+"\n\r"+"\n\rMisc  :'"+text());
+						mob.tell(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight:"+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rTime  : "+dispossessionTimeLeftString()+"\n\r"+description()+"\n\r"+"\n\rMisc  :'"+text());
 					else
 					if(description().length()==0)
 						mob.tell("You don't see anything special about "+this.name());
@@ -784,7 +784,7 @@ public class StdItem implements Item
 			{
 				mob.delInventory(this);
 				if(!mob.location().isContent(this))
-					mob.location().addItemRefuse(this);
+					mob.location().addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
 				mob.location().recoverRoomStats();
 			}
 			remove();
@@ -792,7 +792,7 @@ public class StdItem implements Item
 			break;
 		case Affect.TYP_WRITE:
 			if(this.isReadable())
-				setReadableText(affect.targetMessage());
+				setReadableText((readableText()+" "+affect.targetMessage()).trim());
 			break;
 		case Affect.TYP_DEATH:
 			destroyThis();

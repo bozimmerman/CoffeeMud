@@ -363,7 +363,7 @@ public class StdArea implements Area
 			if((A!=null)&&(!A.okAffect(affect)))
 				return false;
 		}
-		if(!mobility)
+		if((!mobility)||(!Sense.canMove(this)))
 		{
 			if((affect.sourceMinor()==Affect.TYP_ENTER)
 			||(affect.sourceMinor()==Affect.TYP_LEAVE)

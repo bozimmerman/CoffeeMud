@@ -3311,7 +3311,8 @@ public class Import
 			commandType=((String)commands.elementAt(0)).toUpperCase();
 			commands.removeElementAt(0);
 		}
-		else
+		if((!commandType.equalsIgnoreCase("ROOM"))
+		&&(!commandType.equalsIgnoreCase("AREA")))
 		{
 			mob.tell("Export what?  Room or Area?");
 			return;
