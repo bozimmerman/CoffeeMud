@@ -226,6 +226,34 @@ public class Amputation extends StdAbility
 		return V;
 	}
 
+// ****************************************************************************
+// False Realities 4.2.4
+// Addition by Tulath, 4/10/04.
+// Reason:  Easy single limb amputation removal
+// ****************************************************************************
+	public static void unamputate(Environmental target, Amputation A, String gone) 
+	{
+		if (target != null) 
+		{
+			if (target instanceof MOB) {
+			    ((MOB)target).location().show(((MOB)target), null, CMMsg.MSG_OK_VISUAL, "^G<S-YOUPOSS> " + gone + " miraculously regrows!!^?");
+			}
+			else
+			if ((target instanceof DeadBody)
+			    && (((Item)target).owner() != null)
+			    && (((Item)target).owner() instanceof Room)) {
+			    ((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL, "^G" + target.name() + "'s " + gone + " miraculously regrows!!^?");
+			}
+		}
+
+		if (A == null)return;
+		Vector theRest = A.missingLimbNameSet();
+		if (theRest.contains(gone))theRest.remove(gone);
+		A.setMiscText("");
+		for (int i = 0; i < theRest.size(); i++)
+		    A.setMiscText(A.text() + ((String)theRest.elementAt(i)) + ";");
+	}
+	
 	public static int getRacialCode(String name)
 	{
 		name=name.toUpperCase();
