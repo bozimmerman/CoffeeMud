@@ -241,7 +241,6 @@ public class LeatherWorking extends CommonSkill
 				Vector V=(Vector)matches.elementAt(r);
 				if(V.size()>0)
 				{
-					String item=(String)V.elementAt(RCP_FINALNAME);
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 					if(((level+11)<=(mob.envStats().level()))
 					&&(recipeName.toUpperCase().indexOf("STUDDED ")>=0))

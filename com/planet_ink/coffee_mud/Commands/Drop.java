@@ -32,7 +32,6 @@ public class Drop extends BaseItemParser
 		throws java.io.IOException
 	{
 		String whatToDrop=null;
-		boolean optimize=true;
 		Item container=null;
 		Vector V=new Vector();
 

@@ -38,32 +38,36 @@ public class Prayer_Etherealness extends Prayer
 		affectableStats.setHeight(-1);
 	}
 
-	public int mobWeight(MOB mob)
-	{
-		int weight=mob.baseWeight();
-		for(int i=0;i<mob.inventorySize();i++)
-		{
-			Item I=mob.fetchInventory(i);
-			if((I!=null)&&(!I.amWearingAt(Item.FLOATING_NEARBY)))
-				weight+=I.envStats().weight();
-		}
-		return weight;
-	}
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(msg.amISource((MOB)affected))
-		&&(msg.targetMinor()==CMMsg.TYP_GET)
-		&&(msg.target()!=null)
-		&&(msg.target() instanceof Item)
-		&&(((msg.tool()==null)||(msg.tool() instanceof MOB))))
+		&&(msg.amISource((MOB)affected)))
 		{
-			MOB mob=msg.source();
-			if((msg.target().envStats().weight()>(mob.maxCarry()-mobWeight(mob)))&&(!mob.isMine(msg.target())))
+			switch(msg.targetMinor())
 			{
-				mob.tell(msg.target().name()+" is too heavy.");
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_PUT:
+			case CMMsg.TYP_DROP:
+			case CMMsg.TYP_HOLD:
+			case CMMsg.TYP_WIELD:
+			case CMMsg.TYP_WEAR:
+			case CMMsg.TYP_REMOVE:
+			case CMMsg.TYP_DELICATE_HANDS_ACT:
+			case CMMsg.TYP_WITHDRAW:
+			case CMMsg.TYP_LOCK:
+			case CMMsg.TYP_UNLOCK:
+			case CMMsg.TYP_HANDS:
+				msg.source().tell("You fail to manipulate matter in this form.");
+				return false;
+			case CMMsg.TYP_THROW:
+			case CMMsg.TYP_WEAPONATTACK:
+			case CMMsg.TYP_KNOCK:
+			case CMMsg.TYP_PULL:
+			case CMMsg.TYP_PUSH:
+			case CMMsg.TYP_OPEN:
+			case CMMsg.TYP_CLOSE:
+				msg.source().tell("You fail your attempt to affect matter in this form.");
 				return false;
 			}
 		}
@@ -92,6 +96,29 @@ public class Prayer_Etherealness extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shimmer(s) and become(s) ethereal!");
+				Vector allInv=new Vector();
+				for(int i=0;i<target.inventorySize();i++)
+				{
+					Item I=(Item)target.fetchInventory(i);
+					if((I.isDroppable())
+					&&(I.container()==null)
+					&&(I.amWearingAt(Item.INVENTORY)||(I.isRemovable())))
+						allInv.addElement(I);
+				}
+				if(allInv.size()>0)
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"All of <S-YOUPOSS> equipment drop(s) to the ground!");
+				for(int i=0;i<allInv.size();i++)
+				{
+					Item I=(Item)allInv.elementAt(i);
+					if(I.amWearingAt(Item.INVENTORY))
+						CommonMsgs.drop(target,I,true,true);
+					else
+					{
+						CommonMsgs.remove(target,I,true);
+						CommonMsgs.drop(target,I,true,true);
+					}
+				}
+				mob.location().recoverRoomStats();
 				beneficialAffect(mob,target,0);
 			}
 		}

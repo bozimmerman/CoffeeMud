@@ -37,32 +37,37 @@ public class Chant_Shapelessness extends Chant
 		affectableStats.setHeight(-1);
 	}
 
-	public int mobWeight(MOB mob)
-	{
-		int weight=mob.baseWeight();;
-		for(int i=0;i<mob.inventorySize();i++)
-		{
-			Item I=mob.fetchInventory(i);
-			if((I!=null)&&(!I.amWearingAt(Item.FLOATING_NEARBY)))
-				weight+=I.envStats().weight();
-		}
-		return weight;
-	}
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&(msg.targetMinor()==CMMsg.TYP_GET)
-		&&(msg.target()!=null)
-		&&(msg.target() instanceof Item)
-		&&(((msg.tool()==null)||(msg.tool() instanceof MOB))))
+		&&(Dice.rollPercentage()>10))
 		{
-			MOB mob=msg.source();
-			if((msg.target().envStats().weight()>(mob.maxCarry()-mobWeight(mob)))&&(!mob.isMine(msg.target())))
+			switch(msg.targetMinor())
 			{
-				mob.tell(msg.target().name()+" is too heavy.");
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_PUT:
+			case CMMsg.TYP_DROP:
+			case CMMsg.TYP_HOLD:
+			case CMMsg.TYP_WIELD:
+			case CMMsg.TYP_WEAR:
+			case CMMsg.TYP_REMOVE:
+			case CMMsg.TYP_DELICATE_HANDS_ACT:
+			case CMMsg.TYP_WITHDRAW:
+			case CMMsg.TYP_LOCK:
+			case CMMsg.TYP_UNLOCK:
+			case CMMsg.TYP_HANDS:
+				msg.source().tell("You have trouble manipulating matter in this form.");
+				return false;
+			case CMMsg.TYP_THROW:
+			case CMMsg.TYP_WEAPONATTACK:
+			case CMMsg.TYP_KNOCK:
+			case CMMsg.TYP_PULL:
+			case CMMsg.TYP_PUSH:
+			case CMMsg.TYP_OPEN:
+			case CMMsg.TYP_CLOSE:
+				msg.source().tell("You fail your attempt to affect matter in this form.");
 				return false;
 			}
 		}
@@ -77,6 +82,11 @@ public class Chant_Shapelessness extends Chant
 		if(target.fetchEffect(ID())!=null)
 		{
 			target.tell("You are already shapeless.");
+			return false;
+		}
+		if((!auto)&&(!Chant_BlueMoon.moonInSky(mob.location(),null)))
+		{
+			mob.tell("You must be able under the moons glow for this magic to work.");
 			return false;
 		}
 
@@ -96,7 +106,7 @@ public class Chant_Shapelessness extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shimmer(s) and become(s) ethereal!");
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,3);
 			}
 		}
 		else

@@ -44,7 +44,7 @@ public class Chant_WindShape extends Chant
 		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Item))
 		{
-			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+			int recovery=(int)Math.round(Util.div((msg.value()),4.0));
 			msg.setValue(msg.value()-recovery);
 		}
 		return true;

@@ -43,7 +43,8 @@ public class Conquerable extends Arrest
 		&&(hostObj!=null)
 		&&(hostObj instanceof Area))
 		{
-			Law laws=getLaws((Area)hostObj,false);
+			
+			getLaws((Area)hostObj,false);
 			Integer I=null;
 			Vector V=null;
 			if(O instanceof Integer)

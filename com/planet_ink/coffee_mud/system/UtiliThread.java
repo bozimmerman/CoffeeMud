@@ -77,7 +77,6 @@ public class UtiliThread extends Thread
 
 		status="checking tick groups.";
 		Vector tryToKill=new Vector();
-		Vector tickGroups=null;
 		for(Enumeration v=CMClass.ThreadEngine().tickGroups();v.hasMoreElements();)
 		{
 			Tick almostTock=(Tick)v.nextElement();

@@ -43,7 +43,7 @@ public class Prayer_HealUndead extends Prayer
 				int healing=Dice.roll(5,adjustedLevel(mob),10);
 				if(undead)
 				{
-					MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+					target.curState().adjHitPoints(healing,target.maxState());
 					target.tell("You feel tons better!");
 				}
 				else

@@ -22,7 +22,10 @@ public class NoChannel extends StdCommand
 		for(int c=0;c<ChannelSet.getNumChannels();c++)
 		{
 			if(ChannelSet.getChannelName(c).startsWith(channelName))
+			{
 				channelNum=c;
+				channelName=ChannelSet.getChannelName(c);
+			}
 		}
 		if(!MUDZapper.zapperCheck(ChannelSet.getChannelMask(channelNum),mob))
 		{

@@ -40,7 +40,6 @@ public class TaxCollector extends StdBehavior
 			&&((demanded!=null)&&(paid!=null))
 			&&(demanded.contains(msg.source())))
 			{
-				int coins=((Coins)msg.tool()).numberOfCoins();
 				int demanDex=demanded.indexOf(msg.source());
 				if(demanDex>=0)
 				{

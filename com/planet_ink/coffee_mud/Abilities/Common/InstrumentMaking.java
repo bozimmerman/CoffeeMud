@@ -124,7 +124,6 @@ public class InstrumentMaking extends CommonSkill
 			Vector V=(Vector)matches.elementAt(r);
 			if(V.size()>0)
 			{
-				String item=(String)V.elementAt(RCP_FINALNAME);
 				String race=((String)V.elementAt(RCP_RACES)).trim();
 				int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 				if((level<=mob.envStats().level())

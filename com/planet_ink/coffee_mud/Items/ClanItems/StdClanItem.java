@@ -186,7 +186,6 @@ public class StdClanItem extends StdItem implements ClanItem
 		&&(msg.targetMinor()==CMMsg.TYP_GET)
 		&&(((ClanItem)myHost).clanID().length()>0))
 		{
-			MOB M=(MOB)msg.source();
 			if(msg.source().getClanID().length()==0)
 			{
 				msg.source().tell("You must belong to a clan to take a clan item.");

@@ -180,15 +180,6 @@ public class Chant_Treeform extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					int a=0;
-					while(a<target.numEffects())
-					{
-						Ability A=target.fetchEffect(a);
-						int s=target.numEffects();
-						if(A!=null) A.unInvoke();
-						if(target.numEffects()==s)
-							a++;
-					}
 					target.makePeace();
 					CommonMsgs.stand(target,true);
 					oldState=target.curState().cloneCharState();

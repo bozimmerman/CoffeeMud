@@ -266,7 +266,6 @@ public class Weaponsmithing extends CommonSkill
 				Vector V=(Vector)matches.elementAt(r);
 				if(V.size()>0)
 				{
-					String item=(String)V.elementAt(RCP_FINALNAME);
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 					if((level<=mob.envStats().level())
 					&&(canDo((String)V.elementAt(this.RCP_WEAPONCLASS),mob)))

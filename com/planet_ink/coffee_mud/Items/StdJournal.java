@@ -235,7 +235,7 @@ public class StdJournal extends StdItem
 			String to=(String)entry.elementAt(3);
 			String subject=(String)entry.elementAt(4);
 			String message=(String)entry.elementAt(5);
-			String compdate=(String)entry.elementAt(6);
+			//String compdate=(String)entry.elementAt(6);
 			boolean mineAble=to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username);
 			if(mineAble)
 				buf.append("*");

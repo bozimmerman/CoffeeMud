@@ -302,6 +302,7 @@ public class StdCharClass implements CharClass, Cloneable
 		int conStat=mob.charStats().getStat(CharStats.CONSTITUTION);
 		int maxConStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.CONSTITUTION));
+		if(conStat>maxConStat) conStat=maxConStat;
 		int newHitPointGain=getMinHitPointsLevel()+(int)Math.floor(Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()));
 		newHitPointGain+=(int)Math.floor(Util.div(conStat,2.0))-4;
 		if(newHitPointGain<=0) newHitPointGain=1;
@@ -317,6 +318,7 @@ public class StdCharClass implements CharClass, Cloneable
 		int mvStat=mob.charStats().getStat(CharStats.STRENGTH);
 		int maxMvStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.STRENGTH));
+		if(mvStat>maxMvStat) mvStat=maxMvStat;
 		int mvGain=(int)Math.round(lvlMul*Util.mul(Util.div(mvStat,9.0),getMovementMultiplier()));
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
@@ -338,6 +340,7 @@ public class StdCharClass implements CharClass, Cloneable
 		int manStat=mob.charStats().getStat(CharStats.INTELLIGENCE);
 		int maxManStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.INTELLIGENCE));
+		if(manStat>maxManStat) manStat=maxManStat;
 		int manaGain=(int)Math.round(Util.mul(Util.div(manStat,18.0),getBonusManaLevel()));
 		manaGain=manaGain*adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);

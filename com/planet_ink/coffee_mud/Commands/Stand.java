@@ -8,7 +8,7 @@ public class Stand extends StdCommand
 {
 	public Stand(){}
 
-	private String[] access={"STAND","ST"};
+	private String[] access={"STAND","ST","STA","STAN"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
