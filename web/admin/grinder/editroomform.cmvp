@@ -9,6 +9,40 @@
 	<title>CoffeeMUD MUDGrinder</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
+		function AddItem()
+		{
+			document.AREAEDIT.action='/grinder/additemform.cmvp';
+			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.submit();
+		}
+		function EditItem(ME)
+		{
+			document.AREAEDIT.action='/grinder/edititemform.cmvp';
+			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.submit();
+		}
+		function EditMOB(ME)
+		{
+			document.AREAEDIT.action='/grinder/editmobform.cmvp';
+			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.submit();
+		}
+		function AddMOB()
+		{
+			document.AREAEDIT.action='/grinder/addmobform.cmvp';
+			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.submit();
+		}
+		function DelItem(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
+		function DelMOB(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
 		function EditBehavior(ME)
 		{
 			if(ME.selectedIndex==0)
@@ -80,6 +114,18 @@
     <TD WIDTH=500 COLSPAN=2>
 	@RoomData?AFFECTS@
 	</TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>MOBs:</B></FONT></TD>
+    <TD WIDTH=500 COLSPAN=2>
+    @RoomData?MOBLIST@
+    </TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Items:</B></FONT></TD>
+    <TD WIDTH=500 COLSPAN=2>
+    @RoomData?ITEMLIST@
+    </TD>
 </TR>
 <TR>
     <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>

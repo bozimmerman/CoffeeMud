@@ -34,7 +34,11 @@ public class GrinderRooms
 			for(int d=0;d<R.rawExits().length;d++)
 				R.rawExits()[d]=oldR.rawExits()[d];
 			for(int i=0;i<oldR.numInhabitants();i++)
-				R.addInhabitant(oldR.fetchInhabitant(i));
+			{
+				MOB mob=oldR.fetchInhabitant(i);
+				if(mob.getStartRoom()==oldR) mob.setStartRoom(R);
+				R.addInhabitant(mob);
+			}
 			for(int i=0;i<oldR.numItems();i++)
 				R.addItem(oldR.fetchItem(i));
 			redoAllMyDamnRooms=true;
