@@ -32,15 +32,6 @@ public class Disease_Giggles extends Disease
 		MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
-		if((getTickDownRemaining()==1)
-		&&(!mob.amDead())
-		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE)))
-		{
-			mob.delEffect(this);
-			Ability A=CMClass.getAbility("Disease_Giggles");
-			A.invoke(diseaser,mob,true);
-		}
-		else
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();

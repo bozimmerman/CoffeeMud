@@ -3371,23 +3371,306 @@ Common Skill.</FONT></P>
 <P><IMG src="images/prayer.jpg" ></P>
 <P align=left><a name=POISON><FONT 
 color=maroon size=5><STRONG>Poisons:</STRONG></FONT></A></P>
-<P align=left><FONT size=4>How to code a 
-Poison.</FONT></P><FONT size=4>
+<PRE>
+package com.planet_ink.coffee_mud.Abilities.Poisons;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Poison_BeeSting extends Poison
+{
+	public String ID() { return "Poison_BeeSting"; }
+	public String name(){ return "Bee Sting";}
+	public Environmental newInstance(){	return new Poison_BeeSting();}
+</PRE>
+<P align=left><FONT size=4>The Poison base class in the Poisons package provides a tidy template upon
+which your more common, mundane poisons can be based.  The first three
+methods are those required by any Environmental class.  The fact that none of the other
+preliminary methods normally found in skill abilities are present is a testimony to the
+homogeneous nature of Poisons.</FONT></P>
+<PRE>
+	private static final String[] triggerStrings = {"POISONSTING"};
+	public String[] triggerStrings(){return triggerStrings;}
+</PRE>
+<P align=left><FONT size=4>Poisons have the feature of 
+having their own trigger commands, meaning they can be added as attack abilities to 
+monsters (like a Bee in this case).</FONT></P>
+<PRE>
+	protected String POISON_DONE(){return "The stinging poison runs its course.";}
+	protected String POISON_START(){return "^G&lt;S-NAME&gt; turn(s) green.^?";}
+	protected String POISON_CAST(){return "^F&lt;S-NAME&gt; sting(s) &lt;T-NAMESELF&gt;!^?";}
+	protected String POISON_FAIL(){return "&lt;S-NAME&gt; attempt(s) to sting &lt;T-NAMESELF&gt;, but fail(s).";}
+</PRE>
+<P align=left><FONT size=4>In this set of methods, strings are defined for
+the invocation of the poison, all the way through its recovery string.</FONT></P>
+<PRE>
+	protected int POISON_TICKS(){return 10;} // 0 means no adjustment!
+</PRE>
+<P align=left><FONT size=4>Poisons can have a variable duration dependent
+upon level (by returning 0) or can have a set duration on the poisoned creature.</FONT></P>
+<PRE>
+	protected int POISON_DELAY(){return 2;}
+	protected int POISON_DAMAGE(){return (invoker!=null)?2:0;}
+	protected String POISON_AFFECT(){return "&lt;S-NAME&gt; cringe(s) from the poisonous itch.";}
+</PRE>
+<P align=left><FONT size=4>Poisons can also be set to cause the poisoned creature
+to emote on a reguar basis, and to take damage as well.  Here you can see three methods 
+being used to designate how often the emote/damage cycle occurs (in ticks) as well as the
+amount of damage, and the text of the emote.</FONT></P>
+<PRE>
+
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-1);
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-1);
+		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
+			affectableStats.setStat(CharStats.CONSTITUTION,1);
+		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
+			affectableStats.setStat(CharStats.STRENGTH,1);
+	}
+}
+</PRE>
+<P align=left><FONT size=4>And lastly, as described under the digression on state affects, 
+we have the code which lowers the poisoned creatures constitution and strength while the 
+poison is in effect.  We even have a few lines to make sure the values don't fall below 0.</FONT></P>
 <P><IMG src="images/disease.jpg" ></P>
 <P align=left><a name=DISEASE><FONT 
 color=maroon size=5><STRONG>Diseases:</STRONG></FONT></A></P>
-<P align=left><FONT size=4>How to code a 
-Disease.</FONT></P><FONT size=4>
+<P align=left><FONT size=4>Like Poison, the Disease base class in the Diseasess package provides a tidy template upon
+which your more common, mundane diseases can be based.</FONT></P>
+<PRE>
+package com.planet_ink.coffee_mud.Abilities.Diseases;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Disease_Cold extends Disease
+{
+	public String ID() { return "Disease_Cold"; }
+	public String name(){ return "Cold";}
+	public String displayText(){ return "(Cold Virus)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	public boolean putInCommandlist(){return false;}
+	public Environmental newInstance(){	return new Disease_Cold();}
+</PRE>
+<P align=left><FONT size=4>The Disease base class provides many important base services
+that allows CoffeeMud to interact properly with your disease.  For this reason, making a
+disease that extends the Disease base class is highly recommended.  In the first half dozen
+methods, we see the important values of a standard skill being defined. See the introduction
+to Skill Abilities if you need more details on these methods.</FONT></P>
+<PRE>
+	protected String DISEASE_DONE(){return "Your cold clears up.";}
+	protected String DISEASE_START(){return "^G&lt;S-NAME&gt; come(s) down with a cold.^?";}
+</PRE>
+<P align=left><FONT size=4>In this set of methods, strings are defined for
+the invocation of the disease as well as its recovery string.</FONT></P>
+<PRE>
+	protected int DISEASE_TICKS(){return 24;}
+</PRE>
+<P align=left><FONT size=4>Diseases can have a variable duration dependent
+upon level (by returning 0) or can have a set duration on the diseased creature.</FONT></P>
+<PRE>
+	protected int DISEASE_DELAY(){return 5;}
+	protected String DISEASE_AFFECT(){return "&lt;S-NAME&gt; sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
+</PRE>
+<P align=left><FONT size=4>Diseases can also be set to cause the poisoned creature
+to emote on a reguar basis.  Here you can see a pair of methods 
+being used to designate how often the emote/damage cycle occurs (in ticks) as well as the
+text of the emote.  Any damage or other consequences of the disease are defined later.</FONT></P>
+<PRE>
+	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+</PRE>
+<P align=left><FONT size=4>This important method is used to define how the disease is
+spread.  Some aspects of disease catching must be coded by the programmer of the 
+disease.  Some aspects are handled by the engine, while most are handled by the Disease
+base class.  This method is used to coordinate the efforts on behalf of the disease by
+the CoffeeMud engine as a whole.  Different bit values are defined by the DiseaseAffect interface.</FONT></P>
+<PRE>
+
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID))	return false;
+		if(affected==null) return false;
+		if(!(affected instanceof MOB)) return true;
+
+		MOB mob=(MOB)affected;
+		MOB diseaser=invoker;
+		if(diseaser==null) diseaser=mob;
+</PRE>
+<P align=left><FONT size=4>If a disease does anything during its delay cycle (defined
+above by DISEASE_DELAY()), then the programmer must implement a tick method to take
+care of this functionality.  These first few lines of the method are error and
+state checking, as well as defining some useful variables, such as who caused the
+disease (diseaser), and who has the disease (mob)</FONT></P>
+<PRE>
+		
+		if((getTickDownRemaining()==1)
+		&&(Dice.rollPercentage()&gt;mob.charStats().getSave(CharStats.SAVE_COLD))
+		&&(Dice.rollPercentage()&lt;25-mob.charStats().getStat(CharStats.CONSTITUTION))
+		&&(!mob.amDead())
+		&&(!mob.isMonster()))
+		{
+			mob.delEffect(this);
+			Ability A=CMClass.getAbility("Disease_Pneumonia");
+			A.invoke(diseaser,mob,true);
+		}
+</PRE>
+<P align=left><FONT size=4>One of the things we have decided to do in the disease Cold
+is to make it so that, if the creature does not cure the disease before it expires
+naturally, they will almost certainly catch Pneumonia.  By checking getTickDownRemaining,
+we check out counter which runs downwards from DISEASE_TICKS() to 0.  At a value of 1, 
+we make a saving throw check for the creature with the cold, and potentially give them
+another disease to enjoy when the Cold expires 1 tick later.</FONT></P>
+<PRE>
+		else
+		if((!mob.amDead())&&((--diseaseTick)&lt;=0))
+		{
+			diseaseTick=DISEASE_DELAY();
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
+			if(mob.curState().getHitPoints()&gt;((2*diseaser.envStats().level())+1))
+			{
+				int damage=Dice.roll(2,diseaser.envStats().level(),1);
+				MUDFight.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+			}
+			catchIt(mob);
+			return true;
+		}
+		return true;
+	}
+</PRE>
+<P align=left><FONT size=4>The last thing we do in this method is, every DISEASE_DELAY
+ticks, we emote our DISEASE_AFFECT string, and then allow the creature to take a 
+few points of disease damage by calling the MUDFight.postDamage method.  After this, 
+we also call the catchIt(MOB mob) method up in the Disease base class.  This important
+method spreads the disease among those in the same room as the creature, thereby handling 
+any diseases spread by proximity as defined in abilityCode() above.</FONT></P>
+<PRE>
+
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		if(affected==null) return;
+		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-2);
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-3);
+		if(affectableStats.getStat(CharStats.CONSTITUTION)&lt;=0)
+			affectableStats.setStat(CharStats.CONSTITUTION,1);
+		if(affectableStats.getStat(CharStats.STRENGTH)&lt;=0)
+			affectableStats.setStat(CharStats.STRENGTH,1);
+	}
+}
+</PRE>
+<P align=left><FONT size=4>And lastly, as described under the digression on state affects, 
+we have the code which lowers the diseased creatures constitution and strength while the 
+disease is in effect.  We even have a few lines to make sure the values don't fall below 0.</FONT></P>
 <P><IMG src="images/traps.jpg" ></P>
 <P align=left><a name=TRAPS><FONT 
 color=maroon size=5><STRONG>Traps:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>How to code a 
-Trap.</FONT></P><FONT size=4>
+Trap.</FONT></P>
 <P><IMG src="images/language.jpg" ></P>
 <P align=left><a name=LANGS><FONT 
 color=maroon size=5><STRONG>Languages:</STRONG></FONT></A></P>
-<P align=left><FONT size=4>How to code a 
-Language.</FONT></P>
+<P align=left><FONT size=4>Of all skills, you will find that Languages are the 
+easiest to code.  Although they fall into the category of Ability, and are 
+a far derivative of StdAbility, you will need very little of that extended
+knowledge if you follow the K.I.S.S. principle and use the simple template
+provided by the Language base class in the Languages package.</FONT></P>
+<PRE>
+package com.planet_ink.coffee_mud.Abilities.Languages;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Elvish extends Language
+{
+	public String ID() { return "Elvish"; }
+	public String name(){ return "Elvish";}
+	
+	public Environmental newInstance(){	return new Elvish();}
+</PRE>
+<P align=left><FONT size=4>Like all Abilities, the Language requires an ID which is the
+same as its class name, and a readable name.  In the case of Elvish, they are identical.
+</FONT></P>
+<PRE>
+	private static boolean mapped=false;
+	public Elvish()
+	{
+		super();
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
+	}
+</PRE>
+<P align=left><FONT size=4>The constructor of this language is worth noting.  Under the
+section on Character Classes, we learned how to make classes qualify for skills.  Languages,
+like Common Skills, are available to ALL classes.  For this reason, we save ourselves the
+trouble by having the language declare its qualifications itself by accessing the same
+CMAble method we saw up in Character Class creation.
+</FONT></P>
+<PRE>
+	public static Vector wordLists=null;
+	public Vector translationVector()
+	{
+		if(wordLists==null)
+		{
+			String[] one={"a","e","i","o","á","é","í","ó"};
+			String[] two={"os","vi","ne","vo","li","eh","no","ai","by","et","ce","un","il"};
+			String[] three={"ána","cil","sar","tan","hel","loa","sir","hep","yur","nol","hol","qua","éth"};
+			String[] four={"séya","qual","quel","lara","uqua","sana","yava","masse","yanna","quettaparma","manna","manan","merme","carma","harno","harne","varno","essar","saira","cilta","veuma","norta","turme","saita"};
+			String[] five={"cuiva","cuina","nonwa","imire","nauta","cilta","entuc","norta","latin","lòtea","veuya","veuro","apama","hampa","nurta","firta","saira","holle","herwa","uquen","arcoa","calte","cemma","hanta","tanen"};
+			String[] six={"mahtale","porisalque","hairie","tararan","ambarwa","latina","olòtie","amawil","apacen","yavinqua","apalume","linquilea","menelwa","alassea","nurmea","parmasse","ceniril","heldasse","imirin","earina","calatengew","lapselunga","rianna","eneques"};
+			wordLists=new Vector();
+			wordLists.addElement(one);
+			wordLists.addElement(two);
+			wordLists.addElement(three);
+			wordLists.addElement(four);
+			wordLists.addElement(five);
+			wordLists.addElement(six);
+		}
+		return wordLists;
+	}
+</PRE>
+<P align=left><FONT size=4>The first, often only, and certainly most important Language method 
+is translationVector(), which returns a Vector object containing a set of String arrays.
+Each String array is designated by the size of the Common language words which will be used
+by the array for translation.  That is to say, whenever a Common word of three letters is being 
+translated into Elvish, the String array three will have a word randomnly chosen from it.
+<P>
+The words which are placed into these string arrays is arbitrary, and may actually contain as
+many or few letters as you like.  Keeping the number of letters close or the same as the
+Common word equivalent provides a certain symmetry, however, and makes it fun for the players
+who don't speak a language to try and guess what is being said by counting letters.
+</FONT></P>
+<PRE>
+	private static final Hashtable hashwords=new Hashtable();
+	public Hashtable translationHash()
+	{
+		if((hashwords!=null)&&(hashwords.size()&gt;0)) 
+			return hashwords;
+		hashwords.put("ABANDON","avarta");
+		hashwords.put("ABLE","pol");
+		hashwords.put("ACCOMMODATE","camta");
+		hashwords.put("ACT","car");
+		...
+		hashwords.put("WRONG","raicë");
+		hashwords.put("YES","yé");
+		hashwords.put("YESTERDAY","tellaurë");
+		return hashwords;
+		}
+	}
+</PRE>
+<P align=left><FONT size=4>The last Language method is translationHash().  This method is
+entirely optional and may be left out of a language definition.  In fact, it usually IS left
+out.  However, when it is not, it provides a hashtable which can be used to translate
+exact english matches back to the fantasy language.  The First word in each hashtable entry
+is the English word (and it MUST MUST MUST be in UPPERCASE) as the key, and the translation
+word as the entry value.  Correct casing is taken care of by the Language base class.</FONT></P>
 <P align=left><FONT size=4></FONT>&nbsp;</P></FONT></FONT></FONT>
 <P align=left><FONT size=4></FONT>&nbsp;</P></TABLE>
 </BODY>
