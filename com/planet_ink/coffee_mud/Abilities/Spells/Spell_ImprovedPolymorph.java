@@ -60,17 +60,20 @@ public class Spell_ImprovedPolymorph extends Spell
 		commands.removeElement(commands.lastElement());
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if(target==mob)
+		if((target==mob)&&(!auto))
 		{
 			mob.tell("You cannot hold enough energy to cast this on yourself.");
 			return false;
 		}
 		Race R=CMClass.getRace(race);
-		if(R==null)
+		if((R==null)&&(!auto))
 		{
 			mob.tell("You can't turn "+target.name()+" into a '"+race+"'!");
 			return false;
 		}
+		else
+		if(R==null)
+			R=CMClass.randomRace();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -98,7 +101,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		if(statDiff<0) statDiff=statDiff*-1;
 		int levelDiff=mob.envStats().level()-target.envStats().level();
 		boolean success=profficiencyCheck(mob,(levelDiff*5)-(statDiff*5),auto);
-		if(success&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new Hashtable()).contains(target)))
+		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet()).contains(target)))
 		{
 			mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
 			success=false;

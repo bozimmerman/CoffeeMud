@@ -16,14 +16,24 @@ public class Spell_Summon extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 
-		if(commands.size()<1)
+		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		if((commands.size()<1)&&(!auto))
 		{
 			mob.tell("Summon whom?");
 			return false;
 		}
-		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		else
+		if(auto)
+		{
+			for(int i=0;i<2000;i++)
+			{
+				Room R=CMMap.getRandomRoom();
+				if((Sense.canAccess(mob,R))&&(R.numInhabitants()>0))
+				{	areaName=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1)).Name().toUpperCase(); break;}
+			}
+		}
 
-		if(mob.location().fetchInhabitant(areaName)!=null)
+		if((mob.location().fetchInhabitant(areaName)!=null)&&(!auto))
 		{
 			mob.tell("Better look around first.");
 			return false;
@@ -56,7 +66,7 @@ public class Spell_Summon extends Spell
 
 		int adjustment=(target.envStats().level()-mob.envStats().level())*3;
 		boolean success=profficiencyCheck(mob,-adjustment,auto);
-		if(success&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new Hashtable()).contains(target)))
+		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet()).contains(target)))
 		{
 			mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
 			success=false;
