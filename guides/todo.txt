@@ -1,5 +1,3 @@
-Behavior -- Rejuv -- for total area/room rejuv rates.
-Law against being undead
 problems flying during storms
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
 ARTIST ability to make wallpaper -- make Paintings.
