@@ -111,6 +111,16 @@ public class StdPotion extends StdDrink implements Potion
 		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),getSpells(this));
 	}
 
+	public boolean okAffect(Affect affect)
+	{
+		if((affect.amITarget(this))
+		   &&(affect.targetMinor()==Affect.TYP_DRINK)
+		   &&(affect.othersMessage()==null)
+		   &&(affect.sourceMessage()==null))
+				return true;
+		return super.okAffect(affect);
+	}
+	
 	public void affect(Affect affect)
 	{
 		if(affect.amITarget(this))

@@ -57,6 +57,16 @@ public class GenPotion extends GenWater implements Potion
 	public Vector getSpells(Potion me)
 	{	return new StdPotion().getSpells(me);}
 
+	public boolean okAffect(Affect affect)
+	{
+		if((affect.amITarget(this))
+		   &&(affect.targetMinor()==Affect.TYP_DRINK)
+		   &&(affect.othersMessage()==null)
+		   &&(affect.sourceMessage()==null))
+				return true;
+		return super.okAffect(affect);
+	}
+	
 	public void affect(Affect affect)
 	{
 		if(affect.amITarget(this))
