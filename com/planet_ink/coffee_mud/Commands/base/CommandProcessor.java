@@ -145,6 +145,9 @@ public class CommandProcessor
 					else
 						mob.tell("You lack the power to destroy things this way.  Did you mean kill?\n\r");
 					break;
+				case CommandSet.DISMOUNT:
+					socialProcessor.dismount(mob,commands);
+					break;
 				case CommandSet.DOWN:
 					movement.move(mob,Directions.DOWN,false);
 					break;
@@ -258,6 +261,9 @@ public class CommandProcessor
 						createEdit.edit(mob,commands);
 					else
 						mob.tell("You lack the power to modify things.\n\r");
+					break;
+				case CommandSet.MOUNT:
+					socialProcessor.mount(mob,commands);
 					break;
 				case CommandSet.NOANSI:
 					if(!mob.isMonster())

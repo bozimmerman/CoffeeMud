@@ -215,6 +215,12 @@ public class Generic
 			+XMLManager.convertXMLtoTag("WORNL",item.rawLogicalAnd())
 			+XMLManager.convertXMLtoTag("WORNB",item.rawProperLocationBitmap()));
 		}
+		
+		if(E instanceof Rideable)
+		{
+			text.append(XMLManager.convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
+			text.append(XMLManager.convertXMLtoTag("RIDEC",((Rideable)E).mobCapacity()));
+		}
 
 		if(E instanceof Food)
 			text.append(XMLManager.convertXMLtoTag("CAPA2",((Food)E).nourishment()));
@@ -783,6 +789,13 @@ public class Generic
 			item.setReadableText(XMLManager.getValFromPieces(buf,"READ"));
 
 		}
+		
+		if(E instanceof Rideable)
+		{
+			((Rideable)E).setRideBasis(XMLManager.getIntFromPieces(buf,"RIDEB"));
+			((Rideable)E).setMobCapacity(XMLManager.getIntFromPieces(buf,"RIDEC"));
+		}
+		
 		if(E instanceof Food)
 			((Food)E).setNourishment(XMLManager.getIntFromPieces(buf,"CAPA2"));
 

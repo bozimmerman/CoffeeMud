@@ -1283,6 +1283,56 @@ public class Generic
 		}
 	}
 
+	private String rideDesc(int num)
+	{
+		String rideableType=null;
+		if(num==Rideable.RIDEABLE_AIR)
+			rideableType="Water-based (Floating)";
+		else
+		if(num==Rideable.RIDEABLE_WATER)
+			rideableType="Air-based (Flying)";
+		else
+			rideableType="Land-based";
+		return rideableType;
+	}
+	
+	void genRideable(MOB mob, Rideable R)
+		throws IOException
+	{
+		mob.tell("\n\rRideable Type: '"+rideDesc(R.rideBasis())+"'.");
+		boolean q=false;
+		String sel="LWA";
+		while(!q)
+		{
+			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
+			if(newType.equals("?"))
+			{
+				for(int i=0;i<sel.length();i++)
+					mob.tell(sel.charAt(i)+") "+rideDesc(i));
+				q=false;
+			}
+			else
+			{
+				q=true;
+				int newValue=-1;
+				if(newType.length()>0)
+					newValue=sel.indexOf(newType.toUpperCase());
+				if(newValue>=0)
+					R.setRideBasis(newValue);
+				else
+					mob.tell("(no change)");
+			}
+		}
+		
+		mob.tell("\n\rNumber of MOBs held: '"+R.mobCapacity()+"'.");
+		String newLevelStr=mob.session().prompt("Enter a new value: ","");
+		int newLevel=Util.s_int(newLevelStr);
+		if(newLevel>0)
+			R.setMobCapacity(newLevel);
+		else
+			mob.tell("(no change)");
+	}
+	
 	void genShopkeeper(MOB mob, ShopKeeper E)
 		throws IOException
 	{
@@ -1667,6 +1717,8 @@ public class Generic
 			genReadable(mob,me);
 			genBehaviors(mob,me);
 			genAffects(mob,me);
+			if(me instanceof Rideable)
+				genRideable(mob,(Rideable)me);
 			ok=true;
 			if(me.text().length()>=maxLength)
 			{
@@ -1819,6 +1871,8 @@ public class Generic
 			genAffects(mob,me);
 			genDisposition(mob,me);
 			genSensesMask(mob,me);
+			if(me instanceof Rideable)
+				genRideable(mob,(Rideable)me);
 			ok=true;
 			if(me.text().length()>=maxLength)
 			{

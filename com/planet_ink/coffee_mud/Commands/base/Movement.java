@@ -100,14 +100,6 @@ public class Movement
 		if(opExit!=null) opExit.affect(leaveMsg);
 		ExternalPlay.look(mob,null,true);
 		
-		Vector followers=new Vector();
-		for(int f=0;f<mob.numFollowers();f++)
-		{
-			MOB follower=mob.fetchFollower(f);
-			if(follower!=null)
-				followers.addElement(follower);
-		}
-			
 		if(mob.riding()!=null)
 		{
 			boolean moveRiders=false;
@@ -123,15 +115,26 @@ public class Movement
 			   &&(((Room)leaveMsg.target()).isInhabitant((MOB)mob.riding())))
 			{
 				moveRiders=true;
-				if(!followers.contains(mob.riding()))
-					followers.addElement(mob.riding());
+				((MOB)mob.riding()).tell("You are ridden "+Directions.getDirectionName(directionCode)+".");
+				move(((MOB)mob.riding()),directionCode,false);
 			}
 			if(moveRiders)
 				for(int r=0;r<mob.riding().numRiders();r++)
 				{
 					MOB rMOB=mob.riding().fetchRider(r);
-					if(!followers.contains(rMOB))
-						followers.addElement(rMOB);
+					if((rMOB!=null)
+					&&(rMOB!=mob)
+					&&(mob.riding().amRiding(rMOB))
+					&&((rMOB.location()==thisRoom)||(rMOB.location()==destRoom)))
+					{
+						if(rMOB.location()==thisRoom)
+						{
+							rMOB.tell("You ride "+mob.riding().name()+" "+Directions.getDirectionName(directionCode)+".");
+							move(rMOB,directionCode,false);
+						}
+					}
+					else
+						rMOB.setFollowing(null);
 				}
 		}
 
@@ -145,10 +148,7 @@ public class Movement
 			{
 				if(follower.location()==thisRoom)
 				{
-					if((mob.riding()==null)||(mob.riding()!=follower))
-						follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
-					else
-						follower.tell("You are ridden "+Directions.getDirectionName(directionCode)+".");
+					follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
 					move(follower,directionCode,false);
 				}
 			}

@@ -6,12 +6,12 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class StdRideableItem extends StdContainer implements Rideable
+public class StdRideable extends StdContainer implements Rideable
 {
 	protected int rideBasis=Rideable.RIDEABLE_WATER;
 	protected int mobCapacity=4;
 	protected Vector riders=new Vector();
-	public StdRideableItem()
+	public StdRideable()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -26,7 +26,7 @@ public class StdRideableItem extends StdContainer implements Rideable
 	}
 	public Environmental newInstance()
 	{
-		return new StdRideableItem();
+		return new StdRideable();
 	}
 	public void destroyThis()
 	{
@@ -187,22 +187,6 @@ public class StdRideableItem extends StdContainer implements Rideable
 		case Affect.TYP_MOUNT:
 			if(!amRiding(affect.source())&&amRiding(affect.source()))
 				affect.source().setRiding(this);
-			break;
-		case Affect.TYP_ENTER:
-			if(amRiding(affect.source())
-			   &&(affect.target()!=null)
-			   &&(affect.target() instanceof Room))
-			{
-				Room sourceRoom=(Room)affect.source().location();
-				Room targetRoom=(Room)affect.target();
-				if((sourceRoom!=null)&&(!affect.amITarget(sourceRoom)))
-				{
-					int dir=-1;
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-						if(sourceRoom.doors()[d]==targetRoom)
-							dir=d;
-				}
-			}
 			break;
 		}
 	}

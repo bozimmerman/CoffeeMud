@@ -834,6 +834,9 @@ public class Import
 			||(checkName.indexOf("GHOST")>=0)
 			||(checkName.indexOf("GEIST")>=0))
 				M=CMClass.getMOB("GenUndead");
+			else
+			if(checkName.indexOf("HORSE")>=0)
+				M=CMClass.getMOB("GenRideable");
 			for(int i=0;i<shopData.size();i++)
 			{
 				String s=((String)shopData.elementAt(i)).trim();

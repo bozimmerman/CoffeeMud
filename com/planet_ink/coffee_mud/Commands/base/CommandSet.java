@@ -124,6 +124,8 @@ public class CommandSet extends Hashtable
 	public static final int AUTOMELEE=112;
 	public static final int EXPORT=113;
 	public static final int LANGUAGES=114;
+	public static final int MOUNT=115;
+	public static final int DISMOUNT=116;
 
 	public CommandSet()
 	{
@@ -158,6 +160,11 @@ public class CommandSet extends Hashtable
 		put("CREDITS",new Integer(CREDITS));
 		put("DESTROY",new Integer(DESTROY));
 		put("DESCRIPTION",new Integer(DESCRIPTION));
+		put("DISMOUNT",new Integer(DISMOUNT));
+			put("DISEMBARK",new Integer(DISMOUNT));
+			put("DISEM",new Integer(DISMOUNT));
+			put("DIS",new Integer(DISMOUNT));
+			put("DISM",new Integer(DISMOUNT));
 		put("DOWN",new Integer(DOWN));
 			put("D",new Integer(DOWN));
 		put("DRINK",new Integer(DRINK));
@@ -207,6 +214,8 @@ public class CommandSet extends Hashtable
 			put("LO",new Integer(LOOK));
 			put("L",new Integer(LOOK));
 		put("MODIFY",new Integer(MODIFY));
+		put("MOUNT",new Integer(MOUNT));
+			put("BOARD",new Integer(MOUNT));
 		put("NOANSI",new Integer(NOANSI));
 		put("NORTH",new Integer(NORTH));
 			put("N",new Integer(NORTH));

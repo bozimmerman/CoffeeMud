@@ -6,10 +6,10 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class GenRideableItem extends StdRideableItem
+public class GenRideable extends StdRideable
 {
 	protected String readableText="";
-	public GenRideableItem()
+	public GenRideable()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -23,7 +23,7 @@ public class GenRideableItem extends StdRideableItem
 	}
 	public Environmental newInstance()
 	{
-		return new GenRideableItem();
+		return new GenRideable();
 	}
 	public boolean isGeneric(){return true;}
 

@@ -702,7 +702,35 @@ public class StdMOB implements MOB
 						tell("You can't attack "+riding().name()+" right now.");
 						return false;
 					}
+					
 					// establish and enforce range
+					if((atRange<0)&&(riding()!=null))
+					{
+						if((target==riding())||(riding().amRiding(target)))
+							atRange=0;
+						else
+						if((riding() instanceof MOB)
+						   &&(((MOB)riding()).isInCombat())
+						   &&(((MOB)riding()).getVictim()==target)
+						   &&(((MOB)riding()).rangeToTarget()>=0)
+						   &&(((MOB)riding()).rangeToTarget()<atRange))
+							atRange=((MOB)riding()).rangeToTarget();
+						else
+						for(int r=0;r<riding().numRiders();r++)
+						{
+							MOB otherMOB=riding().fetchRider(r);
+							if((otherMOB!=null)
+							   &&(otherMOB!=this)
+							   &&(otherMOB.isInCombat())
+							   &&(otherMOB.getVictim()==target)
+							   &&(otherMOB.rangeToTarget()>=0)
+							   &&(otherMOB.rangeToTarget()<atRange))
+							{
+								atRange=otherMOB.rangeToTarget();
+								break;
+							}
+						}
+					}
 					if(atRange<0)
 					{
 						if(target.getVictim()==null) 
@@ -966,6 +994,8 @@ public class StdMOB implements MOB
 			case Affect.TYP_UNLOCK:
 			case Affect.TYP_WEAR:
 			case Affect.TYP_WIELD:
+			case Affect.TYP_MOUNT:
+			case Affect.TYP_DISMOUNT:
 				mob.tell("You can't do that to "+name()+".");
 				return false;
 			case Affect.TYP_GIVE:
