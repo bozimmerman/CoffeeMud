@@ -389,11 +389,14 @@ public class GenRace extends StdRace
 									 "NUMCABLE","GETCABLE","GETCABLEPROF",
 									 "NUMOFT","GETOFTID","GETOFTPARM"
 									 };
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		int num=0;
+		int mul=1;
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 		{
-			num=(num*10)+Util.s_int(""+code.charAt(code.length()-1));
+			num=(Util.s_int(""+code.charAt(code.length()-1))*mul)+num;
+			mul=mul*10;
 			code=code.substring(0,code.length()-1);
 		}
 		switch(getCodeNum(code))
