@@ -189,7 +189,8 @@ public class GrinderMobs
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
 						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
 						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
-						  "CLESIN","WORSIN","CLEPOW","CURSES","POWERS"};
+						  "CLESIN","WORSIN","CLEPOW","CURSES","POWERS",
+						  "CLANID"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -326,6 +327,11 @@ public class GrinderMobs
 			case 36: // cleric power
 				if(M instanceof Deity)
 					((Deity)M).setClericPowerup(old);
+				break;
+			case 37: // clan
+				M.setClanID(old);
+				if(M.getClanID().length()>0) 
+					M.setClanRole(Clan.POS_MEMBER);
 				break;
 			}
 		}

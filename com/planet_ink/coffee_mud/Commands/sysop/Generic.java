@@ -28,6 +28,25 @@ public class Generic
 			mob.tell("(no change)");
 	}
 
+	static void genClan(MOB mob, MOB E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Clan (ID): '"+E.getClanID()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new one (null)\n\r:","");
+		if(newName.equalsIgnoreCase("null"))
+			E.setClanID("");
+		else
+		if(newName.length()>0)
+		{
+			E.setName(newName);
+			E.setClanRole(Clan.POS_MEMBER);
+		}
+		else
+			mob.tell("(no change)");
+	}
+
 	static void genArchivePath(MOB mob, Area E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -542,16 +561,16 @@ public class Generic
 		}
 	}
 
-	public static void toggleDispositionMask(Environmental E, int mask)
+	public static void toggleDispositionMask(EnvStats E, int mask)
 	{
-		int current=E.baseEnvStats().disposition();
+		int current=E.disposition();
 		if((current&mask)==0)
-			E.baseEnvStats().setDisposition(current|mask);
+			E.setDisposition(current|mask);
 		else
-			E.baseEnvStats().setDisposition(current&((int)(EnvStats.ALLMASK-mask)));
+			E.setDisposition(current&((int)(EnvStats.ALLMASK-mask)));
 	}
 
-	public static void genDisposition(MOB mob, Environmental E, int showNumber, int showFlag)
+	public static void genDisposition(MOB mob, EnvStats E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -583,7 +602,7 @@ public class Generic
 			for(int i=0;i<disps.length;i++)
 			{
 				int mask=disps[i];
-				if((E.baseEnvStats().disposition()&mask)!=0)
+				if((E.disposition()&mask)!=0)
 					buf.append(briefs[i]+" ");
 			}
 			mob.tell(buf.toString());
@@ -599,7 +618,7 @@ public class Generic
 				for(int num=0;num<EnvStats.dispositionsDesc.length;num++)
 					if(mask==Util.pow(2,num))
 					{
-						mob.session().println("    "+letter+") "+Util.padRight(EnvStats.dispositionsDesc[num],20)+":"+((E.baseEnvStats().disposition()&mask)!=0));
+						mob.session().println("    "+letter+") "+Util.padRight(EnvStats.dispositionsDesc[num],20)+":"+((E.disposition()&mask)!=0));
 						break;
 					}
 				letter++;
@@ -637,13 +656,13 @@ public class Generic
 		}
 	}
 
-	public static void toggleSensesMask(Environmental E, int mask)
+	public static void toggleSensesMask(EnvStats E, int mask)
 	{
-		int current=E.baseEnvStats().sensesMask();
+		int current=E.sensesMask();
 		if((current&mask)==0)
-			E.baseEnvStats().setSensesMask(current|mask);
+			E.setSensesMask(current|mask);
 		else
-			E.baseEnvStats().setSensesMask(current&((int)(EnvStats.ALLMASK-mask)));
+			E.setSensesMask(current&((int)(EnvStats.ALLMASK-mask)));
 	}
 
 	public static void toggleClimateMask(Area A, int mask)
@@ -714,7 +733,7 @@ public class Generic
 		}
 	}
 
-	public static void genSensesMask(MOB mob, Environmental E, int showNumber, int showFlag)
+	public static void genSensesMask(MOB mob, EnvStats E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -746,7 +765,7 @@ public class Generic
 			for(int i=0;i<senses.length;i++)
 			{
 				int mask=senses[i];
-				if((E.baseEnvStats().sensesMask()&mask)!=0)
+				if((E.sensesMask()&mask)!=0)
 					buf.append(briefs[i]+" ");
 			}
 			mob.tell(buf.toString());
@@ -762,7 +781,7 @@ public class Generic
 				for(int num=0;num<EnvStats.sensesDesc.length;num++)
 					if(mask==Util.pow(2,num))
 					{
-						mob.session().println("    "+letter+") "+Util.padRight(EnvStats.sensesDesc[num],20)+":"+((E.baseEnvStats().sensesMask()&mask)!=0));
+						mob.session().println("    "+letter+") "+Util.padRight(EnvStats.sensesDesc[num],20)+":"+((E.sensesMask()&mask)!=0));
 						break;
 					}
 				letter++;
@@ -2487,7 +2506,7 @@ public class Generic
 			genUses(mob,me,++showNumber,showFlag);
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			if(me instanceof LandTitle)
@@ -2531,7 +2550,7 @@ public class Generic
 			genWeight(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
 			genNourishment(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
@@ -2581,7 +2600,7 @@ public class Generic
 			genReadable2(mob,(Item)me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			if(me instanceof Container)
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
@@ -2658,7 +2677,7 @@ public class Generic
 			genWeight(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
@@ -2702,7 +2721,7 @@ public class Generic
 			genValue(mob,me,++showNumber,showFlag);
 			genUses(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
@@ -2767,7 +2786,7 @@ public class Generic
 			genGettable(mob,me,++showNumber,showFlag);
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
@@ -2817,7 +2836,7 @@ public class Generic
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genSize(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
@@ -2861,7 +2880,7 @@ public class Generic
 			genInstrumentType(mob,me,++showNumber,showFlag);
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
@@ -2905,7 +2924,7 @@ public class Generic
 				genCloseWord(mob,me,++showNumber,showFlag);
 			}
 			genExitMisc(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
@@ -2948,6 +2967,7 @@ public class Generic
 			genGender(mob,me,++showNumber,showFlag);
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
+			genClan(mob,me,++showNumber,showFlag);
 			genSpeed(mob,me,++showNumber,showFlag);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
 				me.baseEnvStats().setDamage((int)Math.round(Util.div(me.baseEnvStats().damage(),me.baseEnvStats().speed())));
@@ -2960,8 +2980,8 @@ public class Generic
 			genAbilities(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me,++showNumber,showFlag);
-			genSensesMask(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
+			genSensesMask(mob,me.baseEnvStats(),++showNumber,showFlag);
 			if(me instanceof Rideable)
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
@@ -3041,8 +3061,8 @@ public class Generic
 			genAbilities(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me,++showNumber,showFlag);
-			genSensesMask(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
+			genSensesMask(mob,me.baseEnvStats(),++showNumber,showFlag);
 			if(me instanceof Rideable)
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
@@ -3098,6 +3118,7 @@ public class Generic
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genGender(mob,mme,++showNumber,showFlag);
+			genClan(mob,me,++showNumber,showFlag);
 			genSpeed(mob,me,++showNumber,showFlag);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
 				me.baseEnvStats().setDamage((int)Math.round(Util.div(me.baseEnvStats().damage(),me.baseEnvStats().speed())));
@@ -3120,8 +3141,8 @@ public class Generic
 				genBanker2(mob,(Banker)me,++showNumber,showFlag);
 				genBanker3(mob,(Banker)me,++showNumber,showFlag);
 			}
-			genDisposition(mob,me,++showNumber,showFlag);
-			genSensesMask(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
+			genSensesMask(mob,me.baseEnvStats(),++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));

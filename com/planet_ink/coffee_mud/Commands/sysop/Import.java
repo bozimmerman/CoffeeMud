@@ -3482,6 +3482,41 @@ public class Import
 		return CMMap.getRoom(areaName+"#"+roomID);
 	}
 
+	public static void importCustomObjects(MOB mob, Vector custom, HashSet customBother, boolean noPrompt)
+		throws IOException
+	{
+		if(custom.size()==0) return;
+		if((!noPrompt)&&(mob.session()==null)) return;
+		for(int c=0;c<custom.size();c++)
+		{
+			if(custom.elementAt(c) instanceof Race)
+			{
+				Race R=(Race)custom.elementAt(c);
+				if(customBother.contains(R.ID()))
+				   continue;
+				
+				Race R2=CMClass.getRace(R.ID());
+				if(R2==null)
+				{
+					if(!noPrompt)
+						if(!mob.session().confirm("Custom Race '"+R.ID()+"' found, import (Y/n)?","Y"))
+							continue;
+					CMClass.addRace(R);
+					ExternalPlay.DBCreateRace(R.ID(),R.racialParms());
+				}
+				else
+				if(!R2.isGeneric())
+				{
+					if(!noPrompt)
+						if(!mob.session().confirm("Custom Race '"+R.ID()+"' found which would override your standard race.  Import anyway (Y/n)?","Y"))
+							continue;
+					CMClass.addRace(R);
+					ExternalPlay.DBCreateRace(R.ID(),R.racialParms());
+				}
+			}
+		}
+	}
+	
 	public static boolean localDeleteArea(MOB mob, Vector reLinkTable, String areaName)
 	{
 		if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
@@ -3538,6 +3573,8 @@ public class Import
 		Vector nextResetData=new Vector();
 		Hashtable laterLinks=new Hashtable();
 		boolean multiArea=false;
+		Vector custom=new Vector();
+		HashSet customBotherChecker=new HashSet();
 
 		commands.removeElementAt(0);
 
@@ -3635,7 +3672,8 @@ public class Import
 				Vector areas=new Vector();
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area(s) from file: '"+areaFileName+"'...");
-				String error=com.planet_ink.coffee_mud.common.Generic.fillAreasVectorFromXML(buf.toString(),areas);
+				String error=com.planet_ink.coffee_mud.common.Generic.fillAreasVectorFromXML(buf.toString(),areas,custom);
+				if(error.length()==0) Import.importCustomObjects(mob,custom,customBotherChecker,!prompt);
 				if(error.length()>0) return;
 				if(mob.session()!=null)
 					mob.session().rawPrintln("!");
@@ -3695,7 +3733,11 @@ public class Import
 			{
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area from file: '"+areaFileName+"'...");
-				String error=com.planet_ink.coffee_mud.common.Generic.unpackAreaFromXML(buf.toString(),mob.session(),true);
+				Vector areaD=new Vector();
+				String error=com.planet_ink.coffee_mud.common.Generic.fillAreaAndCustomVectorFromXML(buf.toString(),custom,areaD);
+				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				if(error.length()==0)
+					error=com.planet_ink.coffee_mud.common.Generic.unpackAreaFromXML(areaD,mob.session(),true);
 				if(mob.session()!=null)
 					mob.session().rawPrintln("!");
 				if(error.startsWith("Area Exists: "))
@@ -3733,7 +3775,10 @@ public class Import
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AROOM>")>=0))
 			{
 				mob.tell("Unpacking room from file: '"+areaFileName+"'...");
-				String error=com.planet_ink.coffee_mud.common.Generic.unpackRoomFromXML(buf.toString(),true);
+				String error=com.planet_ink.coffee_mud.common.Generic.fillCustomVectorFromXML(buf.toString(),custom);
+				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				if(error.length()==0)
+					error=com.planet_ink.coffee_mud.common.Generic.unpackRoomFromXML(buf.toString(),true);
 				if(error.startsWith("Room Exists: "))
 				{
 					Room R=CMMap.getRoom(error.substring(13).trim());
@@ -3774,7 +3819,10 @@ public class Import
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking mobs from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
-				String error=com.planet_ink.coffee_mud.common.Generic.addMOBsFromXML(buf.toString(),mobs,mob.session());
+				String error=com.planet_ink.coffee_mud.common.Generic.fillCustomVectorFromXML(buf.toString(),custom);
+				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				if(error.length()==0)
+					error=com.planet_ink.coffee_mud.common.Generic.addMOBsFromXML(buf.toString(),mobs,mob.session());
 				if(mob.session()!=null)	mob.session().rawPrintln("!");
 				if(error.length()>0)
 				{
@@ -3803,7 +3851,10 @@ public class Import
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking items from file: '"+areaFileName+"'...");
 				Vector items=new Vector();
-				String error=com.planet_ink.coffee_mud.common.Generic.addItemsFromXML(buf.toString(),items,mob.session());
+				String error=com.planet_ink.coffee_mud.common.Generic.fillCustomVectorFromXML(buf.toString(),custom);
+				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				if(error.length()==0)
+					error=com.planet_ink.coffee_mud.common.Generic.addItemsFromXML(buf.toString(),items,mob.session());
 				if(mob.session()!=null)	mob.session().rawPrintln("!");
 				if(error.length()>0)
 				{
@@ -5144,6 +5195,7 @@ public class Import
 		String commandType="";
 		String fileName="";
 		int fileNameCode=-1; // -1=indetermined, 0=screen, 1=file, 2=path
+		HashSet custom=new HashSet();
 
 		commands.removeElementAt(0);
 		if(commands.size()>0)
@@ -5208,7 +5260,7 @@ public class Import
 		{
 			if(commandType.equalsIgnoreCase("ROOM"))
 			{
-				xml=com.planet_ink.coffee_mud.common.Generic.getRoomXML(mob.location(),true).toString();
+				xml=com.planet_ink.coffee_mud.common.Generic.getRoomXML(mob.location(),custom,true).toString();
 				if(fileNameCode==2) fileName=fileName+File.separatorChar+"room";
 			}
 			else
@@ -5216,7 +5268,7 @@ public class Import
 			{
 				if(mob.session()!=null)
 					mob.session().rawPrint("Reading area '"+mob.location().getArea().Name()+"'...");
-				xml=com.planet_ink.coffee_mud.common.Generic.getAreaXML(mob.location().getArea(),mob.session(),true).toString();
+				xml=com.planet_ink.coffee_mud.common.Generic.getAreaXML(mob.location().getArea(),mob.session(),custom,true).toString();
 				if(fileNameCode==2){
 					if(mob.location().getArea().getArchivePath().length()>0)
 						fileName=fileName+File.separatorChar+mob.location().getArea().getArchivePath();
@@ -5237,7 +5289,7 @@ public class Import
 					{
 						if(mob.session()!=null)
 							mob.session().rawPrint("Reading area '"+A.name()+"'...");
-						buf.append(com.planet_ink.coffee_mud.common.Generic.getAreaXML(A,mob.session(),true).toString());
+						buf.append(com.planet_ink.coffee_mud.common.Generic.getAreaXML(A,mob.session(),custom,true).toString());
 						if(mob.session()!=null)
 							mob.session().rawPrintln("!");
 						if(fileNameCode==2)
@@ -5261,7 +5313,7 @@ public class Import
 			if(fileNameCode==2) fileName=fileName+File.separatorChar+"mobs";
 			Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
-				xml="<MOBS>"+com.planet_ink.coffee_mud.common.Generic.getRoomMobs(mob.location(),found).toString()+"</MOBS>";
+				xml="<MOBS>"+com.planet_ink.coffee_mud.common.Generic.getRoomMobs(mob.location(),custom,found).toString()+"</MOBS>";
 			else
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
@@ -5272,7 +5324,7 @@ public class Import
 				{
 					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");
-					buf.append(com.planet_ink.coffee_mud.common.Generic.getRoomMobs(R,found).toString());
+					buf.append(com.planet_ink.coffee_mud.common.Generic.getRoomMobs(R,custom,found).toString());
 				}
 				xml=buf.toString()+"</MOBS>";
 				if(mob.session()!=null)
@@ -5287,7 +5339,7 @@ public class Import
 				{
 					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");
-					buf.append(com.planet_ink.coffee_mud.common.Generic.getRoomMobs(R,found).toString());
+					buf.append(com.planet_ink.coffee_mud.common.Generic.getRoomMobs(R,custom,found).toString());
 				}
 				xml=buf.toString()+"</MOBS>";
 				if(mob.session()!=null)
@@ -5353,6 +5405,18 @@ public class Import
 				if(mob.session()!=null)
 					mob.session().rawPrintln("!");
 			}
+		}
+		if(custom.size()>0)
+		{
+			StringBuffer str=new StringBuffer("<CUSTOM>");
+			for(Iterator i=custom.iterator();i.hasNext();)
+			{
+				Object o=i.next();
+				if(o instanceof Race)
+					str.append(((Race)o).racialParms());
+			}
+			str.append("</CUSTOM>");
+			xml=str.toString()+xml;
 		}
 		reallyExport(mob,fileName,xml);
 	}

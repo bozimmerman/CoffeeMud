@@ -147,4 +147,5 @@ public interface CharStats extends Cloneable
 	public String hisher();
 	public String heshe();
 	public String HeShe();
+	
 }

@@ -298,7 +298,8 @@ public class Scriptable extends StdBehavior
 				int y=-1;
 				int yy=0;
 				while(yy<s.length())
-					if(s.charAt(yy)==';'){y=yy;break;}
+					if((s.charAt(yy)==';')
+					&&((yy<=0)||(s.charAt(yy-1)!='\\'))) {y=yy;break;}
 					else
 					if(s.charAt(yy)=='\n'){y=yy;break;}
 					else

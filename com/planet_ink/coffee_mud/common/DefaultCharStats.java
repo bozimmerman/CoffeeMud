@@ -27,7 +27,6 @@ public class DefaultCharStats implements Cloneable, CharStats
 	{
 		for(int i=0;i<NUM_STATS;i++)
 			stats[i]=def;
-		stats[GENDER]=(int)'M';
 	}
 
 	public void setMyClasses(String classes)
@@ -430,17 +429,6 @@ public class DefaultCharStats implements Cloneable, CharStats
 
 	public void setStat(int abilityCode, int value)
 	{
-		switch(abilityCode)
-		{
-		case CharStats.STRENGTH:
-		case CharStats.INTELLIGENCE:
-		case CharStats.WISDOM:
-		case CharStats.CHARISMA:
-		case CharStats.DEXTERITY:
-		case CharStats.CONSTITUTION:
-			if(value<0) value=0;
-			break;
-		}
 		stats[abilityCode]=value;
 	}
 

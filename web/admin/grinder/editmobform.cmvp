@@ -163,6 +163,11 @@
     </TD>
 </TR>
 <TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Clan (ID):</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CLANID SIZE=5 MAXLENGTH=100 VALUE="@MobData?CLANID@">
+    </TD>
+</TR>
+<TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Hit Points Mod.:</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ABILITY SIZE=5 VALUE="@MobData?ABILITY@">
 	&nbsp;&nbsp;<FONT COLOR="#66FFFF">(Total Hit Points=((Level*Level) + (Random * Level * THIS)))

@@ -501,7 +501,7 @@ public class MobData extends StdWebMacro
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
 						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
 						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
-						  "CLESIN","WORSIN","CLEPOW"};
+						  "CLESIN","WORSIN","CLEPOW","CLANID"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -770,6 +770,10 @@ public class MobData extends StdWebMacro
 			case 36: // cleric power
 				if((firstTime)&&(M instanceof Deity))
 					old=((Deity)M).getClericPowerup();
+				str.append(old);
+				break;
+			case 37: // clan
+				if(firstTime) old=M.getClanID();
 				str.append(old);
 				break;
 			}

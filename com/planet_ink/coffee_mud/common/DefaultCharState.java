@@ -284,6 +284,46 @@ public class DefaultCharState implements Cloneable, CharState
 		}
 	}
 
+	private final static String[] CODES={
+		"HITS","MANA","MOVE",
+		"HUNGER","THIRST","FATIGUE"};
+	public String[] getCodes(){return CODES;}
+	private int getCodeNum(String code)
+	{
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public boolean sameAs(EnvStats E){
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+			   return false;
+		return true;
+	}
+	
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code)){
+		case 0: setHitPoints(Util.s_int(val)); break;
+		case 1: setMana(Util.s_int(val)); break;
+		case 2: setMovement(Util.s_int(val)); break;
+		case 3: setHunger(Util.s_int(val)); break;
+		case 4: setThirst(Util.s_int(val)); break;
+		case 5: setFatigue(Util.s_int(val)); break;
+		}
+	}
+	public String getStat(String code)
+	{
+		switch(getCodeNum(code)){
+		case 0: return ""+getHitPoints();
+		case 1: return ""+getMana();
+		case 2: return ""+getMovement();
+		case 3: return ""+getHunger();
+		case 4: return ""+getThirst();
+		case 5: return ""+getFatigue();
+		default: return "";
+		}
+	}
 
 	// create a new one of these
 	public CharState cloneCharState()

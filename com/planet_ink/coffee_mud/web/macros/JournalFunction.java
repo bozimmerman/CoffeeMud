@@ -21,12 +21,12 @@ public class JournalFunction extends StdWebMacro
 			httpReq.getRequestObjects().put("JOURNAL: "+last,info);
 		}
 		MOB M=Authenticate.getMOB(Authenticate.getLogin(httpReq));
-		if(M==null)	return "Function not allowed -- noone is logged in!";
+		String from="Unknown";
+		if(M!=null) M.Name();
 		if(parms.containsKey("NEWPOST"))
 		{
-			String from=M.Name();
 			String to=httpReq.getRequestParameter("TO");
-			if((to==null)||(to.equalsIgnoreCase("all"))) to="ALL";
+			if((to==null)||(M==null)||(to.equalsIgnoreCase("all"))) to="ALL";
 			if(!to.equals("ALL"))
 			{
 				if(!ExternalPlay.DBUserSearch(null,to))
@@ -48,10 +48,11 @@ public class JournalFunction extends StdWebMacro
 		if((num<0)||(num>=info.size()))
 			return "Function not performed -- illegal journal message specified.";
 		String to= ((String)((Vector)info.elementAt(num)).elementAt(3));
-		if(M.isASysOp(null)||(to.equalsIgnoreCase("all"))||(to.equalsIgnoreCase(M.Name())))
+		if(M.isASysOp(null)||(to.equalsIgnoreCase(M.Name())))
 		{
 			if(parms.containsKey("DELETE"))
 			{
+				if(M==null)	return "Can not delete -- required logged in user.";
 				ExternalPlay.DBDeleteJournal(last,num);
 				httpReq.addRequestParameters("JOURNALMESSAGE","");
 				httpReq.getRequestObjects().remove("JOURNAL: "+last);
@@ -63,7 +64,7 @@ public class JournalFunction extends StdWebMacro
 				String text=httpReq.getRequestParameter("NEWTEXT");
 				if(text.length()==0)
 					return "Reply not submitted -- No text!";
-				ExternalPlay.DBWriteJournal(last,M.Name(),"","",text,num);
+				ExternalPlay.DBWriteJournal(last,from,"","",text,num);
 				httpReq.getRequestObjects().remove("JOURNAL: "+last);
 				return "Reply submitted";
 			}

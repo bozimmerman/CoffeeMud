@@ -80,6 +80,7 @@ public class CMAble
 		able.autoGain=autoGain;
 		able.isSecret=secret;
 		able.defaultParm=defaultParam;
+		able.defaultProfficiency=defaultProfficiency;
 		ableMap.put(ability,able);
 		int arc_level=getQualifyingLevel("Archon",ability);
 		if((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
@@ -194,7 +195,7 @@ public class CMAble
 				theLevel=level;
 			}
 		}
-		int level=CMAble.getQualifyingLevel(student.baseCharStats().getMyRace().ID(),A.ID());
+		int level=CMAble.getQualifyingLevel(student.charStats().getMyRace().ID(),A.ID());
 		int classLevel=student.baseEnvStats().level();
 		if((level>=0)
 		&&(classLevel>=level)
@@ -229,7 +230,7 @@ public class CMAble
 				theClass=C;
 			}
 		}
-		int level=CMAble.getQualifyingLevel(student.baseCharStats().getMyRace().ID(),A.ID());
+		int level=CMAble.getQualifyingLevel(student.charStats().getMyRace().ID(),A.ID());
 		int classLevel=student.baseEnvStats().level();
 		if((level>=0)
 		&&(classLevel>=level)
@@ -256,19 +257,19 @@ public class CMAble
 			&&(student.charStats().getClassLevel(C)>=level))
 				return true;
 		}
-		int level=CMAble.getQualifyingLevel(student.baseCharStats().getMyRace().ID(),A.ID());
+		int level=CMAble.getQualifyingLevel(student.charStats().getMyRace().ID(),A.ID());
 		if((level>=0)
-		&&(student.charStats().getClassLevel(student.baseCharStats().getMyRace().ID())>=level))
+		&&(student.charStats().getClassLevel(student.charStats().getMyRace().ID())>=level))
 			return true;
 		return false;
 	}
 
-	public static boolean getDefaultGain(String charClass, 
+	public static boolean getDefaultGain(String ID, 
 										 String ability)
 	{
-		if(completeAbleMap.containsKey(charClass))
+		if(completeAbleMap.containsKey(ID))
 		{
-			Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).autoGain;
 		}
@@ -293,13 +294,13 @@ public class CMAble
 		return null;
 	}
 	
-	public static boolean getSecretSkill(String charClass, 
+	public static boolean getSecretSkill(String ID, 
 										 String ability)
 	{
 		boolean secretFound=false;
-		if(completeAbleMap.containsKey(charClass))
+		if(completeAbleMap.containsKey(ID))
 		{
-			Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 			if(ableMap.containsKey(ability))
 				if(!((CMAble)ableMap.get(ability)).isSecret)
 					return false;
@@ -383,12 +384,12 @@ public class CMAble
 		return secretFound;
 	}
 	
-	public static String getDefaultParm(String charClass, 
+	public static String getDefaultParm(String ID, 
 										String ability)
 	{
-		if(completeAbleMap.containsKey(charClass))
+		if(completeAbleMap.containsKey(ID))
 		{
-			Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).defaultParm;
 		}
@@ -401,12 +402,12 @@ public class CMAble
 		return "";
 	}
 	
-	public static int getDefaultProfficiency(String charClass, 
+	public static int getDefaultProfficiency(String ID, 
 										     String ability)
 	{
-		if(completeAbleMap.containsKey(charClass))
+		if(completeAbleMap.containsKey(ID))
 		{
-			Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).defaultProfficiency;
 		}

@@ -27,12 +27,12 @@ public class GenRace extends StdRace
 	public int weightVariance(){return weightVariance;}
 	public long forbiddenWornBits=0;
 	public long forbiddenWornBits(){return forbiddenWornBits;}
-	private String racialCategory="Unknown";
+	public String racialCategory="Unknown";
 	public String racialCategory(){return racialCategory;}
 	public boolean isGeneric(){return true;}
 
 	//                   an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	protected int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
 	protected CharStats setStats=null;
@@ -56,6 +56,12 @@ public class GenRace extends StdRace
 		{
 			return this;
 		}
+	}
+	public Weapon myNaturalWeapon()
+	{ 
+		if(naturalWeapon!=null)
+			return naturalWeapon;
+		return funHumanoidWeapon();	
 	}
 
 	private String arriveStr="arrives";
@@ -99,7 +105,8 @@ public class GenRace extends StdRace
 				affectableStats.setStat(i,affectableStats.getStat(i)+adjStats.getStat(i));
 		if(setStats!=null)
 			for(int i=0;i<CharStats.NUM_STATS;i++)
-				affectableStats.setStat(i,setStats.getStat(i));
+				if(setStats.getStat(i)!=0)
+					affectableStats.setStat(i,setStats.getStat(i));
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
@@ -122,7 +129,7 @@ public class GenRace extends StdRace
 	public String racialParms()
 	{
 		StringBuffer str=new StringBuffer("");
-		str.append("<RACE ID=\""+ID()+"\">");
+		str.append("<RACE><ID>"+ID()+"</ID>");
 		str.append(XMLManager.convertXMLtoTag("NAME",name()));
 		str.append(XMLManager.convertXMLtoTag("CAT",racialCategory()));
 		str.append(XMLManager.convertXMLtoTag("MHEIGHT",""+shortestMale()));
@@ -134,9 +141,9 @@ public class GenRace extends StdRace
 		str.append(XMLManager.convertXMLtoTag("PLAYER",""+playerSelectable));
 		StringBuffer bbody=new StringBuffer("");
 		for(int i=0;i<bodyMask().length;i++)
-			bbody.append(bodyMask()[i]+';');
+			bbody.append((""+bodyMask()[i])+";");
 		str.append(XMLManager.convertXMLtoTag("BODY",bbody.toString()));
-		str.append(XMLManager.convertXMLtoTag("HEALTHRACE",(healthBuddy()!=null)?healthBuddy().ID():""));
+		str.append(XMLManager.convertXMLtoTag("HEALTHRACE",(healthBuddy!=null)?healthBuddy.ID():""));
 		str.append(XMLManager.convertXMLtoTag("ARRIVE",arriveStr()));
 		str.append(XMLManager.convertXMLtoTag("LEAVE",leaveStr()));
 		if(adjEStats==null) str.append("<ESTATS/>");
@@ -161,7 +168,7 @@ public class GenRace extends StdRace
 				Item I=(Item)myResources().elementAt(i);
 				str.append("<RSCITEM>");
 				str.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(I)));
-				str.append(XMLManager.convertXMLtoTag("IDATA",Generic.getPropertiesStr(I,true)));
+				str.append(XMLManager.convertXMLtoTag("IDATA",Generic.parseOutAngleBrackets(I.text())));
 				str.append("</RSCITEM>");
 			}
 			str.append("</RESOURCES>");
@@ -170,9 +177,39 @@ public class GenRace extends StdRace
 		else
 		{
 			str.append("<WEAPON>");
-			str.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(myNaturalWeapon())));
-			str.append(XMLManager.convertXMLtoTag("IDATA",Generic.getPropertiesStr(myNaturalWeapon(),true)));
+			str.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(naturalWeapon)));
+			str.append(XMLManager.convertXMLtoTag("IDATA",Generic.parseOutAngleBrackets(naturalWeapon.text())));
 			str.append("</WEAPON>");
+		}
+		if((racialAbilityNames==null)||(racialAbilityNames.length==0))
+			str.append("<RABILITIES/>");
+		else
+		{
+			str.append("<RABILITIES>");
+			for(int r=0;r<racialAbilityNames.length;r++)
+			{
+				str.append("<RABILITY>");
+				str.append("<RCLASS>"+racialAbilityNames[r]+"</RCLASS>");
+				str.append("<RLEVEL>"+racialAbilityLevels[r]+"</RLEVEL>");
+				str.append("<RPROFF>"+racialAbilityProfficiencies[r]+"</RPROFF>");
+				str.append("<RAGAIN>"+racialAbilityQuals[r]+"</RAGAIN>");
+				str.append("</RABILITY>");
+			}
+			str.append("</RABILITIES>");
+		}
+		if((culturalAbilityNames==null)||(culturalAbilityNames.length==0))
+			str.append("<CABILITIES/>");
+		else
+		{
+			str.append("<CABILITIES>");
+			for(int r=0;r<culturalAbilityNames.length;r++)
+			{
+				str.append("<CABILITY>");
+				str.append("<CCLASS>"+culturalAbilityNames[r]+"</CCLASS>");
+				str.append("<CPROFF>"+culturalAbilityProfficiencies[r]+"</CPROFF>");
+				str.append("</CABILITY>");
+			}
+			str.append("</CABILITIES>");
 		}
 		str.append("</RACE>");
 		return str.toString();
@@ -188,11 +225,14 @@ public class GenRace extends StdRace
 		}
 		Vector raceData=XMLManager.getRealContentsFromPieces(xml,"RACE");
 		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data."); return;}
-		String id=XMLManager.returnXMLParm(parms,"ID");
+		String id=XMLManager.getValFromPieces(raceData,"ID");
 		if(id.length()==0) return;
 		ID=id;
 		name=XMLManager.getValFromPieces(raceData,"NAME");
-		racialCategory=XMLManager.getValFromPieces(raceData,"CAT");
+		String rcat=XMLManager.getValFromPieces(raceData,"CAT");
+		if((rcat==null)||(rcat.length()==0))
+			return;
+		racialCategory=rcat;
 		forbiddenWornBits=XMLManager.getLongFromPieces(raceData,"WEAR");
 		weightVariance=XMLManager.getIntFromPieces(raceData,"VWEIGHT");
 		lightestWeight=XMLManager.getIntFromPieces(raceData,"BWEIGHT");
@@ -222,7 +262,7 @@ public class GenRace extends StdRace
 		if(aState.length()>0){ adjState=new DefaultCharState(); Generic.setCharState(adjState,aState);}
 
 		// now RESOURCES!
-		Vector xV=XMLManager.getRealContentsFromPieces(xml,"RESOURCES");
+		Vector xV=XMLManager.getRealContentsFromPieces(raceData,"RESOURCES");
 		resourceChoices=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
@@ -233,27 +273,64 @@ public class GenRace extends StdRace
 				if((!iblk.tag.equalsIgnoreCase("RSCITEM"))||(iblk.contents==null))
 					continue;
 				Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"ICLASS"));
-				Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"IDATA");
-				if((idat==null)||(newOne==null)) continue;
-				Generic.setPropertiesStr(newOne,idat,true);
+				String idat=XMLManager.getValFromPieces(iblk.contents,"IDATA");
+				newOne.setMiscText(Generic.restoreAngleBrackets(idat));
 				newOne.recoverEnvStats();
 				resourceChoices.addElement(newOne);
 			}
 		}
 		naturalWeapon=null;
-		XMLManager.XMLpiece iblk=XMLManager.getPieceFromPieces(xml,"WEAPON");
-		if((!iblk.tag.equalsIgnoreCase("WEAPON"))&&(iblk.contents!=null))
+		Vector wblk=XMLManager.getRealContentsFromPieces(raceData,"WEAPON");
+		if(wblk!=null)
 		{
-			naturalWeapon=(Weapon)CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"ICLASS"));
-			Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"IDATA");
+			naturalWeapon=(Weapon)CMClass.getWeapon(XMLManager.getValFromPieces(wblk,"ICLASS"));
+			String idat=XMLManager.getValFromPieces(wblk,"IDATA");
 			if((idat!=null)&&(naturalWeapon!=null))
 			{
-				Generic.setPropertiesStr(naturalWeapon,idat,true);
+				naturalWeapon.setMiscText(Generic.restoreAngleBrackets(idat));
 				naturalWeapon.recoverEnvStats();
 			}
 		}
+		xV=XMLManager.getRealContentsFromPieces(raceData,"RABILITIES");
+		racialAbilityNames=null;
+		racialAbilityProfficiencies=null;
+		racialAbilityQuals=null;
+		racialAbilityLevels=null;
+		if((xV!=null)&&(xV.size()>0))
+		{
+			racialAbilityNames=new String[xV.size()];
+			racialAbilityProfficiencies=new int[xV.size()];
+			racialAbilityQuals=new boolean[xV.size()];
+			racialAbilityLevels=new int[xV.size()];
+			for(int x=0;x<xV.size();x++)
+			{
+				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
+				if((!iblk.tag.equalsIgnoreCase("RABILITY"))||(iblk.contents==null))
+					continue;
+				racialAbilityNames[x]=XMLManager.getValFromPieces(iblk.contents,"RCLASS");
+				racialAbilityProfficiencies[x]=XMLManager.getIntFromPieces(iblk.contents,"RPROFF");
+				racialAbilityQuals[x]=XMLManager.getBoolFromPieces(iblk.contents,"RAGAIN");
+				racialAbilityLevels[x]=XMLManager.getIntFromPieces(iblk.contents,"RLEVEL");
+			}
+		}
+		xV=XMLManager.getRealContentsFromPieces(raceData,"CABILITIES");
+		culturalAbilityNames=null;
+		culturalAbilityProfficiencies=null;
+		if((xV!=null)&&(xV.size()>0))
+		{
+			culturalAbilityNames=new String[xV.size()];
+			culturalAbilityProfficiencies=new int[xV.size()];
+			for(int x=0;x<xV.size();x++)
+			{
+				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
+				if((!iblk.tag.equalsIgnoreCase("CABILITY"))||(iblk.contents==null))
+					continue;
+				culturalAbilityNames[x]=XMLManager.getValFromPieces(iblk.contents,"CCLASS");
+				culturalAbilityProfficiencies[x]=XMLManager.getIntFromPieces(iblk.contents,"CPROFF");
+			}
+		}
 	}
-	protected static String[] CODES={"CLASS","PARMS","CAT","WEAR","VWEIGHT","BWEIGHT",
+	protected static String[] CODES={"ID","NAME","CAT","WEAR","VWEIGHT","BWEIGHT",
 									 "VHEIGHT","FHEIGHT","MHEIGHT","PLAYER","LEAVE",
 									 "ARRIVE","HEALTHRACE","BODY","ESTATS",
 									 "ASTATS","CSTATS","ASTATE",
@@ -266,13 +343,13 @@ public class GenRace extends StdRace
 		int num=0;
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 		{
-			num=(num*10)+code.charAt(code.length()-1);
+			num=(num*10)+Util.s_int(""+code.charAt(code.length()-1));
 			code=code.substring(0,code.length()-1);
 		}
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
-		case 1: return ""+racialParms();
+		case 1: return name();
 		case 2: return racialCategory;
 		case 3: return ""+forbiddenWornBits();
 		case 4: return ""+weightVariance();
@@ -288,7 +365,7 @@ public class GenRace extends StdRace
 		{
 			StringBuffer bbody=new StringBuffer("");
 			for(int i=0;i<bodyMask().length;i++)
-				bbody.append(bodyMask()[i]+';');
+				bbody.append((""+bodyMask()[i])+";");
 			return bbody.toString();
 		}
 		case 14: return (adjEStats==null)?"":Generic.getEnvStatsStr(adjEStats);
@@ -316,13 +393,13 @@ public class GenRace extends StdRace
 		int num=0;
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 		{
-			num=(num*10)+code.charAt(code.length()-1);
+			num=(num*10)+Util.s_int(""+code.charAt(code.length()-1));
 			code=code.substring(0,code.length()-1);
 		}
 		switch(getCodeNum(code))
 		{
 		case 0: ID=val; break;
-		case 1: setRacialParms(val); break;
+		case 1: name=val; break;
 		case 2: racialCategory=val; break;
 		case 3: forbiddenWornBits=Util.s_long(val); break;
 		case 4: weightVariance=Util.s_int(val); break;
@@ -371,8 +448,18 @@ public class GenRace extends StdRace
 				 }
 				 break;
 		case 23: racialAbilityMap=null;
-				 if(Util.s_int(val)==0) racialAbilityNames=null; 
-				 else racialAbilityNames=new String[Util.s_int(val)];
+				 if(Util.s_int(val)==0){
+					 racialAbilityNames=null; 
+					 racialAbilityProfficiencies=null; 
+					 racialAbilityQuals=null; 
+					 racialAbilityLevels=null; 
+				 }
+				 else{
+					 racialAbilityNames=new String[Util.s_int(val)];
+					 racialAbilityProfficiencies=new int[Util.s_int(val)];
+					 racialAbilityQuals=new boolean[Util.s_int(val)];
+					 racialAbilityLevels=new int[Util.s_int(val)];
+				 }
 				 break;
 		case 24: {   if(racialAbilityNames==null) racialAbilityNames=new String[num+1];
 				     racialAbilityNames[num]=val;

@@ -324,6 +324,7 @@ public class Generic
 		{
 			text.append(XMLManager.convertXMLtoTag("ALIG",((MOB)E).getAlignment()));
 			text.append(XMLManager.convertXMLtoTag("MONEY",((MOB)E).getMoney()));
+			text.append(XMLManager.convertXMLtoTag("CLAN",((MOB)E).getClanID());
 			text.append(XMLManager.convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.GENDER)));
 			text.append(XMLManager.convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
 			text.append(getGenMobInventory((MOB)E));
@@ -602,10 +603,52 @@ public class Generic
 		return "";
 	}
 
-	public static String fillAreasVectorFromXML(String buf, Vector areas)
+	public static String fillAreaAndCustomVectorFromXML(String buf, Vector area, Vector custom)
+	{
+		Vector xml=XMLManager.parseAllXML(buf);
+		if(xml==null) return unpackErr("Fill","null 'xml'");
+		String error=fillCustomVectorFromXML(xml,custom);
+		if(error.length()>0) return error;
+		Vector areaData=XMLManager.getRealContentsFromPieces(xml,"AREA");
+		if(areaData==null) return unpackErr("Fill","null 'aV'");
+		for(int a=0;a<areaData.size();a++)
+			area.addElement(areaData.elementAt(a));
+		return "";
+	}
+	public static String fillCustomVectorFromXML(String xml, Vector custom)
+	{
+		Vector xmlv=XMLManager.parseAllXML(xml);
+		if(xmlv==null) return unpackErr("Custom","null 'xmlv'");
+		return fillCustomVectorFromXML(xmlv,custom);
+	}
+	public static String fillCustomVectorFromXML(Vector xml, Vector custom)
+	{
+		Vector aV=XMLManager.getRealContentsFromPieces(xml,"CUSTOM");
+		if(aV==null) return "";
+		for(int r=0;r<aV.size();r++)
+		{
+			XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)aV.elementAt(r);
+			if(ablk.tag.equalsIgnoreCase("RACE"))
+			{
+				Race R=CMClass.getRace("GenRace");
+				if(R!=null)
+				{
+					R.setRacialParms(ablk.value);
+					if(!R.ID().equals("GenRace"))
+						custom.addElement(R);
+				}
+			}
+			else
+				return unpackErr("Custom","??"+ablk.tag);
+		}
+		return "";
+	}
+	
+	public static String fillAreasVectorFromXML(String buf, Vector areas, Vector custom)
 	{
 		Vector xml=XMLManager.parseAllXML(buf);
 		if(xml==null) return unpackErr("Areas","null 'xml'");
+		fillCustomVectorFromXML(xml,custom);
 		Vector aV=XMLManager.getRealContentsFromPieces(xml,"AREAS");
 		if(aV==null) return unpackErr("Areas","null 'aV'");
 		for(int r=0;r<aV.size();r++)
@@ -659,7 +702,7 @@ public class Generic
 		return unpackAreaFromXML(aV,S,andRooms);
 	}
 
-	public static StringBuffer getAreaXML(Area area, Session S, boolean andRooms)
+	public static StringBuffer getAreaXML(Area area, Session S, HashSet custom, boolean andRooms)
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(area==null) return buf;
@@ -685,7 +728,7 @@ public class Generic
 					Room R=(Room)r.nextElement();
 					if(S!=null) S.rawPrint(".");
 					if((R!=null)&&(R.roomID()!=null)&&(R.roomID().length()>0))
-						buf.append(getRoomXML(R,true)+"\n\r");
+						buf.append(getRoomXML(R,custom,true)+"\n\r");
 				}
 				buf.append("</AROOMS>");
 			}
@@ -765,7 +808,7 @@ public class Generic
 		//Log.sysOut("Generic",str.toString());
 	}
 
-	public static StringBuffer getRoomMobs(Room room, Hashtable found)
+	public static StringBuffer getRoomMobs(Room room, HashSet custom, Hashtable found)
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(room==null) return buf;
@@ -837,6 +880,9 @@ public class Generic
 				buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
 				buf.append(XMLManager.convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
 				buf.append(XMLManager.convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
+				if((mob.baseCharStats().getMyRace().isGeneric())
+				&&(!custom.contains(mob.baseCharStats().getMyRace())))
+				   custom.add(mob.baseCharStats().getMyRace());
 				buf.append("</MOB>\n\r");
 			}
 		}
@@ -1009,7 +1055,7 @@ public class Generic
 		return buf;
 	}
 
-	public static StringBuffer getRoomXML(Room room, boolean andContent)
+	public static StringBuffer getRoomXML(Room room, HashSet custom, boolean andContent)
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(room==null) return buf;
@@ -1074,6 +1120,10 @@ public class Generic
 					MOB mob=(MOB)inhabs.elementAt(i);
 					if((mob.isMonster())&&((mob.amFollowing()==null)||(mob.amFollowing().isMonster())))
 					{
+						if((mob.charStats().getMyRace().isGeneric())
+						&&(!custom.contains(mob.charStats().getMyRace())))
+						   custom.add(mob.charStats().getMyRace());
+							
 						buf.append("<RMOB>");
 						buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
 						if((((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0)))||(mob.numFollowers()>0))
@@ -1359,6 +1409,8 @@ public class Generic
 		{
 			MOB mob=(MOB)E;
 			mob.baseCharStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
+			mob.setClanID(XMLManager.getValFromPieces(buf,"CLAN"));
+			if(mob.getClanID().length()>0) mob.setClanRole(Clan.POS_MEMBER);
 			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
 			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))
 			{

@@ -139,14 +139,18 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("ABILITIES"))
 				{
-					for(int i=0;i<mob.numLearnedAbilities();i++)
+					int num=Util.s_int(R.getStat("NUMCABLE"));
+					for(int i=0;i<num;i++)
 					{
-						Ability A=mob.fetchAbility(i);
-						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.LANGUAGE))
+						Ability A=mob.fetchAbility(R.getStat("GETCABLE"+i));
+						if(A!=null)
+						{
+							A.setProfficiency(Util.s_int(R.getStat("GETCABLEPROF"+i)));
 							if(A.profficiency()==0)
 								str.append(A.Name()+", ");
 							else
 								str.append(A.Name()+"("+A.profficiency()+"%), ");
+						}
 					}
 
 				}

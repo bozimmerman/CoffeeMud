@@ -78,6 +78,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		{
 			Vector V=mob.location().resourceChoices();
 			Vector V2=new Vector();
+			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
 				if(((((Integer)V.elementAt(v)).intValue()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)

@@ -478,6 +478,7 @@ public class StdRace implements Race
 		{
 			racialAbilityMap=new Hashtable();
 			for(int i=0;i<racialAbilityNames.length;i++)
+			{
 				CMAble.addCharAbilityMapping(ID(),
 											 racialAbilityLevels[i],
 											 racialAbilityNames[i],
@@ -485,12 +486,18 @@ public class StdRace implements Race
 											 "",
 											 racialAbilityQuals[i],
 											 false);
+			}
 											 
 		}
 		if(racialAbilityMap==null) return empty;
-		if(racialAbilityMap.containsKey(new Integer(mob.baseEnvStats().level())))
-			return (Vector)racialAbilityMap.get(new Integer(mob.baseEnvStats().level()));
-		Vector V=CMAble.getUpToLevelListings(ID(),mob.baseEnvStats().level(),true,true);
+		Integer level=null;
+		if(mob!=null) 
+			level=new Integer(mob.envStats().level());
+		else
+			level=new Integer(Integer.MAX_VALUE);
+		if(racialAbilityMap.containsKey(level))
+			return (Vector)racialAbilityMap.get(level);
+		Vector V=CMAble.getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
 		Vector finalV=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
@@ -503,7 +510,7 @@ public class StdRace implements Race
 				finalV.addElement(A);
 			}
 		}
-		racialAbilityMap.put(new Integer(mob.baseEnvStats().level()),finalV);
+		racialAbilityMap.put(level,finalV);
 		return finalV;
 	}
 

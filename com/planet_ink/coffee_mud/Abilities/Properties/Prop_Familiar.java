@@ -87,6 +87,7 @@ public class Prop_Familiar extends Property
 				familiarWith=(MOB)affected;
 				familiarTo=familiarWith.amFollowing();
 				Prop_Familiar F=(Prop_Familiar)copyOf();
+				F.setBorrowed(affected,true);
 				F.imthedaddy=true;
 				F.familiarWith=familiarWith;
 				familiarTo.addAffect(F);

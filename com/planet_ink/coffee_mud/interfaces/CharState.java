@@ -38,4 +38,8 @@ public interface CharState extends Cloneable
 	
 	// create a new one of these
 	public CharState cloneCharState();
+	public String[] getCodes();
+	public void setStat(String code, String val);
+	public String getStat(String code);
+	public boolean sameAs(EnvStats E);
 }

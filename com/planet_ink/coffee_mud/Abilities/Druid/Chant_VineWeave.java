@@ -94,6 +94,11 @@ public class Chant_VineWeave extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if(mob.location().resourceChoices()==null)
+		{
+			mob.tell("This magic will not work here.");
+			return false;
+		}
 		if(((mob.location().myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
 		&&((mob.location().myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION)
 		&&(!mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_COTTON)))

@@ -40,13 +40,6 @@ public class JournalMessageNext extends StdWebMacro
 		else
 			last=""+(Util.s_int(last)+1);
 		
-		String user=Authenticate.getLogin(httpReq);
-		if((user==null)||(user.length()==0))
-			return "Read Not Allowed -- no LOGIN name (Noone logged in?)";
-		MOB M=Authenticate.getMOB(user);
-		if(M==null)
-			return "Read Not Allowed -- no LOGIN MOB (Noone logged in?)";
-		
 		httpReq.addRequestParameters("JOURNALMESSAGE",last);
 		return "";
 	}
