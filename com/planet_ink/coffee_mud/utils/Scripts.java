@@ -42,8 +42,8 @@ public class Scripts
 		String msg=messages.getString(tag);
 		if(msg!=null)
 		{
-			Util.replaceAll(msg,"@x1",replaceX);
-			Util.replaceAll(msg,"@x2",replaceX2);
+			msg=Util.replaceAll(msg,"@x1",replaceX);
+			msg=Util.replaceAll(msg,"@x2",replaceX2);
 		}
 		else msg="";
 		return msg;
@@ -54,9 +54,9 @@ public class Scripts
 		String msg=messages.getString(tag);
 		if(msg!=null)
 		{
-			Util.replaceAll(msg,"@x1",replaceX);
-			Util.replaceAll(msg,"@x2",replaceX2);
-			Util.replaceAll(msg,"@x3",replaceX3);
+			msg=Util.replaceAll(msg,"@x1",replaceX);
+			msg=Util.replaceAll(msg,"@x2",replaceX2);
+			msg=Util.replaceAll(msg,"@x3",replaceX3);
 		}
 		else msg="";
 		return msg;

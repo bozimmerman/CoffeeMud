@@ -29,6 +29,12 @@ public class Util
 	
 	public static String replaceAll(String str, String thisStr, String withThisStr)
 	{
+		if((str==null)
+		||(thisStr==null)
+		||(withThisStr==null)
+		||(str.length()==0)
+		||(thisStr.length()==0))
+			return str;
 		for(int i=str.length()-1;i>=0;i--)
 		{
 			if(str.charAt(i)==thisStr.charAt(0))
@@ -93,6 +99,17 @@ public class Util
 		return (Character.toUpperCase(name.charAt(0))+name.substring(1).toLowerCase()).trim();
 	}
 	
+	/**
+	 * Returns the boolean value of a string without crashing
+ 	 * 
+	 * <br><br><b>Usage:</b> int num=s_bool(CMD.substring(14));
+	 * @param INT Boolean value of string
+	 * @return int Boolean value of the string
+	 */
+	public static boolean s_bool(String BOOL)
+	{
+		return Boolean.valueOf(BOOL).booleanValue(); 
+	}
 	/**
 	 * Returns the integer value of a string without crashing
  	 * 

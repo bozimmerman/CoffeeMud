@@ -44,4 +44,61 @@ public class GenBanker extends StdBanker
 		resetToMaxState();
 		if(getWimpHitPoint()>0) setWimpHitPoint((int)Math.round(Util.mul(curState().getHitPoints(),.10)));
 	}
+	private static String[] MYCODES={"WHATISELL","PREJUDICE","BANKCHAIN","COININT","ITEMINT"};
+	public String getStat(String code)
+	{
+		if(Generic.getGenMobCodeNum(code)>=0)
+			return Generic.getGenMobStat(this,code);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: return ""+whatIsSold();
+		case 1: return prejudiceFactors();
+		case 2: return bankChain();
+		case 3: return ""+getCoinInterest();
+		case 4: return ""+getItemInterest();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{ 
+		if(Generic.getGenMobCodeNum(code)>=0)
+			Generic.setGenMobStat(this,code,val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: setWhatIsSold(Util.s_int(val)); break;
+		case 1: setPrejudiceFactors(val); break;
+		case 2: setBankChain(val); break;
+		case 3: setCoinInterest(Util.s_double(val)); break;
+		case 4: setItemInterest(Util.s_double(val)); break;
+		}
+	}
+	protected int getCodeNum(String code){
+		for(int i=0;i<MYCODES.length;i++)
+			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+		return -1;
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes()
+	{
+		if(codes!=null) return codes;
+		String[] superCodes=Generic.GENMOBCODES;
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<=superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenBanker)) return false;
+		String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+				return false;
+		return true;
+	}
 }

@@ -199,6 +199,40 @@ public class Generic
 		return "";
 	}
 
+	private static String getGenMobAbilities(MOB M)
+	{
+		StringBuffer abilitystr=new StringBuffer("");
+		for(int b=0;b<M.numAbilities();b++)
+		{
+			Ability A=M.fetchAbility(b);
+			if((A!=null)&&(!A.isBorrowed(M)))
+			{
+				abilitystr.append("<ABLTY>");
+				abilitystr.append(XMLManager.convertXMLtoTag("ACLASS",CMClass.className(A)));
+				abilitystr.append(XMLManager.convertXMLtoTag("ADATA",getPropertiesStr(A,true)));
+				abilitystr.append("</ABLTY>");
+			}
+		}
+		return (XMLManager.convertXMLtoTag("ABLTYS",abilitystr.toString()));
+	}
+	
+	private static String getGenMobInventory(MOB M)
+	{
+		StringBuffer itemstr=new StringBuffer("");
+		for(int b=0;b<M.inventorySize();b++)
+		{
+			Item I=M.fetchInventory(b);
+			if(I!=null)
+			{
+				itemstr.append("<ITEM>");
+				itemstr.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(I)));
+				itemstr.append(XMLManager.convertXMLtoTag("IDATA",getPropertiesStr(I,true)));
+				itemstr.append("</ITEM>");
+			}
+		}
+		return (XMLManager.convertXMLtoTag("INVEN",itemstr.toString()));
+	}
+	
 	private static String getGenPropertiesStr(Environmental E)
 	{
 		StringBuffer text=new StringBuffer("");
@@ -270,34 +304,8 @@ public class Generic
 			text.append(XMLManager.convertXMLtoTag("MONEY",((MOB)E).getMoney()));
 			text.append(XMLManager.convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.GENDER)));
 			text.append(XMLManager.convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
-
-			StringBuffer itemstr=new StringBuffer("");
-			for(int b=0;b<((MOB)E).inventorySize();b++)
-			{
-				Item I=((MOB)E).fetchInventory(b);
-				if(I!=null)
-				{
-					itemstr.append("<ITEM>");
-					itemstr.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(I)));
-					itemstr.append(XMLManager.convertXMLtoTag("IDATA",getPropertiesStr(I,true)));
-					itemstr.append("</ITEM>");
-				}
-			}
-			text.append(XMLManager.convertXMLtoTag("INVEN",itemstr.toString()));
-
-			StringBuffer abilitystr=new StringBuffer("");
-			for(int b=0;b<((MOB)E).numAbilities();b++)
-			{
-				Ability A=((MOB)E).fetchAbility(b);
-				if((A!=null)&&(!A.isBorrowed(E)))
-				{
-					abilitystr.append("<ABLTY>");
-					abilitystr.append(XMLManager.convertXMLtoTag("ACLASS",CMClass.className(A)));
-					abilitystr.append(XMLManager.convertXMLtoTag("ADATA",getPropertiesStr(A,true)));
-					abilitystr.append("</ABLTY>");
-				}
-			}
-			text.append(XMLManager.convertXMLtoTag("ABLTYS",abilitystr.toString()));
+			text.append(getGenMobInventory((MOB)E));
+			text.append(getGenMobAbilities((MOB)E));
 
 			if(E instanceof Banker)
 			{
@@ -312,7 +320,7 @@ public class Generic
 				text.append(XMLManager.convertXMLtoTag("CLERIT",((Deity)E).getClericRitual()));
 				text.append(XMLManager.convertXMLtoTag("WORRIT",((Deity)E).getWorshipRitual()));
 
-				itemstr=new StringBuffer("");
+				StringBuffer itemstr=new StringBuffer("");
 				for(int b=0;b<((Deity)E).numBlessings();b++)
 				{
 					Ability A=((Deity)E).fetchBlessing(b);
@@ -330,7 +338,7 @@ public class Generic
 				text.append(XMLManager.convertXMLtoTag("PREJFC",((ShopKeeper)E).prejudiceFactors()));
 
 				Vector V=((ShopKeeper)E).getUniqueStoreInventory();
-				itemstr=new StringBuffer("");
+				StringBuffer itemstr=new StringBuffer("");
 				for(int b=0;b<V.size();b++)
 				{
 					Environmental Env=(Environmental)V.elementAt(b);
@@ -1141,6 +1149,92 @@ public class Generic
 		}
 	}
 
+	private static void setGenMobAbilities(MOB M, Vector buf)
+	{
+		Vector V=XMLManager.getRealContentsFromPieces(buf,"ABLTYS");
+		if(V==null)
+		{
+			Log.errOut("Generic","Error parsing 'ABLTYS' of "+M.ID()+".  Load aborted");
+			return;
+		}
+		else
+		{
+			for(int i=0;i<V.size();i++)
+			{
+				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
+				if((!ablk.tag.equalsIgnoreCase("ABLTY"))||(ablk.contents==null))
+				{
+					Log.errOut("Generic","Error parsing 'ABLTY' of "+M.ID()+".  Load aborted");
+					return;
+				}
+				Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"ACLASS"));
+				Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"ADATA");
+				if((adat==null)||(newOne==null))
+				{
+					Log.errOut("Generic","Error parsing 'ABLTY DATA' of "+CMClass.className(newOne)+".  Load aborted");
+					return;
+				}
+				newOne.setProfficiency(100);
+				setPropertiesStr(newOne,adat,true);
+				if(M.fetchAbility(newOne.ID())==null)
+				{
+					M.addAbility(newOne);
+					newOne.autoInvocation(M);
+				}
+			}
+		}
+	}
+
+	private static void setGenMobInventory(MOB M, Vector buf)
+	{
+		Vector V=XMLManager.getRealContentsFromPieces(buf,"INVEN");
+		if(V==null)
+		{
+			Log.errOut("Generic","Error parsing 'INVEN' of "+M.ID()+".  Load aborted");
+			return;
+		}
+		else
+		{
+			Hashtable IIDmap=new Hashtable();
+			Hashtable LOCmap=new Hashtable();
+			for(int i=0;i<V.size();i++)
+			{
+				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)V.elementAt(i);
+				if((!iblk.tag.equalsIgnoreCase("ITEM"))||(iblk.contents==null))
+				{
+					Log.errOut("Generic","Error parsing 'ITEM' of "+M.ID()+".  Load aborted");
+					return;
+				}
+				Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"ICLASS"));
+				Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"IDATA");
+				if((idat==null)||(newOne==null))
+				{
+					Log.errOut("Generic","Error parsing 'ITEM DATA' of "+CMClass.className(newOne)+".  Load aborted");
+					return;
+				}
+				int wornCode=XMLManager.getIntFromPieces(idat,"IWORN");
+				if((newOne instanceof Container)&&(((Container)newOne).capacity()>0))
+					IIDmap.put(XMLManager.getValFromPieces(idat,"IID"),newOne);
+				String ILOC=XMLManager.getValFromPieces(idat,"ILOC");
+				M.addInventory(newOne);
+				if(ILOC.length()>0)
+					LOCmap.put(newOne,ILOC);
+				setPropertiesStr(newOne,idat,true);
+				newOne.wearAt(wornCode);
+			}
+			for(int i=0;i<M.inventorySize();i++)
+			{
+				Item item=M.fetchInventory(i);
+				if(item!=null)
+				{
+					String ILOC=(String)LOCmap.get(item);
+					if(ILOC!=null)
+						item.setContainer((Item)IIDmap.get(ILOC));
+				}
+			}
+		}
+	}
+	
 	private static void setGenPropertiesStr(Environmental E, Vector buf)
 	{
 		if(buf==null)
@@ -1264,88 +1358,9 @@ public class Generic
 					R.startRacing(mob,true);
 				}
 			}
+			setGenMobInventory((MOB)E,buf);
+			setGenMobAbilities((MOB)E,buf);
 			
-			Vector V=XMLManager.getRealContentsFromPieces(buf,"INVEN");
-			if(V==null)
-			{
-				Log.errOut("Generic","Error parsing 'INVEN' of "+E.ID()+".  Load aborted");
-				return;
-			}
-			else
-			{
-				Hashtable IIDmap=new Hashtable();
-				Hashtable LOCmap=new Hashtable();
-				for(int i=0;i<V.size();i++)
-				{
-					XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)V.elementAt(i);
-					if((!iblk.tag.equalsIgnoreCase("ITEM"))||(iblk.contents==null))
-					{
-						Log.errOut("Generic","Error parsing 'ITEM' of "+E.ID()+".  Load aborted");
-						return;
-					}
-					Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"ICLASS"));
-					Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"IDATA");
-					if((idat==null)||(newOne==null))
-					{
-						Log.errOut("Generic","Error parsing 'ITEM DATA' of "+CMClass.className(newOne)+".  Load aborted");
-						return;
-					}
-					int wornCode=XMLManager.getIntFromPieces(idat,"IWORN");
-					if((newOne instanceof Container)&&(((Container)newOne).capacity()>0))
-						IIDmap.put(XMLManager.getValFromPieces(idat,"IID"),newOne);
-					String ILOC=XMLManager.getValFromPieces(idat,"ILOC");
-					mob.addInventory(newOne);
-					if(ILOC.length()>0)
-						LOCmap.put(newOne,ILOC);
-					setPropertiesStr(newOne,idat,true);
-					newOne.wearAt(wornCode);
-				}
-				for(int i=0;i<mob.inventorySize();i++)
-				{
-					Item item=mob.fetchInventory(i);
-					if(item!=null)
-					{
-						String ILOC=(String)LOCmap.get(item);
-						if(ILOC!=null)
-							item.setContainer((Item)IIDmap.get(ILOC));
-					}
-				}
-			}
-
-
-			V=XMLManager.getRealContentsFromPieces(buf,"ABLTYS");
-			if(V==null)
-			{
-				Log.errOut("Generic","Error parsing 'ABLTYS' of "+E.ID()+".  Load aborted");
-				return;
-			}
-			else
-			{
-				for(int i=0;i<V.size();i++)
-				{
-					XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
-					if((!ablk.tag.equalsIgnoreCase("ABLTY"))||(ablk.contents==null))
-					{
-						Log.errOut("Generic","Error parsing 'ABLTY' of "+E.ID()+".  Load aborted");
-						return;
-					}
-					Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"ACLASS"));
-					Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"ADATA");
-					if((adat==null)||(newOne==null))
-					{
-						Log.errOut("Generic","Error parsing 'ABLTY DATA' of "+CMClass.className(newOne)+".  Load aborted");
-						return;
-					}
-					newOne.setProfficiency(100);
-					setPropertiesStr(newOne,adat,true);
-					if(((MOB)E).fetchAbility(newOne.ID())==null)
-					{
-						((MOB)E).addAbility(newOne);
-						newOne.autoInvocation(((MOB)E));
-					}
-				}
-			}
-
 			if(E instanceof Banker)
 			{
 				((Banker)E).setBankChain(XMLManager.getValFromPieces(buf,"BANK"));
@@ -1361,7 +1376,7 @@ public class Generic
 				godmob.setClericRitual(XMLManager.getValFromPieces(buf,"CLERIT"));
 				godmob.setWorshipRitual(XMLManager.getValFromPieces(buf,"WORRIT"));
 				
-				V=XMLManager.getRealContentsFromPieces(buf,"BLESSINGS");
+				Vector V=XMLManager.getRealContentsFromPieces(buf,"BLESSINGS");
 				if(V==null)
 				{
 					Log.errOut("Generic","Error parsing 'BLESSINGS' of "+E.ID()+".  Load aborted");
@@ -1396,7 +1411,7 @@ public class Generic
 				shopmob.setPrejudiceFactors(XMLManager.getValFromPieces(buf,"PREJFC"));
 				
 				
-				V=XMLManager.getRealContentsFromPieces(buf,"STORE");
+				Vector V=XMLManager.getRealContentsFromPieces(buf,"STORE");
 				if(V==null)
 				{
 					Log.errOut("Generic","Error parsing 'STORE' of "+E.ID()+".  Load aborted");
@@ -1602,4 +1617,149 @@ public class Generic
 		}
 	}
 
+	public static String[] GENITEMCODES={"CLASS","USES","LEVEL","ABILITY","NAME",
+									 "DISPLAY","DESCRIPTION","SECRET","PROPERWORN",
+									 "WORNAND","BASEGOLD","ISREADABLE","ISDROPPABLE",
+									 "ISREMOVABLE","MATERIAL","AFFBEHAV",
+									 "DISPOSITION","WEIGHT","ARMOR",
+									 "DAMAGE","ATTACK","READABLETEXT"};
+	public static String getGenItemStat(Item I, String code){
+		switch(getGenItemCodeNum(code))
+		{
+		case 0: return I.ID();
+		case 1: return ""+I.usesRemaining();
+		case 2: return ""+I.baseEnvStats().level();
+		case 3: return ""+I.baseEnvStats().ability();
+		case 4: return I.name();
+		case 5: return I.displayText();
+		case 6: return I.description();
+		case 7: return I.rawSecretIdentity();
+		case 8: return ""+I.rawProperLocationBitmap();
+		case 9: return ""+I.rawLogicalAnd();
+		case 10: return ""+I.baseGoldValue();
+		case 11: return ""+I.isReadable();
+		case 12: return ""+I.isDroppable();
+		case 13: return ""+I.isRemovable();
+		case 14: return ""+I.material();
+		case 15: return Generic.getExtraEnvPropertiesStr(I);
+		case 16: return ""+I.baseEnvStats().disposition();
+		case 17: return ""+I.baseEnvStats().weight();
+		case 18: return ""+I.baseEnvStats().armor();
+		case 19: return ""+I.baseEnvStats().damage();
+		case 20: return ""+I.baseEnvStats().attackAdjustment();
+		case 21: return I.readableText();
+		}
+		return "";
+	}
+	public static void setGenItemStat(Item I, String code, String val)
+	{
+		switch(getGenItemCodeNum(code))
+		{
+		case 0: break;
+		case 1: I.setUsesRemaining(Util.s_int(val)); break;
+		case 2: I.baseEnvStats().setLevel(Util.s_int(val)); break;
+		case 3: I.baseEnvStats().setAbility(Util.s_int(val)); break;
+		case 4: I.setName(val); break;
+		case 5: I.setDisplayText(val); break;
+		case 6: I.setDescription(val); break;
+		case 7: I.setSecretIdentity(val); break;
+		case 8: I.setRawProperLocationBitmap(Util.s_long(val)); break;
+		case 9: I.setRawLogicalAnd(Util.s_bool(val)); break;
+		case 10: I.setBaseValue(Util.s_int(val)); break;
+		case 11: I.setReadable(Util.s_bool(val)); break;
+		case 12: I.setDroppable(Util.s_bool(val)); break;
+		case 13: I.setRemovable(Util.s_bool(val)); break;
+		case 14: I.setMaterial(Util.s_int(val)); break;
+		case 15: Generic.setExtraEnvProperties(I,XMLManager.parseAllXML(val)); break;
+		case 16: I.baseEnvStats().setDisposition(Util.s_int(val)); break;
+		case 17: I.baseEnvStats().setWeight(Util.s_int(val)); break;
+		case 18: I.baseEnvStats().setArmor(Util.s_int(val)); break;
+		case 19: I.baseEnvStats().setDamage(Util.s_int(val)); break;
+		case 20: I.baseEnvStats().setAttackAdjustment(Util.s_int(val)); break;
+		case 21: I.setReadableText(val); break;
+		}
+	}
+	public static int getGenItemCodeNum(String code){
+		for(int i=0;i<GENITEMCODES.length;i++)
+			if(code.equalsIgnoreCase(GENITEMCODES[i])) return i;
+		return -1;
+	}
+	public static String[] GENMOBCODES={"CLASS","RACE","LEVEL","ABILITY","NAME",
+									 "DISPLAY","DESCRIPTION","MONEY","ALIGNMENT",
+									 "DISPOSITION","SENSES","ARMOR",
+									 "DAMAGE","ATTACK","SPEED","AFFBEHAV",
+									 "ABLES","INVENTORY"};
+	public static String getGenMobStat(MOB M, String code){
+		switch(getGenItemCodeNum(code))
+		{
+		case 0: return CMClass.className(M);
+		case 1: return M.baseCharStats().getMyRace().ID();
+		case 2: return ""+M.baseEnvStats().level();
+		case 3: return ""+M.baseEnvStats().ability();
+		case 4: return M.name();
+		case 5: return M.displayText();
+		case 6: return M.description();
+		case 7: return ""+M.getMoney();
+		case 8: return ""+M.getAlignment();
+		case 9: return ""+M.baseEnvStats().disposition();
+		case 10: return ""+M.baseEnvStats().sensesMask();
+		case 11: return ""+M.baseEnvStats().armor();
+		case 12: return ""+M.baseEnvStats().damage();
+		case 13: return ""+M.baseEnvStats().attackAdjustment();
+		case 14: return ""+M.baseEnvStats().speed();
+		case 15: return Generic.getExtraEnvPropertiesStr(M);
+		case 16: return Generic.getGenMobAbilities(M);
+		case 17: return Generic.getGenMobInventory(M);
+		}
+		return "";
+	}
+	public static void setGenMobStat(MOB M, String code, String val)
+	{
+		switch(getGenItemCodeNum(code))
+		{
+		case 0: break;
+		case 1: M.baseCharStats().setMyRace(CMClass.getRace(val)); break;
+		case 2: M.baseEnvStats().setLevel(Util.s_int(val)); break;
+		case 3: M.baseEnvStats().setAbility(Util.s_int(val)); break;
+		case 4: M.setName(val); break;
+		case 5: M.setDisplayText(val); break;
+		case 6: M.setDescription(val); break;
+		case 7: M.setMoney(Util.s_int(val)); break;
+		case 8: M.setAlignment(Util.s_int(val)); break;
+		case 9: M.baseEnvStats().setDisposition(Util.s_int(val)); break;
+		case 10: M.baseEnvStats().setSensesMask(Util.s_int(val)); break;
+		case 11: M.baseEnvStats().setArmor(Util.s_int(val)); break;
+		case 12: M.baseEnvStats().setDamage(Util.s_int(val)); break;
+		case 13: M.baseEnvStats().setAttackAdjustment(Util.s_int(val)); break;
+		case 14: M.baseEnvStats().setSpeed(Util.s_double(val)); break;
+		case 15: Generic.setExtraEnvProperties(M,XMLManager.parseAllXML(val)); break;
+		case 16:
+			{
+				String extras=Generic.getExtraEnvPropertiesStr(M);
+				while(M.numAbilities()>0)
+				{
+					Ability A=M.fetchAbility(0);
+					if(A!=null)	M.delAbility(A);
+				}
+				Generic.setExtraEnvProperties(M,XMLManager.parseAllXML(extras));
+				Generic.setGenMobAbilities(M,XMLManager.parseAllXML(val));
+				break;
+			}
+		case 17:
+			{
+				while(M.inventorySize()>0)
+				{
+					Item I=M.fetchInventory(0);
+					if(I!=null) M.delInventory(I);
+				}
+				Generic.setGenMobInventory(M,XMLManager.parseAllXML(val));
+			}
+			break;
+		}
+	}
+	public static int getGenMobCodeNum(String code){
+		for(int i=0;i<GENMOBCODES.length;i++)
+			if(code.equalsIgnoreCase(GENMOBCODES[i])) return i;
+		return -1;
+	}
 }

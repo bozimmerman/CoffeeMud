@@ -47,7 +47,7 @@ public class GenWeapon extends StdWeapon
 		Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
+	private static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
 							  "AMMOTYPE","AMMOCAPACITY"};
 	public String getStat(String code)
 	{
@@ -85,10 +85,12 @@ public class GenWeapon extends StdWeapon
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;
 	}
+	private static String[] codes=null;
 	public String[] getStatCodes()
 	{
+		if(codes!=null) return codes;
 		String[] superCodes=Generic.GENITEMCODES;
-		String[] codes=new String[superCodes.length+MYCODES.length];
+		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<=superCodes.length;i++)
 			codes[i]=superCodes[i];

@@ -1138,4 +1138,39 @@ public class StdRoom
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	private static final String[] CODES={"CLASS","DISPLAY","DESCRIPTION","TEXT"};
+	public String[] getStatCodes(){return CODES;}
+	private int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public String getStat(String code){
+		switch(getCodeNum(code))
+		{
+		case 0: return CMClass.className(this);
+		case 1: return displayText();
+		case 2: return description();
+		case 3: return text();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return;
+		case 1: setDisplayText(val); break;
+		case 2: setDescription(val); break;
+		case 3: setMiscText(val); break;
+		}
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof StdRoom)) return false;
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+				return false;
+		return true;
+	}
 }

@@ -42,7 +42,7 @@ public class GenFood extends StdFood
 		Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private String[] MYCODES={"NORISHMENT"};
+	private static String[] MYCODES={"NORISHMENT"};
 	public String getStat(String code)
 	{
 		if(Generic.getGenItemCodeNum(code)>=0)
@@ -69,10 +69,12 @@ public class GenFood extends StdFood
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;
 	}
+	private static String[] codes=null;
 	public String[] getStatCodes()
 	{
+		if(codes!=null) return codes;
 		String[] superCodes=Generic.GENITEMCODES;
-		String[] codes=new String[superCodes.length+MYCODES.length];
+		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<=superCodes.length;i++)
 			codes[i]=superCodes[i];
