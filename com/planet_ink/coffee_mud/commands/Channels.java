@@ -77,7 +77,6 @@ public class Channels
 			}
 		}
 
-Log.sysOut(mob.getChannelMask()+"/"+channelInt+"/"+Util.isSet(mob.getChannelMask(),channelInt)+"/"+Util.pow(2,channelInt));		
 		if(Util.isSet(mob.getChannelMask(),channelInt))
 		{
 			mob.setChannelMask(mob.getChannelMask()&(mob.getChannelMask()-channelNum));
@@ -118,7 +117,6 @@ Log.sysOut(mob.getChannelMask()+"/"+channelInt+"/"+Util.isSet(mob.getChannelMask
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
 				channelNum=c;
 		}
-Log.sysOut(mob.getChannelMask()+"/"+channelNum+"/"+Util.isSet(mob.getChannelMask(),channelNum)+"/"+Util.pow(2,channelNum));		
 		if(!Util.isSet(mob.getChannelMask(),channelNum))
 		{
 			mob.setChannelMask(mob.getChannelMask()|(Util.pow(2,channelNum)));
