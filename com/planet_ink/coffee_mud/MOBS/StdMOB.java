@@ -1531,7 +1531,7 @@ public class StdMOB implements MOB
 				}
 				break;
 			case Affect.TYP_FOLLOW:
-				if(totalFollowers()>=maxFollowers())
+				if(totalFollowers()+mob.totalFollowers()>=maxFollowers())
 				{
 					mob.tell(name()+" can't accept any more followers.");
 					return false;
@@ -1594,6 +1594,32 @@ public class StdMOB implements MOB
 		boolean canseesrc=Sense.canBeSeenBy(affect.source(),this);
 		boolean canhearsrc=Sense.canBeHeardBy(affect.source(),this);
 
+		// first do special cases...
+		if((affect.targetCode()!=Affect.NO_EFFECT)&&(affect.amITarget(this)))
+		{
+			// healing by itself is pure happy
+			if(Util.bset(affect.targetCode(),Affect.MASK_HEAL))
+			{
+				int amt=affect.targetCode()-Affect.MASK_HEAL;
+				if(amt>0)
+					curState().adjHitPoints(amt,maxState());
+			}
+			else
+			if(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+			{
+				int dmg=affect.targetCode()-Affect.MASK_HURT;
+				if(dmg>0)
+				{
+					if((!curState().adjHitPoints(-dmg,maxState()))&&(location()!=null))
+						ExternalPlay.postDeath(affect.source(),this,affect);
+					else
+					if((curState().getHitPoints()<getWimpHitPoint())&&(isInCombat()))
+						ExternalPlay.postPanic(this,affect);
+				}
+			}
+		}
+		
+		// now go on to source activities
 		if((affect.sourceCode()!=Affect.NO_EFFECT)&&(affect.amISource(this)))
 		{
 			if(Util.bset(affect.sourceCode(),Affect.MASK_MALICIOUS))
@@ -1748,96 +1774,81 @@ public class StdMOB implements MOB
 		{
 			int targetMajor=affect.targetMajor();
 
-			// healing by itself is pure happy
-			if(Util.bset(affect.targetCode(),Affect.MASK_HEAL))
+			// two special cases were already handled above
+			if((!Util.bset(affect.targetCode(),Affect.MASK_HEAL))
+			&&(!Util.bset(affect.targetCode(),Affect.MASK_HURT)))
 			{
-				int amt=affect.targetCode()-Affect.MASK_HEAL;
-				if(amt>0)
-					curState().adjHitPoints(amt,maxState());
-			}
-			else
-			if(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-			{
-				int dmg=affect.targetCode()-Affect.MASK_HURT;
-				if(dmg>0)
+				// but there might still be a few more...
+				if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 				{
-					if((!curState().adjHitPoints(-dmg,maxState()))&&(location()!=null))
-						ExternalPlay.postDeath(affect.source(),this,affect);
-					else
-					if((curState().getHitPoints()<getWimpHitPoint())&&(isInCombat()))
-						ExternalPlay.postPanic(this,affect);
-				}
-			}
-			else
-			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-			{
-				if((!isInCombat())
-				&&(!amDead)
-				&&(location().isInhabitant((MOB)affect.source())))
-				{
-					establishRange(this,affect.source(),affect.tool());
-					setVictim(affect.source());
-				}
-				if((isInCombat())&&(!amDead))
-				{
-					if(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+					if((!isInCombat())
+					&&(!amDead)
+					&&(location().isInhabitant((MOB)affect.source())))
 					{
-						Weapon weapon=affect.source().myNaturalWeapon();
-						if((affect.tool()!=null)&&(affect.tool() instanceof Weapon))
-							weapon=(Weapon)affect.tool();
-						if(weapon!=null)
-						{
-							boolean isHit=(CoffeeUtensils.normalizeAndRollLess(affect.source().adjustedAttackBonus(this)+adjustedArmor()));
-							ExternalPlay.postWeaponDamage(affect.source(),this,weapon,isHit);
-							affect.tagModified(true);
-						}
+						establishRange(this,affect.source(),affect.tool());
+						setVictim(affect.source());
 					}
-					else
-					if((affect.tool()!=null)
-					&&(affect.tool() instanceof Weapon))
-						ExternalPlay.postWeaponDamage(affect.source(),this,(Weapon)affect.tool(),true);
+					if((isInCombat())&&(!amDead))
+					{
+						if(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+						{
+							Weapon weapon=affect.source().myNaturalWeapon();
+							if((affect.tool()!=null)&&(affect.tool() instanceof Weapon))
+								weapon=(Weapon)affect.tool();
+							if(weapon!=null)
+							{
+								boolean isHit=(CoffeeUtensils.normalizeAndRollLess(affect.source().adjustedAttackBonus(this)+adjustedArmor()));
+								ExternalPlay.postWeaponDamage(affect.source(),this,weapon,isHit);
+								affect.tagModified(true);
+							}
+						}
+						else
+						if((affect.tool()!=null)
+						&&(affect.tool() instanceof Weapon))
+							ExternalPlay.postWeaponDamage(affect.source(),this,(Weapon)affect.tool(),true);
+					}
+					ExternalPlay.standIfNecessary(this);
 				}
-				ExternalPlay.standIfNecessary(this);
-			}
-			else
-			if((affect.targetMinor()==Affect.TYP_GIVE)
-			 &&(affect.tool()!=null)
-			 &&(affect.tool() instanceof Item))
-			{
-				FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
-				location().send(this,msg);
-				msg=new FullMsg((MOB)affect.target(),affect.tool(),null,Affect.MSG_GET,null);
-				location().send(this,msg);
-			}
-			else
-			if((affect.targetMinor()==Affect.TYP_EXAMINESOMETHING)
-			&&(Sense.canBeSeenBy(this,mob)))
-			{
-				StringBuffer myDescription=new StringBuffer("");
-				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-					myDescription.append(Name()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().roomID())+"\n\r"+description()+"\n\r");
-				if(!isMonster())
+				else
+				if((affect.targetMinor()==Affect.TYP_GIVE)
+				 &&(affect.tool()!=null)
+				 &&(affect.tool() instanceof Item))
 				{
-					String levelStr=charStats().displayClassLevel(this,false);
-					myDescription.append(name()+" the "+charStats().raceName()+" is a "+levelStr+".\n\r");
+					FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
+					location().send(this,msg);
+					msg=new FullMsg((MOB)affect.target(),affect.tool(),null,Affect.MSG_GET,null);
+					location().send(this,msg);
 				}
-				if(envStats().height()>0)
-					myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
-				myDescription.append(healthText()+"\n\r\n\r");
-				myDescription.append(description()+"\n\r\n\r");
-				myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(affect.source(),this));
-				mob.tell(myDescription.toString());
-			}
-			else
-			if((affect.targetMinor()==Affect.TYP_REBUKE)
-			&&(affect.source().Name().equals(getLeigeID())))
-				setLeigeID("");
-			else
-			if(Util.bset(targetMajor,affect.MASK_CHANNEL))
-			{
-				if((playerStats()!=null)
-				&&(!Util.isSet(playerStats().getChannelMask(),((affect.targetCode()-affect.MASK_CHANNEL)-Affect.TYP_CHANNEL))))
-					tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
+				else
+				if((affect.targetMinor()==Affect.TYP_EXAMINESOMETHING)
+				&&(Sense.canBeSeenBy(this,mob)))
+				{
+					StringBuffer myDescription=new StringBuffer("");
+					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+						myDescription.append(Name()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().roomID())+"\n\r"+description()+"\n\r");
+					if(!isMonster())
+					{
+						String levelStr=charStats().displayClassLevel(this,false);
+						myDescription.append(name()+" the "+charStats().raceName()+" is a "+levelStr+".\n\r");
+					}
+					if(envStats().height()>0)
+						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
+					myDescription.append(healthText()+"\n\r\n\r");
+					myDescription.append(description()+"\n\r\n\r");
+					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(affect.source(),this));
+					mob.tell(myDescription.toString());
+				}
+				else
+				if((affect.targetMinor()==Affect.TYP_REBUKE)
+				&&(affect.source().Name().equals(getLeigeID())))
+					setLeigeID("");
+				else
+				if(Util.bset(targetMajor,affect.MASK_CHANNEL))
+				{
+					if((playerStats()!=null)
+					&&(!Util.isSet(playerStats().getChannelMask(),((affect.targetCode()-affect.MASK_CHANNEL)-Affect.TYP_CHANNEL))))
+						tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
+				}
 			}
 
 			// now do the tells

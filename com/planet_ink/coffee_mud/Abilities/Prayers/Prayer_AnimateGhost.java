@@ -66,10 +66,15 @@ public class Prayer_AnimateGhost extends Prayer
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a ghost is here");
 				newMOB.baseEnvStats().setLevel(14);
-				newMOB.setBaseCharStats(body.charStats());
-				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
-				newMOB.baseCharStats().setStat(CharStats.STRENGTH,2);
-				newMOB.baseCharStats().setStat(CharStats.DEXTERITY,35);
+				newMOB.baseCharStats().setStat(CharStats.GENDER,body.charStats().getStat(CharStats.GENDER));
+				newMOB.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
+				newMOB.baseCharStats().setBodyPartStrAfterRace(body.charStats().getBodyPartStr());
+				Ability P=CMClass.getAbility("Prop_StatTrainer");
+				if(P!=null)
+				{
+					P.setMiscText("NOTEACH STR=2 INT=10 WIS=10 CON=10 DEX=35 CHA=2");
+					newMOB.addNonUninvokableAffect(P);
+				}
 				newMOB.recoverCharStats();
 				newMOB.baseEnvStats().setAttackAdjustment(10);
 				newMOB.baseEnvStats().setDisposition(EnvStats.IS_FLYING);

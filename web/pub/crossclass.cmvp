@@ -6,17 +6,8 @@
 	<title>Cross Class Skills</title>
 </head>
 
-<body BGCOLOR=#00FF99>
+<body>
 <h3>Cross Class Skill Information</h3><P>
-
-	<TABLE BORDER=1>
-	<TR><TD WIDTH=100><B>Skills</B></TD>
-	@CharClassNext?reset@
-	@loop@ @CharClassNext@
-	<TD WIDTH=50><a href="crossclass.cmvp?SORTBY=@CharClassID@">@CharClassName@</a></TD>
-	@back@
-	</TR>
-	@CrossClassAbilities@
-	</TABLE>
+	@CrossBaseClassAbilities@
 </BODY>
 </HTML>

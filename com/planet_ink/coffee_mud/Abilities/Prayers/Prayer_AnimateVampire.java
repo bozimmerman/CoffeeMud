@@ -83,13 +83,15 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a vampire is here");
 				newMOB.baseEnvStats().setLevel(19);
-				newMOB.setBaseCharStats(body.charStats());
+				newMOB.baseCharStats().setStat(CharStats.GENDER,body.charStats().getStat(CharStats.GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
-				newMOB.baseCharStats().setStat(CharStats.STRENGTH,22);
-				newMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,15);
-				newMOB.baseCharStats().setStat(CharStats.WISDOM,15);
-				newMOB.baseCharStats().setStat(CharStats.CHARISMA,20);
-				newMOB.baseCharStats().setStat(CharStats.DEXTERITY,22);
+				newMOB.baseCharStats().setBodyPartStrAfterRace(body.charStats().getBodyPartStr());
+				Ability P=CMClass.getAbility("Prop_StatTrainer");
+				if(P!=null)
+				{
+					P.setMiscText("NOTEACH STR=22 INT=15 WIS=15 CON=10 DEX=22 CHA=20");
+					newMOB.addNonUninvokableAffect(P);
+				}
 				newMOB.baseEnvStats().setDisposition(EnvStats.IS_FLYING);
 				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INVISIBLE);
 				newMOB.recoverCharStats();

@@ -60,10 +60,15 @@ public class Prayer_AnimateSkeleton extends Prayer
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a skeleton is here");
 				newMOB.baseEnvStats().setLevel(1);
-				newMOB.setBaseCharStats(body.charStats());
+				newMOB.baseCharStats().setStat(CharStats.GENDER,body.charStats().getStat(CharStats.GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Skeleton"));
-				newMOB.baseCharStats().setStat(CharStats.STRENGTH,15);
-				newMOB.baseCharStats().setStat(CharStats.DEXTERITY,16);
+				newMOB.baseCharStats().setBodyPartStrAfterRace(body.charStats().getBodyPartStr());
+				Ability P=CMClass.getAbility("Prop_StatTrainer");
+				if(P!=null)
+				{
+					P.setMiscText("NOTEACH STR=16 INT=10 WIS=10 CON=10 DEX=15 CHA=2");
+					newMOB.addNonUninvokableAffect(P);
+				}
 				newMOB.recoverCharStats();
 				newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 				newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));

@@ -19,8 +19,10 @@ public class Fighterness extends CombatAbilities
 		if(!(forMe instanceof MOB)) return;
 		MOB mob=(MOB)forMe;
 		String className="Fighter";
-		if((getParms().length()>0)&&(CMClass.getCharClass(getParms())!=null))
-			className=getParms();
+		combatMode=COMBAT_RANDOM;
+		String theparms=getParmsMinusCombatMode();
+		if((theparms.length()>0)&&((CMClass.getCharClass(theparms)!=null)))
+		   className=theparms;
 		if(!mob.baseCharStats().getCurrentClass().ID().equals(className))
 		{
 			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(className));

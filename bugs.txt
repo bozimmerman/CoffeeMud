@@ -1,3 +1,2 @@
 book of laws can be crafted
 the Armor Rescore button doesn't appear to work. I tried a Torso, LVL 75, Steel armor, and it returned a value of 0.
-implement mana cost ranges per class per ability, movement, etc..

@@ -300,6 +300,27 @@ public class DefaultCharStats implements Cloneable, CharStats
 		if(num<0) return 0;
 		return num;
 	}
+	
+	public String getBodyPartStr()
+	{
+		StringBuffer str=new StringBuffer("");
+		for(int i=0;i<getMyRace().bodyMask().length;i++)
+			str.append(getBodyPart(i)+";");
+		return str.toString();
+	}
+	public void setBodyPartStrAfterRace(String str)
+	{
+		Vector V=Util.parseSemicolons(str,true);
+		bodyAlterations=null;
+		for(int i=0;i<getMyRace().bodyMask().length;i++)
+		{
+			if(V.size()<=i) break;
+			int val=Util.s_int((String)V.elementAt(i));
+			int num=getMyRace().bodyMask()[i];
+			if(num!=val) alterBodypart(i,val-num);
+		}
+	}
+	
 	public void alterBodypart(int racialPartNumber, int deviation)
 	{
 		if(bodyAlterations==null) bodyAlterations=new int[Race.BODY_PARTS];

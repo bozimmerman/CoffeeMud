@@ -457,17 +457,30 @@ public class StdAbility implements Ability, Cloneable
 		if(usageType()==Ability.USAGE_NADA) return new int[3];
 		
 		int diff=0;
+		int lowest=Integer.MAX_VALUE;
 		for(int c=0;c<mob.charStats().numClasses();c++)
 		{
 			CharClass C=mob.charStats().getMyClass(c);
 			int qualifyingLevel=CMAble.getQualifyingLevel(C.ID(),ID());
 			int classLevel=mob.charStats().getClassLevel(C.ID());
 			if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
+			{
 				diff+=(classLevel-qualifyingLevel);
+				if(qualifyingLevel<lowest) lowest=qualifyingLevel;
+			}
+		}
+		if(lowest==Integer.MAX_VALUE)
+		{
+			lowest=CMAble.lowestQualifyingLevel(ID());
+			if(lowest<0) lowest=0;
 		}
 	
 		int consumed=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACOST);
+		if(consumed<0) consumed=50+lowest;
+		int minimum=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANAMINCOST);
+		if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
 		if(diff>0) consumed=consumed - (consumed /10 * diff);
+		if(consumed<minimum) consumed=minimum;
 		if(overrideMana()>=0) consumed=overrideMana();
 		return buildCostArray(mob,consumed);
 	}

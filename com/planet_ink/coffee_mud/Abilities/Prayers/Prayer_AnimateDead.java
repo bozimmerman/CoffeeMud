@@ -61,10 +61,15 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("");
 				newMOB.baseEnvStats().setLevel(body.envStats().level());
-				newMOB.setBaseCharStats(body.charStats());
-				newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);
-				newMOB.baseCharStats().setStat(CharStats.DEXTERITY,3);
+				newMOB.baseCharStats().setStat(CharStats.GENDER,body.charStats().getStat(CharStats.GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
+				newMOB.baseCharStats().setBodyPartStrAfterRace(body.charStats().getBodyPartStr());
+				Ability P=CMClass.getAbility("Prop_StatTrainer");
+				if(P!=null)
+				{
+					P.setMiscText("NOTEACH STR=20 INT=10 WIS=10 CON=10 DEX=3 CHA=2");
+					newMOB.addNonUninvokableAffect(P);
+				}
 				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
 				newMOB.recoverCharStats();
 				newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));

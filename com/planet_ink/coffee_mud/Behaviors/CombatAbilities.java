@@ -13,7 +13,39 @@ public class CombatAbilities extends StdBehavior
 	{
 		return new CombatAbilities();
 	}
+	
+	public int combatMode=0;
+	
+	public final static int COMBAT_RANDOM=0;
+	public final static int COMBAT_DEFENSIVE=1;
+	public final static int COMBAT_OFFENSIVE=2;
+	public final static int COMBAT_MIXEDOFFENSIVE=3;
+	public final static int COMBAT_MIXEDDEFENSIVE=4;
+	public final static String[] names={
+		"RANDOM",
+		"DEFENSIVE",
+		"OFFENSIVE",
+		"MIXEDOFFENSIVE",
+		"MIXEDDEFENSIVE"
+	};
 
+	
+	protected String getParmsMinusCombatMode()
+	{
+		Vector V=Util.parse(getParms());
+		for(int v=V.size()-1;v>=0;v--)
+		{
+			String s=((String)V.elementAt(v)).toUpperCase();
+			for(int i=0;i<names.length;i++)
+				if(names[i].startsWith(s))
+				{
+					combatMode=i;
+					V.removeElementAt(v);
+				}
+		}
+		return Util.combine(V,0);
+	}
+	
 	protected void newCharacter(MOB mob)
 	{
 		Vector oldAbilities=new Vector();
@@ -87,6 +119,51 @@ public class CombatAbilities extends StdBehavior
 				&&(tryThisOne.quality()!=tryThisOne.BENEFICIAL_OTHERS))
 			||(victim.fetchAffect(tryThisOne.ID())!=null))
 				tryThisOne=null;
+			else
+			if(tryThisOne.quality()==Ability.MALICIOUS)
+			{
+				switch(combatMode)
+				{
+				case COMBAT_RANDOM:
+					break;
+				case COMBAT_DEFENSIVE:
+					if(Dice.rollPercentage()>5)
+						tryThisOne=null;
+					break;
+				case COMBAT_OFFENSIVE:
+					break;
+				case COMBAT_MIXEDOFFENSIVE:
+					if(Dice.rollPercentage()>75)
+						tryThisOne=null;
+					break;
+				case COMBAT_MIXEDDEFENSIVE:
+					if(Dice.rollPercentage()>25)
+						tryThisOne=null;
+					break;
+				}
+			}
+			else
+			{
+				switch(combatMode)
+				{
+				case COMBAT_RANDOM:
+					break;
+				case COMBAT_DEFENSIVE:
+					break;
+				case COMBAT_OFFENSIVE:
+					if(Dice.rollPercentage()>5)
+						tryThisOne=null;
+					break;
+				case COMBAT_MIXEDOFFENSIVE:
+					if(Dice.rollPercentage()>25)
+						tryThisOne=null;
+					break;
+				case COMBAT_MIXEDDEFENSIVE:
+					if(Dice.rollPercentage()>75)
+						tryThisOne=null;
+					break;
+				}
+			}
 			
 			tries++;
 		}
