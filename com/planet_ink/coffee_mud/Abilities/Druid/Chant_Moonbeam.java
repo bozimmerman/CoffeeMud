@@ -19,7 +19,6 @@ public class Chant_Moonbeam extends Chant
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
-		quality=Ability.OK_SELF;
 
 		baseEnvStats().setLevel(2);
 

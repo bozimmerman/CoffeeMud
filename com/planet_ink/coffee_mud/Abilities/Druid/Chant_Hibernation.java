@@ -20,7 +20,6 @@ public class Chant_Hibernation extends Chant
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
-		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(19);
 

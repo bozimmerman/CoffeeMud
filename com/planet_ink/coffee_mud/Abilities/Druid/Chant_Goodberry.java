@@ -16,6 +16,7 @@ public class Chant_Goodberry extends Chant
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(2);
 
@@ -64,6 +65,7 @@ public class Chant_Goodberry extends Chant
 					newItem.setDescription(target.description());
 					newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
 					newItem.baseEnvStats().setDisposition(EnvStats.IS_LIGHT);
+					newItem.setSpellList(";Prayer_CureLightWounds;");
 					newItem.setMiscText(newItem.text());
 					Item location=target.location();
 					target.destroyThis();

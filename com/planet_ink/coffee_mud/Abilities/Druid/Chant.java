@@ -17,7 +17,7 @@ public class Chant extends StdAbility
 		miscText="";
 		triggerStrings.addElement("CHANT");
 		triggerStrings.addElement("CH");
-		quality=Ability.INDIFFERENT;
+		quality=Ability.OK_SELF;
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		minRange=0;

@@ -16,8 +16,6 @@ public class Chant_AnimalFriendship extends Chant
 		// what the affected mob sees when they
 		// bring up their affected list.
 		displayText="(Animal Friendship)";
-		quality=Ability.OK_SELF;
-
 
 		baseEnvStats().setLevel(2);
 

@@ -19,9 +19,6 @@ public class Chant_Treeform extends Chant
 		// bring up their affected list.
 		displayText="(Treeform)";
 
-
-		quality=Ability.OK_SELF;
-
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

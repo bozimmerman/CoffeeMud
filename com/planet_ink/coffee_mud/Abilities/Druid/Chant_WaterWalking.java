@@ -18,8 +18,6 @@ public class Chant_WaterWalking extends Chant
 		// bring up their affected list.
 		displayText="(Water Walking)";
 
-
-		quality=Ability.OK_SELF;
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -18,6 +18,7 @@ public class Chant_AnimalSpy extends Chant
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		quality=Ability.OK_OTHERS;
 
 		baseEnvStats().setLevel(13);
 

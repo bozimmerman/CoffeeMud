@@ -16,6 +16,7 @@ public class Chant_FortifyFood extends Chant
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(2);
 

@@ -12,5 +12,5 @@
 
 ^XPaladin :^? Paladins are holy fighters, possessing many of the traits of both Fighters and Clerics, though in less intensity than either class alone.  They may learn Cleric spells at higher levels, and possess numerous fighting techniques.  Their weapons and armor choices are unlimited, but Paladins are restricted to a good alignment.
 
-^XRanger  :^? Rangers are noted primarily for their ability to track their friends and enemies, though their knowledge of the natural world has also given them great magical strength.  They are a cross between the fighter and the mage, gaining mage spells at higher levels, and numerous fighting techniques.
+^XRanger  :^? Rangers are noted primarily for their ability to track their friends and enemies, though their knowledge of the natural world has also given them great magical strength.  They are a cross between the fighter and the druid, gaining druid chants at higher levels, and numerous fighting techniques.
 ^XDruid   :^? Druids are mystical guardians of the natural world, and the wielders of natures grandest powers.  They may not wear metal or leather armors, and can only use a small set of natural weapons, but their notorious health and magical chants more than make up for this.  Like the natural world, Druids are restricted to a neutral alignment.

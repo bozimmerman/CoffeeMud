@@ -15,6 +15,7 @@ public class Chant_Farsight extends Chant
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(9);
 

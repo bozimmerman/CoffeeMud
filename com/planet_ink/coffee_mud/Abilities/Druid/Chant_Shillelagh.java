@@ -13,7 +13,7 @@ public class Chant_Shillelagh extends Chant
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Sillelagh";
 		displayText="(Blessed)";
-		quality=Ability.OK_SELF;
+		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(24);
 

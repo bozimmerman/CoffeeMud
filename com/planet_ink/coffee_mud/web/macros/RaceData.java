@@ -30,7 +30,7 @@ public class RaceData extends StdWebMacro
 					if(s==null)
 						s=ExternalPlay.getHelpText(R.name());
 					if(s!=null)
-						str.append(s);
+						str.append(helpHelp(s));
 				}
 				if(parms.containsKey("PLAYABLE"))
 					str.append(R.playerSelectable()+", ");

@@ -28,7 +28,7 @@ public class CharClassData extends StdWebMacro
 					if(s==null)
 						s=ExternalPlay.getHelpText(C.name());
 					if(s!=null)
-						str.append(s);
+						str.append(helpHelp(s));
 				}
 				if(parms.containsKey("PLAYABLE"))
 					str.append(C.playerSelectable()+", ");

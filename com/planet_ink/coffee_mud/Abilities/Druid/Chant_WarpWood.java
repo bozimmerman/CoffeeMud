@@ -13,6 +13,7 @@ public class Chant_WarpWood extends Chant
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Warp Wood";
 
+		quality=Ability.MALICIOUS;
 
 		baseEnvStats().setLevel(8);
 

@@ -15,8 +15,6 @@ public class Chant_SummonMount extends Chant
 		displayText="(Mount)";
 		miscText="";
 
-		quality=Ability.OK_SELF;
-
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
@@ -28,11 +26,7 @@ public class Chant_SummonMount extends Chant
 	{
 		return new Chant_SummonMount();
 	}
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
-
+	
 	public boolean tick(int tickID)
 	{
 		if(tickID==Host.MOB_TICK)

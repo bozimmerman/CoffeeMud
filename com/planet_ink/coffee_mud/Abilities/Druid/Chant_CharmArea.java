@@ -12,6 +12,7 @@ public class Chant_CharmArea extends Chant
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Charm Area";
+		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(3);
 
@@ -25,7 +26,9 @@ public class Chant_CharmArea extends Chant
 	
 	public boolean okAffect(Affect affect)
 	{
-		if(affect.amITarget(affected)&&(affect.targetMinor()==Affect.TYP_LEAVE))
+		if(affect.amITarget(affected)&&(affect.targetMinor()==Affect.TYP_LEAVE)
+		   &&(!affect.amISource(invoker))
+		   &&(affect.source().amFollowing()!=invoker))
 		{
 			affect.source().tell("You really don't feel like leaving this place.  It is just too beautiful.");
 			return false;

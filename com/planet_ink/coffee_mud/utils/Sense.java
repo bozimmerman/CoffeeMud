@@ -137,6 +137,20 @@ public class Sense
 		return true;
 	}
 
+	public static boolean isOnFire(Environmental seen)
+	{
+		if(seen==null) return false;
+		if(seen.fetchAffect("Burning")!=null)
+			return true;
+		if(!(seen instanceof Light))
+			return false;
+		Light light=(Light)seen;
+		if(light.goesOutInTheRain()
+		   &&light.isLit())
+			return true;
+		return false;
+	}
+	
 	public static boolean canBeSeenBy(Environmental seen , Environmental seer)
 	{
 

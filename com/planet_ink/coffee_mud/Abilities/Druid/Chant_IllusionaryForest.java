@@ -17,6 +17,7 @@ public class Chant_IllusionaryForest extends Chant
 		// what the affected mob sees when they
 		// bring up their affected list.
 		displayText="(Illusionary Forest)";
+		quality=Ability.INDIFFERENT;
 
 
 		canBeUninvoked=true;

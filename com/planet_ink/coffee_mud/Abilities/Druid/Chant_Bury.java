@@ -12,6 +12,7 @@ public class Chant_Bury extends Chant
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Bury";
+		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(3);
 
