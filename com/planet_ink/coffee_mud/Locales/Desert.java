@@ -23,6 +23,7 @@ public class Desert extends StdRoom
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_CACTUS),
 		new Integer(EnvResource.RESOURCE_SAND),
+		new Integer(EnvResource.RESOURCE_LAMPOIL),
 		new Integer(EnvResource.RESOURCE_SCALES),
 		new Integer(EnvResource.RESOURCE_DATES)
 	};

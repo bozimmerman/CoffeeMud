@@ -226,16 +226,16 @@ public class Smelting extends CommonSkill
 				&&((--Resource1Destroyed)>=0))
 					I.destroyThis();
 				if((I.material()==EnvResource.RESOURCE_DATA[resourceCode2][0])
-				&&((--Resource1Destroyed)>=0))
+				&&((--Resource2Destroyed)>=0))
 					I.destroyThis();
 			}
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
-		building=(Item)makeResource(doneResourceCode);
+		building=(Item)makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0]);
 		startStr="You start smelting "+doneResourceDesc.toLowerCase()+".";
 		displayText="You are smelting "+doneResourceDesc.toLowerCase();
-		verb="blowing "+doneResourceDesc.toLowerCase();
+		verb="smelting "+doneResourceDesc.toLowerCase();
 		
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;

@@ -6,6 +6,7 @@ public interface Drink extends Environmental
 	public int liquidHeld();
 	public int liquidRemaining();
 	public int liquidType();
+	public void setLiquidType(int newLiquidType);
 		
 	public void setThirstQuenched(int amount);
 	public void setLiquidHeld(int amount);

@@ -123,6 +123,7 @@ public interface EnvResource extends Item
 	public final static int RESOURCE_BLOOD=MATERIAL_LIQUID|87;
 	public final static int RESOURCE_BONE=MATERIAL_GLASS|88;
 	public final static int RESOURCE_COAL=MATERIAL_ROCK|89;
+	public final static int RESOURCE_LAMPOIL=MATERIAL_LIQUID|90;
 	
 	public final static int RESOURCE_MASK=255;	
 
@@ -196,7 +197,7 @@ public interface EnvResource extends Item
 	"CLAY",
 	"DIAMOND","CHINA","CRYSTAL","GEM", "PEARL", "PLATINUM","MILK",
 	"EGGS","HOPS","COFFEEBEANS","COFFEE","OPAL","TOPAZ","AMETHYST","GARNET",
-	"AMBER","AQUAMARINE","CRYSOBERYL","IRONWOOD","SILK","COCOA","BLOOD","BONE", "COAL"
+	"AMBER","AQUAMARINE","CRYSOBERYL","IRONWOOD","SILK","COCOA","BLOOD","BONE", "COAL", "LAMP OIL"
 	};
 	public final static int[][] RESOURCE_DATA={ // full code, base value, frequency, strength (1-10)
 	{RESOURCE_NOTHING,0,0,0}, 
@@ -288,6 +289,7 @@ public interface EnvResource extends Item
 	{RESOURCE_COCOA,4,5,0},
 	{RESOURCE_BLOOD,1,100,0},
 	{RESOURCE_BONE,1,100,3},
-	{RESOURCE_COAL,1,50,1}
+	{RESOURCE_COAL,1,50,1},
+	{RESOURCE_LAMPOIL,1,50,1}
 	};
 }

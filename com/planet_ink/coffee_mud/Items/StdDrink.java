@@ -12,6 +12,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	protected int amountOfLiquidHeld=2000;
 	protected int amountOfLiquidRemaining=2000;
 	protected boolean disappearsAfterDrinking=false;
+	protected int liquidType=EnvResource.RESOURCE_FRESHWATER;
 
 	public StdDrink()
 	{
@@ -35,7 +36,12 @@ public class StdDrink extends StdContainer implements Drink,Item
 	public int thirstQuenched(){return amountOfThirstQuenched;}
 	public int liquidHeld(){return amountOfLiquidHeld;}
 	public int liquidRemaining(){return amountOfLiquidRemaining;}
-	public int liquidType(){return EnvResource.RESOURCE_FRESHWATER;}
+	public int liquidType(){
+		if((material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+			return material();
+		return liquidType;
+	}
+	public void setLiquidType(int newLiquidType){liquidType=newLiquidType;}
 
 	public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
 	public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
@@ -71,6 +77,12 @@ public class StdDrink extends StdContainer implements Drink,Item
 							mob.tell(name()+" is empty.");
 							return false;
 						}
+						if((liquidType()==EnvResource.RESOURCE_SALTWATER)
+						||(liquidType()==EnvResource.RESOURCE_LAMPOIL))
+						{
+							mob.tell("You don't want to be drinking "+EnvResource.RESOURCE_DESCS[liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
+							return false;
+						}
 						return true;
 					}
 					else
@@ -89,15 +101,18 @@ public class StdDrink extends StdContainer implements Drink,Item
 						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 						{
 							Drink thePuddle=(Drink)affect.tool();
-							if(thePuddle.liquidType()==EnvResource.RESOURCE_SALTWATER)
-							{
-								mob.tell("You don't want to be drinking saltwater.");
-								return false;
-							}
 							if(!thePuddle.containsDrink())
 							{
 								mob.tell(thePuddle.name()+" is empty.");
 								return false;
+							}
+							if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
+							{
+								mob.tell("There is still some "+EnvResource.RESOURCE_DESCS[liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()
+										 +" left in "+name()+".  You must empty it before you can fill it with "
+										 +EnvResource.RESOURCE_DESCS[thePuddle.liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
+								return false;
+								
 							}
 							return true;
 						}
@@ -144,6 +159,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 					if(amountToTake>thePuddle.liquidRemaining())
 						amountToTake=thePuddle.liquidRemaining();
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
+					if(amountOfLiquidRemaining<=0)
+						setLiquidType(thePuddle.liquidType());
 					amountOfLiquidRemaining+=amountToTake;
 				}
 				break;

@@ -304,6 +304,7 @@ public class Generic
 			E.setReadable(true);
 		else
 			E.setReadable(genGenericPrompt(mob,"Is this item readable",E.isReadable()));
+		
 		if((E.isReadable())
 		 ||(E instanceof Wand)
 		 ||(E instanceof Scroll)
@@ -402,6 +403,38 @@ public class Generic
 				{
 					if(newName.length()>0)
 						E.setReadableText(newName);
+					else
+						mob.tell("(no change)");
+				}
+			}
+		}
+		else
+		if(E instanceof Drink)
+		{
+			mob.session().println("\n\rCurrent liquid type: "+EnvResource.RESOURCE_DESCS[((Drink)E).liquidType()&EnvResource.RESOURCE_MASK]);
+			boolean q=false;
+			while(!q)
+			{
+				String newType=mob.session().prompt("Enter a new type (?)\n\r:",EnvResource.RESOURCE_DESCS[((Drink)E).liquidType()&EnvResource.RESOURCE_MASK]);
+				if(newType.equals("?"))
+				{
+					StringBuffer say=new StringBuffer("");
+					for(int i=0;i<EnvResource.RESOURCE_DESCS.length-1;i++)
+						if((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+							say.append(EnvResource.RESOURCE_DESCS[i]+", ");
+					mob.tell(say.toString().substring(0,say.length()-2));
+					q=false;
+				}
+				else
+				{
+					q=true;
+					int newValue=-1;
+					for(int i=0;i<EnvResource.RESOURCE_DESCS.length-1;i++)
+						if((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+							if(newType.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[i]))
+								newValue=EnvResource.RESOURCE_DATA[i][0];
+					if(newValue>=0)
+						E.setMaterial(newValue);
 					else
 						mob.tell("(no change)");
 				}

@@ -36,3 +36,4 @@
 % Slippers	1	10	5	100	GenArmor	FEET	0	0
 % Greaves	3	49	5	100	GenArmor	FEET	0	2
 % Whip	1	10	10	150	GenWeapon	FLAILED	0	3
+% Waterskin	1	10	5	50	GenWater	DRINK	25	

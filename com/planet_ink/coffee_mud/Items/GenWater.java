@@ -35,7 +35,13 @@ public class GenWater extends StdDrink
 	{
 		return Generic.getPropertiesStr(this,false);
 	}
-	public int liquidType(){return EnvResource.RESOURCE_FRESHWATER;}
+	public int liquidType(){
+		if((material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+			return material();
+		if(Util.s_int(readableText)==0) return EnvResource.RESOURCE_FRESHWATER;
+		return Util.s_int(readableText);
+	}
+	public void setLiquidType(int newLiquidType){readableText=""+newLiquidType;}
 
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}

@@ -43,10 +43,15 @@ public class Lantern extends LightSource
 							mob.tell(name()+" still has some oil left in it.");
 							return false;
 						}
-						if((affect.tool()!=null)&&(affect.tool() instanceof OilFlask))
+						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 						{
-							OilFlask thePuddle=(OilFlask)affect.tool();
-							if(thePuddle.amountOfLiquidRemaining<1)
+							if(((Drink)affect.tool()).liquidType()!=EnvResource.RESOURCE_LAMPOIL)
+							{
+								mob.tell("You can only fill "+name()+" with lamp oil!");
+								return false;
+							}
+							Drink thePuddle=(Drink)affect.tool();
+							if(thePuddle.liquidRemaining()<1)
 							{
 								mob.tell(thePuddle.name()+" is empty.");
 								return false;
@@ -80,11 +85,11 @@ public class Lantern extends LightSource
 			case Affect.TYP_FILL:
 				if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 				{
-					OilFlask thePuddle=(OilFlask)affect.tool();
+					Drink thePuddle=(Drink)affect.tool();
 					int amountToTake=1;
-					if(amountToTake>thePuddle.amountOfLiquidRemaining)
+					if(amountToTake>thePuddle.liquidRemaining())
 						amountToTake=0;
-					thePuddle.amountOfLiquidRemaining-=amountToTake;
+					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					light(false);
 					setDuration(200);
 					description="The lantern still looks like it has some oil in it.";

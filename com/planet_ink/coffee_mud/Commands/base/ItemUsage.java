@@ -555,7 +555,11 @@ public class ItemUsage
 				return;
 			}
 		}
-		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_DRINK,"<S-NAME> take(s) a drink from <T-NAMESELF>.");
+		String ofWhat="";
+		if((thisThang instanceof Drink)
+		&&(((Drink)thisThang).liquidType()!=EnvResource.RESOURCE_FRESHWATER))
+			ofWhat=" of "+EnvResource.RESOURCE_DESCS[((Drink)thisThang).liquidType()&EnvResource.RESOURCE_MASK].toLowerCase();
+		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_DRINK,"<S-NAME> take(s) a drink"+ofWhat+" from <T-NAMESELF>.");
 		if(mob.location().okAffect(newMsg))
 			mob.location().send(mob,newMsg);
 	}
