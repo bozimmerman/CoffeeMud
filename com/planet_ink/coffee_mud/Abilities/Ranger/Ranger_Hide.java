@@ -80,7 +80,9 @@ public class Ranger_Hide extends StdAbility
 			mob.tell("You only know how to hide outdoors.");
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)&&(!auto))
+		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
+		&&(!auto))
 		{
 			mob.tell("You don't know how to hide in a place like this.");
 			return false;

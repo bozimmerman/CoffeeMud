@@ -34,8 +34,10 @@ public class Chant_SenseSentience extends Chant
 				for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if((((R.domainType()&Room.INDOORS)==0)&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY))
-					   ||(R==mob.location()))
+					if((((R.domainType()&Room.INDOORS)==0)
+						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT))
+					||(R==mob.location()))
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);

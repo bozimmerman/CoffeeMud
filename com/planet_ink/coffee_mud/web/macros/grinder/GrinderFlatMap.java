@@ -355,6 +355,8 @@ public class GrinderFlatMap
 			return ("BGCOLOR=\"#FFFFFF\"");
 		case Room.DOMAIN_INDOORS_MAGIC:
 			return ("BGCOLOR=\"#996600\"");
+		case Room.DOMAIN_INDOORS_METAL:
+			return ("BGCOLOR=\"#996600\"");
 		case Room.DOMAIN_INDOORS_CAVE:
 			return ("BGCOLOR=\"#CC99FF\"");
 		case Room.DOMAIN_INDOORS_STONE:
@@ -368,6 +370,8 @@ public class GrinderFlatMap
 		case Room.DOMAIN_OUTDOORS_AIR:
 			return ("BGCOLOR=\"#FFFFFF\"");
 		case Room.DOMAIN_OUTDOORS_CITY:
+			return ("BGCOLOR=\"#CCCCCC\"");
+		case Room.DOMAIN_OUTDOORS_SPACEPORT:
 			return ("BGCOLOR=\"#CCCCCC\"");
 		case Room.DOMAIN_OUTDOORS_DESERT:
 			return ("BGCOLOR=\"#FFFF66\"");

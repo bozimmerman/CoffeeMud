@@ -32,6 +32,12 @@ public class Skill_WildernessLore extends StdAbility
 			mob.location().send(mob,msg);
 			switch(mob.location().domainType())
 			{
+			case Room.DOMAIN_INDOORS_METAL:
+				mob.tell("You are in a metal structure.");
+				break;
+			case Room.DOMAIN_OUTDOORS_SPACEPORT:
+				mob.tell("You are at a space port.");
+				break;
 			case Room.DOMAIN_OUTDOORS_CITY:
 				mob.tell("You are on a city street.");
 				break;

@@ -26,6 +26,7 @@ public class Ranger_WoodlandLore extends StdAbility
 		if((invoker!=null)
 		   &&(invoker.location()!=null)
 		   &&(((invoker.location().domainType()&Room.INDOORS)==0)
+		   &&(invoker.location().domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT)
 		   &&(invoker.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)))
 		{
 			affectableStats.setDamage(affectableStats.damage()+5);

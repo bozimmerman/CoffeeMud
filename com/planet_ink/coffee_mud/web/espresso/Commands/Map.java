@@ -89,6 +89,8 @@ public class Map extends StdEspressoCommand {
                   return new Color(255,255,255);
           case Room.DOMAIN_INDOORS_MAGIC:
                   return new Color(153,102,00);
+          case Room.DOMAIN_INDOORS_METAL:
+                  return new Color(153,102,00);
           case Room.DOMAIN_INDOORS_CAVE:
                   return new Color(204,153,255);
           case Room.DOMAIN_INDOORS_STONE:
@@ -115,6 +117,8 @@ public class Map extends StdEspressoCommand {
                   return new Color(00,255,00);
           case Room.DOMAIN_OUTDOORS_ROCKS:
                   return new Color(153,102,00);
+          case Room.DOMAIN_OUTDOORS_SPACEPORT:
+                  return new Color(204,204,204);
           case Room.DOMAIN_OUTDOORS_SWAMP:
                   return new Color(00,102,00);
           case Room.DOMAIN_OUTDOORS_UNDERWATER:

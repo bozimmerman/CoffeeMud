@@ -633,9 +633,9 @@ public class Construction extends CraftingSkill
 					return false;
 				}
 				else
-				if((mob.location().domainType()&Room.INDOORS)==0)
+				if(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD)
 				{
-					commonTell(mob,null,null,"There is nothing to demolish here!");
+					commonTell(mob,null,null,"There are no wooden constructs to demolish here!");
 					return false;
 				}
 				else

@@ -35,7 +35,9 @@ public class Ranger_Sneak extends StdAbility
 			mob.tell("You must be outdoors to do this.");
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)&&(!auto))
+		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
+		&&(!auto))
 		{
 			mob.tell("You don't know how to sneak around a place like this.");
 			return false;

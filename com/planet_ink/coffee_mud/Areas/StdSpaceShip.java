@@ -16,6 +16,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public long velocity(){return velocity;}
 	public void setVelocity(long v){velocity=v;}
 	protected static Climate climateObj=null;
+	protected Vector parents=null;
+    protected Vector parentsToLoad=new Vector();
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
 	{
@@ -114,13 +116,16 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public void delSubOp(String username){}
 	public Environmental newInstance(){	return new StdSpaceShip();}
 	public boolean isGeneric(){return false;}
-	private void cloneFix(Area E)
+	protected void cloneFix(StdSpaceShip E)
 	{
 		baseEnvStats=E.baseEnvStats().cloneStats();
 		envStats=E.envStats().cloneStats();
 
 		affects=new Vector();
 		behaviors=new Vector();
+		parents=null;
+		if(E.parents!=null)
+			parents=(Vector)E.parents.clone();
 		for(int b=0;b<E.numBehaviors();b++)
 		{
 			Behavior B=E.fetchBehavior(b);
@@ -133,6 +138,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			if(A!=null)
 				affects.addElement((Ability)A.copyOf());
 		}
+		setTimeObj(new DefaultTimeClock());
 	}
 	public Environmental copyOf()
 	{
@@ -488,7 +494,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public Vector getSubOpVectorList(){	return new Vector();}
 
     public void addChildToLoad(String str){}
-    public void addParentToLoad(String str){}
+    public void addParentToLoad(String str) { parentsToLoad.addElement(str);}
 
 	// Children
 	public void initChildren() {}
@@ -503,18 +509,77 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public void removeChild(Area Disowned) {}
 	public void removeChild(int Disowned) {}
 	public boolean canChild(Area newChild) { return false;}
-	public void initParents() {}
-	public Enumeration getParents() { return new Vector().elements();}
-	public String getParentsList() { return "";}
-	public int getNumParents() { return 0; }
-	public Area getParent(int num) { return null; }
-	public Area getParent(String named) { return null;}
-	public boolean isParent(Area named) { return false;}
-	public boolean isParent(String named) { return false;}
-	public void addParent(Area Adopted) {}
-	public void removeParent(Area Disowned) {}
-	public void removeParent(int Disowned) {}
-	public boolean canParent(Area newParent) { return false;}
+	// Parent
+	public void initParents() {
+	        if (parents == null) {
+	                parents = new Vector();
+	                for (int i = 0; i < parentsToLoad.size(); i++) {
+	                        Area A = CMMap.getArea( (String) parentsToLoad.elementAt(i));
+	                        if (A == null)
+	                                continue;
+	                        parents.addElement(A);
+	                }
+	        }
+	}
+	public Enumeration getParents() { initParents(); return parents.elements(); }
+	public String getParentsList() {
+	        initParents();
+	        StringBuffer str=new StringBuffer("");
+	        for(Enumeration e=getParents(); e.hasMoreElements();) {
+	                Area A=(Area)e.nextElement();
+	                if(str.length()>0) str.append(";");
+	                str.append(A.name());
+	        }
+	        return str.toString();
+	}
+
+	public int getNumParents() { initParents(); return parents.size(); }
+	public Area getParent(int num) { initParents(); return (Area)parents.elementAt(num); }
+	public Area getParent(String named) {
+	        initParents();
+	        for(int i=0;i<parents.size();i++){
+	                Area A=(Area)parents.elementAt(i);
+	                if((A.name().equalsIgnoreCase(named))
+	                   ||(A.Name().equalsIgnoreCase(named)))
+	                       return A;
+	        }
+	        return null;
+	}
+	public boolean isParent(Area named) {
+	        initParents();
+	        for(int i=0;i<parents.size();i++){
+	                Area A=(Area)parents.elementAt(i);
+	                if(A.equals(named))
+	                       return true;
+	        }
+	        return false;
+	}
+	public boolean isParent(String named) {
+	        initParents();
+	        for(int i=0;i<parents.size();i++){
+	                Area A=(Area)parents.elementAt(i);
+	                if((A.name().equalsIgnoreCase(named))
+	                   ||(A.Name().equalsIgnoreCase(named)))
+	                        return true;
+	        }
+	        return false;
+	}
+	public void addParent(Area Adopted) {
+	        initParents();
+	        for(int i=0;i<parents.size();i++){
+	                Area A=(Area)parents.elementAt(i);
+	                if(A.Name().equalsIgnoreCase(Adopted.Name())){
+	                        parents.setElementAt(Adopted, i);
+	                        return;
+	                }
+	        }
+	        parents.addElement(Adopted);
+	}
+	public void removeParent(Area Disowned) { initParents();parents.removeElement(Disowned); }
+	public void removeParent(int Disowned) { initParents();parents.removeElementAt(Disowned); }
+	public boolean canParent(Area newParent) {
+	    return true;
+	}
 
 	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL"};
 	public String[] getStatCodes(){return CODES;}

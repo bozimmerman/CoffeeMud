@@ -19,6 +19,7 @@ public class Chant_GrowForest extends Chant
 		if(((type&Room.INDOORS)>0)
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
 			||(type==Room.DOMAIN_OUTDOORS_CITY)
+		    ||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{

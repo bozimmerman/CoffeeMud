@@ -22,8 +22,8 @@ public class StdArea implements Area
 
     protected Vector children=null;
     protected Vector parents=null;
-    public Vector childrenToLoad=new Vector();
-    public Vector parentsToLoad=new Vector();
+    protected Vector childrenToLoad=new Vector();
+    protected Vector parentsToLoad=new Vector();
 
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
@@ -125,11 +125,17 @@ public class StdArea implements Area
 		return new StdArea();
 	}
 	public boolean isGeneric(){return false;}
-	protected void cloneFix(Area E)
+	protected void cloneFix(StdArea E)
 	{
 		baseEnvStats=E.baseEnvStats().cloneStats();
 		envStats=E.envStats().cloneStats();
 
+		parents=null;
+		if(E.parents!=null)
+			parents=(Vector)E.parents.clone();
+		children=null;
+		if(E.children!=null)
+			children=(Vector)E.children.clone();
 		affects=new Vector();
 		behaviors=new Vector();
 		for(int b=0;b<E.numBehaviors();b++)

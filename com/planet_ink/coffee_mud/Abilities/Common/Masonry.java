@@ -683,9 +683,9 @@ public class Masonry extends CraftingSkill
 					return false;
 				}
 				else
-				if((mob.location().domainType()&Room.INDOORS)==0)
+				if(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE)
 				{
-					commonTell(mob,null,null,"There is nothing to demolish here!");
+					commonTell(mob,null,null,"There are no stone constructs to demolish here!");
 					return false;
 				}
 				else

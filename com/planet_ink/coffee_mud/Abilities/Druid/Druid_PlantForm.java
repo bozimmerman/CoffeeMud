@@ -152,7 +152,8 @@ public class Druid_PlantForm extends StdAbility
 			mob.tell("You must be outdoors to take on your plant form.");
 			return false;
 		}
-		if(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		{
 			mob.tell("You must be in the wild to take on your plant form.");
 			return false;

@@ -37,7 +37,8 @@ public class Druid_DruidicPass extends StdAbility
 			mob.tell("You must be outdoors to perform the Druidic Pass.");
 			return false;
 		}
-		if(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		{
 			mob.tell("You must be in the wild to perform the Druidic Pass.");
 			return false;

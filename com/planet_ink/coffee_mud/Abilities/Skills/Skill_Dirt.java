@@ -61,6 +61,7 @@ public class Skill_Dirt extends StdAbility
 		if((mob.location().domainConditions()==Room.CONDITION_WET)
 		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_AIR)
@@ -68,6 +69,7 @@ public class Skill_Dirt extends StdAbility
 		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_MAGIC)
 		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_STONE)
+		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_METAL)
 		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_CAVE)
 		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_WOOD))
 		{

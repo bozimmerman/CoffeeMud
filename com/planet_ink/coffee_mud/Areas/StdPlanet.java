@@ -17,8 +17,8 @@ public class StdPlanet extends StdArea implements SpaceObject
 		{
 			StdPlanet E=(StdPlanet)this.clone();
 			E.cloneFix(this);
+			E.setTimeObj(new DefaultTimeClock());
 			return E;
-
 		}
 		catch(CloneNotSupportedException e)
 		{

@@ -72,6 +72,7 @@ public class Chant_SummonFlyTrap extends Chant
 		}
 
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))

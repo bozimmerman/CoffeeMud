@@ -21,6 +21,7 @@ public interface Room extends Environmental
 	public final static int DOMAIN_OUTDOORS_DESERT=9;
 	public final static int DOMAIN_OUTDOORS_HILLS=10;
 	public final static int DOMAIN_OUTDOORS_MOUNTAINS=11;
+	public final static int DOMAIN_OUTDOORS_SPACEPORT=12;
 	public final static String[] outdoorDomainDescs={
 		"CITY",
 		"WOODS",
@@ -33,7 +34,8 @@ public interface Room extends Environmental
 		"SWAMP",
 		"DESERT",
 		"HILLS",
-		"MOUNTAINS"};
+		"MOUNTAINS",
+		"SPACEPORT"};
 
 	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
 	public final static int DOMAIN_INDOORS_WOOD=INDOORS+1;
@@ -42,6 +44,7 @@ public interface Room extends Environmental
 	public final static int DOMAIN_INDOORS_UNDERWATER=INDOORS+4;
 	public final static int DOMAIN_INDOORS_AIR=INDOORS+5;
 	public final static int DOMAIN_INDOORS_WATERSURFACE=INDOORS+6;
+	public final static int DOMAIN_INDOORS_METAL=INDOORS+7;
 	public final static String[] indoorDomainDescs={
 		"STONE",
 		"WOODEN",
@@ -49,7 +52,8 @@ public interface Room extends Environmental
 		"MAGIC",
 		"UNDERWATER",
 		"AIR",
-		"WATERSURFACE"};
+		"WATERSURFACE",
+		"METAL"};
 
 	public final static int CONDITION_NORMAL=0;
 	public final static int CONDITION_WET=1;
