@@ -153,11 +153,20 @@ public class StdRoom
 	}
 	public String description()
 	{
+		if((CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE))
+		&&(roomID().length()>0))
+		{
+			String txt=CMClass.DBEngine().DBReadRoomDesc(roomID());
+			if(txt==null)
+			{
+				Log.errOut("Unable to recover description for "+roomID()+".");
+				return "";
+			}
+			return txt;
+		}
+		else
 		if((description==null)||(description.length==0))
 			return "";
-		else
-		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE))
-			return CMClass.DBEngine().DBReadRoomDesc(roomID());
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDCOMPRESS))
 			return Util.decompressString(description);
