@@ -31,9 +31,9 @@ public class Digging extends CommonSkill
 	}
 	public boolean tick(int tickID)
 	{
-		MOB mob=(MOB)affected;
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
+			MOB mob=(MOB)affected;
 			if(tickUp==3)
 			{
 				if(found!=null)

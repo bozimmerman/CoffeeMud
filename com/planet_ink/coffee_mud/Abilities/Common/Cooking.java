@@ -43,9 +43,9 @@ public class Cooking extends CommonSkill
 	}
 	public boolean tick(int tickID)
 	{
-		MOB mob=(MOB)affected;
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
+			MOB mob=(MOB)affected;
 			if((cooking==null)
 			||(fire==null)
 			||(finalDish==null)

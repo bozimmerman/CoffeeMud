@@ -30,9 +30,9 @@ public class Armorsmithing extends CommonSkill
 	
 	public boolean tick(int tickID)
 	{
-		MOB mob=(MOB)affected;
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
+			MOB mob=(MOB)affected;
 			if(building==null)
 				unInvoke();
 			else
