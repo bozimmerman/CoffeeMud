@@ -200,6 +200,33 @@ public class Trap_Trap extends StdAbility implements Trap
 			ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
 		}
 	}
+	
+	public void victimOfSpell(MOB mob)
+	{
+		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in "+affected.name()+"!");
+		MOB target=mob;
+		String spell=text();
+		int x=spell.indexOf(";");
+		Vector V=new Vector();
+		V.addElement(mob.name());
+		if(x>0)
+		{
+			V=Util.parse(spell.substring(x+1));
+			V.insertElementAt(mob.name(),0);
+			spell=spell.substring(0,x);
+		}
+		Ability A=CMClass.findAbility(spell);
+		if(A==null)
+		{
+			mob.location().showHappens(Affect.MSG_OK_VISUAL,"But nothing happened...");
+			return;
+		}
+		MOB mob2=CMClass.getMOB("StdMOB");
+		mob2.setLocation(CMClass.getLocale("StdRoom"));
+		mob2.baseEnvStats().setLevel(affected.envStats().level());
+		mob2.recoverEnvStats();
+		A.invoke(mob2,V,mob,true);
+	}
 
 	public void fallInPit(MOB mob)
 	{
@@ -271,6 +298,9 @@ public class Trap_Trap extends StdAbility implements Trap
 				fallInPit(target);
 			else
 				blade(target);
+			break;
+		case TRAP_SPELL:
+			victimOfSpell(target);
 			break;
 		default:
 			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap, but it appears to have misfired.");
