@@ -44,6 +44,8 @@ public class Buy extends StdCommand
 				mob.tell("There is noone called '"+((String)commands.lastElement())+"' here.");
 				return false;
 			}
+			commands.removeElementAt(commands.size()-1);
+			commands.removeElementAt(commands.size()-1);
 			mobFor=M;
 		}
 		
@@ -66,12 +68,12 @@ public class Buy extends StdCommand
 		}
 		while((allFlag)&&(addendum<=maxToDo));
 		String forName="";
-		if(mobFor!=null)
+		if((mobFor!=null)&&(mobFor!=mob))
 		{
 			if(mobFor.name().indexOf(" ")>=0)
 				forName=" for \""+mobFor.Name()+"\"";
 			else
-				forName=" for "+mob.Name();
+				forName=" for "+mobFor.Name();
 		}
 
 		if(V.size()==0)

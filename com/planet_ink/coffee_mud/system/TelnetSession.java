@@ -777,8 +777,8 @@ public class TelnetSession extends Thread implements Session
 							&&(tank.getVictim().getVictim()!=null)
 							&&(tank.getVictim().getVictim()!=mob()))
 								tank=tank.getVictim().getVictim();
-							if(((++c)<prompt.length())&&(tank!=null))
-								switch(prompt.charAt(++c))
+							if(((c+1)<prompt.length())&&(tank!=null))
+								switch(prompt.charAt(c+1))
 								{
 									case 'h': { buf.append(tank.curState().getHitPoints()); c++; break;}
 									case 'H': { buf.append(tank.maxState().getHitPoints()); c++; break;}

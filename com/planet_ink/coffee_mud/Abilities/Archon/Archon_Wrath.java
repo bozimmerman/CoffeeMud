@@ -33,14 +33,9 @@ public class Archon_Wrath extends ArchonSkill
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),
 									auto?"<T-NAME> <T-IS-ARE> knocked out of <T-HIS-HER> shoes!!!":
 										 "^F**<S-NAME> BLAST(S) <T-NAMESELF>**, knocking <T-HIM-HER> out of <T-HIS-HER> shoes!!^?");
-			if(mob.location().okMessage(mob,msg))
+			if(target.location().okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				if(target.location()!=mob.location())
-					
-					target.location().show(mob,target,CMMsg.MSG_OK_VISUAL,
-									auto?"<T-NAME> <T-IS-ARE> knocked out of <T-HIS-HER> shoes!!!":
-										 "^F**<S-NAME> BLAST(S) <T-NAMESELF>**, knocking <T-HIM-HER> out of <T-HIS-HER> shoes!!^?");
+				target.location().send(mob,msg);
 				if(target.curState().getHitPoints()>2)
 					target.curState().setHitPoints(target.curState().getHitPoints()/2);
 				if(target.curState().getMana()>2)

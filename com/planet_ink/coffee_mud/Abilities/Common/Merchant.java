@@ -423,7 +423,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					Vector V=Util.parse(msg.targetMessage());
 					if(((String)V.elementAt(V.size()-2)).equalsIgnoreCase("for"))
 					{
-						MOB M2=mob.location().fetchInhabitant(((String)V.lastElement())+"$");
+						String s=(String)V.lastElement();
+						if(s.endsWith(".")) s=s.substring(0,s.length()-1);
+						MOB M2=mob.location().fetchInhabitant(s+"$");
 						if(M2!=null) 
 							mobFor=M2;
 					}

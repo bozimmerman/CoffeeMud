@@ -315,7 +315,16 @@ public class Create extends BaseGenerics
 		if(areaType.length()==0) areaType="StdArea";
 		A=CMClass.DBEngine().DBCreateArea(areaName,areaType);
 		A.setName(areaName);
+		Room R=CMClass.getLocale("StdRoom");
+		R.setArea(A);
+		R.setRoomID(CMMap.getOpenRoomID(A.Name()));
+		R.setDisplayText(CMClass.className(R)+"-"+R.roomID());
+		R.setDescription("");
+		CMClass.DBEngine().DBCreateRoom(R,R.ID());
+		CMMap.addRoom(R);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The size of the world just increased!");
+		mob.tell("You are now at "+R.roomID()+".");
+		R.bringMobHere(mob,true);
 	}
 
 	public void classes(MOB mob, Vector commands)

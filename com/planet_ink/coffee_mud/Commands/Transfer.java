@@ -79,7 +79,7 @@ public class Transfer extends At
 
 		if(room==null)
 		{
-			mob.tell("Goto where? Try a Room ID, player name, area name, or room text!");
+			mob.tell("Transfer where? Try a Room ID, player name, area name, or room text!");
 			return false;
 		}
 		for(int i=0;i<V.size();i++)
@@ -96,7 +96,8 @@ public class Transfer extends At
 					CommonMsgs.look(M,true);
 			}
 		}
-		mob.tell("Done.");
+		if(mob.playerStats().tranPoofOut().length()==0)
+			mob.tell("Done.");
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

@@ -188,6 +188,12 @@ public class StdRideable extends StdMOB implements Rideable
 				msg.source().tell("You cannot simply sit on "+name()+", try 'mount'.");
 				return false;
 			}
+			else
+			if(msg.source() instanceof Rideable)
+			{
+				msg.source().tell("You are not allowed on "+name()+".");
+				return false;
+			}
 			break;
 		case CMMsg.TYP_SLEEP:
 			if(amRiding(msg.source()))
@@ -202,6 +208,12 @@ public class StdRideable extends StdMOB implements Rideable
 				msg.source().tell("You cannot lie down on "+name()+".");
 				return false;
 			}
+			else
+			if(msg.source() instanceof Rideable)
+			{
+				msg.source().tell("You are not allowed on "+name()+".");
+				return false;
+			}
 			break;
 		case CMMsg.TYP_MOUNT:
 			if((msg.tool()!=null)
@@ -211,6 +223,12 @@ public class StdRideable extends StdMOB implements Rideable
 				{
 					msg.source().tell(msg.tool().name()+" is "+stateString((Rider)msg.tool())+" "+name()+"!");
 					((Rider)msg.tool()).setRiding(this);
+					return false;
+				}
+				else
+				if((msg.tool() instanceof Rideable)&&(msg.tool() instanceof MOB))
+				{
+					msg.source().tell(msg.tool().name()+" is not allowed on "+name()+".");
 					return false;
 				}
 				if((!(msg.tool() instanceof Rideable))
@@ -234,6 +252,13 @@ public class StdRideable extends StdMOB implements Rideable
 				msg.source().setRiding(this);
 				return false;
 			}
+			else
+			if(msg.source() instanceof Rideable)
+			{
+				msg.source().tell("You are not allowed on "+name()+".");
+				return false;
+			}
+			
 			if((riding()!=msg.source())
 			&&(msg.amITarget(this)))
 			{

@@ -133,9 +133,10 @@ public class Archon_Banish extends ArchonSkill
 					A.prison.addNonUninvokableEffect((Ability)copyOf());
 					A.prison.setArea(mob.location().getArea());
 					A.prison.bringMobHere(target,false);
-					CommonMsgs.look(target,true);
 					A.prison.setDescription("You are standing on an immense, grey stone floor that stretches as far as you can see in all directions.  Rough winds plunging from the dark, starless sky tear savagely at your fragile body.");
 					A.prison.setDisplayText("The Hall of Lost Souls");
+					A.prison.setRoomID("");
+					CommonMsgs.look(target,true);
 					for(int d=0;d<4;d++)
 					{
 						A.prison.rawExits()[d]=CMClass.getExit("Open");

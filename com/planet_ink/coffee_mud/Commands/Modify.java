@@ -211,6 +211,7 @@ public class Modify extends BaseGenerics
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			Area A=CMMap.getArea(restStr);
 			String checkID=CMMap.getOpenRoomID(restStr);
+			boolean reid=false;
 			if(A==null)
 			{
 				if(!mob.isMonster())
@@ -232,26 +233,7 @@ public class Modify extends BaseGenerics
 						if(areaType.length()==0) areaType="StdArea";
 						A=CMClass.DBEngine().DBCreateArea(restStr,areaType);
 						mob.location().setArea(A);
-						CMMap.delRoom(mob.location());
-						String oldID=mob.location().roomID();
-						mob.location().setRoomID(checkID);
-
-						CMClass.DBEngine().DBReCreate(mob.location(),oldID);
-
-						CMMap.addRoom(mob.location());
-						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-						{
-							Room R=(Room)r.nextElement();
-							for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
-							{
-								Room thatRoom=R.rawDoors()[dir];
-								if(thatRoom==mob.location())
-								{
-									CMClass.DBEngine().DBUpdateExits(R);
-									break;
-								}
-							}
-						}
+						reid=true;
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"This entire area twitches.\n\r");
 				}
@@ -264,8 +246,33 @@ public class Modify extends BaseGenerics
 			else
 			{
 				mob.location().setArea(A);
-				CMClass.DBEngine().DBUpdateRoom(mob.location());
+				if(!A.getMap().hasMoreElements())
+					reid=true;
+				else
+					CMClass.DBEngine().DBUpdateRoom(mob.location());
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"This area twitches.\n\r");
+			}
+			
+			if(reid)
+			{
+				CMMap.delRoom(mob.location());
+				String oldID=mob.location().roomID();
+				mob.location().setRoomID(checkID);
+				CMClass.DBEngine().DBReCreate(mob.location(),oldID);
+				CMMap.addRoom(mob.location());
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
+					{
+						Room thatRoom=R.rawDoors()[dir];
+						if(thatRoom==mob.location())
+						{
+							CMClass.DBEngine().DBUpdateExits(R);
+							break;
+						}
+					}
+				}
 			}
 		}
 		else
