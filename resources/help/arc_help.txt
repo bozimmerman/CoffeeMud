@@ -10,9 +10,11 @@ wizinfo nowizinfo wizemote
 
 ^HModules^N  
 import export xml i3 merge
+deviations
 
 ^HSkills^N
 genchar possess goto wizinv
 where snoop visible stat
 at after Multiwatch trailto
+wrath hush banish
 ** enter ^HAHELP 'command name'^N or ^!ATOPICS^N for more help!
