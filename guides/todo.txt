@@ -14,6 +14,12 @@ problems flying during storms
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
 Mining, Foraging, Etc ought to be able to accept a parameter, so MINE IRON would do mine, but would stop mining if you found something other than IRON, and tell you where you might try looking.
 ARTIST ability to make wallpaper -- make Paintings.
+there is no help for TIME. It might be helpful to put in a help, that tells when the sun rises and sets.
+there also needs to be a GenJewelry to create rings, necklaces, bracelets, etc that a jeweler would buy instead of things that a grocer or armorer would buy. GenJewelry should be able to be worn on any specified location.
+we need a shopkeeper of type GROCER who buys all foodstuffs, as well as other RESOURCE based shopkeepers that will buy any metal, wood, or stone.
+qualify command should allow you to type QUALIFY ILLUSION to see what illusion spells you qualify for.
+new skill: Scrap--turns an item of at least 5lbs into 1 lb of material of the type it is made of.
+does eating raw meat confer a disease check? Salmonila, E-Coli, etc...
 add fountain, pit to the mason skill.
 add Arch to mason, that modifies an open passageway with a Majestic Arch
 possible to have NE SE SW NW directions?

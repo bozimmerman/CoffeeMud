@@ -653,7 +653,12 @@ public class StdMOB implements MOB
 		}
 		setFollowing(null);
 		if((!isMonster())&&(soulMate()==null))
-			bringToLife(CMMap.getDeathRoom(this),true);
+		{
+			Room rebirthRoom=CMMap.getDeathRoom(this);
+			if(deathRoom==rebirthRoom)
+				try{Thread.sleep(Host.TICK_TIME+500);}catch(Exception x){}
+			bringToLife(rebirthRoom,true);
+		}
 		Body.startTicker(deathRoom);
 		deathRoom.recoverRoomStats();
 		return Body;
@@ -1026,6 +1031,7 @@ public class StdMOB implements MOB
 			{
 			case Affect.TYP_JUSTICE:
 				if((affect.target()!=null)
+				&&(isInCombat())
 				&&(affect.target() instanceof Item))
 				{
 					tell("Not while you are fighting!");

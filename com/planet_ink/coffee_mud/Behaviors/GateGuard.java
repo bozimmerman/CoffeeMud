@@ -14,6 +14,7 @@ public class GateGuard extends StdBehavior
 	}
 	
 	int tickTock=0;
+	int noticeTock=4;
 	
 	private int findGate(MOB mob)
 	{
@@ -114,12 +115,14 @@ public class GateGuard extends StdBehavior
 						ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 				}
 				else
-				if((numPlayers==0)&&(e.isOpen()))
+				if((numPlayers==0)&&(e.isOpen())&&((--noticeTock)<=0))
 				{
 					FullMsg msg=new FullMsg(mob,e,Affect.MSG_CLOSE,"<S-NAME> close(s) <T-NAME>.");
 					if(mob.location().okAffect(msg))
 						ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 				}
+				else
+					noticeTock=4;
 			}
 		}
 	}

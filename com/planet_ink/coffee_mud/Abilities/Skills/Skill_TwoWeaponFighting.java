@@ -48,7 +48,8 @@ public class Skill_TwoWeaponFighting extends StdAbility
 		{
 			MOB mob=(MOB)affected;
 			
-			if(affectableStats.speed()>=2.0) affectableStats.setSpeed(affectableStats.speed()-1.0);
+			if(affectableStats.speed()>=2.0) 
+				affectableStats.setSpeed(affectableStats.speed()-1.0);
 			if(middleOfTheFight)
 			{
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/2));
@@ -73,7 +74,6 @@ public class Skill_TwoWeaponFighting extends StdAbility
 				&&(mob.rangeToTarget()>=0)
 				&&(mob.rangeToTarget()>=weapon.minRange())
 				&&(mob.rangeToTarget()<=weapon.maxRange())
-				&&((mob.getBitmap()&MOB.ATT_AUTOMELEE)==0)
 				&&(Sense.aliveAwakeMobile(mob,true))
 				&&(!mob.amDead())
 				&&(mob.curState().getHitPoints()>0)

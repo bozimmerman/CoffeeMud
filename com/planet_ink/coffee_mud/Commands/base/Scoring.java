@@ -211,10 +211,10 @@ public class Scoring
 				if(C!=mob.charStats().getCurrentClass())
 				{
 					if(classList.length()>0)
-						if(c==mob.charStats().numClasses()-3)
-							classList.append(", and");
+						if(c==mob.charStats().numClasses()-2)
+							classList.append(", and ");
 						else
-							classList.append(",");
+							classList.append(", ");
 					classList.append(C.name()+" ("+mob.charStats().getClassLevel(C)+") ");
 				}
 			}

@@ -43,7 +43,7 @@ public class Skill_HandCuff extends StdAbility
 			&&(!((Room)affect.target()).isInhabitant(invoker)))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
-				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
+				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
 				if(amountRemaining<0)
 					unInvoke();
 				else
@@ -120,7 +120,7 @@ public class Skill_HandCuff extends StdAbility
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					amountRemaining=adjustedLevel(mob)*200;
+					amountRemaining=adjustedLevel(mob)*300;
 					if(target.location()==mob.location())
 					{
 						success=maliciousAffect(mob,target,Integer.MAX_VALUE-1000,-1);
@@ -130,7 +130,7 @@ public class Skill_HandCuff extends StdAbility
 							if(oldAssist>0)
 								target.setBitmap(target.getBitmap()-MOB.ATT_AUTOASSIST);
 							ExternalPlay.unfollow(target,true);
-							ExternalPlay.follow(target,target,true);
+							ExternalPlay.follow(target,mob,true);
 							target.setFollowing(mob);
 						}
 					}

@@ -211,7 +211,7 @@ public class MudChat extends StdBehavior
 			{
 				finalCommand="emote "+finalCommand.substring(1).trim();
 				if(source!=null)
-					finalCommand=finalCommand.replaceAll(" her "," "+source.charStats().hisher()+" ");
+					finalCommand=Util.replaceAll(finalCommand," her "," "+source.charStats().hisher()+" ");
 			}
 			else
 			if(finalCommand.startsWith("!"))
@@ -224,13 +224,13 @@ public class MudChat extends StdBehavior
 				finalCommand="say \""+target.name()+"\" "+finalCommand.trim();
 
 			if(finalCommand.indexOf("$r")>=0)
-				finalCommand=finalCommand.replaceAll("$r",rest);
+				finalCommand=Util.replaceAll(finalCommand,"$r",rest);
 			if((target!=null)&&(finalCommand.indexOf("$t")>=0))
-				finalCommand=finalCommand.replaceAll("$t",target.name());
+				finalCommand=Util.replaceAll(finalCommand,"$t",target.name());
 			if((source!=null)&&(finalCommand.indexOf("$n")>=0))
-				finalCommand=finalCommand.replaceAll("$n",source.name());
+				finalCommand=Util.replaceAll(finalCommand,"$n",source.name());
 			if(finalCommand.indexOf("$$")>=0)
-				finalCommand=finalCommand.replaceAll("$$","$");
+				finalCommand=Util.replaceAll(finalCommand,"$$","$");
 	
 			Vector V=Util.parse(finalCommand);
 			V.insertElementAt(new Integer(RESPONSE_DELAY),0);

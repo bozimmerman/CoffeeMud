@@ -35,7 +35,7 @@ public class Thief_Bind extends ThiefSkill
 			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the ropes binding <S-HIM-HER>.");
-				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
+				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
 				if(amountRemaining<0)
 					unInvoke();
 				else
@@ -94,7 +94,7 @@ public class Thief_Bind extends ThiefSkill
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					amountRemaining=adjustedLevel(mob)*20;
+					amountRemaining=adjustedLevel(mob)*25;
 					if(target.location()==mob.location())
 						success=maliciousAffect(mob,target,Integer.MAX_VALUE-1000,-1);
 				}

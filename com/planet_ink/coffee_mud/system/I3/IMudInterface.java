@@ -146,31 +146,20 @@ public class IMudInterface implements ImudServices, Serializable
 	}
 	
 	
-	public String replaceAll(String str, String thisStr, String withThisStr)
-	{
-		for(int i=str.length()-1;i>=0;i--)
-		{
-			if(str.charAt(i)==thisStr.charAt(0))
-				if(str.substring(i).startsWith(thisStr))
-					str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
-		}
-		return str;
-	}
-	
 	public String socialFix(String str)
 	{
 		
-		str=replaceAll(str,"$N","<S-NAME>");
-		str=replaceAll(str,"$n","<S-NAME>");
-		str=replaceAll(str,"$T","<T-NAMESELF>");
-		str=replaceAll(str,"$t","<T-NAMESELF>");
-		str=replaceAll(str,"$m","<S-HIM-HER>");
-		str=replaceAll(str,"$M","<T-HIM-HER>");
-		str=replaceAll(str,"$s","<S-HIS-HER>");
-		str=replaceAll(str,"$S","<T-HIS-HER>");
-		str=replaceAll(str,"$e","<S-HE-SHE>");
-		str=replaceAll(str,"$E","<T-HE-SHE>");
-		str=replaceAll(str,"`","\'");
+		str=Util.replaceAll(str,"$N","<S-NAME>");
+		str=Util.replaceAll(str,"$n","<S-NAME>");
+		str=Util.replaceAll(str,"$T","<T-NAMESELF>");
+		str=Util.replaceAll(str,"$t","<T-NAMESELF>");
+		str=Util.replaceAll(str,"$m","<S-HIM-HER>");
+		str=Util.replaceAll(str,"$M","<T-HIM-HER>");
+		str=Util.replaceAll(str,"$s","<S-HIS-HER>");
+		str=Util.replaceAll(str,"$S","<T-HIS-HER>");
+		str=Util.replaceAll(str,"$e","<S-HE-SHE>");
+		str=Util.replaceAll(str,"$E","<T-HE-SHE>");
+		str=Util.replaceAll(str,"`","\'");
 		if(str.equals("$")) return "";
 		return str.trim();
 	}

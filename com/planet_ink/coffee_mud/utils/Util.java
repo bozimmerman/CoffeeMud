@@ -27,6 +27,17 @@ public class Util
 		return str;
 	}
 	
+	public static String replaceAll(String str, String thisStr, String withThisStr)
+	{
+		for(int i=str.length()-1;i>=0;i--)
+		{
+			if(str.charAt(i)==thisStr.charAt(0))
+				if(str.substring(i).startsWith(thisStr))
+					str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+		}
+		return str;
+	}
+	
 	public static String decompressString(byte[] b)
 	{
 		try

@@ -39,7 +39,7 @@ public class Chant_Tangle extends Chant
 			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against "+thePlants.name()+".");
-				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
+				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
 				if(amountRemaining<0)
 					unInvoke();
 				else
@@ -99,7 +99,7 @@ public class Chant_Tangle extends Chant
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					amountRemaining=150;
+					amountRemaining=200;
 					if(target.location()==mob.location())
 					{
 						success=maliciousAffect(mob,target,(adjustedLevel(mob)*10),-1);

@@ -571,7 +571,9 @@ public class ItemUsage
 			else
 			if(from instanceof Room)
 				item=((Room)from).fetchFromMOBRoomFavorsItems(mob,container,name+addendumStr,preferredLoc);
-			if((item!=null)&&(item instanceof Item)&&((!visionMatters)||(Sense.canBeSeenBy(item,mob))))
+			if((item!=null)
+			   &&(item instanceof Item)
+			   &&((!visionMatters)||(Sense.canBeSeenBy(item,mob))))
 				V.addElement(item);
 			if(item==null) return V;
 			addendumStr="."+(++addendum);
@@ -593,7 +595,8 @@ public class ItemUsage
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
-			wear(mob,(Item)items.elementAt(i),false);
+			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob)))
+				wear(mob,(Item)items.elementAt(i),false);
 	}
 
 	public static void hold(MOB mob, Vector commands)
@@ -609,7 +612,8 @@ public class ItemUsage
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
-			hold(mob,(Item)items.elementAt(i),false);
+			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob)))
+				hold(mob,(Item)items.elementAt(i),false);
 	}
 
 	public static void wield(MOB mob, Vector commands)
@@ -625,7 +629,8 @@ public class ItemUsage
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
-			wield(mob,(Item)items.elementAt(i),false);
+			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob)))
+				wield(mob,(Item)items.elementAt(i),false);
 	}
 
 	public static void drink(MOB mob, Vector commands)
