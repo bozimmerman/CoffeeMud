@@ -97,7 +97,7 @@ public class Prayer_Stasis extends Prayer
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					success=beneficialAffect(mob,target,10,-1);
+					success=beneficialAffect(mob,target,10);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is surrounded by a stasis field!");
 				}
 			}
