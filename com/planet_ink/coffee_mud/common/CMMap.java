@@ -84,7 +84,7 @@ public class CMMap
 			roomID=(String)deathRooms.get("ALL");
 		
 		Room room=null;
-		if(roomID.equalsIgnoreCase("start"))
+		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")));
 			room=getStartRoom(mob);
 		if((room==null)&&(roomID!=null)&&(roomID.length()>0))
 			room=getRoom(roomID);

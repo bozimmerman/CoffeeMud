@@ -107,7 +107,6 @@ public class Chant_LocateAnimals extends Chant
 
 		boolean success=profficiencyCheck(0,auto);
 
-		Hashtable lookedIn=new Hashtable();
 		Vector rooms=new Vector();
 		Vector localMap=mob.location().getArea().getMyMap();
 		for(int r=0;r<localMap.size();r++)
