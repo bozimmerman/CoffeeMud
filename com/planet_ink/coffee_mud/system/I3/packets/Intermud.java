@@ -351,14 +351,16 @@ public class Intermud implements Runnable, Persistent, Serializable {
                     try { Thread.sleep(120); }
                     catch( InterruptedException ignore ) { }
                     connect();
-					Log.errOut("InterMud",e.getMessage());
+					if((e.getMessage()!=null)&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0))
+						Log.errOut("InterMud",e.getMessage());
                     return;
                 }
                 try {
                     data = (Vector)LPCData.getLPCData(str);
                 }
                 catch( I3Exception e ) {
-					Log.errOut("InterMud",e.getMessage());
+					if((e.getMessage()!=null)&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0))
+						Log.errOut("InterMud",e.getMessage());
                     continue;
                 }
             }

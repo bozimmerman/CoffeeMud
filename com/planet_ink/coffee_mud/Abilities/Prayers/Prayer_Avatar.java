@@ -11,7 +11,12 @@ public class Prayer_Avatar extends Prayer
 	public String name(){ return "Avatar";}
 	public int quality(){ return BENEFICIAL_SELF;}
 	public int holyQuality(){ return HOLY_EVIL;}
-	public String displayText(){ return "(You are the AVATAR of "+invoker().getWorshipCharID()+")";}
+	public String displayText(){ 
+		if((invoker()!=null)&&(invoker().getWorshipCharID().length()>0))
+			return "(You are the AVATAR of "+invoker().getWorshipCharID()+")";
+		else
+			return "(You are the AVATAR of the gods)";
+	}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Prayer_Avatar();}

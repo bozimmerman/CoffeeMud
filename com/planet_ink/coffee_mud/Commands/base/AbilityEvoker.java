@@ -14,7 +14,7 @@ public class AbilityEvoker extends Scriptable
 	{
 		if(commands.size()==1)
 		{
-			mob.tell(getScr("Movement","gainerr"));
+			mob.tell(getScr("AbilityEvoker","gainerr"));
 			return;
 		}
 		commands.insertElementAt(getScr("CommandSet","say"),0);
