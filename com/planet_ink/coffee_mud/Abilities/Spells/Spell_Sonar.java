@@ -24,7 +24,8 @@ public class Spell_Sonar extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your sonar ears return to normal.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> sonar ears return to normal.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

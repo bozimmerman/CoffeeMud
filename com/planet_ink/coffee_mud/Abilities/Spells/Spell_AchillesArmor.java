@@ -24,7 +24,8 @@ public class Spell_AchillesArmor extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your Achilles Armor fades.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> Achilles Armor is now gone.");
 
 		super.unInvoke();
 

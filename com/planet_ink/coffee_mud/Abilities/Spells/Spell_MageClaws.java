@@ -47,7 +47,8 @@ public class Spell_MageClaws extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your claws are restored to normal hands.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> claws return to normal.");
 	}
 
 

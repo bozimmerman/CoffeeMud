@@ -31,7 +31,8 @@ public class Spell_Weaken extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You begin to feel stronger.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> begin(s) to look a bit stronger.");
 	}
 
 

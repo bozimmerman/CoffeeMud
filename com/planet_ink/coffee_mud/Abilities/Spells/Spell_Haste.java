@@ -31,7 +31,8 @@ public class Spell_Haste extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You begin to slow down to a normal speed.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> slow(s) back down to normal speed.");
 	}
 
 

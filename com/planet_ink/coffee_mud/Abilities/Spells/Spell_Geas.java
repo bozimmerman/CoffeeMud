@@ -77,7 +77,6 @@ public class Spell_Geas extends Spell
 				unInvoke();
 				return false;
 			}
-			MOB mob=(MOB)affected;
 			if(STEP.que!=null)	STEP.step();
 		}
 		return super.tick(ticking,tickID);

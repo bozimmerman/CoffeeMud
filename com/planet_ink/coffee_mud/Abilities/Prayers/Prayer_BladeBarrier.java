@@ -28,7 +28,8 @@ public class Prayer_BladeBarrier extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your blade barrier disappears.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> blade barrier disappears.");
 	}
 
 	public void affect(Environmental myHost, Affect affect)

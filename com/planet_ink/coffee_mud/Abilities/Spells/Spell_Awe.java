@@ -46,7 +46,8 @@ public class Spell_Awe extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You seem less awesome.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) less awesome.");
 	}
 
 

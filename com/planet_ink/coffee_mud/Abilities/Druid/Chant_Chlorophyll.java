@@ -24,7 +24,8 @@ public class Chant_Chlorophyll extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You skin returns to a normal color.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> skin returns to a normal color.");
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

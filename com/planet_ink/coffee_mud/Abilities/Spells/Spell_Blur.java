@@ -53,7 +53,8 @@ public class Spell_Blur extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You begin to come back into focus.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> begin(s) to come back into focus");
 	}
 
 

@@ -62,7 +62,8 @@ public class Spell_FeatherFall extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your normal weight returns.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> normal weight returns.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

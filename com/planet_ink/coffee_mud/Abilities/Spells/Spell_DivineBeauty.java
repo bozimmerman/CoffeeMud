@@ -30,7 +30,8 @@ public class Spell_DivineBeauty extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You begin to feel more like your old ugly self.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> begin(s) to look like <S-HIS-HER> old ugly self.");
 	}
 
 

@@ -32,7 +32,8 @@ public class Chant_Camelback extends Chant
 
 		if(canBeUninvoked())
 		{
-			mob.tell("Your camelback disappears.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> camelback disappears.");
 			mob.curState().setThirst(0);
 		}
 	}

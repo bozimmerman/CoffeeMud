@@ -58,7 +58,8 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The sores on your face clear up.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The sores on <S-YOUPOSS> face clear up.");
 	}
 
 

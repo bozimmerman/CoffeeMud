@@ -46,9 +46,8 @@ public class Spell_Polymorph extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-		{
-			mob.tell("You feel more like yourself again.");
-		}
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> morph(s) back into <S-HIM-HERSELF> again.");
 	}
 
 

@@ -25,7 +25,8 @@ public class Prayer_Demonshield extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your demonic flame shield disappears.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> demonic flame shield vanishes.");
 	}
 
 	public void affect(Environmental myHost, Affect affect)

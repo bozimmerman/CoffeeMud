@@ -26,7 +26,8 @@ public class Spell_Infravision extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your eyes cease to sparkle.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> eyes cease to sparkle.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -31,7 +31,8 @@ public class Spell_MageArmor extends Spell
 		}
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your magical armor vanishes!");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> magical armor fades away.");
 	}
 
 

@@ -41,7 +41,8 @@ public class Spell_Grow extends Spell
 				mob.baseCharStats().getMyRace().setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
 			else
 				mob.baseEnvStats().setWeight(oldWeight);
-			mob.tell("You return to a proper size.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> shrink(s) back down to size.");
 		}
 		super.unInvoke();
 	}

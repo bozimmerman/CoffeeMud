@@ -48,7 +48,8 @@ public class Spell_GiantStrength extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your muscles shrink back to their normal size.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> muscles shrink back to their normal size.");
 	}
 
 

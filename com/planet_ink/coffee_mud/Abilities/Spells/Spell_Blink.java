@@ -24,7 +24,8 @@ public class Spell_Blink extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You stop blinking.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> stop(s) blinking.");
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

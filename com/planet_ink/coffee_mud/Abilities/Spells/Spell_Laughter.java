@@ -47,7 +47,8 @@ public class Spell_Laughter extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell("You stop laughing!");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> stop(s) laughing.");
 			ExternalPlay.standIfNecessary(mob);
 		}
 	}

@@ -120,7 +120,8 @@ public class Prayer_FleshRock extends Prayer
 		if(canBeUninvoked())
 		{
 			if(statue!=null) statue.destroy();
-			mob.tell("Your flesh returns to normal!");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> flesh is no longer made of rock.");
 			mob.curState().setHitPoints(1);
 			mob.curState().setMana(0);
 			mob.curState().setMovement(0);

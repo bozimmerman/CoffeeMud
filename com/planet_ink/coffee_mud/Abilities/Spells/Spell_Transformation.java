@@ -20,7 +20,8 @@ public class Spell_Transformation extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
-			mob.tell("You no longer seem as brutish.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> no longer seem(s) so brutish.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

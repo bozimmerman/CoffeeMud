@@ -26,7 +26,8 @@ public class Chant_WindShape extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You return to normal form.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer shaped like the wind.");
 	}
 
 	public boolean okAffect(Environmental myHost, Affect affect)

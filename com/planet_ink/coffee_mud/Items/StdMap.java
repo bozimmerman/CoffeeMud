@@ -48,7 +48,6 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 	}
 	public void doMapArea()
 	{
-		String newText=getMapArea();
 		Vector V=Util.parseSemicolons(getMapArea());
 		String newName="";
 		for(int v=0;v<V.size();v++)

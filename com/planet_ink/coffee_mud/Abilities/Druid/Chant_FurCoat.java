@@ -30,7 +30,8 @@ public class Chant_FurCoat extends Chant
 		}
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your fur coat vanishes!");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> fur coat vanishes.");
 	}
 
 	public boolean okAffect(Environmental myHost, Affect affect)

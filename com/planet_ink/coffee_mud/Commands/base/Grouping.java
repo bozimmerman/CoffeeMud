@@ -377,7 +377,6 @@ public class Grouping
 			target=(MOB)V.elementAt(v);
 			if(target.willFollowOrdersOf(mob))
 			{
-				Integer commandCodeObj=(Integer)(CommandSet.getInstance()).get((String)commands.elementAt(0));
 				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'^?.");
 				if(mob.location().okAffect(mob,msg))
 				{

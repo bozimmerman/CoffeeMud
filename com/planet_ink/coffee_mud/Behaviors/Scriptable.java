@@ -1338,7 +1338,6 @@ public class Scriptable extends StdBehavior
 						return returnable;
 					}
 
-					int val2=Util.s_int(arg3);
 					returnable=simpleEval(""+val1,arg3,arg2,"GOLDAMT");
 				}
 				break;
@@ -1775,7 +1774,6 @@ public class Scriptable extends StdBehavior
 			}
 			case 39: // isday
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				if(lastKnownLocation!=null)
 					results.append(""+lastKnownLocation.getArea().getDayOfMonth());
 				break;

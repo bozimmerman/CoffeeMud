@@ -28,7 +28,8 @@ public class Spell_AddLimb extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			mob.tell("Your extra limb vanishes!");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> extra limb fades away.");
 			mob.confirmWearability();
 		}
 	}

@@ -132,7 +132,8 @@ public class Chant_Treemorph extends Chant
 		if(canBeUninvoked())
 		{
 			if(tree!=null) tree.destroy();
-			mob.tell("You feel like your normal self again!");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer a tree.");
 			mob.curState().setHitPoints(1);
 			mob.curState().setMana(0);
 			mob.curState().setMovement(0);

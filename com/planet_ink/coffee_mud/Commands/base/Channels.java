@@ -309,7 +309,6 @@ public class Channels
 									 boolean systemMsg)
 	{
 		int channelInt=getChannelInt(channelName);
-		int channelNum=getChannelNum(channelName);
 		int lvl=-1;
 		if(channelLevels.size()>channelInt)
 			lvl=((Integer)channelLevels.elementAt(channelInt)).intValue();

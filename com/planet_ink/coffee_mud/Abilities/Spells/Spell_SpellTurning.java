@@ -22,7 +22,8 @@ public class Spell_SpellTurning extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your reflective protection dissipates.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> reflective protection dissipates.");
 
 		super.unInvoke();
 

@@ -27,7 +27,8 @@ public class Prayer_Etherealness extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You return to material form.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> return(s) to material form.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

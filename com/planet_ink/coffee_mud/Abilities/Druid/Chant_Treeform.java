@@ -115,7 +115,8 @@ public class Chant_Treeform extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell("Your body returns to normal!");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> body is no longer treeish.");
 			if(oldState!=null)
 			{
 				mob.curState().setHitPoints(oldState.getHitPoints());

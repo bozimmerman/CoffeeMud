@@ -715,7 +715,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						if(I instanceof Armor)
 						{
 							str.append("\n\rWear Info  : Worn on ");
-							int maxCode=1;
 							for(int l=0;l<18;l++)
 							{
 								int wornCode=1<<l;

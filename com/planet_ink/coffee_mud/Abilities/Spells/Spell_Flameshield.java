@@ -27,7 +27,8 @@ public class Spell_Flameshield extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your flame shield disappears.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> flame shield vanishes in a puff of smoke.");
 	}
 
 	public void affect(Environmental myHost, Affect affect)

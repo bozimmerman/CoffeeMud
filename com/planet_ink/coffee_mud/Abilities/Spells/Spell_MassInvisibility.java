@@ -50,7 +50,8 @@ public class Spell_MassInvisibility extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You become visible again.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> fade(s) back into view.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

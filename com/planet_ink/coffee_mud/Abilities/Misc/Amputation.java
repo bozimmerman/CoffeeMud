@@ -206,7 +206,8 @@ public class Amputation extends StdAbility
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your limbs have been restored.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> limbs have been restored.");
 	}
 
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet)

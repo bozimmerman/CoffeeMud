@@ -54,7 +54,6 @@ public class Play_Dirge extends Play
 				for(Enumeration f=h.elements();f.hasMoreElements();)
 				{
 					MOB follower=(MOB)f.nextElement();
-					Room R=follower.location();
 
 					double exp=10.0;
 					int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);

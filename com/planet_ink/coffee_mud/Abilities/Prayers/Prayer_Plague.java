@@ -64,7 +64,8 @@ public class Prayer_Plague extends Prayer implements DiseaseAffect
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The sores on your face clear up.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> sores clear up.");
 	}
 
 

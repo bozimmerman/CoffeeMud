@@ -24,7 +24,8 @@ public class Chant_Root extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You pull up your roots.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> roots are pulled up.");
 	}
 	
 	public boolean okAffect(Environmental myHost, Affect affect)

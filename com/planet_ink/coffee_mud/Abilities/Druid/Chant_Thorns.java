@@ -25,7 +25,8 @@ public class Chant_Thorns extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your thorns disappear.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> thorns disappear.");
 	}
 
 	public void affect(Environmental myHost, Affect affect)

@@ -34,7 +34,8 @@ public class Prayer_SenseMagic extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The sparkles fade from your eyes.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The sparkles fade from <S-YOUPOSS> eyes");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

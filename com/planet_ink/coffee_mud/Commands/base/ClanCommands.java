@@ -654,7 +654,6 @@ public class ClanCommands
 
 	public static void clanCreate(MOB mob, Vector commands)
 	{
-		Room R=mob.location();
 		String qual=Util.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
 		if(qual.length()>0)

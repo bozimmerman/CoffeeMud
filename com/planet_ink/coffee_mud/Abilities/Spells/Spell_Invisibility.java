@@ -51,7 +51,8 @@ public class Spell_Invisibility extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You begin to fade back into view.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> fade(s) back into view.");
 	}
 
 

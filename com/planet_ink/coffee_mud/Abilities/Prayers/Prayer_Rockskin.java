@@ -33,7 +33,8 @@ public class Prayer_Rockskin extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your skins softens.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> skin softens.");
 	}
 
 

@@ -387,7 +387,6 @@ public class Clans implements Clan, Tickable
 			Clan C=this;
 			Vector members=new Vector();
 			Vector lastDates=new Vector();
-			Vector clansChange=new Vector();
 			Vector V;
 			int activeMembers=0;
 			ExternalPlay.DBClanFill(C.getName(),members,new Vector(),lastDates);

@@ -22,7 +22,8 @@ public class Chant_CloudWalk extends Chant
 			return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("You are no longer walking in the clouds.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> float(s) down to the ground.");
 
 		super.unInvoke();
 

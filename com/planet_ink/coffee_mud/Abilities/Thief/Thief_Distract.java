@@ -57,7 +57,8 @@ public class Thief_Distract extends ThiefSkill
 			{
 				if((invoker!=null)&&(invoker.location()==mob.location())&&(!invoker.amDead()))
 					invoker.tell("You are no longer distracting "+mob.name()+".");
-				mob.tell("You are no longer distracted.");
+				if((mob.location()!=null)&&(!mob.amDead()))
+					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer so distracted.");
 			}
 		}
 		super.unInvoke();

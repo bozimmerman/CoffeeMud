@@ -23,7 +23,6 @@ public class Play_Blues extends Play
 		MOB myChar=(MOB)affected;
 		if((affect.target()!=null)&&(affect.target() instanceof MOB))
 		{
-			MOB mate=(MOB)affect.target();
 			if((affect.amISource(myChar)||(affect.amITarget(myChar))
 			&&(affect.tool()!=null)
 			&&(affect.tool().ID().equals("Social"))

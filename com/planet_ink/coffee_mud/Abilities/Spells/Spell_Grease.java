@@ -121,7 +121,8 @@ public class Spell_Grease extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You manage to work your way out of the grease.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> manage(s) to work <S-HIS-HER> way out of the grease.");
 	}
 
 

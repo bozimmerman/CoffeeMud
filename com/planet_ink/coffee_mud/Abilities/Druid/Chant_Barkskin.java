@@ -28,7 +28,8 @@ public class Chant_Barkskin extends Chant
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your skin returns to normal.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> skin is no longer bark-like.");
 	}
 
 

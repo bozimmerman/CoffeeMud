@@ -27,7 +27,8 @@ public class Prayer_Wings extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your wings vanish.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> wings vanish.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

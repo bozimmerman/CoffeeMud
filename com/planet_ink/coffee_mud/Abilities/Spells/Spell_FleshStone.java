@@ -120,7 +120,8 @@ public class Spell_FleshStone extends Spell
 		if(canBeUninvoked())
 		{
 			if(statue!=null) statue.destroy();
-			mob.tell("Your flesh returns to normal!");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> flesh returns to normal.");
 			mob.curState().setHitPoints(1);
 			mob.curState().setMana(0);
 			mob.curState().setMovement(0);

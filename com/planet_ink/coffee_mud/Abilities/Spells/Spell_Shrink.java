@@ -25,7 +25,8 @@ public class Spell_Shrink extends Spell
 			if(affected instanceof MOB)
 			{
 				MOB mob=(MOB)affected;
-				mob.tell("You return to your normal size.");
+				if((mob.location()!=null)&&(!mob.amDead()))
+					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> returns to <S-HIS-HER> normal size.");
 			}
 			else
 			if(affected instanceof Item)

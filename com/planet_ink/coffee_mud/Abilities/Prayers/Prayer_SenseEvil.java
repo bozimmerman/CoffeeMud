@@ -34,7 +34,8 @@ public class Prayer_SenseEvil extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The red fades from your eyes.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The red fades from <S-YOUPOSS> eyes.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

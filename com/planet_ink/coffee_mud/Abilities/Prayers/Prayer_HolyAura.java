@@ -38,7 +38,8 @@ public class Prayer_HolyAura extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your holy aura fades.");
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> holy aura fades.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
