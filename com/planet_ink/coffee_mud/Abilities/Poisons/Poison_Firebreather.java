@@ -23,7 +23,8 @@ public class Poison_Firebreather extends Poison_Liquor
 			if((Dice.rollPercentage()<10)&&(!((MOB)affected).isMonster()))
 			{
 				Ability A=CMClass.getAbility("Disease_Migraines");
-				if(A!=null) A.invoke(mob,mob,true);
+				if((A!=null)&&(mob.fetchAffect(A.ID())==null))
+					A.invoke(mob,mob,true);
 			}
 			ExternalPlay.standIfNecessary(mob);
 		}

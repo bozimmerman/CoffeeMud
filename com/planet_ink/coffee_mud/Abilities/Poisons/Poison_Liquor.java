@@ -28,22 +28,6 @@ public class Poison_Liquor extends Poison_Alcohol
 			affectableStats.setStat(CharStats.DEXTERITY,1);
 	}
 	
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking,tickID))	return false;
-		if((affected==null)||(invoker==null)) return false;
-		if(!(affected instanceof MOB)) return true;
-
-		MOB mob=(MOB)affected;
-		if(getTickDownRemaining()==1)
-		{
-			unInvoke();
-			mob.delAffect(this);
-			Ability A=CMClass.getAbility("Disease_Migraines");
-			A.invoke(invoker,mob,true);
-		}
-		return true;
-	}
 	public void unInvoke()
 	{
 		MOB mob=null;
