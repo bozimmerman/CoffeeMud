@@ -207,7 +207,7 @@ public class GlassBlowing extends CommonSkill
 		else
 			itemName="a "+itemName;
 		building.setName(itemName);
-		startStr="You start blowing "+building.name()+".";
+		startStr="<S-NAME> start(s) blowing "+building.name()+".";
 		displayText="You are blowing "+building.name();
 		verb="blowing "+building.name();
 		building.setDisplayText(itemName+" is here");

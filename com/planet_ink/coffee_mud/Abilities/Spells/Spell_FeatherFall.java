@@ -21,7 +21,7 @@ public class Spell_FeatherFall extends Spell
 		canTargetCode=Ability.CAN_MOBS;
 		
 
-		quality=Ability.OK_SELF;
+		quality=Ability.OK_OTHERS;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
@@ -62,13 +62,7 @@ public class Spell_FeatherFall extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) target=mob;
 		if(target==null) return false;
-		if(mob.fetchAffect(this.ID())!=null)
-		{
-			mob.tell("You are already light as a feather.");
-			return false;
-		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

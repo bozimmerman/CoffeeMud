@@ -29,16 +29,22 @@ public class MOBTeacher extends CombatAbilities
 	private void ensureCharClass()
 	{
 		myMOB.baseCharStats().setMyClass(CMClass.getCharClass("StdCharClass"));
-		Ability A=(Ability)CMClass.findAbility(getParms());
+		myMOB.recoverCharStats();
+		Ability A=null;
+		
+		A=(Ability)CMClass.getAbility(getParms());
 		if(A!=null)
 		{
-			if(myMOB.fetchAbility(A.ID())==null)
+			Ability A2=myMOB.fetchAbility(A.ID());
+			if(A2==null)
 			{
 				A=(Ability)A.copyOf();
 				A.setBorrowed(myMOB,true);
 				A.setProfficiency(100);
 				myMOB.addAbility(A);
 			}
+			else
+				A2.setProfficiency(100);
 		}
 		else
 		{
@@ -59,25 +65,28 @@ public class MOBTeacher extends CombatAbilities
 			if(getParms().toUpperCase().indexOf("DRU")>=0)
 				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Druid"));
 			
+			myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
+			myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
+			myMOB.recoverCharStats();
 			for(int i=0;i<CMClass.abilities.size();i++)
 			{
 				A=(Ability)CMClass.abilities.elementAt(i);
-				if(myMOB.fetchAbility(A.ID())==null)
+				Ability A2=myMOB.fetchAbility(A.ID());
+				if(A2==null)
+				{
 					if((A.qualifiesByLevel(myMOB))
-					   ||((myMOB.charStats().getMyClass().ID().equals("StdCharClass"))
-					   &&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
+					||((myMOB.charStats().getMyClass().ID().equals("StdCharClass"))&&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
 					{
 						A=(Ability)A.copyOf();
 						A.setBorrowed(myMOB,true);
 						A.setProfficiency(100);
 						myMOB.addAbility(A);
 					}
+				}
+				else
+					A2.setProfficiency(100);
 			}
 		}
-		
-		myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
-		myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
-		myMOB.recoverCharStats();
 	}
 	
 	public void setParms(String newParms)
@@ -136,9 +145,6 @@ public class MOBTeacher extends CombatAbilities
 					return;
 				}
 				ensureCharClass();
-				monster.baseCharStats().setStat(CharStats.INTELLIGENCE,18);
-				monster.baseCharStats().setStat(CharStats.WISDOM,18);
-				
 				myAbility=monster.fetchAbility(myAbility.ID());
 				if(myAbility==null)
 				{
@@ -176,8 +182,8 @@ public class MOBTeacher extends CombatAbilities
 					return;
 				myAbility.teach(monster,mob);
 				monster.location().send(monster,msg);
-				monster.baseCharStats().setStat(CharStats.INTELLIGENCE,18);
-				monster.baseCharStats().setStat(CharStats.WISDOM,18);
+				monster.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
+				monster.baseCharStats().setStat(CharStats.WISDOM,19);
 				monster.recoverCharStats();
 			}
 		}

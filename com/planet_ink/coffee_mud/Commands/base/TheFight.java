@@ -142,7 +142,7 @@ public class TheFight
 						   int damageType,
 						   String allDisplayMessage)
 	{
-		if((attacker==null)||(target==null)) return;
+		if((attacker==null)||(target==null)||(target.location()==null)) return;
 		FullMsg msg=new FullMsg(attacker,target,weapon,messageCode,Affect.MASK_HURT+damage,messageCode,allDisplayMessage);
 		if(target.location().okAffect(msg))
 		{

@@ -1623,7 +1623,7 @@ public class StdMOB implements MOB
 								}
 							
 							if(Dice.rollPercentage()>(charStats().getStat(CharStats.CONSTITUTION)*4))
-								curState().adjMovement(-2,maxState());
+								curState().adjMovement(-1,maxState());
 						}
 					}
 					if(!isMonster())

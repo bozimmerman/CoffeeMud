@@ -244,7 +244,7 @@ public class Sculpting extends CommonSkill
 				itemName="a "+itemName;
 			
 			building.setName(itemName);
-			startStr="You start sculpting "+building.name()+".";
+			startStr="<S-NAME> start(s) sculpting "+building.name()+".";
 			displayText="You are sculpting "+building.name();
 			verb="sculpting "+building.name();
 			building.setDisplayText(itemName+" is here");

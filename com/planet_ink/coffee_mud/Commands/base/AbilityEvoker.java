@@ -81,13 +81,9 @@ public class AbilityEvoker
 					}
 					else
 					if(evokableAbility!=null)
-					{
 						foundMoreThanOne=true;
-						break;
-					}
 					else
 						evokableAbility=thisAbility;
-
 				}
 			}
 			if((evokableAbility!=null)&&(!foundMoreThanOne))

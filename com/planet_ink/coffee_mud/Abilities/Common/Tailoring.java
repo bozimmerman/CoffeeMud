@@ -291,7 +291,7 @@ public class Tailoring extends CommonSkill
 				else
 					itemName="a "+itemName;
 			building.setName(itemName);
-			startStr="You start knitting "+building.name()+".";
+			startStr="<S-NAME> start(s) knitting "+building.name()+".";
 			displayText="You are knitting "+building.name();
 			verb="knitting "+building.name();
 			building.setDisplayText(itemName+" is here");

@@ -83,29 +83,29 @@ public class CMClass extends ClassLoader
 	public static Weapon getWeapon(String calledThis)
 	{
 		Weapon thisItem=(Weapon)getEnv(weapons,calledThis);
-		if((thisItem==null)&&(weapons.size()>0)&&(calledThis.length()>0))
-			Log.sysOut("CMClass","Unknown Weapon '"+calledThis+"'.");
+		//if((thisItem==null)&&(weapons.size()>0)&&(calledThis.length()>0))
+		//	Log.sysOut("CMClass","Unknown Weapon '"+calledThis+"'.");
 		return thisItem;
 	}
 	public static Item getMiscMagic(String calledThis)
 	{
 		Item thisItem=(Item)getEnv(miscMagic,calledThis);
-		if((thisItem==null)&&(miscMagic.size()>0)&&(calledThis.length()>0))
-			Log.sysOut("CMClass","Unknown MiscMagic '"+calledThis+"'.");
+		//if((thisItem==null)&&(miscMagic.size()>0)&&(calledThis.length()>0))
+		//	Log.sysOut("CMClass","Unknown MiscMagic '"+calledThis+"'.");
 		return thisItem;
 	}
 	public static Armor getArmor(String calledThis)
 	{
 		Armor thisItem=(Armor)getEnv(armor,calledThis);
-		if((thisItem==null)&&(armor.size()>0)&&(calledThis.length()>0))
-			Log.sysOut("CMClass","Unknown Armor '"+calledThis+"'.");
+		//if((thisItem==null)&&(armor.size()>0)&&(calledThis.length()>0))
+		//	Log.sysOut("CMClass","Unknown Armor '"+calledThis+"'.");
 		return thisItem;
 	}
 	public static Item getStdItem(String calledThis)
 	{
 		Item thisItem=(Item)getEnv(items,calledThis);
-		if((thisItem==null)&&(items.size()>0)&&(calledThis.length()>0))
-			Log.sysOut("CMClass","Unknown StdItem '"+calledThis+"'.");
+		//if((thisItem==null)&&(items.size()>0)&&(calledThis.length()>0))
+		//	Log.sysOut("CMClass","Unknown StdItem '"+calledThis+"'.");
 		return thisItem;
 	}
 
@@ -117,7 +117,7 @@ public class CMClass extends ClassLoader
 			for(int i=0;i<charClasses.size();i++)
 				if(((CharClass)(charClasses.elementAt(i))).name().equalsIgnoreCase(calledThis))
 					return (CharClass)charClasses.elementAt(i);
-			Log.sysOut("CMClass","Unknown CharClass '"+calledThis+"'.");
+			//Log.sysOut("CMClass","Unknown CharClass '"+calledThis+"'.");
 		}
 		return thisItem;
 	}
@@ -129,7 +129,7 @@ public class CMClass extends ClassLoader
 			for(int i=0;i<races.size();i++)
 				if(((Race)(races.elementAt(i))).name().equalsIgnoreCase(calledThis))
 					return (Race)races.elementAt(i);
-			Log.sysOut("CMClass","Unknown Race '"+calledThis+"'.");
+			//Log.sysOut("CMClass","Unknown Race '"+calledThis+"'.");
 		}
 		return thisItem;
 	}
@@ -138,30 +138,30 @@ public class CMClass extends ClassLoader
 		Behavior B=(Behavior)getGlobal(behaviors,calledThis);
 		if(B!=null) 
 			B=B.newInstance();
-		else
-		if((behaviors.size()>0)&&(calledThis.length()>0)&&(calledThis.length()>0))
-			Log.sysOut("CMClass","Unknown Behavior '"+calledThis+"'.");
+		//else
+		//if((behaviors.size()>0)&&(calledThis.length()>0)&&(calledThis.length()>0))
+		//	Log.sysOut("CMClass","Unknown Behavior '"+calledThis+"'.");
 		return B;
 	}
 	public static Room getLocale(String calledThis)
 	{
 		Room thisItem= (Room)getEnv(locales,calledThis);
-		if((thisItem==null)&&(locales.size()>0)&&(calledThis.length()>0))
-			Log.sysOut("CMClass","Unknown Locale '"+calledThis+"'.");
+		//if((thisItem==null)&&(locales.size()>0)&&(calledThis.length()>0))
+		//	Log.sysOut("CMClass","Unknown Locale '"+calledThis+"'.");
 		return thisItem;
 	}
 	public static Area getAreaType(String calledThis)
 	{
 		Area thisItem= (Area)getEnv(areaTypes,calledThis);
-		if((thisItem==null)&&(areaTypes.size()>0)&&(calledThis.length()>0))
-			Log.sysOut("CMClass","Unknown Area '"+calledThis+"'.");
+		//if((thisItem==null)&&(areaTypes.size()>0)&&(calledThis.length()>0))
+		//	Log.sysOut("CMClass","Unknown Area '"+calledThis+"'.");
 		return thisItem;
 	}
 	public static Exit getExit(String calledThis)
 	{
 		Exit thisItem= (Exit)getEnv(exits,calledThis);
-		if((thisItem==null)&&(exits.size()>0)&&(calledThis.length()>0))
-			Log.sysOut("CMClass","Unknown Exit '"+calledThis+"'.");
+		//if((thisItem==null)&&(exits.size()>0)&&(calledThis.length()>0))
+		//	Log.sysOut("CMClass","Unknown Exit '"+calledThis+"'.");
 		return thisItem;
 	}
 	public static MOB getMOB(String calledThis)
@@ -173,8 +173,8 @@ public class CMClass extends ClassLoader
 			if(className(mob).equalsIgnoreCase(calledThis))
 				return (MOB)mob.newInstance();
 		}
-		if((MOBs.size()>0)&&(calledThis.length()>0))
-			Log.sysOut("CMClass","Unknown MOB '"+calledThis+"'.");
+		//if((MOBs.size()>0)&&(calledThis.length()>0))
+		//	Log.sysOut("CMClass","Unknown MOB '"+calledThis+"'.");
 		return null;
 	}
 	public static Ability getAbility(String calledThis)
@@ -182,6 +182,7 @@ public class CMClass extends ClassLoader
 		Ability A=(Ability)getGlobal(abilities,calledThis);
 		if(A!=null)
 			A=(Ability)A.newInstance();
+		/*
 		else
 		if((abilities.size()>0)
 		&&(calledThis.length()>0)
@@ -189,6 +190,7 @@ public class CMClass extends ClassLoader
 		&&(calledThis.indexOf("-")<0)
 		&&(calledThis.indexOf("=")<0))
 			Log.sysOut("CMClass","Unknown Ability '"+calledThis+"'.");
+		*/
 		return A;
 	}
 	public static Ability findAbility(String calledThis)

@@ -290,7 +290,7 @@ public class Carpentry extends CommonSkill
 			else
 				itemName="a "+itemName;
 			building.setName(itemName);
-			startStr="You start carving "+building.name()+".";
+			startStr="<S-NAME> start(s) carving "+building.name()+".";
 			displayText="You are carving "+building.name();
 			verb="carving "+building.name();
 			building.setDisplayText(itemName+" is here");

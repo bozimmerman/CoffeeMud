@@ -236,7 +236,7 @@ public class Smelting extends CommonSkill
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
 		building=(Item)makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0]);
-		startStr="You start smelting "+doneResourceDesc.toLowerCase()+".";
+		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
 		displayText="You are smelting "+doneResourceDesc.toLowerCase();
 		verb="smelting "+doneResourceDesc.toLowerCase();
 		

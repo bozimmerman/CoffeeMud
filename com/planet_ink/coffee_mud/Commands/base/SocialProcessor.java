@@ -170,22 +170,30 @@ public class SocialProcessor
 		if((Target!=null)&&(!Sense.canBeSeenBy(Target,mob)))
 		   Target=null;
 
+		String You_see=social.You_see;
+		if((You_see!=null)&&(You_see.trim().length()==0)) You_see=null;
+		String Third_party_sees=social.Third_party_sees;
+		if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) Third_party_sees=null;
+		String Target_sees=social.Target_sees;
+		if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
+		String See_when_no_target=social.See_when_no_target;
+		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) See_when_no_target=null;
 		if((Target==null)&&(targetStr.equals("")))
 		{
-			FullMsg msg=new FullMsg(mob,null,null,social.sourceCode,social.You_see,Affect.NO_EFFECT,null,social.othersCode,social.Third_party_sees);
+			FullMsg msg=new FullMsg(mob,null,null,social.sourceCode,You_see,Affect.NO_EFFECT,null,social.othersCode,Third_party_sees);
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		if((Target==null)&&(!targetStr.equals("")))
 		{
-			FullMsg msg=new FullMsg(mob,null,null,social.sourceCode,social.See_when_no_target,Affect.NO_EFFECT,null,social.othersCode,social.See_when_no_target);
+			FullMsg msg=new FullMsg(mob,null,null,social.sourceCode,See_when_no_target,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,Target,null,social.sourceCode,social.You_see,social.targetCode,social.Target_sees,social.othersCode,social.Third_party_sees);
+			FullMsg msg=new FullMsg(mob,Target,null,social.sourceCode,You_see,social.targetCode,Target_sees,social.othersCode,Third_party_sees);
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 		}

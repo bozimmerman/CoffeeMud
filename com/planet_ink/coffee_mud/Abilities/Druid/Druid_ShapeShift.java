@@ -64,7 +64,10 @@ public class Druid_ShapeShift extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
-			affectableStats.setReplacementName(raceName);
+			if(("AEIOU").indexOf(Character.toUpperCase(raceName.charAt(0)))>=0)
+				affectableStats.setReplacementName("an "+raceName.toLowerCase());
+			else
+				affectableStats.setReplacementName("a "+raceName.toLowerCase());
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
 		}
 	}
@@ -73,7 +76,7 @@ public class Druid_ShapeShift extends StdAbility
 	{
 		if((myRaceCode<0)||(newRace==null))
 			return super.displayText();
-		return "(in "+newRace.name()+" form)";
+		return "(in "+newRace.name().toLowerCase()+" form)";
 	}
 	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -90,8 +93,8 @@ public class Druid_ShapeShift extends StdAbility
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(canBeUninvoked)
-			mob.tell("You have reverted to your normal form.");
+		if((canBeUninvoked)&&(mob.location()!=null))
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().getMyRace().name().toLowerCase()+" form.");
 	}
 
 
@@ -168,7 +171,7 @@ public class Druid_ShapeShift extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_OK_ACTION,"<S-NAME> change(s) shape...");
+			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_OK_ACTION,null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -177,7 +180,7 @@ public class Druid_ShapeShift extends StdAbility
 					raceName="An "+raceName;
 				else
 					raceName="A "+raceName;
-				mob.tell("You have become "+raceName.toLowerCase()+".");
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				newRace.confirmGear(mob);
 				mob.makePeace();
 			}

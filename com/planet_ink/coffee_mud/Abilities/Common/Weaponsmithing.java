@@ -365,7 +365,7 @@ public class Weaponsmithing extends CommonSkill
 			else
 				itemName="a "+itemName;
 			building.setName(itemName);
-			startStr="You start smithing "+building.name()+".";
+			startStr="<S-NAME> start(s) smithing "+building.name()+".";
 			displayText="You are smithing "+building.name();
 			verb="smithing "+building.name();
 			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-6;

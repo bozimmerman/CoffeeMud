@@ -29,7 +29,7 @@ public class ItemMender extends StdBehavior
 			return false;
 		MOB source=affect.source();
 		if(!canFreelyBehaveNormal(affecting))
-			return false;
+			return true;
 		MOB observer=(MOB)affecting;
 		if((source!=observer)
 		&&(affect.amITarget(observer))

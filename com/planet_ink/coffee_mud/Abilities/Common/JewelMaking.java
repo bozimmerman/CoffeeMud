@@ -237,7 +237,7 @@ public class JewelMaking extends CommonSkill
 		else
 			itemName="a "+itemName;
 		building.setName(itemName);
-		startStr="You start making "+building.name()+".";
+		startStr="<S-NAME> start(s) making "+building.name()+".";
 		displayText="You are making "+building.name();
 		verb="making "+building.name();
 		building.setDisplayText(itemName+" is here");
