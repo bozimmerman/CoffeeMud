@@ -15,12 +15,13 @@ public class GrinderArea
 		
 		boolean redoAllMyDamnRooms=false;
 		Vector allMyDamnRooms=null;
+		String oldName=null;
 		
 		// class!
 		String className=(String)httpReq.getRequestParameters().get("CLASS");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this area.";
-		if(className!=CMClass.className(A))
+		if(!className.equalsIgnoreCase(CMClass.className(A)))
 		{
 			allMyDamnRooms=A.getMyMap();
 			Area oldA=A;
@@ -29,6 +30,7 @@ public class GrinderArea
 				return "The class you chose does not exist.  Choose another.";
 			CMMap.delArea(oldA);
 			CMMap.addArea(A);
+			A.setName(oldA.name());
 			redoAllMyDamnRooms=true;
 		}
 		
@@ -41,9 +43,14 @@ public class GrinderArea
 			if(CMMap.getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
 			allMyDamnRooms=A.getMyMap();
+			CMMap.delArea(A);
+			oldName=A.name();
 			ExternalPlay.DBDeleteArea(A);
+			A=ExternalPlay.DBCreateArea(name,CMClass.className(A));
 			A.setName(name);
 			redoAllMyDamnRooms=true;
+			httpReq.getRequestParameters().put("AREA",A.name());
+			httpReq.resetRequestEncodedParameters();
 		}
 		
 		// climate
@@ -123,6 +130,17 @@ public class GrinderArea
 				aff=(String)httpReq.getRequestParameters().get("AFFECT"+num);
 				theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
 			}
+		}
+		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
+		{
+			for(int r=0;r<allMyDamnRooms.size();r++)
+			{
+				Room R=(Room)allMyDamnRooms.elementAt(r);
+				R.setArea(A);
+				if(oldName!=null)
+					ExternalPlay.DBUpdateRoom(R);
+			}
+			A.clearMap();
 		}
 		return null;
 	}

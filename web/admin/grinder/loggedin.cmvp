@@ -1,19 +1,19 @@
-@if?!Authenticate@ @AddFile?failedlogin.cmvp@ @else@
-@if?!CheckReqParm?SUBOP=true@ @AddFile?nopriv.cmvp@ @else@
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 <html>
 <head>
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
 	<title>CoffeeMUD MUDGrinder</title>
 </head>
 
 <body>
 
 <CENTER>
-<IMG SRC="images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
 <h3>MUDGrinder</H3>
 <br>
 <FORM NAME=SELECTAREA METHOD=GET ACTION="" TARGET=_top>
@@ -28,11 +28,11 @@
 <TR><TD ALIGN=CENTER>
 @if?CheckReqParm?SYSOP=true@
 <TABLE BORDER=0><TR><TD ALIGN=CENTER>
-<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="Create" ONCLICK="document.SELECTAREA.action='newarea.cmvp'; document.SELECTAREA.submit();">
+<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="Create" ONCLICK="document.SELECTAREA.action='/grinder/newarea.cmvp'; document.SELECTAREA.submit();">
 </TD><TD ALIGN=CENTER>
-<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="document.SELECTAREA.action='modarea.cmvp'; document.SELECTAREA.submit();">
+<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="document.SELECTAREA.action='/grinder/modarea.cmvp'; document.SELECTAREA.submit();">
 </TD><TD ALIGN=CENTER>
-<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Delete" ONCLICK="document.SELECTAREA.action='areagone.cmvp'; document.SELECTAREA.submit();">
+<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Delete" ONCLICK="document.SELECTAREA.action='/grinder/areagone.cmvp'; document.SELECTAREA.submit();">
 </TD>
 </TR></TABLE>
 @else@

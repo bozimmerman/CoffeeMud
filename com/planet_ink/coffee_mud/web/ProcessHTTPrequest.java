@@ -181,6 +181,19 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 
 	}
+	public void resetRequestEncodedParameters()
+	{
+		StringBuffer buf=new StringBuffer("");
+		for(Enumeration e=getRequestParameters().keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
+			String value=(String)getRequestParameters().get(key);
+			if(buf.length()>0) buf.append("&");
+			buf.append(URLEncoder.encode(key)+"="+URLEncoder.encode(value));
+		}
+		requestParametersEncoded=buf.toString();
+	}
+	
 	public Hashtable getRequestParameters()
 	{
 		// have we already parsed the parameters?
@@ -228,7 +241,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				thisParamName = thisParam.substring(0,eq);
 				thisParamValue = "";
 				if (eq < thisParam.length())
-						thisParamValue=URLDecoder.decode(thisParam.substring(eq+1));
+						thisParamValue=preFilter(new StringBuffer(URLDecoder.decode(thisParam.substring(eq+1))));
 				/* for java vm 1.4
 				if (eq < thisParam.length())
 				{
@@ -310,6 +323,34 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	}
 
 
+	private String preFilter(StringBuffer input)
+	{
+		if(input==null) return null;
+
+		int x=0;
+		while(x<input.length())
+		{
+			char c=input.charAt(x);
+			if(c=='\'')
+				input.setCharAt(x,'`');
+			else
+			if(c==8)
+			{
+				String newStr=input.toString();
+				if(x==0)
+					input=new StringBuffer(newStr.substring(x+1));
+				else
+				{
+					input=new StringBuffer(newStr.substring(0,x-1)+newStr.substring(x+1));
+					x--;
+				}
+				x--;
+			}
+			x++;
+		}
+		return input.toString();
+	}
+	
 	private int myEndif(StringBuffer s, int i)
 	{
 		int endifsToFind=1;

@@ -1,21 +1,21 @@
-@if?!Authenticate@ @AddFile?failedlogin.cmvp@ @else@
-@if?!CheckReqParm?SYSOP=true@ @AddFile?nopriv.cmvp@ @else@
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SYSOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
 	<title>CoffeeMUD MUDGrinder</title>
 </head>
 
 <body>
 
 <CENTER>
-<IMG SRC="images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
 <h3>MUDGrinder -- Create a New Area</H3>
 <br>
-<FORM NAME=NEWAREA METHOD=GET ACTION="newarea2.cmvp" TARGET=_top>
+<FORM NAME=NEWAREA METHOD=GET ACTION="/grinder/newarea2.cmvp" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <TABLE WIDTH=200 BORDER=1>
 <TR><TD ALIGN=CENTER><FONT COLOR=WHITE><B>Enter a name:</B></FONT></TD></TR>

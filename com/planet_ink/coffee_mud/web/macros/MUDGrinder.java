@@ -58,6 +58,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("AREAMAP"))
 		{
+			
 			String AREA=(String)httpReq.getRequestParameters().get("AREA");
 			if(AREA==null) return "";
 			if(AREA.length()==0) return "";
@@ -76,8 +77,12 @@ public class MUDGrinder extends StdWebMacro
 			Area A=CMMap.getArea(AREA);
 			if(A==null) return "";
 			String error=GrinderArea.modifyArea(httpReq,parms);
+			AREA=(String)httpReq.getRequestParameters().get("AREA");
 			if((error!=null)&&(error.length()>0))
 				httpReq.getRequestParameters().put("ERRMSG",error);
+			A=CMMap.getArea(AREA);
+			if(A==null) return "";
+			ExternalPlay.DBUpdateArea(A);
 		}
 		return "";
 	}

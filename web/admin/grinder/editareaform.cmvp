@@ -1,11 +1,11 @@
-@if?!Authenticate@ @AddFile?failedlogin.cmvp@ @else@
-@if?!CheckReqParm?SUBOP=true@ @AddFile?nopriv.cmvp@ @else@
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
 	<title>CoffeeMUD MUDGrinder</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
@@ -31,7 +31,7 @@
 		}
 		function ReShow()
 		{
-			document.AREAEDIT.action='editareaform.cmvp';
+			document.AREAEDIT.action='/grinder/editareaform.cmvp';
 			document.AREAEDIT.target='MAP';
 			document.AREAEDIT.submit();
 		}
@@ -43,7 +43,7 @@
 <h3>Modify Area Data for '@AreaName@'.</H3>
 <P><FONT COLOR=RED><H1>@RequestParameter?ERRMSG@</H1></FONT>
 <BR>
-<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/editareadone.cmvp">
+<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/editareadone.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
 <INPUT TYPE=HIDDEN NAME=ACTION VALUE="MODIFYAREA">
@@ -83,14 +83,14 @@
 </TR>
 <TR>
 	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Behaviors:</B></FONT>
-	<BR><A target=HELP href="../archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+	<BR><A target=HELP HREF="/archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
     <TD WIDTH=500 COLSPAN=2>
 	@AreaData?BEHAVIORS@
 	</TD>
 </TR>
 <TR>
 	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Affects:</B></FONT>
-	<BR><A target=HELP href="../archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+	<BR><A target=HELP href="/archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
     <TD WIDTH=500 COLSPAN=2>
 	@AreaData?AFFECTS@
 	</TD>

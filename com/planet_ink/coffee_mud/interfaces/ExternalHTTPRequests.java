@@ -13,6 +13,7 @@ public interface ExternalHTTPRequests
 	public String WebHelperhtmlPlayerList();
 	public String WebHelperhtmlAreaTbl();
 	public Hashtable getRequestParameters();
+	public void resetRequestEncodedParameters();
 	public String getRequestEncodedParameters();
 	public InetAddress getServerAddress();
 	public String getPageContent(String filename);
