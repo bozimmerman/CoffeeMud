@@ -464,7 +464,7 @@ public class StdMOB implements MOB
 	public int adjustedAttackBonus()
 	{
 		return	envStats().attackAdjustment()
-				+((int)Math.round((new Integer(charStats().getStat(CharStats.STRENGTH)).doubleValue()-9.0)*3.0))
+				+((charStats().getStat(CharStats.STRENGTH)-9)*3)
 				-((curState().getHunger()<1)?10:0)
 				-((curState().getThirst()<1)?10:0);
 	}
@@ -472,7 +472,7 @@ public class StdMOB implements MOB
 	public int adjustedArmor()
 	{
 		return  envStats().armor()
-				-((int)Math.round((new Integer(charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))
+				-((charStats().getStat(CharStats.DEXTERITY)-9)*3)
 				+((curState().getHunger()<1)?10:0)
 				+((curState().getThirst()<1)?10:0)
 				+(((envStats().disposition()&EnvStats.IS_SITTING)>0)?15:0)

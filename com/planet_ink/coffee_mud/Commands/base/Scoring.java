@@ -122,9 +122,8 @@ public class Scoring
 	{
 		TheFight theFight=new TheFight();
 
-		int adjustedArmor=150+mob.adjustedArmor();
 		int adjustedAttack=mob.adjustedAttackBonus();
-
+		int adjustedArmor=(-mob.adjustedArmor())+50;
 
 		StringBuffer msg=new StringBuffer("");
 

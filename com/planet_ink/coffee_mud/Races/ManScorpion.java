@@ -19,7 +19,7 @@ public class ManScorpion extends StdRace
 		// pounds
 		lightestWeight=120;
 		weightVariance=50;
-		forbiddenWornBits=Integer.MAX_VALUE;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return false;}
 

@@ -258,7 +258,7 @@ public class CMClass extends ClassLoader
 		if(tempV.size()==0) return false; addV(tempV,abilities);
 		size+=tempV.size();
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Paladin"+File.separatorChar,"");
-		Log.sysOut("MUD","      All Fighters: "+(tempV.size()+size));
+		Log.sysOut("MUD","     All Fighters : "+(tempV.size()+size));
 		if(tempV.size()==0) return false; addV(tempV,abilities);
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Archon"+File.separatorChar,"");
 		if(tempV.size()==0) return false; addV(tempV,abilities);

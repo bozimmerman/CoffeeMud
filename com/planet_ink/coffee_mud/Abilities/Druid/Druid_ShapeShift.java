@@ -122,6 +122,7 @@ public class Druid_ShapeShift extends StdAbility
 		if(myRaceCode<0) return false;
 		else
 		{
+			setMiscText(""+myRaceCode);
 			int raceLevel=4;
 			if(mob.envStats().level()<6)
 				raceLevel=0;
@@ -134,8 +135,8 @@ public class Druid_ShapeShift extends StdAbility
 			else
 			if(mob.envStats().level()<24)
 				raceLevel=3;
-			raceName=shapes[myRaceCode][raceLevel];
-			newRace=CMClass.getRace(races[myRaceCode][raceLevel]);
+			raceName=shapes[raceLevel][myRaceCode];
+			newRace=CMClass.getRace(races[raceLevel][myRaceCode]);
 		}
 		
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -162,19 +163,8 @@ public class Druid_ShapeShift extends StdAbility
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,0);
-				for(int i=0;i<shapes.length;i++)
-				{
-					if(text().equals(shapes[i]))
-					{
-						raceName=text();
-						newRace=CMClass.getRace(text());
-						if(("AEIOU").indexOf(Character.toUpperCase(raceName.charAt(0)))>=0)
-							raceName="An "+raceName;
-						else
-							raceName="A "+raceName;
-					}
-				}
+				beneficialAffect(mob,mob,Integer.MAX_VALUE);
+				newRace.confirmGear(mob);
 				mob.makePeace();
 			}
 		}
