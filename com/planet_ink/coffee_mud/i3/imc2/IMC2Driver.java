@@ -1278,11 +1278,8 @@ public final class IMC2Driver extends Thread {
         }
 
         if (p.type.equals("keepalive-request")) {
-            tracef(0, "Keepalive request received from " + p.i.from);
-			String from=p.i.from;
-			int x=from.indexOf("@");
-			if(x>0) from=from.substring(x+1);
-            imc_send_keepalive(from);
+            tracef(8, "Keepalive request received from " + p.i.from);
+            imc_send_keepalive(p.i.from);
         }
 
         if (p.type.equals("who-reply")) {
@@ -1422,7 +1419,7 @@ public final class IMC2Driver extends Thread {
         imc_initdata(out);
         out.type = "is-alive";
         out.from = "*";
-        out.to = "*@"+reqFrom;
+        out.to = reqFrom;
         imc_addkey(out, "versionid", IMC_VERSIONID);
         imc_addkey(out, "networkname", this_imcmud.network);
         if (imc_siteinfo.flags != null && imc_siteinfo.flags != "")

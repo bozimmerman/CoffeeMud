@@ -25,13 +25,14 @@ public class Fighter_RapidShot extends StdAbility
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((mob.isInCombat())&&(mob.rangeToTarget()>0))
+		if(mob.isInCombat())
 		{
 			Item w=mob.fetchWieldedItem();
 			if((w!=null)
 			&&(w instanceof Weapon)
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(((Weapon)w).ammunitionType().length()>0)
+			&&((mob.rangeToTarget()>0)||((w.envStats().sensesMask()&EnvStats.SENSE_ITEMNOMINRANGE)==EnvStats.SENSE_ITEMNOMINRANGE))
 			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 			{
 				helpProfficiency(mob);

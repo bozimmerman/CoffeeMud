@@ -32,11 +32,11 @@ public class Fighter_CriticalShot extends StdAbility
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target()!=null)
 		&&(mob.getVictim()==msg.target())
-		&&(mob.rangeToTarget()>0)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
+		&&((mob.rangeToTarget()>0)||((msg.tool().envStats().sensesMask()&EnvStats.SENSE_ITEMNOMINRANGE)==EnvStats.SENSE_ITEMNOMINRANGE))
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,(-75)+mob.charStats().getStat(CharStats.STRENGTH),false)))
 		{
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());

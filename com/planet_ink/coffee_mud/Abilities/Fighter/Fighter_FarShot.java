@@ -32,10 +32,13 @@ public class Fighter_FarShot extends StdAbility
 			if(((msg.targetMinor()==CMMsg.TYP_WEAR)
 			   ||(msg.targetMinor()==CMMsg.TYP_WIELD)
 			   ||(msg.targetMinor()==CMMsg.TYP_HOLD))
+			&&(!qualifiedWeapons.contains(msg.target()))
 			&&((msg.source().fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 			{
 				qualifiedWeapons.addElement(msg.target());
-				msg.target().addEffect((Ability)this.copyOf());
+				Ability A=(Ability)this.copyOf();
+				A.setBorrowed(msg.target(),true);
+				msg.target().addEffect(A);
 			}
 			else
 			if(((msg.targetMinor()==CMMsg.TYP_REMOVE)
@@ -77,7 +80,9 @@ public class Fighter_FarShot extends StdAbility
 				if(!qualifiedWeapons.contains(w))
 				{
 					qualifiedWeapons.addElement(w);
-					w.addEffect((Ability)this.copyOf());
+					Ability A=(Ability)this.copyOf();
+					A.setBorrowed(w,true);
+					w.addEffect(A);
 				}
 			}
 			for(int i=qualifiedWeapons.size()-1;i>=0;i--)
