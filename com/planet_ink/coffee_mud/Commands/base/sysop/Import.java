@@ -2603,9 +2603,9 @@ public class Import
 					case 4:	R=changeRoomClass(R,"StoneRoom"); break;
 					case 5:	R=changeRoomClass(R,"StoneRoom"); break;
 					case 6:	R=changeRoomClass(R,"IndoorShallowWater"); break;
-					case 7:	R=changeRoomClass(R,"WaterSurface"); break;
+					case 7:	R=changeRoomClass(R,"IndoorWaterSurface"); break;
 					case 8:	R=changeRoomClass(R,"IceRoom"); break;
-					case 9:	R=changeRoomClass(R,"InTheAir"); break;
+					case 9:	R=changeRoomClass(R,"IndoorInTheAir"); break;
 					case 10: R=changeRoomClass(R,"HotRoom"); break;
 					case 11: R=changeRoomClass(R,"IceRoom"); break;
 					case 12: R=changeRoomClass(R,"IceRoom"); break;

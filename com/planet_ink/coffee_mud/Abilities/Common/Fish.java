@@ -75,7 +75,9 @@ public class Fish extends CommonSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER))
+		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
 		{
 			mob.tell("You are kidding, right?  Fish on dry land?");
 			return false;

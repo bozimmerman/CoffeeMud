@@ -246,7 +246,9 @@ public class Ranger_FindWater extends StdAbility
 		{
 			Room room=(Room)E;
 			if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			   ||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			   ||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			   ||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+			   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 				msg.append("Your water-finding senses are saturated.  This is a very wet place.\n\r");
 			else
 			if(room.domainConditions()==Room.CONDITION_WET)

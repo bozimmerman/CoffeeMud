@@ -121,10 +121,10 @@ public class Prop_Familiar extends Property
 				break;
 		case TURTLE: 
 				if(((affectableStats.sensesMask()&EnvStats.CAN_BREATHE)>0)
-				   &&(affected instanceof MOB)
-				   &&(((MOB)affected).location()!=null)
-				   &&(((MOB)affected).location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
-						affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_BREATHE);
+				&&(affected instanceof MOB)
+				&&(((MOB)affected).location()!=null)
+				&&((((MOB)affected).location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)||(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)))
+					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_BREATHE);
 				break;
 		case CAT:
 				break;

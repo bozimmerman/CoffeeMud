@@ -58,7 +58,8 @@ public class Spell_IceSheet extends Spell
 			MOB mob=affect.source();
 			if(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
 			{
-				if(room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+				if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+				||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
 				{
 					mob.tell("You are frozen in the ice sheet and can't even blink.");
 					return false;
@@ -120,7 +121,9 @@ public class Spell_IceSheet extends Spell
 
 			String msgStr="the ground becomes covered in ice!";
 			if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+			||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+			||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 				msgStr="the water freezes over!";
 			if(auto)msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
 			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"":"<S-NAME> chant(s) and gesture(s) and ")+msgStr);

@@ -153,7 +153,9 @@ public class LightSource extends StdItem implements Light
 	{
 		if(room==null) return false;
 		return (room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			   ||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE);
+			   ||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			   ||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+			   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE);
 	}
 	
 	public static void lightAffect(Light myLight, Affect affect)
@@ -170,7 +172,7 @@ public class LightSource extends StdItem implements Light
 			&&(mob.isMine(myLight))
 			&&((!Sense.isInFlight(mob))
 			   ||(LightSource.inTheRain(room))
-			   ||(room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)))
+			   ||((room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(room.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))))
 			{
 				if(LightSource.inTheWater(room))
 					mob.tell("The water makes "+myLight.name()+" go out.");

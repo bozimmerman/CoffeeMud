@@ -46,10 +46,18 @@ public class Skill_Swim extends StdAbility
 			return false;
 		}
 		Room r2=mob.location();
-		if((r2==null)||((r2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(r2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
+		if((r2==null)
+		||((r2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+		&&(r2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+		&&(r2.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+		&&(r2.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)))
 		{
 			Room r=mob.location().getRoomInDir(dirCode);
-			if((r==null)||((r.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(r.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
+			if((r==null)||((r.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+						   &&(r.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+						   &&(r.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+						   &&(r.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
+						   ))
 			{
 				mob.tell("There is no water to swim on that way.");
 				return false;
@@ -93,7 +101,9 @@ public class Skill_Swim extends StdAbility
 		if(myAbility.profficiency()<20)
 			return true;
 		if((student.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		 &&(student.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		 &&(student.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+		 &&(student.location().domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+		 &&(student.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
 		{
 			student.tell("You need to be on or in the water to learn any more about swimming!");
 			teacher.tell("You need to be on or in the water to teach more about swimming!");

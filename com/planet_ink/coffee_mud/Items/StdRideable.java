@@ -305,14 +305,19 @@ public class StdRideable extends StdContainer implements Rideable
 					case Rideable.RIDEABLE_LAND:
 						if((targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 						  ||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-						  ||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+						  ||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+						  ||(targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
+						  ||(targetRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+						  ||(targetRoom.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 							ok=false;
 						break;
 					case Rideable.RIDEABLE_AIR:
 						break;
 					case Rideable.RIDEABLE_WATER:
 						if((sourceRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-							&&(targetRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
+						&&(targetRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+						&&(sourceRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
+						&&(targetRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
 							ok=false;
 						break;
 					}

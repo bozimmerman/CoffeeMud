@@ -16,13 +16,16 @@ public interface Room extends Environmental
 	public final static int DOMAIN_OUTDOORS_JUNGLE=7;
 	public final static int DOMAIN_OUTDOORS_SWAMP=8;
 	public final static int DOMAIN_OUTDOORS_DESERT=9;
-	public final static int DOMAIN_OUTDOORS_HILLS=9;
-	public final static int DOMAIN_OUTDOORS_MOUNTAINS=9;
+	public final static int DOMAIN_OUTDOORS_HILLS=10;
+	public final static int DOMAIN_OUTDOORS_MOUNTAINS=11;
 	
 	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
 	public final static int DOMAIN_INDOORS_WOOD=INDOORS+1;
 	public final static int DOMAIN_INDOORS_CAVE=INDOORS+2;
 	public final static int DOMAIN_INDOORS_MAGIC=INDOORS+3;
+	public final static int DOMAIN_INDOORS_UNDERWATER=INDOORS+4;
+	public final static int DOMAIN_INDOORS_AIR=INDOORS+5;
+	public final static int DOMAIN_INDOORS_WATERSURFACE=INDOORS+6;
 	
 	public final static int CONDITION_NORMAL=0;
 	public final static int CONDITION_WET=1;
