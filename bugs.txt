@@ -1,5 +1,9 @@
 ?Test: High Marks, Imp. Distraction, Imp. Peek, Imp. Steal, Imp. Swipe
 ?Test: Far Shot, Body Shield
+mutable body parts, with ability to grant powers
+SMTP Server
+POP3 Server
+POP3 Client
 
 Delver:
 1Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
@@ -40,7 +44,6 @@ Delver:
 6Stone friend 	A charm spell that works against STONE/METAL golems, and against EARTH elementals. 
 7Earthpocket  Creates a cart for the delver that can stonewalk with him. It is kinda like a floating disk spell, with the items locked inside a pocket of earth that only the delver can get to. I would love for it to be a cart type item, though. (to make it different.)  
 
-mutable body parts, with ability to grant powers
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?

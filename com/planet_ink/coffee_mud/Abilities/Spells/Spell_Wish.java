@@ -539,8 +539,8 @@ public class Spell_Wish extends Spell
 			}
 
 			if((target!=null)
-			&&((myWish.indexOf(" LOWER ")>=0)||(myWish.indexOf(" HIGHER ")>=0)||(myWish.indexOf(" WAS ")>=0)||(myWish.indexOf(" WOULD BE ")>=0)||(myWish.indexOf(" WOULD BECOME ")>=0)||(myWish.indexOf(" BECAME ")>=0))
-			&&(myWish.indexOf(" LEVEL ")>=0))
+			&&((myWish.indexOf(" LOWER ")>=0)||(myWish.indexOf(" LOSE ")>=0)||(myWish.indexOf(" GAIN ")>=0)||(myWish.indexOf(" HIGHER ")>=0)||(myWish.indexOf(" WAS ")>=0)||(myWish.indexOf(" WOULD BE ")>=0)||(myWish.indexOf(" WOULD BECOME ")>=0)||(myWish.indexOf(" BECAME ")>=0))
+			&&((myWish.indexOf(" LEVEL ")>=0)||(myWish.indexOf(" LEVELS ")>=0)))
 			{
 				int level=0;
 				if(myWish.indexOf(" LOWER ")>=0)
@@ -548,6 +548,44 @@ public class Spell_Wish extends Spell
 				else
 				if(myWish.indexOf(" HIGHER" )>=0)
 					level=1;
+				else
+				if(myWish.indexOf(" GAIN ")>=0)
+				{
+					level=1;
+					Vector V=Util.parse(myWish);
+					for(int i2=1;i2<V.size();i2++)
+					{
+						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVELS"))
+						{
+							String s=(String)V.elementAt(i2);
+							if(Util.isNumber(s)
+							&&((Util.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
+							{
+								level=Util.s_int(s);
+								break;
+							}
+						}
+					}
+				}
+				else
+				if(myWish.indexOf(" LOSE" )>=0)
+				{
+					level=-1;
+					Vector V=Util.parse(myWish);
+					for(int i2=1;i2<V.size();i2++)
+					{
+						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVELS"))
+						{
+							String s=(String)V.elementAt(i2);
+							if(Util.isNumber(s)
+							&&((Util.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
+							{
+								level=-Util.s_int(s);
+								break;
+							}
+						}
+					}
+				}
 				else
 				{
 					Vector V=Util.parse(myWish);
@@ -570,21 +608,46 @@ public class Spell_Wish extends Spell
 					int levelsLost=level;
 					if(levelsLost<0) levelsLost=levelsLost*-1;
 					if(levelsLost>=mob.baseEnvStats().level())
+					{
 						levelsLost=mob.baseEnvStats().level()-1;
+						if(level>0) level=levelsLost;
+						else level=-levelsLost;
+					}
 					int newLevel=target.baseEnvStats().level()+level;
-					if((target instanceof MOB)&&(newLevel>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
+					if((target instanceof MOB)&&(newLevel>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL))&&(newLevel>target.baseEnvStats().level()))
 					{
 						wishDrain(mob,baseLoss,false);
 						mob.tell("That's beyond your power, but you lost exp even for trying.");
 						return false;
 					}
 						
+					if(target instanceof MOB)
+					{
+						MOB MT=(MOB)target;
+						if(level>0)
+						{
+							for(int i2=0;i2<levelsLost;i2++)
+							{
+								MT.baseCharStats().getCurrentClass().level(MT);
+								MT.recoverEnvStats();
+							}
+						}
+						else
+						while(MT.baseEnvStats().level()>newLevel)
+						{
+							MT.baseCharStats().getCurrentClass().unLevel(MT);
+							MT.recoverEnvStats();
+						}
+					}
+					else
+					{
+						target.baseEnvStats().setLevel(newLevel);
+						target.recoverEnvStats();
+					}
 					wishDrain(mob,baseLoss*levelsLost,true);
-					if((mob!=target)||(newLevel>=target.baseEnvStats().level()))
+					if((mob!=target)||(level>0))
 					for(int i2=0;i2<levelsLost;i2++)
 						mob.baseCharStats().getCurrentClass().unLevel(mob);
-					target.baseEnvStats().setLevel(newLevel);
-					target.recoverEnvStats();
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now level "+target.envStats().level()+"!");
 				}
 				return true;
