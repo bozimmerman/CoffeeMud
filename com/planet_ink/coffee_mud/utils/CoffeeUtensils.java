@@ -334,4 +334,19 @@ public class CoffeeUtensils
 		return true;
 
 	}
+	
+	public static Room roomLocation(Environmental E)
+	{
+		if(E==null) return null;
+		if(E instanceof MOB)
+			return ((MOB)E).location();
+		else
+		if((E instanceof Item)&&(((Item)E).myOwner() instanceof Room))
+			return (Room)((Item)E).myOwner();
+		else
+		if((E instanceof Item)&&(((Item)E).myOwner() instanceof MOB))
+		   return ((MOB)((Item)E).myOwner()).location();
+		return null;
+	}
 }
+

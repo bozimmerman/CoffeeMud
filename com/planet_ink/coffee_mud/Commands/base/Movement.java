@@ -90,6 +90,34 @@ public class Movement
 		if(!mob.riding().okAffect(enterMsg))
 			return false;
 
+		Vector riders=null;
+		Rideable riding=mob.riding();
+		if(riding!=null)
+		{
+			riders=new Vector();
+			for(int r=0;r<riding.numRiders();r++)
+			{
+				MOB rider=riding.fetchRider(r);
+				if((rider!=null)&&(rider!=mob))
+					riders.addElement(rider);
+			}
+			if((riding instanceof Item)
+			   &&(((Room)leaveMsg.target()).isContent((Item)riding)))
+			{
+				((Room)leaveMsg.target()).delItem((Item)riding);
+				((Room)enterMsg.target()).addItem((Item)riding);
+			}
+			else
+			if((riding instanceof MOB)
+			   &&(((Room)leaveMsg.target()).isInhabitant((MOB)riding)))
+			{
+				((MOB)riding).tell("You are ridden "+Directions.getDirectionName(directionCode)+".");
+				move(((MOB)riding),directionCode,false);
+			}
+			else
+				riders=null;
+		}
+		
 		if(exit!=null) exit.affect(enterMsg);
 		mob.location().delInhabitant(mob);
 		((Room)leaveMsg.target()).send(mob,leaveMsg);
@@ -100,53 +128,32 @@ public class Movement
 
 		if(opExit!=null) opExit.affect(leaveMsg);
 		
-		boolean moveRiders=false;
-		if(mob.riding()!=null)
-		{
-			Rideable riding=mob.riding();
-			if((riding instanceof Item)
-			   &&(((Room)leaveMsg.target()).isContent((Item)riding)))
-			{
-				((Room)leaveMsg.target()).delItem((Item)riding);
-				((Room)enterMsg.target()).addItem((Item)riding);
-				moveRiders=true;
-			}
-			else
-			if((riding instanceof MOB)
-			   &&(((Room)leaveMsg.target()).isInhabitant((MOB)riding)))
-			{
-				moveRiders=true;
-				((MOB)riding).tell("You are ridden "+Directions.getDirectionName(directionCode)+".");
-				move(((MOB)riding),directionCode,false);
-			}
-		}
-		
 		ExternalPlay.look(mob,null,true);
 
-		if((mob.riding()!=null)&&(moveRiders))
+		if((riders!=null)&&(riders.size()>0))
 		{
-			Rideable riding=mob.riding();
-			for(int r=0;r<riding.numRiders();r++)
+			for(int r=0;r<riders.size();r++)
 			{
-				MOB rMOB=riding.fetchRider(r);
-				if((rMOB!=null)&&(rMOB!=mob))
+				MOB rMOB=(MOB)riders.elementAt(r);
+				if((rMOB.location()==thisRoom)||(rMOB.location()==destRoom))
 				{
-					if((riding.amRiding(rMOB))
-					&&((rMOB.location()==thisRoom)||(rMOB.location()==destRoom)))
+					boolean fallOff=false;
+					if(rMOB.location()==thisRoom)
 					{
-						if(rMOB.location()==thisRoom)
-						{
-							rMOB.tell("You ride "+riding.name()+" "+Directions.getDirectionName(directionCode)+".");
-							if(!move(rMOB,directionCode,flee))
-							{
-								rMOB.tell("You fall off "+riding.name()+"!");
-								rMOB.setRiding(null);
-							}
-						}
+						rMOB.tell("You ride "+riding.name()+" "+Directions.getDirectionName(directionCode)+".");
+						if(!move(rMOB,directionCode,flee))
+							fallOff=true;
+					}
+					if(fallOff)
+					{
+						rMOB.tell("You fall off "+riding.name()+"!");
+						rMOB.setRiding(null);
 					}
 					else
-						rMOB.setRiding(null);
+						rMOB.setRiding(riding);
 				}
+				else
+					rMOB.setRiding(null);
 			}
 		}
 		

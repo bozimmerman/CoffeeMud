@@ -249,6 +249,7 @@ public class StdRoom
 				break;
 			}
 			case Affect.TYP_ENTER:
+			case Affect.TYP_RECALL:
 			{
 				recoverRoomStats();
 				break;

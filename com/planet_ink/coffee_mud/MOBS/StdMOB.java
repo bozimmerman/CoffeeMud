@@ -538,6 +538,8 @@ public class StdMOB implements MOB
 	public Rideable riding(){return riding;}
 	public void setRiding(Rideable ride)
 	{
+		if((ride!=null)&&(riding()!=null)&&(riding()==ride)&&(riding().amRiding(this)))
+			return;
 		if((riding()!=null)&&(riding().amRiding(this)))
 			riding().delRider(this);
 		riding=ride;
@@ -1461,13 +1463,8 @@ public class StdMOB implements MOB
 				}
 				else
 					speeder=0.0;
-				// this could create timing problems.  Keep an eye on it.
-				if(riding()!=null)
-				{
-					if(((riding() instanceof Item)&&(((Item)riding()).myOwner()!=location()))
-					||((riding() instanceof MOB)&&(((MOB)riding()).location()!=location())))
-						setRiding(null);
-				}
+				if((riding()!=null)&&(CoffeeUtensils.roomLocation(riding())!=location()))
+					setRiding(null);
 				if((!isMonster())&&(((++minuteCounter)*Host.TICK_TIME)>60000))
 				{
 					minuteCounter=0;

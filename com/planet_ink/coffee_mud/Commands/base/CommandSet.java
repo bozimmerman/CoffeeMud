@@ -216,6 +216,7 @@ public class CommandSet extends Hashtable
 		put("MODIFY",new Integer(MODIFY));
 		put("MOUNT",new Integer(MOUNT));
 			put("BOARD",new Integer(MOUNT));
+			put("RIDE",new Integer(MOUNT));
 		put("NOANSI",new Integer(NOANSI));
 		put("NORTH",new Integer(NORTH));
 			put("N",new Integer(NORTH));
