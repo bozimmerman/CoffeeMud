@@ -16,7 +16,7 @@ public class Spell_RogueLimb extends Spell
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public MOB rogueLimb=null;
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((rogueLimb!=null)
@@ -41,21 +41,21 @@ public class Spell_RogueLimb extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if((affected==null)
 		   ||(!(affected instanceof MOB))
 		   ||(rogueLimb==null))
 			return true;
-		if(affect.amITarget(rogueLimb)
+		if(msg.amITarget(rogueLimb)
 		&&(Sense.aliveAwakeMobile(rogueLimb,true))
 		&&(Sense.aliveAwakeMobile((MOB)affected,true))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
-			ExternalPlay.postDamage(rogueLimb,(MOB)affected,affect.tool(),affect.targetCode()-Affect.MASK_HURT,Affect.MASK_GENERAL|affect.sourceCode(),Weapon.TYPE_NATURAL,null);
-		if(affect.amISource(rogueLimb)
-		&&(affect.sourceMinor()==Affect.TYP_DEATH))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+			ExternalPlay.postDamage(rogueLimb,(MOB)affected,msg.tool(),msg.targetCode()-CMMsg.MASK_HURT,CMMsg.MASK_GENERAL|msg.sourceCode(),Weapon.TYPE_NATURAL,null);
+		if(msg.amISource(rogueLimb)
+		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
 			unInvoke();
 			return false;
@@ -67,7 +67,7 @@ public class Spell_RogueLimb extends Spell
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB))
-			((MOB)affected).location().show(((MOB)affected),rogueLimb,null,Affect.MSG_OK_ACTION,"<S-NAME> gain(s) control of <T-NAMESELF>.");
+			((MOB)affected).location().show(((MOB)affected),rogueLimb,null,CMMsg.MSG_OK_ACTION,"<S-NAME> gain(s) control of <T-NAMESELF>.");
 		if(rogueLimb!=null)
 		{
 			rogueLimb.destroy();
@@ -89,7 +89,7 @@ public class Spell_RogueLimb extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> lose(s) control of <T-HIS-HER> limb!":"^S<S-NAME> invoke(s) a powerful spell upon <T-NAMESELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
@@ -103,9 +103,9 @@ public class Spell_RogueLimb extends Spell
 							limbs.addElement(new Integer(i));
 					}
 					String limb=null;
-					if(limbs.size()==0) 
+					if(limbs.size()==0)
 						limb="body part";
-					else 
+					else
 						limb=((String)Race.BODYPARTSTR[((Integer)limbs.elementAt(Dice.roll(1,limbs.size(),-1))).intValue()]).toLowerCase();
 					rogueLimb=CMClass.getMOB("GenMob");
 					rogueLimb.setName(target.name()+"'s "+limb);
@@ -113,8 +113,8 @@ public class Spell_RogueLimb extends Spell
 					rogueLimb.baseEnvStats().setAttackAdjustment((-target.adjustedArmor())+50);
 					rogueLimb.baseEnvStats().setArmor(100-target.adjustedAttackBonus(null));
 					rogueLimb.baseCharStats().setMyRace(theRace);
-					int hp=100; 
-					if(hp>(target.baseState().getHitPoints()/3)) 
+					int hp=100;
+					if(hp>(target.baseState().getHitPoints()/3))
 						hp=(target.baseState().getHitPoints()/3);
 					rogueLimb.baseEnvStats().setDamage(1);
 					rogueLimb.baseState().setHitPoints(100);
@@ -134,7 +134,7 @@ public class Spell_RogueLimb extends Spell
 			}
 		}
 		else
-			mob.location().show(mob,target,Affect.MSG_OK_ACTION,"^S<S-NAME> invoke(s) at <T-NAMESELF>, causing <T-NAME> to twitch, and nothing more.");
+			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"^S<S-NAME> invoke(s) at <T-NAMESELF>, causing <T-NAME> to twitch, and nothing more.");
 
 
 		// return whether it worked

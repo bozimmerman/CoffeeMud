@@ -13,7 +13,7 @@ public class InstantDeath extends ActiveTicker
 		minTicks=1;maxTicks=1;chance=100;
 		tickReset();
 	}
-	
+
 	boolean activated=false;
 
 	public Behavior newInstance()
@@ -39,7 +39,7 @@ public class InstantDeath extends ActiveTicker
 			ExternalPlay.postDeath(null,M,null);
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -83,44 +83,44 @@ public class InstantDeath extends ActiveTicker
 		}
 		return true;
 	}
-	
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
+		super.executeMsg(affecting,msg);
 		if(activated) return;
-		if(affect.amITarget(affecting))
+		if(msg.amITarget(affecting))
 		{
 			if(affecting instanceof MOB)
 			{
-				if(((affect.targetMajor()&Affect.MASK_MALICIOUS)>0)
-				&&(!affect.source().isMonster()))
+				if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
+				&&(!msg.source().isMonster()))
 					activated=true;
 			}
 			else
 			if((affecting instanceof Food)
 			||(affecting instanceof Drink))
 			{
-				if((affect.targetMinor()==Affect.TYP_EAT)
-				||(affect.targetMinor()==Affect.TYP_DRINK))
+				if((msg.targetMinor()==CMMsg.TYP_EAT)
+				||(msg.targetMinor()==CMMsg.TYP_DRINK))
 					activated=true;
 			}
 			else
 			if((affecting instanceof Armor)
 			||(affecting instanceof Weapon))
 			{
-				if((affect.targetMinor()==Affect.TYP_WEAR)
-				||(affect.targetMinor()==Affect.TYP_HOLD)
-				||(affect.targetMinor()==Affect.TYP_WIELD))
+				if((msg.targetMinor()==CMMsg.TYP_WEAR)
+				||(msg.targetMinor()==CMMsg.TYP_HOLD)
+				||(msg.targetMinor()==CMMsg.TYP_WIELD))
 					activated=true;
 			}
 			else
 			if(affecting instanceof Item)
 			{
-				if(affect.targetMinor()==Affect.TYP_GET)
+				if(msg.targetMinor()==CMMsg.TYP_GET)
 					activated=true;
 			}
 			else

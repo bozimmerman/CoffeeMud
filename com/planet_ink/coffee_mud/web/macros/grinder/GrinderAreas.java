@@ -46,8 +46,8 @@ public class GrinderAreas
 				theparm=httpReq.getRequestParameter("BDATA"+num);
 			}
 		}
-		while(E.numAffects()>0)
-			E.delAffect(E.fetchAffect(0));
+		while(E.numEffects()>0)
+			E.delEffect(E.fetchEffect(0));
 		if(httpReq.isRequestParameter("AFFECT1"))
 		{
 			int num=1;
@@ -59,9 +59,9 @@ public class GrinderAreas
 				{
 					Ability B=CMClass.getAbility(aff);
 					if(theparm==null) theparm="";
-					if(B==null) return "Unknown Affect '"+aff+"'.";
+					if(B==null) return "Unknown Effect '"+aff+"'.";
 					B.setMiscText(theparm);
-					E.addNonUninvokableAffect(B);
+					E.addNonUninvokableEffect(B);
 				}
 				num++;
 				aff=httpReq.getRequestParameter("AFFECT"+num);
@@ -167,9 +167,9 @@ public class GrinderAreas
         if((parents!=null)&&(parents.length()>0))
         {
             Area parent=CMMap.getArea(parents);
-            if(parent!=null) 
+            if(parent!=null)
 			{
-                if(A.canParent(parent)) 
+                if(A.canParent(parent))
 				{
                     A.addParent(parent);
                     parent.addChild(A);
@@ -179,14 +179,14 @@ public class GrinderAreas
                     return "The area, '"+parent.Name()+"', cannot be added as a parent, as this would create a circular reference.";
             }
             for(int i=1;;i++)
-                if(httpReq.isRequestParameter("PARENT"+(new Integer(i).toString()))) 
+                if(httpReq.isRequestParameter("PARENT"+(new Integer(i).toString())))
 				{
                     parent=CMMap.getArea(httpReq.getRequestParameter("PARENT"+(new Integer(i).toString())));
-                    if(parent==null) 
+                    if(parent==null)
 						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("PARENT"+(new Integer(i).toString()))+"' not found by CMMap");
                     else
 					{
-						if(A.canParent(parent)) 
+						if(A.canParent(parent))
 						{
 							A.addParent(parent);
 							parent.addChild(A);
@@ -195,8 +195,8 @@ public class GrinderAreas
 						else
 						    return "The area, '"+parent.Name()+"', cannot be added as a parent, as this would create a circular reference.";
                     }
-                } 
-				else 
+                }
+				else
 					break;
         }
 
@@ -207,9 +207,9 @@ public class GrinderAreas
         if((children!=null)&&(children.length()>0))
         {
 			Area child=CMMap.getArea(children);
-			if(child!=null) 
+			if(child!=null)
 			{
-				if(A.canChild(child)) 
+				if(A.canChild(child))
 				{
 				    A.addChild(child);
 				    child.addParent(A);
@@ -219,14 +219,14 @@ public class GrinderAreas
 				    return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
 			}
 			for(int i=1;;i++)
-			    if(httpReq.isRequestParameter("CHILDREN"+(new Integer(i).toString()))) 
+			    if(httpReq.isRequestParameter("CHILDREN"+(new Integer(i).toString())))
 				{
 			        child=CMMap.getArea(httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString())));
-			        if(child==null) 
+			        if(child==null)
 						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString()))+"' not found by CMMap");
 			        else
 					{
-			            if(A.canChild(child)) 
+			            if(A.canChild(child))
 						{
 			                A.addChild(child);
 			                child.addParent(A);
@@ -235,8 +235,8 @@ public class GrinderAreas
 			            else
 			                return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
 			        }
-			    } 
-				else 
+			    }
+				else
 					break;
         }
 
@@ -250,7 +250,7 @@ public class GrinderAreas
 
 		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
 			CMMap.renameRooms(A,oldName,allMyDamnRooms);
-		
+
 		for(int i=0;i<areasNeedingUpdates.size();i++) // will always include A
 		{
 		    Area A2=(Area)areasNeedingUpdates.elementAt(i);

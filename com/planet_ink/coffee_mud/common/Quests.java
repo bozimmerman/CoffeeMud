@@ -23,11 +23,11 @@ public class Quests implements Cloneable, Quest
 	// 0=environmental item/mob/etc
 	// 1=Ability, 2=Ability (for an ability added)
 	// 1=Ability, 2=Ability, 3=String (for an ability modified)
-	// 1=Affect(for an Affect added)
-	// 1=Affect, 2=String (for an Affect modified)
+	// 1=Effect(for an Effect added)
+	// 1=Effect, 2=String (for an Effect modified)
 	// 1=Behavior (for an Behavior added)
 	// 1=Behavior, 2=String (for an Behavior modified)
-	
+
 	// the unique name of the quest
 	public String name(){return name;}
 	public void setName(String newName){name=newName;}
@@ -47,12 +47,12 @@ public class Quests implements Cloneable, Quest
 	public void autostartup()
 	{
 		if((minWait()<0)||(waitInterval()<0))
-			ExternalPlay.deleteTick(this,Host.QUEST_TICK);
+			ExternalPlay.deleteTick(this,Host.TICK_QUEST);
 		else
 		if(!running())
 		{
 			waitRemaining=minWait+(Dice.roll(1,maxWait,0));
-			ExternalPlay.startTickDown(this,Host.QUEST_TICK,1);
+			ExternalPlay.startTickDown(this,Host.TICK_QUEST,1);
 		}
 	}
 	protected void setVars(Vector script)
@@ -125,7 +125,7 @@ public class Quests implements Cloneable, Quest
 						cmd=((String)p.elementAt(0)).toUpperCase();
 					}
 				}
-					
+
 				if(cmd.equals("SET"))
 				{
 					if(p.size()<2)
@@ -143,10 +143,10 @@ public class Quests implements Cloneable, Quest
 						if(areaName.equalsIgnoreCase("any"))
 							A=CMMap.getRandomArea();
 						if(A==null)
-							for (Enumeration e = CMMap.areas(); e.hasMoreElements(); ) 
+							for (Enumeration e = CMMap.areas(); e.hasMoreElements(); )
 							{
 								Area A2 = (Area) e.nextElement();
-								if (A2.Name().equalsIgnoreCase(areaName)) 
+								if (A2.Name().equalsIgnoreCase(areaName))
 								{
 								   A = A2;
 								   break;
@@ -241,7 +241,7 @@ public class Quests implements Cloneable, Quest
 							if(!stuff.contains(M))
 								stuff.addElement(M);
 							R.recoverRoomStats();
-							R.showHappens(Affect.MSG_OK_ACTION,null);
+							R.showHappens(CMMsg.MSG_OK_ACTION,null);
 						}
 					}
 					else
@@ -307,7 +307,7 @@ public class Quests implements Cloneable, Quest
 							A=R.getArea();
 							E=I;
 							R.recoverRoomStats();
-							R.showHappens(Affect.MSG_OK_ACTION,null);
+							R.showHappens(CMMsg.MSG_OK_ACTION,null);
 						}
 					}
 					else
@@ -499,7 +499,7 @@ public class Quests implements Cloneable, Quest
 							if(!stuff.contains(M))
 								stuff.addElement(M);
 							R.recoverRoomStats();
-							R.showHappens(Affect.MSG_OK_ACTION,null);
+							R.showHappens(CMMsg.MSG_OK_ACTION,null);
 						}
 					}
 					else
@@ -578,7 +578,7 @@ public class Quests implements Cloneable, Quest
 							A=R.getArea();
 							E=I;
 							R.recoverRoomStats();
-							R.showHappens(Affect.MSG_OK_ACTION,null);
+							R.showHappens(CMMsg.MSG_OK_ACTION,null);
 						}
 					}
 					else
@@ -758,7 +758,7 @@ public class Quests implements Cloneable, Quest
 						if(!stuff.contains(M))
 							stuff.addElement(M);
 						R.recoverRoomStats();
-						R.showHappens(Affect.MSG_OK_ACTION,null);
+						R.showHappens(CMMsg.MSG_OK_ACTION,null);
 					}
 					else
 					if(cmd.equals("ITEM"))
@@ -808,7 +808,7 @@ public class Quests implements Cloneable, Quest
 							R.addItem(I);
 							A=R.getArea();
 							R.recoverRoomStats();
-							R.showHappens(Affect.MSG_OK_ACTION,null);
+							R.showHappens(CMMsg.MSG_OK_ACTION,null);
 						}
 						E=I;
 						if(!stuff.contains(I))
@@ -982,27 +982,27 @@ public class Quests implements Cloneable, Quest
 						if(E==null)
 						{
 							if(!isQuiet)
-								Log.errOut("Quests","Quest '"+name()+"', cannot give affect, no mob or item set.");
+								Log.errOut("Quests","Quest '"+name()+"', cannot give Effect, no mob or item set.");
 							error=true; break;
 						}
 						if(p.size()<3)
 						{
 							if(!isQuiet)
-								Log.errOut("Quests","Quest '"+name()+"', cannot give affect, ability name not given.");
+								Log.errOut("Quests","Quest '"+name()+"', cannot give Effect, ability name not given.");
 							error=true; break;
 						}
 						Ability A3=CMClass.findAbility((String)p.elementAt(2));
 						if(A3==null)
 						{
 							if(!isQuiet)
-								Log.errOut("Quests","Quest '"+name()+"', cannot give affect, ability name unknown '"+((String)p.elementAt(2))+".");
+								Log.errOut("Quests","Quest '"+name()+"', cannot give Effect, ability name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
 						Vector V=new Vector();
 						V.addElement(E);
-						if(E.fetchAffect(A3.ID())!=null)
+						if(E.fetchEffect(A3.ID())!=null)
 						{
-							A3=E.fetchAffect(A3.ID());
+							A3=E.fetchEffect(A3.ID());
 							V.addElement(A3);
 							V.addElement(A3.text());
 							A3.makeLongLasting();
@@ -1047,12 +1047,12 @@ public class Quests implements Cloneable, Quest
 		else
 		if(duration()<0)
 			Log.errOut("Quests","No duration, quest '"+name()+"' not started.");
-		
+
 		if((!error)&&(done)&&(duration()>=0))
 		{
 			waitRemaining=-1;
 			ticksRemaining=duration();
-			ExternalPlay.startTickDown(this,Host.QUEST_TICK,1);
+			ExternalPlay.startTickDown(this,Host.TICK_QUEST,1);
 		}
 	}
 
@@ -1131,14 +1131,14 @@ public class Quests implements Cloneable, Quest
 					}
 					else
 					{
-						Ability A=E.fetchAffect(((Ability)O).ID());
+						Ability A=E.fetchEffect(((Ability)O).ID());
 						if(A==null) continue;
 						if((V.size()>2)&&(V.elementAt(2) instanceof String))
 							A.setMiscText((String)V.elementAt(2));
 						else
 						{
 							A.unInvoke();
-							E.delAffect(A);
+							E.delEffect(A);
 						}
 					}
 				}
@@ -1152,7 +1152,7 @@ public class Quests implements Cloneable, Quest
 		{
 			ticksRemaining=-1;
 			if((minWait()<0)||(maxWait<0))
-				ExternalPlay.deleteTick(this,Host.QUEST_TICK);
+				ExternalPlay.deleteTick(this,Host.TICK_QUEST);
 			else
 				waitRemaining=minWait+(Dice.roll(1,maxWait,0));
 		}
@@ -1228,7 +1228,7 @@ public class Quests implements Cloneable, Quest
 	public long getTickStatus(){return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID!=Host.QUEST_TICK)
+		if(tickID!=Host.TICK_QUEST)
 			return false;
 		tickStatus=Tickable.STATUS_START;
 		if(running())
@@ -1442,7 +1442,7 @@ public class Quests implements Cloneable, Quest
 		if(quests.contains(Q))
 		{
 			Q.stopQuest();
-			ExternalPlay.deleteTick(Q,Host.QUEST_TICK);
+			ExternalPlay.deleteTick(Q,Host.TICK_QUEST);
 			quests.removeElement(Q);
 		}
 	}

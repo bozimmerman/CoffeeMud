@@ -20,14 +20,14 @@ public class Spell_MirrorImage extends Spell
 	private boolean notAgain=false;
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		if((affect.amITarget(mob))&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK))
+		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
 		{
 			if(invoker()!=null)
 			{
@@ -39,7 +39,7 @@ public class Spell_MirrorImage extends Spell
 				int numberOfTargets = numberOfImages + 1;
 				if(randomizer.nextInt() % numberOfTargets == 0)
 				{
-					if(mob.location().show(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<T-NAME> attack(s) a mirrored image!"))
+					if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<T-NAME> attack(s) a mirrored image!"))
 						numberOfImages--;
 					return false;
 				}
@@ -47,9 +47,9 @@ public class Spell_MirrorImage extends Spell
 		}
 		return true;
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
@@ -57,23 +57,23 @@ public class Spell_MirrorImage extends Spell
 		if(notAgain) return;
 
 		MOB mob=(MOB)affected;
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
 			if((
-				(Util.bset(affect.othersCode(),Affect.MASK_EYES))
-				||(Util.bset(affect.othersCode(),Affect.MASK_MOVE))
-				||(Util.bset(affect.othersCode(),Affect.MASK_MOUTH))
-				||(Util.bset(affect.othersCode(),Affect.MASK_HANDS)))
-			&&(affect.othersMessage()!=null)
-			&&((affect.targetCode()&Affect.MASK_HURT)==0)
-			&&(affect.othersMessage().length()>0))
+				(Util.bset(msg.othersCode(),CMMsg.MASK_EYES))
+				||(Util.bset(msg.othersCode(),CMMsg.MASK_MOVE))
+				||(Util.bset(msg.othersCode(),CMMsg.MASK_MOUTH))
+				||(Util.bset(msg.othersCode(),CMMsg.MASK_HANDS)))
+			&&(msg.othersMessage()!=null)
+			&&((msg.targetCode()&CMMsg.MASK_HURT)==0)
+			&&(msg.othersMessage().length()>0))
 			{
 				notAgain=true;
 				if(numberOfImages<=0)
 					unInvoke();
 				else
 				for(int x=0;x<numberOfImages;x++)
-					affect.addTrailerMsg(new FullMsg(mob,affect.target(),Affect.MSG_OK_VISUAL,affect.othersMessage()));
+					msg.addTrailerMsg(new FullMsg(mob,msg.target(),CMMsg.MSG_OK_VISUAL,msg.othersMessage()));
 			}
 		}
 		notAgain=false;
@@ -105,7 +105,7 @@ public class Spell_MirrorImage extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("You already have mirror images.");
 			return false;
@@ -129,7 +129,7 @@ public class Spell_MirrorImage extends Spell
 			invoker=mob;
 			numberOfImages = Dice.roll(1,(int)(Math.round(Util.div(adjustedLevel(mob),3.0))),2);
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A spell forms around":"^S<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly " + numberOfImages + " copies appear.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -36,12 +36,12 @@ public class Spell_Fly extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> begin(s) to float back down.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to float back down.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		
+
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -62,12 +62,12 @@ public class Spell_Fly extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) to fly around!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) to fly around!");
 					success=beneficialAffect(mob,target,0);
 				}
 			}

@@ -13,7 +13,7 @@ public class Spell_Shove extends Spell
 	public int maxRange(){return 4;}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Host.MOB_TICK;}
+	protected int canTargetCode(){return Host.TICK_MOB;}
 	public boolean doneTicking=false;
 	public Environmental newInstance(){	return new Spell_Shove();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
@@ -39,10 +39,10 @@ public class Spell_Shove extends Spell
 			mob.tell("You can't shove anyone that way!");
 			return false;
 		}
-			
+
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -55,7 +55,7 @@ public class Spell_Shove extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> get(s) shoved back!":"<S-NAME> incant(s) and shove(s) at <T-NAMESELF>.");
-			if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
+			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				if((!msg.wasModified())&&(target.location()==mob.location()))
 				{
@@ -63,9 +63,9 @@ public class Spell_Shove extends Spell
 					target.makePeace();
 					Room newRoom=mob.location().getRoomInDir(dir);
 					Room thisRoom=mob.location();
-					FullMsg enterMsg=new FullMsg(target,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> fly(s) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir))+".");
-					FullMsg leaveMsg=new FullMsg(target,thisRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> <S-IS-ARE> shoved forcefully into the air and out "+Directions.getInDirectionName(dir)+".");
-					if(thisRoom.okAffect(target,leaveMsg)&&newRoom.okAffect(target,enterMsg))
+					FullMsg enterMsg=new FullMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> fly(s) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir))+".");
+					FullMsg leaveMsg=new FullMsg(target,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> <S-IS-ARE> shoved forcefully into the air and out "+Directions.getInDirectionName(dir)+".");
+					if(thisRoom.okMessage(target,leaveMsg)&&newRoom.okMessage(target,enterMsg))
 					{
 						thisRoom.send(target,leaveMsg);
 						newRoom.bringMobHere(target,false);

@@ -152,29 +152,29 @@ public class Bard extends StdCharClass
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			boolean spellLike=((affect.tool()!=null)&&(myChar.fetchAbility(affect.tool().ID())!=null))&&(myChar.isMine(affect.tool()));
-			if((spellLike||((affect.sourceMajor()&Affect.MASK_DELICATE)>0))
-			&&(affect.tool()!=null)
+			boolean spellLike=((msg.tool()!=null)&&(myChar.fetchAbility(msg.tool().ID())!=null))&&(myChar.isMine(msg.tool()));
+			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
+			&&(msg.tool()!=null)
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> "+affect.tool().name()+"!");
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> "+msg.tool().name()+"!");
 					return false;
 				}
 			}
 			else
-			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon))
+			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon))
 			{
-				int classification=((Weapon)affect.tool()).weaponClassification();
+				int classification=((Weapon)msg.tool()).weaponClassification();
 				switch(classification)
 				{
 				case Weapon.CLASS_SWORD:
@@ -186,13 +186,13 @@ public class Bard extends StdCharClass
 				default:
 					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
 						return false;
 					}
 					break;
 				}
 			}
 		}
-		return super.okAffect(myChar,affect);
+		return super.okMessage(myChar,msg);
 	}
 }

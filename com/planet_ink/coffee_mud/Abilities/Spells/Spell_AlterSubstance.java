@@ -30,7 +30,7 @@ public class Spell_AlterSubstance extends Spell
 			Item I=(Item)affected;
 			I.setMaterial(oldMaterial);
 			if(I.owner() instanceof Room)
-				((Room)I.owner()).showHappens(Affect.MSG_OK_VISUAL,I.name()+" reverts to its natural form.");
+				((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" reverts to its natural form.");
 			else
 			if(I.owner() instanceof MOB)
 				((MOB)I.owner()).tell(I.name()+" reverts to its natural form.");
@@ -95,11 +95,11 @@ public class Spell_AlterSubstance extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				material=Util.capitalize(material);
-				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> change(s) into "+material+"!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> change(s) into "+material+"!");
 				oldMaterial=target.material();
 				target.setMaterial(newMaterial);
 				String oldResourceName=EnvResource.RESOURCE_DESCS[oldMaterial&EnvResource.RESOURCE_MASK];

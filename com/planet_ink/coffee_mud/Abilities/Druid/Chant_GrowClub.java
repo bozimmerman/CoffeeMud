@@ -47,7 +47,7 @@ public class Chant_GrowClub extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the trees.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Weapon newItem=(Weapon)CMClass.getWeapon("GenWeapon");
@@ -65,7 +65,7 @@ public class Chant_GrowClub extends Chant
 				newItem.setWeaponType(Weapon.TYPE_BASHING);
 				newItem.setMiscText(newItem.text());
 				mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"A good looking club grows out of a tree and drops.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A good looking club grows out of a tree and drops.");
 				mob.location().recoverEnvStats();
 			}
 		}

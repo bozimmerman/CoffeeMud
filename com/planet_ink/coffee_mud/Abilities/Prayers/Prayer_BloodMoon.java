@@ -30,20 +30,20 @@ public class Prayer_BloodMoon extends Prayer
 			mob.tell("The blood moon over you fades.");
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+		if((msg.amITarget(mob))
+		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 		{
-			int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
-			SaucerSupport.adjustDamageMessage(affect,recovery);
+			int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
+			SaucerSupport.adjustDamageMessage(msg,recovery);
 		}
 		return true;
 	}
@@ -64,10 +64,10 @@ public class Prayer_BloodMoon extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAME> to feel pain.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The Blood Moon rises over <S-NAME>.");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"The Blood Moon rises over <S-NAME>.");
 				maliciousAffect(mob,target,0,-1);
 			}
 		}

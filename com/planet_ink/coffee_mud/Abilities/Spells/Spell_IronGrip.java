@@ -25,37 +25,37 @@ public class Spell_IronGrip extends Spell
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> weapon hand becomes flesh again.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> weapon hand becomes flesh again.");
 
 		super.unInvoke();
 
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect)) return false;
+		if(!super.okMessage(myHost,msg)) return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((affect.amITarget(mob))
-			&&(affect.tool()!=null)
-			&&(affect.tool().ID().toUpperCase().indexOf("DISARM")>=0))
+			if((msg.amITarget(mob))
+			&&(msg.tool()!=null)
+			&&(msg.tool().ID().toUpperCase().indexOf("DISARM")>=0))
 			{
-				mob.location().show(affect.source(),mob,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to disarm <T-NAME>, but the grip is too strong!");
+				mob.location().show(msg.source(),mob,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to disarm <T-NAME>, but the grip is too strong!");
 				return false;
 			}
 			else
-			if((affect.amISource(mob))
-			&&((affect.targetMinor()==Affect.TYP_DROP)
-				||(affect.targetMinor()==Affect.TYP_THROW)
-				||(affect.targetMinor()==Affect.TYP_GET)
-			    ||(affect.targetMinor()==Affect.TYP_REMOVE))
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof Item)
-			&&(mob.isMine((Item)affect.target()))
-			&&(((Item)affect.target()).amWearingAt(Item.WIELD)))
+			if((msg.amISource(mob))
+			&&((msg.targetMinor()==CMMsg.TYP_DROP)
+				||(msg.targetMinor()==CMMsg.TYP_THROW)
+				||(msg.targetMinor()==CMMsg.TYP_GET)
+			    ||(msg.targetMinor()==CMMsg.TYP_REMOVE))
+			&&(msg.target()!=null)
+			&&(msg.target() instanceof Item)
+			&&(mob.isMine((Item)msg.target()))
+			&&(((Item)msg.target()).amWearingAt(Item.WIELD)))
 			{
-				mob.location().show(mob,null,affect.target(),Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!");
+				mob.location().show(mob,null,msg.target(),CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!");
 				return false;
 			}
 		}
@@ -74,7 +74,7 @@ public class Spell_IronGrip extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> watch(es) <T-HIS-HER> weapon hand turn to iron!":"^S<S-NAME> invoke(s) a spell on <T-NAMESELF> and <T-HIS-HER> weapon hand turns into iron!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -22,20 +22,20 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 		return new IndoorWaterSurface();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		switch(WaterSurface.isOkWaterSurfaceAffect(this,affect))
+		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
 		{
 		case -1: return false;
 		case 1: return true;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		UnderWater.sinkAffects(this,affect);
+		super.executeMsg(myHost,msg);
+		UnderWater.sinkAffects(this,msg);
 	}
 	public int thirstQuenched(){return 1000;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}

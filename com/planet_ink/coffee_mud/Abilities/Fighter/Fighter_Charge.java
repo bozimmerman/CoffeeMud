@@ -21,36 +21,36 @@ public class Fighter_Charge extends StdAbility
 	public int maxRange(){return 2;}
 	public boolean done=false;
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&(msg.targetMinor()==Affect.TYP_WEAPONATTACK))
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
 			done=true;
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 			if(done) unInvoke();
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(2*affected.envStats().level()));
 		affectableStats.setArmor(affectableStats.armor()+(2*affected.envStats().level()));
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		boolean notInCombat=!mob.isInCombat();
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if((mob.isInCombat())
 		&&(mob.rangeToTarget()<=0))
 		{
@@ -73,8 +73,8 @@ public class Fighter_Charge extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.MSG_ADVANCE,"<S-NAME> charge(s) at <T-NAMESELF>!");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,"<S-NAME> charge(s) at <T-NAMESELF>!");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(mob.getVictim()==target)

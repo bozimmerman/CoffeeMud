@@ -33,21 +33,21 @@ public class Fighter_CircleParry extends StdAbility
 		return false;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amITarget(mob)
+		if(msg.amITarget(mob)
 		   &&(Sense.aliveAwakeMobile(mob,true))
-		   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(mob.rangeToTarget()==0))
 		{
-			if((affect.tool()!=null)&&(affect.tool() instanceof Item))
+			if((msg.tool()!=null)&&(msg.tool() instanceof Item))
 			{
-				Item attackerWeapon=(Item)affect.tool();
+				Item attackerWeapon=(Item)msg.tool();
 				if((!anyWeapons(mob))
 				&&(attackerWeapon!=null)
 				&&(attackerWeapon instanceof Weapon)
@@ -57,13 +57,13 @@ public class Fighter_CircleParry extends StdAbility
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> circle-parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
+					FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> circle-parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
 					if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-60,false))
 					&&(!lastTime)
-					&&(mob.location().okAffect(mob,msg)))
+					&&(mob.location().okMessage(mob,msg2)))
 					{
 						lastTime=true;
-						mob.location().send(mob,msg);
+						mob.location().send(mob,msg2);
 						helpProfficiency(mob);
 						return false;
 					}

@@ -17,7 +17,7 @@ public class Spell_PhantomHound extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if(((affected==null)
 			||(unInvoked)
@@ -28,18 +28,18 @@ public class Spell_PhantomHound extends Spell
 			{
 				MOB beast=(MOB)affected;
 				int a=0;
-				while(a<beast.numAffects())
+				while(a<beast.numEffects())
 				{
-					Ability A=beast.fetchAffect(a);
+					Ability A=beast.fetchEffect(a);
 					if(A!=null)
 					{
-						int n=beast.numAffects();
+						int n=beast.numEffects();
 						if(A.ID().equals(ID()))
 							a++;
 						else
 						{
 							A.unInvoke();
-							if(beast.numAffects()==n)
+							if(beast.numEffects()==n)
 								a++;
 						}
 					}
@@ -70,13 +70,13 @@ public class Spell_PhantomHound extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==Affect.TYP_QUIT))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			unInvoke();
 	}
 
@@ -91,24 +91,24 @@ public class Spell_PhantomHound extends Spell
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(affect.amISource((MOB)affected))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+		&&(msg.amISource((MOB)affected))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 		{
-			affect.modify(affect.source(),
-						  affect.target(),
-						  affect.tool(),
-						  affect.sourceCode(),
-						  affect.sourceMessage(),
-						  Affect.MASK_HURT,
-						  affect.targetMessage(),
-						  affect.othersCode(),
-						  affect.othersMessage());
+			msg.modify(msg.source(),
+						  msg.target(),
+						  msg.tool(),
+						  msg.sourceCode(),
+						  msg.sourceMessage(),
+						  CMMsg.MASK_HURT,
+						  msg.targetMessage(),
+						  msg.othersCode(),
+						  msg.othersMessage());
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -126,7 +126,7 @@ public class Spell_PhantomHound extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a ferocious phantom assistant.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB beast=CMClass.getMOB("GenMOB");
@@ -161,7 +161,7 @@ public class Spell_PhantomHound extends Spell
 				beast.resetToMaxState();
 				beast.text();
 				beast.bringToLife(mob.location(),true);
-				beast.location().showOthers(beast,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+				beast.location().showOthers(beast,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				beast.setStartRoom(null);
 				victim=mob.getVictim();
 				victim.setVictim(beast);

@@ -10,7 +10,7 @@ public class Play_Symphony extends Play
 {
 	public String ID() { return "Play_Symphony"; }
 	public String name(){ return "Symphony";}
-	public int quality(){ 
+	public int quality(){
 		if(toDoCode<0)
 			return BENEFICIAL_OTHERS;
 		else
@@ -557,10 +557,10 @@ public class Play_Symphony extends Play
 		toDoVal=Util.s_int(toDoString);
 		return toDoCode;
 	}
-	
-	public void affect(Environmental E, Affect msg)
+
+	public void executeMsg(Environmental E, CMMsg msg)
 	{
-		if(Util.bset(msg.targetCode(),Affect.MASK_HURT))
+		if(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 		switch(toDoCode)
 		{
 		case CODE_DOWNDAMAGEPER5:
@@ -576,8 +576,8 @@ public class Play_Symphony extends Play
 		if((affected==invoker())
 		&&(msg.sourceMinor()==toDoVal)
 		&&(msg.target()!=null)
-		&&(msg.target().fetchAffect(ID())==null)
-		&&(msg.target().fetchAffect(ID()).invoker()!=invoker()))
+		&&(msg.target().fetchEffect(ID())==null)
+		&&(msg.target().fetchEffect(ID()).invoker()!=invoker()))
 		{
 			int dmg=0;
 			if(toDoCode==CODE_UPDAMAGEPER3)
@@ -591,7 +591,7 @@ public class Play_Symphony extends Play
 			break;
 		}
 	}
-	
+
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
@@ -634,7 +634,7 @@ public class Play_Symphony extends Play
 			}
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -644,7 +644,7 @@ public class Play_Symphony extends Play
 		switch(toDoCode)
 		{
 		case CODE_CASTMALICIOUSSPELLPER10:
-			if(!((MOB)affected).isInCombat()) 
+			if(!((MOB)affected).isInCombat())
 				return true;
 			per=10;
 			break;
@@ -673,13 +673,13 @@ public class Play_Symphony extends Play
 		case CODE_SPEEDCOMMONSKILLS:
 			{
 				MOB M=(MOB)affected;
-				for(int a=0;a<M.numAffects();a++)
+				for(int a=0;a<M.numEffects();a++)
 				{
-					Ability A=M.fetchAffect(a);
+					Ability A=M.fetchEffect(a);
 					if((A!=null)
 					&&(A.invoker()==M)
 					&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
-						A.tick(M,Host.MOB_TICK);
+						A.tick(M,Host.TICK_MOB);
 				}
 				return true;
 			}
@@ -710,7 +710,7 @@ public class Play_Symphony extends Play
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		instrument=null;
@@ -723,4 +723,4 @@ public class Play_Symphony extends Play
 		return super.invoke(mob,commands,givenTarget,auto);
 	}
 }
-	
+

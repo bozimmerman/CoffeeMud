@@ -50,12 +50,12 @@ public class Thief_Shadowstrike extends ThiefSkill
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		int code=Affect.MASK_MALICIOUS|Affect.MSG_THIEF_ACT;
+		int code=CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT;
 		String str=auto?"":"<S-NAME> strike(s) <T-NAMESELF> from the shadows!";
-		int otherCode=success?code:Affect.NO_EFFECT;
+		int otherCode=success?code:CMMsg.NO_EFFECT;
 		String otherStr=success?str:null;
 		FullMsg msg=new FullMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);
-		if(mob.location().okAffect(mob,msg))
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			ExternalPlay.postAttack(mob,target,w);
@@ -65,7 +65,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 				MOB oldVictim2=mob.getVictim();
 				if(oldVictim==mob) target.makePeace();
 				if(oldVictim2==target) mob.makePeace();
-				if(mob.fetchAffect("Thief_Hide")==null)
+				if(mob.fetchEffect("Thief_Hide")==null)
 				{
 					Ability hide=mob.fetchAbility("Thief_Hide");
 					if(hide!=null) hide.invoke(mob,null,false);

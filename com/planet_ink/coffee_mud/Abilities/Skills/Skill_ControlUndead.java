@@ -18,18 +18,18 @@ public class Skill_ControlUndead extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_ControlUndead();}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
-		&&((affect.amISource((MOB)affected)))
-		&&(affect.target()==invoker()))
+		&&((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+		&&((msg.amISource((MOB)affected)))
+		&&(msg.target()==invoker()))
 		{
-			if((!invoker().isInCombat())&&(affect.source().getVictim()!=invoker()))
+			if((!invoker().isInCombat())&&(msg.source().getVictim()!=invoker()))
 			{
-				affect.source().tell("You're too submissive towards "+invoker().name());
-				if(invoker().getVictim()==affect.source())
+				msg.source().tell("You're too submissive towards "+invoker().name());
+				if(invoker().getVictim()==msg.source())
 				{
 					invoker().makePeace();
 					invoker().setVictim(null);
@@ -37,7 +37,7 @@ public class Skill_ControlUndead extends StdAbility
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -73,15 +73,15 @@ public class Skill_ControlUndead extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> seem(s) controlled.":"^S<S-NAME> control(s) <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> seem(s) controlled.":"^S<S-NAME> control(s) <T-NAMESELF>.^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					if((mob.envStats().level()-target.envStats().level())>6)
 					{
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is now controlled.");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is now controlled.");
 						target.makePeace();
 						ExternalPlay.follow(target,mob,false);
 						ExternalPlay.makePeaceInGroup(mob);
@@ -91,7 +91,7 @@ public class Skill_ControlUndead extends StdAbility
 					}
 					else
 					{
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) submissive!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) submissive!");
 						target.makePeace();
 						beneficialAffect(mob,target,5);
 					}

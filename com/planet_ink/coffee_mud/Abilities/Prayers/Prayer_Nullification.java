@@ -31,14 +31,14 @@ public class Prayer_Nullification extends Prayer
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) nullified.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
-				if(mob.location().okAffect(mob,msg))
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					Ability revokeThis=null;
 					boolean foundSomethingAtLeast=false;
-					for(int a=0;a<target.numAffects();a++)
+					for(int a=0;a<target.numEffects();a++)
 					{
-						Ability A=(Ability)target.fetchAffect(a);
+						Ability A=(Ability)target.fetchEffect(a);
 						if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())
 						&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 						   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
@@ -54,7 +54,7 @@ public class Prayer_Nullification extends Prayer
 					if(revokeThis==null)
 					{
 						if(foundSomethingAtLeast)
-							mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"The magic on <T-NAME> appears too powerful to be nullified.");
+							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"The magic on <T-NAME> appears too powerful to be nullified.");
 						else
 						if(auto)
 							mob.tell(mob,target,null,"Nothing seems to be happening to <T-NAME>.");

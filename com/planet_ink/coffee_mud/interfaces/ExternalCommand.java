@@ -11,8 +11,8 @@ public interface ExternalCommand
 	public void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success);
 	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless);
 	public void justDie(MOB source, MOB target);
-	public void postDeath(MOB source, MOB target,Affect addHere);
-	public void postPanic(MOB mob, Affect affect);
+	public void postDeath(MOB source, MOB target,CMMsg addHere);
+	public void postPanic(MOB mob, CMMsg msg);
 	public void drawIfNecessary(MOB mob, boolean held);
 	public void sheathIfPossible(MOB mob);
 
@@ -36,7 +36,7 @@ public interface ExternalCommand
 	public void unfollow(MOB mob, boolean quiet);
 	public void makePeaceInGroup(MOB mob);
 	public boolean doesOwnThisProperty(MOB mob, Room room);
-	
+
 	// messages
 	public StringBuffer getInventory(MOB seer, MOB mob);
 	public StringBuffer getHelpText(String helpStr, MOB forMOB);
@@ -46,9 +46,9 @@ public interface ExternalCommand
 	public int channelInt(String channelName);
 	public void channel(MOB mob, String channelName, String message, boolean systemMsg);
 	public void channel(String channelName, String clanID, String message, boolean systemMsg);
-	
+
 	// misc
-	public void roomAffectFully(Affect msg, Room room, int dirCode);
+	public void roomAffectFully(CMMsg msg, Room room, int dirCode);
 	public int getMyDirCode(Exit exit, Room room, int testCode);
 	public boolean login(MOB mob) throws IOException;
 	public Vector getTopics(boolean archonHelp, boolean standardHelp);

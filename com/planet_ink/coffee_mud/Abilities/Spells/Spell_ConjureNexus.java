@@ -20,14 +20,14 @@ public class Spell_ConjureNexus extends Spell
 			invoker().tell("The Nexus in '"+((Room)affected).displayText()+"' dissipates.");
 		super.unInvoke();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
 		if((affected==null)||(!(affected instanceof Room)))
 			return false;
 		Room R=(Room)affected;
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		for(int m=0;m<R.numInhabitants();m++)
 		{
 			MOB mob=(MOB)R.fetchInhabitant(m);
@@ -53,9 +53,9 @@ public class Spell_ConjureNexus extends Spell
 		{
 			Room R=(Room)r.nextElement();
 			if(Sense.canAccess(mob,R))
-			for(int a=0;a<R.numAffects();a++)
+			for(int a=0;a<R.numEffects();a++)
 			{
-				Ability A=R.fetchAffect(a);
+				Ability A=R.fetchEffect(a);
 				if((A!=null)&&(A.ID().equals(ID())))
 				{
 					A.unInvoke();
@@ -71,12 +71,12 @@ public class Spell_ConjureNexus extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),auto?"":"^S<S-NAME> summon(s) the Nexus of mana!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob.location(),0);
 			}
-			
+
 		}
 		else
 			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to summon a Nexus, but fail(s).");

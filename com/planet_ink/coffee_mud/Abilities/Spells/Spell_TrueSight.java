@@ -27,9 +27,9 @@ public class Spell_TrueSight extends Spell
 			mob.tell("You no longer have true sight.");
 	}
 
-	public void affect(Environmental E, Affect msg)
+	public void executeMsg(Environmental E, CMMsg msg)
 	{
-		if((msg.targetMinor()==Affect.TYP_EXAMINESOMETHING)
+		if((msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 		&&(affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
@@ -37,8 +37,8 @@ public class Spell_TrueSight extends Spell
 		&&(!msg.target().name().equals(msg.target().Name())))
 			msg.source().tell(msg.target().name()+" is truely "+msg.target().Name()+".");
 	}
-	
-	
+
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -53,9 +53,9 @@ public class Spell_TrueSight extends Spell
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE>  true sight.");
 			return false;
@@ -66,7 +66,7 @@ public class Spell_TrueSight extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) true sight!":"^S<S-NAME> incant(s) softly, and gain(s) true sight!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -8,10 +8,10 @@ public interface CharStats extends Cloneable
 	public static final int CHARISMA=4;
 	public static final int WISDOM=5;
 	public static final int NUM_BASE_STATS=6;
-	
+
 	public static final int GENDER=6;
-	
-	
+
+
 	public static final int NUM_SAVE_START=7;
 	public static final int SAVE_PARALYSIS=7;
 	public static final int SAVE_FIRE=8;
@@ -28,16 +28,16 @@ public interface CharStats extends Cloneable
 	public static final int SAVE_MAGIC=19;
 	public static final int SAVE_DISEASE=20;
 	public static final int SAVE_TRAPS=21;
-	
+
 	public static final int MAX_STRENGTH_ADJ=22;
 	public static final int MAX_INTELLIGENCE_ADJ=23;
 	public static final int MAX_DEXTERITY_ADJ=24;
 	public static final int MAX_CONSTITUTION_ADJ=25;
 	public static final int MAX_CHARISMA_ADJ=26;
 	public static final int MAX_WISDOM_ADJ=27;
-	
+
 	public final static int NUM_STATS=28;
-	
+
 	public static final String[] TRAITS=
 	{
 		"STRENGTH",
@@ -69,7 +69,7 @@ public interface CharStats extends Cloneable
 		"MAX CHARISMA ADJ.",
 		"MAX WISDOM ADJ.",
 	};
-	
+
 	public static final String[] TRAITABBR1=
 	{
 		"S",
@@ -103,19 +103,19 @@ public interface CharStats extends Cloneable
 	};
 	public String getSavesStr();
 	public void setSaves(String str);
-	
+
 	public int getBodyPart(int racialPartNumber);
 	public void alterBodypart(int racialPartNumber, int number);
 	public String getBodyPartStr();
 	public void setBodyPartStrAfterRace(String str);
-	
+
 	public int getStat(int statNum);
 	public int getStat(String abilityName);
 	public void setStat(int statNum, int value);
 	public int getCode(String abilityName);
 	public StringBuffer getStats();
 	public int getSave(int which);
-	
+
 	// physical and static properties
 	public int numClasses();
 	public CharClass getMyClass(int i);
@@ -133,51 +133,51 @@ public interface CharStats extends Cloneable
 	public void setMyRace(Race newVal);
 	public String raceName();
 	public void setRaceName(String newRaceName);
-	
+
 	public void setDisplayClassName(String newname);
 	public void setDisplayClassLevel(String newlevel);
 	public String displayClassName();
 	public String displayClassLevel(MOB mob, boolean shortForm);
-	
+
 	public static int[] affectTypeMap={-1, // strength
 									   -1, // intelligence
-									   -1, // dexterity 
+									   -1, // dexterity
 									   -1, // constitution
 									   -1, // charisma
 									   -1, // wisdom
 									   -1, // gender
-										Affect.TYP_PARALYZE,
-										Affect.TYP_FIRE,
-										Affect.TYP_COLD,
-										Affect.TYP_WATER,
-										Affect.TYP_GAS,
-										Affect.TYP_MIND,
-										Affect.TYP_GENERAL,
-										Affect.TYP_JUSTICE,
-										Affect.TYP_ACID,
-										Affect.TYP_ELECTRIC,
-										Affect.TYP_POISON,
-										Affect.TYP_UNDEAD,
-									    Affect.TYP_CAST_SPELL,
-										Affect.TYP_DISEASE,
+										CMMsg.TYP_PARALYZE,
+										CMMsg.TYP_FIRE,
+										CMMsg.TYP_COLD,
+										CMMsg.TYP_WATER,
+										CMMsg.TYP_GAS,
+										CMMsg.TYP_MIND,
+										CMMsg.TYP_GENERAL,
+										CMMsg.TYP_JUSTICE,
+										CMMsg.TYP_ACID,
+										CMMsg.TYP_ELECTRIC,
+										CMMsg.TYP_POISON,
+										CMMsg.TYP_UNDEAD,
+									    CMMsg.TYP_CAST_SPELL,
+										CMMsg.TYP_DISEASE,
 										-1, // traps
 										-1, // max str
 										-1, // max int
-										-1, // max 
+										-1, // max
 										-1, // max dex
 										-1, // max con
 										-1,	// max cha
 									    -1, // max wis
 									   };
-	
+
 	// create a new one of these
 	public CharStats cloneCharStats();
-	
+
 	public void setGenderName(String gname);
 	public String genderName();
 	public String himher();
 	public String hisher();
 	public String heshe();
 	public String HeShe();
-	
+
 }

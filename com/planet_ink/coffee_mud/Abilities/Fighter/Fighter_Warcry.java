@@ -59,8 +59,8 @@ public class Fighter_Warcry extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_SPEAK,auto?"":"^S<S-NAME> scream(s) a mighty WAR CRY!!^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_SPEAK,auto?"":"^S<S-NAME> scream(s) a mighty WAR CRY!!^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Hashtable h=properTargets(mob,givenTarget,auto);
@@ -68,7 +68,7 @@ public class Fighter_Warcry extends StdAbility
 				for(Enumeration e=h.elements();e.hasMoreElements();)
 				{
 					MOB target=(MOB)e.nextElement();
-					target.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> get(s) enraged!");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> get(s) enraged!");
 					timesTicking=0;
 					beneficialAffect(mob,target,0);
 				}

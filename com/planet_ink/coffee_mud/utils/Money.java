@@ -233,8 +233,8 @@ public class Money
 		changeBag.text();
 		if(banker!=customer)
 		{
-			FullMsg newMsg=new FullMsg(banker,customer,changeBag,Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
-			if(banker.location().okAffect(banker,newMsg))
+			FullMsg newMsg=new FullMsg(banker,customer,changeBag,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+			if(banker.location().okMessage(banker,newMsg))
 				banker.location().send(banker,newMsg);
 			else
 			{

@@ -67,16 +67,16 @@ public class Skill_Disguise extends StdAbility
 			return false;
 		return true;
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect msg)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg)) return false;
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return true;
 		MOB mob=(MOB)myHost;
 		if(msg.amITarget(mob)
 		&&(Sense.canBeSeenBy(mob,msg.source()))
-		&&(msg.targetMinor()==Affect.TYP_EXAMINESOMETHING)
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 		&&((values[0]!=null)||(values[4]!=null)))
 		{
 			String omsg=null;
@@ -92,15 +92,15 @@ public class Skill_Disguise extends StdAbility
 		}
 		return true;
 	}
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return;
 		MOB mob=(MOB)myHost;
 		if(msg.amITarget(this)
 		&&(Sense.canBeSeenBy(mob,msg.source()))
-		&&(msg.targetMinor()==Affect.TYP_EXAMINESOMETHING)
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 		&&((values[0]!=null)||(values[4]!=null)))
 		{
 			StringBuffer myDescription=new StringBuffer("");
@@ -127,8 +127,8 @@ public class Skill_Disguise extends StdAbility
 		if(!ID().equals("Skill_Disguise"))
 			return super.invoke(mob,commands,givenTarget,auto);
 
-		Skill_Disguise A=(Skill_Disguise)mob.fetchAffect("Skill_Disguise");
-		if(A==null) A=(Skill_Disguise)mob.fetchAffect("Skill_MarkDisguise");
+		Skill_Disguise A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
+		if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
 
 		String validChoices="Weight, sex, race, height, name, level, class, or alignment";
 		if(commands.size()==0)
@@ -282,12 +282,12 @@ public class Skill_Disguise extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,mob,null,Affect.MSG_DELICATE_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),"<S-NAME> turn(s) away for a second.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> turn(s) away for a second.");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(A==null)	beneficialAffect(mob,mob,0);
-				if(A==null) A=(Skill_Disguise)mob.fetchAffect("Skill_Disguise");
+				if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
 				A.values[which]=how;
 				mob.recoverCharStats();
 				mob.recoverEnvStats();

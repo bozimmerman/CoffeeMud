@@ -24,7 +24,7 @@ public class Skill_Warrants extends StdAbility
 		if(V.size()==0) return null;
 		return (Behavior)V.firstElement();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Behavior B=null;
@@ -36,8 +36,8 @@ public class Skill_Warrants extends StdAbility
 		boolean success=profficiencyCheck((-25+mob.charStats().getStat(CharStats.CHARISMA)),auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_DELICATE_SMALL_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Vector V=new Vector();

@@ -58,14 +58,14 @@ public class Paralysis extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_PARALYZE|(auto?Affect.MASK_GENERAL:0),auto?"":"^S<S-NAME> paralyze(s) <T-NAMESELF>.^?");
-			if(target.location().okAffect(target,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_GENERAL:0),auto?"":"^S<S-NAME> paralyze(s) <T-NAMESELF>.^?");
+			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
 				if(!msg.wasModified())
 				{
 					success=maliciousAffect(mob,target,0,-1);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can't move!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't move!");
 				}
 			}
 		}

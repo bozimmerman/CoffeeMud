@@ -18,9 +18,9 @@ public class Chant_ControlPlant extends Chant
 	{
 		if((I!=null)&&(I.rawSecretIdentity().length()>0))
 		{
-			for(int a=0;a<I.numAffects();a++)
+			for(int a=0;a<I.numEffects();a++)
 			{
-				Ability A=I.fetchAffect(a);
+				Ability A=I.fetchEffect(a);
 				if((A!=null)
 				&&(A.invoker()!=null)
 				&&(A instanceof Chant_SummonPlants))
@@ -56,7 +56,7 @@ public class Chant_ControlPlant extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,myPlant,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Ability A=isPlant(myPlant);

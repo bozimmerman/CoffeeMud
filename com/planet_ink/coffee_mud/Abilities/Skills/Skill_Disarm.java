@@ -49,9 +49,9 @@ public class Skill_Disarm extends StdAbility
 			return false;
 
 		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=levelDiff*5;
-		else 
+		else
 			levelDiff=0;
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(-levelDiff,auto)&&(hit);
@@ -59,13 +59,13 @@ public class Skill_Disarm extends StdAbility
 		   &&((hisWeapon.fitsOn(Item.WIELD))
 			  ||hisWeapon.fitsOn(Item.WIELD|Item.HELD)))
 		{
-			if(mob.location().show(mob,mob.getVictim(),Affect.MSG_NOISYMOVEMENT,null))
+			if(mob.location().show(mob,mob.getVictim(),CMMsg.MSG_NOISYMOVEMENT,null))
 			{
-				FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,Affect.MSG_DROP,null);
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,CMMsg.MSG_DROP,null);
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob.getVictim(),msg);
-					mob.location().show(mob,mob.getVictim(),Affect.MSG_NOISYMOVEMENT,auto?"<T-NAME> is disarmed!":"<S-NAME> disarm(s) <T-NAMESELF>!");
+					mob.location().show(mob,mob.getVictim(),CMMsg.MSG_NOISYMOVEMENT,auto?"<T-NAME> is disarmed!":"<S-NAME> disarm(s) <T-NAMESELF>!");
 				}
 			}
 		}

@@ -13,16 +13,16 @@ public class LinkedWeather extends StdBehavior
 	{
 		return new LinkedWeather();
 	}
-	
+
 	protected long lastWeather=-1;
 	protected long lastPending=-1;
 	protected String areaName=null;
 	protected boolean rolling=false;
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.AREA_TICK) return true;
+		if(tickID!=Host.TICK_AREA) return true;
 		if(!(ticking instanceof Area)) return true;
 		if(areaName==null){
 			if(getParms().length()==0)
@@ -39,7 +39,7 @@ public class LinkedWeather extends StdBehavior
 			Area A=CMMap.getArea(s);
 			if(A!=null) areaName=A.Name();
 		}
-		
+
 		Area A=(Area)ticking;
 		Area linkedA=CMMap.getArea(areaName);
 		if((A!=null)&&(linkedA!=null))

@@ -27,7 +27,7 @@ public class InstrumentMaking extends CommonSkill
 	private Item building=null;
 	private boolean messedUp=false;
 	private static boolean mapped=false;
-	
+
 	public InstrumentMaking()
 	{
 		super();
@@ -39,7 +39,7 @@ public class InstrumentMaking extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			if(building==null)
 				unInvoke();
@@ -150,7 +150,7 @@ public class InstrumentMaking extends CommonSkill
 		}
 		else
 			firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_WOODEN);
-			
+
 		int foundWood=0;
 		if(firstWood!=null)
 			foundWood=findNumberOfResource(mob.location(),firstWood.material());
@@ -170,7 +170,7 @@ public class InstrumentMaking extends CommonSkill
 		if(firstWood.material()==EnvResource.RESOURCE_ADAMANTITE)
 			woodRequired=woodRequired/3;
 		if(woodRequired<1) woodRequired=1;
-			
+
 		if(foundWood<woodRequired)
 		{
 			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
@@ -247,18 +247,18 @@ public class InstrumentMaking extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
-		
+
 		if(misctype.equalsIgnoreCase("bundle"))
 		{
-			messedUp=false; 
+			messedUp=false;
 			completion=1;
 			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
-		
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
-		if(mob.location().okAffect(mob,msg))
+
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

@@ -17,8 +17,8 @@ public class Skill_Conduct extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public int maxRange(){return 2;}
 	public Environmental newInstance(){	return new Skill_Conduct();}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Ability SYMPHONY=mob.fetchAbility("Play_Symphony");
@@ -43,11 +43,11 @@ public class Skill_Conduct extends StdAbility
 		if(success)
 		{
 			String str=auto?"^SSymphonic Conduction Begins!^?":"^S<S-NAME> begin(s) to wave <S-HIS-HER> arms in a mystical way!^?";
-			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
+			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) conducting the symphony over again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,(auto?Affect.MASK_GENERAL:0)|Affect.MSG_CAST_SOMANTIC_SPELL,str);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_CAST_SOMANTIC_SPELL,str);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -63,12 +63,12 @@ public class Skill_Conduct extends StdAbility
 					MOB follower=(MOB)f.nextElement();
 
 					// malicious songs must not affect the invoker!
-					int affectType=Affect.MSG_CAST_SOMANTIC_SPELL;
-					if(auto) affectType=affectType|Affect.MASK_GENERAL;
+					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
+					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 					if(Sense.canBeSeenBy(invoker,follower))
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
-						if(mob.location().okAffect(mob,msg2))
+						if(mob.location().okMessage(mob,msg2))
 						{
 							follower.location().send(follower,msg2);
 							if(!msg2.wasModified())
@@ -80,7 +80,7 @@ public class Skill_Conduct extends StdAbility
 			}
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> wave(s) <S-HIS-HER> arms around, looking silly.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> wave(s) <S-HIS-HER> arms around, looking silly.");
 
 		return success;
 	}

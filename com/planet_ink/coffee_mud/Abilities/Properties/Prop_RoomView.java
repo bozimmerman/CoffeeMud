@@ -16,29 +16,29 @@ public class Prop_RoomView extends Property
 	public String accountForYourself()
 	{ return "Different View of "+text();	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((newRoom==null)||(!CMMap.getExtendedRoomID(newRoom).equalsIgnoreCase(text().trim())))
 			newRoom=CMMap.getRoom(text());
-		if(newRoom==null) return super.okAffect(myHost,affect);
+		if(newRoom==null) return super.okMessage(myHost,msg);
 
 		if((affected!=null)
 		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Item))
-		&&(affect.amITarget(affected))
-		&&(newRoom.fetchAffect(ID())==null)
-		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+		&&(msg.amITarget(affected))
+		&&(newRoom.fetchEffect(ID())==null)
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 		{
-			Affect msg=new FullMsg(affect.source(),newRoom,affect.tool(),
-						  affect.sourceCode(),affect.sourceMessage(),
-						  affect.targetCode(),affect.targetMessage(),
-						  affect.othersCode(),affect.othersMessage());
-			if(newRoom.okAffect(affect.source(),msg))
+			FullMsg msg2=new FullMsg(msg.source(),newRoom,msg.tool(),
+						  msg.sourceCode(),msg.sourceMessage(),
+						  msg.targetCode(),msg.targetMessage(),
+						  msg.othersCode(),msg.othersMessage());
+			if(newRoom.okMessage(msg.source(),msg2))
 			{
-				newRoom.affect(affect.source(),msg);
+				newRoom.executeMsg(msg.source(),msg2);
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 }

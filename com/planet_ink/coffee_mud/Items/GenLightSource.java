@@ -39,40 +39,40 @@ public class GenLightSource extends GenItem implements Light
 	public boolean isLit(){return lit;}
 	public void light(boolean isLit){lit=isLit;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		switch(LightSource.isAnOkAffect(this,affect))
+		switch(LightSource.isAnOkAffect(this,msg))
 		{
 		case 0: return false;
-		case 1: return super.okAffect(myHost,affect);
+		case 1: return super.okMessage(myHost,msg);
 		default: return true;
 		}
 	}
 
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		LightSource.lightAffect(this,affect);
-		super.affect(myHost,affect);
-		if(affect.amITarget(this))
+		LightSource.lightAffect(this,msg);
+		super.executeMsg(myHost,msg);
+		if(msg.amITarget(this))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_DROP:
-			case Affect.TYP_THROW:
-			case Affect.TYP_GET:
-			case Affect.TYP_REMOVE:
-				if(affect.source()!=null)
+			case CMMsg.TYP_DROP:
+			case CMMsg.TYP_THROW:
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_REMOVE:
+				if(msg.source()!=null)
 				{
-					affect.source().recoverEnvStats();
-					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					msg.source().recoverEnvStats();
+					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					{
-						if(affect.source().location()!=null)
-							affect.source().location().recoverRoomStats();
-						if((affect.tool()!=null)
-						&&(affect.tool()!=affect.source().location())
-						&&(affect.tool() instanceof Room))
-							((Room)affect.tool()).recoverRoomStats();
+						if(msg.source().location()!=null)
+							msg.source().location().recoverRoomStats();
+						if((msg.tool()!=null)
+						&&(msg.tool()!=msg.source().location())
+						&&(msg.tool() instanceof Room))
+							((Room)msg.tool()).recoverRoomStats();
 					}
 				}
 				break;

@@ -24,10 +24,10 @@ public class CommandProcessor
 		String firstWord=((String)commands.elementAt(0)).toUpperCase();
 
 		// first, exacting pass
-		
+
 		Command C=CMClass.findExtraCommand(firstWord,true);
 		if((C!=null)&&(!C.execute(mob,commands))) return;
-		
+
 		Integer commandCodeObj=getCommand(firstWord,commands,true);
 		if((commandCodeObj!=null)
 		&&((commandCodeObj.intValue()!=CommandSet.EVOKE)||(mob.hasAbilityEvoker(firstWord))))
@@ -35,21 +35,21 @@ public class CommandProcessor
 			doCommandCode(mob,commands,commandCodeObj.intValue());
 			return;
 		}
-		
+
 		Social social=Socials.FetchSocial(commands,true);
 		if(social!=null)
 		{
 			social.invoke(mob,commands,null,false);
 			return;
 		}
-		
+
 		// second, inexact pass
 		if(C==null)
 		{
 			C=CMClass.findExtraCommand(firstWord,false);
 			if((C!=null)&&(!C.execute(mob,commands))) return;
 		}
-		
+
 		commandCodeObj=getCommand(firstWord,commands,false);
 		if((commandCodeObj!=null)
 		&&((commandCodeObj.intValue()!=CommandSet.EVOKE)||(mob.hasAbilityEvoker(firstWord))))
@@ -57,14 +57,14 @@ public class CommandProcessor
 			doCommandCode(mob,commands,commandCodeObj.intValue());
 			return;
 		}
-		
+
 		social=Socials.FetchSocial(commands,false);
 		if(social!=null)
 		{
 			social.invoke(mob,commands,null,false);
 			return;
 		}
-		
+
 		if(commandCodeObj!=null)
 			doCommandCode(mob,commands,commandCodeObj.intValue());
 		else
@@ -798,7 +798,7 @@ public class CommandProcessor
 			break;
 		}
 	}
-	
+
 	public static Integer getCommand(String firstWord, Vector commands, boolean exactOnly)
 	{
 		Integer commandCodeObj=(Integer)commandSet.get(firstWord);
@@ -814,7 +814,7 @@ public class CommandProcessor
 		}
 		if((exactOnly)||(commandCodeObj!=null))
 			return commandCodeObj;
-		
+
 		for(Enumeration e=commandSet.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
@@ -827,7 +827,7 @@ public class CommandProcessor
 		}
 		return commandCodeObj;
 	}
-	
+
 	public static void credits(MOB mob)
 	{
 		StringBuffer credits=Resources.getFileResource("text"+File.separatorChar+"credits.txt");
@@ -855,11 +855,11 @@ public class CommandProcessor
 		}
 		if((!keepItDown)&&(commands.size()>1))
 			externalCommand=Util.combine(commands,1);
-		
+
 		if((!noPrompt)
 		&&(!mob.session().confirm("Are you fully aware of the consequences of this act (y/N)?","N")))
 			return;
-		
+
 		if(keepItDown)
 			Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");
 		else
@@ -868,7 +868,7 @@ public class CommandProcessor
 		else
 			Log.errOut("CommandProcessor",mob.Name()+" starts system restart...");
 		mob.tell("Starting shutdown...");
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_SHUTDOWN,null);
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_SHUTDOWN,null);
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();

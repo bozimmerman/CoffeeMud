@@ -15,27 +15,27 @@ public class Spell_SlowProjectiles extends Spell
 	public Environmental newInstance(){	return new Spell_SlowProjectiles();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.tool()!=null)
-		&&(affect.source().getVictim()==affect.target())
-		&&(affect.source().rangeToTarget()>0)
-		&&(affect.tool() instanceof Weapon)
-		&&(((((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED)&&(((Weapon)affect.tool()).requiresAmmunition())
-			||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_THROWN)))
-		&&(affect.source().location()!=null)
-		&&(affect.source().location()==affected)
-		&&(!affect.source().amDead()))
+		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.tool()!=null)
+		&&(msg.source().getVictim()==msg.target())
+		&&(msg.source().rangeToTarget()>0)
+		&&(msg.tool() instanceof Weapon)
+		&&(((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)&&(((Weapon)msg.tool()).requiresAmmunition())
+			||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)))
+		&&(msg.source().location()!=null)
+		&&(msg.source().location()==affected)
+		&&(!msg.source().amDead()))
 		{
-			if(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_THROWN)
-				affect.source().location().show(affect.source(),null,affect.tool(),Affect.MSG_OK_VISUAL,"<O-NAME> flies slowly by.");
+			if(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)
+				msg.source().location().show(msg.source(),null,msg.tool(),CMMsg.MSG_OK_VISUAL,"<O-NAME> flies slowly by.");
 			else
-				affect.source().location().show(affect.source(),null,Affect.MSG_OK_VISUAL,"The shot from "+affect.tool().name()+" flies slowly by.");
-			int damage=(affect.targetCode()-Affect.MASK_HURT)/2;
-			SaucerSupport.adjustDamageMessage(affect,damage*-1);
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,"The shot from "+msg.tool().name()+" flies slowly by.");
+			int damage=(msg.targetCode()-CMMsg.MASK_HURT)/2;
+			SaucerSupport.adjustDamageMessage(msg,damage*-1);
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 
@@ -44,10 +44,10 @@ public class Spell_SlowProjectiles extends Spell
 		Room target=mob.location();
 		if(target==null) return false;
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Projectiles are already slow here!");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -58,7 +58,7 @@ public class Spell_SlowProjectiles extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) slowly.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

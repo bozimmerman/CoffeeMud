@@ -64,27 +64,27 @@ public class Plant extends Vine
 		}
 		return naturalWeapon;
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((myHost!=null)
 		&&(myHost instanceof MOB)
-		&&(affect.amISource((MOB)myHost)))
+		&&(msg.amISource((MOB)myHost)))
 		{
-			if(((affect.targetMinor()==Affect.TYP_LEAVE)
-				||(affect.sourceMinor()==Affect.TYP_ADVANCE)
-				||(affect.sourceMinor()==Affect.TYP_RETREAT)))
+			if(((msg.targetMinor()==CMMsg.TYP_LEAVE)
+				||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
+				||(msg.sourceMinor()==CMMsg.TYP_RETREAT)))
 			{
-				affect.source().tell("You can't really go anywhere -- you are rooted!");
+				msg.source().tell("You can't really go anywhere -- you are rooted!");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((tickID==Host.MOB_TICK)&&(ticking instanceof MOB))
+		if((tickID==Host.TICK_MOB)&&(ticking instanceof MOB))
 			((MOB)ticking).curState().recoverTick(((MOB)ticking),((MOB)ticking).maxState());
 		return true;
 	}

@@ -18,7 +18,7 @@ public class Falling extends StdAbility
 	public Environmental newInstance(){	return new Falling();}
 
 	private boolean reversed(){return profficiency()==100;}
-	
+
 	private boolean isWaterSurface(Room R)
 	{
 		if(R==null) return false;
@@ -35,7 +35,7 @@ public class Falling extends StdAbility
 			return true;
 		return false;
 	}
-	
+
 	private boolean isAirRoom(Room R)
 	{
 		if(R==null) return false;
@@ -44,12 +44,12 @@ public class Falling extends StdAbility
 			return true;
 		return false;
 	}
-	
+
 	private boolean canFallFrom(Room fromHere, int direction)
 	{
-		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS)) 
+		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return false;
-		
+
 		Room toHere=fromHere.getRoomInDir(direction);
 		if((toHere==null)
 		||(fromHere.getExitInDir(direction)==null)
@@ -65,23 +65,23 @@ public class Falling extends StdAbility
 		if(reversed()) return true;
 		unInvoke();
 		if(isAirRoom(mob.location()))
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> stop(s) falling."+CommonStrings.msp("splat.wav",50));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) falling."+CommonStrings.msp("splat.wav",50));
 		else
 		if(isWaterSurface(mob.location())||isUnderWater(mob.location()))
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CommonStrings.msp("splat.wav",50));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CommonStrings.msp("splat.wav",50));
 		else
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CommonStrings.msp("splat.wav",50));
-		ExternalPlay.postDamage(mob,mob,this,damageToTake,Affect.MSG_OK_VISUAL,-1,null);
-		mob.delAffect(this);
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CommonStrings.msp("splat.wav",50));
+		ExternalPlay.postDamage(mob,mob,this,damageToTake,CMMsg.MSG_OK_VISUAL,-1,null);
+		mob.delEffect(this);
 		return false;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		if(tickID!=Host.MOB_TICK)
+		if(tickID!=Host.TICK_MOB)
 			return true;
 
 		if(affected==null)
@@ -152,7 +152,7 @@ public class Falling extends StdAbility
 				Room nextRoom=room.getRoomInDir(direction);
 				if(canFallFrom(room,direction))
 				{
-					room.show(invoker,null,item,Affect.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
+					room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
 					Vector V=new Vector();
 					recursiveRoomItems(V,item,room);
 					for(int v=0;v<V.size();v++)
@@ -162,7 +162,7 @@ public class Falling extends StdAbility
 						nextRoom.addItemRefuse(thisItem,Item.REFUSE_PLAYER_DROP);
 					}
 					room=nextRoom;
-					nextRoom.show(invoker,null,item,Affect.MSG_OK_ACTION,"<O-NAME> falls in from "+(reversed()?"below":"above")+".");
+					nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls in from "+(reversed()?"below":"above")+".");
 					return true;
 				}
 				else
@@ -191,16 +191,16 @@ public class Falling extends StdAbility
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if(temporarilyDisable)
 			return true;
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		if((affected!=null)&&(affected instanceof MOB))
-			if(affect.amISource((MOB)affected))
+			if(msg.amISource((MOB)affected))
 			{
 				if(Sense.isInFlight(mob))
 				{
@@ -208,9 +208,9 @@ public class Falling extends StdAbility
 					unInvoke();
 					return true;
 				}
-				if(Util.bset(affect.targetMajor(),Affect.MASK_MOVE))
+				if(Util.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
 				{
-					affect.source().tell("You are too busy falling to do that right now.");
+					msg.source().tell("You are too busy falling to do that right now.");
 					return false;
 				}
 			}
@@ -236,7 +236,7 @@ public class Falling extends StdAbility
 		Environmental E=target;
 		if(E==null) return false;
 		if((E instanceof Item)&&(room==null)) return false;
-		if(E.fetchAffect("Falling")==null)
+		if(E.fetchEffect("Falling")==null)
 		{
 			Falling F=new Falling();
 			F.setProfficiency(profficiency());
@@ -247,9 +247,9 @@ public class Falling extends StdAbility
 				F.invoker=CMClass.getMOB("StdMOB");
 			F.setBorrowed(E,true);
 			F.makeLongLasting();
-			E.addAffect(F);
+			E.addEffect(F);
 			if(!(E instanceof MOB))
-				ExternalPlay.startTickDown(F,Host.MOB_TICK,1);
+				ExternalPlay.startTickDown(F,Host.TICK_MOB,1);
 			E.recoverEnvStats();
 
 		}

@@ -15,15 +15,15 @@ public class Prop_NoChannel extends Property
 	public String accountForYourself()
 	{ return "No Channeling Field";	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 
-		if((affect.othersMajor()&affect.MASK_CHANNEL)>0)
+		if((msg.othersMajor()&CMMsg.MASK_CHANNEL)>0)
 		{
-			affect.source().tell("This is a no-channel area.");
+			msg.source().tell("This is a no-channel area.");
 			return false;
 		}
 		return true;

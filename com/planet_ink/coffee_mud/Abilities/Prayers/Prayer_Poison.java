@@ -31,8 +31,8 @@ public class Prayer_Poison extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> inflict(s) an unholy poison upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> inflict(s) an unholy poison upon <T-NAMESELF>.^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

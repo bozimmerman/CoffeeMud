@@ -50,19 +50,19 @@ public class Skill_Haggle extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,shopkeeper,this,Affect.MSG_SPEAK,auto?"":"<S-NAME> haggle(s) with <T-NAMESELF>.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,shopkeeper,this,CMMsg.MSG_SPEAK,auto?"":"<S-NAME> haggle(s) with <T-NAMESELF>.");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				mob.addAffect(this);
+				mob.addEffect(this);
 				mob.recoverCharStats();
 				try{
 					commands.insertElementAt(Util.capitalize(cmd),0);
 					ExternalPlay.doCommand(mob,commands);
 					commands.addElement(shopkeeper.name());
 				}catch(Exception e){Log.errOut("Skill_Haggle",e);}
-				mob.delAffect(this);
+				mob.delEffect(this);
 				mob.recoverCharStats();
 			}
 		}

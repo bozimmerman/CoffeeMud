@@ -18,8 +18,8 @@ public class Paladin_Defend extends StdAbility
 	public Environmental newInstance(){	return new Paladin_Defend();}
 	public boolean fullRound=false;
 	public int usageType(){return USAGE_MOVEMENT;}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return true;
@@ -30,28 +30,28 @@ public class Paladin_Defend extends StdAbility
 		else
 		{
 			// preventing distracting player from doin anything else
-			if(affect.amISource(invoker)
-			&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK))
+			if(msg.amISource(invoker)
+			&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK))
 			{
-				invoker.location().show(invoker,affect.target(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> defend(s) <S-HIM-HERSELF> against <T-NAME>.");
+				invoker.location().show(invoker,msg.target(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> defend(s) <S-HIM-HERSELF> against <T-NAME>.");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return;
-		if((affect.amITarget(affected))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon))
+		if((msg.amITarget(affected))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon))
 			fullRound=false;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -62,16 +62,16 @@ public class Paladin_Defend extends StdAbility
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
-			if(fullRound) 
+			if(fullRound)
 			{
 				MOB mob=(MOB)affected;
 				if(!mob.isInCombat())
 					unInvoke();
 				if(mob.location()!=null)
 				{
-					if(mob.location().show(mob,null,this,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> successful defence <S-HAS-HAVE> allowed <S-HIM-HER> to disengage."))
+					if(mob.location().show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> successful defence <S-HAS-HAVE> allowed <S-HIM-HER> to disengage."))
 					{
 						MOB victim=mob.getVictim();
 						if((victim!=null)&&(victim.getVictim()==mob))
@@ -85,14 +85,14 @@ public class Paladin_Defend extends StdAbility
 		}
 		return true;
 	}
-	
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!Sense.aliveAwakeMobile(mob,false))
 			return false;
 
-		Ability A=mob.fetchAffect(ID());
+		Ability A=mob.fetchEffect(ID());
 		if(A!=null)
 		{
 			A.unInvoke();
@@ -121,8 +121,8 @@ public class Paladin_Defend extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_CAST_SOMANTIC_SPELL,"^S<S-NAME> assume(s) an all-out defensive posture.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,"^S<S-NAME> assume(s) an all-out defensive posture.^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				fullRound=false;

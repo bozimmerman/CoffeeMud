@@ -63,7 +63,7 @@ public class Chant_GrowFood extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Food newItem=(Food)CMClass.getStdItem("GenFoodResource");
@@ -81,7 +81,7 @@ public class Chant_GrowFood extends Chant
 				newItem.recoverEnvStats();
 				newItem.setMiscText(newItem.text());
 				mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" pops out of the ground.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" pops out of the ground.");
 				mob.location().recoverEnvStats();
 			}
 		}

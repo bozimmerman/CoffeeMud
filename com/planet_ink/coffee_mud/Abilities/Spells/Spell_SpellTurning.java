@@ -15,7 +15,7 @@ public class Spell_SpellTurning extends Spell
 	public Environmental newInstance(){return new Spell_SpellTurning();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 	private boolean oncePerRound=false;
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -24,34 +24,34 @@ public class Spell_SpellTurning extends Spell
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> reflective protection dissipates.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> reflective protection dissipates.");
 
 		super.unInvoke();
 
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
+		if((msg.amITarget(mob))
 		&&(!oncePerRound)
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
-		&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 		&&(!mob.amDead())
-		&&(mob!=affect.source())
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-(affect.source().envStats().level()*2),false)))
+		&&(mob!=msg.source())
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-(msg.source().envStats().level()*2),false)))
 		{
 			oncePerRound=true;
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The field around <S-NAME> reflects the spell!");
-			Ability A=(Ability)affect.tool();
-			A.invoke(mob,affect.source(),true);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the spell!");
+			Ability A=(Ability)msg.tool();
+			A.invoke(mob,msg.source(),true);
 			return false;
 		}
 		return true;
@@ -62,8 +62,8 @@ public class Spell_SpellTurning extends Spell
 		oncePerRound=false;
 		return super.tick(ticking,tickID);
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -76,7 +76,7 @@ public class Spell_SpellTurning extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A reflective barrier appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) an reflective barrier of protection around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

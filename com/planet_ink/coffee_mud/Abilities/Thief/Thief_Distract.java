@@ -25,7 +25,7 @@ public class Thief_Distract extends ThiefSkill
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/2));
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return true;
@@ -36,15 +36,15 @@ public class Thief_Distract extends ThiefSkill
 		else
 		{
 			// preventing distracting player from doin anything else
-			if(affect.amISource(invoker)
+			if(msg.amISource(invoker)
 			&&(Dice.rollPercentage()>(mob.charStats().getStat(CharStats.WISDOM)*2))
-			&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK))
+			&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK))
 			{
-				invoker.location().show(invoker,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> distract(s) <T-NAME>.");
+				invoker.location().show(invoker,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> distract(s) <T-NAME>.");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -59,7 +59,7 @@ public class Thief_Distract extends ThiefSkill
 				if((invoker!=null)&&(invoker.location()==mob.location())&&(!invoker.amDead()))
 					invoker.tell("You are no longer distracting "+mob.name()+".");
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer so distracted.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer so distracted.");
 			}
 		}
 		super.unInvoke();
@@ -97,8 +97,8 @@ public class Thief_Distract extends ThiefSkill
 		boolean success=profficiencyCheck(-levelDiff,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.MSG_THIEF_ACT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,4);

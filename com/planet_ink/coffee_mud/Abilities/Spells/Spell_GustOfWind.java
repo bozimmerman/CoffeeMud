@@ -25,16 +25,16 @@ public class Spell_GustOfWind extends Spell
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((doneTicking)&&(affect.amISource(mob)))
+		if((doneTicking)&&(msg.amISource(mob)))
 			unInvoke();
 		else
-		if(affect.amISource(mob)&&(affect.sourceMinor()==Affect.TYP_STAND))
+		if(msg.amISource(mob)&&(msg.sourceMinor()==CMMsg.TYP_STAND))
 			return false;
 		return true;
 	}
@@ -51,7 +51,7 @@ public class Spell_GustOfWind extends Spell
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> regain(s) <S-HIS-HER> feet.");
 				ExternalPlay.standIfNecessary(mob);
 			}
 			else
@@ -89,7 +89,7 @@ public class Spell_GustOfWind extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> get(s) blown back!");
-				if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
+				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					if((!msg.wasModified())&&(target.location()==mob.location()))
 					{
@@ -104,7 +104,7 @@ public class Spell_GustOfWind extends Spell
 						&&(Dice.rollPercentage()>((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level()))
 						&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 						{
-							mob.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) down!");
+							mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");
 							doneTicking=false;
 							success=maliciousAffect(mob,target,2,-1);
 						}

@@ -19,26 +19,26 @@ public class Thief_AnalyzeMark extends ThiefSkill
 
 	public MOB getMark(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchAffect("Thief_Mark");
+		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if(A!=null)
 			return A.mark;
 		return null;
 	}
 	public int getMarkTicks(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchAffect("Thief_Mark");
+		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if((A!=null)&&(A.mark!=null))
 			return A.ticks;
 		return -1;
 	}
-	
-	public void affect(Environmental myHost, Affect msg)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(msg.amISource(mob)
-			&&(msg.targetMinor()==Affect.TYP_EXAMINESOMETHING)
+			&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 			&&(msg.target()!=null)
 			&&(getMark(mob)==msg.target())
 			&&(getMarkTicks(mob)>15)
@@ -50,6 +50,6 @@ public class Thief_AnalyzeMark extends ThiefSkill
 					mob.session().unfilteredPrintln(str.toString());
 			}
 		}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
 }

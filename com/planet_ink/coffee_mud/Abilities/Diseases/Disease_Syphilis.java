@@ -23,7 +23,7 @@ public class Disease_Syphilis extends Disease
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_STD;}
 	protected int conDown=0;
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -34,7 +34,7 @@ public class Disease_Syphilis extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_NOISE,DISEASE_AFFECT());
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			if(Dice.rollPercentage()>50)
 				conDown++;
 			if(Dice.rollPercentage()<10)
@@ -50,7 +50,7 @@ public class Disease_Syphilis extends Disease
 		}
 		return true;
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

@@ -202,7 +202,7 @@ public class ClanCrafting extends CommonSkill
 			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"clancraft list\" for a list.");
 			return false;
 		}
-		
+
 		int rsc1=-1;
 		int amt1=0;
 		int rsc2=-1;
@@ -239,14 +239,14 @@ public class ClanCrafting extends CommonSkill
 				}
 			}
 		}
-		
+
 		int expRequired=Util.s_int((String)foundRecipe.elementAt(RCP_EXP));
 		if(C.getExp()<expRequired)
 		{
 			mob.tell("You need "+expRequired+" to do that, but your "+C.typeName()+" has only "+C.getExp()+" experience points.");
 			return false;
 		}
-		
+
 		Item wood1=((rsc1<=0)?null:findFirstResource(mob.location(),rsc1));
 		int found1=0;
 		if((wood1!=null)&&(rsc1>0))
@@ -261,7 +261,7 @@ public class ClanCrafting extends CommonSkill
 			commonTell(mob,"You need "+amt1+" pounds of "+mat1+".  There is not enough here.  Are you sure you set it all on the ground first?");
 			return false;
 		}
-		
+
 		Item wood2=((rsc2<=0)?null:findFirstResource(mob.location(),rsc2));
 		int found2=0;
 		if((wood2!=null)&&(rsc2>0))
@@ -276,7 +276,7 @@ public class ClanCrafting extends CommonSkill
 			commonTell(mob,"You need "+amt2+" pounds of "+mat1+".  There is not enough here.  Are you sure you set it all on the ground first?");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		if(wood1!=null)
@@ -285,7 +285,7 @@ public class ClanCrafting extends CommonSkill
 			destroyResources(mob.location(),amt2,wood2.material(),null,null);
 		C.setExp(C.getExp()-expRequired);
 		C.update();
-		
+
 		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 		if(building==null)
 		{
@@ -316,18 +316,18 @@ public class ClanCrafting extends CommonSkill
 		int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
-		
+
 		if(spell.length()>0)
 		{
 			String parm="";
 			if(spell.indexOf(";")>0)
-			{ 
+			{
 				parm=spell.substring(spell.indexOf(";")+1);
 				spell=spell.substring(0,spell.indexOf(";"));
 			}
 			Ability A=CMClass.getAbility(spell);
 			A.setMiscText(parm);
-			if(A!=null)	building.addNonUninvokableAffect(A);
+			if(A!=null)	building.addNonUninvokableEffect(A);
 		}
 		if(building instanceof Armor)
 		{
@@ -376,9 +376,9 @@ public class ClanCrafting extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<6) completion=6;
-		
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
-		if(mob.location().okAffect(mob,msg))
+
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

@@ -31,7 +31,7 @@ public class Thief_Bind extends ThiefSkill
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BOUND);
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -40,13 +40,13 @@ public class Thief_Bind extends ThiefSkill
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
-			if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-			&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
+			if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
-				if(mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against "+ropeName+" binding <S-HIM-HER>."))
+				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against "+ropeName+" binding <S-HIM-HER>."))
 				{
 					amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
 					if(amountRemaining<0)
@@ -55,7 +55,7 @@ public class Thief_Bind extends ThiefSkill
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 
@@ -78,7 +78,7 @@ public class Thief_Bind extends ThiefSkill
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of "+ropeName+".");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of "+ropeName+".");
 			ExternalPlay.standIfNecessary(mob);
 		}
 	}
@@ -112,8 +112,8 @@ public class Thief_Bind extends ThiefSkill
 		{
 			if(auto) maxRange=10;
 			String str=auto?"<T-NAME> become(s) bound by "+ropeName+".":"<S-NAME> bind(s) <T-NAME> with "+ropeName+".";
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT|Affect.MASK_SOUND|Affect.MASK_MALICIOUS,auto?"":str,str,str);
-			if((target.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MASK_MALICIOUS,auto?"":str,str,str);
+			if((target.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				target.location().send(mob,msg);
 				if(!msg.wasModified())

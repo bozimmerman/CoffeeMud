@@ -65,8 +65,8 @@ public class Fighter_Berzerk extends StdAbility
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already berzerk.");
 			return false;
@@ -84,8 +84,8 @@ public class Fighter_Berzerk extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) a wild look in <S-HIS-HER> eyes!");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> get(s) a wild look in <S-HIS-HER> eyes!");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				hpAdjustment=(int)Math.round(Util.div(target.maxState().getHitPoints(),5.0));

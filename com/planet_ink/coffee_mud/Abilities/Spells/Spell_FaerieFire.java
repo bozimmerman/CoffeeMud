@@ -22,7 +22,7 @@ public class Spell_FaerieFire extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "The faerie fire around <S-NAME> fades.");
+			mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, "The faerie fire around <S-NAME> fades.");
 		super.unInvoke();
 	}
 
@@ -60,7 +60,7 @@ public class Spell_FaerieFire extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				maliciousAffect(mob,target,0,-1);

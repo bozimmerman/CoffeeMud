@@ -37,7 +37,7 @@ public class Decay extends ActiveTicker
 		if(y<0) y=s.length();
 		return ("remain="+tickDown+" "+s.substring(0,x)+s.substring(y).trim()).trim();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -73,7 +73,7 @@ public class Decay extends ActiveTicker
 				}
 				else
 				if(E instanceof Room)
-					((Room)E).showHappens(Affect.MSG_OK_VISUAL,item.name()+" vanishes!");
+					((Room)E).showHappens(CMMsg.MSG_OK_VISUAL,item.name()+" vanishes!");
 				room.recoverRoomStats();
 			}
 		}
@@ -82,47 +82,47 @@ public class Decay extends ActiveTicker
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
+		super.executeMsg(affecting,msg);
 		if(activated) return;
-		if(affect.amITarget(affecting))
+		if(msg.amITarget(affecting))
 		{
 			if(affecting instanceof Rideable)
 			{
-				if(((affect.targetMinor()==Affect.TYP_SLEEP)
-					||(affect.targetMinor()==Affect.TYP_SIT)
-					||(affect.targetMinor()==Affect.TYP_MOUNT)
-					||(affect.targetMinor()==Affect.TYP_ENTER))
-				&&(!affect.source().isMonster())
-				&&(SaucerSupport.zapperCheck(getParms(),affect.source())))
+				if(((msg.targetMinor()==CMMsg.TYP_SLEEP)
+					||(msg.targetMinor()==CMMsg.TYP_SIT)
+					||(msg.targetMinor()==CMMsg.TYP_MOUNT)
+					||(msg.targetMinor()==CMMsg.TYP_ENTER))
+				&&(!msg.source().isMonster())
+				&&(SaucerSupport.zapperCheck(getParms(),msg.source())))
 					activated=true;
 			}
 			else
 			if(affecting instanceof MOB)
 			{
-				if(((affect.targetMajor()&Affect.MASK_MALICIOUS)>0)
-				&&(!affect.source().isMonster())
-				&&(SaucerSupport.zapperCheck(getParms(),affect.source())))
+				if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
+				&&(!msg.source().isMonster())
+				&&(SaucerSupport.zapperCheck(getParms(),msg.source())))
 					activated=true;
 			}
 			else
 			if((affecting instanceof Armor)
 			||(affecting instanceof Weapon))
 			{
-				if(((affect.targetMinor()==Affect.TYP_WEAR)
-					||(affect.targetMinor()==Affect.TYP_HOLD)
-					||(affect.targetMinor()==Affect.TYP_WIELD))
-				&&(SaucerSupport.zapperCheck(getParms(),affect.source())))
+				if(((msg.targetMinor()==CMMsg.TYP_WEAR)
+					||(msg.targetMinor()==CMMsg.TYP_HOLD)
+					||(msg.targetMinor()==CMMsg.TYP_WIELD))
+				&&(SaucerSupport.zapperCheck(getParms(),msg.source())))
 					activated=true;
 			}
 			else
 			if(affecting instanceof Item)
 			{
-				if((affect.targetMinor()==Affect.TYP_GET)
-				&&(SaucerSupport.zapperCheck(getParms(),affect.source())))
+				if((msg.targetMinor()==CMMsg.TYP_GET)
+				&&(SaucerSupport.zapperCheck(getParms(),msg.source())))
 					activated=true;
 			}
 		}

@@ -70,23 +70,23 @@ public class Monkey extends StdRace
 			return "^c" + mob.name() + "^c is in perfect health^N";
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		// the sex rules
 		if(!(myHost instanceof MOB)) return;
 
 		MOB myChar=(MOB)myHost;
-		if((affect.amITarget(myChar))
+		if((msg.amITarget(myChar))
 		&&(Dice.rollPercentage()<10)
-		&&(affect.tool()!=null)
-		&&(affect.tool().ID().equals("Social"))
-		&&(affect.tool().Name().equals("MATE <T-NAME>")
-			||affect.tool().Name().equals("SEX <T-NAME>")))
+		&&(msg.tool()!=null)
+		&&(msg.tool().ID().equals("Social"))
+		&&(msg.tool().Name().equals("MATE <T-NAME>")
+			||msg.tool().Name().equals("SEX <T-NAME>")))
 		{
 			Ability A=CMClass.getAbility("Disease_Aids");
 			if(A!=null)
-				A.invoke(affect.source(),myChar,true);
+				A.invoke(msg.source(),myChar,true);
 		}
 	}
 

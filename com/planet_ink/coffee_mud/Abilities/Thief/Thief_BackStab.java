@@ -67,19 +67,19 @@ public class Thief_BackStab extends ThiefSkill
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,(auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT),auto?"":"<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),auto?"":"<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if((!success)&&(Sense.canBeSeenBy(mob,target))&&(!Sense.isSleeping(target)))
-				mob.location().show(target,mob,Affect.MSG_OK_VISUAL,auto?"":"<S-NAME> spot(s) <T-NAME>!");
+				mob.location().show(target,mob,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> spot(s) <T-NAME>!");
 			else
 			{
-				mob.addAffect(this);
+				mob.addEffect(this);
 				mob.recoverEnvStats();
 			}
 			ExternalPlay.postAttack(mob,target,weapon);
-			mob.delAffect(this);
+			mob.delEffect(this);
 			mob.recoverEnvStats();
 		}
 		else

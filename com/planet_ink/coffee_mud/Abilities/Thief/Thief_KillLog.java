@@ -23,7 +23,7 @@ public class Thief_KillLog extends ThiefSkill
 
 	public MOB getMark(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchAffect("Thief_Mark");
+		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if(A!=null)
 			return A.mark;
 		return null;
@@ -46,11 +46,11 @@ public class Thief_KillLog extends ThiefSkill
 		return str.toString();
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((mark!=null)
 		&&msg.amISource(mark)
-		&&(msg.sourceMinor()==Affect.TYP_DEATH))
+		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
 			String[] set=(String[])theList.get(mark.Name());
 			if(set==null)
@@ -70,7 +70,7 @@ public class Thief_KillLog extends ThiefSkill
 				if(A!=null)	A.setMiscText(text());
 			}
 		}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
 
 	public void setMiscText(String str)

@@ -47,19 +47,19 @@ public class TreeGolem extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((myHost!=null)
 		&&(myHost instanceof MOB)
-		&&(affect.amISource((MOB)myHost)))
+		&&(msg.amISource((MOB)myHost)))
 		{
-			if(affect.targetMinor()==Affect.TYP_LEAVE)
+			if(msg.targetMinor()==CMMsg.TYP_LEAVE)
 			{
-				affect.source().tell("You can't really go anywhere -- you are rooted!");
+				msg.source().tell("You can't really go anywhere -- you are rooted!");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

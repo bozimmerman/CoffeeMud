@@ -19,29 +19,29 @@ public class Skill_Buffoonery extends StdAbility
 	public Environmental newInstance(){	return new Skill_Buffoonery();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	
+
 	private Vector getFreeWearingPositions(MOB target)
 	{
 		Vector V=new Vector();
 		boolean[] pos=new boolean[Item.wornOrder.length];
-		
+
 		for(int i=0;i<pos.length;i++)
 			if(target.freeWearPositions(Item.wornOrder[i])>0)
 				pos[i]=false;
 			else
 				pos[i]=true;
-		
+
 		for(int i=0;i<pos.length;i++)
-			if(!pos[i]) 
+			if(!pos[i])
 				V.addElement(new Long(Item.wornOrder[i]));
 		return V;
 	}
-	
+
 	private boolean freePosition(MOB target)
 	{
 		return getFreeWearingPositions(target).size()>0;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<2)
@@ -62,13 +62,13 @@ public class Skill_Buffoonery extends StdAbility
 			return false;
 		}
 		commands.removeElementAt(commands.size()-1);
-		
+
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		Item targetItem=null;
 		Vector V=new Vector();
-		
+
 		for(int i=0;i<target.inventorySize();i++)
 		{
 			Item I2=target.fetchInventory(i);
@@ -86,7 +86,7 @@ public class Skill_Buffoonery extends StdAbility
 			mob.tell(target.name()+" has no free wearing positions!");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -100,7 +100,7 @@ public class Skill_Buffoonery extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,(Affect.MSG_NOISYMOVEMENT|Affect.MASK_DELICATE|Affect.MASK_MALICIOUS)|(auto?Affect.MASK_GENERAL:0),auto?"":"<S-NAME> do(es) buffoonery to <T-NAMESELF>.");			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,(CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|CMMsg.MASK_MALICIOUS)|(auto?CMMsg.MASK_GENERAL:0),auto?"":"<S-NAME> do(es) buffoonery to <T-NAMESELF>.");			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				long position=-1;

@@ -58,13 +58,13 @@ public class Undead_ColdTouch extends StdAbility
 		if(success)
 		{
 			str=auto?"":"^S<S-NAME> extend(s) a chilling hand to <T-NAMESELF>!^?";
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_UNDEAD|(auto?Affect.MASK_GENERAL:0),str);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_GENERAL:0),str);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) cold!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) cold!");
 					success=maliciousAffect(mob,target,0,-1);
 				}
 			}

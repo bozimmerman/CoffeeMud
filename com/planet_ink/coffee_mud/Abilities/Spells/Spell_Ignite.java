@@ -34,7 +34,7 @@ public class Spell_Ignite extends Spell
 		default:
 			return;
 		}
-		mob.location().showHappens(Affect.MSG_OK_VISUAL,I.name()+" ignites!");
+		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" ignites!");
 		Ability B=CMClass.getAbility("Burning");
 		B.setProfficiency(durationOfBurn);
 		B.invoke(mob,I,true);
@@ -69,7 +69,7 @@ public class Spell_Ignite extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> flares up!":"^S<S-NAME> evoke(s) a spell upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

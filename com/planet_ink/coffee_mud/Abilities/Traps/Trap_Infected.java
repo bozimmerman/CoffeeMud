@@ -19,9 +19,9 @@ public class Trap_Infected extends StdTrap
 	{
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numAffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++)
 		{
-			Ability A=fromMe.fetchAffect(a);
+			Ability A=fromMe.fetchEffect(a);
 			if((A!=null)&&(A.classificationCode()==Ability.DISEASE))
 				offenders.addElement(A);
 		}
@@ -76,9 +76,9 @@ public class Trap_Infected extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((!invoker().mayIFight(target))||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off an infectous trap!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off an infectous trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> notice(s) that "+affected.name()+" is infected!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> notice(s) that "+affected.name()+" is infected!"))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

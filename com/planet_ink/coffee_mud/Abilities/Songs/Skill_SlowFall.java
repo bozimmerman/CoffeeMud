@@ -24,12 +24,12 @@ public class Skill_SlowFall extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		if(activated) affectableStats.setWeight(0);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(affected!=null)
 		{
-			if((affected.fetchAffect("Falling")!=null)
+			if((affected.fetchEffect("Falling")!=null)
 			   &&((!(affected instanceof MOB))
 				  ||(((MOB)affected).fetchAbility(ID())==null)
 				  ||profficiencyCheck(0,false)))

@@ -60,7 +60,7 @@ public class Skill_Write extends StdAbility
 			mob.tell("You can't write on a scroll.");
 			return false;
 		}
-		
+
 		if(Util.combine(commands,1).toUpperCase().startsWith("FILE="))
 		{
 			mob.tell("You can't write that.");
@@ -74,12 +74,12 @@ public class Skill_Write extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",Affect.MSG_WRITE,Util.combine(commands,1),Affect.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",CMMsg.MSG_WRITE,Util.combine(commands,1),CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
-			mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<S-NAME> attempt(s) to write on <T-NAMESELF>, but mess(es) up.");
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> attempt(s) to write on <T-NAMESELF>, but mess(es) up.");
 		return success;
 	}
 

@@ -10,9 +10,9 @@ public class SmokeRings extends CommonSkill
 	public String name(){ return "Smoke Rings";}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	
+
 	private static boolean mapped=false;
-	
+
 	public SmokeRings()
 	{
 		super();
@@ -23,11 +23,11 @@ public class SmokeRings extends CommonSkill
 	}
 	public Environmental newInstance(){	return new SmokeRings();}
 
-	public void affect(Environmental affected, Affect msg)
+	public void executeMsg(Environmental affected, CMMsg msg)
 	{
 		if(((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)))
-		&&(msg.targetMinor()==Affect.TYP_QUIETMOVEMENT)
+		&&(msg.targetMinor()==CMMsg.TYP_QUIETMOVEMENT)
 		&&(msg.target() instanceof Light)
 		&&(msg.tool() instanceof Light)
 		&&(msg.target()==msg.tool())
@@ -70,9 +70,9 @@ public class SmokeRings extends CommonSkill
 				str="<S-NAME> blow(s) out a smoke ring shaped like a galley.";
 				break;
 			}
-			msg.addTrailerMsg(new FullMsg(msg.source(),null,msg.tool(),Affect.MSG_OK_VISUAL,str));
+			msg.addTrailerMsg(new FullMsg(msg.source(),null,msg.tool(),CMMsg.MSG_OK_VISUAL,str));
 		}
-		super.affect(affected,msg);
+		super.executeMsg(affected,msg);
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{

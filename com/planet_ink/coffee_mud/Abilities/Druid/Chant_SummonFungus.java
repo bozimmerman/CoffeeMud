@@ -15,18 +15,18 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 	public Environmental newInstance(){	return new Chant_SummonFungus();}
 	private boolean processing=false;
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((affect.amITarget(littlePlants))
+		if((msg.amITarget(littlePlants))
 		&&(!processing)
-		&&(affect.targetMinor()==Affect.TYP_GET))
+		&&(msg.targetMinor()==CMMsg.TYP_GET))
 		{
 			processing=true;
-			Ability A=littlePlants.fetchAffect(ID());
+			Ability A=littlePlants.fetchEffect(ID());
 			if(A!=null)
 			{
 				ExternalPlay.deleteTick(A,-1);
-				littlePlants.delAffect(A);
+				littlePlants.delEffect(A);
 				littlePlants.setSecretIdentity("");
 			}
 			if(littlePlants.fetchBehavior("Decay")==null)
@@ -34,7 +34,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 				Behavior B=CMClass.getBehavior("Decay");
 				B.setParms("min="+Host.TICKS_PER_MUDDAY+" max="+Host.TICKS_PER_MUDDAY+" chance=100");
 				littlePlants.addBehavior(B);
-				B.affect(myHost,affect);
+				B.executeMsg(myHost,msg);
 			}
 			processing=false;
 		}
@@ -92,7 +92,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		room.addItem(newItem);
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprouts up here.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprouts up here.");
 		Chant_SummonFungus newChant=new Chant_SummonFungus();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

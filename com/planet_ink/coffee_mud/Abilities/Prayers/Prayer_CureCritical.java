@@ -30,12 +30,12 @@ public class Prayer_CureCritical extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,(!undead?0:Affect.MASK_MALICIOUS)|affectType(auto),auto?"A bright white glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a critical healing touch to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|affectType(auto),auto?"A bright white glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a critical healing touch to <T-NAMESELF>.^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int healing=Dice.roll(4,adjustedLevel(mob),6);
-				ExternalPlay.postHealing(mob,target,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,healing,null);
+				ExternalPlay.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel much better!");
 			}
 		}

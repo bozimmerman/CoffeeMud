@@ -26,21 +26,21 @@ public class Chant_Fertility extends Chant
 			mob.tell("Your extreme fertility subsides.");
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		// the sex rules
 		if(!(affected instanceof MOB)) return;
 
 		MOB myChar=(MOB)affected;
-		if((affect.target()!=null)&&(affect.target() instanceof MOB))
+		if((msg.target()!=null)&&(msg.target() instanceof MOB))
 		{
-			MOB mate=(MOB)affect.target();
-			if((affect.amISource(myChar))
-			&&(affect.tool()!=null)
-			&&(affect.tool().ID().equals("Social"))
-			&&(affect.tool().Name().equals("MATE <T-NAME>")
-				||affect.tool().Name().equals("SEX <T-NAME>"))
+			MOB mate=(MOB)msg.target();
+			if((msg.amISource(myChar))
+			&&(msg.tool()!=null)
+			&&(msg.tool().ID().equals("Social"))
+			&&(msg.tool().Name().equals("MATE <T-NAME>")
+				||msg.tool().Name().equals("SEX <T-NAME>"))
 			&&(myChar.charStats().getStat(CharStats.GENDER)!=mate.charStats().getStat(CharStats.GENDER))
 			&&((mate.charStats().getStat(CharStats.GENDER)==((int)'M'))
 			   ||(mate.charStats().getStat(CharStats.GENDER)==((int)'F')))
@@ -65,7 +65,7 @@ public class Chant_Fertility extends Chant
 				Ability A=CMClass.getAbility("Pregnancy");
 				if((A!=null)
 				&&(female.fetchAbility(A.ID())==null)
-				&&(female.fetchAffect(A.ID())==null))
+				&&(female.fetchEffect(A.ID())==null))
 				{
 					A.invoke(male,female,true);
 					unInvoke();
@@ -90,10 +90,10 @@ public class Chant_Fertility extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) extremely fertile!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) extremely fertile!");
 				beneficialAffect(mob,target,(Integer.MAX_VALUE/2));
 			}
 		}

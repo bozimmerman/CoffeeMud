@@ -24,12 +24,12 @@ public class ClimbableSurface extends StdRoom
 
 	public void mountLadder(MOB mob, Rideable ladder)
 	{
-		String mountStr=ladder.mountString(Affect.TYP_MOUNT,mob);
-		FullMsg msg=new FullMsg(mob,ladder,null,Affect.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
+		String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
+		FullMsg msg=new FullMsg(mob,ladder,null,CMMsg.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
 		Room room=(Room)((Item)ladder).owner();
 		if(mob.location()==room) room=null;
-		if((mob.location().okAffect(mob,msg))
-		&&((room==null)||(room.okAffect(mob,msg))))
+		if((mob.location().okMessage(mob,msg))
+		&&((room==null)||(room.okMessage(mob,msg))))
 		{
 			mob.location().send(mob,msg);
 			if(room!=null)
@@ -53,52 +53,52 @@ public class ClimbableSurface extends StdRoom
 		return null;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if(Sense.isSleeping(this))
 			return true;
 
-		if(affect.amITarget(this)
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MOVE))
-		&&(!Sense.isFalling(affect.source()))
-		&&(!Sense.isClimbing(affect.source()))
-		&&(!Sense.isInFlight(affect.source())))
+		if(msg.amITarget(this)
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MOVE))
+		&&(!Sense.isFalling(msg.source()))
+		&&(!Sense.isClimbing(msg.source()))
+		&&(!Sense.isInFlight(msg.source())))
 		{
-			Rideable ladder=findALadder(affect.source(),this);
+			Rideable ladder=findALadder(msg.source(),this);
 			if(ladder!=null)
-				mountLadder(affect.source(),ladder);
-			if((!Sense.isClimbing(affect.source()))
-			&&(!Sense.isFalling(affect.source())))
+				mountLadder(msg.source(),ladder);
+			if((!Sense.isClimbing(msg.source()))
+			&&(!Sense.isFalling(msg.source())))
 			{
-				affect.source().tell("You need to climb that way, if you know how.");
+				msg.source().tell("You need to climb that way, if you know how.");
 				return false;
 			}
 		}
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if(Sense.isSleeping(this)) return;
 
-		if((affect.target() instanceof Item)
-		&&((!(affect.target() instanceof Rideable))
-		   ||(((Rideable)affect.target()).rideBasis()!=Rideable.RIDEABLE_LADDER))
-		&&(!Sense.isFlying(affect.target()))
-		&&((affect.targetMinor()==Affect.TYP_DROP)
-			||((affect.targetMinor()==Affect.TYP_THROW)
-			   &&(affect.tool()!=null)
-			   &&(affect.tool()==this))))
-			InTheAir.makeFall(affect.target(),this,0);
+		if((msg.target() instanceof Item)
+		&&((!(msg.target() instanceof Rideable))
+		   ||(((Rideable)msg.target()).rideBasis()!=Rideable.RIDEABLE_LADDER))
+		&&(!Sense.isFlying(msg.target()))
+		&&((msg.targetMinor()==CMMsg.TYP_DROP)
+			||((msg.targetMinor()==CMMsg.TYP_THROW)
+			   &&(msg.tool()!=null)
+			   &&(msg.tool()==this))))
+			InTheAir.makeFall(msg.target(),this,0);
 		else
-		if(affect.amITarget(this)
-			&&(Util.bset(affect.targetCode(),Affect.MASK_MOVE))
-			&&(!Sense.isFalling(affect.source())))
+		if(msg.amITarget(this)
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_MOVE))
+			&&(!Sense.isFalling(msg.source())))
 		{
-			MOB mob=affect.source();
+			MOB mob=msg.source();
 			if(isInhabitant(mob))
 			{
 				if((!Sense.isInFlight(mob))

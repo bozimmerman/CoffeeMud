@@ -18,25 +18,25 @@ public class ItemIdentifier extends StdBehavior
 		return cost;
 	}
 
-	public boolean okAffect(Environmental affecting, Affect affect)
+	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
-		if(!super.okAffect(affecting,affect))
+		if(!super.okMessage(affecting,msg))
 			return false;
-		MOB source=affect.source();
+		MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return true;
 		MOB observer=(MOB)affecting;
 		if((source!=observer)
-		&&(affect.amITarget(observer))
-		&&(affect.targetMinor()==Affect.TYP_GIVE)
+		&&(msg.amITarget(observer))
+		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!source.isASysOp(source.location()))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Item))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Item))
 		{
-			Item tool=(Item)affect.tool();
+			Item tool=(Item)msg.tool();
 			if(source.getMoney()<cost(tool))
 			{
-				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Item)affect.tool())+" gold coins for me to identify that.",true,false);
+				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Item)msg.tool())+" gold coins for me to identify that.",true,false);
 				return false;
 			}
 			return true;
@@ -45,51 +45,51 @@ public class ItemIdentifier extends StdBehavior
 	}
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
-		MOB source=affect.source();
+		super.executeMsg(affecting,msg);
+		MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return;
 		MOB observer=(MOB)affecting;
 
 		if((source!=observer)
-		&&(affect.amITarget(observer))
-		&&(affect.targetMinor()==Affect.TYP_GIVE)
+		&&(msg.amITarget(observer))
+		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!source.isASysOp(source.location()))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Item))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Item))
 		{
-			int cost=cost((Item)affect.tool());
+			int cost=cost((Item)msg.tool());
 			source.setMoney(source.getMoney()-cost);
 			source.recoverEnvStats();
-			FullMsg newMsg=new FullMsg(affect.source(),observer,null,Affect.MSG_OK_ACTION,"<S-NAME> give(s) "+cost+" gold coins to <T-NAMESELF>.");
-			affect.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,affect.tool(),null,Affect.MSG_EXAMINESOMETHING,"<S-NAME> examine(s) <T-NAME> very closely.");
-			affect.addTrailerMsg(newMsg);
-			StringBuffer up=new StringBuffer(affect.tool().name()+" is made of "+EnvResource.RESOURCE_DESCS[((Item)affect.tool()).material()&EnvResource.RESOURCE_MASK].toLowerCase()+".\n\r");
-			if((affect.tool() instanceof Armor)&&(affect.tool().envStats().height()>0))
-				up.append("It is a size "+affect.tool().envStats().height()+".");
-			int weight=affect.tool().envStats().weight();
-			if((weight!=affect.tool().baseEnvStats().weight())&&(affect.tool() instanceof Container))
-				up.append("It weighs "+affect.tool().baseEnvStats().weight()+" pounds empty and "+weight+" pounds right now.\n\r");
+			FullMsg newMsg=new FullMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,"<S-NAME> give(s) "+cost+" gold coins to <T-NAMESELF>.");
+			msg.addTrailerMsg(newMsg);
+			newMsg=new FullMsg(observer,msg.tool(),null,CMMsg.MSG_EXAMINESOMETHING,"<S-NAME> examine(s) <T-NAME> very closely.");
+			msg.addTrailerMsg(newMsg);
+			StringBuffer up=new StringBuffer(msg.tool().name()+" is made of "+EnvResource.RESOURCE_DESCS[((Item)msg.tool()).material()&EnvResource.RESOURCE_MASK].toLowerCase()+".\n\r");
+			if((msg.tool() instanceof Armor)&&(msg.tool().envStats().height()>0))
+				up.append("It is a size "+msg.tool().envStats().height()+".");
+			int weight=msg.tool().envStats().weight();
+			if((weight!=msg.tool().baseEnvStats().weight())&&(msg.tool() instanceof Container))
+				up.append("It weighs "+msg.tool().baseEnvStats().weight()+" pounds empty and "+weight+" pounds right now.\n\r");
 			else
 				up.append("It weighs "+weight+" pounds.\n\r");
-			if(affect.tool() instanceof Weapon)
+			if(msg.tool() instanceof Weapon)
 			{
-				Weapon w=(Weapon)affect.tool();
+				Weapon w=(Weapon)msg.tool();
 				up.append("It is a "+Weapon.classifictionDescription[w.weaponClassification()].toLowerCase()+" weapon.\n\r");
 				up.append("It does "+Weapon.typeDescription[w.weaponType()].toLowerCase()+" damage.\n\r");
 			}
-			up.append(((Item)affect.tool()).secretIdentity());
-			newMsg=new FullMsg(observer,null,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+up.toString()+"'^?.");
-			affect.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
-			affect.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,affect.tool(),null,Affect.MSG_DROP,null);
-			affect.addTrailerMsg(newMsg);
+			up.append(((Item)msg.tool()).secretIdentity());
+			newMsg=new FullMsg(observer,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) '"+up.toString()+"'^?.");
+			msg.addTrailerMsg(newMsg);
+			newMsg=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+			msg.addTrailerMsg(newMsg);
+			newMsg=new FullMsg(observer,msg.tool(),null,CMMsg.MSG_DROP,null);
+			msg.addTrailerMsg(newMsg);
 		}
 	}
 }

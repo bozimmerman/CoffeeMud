@@ -14,16 +14,16 @@ public class Trap_DeepPit extends Trap_RoomPit
 	protected int trapLevel(){return 14;}
 	public String requiresToSet(){return "";}
 	public Environmental newInstance(){	return new Trap_DeepPit();}
-	
+
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.envStats().weight()<5))
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 		else
 		{
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(trapLevel(),15,1);
-			ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MSG_OK_VISUAL,-1,null);
+			ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 		}
 		ExternalPlay.look(target,null,true);
 	}

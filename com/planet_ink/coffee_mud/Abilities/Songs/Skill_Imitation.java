@@ -27,9 +27,9 @@ public class Skill_Imitation extends StdAbility
 	public Hashtable immitations=new Hashtable();
 	public String[] lastOnes=new String[2];
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return;
 		MOB mob=(MOB)myHost;
@@ -95,8 +95,8 @@ public class Skill_Imitation extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT|Affect.MASK_DELICATE|(auto?Affect.MASK_GENERAL:0),(String)immitations.get(found));
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|(auto?CMMsg.MASK_GENERAL:0),(String)immitations.get(found));
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 			}

@@ -18,7 +18,7 @@ public class Chant_SummonDustdevil extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((affected!=null)
 			&&(affected instanceof MOB)
@@ -58,8 +58,8 @@ public class Chant_SummonDustdevil extends Chant
 						}
 						for(int i=0;i<V.size();i++)
 						{
-							FullMsg msg=new FullMsg(mob,invoker,(Item)V.elementAt(i),Affect.MSG_GIVE,"<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>.");
-							if(mob.location().okAffect(mob,msg))
+							FullMsg msg=new FullMsg(mob,invoker,(Item)V.elementAt(i),CMMsg.MSG_GIVE,"<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>.");
+							if(mob.location().okMessage(mob,msg))
 								mob.location().send(mob,msg);
 							else
 								break;
@@ -70,26 +70,26 @@ public class Chant_SummonDustdevil extends Chant
 		}
 		return super.tick(ticking,tickID);
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(affect.amISource((MOB)affected)))
+		&&(msg.amISource((MOB)affected)))
 		{
-			if(affect.sourceMinor()==Affect.TYP_DEATH)
+			if(msg.sourceMinor()==CMMsg.TYP_DEATH)
 			{
 				unInvoke();
 				return false;
 			}
-			if(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			if(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				affect.source().tell("You can't fight!");
-				affect.source().setVictim(null);
+				msg.source().tell("You can't fight!");
+				msg.source().setVictim(null);
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -98,7 +98,7 @@ public class Chant_SummonDustdevil extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		if(mob.location()!=null)
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> dissipate(s).");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> dissipate(s).");
 			Vector V=new Vector();
 			for(int i=0;i<mob.inventorySize();i++)
 				V.addElement(mob.fetchInventory(i));
@@ -116,17 +116,17 @@ public class Chant_SummonDustdevil extends Chant
 			mob.destroy();
 		}
 	}
-	
-	public void affect(Environmental myHost, Affect msg)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==Affect.TYP_QUIT))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
@@ -142,7 +142,7 @@ public class Chant_SummonDustdevil extends Chant
 		}
 
 		int material=EnvResource.RESOURCE_HEMP;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -152,7 +152,7 @@ public class Chant_SummonDustdevil extends Chant
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from the air.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, material);
@@ -201,7 +201,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
-		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appear(s)!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appear(s)!");
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

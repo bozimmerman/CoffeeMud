@@ -15,29 +15,29 @@ public class Prop_MagicFreedom extends Property
 	public String accountForYourself()
 	{ return "Anti-Magic Field";	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((Util.bset(affect.sourceCode(),affect.MASK_MAGIC))
-		||(Util.bset(affect.targetCode(),affect.MASK_MAGIC))
-		||(Util.bset(affect.othersCode(),affect.MASK_MAGIC)))
+		if((Util.bset(msg.sourceCode(),CMMsg.MASK_MAGIC))
+		||(Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
+		||(Util.bset(msg.othersCode(),CMMsg.MASK_MAGIC)))
 		{
 			Room room=null;
 			if(affected instanceof Room)
 				room=(Room)affected;
 			else
-			if((affect.source()!=null)
-			&&(affect.source().location()!=null))
-				room=affect.source().location();
+			if((msg.source()!=null)
+			&&(msg.source().location()!=null))
+				room=msg.source().location();
 			else
-			if((affect.target()!=null)
-			&&(affect.target() instanceof MOB)
-			&&(((MOB)affect.target()).location()!=null))
-				room=((MOB)affect.target()).location();
+			if((msg.target()!=null)
+			&&(msg.target() instanceof MOB)
+			&&(((MOB)msg.target()).location()!=null))
+				room=((MOB)msg.target()).location();
 			if(room!=null)
-				room.showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+				room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 			return false;
 		}
 		return true;

@@ -56,16 +56,16 @@ public class Prayer_MassParalyze extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" an unholy paralysis upon <T-NAMESELF>.^?");
-				FullMsg msg2=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.TYP_PARALYZE|(auto?Affect.MASK_GENERAL:0),null);
-				if((target!=mob)&&(mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" an unholy paralysis upon <T-NAMESELF>.^?");
+				FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_GENERAL:0),null);
+				if((target!=mob)&&(mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 				{
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);
 					if((!msg.wasModified())&&(!msg2.wasModified()))
 					{
 						success=maliciousAffect(mob,target,7,-1);
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can't move!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't move!");
 					}
 					nothingDone=false;
 				}

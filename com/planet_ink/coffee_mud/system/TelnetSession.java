@@ -216,9 +216,9 @@ public class TelnetSession extends Thread implements Session
 			if(snoops.size()>0)
 				for(int s=0;s<snoops.size();s++)
 					((Session)snoops.elementAt(s)).onlyPrint(msg);
-		
+
 			lastOutput=System.currentTimeMillis();
-		
+
 			if(msg.endsWith("\n\r")
 			&&(msg.equals(lastStr))
 			&&(msg.length()>2)
@@ -232,7 +232,7 @@ public class TelnetSession extends Thread implements Session
 				out.print(lastStr);
 				out.flush();
 			}
-		
+
 			spamStack=0;
 			if(msg.startsWith("\n\r")&&(msg.length()>2))
 				lastStr=msg.substring(2);
@@ -270,16 +270,16 @@ public class TelnetSession extends Thread implements Session
 		}
 		catch(java.lang.NullPointerException e){}
 	}
-	
+
 	public void rawPrint(String msg)
-	{ if(msg==null)return; 
+	{ if(msg==null)return;
 	  onlyPrint((needPrompt?"":"\n\r")+msg);
 	  needPrompt=true;
 	}
 
 	public void print(String msg)
 	{ onlyPrint(filter(mob,mob,null,msg,false)); }
-	
+
 	public void rawPrintln(String msg)
 	{ if(msg==null)return; rawPrint(msg+"\n\r");}
 
@@ -296,7 +296,7 @@ public class TelnetSession extends Thread implements Session
 	{ if(msg==null)return; print(msg+"\n\r");}
 
 	public void unfilteredPrintln(String msg)
-	{ if(msg==null)return; 
+	{ if(msg==null)return;
 	  onlyPrint(filter(mob,mob,null,msg,true)+"\n\r");
 	  needPrompt=true;
 	}
@@ -307,7 +307,7 @@ public class TelnetSession extends Thread implements Session
 	}
 
 	public void colorOnlyPrintln(String msg)
-	{ if(msg==null)return; 
+	{ if(msg==null)return;
 	  onlyPrint(colorOnlyFilter(msg)+"\n\r");
 	  needPrompt=true;
 	}
@@ -318,18 +318,18 @@ public class TelnetSession extends Thread implements Session
 	}
 
 	public void stdPrintln(String msg)
-	{ if(msg==null)return; 
-	  rawPrint(filter(mob,mob,null,msg,false)+"\n\r"); 
+	{ if(msg==null)return;
+	  rawPrint(filter(mob,mob,null,msg,false)+"\n\r");
 	}
 
 	public void println(Environmental src, Environmental trg, Environmental tol, String msg)
-	{ if(msg==null)return; 
+	{ if(msg==null)return;
 	  onlyPrint(filter(src,trg,tol,msg,false)+"\n\r");
 	}
 
 	public void stdPrintln(Environmental src,Environmental trg, Environmental tol, String msg)
-	{ if(msg==null)return; 
-	  rawPrint(filter(src,trg,tol,msg,false)+"\n\r"); 
+	{ if(msg==null)return;
+	  rawPrint(filter(src,trg,tol,msg,false)+"\n\r");
 	}
 
 	public void setPromptFlag(boolean truefalse)
@@ -383,7 +383,7 @@ public class TelnetSession extends Thread implements Session
 		if(mob()==null) return clookup;
 		PlayerStats pstats=mob().playerStats();
 		if(pstats==null) return clookup;
-		
+
 		if(!pstats.getColorStr().equals(lastColorStr))
 		{
 			if(pstats.getColorStr().length()==0)
@@ -448,7 +448,7 @@ public class TelnetSession extends Thread implements Session
 	{
 		if(mob==null) return msg;
 		if(msg==null) return null;
-		
+
 		if(msg.length()==0) return msg;
 
 		StringBuffer buf=new StringBuffer(msg);
@@ -483,13 +483,13 @@ public class TelnetSession extends Thread implements Session
 			}
 		}
 
-		if ((currentColor != ((int)'N'))&&(((termID&1)==1))) 
+		if ((currentColor != ((int)'N'))&&(((termID&1)==1)))
 			buf.append(makeEscape((int)'N'));
 
 		return buf.toString();
 
 	}
-	
+
 	public String filter(Environmental source,
 						 Environmental target,
 						 Environmental tool,
@@ -498,7 +498,7 @@ public class TelnetSession extends Thread implements Session
 	{
 		if(mob==null) return msg;
 		if(msg==null) return null;
-		
+
 		if(msg.length()==0) return msg;
 		boolean doSagain=false;
 		StringBuffer buf=new StringBuffer(msg);
@@ -1187,11 +1187,11 @@ public class TelnetSession extends Thread implements Session
 				case 'v': { buf.append(mob().curState().getMovement()); c++; break;}
 				case 'V': { buf.append(mob().maxState().getMovement()); c++; break;}
 				case 'x': { buf.append(mob().getExperience()); c++; break;}
-				case 'X': { 
+				case 'X': {
 							  if(mob().getExpNeededLevel()==Integer.MAX_VALUE)
-								buf.append("N/A"); 
+								buf.append("N/A");
 							  else
-								buf.append(mob().getExpNeededLevel()); 
+								buf.append(mob().getExpNeededLevel());
 							  c++; break;
 						  }
 				case 'g': { buf.append(mob().getMoney()); c++; break;}
@@ -1268,7 +1268,7 @@ public class TelnetSession extends Thread implements Session
 	{
 		return termID;
 	}
-	
+
 	private boolean isMaskedErrMsg(String str)
 	{
 		if(str==null) return false;
@@ -1325,10 +1325,10 @@ public class TelnetSession extends Thread implements Session
 							enque(0,Util.parse(input));
 						}
 						if(mob==null) break;
-						
+
 						if((spamStack>0)&&((lastOutput-System.currentTimeMillis())>100))
 							onlyPrint("");
-						
+
 						if((!afkFlag())&&(getIdleMillis()>=600000))
 							setAfkFlag(true);
 
@@ -1400,12 +1400,12 @@ public class TelnetSession extends Thread implements Session
 			// the player quit message!
 			if(mob.location()!=null)
 			{
-				FullMsg msg=new FullMsg(mob,null,Affect.MSG_QUIT,null);
+				FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_QUIT,null);
 				for(int f=0;f<mob.numFollowers();f++)
 				{
 					MOB follower=mob.fetchFollower(f);
 					if((follower!=null)&&(follower.location()!=mob.location()))
-						follower.affect(follower,msg);
+						follower.executeMsg(follower,msg);
 				}
 				if(mob.location()!=null)
 					mob.location().send(mob,msg);

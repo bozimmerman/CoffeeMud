@@ -20,22 +20,22 @@ public class ItemMender extends StdBehavior
 		return cost;
 	}
 
-	public boolean okAffect(Environmental affecting, Affect affect)
+	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
-		if(!super.okAffect(affecting,affect))
+		if(!super.okMessage(affecting,msg))
 			return false;
-		MOB source=affect.source();
+		MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return true;
 		MOB observer=(MOB)affecting;
 		if((source!=observer)
-		&&(affect.amITarget(observer))
-		&&(affect.targetMinor()==Affect.TYP_GIVE)
+		&&(msg.amITarget(observer))
+		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!source.isASysOp(source.location()))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Item))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Item))
 		{
-			Item tool=(Item)affect.tool();
+			Item tool=(Item)msg.tool();
 			if(!tool.subjectToWearAndTear())
 			{
 				ExternalPlay.quickSay(observer,source,"I'm sorry, I can't work on these.",true,false);
@@ -55,7 +55,7 @@ public class ItemMender extends StdBehavior
 			}
 			if(source.getMoney()<cost(tool))
 			{
-				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Item)affect.tool())+" gold coins to repair that.",true,false);
+				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Item)msg.tool())+" gold coins to repair that.",true,false);
 				return false;
 			}
 			return true;
@@ -64,33 +64,33 @@ public class ItemMender extends StdBehavior
 	}
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
-		MOB source=affect.source();
+		super.executeMsg(affecting,msg);
+		MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return;
 		MOB observer=(MOB)affecting;
 
 		if((source!=observer)
-		&&(affect.amITarget(observer))
-		&&(affect.targetMinor()==Affect.TYP_GIVE)
+		&&(msg.amITarget(observer))
+		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!source.isASysOp(source.location()))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Item))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Item))
 		{
-			int cost=cost((Item)affect.tool());
+			int cost=cost((Item)msg.tool());
 			source.setMoney(source.getMoney()-cost);
 			source.recoverEnvStats();
-			((Item)affect.tool()).setUsesRemaining(100);
-			FullMsg newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> and "+cost+" coins to <T-NAMESELF>.");
-			affect.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,source,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'There she is, good as new!  Thanks for your business' to <T-NAMESELF>.^?");
-			affect.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,affect.tool(),null,Affect.MSG_DROP,null);
-			affect.addTrailerMsg(newMsg);
+			((Item)msg.tool()).setUsesRemaining(100);
+			FullMsg newMsg=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> and "+cost+" coins to <T-NAMESELF>.");
+			msg.addTrailerMsg(newMsg);
+			newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'There she is, good as new!  Thanks for your business' to <T-NAMESELF>.^?");
+			msg.addTrailerMsg(newMsg);
+			newMsg=new FullMsg(observer,msg.tool(),null,CMMsg.MSG_DROP,null);
+			msg.addTrailerMsg(newMsg);
 		}
 	}
 }

@@ -31,7 +31,7 @@ public class Spell_Light extends Spell
 		MOB mob=(MOB)affected;
 		Room room=((MOB)affected).location();
 		if(canBeUninvoked())
-			room.show(mob,null,Affect.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
 		super.unInvoke();
 		if(canBeUninvoked())
 			room.recoverRoomStats();
@@ -43,9 +43,9 @@ public class Spell_Light extends Spell
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already <S-HAS-HAVE> light.");
 			return false;
@@ -54,7 +54,7 @@ public class Spell_Light extends Spell
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^S<S-NAME> attain(s) a light above <S-HIS-HER> head!":"^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?");
-		if(mob.location().okAffect(mob,msg))
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,0);

@@ -21,7 +21,7 @@ public class Chant_PaleMoon extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
 			if(affected instanceof Room)
-				((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The pale moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The pale moon sets.");
 			super.unInvoke();
 			return;
 		}
@@ -41,7 +41,7 @@ public class Chant_PaleMoon extends Chant
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(mob.location().fetchAffect(ID())==null)
+			if(mob.location().fetchEffect(ID())==null)
 				unInvoke();
 		}
 		else
@@ -54,10 +54,10 @@ public class Chant_PaleMoon extends Chant
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB M=room.fetchInhabitant(i);
-				if((M!=null)&&(M.fetchAffect(ID())==null))
+				if((M!=null)&&(M.fetchEffect(ID())==null))
 				{
 					Ability A=(Ability)copyOf();
-					M.addAffect(A);
+					M.addEffect(A);
 					M.recoverCharStats();
 				}
 			}
@@ -80,7 +80,7 @@ public class Chant_PaleMoon extends Chant
 			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already under the pale moon.");
 			return false;
@@ -102,12 +102,12 @@ public class Chant_PaleMoon extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Pale Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Pale Moon Rises!");
 					beneficialAffect(mob,target,0);
 				}
 			}

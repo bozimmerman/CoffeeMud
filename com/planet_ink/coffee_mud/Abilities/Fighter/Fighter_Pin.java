@@ -26,7 +26,7 @@ public class Fighter_Pin extends StdAbility
 	public long flags(){return Ability.FLAG_BINDING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -36,19 +36,19 @@ public class Fighter_Pin extends StdAbility
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL)))
+		if((msg.amISource(mob))&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
 		{
-			if((Util.bset(affect.sourceMajor(),Affect.MASK_EYES))
-			||(Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOUTH))
-			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE)))
+			if((Util.bset(msg.sourceMajor(),CMMsg.MASK_EYES))
+			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))
+			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
 			{
-				if(affect.sourceMessage()!=null)
+				if(msg.sourceMessage()!=null)
 					mob.tell("You are pinned!");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -78,14 +78,14 @@ public class Fighter_Pin extends StdAbility
 				if(mob==invoker)
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> release(s) <S-HIS-HER> pin.");
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> release(s) <S-HIS-HER> pin.");
 					else
 						mob.tell("You release your pin.");
 				}
 				else
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> released from the pin");
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> released from the pin");
 					else
 						mob.tell("You are released from the pin.");
 				}
@@ -136,8 +136,8 @@ public class Fighter_Pin extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> get(s) pinned!":"^F<S-NAME> pin(s) <T-NAMESELF> to the floor!^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> get(s) pinned!":"^F<S-NAME> pin(s) <T-NAMESELF> to the floor!^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				success=maliciousAffect(mob,target,5,-1);

@@ -19,9 +19,9 @@ public class Spell_Alarm extends Spell
 	public int classificationCode(){	return Ability.SPELL | Ability.DOMAIN_ENCHANTMENT;}
 
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if((affected==null)||(invoker==null))
 		{
@@ -29,15 +29,15 @@ public class Spell_Alarm extends Spell
 			return;
 		}
 
-		if(affect.source()!=null)
+		if(msg.source()!=null)
 		{
-			myRoomContainer=affect.source().location();
-			if(affect.source()==invoker) return;
+			myRoomContainer=msg.source().location();
+			if(msg.source()==invoker) return;
 		}
 
-		if(affect.amITarget(affected))
+		if(msg.amITarget(affected))
 		{
-			myRoomContainer.showHappens(Affect.MSG_NOISE,"A HORRENDOUS ALARM GOES OFF, WHICH SEEMS TO BE COMING FROM "+affected.name().toUpperCase()+"!!!");
+			myRoomContainer.showHappens(CMMsg.MSG_NOISE,"A HORRENDOUS ALARM GOES OFF, WHICH SEEMS TO BE COMING FROM "+affected.name().toUpperCase()+"!!!");
 			invoker.tell("The alarm on your "+affected.name()+" has gone off.");
 			unInvoke();
 		}
@@ -56,7 +56,7 @@ public class Spell_Alarm extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> glow(s) faintly for a short time.":"^S<S-NAME> touch(es) <T-NAMESELF> very lightly.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				myRoomContainer=mob.location();

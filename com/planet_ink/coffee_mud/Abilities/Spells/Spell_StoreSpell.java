@@ -51,7 +51,7 @@ public class Spell_StoreSpell extends Spell
 				if(charges<=0)
 				{
 					mob.tell(me.name()+" seems spent.");
-					me.delAffect(this);
+					me.delEffect(this);
 				}
 				else
 				{
@@ -61,31 +61,31 @@ public class Spell_StoreSpell extends Spell
 					if(target!=null)
 						V.addElement(target.name());
 					V.addElement(message);
-					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,me.name()+" glows brightly.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
 					A.invoke(mob, V, target, true);
 				}
 			}
 		}
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_WAND_USE:
-			if((affect.amITarget(affected))&&(affected instanceof Item))
-				waveIfAble(mob,affect.tool(),affect.targetMessage(),(Item)affected);
+		case CMMsg.TYP_WAND_USE:
+			if((msg.amITarget(affected))&&(affected instanceof Item))
+				waveIfAble(mob,msg.tool(),msg.targetMessage(),(Item)affected);
 			break;
-		case Affect.TYP_SPEAK:
-			if(affect.sourceMinor()==Affect.TYP_SPEAK)
-				affect.addTrailerMsg(new FullMsg(affect.source(),affected,affect.target(),affect.NO_EFFECT,null,Affect.MASK_GENERAL|Affect.TYP_WAND_USE,affect.targetMessage(),affect.NO_EFFECT,null));
+		case CMMsg.TYP_SPEAK:
+			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+				msg.addTrailerMsg(new FullMsg(msg.source(),affected,msg.target(),msg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.targetMessage(),msg.NO_EFFECT,null));
 			break;
 		default:
 			break;
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -128,7 +128,7 @@ public class Spell_StoreSpell extends Spell
 			mob.tell("You don't know how to enchant anything with '"+spellName+"'.");
 			return false;
 		}
-		Ability A=item.fetchAffect(ID());
+		Ability A=item.fetchEffect(ID());
 		if((A!=null)&&(A.text().length()>0)&&(!A.text().startsWith(wandThis.ID()+"/")))
 		{
 			mob.tell("'"+item.name()+"' already has a different spell stored in it.");
@@ -160,16 +160,16 @@ public class Spell_StoreSpell extends Spell
 		{
 			setMiscText(wandThis.ID());
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(target.fetchAffect(ID())==null)
+				if(target.fetchEffect(ID())==null)
 				{
 					A.setInvoker(mob);
-					target.addNonUninvokableAffect(A);
+					target.addNonUninvokableEffect(A);
 				}
 				A.setMiscText(wandThis.ID()+"/"+(charges+1));
-				mob.location().show(mob,target,null,Affect.MSG_OK_VISUAL,"<T-NAME> glow(s) softly.");
+				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s) softly.");
 			}
 
 		}

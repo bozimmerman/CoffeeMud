@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-// this ability is the very picture of the infectuous affect.
+// this ability is the very picture of the infectuous msg.
 // It lobs itself onto other qualified objects, and withdraws
 // again when it will.  Don't lothe the HaveAdjuster, LOVE IT.
 public class Prop_HaveAdjuster extends Property
@@ -188,7 +188,7 @@ public class Prop_HaveAdjuster extends Property
 			else
 			if(Character.isDigit(id.charAt(x)))
 				break;
-			
+
 		return id;
 	}
 }

@@ -21,7 +21,7 @@ public class Skill_ArrestingSap extends StdAbility
 	public void setAbilityCode(int newCode){enhancement=newCode;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -31,19 +31,19 @@ public class Skill_ArrestingSap extends StdAbility
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL)))
+		if((msg.amISource(mob))&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
 		{
-			if((Util.bset(affect.sourceMajor(),Affect.MASK_EYES))
-			||(Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOUTH))
-			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE)))
+			if((Util.bset(msg.sourceMajor(),CMMsg.MASK_EYES))
+			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))
+			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
 			{
-				if(affect.sourceMessage()!=null)
+				if(msg.sourceMessage()!=null)
 					mob.tell("You are way too drowsy.");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -69,7 +69,7 @@ public class Skill_ArrestingSap extends StdAbility
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> regain(s) consciousness.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> regain(s) consciousness.");
 				ExternalPlay.standIfNecessary(mob);
 			}
 			else
@@ -105,7 +105,7 @@ public class Skill_ArrestingSap extends StdAbility
 		else
 			levelDiff=0;
 		levelDiff-=(abilityCode()*mob.charStats().getStat(CharStats.STRENGTH));
-		
+
 		// now see if it worked
 		boolean success=profficiencyCheck((-levelDiff)+(-((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH)))),auto);
 		if(success)
@@ -115,8 +115,8 @@ public class Skill_ArrestingSap extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT|Affect.MASK_MALICIOUS|Affect.MSK_MALICIOUS_MOVE|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> rear(s) back and sap(s) <T-NAMESELF>, knocking <T-HIM-HER> out!^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS|CMMsg.MSK_MALICIOUS_MOVE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> rear(s) back and sap(s) <T-NAMESELF>, knocking <T-HIM-HER> out!^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				success=maliciousAffect(mob,target,3,-1);

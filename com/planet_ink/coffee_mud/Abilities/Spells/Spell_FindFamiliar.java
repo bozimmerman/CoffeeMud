@@ -28,14 +28,14 @@ public class Spell_FindFamiliar extends Spell
 			return false;
 
 		ExternalPlay.postExperience(mob,null,null,-100,false);
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> call(s) for a familiar.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
@@ -54,7 +54,7 @@ public class Spell_FindFamiliar extends Spell
 	}
 	public MOB determineMonster(MOB caster, int level)
 	{
-		
+
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
 		newMOB.baseEnvStats().setAbility(7);
 		newMOB.baseEnvStats().setLevel(level);
@@ -142,10 +142,10 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.resetToMaxState();
 		Ability A=CMClass.getAbility("Prop_Familiar");
 		A.setMiscText(""+choice);
-		newMOB.addNonUninvokableAffect(A);
+		newMOB.addNonUninvokableEffect(A);
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
-		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		return(newMOB);
 

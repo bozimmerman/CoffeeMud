@@ -35,79 +35,79 @@ public class Prancer extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Dance_Stop",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Dance_CanCan",true);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_Lore",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Dance_Foxtrot",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),3,"Fighter_Kick",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Dance_Tarantella",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_Appraise",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Dance_Waltz",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_Dodge",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Dance_Salsa",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Dance_Grass",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),6,"Dance_Clog",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),7,"Thief_Distract",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Dance_Capoeira",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),8,"Dance_Tap",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Dance_Swing",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Disarm",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Dance_Basse",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Dance_Tango",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),11,"Fighter_Spring",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Dance_Polka",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),12,"Dance_RagsSharqi",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Dance_Manipuri",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_Trip",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Dance_Cotillon",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),14,"Skill_TwoWeaponFighting",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Dance_Ballet",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Tumble",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Dance_Jitterbug",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),16,"Dance_Butoh",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Dance_Courante",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),18,"Dance_Musette",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Endurance",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Cartwheel",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Dance_Swords",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),20,"Dance_Flamenco",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Roll",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Dance_Jingledress",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),22,"Dance_Morris",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),23,"Fighter_BlindFighting",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Dance_Butterfly",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),24,"Dance_Macabre",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_CircleTrip",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Dance_War",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),30,"Dance_Square",true);
 		}
 	}
@@ -118,7 +118,7 @@ public class Prancer extends StdCharClass
 	}
 
 	public int getMovementMultiplier(){return 18;}
-	
+
 	public String statQualifications(){return "Charisma 9+, Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -173,7 +173,7 @@ public class Prancer extends StdCharClass
 			}
 		}
 	}
-	
+
 	public void unLevel(MOB mob)
 	{
 		if(mob.envStats().level()<2)
@@ -189,30 +189,30 @@ public class Prancer extends StdCharClass
 		mob.recoverCharStats();
 		mob.recoverMaxState();
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			boolean spellLike=((affect.tool()!=null)&&(myChar.fetchAbility(affect.tool().ID())!=null))&&(myChar.isMine(affect.tool()));
-			if((spellLike||((affect.sourceMajor()&Affect.MASK_DELICATE)>0))
-			&&(affect.tool()!=null)
+			boolean spellLike=((msg.tool()!=null)&&(myChar.fetchAbility(msg.tool().ID())!=null))&&(myChar.isMine(msg.tool()));
+			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
+			&&(msg.tool()!=null)
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> "+affect.tool().name()+"!");
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> "+msg.tool().name()+"!");
 					return false;
 				}
 			}
 			else
-			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon))
+			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon))
 			{
-				int classification=((Weapon)affect.tool()).weaponClassification();
+				int classification=((Weapon)msg.tool()).weaponClassification();
 				switch(classification)
 				{
 				case Weapon.CLASS_SWORD:
@@ -224,7 +224,7 @@ public class Prancer extends StdCharClass
 				default:
 					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
 						return false;
 					}
 					break;
@@ -235,7 +235,7 @@ public class Prancer extends StdCharClass
 	}
 
 	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defense every level.";}
-	
+
 	public void level(MOB mob)
 	{
 		super.level(mob);

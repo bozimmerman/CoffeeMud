@@ -29,15 +29,15 @@ public class Chant_AlterTime extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s), and reality seems to start blurring.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int x=Util.s_int(text());
 				while(x==0)	x=Dice.roll(1,3,-2);
 				if(x>0)
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"Time moves forwards!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Time moves forwards!");
 				else
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"Time moves backwards!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Time moves backwards!");
 				if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(x);
 			}
 		}

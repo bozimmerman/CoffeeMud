@@ -12,7 +12,7 @@ public class Wimpy extends StdBehavior
 	protected int tickWait=0;
 	protected int tickDown=0;
 	protected boolean veryWimpy=false;
-	
+
 	public Behavior newInstance()
 	{
 		return new Wimpy();
@@ -29,11 +29,11 @@ public class Wimpy extends StdBehavior
 		tickDown=tickWait;
 		veryWimpy=Util.getParmInt(newParms,"very",0)==1;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if(((--tickDown)<0)&&(ticking instanceof MOB))
 		{
 			tickDown=tickWait;
@@ -60,7 +60,7 @@ public class Wimpy extends StdBehavior
 							B=(Behavior)V.elementAt(b);
 							int tries=0;
 							while(((++tries)<100)&&(oldRoom==monster.location()))
-								B.tick(monster,Host.MOB_TICK);
+								B.tick(monster,Host.TICK_MOB);
 							if(oldRoom!=monster.location())
 								return true;
 						}

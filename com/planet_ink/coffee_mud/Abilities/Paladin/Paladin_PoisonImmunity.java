@@ -11,19 +11,19 @@ public class Paladin_PoisonImmunity extends Paladin
 	public String name(){ return "Poison Immunity";}
 	public Environmental newInstance(){	return new Paladin_PoisonImmunity();}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(affect.targetMinor()==Affect.TYP_POISON)
+		if((msg.amITarget(mob))
+		&&(msg.targetMinor()==CMMsg.TYP_POISON)
 		&&(!mob.amDead())
 		&&(mob.getAlignment()>650)
 		&&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 			return false;
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

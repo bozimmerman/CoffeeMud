@@ -15,7 +15,7 @@ public class Poison_Liquor extends Poison_Alcohol
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Liquor();}
 	public int classificationCode(){return Ability.POISON;}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(affected instanceof MOB)
@@ -27,7 +27,7 @@ public class Poison_Liquor extends Poison_Alcohol
 		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
 			affectableStats.setStat(CharStats.DEXTERITY,1);
 	}
-	
+
 	public void unInvoke()
 	{
 		MOB mob=null;
@@ -43,6 +43,6 @@ public class Poison_Liquor extends Poison_Alcohol
 		}
 		super.unInvoke();
 		if((mob!=null)&&(!mob.isInCombat()))
-			mob.location().show(mob,null,Affect.MSG_SLEEP,"<S-NAME> curl(s) up on the ground and fall(s) asleep.");
+			mob.location().show(mob,null,CMMsg.MSG_SLEEP,"<S-NAME> curl(s) up on the ground and fall(s) asleep.");
 	}
 }

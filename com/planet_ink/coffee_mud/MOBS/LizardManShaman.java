@@ -40,7 +40,7 @@ public class LizardManShaman extends LizardMan
 		recoverEnvStats();
 		recoverCharStats();
 	}
-   
+
     public void addNaturalAbilities()
     {
         Ability p1 =CMClass.getAbility("Prayer_ProtGood");
@@ -64,10 +64,10 @@ public class LizardManShaman extends LizardMan
         this.addAbility(p4);
 
     }
-   
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((!amDead())&&(tickID==Host.MOB_TICK))
+		if((!amDead())&&(tickID==Host.TICK_MOB))
 		{
 			if (isInCombat())
 			{
@@ -97,12 +97,12 @@ public class LizardManShaman extends LizardMan
             prayer.setProfficiency(Dice.roll(5, 10, 50));
         }
 
-		if(prayer!=null) 
+		if(prayer!=null)
 		    return prayer.invoke(this,null,false);
 		else
 	        return false;
     }
-   
+
 	public Environmental newInstance()
 	{
 		return new LizardManShaman();

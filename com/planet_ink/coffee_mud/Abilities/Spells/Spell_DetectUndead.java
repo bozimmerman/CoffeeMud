@@ -31,7 +31,7 @@ public class Spell_DetectUndead extends Spell
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		   &&(affected!=null)
 		   &&(affected instanceof MOB)
 		   &&(((MOB)affected).location()!=null)
@@ -56,9 +56,9 @@ public class Spell_DetectUndead extends Spell
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> detecting undead things.");
 			return false;
@@ -69,7 +69,7 @@ public class Spell_DetectUndead extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) dark cold senses!":"^S<S-NAME> incant(s) softly, and gain(s) dark cold senses!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

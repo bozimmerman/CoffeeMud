@@ -21,43 +21,43 @@ public class Immunities extends StdAbility
 	public int resistanceCode=0;
 	public Environmental newInstance(){	return new Immunities();}
 
-	
+
 	public static Object[][] immunityTypes={
-		{new Integer(Affect.TYP_ACID), new String("ACID")},
-		{new Integer(Affect.TYP_WATER), new String("WATER")},
-		{new Integer(Affect.TYP_COLD), new String("COLD")},
-		{new Integer(Affect.TYP_DISEASE), new String("DISEASE")},
-		{new Integer(Affect.TYP_ELECTRIC), new String("ELECTRIC")},
-		{new Integer(Affect.TYP_FIRE), new String("FIRE")},
-		{new Integer(Affect.TYP_GAS), new String("GAS")},
-		{new Integer(Affect.TYP_JUSTICE), new String("JUSTICE")},
-		{new Integer(Affect.TYP_MIND), new String("MIND")},
-		{new Integer(Affect.TYP_PARALYZE), new String("PARALYZE")},
-		{new Integer(Affect.TYP_POISON), new String("POISON")},
-		{new Integer(Affect.TYP_UNDEAD), new String("UNDEAD")},
+		{new Integer(CMMsg.TYP_ACID), new String("ACID")},
+		{new Integer(CMMsg.TYP_WATER), new String("WATER")},
+		{new Integer(CMMsg.TYP_COLD), new String("COLD")},
+		{new Integer(CMMsg.TYP_DISEASE), new String("DISEASE")},
+		{new Integer(CMMsg.TYP_ELECTRIC), new String("ELECTRIC")},
+		{new Integer(CMMsg.TYP_FIRE), new String("FIRE")},
+		{new Integer(CMMsg.TYP_GAS), new String("GAS")},
+		{new Integer(CMMsg.TYP_JUSTICE), new String("JUSTICE")},
+		{new Integer(CMMsg.TYP_MIND), new String("MIND")},
+		{new Integer(CMMsg.TYP_PARALYZE), new String("PARALYZE")},
+		{new Integer(CMMsg.TYP_POISON), new String("POISON")},
+		{new Integer(CMMsg.TYP_UNDEAD), new String("UNDEAD")},
 	};
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)||Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)||Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 		&&(!mob.amDead()))
 		{
 			for(int i=0;i<immunityTypes.length;i++)
-				if((affect.targetMinor()==((Integer)immunityTypes[i][0]).intValue())
+				if((msg.targetMinor()==((Integer)immunityTypes[i][0]).intValue())
 				&&((text().toUpperCase().indexOf((String)immunityTypes[i][1])>=0)||(text().toUpperCase().equals("ALL"))))
 			{
 				String immunityName="certain";
-				if(affect.tool()!=null)
-					immunityName=affect.tool().name();
-				if(mob!=affect.source())
-					mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attacks from <T-NAME>.");
+				if(msg.tool()!=null)
+					immunityName=msg.tool().name();
+				if(mob!=msg.source())
+					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attacks from <T-NAME>.");
 				else
-					mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+".");
+					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+".");
 				return false;
 			}
 		}

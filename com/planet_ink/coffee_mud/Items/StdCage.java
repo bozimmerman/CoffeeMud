@@ -26,11 +26,11 @@ public class StdCage extends StdContainer
 		return new StdCage();
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((affect.amITarget(this))&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+		if((msg.amITarget(this))&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 		{
-			MOB mob=affect.source();
+			MOB mob=msg.source();
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				StringBuffer buf=new StringBuffer("");
@@ -71,17 +71,17 @@ public class StdCage extends StdContainer
 			{
 				Behavior B=fetchBehavior(b);
 				if(B!=null)
-					B.affect(this,affect);
+					B.executeMsg(this,msg);
 			}
 
-			for(int a=0;a<numAffects();a++)
+			for(int a=0;a<numEffects();a++)
 			{
-				Ability A=fetchAffect(a);
+				Ability A=fetchEffect(a);
 				if(A!=null)
-					A.affect(this,affect);
+					A.executeMsg(this,msg);
 			}
 			return;
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

@@ -14,9 +14,9 @@ public class Trap_SnakePit extends Trap_RoomPit
 	protected int trapLevel(){return 10;}
 	public String requiresToSet(){return "some caged snakes";}
 	public Environmental newInstance(){	return new Trap_SnakePit();}
-	
+
 	private Vector monsters=null;
-	
+
 	protected Item getCagedAnimal(MOB mob)
 	{
 		if(mob==null) return null;
@@ -33,7 +33,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 		}
 		return null;
 	}
-	
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
@@ -50,7 +50,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 		setMiscText(buf.toString());
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -62,10 +62,10 @@ public class Trap_SnakePit extends Trap_RoomPit
 		}
 		return true;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TRAP_RESET)&&(getReset()>0))
+		if((tickID==Host.TICK_TRAP_RESET)&&(getReset()>0))
 		{
 			// recage the motherfather
 			if((tickDown<=1)&&(monsters!=null))
@@ -81,16 +81,16 @@ public class Trap_SnakePit extends Trap_RoomPit
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.envStats().weight()<5))
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 		else
 		{
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(trapLevel(),6,1);
-			ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MSG_OK_VISUAL,-1,null);
+			ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 		}
 		Vector snakes=new Vector();
 		String t=text();

@@ -60,7 +60,7 @@ public class Prop_WizInvis extends Property
 
 		if(this.canBeUninvoked())
 		{
-			being.delAffect(this);
+			being.delEffect(this);
 			if(being instanceof Room)
 				((Room)being).recoverRoomStats();
 			else
@@ -81,18 +81,18 @@ public class Prop_WizInvis extends Property
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)&&(affect.amITarget(affected))&&(affected!=null)&&(!disabled)))
+		if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)&&(msg.amITarget(affected))&&(affected!=null)&&(!disabled)))
 		{
-			affect.source().tell("Ah, leave "+affected.name()+" alone.");
+			msg.source().tell("Ah, leave "+affected.name()+" alone.");
 			if(affected instanceof MOB)
 				((MOB)affected).makePeace();
 			return false;
 		}
 		else
-		if((affected!=null)&&(affected instanceof MOB)&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))&&(affect.amISource((MOB)affected)))
+		if((affected!=null)&&(affected instanceof MOB)&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))&&(msg.amISource((MOB)affected)))
 			disabled=true;
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

@@ -29,29 +29,29 @@ public class Prayer_ProtEvil extends Prayer
 		if(mob.getAlignment()<350)
 		{
 			int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
-			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^S<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!^?");
+			ExternalPlay.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^S<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!^?");
 		}
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if(invoker==null) return true;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 
-		if((affect.target()==invoker)&&(affect.source()!=invoker))
+		if((msg.target()==invoker)&&(msg.source()!=invoker))
 		{
-			if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-			&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(!Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_HOLY))
-			&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_UNHOLY)))
+			if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
+			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
-				affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+affect.source().name()+".");
+				msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+msg.source().name()+".");
 				return false;
 			}
 
@@ -92,7 +92,7 @@ public class Prayer_ProtEvil extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
+		if(mob.fetchEffect(this.ID())!=null)
 		{
 			mob.tell("You are already affected by "+name()+".");
 			return false;
@@ -113,7 +113,7 @@ public class Prayer_ProtEvil extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) protected from evil.":"^S<S-NAME> "+prayWord(mob)+" for protection from evil.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

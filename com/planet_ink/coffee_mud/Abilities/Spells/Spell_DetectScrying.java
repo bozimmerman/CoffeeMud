@@ -29,7 +29,7 @@ public class Spell_DetectScrying extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) softly to <T-NAMESELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				StringBuffer str=new StringBuffer("");
@@ -40,13 +40,13 @@ public class Spell_DetectScrying extends Spell
 					if(target.session().amSnooping(S1))
 						str.append(S1.mob().name()+" is snooping on <T-NAME>.  ");
 				}
-				Ability A=target.fetchAffect("Spell_Scry");
+				Ability A=target.fetchEffect("Spell_Scry");
 				if((A!=null)&&(A.invoker()!=null))
 					str.append(A.invoker().name()+" is scrying on <T-NAME>.");
-				A=target.fetchAffect("Spell_Claireaudience");
+				A=target.fetchEffect("Spell_Claireaudience");
 				if((A!=null)&&(A.invoker()!=null))
 					str.append(A.invoker().name()+" is listening to <T-NAME>.");
-				A=target.fetchAffect("Spell_Clairevoyance");
+				A=target.fetchEffect("Spell_Clairevoyance");
 				if((A!=null)&&(A.invoker()!=null))
 					str.append(A.invoker().name()+" is watching <T-NAME>.");
 				if(str.length()==0)

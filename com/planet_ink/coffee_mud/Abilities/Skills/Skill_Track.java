@@ -23,7 +23,7 @@ public class Skill_Track extends StdAbility
 	public int abilityCode(){return cacheCode;}
 	public void setAbilityCode(int newCode){cacheCode=newCode;}
 	public int usageType(){return USAGE_MOVEMENT;}
-	
+
 	private Vector theTrail=null;
 	public int nextDirection=-2;
 	public Environmental newInstance(){	return new Skill_Track();}
@@ -32,7 +32,7 @@ public class Skill_Track extends StdAbility
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if(nextDirection==-999)
 				return true;
@@ -76,19 +76,19 @@ public class Skill_Track extends StdAbility
 						{
 							if((nextExit.hasALock())&&(nextExit.isLocked()))
 							{
-								FullMsg msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-								if(oldRoom.okAffect(mob,msg))
+								FullMsg msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+								if(oldRoom.okMessage(mob,msg))
 								{
 									relock=true;
-									msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_UNLOCK,Affect.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
+									msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
 									ExternalPlay.roomAffectFully(msg,oldRoom,nextDirection);
 								}
 							}
-							FullMsg msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-							if(oldRoom.okAffect(mob,msg))
+							FullMsg msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+							if(oldRoom.okMessage(mob,msg))
 							{
 								reclose=true;
-								msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OPEN,Affect.MSG_OK_VISUAL,"<S-NAME> "+nextExit.openWord()+"(s) <T-NAMESELF>.");
+								msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.openWord()+"(s) <T-NAMESELF>.");
 								ExternalPlay.roomAffectFully(msg,oldRoom,nextDirection);
 							}
 						}
@@ -106,18 +106,18 @@ public class Skill_Track extends StdAbility
 								&&(opExit.hasADoor())
 								&&(opExit.isOpen()))
 								{
-									FullMsg msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-									if(nextRoom.okAffect(mob,msg))
+									FullMsg msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+									if(nextRoom.okMessage(mob,msg))
 									{
-										msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_CLOSE,Affect.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
+										msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
 										ExternalPlay.roomAffectFully(msg,nextRoom,opDirection);
 									}
 									if((opExit.hasALock())&&(relock))
 									{
-										msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-										if(nextRoom.okAffect(mob,msg))
+										msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+										if(nextRoom.okMessage(mob,msg))
 										{
-											msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_LOCK,Affect.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
+											msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
 											ExternalPlay.roomAffectFully(msg,nextRoom,opDirection);
 										}
 									}
@@ -136,17 +136,17 @@ public class Skill_Track extends StdAbility
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
-		if((affect.amISource(mob))
-		&&(affect.amITarget(mob.location()))
-		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+		if((msg.amISource(mob))
+		&&(msg.amITarget(mob.location()))
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
@@ -188,7 +188,7 @@ public class Skill_Track extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(givenTarget==null)
 			givenTarget=CMMap.getRoom(mobName);
-		
+
 		Vector rooms=new Vector();
 		if(givenTarget instanceof Room)
 			rooms.addElement(givenTarget);
@@ -201,7 +201,7 @@ public class Skill_Track extends StdAbility
 			Room R=CMMap.getRoom(mobName);
 			if(R!=null) rooms.addElement(R);
 		}
-		
+
 		if(rooms.size()<=0)
 		for(Enumeration r=thisRoom.getArea().getMap();r.hasMoreElements();)
 		{
@@ -209,7 +209,7 @@ public class Skill_Track extends StdAbility
 			if(R.fetchInhabitant(mobName)!=null)
 				rooms.addElement(R);
 		}
-		
+
 		if(rooms.size()<=0)
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
@@ -217,8 +217,8 @@ public class Skill_Track extends StdAbility
 			if(R.fetchInhabitant(mobName)!=null)
 				rooms.addElement(R);
 		}
-		
-		
+
+
 		if(rooms.size()>0)
 		{
 			theTrail=null;
@@ -229,23 +229,23 @@ public class Skill_Track extends StdAbility
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
 				cachedPaths.put(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);
 		}
-		
+
 		if((success)&&(theTrail!=null))
 		{
 			theTrail.addElement(thisRoom);
-			
+
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
-			if(thisRoom.okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
+			if(thisRoom.okMessage(mob,msg))
 			{
 				thisRoom.send(mob,msg);
 				invoker=mob;
 				Skill_Track newOne=(Skill_Track)copyOf();
-				if(mob.fetchAffect(newOne.ID())==null)
-					mob.addAffect(newOne);
+				if(mob.fetchEffect(newOne.ID())==null)
+					mob.addEffect(newOne);
 				mob.recoverEnvStats();
 				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,thisRoom,false);
 			}

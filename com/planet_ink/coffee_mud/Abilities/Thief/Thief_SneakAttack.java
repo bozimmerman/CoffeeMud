@@ -28,22 +28,22 @@ public class Thief_SneakAttack extends ThiefSkill
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+50);
 		}
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect msg)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg)) return false;
 		if((affected==null)||((!(affected instanceof MOB)))) return true;
 		if(activated
 		   &&(!oncePerRound)
 		   &&msg.amISource((MOB)affected)
-		   &&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
+		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 		{
 			oncePerRound=true;
 			helpProfficiency((MOB)affected);
 		}
 		return true;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(Sense.isHidden(affected))
@@ -63,5 +63,5 @@ public class Thief_SneakAttack extends ThiefSkill
 		if(oncePerRound) oncePerRound=false;
 		return super.tick(ticking,tickID);
 	}
-	
+
 }

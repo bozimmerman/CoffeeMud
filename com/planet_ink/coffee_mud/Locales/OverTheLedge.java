@@ -11,16 +11,16 @@ import java.util.*;
 public class OverTheLedge extends InTheAir
 {
 	public String ID(){return "OverTheLedge";}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(Sense.isSleeping(this))
 			return true;
 
-		if((affect.targetMinor()==affect.TYP_ENTER)
-		&&(affect.amITarget(this))
-		&&((getRoomInDir(Directions.DOWN)!=affect.source().location())))
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.amITarget(this))
+		&&((getRoomInDir(Directions.DOWN)!=msg.source().location())))
 			return true;
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 	public Environmental newInstance()
 	{

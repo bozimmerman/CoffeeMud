@@ -37,13 +37,13 @@ public class Chant_RestoreMana extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					target.curState().adjMana(+50,target.maxState());
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> feel(s) a burst of power.");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) a burst of power.");
 				}
 			}
 		}

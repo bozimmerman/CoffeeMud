@@ -20,39 +20,39 @@ public class Spell_WallOfAir extends Spell
 
 	private Item theWall=null;
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 
 		if((invoker!=null)
 		&&(mob.isInCombat())
 		&&(mob.getVictim()==invoker)
 		&&(mob.rangeToTarget()>=1)
-		&&(affect.amITarget(invoker))
-		&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon)
-		&&(!((Weapon)affect.tool()).amWearingAt(Item.INVENTORY))
-		&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED))
+		&&(msg.amITarget(invoker))
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon)
+		&&(!((Weapon)msg.tool()).amWearingAt(Item.INVENTORY))
+		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 		{
-			mob.location().show(mob,invoker,affect.tool(),Affect.MSG_OK_VISUAL,"<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile enters the wall of air.");
+			mob.location().show(mob,invoker,msg.tool(),CMMsg.MSG_OK_VISUAL,"<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile enters the wall of air.");
 			MOB M=CMClass.getMOB("StdMOB");
 			M.setLocation(mob.location());
 			M.setName("The wall of air");
 			M.setVictim(mob);
 			M.setAtRange(mob.rangeToTarget());
-			ExternalPlay.postWeaponDamage(M,mob,(Weapon)affect.tool(),true);
+			ExternalPlay.postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
 			M.setLocation(null);
 			M.setVictim(null);
 			if(mob.isMonster())
-				ExternalPlay.remove(mob,(Item)affect.tool(),false);
+				ExternalPlay.remove(mob,(Item)msg.tool(),false);
 			return false;
 		}
 
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -66,7 +66,7 @@ public class Spell_WallOfAir extends Spell
 			&&(theWall.owner() instanceof Room)
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
-				((Room)theWall.owner()).showHappens(Affect.MSG_OK_VISUAL,"The wall of air dissipates.");
+				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,"The wall of air dissipates.");
 				Item wall=theWall;
 				theWall=null;
 				wall.destroy();
@@ -76,7 +76,7 @@ public class Spell_WallOfAir extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((invoker!=null)
 			   &&(theWall!=null)
@@ -97,7 +97,7 @@ public class Spell_WallOfAir extends Spell
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I=mob.location().fetchItem(i);
-			if((I!=null)&&(I.fetchAffect(ID())!=null))
+			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a wall of air here.");
 				return false;
@@ -124,7 +124,7 @@ public class Spell_WallOfAir extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?"An swirling wall of air appears!":"^S<S-NAME> conjur(s) up a swirling wall of air!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Item I=CMClass.getItem("GenItem");

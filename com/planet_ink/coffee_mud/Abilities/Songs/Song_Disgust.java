@@ -12,7 +12,7 @@ public class Song_Disgust extends Song
 	public String name(){ return "Disgust";}
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Song_Disgust();}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -28,7 +28,7 @@ public class Song_Disgust extends Song
 			MOB newMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
 			if(newMOB!=mob)
 			{
-				room.show(mob,newMOB,Affect.MSG_OK_ACTION,"<S-NAME> appear(s) disgusted with <T-NAMESELF>.");
+				room.show(mob,newMOB,CMMsg.MSG_OK_ACTION,"<S-NAME> appear(s) disgusted with <T-NAMESELF>.");
 				ExternalPlay.postAttack(mob,newMOB,mob.fetchWieldedItem());
 			}
 		}

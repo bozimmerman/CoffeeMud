@@ -18,13 +18,13 @@ public class Skill_EscapeBonds extends StdAbility
 	public Environmental newInstance(){	return new Skill_EscapeBonds();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	
+
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
 		stats.setStat(CharStats.STRENGTH,stats.getStat(CharStats.STRENGTH)+stats.getStat(CharStats.DEXTERITY)+mob.envStats().level());
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!Sense.isBoundOrHeld(mob))
@@ -40,13 +40,13 @@ public class Skill_EscapeBonds extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT|(auto?Affect.MASK_GENERAL:0),"<S-NAME> attempt(s) to escape <S-HIS-HER> bonds.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> attempt(s) to escape <S-HIS-HER> bonds.");
+			if(mob.location().okMessage(mob,msg))
 			{
-				mob.addAffect(this);
+				mob.addEffect(this);
 				mob.recoverCharStats();
 				mob.location().send(mob,msg);
-				mob.delAffect(this);
+				mob.delEffect(this);
 				mob.recoverCharStats();
 			}
 		}

@@ -131,7 +131,7 @@ public class Spell_DetectGold extends Spell
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		   &&(affected!=null)
 		   &&(affected instanceof MOB)
 		   &&(((MOB)affected).location()!=null)
@@ -144,25 +144,25 @@ public class Spell_DetectGold extends Spell
 	}
 
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		   &&(affected instanceof MOB)
-		   &&(affect.target()!=null)
-		   &&(affect.amISource((MOB)affected))
-		   &&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING))
+		   &&(msg.target()!=null)
+		   &&(msg.amISource((MOB)affected))
+		   &&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING))
 		{
-			if((affect.tool()!=null)&&(affect.tool().ID().equals(ID())))
+			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
-				String msg=metalHere((MOB)affected,affect.target(),null);
-				if(msg.length()>0)
-					((MOB)affected).tell(msg);
+				String str=metalHere((MOB)affected,msg.target(),null);
+				if(str.length()>0)
+					((MOB)affected).tell(str);
 			}
 			else
 			{
-				FullMsg msg=new FullMsg(affect.source(),affect.target(),this,affect.MSG_EXAMINESOMETHING,affect.NO_EFFECT,affect.NO_EFFECT,null);
-				affect.addTrailerMsg(msg);
+				FullMsg msg2=new FullMsg(msg.source(),msg.target(),this,CMMsg.MSG_EXAMINESOMETHING,msg.NO_EFFECT,msg.NO_EFFECT,null);
+				msg.addTrailerMsg(msg2);
 			}
 		}
 	}
@@ -173,9 +173,9 @@ public class Spell_DetectGold extends Spell
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting golden things.");
 			return false;
@@ -186,7 +186,7 @@ public class Spell_DetectGold extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) golden senses!":"^S<S-NAME> incant(s) softly, and gain(s) golden senses!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

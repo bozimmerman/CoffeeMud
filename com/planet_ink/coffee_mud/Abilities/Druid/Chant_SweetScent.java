@@ -13,7 +13,7 @@ public class Chant_SweetScent extends Chant
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	return new Chant_SweetScent();}
 
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -63,7 +63,7 @@ public class Chant_SweetScent extends Chant
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(
@@ -95,7 +95,7 @@ public class Chant_SweetScent extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -25,23 +25,23 @@ public class Spell_DetectMagic extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> eyes cease to sparkle.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> eyes cease to sparkle.");
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(affect.target()!=null)
-		&&(affect.amISource((MOB)affected))
-		&&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING)
-		&&(Sense.canBeSeenBy(affect.target(),affected)))
+		&&(msg.target()!=null)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING)
+		&&(Sense.canBeSeenBy(msg.target(),affected)))
 		{
 			String msg2=null;
-			for(int a=0;a<affect.target().numAffects();a++)
+			for(int a=0;a<msg.target().numEffects();a++)
 			{
-				Ability A=affect.target().fetchAffect(a);
+				Ability A=msg.target().fetchEffect(a);
 				if((A!=null)
 				&&(!A.isAutoInvoked())
 				&&(A.displayText().length()>0)
@@ -51,21 +51,21 @@ public class Spell_DetectMagic extends Spell
 				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)))
 				{
 					if(msg2==null)
-						msg2=affect.target().name()+" is affected by: "+A.name();
+						msg2=msg.target().name()+" is affected by: "+A.name();
 					else
 						msg2+=" "+A.name();
 				}
 			}
-			if((msg2==null)&&(Sense.isABonusItems(affect.target())))
-				msg2=affect.target().name()+" is enchanted";
+			if((msg2==null)&&(Sense.isABonusItems(msg.target())))
+				msg2=msg.target().name()+" is enchanted";
 			if(msg2!=null)
 			{
-				FullMsg msg3=new FullMsg(affect.source(),affect.target(),this,
-										affect.MSG_OK_VISUAL,msg2+".",
-										affect.NO_EFFECT,null,
-										affect.NO_EFFECT,null);
-			
-				affect.addTrailerMsg(msg3);
+				FullMsg msg3=new FullMsg(msg.source(),msg.target(),this,
+										CMMsg.MSG_OK_VISUAL,msg2+".",
+										msg.NO_EFFECT,null,
+										msg.NO_EFFECT,null);
+
+				msg.addTrailerMsg(msg3);
 			}
 		}
 	}
@@ -82,9 +82,9 @@ public class Spell_DetectMagic extends Spell
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting magic.");
 			return false;
@@ -95,7 +95,7 @@ public class Spell_DetectMagic extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) sparkling eyes!":"^S<S-NAME> incant(s) softly, and gain(s) sparkling eyes!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

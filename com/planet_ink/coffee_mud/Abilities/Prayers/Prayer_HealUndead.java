@@ -24,7 +24,7 @@ public class Prayer_HealUndead extends Prayer
 			mob.tell("Only the undead are affected by this.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -36,22 +36,22 @@ public class Prayer_HealUndead extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,(undead?0:Affect.MASK_MALICIOUS)|affectType(auto),auto?"<T-NAME> become(s) surrounded by a white light.":"^S<S-NAME> "+prayWord(mob)+" for negative healing power into <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|affectType(auto),auto?"<T-NAME> become(s) surrounded by a white light.":"^S<S-NAME> "+prayWord(mob)+" for negative healing power into <T-NAMESELF>.^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int healing=Dice.roll(5,adjustedLevel(mob),10);
 				if(undead)
 				{
-					ExternalPlay.postHealing(mob,target,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,healing,null);
+					ExternalPlay.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 					target.tell("You feel tons better!");
 				}
 				else
 					ExternalPlay.postDamage(mob,target,this,healing,
-											Affect.MASK_GENERAL|Affect.TYP_UNDEAD,
+											CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,
 											Weapon.TYPE_BURNING,
 											"The unholy spell <DAMAGE> <T-NAME>!");
-											
+
 			}
 		}
 		else

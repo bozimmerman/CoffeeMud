@@ -25,22 +25,22 @@ public class QuestPoint extends StdItem
 		return new QuestPoint();
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_GET:
-			case Affect.TYP_REMOVE:
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_REMOVE:
 			{
 				setContainer(null);
 				destroy();
 				if(!mob.isMine(this))
 					mob.setQuestPoint(mob.getQuestPoint()+1);
 				unWear();
-				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 				return;
 			}
@@ -48,6 +48,6 @@ public class QuestPoint extends StdItem
 				break;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

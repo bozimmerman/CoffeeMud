@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.utils.*;
 public class Socials
 {
 	private Socials() {};
-	
+
 	private static String filename="";
 	private static boolean loaded=false;
 	private static Hashtable soc=new Hashtable();
@@ -32,7 +32,7 @@ public class Socials
 	{
 		soc.put(S.name(),S);
 	}
-	
+
 	public static void load(String newFilename)
 	{
 		filename=newFilename;
@@ -52,47 +52,47 @@ public class Socials
 					switch(s.charAt(0))
 					{
 					case 'W':
-						socobj.setSourceCode(Affect.MSG_SPEAK);
+						socobj.setSourceCode(CMMsg.MSG_SPEAK);
 						break;
 					case 'M':
-						socobj.setSourceCode(Affect.MSG_HANDS);
+						socobj.setSourceCode(CMMsg.MSG_HANDS);
 						break;
 					case 'S':
-						socobj.setSourceCode(Affect.MSG_NOISE);
+						socobj.setSourceCode(CMMsg.MSG_NOISE);
 						break;
 					case 'O':
-						socobj.setSourceCode(Affect.MSG_NOISYMOVEMENT);
+						socobj.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
 						break;
 					default:
-						socobj.setSourceCode(Affect.MSG_HANDS);
+						socobj.setSourceCode(CMMsg.MSG_HANDS);
 						break;
 					}
 					if(s.length()>1)
 					switch(s.charAt(1))
 					{
 					case 'T':
-						socobj.setOthersCode(Affect.MSG_HANDS);
-						socobj.setTargetCode(Affect.MSG_HANDS);
+						socobj.setOthersCode(CMMsg.MSG_HANDS);
+						socobj.setTargetCode(CMMsg.MSG_HANDS);
 						break;
 					case 'S':
-						socobj.setOthersCode(Affect.MSG_NOISE);
-						socobj.setTargetCode(Affect.MSG_NOISE);
+						socobj.setOthersCode(CMMsg.MSG_NOISE);
+						socobj.setTargetCode(CMMsg.MSG_NOISE);
 						break;
 					case 'W':
-						socobj.setOthersCode(Affect.MSG_SPEAK);
-						socobj.setTargetCode(Affect.MSG_SPEAK);
+						socobj.setOthersCode(CMMsg.MSG_SPEAK);
+						socobj.setTargetCode(CMMsg.MSG_SPEAK);
 						break;
 					case 'V':
-						socobj.setOthersCode(Affect.MSG_NOISYMOVEMENT);
-						socobj.setTargetCode(Affect.MSG_NOISYMOVEMENT);
+						socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
+						socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
 						break;
 					case 'O':
-						socobj.setOthersCode(Affect.MSG_OK_VISUAL);
-						socobj.setTargetCode(Affect.MSG_OK_VISUAL);
+						socobj.setOthersCode(CMMsg.MSG_OK_VISUAL);
+						socobj.setTargetCode(CMMsg.MSG_OK_VISUAL);
 						break;
 					default:
-						socobj.setOthersCode(Affect.MSG_NOISYMOVEMENT);
-						socobj.setTargetCode(Affect.MSG_NOISYMOVEMENT);
+						socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
+						socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
 						break;
 					}
 					getline=getline.substring(x+1);
@@ -138,7 +138,7 @@ public class Socials
 			loaded= false;
 		}
 	}
-	
+
 	public static Social FetchSocial(String name, boolean exactOnly)
 	{
 		Social thisOne=(Social)soc.get(name.toUpperCase());
@@ -227,16 +227,16 @@ public class Socials
 
 				switch(I.sourceCode())
 				{
-				case Affect.MSG_SPEAK:
+				case CMMsg.MSG_SPEAK:
 					buf.append('w');
 					break;
-				case Affect.MSG_HANDS:
+				case CMMsg.MSG_HANDS:
 					buf.append('m');
 					break;
-				case Affect.MSG_NOISE:
+				case CMMsg.MSG_NOISE:
 					buf.append('s');
 					break;
-				case Affect.MSG_NOISYMOVEMENT:
+				case CMMsg.MSG_NOISYMOVEMENT:
 					buf.append('o');
 					break;
 				default:
@@ -245,19 +245,19 @@ public class Socials
 				}
 				switch(I.targetCode())
 				{
-				case Affect.MSG_HANDS:
+				case CMMsg.MSG_HANDS:
 					buf.append('t');
 					break;
-				case Affect.MSG_NOISE:
+				case CMMsg.MSG_NOISE:
 					buf.append('s');
 					break;
-				case Affect.MSG_SPEAK:
+				case CMMsg.MSG_SPEAK:
 					buf.append('w');
 					break;
-				case Affect.MSG_NOISYMOVEMENT:
+				case CMMsg.MSG_NOISYMOVEMENT:
 					buf.append('v');
 					break;
-				case Affect.MSG_OK_VISUAL:
+				case CMMsg.MSG_OK_VISUAL:
 					buf.append('o');
 					break;
 				default:

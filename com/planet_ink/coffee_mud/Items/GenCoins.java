@@ -35,10 +35,10 @@ public class GenCoins extends GenItem implements Coins
 			baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
 		envStats=baseEnvStats.cloneStats();
 		// import not to sup this, otherwise 'ability' makes it magical!
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability affect=fetchAffect(a);
-			affect.affectEnvStats(this,envStats);
+			Ability effect=fetchEffect(a);
+			effect.affectEnvStats(this,envStats);
 		}
 	}
 
@@ -93,21 +93,21 @@ public class GenCoins extends GenItem implements Coins
 		return false;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		switch(affect.targetMinor())
+		super.executeMsg(myHost,msg);
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_REMOVE:
-		case Affect.TYP_GET:
-			if((affect.amITarget(this))||((affect.tool()==this)))
+		case CMMsg.TYP_REMOVE:
+		case CMMsg.TYP_GET:
+			if((msg.amITarget(this))||((msg.tool()==this)))
 			{
 				setContainer(null);
-				affect.source().setMoney(affect.source().getMoney()+envStats().ability());
+				msg.source().setMoney(msg.source().getMoney()+envStats().ability());
 				unWear();
 				destroy();
-				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
-					affect.source().location().recoverRoomStats();
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					msg.source().location().recoverRoomStats();
 			}
 			break;
 		default:

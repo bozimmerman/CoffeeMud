@@ -28,12 +28,12 @@ public class Prayer_Monolith extends Prayer
 	private Item theWall=null;
 	private String deathNotice="";
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		switch(wallType)
 		{
 		case TYP_ICE:
@@ -42,13 +42,13 @@ public class Prayer_Monolith extends Prayer
 			&&(mob.getVictim()==invoker)
 			&&(mob.rangeToTarget()==1))
 			{
-				if(affect.sourceMinor()==Affect.TYP_ADVANCE)
+				if(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 				{
 					Item w=mob.fetchWieldedItem();
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
 					Room room=mob.location();
-					room.show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the monolith of ice with "+w.name()+".^?");
+					room.show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the monolith of ice with "+w.name()+".^?");
 					amountRemaining-=mob.envStats().damage();
 					if(amountRemaining<0)
 					{
@@ -61,7 +61,7 @@ public class Prayer_Monolith extends Prayer
 							&&(M.rangeToTarget()>0)
 							&&(M.rangeToTarget()<3)
 							&&(!M.amDead()))
-								ExternalPlay.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+								ExternalPlay.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
 						}
 						((Item)affected).destroy();
 					}
@@ -76,24 +76,24 @@ public class Prayer_Monolith extends Prayer
 			&&(mob.isInCombat())
 			&&(mob.getVictim()==invoker)
 			&&(mob.rangeToTarget()>=1)
-			&&(affect.amITarget(invoker))
-			&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon)
-			&&(!((Weapon)affect.tool()).amWearingAt(Item.INVENTORY))
-			&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED))
+			&&(msg.amITarget(invoker))
+			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon)
+			&&(!((Weapon)msg.tool()).amWearingAt(Item.INVENTORY))
+			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
-				mob.location().show(mob,invoker,Affect.MSG_OK_VISUAL,"<S-NAME> fire(s) "+affect.tool().name()+" at <T-NAME>.  The missile enters the monolith of air.");
+				mob.location().show(mob,invoker,CMMsg.MSG_OK_VISUAL,"<S-NAME> fire(s) "+msg.tool().name()+" at <T-NAME>.  The missile enters the monolith of air.");
 				MOB M=CMClass.getMOB("StdMOB");
 				M.setLocation(mob.location());
 				M.setName("The monolith of air");
 				M.setVictim(mob);
 				M.setAtRange(mob.rangeToTarget());
-				ExternalPlay.postWeaponDamage(M,mob,(Weapon)affect.tool(),true);
+				ExternalPlay.postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
 				M.setLocation(null);
 				M.setVictim(null);
 				if(mob.isMonster())
-					ExternalPlay.remove(mob,(Item)affect.tool(),false);
+					ExternalPlay.remove(mob,(Item)msg.tool(),false);
 				return false;
 			}
 			break;
@@ -103,12 +103,12 @@ public class Prayer_Monolith extends Prayer
 			&&(mob.getVictim()==invoker)
 			&&(mob.rangeToTarget()==1))
 			{
-				if(affect.sourceMinor()==Affect.TYP_ADVANCE)
+				if(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 				{
 					Item w=mob.fetchWieldedItem();
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
-					if(mob.location().show(mob,null,w,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the monolith of stone with <O-NAME>.^?"))
+					if(mob.location().show(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the monolith of stone with <O-NAME>.^?"))
 					{
 						amountRemaining-=mob.envStats().damage();
 						if(amountRemaining<0)
@@ -122,7 +122,7 @@ public class Prayer_Monolith extends Prayer
 			}
 			break;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -139,16 +139,16 @@ public class Prayer_Monolith extends Prayer
 				switch(wallType)
 				{
 				case TYP_FIRE:
-					((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,"The monolith of fire fades.");
+					((Room)theWall.owner()).show(invoker,null,CMMsg.MSG_OK_VISUAL,"The monolith of fire fades.");
 					break;
 				case TYP_AIR:
-					((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,"The monolith of air dissipates.");
+					((Room)theWall.owner()).show(invoker,null,CMMsg.MSG_OK_VISUAL,"The monolith of air dissipates.");
 					break;
 				case TYP_ICE:
-					((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,"The monolith of ice melts.");
+					((Room)theWall.owner()).show(invoker,null,CMMsg.MSG_OK_VISUAL,"The monolith of ice melts.");
 					break;
 				case TYP_EARTH:
-					((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,"The monolith of stone crumbles.");
+					((Room)theWall.owner()).show(invoker,null,CMMsg.MSG_OK_VISUAL,"The monolith of stone crumbles.");
 					break;
 				}
 				Item wall=theWall;
@@ -160,7 +160,7 @@ public class Prayer_Monolith extends Prayer
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			switch(wallType)
 			{
@@ -192,7 +192,7 @@ public class Prayer_Monolith extends Prayer
 						&&(mob.rangeToTarget()==1))
 						{
 							int damage = Dice.roll((int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/4.0),6,1);
-							ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The monolith of fire flares and <DAMAGE> <T-NAME>!");
+							ExternalPlay.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The monolith of fire flares and <DAMAGE> <T-NAME>!");
 						}
 					}
 				}
@@ -213,7 +213,7 @@ public class Prayer_Monolith extends Prayer
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I=mob.location().fetchItem(i);
-			if((I!=null)&&(I.fetchAffect(ID())!=null))
+			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a monolith here.");
 				return false;
@@ -288,7 +288,7 @@ public class Prayer_Monolith extends Prayer
 				break;
 			}
 			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?I.name()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.name()+"!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				I.setGettable(false);

@@ -19,10 +19,10 @@ public class Thief_Listen extends ThiefSkill
 	private Room sourceRoom=null;
 	private Room room=null;
 	private String lastSaid="";
-	
-	public void affect(Environmental myHost, Affect msg)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof Room)
 		&&(invoker()!=null)
@@ -33,8 +33,8 @@ public class Thief_Listen extends ThiefSkill
 		{
 			if(invoker().location()==room)
 			{
-				if((msg.sourceMinor()==Affect.TYP_SPEAK)
-				&&(msg.othersCode()==Affect.NO_EFFECT)
+				if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+				&&(msg.othersCode()==CMMsg.NO_EFFECT)
 				&&(msg.othersMessage()==null)
 				&&(msg.sourceMessage()!=null)
 				&&(!msg.amISource(invoker()))
@@ -46,8 +46,8 @@ public class Thief_Listen extends ThiefSkill
 				}
 			}
 			else
-			if((msg.sourceMinor()==Affect.TYP_SPEAK)
-			&&(msg.othersMinor()==Affect.TYP_SPEAK)
+			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			&&(msg.othersMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.othersMessage()!=null)
 			&&(msg.sourceMessage()!=null)
 			&&(!lastSaid.equals(msg.sourceMessage())))
@@ -55,12 +55,12 @@ public class Thief_Listen extends ThiefSkill
 				lastSaid=msg.sourceMessage();
 				invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 			}
-				
+
 		}
 		else
 			unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		String whom=Util.combine(commands,0);
@@ -72,9 +72,9 @@ public class Thief_Listen extends ThiefSkill
 		}
 
 		if(room!=null)
-		for(int a=room.numAffects()-1;a>=0;a--)
+		for(int a=room.numEffects()-1;a>=0;a--)
 		{
-			Ability A=room.fetchAffect(a);
+			Ability A=room.fetchEffect(a);
 			if((A.ID().equals(ID()))&&(invoker()==mob))
 				A.unInvoke();
 		}
@@ -100,8 +100,8 @@ public class Thief_Listen extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_SMALL_HANDS_ACT),Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,"<S-NAME> listen(s)"+((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))+".");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,"<S-NAME> listen(s)"+((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))+".");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			success=profficiencyCheck(0,auto);

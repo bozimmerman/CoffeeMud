@@ -15,20 +15,20 @@ public class Prayer_SanctifyRoom extends Prayer
 	public Environmental newInstance(){	return new Prayer_SanctifyRoom();}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected==null)
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		Room R=(Room)affected;
-		if((affect.sourceMinor()==Affect.TYP_GET)
+		if((msg.sourceMinor()==CMMsg.TYP_GET)
 		&&((text().length()==0)
 		   ||((R.fetchInhabitant(text())!=null)&&(R.fetchInhabitant(text()).Name().equalsIgnoreCase(text())))))
 		{
-			affect.source().tell("You feel your muscles unwilling to cooperate.");
+			msg.source().tell("You feel your muscles unwilling to cooperate.");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 
@@ -44,14 +44,14 @@ public class Prayer_SanctifyRoom extends Prayer
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to sanctify this place.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((target instanceof Room)
 				&&((ExternalPlay.doesOwnThisProperty(mob,((Room)target)))
 					||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
-					target.addNonUninvokableAffect(this);
+					target.addNonUninvokableEffect(this);
 				else
 					beneficialAffect(mob,target,0);
 			}

@@ -44,19 +44,19 @@ public class Skill_Feint extends StdAbility
 		}
 		return true;
 	}
-	
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amISource(invoker())
-		&&(affect.amITarget(mob))
-		&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK))
+		if(msg.amISource(invoker())
+		&&(msg.amITarget(mob))
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
 			done=true;
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -81,8 +81,8 @@ public class Skill_Feint extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"":"^F<S-NAME> feint(s) at <T-NAMESELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"":"^F<S-NAME> feint(s) at <T-NAMESELF>!^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				done=false;

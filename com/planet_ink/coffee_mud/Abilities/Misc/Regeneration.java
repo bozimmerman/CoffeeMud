@@ -25,7 +25,7 @@ public class Regeneration extends StdAbility
 	public Environmental newInstance(){	return new Regeneration();}
 	public int classificationCode(){return Ability.SKILL;}
 	private int permanentDamage=0;
-	
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -45,25 +45,25 @@ public class Regeneration extends StdAbility
 		doneAnything=doneAnything||mob.curState().adjMana(mob.envStats().level()*2,mob.maxState());
 		doneAnything=doneAnything||mob.curState().adjMovement(mob.envStats().level()*3,mob.maxState());
 		if(doneAnything)
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> regenerate(s).");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> regenerate(s).");
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB M=(MOB)affected;
-			if(msg.amISource(M)&&(msg.sourceMinor()==Affect.TYP_DEATH))
+			if(msg.amISource(M)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 			{
 				permanentDamage=0;
 				M.recoverMaxState();
 			}
 			else
 			if((msg.amITarget(M))
-			&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 			&&(msg.tool()!=null)
 			&&(text().length()>0))
 			{
@@ -119,11 +119,11 @@ public class Regeneration extends StdAbility
 					M.recoverMaxState();
 				}
 			}
-			
+
 		}
 		return true;
 	}
-	
+
 	public void affectCharState(MOB mob, CharState state)
 	{
 		super.affectCharState(mob,state);
@@ -152,8 +152,8 @@ public class Regeneration extends StdAbility
 		if(success)
 		{
 			String str=auto?"":"<S-NAME> lay(s) regenerative magic upon <T-NAMESELF>.";
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,str);
-			if(target.location().okAffect(target,msg))
+			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,str);
+			if(target.location().okMessage(target,msg))
 			{
 			    target.location().send(target,msg);
 				success=beneficialAffect(mob,target,0);

@@ -25,9 +25,9 @@ public class Druid_MyPlants extends StdAbility
 		&&(I.owner()!=null)
 		&&(I.owner() instanceof Room))
 		{
-			for(int a=0;a<I.numAffects();a++)
+			for(int a=0;a<I.numEffects();a++)
 			{
-				Ability A=I.fetchAffect(a);
+				Ability A=I.fetchEffect(a);
 				if((A!=null)
 				&&((A.invoker()==mob)||(A.text().equals(mob.Name())))
 				&&(A instanceof Chant_SummonPlants))
@@ -36,7 +36,7 @@ public class Druid_MyPlants extends StdAbility
 		}
 		return false;
 	}
-	
+
 	public static Item myPlant(Room R, MOB mob, int which)
 	{
 		int plantNum=0;
@@ -78,8 +78,8 @@ public class Druid_MyPlants extends StdAbility
 			mob.tell("Your plant senses fail you.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_QUIETMOVEMENT|Affect.MASK_MAGIC,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_QUIETMOVEMENT|CMMsg.MASK_MAGIC,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				StringBuffer yourPlants=new StringBuffer("");

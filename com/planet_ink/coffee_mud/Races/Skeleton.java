@@ -12,24 +12,24 @@ public class Skeleton extends Undead
 
 	protected static Vector resources=new Vector();
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(myHost instanceof MOB)
 		{
 			MOB mob=(MOB)myHost;
 			if((msg.amITarget(mob))
-			&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon)
 			&&((((Weapon)msg.tool()).weaponType()==Weapon.TYPE_PIERCING)
 				||(((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SLASHING))
 			&&(!mob.amDead()))
 			{
-				int recovery=(int)Math.round(Util.div((msg.targetCode()-Affect.MASK_HURT),2.0));
+				int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
 				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
 			}
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 
 	public Vector myResources()

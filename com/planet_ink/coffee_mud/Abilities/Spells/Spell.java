@@ -16,12 +16,12 @@ public class Spell extends StdAbility
 	private static final String[] triggerStrings = {"CAST","CA","C"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SPELL;}
-	
+
 	protected int affectType(boolean auto){
-		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
+		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 		if(quality()==Ability.MALICIOUS)
-			affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|Affect.MASK_GENERAL;
+			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
+		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		return affectType;
 	}
 
@@ -42,9 +42,9 @@ public class Spell extends StdAbility
 		{
 			MOB tmob=(MOB)target;
 			int num=0;
-			for(int i=0;i<tmob.numAffects();i++)
+			for(int i=0;i<tmob.numEffects();i++)
 			{
-				Ability A=tmob.fetchAffect(i);
+				Ability A=tmob.fetchEffect(i);
 				if((A!=null)
 				&&(A instanceof Spell)
 				&&(A.quality()==Ability.MALICIOUS))
@@ -53,7 +53,7 @@ public class Spell extends StdAbility
 					if(num>5)
 					{
 						Ability A2=CMClass.getAbility("Disease_Magepox");
-						if((A2!=null)&&(target.fetchAffect(A2.ID())==null))
+						if((A2!=null)&&(target.fetchEffect(A2.ID())==null))
 							A2.invoke(mob,target,true);
 						break;
 					}

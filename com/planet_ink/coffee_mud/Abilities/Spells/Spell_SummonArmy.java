@@ -26,13 +26,13 @@ public class Spell_SummonArmy extends Spell
 		}
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==Affect.TYP_QUIT))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			unInvoke();
 	}
 
@@ -47,7 +47,7 @@ public class Spell_SummonArmy extends Spell
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plain.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String[] choices={"Dog","Orc","Tiger","Troll","Chimp","BrownBear","Goblin","LargeBat","GiantScorpion","Rattlesnake","Ogre"};
@@ -61,7 +61,7 @@ public class Spell_SummonArmy extends Spell
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
-					newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 					newMOB.setStartRoom(null);
 					newMOB.setVictim(mob.getVictim());
 					ExternalPlay.follow(newMOB,mob,true);

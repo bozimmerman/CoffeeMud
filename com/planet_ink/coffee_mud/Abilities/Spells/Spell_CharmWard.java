@@ -32,22 +32,22 @@ public class Spell_CharmWard extends Spell
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected==null)
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if((affect.amITarget(mob))
-			&&(!affect.amISource(mob))
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_CHARMING))
+			if((msg.amITarget(mob))
+			&&(!msg.amISource(mob))
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING))
 			&&(!mob.amDead()))
 			{
-				affect.source().location().showHappens(Affect.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
 				return false;
 			}
 		}
@@ -55,17 +55,17 @@ public class Spell_CharmWard extends Spell
 		if(affected instanceof Room)
 		{
 			Room R=(Room)affected;
-			if((affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_CHARMING)))
+			if((msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
 			{
-				if((affect.source().location()!=null)&&(affect.source().location()!=R))
-					affect.source().location().showHappens(Affect.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
-				R.showHappens(Affect.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+				if((msg.source().location()!=null)&&(msg.source().location()!=R))
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 
@@ -97,13 +97,13 @@ public class Spell_CharmWard extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> seem(s) magically protected.":"^S<S-NAME> invoke(s) a charm ward upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if((target instanceof Room)
 				&&((ExternalPlay.doesOwnThisProperty(mob,((Room)target)))
 					||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
-					target.addNonUninvokableAffect(this);
+					target.addNonUninvokableEffect(this);
 				else
 					beneficialAffect(mob,target,0);
 			}

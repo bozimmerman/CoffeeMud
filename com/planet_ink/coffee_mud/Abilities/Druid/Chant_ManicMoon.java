@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_ManicMoon extends Chant
 {
 	public String ID() { return "Chant_ManicMoon"; }
-	public String name(){ return "Manic Moon";} 
+	public String name(){ return "Manic Moon";}
 	public String displayText(){return "(Manic Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
@@ -19,7 +19,7 @@ public class Chant_ManicMoon extends Chant
 	{
 		if(canBeUninvoked())
 			if(affected instanceof Room)
-				((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The manic moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The manic moon sets.");
 
 		super.unInvoke();
 
@@ -64,19 +64,19 @@ public class Chant_ManicMoon extends Chant
 				switch(Dice.roll(1,5,0))
 				{
 				case 1:
-					room.show(M,null,Affect.MSG_NOISE,"<S-NAME> howl(s) at the moon!");
+					room.show(M,null,CMMsg.MSG_NOISE,"<S-NAME> howl(s) at the moon!");
 					break;
 				case 2:
-					room.show(M,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> wig(s) out!");
+					room.show(M,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> wig(s) out!");
 					break;
 				case 3:
-					room.show(M,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) confused!");
+					room.show(M,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> get(s) confused!");
 					break;
 				case 4:
-					room.show(M,null,Affect.MSG_NOISE,"<S-NAME> sing(s) randomly!");
+					room.show(M,null,CMMsg.MSG_NOISE,"<S-NAME> sing(s) randomly!");
 					break;
 				case 5:
-					room.show(M,null,Affect.MSG_NOISE,"<S-NAME> go(es) nuts!");
+					room.show(M,null,CMMsg.MSG_NOISE,"<S-NAME> go(es) nuts!");
 					break;
 				}
 		}
@@ -92,7 +92,7 @@ public class Chant_ManicMoon extends Chant
 			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already under the manic moon.");
 			return false;
@@ -114,12 +114,12 @@ public class Chant_ManicMoon extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Manic Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Manic Moon Rises!");
 					beneficialAffect(mob,target,0);
 				}
 			}

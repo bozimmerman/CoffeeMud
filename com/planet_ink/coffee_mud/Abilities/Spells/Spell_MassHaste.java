@@ -45,12 +45,12 @@ public class Spell_MassHaste extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if((mob.location().okAffect(mob,msg))
-				   &&(target.fetchAffect("Spell_Haste")==null)
-				   &&(target.fetchAffect("Spell_MassHaste")==null))
+				if((mob.location().okMessage(mob,msg))
+				   &&(target.fetchEffect("Spell_Haste")==null)
+				   &&(target.fetchEffect("Spell_MassHaste")==null))
 				{
 					mob.location().send(mob,msg);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> speed(s) up!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> speed(s) up!");
 					Spell_Haste haste=new Spell_Haste();
 					haste.setProfficiency(profficiency());
 					haste.beneficialAffect(mob,target,0);

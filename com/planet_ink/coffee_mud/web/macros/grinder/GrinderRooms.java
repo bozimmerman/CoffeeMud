@@ -46,13 +46,13 @@ public class GrinderRooms
 			R=CMClass.getLocale(className);
 			if(R==null)
 				return "The class you chose does not exist.  Choose another.";
-			for(int a=oldR.numAffects()-1;a>=0;a--)
+			for(int a=oldR.numEffects()-1;a>=0;a--)
 			{
-				Ability A=oldR.fetchAffect(a);
+				Ability A=oldR.fetchEffect(a);
 				if(A!=null)
 				{
 					A.unInvoke();
-					oldR.delAffect(A);
+					oldR.delEffect(A);
 				}
 			}
 			ExternalPlay.deleteTick(oldR,-1);

@@ -26,39 +26,39 @@ public class Chant_Thorns extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> thorns disappear.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> thorns disappear.");
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		MOB mob=(MOB)affected;
-		if(affect.target()==null) return;
-		if(affect.source()==null) return;
-		MOB source=affect.source();
+		if(msg.target()==null) return;
+		if(msg.source()==null) return;
+		MOB source=msg.source();
 		if(source.location()==null) return;
 
 
-		if(affect.amITarget(mob))
+		if(msg.amITarget(mob))
 		{
-			if(Util.bset(affect.targetCode(),Affect.MASK_HANDS)
-			   &&(affect.targetMessage()!=null)
-			   &&(affect.source().rangeToTarget()==0)
-			   &&(affect.targetMessage().length()>0))
+			if(Util.bset(msg.targetCode(),CMMsg.MASK_HANDS)
+			   &&(msg.targetMessage()!=null)
+			   &&(msg.source().rangeToTarget()==0)
+			   &&(msg.targetMessage().length()>0))
 			{
 				if((Dice.rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*2)))
 				{
-					FullMsg msg=new FullMsg(source,mob,this,affectType(false),null);
-					if(source.location().okAffect(source,msg))
+					FullMsg msg2=new FullMsg(source,mob,this,affectType(false),null);
+					if(source.location().okMessage(source,msg2))
 					{
-						source.location().send(source,msg);
+						source.location().send(source,msg2);
 						if(invoker==null) invoker=source;
-						if(!msg.wasModified())
+						if(!msg2.wasModified())
 						{
 							int damage = Dice.roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/3.0),1);
-							ExternalPlay.postDamage(mob,source,this,damage,Affect.MASK_GENERAL|Affect.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
+							ExternalPlay.postDamage(mob,source,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
 						}
 					}
 				}
@@ -83,13 +83,13 @@ public class Chant_Thorns extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already covered in thorns.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -102,7 +102,7 @@ public class Chant_Thorns extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"Long prickly thorns erupt all over <T-NAME>!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

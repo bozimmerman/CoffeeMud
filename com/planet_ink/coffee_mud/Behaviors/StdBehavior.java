@@ -18,7 +18,7 @@ public class StdBehavior implements Behavior
 	public long flags(){return 0;}
 	public boolean grantsAggressivenessTo(MOB M){return false;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
-	
+
 	protected String parms="";
 
 	/** return a new instance of the object*/
@@ -83,9 +83,9 @@ public class StdBehavior implements Behavior
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		return;
 	}
@@ -93,7 +93,7 @@ public class StdBehavior implements Behavior
 	/** this method is used to tell the system whether
 	 * a PENDING affect may take place
 	 */
-	public boolean okAffect(Environmental oking, Affect affect)
+	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		return true;
 	}

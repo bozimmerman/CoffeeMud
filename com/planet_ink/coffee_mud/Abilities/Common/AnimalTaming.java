@@ -29,7 +29,7 @@ public class AnimalTaming extends CommonSkill
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(tickID==Host.MOB_TICK))
+		&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((taming==null)||(mob.location()==null))
@@ -73,7 +73,7 @@ public class AnimalTaming extends CommonSkill
 							if(amount>1)
 								s="of "+amount+" of ";
 							s+="of "+animal.charStats().himher()+" behaviors";
-							mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to tame "+animal.name()+" "+s+".");
+							mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to tame "+animal.name()+" "+s+".");
 							for(int i=0;i<amount;i++)
 							{
 								if(animal.numBehaviors()==0) break;
@@ -168,8 +168,8 @@ public class AnimalTaming extends CommonSkill
 		int duration=35+taming.envStats().level()-mob.envStats().level();
 		if(duration<10) duration=10;
 		verb="taming "+M.name();
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) taming "+M.name()+".");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) taming "+M.name()+".");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);

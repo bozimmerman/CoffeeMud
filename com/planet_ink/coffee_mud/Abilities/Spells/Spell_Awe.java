@@ -15,18 +15,18 @@ public class Spell_Awe extends Spell
 	public Environmental newInstance(){	return new Spell_Awe();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
-		&&((affect.amITarget(affected))))
+		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+		&&((msg.amITarget(affected))))
 		{
-			MOB target=(MOB)affect.target();
+			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
-			&&(affect.source().getVictim()!=target)
-			&&(Dice.rollPercentage()>((affect.source().envStats().level()-target.envStats().level())*10)))
+			&&(msg.source().getVictim()!=target)
+			&&(Dice.rollPercentage()>((msg.source().envStats().level()-target.envStats().level())*10)))
 			{
-				affect.source().tell("You are too much in awe of "+target.name());
-				if(target.getVictim()==affect.source())
+				msg.source().tell("You are too much in awe of "+target.name());
+				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
 					target.setVictim(null);
@@ -34,7 +34,7 @@ public class Spell_Awe extends Spell
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -47,7 +47,7 @@ public class Spell_Awe extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) less awesome.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) less awesome.");
 	}
 
 
@@ -74,10 +74,10 @@ public class Spell_Awe extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) awesome!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) awesome!");
 				beneficialAffect(mob,target,0);
 			}
 		}

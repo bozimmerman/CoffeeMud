@@ -12,31 +12,31 @@ public class Song_SingleMindedness extends Song
 	public String name(){ return "Single Mindedness";}
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Song_SingleMindedness();	}
-	protected Affect themsg=null;
-	
-	public void affect(Environmental ticking, Affect msg)
+	protected CMMsg themsg=null;
+
+	public void executeMsg(Environmental ticking, CMMsg msg)
 	{
-		super.affect(ticking,msg);
+		super.executeMsg(ticking,msg);
 		if((themsg==null)
 		&&(msg.source()!=invoker())
 		&&(msg.source()==affected)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0)
-		&&(!Util.bset(msg.sourceCode(),Affect.MASK_GENERAL)))
+		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL)))
 			themsg=msg;
 	}
-	
-	public boolean okAffect(Environmental ticking, Affect msg)
+
+	public boolean okMessage(Environmental ticking, CMMsg msg)
 	{
 		if((themsg!=null)
 		&&(msg.source()!=invoker())
 		&&(msg.source()==affected)
-		&&(!Util.bset(msg.sourceCode(),Affect.MASK_GENERAL))
+		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&(themsg.sourceMinor()!=msg.sourceMinor()))
 		{
 			msg.source().tell(msg.source(),null,null,"The only thing you have a mind to do is '"+themsg.sourceMessage()+"'.");
 			return false;
 		}
-		return super.okAffect(ticking,msg);
+		return super.okMessage(ticking,msg);
 	}
 }

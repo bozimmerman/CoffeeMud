@@ -28,19 +28,19 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	public int instrumentType(){return Util.s_int(readableText);}
 	public void setInstrumentType(int type){readableText=(""+type);}
 
-	public boolean okAffect(Environmental E, Affect msg)
+	public boolean okMessage(Environmental E, CMMsg msg)
 	{
-		if(!super.okAffect(E,msg)) return false;
+		if(!super.okMessage(E,msg)) return false;
 		if(amWearingAt(Item.WIELD)
 		   &&(msg.source()==owner())
-		   &&(msg.sourceMinor()==Affect.TYP_WEAPONATTACK)
+		   &&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(msg.source().location()!=null)
 		   &&((msg.tool()==null)
 			  ||(msg.tool()==this)
 			  ||(!(msg.tool() instanceof Weapon))
 			  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
 		{
-			msg.source().location().show(msg.source(),null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> play(s) <O-NAME>.");
+			msg.source().location().show(msg.source(),null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> play(s) <O-NAME>.");
 			return false;
 		}
 

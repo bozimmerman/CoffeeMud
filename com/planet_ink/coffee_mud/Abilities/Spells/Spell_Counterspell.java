@@ -29,23 +29,23 @@ public class Spell_Counterspell extends Spell
 
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
-		&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 		&&(invoker!=null)
 		&&(!mob.amDead())
-		&&(Dice.rollPercentage()<(70+(2*(mob.envStats().level()-affect.source().envStats().level())))))
+		&&(Dice.rollPercentage()<(70+(2*(mob.envStats().level()-msg.source().envStats().level())))))
 		{
-			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> dispels the "+affect.tool().name()+" from <T-NAME>!");
+			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"The barrier around <S-NAME> dispels the "+msg.tool().name()+" from <T-NAME>!");
 			tickDown=0;
 			return false;
 		}
@@ -65,7 +65,7 @@ public class Spell_Counterspell extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) protected from spells.":"^S<S-NAME> invoke(s) a counterspell barrier around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				ticked=false;

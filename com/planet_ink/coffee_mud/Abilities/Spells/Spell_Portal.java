@@ -23,13 +23,13 @@ public class Spell_Portal extends Spell
 		{
 			if(newRoom!=null)
 			{
-				newRoom.showHappens(Affect.MSG_OK_VISUAL,"The swirling portal closes.");
+				newRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The swirling portal closes.");
 				newRoom.rawDoors()[Directions.GATE]=null;
 				newRoom.rawExits()[Directions.GATE]=null;
 			}
 			if(oldRoom!=null)
 			{
-				oldRoom.showHappens(Affect.MSG_OK_VISUAL,"The swirling portal closes.");
+				oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The swirling portal closes.");
 				oldRoom.rawDoors()[Directions.GATE]=null;
 				oldRoom.rawExits()[Directions.GATE]=null;
 			}
@@ -59,7 +59,7 @@ public class Spell_Portal extends Spell
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room room=(Room)r.nextElement();
-			
+
 			if(Sense.canAccess(mob,room))
 			if(CoffeeUtensils.containsString(room.displayText(),areaName))
 			{
@@ -98,7 +98,7 @@ public class Spell_Portal extends Spell
 		{
 			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> evoke(s) a blinding, swirling portal here.^?");
 			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType(auto),"A blinding, swirling portal appears here.");
-			if((mob.location().okAffect(mob,msg))&&(newRoom.okAffect(mob,msg2)))
+			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				newRoom.send(mob,msg2);
@@ -111,13 +111,13 @@ public class Spell_Portal extends Spell
 				Ability A1=CMClass.getAbility("Prop_RoomView");
 				if(A1!=null){
 					A1.setMiscText(CMMap.getExtendedRoomID(newRoom));
-					e.addNonUninvokableAffect(A1);
+					e.addNonUninvokableEffect(A1);
 				}
 				Exit e2=(Exit)e.copyOf();
 				Ability A2=CMClass.getAbility("Prop_RoomView");
 				if(A2!=null){
 					A2.setMiscText(CMMap.getExtendedRoomID(mob.location()));
-					e2.addNonUninvokableAffect(A2);
+					e2.addNonUninvokableEffect(A2);
 				}
 				mob.location().rawDoors()[Directions.GATE]=newRoom;
 				newRoom.rawDoors()[Directions.GATE]=mob.location();

@@ -53,7 +53,7 @@ public class Wyvern extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((!amDead())&&(tickID==Host.MOB_TICK))
+		if((!amDead())&&(tickID==Host.TICK_MOB))
 		{
 			if((--stingDown)<=0)
 			{
@@ -83,8 +83,8 @@ public class Wyvern extends StdMOB
 			if (roll<20)
 			{
                 // Sting was successful
- 				FullMsg msg=new FullMsg(this, target, null, Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON, "^F<S-NAME> sting(s) <T-NAMESELF>!^?");
-				if(location().okAffect(target,msg))
+ 				FullMsg msg=new FullMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, "^F<S-NAME> sting(s) <T-NAMESELF>!^?");
+				if(location().okMessage(target,msg))
 				{
 					this.location().send(target,msg);
 					if(!msg.wasModified())

@@ -18,7 +18,7 @@ public class Spell_AddLimb extends Spell
 	public Item itemRef=null;
 	public long wornRef=0;
 	public int oldMsg=0;
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -29,18 +29,18 @@ public class Spell_AddLimb extends Spell
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> extra limb fades away.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> extra limb fades away.");
 			mob.confirmWearability();
 		}
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.alterBodypart(Race.BODY_ARM,1);
 		affectableStats.alterBodypart(Race.BODY_HAND,1);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -54,10 +54,10 @@ public class Spell_AddLimb extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> grow(s) an arm!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) an arm!");
 				beneficialAffect(mob,target,0);
 			}
 

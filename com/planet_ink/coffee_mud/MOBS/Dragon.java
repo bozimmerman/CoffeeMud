@@ -226,7 +226,7 @@ public class Dragon extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((!amDead())&&(tickID==Host.MOB_TICK))
+		if((!amDead())&&(tickID==Host.TICK_MOB))
 		{
 			if(!started)setupDragon(birthColor,DragonAge/8);
 
@@ -272,7 +272,7 @@ public class Dragon extends StdMOB
 	{
 		// ===== the text to post
 		MOB target = null;
-		int AffectCode = Affect.TYP_JUSTICE;
+		int AffectCode = CMMsg.TYP_JUSTICE;
 		String msgText = "";
 
 		// ===== if we are following don't Breath, we might
@@ -288,50 +288,50 @@ public class Dragon extends StdMOB
 		{
 		case WHITE:
 			msgText = "The dragon breathes frost at <T-NAME>.";
-			AffectCode = Affect.TYP_COLD;
+			AffectCode = CMMsg.TYP_COLD;
 			break;
 		case BLACK:
 			msgText = "The dragon spits acid at <T-NAME>.";
-			AffectCode = Affect.TYP_ACID;
+			AffectCode = CMMsg.TYP_ACID;
 			break;
 		case BLUE:
 			msgText = "Lightning shoots forth from the dragons mouth striking <T-NAME>.";
-			AffectCode = Affect.TYP_ELECTRIC;
+			AffectCode = CMMsg.TYP_ELECTRIC;
 			break;
 		case GREEN:
 			msgText = "The dragon breathes a cloud of noxious vapors choking <T-NAME>.";
-			AffectCode = Affect.TYP_GAS;
+			AffectCode = CMMsg.TYP_GAS;
 			break;
 		case RED:
 			msgText = "The dragon torches <T-NAME> with fiery breath!.";
-			AffectCode = Affect.TYP_FIRE;
+			AffectCode = CMMsg.TYP_FIRE;
 			break;
 		case BRASS:
 			msgText = "The dragon cooks <T-NAME> with a blast of pure heat!.";
-			AffectCode = Affect.TYP_FIRE;
+			AffectCode = CMMsg.TYP_FIRE;
 			break;
 		case COPPER:
 			msgText = "The dragon spits acid at <T-NAME>.";
-			AffectCode = Affect.TYP_ACID;
+			AffectCode = CMMsg.TYP_ACID;
 			break;
 		case BRONZE:
 			msgText = "Lightning shoots forth from the dragons mouth striking <T-NAME>.";
-			AffectCode = Affect.TYP_ELECTRIC;
+			AffectCode = CMMsg.TYP_ELECTRIC;
 			break;
 		case SILVER:
 			msgText = "The dragon breathes frost at <T-NAME>.";
-			AffectCode = Affect.TYP_COLD;
+			AffectCode = CMMsg.TYP_COLD;
 			break;
 		case GOLD:
 			if ((int)Math.round(Math.random())==1)
 			{
 				msgText = "The dragon torches <T-NAME> with fiery breath!.";
-				AffectCode = Affect.TYP_FIRE;
+				AffectCode = CMMsg.TYP_FIRE;
 			}
 			else
 			{
 				msgText = "The dragon breathes a cloud of noxious vapors choking <T-NAME>.";
-				AffectCode = Affect.TYP_GAS;
+				AffectCode = CMMsg.TYP_GAS;
 			}
 			break;
 		default:
@@ -350,18 +350,18 @@ public class Dragon extends StdMOB
 				FullMsg Message = new FullMsg(this,
 											  target,
 											  null,
-											  Affect.MSK_MALICIOUS_MOVE|AffectCode,
-											  Affect.MSK_MALICIOUS_MOVE|AffectCode,
-											  Affect.MSG_NOISYMOVEMENT,
+											  CMMsg.MSK_MALICIOUS_MOVE|AffectCode,
+											  CMMsg.MSK_MALICIOUS_MOVE|AffectCode,
+											  CMMsg.MSG_NOISYMOVEMENT,
 											  msgText);
-				if (room.okAffect(this,Message))
+				if (room.okMessage(this,Message))
 				{
 					room.send(this,Message);
 					int damage=((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge),2.0)));
 					if(!Message.wasModified())
 						damage=((short)Math.round(Math.random()*7)*DragonAge);
-					FullMsg msg=new FullMsg(this,target,null,Affect.NO_EFFECT,Affect.MASK_HURT+(damage),Affect.NO_EFFECT,null);
-					if(room.okAffect(this,msg))
+					FullMsg msg=new FullMsg(this,target,null,CMMsg.NO_EFFECT,CMMsg.MASK_HURT+(damage),CMMsg.NO_EFFECT,null);
+					if(room.okMessage(this,msg))
 						room.send(this,msg);
 				}
 			}
@@ -391,15 +391,15 @@ public class Dragon extends StdMOB
 					FullMsg EatMsg=new FullMsg(this,
 											   TastyMorsel,
 											   null,
-											   Affect.MSG_EAT,
-											   Affect.MASK_GENERAL|Affect.TYP_JUSTICE,
-											   Affect.MSG_NOISYMOVEMENT,
+											   CMMsg.MSG_EAT,
+											   CMMsg.MASK_GENERAL|CMMsg.TYP_JUSTICE,
+											   CMMsg.MSG_NOISYMOVEMENT,
 											   "<S-NAME> swallow(es) <T-NAMESELF> WHOLE!");
-					if(location().okAffect(TastyMorsel,EatMsg))
+					if(location().okMessage(TastyMorsel,EatMsg))
 					{
 						location().send(TastyMorsel,EatMsg);
 						Stomach.bringMobHere(TastyMorsel,false);
-						FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MSG_ENTER,Stomach.description(),Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+						FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 						Stomach.send(TastyMorsel,enterMsg);
 					}
 				}
@@ -455,12 +455,12 @@ public class Dragon extends StdMOB
 				FullMsg DigestMsg=new FullMsg(this,
 										   TastyMorsel,
 										   null,
-										   Affect.MSG_OK_ACTION,
+										   CMMsg.MSG_OK_ACTION,
 										   "<S-NAME> digest(s) <T-NAMESELF>!!");
 				Stomach.send(this,DigestMsg);
 				int damage=((int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2)));
 				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-				ExternalPlay.postDamage(this,TastyMorsel,this,damage,Affect.MASK_GENERAL|Affect.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(this,TastyMorsel,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

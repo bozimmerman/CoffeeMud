@@ -65,7 +65,7 @@ public class AreaData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddBehavior(this);\" NAME=BEHAV"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
-			
+
 			Object[] sortedB=null;
 			Vector sortMeB=new Vector();
 			for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
@@ -110,9 +110,9 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			else
-			for(int a=0;a<E.numAffects();a++)
+			for(int a=0;a<E.numEffects();a++)
 			{
-				Ability Able=E.fetchAffect(a);
+				Ability Able=E.fetchEffect(a);
 				if((Able!=null)&&(!Able.isBorrowed(E)))
 				{
 					theclasses.addElement(CMClass.className(Able));
@@ -137,7 +137,7 @@ public class AreaData extends StdWebMacro
 			}
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=AFFECT"+(theclasses.size()+1)+">");
-			str.append("<OPTION SELECTED VALUE=\"\">Select an Affect");
+			str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();

@@ -39,7 +39,7 @@ public class Chant_Reincarnation extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(tickDown!=Integer.MAX_VALUE)
 		&&((--tickDown)<0))
 		{
@@ -52,7 +52,7 @@ public class Chant_Reincarnation extends Chant
 			mob.tell("Your reincarnation geas is lifted as your form solidifies.");
 			if(newRace!=null)
 				mob.baseCharStats().setMyRace(newRace);
-			mob.delAffect(this);
+			mob.delEffect(this);
 			if(mob.location()!=null)
 				mob.location().recoverRoomStats();
 			else
@@ -66,14 +66,14 @@ public class Chant_Reincarnation extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if((msg.sourceMinor()==Affect.TYP_DEATH)
+		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		   &&(msg.amISource(mob)))
 		{
 			newRace=null;
@@ -105,9 +105,9 @@ public class Chant_Reincarnation extends Chant
 		if(success)
 		{
 			int modifier=0;
-			if(target!=mob) modifier=Affect.MASK_MALICIOUS;
+			if(target!=mob) modifier=CMMsg.MASK_MALICIOUS;
 			FullMsg msg=new FullMsg(mob,target,this,modifier|affectType(auto),(auto?"^S<S-NAME> get(s) put under a reincarnation geas!^?":"^S<S-NAME> chant(s) a reincarnation geas upon <T-NAMESELF>.^?"));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,1800);

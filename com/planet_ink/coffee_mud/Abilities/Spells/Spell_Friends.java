@@ -48,7 +48,7 @@ public class Spell_Friends extends Spell
 			return false;
 
 
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		// now see if it worked
 		boolean success=profficiencyCheck(0,auto);
@@ -60,10 +60,10 @@ public class Spell_Friends extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) much more likeable!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) much more likeable!");
 				beneficialAffect(mob,target,0);
 			}
 		}

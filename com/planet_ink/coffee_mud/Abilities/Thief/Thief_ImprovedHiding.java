@@ -20,7 +20,7 @@ public class Thief_ImprovedHiding extends ThiefSkill
 
 	public void improve(MOB mob, boolean yesorno)
 	{
-		Ability A=mob.fetchAffect("Thief_Hide");
+		Ability A=mob.fetchEffect("Thief_Hide");
 		if(A!=null)
 		{
 			if(yesorno)
@@ -29,11 +29,11 @@ public class Thief_ImprovedHiding extends ThiefSkill
 				A.setAbilityCode(0);
 		}
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
 		if((!Sense.isHidden(mob))&&(active))
@@ -42,7 +42,7 @@ public class Thief_ImprovedHiding extends ThiefSkill
 			improve(mob,false);
 			mob.recoverEnvStats();
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -72,7 +72,7 @@ public class Chant_HoldAnimal extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
@@ -80,7 +80,7 @@ public class Chant_HoldAnimal extends Chant
 					success=maliciousAffect(mob,target,8,-1);
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> become(s) perfectly still!!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) perfectly still!!");
 				}
 			}
 		}

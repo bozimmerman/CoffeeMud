@@ -29,26 +29,26 @@ public class Spell_ChantShield extends Spell
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
-		&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
 		&&(invoker!=null)
 		&&(!mob.amDead())
 		&&(Dice.rollPercentage()<35))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> blocks off "+affect.tool().name()+"!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The barrier around <S-NAME> blocks off "+msg.tool().name()+"!");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 
@@ -64,7 +64,7 @@ public class Spell_ChantShield extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> look(s) protected from chants.":"^S<S-NAME> invoke(s) an anti-chant shield around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

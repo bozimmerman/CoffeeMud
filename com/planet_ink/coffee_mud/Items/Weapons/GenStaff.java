@@ -88,23 +88,23 @@ public class GenStaff extends GenWeapon implements Wand
 		new StdWand().waveIfAble(mob,afftarget,message,me);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		switch(affect.targetMinor())
+		MOB mob=msg.source();
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_WAND_USE:
-			if(affect.amITarget(this))
-				waveIfAble(mob,affect.tool(),affect.targetMessage(),this);
+		case CMMsg.TYP_WAND_USE:
+			if(msg.amITarget(this))
+				waveIfAble(mob,msg.tool(),msg.targetMessage(),this);
 			break;
-		case Affect.TYP_SPEAK:
-			if(affect.sourceMinor()==Affect.TYP_SPEAK)
-				affect.addTrailerMsg(new FullMsg(affect.source(),this,affect.target(),affect.NO_EFFECT,null,Affect.MASK_GENERAL|Affect.TYP_WAND_USE,affect.targetMessage(),affect.NO_EFFECT,null));
+		case CMMsg.TYP_SPEAK:
+			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+				msg.addTrailerMsg(new FullMsg(msg.source(),this,msg.target(),msg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.targetMessage(),msg.NO_EFFECT,null));
 			break;
 		default:
 			break;
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 	// wand stats handled by genweapon, filled by readableText
 }

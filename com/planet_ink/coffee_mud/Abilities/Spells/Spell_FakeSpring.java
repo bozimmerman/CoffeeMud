@@ -25,28 +25,28 @@ public class Spell_FakeSpring extends Spell
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(affected))
+		if(msg.amITarget(affected))
 		{
-			if(affect.targetMinor()==Affect.TYP_DRINK)
+			if(msg.targetMinor()==CMMsg.TYP_DRINK)
 			{
-				if(affect.othersMessage()!=null)
-					affect.source().location().show(affect.source(),affect.target(),affect.tool(),Affect.MSG_QUIETMOVEMENT,affect.othersMessage());
-				affect.source().tell("You have drunk all you can.");
+				if(msg.othersMessage()!=null)
+					msg.source().location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_QUIETMOVEMENT,msg.othersMessage());
+				msg.source().tell("You have drunk all you can.");
 				return false;
 			}
 		}
 		else
-		if((affect.tool()!=null)&&(affect.tool()==affected)&&(affect.target()!=null)&&(affect.target() instanceof Drink))
+		if((msg.tool()!=null)&&(msg.tool()==affected)&&(msg.target()!=null)&&(msg.target() instanceof Drink))
 		{
-			if(affect.targetMinor()==Affect.TYP_FILL)
+			if(msg.targetMinor()==CMMsg.TYP_FILL)
 			{
-				affect.source().tell(affect.target().name()+" is full.");
+				msg.source().tell(msg.target().name()+" is full.");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -59,7 +59,7 @@ public class Spell_FakeSpring extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell dramatically.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String itemID = "Spring";
@@ -81,13 +81,13 @@ public class Spell_FakeSpring extends Spell
 				W.setThirstQuenched(0);
 				W.recoverEnvStats();
 				mob.location().addItem((Item)W);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
 				{
 					Ability A=(Ability)copyOf();
 					A.setInvoker(mob);
-					W.addNonUninvokableAffect(A);
+					W.addNonUninvokableEffect(A);
 				}
 				else
 					beneficialAffect(mob,W,0);

@@ -104,7 +104,7 @@ public class Burning extends StdAbility
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		if(tickID!=Host.MOB_TICK)
+		if(tickID!=Host.TICK_MOB)
 			return true;
 
 		if(affected==null)
@@ -146,27 +146,27 @@ public class Burning extends StdAbility
 				mob.tell("Ouch!! "+Util.capitalize(affected.name())+" is on fire!");
 				break;
 			}
-			ExternalPlay.postDamage(invoker,mob,this,Dice.roll(1,5,5),Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,null);
+			ExternalPlay.postDamage(invoker,mob,this,Dice.roll(1,5,5),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,null);
 			return false;
 		}
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected!=null)
 		&&(affected instanceof Item)
-		&&(affect.amITarget((Item)affected))
-		&&(affect.targetMinor()==Affect.TYP_GET))
+		&&(msg.amITarget((Item)affected))
+		&&(msg.targetMinor()==CMMsg.TYP_GET))
 		{
-			if((affect.tool()==null)||(!(affect.tool() instanceof Item)))
-				return ouch(affect.source());
+			if((msg.tool()==null)||(!(msg.tool() instanceof Item)))
+				return ouch(msg.source());
 			// the "oven" exception
 			Item container=(Item)affected;
-			Item target=(Item)affect.tool();
+			Item target=(Item)msg.tool();
 			if((target.owner()==container.owner())
 			&&(target.container()==container))
 				switch(container.material()&EnvResource.MATERIAL_MASK)
@@ -180,31 +180,31 @@ public class Burning extends StdAbility
 				default:
 					break;
 				}
-			return ouch(affect.source());
+			return ouch(msg.source());
 		}
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof Item)
-		&&(affect.tool()!=null)
-		&&(affect.tool()==affected)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof Container)
-		&&(affect.targetMinor()==Affect.TYP_PUT))
+		&&(msg.tool()!=null)
+		&&(msg.tool()==affected)
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof Container)
+		&&(msg.targetMinor()==CMMsg.TYP_PUT))
 		{
 			Item I=(Item)affected;
-			Item C=(Container)affect.target();
+			Item C=(Container)msg.target();
 			if((C instanceof Drink)
 			   &&(((Drink)C).containsDrink()))
 			{
-				affect.addTrailerMsg(new FullMsg(invoker,null,Affect.MSG_OK_VISUAL,I.name()+" is extinguished."));
-				I.delAffect(this);
+				msg.addTrailerMsg(new FullMsg(invoker,null,CMMsg.MSG_OK_VISUAL,I.name()+" is extinguished."));
+				I.delEffect(this);
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -216,12 +216,12 @@ public class Burning extends StdAbility
 	{
 		if(!auto) return false;
 		if(target==null) return false;
-		if(target.fetchAffect("Burning")==null)
+		if(target.fetchEffect("Burning")==null)
 		{
 			if((mob!=null)&&(mob.location()!=null))
 			{
-				FullMsg msg=new FullMsg(mob,target,Affect.MASK_GENERAL|Affect.TYP_FIRE,null);
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,target,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,null);
+				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			beneficialAffect(mob,target,profficiency());

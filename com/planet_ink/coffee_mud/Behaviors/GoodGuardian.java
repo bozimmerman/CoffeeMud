@@ -64,8 +64,8 @@ public class GoodGuardian extends StdBehavior
 				&&((observer.envStats().level()>(inhab.envStats().level()+5))))
 				{
 					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
-					FullMsg msgs=new FullMsg(observer,inhab,Affect.MSG_NOISYMOVEMENT,msg);
-					if(observer.location().okAffect(observer,msgs))
+					FullMsg msgs=new FullMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
+					if(observer.location().okMessage(observer,msgs))
 					{
 						observer.location().send(observer,msgs);
 						if(inhab.getVictim()!=null)
@@ -81,7 +81,7 @@ public class GoodGuardian extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if(!canFreelyBehaveNormal(ticking)) return true;
 		MOB mob=(MOB)ticking;
 		MOB victim=anyPeaceToMake(mob.location(),mob);

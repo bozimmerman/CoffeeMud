@@ -16,7 +16,7 @@ public class Prop_Doppleganger extends Property
 	public String accountForYourself()
 	{ return "Level Changer";	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected instanceof MOB)
 		&&(lastLevelChangers))
@@ -42,7 +42,7 @@ public class Prop_Doppleganger extends Property
 					MOB M=mob.location().fetchInhabitant(i);
 					if((M!=mob)
 					&&((M.getVictim()==mob)||(victim==null))
-					&&(M.fetchAffect(ID())==null))
+					&&(M.fetchEffect(ID())==null))
 					{
 						total+=M.envStats().level();
 						num++;
@@ -71,13 +71,13 @@ public class Prop_Doppleganger extends Property
 				}
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking==affected)
-		&&(tickID==Host.MOB_TICK)
+		&&(tickID==Host.TICK_MOB)
 		&&(affected instanceof MOB))
 			lastLevelChangers=true;
 		return super.tick(ticking,tickID);

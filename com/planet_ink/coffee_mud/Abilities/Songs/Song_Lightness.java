@@ -12,7 +12,7 @@ public class Song_Lightness extends Song
 	public String name(){ return "Lightness";}
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Song_Lightness();}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -31,12 +31,12 @@ public class Song_Lightness extends Song
 		return weight;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&(msg.targetMinor()==Affect.TYP_GET)
+		&&(msg.targetMinor()==CMMsg.TYP_GET)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof Item)
 		&&(((msg.tool()==null)||(msg.tool() instanceof MOB))))
@@ -48,7 +48,7 @@ public class Song_Lightness extends Song
 				return false;
 			}
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()

@@ -15,14 +15,14 @@ public class Prop_NoRecall extends Property
 	public String accountForYourself()
 	{ return "No Recall Field";	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affect.sourceMinor()==affect.TYP_RECALL)
+		if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 		{
-			if((affect.source()!=null)&&(affect.source().location()!=null))
-				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but the magic fizzles.");
+			if((msg.source()!=null)&&(msg.source().location()!=null))
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but the magic fizzles.");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

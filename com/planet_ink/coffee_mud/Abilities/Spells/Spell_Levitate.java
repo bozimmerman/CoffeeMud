@@ -17,7 +17,7 @@ public class Spell_Levitate extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -27,19 +27,19 @@ public class Spell_Levitate extends Spell
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
-			if((affect.sourceMinor()==Affect.TYP_ADVANCE)
-			||(affect.sourceMinor()==Affect.TYP_RETREAT)
-			||(affect.sourceMinor()==Affect.TYP_LEAVE)
-			||(affect.sourceMinor()==Affect.TYP_ENTER)
-			||(affect.sourceMinor()==Affect.TYP_RETREAT))
+			if((msg.sourceMinor()==CMMsg.TYP_ADVANCE)
+			||(msg.sourceMinor()==CMMsg.TYP_RETREAT)
+			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+			||(msg.sourceMinor()==CMMsg.TYP_ENTER)
+			||(msg.sourceMinor()==CMMsg.TYP_RETREAT))
 			{
 				mob.tell("You can't seem to go anywhere!");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -61,7 +61,7 @@ public class Spell_Levitate extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) back down.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) back down.");
 			ExternalPlay.standIfNecessary(mob);
 		}
 	}
@@ -100,16 +100,16 @@ public class Spell_Levitate extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					success=maliciousAffect(mob,target,0,-1);
 					if(target instanceof MOB)
-						((MOB)target).location().show((MOB)target,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) straight up!");
+						((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) straight up!");
 					else
-						mob.location().showHappens(Affect.MSG_OK_ACTION,target.name()+" float(s) straight up!");
+						mob.location().showHappens(CMMsg.MSG_OK_ACTION,target.name()+" float(s) straight up!");
 				}
 			}
 		}

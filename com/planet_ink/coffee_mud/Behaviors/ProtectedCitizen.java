@@ -74,7 +74,7 @@ public class ProtectedCitizen extends ActiveTicker
 		String s=getParmsNoTicks();
 		if(s.length()==0)
 		{ claims=defclaims; return claims;}
-		
+
 		char c=';';
 		int x=s.indexOf(c);
 		if(x<0){ c='/'; x=s.indexOf(c);}
@@ -98,7 +98,7 @@ public class ProtectedCitizen extends ActiveTicker
 			claims[i]=(String)V.elementAt(i);
 		return claims;
 	}
-	
+
 	public boolean assistMOB(MOB mob)
 	{
 		int assistance=0;
@@ -138,7 +138,7 @@ public class ProtectedCitizen extends ActiveTicker
 					&&(SaucerSupport.zapperCheck(getCityguardName(),M2))
 					&&(!BrotherHelper.isBrother(mob.getVictim(),M2))
 					&&(BrotherHelper.canFreelyBehaveNormal(M2))
-					&&(M2.fetchAffect("Skill_Track")==null)
+					&&(M2.fetchEffect("Skill_Track")==null)
 					&&(Sense.canHear(M2))))
 					{
 						M=M2; break;

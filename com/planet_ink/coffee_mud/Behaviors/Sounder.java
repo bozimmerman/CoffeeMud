@@ -16,8 +16,8 @@ public class Sounder extends StdBehavior
 	protected static int UNDER_MASK=1023;
 	protected static int TICK_MASK=65536;
 	protected static int ROOM_MASK=32768;
-	private Affect lastMsg=null;
-	
+	private CMMsg lastMsg=null;
+
 	public Sounder()
 	{
 		minTicks=23;
@@ -39,7 +39,7 @@ public class Sounder extends StdBehavior
 		Vector emote=Util.parseSemicolons(newParms,true);
 		triggers=new int[emote.size()];
 		strings=new String[emote.size()];
-		
+
 		if(emote.size()>0)
 		{
 			String s=(String)emote.firstElement();
@@ -69,135 +69,135 @@ public class Sounder extends StdBehavior
 				else
 				if((s.toUpperCase().startsWith("GET ")))
 				{
-					triggers[v]=Affect.TYP_GET;
+					triggers[v]=CMMsg.TYP_GET;
 					strings[v]=s.substring(4).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("GET_ROOM ")))
 				{
-					triggers[v]=Affect.TYP_GET|ROOM_MASK;
+					triggers[v]=CMMsg.TYP_GET|ROOM_MASK;
 					strings[v]=s.substring(9).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("EAT_ROOM ")))
 				{
-					triggers[v]=Affect.TYP_EAT|ROOM_MASK;
+					triggers[v]=CMMsg.TYP_EAT|ROOM_MASK;
 					strings[v]=s.substring(9).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("EAT ")))
 				{
-					triggers[v]=Affect.TYP_EAT;
+					triggers[v]=CMMsg.TYP_EAT;
 					strings[v]=s.substring(4).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("SIT ")))
 				{
-					triggers[v]=Affect.TYP_SIT;
+					triggers[v]=CMMsg.TYP_SIT;
 					strings[v]=s.substring(4).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("SIT_ROOM ")))
 				{
-					triggers[v]=Affect.TYP_SIT|ROOM_MASK;
+					triggers[v]=CMMsg.TYP_SIT|ROOM_MASK;
 					strings[v]=s.substring(9).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("DROP ")))
 				{
-					triggers[v]=Affect.TYP_DROP;
+					triggers[v]=CMMsg.TYP_DROP;
 					strings[v]=s.substring(5).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("DROP_ROOM ")))
 				{
-					triggers[v]=Affect.TYP_DROP|ROOM_MASK;
+					triggers[v]=CMMsg.TYP_DROP|ROOM_MASK;
 					strings[v]=s.substring(10).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("WEAR ")))
 				{
-					triggers[v]=Affect.TYP_WEAR;
+					triggers[v]=CMMsg.TYP_WEAR;
 					strings[v]=s.substring(5).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("WEAR_ROOM ")))
 				{
-					triggers[v]=Affect.TYP_WEAR|ROOM_MASK;
+					triggers[v]=CMMsg.TYP_WEAR|ROOM_MASK;
 					strings[v]=s.substring(10).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("DRINK ")))
 				{
-					triggers[v]=Affect.TYP_DRINK;
+					triggers[v]=CMMsg.TYP_DRINK;
 					strings[v]=s.substring(6).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("DRINK_ROOM ")))
 				{
-					triggers[v]=Affect.TYP_DRINK|ROOM_MASK;
+					triggers[v]=CMMsg.TYP_DRINK|ROOM_MASK;
 					strings[v]=s.substring(11).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("MOUNT ")))
 				{
-					triggers[v]=Affect.TYP_MOUNT;
+					triggers[v]=CMMsg.TYP_MOUNT;
 					strings[v]=s.substring(6).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("MOUNT_ROOM ")))
 				{
-					triggers[v]=Affect.TYP_MOUNT|ROOM_MASK;
+					triggers[v]=CMMsg.TYP_MOUNT|ROOM_MASK;
 					strings[v]=s.substring(11).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("REMOVE ")))
 				{
-					triggers[v]=Affect.TYP_REMOVE;
+					triggers[v]=CMMsg.TYP_REMOVE;
 					strings[v]=s.substring(7).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("REMOVE_ROOM ")))
 				{
-					triggers[v]=Affect.TYP_REMOVE|ROOM_MASK;
+					triggers[v]=CMMsg.TYP_REMOVE|ROOM_MASK;
 					strings[v]=s.substring(12).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("PORTAL_ENTER ")))
 				{
-					triggers[v]=Affect.TYP_ENTER;
+					triggers[v]=CMMsg.TYP_ENTER;
 					strings[v]=s.substring(13).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("PORTAL_ENTER_ROOM ")))
 				{
-					triggers[v]=Affect.TYP_ENTER|ROOM_MASK;
+					triggers[v]=CMMsg.TYP_ENTER|ROOM_MASK;
 					strings[v]=s.substring(18).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("PORTAL_EXIT ")))
 				{
-					triggers[v]=Affect.TYP_LEAVE;
+					triggers[v]=CMMsg.TYP_LEAVE;
 					strings[v]=s.substring(12).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("PORTAL_EXIT_ROOM ")))
 				{
-					triggers[v]=Affect.TYP_LEAVE|ROOM_MASK;
+					triggers[v]=CMMsg.TYP_LEAVE|ROOM_MASK;
 					strings[v]=s.substring(17).trim();
 				}
 			}
 		}
 		tickReset();
 	}
-	
+
 	private void emoteHere(Room room, MOB emoter, String emote)
 	{
 		if(room==null) return;
 		Room oldLoc=emoter.location();
 		if(emoter.location()!=room) emoter.setLocation(room);
-		FullMsg msg=new FullMsg(emoter,null,Affect.MSG_EMOTE,emote);
-		if(room.okAffect(emoter,msg))
+		FullMsg msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,emote);
+		if(room.okMessage(emoter,msg))
 		{
 			for(int i=0;i<room.numInhabitants();i++)
 			{
@@ -205,10 +205,10 @@ public class Sounder extends StdBehavior
 				if((M!=null)
 				&&(!M.isMonster())
 				&&(Sense.canSenseMoving(emoter,M)))
-					M.affect(M,msg);
+					M.executeMsg(M,msg);
 			}
 		}
-		if(oldLoc!=null) 
+		if(oldLoc!=null)
 			emoter.setLocation(oldLoc);
 	}
 
@@ -244,7 +244,7 @@ public class Sounder extends StdBehavior
 		else
 		{
 			Room R=getBehaversRoom(ticking);
-			if(R!=null) 
+			if(R!=null)
 			{
 				emoter=CMClass.getMOB("StdMOB");
 				emoter.setName(ticking.name());
@@ -253,7 +253,7 @@ public class Sounder extends StdBehavior
 			}
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -272,8 +272,8 @@ public class Sounder extends StdBehavior
 		}
 		return true;
 	}
-	
-	public void affect(Environmental E, Affect msg)
+
+	public void executeMsg(Environmental E, CMMsg msg)
 	{
 		// this will work because, for items, behaviors
 		// get the first tick.
@@ -281,33 +281,33 @@ public class Sounder extends StdBehavior
 		if(msg!=lastMsg)
 		switch(msg.targetMinor())
 		{
-		case Affect.TYP_GET:
-		case Affect.TYP_REMOVE:
-		case Affect.TYP_WEAR:
-		case Affect.TYP_HOLD:
-		case Affect.TYP_WIELD:
-		case Affect.TYP_EAT:
-		case Affect.TYP_DRINK:
-		case Affect.TYP_SIT:
-		case Affect.TYP_SLEEP:
-		case Affect.TYP_MOUNT:
+		case CMMsg.TYP_GET:
+		case CMMsg.TYP_REMOVE:
+		case CMMsg.TYP_WEAR:
+		case CMMsg.TYP_HOLD:
+		case CMMsg.TYP_WIELD:
+		case CMMsg.TYP_EAT:
+		case CMMsg.TYP_DRINK:
+		case CMMsg.TYP_SIT:
+		case CMMsg.TYP_SLEEP:
+		case CMMsg.TYP_MOUNT:
 			if((msg.target()==E)||(!(E instanceof Item)))
 				lookFor=msg.targetMinor();
 			break;
-		case Affect.TYP_DROP:
+		case CMMsg.TYP_DROP:
 			if(((!(E instanceof Item))||(msg.target()==E))
 			&&(msg.target() instanceof Item))
-				lookFor=Affect.TYP_DROP;
+				lookFor=CMMsg.TYP_DROP;
 			break;
-		case Affect.TYP_ENTER:
+		case CMMsg.TYP_ENTER:
 			if((msg.target()!=null)
 			&&(msg.target()==getBehaversRoom(E)))
-				lookFor=Affect.TYP_ENTER;
+				lookFor=CMMsg.TYP_ENTER;
 			break;
-		case Affect.TYP_LEAVE:
+		case CMMsg.TYP_LEAVE:
 			if((msg.target()!=null)
 			&&(msg.target()==getBehaversRoom(E)))
-				lookFor=Affect.TYP_LEAVE;
+				lookFor=CMMsg.TYP_LEAVE;
 			break;
 		}
 		lastMsg=msg;
@@ -319,15 +319,15 @@ public class Sounder extends StdBehavior
 			{
 				if(Util.bset(triggers[v],ROOM_MASK))
 				{
-					FullMsg msg2=new FullMsg(msg.source(),null,null,Affect.NO_EFFECT,Affect.NO_EFFECT,Affect.MSG_EMOTE,Util.replaceAll(strings[v],"$p",E.name()));
+					FullMsg msg2=new FullMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMMsg.MSG_EMOTE,Util.replaceAll(strings[v],"$p",E.name()));
 					msg.addTrailerMsg(msg2);
 				}
 				else
 				{
-					FullMsg msg2=new FullMsg(msg.source(),null,null,Affect.MSG_EMOTE,Affect.NO_EFFECT,Affect.NO_EFFECT,Util.replaceAll(strings[v],"$p",E.name()));
+					FullMsg msg2=new FullMsg(msg.source(),null,null,CMMsg.MSG_EMOTE,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,Util.replaceAll(strings[v],"$p",E.name()));
 					msg.addTrailerMsg(msg2);
 				}
 			}
-		super.affect(E,msg);
+		super.executeMsg(E,msg);
 	}
 }

@@ -21,15 +21,15 @@ public class GoodExecutioner  extends StdBehavior
 		||((M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
 		   &&(M.isMonster())));
 	}
-	
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
-		MOB source=affect.source();
+		super.executeMsg(affecting,msg);
+		MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting)) return;
 		MOB observer=(MOB)affecting;
 		// base 90% chance not to be executed
@@ -43,7 +43,7 @@ public class GoodExecutioner  extends StdBehavior
 			MOB oldFollowing=source.amFollowing();
 			source.setFollowing(null);
 			boolean yep=Aggressive.startFight(observer,source,true);
-			if(yep)	
+			if(yep)
 				ExternalPlay.quickSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
 			else
 			if(oldFollowing!=null)

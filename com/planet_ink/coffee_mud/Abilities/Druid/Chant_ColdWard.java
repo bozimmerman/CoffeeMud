@@ -38,13 +38,13 @@ public class Chant_ColdWard extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already warding the cold.");
 			return false;
 		}
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -54,7 +54,7 @@ public class Chant_ColdWard extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) for a warm field of protection around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -11,11 +11,11 @@ public class Prop_NarrowLedge extends Property
 	public String name(){ return "The Narrow Ledge";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	public Environmental newInstance(){	return new Prop_NarrowLedge();}
-	
+
 	protected int check=16;
 	protected String name="the narrow ledge";
 	protected Vector mobsToKill=new Vector();
-	
+
 	public String accountForYourself()
 	{ return "Very narrow";	}
 
@@ -25,14 +25,14 @@ public class Prop_NarrowLedge extends Property
 		check=Util.getParmInt(newText,"check",16);
 		name=Util.getParmStr(newText,"name","the narrow ledge");
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.SPELL_AFFECT)
+		if(tickID==Host.TICK_SPELL_AFFECT)
 		{
 			synchronized(mobsToKill)
 			{
-				ExternalPlay.deleteTick(this,Host.SPELL_AFFECT);
+				ExternalPlay.deleteTick(this,Host.TICK_SPELL_AFFECT);
 				Vector V=((Vector)mobsToKill.clone());
 				mobsToKill.clear();
 				for(int v=0;v<V.size();v++)
@@ -42,18 +42,18 @@ public class Prop_NarrowLedge extends Property
 					{
 						if((affected instanceof Room)&&(mob.location()!=affected))
 							continue;
-						
+
 						if((affected instanceof Room)
 						&&((((Room)affected).domainType()==Room.DOMAIN_INDOORS_AIR)
 						   ||(((Room)affected).domainType()==Room.DOMAIN_OUTDOORS_AIR))
 						&&(((Room)affected).getRoomInDir(Directions.DOWN)!=null)
 						&&(((Room)affected).getExitInDir(Directions.DOWN)!=null)
 						&&(((Room)affected).getExitInDir(Directions.DOWN).isOpen()))
-							mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) off "+name+"!!");
+							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) off "+name+"!!");
 						else
 						{
-							mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) off "+name+" to <S-HIS-HER> death!!");
-							mob.location().show(mob,null,Affect.MSG_DEATH,null);
+							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) off "+name+" to <S-HIS-HER> death!!");
+							mob.location().show(mob,null,CMMsg.MSG_DEATH,null);
 						}
 					}
 				}
@@ -61,9 +61,9 @@ public class Prop_NarrowLedge extends Property
 		}
 		return true;
 	}
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((msg.targetMinor()==Affect.TYP_ENTER)
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&((msg.amITarget(affected))||(msg.tool()==affected))
 		&&(!Sense.isFalling(msg.source())))
 		{
@@ -80,12 +80,12 @@ public class Prop_NarrowLedge extends Property
 						falling.setProfficiency(0);
 						falling.setAffectedOne(msg.target());
 						falling.invoke(null,null,mob,true);
-						ExternalPlay.startTickDown(this,Host.SPELL_AFFECT,1);
+						ExternalPlay.startTickDown(this,Host.TICK_SPELL_AFFECT,1);
 					}
 				}
 			}
 		}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

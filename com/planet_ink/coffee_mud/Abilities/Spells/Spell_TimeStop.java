@@ -26,10 +26,10 @@ public class Spell_TimeStop extends Spell
 			if(affected instanceof Room)
 			{
 				Room room=(Room)affected;
-				room.showHappens(Affect.MSG_OK_VISUAL, "Time starts moving again...");
+				room.showHappens(CMMsg.MSG_OK_VISUAL, "Time starts moving again...");
 				if(invoker!=null)
 				{
-					Ability me=invoker.fetchAffect(ID());
+					Ability me=invoker.fetchEffect(ID());
 					if(me!=null)
 						me.unInvoke();
 				}
@@ -48,8 +48,8 @@ public class Spell_TimeStop extends Spell
 				ExternalPlay.resumeTicking(mob,-1);
 				if(mob.location()!=null)
 				{
-					mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "Time starts moving again...");
-					Ability me=mob.location().fetchAffect(ID());
+					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, "Time starts moving again...");
+					Ability me=mob.location().fetchEffect(ID());
 					if(me!=null)
 						me.unInvoke();
 				}
@@ -57,32 +57,32 @@ public class Spell_TimeStop extends Spell
 		}
 		super.unInvoke();
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		   &&(affected instanceof Room))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_ENTER:
-			case Affect.TYP_LEAVE:
-			case Affect.TYP_FLEE:
-				if(affect.source()==invoker)
-					affect.source().tell("You cannot travel beyond the time stopped area.");
+			case CMMsg.TYP_ENTER:
+			case CMMsg.TYP_LEAVE:
+			case CMMsg.TYP_FLEE:
+				if(msg.source()==invoker)
+					msg.source().tell("You cannot travel beyond the time stopped area.");
 				else
-					affect.source().tell("Nothing just happened.  You didn't do that.");
+					msg.source().tell("Nothing just happened.  You didn't do that.");
 				return false;
 			default:
-				if((affect.source()!=invoker)
-				   &&(!Util.bset(affect.sourceCode(),Affect.MASK_GENERAL))
-				   &&(!Util.bset(affect.targetCode(),Affect.MASK_GENERAL)))
+				if((msg.source()!=invoker)
+				   &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+				   &&(!Util.bset(msg.targetCode(),CMMsg.MASK_GENERAL)))
 				{
-					affect.source().tell("Time is stopped. Nothing just happened.  You didn't do that.");
+					msg.source().tell("Time is stopped. Nothing just happened.  You didn't do that.");
 					return false;
 				}
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -96,10 +96,10 @@ public class Spell_TimeStop extends Spell
 
 		Environmental target = mob.location();
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Time has already been stopped here!");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -115,7 +115,7 @@ public class Spell_TimeStop extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),(auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Room room=mob.location();

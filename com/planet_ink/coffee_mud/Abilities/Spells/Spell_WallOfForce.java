@@ -20,43 +20,43 @@ public class Spell_WallOfForce extends Spell
 
 	private Item theWall=null;
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 
 		if((invoker!=null)
 		&&(mob.isInCombat())
 		&&((mob.getVictim()==invoker)||(mob==invoker))
 		&&(mob.rangeToTarget()>=1)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof MOB)
-		&&((affect.targetCode()&Affect.MASK_MALICIOUS)>0))
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
+		&&((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0))
 		{
-			if(((affect.tool()!=null)
-				&&(affect.tool() instanceof Ability))
-			||((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-				&&(affect.tool()!=null)
-				&&(affect.tool() instanceof Weapon)
-				&&(!((Weapon)affect.tool()).amWearingAt(Item.INVENTORY))
-				&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED)))
+			if(((msg.tool()!=null)
+				&&(msg.tool() instanceof Ability))
+			||((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+				&&(msg.tool()!=null)
+				&&(msg.tool() instanceof Weapon)
+				&&(!((Weapon)msg.tool()).amWearingAt(Item.INVENTORY))
+				&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)))
 			{
 				mob.tell("Malice neither escapes nor enters the wall of force.");
 				if(mob.isMonster())
-					ExternalPlay.remove(mob,(Weapon)affect.tool(),false);
+					ExternalPlay.remove(mob,(Weapon)msg.tool(),false);
 				return false;
 			}
-			if((affect.sourceMinor()==Affect.TYP_ADVANCE)
+			if((msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 			&&((mob==invoker)||(mob.rangeToTarget()==1)))
 			{
 				if(mob!=invoker)
-					mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> attempt(s) to penetrate the wall of force and fail(s).^?");
+					mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> attempt(s) to penetrate the wall of force and fail(s).^?");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -70,7 +70,7 @@ public class Spell_WallOfForce extends Spell
 			&&(theWall.owner() instanceof Room)
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
-				((Room)theWall.owner()).showHappens(Affect.MSG_OK_VISUAL,"The wall of force is gone.");
+				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,"The wall of force is gone.");
 				Item wall=theWall;
 				theWall=null;
 				wall.destroy();
@@ -80,7 +80,7 @@ public class Spell_WallOfForce extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((invoker!=null)
 			   &&(theWall!=null)
@@ -101,7 +101,7 @@ public class Spell_WallOfForce extends Spell
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I=mob.location().fetchItem(i);
-			if((I!=null)&&(I.fetchAffect(ID())!=null))
+			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a wall of force here.");
 				return false;
@@ -128,7 +128,7 @@ public class Spell_WallOfForce extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?"An impenetrable wall of force appears!":"^S<S-NAME> conjur(s) up a impenetrable wall of force!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Item I=CMClass.getItem("GenItem");

@@ -18,7 +18,7 @@ public class Skill_Puppeteer extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_Puppeteer();}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
@@ -28,30 +28,30 @@ public class Skill_Puppeteer extends StdAbility
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amISource(invoker()))
-		&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-		&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
-		||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE)))
-		&&(affect.targetMinor()!=Affect.TYP_SPEAK)
-		&&(affect.targetMinor()!=Affect.TYP_PANIC)
-		&&(!((affect.tool()!=null)&&(affect.tool() instanceof Song)))
-		&&(!((affect.tool()!=null)&&(affect.tool() instanceof Skill_Puppeteer)))
-		&&(!((affect.tool()!=null)&&(affect.tool() instanceof Dance)))
-		&&(!affect.amITarget(puppet)))
+		if((msg.amISource(invoker()))
+		&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		&&((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+		||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
+		&&(msg.targetMinor()!=CMMsg.TYP_SPEAK)
+		&&(msg.targetMinor()!=CMMsg.TYP_PANIC)
+		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Song)))
+		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Skill_Puppeteer)))
+		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Dance)))
+		&&(!msg.amITarget(puppet)))
 		{
-			invoker().location().show(invoker(),puppet,Affect.MSG_OK_ACTION,"<S-NAME> animate(s) <T-NAMESELF>.");
+			invoker().location().show(invoker(),puppet,CMMsg.MSG_OK_ACTION,"<S-NAME> animate(s) <T-NAMESELF>.");
 			return false;
 		}
 		else
-		if(affect.amITarget(puppet))
-			switch(affect.targetMinor())
+		if(msg.amITarget(puppet))
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_GET:
-			case Affect.TYP_REMOVE:
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_REMOVE:
 				unInvoke();
 				break;
 			}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -69,11 +69,11 @@ public class Skill_Puppeteer extends StdAbility
 																   +((Item)affected).envStats().attackAdjustment()
 																   +invoker().getVictim().adjustedArmor()));
 				if(!isHit)
-					invoker().location().show(invoker(),invoker().getVictim(),affected,Affect.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
+					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
 					ExternalPlay.postDamage(invoker(),invoker().getVictim(),(Item)affected,
 											Dice.roll(1,affected.envStats().level(),1),
-											Affect.MASK_GENERAL|Affect.TYP_WEAPONATTACK,
+											CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,
 											Weapon.TYPE_BASHING,affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}
 			else
@@ -81,19 +81,19 @@ public class Skill_Puppeteer extends StdAbility
 			switch(Dice.roll(1,5,0))
 			{
 			case 1:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" walks around.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" walks around.");
 				break;
 			case 2:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" waves its little arms.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" waves its little arms.");
 				break;
 			case 3:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" hugs you.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" hugs you.");
 				break;
 			case 4:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
 				break;
 			case 5:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" dances around.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" dances around.");
 				break;
 			}
 		}
@@ -108,7 +108,7 @@ public class Skill_Puppeteer extends StdAbility
 		&&(affected instanceof Item)
 		&&(((Item)affected).owner()!=null)
 		&&(((Item)affected).owner() instanceof Room))
-			((Room)((Item)affected).owner()).showHappens(Affect.MSG_OK_ACTION,affected.name()+" stops moving.");
+			((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" stops moving.");
 		super.unInvoke();
 	}
 
@@ -122,7 +122,7 @@ public class Skill_Puppeteer extends StdAbility
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(target.name()+" is already animated!");
 			return false;
@@ -141,21 +141,21 @@ public class Skill_Puppeteer extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.unWear();
 				if(mob.isMine(target))
-					mob.location().show(mob,target,Affect.MSG_DROP,"<S-NAME> start(s) animating <T-NAME>!");
+					mob.location().show(mob,target,CMMsg.MSG_DROP,"<S-NAME> start(s) animating <T-NAME>!");
 				else
-					mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<S-NAME> start(s) animating <T-NAME>!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) animating <T-NAME>!");
 				if(mob.location().isContent(target))
 					beneficialAffect(mob,target,0);
 			}
 		}
 		else
-			mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> twitch(es) oddly, but does nothing more.");
+			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> twitch(es) oddly, but does nothing more.");
 
 
 		// return whether it worked

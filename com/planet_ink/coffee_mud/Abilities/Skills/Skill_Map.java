@@ -34,7 +34,7 @@ public class Skill_Map extends StdAbility
 		map=null;
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
@@ -45,7 +45,7 @@ public class Skill_Map extends StdAbility
 		else
 		if((msg.amISource(mob))
 		&&(map!=null)
-		&&(msg.targetMinor()==Affect.TYP_ENTER)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof Room)
 		&&(!roomsMappedAlready.contains(msg.target())))
@@ -56,13 +56,13 @@ public class Skill_Map extends StdAbility
 				((com.planet_ink.coffee_mud.interfaces.Map)map).doMapArea();
 		}
 
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Ability A=mob.fetchAffect(ID());
+		Ability A=mob.fetchEffect(ID());
 		if(A!=null)
 		{
 			A.unInvoke();
@@ -111,8 +111,8 @@ public class Skill_Map extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.",Affect.MSG_WRITE,";",Affect.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.",CMMsg.MSG_WRITE,";",CMMsg.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!item.ID().equals("BardMap"));
@@ -160,7 +160,7 @@ public class Skill_Map extends StdAbility
 			}
 		}
 		else
-			mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<S-NAME> attempt(s) to start mapping on <T-NAMESELF>, but mess(es) up.");
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> attempt(s) to start mapping on <T-NAMESELF>, but mess(es) up.");
 		return success;
 	}
 

@@ -21,8 +21,8 @@ public class Prayer_Restoration extends Prayer
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
-		
+
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
@@ -32,55 +32,55 @@ public class Prayer_Restoration extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) surrounded by a bright light.":"^S<S-NAME> "+prayWord(mob)+" over <T-NAMESELF> for restorative healing.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int healing=target.maxState().getHitPoints()-target.curState().getHitPoints();
 				if(healing>0)
 				{
-					ExternalPlay.postHealing(mob,target,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,healing,null);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) much healthier!");
+					ExternalPlay.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) much healthier!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
-				Ability A=target.fetchAffect("Amputation");
+				Ability A=target.fetchEffect("Amputation");
 				if(A!=null)
 				{
-					target.delAffect(A);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> missing parts are restored!");
+					target.delEffect(A);
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> missing parts are restored!");
 					A=target.fetchAbility(A.ID());
 					if(A!=null) target.delAbility(A);
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
-				A=target.fetchAffect("Undead_EnergyDrain");
+				A=target.fetchEffect("Undead_EnergyDrain");
 				if(A!=null)
 				{
 					A.unInvoke();
-					target.delAffect(A);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
+					target.delEffect(A);
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
-				A=target.fetchAffect("Undead_WeakEnergyDrain");
+				A=target.fetchEffect("Undead_WeakEnergyDrain");
 				if(A!=null)
 				{
 					A.unInvoke();
-					target.delAffect(A);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
+					target.delEffect(A);
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
-				A=target.fetchAffect("Undead_ColdTouch");
+				A=target.fetchEffect("Undead_ColdTouch");
 				if(A!=null)
 				{
 					A.unInvoke();
-					target.delAffect(A);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer cold and weak!");
+					target.delEffect(A);
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer cold and weak!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
@@ -90,7 +90,7 @@ public class Prayer_Restoration extends Prayer
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
-					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can smell again!");
+					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can smell again!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
@@ -100,7 +100,7 @@ public class Prayer_Restoration extends Prayer
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
-					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can speak again!");
+					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can speak again!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
@@ -110,7 +110,7 @@ public class Prayer_Restoration extends Prayer
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
-					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is cured of <S-HIS-HER> poisonous afflication!");
+					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is cured of <S-HIS-HER> poisonous afflication!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
@@ -120,7 +120,7 @@ public class Prayer_Restoration extends Prayer
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
-					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can move again!");
+					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can move again!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
@@ -130,7 +130,7 @@ public class Prayer_Restoration extends Prayer
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
-					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is cured of <S-HIS-HER> disease!");
+					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is cured of <S-HIS-HER> disease!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
@@ -140,7 +140,7 @@ public class Prayer_Restoration extends Prayer
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
-					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can see again!");
+					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can see again!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
@@ -150,7 +150,7 @@ public class Prayer_Restoration extends Prayer
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
-					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can hear again!");
+					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can hear again!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();

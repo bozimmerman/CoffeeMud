@@ -21,9 +21,9 @@ public class Swamp extends StdRoom
 	{
 		return new Swamp();
 	}
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((msg.amITarget(this)||(msg.targetMinor()==Affect.TYP_ADVANCE)||(msg.targetMinor()==Affect.TYP_RETREAT))
+		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
 		   &&(!msg.source().isMonster())
 		   &&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
 		   &&(Dice.rollPercentage()==1)
@@ -34,12 +34,12 @@ public class Swamp extends StdRoom
 				A=CMClass.getAbility("Disease_Chlamydia");
 			else
 				A=CMClass.getAbility("Disease_Malaria");
-			if((A!=null)&&(msg.source().fetchAffect(A.ID())==null))
+			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))
 				A.invoke(msg.source(),msg.source(),true);
 		}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
-	
+
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_JADE),
 		new Integer(EnvResource.RESOURCE_SCALES),

@@ -34,22 +34,22 @@ public class Fighter_TrueShot extends StdAbility
 		else
 			gettingBonus=false;
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
 
-		if((affect.amISource(mob))
+		if((msg.amISource(mob))
 		&&(gettingBonus)
-		&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+		&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(Dice.rollPercentage()>95)
 		&&(mob.isInCombat())
 		&&(!mob.amDead())
-		&&(affect.target() instanceof MOB))
+		&&(msg.target() instanceof MOB))
 			helpProfficiency(mob);
 	}
 }

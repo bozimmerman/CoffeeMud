@@ -103,7 +103,7 @@ public class Sheep extends StdRace
 		if((body!=null)&&(Dice.roll(1,1000,0)==1))
 		{
 			Ability A=CMClass.getAbility("Disease_Anthrax");
-			if(A!=null) body.addNonUninvokableAffect(A);
+			if(A!=null) body.addNonUninvokableEffect(A);
 		}
 		return body;
 	}

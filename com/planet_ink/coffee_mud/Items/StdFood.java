@@ -36,16 +36,16 @@ public class StdFood extends StdItem implements Food
 		amountOfNourishment=amount;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_DRINK:
+			case CMMsg.TYP_DRINK:
 				if(mob.isMine(this))
 					return true;
 				else
@@ -58,14 +58,14 @@ public class StdFood extends StdItem implements Food
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_EAT:
+			case CMMsg.TYP_EAT:
 				boolean hungry=mob.curState().getHunger()<=0;
 				boolean full=!mob.curState().adjHunger(amountOfNourishment,mob.maxState());
 				if(hungry)
@@ -74,13 +74,13 @@ public class StdFood extends StdItem implements Food
 				if(full)
 					mob.tell("You are full.");
 				this.destroy();
-				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 				break;
 			default:
 				break;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

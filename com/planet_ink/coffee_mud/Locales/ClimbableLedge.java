@@ -11,24 +11,24 @@ import java.util.*;
 public class ClimbableLedge extends ClimbableSurface
 {
 	public String ID(){return "ClimbableLedge";}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(Sense.isSleeping(this))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
-		if((affect.targetMinor()==affect.TYP_ENTER)
-		&&(affect.amITarget(this)))
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.amITarget(this)))
 		{
-			Rideable ladder=findALadder(affect.source(),this);
+			Rideable ladder=findALadder(msg.source(),this);
 			if(ladder!=null)
 			{
-				affect.source().setRiding(ladder);
-				affect.source().recoverEnvStats();
+				msg.source().setRiding(ladder);
+				msg.source().recoverEnvStats();
 			}
-			if((getRoomInDir(Directions.DOWN)!=affect.source().location()))
+			if((getRoomInDir(Directions.DOWN)!=msg.source().location()))
 				return true;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 	public Environmental newInstance()
 	{

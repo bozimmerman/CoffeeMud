@@ -50,7 +50,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 		I.recoverEnvStats();
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((!alreadyFilled)&&(owner()!=null))
 		{
@@ -137,6 +137,6 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 				putInBag(I);
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

@@ -42,7 +42,7 @@ public class Fighter_BullRush extends StdAbility
 			return false;
 		}
 		String direction=Directions.getInDirectionName(dirCode);
-		
+
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -54,8 +54,8 @@ public class Fighter_BullRush extends StdAbility
 		boolean success=profficiencyCheck(-(levelDiff*5),auto);
 
 		str="<S-NAME> bullrush(es) <T-NAME> "+direction+".";
-		FullMsg msg=new FullMsg(mob,target,this,(auto?Affect.MASK_GENERAL:0)|Affect.MASK_MOVE|Affect.MASK_SOUND|Affect.MASK_HANDS|Affect.TYP_JUSTICE,str);
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.TYP_JUSTICE,str);
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			MOB M1=mob.getVictim();

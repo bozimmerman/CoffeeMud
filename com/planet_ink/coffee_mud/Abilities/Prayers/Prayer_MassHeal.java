@@ -31,11 +31,11 @@ public class Prayer_MassHeal extends Prayer
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) surrounded by a white light.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
-				if(mob.location().okAffect(mob,msg))
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					int healing=Dice.roll(adjustedLevel(mob),5,adjustedLevel(mob));
-					ExternalPlay.postHealing(mob,target,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,healing,null);
+					ExternalPlay.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 					target.tell("You feel tons better!");
 				}
 			}

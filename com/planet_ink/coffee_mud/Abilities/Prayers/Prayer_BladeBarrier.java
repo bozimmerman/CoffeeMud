@@ -29,23 +29,23 @@ public class Prayer_BladeBarrier extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> blade barrier disappears.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> blade barrier disappears.");
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((invoker==null)
 		||(affected==null)
 		||(!(affected instanceof MOB)))
 			return;
-		if(affect.target()==invoker)
+		if(msg.target()==invoker)
 		{
-			if((Dice.rollPercentage()>60+affect.source().charStats().getStat(CharStats.DEXTERITY))
-			&&(affect.source().rangeToTarget()==0)
+			if((Dice.rollPercentage()>60+msg.source().charStats().getStat(CharStats.DEXTERITY))
+			&&(msg.source().rangeToTarget()==0)
 			&&((lastMessage==null)||(!lastMessage.startsWith("The blade barrier around")))
-			&&((Util.bset(affect.targetMajor(),Affect.MASK_HANDS))
-			   ||(Util.bset(affect.targetMajor(),Affect.MASK_MOVE))))
+			&&((Util.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
+			   ||(Util.bset(msg.targetMajor(),CMMsg.MASK_MOVE))))
 			{
 				int level=(int)Math.round(Util.div(invoker.envStats().level(),6.0));
 				if(level>5) level=5;
@@ -57,14 +57,14 @@ public class Prayer_BladeBarrier extends Prayer
 					hitWord.deleteCharAt(hitWord.length()-2);
 				if(hitWord.charAt(hitWord.length()-3)=='(')
 					hitWord.deleteCharAt(hitWord.length()-3);
-				ExternalPlay.postDamage((MOB)affect.target(),affect.source(),this,damage,Affect.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.");
+				ExternalPlay.postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.");
 				lastMessage="The blade barrier around";
 			}
 			else
-				lastMessage=affect.othersMessage();
+				lastMessage=msg.othersMessage();
 		}
 		else
-			lastMessage=affect.othersMessage();
+			lastMessage=msg.othersMessage();
 		return;
 	}
 
@@ -82,7 +82,7 @@ public class Prayer_BladeBarrier extends Prayer
 	{
 		MOB target=mob;
 		if(target==null) return false;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("You already have the blade barrier.");
 			return false;
@@ -100,7 +100,7 @@ public class Prayer_BladeBarrier extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> "+prayWord(mob)+" for divine protection!  ")+"A barrier of blades begin to spin around <T-NAME>!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

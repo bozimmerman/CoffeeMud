@@ -13,12 +13,12 @@ public class ResourceOverride extends StdBehavior
 	{
 		return new ResourceOverride();
 	}
-	
+
 	int lastResourceSet=-1;
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.ROOM_BEHAVIOR_TICK) return true;
+		if(tickID!=Host.TICK_ROOM_BEHAVIOR) return true;
 		if(!(ticking instanceof Room)) return true;
 		Room R=(Room)ticking;
 		if((lastResourceSet<0)
@@ -32,7 +32,7 @@ public class ResourceOverride extends StdBehavior
 			String which=((String)V.elementAt(Dice.roll(1,V.size(),-1))).toUpperCase().trim();
 			if((Util.s_int(which)>0)||(which.equalsIgnoreCase("0")))
 			   code=Util.s_int(which);
-			
+
 			if(code<0)
 			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 			{

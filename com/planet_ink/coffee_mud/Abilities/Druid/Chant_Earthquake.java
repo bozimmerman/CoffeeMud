@@ -18,7 +18,7 @@ public class Chant_Earthquake extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{ oncePerRd=false; return super.tick(ticking,tickID);}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -29,27 +29,27 @@ public class Chant_Earthquake extends Chant
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,msg);
+			return super.okMessage(myHost,msg);
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
-		&&(msg.sourceMinor()==Affect.TYP_STAND)
+		&&(msg.sourceMinor()==CMMsg.TYP_STAND)
 		&&(mob.location()!=null))
 		{
 			if(!oncePerRd)
 			{
 				oncePerRd=true;
-				mob.location().show(mob,null,Affect.MASK_GENERAL|Affect.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to stand up, and falls back down!");
+				mob.location().show(mob,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to stand up, and falls back down!");
 			}
 			return false;
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -62,8 +62,8 @@ public class Chant_Earthquake extends Chant
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					ExternalPlay.standIfNecessary(mob);
@@ -106,9 +106,9 @@ public class Chant_Earthquake extends Chant
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				if(Sense.isInFlight(target))
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
 				else
-				if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
+				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
@@ -119,11 +119,11 @@ public class Chant_Earthquake extends Chant
 							if(success)
 							{
 								if(target.location()==mob.location())
-									ExternalPlay.postDamage(mob,target,this,20,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
+									ExternalPlay.postDamage(mob,target,this,20,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
 							}
 						}
 						else
-							mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected by the quake.");
+							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected by the quake.");
 					}
 				}
 			}

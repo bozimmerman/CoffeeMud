@@ -36,16 +36,16 @@ public class Wand_Nourishment extends StdWand
 		secretWord="SHAZAM";
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_SPEAK:
+			case CMMsg.TYP_SPEAK:
 				if((mob.isMine(this))&&(!amWearingAt(Item.INVENTORY)))
-					if(affect.targetMessage().toUpperCase().indexOf("'SHAZAM'")>=0)
+					if(msg.targetMessage().toUpperCase().indexOf("'SHAZAM'")>=0)
 						if(mob.curState().adjHunger(50,mob.maxState()))
 							mob.tell("You are full.");
 				break;
@@ -53,6 +53,6 @@ public class Wand_Nourishment extends StdWand
 				break;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

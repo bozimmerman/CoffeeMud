@@ -16,27 +16,27 @@ public class Thief_Safecracking extends ThiefSkill
 	public Environmental newInstance(){	return new Thief_Safecracking();}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
-		if((affect.amISource(mob))
-		&&(affect.tool()!=null)
-		&&(affect.tool().ID().equals("Thief_Pick")))
+		if((msg.amISource(mob))
+		&&(msg.tool()!=null)
+		&&(msg.tool().ID().equals("Thief_Pick")))
 		{
 			helpProfficiency(mob);
 			Ability A=mob.fetchAbility("Thief_Pick");
 			A.setAbilityCode(10-(profficiency()/10));
-			if((affect.target()!=null)&&(Dice.rollPercentage()<profficiency()))
+			if((msg.target()!=null)&&(Dice.rollPercentage()<profficiency()))
 			{
-				A=affect.target().fetchAffect("Spell_WizardLock");
+				A=msg.target().fetchEffect("Spell_WizardLock");
 				if(A!=null) A.unInvoke();
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

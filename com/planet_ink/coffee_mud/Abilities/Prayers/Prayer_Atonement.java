@@ -22,7 +22,7 @@ public class Prayer_Atonement extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		FullMsg msg2=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
+		FullMsg msg2=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
 
 		if(success)
 		{
@@ -31,7 +31,7 @@ public class Prayer_Atonement extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> feel(s) more good.":"^S<S-NAME> "+prayWord(mob)+" to atone <T-NAMESELF>!^?"));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
@@ -43,9 +43,9 @@ public class Prayer_Atonement extends Prayer
 					   target.setAlignment(1000);
 					else
 					   target.setAlignment(target.getAlignment() + evilness);
-					if(!target.isInCombat() && target.isMonster()) 
+					if(!target.isInCombat() && target.isMonster())
 					{
-						if(mob.location().okAffect(mob,msg2))
+						if(mob.location().okMessage(mob,msg2))
 						{
 						   mob.location().send(mob,msg2);
 						}
@@ -55,9 +55,9 @@ public class Prayer_Atonement extends Prayer
 		}
 		else
 		{
-			if(!target.isInCombat() && target.isMonster()) 
+			if(!target.isInCombat() && target.isMonster())
 			{
-				if(mob.location().okAffect(mob,msg2))
+				if(mob.location().okMessage(mob,msg2))
 				{
 					mob.location().send(mob,msg2);
 				}

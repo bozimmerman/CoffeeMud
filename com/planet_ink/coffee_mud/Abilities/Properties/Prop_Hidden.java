@@ -18,26 +18,26 @@ public class Prop_Hidden extends Property
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
-			
-			if(((!Util.bset(affect.sourceMajor(),Affect.MASK_SOUND)
-				 ||(affect.sourceMinor()==Affect.TYP_SPEAK)
-				 ||(affect.sourceMinor()==Affect.TYP_ENTER)
-				 ||(affect.sourceMinor()==Affect.TYP_LEAVE)
-				 ||(affect.sourceMinor()==Affect.TYP_RECALL)))
-			 &&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-			 &&(affect.sourceMinor()!=Affect.TYP_EXAMINESOMETHING)
-			 &&(affect.sourceMajor()>0))
+
+			if(((!Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND)
+				 ||(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+				 ||(msg.sourceMinor()==CMMsg.TYP_ENTER)
+				 ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+				 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
+			 &&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			 &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINESOMETHING)
+			 &&(msg.sourceMajor()>0))
 			{
 				ticksSinceLoss=0;
 				mob.recoverEnvStats();
@@ -71,6 +71,6 @@ public class Prop_Hidden extends Property
 		}
 		else
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
-			
+
 	}
 }

@@ -20,17 +20,17 @@ public class Prayer_HealingAura extends Prayer
 	private int fiveDown=5;
 	private int tenDown=10;
 	private int twentyDown=20;
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
 		if((affected==null)||(!(affected instanceof MOB)))
 		   return false;
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		MOB myChar=(MOB)affected;
-		
+
 		if((fiveDown>1)&&(tenDown>1)&&(twentyDown>1)) return true;
-			
+
 		Hashtable followers=myChar.getGroupMembers(new Hashtable());
 		if(myChar.location()!=null)
 			for(int i=0;i<myChar.location().numInhabitants();i++)

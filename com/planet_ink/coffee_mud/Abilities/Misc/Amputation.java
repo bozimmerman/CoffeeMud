@@ -48,7 +48,7 @@ public class Amputation extends StdAbility
 												 true,//tail
 												 true//wing
 												 };
-	
+
 	public final static int[][] extraamuputees={{-1},//antenea
 											    {-1},//eye
 											    {-1},//ear
@@ -117,7 +117,7 @@ public class Amputation extends StdAbility
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> limbs have been restored.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> limbs have been restored.");
 	}
 
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet)
@@ -170,7 +170,7 @@ public class Amputation extends StdAbility
 		super.setMiscText(text);
 		missingLimbs=null;
 	}
-	
+
 	public Vector missingLimbNameSet()
 	{
 		if(missingLimbs!=null) return missingLimbs;
@@ -221,7 +221,7 @@ public class Amputation extends StdAbility
 		}
 		return V;
 	}
-	
+
 	public static int getRacialCode(String name)
 	{
 		name=name.toUpperCase();
@@ -230,7 +230,7 @@ public class Amputation extends StdAbility
 				return r;
 		return -1;
 	}
-	
+
 	public Vector affectedLimbNameSet(Object O, String missing, Vector missingLimbs)
 	{
 		Vector AL=new Vector();
@@ -255,7 +255,7 @@ public class Amputation extends StdAbility
 		}
 		return AL;
 	}
-	
+
 	public static void amputate(Environmental target, Amputation A, String gone)
 	{
 		if(A==null) return;
@@ -264,9 +264,9 @@ public class Amputation extends StdAbility
 			if(target instanceof MOB)
 			{
 				if(gone.toLowerCase().endsWith("eye"))
-					((MOB)target).location().show(((MOB)target),null,Affect.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" is destroyed!^?");
+					((MOB)target).location().show(((MOB)target),null,CMMsg.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" is destroyed!^?");
 				else
-					((MOB)target).location().show(((MOB)target),null,Affect.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" falls off!^?");
+					((MOB)target).location().show(((MOB)target),null,CMMsg.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" falls off!^?");
 			}
 			else
 			if((target instanceof DeadBody)
@@ -274,9 +274,9 @@ public class Amputation extends StdAbility
 			&&(((Item)target).owner() instanceof Room))
 			{
 				if(gone.toLowerCase().endsWith("eye"))
-					((Room)((Item)target).owner()).showHappens(Affect.MSG_OK_VISUAL,"^G"+target.name()+"'s "+gone+" is destroyed!^?");
+					((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL,"^G"+target.name()+"'s "+gone+" is destroyed!^?");
 				else
-					((Room)((Item)target).owner()).showHappens(Affect.MSG_OK_VISUAL,"^G"+target.name()+"'s "+gone+" falls off!^?");
+					((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL,"^G"+target.name()+"'s "+gone+" falls off!^?");
 			}
 		}
 		Item limb=CMClass.getItem("GenItem");
@@ -302,7 +302,7 @@ public class Amputation extends StdAbility
 		for(int i=0;i<theRest.size();i++)
 			A.setMiscText(A.text()+((String)theRest.elementAt(i))+";");
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -313,7 +313,7 @@ public class Amputation extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			Amputation A=(Amputation)target.fetchAffect(ID());
+			Amputation A=(Amputation)target.fetchEffect(ID());
 			boolean newOne=false;
 			if(A==null){
 				A=new Amputation();
@@ -330,15 +330,15 @@ public class Amputation extends StdAbility
 			String gone=(String)VN.elementAt(Dice.roll(1,VN.size(),-1));
 
 			String str=auto?"":"^F<S-NAME> amputate <T-NAMESELF>'s "+gone+"!^?";
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_DELICATE_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),str);
-			if(target.location().okAffect(target,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),str);
+			if(target.location().okMessage(target,msg))
 			{
 			    target.location().send(target,msg);
 				if(!msg.wasModified())
 				{
 					amputate(target,A,gone);
 					if(newOne==true)
-						target.addNonUninvokableAffect(A);
+						target.addNonUninvokableEffect(A);
 					target.confirmWearability();
 				}
 			}

@@ -37,7 +37,7 @@ public class Thief_Racketeer extends ThiefSkill
 			mob.tell("You can't get protection money from "+target.name()+".");
 			return false;
 		}
-		Ability A=target.fetchAffect(ID());
+		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			if(A.invoker()==mob)
@@ -63,8 +63,8 @@ public class Thief_Racketeer extends ThiefSkill
 		boolean success=profficiencyCheck(-(levelDiff),auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,(auto?Affect.MASK_GENERAL:0)|Affect.MSG_THIEF_ACT,"<S-NAME> extract(s) "+amount+" gold of protection money from <T-NAME>.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> extract(s) "+amount+" gold of protection money from <T-NAME>.");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,new Long(((Host.TIME_TICK_DELAY*Area.A_FULL_DAY)/Host.TICK_TIME)).intValue());

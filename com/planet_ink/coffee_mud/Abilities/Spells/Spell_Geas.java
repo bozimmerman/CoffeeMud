@@ -20,7 +20,7 @@ public class Spell_Geas extends Spell
 	public Environmental newInstance(){	return new Spell_Geas();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public EnglishParser.geasStep STEP=null;
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -43,17 +43,17 @@ public class Spell_Geas extends Spell
 		}
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
-		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
-		&&((msg.targetCode()-Affect.MASK_HURT)>0))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0))
 			ExternalPlay.postPanic(mob,msg);
-		if((msg.sourceMinor()==Affect.TYP_SPEAK)
+		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(STEP!=null)
 		&&(msg.sourceMessage()!=null)
 		&&((msg.target()==null)||(msg.target() instanceof MOB))
@@ -70,7 +70,7 @@ public class Spell_Geas extends Spell
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.tick(ticking,tickID);
-		if((tickID==Host.MOB_TICK)&&(STEP!=null))
+		if((tickID==Host.TICK_MOB)&&(STEP!=null))
 		{
 			if((STEP.que!=null)&&(STEP.que.size()==0))
 			{
@@ -86,7 +86,7 @@ public class Spell_Geas extends Spell
 	{
 		if(mob.isMonster())
 		{
-			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> sigh(s).");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sigh(s).");
 			ExternalPlay.quickSay(mob,null,"You know, if I had any ambitions, I would put the geas on myself!",false,false);
 			return false;
 		}
@@ -115,19 +115,19 @@ public class Spell_Geas extends Spell
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> place(s) a powerful geas upon <T-NAMESELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				STEP=EnglishParser.processRequest(mob,target,Util.combine(commands,0));
 				if((STEP==null)||(STEP.que==null)||(STEP.que.size()==0))
 				{
-					target.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) confused.");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) confused.");
 					return false;
 				}
 				else
 				{
 					setMiscText(Util.combine(commands,0));
-					if(maliciousAffect(mob,target,500,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0)))
+					if(maliciousAffect(mob,target,500,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0)))
 					{
 						target.makePeace();
 						if(mob.getVictim()==target)

@@ -48,7 +48,7 @@ public class Ingredients extends BagOfEndlessness
 		return I;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((!alreadyFilled)&&(owner()!=null))
 		{
@@ -60,6 +60,6 @@ public class Ingredients extends BagOfEndlessness
 				makeResource(name.toLowerCase(),EnvResource.RESOURCE_DATA[i][0]);
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

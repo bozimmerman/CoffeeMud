@@ -10,13 +10,13 @@ public class WaterCurrents extends ActiveTicker
 	public String ID(){return "WaterCurrents";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 	protected String dirs="";
-	
+
 	public WaterCurrents()
 	{
 		minTicks=3;maxTicks=5;chance=75;
 		tickReset();
 	}
-	
+
 	public Behavior newInstance()
 	{
 		return new WaterCurrents();
@@ -78,14 +78,14 @@ public class WaterCurrents extends ActiveTicker
 				for(int m=0;m<mobsDone.size();m++)
 				{
 					MOB M=(MOB)mobsDone.elementAt(m);
-					R.show(M,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
+					R.show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
 					R2.bringMobHere(M,false);
-					R2.showOthers(M,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
+					R2.showOthers(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
 					ExternalPlay.look(M,null,true);
 				}
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

@@ -1,10 +1,15 @@
+look into genwater and emptyability
 prayer Feed the Dead--cast on an undead MOB, with a secondary target of a body, the undead will gain XP equal to 10*lvl of the body they consume, if body is of higher level than the undead. This way, a necromancer can make his undead more powerful (even his lowly skeletons) Should be around 10th level.
 1. Behavior: Conquest		
 	1. This behavior will make an area conquerable by a clan	
-		1. An area that is already controlled by a clan cannot be conquered without declaring WAR on that clan first.
-	2. Once per MUDhour, the conquest behavior will tick. At this time it checks several factors:	
-		1. It checks to see if any Clan has a higher number of total CONTROLPOINTS than the combined inhabitants of the area.
-		2. If one or more clans have exceded point 1, then the area is considered conquered by the clan with the highest value (in control points).
+		1. An area that is already controlled by a clan cannot be conquered without 
+		declaring WAR on that clan first.
+	2. Once per MUDhour, the conquest behavior will tick. At this time it checks 
+	several factors:	
+		1. It checks to see if any Clan has a higher number of total CONTROLPOINTS 
+		than the combined inhabitants of the area.
+		2. If one or more clans have exceded point 1, then the area is considered 
+		conquered by the clan with the highest value (in control points).
 	3. Earn taxes from players	
 		1. It would be nice to earn from MOBs as well, but I don't know how this could be done effectively.
 		2. MOBs are taxed too, but own no property, and don't break the law if they can't pay.
@@ -99,16 +104,31 @@ Conquest Items   (Edit)
 	1. A flag from your clan must be set on the ground in order for you to attempt to conquer an area.	
 	2. On the ground it should have a description of "A Flag is planted here." See clan logo.	
 11. Craft Aprons		
-	1. An apron is tied to a particular crafting skill. (Fletching, Armorsmith, Weaponsmith, Leatherworking, Tailor, Pottery, Jewel Making, Blacksmithing, Scrimshaw, etc.)	
-	2. Each apron has a pocket, in which items can be stored. The pocket should have a HUGE carry capacity. (5000?) Any item in the pocket that can be made with that skill will have a random chance of being made by the apron wearer if the resources are available.	
-		1. For Example, A WEAPONSMITH APRON with a knife, sword, and mace in it's pocket would try to make a knife 33% of the time if there was metal available on the ground. NOTE: Weaponsmith is a hard skill to get to work, since it has prereqs to using (weapon specialization). On this skill, we may wish to give a mob all of the specializations at 0%...
+	1. An apron is tied to a particular crafting skill. (Fletching, Armorsmith, 
+	Weaponsmith, Leatherworking, Tailor, Pottery, Jewel Making, Blacksmithing, 
+	Scrimshaw, etc.)	
+	2. Each apron has a pocket, in which items can be stored. The pocket should have 
+	a HUGE carry capacity. (5000?) Any item in the pocket that can be made with that 
+	skill will have a random chance of being made by the apron wearer if the 
+	resources are available.	
+		1. For Example, A WEAPONSMITH APRON with a knife, sword, and mace in it's 
+		pocket would try to make a knife 33% of the time if there was metal available 
+		on the ground. NOTE: Weaponsmith is a hard skill to get to work, since it 
+		has prereqs to using (weapon specialization). On this skill, we may wish to 
+		give a mob all of the specializations at 0%...
 	
 Conquest Concepts   (Edit)	
 1. Inhabitant		
 	1. An inhabitant is any MOB native to that area.	
 2. Citizen		
-	1. A citizen is any INTELLIGENT, NON-UNDEAD, NON-GOLEM MOB that is an inhabitant of the area.	
+	1. A citizen is any INTELLIGENT, NON-UNDEAD, NON-GOLEM MOB that is an 
+	inhabitant of the area.	
 3. Control Points		
-	1. Control Points are the currency of conquest. A control point is equal to one MOBlevel. For example, a level 30 Fighter/28 Ranger is worth 58 control points (CPs). Some skills/affects can change the worth of a MOB for control purposes.	
+	1. Control Points are the currency of conquest. A control point is equal 
+	to one MOBlevel. For example, a level 30 Fighter/28 Ranger is worth 58 control 
+	points (CPs). Some skills/affects can change the worth of a MOB for control 
+	purposes.	
 4. Clan Logo		
-	1. This is akin to the DESCRIPTION command for a character. Each clan can create a short logo (40 characters) to represent their clan. For example, "A Black Eagle" could be your logo.	
+	1. This is akin to the DESCRIPTION command for a character. Each clan can 
+	create a short logo (40 characters) to represent their clan. For example, 
+	"A Black Eagle" could be your logo.	

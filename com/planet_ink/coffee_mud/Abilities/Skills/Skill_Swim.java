@@ -33,7 +33,7 @@ public class Skill_Swim extends StdAbility
 	}
 	public boolean placeToSwim(Environmental E)
 	{ return placeToSwim(CoffeeUtensils.roomLocation(E));}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -74,32 +74,32 @@ public class Skill_Swim extends StdAbility
 			mob.tell("You need to get off "+mob.riding().name()+" first!");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,null);
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
 		Room R=mob.location();
 		if((R!=null)
-		&&(R.okAffect(mob,msg)))
+		&&(R.okMessage(mob,msg)))
 		{
 			R.send(mob,msg);
 			success=profficiencyCheck(0,auto);
 			if(!success)
-				R.show(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) against the water, making no progress.");
+				R.show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) against the water, making no progress.");
 			else
 			{
-				if(mob.fetchAffect(ID())==null)
-					mob.addAffect(this);
+				if(mob.fetchEffect(ID())==null)
+					mob.addEffect(this);
 				mob.recoverEnvStats();
 
 				ExternalPlay.move(mob,dirCode,false,false);
 			}
-			mob.delAffect(this);
+			mob.delEffect(this);
 			mob.recoverEnvStats();
 			if(mob.location()!=R)
-				mob.location().show(mob,null,this,Affect.MSG_NOISYMOVEMENT,null);
+				mob.location().show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
 		}
 		return success;
 	}

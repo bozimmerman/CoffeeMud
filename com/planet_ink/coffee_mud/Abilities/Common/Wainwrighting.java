@@ -42,7 +42,7 @@ public class Wainwrighting extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			if(building==null)
 				unInvoke();
@@ -199,13 +199,13 @@ public class Wainwrighting extends CommonSkill
 		{
 			String parm="";
 			if(spell.indexOf(";")>0)
-			{ 
+			{
 				parm=spell.substring(spell.indexOf(";")+1);
 				spell=spell.substring(0,spell.indexOf(";"));
 			}
 			Ability A=CMClass.getAbility(spell);
 			A.setMiscText(parm);
-			if(A!=null)	building.addNonUninvokableAffect(A);
+			if(A!=null)	building.addNonUninvokableEffect(A);
 		}
 		key=null;
 		if(building instanceof Rideable)
@@ -246,18 +246,18 @@ public class Wainwrighting extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<15) completion=15;
-		
+
 		if(misctype.equalsIgnoreCase("bundle"))
 		{
-			messedUp=false; 
+			messedUp=false;
 			completion=1;
 			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
-		
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
-		if(mob.location().okAffect(mob,msg))
+
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

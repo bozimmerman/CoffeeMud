@@ -13,7 +13,7 @@ public class Archon extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+
 	public Archon()
 	{
 		super();
@@ -23,7 +23,7 @@ public class Archon extends StdCharClass
 		{
 			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Resistance",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_AlterTime",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
 		}
@@ -51,7 +51,7 @@ public class Archon extends StdCharClass
 				w.wearAt(Item.WIELD);
 		}
 	}
-	
+
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 
 	{
@@ -60,15 +60,15 @@ public class Archon extends StdCharClass
 		if(verifyOnly)
 			grantAbilities(mob,true);
 	}
-	
+
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		// the most efficient way of doing this -- just hash em!
 		Hashtable alreadyAble=new Hashtable();
 		Hashtable alreadyAff=new Hashtable();
-		for(int a=0;a<mob.numAffects();a++)
+		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability A=mob.fetchAffect(a);
+			Ability A=mob.fetchEffect(a);
 			if(A!=null) alreadyAff.put(A.ID(),A);
 		}
 		for(int a=0;a<mob.numLearnedAbilities();a++)

@@ -15,7 +15,7 @@ public class Chant_SummonHerb extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		
+
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell("You must be outdoors to try this.");
@@ -29,7 +29,7 @@ public class Chant_SummonHerb extends Chant
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -38,7 +38,7 @@ public class Chant_SummonHerb extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<((adjustedLevel(mob)/4)+1);i++)
@@ -52,7 +52,7 @@ public class Chant_SummonHerb extends Chant
 					newItem.setMiscText(newItem.text());
 					mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
 				}
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Some herbs quickly begin to grow here.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Some herbs quickly begin to grow here.");
 				mob.location().recoverEnvStats();
 			}
 		}

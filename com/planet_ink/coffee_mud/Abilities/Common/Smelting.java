@@ -37,7 +37,7 @@ public class Smelting extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
@@ -234,9 +234,9 @@ public class Smelting extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
-		
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
-		if(mob.location().okAffect(mob,msg))
+
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

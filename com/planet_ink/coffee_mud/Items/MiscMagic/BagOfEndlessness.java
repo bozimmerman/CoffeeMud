@@ -28,13 +28,13 @@ public class BagOfEndlessness extends BagOfHolding
 		return new BagOfEndlessness();
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Item))
+		if(msg.amITarget(this)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Item))
 		{
-			Item newitem=(Item)affect.tool();
+			Item newitem=(Item)msg.tool();
 			if((newitem.container()==this)
 			&&(newitem.owner() !=null))
 			{
@@ -51,6 +51,6 @@ public class BagOfEndlessness extends BagOfHolding
 				neweritem.recoverEnvStats();
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

@@ -32,7 +32,7 @@ public class Prayer_Sermon extends Prayer
 		if(charmer==null) return invoker;
 		return charmer;
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -51,7 +51,7 @@ public class Prayer_Sermon extends Prayer
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -61,44 +61,44 @@ public class Prayer_Sermon extends Prayer
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.amISource(mob.amFollowing())))
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.amISource(mob.amFollowing())))
 			unInvoke();
 		else
-		if((affect.amISource(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.amITarget(mob.amFollowing())))
+		if((msg.amISource(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.amITarget(mob.amFollowing())))
 		{
 			mob.tell("You admire "+mob.amFollowing().charStats().himher()+" too much.");
 			return false;
 		}
 		else
-		if((affect.amISource(mob))
+		if((msg.amISource(mob))
 		&&(!mob.isMonster())
-		&&(affect.target() instanceof Room)
-		&&(affect.targetMinor()==affect.TYP_LEAVE)
+		&&(msg.target() instanceof Room)
+		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(mob.amFollowing()!=null)
-		&&(((Room)affect.target()).isInhabitant(mob.amFollowing())))
+		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
 			mob.tell("You are too enthralled to leave.");
 			return false;
 		}
 		else
-		if((affect.amISource(mob))
+		if((msg.amISource(mob))
 		&&(mob.amFollowing()!=null)
-		&&(affect.sourceMinor()==Affect.TYP_NOFOLLOW))
+		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
 			mob.tell("You believe in "+mob.amFollowing().name()+" too much.");
 			return false;
 		}
 
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		
+
 		Hashtable h=new Hashtable();
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
@@ -120,7 +120,7 @@ public class Prayer_Sermon extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		
+
 		boolean success=profficiencyCheck(-(h.size()*3),auto);
 
 		if(success)
@@ -137,15 +137,15 @@ public class Prayer_Sermon extends Prayer
 					// affected MOB.  Then tell everyone else
 					// what happened.
 					FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-					if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
+					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);
-						success=maliciousAffect(mob,target,0,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
+						success=maliciousAffect(mob,target,0,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
 						if(success)
 						{
 							if(target.getVictim()==mob)
 								target.makePeace();
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> begin(s) nodding and shouting praises to "+hisHerDiety(mob)+".");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) nodding and shouting praises to "+hisHerDiety(mob)+".");
 							ExternalPlay.follow(target,mob,true);
 						}
 					}

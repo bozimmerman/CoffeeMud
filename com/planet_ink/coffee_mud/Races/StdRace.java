@@ -34,11 +34,11 @@ public class StdRace implements Race
 	public boolean[] racialAbilityQuals(){return null;}
 	public String[] culturalAbilityNames(){return null;}
 	public int[] culturalAbilityProfficiencies(){return null;}
-										 
+
 	public boolean playerSelectable(){return false;}
 
 	public boolean fertile(){return true;}
-	
+
 	public Race copyOf()
 	{
 		try
@@ -54,7 +54,7 @@ public class StdRace implements Race
 	}
 
 	public Race healthBuddy(){return this;}
-	
+
 	/** some general statistics about such an item
 	 * see class "EnvStats" for more information. */
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -69,41 +69,41 @@ public class StdRace implements Race
 	{
 
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		// the sex rules
 		if(!(myHost instanceof MOB)) return;
 
 		MOB myChar=(MOB)myHost;
-		if((affect.amITarget(myChar))
+		if((msg.amITarget(myChar))
 		&&(fertile())
-		&&(affect.tool()!=null)
-		&&(affect.tool().ID().equals("Social"))
+		&&(msg.tool()!=null)
+		&&(msg.tool().ID().equals("Social"))
 		&&(myChar.charStats().getStat(CharStats.GENDER)==((int)'F'))
-		&&(affect.source().charStats().getStat(CharStats.GENDER)==((int)'M'))
-		&&(affect.tool().Name().equals("MATE <T-NAME>")
-			||affect.tool().Name().equals("SEX <T-NAME>"))
+		&&(msg.source().charStats().getStat(CharStats.GENDER)==((int)'M'))
+		&&(msg.tool().Name().equals("MATE <T-NAME>")
+			||msg.tool().Name().equals("SEX <T-NAME>"))
 		&&(Dice.rollPercentage()<10)
 		&&((ID().equals("Human"))
-		   ||(affect.source().charStats().getMyRace().ID().equals("Human"))
-		   ||(affect.source().charStats().getMyRace().ID().equals(ID())))
-		&&(affect.source().charStats().getMyRace().fertile())
-		&&(myChar.location()==affect.source().location())
+		   ||(msg.source().charStats().getMyRace().ID().equals("Human"))
+		   ||(msg.source().charStats().getMyRace().ID().equals(ID())))
+		&&(msg.source().charStats().getMyRace().fertile())
+		&&(myChar.location()==msg.source().location())
 		&&(myChar.numWearingHere(Item.ON_LEGS)>0)
-		&&(affect.source().numWearingHere(Item.ON_LEGS)>0)
+		&&(msg.source().numWearingHere(Item.ON_LEGS)>0)
 		&&(myChar.numWearingHere(Item.ON_WAIST)>0)
-		&&(affect.source().numWearingHere(Item.ON_WAIST)>0))
+		&&(msg.source().numWearingHere(Item.ON_WAIST)>0))
 		{
 			Ability A=CMClass.getAbility("Pregnancy");
 			if((A!=null)
 			&&(myChar.fetchAbility(A.ID())==null)
-			&&(myChar.fetchAffect(A.ID())==null))
-				A.invoke(affect.source(),myChar,true);
+			&&(myChar.fetchEffect(A.ID())==null))
+				A.invoke(msg.source(),myChar,true);
 		}
 	}
 	public void wearOutfit(MOB mob, Armor s1, Armor s2, Armor p1)
@@ -153,7 +153,7 @@ public class StdRace implements Race
 				mob.setTrains(mob.getTrains()+trainsAtFirstLevel());
 			}
 			setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
-			
+
 			if((culturalAbilityNames()!=null)&&(culturalAbilityProfficiencies()!=null)
 			   &&(culturalAbilityNames().length==culturalAbilityProfficiencies().length))
 			for(int a=0;a<culturalAbilityNames().length;a++)
@@ -247,7 +247,7 @@ public class StdRace implements Race
  		else
 			stats.setHeight(shortestFemale()+heightModifier);
 	}
-	
+
 	public int getMaxWeight()
 	{
 		return lightestWeight()+weightVariance();
@@ -307,7 +307,7 @@ public class StdRace implements Race
 	public DeadBody getCorpse(MOB mob, Room room)
 	{
 		if(room==null) room=mob.location();
-		
+
 		DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
 		Body.setCharStats(mob.baseCharStats().cloneCharStats());
 		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
@@ -323,14 +323,14 @@ public class StdRace implements Race
 		if(room!=null)
 			room.addItem(Body);
 		Body.recoverEnvStats();
-		for(int i=0;i<mob.numAffects();i++)
+		for(int i=0;i<mob.numEffects();i++)
 		{
-			Ability A=mob.fetchAffect(i);
+			Ability A=mob.fetchEffect(i);
 			if((A!=null)&&(A instanceof DiseaseAffect))
 			{
 				if((Util.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
 				||(Util.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
-					Body.addNonUninvokableAffect((Ability)A.copyOf());
+					Body.addNonUninvokableEffect((Ability)A.copyOf());
 			}
 		}
 
@@ -376,7 +376,7 @@ public class StdRace implements Race
 		}
 		return Body;
 	}
-	
+
 	public Vector racialAbilities(MOB mob)
 	{
 		if((racialAbilityMap==null)
@@ -399,7 +399,7 @@ public class StdRace implements Race
 		}
 		if(racialAbilityMap==null) return empty;
 		Integer level=null;
-		if(mob!=null) 
+		if(mob!=null)
 			level=new Integer(mob.envStats().level());
 		else
 			level=new Integer(Integer.MAX_VALUE);

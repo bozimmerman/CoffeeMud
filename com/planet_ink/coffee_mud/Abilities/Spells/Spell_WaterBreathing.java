@@ -25,7 +25,7 @@ public class Spell_WaterBreathing extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> ability to breathe underwater fades.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> ability to breathe underwater fades.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -52,10 +52,10 @@ public class Spell_WaterBreathing extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whistle(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> attains an aquatic aura!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> attains an aquatic aura!");
 				beneficialAffect(mob,target,0);
 			}
 		}

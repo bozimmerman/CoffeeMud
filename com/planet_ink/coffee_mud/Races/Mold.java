@@ -73,56 +73,56 @@ public class Mold extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((myHost!=null)
 		&&(myHost instanceof MOB))
 		{
-			if(affect.amISource((MOB)myHost))
+			if(msg.amISource((MOB)myHost))
 			{
-				if(((affect.targetMinor()==Affect.TYP_LEAVE)
-					||(affect.sourceMinor()==Affect.TYP_ADVANCE)
-					||(affect.sourceMinor()==Affect.TYP_RETREAT)))
+				if(((msg.targetMinor()==CMMsg.TYP_LEAVE)
+					||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
+					||(msg.sourceMinor()==CMMsg.TYP_RETREAT)))
 				{
-					affect.source().tell("You can't really go anywhere -- you are a mold!");
+					msg.source().tell("You can't really go anywhere -- you are a mold!");
 					return false;
 				}
 			}
 			else
-			if(affect.amITarget(myHost)&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+			if(msg.amITarget(myHost)&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 			{
-				int dmg=affect.targetCode()-Affect.MASK_HURT;
-				switch(affect.sourceMinor())
+				int dmg=msg.targetCode()-CMMsg.MASK_HURT;
+				switch(msg.sourceMinor())
 				{
-				case Affect.TYP_FIRE:
+				case CMMsg.TYP_FIRE:
 					{
-						affect.modify(affect.source(),affect.target(),affect.tool(),
-									  affect.sourceCode(),affect.sourceMessage(),
-									  Affect.MASK_HURT+1,affect.targetMessage(),
-									  affect.othersCode(),affect.othersMessage());
+						msg.modify(msg.source(),msg.target(),msg.tool(),
+									  msg.sourceCode(),msg.sourceMessage(),
+									  CMMsg.MASK_HURT+1,msg.targetMessage(),
+									  msg.othersCode(),msg.othersMessage());
 						((MOB)myHost).curState().setHitPoints(((MOB)myHost).curState().getHitPoints()+dmg);
 					}
 					break;
-				case Affect.TYP_WEAPONATTACK:
-					if((affect.tool()!=null)
-					   &&(affect.tool() instanceof Weapon)
-					   &&((((Weapon)affect.tool()).weaponClassification()==Weapon.TYPE_SLASHING)
-						||(((Weapon)affect.tool()).weaponClassification()==Weapon.TYPE_PIERCING)
-						||(((Weapon)affect.tool()).weaponClassification()==Weapon.TYPE_BASHING)))
+				case CMMsg.TYP_WEAPONATTACK:
+					if((msg.tool()!=null)
+					   &&(msg.tool() instanceof Weapon)
+					   &&((((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_SLASHING)
+						||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_PIERCING)
+						||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_BASHING)))
 					{
-						affect.modify(affect.source(),affect.target(),affect.tool(),
-									  affect.sourceCode(),affect.sourceMessage(),
-									  Affect.MASK_HURT+1,affect.targetMessage(),
-									  affect.othersCode(),affect.othersMessage());
+						msg.modify(msg.source(),msg.target(),msg.tool(),
+									  msg.sourceCode(),msg.sourceMessage(),
+									  CMMsg.MASK_HURT+1,msg.targetMessage(),
+									  msg.othersCode(),msg.othersMessage());
 					}
 					break;
-				case Affect.TYP_COLD:
-					SaucerSupport.adjustDamageMessage(affect,dmg);
+				case CMMsg.TYP_COLD:
+					SaucerSupport.adjustDamageMessage(msg,dmg);
 					break;
 				}
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public String healthText(MOB mob)

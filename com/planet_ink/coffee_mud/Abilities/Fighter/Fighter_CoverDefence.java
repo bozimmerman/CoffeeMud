@@ -19,29 +19,29 @@ public class Fighter_CoverDefence extends StdAbility
 	public Environmental newInstance(){	return new Fighter_CoverDefence();}
 	public int classificationCode(){ return Ability.SKILL; }
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amITarget(mob)
-		   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+		if(msg.amITarget(mob)
+		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(Sense.aliveAwakeMobile(mob,true))
-		   &&(affect.source().rangeToTarget()>0)
+		   &&(msg.source().rangeToTarget()>0)
 		   &&(mob.envStats().height()<84)
-		   &&(affect.tool()!=null)
-		   &&(affect.tool() instanceof Weapon)
-		   &&((((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED)
-			  ||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_THROWN)))
+		   &&(msg.tool()!=null)
+		   &&(msg.tool() instanceof Weapon)
+		   &&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
+			  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)))
 		{
-			FullMsg msg=new FullMsg(affect.source(),mob,null,Affect.MSG_QUIETMOVEMENT,"<T-NAME> take(s) cover from <S-YOUPOSS> attack!");
+			FullMsg msg2=new FullMsg(msg.source(),mob,null,CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> take(s) cover from <S-YOUPOSS> attack!");
 			if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
-			&&(affect.source().getVictim()==mob)
-			&&(mob.location().okAffect(mob,msg)))
+			&&(msg.source().getVictim()==mob)
+			&&(mob.location().okMessage(mob,msg2)))
 			{
-				mob.location().send(mob,msg);
+				mob.location().send(mob,msg2);
 				helpProfficiency(mob);
 				return false;
 			}

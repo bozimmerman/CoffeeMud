@@ -14,24 +14,24 @@ public class Spell_Boomerang extends Spell
 	public Environmental newInstance(){	return new Spell_Boomerang();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	private MOB owner=null;
-	
-	public boolean okAffect(Environmental host, Affect msg)
+
+	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if(!super.okAffect(host,msg))
+		if(!super.okMessage(host,msg))
 			return false;
 		if((msg.tool()==affected)
-		&&(msg.sourceMinor()==Affect.TYP_SELL))
+		&&(msg.sourceMinor()==CMMsg.TYP_SELL))
 		{
-			unInvoke(); 
-			if(affected!=null)	affected.delAffect(this);
+			unInvoke();
+			if(affected!=null)	affected.delEffect(this);
 		}
 		return true;
 	}
-	
-	public void affect(Environmental host, Affect msg)
+
+	public void executeMsg(Environmental host, CMMsg msg)
 	{
-		super.affect(host,msg);
-		if((msg.targetMinor()==Affect.TYP_GET)
+		super.executeMsg(host,msg);
+		if((msg.targetMinor()==CMMsg.TYP_GET)
 		&&(msg.amITarget(affected))
 		&&(text().length()==0))
 		{
@@ -47,8 +47,8 @@ public class Spell_Boomerang extends Spell
 				owner=(MOB)I.owner();
 			if((owner!=null)&&(I.owner()!=null)&&(I.owner()!=owner))
 			{
-				if((msg.sourceMinor()==Affect.TYP_DROP)||(msg.target()==I))
-					msg.addTrailerMsg(new FullMsg(owner,null,Affect.NO_EFFECT,null));
+				if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.target()==I))
+					msg.addTrailerMsg(new FullMsg(owner,null,CMMsg.NO_EFFECT,null));
 				else
 				if(!owner.isMine(I))
 				{
@@ -76,10 +76,10 @@ public class Spell_Boomerang extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and cast(s) a spell.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> glows slightly!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glows slightly!");
 				mob.tell(target.name()+" will now await someone to GET it before acknowleding its new master.");
 				setMiscText("");
 				beneficialAffect(mob,target,0);

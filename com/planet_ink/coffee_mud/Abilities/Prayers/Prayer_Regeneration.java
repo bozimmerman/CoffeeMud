@@ -48,7 +48,7 @@ public class Prayer_Regeneration extends Prayer
 		if(((Sense.isSitting(mob))||(Sense.isSleeping(mob)))
 		&&(!mob.isInCombat())
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false))
-		&&(tickID==Host.MOB_TICK))
+		&&(tickID==Host.TICK_MOB))
 		{
 			mob.curState().recoverTick(mob,mob.maxState());
 			mob.curState().recoverTick(mob,mob.maxState());
@@ -62,7 +62,7 @@ public class Prayer_Regeneration extends Prayer
 	{
 		MOB target=mob;
 		if(target==null) return false;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("You already have regenerative powers.");
 			return false;
@@ -71,9 +71,9 @@ public class Prayer_Regeneration extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
@@ -83,7 +83,7 @@ public class Prayer_Regeneration extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) regenerative abilities!":"^S<S-NAME> "+prayWord(mob)+" for divine regenerative abilities!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

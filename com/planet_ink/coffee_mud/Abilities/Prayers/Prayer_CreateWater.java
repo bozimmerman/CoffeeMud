@@ -20,7 +20,7 @@ public class Prayer_CreateWater extends Prayer
 		Item spring=(Item)affected; // protects against uninvoke loops!
 		Room SpringLocation=CoffeeUtensils.roomLocation(spring);
 		if((canBeUninvoked())&&(SpringLocation!=null))
-			SpringLocation.showHappens(Affect.MSG_OK_VISUAL,"The little spring dries up.");
+			SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,"The little spring dries up.");
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -39,7 +39,7 @@ public class Prayer_CreateWater extends Prayer
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for water.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String itemID = "Spring";
@@ -53,13 +53,13 @@ public class Prayer_CreateWater extends Prayer
 				}
 
 				mob.location().addItem(newItem);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
 				{
 					Ability A=(Ability)copyOf();
 					A.setInvoker(mob);
-					newItem.addNonUninvokableAffect(A);
+					newItem.addNonUninvokableEffect(A);
 				}
 				else
 					beneficialAffect(mob,newItem,0);

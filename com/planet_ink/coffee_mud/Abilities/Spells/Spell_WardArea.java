@@ -17,7 +17,7 @@ public class Spell_WardArea extends Spell implements Trap
 	public Environmental newInstance(){	return new Spell_WardArea();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	private boolean sprung=false;
-	
+
 	public MOB theInvoker()
 	{
 		if(invoker()!=null) return invoker();
@@ -36,27 +36,27 @@ public class Spell_WardArea extends Spell implements Trap
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
-	{beneficialAffect(mob,E,0);return (Trap)E.fetchAffect(ID());}
+	{beneficialAffect(mob,E,0);return (Trap)E.fetchEffect(ID());}
 
 	public boolean sprung(){return sprung;}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(sprung) return super.okAffect(myHost,affect);
-		if(!super.okAffect(myHost,affect))
+		if(sprung) return super.okMessage(myHost,msg);
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affect.amITarget(affected))
-		&&(!affect.amISource(invoker())))
+		if((msg.amITarget(affected))
+		&&(!msg.amISource(invoker())))
 		{
-			if((affect.targetMinor()==Affect.TYP_ENTER)
-			||(affect.targetMinor()==Affect.TYP_LEAVE)
-			||(affect.targetMinor()==Affect.TYP_FLEE))
+			if((msg.targetMinor()==CMMsg.TYP_ENTER)
+			||(msg.targetMinor()==CMMsg.TYP_LEAVE)
+			||(msg.targetMinor()==CMMsg.TYP_FLEE))
 			{
-				if(affect.targetMinor()==Affect.TYP_LEAVE)
+				if(msg.targetMinor()==CMMsg.TYP_LEAVE)
 					return true;
 				else
 				{
-					spring(affect.source());
+					spring(msg.source());
 					return false;
 				}
 			}
@@ -74,7 +74,7 @@ public class Spell_WardArea extends Spell implements Trap
 		if((shooter==null)||(parameters==null))
 			return;
 		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
-			mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> avoid(s) a magical ward trap.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a magical ward trap.");
 		else
 		{
 			MOB newCaster=CMClass.getMOB("StdMOB");
@@ -102,17 +102,17 @@ public class Spell_WardArea extends Spell implements Trap
 		sprung=true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if(sprung)
 			return;
 
-		if((affect.amITarget(affected))
-		&&(!affect.amISource(invoker())))
+		if((msg.amITarget(affected))
+		&&(!msg.amISource(invoker())))
 		{
-			if(affect.targetMinor()==Affect.TYP_LEAVE)
-				spring(affect.source());
+			if(msg.targetMinor()==CMMsg.TYP_LEAVE)
+				spring(msg.source());
 		}
 	}
 
@@ -162,10 +162,10 @@ public class Spell_WardArea extends Spell implements Trap
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		Environmental target = mob.location();
-		if((target.fetchAffect(this.ID())!=null)||(givenTarget!=null))
+		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"A ward trap has already been set here!");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -180,13 +180,13 @@ public class Spell_WardArea extends Spell implements Trap
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> set(s) a magical trap.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
-					mob.location().addNonUninvokableAffect((Ability)copyOf());
+					mob.location().addNonUninvokableEffect((Ability)copyOf());
 				else
 					beneficialAffect(mob,mob.location(),9999);
 				shooter=null;

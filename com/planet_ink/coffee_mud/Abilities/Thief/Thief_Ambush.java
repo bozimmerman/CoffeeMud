@@ -20,7 +20,7 @@ public class Thief_Ambush extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect("Thief_Hide")!=null)
+		if(mob.fetchEffect("Thief_Hide")!=null)
 		{
 			mob.tell("You are already hiding.");
 			return false;
@@ -64,8 +64,8 @@ public class Thief_Ambush extends ThiefSkill
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to set up an ambush, but fail(s).");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.MASK_MOVE),"<S-NAME> set(s) up an ambush, directing everyone to hiding places.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),"<S-NAME> set(s) up an ambush, directing everyone to hiding places.");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;

@@ -28,41 +28,41 @@ public class Chant_WaterWalking extends Chant
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect)) return false;
+		if(!super.okMessage(myHost,msg)) return false;
 		if(affected==null) return true;
 		MOB mob=(MOB)affected;
-		if((affect.amISource(mob))
+		if((msg.amISource(mob))
 		&&(mob.location()!=null)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof Room))
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof Room))
 		{
-			if((affect.sourceMinor()==Affect.TYP_ENTER)
+			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			&&((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 				||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
-			&&(affect.target()==mob.location().getRoomInDir(Directions.UP)))
+			&&(msg.target()==mob.location().getRoomInDir(Directions.UP)))
 			{
-				affect.source().tell("Your water walking magic prevents you from ascending from the water surface.");
+				msg.source().tell("Your water walking magic prevents you from ascending from the water surface.");
 				return false;
 			}
 			else
-			if((affect.sourceMinor()==Affect.TYP_LEAVE)
+			if((msg.sourceMinor()==CMMsg.TYP_LEAVE)
 			&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
 			&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Exit))
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Exit))
 			{
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R=mob.location().getRoomInDir(d);
 					if((R!=null)
-					&&(mob.location().getReverseExit(d)==affect.tool())
+					&&(mob.location().getReverseExit(d)==msg.tool())
 					&&((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 					||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)))
 					{
 						triggerNow=true;
-						affect.source().recoverEnvStats();
+						msg.source().recoverEnvStats();
 						return true;
 					}
 				}
@@ -71,9 +71,9 @@ public class Chant_WaterWalking extends Chant
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if(triggerNow)triggerNow=false;
 	}
 
@@ -96,8 +96,8 @@ public class Chant_WaterWalking extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already a water walker.");
 			return false;
@@ -120,12 +120,12 @@ public class Chant_WaterWalking extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> feel(s) a little lighter!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> feel(s) a little lighter!");
 					success=beneficialAffect(mob,target,0);
 				}
 			}

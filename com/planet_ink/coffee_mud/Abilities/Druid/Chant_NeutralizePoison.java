@@ -18,9 +18,9 @@ public class Chant_NeutralizePoison extends Chant
 	{
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numAffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++)
 		{
-			Ability A=fromMe.fetchAffect(a);
+			Ability A=fromMe.fetchEffect(a);
 			if((A!=null)&&(A.classificationCode()==Ability.POISON))
 				offenders.addElement(A);
 		}
@@ -46,10 +46,10 @@ public class Chant_NeutralizePoison extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> look(s) cleansed of any poisons.":"^S<S-NAME> chant(s) for <T-NAME> to be cleansed of poisons.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int old=target.numAffects();
+				int old=target.numEffects();
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					((Ability)offensiveAffects.elementAt(a)).unInvoke();
 				if((target instanceof Drink)&&(((Drink)target).liquidHeld()==EnvResource.RESOURCE_POISON))
@@ -57,7 +57,7 @@ public class Chant_NeutralizePoison extends Chant
 					((Drink)target).setLiquidHeld(EnvResource.RESOURCE_FRESHWATER);
 					target.baseEnvStats().setAbility(0);
 				}
-				if(old>target.numAffects())
+				if(old>target.numEffects())
 				{
 					if(target instanceof MOB)
 					{

@@ -40,7 +40,7 @@ public class Sense
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_BREATHE)==0); }
 	public static boolean canSeeMetal(Environmental E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_METAL)==EnvStats.CAN_SEE_METAL); }
-	
+
 	public static boolean isSeen(Environmental E)
 	{ return (E!=null)&&(((E.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0) || isSleeping(E)); }
 	public static boolean isHidden(Environmental E)
@@ -51,7 +51,7 @@ public class Sense
 		&&(E instanceof MOB)
 		&&(((MOB)E).isInCombat()))
 			return false;
-		return isInHide; 
+		return isInHide;
 	}
 	public static boolean isInvisible(Environmental E)
 	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_INVISIBLE)==EnvStats.IS_INVISIBLE); }
@@ -68,7 +68,7 @@ public class Sense
 		}
 		return false;
 	}
-	
+
 	public static boolean isATrackingMonster(Environmental E)
 	{
 		if(E==null) return false;
@@ -76,7 +76,7 @@ public class Sense
 			return flaggedAffects(E,Ability.FLAG_TRACKING).size()>0;
 		return false;
 	}
-	
+
 	public static boolean isGood(Environmental E)
 	{
 		if(E==null) return false;
@@ -126,7 +126,7 @@ public class Sense
 		   return false;
 		return true;
 	}
-	
+
 	public static boolean canSenseMoving(Environmental sensed, Environmental sensor)
 	{
 		if(isSneaking(sensed)&&(!canSeeSneakers(sensor)))
@@ -167,16 +167,16 @@ public class Sense
 	public static boolean isBoundOrHeld(Environmental E)
 	{
 		if(E==null) return false;
-		if((E.envStats().disposition()&EnvStats.IS_BOUND)==EnvStats.IS_BOUND) 
+		if((E.envStats().disposition()&EnvStats.IS_BOUND)==EnvStats.IS_BOUND)
 			return true;
 		return flaggedAffects(E,Ability.FLAG_BINDING).size()>0;
 	}
 	public static boolean isOnFire(Environmental seen)
 	{
 		if(seen==null) return false;
-		if(seen.fetchAffect("Burning")!=null)
+		if(seen.fetchEffect("Burning")!=null)
 			return true;
-		if(seen.fetchAffect("Prayer_FlameWeapon")!=null)
+		if(seen.fetchEffect("Prayer_FlameWeapon")!=null)
 			return true;
 		if(!(seen instanceof Light))
 			return false;
@@ -186,7 +186,7 @@ public class Sense
 			return true;
 		return false;
 	}
-	
+
 	public static boolean canBeSeenBy(Environmental seen , Environmental seer)
 	{
 		if(seer==seen) return true;
@@ -195,16 +195,16 @@ public class Sense
 		if((seer instanceof MOB)
 		&&(Util.bset(((MOB)seer).getBitmap(),MOB.ATT_SYSOPMSGS)))
 			return true;
-		
+
 		if(!canSee(seer)) return false;
 		if(!isSeen(seen)) return false;
 
 		if((isInvisible(seen))&&(!canSeeInvisible(seer)))
 		   return false;
-		
+
 		if((isHidden(seen))&&(!canSeeHidden(seer)))
 		   return false;
-		
+
 		if((seer instanceof MOB)&&(!(seen instanceof Room)))
 		{
 			MOB mob=(MOB)seer;
@@ -265,7 +265,7 @@ public class Sense
 			else
 			if((((Item)seen).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)
 				Say.append(" (^wmithril aura^?)");
-		
+
 		if(isBound(seen))
 			Say.append(" (^Wbound^?)");
 		if(isFlying(seen))
@@ -310,7 +310,7 @@ public class Sense
 		   return false;
 		return true;
 	}
-	
+
 	public final static int flag_arrives=0;
 	public final static int flag_leaves=1;
 	public final static int flag_is=2;
@@ -406,13 +406,13 @@ public class Sense
 				}
 			}
 			if(totalWeight<=0) return true;
-			
+
 			return (totalFloatilla/totalWeight)<=1000;
 		}
 		return false;
 	}
-	
-	
+
+
 	public static boolean isInFlight(Environmental E)
 	{
 		if(E==null) return false;
@@ -421,7 +421,7 @@ public class Sense
 			return isInFlight(((Rider)E).riding());
 		return false;
 	}
-	
+
 	public static boolean isAnimalIntelligence(MOB E)
 	{
 		return (E!=null)&&(E.charStats().getStat(CharStats.INTELLIGENCE)<2);
@@ -430,8 +430,8 @@ public class Sense
 	{
 		return (E!=null)&&(E.charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation"));
 	}
-	
-	
+
+
 	public static boolean isMobile(Environmental E)
 	{
 		if(E!=null)
@@ -443,7 +443,7 @@ public class Sense
 			}
 		return false;
 	}
-	
+
 	public static Vector flaggedBehaviors(Environmental E, long flag)
 	{
 		Vector V=new Vector();
@@ -456,20 +456,20 @@ public class Sense
 			}
 		return V;
 	}
-	
+
 	public static Vector flaggedAffects(Environmental E, long flag)
 	{
 		Vector V=new Vector();
 		if(E!=null)
-			for(int a=0;a<E.numAffects();a++)
+			for(int a=0;a<E.numEffects();a++)
 			{
-				Ability A=E.fetchAffect(a);
+				Ability A=E.fetchEffect(a);
 				if((A!=null)&&(Util.bset(A.flags(),flag)))
 				{ V.addElement(A);}
 			}
 		return V;
 	}
-	
+
 	public static Vector flaggedAbilities(MOB E, long flag)
 	{
 		Vector V=new Vector();
@@ -482,7 +482,7 @@ public class Sense
 			}
 		return V;
 	}
-	
+
 	public static boolean canAccess(MOB mob, Area A)
 	{
 		if(A==null) return false;
@@ -497,7 +497,7 @@ public class Sense
 			return true;
 		return false;
 	}
-	
+
 	public static String wornLocation(long wornCode)
 	{
 		for(int wornNum=0;wornNum<20;wornNum++)

@@ -29,7 +29,7 @@ public class Chant_PredictWeather extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		   &&(affected!=null)
 		   &&(affected instanceof MOB)
 		   &&(((MOB)affected).location()!=null)
@@ -51,8 +51,8 @@ public class Chant_PredictWeather extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already detecting weather.");
 			return false;
@@ -72,7 +72,7 @@ public class Chant_PredictWeather extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> chant(s) for weather sensitivity!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				lastPrediction="";
 				mob.location().send(mob,msg);

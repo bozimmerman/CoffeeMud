@@ -19,36 +19,36 @@ public class Fighter_ReturnProjectile extends StdAbility
 	public int classificationCode(){ return Ability.SKILL;}
 	public boolean doneThisRound=false;
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if(affect.amITarget(mob)
+		if(msg.amITarget(mob)
 		&&(!doneThisRound)
 		&&(Sense.aliveAwakeMobile(mob,true))
-		&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon)
-		&&((((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED)
-		   ||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_THROWN))
-		&&(!(affect.tool() instanceof Electronics))
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon)
+		&&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
+		   ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
+		&&(!(msg.tool() instanceof Electronics))
 		&&(mob.rangeToTarget()>0)
 		&&(mob.charStats().getBodyPart(Race.BODY_HAND)>1)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.DEXTERITY),false))
 		&&(mob.freeWearPositions(Item.HELD)>0))
 		{
-			Item w=(Item)affect.tool();
+			Item w=(Item)msg.tool();
 			if((((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN)
-			&&(affect.source().isMine(w)))
+			&&(msg.source().isMine(w)))
 			{
 				if(!w.amWearingAt(Item.INVENTORY))
-					ExternalPlay.remove(affect.source(),w,true);
-				ExternalPlay.drop(affect.source(),w,true,false);
+					ExternalPlay.remove(msg.source(),w,true);
+				ExternalPlay.drop(msg.source(),w,true,false);
 			}
 			else
 			if(((Weapon)w).requiresAmmunition())
@@ -77,12 +77,12 @@ public class Fighter_ReturnProjectile extends StdAbility
 			}
 			if(mob.location().isContent(w))
 			{
-				FullMsg msg=new FullMsg(mob,w,affect.source(),Affect.MSG_GET,"<S-NAME> catch(es) the <T-NAME> shot by <O-NAME>!");
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg2=new FullMsg(mob,w,msg.source(),CMMsg.MSG_GET,"<S-NAME> catch(es) the <T-NAME> shot by <O-NAME>!");
+				if(mob.location().okMessage(mob,msg2))
 				{
-					mob.location().send(mob,msg);
+					mob.location().send(mob,msg2);
 					if(mob.isMine(w))
-						ExternalPlay.postAttack(mob,affect.source(),w);
+						ExternalPlay.postAttack(mob,msg.source(),w);
 					doneThisRound=true;
 					helpProfficiency(mob);
 					return false;
@@ -94,7 +94,7 @@ public class Fighter_ReturnProjectile extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 			doneThisRound=false;
 		return super.tick(ticking,tickID);
 	}

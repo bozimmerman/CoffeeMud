@@ -135,7 +135,7 @@ public class Chant_VineWeave extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the plants.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Vector V=(Vector)Resources.getResource("WEAVING RECIPES");
@@ -183,13 +183,13 @@ public class Chant_VineWeave extends Chant
 				{
 					String parm="";
 					if(spell.indexOf(";")>0)
-					{ 
+					{
 						parm=spell.substring(spell.indexOf(";")+1);
 						spell=spell.substring(0,spell.indexOf(";"));
 					}
 					Ability A=CMClass.getAbility(spell);
 					A.setMiscText(parm);
-					if(A!=null)	building.addNonUninvokableAffect(A);
+					if(A!=null)	building.addNonUninvokableEffect(A);
 				}
 				if(building instanceof Weapon)
 				{
@@ -263,7 +263,7 @@ public class Chant_VineWeave extends Chant
 				building.recoverEnvStats();
 
 				mob.location().addItemRefuse(building,Item.REFUSE_RESOURCE);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,building.name()+" twists out of some vines and grows still.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,building.name()+" twists out of some vines and grows still.");
 				mob.location().recoverEnvStats();
 			}
 		}

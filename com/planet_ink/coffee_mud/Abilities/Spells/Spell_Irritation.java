@@ -14,7 +14,7 @@ public class Spell_Irritation extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Irritation();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -35,10 +35,10 @@ public class Spell_Irritation extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> start(s) wincing and scratching!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> start(s) wincing and scratching!");
 				maliciousAffect(mob,target,0,-1);
 			}
 		}

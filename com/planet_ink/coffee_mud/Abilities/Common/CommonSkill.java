@@ -57,16 +57,16 @@ public class CommonSkill extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((mob.isInCombat())||(mob.location()!=activityRoom)||(!Sense.aliveAwakeMobile(mob,true)))
 			{aborted=true; unInvoke(); return false;}
 			if(tickDown==4)
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+".");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+".");
 			else
 			if((tickUp%4)==0)
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+".");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+".");
 
 			tickUp++;
 		}
@@ -164,7 +164,7 @@ public class CommonSkill extends StdAbility
 	protected void commonEmote(MOB mob, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
-			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT|Affect.MASK_GENERAL,str);
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_GENERAL,str);
 		else
 			mob.tell(mob,null,null,str);
 	}
@@ -253,7 +253,7 @@ public class CommonSkill extends StdAbility
 		}
 		return mostItem;
 	}
-	
+
 	public Item getRequiredFire(MOB mob)
 	{
 		Item fire=null;
@@ -285,7 +285,7 @@ public class CommonSkill extends StdAbility
 			return usage;
 		}
 		if(usageType()==Ability.USAGE_NADA) return new int[3];
-		
+
 		int consumed=25;
 		int diff=mob.envStats().level()-CMAble.qualifyingLevel(mob,this);
 		if(diff>0)
@@ -299,7 +299,7 @@ public class CommonSkill extends StdAbility
 		if(overrideMana()>=0) consumed=overrideMana();
 		return buildCostArray(mob,consumed);
 	}
-	
+
 	protected int findNumberOfResource(Room room, int resource)
 	{
 		int foundWood=0;
@@ -525,7 +525,7 @@ public class CommonSkill extends StdAbility
 		}
 		return V;
 	}
-	
+
 	public boolean publicScan(MOB mob, Vector commands)
 	{
 		String rest=Util.combine(commands,1);
@@ -566,8 +566,8 @@ public class CommonSkill extends StdAbility
 		commonTell(mob,buf.toString());
 		return true;
 	}
-	
-	
+
+
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(E==null) return false;
@@ -592,23 +592,23 @@ public class CommonSkill extends StdAbility
 		}
 		return true;
 	}
-	
-	protected int destroyResources(Room room, 
-									int howMuch, 
-									int finalMaterial, 
+
+	protected int destroyResources(Room room,
+									int howMuch,
+									int finalMaterial,
 									Item firstOther,
 									Item never)
 	{
 		int lostValue=0;
 		if(room==null) return 0;
-		
+
 		if(howMuch>0)
 		for(int i=room.numItems()-1;i>=0;i--)
 		{
 			Item I=room.fetchItem(i);
 			if(I==null) break;
 			if(I==never) continue;
-			
+
 			if((firstOther!=null)&&(I==firstOther))
 			{
 				lostValue+=I.value();
@@ -621,7 +621,7 @@ public class CommonSkill extends StdAbility
 			&&(I.material()==finalMaterial))
 			{
 				if(I.baseEnvStats().weight()>howMuch)
-				{ 
+				{
 					I.baseEnvStats().setWeight(I.baseEnvStats().weight()-howMuch);
 					I.destroy();
 					lostValue+=I.value();
@@ -638,15 +638,15 @@ public class CommonSkill extends StdAbility
 					howMuch-=I.baseEnvStats().weight();
 					I.destroy();
 					lostValue+=I.value();
-					if(howMuch<=0) 
+					if(howMuch<=0)
 						break;
 				}
 			}
 		}
 		return lostValue;
 	}
-	
-	
+
+
 	protected Item makeItemResource(int type)
 	{
 		Item I=null;
@@ -689,9 +689,9 @@ public class CommonSkill extends StdAbility
 			commonTell(mob,"You need to stand up!");
 			return false;
 		}
-		for(int a=mob.numAffects()-1;a>=0;a--)
+		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
-			Ability A=mob.fetchAffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
 			{
 				if(A instanceof CommonSkill)

@@ -28,9 +28,9 @@ public class Spell_SummonMarker extends Spell
 		{
 			Room R=(Room)r.nextElement();
 			if(Sense.canAccess(mob,R))
-			for(int a=0;a<R.numAffects();a++)
+			for(int a=0;a<R.numEffects();a++)
 			{
-				Ability A=R.fetchAffect(a);
+				Ability A=R.fetchEffect(a);
 				if((A!=null)
 				   &&(A.ID().equals(ID()))
 				   &&(A.invoker()==mob))
@@ -48,10 +48,10 @@ public class Spell_SummonMarker extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> marker energy to this place!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,mob.location(),Affect.MSG_OK_VISUAL,"The spot <S-NAME> pointed to glows for brief moment.");
+				mob.location().show(mob,mob.location(),CMMsg.MSG_OK_VISUAL,"The spot <S-NAME> pointed to glows for brief moment.");
 				beneficialAffect(mob,mob.location(),(adjustedLevel(mob)*240)+450);
 			}
 

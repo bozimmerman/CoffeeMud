@@ -14,16 +14,16 @@ public class Prop_PeaceMaker extends Property
 	public String accountForYourself()
 	{ return "Peace Maker";	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((Util.bset(affect.sourceCode(),affect.MASK_MALICIOUS))
-		||(Util.bset(affect.targetCode(),affect.MASK_MALICIOUS))
-		||(Util.bset(affect.othersCode(),affect.MASK_MALICIOUS)))
+		if((Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+		||(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		||(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
 		{
-			if((affect.source()!=null)
-			&&(affect.target()!=null)
-			&&(affect.source()!=affected)
-			&&(affect.source()!=affect.target()))
+			if((msg.source()!=null)
+			&&(msg.target()!=null)
+			&&(msg.source()!=affected)
+			&&(msg.source()!=msg.target()))
 			{
 				if(affected instanceof MOB)
 				{
@@ -37,10 +37,10 @@ public class Prop_PeaceMaker extends Property
 							Vector V=Util.parseSemicolons(text(),true);
 							t=(String)V.elementAt(Dice.roll(1,V.size(),-1));
 						}
-						ExternalPlay.quickSay(mob,affect.source(),t,false,false);
+						ExternalPlay.quickSay(mob,msg.source(),t,false,false);
 					}
 					else
-						return super.okAffect(myHost,affect);
+						return super.okMessage(myHost,msg);
 				}
 				else
 				{
@@ -50,15 +50,15 @@ public class Prop_PeaceMaker extends Property
 						Vector V=Util.parseSemicolons(text(),true);
 						t=(String)V.elementAt(Dice.roll(1,V.size(),-1));
 					}
-					affect.source().tell(t);
+					msg.source().tell(t);
 				}
-				if(affect.source().getVictim()!=null)
-					affect.source().getVictim().makePeace();
-				affect.source().makePeace();
-				affect.modify(affect.source(),affect.target(),affect.tool(),Affect.NO_EFFECT,"",Affect.NO_EFFECT,"",Affect.NO_EFFECT,"");
+				if(msg.source().getVictim()!=null)
+					msg.source().getVictim().makePeace();
+				msg.source().makePeace();
+				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

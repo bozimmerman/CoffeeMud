@@ -34,7 +34,7 @@ public class Spell_Shelter extends Spell
 				if(mob==null) break;
 				mob.tell("You return to your previous location.");
 
-				FullMsg enterMsg=new FullMsg(mob,previousLocation,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of nowhere!");
+				FullMsg enterMsg=new FullMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere!");
 				previousLocation.bringMobHere(mob,false);
 				previousLocation.send(mob,enterMsg);
 				ExternalPlay.look(mob,null,true);
@@ -50,16 +50,16 @@ public class Spell_Shelter extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(mob.fetchAffect(ID())!=null)
+		if(mob.fetchEffect(ID())!=null)
 		{
-			mob.fetchAffect(ID()).unInvoke();
+			mob.fetchEffect(ID()).unInvoke();
 			return false;
 		}
 
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!^?");
-		if(mob.location().okAffect(mob,msg))
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			Hashtable h=properTargets(mob,givenTarget,false);
@@ -75,9 +75,9 @@ public class Spell_Shelter extends Spell
 				MOB follower=(MOB)f.nextElement();
 				if((follower.isMonster())||(follower==mob))
 				{
-					FullMsg enterMsg=new FullMsg(follower,newRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of nowhere.");
+					FullMsg enterMsg=new FullMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere.");
 					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,affectType(auto),"<S-NAME> disappear(s) into oblivion.");
-					if(thisRoom.okAffect(follower,leaveMsg)&&newRoom.okAffect(follower,enterMsg))
+					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
 						{

@@ -21,30 +21,30 @@ public class Prop_ReqNoMOB extends Property
 			return true;
 		return !mob.isMonster();
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof Room)
-		&&(affect.targetMinor()==Affect.TYP_ENTER)
-		&&(!Sense.isFalling(affect.source()))
-		&&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof Room)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(!Sense.isFalling(msg.source()))
+		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			Hashtable H=new Hashtable();
 			if(text().toUpperCase().indexOf("NOFOL")>=0)
-				H.put(affect.source(),affect.source());
+				H.put(msg.source(),msg.source());
 			else
 			{
-				affect.source().getGroupMembers(H);
+				msg.source().getGroupMembers(H);
 				for(Enumeration e=H.elements();e.hasMoreElements();)
 					((MOB)e.nextElement()).getRideBuddies(H);
 			}
 			for(Enumeration e=H.elements();e.hasMoreElements();)
 				if(passesMuster((MOB)e.nextElement()))
-					return super.okAffect(myHost,affect);
-			affect.source().tell("You are not allowed in there.");
+					return super.okMessage(myHost,msg);
+			msg.source().tell("You are not allowed in there.");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

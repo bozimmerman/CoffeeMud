@@ -63,8 +63,8 @@ public class Spell_MagicItem extends Spell
 			mob.tell("That spell is too powerful to enchant into anything.");
 			return false;
 		}
-		
-		if((wand.numAffects()>0)||(!wand.isGeneric()))
+
+		if((wand.numEffects()>0)||(!wand.isGeneric()))
 		{
 			mob.tell("You can't enchant '"+wand.name()+"'.");
 			return false;
@@ -85,24 +85,24 @@ public class Spell_MagicItem extends Spell
 			mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 			setMiscText(wandThis.ID());
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,null,Affect.MSG_OK_VISUAL,"<T-NAME> glow(s) brightly!");
+				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s) brightly!");
 				wand.baseEnvStats().setDisposition(target.baseEnvStats().disposition()|EnvStats.IS_BONUS);
 				wand.baseEnvStats().setLevel(wand.baseEnvStats().level()+(CMAble.lowestQualifyingLevel(wandThis.ID())/2));
 				if(wand instanceof Armor)
 				{
 					Ability A=CMClass.getAbility("Prop_WearSpellCast");
 					A.setMiscText(wandThis.ID()+";");
-					wand.addNonUninvokableAffect(A);
+					wand.addNonUninvokableEffect(A);
 				}
 				else
 				if(wand instanceof Weapon)
 				{
 					Ability A=CMClass.getAbility("Prop_FightSpellCast");
 					A.setMiscText("25%;"+wandThis.ID()+";");
-					wand.addNonUninvokableAffect(A);
+					wand.addNonUninvokableEffect(A);
 				}
 				else
 				if((wand instanceof Food)
@@ -110,20 +110,20 @@ public class Spell_MagicItem extends Spell
 				{
 					Ability A=CMClass.getAbility("Prop_UseSpellCast2");
 					A.setMiscText(wandThis.ID()+";");
-					wand.addNonUninvokableAffect(A);
+					wand.addNonUninvokableEffect(A);
 				}
 				else
 				if(wand.fitsOn(Item.HELD)||wand.fitsOn(Item.WIELD))
 				{
 					Ability A=CMClass.getAbility("Prop_WearSpellCast");
 					A.setMiscText(wandThis.ID()+";");
-					wand.addNonUninvokableAffect(A);
+					wand.addNonUninvokableEffect(A);
 				}
 				else
 				{
 					Ability A=CMClass.getAbility("Prop_WearSpellCast");
 					A.setMiscText(wandThis.ID()+";");
-					wand.addNonUninvokableAffect(A);
+					wand.addNonUninvokableEffect(A);
 				}
 				wand.recoverEnvStats();
 			}

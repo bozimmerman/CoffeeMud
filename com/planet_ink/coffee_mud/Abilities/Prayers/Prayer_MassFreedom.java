@@ -18,10 +18,10 @@ public class Prayer_MassFreedom extends Prayer
 		MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
-		FullMsg msg=new FullMsg(newMOB,null,null,Affect.MSG_SIT,null);
-		for(int a=0;a<fromMe.numAffects();a++)
+		FullMsg msg=new FullMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
+		for(int a=0;a<fromMe.numEffects();a++)
 		{
-			Ability A=fromMe.fetchAffect(a);
+			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)
 			{
 				try
@@ -30,7 +30,7 @@ public class Prayer_MassFreedom extends Prayer
 					A.affectEnvStats(newMOB,newMOB.envStats());
 					if((!Sense.aliveAwakeMobile(newMOB,true))
 					   ||(Util.bset(A.flags(),Ability.FLAG_BINDING))
-					   ||(!A.okAffect(newMOB,msg)))
+					   ||(!A.okMessage(newMOB,msg)))
 					if((A.invoker()==null)
 					   ||((A.invoker()!=null)
 						  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
@@ -54,7 +54,7 @@ public class Prayer_MassFreedom extends Prayer
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of freedom flows through the air":"^S<S-NAME> "+prayWord(mob)+" for freedom, and the area begins to fill with divine glory.^?");
 			Room room=mob.location();
-			if((room!=null)&&(room.okAffect(mob,msg)))
+			if((room!=null)&&(room.okMessage(mob,msg)))
 			{
 				room.send(mob,msg);
 				for(int i=0;i<room.numInhabitants();i++)
@@ -70,12 +70,12 @@ public class Prayer_MassFreedom extends Prayer
 						// and add it to the affects list of the
 						// affected MOB.  Then tell everyone else
 						// what happened.
-						int old=target.numAffects();
+						int old=target.numEffects();
 						for(int a=offensiveAffects.size()-1;a>=0;a--)
 							((Ability)offensiveAffects.elementAt(a)).unInvoke();
 						nothingDone=false;
-						if((old>target.numAffects())&&(target.location()!=null))
-							target.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) less constricted.");
+						if((old>target.numEffects())&&(target.location()!=null))
+							target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) less constricted.");
 					}
 				}
 			}

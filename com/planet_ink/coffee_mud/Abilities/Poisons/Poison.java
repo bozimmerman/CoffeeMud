@@ -28,18 +28,18 @@ public class Poison extends StdAbility
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return (invoker!=null)?Dice.roll(invoker().envStats().level(),3,1):0;}
 	private boolean processing=false;
-	
+
 	protected int poisonTick=3;
-	
+
 	protected boolean catchIt(MOB mob, Environmental target)
 	{
 		MOB poisoner=invoker;
 		if(poisoner==null) poisoner=mob;
 		if((poisoner==null)&&(target instanceof MOB)) poisoner=(MOB)target;
-		if((target!=null)&&(target instanceof MOB)&&(target.fetchAffect(ID())==null))
+		if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
 		{
 			MOB targetMOB=(MOB)target;
-			if(targetMOB.location().show(targetMOB,null,Affect.MASK_GENERAL|Affect.MASK_MALICIOUS|Affect.TYP_POISON,POISON_START()))
+			if(targetMOB.location().show(targetMOB,null,CMMsg.MASK_GENERAL|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,POISON_START()))
 			{
 				maliciousAffect(poisoner,target,POISON_TICKS(),-1);
 				return true;
@@ -47,25 +47,25 @@ public class Poison extends StdAbility
 		}
 		return false;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		
+
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
-		
+
 		MOB mob=(MOB)affected;
 		if(mob==null) return false;
 		if((--poisonTick)<=0)
 		{
 			poisonTick=POISON_DELAY();
 			if(POISON_AFFECT().length()>0)
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,POISON_AFFECT()+CommonStrings.msp("poisoned.wav",10));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,POISON_AFFECT()+CommonStrings.msp("poisoned.wav",10));
 			if(invoker==null) invoker=mob;
 			if(POISON_DAMAGE()!=0)
-				ExternalPlay.postDamage(invoker,mob,this,POISON_DAMAGE(),Affect.MASK_GENERAL|Affect.TYP_POISON,-1,null);
+				ExternalPlay.postDamage(invoker,mob,this,POISON_DAMAGE(),CMMsg.MASK_GENERAL|CMMsg.TYP_POISON,-1,null);
 		}
 		return true;
 	}
@@ -99,7 +99,7 @@ public class Poison extends StdAbility
 		}
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(affected==null) return;
 		if(affected instanceof Item)
@@ -109,39 +109,39 @@ public class Poison extends StdAbility
 				Item myItem=(Item)affected;
 				if(myItem.owner()==null) return;
 				processing=true;
-				if(affect.amITarget(myItem))
-					switch(affect.sourceMinor())
+				if(msg.amITarget(myItem))
+					switch(msg.sourceMinor())
 					{
-					case Affect.TYP_DRINK:
+					case CMMsg.TYP_DRINK:
 						if(myItem instanceof Drink)
-							catchIt(affect.source(),affect.source());
+							catchIt(msg.source(),msg.source());
 						break;
-					case Affect.TYP_EAT:
+					case CMMsg.TYP_EAT:
 						if(myItem instanceof Food)
-							catchIt(affect.source(),affect.source());
+							catchIt(msg.source(),msg.source());
 						break;
 					}
 				else
-				if(affect.tool()==affected)
-					switch(affect.sourceMinor())
+				if(msg.tool()==affected)
+					switch(msg.sourceMinor())
 					{
-					case Affect.TYP_WEAPONATTACK:
-						if((affect.source()!=affect.target())
-						&&(affect.target()!=null)
+					case CMMsg.TYP_WEAPONATTACK:
+						if((msg.source()!=msg.target())
+						&&(msg.target()!=null)
 						&&(myItem instanceof Weapon)
-						&&(affect.target() instanceof MOB))
+						&&(msg.target() instanceof MOB))
 						{
 							tickDown--;
-							catchIt((MOB)affect.target(),affect.target());
+							catchIt((MOB)msg.target(),msg.target());
 						}
 						break;
 					}
 			}
 			processing=false;
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
@@ -153,17 +153,17 @@ public class Poison extends StdAbility
 		if(success)
 		{
 			String str=auto?"":POISON_CAST();
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON|(auto?Affect.MASK_GENERAL:0),str);
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|(auto?CMMsg.MASK_GENERAL:0),str);
 			Room R=mob.location();
 			if((target instanceof MOB)&&(((MOB)target).location()!=null))
 				R=((MOB)target).location();
-			if(R.okAffect(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
 			    R.send(mob,msg);
 				if(!msg.wasModified())
 				{
 					if(target instanceof MOB)
-						R.show((MOB)target,null,Affect.MSG_OK_VISUAL,POISON_START());
+						R.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,POISON_START());
 				    success=maliciousAffect(mob,target,POISON_TICKS(),-1);
 				}
 			}

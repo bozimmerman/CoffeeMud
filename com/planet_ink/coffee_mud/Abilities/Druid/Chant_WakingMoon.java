@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_WakingMoon extends Chant
 {
 	public String ID() { return "Chant_WakingMoon"; }
-	public String name(){ return "Waking Moon";} 
+	public String name(){ return "Waking Moon";}
 	public String displayText(){return "(Waking Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
@@ -58,8 +58,8 @@ public class Chant_WakingMoon extends Chant
 			mob.tell("This chant does not work indoors.");
 			return false;
 		}
-		
-		if(target.fetchAffect(ID())!=null)
+
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already under the waking moon.");
 			return false;
@@ -81,12 +81,12 @@ public class Chant_WakingMoon extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Waking Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Waking Moon Rises!");
 					beneficialAffect(mob,target,0);
 				}
 			}

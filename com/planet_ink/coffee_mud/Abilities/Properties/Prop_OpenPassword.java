@@ -16,18 +16,18 @@ public class Prop_OpenPassword extends Property
 	public String accountForYourself()
 	{ return "";	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((affect.sourceMinor()==Affect.TYP_SPEAK)
+		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(affected!=null)
-		&&((affect.sourceCode()&Affect.MASK_MAGIC)==0))
+		&&((msg.sourceCode()&CMMsg.MASK_MAGIC)==0))
 		{
-			int start=affect.sourceMessage().indexOf("\'");
-			int end=affect.sourceMessage().lastIndexOf("\'");
+			int start=msg.sourceMessage().indexOf("\'");
+			int end=msg.sourceMessage().lastIndexOf("\'");
 			if((start>0)&&(end>start))
 			{
-				String str=affect.sourceMessage().substring(start+1,end).trim();
-				MOB mob=(MOB)affect.source();
+				String str=msg.sourceMessage().substring(start+1,end).trim();
+				MOB mob=(MOB)msg.source();
 				if(str.equalsIgnoreCase(text())
 				&&(text().length()>0)
 				&&(mob.location()!=null))
@@ -44,24 +44,24 @@ public class Prop_OpenPassword extends Property
 								{ dirCode=d; break;}
 							if(dirCode>=0)
 							{
-								FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_UNLOCK,null);
-								ExternalPlay.roomAffectFully(msg,R,dirCode);
-								msg=new FullMsg(mob,E,null,Affect.MSG_OPEN,"<T-NAME> opens.");
-								ExternalPlay.roomAffectFully(msg,R,dirCode);
+								FullMsg msg2=new FullMsg(mob,E,null,CMMsg.MSG_UNLOCK,null);
+								ExternalPlay.roomAffectFully(msg2,R,dirCode);
+								msg2=new FullMsg(mob,E,null,CMMsg.MSG_OPEN,"<T-NAME> opens.");
+								ExternalPlay.roomAffectFully(msg2,R,dirCode);
 							}
 						}
 					}
 					else
 					if(affected instanceof Container)
 					{
-						FullMsg msg=new FullMsg(mob,affected,null,Affect.MSG_UNLOCK,null);
-						affected.affect(mob,msg);
-						msg=new FullMsg(mob,affected,null,Affect.MSG_OPEN,"<T-NAME> opens.");
-						affected.affect(mob,msg);
+						FullMsg msg2=new FullMsg(mob,affected,null,CMMsg.MSG_UNLOCK,null);
+						affected.executeMsg(mob,msg2);
+						msg2=new FullMsg(mob,affected,null,CMMsg.MSG_OPEN,"<T-NAME> opens.");
+						affected.executeMsg(mob,msg2);
 					}
 				}
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

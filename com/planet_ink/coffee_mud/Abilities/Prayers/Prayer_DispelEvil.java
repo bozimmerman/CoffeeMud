@@ -29,15 +29,15 @@ public class Prayer_DispelEvil extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"The evil inside <T-NAME> exercise(s)!":"^S<S-NAME> exercise(s) the evil inside <T-NAMESELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"The evil inside <T-NAME> exercise(s)!":"^S<S-NAME> exercise(s) the evil inside <T-NAMESELF>!^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int harming=Dice.roll(3,adjustedLevel(mob)+8,10);
 				if(msg.wasModified())
 					harming=(int)Math.round(Util.div(harming,2.0));
 				if(target.getAlignment()<350)
-					ExternalPlay.postDamage(mob,target,this,harming,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The wicked spell <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The wicked spell <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

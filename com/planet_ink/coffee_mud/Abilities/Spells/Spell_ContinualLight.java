@@ -32,7 +32,7 @@ public class Spell_ContinualLight extends Spell
 		MOB mob=(MOB)affected;
 		Room room=((MOB)affected).location();
 		if(canBeUninvoked())
-			room.show(mob,null,Affect.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
 		super.unInvoke();
 		if(canBeUninvoked())
 			room.recoverRoomStats();
@@ -44,7 +44,7 @@ public class Spell_ContinualLight extends Spell
 		if(commands.size()==0) target=mob;
 		else
 		target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
-		
+
 		if(target==null) return false;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -55,7 +55,7 @@ public class Spell_ContinualLight extends Spell
 		if(!(target instanceof MOB))
 			str="^S<S-NAME> invoke(s) a continual light into <T-NAME>!^?";
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),str);
-		if(mob.location().okAffect(mob,msg))
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,Integer.MAX_VALUE-100);

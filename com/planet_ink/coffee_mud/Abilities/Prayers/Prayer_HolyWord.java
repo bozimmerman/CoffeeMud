@@ -50,7 +50,7 @@ public class Prayer_HolyWord extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> blinding holy aura fades.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> blinding holy aura fades.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -69,10 +69,10 @@ public class Prayer_HolyWord extends Prayer
 			MOB target=room.fetchInhabitant(i);
 			if(target==null) break;
 
-			int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-			if(auto) affectType=affectType|Affect.MASK_GENERAL;
+			int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
+			if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 			if(target.getAlignment()<350)
-				affectType=affectType|Affect.MASK_MALICIOUS;
+				affectType=affectType|CMMsg.MASK_MALICIOUS;
 
 			if(success)
 			{
@@ -81,7 +81,7 @@ public class Prayer_HolyWord extends Prayer
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType,str);
-				if(mob.location().okAffect(mob,msg))
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
@@ -92,7 +92,7 @@ public class Prayer_HolyWord extends Prayer
 							Item I=Prayer_Bless.getSomething(target,true);
 							while(I!=null)
 							{
-								FullMsg msg2=new FullMsg(target,I,null,Affect.MASK_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+								FullMsg msg2=new FullMsg(target,I,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 								target.location().send(target,msg2);
 								Prayer_Bless.endIt(I,2);
 								I.recoverEnvStats();
@@ -103,7 +103,7 @@ public class Prayer_HolyWord extends Prayer
 							target.recoverEnvStats();
 						}
 						else
-						if(Util.bset(affectType,Affect.MASK_MALICIOUS))
+						if(Util.bset(affectType,CMMsg.MASK_MALICIOUS))
 							maliciousFizzle(mob,target,"<T-NAME> did not hear the word!");
 						else
 							beneficialWordsFizzle(mob,target,"<T-NAME> did not hear the word!");
@@ -113,7 +113,7 @@ public class Prayer_HolyWord extends Prayer
 			}
 			else
 			{
-				if(Util.bset(affectType,Affect.MASK_MALICIOUS))
+				if(Util.bset(affectType,CMMsg.MASK_MALICIOUS))
 					maliciousFizzle(mob,target,missStr);
 				else
 					beneficialWordsFizzle(mob,target,missStr);

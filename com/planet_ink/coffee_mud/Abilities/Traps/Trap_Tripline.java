@@ -14,9 +14,9 @@ public class Trap_Tripline extends StdTrap
 	protected int trapLevel(){return 1;}
 	public String requiresToSet(){return "a pound of cloth";}
 	public Environmental newInstance(){	return new Trap_Tripline();}
-	
+
 	public int baseRejuvTime(int level){return 2;}
-	
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
@@ -27,7 +27,7 @@ public class Trap_Tripline extends StdTrap
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -41,15 +41,15 @@ public class Trap_Tripline extends StdTrap
 		}
 		return true;
 	}
-	
+
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) tripping on a taut rope!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) tripping on a taut rope!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> trip(s) on a taut rope!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> trip(s) on a taut rope!"))
 			{
 				super.spring(target);
 				target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()|EnvStats.IS_SITTING);

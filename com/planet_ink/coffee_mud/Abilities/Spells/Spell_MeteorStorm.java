@@ -45,7 +45,7 @@ public class Spell_MeteorStorm extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if(mob.location().okAffect(mob,msg))
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					invoker=mob;
@@ -56,7 +56,7 @@ public class Spell_MeteorStorm extends Spell
 					if(!msg.wasModified())
 						damage = (int)Math.round(Util.div(damage,2.0));
 					if(target.location()==mob.location())
-						ExternalPlay.postDamage(mob,target,this,damage,Affect.MSG_OK_VISUAL,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");
+						ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

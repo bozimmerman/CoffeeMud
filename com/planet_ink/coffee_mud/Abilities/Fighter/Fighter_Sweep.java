@@ -74,10 +74,10 @@ public class Fighter_Sweep extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,Affect.MSG_NOISYMOVEMENT,"^F<S-NAME> sweep(s)!^?"))
+			if(mob.location().show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"^F<S-NAME> sweep(s)!^?"))
 			{
 				invoker=mob;
-				mob.addAffect(this);
+				mob.addEffect(this);
 				mob.recoverEnvStats();
 				for(Enumeration e=h.elements();e.hasMoreElements();)
 				{
@@ -86,14 +86,14 @@ public class Fighter_Sweep extends StdAbility
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_OK_ACTION|(auto?Affect.MASK_GENERAL:0),null);
-					if(mob.location().okAffect(mob,msg))
+					FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_OK_ACTION|(auto?CMMsg.MASK_GENERAL:0),null);
+					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
 						ExternalPlay.postAttack(mob,target,w);
 					}
 				}
-				mob.delAffect(this);
+				mob.delEffect(this);
 				mob.recoverEnvStats();
 			}
 		}

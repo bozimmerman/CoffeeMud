@@ -41,39 +41,39 @@ public class DoorwayGuardian extends StdBehavior
 		}
 		return null;
 	}
-	
-	
+
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public boolean okAffect(Environmental oking, Affect affect)
+	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
-		if(!super.okAffect(oking,affect)) return false;
-		MOB mob=affect.source();
+		if(!super.okMessage(oking,msg)) return false;
+		MOB mob=msg.source();
 		if(!canFreelyBehaveNormal(oking)) return true;
 		MOB monster=(MOB)oking;
 		if((mob.location()==monster.location())
 		&&(mob!=monster)
-		&&(affect.target()!=null)
+		&&(msg.target()!=null)
 		&&(!BrotherHelper.isBrother(mob,monster))
 		&&(Sense.canSenseMoving(mob,monster))
 		&&(!SaucerSupport.zapperCheck(getParms(),mob)))
 		{
-			if(affect.target() instanceof Exit)
+			if(msg.target() instanceof Exit)
 			{
-				Exit exit=(Exit)affect.target();
+				Exit exit=(Exit)msg.target();
 				Exit texit[]=getParmExits(monster);
 				if((texit!=null)
 				&&(texit[0]!=exit)
 				&&(texit[1]!=exit))
 					return true;
 
-				if((affect.targetMinor()!=Affect.TYP_CLOSE)
-				&&(affect.targetMinor()!=Affect.TYP_LOCK))
+				if((msg.targetMinor()!=CMMsg.TYP_CLOSE)
+				&&(msg.targetMinor()!=CMMsg.TYP_LOCK))
 				{
-					FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
-					if(monster.location().okAffect(monster,msgs))
+					FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
+					if(monster.location().okMessage(monster,msgs))
 					{
 						monster.location().send(monster,msgs);
 						return false;
@@ -81,19 +81,19 @@ public class DoorwayGuardian extends StdBehavior
 				}
 			}
 			else
-			if((affect.tool()!=null)
-			&&(affect.target() instanceof Room)
-			&&(affect.tool() instanceof Exit))
+			if((msg.tool()!=null)
+			&&(msg.target() instanceof Room)
+			&&(msg.tool() instanceof Exit))
 			{
-				Exit exit=(Exit)affect.tool();
+				Exit exit=(Exit)msg.tool();
 				Exit texit[]=getParmExits(monster);
 				if((texit!=null)
 				&&(texit[0]!=exit)
 				&&(texit[1]!=exit))
 					return true;
-				
-				FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
-				if(monster.location().okAffect(monster,msgs))
+
+				FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
+				if(monster.location().okMessage(monster,msgs))
 				{
 					monster.location().send(monster,msgs);
 					return false;

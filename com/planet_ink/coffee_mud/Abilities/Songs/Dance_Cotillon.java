@@ -14,14 +14,14 @@ public class Dance_Cotillon extends Dance
 	public Environmental newInstance(){	return new Dance_Cotillon();}
 	protected String danceOf(){return name()+" Dance";}
 	protected MOB whichLast=null;
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
 		if((affected==invoker())&&(((MOB)invoker()).isInCombat()))
 		{
-			if(whichLast==null) 
+			if(whichLast==null)
 				whichLast=(MOB)invoker();
 			else
 			{
@@ -36,7 +36,7 @@ public class Dance_Cotillon extends Dance
 					else
 					if((M2!=whichLast)
 					&&(found)
-					&&(M2.fetchAffect(ID())!=null)
+					&&(M2.fetchEffect(ID())!=null)
 					&&(M2.isInCombat()))
 					{
 						whichLast=M2;
@@ -56,11 +56,11 @@ public class Dance_Cotillon extends Dance
 				if((whichLast!=null)
 				&&(M.isInCombat())
 				&&(M.getVictim().getVictim()!=whichLast)
-				&&(whichLast.location().show(whichLast,null,M.getVictim(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> dance(s) into <O-YOUPOSS> way.")))
+				&&(whichLast.location().show(whichLast,null,M.getVictim(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> dance(s) into <O-YOUPOSS> way.")))
 					M.getVictim().setVictim(whichLast);
 			}
 		}
 		return true;
 	}
-	
+
 }

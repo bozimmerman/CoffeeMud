@@ -39,7 +39,7 @@ public class Thief_Embezzle extends ThiefSkill
 			return false;
 		}
 		Banker bank=(Banker)target;
-		Ability A=target.fetchAffect(ID());
+		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			mob.tell(target.name()+" is watching "+target.charStats().hisher()+" books too closely.");
@@ -88,8 +88,8 @@ public class Thief_Embezzle extends ThiefSkill
 		boolean success=profficiencyCheck(-(levelDiff),auto);
 		if((success)&&(amount>0)&&(coins!=null))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,(auto?Affect.MASK_GENERAL:0)|Affect.MSG_THIEF_ACT,"<S-NAME> embezzle(s) "+amount+" gold from the "+victim+" account maintained by <T-NAME>.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> embezzle(s) "+amount+" gold from the "+victim+" account maintained by <T-NAME>.");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,new Long(((Host.TIME_TICK_DELAY*Area.A_FULL_DAY)/Host.TICK_TIME)).intValue());

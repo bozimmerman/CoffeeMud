@@ -17,59 +17,59 @@ public class Spell_GhostSound extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(Dice.rollPercentage()<10)
 		&&(affected!=null)
 		&&(invoker!=null)
 		&&(affected instanceof Room))
 		switch(Dice.roll(1,14,0))
 		{
-		case 1:	((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 1:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear something coming up behind you.");
 				break;
-		case 2:	((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 2:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear somebody screaming in the distance.");
 				break;
-		case 3:	((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 3:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear the snarl of a large ferocious beast.");
 				break;
-		case 4:	((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 4:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear complete silence.");
 				break;
-		case 5:	((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 5:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"CLANK! Someone just dropped their sword.");
 				break;
-		case 6:	((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 6:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear a bird singing.");
 				break;
-		case 7:	((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 7:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear a cat dying.");
 				break;
-		case 8:	((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 8:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear some people talking.");
 				break;
-		case 9:	((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 9:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear singing.");
 				break;
-		case 10:((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 10:((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear a cow mooing.");
 				break;
-		case 11:((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 11:((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear your shadow.");
 				break;
-		case 12:((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 12:((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear someone trying to sneak by you.");
 				break;
-		case 13:((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 13:((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear an annoying beeping sound.");
 				break;
-		case 14:((Room)affected).showHappens(Affect.MSG_NOISE,
+		case 14:((Room)affected).showHappens(CMMsg.MSG_NOISE,
 				"You hear your heart beating in your chest.");
 				break;
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		// the invoke method for spells receives as
@@ -81,10 +81,10 @@ public class Spell_GhostSound extends Spell
 
 		Environmental target = mob.location();
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> scream(s) loudly, then fall(s) silent.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -100,7 +100,7 @@ public class Spell_GhostSound extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),auto?"":"^S<S-NAME> scream(s) loudly, then fall(s) silent.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob.location(),0);

@@ -135,8 +135,8 @@ public class Lacquerring extends CommonSkill
 		if(!profficiencyCheck(0,auto)) writing="";
 		int duration=60-mob.envStats().level();
 		if(duration<12) duration=12;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) lacquerring "+target.name());
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) lacquerring "+target.name());
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);

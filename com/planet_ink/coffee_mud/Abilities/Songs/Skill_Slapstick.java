@@ -66,8 +66,8 @@ public class Skill_Slapstick extends StdAbility
 				str="<S-NAME> do(es) a silly slapstick routine for <T-NAMESELF>.";
 				break;
 			}
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_SOUND|Affect.MASK_HANDS|Affect.MASK_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),str);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),str);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.curState().adjMana(-mob.envStats().level(),target.maxState());

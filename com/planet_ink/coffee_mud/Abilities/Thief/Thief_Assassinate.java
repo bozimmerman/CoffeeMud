@@ -27,7 +27,7 @@ public class Thief_Assassinate extends ThiefSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if(nextDirection==-999)
 				return true;
@@ -125,18 +125,18 @@ public class Thief_Assassinate extends ThiefSkill
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
-		if((affect.amISource(mob))
-		&&(affect.amITarget(mob.location()))
+		if((msg.amISource(mob))
+		&&(msg.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
-		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
@@ -164,9 +164,9 @@ public class Thief_Assassinate extends ThiefSkill
 
 		tracking=null;
 		String mobName="";
-		if((mob.fetchAffect("Thief_Mark")!=null)&&(!mob.isMonster()))
+		if((mob.fetchEffect("Thief_Mark")!=null)&&(!mob.isMonster()))
 		{
-			Thief_Mark A=(Thief_Mark)mob.fetchAffect("Thief_Mark");
+			Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 			if(A!=null) tracking=A.mark;
 			if(tracking==null)
 			{
@@ -245,15 +245,15 @@ public class Thief_Assassinate extends ThiefSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,tracking,this,Affect.MSG_THIEF_ACT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF> for assassination.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF> for assassination.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
 				displayText="(tracking "+tracking.name()+")";
 				Thief_Assassinate newOne=(Thief_Assassinate)this.copyOf();
-				if(mob.fetchAffect(newOne.ID())==null)
-					mob.addAffect(newOne);
+				if(mob.fetchEffect(newOne.ID())==null)
+					mob.addEffect(newOne);
 				mob.recoverEnvStats();
 				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
 			}

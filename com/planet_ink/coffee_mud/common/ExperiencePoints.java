@@ -12,23 +12,23 @@ public class ExperiencePoints implements Environmental
 {
 	private int exp=0;
 	public ExperiencePoints(int amount){exp=amount;}
-	
+
 	public String ID(){return "ExperiencePoints";}
-	
+
 	// the real name of the object
 	public String name(){return "ExperiencePoints";}
 	public String Name(){return "ExperiencePoints";}
 	public void setName(String newName){}
 
 	private boolean quiet=false;
-	// how the object appears at rest, 
+	// how the object appears at rest,
 	public String displayText(){return ""+quiet;}
 	public void setDisplayText(String newDisplayText){quiet=Util.s_bool(newDisplayText);}
-	
+
 	// Text displayed when this item is LOOKED at
 	public String description(){return ""+exp;}
 	public void setDescription(String newDescription){exp=Util.s_int(newDescription);}
-	
+
 	public Environmental copyOf(){return new ExperiencePoints(0);}
 	public boolean isGeneric(){return false;}
 
@@ -59,14 +59,14 @@ public class ExperiencePoints implements Environmental
 	public void setStat(String code, String val){exp=Util.s_int(val);}
 	public boolean sameAs(Environmental E){return false;}
 
-	/** Manipulation of affect objects, which includes
+	/** Manipulation of ability effect objects, which includes
 	 * spells, traits, skills, etc.*/
-	public void addAffect(Ability to){}
-	public void addNonUninvokableAffect(Ability to){}
-	public void delAffect(Ability to){}
-	public int numAffects(){return 0;}
-	public Ability fetchAffect(int index){return null;}
-	public Ability fetchAffect(String ID){return null;}
+	public void addEffect(Ability to){}
+	public void addNonUninvokableEffect(Ability to){}
+	public void delEffect(Ability to){}
+	public int numEffects(){return 0;}
+	public Ability fetchEffect(int index){return null;}
+	public Ability fetchEffect(String ID){return null;}
 
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/
@@ -81,14 +81,14 @@ public class ExperiencePoints implements Environmental
 	 */
 	public int maxRange(){return exp;}
 	public int minRange(){return exp;}
-	
-	
+
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats){}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState){}
-	public void affect(Environmental myHost, Affect affect){}
-	public boolean okAffect(Environmental myHost, Affect affect){return true;}
-	
+	public void executeMsg(Environmental myHost, CMMsg msg){}
+	public boolean okMessage(Environmental myHost, CMMsg msg){return true;}
+
 	public int compareTo(Object O){return -1;}
 	public long getTickStatus(){return 0;}
 	public boolean tick(Tickable ticking, int tickID)

@@ -21,7 +21,7 @@ public class Spell_StinkingCloud extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
@@ -32,10 +32,10 @@ public class Spell_StinkingCloud extends Spell
 			if((!vic.amDead())&&(vic.location()!=null)&&(Sense.canSmell(vic)))
 			{
 				if((vic.curState().getHunger()<=0))
-					ExternalPlay.postDamage(invoker,vic,this,vic.envStats().level(),Affect.TYP_GAS,-1,"<T-NAME> dry heave(s) in the stinking cloud.");
+					ExternalPlay.postDamage(invoker,vic,this,vic.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> dry heave(s) in the stinking cloud.");
 				else
 				{
-					ExternalPlay.postDamage(invoker,vic,this,vic.envStats().level(),Affect.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
+					ExternalPlay.postDamage(invoker,vic,this,vic.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
 					vic.curState().adjHunger(-500,vic.maxState());
 				}
 			}
@@ -45,40 +45,40 @@ public class Spell_StinkingCloud extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		   &&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(Sense.canSmell(mob))
-				switch(affect.sourceMinor())
+				switch(msg.sourceMinor())
 				{
-				case Affect.TYP_ADVANCE:
+				case CMMsg.TYP_ADVANCE:
 					if(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_GAS)))
 					{
-						mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> double(s) over from the sickening gas.");
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> double(s) over from the sickening gas.");
 						return false;
 					}
 					break;
 				}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		   &&(affected instanceof MOB))
 		{
-			switch(affect.sourceMinor())
+			switch(msg.sourceMinor())
 			{
-			case Affect.TYP_ADVANCE:
+			case CMMsg.TYP_ADVANCE:
 				unInvoke();
 				break;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -92,7 +92,7 @@ public class Spell_StinkingCloud extends Spell
 		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the stinking cloud!");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the stinking cloud!");
 		}
 	}
 
@@ -134,10 +134,10 @@ public class Spell_StinkingCloud extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_GAS|(auto?Affect.MASK_GENERAL:0),null);
-				if((mob.location().okAffect(mob,msg))
-				   &&(mob.location().okAffect(mob,msg2))
-				   &&(target.fetchAffect(this.ID())==null))
+				FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_GAS|(auto?CMMsg.MASK_GENERAL:0),null);
+				if((mob.location().okMessage(mob,msg))
+				   &&(mob.location().okMessage(mob,msg2))
+				   &&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);
@@ -145,7 +145,7 @@ public class Spell_StinkingCloud extends Spell
 					{
 						castingLocation=mob.location();
 						success=maliciousAffect(mob,target,(adjustedLevel(mob)*10),-1);
-						target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> become(s) enveloped in the stinking cloud!");
+						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped in the stinking cloud!");
 					}
 				}
 			}

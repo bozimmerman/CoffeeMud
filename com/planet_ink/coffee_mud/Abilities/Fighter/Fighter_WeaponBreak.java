@@ -65,8 +65,8 @@ public class Fighter_WeaponBreak extends StdAbility
 		{
 			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> disarm(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
 			hisWeapon.unWear();
-			FullMsg msg=new FullMsg(mob,mob.getVictim(),this,Affect.MSG_NOISYMOVEMENT,str);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,mob.getVictim(),this,CMMsg.MSG_NOISYMOVEMENT,str);
+			if(mob.location().okMessage(mob,msg))
 			{
 				hisWeapon.destroy();
 				mob.location().send(mob,msg);

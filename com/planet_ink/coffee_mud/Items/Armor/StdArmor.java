@@ -113,14 +113,14 @@ public class StdArmor extends StdContainer implements Armor
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
-		if((affect.amITarget(this))
+		if((msg.amITarget(this))
 		&&(envStats().height()>0)
-		&&(affect.source().envStats().height()>0)
-		&&(affect.targetMinor()==Affect.TYP_WEAR))
+		&&(msg.source().envStats().height()>0)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAR))
 		{
 			int devianceAllowed=200;
 			if(((rawProperLocationBitmap()&Item.ON_TORSO)>0)
@@ -130,64 +130,64 @@ public class StdArmor extends StdContainer implements Armor
 			||((rawProperLocationBitmap()&Item.ON_HANDS)>0)
 			||((rawProperLocationBitmap()&Item.ON_FEET)>0))
 				devianceAllowed=20;
-			if(affect.source().envStats().height()<(envStats().height()-devianceAllowed))
+			if(msg.source().envStats().height()<(envStats().height()-devianceAllowed))
 			{
-				affect.source().tell(name()+" doesn't fit you -- it's too big.");
+				msg.source().tell(name()+" doesn't fit you -- it's too big.");
 				return false;
 			}
-			if(affect.source().envStats().height()>(envStats().height()+devianceAllowed))
+			if(msg.source().envStats().height()>(envStats().height()+devianceAllowed))
 			{
-				affect.source().tell(name()+" doesn't fit you -- it's too small.");
+				msg.source().tell(name()+" doesn't fit you -- it's too small.");
 				return false;
 			}
 		}
 		return true;
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		// lets do some damage!
-		if((affect.amITarget(this))
-		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING)
+		if((msg.amITarget(this))
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 		&&(subjectToWearAndTear())
 		&&(usesRemaining()<100)
-		&&(Sense.canBeSeenBy(this,affect.source())))
-			affect.source().tell(armorHealth());
+		&&(Sense.canBeSeenBy(this,msg.source())))
+			msg.source().tell(armorHealth());
 		else
 		if((!amWearingAt(Item.INVENTORY))
 		&&(owner()!=null)
 		&&(owner() instanceof MOB)
-		&&(affect.amITarget(owner()))
+		&&(msg.amITarget(owner()))
 		&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*2))
 		&&(subjectToWearAndTear())
 		&&(Dice.rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.DEXTERITY))))
 		{
 			int weaponType=-1;
-			if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
-			&&((affect.targetCode()-Affect.MASK_HURT)>0))
+			if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&((msg.targetCode()-CMMsg.MASK_HURT)>0))
 			{
-				if((affect.tool()!=null)
-				&&(affect.tool() instanceof Weapon))
-				   weaponType=((Weapon)affect.tool()).weaponType();
+				if((msg.tool()!=null)
+				&&(msg.tool() instanceof Weapon))
+				   weaponType=((Weapon)msg.tool()).weaponType();
 				else
-				switch(affect.sourceMinor())
+				switch(msg.sourceMinor())
 				{
-				case Affect.TYP_FIRE:
+				case CMMsg.TYP_FIRE:
 					weaponType=Weapon.TYPE_BURNING;
 					break;
-				case Affect.TYP_WATER:
+				case CMMsg.TYP_WATER:
 					weaponType=Weapon.TYPE_FROSTING;
 					break;
-				case Affect.TYP_ACID:
+				case CMMsg.TYP_ACID:
 					weaponType=Weapon.TYPE_MELTING;
 					break;
-				case Affect.TYP_COLD:
+				case CMMsg.TYP_COLD:
 					weaponType=Weapon.TYPE_FROSTING;
 					break;
-				case Affect.TYP_GAS:
+				case CMMsg.TYP_GAS:
 					weaponType=Weapon.TYPE_GASSING;
 					break;
-				case Affect.TYP_ELECTRIC:
+				case CMMsg.TYP_ELECTRIC:
 					weaponType=Weapon.TYPE_STRIKING;
 					break;
 				}
@@ -306,10 +306,10 @@ public class StdArmor extends StdContainer implements Armor
 						if((rawWornCode()==Armor.ON_HEAD)
 						&&(Dice.rollPercentage()==1)
 						&&(Dice.rollPercentage()==1)
-						&&((affect.targetCode()-Affect.MASK_HURT)>10))
+						&&((msg.targetCode()-CMMsg.MASK_HURT)>10))
 						{
 							Ability A=CMClass.getAbility("Disease_Tinnitus");
-							if((A!=null)&&(owner().fetchAffect(A.ID())==null))
+							if((A!=null)&&(owner().fetchEffect(A.ID())==null))
 								A.invoke((MOB)owner(),owner(),true);
 						}
 						if(Dice.rollPercentage()<5)
@@ -432,7 +432,7 @@ public class StdArmor extends StdContainer implements Armor
 			{
 				MOB owner=(MOB)owner();
 				setUsesRemaining(100);
-				affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,"^I"+name()+" is destroyed!!^?",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,"^I"+name()+" being worn by <S-NAME> is destroyed!^?"));
+				msg.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" is destroyed!!^?",CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" being worn by <S-NAME> is destroyed!^?"));
 				unWear();
 				destroy();
 				owner.recoverEnvStats();

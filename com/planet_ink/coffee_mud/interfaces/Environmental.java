@@ -9,20 +9,20 @@ import java.util.*;
 public interface Environmental extends Cloneable, Tickable, StatsAffecting, MsgListener, Comparable
 {
 	public String ID();  // the class name of the object
-	
+
 	// the real name of the object
 	public String name(); // the potentially modified name of the thing
 	public String Name(); // the base name of the thing
 	public void setName(String newName); // set the base name of the object
-	
-	// how the object appears at rest, 
+
+	// how the object appears at rest,
 	public String displayText();
 	public void setDisplayText(String newDisplayText);
-	
+
 	// Text displayed when this item is LOOKED at
 	public String description();
 	public void setDescription(String newDescription);
-	
+
 	public Environmental copyOf();
 	public boolean isGeneric();
 
@@ -51,14 +51,14 @@ public interface Environmental extends Cloneable, Tickable, StatsAffecting, MsgL
 	public void setStat(String code, String val);
 	public boolean sameAs(Environmental E);
 
-	/** Manipulation of affect objects, which includes
+	/** Manipulation of ability effect objects, which includes
 	 * spells, traits, skills, etc.*/
-	public void addAffect(Ability to);
-	public void addNonUninvokableAffect(Ability to);
-	public void delAffect(Ability to);
-	public int numAffects();
-	public Ability fetchAffect(int index);
-	public Ability fetchAffect(String ID);
+	public void addEffect(Ability to);
+	public void addNonUninvokableEffect(Ability to);
+	public void delEffect(Ability to);
+	public int numEffects();
+	public Ability fetchEffect(int index);
+	public Ability fetchEffect(String ID);
 
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/

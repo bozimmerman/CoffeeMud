@@ -20,32 +20,32 @@ public interface Ability  extends Environmental
 	public static final String[] TYPE_DESCS={
 		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY","THIEF SKILL","LANGUAGE","CHANT","COMMON SKILL","DISEASE","POISON"
 	};
-	
+
 	// domains
 	public static final int DOMAIN_DIVINATION=1<<5;
 	public static final int DOMAIN_ABJURATION=2<<5;
 	public static final int DOMAIN_ILLUSION=3<<5;
 	public static final int DOMAIN_EVOCATION=4<<5;
 	public static final int DOMAIN_ALTERATION=5<<5;
-	public static final int DOMAIN_TRANSMUTATION=6<<5;	
-	public static final int DOMAIN_ENCHANTMENT=7<<5;	
+	public static final int DOMAIN_TRANSMUTATION=6<<5;
+	public static final int DOMAIN_ENCHANTMENT=7<<5;
 	public static final int DOMAIN_CONJURATION=8<<5;
 	public static final String[] DOMAIN_DESCS={
 		"NOTHING","DIVINATION","ABJURATION","ILLUSION","INVOCATION/EVOCATION","ALTERATION",
 		"TRANSMUTATION","ENCHANTMENT/CHARM","CONJURATION"
 	};
-	
+
 	// affect/target flags
 	public static final int CAN_MOBS=1;
 	public static final int CAN_ITEMS=2;
 	public static final int CAN_AREAS=4;
 	public static final int CAN_ROOMS=8;
 	public static final int CAN_EXITS=16;
-	
+
 	public static final int ALL_DOMAINS=(255<<5);
 	// the classification incorporates the above
 	public int classificationCode();
-	
+
 	// qualities
 	public static final int MALICIOUS=0;
 	public static final int INDIFFERENT=1;
@@ -79,43 +79,43 @@ public interface Ability  extends Environmental
 	public long flags();
 	// these are flags which deliver slightly more
 	// specific information about this ability.
-	
-	
-	// who is responsible for initiating this affect?
+
+
+	// who is responsible for initiating this ability?
 	public MOB invoker();
 	public void setInvoker(MOB mob);
-	
+
 	// who (or what) is being affected by the abilitys use?
 	public Environmental affecting();
 	public void setAffectedOne(Environmental being);
-	
+
 	// whether or not this ability is also a command
 	// most skills are, properties never are
 	public boolean putInCommandlist();
-	
+
 	// the initial command word to activate this ability
 	// or its brethren (cast, trip, etc..)
 	public String[] triggerStrings();
-	
+
 	// when a mob uses an ability manually, this is the method
 	// to make it happen.
 	public boolean invoke(MOB mob, Environmental target, boolean auto);
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto);
-	
+
 	// for affects which may be uninvoked, this will do the trick!
 	public void unInvoke();
 	public boolean bubbleAffect();
 	public boolean canBeUninvoked();
 	public void makeNonUninvokable();
 
-	// for abilities which are on a timer, this method will 
+	// for abilities which are on a timer, this method will
 	// make those abilities last a very long time (until reboot perhaps)
 	public void makeLongLasting();
-	
-	// an autoinvocating effect is an ability which affects the 
+
+	// an autoinvocating effect is an ability which affects the
 	// mob just by having the ability.  Dodge is an example of this.
 	// the autoinvacation method is called to initiate this.
-	// this method should be called WHENEVER an ability is 
+	// this method should be called WHENEVER an ability is
 	// added to a MOB for the first time.
 	public boolean autoInvocation(MOB mob);
 	public boolean isAutoInvoked();
@@ -126,18 +126,18 @@ public interface Ability  extends Environmental
 	public final static int USAGE_MOVEMENT=2;
 	public final static int USAGE_HITPOINTS=4;
 	public int usageType();
-	
+
 	// a borrowed ability is one derived from some other source
-	// than the mobs knowledge, such as a magic item, or 
-	// a class behavior.  borrowed abilities are not saved, 
+	// than the mobs knowledge, such as a magic item, or
+	// a class behavior.  borrowed abilities are not saved,
 	// and neither are borrowed properties or affects.
 	public boolean isBorrowed(Environmental toMe);
 	public void setBorrowed(Environmental toMe, boolean truefalse);
-	
+
 	/** An optional numeric code for this ability */
 	public int abilityCode();
 	public void setAbilityCode(int newCode);
-	
+
 	// methods to assist in teaching and learning the
 	// abilities
 	public boolean canBeTaughtBy(MOB teacher, MOB student);
@@ -152,7 +152,7 @@ public interface Ability  extends Environmental
 
 	// for use by the identify spell, this should return a
 	// nice description of any properties incorporated
-	// by this affect
+	// by this effect
 	public String accountForYourself();
 
 	// For clerics, usually, whether this ability is
@@ -160,9 +160,9 @@ public interface Ability  extends Environmental
 	public boolean appropriateToMyAlignment(int alignment);
 	public int adjustedLevel(MOB mob);
 
-	// intelligently add this ability as an affect upon a target,
+	// intelligently add this ability as an effect upon a target,
 	// and start a new clock (if necessary), setting the timer
-	// on the affect as needed.
+	// on the effect as needed.
 	public void startTickDown(MOB invoker, Environmental affected, int tickTime);
 
 	// as an ability, how profficient the mob is at it.

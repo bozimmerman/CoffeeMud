@@ -18,9 +18,9 @@ public class Prayer_FreezeMetal extends Prayer
 
 	private Vector affectedItems=new Vector();
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg)) return false;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 		if((msg.target()==null)
@@ -29,7 +29,7 @@ public class Prayer_FreezeMetal extends Prayer
 		MOB mob=(MOB)affected;
 		if(!mob.isMine(msg.target())) return true;
 		Item I=(Item)msg.target();
-		if(msg.targetMinor()==Affect.TYP_REMOVE)
+		if(msg.targetMinor()==CMMsg.TYP_REMOVE)
 		{
 			if(I.amWearingAt(Item.INVENTORY))
 				msg.source().tell(affected.name()+" is too cold!");
@@ -49,7 +49,7 @@ public class Prayer_FreezeMetal extends Prayer
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 		if(invoker==null)
@@ -69,7 +69,7 @@ public class Prayer_FreezeMetal extends Prayer
 				int damage=Dice.roll(1,3,1);
 				if(item.subjectToWearAndTear())
 					item.setUsesRemaining(item.usesRemaining()-1);
-				ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_COLD,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;
@@ -91,11 +91,11 @@ public class Prayer_FreezeMetal extends Prayer
 			for(int i=0;i<affectedItems.size();i++)
 			{
 				Item I=(Item)affectedItems.elementAt(i);
-				Ability A=I.fetchAffect(this.ID());
+				Ability A=I.fetchEffect(this.ID());
 				while(A!=null)
 				{
-					I.delAffect(A);
-					A=I.fetchAffect(this.ID());
+					I.delEffect(A);
+					A=I.fetchEffect(this.ID());
 				}
 
 			}
@@ -127,7 +127,7 @@ public class Prayer_FreezeMetal extends Prayer
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+".^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

@@ -15,20 +15,20 @@ public class Chant_FeelHeat extends Chant
 	protected int canTargetCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Chant_FeelHeat();}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		   &&(affect.sourceMinor()==Affect.TYP_FIRE))
+		if((msg.amITarget(mob))&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		   &&(msg.sourceMinor()==CMMsg.TYP_FIRE))
 		{
-			int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),2.0));
-			SaucerSupport.adjustDamageMessage(affect,recovery);
+			int recovery=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),2.0));
+			SaucerSupport.adjustDamageMessage(msg,recovery);
 		}
 		return true;
 	}
@@ -37,7 +37,7 @@ public class Chant_FeelHeat extends Chant
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if(tickID!=Host.MOB_TICK) return false;
+		if(tickID!=Host.TICK_MOB) return false;
 		if((affecting()!=null)&&(affecting() instanceof MOB))
 		{
 			MOB dummy=(MOB)affecting();
@@ -48,21 +48,21 @@ public class Chant_FeelHeat extends Chant
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
 					int damage=Dice.roll(1,8,0);
-					ExternalPlay.postDamage(invoker,dummy,null,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().weatherType(room)==Area.WEATHER_DUSTSTORM)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
 					int damage=Dice.roll(1,16,0);
-					ExternalPlay.postDamage(invoker,dummy,null,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().weatherType(room)==Area.WEATHER_DROUGHT)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
 					int damage=Dice.roll(1,8,0);
-					ExternalPlay.postDamage(invoker,dummy,null,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
 				}
 			}
 		}
@@ -110,12 +110,12 @@ public class Chant_FeelHeat extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> feel(s) very hot");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) very hot");
 					maliciousAffect(mob,target,0,-1);
 				}
 			}

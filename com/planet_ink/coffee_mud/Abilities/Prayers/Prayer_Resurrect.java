@@ -35,7 +35,7 @@ public class Prayer_Resurrect extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,body,this,affectType(auto),auto?"<T-NAME> is resurrected!":"^S<S-NAME> resurrect(s) <T-NAMESELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				invoker=mob;
 				mob.location().send(mob,msg);
@@ -49,23 +49,23 @@ public class Prayer_Resurrect extends Prayer
 						rejuvedMOB.tell("You are being resurrected.");
 						if(rejuvedMOB.location()!=mob.location())
 						{
-							rejuvedMOB.location().showOthers(rejuvedMOB,null,Affect.MSG_OK_VISUAL,"<S-NAME> disappears!");
+							rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> disappears!");
 							mob.location().bringMobHere(rejuvedMOB,false);
 						}
 						Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
 						if(A!=null) rejuvedMOB.delAbility(A);
-						A=rejuvedMOB.fetchAffect("Prop_AstralSpirit");
-						if(A!=null) rejuvedMOB.delAffect(A);
-						
+						A=rejuvedMOB.fetchEffect("Prop_AstralSpirit");
+						if(A!=null) rejuvedMOB.delEffect(A);
+
 						int it=0;
 						while(it<rejuvedMOB.location().numItems())
 						{
 							Item item=rejuvedMOB.location().fetchItem(it);
 							if((item!=null)&&(item.container()==body))
 							{
-								FullMsg msg2=new FullMsg(rejuvedMOB,body,item,Affect.MSG_GET,null);
+								FullMsg msg2=new FullMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
 								rejuvedMOB.location().send(rejuvedMOB,msg2);
-								FullMsg msg3=new FullMsg(rejuvedMOB,item,null,Affect.MSG_GET,null);
+								FullMsg msg3=new FullMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
 								rejuvedMOB.location().send(rejuvedMOB,msg3);
 								it=0;
 							}
@@ -73,11 +73,11 @@ public class Prayer_Resurrect extends Prayer
 								it++;
 						}
 						body.destroy();
-						rejuvedMOB.location().show(rejuvedMOB,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
+						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 						mob.location().recoverRoomStats();
 					}
 					else
-						mob.location().show(mob,body,Affect.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");
+						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");
 				}
 			}
 		}

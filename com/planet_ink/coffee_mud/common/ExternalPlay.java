@@ -9,17 +9,17 @@ public class ExternalPlay
 	private static final long startTime=System.currentTimeMillis();
 	private static boolean systemStarted=false;
 	private static I3Interface i3interface=null;
-	
+
 	private static String nameOfMud="Unnamed CoffeeMud";
 	public static String mudName(){return nameOfMud;}
-	
+
 	public static void setPlayer(ExternalCommand newPlayer, ExternalSystem otherNewPlayer, I3Interface i3)
 	{
 		player=newPlayer;
 		sysPlayer=otherNewPlayer;
 		i3interface=i3;
 	}
-	
+
 	public static long getStartTime()
 	{
 		return startTime;
@@ -54,7 +54,7 @@ public class ExternalPlay
 		if(player!=null) return player.postExperience(mob,victim,homage,amount,quiet);
 		return false;
 	}
-		
+
 	public static void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage)
 	{
 		if(player!=null) player.postDamage(attacker,target,weapon,damage,messageCode,damageType,allDisplayMessage);
@@ -71,7 +71,7 @@ public class ExternalPlay
 	}
 	public static void setSystemStarted(String mudsName){nameOfMud=mudsName;systemStarted=true;}
 	public static boolean getSystemStarted(){return systemStarted;}
-	
+
 	public static void obliterateArea(String areaName)
 	{
 		if(player!=null) player.obliterateArea(areaName);
@@ -106,7 +106,7 @@ public class ExternalPlay
 		if(player!=null) return player.getTopics(archonHelp,standardHelp);
 		return new Vector();
 	}
-	
+
 	public static StringBuffer niceLister(MOB mob, Vector items, boolean useName)
 	{
 		if(player!=null) return player.niceLister(mob,items,useName);
@@ -138,16 +138,16 @@ public class ExternalPlay
 	{
 		if(player!=null) player.look(mob,commands,quiet);
 	}
-	
-	public static void postPanic(MOB mob, Affect affect)
+
+	public static void postPanic(MOB mob, CMMsg msg)
 	{
-		if(player!=null) player.postPanic(mob,affect);
+		if(player!=null) player.postPanic(mob,msg);
 	}
 	public static void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success)
 	{
 		if(player!=null) player.postWeaponDamage(source,target,weapon,success);
 	}
-	public static void postDeath(MOB source, MOB target,Affect addHere)
+	public static void postDeath(MOB source, MOB target,CMMsg addHere)
 	{
 		if(player!=null) player.postDeath(source,target,addHere);
 	}
@@ -169,7 +169,7 @@ public class ExternalPlay
 	{
 		if(player!=null) player.flee(mob,direction);
 	}
-	public static void roomAffectFully(Affect msg, Room room, int dirCode)
+	public static void roomAffectFully(CMMsg msg, Room room, int dirCode)
 	{
 		if(player!=null) player.roomAffectFully(msg,room,dirCode);
 	}
@@ -225,20 +225,20 @@ public class ExternalPlay
 	{
 		if(player!=null) player.sheathIfPossible(mob);
 	}
-	
+
 	public static void startTickDown(Tickable E,
 									 int tickID,
 									 int numTicks)
 	{
 		if(sysPlayer!=null) sysPlayer.startTickDown(E,tickID,numTicks);
 	}
-	
+
 	public static String systemReport(String itemCode)
 	{
 		if(sysPlayer!=null) return sysPlayer.systemReport(itemCode);
 		return "";
 	}
-	
+
 	public static boolean deleteTick(Tickable E, int tickID)
 	{
 		if(sysPlayer!=null) return sysPlayer.deleteTick(E,tickID);
@@ -271,7 +271,7 @@ public class ExternalPlay
 		if(player!=null) return player.get(mob,container,getThis,quiet);
 		return false;
 	}
-	
+
 	public static void DBReadContent(Room thisRoom, Hashtable rooms)
 	{
 		if(sysPlayer!=null) sysPlayer.DBReadContent(thisRoom,rooms);
@@ -317,7 +317,7 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateMOB(mob);
 	}
-	
+
 	public static void DBClanFill(String clan, Vector members, Vector roles, Vector dates)
 	{  if(sysPlayer!=null) sysPlayer.DBClanFill(clan,members,roles,dates);}
 	public static void DBUpdateClanMembership(String name, String clan, int role)
@@ -330,7 +330,7 @@ public class ExternalPlay
 	{  if(sysPlayer!=null) sysPlayer.DBCreateClan(C);}
 	public static void DBUpdateEmail(MOB mob)
 	{  if(sysPlayer!=null) sysPlayer.DBUpdateEmail(mob);}
-	
+
 	public static void DBUpdateItems(Room room)
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateItems(room);

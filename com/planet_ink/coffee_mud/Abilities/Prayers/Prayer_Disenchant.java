@@ -31,15 +31,15 @@ public class Prayer_Disenchant extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> appear(s) neutralized!":"^S<S-NAME> "+prayForWord(mob)+" to neutralize <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
 				target.baseEnvStats().setAbility(0);
 				Vector affects=new Vector();
-				for(int a=target.numAffects()-1;a>=0;a--)
+				for(int a=target.numEffects()-1;a>=0;a--)
 				{
-					Ability A=target.fetchAffect(a);
+					Ability A=target.fetchEffect(a);
 					if(A!=null)
 						affects.addElement(A);
 				}
@@ -47,7 +47,7 @@ public class Prayer_Disenchant extends Prayer
 				{
 					Ability A=(Ability)affects.elementAt(a);
 					A.unInvoke();
-					target.delAffect(A);
+					target.delEffect(A);
 				}
 				if(target instanceof Wand)
 				{

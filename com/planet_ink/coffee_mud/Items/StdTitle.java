@@ -123,30 +123,30 @@ public class StdTitle extends StdItem implements LandTitle
 			if(R==null) return null;
 		}
 		LandTitle A=null;
-		for(int a=0;a<R.numAffects();a++)
-			if(R.fetchAffect(a) instanceof LandTitle)
-			{ A=(LandTitle)R.fetchAffect(a); break;}
+		for(int a=0;a<R.numEffects();a++)
+			if(R.fetchEffect(a) instanceof LandTitle)
+			{ A=(LandTitle)R.fetchEffect(a); break;}
 		return A;
 	}
 
 	public boolean isReadable(){return true;}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((affect.targetMinor()==Affect.TYP_WRITE)
-		&&(affect.amITarget(this)))
+		if((msg.targetMinor()==CMMsg.TYP_WRITE)
+		&&(msg.amITarget(this)))
 		{
-			MOB mob=affect.source();
+			MOB mob=msg.source();
 			mob.tell("You shouldn't write on "+name()+".");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
-		if((msg.targetMinor()==Affect.TYP_SELL)
+		super.executeMsg(myHost,msg);
+		if((msg.targetMinor()==CMMsg.TYP_SELL)
 		&&(msg.tool()==this)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof ShopKeeper))
@@ -171,7 +171,7 @@ public class StdTitle extends StdItem implements LandTitle
 			recoverEnvStats();
 		}
 		else
-		if((msg.targetMinor()==Affect.TYP_GIVE)
+		if((msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.tool()==this)
 		&&(msg.source()!=null)
 		&&(landOwner().length()>0)
@@ -201,7 +201,7 @@ public class StdTitle extends StdItem implements LandTitle
 			recoverEnvStats();
 		}
 		else
-		if((msg.targetMinor()==Affect.TYP_GET)
+		if((msg.targetMinor()==CMMsg.TYP_GET)
 		&&(msg.amITarget(this))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof ShopKeeper))
@@ -231,7 +231,7 @@ public class StdTitle extends StdItem implements LandTitle
 		}
 		else
 		if((msg.amITarget(this))
-		&&(msg.targetMinor()==Affect.TYP_READSOMETHING))
+		&&(msg.targetMinor()==CMMsg.TYP_READSOMETHING))
 		{
 			if(Sense.canBeSeenBy(this,msg.source()))
 			{

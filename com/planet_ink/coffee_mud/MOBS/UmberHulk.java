@@ -14,7 +14,7 @@ public class UmberHulk extends StdMOB
 	public UmberHulk()
 	{
 		super();
-		
+
 		Username="an Umber Hulk";
 		setDescription("An 8 foot tall, 5 foot wide mass of meanness just waiting to eat....");
 		setDisplayText("A huge Umber Hulk eyes you.");
@@ -50,7 +50,7 @@ public class UmberHulk extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((!amDead())&&(tickID==Host.MOB_TICK))
+		if((!amDead())&&(tickID==Host.TICK_MOB))
 		{
 			if((--confuseDown)<=0)
 			{

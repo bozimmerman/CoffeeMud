@@ -21,26 +21,26 @@ public class Chant_PlantWall extends Chant
 	private Item theWall=null;
 	private String deathNotice="";
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 
 		if((invoker!=null)
 		&&(mob.isInCombat())
 		&&(mob!=invoker)
 		&&(mob.getVictim()==invoker))
 		{
-			if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+			if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			&&(mob.rangeToTarget()>0)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon)
-			&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED)
-			&&(affect.tool().maxRange()>0))
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon)
+			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
+			&&(msg.tool().maxRange()>0))
 			{
-				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> fire(s) at the plant wall with "+affect.tool().name()+".^?");
+				mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> fire(s) at the plant wall with "+msg.tool().name()+".^?");
 				amountRemaining-=mob.envStats().damage();
 				if(amountRemaining<0)
 				{
@@ -50,12 +50,12 @@ public class Chant_PlantWall extends Chant
 				return false;
 			}
 			else
-			if((mob.rangeToTarget()==1)&&(affect.sourceMinor()==Affect.TYP_ADVANCE))
+			if((mob.rangeToTarget()==1)&&(msg.sourceMinor()==CMMsg.TYP_ADVANCE))
 			{
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
- 				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of stone with "+w.name()+".^?");
+ 				mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of stone with "+w.name()+".^?");
 				amountRemaining-=mob.envStats().damage();
 				if(amountRemaining<0)
 				{
@@ -66,16 +66,16 @@ public class Chant_PlantWall extends Chant
 			}
 			else
 			if((mob.rangeToTarget()>0)
-			&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(affect.tool().maxRange()>0))
+			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(msg.tool().maxRange()>0))
 			{
-				mob.location().show(mob,null,affect.tool(),Affect.MSG_OK_VISUAL,"^FThe plant wall absorbs <O-NAME> from <S-NAME>.^?");
+				mob.location().show(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"^FThe plant wall absorbs <O-NAME> from <S-NAME>.^?");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -89,7 +89,7 @@ public class Chant_PlantWall extends Chant
 			&&(theWall.owner() instanceof Room)
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
-				((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,deathNotice);
+				((Room)theWall.owner()).show(invoker,null,CMMsg.MSG_OK_VISUAL,deathNotice);
 				Item wall=theWall;
 				theWall=null;
 				wall.destroy();
@@ -99,7 +99,7 @@ public class Chant_PlantWall extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((invoker!=null)
 			   &&(theWall!=null)
@@ -125,7 +125,7 @@ public class Chant_PlantWall extends Chant
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I=mob.location().fetchItem(i);
-			if((I!=null)&&(I.fetchAffect(ID())!=null))
+			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a plant wall here.");
 				return false;
@@ -152,7 +152,7 @@ public class Chant_PlantWall extends Chant
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?"A plant wall appears!":"^S<S-NAME> chant(s) for a plant wall!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				amountRemaining=mob.baseState().getHitPoints()/6;

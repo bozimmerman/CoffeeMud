@@ -25,36 +25,36 @@ public class Spell_MindBlock extends Spell
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> anti-psionic field fades.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> anti-psionic field fades.");
 
 		super.unInvoke();
 
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
+		if((msg.amITarget(mob))
 		&&(!mob.amDead())
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
-			boolean yep=(affect.targetMinor()==Affect.TYP_MIND);
+			boolean yep=(msg.targetMinor()==CMMsg.TYP_MIND);
 			if((!yep)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Ability))
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability))
 			{
-				Ability A=(Ability)affect.tool();
+				Ability A=(Ability)msg.tool();
 				if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ILLUSION)
 				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
 				   yep=true;
 			}
 			if(yep)
 			{
-				affect.source().tell(affect.source(),mob,null,"<T-NAME> seem(s) unaffected.");
+				msg.source().tell(msg.source(),mob,null,"<T-NAME> seem(s) unaffected.");
 				return false;
 			}
 		}
@@ -74,7 +74,7 @@ public class Spell_MindBlock extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A anti-psionic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anti-psionic field of protection around <T-NAMESELF>.^?"));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				amountAbsorbed=0;
 				mob.location().send(mob,msg);

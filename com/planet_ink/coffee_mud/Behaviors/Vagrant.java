@@ -14,14 +14,14 @@ public class Vagrant extends StdBehavior
 	{
 		return new Vagrant();
 	}
-	
-	public boolean okAffect(Environmental oking, Affect msg)
+
+	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if((oking==null)||(!(oking instanceof MOB)))
-		   return super.okAffect(oking,msg);
+		   return super.okMessage(oking,msg);
 		MOB mob=(MOB)oking;
 		if(msg.amITarget(mob)
-		   &&(((msg.sourceCode()&Affect.MASK_MOVE)>0)||((msg.sourceCode()&Affect.MASK_HANDS)>0)))
+		   &&(((msg.sourceCode()&CMMsg.MASK_MOVE)>0)||((msg.sourceCode()&CMMsg.MASK_HANDS)>0)))
 		{
 			if(!msg.amISource(mob))
 				sleepForTicks=0;
@@ -34,12 +34,12 @@ public class Vagrant extends StdBehavior
 		}
 		return true;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		MOB mob=(MOB)ticking;
 		if((wakeForTicks<=0)&&(sleepForTicks<=0))
 		{
@@ -51,7 +51,7 @@ public class Vagrant extends StdBehavior
 			else
 			{
 				if(Sense.aliveAwakeMobile(mob,true))
-					mob.location().show(mob,mob.location(),Affect.MSG_SLEEP,"<S-NAME> curl(s) on the ground and go(es) to sleep.");
+					mob.location().show(mob,mob.location(),CMMsg.MSG_SLEEP,"<S-NAME> curl(s) on the ground and go(es) to sleep.");
 				if(Sense.isSleeping(mob))
 					sleepForTicks=Dice.roll(1,10,0);
 			}

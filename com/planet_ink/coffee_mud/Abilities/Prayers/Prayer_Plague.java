@@ -33,13 +33,13 @@ public class Prayer_Plague extends Prayer implements DiseaseAffect
 			if(invoker==null) invoker=mob;
 			int dmg=mob.envStats().level()/2;
 			if(dmg<1) dmg=1;
-			ExternalPlay.postDamage(invoker,mob,this,dmg,Affect.TYP_DISEASE,-1,"<T-NAME> watch(es) <T-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
+			ExternalPlay.postDamage(invoker,mob,this,dmg,CMMsg.TYP_DISEASE,-1,"<T-NAME> watch(es) <T-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
 			if(mob.location()==null) return false;
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
-			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
+			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchEffect(ID())==null))
 				if(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
 					maliciousAffect(invoker,target,48,-1);
 				}
 		}
@@ -65,7 +65,7 @@ public class Prayer_Plague extends Prayer implements DiseaseAffect
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> sores clear up.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> sores clear up.");
 	}
 
 
@@ -84,9 +84,9 @@ public class Prayer_Plague extends Prayer implements DiseaseAffect
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> inflict(s) an unholy plague upon <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_DISEASE|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> inflict(s) an unholy plague upon <T-NAMESELF>.^?");
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
@@ -94,7 +94,7 @@ public class Prayer_Plague extends Prayer implements DiseaseAffect
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,48,-1);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
 				}
 			}
 		}

@@ -58,7 +58,7 @@ public class Spell_Shatter extends Spell
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> starts vibrating!":"^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?");
 			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType(auto),null);
-			if((mob.location().okAffect(mob,msg))&&((mobTarget==null)||(mob.location().okAffect(mob,msg2))))
+			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(mobTarget!=null)
@@ -98,9 +98,9 @@ public class Spell_Shatter extends Spell
 					{
 						target.setUsesRemaining(100);
 						if(mobTarget==null)
-							mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
+							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
 						else
-							mob.location().show(mobTarget,target,Affect.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed!");
+							mob.location().show(mobTarget,target,CMMsg.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed!");
 						target.unWear();
 						target.destroy();
 						mob.location().recoverRoomStats();

@@ -26,7 +26,7 @@ public class Spell_IdentifyObject extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> stud(ys) <T-NAMESELF> very closely.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String identity=((Item)target).secretIdentity();

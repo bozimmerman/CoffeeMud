@@ -25,16 +25,16 @@ public class Spell_Claireaudience extends Spell
 		super.unInvoke();
 
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)
-		&&(affect.amISource((MOB)affected))
-		&&(affect.sourceMinor()==Affect.TYP_SPEAK)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(invoker!=null)
 		&&(((MOB)invoker).location()!=((MOB)affected).location())
-		&&(affect.othersMessage()!=null))
-			((MOB)invoker).affect(invoker,affect);
+		&&(msg.othersMessage()!=null))
+			((MOB)invoker).executeMsg(invoker,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -98,7 +98,7 @@ public class Spell_Claireaudience extends Spell
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) claireaudience, calling '"+mobName+"'.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),null);
-			if((mob.location().okAffect(mob,msg))&&((newRoom==mob.location())||(newRoom.okAffect(mob,msg2))))
+			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);

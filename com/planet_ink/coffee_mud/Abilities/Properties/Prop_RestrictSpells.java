@@ -12,38 +12,38 @@ public class Prop_RestrictSpells extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prop_RestrictSpells();}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
-		&&(text().toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))
+		if((msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&(text().toUpperCase().indexOf(msg.tool().ID().toUpperCase())>=0))
 		{
 			Room roomS=null;
 			Room roomD=null;
-			if((affect.target()!=null)&&(affect.target() instanceof MOB)&&(((MOB)affect.target()).location()!=null))
-				roomD=((MOB)affect.target()).location();
+			if((msg.target()!=null)&&(msg.target() instanceof MOB)&&(((MOB)msg.target()).location()!=null))
+				roomD=((MOB)msg.target()).location();
 			else
-			if((affect.source()!=null)&&(affect.source().location()!=null))
-				roomS=affect.source().location();
+			if((msg.source()!=null)&&(msg.source().location()!=null))
+				roomS=msg.source().location();
 			else
-			if((affect.target()!=null)&&(affect.target() instanceof Room))
-				roomD=(Room)affect.target();
+			if((msg.target()!=null)&&(msg.target() instanceof Room))
+				roomD=(Room)msg.target();
 
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
 				roomD=null;
 
 			if(roomS!=null)
-				roomS.showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+				roomS.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 			if(roomD!=null)
-				roomD.showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
-			if((affect.source()!=null)
-			&&(affect.source().location()!=null)
-			&&(affect.source().location()!=roomS)
-			&&(affect.source().location()!=roomD))
-				affect.source().location().showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+				roomD.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+			if((msg.source()!=null)
+			&&(msg.source().location()!=null)
+			&&(msg.source().location()!=roomS)
+			&&(msg.source().location()!=roomD))
+				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 			return false;
 		}
 		return true;

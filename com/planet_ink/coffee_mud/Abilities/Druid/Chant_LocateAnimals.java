@@ -22,7 +22,7 @@ public class Chant_LocateAnimals extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if(nextDirection==-999)
 				return true;
@@ -58,18 +58,18 @@ public class Chant_LocateAnimals extends Chant
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
-		if((affect.amISource(mob))
-		&&(affect.amITarget(mob.location()))
+		if((msg.amISource(mob))
+		&&(msg.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
-		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
@@ -87,7 +87,7 @@ public class Chant_LocateAnimals extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
+		if(mob.fetchEffect(this.ID())!=null)
 		{
 			mob.tell("You are already trying to locate animals.");
 			return false;
@@ -139,14 +139,14 @@ public class Chant_LocateAnimals extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) for the animals.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
 				displayText="(seeking "+target.name()+")";
 				Chant_LocateAnimals newOne=(Chant_LocateAnimals)this.copyOf();
-				if(mob.fetchAffect(newOne.ID())==null)
-					mob.addAffect(newOne);
+				if(mob.fetchEffect(newOne.ID())==null)
+					mob.addEffect(newOne);
 				mob.recoverEnvStats();
 				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
 			}

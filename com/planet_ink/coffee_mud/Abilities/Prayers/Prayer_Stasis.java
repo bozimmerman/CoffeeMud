@@ -55,21 +55,21 @@ public class Prayer_Stasis extends Prayer
 			mob.tell("The holy stasis has been lifted.");
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
-			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),Affect.MASK_HURT,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+		if((msg.amITarget(mob))&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+			msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),CMMsg.MASK_HURT,msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 		else
-		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)))
+		if((msg.amITarget(mob))&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
 		{
-			affect.source().tell(affect.source(),mob,null,"The statis field around <T-NAME> protect(s) <T-HIM-HER>.");
+			msg.source().tell(msg.source(),mob,null,"The statis field around <T-NAME> protect(s) <T-HIM-HER>.");
 			return false;
 		}
 
@@ -92,13 +92,13 @@ public class Prayer_Stasis extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to place a stasis upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					success=beneficialAffect(mob,target,10);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is surrounded by a stasis field!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is surrounded by a stasis field!");
 				}
 			}
 		}

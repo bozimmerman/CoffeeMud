@@ -31,7 +31,7 @@ public class Chant_BreatheWater extends Chant
 			affectableStats.alterBodypart(Race.BODY_GILL,2);
 		super.affectCharStats(affected,affectableStats);
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -49,8 +49,8 @@ public class Chant_BreatheWater extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already a water breather.");
 			return false;
@@ -62,10 +62,10 @@ public class Chant_BreatheWater extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> grow(s) a pair of gills!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) a pair of gills!");
 				beneficialAffect(mob,target,0);
 			}
 		}

@@ -22,15 +22,15 @@ public class Spell_FoolsGold extends Spell
 		return false;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)&&(affected instanceof Item))
 		{
-			if((affect.amITarget(affected))&&(affect.targetMinor()==Affect.TYP_GET)&&(affect.source()!=invoker))
+			if((msg.amITarget(affected))&&(msg.targetMinor()==CMMsg.TYP_GET)&&(msg.source()!=invoker))
 				destroyOnNextTick=true;
 			else
-			if((affect.tool()!=null)&&(affect.tool()==affected)&&(affect.targetMinor()==Affect.TYP_GIVE))
+			if((msg.tool()!=null)&&(msg.tool()==affected)&&(msg.targetMinor()==CMMsg.TYP_GIVE))
 				destroyOnNextTick=true;
 		}
 	}
@@ -50,7 +50,7 @@ public class Spell_FoolsGold extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Item gold=(Item)CMClass.getItem("GenItem");
@@ -72,7 +72,7 @@ public class Spell_FoolsGold extends Spell
 				gold.baseEnvStats().setWeight(0);
 				gold.recoverEnvStats();
 				mob.addInventory(gold);
-				mob.location().show(mob,null,gold,Affect.MSG_OK_ACTION,"Suddenly, <S-NAME> hold(s) <O-NAME>.");
+				mob.location().show(mob,null,gold,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> hold(s) <O-NAME>.");
 				destroyOnNextTick=false;
 				beneficialAffect(mob,gold,0);
 			}

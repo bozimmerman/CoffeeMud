@@ -38,28 +38,28 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 	}
 
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		switch(affect.sourceMinor())
+		MOB mob=msg.source();
+		switch(msg.sourceMinor())
 		{
-		case Affect.TYP_SPEAK:
+		case CMMsg.TYP_SPEAK:
 			if((mob.isMine(this))
 			   &&(!amWearingAt(Item.INVENTORY))
-			   &&(affect.target() instanceof MOB)
-			   &&(mob.location().isInhabitant((MOB)affect.target())))
+			   &&(msg.target() instanceof MOB)
+			   &&(mob.location().isInhabitant((MOB)msg.target())))
 			{
-				MOB target=(MOB)affect.target();
-				int x=affect.targetMessage().toUpperCase().indexOf("'LEVEL UP'");
+				MOB target=(MOB)msg.target();
+				int x=msg.targetMessage().toUpperCase().indexOf("'LEVEL UP'");
 				if(x>=0)
 				{
 					if((usesRemaining()>0)&&(useTheWand(CMClass.getAbility("Falling"),mob)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
-						FullMsg msg=new FullMsg(mob,affect.target(),null,Affect.MSG_HANDS,Affect.MSG_OK_ACTION,Affect.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
-						if(mob.location().okAffect(mob,msg))
+						FullMsg msg2=new FullMsg(mob,msg.target(),null,CMMsg.MSG_HANDS,CMMsg.MSG_OK_ACTION,CMMsg.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
+						if(mob.location().okMessage(mob,msg2))
 						{
-							mob.location().send(mob,msg);
+							mob.location().send(mob,msg2);
 							if(target.getExpNeededLevel()==Integer.MAX_VALUE)
 								target.charStats().getCurrentClass().level(target);
 							else

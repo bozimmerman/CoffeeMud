@@ -53,7 +53,7 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_MANACONSUMETIME=22;
 	public static final int SYSTEMI_MANACONSUMEAMT=23;
 	public static final int NUMI_SYSTEM=24;
-	  
+
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
 	public static final int SYSTEMB_ROOMDCOMPRESS=2;
@@ -124,7 +124,7 @@ public class CommonStrings extends Scriptable
 			break;
 		}
 	}
-	
+
 	public static String[] standardColorLookups()
 	{
 		if(clookup==null)
@@ -366,7 +366,7 @@ public class CommonStrings extends Scriptable
 
 	public static final int ARMOR_CEILING=500;
 	public static final int ATTACK_CEILING=1000;
-	
+
 	public static String armorStr(int armor){
 		return (armor<0)?armorStrs[0]:(
 			   (armor>=ARMOR_CEILING)?armorStrs[armorStrs.length-1]+" ("+armor+")":(
@@ -457,9 +457,9 @@ public class CommonStrings extends Scriptable
 		else return "pure goodness";
 
 	}
-	public static void resistanceMsgs(Affect affect, MOB source, MOB target)
+	public static void resistanceMsgs(CMMsg msg, MOB source, MOB target)
 	{
-		if(affect.wasModified()) return;
+		if(msg.wasModified()) return;
 
 		if(target.amDead()) return;
 
@@ -470,33 +470,33 @@ public class CommonStrings extends Scriptable
 			source=null;
 			endPart=".";
 		}
-		if(affect.tool()!=null)
+		if(msg.tool()!=null)
 		{
-			if(affect.tool() instanceof Trap)
+			if(msg.tool() instanceof Trap)
 				endPart=".";
 			else
-		    if(affect.tool() instanceof Ability)
-				tool=((Ability)affect.tool()).name();
+		    if(msg.tool() instanceof Ability)
+				tool=((Ability)msg.tool()).name();
 		}
 		String tackOn=null;
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_MIND: tackOn="<S-NAME> shake(s) off the "+((tool==null)?"mental attack":tool)+endPart; break;
-		case Affect.TYP_GAS: tackOn="<S-NAME> resist(s) the "+((tool==null)?"noxious fumes":tool)+endPart; break;
-		case Affect.TYP_COLD: tackOn="<S-NAME> shake(s) off the "+((tool==null)?"cold blast":tool)+endPart;	break;
-		case Affect.TYP_ELECTRIC: tackOn="<S-NAME> shake(s) off the "+((tool==null)?"electrical attack":tool)+endPart; break;
-		case Affect.TYP_FIRE: tackOn="<S-NAME> resist(s) the "+((tool==null)?"blast of heat":tool)+endPart; break;
-		case Affect.TYP_WATER: tackOn="<S-NAME> dodge(s) the "+((tool==null)?"wet blast":tool)+endPart;	break;
-		case Affect.TYP_UNDEAD:	tackOn="<S-NAME> shake(s) off the "+((tool==null)?"evil attack":tool)+endPart; break;
-		case Affect.TYP_POISON:	tackOn="<S-NAME> shake(s) off the "+((tool==null)?"poison":tool)+endPart; break;
-		case Affect.TYP_DISEASE: tackOn="<S-NAME> resist(s) the "+((tool==null)?"disease":tool); break;
-		case Affect.TYP_JUSTICE:break;
-		case Affect.TYP_CAST_SPELL:	tackOn="<S-NAME> resist(s) the "+((tool==null)?"magical attack":tool)+endPart; break;
-		case Affect.TYP_PARALYZE: tackOn="<S-NAME> resist(s) the "+((tool==null)?"paralysis":tool)+endPart; break;
+		case CMMsg.TYP_MIND: tackOn="<S-NAME> shake(s) off the "+((tool==null)?"mental attack":tool)+endPart; break;
+		case CMMsg.TYP_GAS: tackOn="<S-NAME> resist(s) the "+((tool==null)?"noxious fumes":tool)+endPart; break;
+		case CMMsg.TYP_COLD: tackOn="<S-NAME> shake(s) off the "+((tool==null)?"cold blast":tool)+endPart;	break;
+		case CMMsg.TYP_ELECTRIC: tackOn="<S-NAME> shake(s) off the "+((tool==null)?"electrical attack":tool)+endPart; break;
+		case CMMsg.TYP_FIRE: tackOn="<S-NAME> resist(s) the "+((tool==null)?"blast of heat":tool)+endPart; break;
+		case CMMsg.TYP_WATER: tackOn="<S-NAME> dodge(s) the "+((tool==null)?"wet blast":tool)+endPart;	break;
+		case CMMsg.TYP_UNDEAD:	tackOn="<S-NAME> shake(s) off the "+((tool==null)?"evil attack":tool)+endPart; break;
+		case CMMsg.TYP_POISON:	tackOn="<S-NAME> shake(s) off the "+((tool==null)?"poison":tool)+endPart; break;
+		case CMMsg.TYP_DISEASE: tackOn="<S-NAME> resist(s) the "+((tool==null)?"disease":tool); break;
+		case CMMsg.TYP_JUSTICE:break;
+		case CMMsg.TYP_CAST_SPELL:	tackOn="<S-NAME> resist(s) the "+((tool==null)?"magical attack":tool)+endPart; break;
+		case CMMsg.TYP_PARALYZE: tackOn="<S-NAME> resist(s) the "+((tool==null)?"paralysis":tool)+endPart; break;
 		}
 		if(tackOn!=null)
-			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,tackOn));
-		affect.tagModified(true);
+			msg.addTrailerMsg(new FullMsg(target,source,CMMsg.MSG_OK_ACTION,tackOn));
+		msg.tagModified(true);
 	}
 
 	// this is the sound support method.
@@ -509,7 +509,7 @@ public class CommonStrings extends Scriptable
 		else
 			return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
 	}
-	
+
 	public static String msp(String soundName, int priority)
 	{ return msp(soundName,50,Dice.roll(1,50,priority));}
 
@@ -565,7 +565,7 @@ public class CommonStrings extends Scriptable
 	"almost invincible",
 	"invincible!",
 	};
-	
+
 	public final static String[] fightStrs={
 	"none",
 	"novice",

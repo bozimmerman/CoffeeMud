@@ -12,7 +12,7 @@ public class Play_Tempo extends Play
 	public String name(){ return "Tempo";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public Environmental newInstance(){	return new Play_Tempo();}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -20,12 +20,12 @@ public class Play_Tempo extends Play
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			for(int i=0;i<mob.numAffects();i++)
+			for(int i=0;i<mob.numEffects();i++)
 			{
-				Ability A=mob.fetchAffect(i);
+				Ability A=mob.fetchEffect(i);
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
-					A.tick(mob,Host.MOB_TICK);
+					A.tick(mob,Host.TICK_MOB);
 			}
 		}
 		return true;

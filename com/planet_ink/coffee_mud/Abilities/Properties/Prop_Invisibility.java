@@ -15,16 +15,16 @@ public class Prop_Invisibility extends Property
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
 
-		if((affect.amISource(mob))&&(Util.bset(affect.sourceCode(),Affect.MASK_MALICIOUS)))
+		if((msg.amISource(mob))&&(Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS)))
 		{
 			ticksSinceLoss=0;
 			mob.recoverEnvStats();

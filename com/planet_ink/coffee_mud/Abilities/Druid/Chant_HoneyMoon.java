@@ -21,7 +21,7 @@ public class Chant_HoneyMoon extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
 			if(affected instanceof Room)
-				((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The pale moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The pale moon sets.");
 			super.unInvoke();
 			return;
 		}
@@ -63,7 +63,7 @@ public class Chant_HoneyMoon extends Chant
 			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already under the honey moon.");
 			return false;
@@ -85,12 +85,12 @@ public class Chant_HoneyMoon extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Honey Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Honey Moon Rises!");
 					beneficialAffect(mob,target,0);
 				}
 			}

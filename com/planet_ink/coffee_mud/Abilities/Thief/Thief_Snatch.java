@@ -74,20 +74,20 @@ public class Thief_Snatch extends StdAbility
 		   &&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)
 			  ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{
-			FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,Affect.MSG_DROP,null);
-			FullMsg msg2=new FullMsg(mob,null,this,Affect.MSG_THIEF_ACT,null);
-			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+			FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,CMMsg.MSG_DROP,null);
+			FullMsg msg2=new FullMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,null);
+			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob.getVictim(),msg);
 				mob.location().send(mob,msg2);
-				mob.location().show(mob,mob.getVictim(),Affect.MSG_OK_VISUAL,"<S-NAME> disarm(s) <T-NAMESELF>!");
+				mob.location().show(mob,mob.getVictim(),CMMsg.MSG_OK_VISUAL,"<S-NAME> disarm(s) <T-NAMESELF>!");
 				if(mob.location().isContent(hisWeapon))
 				{
 					ExternalPlay.get(mob,null,hisWeapon,true);
 					if(mob.isMine(hisWeapon))
 					{
-						msg=new FullMsg(mob,hisWeapon,null,Affect.MSG_HOLD,"<S-NAME> snatch(es) the <T-NAME> out of mid-air!");
-						if(mob.location().okAffect(mob,msg))
+						msg=new FullMsg(mob,hisWeapon,null,CMMsg.MSG_HOLD,"<S-NAME> snatch(es) the <T-NAME> out of mid-air!");
+						if(mob.location().okMessage(mob,msg))
 							mob.location().send(mob,msg);
 					}
 				}

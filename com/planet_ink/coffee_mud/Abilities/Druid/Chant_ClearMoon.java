@@ -18,9 +18,9 @@ public class Chant_ClearMoon extends Chant
 	public void clearMoons(Environmental E)
 	{
 		if(E!=null)
-		for(int a=E.numAffects()-1;a>=0;a--)
+		for(int a=E.numEffects()-1;a>=0;a--)
 		{
-			Ability A=E.fetchAffect(a);
+			Ability A=E.fetchEffect(a);
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
 			&&(A.Name().endsWith(" Moon")))
@@ -41,7 +41,7 @@ public class Chant_ClearMoon extends Chant
 		else
 		{
 			FullMsg msg=new FullMsg(mob,null,null,affectType(auto),"^S<S-NAME> chant(s) for a clear moon.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Room thatRoom=mob.location();

@@ -35,7 +35,7 @@ public class Scrapping extends CommonSkill
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(tickID==Host.MOB_TICK))
+		&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((found==null)
@@ -66,7 +66,7 @@ public class Scrapping extends CommonSkill
 						amount=amount*(abilityCode());
 						String s="s";
 						if(amount==1) s="";
-						mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to scrap "+amount+" pound"+s+" of "+foundShortName+".");
+						mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to scrap "+amount+" pound"+s+" of "+foundShortName+".");
 						for(int i=0;i<amount;i++)
 						{
 							Item newFound=(Item)found.copyOf();
@@ -118,11 +118,11 @@ public class Scrapping extends CommonSkill
 				V.addElement(I2);
 			}
 		}
-		
+
 		LandTitle t=null;
-		for(int a=0;a<mob.location().numAffects();a++)
+		for(int a=0;a<mob.location().numEffects();a++)
 		{
-			Ability A=mob.location().fetchAffect(a);
+			Ability A=mob.location().fetchEffect(a);
 			if((A!=null)&&(A instanceof LandTitle))
 				t=(LandTitle)A;
 		}
@@ -131,7 +131,7 @@ public class Scrapping extends CommonSkill
 			mob.tell("You are not allowed to scrap anything here.");
 			return false;
 		}
-			
+
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I2=mob.location().fetchItem(i);
@@ -178,8 +178,8 @@ public class Scrapping extends CommonSkill
 		foundShortName="nothing";
 		if(found!=null)
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);

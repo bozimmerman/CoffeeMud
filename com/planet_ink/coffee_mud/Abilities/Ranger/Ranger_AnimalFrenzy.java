@@ -34,7 +34,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 		if(invoker!=affected) return true;
 		if(rangersGroup==null)
 			rangersGroup=new Vector();
-		
+
 		if(rangersGroup!=null)
 		{
 			Hashtable h=invoker.getGroupMembers(new Hashtable());
@@ -47,7 +47,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				&&(Sense.isAnimalIntelligence(mob)))
 				{
 					rangersGroup.addElement(mob);
-					mob.addNonUninvokableAffect((Ability)this.copyOf());
+					mob.addNonUninvokableEffect((Ability)this.copyOf());
 				}
 			}
 			for(int i=rangersGroup.size()-1;i>=0;i--)
@@ -58,9 +58,9 @@ public class Ranger_AnimalFrenzy extends StdAbility
 					if((!h.contains(mob))
 					||(mob.location()!=invoker.location()))
 					{
-						Ability A=mob.fetchAffect(this.ID());
+						Ability A=mob.fetchEffect(this.ID());
 						if((A!=null)&&(A.invoker()==invoker))
-							mob.delAffect(A);
+							mob.delEffect(A);
 						rangersGroup.removeElement(mob);
 					}
 				}
@@ -68,14 +68,14 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				{
 				}
 			}
-			if((Dice.rollPercentage()==1) 
+			if((Dice.rollPercentage()==1)
 			   &&(invoker.isInCombat())
 			   &&(rangersGroup.size()>0))
 				helpProfficiency(invoker);
 		}
 		return true;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -17,13 +17,13 @@ public class Spell_Clone extends Spell
 	public Environmental newInstance(){	return new Spell_Clone();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==Affect.TYP_QUIT))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			unInvoke();
 	}
 
@@ -49,7 +49,7 @@ public class Spell_Clone extends Spell
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s), feeling his body split in two.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob);
@@ -109,7 +109,7 @@ public class Spell_Clone extends Spell
 			newMOB.delBehavior(B);
 		}
 		newMOB.bringToLife(caster.location(),true);
-		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

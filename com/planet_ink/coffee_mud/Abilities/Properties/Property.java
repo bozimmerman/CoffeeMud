@@ -50,8 +50,8 @@ public class Property implements Ability, Cloneable
 
 	public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
 	{
-		if(affected.fetchAffect(ID())==null)
-			affected.addAffect(this);
+		if(affected.fetchEffect(ID())==null)
+			affected.addEffect(this);
 	}
 
 	public int profficiency(){return 0;}
@@ -72,12 +72,12 @@ public class Property implements Ability, Cloneable
 	protected static final EnvStats envStats=new DefaultEnvStats();
 	public EnvStats envStats(){return envStats;}
 	public EnvStats baseEnvStats(){return envStats;}
-	
+
 	public void recoverEnvStats(){}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public Environmental newInstance()
 	{ return new Property();}
-	
+
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
 	private int getCodeNum(String code){
@@ -110,7 +110,7 @@ public class Property implements Ability, Cloneable
 		return true;
 	}
 	private void cloneFix(Ability E){}
-	
+
 	public Environmental copyOf()
 	{
 		try
@@ -125,9 +125,9 @@ public class Property implements Ability, Cloneable
 			return this.newInstance();
 		}
 	}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	
+
 	public void setMiscText(String newMiscText)
 	{ miscText=newMiscText;}
 	public String text()
@@ -148,7 +148,7 @@ public class Property implements Ability, Cloneable
 		if((E instanceof Area)&&((canAffectCode()&Ability.CAN_AREAS)>0)) return true;
 		return false;
 	}
-	
+
 	public boolean canTarget(Environmental E)
 	{ return false;}
 
@@ -158,11 +158,11 @@ public class Property implements Ability, Cloneable
 	{}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		return;
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		return true;
 	}
@@ -174,12 +174,12 @@ public class Property implements Ability, Cloneable
 	public int[] usageCost(MOB mob){return cost;}
 
 
-	public void addAffect(Ability to){}
-	public void addNonUninvokableAffect(Ability to){}
-	public void delAffect(Ability to){}
-	public int numAffects(){ return 0;}
-	public Ability fetchAffect(int index){return null;}
-	public Ability fetchAffect(String ID){return null;}
+	public void addEffect(Ability to){}
+	public void addNonUninvokableEffect(Ability to){}
+	public void delEffect(Ability to){}
+	public int numEffects(){ return 0;}
+	public Ability fetchEffect(int index){return null;}
+	public Ability fetchEffect(String ID){return null;}
 	public void addBehavior(Behavior to){}
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}

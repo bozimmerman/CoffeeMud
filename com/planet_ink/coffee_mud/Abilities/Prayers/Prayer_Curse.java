@@ -69,22 +69,22 @@ public class Prayer_Curse extends Prayer
 
 	public static boolean isBlessed(Item item)
 	{
-		if(item.fetchAffect("Prayer_Bless")!=null)
+		if(item.fetchEffect("Prayer_Bless")!=null)
 			return true;
-		if(item.fetchAffect("Prayer_HolyAura")!=null)
+		if(item.fetchEffect("Prayer_HolyAura")!=null)
 			return true;
-		if(item.fetchAffect("Prayer_BlessItem")!=null)
+		if(item.fetchEffect("Prayer_BlessItem")!=null)
 			return true;
-		if(item.fetchAffect("Prayer_HolyWord")!=null)
+		if(item.fetchEffect("Prayer_HolyWord")!=null)
 			return true;
 		return false;
 	}
 
 	public static void endIt(Environmental target, int level)
 	{
-		for(int a=target.numAffects()-1;a>=0;a--)
+		for(int a=target.numEffects()-1;a>=0;a--)
 		{
-			Ability A=target.fetchAffect(a);
+			Ability A=target.fetchEffect(a);
 			if(A!=null)
 			{
 				if(A instanceof Prayer_Bless)
@@ -125,8 +125,8 @@ public class Prayer_Curse extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> is cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> is cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

@@ -337,17 +337,17 @@ public class MudChat extends StdBehavior
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
+		super.executeMsg(affecting,msg);
 
 		if(!canFreelyBehaveNormal(affecting))
 			return;
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		MOB monster=(MOB)affecting;
-		if((!affect.amISource(monster))
+		if((!msg.amISource(monster))
 		&&(!mob.isMonster())
 		&&(Sense.canBeHeardBy(mob,monster))
 		&&(Sense.canBeSeenBy(mob,monster))
@@ -359,22 +359,22 @@ public class MudChat extends StdBehavior
 			myChatGroup=getMyChatGroup(monster,getChatGroups());
 			String rest[]=new String[1];
 
-			if((affect.targetMinor()==Affect.TYP_SPEAK)
-			&&(affect.amITarget(monster)
+			if((msg.targetMinor()==CMMsg.TYP_SPEAK)
+			&&(msg.amITarget(monster)
 			   ||((mob.location()==monster.location())
 				  &&(talkDown<=0)
 				  &&(mob.location().numPCInhabitants()==1)))
 			&&(Sense.canBeHeardBy(mob,monster))
 			&&(myChatGroup!=null)
-			&&(lastReactedTo!=affect.source())
-			&&(affect.sourceMessage()!=null)
-			&&(affect.targetMessage()!=null))
+			&&(lastReactedTo!=msg.source())
+			&&(msg.sourceMessage()!=null)
+			&&(msg.targetMessage()!=null))
 			{
-				int x=affect.sourceMessage().indexOf("'");
-				int y=affect.sourceMessage().lastIndexOf("'");
+				int x=msg.sourceMessage().indexOf("'");
+				int y=msg.sourceMessage().lastIndexOf("'");
 				if((x>=0)&&(y>x))
 				{
-					String msg=" "+affect.sourceMessage().substring(x+1,y)+" ";
+					String str=" "+msg.sourceMessage().substring(x+1,y)+" ";
 					int l=0;
 					for(int i=1;i<myChatGroup.size();i++)
 					{
@@ -385,7 +385,7 @@ public class MudChat extends StdBehavior
 						&&(expression.charAt(0)=='(')
 						&&(expression.charAt(l-1)==')'))
 						{
-							if(match(expression.substring(1,expression.length()-1),msg,rest))
+							if(match(expression.substring(1,expression.length()-1),str,rest))
 							{
 								myResponses=possResponses;
 								break;
@@ -395,33 +395,33 @@ public class MudChat extends StdBehavior
 				}
 			}
 			else
-			if((affect.sourceMinor()==Affect.TYP_SPEAK)
+			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(Sense.canBeHeardBy(mob,monster))
 			&&(Sense.canBeSeenBy(mob,monster))
 			&&(mob.isMonster())
-			&&(affect.source()!=monster))
+			&&(msg.source()!=monster))
 			   talkDown=this.TALK_WAIT_DELAY;
 			else
 			if((Sense.canBeHeardBy(mob,monster))
 			&&(Sense.canBeSeenBy(mob,monster))
 			&&(Sense.canBeSeenBy(monster,mob))
 			&&(talkDown<=0)
-			&&(lastReactedTo!=affect.source())
+			&&(lastReactedTo!=msg.source())
 			&&(myChatGroup!=null))
 			{
-				String msg=null;
+				String str=null;
 				char c1='[';
 				char c2=']';
-				if((affect.amITarget(monster)&&(affect.targetMessage()!=null)))
-					msg=" "+affect.targetMessage()+" ";
+				if((msg.amITarget(monster)&&(msg.targetMessage()!=null)))
+					str=" "+msg.targetMessage()+" ";
 				else
-				if(affect.othersMessage()!=null)
+				if(msg.othersMessage()!=null)
 				{
 					c1='{';
 					c2='}';
-					msg=" "+affect.othersMessage()+" ";
+					str=" "+msg.othersMessage()+" ";
 				}
-				if(msg!=null)
+				if(str!=null)
 				{
 					int l=0;
 					for(int i=1;i<myChatGroup.size();i++)
@@ -433,7 +433,7 @@ public class MudChat extends StdBehavior
 						&&(expression.charAt(0)==c1)
 						&&(expression.charAt(l-1)==c2))
 						{
-							if(match(expression.substring(1,expression.length()-1),msg,rest))
+							if(match(expression.substring(1,expression.length()-1),str,rest))
 							{
 								myResponses=possResponses;
 								break;
@@ -446,7 +446,7 @@ public class MudChat extends StdBehavior
 
 			if(myResponses!=null)
 			{
-				lastReactedTo=affect.source();
+				lastReactedTo=msg.source();
 				queResponse(myResponses,monster,mob,rest[0]);
 			}
 		}
@@ -455,7 +455,7 @@ public class MudChat extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if((tickID==Host.MOB_TICK)&&(ticking instanceof MOB))
+		if((tickID==Host.TICK_MOB)&&(ticking instanceof MOB))
 		{
 			if(!canFreelyBehaveNormal(ticking))
 			{

@@ -23,7 +23,7 @@ public class Chant_SummonFire extends Chant
 		if(littleFire==null)
 			return;
 		if(canBeUninvoked())
-			FireLocation.showHappens(Affect.MSG_OK_VISUAL,"The little magical fire goes out.");
+			FireLocation.showHappens(CMMsg.MSG_OK_VISUAL,"The little magical fire goes out.");
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -60,7 +60,7 @@ public class Chant_SummonFire extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) for fire.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Item I=CMClass.getItem("GenItem");
@@ -72,10 +72,10 @@ public class Chant_SummonFire extends Chant
 				I.setMaterial(EnvResource.RESOURCE_NOTHING);
 				I.setMiscText(I.text());
 				Ability B=CMClass.getAbility("Burning");
-				I.addNonUninvokableAffect(B);
+				I.addNonUninvokableEffect(B);
 
 				mob.location().addItem(I);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, a little magical campfire begins burning here.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, a little magical campfire begins burning here.");
 				FireLocation=mob.location();
 				littleFire=I;
 				beneficialAffect(mob,I,0);

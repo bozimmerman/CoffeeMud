@@ -22,31 +22,31 @@ public class MagicShelter extends StdRoom
 		if(A!=null)
 		{
 			A.setBorrowed(this,true);
-			addAffect(A);
+			addEffect(A);
 		}
 		A=CMClass.getAbility("Prop_NoRecall");
 		if(A!=null)
 		{
 			A.setBorrowed(this,true);
-			addAffect(A);
+			addEffect(A);
 		}
 		A=CMClass.getAbility("Prop_NoSummon");
 		if(A!=null)
 		{
 			A.setBorrowed(this,true);
-			addAffect(A);
+			addEffect(A);
 		}
 		A=CMClass.getAbility("Prop_NoTeleport");
 		if(A!=null)
 		{
 			A.setBorrowed(this,true);
-			addAffect(A);
+			addEffect(A);
 		}
 		A=CMClass.getAbility("Prop_NoTeleportOut");
 		if(A!=null)
 		{
 			A.setBorrowed(this,true);
-			addAffect(A);
+			addEffect(A);
 		}
 	}
 
@@ -55,16 +55,16 @@ public class MagicShelter extends StdRoom
 		return new MagicShelter();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if(Sense.isSleeping(this))
 			return true;
-		if((affect.sourceMinor()==affect.TYP_RECALL)
-		||(affect.sourceMinor()==affect.TYP_LEAVE))
+		if((msg.sourceMinor()==CMMsg.TYP_RECALL)
+		||(msg.sourceMinor()==CMMsg.TYP_LEAVE))
 		{
-			affect.source().tell("You can't leave the shelter that way.  You'll have to revoke it.");
+			msg.source().tell("You can't leave the shelter that way.  You'll have to revoke it.");
 			return false;
 		}
 		return true;

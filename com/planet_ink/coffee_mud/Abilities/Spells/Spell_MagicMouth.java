@@ -15,20 +15,20 @@ public class Spell_MagicMouth extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	Room myRoomContainer=null;
-	int myTrigger=Affect.TYP_ENTER;
+	int myTrigger=CMMsg.TYP_ENTER;
 	String message="NO MESSAGE ENTERED";
 
 	boolean waitingForLook=false;
 
 	public void doMyThing()
 	{
-		myRoomContainer.showHappens(Affect.MSG_NOISE,"\n\r\n\r"+affected.name()+" says '"+message+"'.\n\r\n\r");
+		myRoomContainer.showHappens(CMMsg.MSG_NOISE,"\n\r\n\r"+affected.name()+" says '"+message+"'.\n\r\n\r");
 		unInvoke();
 		return;
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 
 		if(affected==null)
@@ -37,40 +37,40 @@ public class Spell_MagicMouth extends Spell
 			return;
 		}
 
-		if((affect.amITarget(myRoomContainer))
-		&&(!Sense.isSneaking(affect.source())))
+		if((msg.amITarget(myRoomContainer))
+		&&(!Sense.isSneaking(msg.source())))
 		{
-			if((waitingForLook)&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+			if((waitingForLook)&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 			{
 				doMyThing();
 				return;
 			}
 			else
-			if(affect.targetMinor()==myTrigger)
+			if(msg.targetMinor()==myTrigger)
 				waitingForLook=true;
 		}
 		else
-		if(affect.amITarget(affected))
+		if(msg.amITarget(affected))
 		{
-			if((affect.targetMinor()==myTrigger)
-			&&(!Sense.isSneaking(affect.source())))
+			if((msg.targetMinor()==myTrigger)
+			&&(!Sense.isSneaking(msg.source())))
 			{
 				doMyThing();
 				return;
 			}
 			switch(myTrigger)
 			{
-			case Affect.TYP_GET:
+			case CMMsg.TYP_GET:
 				if(
-				   (affect.targetMinor()==Affect.TYP_OPEN)
-				 ||(affect.targetMinor()==Affect.TYP_GIVE)
-				 ||(affect.targetMinor()==Affect.TYP_DELICATE_HANDS_ACT)
-				 ||(affect.targetMinor()==Affect.TYP_JUSTICE)
-				 ||(affect.targetMinor()==Affect.TYP_GENERAL)
-				 ||(affect.targetMinor()==Affect.TYP_LOCK)
-				 ||(affect.targetMinor()==Affect.TYP_PULL)
-				 ||(affect.targetMinor()==Affect.TYP_PUSH)
-				 ||(affect.targetMinor()==Affect.TYP_UNLOCK))
+				   (msg.targetMinor()==CMMsg.TYP_OPEN)
+				 ||(msg.targetMinor()==CMMsg.TYP_GIVE)
+				 ||(msg.targetMinor()==CMMsg.TYP_DELICATE_HANDS_ACT)
+				 ||(msg.targetMinor()==CMMsg.TYP_JUSTICE)
+				 ||(msg.targetMinor()==CMMsg.TYP_GENERAL)
+				 ||(msg.targetMinor()==CMMsg.TYP_LOCK)
+				 ||(msg.targetMinor()==CMMsg.TYP_PULL)
+				 ||(msg.targetMinor()==CMMsg.TYP_PUSH)
+				 ||(msg.targetMinor()==CMMsg.TYP_UNLOCK))
 				{
 					doMyThing();
 					return;
@@ -104,19 +104,19 @@ public class Spell_MagicMouth extends Spell
 		String triggerStr=((String)commands.elementAt(1)).trim().toUpperCase();
 
 		if(triggerStr.startsWith("HOLD"))
-			myTrigger=Affect.TYP_HOLD;
+			myTrigger=CMMsg.TYP_HOLD;
 		else
 		if(triggerStr.startsWith("WIELD"))
-			myTrigger=Affect.TYP_WIELD;
+			myTrigger=CMMsg.TYP_WIELD;
 		else
 		if(triggerStr.startsWith("WEAR"))
-			myTrigger=Affect.TYP_WEAR;
+			myTrigger=CMMsg.TYP_WEAR;
 		else
 		if(triggerStr.startsWith("TOUCH"))
-			myTrigger=Affect.TYP_GET;
+			myTrigger=CMMsg.TYP_GET;
 		else
 		if(triggerStr.startsWith("ENTER"))
-			myTrigger=Affect.TYP_ENTER;
+			myTrigger=CMMsg.TYP_ENTER;
 		else
 		{
 			mob.tell("You must specify the trigger event that will cause the mouth to speak.\n\r'"+triggerStr+"' is not correct, but you can try TOUCH, WEAR, WIELD, HOLD, or ENTER.\n\r");
@@ -132,7 +132,7 @@ public class Spell_MagicMouth extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				myRoomContainer=mob.location();

@@ -41,19 +41,19 @@ public class Prop_Resistance extends Property
 		affectedStats.setStat(CharStats.SAVE_POISON,affectedStats.getStat(CharStats.SAVE_POISON)+adjCharStats.getStat(CharStats.SAVE_POISON));
 		affectedStats.setStat(CharStats.SAVE_PARALYSIS,affectedStats.getStat(CharStats.SAVE_PARALYSIS)+adjCharStats.getStat(CharStats.SAVE_PARALYSIS));
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		if((affect.amITarget(mob))&&(!affect.wasModified())&&(mob.location()!=null))
+		if((msg.amITarget(mob))&&(!msg.wasModified())&&(mob.location()!=null))
 		{
-			if(!Prop_HaveResister.isOk(affect,this,mob))
+			if(!Prop_HaveResister.isOk(msg,this,mob))
 				return false;
-			Prop_HaveResister.resistAffect(affect,mob,this);
+			Prop_HaveResister.resistAffect(msg,mob,this);
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

@@ -24,7 +24,7 @@ public class Spell_Silence extends Spell
 			return;
 		Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(Affect.MSG_OK_ACTION, "The sounds here begin to return.");
+			room.showHappens(CMMsg.MSG_OK_ACTION, "The sounds here begin to return.");
 		super.unInvoke();
 	}
 
@@ -47,10 +47,10 @@ public class Spell_Silence extends Spell
 
 		Environmental target = mob.location();
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"<S-NAME> fizzles a spell.");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -66,12 +66,12 @@ public class Spell_Silence extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),(auto?"S":"^S<S-NAME> whisper(s) and gesture(s) and s")+"ilence falls like a blanket.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
-					mob.location().addNonUninvokableAffect(this);
+					mob.location().addNonUninvokableEffect(this);
 				else
 					beneficialAffect(mob,mob.location(),0);
 			}

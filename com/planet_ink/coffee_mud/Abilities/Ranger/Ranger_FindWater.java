@@ -34,7 +34,7 @@ public class Ranger_FindWater extends StdAbility
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if(nextDirection==-999)
 				return true;
@@ -84,36 +84,36 @@ public class Ranger_FindWater extends StdAbility
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
-		if((affect.amISource(mob))
-		&&(affect.amITarget(mob.location()))
+		if((msg.amISource(mob))
+		&&(msg.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
-		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),false);
 		else
 		if((affected!=null)
 		   &&(affected instanceof MOB)
-		   &&(affect.target()!=null)
-		   &&(affect.amISource((MOB)affected))
-		   &&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING))
+		   &&(msg.target()!=null)
+		   &&(msg.amISource((MOB)affected))
+		   &&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING))
 		{
-			if((affect.tool()!=null)&&(affect.tool().ID().equals(ID())))
+			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
-				String msg=waterHere((MOB)affected,affect.target(),null);
-				if(msg.length()>0)
-					((MOB)affected).tell(msg);
+				String str=waterHere((MOB)affected,msg.target(),null);
+				if(str.length()>0)
+					((MOB)affected).tell(str);
 			}
 			else
 			{
-				FullMsg msg=new FullMsg(affect.source(),affect.target(),this,affect.MSG_EXAMINESOMETHING,affect.NO_EFFECT,affect.NO_EFFECT,null);
-				affect.addTrailerMsg(msg);
+				FullMsg msg2=new FullMsg(msg.source(),msg.target(),this,CMMsg.MSG_EXAMINESOMETHING,msg.NO_EFFECT,msg.NO_EFFECT,null);
+				msg.addTrailerMsg(msg2);
 			}
 		}
 	}
@@ -254,13 +254,13 @@ public class Ranger_FindWater extends StdAbility
 
 		if((success)&&(theTrail!=null))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_QUIETMOVEMENT,auto?"<S-NAME> begin(s) sniffing around for water!":"<S-NAME> begin(s) sensing water.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<S-NAME> begin(s) sniffing around for water!":"<S-NAME> begin(s) sensing water.");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Ranger_FindWater newOne=(Ranger_FindWater)this.copyOf();
-				if(mob.fetchAffect(newOne.ID())==null)
-					mob.addAffect(newOne);
+				if(mob.fetchEffect(newOne.ID())==null)
+					mob.addEffect(newOne);
 				mob.recoverEnvStats();
 				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
 			}

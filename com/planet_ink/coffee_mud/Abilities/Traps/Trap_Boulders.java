@@ -14,7 +14,7 @@ public class Trap_Boulders extends StdTrap
 	protected int trapLevel(){return 20;}
 	public String requiresToSet(){return "50 pounds of boulders";}
 	public Environmental newInstance(){	return new Trap_Boulders();}
-	
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
@@ -26,7 +26,7 @@ public class Trap_Boulders extends StdTrap
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -54,19 +54,19 @@ public class Trap_Boulders extends StdTrap
 		}
 		return true;
 	}
-	
+
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((!invoker().mayIFight(target))||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a boulder trap!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a boulder trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> trigger(s) a trap!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> trigger(s) a trap!"))
 			{
 				super.spring(target);
 				int damage=Dice.roll(trapLevel(),20,1);
-				ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,Weapon.TYPE_BASHING,"Dozens of boulders <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_BASHING,"Dozens of boulders <DAMAGE> <T-NAME>!");
 			}
 		}
 	}

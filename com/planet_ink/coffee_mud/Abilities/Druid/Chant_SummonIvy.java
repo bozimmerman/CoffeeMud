@@ -42,10 +42,10 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
-		newItem.addNonUninvokableAffect(CMClass.getAbility("Disease_PoisonIvy"));
+		newItem.addNonUninvokableEffect(CMClass.getAbility("Disease_PoisonIvy"));
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
 		Chant_SummonIvy newChant=new Chant_SummonIvy();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

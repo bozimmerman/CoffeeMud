@@ -42,16 +42,16 @@ public class StdSmokable extends StdContainer implements Light
 		return new StdSmokable();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 
-		if(!affect.amITarget(this))
-			return super.okAffect(myHost,affect);
+		if(!msg.amITarget(this))
+			return super.okMessage(myHost,msg);
 		else
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_WEAR:
+		case CMMsg.TYP_WEAR:
 			if(capacity>0)
 			{
 				if(getContents().size()>0)
@@ -76,12 +76,12 @@ public class StdSmokable extends StdContainer implements Light
 					return false;
 				}
 			}
-			affect.modify(affect.source(),affect.target(),affect.tool(),
-						  affect.sourceCode(),"<S-NAME> light(s) up <T-NAME>.",
-						  affect.targetCode(),"<S-NAME> light(s) up <T-NAME>.",
-						  affect.othersCode(),"<S-NAME> light(s) up <T-NAME>.");
-			return super.okAffect(myHost,affect);
-		case Affect.TYP_EXTINGUISH:
+			msg.modify(msg.source(),msg.target(),msg.tool(),
+						  msg.sourceCode(),"<S-NAME> light(s) up <T-NAME>.",
+						  msg.targetCode(),"<S-NAME> light(s) up <T-NAME>.",
+						  msg.othersCode(),"<S-NAME> light(s) up <T-NAME>.");
+			return super.okMessage(myHost,msg);
+		case CMMsg.TYP_EXTINGUISH:
 			if((durationTicks==0)||(!isLit()))
 			{
 				mob.tell(name()+" is not lit!");
@@ -89,12 +89,12 @@ public class StdSmokable extends StdContainer implements Light
 			}
 			return true;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.LIGHT_FLICKERS)
+		if((tickID==Host.TICK_LIGHT_FLICKERS)
 		&&(isLit())
 		&&(owner()!=null))
 		{
@@ -108,7 +108,7 @@ public class StdSmokable extends StdContainer implements Light
 					if((mob.location()!=null)
 					&&(Sense.aliveAwakeMobile(mob,true)))
 					{
-						mob.location().show(mob,this,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> puff(s) on <T-NAME>.");
+						mob.location().show(mob,this,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> puff(s) on <T-NAME>.");
 					}
 				}
 				return true;
@@ -118,7 +118,7 @@ public class StdSmokable extends StdContainer implements Light
 				if(owner() instanceof Room)
 				{
 					if(((Room)owner()).numInhabitants()>0)
-						((Room)owner()).showHappens(Affect.MSG_OK_VISUAL,name()+" burns out.");
+						((Room)owner()).showHappens(CMMsg.MSG_OK_VISUAL,name()+" burns out.");
 					if(destroyedWhenBurnedOut())
 						destroy();
 					((Room)owner()).recoverRoomStats();
@@ -159,9 +159,9 @@ public class StdSmokable extends StdContainer implements Light
 			   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		if(mob==null) return;
 		Room room=mob.location();
 		if(room==null) return;
@@ -179,23 +179,23 @@ public class StdSmokable extends StdContainer implements Light
 					mob.tell("The water makes "+name()+" go out.");
 				else
 					mob.tell("The rain makes "+name()+" go out.");
-				tick(this,Host.LIGHT_FLICKERS);
+				tick(this,Host.TICK_LIGHT_FLICKERS);
 			}
 		}
 
-		if(affect.amITarget(this))
-			switch(affect.targetMinor())
+		if(msg.amITarget(this))
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_EXTINGUISH:
+			case CMMsg.TYP_EXTINGUISH:
 				if(isLit())
 				{
 					light(false);
-					ExternalPlay.deleteTick(this,Host.LIGHT_FLICKERS);
+					ExternalPlay.deleteTick(this,Host.TICK_LIGHT_FLICKERS);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}
 				break;
-			case Affect.TYP_WEAR:
+			case CMMsg.TYP_WEAR:
 				if(durationTicks>0)
 				{
 					if(capacity>0)
@@ -204,34 +204,34 @@ public class StdSmokable extends StdContainer implements Light
 						for(int v=0;v<V.size();v++)
 							((Item)V.elementAt(v)).destroy();
 					}
-					
+
 					light(true);
-					ExternalPlay.startTickDown(this,Host.LIGHT_FLICKERS,1);
+					ExternalPlay.startTickDown(this,Host.TICK_LIGHT_FLICKERS,1);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}
 				break;
 			}
-		super.affect(myHost,affect);
-		if(affect.amITarget(this))
+		super.executeMsg(myHost,msg);
+		if(msg.amITarget(this))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_DROP:
-			case Affect.TYP_THROW:
-			case Affect.TYP_GET:
-			case Affect.TYP_REMOVE:
-				if(affect.source()!=null)
+			case CMMsg.TYP_DROP:
+			case CMMsg.TYP_THROW:
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_REMOVE:
+				if(msg.source()!=null)
 				{
-					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					{
-						affect.source().recoverEnvStats();
-						if(affect.source().location()!=null)
-							affect.source().location().recoverRoomStats();
-						if((affect.tool()!=null)
-						&&(affect.tool()!=affect.source().location())
-						&&(affect.tool() instanceof Room))
-							((Room)affect.tool()).recoverRoomStats();
+						msg.source().recoverEnvStats();
+						if(msg.source().location()!=null)
+							msg.source().location().recoverRoomStats();
+						if((msg.tool()!=null)
+						&&(msg.tool()!=msg.source().location())
+						&&(msg.tool() instanceof Room))
+							((Room)msg.tool()).recoverRoomStats();
 					}
 				}
 				break;

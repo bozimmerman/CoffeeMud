@@ -45,7 +45,7 @@ public class Spell_MassFeatherfall extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if(mob.location().okAffect(mob,msg))
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					Spell_FeatherFall fall=new Spell_FeatherFall();

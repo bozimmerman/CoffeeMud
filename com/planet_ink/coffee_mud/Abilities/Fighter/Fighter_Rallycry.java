@@ -63,8 +63,8 @@ public class Fighter_Rallycry extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_SPEAK,auto?"":"^S<S-NAME> scream(s) a mighty RALLYING CRY!!^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_SPEAK,auto?"":"^S<S-NAME> scream(s) a mighty RALLYING CRY!!^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Hashtable h=properTargets(mob,givenTarget,auto);
@@ -72,12 +72,12 @@ public class Fighter_Rallycry extends StdAbility
 				for(Enumeration e=h.elements();e.hasMoreElements();)
 				{
 					MOB target=(MOB)e.nextElement();
-					target.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) rallyed!");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) rallyed!");
 					timesTicking=0;
 					hpUp=mob.envStats().level();
 					beneficialAffect(mob,target,0);
 					target.recoverMaxState();
-					if(target.fetchAffect(ID())!=null)
+					if(target.fetchEffect(ID())!=null)
 						mob.curState().adjHitPoints(hpUp,mob.maxState());
 				}
 			}

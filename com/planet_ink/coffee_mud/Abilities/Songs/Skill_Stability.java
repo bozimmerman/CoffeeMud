@@ -17,39 +17,39 @@ public class Skill_Stability extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.SKILL;}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
-		&&(affect.amITarget(affected))
-		&&(((Ability)affect.tool()).quality()==Ability.MALICIOUS)
-		&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_MOVING))
+		if((msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&(msg.amITarget(affected))
+		&&(((Ability)msg.tool()).quality()==Ability.MALICIOUS)
+		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-40,false)))
 		{
 			Room roomS=null;
 			Room roomD=null;
-			if((affect.target()!=null)&&(affect.target() instanceof MOB))
-				roomD=((MOB)affect.target()).location();
-			if((affect.source()!=null)&&(affect.source().location()!=null))
-				roomS=affect.source().location();
-			if((affect.target()!=null)&&(affect.target() instanceof Room))
-				roomD=(Room)affect.target();
+			if((msg.target()!=null)&&(msg.target() instanceof MOB))
+				roomD=((MOB)msg.target()).location();
+			if((msg.source()!=null)&&(msg.source().location()!=null))
+				roomS=msg.source().location();
+			if((msg.target()!=null)&&(msg.target() instanceof Room))
+				roomD=(Room)msg.target();
 
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
 				roomD=null;
 
 			if(roomS!=null)
-				roomS.show((MOB)affected,null,affect.tool(),Affect.MSG_OK_VISUAL,"<S-NAME> remain(s) stable despite the <O-NAME>.");
+				roomS.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"<S-NAME> remain(s) stable despite the <O-NAME>.");
 			if(roomD!=null)
-				roomS.show((MOB)affected,null,affect.tool(),Affect.MSG_OK_VISUAL,"<S-NAME> remain(s) stable despite the <O-NAME>.");
+				roomS.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"<S-NAME> remain(s) stable despite the <O-NAME>.");
 			helpProfficiency((MOB)affected);
 			return false;
 		}

@@ -18,7 +18,7 @@ public class Chant_SummonElemental extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(invoker!=null))
 			{
@@ -27,7 +27,7 @@ public class Chant_SummonElemental extends Chant
 				||(mob.amDead())
 				||(mob.location()!=invoker.location())))
 				{
-					mob.delAffect(this);
+					mob.delEffect(this);
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 				}
@@ -35,17 +35,17 @@ public class Chant_SummonElemental extends Chant
 		}
 		return super.tick(ticking,tickID);
 	}
-	
-	public void affect(Environmental myHost, Affect msg)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==Affect.TYP_QUIT))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -57,11 +57,11 @@ public class Chant_SummonElemental extends Chant
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from another Plain.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
-				target.addNonUninvokableAffect(this);
+				target.addNonUninvokableEffect(this);
 				if(target.isInCombat()) target.makePeace();
 				ExternalPlay.follow(target,mob,true);
 				if(target.amFollowing()!=mob)
@@ -130,9 +130,9 @@ public class Chant_SummonElemental extends Chant
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
-		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		newMOB.setStartRoom(null);
-		newMOB.addNonUninvokableAffect(this);
+		newMOB.addNonUninvokableEffect(this);
 		return(newMOB);
 	}
 }

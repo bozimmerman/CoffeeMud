@@ -21,13 +21,13 @@ public class Skill_Songcraft extends StdAbility
 	public String lastID="";
 	public int craftType(){return Ability.SONG;}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected==null)||(!(affected instanceof MOB)))
 		   return;
 		MOB mob=(MOB)affected;
-		if((msg.sourceMinor()==Affect.TYP_CAST_SPELL)
+		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(!msg.amISource(mob))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
@@ -44,7 +44,7 @@ public class Skill_Songcraft extends StdAbility
 			Ability A=(Ability)copyOf();
 			A.setMiscText(msg.tool().ID());
 			lastID=msg.tool().ID();
-			msg.addTrailerMsg(new FullMsg(mob,msg.source(),A,Affect.MSG_OK_VISUAL,"<T-NAME> cast '"+msg.tool().name()+"'.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null));
+			msg.addTrailerMsg(new FullMsg(mob,msg.source(),A,CMMsg.MSG_OK_VISUAL,"<T-NAME> cast '"+msg.tool().name()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			helpProfficiency(mob);
 		}
 	}

@@ -35,7 +35,7 @@ public class Spell_MagicMissile extends Spell
 			for(int i=0;i<numMissiles;i++)
 			{
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(i==0)?((auto?"A magic missle appears hurling full speed at <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a magic missile!^?")+CommonStrings.msp("spelldam2.wav",40)):null);
-				if(mob.location().okAffect(mob,msg))
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
@@ -43,7 +43,7 @@ public class Spell_MagicMissile extends Spell
 						int damage = 0;
 						damage += Dice.roll(1,11,11/numMissiles);
 						if(target.location()==mob.location())
-							ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,((i==0)?"^SThe missile ":"^SAnother missile ")+"<DAMAGE> <T-NAME>!^?");
+							ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,((i==0)?"^SThe missile ":"^SAnother missile ")+"<DAMAGE> <T-NAME>!^?");
 					}
 				}
 				if(target.amDead())

@@ -27,7 +27,7 @@ public class Spell_Infravision extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> eyes cease to sparkle.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> eyes cease to sparkle.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -43,9 +43,9 @@ public class Spell_Infravision extends Spell
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already using infravision.");
 			return false;
@@ -54,7 +54,7 @@ public class Spell_Infravision extends Spell
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) glowing eyes!":"^S<S-NAME> invoke(s) glowing red eyes!^?");
-		if(mob.location().okAffect(mob,msg))
+		if(mob.location().okMessage(mob,msg))
 		{
 			successfulObservation=success;
 			mob.location().send(mob,msg);

@@ -70,11 +70,11 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				case 30: say="Goop"+((target.charStats().getStat(CharStats.GENDER)==(int)'M')?"boy":"girl")+"!";  break;
 				}
 				ExternalPlay.quickSay(mob,target,say,false,false);
-				if((target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
+				if((target!=invoker)&&(target!=mob)&&(target.fetchEffect(ID())==null))
 				{
 					if(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
 					{
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
 						maliciousAffect(invoker,target,0,-1);
 					}
 				}
@@ -111,9 +111,9 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> incant(s) rudely to <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_DISEASE|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> incant(s) rudely to <T-NAMESELF>.^?");
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
@@ -121,7 +121,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,0,-1);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
 				}
 			}
 		}

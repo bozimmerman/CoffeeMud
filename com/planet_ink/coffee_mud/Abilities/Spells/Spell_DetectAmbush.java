@@ -28,13 +28,13 @@ public class Spell_DetectAmbush extends Spell
 			mob.tell("You are no longer detecting ambushes.");
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,msg);
+			return super.okMessage(myHost,msg);
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob)
-		&&(msg.targetMinor()==Affect.TYP_ENTER)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()!=null)
 		&&(msg.target()!=lastRoom)
 		&&(msg.target() instanceof Room)))
@@ -62,7 +62,7 @@ public class Spell_DetectAmbush extends Spell
 			}
 		}
 
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -71,9 +71,9 @@ public class Spell_DetectAmbush extends Spell
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting ambushes.");
 			return false;
@@ -84,7 +84,7 @@ public class Spell_DetectAmbush extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) careful senses!":"^S<S-NAME> incant(s) softly, and gain(s) careful senses!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -142,8 +142,8 @@ public class SaucerSupport
 			copy=Util.replaceAll(copy,"<WORD>",word);
 		return copy;
 	}
-	
-	
+
+
 	private static boolean levelCheck(String text, char prevChar, int lastPlace, int lvl)
 	{
 		int x=0;
@@ -156,7 +156,7 @@ public class SaucerSupport
 			{
 				char prev='+';
 				if(x>0) prev=text.charAt(x-1);
-				
+
 				char primaryChar=text.charAt(x);
 				x++;
 				boolean andEqual=false;
@@ -166,7 +166,7 @@ public class SaucerSupport
 					x++;
 				}
 				lastPlace=x;
-					
+
 				if(prev==prevChar)
 				{
 					boolean found=false;
@@ -198,7 +198,7 @@ public class SaucerSupport
 		}
 		return false;
 	}
-	
+
 	public static boolean fromHere(Vector V, char plusMinus, int fromHere, String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
@@ -214,7 +214,7 @@ public class SaucerSupport
 
 	public static boolean tattooCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
-		Ability A=mob.fetchAffect("Prop_Tattoo");
+		Ability A=mob.fetchEffect("Prop_Tattoo");
 		if(A==null) return false;
 		String txt=A.text().toUpperCase();
 		int x=txt.indexOf(";");
@@ -228,7 +228,7 @@ public class SaucerSupport
 		}
 		return false;
 	}
-	
+
 	public static boolean nameCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
 		Vector names=Util.parse(mob.name().toUpperCase());
@@ -241,22 +241,22 @@ public class SaucerSupport
 				return true;
 		return false;
 	}
-	
-	public static void adjustDamageMessage(Affect msg, int adjustment)
+
+	public static void adjustDamageMessage(CMMsg msg, int adjustment)
 	{
-		if((msg!=null)&&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
+		if((msg!=null)&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 		{
-			int amount=msg.targetCode()-Affect.MASK_HURT;
+			int amount=msg.targetCode()-CMMsg.MASK_HURT;
 			amount+=adjustment;
 			if(amount>1023) amount=1023;
 			if(amount<0) amount=0;
 			msg.modify(msg.source(),msg.target(),msg.tool(),
 					   msg.sourceCode(),msg.sourceMessage(),
-					   Affect.MASK_HURT+amount,msg.targetMessage(),
+					   CMMsg.MASK_HURT+amount,msg.targetMessage(),
 					   msg.othersCode(),msg.othersMessage());
 		}
 	}
-	
+
 	public static StringBuffer levelHelp(String str, char c, String append)
 	{
 		if(str.startsWith(c+">="))
@@ -275,7 +275,7 @@ public class SaucerSupport
 			return new StringBuffer(append+"level "+str.substring(2).trim()+" players.  ");
 		return new StringBuffer("");
 	}
-	
+
 	public static String zapperDesc(String text)
 	{
 		if(text.trim().length()==0) return "Anyone";
@@ -411,7 +411,7 @@ public class SaucerSupport
 						buf.append(".  ");
 					}
 					break;
-				case 14: // -Clan 
+				case 14: // -Clan
 					{
 						buf.append("Requires membership in the following clan(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
@@ -615,18 +615,18 @@ public class SaucerSupport
 				buf.append(levelHelp(str,'-',"Disallows "));
 			}
 		}
-		
+
 		if(buf.length()==0) buf.append("Anyone.");
 		return buf.toString();
 	}
-	
+
 	public static boolean zapperCheck(String text, MOB mob)
 	{
 		if(mob==null) return true;
 		if(mob.charStats()==null) return true;
 		if(text.trim().length()==0) return true;
 		getZapCodes();
-		
+
 		String mobClass=Util.padRight(mob.charStats().displayClassName(),4).toUpperCase().trim();
 		String mobRaceCat=mob.charStats().getMyRace().racialCategory().toUpperCase();
 		if(mobRaceCat.length()>6) mobRaceCat=mobRaceCat.substring(0,6);
@@ -636,7 +636,7 @@ public class SaucerSupport
 		String mobGender=mob.charStats().genderName().toUpperCase();
 		int level=mob.envStats().level();
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
-		
+
 		Vector V=Util.parse(text.toUpperCase());
 		if(mob.isASysOp(mob.location()))
 		for(int v=0;v<V.size();v++)
@@ -661,7 +661,7 @@ public class SaucerSupport
 					&&(!fromHere(V,'+',v+1,mobClass))) return false;
 					break;
 				case 2: // -Race
-					if(!fromHere(V,'+',v+1,mobRace)) 
+					if(!fromHere(V,'+',v+1,mobRace))
 						return false;
 					break;
 				case 3: // -Alignment
@@ -692,11 +692,11 @@ public class SaucerSupport
 					if(mob.isMonster()) return false;
 					break;
 				case 12: // -Racecat
-					if(!fromHere(V,'+',v+1,mobRaceCat)) 
+					if(!fromHere(V,'+',v+1,mobRaceCat))
 						return false;
 					break;
 				case 13: // +Racecat
-					if(fromHere(V,'-',v+1,mobRaceCat)) 
+					if(fromHere(V,'-',v+1,mobRaceCat))
 						return false;
 					break;
 				case 14: // -Clan
@@ -710,7 +710,7 @@ public class SaucerSupport
 						return false;
 					break;
 				case 16: // +names
-					if(nameCheck(V,'-',v+1,mob)) 
+					if(nameCheck(V,'-',v+1,mob))
 						return false;
 					break;
 				case 17: // -anyclass
@@ -724,7 +724,7 @@ public class SaucerSupport
 					break;
 				case 18: // +anyclass
 					for(int c=0;c<mob.charStats().numClasses();c++)
-						if(fromHere(V,'-',v+1,Util.padRight(mob.charStats().getMyClass(c).name(),4).toUpperCase().trim())) 
+						if(fromHere(V,'-',v+1,Util.padRight(mob.charStats().getMyClass(c).name(),4).toUpperCase().trim()))
 							return false;
 					break;
 				case 19: // -str
@@ -802,9 +802,9 @@ public class SaucerSupport
 		return true;
 	}
 
-	public static boolean findTheRoom(Room location, 
-									  Room destRoom, 
-									  int tryCode, 
+	public static boolean findTheRoom(Room location,
+									  Room destRoom,
+									  int tryCode,
 									  Vector dirVec,
 									  Vector theTrail,
 									  Hashtable lookedIn,
@@ -814,7 +814,7 @@ public class SaucerSupport
 		if(lookedIn==null) return false;
 		if(lookedIn.get(location)!=null) return false;
 		if(depth>TRACK_DEPTH) return false;
-		
+
 		lookedIn.put(location,location);
 		for(int x=0;x<dirVec.size();x++)
 		{
@@ -839,15 +839,15 @@ public class SaucerSupport
 		}
 		return false;
 	}
-	
-	public static Vector findBastardTheBestWay(Room location, 
+
+	public static Vector findBastardTheBestWay(Room location,
 											   Vector destRooms,
 											   boolean noWater)
 	{
-		
+
 		Vector trailArray[] = new Vector[TRACK_ATTEMPTS];
 		Room trackArray[] = new Room[TRACK_ATTEMPTS];
-		
+
 		for(int t=0;t<TRACK_ATTEMPTS;t++)
 		{
 			Vector dirVec=new Vector();
@@ -880,14 +880,14 @@ public class SaucerSupport
 				winner=t;
 			}
 		}
-		
-		if(winner<0) 
+
+		if(winner<0)
 			return null;
 		else
 			return trailArray[winner];
 	}
-	
-	public static int trackNextDirectionFromHere(Vector theTrail, 
+
+	public static int trackNextDirectionFromHere(Vector theTrail,
 												 Room location,
 												 boolean noWaterOrAir)
 	{
@@ -927,13 +927,13 @@ public class SaucerSupport
 		}
 		return bestDirection;
 	}
-	
+
 	public static int radiatesFromDir(Room room, Vector rooms)
 	{
 		for(int i=0;i<rooms.size();i++)
 		{
 			Room R=(Room)rooms.elementAt(i);
-			
+
 			if(R==room) return -1;
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				if(R.getRoomInDir(d)==room)
@@ -941,8 +941,8 @@ public class SaucerSupport
 		}
 		return -1;
 	}
-	public static void getRadiantRooms(Room room, 
-									   Vector rooms, 
+	public static void getRadiantRooms(Room room,
+									   Vector rooms,
 									   boolean openOnly,
 									   boolean areaOnly,
 									   boolean noSkyPlease,
@@ -971,7 +971,7 @@ public class SaucerSupport
 					&&(R1.rawDoors()[d]!=null)
 					&&(R1.rawDoors()[d].roomID().length()==0))
 						continue;
-					
+
 					Room R=R1.getRoomInDir(d);
 					Exit E=R1.getExitInDir(d);
 					if((R!=null)
@@ -994,7 +994,7 @@ public class SaucerSupport
 			depth++;
 		}
 	}
-	
+
 	public static void extinguish(MOB source, Environmental target, boolean mundane)
 	{
 		if(target instanceof Room)
@@ -1012,9 +1012,9 @@ public class SaucerSupport
 			}
 			return;
 		}
-		for(int a=target.numAffects()-1;a>=0;a--)
+		for(int a=target.numEffects()-1;a>=0;a--)
 		{
-			Ability A=target.fetchAffect(a);
+			Ability A=target.fetchEffect(a);
 			if((A!=null)&&((!mundane)||(A.classificationCode()==Ability.PROPERTY)))
 			{
 				if((Util.bset(A.flags(),Ability.FLAG_HEATING)&&(!mundane))
@@ -1036,13 +1036,13 @@ public class SaucerSupport
 		}
 		if((target instanceof Light)&&(((Light)target).isLit()))
 		{
-			((Light)target).tick(target,Host.LIGHT_FLICKERS);
+			((Light)target).tick(target,Host.TICK_LIGHT_FLICKERS);
 			((Light)target).light(false);
 		}
 	}
-	
-	public static boolean beMobile(MOB mob, 
-								   boolean dooropen, 
+
+	public static boolean beMobile(MOB mob,
+								   boolean dooropen,
 								   boolean wander,
 								   boolean roomprefer, boolean roomobject, Vector rooms)
 	{
@@ -1052,14 +1052,14 @@ public class SaucerSupport
 			return false;
 
 		Room oldRoom=mob.location();
-		
+
 		for(int m=0;m<oldRoom.numInhabitants();m++)
 		{
 			MOB inhab=oldRoom.fetchInhabitant(m);
 			if((inhab!=null)&&(inhab.isASysOp(oldRoom)))
 				return false;
 		}
-			
+
 		if(oldRoom instanceof GridLocale)
 		{
 			Vector V=((GridLocale)oldRoom).getAllRooms();
@@ -1078,18 +1078,18 @@ public class SaucerSupport
 			if((nextRoom!=null)&&(nextExit!=null))
 			{
 				Exit opExit=nextRoom.getExitInDir(Directions.getOpDirectionCode(direction));
-				for(int a=0;a<nextExit.numAffects();a++)
+				for(int a=0;a<nextExit.numEffects();a++)
 				{
-					Ability aff=nextExit.fetchAffect(a);
+					Ability aff=nextExit.fetchEffect(a);
 					if((aff!=null)&&(aff instanceof Trap))
 						direction=-1;
 				}
 
 				if(opExit!=null)
 				{
-					for(int a=0;a<opExit.numAffects();a++)
+					for(int a=0;a<opExit.numEffects();a++)
 					{
-						Ability aff=opExit.fetchAffect(a);
+						Ability aff=opExit.fetchEffect(a);
 						if((aff!=null)&&(aff instanceof Trap))
 							direction=-1;
 					}
@@ -1130,7 +1130,7 @@ public class SaucerSupport
 		int opDirection=Directions.getOpDirectionCode(direction);
 		if((nextRoom==null)||(nextExit==null))
 			return false;
-		
+
 		boolean reclose=false;
 		boolean relock=false;
 		// handle doors!
@@ -1138,12 +1138,12 @@ public class SaucerSupport
 		{
 			if((nextExit.hasALock())&&(nextExit.isLocked()))
 			{
-				FullMsg msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-				if(oldRoom.okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+				if(oldRoom.okMessage(mob,msg))
 				{
 					relock=true;
-					msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_UNLOCK,Affect.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
-					if(oldRoom.okAffect(mob,msg))
+					msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
+					if(oldRoom.okMessage(mob,msg))
 						ExternalPlay.roomAffectFully(msg,oldRoom,direction);
 				}
 			}
@@ -1207,7 +1207,7 @@ public class SaucerSupport
 		}
 		else
 			ExternalPlay.move(mob,direction,false,false);
-		
+
 		if((reclose)&&(mob.location()==nextRoom)&&(dooropen))
 		{
 			Exit opExit=nextRoom.getExitInDir(opDirection);
@@ -1218,11 +1218,11 @@ public class SaucerSupport
 				try{ExternalPlay.doCommand(mob,Util.parse("CLOSE "+Directions.getDirectionName(opDirection)));}catch(Exception e){}
 				if((opExit.hasALock())&&(relock))
 				{
-					FullMsg msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-					if(nextRoom.okAffect(mob,msg))
+					FullMsg msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+					if(nextRoom.okMessage(mob,msg))
 					{
-						msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_LOCK,Affect.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
-						if(nextRoom.okAffect(mob,msg))
+						msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
+						if(nextRoom.okMessage(mob,msg))
 							ExternalPlay.roomAffectFully(msg,nextRoom,opDirection);
 					}
 				}
@@ -1230,9 +1230,9 @@ public class SaucerSupport
 		}
 		return mob.location()!=oldRoom;
 	}
-	
-	
-	  public static Hashtable timsItemAdjustments(Item I, 
+
+
+	  public static Hashtable timsItemAdjustments(Item I,
 												int level,
 												int material,
 												int weight,
@@ -1259,7 +1259,7 @@ public class SaucerSupport
 			if(weight==0) weight=10;
 			if(basereach>maxreach) maxreach=basereach;
 			if(reach<basereach)
-			{ 
+			{
 				reach=basereach;
 				vals.put("MINRANGE",""+basereach);
 				vals.put("MAXRANGE",""+maxreach);
@@ -1269,7 +1269,7 @@ public class SaucerSupport
 				basereach=reach;
 			int damage=((level-1)/((reach/weight)+2) + (weight-baseattack)/5 -reach)*((hands+1)/2);
 			int cost=2*((weight*materialvalue)+((5*damage)+baseattack+(reach*10))*damage)/(hands+1);
-				
+
 			if(basematerial==EnvResource.MATERIAL_METAL)
 			{
 				switch(material&EnvResource.MATERIAL_MASK)
@@ -1395,7 +1395,7 @@ public class SaucerSupport
 				}
 			}
 			if(damage<=0) damage=1;
-			
+
 			vals.put("DAMAGE",""+damage);
 			vals.put("ATTACK",""+baseattack);
 			vals.put("VALUE",""+cost);
@@ -1441,7 +1441,7 @@ public class SaucerSupport
 					break;
 				}
 			}
-				   
+
 			double totalpts=0.0;
 			double weightpts=0.0;
 			for(int i=0;i<Item.wornWeights.length-1;i++)
@@ -1472,7 +1472,7 @@ public class SaucerSupport
 					if(hands==1) break;
 				}
 			}
-			int cost=(int)Math.round(((pts*pts) + new Integer(materialvalue).doubleValue()) 
+			int cost=(int)Math.round(((pts*pts) + new Integer(materialvalue).doubleValue())
 									 * ( weightpts / 2));
 			int armor=(int)Math.round(totalpts);
 			switch(material)
@@ -1504,7 +1504,7 @@ public class SaucerSupport
 		}
 		return vals;
 	}
-	
-	
-	
+
+
+
 }

@@ -34,62 +34,62 @@ public class LifeFountain extends StdDrink implements MiscMagic
 		return new LifeFountain();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_DRINK:
-				if((affect.othersMessage()==null)
-				&&(affect.sourceMessage()==null))
+			case CMMsg.TYP_DRINK:
+				if((msg.othersMessage()==null)
+				&&(msg.sourceMessage()==null))
 					return true;
 				break;
-			case Affect.TYP_FILL:
+			case CMMsg.TYP_FILL:
 				mob.tell("You can't fill the fountain of life.");
 				return false;
 			default:
 				break;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_DRINK:
-				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
+			case CMMsg.TYP_DRINK:
+				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 				{
-					Long time=(Long)lastDrinks.get(affect.source());
+					Long time=(Long)lastDrinks.get(msg.source());
 					if((time==null)||(time.longValue()<(System.currentTimeMillis()-16000)))
 					{
 						Ability A=CMClass.getAbility("Prayer_CureLight");
-						if(A!=null) A.invoke(affect.source(),affect.source(),true);
+						if(A!=null) A.invoke(msg.source(),msg.source(),true);
 						A=CMClass.getAbility("Prayer_RemovePoison");
-						if(A!=null) A.invoke(affect.source(),affect.source(),true);
+						if(A!=null) A.invoke(msg.source(),msg.source(),true);
 						A=CMClass.getAbility("Prayer_CureDisease");
-						if(A!=null) A.invoke(affect.source(),affect.source(),true);
+						if(A!=null) A.invoke(msg.source(),msg.source(),true);
 						time=new Long(System.currentTimeMillis());
-						lastDrinks.put(affect.source(),time);
+						lastDrinks.put(msg.source(),time);
 					}
 				}
 				else
 				{
-					affect.addTrailerMsg(new FullMsg(affect.source(),affect.target(),affect.tool(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
-					super.affect(myHost,affect);
+					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),msg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),msg.NO_EFFECT,null));
+					super.executeMsg(myHost,msg);
 				}
 				break;
 			default:
-				super.affect(myHost,affect);
+				super.executeMsg(myHost,msg);
 				break;
 			}
 		}
 		else
-			super.affect(myHost,affect);
+			super.executeMsg(myHost,msg);
 	}
 
 }

@@ -12,7 +12,7 @@ public class Chant_GrowForest extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_GrowForest();}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		int type=mob.location().domainType();
@@ -25,11 +25,11 @@ public class Chant_GrowForest extends Chant
 			mob.tell("This magic won't work here.");
 			return false;
 		}
-		
+
 		int material=-1;
 		Vector choices=new Vector();
 		String s=Util.combine(commands,0);
-		
+
 		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 		{
 			int code=EnvResource.RESOURCE_DATA[i][0];
@@ -46,14 +46,14 @@ public class Chant_GrowForest extends Chant
 			mob.tell("'"+s+"' is not a recognized form of tree!");
 			return false;
 		}
-		
+
 		if((material<0)&&(choices.size()>0))
 			material=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
-		
+
 		if(material<0) return false;
-		
+
 		String shortName=EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK];
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -62,10 +62,10 @@ public class Chant_GrowForest extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,"A grove of "+shortName.toLowerCase()+" trees sprout up.");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"A grove of "+shortName.toLowerCase()+" trees sprout up.");
 				mob.location().setResource(material);
 			}
 		}

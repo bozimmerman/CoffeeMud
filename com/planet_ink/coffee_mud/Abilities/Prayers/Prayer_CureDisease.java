@@ -17,9 +17,9 @@ public class Prayer_CureDisease extends Prayer
 	{
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numAffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++)
 		{
-			Ability A=fromMe.fetchAffect(a);
+			Ability A=fromMe.fetchEffect(a);
 			if((A!=null)&&(A instanceof DiseaseAffect))
 				offenders.addElement(A);
 		}
@@ -44,13 +44,13 @@ public class Prayer_CureDisease extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A healing glow surrounds <T-NAME>.":"^S<S-NAME> cure(s) the disease in <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int old=target.numAffects();
+				int old=target.numEffects();
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					((Ability)offensiveAffects.elementAt(a)).unInvoke();
-				if(old>target.numAffects())
+				if(old>target.numEffects())
 					target.tell("You feel much better!");
 			}
 		}

@@ -28,15 +28,15 @@ public class Spell_EndlessRoad extends Spell
 		ExternalPlay.standIfNecessary(mob);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,msg);
+			return super.okMessage(myHost,msg);
 		MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		   &&(mob.location()!=null)
-		   &&(msg.targetMinor()==Affect.TYP_ENTER)
+		   &&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		   &&(msg.target()!=null)
 		   &&(msg.target() instanceof Room)
 		   &&(msg.target()!=mob.location()))
@@ -52,7 +52,7 @@ public class Spell_EndlessRoad extends Spell
 					   msg.othersMessage());
 		}
 
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -77,8 +77,8 @@ public class Spell_EndlessRoad extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>!^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
@@ -87,7 +87,7 @@ public class Spell_EndlessRoad extends Spell
 					success=maliciousAffect(mob,target,0,-1);
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> seem(s) lost!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> seem(s) lost!");
 				}
 			}
 		}

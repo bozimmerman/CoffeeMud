@@ -24,18 +24,18 @@ public class Song_Rage extends Song
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if(affect.amISource(invoker)) return true;
-		if(affect.sourceMinor()!=Affect.TYP_FLEE) return true;
-		if(affect.source().fetchAffect(this.ID())==null) return true;
+		if(msg.amISource(invoker)) return true;
+		if(msg.sourceMinor()!=CMMsg.TYP_FLEE) return true;
+		if(msg.source().fetchEffect(this.ID())==null) return true;
 
-		affect.source().tell("You are too enraged to flee.");
+		msg.source().tell("You are too enraged to flee.");
 		return false;
 	}
 

@@ -36,21 +36,21 @@ public class Prayer_ProtParalyzation extends Prayer
 		affectedStats.setStat(CharStats.SAVE_PARALYSIS,affectedStats.getStat(CharStats.SAVE_PARALYSIS)+100);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if(invoker==null) return true;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 
-		if(affect.target()==invoker)
+		if(msg.target()==invoker)
 		{
-			if((affect.tool()!=null)
+			if((msg.tool()!=null)
 			   &&(Dice.rollPercentage()>50)
-			   &&((affect.targetMinor()==Affect.TYP_PARALYZE)))
+			   &&((msg.targetMinor()==CMMsg.TYP_PARALYZE)))
 			{
-				affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"An paralyzing assault against <S-NAME> is magically repelled.");
+				msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"An paralyzing assault against <S-NAME> is magically repelled.");
 				return false;
 			}
 
@@ -63,7 +63,7 @@ public class Prayer_ProtParalyzation extends Prayer
 	{
 		MOB target=mob;
 		if(target==null) return false;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("You already have protection from paralyzation.");
 			return false;
@@ -84,7 +84,7 @@ public class Prayer_ProtParalyzation extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) a free mind and body.":"^S<S-NAME> "+prayWord(mob)+" for a free mind and body.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

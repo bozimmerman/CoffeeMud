@@ -12,7 +12,7 @@ public class Poison_Slumberall extends Poison
 	private static final String[] triggerStrings = {"POISONSLEEP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Slumberall();}
-	
+
 	protected int POISON_TICKS(){return 50;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "You don't feel so drowsy anymore.";}
@@ -22,13 +22,13 @@ public class Poison_Slumberall extends Poison
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return 0;}
 	protected boolean fallenYet=false;
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(affected instanceof MOB)
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
 	}
-	
+
 	public void unInvoke()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -38,7 +38,7 @@ public class Poison_Slumberall extends Poison
 		}
 		super.unInvoke();
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -48,34 +48,34 @@ public class Poison_Slumberall extends Poison
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if(affect.amITarget(mob)&&(fallenYet)&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+		if(msg.amITarget(mob)&&(fallenYet)&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 			unInvoke();
 		else
-		if((affect.amISource(mob))
-		&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-		&&(affect.sourceMajor()>0))
+		if((msg.amISource(mob))
+		&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		&&(msg.sourceMajor()>0))
 		{
 			mob.tell("You are way too drowsy.");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		
+
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
-		
+
 		MOB mob=(MOB)affected;
 		if(mob==null) return false;
 		if((!fallenYet)&&(mob.location()!=null))
 		{
 			fallenYet=true;
-			mob.location().show(mob,null,Affect.MSG_SLEEP,"<S-NAME> fall(s) asleep!");
+			mob.location().show(mob,null,CMMsg.MSG_SLEEP,"<S-NAME> fall(s) asleep!");
 			mob.recoverEnvStats();
 		}
 		return true;

@@ -22,7 +22,7 @@ public class Disease_Yawning extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> feel(s) really tired.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> stretch(es) and yawn(s).";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -35,7 +35,7 @@ public class Disease_Yawning extends Disease
 		if((getTickDownRemaining()==1)
 		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE)))
 		{
-			mob.delAffect(this);
+			mob.delEffect(this);
 			Ability A=CMClass.getAbility("Disease_Yawning");
 			A.invoke(diseaser,mob,true);
 		}
@@ -43,8 +43,8 @@ public class Disease_Yawning extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			Affect msg=new FullMsg(mob,null,this,Affect.MSG_NOISE,DISEASE_AFFECT());
-			if((mob.location()!=null)&&(mob.location().okAffect(mob,msg)))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISE,DISEASE_AFFECT());
+			if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 				mob.location().send(mob,msg);
 			catchIt(mob);
 			return true;

@@ -41,7 +41,7 @@ public class GateGuard extends StdBehavior
 			}
 		}
 	}
-	
+
 	private int findGate(MOB mob)
 	{
 		if(mob.location()==null) return -1;
@@ -58,7 +58,7 @@ public class GateGuard extends StdBehavior
 		}
 		return -1;
 	}
-	
+
 	private Key getMyKeyTo(MOB mob, Exit e)
 	{
 		Key key=null;
@@ -97,12 +97,12 @@ public class GateGuard extends StdBehavior
 		return num;
 	}
 
-	public void affect(Environmental host, Affect msg)
+	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(host instanceof MOB)
 		{
 			MOB mob=(MOB)host;
-			if((msg.targetMinor()==Affect.TYP_KNOCK)
+			if((msg.targetMinor()==CMMsg.TYP_KNOCK)
 			&&(!msg.amISource(mob))
 			&&(mob.location()!=null)
 			&&(mob.location()!=msg.source().location())
@@ -120,14 +120,14 @@ public class GateGuard extends StdBehavior
 				}
 			}
 		}
-		super.affect(host,msg);
+		super.executeMsg(host,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if(!canFreelyBehaveNormal(ticking)) return true;
 		MOB mob=(MOB)ticking;
 		int dir=findGate(mob);
@@ -143,8 +143,8 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						FullMsg msg=new FullMsg(mob,e,Affect.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
-						if(mob.location().okAffect(mob,msg))
+						FullMsg msg=new FullMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
+						if(mob.location().okMessage(mob,msg))
 							ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 					}
 				}
@@ -155,8 +155,8 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						FullMsg msg=new FullMsg(mob,e,Affect.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAME>.");
-						if(mob.location().okAffect(mob,msg))
+						FullMsg msg=new FullMsg(mob,e,CMMsg.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAME>.");
+						if(mob.location().okMessage(mob,msg))
 							ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 					}
 				}
@@ -172,8 +172,8 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						FullMsg msg=new FullMsg(mob,e,Affect.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
-						if(mob.location().okAffect(mob,msg))
+						FullMsg msg=new FullMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
+						if(mob.location().okMessage(mob,msg))
 							ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 					}
 				}

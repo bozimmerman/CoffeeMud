@@ -28,14 +28,14 @@ public class Skill_Dirt extends StdAbility
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		if((doneTicking)&&(affect.amISource(mob)))
+		if((doneTicking)&&(msg.amISource(mob)))
 			unInvoke();
 		return true;
 	}
@@ -57,7 +57,7 @@ public class Skill_Dirt extends StdAbility
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		
+
 		if((mob.location().domainConditions()==Room.CONDITION_WET)
 		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -74,13 +74,13 @@ public class Skill_Dirt extends StdAbility
 			mob.tell("There's no dirt here to kick!");
 			return false;
 		}
-		
+
 		if(mob.charStats().getBodyPart(Race.BODY_FOOT)<=0)
 		{
 			mob.tell("You need feet to kick.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -88,11 +88,11 @@ public class Skill_Dirt extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"Dirt flies at <T-NAME>!":"^F<S-NAME> kick(s) dirt at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"Dirt flies at <T-NAME>!":"^F<S-NAME> kick(s) dirt at <T-NAMESELF>.^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> blinded!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> blinded!");
 				maliciousAffect(mob,target,3,-1);
 			}
 		}

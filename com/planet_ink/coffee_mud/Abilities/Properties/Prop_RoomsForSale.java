@@ -19,7 +19,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			Room R2=R.getRoomInDir(d);
 			if((R2!=null)&&(R2.roomID().length()>0)&&(!V.contains(R2)))
 			{
-				Ability A=R2.fetchAffect(ID());
+				Ability A=R2.fetchEffect(ID());
 				if((R2.getArea()==R.getArea())&&(A!=null))
 					fillCluster(R2,V);
 				else
@@ -47,7 +47,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.elementAt(v);
-			LandTitle A=(LandTitle)R.fetchAffect(ID());
+			LandTitle A=(LandTitle)R.fetchEffect(ID());
 			if(A!=null)
 			{
 				A.setLandOwner(landOwner());
@@ -80,7 +80,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			for(int v=0;v<V.size();v++)
 			{
 				Room R2=(Room)V.elementAt(v);
-				Prop_RoomsForSale T2=(Prop_RoomsForSale)R2.fetchAffect(ID());
+				Prop_RoomsForSale T2=(Prop_RoomsForSale)R2.fetchEffect(ID());
 				if(T2!=null)
 					T2.justUpdateLot(R2,T2);
 			}

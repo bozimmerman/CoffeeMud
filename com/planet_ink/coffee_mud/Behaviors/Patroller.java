@@ -128,17 +128,17 @@ public class Patroller extends ActiveTicker
 				{
 					if((E.hasALock())&&(E.isLocked()))
 					{
-						FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-						if(mob.location().okAffect(mob,msg))
+						FullMsg msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+						if(mob.location().okMessage(mob,msg))
 						{
-							msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_UNLOCK,Affect.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
+							msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
 							ExternalPlay.roomAffectFully(msg,thisRoom,direction);
 						}
 					}
-					FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-					if(mob.location().okAffect(mob,msg))
+					FullMsg msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+					if(mob.location().okMessage(mob,msg))
 					{
-						msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_OPEN,Affect.MSG_OK_VISUAL,"<S-NAME> "+E.openWord()+"(s) <T-NAMESELF>.");
+						msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+E.openWord()+"(s) <T-NAMESELF>.");
 						ExternalPlay.roomAffectFully(msg,thisRoom,direction);
 					}
 				}

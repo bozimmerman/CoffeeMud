@@ -21,16 +21,16 @@ public class Thief_ContractHit extends ThiefSkill
 	private boolean hitting=false;
 	private Vector hitmen=new Vector();
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 			if(msg.amISource((MOB)affected)
-			&&(msg.sourceMinor()==Affect.TYP_DEATH))
+			&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 			{
 				done=true;
 				unInvoke();
 			}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -99,7 +99,7 @@ public class Thief_ContractHit extends ThiefSkill
 						M.isInCombat();
 						if((((M.getVictim()!=mob))
 							||(!M.location().isInhabitant(mob)))
-						&&(M.fetchAffect("Thief_Assassinate")==null))
+						&&(M.fetchEffect("Thief_Assassinate")==null))
 						{
 							M.setVictim(null);
 							Ability A=M.fetchAbility("Thief_Assassinate");
@@ -124,7 +124,7 @@ public class Thief_ContractHit extends ThiefSkill
 		{
 			if((M!=null)&&(M.location()!=null))
 			{
-				M.location().showHappens(Affect.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to "+M.name()+".");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to "+M.name()+".");
 				M.tell("'It is done.'");
 			}
 		}
@@ -194,8 +194,8 @@ public class Thief_ContractHit extends ThiefSkill
 		if(levelDiff>0) levelDiff=0;
 		boolean success=profficiencyCheck(levelDiff,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_THIEF_ACT,Affect.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 

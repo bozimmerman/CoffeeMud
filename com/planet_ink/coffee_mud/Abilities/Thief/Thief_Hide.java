@@ -24,58 +24,58 @@ public class Thief_Hide extends ThiefSkill
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
-			if(((affect.sourceMinor()==Affect.TYP_ENTER)
-				||(affect.sourceMinor()==Affect.TYP_LEAVE)
-				||(affect.sourceMinor()==Affect.TYP_FLEE)
-				||(affect.sourceMinor()==Affect.TYP_RECALL))
-			&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-			&&(affect.sourceMajor()>0))
+			if(((msg.sourceMinor()==CMMsg.TYP_ENTER)
+				||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+				||(msg.sourceMinor()==CMMsg.TYP_FLEE)
+				||(msg.sourceMinor()==CMMsg.TYP_RECALL))
+			&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&(msg.sourceMajor()>0))
 			{
 				unInvoke();
 				mob.recoverEnvStats();
 			}
 			else
 			if((abilityCode()==0)
-			&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-			&&(affect.othersMinor()!=Affect.TYP_EXAMINESOMETHING)
-			&&(affect.othersMajor()>0))
+			&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&(msg.othersMinor()!=CMMsg.TYP_EXAMINESOMETHING)
+			&&(msg.othersMajor()>0))
 			{
-				if(Util.bset(affect.othersMajor(),Affect.MASK_SOUND))
+				if(Util.bset(msg.othersMajor(),CMMsg.MASK_SOUND))
 				{
 					unInvoke();
 					mob.recoverEnvStats();
 				}
 				else
-				switch(affect.othersMinor())
+				switch(msg.othersMinor())
 				{
-				case Affect.TYP_SPEAK:
-				case Affect.TYP_CAST_SPELL:
+				case CMMsg.TYP_SPEAK:
+				case CMMsg.TYP_CAST_SPELL:
 					{
 						unInvoke();
 						mob.recoverEnvStats();
 					}
 					break;
-				case Affect.TYP_OPEN:
-				case Affect.TYP_CLOSE:
-				case Affect.TYP_LOCK:
-				case Affect.TYP_UNLOCK:
-				case Affect.TYP_PUSH:
-				case Affect.TYP_PULL:
-					if((affect.target()!=null)
-					&&((affect.target() instanceof Exit)
-						||((affect.target() instanceof Item)
-						   &&(!affect.source().isMine((Item)affect.target())))))
+				case CMMsg.TYP_OPEN:
+				case CMMsg.TYP_CLOSE:
+				case CMMsg.TYP_LOCK:
+				case CMMsg.TYP_UNLOCK:
+				case CMMsg.TYP_PUSH:
+				case CMMsg.TYP_PULL:
+					if((msg.target()!=null)
+					&&((msg.target() instanceof Exit)
+						||((msg.target() instanceof Item)
+						   &&(!msg.source().isMine((Item)msg.target())))))
 					{
 						unInvoke();
 						mob.recoverEnvStats();
@@ -97,7 +97,7 @@ public class Thief_Hide extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
+		if(mob.fetchEffect(this.ID())!=null)
 		{
 			mob.tell("You are already hiding.");
 			return false;
@@ -130,14 +130,14 @@ public class Thief_Hide extends ThiefSkill
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.MASK_MOVE),str,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Ability newOne=(Ability)this.copyOf();
-				if(mob.fetchAffect(newOne.ID())==null)
-					mob.addAffect(newOne);
+				if(mob.fetchEffect(newOne.ID())==null)
+					mob.addEffect(newOne);
 				mob.recoverEnvStats();
 			}
 			else

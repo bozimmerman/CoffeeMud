@@ -27,15 +27,15 @@ public class Thief_Mark extends ThiefSkill
 			return "";
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(msg.amISource(mark)&&(msg.sourceMinor()==Affect.TYP_DEATH))
+		if(msg.amISource(mark)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
 			mark=null;
 			ticks=0;
 			setMiscText("");
 		}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -103,15 +103,15 @@ public class Thief_Mark extends ThiefSkill
 			return beneficialVisualFizzle(mob,target,"<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=mob.fetchAffect(ID());
+				Ability A=mob.fetchEffect(ID());
 				if(A==null)
 				{
 					A=(Ability)copyOf();
-					mob.addAffect(A);
+					mob.addEffect(A);
 					A.makeNonUninvokable();
 				}
 				((Thief_Mark)A).mark=target;

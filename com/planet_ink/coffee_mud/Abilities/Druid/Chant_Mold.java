@@ -56,7 +56,7 @@ public class Chant_Mold extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
@@ -67,7 +67,7 @@ public class Chant_Mold extends Chant
 						if(A!=null)
 						{
 							A.setInvoker(mob);
-							target.addNonUninvokableAffect(A);
+							target.addNonUninvokableEffect(A);
 						}
 						maliciousAffect(mob,target,(int)(Host.TICKS_PER_MUDDAY*3),-1);
 					}
@@ -82,7 +82,7 @@ public class Chant_Mold extends Chant
 							if(A!=null)
 							{
 								A.setInvoker(mob);
-								I.addNonUninvokableAffect(A);
+								I.addNonUninvokableEffect(A);
 							}
 							maliciousAffect(mob,I,(int)(Host.TICKS_PER_MUDDAY*3),-1);
 						}

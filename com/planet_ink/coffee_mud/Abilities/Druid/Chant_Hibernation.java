@@ -29,7 +29,7 @@ public class Chant_Hibernation extends Chant
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> hibernation.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> hibernation.");
 				else
 					mob.tell("Your hibernation ends.");
 			}
@@ -38,32 +38,32 @@ public class Chant_Hibernation extends Chant
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
 
-		if((affect.amISource(mob))
-		&&(!Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))
-		&&((Util.bset(affect.sourceCode(),Affect.MASK_MOVE))||(Util.bset(affect.sourceCode(),Affect.MASK_HANDS))||(Util.bset(affect.sourceCode(),Affect.MASK_MOUTH))))
+		if((msg.amISource(mob))
+		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+		&&((Util.bset(msg.sourceCode(),CMMsg.MASK_MOVE))||(Util.bset(msg.sourceCode(),CMMsg.MASK_HANDS))||(Util.bset(msg.sourceCode(),CMMsg.MASK_MOUTH))))
 			unInvoke();
 		return;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 		MOB mob=(MOB)affected;
 
-		if((affect.amISource(mob)
-		&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-		&&(!Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))
-		&&(affect.sourceMajor()>0)))
+		if((msg.amISource(mob)
+		&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+		&&(msg.sourceMajor()>0)))
 		{
 			if(roundsHibernating<10)
 			{
@@ -73,7 +73,7 @@ public class Chant_Hibernation extends Chant
 			else
 				unInvoke();
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -82,7 +82,7 @@ public class Chant_Hibernation extends Chant
 
 		MOB mob=(MOB)affected;
 
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if(!profficiencyCheck(0,false)) return true;
 
 		if((!mob.isInCombat())
@@ -96,7 +96,7 @@ public class Chant_Hibernation extends Chant
 			if(!Sense.isGolem(mob))
 			{
 				double hp=new Integer(mob.charStats().getStat(CharStats.CONSTITUTION)).doubleValue();
-				ExternalPlay.postHealing(mob,mob,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,(int)Math.round((hp*.1)+(mob.envStats().level()/2)),null);
+				ExternalPlay.postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,(int)Math.round((hp*.1)+(mob.envStats().level()/2)),null);
 			}
 			double move=new Integer(mob.charStats().getStat(CharStats.STRENGTH)).doubleValue();
 			mob.curState().adjMovement((int)Math.round((move*.1)+(mob.envStats().level()/2)),mob.maxState());
@@ -130,8 +130,8 @@ public class Chant_Hibernation extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_SLEEP|Affect.MASK_MAGIC,"<S-NAME> begin(s) to hibernate...");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_SLEEP|CMMsg.MASK_MAGIC,"<S-NAME> begin(s) to hibernate...");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				oldState=mob.curState();

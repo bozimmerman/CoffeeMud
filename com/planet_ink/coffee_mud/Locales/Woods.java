@@ -21,21 +21,21 @@ public class Woods extends StdRoom
 	{
 		return new Woods();
 	}
-	
-	public void affect(Environmental myHost, Affect msg)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((msg.amITarget(this)||(msg.targetMinor()==Affect.TYP_ADVANCE)||(msg.targetMinor()==Affect.TYP_RETREAT))
+		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
 		   &&(!msg.source().isMonster())
 		   &&(Dice.rollPercentage()==1)
 		   &&(Dice.rollPercentage()==1))
 		{
 			Ability A=CMClass.getAbility("Disease_PoisonIvy");
-			if((A!=null)&&(msg.source().fetchAffect(A.ID())==null))
+			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))
 				A.invoke(msg.source(),msg.source(),true);
 		}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
-	
+
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_WOOD),
 		new Integer(EnvResource.RESOURCE_PINE),

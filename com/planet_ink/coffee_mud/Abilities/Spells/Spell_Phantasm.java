@@ -19,7 +19,7 @@ public class Spell_Phantasm extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -33,7 +33,7 @@ public class Spell_Phantasm extends Spell
 					if(mob.amDead()) mob.setLocation(null);
 					else
 					if(mob.location()!=null)
-						mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around for someone to fight...");
+						mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around for someone to fight...");
 					((MOB)affected).destroy();
 				}
 			}
@@ -41,15 +41,15 @@ public class Spell_Phantasm extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg)) return false;
-		super.affect(myHost,msg);
+		if(!super.okMessage(myHost,msg)) return false;
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(msg.amITarget(mob)&&(msg.sourceMinor()==Affect.TYP_CAST_SPELL))
+			if(msg.amITarget(mob)&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL))
 			{
 				mob.tell(mob.name()+" seems strangely unaffected by your magic.");
 				return false;
@@ -57,19 +57,19 @@ public class Spell_Phantasm extends Spell
 		}
 		return true;
 	}
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((msg.amISource(mob)||msg.amISource(mob.amFollowing()))
-			&&(msg.sourceMinor()==Affect.TYP_QUIT))
+			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 				unInvoke();
 			else
-			if(msg.amITarget(mob)&&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
-				msg.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_QUIT,msg.source().name()+"'s attack somehow went THROUGH "+mob.name()+"."));
+			if(msg.amITarget(mob)&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
+				msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_QUIT,msg.source().name()+"'s attack somehow went THROUGH "+mob.name()+"."));
 		}
 	}
 
@@ -109,7 +109,7 @@ public class Spell_Phantasm extends Spell
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s), calling on the name of "+type+".^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob, R, mob.envStats().level());
@@ -160,7 +160,7 @@ public class Spell_Phantasm extends Spell
 		newMOB.resetToMaxState();
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
-		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

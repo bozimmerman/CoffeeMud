@@ -200,7 +200,7 @@ public class IMudClient implements I3Interface
 			Vector V=Util.parse(msgstr);
 			Social S=Socials.FetchSocial(V,true);
 			if(S==null) S=Socials.FetchSocial(V,false);
-			Affect msg=null;
+			CMMsg msg=null;
 			if(S!=null)
 			{
 				msg=S.makeChannelMsg(mob,0,channelName,V,true);
@@ -358,7 +358,7 @@ public class IMudClient implements I3Interface
 		if(remote.length()==0) return false;
 		return true;
 	}
-	
+
 	public String socialFixOut(String str)
 	{
 

@@ -18,14 +18,14 @@ public class Song_Nothing extends Song
 	}
 	public Environmental newInstance(){	return new Song_Nothing();}
 	public void setProfficiency(int newProfficiency){	super.setProfficiency(100);}
-	
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		boolean foundOne=false;
-		for(int a=0;a<mob.numAffects();a++)
+		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability A=(Ability)mob.fetchAffect(a);
+			Ability A=(Ability)mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Song))
 				foundOne=true;
 		}
@@ -36,7 +36,7 @@ public class Song_Nothing extends Song
 			return true;
 		}
 
-		mob.location().show(mob,null,Affect.MSG_NOISE,auto?"Silence.":"<S-NAME> stop(s) singing.");
+		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?"Silence.":"<S-NAME> stop(s) singing.");
 		mob.location().recoverRoomStats();
 		return true;
 	}

@@ -13,7 +13,7 @@ public class Spell_IllusoryWall extends Spell
 	protected int canTargetCode(){return CAN_EXITS;}
 	public Environmental newInstance(){ return new Spell_IllusoryWall();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -55,14 +55,14 @@ public class Spell_IllusoryWall extends Spell
 		else
 		{
 			FullMsg msg=new FullMsg(mob,exit,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+".^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if((ExternalPlay.doesOwnThisProperty(mob,room))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),room)))
 				||(ExternalPlay.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
-					exit.addNonUninvokableAffect(this);
+					exit.addNonUninvokableEffect(this);
 				else
 					beneficialAffect(mob,exit,0);
 			}

@@ -19,7 +19,7 @@ public class UtiliThread extends Thread
 	{
 		super("UtiliThread");
 	}
-	
+
 	public void itemSweep()
 	{
 		status="sweeping";
@@ -57,7 +57,7 @@ public class UtiliThread extends Thread
 				MOB mob=(MOB)R.fetchInhabitant(m);
 				if((mob!=null)&&(mob.lastTickedDateTime()<lastDateTime))
 				{
-					boolean ticked=ServiceEngine.isTicking(mob,Host.MOB_TICK);
+					boolean ticked=ServiceEngine.isTicking(mob,Host.TICK_MOB);
 					boolean isDead=mob.amDead();
 					String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
 					if(CMMap.getPlayer(mob.Name())==null)
@@ -98,7 +98,7 @@ public class UtiliThread extends Thread
 							str=new StringBuffer("Dead tick group! Last serviced: "+obj.name()+" ("+((Environmental)obj).ID()+"), Status="+code+" ("+codeWord+"), tickID "+client.tickID);
 						else
 							str=new StringBuffer("Dead tick group! Last serviced: "+obj.name()+", Status="+code+" ("+codeWord+"), tickID "+client.tickID);
-					
+
 						if((obj instanceof MOB)&&(((MOB)obj).location()!=null))
 							Log.errOut("UtiliThread",str.toString()+" in "+((MOB)obj).location().roomID());
 						else
@@ -145,7 +145,7 @@ public class UtiliThread extends Thread
 				if((S.mob()!=null))
 				{
 					long check=60000;
-					
+
 					if((S.previousCMD()!=null)
 					&&(S.previousCMD().size()>0)
 					&&(((String)S.previousCMD().firstElement()).equalsIgnoreCase("IMPORT")
@@ -158,7 +158,7 @@ public class UtiliThread extends Thread
 					else
 					if(S.getStatus()==Session.STATUS_LOGIN)
 						check=check*5;
-					
+
 					if(time>(check*10))
 					{
 						Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);

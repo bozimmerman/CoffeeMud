@@ -106,48 +106,48 @@ public class Barbarian extends StdCharClass
 
 	public String weaponLimitations(){return "";}
 	public String armorLimitations(){return "Must use non-metal armors to avoid skill failure.";}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
 
-		if((affect.amITarget(myChar))
-		   &&(affect.tool()!=null)
-		   &&(affect.tool() instanceof Weapon)
-		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+		if((msg.amITarget(myChar))
+		   &&(msg.tool()!=null)
+		   &&(msg.tool() instanceof Weapon)
+		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 		{
 			int recovery=(myChar.charStats().getClassLevel(this)/5);
-			SaucerSupport.adjustDamageMessage(affect,recovery*-1);
+			SaucerSupport.adjustDamageMessage(msg,recovery*-1);
 		}
 		else
-		if((affect.amITarget(myChar))
-		   &&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		   &&(affect.tool()!=null)
-		   &&(affect.tool() instanceof Ability)
-		   &&((((Ability)affect.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
+		if((msg.amITarget(myChar))
+		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		   &&(msg.tool()!=null)
+		   &&(msg.tool() instanceof Ability)
+		   &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
 		{
 			if(Dice.rollPercentage()<=myChar.charStats().getClassLevel(this))
 			{
-				myChar.location().show(myChar,null,affect.source(),Affect.MSG_OK_ACTION,"<S-NAME> resist(s) the "+affect.tool().name()+" attack from <O-NAMESELF>!");
+				myChar.location().show(myChar,null,msg.source(),CMMsg.MSG_OK_ACTION,"<S-NAME> resist(s) the "+msg.tool().name()+" attack from <O-NAMESELF>!");
 				return false;
 			}
 		}
 		else
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(myChar.isMine(affect.tool()))
+			if((msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(myChar.isMine(msg.tool()))
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+msg.tool().name()+" attempt due to <S-HIS-HER> armor!");
 					return false;
 				}
 			}
 		}
-		return super.okAffect(myChar,affect);
+		return super.okMessage(myChar,msg);
 	}
 
 	public void outfit(MOB mob)

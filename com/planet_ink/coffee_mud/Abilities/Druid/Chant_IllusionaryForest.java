@@ -25,29 +25,29 @@ public class Chant_IllusionaryForest extends Chant
 			return;
 		Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(Affect.MSG_OK_VISUAL, "The appearance of this place changes...");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, "The appearance of this place changes...");
 		super.unInvoke();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof Room)
-		&&(affect.amITarget(affected))
-		&&(newRoom().fetchAffect(ID())==null)
-		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+		&&(msg.amITarget(affected))
+		&&(newRoom().fetchEffect(ID())==null)
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 		{
-			Affect msg=new FullMsg(affect.source(),newRoom(),affect.tool(),
-						  affect.sourceCode(),affect.sourceMessage(),
-						  affect.targetCode(),affect.targetMessage(),
-						  affect.othersCode(),affect.othersMessage());
-			if(newRoom().okAffect(myHost,msg))
+			FullMsg msg2=new FullMsg(msg.source(),newRoom(),msg.tool(),
+						  msg.sourceCode(),msg.sourceMessage(),
+						  msg.targetCode(),msg.targetMessage(),
+						  msg.othersCode(),msg.othersMessage());
+			if(newRoom().okMessage(myHost,msg2))
 			{
-				newRoom().affect(myHost,msg);
+				newRoom().executeMsg(myHost,msg2);
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public Room newRoom()
@@ -99,7 +99,7 @@ public class Chant_IllusionaryForest extends Chant
 		}
 		return newRoom;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		// the invoke method for spells receives as
@@ -120,13 +120,13 @@ public class Chant_IllusionaryForest extends Chant
 			// what happened.
 			newRoom();
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) dramatically!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,"The appearance of this place changes...");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The appearance of this place changes...");
 				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
-					mob.location().addNonUninvokableAffect(this);
+					mob.location().addNonUninvokableEffect(this);
 				else
 					beneficialAffect(mob,mob.location(),0);
 			}

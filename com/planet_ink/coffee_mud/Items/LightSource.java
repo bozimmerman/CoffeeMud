@@ -38,16 +38,16 @@ public class LightSource extends StdItem implements Light
 		return new LightSource();
 	}
 
-	public static int isAnOkAffect(Light myLight, Affect affect)
+	public static int isAnOkAffect(Light myLight, CMMsg msg)
 	{
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 
-		if(!affect.amITarget(myLight))
+		if(!msg.amITarget(myLight))
 			return 1;
 		else
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_HOLD:
+		case CMMsg.TYP_HOLD:
 			if(myLight.getDuration()==0)
 			{
 				mob.tell(myLight.name()+" looks used up.");
@@ -66,7 +66,7 @@ public class LightSource extends StdItem implements Light
 				}
 			}
 			return 1;
-		case Affect.TYP_EXTINGUISH:
+		case CMMsg.TYP_EXTINGUISH:
 			if((myLight.getDuration()==0)||(!myLight.isLit()))
 			{
 				mob.tell(myLight.name()+" is not lit!");
@@ -77,12 +77,12 @@ public class LightSource extends StdItem implements Light
 		return 1;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		switch(LightSource.isAnOkAffect(this,affect))
+		switch(LightSource.isAnOkAffect(this,msg))
 		{
 		case 0: return false;
-		case 1: return super.okAffect(myHost,affect);
+		case 1: return super.okMessage(myHost,msg);
 		default: return true;
 		}
 	}
@@ -102,14 +102,14 @@ public class LightSource extends StdItem implements Light
 	}
 
 	public static void doAffect(Light myLight,
-								Affect affect)
+								CMMsg msg)
 	{
 	}
 
 	public static boolean pleaseTickLightly(Light myLight,
 											int tickID)
 	{
-		if(tickID==Host.LIGHT_FLICKERS)
+		if(tickID==Host.TICK_LIGHT_FLICKERS)
 		{
 			if((myLight.owner()!=null)
 			&&(myLight.isLit())
@@ -118,7 +118,7 @@ public class LightSource extends StdItem implements Light
 				if(myLight.owner() instanceof Room)
 				{
 					if(((Room)myLight.owner()).numInhabitants()>0)
-						((Room)myLight.owner()).showHappens(Affect.MSG_OK_VISUAL,myLight.name()+" flickers and burns out.");
+						((Room)myLight.owner()).showHappens(CMMsg.MSG_OK_VISUAL,myLight.name()+" flickers and burns out.");
 					if(myLight.destroyedWhenBurnedOut())
 						myLight.destroy();
 					((Room)myLight.owner()).recoverRoomStats();
@@ -166,9 +166,9 @@ public class LightSource extends StdItem implements Light
 			   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE);
 	}
 
-	public static void lightAffect(Light myLight, Affect affect)
+	public static void lightAffect(Light myLight, CMMsg msg)
 	{
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		if(mob==null) return;
 		Room room=mob.location();
 		if(room==null) return;
@@ -186,31 +186,31 @@ public class LightSource extends StdItem implements Light
 					mob.tell("The water makes "+myLight.name()+" go out.");
 				else
 					mob.tell("The rain makes "+myLight.name()+" go out.");
-				myLight.tick(myLight,Host.LIGHT_FLICKERS);
+				myLight.tick(myLight,Host.TICK_LIGHT_FLICKERS);
 			}
 		}
 
-		if(affect.amITarget(myLight))
-			switch(affect.targetMinor())
+		if(msg.amITarget(myLight))
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_EXTINGUISH:
+			case CMMsg.TYP_EXTINGUISH:
 				if(myLight.isLit())
 				{
 					myLight.light(false);
-					ExternalPlay.deleteTick(myLight,Host.LIGHT_FLICKERS);
+					ExternalPlay.deleteTick(myLight,Host.TICK_LIGHT_FLICKERS);
 					myLight.recoverEnvStats();
 					room.recoverRoomStats();
 				}
 				break;
-			case Affect.TYP_HOLD:
+			case CMMsg.TYP_HOLD:
 				if(myLight.getDuration()>0)
 				{
 					if(!myLight.isLit())
-						affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> light(s) up "+myLight.name()+"."));
+						msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> light(s) up "+myLight.name()+"."));
 					else
 						mob.tell(myLight.name()+" is already lit.");
 					myLight.light(true);
-					ExternalPlay.startTickDown(myLight,Host.LIGHT_FLICKERS,myLight.getDuration());
+					ExternalPlay.startTickDown(myLight,Host.TICK_LIGHT_FLICKERS,myLight.getDuration());
 					myLight.recoverEnvStats();
 					room.recoverRoomStats();
 				}
@@ -218,29 +218,29 @@ public class LightSource extends StdItem implements Light
 			}
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		LightSource.lightAffect(this,affect);
-		super.affect(myHost,affect);
-		if(affect.amITarget(this))
+		LightSource.lightAffect(this,msg);
+		super.executeMsg(myHost,msg);
+		if(msg.amITarget(this))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_DROP:
-			case Affect.TYP_THROW:
-			case Affect.TYP_GET:
-			case Affect.TYP_REMOVE:
-				if(affect.source()!=null)
+			case CMMsg.TYP_DROP:
+			case CMMsg.TYP_THROW:
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_REMOVE:
+				if(msg.source()!=null)
 				{
-					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					{
-						affect.source().recoverEnvStats();
-						if(affect.source().location()!=null)
-							affect.source().location().recoverRoomStats();
-						if((affect.tool()!=null)
-						&&(affect.tool()!=affect.source().location())
-						&&(affect.tool() instanceof Room))
-							((Room)affect.tool()).recoverRoomStats();
+						msg.source().recoverEnvStats();
+						if(msg.source().location()!=null)
+							msg.source().location().recoverRoomStats();
+						if((msg.tool()!=null)
+						&&(msg.tool()!=msg.source().location())
+						&&(msg.tool() instanceof Room))
+							((Room)msg.tool()).recoverRoomStats();
 					}
 				}
 				break;

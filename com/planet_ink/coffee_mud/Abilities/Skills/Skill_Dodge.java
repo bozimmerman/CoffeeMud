@@ -21,35 +21,35 @@ public class Skill_Dodge extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 			doneThisRound=false;
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amITarget(mob)
-		   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+		if(msg.amITarget(mob)
+		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(Sense.aliveAwakeMobile(mob,true))
-		   &&(affect.source().rangeToTarget()==0)
-		   &&(affect.tool()!=null)
+		   &&(msg.source().rangeToTarget()==0)
+		   &&(msg.tool()!=null)
 		   &&(!doneThisRound)
-		   &&(affect.tool() instanceof Weapon)
-		   &&(((Weapon)affect.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
-		   &&(((Weapon)affect.tool()).weaponClassification()!=Weapon.CLASS_THROWN))
+		   &&(msg.tool() instanceof Weapon)
+		   &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
+		   &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN))
 		{
-			FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
+			FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
 			if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
-			&&(affect.source().getVictim()==mob)
-			&&(mob.location().okAffect(mob,msg)))
+			&&(msg.source().getVictim()==mob)
+			&&(mob.location().okMessage(mob,msg2)))
 			{
 				doneThisRound=true;
-				mob.location().send(mob,msg);
+				mob.location().send(mob,msg2);
 				helpProfficiency(mob);
 				return false;
 			}

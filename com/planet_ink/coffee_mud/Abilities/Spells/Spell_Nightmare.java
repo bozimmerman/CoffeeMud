@@ -19,7 +19,7 @@ public class Spell_Nightmare extends Spell
 	public int amountRemaining=0;
 	boolean notAgainThisRound=false;
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -30,11 +30,11 @@ public class Spell_Nightmare extends Spell
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
 
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
-			if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-			&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
+			if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
 				if(notAgainThisRound)
 				{
@@ -86,25 +86,25 @@ public class Spell_Nightmare extends Spell
 					notAgainThisRound=true;
 					switch(Dice.roll(1,10,0))
 					{
-					case 1:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+					case 1:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> struggle(s) with an imaginary foe."); break;
-					case 2:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+					case 2:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> scream(s) in horror!"); break;
-					case 3:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+					case 3:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> beg(s) for mercy."); break;
-					case 4:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+					case 4:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> grab(s) <S-HIS-HER> head and cr(ys)."); break;
-					case 5:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+					case 5:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> whimper(s)."); break;
-					case 6:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+					case 6:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> look(s) terrified!"); break;
-					case 7:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+					case 7:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> swipe(s) at <S-HIS-HER> feet and arms."); break;
-					case 8:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+					case 8:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> claw(s) at the air."); break;
-					case 9:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+					case 9:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> shiver(s) in fear."); break;
-					case 10:mob.location().show(mob,null,Affect.MSG_OK_ACTION,
+					case 10:mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> shake(s) in anticipation of horror!"); break;
 					}
 					amountRemaining-=mob.charStats().getStat(CharStats.INTELLIGENCE*2);
@@ -115,7 +115,7 @@ public class Spell_Nightmare extends Spell
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -128,12 +128,12 @@ public class Spell_Nightmare extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		if((!mob.amDead())&&(mob.location()!=null))
-			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to wake up from <S-HIS-HER> nightmare.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to wake up from <S-HIS-HER> nightmare.");
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 			notAgainThisRound=false;
 		return super.tick(ticking,tickID);
 	}
@@ -161,8 +161,8 @@ public class Spell_Nightmare extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))||(mob.location().okAffect(mob,msg2)))
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))||(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
@@ -170,7 +170,7 @@ public class Spell_Nightmare extends Spell
 				{
 					amountRemaining=100;
 					maliciousAffect(mob,target,0,-1);
-					target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> go(es) into the throws of a horrendous nightmare!!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) into the throws of a horrendous nightmare!!");
 				}
 			}
 		}

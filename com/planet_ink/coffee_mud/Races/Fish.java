@@ -69,9 +69,9 @@ public class Fish extends StdRace
 		return false;
 	}
 
-	public boolean okAffect(Environmental affected, Affect msg)
+	public boolean okMessage(Environmental affected, CMMsg msg)
 	{
-		if((msg.targetMinor()==Affect.TYP_ENTER)
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.target() instanceof Room)
 		&&(msg.tool() instanceof Exit)

@@ -29,37 +29,37 @@ public class Spell_FreeMovement extends Spell
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
 		&&(!mob.amDead()))
 		{
-			Ability A=(Ability)affect.tool();
+			Ability A=(Ability)msg.tool();
 			if(Util.bset(A.flags(),Ability.FLAG_BINDING))
 			{
-				affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
+				msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
 				return false;
 			}
 			else
 			{
 				MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
-				FullMsg msg=new FullMsg(newMOB,null,null,Affect.MSG_SIT,null);
+				FullMsg msg2=new FullMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
 				newMOB.recoverEnvStats();
 				try
 				{
 					A.affectEnvStats(newMOB,newMOB.envStats());
 					if((!Sense.aliveAwakeMobile(newMOB,true))
 					   ||(Util.bset(A.flags(),Ability.FLAG_BINDING))
-					   ||(!A.okAffect(newMOB,msg)))
+					   ||(!A.okMessage(newMOB,msg2)))
 					{
-						affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
+						msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
 						return false;
 					}
 				}
@@ -84,7 +84,7 @@ public class Spell_FreeMovement extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) freely protected.":"^S<S-NAME> invoke(s) an uninhibiting barrier of protection around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

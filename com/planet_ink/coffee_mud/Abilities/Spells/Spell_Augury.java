@@ -15,15 +15,15 @@ public class Spell_Augury extends Spell
 
 	public boolean isTrapped(Environmental E)
 	{
-		for(int a=0;a<E.numAffects();a++)
+		for(int a=0;a<E.numEffects();a++)
 		{
-			Ability A=E.fetchAffect(a);
+			Ability A=E.fetchEffect(a);
 			if((A!=null)&&(A instanceof Trap))
 				return true;
 		}
 		return false;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
@@ -63,7 +63,7 @@ public class Spell_Augury extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", incanting.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				boolean aggressiveMonster=false;
 				for(int m=0;m<room.numInhabitants();m++)

@@ -32,7 +32,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"a tall, healthy "+EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
 		room.recoverEnvStats();
 		Chant_GrowOak newChant=new Chant_GrowOak();
 		newChant.PlantsLocation=room;
@@ -55,8 +55,8 @@ public class Chant_GrowOak extends Chant_SummonPlants
 				if(invoker.location()!=PlantsLocation)
 					dmg=dmg/2;
 				if(dmg>0)
-				{ 
-					if(ExternalPlay.postHealing(invoker,invoker,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,dmg,null))
+				{
+					if(ExternalPlay.postHealing(invoker,invoker,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,dmg,null))
 						invoker.tell("Your oak absorbs "+dmg+" points of your damage!");
 				}
 				hpRemaining-=dmg;
@@ -68,12 +68,12 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		for(int i=0;i<PlantsLocation.numInhabitants();i++)
 		{
 			MOB M=PlantsLocation.fetchInhabitant(i);
-			if(M.fetchAffect("Chopping")!=null)
+			if(M.fetchEffect("Chopping")!=null)
 			{
 				int dmg=Dice.roll(1,50,50);
 				hpRemaining-=dmg;
 				if(invoker!=null) invoker.tell("Your oak is being chopped down!");
-				ExternalPlay.postDamage(invoker,invoker,null,dmg/2,Affect.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
+				ExternalPlay.postDamage(invoker,invoker,null,dmg/2,CMMsg.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
 				if(hpRemaining<0)
 				{
 					if(invoker!=null)
@@ -96,7 +96,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 				Item I=R.fetchItem(i);
 				if((I!=null)
 				   &&(I.secretIdentity().equals(mob.Name()))
-				   &&(I.fetchAffect(ID())!=null))
+				   &&(I.fetchEffect(ID())!=null))
 				{
 					mob.tell("Each druid is allowed but one oak at a time.");
 					return false;

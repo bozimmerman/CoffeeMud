@@ -155,39 +155,39 @@ public class GenWallpaper implements Item
 	public int usesRemaining(){return Integer.MAX_VALUE;}
 	public void setUsesRemaining(int newUses){}
 	public boolean savable(){return true;}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		if(!affect.amITarget(this))
+		MOB mob=msg.source();
+		if(!msg.amITarget(this))
 			return true;
 		else
-		if(affect.targetCode()==Affect.NO_EFFECT)
+		if(msg.targetCode()==CMMsg.NO_EFFECT)
 			return true;
 		else
-		if(Util.bset(affect.targetCode(),Affect.MASK_MAGIC))
+		if(Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
 		{
 			mob.tell("Please don't do that.");
 			return false;
 		}
 		else
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_EXAMINESOMETHING:
-		case Affect.TYP_READSOMETHING:
-		case Affect.TYP_SPEAK:
-		case Affect.TYP_OK_ACTION:
-		case Affect.TYP_OK_VISUAL:
-		case Affect.TYP_NOISE:
+		case CMMsg.TYP_EXAMINESOMETHING:
+		case CMMsg.TYP_READSOMETHING:
+		case CMMsg.TYP_SPEAK:
+		case CMMsg.TYP_OK_ACTION:
+		case CMMsg.TYP_OK_VISUAL:
+		case CMMsg.TYP_NOISE:
 			return true;
-		case Affect.TYP_GET:
-			if((affect.tool()==null)||(affect.tool() instanceof MOB))
+		case CMMsg.TYP_GET:
+			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
 				mob.tell("You can't get "+name()+".");
 				return false;
 			}
 			break;
-		case Affect.TYP_DROP:
-		case Affect.TYP_THROW:
+		case CMMsg.TYP_DROP:
+		case CMMsg.TYP_THROW:
 			return true;
 		default:
 			break;
@@ -196,15 +196,15 @@ public class GenWallpaper implements Item
 		return false;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		if(!affect.amITarget(this))
+		MOB mob=msg.source();
+		if(!msg.amITarget(this))
 			return;
 		else
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_EXAMINESOMETHING:
+		case CMMsg.TYP_EXAMINESOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if(description().length()==0)
@@ -215,7 +215,7 @@ public class GenWallpaper implements Item
 			else
 				mob.tell("You can't see that!");
 			return;
-		case Affect.TYP_READSOMETHING:
+		case CMMsg.TYP_READSOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
@@ -267,12 +267,12 @@ public class GenWallpaper implements Item
 		}
 	}
 
-	public void addNonUninvokableAffect(Ability to){}
-	public void addAffect(Ability to){}
-	public void delAffect(Ability to){}
-	public int numAffects(){return 0;}
-	public Ability fetchAffect(int index){return null;}
-	public Ability fetchAffect(String ID){return null;}
+	public void addNonUninvokableEffect(Ability to){}
+	public void addEffect(Ability to){}
+	public void delEffect(Ability to){}
+	public int numEffects(){return 0;}
+	public Ability fetchEffect(int index){return null;}
+	public Ability fetchEffect(String ID){return null;}
 	public void addBehavior(Behavior to){}
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}

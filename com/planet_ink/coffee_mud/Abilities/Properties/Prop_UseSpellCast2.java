@@ -26,7 +26,7 @@ public class Prop_UseSpellCast2 extends Property
 		spellH=Prop_SpellAdder.getMySpellsH(this);
 		return spellH;
 	}
-	
+
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -41,7 +41,7 @@ public class Prop_UseSpellCast2 extends Property
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			Ability EA=newMOB.fetchAffect(A.ID());
+			Ability EA=newMOB.fetchEffect(A.ID());
 			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this)))
 				A.invoke(sourceMOB,newMOB,true);
 		}
@@ -67,9 +67,9 @@ public class Prop_UseSpellCast2 extends Property
 		return id;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if(processing) return;
 		processing=true;
@@ -77,23 +77,23 @@ public class Prop_UseSpellCast2 extends Property
 		if(affected==null) return;
 		Item myItem=(Item)affected;
 		if(myItem.owner()==null) return;
-		switch(affect.sourceMinor())
+		switch(msg.sourceMinor())
 		{
-		case Affect.TYP_DRINK:
+		case CMMsg.TYP_DRINK:
 			if((myItem instanceof Drink)
-			&&(affect.amITarget(myItem)))
-				addMeIfNeccessary(affect.source(),affect.source());
+			&&(msg.amITarget(myItem)))
+				addMeIfNeccessary(msg.source(),msg.source());
 			break;
-		case Affect.TYP_EAT:
+		case CMMsg.TYP_EAT:
 			if((myItem instanceof Food)
-			&&(affect.amITarget(myItem)))
-				addMeIfNeccessary(affect.source(),affect.source());
+			&&(msg.amITarget(myItem)))
+				addMeIfNeccessary(msg.source(),msg.source());
 			break;
-		case Affect.TYP_GET:
+		case CMMsg.TYP_GET:
 			if((!(myItem instanceof Drink))
 			  &&(!(myItem instanceof Food))
-			  &&(affect.amITarget(myItem)))
-				addMeIfNeccessary(affect.source(),affect.source());
+			  &&(msg.amITarget(myItem)))
+				addMeIfNeccessary(msg.source(),msg.source());
 			break;
 		}
 		processing=false;

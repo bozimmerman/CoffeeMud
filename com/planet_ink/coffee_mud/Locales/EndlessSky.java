@@ -32,12 +32,12 @@ public class EndlessSky extends StdGrid
 		return new EndlessSky();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		return InTheAir.isOkAirAffect(this,affect);
+		return InTheAir.isOkAirAffect(this,msg);
 	}
 	public String getChildLocaleID(){return "InTheAir";}
 

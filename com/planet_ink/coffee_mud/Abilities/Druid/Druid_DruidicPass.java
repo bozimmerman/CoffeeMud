@@ -17,7 +17,7 @@ public class Druid_DruidicPass extends StdAbility
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Druid_DruidicPass();	}
-	
+
 	public int classificationCode()
 	{
 		return Ability.SKILL;
@@ -76,20 +76,20 @@ public class Druid_DruidicPass extends StdAbility
 		else
 		if(exit.isOpen())
 		{
-			if(mob.fetchAffect(ID())==null)
+			if(mob.fetchEffect(ID())==null)
 			{
-				mob.addAffect(this);
+				mob.addEffect(this);
 				mob.recoverEnvStats();
 			}
 
 			ExternalPlay.move(mob,dirCode,false,false);
-			mob.delAffect(this);
+			mob.delEffect(this);
 			mob.recoverEnvStats();
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_QUIETMOVEMENT|Affect.MASK_MAGIC,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_QUIETMOVEMENT|CMMsg.MASK_MAGIC,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				boolean open=exit.isOpen();
@@ -98,13 +98,13 @@ public class Druid_DruidicPass extends StdAbility
 				if(opExit!=null)
 					opExit.setDoorsNLocks(exit.hasADoor(),true,exit.defaultsClosed(),exit.hasALock(),false,exit.defaultsLocked());
 				mob.tell("\n\r\n\r");
-				if(mob.fetchAffect(ID())==null)
+				if(mob.fetchEffect(ID())==null)
 				{
-					mob.addAffect(this);
+					mob.addEffect(this);
 					mob.recoverEnvStats();
 				}
 				ExternalPlay.move(mob,dirCode,false,false);
-				mob.delAffect(this);
+				mob.delEffect(this);
 				mob.recoverEnvStats();
 				exit.setDoorsNLocks(exit.hasADoor(),open,exit.defaultsClosed(),exit.hasALock(),locked,exit.defaultsLocked());
 				if(opExit!=null)

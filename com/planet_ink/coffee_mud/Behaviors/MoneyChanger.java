@@ -19,21 +19,21 @@ public class MoneyChanger extends StdBehavior
 		((MOB)forMe).baseCharStats().setStat(CharStats.STRENGTH,100);
 		super.startBehavior(forMe);
 	}
-	
-	public boolean okAffect(Environmental affecting, Affect affect)
+
+	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
-		if(!super.okAffect(affecting,affect))
+		if(!super.okMessage(affecting,msg))
 			return false;
-		MOB source=affect.source();
+		MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return true;
 		MOB observer=(MOB)affecting;
 		if((source!=observer)
-		&&(affect.amITarget(observer))
-		&&(affect.targetMinor()==Affect.TYP_GIVE)
+		&&(msg.amITarget(observer))
+		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!source.isASysOp(source.location()))
-		&&(affect.tool()!=null)
-		&&(!(affect.tool() instanceof Coins)))
+		&&(msg.tool()!=null)
+		&&(!(msg.tool() instanceof Coins)))
 		{
 			ExternalPlay.quickSay(observer,source,"I'm sorry, I can only accept gold coins.",true,false);
 			return false;
@@ -42,25 +42,25 @@ public class MoneyChanger extends StdBehavior
 	}
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
-		MOB source=affect.source();
+		super.executeMsg(affecting,msg);
+		MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return;
 		MOB observer=(MOB)affecting;
-		
+
 		if((source!=observer)
-		&&(affect.amITarget(observer))
+		&&(msg.amITarget(observer))
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(observer,source))
-		&&(affect.targetMinor()==Affect.TYP_GIVE)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Coins))
+		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Coins))
 		{
-			int value=((Coins)affect.tool()).numberOfCoins();
+			int value=((Coins)msg.tool()).numberOfCoins();
 			int numberToTake=1;
 			if(value>20) numberToTake=value/20;
 			value-=numberToTake;
@@ -69,8 +69,8 @@ public class MoneyChanger extends StdBehavior
 			if(value>0)
 			{
 				Money.giveMoney(observer,source,value);
-				FullMsg newMsg=new FullMsg(observer,source,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
-				affect.addTrailerMsg(newMsg);
+				FullMsg newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
+				msg.addTrailerMsg(newMsg);
 			}
 			else
 				ExternalPlay.quickSay(observer,source,"Gee, thanks. :)",true,false);

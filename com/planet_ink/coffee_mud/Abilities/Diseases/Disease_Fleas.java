@@ -22,7 +22,7 @@ public class Disease_Fleas extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> <S-HAS-HAVE> fleas!^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIM-HERSELF>.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD|Disease.SPREAD_PROXIMITY;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -33,7 +33,7 @@ public class Disease_Fleas extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,DISEASE_AFFECT());
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,DISEASE_AFFECT());
 			catchIt(mob);
 			return true;
 		}

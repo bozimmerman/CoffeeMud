@@ -60,7 +60,7 @@ public class Chant_SummonSeed extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <S-HIS-HER> hands.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=2;i<(2+(adjustedLevel(mob)/4));i++)
@@ -78,7 +78,7 @@ public class Chant_SummonSeed extends Chant
 					newItem.setMiscText(newItem.text());
 					mob.addInventory(newItem);
 				}
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Some seeds appear!");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Some seeds appear!");
 				mob.location().recoverEnvStats();
 			}
 		}

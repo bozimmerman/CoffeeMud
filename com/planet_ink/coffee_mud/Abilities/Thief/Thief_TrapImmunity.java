@@ -16,27 +16,27 @@ public class Thief_TrapImmunity extends ThiefSkill
 	public Environmental newInstance(){	return new Thief_TrapImmunity();}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_TRAPS,affectableStats.getStat(CharStats.SAVE_TRAPS)+(profficiency()/2));
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect msg)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-		   return super.okAffect(myHost,msg);
+		   return super.okMessage(myHost,msg);
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!msg.amISource(mob))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Trap))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> deftly avoid(s) a trap.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> deftly avoid(s) a trap.");
 			helpProfficiency(mob);
 			return false;
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 }

@@ -87,11 +87,11 @@ public class Fighter_AtemiStrike extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> deliver(s) a deadly Atemi strike to <T-NAMESELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> deliver(s) a deadly Atemi strike to <T-NAMESELF>!^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> do(es) not look well.");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> do(es) not look well.");
 				success=maliciousAffect(mob,target,mob.envStats().level()/3,-1);
 			}
 		}

@@ -87,12 +87,12 @@ public class Spell_Delay extends Spell
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		Environmental target = mob.location();
-		if((target.fetchAffect(this.ID())!=null)||(givenTarget!=null))
+		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"A delay has already been cast here!");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -107,7 +107,7 @@ public class Spell_Delay extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> point(s) and shout(s) 'NOW!'.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.tell("You hear a clock start ticking down in your head...20...19...");

@@ -16,28 +16,28 @@ public class Spell_CombatPrecognition extends Spell
 	public Environmental newInstance(){	return new Spell_CombatPrecognition();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amITarget(mob)
+		if(msg.amITarget(mob)
 		   &&(mob.location()!=null)
 		   &&(Sense.aliveAwakeMobile(mob,true)))
 		{
-			if(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> avoid(s) the attack by <T-NAME>!");
+				FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> avoid(s) the attack by <T-NAME>!");
 				if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-60,false))
 				&&(!lastTime)
-				&&(affect.source().getVictim()==mob)
-				&&(affect.source().rangeToTarget()==0)
-				&&(mob.location().okAffect(mob,msg)))
+				&&(msg.source().getVictim()==mob)
+				&&(msg.source().rangeToTarget()==0)
+				&&(mob.location().okMessage(mob,msg2)))
 				{
 					lastTime=true;
-					mob.location().send(mob,msg);
+					mob.location().send(mob,msg2);
 					helpProfficiency(mob);
 					return false;
 				}
@@ -45,41 +45,41 @@ public class Spell_CombatPrecognition extends Spell
 					lastTime=false;
 			}
 			else
-			if((!affect.wasModified())
-			   &&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
+			if((!msg.wasModified())
+			   &&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			   &&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-50,false)))
 			{
 				String tool=null;
-				if((affect.tool()!=null)&&(affect.tool() instanceof Ability))
-					tool=((Ability)affect.tool()).name();
+				if((msg.tool()!=null)&&(msg.tool() instanceof Ability))
+					tool=((Ability)msg.tool()).name();
 				FullMsg msg2=null;
-				switch(affect.targetMinor())
+				switch(msg.targetMinor())
 				{
-				case Affect.TYP_JUSTICE:
-					if((Util.bset(affect.targetCode(),Affect.MASK_MOVE))
+				case CMMsg.TYP_JUSTICE:
+					if((Util.bset(msg.targetCode(),CMMsg.MASK_MOVE))
 					&&(tool!=null))
-						msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"physical":tool)+" from <T-NAME>.");
+						msg2=new FullMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"physical":tool)+" from <T-NAME>.");
 					break;
-				case Affect.TYP_GAS:
-					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"noxious fumes":tool)+" from <T-NAME>.");
+				case CMMsg.TYP_GAS:
+					msg2=new FullMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"noxious fumes":tool)+" from <T-NAME>.");
 					break;
-				case Affect.TYP_COLD:
-					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"cold blast":tool)+" from <T-NAME>.");
+				case CMMsg.TYP_COLD:
+					msg2=new FullMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"cold blast":tool)+" from <T-NAME>.");
 					break;
-				case Affect.TYP_ELECTRIC:
-					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"electrical attack":tool)+" from <T-NAME>.");
+				case CMMsg.TYP_ELECTRIC:
+					msg2=new FullMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"electrical attack":tool)+" from <T-NAME>.");
 					break;
-				case Affect.TYP_FIRE:
-					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"blast of heat":tool)+" from <T-NAME>.");
+				case CMMsg.TYP_FIRE:
+					msg2=new FullMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"blast of heat":tool)+" from <T-NAME>.");
 					break;
-				case Affect.TYP_WATER:
-					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"weat blast":tool)+" from <T-NAME>.");
+				case CMMsg.TYP_WATER:
+					msg2=new FullMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"weat blast":tool)+" from <T-NAME>.");
 					break;
-				case Affect.TYP_ACID:
-					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"acid attack":tool)+" from <T-NAME>.");
+				case CMMsg.TYP_ACID:
+					msg2=new FullMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"acid attack":tool)+" from <T-NAME>.");
 					break;
 				}
-				if((msg2!=null)&&(mob.location()!=null)&&(mob.location().okAffect(mob,msg2)))
+				if((msg2!=null)&&(mob.location()!=null)&&(mob.location().okMessage(mob,msg2)))
 				{
 					mob.location().send(mob,msg2);
 					return false;
@@ -101,7 +101,7 @@ public class Spell_CombatPrecognition extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("You already have the sight.");
 			return false;
@@ -124,7 +124,7 @@ public class Spell_CombatPrecognition extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> shout(s) combatively!":"^S<S-NAME> shout(s) a combative spell!^?"));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

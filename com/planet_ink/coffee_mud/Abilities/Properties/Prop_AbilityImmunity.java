@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_AbilityImmunity extends Property 
+public class Prop_AbilityImmunity extends Property
 {
 	public String ID() { return "Prop_AbilityImmunity"; }
 	public String name(){ return "Ability Immunity";}
@@ -20,30 +20,30 @@ public class Prop_AbilityImmunity extends Property
 		super.setMiscText(newText);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if ( (affect.source() != null)
-		&& (affected instanceof MOB) 
-	    && (affect.target() != null)
-	    && (affect.tool() != null)
-	    && (affect.amITarget(affected))
-	    && (affect.tool() instanceof Ability )) 
+		if ( (msg.source() != null)
+		&& (affected instanceof MOB)
+	    && (msg.target() != null)
+	    && (msg.tool() != null)
+	    && (msg.amITarget(affected))
+	    && (msg.tool() instanceof Ability ))
 		{
-			Ability d = (Ability)affect.tool();
-			for(int i = 0; i < diseases.size(); i++) 
+			Ability d = (Ability)msg.tool();
+			for(int i = 0; i < diseases.size(); i++)
 			{
 				if((CoffeeUtensils.containsString(d.ID(),((String)diseases.elementAt(i))))
 				||(CoffeeUtensils.containsString(d.name(),((String)diseases.elementAt(i)))))
 				{
-					if(affect.target() instanceof MOB)
-						((MOB)affect.target()).tell("You are immune to "+affect.tool().name()+".");
-					if(affect.source()!=affect.target())
-						affect.source().tell(affected.name()+" is immune to "+affect.tool().name()+".");
+					if(msg.target() instanceof MOB)
+						((MOB)msg.target()).tell("You are immune to "+msg.tool().name()+".");
+					if(msg.source()!=msg.target())
+						msg.source().tell(affected.name()+" is immune to "+msg.tool().name()+".");
 					else
 					return false;
 				}
 			}
 		}
-		return super.okAffect(myHost, affect);
+		return super.okMessage(myHost, msg);
 	}
 }

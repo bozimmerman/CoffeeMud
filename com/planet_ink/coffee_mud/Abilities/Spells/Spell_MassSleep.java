@@ -50,16 +50,16 @@ public class Spell_MassSleep extends Spell
 					// what happened.
 					MOB oldVictim=mob.getVictim();
 					FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-					if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
+					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);
 						if(!msg.wasModified())
 						{
 							Spell_Sleep spell=new Spell_Sleep();
 							spell.setProfficiency(profficiency());
-							success=spell.maliciousAffect(mob,target,2,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
+							success=spell.maliciousAffect(mob,target,2,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
 							if(success)
-								target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
+								target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
 						}
 					}
 					if(oldVictim==null) mob.setVictim(null);

@@ -55,7 +55,7 @@ public class Hireling extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if(onTheJobUntil==0) return true;
 		MOB observer=(MOB)ticking;
 		if(System.currentTimeMillis()>onTheJobUntil)
@@ -111,65 +111,65 @@ public class Hireling extends StdBehavior
 		return true;
 	}
 
-	public boolean okAffect(Environmental affecting, Affect affect)
+	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if((affecting instanceof MOB)
-		&&(affect.amISource((MOB)affecting))
-		&&((affect.targetMinor()==Affect.TYP_GIVE)
-		   ||(affect.targetMinor()==Affect.TYP_DROP))
-		&&((affect.target() instanceof Coins)||(affect.tool() instanceof Coins)))
+		&&(msg.amISource((MOB)affecting))
+		&&((msg.targetMinor()==CMMsg.TYP_GIVE)
+		   ||(msg.targetMinor()==CMMsg.TYP_DROP))
+		&&((msg.target() instanceof Coins)||(msg.tool() instanceof Coins)))
 		{
 			ExternalPlay.quickSay((MOB)affecting,null,"I don't think so.",false,false);
 			return false;
 		}
 		return true;
 	}
-	
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
-		MOB source=affect.source();
+		super.executeMsg(affecting,msg);
+		MOB source=msg.source();
 		if(!canActAtAll(affecting)) return;
 
 		MOB observer=(MOB)affecting;
-		if((affect.sourceMinor()==Affect.TYP_QUIT)
-		&&(affect.amISource(observer)||affect.amISource(observer.amFollowing())))
+		if((msg.sourceMinor()==CMMsg.TYP_QUIT)
+		&&(msg.amISource(observer)||msg.amISource(observer.amFollowing())))
 		   allDone(observer);
 		else
-		if((affect.sourceMinor()==Affect.TYP_SPEAK)
-		&&(!affect.amISource(observer))
-		&&(!affect.source().isMonster()))
+		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		&&(!msg.amISource(observer))
+		&&(!msg.source().isMonster()))
 		{
-			if(((affect.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
-				||(affect.sourceMessage().toUpperCase().indexOf("'HIRE")>0))
+			if(((msg.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
+				||(msg.sourceMessage().toUpperCase().indexOf("'HIRE")>0))
 			&&(onTheJobUntil==0))
 				ExternalPlay.quickSay(observer,null,"I'm for hire.  Just give me "+price()+" and I'll work for you.",false,false);
 			else
-			if(((affect.sourceMessage().toUpperCase().indexOf(" FIRED")>0))
-			&&((workingFor!=null)&&(affect.source().Name().equals(workingFor)))
-			&&(affect.amITarget(observer))
+			if(((msg.sourceMessage().toUpperCase().indexOf(" FIRED")>0))
+			&&((workingFor!=null)&&(msg.source().Name().equals(workingFor)))
+			&&(msg.amITarget(observer))
 			&&(onTheJobUntil!=0))
 			{
-				ExternalPlay.quickSay(observer,affect.source(),"Suit yourself.  Goodbye.",false,false);
+				ExternalPlay.quickSay(observer,msg.source(),"Suit yourself.  Goodbye.",false,false);
 				allDone(observer);
 			}
 		}
 		else
-		if(affect.amITarget(observer)
-		   &&(!affect.amISource(observer))
-		   &&(affect.targetMinor()==Affect.TYP_GIVE)
-		   &&(affect.tool()!=null)
-		   &&(affect.tool() instanceof Coins))
+		if(msg.amITarget(observer)
+		   &&(!msg.amISource(observer))
+		   &&(msg.targetMinor()==CMMsg.TYP_GIVE)
+		   &&(msg.tool()!=null)
+		   &&(msg.tool() instanceof Coins))
 		{
-			int given=((Coins)affect.tool()).numberOfCoins();
-			if(partials.get(affect.source().Name())!=null)
+			int given=((Coins)msg.tool()).numberOfCoins();
+			if(partials.get(msg.source().Name())!=null)
 			{
-				given+=((Integer)partials.get(affect.source().Name())).intValue();
-				partials.remove(affect.source().Name());
+				given+=((Integer)partials.get(msg.source().Name())).intValue();
+				partials.remove(msg.source().Name());
 			}
 			if(given<price())
 			{
@@ -182,7 +182,7 @@ public class Hireling extends StdBehavior
 				}
 				else
 					ExternalPlay.quickSay(observer,source,"My price is "+price()+".  Give me "+(price()-given)+" more and I'll work.",true,false);
-				partials.put(affect.source().Name(),new Integer(given));
+				partials.put(msg.source().Name(),new Integer(given));
 			}
 			else
 			{
@@ -192,12 +192,12 @@ public class Hireling extends StdBehavior
 						ExternalPlay.quickSay(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
 					else
 						ExternalPlay.quickSay(observer,source,"Sorry, I'm on the job right now.  Give me 1 more coin later on and I'll work.",true,false);
-					partials.put(affect.source().Name(),new Integer(given));
+					partials.put(msg.source().Name(),new Integer(given));
 				}
 				else
 				{
 					if(given>price())
-						partials.put(affect.source().Name(),new Integer(given-price()));
+						partials.put(msg.source().Name(),new Integer(given-price()));
 					StringBuffer skills=new StringBuffer("");
 					for(int a=0;a<observer.numAbilities();a++)
 					{

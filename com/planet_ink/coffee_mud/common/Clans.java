@@ -10,7 +10,7 @@ import java.util.*;
 public class Clans implements Clan, Tickable
 {
 	private static Hashtable all=new Hashtable();
-		
+
 	private long tickStatus=Tickable.STATUS_NOT;
 	public long getTickStatus(){return tickStatus;}
 	protected String clanName="";
@@ -23,12 +23,12 @@ public class Clans implements Clan, Tickable
 	protected Vector voteList=null;
 	protected long exp=0;
 	protected double taxRate=0.0;
-	
+
 	//*****************
 	public Hashtable relations=new Hashtable();
 	public int government=Clan.GVT_DICTATORSHIP;
 	//*****************
-	
+
 	public void updateVotes()
 	{
 		ExternalPlay.DBDeleteData(ID(),"CLANVOTES",ID()+"/CLANVOTES");
@@ -111,7 +111,7 @@ public class Clans implements Clan, Tickable
 		}
 		return voteList.elements();
 	}
-	
+
 	public long getExp(){return exp;}
 	public void setExp(long newexp){exp=newexp;}
 	public void adjExp(int howMuch)
@@ -119,22 +119,22 @@ public class Clans implements Clan, Tickable
 		exp=exp+howMuch;
 		if(howMuch<0) exp=0;
 	}
-	
+
 	public void setTaxes(double rate){
 		taxRate=rate;
 	}
 	public double getTaxes(){return taxRate;}
-	
+
 	public static void shutdownClans()
 	{
 		for(Enumeration e=all.elements();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
-			ExternalPlay.deleteTick(C,Host.CLAN_TICK);
+			ExternalPlay.deleteTick(C,Host.TICK_CLAN);
 		}
 		all.clear();
 	}
-	
+
 	public static int getClanRelations(String id1, String id2)
 	{
 		if((id1.length()==0)||(id2.length()==0)) return Clan.REL_NEUTRAL;
@@ -157,14 +157,14 @@ public class Clans implements Clan, Tickable
 		}
 		return rel;
 	}
-	
+
 	public int getClanRelations(String id)
 	{
 		long i[]=(long[])relations.get(id.toUpperCase());
 		if(i!=null) return (int)i[0];
 		return	Clan.REL_NEUTRAL;
 	}
-	
+
 	public static Clan getClan(String id)
 	{
 		if(id.length()==0) return null;
@@ -196,18 +196,18 @@ public class Clans implements Clan, Tickable
 		i[1]=System.currentTimeMillis();
 		relations.put(id.toUpperCase(),i);
 	}
-	
+
 	public int getGovernment(){return government;}
 	public void setGovernment(int type){government=type;}
-	
+
 	public static int getRoleOrder(int role)
 	{
 		for(int i=0;i<Clan.POSORDER.length;i++)
 			if(Clan.POSORDER[i]==role) return i;
 		return 1;
 	}
-	
-	
+
+
 	public static String getRoleName(int government, int role, boolean titleCase, boolean plural)
 	{
 		StringBuffer roleName=new StringBuffer();
@@ -286,15 +286,15 @@ public class Clans implements Clan, Tickable
 	}
 	public static void addClan(Clan C)
 	{
-		ExternalPlay.startTickDown(C,Host.CLAN_TICK,(int)Host.TICKS_PER_MUDDAY);
+		ExternalPlay.startTickDown(C,Host.TICK_CLAN,(int)Host.TICKS_PER_MUDDAY);
 		all.put(C.ID().toUpperCase(),C);
 	}
 	public static void removeClan(Clan C)
 	{
-		ExternalPlay.deleteTick(C,Host.CLAN_TICK);
+		ExternalPlay.deleteTick(C,Host.TICK_CLAN);
 		all.remove(C.ID().toUpperCase());
 	}
-	
+
 	public String getDetail(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -381,7 +381,7 @@ public class Clans implements Clan, Tickable
 		}
 		return "Clan";
 	}
-	
+
 	public int allowedToDoThis(MOB mob, int function)
 	{
 		if(mob==null) return -1;
@@ -552,7 +552,7 @@ public class Clans implements Clan, Tickable
 		}
 		return -1;
 	}
-	
+
 	public DVector getRealMemberList(int PosFilter)
 	{
 		DVector members=getMemberList(PosFilter);
@@ -560,7 +560,7 @@ public class Clans implements Clan, Tickable
 		for(int i=members.size()-1;i>=0;i--)
 		{
 			String member=(String)members.elementAt(i,1);
-			if(CMMap.getPlayer(member)!=null) 
+			if(CMMap.getPlayer(member)!=null)
 				continue;
 			if(ExternalPlay.DBUserSearch(null,member))
 				continue;
@@ -568,7 +568,7 @@ public class Clans implements Clan, Tickable
 		}
 		return members;
 	}
-	
+
 	public int getSize()
 	{
 		Vector members=new Vector();
@@ -593,7 +593,7 @@ public class Clans implements Clan, Tickable
 	public String getAcceptanceSettings() { return AcceptanceSettings; }
 	public void setAcceptanceSettings(String newSettings) { AcceptanceSettings=newSettings; }
 
-	public String getPolitics() { 
+	public String getPolitics() {
 		StringBuffer str=new StringBuffer("");
 		str.append("<POLITICS>");
 		str.append(XMLManager.convertXMLtoTag("GOVERNMENT",""+getGovernment()));
@@ -616,10 +616,10 @@ public class Clans implements Clan, Tickable
 			str.append("</RELATIONS>");
 		}
 		str.append("</POLITICS>");
-		return str.toString(); 
+		return str.toString();
 	}
-	public void setPolitics(String politics) 
-	{ 
+	public void setPolitics(String politics)
+	{
 		relations.clear();
 		government=Clan.GVT_DICTATORSHIP;
 		if(politics.trim().length()==0) return;
@@ -704,12 +704,12 @@ public class Clans implements Clan, Tickable
 			numVotes=realmembers.size();
 		return numVotes;
 	}
-	
-	
-	public int getTopRank() { 
+
+
+	public int getTopRank() {
 		if((getGovernment()>=0)
 		&&(getGovernment()<Clan.topRanks.length))
-			return Clan.topRanks[getGovernment()]; 
+			return Clan.topRanks[getGovernment()];
 		return POS_BOSS;
 	}
 
@@ -726,19 +726,19 @@ public class Clans implements Clan, Tickable
 			return new Clans();
 		}
 	}
-	
+
 	public static void tickAllClans()
 	{
 		for(Enumeration e=clans();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
-			C.tick(C,Host.CLAN_TICK);
+			C.tick(C,Host.TICK_CLAN);
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID!=Host.CLAN_TICK)
+		if(tickID!=Host.TICK_CLAN)
 			return true;
 		try{
 			DVector members=getMemberList();
@@ -752,7 +752,7 @@ public class Clans implements Clan, Tickable
 					activeMembers++;
 				numTypes[getRoleOrder(((Integer)members.elementAt(j,2)).intValue())]++;
 			}
-			
+
 			// handle any necessary promotions
 			if((getGovernment()==Clan.GVT_DICTATORSHIP)
 			||(getGovernment()==Clan.GVT_OLIGARCHY))
@@ -778,8 +778,8 @@ public class Clans implements Clan, Tickable
 					}
 				}
 			}
-			
-			
+
+
 			if(activeMembers<CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS))
 			{
 				if(getStatus()==Clan.CLANSTATUS_FADING)
@@ -818,8 +818,8 @@ public class Clans implements Clan, Tickable
 			default:
 				break;
 			}
-			
-			
+
+
 			// now do votes
 			if((getGovernment()!=Clan.GVT_DICTATORSHIP)&&(votes()!=null))
 			{
@@ -924,12 +924,12 @@ public class Clans implements Clan, Tickable
 		}
 		return true;
 	}
-	
+
 	public void clanAnnounce(String msg)
 	{
 		ExternalPlay.channel("CLANTALK",ID(),msg,true);
 	}
-	
+
 	public static class ClanVote
 	{
 		public String voteStarter="";
@@ -939,6 +939,6 @@ public class Clans implements Clan, Tickable
 		public int function=0;
 		public DVector votes=null;
 	}
-	
-	
+
+
 }

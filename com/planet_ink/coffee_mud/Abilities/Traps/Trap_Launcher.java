@@ -67,13 +67,13 @@ public class Trap_Launcher extends StdTrap
 				name=text().substring(x+1);
 			}
 			if((!invoker().mayIFight(target))||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off "+name+" trap!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off "+name+" trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> <S-IS-ARE> struck by "+name+" trap!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> <S-IS-ARE> struck by "+name+" trap!"))
 			{
 				super.spring(target);
 				int damage=Dice.roll(trapLevel(),dam,1);
-				ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MSG_OK_VISUAL,-1,null);
+				ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

@@ -19,7 +19,7 @@ public class Spell_FlamingEnsnarement extends Spell
 	public long flags(){return Ability.FLAG_BINDING|Ability.FLAG_BURNING|Ability.FLAG_HEATING;}
 
 	public int amountRemaining=0;
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -29,15 +29,15 @@ public class Spell_FlamingEnsnarement extends Spell
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
-			switch(affect.sourceMinor())
+			switch(msg.sourceMinor())
 			{
-			case Affect.TYP_ENTER:
-			case Affect.TYP_ADVANCE:
-			case Affect.TYP_LEAVE:
-			case Affect.TYP_FLEE:
-				if(mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the flaming ensnarement."))
+			case CMMsg.TYP_ENTER:
+			case CMMsg.TYP_ADVANCE:
+			case CMMsg.TYP_LEAVE:
+			case CMMsg.TYP_FLEE:
+				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the flaming ensnarement."))
 				{
 					amountRemaining-=mob.envStats().level();
 					if(amountRemaining<0)
@@ -46,7 +46,7 @@ public class Spell_FlamingEnsnarement extends Spell
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -63,18 +63,18 @@ public class Spell_FlamingEnsnarement extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the burning ensnarement.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the burning ensnarement.");
 	}
-   
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
 			MOB vic=(MOB)affected;
 			if((!vic.amDead())&&(vic.location()!=null))
-				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(2,4,0),Affect.TYP_FIRE,-1,"<T-NAME> get(s) singed from <T-HIS-HER> flaming ensnarement!");
+				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(2,4,0),CMMsg.TYP_FIRE,-1,"<T-NAME> get(s) singed from <T-HIS-HER> flaming ensnarement!");
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -109,7 +109,7 @@ public class Spell_FlamingEnsnarement extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
+				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
@@ -118,7 +118,7 @@ public class Spell_FlamingEnsnarement extends Spell
 						if(target.location()==mob.location())
 						{
 							success=maliciousAffect(mob,target,0,-1);
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> become(s) ensnared in the flaming tendrils erupting from the ground, and is unable to move <S-HIS-HER> feet!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) ensnared in the flaming tendrils erupting from the ground, and is unable to move <S-HIS-HER> feet!");
 						}
 					}
 				}

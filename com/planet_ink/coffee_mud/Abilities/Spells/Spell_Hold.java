@@ -70,7 +70,7 @@ public class Spell_Hold extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
@@ -78,7 +78,7 @@ public class Spell_Hold extends Spell
 					success=maliciousAffect(mob,target,8,-1);
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> become(s) perfectly still!!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) perfectly still!!");
 				}
 			}
 		}

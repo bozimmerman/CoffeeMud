@@ -13,7 +13,7 @@ public class Chant_AstralProjection extends Chant
 	public String displayText(){return "(Astral Projection)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Chant_AstralProjection();}
-	
+
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -28,19 +28,19 @@ public class Chant_AstralProjection extends Chant
 			mob.tell("^HYour spirit has returned to your body...\n\r\n\r^N");
 			invoker.setSoulMate(null);
 			invoker.destroy();
-			
+
 		}
 		super.unInvoke();
 		if(mob!=null)
 			ExternalPlay.standIfNecessary(mob);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
 			return super.tick(ticking,tickID);
 
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(tickDown!=Integer.MAX_VALUE)
 		&&(canBeUninvoked())
 		&&(tickDown==1))
@@ -48,14 +48,14 @@ public class Chant_AstralProjection extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(affect.amISource((MOB)affected))
-		&&(affect.sourceMinor()==Affect.TYP_DEATH))
+		&&(msg.amISource((MOB)affected))
+		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 			unInvoke();
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void peaceAt(MOB mob)
@@ -89,14 +89,14 @@ public class Chant_AstralProjection extends Chant
 			target=(MOB)givenTarget;
 		if(target.soulMate()!=null)
 		{
-			Ability AS=target.soulMate().fetchAffect(ID());
+			Ability AS=target.soulMate().fetchEffect(ID());
 			if(AS!=null)
 			{
 				AS.unInvoke();
 				return false;
 			}
 		}
-		if(target.fetchAffect("Prop_AstralSpirit")!=null)
+		if(target.fetchEffect("Prop_AstralSpirit")!=null)
 		{
 			mob.tell("You are already as astral spirit.");
 			return false;
@@ -108,16 +108,16 @@ public class Chant_AstralProjection extends Chant
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) softly.^?");
-		if(mob.location().okAffect(mob,msg))
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			target.makePeace();
 			peaceAt(target);
 			MOB spirit=(MOB)target.copyOf();
-			for(int a=0;a<spirit.numAffects();a++)
+			for(int a=0;a<spirit.numEffects();a++)
 			{
-				Ability A=spirit.fetchAffect(a);
-				if(A.canBeUninvoked()) spirit.delAffect(A);
+				Ability A=spirit.fetchEffect(a);
+				if(A.canBeUninvoked()) spirit.delEffect(A);
 			}
 			while(spirit.inventorySize()>0)
 			{
@@ -125,10 +125,10 @@ public class Chant_AstralProjection extends Chant
 				if(I!=null) I.destroy();
 			}
 			spirit.setMoney(0);
-			mob.location().show(target,null,Affect.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
+			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
 			beneficialAffect(spirit,target,0);
 			Ability A=CMClass.getAbility("Prop_AstralSpirit");
-			spirit.addNonUninvokableAffect(A);
+			spirit.addNonUninvokableEffect(A);
 			Session s=target.session();
 			s.setMob(spirit);
 			spirit.setSession(s);

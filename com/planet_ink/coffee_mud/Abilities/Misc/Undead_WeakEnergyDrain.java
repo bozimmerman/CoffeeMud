@@ -46,7 +46,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 		int movelevel=affectableState.getMovement()/affected.baseEnvStats().level();
 		affectableState.setMovement(affectableState.getMovement()-(movelevel*levelsDown));
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -78,9 +78,9 @@ public class Undead_WeakEnergyDrain extends StdAbility
 				return false;
 			}
 			MOB victim=mob.getVictim();
-				reAffect=victim.fetchAffect("Undead_WeakEnergyDrain");
+				reAffect=victim.fetchEffect("Undead_WeakEnergyDrain");
 			if(reAffect==null)
-				reAffect=victim.fetchAffect("Undead_EnergyDrain");
+				reAffect=victim.fetchEffect("Undead_EnergyDrain");
 			if(reAffect!=null) target=victim;
 		}
 		if(target==null)
@@ -96,13 +96,13 @@ public class Undead_WeakEnergyDrain extends StdAbility
 		if(success)
 		{
 			str=auto?"":"^S<S-NAME> extend(s) an energy draining hand to <T-NAMESELF>!^?";
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_UNDEAD|(auto?Affect.MASK_GENERAL:0),str);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_GENERAL:0),str);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> drained!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> drained!");
 					if(reAffect!=null)
 					{
 						if(reAffect instanceof Undead_WeakEnergyDrain)

@@ -31,7 +31,7 @@ public class AnimalTraining extends CommonSkill
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(tickID==Host.MOB_TICK))
+		&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((taming==null)||(mob.location()==null))
@@ -68,7 +68,7 @@ public class AnimalTraining extends CommonSkill
 						else
 						{
 							String s=" to "+skillto;
-							mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to train "+animal.name()+" "+s+".");
+							mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to train "+animal.name()+" "+s+".");
 							if(skill instanceof Behavior)
 								animal.addBehavior((Behavior)skill);
 							else
@@ -217,8 +217,8 @@ public class AnimalTraining extends CommonSkill
 		int duration=35+taming.envStats().level()-mob.envStats().level();
 		if(duration<10) duration=10;
 		verb="training "+M.name();
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) training "+M.name()+".");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) training "+M.name()+".");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);

@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_PiercingMoon extends Chant
 {
 	public String ID() { return "Chant_PiercingMoon"; }
-	public String name(){ return "Piercing Moon";} 
+	public String name(){ return "Piercing Moon";}
 	public String displayText(){return "(Piercing Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
@@ -58,8 +58,8 @@ public class Chant_PiercingMoon extends Chant
 			mob.tell("This chant only works outdoors.");
 			return false;
 		}
-		
-		if(target.fetchAffect(ID())!=null)
+
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already under the piercing moon.");
 			return false;
@@ -81,15 +81,15 @@ public class Chant_PiercingMoon extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					if(!mob.location().getArea().canSeeTheMoon(mob.location()))
-						mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Moon pierces through the clouds!");
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Moon pierces through the clouds!");
 					else
-						mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Moon brightens!");
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Moon brightens!");
 					beneficialAffect(mob,target,0);
 				}
 			}

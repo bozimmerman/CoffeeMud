@@ -34,7 +34,7 @@ public class Prop_SpellReflecting extends Property
 		setAbilityCode(remaining);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected==null)	return true;
 		if((fade<=0)&&(abilityCode()<remaining))
@@ -54,13 +54,13 @@ public class Prop_SpellReflecting extends Property
 			}
 		}
 
-		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
+		if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
 		&&(Dice.rollPercentage()<=chance)
 		&&(abilityCode()>0)
-		&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 		{
 			MOB target=null;
 			if(affected instanceof MOB)
@@ -74,43 +74,43 @@ public class Prop_SpellReflecting extends Property
 			else
 				return true;
 
-			if(!affect.amITarget(target)) return true;
-			if(affect.amISource(target)) return true;
+			if(!msg.amITarget(target)) return true;
+			if(msg.amISource(target)) return true;
 			if(target.location()==null) return true;
 
-			int lvl=CMAble.qualifyingLevel(affect.source(),((Ability)affect.tool()));
-			if(lvl<=0) lvl=CMAble.lowestQualifyingLevel(((Ability)affect.tool()).ID());
+			int lvl=CMAble.qualifyingLevel(msg.source(),((Ability)msg.tool()));
+			if(lvl<=0) lvl=CMAble.lowestQualifyingLevel(((Ability)msg.tool()).ID());
 			if(lvl<=0) lvl=1;
 			if((lvl<minLevel)||(lvl>maxLevel)) return true;
 
-			target.location().show(target,affected,Affect.MSG_OK_VISUAL,"The field around <T-NAMESELF> reflects the spell!");
-			Ability A=(Ability)affect.tool();
-			A.invoke(target,affect.source(),true);
+			target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,"The field around <T-NAMESELF> reflects the spell!");
+			Ability A=(Ability)msg.tool();
+			A.invoke(target,msg.source(),true);
 			setAbilityCode(abilityCode()-lvl);
 			if(abilityCode()<=0)
 			{
 				if(affected instanceof MOB)
 				{
-					target.location().show(target,target,Affect.MSG_OK_VISUAL,"The field around <T-NAMESELF> fades.");
+					target.location().show(target,target,CMMsg.MSG_OK_VISUAL,"The field around <T-NAMESELF> fades.");
 					if(fade>0)
-						target.delAffect(this);
+						target.delEffect(this);
 				}
 				else
 				if(affected instanceof Item)
 				{
 					if(fade>0)
 					{
-						target.location().show(target,affected,Affect.MSG_OK_VISUAL,"<T-NAMESELF> vanishes!");
+						target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,"<T-NAMESELF> vanishes!");
 						((Item)affected).destroy();
 						target.location().recoverRoomStats();
 					}
 					else
-						target.location().show(target,affected,Affect.MSG_OK_VISUAL,"The field around <T-NAMESELF> fades.");
+						target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,"The field around <T-NAMESELF> fades.");
 				}
 			}
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 

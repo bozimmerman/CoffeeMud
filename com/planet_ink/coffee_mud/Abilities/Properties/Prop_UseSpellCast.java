@@ -19,7 +19,7 @@ public class Prop_UseSpellCast extends Property
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			Ability EA=newMOB.fetchAffect(A.ID());
+			Ability EA=newMOB.fetchEffect(A.ID());
 			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this)))
 				A.invoke(sourceMOB,newMOB,true);
 		}
@@ -45,9 +45,9 @@ public class Prop_UseSpellCast extends Property
 		return id;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if(processing) return;
 		processing=true;
@@ -56,32 +56,32 @@ public class Prop_UseSpellCast extends Property
 		Item myItem=(Item)affected;
 		if(myItem.owner()==null) return;
 		if(!(myItem.owner() instanceof MOB)) return;
-		if(affect.amISource((MOB)myItem.owner()))
-			switch(affect.sourceMinor())
+		if(msg.amISource((MOB)myItem.owner()))
+			switch(msg.sourceMinor())
 			{
-			case Affect.TYP_FILL:
+			case CMMsg.TYP_FILL:
 				if((myItem instanceof Drink)
-				&&(affect.tool()!=myItem)
-				&&(affect.amITarget(myItem)))
-					addMeIfNeccessary(affect.source(),affect.source());
+				&&(msg.tool()!=myItem)
+				&&(msg.amITarget(myItem)))
+					addMeIfNeccessary(msg.source(),msg.source());
 				break;
-			case Affect.TYP_WEAR:
+			case CMMsg.TYP_WEAR:
 				if((myItem instanceof Armor)
-				  &&(affect.amITarget(myItem)))
-					addMeIfNeccessary(affect.source(),affect.source());
+				  &&(msg.amITarget(myItem)))
+					addMeIfNeccessary(msg.source(),msg.source());
 				break;
-			case Affect.TYP_PUT:
+			case CMMsg.TYP_PUT:
 				if((myItem instanceof Container)
-				  &&(affect.amITarget(myItem)))
-					addMeIfNeccessary(affect.source(),affect.source());
+				  &&(msg.amITarget(myItem)))
+					addMeIfNeccessary(msg.source(),msg.source());
 				break;
-			case Affect.TYP_WIELD:
-			case Affect.TYP_HOLD:
+			case CMMsg.TYP_WIELD:
+			case CMMsg.TYP_HOLD:
 				if((!(myItem instanceof Drink))
 				  &&(!(myItem instanceof Armor))
 				  &&(!(myItem instanceof Container))
-				  &&(affect.amITarget(myItem)))
-					addMeIfNeccessary(affect.source(),affect.source());
+				  &&(msg.amITarget(myItem)))
+					addMeIfNeccessary(msg.source(),msg.source());
 				break;
 			}
 		processing=false;

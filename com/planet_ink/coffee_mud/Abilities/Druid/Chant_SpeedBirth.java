@@ -19,7 +19,7 @@ public class Chant_SpeedBirth extends Chant
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		Ability A=target.fetchAffect("Pregnancy");
+		Ability A=target.fetchEffect("Pregnancy");
 		long start=0;
 		long end=0;
 		long days=0;
@@ -50,7 +50,7 @@ public class Chant_SpeedBirth extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 		if((success)&&(A!=null)&&(remain>0))
 		{
@@ -59,7 +59,7 @@ public class Chant_SpeedBirth extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(remain<=20000)
@@ -73,7 +73,7 @@ public class Chant_SpeedBirth extends Chant
 				else
 					remain=remain/2;
 				A.setMiscText((start-remain)+"/"+(end-remain)+rest);
-				target.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> appear(s) even MORE pregnant!");
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> appear(s) even MORE pregnant!");
 			}
 		}
 		else

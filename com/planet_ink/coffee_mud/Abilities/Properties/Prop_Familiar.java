@@ -40,10 +40,10 @@ public class Prop_Familiar extends Property
 	{
 		if(familiarTo!=null)
 		{
-			Ability A=familiarTo.fetchAffect(ID());
+			Ability A=familiarTo.fetchEffect(ID());
 			if(A!=null)
 			{
-				familiarTo.delAffect(A);
+				familiarTo.delEffect(A);
 				/*if(!familiarTo.amDead())
 				{
 					ExternalPlay.postExperience(familiarTo,null,null,-50,false);
@@ -55,10 +55,10 @@ public class Prop_Familiar extends Property
 		}
 		if(familiarWith!=null)
 		{
-			Ability A=familiarWith.fetchAffect(ID());
+			Ability A=familiarWith.fetchEffect(ID());
 			if(A!=null)
 			{
-				familiarWith.delAffect(A);
+				familiarWith.delEffect(A);
 				familiarWith.recoverCharStats();
 				familiarWith.recoverEnvStats();
 			}
@@ -72,7 +72,7 @@ public class Prop_Familiar extends Property
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((affected==null)||(!(affected instanceof MOB)))
 				return removeMeFromFamiliarTo();
@@ -90,7 +90,7 @@ public class Prop_Familiar extends Property
 				F.setBorrowed(affected,true);
 				F.imthedaddy=true;
 				F.familiarWith=familiarWith;
-				familiarTo.addAffect(F);
+				familiarTo.addEffect(F);
 				familiarTo.recoverCharStats();
 				familiarTo.recoverEnvStats();
 			}
@@ -140,26 +140,26 @@ public class Prop_Familiar extends Property
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
+		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
 		&&(familiarWith!=null)
 		&&(familiarTo!=null)
-		&&((affect.amITarget(familiarWith))||(affect.amITarget(familiarTo)))
+		&&((msg.amITarget(familiarWith))||(msg.amITarget(familiarTo)))
 		&&(familiarType==RABBIT))
 		{
-			MOB target=(MOB)affect.target();
-			if((!target.isInCombat())&&(affect.source().getVictim()!=target))
+			MOB target=(MOB)msg.target();
+			if((!target.isInCombat())&&(msg.source().getVictim()!=target))
 			{
-				affect.source().tell("You are too much in awe of "+target.name());
-				if(familiarWith.getVictim()==affect.source())
+				msg.source().tell("You are too much in awe of "+target.name());
+				if(familiarWith.getVictim()==msg.source())
 					familiarWith.makePeace();
-				if(familiarTo.getVictim()==affect.source())
+				if(familiarTo.getVictim()==msg.source())
 					familiarTo.makePeace();
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void setMiscText(String newText)

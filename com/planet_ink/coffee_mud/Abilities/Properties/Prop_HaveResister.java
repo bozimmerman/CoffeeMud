@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-// this ability is the very picture of the infectuous affect.
+// this ability is the very picture of the infectuous msg.
 // It lobs itself onto other qualified objects, and withdraws
 // again when it will.  Don't lothe the HaveResister, LOVE IT.
 public class Prop_HaveResister extends Property
@@ -110,25 +110,25 @@ public class Prop_HaveResister extends Property
 		adjCharStats.setStat(CharStats.SAVE_TRAPS,getProtection(me,"traps"));
 	}
 
-	public static void resistAffect(Affect affect, MOB mob, Ability me)
+	public static void resistAffect(CMMsg msg, MOB mob, Ability me)
 	{
 		if(mob.location()==null) return;
 		if(mob.amDead()) return;
-		if(!affect.amITarget(mob)) return;
+		if(!msg.amITarget(mob)) return;
 
-		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&((affect.targetCode()-Affect.MASK_HURT)>0)
-		&&(affect.tool()!=null)
-		   &&(affect.tool() instanceof Weapon))
+		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.tool()!=null)
+		   &&(msg.tool() instanceof Weapon))
 		{
-			int recovery=affect.targetCode()-Affect.MASK_HURT;
+			int recovery=msg.targetCode()-CMMsg.MASK_HURT;
 			recovery=(int)Math.round(Util.mul(recovery,Math.random()));
 			if(recovery<=0) recovery=0;
 			if(Prop_HaveResister.checkProtection(me,"weapons"))
 				mob.curState().adjHitPoints(recovery,mob.maxState());
 			else
 			{
-				Weapon W=(Weapon)affect.tool();
+				Weapon W=(Weapon)msg.tool();
 				if(((W.weaponType()==Weapon.TYPE_BASHING)&&(Prop_HaveResister.checkProtection(me,"blunt")))
 				 ||((W.weaponType()==Weapon.TYPE_PIERCING)&&(Prop_HaveResister.checkProtection(me,"pierce")))
 				 ||((W.weaponType()==Weapon.TYPE_SLASHING)&&(Prop_HaveResister.checkProtection(me,"slash"))))
@@ -144,22 +144,22 @@ public class Prop_HaveResister extends Property
 		return id;
 	}
 
-	public static boolean isOk(Affect affect, Ability me, MOB mob)
+	public static boolean isOk(CMMsg msg, Ability me, MOB mob)
 	{
-		if(!Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
+		if(!Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			return true;
 
-		if(Util.bset(affect.targetCode(),Affect.MASK_MAGIC))
+		if(Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
 		{
-			if(affect.tool() instanceof Ability)
+			if(msg.tool() instanceof Ability)
 			{
-				Ability A=(Ability)affect.tool();
+				Ability A=(Ability)msg.tool();
 				if((A.ID().equals("Spell_Summon"))
 				   ||(A.ID().equals("Spell_Gate")))
 				{
 					if(Prop_HaveResister.checkProtection(me,"teleport"))
 					{
-						affect.source().tell("You can't seem to fixate on '"+mob.name()+"'.");
+						msg.source().tell("You can't seem to fixate on '"+mob.name()+"'.");
 						return false;
 					}
 				}
@@ -170,7 +170,7 @@ public class Prop_HaveResister extends Property
 				{
 					if(Prop_HaveResister.checkProtection(me,"holy"))
 					{
-						mob.location().show(affect.source(),mob,Affect.MSG_OK_VISUAL,"Holy energies from <S-NAME> are repelled from <T-NAME>.");
+						mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,"Holy energies from <S-NAME> are repelled from <T-NAME>.");
 						return false;
 					}
 				}
@@ -179,9 +179,9 @@ public class Prop_HaveResister extends Property
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected!=null)
@@ -189,11 +189,11 @@ public class Prop_HaveResister extends Property
 		&&(((Item)affected).owner() instanceof MOB))
 		{
 			MOB mob=(MOB)((Item)affected).owner();
-			if((affect.amITarget(mob))&&(!affect.wasModified())&&(mob.location()!=null))
+			if((msg.amITarget(mob))&&(!msg.wasModified())&&(mob.location()!=null))
 			{
-				if(!Prop_HaveResister.isOk(affect,this,mob))
+				if(!Prop_HaveResister.isOk(msg,this,mob))
 					return false;
-				Prop_HaveResister.resistAffect(affect,mob,this);
+				Prop_HaveResister.resistAffect(msg,mob,this);
 			}
 		}
 		return true;

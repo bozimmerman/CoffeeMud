@@ -43,12 +43,12 @@ public class Spell_LocateObject extends Spell
 				if(s.startsWith("<"))
 					s=s.substring(1);
 				int levelFind=Util.s_int(s);
-				
-				if(lt) 
+
+				if(lt)
 					maxLevel=levelFind;
-				else 
+				else
 					minLevel=levelFind;
-				
+
 				commands.removeElementAt(commands.size()-1);
 				if(commands.size()>1)
 					s=(String)commands.lastElement();
@@ -65,16 +65,16 @@ public class Spell_LocateObject extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a divination, shouting '"+what+"'^?.");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Vector itemsFound=new Vector();
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
-					
+
 					if(!Sense.canAccess(mob,room)) continue;
-					
+
 					Environmental item=room.fetchItem(null,what);
 					if((item!=null)&&(Sense.canSee(item)))
 					{

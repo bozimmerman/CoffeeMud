@@ -31,7 +31,7 @@ public class Construction extends CommonSkill
 	private final static int DAT_ROOF=2;
 	private final static int DAT_REQDIR=3;
 	private final static int DAT_REQNONULL=4;
-	
+
 	// name, wood, ok=0/roof=1/out=2, req direction=1, ok=0, ok=0, nonull=1, nullonly=2
 	private final static String[][] data={
 		{"Wall","100","1","1","0"},
@@ -63,7 +63,7 @@ public class Construction extends CommonSkill
 					CMAble.addCharAbilityMapping("All",10,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Construction();}
-	
+
 	public Exit generify(Exit E)
 	{
 		Exit E2=CMClass.getExit("GenExit");
@@ -142,12 +142,12 @@ public class Construction extends CommonSkill
 							R.setDisplayText(room.displayText());
 							R.setDescription(room.description());
 							R.setArea(room.getArea());
-							for(int a=room.numAffects()-1;a>=0;a--)
+							for(int a=room.numEffects()-1;a>=0;a--)
 							{
-								Ability A=room.fetchAffect(a);
+								Ability A=room.fetchEffect(a);
 								if(A!=null){
-									room.delAffect(A);
-									R.addAffect(A);
+									room.delEffect(A);
+									R.addEffect(A);
 								}
 							}
 							for(int i=room.numItems()-1;i>=0;i--)
@@ -252,7 +252,7 @@ public class Construction extends CommonSkill
 									room.rawExits()[workingOn]=E;
 								}
 								Ability A=CMClass.getAbility("Prop_Crawlspace");
-								if(A!=null) E.addNonUninvokableAffect(A);
+								if(A!=null) E.addNonUninvokableEffect(A);
 								ExternalPlay.DBUpdateExits(room);
 							}
 						}
@@ -274,7 +274,7 @@ public class Construction extends CommonSkill
 									if(A!=null)
 									{
 										A.setMiscText(CMMap.getExtendedRoomID(R2));
-										E.addNonUninvokableAffect(A);
+										E.addNonUninvokableEffect(A);
 									}
 								}
 								ExternalPlay.DBUpdateExits(room);
@@ -336,12 +336,12 @@ public class Construction extends CommonSkill
 								R.setDisplayText(room.displayText());
 								R.setDescription(room.description());
 								R.setArea(room.getArea());
-								for(int a=room.numAffects()-1;a>=0;a--)
+								for(int a=room.numEffects()-1;a>=0;a--)
 								{
-									Ability A=room.fetchAffect(a);
+									Ability A=room.fetchEffect(a);
 									if(A!=null){
-										room.delAffect(A);
-										R.addAffect(A);
+										room.delEffect(A);
+										R.addEffect(A);
 									}
 								}
 								for(int i=room.numItems()-1;i>=0;i--)
@@ -464,7 +464,7 @@ public class Construction extends CommonSkill
 			commonTell(mob,"There is a wall that way that needs to be demolished first.");
 			return false;
 		}
-														  
+
 
 		int woodRequired=Util.s_int(data[doingCode][DAT_WOOD]);
 		if(((mob.location().domainType()&Room.INDOORS)==0)
@@ -512,7 +512,7 @@ public class Construction extends CommonSkill
 			if(Directions.getGoodDirectionCode((String)commands.elementAt(1))>=0)
 			{
 				int dir=Directions.getGoodDirectionCode((String)commands.elementAt(1));
-				
+
 				if(mob.location().getExitInDir(dir)==null)
 				{
 					commonTell(mob,"There is no exit "+Directions.getInDirectionName(dir)+" to describe.");
@@ -529,7 +529,7 @@ public class Construction extends CommonSkill
 			}
 			else
 				commands.removeElementAt(1);
-																 
+
 			String title=Util.combine(commands,1);
 			if(title.length()==0)
 			{
@@ -638,9 +638,9 @@ public class Construction extends CommonSkill
 		messedUp=!profficiencyCheck(0,auto);
 		startStr="<S-NAME> start(s) "+verb;
 		if(completion<25) completion=25;
-		
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr+".");
-		if(mob.location().okAffect(mob,msg))
+
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

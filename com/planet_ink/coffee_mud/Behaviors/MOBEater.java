@@ -34,7 +34,7 @@ public class MOBEater extends ActiveTicker
 				Stomach.setArea(lastKnownLocation.getArea());
 			Stomach.setName("The Stomach of "+forMe.name());
 			Stomach.setDescription("You are in the stomach of "+forMe.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
-			Stomach.addNonUninvokableAffect(CMClass.getAbility("Prop_NoRecall"));
+			Stomach.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
 		}
 	}
 
@@ -83,26 +83,26 @@ public class MOBEater extends ActiveTicker
 		MOB mob=(MOB)ticking;
 		if(mob.location()!=null)
 			lastKnownLocation=mob.location();
-		
+
 		if((--digestDown)<=0)
 		{
 			digestDown=4;
 			digestTastyMorsels(mob);
 		}
-		
+
 		if((canAct(ticking,tickID))
 		&&(((MOB)ticking).isInCombat())
 		&&(!mob.amDead()))
 			trySwallowWhole(mob);
 		return true;
 	}
-	public void affect(Environmental mob, Affect msg)
+	public void executeMsg(Environmental mob, CMMsg msg)
 	{
 		if((mob instanceof MOB)
 		&&(msg.amISource((MOB)mob))
-		&&(msg.sourceMinor()==Affect.TYP_DEATH))
+		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 			kill();
-		super.affect(mob,msg);
+		super.executeMsg(mob,msg);
 	}
 	protected boolean trySwallowWhole(MOB mob)
 	{
@@ -120,13 +120,13 @@ public class MOBEater extends ActiveTicker
 				FullMsg EatMsg=new FullMsg(mob,
 										   TastyMorsel,
 										   null,
-										   Affect.MSG_OK_ACTION,
+										   CMMsg.MSG_OK_ACTION,
 										   "<S-NAME> swallow(es) <T-NAMESELF> WHOLE!");
-				if(mob.location().okAffect(TastyMorsel,EatMsg))
+				if(mob.location().okMessage(TastyMorsel,EatMsg))
 				{
 					mob.location().send(TastyMorsel,EatMsg);
 					Stomach.bringMobHere(TastyMorsel,false);
-					FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MSG_ENTER,Stomach.description(),Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+					FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 					Stomach.send(TastyMorsel,enterMsg);
 				}
 			}
@@ -148,13 +148,13 @@ public class MOBEater extends ActiveTicker
 				FullMsg DigestMsg=new FullMsg(mob,
 										   TastyMorsel,
 										   null,
-										   Affect.MASK_GENERAL|Affect.TYP_ACID,
+										   CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,
 										   "<S-NAME> Digests <T-NAMESELF>!!");
 				// no OKaffectS, since the dragon is not in his own stomach.
 				Stomach.send(mob,DigestMsg);
 				int damage=(int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2));
 				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-				ExternalPlay.postDamage(mob,TastyMorsel,null,damage,Affect.MASK_GENERAL|Affect.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

@@ -28,7 +28,7 @@ public class Spell_Darkness extends Spell
 		{
 			room.recoverRoomStats();
 			room.recoverRoomStats();
-			room.showHappens(Affect.MSG_OK_VISUAL, "The darkness starts to fade.");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, "The darkness starts to fade.");
 		}
 	}
 
@@ -50,10 +50,10 @@ public class Spell_Darkness extends Spell
 
 		Environmental target = mob.location();
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Darkness has already been cast here!");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -69,12 +69,12 @@ public class Spell_Darkness extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), (auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
-					mob.location().addNonUninvokableAffect(this);
+					mob.location().addNonUninvokableEffect(this);
 				else
 					beneficialAffect(mob,mob.location(),0);
 				mob.location().recoverRoomStats();

@@ -28,7 +28,7 @@ public class Chant_Treehouse extends Chant
 			Room R=room.getRoomInDir(Directions.UP);
 			if((R!=null)&&(R.roomID().equalsIgnoreCase("")))
 			{
-				R.showHappens(Affect.MSG_OK_VISUAL,"The treehouse fades away...");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,"The treehouse fades away...");
 				while(R.numInhabitants()>0)
 				{
 					MOB M=R.fetchInhabitant(0);
@@ -56,7 +56,7 @@ public class Chant_Treehouse extends Chant
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target = mob.location();
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("There is already a treehouse above here!");
 			return false;
@@ -97,10 +97,10 @@ public class Chant_Treehouse extends Chant
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) for a treehouse!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,"A treehouse appears up in a nearby tree!");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"A treehouse appears up in a nearby tree!");
 				mob.location().clearSky();
 				Room newRoom=CMClass.getLocale("WoodRoom");
 				newRoom.setDisplayText("A treehouse");
@@ -112,7 +112,7 @@ public class Chant_Treehouse extends Chant
 				Ability A=CMClass.getAbility("Prop_RoomView");
 				A.setMiscText(CMMap.getExtendedRoomID(mob.location()));
 				Exit E=CMClass.getExit("ClimbableExit");
-				E.addNonUninvokableAffect(A);
+				E.addNonUninvokableEffect(A);
 				newRoom.rawExits()[Directions.DOWN]=E;
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
@@ -127,7 +127,7 @@ public class Chant_Treehouse extends Chant
 						A=CMClass.getAbility("Prop_RoomView");
 						A.setMiscText(CMMap.getExtendedRoomID(R));
 						E=CMClass.getExit("Impassable");
-						E.addNonUninvokableAffect(A);
+						E.addNonUninvokableEffect(A);
 						newRoom.rawExits()[d]=E;
 					}
 				}

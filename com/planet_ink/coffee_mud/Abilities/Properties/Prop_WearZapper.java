@@ -17,47 +17,47 @@ public class Prop_WearZapper extends Property
 		return "Wearing restricted as follows: "+SaucerSupport.zapperDesc(miscText);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if(affected==null) return false;
 		if(!(affected instanceof Item)) return false;
 		Item myItem=(Item)affected;
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		if(mob.location()==null)
 			return true;
 
-		if(affect.amITarget(myItem))
-		switch(affect.targetMinor())
+		if(msg.amITarget(myItem))
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_HOLD:
+		case CMMsg.TYP_HOLD:
 			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,myItem,Affect.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
-		case Affect.TYP_WEAR:
+		case CMMsg.TYP_WEAR:
 			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,myItem,Affect.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
-		case Affect.TYP_WIELD:
+		case CMMsg.TYP_WIELD:
 			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,myItem,Affect.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
-		case Affect.TYP_GET:
+		case CMMsg.TYP_GET:
 			break;
-		case Affect.TYP_DROP:
-		case Affect.TYP_THROW:
+		case CMMsg.TYP_DROP:
+		case CMMsg.TYP_THROW:
 			break;
 		default:
 			break;

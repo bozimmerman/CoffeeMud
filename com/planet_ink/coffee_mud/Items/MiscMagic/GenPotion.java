@@ -58,25 +58,25 @@ public class GenPotion extends GenWater implements Potion
 	public Vector getSpells(Potion me)
 	{	return new StdPotion().getSpells(me);}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((affect.amITarget(this))
-		   &&(affect.targetMinor()==Affect.TYP_DRINK)
-		   &&(affect.othersMessage()==null)
-		   &&(affect.sourceMessage()==null))
+		if((msg.amITarget(this))
+		   &&(msg.targetMinor()==CMMsg.TYP_DRINK)
+		   &&(msg.othersMessage()==null)
+		   &&(msg.sourceMessage()==null))
 				return true;
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_DRINK:
-				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
+			case CMMsg.TYP_DRINK:
+				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 				{
 					drinkIfAble(mob,this);
 					mob.tell(name()+" vanishes!");
@@ -84,17 +84,17 @@ public class GenPotion extends GenWater implements Potion
 				}
 				else
 				{
-					affect.addTrailerMsg(new FullMsg(affect.source(),affect.target(),affect.tool(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
-					super.affect(myHost,affect);
+					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),msg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),msg.NO_EFFECT,null));
+					super.executeMsg(myHost,msg);
 				}
 				break;
 			default:
-				super.affect(myHost,affect);
+				super.executeMsg(myHost,msg);
 				break;
 			}
 		}
 		else
-			super.affect(myHost,affect);
+			super.executeMsg(myHost,msg);
 	}
 	// stats handled by GenDrink, spells by readable text
 }

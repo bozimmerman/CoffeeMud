@@ -23,7 +23,7 @@ public class Undead extends StdRace
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-	
+
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
@@ -38,66 +38,66 @@ public class Undead extends StdRace
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect msg)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((myHost!=null)&&(myHost instanceof MOB))
 		{
 			MOB mob=(MOB)myHost;
-			if(msg.amITarget(mob)&&Util.bset(msg.targetCode(),Affect.MASK_HEAL))
+			if(msg.amITarget(mob)&&Util.bset(msg.targetCode(),CMMsg.MASK_HEAL))
 			{
-				int amount=msg.targetCode()-Affect.MASK_HEAL;
+				int amount=msg.targetCode()-CMMsg.MASK_HEAL;
 				if((amount>0)
 				&&(msg.tool()!=null)
 				&&(msg.tool() instanceof Ability)
 				&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALING|Ability.FLAG_HOLY))
 				&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 				{
-					ExternalPlay.postDamage(msg.source(),mob,msg.tool(),amount,Affect.MASK_GENERAL|Affect.TYP_ACID,Weapon.TYPE_BURNING,"The healing magic from <S-NAME> seems to <DAMAGE> <T-NAMESELF>.");
+					ExternalPlay.postDamage(msg.source(),mob,msg.tool(),amount,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The healing magic from <S-NAME> seems to <DAMAGE> <T-NAMESELF>.");
 					if((mob.getVictim()==null)&&(mob!=msg.source())&&(mob.isMonster()))
 						mob.setVictim(msg.source());
 				}
 				return false;
 			}
 			else
-			if((msg.amITarget(mob)&&Util.bset(msg.targetCode(),Affect.MASK_HURT))
+			if((msg.amITarget(mob)&&Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
 			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
 			&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
 			{
-				int amount=msg.targetCode()-Affect.MASK_HURT;
+				int amount=msg.targetCode()-CMMsg.MASK_HURT;
 				if(amount>0)
 				{
-					ExternalPlay.postHealing(msg.source(),mob,msg.tool(),Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,amount,"The harming magic heals <T-NAMESELF>.");
+					ExternalPlay.postHealing(msg.source(),mob,msg.tool(),CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,"The harming magic heals <T-NAMESELF>.");
 					return false;
 				}
 			}
 			else
 			if((msg.amITarget(mob))
-			&&(Util.bset(msg.targetCode(),Affect.MASK_MALICIOUS)
-				||Util.bset(msg.targetCode(),Affect.MASK_HURT))
-			&&((msg.targetMinor()==Affect.TYP_DISEASE)
-				||(msg.targetMinor()==Affect.TYP_GAS)
-				||(msg.targetMinor()==Affect.TYP_MIND)
-				||(msg.targetMinor()==Affect.TYP_PARALYZE)
-				||(msg.targetMinor()==Affect.TYP_POISON)
-				||(msg.targetMinor()==Affect.TYP_UNDEAD))
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)
+				||Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&((msg.targetMinor()==CMMsg.TYP_DISEASE)
+				||(msg.targetMinor()==CMMsg.TYP_GAS)
+				||(msg.targetMinor()==CMMsg.TYP_MIND)
+				||(msg.targetMinor()==CMMsg.TYP_PARALYZE)
+				||(msg.targetMinor()==CMMsg.TYP_POISON)
+				||(msg.targetMinor()==CMMsg.TYP_UNDEAD))
 			&&(!mob.amDead()))
 			{
 				String immunityName="certain";
 				if(msg.tool()!=null)
 					immunityName=msg.tool().name();
 				if(mob!=msg.source())
-					mob.location().show(mob,msg.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attacks from <T-NAME>.");
+					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attacks from <T-NAME>.");
 				else
-					mob.location().show(mob,msg.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+".");
+					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+".");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
-	
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

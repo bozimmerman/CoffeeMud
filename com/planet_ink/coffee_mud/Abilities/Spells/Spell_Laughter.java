@@ -29,7 +29,7 @@ public class Spell_Laughter extends Spell
 
 		if(!super.tick(ticking,tickID))
 			return false;
-		((MOB)affected).location().show((MOB)affected,null,Affect.MSG_OK_ACTION,"<S-NAME> laugh(s) uncontrollably, unable to move!");
+		((MOB)affected).location().show((MOB)affected,null,CMMsg.MSG_OK_ACTION,"<S-NAME> laugh(s) uncontrollably, unable to move!");
 		return true;
 	}
 
@@ -44,7 +44,7 @@ public class Spell_Laughter extends Spell
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> stop(s) laughing.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) laughing.");
 			ExternalPlay.standIfNecessary(mob);
 		}
 	}
@@ -91,8 +91,8 @@ public class Spell_Laughter extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> tell(s) <T-NAMESELF> a magical joke.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
@@ -101,7 +101,7 @@ public class Spell_Laughter extends Spell
 					success=maliciousAffect(mob,target,8,-1);
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> begin(s) laughing uncontrollably, unable to move!!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) laughing uncontrollably, unable to move!!");
 				}
 			}
 		}

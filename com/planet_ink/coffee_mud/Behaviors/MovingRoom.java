@@ -23,14 +23,14 @@ public class MovingRoom extends ActiveTicker
     private boolean isReversed = false;
 	private String savedStringInside = "";
     private String savedStringOutside = "";
-	
+
 	private static final int CODE0_TRAVELDIRECTION=0;
 	private static final int CODE0_DOORSDIRECTION=1;
 	private static final int CODE0_INSIDEARRIVEMSG=2;
 	private static final int CODE0_INSIDEDEPARTMSG=3;
 	private static final int CODE0_OUTSIDEARRIVEMSG=4;
 	private static final int CODE0_OUTSIDEDEPARTMSG=5;
-	
+
 	private static final int CODE1_NORMALINSIDEOPEN=0;
 	private static final int CODE1_NORMALINSIDECLOSED=1;
 	private static final int CODE1_NORMALOUTSIDEOPEN=2;
@@ -39,7 +39,7 @@ public class MovingRoom extends ActiveTicker
 	private static final int CODE1_REVERSEINSIDECLOSED=5;
 	private static final int CODE1_REVERSEOUTSIDEOPEN=6;
 	private static final int CODE1_REVERSEOUTSIDECLOSED=7;
-	
+
 	private static final int CODE_NORMALBLOCK=0;
 	private static final int CODE_REVERSEBLOCK=1;
 	private static final int CODE_DESCRIPTIONBLOCK=2;
@@ -110,7 +110,7 @@ public class MovingRoom extends ActiveTicker
 		String theDescriptionsBlock=XMLManager.returnXMLBlock(theFullBlock, "ROOMDESCRIPTIONS");
 		int x=1;
 		String thisone=XMLManager.returnXMLValue(theStopsBlock, "STOP1");
-		while (thisone!="") 
+		while (thisone!="")
 		{
 			++x;
 			listOfRooms.addElement(thisone);
@@ -153,13 +153,13 @@ public class MovingRoom extends ActiveTicker
 		String repWord="";
 		incoming = " " + incoming;
 		int i=0;
-		if (incoming.indexOf("$disproom")>0) 
+		if (incoming.indexOf("$disproom")>0)
 		{
 			i = incoming.indexOf("$disproom");
 			repWord=incoming.substring(1,i)+busstopRoom.displayText()+incoming.substring(i+9);
-		} 
-		else 
-		if (incoming.indexOf("$traveldir")>0) 
+		}
+		else
+		if (incoming.indexOf("$traveldir")>0)
 		{
 			i = incoming.indexOf("$traveldir");
 			int pos=listOfRooms.indexOf(CMMap.getExtendedRoomID(busstopRoom));
@@ -182,9 +182,9 @@ public class MovingRoom extends ActiveTicker
 					V=(Vector)messageInfo.elementAt(CODE_REVERSEBLOCK);
 			}
 			repWord=incoming.substring(1,i)+V.elementAt(0).toString()+incoming.substring(i+10);
-		} 
-		else 
-		if (incoming.indexOf("$outopendir")>0) 
+		}
+		else
+		if (incoming.indexOf("$outopendir")>0)
 		{
 			i = incoming.indexOf("$outopendir");
 			Vector V=new Vector();
@@ -193,9 +193,9 @@ public class MovingRoom extends ActiveTicker
 			else
 				V=(Vector)messageInfo.elementAt(CODE_NORMALBLOCK);
 			repWord=incoming.substring(1,i)+Directions.getDirectionName(Directions.getOpDirectionCode(V.elementAt(1).toString()))+incoming.substring(i+11);
-		} 
-		else 
-		if (incoming.indexOf("$inopendir")>0) 
+		}
+		else
+		if (incoming.indexOf("$inopendir")>0)
 		{
 			i = incoming.indexOf("$inopendir");
 			Vector V=new Vector();
@@ -204,8 +204,8 @@ public class MovingRoom extends ActiveTicker
 			else
 				V=(Vector)messageInfo.elementAt(CODE_NORMALBLOCK);
 			repWord=incoming.substring(1,i)+V.elementAt(1).toString()+incoming.substring(i+10);
-		} 
-		else 
+		}
+		else
 		{
 			repWord=incoming.substring(1);
 			return repWord;
@@ -235,23 +235,23 @@ public class MovingRoom extends ActiveTicker
 		if(canAct(ticking,tickID))
 		{
 			Room subwayRoom=getBehaversRoom(ticking);
-			if (currentStop==0) 
+			if (currentStop==0)
 			{
                 isReversed=false;
                 nextStop=currentStop+1;
-            } 
-			else 
-			if (currentStop==(listOfRooms.size()-1)) 
+            }
+			else
+			if (currentStop==(listOfRooms.size()-1))
 			{
                 isReversed=true;
                 nextStop=currentStop-1;
-            } 
-			else 
-			if (isReversed) 
+            }
+			else
+			if (isReversed)
 			{
                 nextStop=currentStop-1;
-            } 
-			else 
+            }
+			else
 			{
                 nextStop=currentStop+1;
 			}
@@ -265,13 +265,13 @@ public class MovingRoom extends ActiveTicker
                 Room nextStopRoom =CMMap.getRoom(nextStopS);
 				if (nextStopRoom == null)
 					nextStopRoom=getBehaversRoom(ticking);
-				if (currentStatus==0) 
+				if (currentStatus==0)
 				{
 					//DEPARTING
 					if (isReversed)
 					{
-						currentStopRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(CODE0_OUTSIDEDEPARTMSG).toString(),nextStopRoom));
-						subwayRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(CODE0_INSIDEDEPARTMSG).toString(),nextStopRoom));
+						currentStopRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(CODE0_OUTSIDEDEPARTMSG).toString(),nextStopRoom));
+						subwayRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(CODE0_INSIDEDEPARTMSG).toString(),nextStopRoom));
 						if (((subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]!=null) && ((currentStop==0) || (currentStop==(listOfRooms.size()-1))))||(subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]!=null))
 						{
 							if ((currentStop==0)||(currentStop==(listOfRooms.size()-1)))
@@ -280,8 +280,8 @@ public class MovingRoom extends ActiveTicker
 								currentStopRoom.rawExits()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]=null;
 								subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]=null;
 								subwayRoom.rawExits()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]=null;
-							} 
-							else 
+							}
+							else
 							{
 								currentStopRoom.rawDoors()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]=null;
 								currentStopRoom.rawExits()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]=null;
@@ -299,29 +299,29 @@ public class MovingRoom extends ActiveTicker
 							if(!stubs.contains(s2)) stubs.addElement(s2);
                         	subwayRoom.setDescription(subwayRoom.description()+"  "+s1);
 							currentStopRoom.setDescription(currentStopRoom.description()+"  "+s2);
-						} 
-						else 
+						}
+						else
 						{
 							Log.errOut("MovingRoom","Previous room links exists, "+subwayRoom.roomID()+" "+currentStopRoom.roomID()+" not unlinking exit.");
 						}
 						super.setParms("min="+roomInfos.elementAt(2)+" max="+roomInfos.elementAt(2)+" chance=100;"+roomInfos.elementAt(0)+";"+roomInfos.elementAt(1)+";"+roomInfos.elementAt(2));
 						currentStatus=1;
-				  	} 
-					else 
+				  	}
+					else
 					{
 						// departing, not reversed
-						currentStopRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(CODE0_OUTSIDEDEPARTMSG).toString(),nextStopRoom));
-						subwayRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(CODE0_INSIDEDEPARTMSG).toString(),nextStopRoom));
+						currentStopRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(CODE0_OUTSIDEDEPARTMSG).toString(),nextStopRoom));
+						subwayRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(CODE0_INSIDEDEPARTMSG).toString(),nextStopRoom));
 						if (((subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]!=null) && ((currentStop==0) || (currentStop==(listOfRooms.size()-1))))||(subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]!=null))
 						{
-							if ((currentStop==0)||(currentStop==(listOfRooms.size()-1))) 
+							if ((currentStop==0)||(currentStop==(listOfRooms.size()-1)))
 							{
 								currentStopRoom.rawDoors()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]=null;
 								currentStopRoom.rawExits()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]=null;
 								subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]=null;
 								subwayRoom.rawExits()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]=null;
-							} 
-							else 
+							}
+							else
 							{
 								currentStopRoom.rawDoors()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]=null;
 								currentStopRoom.rawExits()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]=null;
@@ -339,22 +339,22 @@ public class MovingRoom extends ActiveTicker
 							if(!stubs.contains(s2)) stubs.addElement(s2);
                         	subwayRoom.setDescription(subwayRoom.description()+"  "+s1);
 							currentStopRoom.setDescription(currentStopRoom.description()+"  "+s2);
-						} 
-						else 
+						}
+						else
 						{
 							Log.errOut("MovingRoom","Previous room links exists, "+subwayRoom.roomID()+" "+currentStopRoom.roomID()+" not unlinking exit.");
 						}
 						super.setParms("min="+roomInfos.elementAt(2)+" max="+roomInfos.elementAt(2)+" chance=100;"+roomInfos.elementAt(0)+";"+roomInfos.elementAt(1)+";"+roomInfos.elementAt(2));
 						currentStatus=1;
 					}
-                } 
-				else 
+                }
+				else
 				{
 					//ARRIVING
 					if (isReversed)
 					{
-						subwayRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(2).toString(),nextStopRoom));
-						nextStopRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(4).toString(),nextStopRoom));
+						subwayRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(2).toString(),nextStopRoom));
+						nextStopRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(4).toString(),nextStopRoom));
 						currentStatus=0;
 						if ((nextStopRoom.rawDoors()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]==null)||(nextStopRoom.rawDoors()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]==subwayRoom))
 						{
@@ -374,19 +374,19 @@ public class MovingRoom extends ActiveTicker
 							if(!stubs.contains(s2)) stubs.addElement(s2);
                         	subwayRoom.setDescription(subwayRoom.description()+"  "+s1);
 							nextStopRoom.setDescription(nextStopRoom.description()+"  "+s2);
-						} 
-						else 
+						}
+						else
 						{
 							Log.errOut("MovingRoom","Previous room links exists, "+subwayRoom.roomID()+" "+nextStopRoom.roomID()+" not linking exits.");
 						}
 						super.setParms("min="+roomInfos.elementAt(1)+" max="+roomInfos.elementAt(1)+" chance=100;"+roomInfos.elementAt(0)+";"+roomInfos.elementAt(1)+";"+roomInfos.elementAt(2));
 						currentStop = nextStop;
-				  	} 
-					else 
+				  	}
+					else
 					{
 						// arriving, not reversed
-						subwayRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(2).toString(),nextStopRoom));
-						nextStopRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(4).toString(),nextStopRoom));
+						subwayRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(2).toString(),nextStopRoom));
+						nextStopRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(4).toString(),nextStopRoom));
 						currentStatus=0;
 						if ((nextStopRoom.rawDoors()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]==null)||(nextStopRoom.rawDoors()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]==subwayRoom))
 						{
@@ -406,8 +406,8 @@ public class MovingRoom extends ActiveTicker
 							if(!stubs.contains(s2)) stubs.addElement(s2);
                         	subwayRoom.setDescription(subwayRoom.description()+"  "+s1);
 							nextStopRoom.setDescription(nextStopRoom.description()+"  "+s2);
-						} 
-						else 
+						}
+						else
 						{
 							Log.errOut("MovingRoom","Previous room links exists, "+subwayRoom.roomID()+" "+nextStopRoom.roomID()+" not linking exits.");
 						}

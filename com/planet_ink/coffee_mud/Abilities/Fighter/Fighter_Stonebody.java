@@ -19,41 +19,41 @@ public class Fighter_Stonebody extends StdAbility
 	public Environmental newInstance(){	return new Fighter_Stonebody();}
 	public int classificationCode(){ return Ability.SKILL;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		regain=-1;
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if(affect.amITarget(mob)
+		if(msg.amITarget(mob)
 		&&(Sense.aliveAwakeMobile(mob,true))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&((affect.targetCode()-Affect.MASK_HURT)>0)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon)
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.CONSTITUTION),false)))
 		{
 			int regain=(int)Math.round(Util.mul(Util.div(profficiency(),100.0),2.0));
-			SaucerSupport.adjustDamageMessage(affect,regain*-1);
+			SaucerSupport.adjustDamageMessage(msg,regain*-1);
 		}
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 		&&(regain>0))
 		{
 			helpProfficiency(mob);

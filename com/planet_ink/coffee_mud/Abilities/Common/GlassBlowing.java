@@ -38,7 +38,7 @@ public class GlassBlowing extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
@@ -187,7 +187,7 @@ public class GlassBlowing extends CommonSkill
 		if(spell.length()>0)
 		{
 			Ability A=CMClass.getAbility(spell);
-			if(A!=null)	building.addNonUninvokableAffect(A);
+			if(A!=null)	building.addNonUninvokableEffect(A);
 		}
 		if(building instanceof Container)
 		{
@@ -218,18 +218,18 @@ public class GlassBlowing extends CommonSkill
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
-		
+
 		if(misctype.equalsIgnoreCase("bundle"))
 		{
-			messedUp=false; 
+			messedUp=false;
 			completion=1;
 			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
-		
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
-		if(mob.location().okAffect(mob,msg))
+
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

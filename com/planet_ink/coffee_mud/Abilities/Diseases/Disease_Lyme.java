@@ -24,28 +24,28 @@ public class Disease_Lyme extends Disease
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
 	int days=0;
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))
+		if((msg.amISource(mob))
 		&&(days>0)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
-		&&(mob.fetchAbility(affect.tool().ID())==affect.tool())
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
 		&&(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+25)))
 		{
-			mob.tell("Your headaches make you forget "+affect.tool().name()+"!");
+			mob.tell("Your headaches make you forget "+msg.tool().name()+"!");
 			return false;
 		}
 
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -71,7 +71,7 @@ public class Disease_Lyme extends Disease
 			else
 				A=CMClass.getAbility("Disease_Fever");
 			if(A!=null) A.invoke(diseaser,mob,true);
-			A=mob.fetchAffect(A.ID());
+			A=mob.fetchEffect(A.ID());
 			if(A!=null) A.makeLongLasting();
 		}
 		else

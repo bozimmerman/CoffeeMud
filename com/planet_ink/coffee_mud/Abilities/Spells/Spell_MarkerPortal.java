@@ -23,13 +23,13 @@ public class Spell_MarkerPortal extends Spell
 		{
 			if(newRoom!=null)
 			{
-				newRoom.showHappens(Affect.MSG_OK_VISUAL,"The swirling portal closes.");
+				newRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The swirling portal closes.");
 				newRoom.rawDoors()[Directions.GATE]=null;
 				newRoom.rawExits()[Directions.GATE]=null;
 			}
 			if(oldRoom!=null)
 			{
-				oldRoom.showHappens(Affect.MSG_OK_VISUAL,"The swirling portal closes.");
+				oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The swirling portal closes.");
 				oldRoom.rawDoors()[Directions.GATE]=null;
 				oldRoom.rawExits()[Directions.GATE]=null;
 			}
@@ -44,9 +44,9 @@ public class Spell_MarkerPortal extends Spell
 		{
 			Room R=(Room)r.nextElement();
 			if(Sense.canAccess(mob,R))
-			for(int a=0;a<R.numAffects();a++)
+			for(int a=0;a<R.numEffects();a++)
 			{
-				Ability A=R.fetchAffect(a);
+				Ability A=R.fetchEffect(a);
 				if((A!=null)
 				&&(A.ID().equals("Spell_SummonMarker"))
 				&&(A.invoker()==mob))
@@ -100,7 +100,7 @@ public class Spell_MarkerPortal extends Spell
 		{
 			FullMsg msg=new FullMsg(mob,oldRoom,this,affectType(auto),"^S<S-NAME> conjur(s) a blinding, swirling portal here.^?");
 			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType(auto),"A blinding, swirling portal appears here.");
-			if((oldRoom.okAffect(mob,msg))&&(newRoom.okAffect(mob,msg2)))
+			if((oldRoom.okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				oldRoom.send(mob,msg);
 				newRoom.send(mob,msg2);

@@ -14,9 +14,9 @@ public class Trap_Darkfall extends StdTrap
 	protected int trapLevel(){return 2;}
 	public String requiresToSet(){return "";}
 	public Environmental newInstance(){	return new Trap_Darkfall();}
-	
+
 	public int baseRejuvTime(int level){return 20;}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -28,15 +28,15 @@ public class Trap_Darkfall extends StdTrap
 		else
 			disabled=false;
 	}
-	
+
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off a darkness trap!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a darkness trap!"))
 			{
 				super.spring(target);
 				target.location().recoverRoomStats();

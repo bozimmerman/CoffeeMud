@@ -22,7 +22,7 @@ public class Chant_SummonPlants extends Chant
 		if(littlePlants==null)
 			return;
 		if(canBeUninvoked())
-			PlantsLocation.showHappens(Affect.MSG_OK_VISUAL,littlePlants.name()+" wither"+(littlePlants.name().startsWith("s")?"":"s")+" away.");
+			PlantsLocation.showHappens(CMMsg.MSG_OK_VISUAL,littlePlants.name()+" wither"+(littlePlants.name().startsWith("s")?"":"s")+" away.");
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -35,18 +35,18 @@ public class Chant_SummonPlants extends Chant
 	}
 
 	public String text()
-	{ 
+	{
 		if((miscText.length()==0)
 		&&(invoker()!=null))
 			miscText=invoker().Name();
 		return super.text();
 	}
-	
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((affect.amITarget(littlePlants))
-		&&(affect.targetMinor()==Affect.TYP_GET))
-			affect.addTrailerMsg(new FullMsg(affect.source(),littlePlants,null,Affect.MSG_OK_VISUAL,Affect.MASK_GENERAL|Affect.MSG_DEATH,-1,null));
+		if((msg.amITarget(littlePlants))
+		&&(msg.targetMinor()==CMMsg.TYP_GET))
+			msg.addTrailerMsg(new FullMsg(msg.source(),littlePlants,null,CMMsg.MSG_OK_VISUAL,CMMsg.MASK_GENERAL|CMMsg.MSG_DEATH,-1,null));
 	}
 
 	public static Item buildPlant(MOB mob, Room room)
@@ -86,13 +86,13 @@ public class Chant_SummonPlants extends Chant
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
 		Chant_SummonPlants newChant=new Chant_SummonPlants();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if((ExternalPlay.doesOwnThisProperty(mob,room))
 		||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),room))))
-			newItem.addNonUninvokableAffect(newChant);
+			newItem.addNonUninvokableEffect(newChant);
 		else
 			newChant.beneficialAffect(mob,newItem,(newChant.adjustedLevel(mob)*240)+450);
 		room.recoverEnvStats();
@@ -135,7 +135,7 @@ public class Chant_SummonPlants extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				buildMyPlant(mob,mob.location());

@@ -21,26 +21,26 @@ public class Thief_MarkInvisibility extends ThiefSkill
 
 	public MOB getMark(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchAffect("Thief_Mark");
+		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if(A!=null)
 			return A.mark;
 		return null;
 	}
 	public int getMarkTicks(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchAffect("Thief_Mark");
+		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if((A!=null)&&(A.mark!=null))
 			return A.ticks;
 		return -1;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(active)
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;

@@ -15,20 +15,20 @@ public class Prayer_AnimateVampire extends Prayer
 	public Environmental newInstance(){	return new Prayer_AnimateVampire();}
 
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(msg.amISource(mob)
-			&&(msg.sourceMinor()==Affect.TYP_DEATH))
+			&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 			{
 				Ability A=CMClass.getAbility("Disease_Vampirism");
-				if((A!=null)&&(mob.fetchAffect(A.ID())==null))
+				if((A!=null)&&(mob.fetchEffect(A.ID())==null))
 					A.invoke(mob,mob,true);
 			}
 		}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -75,7 +75,7 @@ public class Prayer_AnimateVampire extends Prayer
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to animate <T-NAMESELF> as a vampire.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB newMOB=(MOB)CMClass.getMOB("GenUndead");
@@ -90,7 +90,7 @@ public class Prayer_AnimateVampire extends Prayer
 				if(P!=null)
 				{
 					P.setMiscText("NOTEACH STR=22 INT=15 WIS=15 CON=10 DEX=22 CHA=20");
-					newMOB.addNonUninvokableAffect(P);
+					newMOB.addNonUninvokableEffect(P);
 				}
 				newMOB.baseEnvStats().setDisposition(EnvStats.IS_FLYING);
 				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INVISIBLE);
@@ -111,23 +111,23 @@ public class Prayer_AnimateVampire extends Prayer
 				Ability A=CMClass.getAbility("Immunities");
 				if(A!=null){
 					A.setMiscText("all");
-					newMOB.addNonUninvokableAffect(A);
+					newMOB.addNonUninvokableEffect(A);
 				}
 				newMOB.addAbility(CMClass.getAbility("Undead_EnergyDrain"));
 				B=CMClass.getBehavior("CombatAbilities");
 				newMOB.addBehavior(B);
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
-				newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				int it=0;
 				while(it<newMOB.location().numItems())
 				{
 					Item item=newMOB.location().fetchItem(it);
 					if((item!=null)&&(item.container()==body))
 					{
-						FullMsg msg2=new FullMsg(newMOB,body,item,Affect.MSG_GET,null);
+						FullMsg msg2=new FullMsg(newMOB,body,item,CMMsg.MSG_GET,null);
 						newMOB.location().send(newMOB,msg2);
-						FullMsg msg3=new FullMsg(newMOB,item,null,Affect.MSG_GET,null);
+						FullMsg msg3=new FullMsg(newMOB,item,null,CMMsg.MSG_GET,null);
 						newMOB.location().send(newMOB,msg3);
 						it=0;
 					}
@@ -135,7 +135,7 @@ public class Prayer_AnimateVampire extends Prayer
 						it++;
 				}
 				body.destroy();
-				mob.location().show(newMOB,null,Affect.MSG_OK_VISUAL,"<S-NAME> begin(s) to rise!");
+				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to rise!");
 				mob.location().recoverRoomStats();
 			}
 		}

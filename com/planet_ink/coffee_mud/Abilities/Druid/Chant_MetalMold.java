@@ -58,7 +58,7 @@ public class Chant_MetalMold extends Chant
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> grow(s) moldy!":"^S<S-NAME> chant(s), causing <T-NAMESELF> to get eaten by mold.^?");
 			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType(auto),null);
-			if((mob.location().okAffect(mob,msg))&&((mobTarget==null)||(mob.location().okAffect(mob,msg2))))
+			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(mobTarget!=null)
@@ -79,9 +79,9 @@ public class Chant_MetalMold extends Chant
 					{
 						target.setUsesRemaining(100);
 						if(mobTarget==null)
-							mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is destroyed by mold!");
+							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is destroyed by mold!");
 						else
-							mob.location().show(mobTarget,target,Affect.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed by mold!");
+							mob.location().show(mobTarget,target,CMMsg.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed by mold!");
 						target.unWear();
 						target.destroy();
 						mob.location().recoverRoomStats();

@@ -17,8 +17,8 @@ public class Ranger_Enemy1 extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.SKILL;}
-	
-	
+
+
 	public String text()
 	{
 		if(miscText.length()==0)
@@ -40,9 +40,9 @@ public class Ranger_Enemy1 extends StdAbility
 				   &&(((Ranger_Enemy1)A).miscText.length()>0))
 					choices.remove(((Ranger_Enemy1)A).miscText);
 			}
-			for(int a=0;a<mob.numAffects();a++)
+			for(int a=0;a<mob.numEffects();a++)
 			{
-				Ability A=mob.fetchAffect(a);
+				Ability A=mob.fetchEffect(a);
 				if((A instanceof Ranger_Enemy1)
 				   &&(((Ranger_Enemy1)A).miscText.length()>0))
 					choices.remove(((Ranger_Enemy1)A).miscText);
@@ -54,19 +54,19 @@ public class Ranger_Enemy1 extends StdAbility
 			for(int a=0;a<mob.numLearnedAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
-				if((A!=null)&&(A.ID().equals(ID()))) 
+				if((A!=null)&&(A.ID().equals(ID())))
 					((Ranger_Enemy1)A).miscText=miscText;
 			}
-			for(int a=0;a<mob.numAffects();a++)
+			for(int a=0;a<mob.numEffects();a++)
 			{
-				Ability A=mob.fetchAffect(a);
-				if((A!=null)&&(A.ID().equals(ID()))) 
+				Ability A=mob.fetchEffect(a);
+				if((A!=null)&&(A.ID().equals(ID())))
 					((Ranger_Enemy1)A).miscText=miscText;
 			}
 		}
 		return super.text();
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -35,7 +35,7 @@ public class Spell_Dismissal extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive spell!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
@@ -44,8 +44,8 @@ public class Spell_Dismissal extends Spell
 						target.destroy();
 					else
 					{
-						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> vanish(es) in dismissal!");
-						target.getStartRoom().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> appear(s)!");
+						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> vanish(es) in dismissal!");
+						target.getStartRoom().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> appear(s)!");
 						target.getStartRoom().bringMobHere(target,false);
 						ExternalPlay.look(target,null,true);
 					}

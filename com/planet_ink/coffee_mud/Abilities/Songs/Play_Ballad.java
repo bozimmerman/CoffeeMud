@@ -13,22 +13,22 @@ public class Play_Ballad extends Play
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public Environmental newInstance(){	return new Play_Ballad();}
 	protected String songOf(){return "a "+name();}
-	
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		// the sex rules
 		if(!(affected instanceof MOB)) return;
 
 		MOB myChar=(MOB)affected;
-		if((affect.target()!=null)&&(affect.target() instanceof MOB))
+		if((msg.target()!=null)&&(msg.target() instanceof MOB))
 		{
-			MOB mate=(MOB)affect.target();
-			if((affect.amISource(myChar))
-			&&(affect.tool()!=null)
-			&&(affect.tool().ID().equals("Social"))
-			&&(affect.tool().Name().equals("MATE <T-NAME>")
-				||affect.tool().Name().equals("SEX <T-NAME>"))
+			MOB mate=(MOB)msg.target();
+			if((msg.amISource(myChar))
+			&&(msg.tool()!=null)
+			&&(msg.tool().ID().equals("Social"))
+			&&(msg.tool().Name().equals("MATE <T-NAME>")
+				||msg.tool().Name().equals("SEX <T-NAME>"))
 			&&(myChar.charStats().getStat(CharStats.GENDER)!=mate.charStats().getStat(CharStats.GENDER))
 			&&((mate.charStats().getStat(CharStats.GENDER)==((int)'M'))
 			   ||(mate.charStats().getStat(CharStats.GENDER)==((int)'F')))
@@ -53,14 +53,14 @@ public class Play_Ballad extends Play
 				Ability A=CMClass.getAbility("Pregnancy");
 				if((A!=null)
 				&&(female.fetchAbility(A.ID())==null)
-				&&(female.fetchAffect(A.ID())==null))
+				&&(female.fetchEffect(A.ID())==null))
 				{
 					A.invoke(male,female,true);
 					unInvoke();
 				}
 			}
 		}
-	}	
+	}
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
@@ -74,4 +74,3 @@ public class Play_Ballad extends Play
 			stats.setAttackAdjustment(stats.attackAdjustment()+invoker().charStats().getStat(CharStats.CHARISMA)+(invokerLevel()/2));
 	}
 }
-	

@@ -29,13 +29,13 @@ public class Spell_Permanency extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				StdAbility theOne=null;
-				for(int a=target.numAffects()-1;a>=0;a--)
+				for(int a=target.numEffects()-1;a>=0;a--)
 				{
-					Ability A=target.fetchAffect(a);
+					Ability A=target.fetchEffect(a);
 					if((A.invoker()==mob)
 					 &&(!A.isAutoInvoked())
 					 &&(A.canBeUninvoked())
@@ -58,7 +58,7 @@ public class Spell_Permanency extends Spell
 					ExternalPlay.postExperience(mob,null,null,-exp,false);
 					theOne.makeLongLasting();
 					theOne.makeNonUninvokable();
-					mob.location().show(mob,target,null,Affect.MSG_OK_VISUAL,"The quality of "+theOne.name()+" inside <T-NAME> glows!");
+					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"The quality of "+theOne.name()+" inside <T-NAME> glows!");
 				}
 			}
 

@@ -15,18 +15,18 @@ public class Chant_FreeVine extends Chant
 	protected int canTargetCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Chant_FreeVine();}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(affect.amISource((MOB)affected)))
+		&&(msg.amISource((MOB)affected)))
 		{
-			if(((affect.targetMinor()==Affect.TYP_LEAVE)
-			||(affect.sourceMinor()==Affect.TYP_ADVANCE)
-			||(affect.sourceMinor()==Affect.TYP_RETREAT)))
+			if(((msg.targetMinor()==CMMsg.TYP_LEAVE)
+			||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
+			||(msg.sourceMinor()==CMMsg.TYP_RETREAT)))
 				unInvoke();
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 
@@ -52,12 +52,12 @@ public class Chant_FreeVine extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s)freely to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> pull(s) <S-HIS-HER> roots up!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> pull(s) <S-HIS-HER> roots up!");
 					beneficialAffect(mob,target,0);
 				}
 			}

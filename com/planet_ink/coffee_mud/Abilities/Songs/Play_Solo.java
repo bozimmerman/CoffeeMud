@@ -16,9 +16,9 @@ public class Play_Solo extends Play
 	protected boolean skipStandardSongTick(){return true;}
 	protected String songOf(){return "a "+name();}
 
-	public boolean okAffect(Environmental E, Affect msg)
+	public boolean okMessage(Environmental E, CMMsg msg)
 	{
-		if(!super.okAffect(E,msg)) return false;
+		if(!super.okMessage(E,msg)) return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB myChar=(MOB)affected;
@@ -32,7 +32,7 @@ public class Play_Solo extends Play
 				if(((otherBard.envStats().level()+Dice.roll(1,30,0))>(myChar.envStats().level()+Dice.roll(1,20,0)))
 				&&(otherBard.location()!=null))
 				{
-					if(otherBard.location().show(otherBard,myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!"))
+					if(otherBard.location().show(otherBard,myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!"))
 						unplay(myChar,null,null);
 				}
 				else
@@ -47,22 +47,22 @@ public class Play_Solo extends Play
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 		unplay(mob,mob,null);
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
-			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
+			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -74,9 +74,9 @@ public class Play_Solo extends Play
 				{
 					MOB M=mob.location().fetchInhabitant(i);
 					if(M!=null)
-					for(int a=0;a<M.numAffects();a++)
+					for(int a=0;a<M.numEffects();a++)
 					{
-						Ability A=M.fetchAffect(a);
+						Ability A=M.fetchEffect(a);
 						if((A!=null)
 						&&(A.invoker()!=mob)
 						&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG))
@@ -108,12 +108,12 @@ public class Play_Solo extends Play
 					else
 						A.unInvoke();
 				}
-				mob.addAffect(newOne);
+				mob.addEffect(newOne);
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
 
 		return success;
 	}

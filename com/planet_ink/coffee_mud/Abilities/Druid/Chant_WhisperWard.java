@@ -14,7 +14,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	Room myRoomContainer=null;
-	int myTrigger=Affect.TYP_ENTER;
+	int myTrigger=CMMsg.TYP_ENTER;
 	boolean waitingForLook=false;
 	public Environmental newInstance(){	return new Chant_WhisperWard();	}
 
@@ -26,7 +26,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
-	{beneficialAffect(mob,E,0); return (Trap)E.fetchAffect(ID());}
+	{beneficialAffect(mob,E,0); return (Trap)E.fetchEffect(ID());}
 
 	public boolean disabled(){return false;}
 	public boolean sprung(){return false;}
@@ -43,9 +43,9 @@ public class Chant_WhisperWard extends Chant implements Trap
 		unInvoke();
 		return;
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 
 		if(affected==null)
@@ -54,36 +54,36 @@ public class Chant_WhisperWard extends Chant implements Trap
 			return;
 		}
 
-		if(affect.amITarget(myRoomContainer))
+		if(msg.amITarget(myRoomContainer))
 		{
-			if((waitingForLook)&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+			if((waitingForLook)&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 			{
 				doMyThing();
 				return;
 			}
 			else
-			if(affect.targetMinor()==myTrigger)
+			if(msg.targetMinor()==myTrigger)
 				waitingForLook=true;
 		}
 		else
-		if(affect.amITarget(affected))
+		if(msg.amITarget(affected))
 		{
-			if((affect.targetMinor()==myTrigger)&&(!Sense.isSneaking(affect.source())))
+			if((msg.targetMinor()==myTrigger)&&(!Sense.isSneaking(msg.source())))
 			{
 				doMyThing();
 				return;
 			}
 			else
-			if((myTrigger==Affect.TYP_GET)
-			&&((affect.targetMinor()==Affect.TYP_OPEN)
-				 ||(affect.targetMinor()==Affect.TYP_GIVE)
-				 ||(affect.targetMinor()==Affect.TYP_DELICATE_HANDS_ACT)
-				 ||(affect.targetMinor()==Affect.TYP_JUSTICE)
-				 ||(affect.targetMinor()==Affect.TYP_GENERAL)
-				 ||(affect.targetMinor()==Affect.TYP_LOCK)
-				 ||(affect.targetMinor()==Affect.TYP_PULL)
-				 ||(affect.targetMinor()==Affect.TYP_PUSH)
-				 ||(affect.targetMinor()==Affect.TYP_UNLOCK)))
+			if((myTrigger==CMMsg.TYP_GET)
+			&&((msg.targetMinor()==CMMsg.TYP_OPEN)
+				 ||(msg.targetMinor()==CMMsg.TYP_GIVE)
+				 ||(msg.targetMinor()==CMMsg.TYP_DELICATE_HANDS_ACT)
+				 ||(msg.targetMinor()==CMMsg.TYP_JUSTICE)
+				 ||(msg.targetMinor()==CMMsg.TYP_GENERAL)
+				 ||(msg.targetMinor()==CMMsg.TYP_LOCK)
+				 ||(msg.targetMinor()==CMMsg.TYP_PULL)
+				 ||(msg.targetMinor()==CMMsg.TYP_PUSH)
+				 ||(msg.targetMinor()==CMMsg.TYP_UNLOCK)))
 			{
 				doMyThing();
 				return;
@@ -104,19 +104,19 @@ public class Chant_WhisperWard extends Chant implements Trap
 		String triggerStr=((String)commands.lastElement()).trim().toUpperCase();
 
 		if(triggerStr.startsWith("HOLD"))
-			myTrigger=Affect.TYP_HOLD;
+			myTrigger=CMMsg.TYP_HOLD;
 		else
 		if(triggerStr.startsWith("WIELD"))
-			myTrigger=Affect.TYP_WIELD;
+			myTrigger=CMMsg.TYP_WIELD;
 		else
 		if(triggerStr.startsWith("WEAR"))
-			myTrigger=Affect.TYP_WEAR;
+			myTrigger=CMMsg.TYP_WEAR;
 		else
 		if(triggerStr.startsWith("TOUCH"))
-			myTrigger=Affect.TYP_GET;
+			myTrigger=CMMsg.TYP_GET;
 		else
 		if(triggerStr.startsWith("ENTER"))
-			myTrigger=Affect.TYP_ENTER;
+			myTrigger=CMMsg.TYP_ENTER;
 		else
 		{
 			mob.tell("You must specify the trigger event that will cause the wind to whisper to you.\n\r'"+triggerStr+"' is not correct, but you can try TOUCH, WEAR, WIELD, HOLD, or ENTER.\n\r");
@@ -148,7 +148,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				myRoomContainer=mob.location();

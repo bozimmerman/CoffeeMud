@@ -201,13 +201,13 @@ public class IMudInterface implements ImudServices, Serializable
 				if(ck.type==Packet.CHAN_MESSAGE)
 				{
 					String str="^Q^q"+mob.name()+" "+channelName+"(S) '"+fixColors(ck.message)+"'^?^.";
-					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str);
+					msg=new FullMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 				else
 				{
 					String msgs=socialFixIn(fixColors(ck.message));
 					String str="^Q^q["+channelName+"] "+msgs+"^?^.";
-					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str);
+					msg=new FullMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 
 				for(int s=0;s<Sessions.size();s++)
@@ -218,8 +218,8 @@ public class IMudInterface implements ImudServices, Serializable
 					&&(!M.amDead())
 					&&(M!=null)
 					&&(SaucerSupport.zapperCheck(mask,M))
-					&&(ses.mob().okAffect(ses.mob(),msg)))
-						ses.mob().affect(ses.mob(),msg);
+					&&(ses.mob().okMessage(ses.mob(),msg)))
+						ses.mob().executeMsg(ses.mob(),msg);
 				}
 			}
 			break;
@@ -486,7 +486,7 @@ public class IMudInterface implements ImudServices, Serializable
 				return channels[i][2];
 		return "";
 	}
-	
+
     /**
      * Given a local channel name, returns the remote
      * channel name.

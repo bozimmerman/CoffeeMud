@@ -57,13 +57,13 @@ public class Spell_Blindness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^SYou invoke a flashing light into <T-NAME>s eyes.^?",affectType(auto),auto?"":"^S<S-NAME> invoke(s) a flashing light into your eyes.^?",Affect.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invokes a flashing light into <T-NAME>s eyes.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^SYou invoke a flashing light into <T-NAME>s eyes.^?",affectType(auto),auto?"":"^S<S-NAME> invoke(s) a flashing light into your eyes.^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invokes a flashing light into <T-NAME>s eyes.^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> go(es) blind!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) blind!");
 					success=maliciousAffect(mob,target,0,-1);
 				}
 			}

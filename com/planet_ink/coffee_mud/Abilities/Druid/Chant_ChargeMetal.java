@@ -32,24 +32,24 @@ public class Chant_ChargeMetal extends Chant
 		return null;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if(affected==null) return true;
 		if(!(affected instanceof Item)) return true;
-		
+
 		Item I=(Item)affected;
 		if((I.owner()==null)
 		||(!(I.owner() instanceof MOB))
 		||(I.amWearingAt(Item.INVENTORY)))
 			return true;
-		
+
 		MOB mob=(MOB)I.owner();
 		if((!msg.amITarget(mob))
-		&&(msg.targetMinor()==Affect.TYP_ELECTRIC))
+		&&(msg.targetMinor()==CMMsg.TYP_ELECTRIC))
 		{
-			((MOB)affected).location().show((MOB)mob,null,I,Affect.MSG_OK_VISUAL,"<O-NAME> attracts a charge to <S-NAME>!");
+			((MOB)affected).location().show((MOB)mob,null,I,CMMsg.MSG_OK_VISUAL,"<O-NAME> attracts a charge to <S-NAME>!");
 			msg.modify(msg.source(),
 					   mob,
 					   msg.tool(),
@@ -79,11 +79,11 @@ public class Chant_ChargeMetal extends Chant
 			for(int i=0;i<affectedItems.size();i++)
 			{
 				Item I=(Item)affectedItems.elementAt(i);
-				Ability A=I.fetchAffect(this.ID());
+				Ability A=I.fetchEffect(this.ID());
 				while(A!=null)
 				{
-					I.delAffect(A);
-					A=I.fetchAffect(this.ID());
+					I.delEffect(A);
+					A=I.fetchEffect(this.ID());
 				}
 
 			}
@@ -126,7 +126,7 @@ public class Chant_ChargeMetal extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

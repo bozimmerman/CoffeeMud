@@ -30,7 +30,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"a tall, healthy "+EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
 		room.recoverEnvStats();
 		Chant_SummonTree newChant=new Chant_SummonTree();
 		newChant.PlantsLocation=room;
@@ -52,7 +52,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		for(int i=0;i<PlantsLocation.numInhabitants();i++)
 		{
 			MOB M=PlantsLocation.fetchInhabitant(i);
-			if(M.fetchAffect("Chopping")!=null)
+			if(M.fetchEffect("Chopping")!=null)
 			{
 				unInvoke();
 				break;

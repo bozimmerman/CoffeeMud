@@ -14,22 +14,22 @@ public class Beggar extends StdBehavior
 	{
 		return new Beggar();
 	}
-	
-	public void affect(Environmental oking, Affect msg)
+
+	public void executeMsg(Environmental oking, CMMsg msg)
 	{
-		super.affect(oking,msg);
+		super.executeMsg(oking,msg);
 		if((oking==null)||(!(oking instanceof MOB)))
 			return;
 		MOB mob=(MOB)oking;
-		if((msg.amITarget(mob))&&(msg.targetMinor()==Affect.TYP_GIVE))
-			msg.addTrailerMsg(new FullMsg(mob,msg.source(),Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?"));
+		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_GIVE))
+			msg.addTrailerMsg(new FullMsg(mob,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?"));
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if(!canFreelyBehaveNormal(ticking)) return true;
 		tickTock++;
 		if(tickTock<5) return true;

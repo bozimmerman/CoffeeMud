@@ -22,7 +22,7 @@ public class Paladin extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+
 	public Paladin()
 	{
 		super();
@@ -43,7 +43,7 @@ public class Paladin extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",75,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Paladin_HealingHands",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Paladin_ImprovedResists",true);
@@ -81,17 +81,17 @@ public class Paladin extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Trip",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Paladin_Aura",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_HolyAura",false);
-			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);	
+			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_Calm",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_CureBlindness",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BladeBarrier",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_Godstrike",false);
-			CMAble.addCharAbilityMapping(ID(),24,"Fighter_Sweep",false);	
+			CMAble.addCharAbilityMapping(ID(),24,"Fighter_Sweep",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_MassFreedom",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Paladin_Goodness",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Heal",false);
 			CMAble.addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",true);
-		
+
 		}
 	}
 
@@ -101,20 +101,20 @@ public class Paladin extends StdCharClass
 	}
 
 	public String otherLimitations(){return "Must remain good to avoid spell/skill failure chance.";}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if((affect.amISource(myChar))
-		&&(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
+		if((msg.amISource(myChar))
+		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(myChar.getAlignment() < 650)
-		&&((affect.tool()==null)||((affect.tool() instanceof Ability)&&(myChar.isMine(affect.tool()))))
+		&&((msg.tool()==null)||((msg.tool() instanceof Ability)&&(myChar.isMine(msg.tool()))))
 		&&(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2))
 		{
-			myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> angry god absorb <S-HIS-HER> magical energy!");
+			myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> angry god absorb <S-HIS-HER> magical energy!");
 			return false;
 		}
-		return super.okAffect(myChar, affect);
+		return super.okMessage(myChar, msg);
 	}
 
 	public String statQualifications(){return "Strength 9+, Wisdom 9+";}

@@ -25,15 +25,15 @@ public class Spell_Knock extends Spell
 				Exit E=mob.location().getExitInDir(d);
 				if((E!=null)
 				&&(!E.isOpen()))
-				{ 
-					theDir=d; 
+				{
+					theDir=d;
 					break;
 				}
 			}
 			if(theDir>=0)
 				commands.addElement(Directions.getDirectionName(theDir));
 		}
-		
+
 		String whatToOpen=Util.combine(commands,0);
 		Environmental openThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
@@ -42,7 +42,7 @@ public class Spell_Knock extends Spell
 		if(openThis==null)
 			openThis=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(openThis==null) return false;
-		
+
 		if(openThis instanceof Exit)
 		{
 			if(((Exit)openThis).isOpen())
@@ -80,22 +80,22 @@ public class Spell_Knock extends Spell
 		{
 
 			FullMsg msg=new FullMsg(mob,openThis,null,affectType(auto),(auto?openThis.name()+" begin(s) to glow!":"^S<S-NAME> point(s) at <T-NAMESELF>.^?")+CommonStrings.msp("knock.wav",10));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(int a=0;a<openThis.numAffects();a++)
+				for(int a=0;a<openThis.numEffects();a++)
 				{
-					Ability A=openThis.fetchAffect(a);
+					Ability A=openThis.fetchEffect(a);
 					if((A!=null)&&(A.ID().equalsIgnoreCase("Spell_WizardLock"))&&(A.invoker()!=null)&&(A.invoker().envStats().level()<mob.envStats().level()+3))
 					{
 						A.unInvoke();
-						mob.location().show(mob,null,openThis,Affect.MSG_OK_VISUAL,"A spell around <O-NAME> seems to fade.");
+						mob.location().show(mob,null,openThis,CMMsg.MSG_OK_VISUAL,"A spell around <O-NAME> seems to fade.");
 						break;
 					}
 				}
-				msg=new FullMsg(mob,openThis,null,Affect.MSG_UNLOCK,null);
+				msg=new FullMsg(mob,openThis,null,CMMsg.MSG_UNLOCK,null);
 				ExternalPlay.roomAffectFully(msg,mob.location(),dirCode);
-				msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,"<T-NAME> opens.");
+				msg=new FullMsg(mob,openThis,null,CMMsg.MSG_OPEN,"<T-NAME> opens.");
 				ExternalPlay.roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}

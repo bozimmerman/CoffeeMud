@@ -119,10 +119,10 @@ public class Templar extends Cleric
 
 	public void tick(MOB myChar, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)&&((--tickDown)<=0))
+		if((tickID==Host.TICK_MOB)&&((--tickDown)<=0))
 		{
 			tickDown=5;
-			if(myChar.fetchAffect("Prayer_AuraStrife")==null)
+			if(myChar.fetchEffect("Prayer_AuraStrife")==null)
 			{
 				Ability A=CMClass.getAbility("Prayer_AuraStrife");
 				if(A!=null) A.invoke(myChar,myChar,true);
@@ -153,23 +153,23 @@ public class Templar extends Cleric
 	public String otherLimitations(){return "Always fumbles good prayers.  Using non-evil prayers introduces failure chance.";}
 	public String weaponLimitations(){return "";}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(!super.okAffect(myChar, affect))
+		if(!super.okMessage(myChar, msg))
 			return false;
 
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(myChar.isMine(affect.tool()))
-			&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
+			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(myChar.isMine(msg.tool()))
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 			{
 				int align=myChar.getAlignment();
-				Ability A=(Ability)affect.tool();
+				Ability A=(Ability)msg.tool();
 
 				if(A.appropriateToMyAlignment(align))
 					return true;

@@ -14,18 +14,18 @@ public class Trap_AcidSpray extends StdTrap
 	protected int trapLevel(){return 15;}
 	public String requiresToSet(){return "";}
 	public Environmental newInstance(){	return new Trap_AcidSpray();}
-	
+
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((!invoker().mayIFight(target))||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a acid trap!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a acid trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off an acid spraying trap!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> set(s) off an acid spraying trap!"))
 			{
 				super.spring(target);
-				ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),6,1),Affect.MASK_GENERAL|Affect.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),6,1),CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

@@ -23,11 +23,11 @@ public class MOBReSave extends ActiveTicker
 	{
 		return new MOBReSave();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking instanceof MOB)
-		&&(tickID==Host.MOB_TICK)
+		&&(tickID==Host.TICK_MOB)
 		&&(!((MOB)ticking).amDead())
 		&&(!noRecurse)
 		&&(ExternalPlay.getSystemStarted())
@@ -54,5 +54,5 @@ public class MOBReSave extends ActiveTicker
 		return true;
 	}
 
-	
+
 }

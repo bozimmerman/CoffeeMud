@@ -15,29 +15,29 @@ public class Spell_BigMouth extends Spell
 	public Environmental newInstance()	{ return new Spell_BigMouth();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
-		if((affect.amISource(mob))
-		&&(affect.targetMinor()==Affect.TYP_EAT)
-		&&(affect.target()!=null)
+		if((msg.amISource(mob))
+		&&(msg.targetMinor()==CMMsg.TYP_EAT)
+		&&(msg.target()!=null)
 		&&(Stomach!=null)
-		&&(affect.target() instanceof MOB))
+		&&(msg.target() instanceof MOB))
 		{
-			MOB target=(MOB)affect.target();
+			MOB target=(MOB)msg.target();
 			if(target.envStats().weight()<(mob.envStats().weight()/2))
 			{
-				boolean isHit=(CoffeeUtensils.normalizeAndRollLess(affect.source().adjustedAttackBonus(target)+target.adjustedArmor()));
+				boolean isHit=(CoffeeUtensils.normalizeAndRollLess(msg.source().adjustedAttackBonus(target)+target.adjustedArmor()));
 				if(!isHit)
 					mob.tell("You fail to eat "+target.name());
 				else
-					affect.modify(affect.source(),affect.target(),affect.tool(),
-							  affect.sourceCode()|Affect.MASK_GENERAL,affect.sourceMessage(),
-							  Affect.MSG_NOISYMOVEMENT,affect.targetMessage(),
-							  affect.othersCode()|Affect.MASK_GENERAL,affect.othersMessage());
+					msg.modify(msg.source(),msg.target(),msg.tool(),
+							  msg.sourceCode()|CMMsg.MASK_GENERAL,msg.sourceMessage(),
+							  CMMsg.MSG_NOISYMOVEMENT,msg.targetMessage(),
+							  msg.othersCode()|CMMsg.MASK_GENERAL,msg.othersMessage());
 			}
 			else
 			{
@@ -45,7 +45,7 @@ public class Spell_BigMouth extends Spell
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	private Room Stomach = null;
@@ -105,13 +105,13 @@ public class Spell_BigMouth extends Spell
 					FullMsg DigestMsg=new FullMsg(mob,
 											   TastyMorsel,
 											   null,
-											   Affect.MASK_GENERAL|Affect.TYP_ACID,
+											   CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,
 											   "<S-NAME> Digests <T-NAMESELF>!!");
 					// no OKaffectS, since the dragon is not in his own stomach.
 					Stomach.send(mob,DigestMsg);
 					int damage=(int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2));
 					if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-					ExternalPlay.postDamage(mob,TastyMorsel,null,damage,Affect.MASK_GENERAL|Affect.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 				}
 			}
 		}
@@ -125,34 +125,34 @@ public class Spell_BigMouth extends Spell
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
-			super.affect(myHost,affect);
+			super.executeMsg(myHost,msg);
 			return;
 		}
 
 		MOB mob=(MOB)affected;
 
-		if((affect.amISource(mob))
-		&&(affect.sourceMinor()==Affect.TYP_EAT)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof MOB)
+		if((msg.amISource(mob))
+		&&(msg.sourceMinor()==CMMsg.TYP_EAT)
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
 		&&(Stomach!=null)
-		&&(affect.target().envStats().weight()<(mob.envStats().weight()/2)))
+		&&(msg.target().envStats().weight()<(mob.envStats().weight()/2)))
 		{
 			lastKnownLocation=mob.location();
-			MOB TastyMorsel=(MOB)affect.target();
+			MOB TastyMorsel=(MOB)msg.target();
 			Stomach.bringMobHere(TastyMorsel,false);
-			FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MSG_ENTER,Stomach.description(),Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+			FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 			Stomach.send(TastyMorsel,enterMsg);
 		}
-		if((affect.amISource(mob))
-		&&((affect.sourceMinor()==Affect.TYP_QUIT)||(affect.sourceMinor()==Affect.TYP_DEATH)))
+		if((msg.amISource(mob))
+		&&((msg.sourceMinor()==CMMsg.TYP_QUIT)||(msg.sourceMinor()==CMMsg.TYP_DEATH)))
 			kill();
 
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -187,7 +187,7 @@ public class Spell_BigMouth extends Spell
 		if(target==null) return false;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already the owner of a huge mouth.");
 			return false;
@@ -220,10 +220,10 @@ public class Spell_BigMouth extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> feel(s) <S-HIS-HER> mouth grow to an enormous size!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) <S-HIS-HER> mouth grow to an enormous size!");
 				beneficialAffect(mob,target,4);
 			}
 		}

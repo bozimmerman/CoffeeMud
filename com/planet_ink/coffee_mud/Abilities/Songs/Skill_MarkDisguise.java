@@ -18,14 +18,14 @@ public class Skill_MarkDisguise extends Skill_Disguise
 
 	public MOB getMark(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchAffect("Thief_Mark");
+		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if(A!=null)
 			return A.mark;
 		return null;
 	}
 	public int getMarkTicks(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchAffect("Thief_Mark");
+		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if((A!=null)&&(A.mark!=null))
 			return A.ticks;
 		return -1;
@@ -33,8 +33,8 @@ public class Skill_MarkDisguise extends Skill_Disguise
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Skill_Disguise A=(Skill_Disguise)mob.fetchAffect("Skill_Disguise");
-		if(A==null) A=(Skill_Disguise)mob.fetchAffect("Skill_MarkDisguise");
+		Skill_Disguise A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
+		if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
 		if(A!=null)
 		{
 			A.unInvoke();
@@ -67,12 +67,12 @@ public class Skill_MarkDisguise extends Skill_Disguise
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,mob,null,Affect.MSG_DELICATE_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),"<S-NAME> turn(s) away for a second.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> turn(s) away for a second.");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(A==null)	beneficialAffect(mob,mob,0);
-				if(A==null) A=(Skill_Disguise)mob.fetchAffect("Skill_MarkDisguise");
+				if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
 				A.values[0]=""+target.baseEnvStats().weight();
 				A.values[1]=""+target.baseEnvStats().level();
 				A.values[2]=target.charStats().genderName();

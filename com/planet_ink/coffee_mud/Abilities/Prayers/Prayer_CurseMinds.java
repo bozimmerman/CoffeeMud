@@ -50,8 +50,8 @@ public class Prayer_CurseMinds extends Prayer
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)-50);
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -71,16 +71,16 @@ public class Prayer_CurseMinds extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayWord(mob)+" an unholy curse upon <T-NAMESELF>.^?");
-				FullMsg msg2=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-				if((target!=mob)&&(mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayWord(mob)+" an unholy curse upon <T-NAMESELF>.^?");
+				FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+				if((target!=mob)&&(mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 				{
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);
 					if((!msg.wasModified())&&(!msg2.wasModified()))
 					{
 						success=maliciousAffect(mob,target,15,-1);
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) confused!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) confused!");
 					}
 					nothingDone=false;
 				}

@@ -26,7 +26,7 @@ public class Spell_DetectSentience extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) softly to <S-HIM-HERSELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				StringBuffer lines=new StringBuffer("^x");

@@ -35,7 +35,7 @@ public class Alchemy extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
@@ -294,9 +294,9 @@ public class Alchemy extends CommonSkill
 			int completion=CMAble.qualifyingLevel(mob,theSpell)*5;
 			if(completion<10) completion=10;
 			messedUp=!profficiencyCheck(0,auto);
-			
-			FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,null);
-			if(mob.location().okAffect(mob,msg))
+
+			FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,completion);

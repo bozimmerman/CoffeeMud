@@ -28,22 +28,22 @@ public class Chant_Treemind extends Chant
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
+		if((msg.amITarget(mob))
 		&&(!mob.amDead())
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
-			boolean yep=(affect.targetMinor()==Affect.TYP_MIND);
+			boolean yep=(msg.targetMinor()==CMMsg.TYP_MIND);
 			if((!yep)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Ability))
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability))
 			{
-				Ability A=(Ability)affect.tool();
+				Ability A=(Ability)msg.tool();
 				if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ILLUSION)
 				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
 				   yep=true;
@@ -59,8 +59,8 @@ public class Chant_Treemind extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already have the mind of a tree.");
 			return false;
@@ -73,7 +73,7 @@ public class Chant_Treemind extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A treemind field envelopes <T-NAME>!":"^S<S-NAME> chant(s) for the hard protective mind of the tree.^?"));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				amountAbsorbed=0;
 				mob.location().send(mob,msg);

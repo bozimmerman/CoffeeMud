@@ -62,7 +62,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		if(thisThang instanceof Coins) name="COINS";
 		ExternalPlay.DBCreateData(mob,bankChain(),""+thisThang+Math.random(),name+";"+Generic.getPropertiesStr(thisThang,true));
 	}
-	
+
 	protected Item makeItem(String data)
 	{
 		int x=data.indexOf(";");
@@ -70,7 +70,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		Item I=null;
 		if(data.substring(0,x).equals("COINS"))
 			I=CMClass.getItem("StdCoins");
-		else 
+		else
 			I=CMClass.getItem(data.substring(0,x));
 		if(I!=null)
 		{
@@ -81,7 +81,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		}
 		return null;
 	}
-	
+
 	public void delDepositInventory(String mob, Item thisThang)
 	{
 		Vector V=getDepositInventory(mob);
@@ -94,7 +94,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				ExternalPlay.DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_BANK)),((String)V2.elementAt(DATA_KEY)));
 				break;
 			}
-				
+
 			Item I=makeItem((String)V2.elementAt(DATA_DATA));
 			if(I==null) continue;
 			if(thisThang.sameAs(I))
@@ -144,7 +144,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		}
 		return mine;
 	}
-	
+
 	public Item findDepositInventory(String mob, String likeThis)
 	{
 		Vector V=getDepositInventory(mob);
@@ -154,7 +154,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			Vector V2=(Vector)V.elementAt(v);
 			if(money&&((String)V2.elementAt(DATA_DATA)).startsWith("COINS;"))
 				return makeItem((String)V2.elementAt(DATA_DATA));
-			
+
 			Item I=makeItem((String)V2.elementAt(DATA_DATA));
 			if(I==null) continue;
 			if(CoffeeUtensils.containsString(I.Name(),likeThis))
@@ -175,7 +175,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		if(!super.tick(ticking,tickID))
 			return false;
 		try{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			boolean proceed=false;
 			// handle interest by watching the days go by...
@@ -288,88 +288,88 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return min;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		if(affect.amITarget(this))
+		MOB mob=msg.source();
+		if(msg.amITarget(this))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_GIVE:
-			case Affect.TYP_DEPOSIT:
+			case CMMsg.TYP_GIVE:
+			case CMMsg.TYP_DEPOSIT:
 				{
-					if(affect.tool() instanceof Container)
-						((Container)affect.tool()).emptyPlease();
-					FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
-					location().send(this,msg);
-					msg=new FullMsg((MOB)affect.target(),affect.tool(),null,Affect.MSG_GET,null);
-					location().send(this,msg);
-					if(affect.tool() instanceof Coins)
+					if(msg.tool() instanceof Container)
+						((Container)msg.tool()).emptyPlease();
+					FullMsg msg2=new FullMsg(msg.source(),msg.tool(),null,CMMsg.MSG_DROP,null);
+					location().send(this,msg2);
+					msg2=new FullMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET,null);
+					location().send(this,msg2);
+					if(msg.tool() instanceof Coins)
 					{
-						Coins older=(Coins)affect.tool();
+						Coins older=(Coins)msg.tool();
 						Coins item=(Coins)CMClass.getItem("StdCoins");
 						int newNum=older.numberOfCoins();
 						Item old=null;
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-							old=findDepositInventory(affect.source().getClanID(),""+Integer.MAX_VALUE);
+							old=findDepositInventory(msg.source().getClanID(),""+Integer.MAX_VALUE);
 						else
-							old=findDepositInventory(affect.source().Name(),""+Integer.MAX_VALUE);
+							old=findDepositInventory(msg.source().Name(),""+Integer.MAX_VALUE);
 						if((old!=null)&&(old instanceof Coins))
 							newNum+=((Coins)old).numberOfCoins();
 						item.setNumberOfCoins(newNum);
 						if(old!=null)
 						{
 							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-								delDepositInventory(affect.source().getClanID(),old);
+								delDepositInventory(msg.source().getClanID(),old);
 							else
-								delDepositInventory(affect.source().Name(),old);
+								delDepositInventory(msg.source().Name(),old);
 						}
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-							addDepositInventory(affect.source().getClanID(),item);
+							addDepositInventory(msg.source().getClanID(),item);
 						else
-							addDepositInventory(affect.source().Name(),item);
-						if(affect.targetMinor()==Affect.TYP_GIVE)
+							addDepositInventory(msg.source().Name(),item);
+						if(msg.targetMinor()==CMMsg.TYP_GIVE)
 						{
-							setMoney(getMoney()-((Coins)affect.tool()).numberOfCoins());
+							setMoney(getMoney()-((Coins)msg.tool()).numberOfCoins());
 							if(getMoney()<0) setMoney(0);
 							recoverEnvStats();
 						}
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-						    ExternalPlay.quickSay(this,mob,"Ok, Clan "+mob.getClanID()+" now has a balance of "+getBalance(affect.source())+" gold coins.",true,false);
+						    ExternalPlay.quickSay(this,mob,"Ok, Clan "+mob.getClanID()+" now has a balance of "+getBalance(msg.source())+" gold coins.",true,false);
 						else
-						    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+getBalance(affect.source())+" gold coins.",true,false);
+						    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+getBalance(msg.source())+" gold coins.",true,false);
 					}
 					else
 					{
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-							addDepositInventory(affect.source().getClanID(),(Item)affect.tool());
+							addDepositInventory(msg.source().getClanID(),(Item)msg.tool());
 						else
-							addDepositInventory(affect.source().Name(),(Item)affect.tool());
-					    ExternalPlay.quickSay(this,mob,"Thank you, "+affect.tool().name()+" is safe with us.",true,false);
-						((Item)affect.tool()).destroy();
+							addDepositInventory(msg.source().Name(),(Item)msg.tool());
+					    ExternalPlay.quickSay(this,mob,"Thank you, "+msg.tool().name()+" is safe with us.",true,false);
+						((Item)msg.tool()).destroy();
 					}
 				}
 				return;
-			case Affect.TYP_WITHDRAW:
+			case CMMsg.TYP_WITHDRAW:
 				{
-					Item old=(Item)affect.tool();
+					Item old=(Item)msg.tool();
 					if(old instanceof Coins)
 					{
 						Item item=null;
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-							item=findDepositInventory(affect.source().getClanID(),""+Integer.MAX_VALUE);
+							item=findDepositInventory(msg.source().getClanID(),""+Integer.MAX_VALUE);
 						else
-							item=findDepositInventory(affect.source().Name(),""+Integer.MAX_VALUE);
+							item=findDepositInventory(msg.source().Name(),""+Integer.MAX_VALUE);
 						if((item!=null)&&(item instanceof Coins))
 						{
 							Coins coins=(Coins)item;
 							coins.setNumberOfCoins(coins.numberOfCoins()-((Coins)old).numberOfCoins());
 							coins.recoverEnvStats();
 							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-								delDepositInventory(affect.source().getClanID(),item);
+								delDepositInventory(msg.source().getClanID(),item);
 							else
-								delDepositInventory(affect.source().Name(),item);
-							com.planet_ink.coffee_mud.utils.Money.giveMoney(mob,affect.source(),((Coins)old).numberOfCoins());
+								delDepositInventory(msg.source().Name(),item);
+							com.planet_ink.coffee_mud.utils.Money.giveMoney(mob,msg.source(),((Coins)old).numberOfCoins());
 							if(coins.numberOfCoins()<=0)
 							{
 								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
@@ -382,12 +382,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 							{
 								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 								{
-									addDepositInventory(affect.source().getClanID(),item);
-								    ExternalPlay.quickSay(this,mob,"Ok, Clan "+affect.source().getClanID()+" now has a balance of "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
+									addDepositInventory(msg.source().getClanID(),item);
+								    ExternalPlay.quickSay(this,mob,"Ok, Clan "+msg.source().getClanID()+" now has a balance of "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
 								}
 								else
 								{
-									addDepositInventory(affect.source().Name(),item);
+									addDepositInventory(msg.source().Name(),item);
 								    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
 								}
 							}
@@ -398,38 +398,38 @@ public class StdBanker extends StdShopKeeper implements Banker
 					else
 					{
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-							delDepositInventory(affect.source().getClanID(),old);
+							delDepositInventory(msg.source().getClanID(),old);
 						else
-							delDepositInventory(affect.source().Name(),old);
+							delDepositInventory(msg.source().Name(),old);
 					    ExternalPlay.quickSay(this,mob,"Thank you for your trust.",true,false);
 						if(location()!=null)
 							location().addItemRefuse(old,Item.REFUSE_PLAYER_DROP);
-						FullMsg msg=new FullMsg(mob,old,this,Affect.MSG_GET,null);
-						if(location().okAffect(mob,msg))
-							location().send(mob,msg);
+						FullMsg msg2=new FullMsg(mob,old,this,CMMsg.MSG_GET,null);
+						if(location().okMessage(mob,msg2))
+							location().send(mob,msg2);
 					}
 
 				}
 				return;
-			case Affect.TYP_VALUE:
-			case Affect.TYP_SELL:
-			case Affect.TYP_VIEW:
-				super.affect(myHost,affect);
+			case CMMsg.TYP_VALUE:
+			case CMMsg.TYP_SELL:
+			case CMMsg.TYP_VIEW:
+				super.executeMsg(myHost,msg);
 				return;
-			case Affect.TYP_BUY:
-				super.affect(myHost,affect);
+			case CMMsg.TYP_BUY:
+				super.executeMsg(myHost,msg);
 				return;
-			case Affect.TYP_LIST:
+			case CMMsg.TYP_LIST:
 			{
-				super.affect(myHost,affect);
+				super.executeMsg(myHost,msg);
 				Vector V=null;
 				if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 					V=getDepositedItems(mob.getClanID());
 				else
 					V=getDepositedItems(mob.Name());
-				StringBuffer msg=new StringBuffer("\n\r");
+				StringBuffer str=new StringBuffer("\n\r");
 				String c="^x[Item                              ] ";
-				msg.append(c+c+"^.^N\n\r");
+				str.append(c+c+"^.^N\n\r");
 				int colNum=0;
 				Coins coins=null;
 				boolean otherThanCoins=false;
@@ -446,37 +446,37 @@ public class StdBanker extends StdShopKeeper implements Banker
 					col="["+Util.padRight(I.name(),34)+"] ";
 					if((++colNum)>2)
 					{
-						msg.append("\n\r");
+						str.append("\n\r");
 						colNum=1;
 					}
-					msg.append(col);
+					str.append(col);
 				}
 				if(!otherThanCoins)
-					msg=new StringBuffer("\n\r^N");
+					str=new StringBuffer("\n\r^N");
 				else
-					msg.append("\n\r\n\r");
+					str.append("\n\r\n\r");
 				if(coins!=null)
 				{
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-						msg.append("Clan "+mob.getClanID()+" has a balance of ^H"+coins.numberOfCoins()+"^? gold coins.");
+						str.append("Clan "+mob.getClanID()+" has a balance of ^H"+coins.numberOfCoins()+"^? gold coins.");
 					else
-						msg.append("Your balance with us is ^H"+coins.numberOfCoins()+"^? gold coins.");
+						str.append("Your balance with us is ^H"+coins.numberOfCoins()+"^? gold coins.");
 				}
 				if(coinInterest!=0.0)
 				{
 					double cci=Util.mul(Math.abs(coinInterest),100.0);
 					String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-					msg.append("\n\rWe "+ci+"weekly on money deposited here.");
+					str.append("\n\rWe "+ci+"weekly on money deposited here.");
 				}
 				if(itemInterest!=0.0)
 				{
 					double cci=Util.mul(Math.abs(itemInterest),100.0);
 					String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-					msg.append("\n\rWe "+ci+"weekly on items kept with us.");
+					str.append("\n\rWe "+ci+"weekly on items kept with us.");
 				}
 				if(bankChain().length()>0)
-					msg.append("\n\rI am a banker for "+bankChain()+".");
-				ExternalPlay.quickSay(this,mob,msg.toString()+"^T",true,false);
+					str.append("\n\rI am a banker for "+bankChain()+".");
+				ExternalPlay.quickSay(this,mob,str.toString()+"^T",true,false);
 				return;
 			}
 			default:
@@ -484,84 +484,84 @@ public class StdBanker extends StdShopKeeper implements Banker
 			}
 		}
 		else
-		if(affect.sourceMinor()==Affect.TYP_RETIRE)
-			delAllDeposits(affect.source().Name());
-		super.affect(myHost,affect);
+		if(msg.sourceMinor()==CMMsg.TYP_RETIRE)
+			delAllDeposits(msg.source().Name());
+		super.executeMsg(myHost,msg);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		if(affect.amITarget(this))
+		MOB mob=msg.source();
+		if(msg.amITarget(this))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_GIVE:
-			case Affect.TYP_DEPOSIT:
+			case CMMsg.TYP_GIVE:
+			case CMMsg.TYP_DEPOSIT:
 				{
-					if(affect.tool()==null) return false;
-					if(affect.tool() instanceof Coins)
+					if(msg.tool()==null) return false;
+					if(msg.tool() instanceof Coins)
 						return true;
 					if((whatISell==ShopKeeper.DEAL_CLANBANKER)
-					&&((affect.source().getClanID().length()==0)
-					  ||(Clans.getClan(affect.source().getClanID())==null)))
+					&&((msg.source().getClanID().length()==0)
+					  ||(Clans.getClan(msg.source().getClanID())==null)))
 					{
 						ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 						return false;
 					}
-					if(!(affect.tool() instanceof Item))
+					if(!(msg.tool() instanceof Item))
 					{
 						mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
 						return false;
 					}
 					int balance=getBalance(mob);
-					int minbalance=minBalance(mob)+(((Item)affect.tool()).value()/2);
+					int minbalance=minBalance(mob)+(((Item)msg.tool()).value()/2);
 					if(balance<minbalance)
 					{
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-							ExternalPlay.quickSay(this,mob,"Clan "+affect.source().getClanID()+" will need a total balance of "+minbalance+" for me to hold that.",true,false);
+							ExternalPlay.quickSay(this,mob,"Clan "+msg.source().getClanID()+" will need a total balance of "+minbalance+" for me to hold that.",true,false);
 						else
 							ExternalPlay.quickSay(this,mob,"You'll need a total balance of "+minbalance+" for me to hold that.",true,false);
 						return false;
 					}
 				}
 				return true;
-			case Affect.TYP_WITHDRAW:
+			case CMMsg.TYP_WITHDRAW:
 				{
-					String thename=affect.source().Name();
+					String thename=msg.source().Name();
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 					{
-						thename=affect.source().getClanID();
-						Clan C=Clans.getClan(affect.source().getClanID());
-						if((affect.source().getClanID().length()==0)
+						thename=msg.source().getClanID();
+						Clan C=Clans.getClan(msg.source().getClanID());
+						if((msg.source().getClanID().length()==0)
 						  ||(C==null))
 						{
 							ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 							return false;
 						}
-						
-						if(C.allowedToDoThis(affect.source(),Clan.FUNC_CLANWITHDRAW)>=0)
+
+						if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANWITHDRAW)>=0)
 						{
 							ExternalPlay.quickSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 							return false;
 						}
 					}
-					if((affect.tool()==null)||(!(affect.tool() instanceof Item)))
+					if((msg.tool()==null)||(!(msg.tool() instanceof Item)))
 					{
 						ExternalPlay.quickSay(this,mob,"What do you want? I'm busy!",true,false);
 						return false;
 					}
-					if((!(affect.tool() instanceof Coins))
-					&&(findDepositInventory(thename,affect.tool().Name())==null))
+					if((!(msg.tool() instanceof Coins))
+					&&(findDepositInventory(thename,msg.tool().Name())==null))
 					{
 						ExternalPlay.quickSay(this,mob,"You want WHAT?",true,false);
 						return false;
 					}
-					int balance=getBalance(affect.source());
+					int balance=getBalance(msg.source());
 					int minbalance=minBalance(mob);
-					if(affect.tool() instanceof Coins)
+					if(msg.tool() instanceof Coins)
 					{
-						if(((Coins)affect.tool()).numberOfCoins()>balance)
+						if(((Coins)msg.tool()).numberOfCoins()>balance)
 						{
 							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 								ExternalPlay.quickSay(this,mob,"I'm sorry, Clan "+thename+" has only "+balance+" gold coins in its account.",true,false);
@@ -570,7 +570,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							return false;
 						}
 						if(minbalance==0) return true;
-						if(((Coins)affect.tool()).numberOfCoins()>(balance-minbalance))
+						if(((Coins)msg.tool()).numberOfCoins()>(balance-minbalance))
 						{
 							if((balance-minbalance)>0)
 								ExternalPlay.quickSay(this,mob,"I'm sorry, you may only withdraw "+(balance-minbalance)+" gold coins at this time.",true,false);
@@ -581,26 +581,26 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 				}
 				return true;
-			case Affect.TYP_VALUE:
-			case Affect.TYP_SELL:
-			case Affect.TYP_VIEW:
-				return super.okAffect(myHost,affect);
-			case Affect.TYP_BUY:
-				return super.okAffect(myHost,affect);
-			case Affect.TYP_LIST:
+			case CMMsg.TYP_VALUE:
+			case CMMsg.TYP_SELL:
+			case CMMsg.TYP_VIEW:
+				return super.okMessage(myHost,msg);
+			case CMMsg.TYP_BUY:
+				return super.okMessage(myHost,msg);
+			case CMMsg.TYP_LIST:
 			{
-				String thename=affect.source().Name();
+				String thename=msg.source().Name();
 				if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 				{
-					thename=affect.source().getClanID();
-					Clan C=Clans.getClan(affect.source().getClanID());
-					if((affect.source().getClanID().length()==0)
+					thename=msg.source().getClanID();
+					Clan C=Clans.getClan(msg.source().getClanID());
+					if((msg.source().getClanID().length()==0)
 					  ||(C==null))
 					{
 						ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 						return false;
 					}
-					if(C.allowedToDoThis(affect.source(),Clan.FUNC_CLANDEPOSITLIST)>=0)
+					if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANDEPOSITLIST)>=0)
 					{
 						ExternalPlay.quickSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 						return false;
@@ -608,26 +608,26 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				if(numberDeposited(thename)==0)
 				{
-					StringBuffer msg=new StringBuffer("");
+					StringBuffer str=new StringBuffer("");
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-						msg.append("The Clan "+thename+" does not have an account with us, I'm afraid.");
+						str.append("The Clan "+thename+" does not have an account with us, I'm afraid.");
 					else
-						msg.append("You don't have an account with us, I'm afraid.");
+						str.append("You don't have an account with us, I'm afraid.");
 					if(coinInterest!=0.0)
 					{
 						double cci=Util.mul(Math.abs(coinInterest),100.0);
 						String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						msg.append("\n\rWe "+ci+"weekly on money deposited here.");
+						str.append("\n\rWe "+ci+"weekly on money deposited here.");
 					}
 					if(itemInterest!=0.0)
 					{
 						double cci=Util.mul(Math.abs(itemInterest),100.0);
 						String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						msg.append("\n\rWe "+ci+"weekly on items kept with us.");
+						str.append("\n\rWe "+ci+"weekly on items kept with us.");
 					}
 					if(bankChain().length()>0)
-						msg.append("\n\rI am a banker for "+bankChain()+".");
-					ExternalPlay.quickSay(this,mob,msg.toString()+"^T",true,false);
+						str.append("\n\rI am a banker for "+bankChain()+".");
+					ExternalPlay.quickSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
 				else
@@ -637,6 +637,6 @@ public class StdBanker extends StdShopKeeper implements Banker
 				break;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

@@ -14,9 +14,9 @@ public class Chant_ControlWeather extends Chant
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_ControlWeather();}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg)) return false;
 		if(!msg.amISource(invoker())
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
@@ -38,7 +38,7 @@ public class Chant_ControlWeather extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		Ability A=mob.location().getArea().fetchAffect(ID());
+		Ability A=mob.location().getArea().fetchEffect(ID());
 		int size=mob.location().getArea().numberOfIDedRooms();
 		size=size/mob.envStats().level();
 		if(size<0) size=0;
@@ -47,7 +47,7 @@ public class Chant_ControlWeather extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,mob.location().getArea(),this,affectType(auto),auto?"The sky changes color!":"^S<S-NAME> chant(s) into the sky for control of the weather!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if((A!=null)&&(A.invoker()!=mob))

@@ -59,10 +59,10 @@ public class LockSmith extends CommonSkill
 		((Key)building).setKey(keyName);
 		return building;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(tickDown==6)
@@ -84,7 +84,7 @@ public class LockSmith extends CommonSkill
 								building=null;
 								unInvoke();
 							}
-							
+
 							Exit exit2=mob.location().getPairedExit(dir);
 							Room room2=mob.location().getRoomInDir(dir);
 							((Exit)workingOn).baseEnvStats().setLevel(mob.envStats().level());
@@ -180,9 +180,9 @@ public class LockSmith extends CommonSkill
 				woodRequired=5;
 
 			String titleInName="";
-			for(int a=0;a<mob.location().numAffects();a++)
+			for(int a=0;a<mob.location().numEffects();a++)
 			{
-				Ability A=mob.location().fetchAffect(a);
+				Ability A=mob.location().fetchEffect(a);
 				if((A!=null)&&(A instanceof LandTitle))
 				{ titleInName=((LandTitle)A).landOwner(); break;}
 			}
@@ -191,9 +191,9 @@ public class LockSmith extends CommonSkill
 			{
 				Room R2=mob.location().getRoomInDir(dir);
 				if(R2!=null)
-				for(int a=0;a<R2.numAffects();a++)
+				for(int a=0;a<R2.numEffects();a++)
 				{
-					Ability A=R2.fetchAffect(a);
+					Ability A=R2.fetchEffect(a);
 					if((A!=null)&&(A instanceof LandTitle))
 					{ titleInName=((LandTitle)A).landOwner(); break;}
 				}
@@ -270,7 +270,7 @@ public class LockSmith extends CommonSkill
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(1);
 		building.setMaterial(firstWood.material());
-		if(keyFlag)	
+		if(keyFlag)
 			building.baseEnvStats().setLevel(1);
 		else
 			building.baseEnvStats().setLevel(workingOn.envStats().level());
@@ -284,9 +284,9 @@ public class LockSmith extends CommonSkill
 			profficiencyAddition=workingOn.envStats().level()-mob.envStats().level();
 		messedUp=!profficiencyCheck(profficiencyAddition*5,auto);
 		if(completion<8) completion=8;
-		
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
-		if(mob.location().okAffect(mob,msg))
+
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			boltlock=lboltlock;

@@ -43,7 +43,7 @@ public class Prayer_SenseLife extends Prayer
 		}
 		return false;
 	}
-	
+
 	public void messageTo(MOB mob)
 	{
 		String last="";
@@ -79,7 +79,7 @@ public class Prayer_SenseLife extends Prayer
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		   &&(affected!=null)
 		   &&(affected instanceof MOB)
 		   &&(((MOB)affected).location()!=null)
@@ -98,7 +98,7 @@ public class Prayer_SenseLife extends Prayer
 
 		Environmental target=mob;
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
@@ -108,7 +108,7 @@ public class Prayer_SenseLife extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) life-like senses!":"^S<S-NAME> listen(s) for a message from "+hisHerDiety(mob)+".^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

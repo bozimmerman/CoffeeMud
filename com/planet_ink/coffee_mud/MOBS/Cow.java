@@ -36,18 +36,18 @@ public class Cow extends StdMOB implements Drink
 	{
 		return new Cow();
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
+		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
 			return true;
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
+		super.executeMsg(myHost,msg);
+		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
 		{
-			MOB mob=affect.source();
+			MOB mob=msg.source();
 			boolean thirsty=mob.curState().getThirst()<=0;
 			boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState());
 			if(thirsty)
@@ -57,13 +57,13 @@ public class Cow extends StdMOB implements Drink
 				mob.tell("You have drunk all you can.");
 		}
 		else
-		if((affect.tool()==this)
-		&&(affect.targetMinor()==Affect.TYP_FILL)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof Container)
-		&&(((Container)affect.target()).capacity()>0))
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_FILL)
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof Container)
+		&&(((Container)msg.target()).capacity()>0))
 		{
-			Item container=(Item)affect.target();
+			Item container=(Item)msg.target();
 			Item I=CMClass.getItem("GenLiquidResource");
 			I.setName("some milk");
 			I.setDisplayText("some milk has been left here.");

@@ -9,7 +9,7 @@ public class ActiveTicker extends StdBehavior
 {
 	public String ID(){return "ActiveTicker";}
 	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
-	
+
 	protected int minTicks=10;
 	protected int maxTicks=30;
 	protected int chance=100;
@@ -52,13 +52,13 @@ public class ActiveTicker extends StdBehavior
 		}
 		return parms;
 	}
-	
+
 	protected boolean canAct(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)
-		||(tickID==Host.ITEM_BEHAVIOR_TICK)
-		||(tickID==Host.ROOM_BEHAVIOR_TICK)
-		||((tickID==Host.AREA_TICK)&&(ticking instanceof Area)))
+		if((tickID==Host.TICK_MOB)
+		||(tickID==Host.TICK_ITEM_BEHAVIOR)
+		||(tickID==Host.TICK_ROOM_BEHAVIOR)
+		||((tickID==Host.TICK_AREA)&&(ticking instanceof Area)))
 		{
 			int a=Dice.rollPercentage();
 			if((--tickDown)<1)

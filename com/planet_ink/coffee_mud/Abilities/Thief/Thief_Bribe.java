@@ -34,7 +34,7 @@ public class Thief_Bribe extends ThiefSkill
 				CoffeeUtensils.wanderAway(mob,true,true);
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<1)
@@ -72,8 +72,8 @@ public class Thief_Bribe extends ThiefSkill
 
 		if((!success)||(mob.getMoney()<amountRequired))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,"^T<S-NAME> attempt(s) to bribe <T-NAMESELF> to '"+Util.combine(commands,0)+"', but no deal is reached.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to bribe <T-NAMESELF> to '"+Util.combine(commands,0)+"', but no deal is reached.^?");
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			if(mob.getMoney()<amountRequired)
 				mob.tell(target.charStats().HeShe()+" requires "+amountRequired+" coins to do this.");
@@ -81,10 +81,10 @@ public class Thief_Bribe extends ThiefSkill
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"' for "+amountRequired+" coins.^?");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"' for "+amountRequired+" coins.^?");
 			mob.setMoney(mob.getMoney()-amountRequired);
 			mob.recoverEnvStats();
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				try

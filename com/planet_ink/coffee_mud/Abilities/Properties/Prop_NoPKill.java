@@ -12,31 +12,31 @@ public class Prop_NoPKill extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 	public Environmental newInstance(){	Prop_NoPKill newOne=new Prop_NoPKill();	newOne.setMiscText(text());	return newOne;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(((Util.bset(affect.sourceCode(),affect.MASK_MALICIOUS))
-		||(Util.bset(affect.targetCode(),affect.MASK_MALICIOUS))
-		||(Util.bset(affect.othersCode(),affect.MASK_MALICIOUS)))
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof MOB)
-		    &&(!((MOB)affect.target()).isMonster())
-		    &&(!affect.source().isMonster()))
+		if(((Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+		||(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		||(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
+			&&(msg.target()!=null)
+			&&(msg.target() instanceof MOB)
+		    &&(!((MOB)msg.target()).isMonster())
+		    &&(!msg.source().isMonster()))
 		{
 			if(Util.s_int(text())==0)
 			{
-				affect.source().tell("Player killing is forbidden here.");
-				affect.source().setVictim(null);
+				msg.source().tell("Player killing is forbidden here.");
+				msg.source().setVictim(null);
 				return false;
 			}
-			int levelDiff=affect.source().envStats().level()-((MOB)affect.target()).envStats().level();
+			int levelDiff=msg.source().envStats().level()-((MOB)msg.target()).envStats().level();
 			if(levelDiff<0) levelDiff=levelDiff*-1;
 			if(levelDiff>Util.s_int(text()))
 			{
-				affect.source().tell("Player killing is forbidden for characters whose level difference is greater than "+Util.s_int(text())+".");
-				affect.source().setVictim(null);
+				msg.source().tell("Player killing is forbidden for characters whose level difference is greater than "+Util.s_int(text())+".");
+				msg.source().setVictim(null);
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

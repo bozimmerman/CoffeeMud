@@ -20,7 +20,7 @@ public class Druid_PlantForm extends StdAbility
 
 	public Race newRace=null;
 	public String raceName="";
-	
+
 	public String displayText()
 	{
 		if(newRace==null)
@@ -44,18 +44,18 @@ public class Druid_PlantForm extends StdAbility
 	"Shambler"
 	};
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
-		&&((affect.amITarget(affected))))
+		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+		&&((msg.amITarget(affected))))
 		{
-			MOB target=(MOB)affect.target();
+			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
-			&&(affect.source().isMonster())
-			&&(affect.source().getVictim()!=target))
+			&&(msg.source().isMonster())
+			&&(msg.source().getVictim()!=target))
 			{
-				affect.source().tell("Attack a plant?!");
-				if(target.getVictim()==affect.source())
+				msg.source().tell("Attack a plant?!");
+				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
 					target.setVictim(null);
@@ -63,7 +63,7 @@ public class Druid_PlantForm extends StdAbility
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -91,7 +91,7 @@ public class Druid_PlantForm extends StdAbility
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().raceName().toLowerCase()+" form.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().raceName().toLowerCase()+" form.");
 	}
 
 	public void setRaceName(MOB mob)
@@ -121,25 +121,25 @@ public class Druid_PlantForm extends StdAbility
 	{
 		return shapes[getRaceLevel(classLevel)];
 	}
-						
-	
+
+
 	public static boolean isShapeShifted(MOB mob)
 	{
 		if(mob==null) return false;
-		for(int a=0;a<mob.numAffects();a++)
+		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability A=mob.fetchAffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Druid_PlantForm))
 				return true;
 		}
 		return false;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		for(int a=mob.numAffects()-1;a>=0;a--)
+		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
-			Ability A=mob.fetchAffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Druid_PlantForm))
 			{
 				A.unInvoke();
@@ -157,7 +157,7 @@ public class Druid_PlantForm extends StdAbility
 			mob.tell("You must be in the wild to take on your plant form.");
 			return false;
 		}
-		
+
 		int classLevel=CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this);
 		String choice=Util.combine(commands,0);
 		if(choice.trim().length()>0)
@@ -207,13 +207,13 @@ public class Druid_PlantForm extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_OK_ACTION,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,Integer.MAX_VALUE);
 				raceName=Util.capitalize(Util.startWithAorAn(raceName.toLowerCase()));
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				mob.confirmWearability();
 			}
 		}

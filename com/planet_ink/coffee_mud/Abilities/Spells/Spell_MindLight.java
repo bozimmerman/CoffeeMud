@@ -26,7 +26,7 @@ public class Spell_MindLight extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			room.showHappens(Affect.MSG_OK_VISUAL, "The mind light starts to fade.");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, "The mind light starts to fade.");
 		}
 	}
 
@@ -54,7 +54,7 @@ public class Spell_MindLight extends Spell
 		}
 		return true;
 	}
-	
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -67,10 +67,10 @@ public class Spell_MindLight extends Spell
 
 		Environmental target = mob.location();
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Mind Light has already been cast here!");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -86,12 +86,12 @@ public class Spell_MindLight extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), (auto?"T":"^S<S-NAME> incant(s) and gesture(s) and t")+"he mind light envelopes everyone.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
-					mob.location().addNonUninvokableAffect(this);
+					mob.location().addNonUninvokableEffect(this);
 				else
 					beneficialAffect(mob,mob.location(),0);
 				mob.location().recoverRoomStats();

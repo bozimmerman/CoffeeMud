@@ -33,7 +33,7 @@ public class Fighter_CalledStrike extends StdAbility
 	{
 		MOB mob=(MOB)target;
 		if(mob==null) return false;
-		Amputation A=(Amputation)mob.fetchAffect("Amputation");
+		Amputation A=(Amputation)mob.fetchEffect("Amputation");
 		boolean newOne=false;
 		if(A==null)
 		{
@@ -55,16 +55,16 @@ public class Fighter_CalledStrike extends StdAbility
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(target==null))
-		   return super.okAffect(myHost,msg);
+		   return super.okMessage(myHost,msg);
 		MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(msg.amITarget(target))
-		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 		{
-			int hurtAmount=msg.targetCode()-Affect.MASK_HURT;
+			int hurtAmount=msg.targetCode()-CMMsg.MASK_HURT;
 			if(hurtAmount>=(target.baseState().getHitPoints()/hpReq))
 			{
 				hurtAmount=(target.baseState().getHitPoints()/hpReq);
@@ -75,7 +75,7 @@ public class Fighter_CalledStrike extends StdAbility
 				mob.tell(mob,target,null,"You failed to cut off <T-YOUPOSS> '"+gone+"'.");
 			unInvoke();
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 
 	protected boolean prereqs(MOB mob)
@@ -85,7 +85,7 @@ public class Fighter_CalledStrike extends StdAbility
 			mob.tell("You are too far away to perform a called strike!");
 			return false;
 		}
-		
+
 		Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
@@ -129,13 +129,13 @@ public class Fighter_CalledStrike extends StdAbility
 			mob.tell("Do this to whom?");
 			return false;
 		}
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(target.name()+" already has a call against one of "+target.charStats().hisher()+" limbs.");
 			return false;
 		}
 
-		Amputation A=(Amputation)target.fetchAffect("Amputation");
+		Amputation A=(Amputation)target.fetchEffect("Amputation");
 		boolean newOne=false;
 		if(A==null)
 		{
@@ -167,7 +167,7 @@ public class Fighter_CalledStrike extends StdAbility
 			String off=Util.combine(commands,0);
 			if((off.equalsIgnoreCase("head"))
 			&&(target.charStats().getBodyPart(Race.BODY_HEAD)>=0))
-		    {	
+		    {
 				gone=Race.BODYPARTSTR[Race.BODY_HEAD].toLowerCase();
 				hpReq=3;
 			}
@@ -200,7 +200,7 @@ public class Fighter_CalledStrike extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if((success)&&(gone.length()>0))
 		{
-			if(mob.location().show(mob,target,this,(auto?Affect.MASK_GENERAL:0)|Affect.MASK_MALICIOUS|Affect.MSG_NOISYMOVEMENT,"^F<S-NAME> call(s) '"+gone+"'!^?"))
+			if(mob.location().show(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F<S-NAME> call(s) '"+gone+"'!^?"))
 			{
 				invoker=mob;
 				beneficialAffect(mob,mob,2);

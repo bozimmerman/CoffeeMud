@@ -31,24 +31,24 @@ public class GenLantern extends GenLightSource
 	}
 	public boolean isGeneric(){return true;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-				case Affect.TYP_FILL:
-					if((affect.tool()!=null)
-					&&(affect.tool()!=affect.target())
-					&&(affect.tool() instanceof Drink))
+				case CMMsg.TYP_FILL:
+					if((msg.tool()!=null)
+					&&(msg.tool()!=msg.target())
+					&&(msg.tool() instanceof Drink))
 					{
-						if(((Drink)affect.tool()).liquidType()!=EnvResource.RESOURCE_LAMPOIL)
+						if(((Drink)msg.tool()).liquidType()!=EnvResource.RESOURCE_LAMPOIL)
 						{
 							mob.tell("You can only fill "+name()+" with lamp oil!");
 							return false;
 						}
-						Drink thePuddle=(Drink)affect.tool();
+						Drink thePuddle=(Drink)msg.tool();
 						if(!thePuddle.containsDrink())
 						{
 							mob.tell(thePuddle.name()+" is empty.");
@@ -65,19 +65,19 @@ public class GenLantern extends GenLightSource
 					break;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_FILL:
-				if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
+			case CMMsg.TYP_FILL:
+				if((msg.tool()!=null)&&(msg.tool() instanceof Drink))
 				{
-					Drink thePuddle=(Drink)affect.tool();
+					Drink thePuddle=(Drink)msg.tool();
 					int amountToTake=1;
 					if(!thePuddle.containsDrink()) amountToTake=0;
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
@@ -89,6 +89,6 @@ public class GenLantern extends GenLightSource
 				break;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

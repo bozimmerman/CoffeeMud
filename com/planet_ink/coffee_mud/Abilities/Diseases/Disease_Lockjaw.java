@@ -42,25 +42,25 @@ public class Disease_Lockjaw extends Disease
 		}
 		return true;
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))
-		&&(!Util.bset(affect.sourceCode(),Affect.MASK_GENERAL))
-		&&((affect.sourceMinor()==Affect.TYP_EAT)||(affect.sourceMinor()==Affect.TYP_DRINK)))
+		if((msg.amISource(mob))
+		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+		&&((msg.sourceMinor()==CMMsg.TYP_EAT)||(msg.sourceMinor()==CMMsg.TYP_DRINK)))
 		{
 			mob.tell("You can't open your mouth!");
 			return false;
 		}
 
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

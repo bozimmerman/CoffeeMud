@@ -22,21 +22,21 @@ public class Skill_Attack2 extends StdAbility
 	{
 		affectableStats.setSpeed(affectableStats.speed()+(1.0*(new Integer(profficiency()).doubleValue()/100.0)));
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
 
-		if((affect.amISource(mob))
-		&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+		if((msg.amISource(mob))
+		&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(Dice.rollPercentage()>95)
 		&&(mob.isInCombat())
 		&&(!mob.amDead())
-		&&(affect.target() instanceof MOB))
+		&&(msg.target() instanceof MOB))
 			helpProfficiency(mob);
 	}
 }

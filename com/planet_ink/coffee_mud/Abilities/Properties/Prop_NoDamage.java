@@ -16,15 +16,15 @@ public class Prop_NoDamage extends Property
 	public String accountForYourself()
 	{ return "Harmless";	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(Util.bset(msg.targetCode(),Affect.MASK_HURT)
+		if(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)
 		&&(affected !=null)
 		&&((msg.source()==affected)||(msg.tool()==affected)))
 		{
 			msg.modify(msg.source(),msg.target(),msg.tool(),
 					   msg.sourceCode(),msg.sourceMessage(),
-					   Affect.MASK_HURT,msg.targetMessage(),
+					   CMMsg.MASK_HURT,msg.targetMessage(),
 					   msg.othersCode(),msg.othersMessage());
 		}
 		return true;

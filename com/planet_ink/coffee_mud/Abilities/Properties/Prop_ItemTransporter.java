@@ -52,7 +52,7 @@ public class Prop_ItemTransporter extends Property
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();
-				Ability A=room.fetchAffect("Prop_ItemTransReceiver");
+				Ability A=room.fetchEffect("Prop_ItemTransReceiver");
 				if((A!=null)&&(A.text().equalsIgnoreCase(text())))
 					possibilities.addElement(room);
 				for(int i=0;i<room.numItems();i++)
@@ -60,7 +60,7 @@ public class Prop_ItemTransporter extends Property
 					Item item=room.fetchItem(i);
 					if((item!=null)&&(item!=affected))
 					{
-						A=item.fetchAffect("Prop_ItemTransReceiver");
+						A=item.fetchEffect("Prop_ItemTransReceiver");
 						if((A!=null)&&(A.text().equalsIgnoreCase(text())))
 							possibilities.addElement(item);
 					}
@@ -70,7 +70,7 @@ public class Prop_ItemTransporter extends Property
 					MOB mob=room.fetchInhabitant(m);
 					if((mob!=null)&&(mob!=affected))
 					{
-						A=mob.fetchAffect("Prop_ItemTransReceiver");
+						A=mob.fetchEffect("Prop_ItemTransReceiver");
 						if((A!=null)&&(A.text().equalsIgnoreCase(text())))
 							possibilities.addElement(mob);
 						for(int i=0;i<mob.inventorySize();i++)
@@ -78,7 +78,7 @@ public class Prop_ItemTransporter extends Property
 							Item item=mob.fetchInventory(i);
 							if((item!=null)&&(item!=affected))
 							{
-								A=item.fetchAffect("Prop_ItemTransReceiver");
+								A=item.fetchEffect("Prop_ItemTransReceiver");
 								if((A!=null)&&(A.text().equalsIgnoreCase(text())))
 									possibilities.addElement(item);
 							}
@@ -116,42 +116,42 @@ public class Prop_ItemTransporter extends Property
 			return false;
 		return true;
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if(affected==null) return true;
-		
-		if(((affect.amITarget(affected))
-			&&((affect.targetMinor()==Affect.TYP_PUT)
-			   ||(affect.targetMinor()==Affect.TYP_GIVE))
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Item))
+
+		if(((msg.amITarget(affected))
+			&&((msg.targetMinor()==CMMsg.TYP_PUT)
+			   ||(msg.targetMinor()==CMMsg.TYP_GIVE))
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Item))
 		||((affected instanceof MOB)
-			&&(affect.amISource((MOB)affected))
-			&&(affect.targetMinor()==Affect.TYP_GET)
-			&&(affect.target() !=null)
-			&&(affect.target() instanceof Item))
+			&&(msg.amISource((MOB)affected))
+			&&(msg.targetMinor()==CMMsg.TYP_GET)
+			&&(msg.target() !=null)
+			&&(msg.target() instanceof Item))
 		||((affected instanceof Room)
-			&&(affect.targetMinor()==Affect.TYP_DROP)
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof Item))
+			&&(msg.targetMinor()==CMMsg.TYP_DROP)
+			&&(msg.target()!=null)
+			&&(msg.target() instanceof Item))
 		||((affected instanceof Room)
-			&&(affect.targetMinor()==Affect.TYP_THROW)
-		    &&(affected==affect.tool())
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof Item)))
+			&&(msg.targetMinor()==CMMsg.TYP_THROW)
+		    &&(affected==msg.tool())
+			&&(msg.target()!=null)
+			&&(msg.target() instanceof Item)))
 		{
 			if(!setDestination())
 			{
-				affect.source().tell("The transporter has no possible ItemTransReceiver with the code '"+text()+"'.");
+				msg.source().tell("The transporter has no possible ItemTransReceiver with the code '"+text()+"'.");
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	public synchronized void tryToMoveStuff()
 	{
 		if((mobDestination!=null)||(roomDestination!=null))
@@ -242,20 +242,20 @@ public class Prop_ItemTransporter extends Property
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 			tryToMoveStuff();
 		return true;
 	}
-	
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		// amazingly important that this happens first!
-		super.affect(myHost,affect);
-		if((affect.targetMinor()==Affect.TYP_GET)
-		||(affect.targetMinor()==Affect.TYP_GIVE)
-		||(affect.targetMinor()==Affect.TYP_PUT)
-		||(affect.targetMinor()==Affect.TYP_THROW)
-		||(affect.targetMinor()==Affect.TYP_DROP))
+		super.executeMsg(myHost,msg);
+		if((msg.targetMinor()==CMMsg.TYP_GET)
+		||(msg.targetMinor()==CMMsg.TYP_GIVE)
+		||(msg.targetMinor()==CMMsg.TYP_PUT)
+		||(msg.targetMinor()==CMMsg.TYP_THROW)
+		||(msg.targetMinor()==CMMsg.TYP_DROP))
 			tryToMoveStuff();
 	}
 }

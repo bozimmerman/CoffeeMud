@@ -35,16 +35,16 @@ public class Druid_Rend extends StdAbility
 			mob.tell("You must have legs to rend!");
 			return false;
 		}
-		Ability A=mob.fetchAffect("Fighter_Pin");
+		Ability A=mob.fetchEffect("Fighter_Pin");
 		if(A!=null)
 		{
 			mob.tell("You rend your way out of the pin!");
 			A.unInvoke();
-			mob.delAffect(A);
+			mob.delEffect(A);
 			ExternalPlay.standIfNecessary(mob);
 			return true;
 		}
-		
+
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -53,7 +53,7 @@ public class Druid_Rend extends StdAbility
 			mob.tell("You can only rend someone who is on the ground!");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -72,11 +72,11 @@ public class Druid_Rend extends StdAbility
 			invoker=mob;
 			int topDamage=adjustedLevel(mob)*2;
 			int damage=Dice.roll(1,topDamage,0);
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.MSG_NOISYMOVEMENT,Weapon.TYPE_PIERCING,"^F<S-NAME> <DAMAGE> <T-NAME> by rending <T-HIM-HER> with <S-HIS-HER> feet!^?");
+				ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_PIERCING,"^F<S-NAME> <DAMAGE> <T-NAME> by rending <T-HIM-HER> with <S-HIS-HER> feet!^?");
 			}
 		}
 		else

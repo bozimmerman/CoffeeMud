@@ -14,9 +14,9 @@ public class Trap_SpikePit extends Trap_RoomPit
 	protected int trapLevel(){return 8;}
 	public String requiresToSet(){return "5 dagger-class weapons";}
 	public Environmental newInstance(){	return new Trap_SpikePit();}
-	
+
 	public Vector daggerDamages=null;
-	
+
 	private Item getDagger(MOB mob)
 	{
 		if(mob==null) return null;
@@ -30,7 +30,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		}
 		return null;
 	}
-	
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
@@ -38,7 +38,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		int num=0;
 		while((I!=null)&&((++num)<6))
 		{
-			if(daggerDamages==null) 
+			if(daggerDamages==null)
 				daggerDamages=new Vector();
 			daggerDamages.addElement(new Integer(I.baseEnvStats().damage()));
 			I.destroy();
@@ -46,7 +46,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -60,14 +60,14 @@ public class Trap_SpikePit extends Trap_RoomPit
 		}
 		return true;
 	}
-	
+
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.envStats().weight()<5))
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 		else
 		{
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor!");
 			int damage=Dice.roll(trapLevel(),6,1);
 			if((daggerDamages!=null)&&(daggerDamages.size()>0))
 			{
@@ -76,7 +76,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 			}
 			else
 				damage+=Dice.roll(5,4,0);
-			ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"Spikes on the pit floor <DAMAGE> <T-NAME>!");
+			ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"Spikes on the pit floor <DAMAGE> <T-NAME>!");
 		}
 		ExternalPlay.look(target,null,true);
 	}

@@ -23,7 +23,7 @@ public class Chant_PlantSnare extends Chant
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BOUND);
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -33,13 +33,13 @@ public class Chant_PlantSnare extends Chant
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
-			if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-			&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
+			if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
-				if(mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the snaring plants."))
+				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the snaring plants."))
 				{
 					amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
 					if(amountRemaining<0)
@@ -48,7 +48,7 @@ public class Chant_PlantSnare extends Chant
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -62,7 +62,7 @@ public class Chant_PlantSnare extends Chant
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the plants.");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the plants.");
 			ExternalPlay.standIfNecessary(mob);
 		}
 	}
@@ -109,7 +109,7 @@ public class Chant_PlantSnare extends Chant
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
+				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
@@ -118,7 +118,7 @@ public class Chant_PlantSnare extends Chant
 						if(target.location()==mob.location())
 						{
 							success=maliciousAffect(mob,target,(adjustedLevel(mob)*10),-1);
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> become(s) stuck as tangling mass of plant life grows onto <S-HIM-HER>!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck as tangling mass of plant life grows onto <S-HIM-HER>!");
 						}
 					}
 				}

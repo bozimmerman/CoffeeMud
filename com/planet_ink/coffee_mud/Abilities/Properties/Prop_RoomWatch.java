@@ -15,9 +15,9 @@ public class Prop_RoomWatch extends Property
 	public String accountForYourself()
 	{ return "Different View of "+text();	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if(newRooms==null)
 		{
 			Vector V=Util.parseSemicolons(text(),true);
@@ -30,28 +30,28 @@ public class Prop_RoomWatch extends Property
 		}
 
 		if((affected!=null)
-		&&(affect.othersCode()!=Affect.NO_EFFECT)
-		&&(affect.othersMessage()!=null)
-		&&(affect.othersMessage().length()>0))
+		&&(msg.othersCode()!=CMMsg.NO_EFFECT)
+		&&(msg.othersMessage()!=null)
+		&&(msg.othersMessage().length()>0))
 		{
 			for(int r=0;r<newRooms.size();r++)
 			{
 				Room R=(Room)newRooms.elementAt(r);
-				if((R!=null)&&(R.fetchAffect(ID())==null))
+				if((R!=null)&&(R.fetchEffect(ID())==null))
 				{
-					Affect msg=new FullMsg(affect.source(),affect.target(),affect.tool(),
-								  Affect.NO_EFFECT,null,
-								  Affect.NO_EFFECT,null,
-								  affect.othersCode(),affect.othersMessage());
-					if(R.okAffect(affect.source(),msg))
+					FullMsg msg2=new FullMsg(msg.source(),msg.target(),msg.tool(),
+								  CMMsg.NO_EFFECT,null,
+								  CMMsg.NO_EFFECT,null,
+								  msg.othersCode(),msg.othersMessage());
+					if(R.okMessage(msg.source(),msg2))
 					for(int i=0;i<R.numInhabitants();i++)
 					{
 						MOB M=R.fetchInhabitant(i);
 						if((M!=null)
 						&&(Sense.canSee(M))
 						&&(Sense.canBeSeenBy(R,M))
-						&&(Sense.canBeSeenBy(affect.source(),M)))
-							M.affect(M,msg);
+						&&(Sense.canBeSeenBy(msg2.source(),M)))
+							M.executeMsg(M,msg2);
 					}
 				}
 			}

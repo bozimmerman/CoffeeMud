@@ -42,10 +42,10 @@ public class Prop_TicketTaker extends Property
 			return host==R;
 		return false;
 	}
-	
-	public void affect(Environmental myHost, Affect msg)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if(((myHost instanceof Rider)&&(((Rider)myHost).riding()!=null))
 		   ||(myHost instanceof Rideable))
 		{
@@ -58,22 +58,22 @@ public class Prop_TicketTaker extends Property
 			{
 				switch(msg.sourceMinor())
 				{
-				case Affect.TYP_MOUNT:
-				case Affect.TYP_SIT:
-				case Affect.TYP_ENTER:
-				case Affect.TYP_SLEEP:
+				case CMMsg.TYP_MOUNT:
+				case CMMsg.TYP_SIT:
+				case CMMsg.TYP_ENTER:
+				case CMMsg.TYP_SLEEP:
 					if(mob.getMoney()>=cost())
 					{
-						mob.location().show(mob,myHost,Affect.MSG_NOISYMOVEMENT,"<S-NAME> give(s) "+cost()+" gold to <T-NAME>.");
+						mob.location().show(mob,myHost,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> give(s) "+cost()+" gold to <T-NAME>.");
 						mob.setMoney(mob.getMoney()-cost());
 					}
 				}
 			}
 		}
 	}
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg)) return false;
 		if(((myHost instanceof Rider)&&(((Rider)myHost).riding()!=null))
 		   ||(myHost instanceof Rideable))
 		{
@@ -85,10 +85,10 @@ public class Prop_TicketTaker extends Property
 			&&(isMine(myHost,(Rideable)msg.target())))
 				switch(msg.sourceMinor())
 				{
-				case Affect.TYP_MOUNT:
-				case Affect.TYP_SIT:
-				case Affect.TYP_ENTER:
-				case Affect.TYP_SLEEP:
+				case CMMsg.TYP_MOUNT:
+				case CMMsg.TYP_SIT:
+				case CMMsg.TYP_ENTER:
+				case CMMsg.TYP_SLEEP:
 					if(mob.getMoney()<cost())
 					{
 						if(myHost instanceof MOB)

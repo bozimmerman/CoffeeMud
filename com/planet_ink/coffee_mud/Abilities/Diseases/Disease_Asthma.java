@@ -22,7 +22,7 @@ public class Disease_Asthma extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> start(s) wheezing.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> wheeze(s) loudly.";}
 	public int abilityCode(){return 0;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -38,10 +38,10 @@ public class Disease_Asthma extends Disease
 				int damage=mob.curState().getHitPoints()/2;
 				MOB diseaser=invoker;
 				if(diseaser==null) diseaser=mob;
-				ExternalPlay.postDamage(diseaser,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,"<S-NAME> <S-HAS-HAVE> an asthma attack! It <DAMAGE> <S-NAME>!");
+				ExternalPlay.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,"<S-NAME> <S-HAS-HAVE> an asthma attack! It <DAMAGE> <S-NAME>!");
 			}
 			else
-				mob.location().show(mob,null,Affect.MSG_NOISE,DISEASE_AFFECT());
+				mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			return true;
 		}
 		return true;

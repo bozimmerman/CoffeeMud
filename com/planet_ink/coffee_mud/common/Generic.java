@@ -22,10 +22,10 @@ public class Generic
 		mob.baseState().setMovement(mob.baseCharStats().getCurrentClass().getLevelMove(mob));
 		mob.recoverMaxState();
 		mob.resetToMaxState();
-		if(mob.getWimpHitPoint()>0) 
+		if(mob.getWimpHitPoint()>0)
 			mob.setWimpHitPoint((int)Math.round(Util.mul(mob.curState().getHitPoints(),.10)));
 	}
-	
+
 	public static String parseOutAngleBrackets(String s)
 	{
 		int x=s.indexOf("<");
@@ -194,7 +194,7 @@ public class Generic
 		    StringBuffer parentstr = new StringBuffer();
 		    StringBuffer childrenstr = new StringBuffer();
 		    str.append(XMLManager.convertXMLtoTag("ARCHP", ( (Area) E).getArchivePath()));
-		    for(Enumeration e=((Area)E).getParents(); e.hasMoreElements();) 
+		    for(Enumeration e=((Area)E).getParents(); e.hasMoreElements();)
 			{
 		        Area A=(Area)e.nextElement();
 		        parentstr.append("<PARENT>");
@@ -202,7 +202,7 @@ public class Generic
 		        parentstr.append("</PARENT>");
 		    }
 		    str.append(XMLManager.convertXMLtoTag("PARENTS",parentstr.toString()));
-		    for(Enumeration e=((Area)E).getChildren(); e.hasMoreElements();) 
+		    for(Enumeration e=((Area)E).getChildren(); e.hasMoreElements();)
 			{
 		        Area A=(Area)e.nextElement();
 		        childrenstr.append("<CHILD>");
@@ -299,7 +299,7 @@ public class Generic
 
 		if(E instanceof ClanItem)
 			text.append(XMLManager.convertXMLtoTag("CLANID",""+((ClanItem)E).clanID()));
-		
+
 		if(E instanceof Item)
 		{
 			Item item=(Item)E;
@@ -1461,11 +1461,11 @@ public class Generic
 					((Deity)E).delPower(((Deity)E).fetchPower(0));
 			}
 		}
-		while(E.numAffects()>0)
+		while(E.numEffects()>0)
 		{
-			Ability aff=E.fetchAffect(0);
+			Ability aff=E.fetchEffect(0);
 			if(aff!=null)
-				E.delAffect(aff);
+				E.delEffect(aff);
 		}
 		while(E.numBehaviors()>0)
 		{
@@ -1510,7 +1510,7 @@ public class Generic
 
 		if(E instanceof ClanItem)
 			((ClanItem)E).setClanID(XMLManager.getValFromPieces(buf,"CLANID"));
-		
+
 		if(E instanceof Item)
 		{
 			Item item=(Item)E;
@@ -1754,9 +1754,9 @@ public class Generic
 		text.append(XMLManager.convertXMLtoTag("BEHAVES",behaviorstr.toString()));
 
 		StringBuffer affectstr=new StringBuffer("");
-		for(int a=0;a<E.numAffects();a++)
+		for(int a=0;a<E.numEffects();a++)
 		{
-			Ability A=E.fetchAffect(a);
+			Ability A=E.fetchEffect(a);
 			if((A!=null)&&(!A.isBorrowed(E)))
 			{
 				affectstr.append("<AFF>");
@@ -1947,7 +1947,7 @@ public class Generic
 					return;
 				}
 				newOne.setMiscText(restoreAngleBrackets(aparms));
-				E.addNonUninvokableAffect(newOne);
+				E.addNonUninvokableEffect(newOne);
 			}
 		}
 	}

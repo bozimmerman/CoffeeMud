@@ -83,29 +83,29 @@ public class WaterSurface extends StdRoom implements Drink
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		switch(WaterSurface.isOkWaterSurfaceAffect(this,affect))
+		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
 		{
 		case -1: return false;
 		case 1: return true;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
-	public static int isOkWaterSurfaceAffect(Room room, Affect affect)
+	public static int isOkWaterSurfaceAffect(Room room, CMMsg msg)
 	{
 		if(Sense.isSleeping(room))
 			return 0;
 
-		if(((affect.targetMinor()==Affect.TYP_LEAVE)
-			||(affect.targetMinor()==Affect.TYP_ENTER)
-			||(affect.targetMinor()==Affect.TYP_FLEE))
-		   &&(affect.amITarget(room))
-		   &&(!Sense.isFalling(affect.source()))
-		   &&(!Sense.isInFlight(affect.source()))
-		   &&(!Sense.isWaterWorthy(affect.source())))
+		if(((msg.targetMinor()==CMMsg.TYP_LEAVE)
+			||(msg.targetMinor()==CMMsg.TYP_ENTER)
+			||(msg.targetMinor()==CMMsg.TYP_FLEE))
+		   &&(msg.amITarget(room))
+		   &&(!Sense.isFalling(msg.source()))
+		   &&(!Sense.isInFlight(msg.source()))
+		   &&(!Sense.isWaterWorthy(msg.source())))
 		{
-			MOB mob=affect.source();
+			MOB mob=msg.source();
 			boolean hasBoat=false;
 			for(int i=0;i<mob.inventorySize();i++)
 			{
@@ -127,20 +127,20 @@ public class WaterSurface extends StdRoom implements Drink
 				}
 		}
 		else
-		if(((affect.sourceMinor()==Affect.TYP_SIT)||(affect.sourceMinor()==Affect.TYP_SLEEP))
-		&&((affect.source().riding()==null)||(!Sense.isSwimming(affect.source().riding()))))
+		if(((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_SLEEP))
+		&&((msg.source().riding()==null)||(!Sense.isSwimming(msg.source().riding()))))
 		{
-			affect.source().tell("You cannot rest here.");
+			msg.source().tell("You cannot rest here.");
 			return -1;
 		}
 		else
-		if(affect.amITarget(room)
-		&&(affect.targetMinor()==Affect.TYP_DRINK)
+		if(msg.amITarget(room)
+		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
 		&&(room instanceof Drink))
 		{
 			if(((Drink)room).liquidType()==EnvResource.RESOURCE_SALTWATER)
 			{
-				affect.source().tell("You don't want to be drinking saltwater.");
+				msg.source().tell("You don't want to be drinking saltwater.");
 				return -1;
 			}
 			return 1;
@@ -148,10 +148,10 @@ public class WaterSurface extends StdRoom implements Drink
 		return 0;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		UnderWater.sinkAffects(this,affect);
+		super.executeMsg(myHost,msg);
+		UnderWater.sinkAffects(this,msg);
 	}
 	public int thirstQuenched(){return 1000;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}

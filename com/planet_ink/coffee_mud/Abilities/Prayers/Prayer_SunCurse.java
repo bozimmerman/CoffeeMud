@@ -26,7 +26,7 @@ public class Prayer_SunCurse extends Prayer
 		else
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -55,7 +55,7 @@ public class Prayer_SunCurse extends Prayer
 
 		super.unInvoke();
 
-		if((canBeUninvoked())&&(mob.fetchAffect("Spell_FleshStone")==null))
+		if((canBeUninvoked())&&(mob.fetchEffect("Spell_FleshStone")==null))
 			mob.tell("Your sun curse is lifted.");
 	}
 
@@ -64,7 +64,7 @@ public class Prayer_SunCurse extends Prayer
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if((!auto)
 		&&(target.location()!=null)
 		&&(target.location().getArea().canSeeTheSun(target.location())))
@@ -84,13 +84,13 @@ public class Prayer_SunCurse extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for an unholy sun curse upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					success=maliciousAffect(mob,target,0,-1);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> under a mighty sun curse!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> under a mighty sun curse!");
 				}
 			}
 		}

@@ -32,25 +32,25 @@ public class Fighter_Tumble extends StdAbility
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		   &&((affect.targetCode()-Affect.MASK_HURT)>0))
+		if((msg.amITarget(mob))
+		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		   &&((msg.targetCode()-CMMsg.MASK_HURT)>0))
 		{
-			if((affect.tool()!=null)
+			if((msg.tool()!=null)
 			&&(!mob.amDead())
-			&&(affect.tool() instanceof Weapon))
+			&&(msg.tool() instanceof Weapon))
 			{
-				affect.modify(affect.source(),affect.target(),affect.tool(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-				affect.addTrailerMsg(new FullMsg((MOB)affect.target(),affect.source(),Affect.MSG_OK_VISUAL,"<S-NAME> tumble(s) around the attack from <T-NAME>."));
+				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+				msg.addTrailerMsg(new FullMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> tumble(s) around the attack from <T-NAME>."));
 				if((++hits)>=2)
 					unInvoke();
 			}
@@ -60,7 +60,7 @@ public class Fighter_Tumble extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
+		if(mob.fetchEffect(this.ID())!=null)
 		{
 			mob.tell("You are already tumbling.");
 			return false;
@@ -82,8 +82,8 @@ public class Fighter_Tumble extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT,auto?"<T-NAME> begin(s) tumbling around!":"<S-NAME> tumble(s) around!");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> begin(s) tumbling around!":"<S-NAME> tumble(s) around!");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				hits=0;

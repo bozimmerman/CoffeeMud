@@ -44,11 +44,11 @@ public class GenCaged extends GenItem implements CagedAnimal
 		recoverEnvStats();
 		return true;
 	}
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this)
 		   &&(baseEnvStats().ability()==0)
-		   &&(msg.targetMinor()==Affect.TYP_GET))
+		   &&(msg.targetMinor()==CMMsg.TYP_GET))
 		{
 			MOB M=unCageMe();
 			if((M!=null)&&(msg.source().location()!=null))
@@ -56,7 +56,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 			destroy();
 			return;
 		}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
 	public MOB unCageMe()
 	{

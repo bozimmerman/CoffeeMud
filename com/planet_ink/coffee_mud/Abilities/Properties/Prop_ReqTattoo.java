@@ -36,36 +36,36 @@ public class Prop_ReqTattoo extends Property
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
-		&&(affect.target()!=null)
-		&&(!Sense.isFalling(affect.source()))
-		&&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
+		&&(msg.target()!=null)
+		&&(!Sense.isFalling(msg.source()))
+		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
-			if(((affect.target() instanceof Room)&&(affect.targetMinor()==Affect.TYP_ENTER))
-			||((affect.target() instanceof Item)&&(affect.targetMinor()==Affect.TYP_GET)))
+			if(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
+			||((msg.target() instanceof Item)&&(msg.targetMinor()==CMMsg.TYP_GET)))
 			{
 				Hashtable H=new Hashtable();
 				if(text().toUpperCase().indexOf("NOFOL")>=0)
-					H.put(affect.source(),affect.source());
+					H.put(msg.source(),msg.source());
 				else
 				{
-					affect.source().getGroupMembers(H);
+					msg.source().getGroupMembers(H);
 					for(Enumeration e=H.elements();e.hasMoreElements();)
 						((MOB)e.nextElement()).getRideBuddies(H);
 				}
 				for(Enumeration e=H.elements();e.hasMoreElements();)
 					if(passesMuster((MOB)e.nextElement()))
-						return super.okAffect(myHost,affect);
-				if(affect.target() instanceof Room)
-					affect.source().tell("You have not been granted authorization to go that way.");
+						return super.okMessage(myHost,msg);
+				if(msg.target() instanceof Room)
+					msg.source().tell("You have not been granted authorization to go that way.");
 				else
-				if(affect.source().location()!=null)
-					affect.source().location().show(affect.source(),null,affected,Affect.MSG_OK_ACTION,"<O-NAME> flashes and flies out of <S-HIS-HER> hands!");
+				if(msg.source().location()!=null)
+					msg.source().location().show(msg.source(),null,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> flashes and flies out of <S-HIS-HER> hands!");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

@@ -15,10 +15,10 @@ public class Dance_Swords extends Dance
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected String danceOf(){return name()+" Dance";}
 	protected boolean skipStandardDanceInvoke(){return true;}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((!super.okAffect(myHost,affect))
+		if((!super.okMessage(myHost,msg))
 		||(affected==null))
 		{
 			if(affected instanceof MOB)
@@ -28,11 +28,11 @@ public class Dance_Swords extends Dance
 			return false;
 		}
 		else
-		if(affect.amITarget(affected))
-			switch(affect.targetMinor())
+		if(msg.amITarget(affected))
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_GET:
-			case Affect.TYP_REMOVE:
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_REMOVE:
 				if(affected instanceof MOB)
 					undance((MOB)affected,null,this);
 				else
@@ -51,7 +51,7 @@ public class Dance_Swords extends Dance
 		&&(((Item)E).owner()!=null)
 		&&(((Item)E).owner() instanceof Room))
 		{
-			((Room)((Item)E).owner()).showHappens(Affect.MSG_OK_ACTION,E.name()+" vanishes!");
+			((Room)((Item)E).owner()).showHappens(CMMsg.MSG_OK_ACTION,E.name()+" vanishes!");
 			((Item)E).destroy();
 		}
 	}
@@ -77,7 +77,7 @@ public class Dance_Swords extends Dance
 				if((I!=null)
 				&&(I instanceof Weapon)
 				&&(((Weapon)I).weaponClassification()==Weapon.CLASS_SWORD)
-				&&(I.fetchAffect(ID())==null))
+				&&(I.fetchEffect(ID())==null))
 				{
 					sword=(Weapon)I;
 					break;
@@ -109,11 +109,11 @@ public class Dance_Swords extends Dance
 																   +((Item)affected).envStats().attackAdjustment()
 																   +invoker().getVictim().adjustedArmor()));
 				if((!isHit)||(!(affected instanceof Weapon)))
-					invoker().location().show(invoker(),invoker().getVictim(),affected,Affect.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
+					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
 					ExternalPlay.postDamage(invoker(),invoker().getVictim(),(Item)affected,
 											Dice.roll(1,affected.envStats().damage(),5),
-											Affect.MASK_GENERAL|Affect.TYP_WEAPONATTACK,
+											CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}
 			else
@@ -121,19 +121,19 @@ public class Dance_Swords extends Dance
 			switch(Dice.roll(1,5,0))
 			{
 			case 1:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" twiches a bit.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" twiches a bit.");
 				break;
 			case 2:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" is looking for trouble.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" is looking for trouble.");
 				break;
 			case 3:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" practices its moves.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" practices its moves.");
 				break;
 			case 4:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
 				break;
 			case 5:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" dances around.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" dances around.");
 				break;
 			}
 		}
@@ -147,7 +147,7 @@ public class Dance_Swords extends Dance
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -161,11 +161,11 @@ public class Dance_Swords extends Dance
 		if(success)
 		{
 			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";
-			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
+			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -176,24 +176,24 @@ public class Dance_Swords extends Dance
 				MOB follower=mob;
 
 				// malicious dances must not affect the invoker!
-				int affectType=Affect.MSG_CAST_SOMANTIC_SPELL;
-				if(auto) affectType=affectType|Affect.MASK_GENERAL;
+				int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
+				if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 
-				if((Sense.canBeSeenBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
+				if((Sense.canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 				{
 					FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
-					if(mob.location().okAffect(mob,msg2))
+					if(mob.location().okMessage(mob,msg2))
 					{
 						follower.location().send(follower,msg2);
-						if((!msg2.wasModified())&&(follower.fetchAffect(newOne.ID())==null))
-							follower.addAffect(newOne);
+						if((!msg2.wasModified())&&(follower.fetchEffect(newOne.ID())==null))
+							follower.addEffect(newOne);
 					}
 				}
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> make(s) a false step.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> make(s) a false step.");
 
 		return success;
 	}

@@ -104,7 +104,7 @@ public class Healer extends Cleric
 
 	public void tick(MOB myChar, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)&&(myChar.charStats().getClassLevel(this)>=30))
+		if((tickID==Host.TICK_MOB)&&(myChar.charStats().getClassLevel(this)>=30))
 		{
 			if(((--fiveDown)>1)&&((--tenDown)>1)&&((--twentyDown)>1)) return;
 
@@ -167,23 +167,23 @@ public class Healer extends Cleric
 	public String otherLimitations(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
 	public String weaponLimitations(){return "May use Blunt, Flailed weapons, Hammers, and Natural (unarmed) weapons only.";}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(!super.okAffect(myChar, affect))
+		if(!super.okMessage(myChar, msg))
 			return false;
 
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(myChar.isMine(affect.tool()))
-			&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
+			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(myChar.isMine(msg.tool()))
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 			{
 				int align=myChar.getAlignment();
-				Ability A=(Ability)affect.tool();
+				Ability A=(Ability)msg.tool();
 
 				if(A.appropriateToMyAlignment(align))
 					return true;
@@ -225,74 +225,74 @@ public class Healer extends Cleric
 				return false;
 			}
 			else
-			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon))
+			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon))
 			{
 
-				if((((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_BLUNT)
-				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_HAMMER)
-				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_FLAILED)
-				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_NATURAL))
+				if((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_BLUNT)
+				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_HAMMER)
+				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_FLAILED)
+				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL))
 					return true;
 				if(myChar.fetchWieldedItem()==null) return true;
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
 					return false;
 				}
 			}
 			else
-			if((affect.amITarget(myChar))
-			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-			&&((affect.sourceMinor()==Affect.TYP_COLD)
-				||(affect.sourceMinor()==Affect.TYP_WATER)))
+			if((msg.amITarget(myChar))
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&((msg.sourceMinor()==CMMsg.TYP_COLD)
+				||(msg.sourceMinor()==CMMsg.TYP_WATER)))
 			{
 				int recovery=myChar.charStats().getClassLevel(this);
-				SaucerSupport.adjustDamageMessage(affect,recovery*-1);
+				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
 			}
 			else
-			if((affect.amITarget(myChar))
-			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-			&&(affect.sourceMinor()==Affect.TYP_FIRE))
+			if((msg.amITarget(myChar))
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&(msg.sourceMinor()==CMMsg.TYP_FIRE))
 			{
-				int recovery=affect.targetCode()-Affect.MASK_HURT;
-				SaucerSupport.adjustDamageMessage(affect,recovery);
+				int recovery=msg.targetCode()-CMMsg.MASK_HURT;
+				SaucerSupport.adjustDamageMessage(msg,recovery);
 			}
 		}
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if(!(myHost instanceof MOB)) return;
 		MOB myChar=(MOB)myHost;
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(myChar.isMine(affect.tool()))
-			&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
+			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(myChar.isMine(msg.tool()))
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 			{
-				if((affect.target()!=null)
-				   &&(affect.target() instanceof MOB))
+				if((msg.target()!=null)
+				   &&(msg.target() instanceof MOB))
 				{
-					MOB tmob=(MOB)affect.target();
-					if(affect.tool().ID().equals("Prayer_CureLight"))
+					MOB tmob=(MOB)msg.target();
+					if(msg.tool().ID().equals("Prayer_CureLight"))
 						tmob.curState().adjHitPoints(Dice.roll(2,6,4),tmob.maxState());
 					else
-					if(affect.tool().ID().equals("Prayer_CureSerious"))
+					if(msg.tool().ID().equals("Prayer_CureSerious"))
 						tmob.curState().adjHitPoints(Dice.roll(2,16,4),tmob.maxState());
 					else
-					if(affect.tool().ID().equals("Prayer_CureCritical"))
+					if(msg.tool().ID().equals("Prayer_CureCritical"))
 						tmob.curState().adjHitPoints(Dice.roll(4,16,4),tmob.maxState());
 					else
-					if(affect.tool().ID().equals("Prayer_Heal"))
+					if(msg.tool().ID().equals("Prayer_Heal"))
 						tmob.curState().adjHitPoints(Dice.roll(5,20,4),tmob.maxState());
 					else
-					if(affect.tool().ID().equals("Prayer_MassHeal"))
+					if(msg.tool().ID().equals("Prayer_MassHeal"))
 						tmob.curState().adjHitPoints(Dice.roll(5,20,4),tmob.maxState());
 				}
 			}

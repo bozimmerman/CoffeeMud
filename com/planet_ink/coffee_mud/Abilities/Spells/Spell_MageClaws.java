@@ -15,16 +15,16 @@ public class Spell_MageClaws extends Spell
 	public Environmental newInstance()	{ return new Spell_MageClaws();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
 
-		if((affect.amISource(mob))
-		&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-		&&(affect.tool()==null))
+		if((msg.amISource(mob))
+		&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(msg.tool()==null))
 		{
 			Weapon w=(Weapon)CMClass.getItem("GenWeapon");
 			w.setName("a pair of jagged claws");
@@ -33,9 +33,9 @@ public class Spell_MageClaws extends Spell
 			w.baseEnvStats().setDamage(15);
 			w.baseEnvStats().setAttackAdjustment(20);
 			w.recoverEnvStats();
-			affect.modify(affect.source(),affect.target(),w,affect.sourceCode(),affect.sourceMessage(),affect.targetCode(),affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+			msg.modify(msg.source(),msg.target(),w,msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -48,7 +48,7 @@ public class Spell_MageClaws extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> claws return to normal.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> claws return to normal.");
 	}
 
 
@@ -75,10 +75,10 @@ public class Spell_MageClaws extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> hands turn into brutal claws!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> hands turn into brutal claws!");
 				beneficialAffect(mob,target,0);
 			}
 		}

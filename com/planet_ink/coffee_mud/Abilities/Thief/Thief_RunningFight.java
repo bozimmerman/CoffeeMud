@@ -17,8 +17,8 @@ public class Thief_RunningFight extends ThiefSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	private MOB lastOpponent=null;
-	
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(lastOpponent!=null))
 		{
@@ -30,23 +30,23 @@ public class Thief_RunningFight extends ThiefSkill
 				lastOpponent=null;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
-		if(affect.amISource(mob)
-		&&(affect.targetMinor()==Affect.TYP_LEAVE)
+		if(msg.amISource(mob)
+		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(mob.isInCombat())
 		&&(mob.getVictim()!=null)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof Room)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Exit)
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof Room)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Exit)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false))
 		&&(Dice.rollPercentage()>mob.getVictim().charStats().getSave(CharStats.SAVE_TRAPS))
 		&&(Dice.rollPercentage()>mob.getVictim().charStats().getSave(CharStats.SAVE_MIND)))
@@ -63,13 +63,13 @@ public class Thief_RunningFight extends ThiefSkill
 				if(mob.location().getRoomInDir(i)!=null)
 				{
 					if((mob.location().getRoomInDir(i)!=null)
-					&&(mob.location().getReverseExit(i)==affect.tool()))
+					&&(mob.location().getReverseExit(i)==msg.tool()))
 					{
 						dir=i; break;
 					}
 				}
 			}
-			if(dir<0) return super.okAffect(myHost,affect);
+			if(dir<0) return super.okMessage(myHost,msg);
 			mob.makePeace();
 			if(ExternalPlay.move(M,dir,false,false))
 			{
@@ -82,6 +82,6 @@ public class Thief_RunningFight extends ThiefSkill
 				mob.setVictim(M);
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

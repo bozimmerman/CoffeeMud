@@ -19,16 +19,16 @@ public class Prayer_CureBlindness extends Prayer
 		MOB newerMOB=(MOB)CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
-		FullMsg msg=new FullMsg(newMOB,newerMOB,null,Affect.MSG_EXAMINESOMETHING,null);
-		for(int a=0;a<fromMe.numAffects();a++)
+		FullMsg msg=new FullMsg(newMOB,newerMOB,null,CMMsg.MSG_EXAMINESOMETHING,null);
+		for(int a=0;a<fromMe.numEffects();a++)
 		{
-			Ability A=fromMe.fetchAffect(a);
+			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)
 			{
 				newMOB.recoverEnvStats();
 				A.affectEnvStats(newMOB,newMOB.envStats());
 				if((!Sense.canSee(newMOB))
-				   ||(!A.okAffect(newMOB,msg)))
+				   ||(!A.okMessage(newMOB,msg)))
 				if((A.invoker()==null)
 				   ||((A.invoker()!=null)
 					  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
@@ -56,7 +56,7 @@ public class Prayer_CureBlindness extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A visible glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to see the light.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)

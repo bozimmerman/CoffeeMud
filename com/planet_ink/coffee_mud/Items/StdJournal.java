@@ -22,29 +22,29 @@ public class StdJournal extends StdItem
 	{
 		return new StdJournal();
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
-		switch(affect.targetMinor())
+		if(msg.amITarget(this))
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_WRITE:
-			if((!SaucerSupport.zapperCheck(getWriteReq(),affect.source()))&&(!affect.source().isASysOp(null)))
+		case CMMsg.TYP_WRITE:
+			if((!SaucerSupport.zapperCheck(getWriteReq(),msg.source()))&&(!msg.source().isASysOp(null)))
 			{
-				affect.source().tell("You are not allowed to write on "+name());
+				msg.source().tell("You are not allowed to write on "+name());
 				return false;
 			}
 			return true;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		if(affect.amITarget(this))
-		switch(affect.targetMinor())
+		MOB mob=msg.source();
+		if(msg.amITarget(this))
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_READSOMETHING:
+		case CMMsg.TYP_READSOMETHING:
 			if(!Sense.canBeSeenBy(this,mob))
 				mob.tell("You can't see that!");
 			else
@@ -58,8 +58,8 @@ public class StdJournal extends StdItem
 					return;
 				}
 				int which=-1;
-				if(Util.s_long(affect.targetMessage())>0)
-					which=Util.s_int(affect.targetMessage());
+				if(Util.s_long(msg.targetMessage())>0)
+					which=Util.s_int(msg.targetMessage());
 				StringBuffer entry=DBRead(Name(),mob.Name(),which-1,lastTime);
 				boolean mineAble=false;
 				if(entry.charAt(0)=='#')
@@ -121,10 +121,10 @@ public class StdJournal extends StdItem
 				return;
 			}
 			return;
-		case Affect.TYP_WRITE:
+		case CMMsg.TYP_WRITE:
 			try
 			{
-				if((affect.targetMessage().toUpperCase().startsWith("DEL"))
+				if((msg.targetMessage().toUpperCase().startsWith("DEL"))
 				   &&(mob.isASysOp(null))
 				   &&(!mob.isMonster()))
 				{
@@ -172,7 +172,7 @@ public class StdJournal extends StdItem
 			}
 			return;
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	public StringBuffer DBRead(String Journal, String username, int which, long lastTimeDate)

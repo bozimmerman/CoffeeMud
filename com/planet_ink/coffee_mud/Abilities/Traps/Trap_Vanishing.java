@@ -20,9 +20,9 @@ public class Trap_Vanishing extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> foil(s) a trap on "+affected.name()+"!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> foil(s) a trap on "+affected.name()+"!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> notice(s) something about "+affected.name()+" .. it's fading away."))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> notice(s) something about "+affected.name()+" .. it's fading away."))
 			{
 				super.spring(target);
 				affected.baseEnvStats().setDisposition(affected.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);

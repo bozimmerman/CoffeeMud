@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_SummonMoon extends Chant
 {
 	public String ID() { return "Chant_SummonMoon"; }
-	public String name(){ return "Summon Moon";} 
+	public String name(){ return "Summon Moon";}
 	public String displayText(){return "(Summon Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
@@ -58,8 +58,8 @@ public class Chant_SummonMoon extends Chant
 			mob.tell("This chant only works indoors.");
 			return false;
 		}
-		
-		if(target.fetchAffect(ID())!=null)
+
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already under the summoned moon.");
 			return false;
@@ -81,12 +81,12 @@ public class Chant_SummonMoon extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Moon pierces into the room!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Moon pierces into the room!");
 					beneficialAffect(mob,target,0);
 				}
 			}

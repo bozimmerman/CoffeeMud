@@ -21,9 +21,9 @@ public class Thief_UsePoison extends ThiefSkill
 	{
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numAffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++)
 		{
-			Ability A=fromMe.fetchAffect(a);
+			Ability A=fromMe.fetchEffect(a);
 			if((A!=null)&&(A.classificationCode()==Ability.POISON))
 				offenders.addElement(A);
 		}
@@ -68,8 +68,8 @@ public class Thief_UsePoison extends ThiefSkill
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,"<S-NAME> attempt(s) to poison <T-NAMESELF>.");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> attempt(s) to poison <T-NAMESELF>.");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(success)
@@ -79,7 +79,7 @@ public class Thief_UsePoison extends ThiefSkill
 					if(target instanceof Weapon)
 						A.invoke(mob,target,true);
 					else
-						target.addNonUninvokableAffect(A);
+						target.addNonUninvokableEffect(A);
 			}
 		}
 		return success;

@@ -28,7 +28,7 @@ public class Prayer_ChainStrike extends Prayer
 			if((M!=mob)&&(!targets.contains(M))) targets.addElement(M);
 		}
 		targets.addElement(mob);
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -38,7 +38,7 @@ public class Prayer_ChainStrike extends Prayer
 
 		int maxDie=adjustedLevel(mob);
 		int damage = Dice.roll(maxDie,8,1);
-		
+
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
@@ -60,7 +60,7 @@ public class Prayer_ChainStrike extends Prayer
 							   &&(M2.location()==mob.location()))
 								 count++;
 						}
-						if(count<2) 
+						if(count<2)
 							return true;
 						continue;
 					}
@@ -73,9 +73,9 @@ public class Prayer_ChainStrike extends Prayer
 					if((target==mob)||(myGroup.contains(target)))
 					   auto=true;
 					FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-					FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC|(auto?Affect.MASK_GENERAL:0),null);
+					FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_GENERAL:0),null);
 					auto=oldAuto;
-					if((mob.location().okAffect(mob,msg))&&((mob.location().okAffect(mob,msg2))))
+					if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 					{
 						mob.location().send(mob,msg);
 						mob.location().send(mob,msg2);
@@ -86,7 +86,7 @@ public class Prayer_ChainStrike extends Prayer
 							dmg = (int)Math.round(Util.div(dmg,2.0));
 						if(target.location()==mob.location())
 						{
-							ExternalPlay.postDamage(mob,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The strike <DAMAGE> <T-NAME>!");
+							ExternalPlay.postDamage(mob,target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The strike <DAMAGE> <T-NAME>!");
 							damage = (int)Math.round(Util.div(damage,2.0));
 							if(damage<5){ damage=0; break;}
 						}

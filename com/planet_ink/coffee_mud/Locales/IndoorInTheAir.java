@@ -23,15 +23,15 @@ public class IndoorInTheAir extends StdRoom
 	{
 		return new IndoorInTheAir();
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect)) return false;
-		return InTheAir.isOkAirAffect(this,affect);
+		if(!super.okMessage(myHost,msg)) return false;
+		return InTheAir.isOkAirAffect(this,msg);
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		InTheAir.airAffects(this,affect);
+		super.executeMsg(myHost,msg);
+		InTheAir.airAffects(this,msg);
 	}
-	
+
 }

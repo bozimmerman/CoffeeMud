@@ -25,16 +25,16 @@ public class Prayer_HolyWind extends Prayer
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((doneTicking)&&(affect.amISource(mob)))
+		if((doneTicking)&&(msg.amISource(mob)))
 			unInvoke();
 		else
-		if(affect.amISource(mob)&&(affect.sourceMinor()==Affect.TYP_STAND))
+		if(msg.amISource(mob)&&(msg.sourceMinor()==CMMsg.TYP_STAND))
 			return false;
 		return true;
 	}
@@ -51,8 +51,8 @@ public class Prayer_HolyWind extends Prayer
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					ExternalPlay.standIfNecessary(mob);
@@ -93,7 +93,7 @@ public class Prayer_HolyWind extends Prayer
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> get(s) blown back!");
-				if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
+				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					if((!msg.wasModified())&&(target.location()==mob.location()))
 					{
@@ -113,7 +113,7 @@ public class Prayer_HolyWind extends Prayer
 						&&(Dice.rollPercentage()>(((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level()))-(5*howLong))
 						&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 						{
-							mob.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) down!");
+							mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");
 							doneTicking=false;
 							success=maliciousAffect(mob,target,howLong,-1);
 						}

@@ -75,8 +75,8 @@ public class Thief_SlipItem extends ThiefSkill
 		{
 			if(Dice.rollPercentage()>discoverChance)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to slip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off you and fails!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off <T-NAME> and fails!");
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to slip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off <T-NAME> and fails!");
+				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
@@ -93,14 +93,14 @@ public class Thief_SlipItem extends ThiefSkill
 
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
-			int hisCode=Affect.MSG_THIEF_ACT;
+			int hisCode=CMMsg.MSG_THIEF_ACT;
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
 			else
-				hisCode=hisCode|((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
+				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
 
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))
@@ -108,8 +108,8 @@ public class Thief_SlipItem extends ThiefSkill
 					if(target.getVictim()==mob)
 						target.makePeace();
 				}
-				msg=new FullMsg(target,stolen,null,Affect.MSG_REMOVE,Affect.MSG_REMOVE,Affect.MSG_NOISE,null);
-				if(target.location().okAffect(target,msg))
+				msg=new FullMsg(target,stolen,null,CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,CMMsg.MSG_NOISE,null);
+				if(target.location().okMessage(target,msg))
 					target.location().send(mob,msg);
 			}
 		}

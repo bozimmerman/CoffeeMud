@@ -68,11 +68,11 @@ public class Fighter_FlyingKick extends StdAbility
 			invoker=mob;
 			int topDamage=adjustedLevel(mob)+20;
 			int damage=Dice.roll(1,topDamage,0);
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.MSG_NOISYMOVEMENT,Weapon.TYPE_BASHING,"^F<S-NAME> <DAMAGE> <T-NAME> with a flying KICK!^?"+CommonStrings.msp("bashed1.wav",30));
+				ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_BASHING,"^F<S-NAME> <DAMAGE> <T-NAME> with a flying KICK!^?"+CommonStrings.msp("bashed1.wav",30));
 				if(mob.getVictim()==target)
 				{
 					mob.setAtRange(0);

@@ -39,19 +39,19 @@ public class Wand_Fire extends StdWand
 	}
 
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		switch(affect.sourceMinor())
+		MOB mob=msg.source();
+		switch(msg.sourceMinor())
 		{
-		case Affect.TYP_SPEAK:
+		case CMMsg.TYP_SPEAK:
 			if((mob.isMine(this))
 			   &&(!amWearingAt(Item.INVENTORY))
-			   &&(affect.target() instanceof MOB)
-			   &&(mob.location().isInhabitant((MOB)affect.target())))
+			   &&(msg.target() instanceof MOB)
+			   &&(mob.location().isInhabitant((MOB)msg.target())))
 			{
-				MOB target=(MOB)affect.target();
-				int x=affect.targetMessage().toUpperCase().indexOf("BLAZE");
+				MOB target=(MOB)msg.target();
+				int x=msg.targetMessage().toUpperCase().indexOf("BLAZE");
 				if(x>=0)
 				{
 					Ability spell = CMClass.getAbility("Spell_BurningHands");
@@ -62,7 +62,7 @@ public class Wand_Fire extends StdWand
 						return;
 					}
 				}
-				x=affect.targetMessage().toUpperCase().indexOf("BURN");
+				x=msg.targetMessage().toUpperCase().indexOf("BURN");
 				if(x>=0)
 				{
 					Ability spell = CMClass.getAbility("Spell_Fireball");
@@ -78,6 +78,6 @@ public class Wand_Fire extends StdWand
 		default:
 			break;
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

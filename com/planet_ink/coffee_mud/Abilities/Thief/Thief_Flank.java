@@ -44,7 +44,7 @@ public class Thief_Flank extends ThiefSkill
 			unInvoke();
 		return true;
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(target==null))
 			return true;
@@ -58,7 +58,7 @@ public class Thief_Flank extends ThiefSkill
 			unInvoke();
 		if(target.getVictim()==mob)
 			unInvoke();
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -103,8 +103,8 @@ public class Thief_Flank extends ThiefSkill
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.MSG_THIEF_ACT,auto?"":"<S-NAME> flank(s) <T-NAMESELF>!");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"":"<S-NAME> flank(s) <T-NAMESELF>!");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target=mob.getVictim();

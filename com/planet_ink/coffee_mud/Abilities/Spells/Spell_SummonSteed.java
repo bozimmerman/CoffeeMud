@@ -30,7 +30,7 @@ public class Spell_SummonSteed extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -43,14 +43,14 @@ public class Spell_SummonSteed extends Spell
 				||(invoker.location()==null)
 				||((invoker!=null)&&(mob.location()!=invoker.location())&&(invoker.riding()!=affected))))
 				{
-					mob.delAffect(this);
+					mob.delEffect(this);
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 				}
                 if((mob.amFollowing()==null)&&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
                 {
-                    mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> flees.");
-                    mob.delAffect(this);
+                    mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> flees.");
+                    mob.delEffect(this);
                     if(mob.amDead()) mob.setLocation(null);
                     mob.destroy();
                 }
@@ -59,13 +59,13 @@ public class Spell_SummonSteed extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==Affect.TYP_QUIT))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			unInvoke();
 	}
 
@@ -80,13 +80,13 @@ public class Spell_SummonSteed extends Spell
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> call(s) for a loyal steed.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
                 MOB squabble = checkPack(target, mob);
-                target.addNonUninvokableAffect( (Ability) copyOf());
-                if(squabble==null) 
+                target.addNonUninvokableEffect( (Ability) copyOf());
+                if(squabble==null)
 				{
                     if (target.isInCombat()) target.makePeace();
                     ExternalPlay.follow(target, mob, true);
@@ -96,7 +96,7 @@ public class Spell_SummonSteed extends Spell
                 }
                 else
                 {
-                    squabble.location().showOthers(squabble,target,Affect.MSG_OK_ACTION,"^F<S-NAME> bares its teeth at <T-NAME> and begins to attack!^?");
+                    squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,"^F<S-NAME> bares its teeth at <T-NAME> and begins to attack!^?");
                     target.setVictim(squabble);
                 }
 			}
@@ -163,7 +163,7 @@ public class Spell_SummonSteed extends Spell
 		newMOB.resetToMaxState();
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
-		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);
@@ -171,13 +171,13 @@ public class Spell_SummonSteed extends Spell
 
 	}
 
-    public MOB checkPack(MOB newPackmate, MOB mob) 
+    public MOB checkPack(MOB newPackmate, MOB mob)
 	{
-        for(int i=0;i<mob.numFollowers();i++) 
+        for(int i=0;i<mob.numFollowers();i++)
 		{
             MOB possibleBitch = mob.fetchFollower(i);
             if(newPackmate.Name().equalsIgnoreCase(possibleBitch.Name())
-            && (Dice.rollPercentage()-mob.charStats().CHARISMA+newPackmate.envStats().level() > 75)) 
+            && (Dice.rollPercentage()-mob.charStats().CHARISMA+newPackmate.envStats().level() > 75))
                 return possibleBitch;
         }
         return null;

@@ -12,20 +12,20 @@ public class Prop_SparringRoom extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prop_SparringRoom();}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affect.sourceMinor()==Affect.TYP_DEATH)
-		&&(!affect.source().isMonster()))
+		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
+		&&(!msg.source().isMonster()))
 		{
 			MOB source=null;
-			if((affect.tool()!=null)&&(affect.tool() instanceof MOB))
-				source=(MOB)affect.tool();
-			MOB target=affect.source();
+			if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+				source=(MOB)msg.tool();
+			MOB target=msg.source();
 			Room deathRoom=target.location();
-			deathRoom.show(source,source,Affect.MSG_OK_VISUAL,affect.sourceMessage());
+			deathRoom.show(source,source,CMMsg.MSG_OK_VISUAL,msg.sourceMessage());
 			Hashtable beneficiaries=new Hashtable();
 			if((source!=null)&&(source.charStats()!=null))
 			{
@@ -40,9 +40,9 @@ public class Prop_SparringRoom extends Property
 			}
 			target.makePeace();
 			target.setRiding(null);
-			for(int a=target.numAffects()-1;a>=0;a--)
+			for(int a=target.numEffects()-1;a>=0;a--)
 			{
-				Ability A=target.fetchAffect(a);
+				Ability A=target.fetchEffect(a);
 				if(A!=null) A.unInvoke();
 			}
 			target.setLocation(null);
@@ -62,7 +62,7 @@ public class Prop_SparringRoom extends Property
 			if(R==null) R=target.getStartRoom();
 			R.bringMobHere(target,false);
 			target.bringToLife(R,true);
-			target.location().showOthers(target,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+			target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 			deathRoom.recoverRoomStats();
 			return false;
 		}

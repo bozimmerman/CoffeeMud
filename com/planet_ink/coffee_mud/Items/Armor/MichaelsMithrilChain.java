@@ -25,18 +25,18 @@ public class MichaelsMithrilChain extends StdArmor
 		material=EnvResource.RESOURCE_MITHRIL;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((affect.target()==null)||(!(affect.target() instanceof MOB)))
+		if((msg.target()==null)||(!(msg.target() instanceof MOB)))
 			return true;
 
-		MOB mob=(MOB)affect.target();
-		if((affect.targetMinor()==affect.TYP_ELECTRIC)
+		MOB mob=(MOB)msg.target();
+		if((msg.targetMinor()==CMMsg.TYP_ELECTRIC)
 		&&(!this.amWearingAt(Item.INVENTORY))
 		&&(!this.amWearingAt(Item.HELD))
 		&&(mob.isMine(this)))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> appear(s) to be unaffected.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> appear(s) to be unaffected.");
 			return false;
 		}
 		return true;

@@ -32,19 +32,19 @@ public class Spell_Immunity extends Spell
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==immunityType)
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.targetMinor()==immunityType)
 		&&(!mob.amDead())
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
-			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attack from <T-NAME>.");
+			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attack from <T-NAME>.");
 			return false;
 		}
 		return true;
@@ -63,28 +63,28 @@ public class Spell_Immunity extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) an immunity barrier.":"^S<S-NAME> invoke(s) an immunity barrier around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				switch(Dice.roll(1,5,0))
 				{
 				case 1:
-					immunityType=Affect.TYP_ACID;
+					immunityType=CMMsg.TYP_ACID;
 					immunityName="acid";
 					break;
 				case 2:
-					immunityType=Affect.TYP_FIRE;
+					immunityType=CMMsg.TYP_FIRE;
 					immunityName="fire";
 					break;
 				case 3:
-					immunityType=Affect.TYP_GAS;
+					immunityType=CMMsg.TYP_GAS;
 					immunityName="gas";
 					break;
 				case 4:
-					immunityType=Affect.TYP_COLD;
+					immunityType=CMMsg.TYP_COLD;
 					immunityName="cold";
 					break;
 				case 5:
-					immunityType=Affect.TYP_ELECTRIC;
+					immunityType=CMMsg.TYP_ELECTRIC;
 					immunityName="electricity";
 					break;
 				}

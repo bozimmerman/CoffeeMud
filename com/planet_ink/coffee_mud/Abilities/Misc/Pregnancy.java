@@ -46,7 +46,7 @@ public class Pregnancy extends StdAbility
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((tickID==Host.MOB_TICK)&&(affected!=null)&&(affected instanceof MOB))
+		if((tickID==Host.TICK_MOB)&&(affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			int x=text().indexOf("/");
@@ -63,7 +63,7 @@ public class Pregnancy extends StdAbility
 					if(days<7) // BIRTH!
 					{
 						if((Dice.rollPercentage()>50)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>5))
-							mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain!!");
+							mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain!!");
 						labor=true;
 						ticksInLabor++;
 						if(ticksInLabor>45)
@@ -94,9 +94,9 @@ public class Pregnancy extends StdAbility
 							}
 							desc+=".";
 
-							mob.location().show(mob,null,Affect.MSG_NOISE,"***** "+mob.name().toUpperCase()+" GIVE(S) BIRTH ******");
-							Ability A=mob.fetchAffect(ID());
-							if(A!=null) mob.delAffect(A);
+							mob.location().show(mob,null,CMMsg.MSG_NOISE,"***** "+mob.name().toUpperCase()+" GIVE(S) BIRTH ******");
+							Ability A=mob.fetchEffect(ID());
+							if(A!=null) mob.delEffect(A);
 							MOB babe=CMClass.getMOB("GenMOB");
 							Race R=CMClass.getRace((String)races.elementAt(Dice.roll(1,races.size(),-1)));
 							if(R==null) R=mob.baseCharStats().getMyRace();
@@ -123,7 +123,7 @@ public class Pregnancy extends StdAbility
 							babe.baseState().setMovement(0);
 							Ability A3=CMClass.getAbility("Age");
 							A3.setMiscText(""+System.currentTimeMillis());
-							babe.addNonUninvokableAffect(A3);
+							babe.addNonUninvokableEffect(A3);
 							babe.recoverCharStats();
 							babe.recoverEnvStats();
 							babe.recoverMaxState();
@@ -131,7 +131,7 @@ public class Pregnancy extends StdAbility
 							Item I=CMClass.getItem("GenCaged");
 							((CagedAnimal)I).cageMe(babe);
 							I.baseEnvStats().setAbility(1);
-							I.addNonUninvokableAffect(A3);
+							I.addNonUninvokableEffect(A3);
 							I.recoverEnvStats();
 							mob.location().addItem(I);
 							Behavior B=CMClass.getBehavior("Emoter");
@@ -168,7 +168,7 @@ public class Pregnancy extends StdAbility
 		if(success)
 		{
 			setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
-			target.addNonUninvokableAffect(this);
+			target.addNonUninvokableEffect(this);
 		}
 		return success;
 	}

@@ -23,7 +23,7 @@ public class Disease_Infection extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> infected wounds.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> wince(s) in pain.";}
 	public int abilityCode(){return 0;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -42,7 +42,7 @@ public class Disease_Infection extends Disease
 		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE))
 		&&(Dice.rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION)))
 		{
-			mob.delAffect(this);
+			mob.delEffect(this);
 			Ability A=CMClass.getAbility("Disease_Gangrene");
 			A.invoke(diseaser,mob,true);
 		}
@@ -50,9 +50,9 @@ public class Disease_Infection extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int damage=1;
-			ExternalPlay.postDamage(diseaser,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
+			ExternalPlay.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
 			if(Dice.rollPercentage()==1)
 			{
 				Ability A=CMClass.getAbility("Disease_Fever");

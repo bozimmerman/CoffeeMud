@@ -17,10 +17,10 @@ public class MobileGoodGuardian extends Mobile
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if(!canFreelyBehaveNormal(ticking)) return true;
 		MOB mob=(MOB)ticking;
-		
+
 		// ridden things dont wander!
 		if(ticking instanceof Rideable)
 			if(((Rideable)ticking).numRiders()>0)
@@ -28,7 +28,7 @@ public class MobileGoodGuardian extends Mobile
 		if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
 		||(!Sense.canTaste(mob)))
 		   return true;
-		
+
 		Room thisRoom=mob.location();
 		MOB victim=GoodGuardian.anyPeaceToMake(mob.location(),mob);
 		GoodGuardian.keepPeace(mob,victim);

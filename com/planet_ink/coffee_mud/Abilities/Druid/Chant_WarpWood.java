@@ -41,10 +41,10 @@ public class Chant_WarpWood extends Chant
 					target=(Item)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1));
 			}
 		}
-		
+
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
-		
+
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -60,7 +60,7 @@ public class Chant_WarpWood extends Chant
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> starts warping!":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
 			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType(auto),null);
-			if((mob.location().okAffect(mob,msg))&&((mobTarget==null)||(mob.location().okAffect(mob,msg2))))
+			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(mobTarget!=null)
@@ -72,15 +72,15 @@ public class Chant_WarpWood extends Chant
 						damage=(int)Math.round(Util.div(damage,2.0));
 					target.setUsesRemaining(target.usesRemaining()-damage);
 					if(mobTarget==null)
-						mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> begin(s) to twist and warp!");
-					else													  
-						mob.location().show(mobTarget,target,Affect.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, twists and warps!");
+						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> begin(s) to twist and warp!");
+					else
+						mob.location().show(mobTarget,target,CMMsg.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, twists and warps!");
 					if(target.usesRemaining()>0)
 						target.recoverEnvStats();
 					else
 					{
 						target.setUsesRemaining(100);
-						mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
+						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
 						target.unWear();
 						target.destroy();
 						mob.location().recoverRoomStats();

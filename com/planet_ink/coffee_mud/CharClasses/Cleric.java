@@ -233,24 +233,24 @@ public class Cleric extends StdCharClass
 		return 500;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(!super.okAffect(myChar, affect))
+		if(!super.okMessage(myChar, msg))
 			return false;
 
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
+			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 			&&(!disableAlignedSpells())
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(myChar.isMine(affect.tool()))
-			&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(myChar.isMine(msg.tool()))
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 			{
 				int align=myChar.getAlignment();
-				Ability A=(Ability)affect.tool();
+				Ability A=(Ability)msg.tool();
 
 				if(A.appropriateToMyAlignment(align))
 					return true;
@@ -286,12 +286,12 @@ public class Cleric extends StdCharClass
 				return false;
 			}
 			else
-			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
 			&&(!disableAlignedWeapons())
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon))
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon))
 			{
-				int classification=((Weapon)affect.tool()).weaponClassification();
+				int classification=((Weapon)msg.tool()).weaponClassification();
 				if(myChar.getAlignment()<350)
 				{
 					if((classification==Weapon.CLASS_POLEARM)
@@ -324,7 +324,7 @@ public class Cleric extends StdCharClass
 				}
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
 					return false;
 				}
 			}

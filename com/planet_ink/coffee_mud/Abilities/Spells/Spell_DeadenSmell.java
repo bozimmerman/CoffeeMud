@@ -57,12 +57,12 @@ public class Spell_DeadenSmell extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) and snort(s) at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> lost <S-HIS-HER> sense of smell!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> lost <S-HIS-HER> sense of smell!");
 					success=beneficialAffect(mob,target,0);
 				}
 			}

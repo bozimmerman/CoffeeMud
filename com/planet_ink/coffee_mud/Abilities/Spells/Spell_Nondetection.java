@@ -31,16 +31,16 @@ public class Spell_Nondetection extends Spell
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
-		&&((((Ability)affect.tool()).classificationCode()&ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
+		if((msg.amITarget(mob))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode()&ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
 		&&(!mob.amDead())
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 			return false;
@@ -60,7 +60,7 @@ public class Spell_Nondetection extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"An undetectable field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an globe of resistance around <T-NAMESELF>.^?"));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				amountAbsorbed=0;
 				mob.location().send(mob,msg);

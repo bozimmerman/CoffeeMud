@@ -87,11 +87,11 @@ public class Song_Thanks extends Song
 		if(success)
 		{
 			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
-			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
+			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -107,25 +107,25 @@ public class Song_Thanks extends Song
 					MOB follower=(MOB)f.nextElement();
 
 					// malicious songs must not affect the invoker!
-					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-					if(auto) affectType=affectType|Affect.MASK_GENERAL;
+					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
+					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 
-					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
+					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
 						FullMsg msg3=msg2;
-						if((mob.location().okAffect(mob,msg2))&&(mob.location().okAffect(mob,msg3)))
+						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
 						{
 							follower.location().send(follower,msg2);
 							if(!msg2.wasModified())
 							{
 								follower.location().send(follower,msg3);
-								if((!msg3.wasModified())&&(follower.fetchAffect(newOne.ID())==null))
+								if((!msg3.wasModified())&&(follower.fetchEffect(newOne.ID())==null))
 								{
 									if(follower!=mob)
-										follower.addAffect((Ability)newOne.copyOf());
+										follower.addEffect((Ability)newOne.copyOf());
 									else
-										follower.addAffect(newOne);
+										follower.addEffect(newOne);
 								}
 							}
 						}
@@ -135,7 +135,7 @@ public class Song_Thanks extends Song
 			}
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
 
 		return success;
 	}

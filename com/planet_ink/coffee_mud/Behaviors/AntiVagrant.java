@@ -30,7 +30,7 @@ public class AntiVagrant extends ActiveTicker
 		anywhere=parms.toUpperCase().indexOf("ANYWHERE")>=0;
 		super.setParms(parms);
 	}
-	
+
 	public void wakeVagrants(MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;
@@ -40,8 +40,8 @@ public class AntiVagrant extends ActiveTicker
 			if(Sense.isSleeping(target)&&(target!=observer))
 			{
 				ExternalPlay.quickSay(observer,target,"Damn lazy good for nothing!",false,false);
-				FullMsg msg=new FullMsg(observer,target,Affect.MSG_NOISYMOVEMENT,"<S-NAME> shake(s) <T-NAME> awake.");
-				if(observer.location().okAffect(observer,msg))
+				FullMsg msg=new FullMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> shake(s) <T-NAME> awake.");
+				if(observer.location().okMessage(observer,msg))
 				{
 					observer.location().send(observer,msg);
 					target.tell(observer.name()+" shakes you awake.");
@@ -54,8 +54,8 @@ public class AntiVagrant extends ActiveTicker
 			if((Sense.isSitting(target)&&(target!=observer)))
 			{
 				ExternalPlay.quickSay(observer,target,"Get up and move along!",false,false);
-				FullMsg msg=new FullMsg(observer,target,Affect.MSG_NOISYMOVEMENT,"<S-NAME> stand(s) <T-NAME> up.");
-				if(observer.location().okAffect(observer,msg))
+				FullMsg msg=new FullMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stand(s) <T-NAME> up.");
+				if(observer.location().okMessage(observer,msg))
 				{
 					observer.location().send(observer,msg);
 					ExternalPlay.standIfNecessary(target);
@@ -79,11 +79,11 @@ public class AntiVagrant extends ActiveTicker
 	}
 
 
-	public void affect(Environmental affecting, Affect msg)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		// believe it or not, this is for arrest behavior.
-		super.affect(affecting,msg);
-		if((msg.sourceMinor()==Affect.TYP_SPEAK)
+		super.executeMsg(affecting,msg);
+		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().toUpperCase().indexOf("SIT")>=0))
 			speakDown=3;
@@ -93,8 +93,8 @@ public class AntiVagrant extends ActiveTicker
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return true;
-		
+		if(tickID!=Host.TICK_MOB) return true;
+
 		// believe it or not, this is for arrest behavior.
 		if(speakDown>0)	{	speakDown--;return true;	}
 

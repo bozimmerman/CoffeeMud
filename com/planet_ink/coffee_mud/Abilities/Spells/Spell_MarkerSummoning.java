@@ -21,9 +21,9 @@ public class Spell_MarkerSummoning extends Spell
 		{
 			Room R=(Room)r.nextElement();
 			if(Sense.canAccess(mob,R))
-			for(int a=0;a<R.numAffects();a++)
+			for(int a=0;a<R.numEffects();a++)
 			{
-				Ability A=R.fetchAffect(a);
+				Ability A=R.fetchEffect(a);
 				if((A!=null)
 				&&(A.invoker()==mob))
 				{
@@ -70,15 +70,15 @@ public class Spell_MarkerSummoning extends Spell
 		if((success)&&(inhabs.size()>0))
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> summon(s) the power of <S-HIS-HER> marker energy!^?");
-			if((mob.location().okAffect(mob,msg))&&(oldRoom.okAffect(mob,msg)))
+			if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<inhabs.size();i++)
 				{
 					MOB follower=(MOB)inhabs.elementAt(i);
-					FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
-					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
-					if(oldRoom.okAffect(follower,leaveMsg)&&newRoom.okAffect(follower,enterMsg))
+					FullMsg enterMsg=new FullMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
+					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
+					if(oldRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						follower.makePeace();
 						oldRoom.send(follower,leaveMsg);
@@ -97,9 +97,9 @@ public class Spell_MarkerSummoning extends Spell
 				for(int i=0;i<items.size();i++)
 				{
 					Item I=(Item)items.elementAt(i);
-					oldRoom.showHappens(Affect.MSG_OK_VISUAL,I.name()+" disappears in a summoning swirl!");
+					oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" disappears in a summoning swirl!");
 					newRoom.bringItemHere(I,-1);
-					newRoom.showHappens(Affect.MSG_OK_VISUAL,I.name()+" appears in a burst of light!");
+					newRoom.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" appears in a burst of light!");
 				}
 			}
 

@@ -92,7 +92,7 @@ public class StdGrid extends StdRoom implements GridLocale
 					break;
 				}
 		if(oldDirCode<0) return null;
-		
+
 		if((oldLoc!=loc)&&(loc instanceof GridLocale))
 		{
 			Room[][] grid=getBuiltGrid();
@@ -132,7 +132,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(subMap!=null) return (Room[][])subMap.clone();
 		return null;
 	}
-	
+
 	public Vector getAllRooms()
 	{
 		Vector V=new Vector();
@@ -368,7 +368,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				if(subMap[x][y]==loc)
 					return roomID()+"#("+x+","+y+")";
 		return "";
-		
+
 	}
 	public int getChildX(Room loc)
 	{
@@ -409,7 +409,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			return subMap[x][y];
 		return null;
 	}
-	
+
 	protected Room getGridRoom(int x, int y)
 	{
 		if(subMap==null) subMap=new Room[xsize][ysize];
@@ -433,23 +433,23 @@ public class StdGrid extends StdRoom implements GridLocale
 				c=Dice.roll(1,descriptions.size(),-1);
 			gc.setDescription((String)descriptions.elementAt(c));
 		}
-		
-		for(int a=0;a<numAffects();a++)
-			gc.addAffect((Ability)fetchAffect(a).copyOf());
+
+		for(int a=0;a<numEffects();a++)
+			gc.addEffect((Ability)fetchEffect(a).copyOf());
 		for(int b=0;b<numBehaviors();b++)
 			gc.addBehavior((Behavior)fetchBehavior(b).copyOf());
 		return gc;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
-		
-		if((affect.targetMinor()==affect.TYP_ENTER)
-		&&(affect.target()==this))
+
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.target()==this))
 		{
-			MOB mob=affect.source();
+			MOB mob=msg.source();
 			if((mob.location()!=null)&&(mob.location().roomID().length()>0))
 			{
 				Room altRoom=getAltRoomFrom(mob.location());
@@ -459,15 +459,15 @@ public class StdGrid extends StdRoom implements GridLocale
 					return false;
 				}
 				else
-				affect.modify(affect.source(),
+				msg.modify(msg.source(),
 							  altRoom,
-							  affect.tool(),
-							  affect.sourceCode(),
-							  affect.sourceMessage(),
-							  affect.targetCode(),
-							  affect.targetMessage(),
-							  affect.othersCode(),
-							  affect.othersMessage());
+							  msg.tool(),
+							  msg.sourceCode(),
+							  msg.sourceMessage(),
+							  msg.targetCode(),
+							  msg.targetMessage(),
+							  msg.othersCode(),
+							  msg.othersMessage());
 			}
 		}
 		return true;

@@ -13,41 +13,41 @@ public class Chant_CharmArea extends Chant
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_CharmArea();}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(affected)&&(affect.targetMinor()==Affect.TYP_LEAVE)
-		   &&(!affect.amISource(invoker))
-		   &&(affect.source().amFollowing()!=invoker))
+		if(msg.amITarget(affected)&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
+		   &&(!msg.amISource(invoker))
+		   &&(msg.source().amFollowing()!=invoker))
 		{
-			affect.source().tell("You really don't feel like leaving this place.  It is just too beautiful.");
+			msg.source().tell("You really don't feel like leaving this place.  It is just too beautiful.");
 			return false;
 		}
-		if((Util.bset(affect.sourceCode(),affect.MASK_MALICIOUS))
-		||(Util.bset(affect.targetCode(),affect.MASK_MALICIOUS))
-		||(Util.bset(affect.othersCode(),affect.MASK_MALICIOUS)))
+		if((Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+		||(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		||(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
 		{
-			if((affect.source()!=null)
-			   &&(affect.target()!=null)
-			   &&(affect.source()!=affect.target()))
+			if((msg.source()!=null)
+			   &&(msg.target()!=null)
+			   &&(msg.source()!=msg.target()))
 			{
-				affect.source().tell("Nah, you feel too peaceful here.");
-				if(affect.source().getVictim()!=null)
-					affect.source().getVictim().makePeace();
-				affect.source().makePeace();
+				msg.source().tell("Nah, you feel too peaceful here.");
+				if(msg.source().getVictim()!=null)
+					msg.source().getVictim().makePeace();
+				msg.source().makePeace();
 			}
-			affect.modify(affect.source(),affect.target(),affect.tool(),Affect.NO_EFFECT,"",Affect.NO_EFFECT,"",Affect.NO_EFFECT,"");
+			msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		if(affect.amITarget(affected)&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+		super.executeMsg(myHost,msg);
+		if(msg.amITarget(affected)&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 		{
-			affect.addTrailerMsg(new FullMsg(affect.source(),null,null,Affect.MSG_OK_VISUAL,Affect.NO_EFFECT,Affect.NO_EFFECT,"There is something charming about this place."));
+			msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,"There is something charming about this place."));
 		}
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -73,7 +73,7 @@ public class Chant_CharmArea extends Chant
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		
+
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -81,7 +81,7 @@ public class Chant_CharmArea extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"This area seems to twinkle with beauty.":"^S<S-NAME> chant(s), bringing forth the natural beauty of this place.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

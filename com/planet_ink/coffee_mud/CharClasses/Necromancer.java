@@ -130,23 +130,23 @@ public class Necromancer extends Cleric
 	public String otherLimitations(){return "Always fumbles good prayers.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.";}
 	public String weaponLimitations(){return "May only use sword, axe, polearm, and some edged weapons.";}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(!super.okAffect(myChar, affect))
+		if(!super.okMessage(myChar, msg))
 			return false;
 
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(myChar.isMine(affect.tool()))
-			&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
+			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(myChar.isMine(msg.tool()))
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 			{
 				int align=myChar.getAlignment();
-				Ability A=(Ability)affect.tool();
+				Ability A=(Ability)msg.tool();
 
 				if(A.appropriateToMyAlignment(align))
 					return true;
@@ -185,7 +185,7 @@ public class Necromancer extends Cleric
 				return false;
 			}
 			else
-			if((affect.sourceMinor()==Affect.TYP_DEATH)
+			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 			   &&(myChar.baseCharStats().getClassLevel(this)>=30)
 			   &&(!myChar.baseCharStats().getMyRace().ID().equals("Lich")))
 			{
@@ -198,20 +198,20 @@ public class Necromancer extends Cleric
 				}
 			}
 			else
-			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon))
+			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon))
 			{
 
-				if((((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_EDGED)
-				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_POLEARM)
-				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_DAGGER)
-				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_AXE)
-				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_SWORD))
+				if((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_EDGED)
+				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_POLEARM)
+				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_DAGGER)
+				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_AXE)
+				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_SWORD))
 					return true;
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
 					return false;
 				}
 			}

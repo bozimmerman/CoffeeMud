@@ -11,7 +11,7 @@ public class PlantLore extends CommonSkill
 	private static final String[] triggerStrings = {"PLANTLORE","PSPECULATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	private static boolean mapped=false;
-	
+
 	private boolean success=false;
 	public PlantLore()
 	{
@@ -25,7 +25,7 @@ public class PlantLore extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(tickUp==6)
@@ -113,8 +113,8 @@ public class PlantLore extends CommonSkill
 			success=true;
 		int duration=45-mob.envStats().level();
 		if(duration<5) duration=5;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) observing the growth in this area.");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) observing the growth in this area.");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);

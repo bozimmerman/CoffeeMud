@@ -12,41 +12,41 @@ public class Trap_Enter extends Trap_Trap
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Trap_Enter();}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(sprung) return super.okAffect(myHost,affect);
-		if(!super.okAffect(myHost,affect))
+		if(sprung) return super.okMessage(myHost,msg);
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		   if((affect.amITarget(affected))
- 			||((affect.tool()!=null)&&(affect.tool()==affected)))
+		   if((msg.amITarget(affected))
+ 			||((msg.tool()!=null)&&(msg.tool()==affected)))
 		{
-			if((affect.targetMinor()==Affect.TYP_ENTER)
-			||(affect.targetMinor()==Affect.TYP_LEAVE)
-			||(affect.targetMinor()==Affect.TYP_FLEE))
+			if((msg.targetMinor()==CMMsg.TYP_ENTER)
+			||(msg.targetMinor()==CMMsg.TYP_LEAVE)
+			||(msg.targetMinor()==CMMsg.TYP_FLEE))
 			{
-				if(affect.targetMinor()==Affect.TYP_LEAVE)
+				if(msg.targetMinor()==CMMsg.TYP_LEAVE)
 					return true;
 				else
 				{
-					spring(affect.source());
+					spring(msg.source());
 					return false;
 				}
 			}
 		}
 		return true;
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if(sprung)
 			return;
 
-		if((affect.amITarget(affected))||((affect.tool()!=null)&&(affect.tool()==affected)))
+		if((msg.amITarget(affected))||((msg.tool()!=null)&&(msg.tool()==affected)))
 		{
-			if(affect.targetMinor()==Affect.TYP_LEAVE)
+			if(msg.targetMinor()==CMMsg.TYP_LEAVE)
 			{
-				spring(affect.source());
+				spring(msg.source());
 			}
 		}
 	}

@@ -25,19 +25,19 @@ public class Spell_IceSheet extends Spell
 			return;
 		Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(Affect.MSG_OK_VISUAL, "The ice sheet melts.");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, "The ice sheet melts.");
 		super.unInvoke();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
 		   return false;
 		Room room=(Room)affected;
-		if(affect.source().location()==room)
+		if(msg.source().location()==room)
 		{
-			MOB mob=affect.source();
-			if(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
+			MOB mob=msg.source();
+			if(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			{
 				if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 				||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
@@ -46,22 +46,22 @@ public class Spell_IceSheet extends Spell
 					return false;
 				}
 				else
-				if((Util.bset(affect.sourceMajor(),Affect.MASK_MOVE)))
+				if((Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
 				{
 					if((!Sense.isInFlight(mob))
-					&&(Dice.rollPercentage()>((affect.source().charStats().getStat(CharStats.DEXTERITY)*3)+25)))
+					&&(Dice.rollPercentage()>((msg.source().charStats().getStat(CharStats.DEXTERITY)*3)+25)))
 					{
 						int oldDisposition=mob.baseEnvStats().disposition();
 						oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
 						mob.baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SITTING);
 						mob.recoverEnvStats();
-						mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> slip(s) on the ice.");
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) on the ice.");
 						return false;
 					}
 				}
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -83,10 +83,10 @@ public class Spell_IceSheet extends Spell
 
 		Environmental target = mob.location();
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Ice Sheet has already been cast here!");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -109,7 +109,7 @@ public class Spell_IceSheet extends Spell
 				msgStr="the water freezes over!";
 			if(auto)msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob.location(),0);

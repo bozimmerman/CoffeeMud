@@ -34,29 +34,29 @@ public class Prayer_Rockskin extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> skin softens.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> skin softens.");
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		   &&((affect.targetCode()-Affect.MASK_HURT)>0))
+		if((msg.amITarget(mob))
+		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		   &&((msg.targetCode()-CMMsg.MASK_HURT)>0))
 		{
-			if((affect.tool()!=null)
+			if((msg.tool()!=null)
 			&&(!mob.amDead())
-			&&(affect.tool() instanceof Weapon))
+			&&(msg.tool() instanceof Weapon))
 			{
-				affect.modify(affect.source(),affect.target(),affect.tool(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-				affect.addTrailerMsg(new FullMsg((MOB)affect.target(),affect.source(),Affect.MSG_OK_VISUAL,"The rock skin around <S-NAME> absorbs the attack from <T-NAME>."));
+				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+				msg.addTrailerMsg(new FullMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,"The rock skin around <S-NAME> absorbs the attack from <T-NAME>."));
 				if((--HitsRemaining)<=0)
 					unInvoke();
 			}
@@ -87,10 +87,10 @@ public class Prayer_Rockskin extends Prayer
 			invoker=mob;
 
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> skin turn hard as rock!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> skin turn hard as rock!");
 				HitsRemaining=5+(int)Math.round(adjustedLevel(mob)/2);
 				beneficialAffect(mob,target,0);
 			}

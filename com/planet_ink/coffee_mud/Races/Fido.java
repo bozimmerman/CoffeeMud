@@ -48,7 +48,7 @@ public class Fido extends StdRace
 		if((body!=null)&&(Dice.rollPercentage()<25))
 		{
 			Ability A=CMClass.getAbility("Disease_Fleas");
-			if(A!=null) body.addNonUninvokableAffect(A);
+			if(A!=null) body.addNonUninvokableEffect(A);
 		}
 		return body;
 	}

@@ -22,12 +22,12 @@ public class Chant_Blight extends Chant
 			return;
 		Room R=(Room)affected;
 		if(canBeUninvoked())
-			R.showHappens(Affect.MSG_OK_VISUAL,"The blight is ended.");
+			R.showHappens(CMMsg.MSG_OK_VISUAL,"The blight is ended.");
 
 		super.unInvoke();
 
 	}
-	
+
 	public boolean isBlightable(int resource)
 	{
 		if(((resource&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PAPER)
@@ -53,7 +53,7 @@ public class Chant_Blight extends Chant
 				Item I=R.fetchItem(i);
 				if((I!=null)&&(isBlightable(I.material())))
 				{
-					R.showHappens(Affect.MSG_OK_VISUAL,I.name()+" withers away.");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" withers away.");
 					I.destroy();
 					break;
 				}
@@ -62,18 +62,18 @@ public class Chant_Blight extends Chant
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof MOB)
-		&&(((MOB)affect.target()).charStats().getMyRace().racialCategory().equals("Vegetation")))
+		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
+		&&(((MOB)msg.target()).charStats().getMyRace().racialCategory().equals("Vegetation")))
 		{
-			int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
-			SaucerSupport.adjustDamageMessage(affect,recovery);
+			int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
+			SaucerSupport.adjustDamageMessage(msg,recovery);
 		}
 		return true;
 	}
@@ -82,7 +82,7 @@ public class Chant_Blight extends Chant
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already blighted.");
 			return false;
@@ -104,12 +104,12 @@ public class Chant_Blight extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The soil is blighted!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The soil is blighted!");
 					beneficialAffect(mob,target,0);
 				}
 			}

@@ -19,28 +19,28 @@ public class Fighter_Intimidate extends StdAbility
 	public int classificationCode(){ return Ability.SKILL;}
 	public Room lastRoom=null;
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
-		&&((affect.amITarget(affected))))
+		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+		&&((msg.amITarget(affected))))
 		{
-			MOB target=(MOB)affect.target();
+			MOB target=(MOB)msg.target();
 			MOB mob=(MOB)affected;
-			int levelDiff=((affect.source().envStats().level()-target.envStats().level())*10);
+			int levelDiff=((msg.source().envStats().level()-target.envStats().level())*10);
 			// 1 level off = -10
 			// 10 levels off = -100
 			if((!target.isInCombat())
-			&&(affect.source().getVictim()!=target)
+			&&(msg.source().getVictim()!=target)
 			&&(levelDiff<0)
 			&&((mob.fetchAbility(ID())==null)||profficiencyCheck((-(100+levelDiff))+(target.charStats().getStat(CharStats.CHARISMA)*2),false)))
 			{
-				affect.source().tell("You are too intimidated by "+target.name());
-				if(affect.source().location()!=lastRoom)
+				msg.source().tell("You are too intimidated by "+target.name());
+				if(msg.source().location()!=lastRoom)
 				{
-					lastRoom=affect.source().location();
+					lastRoom=msg.source().location();
 					helpProfficiency(target);
 				}
-				if(target.getVictim()==affect.source())
+				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
 					target.setVictim(null);
@@ -48,7 +48,7 @@ public class Fighter_Intimidate extends StdAbility
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 }

@@ -30,14 +30,14 @@ public class Spell_Mend extends Spell
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),
 									(auto?"<T-NAME> begins to shimmer!"
 										 :"^S<S-NAME> incant(s) at <T-NAMESELF>!^?"));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.usesRemaining()>=100)
 					mob.tell("Nothing happens to "+target.name()+".");
 				else
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> begin(s) to glow and mend!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> begin(s) to glow and mend!");
 					target.setUsesRemaining(100);
 				}
 				target.recoverEnvStats();

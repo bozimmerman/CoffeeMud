@@ -32,52 +32,52 @@ public class Spell_Enthrall extends Spell
 		if(charmer==null) return invoker;
 		return charmer;
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if(mob.amFollowing()==null) return super.okAffect(myHost,affect);
+		if(mob.amFollowing()==null) return super.okMessage(myHost,msg);
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.source()==mob.amFollowing()))
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.source()==mob.amFollowing()))
 				unInvoke();
-		if((affect.amISource(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.target()==mob.amFollowing()))
+		if((msg.amISource(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.target()==mob.amFollowing()))
 		{
 			mob.tell("You like "+mob.amFollowing().charStats().himher()+" too much.");
 			return false;
 		}
 		else
-		if((affect.amISource(mob))
+		if((msg.amISource(mob))
 		&&(!mob.isMonster())
-		&&(affect.target() instanceof Room)
-		&&(affect.targetMinor()==affect.TYP_LEAVE)
+		&&(msg.target() instanceof Room)
+		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(mob.amFollowing()!=null)
-		&&(((Room)affect.target()).isInhabitant(mob.amFollowing())))
+		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
 			mob.tell("You don't want to leave your friend.");
 			return false;
 		}
 		else
-		if((affect.amISource(mob))
+		if((msg.amISource(mob))
 		&&(mob.amFollowing()!=null)
-		&&(affect.sourceMinor()==Affect.TYP_NOFOLLOW))
+		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
 			mob.tell("You like "+mob.amFollowing().name()+" too much.");
 			return false;
 		}
-		   
-		
 
-		return super.okAffect(myHost,affect);
+
+
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -163,13 +163,13 @@ public class Spell_Enthrall extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			String str=auto?"":"^S<S-NAME> smile(s) powerfully at <T-NAMESELF>.^?";
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_CAST_VERBAL_SPELL,str);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,str);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
+					success=maliciousAffect(mob,target,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();

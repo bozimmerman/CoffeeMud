@@ -22,7 +22,7 @@ public class Disease_Plague extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) seriously ill!^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> watch(es) <S-HIS-HER> body erupt with a fresh batch of painful oozing sores!";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -35,10 +35,10 @@ public class Disease_Plague extends Disease
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int dmg=mob.envStats().level()/2;
 			if(dmg<1) dmg=1;
-			ExternalPlay.postDamage(diseaser,mob,this,dmg,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
+			ExternalPlay.postDamage(diseaser,mob,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
 			catchIt(mob);
 			return true;
 		}

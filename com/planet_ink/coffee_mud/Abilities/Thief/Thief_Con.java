@@ -42,20 +42,20 @@ public class Thief_Con extends ThiefSkill
 			mob.tell(target.name()+" is too busy fighting right now.");
 			return false;
 		}
-		
+
 		if(mob.isInCombat())
 		{
 			mob.tell("You are too busy fighting right now.");
 			return false;
 		}
-		
+
 		if(commands.size()<1)
 		{
 			mob.tell("Con "+target.charStats().himher()+" into doing what?");
 			return false;
 		}
 
-		
+
 		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
 		{
 			mob.tell("You can't con someone to follow.");
@@ -73,15 +73,15 @@ public class Thief_Con extends ThiefSkill
 
 		if(!success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> into '"+Util.combine(commands,0)+"', but is unsuccesssful.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> into '"+Util.combine(commands,0)+"', but is unsuccesssful.^?");
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> into '"+Util.combine(commands,0)+"'.^?");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> into '"+Util.combine(commands,0)+"'.^?");
 			mob.recoverEnvStats();
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				try

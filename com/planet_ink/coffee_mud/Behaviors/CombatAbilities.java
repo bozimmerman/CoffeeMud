@@ -13,9 +13,9 @@ public class CombatAbilities extends StdBehavior
 	{
 		return new CombatAbilities();
 	}
-	
+
 	public int combatMode=0;
-	
+
 	public final static int COMBAT_RANDOM=0;
 	public final static int COMBAT_DEFENSIVE=1;
 	public final static int COMBAT_OFFENSIVE=2;
@@ -29,7 +29,7 @@ public class CombatAbilities extends StdBehavior
 		"MIXEDDEFENSIVE"
 	};
 
-	
+
 	protected String getParmsMinusCombatMode()
 	{
 		Vector V=Util.parse(getParms());
@@ -45,7 +45,7 @@ public class CombatAbilities extends StdBehavior
 		}
 		return Util.combine(V,0);
 	}
-	
+
 	protected void newCharacter(MOB mob)
 	{
 		Vector oldAbilities=new Vector();
@@ -67,7 +67,7 @@ public class CombatAbilities extends StdBehavior
 				if(!CMAble.qualifiesByLevel(mob,newOne))
 				{
 					mob.delAbility(newOne);
-					mob.delAffect(mob.fetchAffect(newOne.ID()));
+					mob.delEffect(mob.fetchEffect(newOne.ID()));
 					a=a-1;
 				}
 				else
@@ -80,7 +80,7 @@ public class CombatAbilities extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 		if(ticking==null) return true;
-		if(tickID!=Host.MOB_TICK)
+		if(tickID!=Host.TICK_MOB)
 		{
 			Log.errOut("CombatAbilities",ticking.name()+" wants to fight?!");
 			return true;
@@ -117,7 +117,7 @@ public class CombatAbilities extends StdBehavior
 			||((tryThisOne.quality()!=Ability.MALICIOUS)
 				&&(tryThisOne.quality()!=Ability.BENEFICIAL_SELF)
 				&&(tryThisOne.quality()!=tryThisOne.BENEFICIAL_OTHERS))
-			||(victim.fetchAffect(tryThisOne.ID())!=null))
+			||(victim.fetchEffect(tryThisOne.ID())!=null))
 				tryThisOne=null;
 			else
 			if(tryThisOne.quality()==Ability.MALICIOUS)
@@ -164,18 +164,18 @@ public class CombatAbilities extends StdBehavior
 					break;
 				}
 			}
-			
+
 			tries++;
 		}
 
-		
+
 		boolean wandThis=true;
 		if(tryThisOne!=null)
 		{
 			if(Util.bset(tryThisOne.usageType(),Ability.USAGE_MANA))
 			{
 				if((Math.random()>Util.div(mob.curState().getMana(), mob.maxState().getMana()))
-                ||(mob.curState().getMana() < tryThisOne.usageCost(mob)[0])) 
+                ||(mob.curState().getMana() < tryThisOne.usageCost(mob)[0]))
 				{
                    if((Dice.rollPercentage()>30)
 				   ||(CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACONSUMETIME)<=0)
@@ -199,7 +199,7 @@ public class CombatAbilities extends StdBehavior
 				   ||(mob.curState().getHitPoints()<tryThisOne.usageCost(mob)[2]))
 					return true;
 			}
-			
+
 			if(tryThisOne.quality()!=Ability.MALICIOUS)
 				victim=mob;
 

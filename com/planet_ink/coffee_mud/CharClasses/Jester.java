@@ -38,81 +38,81 @@ public class Jester extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_BellyRolling",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Climsiness",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Skill_IdentifyPoison",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Song_Inebriation",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_Hide",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Slapstick",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Song_Babble",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_Mimicry",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_EscapeBonds",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Thief_MinorTrap",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Song_Detection",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),8,"Thief_UsePoison",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Thief_Distract",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Song_Rage",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),9,"Thief_Peek",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_FireBreathing",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),10,"Skill_Joke",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Thief_Sneak",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Song_Distraction",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),11,"Thief_Bind",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Song_Lightness",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),12,"Skill_SlowFall",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Song_Seeing",false);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_Trip",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),14,"Dance_Stop",100,true);
 			CMAble.addCharAbilityMapping(ID(),14,"Dance_Clog",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Fighter_CriticalShot",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Song_Mercy",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),15,"Thief_DetectTraps",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),16,"Skill_Stability",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_ReadMagic",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Song_Charm",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),18,"Fighter_Tumble",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Song_Thanks",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),19,"Thief_Swipe",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),20,"Thief_AvoidTraps",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Fighter_CritStrike",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Song_Mute",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),21,"Thief_Steal",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),22,"Skill_Feint",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Song_Quickness",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),23,"Fighter_BlindFighting",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Song_SingleMindedness",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),24,"Fighter_Cartwheel",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Song_Disgust",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),25,"Skill_Puppeteer",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_Roll",false);
 
@@ -126,7 +126,7 @@ public class Jester extends StdCharClass
 	}
 
 	public int getMovementMultiplier(){return 18;}
-	
+
 	public String statQualifications(){return "Charisma 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -161,7 +161,7 @@ public class Jester extends StdCharClass
 			affectableStats.getStat(CharStats.SAVE_POISON)
 			+(affectableStats.getClassLevel(this)*2));
 	}
-	
+
 	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
 	public String armorLimitations(){return "Must wear non-metal armor to avoid skill failure.";}
 	public String otherLimitations(){return "";}
@@ -177,29 +177,29 @@ public class Jester extends StdCharClass
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			boolean spellLike=((affect.tool()!=null)&&(myChar.fetchAbility(affect.tool().ID())!=null))&&(myChar.isMine(affect.tool()));
-			if((spellLike||((affect.sourceMajor()&Affect.MASK_DELICATE)>0))
-			&&(affect.tool()!=null)
+			boolean spellLike=((msg.tool()!=null)&&(myChar.fetchAbility(msg.tool().ID())!=null))&&(myChar.isMine(msg.tool()));
+			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
+			&&(msg.tool()!=null)
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> "+affect.tool().name()+"!");
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> "+msg.tool().name()+"!");
 					return false;
 				}
 			}
 			else
-			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon))
+			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon))
 			{
-				int classification=((Weapon)affect.tool()).weaponClassification();
+				int classification=((Weapon)msg.tool()).weaponClassification();
 				switch(classification)
 				{
 				case Weapon.CLASS_SWORD:
@@ -211,7 +211,7 @@ public class Jester extends StdCharClass
 				default:
 					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
 						return false;
 					}
 					break;

@@ -120,7 +120,7 @@ public class Prop_Auction extends Property
 		Vector V=new Vector();
 		V.addElement("AUCTION");
 		V.addElement("CHANNEL");
-System.out.println(Util.combine(commands,0));		
+System.out.println(Util.combine(commands,0));
 		if(target!=null)
 		{
 			setInvoker(mob);
@@ -130,7 +130,7 @@ System.out.println(Util.combine(commands,0));
 			auctionStart=System.currentTimeMillis();
 System.out.println("S-"+auctioning.name()+"/"+mob.Name()+"/"+bid+"/"+highBid);
 			setAbilityCode(STATE_START);
-			ExternalPlay.startTickDown(this,Host.QUEST_TICK,1);
+			ExternalPlay.startTickDown(this,Host.TICK_QUEST,1);
 			V.addElement("New lot: "+auctioning.name()+".  The opening bid is "+bid+".");
 		}
 		else

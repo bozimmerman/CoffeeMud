@@ -22,7 +22,7 @@ public class Disease_Vampirism extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) pale and cold.^?";}
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -34,7 +34,7 @@ public class Disease_Vampirism extends Disease
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
@@ -47,7 +47,7 @@ public class Disease_Vampirism extends Disease
 				return false;
 			}
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

@@ -281,7 +281,7 @@ public class Drowness extends StdBehavior
     {
         if(Sense.isSitting(mob))
             mob.envStats().setDisposition(mob.envStats().disposition() - EnvStats.IS_SITTING);
-        mob.location().show(mob, null, Affect.MSG_QUIETMOVEMENT, "<S-NAME> stand(s) up, ready for more combat.");
+        mob.location().show(mob, null, CMMsg.MSG_QUIETMOVEMENT, "<S-NAME> stand(s) up, ready for more combat.");
 
         return true;
     }
@@ -299,26 +299,26 @@ public class Drowness extends StdBehavior
         {
             prayer = CMClass.getAbility("Prayer_CureSerious");
         }
-		if(prayer!=null) 
+		if(prayer!=null)
 	        return prayer.invoke(mob,null,false);
 		else
 			return false;
     }
 
-	public boolean okAffect(Environmental oking, Affect affect)
+	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
-		if(oking==null) return super.okAffect(oking,affect);
-		if(!(oking instanceof MOB)) return super.okAffect(oking,affect);
+		if(oking==null) return super.okMessage(oking,msg);
+		if(!(oking instanceof MOB)) return super.okMessage(oking,msg);
 
-		boolean retval = super.okAffect(oking, affect);
+		boolean retval = super.okMessage(oking, msg);
 		MOB mob=(MOB)oking;
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL))
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 		{
             if(Dice.rollPercentage() <= magicResistance)
             {
-	            affect.source().tell("The drow resisted your spell!");
+	            msg.source().tell("The drow resisted your spell!");
 	            return false;
             }
         }
@@ -331,7 +331,7 @@ public class Drowness extends StdBehavior
 		if(ticking instanceof MOB)
 		{
 			MOB mob=(MOB)ticking;
-			if((!mob.amDead())&&(tickID==Host.MOB_TICK))
+			if((!mob.amDead())&&(tickID==Host.TICK_MOB))
 			{
 				if(mob.baseCharStats().getStat(CharStats.GENDER)=='F')
 				{
@@ -390,7 +390,7 @@ public class Drowness extends StdBehavior
             prayer = CMClass.getAbility("Prayer_CureSerious");
             prayer.setProfficiency(Dice.roll(5, 10, 50));
         }
-		if(prayer!=null) 
+		if(prayer!=null)
 	        return prayer.invoke(mob,null,false);
 		else
 			return false;

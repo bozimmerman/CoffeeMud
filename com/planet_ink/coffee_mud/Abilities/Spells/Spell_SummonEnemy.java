@@ -26,13 +26,13 @@ public class Spell_SummonEnemy extends Spell
 		}
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==Affect.TYP_QUIT))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			unInvoke();
 	}
 
@@ -47,7 +47,7 @@ public class Spell_SummonEnemy extends Spell
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> conjur(s) the dark shadow of a living creature...^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
@@ -98,7 +98,7 @@ public class Spell_SummonEnemy extends Spell
 		monster.resetToMaxState();
 		monster.text();
 		monster.bringToLife(caster.location(),true);
-		monster.location().showOthers(monster,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+		monster.location().showOthers(monster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		monster.setStartRoom(null);
 		return(monster);

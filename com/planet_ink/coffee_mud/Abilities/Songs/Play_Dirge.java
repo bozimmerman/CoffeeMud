@@ -16,7 +16,7 @@ public class Play_Dirge extends Play
 	protected boolean persistantSong(){return false;}
 	protected boolean skipStandardSongTick(){return true;}
 	protected String songOf(){return "a "+name();}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
@@ -30,17 +30,17 @@ public class Play_Dirge extends Play
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 		unplay(mob,mob,null);
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
-			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
+			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -50,7 +50,7 @@ public class Play_Dirge extends Play
 				Hashtable h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
 				if(h.get(mob)==null) h.put(mob,mob);
-				
+
 				for(Enumeration f=h.elements();f.hasMoreElements();)
 				{
 					MOB follower=(MOB)f.nextElement();
@@ -66,14 +66,13 @@ public class Play_Dirge extends Play
 						ExternalPlay.postExperience(follower,null,follower.getLeigeID(),expGained,false);
 				}
 				mob.location().recoverRoomStats();
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" fades away.");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" fades away.");
 				target.destroy();
 			}
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
 
 		return success;
 	}
 }
-	

@@ -33,14 +33,14 @@ public class Skill_Explosive extends StdAbility
 		if(success)
 		{
 			str=auto?"<T-NAME> is **BLASTED**!":"^F<S-NAME> ** BLAST(S) ** <T-NAMESELF>!^?";
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),str);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),str);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int damage=Dice.roll(1,90+mob.envStats().level(),30);
 				if(msg.wasModified())
 					damage=damage/2;
-				ExternalPlay.postDamage(mob,target,this,damage,Affect.TYP_OK_VISUAL,Weapon.TYPE_BURSTING,"The blast <DAMAGE> <T-NAME>!!!");
+				ExternalPlay.postDamage(mob,target,this,damage,CMMsg.TYP_OK_VISUAL,Weapon.TYPE_BURSTING,"The blast <DAMAGE> <T-NAME>!!!");
 			}
 		}
 		else

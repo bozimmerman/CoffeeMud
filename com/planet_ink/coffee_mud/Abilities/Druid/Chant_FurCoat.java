@@ -31,12 +31,12 @@ public class Chant_FurCoat extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> fur coat vanishes.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> fur coat vanishes.");
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if(theArmor==null) return true;
 
@@ -45,12 +45,12 @@ public class Chant_FurCoat extends Chant
 		||(theArmor.owner() instanceof Room)))
 			unInvoke();
 
-		MOB mob=affect.source();
-		if(!affect.amITarget(theArmor))
+		MOB mob=msg.source();
+		if(!msg.amITarget(theArmor))
 			return true;
 		else
-		if((affect.targetMinor()==Affect.TYP_REMOVE)
-		||(affect.targetMinor()==Affect.TYP_GET))
+		if((msg.targetMinor()==CMMsg.TYP_REMOVE)
+		||(msg.targetMinor()==CMMsg.TYP_GET))
 		{
 			mob.tell("The fur coat cannot be removed from where it is.");
 			return false;
@@ -64,13 +64,13 @@ public class Chant_FurCoat extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You already have a fur coat.");
 			return false;
 		}
-		
+
 		if(Druid_ShapeShift.isShapeShifted(target))
 		{
 			mob.tell("You cannot invoke this chant in your present form.");
@@ -100,7 +100,7 @@ public class Chant_FurCoat extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A thick coat of fur appears on <T-NAME>.":"^S<S-NAME> chant(s) for a thick coat of fur!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				theArmor=CMClass.getArmor("GenArmor");
@@ -120,7 +120,7 @@ public class Chant_FurCoat extends Chant
 				}
 				Ability A=CMClass.getAbility("Prop_WearResister");
 				A.setMiscText("cold");
-				if(A!=null) theArmor.addNonUninvokableAffect(A);
+				if(A!=null) theArmor.addNonUninvokableEffect(A);
 				theArmor.recoverEnvStats();
 				theArmor.text();
 				target.addInventory(theArmor);

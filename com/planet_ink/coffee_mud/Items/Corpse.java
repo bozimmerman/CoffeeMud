@@ -39,11 +39,11 @@ public class Corpse extends GenContainer implements DeadBody
 	public void startTicker(Room thisRoom)
 	{
 		roomLocation=thisRoom;
-		ExternalPlay.startTickDown(this,Host.DEADBODY_DECAY,envStats().rejuv());
+		ExternalPlay.startTickDown(this,Host.TICK_DEADBODY_DECAY,envStats().rejuv());
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.DEADBODY_DECAY)
+		if(tickID==Host.TICK_DEADBODY_DECAY)
 		{
 			destroy();
 			roomLocation.recoverRoomStats();
@@ -59,13 +59,13 @@ public class Corpse extends GenContainer implements DeadBody
 		return charStats;
 	}
 	public void setCharStats(CharStats newStats){charStats=newStats;}
-	
-	public boolean okAffect(Environmental myHost, Affect msg)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if((msg.amITarget(this)||(msg.tool()==this))
-		&&(msg.targetMinor()==Affect.TYP_GET)
+		&&(msg.targetMinor()==CMMsg.TYP_GET)
 		&&((envStats().ability()>10)||(Sense.isABonusItems(this)))
 		&&(rawSecretIdentity().indexOf("/")>=0)
 		&&(rawSecretIdentity().toUpperCase().startsWith(msg.source().Name().toUpperCase()+"/"))

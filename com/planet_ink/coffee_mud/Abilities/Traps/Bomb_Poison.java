@@ -17,9 +17,9 @@ public class Bomb_Poison extends StdBomb
 	{
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numAffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++)
 		{
-			Ability A=fromMe.fetchAffect(a);
+			Ability A=fromMe.fetchEffect(a);
 			if((A!=null)&&(A.classificationCode()==Ability.POISON))
 				offenders.addElement(A);
 		}
@@ -52,9 +52,9 @@ public class Bomb_Poison extends StdBomb
 		if(target.location()!=null)
 		{
 			if((!invoker().mayIFight(target))||(target==invoker())||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) the poison gas!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) the poison gas!");
 			else
-			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.name()+" spews poison gas all over <T-NAME>!"))
+			if(target.location().show(invoker(),target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,affected.name()+" spews poison gas all over <T-NAME>!"))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

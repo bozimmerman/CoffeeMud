@@ -14,7 +14,7 @@ public class Dance_Tarantella extends Dance
 	public Environmental newInstance(){	return new Dance_Tarantella();}
 	private int ticks=1;
 	protected String danceOf(){return name()+" Dance";}
-	
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -29,13 +29,13 @@ public class Dance_Tarantella extends Dance
 		MOB mob=(MOB)affected;
 		if(mob==null)
 			return false;
-		
+
 		if((++ticks)>=15)
 		{
 			Vector offenders=null;
-			for(int a=0;a<mob.numAffects();a++)
+			for(int a=0;a<mob.numEffects();a++)
 			{
-				Ability A=mob.fetchAffect(a);
+				Ability A=mob.fetchEffect(a);
 				if((A!=null)&&(A.classificationCode()==Ability.POISON))
 				{
 					if(offenders==null) offenders=new Vector();
@@ -46,7 +46,7 @@ public class Dance_Tarantella extends Dance
 				for(int a=0;a<offenders.size();a++)
 					((Ability)offenders.elementAt(a)).unInvoke();
 		}
-		
+
 		return true;
 	}
 

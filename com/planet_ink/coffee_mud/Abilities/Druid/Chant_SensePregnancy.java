@@ -21,7 +21,7 @@ public class Chant_SensePregnancy extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
@@ -30,10 +30,10 @@ public class Chant_SensePregnancy extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) over <T-YOUPOSS> stomach.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=target.fetchAffect("Pregnancy");
+				Ability A=target.fetchEffect("Pregnancy");
 				if((A==null)||(A.displayText().length()==0))
 					mob.tell(target.name()+" is not pregnant.");
 				else

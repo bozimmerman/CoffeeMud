@@ -39,19 +39,19 @@ public class Artisan extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_Warrants",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),10,"Skill_WandUse",false);
 
 			CMAble.addCharAbilityMapping(ID(),15,"Thief_Appraise",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),20,"Thief_Haggle",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Skill_Cage",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),25,"Skill_Stability",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),30,"Thief_Lore",false);
 		}
 	}
@@ -76,7 +76,7 @@ public class Artisan extends StdCharClass
 			}
 		}
 	}
-	
+
 	public boolean playerSelectable()
 	{
 		return false;
@@ -84,13 +84,13 @@ public class Artisan extends StdCharClass
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)&&(ticking instanceof MOB))
+		if((tickID==Host.TICK_MOB)&&(ticking instanceof MOB))
 		{
 			MOB mob=(MOB)ticking;
 			int exp=0;
-			for(int a=0;a<mob.numAffects();a++)
+			for(int a=0;a<mob.numEffects();a++)
 			{
-				Ability A=mob.fetchAffect(a);
+				Ability A=mob.fetchEffect(a);
 				if((A!=null)
 				&&(!A.isAutoInvoked())
 				&&(mob.isMine(A))
@@ -102,7 +102,7 @@ public class Artisan extends StdCharClass
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public String statQualifications(){return "Wisdom 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -133,47 +133,47 @@ public class Artisan extends StdCharClass
 	}
 	public String weaponLimitations(){return "To avoid fumble chance, must use natural, or dagger-like weapon.";}
 	public String armorLimitations(){return "Must wear cloth, or vegetation based armor to avoid skill failure.";}
-	
+
 	protected boolean isAllowedWeapon(int wclass){
 		for(int i=0;i<allowedWeapons.length;i++)
 			if(wclass==allowedWeapons[i]) return true;
 		return false;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			boolean spellLike=((affect.tool()!=null)&&(myChar.fetchAbility(affect.tool().ID())!=null))&&(myChar.isMine(affect.tool()));
-			if((spellLike||((affect.sourceMajor()&Affect.MASK_DELICATE)>0))
+			boolean spellLike=((msg.tool()!=null)&&(myChar.fetchAbility(msg.tool().ID())!=null))&&(myChar.isMine(msg.tool()));
+			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.INTELLIGENCE)*2))
 				{
 					String name="in <S-HIS-HER> maneuver";
 					if(spellLike)
-						name=affect.tool().name().toLowerCase();
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) "+name+"!");
+						name=msg.tool().name().toLowerCase();
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) "+name+"!");
 					return false;
 				}
 			}
 			else
-			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon))
+			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon))
 			{
-				int classification=((Weapon)affect.tool()).weaponClassification();
+				int classification=((Weapon)msg.tool()).weaponClassification();
 				if(!isAllowedWeapon(classification))
 					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.WISDOM)*2))
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
 						return false;
 					}
 			}
 		}
-		return super.okAffect(myChar,affect);
+		return super.okMessage(myChar,msg);
 	}
 	public String otherBonuses(){return "";}
 }

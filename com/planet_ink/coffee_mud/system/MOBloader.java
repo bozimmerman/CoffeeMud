@@ -188,7 +188,7 @@ public class MOBloader
 						if(profficiency==Integer.MAX_VALUE)
 						{
 							newAbility.setProfficiency(100);
-							mob.addNonUninvokableAffect(newAbility);
+							mob.addNonUninvokableEffect(newAbility);
 							newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
 						}
 						else
@@ -208,12 +208,12 @@ public class MOBloader
 			Log.errOut("MOB",sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
-		
+
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
 		mob.resetToMaxState();
-		
+
 		if(mob.baseCharStats()!=null)
 		{
 			mob.baseCharStats().getCurrentClass().startCharacter(mob,false,true);
@@ -228,7 +228,7 @@ public class MOBloader
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
 		mob.resetToMaxState();
-		
+
 		if(CMMap.getPlayer(mob.Name())==null)
 			CMMap.addPlayer(mob);
 	}
@@ -403,7 +403,7 @@ public class MOBloader
 					if(bringToLife)
 					{
 						newMOB.bringToLife(mob.location(),true);
-						mob.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+						mob.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 					}
 				}
 			}
@@ -441,7 +441,7 @@ public class MOBloader
 		}
 	}
 
-	
+
 	public static void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
 	{
 		DBConnection D=null;
@@ -511,7 +511,7 @@ public class MOBloader
 
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return;
-		
+
 		DBConnection D=null;
 		String strStartRoomID=(mob.getStartRoom()!=null)?CMMap.getExtendedRoomID(mob.getStartRoom()):"";
 		String strOtherRoomID=(mob.location()!=null)?CMMap.getExtendedRoomID(mob.location()):"";
@@ -647,7 +647,7 @@ public class MOBloader
 
 	public static void DBUpdateFollowers(MOB mob)
 	{
-		
+
 		if((mob==null)||(mob.Name().length()==0))
 			return;
 		Vector V=new Vector();
@@ -764,9 +764,9 @@ public class MOBloader
 				V.addElement(str);
 			}
 		}
-		for(int a=0;a<mob.numAffects();a++)
+		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability thisAffect=mob.fetchAffect(a);
+			Ability thisAffect=mob.fetchEffect(a);
 			if((thisAffect!=null)
 			&&(!H.contains(thisAffect.ID()))
 			&&(!thisAffect.isBorrowed(mob)))
@@ -826,7 +826,7 @@ public class MOBloader
 		if(mob.Name().length()==0) return;
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return;
-		
+
 		DBConnection D=null;
 		String str=null;
 		try
@@ -861,7 +861,7 @@ public class MOBloader
 	{
 		DBConnection D=null;
 		boolean returnable=false;
-		
+
 		if(mob!=null)
 		{
 			if(mob.playerStats()==null)

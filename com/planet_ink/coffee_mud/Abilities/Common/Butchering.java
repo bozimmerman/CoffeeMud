@@ -51,12 +51,12 @@ public class Butchering extends CommonSkill
 					}
 					else
 					{
-						mob.location().show(mob,null,body,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up <O-NAME>.");
+						mob.location().show(mob,null,body,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up <O-NAME>.");
 						Vector resources=body.charStats().getMyRace().myResources();
 						Vector diseases=new Vector();
-						for(int i=0;i<body.numAffects();i++)
+						for(int i=0;i<body.numEffects();i++)
 						{
-							Ability A=body.fetchAffect(i);
+							Ability A=body.fetchEffect(i);
 							if((A!=null)&&(A instanceof DiseaseAffect))
 							{
 								if((Util.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
@@ -73,7 +73,7 @@ public class Butchering extends CommonSkill
 								Item newFound=(Item)((Item)resources.elementAt(i)).copyOf();
 								if((newFound instanceof Food)||(newFound instanceof Drink))
 								for(int d=0;d<diseases.size();d++)
-									newFound.addNonUninvokableAffect((Ability)((Ability)diseases.elementAt(d)).copyOf());
+									newFound.addNonUninvokableEffect((Ability)((Ability)diseases.elementAt(d)).copyOf());
 								newFound.recoverEnvStats();
 								mob.location().addItemRefuse(newFound,Item.REFUSE_RESOURCE);
 								mob.location().recoverRoomStats();
@@ -108,8 +108,8 @@ public class Butchering extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		failed=!profficiencyCheck(0,auto);
-		FullMsg msg=new FullMsg(mob,I,null,Affect.MSG_NOISYMOVEMENT,Affect.MSG_OK_ACTION,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) butchering <T-NAME>.");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,I,null,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_OK_ACTION,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) butchering <T-NAME>.");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			body=(DeadBody)I;

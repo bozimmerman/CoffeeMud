@@ -38,10 +38,10 @@ public class Chant_SummonTornado extends Chant
 
 		Environmental target = mob.location();
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"A tornado is already here!");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -64,7 +64,7 @@ public class Chant_SummonTornado extends Chant
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), (auto?"A":"^S<S-NAME> chant(s) to the sky and a")+" tornado touches down!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Vector stuff=new Vector();
@@ -89,7 +89,7 @@ public class Chant_SummonTornado extends Chant
 						availableRooms.addElement(R);
 				}
 				if(stuff.size()==0)
-					mob.location().showHappens(Affect.MSG_OK_ACTION,"The tornado dissipates harmlessly.");
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The tornado dissipates harmlessly.");
 				else
 				while(stuff.size()>0)
 				{
@@ -100,10 +100,10 @@ public class Chant_SummonTornado extends Chant
 					{
 						Item I=(Item)O;
 						if(R==mob.location())
-							mob.location().show(mob,null,I,Affect.MSG_OK_ACTION,"The tornado picks up <O-NAME> and whisks it around.");
+							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,"The tornado picks up <O-NAME> and whisks it around.");
 						else
 						{
-							mob.location().show(mob,null,I,Affect.MSG_OK_ACTION,"The tornado picks up <O-NAME> and whisks it away.");
+							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,"The tornado picks up <O-NAME> and whisks it away.");
 							R.bringItemHere(I,-1);
 						}
 						if(I.subjectToWearAndTear())
@@ -138,7 +138,7 @@ public class Chant_SummonTornado extends Chant
 							}
 							if(I.usesRemaining()<=0)
 							{
-								mob.location().showHappens(Affect.MSG_OK_VISUAL,I.name()+" is destroyed!");
+								mob.location().showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" is destroyed!");
 								I.destroy();
 							}
 						}
@@ -147,27 +147,27 @@ public class Chant_SummonTornado extends Chant
 					if(O instanceof MOB)
 					{
 						MOB M=(MOB)O;
-						msg=new FullMsg(M,mob.location(),null,Affect.MSG_LEAVE|Affect.MASK_GENERAL,Affect.MSG_LEAVE,Affect.NO_EFFECT,null);
+						msg=new FullMsg(M,mob.location(),null,CMMsg.MSG_LEAVE|CMMsg.MASK_GENERAL,CMMsg.MSG_LEAVE,CMMsg.NO_EFFECT,null);
 						FullMsg msg2=new FullMsg(mob,M,this,affectType(auto),null);
-						FullMsg msg3=new FullMsg(mob,M,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),null);
-						if((mob.location().okAffect(M,msg))
-						&&(mob.location().okAffect(mob,msg2))
-						&&(mob.location().okAffect(mob,msg3)))
+						FullMsg msg3=new FullMsg(mob,M,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+						if((mob.location().okMessage(M,msg))
+						&&(mob.location().okMessage(mob,msg2))
+						&&(mob.location().okMessage(mob,msg3)))
 						{
 							mob.location().send(mob,msg2);
 							mob.location().send(mob,msg3);
 							if(R==mob.location())
-								mob.location().show(M,null,null,Affect.MSG_OK_ACTION,"The tornado picks <S-NAME> up and whisks <S-HIM-HER> around.");
+								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,"The tornado picks <S-NAME> up and whisks <S-HIM-HER> around.");
 							else
 							{
-								mob.location().show(M,null,null,Affect.MSG_OK_ACTION,"The tornado picks <S-NAME> up and whisks <S-HIM-HER> away.");
+								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,"The tornado picks <S-NAME> up and whisks <S-HIM-HER> away.");
 								R.bringMobHere(M,false);
 							}
 							int maxDie=(int)Math.round(Util.div(adjustedLevel(mob),2.0));
 							int damage = Dice.roll(maxDie,7,1);
 							if((msg.wasModified())||(msg2.wasModified()))
 								damage = (int)Math.round(Util.div(damage,2.0));
-							ExternalPlay.postDamage(mob,M,this,damage,Affect.MASK_GENERAL|Affect.TYP_WEAPONATTACK,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
+							ExternalPlay.postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
 							if(R!=mob.location()) M.tell("Wait a minute! Where are you?");
 						}
 					}

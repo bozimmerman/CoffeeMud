@@ -22,29 +22,29 @@ public class Follower extends StdBehavior
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
+		super.executeMsg(affecting,msg);
 
 		if(!canFreelyBehaveNormal(affecting)) return;
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		if(mob.amDead()) return;
 		if(mob.location()==null) return;
 
 
 		if((direction<0)
-		&&(affect.amITarget(((MOB)affecting).location()))
+		&&(msg.amITarget(((MOB)affecting).location()))
 		&&(Sense.canBeSeenBy(mob,affecting))
-		&&(affect.othersMessage()!=null)
-		&&((affect.targetMinor()==Affect.TYP_LEAVE)
-		 ||(affect.targetMinor()==Affect.TYP_FLEE)))
+		&&(msg.othersMessage()!=null)
+		&&((msg.targetMinor()==CMMsg.TYP_LEAVE)
+		 ||(msg.targetMinor()==CMMsg.TYP_FLEE)))
 		{
-			String directionWent=affect.othersMessage();
+			String directionWent=msg.othersMessage();
 			int x=directionWent.lastIndexOf(" ");
-			if((x>=0)&&((Dice.rollPercentage()*10)<affect.source().getAlignment()))
+			if((x>=0)&&((Dice.rollPercentage()*10)<msg.source().getAlignment()))
 			{
 				directionWent=directionWent.substring(x+1);
 				direction=Directions.getDirectionCode(directionWent);
@@ -58,7 +58,7 @@ public class Follower extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if((direction>=0)&&(ticking instanceof MOB))
 		{
 			if(!canFreelyBehaveNormal(ticking)) return true;

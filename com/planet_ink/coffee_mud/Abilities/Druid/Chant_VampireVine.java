@@ -13,21 +13,21 @@ public class Chant_VampireVine extends Chant_SummonVine
 	public Environmental newInstance(){	return new Chant_VampireVine();}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg)) return false;
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(msg.amISource(mob)&&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
+			if(msg.amISource(mob)&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 			{
-				int amount=msg.targetCode()-Affect.MASK_HURT;
+				int amount=msg.targetCode()-CMMsg.MASK_HURT;
 				if(amount>3)
 				{
 					amount=amount/4;
-					ExternalPlay.postHealing(((MOB)affected),((MOB)affected),this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,amount,null);
+					ExternalPlay.postHealing(((MOB)affected),((MOB)affected),this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,null);
 					if(invoker!=null)
-						ExternalPlay.postHealing(invoker,invoker,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,amount,null);
+						ExternalPlay.postHealing(invoker,invoker,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,null);
 				}
 			}
 		}
@@ -67,7 +67,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		//if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
-		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

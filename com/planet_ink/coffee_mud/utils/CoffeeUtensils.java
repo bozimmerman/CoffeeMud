@@ -11,9 +11,9 @@ public class CoffeeUtensils
 	{
 		if(mob==null) return null;
 		if(mob instanceof ShopKeeper) return (ShopKeeper)mob;
-		for(int a=0;a<mob.numAffects();a++)
+		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability A=mob.fetchAffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof ShopKeeper))
 				return (ShopKeeper)A;
 		}
@@ -84,9 +84,9 @@ public class CoffeeUtensils
 	public static Trap fetchMyTrap(Environmental myThang)
 	{
 		if(myThang==null) return null;
-		for(int a=0;a<myThang.numAffects();a++)
+		for(int a=0;a<myThang.numEffects();a++)
 		{
-			Ability A=myThang.fetchAffect(a);
+			Ability A=myThang.fetchEffect(a);
 			if((A!=null)&&(A instanceof  Trap))
 				return (Trap)A;
 		}
@@ -101,15 +101,15 @@ public class CoffeeUtensils
 	}
 	public static void setTrapped(Environmental myThang, Trap theTrap, boolean isTrapped)
 	{
-		for(int a=0;a<myThang.numAffects();a++)
+		for(int a=0;a<myThang.numEffects();a++)
 		{
-			Ability A=myThang.fetchAffect(a);
+			Ability A=myThang.fetchEffect(a);
 			if((A!=null)&&(A instanceof Trap))
 				A.unInvoke();
 		}
 
-		if((isTrapped)&&(myThang.fetchAffect(theTrap.ID())==null))
-			myThang.addAffect(theTrap);
+		if((isTrapped)&&(myThang.fetchEffect(theTrap.ID())==null))
+			myThang.addEffect(theTrap);
 	}
 
 	public static boolean containsString(String toSrchStr, String srchStr)
@@ -129,7 +129,7 @@ public class CoffeeUtensils
 						found=true;
 					break;
 				}
-					
+
 				switch(toSrchStr.charAt(tos))
 				{
 				case '^':
@@ -184,10 +184,10 @@ public class CoffeeUtensils
 		}
 		return found;
 	}
-	
+
 	public static boolean reachableItem(MOB mob, Environmental I)
 	{
-		if((I==null)||(!(I instanceof Item))) 
+		if((I==null)||(!(I instanceof Item)))
 			return true;
 		if((mob.isMine(I))
 		||((mob.riding()!=null)&&((I==mob.riding())
@@ -196,7 +196,7 @@ public class CoffeeUtensils
 		   return true;
 		return false;
 	}
-	
+
 	public static Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly)
 	{
 		if(srchStr.length()==0) return null;
@@ -567,7 +567,7 @@ public class CoffeeUtensils
 			return 5;
 		return score;
 	}
-	
+
 	public static MOB makeMOBfromCorpse(DeadBody corpse, String type)
 	{
 		if((type==null)||(type.length()==0))

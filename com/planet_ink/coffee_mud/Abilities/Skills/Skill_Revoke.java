@@ -26,7 +26,7 @@ public class Skill_Revoke extends StdAbility
 
 		Environmental target=null;
 		if((whatToRevoke.length()==0)
-		&&(mob.location().numAffects()>0))
+		&&(mob.location().numEffects()>0))
 			target=mob.location();
 		else
 		if(whatToRevoke.equalsIgnoreCase("room"))
@@ -44,9 +44,9 @@ public class Skill_Revoke extends StdAbility
 			return false;
 
 		Ability revokeThis=null;
-		for(int a=0;a<target.numAffects();a++)
+		for(int a=0;a<target.numEffects();a++)
 		{
-			Ability A=(Ability)target.fetchAffect(a);
+			Ability A=(Ability)target.fetchEffect(a);
 			if((A!=null)
 			&&(A.invoker()==mob)
 			&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
@@ -69,8 +69,8 @@ public class Skill_Revoke extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> revoke(s) "+revokeThis.name()+" from "+target.name());
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> revoke(s) "+revokeThis.name()+" from "+target.name());
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				revokeThis.unInvoke();

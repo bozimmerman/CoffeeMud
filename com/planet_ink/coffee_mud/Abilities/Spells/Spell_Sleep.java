@@ -15,7 +15,7 @@ public class Spell_Sleep extends Spell
 	public Environmental newInstance(){	return new Spell_Sleep();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -25,14 +25,14 @@ public class Spell_Sleep extends Spell
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))
-		&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-		&&(affect.sourceMajor()>0))
+		if((msg.amISource(mob))
+		&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		&&(msg.sourceMajor()>0))
 		{
 			mob.tell("You are way too drowsy.");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -57,7 +57,7 @@ public class Spell_Sleep extends Spell
 		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> do(es)n't seem so drowsy any more.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> do(es)n't seem so drowsy any more.");
 			ExternalPlay.standIfNecessary(mob);
 		}
 	}
@@ -82,7 +82,7 @@ public class Spell_Sleep extends Spell
 			mob.tell(target.name()+" is in combat, and would not be affected.");
 			return false;
 		}
-		
+
 		// if they can't hear the sleep spell, it
 		// won't happen
 		if((!auto)&&(!Sense.canBeHeardBy(mob,target)))
@@ -111,15 +111,15 @@ public class Spell_Sleep extends Spell
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
 			MOB oldVictim=mob.getVictim();
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					success=maliciousAffect(mob,target,3,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
+					success=maliciousAffect(mob,target,3,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
 				}
 				if(oldVictim==null)	mob.setVictim(null);
 			}

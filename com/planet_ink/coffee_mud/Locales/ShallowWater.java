@@ -21,25 +21,25 @@ public class ShallowWater extends StdRoom implements Drink
 	{
 		return new ShallowWater();
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
+		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
 		{
 			if(liquidType()==EnvResource.RESOURCE_SALTWATER)
 			{
-				affect.source().tell("You don't want to be drinking saltwater.");
+				msg.source().tell("You don't want to be drinking saltwater.");
 				return false;
 			}
 			return true;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
+		super.executeMsg(myHost,msg);
+		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
 		{
-			MOB mob=affect.source();
+			MOB mob=msg.source();
 			boolean thirsty=mob.curState().getThirst()<=0;
 			boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState());
 			if(thirsty)
@@ -49,7 +49,7 @@ public class ShallowWater extends StdRoom implements Drink
 				mob.tell("You have drunk all you can.");
 		}
 	}
-	
+
 	public int thirstQuenched(){return 500;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
 	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}

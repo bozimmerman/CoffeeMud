@@ -215,12 +215,12 @@ public class StdCharClass implements CharClass, Cloneable
 	{
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 	}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
@@ -370,7 +370,7 @@ public class StdCharClass implements CharClass, Cloneable
 		double lvlMul=1.0;//-Util.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
 		int mvGain=(int)Math.round(lvlMul*Util.mul(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0),getMovementMultiplier()));
-		
+
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
@@ -597,13 +597,13 @@ public class StdCharClass implements CharClass, Cloneable
 		if((killer==null)||(killed==null)) return new Hashtable();
 		Room deathRoom=killed.location();
 		if(deathRoom==null) deathRoom=killer.location();
-		
+
 		Hashtable beneficiaries=new Hashtable();
 		Hashtable followers=(killer!=null)?killer.getGroupMembers(new Hashtable()):(new Hashtable());
 
 		int totalLevels=0;
 		int expAmount=100;
-		
+
 		if(deathRoom!=null)
 			for(int m=0;m<deathRoom.numInhabitants();m++)
 			{
@@ -616,7 +616,7 @@ public class StdCharClass implements CharClass, Cloneable
 					expAmount+=25;
 				}
 			}
-		
+
 		if(beneficiaries.size()>0)
 			for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
 			{

@@ -46,7 +46,7 @@ public class Chant_Feralness extends Chant
 			unInvoke();
 		return true;
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -71,8 +71,8 @@ public class Chant_Feralness extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already feral.");
 			return false;
@@ -95,7 +95,7 @@ public class Chant_Feralness extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<T-NAME> go(es) feral!":"^S<S-NAME> chant(s) to <S-NAMESELF> and become(s) feral!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!Druid_ShapeShift.isShapeShifted(mob))

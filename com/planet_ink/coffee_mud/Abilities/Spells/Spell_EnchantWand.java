@@ -73,7 +73,7 @@ public class Spell_EnchantWand extends Spell
 		{
 			setMiscText(wandThis.ID());
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				wand.setSpell((Ability)wandThis.copyOf());

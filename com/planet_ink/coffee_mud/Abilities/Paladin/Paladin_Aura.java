@@ -29,7 +29,7 @@ public class Paladin_Aura extends Paladin
 				if((mob.getAlignment()<350)&&(pass))
 				{
 					int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
-					ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGE> <T-NAME>!^?");
+					ExternalPlay.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGE> <T-NAME>!^?");
 				}
 			}
 			catch(java.lang.ArrayIndexOutOfBoundsException e)
@@ -39,33 +39,33 @@ public class Paladin_Aura extends Paladin
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if((invoker==null)||(invoker.getAlignment()<650))
 			return true;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 
-		if((affect.target()!=null)
-		   &&(paladinsGroup.contains(affect.target()))
-		   &&(!paladinsGroup.contains(affect.source()))
+		if((msg.target()!=null)
+		   &&(paladinsGroup.contains(msg.target()))
+		   &&(!paladinsGroup.contains(msg.source()))
 		   &&(pass)
-		   &&(affect.target() instanceof MOB)
-		   &&(affect.source()!=invoker))
+		   &&(msg.target() instanceof MOB)
+		   &&(msg.source()!=invoker))
 		{
-			if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-			&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(!Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_HOLY))
-			&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_UNHOLY)))
+			if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
+			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
-				affect.source().location().show((MOB)affect.target(),null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+affect.source().name()+".");
+				msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+msg.source().name()+".");
 				return false;
 			}
-			if(((affect.targetMinor()==Affect.TYP_POISON)||(affect.targetMinor()==Affect.TYP_DISEASE))
+			if(((msg.targetMinor()==CMMsg.TYP_POISON)||(msg.targetMinor()==CMMsg.TYP_DISEASE))
 			&&(pass))
 				return false;
 		}

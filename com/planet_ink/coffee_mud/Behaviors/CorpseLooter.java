@@ -12,14 +12,14 @@ public class CorpseLooter extends StdBehavior
 	{
 		return new CorpseLooter();
 	}
-	
+
 	int tickTocker=1;
 	int tickTock=0;
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if(--tickTock>0) return true;
 		((MOB)ticking).setBitmap(Util.setb(((MOB)ticking).getBitmap(),MOB.ATT_AUTOLOOT));
 		if((++tickTocker)==100) tickTocker=99;

@@ -74,9 +74,9 @@ public class Prayer_Bless extends Prayer
 
 	public static void endIt(Environmental target, int level)
 	{
-		for(int a=target.numAffects()-1;a>=0;a--)
+		for(int a=target.numEffects()-1;a>=0;a--)
 		{
-			Ability A=target.fetchAffect(a);
+			Ability A=target.fetchEffect(a);
 			if(A!=null)
 			{
 				if(A instanceof Prayer_Curse)
@@ -109,17 +109,17 @@ public class Prayer_Bless extends Prayer
 
 	public static boolean isCursed(Item item)
 	{
-		if(item.fetchAffect("Prayer_Curse")!=null)
+		if(item.fetchEffect("Prayer_Curse")!=null)
 			return true;
-		if(item.fetchAffect("Prayer_CurseMetal")!=null)
+		if(item.fetchEffect("Prayer_CurseMetal")!=null)
 			return true;
-		if(item.fetchAffect("Prayer_GreatCurse")!=null)
+		if(item.fetchEffect("Prayer_GreatCurse")!=null)
 			return true;
-		if(item.fetchAffect("Prayer_CurseItem")!=null)
+		if(item.fetchEffect("Prayer_CurseItem")!=null)
 			return true;
-		if(item.fetchAffect("Prayer_UnholyWord")!=null)
+		if(item.fetchEffect("Prayer_UnholyWord")!=null)
 			return true;
-		if(item.fetchAffect("Prayer_SunCurse")!=null)
+		if(item.fetchEffect("Prayer_SunCurse")!=null)
 			return true;
 		if(!item.isRemovable())
 			return true;
@@ -145,13 +145,13 @@ public class Prayer_Bless extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> bless(es) <T-NAMESELF>"+inTheNameOf(mob)+".^?")+CommonStrings.msp("bless.wav",10));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Item I=getSomething(target,true);
 				while(I!=null)
 				{
-					FullMsg msg2=new FullMsg(target,I,null,Affect.MASK_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+					FullMsg msg2=new FullMsg(target,I,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 					target.location().send(target,msg2);
 					endIt(I,0);
 					I.recoverEnvStats();

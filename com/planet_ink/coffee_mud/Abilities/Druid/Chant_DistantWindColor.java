@@ -22,7 +22,7 @@ public class Chant_DistantWindColor extends Chant
 			mob.tell("Discern the wind color where?");
 			return false;
 		}
-		
+
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
 		Room anyRoom=null;
 		Room newRoom=null;
@@ -64,7 +64,7 @@ public class Chant_DistantWindColor extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> chant(s) about a far away place.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String msg2=Chant_WindColor.getWindColor(mob,newRoom);

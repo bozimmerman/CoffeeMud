@@ -51,7 +51,7 @@ public class Troll extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((!amDead())&&(tickID==Host.MOB_TICK))
+		if((!amDead())&&(tickID==Host.TICK_MOB))
 		{
 			if((--regDown)<=0)
 			{
@@ -71,7 +71,7 @@ public class Troll extends StdMOB
 		{
 			String msgText = "The troll regenerates wounds";
 
-			FullMsg message = new FullMsg(this, target, null, Affect.MSG_OK_ACTION, msgText);
+			FullMsg message = new FullMsg(this, target, null, CMMsg.MSG_OK_ACTION, msgText);
 
 			target.send(this, message);
 

@@ -23,7 +23,7 @@ public class Disease_Cancer extends Disease
 	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sicker...";}
 	public int abilityCode(){return 0;}
 	protected int conDown=1;
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -34,13 +34,13 @@ public class Disease_Cancer extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_NOISE,DISEASE_AFFECT());
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			conDown++;
 			return true;
 		}
 		return true;
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

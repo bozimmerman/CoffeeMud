@@ -16,7 +16,7 @@ public class Sinking extends StdAbility
 	public Environmental newInstance(){	return new Sinking();}
 
 	private boolean reversed(){return profficiency()==100;}
-	
+
 	private boolean isWaterSurface(Room R)
 	{
 		if(R==null) return false;
@@ -33,7 +33,7 @@ public class Sinking extends StdAbility
 			return true;
 		return false;
 	}
-	
+
 	private boolean isAirRoom(Room R)
 	{
 		if(R==null) return false;
@@ -42,12 +42,12 @@ public class Sinking extends StdAbility
 			return true;
 		return false;
 	}
-	
+
 	private boolean canSinkFrom(Room fromHere, int direction)
 	{
-		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS)) 
+		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return false;
-		
+
 		Room toHere=fromHere.getRoomInDir(direction);
 		if((toHere==null)
 		||(fromHere.getExitInDir(direction)==null)
@@ -61,16 +61,16 @@ public class Sinking extends StdAbility
 	private boolean stopSinking(MOB mob)
 	{
 		unInvoke();
-		mob.delAffect(this);
+		mob.delEffect(this);
 		return false;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		if(tickID!=Host.MOB_TICK)
+		if(tickID!=Host.TICK_MOB)
 			return true;
 
 		if(affected==null)
@@ -104,7 +104,7 @@ public class Sinking extends StdAbility
 				&&(A.profficiencyCheck(25,(A.profficiency()>=75))
 				&&(mob.curState().getMovement()>0)))
 				{
-					if(mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> tread(s) water."))
+					if(mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> tread(s) water."))
 					{
 						mob.curState().expendEnergy(mob,mob.maxState(),true);
 						return true;
@@ -146,7 +146,7 @@ public class Sinking extends StdAbility
 				Room nextRoom=room.getRoomInDir(direction);
 				if(canSinkFrom(room,direction))
 				{
-					room.show(invoker,null,item,Affect.MSG_OK_ACTION,"<O-NAME> sinks "+addStr+".");
+					room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks "+addStr+".");
 					Vector V=new Vector();
 					recursiveRoomItems(V,item,room);
 					for(int v=0;v<V.size();v++)
@@ -156,7 +156,7 @@ public class Sinking extends StdAbility
 						nextRoom.addItemRefuse(thisItem,Item.REFUSE_PLAYER_DROP);
 					}
 					room=nextRoom;
-					nextRoom.show(invoker,null,item,Affect.MSG_OK_ACTION,"<O-NAME> sinks in from "+(reversed()?"below":"above")+".");
+					nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks in from "+(reversed()?"below":"above")+".");
 					return true;
 				}
 				else
@@ -205,7 +205,7 @@ public class Sinking extends StdAbility
 		Environmental E=target;
 		if(E==null) return false;
 		if((E instanceof Item)&&(room==null)) return false;
-		if(E.fetchAffect("Sinking")==null)
+		if(E.fetchEffect("Sinking")==null)
 		{
 			Sinking F=new Sinking();
 			F.setProfficiency(profficiency());
@@ -214,11 +214,11 @@ public class Sinking extends StdAbility
 				F.invoker=(MOB)E;
 			else
 				F.invoker=CMClass.getMOB("StdMOB");
-			E.addAffect(F);
+			E.addEffect(F);
 			F.setBorrowed(E,true);
 			F.makeLongLasting();
 			if(!(E instanceof MOB))
-				ExternalPlay.startTickDown(F,Host.MOB_TICK,1);
+				ExternalPlay.startTickDown(F,Host.TICK_MOB,1);
 			E.recoverEnvStats();
 		}
 		return true;

@@ -26,7 +26,7 @@ public class Spell_Shrink extends Spell
 			{
 				MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> return(s) to <S-HIS-HER> normal size.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> return(s) to <S-HIS-HER> normal size.");
 			}
 			else
 			if(affected instanceof Item)
@@ -35,7 +35,7 @@ public class Spell_Shrink extends Spell
 				if(item.owner()!=null)
 				{
 					if(item.owner() instanceof Room)
-						((Room)item.owner()).showHappens(Affect.MSG_OK_VISUAL,item.name()+" returns to its proper size.");
+						((Room)item.owner()).showHappens(CMMsg.MSG_OK_VISUAL,item.name()+" returns to its proper size.");
 					else
 					if(item.owner() instanceof MOB)
 						((MOB)item.owner()).tell(item.name()+" returns to its proper size.");
@@ -74,7 +74,7 @@ public class Spell_Shrink extends Spell
 		if((success)&&((E instanceof MOB)||(E instanceof Item)))
 		{
 			FullMsg msg=new FullMsg(mob,E,this,affectType(auto),auto?"<T-NAME> feel(s) somewhat smaller.":"^S<S-NAME> cast(s) a small spell on <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,E,0);

@@ -73,24 +73,24 @@ public class GenScroll extends GenItem implements Scroll
 		new StdScroll().parseSpells(me,names);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_READSOMETHING:
-				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
-					readIfAble(mob,this,affect.targetMessage());
+			case CMMsg.TYP_READSOMETHING:
+				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
+					readIfAble(mob,this,msg.targetMessage());
 				else
-					affect.addTrailerMsg(new FullMsg(affect.source(),affect.target(),affect.tool(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
+					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),msg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),msg.NO_EFFECT,null));
 				return;
 			default:
 				break;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 	public void setReadableText(String newText)
 	{

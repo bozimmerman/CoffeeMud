@@ -143,17 +143,17 @@ public class DrowWizard extends DrowElf
 
     }
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		boolean retval = super.okAffect(myHost,affect);
+		boolean retval = super.okMessage(myHost,msg);
 
-		if((affect.amITarget(this))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL))
+		if((msg.amITarget(this))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 		{
             if(Dice.rollPercentage() <= magicResistance)
             {
-	            affect.source().tell("The drow warrior resisted your spell!");
+	            msg.source().tell("The drow warrior resisted your spell!");
 	            return false;
             }
         }
@@ -162,7 +162,7 @@ public class DrowWizard extends DrowElf
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((!amDead())&&(tickID==Host.MOB_TICK))
+		if((!amDead())&&(tickID==Host.TICK_MOB))
 		{
 			if (isInCombat())
 			{

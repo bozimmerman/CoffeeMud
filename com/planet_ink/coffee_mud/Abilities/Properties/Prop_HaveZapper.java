@@ -19,34 +19,34 @@ public class Prop_HaveZapper extends Property
 
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if(affected==null) return false;
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		if(mob.location()==null)
 			return true;
 
-		if(affect.amITarget(affected))
-		switch(affect.targetMinor())
+		if(msg.amITarget(affected))
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_HOLD:
+		case CMMsg.TYP_HOLD:
 			break;
-		case Affect.TYP_WEAR:
+		case CMMsg.TYP_WEAR:
 			break;
-		case Affect.TYP_WIELD:
+		case CMMsg.TYP_WIELD:
 			break;
-		case Affect.TYP_GET:
+		case CMMsg.TYP_GET:
 			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,affected,Affect.MSG_OK_ACTION,"<O-NAME> flashes and flies out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> flashes and flies out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
-		case Affect.TYP_DROP:
-		case Affect.TYP_THROW:
+		case CMMsg.TYP_DROP:
+		case CMMsg.TYP_THROW:
 			break;
 		default:
 			break;

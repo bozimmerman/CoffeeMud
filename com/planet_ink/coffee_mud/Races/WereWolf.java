@@ -27,12 +27,12 @@ public class WereWolf extends GiantWolf
 		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+3);
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		MOB mob=(MOB)myHost;
 		if(msg.amISource(mob)
 		&&(!msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(mob.fetchWieldedItem()==null)
@@ -41,13 +41,13 @@ public class WereWolf extends GiantWolf
 		&&(Dice.rollPercentage()<50)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
 		&&(!((MOB)msg.target()).isMonster())
-		&&(((msg.targetCode()-Affect.MASK_HURT)>(((MOB)msg.target()).maxState().getHitPoints()/5))))
+		&&(((msg.targetCode()-CMMsg.MASK_HURT)>(((MOB)msg.target()).maxState().getHitPoints()/5))))
 		{
 			Ability A=CMClass.getAbility("Disease_Lycanthropy");
-			if((A!=null)&&(msg.target().fetchAffect(A.ID())==null))
+			if((A!=null)&&(msg.target().fetchEffect(A.ID())==null))
 				A.invoke(mob,(MOB)msg.target(),true);
 		}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
 
 	public Vector myResources()
@@ -66,7 +66,7 @@ public class WereWolf extends GiantWolf
 					Item meat=makeResource
 					("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT);
 					Ability A=CMClass.getAbility("Disease_Lycanthropy");
-					if(A!=null)	meat.addNonUninvokableAffect(A);
+					if(A!=null)	meat.addNonUninvokableEffect(A);
 					resources.addElement(meat);
 					resources.addElement(makeResource
 					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));

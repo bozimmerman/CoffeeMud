@@ -18,14 +18,14 @@ public class Specialization_Natural extends Specialization_Weapon
 
 	public Environmental newInstance(){	return new Specialization_Natural();}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((activated)
 		&&(Dice.rollPercentage()<25)
 		&&(affected instanceof MOB)
-		&&(affect.amISource((MOB)affected))
-		&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-		&&((affect.tool()==null)))
+		&&(msg.amISource((MOB)affected))
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&((msg.tool()==null)))
 			helpProfficiency((MOB)affected);
 	}
 

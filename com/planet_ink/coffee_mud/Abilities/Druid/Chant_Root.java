@@ -25,45 +25,45 @@ public class Chant_Root extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> roots are pulled up.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> roots are pulled up.");
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			if(affect.amISource((MOB)affected))
+			if(msg.amISource((MOB)affected))
 			{
-				if((affect.targetMinor()==Affect.TYP_LEAVE)
-				||(affect.sourceMinor()==Affect.TYP_ADVANCE)
-				||(affect.sourceMinor()==Affect.TYP_RETREAT))
+				if((msg.targetMinor()==CMMsg.TYP_LEAVE)
+				||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
+				||(msg.sourceMinor()==CMMsg.TYP_RETREAT))
 				{
 					if(!uprooted)
 					{
-						affect.source().tell("You can't really go anywhere -- you are rooted!");
+						msg.source().tell("You can't really go anywhere -- you are rooted!");
 						return false;
 					}
 					uprooted=false;
 				}
 			}
 			else
-			if(affect.amITarget(affected))
+			if(msg.amITarget(affected))
 			{
-				if((affect.tool()!=null)
-				&&(affect.tool() instanceof Ability)
-				&&((Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_MOVING))
-					||(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_TRANSPORTING))))
+				if((msg.tool()!=null)
+				&&(msg.tool() instanceof Ability)
+				&&((Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
+					||(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))))
 				{
 					if(!uprooted)
 					{
-						affect.source().tell((MOB)affected,null,null,"<S-NAME> <S-IS-ARE> rooted and can't go anywhere.");
+						msg.source().tell((MOB)affected,null,null,"<S-NAME> <S-IS-ARE> rooted and can't go anywhere.");
 						return false;
 					}
 					uprooted=false;
 				}
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -71,8 +71,8 @@ public class Chant_Root extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(ID())!=null)
+
+		if(target.fetchEffect(ID())!=null)
 		{
 			target.tell("You are already rooted.");
 			return false;
@@ -95,7 +95,7 @@ public class Chant_Root extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> become(s) rooted to the ground!":"^S<S-NAME> chant(s) as <S-HIS-HER> feet become rooted in the ground!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

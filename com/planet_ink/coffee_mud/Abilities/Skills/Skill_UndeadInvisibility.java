@@ -18,18 +18,18 @@ public class Skill_UndeadInvisibility extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Skill_UndeadInvisibility();	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
-		&&((affect.amITarget(affected))))
+		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+		&&((msg.amITarget(affected))))
 		{
-			MOB target=(MOB)affect.target();
+			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
-			   &&(affect.source().charStats().getMyRace().racialCategory().equals("Undead"))
-			   &&(affect.source().getVictim()!=target))
+			   &&(msg.source().charStats().getMyRace().racialCategory().equals("Undead"))
+			   &&(msg.source().getVictim()!=target))
 			{
-				affect.source().tell("You don't see "+target.name());
-				if(target.getVictim()==affect.source())
+				msg.source().tell("You don't see "+target.name());
+				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
 					target.setVictim(null);
@@ -38,6 +38,6 @@ public class Skill_UndeadInvisibility extends StdAbility
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

@@ -26,7 +26,7 @@ public class Prop_FightSpellCast extends Property
 		spellH=Prop_SpellAdder.getMySpellsH(this);
 		return spellH;
 	}
-	
+
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -34,14 +34,14 @@ public class Prop_FightSpellCast extends Property
 		spellH=null;
 	}
 
-	
+
 	public void addMeIfNeccessary(MOB sourceMOB, MOB newMOB)
 	{
 		Vector V=getMySpellsV();
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			Ability EA=newMOB.fetchAffect(A.ID());
+			Ability EA=newMOB.fetchEffect(A.ID());
 			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this)))
 				A.invoke(sourceMOB,newMOB,true);
 		}
@@ -67,9 +67,9 @@ public class Prop_FightSpellCast extends Property
 		return id;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if(processing) return;
 		processing=true;
@@ -82,26 +82,26 @@ public class Prop_FightSpellCast extends Property
 		&&(!myItem.amWearingAt(Item.INVENTORY))
 		&&(myItem.owner()!=null)
 		&&(myItem.owner() instanceof MOB)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof MOB))
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB))
 		{
 			MOB mob=(MOB)myItem.owner();
 			if((mob.isInCombat())
 			&&(mob.location()!=null)
-			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-			&&((affect.targetCode()-Affect.MASK_HURT)>0)
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
 			&&(!mob.amDead()))
 			{
 				if((myItem instanceof Weapon)
-				&&(affect.tool()==myItem)
+				&&(msg.tool()==myItem)
 				&&(myItem.amWearingAt(Item.WIELD))
-				&&(affect.amISource(mob)))
-					addMeIfNeccessary(affect.source(),(MOB)affect.target());
+				&&(msg.amISource(mob)))
+					addMeIfNeccessary(msg.source(),(MOB)msg.target());
 				else
-				if((affect.amITarget(mob))
+				if((msg.amITarget(mob))
 				&&(!myItem.amWearingAt(Item.WIELD))
 				&&(!(myItem instanceof Weapon)))
-					addMeIfNeccessary((MOB)affect.target(),(MOB)affect.target());
+					addMeIfNeccessary((MOB)msg.target(),(MOB)msg.target());
 			}
 		}
 		processing=false;

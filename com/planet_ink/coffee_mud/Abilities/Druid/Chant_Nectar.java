@@ -27,7 +27,7 @@ public class Chant_Nectar extends Chant
 			Item littleSpring=(Item)affected;
 			Room SpringLocation=CoffeeUtensils.roomLocation(littleSpring);
 			if(canBeUninvoked())
-				SpringLocation.showHappens(Affect.MSG_OK_VISUAL,littleSpring.name()+" dries up.");
+				SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,littleSpring.name()+" dries up.");
 			super.unInvoke();
 			if(canBeUninvoked())
 			{
@@ -69,18 +69,18 @@ public class Chant_Nectar extends Chant
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(affected!=null)
-		if(affect.amITarget(affected))
+		if(msg.amITarget(affected))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_DRINK:
+			case CMMsg.TYP_DRINK:
 				{
-					MOB M=(MOB)affect.source();
+					MOB M=(MOB)msg.source();
 					int hp=Dice.roll(1,M.charStats().getStat(CharStats.CONSTITUTION),0);
-					ExternalPlay.postHealing(M,M,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,hp,null);
+					ExternalPlay.postHealing(M,M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,hp,null);
 					int mana=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
 					M.curState().adjMana(mana,M.maxState());
 					int move=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
@@ -91,7 +91,7 @@ public class Chant_Nectar extends Chant
 				break;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -112,7 +112,7 @@ public class Chant_Nectar extends Chant
 				return false;
 			}
 		}
-		
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -122,7 +122,7 @@ public class Chant_Nectar extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) for nectar.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Item newItem=(Item)CMClass.getItem("Spring");
@@ -130,10 +130,10 @@ public class Chant_Nectar extends Chant
 				newItem.setDisplayText("an enormous flower is dripping with nectar");
 				newItem.setDescription("The closer you look, the more illusive the flower becomes.  There must be druid magic at work here!");
 				Ability A=CMClass.getAbility("Poison_Liquor");
-				if(A!=null) newItem.addNonUninvokableAffect(A);
+				if(A!=null) newItem.addNonUninvokableEffect(A);
 
 				mob.location().addItem(newItem);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				drank=new Vector();
 				lastNum=-1;
 				beneficialAffect(mob,newItem,0);

@@ -30,12 +30,12 @@ public class Insect extends StdRace
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
 	}
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		MOB mob=(MOB)myHost;
 		if(msg.amISource(mob)
 		&&(!msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(mob.fetchWieldedItem()==null)
@@ -43,13 +43,13 @@ public class Insect extends StdRace
 		&&(msg.tool() instanceof Weapon)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
 		&&(!((MOB)msg.target()).isMonster())
-		&&(((msg.targetCode()-Affect.MASK_HURT)>(((MOB)msg.target()).maxState().getHitPoints()/20))))
+		&&(((msg.targetCode()-CMMsg.MASK_HURT)>(((MOB)msg.target()).maxState().getHitPoints()/20))))
 		{
 			Ability A=CMClass.getAbility("Disease_Lyme");
-			if((A!=null)&&(msg.target().fetchAffect(A.ID())==null))
+			if((A!=null)&&(msg.target().fetchEffect(A.ID())==null))
 				A.invoke(mob,(MOB)msg.target(),true);
 		}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

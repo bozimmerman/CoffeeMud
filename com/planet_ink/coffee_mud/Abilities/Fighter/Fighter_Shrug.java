@@ -19,25 +19,25 @@ public class Fighter_Shrug extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amITarget((MOB)affected))
-		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 		&&(!msg.amISource((MOB)affected))
 		&&(Sense.aliveAwakeMobile((MOB)affected,true))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 		{
 			MOB mob=(MOB)affected;
-			if(mob.location().show(mob,msg.source(),this,Affect.MSG_OK_ACTION,"<S-NAME> shrug(s) off the attack from <T-NAME>."))
+			if(mob.location().show(mob,msg.source(),this,CMMsg.MSG_OK_ACTION,"<S-NAME> shrug(s) off the attack from <T-NAME>."))
 			{
 				unInvoke();
 				return false;
 			}
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -67,8 +67,8 @@ public class Fighter_Shrug extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT,auto?"<T-NAME> is braced for an attack!":"<S-NAME> brace(s) for an attack!");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> is braced for an attack!":"<S-NAME> brace(s) for an attack!");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -45,7 +45,7 @@ public class Spell_Meld extends Spell
 			if(heiarchy[i]==material) return i;
 		return 99;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		// add something to disable traps
@@ -148,7 +148,7 @@ public class Spell_Meld extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> meld(s) "+itemOne.name()+" and "+itemTwo.name()+".^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 
@@ -285,17 +285,17 @@ public class Spell_Meld extends Spell
 				}
 				if(melded!=null)
 				{
-					for(int a=0;a<itemOne.numAffects();a++)
+					for(int a=0;a<itemOne.numEffects();a++)
 					{
-						Ability aff=itemOne.fetchAffect(a);
-						if((aff!=null)&&(melded.fetchAffect(aff.ID())==null))
-							melded.addAffect(aff);
+						Ability aff=itemOne.fetchEffect(a);
+						if((aff!=null)&&(melded.fetchEffect(aff.ID())==null))
+							melded.addEffect(aff);
 					}
-					for(int a=0;a<itemTwo.numAffects();a++)
+					for(int a=0;a<itemTwo.numEffects();a++)
 					{
-						Ability aff=itemTwo.fetchAffect(a);
-						if((aff!=null)&&(melded.fetchAffect(aff.ID())==null))
-							melded.addAffect(aff);
+						Ability aff=itemTwo.fetchEffect(a);
+						if((aff!=null)&&(melded.fetchEffect(aff.ID())==null))
+							melded.addEffect(aff);
 					}
 					for(int a=0;a<itemOne.numBehaviors();a++)
 					{

@@ -42,7 +42,7 @@ public class Prayer_Blindsight extends Prayer
 	{
 		MOB target=mob;
 		if(target==null) return false;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("You already have the blindsight.");
 			return false;
@@ -60,7 +60,7 @@ public class Prayer_Blindsight extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) blindsight.":"^S<S-NAME> "+prayWord(mob)+" for the blindsight.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

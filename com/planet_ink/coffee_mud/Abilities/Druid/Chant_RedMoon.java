@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_RedMoon extends Chant
 {
 	public String ID() { return "Chant_RedMoon"; }
-	public String name(){ return "Red Moon";} 
+	public String name(){ return "Red Moon";}
 	public String displayText(){return "(Red Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
@@ -22,24 +22,24 @@ public class Chant_RedMoon extends Chant
 			return;
 		Room R=(Room)affected;
 		if(canBeUninvoked())
-			R.showHappens(Affect.MSG_OK_VISUAL,"The red moon sets.");
+			R.showHappens(CMMsg.MSG_OK_VISUAL,"The red moon sets.");
 
 		super.unInvoke();
 
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		   &&(affect.target()!=null)
-		   &&(affect.target() instanceof MOB))
+		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		   &&(msg.target()!=null)
+		   &&(msg.target() instanceof MOB))
 		{
-			MOB mob=(MOB)affect.target();
-			int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
+			MOB mob=(MOB)msg.target();
+			int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
 			if(Sense.isEvil(mob)) recovery=recovery*-1;
-			SaucerSupport.adjustDamageMessage(affect,recovery);
+			SaucerSupport.adjustDamageMessage(msg,recovery);
 		}
 		return true;
 	}
@@ -56,7 +56,7 @@ public class Chant_RedMoon extends Chant
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room target=mob.location();
@@ -66,7 +66,7 @@ public class Chant_RedMoon extends Chant
 			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already under the red moon.");
 			return false;
@@ -88,14 +88,14 @@ public class Chant_RedMoon extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Red Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Red Moon Rises!");
 					beneficialAffect(mob,target,0);
-					Ability A=target.fetchAffect("Chant_BlueMoon");
+					Ability A=target.fetchEffect("Chant_BlueMoon");
 					if(A!=null) A.unInvoke();
 				}
 			}

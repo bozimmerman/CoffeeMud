@@ -22,24 +22,24 @@ public class Spell_WallOfStone extends Spell
 	private Item theWall=null;
 	private String deathNotice="";
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 
 		if((invoker!=null)
 		&&(mob.isInCombat())
 		&&(mob.getVictim()==invoker)
 		&&(mob.rangeToTarget()==1))
 		{
-			if(affect.sourceMinor()==Affect.TYP_ADVANCE)
+			if(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 			{
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of stone with "+w.name()+".^?");
+				mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of stone with "+w.name()+".^?");
 				amountRemaining-=mob.envStats().damage();
 				if(amountRemaining<0)
 				{
@@ -49,7 +49,7 @@ public class Spell_WallOfStone extends Spell
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -63,7 +63,7 @@ public class Spell_WallOfStone extends Spell
 			&&(theWall.owner() instanceof Room)
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
-				((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,deathNotice);
+				((Room)theWall.owner()).show(invoker,null,CMMsg.MSG_OK_VISUAL,deathNotice);
 				Item wall=theWall;
 				theWall=null;
 				wall.destroy();
@@ -73,7 +73,7 @@ public class Spell_WallOfStone extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((invoker!=null)
 			   &&(theWall!=null)
@@ -94,7 +94,7 @@ public class Spell_WallOfStone extends Spell
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I=mob.location().fetchItem(i);
-			if((I!=null)&&(I.fetchAffect(ID())!=null))
+			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a wall of stone here.");
 				return false;
@@ -121,7 +121,7 @@ public class Spell_WallOfStone extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?"A mighty wall of stone appears!":"^S<S-NAME> conjur(s) up a mighty wall of stone!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				amountRemaining=mob.baseState().getHitPoints()/6;

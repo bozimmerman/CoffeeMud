@@ -24,7 +24,7 @@ public class Skill_FalseArrest extends StdAbility
 		if(V.size()==0) return null;
 		return (Behavior)V.firstElement();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -79,8 +79,8 @@ public class Skill_FalseArrest extends StdAbility
 			beneficialWordsFizzle(mob,target,"<S-NAME> frown(s) at <T-NAMESELF>, but lose(s) the nerve.");
 			return false;
 		}
-		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> frown(s) at <T-NAMESELF>.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> frown(s) at <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			Vector V=new Vector();

@@ -20,7 +20,7 @@ public class Chant_SummonInsects extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
@@ -29,7 +29,7 @@ public class Chant_SummonInsects extends Chant
 				unInvoke();
 			else
 			if((!vic.amDead())&&(vic.location()!=null))
-				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(1,3,0),Affect.TYP_OK_VISUAL,-1,"<T-NAME> <T-IS-ARE> stung by the swarm!");
+				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(1,3,0),CMMsg.TYP_OK_VISUAL,-1,"<T-NAME> <T-IS-ARE> stung by the swarm!");
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -43,7 +43,7 @@ public class Chant_SummonInsects extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the insect swarm!");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the insect swarm!");
 	}
 
 
@@ -83,15 +83,15 @@ public class Chant_SummonInsects extends Chant
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if((mob.location().okAffect(mob,msg))
-				   &&(target.fetchAffect(this.ID())==null))
+				if((mob.location().okMessage(mob,msg))
+				   &&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
 					if((!msg.wasModified())&&(target.location()==mob.location()))
 					{
 						castingLocation=mob.location();
 						success=maliciousAffect(mob,target,(mob.envStats().level()*10),-1);
-						target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> become(s) enveloped by the swarm of stinging insects!");
+						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped by the swarm of stinging insects!");
 					}
 				}
 			}

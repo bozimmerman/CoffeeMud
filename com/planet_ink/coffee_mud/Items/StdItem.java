@@ -63,9 +63,9 @@ public class StdItem implements Item
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if(A!=null)
 				A.affectEnvStats(this,envStats);
 		}
@@ -100,11 +100,11 @@ public class StdItem implements Item
 			if(B!=null)	addBehavior((Behavior)B.copyOf());
 		}
 
-		for(int a=0;a<E.numAffects();a++)
+		for(int a=0;a<E.numEffects();a++)
 		{
-			Ability A=E.fetchAffect(a);
+			Ability A=E.fetchEffect(a);
 			if((A!=null)&&(!A.canBeUninvoked())&&(!A.ID().equals("ItemRejuv")))
-				addAffect((Ability)A.copyOf());
+				addEffect((Ability)A.copyOf());
 		}
 
 	}
@@ -344,27 +344,27 @@ public class StdItem implements Item
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))
 				affectableStats.setWeight(affectableStats.weight()+envStats().weight());
 		}
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.bubbleAffect()))
 			   A.affectEnvStats(affected,affectableStats);
 		}
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.bubbleAffect()))
 			   A.affectCharStats(affectedMob,affectableStats);
 		}
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.bubbleAffect()))
 			   A.affectCharState(affectedMob,affectableMaxState);
 		}
@@ -386,7 +386,7 @@ public class StdItem implements Item
 		if(destroyed)
 			return false;
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==Host.ITEM_BEHAVIOR_TICK)
+		if(tickID==Host.TICK_ITEM_BEHAVIOR)
 		{
 			if(numBehaviors()==0) return false;
 			for(int b=0;b<numBehaviors();b++)
@@ -398,18 +398,19 @@ public class StdItem implements Item
 			}
 		}
 		else
+		if(tickID!=Host.TICK_CLANITEM)
 		{
 			int a=0;
-			while(a<numAffects())
+			while(a<numEffects())
 			{
-				Ability A=fetchAffect(a);
+				Ability A=fetchEffect(a);
 				if(A!=null)
 				{
-					int s=numAffects();
+					int s=numEffects();
 					tickStatus=Tickable.STATUS_AFFECT+a;
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
-					if(numAffects()==s)
+					if(numEffects()==s)
 						a++;
 				}
 				else
@@ -516,64 +517,64 @@ public class StdItem implements Item
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(!B.okAffect(this,affect)))
+			if((B!=null)&&(!B.okMessage(this,msg)))
 				return false;
 		}
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
-			if((A!=null)&&(!A.okAffect(this,affect)))
+			Ability A=fetchEffect(a);
+			if((A!=null)&&(!A.okMessage(this,msg)))
 				return false;
 		}
 
-		MOB mob=affect.source();
-		if(!affect.amITarget(this))
+		MOB mob=msg.source();
+		if(!msg.amITarget(this))
 			return true;
 		else
-		if(affect.targetCode()==Affect.NO_EFFECT)
+		if(msg.targetCode()==CMMsg.NO_EFFECT)
 			return true;
 		else
-		if((Util.bset(affect.targetCode(),Affect.MASK_MAGIC))
+		if((Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
 		&&(!isGettable())
 		&&((displayText().length()==0)
-		   ||((affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(((Ability)affect.tool()).quality()==Ability.MALICIOUS))))
+		   ||((msg.tool()!=null)
+			&&(msg.tool() instanceof Ability)
+			&&(((Ability)msg.tool()).quality()==Ability.MALICIOUS))))
 		{
 			mob.tell("Please don't do that.");
 			return false;
 		}
 		else
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_EXAMINESOMETHING:
-		case Affect.TYP_READSOMETHING:
-		case Affect.TYP_QUIETMOVEMENT:
-		case Affect.TYP_SPEAK:
-		case Affect.TYP_OK_ACTION:
-		case Affect.TYP_OK_VISUAL:
-		case Affect.TYP_DEATH:
-		case Affect.TYP_NOISE:
+		case CMMsg.TYP_EXAMINESOMETHING:
+		case CMMsg.TYP_READSOMETHING:
+		case CMMsg.TYP_QUIETMOVEMENT:
+		case CMMsg.TYP_SPEAK:
+		case CMMsg.TYP_OK_ACTION:
+		case CMMsg.TYP_OK_VISUAL:
+		case CMMsg.TYP_DEATH:
+		case CMMsg.TYP_NOISE:
 			return true;
-		case Affect.TYP_HOLD:
-			if(!alreadyWornMsg(affect.source(),this))
+		case CMMsg.TYP_HOLD:
+			if(!alreadyWornMsg(msg.source(),this))
 				return false;
 			if(!fitsOn(Item.HELD))
 			{
-				StringBuffer msg=new StringBuffer("You can't hold "+name()+".");
+				StringBuffer str=new StringBuffer("You can't hold "+name()+".");
 				if(fitsOn(Item.WIELD))
-					msg.append("Try WIELDing it.");
+					str.append("Try WIELDing it.");
 				else
 				if(properWornBitmap>0)
-					msg.append("Try WEARing it.");
-				mob.tell(msg.toString());
+					str.append("Try WEARing it.");
+				mob.tell(str.toString());
 				return false;
 			}
 			if(envStats().level()>mob.envStats().level())
@@ -600,13 +601,13 @@ public class StdItem implements Item
 				}
 			}
 			return true;
-		case Affect.TYP_WEAR:
+		case CMMsg.TYP_WEAR:
 			if(properWornBitmap==0)
 			{
 				mob.tell("You can't wear "+name()+".");
 				return false;
 			}
-			if(!alreadyWornMsg(affect.source(),this))
+			if(!alreadyWornMsg(msg.source(),this))
 				return false;
 			if(envStats().level()>mob.envStats().level())
 			{
@@ -647,13 +648,13 @@ public class StdItem implements Item
 				}
 			}
 			return true;
-		case Affect.TYP_WIELD:
+		case CMMsg.TYP_WIELD:
 			if(!fitsOn(Item.WIELD))
 			{
 				mob.tell("You can't wield "+name()+" as a weapon.");
 				return false;
 			}
-			if(!alreadyWornMsg(affect.source(),this))
+			if(!alreadyWornMsg(msg.source(),this))
 				return false;
 			if(envStats().level()>mob.envStats().level())
 			{
@@ -678,11 +679,11 @@ public class StdItem implements Item
 				}
 			}
 			return true;
-		case Affect.TYP_GET:
-			if((affect.tool()==null)||(affect.tool() instanceof MOB))
+		case CMMsg.TYP_GET:
+			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
 				if((!Sense.canBeSeenBy(this,mob))
-				   &&((affect.sourceMajor()&Affect.MASK_GENERAL)==0)
+				   &&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0)
 				   &&(amWearingAt(Item.INVENTORY)))
 				{
 					mob.tell("You can't see that.");
@@ -716,24 +717,24 @@ public class StdItem implements Item
 			}
 			if(this instanceof Container)
 				return true;
-			switch(affect.sourceMinor())
+			switch(msg.sourceMinor())
 			{
-			case Affect.TYP_BUY:
-			case Affect.TYP_GET:
-			case Affect.TYP_GENERAL:
-			case Affect.TYP_REMOVE:
-			case Affect.TYP_SELL:
-			case Affect.TYP_VALUE:
-			case Affect.TYP_VIEW:
-			case Affect.TYP_GIVE:
+			case CMMsg.TYP_BUY:
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_GENERAL:
+			case CMMsg.TYP_REMOVE:
+			case CMMsg.TYP_SELL:
+			case CMMsg.TYP_VALUE:
+			case CMMsg.TYP_VIEW:
+			case CMMsg.TYP_GIVE:
 				return true;
 			}
 			break;
-		case Affect.TYP_REMOVE:
-			if((affect.tool()==null)||(affect.tool() instanceof MOB))
+		case CMMsg.TYP_REMOVE:
+			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
 				if((!Sense.canBeSeenBy(this,mob))
-				   &&((affect.sourceMajor()&Affect.MASK_GENERAL)==0)
+				   &&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0)
 				   &&(amWearingAt(Item.INVENTORY)))
 				{
 					mob.tell("You can't see that.");
@@ -753,20 +754,20 @@ public class StdItem implements Item
 			}
 			if(this instanceof Container)
 				return true;
-			switch(affect.sourceMinor())
+			switch(msg.sourceMinor())
 			{
-			case Affect.TYP_BUY:
-			case Affect.TYP_GET:
-			case Affect.TYP_GENERAL:
-			case Affect.TYP_REMOVE:
-			case Affect.TYP_SELL:
-			case Affect.TYP_VALUE:
-			case Affect.TYP_VIEW:
-			case Affect.TYP_GIVE:
+			case CMMsg.TYP_BUY:
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_GENERAL:
+			case CMMsg.TYP_REMOVE:
+			case CMMsg.TYP_SELL:
+			case CMMsg.TYP_VALUE:
+			case CMMsg.TYP_VIEW:
+			case CMMsg.TYP_GIVE:
 				return true;
 			}
 			break;
-		case Affect.TYP_DROP:
+		case CMMsg.TYP_DROP:
 			if(!mob.isMine(this))
 			{
 				mob.tell("You don't have that.");
@@ -778,7 +779,7 @@ public class StdItem implements Item
 				return false;
 			}
 			return true;
-		case Affect.TYP_THROW:
+		case CMMsg.TYP_THROW:
 			if(envStats().weight()>(mob.maxCarry()/5))
 			{
 				mob.tell(name()+" is too heavy to throw.");
@@ -790,43 +791,43 @@ public class StdItem implements Item
 				return false;
 			}
 			return true;
-		case Affect.TYP_BUY:
-		case Affect.TYP_SELL:
-		case Affect.TYP_VALUE:
-		case Affect.TYP_VIEW:
+		case CMMsg.TYP_BUY:
+		case CMMsg.TYP_SELL:
+		case CMMsg.TYP_VALUE:
+		case CMMsg.TYP_VIEW:
 				return true;
-		case Affect.TYP_OPEN:
-		case Affect.TYP_CLOSE:
-		case Affect.TYP_LOCK:
-		case Affect.TYP_PUT:
-		case Affect.TYP_UNLOCK:
+		case CMMsg.TYP_OPEN:
+		case CMMsg.TYP_CLOSE:
+		case CMMsg.TYP_LOCK:
+		case CMMsg.TYP_PUT:
+		case CMMsg.TYP_UNLOCK:
 			if(this instanceof Container)
 				return true;
 			break;
-		case Affect.TYP_DELICATE_HANDS_ACT:
-		case Affect.TYP_JUSTICE:
-		case Affect.TYP_WAND_USE:
-		case Affect.TYP_FIRE:
-		case Affect.TYP_CAST_SPELL:
+		case CMMsg.TYP_DELICATE_HANDS_ACT:
+		case CMMsg.TYP_JUSTICE:
+		case CMMsg.TYP_WAND_USE:
+		case CMMsg.TYP_FIRE:
+		case CMMsg.TYP_CAST_SPELL:
 			return true;
-		case Affect.TYP_FILL:
+		case CMMsg.TYP_FILL:
 			if(this instanceof Drink)
 				return true;
 			if(this instanceof Lantern)
 				return true;
 			break;
-		case Affect.TYP_EAT:
+		case CMMsg.TYP_EAT:
 			if(this instanceof Food)
 				return true;
 			break;
-		case Affect.TYP_DRINK:
+		case CMMsg.TYP_DRINK:
 			if(this instanceof Drink)
 				return true;
 			break;
-		case Affect.TYP_WRITE:
+		case CMMsg.TYP_WRITE:
 			if((this.isReadable())&&(!(this instanceof Scroll)))
 			{
-				if(affect.targetMessage().trim().length()==0)
+				if(msg.targetMessage().trim().length()==0)
 				{
 					mob.tell("Write what on "+name()+"?");
 					return false;
@@ -842,7 +843,7 @@ public class StdItem implements Item
 		return false;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
@@ -850,23 +851,23 @@ public class StdItem implements Item
 		{
 			Behavior B=fetchBehavior(b);
 			if(B!=null)
-				B.affect(this,affect);
+				B.executeMsg(this,msg);
 		}
 
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if(A!=null)
-				A.affect(this,affect);
+				A.executeMsg(this,msg);
 		}
 
-		MOB mob=affect.source();
-		if(!affect.amITarget(this))
+		MOB mob=msg.source();
+		if(!msg.amITarget(this))
 			return;
 		else
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_EXAMINESOMETHING:
+		case CMMsg.TYP_EXAMINESOMETHING:
 			if(!(this instanceof Container))
 			{
 				if(Sense.canBeSeenBy(this,mob))
@@ -883,7 +884,7 @@ public class StdItem implements Item
 					mob.tell("You can't see that!");
 			}
 			return;
-		case Affect.TYP_READSOMETHING:
+		case CMMsg.TYP_READSOMETHING:
 			if(!(this instanceof LandTitle))
 			{
 				if(Sense.canBeSeenBy(this,mob))
@@ -909,7 +910,7 @@ public class StdItem implements Item
 					mob.tell("You can't see that!");
 			}
 			return;
-		case Affect.TYP_HOLD:
+		case CMMsg.TYP_HOLD:
 			if((canWear(mob,Item.HELD))&&(fitsOn(Item.HELD)))
 			{
 				wearAt(Item.HELD);
@@ -918,7 +919,7 @@ public class StdItem implements Item
 				mob.recoverMaxState();
 			}
 			break;
-		case Affect.TYP_WEAR:
+		case CMMsg.TYP_WEAR:
 			if(canWear(mob,0))
 			{
 				wearIfPossible(mob);
@@ -927,7 +928,7 @@ public class StdItem implements Item
 				mob.recoverMaxState();
 			}
 			break;
-		case Affect.TYP_WIELD:
+		case CMMsg.TYP_WIELD:
 			if((canWear(mob,Item.WIELD))&&(fitsOn(Item.WIELD)))
 			{
 				wearAt(Item.WIELD);
@@ -936,7 +937,7 @@ public class StdItem implements Item
 				mob.recoverMaxState();
 			}
 			break;
-		case Affect.TYP_GET:
+		case CMMsg.TYP_GET:
 			if(!(this instanceof Container))
 			{
 				setContainer(null);
@@ -947,53 +948,53 @@ public class StdItem implements Item
 				if(!mob.isMine(this))
 					mob.addInventory(this);
 				unWear();
-				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 			}
 			break;
-		case Affect.TYP_REMOVE:
+		case CMMsg.TYP_REMOVE:
 			if(!(this instanceof Container))
 			{
 				unWear();
-				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 			}
 			break;
-		case Affect.TYP_THROW:
+		case CMMsg.TYP_THROW:
 			if(mob.isMine(this)
-			   &&(affect.tool()!=null)
-			   &&(affect.tool() instanceof Room))
+			   &&(msg.tool()!=null)
+			   &&(msg.tool() instanceof Room))
 			{
 				mob.delInventory(this);
-				if(!((Room)affect.tool()).isContent(this))
-					((Room)affect.tool()).addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
-				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+				if(!((Room)msg.tool()).isContent(this))
+					((Room)msg.tool()).addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 				{
-					((Room)affect.tool()).recoverRoomStats();
-					if(mob.location()!=affect.tool())
+					((Room)msg.tool()).recoverRoomStats();
+					if(mob.location()!=msg.tool())
 						mob.location().recoverRoomStats();
 				}
 			}
 			unWear();
 			setContainer(null);
 			break;
-		case Affect.TYP_DROP:
+		case CMMsg.TYP_DROP:
 			if(mob.isMine(this))
 			{
 				mob.delInventory(this);
 				if(!mob.location().isContent(this))
 					mob.location().addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
-				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 			}
 			unWear();
 			setContainer(null);
 			break;
-		case Affect.TYP_WRITE:
+		case CMMsg.TYP_WRITE:
 			if(this.isReadable())
-				setReadableText((readableText()+" "+affect.targetMessage()).trim());
+				setReadableText((readableText()+" "+msg.targetMessage()).trim());
 			break;
-		case Affect.TYP_DEATH:
+		case CMMsg.TYP_DEATH:
 			destroy();
 			break;
 		default:
@@ -1005,9 +1006,9 @@ public class StdItem implements Item
 	public void destroy()
 	{
 		myContainer=null;
-		for(int a=this.numAffects()-1;a>=0;a--)
+		for(int a=this.numEffects()-1;a>=0;a--)
 		{
-			Ability aff=fetchAffect(a);
+			Ability aff=fetchEffect(a);
 			if((aff!=null)&&(!(aff.ID().equals("ItemRejuv"))))
 				aff.unInvoke();
 		}
@@ -1084,7 +1085,7 @@ public class StdItem implements Item
 		recoverEnvStats();
 	}
 
-	public void addNonUninvokableAffect(Ability to)
+	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
 		if(affects==null) affects=new Vector();
@@ -1094,7 +1095,7 @@ public class StdItem implements Item
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
-	public void addAffect(Ability to)
+	public void addEffect(Ability to)
 	{
 		if(to==null) return;
 		if(affects==null) affects=new Vector();
@@ -1102,7 +1103,7 @@ public class StdItem implements Item
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
-	public void delAffect(Ability to)
+	public void delEffect(Ability to)
 	{
 		if(affects==null) return;
 		int size=affects.size();
@@ -1110,12 +1111,12 @@ public class StdItem implements Item
 		if(affects.size()<size)
 			to.setAffectedOne(null);
 	}
-	public int numAffects()
+	public int numEffects()
 	{
 		if(affects==null) return 0;
 		return affects.size();
 	}
-	public Ability fetchAffect(int index)
+	public Ability fetchEffect(int index)
 	{
 		if(affects==null) return null;
 		try
@@ -1125,12 +1126,12 @@ public class StdItem implements Item
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	public Ability fetchAffect(String ID)
+	public Ability fetchEffect(String ID)
 	{
 		if(affects==null) return null;
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.ID().equals(ID)))
 				return A;
 		}
@@ -1152,7 +1153,7 @@ public class StdItem implements Item
 
 		// first one! so start ticking...
 		if(behaviors.size()==0)
-			ExternalPlay.startTickDown(this,Host.ITEM_BEHAVIOR_TICK,1);
+			ExternalPlay.startTickDown(this,Host.TICK_ITEM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1161,7 +1162,7 @@ public class StdItem implements Item
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			ExternalPlay.deleteTick(this,Host.ITEM_BEHAVIOR_TICK);
+			ExternalPlay.deleteTick(this,Host.TICK_ITEM_BEHAVIOR);
 	}
 	public int numBehaviors()
 	{
@@ -1192,11 +1193,11 @@ public class StdItem implements Item
 	protected String tackOns()
 	{
 		String identity="";
-		if(numAffects()>0)
+		if(numEffects()>0)
 			identity+="\n\rHas the following magical properties: ";
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.accountForYourself().length()>0))
 				identity+="\n\r"+A.accountForYourself();
 		}

@@ -43,11 +43,11 @@ public class Song_Lullibye extends Song
 			{
 				if(Sense.isSleeping(mob))
 					mob.envStats().setDisposition(mob.envStats().disposition()-EnvStats.IS_SLEEPING);
-				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> wake(s) up.");
+				mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> wake(s) up.");
 			}
 			else
 			{
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> fall(s) asleep.");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> fall(s) asleep.");
 				mob.envStats().setDisposition(mob.envStats().disposition()|EnvStats.IS_SLEEPING);
 			}
 		}
@@ -55,20 +55,20 @@ public class Song_Lullibye extends Song
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if(affect.source()==invoker)
+		if(msg.source()==invoker)
 			return true;
 
-		if(affect.source()!=affected)
+		if(msg.source()!=affected)
 			return true;
 
 
-		if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-		&&(affect.targetMinor()==Affect.TYP_STAND)&&(asleep))
+		if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		&&(msg.targetMinor()==CMMsg.TYP_STAND)&&(asleep))
 			return false;
 		return true;
 	}

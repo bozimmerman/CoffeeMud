@@ -14,27 +14,27 @@ public class MOBHelper extends StdBehavior
 	}
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
-		MOB mob=affect.source();
+		super.executeMsg(affecting,msg);
+		MOB mob=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return;
 		MOB monster=(MOB)affecting;
-		if(affect.target()==null)
+		if(msg.target()==null)
 			return;
-		if(!(affect.target() instanceof MOB))
+		if(!(msg.target() instanceof MOB))
 			return;
-		MOB target=(MOB)affect.target();
+		MOB target=(MOB)msg.target();
 
 		if((mob!=monster)
 		&&(target!=monster)
 		&&(mob!=target)
 		&&(Sense.canBeSeenBy(mob,monster))
 		&&(Sense.canBeSeenBy(target,monster))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(target.isMonster()))
 			Aggressive.startFight(monster,mob,true);
 	}

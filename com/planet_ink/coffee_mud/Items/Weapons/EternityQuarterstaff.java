@@ -36,26 +36,26 @@ public class EternityQuarterstaff extends Quarterstaff
 		return new EternityQuarterstaff();
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		switch(affect.sourceMinor())
+		MOB mob=msg.source();
+		switch(msg.sourceMinor())
 		{
-		case Affect.TYP_SPEAK:
+		case CMMsg.TYP_SPEAK:
 			if((mob.isMine(this))
 			   &&(!amWearingAt(Item.INVENTORY))
-			   &&(affect.target() instanceof MOB)
-			   &&(mob.location().isInhabitant((MOB)affect.target())))
+			   &&(msg.target() instanceof MOB)
+			   &&(mob.location().isInhabitant((MOB)msg.target())))
 			{
-				MOB target=(MOB)affect.target();
-				int x=affect.targetMessage().toUpperCase().indexOf("HEAL");
+				MOB target=(MOB)msg.target();
+				int x=msg.targetMessage().toUpperCase().indexOf("HEAL");
 				if(x>=0)
 				{
 					if(usesRemaining()>0)
 					{
 						this.setUsesRemaining(this.usesRemaining()-5);
-						FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_CAST_VERBAL_SPELL,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light.");
-						if(mob.location().okAffect(mob,msg))
+						FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light.");
+						if(mob.location().okMessage(mob,msg2))
 						{
 		   					int healing=1+(int)Math.round(Util.div(envStats().level(),10.0));
 							target.curState().adjHitPoints(healing,target.maxState());
@@ -70,6 +70,6 @@ public class EternityQuarterstaff extends Quarterstaff
 		default:
 			break;
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

@@ -32,23 +32,23 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
-	{beneficialAffect(mob,E,0);return (Trap)E.fetchAffect(ID());}
+	{beneficialAffect(mob,E,0);return (Trap)E.fetchEffect(ID());}
 
 	public void spring(MOB M)
 	{
 		sprung=true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(sprung){	return;	}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
-		if((affect.amITarget(affected))&&(affect.targetMinor()==Affect.TYP_OPEN))
+		if((msg.amITarget(affected))&&(msg.targetMinor()==CMMsg.TYP_OPEN))
 		{
-			if((!affect.amISource(invoker())
-			&&(Dice.rollPercentage()>affect.source().charStats().getStat(CharStats.SAVE_TRAPS))))
-				spring(affect.source());
+			if((!msg.amISource(invoker())
+			&&(Dice.rollPercentage()>msg.source().charStats().getStat(CharStats.SAVE_TRAPS))))
+				spring(msg.source());
 		}
 	}
 
@@ -64,8 +64,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			SaucerSupport.getRadiantRooms(room1,rooms,true,true,false,null,10);
 			SaucerSupport.getRadiantRooms(room2,rooms,true,true,false,null,10);
 			Vector mobsDone=new Vector();
-			room1.showHappens(Affect.MSG_NOISE,"A horrible alarm is going off here.");
-			room2.showHappens(Affect.MSG_NOISE,"A horrible alarm is going off here.");
+			room1.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
+			room2.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
 			for(int r=0;r<rooms.size();r++)
 			{
 				Room R=(Room)rooms.elementAt(r);
@@ -74,7 +74,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 					int dir=SaucerSupport.radiatesFromDir(R,rooms);
 					if(dir>=0)
 					{
-						R.showHappens(Affect.MSG_NOISE,"You hear a loud alarm "+Directions.getInDirectionName(dir)+".");
+						R.showHappens(CMMsg.MSG_NOISE,"You hear a loud alarm "+Directions.getInDirectionName(dir)+".");
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							MOB M=R.fetchInhabitant(i);
@@ -117,8 +117,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,alarmThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?alarmThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+alarmThis.name()+"."));
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,alarmThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_GENERAL|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?alarmThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+alarmThis.name()+"."));
+		if(mob.location().okMessage(mob,msg))
 		{
 			invoker=mob;
 			mob.location().send(mob,msg);
@@ -135,8 +135,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 				if(Dice.rollPercentage()>50)
 				{
 					beneficialAffect(mob,alarmThis,0);
-					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) the alarm on accident!");
-					Trap T=(Trap)alarmThis.fetchAffect(ID());
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the alarm on accident!");
+					Trap T=(Trap)alarmThis.fetchEffect(ID());
 					if(T!=null) T.spring(mob);
 				}
 				else

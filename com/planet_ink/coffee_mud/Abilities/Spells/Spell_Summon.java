@@ -61,17 +61,17 @@ public class Spell_Summon extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> summon(s) <T-NAME> in a mighty cry!^?");
-			if((mob.location().okAffect(mob,msg))&&(oldRoom.okAffect(mob,msg)))
+			if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 
 				MOB follower=target;
 				Room newRoom=mob.location();
-				FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CommonStrings.msp("appear.wav",10));
-				FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
-				if(oldRoom.okAffect(follower,leaveMsg))
+				FullMsg enterMsg=new FullMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CommonStrings.msp("appear.wav",10));
+				FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
+				if(oldRoom.okMessage(follower,leaveMsg))
 				{
-					if(newRoom.okAffect(follower,enterMsg))
+					if(newRoom.okMessage(follower,enterMsg))
 					{
 						follower.makePeace();
 						oldRoom.send(follower,leaveMsg);

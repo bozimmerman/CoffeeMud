@@ -18,14 +18,14 @@ public class Prayer_CurseMetal extends Prayer
 
 	private Vector affectedItems=new Vector();
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg)) return false;
 		if(affected==null) return true;
 		if(!(affected instanceof Item)) return true;
 		if(!msg.amITarget(affected)) return true;
 
-		if(Util.bset(msg.targetMajor(),Affect.MASK_HANDS))
+		if(Util.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
 		{
 			msg.source().tell(affected.name()+" is filled with unholy heat!");
 			return false;
@@ -42,7 +42,7 @@ public class Prayer_CurseMetal extends Prayer
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 		if(invoker==null)
@@ -60,13 +60,13 @@ public class Prayer_CurseMetal extends Prayer
 			   &&(!mob.amDead()))
 			{
 				int damage=Dice.roll(1,6,1);
-				ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 				if(Dice.rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
 				{
 					ExternalPlay.drop(mob,item,false,false);
 					if(!mob.isMine(item))
 					{
-						item.addAffect((Ability)this.copyOf());
+						item.addEffect((Ability)this.copyOf());
 						affectedItems.addElement(item);
 						break;
 					}
@@ -92,11 +92,11 @@ public class Prayer_CurseMetal extends Prayer
 			for(int i=0;i<affectedItems.size();i++)
 			{
 				Item I=(Item)affectedItems.elementAt(i);
-				Ability A=I.fetchAffect(this.ID());
+				Ability A=I.fetchEffect(this.ID());
 				while(A!=null)
 				{
-					I.delAffect(A);
-					A=I.fetchAffect(this.ID());
+					I.delEffect(A);
+					A=I.fetchEffect(this.ID());
 				}
 
 			}
@@ -128,7 +128,7 @@ public class Prayer_CurseMetal extends Prayer
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to curse <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

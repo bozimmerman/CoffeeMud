@@ -35,7 +35,7 @@ public class Fighter_Spring extends StdAbility
 			mob.tell("There is no more room to spring back!");
 			return false;
 		}
-		
+
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -55,21 +55,21 @@ public class Fighter_Spring extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				ExternalPlay.postAttack(mob,target,mob.fetchWieldedItem());
 				if(mob.getVictim()==target)
 				{
-					msg=new FullMsg(mob,target,this,Affect.MSG_RETREAT,"<S-NAME> spring(s) back!");
-					if(mob.location().okAffect(mob,msg))
+					msg=new FullMsg(mob,target,this,CMMsg.MSG_RETREAT,"<S-NAME> spring(s) back!");
+					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
 						if(mob.rangeToTarget()<mob.location().maxRange())
 						{
-							msg=new FullMsg(mob,target,this,Affect.MSG_RETREAT,null);
-							if(mob.location().okAffect(mob,msg))
+							msg=new FullMsg(mob,target,this,CMMsg.MSG_RETREAT,null);
+							if(mob.location().okMessage(mob,msg))
 								mob.location().send(mob,msg);
 						}
 					}

@@ -66,16 +66,16 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public static LandTitle getLandTitle(Room R)
 	{
 		LandTitle oldTitle=null;
-		for(int a=0;a<R.numAffects();a++)
-			if(R.fetchAffect(a) instanceof LandTitle)
-			{ oldTitle=(LandTitle)R.fetchAffect(a); break;}
+		for(int a=0;a<R.numEffects();a++)
+			if(R.fetchEffect(a) instanceof LandTitle)
+			{ oldTitle=(LandTitle)R.fetchEffect(a); break;}
 		return oldTitle;
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
-		if((msg.sourceMinor()==Affect.TYP_SHUTDOWN)
+		super.executeMsg(myHost,msg);
+		if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 		&&(affected!=null)
 		&&(affected instanceof Room))
 		{

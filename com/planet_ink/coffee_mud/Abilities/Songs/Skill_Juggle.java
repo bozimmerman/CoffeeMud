@@ -21,14 +21,14 @@ public class Skill_Juggle extends StdAbility
 	protected Vector juggles=new Vector();
 	protected long lastJuggle=-1;
 	protected boolean pause=false;
-	
+
 	public int maxJuggles()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 			return 5+(CMAble.qualifyingClassLevel((MOB)affected,this));
 		return 5;
 	}
-	
+
 	public int maxAttacks()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -36,7 +36,7 @@ public class Skill_Juggle extends StdAbility
 				   +(CMAble.qualifyingClassLevel((MOB)affected,this)/5);
 		return 1;
 	}
-	
+
 	public String displayText()
 	{
 		if(juggles.size()>0)
@@ -67,14 +67,14 @@ public class Skill_Juggle extends StdAbility
 		}
 		else
 			return "(Juggling??)";
-			
+
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg))
+		if(!super.okMessage(myHost,msg))
 			return false;
-		if((msg.targetMinor()==Affect.TYP_GET)
+		if((msg.targetMinor()==CMMsg.TYP_GET)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof Item)
 		&&(juggles.contains(msg.target()))
@@ -87,25 +87,25 @@ public class Skill_Juggle extends StdAbility
 		}
 		return true;
 	}
-	
+
 	private void unJuggle(Item I)
 	{
 		if(I==null) return;
-		Ability A=I.fetchAffect("Spell_Fly");
+		Ability A=I.fetchEffect("Spell_Fly");
 		if(A!=null) A.unInvoke();
 		juggles.removeElement(I);
 	}
-	
+
 	public void juggleItem(Item I)
 	{
 		if(I==null) return;
 		if(juggles.contains(I)) return;
-		if(I.fetchAffect("Spell_Fly")==null)
+		if(I.fetchEffect("Spell_Fly")==null)
 		{
 			Ability A=CMClass.getAbility("Spell_Fly");
 			if(A!=null)
 			{
-				I.addAffect(A);
+				I.addEffect(A);
 				A.makeLongLasting();
 				A.setBorrowed(I,true);
 				I.recoverEnvStats();
@@ -113,7 +113,7 @@ public class Skill_Juggle extends StdAbility
 		}
 		juggles.addElement(I);
 	}
-	
+
 	private synchronized void juggle()
 	{
 		boolean anythingToDo=false;
@@ -130,7 +130,7 @@ public class Skill_Juggle extends StdAbility
 			||(I.owner()==null)
 			||((I.owner() instanceof MOB)&&(I.owner()!=M))
 			||((I.owner() instanceof Room)&&(I.owner()!=R)))
-			{ 
+			{
 				anythingToDo=true;
 				break;
 			}
@@ -158,7 +158,7 @@ public class Skill_Juggle extends StdAbility
 			&&(!juggles.contains(I))
 			&&(juggles.size()<maxJuggles()))
 			{
-				if(M.location().show(M,I,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>."))
+				if(M.location().show(M,I,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>."))
 					juggleItem(I);
 				else
 				{
@@ -170,7 +170,7 @@ public class Skill_Juggle extends StdAbility
 		}
 		pause=false;
 		if(juggles.size()==0)
-		{ 
+		{
 			unInvoke();
 			return;
 		}
@@ -215,23 +215,23 @@ public class Skill_Juggle extends StdAbility
 		M.recoverMaxState();
 		M.location().recoverRoomStats();
 	}
-	
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(!pause)
 		{
 			juggle();
-			if(((affect.targetMinor()==Affect.TYP_GET)||(affect.targetMinor()==Affect.TYP_REMOVE))
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof Item)
-			&&(juggles.contains(affect.target())))
+			if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_REMOVE))
+			&&(msg.target()!=null)
+			&&(msg.target() instanceof Item)
+			&&(juggles.contains(msg.target())))
 			{
-				unJuggle((Item)affect.target());
-				if(juggles.size()==0) 
+				unJuggle((Item)msg.target());
+				if(juggles.size()==0)
 					unInvoke();
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -246,7 +246,7 @@ public class Skill_Juggle extends StdAbility
 				MOB mob=(MOB)affected;
 				if(mob.location()!=null)
 				{
-					if(!mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> juggle(s) "+juggles.size()+" items in the air."))
+					if(!mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> juggle(s) "+juggles.size()+" items in the air."))
 					   unInvoke();
 					else
 					if(mob.isInCombat())
@@ -296,7 +296,7 @@ public class Skill_Juggle extends StdAbility
 			while(juggles.size()>0)
 			{
 				Item I=(Item)juggles.elementAt(0);
-				M.location().show(M,I,Affect.MSG_OK_ACTION,"<S-NAME> stop(s) juggling <T-NAMESELF>.");
+				M.location().show(M,I,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) juggling <T-NAMESELF>.");
 				unJuggle(I);
 				I.unWear();
 				if(!M.isMine(I)) M.giveItem(I);
@@ -308,7 +308,7 @@ public class Skill_Juggle extends StdAbility
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		String whatToJuggle=Util.combine(commands,0);
-		Skill_Juggle A=(Skill_Juggle)mob.fetchAffect("Skill_Juggle");
+		Skill_Juggle A=(Skill_Juggle)mob.fetchEffect("Skill_Juggle");
 		if(whatToJuggle.length()==0)
 		{
 			if(A==null)
@@ -323,13 +323,13 @@ public class Skill_Juggle extends StdAbility
 				return true;
 			}
 		}
-		
+
 		if((A!=null)&&(A.juggles.size()>=A.maxJuggles()))
 		{
 			mob.tell("You are already juggling the most items you can.");
 			return false;
 		}
-		
+
 		int maxToJuggle=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0))
@@ -337,7 +337,7 @@ public class Skill_Juggle extends StdAbility
 			maxToJuggle=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
 		}
-		
+
 		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(whatToJuggle.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(4);}
@@ -383,7 +383,7 @@ public class Skill_Juggle extends StdAbility
 			if(A==null)
 			{
 				beneficialAffect(mob,mob,0);
-				A=(Skill_Juggle)mob.fetchAffect(ID());
+				A=(Skill_Juggle)mob.fetchEffect(ID());
 				if(A==null) return false;
 			}
 			A.makeLongLasting();
@@ -391,9 +391,9 @@ public class Skill_Juggle extends StdAbility
 			for(int i=0;i<V.size();i++)
 			{
 				Item I=(Item)V.elementAt(i);
-				FullMsg msg=new FullMsg(mob,I,this,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>.");
+				FullMsg msg=new FullMsg(mob,I,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>.");
 				if((A.juggles.size()<A.maxJuggles())
-				&&(mob.location().okAffect(mob,msg)))
+				&&(mob.location().okMessage(mob,msg)))
 				{
 					mob.location().send(mob,msg);
 					A.juggleItem(I);
@@ -404,7 +404,7 @@ public class Skill_Juggle extends StdAbility
 			A.pause=false;
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to juggle, but messes up.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to juggle, but messes up.");
 
 
 		// return whether it worked

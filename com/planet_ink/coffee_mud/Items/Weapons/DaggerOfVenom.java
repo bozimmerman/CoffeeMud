@@ -32,20 +32,20 @@ public class DaggerOfVenom extends Dagger
 	{
 		return new DaggerOfVenom();
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		if((affect.source().location()!=null)
-		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		   &&((affect.targetCode()-Affect.MASK_HURT)>0)
-		   &&(affect.tool()==this)
-		   &&(affect.target() instanceof MOB))
+		super.executeMsg(myHost,msg);
+		if((msg.source().location()!=null)
+		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		   &&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		   &&(msg.tool()==this)
+		   &&(msg.target() instanceof MOB))
 		{
             int chance = ((int) Math.random() * 20);
             if(chance == 10)
             {
                 Ability poison = CMClass.getAbility("Poison");
-	            if(poison!=null) poison.invoke(affect.source(),(MOB)affect.target(), true);
+	            if(poison!=null) poison.invoke(msg.source(),(MOB)msg.target(), true);
             }
 		}
 	}

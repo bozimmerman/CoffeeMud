@@ -22,7 +22,7 @@ public class Disease_Flu extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a flu.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -35,9 +35,9 @@ public class Disease_Flu extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_NOISE,DISEASE_AFFECT());
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			int damage=Dice.roll(2,diseaser.envStats().level()+1,1);
-			ExternalPlay.postDamage(diseaser,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
+			ExternalPlay.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
 			catchIt(mob);
 			if(Dice.rollPercentage()==1)
 			{
@@ -59,7 +59,7 @@ public class Disease_Flu extends Disease
 		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
 			affectableStats.setStat(CharStats.STRENGTH,1);
 	}
-	
+
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		if(affected==null) return;

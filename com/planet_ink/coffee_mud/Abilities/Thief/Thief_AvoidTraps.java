@@ -16,16 +16,16 @@ public class Thief_AvoidTraps extends ThiefSkill
 	public Environmental newInstance(){	return new Thief_AvoidTraps();}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_TRAPS,affectableStats.getStat(CharStats.SAVE_TRAPS)+(profficiency()/2));
 	}
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-		   return super.okAffect(myHost,msg);
+		   return super.okMessage(myHost,msg);
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!msg.amISource(mob))
@@ -33,6 +33,6 @@ public class Thief_AvoidTraps extends ThiefSkill
 		&&(msg.tool() instanceof Trap)
 		&&(Dice.rollPercentage()>90))
 			helpProfficiency(mob);
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 }

@@ -19,7 +19,7 @@ public class SaveThread extends Thread
 	{
 		super("SaveThread");
 	}
-	
+
 	public void itemSweep()
 	{
 		status="sweeping";
@@ -27,9 +27,9 @@ public class SaveThread extends Thread
 		{
 			Room R=(Room)r.nextElement();
 			LandTitle T=null;
-			for(int a=0;a<R.numAffects();a++)
+			for(int a=0;a<R.numEffects();a++)
 			{
-				Ability A=R.fetchAffect(a);
+				Ability A=R.fetchEffect(a);
 				if((A!=null)&&(A instanceof LandTitle))
 					T=(LandTitle)A;
 			}
@@ -111,7 +111,7 @@ public class SaveThread extends Thread
 			else
 			if(cond.startsWith("<"))
 				finish=Util.s_int(cond.substring(1).trim())-1;
-				
+
 			if((start>=0)&&(finish<levels.length)&&(start<=finish))
 			{
 				long realVal=System.currentTimeMillis()-((long)(val*1000*60*60*24));
@@ -124,7 +124,7 @@ public class SaveThread extends Thread
 		Vector allUsers=ExternalPlay.getUserList();
 		Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if(protectedOnes==null) protectedOnes=new Vector();
-			
+
 		for(int u=0;u<allUsers.size();u++)
 		{
 			Vector user=(Vector)allUsers.elementAt(u);
@@ -139,7 +139,7 @@ public class SaveThread extends Thread
 				when=levels[level];
 			else
 				continue;
-				
+
 			if(last<when)
 			{
 				boolean protectedOne=false;
@@ -162,7 +162,7 @@ public class SaveThread extends Thread
 		}
 		return true;
 	}
-	
+
 	public void run()
 	{
 		lastStart=System.currentTimeMillis();

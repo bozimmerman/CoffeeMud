@@ -15,7 +15,7 @@ public class SpecialistMage extends Mage
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+
 	public void cloneFix(CharClass C)
 	{
 		super.cloneFix(C);
@@ -46,7 +46,7 @@ public class SpecialistMage extends Mage
 			}
 		}
 	}
-	
+
 	public boolean playerSelectable(){	return false;}
 	public String otherBonuses()
 	{
@@ -64,64 +64,64 @@ public class SpecialistMage extends Mage
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if((affect.tool()==null)||(!(affect.tool() instanceof Ability)))
-		   return super.okAffect(myChar,affect);
-		int domain=((Ability)affect.tool()).classificationCode()&Ability.ALL_DOMAINS;
-		if(affect.amISource(myChar)
-		&&(myChar.isMine(affect.tool())))
+		if((msg.tool()==null)||(!(msg.tool() instanceof Ability)))
+		   return super.okMessage(myChar,msg);
+		int domain=((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS;
+		if(msg.amISource(myChar)
+		&&(myChar.isMine(msg.tool())))
 		{
-			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
+			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 			   &&(domain==opposed())
-			   &&(!CMAble.getDefaultGain(ID(),affect.tool().ID())))
+			   &&(!CMAble.getDefaultGain(ID(),msg.tool().ID())))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.INTELLIGENCE)/2))
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fizzle(s) a spell.");
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fizzle(s) a spell.");
 					return false;
 				}
 			}
 			if((myChar.charStats().getClassLevel(this)>=5)
-			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-			&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_DOMAINS)==domain()))
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==domain()))
 			{
-				int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),Util.mul(0.02,myChar.charStats().getClassLevel(this))));
-				SaucerSupport.adjustDamageMessage(affect,recovery*-1);
+				int recovery=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),Util.mul(0.02,myChar.charStats().getClassLevel(this))));
+				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
 			}
 		}
 		else
-		if((affect.amITarget(myChar))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability))
+		if((msg.amITarget(myChar))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability))
 		{
 			if((domain==domain())
 			&&(myChar.charStats().getClassLevel(this)>=5))
 			{
-				int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),1.0+Util.mul(0.02,myChar.charStats().getClassLevel(this))));
-				SaucerSupport.adjustDamageMessage(affect,recovery*-1);
+				int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),1.0+Util.mul(0.02,myChar.charStats().getClassLevel(this))));
+				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
 			}
 			else
 			if(domain==opposed())
 			{
-				int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),1.0+Util.mul(0.02,30-myChar.charStats().getClassLevel(this))));
-				SaucerSupport.adjustDamageMessage(affect,recovery*-1);
+				int recovery=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),1.0+Util.mul(0.02,30-myChar.charStats().getClassLevel(this))));
+				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
 			}
 		}
-		
-		return super.okAffect(myChar,affect);
+
+		return super.okMessage(myChar,msg);
 	}
-	
-	public int classDurationModifier(MOB myChar, 
-									 Ability skill, 
+
+	public int classDurationModifier(MOB myChar,
+									 Ability skill,
 									 int duration)
 	{
 		if(myChar==null) return duration;
 		boolean lessTen=myChar.charStats().getClassLevel(this)<10;
-		   
+
 		int domain=skill.classificationCode()&Ability.ALL_DOMAINS;
 		if((skill.invoker()==myChar)
 		||(skill.quality()!=Ability.MALICIOUS))
@@ -133,7 +133,7 @@ public class SpecialistMage extends Mage
 			{
 				if(!lessTen)
 				{
-					if(duration>=(Integer.MAX_VALUE/2)) 
+					if(duration>=(Integer.MAX_VALUE/2))
 						return duration;
 					else
 						return duration*2;
@@ -144,7 +144,7 @@ public class SpecialistMage extends Mage
 		{
 			if(domain==opposed())
 			{
-				if(duration>=(Integer.MAX_VALUE/2)) 
+				if(duration>=(Integer.MAX_VALUE/2))
 					return duration;
 				else
 					return duration*2;

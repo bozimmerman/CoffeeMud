@@ -12,17 +12,17 @@ public class Chant_AnimalFriendship extends Chant
 	public String displayText(){return "(Animal Friendship)";}
 	public Environmental newInstance()	{	return new Chant_AnimalFriendship();}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
-		&&((affect.amITarget(affected)))
-		&&(Sense.isAnimalIntelligence(affect.source())))
+		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+		&&((msg.amITarget(affected)))
+		&&(Sense.isAnimalIntelligence(msg.source())))
 		{
-			MOB target=(MOB)affect.target();
-			if((!target.isInCombat())&&(affect.source().getVictim()!=target))
+			MOB target=(MOB)msg.target();
+			if((!target.isInCombat())&&(msg.source().getVictim()!=target))
 			{
-				affect.source().tell("You feel too friendly towards "+target.name());
-				if(target.getVictim()==affect.source())
+				msg.source().tell("You feel too friendly towards "+target.name());
+				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
 					target.setVictim(null);
@@ -30,7 +30,7 @@ public class Chant_AnimalFriendship extends Chant
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -53,7 +53,7 @@ public class Chant_AnimalFriendship extends Chant
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already friendly to animals.");
 			return false;
@@ -76,7 +76,7 @@ public class Chant_AnimalFriendship extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) animal friendly!":"^S<S-NAME> chant(s) for animal friendship.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

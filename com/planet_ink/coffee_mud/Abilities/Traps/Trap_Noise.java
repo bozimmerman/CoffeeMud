@@ -14,15 +14,15 @@ public class Trap_Noise extends StdTrap
 	protected int trapLevel(){return 1;}
 	public String requiresToSet(){return "";}
 	public Environmental newInstance(){	return new Trap_Noise();}
-	
+
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a noise trap!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a noise trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off a noise trap!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a noise trap!"))
 			{
 				super.spring(target);
 				Area A=target.location().getArea();
@@ -30,7 +30,7 @@ public class Trap_Noise extends StdTrap
 				{
 					Room R=(Room)e.nextElement();
 					if(R!=target.location())
-						R.showHappens(Affect.MASK_GENERAL|Affect.MSG_NOISE,"You hear a loud noise coming from somewhere.");
+						R.showHappens(CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"You hear a loud noise coming from somewhere.");
 				}
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();

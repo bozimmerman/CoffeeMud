@@ -33,7 +33,7 @@ public class Spell_FloatingDisc extends Spell
 		{
 			if(item.amWearingAt(Item.FLOATING_NEARBY))
 			{
-				mob.location().show(mob,item,Affect.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME> now floats back "+((wasntMine)?"down to the ground":"into <S-HIS-HER> hands."));
+				mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME> now floats back "+((wasntMine)?"down to the ground":"into <S-HIS-HER> hands."));
 				item.unWear();
 			}
 			if(wasntMine)
@@ -75,7 +75,7 @@ public class Spell_FloatingDisc extends Spell
 			wasntMine=false;
 			if(!mob.isMine(target))
 			{
-				target.addNonUninvokableAffect(this);
+				target.addNonUninvokableEffect(this);
 				target.recoverEnvStats();
 				wasntMine=true;
 				if(target.ID().equals("StdCoins"))
@@ -86,15 +86,15 @@ public class Spell_FloatingDisc extends Spell
 				else
 				if(!ExternalPlay.get(mob,null,(Item)target,true))
 				{
-					target.delAffect(this);
+					target.delEffect(this);
 					target.recoverEnvStats();
 					return false;
 				}
-				target.delAffect(this);
+				target.delEffect(this);
 				target.recoverEnvStats();
 			}
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				long properWornCode=((Item)target).rawProperLocationBitmap();

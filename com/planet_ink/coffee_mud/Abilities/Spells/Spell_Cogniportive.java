@@ -102,7 +102,7 @@ public class Spell_Cogniportive extends Spell
 				target=afftarget;
 			Room home=CMMap.getRoom(text());
 			if(home==null)
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
 			else
 			{
 				Hashtable h=properTargets(mob,null,false);
@@ -112,9 +112,9 @@ public class Spell_Cogniportive extends Spell
 				for(Enumeration f=h.elements();f.hasMoreElements();)
 				{
 					MOB follower=(MOB)f.nextElement();
-					FullMsg enterMsg=new FullMsg(follower,home,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
-					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
-					if(thisRoom.okAffect(follower,leaveMsg)&&home.okAffect(follower,enterMsg))
+					FullMsg enterMsg=new FullMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
+					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
+					if(thisRoom.okMessage(follower,leaveMsg)&&home.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
 						{
@@ -132,41 +132,41 @@ public class Spell_Cogniportive extends Spell
 		}
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 
 		if(affected instanceof Item)
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_WAND_USE:
-			if(affect.amITarget(affected))
-				waveIfAble(mob,affect.tool(),(Item)affected);
+		case CMMsg.TYP_WAND_USE:
+			if(msg.amITarget(affected))
+				waveIfAble(mob,msg.tool(),(Item)affected);
 			break;
-		case Affect.TYP_SPEAK:
-			if(affect.sourceMinor()==Affect.TYP_SPEAK)
+		case CMMsg.TYP_SPEAK:
+			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			{
-				String msg=affect.sourceMessage();
-				int x=msg.indexOf("'");
+				String msgStr=msg.sourceMessage();
+				int x=msgStr.indexOf("'");
 				if(x<0) break;
-				msg=msg.substring(x+1);
-				x=msg.lastIndexOf("'");
+				msgStr=msgStr.substring(x+1);
+				x=msgStr.lastIndexOf("'");
 				if(x<0) break;
-				msg=msg.substring(0,x);
-				Vector V=Util.parse(msg);
+				msgStr=msgStr.substring(0,x);
+				Vector V=Util.parse(msgStr);
 				if(V.size()<2) break;
 				String str=(String)V.firstElement();
 				if(!str.equalsIgnoreCase("HOME")) break;
 				str=Util.combine(V,1);
 				if(CoffeeUtensils.containsString(affected.name(),str)
 				||CoffeeUtensils.containsString(affected.displayText(),str))
-					affect.addTrailerMsg(new FullMsg(affect.source(),affected,affect.target(),affect.NO_EFFECT,null,Affect.MASK_GENERAL|Affect.TYP_WAND_USE,affect.sourceMessage(),affect.NO_EFFECT,null));
+					msg.addTrailerMsg(new FullMsg(msg.source(),affected,msg.target(),msg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.sourceMessage(),msg.NO_EFFECT,null));
 			}
 			break;
 		default:
 			break;
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -180,7 +180,7 @@ public class Spell_Cogniportive extends Spell
 			return false;
 		}
 
-		Ability A=target.fetchAffect(ID());
+		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			mob.tell(target.name()+" is already cogniportive!");
@@ -195,12 +195,12 @@ public class Spell_Cogniportive extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> glow(s) softly!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> glow(s) softly!");
 				beneficialAffect(mob,target,1000);
-				A=target.fetchAffect(ID());
+				A=target.fetchEffect(ID());
 				if(A!=null)
 					A.setMiscText(((Spell_Cogniportive)A).establishHome(mob,target));
 				target.recoverEnvStats();

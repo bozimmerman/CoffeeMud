@@ -32,28 +32,28 @@ public class Prayer_LinkedHealth extends Prayer
 			if(buddy!=null)
 			{
 				mob.tell("Your health is no longer linked with "+buddy.name()+".");
-				Ability A=buddy.fetchAffect(ID());
+				Ability A=buddy.fetchEffect(ID());
 				if(A!=null) A.unInvoke();
 			}
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 		{
-			if((affect.tool()==null)||(!affect.tool().ID().equals(ID())))
+			if((msg.tool()==null)||(!msg.tool().ID().equals(ID())))
 			{
-				int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
-				SaucerSupport.adjustDamageMessage(affect,recovery*-1);
-				ExternalPlay.postDamage(affect.source(),buddy,this,recovery,Affect.MSG_OK_VISUAL,Weapon.TYPE_BURSTING,"<T-NAME> absorb(s) damage from the harm to "+affect.target().name()+".");
+				int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
+				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
+				ExternalPlay.postDamage(msg.source(),buddy,this,recovery,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BURSTING,"<T-NAME> absorb(s) damage from the harm to "+msg.target().name()+".");
 			}
 		}
 		return true;
@@ -62,17 +62,17 @@ public class Prayer_LinkedHealth extends Prayer
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if(mob.fetchAffect(ID())!=null)
+		if(mob.fetchEffect(ID())!=null)
 		{
 			mob.tell("Your health is already linked with someones!");
 			return false;
 		}
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(target.name()+"'s health is already linked with someones!");
 			return false;
 		}
-		
+
 		if(!mob.getGroupMembers(new Hashtable()).contains(target))
 		{
 			mob.tell(target.name()+" is not in your group.");
@@ -91,10 +91,10 @@ public class Prayer_LinkedHealth extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" that <S-HIS-HER> health be linked with <T-NAME>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<S-NAME> and <T-NAME> are linked in health.");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> and <T-NAME> are linked in health.");
 				buddy=mob;
 				beneficialAffect(mob,target,0);
 				buddy=target;

@@ -15,23 +15,23 @@ public class Prop_ReqHeight extends Property
 	public String accountForYourself()
 	{ return "Height limit: "+Util.s_int(text());	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
-		   &&(affect.target()!=null)
-		   &&(affect.target() instanceof Room)
-		   &&(affect.targetMinor()==Affect.TYP_ENTER)
-		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
+		   &&(msg.target()!=null)
+		   &&(msg.target() instanceof Room)
+		   &&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			int height=100;
 			if(Util.s_int(text())>0)
 				height=Util.s_int(text());
-			if(affect.source().envStats().height()>height)
+			if(msg.source().envStats().height()>height)
 			{
-				affect.source().tell("You are too tall to fit in there.");
+				msg.source().tell("You are too tall to fit in there.");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

@@ -45,11 +45,11 @@ public class Spell_MassFly extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if(mob.location().okAffect(mob,msg))
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					if(mob.location()==target.location())
-						target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) to fly around!");
+						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) to fly around!");
 					Spell_Fly fly=new Spell_Fly();
 					fly.setProfficiency(profficiency());
 					fly.beneficialAffect(mob,target,0);

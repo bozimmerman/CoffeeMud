@@ -38,7 +38,7 @@ public class Spell_WeaknessCold extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if(tickID!=Host.MOB_TICK) return false;
+		if(tickID!=Host.TICK_MOB) return false;
 		if((affecting()!=null)&&(affecting() instanceof MOB))
 		{
 			MOB dummy=(MOB)affecting();
@@ -48,31 +48,31 @@ public class Spell_WeaknessCold extends Spell
 				if((room.getArea().weatherType(room)==Area.WEATHER_WINDY)
 				&&((room.getArea().climateType()&Area.CLIMASK_COLD)>0)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
-					ExternalPlay.postDamage(invoker,dummy,null,1,Affect.MASK_GENERAL|Affect.TYP_COLD,Weapon.TYPE_FROSTING,"The cold biting wind <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(invoker,dummy,null,1,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The cold biting wind <DAMAGE> <T-NAME>!");
 				else
 				if((room.getArea().weatherType(room)==Area.WEATHER_WINTER_COLD)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
-					ExternalPlay.postDamage(invoker,dummy,null,1,Affect.MASK_GENERAL|Affect.TYP_COLD,Weapon.TYPE_FROSTING,"The biting cold <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(invoker,dummy,null,1,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The biting cold <DAMAGE> <T-NAME>!");
 				else
 				if((room.getArea().weatherType(room)==Area.WEATHER_SNOW)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
 				{
 					int damage=Dice.roll(1,8,0);
-					ExternalPlay.postDamage(invoker,dummy,null,damage,Affect.MASK_GENERAL|Affect.TYP_COLD,Weapon.TYPE_FROSTING,"The blistering snow <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The blistering snow <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().weatherType(room)==Area.WEATHER_BLIZZARD)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
 				{
 					int damage=Dice.roll(1,16,0);
-					ExternalPlay.postDamage(invoker,dummy,null,damage,Affect.MASK_GENERAL|Affect.TYP_COLD,Weapon.TYPE_FROSTING,"The blizzard <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The blizzard <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().weatherType(room)==Area.WEATHER_HAIL)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
 				{
 					int damage=Dice.roll(1,8,0);
-					ExternalPlay.postDamage(invoker,dummy,null,damage,Affect.MASK_GENERAL|Affect.TYP_COLD,Weapon.TYPE_FROSTING,"The biting hail <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The biting hail <DAMAGE> <T-NAME>!");
 				}
 			}
 		}
@@ -80,20 +80,20 @@ public class Spell_WeaknessCold extends Spell
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		   &&(affect.sourceMinor()==Affect.TYP_COLD))
+		if((msg.amITarget(mob))&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		   &&(msg.sourceMinor()==CMMsg.TYP_COLD))
 		{
-			int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),1.5));
-			SaucerSupport.adjustDamageMessage(affect,recovery);
+			int recovery=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),1.5));
+			SaucerSupport.adjustDamageMessage(msg,recovery);
 		}
 		return true;
 	}
@@ -110,7 +110,7 @@ public class Spell_WeaknessCold extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A shimmering frost absorbing field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering frost absorbing field around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				success=maliciousAffect(mob,target,0,-1);

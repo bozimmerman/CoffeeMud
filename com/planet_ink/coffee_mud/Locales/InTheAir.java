@@ -23,26 +23,26 @@ public class InTheAir extends StdRoom
 		return new InTheAir();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect)) return false;
-		return isOkAirAffect(this,affect);
+		if(!super.okMessage(myHost,msg)) return false;
+		return isOkAirAffect(this,msg);
 	}
-	
+
 	public static void makeFall(Environmental E, Room room, int avg)
 	{
 		if((E==null)||(room==null)) return;
-		
+
 		if((avg==0)&&(room.getRoomInDir(Directions.DOWN)==null)) return;
 		if((avg>0)&&(room.getRoomInDir(Directions.UP)==null)) return;
-		
+
 		if(((E instanceof MOB)&&(!Sense.isInFlight(E)))
 		||((E instanceof Item)&&(!Sense.isFlying(((Item)E).ultimateContainer()))))
 		{
 			if(!Sense.isFalling(E))
 			{
 				Ability falling=CMClass.getAbility("Falling");
-				if(falling!=null) 
+				if(falling!=null)
 				{
 					falling.setProfficiency(avg);
 					falling.setAffectedOne(room);
@@ -51,8 +51,8 @@ public class InTheAir extends StdRoom
 			}
 		}
 	}
-	
-	public static void airAffects(Room room, Affect affect)
+
+	public static void airAffects(Room room, CMMsg msg)
 	{
 		if(Sense.isSleeping(room)) return;
 		boolean foundReversed=false;
@@ -65,7 +65,7 @@ public class InTheAir extends StdRoom
 			if((mob!=null)
 			&&((mob.getStartRoom()==null)||(mob.getStartRoom()!=room)))
 			{
-				Ability A=mob.fetchAffect("Falling");
+				Ability A=mob.fetchEffect("Falling");
 				if(A!=null)
 				{
 					if(A.profficiency()>=100)
@@ -84,7 +84,7 @@ public class InTheAir extends StdRoom
 			Item item=room.fetchItem(i);
 			if(item!=null)
 			{
-				Ability A=item.fetchAffect("Falling");
+				Ability A=item.fetchEffect("Falling");
 				if(A!=null)
 				{
 					if(A.profficiency()>=100)
@@ -102,27 +102,27 @@ public class InTheAir extends StdRoom
 		for(int i=0;i<mightNeedAdjusting.size();i++)
 		{
 			Environmental E=(Environmental)mightNeedAdjusting.elementAt(i);
-			Ability A=E.fetchAffect("Falling");
+			Ability A=E.fetchEffect("Falling");
 			if(A!=null) A.setProfficiency(avg);
 		}
 		for(int i=0;i<needToFall.size();i++)
 			makeFall((Environmental)needToFall.elementAt(i),room,avg);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		InTheAir.airAffects(this,affect);
+		super.executeMsg(myHost,msg);
+		InTheAir.airAffects(this,msg);
 	}
-	
-	public static boolean isOkAirAffect(Room room, Affect affect)
+
+	public static boolean isOkAirAffect(Room room, CMMsg msg)
 	{
-		if(Sense.isSleeping(room)) 
+		if(Sense.isSleeping(room))
 			return true;
-		if((affect.targetMinor()==affect.TYP_ENTER)
-		&&(affect.amITarget(room)))
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.amITarget(room)))
 		{
-			MOB mob=affect.source();
+			MOB mob=msg.source();
 			if((!Sense.isInFlight(mob))&&(!Sense.isFalling(mob)))
 			{
 				mob.tell("You can't fly.");
@@ -132,26 +132,26 @@ public class InTheAir extends StdRoom
 			switch(room.getArea().weatherType(room))
 			{
 			case Area.WEATHER_BLIZZARD:
-				room.show(mob,null,Affect.MSG_OK_VISUAL,"The swirling blizzard inhibits <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The swirling blizzard inhibits <S-YOUPOSS> progress.");
 				return false;
 			case Area.WEATHER_HAIL:
-				room.show(mob,null,Affect.MSG_OK_VISUAL,"The hail storm inhibits <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The hail storm inhibits <S-YOUPOSS> progress.");
 				return false;
 			case Area.WEATHER_RAIN:
-				room.show(mob,null,Affect.MSG_OK_VISUAL,"The rain storm inhibits <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The rain storm inhibits <S-YOUPOSS> progress.");
 				return false;
 			case Area.WEATHER_SLEET:
-				room.show(mob,null,Affect.MSG_OK_VISUAL,"The biting sleet inhibits <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The biting sleet inhibits <S-YOUPOSS> progress.");
 				return false;
 			case Area.WEATHER_THUNDERSTORM:
-				room.show(mob,null,Affect.MSG_OK_VISUAL,"The thunderstorm inhibits <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The thunderstorm inhibits <S-YOUPOSS> progress.");
 				return false;
 			case Area.WEATHER_WINDY:
-				room.show(mob,null,Affect.MSG_OK_VISUAL,"The hard winds inhibit <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The hard winds inhibit <S-YOUPOSS> progress.");
 				return false;
 			}
 		}
-		InTheAir.airAffects(room,affect);
+		InTheAir.airAffects(room,msg);
 		return true;
 	}
 }

@@ -13,7 +13,7 @@ public class Chant_PlantBed extends Chant
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_PlantBed();}
 	private Item peaPod=null;
-	
+
 	public void unInvoke()
 	{
 		super.unInvoke();
@@ -21,14 +21,14 @@ public class Chant_PlantBed extends Chant
 		{
 			Room R=CoffeeUtensils.roomLocation(peaPod);
 			if(R!=null)
-				R.showHappens(Affect.MSG_OK_VISUAL,"A pea-pod shrivels up!");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,"A pea-pod shrivels up!");
 			Rideable RI=(Rideable)peaPod;
 			for(int r=RI.numRiders()-1;r>=0;r--)
 				RI.fetchRider(r).setRiding(null);
 			peaPod.destroy();
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
@@ -45,7 +45,7 @@ public class Chant_PlantBed extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Item newItem=(Item)CMClass.getItem("GenBed");
@@ -61,12 +61,12 @@ public class Chant_PlantBed extends Chant
 				newItem.setGettable(false);
 				Ability A=CMClass.getAbility("Prop_RideResister");
 				A.setMiscText("disease poison");
-				newItem.addNonUninvokableAffect(A);
+				newItem.addNonUninvokableEffect(A);
 				newItem.recoverEnvStats();
 				newItem.setMiscText(newItem.text());
 				peaPod=newItem;
 				mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"A comfortable pea-pod bed grows nearby.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A comfortable pea-pod bed grows nearby.");
 				mob.location().recoverEnvStats();
 				beneficialAffect(mob,newItem,0);
 			}

@@ -35,7 +35,7 @@ public class Prayer_Anger extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of anger descends":"^S<S-NAME> rage(s) for anger.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<mob.location().numInhabitants();i++)
@@ -55,8 +55,8 @@ public class Prayer_Anger extends Prayer
 							}
 							tries++;
 						}
-						FullMsg amsg=new FullMsg(mob,inhab,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-						if((target!=null)&&(mob.location().okAffect(mob,amsg)))
+						FullMsg amsg=new FullMsg(mob,inhab,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+						if((target!=null)&&(mob.location().okMessage(mob,amsg)))
 						{
 							inhab.tell("You feel angry.");
 							inhab.setVictim(target);

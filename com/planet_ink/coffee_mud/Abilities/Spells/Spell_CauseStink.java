@@ -20,7 +20,7 @@ public class Spell_CauseStink extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if(Dice.rollPercentage()>25) return true;
 			if((affected==null)||(!(affected instanceof MOB))) return false;
@@ -45,20 +45,20 @@ public class Spell_CauseStink extends Spell
 			}
 			if(str!=null)
 			{
-				FullMsg msg=new FullMsg(mob,null,Affect.MASK_GENERAL|Affect.MASK_SOUND|Affect.MASK_EYES|Affect.TYP_GENERAL,str);
-				if(room.okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,null,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_GENERAL,str);
+				if(room.okMessage(mob,msg))
 				for(int m=0;m<room.numInhabitants();m++)
 				{
 					MOB M2=room.fetchInhabitant(m);
 					if((!M2.isMonster())&&(M2!=mob)&&(Sense.canSmell(M2)))
-						M2.affect(M2,msg);
+						M2.executeMsg(M2,msg);
 				}
 			}
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
 				Room R=room.getRoomInDir(d);
 				if((R!=null)&&(R.numPCInhabitants()>0))
-					R.showHappens(Affect.MASK_GENERAL|Affect.MASK_SOUND|Affect.MASK_EYES|Affect.TYP_GENERAL,
+					R.showHappens(CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_GENERAL,
 								  "There is a very bad smell coming from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(d)));
 			}
 		}
@@ -88,7 +88,7 @@ public class Spell_CauseStink extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) and utter(s) a stinky spell at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

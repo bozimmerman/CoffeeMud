@@ -22,13 +22,13 @@ public class Prayer_Gateway extends Prayer
 		{
 			if(newRoom!=null)
 			{
-				newRoom.showHappens(Affect.MSG_OK_VISUAL,"The divine gateway closes.");
+				newRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The divine gateway closes.");
 				newRoom.rawDoors()[Directions.GATE]=null;
 				newRoom.rawExits()[Directions.GATE]=null;
 			}
 			if(oldRoom!=null)
 			{
-				oldRoom.showHappens(Affect.MSG_OK_VISUAL,"The divine gateway closes.");
+				oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The divine gateway closes.");
 				oldRoom.rawDoors()[Directions.GATE]=null;
 				oldRoom.rawExits()[Directions.GATE]=null;
 			}
@@ -93,7 +93,7 @@ public class Prayer_Gateway extends Prayer
 		{
 			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for a blinding, divine gateway here.^?");
 			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType(auto),"A blinding, divine gateway appears here.");
-			if((mob.location().okAffect(mob,msg))&&(newRoom.okAffect(mob,msg2)))
+			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				newRoom.send(mob,msg2);

@@ -36,25 +36,25 @@ public class Chant_Yearning extends Chant
 			mob.tell("Your yearning subsides.");
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		// the sex rules
 		if(!(affected instanceof MOB)) return;
 		MOB myChar=(MOB)affected;
 
-		if((affect.amISource(myChar))
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof MOB)
-		&&(affect.tool()!=null)
-		&&(affect.tool().ID().equals("Social"))
-		&&(affect.tool().Name().equals("MATE <T-NAME>")
-			||affect.tool().Name().equals("SEX <T-NAME>"))
-		&&(myChar.location()==((MOB)affect.target()).location())
+		if((msg.amISource(myChar))
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
+		&&(msg.tool()!=null)
+		&&(msg.tool().ID().equals("Social"))
+		&&(msg.tool().Name().equals("MATE <T-NAME>")
+			||msg.tool().Name().equals("SEX <T-NAME>"))
+		&&(myChar.location()==((MOB)msg.target()).location())
 		&&(myChar.numWearingHere(Item.ON_LEGS)==0)
-		&&(((MOB)affect.target()).numWearingHere(Item.ON_LEGS)==0)
+		&&(((MOB)msg.target()).numWearingHere(Item.ON_LEGS)==0)
 		&&(myChar.numWearingHere(Item.ON_WAIST)==0)
-		&&(((MOB)affect.target()).numWearingHere(Item.ON_WAIST)==0))
+		&&(((MOB)msg.target()).numWearingHere(Item.ON_WAIST)==0))
 			unInvoke();
 	}
 
@@ -73,13 +73,13 @@ public class Chant_Yearning extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) to yearn for something!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) to yearn for something!");
 					maliciousAffect(mob,target,(Integer.MAX_VALUE/2),-1);
 				}
 			}

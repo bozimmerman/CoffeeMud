@@ -30,11 +30,11 @@ public class Song_Rebirth extends Song
 		if(success)
 		{
 			String str=auto?"The "+songOf()+" begins to play!":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
-			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
+			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				boolean foundOne=false;
@@ -52,24 +52,24 @@ public class Song_Rebirth extends Song
 							rejuvedMOB.tell("You are being resusitated.");
 							if(rejuvedMOB.location()!=mob.location())
 							{
-								rejuvedMOB.location().showOthers(rejuvedMOB,null,Affect.MSG_OK_VISUAL,"<S-NAME> disappear(s)!");
+								rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> disappear(s)!");
 								mob.location().bringMobHere(rejuvedMOB,false);
 							}
-							
+
 							Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
 							if(A!=null) rejuvedMOB.delAbility(A);
-							A=rejuvedMOB.fetchAffect("Prop_AstralSpirit");
-							if(A!=null) rejuvedMOB.delAffect(A);
-							
+							A=rejuvedMOB.fetchEffect("Prop_AstralSpirit");
+							if(A!=null) rejuvedMOB.delEffect(A);
+
 							int it=0;
 							while(it<rejuvedMOB.location().numItems())
 							{
 								Item item=rejuvedMOB.location().fetchItem(it);
 								if((item!=null)&&(item.container()==body))
 								{
-									FullMsg msg2=new FullMsg(rejuvedMOB,body,item,Affect.MSG_GET,null);
+									FullMsg msg2=new FullMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
 									rejuvedMOB.location().send(rejuvedMOB,msg2);
-									FullMsg msg3=new FullMsg(rejuvedMOB,item,null,Affect.MSG_GET,null);
+									FullMsg msg3=new FullMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
 									rejuvedMOB.location().send(rejuvedMOB,msg3);
 									it=0;
 								}
@@ -79,7 +79,7 @@ public class Song_Rebirth extends Song
 							body.destroy();
 							mob.location().recoverRoomStats();
 							foundOne=true;
-							rejuvedMOB.location().show(rejuvedMOB,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
+							rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 							i=0;
 						}
 						else
@@ -93,7 +93,7 @@ public class Song_Rebirth extends Song
 			}
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
 
 		return success;
 	}

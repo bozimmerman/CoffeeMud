@@ -38,9 +38,9 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		if(mob.location().numInhabitants()==1)
 			return true;
 		Vector choices=new Vector();
-		for(int a=0;a<mob.numAffects();a++)
+		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability A=mob.fetchAffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)
 			   &&(A.canBeUninvoked())
 			   &&(!A.ID().equals(ID()))
@@ -53,12 +53,12 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		if(choices.size()==0) return true;
 		MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 		Ability thisOne=(Ability)choices.elementAt(Dice.roll(1,choices.size(),-1));
-		if((target==null)||(thisOne==null)||(target.fetchAffect(ID())!=null))
+		if((target==null)||(thisOne==null)||(target.fetchEffect(ID())!=null))
 			return true;
 		if(Dice.rollPercentage()>(target.charStats().getSave(CharStats.SAVE_DISEASE)))
 		{
 			((Ability)this.copyOf()).invoke(target,target,true);
-			if(target.fetchAffect(ID())!=null)
+			if(target.fetchEffect(ID())!=null)
 				((Ability)thisOne.copyOf()).invoke(target,target,true);
 		}
 		return true;
@@ -81,9 +81,9 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"^S<S-NAME> "+prayWord(mob)+" for a contagion to inflict <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.TYP_DISEASE|Affect.MASK_MALICIOUS,null);
-			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"^S<S-NAME> "+prayWord(mob)+" for a contagion to inflict <T-NAMESELF>.^?");
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.TYP_DISEASE|CMMsg.MASK_MALICIOUS,null);
+			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);

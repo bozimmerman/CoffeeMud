@@ -20,7 +20,7 @@ public class Mime extends ActiveTicker
 										  |Behavior.CAN_ITEMS
 									      |Behavior.CAN_ROOMS;}
 	private boolean disabled=false;
-	private Affect lastMsg=null;
+	private CMMsg lastMsg=null;
 
 	public Behavior newInstance()
 	{
@@ -29,21 +29,21 @@ public class Mime extends ActiveTicker
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
+		super.executeMsg(affecting,msg);
 		if((affecting instanceof MOB)&&(!canFreelyBehaveNormal(affecting)))
 			return;
 		if(disabled) return;
-		if(((!(affecting instanceof MOB))||(!affect.amISource((MOB)affecting)))
-		&&(affect.sourceMinor()==Affect.TYP_EMOTE)
-		||((affect.tool()!=null)&&(affect.tool().ID().equals("Social"))))
-			lastMsg=affect;
+		if(((!(affecting instanceof MOB))||(!msg.amISource((MOB)affecting)))
+		&&(msg.sourceMinor()==CMMsg.TYP_EMOTE)
+		||((msg.tool()!=null)&&(msg.tool().ID().equals("Social"))))
+			lastMsg=msg;
 	}
 
-	public void fixSNameTo(Affect msg, MOB sMOB, Environmental ticking)
+	public void fixSNameTo(CMMsg msg, MOB sMOB, Environmental ticking)
 	{
 		//String src=msg.sourceMessage();
 		String trg=msg.targetMessage();
@@ -77,15 +77,15 @@ public class Mime extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		Affect msg=lastMsg;
+		CMMsg msg=lastMsg;
 		if(msg==null) return true;
 		lastMsg=null;
 		if(((ticking instanceof MOB)&&(!canFreelyBehaveNormal(ticking)))
 		||(!canAct(ticking,tickID)))
 			return true;
-		msg=(Affect)msg.copyOf();
+		msg=(CMMsg)msg.copyOf();
 		MOB sMOB=(MOB)msg.source();
-		if(msg.sourceMinor()==Affect.TYP_EMOTE)
+		if(msg.sourceMinor()==CMMsg.TYP_EMOTE)
 		{
 			if(ticking instanceof MOB)
 				msg.modify((MOB)ticking,msg.target(),msg.tool(),
@@ -132,7 +132,7 @@ public class Mime extends ActiveTicker
 		disabled=true;
 		if((msg!=null)
 		&&(sMOB.location()!=null)
-		&&(sMOB.location().okAffect(sMOB,msg)))
+		&&(sMOB.location().okMessage(sMOB,msg)))
 		{
 			if(msg.source().location()==null)
 			{

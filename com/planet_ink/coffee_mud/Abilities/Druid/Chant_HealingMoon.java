@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_HealingMoon extends Chant
 {
 	public String ID() { return "Chant_HealingMoon"; }
-	public String name(){ return "Healing Moon";} 
+	public String name(){ return "Healing Moon";}
 	public String displayText(){return "(Healing Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
@@ -20,7 +20,7 @@ public class Chant_HealingMoon extends Chant
 	{
 		if(canBeUninvoked())
 			if(affected instanceof Room)
-				((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The healing moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The healing moon sets.");
 		super.unInvoke();
 
 	}
@@ -39,7 +39,7 @@ public class Chant_HealingMoon extends Chant
 			{
 				MOB M=room.fetchInhabitant(i);
 				int healing=M.charStats().getStat(CharStats.CONSTITUTION);
-				ExternalPlay.postHealing(M,M,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,healing,null);
+				ExternalPlay.postHealing(M,M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 			}
 		}
 		return true;
@@ -55,7 +55,7 @@ public class Chant_HealingMoon extends Chant
 			return false;
 		}
 
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already under the love moon.");
 			return false;
@@ -77,12 +77,12 @@ public class Chant_HealingMoon extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the moon.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Healing Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Healing Moon Rises!");
 					beneficialAffect(mob,target,0);
 				}
 			}

@@ -30,14 +30,14 @@ public class Prayer_CauseCritical extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,(undead?0:Affect.MASK_MALICIOUS)|affectType(auto),(auto?"A critically painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a critical burst of pain at <T-NAMESELF>!^?")+CommonStrings.msp("spelldam1.wav",40));
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|affectType(auto),(auto?"A critically painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a critical burst of pain at <T-NAMESELF>!^?")+CommonStrings.msp("spelldam1.wav",40));
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob)+12,5);
-					ExternalPlay.postDamage(mob,target,this,harming,Affect.MASK_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

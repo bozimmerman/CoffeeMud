@@ -21,7 +21,7 @@ public class Druid_ShapeShift extends StdAbility
 	public int myRaceCode=-1;
 	public Race newRace=null;
 	public String raceName="";
-	
+
 	public String displayText()
 	{
 		if((myRaceCode<0)||(newRace==null))
@@ -49,7 +49,7 @@ public class Druid_ShapeShift extends StdAbility
 	{.2		  ,.3         ,.4        ,.5	   ,.2			  ,.3       ,.3           ,.4         ,.5};
 	private static double[]   armadj=
 	{1.0	  ,.5         ,.4        ,.5	   ,1.0			  ,.3       ,1.0          ,.2         ,.2};
-	
+
 	private static String[] forms={"Rodent form",
 								   "Feline form",
 								   "K-9 form",
@@ -98,7 +98,7 @@ public class Druid_ShapeShift extends StdAbility
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().raceName().toLowerCase()+" form.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().raceName().toLowerCase()+" form.");
 	}
 
 	public void setRaceName(MOB mob)
@@ -121,10 +121,10 @@ public class Druid_ShapeShift extends StdAbility
 		if(classLevel<24)
 			return 3;
 		else
-			return 4;	
+			return 4;
 	}
 	public int getRaceCode()
-	{ 
+	{
 		if((myRaceCode<0)||
 		(myRaceCode>attadj.length)) return 0;
 		return myRaceCode;
@@ -137,25 +137,25 @@ public class Druid_ShapeShift extends StdAbility
 	{
 		return shapes[getRaceLevel(classLevel)][raceCode];
 	}
-						
-	
+
+
 	public static boolean isShapeShifted(MOB mob)
 	{
 		if(mob==null) return false;
-		for(int a=0;a<mob.numAffects();a++)
+		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability A=mob.fetchAffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Druid_ShapeShift))
 				return true;
 		}
 		return false;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		for(int a=mob.numAffects()-1;a>=0;a--)
+		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
-			Ability A=mob.fetchAffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Druid_ShapeShift))
 			{
 				A.unInvoke();
@@ -167,7 +167,7 @@ public class Druid_ShapeShift extends StdAbility
 		Vector allShapeshifts=new Vector();
 		if((myRaceCode>=0)&&(myRaceCode<racesTaken.length))
 			racesTaken[myRaceCode]++;
-		
+
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
@@ -179,7 +179,7 @@ public class Druid_ShapeShift extends StdAbility
 					racesTaken[D.myRaceCode]++;
 			}
 		}
-		
+
 		if(myRaceCode<0)
 		{
 			if(mob.isMonster())
@@ -189,7 +189,7 @@ public class Druid_ShapeShift extends StdAbility
 					myRaceCode=Dice.roll(1,racesTaken.length,-1);
 			}
 			else
-			if(mob.isInCombat()) 
+			if(mob.isInCombat())
 				return false;
 			else
 			{
@@ -212,8 +212,8 @@ public class Druid_ShapeShift extends StdAbility
 				}catch(Exception e){};
 			}
 		}
-		
-		if(myRaceCode<0) 
+
+		if(myRaceCode<0)
 			return false;
 		else
 		{
@@ -278,7 +278,7 @@ public class Druid_ShapeShift extends StdAbility
 			mob.tell("'"+parm+"' is an illegal form!\n\rValid forms include: \n\r"+list.toString());
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -299,13 +299,13 @@ public class Druid_ShapeShift extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_OK_ACTION,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,Integer.MAX_VALUE);
 				raceName=Util.capitalize(Util.startWithAorAn(raceName.toLowerCase()));
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				mob.confirmWearability();
 			}
 		}

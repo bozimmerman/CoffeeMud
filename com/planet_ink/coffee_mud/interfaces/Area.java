@@ -145,7 +145,9 @@ public interface Area extends Environmental
 	public final static int AREASTAT_MEDLEVEL=4;
 	public final static int AREASTAT_AVGALIGN=5;
 	public final static int AREASTAT_MEDALIGN=6;
-	public final static int AREASTAT_NUMBER=7;
+	public final static int AREASTAT_TOTLEVEL=7;
+	public final static int AREASTAT_INTLEVEL=8;											  
+	public final static int AREASTAT_NUMBER=9;
 	
     // Partition Necessary
     public void addChildToLoad(String str);

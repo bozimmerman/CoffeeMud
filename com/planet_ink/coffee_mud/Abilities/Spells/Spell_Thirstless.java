@@ -28,7 +28,7 @@ public class Spell_Thirstless extends Spell
 			((MOB)affected).curState().setThirst(((MOB)affected).maxState().getThirst());
 		return super.tick(ticking, tickID);
 	}
-	
+
 
 	public void unInvoke()
 	{
@@ -68,7 +68,7 @@ public class Spell_Thirstless extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -44,8 +44,8 @@ public class Thief_Peek extends ThiefSkill
 		{
 			if(Dice.rollPercentage()<discoverChance)
 			{
-				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_VISUAL,auto?"":"Your peek attempt fails; <T-NAME> spots you!",Affect.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to peek at your inventory and fails!",Affect.NO_EFFECT,null);
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your peek attempt fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to peek at your inventory and fails!",CMMsg.NO_EFFECT,null);
+				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
@@ -60,10 +60,10 @@ public class Thief_Peek extends ThiefSkill
 			if(Dice.rollPercentage()<discoverChance)
 				str=auto?"":"<S-NAME> peek(s) at your inventory.";
 
-			FullMsg msg=new FullMsg(mob,target,this,auto?Affect.MSG_OK_VISUAL:(Affect.MSG_THIEF_ACT|Affect.MASK_EYES),auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",Affect.MSG_EXAMINESOMETHING,str,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT|CMMsg.MASK_EYES),auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",CMMsg.MSG_EXAMINESOMETHING,str,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
-				msg=new FullMsg(mob,target,null,Affect.MSG_OK_VISUAL,auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",Affect.MSG_OK_VISUAL,str,(str==null)?Affect.NO_EFFECT:Affect.MSG_OK_VISUAL,str);
+				msg=new FullMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",CMMsg.MSG_OK_VISUAL,str,(str==null)?CMMsg.NO_EFFECT:CMMsg.MSG_OK_VISUAL,str);
 				mob.location().send(mob,msg);
 				StringBuffer msg2=ExternalPlay.getInventory(mob,target);
 				if(msg2.length()==0)

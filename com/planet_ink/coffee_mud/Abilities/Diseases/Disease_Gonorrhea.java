@@ -43,7 +43,7 @@ public class Disease_Gonorrhea extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_NOISE,DISEASE_AFFECT());
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			return true;
 		}
 		return true;
@@ -55,22 +55,22 @@ public class Disease_Gonorrhea extends Disease
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-5);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affected==null) return super.okAffect(myHost,affect);
+		if(affected==null) return super.okMessage(myHost,msg);
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(((affect.amITarget(mob))||(affect.amISource(mob)))
-			&&(affect.tool()!=null)
-			&&(affect.tool().ID().equals("Social"))
-			&&(affect.tool().Name().equals("MATE <T-NAME>")
-			||affect.tool().Name().equals("SEX <T-NAME>")))
+			if(((msg.amITarget(mob))||(msg.amISource(mob)))
+			&&(msg.tool()!=null)
+			&&(msg.tool().ID().equals("Social"))
+			&&(msg.tool().Name().equals("MATE <T-NAME>")
+			||msg.tool().Name().equals("SEX <T-NAME>")))
 			{
-				affect.source().tell(mob,null,null,"<S-NAME> really do(es)n't feel like it.");
+				msg.source().tell(mob,null,null,"<S-NAME> really do(es)n't feel like it.");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

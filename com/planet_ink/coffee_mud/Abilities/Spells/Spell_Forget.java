@@ -15,7 +15,7 @@ public class Spell_Forget extends Spell
 	public Environmental newInstance(){	return new Spell_Forget();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -25,17 +25,17 @@ public class Spell_Forget extends Spell
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
-		&&(mob.fetchAbility(affect.tool().ID())==affect.tool())
+		if((msg.amISource(mob))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
 		&&(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+10)))
 		{
-			mob.tell("You can't remember "+affect.tool().name()+"!");
+			mob.tell("You can't remember "+msg.tool().name()+"!");
 			return false;
 		}
 
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -82,8 +82,8 @@ public class Spell_Forget extends Spell
 			// what happened.
 			String str=auto?"":"^S<S-NAME> incant(s) confusingly at <T-NAMESELF>^?";
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),str);
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
@@ -91,7 +91,7 @@ public class Spell_Forget extends Spell
 				{
 					success=maliciousAffect(mob,target,0,-1);
 					if(success)
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) forgetful!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) forgetful!");
 				}
 			}
 		}

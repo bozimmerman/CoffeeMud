@@ -126,7 +126,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			MOB M=(MOB)affected;
 			Merchant A=(Merchant)M.fetchAbility(ID());
 			if((A!=null)&&(A!=this)) A.baseInventory=baseInventory;
-			A=(Merchant)M.fetchAffect(ID());
+			A=(Merchant)M.fetchEffect(ID());
 			if((A!=null)&&(A!=this)) A.baseInventory=baseInventory;
 		}
 	}
@@ -337,54 +337,54 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public String prejudiceFactors(){return "";}
 	public void setPrejudiceFactors(String factors){}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		MOB M=(MOB)affected;
-		if(affect.amITarget(M))
+		if(msg.amITarget(M))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_VALUE:
-			case Affect.TYP_SELL:
+			case CMMsg.TYP_VALUE:
+			case CMMsg.TYP_SELL:
 				mob.tell("You'll have to talk to "+M.name()+" about that.");
 				return false;
-			case Affect.TYP_BUY:
-			case Affect.TYP_VIEW:
+			case CMMsg.TYP_BUY:
+			case CMMsg.TYP_VIEW:
 			{
-				if((affect.tool()!=null)
-				&&(doIHaveThisInStock(affect.tool().Name(),mob)))
+				if((msg.tool()!=null)
+				&&(doIHaveThisInStock(msg.tool().Name(),mob)))
 				{
-					if((affect.targetMinor()!=Affect.TYP_VIEW)
-					&&(yourValue(mob,affect.tool(),true)[0]>Money.totalMoney(mob)))
+					if((msg.targetMinor()!=CMMsg.TYP_VIEW)
+					&&(yourValue(mob,msg.tool(),true)[0]>Money.totalMoney(mob)))
 					{
-						ExternalPlay.quickSay(M,mob,"You can't afford to buy "+affect.tool().name()+".",false,false);
+						ExternalPlay.quickSay(M,mob,"You can't afford to buy "+msg.tool().name()+".",false,false);
 						return false;
 					}
-					if(affect.tool() instanceof Item)
+					if(msg.tool() instanceof Item)
 					{
-						if(((Item)affect.tool()).envStats().level()>mob.envStats().level())
+						if(((Item)msg.tool()).envStats().level()>mob.envStats().level())
 						{
 							ExternalPlay.quickSay(M,mob,"That's too advanced for you, I'm afraid.",true,false);
 							return false;
 						}
 					}
-					return super.okAffect(myHost,affect);
+					return super.okMessage(myHost,msg);
 				}
 				ExternalPlay.quickSay(M,mob,"I don't have that in stock.  Ask for my LIST.",true,false);
 				return false;
 			}
-			case Affect.TYP_LIST:
-				return super.okAffect(myHost,affect);
+			case CMMsg.TYP_LIST:
+				return super.okMessage(myHost,msg);
 			default:
 				break;
 			}
 		}
 		else
-		if(affect.amISource(M)&&(affect.sourceMinor()==Affect.TYP_DEATH))
+		if(msg.amISource(M)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
 			Item I=(Item)removeStock("all",M);
 			while(I!=null)
@@ -394,35 +394,35 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			}
 			M.recoverEnvStats();
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
-			super.affect(myHost,affect);
+			super.executeMsg(myHost,msg);
 			return;
 		}
 
 		MOB M=(MOB)affected;
-		if(affect.amITarget(M))
+		if(msg.amITarget(M))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_VIEW:
-				super.affect(myHost,affect);
-				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().Name(),mob)))
-					ExternalPlay.quickSay(M,affect.source(),"Interested in "+affect.tool().name()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
+			case CMMsg.TYP_VIEW:
+				super.executeMsg(myHost,msg);
+				if((msg.tool()!=null)&&(doIHaveThisInStock(msg.tool().Name(),mob)))
+					ExternalPlay.quickSay(M,msg.source(),"Interested in "+msg.tool().name()+"? Here is some information for you:\n\rLevel "+msg.tool().envStats().level()+"\n\rDescription: "+msg.tool().description(),true,false);
 				break;
-			case Affect.TYP_BUY:
-				super.affect(myHost,affect);
-				if((affect.tool()!=null)
-				&&(doIHaveThisInStock(affect.tool().Name(),mob)))
+			case CMMsg.TYP_BUY:
+				super.executeMsg(myHost,msg);
+				if((msg.tool()!=null)
+				&&(doIHaveThisInStock(msg.tool().Name(),mob)))
 				{
-					int price=yourValue(mob,affect.tool(),true)[0];
-					Vector products=removeSellableProduct(affect.tool().Name(),mob);
+					int price=yourValue(mob,msg.tool(),true)[0];
+					Vector products=removeSellableProduct(msg.tool().Name(),mob);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
 					Money.subtractMoney(M,mob,price);
@@ -435,18 +435,18 @@ public class Merchant extends CommonSkill implements ShopKeeper
 							Item I=(Item)products.elementAt(p);
 							mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 						}
-						FullMsg msg=new FullMsg(mob,product,this,Affect.MSG_GET,null);
-						if(M.location().okAffect(mob,msg))
-							M.location().send(mob,msg);
+						FullMsg msg2=new FullMsg(mob,product,this,CMMsg.MSG_GET,null);
+						if(M.location().okMessage(mob,msg2))
+							M.location().send(mob,msg2);
 						else
 							return;
 					}
 					mob.location().recoverRoomStats();
 				}
 				break;
-			case Affect.TYP_LIST:
+			case CMMsg.TYP_LIST:
 				{
-					super.affect(myHost,affect);
+					super.executeMsg(myHost,msg);
 					StringBuffer str=listInventory(mob);
 					if(str.length()==0)
 						ExternalPlay.quickSay(M,mob,"I have nothing for sale.",false,false);
@@ -455,12 +455,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				}
 				break;
 			default:
-				super.affect(myHost,affect);
+				super.executeMsg(myHost,msg);
 				break;
 			}
 		}
 		else
-			super.affect(myHost,affect);
+			super.executeMsg(myHost,msg);
 	}
 
 	public int[] yourValue(MOB mob, Environmental product, boolean sellTo)
@@ -529,8 +529,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 		if(Util.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			FullMsg msg=new FullMsg(mob,mob,Affect.MSG_LIST,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,mob,CMMsg.MSG_LIST,null);
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return true;
 		}
@@ -613,8 +613,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return false;
 		}
 
-		FullMsg msg=new FullMsg(mob,target,Affect.MSG_SELL,"<S-NAME> put(s) <T-NAME> up for sale.");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,target,CMMsg.MSG_SELL,"<S-NAME> put(s) <T-NAME> up for sale.");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			for(int i=0;i<V.size();i++)

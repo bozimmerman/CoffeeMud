@@ -76,10 +76,10 @@ public class Prayer_Philosophy extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> give(s) <T-NAMESELF> something to think about.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> start(s) pondering the mysteries of the universe.");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> start(s) pondering the mysteries of the universe.");
 				beneficialAffect(mob,target,0);
 			}
 		}

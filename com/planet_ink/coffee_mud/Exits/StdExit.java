@@ -7,7 +7,7 @@ import java.util.*;
 public class StdExit implements Exit
 {
 	public String ID(){	return "StdExit";}
-	
+
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
 	protected boolean isOpen=true;
@@ -21,7 +21,7 @@ public class StdExit implements Exit
 		isOpen=!defaultsClosed();
 		isLocked=defaultsLocked();
 	}
-	
+
 	public String Name(){ return "a walkway";}
 	public boolean hasADoor(){return false;}
 	public boolean hasALock(){return false;}
@@ -34,7 +34,7 @@ public class StdExit implements Exit
 	public String closeWord(){return "close";}
 	public String openWord(){return "open";}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
-	
+
 	public void setName(String newName){}
 	public String name()
 	{
@@ -52,9 +52,9 @@ public class StdExit implements Exit
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if(A!=null)
 				A.affectEnvStats(this,envStats);
 		}
@@ -99,7 +99,7 @@ public class StdExit implements Exit
 	}
 	public void setMiscText(String newMiscText){miscText=newMiscText;}
 	public String text(){return miscText;}
-	
+
 	public void setDisplayText(String newDisplayText){}
 	public void setDescription(String newDescription){}
 	public int maxRange(){return Integer.MAX_VALUE;}
@@ -123,12 +123,12 @@ public class StdExit implements Exit
 
 	private void mountLadder(MOB mob, Rideable ladder)
 	{
-		String mountStr=ladder.mountString(Affect.TYP_MOUNT,mob);
-		FullMsg msg=new FullMsg(mob,ladder,null,Affect.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
+		String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
+		FullMsg msg=new FullMsg(mob,ladder,null,CMMsg.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
 		Room room=(Room)((Item)ladder).owner();
 		if(mob.location()==room) room=null;
-		if((mob.location().okAffect(mob,msg))
-		&&((room==null)||(room.okAffect(mob,msg))))
+		if((mob.location().okMessage(mob,msg))
+		&&((room==null)||(room.okMessage(mob,msg))))
 		{
 			mob.location().send(mob,msg);
 			if(room!=null)
@@ -136,37 +136,37 @@ public class StdExit implements Exit
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(!B.okAffect(this,affect)))
+			if((B!=null)&&(!B.okMessage(this,msg)))
 				return false;
 		}
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
-			if((A!=null)&&(!A.okAffect(this,affect)))
+			Ability A=fetchEffect(a);
+			if((A!=null)&&(!A.okMessage(this,msg)))
 				return false;
 		}
 
-		MOB mob=affect.source();
-		if((!affect.amITarget(this))&&(affect.tool()!=this))
+		MOB mob=msg.source();
+		if((!msg.amITarget(this))&&(msg.tool()!=this))
 			return true;
 		else
-		if(affect.targetCode()==Affect.NO_EFFECT)
+		if(msg.targetCode()==CMMsg.NO_EFFECT)
 			return true;
 		else
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_EXAMINESOMETHING:
-		case Affect.TYP_READSOMETHING:
-		case Affect.TYP_OK_VISUAL:
-		case Affect.TYP_KNOCK:
-		case Affect.TYP_OK_ACTION:
+		case CMMsg.TYP_EXAMINESOMETHING:
+		case CMMsg.TYP_READSOMETHING:
+		case CMMsg.TYP_OK_VISUAL:
+		case CMMsg.TYP_KNOCK:
+		case CMMsg.TYP_OK_ACTION:
 			return true;
-		case Affect.TYP_ENTER:
+		case CMMsg.TYP_ENTER:
 			if((hasADoor())&&(!isOpen())&&(mob.envStats().height()>=0))
 			{
 				if((!Sense.canBeSeenBy(this,mob))
@@ -194,8 +194,8 @@ public class StdExit implements Exit
 			&&(!Sense.isInFlight(mob)))
 			{
 				Rideable ladder=null;
-				if(affect.target() instanceof Room)
-					ladder=findALadder(mob,(Room)affect.target());
+				if(msg.target() instanceof Room)
+					ladder=findALadder(mob,(Room)msg.target());
 				if(ladder!=null)
 					mountLadder(mob,ladder);
 				if((!Sense.isClimbing(mob))
@@ -206,10 +206,10 @@ public class StdExit implements Exit
 				}
 			}
 			return true;
-		case Affect.TYP_LEAVE:
-		case Affect.TYP_FLEE:
+		case CMMsg.TYP_LEAVE:
+		case CMMsg.TYP_FLEE:
 			return true;
-		case Affect.TYP_CLOSE:
+		case CMMsg.TYP_CLOSE:
 			if(isOpen)
 			{
 				if(!hasADoor())
@@ -226,7 +226,7 @@ public class StdExit implements Exit
 				return false;
 			}
 			//break;
-		case Affect.TYP_OPEN:
+		case CMMsg.TYP_OPEN:
 			if(!hasADoor())
 			{
 				mob.tell("There is nothing to "+openWord()+" that way!");
@@ -248,32 +248,32 @@ public class StdExit implements Exit
 					return true;
 			}
 			//break;
-		case Affect.TYP_PUSH:
+		case CMMsg.TYP_PUSH:
 			if((isOpen())||(!hasADoor()))
 			{
 				mob.tell("There is nothing to push over there.");
 				return false;
 			}
 			return true;
-		case Affect.TYP_DELICATE_HANDS_ACT:
-		case Affect.TYP_JUSTICE:
-		case Affect.TYP_CAST_SPELL:
-		case Affect.TYP_SPEAK:
+		case CMMsg.TYP_DELICATE_HANDS_ACT:
+		case CMMsg.TYP_JUSTICE:
+		case CMMsg.TYP_CAST_SPELL:
+		case CMMsg.TYP_SPEAK:
 			return true;
-		case Affect.TYP_PULL:
+		case CMMsg.TYP_PULL:
 			if((isOpen())||(!hasADoor()))
 			{
 				mob.tell("There is nothing to pull over there.");
 				return false;
 			}
 			return true;
-		case Affect.TYP_LOCK:
+		case CMMsg.TYP_LOCK:
 			if(!hasADoor())
 			{
 				mob.tell("There is nothing to lock that way!");
 				return false;
 			}
-		case Affect.TYP_UNLOCK:
+		case CMMsg.TYP_UNLOCK:
 			if(!hasADoor())
 			{
 				mob.tell("There is nothing to unlock that way!");
@@ -292,13 +292,13 @@ public class StdExit implements Exit
 			}
 			else
 			{
-				if((!isLocked())&&(affect.targetMinor()==Affect.TYP_UNLOCK))
+				if((!isLocked())&&(msg.targetMinor()==CMMsg.TYP_UNLOCK))
 				{
 					mob.tell("The "+doorName()+" is not locked.");
 					return false;
 				}
 				else
-				if((isLocked())&&(affect.targetMinor()==Affect.TYP_LOCK))
+				if((isLocked())&&(msg.targetMinor()==CMMsg.TYP_LOCK))
 				{
 					mob.tell("The "+doorName()+" is already locked.");
 					return false;
@@ -326,7 +326,7 @@ public class StdExit implements Exit
 		default:
 			break;
 		}
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
 			mob.tell("You can't do that.");
 			return false;
@@ -365,28 +365,28 @@ public class StdExit implements Exit
 		return Say;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
 			if(B!=null)
-				B.affect(this,affect);
+				B.executeMsg(this,msg);
 		}
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if(A!=null)
-				A.affect(this,affect);
+				A.executeMsg(this,msg);
 		}
 
-		MOB mob=affect.source();
-		if((!affect.amITarget(this))&&(affect.tool()!=this))
+		MOB mob=msg.source();
+		if((!msg.amITarget(this))&&(msg.tool()!=this))
 			return;
 		else
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_EXAMINESOMETHING:
+		case CMMsg.TYP_EXAMINESOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if(description().trim().length()>0)
@@ -411,7 +411,7 @@ public class StdExit implements Exit
 			else
 				mob.tell("You can't see that way!");
 			return;
-		case Affect.TYP_READSOMETHING:
+		case CMMsg.TYP_READSOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if((isReadable())&&(readableText()!=null)&&(readableText().length()>0))
@@ -434,27 +434,27 @@ public class StdExit implements Exit
 			else
 				mob.tell("You can't see that!");
 			return;
-		case Affect.TYP_CLOSE:
+		case CMMsg.TYP_CLOSE:
 			if((!hasADoor())||(!isOpen())) return;
 			isOpen=false;
 			break;
-		case Affect.TYP_OPEN:
+		case CMMsg.TYP_OPEN:
 			if((!hasADoor())||(isOpen())||(isLocked())) return;
 			if(defaultsClosed()||defaultsLocked())
-				ExternalPlay.startTickDown(this,Host.EXIT_REOPEN,openDelayTicks());
+				ExternalPlay.startTickDown(this,Host.TICK_EXIT_REOPEN,openDelayTicks());
 			isLocked=false;
 			isOpen=true;
 			break;
-		case Affect.TYP_LOCK:
+		case CMMsg.TYP_LOCK:
 			if((!hasADoor())||(!hasALock())||(isLocked())) return;
 			isOpen=false;
 			isLocked=true;
 			break;
-		case Affect.TYP_PULL:
-		case Affect.TYP_PUSH:
+		case CMMsg.TYP_PULL:
+		case CMMsg.TYP_PUSH:
 			mob.tell("It doesn't appear to be doing any good.");
 			break;
-		case Affect.TYP_UNLOCK:
+		case CMMsg.TYP_UNLOCK:
 			if((!hasADoor())||(!hasALock())||(isOpen())||(!isLocked()))
 				return;
 			isLocked=false;
@@ -467,7 +467,7 @@ public class StdExit implements Exit
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.EXIT_REOPEN)
+		if(tickID==Host.TICK_EXIT_REOPEN)
 		{
 			if(defaultsClosed())
 				isOpen=false;
@@ -479,7 +479,7 @@ public class StdExit implements Exit
 			return false;
 		}
 		else
-		if(tickID==Host.EXIT_BEHAVIOR_TICK)
+		if(tickID==Host.TICK_EXIT_BEHAVIOR)
 		{
 			for(int b=0;b<numBehaviors();b++)
 			{
@@ -492,9 +492,9 @@ public class StdExit implements Exit
 		else
 		{
 			int a=0;
-			while(a<numAffects())
+			while(a<numEffects())
 			{
-				Ability A=fetchAffect(a);
+				Ability A=fetchEffect(a);
 				if(A!=null)
 				{
 					int s=affects.size();
@@ -556,14 +556,14 @@ public class StdExit implements Exit
 		if(link.length()>0)
 			miscText="{#"+link+"#}"+miscText;
 	}
-	
-	public void addNonUninvokableAffect(Ability to)
+
+	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
 		if(affects==null) affects=new Vector();
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A==to))
 				return;
 		}
@@ -572,20 +572,20 @@ public class StdExit implements Exit
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
-	public void addAffect(Ability to)
+	public void addEffect(Ability to)
 	{
 		if(to==null) return;
 		if(affects==null) affects=new Vector();
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A==to))
 				return;
 		}
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
-	public void delAffect(Ability to)
+	public void delEffect(Ability to)
 	{
 		if(affects==null) return;
 		int size=affects.size();
@@ -593,12 +593,12 @@ public class StdExit implements Exit
 		if(affects.size()<size)
 			to.setAffectedOne(null);
 	}
-	public int numAffects()
+	public int numEffects()
 	{
 		if(affects==null) return 0;
 		return affects.size();
 	}
-	public Ability fetchAffect(int index)
+	public Ability fetchEffect(int index)
 	{
 		if(affects==null) return null;
 		try
@@ -608,12 +608,12 @@ public class StdExit implements Exit
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	public Ability fetchAffect(String ID)
+	public Ability fetchEffect(String ID)
 	{
 		if(affects==null) return null;
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.ID().equals(ID)))
 			   return A;
 		}
@@ -635,7 +635,7 @@ public class StdExit implements Exit
 		}
 		// first one! so start ticking...
 		if(behaviors.size()==0)
-			ExternalPlay.startTickDown(this,Host.EXIT_BEHAVIOR_TICK,1);
+			ExternalPlay.startTickDown(this,Host.TICK_EXIT_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -644,7 +644,7 @@ public class StdExit implements Exit
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			ExternalPlay.deleteTick(this,Host.EXIT_BEHAVIOR_TICK);
+			ExternalPlay.deleteTick(this,Host.TICK_EXIT_BEHAVIOR);
 	}
 
 	public int numBehaviors()
@@ -654,7 +654,7 @@ public class StdExit implements Exit
 	}
 	public Behavior fetchBehavior(int index)
 	{
-		if(behaviors==null) 
+		if(behaviors==null)
 			return null;
 		try
 		{
@@ -665,7 +665,7 @@ public class StdExit implements Exit
 	}
 	public Behavior fetchBehavior(String ID)
 	{
-		if(behaviors==null) 
+		if(behaviors==null)
 			return null;
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -677,7 +677,7 @@ public class StdExit implements Exit
 	}
 	public int openDelayTicks()	{ return 45;}
 	public void setOpenDelayTicks(int numTicks){}
-	
+
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
 	private int getCodeNum(String code){

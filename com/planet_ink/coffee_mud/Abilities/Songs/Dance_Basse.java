@@ -13,19 +13,19 @@ public class Dance_Basse extends Dance
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public Environmental newInstance(){	return new Dance_Basse();}
 	protected String danceOf(){return name()+" Dance";}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
-		&&((affect.amITarget(affected))))
+		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+		&&((msg.amITarget(affected))))
 		{
-			MOB target=(MOB)affect.target();
+			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
-			&&(affect.source().getVictim()!=target)
-			&&(Dice.rollPercentage()>((affect.source().envStats().level()-target.envStats().level())*10)))
+			&&(msg.source().getVictim()!=target)
+			&&(Dice.rollPercentage()>((msg.source().envStats().level()-target.envStats().level())*10)))
 			{
-				affect.source().tell("You are too much in awe of "+target.name());
-				if(target.getVictim()==affect.source())
+				msg.source().tell("You are too much in awe of "+target.name());
+				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
 					target.setVictim(null);
@@ -33,6 +33,6 @@ public class Dance_Basse extends Dance
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

@@ -29,42 +29,42 @@ public class StdLasso extends StdWeapon
 		setRawLogicalAnd(true);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((affect.tool()==this)
-		&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
 			return;
-			//affect.addTrailerMsg(new FullMsg(affect.source(),this,Affect.MSG_DROP,null));
+			//msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_DROP,null));
 		else
-		if((affect.tool()==this)
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.target() !=null)
-		&&(affect.target() instanceof MOB)
+		if((msg.tool()==this)
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.target() !=null)
+		&&(msg.target() instanceof MOB)
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			unWear();
-			affect.addTrailerMsg(new FullMsg(affect.source(),this,Affect.MASK_GENERAL|Affect.MSG_DROP,null));
-			affect.addTrailerMsg(new FullMsg((MOB)affect.target(),this,Affect.MASK_GENERAL|Affect.MSG_GET,null));
-			affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),this,Affect.MASK_GENERAL|Affect.TYP_GENERAL,null));
+			msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,null));
+			msg.addTrailerMsg(new FullMsg((MOB)msg.target(),this,CMMsg.MASK_GENERAL|CMMsg.MSG_GET,null));
+			msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),this,CMMsg.MASK_GENERAL|CMMsg.TYP_GENERAL,null));
 		}
 		else
-		if((affect.tool()==this)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof MOB)
-		&&(affect.targetMinor()==Affect.TYP_GENERAL)
-		&&(((MOB)affect.target()).isMine(this))
-		&&(affect.sourceMessage()==null))
+		if((msg.tool()==this)
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
+		&&(msg.targetMinor()==CMMsg.TYP_GENERAL)
+		&&(((MOB)msg.target()).isMine(this))
+		&&(msg.sourceMessage()==null))
 		{
 			Ability A=CMClass.getAbility("Thief_Bind");
 			if(A!=null)
 			{
 				A.setAffectedOne(this);
-				A.invoke(affect.source(),affect.target(),true);
+				A.invoke(msg.source(),msg.target(),true);
 			}
 		}
 		else
-			super.affect(myHost,affect);
+			super.executeMsg(myHost,msg);
 	}
 
 	public Environmental newInstance()

@@ -10,19 +10,19 @@ public class Prop_WeaponImmunity extends Property
 	public String name(){ return "Weapon Immunity";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	Prop_WeaponImmunity BOB=new Prop_WeaponImmunity();	BOB.setMiscText(text());return BOB;}
-	
+
 	public String accountForYourself()
 	{
 		String id="Weapon Immunities for the wearer: "+text();
 		return id;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if((affected!=null)
-		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 		{
 			MOB M=null;
 			if(affected instanceof MOB)
@@ -117,9 +117,9 @@ public class Prop_WeaponImmunity extends Property
 					}
 				}
 				if(immune)
-					msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),Affect.MASK_HURT,msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+					msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),CMMsg.MASK_HURT,msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 			}
-			
+
 		}
 		return true;
 	}

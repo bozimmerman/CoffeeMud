@@ -15,7 +15,7 @@ public class Trap_CaveIn extends StdTrap
 	public String requiresToSet(){return "100 pounds of wood";}
 	public Environmental newInstance(){	return new Trap_CaveIn();}
 	public int baseRejuvTime(int level){ return 6;}
-	
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
@@ -27,7 +27,7 @@ public class Trap_CaveIn extends StdTrap
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -53,34 +53,34 @@ public class Trap_CaveIn extends StdTrap
 		}
 		return true;
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect msg)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((sprung)
 		&&(affected!=null)
 		&&(!disabled())
 		&&(tickDown>=0))
 		{
-			if(((msg.targetMinor()==Affect.TYP_LEAVE)
-				||(msg.targetMinor()==Affect.TYP_ENTER)
-				||(msg.targetMinor()==Affect.TYP_FLEE))
+			if(((msg.targetMinor()==CMMsg.TYP_LEAVE)
+				||(msg.targetMinor()==CMMsg.TYP_ENTER)
+				||(msg.targetMinor()==CMMsg.TYP_FLEE))
 			   &&(msg.amITarget(affected)))
 			{
 				msg.source().tell("The cave-in prevents entry or exit from here.");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
-	
+
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a cave-in!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a cave-in!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> trigger(s) a cave-in!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> trigger(s) a cave-in!"))
 			{
 				super.spring(target);
 				if((affected!=null)
@@ -94,7 +94,7 @@ public class Trap_CaveIn extends StdTrap
 							if(invoker().mayIFight(M))
 							{
 								int damage=Dice.roll(trapLevel(),20,1);
-								ExternalPlay.postDamage(invoker(),M,this,damage,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,Weapon.TYPE_BASHING,"The cave-in <DAMAGE> <T-NAME>!");
+								ExternalPlay.postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_BASHING,"The cave-in <DAMAGE> <T-NAME>!");
 							}
 					}
 				}

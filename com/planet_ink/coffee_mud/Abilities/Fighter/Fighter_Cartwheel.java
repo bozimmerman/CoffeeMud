@@ -55,14 +55,14 @@ public class Fighter_Cartwheel extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,victim,this,Affect.MSG_RETREAT,"<S-NAME> cartwheel(s) away from <T-NAMESELF>!");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,victim,this,CMMsg.MSG_RETREAT,"<S-NAME> cartwheel(s) away from <T-NAMESELF>!");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(mob.rangeToTarget()<mob.location().maxRange())
 				{
-					msg=new FullMsg(mob,victim,this,Affect.MSG_RETREAT,null);
-					if(mob.location().okAffect(mob,msg))
+					msg=new FullMsg(mob,victim,this,CMMsg.MSG_RETREAT,null);
+					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
 				}
 			}

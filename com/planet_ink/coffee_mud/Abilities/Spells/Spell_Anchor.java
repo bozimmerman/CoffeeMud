@@ -14,7 +14,7 @@ public class Spell_Anchor extends Spell
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_Anchor();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -32,49 +32,49 @@ public class Spell_Anchor extends Spell
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if(affected==null)	return true;
 
-		if((affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
+		if((msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
 		&&((affected==null)
-			||((affected instanceof Item)&&(!((Item)affected).amWearingAt(Item.INVENTORY))&&(affect.amITarget(((Item)affected).owner())))
-			||((affected instanceof MOB)&&(affect.amITarget((MOB)affected))))
-		&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_MOVING)
-		   ||Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+			||((affected instanceof Item)&&(!((Item)affected).amWearingAt(Item.INVENTORY))&&(msg.amITarget(((Item)affected).owner())))
+			||((affected instanceof MOB)&&(msg.amITarget((MOB)affected))))
+		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING)
+		   ||Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
 		{
 			Room roomS=null;
 			Room roomD=null;
-			if((affect.target()!=null)&&(affect.target() instanceof MOB))
-				roomD=((MOB)affect.target()).location();
+			if((msg.target()!=null)&&(msg.target() instanceof MOB))
+				roomD=((MOB)msg.target()).location();
 			else
-			if((affect.target()!=null)&&(affect.target() instanceof Item))
+			if((msg.target()!=null)&&(msg.target() instanceof Item))
 			{
-				Item I=(Item)affect.target();
+				Item I=(Item)msg.target();
 				if((I.owner()!=null)&&(I.owner() instanceof MOB))
-					roomD=((MOB)((Item)affect.target()).owner()).location();
+					roomD=((MOB)((Item)msg.target()).owner()).location();
 				else
 				if((I.owner()!=null)&&(I.owner() instanceof Room))
-					roomD=(Room)((Item)affect.target()).owner();
+					roomD=(Room)((Item)msg.target()).owner();
 			}
 			else
-			if((affect.target()!=null)&&(affect.target() instanceof Room))
-				roomD=(Room)affect.target();
-			
-			if((affect.source()!=null)&&(affect.source().location()!=null))
-				roomS=affect.source().location();
+			if((msg.target()!=null)&&(msg.target() instanceof Room))
+				roomD=(Room)msg.target();
+
+			if((msg.source()!=null)&&(msg.source().location()!=null))
+				roomS=msg.source().location();
 
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
 				roomD=null;
 
 			if(roomS!=null)
-				roomS.showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+				roomS.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 			if(roomD!=null)
-				roomD.showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+				roomD.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 			return false;
 		}
 		return true;
@@ -94,7 +94,7 @@ public class Spell_Anchor extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"An magical anchoring field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anchoring field of protection around <T-NAMESELF>.^?"));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -21,7 +21,7 @@ public class Druid_PackCall extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((affected!=null)
 			&&(affected instanceof MOB)
@@ -45,19 +45,19 @@ public class Druid_PackCall extends StdAbility
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wander(s) off.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> wander(s) off.");
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==Affect.TYP_QUIT))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			unInvoke();
 	}
 
@@ -79,9 +79,9 @@ public class Druid_PackCall extends StdAbility
 			return false;
 		}
 		Druid_ShapeShift D=null;
-		for(int a=0;a<mob.numAffects();a++)
+		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability A=mob.fetchAffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Druid_ShapeShift))
 				D=(Druid_ShapeShift)A;
 		}
@@ -119,8 +119,8 @@ public class Druid_PackCall extends StdAbility
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISE,auto?"":"^S<S-NAME> call(s) for help from <S-HIS-HER> pack!^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISE,auto?"":"^S<S-NAME> call(s) for help from <S-HIS-HER> pack!^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int levelsRemaining=90;
@@ -163,7 +163,7 @@ public class Druid_PackCall extends StdAbility
 					if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 					newMOB.setStartRoom(null);
 					int dir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
-					newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> arrive(s) "+Directions.getFromDirectionName(dir)+" and attack(s) "+victim.name()+"!");
+					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> arrive(s) "+Directions.getFromDirectionName(dir)+" and attack(s) "+victim.name()+"!");
 					ExternalPlay.follow(newMOB,mob,true);
 					if(newMOB.amFollowing()!=mob)
 					{

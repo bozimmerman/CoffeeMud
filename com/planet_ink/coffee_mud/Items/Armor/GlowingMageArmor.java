@@ -29,21 +29,21 @@ public class GlowingMageArmor extends StdArmor
 
 	public boolean savable(){return false;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((amWearingAt(Item.INVENTORY)||(owner()==null)||(owner() instanceof Room))
 		&&(!amDestroyed()))
 			destroy();
 
-		MOB mob=affect.source();
-		if(!affect.amITarget(this))
+		MOB mob=msg.source();
+		if(!msg.amITarget(this))
 			return true;
 		else
-		if((affect.targetMinor()==Affect.TYP_GET)
-		||(affect.targetMinor()==Affect.TYP_REMOVE))
+		if((msg.targetMinor()==CMMsg.TYP_GET)
+		||(msg.targetMinor()==CMMsg.TYP_REMOVE))
 		{
 			mob.tell("The mage armor cannot be removed from where it is.");
 			return false;

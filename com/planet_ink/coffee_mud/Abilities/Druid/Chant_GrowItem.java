@@ -126,7 +126,7 @@ public class Chant_GrowItem extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the trees.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Vector V=(Vector)Resources.getResource("CARPENTRY RECIPES");
@@ -175,13 +175,13 @@ public class Chant_GrowItem extends Chant
 				{
 					String parm="";
 					if(spell.indexOf(";")>0)
-					{ 
+					{
 						parm=spell.substring(spell.indexOf(";")+1);
 						spell=spell.substring(0,spell.indexOf(";"));
 					}
 					Ability A=CMClass.getAbility(spell);
 					A.setMiscText(parm);
-					if(A!=null)	building.addNonUninvokableAffect(A);
+					if(A!=null)	building.addNonUninvokableEffect(A);
 				}
 				if((building instanceof Container)
 				&&(!(building instanceof Armor)))
@@ -289,7 +289,7 @@ public class Chant_GrowItem extends Chant
 				mob.location().addItemRefuse(building,Item.REFUSE_RESOURCE);
 				if(key!=null)
 					mob.location().addItemRefuse(key,Item.REFUSE_RESOURCE);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,building.name()+" grows out of a tree and drops.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,building.name()+" grows out of a tree and drops.");
 				mob.location().recoverEnvStats();
 			}
 		}

@@ -40,7 +40,7 @@ public class Chicken extends StdMOB
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if(Dice.rollPercentage()>95)
 			{
@@ -57,7 +57,7 @@ public class Chicken extends StdMOB
 				Item I=fetchInventory(Dice.roll(1,inventorySize(),-1));
 				if(I.name().equals("an egg"))
 				{
-					location().show(this,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");
+					location().show(this,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");
 					I.removeFromOwnerContainer();
 					location().addItemRefuse(I,Item.REFUSE_RESOURCE);
 					location().recoverRoomStats();

@@ -15,7 +15,7 @@ public class Chant_VineMass extends Chant_SummonVine
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_VineMass();}
 	public long flags(){return Ability.FLAG_SUMMONING;}
-	
+
 	public MOB determineMonster(MOB caster, int material)
 	{
 		MOB victim=caster.getVictim();
@@ -59,7 +59,7 @@ public class Chant_VineMass extends Chant_SummonVine
 				ExternalPlay.follow(newMOB,caster,true);
 				if(newMOB.amFollowing()!=caster)
 				{
-					A=newMOB.fetchAffect(ID());
+					A=newMOB.fetchEffect(ID());
 					if(A!=null) A.unInvoke();
 					return null;
 				}

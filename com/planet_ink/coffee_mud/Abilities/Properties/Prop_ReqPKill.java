@@ -11,25 +11,25 @@ public class Prop_ReqPKill extends Property
 	public String name(){ return "Playerkill ONLY Zone";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 	public Environmental newInstance(){ return new Prop_ReqPKill();}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
-		   &&(affect.target()!=null)
-		   &&(affect.target() instanceof Room)
-		   &&(affect.targetMinor()==Affect.TYP_ENTER)
-		   &&(!Sense.isFalling(affect.source()))
-		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
+		   &&(msg.target()!=null)
+		   &&(msg.target() instanceof Room)
+		   &&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		   &&(!Sense.isFalling(msg.source()))
+		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
-			if((!affect.source().isMonster())
-			   &&(!Util.bset(affect.source().getBitmap(),MOB.ATT_PLAYERKILL)))
+			if((!msg.source().isMonster())
+			   &&(!Util.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
 			{
-				affect.source().tell("You must have your playerkill flag set to enter here.");
+				msg.source().tell("You must have your playerkill flag set to enter here.");
 				return false;
 			}
 		}
-		if((!affect.source().isMonster())
-		&&(!Util.bset(affect.source().getBitmap(),MOB.ATT_PLAYERKILL)))
-			affect.source().setBitmap(Util.setb(affect.source().getBitmap(),MOB.ATT_PLAYERKILL));
-		return super.okAffect(myHost,affect);
+		if((!msg.source().isMonster())
+		&&(!Util.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
+			msg.source().setBitmap(Util.setb(msg.source().getBitmap(),MOB.ATT_PLAYERKILL));
+		return super.okMessage(myHost,msg);
 	}
 }

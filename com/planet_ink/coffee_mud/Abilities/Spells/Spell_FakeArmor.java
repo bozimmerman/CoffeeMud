@@ -21,22 +21,22 @@ public class Spell_FakeArmor extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(!notAgainThisRound)
-		&&(affect.target()!=null)
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		&&(msg.target()!=null)
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 		&&(affected instanceof Item)
-		&&(affect.amITarget(((Item)affected).owner()))
-		&&(affect.target() instanceof MOB))
+		&&(msg.amITarget(((Item)affected).owner()))
+		&&(msg.target() instanceof MOB))
 		{
 			notAgainThisRound=true;
-			affect.addTrailerMsg(new FullMsg((MOB)affect.target(),null,Affect.MSG_OK_VISUAL,affected.name()+" absorbs some of the damage done to <S-NAME>."));
+			msg.addTrailerMsg(new FullMsg((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,affected.name()+" absorbs some of the damage done to <S-NAME>."));
 			((Item)affected).unWear();
 			((Item)affected).destroy();
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 
 	}
 	public void unInvoke()
@@ -83,7 +83,7 @@ public class Spell_FakeArmor extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Armor armor=(Armor)CMClass.getItem("GenArmor");
@@ -127,7 +127,7 @@ public class Spell_FakeArmor extends Spell
 				armor.recoverEnvStats();
 				armor.setBaseValue(0);
 				mob.addInventory(armor);
-				mob.location().show(mob,null,armor,Affect.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
+				mob.location().show(mob,null,armor,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
 				myItem=armor;
 				beneficialAffect(mob,armor,0);
 			}

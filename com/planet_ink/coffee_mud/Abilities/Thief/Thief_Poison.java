@@ -37,8 +37,8 @@ public class Thief_Poison extends ThiefSkill
 		if(success)
 		{
 			str=auto?"":"^F<S-NAME> attempt(s) to poison <T-NAMESELF>!^?";
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,Affect.MSK_MALICIOUS_MOVE|Affect.MSG_THIEF_ACT|(auto?Affect.MASK_GENERAL:0),str,Affect.MSG_NOISYMOVEMENT,str);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.MSG_THIEF_ACT|(auto?CMMsg.MASK_GENERAL:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

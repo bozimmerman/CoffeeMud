@@ -28,7 +28,7 @@ public class Prop_RideSpellCast extends Property
 		spellH=Prop_SpellAdder.getMySpellsH(this);
 		return spellH;
 	}
-	
+
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -63,11 +63,11 @@ public class Prop_RideSpellCast extends Property
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			Ability EA=E.fetchAffect(A.ID());
+			Ability EA=E.fetchEffect(A.ID());
 			if(EA==null)
 			{
 				A.invoke(E,E,true);
-				EA=E.fetchAffect(A.ID());
+				EA=E.fetchEffect(A.ID());
 			}
 			if(EA!=null)
 				EA.makeLongLasting();
@@ -79,9 +79,9 @@ public class Prop_RideSpellCast extends Property
 	{
 		Hashtable h=getMySpellsH();
 		int x=0;
-		while(x<E.numAffects())
+		while(x<E.numEffects())
 		{
-			Ability thisAffect=E.fetchAffect(x);
+			Ability thisAffect=E.fetchEffect(x);
 			if(thisAffect!=null)
 			{
 				String ID=(String)h.get(thisAffect.ID());

@@ -30,7 +30,7 @@ public class Thief_Lure extends ThiefSkill implements Trap
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{return null;}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<2)
@@ -52,7 +52,7 @@ public class Thief_Lure extends ThiefSkill implements Trap
 			return false;
 		}
 		String direction=Directions.getInDirectionName(dirCode);
-		
+
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -66,8 +66,8 @@ public class Thief_Lure extends ThiefSkill implements Trap
 		success=success&&(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_MIND));
 
 		str="<S-NAME> lure(s) <T-NAME> "+direction+".";
-		FullMsg msg=new FullMsg(mob,target,this,(auto?Affect.MASK_GENERAL:0)|Affect.MSG_SPEAK,str);
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_SPEAK,str);
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if((success)&&(ExternalPlay.move(mob,dirCode,false,false))&&(Sense.canBeHeardBy(target,mob)))

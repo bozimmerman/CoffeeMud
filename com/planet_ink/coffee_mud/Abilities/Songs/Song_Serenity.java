@@ -13,13 +13,13 @@ public class Song_Serenity extends Song
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Song_Serenity();	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 		if(!Sense.canBeHeardBy(invoker,affected)) return true;
 
-		if((Util.bset(msg.targetCode(),Affect.MASK_MALICIOUS))
+		if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		   &&(msg.amISource((MOB)affected))
 		   &&(msg.target()!=null)
 		   &&(affected!=msg.target()))

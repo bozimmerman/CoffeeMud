@@ -12,24 +12,24 @@ public class Trap_Get extends Trap_Trap
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Trap_Get();}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(sprung)
 		{
-			if(affect.source().isMine(affected))
+			if(msg.source().isMine(affected))
 				unInvoke();
 			else
-				super.affect(myHost,affect);
+				super.executeMsg(myHost,msg);
 			return;
 		}
 
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
-		if(affect.amITarget(affected))
+		if(msg.amITarget(affected))
 		{
-			if(affect.targetMinor()==Affect.TYP_GET)
+			if(msg.targetMinor()==CMMsg.TYP_GET)
 			{
-				spring(affect.source());
+				spring(msg.source());
 			}
 		}
 	}

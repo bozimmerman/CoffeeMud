@@ -21,34 +21,34 @@ public class Skill_BellyRolling extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 			doneThisRound=false;
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amITarget(mob)
-		&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+		if(msg.amITarget(mob)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(Sense.aliveAwakeMobile(mob,true))
 		&&(Sense.isSitting(mob))
-		&&(affect.tool()!=null)
+		&&(msg.tool()!=null)
 		&&(!doneThisRound)
-		&&(affect.tool() instanceof Weapon))
+		&&(msg.tool() instanceof Weapon))
 		{
-			// can't use -NAME for affect.source() lest sitting prevent it
-			FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_SITMOVE,"<S-NAME> roll(s) away from the attack by <T-NAMESELF>!");
+			// can't use -NAME for msg.source() lest sitting prevent it
+			FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_SITMOVE,"<S-NAME> roll(s) away from the attack by <T-NAMESELF>!");
 			if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-50,false))
-			&&((affect.source().getVictim()==mob)||(affect.source().getVictim()==null))
-			&&(mob.location().okAffect(mob,msg)))
+			&&((msg.source().getVictim()==mob)||(msg.source().getVictim()==null))
+			&&(mob.location().okMessage(mob,msg2)))
 			{
 				doneThisRound=true;
-				mob.location().send(mob,msg);
+				mob.location().send(mob,msg2);
 				helpProfficiency(mob);
 				return false;
 			}

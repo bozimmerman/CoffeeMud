@@ -31,7 +31,7 @@ public class Chant_SoaringEagle extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> eagle wings vanish.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> eagle wings vanish.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -39,8 +39,8 @@ public class Chant_SoaringEagle extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(ID())!=null)
+
+		if(target.fetchEffect(ID())!=null)
 		{
 			target.tell("You already have the wings of an eagle.");
 			return false;
@@ -63,7 +63,7 @@ public class Chant_SoaringEagle extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> gain(s) the wings of an eagle!":"^S<S-NAME> chant(s), causing <S-HIM-HER> to grow a pair of wings!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

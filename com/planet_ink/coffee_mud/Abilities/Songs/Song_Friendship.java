@@ -15,7 +15,7 @@ public class Song_Friendship extends Song
 	protected boolean skipStandardSongInvoke(){return true;}
 	public long flags(){return Ability.FLAG_CHARMING;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(affected==invoker))
 			return true;
@@ -25,39 +25,39 @@ public class Song_Friendship extends Song
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.amISource(mob.amFollowing())))
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.amISource(mob.amFollowing())))
 			unInvoke();
 		else
-		if((affect.amISource(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.amITarget(mob.amFollowing())))
+		if((msg.amISource(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.amITarget(mob.amFollowing())))
 		{
 			mob.tell("You like "+mob.amFollowing().charStats().himher()+" too much.");
 			return false;
 		}
 		else
-		if((affect.amISource(mob))
+		if((msg.amISource(mob))
 		&&(!mob.isMonster())
-		&&(affect.target() instanceof Room)
-		&&(affect.targetMinor()==affect.TYP_LEAVE)
+		&&(msg.target() instanceof Room)
+		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(mob.amFollowing()!=null)
-		&&(((Room)affect.target()).isInhabitant(mob.amFollowing())))
+		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
 			mob.tell("You don't want to leave your friend.");
 			return false;
 		}
 		else
-		if((affect.amISource(mob))
+		if((msg.amISource(mob))
 		&&(mob.amFollowing()!=null)
-		&&(affect.sourceMinor()==Affect.TYP_NOFOLLOW))
+		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
 			mob.tell("You like "+mob.amFollowing().name()+" too much.");
 			return false;
 		}
 
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -102,7 +102,7 @@ public class Song_Friendship extends Song
 		else
 			super.unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -119,11 +119,11 @@ public class Song_Friendship extends Song
 		if(success)
 		{
 			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
-			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
+			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -140,29 +140,29 @@ public class Song_Friendship extends Song
 				{
 					MOB follower=(MOB)f.nextElement();
 					// malicious songs must not affect the invoker!
-					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
+					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
-						affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
-					if(auto) affectType=affectType|Affect.MASK_GENERAL;
+						affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
+					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 
-					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
+					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
 						FullMsg msg3=msg2;
 						if((mindAttack())&&(follower!=mob))
-							msg2=new FullMsg(mob,follower,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
+							msg2=new FullMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 						int levelDiff=follower.envStats().level()-mob.envStats().level();
 
 						if((levelDiff>3)&&(mindAttack()))
 							mob.tell(mob,follower,null,"<T-NAME> looks too powerful.");
 						else
-						if((mob.location().okAffect(mob,msg2))&&(mob.location().okAffect(mob,msg3)))
+						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
 						{
 							mob.location().send(mob,msg2);
 							if(!msg2.wasModified())
 							{
 								mob.location().send(mob,msg3);
-								if((!msg3.wasModified())&&(follower.fetchAffect(newOne.ID())==null))
+								if((!msg3.wasModified())&&(follower.fetchEffect(newOne.ID())==null))
 								{
 									if((follower.amFollowing()!=mob)&&(follower!=mob))
 									{
@@ -170,9 +170,9 @@ public class Song_Friendship extends Song
 										if(follower.amFollowing()==mob)
 										{
 											if(follower!=mob)
-												follower.addAffect((Ability)newOne.copyOf());
+												follower.addEffect((Ability)newOne.copyOf());
 											else
-												follower.addAffect(newOne);
+												follower.addEffect(newOne);
 											ExternalPlay.makePeaceInGroup(mob);
 										}
 									}
@@ -184,7 +184,7 @@ public class Song_Friendship extends Song
 			}
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
 
 		return success;
 	}

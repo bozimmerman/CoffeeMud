@@ -10,7 +10,7 @@ public class Lich extends Skeleton
 	public String name(){ return "Lich"; }
 
 	protected static Vector resources=new Vector();
-	
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -25,7 +25,7 @@ public class Lich extends Skeleton
 	public void tick(MOB myChar, int tickID)
 	{
 		super.tick(myChar,tickID);
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(Dice.rollPercentage()<10))
 		{
 			Ability A=CMClass.getAbility("Spell_Fear");

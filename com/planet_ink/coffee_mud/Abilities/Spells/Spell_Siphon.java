@@ -33,7 +33,7 @@ public class Spell_Siphon extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) a thirst for the energy of others.":"^S<S-NAME> invoke(s) an area deprived of energy around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
@@ -56,28 +56,28 @@ public class Spell_Siphon extends Spell
 		mob.tell("You no longer feel a thirst for the energy of others.");
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		if((affect.amITarget(mob))
-		&&(!affect.amISource(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&((affect.targetCode()-Affect.MASK_HURT)>0)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon)
+		if((msg.amITarget(mob))
+		&&(!msg.amISource(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon)
 		&&(Dice.rollPercentage()>50)
-		&&(affect.source().curState().getMana()>0))
+		&&(msg.source().curState().getMana()>0))
 		{
-		
-			FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> siphon(s) mana from <T-NAME>!");
-			if(mob.location().okAffect(mob,msg))
+
+			FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> siphon(s) mana from <T-NAME>!");
+			if(mob.location().okMessage(mob,msg2))
 			{
 				int maxManaRestore = 3;
-				MOB source = affect.source();
+				MOB source = msg.source();
 				int curSourceMana = source.curState().getMana();
 				int manaDrain = 0;
 				if(maxManaRestore <= curSourceMana)
@@ -90,9 +90,9 @@ public class Spell_Siphon extends Spell
 				}
 				mob.curState().adjMana(manaDrain, mob.maxState());
 				source.curState().adjMana(manaDrain * -1, source.maxState());
-				mob.location().send(mob,msg);
+				mob.location().send(mob,msg2);
 			}
 		}
-		return super.okAffect(myHost, affect);
+		return super.okMessage(myHost, msg);
 	}
 }

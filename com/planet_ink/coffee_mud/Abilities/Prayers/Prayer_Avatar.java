@@ -119,7 +119,7 @@ public class Prayer_Avatar extends Prayer
 	{
 		MOB target=mob;
 		if(target==null) return false;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("You are already the AVATAR.");
 			return false;
@@ -150,10 +150,10 @@ public class Prayer_Avatar extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+".^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) the AVATAR!");
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) the AVATAR!");
 				beneficialAffect(mob,target,levels);
 			}
 		}

@@ -25,33 +25,33 @@ public class Spell_MajorGlobe extends Spell
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> anti-magic globe fades.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> anti-magic globe fades.");
 
 		super.unInvoke();
 
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
-		&&(((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-			||((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-			||((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
 		&&(!mob.amDead())
-		&&(CMAble.lowestQualifyingLevel(affect.tool().ID())<=15)
+		&&(CMAble.lowestQualifyingLevel(msg.tool().ID())<=15)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
-			amountAbsorbed+=CMAble.lowestQualifyingLevel(affect.tool().ID());
-			mob.location().show(mob,affect.source(),null,Affect.MSG_OK_VISUAL,"The globe around <S-NAME> absorbs the "+affect.tool().name()+" from <T-NAME>!");
+			amountAbsorbed+=CMAble.lowestQualifyingLevel(msg.tool().ID());
+			mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The globe around <S-NAME> absorbs the "+msg.tool().name()+" from <T-NAME>!");
 			return false;
 		}
 		if((invoker!=null)&&(amountAbsorbed>(invoker.envStats().level()*4)))
@@ -72,7 +72,7 @@ public class Spell_MajorGlobe extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A great anti-magic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) a great anti-magic globe of protection around <T-NAMESELF>.^?"));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				amountAbsorbed=0;
 				mob.location().send(mob,msg);

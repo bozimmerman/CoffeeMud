@@ -12,7 +12,7 @@ public class Aggressive extends StdBehavior
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 	protected int tickWait=0;
 	protected int tickDown=0;
-	
+
 	public Behavior newInstance()
 	{
 		return new Aggressive();
@@ -28,9 +28,9 @@ public class Aggressive extends StdBehavior
 		tickWait=Util.getParmInt(newParms,"delay",0);
 		tickDown=tickWait;
 	}
-	
-	public static boolean startFight(MOB monster, 
-									 MOB mob, 
+
+	public static boolean startFight(MOB monster,
+									 MOB mob,
 									 boolean fightMOBs)
 	{
 		if((mob!=null)
@@ -54,7 +54,7 @@ public class Aggressive extends StdBehavior
 					A.invoke(monster,mob,false);
 				}
 			}
-			
+
 			// normal attack
 			ExternalPlay.postAttack(monster,mob,monster.fetchWieldedItem());
 			return true;
@@ -73,7 +73,7 @@ public class Aggressive extends StdBehavior
 			{
 				if(mob.charStats().getCurrentClass().ID().equals("Archon"))
 					return false;
-				
+
 				if((startItWith==null)
 				&&(SaucerSupport.zapperCheck(zapStr,mob)))
 					 startItWith=mob;
@@ -85,12 +85,12 @@ public class Aggressive extends StdBehavior
 		return false;
 	}
 
-	public static void tickAggressively(Tickable ticking, 
+	public static void tickAggressively(Tickable ticking,
 										int tickID,
 										boolean mobKiller,
 										String zapStr)
 	{
-		if(tickID!=Host.MOB_TICK) return;
+		if(tickID!=Host.TICK_MOB) return;
 		if(ticking==null) return;
 		if(!(ticking instanceof MOB)) return;
 
@@ -100,7 +100,7 @@ public class Aggressive extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;

@@ -76,13 +76,13 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					R2.setRoomID(ExternalPlay.getOpenRoomID(R.getArea().Name()));
 					R2.setArea(R.getArea());
 					Ability newTitle=null;
-					for(int a=0;a<R.numAffects();a++)
+					for(int a=0;a<R.numEffects();a++)
 					{
-						Ability A2=R.fetchAffect(a);
+						Ability A2=R.fetchEffect(a);
 						if(A2!=null)
 						{
 							A2=(Ability)A2.copyOf();
-							R2.addNonUninvokableAffect(A2);
+							R2.addNonUninvokableEffect(A2);
 							if(A2 instanceof LandTitle)
 								newTitle=A2;
 						}

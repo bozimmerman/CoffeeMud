@@ -29,14 +29,14 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 		return new ManualArchon();
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_READSOMETHING:
+			case CMMsg.TYP_READSOMETHING:
 				if(mob.isMine(this))
 				{
 					mob.tell("The manual glows softly, enveloping you in its magical energy.");
@@ -73,13 +73,13 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 				}
 				mob.tell("The book vanishes out of your hands.");
 				destroy();
-				affect.source().location().recoverRoomStats();
+				msg.source().location().recoverRoomStats();
 				return;
 			default:
 				break;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 }

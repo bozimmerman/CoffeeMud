@@ -32,34 +32,34 @@ public class HolyAvenger extends TwoHandedSword
 		return new HolyAvenger();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		if(mob.location()==null)
 			return true;
 
-		if(affect.amITarget(this))
-		switch(affect.targetMinor())
+		if(msg.amITarget(this))
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_HOLD:
-		case Affect.TYP_WEAR:
-		case Affect.TYP_WIELD:
-		case Affect.TYP_GET:
-			if((!affect.source().charStats().getCurrentClass().ID().equals("Paladin"))
-			||(affect.source().getAlignment()<650))
+		case CMMsg.TYP_HOLD:
+		case CMMsg.TYP_WEAR:
+		case CMMsg.TYP_WIELD:
+		case CMMsg.TYP_GET:
+			if((!msg.source().charStats().getCurrentClass().ID().equals("Paladin"))
+			||(msg.source().getAlignment()<650))
 			{
 				unWear();
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,name()+" flashes and flies out of <S-HIS-HER> hands!");
-				if(affect.source().isMine(this))
-					ExternalPlay.drop(affect.source(),this,true,false);
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,name()+" flashes and flies out of <S-HIS-HER> hands!");
+				if(msg.source().isMine(this))
+					ExternalPlay.drop(msg.source(),this,true,false);
 				return false;
 			}
 			break;
-		case Affect.TYP_DROP:
-		case Affect.TYP_THROW:
+		case CMMsg.TYP_DROP:
+		case CMMsg.TYP_THROW:
 			break;
 		default:
 			break;
@@ -67,26 +67,26 @@ public class HolyAvenger extends TwoHandedSword
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		if((affect.source().location()!=null)
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&((affect.targetCode()-Affect.MASK_HURT)>0)
-		&&(affect.tool()==this)
-		&&(affect.target() instanceof MOB)
-		&&(!((MOB)affect.target()).amDead())
-		&&(((MOB)affect.target()).getAlignment()<350))
+		super.executeMsg(myHost,msg);
+		if((msg.source().location()!=null)
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.tool()==this)
+		&&(msg.target() instanceof MOB)
+		&&(!((MOB)msg.target()).amDead())
+		&&(((MOB)msg.target()).getAlignment()<350))
 		{
-			FullMsg msg=new FullMsg(affect.source(),(MOB)affect.target(),new HolyAvenger(),Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_UNDEAD,Affect.MSG_NOISYMOVEMENT,null);
-			if(affect.source().location().okAffect(affect.source(),msg))
+			FullMsg msg2=new FullMsg(msg.source(),(MOB)msg.target(),new HolyAvenger(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD,CMMsg.MSG_NOISYMOVEMENT,null);
+			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
-				affect.source().location().send(affect.source(), msg);
+				msg.source().location().send(msg.source(), msg2);
 				int damage=Dice.roll(1,15,0);
 				if(msg.wasModified())
 					damage=damage/2;
-				affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,name()+" dispels evil within <T-NAME> and "+CommonStrings.standardHitWord(Weapon.TYPE_BURSTING,damage)+" <T-HIM-HER>>!"));
-				affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),null,Affect.NO_EFFECT,Affect.MASK_HURT+damage,Affect.NO_EFFECT,null));
+				msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),CMMsg.MSG_OK_ACTION,name()+" dispels evil within <T-NAME> and "+CommonStrings.standardHitWord(Weapon.TYPE_BURSTING,damage)+" <T-HIM-HER>>!"));
+				msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),null,CMMsg.NO_EFFECT,CMMsg.MASK_HURT+damage,CMMsg.NO_EFFECT,null));
 			}
 		}
 	}

@@ -12,7 +12,7 @@ public class Song_Comprehension extends Song
 	public String name(){ return "Comprehension";}
 	public int quality(){ return OK_OTHERS;}
 	public Environmental newInstance(){	return new Song_Comprehension();}
-	
+
 	protected String getMsgFromAffect(String msg)
 	{
 		if(msg==null) return null;
@@ -31,31 +31,31 @@ public class Song_Comprehension extends Song
 			return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
 		return affmsg;
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)
-		&&(!affect.amISource((MOB)affected))
-		&&((affect.sourceMinor()==Affect.TYP_SPEAK)
-		   ||(affect.sourceMinor()==Affect.TYP_TELL)
-		   ||(Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL)))
-		&&(affect.tool() !=null)
-		&&(affect.sourceMessage()!=null)
-		&&(affect.tool() instanceof Ability)
-		&&(((Ability)affect.tool()).classificationCode()==Ability.LANGUAGE)
-		&&(((MOB)affected).fetchAffect(affect.tool().ID())==null))
+		&&(!msg.amISource((MOB)affected))
+		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
+		&&(msg.tool() !=null)
+		&&(msg.sourceMessage()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE)
+		&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
 		{
-			String msg=this.getMsgFromAffect(affect.sourceMessage());
-			if(msg!=null)
+			String str=this.getMsgFromAffect(msg.sourceMessage());
+			if(str!=null)
 			{
-				if(Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))
-					affect.addTrailerMsg(new FullMsg(affect.source(),null,null,Affect.NO_EFFECT,Affect.NO_EFFECT,affect.othersCode(),this.subStitute(affect.othersMessage(),msg)+" (translated from "+ID()+")"));
+				if(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+					msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
 				else
-				if(affect.amITarget(null)&&(affect.targetMessage()!=null))
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.targetCode(),Affect.NO_EFFECT,this.subStitute(affect.targetMessage(),msg)+" (translated from "+((Ability)affect.tool()).ID()+")"));
+				if(msg.amITarget(null)&&(msg.targetMessage()!=null))
+					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
 				else
-				if(!affect.amITarget(null)&&(affect.othersMessage()!=null))
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.othersCode(),Affect.NO_EFFECT,this.subStitute(affect.othersMessage(),msg)+" (translated from "+((Ability)affect.tool()).ID()+")"));
+				if(!msg.amITarget(null)&&(msg.othersMessage()!=null))
+					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(msg.othersMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
 			}
 		}
 	}

@@ -32,16 +32,16 @@ public class Prop_PracticeDummy extends Property
 		if(text().toUpperCase().indexOf("KILL")<0)
 			affectableStats.setArmor(100);
 	}
-	
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect)) return false;
+		if(!super.okMessage(myHost,msg)) return false;
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(affect.amISource((MOB)affected)))
+		&&(msg.amISource((MOB)affected)))
 		{
-			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
+			if(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			{
 				((MOB)affected).makePeace();
 				Room room=((MOB)affected).location();
@@ -55,11 +55,11 @@ public class Prop_PracticeDummy extends Property
 				return false;
 			}
 			else
-			if((affect.targetMinor()==Affect.TYP_GET)
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof Item))
+			if((msg.targetMinor()==CMMsg.TYP_GET)
+			&&(msg.target()!=null)
+			&&(msg.target() instanceof Item))
 			{
-				affect.source().tell("Dummys cant get anything.");
+				msg.source().tell("Dummys cant get anything.");
 				return false;
 			}
 		}

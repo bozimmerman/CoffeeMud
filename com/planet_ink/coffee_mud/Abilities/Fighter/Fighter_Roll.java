@@ -20,54 +20,54 @@ public class Fighter_Roll extends StdAbility
 	public int classificationCode(){ return Ability.SKILL;}
 	public boolean doneThisRound=false;
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		regain=-1;
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if(affect.amITarget(mob)
+		if(msg.amITarget(mob)
 		&&(Sense.aliveAwakeMobile(mob,true))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&((affect.targetCode()-Affect.MASK_HURT)>0)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon)
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
 		&&(!doneThisRound)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.DEXTERITY),false)))
 		{
 			doneThisRound=true;
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
-			regain=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),pctRecovery));
-			SaucerSupport.adjustDamageMessage(affect,regain*-1);
+			regain=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),pctRecovery));
+			SaucerSupport.adjustDamageMessage(msg,regain*-1);
 		}
 		return true;
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 			doneThisRound=false;
 		return super.tick(ticking,tickID);
 	}
-	
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 		&&(regain>0))
 		{
-			affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> roll(s) with the hit."));
+			msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> roll(s) with the hit."));
 			helpProfficiency(mob);
 			regain=-1;
 		}

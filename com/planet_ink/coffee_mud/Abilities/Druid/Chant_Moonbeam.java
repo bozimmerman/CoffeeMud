@@ -28,7 +28,7 @@ public class Chant_Moonbeam extends Chant
 		MOB mob=(MOB)affected;
 		Room room=((MOB)affected).location();
 		if(canBeUninvoked())
-			room.show(mob,null,Affect.MSG_OK_VISUAL,"The moonbeam shining down from above <S-NAME> dims.");
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The moonbeam shining down from above <S-NAME> dims.");
 		super.unInvoke();
 		room.recoverRoomStats();
 	}
@@ -38,13 +38,13 @@ public class Chant_Moonbeam extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("The moonbeam is already with you.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -52,7 +52,7 @@ public class Chant_Moonbeam extends Chant
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A moonbeam begin(s) to follow <T-NAME> around!":"^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?");
-		if(mob.location().okAffect(mob,msg))
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,0);

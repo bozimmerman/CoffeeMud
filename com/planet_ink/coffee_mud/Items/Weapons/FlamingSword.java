@@ -30,25 +30,25 @@ public class FlamingSword extends Longsword
 	{
 		return new FlamingSword();
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		if((affect.source().location()!=null)
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&((affect.targetCode()-Affect.MASK_HURT)>0)
-		&&(affect.tool()==this)
-		&&(affect.target() instanceof MOB)
-		&&(!((MOB)affect.target()).amDead()))
+		super.executeMsg(myHost,msg);
+		if((msg.source().location()!=null)
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.tool()==this)
+		&&(msg.target() instanceof MOB)
+		&&(!((MOB)msg.target()).amDead()))
 		{
-			FullMsg msg=new FullMsg(affect.source(),(MOB)affect.target(),new FlamingSword(),Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_FIRE,Affect.MSG_NOISYMOVEMENT,null);
-			if(affect.source().location().okAffect(affect.source(),msg))
+			FullMsg msg2=new FullMsg(msg.source(),(MOB)msg.target(),new FlamingSword(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
-				affect.source().location().send(affect.source(), msg);
-				if(!msg.wasModified())
+				msg.source().location().send(msg.source(), msg2);
+				if(!msg2.wasModified())
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					ExternalPlay.postDamage(affect.source(),(MOB)affect.target(),null,flameDamage,Affect.TYP_FIRE,Weapon.TYPE_BURNING,name()+" <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

@@ -43,18 +43,18 @@ public class Chant_WindSnatcher extends Chant
 			mob.tell("Your wind snatcher fades away.");
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
-		if((affect.tool()!=null)&&(affect.tool() instanceof Ability)
-		   &&(isSpell(affect.tool().ID())))
+		if((msg.tool()!=null)&&(msg.tool() instanceof Ability)
+		   &&(isSpell(msg.tool().ID())))
 		{
-			affect.source().location().show(invoker,null,affect.MSG_OK_VISUAL,"A form around <S-NAME> snatches "+affect.tool().name()+".");
+			msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"A form around <S-NAME> snatches "+msg.tool().name()+".");
 			return false;
 		}
 		return true;
@@ -64,7 +64,7 @@ public class Chant_WindSnatcher extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			target.tell("You are already snatching the wind.");
 			return false;
@@ -82,10 +82,10 @@ public class Chant_WindSnatcher extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) for <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The wind snatcher surrounds <S-NAME>.");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"The wind snatcher surrounds <S-NAME>.");
 				beneficialAffect(mob,target,0);
 			}
 		}

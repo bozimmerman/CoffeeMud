@@ -33,20 +33,20 @@ public class IndoorUnderWater extends StdRoom implements Drink
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		switch(UnderWater.isOkUnderWaterAffect(this,affect))
+		switch(UnderWater.isOkUnderWaterAffect(this,msg))
 		{
 		case -1: return false;
 		case 1: return true;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
-	
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		UnderWater.sinkAffects(this,affect);
+		super.executeMsg(myHost,msg);
+		UnderWater.sinkAffects(this,msg);
 	}
 	public int thirstQuenched(){return 500;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}

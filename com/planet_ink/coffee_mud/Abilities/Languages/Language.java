@@ -121,37 +121,37 @@ public class Language extends StdAbility
 		return w.toString();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((beingSpoken())
 		&&(affected instanceof MOB)
-		&&(affect.amISource((MOB)affected))
-		&&(affect.sourceMessage()!=null)
-		&&(affect.tool()==null)
-		&&((affect.sourceMinor()==Affect.TYP_SPEAK)
-		   ||(affect.sourceMinor()==Affect.TYP_TELL)
-		   ||(Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))))
+		&&(msg.amISource((MOB)affected))
+		&&(msg.sourceMessage()!=null)
+		&&(msg.tool()==null)
+		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 		{
-			String msg=affect.othersMessage();
-			if(msg==null) msg=affect.targetMessage();
-			if(msg!=null) msg=getMsgFromAffect(msg);
-			if(msg!=null)
+			String str=msg.othersMessage();
+			if(str==null) str=msg.targetMessage();
+			if(str!=null) str=getMsgFromAffect(str);
+			if(str!=null)
 			{
-				String smsg=getMsgFromAffect(affect.sourceMessage());
-				int numToMess=(int)Math.round(Util.mul(numChars(msg),Util.div(100-profficiency(),100)));
+				String smsg=getMsgFromAffect(msg.sourceMessage());
+				int numToMess=(int)Math.round(Util.mul(numChars(str),Util.div(100-profficiency(),100)));
 				if(numToMess>0)
 					smsg=messChars(smsg,numToMess);
 				StringBuffer newStr=new StringBuffer("");
 				int start=0;
 				int end=0;
 				int state=-1;
-				while(start<=msg.length())
+				while(start<=str.length())
 				{
 					char c='\0';
-					if(end>=msg.length())
+					if(end>=str.length())
 						c=' ';
 					else
-						c=msg.charAt(end);
+						c=str.charAt(end);
 					switch(state)
 					{
 					case -1:
@@ -165,9 +165,9 @@ public class Language extends StdAbility
 						{ end++;}
 						else
 						if(Character.isDigit(c))
-						{ newStr.append(msg.substring(start,end+1)); end++; start=end; state=1; }
+						{ newStr.append(str.substring(start,end+1)); end++; start=end; state=1; }
 						else
-						{ newStr.append(translate(msg.substring(start,end))+c); end++; start=end; state=-1; }
+						{ newStr.append(translate(str.substring(start,end))+c); end++; start=end; state=-1; }
 						break;
 					case 1:
 						if(Character.isLetterOrDigit(c))
@@ -177,28 +177,28 @@ public class Language extends StdAbility
 						break;
 					}
 				}
-				msg=newStr.toString();
-				affect.modify(affect.source(),
-							  affect.target(),
+				str=newStr.toString();
+				msg.modify(msg.source(),
+							  msg.target(),
 							  this,
-							  affect.sourceCode(),
-							  subStitute(affect.sourceMessage(),smsg),
-							  affect.targetCode(),
-							  subStitute(affect.targetMessage(),msg),
-							  affect.othersCode(),
-							  subStitute(affect.othersMessage(),msg));
+							  msg.sourceCode(),
+							  subStitute(msg.sourceMessage(),smsg),
+							  msg.targetCode(),
+							  subStitute(msg.targetMessage(),str),
+							  msg.othersCode(),
+							  subStitute(msg.othersMessage(),str));
 				helpProfficiency((MOB)affected);
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!auto)
 		{
-			for(int a=0;a<mob.numAffects();a++)
+			for(int a=0;a<mob.numEffects();a++)
 			{
-				Ability A=mob.fetchAffect(a);
+				Ability A=mob.fetchEffect(a);
 				if((A!=null)&&(A instanceof Language))
 				{
 					if(mob.isMonster())
@@ -217,36 +217,36 @@ public class Language extends StdAbility
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)
-		&&(!affect.amISource((MOB)affected))
-		&&((affect.sourceMinor()==Affect.TYP_SPEAK)
-		   ||(affect.sourceMinor()==Affect.TYP_TELL)
-		   ||(Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL)))
-		&&(affect.tool() !=null)
-		&&(affect.sourceMessage()!=null)
-		&&(affect.tool() instanceof Language)
-		&&(affect.tool().ID().equals(ID())))
+		&&(!msg.amISource((MOB)affected))
+		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
+		&&(msg.tool() !=null)
+		&&(msg.sourceMessage()!=null)
+		&&(msg.tool() instanceof Language)
+		&&(msg.tool().ID().equals(ID())))
 		{
-			String msg=this.getMsgFromAffect(affect.sourceMessage());
-			if(msg!=null)
+			String str=this.getMsgFromAffect(msg.sourceMessage());
+			if(str!=null)
 			{
-				int numToMess=(int)Math.round(Util.mul(numChars(msg),Util.div(100-profficiency(),100)));
+				int numToMess=(int)Math.round(Util.mul(numChars(str),Util.div(100-profficiency(),100)));
 				if(numToMess>0)
-					msg=messChars(msg,numToMess);
-				if(Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))
-					affect.addTrailerMsg(new FullMsg(affect.source(),null,null,Affect.NO_EFFECT,Affect.NO_EFFECT,affect.othersCode(),this.subStitute(affect.othersMessage(),msg)+" (translated from "+ID()+")"));
+					str=messChars(str,numToMess);
+				if(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+					msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
 				else
-				if(affect.amITarget(null)&&(affect.targetMessage()!=null))
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.targetCode(),Affect.NO_EFFECT,this.subStitute(affect.targetMessage(),msg)+" (translated from "+ID()+")"));
+				if(msg.amITarget(null)&&(msg.targetMessage()!=null))
+					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+ID()+")"));
 				else
-				if(!affect.amITarget(null)&&(affect.othersMessage()!=null))
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.othersCode(),Affect.NO_EFFECT,this.subStitute(affect.othersMessage(),msg)+" (translated from "+ID()+")"));
+				if(!msg.amITarget(null)&&(msg.othersMessage()!=null))
+					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
 				else
-				if(affect.amITarget((MOB)affected)&&(affect.targetMessage()!=null))
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.targetCode(),Affect.NO_EFFECT,this.subStitute(affect.targetMessage(),msg)+" (translated from "+ID()+")"));
+				if(msg.amITarget((MOB)affected)&&(msg.targetMessage()!=null))
+					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+ID()+")"));
 			}
 		}
 	}

@@ -31,7 +31,7 @@ public class Spell_PassDoor extends Spell
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer translucent.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer translucent.");
 
 		super.unInvoke();
 
@@ -50,8 +50,8 @@ public class Spell_PassDoor extends Spell
 				Exit E=mob.location().getExitInDir(d);
 				if((E!=null)
 				&&(!E.isOpen()))
-				{ 
-					theDir=d; 
+				{
+					theDir=d;
 					break;
 				}
 			}
@@ -91,13 +91,13 @@ public class Spell_PassDoor extends Spell
 		boolean success=profficiencyCheck(0,auto);
 
 		if((!success)
-		||(mob.fetchAffect(ID())!=null))
+		||(mob.fetchEffect(ID())!=null))
 			beneficialVisualFizzle(mob,null,"<S-NAME> walk(s) "+Directions.getDirectionName(dirCode)+", but go(es) no further.");
 		else
 		if(auto)
 		{
 			FullMsg msg=new FullMsg(mob,null,null,affectType(auto),"<S-NAME> shimmer(s) and turn(s) translucent.");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,5);
@@ -107,14 +107,14 @@ public class Spell_PassDoor extends Spell
 		else
 		{
 			FullMsg msg=new FullMsg(mob,null,null,affectType(auto),"^S<S-NAME> shimmer(s) and pass(es) "+Directions.getDirectionName(dirCode)+".^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.addAffect(this);
+				mob.addEffect(this);
 				mob.recoverEnvStats();
 				mob.tell("\n\r\n\r");
 				ExternalPlay.move(mob,dirCode,false,false);
-				mob.delAffect(this);
+				mob.delEffect(this);
 				mob.recoverEnvStats();
 			}
 		}

@@ -16,14 +16,14 @@ public class Chant_Treeform extends Chant
 	protected int canTargetCode(){return 0;}
 	private CharState oldState=null;
 	public Environmental newInstance(){	return new Chant_Treeform();}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if(affect.source().getVictim()==mob)
-			affect.source().setVictim(null);
+		if(msg.source().getVictim()==mob)
+			msg.source().setVictim(null);
 		if(mob.isInCombat())
 		{
 			if(mob.getVictim()!=null)
@@ -40,24 +40,24 @@ public class Chant_Treeform extends Chant
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
-			if((affect.sourceMinor()==Affect.TYP_ENTER)||(affect.sourceMinor()==Affect.TYP_LEAVE))
+			if((msg.sourceMinor()==CMMsg.TYP_ENTER)||(msg.sourceMinor()==CMMsg.TYP_LEAVE))
 				unInvoke();
 			else
-			if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-			&&(affect.sourceMajor()>0))
+			if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&(msg.sourceMajor()>0))
 			{
 				mob.tell("Trees can't do that.");
 				return false;
 			}
 		}
-		if(affect.amITarget(mob))
+		if(msg.amITarget(mob))
 		{
-			if(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				affect.source().tell("Attack a tree?!");
-				affect.source().setVictim(null);
+				msg.source().tell("Attack a tree?!");
+				msg.source().setVictim(null);
 				mob.setVictim(null);
 				return false;
 			}
@@ -70,16 +70,16 @@ public class Chant_Treeform extends Chant
 				item.setMaterial(EnvResource.RESOURCE_WOOD);
 				item.setGettable(false);
 				item.envStats().setWeight(2000);
-				FullMsg msg=new FullMsg(affect.source(),item,affect.targetCode(),null);
-				if(!okAffect(affect.source(),msg))
+				FullMsg msg2=new FullMsg(msg.source(),item,msg.targetCode(),null);
+				if(!okMessage(msg.source(),msg2))
 					return false;
 			}
 		}
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if(affect.source().getVictim()==mob)
-			affect.source().setVictim(null);
+		if(msg.source().getVictim()==mob)
+			msg.source().setVictim(null);
 		if(mob.isInCombat())
 		{
 			if(mob.getVictim()!=null)
@@ -116,7 +116,7 @@ public class Chant_Treeform extends Chant
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> body is no longer treeish.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> body is no longer treeish.");
 			if(oldState!=null)
 			{
 				mob.curState().setHitPoints(oldState.getHitPoints());
@@ -151,7 +151,7 @@ public class Chant_Treeform extends Chant
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already a tree.");
 			return false;
@@ -175,18 +175,18 @@ public class Chant_Treeform extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					int a=0;
-					while(a<target.numAffects())
+					while(a<target.numEffects())
 					{
-						Ability A=target.fetchAffect(a);
-						int s=target.numAffects();
+						Ability A=target.fetchEffect(a);
+						int s=target.numEffects();
 						if(A!=null) A.unInvoke();
-						if(target.numAffects()==s)
+						if(target.numEffects()==s)
 							a++;
 					}
 					target.makePeace();
@@ -195,7 +195,7 @@ public class Chant_Treeform extends Chant
 					success=beneficialAffect(mob,target,mob.envStats().level()*50);
 					if(success)
 					{
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> transform(s) into a tree!!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> transform(s) into a tree!!");
 						target.tell("To return to your flesh body, try to leave this area.");
 					}
 				}

@@ -26,7 +26,7 @@ public class StdArea implements Area
     protected Vector parents=null;
     public Vector childrenToLoad=new Vector();
     public Vector parentsToLoad=new Vector();
-	
+
 	protected static int year=1;
 	protected static int month=1;
 	protected static int day=1;
@@ -135,9 +135,9 @@ public class StdArea implements Area
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if(A!=null)
 				A.affectEnvStats(this,envStats);
 		}
@@ -150,7 +150,7 @@ public class StdArea implements Area
 	public void setCurrentWeatherType(int weatherCode){currentWeather=weatherCode;}
 	public int getTechLevel(){return techLevel;}
 	public void setTechLevel(int level){techLevel=level;}
-	
+
 	public boolean hasASky(Room room)
 	{
 		if((room==null)
@@ -159,8 +159,8 @@ public class StdArea implements Area
 			return false;
 		return true;
 	}
-	
-	
+
+
 	public int weatherType(Room room)
 	{
 		if(!hasASky(room)) return Area.WEATHER_CLEAR;
@@ -209,7 +209,7 @@ public class StdArea implements Area
 		if(((timeCode!=Area.TIME_DAY)&&(timeCode!=Area.TIME_DAWN))
 		||(!hasASky(room)))
 			return false;
-		
+
 		switch(weatherType(room))
 		{
 		case Area.WEATHER_BLIZZARD:
@@ -224,7 +224,7 @@ public class StdArea implements Area
 		default:
 			return true;
 		}
-		
+
 	}
 	public String timeDescription(MOB mob, Room room)
 	{
@@ -372,9 +372,9 @@ public class StdArea implements Area
 			if(B!=null)
 				behaviors.addElement(B);
 		}
-		for(int a=0;a<E.numAffects();a++)
+		for(int a=0;a<E.numEffects();a++)
 		{
-			Ability A=E.fetchAffect(a);
+			Ability A=E.fetchEffect(a);
 			if(A!=null)
 				affects.addElement(A);
 		}
@@ -415,89 +415,89 @@ public class StdArea implements Area
 	public void setDescription(String newDescription)
 	{ description=newDescription;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(!B.okAffect(this,affect)))
+			if((B!=null)&&(!B.okMessage(this,msg)))
 				return false;
 		}
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
-			if((A!=null)&&(!A.okAffect(this,affect)))
+			Ability A=fetchEffect(a);
+			if((A!=null)&&(!A.okMessage(this,msg)))
 				return false;
 		}
 		if((!mobility)||(!Sense.canMove(this)))
 		{
-			if((affect.sourceMinor()==Affect.TYP_ENTER)
-			||(affect.sourceMinor()==Affect.TYP_LEAVE)
-			||(affect.sourceMinor()==Affect.TYP_FLEE))
+			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+			||(msg.sourceMinor()==CMMsg.TYP_FLEE))
 				return false;
 		}
 		if(getTechLevel()==Area.TECH_HIGH)
 		{
-			if((Util.bset(affect.sourceCode(),affect.MASK_MAGIC))
-			||(Util.bset(affect.targetCode(),affect.MASK_MAGIC))
-			||(Util.bset(affect.othersCode(),affect.MASK_MAGIC)))
+			if((Util.bset(msg.sourceCode(),CMMsg.MASK_MAGIC))
+			||(Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
+			||(Util.bset(msg.othersCode(),CMMsg.MASK_MAGIC)))
 			{
 				Room room=null;
-				if((affect.target()!=null)
-				&&(affect.target() instanceof MOB)
-				&&(((MOB)affect.target()).location()!=null))
-					room=((MOB)affect.target()).location();
+				if((msg.target()!=null)
+				&&(msg.target() instanceof MOB)
+				&&(((MOB)msg.target()).location()!=null))
+					room=((MOB)msg.target()).location();
 				else
-				if((affect.source()!=null)
-				&&(affect.source().location()!=null))
-					room=affect.source().location();
+				if((msg.source()!=null)
+				&&(msg.source().location()!=null))
+					room=msg.source().location();
 				if(room!=null)
 				{
 					if(room.getArea()==this)
-						room.showHappens(Affect.MSG_OK_VISUAL,"Magic doesn't seem to work here.");
+						room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic doesn't seem to work here.");
 					else
-						room.showHappens(Affect.MSG_OK_VISUAL,"Magic doesn't seem to work there.");
+						room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic doesn't seem to work there.");
 				}
-				
+
 				return false;
 			}
 		}
 		else
 		if(getTechLevel()==Area.TECH_LOW)
 		{
-			if((affect.tool()!=null)
-			&&(affect.tool() instanceof Electronics))
+			if((msg.tool()!=null)
+			&&(msg.tool() instanceof Electronics))
 			{
-				switch(affect.sourceMinor())
+				switch(msg.sourceMinor())
 				{
-				case Affect.TYP_BUY:
-				case Affect.TYP_CLOSE:
-				case Affect.TYP_DEPOSIT:
-				case Affect.TYP_DROP:
-				case Affect.TYP_EXAMINESOMETHING:
-				case Affect.TYP_GET:
-				case Affect.TYP_GIVE:
-				case Affect.TYP_OPEN:
-				case Affect.TYP_PUT:
-				case Affect.TYP_SELL:
-				case Affect.TYP_VALUE:
-				case Affect.TYP_REMOVE:
-				case Affect.TYP_VIEW:
-				case Affect.TYP_WITHDRAW:
+				case CMMsg.TYP_BUY:
+				case CMMsg.TYP_CLOSE:
+				case CMMsg.TYP_DEPOSIT:
+				case CMMsg.TYP_DROP:
+				case CMMsg.TYP_EXAMINESOMETHING:
+				case CMMsg.TYP_GET:
+				case CMMsg.TYP_GIVE:
+				case CMMsg.TYP_OPEN:
+				case CMMsg.TYP_PUT:
+				case CMMsg.TYP_SELL:
+				case CMMsg.TYP_VALUE:
+				case CMMsg.TYP_REMOVE:
+				case CMMsg.TYP_VIEW:
+				case CMMsg.TYP_WITHDRAW:
 					break;
 				default:
 					{
 						Room room=null;
-						if((affect.target()!=null)
-						&&(affect.target() instanceof MOB)
-						&&(((MOB)affect.target()).location()!=null))
-							room=((MOB)affect.target()).location();
+						if((msg.target()!=null)
+						&&(msg.target() instanceof MOB)
+						&&(((MOB)msg.target()).location()!=null))
+							room=((MOB)msg.target()).location();
 						else
-						if((affect.source()!=null)
-						&&(affect.source().location()!=null))
-							room=affect.source().location();
+						if((msg.source()!=null)
+						&&(msg.source().location()!=null))
+							room=msg.source().location();
 						if(room!=null)
-							room.showHappens(Affect.MSG_OK_VISUAL,"Technology doesn't seem to work here.");
+							room.showHappens(CMMsg.MSG_OK_VISUAL,"Technology doesn't seem to work here.");
 						return false;
 					}
 				}
@@ -506,23 +506,23 @@ public class StdArea implements Area
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
 			if(B!=null)
-				B.affect(this,affect);
+				B.executeMsg(this,msg);
 		}
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if(A!=null)
-				A.affect(this,affect);
+				A.executeMsg(this,msg);
 		}
-		if((affect.sourceMinor()==Affect.TYP_RETIRE)
-		&&(amISubOp(affect.source().Name())))
-			delSubOp(affect.source().Name());
+		if((msg.sourceMinor()==CMMsg.TYP_RETIRE)
+		&&(amISubOp(msg.source().Name())))
+			delSubOp(msg.source().Name());
 	}
 
 	public void tickControl(boolean start)
@@ -530,7 +530,7 @@ public class StdArea implements Area
 		if(start)
 		{
 			stopTicking=false;
-			ExternalPlay.startTickDown(this,Host.AREA_TICK,1);
+			ExternalPlay.startTickDown(this,Host.TICK_AREA,1);
 		}
 		else
 			stopTicking=true;
@@ -722,7 +722,7 @@ public class StdArea implements Area
 	{
 		if(stopTicking) return false;
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==Host.AREA_TICK)
+		if(tickID==Host.TICK_AREA)
 		{
 			for(int b=0;b<numBehaviors();b++)
 			{
@@ -733,9 +733,9 @@ public class StdArea implements Area
 			}
 
 			int a=0;
-			while(a<numAffects())
+			while(a<numEffects())
 			{
-				Ability A=fetchAffect(a);
+				Ability A=fetchEffect(a);
 				if(A!=null)
 				{
 					tickStatus=Tickable.STATUS_AFFECT+a;
@@ -807,9 +807,9 @@ public class StdArea implements Area
 				}
 				long[] allspot={Item.ON_FEET,Item.ON_TORSO,Item.ON_LEGS};
 				long allcode=0;
-				for(int l=0;l<allspot.length;l++) 
+				for(int l=0;l<allspot.length;l++)
 					allcode=allcode|allspot[l];
-				
+
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session S=Sessions.elementAt(s);
@@ -818,10 +818,10 @@ public class StdArea implements Area
 					||(S.mob().location().getArea()!=this)
 					||(S.mob().isMonster()))
 						continue;
-					
+
 					MOB M=S.mob();
 					Room R=M.location();
-					
+
 					if(coldChance>0)
 					{
 						int save=(M.charStats().getStat(CharStats.SAVE_COLD)+M.charStats().getStat(CharStats.SAVE_WATER))/2;
@@ -853,12 +853,12 @@ public class StdArea implements Area
 								Ability COLD=CMClass.getAbility("Disease_Cold");
 								if(Dice.rollPercentage()<(fluChance+(((M.location().domainConditions()&Room.CONDITION_WET)>0)?10:0)))
 									COLD=CMClass.getAbility("Disease_Flu");
-								if((COLD!=null)&&(M.fetchAffect(COLD.ID())==null))
+								if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null))
 									COLD.invoke(M,M,true);
 							}
 						}
 					}
-					
+
 					switch(R.domainType())
 					{
 					case Room.DOMAIN_INDOORS_UNDERWATER:
@@ -901,8 +901,8 @@ public class StdArea implements Area
 							{
 								if(M.location()!=null)
 								{
-									FullMsg msg=new FullMsg(M,null,null,Affect.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" owned by "+M.name()+" is destroyed!");
-									if(M.location().okAffect(M,msg))
+									FullMsg msg=new FullMsg(M,null,null,CMMsg.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" owned by "+M.name()+" is destroyed!");
+									if(M.location().okMessage(M,msg))
 										M.location().send(M,msg);
 								}
 								I.destroy();
@@ -1200,12 +1200,12 @@ public class StdArea implements Area
 		Resources.saveFileResource("time.txt");
 	}
 
-	public void addNonUninvokableAffect(Ability to)
+	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A==to))
 				return;
 		}
@@ -1214,30 +1214,30 @@ public class StdArea implements Area
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
-	public void addAffect(Ability to)
+	public void addEffect(Ability to)
 	{
 		if(to==null) return;
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A==to))
 				return;
 		}
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
-	public void delAffect(Ability to)
+	public void delEffect(Ability to)
 	{
 		int size=affects.size();
 		affects.removeElement(to);
 		if(affects.size()<size)
 			to.setAffectedOne(null);
 	}
-	public int numAffects()
+	public int numEffects()
 	{
 		return affects.size();
 	}
-	public Ability fetchAffect(int index)
+	public Ability fetchEffect(int index)
 	{
 		try
 		{
@@ -1246,11 +1246,11 @@ public class StdArea implements Area
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	public Ability fetchAffect(String ID)
+	public Ability fetchEffect(String ID)
 	{
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.ID().equals(ID)))
 			   return A;
 		}
@@ -1363,11 +1363,15 @@ public class StdArea implements Area
 
 	public int[] getAreaIStats()
 	{
+		if(!ExternalPlay.getSystemStarted())
+			return null;
 		getAreaStats();
 		return statData;
 	}
 	public StringBuffer getAreaStats()
 	{
+		if(!ExternalPlay.getSystemStarted())
+			return new StringBuffer("");
 		StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+Name().toUpperCase());
 		if(s!=null) return s;
 		s=new StringBuffer("");
@@ -1383,7 +1387,8 @@ public class StdArea implements Area
 		statData[Area.AREASTAT_AVGLEVEL]=0;
 		statData[Area.AREASTAT_MEDLEVEL]=0;
 		statData[Area.AREASTAT_AVGALIGN]=0;
-		int totalLevels=0;
+		statData[Area.AREASTAT_TOTLEVEL]=0;
+		statData[Area.AREASTAT_INTLEVEL]=0;
 		long totalAlignments=0;
 		for(Enumeration r=getMap();r.hasMoreElements();)
 		{
@@ -1398,7 +1403,9 @@ public class StdArea implements Area
 					alignRanges.addElement(new Integer(mob.getAlignment()));
 					totalAlignments+=mob.getAlignment();
 					statData[Area.AREASTAT_POPULATION]++;
-					totalLevels+=lvl;
+					statData[Area.AREASTAT_TOTLEVEL]+=lvl;
+					if(!Sense.isAnimalIntelligence(mob))
+						statData[Area.AREASTAT_INTLEVEL]+=lvl;
 					if(lvl<statData[Area.AREASTAT_MINLEVEL])
 						statData[Area.AREASTAT_MINLEVEL]=lvl;
 					if(lvl>statData[Area.AREASTAT_MAXLEVEL])
@@ -1418,7 +1425,7 @@ public class StdArea implements Area
 			Collections.sort((List)alignRanges);
 			statData[Area.AREASTAT_MEDLEVEL]=((Integer)levelRanges.elementAt((int)Math.round(Math.floor(Util.div(levelRanges.size(),2.0))))).intValue();
 			statData[Area.AREASTAT_MEDALIGN]=((Integer)alignRanges.elementAt((int)Math.round(Math.floor(Util.div(alignRanges.size(),2.0))))).intValue();
-			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(Util.div(totalLevels,statData[Area.AREASTAT_POPULATION]));
+			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(Util.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
 			statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(statData[Area.AREASTAT_POPULATION]).doubleValue());
 			s.append("Population     : "+statData[Area.AREASTAT_POPULATION]+"\n\r");
 			s.append("Level range    : "+statData[Area.AREASTAT_MINLEVEL]+" to "+statData[Area.AREASTAT_MAXLEVEL]+"\n\r");
@@ -1463,9 +1470,9 @@ public class StdArea implements Area
 	{
 		synchronized(roomSemaphore)
 		{
-			if(myRooms!=null) 
+			if(myRooms!=null)
 				return myRooms.size();
-			else 
+			else
 				makeMap();
 			return myRooms.size();
 		}
@@ -1540,7 +1547,7 @@ public class StdArea implements Area
 
     public void addChildToLoad(String str) { childrenToLoad.addElement(str);}
     public void addParentToLoad(String str) { parentsToLoad.addElement(str);}
-	
+
 	// Children
 	public void initChildren() {
 	        if(children==null) {
@@ -1726,8 +1733,8 @@ public class StdArea implements Area
 	}
 
 
-	
-	
+
+
 	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL"};
 	public String[] getStatCodes(){return CODES;}
 	private int getCodeNum(String code){

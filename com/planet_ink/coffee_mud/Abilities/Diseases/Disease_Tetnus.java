@@ -23,7 +23,7 @@ public class Disease_Tetnus extends Disease
 	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting slower...";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 	protected int dexDown=1;
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -34,13 +34,13 @@ public class Disease_Tetnus extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_NOISE,DISEASE_AFFECT());
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			dexDown++;
 			return true;
 		}
 		return true;
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

@@ -18,7 +18,7 @@ public class Chant_SaplingWorkers extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((affected!=null)
 			&&(affected instanceof MOB)
@@ -34,19 +34,19 @@ public class Chant_SaplingWorkers extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(affect.amISource((MOB)affected)))
+		&&(msg.amISource((MOB)affected)))
 		{
-			if(affect.sourceMinor()==Affect.TYP_DEATH)
+			if(msg.sourceMinor()==CMMsg.TYP_DEATH)
 			{
 				unInvoke();
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -56,19 +56,19 @@ public class Chant_SaplingWorkers extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> grow(s) still and tree-like.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) still and tree-like.");
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==Affect.TYP_QUIT))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			unInvoke();
 	}
 
@@ -107,7 +107,7 @@ public class Chant_SaplingWorkers extends Chant
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the trees.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, material);
@@ -189,7 +189,7 @@ public class Chant_SaplingWorkers extends Chant
 		newMOB.bringToLife(caster.location(),true);
 		newMOB.setBitmap(MOB.ATT_AUTOASSIST);
 		newMOB.setStartRoom(null);
-		newMOB.location().show(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) looking around!");
+		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) looking around!");
 		if(start) A.invoke(newMOB,null,false);
 		return(newMOB);
 	}

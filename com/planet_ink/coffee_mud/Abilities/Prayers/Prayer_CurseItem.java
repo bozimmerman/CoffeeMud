@@ -50,9 +50,9 @@ public class Prayer_CurseItem extends Prayer
 		super.unInvoke();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if(affected==null) return true;
@@ -60,13 +60,13 @@ public class Prayer_CurseItem extends Prayer
 
 		Item item=(Item)affected;
 
-		MOB mob=affect.source();
-		if(!affect.amITarget(item))
+		MOB mob=msg.source();
+		if(!msg.amITarget(item))
 			return true;
 		else
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_REMOVE:
+		case CMMsg.TYP_REMOVE:
 			if(!item.amWearingAt(Item.INVENTORY))
 			{
 				if(item.amWearingAt(Item.WIELD)||item.amWearingAt(Item.HELD))
@@ -78,8 +78,8 @@ public class Prayer_CurseItem extends Prayer
 				return false;
 			}
 			break;
-		case Affect.TYP_DROP:
-		case Affect.TYP_THROW:
+		case CMMsg.TYP_DROP:
+		case CMMsg.TYP_THROW:
 			mob.tell("You can't seem to get rid of "+item.name()+".");
 			return false;
 		}
@@ -112,7 +112,7 @@ public class Prayer_CurseItem extends Prayer
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> is cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
 			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType(auto),null);
-			if((mob.location().okAffect(mob,msg))&&((mobTarget==null)||(mob.location().okAffect(mob,msg2))))
+			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(mobTarget!=null)

@@ -18,10 +18,10 @@ public class Prayer extends StdAbility
 	public int classificationCode(){return Ability.PRAYER;}
 
 	protected int affectType(boolean auto){
-		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
+		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 		if(quality()==Ability.MALICIOUS)
-			affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|Affect.MASK_GENERAL;
+			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
+		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		return affectType;
 	}
 	public Environmental newInstance(){	return new Prayer();}
@@ -82,7 +82,7 @@ public class Prayer extends StdAbility
 		switch(qual)
 		{
 		case 0:
-			if((alignment>350)&&(alignment<650)) 
+			if((alignment>350)&&(alignment<650))
 				return true;
 			break;
 		case 1:

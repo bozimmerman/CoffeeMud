@@ -25,7 +25,7 @@ public class Chant_PredictPhase extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and gaze(s) toward the sky.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.tell(Area.MOON_PHASES[mob.location().getArea().getMoonPhase()]);

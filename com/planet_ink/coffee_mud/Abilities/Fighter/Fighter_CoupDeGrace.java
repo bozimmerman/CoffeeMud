@@ -75,20 +75,20 @@ public class Fighter_CoupDeGrace extends StdAbility
 		boolean success=profficiencyCheck(chance,auto)&&(hit);
 		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/5))))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(0);
-				ExternalPlay.postDamage(mob,target,ww,dmg,Affect.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"<S-NAME> rear(s) back and Coup de Graces <T-NAME>!"+CommonStrings.msp("decap.wav",30));
+				ExternalPlay.postDamage(mob,target,ww,dmg,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"<S-NAME> rear(s) back and Coup de Graces <T-NAME>!"+CommonStrings.msp("decap.wav",30));
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
 		{
 			String str=auto?"":"<S-NAME> attempt(s) a Coup de Grace and fail(s)!";
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,str);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,str);
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		return success;

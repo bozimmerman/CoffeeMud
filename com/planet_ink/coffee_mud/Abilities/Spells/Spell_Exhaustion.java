@@ -32,13 +32,13 @@ public class Spell_Exhaustion extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and shout(s)!^?"));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
 				if(msg.wasModified())
 				{
-					target.location().show(target,null,Affect.MSG_OK_VISUAL,"<T-NAME> become(s) exhausted!");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> become(s) exhausted!");
 					target.curState().setMovement(0);
 					target.curState().setFatigue(target.curState().getFatigue()+CharState.FATIGUED_MILLIS);
 				}

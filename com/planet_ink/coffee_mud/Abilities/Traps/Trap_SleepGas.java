@@ -19,9 +19,9 @@ public class Trap_SleepGas extends StdTrap
 	{
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numAffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++)
 		{
-			Ability A=fromMe.fetchAffect(a);
+			Ability A=fromMe.fetchEffect(a);
 			if((A!=null)
 			&&(A.classificationCode()==Ability.POISON)
 			&&(A.ID().equalsIgnoreCase("Poison_Slumberall")))
@@ -29,7 +29,7 @@ public class Trap_SleepGas extends StdTrap
 		}
 		return offenders;
 	}
-	
+
 	private Item getPoison(MOB mob)
 	{
 		if(mob==null) return null;
@@ -47,7 +47,7 @@ public class Trap_SleepGas extends StdTrap
 		}
 		return null;
 	}
-	
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
@@ -60,7 +60,7 @@ public class Trap_SleepGas extends StdTrap
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -78,9 +78,9 @@ public class Trap_SleepGas extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a needle trap!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a needle trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off a needle trap!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a needle trap!"))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

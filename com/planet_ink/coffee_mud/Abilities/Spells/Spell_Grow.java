@@ -42,7 +42,7 @@ public class Spell_Grow extends Spell
 			else
 				mob.baseEnvStats().setWeight(oldWeight);
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> shrink(s) back down to size.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shrink(s) back down to size.");
 		}
 		super.unInvoke();
 	}
@@ -52,7 +52,7 @@ public class Spell_Grow extends Spell
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target.name()+" is already HUGE!");
 			return false;
@@ -66,10 +66,10 @@ public class Spell_Grow extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
 				oldWeight=mob.baseEnvStats().weight();
 				double aff=1.0 + Util.mul(0.1,(mob.envStats().level()));
 				aff=aff*aff;

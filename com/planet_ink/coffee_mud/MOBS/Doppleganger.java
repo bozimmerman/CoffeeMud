@@ -57,7 +57,7 @@ public class Doppleganger extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((!amDead())&&(tickID==Host.MOB_TICK))
+		if((!amDead())&&(tickID==Host.TICK_MOB))
 		{
 			if(mimicing!=null)
 			{
@@ -77,11 +77,11 @@ public class Doppleganger extends StdMOB
 		return super.killMeDead(createBody);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
-		if((affect.amITarget(this))&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)))
+		if((msg.amITarget(this))&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
 		{
 			if(mimicing!=null)
 			{
@@ -90,10 +90,10 @@ public class Doppleganger extends StdMOB
 				if((mimicing.location()!=null)&&(mimicing.location()!=location()))
 					mimicing=null;
 			}
-			if((mimicing==null)&&(location()!=null)&&(affect.source()!=null))
+			if((mimicing==null)&&(location()!=null)&&(msg.source()!=null))
 			{
-				location().show(this,null,Affect.MSG_OK_VISUAL,"<S-NAME> take(s) on a new form!");
-				mimicing=affect.source();
+				location().show(this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on a new form!");
+				mimicing=msg.source();
 				Username=mimicing.Name();
 				setDisplayText(mimicing.displayText());
 				setDescription(mimicing.description());

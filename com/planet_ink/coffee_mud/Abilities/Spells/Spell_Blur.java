@@ -15,23 +15,23 @@ public class Spell_Blur extends Spell
 	public Environmental newInstance(){	return new Spell_Blur();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL))
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 		{
 			int pctDodge=invoker.charStats().getStat(CharStats.INTELLIGENCE);
 			if(Dice.rollPercentage()<(pctDodge*2))
 			{
-				FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_VISUAL,"<T-NAME> can't seem to focus on <S-NAME>.");
-				if(mob.location().okAffect(mob,msg))
-					mob.location().send(mob,msg);
+				FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> can't seem to focus on <S-NAME>.");
+				if(mob.location().okMessage(mob,msg2))
+					mob.location().send(mob,msg2);
 				return false;
 			}
 		}
@@ -54,7 +54,7 @@ public class Spell_Blur extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> begin(s) to come back into focus");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to come back into focus");
 	}
 
 
@@ -81,10 +81,10 @@ public class Spell_Blur extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) blurry!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) blurry!");
 				beneficialAffect(mob,target,0);
 			}
 		}

@@ -106,11 +106,11 @@ public class StdRoom
 				inhabitants.addElement(M);
 			}
 		}
-		for(int i=0;i<E.numAffects();i++)
+		for(int i=0;i<E.numEffects();i++)
 		{
-			Ability A=(Ability)E.fetchAffect(i);
+			Ability A=(Ability)E.fetchEffect(i);
 			if((A!=null)&&(!A.canBeUninvoked()))
-				addAffect((Ability)A.copyOf());
+				addEffect((Ability)A.copyOf());
 		}
 		for(int i=0;i<E.numBehaviors();i++)
 		{
@@ -308,41 +308,41 @@ public class StdRoom
 	public void toggleMobility(boolean onoff){mobility=onoff;}
 	public boolean getMobility(){return mobility;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!getArea().okAffect(this,affect))
+		if(!getArea().okMessage(this,msg))
 			return false;
 
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=(MOB)affect.source();
-			switch(affect.targetMinor())
+			MOB mob=(MOB)msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_LEAVE:
+			case CMMsg.TYP_LEAVE:
 				if((!Sense.canMove(this))||(!getMobility()))
 					return false;
 				break;
-			case Affect.TYP_FLEE:
-			case Affect.TYP_ENTER:
+			case CMMsg.TYP_FLEE:
+			case CMMsg.TYP_ENTER:
 				if((!Sense.canMove(this))||(!getMobility()))
 					return false;
 				if(!mob.isMonster())
 					giveASky(0);
 				break;
-			case Affect.TYP_AREAAFFECT:
+			case CMMsg.TYP_AREAAFFECT:
 				// obsolete with the area objects
 				break;
-			case Affect.TYP_CAST_SPELL:
-			case Affect.TYP_DELICATE_HANDS_ACT:
-			case Affect.TYP_OK_ACTION:
-			case Affect.TYP_JUSTICE:
-			case Affect.TYP_OK_VISUAL:
+			case CMMsg.TYP_CAST_SPELL:
+			case CMMsg.TYP_DELICATE_HANDS_ACT:
+			case CMMsg.TYP_OK_ACTION:
+			case CMMsg.TYP_JUSTICE:
+			case CMMsg.TYP_OK_VISUAL:
 				break;
-			case Affect.TYP_SPEAK:
+			case CMMsg.TYP_SPEAK:
 				break;
 			default:
-				if((Util.bset(affect.targetMajor(),Affect.MASK_HANDS))
-				||(Util.bset(affect.targetMajor(),Affect.MASK_MOUTH)))
+				if((Util.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
+				||(Util.bset(msg.targetMajor(),CMMsg.MASK_MOUTH)))
 				{
 					mob.tell("You can't do that here.");
 					return false;
@@ -351,33 +351,33 @@ public class StdRoom
 			}
 		}
 
-		if(isInhabitant(affect.source()))
-			if(!affect.source().okAffect(this,affect))
+		if(isInhabitant(msg.source()))
+			if(!msg.source().okMessage(this,msg))
 				return false;
 		for(int i=0;i<numInhabitants();i++)
 		{
 			MOB inhab=fetchInhabitant(i);
 			if((inhab!=null)
-			&&(inhab!=affect.source())
-			&&(!inhab.okAffect(this,affect)))
+			&&(inhab!=msg.source())
+			&&(!inhab.okMessage(this,msg)))
 				return false;
 		}
 		for(int i=0;i<numItems();i++)
 		{
 			Item content=fetchItem(i);
-			if((content!=null)&&(!content.okAffect(this,affect)))
+			if((content!=null)&&(!content.okMessage(this,msg)))
 				return false;
 		}
-		for(int i=0;i<numAffects();i++)
+		for(int i=0;i<numEffects();i++)
 		{
-			Ability A=fetchAffect(i);
-			if((A!=null)&&(!A.okAffect(this,affect)))
+			Ability A=fetchEffect(i);
+			if((A!=null)&&(!A.okMessage(this,msg)))
 				return false;
 		}
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(!B.okAffect(this,affect)))
+			if((B!=null)&&(!B.okMessage(this,msg)))
 				return false;
 		}
 
@@ -385,50 +385,50 @@ public class StdRoom
 		{
 			Exit thisExit=rawExits()[i];
 			if(thisExit!=null)
-				if(!thisExit.okAffect(this,affect))
+				if(!thisExit.okMessage(this,msg))
 					return false;
 		}
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		getArea().affect(this,affect);
+		getArea().executeMsg(this,msg);
 
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=(MOB)affect.source();
-			switch(affect.targetMinor())
+			MOB mob=(MOB)msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_LEAVE:
+			case CMMsg.TYP_LEAVE:
 			{
-				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
 				break;
 			}
-			case Affect.TYP_FLEE:
+			case CMMsg.TYP_FLEE:
 			{
-				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
 				break;
 			}
-			case Affect.TYP_ENTER:
-			case Affect.TYP_RECALL:
+			case CMMsg.TYP_ENTER:
+			case CMMsg.TYP_RECALL:
 			{
-				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
 				break;
 			}
-			case Affect.TYP_EXAMINESOMETHING:
-				look(mob,affect.sourceMessage()==null);
+			case CMMsg.TYP_EXAMINESOMETHING:
+				look(mob,msg.sourceMessage()==null);
 				break;
-			case Affect.TYP_READSOMETHING:
+			case CMMsg.TYP_READSOMETHING:
 				if(Sense.canBeSeenBy(this,mob))
 					mob.tell("There is nothing written here.");
 				else
 					mob.tell("You can't see that!");
 				break;
-			case Affect.TYP_AREAAFFECT:
+			case CMMsg.TYP_AREAAFFECT:
 				// obsolete with the area objects
 				break;
 			default:
@@ -440,28 +440,28 @@ public class StdRoom
 		{
 			Item content=fetchItem(i);
 			if(content!=null)
-				content.affect(this,affect);
+				content.executeMsg(this,msg);
 		}
 
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			Exit thisExit=rawExits()[d];
 			if(thisExit!=null)
-				thisExit.affect(this,affect);
+				thisExit.executeMsg(this,msg);
 		}
 
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
 			if(B!=null)
-				B.affect(this,affect);
+				B.executeMsg(this,msg);
 		}
 
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if(A!=null)
-				A.affect(this,affect);
+				A.executeMsg(this,msg);
 		}
 
 	}
@@ -485,7 +485,7 @@ public class StdRoom
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==Host.ROOM_BEHAVIOR_TICK)
+		if(tickID==Host.TICK_ROOM_BEHAVIOR)
 		{
 			if(numBehaviors()==0) return false;
 			for(int b=0;b<numBehaviors();b++)
@@ -498,16 +498,16 @@ public class StdRoom
 		else
 		{
 			int a=0;
-			while(a<numAffects())
+			while(a<numEffects())
 			{
-				Ability A=fetchAffect(a);
+				Ability A=fetchEffect(a);
 				if(A!=null)
 				{
-					int s=numAffects();
+					int s=numEffects();
 					tickStatus=Tickable.STATUS_AFFECT+a;
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
-					if(numAffects()==s)
+					if(numEffects()==s)
 						a++;
 				}
 				else
@@ -532,10 +532,10 @@ public class StdRoom
 		Area myArea=getArea();
 		if(myArea!=null)
 			myArea.affectEnvStats(this,envStats());
-		
-		for(int a=0;a<numAffects();a++)
+
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if(A!=null) A.affectEnvStats(this,envStats);
 		}
 		for(int i=0;i<numItems();i++)
@@ -624,7 +624,7 @@ public class StdRoom
 		{"HAIL","W"+Area.WEATHER_HAIL},
 		{"CLOUDY","W"+Area.WEATHER_CLOUDY}
 	};
-	
+
 	protected String parseVariesCodes(String text)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -676,7 +676,7 @@ public class StdRoom
 		buf.append(text);
 		return buf.toString();
 	}
-	
+
 	protected String parseVaries(String text)
 	{
 		if(text.startsWith("<VARIES>"))
@@ -690,14 +690,14 @@ public class StdRoom
 		else
 			return text;
 	}
-	
+
 	public String roomTitle(){
 		return parseVaries(displayText());
 	}
 	public String roomDescription(){
 		return parseVaries(description());
 	}
-	
+
 	protected void look(MOB mob, boolean careAboutBrief)
 	{
 		StringBuffer Say=new StringBuffer("");
@@ -809,7 +809,7 @@ public class StdRoom
 			V=((Container)item).getContents();
 		if(o instanceof MOB)((MOB)o).delInventory(item);
 		if(o instanceof Room) ((Room)o).delItem(item);
-		
+
 		if(survivalCode<0)
 			addItem(item);
 		else
@@ -911,7 +911,7 @@ public class StdRoom
 		mob.tell(buf.toString().trim()+"]^.^N");
 	}
 
-	private void reallyReallySend(MOB source, Affect msg)
+	private void reallyReallySend(MOB source, CMMsg msg)
 	{
 		if(Log.debugChannelOn())
 			Log.debugOut("StdRoom",((msg.source()!=null)?msg.source().ID():"null")+":"+msg.sourceCode()+":"+msg.sourceMessage()+"/"+((msg.target()!=null)?msg.target().ID():"null")+":"+msg.targetCode()+":"+msg.targetMessage()+"/"+((msg.tool()!=null)?msg.tool().ID():"null")+"/"+msg.othersCode()+":"+msg.othersMessage());
@@ -920,12 +920,12 @@ public class StdRoom
 		{
 			MOB otherMOB=(MOB)inhabs.elementAt(i);
 			if((otherMOB!=null)&&(otherMOB!=source))
-				otherMOB.affect(otherMOB,msg);
+				otherMOB.executeMsg(otherMOB,msg);
 		}
-		affect(source,msg);
+		executeMsg(source,msg);
 	}
 
-	private void reallySend(MOB source, Affect msg)
+	private void reallySend(MOB source, CMMsg msg)
 	{
 		reallyReallySend(source,msg);
 		// now handle trailer msgs
@@ -933,26 +933,26 @@ public class StdRoom
 		{
 			for(int i=0;i<msg.trailerMsgs().size();i++)
 			{
-				Affect affect=(Affect)msg.trailerMsgs().elementAt(i);
-				if((affect!=msg)
-				&&((affect.target()==null)
-				   ||(!(affect.target() instanceof MOB))
-				   ||(!((MOB)affect.target()).amDead()))
-				&&(okAffect(source,affect)))
+				CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
+				if((msg!=msg2)
+				&&((msg2.target()==null)
+				   ||(!(msg2.target() instanceof MOB))
+				   ||(!((MOB)msg2.target()).amDead()))
+				&&(okMessage(source,msg2)))
 				{
-					source.affect(source,affect);
-					reallyReallySend(source,affect);
+					source.executeMsg(source,msg2);
+					reallyReallySend(source,msg2);
 				}
 			}
 		}
 	}
 
-	public void send(MOB source, Affect msg)
+	public void send(MOB source, CMMsg msg)
 	{
-		source.affect(source,msg);
+		source.executeMsg(source,msg);
 		reallySend(source,msg);
 	}
-	public void sendOthers(MOB source, Affect msg)
+	public void sendOthers(MOB source, CMMsg msg)
 	{
 		reallySend(source,msg);
 	}
@@ -971,7 +971,7 @@ public class StdRoom
 					 String allMessage)
 	{
 		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		send(source,msg);
 		return true;
@@ -983,7 +983,7 @@ public class StdRoom
 					 String allMessage)
 	{
 		FullMsg msg=new FullMsg(source,target,tool,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		send(source,msg);
 		return true;
@@ -994,7 +994,7 @@ public class StdRoom
 						   String allMessage)
 	{
 		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		reallySend(source,msg);
 		return true;
@@ -1006,7 +1006,7 @@ public class StdRoom
 						   String allMessage)
 	{
 		FullMsg msg=new FullMsg(source,target,tool,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		reallySend(source,msg);
 		return true;
@@ -1017,9 +1017,9 @@ public class StdRoom
 						   String allMessage)
 	{
 		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
-		source.affect(source,msg);
+		source.executeMsg(source,msg);
 		return true;
 	}
 	public boolean showSource(MOB source,
@@ -1029,9 +1029,9 @@ public class StdRoom
 						   String allMessage)
 	{
 		FullMsg msg=new FullMsg(source,target,tool,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
-		source.affect(source,msg);
+		source.executeMsg(source,msg);
 		return true;
 	}
 
@@ -1047,11 +1047,11 @@ public class StdRoom
 	public void destroyRoom()
 	{
 		try{
-		for(int a=numAffects()-1;a>=0;a--)
-			fetchAffect(a).unInvoke();
+		for(int a=numEffects()-1;a>=0;a--)
+			fetchEffect(a).unInvoke();
 		}catch(Exception e){}
-		while(numAffects()>0)
-			delAffect(fetchAffect(0));
+		while(numEffects()>0)
+			delEffect(fetchEffect(0));
 		try{
 		for(int a=numInhabitants()-1;a>=0;a--)
 			fetchInhabitant(a).destroy();
@@ -1195,7 +1195,7 @@ public class StdRoom
 			else
 				found=null;
 		}
-		
+
 		if((found!=null) // the smurfy well/gate exception
 		&&(found instanceof Item)
 		&&(goodLocation==null)
@@ -1293,7 +1293,7 @@ public class StdRoom
 			return 10;
 	}
 
-	public void addAffect(Ability to)
+	public void addEffect(Ability to)
 	{
 		if(to==null) return;
 		if(affects==null) affects=new Vector();
@@ -1301,7 +1301,7 @@ public class StdRoom
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
-	public void addNonUninvokableAffect(Ability to)
+	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
 		if(affects==null) affects=new Vector();
@@ -1311,7 +1311,7 @@ public class StdRoom
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
-	public void delAffect(Ability to)
+	public void delEffect(Ability to)
 	{
 		if(affects==null) return;
 		int size=affects.size();
@@ -1319,12 +1319,12 @@ public class StdRoom
 		if(affects.size()<size)
 			to.setAffectedOne(null);
 	}
-	public int numAffects()
+	public int numEffects()
 	{
 		if(affects==null) return 0;
 		return affects.size();
 	}
-	public Ability fetchAffect(int index)
+	public Ability fetchEffect(int index)
 	{
 		if(affects==null) return null;
 		try
@@ -1334,12 +1334,12 @@ public class StdRoom
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	public Ability fetchAffect(String ID)
+	public Ability fetchEffect(String ID)
 	{
 		if(affects==null) return null;
-		for(int a=0;a<numAffects();a++)
+		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchAffect(a);
+			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.ID().equals(ID)))
 			   return A;
 		}
@@ -1359,7 +1359,7 @@ public class StdRoom
 			   return;
 		}
 		if(behaviors.size()==0)
-			ExternalPlay.startTickDown(this,Host.ROOM_BEHAVIOR_TICK,1);
+			ExternalPlay.startTickDown(this,Host.TICK_ROOM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1368,7 +1368,7 @@ public class StdRoom
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			ExternalPlay.deleteTick(this,Host.ROOM_BEHAVIOR_TICK);
+			ExternalPlay.deleteTick(this,Host.TICK_ROOM_BEHAVIOR);
 	}
 	public int numBehaviors()
 	{

@@ -19,7 +19,7 @@ public class Chant_AnimalSpy extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		   &&(affected==spy))
 		{
 			if(spy.amDead()
@@ -40,57 +40,57 @@ public class Chant_AnimalSpy extends Chant
 		{
 			if(invoker!=null)
 			{
-				Ability A=invoker.fetchAffect(this.ID());
+				Ability A=invoker.fetchEffect(this.ID());
 				if(A!=null)
-					invoker.delAffect(A);
+					invoker.delEffect(A);
 				invoker.tell("Your connection with '"+spy.name()+"' fades.");
 			}
 		}
 		super.unInvoke();
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		try
 		{
-			super.affect(myHost,affect);
+			super.executeMsg(myHost,msg);
 			if(spy==null) return;
 			if(invoker==null) return;
 
-			if((affect.amISource(spy))
-			&&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING)
-			&&(affect.target()!=null)
-			&&((((MOB)invoker).location()!=spy.location())||(!(affect.target() instanceof Room))))
+			if((msg.amISource(spy))
+			&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING)
+			&&(msg.target()!=null)
+			&&((((MOB)invoker).location()!=spy.location())||(!(msg.target() instanceof Room))))
 			{
 				disable=true;
-				FullMsg newAffect=new FullMsg(invoker,affect.target(),Affect.TYP_EXAMINESOMETHING,null);
-				affect.target().affect(invoker,newAffect);
+				FullMsg newAffect=new FullMsg(invoker,msg.target(),CMMsg.TYP_EXAMINESOMETHING,null);
+				msg.target().executeMsg(invoker,newAffect);
 			}
 			else
-			if((!affect.amISource(invoker))
+			if((!msg.amISource(invoker))
 			&&(((MOB)invoker).location()!=spy.location())
-			&&(affect.othersCode()!=Affect.NO_EFFECT)
-			&&(affect.othersMessage()!=null)
+			&&(msg.othersCode()!=CMMsg.NO_EFFECT)
+			&&(msg.othersMessage()!=null)
 			&&(!disable))
 			{
 				disable=true;
-				((MOB)invoker).affect(invoker,affect);
+				((MOB)invoker).executeMsg(invoker,msg);
 			}
 			else
-			if(affect.amISource(invoker)
+			if(msg.amISource(invoker)
 			&&(!disable)
-			&&(affect.sourceMinor()==Affect.TYP_SPEAK)
-			&&((affect.sourceCode()&Affect.MASK_MAGIC)==0))
+			&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			&&((msg.sourceCode()&CMMsg.MASK_MAGIC)==0))
 			{
-				int start=affect.sourceMessage().indexOf("\'");
-				int end=affect.sourceMessage().lastIndexOf("\'");
+				int start=msg.sourceMessage().indexOf("\'");
+				int end=msg.sourceMessage().lastIndexOf("\'");
 				if((start>0)&&(end>start))
 				{
-					String msg=affect.sourceMessage().substring(start+1,end).trim();
-					if(msg.length()>0)
+					String msg2=msg.sourceMessage().substring(start+1,end).trim();
+					if(msg2.length()>0)
 					{
 						try{
-							ExternalPlay.doCommand(spy,Util.parse(msg.trim()));
+							ExternalPlay.doCommand(spy,Util.parse(msg2.trim()));
 						}
 						catch(Exception e)
 						{
@@ -140,14 +140,14 @@ public class Chant_AnimalSpy extends Chant
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, invoking the a mystical connection.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),null);
-			if((mob.location().okAffect(mob,msg))&&((newRoom==mob.location())||(newRoom.okAffect(mob,msg2))))
+			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);
 				spy=target;
 				beneficialAffect(mob,spy,0);
-				Ability A=spy.fetchAffect(ID());
-				mob.addNonUninvokableAffect((Ability)A.copyOf());
+				Ability A=spy.fetchEffect(ID());
+				mob.addNonUninvokableEffect((Ability)A.copyOf());
 				A.setAffectedOne(spy);
 			}
 

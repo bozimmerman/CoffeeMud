@@ -27,16 +27,16 @@ public class Fighter_BodyFlip extends StdAbility
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((doneTicking)&&(affect.amISource(mob)))
+		if((doneTicking)&&(msg.amISource(mob)))
 			unInvoke();
 		else
-		if(affect.amISource(mob)&&(affect.sourceMinor()==Affect.TYP_STAND))
+		if(msg.amISource(mob)&&(msg.sourceMinor()==CMMsg.TYP_STAND))
 			return false;
 		return true;
 	}
@@ -53,8 +53,8 @@ public class Fighter_BodyFlip extends StdAbility
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					ExternalPlay.standIfNecessary(mob);
@@ -114,12 +114,12 @@ public class Fighter_BodyFlip extends StdAbility
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> flip(s) over!":"^F<S-NAME> flip(s) <T-NAMESELF> over!^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> flip(s) over!":"^F<S-NAME> flip(s) <T-NAMESELF> over!^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				maliciousAffect(mob,target,2,-1);
-				target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the floor!");
+				target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the floor!");
 			}
 		}
 		else

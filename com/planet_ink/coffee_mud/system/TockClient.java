@@ -15,7 +15,7 @@ public class TockClient
 	public long lastStop=0;
 	public long milliTotal=0;
 	public long tickTotal=0;
-	
+
 	public TockClient(Tickable newClientObject,
 					  int newTickDown,
 					  int newTickID)
@@ -25,7 +25,7 @@ public class TockClient
 		clientObject=newClientObject;
 		tickID=newTickID;
 	}
-	
+
 	public String tickCodeWord()
 	{
 		if(clientObject==null) return "";
@@ -45,9 +45,9 @@ public class TockClient
 			if(Util.bset(code,Tickable.STATUS_AFFECT))
 			{
 				long b=(code-Tickable.STATUS_AFFECT);
-				String codeWord="Affect #"+b;
-				if((b>=0)&&(b<((Environmental)obj).numAffects()))
-					codeWord+=" ("+(((Environmental)obj).fetchAffect((int)b)).name();
+				String codeWord="Effect #"+b;
+				if((b>=0)&&(b<((Environmental)obj).numEffects()))
+					codeWord+=" ("+(((Environmental)obj).fetchEffect((int)b)).name();
 				return codeWord;
 			}
 		}
@@ -56,7 +56,7 @@ public class TockClient
 		   codeWord="Behavior?!";
 		else
 		if(Util.bset(code,Tickable.STATUS_AFFECT))
-		   codeWord="Affect?!";
+		   codeWord="Effect?!";
 		else
 		switch((int)code)
 		{
@@ -85,5 +85,5 @@ public class TockClient
 		}
 		return codeWord;
 	}
-	
+
 }

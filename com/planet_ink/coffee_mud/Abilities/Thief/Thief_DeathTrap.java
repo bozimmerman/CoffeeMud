@@ -35,8 +35,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if(E==null) return null;
 		Trap T=(Trap)copyOf();
 		T.setInvoker(mob);
-		E.addAffect(T);
-		ExternalPlay.startTickDown(T,Host.TRAP_DESTRUCTION,new Long(Host.TICKS_PER_MUDDAY).intValue());
+		E.addEffect(T);
+		ExternalPlay.startTickDown(T,Host.TICK_TRAP_DESTRUCTION,new Long(Host.TICKS_PER_MUDDAY).intValue());
 		return T;
 	}
 
@@ -46,9 +46,9 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			ExternalPlay.postDeath(invoker(),M,null);
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((msg.targetMinor()==Affect.TYP_ENTER)
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()==affected)
 		&&(msg.source()!=invoker())
 		&&(!sprung)
@@ -56,7 +56,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		&&(invoker().mayIFight(msg.source()))
 		&&(Dice.rollPercentage()>msg.source().charStats().getSave(CharStats.SAVE_TRAPS)))
 			ExternalPlay.postDeath(invoker(),msg.source(),msg);
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
 
 	protected Item findMostOfMaterial(Room room, int material)
@@ -104,13 +104,13 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.TRAP_RESET)
+		if(tickID==Host.TICK_TRAP_RESET)
 		{
 			sprung=false;
 			return false;
 		}
 		else
-		if(tickID==Host.TRAP_DESTRUCTION)
+		if(tickID==Host.TICK_TRAP_DESTRUCTION)
 		{
 			unInvoke();
 			return false;
@@ -149,8 +149,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,trapThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap here."));
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_GENERAL|CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap here."));
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(success)
@@ -163,7 +163,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 				if(Dice.rollPercentage()>50)
 				{
 					Trap T=setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMAble.qualifyingClassLevel(mob,this)-CMAble.lowestQualifyingLevel(ID()))+1);
-					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
 					T.spring(mob);
 				}
 				else

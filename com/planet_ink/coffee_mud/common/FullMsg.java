@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import java.util.Vector;
 
-public class FullMsg implements Affect
+public class FullMsg implements CMMsg
 {
 	private int targetCode=0;
 	private int sourceCode=0;
@@ -86,8 +86,8 @@ public class FullMsg implements Affect
 		othersCode=newSourceCode;
 		othersMsg=othersMessage;
 	}
-	
-	public Affect copyOf()
+
+	public CMMsg copyOf()
 	{
 		return new FullMsg(source(),target(),tool(),sourceCode(),sourceMessage(),targetCode(),targetMessage(),othersCode(),othersMessage());
 	}
@@ -102,7 +102,7 @@ public class FullMsg implements Affect
 	}
 	public Vector trailerMsgs()
 	{	return trailMsgs;}
-	public void addTrailerMsg(Affect msg)
+	public void addTrailerMsg(CMMsg msg)
 	{
 		if(trailMsgs==null) trailMsgs=new Vector();
 		trailMsgs.addElement(msg);
@@ -160,11 +160,11 @@ public class FullMsg implements Affect
 	}
 	public int targetMajor()
 	{
-		return targetCode&Affect.MAJOR_MASK;
+		return targetCode&CMMsg.MAJOR_MASK;
 	}
 	public int targetMinor()
 	{
-		return targetCode&Affect.MINOR_MASK;
+		return targetCode&CMMsg.MINOR_MASK;
 	}
 	public int targetCode()
 	{
@@ -181,11 +181,11 @@ public class FullMsg implements Affect
 	}
 	public int sourceMajor()
 	{
-		return sourceCode&Affect.MAJOR_MASK;
+		return sourceCode&CMMsg.MAJOR_MASK;
 	}
 	public int sourceMinor()
 	{
-		return sourceCode&Affect.MINOR_MASK;
+		return sourceCode&CMMsg.MINOR_MASK;
 	}
 	public String sourceMessage()
 	{
@@ -195,11 +195,11 @@ public class FullMsg implements Affect
 
 	public int othersMajor()
 	{
-		return othersCode&Affect.MAJOR_MASK;
+		return othersCode&CMMsg.MAJOR_MASK;
 	}
 	public int othersMinor()
 	{
-		return othersCode&Affect.MINOR_MASK;
+		return othersCode&CMMsg.MINOR_MASK;
 	}
 	public int othersCode()
 	{

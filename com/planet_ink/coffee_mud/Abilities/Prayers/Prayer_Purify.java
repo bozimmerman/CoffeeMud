@@ -43,7 +43,7 @@ public class Prayer_Purify extends Prayer
 									auto?"":"^S<S-NAME> purify <T-NAMESELF>"+inTheNameOf(mob)+".^?",
 									auto?"":"^S<S-NAME> purifies <T-NAMESELF>"+inTheNameOf(mob)+".^?",
 									auto?"":"^S<S-NAME> purifies <T-NAMESELF>"+inTheNameOf(mob)+".^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				boolean doneSomething=false;
@@ -54,12 +54,12 @@ public class Prayer_Purify extends Prayer
 					target.baseEnvStats().setAbility(0);
 					target.recoverEnvStats();
 				}
-				while(target.numAffects()>0)
+				while(target.numEffects()>0)
 				{
 					doneSomething=true;
-					Ability A=target.fetchAffect(0);
+					Ability A=target.fetchEffect(0);
 					A.unInvoke();
-					target.delAffect(A);
+					target.delEffect(A);
 				}
 				if((target instanceof Pill)
 				&&(!((Pill)target).getSpellList().equals("Prayer_Sober")))
@@ -74,7 +74,7 @@ public class Prayer_Purify extends Prayer
 					((Potion)target).setSpellList("Prayer_Sober");
 				}
 				if(doneSomething)
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" appears purified!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" appears purified!");
 				target.recoverEnvStats();
 				mob.location().recoverRoomStats();
 			}

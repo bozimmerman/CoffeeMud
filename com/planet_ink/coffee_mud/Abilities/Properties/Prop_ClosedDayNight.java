@@ -93,23 +93,23 @@ public class Prop_ClosedDayNight extends Property
 		}
 		return closed;
 	}
-	
-	public boolean okAffect(Environmental E, Affect msg)
+
+	public boolean okMessage(Environmental E, CMMsg msg)
 	{
-		if(!super.okAffect(E,msg)) 
+		if(!super.okMessage(E,msg))
 			return false;
-		
+
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(closed())
 		&&(Home!=null)
 		&&(!Sense.isSleeping(affected))
-		&&((msg.targetMinor()==Affect.TYP_BUY)
-		   ||(msg.targetMinor()==Affect.TYP_SELL)
-		   ||(msg.targetMinor()==Affect.TYP_VALUE)
-		   ||(msg.targetMinor()==Affect.TYP_DEPOSIT)
-		   ||(msg.targetMinor()==Affect.TYP_WITHDRAW)
-		   ||(msg.targetMinor()==Affect.TYP_VIEW)))
+		&&((msg.targetMinor()==CMMsg.TYP_BUY)
+		   ||(msg.targetMinor()==CMMsg.TYP_SELL)
+		   ||(msg.targetMinor()==CMMsg.TYP_VALUE)
+		   ||(msg.targetMinor()==CMMsg.TYP_DEPOSIT)
+		   ||(msg.targetMinor()==CMMsg.TYP_WITHDRAW)
+		   ||(msg.targetMinor()==CMMsg.TYP_VIEW)))
 		{
 			ShopKeeper sk=CoffeeUtensils.getShopKeeper((MOB)affected);
 			if(sk!=null)
@@ -154,7 +154,7 @@ public class Prop_ClosedDayNight extends Property
 		}
 		return R;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -169,7 +169,7 @@ public class Prop_ClosedDayNight extends Property
 				ExternalPlay.standIfNecessary(mob);
 				if(!Sense.aliveAwakeMobile(mob,true)||(mob.isInCombat()))
 					return true;
-				
+
 				if((mob.location()==mob.getStartRoom())
 				&&(lockupFlag))
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -181,32 +181,32 @@ public class Prop_ClosedDayNight extends Property
 							FullMsg msg=null;
 							if(E.isOpen())
 							{
-								msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-								if(R2.okAffect(mob,msg))
+								msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+								if(R2.okMessage(mob,msg))
 								{
-									msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_CLOSE,Affect.MSG_OK_VISUAL,"<S-NAME> "+E.closeWord()+"(s) <T-NAMESELF>.");
+									msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+E.closeWord()+"(s) <T-NAMESELF>.");
 									ExternalPlay.roomAffectFully(msg,mob.location(),d);
 								}
 							}
 							if(!E.isLocked())
 							{
-								msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-								if(R2.okAffect(mob,msg))
+								msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+								if(R2.okMessage(mob,msg))
 								{
-									msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_LOCK,Affect.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
+									msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
 									ExternalPlay.roomAffectFully(msg,mob.location(),d);
 								}
 							}
 						}
 					}
-				
+
 				if(Home!=null)
 				{
 					Room R=getHomeRoom();
 					if((R!=null)&&(R!=mob.location()))
 					{
 						// still tracking...
-						if(mob.fetchAffect("Skill_Track")!=null)
+						if(mob.fetchEffect("Skill_Track")!=null)
 							return true;
 						ShopKeeper sk=CoffeeUtensils.getShopKeeper((MOB)affected);
 						if(sk!=null)
@@ -220,7 +220,7 @@ public class Prop_ClosedDayNight extends Property
 						return true;
 					}
 				}
-				
+
 				try{
 					if(sleepFlag)
 						ExternalPlay.doCommand(mob,Util.parse("SLEEP"));
@@ -241,7 +241,7 @@ public class Prop_ClosedDayNight extends Property
 					if(mob.location()!=mob.getStartRoom())
 					{
 						// still tracking...
-						if(mob.fetchAffect("Skill_Track")!=null)
+						if(mob.fetchEffect("Skill_Track")!=null)
 							return true;
 						Ability A=CMClass.getAbility("Skill_Track");
 						if(A!=null)
@@ -253,7 +253,7 @@ public class Prop_ClosedDayNight extends Property
 					}
 				}
 				lastClosed=0;
-				
+
 				if((mob.location()==mob.getStartRoom())
 				&&(lockupFlag))
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -265,19 +265,19 @@ public class Prop_ClosedDayNight extends Property
 							FullMsg msg=null;
 							if((E.isLocked())&&(!E.defaultsLocked()))
 							{
-								msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-								if(R2.okAffect(mob,msg))
+								msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+								if(R2.okMessage(mob,msg))
 								{
-									msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_UNLOCK,Affect.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
+									msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
 									ExternalPlay.roomAffectFully(msg,mob.location(),d);
 								}
 							}
 							if((!E.isOpen())&&(!E.defaultsClosed()))
 							{
-								msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-								if(R2.okAffect(mob,msg))
+								msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+								if(R2.okMessage(mob,msg))
 								{
-									msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_OPEN,Affect.MSG_OK_VISUAL,"<S-NAME> "+E.openWord()+"(s) <T-NAMESELF>.");
+									msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+E.openWord()+"(s) <T-NAMESELF>.");
 									ExternalPlay.roomAffectFully(msg,mob.location(),d);
 								}
 							}
@@ -287,8 +287,8 @@ public class Prop_ClosedDayNight extends Property
 		}
 		return true;
 	}
-	
-	
+
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(affected==null) return;
@@ -333,6 +333,6 @@ public class Prop_ClosedDayNight extends Property
 				}
 			}
 		}
-		
+
 	}
 }

@@ -9,12 +9,12 @@ public class GapExit extends StdExit
 	public String ID(){	return "GapExit";}
 	public String Name(){ return "a crevasse";}
 	public String description(){return "Looks like you'll have to jump it.";}
-	
+
 	public Environmental newInstance()
 	{
 		return new GapExit();
 	}
-	
+
 	public int mobWeight(MOB mob)
 	{
 		int weight=mob.baseEnvStats().weight();
@@ -26,36 +26,36 @@ public class GapExit extends StdExit
 		}
 		return weight;
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect)) return false;
-		MOB mob=affect.source();
-		if(((affect.amITarget(this))||(affect.tool()==this))
-		&&(affect.targetMinor()==Affect.TYP_ENTER)
+		if(!super.okMessage(myHost,msg)) return false;
+		MOB mob=msg.source();
+		if(((msg.amITarget(this))||(msg.tool()==this))
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(!Sense.isInFlight(mob))
 		&&(!Sense.isFalling(mob)))
 		{
 			int chance=(int)Math.round(Util.div(mobWeight(mob),mob.maxCarry())*(100.0-new Integer(3*mob.charStats().getStat(CharStats.STRENGTH)).doubleValue()));
 			if(Dice.rollPercentage()<chance)
 			{
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to jump the crevasse, but miss(es) the far ledge!");
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s)!!!!");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to jump the crevasse, but miss(es) the far ledge!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s)!!!!");
 				ExternalPlay.postDeath(null,mob,null);
 				return false;
 			}
 		}
 		return true;
 	}
-	
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		MOB mob=affect.source();
-		if(((affect.amITarget(this))||(affect.tool()==this))
-		&&(affect.targetMinor()==Affect.TYP_ENTER)
+		super.executeMsg(myHost,msg);
+		MOB mob=msg.source();
+		if(((msg.amITarget(this))||(msg.tool()==this))
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(!Sense.isInFlight(mob))
 		&&(!Sense.isFalling(mob)))
-			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> jump(s) the crevasse!");
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> jump(s) the crevasse!");
 	}
 }

@@ -38,20 +38,20 @@ public class UnderWater extends StdRoom implements Drink
 	public static void makeSink(Environmental E, Room room, int avg)
 	{
 		if((E==null)||(room==null)) return;
-		
+
 		Room R=room.getRoomInDir(Directions.DOWN);
 		if(avg>0) R=room.getRoomInDir(Directions.UP);
 		if((R==null)
 		||((R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
 			return;
-		
+
 		if(((E instanceof MOB)&&(!Sense.isWaterWorthy(E))&&(!Sense.isInFlight(E))&&(E.envStats().weight()>=1))
 		||((E instanceof Item)&&(!Sense.isInFlight(((Item)E).ultimateContainer()))&&(!Sense.isWaterWorthy(((Item)E).ultimateContainer()))))
-			if(E.fetchAffect("Sinking")==null)
+			if(E.fetchEffect("Sinking")==null)
 			{
 				Ability sinking=CMClass.getAbility("Sinking");
-				if(sinking!=null) 
+				if(sinking!=null)
 				{
 					sinking.setProfficiency(avg);
 					sinking.setAffectedOne(room);
@@ -59,14 +59,14 @@ public class UnderWater extends StdRoom implements Drink
 				}
 			}
 	}
-	
-	public static void sinkAffects(Room room, Affect affect)
+
+	public static void sinkAffects(Room room, CMMsg msg)
 	{
-		if(affect.amITarget(room)
-		&&(affect.targetMinor()==Affect.TYP_DRINK)
+		if(msg.amITarget(room)
+		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
 		&&(room instanceof Drink))
 		{
-			MOB mob=affect.source();
+			MOB mob=msg.source();
 			boolean thirsty=mob.curState().getThirst()<=0;
 			boolean full=!mob.curState().adjThirst(((Drink)room).thirstQuenched(),mob.maxState());
 			if(thirsty)
@@ -75,14 +75,14 @@ public class UnderWater extends StdRoom implements Drink
 			if(full)
 				mob.tell("You have drunk all you can.");
 		}
-		
-		if(Sense.isSleeping(room)) 
+
+		if(Sense.isSleeping(room))
 			return;
 		boolean foundReversed=false;
 		boolean foundNormal=false;
 		Vector needToFall=new Vector();
 		Vector mightNeedAdjusting=new Vector();
-		
+
 		if((room.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(room.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
 			for(int i=0;i<room.numInhabitants();i++)
@@ -91,7 +91,7 @@ public class UnderWater extends StdRoom implements Drink
 				if((mob!=null)
 				&&((mob.getStartRoom()==null)||(mob.getStartRoom()!=room)))
 				{
-					Ability A=mob.fetchAffect("Sinking");
+					Ability A=mob.fetchEffect("Sinking");
 					if(A!=null)
 					{
 						if(A.profficiency()>=100)
@@ -113,7 +113,7 @@ public class UnderWater extends StdRoom implements Drink
 			Item item=room.fetchItem(i);
 			if(item!=null)
 			{
-				Ability A=item.fetchAffect("Sinking");
+				Ability A=item.fetchEffect("Sinking");
 				if(A!=null)
 				{
 					if(A.profficiency()>=100)
@@ -131,70 +131,70 @@ public class UnderWater extends StdRoom implements Drink
 		for(int i=0;i<mightNeedAdjusting.size();i++)
 		{
 			Environmental E=(Environmental)mightNeedAdjusting.elementAt(i);
-			Ability A=E.fetchAffect("Sinking");
+			Ability A=E.fetchEffect("Sinking");
 			if(A!=null) A.setProfficiency(avg);
 		}
 		for(int i=0;i<needToFall.size();i++)
 			makeSink((Environmental)needToFall.elementAt(i),room,avg);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		switch(UnderWater.isOkUnderWaterAffect(this,affect))
+		switch(UnderWater.isOkUnderWaterAffect(this,msg))
 		{
 		case -1: return false;
 		case 1: return true;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
-	public static int isOkUnderWaterAffect(Room room, Affect affect)
+	public static int isOkUnderWaterAffect(Room room, CMMsg msg)
 	{
-		if(Sense.isSleeping(room)) 
+		if(Sense.isSleeping(room))
 			return 0;
-			 
-		if((affect.targetMinor()==affect.TYP_FIRE)
-		||(affect.targetMinor()==affect.TYP_GAS)
-		||(affect.sourceMinor()==affect.TYP_FIRE)
-		||(affect.sourceMinor()==affect.TYP_GAS))
+
+		if((msg.targetMinor()==CMMsg.TYP_FIRE)
+		||(msg.targetMinor()==CMMsg.TYP_GAS)
+		||(msg.sourceMinor()==CMMsg.TYP_FIRE)
+		||(msg.sourceMinor()==CMMsg.TYP_GAS))
 		{
-			affect.source().tell("That won't work underwater.");
+			msg.source().tell("That won't work underwater.");
 			return -1;
 		}
 		else
-		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon))
+		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon))
 		{
-			Weapon w=(Weapon)affect.tool();
+			Weapon w=(Weapon)msg.tool();
 			if((w.weaponType()==Weapon.TYPE_SLASHING)
 			||(w.weaponType()==Weapon.TYPE_BASHING))
 			{
-				int damage=affect.targetCode()-Affect.MASK_HURT;
+				int damage=msg.targetCode()-CMMsg.MASK_HURT;
 				damage=damage/3;
 				damage=damage*2;
-				SaucerSupport.adjustDamageMessage(affect,damage*-1);
+				SaucerSupport.adjustDamageMessage(msg,damage*-1);
 			}
 		}
 		else
-		if(affect.amITarget(room)
-		&&(affect.targetMinor()==Affect.TYP_DRINK)
+		if(msg.amITarget(room)
+		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
 		&&(room instanceof Drink))
 		{
 			if(((Drink)room).liquidType()==EnvResource.RESOURCE_SALTWATER)
 			{
-				affect.source().tell("You don't want to be drinking saltwater.");
+				msg.source().tell("You don't want to be drinking saltwater.");
 				return -1;
 			}
 			return 1;
 		}
 		return 0;
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		UnderWater.sinkAffects(this,affect);
+		super.executeMsg(myHost,msg);
+		UnderWater.sinkAffects(this,msg);
 	}
-	
+
 	public int thirstQuenched(){return 500;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
 	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}

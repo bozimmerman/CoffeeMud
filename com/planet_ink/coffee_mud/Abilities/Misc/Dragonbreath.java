@@ -52,9 +52,9 @@ public class Dragonbreath extends StdAbility
 			for(int i=0;i<DragonColors.length;i++)
 				if(CoffeeUtensils.containsString(mob.displayText(),DragonColors[i][0]))
 				{ color=i; break;}
-			if(color<0)	
+			if(color<0)
 				colorc='f';
-			else 
+			else
 				colorc=DragonColors[color][1].charAt(0);
 		}
 		else
@@ -80,7 +80,7 @@ public class Dragonbreath extends StdAbility
 		String stuffWord="flames";
 		String castPhrase="<S-NAME> blast(s) flames from <S-HIS-HER> mouth!";
 		int WeaponType=Weapon.TYPE_BURNING;
-		int strikeType=Affect.TYP_FIRE;
+		int strikeType=CMMsg.TYP_FIRE;
 
 		switch(colorc)
 		{
@@ -116,13 +116,13 @@ public class Dragonbreath extends StdAbility
 				break;
 
 		}
-		
+
 		if(success)
 		{
 
 			if(text().length()==0)
 				setMiscText("");
-			if(mob.location().show(mob,null,this,Affect.MSG_NOISYMOVEMENT,auto?autoPhrase:castPhrase))
+			if(mob.location().show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?autoPhrase:castPhrase))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -131,8 +131,8 @@ public class Dragonbreath extends StdAbility
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|strikeType|(auto?Affect.MASK_GENERAL:0),null);
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|strikeType|(auto?CMMsg.MASK_GENERAL:0),null);
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					invoker=mob;
@@ -144,7 +144,7 @@ public class Dragonbreath extends StdAbility
 					damage += Dice.roll(maxDie,6,1);
 					if(msg.wasModified())
 						damage = (int)Math.round(Util.div(damage,2.0));
-					ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.MASK_SOUND|strikeType,WeaponType,"^FThe "+stuffWord+" <DAMAGE> <T-NAME>!^?");
+					ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|strikeType,WeaponType,"^FThe "+stuffWord+" <DAMAGE> <T-NAME>!^?");
 				}
 			}
 		}

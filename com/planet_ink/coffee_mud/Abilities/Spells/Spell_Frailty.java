@@ -15,19 +15,19 @@ public class Spell_Frailty extends Spell
 	public Environmental newInstance(){	return new Spell_Frailty();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+		if((msg.amITarget(mob))&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 		{
-			int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
-			SaucerSupport.adjustDamageMessage(affect,recovery);
+			int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
+			SaucerSupport.adjustDamageMessage(msg,recovery);
 		}
 		return true;
 	}
@@ -43,7 +43,7 @@ public class Spell_Frailty extends Spell
 		if(canBeUninvoked())
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) less frail.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) less frail.");
 		}
 	}
 
@@ -69,12 +69,12 @@ public class Spell_Frailty extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) frail!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) frail!");
 					maliciousAffect(mob,target,10,-1);
 				}
 			}

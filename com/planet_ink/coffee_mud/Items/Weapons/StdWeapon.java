@@ -67,38 +67,38 @@ public class StdWeapon extends StdItem implements Weapon
 			envStats().setDamage(((int)Math.round(Util.mul(envStats().damage(),Util.div(usesRemaining(),100)))));
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
-		if((affect.amITarget(this))
-		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING)
-		&&(Sense.canBeSeenBy(this,affect.source())))
+		if((msg.amITarget(this))
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+		&&(Sense.canBeSeenBy(this,msg.source())))
 		{
 			if(requiresAmmunition())
-				affect.source().tell(ammunitionType()+" remaining: "+ammunitionRemaining()+"/"+ammunitionCapacity()+".");
+				msg.source().tell(ammunitionType()+" remaining: "+ammunitionRemaining()+"/"+ammunitionCapacity()+".");
 			if((subjectToWearAndTear())&&(usesRemaining()<100))
-				affect.source().tell(weaponHealth());
+				msg.source().tell(weaponHealth());
 		}
 		else
-		if((affect.tool()==this)
-		&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
-			affect.addTrailerMsg(new FullMsg(affect.source(),this,Affect.MSG_DROP,null));
-		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.tool()==this)
+			msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_DROP,null));
+		if((Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.tool()==this)
 		&&(amWearingAt(Item.WIELD))
 		&&(weaponClassification()!=Weapon.CLASS_NATURAL)
 		&&(weaponType()!=Weapon.TYPE_NATURAL)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof MOB)
-		&&((affect.targetCode()-Affect.MASK_HURT)>0)
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
 		&&(owner()!=null)
 		&&(owner() instanceof MOB)
-		&&(affect.amISource((MOB)owner())))
+		&&(msg.amISource((MOB)owner())))
 		{
-			int hurt=(affect.targetCode()-Affect.MASK_HURT);
-			MOB tmob=(MOB)affect.target();
+			int hurt=(msg.targetCode()-CMMsg.MASK_HURT);
+			MOB tmob=(MOB)msg.target();
 			if((hurt>(tmob.maxState().getHitPoints()/10)||(hurt>50))
 			&&(tmob.curState().getHitPoints()>hurt))
 			{
@@ -119,8 +119,8 @@ public class StdWeapon extends StdItem implements Weapon
 					else
 						A=CMClass.getAbility("Disease_Infection");
 
-					if((A!=null)&&(affect.target().fetchAffect(A.ID())==null))
-						A.invoke(affect.source(),affect.target(),true);
+					if((A!=null)&&(msg.target().fetchEffect(A.ID())==null))
+						A.invoke(msg.source(),msg.target(),true);
 				}
 				else
 				if((hurt>100)
@@ -135,7 +135,7 @@ public class StdWeapon extends StdItem implements Weapon
 					default:
 						{
 							Ability A=CMClass.getAbility("Amputation");
-							if(A!=null) A.invoke(affect.source(),affect.target(),true);
+							if(A!=null) A.invoke(msg.source(),msg.target(),true);
 						}
 						break;
 					}
@@ -144,7 +144,7 @@ public class StdWeapon extends StdItem implements Weapon
 
 			if((subjectToWearAndTear())
 			&&(Dice.rollPercentage()<5)
-			&&(affect.source().rangeToTarget()==0)
+			&&(msg.source().rangeToTarget()==0)
 			&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*5))
 			&&((material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ENERGY))
 			{
@@ -155,7 +155,7 @@ public class StdWeapon extends StdItem implements Weapon
 				{
 					MOB owner=(MOB)owner();
 					setUsesRemaining(100);
-					affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,"^I"+name()+" is destroyed!!^?",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,"^I"+name()+" being wielded by <S-NAME> is destroyed!^?"));
+					msg.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" is destroyed!!^?",CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" being wielded by <S-NAME> is destroyed!^?"));
 					unWear();
 					destroy();
 					owner.recoverEnvStats();
@@ -166,13 +166,13 @@ public class StdWeapon extends StdItem implements Weapon
 			}
 		}
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-		   &&(affect.tool()==this)
+		if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		   &&(msg.tool()==this)
 		   &&(requiresAmmunition())
 		   &&(ammunitionCapacity()>0))
 		{
@@ -181,11 +181,11 @@ public class StdWeapon extends StdItem implements Weapon
 			if(ammunitionRemaining()<=0)
 			{
 				boolean reLoaded=false;
-				if((affect.source().isMine(this))
-				   &&(affect.source().location()!=null)
-				   &&(Sense.aliveAwakeMobile(affect.source(),true)))
+				if((msg.source().isMine(this))
+				   &&(msg.source().location()!=null)
+				   &&(Sense.aliveAwakeMobile(msg.source(),true)))
 				{
-					MOB mob=affect.source();
+					MOB mob=msg.source();
 					for(int i=0;i<mob.inventorySize();i++)
 					{
 						Item I=mob.fetchInventory(i);
@@ -197,7 +197,7 @@ public class StdWeapon extends StdItem implements Weapon
 						   ||(I.container()!=null)
 						   ||(!I.rawSecretIdentity().equalsIgnoreCase(ammunitionType()))))
 						{
-							mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) "+ammunitionType()+" from "+I.name()+".");
+							mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> get(s) "+ammunitionType()+" from "+I.name()+".");
 							int howMuchToTake=ammunitionCapacity();
 							if(I.usesRemaining()<howMuchToTake)
 								howMuchToTake=I.usesRemaining();
@@ -212,8 +212,8 @@ public class StdWeapon extends StdItem implements Weapon
 				if(!reLoaded)
 				{
 					setAmmoRemaining(0);
-					affect.source().tell("You have no more "+ammunitionType()+".");
-					ExternalPlay.remove(affect.source(),this,false);
+					msg.source().tell("You have no more "+ammunitionType()+".");
+					ExternalPlay.remove(msg.source(),this,false);
 					return false;
 				}
 			}

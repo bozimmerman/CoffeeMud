@@ -38,7 +38,7 @@ public class Fighter_Cleave extends StdAbility
 		{
 			Item w=mob.fetchWieldedItem();
 			if(w==null) w=mob.myNaturalWeapon();
-			if(mob.location().show(mob,nextTarget,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> CLEAVE(S) INTO <T-NAME>!!"))
+			if(mob.location().show(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> CLEAVE(S) INTO <T-NAME>!!"))
 			{
 				ExternalPlay.postAttack(mob,nextTarget,w);
 				helpProfficiency(mob);
@@ -48,27 +48,27 @@ public class Fighter_Cleave extends StdAbility
 		nextTarget=null;
 		return true;
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amISource(mob))
+		if((msg.amISource(mob))
 		&&(mob.getVictim()!=null)
-		&&(affect.amITarget(mob.getVictim()))
-		&&(!affect.amITarget(mob))
+		&&(msg.amITarget(mob.getVictim()))
+		&&(!msg.amITarget(mob))
 		&&(!mob.getVictim().amDead())
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon))
 		{
 			MOB victim=mob.getVictim();
-			Weapon w=(Weapon)affect.tool();
-			int damAmount=affect.targetCode()-Affect.MASK_HURT;
+			Weapon w=(Weapon)msg.tool();
+			int damAmount=msg.targetCode()-CMMsg.MASK_HURT;
 
 			if((damAmount>victim.curState().getHitPoints())
 			&&(w.weaponType()==Weapon.TYPE_SLASHING)

@@ -14,7 +14,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-public class MOBHunter extends ActiveTicker 
+public class MOBHunter extends ActiveTicker
 {
 	public String ID(){return "MOBHunter";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
@@ -22,7 +22,7 @@ public class MOBHunter extends ActiveTicker
 	private boolean debug=false;
 	int radius=20;
 
-	public MOBHunter() 
+	public MOBHunter()
 	{
 		super();
 		minTicks=600; maxTicks=1200; chance=100; radius=20;
@@ -35,7 +35,7 @@ public class MOBHunter extends ActiveTicker
 
 	private boolean isHunting(MOB mob)
 	{
-		Ability A=mob.fetchAffect("Thief_Assasinate");
+		Ability A=mob.fetchEffect("Thief_Assasinate");
 		if(A!=null) return true;
 		return false;
 	}
@@ -56,8 +56,8 @@ public class MOBHunter extends ActiveTicker
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB M=R.fetchInhabitant(i);
-				if(SaucerSupport.zapperCheck(getParms(),M)) 
-				{	
+				if(SaucerSupport.zapperCheck(getParms(),M))
+				{
 					prey=M;
 					break;
 				}

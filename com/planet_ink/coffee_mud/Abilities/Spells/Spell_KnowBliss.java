@@ -35,21 +35,21 @@ public class Spell_KnowBliss extends Spell
 		}
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
-		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
-		&&((msg.targetCode()-Affect.MASK_HURT)>0))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0))
 			unInvoke();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			// undo the affects of this spell
 			if((affected==null)||(!(affected instanceof MOB)))
@@ -59,15 +59,15 @@ public class Spell_KnowBliss extends Spell
 		}
 		return super.tick(ticking,tickID);
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect msg)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,msg);
+			return super.okMessage(myHost,msg);
 		MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
-		&&(msg.targetCode()&Affect.MASK_MALICIOUS)>0)
+		&&(msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
 		{
 			mob.tell("Nah, you feel too happy to do that.");
 			mob.setVictim(null);
@@ -98,13 +98,13 @@ public class Spell_KnowBliss extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) happily at <T-NAMESELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> smile(s) most peculiarly!");
-					maliciousAffect(mob,target,0,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> smile(s) most peculiarly!");
+					maliciousAffect(mob,target,0,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
 					target.makePeace();
 					if(mob.getVictim()==target)
 						mob.makePeace();

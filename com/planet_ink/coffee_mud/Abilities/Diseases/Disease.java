@@ -38,7 +38,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 		if((diseased==null)&&(target instanceof MOB)) diseased=(MOB)target;
 		if((target!=null)
 		&&(diseased!=null)
-		&&(target.fetchAffect(ID())==null))
+		&&(target.fetchEffect(ID())==null))
 		{
 			if(target instanceof MOB)
 			{
@@ -85,7 +85,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			super.unInvoke();
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(affected==null) return;
 		if(affected instanceof MOB)
@@ -96,36 +96,36 @@ public class Disease extends StdAbility implements DiseaseAffect
 			// it should consistantly prevent the mob
 			// from trying to do ANYTHING except sleep
 			if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_DAMAGE))
-			&&(affect.amISource(mob))
-			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon)
-			&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
-			&&(affect.source().fetchWieldedItem()==null)
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof MOB)
-			&&(affect.target()!=affect.source())
-			&&(Dice.rollPercentage()>(((MOB)affect.target()).charStats().getSave(CharStats.SAVE_DISEASE)+70)))
-				catchIt(mob,affect.target());
+			&&(msg.amISource(mob))
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon)
+			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
+			&&(msg.source().fetchWieldedItem()==null)
+			&&(msg.target()!=null)
+			&&(msg.target() instanceof MOB)
+			&&(msg.target()!=msg.source())
+			&&(Dice.rollPercentage()>(((MOB)msg.target()).charStats().getSave(CharStats.SAVE_DISEASE)+70)))
+				catchIt(mob,msg.target());
 			else
 			if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT))
-			&&(affect.amISource(mob)||affect.amITarget(mob))
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof MOB)
-			&&(Util.bset(affect.targetCode(),Affect.MASK_MOVE)||Util.bset(affect.targetCode(),Affect.MASK_HANDS))
-			&&((affect.tool()==null)
-				||(affect.tool()!=null)
-					&&(affect.tool() instanceof Weapon)
-					&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
-				catchIt(mob,affect.amITarget(mob)?affect.source():affect.target());
+			&&(msg.amISource(mob)||msg.amITarget(mob))
+			&&(msg.target()!=null)
+			&&(msg.target() instanceof MOB)
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_MOVE)||Util.bset(msg.targetCode(),CMMsg.MASK_HANDS))
+			&&((msg.tool()==null)
+				||(msg.tool()!=null)
+					&&(msg.tool() instanceof Weapon)
+					&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
+				catchIt(mob,msg.amITarget(mob)?msg.source():msg.target());
 			else
 			if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_STD))
-			&&((affect.amITarget(mob))||(affect.amISource(mob)))
-			&&(affect.tool()!=null)
-			&&(affect.tool().ID().equals("Social"))
-			&&(affect.tool().Name().equals("MATE <T-NAME>")
-				||affect.tool().Name().equals("SEX <T-NAME>")))
-				catchIt(mob,affect.amITarget(mob)?affect.source():affect.target());
+			&&((msg.amITarget(mob))||(msg.amISource(mob)))
+			&&(msg.tool()!=null)
+			&&(msg.tool().ID().equals("Social"))
+			&&(msg.tool().Name().equals("MATE <T-NAME>")
+				||msg.tool().Name().equals("SEX <T-NAME>")))
+				catchIt(mob,msg.amITarget(mob)?msg.source():msg.target());
 		}
 		else
 		if(affected instanceof Item)
@@ -135,41 +135,41 @@ public class Disease extends StdAbility implements DiseaseAffect
 				Item myItem=(Item)affected;
 				if(myItem.owner()==null) return;
 				processing=true;
-				switch(affect.sourceMinor())
+				switch(msg.sourceMinor())
 				{
-				case Affect.TYP_DRINK:
+				case CMMsg.TYP_DRINK:
 					if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
 					||(Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
 					{
 						if((myItem instanceof Drink)
-						&&(affect.amITarget(myItem)))
-							catchIt(affect.source(),affect.source());
+						&&(msg.amITarget(myItem)))
+							catchIt(msg.source(),msg.source());
 					}
 					break;
-				case Affect.TYP_EAT:
+				case CMMsg.TYP_EAT:
 					if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
 					||(Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
 					{
 
 						if((myItem instanceof Food)
-						&&(affect.amITarget(myItem)))
-							catchIt(affect.source(),affect.source());
+						&&(msg.amITarget(myItem)))
+							catchIt(msg.source(),msg.source());
 					}
 					break;
-				case Affect.TYP_GET:
+				case CMMsg.TYP_GET:
 					if(Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT))
 					{
 						if((!(myItem instanceof Drink))
 						  &&(!(myItem instanceof Food))
-						  &&(affect.amITarget(myItem)))
-							catchIt(affect.source(),affect.source());
+						  &&(msg.amITarget(myItem)))
+							catchIt(msg.source(),msg.source());
 					}
 					break;
 				}
 			}
 			processing=false;
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -184,16 +184,16 @@ public class Disease extends StdAbility implements DiseaseAffect
 		{
 			MOB mvictim=mob.getVictim();
 			MOB tvictim=target.getVictim();
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_HANDS|Affect.MASK_MALICIOUS|Affect.TYP_DISEASE|(auto?Affect.MASK_GENERAL:0),"");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_HANDS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),"");
 			Room R=target.location();
 			if(R!=null)
-				if(R.okAffect(target,msg))
+				if(R.okMessage(target,msg))
 				{
 				    R.send(target,msg);
 					if(!msg.wasModified())
 					{
-						
-						R.show(target,null,Affect.MSG_OK_VISUAL,DISEASE_START());
+
+						R.show(target,null,CMMsg.MSG_OK_VISUAL,DISEASE_START());
 					    success=maliciousAffect(mob,target,DISEASE_TICKS(),-1);
 					}
 					if((mvictim!=target)&&(mob.getVictim()==target))

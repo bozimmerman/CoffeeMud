@@ -16,16 +16,16 @@ public class Chant_MuddyGrounds extends Chant
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(affected!=null)&&(affected instanceof Room))
-			((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The mud in '"+((Room)affected).displayText()+"' dries up.");
+			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The mud in '"+((Room)affected).displayText()+"' dries up.");
 		super.unInvoke();
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if((affected!=null)&&(affected instanceof Room))
 			affectableStats.setWeight((affectableStats.weight()*2)+1);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
@@ -39,12 +39,12 @@ public class Chant_MuddyGrounds extends Chant
 			}
 		}
 		return super.tick(ticking,tickID);
-		
+
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		
+
 		int type=mob.location().domainType();
 		if(((type&Room.INDOORS)>0)
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
@@ -63,17 +63,17 @@ public class Chant_MuddyGrounds extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,"The ground here turns to MUD!");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The ground here turns to MUD!");
 				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
-					mob.location().addNonUninvokableAffect(this);
+					mob.location().addNonUninvokableEffect(this);
 				else
 					beneficialAffect(mob,mob.location(),0);
 			}
-			
+
 		}
 		else
 			beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to the ground, but nothing happens.");

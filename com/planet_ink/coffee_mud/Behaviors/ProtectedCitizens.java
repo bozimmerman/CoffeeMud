@@ -24,10 +24,10 @@ public class ProtectedCitizens extends ActiveTicker
 
 	public ProtectedCitizens()
 	{
-		minTicks=1; 
-		maxTicks=3; 
-		chance=99; 
-		radius=7; 
+		minTicks=1;
+		maxTicks=3;
+		chance=99;
+		radius=7;
 		maxAssistance=1;
 		tickReset();
 	}
@@ -46,7 +46,7 @@ public class ProtectedCitizens extends ActiveTicker
 	{
 		if(citizenZapper!=null) return citizenZapper;
 		String s=getParmsNoTicks();
-		if(s.length()==0){ citizenZapper=""; return "";} 
+		if(s.length()==0){ citizenZapper=""; return "";}
 		char c=';';
 		int x=s.indexOf(c);
 		if(x<0){ citizenZapper=""; return "";}
@@ -58,7 +58,7 @@ public class ProtectedCitizens extends ActiveTicker
 	{
 		if(helperZapper!=null) return helperZapper;
 		String s=getParmsNoTicks();
-		if(s.length()==0){ helperZapper=""; return "";} 
+		if(s.length()==0){ helperZapper=""; return "";}
 		char c=';';
 		int x=s.indexOf(c);
 		if(x<0){ helperZapper=""; return "";}
@@ -75,7 +75,7 @@ public class ProtectedCitizens extends ActiveTicker
 		String s=getParmsNoTicks();
 		if(s.length()==0)
 		{ claims=defclaims; return claims;}
-		
+
 		char c=';';
 		int x=s.indexOf(c);
 		if(x<0)	{ claims=defclaims; return claims;}
@@ -103,9 +103,9 @@ public class ProtectedCitizens extends ActiveTicker
 
 	public boolean assistMOB(MOB mob)
 	{
-		if(mob==null) 
+		if(mob==null)
 			return false;
-		
+
 		if((!mob.isMonster())
 		||(!mob.isInCombat())
 		||(!Sense.aliveAwakeMobile(mob,true))
@@ -115,10 +115,10 @@ public class ProtectedCitizens extends ActiveTicker
 				assisters.remove(mob);
 			return false;
 		}
-		
-		if(!SaucerSupport.zapperCheck(getProtectedZapper(),mob)) 
+
+		if(!SaucerSupport.zapperCheck(getProtectedZapper(),mob))
 			return false;
-		
+
 		int assistance=0;
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
@@ -155,7 +155,7 @@ public class ProtectedCitizens extends ActiveTicker
 			&&(!M.isInCombat())
 			&&(!BrotherHelper.isBrother(mob.getVictim(),M))
 			&&(BrotherHelper.canFreelyBehaveNormal(M))
-			&&(M.fetchAffect("Skill_Track")==null)
+			&&(M.fetchEffect("Skill_Track")==null)
 			&&(Sense.canHear(M))))
 			{
 				if(M.location()==thisRoom)
@@ -169,10 +169,10 @@ public class ProtectedCitizens extends ActiveTicker
 				assistance++;
 			}
 		}
-		
+
 		if(assistance>=maxAssistance)
 			return true;
-		
+
 		for(int r=0;r<rooms.size();r++)
 		{
 			Room R=(Room)rooms.elementAt(r);
@@ -189,14 +189,14 @@ public class ProtectedCitizens extends ActiveTicker
 					&&(BrotherHelper.canFreelyBehaveNormal(M))
 					&&(!BrotherHelper.isBrother(mob.getVictim(),M))
 					&&(SaucerSupport.zapperCheck(getCityguardZapper(),M))
-					&&(M.fetchAffect("Skill_Track")==null)
+					&&(M.fetchEffect("Skill_Track")==null)
 					&&(Sense.canHear(M))))
 					{
 						boolean notAllowed=false;
 						for(Enumeration a=assisters.elements();a.hasMoreElements();)
 						{
 							Vector assers=(Vector)a.nextElement();
-							if(assers.contains(M)) 
+							if(assers.contains(M))
 							{ notAllowed=true; break;}
 						}
 						if(!notAllowed)
@@ -225,7 +225,7 @@ public class ProtectedCitizens extends ActiveTicker
 		super.tick(ticking,tickID);
 		if(canAct(ticking,tickID))
 		{
-			if(ticking instanceof MOB) 
+			if(ticking instanceof MOB)
 				assistMOB((MOB)ticking);
 			else
 			if(ticking instanceof Room)

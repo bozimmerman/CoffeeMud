@@ -34,7 +34,7 @@ public class Goblin extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if(birthType!=baseEnvStats().ability())
 				setMOBSpecifics(baseEnvStats().ability());

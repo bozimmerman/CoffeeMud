@@ -15,7 +15,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	public Environmental newInstance(){	return new Spell_IllusoryDisease();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 	private int diseaseTick=5;
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -53,12 +53,12 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 				break;
 			}
 			if(str!=null)
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,str);
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,str);
 			return true;
 		}
 		return true;
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -95,12 +95,12 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> get(s) sick!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> get(s) sick!");
 					success=maliciousAffect(mob,target,0,-1);
 				}
 			}

@@ -16,16 +16,16 @@ public class Impassable extends GenExit
 		return new Impassable();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		MOB mob=affect.source();
-		if((!affect.amITarget(this))&&(affect.tool()!=this))
+		MOB mob=msg.source();
+		if((!msg.amITarget(this))&&(msg.tool()!=this))
 			return true;
 		else
-		if(Util.bset(affect.targetMajor(),Affect.MASK_MOVE))
+		if(Util.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
 		{
 			mob.tell("You can't go that way.");
 			return false;

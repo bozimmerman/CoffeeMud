@@ -105,7 +105,7 @@ public class Spell_KnowOrigin extends Spell
 		if((success)&&(R!=null))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.tell(target.name()+" seems to come from '"+R.roomTitle()+"'.");

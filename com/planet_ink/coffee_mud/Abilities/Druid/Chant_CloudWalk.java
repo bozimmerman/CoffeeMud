@@ -23,7 +23,7 @@ public class Chant_CloudWalk extends Chant
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> float(s) down to the ground.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> float(s) down to the ground.");
 
 		super.unInvoke();
 
@@ -58,9 +58,9 @@ public class Chant_CloudWalk extends Chant
 					   &&(M.location()!=null)
 					   &&(M!=mob)
 					   &&(M.location()==mob.location())
-					   &&(M.fetchAffect(ID())==null))
+					   &&(M.fetchEffect(ID())==null))
 					{
-						M.location().show(M,null,null,Affect.MSG_OK_VISUAL,"<S-NAME> start(s) to fly around!");
+						M.location().show(M,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> start(s) to fly around!");
 						beneficialAffect(mob,M,0);
 					}
 				}
@@ -75,7 +75,7 @@ public class Chant_CloudWalk extends Chant
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			target.tell("You are already a cloud walker");
 			return false;
@@ -97,12 +97,12 @@ public class Chant_CloudWalk extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,null,Affect.MSG_OK_VISUAL,"<S-NAME> start(s) to fly around!");
+					mob.location().show(target,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> start(s) to fly around!");
 					beneficialAffect(mob,target,0);
 				}
 			}

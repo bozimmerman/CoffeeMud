@@ -63,16 +63,16 @@ public class Spell_LightSensitivity extends Spell
 			// what happened.
 			invoker=mob;
 			String autoStr="A flashing light blazes in the eyes of <T-NAME>!";
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?autoStr:"^SYou invoke a sensitive light into <T-NAME>s eyes.^?",affectType(auto),auto?autoStr:"^S<S-NAME> invoke(s) a sensitive light into your eyes.^?",Affect.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:"^S<S-NAME> invokes a sensitive light into <T-NAME>s eyes.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?autoStr:"^SYou invoke a sensitive light into <T-NAME>s eyes.^?",affectType(auto),auto?autoStr:"^S<S-NAME> invoke(s) a sensitive light into your eyes.^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:"^S<S-NAME> invokes a sensitive light into <T-NAME>s eyes.^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					if(Sense.isInDark(mob.location()))
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) extremely sensitive to light.");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) extremely sensitive to light.");
 					else
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) blinded by the light.");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) blinded by the light.");
 					if(quality()==Ability.MALICIOUS)
 						success=maliciousAffect(mob,target,0,-1);
 					else

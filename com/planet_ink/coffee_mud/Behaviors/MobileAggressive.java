@@ -11,7 +11,7 @@ public class MobileAggressive extends Mobile
 	protected int tickWait=0;
 	protected int tickDown=0;
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
-	
+
 	public Behavior newInstance()
 	{
 		return new MobileAggressive();
@@ -30,7 +30,7 @@ public class MobileAggressive extends Mobile
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.MOB_TICK) return true;
+		if(tickID!=Host.TICK_MOB) return true;
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;

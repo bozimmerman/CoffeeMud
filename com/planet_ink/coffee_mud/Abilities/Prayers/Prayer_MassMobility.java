@@ -16,31 +16,31 @@ public class Prayer_MassMobility extends Prayer
 
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
 		&&(!mob.amDead()))
 		{
-			Ability A=(Ability)affect.tool();
+			Ability A=(Ability)msg.tool();
 			MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
-			FullMsg msg=new FullMsg(newMOB,null,null,Affect.MSG_SIT,null);
+			FullMsg msg2=new FullMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
 			newMOB.recoverEnvStats();
 			try
 			{
 				A.affectEnvStats(newMOB,newMOB.envStats());
 				if((!Sense.aliveAwakeMobile(newMOB,true))
 				   ||(Util.bset(A.flags(),Ability.FLAG_BINDING))
-				   ||(!A.okAffect(newMOB,msg)))
+				   ||(!A.okMessage(newMOB,msg2)))
 				{
-					mob.location().show(mob,affect.source(),null,Affect.MSG_OK_VISUAL,"The aura around <S-NAME> repels the "+A.name()+" from <T-NAME>.");
+					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The aura around <S-NAME> repels the "+A.name()+" from <T-NAME>.");
 					return false;
 				}
 			}
@@ -79,12 +79,12 @@ public class Prayer_MassMobility extends Prayer
 		boolean success=profficiencyCheck(0,auto);
 
 		Room room=mob.location();
-		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-		if(auto) affectType=affectType|Affect.MASK_GENERAL;
+		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
+		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		if((success)&&(room!=null))
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of mobility!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<room.numInhabitants();i++)
@@ -97,7 +97,7 @@ public class Prayer_MassMobility extends Prayer
 					// affected MOB.  Then tell everyone else
 					// what happened.
 					msg=new FullMsg(mob,target,this,affectType,"Mobility is invoked upon <T-NAME>.");
-					if(mob.location().okAffect(mob,msg))
+					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
 						beneficialAffect(mob,target,0);

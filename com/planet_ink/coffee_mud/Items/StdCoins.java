@@ -102,21 +102,21 @@ public class StdCoins extends StdItem implements Coins
 		return false;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		switch(affect.targetMinor())
+		super.executeMsg(myHost,msg);
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_GET:
-		case Affect.TYP_REMOVE:
-			if((affect.amITarget(this))||((affect.tool()==this)))
+		case CMMsg.TYP_GET:
+		case CMMsg.TYP_REMOVE:
+			if((msg.amITarget(this))||((msg.tool()==this)))
 			{
 				setContainer(null);
 				unWear();
 				destroy();
-				affect.source().setMoney(affect.source().getMoney()+envStats().ability());
-				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
-					affect.source().location().recoverRoomStats();
+				msg.source().setMoney(msg.source().getMoney()+envStats().ability());
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					msg.source().location().recoverRoomStats();
 			}
 			break;
 		default:

@@ -20,7 +20,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
@@ -164,7 +164,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		building.baseEnvStats().setDamage(highestDamage+(hardness*2));
 		Ability A=CMClass.getAbility("Prop_HaveZapper");
 		A.setMiscText("-CLASS +Paladin -ALIGNMENT +Good");
-		building.addNonUninvokableAffect(A);
+		building.addNonUninvokableEffect(A);
 
 		building.recoverEnvStats();
 		building.text();
@@ -172,8 +172,8 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<6) completion=6;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

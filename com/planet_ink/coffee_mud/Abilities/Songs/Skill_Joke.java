@@ -46,7 +46,7 @@ public class Skill_Joke extends StdAbility
 				Vector insulto=Resources.getFileLineVector(Resources.getFileResource("skills"+File.separatorChar+"insulto.txt"));
 				String[] ob=new String[5];
 				String[] de=new String[5];
-				for (int cnt=1; cnt<4; cnt++) 
+				for (int cnt=1; cnt<4; cnt++)
 				{
 					ob[cnt] = (String)insulto.elementAt(Dice.roll(1,insulto.size(),-1));
 					de[cnt] = (String)insultd.elementAt(Dice.roll(1,insultd.size(),-1));
@@ -88,8 +88,8 @@ public class Skill_Joke extends StdAbility
 				}
 				str="<S-NAME> joke(s) to <T-NAMESELF>:\n\r"+joke;
 			}
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK|(auto?Affect.MASK_GENERAL:0),str);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK|(auto?CMMsg.MASK_GENERAL:0),str);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(Dice.rollPercentage()<25)
@@ -102,7 +102,7 @@ public class Skill_Joke extends StdAbility
 					Ability A=CMClass.getAbility("Disease_Giggles");
 					A.invoke(mob,target,true);
 				}
-				
+
 			}
 		}
 		else

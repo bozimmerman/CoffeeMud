@@ -26,7 +26,7 @@ public class Spell_Mirage extends Spell
 			return;
 		Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(Affect.MSG_OK_VISUAL, "The appearance of this place changes...");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, "The appearance of this place changes...");
 		super.unInvoke();
 	}
 
@@ -44,27 +44,27 @@ public class Spell_Mirage extends Spell
 		}
 		return newRoom;
 	}
-	
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof Room)
-		&&(affect.amITarget(affected))
-		&&(room().fetchAffect(ID())==null)
-		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+		&&(msg.amITarget(affected))
+		&&(room().fetchEffect(ID())==null)
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 		{
-			Affect msg=new FullMsg(affect.source(),room(),affect.tool(),
-						  affect.sourceCode(),affect.sourceMessage(),
-						  affect.targetCode(),affect.targetMessage(),
-						  affect.othersCode(),affect.othersMessage());
-			if(room().okAffect(affect.source(),msg))
+			FullMsg msg2=new FullMsg(msg.source(),room(),msg.tool(),
+						  msg.sourceCode(),msg.sourceMessage(),
+						  msg.targetCode(),msg.targetMessage(),
+						  msg.othersCode(),msg.othersMessage());
+			if(room().okMessage(msg.source(),msg2))
 			{
-				room().affect(affect.source(),msg);
+				room().executeMsg(msg.source(),msg2);
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -93,10 +93,10 @@ public class Spell_Mirage extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> speak(s) and gesture(s) dramatically!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,"The appearance of this place changes...");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The appearance of this place changes...");
 				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
 				{
@@ -106,7 +106,7 @@ public class Spell_Mirage extends Spell
 					if((newRoom!=null)&&(newRoom.roomID().length()>0)&&(!(newRoom instanceof GridLocale)))
 					{
 						A.setMiscText(CMMap.getExtendedRoomID(newRoom));
-						mob.location().addNonUninvokableAffect(A);
+						mob.location().addNonUninvokableEffect(A);
 					}
 				}
 				else

@@ -35,7 +35,7 @@ public class StdTrap extends StdAbility implements Trap
 	public boolean disabled(){
 		return (sprung&&disabled)
 			   ||(affected==null)
-			   ||(affected.fetchAffect(ID())==null);
+			   ||(affected.fetchEffect(ID())==null);
 	}
 	public void disable(){
 		disabled=true;
@@ -43,7 +43,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(!canBeUninvoked())
 		{
 			tickDown=getReset();
-			ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
+			ExternalPlay.startTickDown(this,Host.TICK_TRAP_RESET,1);
 		}
 		else
 			unInvoke();
@@ -80,22 +80,22 @@ public class StdTrap extends StdAbility implements Trap
 		return Ability.TRAP;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((!disabled())&&(affected instanceof Item))
 		{
-			if((affect.tool()==affected)
-			   &&(affect.targetMinor()==Affect.TYP_GIVE)
-			   &&(affect.targetMessage()!=null)
-			   &&(affect.target()!=null)
-			   &&(affect.target() instanceof MOB)
-			   &&(!affect.source().getGroupMembers(new Hashtable()).contains(affect.target())))
+			if((msg.tool()==affected)
+			   &&(msg.targetMinor()==CMMsg.TYP_GIVE)
+			   &&(msg.targetMessage()!=null)
+			   &&(msg.target()!=null)
+			   &&(msg.target() instanceof MOB)
+			   &&(!msg.source().getGroupMembers(new Hashtable()).contains(msg.target())))
 			{
-				affect.source().tell((MOB)affect.target(),affect.tool(),null,"<S-NAME> can't accept <T-NAME>.");
+				msg.source().tell((MOB)msg.target(),msg.tool(),null,"<S-NAME> can't accept <T-NAME>.");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void activateBomb()
@@ -105,24 +105,24 @@ public class StdTrap extends StdAbility implements Trap
 			tickDown=getReset();
 			sprung=false;
 			disabled=false;
-			ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
+			ExternalPlay.startTickDown(this,Host.TICK_TRAP_RESET,1);
 		}
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(!sprung)
 		if(Util.bset(canAffectCode(),Ability.CAN_EXITS))
 		{
-			if(affect.amITarget(affected))
+			if(msg.amITarget(affected))
 			{
 				if((affected instanceof Exit)
 				&&(((Exit)affected).hasADoor())
 				&&(((Exit)affected).hasALock())
 				&&(((Exit)affected).isLocked()))
 				{
-					if(affect.targetMinor()==Affect.TYP_UNLOCK)
-						spring(affect.source());
+					if(msg.targetMinor()==CMMsg.TYP_UNLOCK)
+						spring(msg.source());
 				}
 				else
 				if((affected instanceof Container)
@@ -130,12 +130,12 @@ public class StdTrap extends StdAbility implements Trap
 				&&(((Container)affected).hasALock())
 				&&(((Container)affected).isLocked()))
 				{
-					if(affect.targetMinor()==Affect.TYP_UNLOCK)
-						spring(affect.source());
+					if(msg.targetMinor()==CMMsg.TYP_UNLOCK)
+						spring(msg.source());
 				}
 				else
-				if(affect.targetMinor()==Affect.TYP_OPEN)
-					spring(affect.source());
+				if(msg.targetMinor()==CMMsg.TYP_OPEN)
+					spring(msg.source());
 			}
 		}
 		else
@@ -143,35 +143,35 @@ public class StdTrap extends StdAbility implements Trap
 		{
 			if(isABomb())
 			{
-				if(affect.amITarget(affected))
+				if(msg.amITarget(affected))
 				{
-					if((affect.targetMinor()==Affect.TYP_HOLD)
-					&&(affect.source().isMine(affected)))
+					if((msg.targetMinor()==CMMsg.TYP_HOLD)
+					&&(msg.source().isMine(affected)))
 					{
-						affect.source().tell(affect.source(),affected,null,"You activate <T-NAME>.");
+						msg.source().tell(msg.source(),affected,null,"You activate <T-NAME>.");
 						activateBomb();
 					}
 				}
 			}
 			else
-			if(affect.amITarget(affected))
+			if(msg.amITarget(affected))
 			{
-				if((affect.targetMinor()==Affect.TYP_GET)
-				&&(!affect.source().isMine(affected)))
-					spring(affect.source());
+				if((msg.targetMinor()==CMMsg.TYP_GET)
+				&&(!msg.source().isMine(affected)))
+					spring(msg.source());
 			}
 		}
 		else
 		if(Util.bset(canAffectCode(),Ability.CAN_ROOMS))
 		{
-			if(affect.amITarget(affected))
+			if(msg.amITarget(affected))
 			{
-				if((affect.targetMinor()==Affect.TYP_ENTER)
-				&&(!affect.source().isMine(affected)))
-					spring(affect.source());
+				if((msg.targetMinor()==CMMsg.TYP_ENTER)
+				&&(!msg.source().isMine(affected)))
+					spring(msg.source());
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 	public boolean maySetTrap(MOB mob, int asLevel)
 	{
@@ -189,7 +189,7 @@ public class StdTrap extends StdAbility implements Trap
 				mob.tell("You are not high enough level ("+trapLevel()+") to set that trap.");
 				return false;
 			}
-		if(E.fetchAffect(ID())!=null)
+		if(E.fetchEffect(ID())!=null)
 		{
 			if(mob!=null)
 				mob.tell("This trap is already set on "+E.name()+".");
@@ -232,9 +232,9 @@ public class StdTrap extends StdAbility implements Trap
 		T.setReset(rejuv);
 		T.setInvoker(mob);
 		T.setBorrowed(E,true);
-		E.addAffect(T);
+		E.addEffect(T);
 		if(!isABomb())
-			ExternalPlay.startTickDown(T,Host.TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
+			ExternalPlay.startTickDown(T,Host.TICK_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
 		return T;
 	}
 
@@ -243,14 +243,14 @@ public class StdTrap extends StdAbility implements Trap
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
 
-		if(tickID==Host.TRAP_DESTRUCTION)
+		if(tickID==Host.TICK_TRAP_DESTRUCTION)
 		{
 			if(canBeUninvoked())
 				disable();
 			return false;
 		}
 		else
-		if((tickID==Host.TRAP_RESET)&&(getReset()>0))
+		if((tickID==Host.TICK_TRAP_RESET)&&(getReset()>0))
 		{
 			if((--tickDown)<=0)
 			{
@@ -294,7 +294,7 @@ public class StdTrap extends StdAbility implements Trap
 		disabled=false;
 		tickDown=getReset();
 		if(!isABomb())
-			ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
+			ExternalPlay.startTickDown(this,Host.TICK_TRAP_RESET,1);
 	}
 
 	protected Item findFirstResource(Room room, String other)

@@ -24,22 +24,22 @@ public class Prayer_DemonicConsumption extends Prayer
 
 
 		boolean success=false;
-		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
+		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 		if(!(target instanceof Item))
 		{
 			if(!auto)
-				affectType=affectType|Affect.MASK_MALICIOUS;
+				affectType=affectType|CMMsg.MASK_MALICIOUS;
 		}
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
 		success=profficiencyCheck(-(levelDiff*20),auto);
 
-		if(auto)affectType=affectType|Affect.MASK_GENERAL;
+		if(auto)affectType=affectType|CMMsg.MASK_GENERAL;
 
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+" treacherously!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
@@ -55,14 +55,14 @@ public class Prayer_DemonicConsumption extends Prayer
 					if(target instanceof MOB)
 					{
 						if(((MOB)target).curState().getHitPoints()>0)
-							ExternalPlay.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe evil <DAMAGE> <T-NAME>!^?");
+							ExternalPlay.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe evil <DAMAGE> <T-NAME>!^?");
 						if(((MOB)target).amDead())
-							mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> <T-IS-ARE> consumed!");
+							mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> <T-IS-ARE> consumed!");
 						else
 							return false;
 					}
 					else
-						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> is consumed!");
+						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> is consumed!");
 
 					if(target instanceof Item)
 						((Item)target).destroy();

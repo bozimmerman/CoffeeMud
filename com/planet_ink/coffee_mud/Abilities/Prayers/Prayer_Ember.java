@@ -29,14 +29,14 @@ public class Prayer_Ember extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"A flaming ember assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+".  A flaming ember appears and attacks <T-NAMESELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"A flaming ember assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+".  A flaming ember appears and attacks <T-NAMESELF>!^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					int harming=Dice.roll(1,adjustedLevel(mob)+3,3);
-					ExternalPlay.postDamage(mob,target,this,harming,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The unholy ember <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The unholy ember <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

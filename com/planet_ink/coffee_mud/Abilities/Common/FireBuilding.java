@@ -116,7 +116,7 @@ public class FireBuilding extends CommonSkill
 				else
 				{
 					l.light(true);
-					mob.location().show(mob,lighting,Affect.TYP_HANDS,"<S-NAME> light(s) <T-NAMESELF>.");
+					mob.location().show(mob,lighting,CMMsg.TYP_HANDS,"<S-NAME> light(s) <T-NAMESELF>.");
 					return true;
 				}
 				return false;
@@ -180,9 +180,9 @@ public class FireBuilding extends CommonSkill
 
 		durationOfBurn=durationOfBurn*abilityCode();
 		if(completion<4) completion=4;
-		
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) building a fire.");
-		if(mob.location().okAffect(mob,msg))
+
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) building a fire.");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

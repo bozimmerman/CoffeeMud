@@ -14,9 +14,9 @@ public class Trap_MonsterCage extends StdTrap
 	protected int trapLevel(){return 10;}
 	public String requiresToSet(){return "a caged monster";}
 	public Environmental newInstance(){	return new Trap_MonsterCage();}
-	
+
 	private MOB monster=null;
-	
+
 	private Item getCagedAnimal(MOB mob)
 	{
 		if(mob==null) return null;
@@ -32,7 +32,7 @@ public class Trap_MonsterCage extends StdTrap
 		}
 		return null;
 	}
-	
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
@@ -41,10 +41,10 @@ public class Trap_MonsterCage extends StdTrap
 		setMiscText(((CagedAnimal)I).cageText());
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TRAP_RESET)&&(getReset()>0))
+		if((tickID==Host.TICK_TRAP_RESET)&&(getReset()>0))
 		{
 			// recage the motherfather
 			if((tickDown<=1)
@@ -54,15 +54,15 @@ public class Trap_MonsterCage extends StdTrap
 		}
 		return super.tick(ticking,tickID);
 	}
-	
-	
+
+
 	public void unInvoke()
 	{
 		if((monster!=null)&&(canBeUninvoked()))
 			monster.destroy();
 		super.unInvoke();
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -74,15 +74,15 @@ public class Trap_MonsterCage extends StdTrap
 		}
 		return true;
 	}
-	
+
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null)&&(text().length()>0))
 		{
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) opening a monster cage!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) opening a monster cage!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> trip(s) open a caged monster!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> trip(s) open a caged monster!"))
 			{
 				super.spring(target);
 				Item I=CMClass.getItem("GenCaged");

@@ -35,8 +35,8 @@ public class Spell_Spook extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> scare(s) <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))&&((mob.location().okAffect(mob,msg2))))
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
@@ -46,7 +46,7 @@ public class Spell_Spook extends Spell
 					{
 						if(target.location()==mob.location())
 						{
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> shake(s) in fear!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> shake(s) in fear!");
 							invoker=mob;
 							ExternalPlay.flee(target,"");
 						}

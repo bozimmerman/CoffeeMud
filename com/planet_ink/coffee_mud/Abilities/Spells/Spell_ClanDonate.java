@@ -43,14 +43,14 @@ public class Spell_ClanDonate extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" vanishes!");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" vanishes!");
 				clanDonateRoom.bringItemHere(target,Item.REFUSE_PLAYER_DROP);
 				clanDonateRoom.recoverRoomStats();
-				clanDonateRoom.showHappens(Affect.MSG_OK_VISUAL,target.name()+" appears!");
-				
+				clanDonateRoom.showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" appears!");
+
 			}
 
 		}

@@ -69,7 +69,7 @@ public class Hunting extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			activityRoom=mob.location();
@@ -130,7 +130,7 @@ public class Hunting extends CommonSkill
 					found.location().delInhabitant(found);
 					found.setLocation(null);
 					found.destroy();
-					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> <S-HAS-HAVE> lost the trail.");
+					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-HAS-HAVE> lost the trail.");
 				}
 			}
 		}
@@ -173,8 +173,8 @@ public class Hunting extends CommonSkill
 			}
 		}
 		int duration=10+(mob.envStats().level()/4);
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) hunting.");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) hunting.");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);

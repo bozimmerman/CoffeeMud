@@ -24,26 +24,26 @@ public class Disease_Amnesia extends Disease
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return 0;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Ability)
-		&&(mob.fetchAbility(affect.tool().ID())==affect.tool())
+		if((msg.amISource(mob))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
 		&&(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+10)))
 		{
-			mob.tell("You can't remember "+affect.tool().name()+"!");
+			mob.tell("You can't remember "+msg.tool().name()+"!");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

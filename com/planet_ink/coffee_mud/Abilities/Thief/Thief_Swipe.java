@@ -16,7 +16,7 @@ public class Thief_Swipe extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Swipe();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	
+
 	private DVector lastOnes=new DVector(2);
 	private int timesPicked(MOB target)
 	{
@@ -34,11 +34,11 @@ public class Thief_Swipe extends ThiefSkill
 		}
 		if(lastOnes.size()>=50)
 			lastOnes.removeElementAt(0);
-		lastOnes.addElement(target,new Integer(times+1)); 
+		lastOnes.addElement(target,new Integer(times+1));
 		return times+1;
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
@@ -51,7 +51,7 @@ public class Thief_Swipe extends ThiefSkill
 			mob.tell("Not while you are fighting!");
 			return false;
 		}
-		
+
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -73,7 +73,7 @@ public class Thief_Swipe extends ThiefSkill
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
 
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15));
 		else
 			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?1:2));
@@ -83,8 +83,8 @@ public class Thief_Swipe extends ThiefSkill
 		{
 			if(Dice.rollPercentage()>discoverChance)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the swipe; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to pick your pocket and fails!",Affect.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to pick <T-NAME>'s pocket and fails!");
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the swipe; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to pick your pocket and fails!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to pick <T-NAME>'s pocket and fails!");
+				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
@@ -104,29 +104,29 @@ public class Thief_Swipe extends ThiefSkill
 				goldTaken=target.getMoney();
 
 			String str=null;
-			int code=Affect.MSG_THIEF_ACT;
+			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if(goldTaken > 0)
 					str="<S-NAME> pick(s) <T-HIS-HER> pocket for "+goldTaken+" gold.";
 				else
 				{
 					str="<S-NAME> attempt(s) to pick <T-HIS-HER> pocket, but nothing was found to steal!";
-					code=Affect.MSG_QUIETMOVEMENT;
+					code=CMMsg.MSG_QUIETMOVEMENT;
 				}
 
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
-			int hisCode=Affect.MSG_THIEF_ACT;
+			int hisCode=CMMsg.MSG_THIEF_ACT;
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
 			else
 			{
 				str+=" <T-NAME> spots you!";
-				hisCode=hisCode|((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
+				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
 			}
 
-			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))

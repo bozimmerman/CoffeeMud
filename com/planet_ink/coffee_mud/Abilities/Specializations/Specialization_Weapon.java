@@ -15,7 +15,7 @@ public class Specialization_Weapon extends StdAbility
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	
+
 	protected boolean activated=false;
 	protected int weaponType=-1;
 	protected int secondWeaponType=-1;
@@ -23,18 +23,18 @@ public class Specialization_Weapon extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Specialization_Weapon();}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((activated)
 		&&(Dice.rollPercentage()<25)
 		&&(affected instanceof MOB)
-		&&(affect.amISource((MOB)affected))
-		&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-		&&((affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon)
-		&&((((Weapon)affect.tool()).weaponClassification()==weaponType)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&((msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon)
+		&&((((Weapon)msg.tool()).weaponClassification()==weaponType)
  		 ||(weaponType<0)
-		 ||(((Weapon)affect.tool()).weaponClassification()==secondWeaponType))))
+		 ||(((Weapon)msg.tool()).weaponClassification()==secondWeaponType))))
 			helpProfficiency((MOB)affected);
 	}
 

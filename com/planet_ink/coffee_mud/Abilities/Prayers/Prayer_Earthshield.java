@@ -41,12 +41,12 @@ public class Prayer_Earthshield extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> earth shield vanishes.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> earth shield vanishes.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
+		if(mob.fetchEffect(this.ID())!=null)
 		{
 			mob.tell("You are already affected by "+name()+".");
 			return false;
@@ -67,13 +67,13 @@ public class Prayer_Earthshield extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+".^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					success=beneficialAffect(mob,target,0);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is covered by an Earth Shield!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is covered by an Earth Shield!");
 				}
 			}
 		}

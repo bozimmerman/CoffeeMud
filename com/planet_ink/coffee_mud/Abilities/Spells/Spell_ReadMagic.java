@@ -32,12 +32,12 @@ public class Spell_ReadMagic extends Spell
 
 
 		boolean success=profficiencyCheck(0,auto);
-		if((success)&&(mob.fetchAffect(this.ID())==null))
+		if((success)&&(mob.fetchEffect(this.ID())==null))
 		{
 			Ability thisNewOne=(Ability)this.copyOf();
-			mob.addAffect(thisNewOne);
+			mob.addEffect(thisNewOne);
 			ExternalPlay.read(mob,target,"");
-			mob.delAffect(thisNewOne);
+			mob.delEffect(thisNewOne);
 		}
 		else
 			return beneficialWordsFizzle(mob,target,"^S<S-NAME> incant(s) and gazes over <T-NAMESELF>, but nothing more happens.^?");

@@ -42,29 +42,29 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		switch(this.envStats().level())
 		{
 			case SILVER_RING:
-				return Affect.TYP_COLD;
+				return CMMsg.TYP_COLD;
 			case COPPER_RING:
-				return Affect.TYP_ELECTRIC;
+				return CMMsg.TYP_ELECTRIC;
 			case PLATINUM_RING:
-				return Affect.TYP_GAS;
+				return CMMsg.TYP_GAS;
 			case GOLD_RING_DIAMOND:
-				return Affect.TYP_FIRE;
+				return CMMsg.TYP_FIRE;
 			case GOLD_RING:
-				return Affect.TYP_ACID;
+				return CMMsg.TYP_ACID;
 			case GOLD_RING_RUBY:
-				return Affect.TYP_MIND;
+				return CMMsg.TYP_MIND;
 			case BRONZE_RING:
-				return Affect.TYP_PARALYZE;
+				return CMMsg.TYP_PARALYZE;
 			case GOLD_RING_OPAL:
-				return Affect.TYP_CAST_SPELL;
+				return CMMsg.TYP_CAST_SPELL;
 			case GOLD_RING_TOPAZ:
 				return -99;
 			case GOLD_RING_SAPPHIRE:
-				return Affect.TYP_JUSTICE;
+				return CMMsg.TYP_JUSTICE;
 			case MITHRIL_RING:
-				return Affect.TYP_WEAPONATTACK;
+				return CMMsg.TYP_WEAPONATTACK;
 			case GOLD_RING_PEARL:
-				return Affect.TYP_WATER;
+				return CMMsg.TYP_WATER;
 			case GOLD_RING_EMERALD:
 				return -99;
 			default:
@@ -180,20 +180,20 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		}
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		if((affect.target()==null)||(!(affect.target() instanceof MOB)))
+		super.executeMsg(myHost,msg);
+		if((msg.target()==null)||(!(msg.target() instanceof MOB)))
 			return ;
 
-		MOB mob=(MOB)affect.target();
+		MOB mob=(MOB)msg.target();
 		if(mob!=this.owner()) return;
 
-		if((affect.targetMinor()==correctTargetMinor())
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
+		if((msg.targetMinor()==correctTargetMinor())
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(!this.amWearingAt(Item.INVENTORY))
 		&&(mob.isMine(this))
 		&&(rollChance()))
-			CommonStrings.resistanceMsgs(affect,affect.source(),mob);
+			CommonStrings.resistanceMsgs(msg,msg.source(),mob);
 	}
 }

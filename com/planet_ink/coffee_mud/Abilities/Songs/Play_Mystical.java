@@ -14,7 +14,7 @@ public class Play_Mystical extends Play
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public Environmental newInstance(){	return new Play_Mystical();}
 	protected String songOf(){return name()+" Music";}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -25,9 +25,9 @@ public class Play_Mystical extends Play
 		{
 			MOB mob=(MOB)R.fetchInhabitant(m);
 			if(mob!=null)
-			for(int i=0;i<mob.numAffects();i++)
+			for(int i=0;i<mob.numEffects();i++)
 			{
-				Ability A=mob.fetchAffect(i);
+				Ability A=mob.fetchEffect(i);
 				if((A!=null)
 				&&(A instanceof StdAbility)
 				&&(A.quality()!=Ability.MALICIOUS)

@@ -56,7 +56,7 @@ public class Chant_Shillelagh extends Chant
 			mob.tell("You cannot enchant this foreign material.");
 			return false;
 		}
-		if(((Weapon)target).fetchAffect(this.ID())!=null)
+		if(((Weapon)target).fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target.name()+" is already enchanted.");
 			return false;
@@ -73,11 +73,11 @@ public class Chant_Shillelagh extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> appear(s) enchanted!":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
-				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> glow(s)!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s)!");
 				target.recoverEnvStats();
 				mob.recoverEnvStats();
 			}

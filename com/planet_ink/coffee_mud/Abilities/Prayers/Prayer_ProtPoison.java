@@ -35,21 +35,21 @@ public class Prayer_ProtPoison extends Prayer
 		affectedStats.setStat(CharStats.SAVE_POISON,affectedStats.getStat(CharStats.SAVE_POISON)+100);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if(invoker==null) return true;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 
-		if(affect.target()==invoker)
+		if(msg.target()==invoker)
 		{
-			if((affect.tool()!=null)
+			if((msg.tool()!=null)
 			   &&(Dice.rollPercentage()>50)
-			   &&((affect.targetMinor()==Affect.TYP_POISON)))
+			   &&((msg.targetMinor()==CMMsg.TYP_POISON)))
 			{
-				affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"<S-NAME> magically repells the poison.");
+				msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> magically repells the poison.");
 				return false;
 			}
 
@@ -62,7 +62,7 @@ public class Prayer_ProtPoison extends Prayer
 	{
 		MOB target=mob;
 		if(target==null) return false;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("You already have protection from poison.");
 			return false;
@@ -83,7 +83,7 @@ public class Prayer_ProtPoison extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) a anitidotal protection.":"^S<S-NAME> "+prayWord(mob)+" for protection from poisons.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

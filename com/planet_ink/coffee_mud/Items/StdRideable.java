@@ -128,7 +128,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return "in";
 	}
-	
+
 	public String mountString(int commandType, Rider R)
 	{
 		switch(rideBasis)
@@ -147,7 +147,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_LADDER:
 			return "climb(s) onto";
 		case Rideable.RIDEABLE_SLEEP:
-			if(commandType==Affect.TYP_SIT)
+			if(commandType==CMMsg.TYP_SIT)
 				return "sit(s) down on";
 			else
 				return "lie(s) down on";
@@ -221,7 +221,7 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 		}
 	}
-	
+
 	public String displayText()
 	{
  		if((numRiders()>0)&&(stateStringSubject(this).length()>0))
@@ -250,149 +250,149 @@ public class StdRideable extends StdContainer implements Rideable
 	{
 		return riders.contains(mob);
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_ADVANCE:
+		case CMMsg.TYP_ADVANCE:
 			if((rideBasis()==Rideable.RIDEABLE_LADDER)
-			&&(amRiding(affect.source())))
+			&&(amRiding(msg.source())))
 			{
-				affect.source().tell("You cannot advance while "+stateString(affect.source())+" "+name()+"!");
+				msg.source().tell("You cannot advance while "+stateString(msg.source())+" "+name()+"!");
 				return false;
 			}
 			break;
-		case Affect.TYP_RETREAT:
+		case CMMsg.TYP_RETREAT:
 			if((rideBasis()==Rideable.RIDEABLE_LADDER)
-			&&(amRiding(affect.source())))
+			&&(amRiding(msg.source())))
 			{
-				affect.source().tell("You cannot retreat while "+stateString(affect.source())+" "+name()+"!");
+				msg.source().tell("You cannot retreat while "+stateString(msg.source())+" "+name()+"!");
 				return false;
 			}
 			break;
-		case Affect.TYP_DISMOUNT:
-			if(affect.amITarget(this))
+		case CMMsg.TYP_DISMOUNT:
+			if(msg.amITarget(this))
 			{
-				if((affect.tool()!=null)
-				   &&(affect.tool() instanceof Rider))
+				if((msg.tool()!=null)
+				   &&(msg.tool() instanceof Rider))
 				{
-					if(!amRiding((Rider)affect.tool()))
+					if(!amRiding((Rider)msg.tool()))
 					{
-						affect.source().tell(affect.tool()+" is not "+stateString((Rider)affect.tool())+" "+name()+"!");
-						if(((Rider)affect.tool()).riding()==this)
-							((Rider)affect.tool()).setRiding(null);
+						msg.source().tell(msg.tool()+" is not "+stateString((Rider)msg.tool())+" "+name()+"!");
+						if(((Rider)msg.tool()).riding()==this)
+							((Rider)msg.tool()).setRiding(null);
 						return false;
 					}
 				}
 				else
-				if(!amRiding(affect.source()))
+				if(!amRiding(msg.source()))
 				{
-					affect.source().tell("You are not "+stateString(affect.source())+" "+name()+"!");
-					if(affect.source().riding()==this)
-						affect.source().setRiding(null);
+					msg.source().tell("You are not "+stateString(msg.source())+" "+name()+"!");
+					if(msg.source().riding()==this)
+						msg.source().setRiding(null);
 					return false;
 				}
 				// protects from standard item rejection
 				return true;
 			}
 			break;
-		case Affect.TYP_SIT:
-			if(amRiding(affect.source()))
+		case CMMsg.TYP_SIT:
+			if(amRiding(msg.source()))
 			{
-				affect.source().tell("You are "+stateString(affect.source())+" "+name()+"!");
-				affect.source().setRiding(this);
+				msg.source().tell("You are "+stateString(msg.source())+" "+name()+"!");
+				msg.source().setRiding(this);
 				return false;
 			}
 			else
-			if((riding()!=affect.source())
+			if((riding()!=msg.source())
 			&&((rideBasis()==Rideable.RIDEABLE_SIT)
 			||(rideBasis()==Rideable.RIDEABLE_ENTERIN)
 			||(rideBasis()==Rideable.RIDEABLE_TABLE)
 			||(rideBasis()==Rideable.RIDEABLE_SLEEP)))
 			{
-				if(affect.amITarget(this)
+				if(msg.amITarget(this)
 				&&(numRiders()>=riderCapacity())
-				&&(!amRiding(affect.source())))
+				&&(!amRiding(msg.source())))
 				{
 					// for items
-					affect.source().tell(name()+" is full.");
+					msg.source().tell(name()+" is full.");
 					// for mobs
-					// affect.source().tell("No more can fit on "+name()+".");
+					// msg.source().tell("No more can fit on "+name()+".");
 					return false;
 				}
 				return true;
 			}
 			else
-			if(affect.amITarget(this))
+			if(msg.amITarget(this))
 			{
-				affect.source().tell("You cannot sit on "+name()+".");
+				msg.source().tell("You cannot sit on "+name()+".");
 				return false;
 			}
 			break;
-		case Affect.TYP_SLEEP:
-			if((amRiding(affect.source()))
-			&&(((!affect.amITarget(this))&&(affect.target()!=null))
+		case CMMsg.TYP_SLEEP:
+			if((amRiding(msg.source()))
+			&&(((!msg.amITarget(this))&&(msg.target()!=null))
 			   ||((rideBasis()!=Rideable.RIDEABLE_SLEEP)&&(rideBasis()!=Rideable.RIDEABLE_ENTERIN))))
 			{
-				affect.source().tell("You are "+stateString(affect.source())+" "+name()+"!");
-				affect.source().setRiding(this);
+				msg.source().tell("You are "+stateString(msg.source())+" "+name()+"!");
+				msg.source().setRiding(this);
 				return false;
 			}
 			else
-			if((riding()!=affect.source())
+			if((riding()!=msg.source())
 			&&((rideBasis()==Rideable.RIDEABLE_SLEEP)
 			||(rideBasis()==Rideable.RIDEABLE_ENTERIN)))
 			{
-				if(affect.amITarget(this)
+				if(msg.amITarget(this)
 				&&(numRiders()>=riderCapacity())
-				&&(!amRiding(affect.source())))
+				&&(!amRiding(msg.source())))
 				{
 					// for items
-					affect.source().tell(name()+" is full.");
+					msg.source().tell(name()+" is full.");
 					// for mobs
-					// affect.source().tell("No more can fit on "+name()+".");
+					// msg.source().tell("No more can fit on "+name()+".");
 					return false;
 				}
 				return true;
 			}
 			else
-			if(affect.amITarget(this))
+			if(msg.amITarget(this))
 			{
-				affect.source().tell("You cannot lie down on "+name()+".");
+				msg.source().tell("You cannot lie down on "+name()+".");
 				return false;
 			}
 			break;
-		case Affect.TYP_MOUNT:
-			if((affect.tool()!=null)
-			   &&(affect.amITarget(this))
-			   &&(affect.tool() instanceof Rider))
+		case CMMsg.TYP_MOUNT:
+			if((msg.tool()!=null)
+			   &&(msg.amITarget(this))
+			   &&(msg.tool() instanceof Rider))
 			{
-				affect.source().tell(affect.tool().name()+" can not be mounted to "+name()+"!");
+				msg.source().tell(msg.tool().name()+" can not be mounted to "+name()+"!");
 				return false;
 			}
 			else
-			if(amRiding(affect.source()))
+			if(amRiding(msg.source()))
 			{
-				affect.source().tell("You are "+stateString(affect.source())+" "+name()+"!");
-				affect.source().setRiding(this);
+				msg.source().tell("You are "+stateString(msg.source())+" "+name()+"!");
+				msg.source().setRiding(this);
 				return false;
 			}
-			if((riding()!=affect.source())
+			if((riding()!=msg.source())
 			&&((rideBasis()==Rideable.RIDEABLE_LAND)
 			   ||(rideBasis()==Rideable.RIDEABLE_AIR)
 			   ||(rideBasis()==Rideable.RIDEABLE_WAGON)
 			   ||(rideBasis()==Rideable.RIDEABLE_LADDER)
 			   ||(rideBasis()==Rideable.RIDEABLE_WATER)))
 			{
-				if(affect.amITarget(this))
+				if(msg.amITarget(this))
 				{
 					if((numRiders()>=riderCapacity())
-					&&(!amRiding(affect.source())))
+					&&(!amRiding(msg.source())))
 					{
 						// for items
-						affect.source().tell(name()+" is full.");
+						msg.source().tell(name()+" is full.");
 						// for mobs
-						// affect.source().tell("No more can fit on "+name()+".");
+						// msg.source().tell("No more can fit on "+name()+".");
 						return false;
 					}
 					// protects from standard item rejection
@@ -400,20 +400,20 @@ public class StdRideable extends StdContainer implements Rideable
 				}
 			}
 			else
-			if(affect.amITarget(this))
+			if(msg.amITarget(this))
 			{
-				affect.source().tell("You cannot mount "+name()+".");
+				msg.source().tell("You cannot mount "+name()+".");
 				return false;
 			}
 			break;
-		case Affect.TYP_ENTER:
-			if(amRiding(affect.source())
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof Room))
+		case CMMsg.TYP_ENTER:
+			if(amRiding(msg.source())
+			&&(msg.target()!=null)
+			&&(msg.target() instanceof Room))
 			{
-				Room sourceRoom=(Room)affect.source().location();
-				Room targetRoom=(Room)affect.target();
-				if((sourceRoom!=null)&&(!affect.amITarget(sourceRoom)))
+				Room sourceRoom=(Room)msg.source().location();
+				Room targetRoom=(Room)msg.target();
+				if((sourceRoom!=null)&&(!msg.amITarget(sourceRoom)))
 				{
 					boolean ok=!((targetRoom.domainType()&Room.INDOORS)>0);
 					switch(rideBasis)
@@ -432,7 +432,7 @@ public class StdRideable extends StdContainer implements Rideable
 							   ||(!(riding() instanceof MOB))
 							   ||(((MOB)riding()).baseEnvStats().weight()<(baseEnvStats().weight()/5))))
 							{
-								affect.source().tell(name()+" doesn't seem to be moving.");
+								msg.source().tell(name()+" doesn't seem to be moving.");
 								return false;
 							}
 						break;
@@ -456,118 +456,118 @@ public class StdRideable extends StdContainer implements Rideable
 					}
 					if(!ok)
 					{
-						affect.source().tell("You cannot ride "+name()+" that way.");
+						msg.source().tell("You cannot ride "+name()+" that way.");
 						return false;
 					}
-					if(Sense.isSitting(affect.source()))
+					if(Sense.isSitting(msg.source()))
 					{
-						affect.source().tell("You cannot crawl while "+stateString(affect.source())+" "+name()+".");
+						msg.source().tell("You cannot crawl while "+stateString(msg.source())+" "+name()+".");
 						return false;
 					}
 				}
 			}
 			break;
-		case Affect.TYP_GIVE:
-			if(affect.target() instanceof MOB)
+		case CMMsg.TYP_GIVE:
+			if(msg.target() instanceof MOB)
 			{
-				MOB tmob=(MOB)affect.target();
-				if((amRiding(tmob))&&(!amRiding(affect.source())))
+				MOB tmob=(MOB)msg.target();
+				if((amRiding(tmob))&&(!amRiding(msg.source())))
 				{
 					if(rideBasis()==Rideable.RIDEABLE_ENTERIN)
-						affect.source().tell(affect.source(),tmob,null,"<T-NAME> must exit first.");
+						msg.source().tell(msg.source(),tmob,null,"<T-NAME> must exit first.");
 					else
-						affect.source().tell(affect.source(),tmob,null,"<T-NAME> must disembark first.");
+						msg.source().tell(msg.source(),tmob,null,"<T-NAME> must disembark first.");
 					return false;
 				}
 			}
 			break;
-		case Affect.TYP_BUY:
-		case Affect.TYP_SELL:
-			if(amRiding(affect.source()))
+		case CMMsg.TYP_BUY:
+		case CMMsg.TYP_SELL:
+			if(amRiding(msg.source()))
 			{
-				affect.source().tell("You cannot do that while "+stateString(affect.source())+" "+name()+".");
+				msg.source().tell("You cannot do that while "+stateString(msg.source())+" "+name()+".");
 				return false;
 			}
 			break;
 		}
-		if((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
-		&&(amRiding(affect.source()))
-		&&((affect.sourceMessage()!=null)||(affect.othersMessage()!=null))
-		&&(((!CoffeeUtensils.reachableItem(affect.source(),affect.target())))
-			|| ((!CoffeeUtensils.reachableItem(affect.source(),affect.tool())))
-			|| ((affect.sourceMinor()==Affect.TYP_GIVE)&&(affect.target()!=null)&&(affect.target() instanceof MOB)&&(affect.target()!=this)&&(!amRiding((MOB)affect.target())))))
+		if((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+		&&(amRiding(msg.source()))
+		&&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
+		&&(((!CoffeeUtensils.reachableItem(msg.source(),msg.target())))
+			|| ((!CoffeeUtensils.reachableItem(msg.source(),msg.tool())))
+			|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target()!=null)&&(msg.target() instanceof MOB)&&(msg.target()!=this)&&(!amRiding((MOB)msg.target())))))
 		{
 
-			affect.source().tell("You cannot do that while "+stateString(affect.source())+" "+name()+".");
+			msg.source().tell("You cannot do that while "+stateString(msg.source())+" "+name()+".");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		switch(affect.targetMinor())
+		super.executeMsg(myHost,msg);
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_DISMOUNT:
-			if((affect.tool()!=null)
-			   &&(affect.tool() instanceof Rider))
+		case CMMsg.TYP_DISMOUNT:
+			if((msg.tool()!=null)
+			   &&(msg.tool() instanceof Rider))
 			{
-				((Rider)affect.tool()).setRiding(null);
-				if(affect.source().location()!=null)
-					affect.source().location().recoverRoomStats();
+				((Rider)msg.tool()).setRiding(null);
+				if(msg.source().location()!=null)
+					msg.source().location().recoverRoomStats();
 			}
 			else
-			if(amRiding(affect.source()))
+			if(amRiding(msg.source()))
 			{
-				affect.source().setRiding(null);
-				if(affect.source().location()!=null)
-					affect.source().location().recoverRoomStats();
+				msg.source().setRiding(null);
+				if(msg.source().location()!=null)
+					msg.source().location().recoverRoomStats();
 			}
 			break;
-		case Affect.TYP_ENTER:
-		case Affect.TYP_LEAVE:
-		case Affect.TYP_FLEE:
+		case CMMsg.TYP_ENTER:
+		case CMMsg.TYP_LEAVE:
+		case CMMsg.TYP_FLEE:
 			if((rideBasis()==Rideable.RIDEABLE_LADDER)
-			&&(amRiding(affect.source())))
+			&&(amRiding(msg.source())))
 			{
-				affect.source().setRiding(null);
-				if(affect.source().location()!=null)
-					affect.source().location().recoverRoomStats();
+				msg.source().setRiding(null);
+				if(msg.source().location()!=null)
+					msg.source().location().recoverRoomStats();
 			}
 			break;
-		case Affect.TYP_MOUNT:
-		case Affect.TYP_SIT:
-		case Affect.TYP_SLEEP:
-			if(affect.amITarget(this))
+		case CMMsg.TYP_MOUNT:
+		case CMMsg.TYP_SIT:
+		case CMMsg.TYP_SLEEP:
+			if(msg.amITarget(this))
 			{
-				if((affect.tool()!=null)
-				   &&(affect.tool() instanceof Rider))
+				if((msg.tool()!=null)
+				   &&(msg.tool() instanceof Rider))
 				{
-					((Rider)affect.tool()).setRiding(this);
-					if(affect.source().location()!=null)
-						affect.source().location().recoverRoomStats();
+					((Rider)msg.tool()).setRiding(this);
+					if(msg.source().location()!=null)
+						msg.source().location().recoverRoomStats();
 				}
 				else
-				if(!amRiding(affect.source()))
+				if(!amRiding(msg.source()))
 				{
-					affect.source().setRiding(this);
-					if(affect.source().location()!=null)
-						affect.source().location().recoverRoomStats();
+					msg.source().setRiding(this);
+					if(msg.source().location()!=null)
+						msg.source().location().recoverRoomStats();
 				}
 			}
 			break;
 		}
-		switch(affect.sourceMinor())
+		switch(msg.sourceMinor())
 		{
-		case Affect.TYP_STAND:
-		case Affect.TYP_QUIT:
-		case Affect.TYP_PANIC:
-		case Affect.TYP_DEATH:
-			if(amRiding(affect.source()))
+		case CMMsg.TYP_STAND:
+		case CMMsg.TYP_QUIT:
+		case CMMsg.TYP_PANIC:
+		case CMMsg.TYP_DEATH:
+			if(amRiding(msg.source()))
 			{
-			   affect.source().setRiding(null);
-				if(affect.source().location()!=null)
-					affect.source().location().recoverRoomStats();
+			   msg.source().setRiding(null);
+				if(msg.source().location()!=null)
+					msg.source().location().recoverRoomStats();
 			}
 			break;
 		}

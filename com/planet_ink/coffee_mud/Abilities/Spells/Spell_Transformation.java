@@ -21,7 +21,7 @@ public class Spell_Transformation extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer so brutish.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer so brutish.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -52,7 +52,7 @@ public class Spell_Transformation extends Spell
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) a large, brutish warrior!":"^S<S-NAME> incant(s), transforming into a large brutish warrior!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				inc=Dice.roll(2,4,0);

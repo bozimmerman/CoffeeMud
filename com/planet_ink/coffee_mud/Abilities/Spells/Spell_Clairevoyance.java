@@ -27,18 +27,18 @@ public class Spell_Clairevoyance extends Spell
 
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)
-		&&(affect.amISource((MOB)affected))
-		&&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING)
 		&&(invoker!=null)
-		&&(affect.target()!=null)
-		&&((((MOB)invoker).location()!=((MOB)affected).location())||(!(affect.target() instanceof Room))))
+		&&(msg.target()!=null)
+		&&((((MOB)invoker).location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
 		{
-			FullMsg newAffect=new FullMsg(invoker,affect.target(),Affect.TYP_EXAMINESOMETHING,null);
-			affect.target().affect(affect.target(),newAffect);
+			FullMsg newAffect=new FullMsg(invoker,msg.target(),CMMsg.TYP_EXAMINESOMETHING,null);
+			msg.target().executeMsg(msg.target(),newAffect);
 		}
 	}
 
@@ -102,7 +102,7 @@ public class Spell_Clairevoyance extends Spell
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) clairevoyance, calling '"+mobName+"'.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),null);
-			if((mob.location().okAffect(mob,msg))&&((newRoom==mob.location())||(newRoom.okAffect(mob,msg2))))
+			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);

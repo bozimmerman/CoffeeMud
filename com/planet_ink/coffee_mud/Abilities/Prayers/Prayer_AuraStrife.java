@@ -33,7 +33,7 @@ public class Prayer_AuraStrife extends Prayer
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(invoker()!=null)
 		&&(affected!=null)
 		&&(affected instanceof MOB))
@@ -72,7 +72,7 @@ public class Prayer_AuraStrife extends Prayer
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -92,5 +92,5 @@ public class Prayer_AuraStrife extends Prayer
 		// return whether it worked
 		return success;
 	}
-	
+
 }

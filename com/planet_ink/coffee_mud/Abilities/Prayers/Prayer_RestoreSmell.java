@@ -18,9 +18,9 @@ public class Prayer_RestoreSmell extends Prayer
 		MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numAffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++)
 		{
-			Ability A=fromMe.fetchAffect(a);
+			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)
 			{
 				newMOB.recoverEnvStats();
@@ -53,7 +53,7 @@ public class Prayer_RestoreSmell extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A visible glow surrounds the nose of <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be able to smell the roses.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)

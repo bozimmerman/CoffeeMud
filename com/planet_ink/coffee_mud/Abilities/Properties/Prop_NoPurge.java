@@ -42,14 +42,14 @@ public class Prop_NoPurge extends Property
 				((Item)affected).setDispossessionTime(0);
 		}
 	}
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if(affected!=null)
 		{
 			if(affected instanceof Room)
 			{
-				if((msg.targetMinor()==Affect.TYP_DROP)
+				if((msg.targetMinor()==CMMsg.TYP_DROP)
 				&&(msg.target()!=null)
 				&&(msg.target() instanceof Item))
 					((Item)msg.target()).setDispossessionTime(0);
@@ -57,7 +57,7 @@ public class Prop_NoPurge extends Property
 			else
 			if(affected instanceof Container)
 			{
-				if((msg.targetMinor()==Affect.TYP_PUT)
+				if((msg.targetMinor()==CMMsg.TYP_PUT)
 				&&(msg.target()!=null)
 				&&(msg.target()==affected)
 				&&(msg.target() instanceof Item)
@@ -71,7 +71,7 @@ public class Prop_NoPurge extends Property
 			else
 			if(affected instanceof Item)
 			{
-				if((msg.targetMinor()==Affect.TYP_DROP)
+				if((msg.targetMinor()==CMMsg.TYP_DROP)
 				&&(msg.target()!=null)
 				&&(msg.target() instanceof Item)
 				&&(msg.target()==affected))

@@ -30,22 +30,22 @@ public class Prayer_ElectricHealing extends Prayer
 			mob.tell("The aura of electric healing around you fades.");
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		   &&(affect.sourceMinor()==affect.TYP_ELECTRIC)
-		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+		if((msg.amITarget(mob))
+		   &&(msg.sourceMinor()==CMMsg.TYP_ELECTRIC)
+		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 		{
-			int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The electric attack heals <S-NAME> "+recovery+" points.");
-			ExternalPlay.postHealing(mob,mob,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,recovery,null);
+			int recovery=(int)Math.round(Util.div((msg.targetCode()-CMMsg.MASK_HURT),2.0));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The electric attack heals <S-NAME> "+recovery+" points.");
+			ExternalPlay.postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,recovery,null);
 			return false;
 		}
 		return true;
@@ -54,7 +54,7 @@ public class Prayer_ElectricHealing extends Prayer
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("You already healed by electricity.");
 			return false;
@@ -75,10 +75,10 @@ public class Prayer_ElectricHealing extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for electric healing.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"An aura surrounds <S-NAME>.");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"An aura surrounds <S-NAME>.");
 				beneficialAffect(mob,target,0);
 			}
 		}

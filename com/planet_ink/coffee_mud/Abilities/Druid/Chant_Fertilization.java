@@ -24,19 +24,19 @@ public class Chant_Fertilization extends Chant
 					MOB M=R.fetchInhabitant(m);
 					if(M!=null)
 					{
-						Ability A=M.fetchAffect("Farming");
-						if(A==null) A=M.fetchAffect("Foraging");
+						Ability A=M.fetchEffect("Farming");
+						if(A==null) A=M.fetchEffect("Foraging");
 						if(A!=null) A.setAbilityCode(4);
 					}
 				}
 		}
 		return super.tick(ticking,tickID);
-		
+
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		
+
 		int type=mob.location().domainType();
 		if(((type&Room.INDOORS)>0)
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
@@ -55,12 +55,12 @@ public class Chant_Fertilization extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to make the land fruitful.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob.location(),CMAble.qualifyingClassLevel(mob,this)*new Long(((Host.TIME_TICK_DELAY*Area.A_FULL_DAY)/Host.TICK_TIME)).intValue());
 			}
-			
+
 		}
 		else
 			beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to make the land fruitful, but nothing happens.");

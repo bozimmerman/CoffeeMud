@@ -29,17 +29,17 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 		return new ManualClasses();
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_READSOMETHING:
+			case CMMsg.TYP_READSOMETHING:
 				if(mob.isMine(this))
 				{
-					if(mob.fetchAffect("Spell_ReadMagic")!=null)
+					if(mob.fetchEffect("Spell_ReadMagic")!=null)
 					{
 						if(this.usesRemaining()<=0)
 							mob.tell("The markings have been read off the parchment, and are no longer discernable.");
@@ -64,7 +64,7 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 							{
 								mob.charStats().setCurrentClass(thisC);
 								mob.tell("You are now a "+thisC.name()+".");
-								mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,mob.name()+" undergoes a traumatic change.");
+								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,mob.name()+" undergoes a traumatic change.");
 							}
 						}
 					}
@@ -76,7 +76,7 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 				break;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 }

@@ -213,14 +213,14 @@ public class StdDeity extends StdMOB implements Deity
 		CMMap.addDeity(this);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,msg))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if(msg.amITarget(this))
 		switch(msg.targetMinor())
 		{
-		case Affect.TYP_SERVE:
+		case CMMsg.TYP_SERVE:
 			if(msg.source().getMyDeity()==this)
 			{
 				msg.source().tell("You already worship "+name()+".");
@@ -246,7 +246,7 @@ public class StdDeity extends StdMOB implements Deity
 				return false;
 			}
 			break;
-		case Affect.TYP_REBUKE:
+		case CMMsg.TYP_REBUKE:
 			if(!msg.source().getWorshipCharID().equals(Name()))
 			{
 				msg.source().tell("You do not worship "+name()+".");
@@ -354,7 +354,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			if((!alreadyBlessed(mob))&&(numBlessings()>0))
 			{
-				mob.location().show(this,mob,Affect.MSG_OK_VISUAL,"You feel the presence of <S-NAME> in <T-NAME>.");
+				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"You feel the presence of <S-NAME> in <T-NAME>.");
 				if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
 				{
 					for(int b=0;b<numBlessings();b++)
@@ -386,7 +386,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			if((!alreadyPowered(mob))&&(numPowers()>0))
 			{
-				mob.location().show(this,mob,Affect.MSG_OK_VISUAL,"You feel the power of <S-NAME> in <T-NAME>.");
+				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"You feel the power of <S-NAME> in <T-NAME>.");
 				Ability Power=fetchPower(Dice.roll(1,numPowers(),-1));
 				if(Power!=null)
 					bestowPower(mob,Power);
@@ -406,7 +406,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			if(numCurses()>0)
 			{
-				mob.location().show(this,mob,Affect.MSG_OK_VISUAL,"You feel the wrath of <S-NAME> in <T-NAME>.");
+				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"You feel the wrath of <S-NAME> in <T-NAME>.");
 				if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
 				{
 					for(int b=0;b<numCurses();b++)
@@ -435,14 +435,14 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if((alreadyBlessed(mob))&&(mob.location()!=null))
 		{
-			mob.location().show(this,mob,Affect.MSG_OK_VISUAL,"<S-NAME> remove(s) <S-HIS-HER> blessings from <T-NAME>.");
-			for(int a=mob.numAffects()-1;a>=0;a--)
+			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"<S-NAME> remove(s) <S-HIS-HER> blessings from <T-NAME>.");
+			for(int a=mob.numEffects()-1;a>=0;a--)
 			{
-				Ability A=mob.fetchAffect(a);
+				Ability A=mob.fetchEffect(a);
 				if((A!=null)&&(A.invoker()==this))
 				{
 					A.unInvoke();
-					mob.delAffect(A);
+					mob.delEffect(A);
 				}
 			}
 		}
@@ -452,18 +452,18 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if((alreadyPowered(mob))&&(mob.location()!=null))
 		{
-			mob.location().show(this,mob,Affect.MSG_OK_VISUAL,"<S-NAME> remove(s) <S-HIS-HER> powers from <T-NAME>.");
+			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"<S-NAME> remove(s) <S-HIS-HER> powers from <T-NAME>.");
 			for(int a=mob.numLearnedAbilities()-1;a>=0;a--)
 			{
 				Ability A=mob.fetchAbility(a);
 				if((A!=null)&&(A.isBorrowed(mob)))
 				{
 					mob.delAbility(A);
-					A=mob.fetchAffect(A.ID());
+					A=mob.fetchEffect(A.ID());
 					if(A!=null)
 					{
 						A.unInvoke();
-						mob.delAffect(A);
+						mob.delEffect(A);
 					}
 				}
 			}
@@ -472,15 +472,15 @@ public class StdDeity extends StdMOB implements Deity
 
 	public boolean alreadyBlessed(MOB mob)
 	{
-		for(int a=0;a<mob.numAffects();a++)
+		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability A=mob.fetchAffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A.invoker()==this))
 				return true;
 		}
 		return false;
 	}
-	
+
 	public boolean alreadyPowered(MOB mob)
 	{
 		if(numPowers()>0)
@@ -492,10 +492,10 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		return false;
 	}
-	
-	public static boolean triggerCheck(Affect msg, 
-									   Vector V, 
-									   Hashtable trigParts, 
+
+	public static boolean triggerCheck(CMMsg msg,
+									   Vector V,
+									   Hashtable trigParts,
 									   Hashtable trigTimes)
 	{
 		boolean recheck=false;
@@ -625,19 +625,19 @@ public class StdDeity extends StdMOB implements Deity
 		return recheck;
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if(norecurse) return;
 
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
 			{
-			case Affect.TYP_SERVE:
+			case CMMsg.TYP_SERVE:
 				msg.source().setWorshipCharID(name());
 				break;
-			case Affect.TYP_REBUKE:
+			case CMMsg.TYP_REBUKE:
 				if(msg.source().getWorshipCharID().equals(Name()))
 				{
 					msg.source().setWorshipCharID("");
@@ -744,7 +744,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&((--checkDown)<0))
 		{
 			checkDown=10;
@@ -757,16 +757,16 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						if(!SaucerSupport.zapperCheck(getClericRequirements(),M))
 						{
-							FullMsg msg=new FullMsg(M,this,null,Affect.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
-							if((M.location()!=null)&&(M.okAffect(M,msg)))
+							FullMsg msg=new FullMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+							if((M.location()!=null)&&(M.okMessage(M,msg)))
 								M.location().send(M,msg);
 						}
 					}
 					else
 					if(!SaucerSupport.zapperCheck(getWorshipRequirements(),M))
 					{
-						FullMsg msg=new FullMsg(M,this,null,Affect.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
-						if((M.location()!=null)&&(M.okAffect(M,msg)))
+						FullMsg msg=new FullMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+						if((M.location()!=null)&&(M.okMessage(M,msg)))
 							M.location().send(M,msg);
 					}
 				}
@@ -1109,24 +1109,24 @@ public class StdDeity extends StdMOB implements Deity
 	private static final int TRIGGER_RANDOM=18;
 	private static final int TRIGGER_CHECK=19;
 	private static final int[] TRIG_WATCH={
-		Affect.TYP_SPEAK,		//0
+		CMMsg.TYP_SPEAK,		//0
 		-999,					//1
-		Affect.TYP_PUT,			//2
-		Affect.TYP_FIRE,		//3
-		Affect.TYP_EAT,			//4
-		Affect.TYP_DRINK,		//5
-		Affect.TYP_ENTER,		//6
+		CMMsg.TYP_PUT,			//2
+		CMMsg.TYP_FIRE,		//3
+		CMMsg.TYP_EAT,			//4
+		CMMsg.TYP_DRINK,		//5
+		CMMsg.TYP_ENTER,		//6
 		-999,					//7
-		Affect.TYP_CAST_SPELL,  //8
-		Affect.TYP_EMOTE,		//9
-		Affect.TYP_PUT,			//10
-		Affect.TYP_PUT,			//11
-		Affect.TYP_FIRE,		//12
-		Affect.TYP_FIRE,		//13
+		CMMsg.TYP_CAST_SPELL,  //8
+		CMMsg.TYP_EMOTE,		//9
+		CMMsg.TYP_PUT,			//10
+		CMMsg.TYP_PUT,			//11
+		CMMsg.TYP_FIRE,		//12
+		CMMsg.TYP_FIRE,		//13
 		-999,					//14
 		-999,					//15
 		-999,					//16
-		Affect.TYP_READSOMETHING,//17
+		CMMsg.TYP_READSOMETHING,//17
 		-999					,//18
 		-999					//19
 	};
@@ -1141,7 +1141,7 @@ public class StdDeity extends StdMOB implements Deity
 		public String parm1=null;
 		public String parm2=null;
 	}
-	
+
 	/** Manipulation of curse objects, which includes spells, traits, skills, etc.*/
 	public void addCurse(Ability to)
 	{
@@ -1181,7 +1181,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		return (Ability)CoffeeUtensils.fetchEnvironmental(curses,ID,false);
 	}
-	
+
 	public String getClericSin()
 	{ return clericSin;}
 	public void setClericSin(String ritual)
@@ -1195,7 +1195,7 @@ public class StdDeity extends StdMOB implements Deity
 			return "The curses of "+name()+" are placed upon "+charStats().hisher()+" clerics whenever the cleric does the following: "+getTriggerDesc(clericCurseTriggers)+".";
 		return "";
 	}
-	
+
 	public String getWorshipSin()
 	{ return worshipSin;}
 	public void setWorshipSin(String ritual)
@@ -1209,7 +1209,7 @@ public class StdDeity extends StdMOB implements Deity
 			return "The curses of "+name()+" are placed upon "+charStats().hisher()+" worshippers whenever the worshipper does the following: "+getTriggerDesc(clericCurseTriggers)+".";
 		return "";
 	}
-	
+
 	/** Manipulation of granted clerical powers, which includes spells, traits, skills, etc.*/
 	/** Make sure that none of these can really be qualified for by the cleric!*/
 	/** Manipulation of curse objects, which includes spells, traits, skills, etc.*/
@@ -1251,7 +1251,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		return (Ability)CoffeeUtensils.fetchEnvironmental(powers,ID,false);
 	}
-	
+
 	public String getClericPowerup()
 	{
 		return clericPowerup;

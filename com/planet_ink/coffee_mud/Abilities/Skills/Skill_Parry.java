@@ -20,29 +20,29 @@ public class Skill_Parry extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 			doneThisRound=false;
 		return super.tick(ticking,tickID);
 	}
 
 	public Environmental newInstance(){	return new Skill_Parry();}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amITarget(mob)
+		if(msg.amITarget(mob)
 		   &&(Sense.aliveAwakeMobile(mob,true))
-		   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(!doneThisRound)
 		   &&(mob.rangeToTarget()==0))
 		{
-			if((affect.tool()!=null)&&(affect.tool() instanceof Item))
+			if((msg.tool()!=null)&&(msg.tool() instanceof Item))
 			{
-				Item attackerWeapon=(Item)affect.tool();
+				Item attackerWeapon=(Item)msg.tool();
 				Item myWeapon=mob.fetchWieldedItem();
 				if((myWeapon!=null)
 				&&(attackerWeapon!=null)
@@ -57,12 +57,12 @@ public class Skill_Parry extends StdAbility
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
+					FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
 					if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-70,false))
-					&&(mob.location().okAffect(mob,msg)))
+					&&(mob.location().okMessage(mob,msg2)))
 					{
 						doneThisRound=true;
-						mob.location().send(mob,msg);
+						mob.location().send(mob,msg2);
 						helpProfficiency(mob);
 						return false;
 					}

@@ -11,15 +11,15 @@ public class ResetWhole extends StdBehavior
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
 	protected long lastAccess=-1;
-	
+
 	public Behavior newInstance()
 	{
 		return new ResetWhole();
 	}
 
-	public void affect(Environmental E, Affect msg)
+	public void executeMsg(Environmental E, CMMsg msg)
 	{
-		super.affect(E,msg);
+		super.executeMsg(E,msg);
 		if(!msg.source().isMonster())
 		{
 			if((E instanceof Area)
@@ -31,12 +31,12 @@ public class ResetWhole extends StdBehavior
 				lastAccess=System.currentTimeMillis();
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if(lastAccess<0) return true;
-		
+
 		long time=(long)1800000;
 		try
 		{

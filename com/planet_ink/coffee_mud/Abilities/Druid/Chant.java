@@ -11,10 +11,10 @@ public class Chant extends StdAbility
 	public String name(){ return "a Druidic Chant";}
 	public String displayText(){return "(in the natural order)";}
 	protected int affectType(boolean auto){
-		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
+		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 		if(quality()==Ability.MALICIOUS)
-			affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|Affect.MASK_GENERAL;
+			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
+		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		return affectType;
 	}
 	private static final String[] triggerStrings = {"CHANT","CH"};
@@ -22,7 +22,7 @@ public class Chant extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	
+
 	public Environmental newInstance(){	return new Chant();	}
 	public int classificationCode()	{ return Ability.CHANT;	}
 
@@ -52,7 +52,7 @@ public class Chant extends StdAbility
 
 		if((appropriateToMyAlignment(mob.getAlignment()))||(auto))
 			return true;
-		
+
 		if((Dice.rollPercentage()<50))
 			return true;
 		mob.tell("Extreme emotions disrupt your chant.");

@@ -73,12 +73,12 @@ public class Age extends StdAbility
 					babe.recoverCharStats();
 					babe.recoverEnvStats();
 					babe.recoverMaxState();
-					Age A=(Age)babe.fetchAffect(ID());
+					Age A=(Age)babe.fetchEffect(ID());
 					if(A!=null) A.setMiscText(text());
 					babe.text();
 					babe.bringToLife(R,true);
 					babe.setFollowing(following);
-					R.show(babe,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
+					R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
 					((Item)affected).destroy();
 				}
 			}
@@ -109,16 +109,16 @@ public class Age extends StdAbility
 					babe.recoverEnvStats();
 					babe.recoverMaxState();
 					babe.text();
-					babe.delAffect(this);
+					babe.delEffect(this);
 				}
 			}
 		}
 		norecurse=false;
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		doThang();
 	}
 

@@ -45,10 +45,10 @@ public class Spell_MassInvisibility extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if(mob.location().okAffect(mob,msg))
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> fade(s) from view!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fade(s) from view!");
 					Spell_Invisibility spell=new Spell_Invisibility();
 					spell.setProfficiency(profficiency());
 					spell.beneficialAffect(mob,target,0);

@@ -28,7 +28,7 @@ public class Prayer_Etherealness extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> return(s) to material form.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> return(s) to material form.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -50,12 +50,12 @@ public class Prayer_Etherealness extends Prayer
 		return weight;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&(msg.targetMinor()==Affect.TYP_GET)
+		&&(msg.targetMinor()==CMMsg.TYP_GET)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof Item)
 		&&(((msg.tool()==null)||(msg.tool() instanceof MOB))))
@@ -67,7 +67,7 @@ public class Prayer_Etherealness extends Prayer
 				return false;
 			}
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -88,10 +88,10 @@ public class Prayer_Etherealness extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" that <T-NAME> be given an ethereal form.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> shimmer(s) and become(s) ethereal!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shimmer(s) and become(s) ethereal!");
 				beneficialAffect(mob,target,0);
 			}
 		}

@@ -84,28 +84,28 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(invokerMOB!=null) invoker=invokerMOB;
 
-		borrowed=true; // makes it so that the affect does not save!
+		borrowed=true; // makes it so that the effect does not save!
 
 		if(invoker()!=null)
 			tickTime=invoker().charStats().getCurrentClass().classDurationModifier(invoker(),this,tickTime);
 		if(affected instanceof MOB)
 		{
 			if(((MOB)affected).location()==null) return;
-			if(affected.fetchAffect(this.ID())==null) affected.addAffect(this);
+			if(affected.fetchEffect(this.ID())==null) affected.addEffect(this);
 			((MOB)affected).location().recoverRoomStats();
 			if(invoker()!=affected)
 				tickTime=((MOB)affected).charStats().getCurrentClass().classDurationModifier(((MOB)affected),this,tickTime);
 		}
 		else
 		{
-			if(affected.fetchAffect(this.ID())==null)
-				affected.addAffect(this);
+			if(affected.fetchEffect(this.ID())==null)
+				affected.addEffect(this);
 
 			if(affected instanceof Room)
 				((Room)affected).recoverRoomStats();
 			else
 				affected.recoverEnvStats();
-			ExternalPlay.startTickDown(this,Host.MOB_TICK,1);
+			ExternalPlay.startTickDown(this,Host.TICK_MOB,1);
 		}
 		tickDown=tickTime;
 	}
@@ -198,7 +198,7 @@ public class StdAbility implements Ability, Cloneable
 			return null;
 		}
 
-		if((target.fetchAffect(this.ID())!=null)&&(!isAutoInvoked()))
+		if((target.fetchEffect(this.ID())!=null)&&(!isAutoInvoked()))
 		{
 			if(!quiet)
 			{
@@ -243,7 +243,7 @@ public class StdAbility implements Ability, Cloneable
 			return null;
 		}
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			if(target==mob)
 				mob.tell("You are already affected by "+name()+".");
@@ -370,7 +370,7 @@ public class StdAbility implements Ability, Cloneable
 
 		if(canBeUninvoked())
 		{
-			being.delAffect(this);
+			being.delEffect(this);
 			if(being instanceof Room)
 				((Room)being).recoverRoomStats();
 			else
@@ -422,28 +422,28 @@ public class StdAbility implements Ability, Cloneable
 		if((useMana)&&(!useMoves)&&(useHits)) divider=2;
 		else
 		if((!useMana)&&(useMoves)&&(useHits)) divider=2;
-		
+
 		if(useMana){
 			usageCosts[0]=consumed/divider;
 			if(usageCosts[0]<5)	usageCosts[0]=5;
-			if(consumed==Integer.MAX_VALUE) 
+			if(consumed==Integer.MAX_VALUE)
 				usageCosts[0]=mob.maxState().getMana();
 		}
 		if(useMoves){
 			usageCosts[1]=consumed/divider;
 			if(usageCosts[1]<5)	usageCosts[1]=5;
-			if(consumed==Integer.MAX_VALUE) 
+			if(consumed==Integer.MAX_VALUE)
 				usageCosts[1]=mob.maxState().getMovement();
 		}
 		if(useHits){
 			usageCosts[2]=consumed/divider;
 			if(usageCosts[2]<5)	usageCosts[2]=5;
-			if(consumed==Integer.MAX_VALUE) 
+			if(consumed==Integer.MAX_VALUE)
 				usageCosts[2]=mob.maxState().getHitPoints();
 		}
 		return usageCosts;
 	}
-	
+
 	public int[] usageCost(MOB mob)
 	{
 		if(mob==null)
@@ -455,7 +455,7 @@ public class StdAbility implements Ability, Cloneable
 			return usage;
 		}
 		if(usageType()==Ability.USAGE_NADA) return new int[3];
-		
+
 		int diff=0;
 		int lowest=Integer.MAX_VALUE;
 		for(int c=0;c<mob.charStats().numClasses();c++)
@@ -474,7 +474,7 @@ public class StdAbility implements Ability, Cloneable
 			lowest=CMAble.lowestQualifyingLevel(ID());
 			if(lowest<0) lowest=0;
 		}
-	
+
 		int consumed=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACOST);
 		if(consumed<0) consumed=50+lowest;
 		int minimum=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANAMINCOST);
@@ -484,7 +484,7 @@ public class StdAbility implements Ability, Cloneable
 		if(overrideMana()>=0) consumed=overrideMana();
 		return buildCostArray(mob,consumed);
 	}
-	
+
 	public void helpProfficiency(MOB mob)
 	{
 		Ability A=(Ability)mob.fetchAbility(ID());
@@ -585,8 +585,8 @@ public class StdAbility implements Ability, Cloneable
 		boolean ok=true;
 		if(additionAffectCheckCode>=0)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.NO_EFFECT,additionAffectCheckCode,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.NO_EFFECT,additionAffectCheckCode,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				ok=(!msg.wasModified());
@@ -605,7 +605,7 @@ public class StdAbility implements Ability, Cloneable
 
 				if(target!=null)
 					tickAdjustmentFromStandard-=(target.envStats().level()*2);
-				
+
 				if(tickAdjustmentFromStandard>(Host.TICKS_PER_MUDDAY/2))
 					tickAdjustmentFromStandard=(int)(Host.TICKS_PER_MUDDAY/2);
 
@@ -623,8 +623,8 @@ public class StdAbility implements Ability, Cloneable
 										String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,"^T"+message+"^?");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T"+message+"^?");
+		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 
 		return false;
@@ -635,8 +635,8 @@ public class StdAbility implements Ability, Cloneable
 										  String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_OK_VISUAL,message);
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,message);
+		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 
 		return false;
@@ -647,8 +647,8 @@ public class StdAbility implements Ability, Cloneable
 									String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_OK_VISUAL|Affect.MASK_MALICIOUS,message);
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message);
+		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 
 		return false;
@@ -684,13 +684,13 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(isAutoInvoked())
 		{
-			Ability thisAbility=mob.fetchAffect(this.ID());
+			Ability thisAbility=mob.fetchEffect(this.ID());
 			if(thisAbility!=null)
 				return false;
 			Ability thatAbility=(Ability)this.copyOf();
 			((StdAbility)thatAbility).canBeUninvoked=true;
 			thatAbility.setBorrowed(mob,true);
-			mob.addAffect(thatAbility);
+			mob.addEffect(thatAbility);
 			return true;
 		}
 		return false;
@@ -731,7 +731,7 @@ public class StdAbility implements Ability, Cloneable
 		return false;
 	}
 
-	protected boolean ableOk(MOB mob, MOB target, Affect msg)
+	protected boolean ableOk(MOB mob, MOB target, CMMsg msg)
 	{
 		if((mob==null)||(mob.location()==null))
 			return false;
@@ -739,14 +739,14 @@ public class StdAbility implements Ability, Cloneable
 		if((target==null)
 		||(target.location()==null)
 		||(target.location()==mob.location()))
-			return mob.location().okAffect(mob,msg);
+			return mob.location().okMessage(mob,msg);
 
-		boolean ok=mob.location().okAffect(mob,msg);
+		boolean ok=mob.location().okMessage(mob,msg);
 		if(!ok) return false;
-		return target.okAffect(mob,msg);
+		return target.okMessage(mob,msg);
 	}
 
-	protected void ableSend(MOB mob, MOB target, Affect msg)
+	protected void ableSend(MOB mob, MOB target, CMMsg msg)
 	{
 		if((mob==null)||(mob.location()==null))
 			return;
@@ -760,7 +760,7 @@ public class StdAbility implements Ability, Cloneable
 		}
 
 		mob.location().send(mob,msg);
-		target.affect(mob,msg);
+		target.executeMsg(mob,msg);
 	}
 
 
@@ -873,7 +873,7 @@ public class StdAbility implements Ability, Cloneable
 			student.tell("You are refusing training at this time.");
 			return false;
 		}
-		
+
 		Ability yourAbility=student.fetchAbility(ID());
 		Ability teacherAbility=teacher.fetchAbility(ID());
 		if(yourAbility==null)
@@ -959,17 +959,17 @@ public class StdAbility implements Ability, Cloneable
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		return;
 	}
 
 	/** this method is used to tell the system whether
-	 * a PENDING affect may take place
+	 * a PENDING message may take place
 	 */
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		return true;
 	}
@@ -987,7 +987,7 @@ public class StdAbility implements Ability, Cloneable
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
 
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(tickDown!=Integer.MAX_VALUE)
 		&&(canBeUninvoked()))
 		{
@@ -1008,12 +1008,12 @@ public class StdAbility implements Ability, Cloneable
 	}
 	public boolean appropriateToMyAlignment(int alignment){return true;}
 
-	public void addAffect(Ability to){}
-	public void addNonUninvokableAffect(Ability to){}
-	public void delAffect(Ability to){}
-	public int numAffects(){ return 0;}
-	public Ability fetchAffect(int index){return null;}
-	public Ability fetchAffect(String ID){return null;}
+	public void addEffect(Ability to){}
+	public void addNonUninvokableEffect(Ability to){}
+	public void delEffect(Ability to){}
+	public int numEffects(){ return 0;}
+	public Ability fetchEffect(int index){return null;}
+	public Ability fetchEffect(String ID){return null;}
 	public void addBehavior(Behavior to){}
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}

@@ -24,7 +24,7 @@ public class Dance_Flamenco extends Dance
 		if(invoker==null) return false;
 
 		int hpLoss=Dice.roll(prancerLevel(),8,0)+Dice.roll((invoker().getGroupMembers(new Hashtable()).size())-1,20,0);
-		ExternalPlay.postDamage(invoker,mob,this,hpLoss,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe flamenco dance <DAMAGE> <T-NAME>!^?");
+		ExternalPlay.postDamage(invoker,mob,this,hpLoss,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe flamenco dance <DAMAGE> <T-NAME>!^?");
 		return true;
 	}
 

@@ -15,23 +15,23 @@ public class Prop_ReqCapacity extends Property
 	public String accountForYourself()
 	{ return "Capacity limit: "+Util.s_int(text());	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
-		   &&(affect.target()!=null)
-		   &&(affect.target() instanceof Room)
-		   &&(affect.targetMinor()==Affect.TYP_ENTER)
-		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
+		   &&(msg.target()!=null)
+		   &&(msg.target() instanceof Room)
+		   &&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			int capacity=2;
 			if(Util.s_int(text())>0)
 				capacity=Util.s_int(text());
-			if(((Room)affect.target()).numInhabitants()>=capacity)
+			if(((Room)msg.target()).numInhabitants()>=capacity)
 			{
-				affect.source().tell("No more people can fit in there.");
+				msg.source().tell("No more people can fit in there.");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

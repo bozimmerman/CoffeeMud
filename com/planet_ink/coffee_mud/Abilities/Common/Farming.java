@@ -29,7 +29,7 @@ public class Farming extends CommonSkill
 	{
 		if((affected!=null)
 		   &&(affected instanceof Room)
-		   &&(tickID==Host.MOB_TICK))
+		   &&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)invoker();
 			if(tickUp==6)
@@ -56,7 +56,7 @@ public class Farming extends CommonSkill
 					int amount=Dice.roll(1,20,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
-					room.showHappens(Affect.MSG_OK_VISUAL,amount+" pound"+s+" of "+foundShortName+" have grown here.");
+					room.showHappens(CMMsg.MSG_OK_VISUAL,amount+" pound"+s+" of "+foundShortName+" have grown here.");
 					for(int i=0;i<amount;i++)
 					{
 						Item newFound=(Item)found.copyOf();
@@ -97,7 +97,7 @@ public class Farming extends CommonSkill
 			commonTell(mob,"You can't plant anything indoors!");
 			return false;
 		}
-		if(mob.location().fetchAffect("Farming")!=null)
+		if(mob.location().fetchEffect("Farming")!=null)
 		{
 			commonTell(mob,"It looks like a crop is already growing here.");
 			return false;
@@ -124,7 +124,7 @@ public class Farming extends CommonSkill
 			commonTell(mob,"You don't know how to plant "+Util.combine(commands,0));
 			return false;
 		}
-		
+
 		Item mine=null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
@@ -140,17 +140,17 @@ public class Farming extends CommonSkill
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		mine.destroy();
 		if((profficiencyCheck(0,auto))&&(isPotentialCrop(mob.location(),code)))
 			found=(Item)makeResource(code,false);
 		int duration=45-mob.envStats().level();
 		if(duration<25) duration=25;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) planting "+foundShortName+".");
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) planting "+foundShortName+".");
 		verb="planting "+foundShortName;
 		displayText="You are planting "+foundShortName;
 		room=mob.location();
-		if(mob.location().okAffect(mob,msg))
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);

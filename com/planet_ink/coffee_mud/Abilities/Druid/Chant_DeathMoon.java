@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_DeathMoon extends Chant
 {
 	public String ID() { return "Chant_DeathMoon"; }
-	public String name(){ return "Death Moon";} 
+	public String name(){ return "Death Moon";}
 	public String displayText(){return "(Death Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
@@ -19,7 +19,7 @@ public class Chant_DeathMoon extends Chant
 	{
 		if(canBeUninvoked())
 			if(affected instanceof Room)
-				((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The death moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The death moon sets.");
 
 		super.unInvoke();
 
@@ -31,7 +31,7 @@ public class Chant_DeathMoon extends Chant
 		affectableStats.setSensesMask(affectableStats.sensesMask() |  EnvStats.CAN_NOT_SPEAK);
 		affectableStats.setSensesMask(affectableStats.sensesMask() |  EnvStats.CAN_NOT_HEAR);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -46,7 +46,7 @@ public class Chant_DeathMoon extends Chant
 			{
 				MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(M!=invoker))
-					ExternalPlay.postDamage(invoker,M,this,Dice.roll(1,M.envStats().level(),0),Affect.MASK_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The gaze of the death moon <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(invoker,M,this,Dice.roll(1,M.envStats().level(),0),CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The gaze of the death moon <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;
@@ -61,7 +61,7 @@ public class Chant_DeathMoon extends Chant
 			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already under the death moon.");
 			return false;
@@ -83,12 +83,12 @@ public class Chant_DeathMoon extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Death Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Death Moon Rises!");
 					beneficialAffect(mob,target,0);
 				}
 			}

@@ -41,9 +41,9 @@ public class Spell_Delude extends Spell
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already deluding others.");
 			return false;
@@ -58,7 +58,7 @@ public class Spell_Delude extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) and meditate(s).^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
@@ -66,7 +66,7 @@ public class Spell_Delude extends Spell
 					int alignment = mob.getAlignment();
 					previousAlignment=alignment;
 
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> undergo(es) a change of attitude");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> undergo(es) a change of attitude");
 					success=beneficialAffect(mob,target,0);
 					if(success)
 					{

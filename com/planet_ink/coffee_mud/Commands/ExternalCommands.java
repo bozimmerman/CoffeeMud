@@ -29,12 +29,12 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return ItemUsage.wear(mob,item,quiet);
 	}
-	
+
 	public int channelInt(String channelName)
 	{
 		return Channels.getChannelInt(channelName);
 	}
-	
+
 	public void obliterateArea(String areaName)
 	{
 		Rooms.obliterateArea(areaName);
@@ -63,7 +63,7 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return Help.getTopics(archonHelp,standardHelp);
 	}
-	
+
 	public String getOpenRoomID(String areaName)
 	{
 		return Reset.getOpenRoomID(areaName);
@@ -88,27 +88,27 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return ShopKeepers.parseShopkeeper(mob,commands,error);
 	}
-							   
-	public boolean postExperience(MOB mob, 
-								  MOB victim, 
-								  String homage, 
-								  int amount, 
+
+	public boolean postExperience(MOB mob,
+								  MOB victim,
+								  String homage,
+								  int amount,
 								  boolean quiet)
 	{
 		return TheFight.postExperience(mob,victim,homage,amount,quiet);
 	}
-	public boolean postHealing(MOB healer, 
-							   MOB target, 
-							   Environmental tool, 
+	public boolean postHealing(MOB healer,
+							   MOB target,
+							   Environmental tool,
 							   int messageCode,
 							   int healing,
 							   String allDisplayMessage)
 	{
 		return TheFight.postHealing(healer,target,tool,messageCode,healing,allDisplayMessage);
 	}
-	public void postDamage(MOB attacker, 
-						   MOB target, 
-						   Environmental weapon, 
+	public void postDamage(MOB attacker,
+						   MOB target,
+						   Environmental weapon,
 						   int damage,
 						   int messageCode,
 						   int damageType,
@@ -132,15 +132,15 @@ public class ExternalCommands implements ExternalCommand
 	{
 		TheFight.postWeaponDamage(source,target,weapon,success);
 	}
-	public void postPanic(MOB mob, Affect affect)
+	public void postPanic(MOB mob, CMMsg msg)
 	{
-		TheFight.postPanic(mob,affect);
+		TheFight.postPanic(mob,msg);
 	}
 	public void sheathIfPossible(MOB mob)
 	{
 		TheFight.sheathIfPossible(mob);
 	}
-	public void postDeath(MOB source, MOB target,Affect addHere)
+	public void postDeath(MOB source, MOB target,CMMsg addHere)
 	{
 		TheFight.postDeath(source,target,addHere);
 	}
@@ -152,7 +152,7 @@ public class ExternalCommands implements ExternalCommand
 	{ Channels.reallyChannel(mob,channelName,message,systemMsg);}
 	public void channel(String channelName, String clanID, String message, boolean systemMsg)
 	{ Channels.reallyChannel(channelName,clanID,message,systemMsg);}
-	
+
 	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
 		return TheFight.properTargets(A,caster,beRuthless);
@@ -165,7 +165,7 @@ public class ExternalCommands implements ExternalCommand
 	{
 		Movement.flee(mob,direction);
 	}
-	public void roomAffectFully(Affect msg, Room room, int dirCode)
+	public void roomAffectFully(CMMsg msg, Room room, int dirCode)
 	{
 		Movement.roomAffectFully(msg,room,dirCode);
 	}

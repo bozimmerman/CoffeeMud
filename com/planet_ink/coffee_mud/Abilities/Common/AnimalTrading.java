@@ -110,8 +110,8 @@ public class AnimalTrading extends CommonSkill
 			return false;
 		if(profficiencyCheck(0,auto))
 		{
-			FullMsg msg=new FullMsg(mob,shopkeeper,M,Affect.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAME>.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAME>.");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(taming instanceof Item)

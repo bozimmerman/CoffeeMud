@@ -62,19 +62,19 @@ public class Spell_LowerResists extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A shimmering unresistable field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering unresistable field around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(int a=0;a<target.numAffects();a++)
+				for(int a=0;a<target.numEffects();a++)
 				{
-					Ability A=target.fetchAffect(a);
+					Ability A=target.fetchEffect(a);
 					if((!A.isAutoInvoked())
 					&&(A.canBeUninvoked())
 					&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ABJURATION))
 					{
-						int x=target.numAffects();
+						int x=target.numEffects();
 						A.unInvoke();
-						if(x>target.numAffects())
+						if(x>target.numEffects())
 							a--;
 					}
 				}

@@ -55,21 +55,21 @@ public class Prayer_DrunkenStupor extends Prayer
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if(affect.source()!=affected)
+		if(msg.source()!=affected)
 			return true;
-		if(affect.source().location()==null)
+		if(msg.source().location()==null)
 			return true;
-		if((!Util.bset(affect.targetMajor(),Affect.MASK_GENERAL))
-		&&(affect.targetMajor()>0))
+		if((!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
+		&&(msg.targetMajor()>0))
 		{
-			if((affect.target() !=null)
-				&&(affect.target() instanceof MOB))
-					affect.modify(affect.source(),affect.source().location().fetchInhabitant(Dice.roll(1,affect.source().location().numInhabitants(),0)-1),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode(),affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+			if((msg.target() !=null)
+				&&(msg.target() instanceof MOB))
+					msg.modify(msg.source(),msg.source().location().fetchInhabitant(Dice.roll(1,msg.source().location().numInhabitants(),0)-1),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 		}
 		return true;
 	}
@@ -101,9 +101,9 @@ public class Prayer_DrunkenStupor extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" to inflict a drunken stupor upon <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" to inflict a drunken stupor upon <T-NAMESELF>.^?");
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
@@ -111,7 +111,7 @@ public class Prayer_DrunkenStupor extends Prayer
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,0,-1);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) a bit tipsy!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) a bit tipsy!");
 				}
 			}
 		}

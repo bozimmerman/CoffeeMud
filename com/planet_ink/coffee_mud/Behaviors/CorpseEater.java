@@ -18,7 +18,7 @@ public class CorpseEater extends ActiveTicker
 	{
 		return new CorpseEater();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -40,7 +40,7 @@ public class CorpseEater extends ActiveTicker
 					}
 					if(I instanceof Container)
 						((Container)I).emptyPlease();
-					thisRoom.show(mob,null,I,Affect.MSG_NOISYMOVEMENT,"<S-NAME> eat(s) <O-NAME>.");
+					thisRoom.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> eat(s) <O-NAME>.");
 					I.destroy();
 					return true;
 				}

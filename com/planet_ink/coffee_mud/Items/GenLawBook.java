@@ -22,29 +22,29 @@ public class GenLawBook extends GenReadable
 	{
 		return new GenLawBook();
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
-		switch(affect.targetMinor())
+		if(msg.amITarget(this))
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_WRITE:
-			if(!affect.source().isASysOp(affect.source().location()))
+		case CMMsg.TYP_WRITE:
+			if(!msg.source().isASysOp(msg.source().location()))
 			{
-				affect.source().tell("You are not allowed to write on "+name());
+				msg.source().tell("You are not allowed to write on "+name());
 				return false;
 			}
 			return true;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		if(affect.amITarget(this))
-		switch(affect.targetMinor())
+		MOB mob=msg.source();
+		if(msg.amITarget(this))
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_READSOMETHING:
+		case CMMsg.TYP_READSOMETHING:
 			if(!Sense.canBeSeenBy(this,mob))
 				mob.tell("You can't see that!");
 			else
@@ -55,7 +55,7 @@ public class GenLawBook extends GenReadable
 				if(A!=null)	VB=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 				if((VB==null)||(VB.size()==0))
 				{
-					affect.source().tell("The pages appear blank, and damaged."); 
+					msg.source().tell("The pages appear blank, and damaged.");
 					return;
 				}
 				Behavior B=(Behavior)VB.firstElement();
@@ -63,10 +63,10 @@ public class GenLawBook extends GenReadable
 				VB.addElement(new Integer(Law.MOD_LEGALINFO));
 				B.modifyBehavior(A,mob,VB);
 				Law theLaw=(Law)VB.firstElement();
-				
+
 				int which=-1;
-				if(Util.s_long(affect.targetMessage())>0)
-					which=Util.s_int(affect.targetMessage());
+				if(Util.s_long(msg.targetMessage())>0)
+					which=Util.s_int(msg.targetMessage());
 				try{
 					if(which<1)
 					{
@@ -102,7 +102,7 @@ public class GenLawBook extends GenReadable
 				}
 			}
 			return;
-		case Affect.TYP_WRITE:
+		case CMMsg.TYP_WRITE:
 			try
 			{
 				Area A=CMMap.getArea(readableText());
@@ -110,11 +110,11 @@ public class GenLawBook extends GenReadable
 				if(A!=null)	VB=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 				if((VB==null)||(VB.size()==0))
 				{
-					affect.source().tell("The pages appear blank, and too damaged to write on.");
+					msg.source().tell("The pages appear blank, and too damaged to write on.");
 					return;
 				}
 				Behavior B=(Behavior)VB.firstElement();
-				
+
 				if(!mob.isMonster())
 				{
 				}
@@ -126,9 +126,9 @@ public class GenLawBook extends GenReadable
 			}
 			return;
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
-	
+
 	public String getFromTOC(String tag)
 	{
 		Properties lawProps=(Properties)Resources.getResource("LAWBOOKTOC");
@@ -149,12 +149,12 @@ public class GenLawBook extends GenReadable
 		}
 		return "";
 	}
-	
-	public void changeTheLaw(Area A, 
-							 Behavior B, 
-							 MOB mob, 
-							 Law theLaw, 
-							 String tag, 
+
+	public void changeTheLaw(Area A,
+							 Behavior B,
+							 MOB mob,
+							 Law theLaw,
+							 String tag,
 							 String newValue)
 	{
 		theLaw.setInternalStr(tag,newValue);
@@ -177,14 +177,14 @@ public class GenLawBook extends GenReadable
 			+"Sentence";
 	}
 
-	
+
 	public final static String[][] locflags={
 		{"Only a crime if the person is not at home","!home"},
 		{"A crime ONLY if the person is at home","home"},
 		{"A crime ONLY if the person is outside and not inside","!indoors"},
 		{"A crime ONLY if the person is inside and not outside","indoors"}
 	};
-	
+
 	public final static String[][] lawflags={
 		{"Only a crime if not recently caught for it","!recently"},
 		{"A crime ONLY if witness is in the same room","witness"},
@@ -192,7 +192,7 @@ public class GenLawBook extends GenReadable
 		{"A crime ONLY if perpetrator is in combat.","combat"},
 		{"A crime ONLY if perpetrator is NOT in combat.","!combat"}
 	};
-	
+
 	public String[] modifyLaw(Area A, Behavior B, Law theLaw, MOB mob, String[] oldLaw)
 		throws IOException
 	{
@@ -212,7 +212,7 @@ public class GenLawBook extends GenReadable
 			else
 				return oldLaw;
 		}
-			
+
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("Modify Law: "+oldLaw[Law.BIT_CRIMENAME]+"\n\r\n\r");
@@ -281,7 +281,7 @@ public class GenLawBook extends GenReadable
 							lastOle="";
 							continue;
 						}
-						
+
 						boolean there=false;
 						if(oldVal.startsWith(locflags[i][1].toUpperCase())
 						||(oldVal.indexOf(" "+locflags[i][1].toUpperCase())>=0))
@@ -319,7 +319,7 @@ public class GenLawBook extends GenReadable
 							lastOle="";
 							continue;
 						}
-						
+
 						boolean there=false;
 						if(oldVal.startsWith(lawflags[i][1].toUpperCase())
 						||(oldVal.indexOf(" "+lawflags[i][1].toUpperCase())>=0))
@@ -342,7 +342,7 @@ public class GenLawBook extends GenReadable
 			}
 		}
 	}
-	
+
 	public void doIllegalEmotation(Area A, Behavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
@@ -378,7 +378,7 @@ public class GenLawBook extends GenReadable
 						for(int i=0;i<newValue.length;i++)
 						{
 							s2.append(newValue[i]);
-							if(i<(newValue.length-1)) 
+							if(i<(newValue.length-1))
 								s2.append(";");
 						}
 						changeTheLaw(A,B,mob,theLaw,"CRIME"+(theLaw.otherBits().size()+1),s2.toString());
@@ -405,7 +405,7 @@ public class GenLawBook extends GenReadable
 							for(int i=0;i<newValue.length;i++)
 							{
 								s2.append(newValue[i]);
-								if(i<(newValue.length-1)) 
+								if(i<(newValue.length-1))
 									s2.append(";");
 							}
 							changeTheLaw(A,B,mob,theLaw,crimeName,crimeWords+";"+s2.toString());
@@ -422,7 +422,7 @@ public class GenLawBook extends GenReadable
 								for(int v=0;v<newValue.length;v++)
 								{
 									s2.append(newValue[v]);
-									if(v<(newValue.length-1)) 
+									if(v<(newValue.length-1))
 										s2.append(";");
 								}
 								changeTheLaw(A,B,mob,theLaw,crimeName,crimeWords+";"+s2.toString());
@@ -437,7 +437,7 @@ public class GenLawBook extends GenReadable
 			}
 		}
 	}
-	
+
 	public void doIllegalSkill(Area A, Behavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
@@ -494,7 +494,7 @@ public class GenLawBook extends GenReadable
 							for(int i=0;i<newValue.length;i++)
 							{
 								s2.append(newValue[i]);
-								if(i<(newValue.length-1)) 
+								if(i<(newValue.length-1))
 									s2.append(";");
 							}
 							changeTheLaw(A,B,mob,theLaw,AB.ID().toUpperCase(),s2.toString());
@@ -534,7 +534,7 @@ public class GenLawBook extends GenReadable
 							for(int i=0;i<newValue.length;i++)
 							{
 								s2.append(newValue[i]);
-								if(i<(newValue.length-1)) 
+								if(i<(newValue.length-1))
 									s2.append(";");
 							}
 						changeTheLaw(A,B,mob,theLaw,crimeName,s2.toString());
@@ -546,7 +546,7 @@ public class GenLawBook extends GenReadable
 			}
 		}
 	}
-	
+
 	public void doIllegalInfluence(Area A, Behavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
@@ -555,7 +555,7 @@ public class GenLawBook extends GenReadable
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
-			str.append(Util.padRight("#  Affect",20)+" "+shortLawHeader()+"\n\r");
+			str.append(Util.padRight("#  Effect",20)+" "+shortLawHeader()+"\n\r");
 			Hashtable filteredTable=new Hashtable();
 			for(Enumeration e=theLaw.abilityCrimes().keys();e.hasMoreElements();)
 			{
@@ -603,7 +603,7 @@ public class GenLawBook extends GenReadable
 							for(int i=0;i<newValue.length;i++)
 							{
 								s2.append(newValue[i]);
-								if(i<(newValue.length-1)) 
+								if(i<(newValue.length-1))
 									s2.append(";");
 							}
 							changeTheLaw(A,B,mob,theLaw,"$"+AB.ID().toUpperCase(),s2.toString());
@@ -643,7 +643,7 @@ public class GenLawBook extends GenReadable
 							for(int i=0;i<newValue.length;i++)
 							{
 								s2.append(newValue[i]);
-								if(i<(newValue.length-1)) 
+								if(i<(newValue.length-1))
 									s2.append(";");
 							}
 						changeTheLaw(A,B,mob,theLaw,crimeName,s2.toString());
@@ -655,7 +655,7 @@ public class GenLawBook extends GenReadable
 			}
 		}
 	}
-	
+
 	public void doBasicLaw(Area A, Behavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
@@ -697,7 +697,7 @@ public class GenLawBook extends GenReadable
 						for(int i=0;i<newValue.length;i++)
 						{
 							s2.append(newValue[i]);
-							if(i<(newValue.length-1)) 
+							if(i<(newValue.length-1))
 								s2.append(";");
 						}
 					changeTheLaw(A,B,mob,theLaw,crimeName,s2.toString());
@@ -708,7 +708,7 @@ public class GenLawBook extends GenReadable
 				break;
 		}
 	}
-	
+
 	public void doParoleAndRelease(Area A, Behavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
@@ -795,8 +795,8 @@ public class GenLawBook extends GenReadable
 			}
 		}
 	}
-	
-	
+
+
 	public void doJailPolicy(Area A, Behavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
@@ -883,8 +883,8 @@ public class GenLawBook extends GenReadable
 			}
 		}
 	}
-	
-	
+
+
 	public void doTresspassingLaw(Area A, Behavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
@@ -928,7 +928,7 @@ public class GenLawBook extends GenReadable
 						for(int i=0;i<newValue.length;i++)
 						{
 							s2.append(newValue[i]);
-							if(i<(newValue.length-1)) 
+							if(i<(newValue.length-1))
 								s2.append(";");
 						}
 					changeTheLaw(A,B,mob,theLaw,"TRESPASSING",s2.toString());
@@ -937,7 +937,7 @@ public class GenLawBook extends GenReadable
 			}
 		}
 	}
-	
+
 	public void doVictimsOfCrime(Area A, Behavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
@@ -961,7 +961,7 @@ public class GenLawBook extends GenReadable
 			}
 		}
 	}
-	
+
 	public void doOfficersAndJudges(Area A, Behavior B, Law theLaw, MOB mob)
 		throws IOException
 	{

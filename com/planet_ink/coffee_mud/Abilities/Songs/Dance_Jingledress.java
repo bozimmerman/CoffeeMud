@@ -14,7 +14,7 @@ public class Dance_Jingledress extends Dance
 	public Environmental newInstance(){	return new Dance_Jingledress();}
 	protected String danceOf(){return name()+" Dance";}
 	public long flags(){return Ability.FLAG_HEALING;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -23,11 +23,11 @@ public class Dance_Jingledress extends Dance
 		MOB mob=(MOB)affected;
 		if(mob==null)
 			return false;
-		
+
 		if(invoker()!=null)
 		{
 			int healing=Dice.roll(2,adjustedLevel(invoker()),4);
-			ExternalPlay.postHealing(invoker(),mob,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,healing,null);
+			ExternalPlay.postHealing(invoker(),mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 		}
 		return true;
 	}

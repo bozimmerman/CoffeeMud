@@ -22,7 +22,7 @@ public class Disease_Magepox extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with the Magepox.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> watch(es) new mystical sores appear on <S-HIS-HER> body.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -33,7 +33,7 @@ public class Disease_Magepox extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());
 			catchIt(mob);
 			return true;
 		}
@@ -53,6 +53,6 @@ public class Disease_Magepox extends Disease
 			affectableState.setMana(0);
 		if(affected.curState().getMana()>affectableState.getMana())
 			affected.curState().setMana(affectableState.getMana());
-			
+
 	}
 }

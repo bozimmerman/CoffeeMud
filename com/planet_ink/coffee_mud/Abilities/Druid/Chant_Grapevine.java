@@ -9,24 +9,24 @@ public class Chant_Grapevine extends Chant
 {
 	public String ID() { return "Chant_Grapevine"; }
 	public String name(){ return "Grapevine";}
-	
+
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_Grapevine();}
 	Vector myChants=new Vector();
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected instanceof Item)
 		&&(((Item)affected).owner() instanceof Room)
 		&&(((Room)((Item)affected).owner()).isContent((Item)affected))
-		&&(affect.sourceMinor()==Affect.TYP_SPEAK)
+		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(invoker!=null)
 		&&(((MOB)invoker).location()!=((Room)((Item)affected).owner()))
-		&&(affect.othersMessage()!=null))
-			((MOB)invoker).affect(invoker,affect);
+		&&(msg.othersMessage()!=null))
+			((MOB)invoker).executeMsg(invoker,msg);
 	}
 
 	public void unInvoke()
@@ -43,16 +43,16 @@ public class Chant_Grapevine extends Chant
 				   &&(A.affecting() instanceof Item))
 				{
 					Item I=(Item)A.affecting();
-					I.delAffect(A);
+					I.delEffect(A);
 				}
 			}
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((mob.fetchAffect(ID())!=null)||(mob.fetchAffect("Chant_TapGrapevine")!=null))
+		if((mob.fetchEffect(ID())!=null)||(mob.fetchEffect("Chant_TapGrapevine")!=null))
 		{
 			mob.tell("You are already listening through a grapevine.");
 			return false;
@@ -78,12 +78,12 @@ public class Chant_Grapevine extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,myPlant,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF> and listen(s) carefully to <T-HIM-HER>!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				myChants=new Vector();
 				beneficialAffect(mob,mob,0);
-				Chant_Grapevine C=(Chant_Grapevine)mob.fetchAffect(ID());
+				Chant_Grapevine C=(Chant_Grapevine)mob.fetchEffect(ID());
 				if(C==null) return false;
 				for(int i=0;i<myRooms.size();i++)
 				{
@@ -92,10 +92,10 @@ public class Chant_Grapevine extends Chant
 					myPlant=Druid_MyPlants.myPlant(R,mob,ii);
 					while(myPlant!=null)
 					{
-						Ability A=myPlant.fetchAffect(ID());
-						if(A!=null) myPlant.delAffect(A);
-						myPlant.addNonUninvokableAffect((Ability)C.copyOf());
-						A=myPlant.fetchAffect(ID());
+						Ability A=myPlant.fetchEffect(ID());
+						if(A!=null) myPlant.delEffect(A);
+						myPlant.addNonUninvokableEffect((Ability)C.copyOf());
+						A=myPlant.fetchEffect(ID());
 						if(A!=null) myChants.addElement(A);
 						ii++;
 						myPlant=Druid_MyPlants.myPlant(R,mob,ii);

@@ -22,7 +22,7 @@ public class Disease_Smiles extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> start(s) smiling.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> smile(s) happily.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -35,7 +35,7 @@ public class Disease_Smiles extends Disease
 		{
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;
-			mob.delAffect(this);
+			mob.delEffect(this);
 			Ability A=CMClass.getAbility("Disease_Giggles");
 			A.invoke(diseaser,mob,true);
 		}
@@ -43,8 +43,8 @@ public class Disease_Smiles extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			Affect msg=new FullMsg(mob,null,this,Affect.MSG_QUIETMOVEMENT,DISEASE_AFFECT());
-			if((mob.location()!=null)&&(mob.location().okAffect(mob,msg)))
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,DISEASE_AFFECT());
+			if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 				mob.location().send(mob,msg);
 			catchIt(mob);
 			return true;

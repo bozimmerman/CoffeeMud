@@ -62,7 +62,7 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 				MOB target=(MOB)afftarget;
 				if(message.toUpperCase().indexOf("LEVEL ALL UP")>0)
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
 					int destLevel=CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL);
 					if(destLevel==0) destLevel=30;
 					if(destLevel<=target.baseEnvStats().level())
@@ -78,7 +78,7 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 				else
 				if(message.toUpperCase().indexOf("LEVEL UP")>0)
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
 					if(target.getExpNeededLevel()==Integer.MAX_VALUE)
 						target.charStats().getCurrentClass().level(target);
 					else
@@ -88,7 +88,7 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 				else
 				if(message.toUpperCase().indexOf("REFRESH")>0)
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell("You feel refreshed!");
@@ -97,10 +97,10 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 				else
 				if(message.toUpperCase().indexOf("BURN")>0)
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,me.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= 3;
-					ExternalPlay.postDamage(mob,target,null,(++flameDamage),Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,(me.name()+" <DAMAGE> <T-NAME>!")+CommonStrings.msp("fireball.wav",30));
+					ExternalPlay.postDamage(mob,target,null,(++flameDamage),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,(me.name()+" <DAMAGE> <T-NAME>!")+CommonStrings.msp("fireball.wav",30));
 					return;
 				}
 			}
@@ -120,25 +120,25 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		if(mob.location()==null)
 			return true;
 
-		if(affect.amITarget(this))
-		switch(affect.targetMinor())
+		if(msg.amITarget(this))
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_HOLD:
-		case Affect.TYP_WEAR:
-		case Affect.TYP_WIELD:
-		case Affect.TYP_GET:
+		case CMMsg.TYP_HOLD:
+		case CMMsg.TYP_WEAR:
+		case CMMsg.TYP_WIELD:
+		case CMMsg.TYP_GET:
 			if(mob.charStats().getClassLevel("Archon")<0)
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,name()+" flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,name()+" flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
@@ -146,26 +146,26 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		if((affect.source().location()!=null)
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&((affect.targetCode()-Affect.MASK_HURT)>0)
-		&&(affect.tool()==this)
-		&&(affect.target() instanceof MOB)
-		&&(!((MOB)affect.target()).amDead()))
+		super.executeMsg(myHost,msg);
+		if((msg.source().location()!=null)
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.tool()==this)
+		&&(msg.target() instanceof MOB)
+		&&(!((MOB)msg.target()).amDead()))
 		{
-			FullMsg msg=new FullMsg(affect.source(),(MOB)affect.target(),new ArchonStaff(),Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_FIRE,Affect.MSG_NOISYMOVEMENT,null);
-			if(affect.source().location().okAffect(affect.source(),msg))
+			FullMsg msg2=new FullMsg(msg.source(),(MOB)msg.target(),new ArchonStaff(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
-				affect.source().location().send(affect.source(), msg);
-				if(!msg.wasModified())
+				msg.source().location().send(msg.source(), msg2);
+				if(!msg2.wasModified())
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					if(!((MOB)affect.target()).amDead())
-						ExternalPlay.postDamage(affect.source(),(MOB)affect.target(),null,flameDamage,Affect.TYP_FIRE,Weapon.TYPE_BURNING,name()+" shoots a flame which <DAMAGE> <T-NAME>!");
+					if(!((MOB)msg.target()).amDead())
+						ExternalPlay.postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" shoots a flame which <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

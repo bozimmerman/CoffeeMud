@@ -19,30 +19,30 @@ public class Fighter_CritStrike extends StdAbility
 	public Environmental newInstance(){	return new Fighter_CritStrike();}
 	public int classificationCode(){return Ability.SKILL;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
-		if(affect.amISource(mob)
+		if(msg.amISource(mob)
 		&&(Sense.aliveAwakeMobile(mob,true))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.target()!=null)
-		&&(mob.getVictim()==affect.target())
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.target()!=null)
+		&&(mob.getVictim()==msg.target())
 		&&(mob.rangeToTarget()==0)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon)
-		&&(((Weapon)affect.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
-		&&(((Weapon)affect.tool()).weaponClassification()!=Weapon.CLASS_THROWN)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon)
+		&&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
+		&&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck((-90)+mob.charStats().getStat(CharStats.STRENGTH),false)))
 		{
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
-			int bonus=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),pctRecovery));
-			SaucerSupport.adjustDamageMessage(affect,bonus);
+			int bonus=(int)Math.round(Util.mul((msg.targetCode()-CMMsg.MASK_HURT),pctRecovery));
+			SaucerSupport.adjustDamageMessage(msg,bonus);
 			helpProfficiency(mob);
 		}
 		return true;

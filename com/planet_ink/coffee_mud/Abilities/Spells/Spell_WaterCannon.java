@@ -47,8 +47,8 @@ public class Spell_WaterCannon extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<S-NAME> incant(s) at <T-NAMESELF> and geyser of water blasts towards <T-HIM-HER>.");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_WATER|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -61,15 +61,15 @@ public class Spell_WaterCannon extends Spell
 					damage = (int)Math.round(Util.div(damage,2.0));
 
 				if(target.location()==mob.location())
-					ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_WATER,Weapon.TYPE_BASHING,"The water blast <DAMAGE> <T-NAME>!");
-            
+					ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The water blast <DAMAGE> <T-NAME>!");
+
 				int percentage = Dice.roll(1, 100, 0);
 				if(percentage < 10)
 				{
       				FullMsg msg3=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> is knocked down by the water cannon.");
-					if(mob.location().okAffect(mob,msg3))
+					if(mob.location().okMessage(mob,msg3))
 					{
-					   mob.location().send(mob, msg3);                  
+					   mob.location().send(mob, msg3);
 					}
 					affectEnvStats(target, target.envStats());
 				}

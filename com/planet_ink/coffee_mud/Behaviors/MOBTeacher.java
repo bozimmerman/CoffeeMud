@@ -64,7 +64,7 @@ public class MOBTeacher extends CombatAbilities
 				A2.setProfficiency(100);
 		}
 	}
-	
+
 	private void ensureCharClass()
 	{
 		setTheCharClass(myMOB,CMClass.getCharClass("StdCharClass"));
@@ -79,9 +79,9 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
 		myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
 		Vector V=Util.parse(getParms());
-		
+
 		int pct=100;
-		
+
 		A=(Ability)CMClass.getAbility(getParms());
 		if(A!=null)
 			addAbility(myMOB,A,pct,myAbles);
@@ -128,37 +128,37 @@ public class MOBTeacher extends CombatAbilities
 		ensureCharClass();
 	}
 
-	public boolean okAffect(Environmental host, Affect msg)
+	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(host instanceof MOB)
 		{
 			if(Util.bset(((MOB)host).getBitmap(),MOB.ATT_NOTEACH))
 				((MOB)host).setBitmap(Util.unsetb(((MOB)host).getBitmap(),MOB.ATT_NOTEACH));
 		}
-		return super.okAffect(host,msg);
+		return super.okMessage(host,msg);
 	}
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		if(myMOB==null) return;
-		super.affect(affecting,affect);
+		super.executeMsg(affecting,msg);
 		if(!canFreelyBehaveNormal(affecting))
 			return;
 		MOB monster=myMOB;
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 
-		if((!affect.amISource(monster))
+		if((!msg.amISource(monster))
 		&&(!mob.isMonster())
-		&&(affect.sourceMessage()!=null)
-		&&((affect.target()==null)||affect.amITarget(monster))
-		&&(affect.targetMinor()==Affect.TYP_SPEAK))
+		&&(msg.sourceMessage()!=null)
+		&&((msg.target()==null)||msg.amITarget(monster))
+		&&(msg.targetMinor()==CMMsg.TYP_SPEAK))
 		{
-			int x=affect.sourceMessage().toUpperCase().indexOf("TEACH");
+			int x=msg.sourceMessage().toUpperCase().indexOf("TEACH");
 			if(x<0)
-				x=affect.sourceMessage().toUpperCase().indexOf("GAIN ");
+				x=msg.sourceMessage().toUpperCase().indexOf("GAIN ");
 			if(x>=0)
 			{
 				boolean giveABonus=false;
-				String s=affect.sourceMessage().substring(x+5).trim();
+				String s=msg.sourceMessage().substring(x+5).trim();
 				x=s.lastIndexOf("`");
 				if(x>0) s=s.substring(0,x);
 				x=s.lastIndexOf("\'");
@@ -225,14 +225,14 @@ public class MOBTeacher extends CombatAbilities
 					return;
 				if(!myAbility.canBeLearnedBy(monster,mob))
 					return;
-				FullMsg msg=new FullMsg(monster,mob,null,Affect.MSG_SPEAK,null);
-				if(!monster.location().okAffect(monster,msg))
+				FullMsg msg2=new FullMsg(monster,mob,null,CMMsg.MSG_SPEAK,null);
+				if(!monster.location().okMessage(monster,msg2))
 					return;
-				msg=new FullMsg(monster,mob,null,Affect.MSG_OK_ACTION,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
-				if(!monster.location().okAffect(monster,msg))
+				msg2=new FullMsg(monster,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
+				if(!monster.location().okMessage(monster,msg2))
 					return;
 				myAbility.teach(monster,mob);
-				monster.location().send(monster,msg);
+				monster.location().send(monster,msg2);
 				monster.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
 				monster.baseCharStats().setStat(CharStats.WISDOM,19);
 				monster.recoverCharStats();

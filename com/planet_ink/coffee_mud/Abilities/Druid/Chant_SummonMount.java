@@ -27,19 +27,19 @@ public class Chant_SummonMount extends Chant
 		}
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==Affect.TYP_QUIT))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			unInvoke();
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(invoker!=null))
 			{
@@ -48,7 +48,7 @@ public class Chant_SummonMount extends Chant
 				||(mob.amDead())
 				||((invoker!=null)&&(mob.location()!=invoker.location())&&(invoker.riding()!=affected))))
 				{
-					mob.delAffect(this);
+					mob.delEffect(this);
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 				}
@@ -95,12 +95,12 @@ public class Chant_SummonMount extends Chant
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) humbly for a mount.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, adjustedLevel(mob));
 				target.bringToLife(newRoom,true);
-				target.location().showOthers(target,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat()) target.makePeace();
@@ -113,7 +113,7 @@ public class Chant_SummonMount extends Chant
 						mob.tell(target.name()+" seems unwilling to follow you.");
 				}
 				invoker=mob;
-				target.addNonUninvokableAffect((Ability)copyOf());
+				target.addNonUninvokableEffect((Ability)copyOf());
 			}
 		}
 		else

@@ -22,26 +22,26 @@ public class Ranger_Hide extends StdAbility
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
-			
-			if(((Util.bset(affect.sourceMajor(),Affect.MASK_SOUND)
-				 ||(affect.sourceMinor()==Affect.TYP_SPEAK)
-				 ||(affect.sourceMinor()==Affect.TYP_ENTER)
-				 ||(affect.sourceMinor()==Affect.TYP_LEAVE)
-				 ||(affect.sourceMinor()==Affect.TYP_RECALL)))
-			 &&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-			 &&(affect.sourceMinor()!=Affect.TYP_EXAMINESOMETHING)
-			 &&(affect.sourceMajor()>0))
+
+			if(((Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND)
+				 ||(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+				 ||(msg.sourceMinor()==CMMsg.TYP_ENTER)
+				 ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+				 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
+			 &&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			 &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINESOMETHING)
+			 &&(msg.sourceMajor()>0))
 			{
 				unInvoke();
 				mob.recoverEnvStats();
@@ -63,7 +63,7 @@ public class Ranger_Hide extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(mob.fetchAffect(this.ID())!=null)
+		if(mob.fetchEffect(this.ID())!=null)
 		{
 			mob.tell("You are already hiding.");
 			return false;
@@ -74,7 +74,7 @@ public class Ranger_Hide extends StdAbility
 			mob.tell("Not while in combat!");
 			return false;
 		}
-		
+
 		if((((mob.location().domainType()&Room.INDOORS)>0))&&(!auto))
 		{
 			mob.tell("You only know how to hide outdoors.");
@@ -101,7 +101,7 @@ public class Ranger_Hide extends StdAbility
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_DESERT))
 			str="You creep behind some rocks and remain completely still.";
-		   
+
 
 		boolean success=profficiencyCheck(levelDiff*10,auto);
 
@@ -109,14 +109,14 @@ public class Ranger_Hide extends StdAbility
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.MASK_MOVE),str,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Ability newOne=(Ability)this.copyOf();
-				if(mob.fetchAffect(newOne.ID())==null)
-					mob.addAffect(newOne);
+				if(mob.fetchEffect(newOne.ID())==null)
+					mob.addEffect(newOne);
 				mob.recoverEnvStats();
 			}
 			else

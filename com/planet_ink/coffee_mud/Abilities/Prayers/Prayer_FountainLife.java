@@ -25,7 +25,7 @@ public class Prayer_FountainLife extends Prayer
 		if(littleSpring==null)
 			return;
 		if(canBeUninvoked())
-			SpringLocation.showHappens(Affect.MSG_OK_VISUAL,"The fountain of life dries up.");
+			SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,"The fountain of life dries up.");
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -48,7 +48,7 @@ public class Prayer_FountainLife extends Prayer
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for the fountain of life.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String itemID = "LifeFountain";
@@ -62,7 +62,7 @@ public class Prayer_FountainLife extends Prayer
 				}
 
 				mob.location().addItem(newItem);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				SpringLocation=mob.location();
 				littleSpring=newItem;
 				beneficialAffect(mob,newItem,0);

@@ -41,20 +41,20 @@ public class StdContainer extends StdItem implements Container
 		capacity=newValue;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_PUT:
-				if((affect.tool()!=null)
-				&&(affect.tool() instanceof Item))
+			case CMMsg.TYP_PUT:
+				if((msg.tool()!=null)
+				&&(msg.tool() instanceof Item))
 				{
-					Item newitem=(Item)affect.tool();
+					Item newitem=(Item)msg.tool();
 					if(hasALid()&&(!isOpen()))
 					{
 						mob.tell(name()+" is closed.");
@@ -103,22 +103,22 @@ public class StdContainer extends StdItem implements Container
 							mob.tell(name()+" is full.");
 							return false;
 						}
-						if((!affect.source().isMine(this))&&(affect.source().isMine(newitem)))
-							if(!ExternalPlay.drop(affect.source(),newitem,true,true))
+						if((!msg.source().isMine(this))&&(msg.source().isMine(newitem)))
+							if(!ExternalPlay.drop(msg.source(),newitem,true,true))
 								return false;
 						return true;
 					}
 				}
 				break;
-			case Affect.TYP_GET:
-				if((affect.tool()!=null)
-				&&(affect.tool() instanceof Item))
+			case CMMsg.TYP_GET:
+				if((msg.tool()!=null)
+				&&(msg.tool() instanceof Item))
 				{
-					Item newitem=(Item)affect.tool();
+					Item newitem=(Item)msg.tool();
 					if(newitem.container()==this)
 					{
 						if((!Sense.canBeSeenBy(newitem,mob))
-						&&((affect.sourceMajor()&Affect.MASK_GENERAL)==0))
+						&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0))
 						{
 							mob.tell("You can't see that.");
 							return false;
@@ -163,15 +163,15 @@ public class StdContainer extends StdItem implements Container
 					return false;
 				}
 				break;
-			case Affect.TYP_REMOVE:
-				if((affect.tool()!=null)
-				&&(affect.tool() instanceof Item))
+			case CMMsg.TYP_REMOVE:
+				if((msg.tool()!=null)
+				&&(msg.tool() instanceof Item))
 				{
-					Item newitem=(Item)affect.tool();
+					Item newitem=(Item)msg.tool();
 					if(newitem.container()==this)
 					{
 						if((!Sense.canBeSeenBy(newitem,mob))
-						&&((affect.sourceMajor()&Affect.MASK_GENERAL)==0))
+						&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0))
 						{
 							mob.tell("You can't see that.");
 							return false;
@@ -192,7 +192,7 @@ public class StdContainer extends StdItem implements Container
 					}
 				}
 				break;
-			case Affect.TYP_CLOSE:
+			case CMMsg.TYP_CLOSE:
 				if(isOpen)
 				{
 					if(!hasALid)
@@ -209,7 +209,7 @@ public class StdContainer extends StdItem implements Container
 					return false;
 				}
 				//break;
-			case Affect.TYP_OPEN:
+			case CMMsg.TYP_OPEN:
 				if(!hasALid)
 				{
 					mob.tell("There is nothing to open on "+name()+".");
@@ -231,8 +231,8 @@ public class StdContainer extends StdItem implements Container
 						return true;
 				}
 				//break;
-			case Affect.TYP_LOCK:
-			case Affect.TYP_UNLOCK:
+			case CMMsg.TYP_LOCK:
+			case CMMsg.TYP_UNLOCK:
 				if(!hasALid)
 				{
 					mob.tell("There is nothing to lock or unlock on "+name()+".");
@@ -251,13 +251,13 @@ public class StdContainer extends StdItem implements Container
 				}
 				else
 				{
-					if((!isLocked)&&(affect.targetMinor()==Affect.TYP_UNLOCK))
+					if((!isLocked)&&(msg.targetMinor()==CMMsg.TYP_UNLOCK))
 					{
 						mob.tell(name()+" is not locked.");
 						return false;
 					}
 					else
-					if((isLocked)&&(affect.targetMinor()==Affect.TYP_LOCK))
+					if((isLocked)&&(msg.targetMinor()==CMMsg.TYP_LOCK))
 					{
 						mob.tell(name()+" is already locked.");
 						return false;
@@ -289,20 +289,20 @@ public class StdContainer extends StdItem implements Container
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
 
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_GET:
-			case Affect.TYP_REMOVE:
-				if((affect.tool()!=null)
-				&&(affect.tool() instanceof Item))
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_REMOVE:
+				if((msg.tool()!=null)
+				&&(msg.tool() instanceof Item))
 				{
-					Item newitem=(Item)affect.tool();
+					Item newitem=(Item)msg.tool();
 					if(newitem.container()==this)
 					{
 						newitem.setContainer(null);
@@ -314,52 +314,52 @@ public class StdContainer extends StdItem implements Container
 				{
 					setContainer(null);
 					mob.giveItem(this);
-					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 				}
 				else
 				{
 					setContainer(null);
 					unWear();
-					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 				}
 				break;
-			case Affect.TYP_PUT:
-				if((affect.tool()!=null)
-				&&(affect.tool() instanceof Item))
+			case CMMsg.TYP_PUT:
+				if((msg.tool()!=null)
+				&&(msg.tool() instanceof Item))
 				{
-					Item newitem=(Item)affect.tool();
+					Item newitem=(Item)msg.tool();
 					newitem.setContainer(this);
-					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 				}
 				break;
-			case Affect.TYP_THROW:
+			case CMMsg.TYP_THROW:
 				if((mob.isMine(this))
-				&&(affect.tool()!=null)
-				&&(affect.tool() instanceof Room))
+				&&(msg.tool()!=null)
+				&&(msg.tool() instanceof Room))
 				{
 					setContainer(null);
-					recursiveDropMOB(mob,(Room)affect.tool(),this,this instanceof DeadBody);
-					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					recursiveDropMOB(mob,(Room)msg.tool(),this,this instanceof DeadBody);
+					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					{
 						mob.location().recoverRoomStats();
-						if(mob.location()!=affect.tool())
-							((Room)affect.tool()).recoverRoomStats();
+						if(mob.location()!=msg.tool())
+							((Room)msg.tool()).recoverRoomStats();
 					}
 				}
 				break;
-			case Affect.TYP_DROP:
+			case CMMsg.TYP_DROP:
 				if(mob.isMine(this))
 				{
 					setContainer(null);
 					recursiveDropMOB(mob,mob.location(),this,this instanceof DeadBody);
-					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 				}
 				break;
-			case Affect.TYP_EXAMINESOMETHING:
+			case CMMsg.TYP_EXAMINESOMETHING:
 				if(Sense.canBeSeenBy(this,mob))
 				{
 					StringBuffer buf=new StringBuffer("");
@@ -418,21 +418,21 @@ public class StdContainer extends StdItem implements Container
 				else
 					mob.tell("You can't see that!");
 				break;
-			case Affect.TYP_CLOSE:
+			case CMMsg.TYP_CLOSE:
 				if((!hasALid)||(!isOpen)) return;
 				isOpen=false;
 				break;
-			case Affect.TYP_OPEN:
+			case CMMsg.TYP_OPEN:
 				if((!hasALid)||(isOpen)||(isLocked)) return;
 				isLocked=false;
 				isOpen=true;
 				break;
-			case Affect.TYP_LOCK:
+			case CMMsg.TYP_LOCK:
 				if((!hasALid)||(!hasALock)||(isLocked)) return;
 				isOpen=false;
 				isLocked=true;
 				break;
-			case Affect.TYP_UNLOCK:
+			case CMMsg.TYP_UNLOCK:
 				if((!hasALid)||(!hasALock)||(isOpen)||(!isLocked))
 					return;
 				isLocked=false;
@@ -441,7 +441,7 @@ public class StdContainer extends StdItem implements Container
 				break;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 	protected int recursiveWeight(Item thisContainer)
 	{

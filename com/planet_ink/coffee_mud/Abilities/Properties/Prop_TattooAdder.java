@@ -23,39 +23,39 @@ public class Prop_TattooAdder extends Property
 		if(tattooCode>=0) return tattooCode;
 		if(affected==null) return -1;
 		if(affected instanceof Drink)
-			tattooCode= Affect.TYP_DRINK;
+			tattooCode= CMMsg.TYP_DRINK;
 		else
 		if(affected instanceof Food)
-			tattooCode= Affect.TYP_EAT;
+			tattooCode= CMMsg.TYP_EAT;
 		else
 		if(affected instanceof MOB)
-			tattooCode= Affect.TYP_DEATH;
+			tattooCode= CMMsg.TYP_DEATH;
 		else
 		if(affected instanceof Weapon)
-			tattooCode= Affect.TYP_WEAPONATTACK;
+			tattooCode= CMMsg.TYP_WEAPONATTACK;
 		else
 		if(affected instanceof Armor)
-			tattooCode= Affect.TYP_WEAR;
+			tattooCode= CMMsg.TYP_WEAR;
 		else
 		if(affected instanceof Item)
-			tattooCode= Affect.TYP_GET;
+			tattooCode= CMMsg.TYP_GET;
 		else
 		if(affected instanceof Room)
-			tattooCode= Affect.TYP_ENTER;
+			tattooCode= CMMsg.TYP_ENTER;
 		else
 		if(affected instanceof Area)
-			tattooCode= Affect.TYP_ENTER;
+			tattooCode= CMMsg.TYP_ENTER;
 		else
 		if(affected instanceof Exit)
-			tattooCode= Affect.TYP_ENTER;
+			tattooCode= CMMsg.TYP_ENTER;
 		return tattooCode;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((tattooCode()>=0)
-		&&((affect.targetMinor()==tattooCode())||(affect.sourceMinor()==tattooCode()))
-		&&(affect.amITarget(affected)||((affect.tool()==affected)&&(tattooCode()!=Affect.TYP_DEATH)))
+		&&((msg.targetMinor()==tattooCode())||(msg.sourceMinor()==tattooCode()))
+		&&(msg.amITarget(affected)||((msg.tool()==affected)&&(tattooCode()!=CMMsg.TYP_DEATH)))
 		&&(text().length()>0))
 		{
 			String tattooName=text();
@@ -63,29 +63,29 @@ public class Prop_TattooAdder extends Property
 			if(tattooMinus)
 				tattooName=tattooName.substring(1);
 
-			Ability A=affect.source().fetchAbility("Prop_Tattoo");
+			Ability A=msg.source().fetchAbility("Prop_Tattoo");
 			if(A==null)
 			{
 				A=CMClass.getAbility("Prop_Tattoo");
-				affect.source().addAbility(A);
+				msg.source().addAbility(A);
 			}
 			int x=A.text().indexOf(";"+tattooName.toUpperCase()+";");
 			if(x>=0)
 			{
 				if(tattooMinus)
 				{
-					affect.source().location().showHappens(Affect.MSG_OK_ACTION,affected.name()+" takes away the "+tattooName+" tattoo from <S-NAME>.");
+					msg.source().location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" takes away the "+tattooName+" tattoo from <S-NAME>.");
 					A.setMiscText(A.text().substring(0,x+1)+A.text().substring(x+2+tattooName.length()));
 				}
 			}
 			else
 			{
-				affect.source().location().showHappens(Affect.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+tattooName+" tattoo.");
+				msg.source().location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+tattooName+" tattoo.");
 				if(A.text().length()==0)
 					A.setMiscText(";");
 				A.setMiscText(A.text()+tattooName.toUpperCase()+";");
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

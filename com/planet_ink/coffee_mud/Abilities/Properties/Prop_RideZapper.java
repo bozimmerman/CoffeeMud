@@ -17,27 +17,27 @@ public class Prop_RideZapper extends Property
 		return "Mounting restricted as follows: "+SaucerSupport.zapperDesc(miscText);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if(affected==null) return true;
 		if(!(affected instanceof Rideable)) return true;
 
-		MOB mob=affect.source();
+		MOB mob=msg.source();
 		if(mob.location()==null) return true;
 
-		if(affect.amITarget(affected))
-		switch(affect.targetMinor())
+		if(msg.amITarget(affected))
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_SIT:
-		case Affect.TYP_SLEEP:
-		case Affect.TYP_MOUNT:
-		case Affect.TYP_ENTER:
+		case CMMsg.TYP_SIT:
+		case CMMsg.TYP_SLEEP:
+		case CMMsg.TYP_MOUNT:
+		case CMMsg.TYP_ENTER:
 			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,affected,Affect.MSG_OK_VISUAL,"<O-NAME> zaps <S-NAME>, making <S-HIS-HER> jump up!");
+				mob.location().show(mob,null,affected,CMMsg.MSG_OK_VISUAL,"<O-NAME> zaps <S-NAME>, making <S-HIS-HER> jump up!");
 				return false;
 			}
 			break;

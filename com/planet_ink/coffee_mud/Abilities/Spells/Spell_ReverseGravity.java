@@ -35,7 +35,7 @@ public class Spell_ReverseGravity extends Spell
 					A.setAffectedOne(null);
 					A.setProfficiency(100);
 					A.invoke(null,null,inhab,true);
-					A=inhab.fetchAffect("Falling");
+					A=inhab.fetchEffect("Falling");
 					if(A!=null)
 						childrenAffects.addElement(A);
 				}
@@ -49,7 +49,7 @@ public class Spell_ReverseGravity extends Spell
 					A.setAffectedOne(room);
 					A.setProfficiency(100);
 					A.invoke(null,null,inhab,true);
-					A=inhab.fetchAffect("Falling");
+					A=inhab.fetchEffect("Falling");
 					if(A!=null)
 						childrenAffects.addElement(A);
 				}
@@ -68,10 +68,10 @@ public class Spell_ReverseGravity extends Spell
 			if(affected instanceof Room)
 			{
 				Room room=(Room)affected;
-				room.showHappens(Affect.MSG_OK_VISUAL, "Gravity returns to normal...");
+				room.showHappens(CMMsg.MSG_OK_VISUAL, "Gravity returns to normal...");
 				if(invoker!=null)
 				{
-					Ability me=invoker.fetchAffect(ID());
+					Ability me=invoker.fetchEffect(ID());
 					if(me!=null) me.setProfficiency(0);
 				}
 			}
@@ -81,8 +81,8 @@ public class Spell_ReverseGravity extends Spell
 				MOB mob=(MOB)affected;
 				if(mob.location()!=null)
 				{
-					mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "Gravity returns to normal..");
-					Ability me=mob.location().fetchAffect(ID());
+					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, "Gravity returns to normal..");
+					Ability me=mob.location().fetchEffect(ID());
 					if(me!=null) me.setProfficiency(0);
 				}
 			}
@@ -107,10 +107,10 @@ public class Spell_ReverseGravity extends Spell
 
 		Environmental target = mob.location();
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Gravity has already been reversed here!");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -126,7 +126,7 @@ public class Spell_ReverseGravity extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), (auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to reverse!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				childrenAffects=new Vector();
 				mob.location().send(mob,msg);

@@ -49,7 +49,7 @@ public class Disease_Cannibalism extends Disease
    }
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
-	
+
 	public void unInvoke()
 	{
 		if(affected==null)
@@ -65,8 +65,8 @@ public class Disease_Cannibalism extends Disease
 		else
 			super.unInvoke();
 	}
-   
-	public boolean okAffect(Environmental myHost, Affect msg)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
@@ -74,14 +74,14 @@ public class Disease_Cannibalism extends Disease
          if(source == null)
             return false;
 			MOB mob=(MOB)affected;
-         if(msg.targetMinor() == Affect.TYP_EAT)
+         if(msg.targetMinor() == CMMsg.TYP_EAT)
          {
             Environmental food = msg.target();
             if((food!=null)
 			&&(food.name().toLowerCase().indexOf(mob.charStats().raceName()) < 0))
             {
-				FullMsg newMessage=new FullMsg(mob,null,this,Affect.MSG_OK_VISUAL,"^S<S-NAME> attempt(s) to eat "+ food.Name() +", but can't stomach it....^?");
-				if(mob.location().okAffect(mob,newMessage))
+				FullMsg newMessage=new FullMsg(mob,null,this,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> attempt(s) to eat "+ food.Name() +", but can't stomach it....^?");
+				if(mob.location().okMessage(mob,newMessage))
 					mob.location().send(mob,newMessage);
 				return false;
             }
@@ -99,6 +99,6 @@ public class Disease_Cannibalism extends Disease
 			}
 		}
 
-      return super.okAffect(myHost,msg);
+      return super.okMessage(myHost,msg);
 	}
 }

@@ -26,7 +26,7 @@ public class Spell_Disenchant extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				boolean doneSomething=false;
@@ -68,9 +68,9 @@ public class Spell_Disenchant extends Spell
 				}
 
 				Vector affects=new Vector();
-				for(int a=target.numAffects()-1;a>=0;a--)
+				for(int a=target.numEffects()-1;a>=0;a--)
 				{
-					Ability A=target.fetchAffect(a);
+					Ability A=target.fetchEffect(a);
 					if(A!=null)
 						affects.addElement(A);
 				}
@@ -79,13 +79,13 @@ public class Spell_Disenchant extends Spell
 					Ability A=(Ability)affects.elementAt(a);
 					A.unInvoke();
 					level=level-1;
-					target.delAffect(A);
+					target.delEffect(A);
 					doneSomething=true;
 				}
 
 				if(doneSomething)
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> fades and becomes dull!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fades and becomes dull!");
 					if((target.baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS)
 						target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()-EnvStats.IS_BONUS);
 					if(level<=0) level=1;

@@ -26,8 +26,8 @@ public class Skill_Recall extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,mob.getStartRoom(),this,Affect.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> recall(s) body and spirit to the Java Plain!");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,mob.getStartRoom(),this,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> recall(s) body and spirit to the Java Plain!");
+			if(mob.location().okMessage(mob,msg))
 			{
 				if(mob.isInCombat())
 					ExternalPlay.flee(mob,"NOWHERE");
@@ -37,8 +37,8 @@ public class Skill_Recall extends StdAbility
 					MOB follower=mob.fetchFollower(f);
 					if((follower!=null)&&(follower.isMonster())&&(follower.location()!=null))
 					{
-						FullMsg msg2=new FullMsg(follower,mob.getStartRoom(),this,Affect.MASK_MOVE|Affect.TYP_RECALL,"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
-						if(follower.location().okAffect(follower,msg2))
+						FullMsg msg2=new FullMsg(follower,mob.getStartRoom(),this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
+						if(follower.location().okMessage(follower,msg2))
 						{
 							if(follower.isInCombat()) ExternalPlay.flee(follower,"NOWHERE");
 							follower.location().send(follower,msg2);

@@ -507,15 +507,15 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
         }
     }
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		if(!affect.amITarget(this))
-			super.affect(myHost,affect);
+		MOB mob=msg.source();
+		if(!msg.amITarget(this))
+			super.executeMsg(myHost,msg);
 		else
-		switch(affect.targetMinor())
+		switch(msg.targetMinor())
 		{
-		case Affect.TYP_READSOMETHING:
+		case CMMsg.TYP_READSOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				StringBuffer map[][]=getMyMappedRoom();
@@ -528,13 +528,13 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 					int x=0;
 					int y=0;
 					String sec="A0";
-					if((affect.targetMessage().length()>0)&&(!affect.targetMessage().startsWith("<S-NAME>")))
+					if((msg.targetMessage().length()>0)&&(!msg.targetMessage().startsWith("<S-NAME>")))
 					{
 						sec="";
 						boolean trans=false;
-						for(int i=0;i<affect.targetMessage().length();i++)
+						for(int i=0;i<msg.targetMessage().length();i++)
 						{
-							char c=affect.targetMessage().charAt(i);
+							char c=msg.targetMessage().charAt(i);
 							if(Character.isDigit(c))
 							{
 								trans=true;
@@ -575,7 +575,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 				mob.tell("You can't see that!");
 			return;
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	public void placeRoom(MapRoom room,

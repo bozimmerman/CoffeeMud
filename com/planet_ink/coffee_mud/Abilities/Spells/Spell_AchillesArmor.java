@@ -25,79 +25,79 @@ public class Spell_AchillesArmor extends Spell
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> Achilles Armor is now gone.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> Achilles Armor is now gone.");
 
 		super.unInvoke();
 
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		&&(affect.source()!=affect.target())
+		if((msg.amITarget(mob))
+		&&(msg.source()!=msg.target())
 		&&(mob.location()!=null)
-		&&(mob.location().isInhabitant(affect.source()))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&((affect.targetCode()-Affect.MASK_HURT)>0)
+		&&(mob.location().isInhabitant(msg.source()))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
 		&&(!mob.amDead()))
 		{
 			int weaponType=-1;
-			if((affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon))
-			   weaponType=((Weapon)affect.tool()).weaponType();
+			if((msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon))
+			   weaponType=((Weapon)msg.tool()).weaponType();
 			else
-			switch(affect.sourceMinor())
+			switch(msg.sourceMinor())
 			{
-			case Affect.TYP_FIRE:
+			case CMMsg.TYP_FIRE:
 				weaponType=Weapon.TYPE_BURNING;
 				break;
-			case Affect.TYP_WATER:
+			case CMMsg.TYP_WATER:
 				weaponType=Weapon.TYPE_FROSTING;
 				break;
-			case Affect.TYP_ACID:
+			case CMMsg.TYP_ACID:
 				weaponType=Weapon.TYPE_MELTING;
 				break;
-			case Affect.TYP_COLD:
+			case CMMsg.TYP_COLD:
 				weaponType=Weapon.TYPE_FROSTING;
 				break;
-			case Affect.TYP_GAS:
+			case CMMsg.TYP_GAS:
 				weaponType=Weapon.TYPE_GASSING;
 				break;
-			case Affect.TYP_ELECTRIC:
+			case CMMsg.TYP_ELECTRIC:
 				weaponType=Weapon.TYPE_STRIKING;
 				break;
-			case Affect.TYP_DISEASE:
-			case Affect.TYP_POISON:
-			case Affect.TYP_UNDEAD:
-			case Affect.TYP_CAST_SPELL:
+			case CMMsg.TYP_DISEASE:
+			case CMMsg.TYP_POISON:
+			case CMMsg.TYP_UNDEAD:
+			case CMMsg.TYP_CAST_SPELL:
 				weaponType=Weapon.TYPE_BURSTING;
 				break;
 			}
 			if(weaponType<0)
-				return super.okAffect(myHost,affect);
+				return super.okMessage(myHost,msg);
 
 			if(weaponType!=vulnerability)
 			{
 				String name=null;
-				if(affect.tool()==null)
+				if(msg.tool()==null)
 					name="the attack";
 				else
-				if(affect.tool() instanceof Weapon)
-					name=affect.tool().name();
+				if(msg.tool() instanceof Weapon)
+					name=msg.tool().name();
 				else
-					name="the "+affect.tool().name();
-				mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The armor around <S-NAME> blocks "+name+" attack from <T-NAME>!");
+					name="the "+msg.tool().name();
+				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"The armor around <S-NAME> blocks "+name+" attack from <T-NAME>!");
 				return false;
 			}
 			else
-				ExternalPlay.postDeath(affect.source(),mob,affect);
+				ExternalPlay.postDeath(msg.source(),mob,msg);
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 
@@ -113,7 +113,7 @@ public class Spell_AchillesArmor extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) Achilles Armor!":"^S<S-NAME> invoke(s) Achilles Armor around <T-NAMESELF>!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				vulnerability=Dice.roll(1,Weapon.typeDescription.length,-1);

@@ -28,28 +28,28 @@ public class Prayer_FlameWeapon extends Prayer
 			affectableStats.setAbility(affectableStats.ability()+1);
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		if((affect.source().location()!=null)
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&((affect.targetCode()-Affect.MASK_HURT)>0)
-		&&(affect.tool()==affected)
+		super.executeMsg(myHost,msg);
+		if((msg.source().location()!=null)
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&((msg.targetCode()-CMMsg.MASK_HURT)>0)
+		&&(msg.tool()==affected)
 		&&(!notAgain)
-		&&(affect.target() instanceof MOB)
-		&&(!((MOB)affect.target()).amDead()))
+		&&(msg.target() instanceof MOB)
+		&&(!((MOB)msg.target()).amDead()))
 		{
 			notAgain=true;
-			FullMsg msg=new FullMsg(affect.source(),(MOB)affect.target(),affected,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_FIRE,Affect.MSG_NOISYMOVEMENT,null);
-			if(affect.source().location().okAffect(affect.source(),msg))
+			FullMsg msg2=new FullMsg(msg.source(),(MOB)msg.target(),affected,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
-				affect.source().location().send(affect.source(), msg);
-				if(!msg.wasModified())
+				msg.source().location().send(msg.source(), msg2);
+				if(!msg2.wasModified())
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,"The flame around "+affected.name()+" "+CommonStrings.standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),null,Affect.MASK_GENERAL|Affect.TYP_FIRE,Affect.MASK_HURT+flameDamage,Affect.NO_EFFECT,null));
+					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),CMMsg.MSG_OK_ACTION,"The flame around "+affected.name()+" "+CommonStrings.standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
+					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),null,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,CMMsg.MASK_HURT+flameDamage,CMMsg.NO_EFFECT,null));
 				}
 			}
 			notAgain=false;
@@ -105,7 +105,7 @@ public class Prayer_FlameWeapon extends Prayer
 			mob.tell("You can only enflame weapons.");
 			return false;
 		}
-		if(((Weapon)target).fetchAffect(this.ID())!=null)
+		if(((Weapon)target).fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target.name()+" is already enflamed.");
 			return false;
@@ -122,11 +122,11 @@ public class Prayer_FlameWeapon extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> appear(s) surrounded by flames!":"^S<S-NAME> hold(s) <T-NAMESELF> and "+prayWord(mob)+".^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
-				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,("<T-NAME> is engulfed in flames!")+CommonStrings.msp("fireball.wav",10));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,("<T-NAME> is engulfed in flames!")+CommonStrings.msp("fireball.wav",10));
 				target.recoverEnvStats();
 				mob.recoverEnvStats();
 			}

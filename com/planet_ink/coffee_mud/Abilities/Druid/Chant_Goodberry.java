@@ -69,10 +69,10 @@ public class Chant_Goodberry extends Chant
 		{
 			int numAffected=Dice.roll(1,adjustedLevel(mob)/7,1);
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> begin to glow!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> begin to glow!");
 				if(owner instanceof MOB)
 					for(int i=0;i<((MOB)owner).inventorySize();i++)
 					{

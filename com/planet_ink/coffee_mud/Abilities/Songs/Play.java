@@ -17,7 +17,7 @@ public class Play extends StdAbility
 	public int classificationCode(){return Ability.SONG;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int maxRange(){return 2;}
-	
+
 	protected int requiredInstrumentType(){return -1;}
 	protected boolean skipStandardSongInvoke(){return false;}
 	protected boolean mindAttack(){return quality()==Ability.MALICIOUS;}
@@ -29,10 +29,10 @@ public class Play extends StdAbility
 	protected MusicalInstrument instrument=null;
 
 	protected int affectType(boolean auto){
-		int affectType=Affect.MSG_CAST_SOMANTIC_SPELL;
+		int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 		if(quality()==Ability.MALICIOUS)
-			affectType=Affect.MSG_CAST_ATTACK_SOMANTIC_SPELL;
-		if(auto) affectType=affectType|Affect.MASK_GENERAL;
+			affectType=CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL;
+		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		return affectType;
 	}
 
@@ -57,11 +57,11 @@ public class Play extends StdAbility
 		else
 			return 1;
 	}
-	
+
 	protected void inpersistantAffect(MOB mob)
 	{
 	}
-	
+
 	public static boolean usingInstrument(MusicalInstrument I, MOB mob)
 	{
 		if((I==null)||(mob==null)) return false;
@@ -72,7 +72,7 @@ public class Play extends StdAbility
 		else
 			return mob.isMine(I)&&(!I.amWearingAt(Item.INVENTORY));
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -100,21 +100,21 @@ public class Play extends StdAbility
 		return true;
 	}
 
-	public void affect(Environmental host, Affect msg)
+	public void executeMsg(Environmental host, CMMsg msg)
 	{
-		super.affect(host,msg);
+		super.executeMsg(host,msg);
 		if((affected==invoker)
 		&&(msg.amISource(invoker))
 		&&(!unInvoked)
 		&&(instrument!=null))
 		{
-			if((msg.sourceMinor()==Affect.TYP_SPEAK)
+			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(instrument.amWearingAt(Item.ON_MOUTH)))
 				unInvoke();
 			else
-			if(((msg.sourceMinor()==Affect.TYP_REMOVE)
-			   ||(msg.sourceMinor()==Affect.TYP_WEAR)
-			   ||(msg.sourceMinor()==Affect.TYP_WIELD))
+			if(((msg.sourceMinor()==CMMsg.TYP_REMOVE)
+			   ||(msg.sourceMinor()==CMMsg.TYP_WEAR)
+			   ||(msg.sourceMinor()==CMMsg.TYP_WIELD))
 			&&(instrument.amWearingAt(Item.HELD)))
 				unInvoke();
 		}
@@ -125,19 +125,19 @@ public class Play extends StdAbility
 		if(mob==null) return;
 		if(song!=null)
 		{
-			song=mob.fetchAffect(song.ID());
+			song=mob.fetchEffect(song.ID());
 			if(song!=null) song.unInvoke();
 		}
 		else
-		for(int a=mob.numAffects()-1;a>=0;a--)
+		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
-			Ability A=(Ability)mob.fetchAffect(a);
+			Ability A=(Ability)mob.fetchEffect(a);
 			if(((A!=null)&&(A instanceof Play))
 			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 				A.unInvoke();
 		}
 	}
-	
+
 	public static MusicalInstrument getInstrument(MOB mob, int requiredInstrumentType, boolean noisy)
 	{
 		MusicalInstrument instrument=null;
@@ -212,7 +212,7 @@ public class Play extends StdAbility
 				return false;
 			}
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -227,11 +227,11 @@ public class Play extends StdAbility
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
-			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
+			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -247,31 +247,31 @@ public class Play extends StdAbility
 					MOB follower=(MOB)f.nextElement();
 
 					// malicious songs must not affect the invoker!
-					int affectType=Affect.MSG_CAST_SOMANTIC_SPELL;
-					if(auto) affectType=affectType|Affect.MASK_GENERAL;
+					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
+					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
-						affectType=affectType|Affect.MASK_MALICIOUS;
+						affectType=affectType|CMMsg.MASK_MALICIOUS;
 
-					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
+					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
 						FullMsg msg3=msg2;
 						if((mindAttack())&&(follower!=mob))
-							msg2=new FullMsg(mob,follower,this,Affect.MSK_CAST_MALICIOUS_SOMANTIC|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-						if((mob.location().okAffect(mob,msg2))&&(mob.location().okAffect(mob,msg3)))
+							msg2=new FullMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
 						{
 							follower.location().send(follower,msg2);
 							if(!msg2.wasModified())
 							{
 								follower.location().send(follower,msg3);
-								if((!msg3.wasModified())&&(follower.fetchAffect(newOne.ID())==null))
+								if((!msg3.wasModified())&&(follower.fetchEffect(newOne.ID())==null))
 								{
 									if(persistantSong())
 									{
 										if(follower!=mob)
-											follower.addAffect((Ability)newOne.copyOf());
+											follower.addEffect((Ability)newOne.copyOf());
 										else
-											follower.addAffect(newOne);
+											follower.addEffect(newOne);
 									}
 									else
 										inpersistantAffect(follower);
@@ -284,7 +284,7 @@ public class Play extends StdAbility
 			}
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
 
 		return success;
 	}

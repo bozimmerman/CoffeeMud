@@ -34,9 +34,9 @@ public class Chant_EelShock extends Chant
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(EnvStats.IS_SITTING);
 	}
-  
-   
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -46,14 +46,14 @@ public class Chant_EelShock extends Chant
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))
-		&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-		&&(affect.sourceMajor()>0))
+		if((msg.amISource(mob))
+		&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		&&(msg.sourceMajor()>0))
 		{
 			mob.tell("You are stunned.");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 
@@ -68,8 +68,8 @@ public class Chant_EelShock extends Chant
 
 		Room location = mob.location();
 		boolean roomWet = false;
-      
-		if(location.domainType() == Room.DOMAIN_INDOORS_UNDERWATER || 
+
+		if(location.domainType() == Room.DOMAIN_INDOORS_UNDERWATER ||
 		   location.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE ||
 		   location.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER ||
 		   location.domainType() == Room.DOMAIN_OUTDOORS_WATERSURFACE ||
@@ -77,20 +77,20 @@ public class Chant_EelShock extends Chant
 		{
 		   roomWet = true;
 		}
-      
+
 		Area currentArea = location.getArea();
-		if(currentArea.weatherType(location) == Area.WEATHER_RAIN || 
+		if(currentArea.weatherType(location) == Area.WEATHER_RAIN ||
 		   currentArea.weatherType(location) == Area.WEATHER_THUNDERSTORM)
 		{
 		   roomWet = true;
 		}
-      
+
 		if(!roomWet)
 		{
 				mob.tell("It's too dry to invoke this chant.");
 				return false;
 		}
-      
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -111,8 +111,8 @@ public class Chant_EelShock extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC|(auto?Affect.MASK_GENERAL:0),"<T-NAME> is stunned.");
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_GENERAL:0),"<T-NAME> is stunned.");
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())

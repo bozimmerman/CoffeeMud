@@ -50,10 +50,10 @@ public class Cooking extends CommonSkill
 		   return true;
 		return false;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((cooking==null)
@@ -401,7 +401,7 @@ public class Cooking extends CommonSkill
 
 		fire=getRequiredFire(mob);
 		if(fire==null) return false;
-		
+
 		burnt=!profficiencyCheck(0,auto);
 		int duration=40-mob.envStats().level();
 		if(duration<15) duration=15;
@@ -493,12 +493,12 @@ public class Cooking extends CommonSkill
 				{
 					StringBuffer buf=new StringBuffer("If you are trying to make "+recipeName+", you need to add a little more ");
 					for(int i=1;i<counts.size();i++)
-						if(i==1) 
+						if(i==1)
 							buf.append(((String)counts.elementAt(i)).toLowerCase());
 						else
-						if(i==counts.size()-1) 
+						if(i==counts.size()-1)
 							buf.append(", and "+((String)counts.elementAt(i)).toLowerCase());
-						else 
+						else
 							buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
 					complaints.addElement(buf.toString());
 				}
@@ -507,12 +507,12 @@ public class Cooking extends CommonSkill
 				{
 					StringBuffer buf=new StringBuffer("If you are trying to make "+recipeName+", you need to remove some of the ");
 					for(int i=1;i<counts.size();i++)
-						if(i==1) 
+						if(i==1)
 							buf.append(((String)counts.elementAt(i)).toLowerCase());
 						else
-						if(i==counts.size()-1) 
+						if(i==counts.size()-1)
 							buf.append(", and "+((String)counts.elementAt(i)).toLowerCase());
-						else 
+						else
 							buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
 					complaints.addElement(buf.toString());
 				}
@@ -632,7 +632,7 @@ public class Cooking extends CommonSkill
 				Ability A=CMClass.getAbility(spell);
 				if(A!=null)
 				{
-					finalDish.addNonUninvokableAffect(A);
+					finalDish.addNonUninvokableEffect(A);
 					A.setMiscText(parms);
 				}
 			}
@@ -645,8 +645,8 @@ public class Cooking extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		FullMsg msg=new FullMsg(mob,cooking,null,Affect.MSG_NOISYMOVEMENT,Affect.MSG_OK_ACTION,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) "+cookWord()+" something in <T-NAME>.");
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,cooking,null,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_OK_ACTION,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) "+cookWord()+" something in <T-NAME>.");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);

@@ -71,12 +71,12 @@ public class Spell_GraceOfTheCat extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> move(s) more gracefully!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> move(s) more gracefully!");
 					beneficialAffect(mob,target,0);
 				}
 			}

@@ -15,7 +15,7 @@ public class Trap_RoomPit extends StdTrap
 	public String requiresToSet(){return "";}
 	public Environmental newInstance(){	return new Trap_RoomPit();}
 	protected Vector pit=null;
-	
+
 	public void unInvoke()
 	{
 		if((pit!=null)
@@ -61,13 +61,13 @@ public class Trap_RoomPit extends StdTrap
 			super.unInvoke();
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
-		
-		if((tickID==Host.TRAP_DESTRUCTION)
+
+		if((tickID==Host.TICK_TRAP_DESTRUCTION)
 		&&(canBeUninvoked())
 		&&(pit!=null)
 		&&(pit.size()>1)
@@ -77,7 +77,7 @@ public class Trap_RoomPit extends StdTrap
 		else
 			return super.tick(ticking,tickID);
 	}
-	
+
 	protected synchronized void makePit(MOB target)
 	{
 		if((pit==null)||(pit.size()<2))
@@ -105,51 +105,51 @@ public class Trap_RoomPit extends StdTrap
 			pit=V;
 		}
 	}
-	
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		boolean unSpring=false;
 		if((!sprung)
 		&&(affected instanceof Room)
-		&&(affect.amITarget(affected))
-		&&((affect.targetMinor()==Affect.TYP_ENTER)
-		&&(!affect.source().isMine(affected)))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Exit))
+		&&(msg.amITarget(affected))
+		&&((msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(!msg.source().isMine(affected)))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Exit))
 		{
 			Room room=(Room)affected;
-			if((room.getExitInDir(Directions.DOWN)==affect.tool())
-			||(room.getReverseExit(Directions.DOWN)==affect.tool()))
+			if((room.getExitInDir(Directions.DOWN)==msg.tool())
+			||(room.getReverseExit(Directions.DOWN)==msg.tool()))
 			{
 				unSpring=true;
 				sprung=true;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if(unSpring) sprung=false;
 	}
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.envStats().weight()<5))
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 		else
 		{
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(trapLevel(),6,1);
-			ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MSG_OK_VISUAL,-1,null);
+			ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 		}
 		ExternalPlay.look(target,null,true);
 	}
-	
+
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null)&&(!Sense.isInFlight(target)))
 		{
 			if((!invoker().mayIFight(target))
 			||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) falling into a pit!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) falling into a pit!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> fall(s) into a pit!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> fall(s) into a pit!"))
 			{
 				super.spring(target);
 				makePit(target);

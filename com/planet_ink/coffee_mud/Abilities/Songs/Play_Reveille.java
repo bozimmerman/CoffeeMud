@@ -14,7 +14,7 @@ public class Play_Reveille extends Play
 	protected int canAffectCode(){return 0;}
 	public Environmental newInstance(){	return new Play_Reveille();}
 	protected boolean skipStandardSongTick(){return true;}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -24,11 +24,11 @@ public class Play_Reveille extends Play
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
-			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
+			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -39,7 +39,7 @@ public class Play_Reveille extends Play
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{ MOB M=mob.location().fetchInhabitant(i); h.put(M,M);}
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				{ 
+				{
 					Room R=mob.location().getRoomInDir(d);
 					if(R!=null)
 						for(int i=0;i<R.numInhabitants();i++)
@@ -52,12 +52,12 @@ public class Play_Reveille extends Play
 					Room R=follower.location();
 
 					// malicious songs must not affect the invoker!
-					int affectType=Affect.MSG_CAST_SOMANTIC_SPELL;
-					if(auto) affectType=affectType|Affect.MASK_GENERAL;
-					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
+					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
+					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
-						if(R.okAffect(mob,msg2))
+						if(R.okMessage(mob,msg2))
 						{
 							follower.location().send(follower,msg2);
 							if(Sense.isSleeping(follower))
@@ -76,9 +76,8 @@ public class Play_Reveille extends Play
 			}
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
 
 		return success;
 	}
 }
-	

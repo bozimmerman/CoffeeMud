@@ -21,9 +21,9 @@ public class Spell_DispelMagic extends Spell
 
 		Ability revokeThis=null;
 		boolean foundSomethingAtLeast=false;
-		for(int a=0;a<target.numAffects();a++)
+		for(int a=0;a<target.numEffects();a++)
 		{
-			Ability A=(Ability)target.fetchAffect(a);
+			Ability A=(Ability)target.fetchEffect(a);
 			if((A!=null)&&(A.canBeUninvoked())
 			&&(((A.classificationCode()&Ability.SPELL)>0)||((A.classificationCode()&Ability.CHANT)>0)))
 			{
@@ -67,11 +67,11 @@ public class Spell_DispelMagic extends Spell
 			if(((!mob.isMonster())&&(target instanceof MOB)&&(!((MOB)target).isMonster()))
 			||(mob==target)
 			||(mob.getGroupMembers(new Hashtable()).containsKey(target)))
-				affectType=Affect.MSG_CAST_VERBAL_SPELL;
-			if(auto) affectType=affectType|Affect.MASK_GENERAL;
-			
+				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
+			if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+
 			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?revokeThis.name()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				revokeThis.unInvoke();

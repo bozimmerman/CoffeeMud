@@ -14,7 +14,7 @@ public class Spell_Breadcrumbs extends Spell
 	public Environmental newInstance(){	return new Spell_Breadcrumbs();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 	public Vector trail=null;
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -56,14 +56,14 @@ public class Spell_Breadcrumbs extends Spell
 		return str.toString()+")";
 	}
 
-	public void affect(Environmental myHost, Affect msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(trail!=null)
-		&&(msg.targetMinor()==Affect.TYP_ENTER)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof Room))
 		{
@@ -111,9 +111,9 @@ public class Spell_Breadcrumbs extends Spell
 	{
 		MOB target=mob;
 		if(target==null) return false;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already dropping breadcrumbs.");
 			return false;
@@ -135,7 +135,7 @@ public class Spell_Breadcrumbs extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) mysterious breadcrumbs.":"^S<S-NAME> invoke(s) the mystical breadcrumbs.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				trail=new Vector();

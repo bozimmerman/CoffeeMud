@@ -106,17 +106,17 @@ public class Prop_EnterAdjuster extends Property
 		mob.confirmWearability();
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)&&((affected instanceof Room)||(affected instanceof Exit)))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_ENTER:
-				EATME(affect.source());
+			case CMMsg.TYP_ENTER:
+				EATME(msg.source());
 				break;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 }

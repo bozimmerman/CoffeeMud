@@ -47,27 +47,27 @@ public class Spell_FeignDeath extends Spell
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 		MOB mob=(MOB)affected;
 
-		if((affect.amISource(mob))&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL)))
+		if((msg.amISource(mob))&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
 		{
-			if(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			if(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
 				mob.tell("You are unable to attack in this semi-incorporeal form.");
 				peaceAt(mob);
 				return false;
 			}
 			else
-			if((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOUTH)))
+			if((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
 			{
-				if(Util.bset(affect.sourceMajor(),Affect.MASK_SOUND))
+				if(Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
 					mob.tell("You are unable to make sounds in this semi-incorporeal form.");
 				else
 					mob.tell("You are unable to do that this semi-incorporeal form.");
@@ -76,8 +76,8 @@ public class Spell_FeignDeath extends Spell
 			}
 		}
 		else
-		if((affect.amITarget(mob))&&(!affect.amISource(mob))
-		   &&(!Util.bset(affect.targetMajor(),Affect.MASK_GENERAL)))
+		if((msg.amITarget(mob))&&(!msg.amISource(mob))
+		   &&(!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))
 		{
 			mob.tell(mob.name()+" doesn't seem to be here.");
 			return false;
@@ -108,7 +108,7 @@ public class Spell_FeignDeath extends Spell
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) to <T-NAMESELF> and yell(s) for death!^?");
-		if(mob.location().okAffect(mob,msg))
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			target.makePeace();
@@ -125,7 +125,7 @@ public class Spell_FeignDeath extends Spell
 				if(follower!=null)
 					follower.setFollowing(null);
 			}
-			deathRoom.show(target,null,Affect.MSG_OK_ACTION,"^Z"+target.name()+" is DEAD!!!^.^?\n\r");
+			deathRoom.show(target,null,CMMsg.MSG_OK_ACTION,"^Z"+target.name()+" is DEAD!!!^.^?\n\r");
 			Body.setName("the body of "+target.name());
 			Body.setDisplayText("the body of "+target.name()+" lies here.");
 			Body.baseEnvStats().setWeight(target.envStats().weight()+100);

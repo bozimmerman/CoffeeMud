@@ -24,13 +24,13 @@ public class Masonry extends CommonSkill
 	private final static int BUILD_CRAWLWAY=8;
 	private final static int BUILD_POOL=9;
 	private final static int BUILD_PORTCULIS=10;
-	
+
 	private final static int DAT_NAME=0;
 	private final static int DAT_WOOD=1;
 	private final static int DAT_ROOF=2;
 	private final static int DAT_REQDIR=3;
 	private final static int DAT_REQNONULL=4;
-	
+
 	// name, wood, ok=0/roof=1/out=2, req direction=1, ok=0, ok=0, nonull=1, nullonly=2
 	private final static String[][] data={
 		{"Wall","250","1","1","0"},
@@ -45,7 +45,7 @@ public class Masonry extends CommonSkill
 		{"Pool","700","2","0","0"},
 		{"Portcullis","100","0","1","0"},
 	};
-	
+
 	private Room room=null;
 	private int dir=-1;
 	private int doingCode=-1;
@@ -80,7 +80,7 @@ public class Masonry extends CommonSkill
 		E2.recoverEnvStats();
 		return E2;
 	}
-	
+
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -148,13 +148,13 @@ public class Masonry extends CommonSkill
 							R.setDisplayText(room.displayText());
 							R.setDescription(room.description());
 							R.setArea(room.getArea());
-							for(int a=room.numAffects()-1;a>=0;a--)
+							for(int a=room.numEffects()-1;a>=0;a--)
 							{
-								Ability A=room.fetchAffect(a);
+								Ability A=room.fetchEffect(a);
 								if(A!=null)
 								{
-									room.delAffect(A);
-									R.addAffect(A);
+									room.delEffect(A);
+									R.addEffect(A);
 								}
 							}
 							for(int i=room.numItems()-1;i>=0;i--)
@@ -301,7 +301,7 @@ public class Masonry extends CommonSkill
 									room.rawExits()[workingOn]=E;
 								}
 								Ability A=CMClass.getAbility("Prop_Crawlspace");
-								if(A!=null) E.addNonUninvokableAffect(A);
+								if(A!=null) E.addNonUninvokableEffect(A);
 								ExternalPlay.DBUpdateExits(room);
 							}
 						}
@@ -323,7 +323,7 @@ public class Masonry extends CommonSkill
 									if(A!=null)
 									{
 										A.setMiscText(CMMap.getExtendedRoomID(R2));
-										E.addNonUninvokableAffect(A);
+										E.addNonUninvokableEffect(A);
 									}
 								}
 								ExternalPlay.DBUpdateExits(room);
@@ -340,12 +340,12 @@ public class Masonry extends CommonSkill
 								R.setDisplayText(room.displayText());
 								R.setDescription(room.description());
 								R.setArea(room.getArea());
-								for(int a=room.numAffects()-1;a>=0;a--)
+								for(int a=room.numEffects()-1;a>=0;a--)
 								{
-									Ability A=room.fetchAffect(a);
+									Ability A=room.fetchEffect(a);
 									if(A!=null){
-										room.delAffect(A);
-										R.addAffect(A);
+										room.delEffect(A);
+										R.addEffect(A);
 									}
 								}
 								for(int i=room.numItems()-1;i>=0;i--)
@@ -469,7 +469,7 @@ public class Masonry extends CommonSkill
 			commonTell(mob,"There is a wall that way that needs to be demolished first.");
 			return false;
 		}
-														  
+
 
 		int woodRequired=Util.s_int(data[doingCode][DAT_WOOD]);
 		if(((mob.location().domainType()&Room.INDOORS)==0)
@@ -485,7 +485,7 @@ public class Masonry extends CommonSkill
 			commonTell(mob,"That can only be built outdoors!");
 			return false;
 		}
-		
+
 		if(doingCode==BUILD_TITLE)
 		{
 			String title=Util.combine(commands,1);
@@ -517,7 +517,7 @@ public class Masonry extends CommonSkill
 			if(Directions.getGoodDirectionCode((String)commands.elementAt(1))>=0)
 			{
 				int dir=Directions.getGoodDirectionCode((String)commands.elementAt(1));
-				
+
 				if(mob.location().getExitInDir(dir)==null)
 				{
 					commonTell(mob,"There is no exit "+Directions.getInDirectionName(dir)+" to describe.");
@@ -641,9 +641,9 @@ public class Masonry extends CommonSkill
 		messedUp=!profficiencyCheck(0,auto);
 		startStr="<S-NAME> start(s) "+verb;
 		if(completion<15) completion=15;
-		
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr+".");
-		if(mob.location().okAffect(mob,msg))
+
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

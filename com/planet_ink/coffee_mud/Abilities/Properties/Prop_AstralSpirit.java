@@ -14,9 +14,9 @@ public class Prop_AstralSpirit extends Property
 	public Environmental newInstance(){	return new Prop_AstralSpirit();}
 	public boolean autoInvocation(MOB mob)
 	{
-		if((mob!=null)&&(mob.fetchAffect(ID())==null))
+		if((mob!=null)&&(mob.fetchEffect(ID())==null))
 		{
-			mob.addNonUninvokableAffect(this);
+			mob.addNonUninvokableEffect(this);
 			return true;
 		}
 		return false;
@@ -38,30 +38,30 @@ public class Prop_AstralSpirit extends Property
 	}
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 		MOB mob=(MOB)affected;
 
-		if((affect.amISource(mob))&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL)))
+		if((msg.amISource(mob))&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
 		{
-			if((affect.tool()!=null)&&(affect.tool().ID().equalsIgnoreCase("Skill_Revoke")))
-			   return super.okAffect(myHost,affect);
+			if((msg.tool()!=null)&&(msg.tool().ID().equalsIgnoreCase("Skill_Revoke")))
+			   return super.okMessage(myHost,msg);
 			else
-			if(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			if(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
 				mob.tell("You are unable to attack in this incorporeal form.");
 				peaceAt(mob);
 				return false;
 			}
 			else
-			if((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOUTH)))
+			if((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
 			{
-				if(Util.bset(affect.sourceMajor(),Affect.MASK_SOUND))
+				if(Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
 					mob.tell("You are unable to make sounds in this incorporeal form.");
 				else
 					mob.tell("You are unable to do that this incorporeal form.");
@@ -70,8 +70,8 @@ public class Prop_AstralSpirit extends Property
 			}
 		}
 		else
-		if((affect.amITarget(mob))&&(!affect.amISource(mob))
-		   &&(!Util.bset(affect.targetMajor(),Affect.MASK_GENERAL)))
+		if((msg.amITarget(mob))&&(!msg.amISource(mob))
+		   &&(!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))
 		{
 			mob.tell(mob.name()+" doesn't seem to be here.");
 			return false;

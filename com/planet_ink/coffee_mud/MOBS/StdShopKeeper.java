@@ -439,93 +439,93 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return item;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=affect.source();
-		if(affect.amITarget(this))
+		MOB mob=msg.source();
+		if(msg.amITarget(this))
 		{
-			switch(affect.targetMinor())
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_VALUE:
-			case Affect.TYP_SELL:
+			case CMMsg.TYP_VALUE:
+			case CMMsg.TYP_SELL:
 			{
-				if((affect.tool()!=null)&&(doISellThis(affect.tool())))
+				if((msg.tool()!=null)&&(doISellThis(msg.tool())))
 				{
-					if(yourValue(mob,affect.tool(),false)[0]<2)
+					if(yourValue(mob,msg.tool(),false)[0]<2)
 					{
 						ExternalPlay.quickSay(this,mob,"I'm not interested.",true,false);
 						return false;
 					}
-					if(affect.tool() instanceof Ability)
+					if(msg.tool() instanceof Ability)
 					{
 						ExternalPlay.quickSay(this,mob,"I'm not interested.",true,false);
 						return false;
 					}
-					int numInStock=numberInStock(affect.tool());
-					if(((!(affect.tool() instanceof EnvResource))&&(numInStock>=maximumDuplicatesBought))
+					int numInStock=numberInStock(msg.tool());
+					if(((!(msg.tool() instanceof EnvResource))&&(numInStock>=maximumDuplicatesBought))
 					||(numInStock>=(maximumDuplicatesBought*100)))
 					{
 						ExternalPlay.quickSay(this,mob,"I'm sorry, I'm not buying any more of those.",true,false);
 						return false;
 					}
-					if((affect.tool() instanceof Container)&&(((Container)affect.tool()).hasALock()))
+					if((msg.tool() instanceof Container)&&(((Container)msg.tool()).hasALock()))
 					{
 						for(int i=0;i<mob.inventorySize();i++)
 						{
 							Item I=mob.fetchInventory(i);
 							if((I!=null)
 							&&(I instanceof Key)
-							&&(((Key)I).getKey().equals(((Container)affect.tool()).keyName()))&&(I.container()==affect.tool()))
+							&&(((Key)I).getKey().equals(((Container)msg.tool()).keyName()))&&(I.container()==msg.tool()))
 								return true;
 						}
 						ExternalPlay.quickSay(this,mob,"I won't buy that back unless you put the key in it.",true,false);
 						return false;
 					}
-					if((affect.tool() instanceof Item)&&(affect.source().isMine(affect.tool())))
+					if((msg.tool() instanceof Item)&&(msg.source().isMine(msg.tool())))
 					{
-						FullMsg msg=new FullMsg(affect.source(),affect.tool(),Affect.MSG_DROP,null);
-						if(!mob.location().okAffect(mob,msg))
+						FullMsg msg2=new FullMsg(msg.source(),msg.tool(),CMMsg.MSG_DROP,null);
+						if(!mob.location().okMessage(mob,msg2))
 							return false;
 					}
-					return super.okAffect(myHost,affect);
+					return super.okMessage(myHost,msg);
 				}
 				ExternalPlay.quickSay(this,mob,"I'm sorry, I'm not buying those.",true,false);
 				return false;
 			}
-			case Affect.TYP_BUY:
-			case Affect.TYP_VIEW:
+			case CMMsg.TYP_BUY:
+			case CMMsg.TYP_VIEW:
 			{
-				if((affect.tool()!=null)
-				&&(doIHaveThisInStock(affect.tool().Name()+"$",mob)))
+				if((msg.tool()!=null)
+				&&(doIHaveThisInStock(msg.tool().Name()+"$",mob)))
 				{
-					if(affect.targetMinor()!=Affect.TYP_VIEW)
+					if(msg.targetMinor()!=CMMsg.TYP_VIEW)
 					{
-						int[] val=yourValue(mob,affect.tool(),true);
+						int[] val=yourValue(mob,msg.tool(),true);
 						if((val[2]>0)&&(val[2]>mob.getExperience()))
 						{
-							ExternalPlay.quickSay(this,mob,"You aren't experienced enough to buy "+affect.tool().name()+".",false,false);
+							ExternalPlay.quickSay(this,mob,"You aren't experienced enough to buy "+msg.tool().name()+".",false,false);
 							return false;
 						}
 						if((val[1]>0)&&(val[1]>mob.getQuestPoint()))
 						{
-							ExternalPlay.quickSay(this,mob,"You don't have enough quest points to buy "+affect.tool().name()+".",false,false);
+							ExternalPlay.quickSay(this,mob,"You don't have enough quest points to buy "+msg.tool().name()+".",false,false);
 							return false;
 						}
 						if((val[0]>0)&&(val[0]>com.planet_ink.coffee_mud.utils.Money.totalMoney(mob)))
 						{
-							ExternalPlay.quickSay(this,mob,"You can't afford to buy "+affect.tool().name()+".",false,false);
+							ExternalPlay.quickSay(this,mob,"You can't afford to buy "+msg.tool().name()+".",false,false);
 							return false;
 						}
 					}
-					if(affect.tool() instanceof Item)
+					if(msg.tool() instanceof Item)
 					{
-						if(((Item)affect.tool()).envStats().level()>mob.envStats().level())
+						if(((Item)msg.tool()).envStats().level()>mob.envStats().level())
 						{
 							ExternalPlay.quickSay(this,mob,"That's too advanced for you, I'm afraid.",true,false);
 							return false;
 						}
 					}
-					if((affect.tool() instanceof LandTitle)
+					if((msg.tool() instanceof LandTitle)
 					&&(whatISell==ShopKeeper.DEAL_CLANDSELLER))
 					{
 						if(mob.getClanID().length()==0)
@@ -534,22 +534,22 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							return false;
 						}
 					}
-					if(affect.tool() instanceof MOB)
+					if(msg.tool() instanceof MOB)
 					{
-						if(affect.source().totalFollowers()>=affect.source().maxFollowers())
+						if(msg.source().totalFollowers()>=msg.source().maxFollowers())
 						{
 							ExternalPlay.quickSay(this,mob,"You can't accept any more followers.",true,false);
 							return false;
 						}
 					}
-					if(affect.tool() instanceof Ability)
+					if(msg.tool() instanceof Ability)
 					{
-						if((whatISell==DEAL_TRAINER)&&(!((Ability)affect.tool()).canBeLearnedBy(new Teacher(),mob)))
+						if((whatISell==DEAL_TRAINER)&&(!((Ability)msg.tool()).canBeLearnedBy(new Teacher(),mob)))
 							return false;
 
-						if(affect.targetMinor()==Affect.TYP_BUY)
+						if(msg.targetMinor()==CMMsg.TYP_BUY)
 						{
-							Ability A=(Ability)affect.tool();
+							Ability A=(Ability)msg.tool();
 							if(A.canTarget(mob)){}
 							else
 							if(A.canTarget(CMClass.sampleItem()))
@@ -569,18 +569,18 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							}
 						}
 					}
-					return super.okAffect(myHost,affect);
+					return super.okMessage(myHost,msg);
 				}
 				ExternalPlay.quickSay(this,mob,"I don't have that in stock.  Ask for my LIST.",true,false);
 				return false;
 			}
-			case Affect.TYP_LIST:
-				return super.okAffect(myHost,affect);
+			case CMMsg.TYP_LIST:
+				return super.okMessage(myHost,msg);
 			default:
 				break;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public String findInnRoom(InnKey key, String addThis, Room R)
@@ -642,41 +642,41 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return V;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_GIVE:
-				if((affect.tool()!=null)
+			case CMMsg.TYP_GIVE:
+				if((msg.tool()!=null)
 				&&(mob.isASysOp(mob.location()))
-				&&((doISellThis(affect.tool()))||(whatISell==DEAL_INVENTORYONLY)))
+				&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
 				{
-					Item item2=(Item)affect.tool().copyOf();
+					Item item2=(Item)msg.tool().copyOf();
 					storeInventory.addElement(item2);
 					if(item2 instanceof InnKey)
 						((InnKey)item2).hangOnRack(this);
 					return;
 				}
-				super.affect(myHost,affect);
+				super.executeMsg(myHost,msg);
 				break;
-			case Affect.TYP_VALUE:
-				super.affect(myHost,affect);
-				ExternalPlay.quickSay(this,mob,"I'll give you "+yourValue(mob,affect.tool(),false)[0]+" for "+affect.tool().name()+".",true,false);
+			case CMMsg.TYP_VALUE:
+				super.executeMsg(myHost,msg);
+				ExternalPlay.quickSay(this,mob,"I'll give you "+yourValue(mob,msg.tool(),false)[0]+" for "+msg.tool().name()+".",true,false);
 				break;
-			case Affect.TYP_SELL:
-				super.affect(myHost,affect);
-				if((affect.tool()!=null)&&(doISellThis(affect.tool())))
+			case CMMsg.TYP_SELL:
+				super.executeMsg(myHost,msg);
+				if((msg.tool()!=null)&&(doISellThis(msg.tool())))
 				{
-					int val=yourValue(mob,affect.tool(),false)[0];
+					int val=yourValue(mob,msg.tool(),false)[0];
 					mob.setMoney(mob.getMoney()+val);
 					mob.recoverEnvStats();
-					mob.tell(name()+" pays you "+val+" for "+affect.tool().name()+".");
-					if(affect.tool() instanceof Item)
+					mob.tell(name()+" pays you "+val+" for "+msg.tool().name()+".");
+					if(msg.tool() instanceof Item)
 					{
-						Item item=(Item)affect.tool();
+						Item item=(Item)msg.tool();
 						Vector V=null;
 						if(item instanceof Container)
 							V=((Container)item).getContents();
@@ -701,39 +701,39 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						item.setContainer(null);
 					}
 					else
-					if(affect.tool() instanceof MOB)
+					if(msg.tool() instanceof MOB)
 					{
-						storeInventory.addElement(((MOB)affect.tool()).copyOf());
-						((MOB)affect.tool()).setFollowing(null);
-						if((((MOB)affect.tool()).baseEnvStats().rejuv()>0)
-						&&(((MOB)affect.tool()).baseEnvStats().rejuv()<Integer.MAX_VALUE)
-						&&(((MOB)affect.tool()).getStartRoom()!=null))
-							((MOB)affect.tool()).killMeDead(false);
+						storeInventory.addElement(((MOB)msg.tool()).copyOf());
+						((MOB)msg.tool()).setFollowing(null);
+						if((((MOB)msg.tool()).baseEnvStats().rejuv()>0)
+						&&(((MOB)msg.tool()).baseEnvStats().rejuv()<Integer.MAX_VALUE)
+						&&(((MOB)msg.tool()).getStartRoom()!=null))
+							((MOB)msg.tool()).killMeDead(false);
 						else
-							((MOB)affect.tool()).destroy();
+							((MOB)msg.tool()).destroy();
 					}
 					else
-					if(affect.tool() instanceof Ability)
+					if(msg.tool() instanceof Ability)
 					{
 
 					}
 					if(mySession!=null)
-						mySession.stdPrintln(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
-					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+						mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
+					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 				}
 				break;
-			case Affect.TYP_VIEW:
-				super.affect(myHost,affect);
-				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().Name()+"$",mob)))
+			case CMMsg.TYP_VIEW:
+				super.executeMsg(myHost,msg);
+				if((msg.tool()!=null)&&(doIHaveThisInStock(msg.tool().Name()+"$",mob)))
 				{
 					StringBuffer str=new StringBuffer("");
-					str.append("Interested in "+affect.tool().name()+"?");
+					str.append("Interested in "+msg.tool().name()+"?");
 					str.append(" Here is some information for you:");
-					str.append("\n\rLevel      : "+affect.tool().envStats().level());
-					if(affect.tool() instanceof Item)
+					str.append("\n\rLevel      : "+msg.tool().envStats().level());
+					if(msg.tool() instanceof Item)
 					{
-						Item I=(Item)affect.tool();
+						Item I=(Item)msg.tool();
 						str.append("\n\rMaterial   : "+Util.capitalize(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].toLowerCase()));
 						str.append("\n\rWeight     : "+I.envStats().weight()+" pounds");
 						if(I instanceof Weapon)
@@ -767,16 +767,16 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								str.delete(str.length()-4,str.length());
 						}
 					}
-					str.append("\n\rDescription: "+affect.tool().description());
-					ExternalPlay.quickSay(this,affect.source(),str.toString(),true,false);
+					str.append("\n\rDescription: "+msg.tool().description());
+					ExternalPlay.quickSay(this,msg.source(),str.toString(),true,false);
 				}
 				break;
-			case Affect.TYP_BUY:
-				super.affect(myHost,affect);
-				if((affect.tool()!=null)
-				&&(doIHaveThisInStock(affect.tool().Name()+"$",mob)))
+			case CMMsg.TYP_BUY:
+				super.executeMsg(myHost,msg);
+				if((msg.tool()!=null)
+				&&(doIHaveThisInStock(msg.tool().Name()+"$",mob)))
 				{
-					Vector products=removeSellableProduct(affect.tool().Name()+"$",mob);
+					Vector products=removeSellableProduct(msg.tool().Name()+"$",mob);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
 					int[] val=yourValue(mob,product,true);
@@ -791,14 +791,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							Item I=(Item)products.elementAt(p);
 							mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 						}
-						FullMsg msg=new FullMsg(mob,product,this,Affect.MSG_GET,null);
-						if(location().okAffect(mob,msg))
+						FullMsg msg2=new FullMsg(mob,product,this,CMMsg.MSG_GET,null);
+						if(location().okMessage(mob,msg2))
 						{
-							tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
-							location().send(mob,msg);
-							if((affect.tool() instanceof InnKey)&&(location()!=null))
+							tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
+							location().send(mob,msg2);
+							if((msg.tool() instanceof InnKey)&&(location()!=null))
 							{
-								InnKey item =(InnKey)affect.tool();
+								InnKey item =(InnKey)msg.tool();
 								String buf=findInnRoom(item, "", location());
 								if(buf==null) buf=findInnRoom(item, "upstairs", location().getRoomInDir(Directions.UP));
 								if(buf==null) buf=findInnRoom(item, "downstairs", location().getRoomInDir(Directions.DOWN));
@@ -855,14 +855,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					}
 
 					if(mySession!=null)
-						mySession.stdPrintln(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
-					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+						mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
+					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 				}
 				break;
-			case Affect.TYP_LIST:
+			case CMMsg.TYP_LIST:
 				{
-					super.affect(myHost,affect);
+					super.executeMsg(myHost,msg);
 					StringBuffer str=listInventory(mob);
 					if(str.length()==0)
 					{
@@ -875,12 +875,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				}
 				break;
 			default:
-				super.affect(myHost,affect);
+				super.executeMsg(myHost,msg);
 				break;
 			}
 		}
 		else
-			super.affect(myHost,affect);
+			super.executeMsg(myHost,msg);
 	}
 
 	protected double prejudiceValueFromPart(MOB mob, boolean sellTo, String part)
@@ -951,7 +951,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				val[1]=(I.intValue()*-1)-100;
 			return val;
 		}
-			
+
 		if(product instanceof Item)
 			val[0]=((Item)product).value();
 		else
@@ -965,7 +965,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		else
 		if(product instanceof MOB)
 		{
-			Ability A=product.fetchAffect("Prop_Retainable");
+			Ability A=product.fetchEffect("Prop_Retainable");
 			if(A!=null)
 				val[0]=Util.s_int(A.text());
 			if(val[0]==0)
@@ -975,7 +975,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			val[0]=CMAble.lowestQualifyingLevel(product.ID())*25;
 		if((I!=null)&&(I.intValue()>=0))
 			val[0]=I.intValue();
-		
+
 		if(mob==null) return val;
 
 		double d=prejudiceFactor(mob,sellTo);
@@ -1009,9 +1009,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 	protected LandTitle getTitle(Room R)
 	{
-		for(int a=0;a<R.numAffects();a++)
-			if(R.fetchAffect(a) instanceof LandTitle)
-				return (LandTitle)R.fetchAffect(a);
+		for(int a=0;a<R.numEffects();a++)
+			if(R.fetchEffect(a) instanceof LandTitle)
+				return (LandTitle)R.fetchEffect(a);
 		return null;
 	}
 
@@ -1060,14 +1060,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							}
 							else
 								continue;
-							if(L2.landOwner().equals(name)) 
+							if(L2.landOwner().equals(name))
 							{ skipThisOne=false; break;}
 							if(L2.landOwner().length()>0)
 								skipThisOne=true;
 						}
 						if(skipThisOne) continue;
 					}
-					
+
 					I.recoverEnvStats();
 					V.addElement(I);
 				}

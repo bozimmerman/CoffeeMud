@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_PeaceMoon extends Chant
 {
 	public String ID() { return "Chant_PeaceMoon"; }
-	public String name(){ return "Peace Moon";} 
+	public String name(){ return "Peace Moon";}
 	public String displayText(){return "(Peace Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
@@ -21,7 +21,7 @@ public class Chant_PeaceMoon extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
 			if(affected instanceof Room)
-				((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The peace moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The peace moon sets.");
 			super.unInvoke();
 			return;
 		}
@@ -33,26 +33,26 @@ public class Chant_PeaceMoon extends Chant
 
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected instanceof Room)
-		if((Util.bset(affect.sourceCode(),affect.MASK_MALICIOUS))
-		||(Util.bset(affect.targetCode(),affect.MASK_MALICIOUS))
-		||(Util.bset(affect.othersCode(),affect.MASK_MALICIOUS)))
+		if((Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+		||(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		||(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
 		{
-			if((affect.source()!=null)
-			   &&(affect.target()!=null)
-			   &&(affect.source()!=affect.target()))
+			if((msg.source()!=null)
+			   &&(msg.target()!=null)
+			   &&(msg.source()!=msg.target()))
 			{
-				affect.source().tell("Nah, you feel too peaceful here.");
-				if(affect.source().getVictim()!=null)
-					affect.source().getVictim().makePeace();
-				affect.source().makePeace();
+				msg.source().tell("Nah, you feel too peaceful here.");
+				if(msg.source().getVictim()!=null)
+					msg.source().getVictim().makePeace();
+				msg.source().makePeace();
 			}
-			affect.modify(affect.source(),affect.target(),affect.tool(),Affect.NO_EFFECT,"",Affect.NO_EFFECT,"",Affect.NO_EFFECT,"");
+			msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"");
 			return false;
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -62,7 +62,7 @@ public class Chant_PeaceMoon extends Chant
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(mob.location().fetchAffect(ID())==null)
+			if(mob.location().fetchEffect(ID())==null)
 				unInvoke();
 			if(mob.isInCombat()) mob.makePeace();
 		}
@@ -76,10 +76,10 @@ public class Chant_PeaceMoon extends Chant
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB M=room.fetchInhabitant(i);
-				if((M!=null)&&(M.fetchAffect(ID())==null))
+				if((M!=null)&&(M.fetchEffect(ID())==null))
 				{
 					Ability A=(Ability)copyOf();
-					M.addAffect(A);
+					M.addEffect(A);
 				}
 			}
 		}
@@ -95,7 +95,7 @@ public class Chant_PeaceMoon extends Chant
 			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already under the peace moon.");
 			return false;
@@ -117,12 +117,12 @@ public class Chant_PeaceMoon extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Peace Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Peace Moon Rises!");
 					beneficialAffect(mob,target,0);
 				}
 			}

@@ -107,12 +107,12 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),22,"Thief_Flank",true);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_Trap",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),24,"Thief_Bribe",true);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Thief_Ambush",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Ventrilloquate",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),30,"Thief_Nondetection",true);
 		}
 	}
@@ -146,25 +146,25 @@ public class Thief extends StdCharClass
 	}
 	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
 	public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(myHost instanceof MOB)
 		{
 			MOB myChar=(MOB)myHost;
-			if(affect.amISource(myChar)
+			if(msg.amISource(myChar)
 			   &&(!myChar.isMonster())
-			   &&(affect.sourceCode()==Affect.MSG_THIEF_ACT)
-			   &&(affect.target()!=null)
-			   &&(affect.target() instanceof MOB)
-			   &&(affect.targetMessage()==null)
-			   &&(affect.tool()!=null)
-			   &&(affect.tool() instanceof Ability)
-			   &&(affect.tool().ID().equals("Thief_Steal")
-				  ||affect.tool().ID().equals("Thief_Robbery")
-				  ||affect.tool().ID().equals("Thief_Swipe")))
-				ExternalPlay.postExperience(myChar,(MOB)affect.target()," for a successful "+affect.tool().name(),10,false);
+			   &&(msg.sourceCode()==CMMsg.MSG_THIEF_ACT)
+			   &&(msg.target()!=null)
+			   &&(msg.target() instanceof MOB)
+			   &&(msg.targetMessage()==null)
+			   &&(msg.tool()!=null)
+			   &&(msg.tool() instanceof Ability)
+			   &&(msg.tool().ID().equals("Thief_Steal")
+				  ||msg.tool().ID().equals("Thief_Robbery")
+				  ||msg.tool().ID().equals("Thief_Swipe")))
+				ExternalPlay.postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),10,false);
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 
 	protected boolean isAllowedWeapon(int wclass){
@@ -173,40 +173,40 @@ public class Thief extends StdCharClass
 		return false;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			boolean spellLike=((affect.tool()!=null)&&(myChar.fetchAbility(affect.tool().ID())!=null))&&(myChar.isMine(affect.tool()));
-			if((spellLike||((affect.sourceMajor()&Affect.MASK_DELICATE)>0))
+			boolean spellLike=((msg.tool()!=null)&&(myChar.fetchAbility(msg.tool().ID())!=null))&&(myChar.isMine(msg.tool()));
+			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 				{
 					String name="in <S-HIS-HER> maneuver";
 					if(spellLike)
-						name=affect.tool().name().toLowerCase();
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) "+name+"!");
+						name=msg.tool().name().toLowerCase();
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) "+name+"!");
 					return false;
 				}
 			}
 			else
-			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon))
+			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon))
 			{
-				int classification=((Weapon)affect.tool()).weaponClassification();
+				int classification=((Weapon)msg.tool()).weaponClassification();
 				if(!isAllowedWeapon(classification))
 					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
 						return false;
 					}
 			}
 		}
-		return super.okAffect(myChar,affect);
+		return super.okMessage(myChar,msg);
 	}
 
 	public void unLevel(MOB mob)

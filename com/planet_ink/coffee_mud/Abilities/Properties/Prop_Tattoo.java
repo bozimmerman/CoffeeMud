@@ -10,7 +10,7 @@ public class Prop_Tattoo extends Property
 	public String name(){ return "A Tattoo";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	Prop_Tattoo BOB=new Prop_Tattoo();	BOB.setMiscText(text());return BOB;}
-	
+
 	public static Vector getTattoos(MOB mob)
 	{
 		Vector tattos=new Vector();
@@ -19,25 +19,25 @@ public class Prop_Tattoo extends Property
 			tattos=Util.parseSemicolons(A.text().toUpperCase(),true);
 		else
 		{
-			A=mob.fetchAffect("Prop_Tattoo");
+			A=mob.fetchEffect("Prop_Tattoo");
 			if(A!=null)
 				tattos=Util.parseSemicolons(A.text().toUpperCase(),true);
 		}
 		return tattos;
 	}
-			
 
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		/*if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 
-			if((affect.amITarget(mob))
-			   &&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING)
+			if((msg.amITarget(mob))
+			   &&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 			   &&(text().length()>0))
 			{
-				Vector V=getTattoos(affect.source());
+				Vector V=getTattoos(msg.source());
 				String tattoos="";
 				if(V.size()==1)
 				   tattoos=(String)V.elementAt(0);
@@ -51,9 +51,9 @@ public class Prop_Tattoo extends Property
 					else
 					   tattoos+=", "+(String)V.elementAt(v);
 				if(tattoos.length()>0)
-					affect.addTrailerMsg(new FullMsg(affect.source(),mob,null,Affect.MSG_OK_VISUAL,"<T-NAME> has the following tattoos: "+tattoos.toLowerCase(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null));
+					msg.addTrailerMsg(new FullMsg(msg.source(),mob,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> has the following tattoos: "+tattoos.toLowerCase(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 		}*/
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

@@ -44,29 +44,29 @@ public class GenPill extends GenFood implements Pill
 	public Vector getSpells(Pill me)
 	{ return new StdPill().getSpells(me);}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_EAT:
-				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
+			case CMMsg.TYP_EAT:
+				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 				{
 					eatIfAble(mob,this);
-					super.affect(myHost,affect);
+					super.executeMsg(myHost,msg);
 				}
 				else
-					affect.addTrailerMsg(new FullMsg(affect.source(),affect.target(),affect.tool(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
+					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),msg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),msg.NO_EFFECT,null));
 				break;
 			default:
-				super.affect(myHost,affect);
+				super.executeMsg(myHost,msg);
 				break;
 			}
 		}
 		else
-			super.affect(myHost,affect);
+			super.executeMsg(myHost,msg);
 	}
 	// stats handled by genfood, spells by readabletext
 }

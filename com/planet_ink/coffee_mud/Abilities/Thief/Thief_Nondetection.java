@@ -17,12 +17,12 @@ public class Thief_Nondetection extends ThiefSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public boolean active=false;
-	
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
 		if((!Sense.isHidden(mob))&&(active))
@@ -31,23 +31,23 @@ public class Thief_Nondetection extends ThiefSkill
 			mob.recoverEnvStats();
 		}
 		else
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
-			if(((Util.bset(affect.sourceMajor(),Affect.MASK_SOUND)
-				 ||(affect.sourceMinor()==Affect.TYP_SPEAK)
-				 ||(affect.sourceMinor()==Affect.TYP_ENTER)
-				 ||(affect.sourceMinor()==Affect.TYP_LEAVE)
-				 ||(affect.sourceMinor()==Affect.TYP_RECALL)))
+			if(((Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND)
+				 ||(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+				 ||(msg.sourceMinor()==CMMsg.TYP_ENTER)
+				 ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+				 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
 			 &&(active)
-			 &&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-			 &&(affect.sourceMinor()!=Affect.TYP_EXAMINESOMETHING)
-			 &&(affect.sourceMajor()>0))
+			 &&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			 &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINESOMETHING)
+			 &&(msg.sourceMajor()>0))
 			{
 				active=false;
 				mob.recoverEnvStats();
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -56,7 +56,7 @@ public class Thief_Nondetection extends ThiefSkill
 		if(active&&((affected.baseEnvStats().disposition()&EnvStats.IS_HIDDEN)==0))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;

@@ -15,9 +15,9 @@ public class Prop_Retainable extends Property
 	public String accountForYourself()
 	{ return "Retainable";	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
@@ -26,8 +26,8 @@ public class Prop_Retainable extends Property
 				Room room=mob.location();
 				mob.baseEnvStats().setRejuv(0);
 				mob.setStartRoom(room);
-				if((affect.sourceMinor()==Affect.TYP_SHUTDOWN)
-				||((affect.sourceMinor()==Affect.TYP_QUIT)&&(affect.amISource(mob.amFollowing()))))
+				if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+				||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource(mob.amFollowing()))))
 					mob.setFollowing(null);
 			}
 		}

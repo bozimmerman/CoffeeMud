@@ -15,7 +15,7 @@ public class Poison_Firebreather extends Poison_Liquor
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Firebreather();}
 	protected int POISON_TICKS(){return 35;}
-	
+
 	public void unInvoke()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -24,7 +24,7 @@ public class Poison_Firebreather extends Poison_Liquor
 			if((Dice.rollPercentage()<10)&&(!((MOB)affected).isMonster()))
 			{
 				Ability A=CMClass.getAbility("Disease_Migraines");
-				if((A!=null)&&(mob.fetchAffect(A.ID())==null))
+				if((A!=null)&&(mob.fetchEffect(A.ID())==null))
 					A.invoke(mob,mob,true);
 			}
 			ExternalPlay.standIfNecessary(mob);
@@ -43,7 +43,7 @@ public class Poison_Firebreather extends Poison_Liquor
 		{
 			if(Dice.rollPercentage()<40)
 			{
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) fire!"+CommonStrings.msp("fireball.wav",20));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) fire!"+CommonStrings.msp("fireball.wav",20));
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					MOB target=room.fetchInhabitant(i);
@@ -52,8 +52,8 @@ public class Poison_Firebreather extends Poison_Liquor
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_FIRE,null);
-					if((mob!=target)&&(mob.mayPhysicallyAttack(target))&&(room.okAffect(mob,msg)))
+					FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,null);
+					if((mob!=target)&&(mob.mayPhysicallyAttack(target))&&(room.okMessage(mob,msg)))
 					{
 						room.send(mob,msg);
 						invoker=mob;
@@ -65,12 +65,12 @@ public class Poison_Firebreather extends Poison_Liquor
 						damage += Dice.roll(maxDie,6,1);
 						if(msg.wasModified())
 							damage = (int)Math.round(Util.div(damage,2.0));
-						ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.MASK_SOUND|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"^FThe fire <DAMAGE> <T-NAME>!^?");
+						ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"^FThe fire <DAMAGE> <T-NAME>!^?");
 					}
 				}
 			}
 			else
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) smoke!");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) smoke!");
 			disableHappiness=true;
 		}
 		return super.tick(ticking,tickID);

@@ -71,7 +71,7 @@ public class Skill_Convert extends StdAbility
 				{
 					if(!target.session().confirm(mob.name()+" is trying to convert you to the worship of "+D.name()+".  Is this what you want (N/y)?","N"))
 					{
-						mob.location().show(mob,target,Affect.MSG_SPEAK,"<S-YOUPOSS> attempt to convert <T-NAME> to the worship of "+D.name()+" is rejected.");
+						mob.location().show(mob,target,CMMsg.MSG_SPEAK,"<S-YOUPOSS> attempt to convert <T-NAME> to the worship of "+D.name()+" is rejected.");
 						return false;
 					}
 				}
@@ -82,11 +82,11 @@ public class Skill_Convert extends StdAbility
 			}
 			Room dRoom=D.location();
 			if(dRoom==mob.location()) dRoom=null;
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,auto?"<S-NAME> <S-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAMESELF> to the worship of "+D.name()+".");
-			FullMsg msg2=new FullMsg(target,D,this,Affect.MSG_SERVE,null);
-			if((mob.location().okAffect(mob,msg))
-			   &&(mob.location().okAffect(mob,msg2))
-			   &&((dRoom==null)||(dRoom.okAffect(mob,msg2))))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?"<S-NAME> <S-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAMESELF> to the worship of "+D.name()+".");
+			FullMsg msg2=new FullMsg(target,D,this,CMMsg.MSG_SERVE,null);
+			if((mob.location().okMessage(mob,msg))
+			   &&(mob.location().okMessage(mob,msg2))
+			   &&((dRoom==null)||(dRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(target,msg2);

@@ -91,10 +91,10 @@ public class Chant_PlantMaze extends Chant
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) amazingly!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,"Something is happening...");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Something is happening...");
 
 				Room newRoom=CMClass.getLocale("WoodsMaze");
 				((GridLocale)newRoom).setXSize(10);
@@ -103,7 +103,7 @@ public class Chant_PlantMaze extends Chant
 				if(!s.endsWith("s"))s=s+"s";
 				String nos=s.substring(0,s.length()-1).toLowerCase();
 				newRoom.setDisplayText(Util.capitalize(nos)+" Maze");
-				newRoom.addNonUninvokableAffect(CMClass.getAbility("Prop_NoTeleportOut"));
+				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 				StringBuffer desc=new StringBuffer("");
 				desc.append("This quaint glade is surrounded by tall "+s+".  A gentle breeze tosses leaves up into the air.");
 				desc.append("<P>");
@@ -153,9 +153,9 @@ public class Chant_PlantMaze extends Chant
 					MOB follower=(MOB)everyone.elementAt(m);
 					if(follower==null) continue;
 					Room newerRoom=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
-					FullMsg enterMsg=new FullMsg(follower,newerRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of "+thePlants.name()+".");
+					FullMsg enterMsg=new FullMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of "+thePlants.name()+".");
 					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into "+thePlants.name()+".");
-					if(oldRoom.okAffect(follower,leaveMsg)&&newerRoom.okAffect(follower,enterMsg))
+					if(oldRoom.okMessage(follower,leaveMsg)&&newerRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
 							follower.makePeace();

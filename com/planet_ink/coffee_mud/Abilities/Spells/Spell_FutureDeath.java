@@ -45,8 +45,8 @@ public class Spell_FutureDeath extends Spell
 			// what happened.
 			String str=auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>^?";
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),str);
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
@@ -86,7 +86,7 @@ public class Spell_FutureDeath extends Spell
 						str="<S-NAME> stand(s) on <S-HIS-HER> toes, stick(s) out <S-HIS-HER> tongue, and die(s).";
 						break;
 					}
-					target.location().show(target,null,Affect.MSG_OK_VISUAL,str);
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,str);
 					ExternalPlay.postDeath(mob,target,null);
 				}
 			}

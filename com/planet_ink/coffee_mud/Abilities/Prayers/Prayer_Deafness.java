@@ -56,13 +56,13 @@ public class Prayer_Deafness extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> scream(s) an unholy prayer to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> scream(s) an unholy prayer to <T-NAMESELF>.^?");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> go(es) deaf!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) deaf!");
 					maliciousAffect(mob,target,0,-1);
 				}
 			}

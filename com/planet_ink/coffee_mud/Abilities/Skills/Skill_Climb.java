@@ -49,23 +49,23 @@ public class Skill_Climb extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,null);
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			success=profficiencyCheck(0,auto);
 
-			if(mob.fetchAffect(ID())==null)
+			if(mob.fetchEffect(ID())==null)
 			{
-				mob.addAffect(this);
+				mob.addEffect(this);
 				mob.recoverEnvStats();
 			}
 
 			ExternalPlay.move(mob,dirCode,false,false);
-			mob.delAffect(this);
+			mob.delEffect(this);
 			mob.recoverEnvStats();
 			if(!success)
-				mob.location().affect(mob,new FullMsg(mob,mob.location(),Affect.MASK_MOVE|Affect.TYP_GENERAL,null));
+				mob.location().executeMsg(mob,new FullMsg(mob,mob.location(),CMMsg.MASK_MOVE|CMMsg.TYP_GENERAL,null));
 		}
 		return success;
 	}

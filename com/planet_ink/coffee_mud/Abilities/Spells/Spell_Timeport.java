@@ -52,21 +52,21 @@ public class Spell_Timeport extends Spell
 		}
 		super.unInvoke();
 		if(room!=null)
-			room.show(mob, null, Affect.MSG_OK_VISUAL, "<S-NAME> reappear(s)!");
+			room.show(mob, null, CMMsg.MSG_OK_VISUAL, "<S-NAME> reappear(s)!");
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			if(affect.amISource((MOB)affected))
-				if((!Util.bset(affect.sourceCode(),Affect.MASK_GENERAL))
-				&&(!Util.bset(affect.targetCode(),Affect.MASK_GENERAL)))
+			if(msg.amISource((MOB)affected))
+				if((!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+				&&(!Util.bset(msg.targetCode(),CMMsg.MASK_GENERAL)))
 				{
-					affect.source().tell("Nothing just happened.  You didn't do that.");
+					msg.source().tell("Nothing just happened.  You didn't do that.");
 					return false;
 				}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -91,7 +91,7 @@ public class Spell_Timeport extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s)")+"!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Room room=mob.location();
@@ -102,11 +102,11 @@ public class Spell_Timeport extends Spell
 					if((M!=null)&&(M.getVictim()==target))
 						M.makePeace();
 				}
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> vanish(es)!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es)!");
 				ExternalPlay.suspendTicking(target,-1);
 				beneficialAffect(mob,target,3);
-				Ability A=target.fetchAffect(ID());
-				if(A!=null)	ExternalPlay.startTickDown(A,Host.MOB_TICK,1);
+				Ability A=target.fetchEffect(ID());
+				if(A!=null)	ExternalPlay.startTickDown(A,Host.TICK_MOB,1);
 			}
 		}
 		else

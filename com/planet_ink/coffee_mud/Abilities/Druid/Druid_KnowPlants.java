@@ -22,9 +22,9 @@ public class Druid_KnowPlants extends StdAbility
 	{
 		if((I!=null)&&(I.rawSecretIdentity().length()>0))
 		{
-			for(int a=0;a<I.numAffects();a++)
+			for(int a=0;a<I.numEffects();a++)
 			{
-				Ability A=I.fetchAffect(a);
+				Ability A=I.fetchEffect(a);
 				if((A!=null)&&(A.invoker()!=null)&&(A instanceof Chant_SummonPlants))
 					return true;
 			}
@@ -51,8 +51,8 @@ public class Druid_KnowPlants extends StdAbility
 			mob.tell("Your plant senses fail you.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,I,null,Affect.MSG_DELICATE_SMALL_HANDS_ACT|Affect.MASK_MAGIC,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,I,null,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|CMMsg.MASK_MAGIC,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				StringBuffer str=new StringBuffer("");

@@ -23,7 +23,7 @@ public class Chant_HowlersMoon extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
 			if(affected instanceof Room)
-				((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The howlers moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The howlers moon sets.");
 			super.unInvoke();
 			return;
 		}
@@ -49,7 +49,7 @@ public class Chant_HowlersMoon extends Chant
 			Room room=(Room)affected;
 			if(!Chant_BlueMoon.moonInSky(room,this))
 				unInvoke();
-			
+
 			if((++ticksTicked)<20) return true;
 			int numWolfs=0;
 			for(int i=0;i<room.numInhabitants();i++)
@@ -57,12 +57,12 @@ public class Chant_HowlersMoon extends Chant
 				MOB M=room.fetchInhabitant(i);
 				if((M!=null)
 				&&(M.isMonster())
-				&&(M.fetchAffect(ID())!=null))
+				&&(M.fetchEffect(ID())!=null))
 					numWolfs++;
 			}
 			if((numWolfs>5)||((invoker()!=null)&&(numWolfs>invoker().envStats().level()/10)))
 				 return true;
-			if(fromDir<0) 
+			if(fromDir<0)
 			{
 				Vector choices=fillChoices(room);
 				if(choices.size()==0)
@@ -79,7 +79,7 @@ public class Chant_HowlersMoon extends Chant
 				Room newRoom=room.getRoomInDir(fromDir);
 				int opDir=Directions.getOpDirectionCode(fromDir);
 				target.bringToLife(newRoom,true);
-				target.location().showOthers(target,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				ExternalPlay.move(target,opDir,false,false);
@@ -125,7 +125,7 @@ public class Chant_HowlersMoon extends Chant
 		}
 		return choices;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room target=mob.location();
@@ -135,7 +135,7 @@ public class Chant_HowlersMoon extends Chant
 			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already under the howler's moon.");
 			return false;
@@ -154,7 +154,7 @@ public class Chant_HowlersMoon extends Chant
 			return false;
 		}
 		fromDir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -171,12 +171,12 @@ public class Chant_HowlersMoon extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Howler's Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Howler's Moon Rises!");
 					ticksTicked=0;
 					beneficialAffect(mob,target,0);
 				}

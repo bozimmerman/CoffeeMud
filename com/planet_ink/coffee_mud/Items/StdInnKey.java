@@ -28,7 +28,7 @@ public class StdInnKey extends StdKey implements InnKey
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.ITEM_BOUNCEBACK)
+		if(tickID==Host.TICK_ITEM_BOUNCEBACK)
 		{
 			this.destroyed=false;
 			this.setContainer(null);
@@ -58,41 +58,41 @@ public class StdInnKey extends StdKey implements InnKey
 		}
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		if(((affect.targetMinor()==Affect.TYP_GIVE)
-		||(affect.targetMinor()==Affect.TYP_SELL))
+		super.executeMsg(myHost,msg);
+		if(((msg.targetMinor()==CMMsg.TYP_GIVE)
+		||(msg.targetMinor()==CMMsg.TYP_SELL))
 		&&(myShopkeeper!=null)
-		&&(affect.target()==myShopkeeper)
-		&&(affect.tool()==this))
+		&&(msg.target()==myShopkeeper)
+		&&(msg.tool()==this))
 		{
-			ExternalPlay.deleteTick(this,Host.ITEM_BOUNCEBACK);
+			ExternalPlay.deleteTick(this,Host.TICK_ITEM_BOUNCEBACK);
 			myShopkeeper.addStoreInventory(this); //makes a copy
 			destroy();
 		}
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if(((affect.targetMinor()==Affect.TYP_GIVE)
-		||(affect.targetMinor()==Affect.TYP_SELL))
-		&&(affect.target() instanceof ShopKeeper)
+		if(((msg.targetMinor()==CMMsg.TYP_GIVE)
+		||(msg.targetMinor()==CMMsg.TYP_SELL))
+		&&(msg.target() instanceof ShopKeeper)
 		&&(myShopkeeper!=null)
-		&&(affect.target()!=myShopkeeper)
-		&&(affect.tool()==this))
+		&&(msg.target()!=myShopkeeper)
+		&&(msg.tool()==this))
 		{
-			ExternalPlay.quickSay((MOB)affect.target(),affect.source(),"I'm not interested.",false,false);
+			ExternalPlay.quickSay((MOB)msg.target(),msg.source(),"I'm not interested.",false,false);
 			return false;
 		}
 		else
-		if((affect.sourceMinor()==Affect.TYP_GET)
+		if((msg.sourceMinor()==CMMsg.TYP_GET)
 		&&(myShopkeeper!=null)
-		&&(affect.tool()==myShopkeeper)
-		&&(affect.target()==this))
-			ExternalPlay.startTickDown(this,Host.ITEM_BOUNCEBACK,(int)Host.TICKS_PER_MUDDAY);
+		&&(msg.tool()==myShopkeeper)
+		&&(msg.target()==this))
+			ExternalPlay.startTickDown(this,Host.TICK_ITEM_BOUNCEBACK,(int)Host.TICKS_PER_MUDDAY);
 		return true;
 	}
 }

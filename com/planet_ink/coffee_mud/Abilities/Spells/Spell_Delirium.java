@@ -142,7 +142,7 @@ public class Spell_Delirium extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
@@ -155,27 +155,27 @@ public class Spell_Delirium extends Spell
 	}
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		String othersMessage=affect.othersMessage();
-		String sourceMessage=affect.sourceMessage();
-		String targetMessage=affect.targetMessage();
-		if((affect.amITarget(mob))&&(targetMessage!=null))
+		String othersMessage=msg.othersMessage();
+		String sourceMessage=msg.sourceMessage();
+		String targetMessage=msg.targetMessage();
+		if((msg.amITarget(mob))&&(targetMessage!=null))
 		{
-			targetMessage=process(mob,process(mob,targetMessage,affect.target()),affect.target());
-			if(!targetMessage.equals(affect.targetMessage()))
-				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),sourceMessage,affect.targetCode(),targetMessage,affect.othersCode(),othersMessage);
+			targetMessage=process(mob,process(mob,targetMessage,msg.target()),msg.target());
+			if(!targetMessage.equals(msg.targetMessage()))
+				msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),sourceMessage,msg.targetCode(),targetMessage,msg.othersCode(),othersMessage);
 		}
-		if((affect.amISource(mob))&&(sourceMessage!=null))
+		if((msg.amISource(mob))&&(sourceMessage!=null))
 		{
-			sourceMessage=process(mob,process(mob,sourceMessage,affect.source()),affect.source());
-			if(!sourceMessage.equals(affect.sourceMessage()))
-				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),sourceMessage,affect.targetCode(),targetMessage,affect.othersCode(),othersMessage);
+			sourceMessage=process(mob,process(mob,sourceMessage,msg.source()),msg.source());
+			if(!sourceMessage.equals(msg.sourceMessage()))
+				msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),sourceMessage,msg.targetCode(),targetMessage,msg.othersCode(),othersMessage);
 		}
 		return true;
 	}
@@ -189,7 +189,7 @@ public class Spell_Delirium extends Spell
 		super.unInvoke();
 
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> begin(s) to feel a bit less delirius.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to feel a bit less delirius.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -215,8 +215,8 @@ public class Spell_Delirium extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))||(mob.location().okAffect(mob,msg2)))
+			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))||(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
@@ -224,7 +224,7 @@ public class Spell_Delirium extends Spell
 				{
 					amountRemaining=300;
 					maliciousAffect(mob,target,0,-1);
-					target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> go(es) under the grip of delirium!!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) under the grip of delirium!!");
 				}
 			}
 		}

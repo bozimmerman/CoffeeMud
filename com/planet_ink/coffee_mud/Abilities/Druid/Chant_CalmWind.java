@@ -15,7 +15,7 @@ public class Chant_CalmWind extends Chant
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_CalmWind();}
 	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
@@ -51,7 +51,7 @@ public class Chant_CalmWind extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"^SThe swirling sky changes color!^?":"^S<S-NAME> chant(s) into the swirling sky!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				switch(mob.location().getArea().weatherType(mob.location()))

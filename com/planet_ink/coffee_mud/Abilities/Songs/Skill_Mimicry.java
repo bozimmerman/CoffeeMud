@@ -18,26 +18,26 @@ public class Skill_Mimicry extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_Mimicry();}
 	public MOB mimicing=null;
-	private Affect lastMsg=null;
+	private CMMsg lastMsg=null;
 	private boolean disabled=false;
-	
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.affect(affecting,affect);
+		super.executeMsg(affecting,msg);
 		if((affecting instanceof MOB)&&(!Sense.aliveAwakeMobile((MOB)affecting,true)))
 			return;
 		if(disabled) return;
-		if(((!(affecting instanceof MOB))||(!affect.amISource((MOB)affecting)))
-		&&((affect.sourceMinor()!=Affect.TYP_EMOTE)
-		||((affect.tool()!=null)&&(affect.tool().ID().equals("Social")))))
-			lastMsg=affect;
+		if(((!(affecting instanceof MOB))||(!msg.amISource((MOB)affecting)))
+		&&((msg.sourceMinor()!=CMMsg.TYP_EMOTE)
+		||((msg.tool()!=null)&&(msg.tool().ID().equals("Social")))))
+			lastMsg=msg;
 	}
 
-	public void fixSNameTo(Affect msg, MOB sMOB, Environmental ticking)
+	public void fixSNameTo(CMMsg msg, MOB sMOB, Environmental ticking)
 	{
 		//String src=msg.sourceMessage();
 		String trg=msg.targetMessage();
@@ -71,14 +71,14 @@ public class Skill_Mimicry extends StdAbility
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		Affect msg=lastMsg;
+		CMMsg msg=lastMsg;
 		if(msg==null) return true;
 		lastMsg=null;
 		if(((affected instanceof MOB)&&(!Sense.aliveAwakeMobile((MOB)affected,true))))
 			return true;
-		msg=(Affect)msg.copyOf();
+		msg=(CMMsg)msg.copyOf();
 		MOB sMOB=(MOB)msg.source();
-		if(msg.sourceMinor()==Affect.TYP_EMOTE)
+		if(msg.sourceMinor()==CMMsg.TYP_EMOTE)
 		{
 			if(affected instanceof MOB)
 				msg.modify((MOB)affected,msg.target(),msg.tool(),
@@ -125,7 +125,7 @@ public class Skill_Mimicry extends StdAbility
 		disabled=true;
 		if((msg!=null)
 		&&(sMOB.location()!=null)
-		&&(sMOB.location().okAffect(sMOB,msg)))
+		&&(sMOB.location().okMessage(sMOB,msg)))
 		{
 			if(msg.source().location()==null)
 			{
@@ -139,7 +139,7 @@ public class Skill_Mimicry extends StdAbility
 		disabled=false;
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -152,8 +152,8 @@ public class Skill_Mimicry extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT|(auto?Affect.MASK_GENERAL:0),auto?"":"<S-NAME> begin(s) mimicing <T-NAMESELF>.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT|(auto?CMMsg.MASK_GENERAL:0),auto?"":"<S-NAME> begin(s) mimicing <T-NAMESELF>.");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mimicing=target;

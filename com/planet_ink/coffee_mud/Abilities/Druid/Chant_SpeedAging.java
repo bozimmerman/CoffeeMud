@@ -21,7 +21,7 @@ public class Chant_SpeedAging extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
@@ -30,10 +30,10 @@ public class Chant_SpeedAging extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=target.fetchAffect("Age");
+				Ability A=target.fetchEffect("Age");
 				if((!(target instanceof MOB))&&(A==null))
 				{
 					if(target instanceof Food)
@@ -53,24 +53,24 @@ public class Chant_SpeedAging extends Chant
 							case EnvResource.MATERIAL_VEGETATION:
 							case EnvResource.MATERIAL_WOODEN:
 							{
-								mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" rots away!");
+								mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" rots away!");
 								((Item)target).destroy();
 								break;
 							}
 						default:
-							mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" ages, but nothing happens to it.");
+							mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" ages, but nothing happens to it.");
 							break;
 						}
 					}
 					else
-						mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" ages, but nothing happens to it.");
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" ages, but nothing happens to it.");
 					success=false;
 				}
 				else
 				if((A==null)||(A.displayText().length()==0))
 				{
 					MOB M=(MOB)target;
-					mob.location().show(M,null,Affect.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
+					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
 					M.setAgeHours(M.getAgeHours()+(M.getAgeHours()/10));
 				}
 				else
@@ -82,9 +82,9 @@ public class Chant_SpeedAging extends Chant
 						age=(Host.TICKS_PER_MUDDAY*Host.TICK_TIME);
 					A.setMiscText(""+(start-age));
 					if(target instanceof MOB)
-						mob.location().show((MOB)target,null,Affect.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
+						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
 					else
-						mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" ages a bit.");
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" ages a bit.");
 				}
 			}
 		}

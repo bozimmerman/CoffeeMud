@@ -28,39 +28,39 @@ public class Spell_Flameshield extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> flame shield vanishes in a puff of smoke.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> flame shield vanishes in a puff of smoke.");
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		MOB mob=(MOB)affected;
-		if(affect.target()==null) return;
-		if(affect.source()==null) return;
-		MOB source=affect.source();
+		if(msg.target()==null) return;
+		if(msg.source()==null) return;
+		MOB source=msg.source();
 		if(source.location()==null) return;
 
 
-		if(affect.amITarget(mob))
+		if(msg.amITarget(mob))
 		{
-			if(Util.bset(affect.targetCode(),Affect.MASK_HANDS)
-			   &&(affect.targetMessage()!=null)
-			   &&(affect.source().rangeToTarget()==0)
-			   &&(affect.targetMessage().length()>0))
+			if(Util.bset(msg.targetCode(),CMMsg.MASK_HANDS)
+			   &&(msg.targetMessage()!=null)
+			   &&(msg.source().rangeToTarget()==0)
+			   &&(msg.targetMessage().length()>0))
 			{
 				if((Dice.rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*3)))
 				{
-					FullMsg msg=new FullMsg(source,mob,this,affectType(false),null);
-					if(source.location().okAffect(source,msg))
+					FullMsg msg2=new FullMsg(source,mob,this,affectType(false),null);
+					if(source.location().okMessage(source,msg2))
 					{
-						source.location().send(source,msg);
+						source.location().send(source,msg2);
 						if(invoker==null) invoker=source;
-						if(!msg.wasModified())
+						if(!msg2.wasModified())
 						{
 							int damage = Dice.roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/4.0),1);
-							ExternalPlay.postDamage(mob,source,this,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The flame shield around <S-NAME> flares and <DAMAGE> <T-NAME>!");
+							ExternalPlay.postDamage(mob,source,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flame shield around <S-NAME> flares and <DAMAGE> <T-NAME>!");
 						}
 					}
 				}
@@ -95,7 +95,7 @@ public class Spell_Flameshield extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of flames erupt(s) around <T-NAME>!^?")+CommonStrings.msp("fireball.wav",10));
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

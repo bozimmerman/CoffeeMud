@@ -72,14 +72,14 @@ public class Spell_FeelTheVoid extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) the void at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					if(target.location()==mob.location())
 					{
-						target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> stand(s) dazed and quiet!");
+						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> stand(s) dazed and quiet!");
 						success=maliciousAffect(mob,target,0,-1);
 					}
 				}

@@ -40,23 +40,23 @@ public class Spell_AlternateReality extends Spell
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
-		&&((affect.amISource((MOB)affected)))
-		&&(affect.target()!=null)
+		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+		&&((msg.amISource((MOB)affected)))
+		&&(msg.target()!=null)
 		&&(invoker()!=null))
 		{
 			Hashtable H=invoker().getGroupMembers(new Hashtable());
-			if(H.contains(affect.target()))
+			if(H.contains(msg.target()))
 			{
-				affect.source().tell("But you are on "+invoker().name()+"'s side!");
+				msg.source().tell("But you are on "+invoker().name()+"'s side!");
 				if(invoker().getVictim()!=affected)
 					((MOB)affected).setVictim(invoker().getVictim());
 				return false;
 			}
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 
@@ -87,16 +87,16 @@ public class Spell_AlternateReality extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) to <T-NAME>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
+					success=maliciousAffect(mob,target,0,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
 					if(success)
 					{
 						Room R=target.location();
-						R.show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> change(s) sides!");
+						R.show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> change(s) sides!");
 						target.makePeace();
 						if(mob.getVictim()==target)
 							mob.setVictim(null);

@@ -24,7 +24,7 @@ public class Chant_FindMate extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.MOB_TICK)
+		if(tickID==Host.TICK_MOB)
 		{
 			if((theTrail==null)
 			||(affected == null)
@@ -44,12 +44,12 @@ public class Chant_FindMate extends Chant
 				if(mate!=null)
 				{
 					mob.tell("You peer longingly at "+mate.name()+".");
-					
+
 					Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
 					if(I!=null)	ExternalPlay.remove(mob,I,false);
 					I=mob.fetchFirstWornItem(Item.ON_LEGS);
 					if(I!=null)	ExternalPlay.remove(mob,I,false);
-					
+
 					if((mob.fetchFirstWornItem(Item.ON_WAIST)!=null)
 					||(mob.fetchFirstWornItem(Item.ON_LEGS)!=null))
 						unInvoke();
@@ -59,7 +59,7 @@ public class Chant_FindMate extends Chant
 					unInvoke();
 				}
 			}
-			
+
 			if(nextDirection==-999)
 				return true;
 
@@ -94,18 +94,18 @@ public class Chant_FindMate extends Chant
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 
 		MOB mob=(MOB)affected;
-		if((affect.amISource(mob))
-		&&(affect.amITarget(mob.location()))
+		if((msg.amISource(mob))
+		&&(msg.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
-		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
@@ -115,7 +115,7 @@ public class Chant_FindMate extends Chant
 		if((mate==null)||(forMe==null)) return false;
 		if(mate.charStats().getStat(CharStats.GENDER)==forMe.charStats().getStat(CharStats.GENDER))
 			return false;
-		if((mate.charStats().getStat(CharStats.GENDER)!=(int)'M') 
+		if((mate.charStats().getStat(CharStats.GENDER)!=(int)'M')
 		&&(mate.charStats().getStat(CharStats.GENDER)!=(int)'F'))
 			return false;
 		String materace=mate.charStats().getMyRace().ID();
@@ -129,18 +129,18 @@ public class Chant_FindMate extends Chant
 			return true;
 		return false;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if((target.charStats().getStat(CharStats.GENDER)!=(int)'M') 
+		if((target.charStats().getStat(CharStats.GENDER)!=(int)'M')
 		&&(target.charStats().getStat(CharStats.GENDER)!=(int)'F'))
 		{
 			mob.tell(target.name()+" is incapable of mating!");
 			return false;
 		}
-		
+
 		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
 		if(V.size()>0)
@@ -148,7 +148,7 @@ public class Chant_FindMate extends Chant
 			target.tell("You stop tracking.");
 			return true;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -192,14 +192,14 @@ public class Chant_FindMate extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?null:"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
-				Chant_FindMate A=(Chant_FindMate)target.fetchAffect(ID());
+				Chant_FindMate A=(Chant_FindMate)target.fetchEffect(ID());
 				if(A!=null)
 				{
-					target.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> yearn(s) for a mate!");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> yearn(s) for a mate!");
 					A.makeLongLasting();
 					A.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
 					target.recoverEnvStats();

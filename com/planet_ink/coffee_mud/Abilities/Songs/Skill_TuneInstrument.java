@@ -28,12 +28,12 @@ public class Skill_TuneInstrument extends StdAbility
 	{
 		Item target=Play.getInstrument(mob,-1,true);
 		if(target==null) return false;
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(target.name()+" is already tuned.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -41,15 +41,15 @@ public class Skill_TuneInstrument extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> tune(s) <T-NAMESELF>.");
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> tune(s) <T-NAMESELF>.");
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
 			}
 		}
 		else
-			mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> attempt(s) to tune <T-NAMESELF>, but mess(es) up.");
+			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> attempt(s) to tune <T-NAMESELF>, but mess(es) up.");
 
 
 		// return whether it worked

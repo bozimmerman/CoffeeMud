@@ -41,9 +41,9 @@ public class Prop_WearResister extends Property
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if((affected !=null)
 		&&(affected instanceof Item)
@@ -51,11 +51,11 @@ public class Prop_WearResister extends Property
 		&&(((Item)affected).owner() instanceof MOB))
 		{
 			MOB mob=(MOB)((Item)affected).owner();
-			if((affect.amITarget(mob))&&(!affect.wasModified())&&(mob.location()!=null))
+			if((msg.amITarget(mob))&&(!msg.wasModified())&&(mob.location()!=null))
 			{
-				if(!Prop_HaveResister.isOk(affect,this,mob))
+				if(!Prop_HaveResister.isOk(msg,this,mob))
 					return false;
-				Prop_HaveResister.resistAffect(affect,mob,this);
+				Prop_HaveResister.resistAffect(msg,mob,this);
 			}
 		}
 		return true;

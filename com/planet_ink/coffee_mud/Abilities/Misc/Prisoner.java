@@ -16,39 +16,39 @@ public class Prisoner extends StdAbility
 	public Environmental newInstance(){	return new Prisoner();}
 	public long flags(){return Ability.FLAG_BINDING;}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((affected instanceof MOB)&&(affect.amISource((MOB)affected)))
-			if(affect.sourceMinor()==affect.TYP_RECALL)
+		if((affected instanceof MOB)&&(msg.amISource((MOB)affected)))
+			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 			{
-				if((affect.source()!=null)&&(affect.source().location()!=null))
-					affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but a geas prevents <S-HIM-HER>.");
+				if((msg.source()!=null)&&(msg.source().location()!=null))
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but a geas prevents <S-HIM-HER>.");
 				return false;
 			}
 			else
-			if(affect.sourceMinor()==Affect.TYP_FLEE)
+			if(msg.sourceMinor()==CMMsg.TYP_FLEE)
 			{
-				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to flee, but a geas prevents <S-HIM-HER>.");
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to flee, but a geas prevents <S-HIM-HER>.");
 				return false;
 			}
 			else
-			if((affect.tool()!=null)&&(affect.tool() instanceof Ability)
-			   &&(affect.targetMinor()==Affect.TYP_LEAVE))
+			if((msg.tool()!=null)&&(msg.tool() instanceof Ability)
+			   &&(msg.targetMinor()==CMMsg.TYP_LEAVE))
 			{
-				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>.");
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>.");
 				return false;
 			}
 			else
-			if((affect.targetMinor()==Affect.TYP_ENTER)
-			   &&(affect.target()!=null)
-			   &&(affect.target() instanceof Room)
-			   &&(affect.source().location()!=null)
-			   &&(!affect.source().location().getArea().name().equals(((Room)affect.target()).getArea().name())))
+			if((msg.targetMinor()==CMMsg.TYP_ENTER)
+			   &&(msg.target()!=null)
+			   &&(msg.target() instanceof Room)
+			   &&(msg.source().location()!=null)
+			   &&(!msg.source().location().getArea().name().equals(((Room)msg.target()).getArea().name())))
 			{
-				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>.");
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>.");
 				return false;
 			}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()

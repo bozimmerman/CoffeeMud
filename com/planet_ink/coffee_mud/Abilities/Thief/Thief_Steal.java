@@ -33,7 +33,7 @@ public class Thief_Steal extends ThiefSkill
 		}
 		if(lastOnes.size()>=50)
 			lastOnes.removeElementAt(0);
-		lastOnes.addElement(target,new Integer(times+1)); 
+		lastOnes.addElement(target,new Integer(times+1));
 		return times+1;
 	}
 
@@ -83,8 +83,8 @@ public class Thief_Steal extends ThiefSkill
 		{
 			if(Dice.rollPercentage()>discoverChance)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to steal; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from you and fails!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from <T-NAME> and fails!");
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to steal; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from <T-NAME> and fails!");
+				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
@@ -93,29 +93,29 @@ public class Thief_Steal extends ThiefSkill
 		else
 		{
 			String str=null;
-			int code=Affect.MSG_THIEF_ACT;
+			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if((stolen!=null)&&(stolen.amWearingAt(Item.INVENTORY)))
 					str="<S-NAME> steal(s) "+stolen.name()+" from <T-NAMESELF>.";
 				else
 				{
-					code=Affect.MSG_QUIETMOVEMENT;
+					code=CMMsg.MSG_QUIETMOVEMENT;
 					str="<S-NAME> attempt(s) to steal from <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
 				}
 
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
-			int hisCode=Affect.MSG_THIEF_ACT;
+			int hisCode=CMMsg.MSG_THIEF_ACT;
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
 			else
 			{
 				str+=" <T-NAME> spots you!";
-				hisCode=hisCode|((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
+				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
 			}
 
-			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))
@@ -125,12 +125,12 @@ public class Thief_Steal extends ThiefSkill
 					if(mob.getVictim()==target)
 						mob.makePeace();
 				}
-				msg=new FullMsg(target,stolen,null,Affect.MSG_DROP,Affect.MSG_DROP,Affect.MSG_NOISE,null);
-				if(target.location().okAffect(target,msg))
+				msg=new FullMsg(target,stolen,null,CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_NOISE,null);
+				if(target.location().okMessage(target,msg))
 				{
 					target.location().send(mob,msg);
-					msg=new FullMsg(mob,stolen,null,Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_NOISE,null);
-					if(mob.location().okAffect(mob,msg))
+					msg=new FullMsg(mob,stolen,null,CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_NOISE,null);
+					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
 				}
 			}

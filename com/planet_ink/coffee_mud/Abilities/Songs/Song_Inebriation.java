@@ -35,7 +35,7 @@ public class Song_Inebriation extends Song
 	public void show(MOB mob, int code, String text)
 	{
 		FullMsg msg=new FullMsg(mob,null,this,code,code,code,text);
-		if((mob.location()!=null)&&(mob.location().okAffect(mob,msg)))
+		if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 			mob.location().send(mob,msg);
 	}
 
@@ -50,58 +50,58 @@ public class Song_Inebriation extends Song
 		if((Dice.rollPercentage()<25)&&(Sense.canMove(mob)))
 		{
 			if(mob.getAlignment()<350)
-				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
+				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
 			else
 			if(mob.getAlignment()<650)
-				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
+				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
 			else
-				show(mob,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");
+				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");
 
 		}
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if(affect.source()==invoker)
+		if(msg.source()==invoker)
 			return true;
 
-		if(affect.source()!=affected)
+		if(msg.source()!=affected)
 			return true;
 
-		if(affect.target()==null)
+		if(msg.target()==null)
 			return true;
 
-		if(!(affect.target() instanceof MOB))
+		if(!(msg.target() instanceof MOB))
 		   return true;
 
-		if((affect.amISource((MOB)affected))
-		&&(affect.sourceMessage()!=null)
-		&&(affect.tool()==null)
-		&&((affect.sourceMinor()==Affect.TYP_SPEAK)
-		   ||(affect.sourceMinor()==Affect.TYP_TELL)
-		   ||(Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))))
+		if((msg.amISource((MOB)affected))
+		&&(msg.sourceMessage()!=null)
+		&&(msg.tool()==null)
+		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 		{
 			Ability A=CMClass.getAbility("Drunken");
 			if(A!=null)
 			{
 				A.setProfficiency(100);
-				A.invoke(affect.source(),null,true);
-				A.setAffectedOne(affect.source());
-				if(!A.okAffect(myHost,affect))
+				A.invoke(msg.source(),null,true);
+				A.setAffectedOne(msg.source());
+				if(!A.okMessage(myHost,msg))
 					return false;
 			}
 		}
 		else
-		if((!Util.bset(affect.targetMajor(),Affect.MASK_GENERAL))
-		&&(affect.targetMajor()>0))
+		if((!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
+		&&(msg.targetMajor()>0))
 		{
-			MOB newTarget=affect.source().location().fetchInhabitant(Dice.roll(1,affect.source().location().numInhabitants(),-1));
+			MOB newTarget=msg.source().location().fetchInhabitant(Dice.roll(1,msg.source().location().numInhabitants(),-1));
 			if(newTarget!=null)
-				affect.modify(affect.source(),newTarget,affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode(),affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+				msg.modify(msg.source(),newTarget,msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 		}
 		return true;
 	}

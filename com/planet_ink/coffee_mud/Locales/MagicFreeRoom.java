@@ -14,7 +14,7 @@ public class MagicFreeRoom extends StdRoom
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_STONE;
 		domainCondition=Room.CONDITION_NORMAL;
-		addAffect(CMClass.getAbility("Prop_MagicFreedom"));
+		addEffect(CMClass.getAbility("Prop_MagicFreedom"));
 	}
 	public Environmental newInstance()
 	{

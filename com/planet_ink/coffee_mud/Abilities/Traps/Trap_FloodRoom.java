@@ -15,7 +15,7 @@ public class Trap_FloodRoom extends StdTrap
 	public String requiresToSet(){return "100 pounds of stone, 10 water containers";}
 	public Environmental newInstance(){	return new Trap_FloodRoom();}
 	public int baseRejuvTime(int level){ return 16;}
-	
+
 	private int numWaterskins(MOB mob)
 	{
 		if(mob==null) return 0;
@@ -29,7 +29,7 @@ public class Trap_FloodRoom extends StdTrap
 		}
 		return num;
 	}
-	
+
 	private void killWaterskins(MOB mob)
 	{
 		if(mob==null) return;
@@ -53,8 +53,8 @@ public class Trap_FloodRoom extends StdTrap
 			i++;
 		}
 	}
-	
-	
+
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
@@ -67,7 +67,7 @@ public class Trap_FloodRoom extends StdTrap
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
@@ -99,7 +99,7 @@ public class Trap_FloodRoom extends StdTrap
 		}
 		return true;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -114,35 +114,35 @@ public class Trap_FloodRoom extends StdTrap
 		else
 			disabled=false;
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect msg)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((sprung)
 		&&(affected!=null)
 		&&(!disabled())
 		&&(tickDown>=0))
 		{
-			if(((msg.targetMinor()==Affect.TYP_LEAVE)
-				||(msg.targetMinor()==Affect.TYP_FLEE))
+			if(((msg.targetMinor()==CMMsg.TYP_LEAVE)
+				||(msg.targetMinor()==CMMsg.TYP_FLEE))
 			   &&(msg.amITarget(affected)))
 			{
 				msg.source().tell("The exits are blocked! You can't get out!");
 				return false;
 			}
 			else
-			if((msg.targetMinor()==Affect.TYP_ENTER)
+			if((msg.targetMinor()==CMMsg.TYP_ENTER)
 			   &&(msg.amITarget(affected)))
 			{
 				msg.source().tell("The entry to that room is blocked!");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TRAP_RESET)&&(getReset()>0))
+		if((tickID==Host.TICK_TRAP_RESET)&&(getReset()>0))
 		{
 			if((sprung)
 			&&(affected!=null)
@@ -153,7 +153,7 @@ public class Trap_FloodRoom extends StdTrap
 				Room R=(Room)affected;
 				if(tickDown>13)
 				{
-					R.showHappens(Affect.MSG_OK_VISUAL,"Water is filling up the room!");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,"Water is filling up the room!");
 					SaucerSupport.extinguish(invoker(),R,true);
 					R.recoverEnvStats();
 					R.recoverRoomStats();
@@ -169,14 +169,14 @@ public class Trap_FloodRoom extends StdTrap
 				{
 					R.recoverEnvStats();
 					R.recoverRoomStats();
-					R.showHappens(Affect.MSG_OK_VISUAL,"The water is draining away...");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,"The water is draining away...");
 				}
 			}
 		}
 		return super.tick(ticking,tickID);
 	}
-	
-	public void disable(){ 
+
+	public void disable(){
 		super.disable();
 		if((affected!=null)&&(affected instanceof Room))
 		{
@@ -184,18 +184,18 @@ public class Trap_FloodRoom extends StdTrap
 			((Room)affected).recoverRoomStats();
 		}
 	}
-		
+
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> trigger(s) a trap!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> trigger(s) a trap!"))
 			{
 				super.spring(target);
-				target.location().showHappens(Affect.MSG_OK_VISUAL,"The exits are blocked off! Water starts pouring in!");
+				target.location().showHappens(CMMsg.MSG_OK_VISUAL,"The exits are blocked off! Water starts pouring in!");
 			}
 		}
 	}

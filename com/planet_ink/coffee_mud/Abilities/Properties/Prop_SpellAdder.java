@@ -14,7 +14,7 @@ public class Prop_SpellAdder extends Property
 	private Environmental lastMOB=null;
 	boolean processing=false;
 	public Environmental newInstance(){	Prop_SpellAdder BOB=new Prop_SpellAdder(); BOB.setMiscText(text());	return BOB;}
-	
+
 	protected Hashtable spellH=null;
 	protected Vector spellV=null;
 	public Vector getMySpellsV()
@@ -29,7 +29,7 @@ public class Prop_SpellAdder extends Property
 		spellH=Prop_SpellAdder.getMySpellsH(this);
 		return spellH;
 	}
-	
+
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -62,7 +62,7 @@ public class Prop_SpellAdder extends Property
 		}
 		return theSpells;
 	}
-	
+
 	public static boolean didHappen(int defaultPct, Ability A)
 	{
 		if(A==null) return false;
@@ -100,7 +100,7 @@ public class Prop_SpellAdder extends Property
 			h.put(((Ability)V.elementAt(v)).ID(),((Ability)V.elementAt(v)).ID());
 		return h;
 	}
-	
+
 
 	public MOB qualifiedMOB(Environmental target)
 	{
@@ -122,11 +122,11 @@ public class Prop_SpellAdder extends Property
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			Ability EA=target.fetchAffect(A.ID());
+			Ability EA=target.fetchEffect(A.ID());
 			if((EA==null)&&(didHappen(100,this)))
 			{
 				A.invoke(qualifiedMOB(target),target,true);
-				EA=target.fetchAffect(A.ID());
+				EA=target.fetchEffect(A.ID());
 			}
 			if(EA!=null)
 				EA.makeLongLasting();
@@ -137,9 +137,9 @@ public class Prop_SpellAdder extends Property
 	{
 		Hashtable h=getMySpellsH();
 		int x=0;
-		while(x<lastMOB.numAffects())
+		while(x<lastMOB.numEffects())
 		{
-			Ability thisAffect=lastMOB.fetchAffect(x);
+			Ability thisAffect=lastMOB.fetchEffect(x);
 			if(thisAffect!=null)
 			{
 				String ID=(String)h.get(thisAffect.ID());
@@ -154,18 +154,18 @@ public class Prop_SpellAdder extends Property
 		lastMOB=null;
 	}
 
-	public void affect(Environmental host, Affect msg)
+	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof Room)||(affected instanceof Area))
 		{
-			if((msg.targetMinor()==Affect.TYP_LEAVE)
-			||(msg.targetMinor()==Affect.TYP_RECALL))
+			if((msg.targetMinor()==CMMsg.TYP_LEAVE)
+			||(msg.targetMinor()==CMMsg.TYP_RECALL))
 				removeMyAffectsFrom(msg.source());
-			if(msg.targetMinor()==Affect.TYP_ENTER)
+			if(msg.targetMinor()==CMMsg.TYP_ENTER)
 				addMeIfNeccessary(msg.source());
 		}
 	}
-	
+
 	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
 	{
 		if(processing) return;

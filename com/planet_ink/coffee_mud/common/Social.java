@@ -12,9 +12,9 @@ public class Social implements Environmental
 	private String Third_party_sees;
 	private String Target_sees;
 	private String See_when_no_target;
-	private int sourceCode=Affect.MSG_OK_ACTION;
-	private int othersCode=Affect.MSG_OK_ACTION;
-	private int targetCode=Affect.MSG_OK_ACTION;
+	private int sourceCode=CMMsg.MSG_OK_ACTION;
+	private int othersCode=CMMsg.MSG_OK_ACTION;
+	private int targetCode=CMMsg.MSG_OK_ACTION;
 
 	public String ID() { return "Social"; }
 	public String name(){ return Social_name;}
@@ -62,21 +62,21 @@ public class Social implements Environmental
 		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) See_when_no_target=null;
 		if((Target==null)&&(targetable()))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,(auto?Affect.MASK_GENERAL:0)|sourceCode(),See_when_no_target,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		if(Target==null)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,(auto?Affect.MASK_GENERAL:0)|sourceCode(),You_see,Affect.NO_EFFECT,null,othersCode(),Third_party_sees);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),You_see,CMMsg.NO_EFFECT,null,othersCode(),Third_party_sees);
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,Target,this,(auto?Affect.MASK_GENERAL:0)|sourceCode(),You_see,targetCode(),Target_sees,othersCode(),Third_party_sees);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,Target,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),You_see,targetCode(),Target_sees,othersCode(),Third_party_sees);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target instanceof MOB)
@@ -91,7 +91,7 @@ public class Social implements Environmental
 					&&(mob.charStats().getStat(CharStats.GENDER)!=tmob.charStats().getStat(CharStats.GENDER)))
 					{
 						Ability A=CMClass.getAbility("Disease_Smiles");
-						if((A!=null)&&(target.fetchAffect(A.ID())==null))
+						if((A!=null)&&(target.fetchEffect(A.ID())==null))
 							A.invoke(tmob,tmob,true);
 					}
 				}
@@ -100,11 +100,11 @@ public class Social implements Environmental
 		return true;
 	}
 
-	public Affect makeChannelMsg(MOB mob, 
-								 int channelInt, 
-								 String channelName, 
-								 Vector commands,
-								 boolean makeTarget)
+	public CMMsg makeChannelMsg(MOB mob,
+								int channelInt,
+								String channelName,
+								Vector commands,
+								boolean makeTarget)
 	{
 		String targetStr="";
 		if((commands.size()>1)&&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF")))
@@ -135,15 +135,15 @@ public class Social implements Environmental
 		String str=makeTarget?"":"^Q^q["+channelName+"] ";
 		String end=makeTarget?"":"^?^.";
 		if((Target==null)&&(targetable()))
-			msg=new FullMsg(mob,null,this,Affect.MASK_CHANNEL|sourceCode(),str+See_when_no_target+end,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+			msg=new FullMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+See_when_no_target+end,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		else
 		if(Target==null)
-			msg=new FullMsg(mob,null,this,Affect.MASK_CHANNEL|sourceCode(),str+You_see+end,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str+Third_party_sees+end);
+			msg=new FullMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end);
 		else
-			msg=new FullMsg(mob,Target,this,Affect.MASK_CHANNEL|sourceCode(),str+You_see+end,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str+Target_sees+end,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str+Third_party_sees+end);
+			msg=new FullMsg(mob,Target,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Target_sees+end,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end);
 		return msg;
 	}
-	
+
 	public String description(){return "";}
 	public void setDescription(String str){}
 	public String displayText(){return "";}
@@ -215,18 +215,18 @@ public class Social implements Environmental
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)	{}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)	{}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)	{}
-	public void affect(Environmental myHost, Affect affect){}
-	public boolean okAffect(Environmental myHost, Affect affect){	return true;}
+	public void executeMsg(Environmental myHost, CMMsg msg){}
+	public boolean okMessage(Environmental myHost, CMMsg msg){	return true;}
 	public boolean tick(Tickable ticking, int tickID)	{ return true;	}
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return 0;}
 
-	public void addAffect(Ability to){}
-	public void addNonUninvokableAffect(Ability to){}
-	public void delAffect(Ability to){}
-	public int numAffects(){ return 0;}
-	public Ability fetchAffect(int index){return null;}
-	public Ability fetchAffect(String ID){return null;}
+	public void addEffect(Ability to){}
+	public void addNonUninvokableEffect(Ability to){}
+	public void delEffect(Ability to){}
+	public int numEffects(){ return 0;}
+	public Ability fetchEffect(int index){return null;}
+	public Ability fetchEffect(String ID){return null;}
 	public void addBehavior(Behavior to){}
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}

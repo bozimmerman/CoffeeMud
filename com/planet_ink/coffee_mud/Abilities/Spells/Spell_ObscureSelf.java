@@ -26,24 +26,24 @@ public class Spell_ObscureSelf extends Spell
 	};
 
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
 		MOB mob=(MOB)affected;
 
-		String othersMessage=affect.othersMessage();
-		String sourceMessage=affect.sourceMessage();
-		String targetMessage=affect.targetMessage();
+		String othersMessage=msg.othersMessage();
+		String sourceMessage=msg.sourceMessage();
+		String targetMessage=msg.targetMessage();
 		boolean somethingsChanged=false;
 		int x=0;
-		if((affect.amITarget(mob))&&((affect.targetCode()&Affect.MASK_HURT)==0))
+		if((msg.amITarget(mob))&&((msg.targetCode()&CMMsg.MASK_HURT)==0))
 		{
-			if((!affect.amISource(mob))&&((affect.targetMinor()==Affect.TYP_EXAMINESOMETHING)
-										||(affect.targetMinor()==Affect.TYP_READSOMETHING)))
+			if((!msg.amISource(mob))&&((msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+										||(msg.targetMinor()==CMMsg.TYP_READSOMETHING)))
 			{
-				affect.source().tell("He or she is too vague to make out any details.");
+				msg.source().tell("He or she is too vague to make out any details.");
 				return false;
 			}
 
@@ -60,7 +60,7 @@ public class Spell_ObscureSelf extends Spell
 					}
 				}
 			}
-			if((!affect.amISource(mob))&&(sourceMessage!=null))
+			if((!msg.amISource(mob))&&(sourceMessage!=null))
 			{
 				for(int i=0;i<stuff.length;i++)
 				{
@@ -74,7 +74,7 @@ public class Spell_ObscureSelf extends Spell
 				}
 			}
 		}
-		if(affect.amISource(mob))
+		if(msg.amISource(mob))
 		{
 			if(othersMessage!=null)
 			{
@@ -89,7 +89,7 @@ public class Spell_ObscureSelf extends Spell
 					}
 				}
 			}
-			if((!affect.amITarget(mob))&&(targetMessage!=null))
+			if((!msg.amITarget(mob))&&(targetMessage!=null))
 			{
 				for(int i=0;i<stuff.length;i++)
 				{
@@ -104,7 +104,7 @@ public class Spell_ObscureSelf extends Spell
 			}
 		}
 		if(somethingsChanged)
-			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),sourceMessage,affect.targetCode(),targetMessage,affect.othersCode(),othersMessage);
+			msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),sourceMessage,msg.targetCode(),targetMessage,msg.othersCode(),othersMessage);
 		return true;
 	}
 
@@ -118,14 +118,14 @@ public class Spell_ObscureSelf extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) a bit less obscure.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) a bit less obscure.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
 
-		if(target.fetchAffect(ID())!=null)
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("You are already obscure.");
 			return false;
@@ -149,7 +149,7 @@ public class Spell_ObscureSelf extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^S<T-NAME> become(s) obscure!":"^S<S-NAME> whisper(s) to <S-HIS-HERSELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

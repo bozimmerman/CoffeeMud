@@ -29,7 +29,7 @@ public class Chant_WindColor extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(affected!=null)
 		&&(affected instanceof MOB)
 		&&(((MOB)affected).location()!=null)
@@ -60,7 +60,7 @@ public class Chant_WindColor extends Chant
 		}
 		return "";
 	}
-	
+
 	public static String getWindColor(MOB mob, Room R)
 	{
 		if((R==null)||(mob==null)) return "";
@@ -131,7 +131,7 @@ public class Chant_WindColor extends Chant
 				else
 				if(M.envStats().level()>(mob.envStats().level()-15))
 				{ if (levelCode<0) levelCode=0;}
-				
+
 				int done=0;
 				if(M.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 				{ done++; colors[0]++;}
@@ -161,7 +161,7 @@ public class Chant_WindColor extends Chant
 		for(int i=0;i<colors.length;i++)
 			if(colors[i]>0){foundOne=true; break;}
 		if(!foundOne) return "";
-		
+
 		StringBuffer str=new StringBuffer("");
 		switch(sourceCode)
 		{
@@ -236,7 +236,7 @@ public class Chant_WindColor extends Chant
 		}
 		Vector V=new Vector();
 		for(int i=0;i<colors.length;i++)
-			if(colors[i]>0) 
+			if(colors[i]>0)
 				V.addElement(new Integer(i));
 		if(V.size()==1)
 			return str.toString()+getColor(((Integer)V.firstElement()).intValue());
@@ -256,8 +256,8 @@ public class Chant_WindColor extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already watching the winds.");
 			return false;
@@ -277,7 +277,7 @@ public class Chant_WindColor extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) visions of the winds!":"^S<S-NAME> chant(s) for visions on the wind!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				lastRoom=null;
 				mob.location().send(mob,msg);

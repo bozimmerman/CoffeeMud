@@ -15,10 +15,10 @@ public class Trap_BearTrap extends StdTrap
 	public String requiresToSet(){return "30 pounds of metal";}
 	public Environmental newInstance(){	return new Trap_BearTrap();}
 	public int baseRejuvTime(int level){ return 35;}
-	
+
 	private int amountRemaining=250;
 	private MOB trapped=null;
-	
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
@@ -31,7 +31,7 @@ public class Trap_BearTrap extends StdTrap
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -46,8 +46,8 @@ public class Trap_BearTrap extends StdTrap
 			}
 		return true;
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect msg)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((sprung)
 		&&(trapped!=null)
@@ -55,18 +55,18 @@ public class Trap_BearTrap extends StdTrap
 		&&(msg.amISource(trapped))
 		&&(trapped.location()!=null))
 		{
-			if((((msg.targetMinor()==Affect.TYP_LEAVE)||(msg.targetMinor()==Affect.TYP_FLEE))
+			if((((msg.targetMinor()==CMMsg.TYP_LEAVE)||(msg.targetMinor()==CMMsg.TYP_FLEE))
 				&&(msg.amITarget(affected)))
-			||(msg.sourceMinor()==Affect.TYP_ADVANCE)
-			||(msg.sourceMinor()==Affect.TYP_RETREAT))
+			||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
+			||(msg.sourceMinor()==CMMsg.TYP_RETREAT))
 			{
-				if(trapped.location().show(trapped,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) to get out of the bear trap."))
+				if(trapped.location().show(trapped,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) to get out of the bear trap."))
 				{
 					amountRemaining-=trapped.charStats().getStat(CharStats.STRENGTH);
 					amountRemaining-=trapped.envStats().level();
 					if(amountRemaining<=0)
 					{
-						trapped.location().show(trapped,null,Affect.MSG_OK_VISUAL,"<S-NAME> pull(s) free of the bear trap.");
+						trapped.location().show(trapped,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> pull(s) free of the bear trap.");
 						trapped=null;
 					}
 					else
@@ -76,24 +76,24 @@ public class Trap_BearTrap extends StdTrap
 					return false;
 			}
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
-	
+
 	public void spring(MOB target)
 	{
 		trapped=null;
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((!invoker().mayIFight(target))||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) a bear trap!");
+				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) a bear trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> step(s) on a bear trap!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> step(s) on a bear trap!"))
 			{
 				super.spring(target);
 				int damage=Dice.roll(trapLevel(),6,1);
 				trapped=target;
 				amountRemaining=250+(trapLevel()*10);
-				ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The bear trap <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The bear trap <DAMAGE> <T-NAME>!");
 			}
 		}
 	}

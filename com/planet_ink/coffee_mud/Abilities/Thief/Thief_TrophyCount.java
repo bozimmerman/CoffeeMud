@@ -34,15 +34,15 @@ public class Thief_TrophyCount extends ThiefSkill
 		str.append("</MOBS>");
 		return str.toString();
 	}
-	
-	public void affect(Environmental myHost, Affect msg)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((msg.sourceMinor()==Affect.TYP_DEATH)
+		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(msg.tool()!=null)
 		&&(msg.tool()==affected))
 		{
 			Race R=msg.source().charStats().getMyRace();
-			if(!R.ID().equalsIgnoreCase("StdRace")) 
+			if(!R.ID().equalsIgnoreCase("StdRace"))
 			{
 				String[] set=(String[])theList.get(R.name());
 				if(set==null)
@@ -60,9 +60,9 @@ public class Thief_TrophyCount extends ThiefSkill
 				}
 			}
 		}
-		super.affect(myHost,msg);
+		super.executeMsg(myHost,msg);
 	}
-	
+
 	public void setMiscText(String str)
 	{
 		theList.clear();
@@ -84,7 +84,7 @@ public class Thief_TrophyCount extends ThiefSkill
 			}
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -108,6 +108,6 @@ public class Thief_TrophyCount extends ThiefSkill
 			mob.tell("You failed to recall your count.");
 			return false;
 		}
-		
+
 	}
 }

@@ -12,7 +12,7 @@ public class Searching extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	private static boolean mapped=false;
 	private Room searchRoom=null;
-	
+
 	private boolean success=false;
 	public Searching()
 	{
@@ -26,7 +26,7 @@ public class Searching extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(tickUp==1)
@@ -59,8 +59,8 @@ public class Searching extends CommonSkill
 		if(profficiencyCheck(0,auto))
 			success=true;
 		int duration=3;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,(auto?"":"<S-NAME> start(s) searching."));
-		if(mob.location().okAffect(mob,msg))
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,(auto?"":"<S-NAME> start(s) searching."));
+		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			searchRoom=mob.location();

@@ -15,29 +15,29 @@ public class Trap_AcidPit extends Trap_RoomPit
 	public String requiresToSet(){return "";}
 	public Environmental newInstance(){	return new Trap_AcidPit();}
 	public int baseRejuvTime(int level)
-	{	
+	{
 		int time=super.baseRejuvTime(level);
 		if(time<15) time=15;
 		return time;
 	}
-	
+
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.envStats().weight()<5))
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 		else
 		{
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(trapLevel(),6,1);
-			ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MASK_GENERAL|Affect.TYP_ACID,-1,null);
-			target.location().showHappens(Affect.MSG_OK_VISUAL,"Acid starts pouring into the room!");
+			ExternalPlay.postDamage(invoker(),target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,-1,null);
+			target.location().showHappens(CMMsg.MSG_OK_VISUAL,"Acid starts pouring into the room!");
 		}
 		ExternalPlay.look(target,null,true);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TRAP_RESET)&&(getReset()>0))
+		if((tickID==Host.TICK_TRAP_RESET)&&(getReset()>0))
 		{
 			if((sprung)
 			&&(affected!=null)
@@ -53,7 +53,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 					if((M!=null)&&(M!=invoker()))
 					{
 						int damage=Dice.roll(trapLevel(),6,1);
-						ExternalPlay.postDamage(invoker(),M,this,damage,Affect.MASK_MALICIOUS|Affect.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
+						ExternalPlay.postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
 					}
 				}
 				return super.tick(ticking,tickID);
@@ -63,5 +63,5 @@ public class Trap_AcidPit extends Trap_RoomPit
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 }

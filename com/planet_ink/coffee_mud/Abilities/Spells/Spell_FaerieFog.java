@@ -27,7 +27,7 @@ public class Spell_FaerieFog extends Spell
 		if(canBeUninvoked())
 		{
 			Room room=(Room)affected;
-			room.showHappens(Affect.MSG_OK_VISUAL, "The faerie fog starts to clear out.");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, "The faerie fog starts to clear out.");
 		}
 		super.unInvoke();
 	}
@@ -50,10 +50,10 @@ public class Spell_FaerieFog extends Spell
 
 		Environmental target = mob.location();
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<S-NAME> fizzles a spell.");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -69,7 +69,7 @@ public class Spell_FaerieFog extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob.location(),0);

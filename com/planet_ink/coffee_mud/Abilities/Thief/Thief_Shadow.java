@@ -61,31 +61,31 @@ public class Thief_Shadow extends ThiefSkill
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
-		if(((affect.targetMinor()==Affect.TYP_LEAVE)
-		 ||(affect.targetMinor()==Affect.TYP_FLEE))
+		super.executeMsg(myHost,msg);
+		if(((msg.targetMinor()==CMMsg.TYP_LEAVE)
+		 ||(msg.targetMinor()==CMMsg.TYP_FLEE))
 		&&(stillAShadower())
 		&&(stillAShadowee())
-		&&(affect.amISource(shadowing))
-		&&(affect.amITarget(shadowing.location()))
+		&&(msg.amISource(shadowing))
+		&&(msg.amITarget(shadowing.location()))
 		&&(!Sense.isSneaking(shadowing))
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Exit))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Exit))
 		{
-			
+
 			int dir=-1;
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				if(shadowing.location().getReverseExit(d)==affect.tool())
+				if(shadowing.location().getReverseExit(d)==msg.tool())
 					dir=d;
-			if((dir>=0)&&(affect.source().location()!=lastRoom))
+			if((dir>=0)&&(msg.source().location()!=lastRoom))
 			{
 				String directionWent=Directions.getDirectionName(dir);
 				MOB mob=(MOB)invoker;
-				lastRoom=affect.source().location();
+				lastRoom=msg.source().location();
 				if(!mob.isMonster())
 					mob.session().enque(0,Util.parse(directionWent));
 				else
@@ -133,7 +133,7 @@ public class Thief_Shadow extends ThiefSkill
 		{
 			if((invoker!=null)&&(shadowing!=null))
 			{
-				invoker.delAffect(this);
+				invoker.delEffect(this);
 				setAffectedOne(shadowing);
 				((MOB)invoker).tell("You are no longer shadowing "+shadowing.name()+".");
 			}
@@ -144,21 +144,21 @@ public class Thief_Shadow extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Thief_Shadow A=(Thief_Shadow)mob.fetchAffect(ID());
+		Thief_Shadow A=(Thief_Shadow)mob.fetchEffect(ID());
 		if(A!=null)
 		{
 			if(A.shadowing==null)
-				mob.delAffect(A);
+				mob.delEffect(A);
 			else
 			{
-				Ability AA=A.shadowing.fetchAffect(ID());
+				Ability AA=A.shadowing.fetchEffect(ID());
 				if((AA!=null)&&(AA.invoker()==mob))
 				{
 					AA.unInvoke();
 					return true;
 				}
 				else
-					mob.delAffect(A);
+					mob.delEffect(A);
 			}
 		}
 		if(commands.size()<1)
@@ -198,23 +198,23 @@ public class Thief_Shadow extends ThiefSkill
 
 		if(!success)
 		{
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_VISUAL,auto?"":"Your attempt to shadow <T-NAMESELF> fails; <T-NAME> spots you!",Affect.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to shadow you.",Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to shadow <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to shadow you.",CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,this,auto?Affect.MSG_OK_VISUAL:Affect.MSG_THIEF_ACT,"You are now shadowing <T-NAME>.  Enter 'shadow' again to disengage.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now shadowing <T-NAME>.  Enter 'shadow' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				shadowing=target;
 				if(beneficialAffect(mob,target,Integer.MAX_VALUE-1000))
 				{
-					A=(Thief_Shadow)target.fetchAffect(ID());
+					A=(Thief_Shadow)target.fetchEffect(ID());
 					if(A!=null)
 					{
-						mob.addAffect(A);
+						mob.addEffect(A);
 						A.shadowing=target;
 						A.setAffectedOne(target);
 						A.lastTogether=System.currentTimeMillis();

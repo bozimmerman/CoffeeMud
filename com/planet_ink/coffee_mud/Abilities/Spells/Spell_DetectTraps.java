@@ -35,7 +35,7 @@ public class Spell_DetectTraps extends Spell
 			return E.name()+" is trapped.\n\r";
 		return "";
 	}
-	
+
 	public String trapHere(MOB mob, Environmental E)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -87,7 +87,7 @@ public class Spell_DetectTraps extends Spell
 				for(int v=0;v<V.size();v++)
 				{
 					Environmental E2=(Environmental)V.elementAt(v);
-					if(E2 instanceof Item)	
+					if(E2 instanceof Item)
 						if(trapCheck((Item)E2).length()>0)
 							return E.name()+" has something trapped in stock.";
 				}
@@ -95,26 +95,26 @@ public class Spell_DetectTraps extends Spell
 		}
 		return msg.toString();
 	}
-	
-	public void affect(Environmental myHost, Affect affect)
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(affect.target()!=null)
-		&&(affect.amISource((MOB)affected))
-		&&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING))
+		&&(msg.target()!=null)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING))
 		{
-			if((affect.tool()!=null)&&(affect.tool().ID().equals(ID())))
+			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
-				String msg=trapHere((MOB)affected,affect.target());
-				if(msg.length()>0)
-					((MOB)affected).tell(msg);
+				String str=trapHere((MOB)affected,msg.target());
+				if(str.length()>0)
+					((MOB)affected).tell(str);
 			}
 			else
 			{
-				FullMsg msg=new FullMsg(affect.source(),affect.target(),this,affect.MSG_EXAMINESOMETHING,affect.NO_EFFECT,affect.NO_EFFECT,null);
-				affect.addTrailerMsg(msg);
+				FullMsg msg2=new FullMsg(msg.source(),msg.target(),this,CMMsg.MSG_EXAMINESOMETHING,msg.NO_EFFECT,msg.NO_EFFECT,null);
+				msg.addTrailerMsg(msg2);
 			}
 		}
 	}
@@ -125,9 +125,9 @@ public class Spell_DetectTraps extends Spell
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting traps.");
 			return false;
@@ -137,7 +137,7 @@ public class Spell_DetectTraps extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) liquid sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) sensitivity to traps!^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -15,12 +15,12 @@ public class ObjectGuardian extends StdBehavior
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
+	 * and every message listed in the CMMsg interface
 	 * from the given Environmental source */
-	public boolean okAffect(Environmental oking, Affect affect)
+	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
-		if(!super.okAffect(oking,affect)) return false;
-		MOB mob=affect.source();
+		if(!super.okMessage(oking,msg)) return false;
+		MOB mob=msg.source();
         MOB monster=(MOB)oking;
         if(parms.toUpperCase().indexOf("SENTINAL")>=0)
         {
@@ -30,16 +30,16 @@ public class ObjectGuardian extends StdBehavior
                 return true;
         }
         else
-		if(!canFreelyBehaveNormal(oking)) 
+		if(!canFreelyBehaveNormal(oking))
 			return true;
-		
+
 		if((mob!=monster)
-		&&((affect.sourceMinor()==Affect.TYP_GET)
-		||((affect.sourceMinor()==Affect.TYP_THROW)&&(monster.location()==affect.tool()))
-		||(affect.sourceMinor()==Affect.TYP_DROP)))
+		&&((msg.sourceMinor()==CMMsg.TYP_GET)
+		||((msg.sourceMinor()==CMMsg.TYP_THROW)&&(monster.location()==msg.tool()))
+		||(msg.sourceMinor()==CMMsg.TYP_DROP)))
 		{
-			FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> touch that.");
-			if(monster.location().okAffect(monster,msgs))
+			FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> touch that.");
+			if(monster.location().okMessage(monster,msgs))
 			{
 				monster.location().send(monster,msgs);
 				return false;

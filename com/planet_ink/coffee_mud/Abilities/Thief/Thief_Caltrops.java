@@ -17,7 +17,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Caltrops();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	
+
 	public boolean isABomb(){return false;}
 	public void activateBomb(){}
 	public boolean disabled(){return false;}
@@ -28,51 +28,51 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
-	{maliciousAffect(mob,E,0,-1); return (Trap)E.fetchAffect(ID());}
+	{maliciousAffect(mob,E,0,-1); return (Trap)E.fetchEffect(ID());}
 
 	public boolean sprung(){return false;}
 	public void spring(MOB mob)
 	{
 		if((!invoker().mayIFight(mob))||(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS)))
-			mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> avoid(s) some caltrops on the floor.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some caltrops on the floor.");
 		else
-			ExternalPlay.postDamage(invoker(),mob,null,Dice.roll(1,5,0),Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");
+			ExternalPlay.postDamage(invoker(),mob,null,Dice.roll(1,5,0),CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");
 		// does not set sprung flag -- as this trap never goes out of use
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect msg)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affected==null) return super.okAffect(myHost,msg);
-		if(!(affected instanceof Room)) return super.okAffect(myHost,msg);
-		if(invoker()==null) return super.okAffect(myHost,msg);
+		if(affected==null) return super.okMessage(myHost,msg);
+		if(!(affected instanceof Room)) return super.okMessage(myHost,msg);
+		if(invoker()==null) return super.okMessage(myHost,msg);
 		Room room=(Room)affected;
 		if((msg.amITarget(room)||room.isInhabitant(msg.source()))
 		&&(!msg.amISource(invoker()))
-		&&((msg.sourceMinor()==Affect.TYP_ENTER)
-			||(msg.sourceMinor()==Affect.TYP_LEAVE)
-			||(msg.sourceMinor()==Affect.TYP_FLEE)
-			||(msg.sourceMinor()==Affect.TYP_ADVANCE)
-			||(msg.sourceMinor()==Affect.TYP_RETREAT)))
+		&&((msg.sourceMinor()==CMMsg.TYP_ENTER)
+			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+			||(msg.sourceMinor()==CMMsg.TYP_FLEE)
+			||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
+			||(msg.sourceMinor()==CMMsg.TYP_RETREAT)))
 				spring(msg.source());
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.location()==null) return false;
-		if(mob.location().fetchAffect(ID())!=null)
+		if(mob.location().fetchEffect(ID())!=null)
 		{
 			mob.tell("Caltrops have already been tossed down here.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 		Environmental target=mob.location();
 		if(success)
 		{
-			if(mob.location().show(mob,target,(auto?Affect.MASK_GENERAL:0)|Affect.MSG_THIEF_ACT,"<S-NAME> throw(s) down caltrops!"))
+			if(mob.location().show(mob,target,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> throw(s) down caltrops!"))
 				maliciousAffect(mob,target,0,-1);
 			else
 				success=false;

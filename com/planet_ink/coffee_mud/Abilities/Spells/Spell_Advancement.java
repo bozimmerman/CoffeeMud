@@ -65,10 +65,10 @@ public class Spell_Advancement extends Spell
 			invoker=mob;
 
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) more knowledgable!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) more knowledgable!");
 				beneficialAffect(mob,target,0);
 			}
 		}

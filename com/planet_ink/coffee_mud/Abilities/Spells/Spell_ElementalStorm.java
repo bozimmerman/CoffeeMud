@@ -28,13 +28,13 @@ public class Spell_ElementalStorm extends Spell
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		
-		int[] types={Affect.TYP_FIRE,
-					 Affect.TYP_COLD,
-					 Affect.TYP_ACID,
-					 Affect.TYP_WATER,
-					 Affect.TYP_ELECTRIC,
-					 Affect.TYP_GAS};
+
+		int[] types={CMMsg.TYP_FIRE,
+					 CMMsg.TYP_COLD,
+					 CMMsg.TYP_ACID,
+					 CMMsg.TYP_WATER,
+					 CMMsg.TYP_ELECTRIC,
+					 CMMsg.TYP_GAS};
 		int[] dames={Weapon.TYPE_BURNING,
 					 Weapon.TYPE_FROSTING,
 					 Weapon.TYPE_MELTING,
@@ -53,7 +53,7 @@ public class Spell_ElementalStorm extends Spell
 			for(int i=0;i<numMissiles;i++)
 			{
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(i==0)?((auto?"An elemental storm assaults <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, evoking an elemental storm!^?")+CommonStrings.msp("spelldam1.wav",40)):null);
-				if(mob.location().okAffect(mob,msg))
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
@@ -61,7 +61,7 @@ public class Spell_ElementalStorm extends Spell
 						int damage = 0;
 						damage += Dice.roll(1,3,0);
 						if(target.location()==mob.location())
-							ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|types[i],dames[i],"^S"+ds[i]+" <DAMAGE> <T-NAME>!^?");
+							ExternalPlay.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|types[i],dames[i],"^S"+ds[i]+" <DAMAGE> <T-NAME>!^?");
 					}
 				}
 				if(target.amDead())

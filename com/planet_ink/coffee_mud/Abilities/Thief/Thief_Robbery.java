@@ -35,26 +35,26 @@ public class Thief_Robbery extends ThiefSkill
 		}
 		if(lastOnes.size()>=50)
 			lastOnes.removeElementAt(0);
-		lastOnes.addElement(target,new Integer(times+1)); 
+		lastOnes.addElement(target,new Integer(times+1));
 		return times+1;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((msg.amITarget(affected))
 		   &&(mobs.contains(msg.source())))
 		{
-			if((msg.targetMinor()==Affect.TYP_BUY)
-			   ||(msg.targetMinor()==Affect.TYP_SELL)
-			   ||(msg.targetMinor()==Affect.TYP_LIST)
-			   ||(msg.targetMinor()==Affect.TYP_VALUE)
-			   ||(msg.targetMinor()==Affect.TYP_VIEW))
+			if((msg.targetMinor()==CMMsg.TYP_BUY)
+			   ||(msg.targetMinor()==CMMsg.TYP_SELL)
+			   ||(msg.targetMinor()==CMMsg.TYP_LIST)
+			   ||(msg.targetMinor()==CMMsg.TYP_VALUE)
+			   ||(msg.targetMinor()==CMMsg.TYP_VIEW))
 			{
 				msg.source().tell(affected.name()+" looks unwilling to do business with you.");
 				return false;
 			}
 		}
-		return super.okAffect(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -118,10 +118,10 @@ public class Thief_Robbery extends ThiefSkill
 		{
 			if(Dice.rollPercentage()>discoverChance)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to rob <T-NAMESELF>; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob you and fails!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob <T-NAME> and fails!");
-				if(mob.location().okAffect(mob,msg))
+				FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to rob <T-NAMESELF>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob <T-NAME> and fails!");
+				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
-				Thief_Robbery A=(Thief_Robbery)target.fetchAffect(ID());
+				Thief_Robbery A=(Thief_Robbery)target.fetchEffect(ID());
 				if(A==null)
 				{
 					mobs.clear();
@@ -137,34 +137,34 @@ public class Thief_Robbery extends ThiefSkill
 		else
 		{
 			String str=null;
-			int code=Affect.MSG_THIEF_ACT;
+			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if(stolen!=null)
 					str="<S-NAME> rob(s) "+stolen.name()+" from <T-NAMESELF>.";
 				else
 				{
 					str="<S-NAME> attempt(s) to rob <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
-					code=Affect.MSG_QUIETMOVEMENT;
+					code=CMMsg.MSG_QUIETMOVEMENT;
 				}
 
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
-			int hisCode=Affect.MSG_THIEF_ACT;
+			int hisCode=CMMsg.MSG_THIEF_ACT;
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
 			else
 			{
 				str+=" <T-NAME> spots you!";
-				hisCode=hisCode|((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
+				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
 			}
 
-			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Thief_Robbery A=(Thief_Robbery)target.fetchAffect(ID());
+				Thief_Robbery A=(Thief_Robbery)target.fetchEffect(ID());
 				if(A==null)	beneficialAffect(mob,target,0);
-				A=(Thief_Robbery)target.fetchAffect(ID());
+				A=(Thief_Robbery)target.fetchEffect(ID());
 				if(A!=null)
 					A.mobs.addElement(mob);
 				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))
@@ -179,8 +179,8 @@ public class Thief_Robbery extends ThiefSkill
 					if(stolen instanceof Item)
 					{
 						mob.location().addItemRefuse((Item)stolen,Item.REFUSE_PLAYER_DROP);
-						msg=new FullMsg(mob,stolen,null,Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_NOISE,null);
-						if(mob.location().okAffect(mob,msg))
+						msg=new FullMsg(mob,stolen,null,CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_NOISE,null);
+						if(mob.location().okMessage(mob,msg))
 							mob.location().send(mob,msg);
 					}
 				}

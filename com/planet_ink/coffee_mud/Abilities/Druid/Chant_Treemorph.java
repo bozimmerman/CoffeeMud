@@ -17,7 +17,7 @@ public class Chant_Treemorph extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(affected!=null)
 		&&(tree!=null)
 		&&(affected instanceof MOB))
@@ -45,13 +45,13 @@ public class Chant_Treemorph extends Chant
 			affectableStats.setMyRace(treeForm);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(affect.source().getVictim()==mob)
-				affect.source().setVictim(null);
+			if(msg.source().getVictim()==mob)
+				msg.source().setVictim(null);
 			if(mob.isInCombat())
 			{
 				if(mob.getVictim()!=null)
@@ -68,24 +68,24 @@ public class Chant_Treemorph extends Chant
 			// when this spell is on a MOBs Affected list,
 			// it should consistantly prevent the mob
 			// from trying to do ANYTHING except sleep
-			if(affect.amISource(mob))
+			if(msg.amISource(mob))
 			{
-				if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-				&&(affect.sourceMajor()>0))
+				if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+				&&(msg.sourceMajor()>0))
 				{
 					mob.tell("Trees can't do that.");
 					return false;
 				}
 			}
 		}
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(affect.source().getVictim()==affected)
-				affect.source().setVictim(null);
+			if(msg.source().getVictim()==affected)
+				msg.source().setVictim(null);
 			if(mob.isInCombat())
 			{
 				if(mob.getVictim()!=null)
@@ -133,7 +133,7 @@ public class Chant_Treemorph extends Chant
 		{
 			if(tree!=null) tree.destroy();
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer a tree.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer a tree.");
 			mob.curState().setHitPoints(1);
 			mob.curState().setMana(0);
 			mob.curState().setMovement(0);
@@ -170,18 +170,18 @@ public class Chant_Treemorph extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
 					int a=0;
-					while(a<target.numAffects())
+					while(a<target.numEffects())
 					{
-						Ability A=target.fetchAffect(a);
-						int s=target.numAffects();
+						Ability A=target.fetchEffect(a);
+						int s=target.numEffects();
 						if(A!=null) A.unInvoke();
-						if(target.numAffects()==s)
+						if(target.numEffects()==s)
 							a++;
 					}
 					target.makePeace();
@@ -192,13 +192,13 @@ public class Chant_Treemorph extends Chant
 					tree.setDescription("It`s a tall oak tree, which seems to remind you of "+target.name()+".");
 					tree.setMaterial(EnvResource.RESOURCE_OAK);
 					tree.baseEnvStats().setWeight(5000);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) into a tree!!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into a tree!!");
 					success=maliciousAffect(mob,target,mob.envStats().level()*50,-1);
-					Ability A=target.fetchAffect(ID());
+					Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))
 					{
 						mob.location().addItem(tree);
-						tree.addAffect(A);
+						tree.addEffect(A);
 						A.setAffectedOne(target);
 						tree.recoverEnvStats();
 					}

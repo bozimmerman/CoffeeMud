@@ -40,22 +40,22 @@ public class Prop_RideResister extends Property
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if((affected !=null)
 		&&(affected instanceof Rideable)
-		&&(affect.target()!=null)
-		&&(affect.target() instanceof MOB)
-		&&(((Rideable)affected).amRiding((MOB)affect.target()))
-		&&(!affect.wasModified())
-		&&(((MOB)affect.target()).location()!=null))
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
+		&&(((Rideable)affected).amRiding((MOB)msg.target()))
+		&&(!msg.wasModified())
+		&&(((MOB)msg.target()).location()!=null))
 		{
-			MOB mob=(MOB)affect.target();
-			if(!Prop_HaveResister.isOk(affect,this,mob))
+			MOB mob=(MOB)msg.target();
+			if(!Prop_HaveResister.isOk(msg,this,mob))
 				return false;
-			Prop_HaveResister.resistAffect(affect,mob,this);
+			Prop_HaveResister.resistAffect(msg,mob,this);
 		}
 		return true;
 	}

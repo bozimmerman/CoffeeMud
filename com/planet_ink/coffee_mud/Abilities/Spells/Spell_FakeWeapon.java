@@ -26,24 +26,24 @@ public class Spell_FakeWeapon extends Spell
 		}
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof Item)
-		&&(affect.tool()==affected)
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+		&&(msg.tool()==affected)
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT)))
 		{
-			affect.modify(affect.source(),
-						  affect.target(),
-						  affect.tool(),
-						  affect.sourceCode(),
-						  affect.sourceMessage(),
-						  Affect.MASK_HURT,
-						  affect.targetMessage(),
-						  affect.othersCode(),
-						  affect.othersMessage());
+			msg.modify(msg.source(),
+						  msg.target(),
+						  msg.tool(),
+						  msg.sourceCode(),
+						  msg.sourceMessage(),
+						  CMMsg.MASK_HURT,
+						  msg.targetMessage(),
+						  msg.othersCode(),
+						  msg.othersMessage());
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -68,7 +68,7 @@ public class Spell_FakeWeapon extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Weapon weapon=(Weapon)CMClass.getItem("GenWeapon");
@@ -132,7 +132,7 @@ public class Spell_FakeWeapon extends Spell
 				weapon.setBaseValue(0);
 				weapon.recoverEnvStats();
 				mob.addInventory(weapon);
-				mob.location().show(mob,null,weapon,Affect.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
+				mob.location().show(mob,null,weapon,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
 				myItem=weapon;
 				beneficialAffect(mob,weapon,0);
 			}

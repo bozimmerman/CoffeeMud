@@ -40,18 +40,18 @@ public class Chant_FungalBloom extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.setDescription("It seems to be getting puffier and puffier!");
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" seems to be puffing up!");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" seems to be puffing up!");
 				Ability A=CMClass.getAbility("Bomb_Poison");
 				A.setMiscText("Poison_Bloodboil");
 				A.setInvoker(mob);
 				A.setBorrowed(target,true);
 				((Trap)A).setReset(3);
-				target.addAffect(A);
-				A=target.fetchAffect(A.ID());
+				target.addEffect(A);
+				A=target.fetchEffect(A.ID());
 				if(A!=null)	((Trap)A).activateBomb();
 			}
 		}

@@ -85,7 +85,7 @@ public class StdTub extends StdRideable implements Drink
 	{
 		return "in";
 	}
-	
+
 	public String mountString(int commandType, Rider R)
 	{
 		switch(rideBasis)
@@ -141,17 +141,17 @@ public class StdTub extends StdRideable implements Drink
 		}
 		return "";
 	}
-	
-	public boolean okAffect(Environmental myHost, Affect affect)
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_DRINK:
+			case CMMsg.TYP_DRINK:
 				if((mob.isMine(this))||(envStats().weight()>1000)||(!this.isGettable()))
 				{
 					if(!containsDrink())
@@ -172,18 +172,18 @@ public class StdTub extends StdRideable implements Drink
 					mob.tell("You don't have that.");
 					return false;
 				}
-			case Affect.TYP_FILL:
+			case CMMsg.TYP_FILL:
 				if((liquidRemaining()>=amountOfLiquidHeld)
 				&&(liquidHeld()<500000))
 				{
 					mob.tell(name()+" is full.");
 					return false;
 				}
-				if((affect.tool()!=null)
-				&&(affect.tool()!=affect.target())
-				&&(affect.tool() instanceof Drink))
+				if((msg.tool()!=null)
+				&&(msg.tool()!=msg.target())
+				&&(msg.tool() instanceof Drink))
 				{
-					Drink thePuddle=(Drink)affect.tool();
+					Drink thePuddle=(Drink)msg.tool();
 					if(!thePuddle.containsDrink())
 					{
 						mob.tell(thePuddle.name()+" is empty.");
@@ -211,14 +211,14 @@ public class StdTub extends StdRideable implements Drink
 		return true;
 	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(affect.amITarget(this))
+		if(msg.amITarget(this))
 		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
 			{
-			case Affect.TYP_DRINK:
+			case CMMsg.TYP_DRINK:
 				amountOfLiquidRemaining-=amountOfThirstQuenched;
 				boolean thirsty=mob.curState().getThirst()<=0;
 				boolean full=!mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState());
@@ -230,10 +230,10 @@ public class StdTub extends StdRideable implements Drink
 				if(disappearsAfterDrinking)
 					destroy();
 				break;
-			case Affect.TYP_FILL:
-				if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
+			case CMMsg.TYP_FILL:
+				if((msg.tool()!=null)&&(msg.tool() instanceof Drink))
 				{
-					Drink thePuddle=(Drink)affect.tool();
+					Drink thePuddle=(Drink)msg.tool();
 					int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
 					if(amountOfLiquidHeld>=500000)
 						amountToTake=thePuddle.liquidRemaining();
@@ -254,6 +254,6 @@ public class StdTub extends StdRideable implements Drink
 				break;
 			}
 		}
-		super.affect(myHost,affect);
+		super.executeMsg(myHost,msg);
 	}
 }

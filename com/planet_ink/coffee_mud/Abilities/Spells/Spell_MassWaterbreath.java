@@ -45,12 +45,12 @@ public class Spell_MassWaterbreath extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if(mob.location().okAffect(mob,msg))
+				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					Spell_WaterBreathing breath=new Spell_WaterBreathing();
 					breath.setProfficiency(profficiency());
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> grow(s) a pair of gills!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) a pair of gills!");
 					breath.beneficialAffect(mob,target,0);
 				}
 			}

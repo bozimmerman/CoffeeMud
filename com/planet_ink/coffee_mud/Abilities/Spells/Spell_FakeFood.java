@@ -22,7 +22,7 @@ public class Spell_FakeFood extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell dramatically.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Food F=(Food)CMClass.getItem("GenFood");
@@ -56,7 +56,7 @@ public class Spell_FakeFood extends Spell
 					Food F2=(Food)F.copyOf();
 					F2.recoverEnvStats();
 					mob.location().addItemRefuse(F2,Item.REFUSE_RESOURCE);
-					mob.location().show(mob,null,F2,Affect.MSG_OK_VISUAL,"<O-NAME> appears!");
+					mob.location().show(mob,null,F2,CMMsg.MSG_OK_VISUAL,"<O-NAME> appears!");
 				}
 			}
 		}

@@ -13,7 +13,7 @@ public class Poison_Alcohol extends Poison
 	public String displayText(){ return "(Drunk)";}
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Alcohol();}
-	
+
 	protected int POISON_TICKS(){return 65;}
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "You feel sober again.";}
@@ -23,7 +23,7 @@ public class Poison_Alcohol extends Poison
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to inebriate <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return 0;}
 	protected boolean disableHappiness=false;
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(affected instanceof MOB)
@@ -35,7 +35,7 @@ public class Poison_Alcohol extends Poison
 		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
 			affectableStats.setStat(CharStats.DEXTERITY,1);
 	}
-	
+
 	public void unInvoke()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -44,14 +44,14 @@ public class Poison_Alcohol extends Poison
 			if((Dice.rollPercentage()==1)&&(!((MOB)affected).isMonster()))
 			{
 				Ability A=CMClass.getAbility("Disease_Migraines");
-				if((A!=null)&&(mob.fetchAffect(A.ID())==null))
+				if((A!=null)&&(mob.fetchEffect(A.ID())==null))
 					A.invoke(mob,mob,true);
 			}
 			ExternalPlay.standIfNecessary(mob);
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -59,9 +59,9 @@ public class Poison_Alcohol extends Poison
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
-		
+
 		if(disableHappiness){disableHappiness=false; return true;}
-		
+
 		MOB mob=(MOB)affected;
 		if(mob==null) return true;
 
@@ -72,31 +72,31 @@ public class Poison_Alcohol extends Poison
 			switch(Dice.roll(1,9,-1))
 			{
 			case 0:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
 				break;
 			case 1:
-				room.show(mob,null,this,Affect.MSG_NOISE,"<S-NAME> belch(es) grotesquely.");
+				room.show(mob,null,this,CMMsg.MSG_NOISE,"<S-NAME> belch(es) grotesquely.");
 				break;
 			case 2:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> spin(s) <S-HIS-HER> head around.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> spin(s) <S-HIS-HER> head around.");
 				break;
 			case 3:
-				room.show(mob,null,this,Affect.MSG_NOISE,"<S-NAME> can't stop snarling.");
+				room.show(mob,null,this,CMMsg.MSG_NOISE,"<S-NAME> can't stop snarling.");
 				break;
 			case 4:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> just fell over!");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> just fell over!");
 				break;
 			case 5:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
 				break;
 			case 6:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
 				break;
 			case 7:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> <S-IS-ARE> definitely sh** faced!");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> <S-IS-ARE> definitely sh** faced!");
 				break;
 			case 8:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly at the ground.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly at the ground.");
 				break;
 			}
 			else
@@ -104,62 +104,62 @@ public class Poison_Alcohol extends Poison
 			switch(Dice.roll(1,9,-1))
 			{
 			case 0:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
 				break;
 			case 1:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> burp(s) noncommitally.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> burp(s) noncommitally.");
 				break;
 			case 2:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
 				break;
 			case 3:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
 				break;
 			case 4:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> almost fell over.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> almost fell over.");
 				break;
 			case 5:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> hiccup(s) and almost smile(s).");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> hiccup(s) and almost smile(s).");
 				break;
 			case 6:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> belch(es)!");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> belch(es)!");
 				break;
 			case 7:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> <S-IS-ARE> definitely drunk!");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> <S-IS-ARE> definitely drunk!");
 				break;
 			case 8:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly ahead.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly ahead.");
 				break;
 			}
 			else
 			switch(Dice.roll(1,9,-1))
 			{
 			case 0:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");
 				break;
 			case 1:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> hiccup(s) and smile(s).");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> hiccup(s) and smile(s).");
 				break;
 			case 2:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> bob(s) <S-HIS-HER> head back and forth.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> bob(s) <S-HIS-HER> head back and forth.");
 				break;
 			case 3:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't stop smiling.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> can't stop smiling.");
 				break;
 			case 4:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> lean(s) slightly to one side.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> lean(s) slightly to one side.");
 				break;
 			case 5:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
 				break;
 			case 6:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
 				break;
 			case 7:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> <S-IS-ARE> definitely a bit tipsy!");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> <S-IS-ARE> definitely a bit tipsy!");
 				break;
 			case 8:
-				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly at <S-HIS-HER> eyelids.");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly at <S-HIS-HER> eyelids.");
 				break;
 			}
 
@@ -167,46 +167,46 @@ public class Poison_Alcohol extends Poison
 		return true;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okAffect(myHost,affect))
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if(affected instanceof MOB)
 		{
-			if(affect.source()!=affected)
+			if(msg.source()!=affected)
 				return true;
-			if(affect.source().location()==null)
+			if(msg.source().location()==null)
 				return true;
-			
-			if((affect.amISource((MOB)affected))
-			&&(affect.sourceMessage()!=null)
-			&&(affect.tool()==null)
-			&&((affect.sourceMinor()==Affect.TYP_SPEAK)
-			   ||(affect.sourceMinor()==Affect.TYP_TELL)
-			   ||(Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))))
+
+			if((msg.amISource((MOB)affected))
+			&&(msg.sourceMessage()!=null)
+			&&(msg.tool()==null)
+			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+			   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 			{
 				Ability A=CMClass.getAbility("Drunken");
 				if(A!=null)
 				{
 					A.setProfficiency(100);
-					A.invoke(affect.source(),null,true);
-					A.setAffectedOne(affect.source());
-					if(!A.okAffect(myHost,affect))
+					A.invoke(msg.source(),null,true);
+					A.setAffectedOne(msg.source());
+					if(!A.okMessage(myHost,msg))
 						return false;
 				}
 			}
 			else
-			if((!Util.bset(affect.targetMajor(),Affect.MASK_GENERAL))
-			&&(affect.targetMajor()>0))
+			if((!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
+			&&(msg.targetMajor()>0))
 			{
-				if((affect.target() !=null)
-					&&(affect.target() instanceof MOB))
-						affect.modify(affect.source(),affect.source().location().fetchInhabitant(Dice.roll(1,affect.source().location().numInhabitants(),0)-1),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode(),affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+				if((msg.target() !=null)
+					&&(msg.target() instanceof MOB))
+						msg.modify(msg.source(),msg.source().location().fetchInhabitant(Dice.roll(1,msg.source().location().numInhabitants(),0)-1),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 			}
 		}
 		else
 		{
-			
+
 		}
 		return true;
 	}

@@ -21,7 +21,7 @@ public class Spell_AcidFog extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
@@ -32,7 +32,7 @@ public class Spell_AcidFog extends Spell
 			if((!vic.amDead())&&(vic.location()!=null))
 			{
 				int damage=vic.envStats().level();
-				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(1,damage,0),Affect.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
+				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(1,damage,0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -48,7 +48,7 @@ public class Spell_AcidFog extends Spell
 		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the acid fog!");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the acid fog!");
 		}
 	}
 
@@ -83,10 +83,10 @@ public class Spell_AcidFog extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ACID|(auto?Affect.MASK_GENERAL:0),null);
-				if((mob.location().okAffect(mob,msg))
-				   &&(mob.location().okAffect(mob,msg2))
-				   &&(target.fetchAffect(this.ID())==null))
+				FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ACID|(auto?CMMsg.MASK_GENERAL:0),null);
+				if((mob.location().okMessage(mob,msg))
+				   &&(mob.location().okMessage(mob,msg2))
+				   &&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);
@@ -94,7 +94,7 @@ public class Spell_AcidFog extends Spell
 					{
 						castingLocation=mob.location();
 						success=maliciousAffect(mob,target,(mob.envStats().level()*10),-1);
-						target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> become(s) enveloped in the acid fog!");
+						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped in the acid fog!");
 					}
 				}
 			}

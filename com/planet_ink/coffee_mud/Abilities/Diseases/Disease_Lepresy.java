@@ -33,37 +33,37 @@ public class Disease_Lepresy extends Disease
 		return str;
 	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(myHost,affect);
+			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.targetMessage()!=null))
+		if((msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+		&&(msg.targetMessage()!=null))
 		{
-			if(affect.targetMessage().indexOf("<DAMAGE>")>=0)
-			affect.modify(affect.source(),
-						  affect.target(),
-						  affect.tool(),
-						  affect.sourceCode(),affect.sourceMessage(),
-						  affect.targetCode(),replaceDamageTag(affect.targetMessage(),1,0),
-						  affect.othersCode(),affect.othersMessage());
+			if(msg.targetMessage().indexOf("<DAMAGE>")>=0)
+			msg.modify(msg.source(),
+						  msg.target(),
+						  msg.tool(),
+						  msg.sourceCode(),msg.sourceMessage(),
+						  msg.targetCode(),replaceDamageTag(msg.targetMessage(),1,0),
+						  msg.othersCode(),msg.othersMessage());
 			else
-			if((affect.tool()!=null)&&(affect.tool() instanceof Weapon))
-			affect.modify(affect.source(),
-						  affect.target(),
-						  affect.tool(),
-						  affect.sourceCode(),affect.sourceMessage(),
-						  affect.targetCode(),"^F"+((Weapon)affect.tool()).hitString(1)+"^?",
-						  affect.othersCode(),affect.othersMessage());
+			if((msg.tool()!=null)&&(msg.tool() instanceof Weapon))
+			msg.modify(msg.source(),
+						  msg.target(),
+						  msg.tool(),
+						  msg.sourceCode(),msg.sourceMessage(),
+						  msg.targetCode(),"^F"+((Weapon)msg.tool()).hitString(1)+"^?",
+						  msg.othersCode(),msg.othersMessage());
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 }

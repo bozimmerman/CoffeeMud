@@ -28,7 +28,7 @@ public class Prayer_Wings extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> wings vanish.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> wings vanish.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -40,9 +40,9 @@ public class Prayer_Wings extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> wings.");
 			return false;
@@ -60,10 +60,10 @@ public class Prayer_Wings extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" that <T-NAME> be given the gift of flight.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> grow(s) an enormous pair of wings!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) an enormous pair of wings!");
 				beneficialAffect(mob,target,0);
 			}
 		}

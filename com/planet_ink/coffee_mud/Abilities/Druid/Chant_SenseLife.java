@@ -39,7 +39,7 @@ public class Chant_SenseLife extends Chant
 		}
 		return false;
 	}
-	
+
 	public void messageTo(MOB mob)
 	{
 		String last="";
@@ -75,7 +75,7 @@ public class Chant_SenseLife extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.MOB_TICK)
+		if((tickID==Host.TICK_MOB)
 		   &&(affected!=null)
 		   &&(affected instanceof MOB)
 		   &&(((MOB)affected).location()!=null)
@@ -92,8 +92,8 @@ public class Chant_SenseLife extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
-		if(target.fetchAffect(this.ID())!=null)
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			target.tell("You are already sensing life echoes.");
 			return false;
@@ -110,7 +110,7 @@ public class Chant_SenseLife extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) life-senses!":"^S<S-NAME> chant(s) softly, and then stop(s) to listen.^?");
-			if(mob.location().okAffect(mob,msg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

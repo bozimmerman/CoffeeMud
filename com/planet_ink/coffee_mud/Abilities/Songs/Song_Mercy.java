@@ -32,19 +32,19 @@ public class Song_Mercy extends Song
 			count--;
 		return true;
 	}
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		MOB mob=(MOB)affected;
-		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
+		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
 		&&(mob.location()!=null)
-		&&((affect.amITarget(mob)))
+		&&((msg.amITarget(mob)))
 		&&((count>0)||(lastRoom==null)||(lastRoom!=mob.location())))
 		{
-			MOB target=(MOB)affect.target();
-			if((!target.isInCombat())&&(affect.source().getVictim()!=target))
+			MOB target=(MOB)msg.target();
+			if((!target.isInCombat())&&(msg.source().getVictim()!=target))
 			{
-				affect.source().tell("You feel like showing "+target.name()+" mercy right now.");
-				if(target.getVictim()==affect.source())
+				msg.source().tell("You feel like showing "+target.name()+" mercy right now.");
+				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
 					target.setVictim(null);
@@ -53,7 +53,7 @@ public class Song_Mercy extends Song
 			}
 
 		}
-		return super.okAffect(myHost,affect);
+		return super.okMessage(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -14,7 +14,7 @@ public class Play_Ditty extends Play
 	public Environmental newInstance(){	return new Play_Ditty();}
 	protected String songOf(){return "a "+name();}
 	public long flags(){return Ability.FLAG_HEALING;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -23,7 +23,7 @@ public class Play_Ditty extends Play
 		{
 			MOB mob=(MOB)affected;
 			int healing=invoker().charStats().getStat(CharStats.CHARISMA)/4;
-			ExternalPlay.postHealing(invoker(),mob,this,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,healing,null);
+			ExternalPlay.postHealing(invoker(),mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 		}
 		return true;
 	}

@@ -41,9 +41,9 @@ public class WingFlying extends StdAbility
 			mob.tell("You can't flap without wings.");
 			return false;
 		}
-		
+
 		boolean wasFlying=Sense.isFlying(target);
-		Ability A=target.fetchAffect(ID());
+		Ability A=target.fetchEffect(ID());
 		if(A!=null) A.unInvoke();
 		target.recoverEnvStats();
 		String str="";
@@ -57,7 +57,7 @@ public class WingFlying extends StdAbility
 			flying=true;
 			str="<S-NAME> start(s) flapping <S-HIS-HER> wings.";
 		}
-			
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -69,12 +69,12 @@ public class WingFlying extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,str);
-			if(target.location().okAffect(target,msg))
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
+			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
 				beneficialAffect(mob,target,9999);
-				A=target.fetchAffect(ID());
+				A=target.fetchEffect(ID());
 				if(A!=null) A.makeLongLasting();
 			}
 		}

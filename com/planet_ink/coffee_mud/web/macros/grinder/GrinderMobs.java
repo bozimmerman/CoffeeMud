@@ -18,7 +18,7 @@ public class GrinderMobs
 		}
 		return "";
 	}
-	
+
 	public static void happilyAddItem(Item I, MOB M)
 	{
 		if(I.subjectToWearAndTear())
@@ -35,8 +35,8 @@ public class GrinderMobs
 		while(E.numLearnedAbilities()>0)
 		{
 			Ability A=E.fetchAbility(0);
-			if(E.fetchAffect(A.ID())!=null)
-				E.delAffect(E.fetchAffect(A.ID()));
+			if(E.fetchEffect(A.ID())!=null)
+				E.delEffect(E.fetchEffect(A.ID()));
 			E.delAbility(A);
 		}
 		if(httpReq.isRequestParameter("ABLES1"))
@@ -330,7 +330,7 @@ public class GrinderMobs
 				break;
 			case 37: // clan
 				M.setClanID(old);
-				if(M.getClanID().length()>0) 
+				if(M.getClanID().length()>0)
 					M.setClanRole(Clan.POS_MEMBER);
 				break;
 			}

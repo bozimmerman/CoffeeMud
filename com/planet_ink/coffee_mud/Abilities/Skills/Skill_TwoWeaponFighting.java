@@ -16,13 +16,13 @@ public class Skill_TwoWeaponFighting extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	
+
 	private boolean middleOfTheFight=false;
 	private Weapon lastWeapon=null;
 	private Weapon lastPrimary=null;
 	public Environmental newInstance(){	return new Skill_TwoWeaponFighting();	}
 
-	
+
 	private Weapon getFirstWeapon(MOB mob)
 	{
 		if((lastPrimary!=null)
@@ -43,7 +43,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 		lastPrimary=weapon;
 		return weapon;
 	}
-	
+
 	private Weapon getSecondWeapon(MOB mob)
 	{
 		if((lastWeapon!=null)
@@ -64,13 +64,13 @@ public class Skill_TwoWeaponFighting extends StdAbility
 		lastWeapon=weapon;
 		return weapon;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			
+
 			if((getSecondWeapon(mob)!=null)&&(getFirstWeapon(mob)!=null))
 			{
 				if((affectableStats.speed()>=2.0)&&(lastWeapon!=null))
@@ -81,10 +81,10 @@ public class Skill_TwoWeaponFighting extends StdAbility
 			}
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.MOB_TICK)&&(affected instanceof MOB))
+		if((tickID==Host.TICK_MOB)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(mob.isInCombat())

@@ -110,14 +110,14 @@ public class Emoter extends ActiveTicker
 		if(emoter.location()!=room) emoter.setLocation(room);
 		if(Wrapper)
 		{
-			msg=new FullMsg(emoter,null,Affect.MSG_EMOTE,"^E<S-NAME> "+(String)emote.elementAt(2)+"^?");
+			msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,"^E<S-NAME> "+(String)emote.elementAt(2)+"^?");
 		}
 		else
 		{
-			msg=new FullMsg(emoter,null,Affect.MSG_EMOTE,(String)emote.elementAt(2));
+			msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,(String)emote.elementAt(2));
 		}
 
-		if(room.okAffect(emoter,msg))
+		if(room.okMessage(emoter,msg))
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB M=room.fetchInhabitant(i);
@@ -125,13 +125,13 @@ public class Emoter extends ActiveTicker
 			switch(((Integer)emote.elementAt(0)).intValue())
 			{
 			case EMOTE_VISUAL:
-				if(Sense.canBeSeenBy(emoter,M))	M.affect(M,msg);
+				if(Sense.canBeSeenBy(emoter,M))	M.executeMsg(M,msg);
 				break;
 			case EMOTE_SOUND:
-				if(Sense.canBeHeardBy(emoter,M)) M.affect(M,msg);
+				if(Sense.canBeHeardBy(emoter,M)) M.executeMsg(M,msg);
 				break;
 			case EMOTE_SMELL:
-				if(Sense.canSmell(M)) M.affect(M,msg);
+				if(Sense.canSmell(M)) M.executeMsg(M,msg);
 				break;
 			}
 		}
