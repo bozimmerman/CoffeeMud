@@ -283,11 +283,19 @@ public class StdRideable extends StdMOB implements Rideable
 		{
 		case Affect.TYP_DISMOUNT:
 			if(amRiding(affect.source()))
+			{
 				affect.source().setRiding(null);
+				if(affect.source().location()!=null)
+					affect.source().location().recoverRoomStats();
+			}
 			break;
 		case Affect.TYP_MOUNT:
 			if((affect.amITarget(this))&&(!amRiding(affect.source())))
+			{
 				affect.source().setRiding(this);
+				if(affect.source().location()!=null)
+					affect.source().location().recoverRoomStats();
+			}
 			break;
 		}
 	}

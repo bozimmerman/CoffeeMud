@@ -167,9 +167,6 @@ public class StdRideable extends StdContainer implements Rideable
 		else
 		if(rideBasis==Rideable.RIDEABLE_WATER)
 			envStats().setDisposition(envStats().disposition()|EnvStats.IS_SWIMMING);
-		else
-		if(rideBasis==Rideable.RIDEABLE_LADDER)
-			envStats().setDisposition(envStats().disposition()|EnvStats.IS_CLIMBING);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -182,6 +179,8 @@ public class StdRideable extends StdContainer implements Rideable
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.baseEnvStats().attackAdjustment());
 				affectableStats.setDamage(affectableStats.damage()-mob.baseEnvStats().damage());
 			}
+			if(rideBasis==Rideable.RIDEABLE_LADDER)
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
 		}
 	}
 	public String displayText()
@@ -412,22 +411,37 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 		case Affect.TYP_DISMOUNT:
 			if(amRiding(affect.source()))
+			{
 				affect.source().setRiding(null);
+				if(affect.source().location()!=null)
+					affect.source().location().recoverRoomStats();
+			}
 			break;
 		case Affect.TYP_ENTER:
 			if((rideBasis()==Rideable.RIDEABLE_LADDER)
 			&&(amRiding(affect.source())))
+			{
 				affect.source().setRiding(null);
+				affect.source().recoverEnvStats();
+			}
 			break;
 		case Affect.TYP_MOUNT:
 		case Affect.TYP_SIT:
 		case Affect.TYP_SLEEP:
 			if((affect.amITarget(this))&&(!amRiding(affect.source())))
+			{
 				affect.source().setRiding(this);
+				if(affect.source().location()!=null)
+					affect.source().location().recoverRoomStats();
+			}
 			break;
 		}
 		if((affect.sourceMinor()==Affect.TYP_STAND)
 		&&(amRiding(affect.source())))
+		{
 		   affect.source().setRiding(null);
+			if(affect.source().location()!=null)
+				affect.source().location().recoverRoomStats();
+		}
 	}
 }

@@ -1,7 +1,6 @@
-GenLadder, GenFountain
+Add retainer capabilities to hireling
 the shopkeepers give way to much money for items. It is too lucrative
 Wainsright - to create wagons -- but first, a rideable in a rideable is a puller!
-property to force an object to decay once worn/picked up
 mime behavior: A MOB will mimic any social that you do.
 pillow social to start a pillow fight
 aroma property. Exudes an odor to all adjacent rooms. Given to Undead for their stench. Given to Harem girls for their perfume. Parameter would be the emitted aroma description, and a Min/Max/Chance of message being created.
@@ -33,6 +32,7 @@ viewer/editor for items/mobs worldwide
 titles for high levels.
 Auto quests, quests, questbox (Behavior)
 Ambusher—This gives the MOB an aggressive attitude, with the hide and backstab skills.  Ambushers may have a delay on them, a number of ticks before they come out of hiding and attack.
+Thieves attack/damage closer to a fighter, to balance out the bad armor.
 ReligiousHelper—Aids other MOBs of given religion
 Nonconvertable—MOB won’t accept another religion.
 IMPROVED TURNING:  Affects your bonus to Turn or control.  Don’t give this to anyone yet, but specialty clerics will need to have access to it.
