@@ -71,6 +71,11 @@ public class Bard extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_Steal",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Song_Death",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Song_Rebirth",false);
+
+			CMAble.addCharAbilityMapping(ID(),25,"Song_Knowledge",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Song_Thanks",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Song_Babble",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Song_Comprehension",false);
 		}
 	}
 
