@@ -4068,6 +4068,28 @@ public class Import
 			}
 		}
 	}
+	
+	
+	public static String getStat(Environmental E, String stat)
+	{
+		if((stat!=null)&&(stat.length()>0)&&(stat.equalsIgnoreCase("REJUV")))
+		{
+			if(E.baseEnvStats().rejuv()==Integer.MAX_VALUE)
+				return "0";
+			else
+				return ""+E.baseEnvStats().rejuv();
+		}
+		else
+			return E.getStat(stat);
+	}
+
+	public static void setStat(Environmental E, String stat, String value)
+	{
+		if((stat!=null)&&(stat.length()>0)&&(stat.equalsIgnoreCase("REJUV")))
+			E.baseEnvStats().setRejuv(Util.s_int(value));
+		else
+			E.setStat(stat,value);
+	}
 
 	public static void merge(MOB mob, Vector commands)
 	{
@@ -4247,6 +4269,10 @@ public class Import
 					}
 			}
 		}
+		
+		allKnownFields.addElement("REJUV");
+		allFieldsMsg.append("REJUV ");
+		
 		for(int i=0;i<commands.size();i++)
 		{
 			String str=((String)commands.elementAt(i)).toUpperCase();
@@ -4426,6 +4452,7 @@ public class Import
 		for(int i=0;i<EFIELDS.length;i++)
 			if(!efields.contains(EFIELDS[i]))
 				efields.addElement(EFIELDS[i]);
+		efields.addElement("REJUV");
 		allMyFields=(Vector)efields.clone();
 		for(int v=0;v<ignore.size();v++)
 			if(efields.contains(ignore.elementAt(v)))
@@ -4458,8 +4485,8 @@ public class Import
 				for(int i=0;i<fieldsToCheck.size();i++)
 				{
 					String field=(String)fieldsToCheck.elementAt(i);
-					if(noisy) mob.tell(field+"/"+E.getStat(field)+"/"+E2.getStat(field)+"/"+E.getStat(field).equals(E2.getStat(field)));
-					if(!E.getStat(field).equals(E2.getStat(field)))
+					if(noisy) mob.tell(field+"/"+getStat(E,field)+"/"+getStat(E2,field)+"/"+getStat(E,field).equals(getStat(E2,field)));
+					if(!getStat(E,field).equals(getStat(E2,field)))
 					{ checkedOut=false; break;}
 				}
 				if(checkedOut)
@@ -4478,11 +4505,11 @@ public class Import
 					for(int i=0;i<fieldsToChange.size();i++)
 					{
 						String field=(String)fieldsToChange.elementAt(i);
-						if(noisy) mob.tell(E.name()+" wants to change "+field+" value "+E.getStat(field)+" to "+E2.getStat(field)+"/"+(!E.getStat(field).equals(E2.getStat(field))));
-						if(!E.getStat(field).equals(E2.getStat(field)))
+						if(noisy) mob.tell(E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+getStat(E2,field)+"/"+(!getStat(E,field).equals(getStat(E2,field))));
+						if(!getStat(E,field).equals(getStat(E2,field)))
 						{
-							E.setStat(field,E2.getStat(field));
-							Log.sysOut("Merge","The "+Util.capitalize(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed to "+E2.getStat(field)+".");
+							setStat(E,field,getStat(E2,field));
+							Log.sysOut("Merge","The "+Util.capitalize(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed to "+getStat(E2,field)+".");
 							didAnything=true;
 						}
 					}

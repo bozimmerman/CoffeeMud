@@ -605,6 +605,7 @@ public class StdAbility implements Ability, Cloneable
 				return false;
 			Ability thatAbility=(Ability)this.copyOf();
 			((StdAbility)thatAbility).canBeUninvoked=true;
+			thatAbility.setBorrowed(mob,true);
 			mob.addAffect(thatAbility);
 			return true;
 		}

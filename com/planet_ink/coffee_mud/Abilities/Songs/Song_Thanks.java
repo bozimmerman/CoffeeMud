@@ -83,7 +83,7 @@ public class Song_Thanks extends Song
 		}
 
 		boolean success=profficiencyCheck(0,auto);
-		unsing(mob,null,null);
+		unsing(mob,mob,null);
 		if(success)
 		{
 			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";

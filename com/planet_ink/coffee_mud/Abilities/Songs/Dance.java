@@ -156,7 +156,7 @@ public class Dance extends StdAbility
 								follower.location().send(follower,msg3);
 								if((!msg3.wasModified())&&(follower.fetchAffect(newOne.ID())==null))
 								{
-									undance(follower,mob,null);
+									undance(follower,null,null);
 									if(follower!=mob)
 										follower.addAffect((Ability)newOne.copyOf());
 									else

@@ -1745,7 +1745,7 @@ public class Generic
 									 "DISPLAY","DESCRIPTION","MONEY","ALIGNMENT",
 									 "DISPOSITION","SENSES","ARMOR",
 									 "DAMAGE","ATTACK","SPEED","AFFBEHAV",
-									 "ABLES","INVENTORY","REJUV"};
+									 "ABLES","INVENTORY"};
 	public static String getGenMobStat(MOB M, String code){
 		switch(getGenItemCodeNum(code))
 		{
@@ -1786,8 +1786,6 @@ public class Generic
 					}
 					return str.toString();
 				}
-		case 18: if(M.baseEnvStats().rejuv()==Integer.MAX_VALUE) return "0";
-				 else return ""+M.baseEnvStats().rejuv();
 		}
 		return "";
 	}
@@ -1833,7 +1831,6 @@ public class Generic
 				Generic.setGenMobInventory(M,XMLManager.parseAllXML(val));
 			}
 			break;
-		case 18: M.baseEnvStats().setRejuv(Util.s_int(val)); break;
 		}
 	}
 	public static int getGenMobCodeNum(String code){

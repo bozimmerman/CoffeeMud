@@ -202,7 +202,7 @@ public class Play extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		unplay(mob,null,null);
+		unplay(mob,mob,null);
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";

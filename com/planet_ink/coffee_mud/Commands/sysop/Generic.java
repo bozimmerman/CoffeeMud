@@ -1971,8 +1971,9 @@ public class Generic
 								mob.tell(chosenOne.ID()+" re-added.");
 							if(!alreadyHasIt)
 							{
-								E.addAbility((Ability)chosenOne.copyOf());
-								chosenOne.setProfficiency(100);
+								chosenOne=(Ability)chosenOne.copyOf();
+								E.addAbility(chosenOne);
+								chosenOne.setProfficiency(50);
 								chosenOne.autoInvocation(mob);
 							}
 						}

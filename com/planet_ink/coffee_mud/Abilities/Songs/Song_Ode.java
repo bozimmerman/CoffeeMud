@@ -375,7 +375,7 @@ public class Song_Ode extends Song
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			unsing(mob,null,null);
+			unsing(mob,mob,null);
 			whom=target;
 			String str="^S<S-NAME> begin(s) to compose an "+songOf()+".^?";
 			FullMsg msg=new FullMsg(mob,null,this,(auto?Affect.MASK_GENERAL:0)|Affect.MSG_DELICATE_HANDS_ACT,str);

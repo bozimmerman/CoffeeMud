@@ -30,13 +30,16 @@ public class CombatAbilities extends StdBehavior
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability newOne=mob.fetchAbility(a);
-			if((newOne!=null)
-			&&(!oldAbilities.contains(newOne))
-			&&(!CMAble.qualifiesByLevel(mob,newOne)))
+			if((newOne!=null)&&(!oldAbilities.contains(newOne)))
 			{
-				mob.delAbility(newOne);
-				mob.delAffect(mob.fetchAffect(newOne.ID()));
-				a=a-1;
+				if(!CMAble.qualifiesByLevel(mob,newOne))
+				{
+					mob.delAbility(newOne);
+					mob.delAffect(mob.fetchAffect(newOne.ID()));
+					a=a-1;
+				}
+				else
+					newOne.setProfficiency(100);
 			}
 		}
 	}
