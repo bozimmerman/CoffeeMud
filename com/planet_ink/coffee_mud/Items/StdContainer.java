@@ -435,4 +435,44 @@ public class StdContainer extends StdItem implements Container
 			}
 		}while(!nothingDone);
 	}
+	
+	private void reallyGetContents(Item container, Environmental own, Vector V)
+	{
+		if(container==null) return;
+		if(own instanceof MOB)
+		{
+			for(int i=0;i<((MOB)own).inventorySize();i++)
+			{
+				Item I=((MOB)own).fetchInventory(i);
+				if((I.location()==container)
+				&&(!V.contains(I)))
+				{
+					V.addElement(I);
+					reallyGetContents(I,own,V);
+				}
+			}
+		}
+		else
+		if(own instanceof Room)
+		{
+			for(int i=0;i<((Room)own).numItems();i++)
+			{
+				Item I=((Room)own).fetchItem(i);
+				if((I.location()==container)
+				&&(!V.contains(I)))
+				{
+					V.addElement(I);
+					reallyGetContents(I,own,V);
+				}
+			}
+		}
+	}
+	
+	public Vector getContents()
+	{
+		Vector V=new Vector();
+		if(myOwner()!=null)
+			reallyGetContents(this,myOwner(),V);
+		return V;
+	}
 }

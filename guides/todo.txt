@@ -46,16 +46,16 @@
 ! Buy command for standard mobs, to facilitate trades.
 ! race based wearing restrictions, and a "become" method to enforce them (and clothing size);
 ! resources property for rooms
+! HuntableAnimals that produce pieces of raw meat in inventory when killed.  
+! Hunt ability for rangers to find them.
 
-HuntableAnimals that produce pieces of raw meat in inventory when killed.  Poisoned and poisoning 
-animals will produce poisoned meat, of course.  
+
+Poisoned and poisoning animals will produce poisoned meat, of course.  
 
 0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where  one could buy raw materials.  Facilities available there would be used, along with your skill, to  produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing,  Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and  remove rawness from Meat).  The LeatherWorker ability can mend leather items, Tailor cloth items, etc..
 
 some sort of map skill for bards, allowing them to either know where they are or to get to where they want to be
 mapmaking skill for bards
-
-Hunt ability for rangers to find them.
 
 Guilds will have the ability to take on a character and make him or her the class sponsored by the 
 guild.  These will be special Sub-Classes (derivatives of existing classes).  SubClasses: 
