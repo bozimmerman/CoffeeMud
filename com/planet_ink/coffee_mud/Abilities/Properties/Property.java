@@ -43,7 +43,11 @@ public class Property implements Ability, Cloneable
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
-	public void startTickDown(Environmental affected, int tickTime){}
+	public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
+	{
+		if(affected.fetchAffect(ID())==null)
+			affected.addAffect(this);
+	}
 
 	public int profficiency(){return 0;}
 	public void setProfficiency(int newProfficiency){}

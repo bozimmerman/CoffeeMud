@@ -32,7 +32,7 @@ public class Spell_IncreaseGravity extends Spell
 				{
 					Ability A=(Ability)this.copyOf();
 					A.setBorrowed(inhab,true);
-					A.startTickDown(inhab,tickDown);
+					A.startTickDown(invoker,inhab,tickDown);
 				}
 				if(inhab.isInCombat())
 					inhab.curState().adjMovement(-1,inhab.maxState());

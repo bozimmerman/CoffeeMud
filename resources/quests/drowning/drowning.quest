@@ -1,11 +1,15 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+#set the quest name
+set name drowning
 
-<P>&nbsp;</P>
+set locale WaterSurface
+# select a random locale of some water surface type
 
-</BODY>
-</HTML>
+set mobtype Human
+# find a random human in that area and bring him or her there
+
+give behavior Scriptable LOAD=quests/drowning/drowning.script
+# load the above behavior into the last mob (Human)
+
+set duration 450
+# the duration of the quest is 5 minutes (450 ticks).  The scripts on the mobs will
+# do the rest...

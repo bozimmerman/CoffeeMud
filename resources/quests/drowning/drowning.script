@@ -1,11 +1,62 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+ONCE_PROG
+	QUESTCHAT Help, I'm drowning!
+	mpsetvar $i DROWNING ''
+~
 
-<P>&nbsp;</P>
+ALL_GREET_PROG 99
+	if var($i DROWNING == '') AND inroom($i WaterSurface)
+		if ispc($n)
+			say "$n" Thank goodness! I can't swim! Get me out of here!
+			follow $n
+			mpsetvar $i DROWNING $n
+		endif
+	endif
+~
 
-</BODY>
-</HTML>
+RAND_PROG 90
+	if !inroom($i Water) and isfollow($i)
+		if var($i DROWNING != '')
+			say "$<$i DROWNING>" You saved me!
+			follow self
+			if !QUESTWINNER('$<$i DROWNING>' drowning)
+				mpexp '$<$i DROWNING>' 100
+				mpoload QuestPoint
+				give "a quest point" "$<$i DROWNING>"
+			endif
+			mpoload 100
+			give 100 "$<$i DROWNING>"
+			mpquestwin '$<$i DROWNING>' drowning
+			mpendquest drowning
+		else
+			say "Well, I'm safe.  But I'm not sure how.  Ah well."
+			mpendquest drowning
+		endif
+	endif
+~
+
+QUEST_TIME_PROG diseased 1
+	QUESTCHAT Never mind about the help.  I drowned.  Thanks.
+	mpquestend drowning
+~
+
+EXIT_PROG 99
+	if !inroom($i Water) and isfollow($i)
+		if var($i DROWNING != '')
+			say "$<$i DROWNING>" You saved me!
+			follow self
+			if !QUESTWINNER('$<$i DROWNING>' drowning)
+				mpexp '$<$i DROWNING>' 100
+				mpoload QuestPoint
+				give "a quest point" "$<$i DROWNING>"
+			endif
+			mpoload 100
+			give 100 "$<$i DROWNING>"
+			mpquestwin '$<$i DROWNING>' drowning
+			mpsetvar $i DROWNING ''
+			mpendquest drowning
+		else
+			say "Well, I'm safe.  But I'm not sure how.  Ah well."
+			mpendquest drowning
+		endif
+	endif
+~

@@ -1,1 +1,2 @@
-<ITEMS></ITEMS>
+<ITEMS><ITEM><ICLAS>GenReadable</ICLAS><IUSES>2147483647</IUSES><ILEVL>1</ILEVL><IABLE>0</IABLE><IREJUV>2147483647</IREJUV><ITEXT>&lt;NAME&gt;a most secret note&lt;/NAME&gt;&lt;DESC&gt;&lt;/DESC&gt;&lt;DISP&gt;a most secret note sits here.&lt;/DISP&gt;&lt;PROP&gt;0|0|0|0|0|1|2147483647|1.0|1|0|0|&lt;/PROP&gt;&lt;BEHAVES&gt;&lt;/BEHAVES&gt;&lt;AFFECS&gt;&lt;/AFFECS&gt;&lt;FLAG&gt;15&lt;/FLAG&gt;&lt;IDENT&gt;&lt;/IDENT&gt;&lt;VALUE&gt;5&lt;/VALUE&gt;&lt;MTRAL&gt;2368&lt;/MTRAL&gt;&lt;READ&gt;Something in secret code.  It`s unreadable...&lt;/READ&gt;&lt;WORNL&gt;false&lt;/WORNL&gt;&lt;WORNB&gt;512&lt;/WORNB&gt;</ITEXT></ITEM>
+</ITEMS>

@@ -1,11 +1,36 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+#set the quest name
+set name delivery
 
-<P>&nbsp;</P>
+import items quests/delivery/note.cmare
+#import our secret note
 
-</BODY>
-</HTML>
+set area any
+# inform the quest that it occurs anywhere
+
+set mobtype Human
+# load up any mob from the above area.  Will set a room!
+
+give behavior Scriptable LOAD=quests/smurfocide/deliverer.script
+# load the above behavior into the last mob (Human)
+
+load item secret note
+# load our secret note.  For the time being, it will sit in the room
+
+give item
+# now we give the item to our mob
+
+set room
+# clear the room designation
+
+set area any
+# set any other area as a designation
+
+set mobtype Human
+# load up any other mob from any other area.  Will set a room!
+
+give behavior Scriptable LOAD=quests/smurfocide/deliveree.script
+# load the above behavior into the last mob (Human)
+
+set duration 75
+# the duration of the quest is 5 minutes (75 ticks).  The scripts on the mobs will
+# do the rest...

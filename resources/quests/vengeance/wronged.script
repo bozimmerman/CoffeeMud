@@ -1,18 +1,23 @@
 # this script is for the one who will give the reward!
 ONCE_PROG
-	gossip Vengeance! I have been wronged by ${2 vengeance}!
-	mpsetvar $i VENGEANCE 
+	QUESTCHAT Vengeance! I have been wronged by ${2 vengeance}!
+	mpsetvar $i VENGEANCE  ''
 ~
 
 SPEECH_PROG trouble problem wronged quest help honor insult reward corpse enemy trouble? problem? wronged? quest? help? honor? insult? reward? corpse? enemy?
 	say "$n" ${2 vengeance} has insulted my honor!  Kill him dead and I'll have a reward.
 ~
 
+QUEST_TIME_PROG vengeance 1
+	QUESTCHAT One minute to left kill ${2 vengeance}, or I'm doing it myself.
+~
+
+
 GREET_PROG 200
 	IF VAR($i VENGEANCE != MINE)
 		IF VAR($n VENGEANCE == KILLER)
 			mpsetvar $i VENGEANCE MINE
-			mpsetvar $n VENGEANCE
+			mpsetvar $n VENGEANCE ''
 			say "$n" Thank you.  I will mount his head on my wall.  Here is your reward:
 			mpexp $n 100
 			mpoload QuestPoint

@@ -1,6 +1,6 @@
 ONCE_PROG
-	gossip Find and bring me $[1 treasurehunt] and you shall be rewarded!
-	mpsetvar i$ TREASUREHUNT 
+	QUESTCHAT Find and bring me $[1 treasurehunt] and you shall be rewarded!
+	mpsetvar i$ TREASUREHUNT  ''
 ~
 
 SPEECH_PROG missing bring quest reward coin find missing? bring? quest? reward? coin? find? missing?
@@ -8,12 +8,16 @@ SPEECH_PROG missing bring quest reward coin find missing? bring? quest? reward? 
 endif
 ~
 
+QUEST_TIME_PROG treasurehunt 5
+	QUESTCHAT Five minutes remaining to find $[1 treasurehunt] and give it to me!
+~
+
 GIVE_PROG all
 	IF !ISNAME($o '$[1 treasurehunt]')
 		say "$n" Sorry, that's not it!
 		drop $o
 	else
-		if var($n TREASUREHUNT == FOUND)
+		if var($i TREASUREHUNT == FOUND)
 			say "$n" Sorry, someone beat you!
 			drop $o
 		else

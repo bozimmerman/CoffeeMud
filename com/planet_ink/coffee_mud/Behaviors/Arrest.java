@@ -1230,7 +1230,7 @@ public class Arrest extends StdBehavior
 							{
 								judge.location().show(judge,W.criminal,Affect.MSG_OK_VISUAL,"<S-NAME> put(s) <T-NAME> on parole!");
 								Ability A=CMClass.getAbility("Prisoner");
-								A.startTickDown(W.criminal,W.jailTime);
+								A.startTickDown(judge,W.criminal,W.jailTime);
 								W.criminal.recoverEnvStats();
 								W.criminal.recoverCharStats();
 								ExternalPlay.quickSay(judge,W.criminal,(String)laws.get("PAROLEDISMISS"),false,false);
@@ -1289,7 +1289,7 @@ public class Arrest extends StdBehavior
 									if(W.criminal.location()==jail)
 									{
 										Ability A=CMClass.getAbility("Prisoner");
-										A.startTickDown(W.criminal,W.jailTime);
+										A.startTickDown(judge,W.criminal,W.jailTime);
 										W.criminal.recoverEnvStats();
 										W.criminal.recoverCharStats();
 									}
@@ -1336,7 +1336,7 @@ public class Arrest extends StdBehavior
 								setFree(W.criminal);
 								dismissOfficer(officer);
 								Ability A=CMClass.getAbility("Prisoner");
-								A.startTickDown(W.criminal,100);
+								A.startTickDown(judge,W.criminal,100);
 								W.criminal.recoverEnvStats();
 								W.criminal.recoverCharStats();
 								ExternalPlay.postAttack(judge,W.criminal,judge.fetchWieldedItem());

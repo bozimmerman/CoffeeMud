@@ -9,7 +9,7 @@ endif
 ~
 
 ONCE_PROG
-mpsetvar $i LOLLY
+mpsetvar $i LOLLY ''
 ~
 
 RAND_PROG 10

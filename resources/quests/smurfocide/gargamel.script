@@ -1,11 +1,64 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+# script for gargamel
+ONCE_PROG
+	QUESTCHAT I hate the smurfs! I hate them! I want them all dead right NOW!
+	mpsetvar i$ SMURFOCIDE  ''
+~
 
-<P>&nbsp;</P>
+SPEECH_PROG smurf hate kill all smurfocide quest dead want smurfs smurf? hate? kill? all? smurfocide? quest? dead? want? smurfs?
+	say "$n" Give me 19 dead smurfs, including papa smurfs own corpse, and you will be rewarded.
+endif
+~
 
-</BODY>
-</HTML>
+QUEST_TIME_PROG smurfocide 1
+	QUESTCHAT My patience grows THIN! One more minute people!
+~
+
+GIVE_PROG 'the body of papa smurf'
+	if QUESTWINNER($n smurfocide)
+		say $n You've already committed smurfocide. Go away!
+		MPPURGE $o
+	else
+		if var($i SMURFOCIDE == DONE)
+			say "$n" Sorry, someone beat you!
+			MPPURGE $o
+		else
+			if var($n SMURFOCIDE >= 19)
+				say "$n" Wonderful!  Now I can make my famous smurf stew!
+				MPFORCE Azreal emote licks his lips.
+				mpexp $n 100
+				mpoload QuestPoint
+				give "a quest point" "$n"
+				mpquestwin $n smurfocide
+				mpendquest smurfocide
+			else
+				say "$n" Well done.  This was a nasty one.  Now bring me the rest!
+				MPSETVAR $n PAPASMURF DONE
+			endif
+		endif
+	endif
+~
+
+GIVE_PROG 'the body of a smurf' 'the body of handy smurf' 'the body of grumpy smurf' 'the body of sleepy smurf' 'the body of brainy smurf' 'the body of hefty smurf' 'the body of jokey smurf' 'the body of smurfette'
+	if QUESTWINNER($n smurfocide)
+		say $n You've already committed smurfocide. Go away!
+		MPPURGE $o
+	else
+		if var($i SMURFOCIDE == DONE)
+			say "$n" Sorry, someone beat you!
+			MPPURGE $o
+		else
+			if var($n SMURFOCIDE >= 19) AND var($n PAPASMURF == DONE)
+				say "$n" Wonderful!  Now I can make my famous smurf stew!
+				MPFORCE Azreal emote licks his lips.
+				mpexp $n 100
+				mpoload QuestPoint
+				give "a quest point" "$n"
+				mpquestwin $n smurfocide
+				mpendquest smurfocide
+			else
+				mpsetvar $n SMURFOCIDE ++
+				say "$n" Lovely! Keep them coming!
+			endif
+		endif
+	endif
+~

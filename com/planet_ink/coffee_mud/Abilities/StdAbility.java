@@ -77,8 +77,10 @@ public class StdAbility implements Ability, Cloneable
 		if(profficiency>100) profficiency=100;
 	}
 
-	public void startTickDown(Environmental affected, int tickTime)
+	public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
 	{
+		if(invokerMOB!=null) invoker=invokerMOB;
+		
 		borrowed=true; // makes it so that the affect does not save!
 		
 		if(invoker()!=null)
@@ -486,7 +488,7 @@ public class StdAbility implements Ability, Cloneable
 					tickAdjustmentFromStandard=5;
 			}
 
-			newOne.startTickDown(target,tickAdjustmentFromStandard);
+			newOne.startTickDown(invoker,target,tickAdjustmentFromStandard);
 		}
 		return ok;
 	}
@@ -541,7 +543,7 @@ public class StdAbility implements Ability, Cloneable
 			if(tickAdjustmentFromStandard<=0)
 				tickAdjustmentFromStandard=(adjustedLevel(mob)*7)+60;
 
-			newOne.startTickDown(target,tickAdjustmentFromStandard);
+			newOne.startTickDown(invoker,target,tickAdjustmentFromStandard);
 		}
 		return ok;
 	}

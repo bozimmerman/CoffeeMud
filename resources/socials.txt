@@ -21,9 +21,6 @@ mo	WONDER <T-NAME>	You look at <T-NAMESELF> and wonder what will happen.	<S-NAME
 mo	WONDER SELF	You wonder about yourself and your purpose here.	A blank stare crosses <S-NAME>'s face.  What could <S-HE-SHE> be wondering about?		
 mo	CONTEMPLATE	You bite your lip contemplatively.	<S-NAME> bites <S-HIS-HER> lip contemplatively.		
 sv	YEEHAW	You mount your pony(?) and shout YEEEEEEEHAAAAAAAW!	<S-NAME> bounces up and down screaming *YEEEEEEHAAAAAAW!*		
-ww	SING	You raise your clear (?) voice towards the sky.	HEY CLERICS! I COULD USE A HEAL!  <S-NAME> has begun to sing.		
-ww	SING <T-NAME>	You sing a ballad to <T-HIM-HER>.	<S-NAME> sings a ballad to <T-NAMESELF>.	<S-NAME> sings a ballad to you!  How sweet!	You see no one to sing to.
-ww	SING SELF	You sing a little ditty to yourself.	<S-NAME> sings a little ditty to <S-HIM-HERSELF>.		
 ov	COLLAPSE	You collapse on the floor from exhaustion.	<S-NAME> dramatically collapses to the floor from exhaustion.		
 ov	COLLAPSE <T-NAME>	You collapse right into <T-NAMESELF>'s arms.	<S-NAME> collapses right into <T-NAMESELF>'s arms.	Suddenly, <S-NAME> collapses into your arms from exhaustion.	They've already left, just collapse on the floor.
 ot	SLOBBER <T-NAME>	You slobber on <T-NAMESELF>.	<S-NAME> slobbers on <T-NAMESELF>  **Yuck**	<S-NAME> slobbers disgustingly on you.	Slobber on WHOM?

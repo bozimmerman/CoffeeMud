@@ -23,8 +23,8 @@ public class Prop_NoTeleport extends Property
 		&&(affect.tool() instanceof Ability)
 		&&(affect.source()!=null)
 		&&(affect.source().location()!=null)
-		&&((affect.source().location()!=affected)
-		   &&(affect.source().location().getArea()!=affected))
+		&&(affect.source().location()!=affected)
+		&&(affect.source().location().getArea()!=affected)
 		&&(text().toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))
 		{
 			affect.source().location().showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");

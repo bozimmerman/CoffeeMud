@@ -1,11 +1,21 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+# this script is for the human chosen to be the note bearer
 
-<P>&nbsp;</P>
+SPEECH_PROG 'I have a delivery from'
+	if has($n 'a most secret note')
+		say "$n" It is not for me.  Give it to someone else.
+	endif
+~
+	
 
-</BODY>
-</HTML>
+GIVE_PROG p a most secret note
+	whisper "$n" Thank you.  You've done well.
+	if !QUESTWINNER($n delivery)
+		mpexp $n 100
+		mpoload QuestPoint
+		give "a quest point" "$n"
+	endif
+	mpoload 100
+	give 100 "$n"
+	mpquestwin $n delivery
+	mpendquest delivery
+~

@@ -1,11 +1,36 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+ONCE_PROG
+	QUESTCHAT Help, I'm dying of plague!
+	mpsetvar $i DISEASED ''
+	sit
+~
 
-<P>&nbsp;</P>
+ALL_GREET_PROG 99
+	if var($i DISEASED == '') AND affected($i Disease_Plague)
+		if ispc($n)
+			say "$n" Thank goodness! Please help! I have the plague!
+		endif
+	endif
+~
 
-</BODY>
-</HTML>
+DEATH_PROG 99
+	QUESTCHAT I'm dead now.  Forget the whole quest thing.
+	mpquestend diseased
+~
+
+RAND_PROG 90
+	if !affected($i Disease_Plague)
+		mpsetvar $i DISEASED $r
+		say "$<$i DISEASED>" You saved me!
+		if !QUESTWINNER('$<$i DISEASED>' drowning)
+			mpexp '$<$i DISEASED>' 100
+			mpoload QuestPoint
+			give "a quest point" "$<$i DISEASED>"
+		endif
+		mpoload 100
+		give 100 "$<$i DISEASED>"
+		mpquestwin '$<$i DISEASED>' drowning
+		mpsetvar $i DISEASED ''
+		mpendquest diseased
+	endif
+~
+

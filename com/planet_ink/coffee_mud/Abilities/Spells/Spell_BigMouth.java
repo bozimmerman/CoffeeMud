@@ -172,7 +172,7 @@ public class Spell_BigMouth extends Spell
 				{
 					unInvoked=false;
 					Spell_BigMouth A =(Spell_BigMouth)this.copyOf();
-					A.startTickDown(Stomach,10000);
+					A.startTickDown(invoker,Stomach,10000);
 				}
 			}
 			else

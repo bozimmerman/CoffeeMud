@@ -132,7 +132,7 @@ public interface Ability  extends Environmental
 	// intelligently add this ability as an affect upon a target,
 	// and start a new clock (if necessary), setting the timer
 	// on the affect as needed.
-	public void startTickDown(Environmental affected, int tickTime);
+	public void startTickDown(MOB invoker, Environmental affected, int tickTime);
 
 	// as an ability, how profficient the mob is at it.
 	public int profficiency();

@@ -1,11 +1,37 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+# this script is for the human chosen to be the note bearer
 
-<P>&nbsp;</P>
+RAND_PROG 10
+	if has($i 'a most secret note')
+		whisper "$n" I have a note I need to be delivered to ${2 delivery}.  If you would like the mission, say 'I accept', and I will give you the details. A reward is involved.
+		mpsetvar $i DELIVERY ''
+	endif
+~
 
-</BODY>
-</HTML>
+SPEECH_PROG mission problem secret quest help delivery deliver 'me to do' 'to do' mission? problem? secret? quest? help? delivery? delive?r 'me to do?' 'to do?' 
+	if has($i 'a most secret note')
+		whisper "$n" I have a note I need to be delivered to ${2 delivery}.  If you would like the mission, say 'I accept', and I will give you the details.  A reward is involved.
+		mpsetvar $i DELIVERY ''
+	endif
+~
+
+QUEST_TIME_PROG delivery 1
+	if !has($i 'a most secret note')
+		tell "$<$i DELIVERY>" "Never mind.  The information on that note doesn't matter any more.  Forget the mission.
+		mpquestend delivery
+	endif
+~
+
+
+SPEECH_PROG p i accept
+	if has($i 'a most secret note')
+		give "a most secret note" "$n"
+		whisper "$n" Find ${2 delivery}.  Say these words: "I have a delivery from ${1 delivery}".  If he responds with "It is not for me.  Give it to someone else.", then give it to him.  Understood?  Now go!
+		mpsetvar $i DELIVERY $n
+	endif
+~
+	
+
+GIVE_PROG p a most secret note
+	whisper "$n" So, you refuse?  Help me find someone else then.  Ok?
+	mpsetvar $i DELIVERY ''
+~

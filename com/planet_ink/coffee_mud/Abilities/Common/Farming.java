@@ -75,7 +75,7 @@ public class Farming extends CommonSkill
 			Farming F=((Farming)copyOf());
 			F.unInvoked=false;
 			F.tickDown=50;
-			F.startTickDown(room,50);
+			F.startTickDown(invoker,room,50);
 		}
 	}
 

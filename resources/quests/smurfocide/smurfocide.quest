@@ -1,8 +1,8 @@
 #set the quest name
 set name smurfocide
 
-set area Smurville
-# inform the quest that it occurs in Smurville
+set area Smurfville
+# inform the quest that it occurs in Smurfville
 
 set mob Gargamel
 # load up any mob from the above area.  Will set a room!

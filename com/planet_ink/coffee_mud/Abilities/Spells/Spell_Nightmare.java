@@ -123,7 +123,7 @@ public class Spell_Nightmare extends Spell
 				mob.location().send(mob,msg2);
 				if(!msg.wasModified())
 				{
-					amountRemaining=200;
+					amountRemaining=150;
 					maliciousAffect(mob,target,0,-1);
 					target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> go(es) into the throws of a horrendous nightmare!!");
 				}

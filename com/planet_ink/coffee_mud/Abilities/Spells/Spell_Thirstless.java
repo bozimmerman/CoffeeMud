@@ -65,7 +65,7 @@ public class Spell_Thirstless extends Spell
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
-				mob.tell("You feel full!");
+				mob.tell("You feel quenched!");
 			}
 		}
 		else
