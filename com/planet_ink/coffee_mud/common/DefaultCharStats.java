@@ -33,7 +33,9 @@ public class DefaultCharStats implements Cloneable, CharStats
 		}
 		if(classes.trim().length()>0)
 			MyClasses.addElement(CMClass.getCharClass(classes.trim()));
-		myClasses=(CharClass[])MyClasses.toArray();
+		myClasses=new CharClass[MyClasses.size()];
+		for(int i=0;i<MyClasses.size();i++)
+			myClasses[i]=(CharClass)MyClasses.elementAt(i);
 	}
 	public void setMyLevels(String levels)
 	{
@@ -49,7 +51,9 @@ public class DefaultCharStats implements Cloneable, CharStats
 		}
 		if(levels.trim().length()>0)
 			MyLevels.addElement(new Integer(Util.s_int(levels)));
-		myLevels=(Integer[])MyLevels.toArray();
+		myLevels=new Integer[MyLevels.size()];
+		for(int i=0;i<MyLevels.size();i++)
+			myLevels[i]=(Integer)MyLevels.elementAt(i);
 	}
 	public String getMyClassesStr()
 	{
@@ -76,143 +80,152 @@ public class DefaultCharStats implements Cloneable, CharStats
 		if(myClasses==null) return 0;
 		return myClasses.length;
 	}
-	public int combinedClassLevels()
+	public int combinedSubLevels()
 	{
-		if((myClasses==null)||(myLevels==null))
-			return 0;
+		synchronized(this)
+		{
+			if((myClasses==null)
+			   ||(myLevels==null)
+			   ||(myClasses.length<2))
+				return 0;
 		
-		int combined=0;
-		for(int i=0;i<myLevels.length;i++)
-			combined+=myLevels[i].intValue();
-		return combined;
+			int combined=0;
+			for(int i=0;i<myLevels.length-1;i++)
+				combined+=myLevels[i].intValue();
+			return combined;
+		}
 	}
 
 	public CharClass getMyClass(int i)
 	{
-		if((myClasses==null)
-		||(i<0)
-		||(i>=myClasses.length)) 
-			return CMClass.getCharClass("StdCharClass");
-		return myClasses[i];
+		synchronized(this)
+		{
+			if((myClasses==null)
+			||(i<0)
+			||(i>=myClasses.length)) 
+				return CMClass.getCharClass("StdCharClass");
+			return myClasses[i];
+		}
 	}
-	public int getClassLevel(String classID)
+	public int getClassLevel(CharClass aClass)
 	{
-		if((myClasses==null)||(myLevels==null)
-		||(myClasses.length!=myLevels.length))
+		synchronized(this)
+		{
+			if(myClasses==null)	return -1;
+			for(int i=0;i<myClasses.length;i++)
+				if(myClasses[i]==aClass)
+				   return myLevels[i].intValue();
 			return -1;
-		for(int i=0;i<myClasses.length;i++)
-			if(myClasses[i].ID().equalsIgnoreCase(classID))
-			   return myLevels[i].intValue();
-		return -1;
+		}
 	}
 	
-	public void setClassLevel(String classID, int level)
+	public void setClassLevel(CharClass aClass, int level)
 	{
-		if((myClasses==null)||(myLevels==null))
+		synchronized(this)
 		{
-			myClasses=new CharClass[1];
-			myLevels=new Integer[1];
-			myClasses[0]=CMClass.getCharClass(classID);
-			myLevels[0]=new Integer(level);
+			if(myClasses==null)
+			{
+				myClasses=new CharClass[1];
+				myLevels=new Integer[1];
+				myClasses[0]=aClass;
+				myLevels[0]=new Integer(level);
+			}
+			else
+			{
+				if((level<0)&&(myClasses.length>1))
+				{
+					CharClass[] oldClasses=myClasses;
+					Integer[] oldLevels=myLevels;
+					myClasses=new CharClass[oldClasses.length-1];
+					myLevels=new Integer[oldClasses.length-1];
+					for(int c=0;c<myClasses.length;c++)
+					{
+						myClasses[c]=oldClasses[c];
+						if(c<oldLevels.length)
+							myLevels[c]=oldLevels[c];
+						else
+							myLevels[c]=new Integer(0);
+					}
+				}
+				else
+				if(getClassLevel(aClass)<0)
+				{
+					setCurrentClass(aClass);
+					if(getClassLevel(aClass)>=0)
+						setClassLevel(aClass,level);
+				}
+				else
+				for(int i=0;i<numClasses();i++)
+				{
+					CharClass C=getMyClass(i);
+					if((C==aClass)&&(myLevels[i].intValue()!=level))
+					{
+						myLevels[i]=new Integer(level);
+						break;
+					}
+				}
+			}
 		}
-		else
-		if(myClasses.length==myLevels.length)
+	}
+	
+	public void setCurrentClass(CharClass aClass)
+	{
+		synchronized(this)
 		{
-			if((level<0)&&(myClasses.length>1))
+			if(((myClasses==null)||(myLevels==null))
+			||((numClasses()==1)&&(myClasses[0].ID().equals("StdCharClass"))))
+			{
+				myClasses=new CharClass[1];
+				myLevels=new Integer[1];
+				myClasses[0]=aClass;
+				myLevels[0]=new Integer(0);
+				return;
+			}
+		
+			int level=getClassLevel(aClass);
+			if(level<0)
 			{
 				CharClass[] oldClasses=myClasses;
 				Integer[] oldLevels=myLevels;
-				myClasses=new CharClass[oldClasses.length-1];
-				myLevels=new Integer[oldClasses.length-1];
-				for(int c=0;c<myClasses.length;c++)
+				myClasses=new CharClass[oldClasses.length+1];
+				myLevels=new Integer[oldClasses.length+1];
+				for(int c=0;c<oldClasses.length;c++)
 				{
 					myClasses[c]=oldClasses[c];
-					if(c<oldLevels.length)
-						myLevels[c]=oldLevels[c];
-					else
-						myLevels[c]=new Integer(0);
-				}
-			}
-			else
-			if(getClassLevel(classID)<0)
-			{
-				setCurrentClass(classID);
-				if(getClassLevel(classID)>=0)
-					setClassLevel(classID,level);
-			}
-			else
-			for(int i=0;i<numClasses();i++)
-			{
-				CharClass C=getMyClass(i);
-				if(C.ID().equals(classID))
-				{
-					myLevels[i]=new Integer(level);
-					break;
-				}
-			}
-			
-		}
-	}
-	
-	public void setCurrentClass(String classID)
-	{
-		if(((myClasses==null)||(myLevels==null))
-		||((numClasses()==1)&&(myClasses[0].ID().equals("StdCharClass"))))
-		{
-			myClasses=new CharClass[1];
-			myLevels=new Integer[1];
-			myClasses[0]=CMClass.getCharClass(classID);
-			myLevels[0]=new Integer(0);
-		}
-		
-		if(getClassLevel(classID)<0)
-		{
-			CharClass[] oldClasses=myClasses;
-			Integer[] oldLevels=myLevels;
-			myClasses=new CharClass[oldClasses.length+1];
-			myLevels=new Integer[oldClasses.length+1];
-			for(int c=0;c<oldClasses.length;c++)
-			{
-				myClasses[c]=oldClasses[c];
-				if(c<oldLevels.length)
 					myLevels[c]=oldLevels[c];
-				else
-					myLevels[c]=new Integer(0);
-				
-			}
-			myClasses[oldClasses.length]=CMClass.getCharClass(classID);
-			myLevels[oldClasses.length]=new Integer(0);
-		}
-		else
-		if(myClasses.length==myLevels.length)
-		{
-			if(myClasses[myClasses.length-1].ID().equals(classID))
-				return;
-			CharClass oldC=CMClass.getCharClass(classID);
-			Integer oldI=new Integer(getClassLevel(classID));
-			int startHere=-1;
-			for(int i=0;i<myClasses.length;i++)
-			{
-				CharClass C=getMyClass(i);
-				if(C.ID().equals(classID)){	startHere=i; break;}
-			}
-			if(startHere>=0)
-			{
-				for(int i=startHere;i<(myClasses.length-1);i++)
-				{
-					myClasses[i]=myClasses[i+1];
-					myLevels[i]=myLevels[i+1];
 				}
-				myClasses[myClasses.length-1]=oldC;
+				myClasses[oldClasses.length]=aClass;
+				myLevels[oldClasses.length]=new Integer(0);
+			}
+			else
+			{
+				if(myClasses[myClasses.length-1]==aClass)
+					return;
+				Integer oldI=new Integer(level);
+				boolean go=false;
+				for(int i=0;i<myClasses.length-1;i++)
+				{
+					CharClass C=getMyClass(i);
+					if((C==aClass)||(go))
+					{
+						go=true;
+						myClasses[i]=myClasses[i+1];
+						myLevels[i]=myLevels[i+1];
+					}
+				}
+				myClasses[myClasses.length-1]=aClass;
 				myLevels[myClasses.length-1]=oldI;
 			}
 		}
 	}
 	public CharClass getCurrentClass()
 	{
-		if(myClasses==null)
-			setCurrentClass("StdCharClass");
-		return myClasses[myClasses.length-1];
+		synchronized(this)
+		{
+			if(myClasses==null)
+				setCurrentClass(CMClass.getCharClass("StdCharClass"));
+			return myClasses[myClasses.length-1];
+		}
 	}
 	public Race getMyRace()
 	{

@@ -15,7 +15,7 @@ public class FrontDoor
 			CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
 			if((thisClass.playerSelectable())
 			   &&(thisClass.baseClass().equals(thisClass.ID()))
-			   &&thisClass.qualifiesForThisClass(mob))
+			   &&thisClass.qualifiesForThisClass(mob,true))
 				them.addElement(thisClass);
 		}
 		return them;
@@ -308,7 +308,7 @@ public class FrontDoor
 							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
 							if((thisClass.playerSelectable())
 							   &&(thisClass.baseClass().equals(thisClass.ID()))
-							   &&thisClass.qualifiesForThisClass(mob))
+							   &&thisClass.qualifiesForThisClass(mob,true))
 								if(thisClass.name().equalsIgnoreCase(ClassStr))
 								{
 									newClass=thisClass;
@@ -321,7 +321,7 @@ public class FrontDoor
 							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
 							if((thisClass.playerSelectable())
 							   &&(thisClass.baseClass().equals(thisClass.ID()))
-							   &&thisClass.qualifiesForThisClass(mob))
+							   &&thisClass.qualifiesForThisClass(mob,true))
 								if(thisClass.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
 								{
 									newClass=thisClass;
@@ -331,7 +331,7 @@ public class FrontDoor
 						if((newClass!=null)
 						&&(newClass.playerSelectable())
 						&&(newClass.baseClass().equals(newClass.ID()))
-						&&(newClass.qualifiesForThisClass(mob)))
+						&&(newClass.qualifiesForThisClass(mob,true)))
 						{
 							StringBuffer str=ExternalPlay.getHelpText(newClass.ID().toUpperCase());
 							if(str!=null) mob.tell("\n\r^N"+str.toString()+"\n\r");
@@ -343,8 +343,8 @@ public class FrontDoor
 					}
 				}
 				mob.baseEnvStats().setLevel(1);
-				mob.baseCharStats().setCurrentClass(newClass.ID());
-				mob.baseCharStats().setClassLevel(newClass.ID(),1);
+				mob.baseCharStats().setCurrentClass(newClass);
+				mob.baseCharStats().setClassLevel(newClass,1);
 				mob.baseEnvStats().setSensesMask(0);
 
 				mob.baseState().setHitPoints(20);

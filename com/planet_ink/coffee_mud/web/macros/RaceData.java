@@ -178,7 +178,7 @@ public class RaceData extends StdWebMacro
 					for(int c=0;c<CMClass.charClasses.size();c++)
 					{
 						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
-						if((C!=null)&&(C.playerSelectable())&&(C.qualifiesForThisClass(mob)))
+						if((C!=null)&&(C.playerSelectable())&&(C.qualifiesForThisClass(mob,true)))
 							str.append(C.name()+", ");
 					}
 				}

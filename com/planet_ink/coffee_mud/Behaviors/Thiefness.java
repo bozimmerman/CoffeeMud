@@ -21,8 +21,7 @@ public class Thiefness extends CombatAbilities
 		MOB mob=(MOB)forMe;
 		if(!mob.baseCharStats().getCurrentClass().ID().equals("Thief"))
 		{
-			mob.baseCharStats().setCurrentClass("Thief");
-			mob.baseCharStats().setClassLevel("Thief",mob.envStats().level());
+			mob.baseCharStats().setCurrentClass(CMClass.getCharClass("Thief"));
 			mob.recoverCharStats();
 		}
 		// now equip character...

@@ -31,9 +31,11 @@ public class Archon extends StdCharClass
 	}
 
 	public String statQualifications(){return "Must be granted by another Archon.";}
-	public boolean qualifiesForThisClass(MOB mob)
+	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		return true;
+		if(!quiet)
+			mob.tell("This class cannot be learned.");
+		return false;
 	}
 	public void outfit(MOB mob)
 	{
@@ -46,12 +48,22 @@ public class Archon extends StdCharClass
 		}
 	}
 	
+	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
+
+	{
+		// archons ALWAYS use borrowed abilities
+		super.startCharacter(mob, true, verifyOnly);
+		if(verifyOnly)
+			grantAbilities(mob,true);
+	}
+	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		for(int a=0;a<CMClass.abilities.size();a++)
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if(CMAble.qualifyingLevel(mob,A)<=mob.charStats().getClassLevel(ID()))
+			if((CMAble.qualifyingLevel(mob,A)>0)
+			&&(CMAble.qualifyingLevel(mob,A)<=mob.charStats().getClassLevel(this)))
 			{
 				Ability mine=mob.fetchAbility(A.ID());
 				if(mine!=null)

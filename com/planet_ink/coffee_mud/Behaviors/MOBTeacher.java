@@ -23,8 +23,8 @@ public class MOBTeacher extends CombatAbilities
 
 	private void setTheCharClass(MOB mob, String classID)
 	{
-		mob.baseCharStats().setCurrentClass(classID);
-		mob.baseCharStats().setClassLevel(classID,mob.envStats().level());
+		mob.baseCharStats().setCurrentClass(CMClass.getCharClass(classID));
+		mob.baseCharStats().setClassLevel(CMClass.getCharClass(classID),mob.envStats().level());
 	}
 	
 	private void ensureCharClass()

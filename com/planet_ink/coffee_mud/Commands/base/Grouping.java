@@ -104,7 +104,7 @@ public class Grouping
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
 		msg.append(Util.padRight(who.charStats().getMyRace().name(),8)+" ");
-		int classLevel=who.charStats().getClassLevel(who.charStats().getCurrentClass().ID());
+		int classLevel=who.charStats().getClassLevel(who.charStats().getCurrentClass());
 		String levelStr=null;
 		if(classLevel>=(who.envStats().level()-1))
 			levelStr=""+who.envStats().level();

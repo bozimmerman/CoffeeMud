@@ -38,14 +38,14 @@ public class Drowness extends StdBehavior
 		mob.baseCharStats().setStat(CharStats.CHARISMA,13 + Dice.roll(1,6,0));
 		if(mob.baseCharStats().getStat(CharStats.GENDER)=='M')
 		{
-			mob.baseCharStats().setCurrentClass("Fighter");
-			mob.baseCharStats().setClassLevel("Fighter",mob.envStats().level());
+			mob.baseCharStats().setCurrentClass(CMClass.getCharClass("Fighter"));
+			mob.recoverCharStats();
 			addMaleNaturalAbilities(mob);
 		}
 		else
 		{
-			mob.baseCharStats().setCurrentClass("Cleric");
-			mob.baseCharStats().setClassLevel("Cleric",mob.envStats().level());
+			mob.baseCharStats().setCurrentClass(CMClass.getCharClass("Cleric"));
+			mob.recoverCharStats();
 			addFemaleNaturalAbilities(mob);
 		}
 		mob.baseCharStats().setMyRace(CMClass.getRace("Elf"));

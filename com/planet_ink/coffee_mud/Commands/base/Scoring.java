@@ -165,12 +165,12 @@ public class Scoring
 		StringBuffer msg=new StringBuffer("");
 
 		String levelStr=null;
-		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass().ID());
+		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 		if(classLevel>=(mob.envStats().level()-1))
 			levelStr="level "+mob.envStats().level()+" "+mob.charStats().getCurrentClass().name();
 		else
 			levelStr=mob.charStats().getCurrentClass().name()+" "+classLevel+"/"+mob.envStats().level();
-		msg.append("You are ^H"+mob.name()+"^? the "+levelStr+"^?.\n\r");
+		msg.append("You are ^H"+mob.name()+"^? the ^H"+levelStr+"^?.\n\r");
 		if(classLevel<(mob.envStats().level()-1))
 		{
 			msg.append("You also have levels in: ");
@@ -185,7 +185,7 @@ public class Scoring
 							classList.append(", and");
 						else
 							classList.append(",");
-					classList.append(C.name()+" ("+mob.charStats().getClassLevel(C.ID())+") ");
+					classList.append(C.name()+" ("+mob.charStats().getClassLevel(C)+") ");
 				}
 			}
 			msg.append(classList.toString()+".\n\r");

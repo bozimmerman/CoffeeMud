@@ -264,16 +264,24 @@ public class Mage extends StdCharClass
 	}
 
 	public String statQualifications(){return "Intelligence 9+";}
-	public boolean qualifiesForThisClass(MOB mob)
+	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
+		{
+			if(!quiet)
+				mob.tell("You need at least a 9 Intelligence to become a Mage.");
 			return false;
+		}
 		if(!(mob.charStats().getMyRace().ID().equals("Human"))
 		&& !(mob.charStats().getMyRace().ID().equals("Elf"))
 		&& !(mob.charStats().getMyRace().ID().equals("Gnome"))
 		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
-			return(false);
-		return true;
+		{
+			if(!quiet)
+				mob.tell("You need to be Human, Elf, Gnome, or Half Elf to be a Mage.");
+			return false;
+		}
+		return super.qualifiesForThisClass(mob,quiet);
 	}
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
@@ -284,12 +292,12 @@ public class Mage extends StdCharClass
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
 			if((CMAble.qualifyingLevel(mob,A)>0)
-			&&(CMAble.qualifyingLevel(mob,A)==mob.charStats().getClassLevel(ID()))
+			&&(CMAble.qualifyingLevel(mob,A)==mob.charStats().getClassLevel(this))
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 				numTotal++;
 		}
 		Hashtable given=new Hashtable();
-		int level=mob.charStats().getClassLevel(ID());
+		int level=mob.charStats().getClassLevel(this);
 		int numSpells=3;
 		if(level<8)
 			numSpells=3;
@@ -306,7 +314,7 @@ public class Mage extends StdCharClass
 			{
 				Ability A=(Ability)CMClass.abilities.elementAt(a);
 				if((CMAble.qualifyingLevel(mob,A)>0)
-				&&(CMAble.qualifyingLevel(mob,A)==mob.charStats().getClassLevel(ID()))
+				&&(CMAble.qualifyingLevel(mob,A)==mob.charStats().getClassLevel(this))
 				&&(!CMAble.getDefaultGain(ID(),A.ID()))
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 				{

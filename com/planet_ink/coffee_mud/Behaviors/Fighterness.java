@@ -20,8 +20,7 @@ public class Fighterness extends CombatAbilities
 		MOB mob=(MOB)forMe;
 		if(!mob.baseCharStats().getCurrentClass().ID().equals("Fighter"))
 		{
-			mob.baseCharStats().setCurrentClass("Fighter");
-			mob.baseCharStats().setClassLevel("Fighter",mob.envStats().level());
+			mob.baseCharStats().setCurrentClass(CMClass.getCharClass("Fighter"));
 			mob.recoverCharStats();
 		}
 		// now equip character...

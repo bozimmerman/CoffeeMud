@@ -149,11 +149,15 @@ public class Cleric extends StdCharClass
 	}
 
 	public String statQualifications(){return "Wisdom 9+";}
-	public boolean qualifiesForThisClass(MOB mob)
+	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=8)
+		{
+			if(!quiet)
+				mob.tell("You need at least a 9 Wisdom to become a Cleric.");
 			return false;
-		return true;
+		}
+		return super.qualifiesForThisClass(mob,quiet);
 	}
 
 	public String otherLimitations(){return "Using prayers outside your alignment introduces failure chance.";}

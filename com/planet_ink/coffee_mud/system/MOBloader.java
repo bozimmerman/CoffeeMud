@@ -36,7 +36,7 @@ public class MOBloader
 				stats.setMyLevels(DBConnections.getRes(R,"CMLEVL"));
 				int level=0;
 				for(int i=0;i<mob.baseCharStats().numClasses();i++)
-					level+=stats.getClassLevel(mob.baseCharStats().getMyClass(i).ID());
+					level+=stats.getClassLevel(mob.baseCharStats().getMyClass(i));
 				mob.baseEnvStats().setLevel(level);
 				state.setMana(Util.s_int(DBConnections.getRes(R,"CMMANA")));
 				state.setMovement(Util.s_int(DBConnections.getRes(R,"CMMOVE")));

@@ -45,10 +45,10 @@ public interface CharStats extends Cloneable
 	public void setMyLevels(String levels);
 	public String getMyClassesStr();
 	public String getMyLevelsStr();
-	public void setCurrentClass(String classID);
-	public int getClassLevel(String classID);
-	public int combinedClassLevels();
-	public void setClassLevel(String classID, int level);
+	public void setCurrentClass(CharClass aClass);
+	public int getClassLevel(CharClass aClass);
+	public int combinedSubLevels();
+	public void setClassLevel(CharClass aClass, int level);
 	public Race getMyRace();
 	public void setMyRace(Race newVal);
 	

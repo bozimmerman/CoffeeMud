@@ -110,16 +110,24 @@ public class Druid extends StdCharClass
 	}
 
 	public String statQualifications(){return "Constitution 9+";}
-	public boolean qualifiesForThisClass(MOB mob)
+	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
+		{
+			if(!quiet)
+				mob.tell("You need at least a 9 Constitution to become a Druid.");
 			return false;
+		}
 		if(!(mob.charStats().getMyRace().ID().equals("Human"))
 		&& !(mob.charStats().getMyRace().ID().equals("Elf"))
 		&& !(mob.charStats().getMyRace().ID().equals("Dwarf"))
 		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
-			return(false);
-		return true;
+		{
+			if(!quiet)
+				mob.tell("You must be Human, Elf, Dwarf, or Half Elf to be a Druid");
+			return false;
+		}
+		return super.qualifiesForThisClass(mob,quiet);
 	}
 
 	public String weaponLimitations(){return "To avoid fumbling, must be Natural, Wooden, or Vegetation-based weapons.";}

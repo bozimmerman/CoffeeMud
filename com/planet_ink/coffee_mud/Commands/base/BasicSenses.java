@@ -172,6 +172,23 @@ public class BasicSenses
 
 		String abilityName=((String)commands.elementAt(0)).toUpperCase();
 		int abilityCode=mob.charStats().getCode(abilityName);
+		CharClass theClass=null;
+		if(abilityCode<0)
+		{
+			for(int c=0;c<CMClass.charClasses.size();c++)
+			{
+				CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+				if(C.name().toUpperCase().startsWith(abilityName.toUpperCase()))
+				{
+					if(C.qualifiesForThisClass(mob,false))
+					{
+						abilityCode=106;
+						theClass=C;
+					}
+					break;
+				}
+			}
+		}
 
 		if(abilityCode<0)
 		{
@@ -330,6 +347,13 @@ public class BasicSenses
 			mob.tell("You feel more educatable!");
 			mob.setTrains(mob.getTrains()-1);
 			mob.setPractices(mob.getPractices()+5);
+			break;
+		case 106:
+			mob.tell("You have undergone "+theClass.name()+" training!");
+			mob.setTrains(mob.getTrains()-1);
+			mob.baseCharStats().setCurrentClass(theClass);
+			mob.recoverCharStats();
+			mob.charStats().getCurrentClass().startCharacter(mob,false,true);
 			break;
 		}
 	}

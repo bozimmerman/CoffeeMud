@@ -91,17 +91,29 @@ public class Bard extends StdCharClass
 	}
 
 	public String statQualifications(){return "Charisma 9+, Dexterity 9+";}
-	public boolean qualifiesForThisClass(MOB mob)
+	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.CHARISMA) <= 8)
+		{
+			if(!quiet)
+				mob.tell("You need at least a 9 Charisma to become a Bard.");
 			return false;
+		}
 		if(mob.baseCharStats().getStat(CharStats.DEXTERITY) <= 8)
+		{
+			if(!quiet)
+				mob.tell("You need at least a 9 Dexterity to become a Bard.");
 			return false;
+		}
 		if(!(mob.charStats().getMyRace().ID().equals("Human"))
 		&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
-			return(false);
+		{
+			if(!quiet)
+				mob.tell("You must be Human or Half Elf to be a Bard");
+			return false;
+		}
 
-		return true;
+		return super.qualifiesForThisClass(mob,quiet);
 	}
 	public String weaponLimitations(){return new Thief().weaponLimitations();}
 	public String armorLimitations(){return new Thief().armorLimitations();}

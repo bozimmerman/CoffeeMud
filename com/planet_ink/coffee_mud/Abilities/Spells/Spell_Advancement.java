@@ -27,7 +27,7 @@ public class Spell_Advancement extends Spell
 	{
 		super.affectCharStats(affected,affectableStats);
 		CharClass C=affectableStats.getCurrentClass();
-		affectableStats.setClassLevel(C.ID(),affectableStats.getClassLevel(C.ID())+1);
+		affectableStats.setClassLevel(C,affectableStats.getClassLevel(C)+1);
 	}
 
 	public void unInvoke()

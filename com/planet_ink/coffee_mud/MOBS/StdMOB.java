@@ -283,9 +283,8 @@ public class StdMOB implements MOB
 	public CharStats charStats(){return charStats;}
 	public void recoverCharStats()
 	{
+		baseCharStats.setClassLevel(baseCharStats.getCurrentClass(),baseEnvStats().level()-baseCharStats().combinedSubLevels());
 		charStats=baseCharStats().cloneCharStats();
-		if(charStats.combinedClassLevels()==0)
-			charStats.setClassLevel(charStats.getCurrentClass().ID(),baseEnvStats().level());
 			
 		if(riding()!=null) riding().affectCharStats(this,charStats);
 		for(int a=0;a<numAffects();a++)
@@ -1322,7 +1321,7 @@ public class StdMOB implements MOB
 					if(!isMonster())
 					{
 						String levelStr=null;
-						int classLevel=charStats().getClassLevel(charStats().getCurrentClass().ID());
+						int classLevel=charStats().getClassLevel(charStats().getCurrentClass());
 						if(classLevel>=(envStats().level()-1))
 							levelStr="level "+envStats().level()+" "+charStats().getCurrentClass().name();
 						else
@@ -1472,7 +1471,7 @@ public class StdMOB implements MOB
 				if(!isMonster())
 				{
 					String levelStr=null;
-					int classLevel=charStats().getClassLevel(charStats().getCurrentClass().ID());
+					int classLevel=charStats().getClassLevel(charStats().getCurrentClass());
 					if(classLevel>=(envStats().level()-1))
 						levelStr="level "+envStats().level()+" "+charStats().getCurrentClass().name();
 					else
@@ -1700,7 +1699,7 @@ public class StdMOB implements MOB
 	public boolean isASysOp(Room of)
 	{
 		if(baseCharStats()==null) return false;
-		if(baseCharStats().getClassLevel("Archon")>=0)
+		if(baseCharStats().getCurrentClass().ID().equals("Archon"))
 			return true;
 		if(of==null) return false;
 		if(of.getArea()==null) return false;

@@ -26,8 +26,29 @@ public class StdCharClass implements CharClass
 		return false;
 	}
 
-	public boolean qualifiesForThisClass(MOB mob)
+	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
+		if((!mob.isMonster())&&(mob.baseEnvStats().level()>0))
+		{
+			if(mob.charStats().getCurrentClass().ID().equals(ID()))
+			{
+				if(!quiet)
+					mob.tell("But you are already a "+name()+"!");
+				return false;
+			}
+			if(!mob.charStats().getCurrentClass().baseClass().equals(baseClass()))
+			{
+				if(!quiet)
+					mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");
+				return false;
+			}
+			if(mob.getTrains()<1)
+			{
+				if(!quiet)
+					mob.tell("You need a training point to become a "+name()+".");
+				return false;
+			}
+		}
 		return true;
 	}
 	public String weaponLimitations(){return "";}
@@ -187,7 +208,7 @@ public class StdCharClass implements CharClass
 	{
 		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+adjuster);
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
-		mob.baseCharStats().setClassLevel(curClass.ID(),mob.baseCharStats().getClassLevel(curClass.ID())+adjuster);
+		mob.baseCharStats().setClassLevel(curClass,mob.baseCharStats().getClassLevel(curClass)+adjuster);
 		int gained=mob.getExperience()-mob.getExpNextLevel();
 		if(gained<50) gained=50;
 
@@ -199,7 +220,12 @@ public class StdCharClass implements CharClass
 
 		StringBuffer theNews=new StringBuffer("");
 
-		theNews.append("^HYou are now a level "+mob.baseCharStats().getClassLevel(curClass.ID())+" "+mob.charStats().getCurrentClass().name()+".^N\n\r");
+		int classLevel=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
+		if(classLevel>=(mob.baseEnvStats().level()-1))
+			levelStr="level "+mob.baseEnvStats().level()+" "+mob.baseCharStats().getCurrentClass().name();
+		else
+			levelStr=mob.baseCharStats().getCurrentClass().name()+" "+classLevel+"/"+mob.baseEnvStats().level();
+		theNews.append("^HYou are now a "+levelStr+".^N\n\r");
 
 		int newHitPointGain=getMinHitPointsLevel()+(int)Math.floor(Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()));
 		newHitPointGain+=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.CONSTITUTION),2.0))-4;
@@ -208,25 +234,25 @@ public class StdCharClass implements CharClass
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
 		if(mob.baseState().getHitPoints()<20) mob.baseState().setHitPoints(20);
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
-		theNews.append("^!You have gained ^H"+newHitPointGain+"^! hit " + 
+		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " + 
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
 		int mvGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0)*6);
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
-		theNews.append(mvGain+"^! move " + (mvGain!=1?"points":"point") + ", ^H");
+		theNews.append(mvGain+"^N move " + (mvGain!=1?"points":"point") + ", ^H");
 
 		int attGain=(int)Math.round(Util.div(mob.charStats().getStat(getAttackAttribute()),6.0))+getBonusAttackLevel();
 		attGain=attGain*adjuster;
 		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+attGain);
 		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
-		theNews.append(attGain+"^! attack " + (attGain!=1?"points":"point") + ", ^H");
+		theNews.append(attGain+"^N attack " + (attGain!=1?"points":"point") + ", ^H");
 
 		int manaGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.INTELLIGENCE),18.0)*getBonusManaLevel());
 		manaGain=manaGain*adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
-		theNews.append(manaGain+"^! " + (manaGain!=1?"points":"point") + " of mana,");
+		theNews.append(manaGain+"^N " + (manaGain!=1?"points":"point") + " of mana,");
 		if((adjuster<0)&&(((mob.baseEnvStats().level()+1)%getLevelsPerBonusDamage())==0))
 			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()-1);
 		else
@@ -248,8 +274,8 @@ public class StdCharClass implements CharClass
 		mob.baseCharStats().setStat(CharStats.DEXTERITY,11);
 		mob.baseCharStats().setStat(CharStats.CONSTITUTION,10);
 		mob.baseCharStats().setStat(CharStats.CHARISMA,10);
-		mob.baseCharStats().setCurrentClass(ID());
-		mob.baseCharStats().setClassLevel(ID(),1);
+		mob.baseCharStats().setCurrentClass(this);
+		mob.baseCharStats().setClassLevel(this,1);
 		mob.baseEnvStats().setArmor(50);
 		mob.baseEnvStats().setLevel(1);
 		mob.baseEnvStats().setSensesMask(0);
@@ -328,13 +354,13 @@ public class StdCharClass implements CharClass
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
-		theNews.append("^H" + practiceGain+"^! practice " +
+		theNews.append("^H" + practiceGain+"^N practice " +
 			( practiceGain != 1? "sessions" : "session" ) + ", ");
 
 		int trainGain=1;
 		if(trainGain<=0)trainGain=1;
 		mob.setTrains(mob.getTrains()+trainGain);
-		theNews.append("and ^H"+trainGain+"^! training point.\n\r^N");
+		theNews.append("and ^H"+trainGain+"^N training point.\n\r^N");
 
 		mob.tell(theNews.toString());
 		

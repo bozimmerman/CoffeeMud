@@ -22,8 +22,8 @@ public class Clericness extends CombatAbilities
 		MOB mob=(MOB)forMe;
 		if(!mob.baseCharStats().getCurrentClass().ID().equals("Cleric"))
 		{
-			mob.baseCharStats().setCurrentClass("Cleric");
-			mob.baseCharStats().setClassLevel("Cleric",mob.envStats().level());
+			mob.baseCharStats().setCurrentClass(CMClass.getCharClass("Cleric"));
+			mob.recoverCharStats();
 		}
 		// now equip character...
 		newCharacter(mob);

@@ -83,11 +83,15 @@ public class Thief extends StdCharClass
 	}
 
 	public String statQualifications(){return "Dexterity 9+";}
-	public boolean qualifiesForThisClass(MOB mob)
+	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)>8)
-			return true;
-		return false;
+		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
+		{
+			if(!quiet)
+				mob.tell("You need at least a 9 Dexterity to become a Thief.");
+			return false;
+		}
+		return super.qualifiesForThisClass(mob,quiet);
 	}
 
 	public void outfit(MOB mob)
@@ -197,6 +201,6 @@ public class Thief extends StdCharClass
 		int attArmor=((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1;
 		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
 		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
-		mob.tell("^!Your stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
+		mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
 }

@@ -147,7 +147,7 @@ public class Prop_EnterAdjuster extends Property
 		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+getVal(readableText,"int"));
 		val=getStr(readableText,"cla").toUpperCase();
 		if((val.length()>0)&&(CMClass.getCharClass(val)!=null))
-			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(val).ID());
+			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(val));
 		val=getStr(readableText,"rac").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{
@@ -157,7 +157,7 @@ public class Prop_EnterAdjuster extends Property
 		mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)+getVal(readableText,"str"));
 		mob.baseCharStats().setStat(CharStats.WISDOM,mob.baseCharStats().getStat(CharStats.WISDOM)+getVal(readableText,"wis"));
 		if(getVal(readableText,"lev")!=0)
-			mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass().ID(),mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass().ID())+getVal(readableText,"lev"));
+			mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())+getVal(readableText,"lev"));
 
 		mob.baseState().setHitPoints(mob.curState().getHitPoints()+getVal(readableText,"hit"));
 		mob.curState().setHunger(mob.curState().getHunger()+getVal(readableText,"hun"));

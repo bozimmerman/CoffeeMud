@@ -6,7 +6,7 @@ public interface CharClass
 	public String name();
 	public String baseClass();
 	public boolean playerSelectable();
-	public boolean qualifiesForThisClass(MOB mob);
+	public boolean qualifiesForThisClass(MOB mob, boolean quiet);
 
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly);
 	public void gainExperience(MOB mob, MOB victim, String homage, int amount);

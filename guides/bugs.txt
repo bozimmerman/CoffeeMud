@@ -15,3 +15,4 @@ leroy seems to have forgotten mining, digging, sculpting and masonry
 Prompt help does not list X : xp to next level
 check out www.nitestalker.net
 in trails on web site, old thalos 2n 3n 2n should be 3e not 3n
+** reverse colors broken in sign-on
