@@ -400,124 +400,106 @@ public class MOBloader
 		DBUpdateItems(mob);
 		DBUpdateAbilities(mob);
 	}
-	private static void DBUpdateContents(MOB mob)
+	private static void DBUpdateContents(MOB mob, Vector V)
 	{
-		DBConnection D=null;
-		String str=null;
-		try
+		for(int i=0;i<mob.inventorySize();i++)
 		{
-			for(int i=0;i<mob.inventorySize();i++)
+			Item thisItem=mob.fetchInventory(i);
+			if((thisItem!=null)
+			&&(thisItem.savable()))
 			{
-				Item thisItem=mob.fetchInventory(i);
-				if((thisItem!=null)
-				&&(thisItem.savable()))
-				{
-					D=DBConnector.DBFetch();
-					str="INSERT INTO CMCHIT ("
-					+"CMUSERID, "
-					+"CMITNM, "
-					+"CMITID, "
-					+"CMITTX, "
-					+"CMITLO, "
-					+"CMITWO, "
-					+"CMITUR, "
-					+"CMITLV, "
-					+"CMITAB, "
-					+"CMHEIT"
-					+") values ("
-					+"'"+mob.ID()+"',"
-					+"'"+(thisItem)+"',"
-					+"'"+thisItem.ID()+"',"
-					+"'"+thisItem.text()+" ',"
-					+"'"+((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"
-					+thisItem.rawWornCode()+","
-					+thisItem.usesRemaining()+","
-					+thisItem.baseEnvStats().level()+","
-					+thisItem.baseEnvStats().ability()+","
-					+thisItem.baseEnvStats().height()+")";
-					D.update(str);
-					DBConnector.DBDone(D);
-				}
+				String
+				str="INSERT INTO CMCHIT ("
+				+"CMUSERID, "
+				+"CMITNM, "
+				+"CMITID, "
+				+"CMITTX, "
+				+"CMITLO, "
+				+"CMITWO, "
+				+"CMITUR, "
+				+"CMITLV, "
+				+"CMITAB, "
+				+"CMHEIT"
+				+") values ("
+				+"'"+mob.ID()+"',"
+				+"'"+(thisItem)+"',"
+				+"'"+thisItem.ID()+"',"
+				+"'"+thisItem.text()+" ',"
+				+"'"+((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"
+				+thisItem.rawWornCode()+","
+				+thisItem.usesRemaining()+","
+				+thisItem.baseEnvStats().level()+","
+				+thisItem.baseEnvStats().ability()+","
+				+thisItem.baseEnvStats().height()+")";
+				V.addElement(str);
 			}
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("MOB","UpdateItems"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
 	}
 
 	public static void DBUpdateItems(MOB mob)
 	{
 		if(mob.ID().length()==0) return;
-		DBConnection D=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.ID()+"'");
-			if(DBConnector.DBConfirmDeletions)
-			{
-				ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+mob.ID()+"'");
-				if((R!=null)&&(R.next()))
-					Log.errOut("DBUpdateItems","Delete Failed.");
-			}
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("MOB","UpdateItems"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		Vector V=new Vector();
+		V.addElement("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.ID()+"'");
 		if(mob.inventorySize()>0)
-			DBUpdateContents(mob);
+			DBUpdateContents(mob,V);
+		DBConnection D=DBConnector.DBFetch();
+		for(int v=0;v<V.size();v++)
+		{
+			String updateString=(String)V.elementAt(v);
+			try
+			{
+				D.update(updateString);
+			}
+			catch(SQLException sqle)
+			{
+				Log.errOut("MOB","UpdateItems"+sqle);
+			}
+		}
+		DBConnector.DBDone(D);
 	}
 
 	public static void DBUpdateFollowers(MOB mob)
 	{
 		if(mob.ID().length()==0) return;
-		DBConnection D=null;
-		String str=null;
-		try
+		Vector V=new Vector();
+		DBConnection D=DBConnector.DBFetch();
+		V.addElement("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.ID()+"'");
+		for(int f=0;f<mob.numFollowers();f++)
 		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.ID()+"'");
-			if(DBConnector.DBConfirmDeletions)
+			MOB thisMOB=mob.fetchFollower(f);
+			if((thisMOB!=null)&&(thisMOB.isMonster()))
 			{
-				ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+mob.ID()+"'");
-				if((R!=null)&&(R.next()))
-					Log.errOut("DBUpdateFollowers","Delete Failed.");
-			}
-			DBConnector.DBDone(D);
-			for(int f=0;f<mob.numFollowers();f++)
-			{
-				MOB thisMOB=mob.fetchFollower(f);
-				if((thisMOB!=null)&&(thisMOB.isMonster()))
-				{
-					D=DBConnector.DBFetch();
-					str="INSERT INTO CMCHFO ("
-					+"CMUSERID, "
-					+"CMFONM, "
-					+"CMFOID, "
-					+"CMFOTX, "
-					+"CMFOLV, "
-					+"CMFOAB"
-					+") values ("
-					+"'"+mob.ID()+"',"
-					+f+","
-					+"'"+CMClass.className(thisMOB)+"',"
-					+"'"+thisMOB.text()+" ',"
-					+thisMOB.baseEnvStats().level()+","
-					+thisMOB.baseEnvStats().ability()
-					+")";
-					D.update(str);
-					DBConnector.DBDone(D);
-				}
+				String
+				str="INSERT INTO CMCHFO ("
+				+"CMUSERID, "
+				+"CMFONM, "
+				+"CMFOID, "
+				+"CMFOTX, "
+				+"CMFOLV, "
+				+"CMFOAB"
+				+") values ("
+				+"'"+mob.ID()+"',"
+				+f+","
+				+"'"+CMClass.className(thisMOB)+"',"
+				+"'"+thisMOB.text()+" ',"
+				+thisMOB.baseEnvStats().level()+","
+				+thisMOB.baseEnvStats().ability()
+				+")";
+				V.addElement(str);
 			}
 		}
-		catch(SQLException sqle)
+		for(int v=0;v<V.size();v++)
 		{
-			Log.errOut("MOB","UpdateFollowers"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
+			String updateString=(String)V.elementAt(v);
+			try
+			{
+				D.update(updateString);
+			}
+			catch(SQLException sqle)
+			{
+				Log.errOut("MOB","UpdateFollowers"+sqle);
+			}
 		}
 	}
 
@@ -529,12 +511,6 @@ public class MOBloader
 		{
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.ID()+"'");
-			if(DBConnector.DBConfirmDeletions)
-			{
-				ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+mob.ID()+"'");
-				if((R!=null)&&(R.next()))
-					Log.errOut("DBDeleteMOB","Delete Failed.");
-			}
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -573,52 +549,46 @@ public class MOBloader
 	public static void DBUpdateAbilities(MOB mob)
 	{
 		if(mob.ID().length()==0) return;
-		DBConnection D=null;
-		String str=null;
-		try
+		DBConnection D=DBConnector.DBFetch();
+		Vector V=new Vector();
+		V.addElement("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.ID()+"'");
+		for(int a=0;a<mob.numAbilities();a++)
 		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.ID()+"'");
-			if(DBConnector.DBConfirmDeletions)
+			Ability thisAbility=mob.fetchAbility(a);
+			if((thisAbility!=null)&&(!thisAbility.isBorrowed(mob)))
 			{
-				ResultSet R=D.query("SELECT * FROM CMCHAB WHERE CMUSERID='"+mob.ID()+"'");
-				if((R!=null)&&(R.next()))
-					Log.errOut("DBUpdateAbilitiess","Delete Failed.");
-			}
-			DBConnector.DBDone(D);
-			for(int a=0;a<mob.numAbilities();a++)
-			{
-				Ability thisAbility=mob.fetchAbility(a);
-				if((thisAbility!=null)&&(!thisAbility.isBorrowed(mob)))
-				{
-					D=DBConnector.DBFetch();
-					str="INSERT INTO CMCHAB ("
-					+"CMUSERID, "
-					+"CMABID, "
-					+"CMABLVL, "
-					+"CMABAB, "
-					+"CMABUR,"
-					+"CMABPF,"
-					+"CMABTX"
-					+") values ("
-					+"'"+mob.ID()+"',"
-					+"'"+thisAbility.ID()+"',"
-					+thisAbility.baseEnvStats().level()+","
-					+thisAbility.baseEnvStats().ability()+","
-					+thisAbility.usesRemaining()+","
-					+thisAbility.profficiency()+",'"
-					+thisAbility.text()+"'"
-					+")";
-					D.update(str);
-					DBConnector.DBDone(D);
-				}
+				String
+				str="INSERT INTO CMCHAB ("
+				+"CMUSERID, "
+				+"CMABID, "
+				+"CMABLVL, "
+				+"CMABAB, "
+				+"CMABUR,"
+				+"CMABPF,"
+				+"CMABTX"
+				+") values ("
+				+"'"+mob.ID()+"',"
+				+"'"+thisAbility.ID()+"',"
+				+thisAbility.baseEnvStats().level()+","
+				+thisAbility.baseEnvStats().ability()+","
+				+thisAbility.usesRemaining()+","
+				+thisAbility.profficiency()+",'"
+				+thisAbility.text()+"'"
+				+")";
+				V.addElement(str);
 			}
 		}
-		catch(SQLException sqle)
+		for(int v=0;v<V.size();v++)
 		{
-			Log.errOut("MOB",str);
-			Log.errOut("MOB","UpdateAbilities"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
+			String updateString=(String)V.elementAt(v);
+			try
+			{
+				D.update(updateString);
+			}
+			catch(SQLException sqle)
+			{
+				Log.errOut("MOB","UpdateAbilities"+sqle);
+			}
 		}
 	}
 

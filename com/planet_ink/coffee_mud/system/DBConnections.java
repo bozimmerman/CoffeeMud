@@ -105,6 +105,43 @@ public class DBConnections
 	}
 	
 	/** 
+	 * 
+	 * <br><br><b>Usage: updateGroup(V);</b> 
+	 * @param Vector of strings to update with
+	 * @return int	the responseCode, or -1
+	 */
+	public int updateGroup(Vector V)
+	{
+		DBConnection DBToUse=null;
+		int Result=-1;
+		try
+		{
+			DBToUse=DBFetch();
+			for(int v=0;v<V.size();v++)
+			{
+				String updateString=(String)V.elementAt(v);
+				try
+				{
+					Result=DBToUse.update(updateString);
+				}
+				catch(SQLException sqle)
+				{}
+				if(Result<0)
+				{
+					Log.errOut("DBConnections",""+DBToUse.getLastError());
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			Log.errOut("DBConnections",""+e);
+		}
+		if(DBToUse!=null)
+			DBDone(DBToUse);
+		return Result;
+	}
+	
+	/** 
 	 * Should close all Connections, repopulate Connections
 	 * with fresh new database connections.
 	 * 

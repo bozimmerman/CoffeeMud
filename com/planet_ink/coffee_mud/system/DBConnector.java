@@ -6,7 +6,6 @@ import java.sql.SQLException;
 public class DBConnector
 {
 	private static DBConnections DBs=null;
-	public static boolean DBConfirmDeletions=false;
 	
 	public static void connect (String NEWDBClass,
 					  		    String NEWDBService, 

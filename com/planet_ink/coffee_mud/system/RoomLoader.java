@@ -308,12 +308,6 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMROIT WHERE CMROID='"+room.ID()+"'");
-			if(DBConnector.DBConfirmDeletions)
-			{
-				ResultSet R=D.query("SELECT * FROM CMROIT WHERE CMROID='"+room.ID()+"'");
-				if((R!=null)&&(R.next()))
-					Log.errOut("DBUpdateItems","Delete Failed.");
-			}
 			DBConnector.DBDone(D);
 			DBUpdateContents(room);
 		}
@@ -333,12 +327,6 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMROEX WHERE CMROID='"+room.ID()+"'");
-			if(DBConnector.DBConfirmDeletions)
-			{
-				ResultSet R=D.query("SELECT * FROM CMROEX WHERE CMROID='"+room.ID()+"'");
-				if((R!=null)&&(R.next()))
-					Log.errOut("DBUpdateExits","Delete Failed.");
-			}
 			DBConnector.DBDone(D);
 			for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
 			{
@@ -381,12 +369,6 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMROCH WHERE CMROID='"+room.ID()+"'");
-			if(DBConnector.DBConfirmDeletions)
-			{
-				ResultSet R=D.query("SELECT * FROM CMROCH WHERE CMROID='"+room.ID()+"'");
-				if((R!=null)&&(R.next()))
-					Log.errOut("DBUpdateMOBs","Delete Failed.");
-			}
 			DBConnector.DBDone(D);
 			for(int m=0;m<room.numInhabitants();m++)
 			{
@@ -587,12 +569,6 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMAREA WHERE CMAREA='"+A.name()+"'");
-			if(DBConnector.DBConfirmDeletions)
-			{
-				ResultSet R=D.query("SELECT * FROM CMAREA WHERE CMAREA='"+A.name()+"'");
-				if((R!=null)&&(R.next()))
-					Log.errOut("DBDeleteArea","Delete Failed.");
-			}
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -673,12 +649,6 @@ public class RoomLoader
 
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMROOM WHERE CMROID='"+room.ID()+"'");
-			if(DBConnector.DBConfirmDeletions)
-			{
-				ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+room.ID()+"'");
-				if((R!=null)&&(R.next()))
-					Log.errOut("DBDeleteRoom","Delete Failed.");
-			}
 			DBConnector.DBDone(D);
 
 		}

@@ -20,7 +20,7 @@ public class MUD extends Thread implements Host
 	public String execExternalCommand=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)3.0;
-	public static final float HOST_VERSION_MINOR=(float)5.3;
+	public static final float HOST_VERSION_MINOR=(float)5.4;
 	
 	private boolean acceptConnections=false;
 	private String offlineReason=new String("UNKNOWN");
@@ -201,7 +201,6 @@ public class MUD extends Thread implements Host
 				Log.errOut("MUD","Unable to start web server - loadWebCommonPropPage() failed");
 		}
 
-		DBConnector.DBConfirmDeletions=page.getBoolean("DBCONFIRMDELETIONS");
 		offlineReason=new String("Booting: connecting to database");
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();
@@ -214,8 +213,6 @@ public class MUD extends Thread implements Host
 			//fatalStartupError(3);
 			//return false;
 		}
-		if(DBConnector.DBConfirmDeletions)
-			Log.sysOut("MUD","DB Deletions will be confirmed.");
 		
 		CommandProcessor commandProcessor=new CommandProcessor();
 		ExternalPlay.setPlayer(new ExternalCommands(commandProcessor), new ExternalSystems());
