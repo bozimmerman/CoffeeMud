@@ -402,7 +402,7 @@ public interface EnvResource extends Item
 	"SPIDERSTEEL", // 158
 	"ASH", // 159
 	"PERFUME", // 160
-	"ATLANTEANSTEEL",//161
+	"ATLANTITE",//161
 	};
 	
 	public final static int DATA_CODE=0;
