@@ -1,4 +1,4 @@
-SET JAVACPATH=D:\java\jdk1.4.0\bin\javac
+SET JAVACPATH=C:\java\jdk1.4.0\bin\javac
 
 %JAVACPATH% com\planet_ink\coffee_mud\Abilities\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\Abilities\Archon\*.java

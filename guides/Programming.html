@@ -844,11 +844,11 @@ resets on all items in the room.</FONT> </P>
 section, we saw how items are given to mobs by simply calling the addInventory() 
 method, so this will not be repeated. Regardless of where or how the item is 
 created, however, it is destroyed the same way. With a simple call to the 
-destroy() method on the item. Here is an example of destroying all the items 
-in a room. </FONT></P>
+destroy() method on the item. Here is an example of destroying all the items in 
+a room. </FONT></P>
 <P><FONT size=4></FONT></P><PRE>	
 Room room=CMMap.getRoom("Midgaard#3504");
-for(int i=0;i&lt;room.numItems();i++)
+for(int i=room.numItems()-1;i&gt;=0;i--)
 {
 	Item item=room.fetchItem(i);
 	item.destroy();
@@ -1764,13 +1764,13 @@ you do not wish any restrictions on wearing.</FONT></P><pre>	private static fina
 bodyMask method defines and returns an array of integers which defines the types 
 and number of particular body parts normally retained by the race.&nbsp; Each 
 position in the array is defined by the equates BODY_ in the Race 
-interface.&nbsp; These equates are (starting from 0): <FONT size=3>BODY_ANTENEA, 
-BODY_EYE, BODY_EAR, BODY_HEAD, BODY_NECK, BODY_ARM, BODY_HAND, BODY_TORSO, 
-BODY_LEG, BODY_FOOT, BODY_NOSE, BODY_GILL, BODY_MOUTH, BODY_WAIST, BODY_TAIL, 
-BODY_WING</FONT>. Remember that these can be found in the Race interface for you 
-to reference.&nbsp; In the above example, we find no antenea, 2 eyes, 2 ears, a 
-head, neck, no arms or hands, a torso, 4 legs, 4 feet, anose, but&nbsp;no gill, 
-and then a mouth, waist, tail, and 2 wings.</FONT></P><pre>public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+interface.&nbsp; These equates are (starting from 0): <FONT size=3>BODY_ANTENEA, BODY_EYE, BODY_EAR, BODY_HEAD, BODY_NECK, 
+BODY_ARM, BODY_HAND, BODY_TORSO, BODY_LEG, BODY_FOOT, BODY_NOSE, BODY_GILL, 
+BODY_MOUTH, BODY_WAIST, BODY_TAIL, BODY_WING</FONT>. Remember that these can be 
+found in the Race interface for you to reference.&nbsp; In the above example, we 
+find no antenea, 2 eyes, 2 ears, a head, neck, no arms or hands, a torso, 4 
+legs, 4 feet, anose, but&nbsp;no gill, and then a mouth, waist, tail, and 2 
+wings.</FONT></P><pre>public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 {
 	super.affectEnvStats(affected,affectableStats);
 	affectableStats.setSensesMask(affectableStats.sensesMask()
