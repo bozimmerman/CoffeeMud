@@ -10,6 +10,7 @@ public class Druid extends StdCharClass
 	public String ID(){return "Druid";}
 	public String name(){return "Druid";}
 	public String baseClass(){return ID();}
+	public int getMinHitPointsLevel(){return 5;}
 	public int getMaxHitPointsLevel(){return 25;}
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusManaLevel(){return 15;}
@@ -17,7 +18,6 @@ public class Druid extends StdCharClass
 	public int getAttackAttribute(){return CharStats.CONSTITUTION;}
 	public int getLevelsPerBonusDamage(){ return 6;}
 	private static boolean abilitiesLoaded=false;
-	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	
 	public Druid()

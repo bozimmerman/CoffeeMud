@@ -19,7 +19,6 @@ public class Mage extends StdCharClass
 	public int getPracsFirstLevel(){return 6;}
 	public int getTrainsFirstLevel(){return 3;}
 	private static boolean abilitiesLoaded=false;
-	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public Mage()
 	{

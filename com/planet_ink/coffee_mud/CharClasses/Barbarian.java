@@ -10,7 +10,8 @@ public class Barbarian extends StdCharClass
 	public String ID(){return "Barbarian";}
 	public String name(){return "Barbarian";}
 	public String baseClass(){return "Fighter";}
-	public int getMaxHitPointsLevel(){return 26;}
+	public int getMinHitPointsLevel(){return 3;}
+	public int getMaxHitPointsLevel(){return 25;}
 	public int getBonusPracLevel(){return -1;}
 	public int getBonusManaLevel(){return 8;}
 	public int getBonusAttackLevel(){return 2;}

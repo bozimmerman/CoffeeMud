@@ -17,7 +17,7 @@ public class Bard extends StdCharClass
 	public int getAttackAttribute(){return CharStats.DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 4;}
 	private static boolean abilitiesLoaded=false;
-	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
+	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	
 	public Bard()
 	{
@@ -116,10 +116,9 @@ public class Bard extends StdCharClass
 
 		return super.qualifiesForThisClass(mob,quiet);
 	}
-	public String weaponLimitations(){return new Thief().weaponLimitations();}
-	public String armorLimitations(){return new Thief().armorLimitations();}
-	public String otherLimitations(){return new Thief().otherLimitations();}
-
+	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
+	public String armorLimitations(){return "Must wear non-metal armor to avoid skill failure.";}
+	public String otherLimitations(){return "";}
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
@@ -136,7 +135,7 @@ public class Bard extends StdCharClass
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if(((affect.sourceMajor()&Affect.MASK_DELICATE)>0)
-			&&(!new Thief().armorCheck(myChar)))
+			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 				{

@@ -1389,7 +1389,255 @@ color=blue>Behaviors:</FONT></STRONG></FONT></P>
 <IMG src="images/cloak.jpg">
 </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT size=5 color=purple><STRONG>Character Classes:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code a Character Class.</FONT></P>
+<P align=left><FONT size=4>A Character Class, in CoffeeMud, 
+is the carreer being followed by the player.&nbsp;&nbsp; Armor and weapon 
+choices, skill and spell access, as well as score advancements all depend on the 
+Character Class chosen by the player.&nbsp; Thankfully,&nbsp;despite all this 
+weighty responsibility, Character Classes are not difficult to code.&nbsp; Let's 
+take a look at a simple one here:</FONT></P>
+<pre>
+package com.planet_ink.coffee_mud.CharClasses;
+
+import java.util.*;
+import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+
+public class NormalGuy extends StdCharClass
+{
+</pre>
+<P align=left><FONT size=4>Our Normal Guy character class will define all 
+of the basic elements of a filled-out character class.&nbsp;</FONT></P>
+<pre>
+	public String ID(){return "NormalGuy";}
+	public String name(){return "Normal Guy";}
+	public String baseClass(){return ID();}
+</pre>
+<P align=left><FONT size=4>The first methods above are the unique Character 
+Class ID and the displayable Name of the class.  The baseClass method takes 
+a bit of explaining.  If your CoffeeMud system is using the default SubClassing
+system, the baseClass will define which classes may be switched between by 
+a player, as well as which classes are available to choose from when a new 
+player is created.  Fighter, Monk, Paladin, Ranger, and Barbarian, for instance,
+all have a baseClass of "Fighter".  This means that the Fighter class is one of
+the classes which may be chosen by a new player (since it's ID() and baseClass() 
+are the same), and that any of the baseClass() "Fighter" classes may switch
+amongst each other.  If your CoffeeMud system is using the multi-class or single
+classing system, this method is irrelevant.</FONT></P>
+<pre>
+	public int getMinHitPointsLevel(){return 1;}
+	public int getMaxHitPointsLevel(){return 10;}
+</pre>
+<P align=left><FONT size=4>Next come the hit point ranges.&nbsp;&nbsp;When a player with this class 
+gains a level,&nbsp;a random roll between the min and max hit point values will 
+determine the bonus hit points, and any Constitution bonuses will be added 
+thereafter.</FONT></P>
+<pre>
+	public int getPracsFirstLevel(){return 3;}
+	public int getTrainsFirstLevel(){return 1;}
+	public int getBonusPracLevel(){return 0;}
+</pre>
+<P align=left><FONT size=4>The next two methods define the starting Training and Practice 
+points for this Character Class.  The BonusPracLevel method tells us how many 
+bonus practices (above the number determined the WISDOM/4 formula) which the 
+player will receive every level.</FONT></P>
+<pre>
+	public int getAttackAttribute(){return CharStats.STRENGTH;}
+	public int getBonusAttackLevel(){return 1;}
+</pre>
+<P align=left><FONT size=4>And here is an method 
+defining which of the 6 primary Character Attributes (Strength, Intelligence, 
+Wisdom, Dexterity, Constitution, or Charisma) are used to determine any attack 
+bonuses whenever the player gains a level.&nbsp; Usually this is 
+Strength.  The number of bonus attack points received by a player when a level
+is gained is determined by dividing the players score in this attribute by 6,
+and then adding the value returned by getBonusAttackLevel().
+</FONT></P>
+<pre>
+	public int getBonusManaLevel(){return 5;}
+</pre>
+<P align=left><FONT size=4>This method determines how much mana a player receives
+when they gain a level in this class.  The formula is determined by dividing the players
+intelligence score by 18, and then multiplying that result by this value.
+</FONT></P>
+<pre>
+	public int getLevelsPerBonusDamage(){ return 25;}
+</pre>
+<P align=left><FONT size=4>This score determines how many levels a player must
+make, in this class, before they will gain a bonus point of damage to all
+damage rolls.
+</FONT></P>
+<pre>
+	public int getMovementMultiplier(){return 2;}
+</pre>
+<P align=left><FONT size=4>And lastly for our scores, this method will determine
+how many movement points a player receives when they gain a level.  The formula
+is determined by dividing the player's strength score by 9, and multiplying the
+result by this value.
+</FONT></P>
+<pre>
+	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
+</pre>
+<P align=left><FONT size=4>The CharClass interface defines a method called "armorCheck"
+which returns true if the player is in compliance with armor requirements.  This
+method does its work by checking the allowedArmorLevel method.  This method returns
+an equate defined in the CharClass interface which may specify ANY armor, CLOTH level,
+armor, LEATHER (or worse) armor, or NON-METAL armor.
+</FONT></P>
+<pre>
+	private static boolean abilitiesLoaded=false;
+	public NormalGuy()
+	{
+		super();
+		maxStat[CharStats.CHARISMA]=10;
+		if(!abilitiesLoaded)
+		{
+			abilitiesLoaded=true;
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",0,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",0,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",0,false);
+		}
+	}
+</pre>
+<P align=left><FONT size=4>And now we come to our constructer!  The Constructer
+for every class has a couple of important parts.  The first is to define any special 
+maximums for the primary attributes.  This is done by setting the appropriate
+value in the maxStat[] array for the class.  By default, 18 is the maximum score
+for all primary attributes.</FONT><P>
+<P align=left><FONT size=4>
+The second part establishes the qualifying and bonus skills for the class.  This is
+done through repeated calls to the CMAble.addCharAbilityMapping method.  The
+first parameter of the method is the ID() value of the Character Class itself, 
+followed by the level at which this class gains or qualifies for the skill.  Next is
+the ID() value of the Ability to allow this class to qualify for, followed by 
+the default profficiency which this class displays in the skill (typically 0).  
+The last parameter establishes whether the player will receive this skill 
+automatically when he or she gains the appropriate level, or whether they merely
+qualify for the skill.
+</FONT></P>
+<pre>
+
+	public boolean playerSelectable()
+	{
+		return true;
+	}
+</pre>
+<P align=left><FONT size=4>
+You should always have this method in your Character Class, and it should always
+return true.  Otherwise your players will never have access to the Class.
+</FONT></P>
+<pre>
+	public String statQualifications(){return "Warm body, breathe.";}
+	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
+	{
+		if(!Sense.canBreathe(mob))
+		{
+			if(!quiet)
+				mob.tell("You need to be breathing to be a normal guy.");
+			return false;
+		}
+		return super.qualifiesForThisClass(mob,quiet);
+	}
+</pre>
+<P align=left><FONT size=4>
+The next method is a display string, for the benefit of some of the web macros,
+which describes in plain english any attribute, or other numeric qualifications to
+become this class.  The qualifiesForThisClass method would actually check and enforce the
+qualifications described by statQualifications.  In our example above, there
+are no stat qualifications, only a check to see if the idiot is still breathing.
+Also note that a quiet boolean exists to allow qualifications to be checked 
+without sending any messages to the player in question.
+</FONT></P>
+<pre>
+
+	public String otherBonuses(){return "Receives a mortgage, but no home.";}
+</pre>
+<P align=left><FONT size=4>
+The next method, like statQualifications above, is for the benefit of the web macros.
+It describes any special bonuses received due to being this class.
+</FONT></P>
+<pre>
+	public void outfit(MOB mob)
+	{
+		Weapon w=(Weapon)CMClass.getWeapon("a mortgage");
+		if(mob.fetchInventory(w.ID())==null)
+			mob.addInventory(w);
+	}
+</pre>
+<P align=left><FONT size=4>
+The outfit method should give the character any Class-Specific equipment they
+may need.  Clothing and so forth is actually covered by Races.
+</FONT></P>
+<pre>
+	public String weaponLimitations(){return "Weapons?  What for?";}
+	public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
+	public boolean okAffect(MOB myChar, Affect affect)
+	{
+		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		{
+			if((affect.tool()!=null)
+			&&(affect.tool() instanceof Ability)
+			&&(myChar.isMine(affect.tool()))
+			&&(!armorCheck(myChar)))
+			{
+				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
+				{
+					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
+					return false;
+				}
+			}
+			else
+			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			&&(affect.tool()!=null)
+			&&(affect.tool() instanceof Weapon))
+			{
+				int classification=((Weapon)affect.tool()).weaponClassification();
+				switch(classification)
+				{
+				case Weapon.CLASS_SWORD:
+				case Weapon.CLASS_RANGED:
+				case Weapon.CLASS_THROWN:
+				case Weapon.CLASS_NATURAL:
+				case Weapon.CLASS_DAGGER:
+					break;
+				default:
+					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
+					{
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						return false;
+					}
+					break;
+				}
+			}
+		}
+		return super.okAffect(myChar,affect);
+	}
+}
+</pre>
+<P align=left><FONT size=4>
+And lastly, just as I'm sure you were wondering how useful those three Digressions above
+woudl really be, we see them in active use.  Most classes contain methods such as these
+to describe and enforce armor and weapon restrictions for the class.  The first
+two methods are, like the others above, web macro descriptions of the facts.  The real
+work is done in the okAffect method which we discussed in the first Digression.  In it,
+we see messages messages containing the players Ability objects as tools 
+and messages for weapon attacks being intercepted.  In the for case, an armorCheck
+method call is made, as well as a last-ditch check of the ability scores, before
+the message is cancelled.  In the latter case, the weapon being wielded by the
+player during their attack is examined to see if it is allowed by the class before
+a fumble roll is made.
+</FONT></P>
+<P align=left><FONT size=4>
+And not least, although we won't go into it in detail here, there are two other methods 
+which may be of use for the advanced Character Class programmer.  They are the 
+level and unLevel methods.  These methods are called when a player gains or loses
+(respectively) a level in the class.  If there are any extra skills or bonus
+scores the player may wish to gain and lose with levels, that would be the place for such code.
+Also, in some cases (Mages and Clerics come to mind), the gaining of qualifying
+skills may be somewhat complex.  In those cases, overriding the gainAbilities
+method may be in order.  Check the Mage and Cleric classes for more information.
+</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>

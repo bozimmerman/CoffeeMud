@@ -42,101 +42,101 @@ public class Cleric extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
 			
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CauseLight",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CauseLight",false);
 			
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
 			
-			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Bury",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Desecrate",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Bury",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Desecrate",false);
 			
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtGood",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
 			
-			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CreateFood",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Deafness",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CreateFood",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Deafness",false);
 			
-			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CureSerious",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CreateWater",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CauseSerious",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CureSerious",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CreateWater",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CauseSerious",false);
 			
-			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",true);
-			//CMAble.addCharAbilityMapping(ID(),7,"Prayer_SenseAlignment",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Curse",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
+			//CMAble.addCharAbilityMapping(ID(),7,"Prayer_SenseAlignment",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Curse",false);
 			
-			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Freedom",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Paralyze",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Freedom",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Paralyze",false);
 			
-			CMAble.addCharAbilityMapping(ID(),9,"Prayer_DispelEvil",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Prayer_DispelGood",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Prayer_DispelEvil",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Prayer_DispelGood",false);
 			
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
 			
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_SenseHidden",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Poison",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Prayer_SenseHidden",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",false);
 			
-			CMAble.addCharAbilityMapping(ID(),12,"Prayer_CureDisease",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Prayer_Plague",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Prayer_CureDisease",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Prayer_Plague",false);
 			
-			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",false);
 			
-			CMAble.addCharAbilityMapping(ID(),14,"Prayer_CureCritical",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Prayer_CauseCritical",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Prayer_CureCritical",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Prayer_CauseCritical",false);
 			
-			CMAble.addCharAbilityMapping(ID(),15,"Prayer_HolyAura",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Prayer_HolyAura",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",false);
 			
-			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Calm",true);
-			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Anger",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Calm",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Anger",false);
 			
 				CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 			
-			CMAble.addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindness",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindness",false);
 			
-			CMAble.addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",false);
 			
-			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Godstrike",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Hellfire",false);
 			
-			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassMobility",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",false);
 			
-			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Heal",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Harm",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Heal",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Harm",false);
 			
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BlessItem",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BlessItem",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",false);
 			
-			CMAble.addCharAbilityMapping(ID(),23,"Prayer_MassHeal",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Prayer_MassHarm",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Prayer_MassHeal",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Prayer_MassHarm",false);
 			
-			CMAble.addCharAbilityMapping(ID(),24,"Prayer_HolyWord",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Prayer_HolyWord",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",false);
 			
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Regeneration",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_AnimateDead",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Resurrect",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Regeneration",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Prayer_AnimateDead",false);
 			// placeholders
 			CMAble.addCharAbilityMapping(ID(),30,"Prayer_Deathfinger",false);
 			CMAble.addCharAbilityMapping(ID(),30,"Prayer_Drain",false);
@@ -145,6 +145,47 @@ public class Cleric extends StdCharClass
 		}
 	}
 
+	
+	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	{
+		super.grantAbilities(mob,isBorrowedClass);
+		
+		// if he already has one, don't give another!
+		if(!mob.isMonster())
+		{
+			for(int a=0;a<mob.numAbilities();a++)
+			{
+				Ability A=mob.fetchAbility(a);
+				if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
+				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+				&&(CMAble.getQualifyingLevel(ID(),A.ID())==mob.baseCharStats().getClassLevel(this))
+				&&(!CMAble.getDefaultGain(ID(),A.ID())))
+					return;
+			}
+			// now only give one, for current level, respecting alignment!
+			for(int a=0;a<CMClass.abilities.size();a++)
+			{
+				Ability A=(Ability)CMClass.abilities.elementAt(a);
+				if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
+				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+				&&(mob.isMonster()||A.appropriateToMyAlignment(mob.getAlignment()))
+				&&(mob.isMonster()||(CMAble.getQualifyingLevel(ID(),A.ID())==mob.baseCharStats().getClassLevel(this)))
+				&&(!CMAble.getDefaultGain(ID(),A.ID())))
+					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
+			}
+		}
+		else // monsters get everything -- leave it to other code to pick the right 
+		for(int a=0;a<CMClass.abilities.size();a++) // ...ones to use.
+		{
+			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
+			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+			&&((CMAble.getQualifyingLevel(ID(),A.ID())<=mob.baseCharStats().getClassLevel(this)))
+			&&(!CMAble.getDefaultGain(ID(),A.ID())))
+				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
+		}
+	}
+	
 	public boolean playerSelectable()
 	{
 		return true;

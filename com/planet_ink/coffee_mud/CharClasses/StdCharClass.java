@@ -271,6 +271,7 @@ public class StdCharClass implements CharClass
 		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+adjuster);
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
 		mob.baseCharStats().setClassLevel(curClass,mob.baseCharStats().getClassLevel(curClass)+adjuster);
+		int classLevel=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
 		int gained=mob.getExperience()-mob.getExpNextLevel();
 		if(gained<50) gained=50;
 
@@ -282,7 +283,6 @@ public class StdCharClass implements CharClass
 
 		StringBuffer theNews=new StringBuffer("");
 
-		int classLevel=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
 		String levelStr=null;
 		if(classLevel>=mob.baseEnvStats().level())
 			levelStr="level "+mob.baseEnvStats().level()+" "+mob.baseCharStats().getCurrentClass().name();
@@ -300,7 +300,7 @@ public class StdCharClass implements CharClass
 		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " + 
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
-		int mvGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0)*getMovementMultiplier());
+		int mvGain=(int)Math.round(Util.mul(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0),getMovementMultiplier()));
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
@@ -312,14 +312,14 @@ public class StdCharClass implements CharClass
 		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
 		theNews.append(attGain+"^N attack " + (attGain!=1?"points":"point") + ", ^H");
 
-		int manaGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.INTELLIGENCE),18.0)*getBonusManaLevel());
+		int manaGain=(int)Math.round(Util.mul(Util.div(mob.charStats().getStat(CharStats.INTELLIGENCE),18.0),getBonusManaLevel()));
 		manaGain=manaGain*adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
 		theNews.append(manaGain+"^N " + (manaGain!=1?"points":"point") + " of mana,");
-		if((adjuster<0)&&(((mob.baseEnvStats().level()+1)%getLevelsPerBonusDamage())==0))
+		if((adjuster<0)&&(((classLevel+1)%getLevelsPerBonusDamage())==0))
 			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()-1);
 		else
-		if((adjuster>0)&&((mob.baseEnvStats().level()%getLevelsPerBonusDamage())==0))
+		if((adjuster>0)&&((classLevel%getLevelsPerBonusDamage())==0))
 			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+1);
 		mob.recoverMaxState();
 		return theNews;

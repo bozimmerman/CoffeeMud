@@ -17,7 +17,6 @@ public class Thief extends StdCharClass
 	public int getAttackAttribute(){return CharStats.DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 5;}
 	private static boolean abilitiesLoaded=false;
-	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
 	
 	public Thief()
@@ -112,7 +111,7 @@ public class Thief extends StdCharClass
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if(((affect.sourceMajor()&Affect.MASK_DELICATE)>0)
-			&&(!new Thief().armorCheck(myChar)))
+			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 				{
