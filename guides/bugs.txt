@@ -1,3 +1,4 @@
 damn upgrade tool won't go to access
-no color code translations for <> names.
+affecting a room with a deeppit broke
+reset on trap_enterpit
 

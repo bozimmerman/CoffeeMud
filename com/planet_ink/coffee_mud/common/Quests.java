@@ -518,6 +518,7 @@ public class Quests implements Cloneable, Quest
 				{
 					if(p.size()<2)
 					{
+						Log.errOut("Quest '"+name()+"', no IMPORT type.");
 						error=true; break;
 					}
 					cmd=((String)p.elementAt(1)).toUpperCase();
@@ -525,6 +526,7 @@ public class Quests implements Cloneable, Quest
 					{
 						if(p.size()<3)
 						{
+							Log.errOut("Quest '"+name()+"', no IMPORT MOBS file.");
 							error=true; break;
 						}
 						StringBuffer buf=Resources.getFileResource(Util.combine(p,2));
@@ -913,9 +915,9 @@ public class Quests implements Cloneable, Quest
 				done=true;
 			}
 		}
-		if(error)
-			Log.errOut("Quest","One or more errors in '"+name()+"', quest not started");
-		else
+		//if(error)
+		//	Log.errOut("Quest","One or more errors in '"+name()+"', quest not started");
+		//else
 		if(!done)
 			Log.errOut("Quest","Nothing parsed in '"+name()+"', quest not started");
 		else

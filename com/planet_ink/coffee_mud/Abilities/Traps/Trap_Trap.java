@@ -16,7 +16,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	protected boolean sprung=false;
 	protected Room myPit=null;
 	protected Room myPitUp=null;
-	protected int reset=0;
+	protected int reset=60; // 5 minute reset is standard
 	protected int trapType(){return Dice.roll(1,3,-1);}
 
 	public Trap_Trap()

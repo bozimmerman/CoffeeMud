@@ -13,9 +13,10 @@ public class Sounder extends StdBehavior
 	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
 	protected int[] triggers=null;
 	protected String[] strings=null;
-	protected int UNDER_MASK=1023;
-	protected int TICK_MASK=65536;
-	protected int ROOM_MASK=32768;
+	protected static int UNDER_MASK=1023;
+	protected static int TICK_MASK=65536;
+	protected static int ROOM_MASK=32768;
+	private Affect lastMsg=null;
 	
 	public Sounder()
 	{
@@ -229,6 +230,7 @@ public class Sounder extends StdBehavior
 		// this will work because, for items, behaviors
 		// get the first tick.
 		int lookFor=-1;
+		if(msg!=lastMsg)
 		switch(msg.targetMinor())
 		{
 		case Affect.TYP_GET:
@@ -261,27 +263,23 @@ public class Sounder extends StdBehavior
 				lookFor=Affect.TYP_LEAVE;
 			break;
 		}
+		lastMsg=msg;
 		Room room=msg.source().location();
 		if((lookFor>=0)&&(room!=null))
 		for(int v=0;v<triggers.length;v++)
 			if(((triggers[v]&UNDER_MASK)==lookFor)
 			&&(!Util.bset(triggers[v],TICK_MASK)))
 			{
-				FullMsg msg2=new FullMsg(msg.source(),null,Affect.MSG_EMOTE,Util.replaceAll(strings[v],"$p",E.name()));
-				if(msg.source().location().okAffect(msg.source(),msg2))
-					if(Util.bset(triggers[v],ROOM_MASK))
-					{
-						for(int r=0;r<room.numInhabitants();r++)
-						{
-							MOB M=room.fetchInhabitant(r);
-							if((M!=null)
-							&&(!M.isMonster())
-							&&(M!=msg.source()))
-								M.affect(M,msg2);
-						}
-					}
-					else
-						msg.source().affect(msg.source(),msg2);
+				if(Util.bset(triggers[v],ROOM_MASK))
+				{
+					FullMsg msg2=new FullMsg(msg.source(),null,null,Affect.NO_EFFECT,Affect.NO_EFFECT,Affect.MSG_EMOTE,Util.replaceAll(strings[v],"$p",E.name()));
+					msg.addTrailerMsg(msg2);
+				}
+				else
+				{
+					FullMsg msg2=new FullMsg(msg.source(),null,null,Affect.MSG_EMOTE,Affect.NO_EFFECT,Affect.NO_EFFECT,Util.replaceAll(strings[v],"$p",E.name()));
+					msg.addTrailerMsg(msg2);
+				}
 			}
 		super.affect(E,msg);
 	}

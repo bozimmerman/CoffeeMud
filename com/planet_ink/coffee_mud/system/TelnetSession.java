@@ -801,6 +801,7 @@ public class TelnetSession extends Thread implements Session
 							{
 								buf.delete(loop,ldex+1);
 								buf.insert(loop,replacement.toCharArray());
+								loop--;
 							}
 						}
 					}

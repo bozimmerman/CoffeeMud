@@ -55,12 +55,23 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		super();
 		if(benefactor==null)
+		{
 			benefactor=(MOB)CMClass.getMOB("StdMOB");
+			benefactor.setLocation(CMClass.getLocale("StdRoom"));
+		}
 	}
-	protected static MOB benefactor=(MOB)CMClass.getMOB("StdMOB");
+	protected static MOB benefactor=null;
 	public MOB invoker()
 	{
-		if(invoker==null) return benefactor;
+		if(invoker==null)
+		{
+			if(benefactor==null)
+			{
+				benefactor=(MOB)CMClass.getMOB("StdMOB");
+				benefactor.setLocation(CMClass.getLocale("StdRoom"));
+			}
+			return benefactor;
+		}
 		return super.invoker();
 	}
 

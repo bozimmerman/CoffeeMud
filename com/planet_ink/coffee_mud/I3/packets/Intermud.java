@@ -162,7 +162,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
         channels = new ChannelList(-1);
         muds = new MudList(-1);
         banned = new Hashtable();
-        name_servers = new Vector(1);
+        name_servers = new Vector();
         name_servers.addElement(new NameServer("us-1.i3.intermud.org", 9000, "*gjs"));
         modified = Persistent.UNMODIFIED;
         try {
@@ -220,7 +220,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
         attempts++;
         try {
             NameServer n = (NameServer)name_servers.elementAt(0);
-
+			
             connection = new Socket(n.ip, n.port);
             output = new DataOutputStream(connection.getOutputStream());
             send("({\"startup-req-3\",5,\"" + intermud.getMudName() + "\",0,\"" +
@@ -249,7 +249,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                 }
             }
         }
-        catch( java.io.IOException e ) {
+        catch( Exception e ) {
             try { Thread.sleep(attempts * 10); }
             catch( InterruptedException ignore )
 			{ 
