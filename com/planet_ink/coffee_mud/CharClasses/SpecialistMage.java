@@ -9,6 +9,7 @@ public class SpecialistMage extends Mage
 {
 	public String ID(){return "SpecialistMage";}
 	public String name(){return "Specialist Mage";}
+	public String baseClass(){return "Mage";}
 	public static int domain(){return Ability.DOMAIN_ABJURATION;}
 	public static int opposed(){return Ability.DOMAIN_ENCHANTMENT;}
 	public static boolean myAbilitiesLoaded=false;
