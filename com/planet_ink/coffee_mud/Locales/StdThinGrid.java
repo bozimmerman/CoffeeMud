@@ -29,6 +29,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	protected Vector descriptions=new Vector();
 	protected Vector displayTexts=new Vector();
 	protected Vector gridexits=new Vector();
+	protected static HashSet working=new HashSet();
 	
 	protected int xsize=5;
 	protected int ysize=5;
@@ -196,6 +197,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	{
 		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
 			return;
+		if(working.contains(R)) return;
+		working.add(R);
 		
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
@@ -239,6 +242,39 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		else
 		if((rawDoors()[Directions.EAST]!=null)&&(rawExits()[Directions.EAST]!=null))
 			linkRoom(R,rawDoors()[Directions.EAST],Directions.EAST,rawExits()[Directions.EAST],rawExits()[Directions.EAST]);
+		
+		for(int d=0;d<gridexits.size();d++)
+		{
+			CMMap.CrossExit EX=(CMMap.CrossExit)gridexits.elementAt(d);
+			try{
+				if((EX.out)&&(EX.x==x)&&(EX.y==y))
+				{
+					if((EX.x==0)&&(EX.dir==Directions.WEST))
+						tryFillInExtraneousExternal(EX,ox,R);
+					if((EX.x==xSize()-1)&&(EX.dir==Directions.EAST))
+						tryFillInExtraneousExternal(EX,ox,R);
+					if((EX.y==0)&&(EX.dir==Directions.NORTH))
+						tryFillInExtraneousExternal(EX,ox,R);
+					if((EX.y==ySize()-1)&&(EX.dir==Directions.SOUTH))
+						tryFillInExtraneousExternal(EX,ox,R);
+				}
+			}catch(Exception e){}
+		}
+		working.remove(R);
+	}
+	
+	public void tryFillInExtraneousExternal(CMMap.CrossExit EX, Exit ox, Room linkFrom)
+	{
+		if(EX==null) return;
+		Room linkTo=CMMap.getRoom(EX.destRoomID);
+		if((linkTo!=null)&&(linkTo.getGridParent()!=null)) 
+			linkTo=linkTo.getGridParent();
+		if((linkTo!=null)&&(linkFrom.rawDoors()[EX.dir]!=linkTo))
+		{
+			if(ox==null) ox=(Exit)CMClass.getExit("Open");
+			linkFrom.rawDoors()[EX.dir]=linkTo;
+			linkFrom.rawExits()[EX.dir]=ox;
+		}
 	}
 	
 	protected Room getMakeGridRoom(int x, int y)

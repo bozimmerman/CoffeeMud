@@ -356,11 +356,54 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 	}
 
+	public void tryFillInExtraneousExternal(CMMap.CrossExit EX, Exit ox)
+	{
+		if(EX==null) return;
+		Room linkFrom=null;
+		if(subMap!=null)
+			linkFrom=subMap[EX.x][EX.y];
+		if(linkFrom!=null)
+		{
+			Room linkTo=CMMap.getRoom(EX.destRoomID);
+			if((linkTo!=null)&&(linkTo.getGridParent()!=null)) 
+				linkTo=linkTo.getGridParent();
+			if((linkTo!=null)&&(linkFrom.rawDoors()[EX.dir]!=linkTo))
+			{
+				if(ox==null) ox=(Exit)CMClass.getExit("Open");
+				linkFrom.rawDoors()[EX.dir]=linkTo;
+				linkFrom.rawExits()[EX.dir]=ox;
+			}
+		}
+	}
+	
+	public void fillInTheExtraneousExternals(Room[][] subMap, Exit ox)
+	{
+		if(subMap!=null)
+		for(int d=0;d<gridexits.size();d++)
+		{
+			CMMap.CrossExit EX=(CMMap.CrossExit)gridexits.elementAt(d);
+			try{
+				if(EX.out)
+				{
+					if((EX.x==0)&&(EX.dir==Directions.WEST))
+						tryFillInExtraneousExternal(EX,ox);
+					if((EX.x==xSize()-1)&&(EX.dir==Directions.EAST))
+						tryFillInExtraneousExternal(EX,ox);
+					if((EX.y==0)&&(EX.dir==Directions.NORTH))
+						tryFillInExtraneousExternal(EX,ox);
+					if((EX.y==ySize()-1)&&(EX.dir==Directions.SOUTH))
+						tryFillInExtraneousExternal(EX,ox);
+				}
+			}catch(Exception e){}
+		}
+	}
+	
 	public void buildGrid()
 	{
 		clearGrid(null);
 		try
 		{
+			Room R=null;
 			subMap=new Room[xsize][ysize];
 			Exit ox=CMClass.getExit("Open");
 			for(int x=0;x<subMap.length;x++)
@@ -378,6 +421,7 @@ public class StdGrid extends StdRoom implements GridLocale
 					}
 				}
 			buildFinalLinks();
+			fillInTheExtraneousExternals(subMap,ox);
 		}
 		catch(Exception e)
 		{

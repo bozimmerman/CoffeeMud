@@ -1,15 +1,3 @@
-GridTest#0 I made into a 5x5 WoodsGrid, and linked to it's east another 
-5x5 WoodsGrid. 
-
-I then created a single WoodRoom and deleted all exits to it so it was an 
-unlinked room. 
-
-Then, from the far southwest corner of GridTest#0 I did a 'link GridTest#2 
-south' which created the link to the single room. 
-
-Reboot, and now the grid room is not linked to the WoodRoom anymore. 
-The single WoodRoom still has a link to the grid though, to the correct child room (GridTest#0#(0,4)).
-
 abyss/portal change
 look into a mob with a limiteditems(1) prop .. kill the mob, get the sword.
 prop to give each mob a unique death message
