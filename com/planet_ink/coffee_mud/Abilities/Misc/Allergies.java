@@ -193,9 +193,18 @@ public class Allergies extends StdAbility
 	        if(allergies.length()==0) return false;
 	        
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
-			if(target.location().okMessage(target,msg))
+			if(target.location()!=null)
 			{
-			    target.location().send(target,msg);
+				if(target.location().okMessage(target,msg))
+				{
+				    target.location().send(target,msg);
+				    Ability A=(Ability)copyOf();
+				    A.setMiscText(allergies.trim());
+				    target.addNonUninvokableEffect(A);
+				}
+			}
+			else
+			{
 			    Ability A=(Ability)copyOf();
 			    A.setMiscText(allergies.trim());
 			    target.addNonUninvokableEffect(A);

@@ -2360,6 +2360,7 @@ public class Arrest extends StdBehavior
 						officer=getElligibleOfficer(laws,myArea,W.criminal(),W.victim());
 					W.setTravelAttemptTime(0);
 					if((officer!=null)
+					&&(W.criminal().location()!=null)
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(!W.criminal().amDead())
 					&&(Sense.isInTheGame(W.criminal(),true))
@@ -2421,6 +2422,7 @@ public class Arrest extends StdBehavior
 					MOB officer=W.arrestingOfficer();
 					W.setTravelAttemptTime(0);
 					if((officer!=null)
+					&&(W.criminal().location()!=null)
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(Sense.isInTheGame(W.criminal(),true))
 					&&(!W.criminal().amDead())
@@ -2473,6 +2475,7 @@ public class Arrest extends StdBehavior
 				{
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
+					&&(W.criminal().location()!=null)
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(!W.criminal().amDead())
 					&&(Sense.isInTheGame(W.criminal(),true))
