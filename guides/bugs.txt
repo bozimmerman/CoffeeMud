@@ -1,5 +1,3 @@
 Some mage stuff at the trading post.
-racialCategory - a prejudice behavior so shopkeepers charge more/less to certain races in the next build?  
-Perhaps you might extend this to work in the laws system differently as well - instead of naming particular races to protect, you select categories.  
  Maybe a behavior based on GateGuard that allow/disallows certain categories.
 I am also trying to make a room that will provide faster healing and regen rates when in that room? What should I be doing to achieve that?

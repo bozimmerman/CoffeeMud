@@ -1277,16 +1277,43 @@ GenMob, plus&nbsp;a few more:</P>
     <TD width="75%"><STRONG>Description</STRONG></TD></TR>
   <TR>
     <TD><EM> Type</EM></TD>
-    <TD>a shopkeeper can sell *)Anything, G)eneral items, 
-      A)rmor, M)iscellanous magic items not included amongst armor or weapons, 
-      W)eapons, P)ets, L)eather items, O)nly buys the things he also sells (but 
-      sells whatever you give him to sell), T)rains players in spells, prayers, 
-      skills, or songs, C)asts prayers, spells, or songs on the buyer.&nbsp; All 
+    <TD>a shopkeeper can sell Anything, General items, Armor, Miscellanous magic items 
+      not included amongst armor or weapons, Weapons, Pets, Leather items, 
+      Only buys the things he also sells (but sells whatever you give 
+      him to sell), Trains players in spells, prayers, skills, or songs, Casts 
+      prayers, spells, or songs on the buyer, Potions, Land, and more!&nbsp; All 
       shopkeepers can also buy what they sell, excluding Trainers and 
   Casters.</TD></TR>
   <TR>
     <TD><EM> Inventory</EM></TD>
     <TD>this is where you would "stock" your shopkeeper with items that match their type.</TD></TR>
+  <TR>
+    <TD><EM>Prejudice Factors</EM></TD>
+    <TD>
+      <P>This complicated field is where you can adjust the prices the 
+      ShopKeeper sells from the programmed normal.&nbsp; An unspecified value 
+      here will always return a value of 1.0 (which means NO adjustment).&nbsp; 
+      However, you may enter one or more adjustments seperated by semicolons 
+      (;).&nbsp; Here is an example:</P>
+      <P><FONT face="Courier New" size=2>SELL=5.5 Elf Dwarf ; BUY=0.4 Elf Dwarf 
+      ; SELL=1.0 ; BUY=1.0</FONT></P>
+      <P>Each adjustment must begin with the words "SELL=" or "BUY=" followed by 
+      a Real number designating the adjustment from normal.&nbsp; A value above 
+      1.0 will raise prices.&nbsp; A value below 1.0 (like 0.3 or 0.75) will 
+      lower prices.&nbsp; Values of 0.0 are NOT allowed.&nbsp; If you need to 
+      all but not allow buying and selling, a value of 0.000000001 should 
+      do.&nbsp; </P>
+      <P>Each adjustment may also contain the name of one or more Racial 
+      Categories (Elf, Dwarf, Gnome, Halfing, etc..).&nbsp; If a Racial Category 
+      is specified, then the adjustment will ONLY apply to that race.&nbsp; The 
+      adjustments are read from left to right, so adjustments without any racial 
+      categories should be listed LAST.&nbsp; In the above example, Dwarves and 
+      Elves are given a very bad deal, where everyone else gets a normal 
+      one.&nbsp; In addition to Racial Categories, you may also list alignments 
+      (good, neutral, or evil).&nbsp; Remember that this field is evaluated from 
+      left to right, so any matches made&nbsp;on the left that apply to a player 
+      will cancel evaluation of the rest of the field!&nbsp;&nbsp; 
+  </P>             </TD></TR>
 </TABLE></STRONG><BR></P><STRONG>
 <P>The "GenBanker"</P></STRONG>
 <P>A Banker is a special type of ShopKeeper that holds money and items in a 
@@ -1548,8 +1575,12 @@ Items</STRONG></P>
 <P class=MsoNormal>StdBanker</P>
 <UL>
   <LI>
-  <DIV class=MsoNormal>misc tex &nbsp;- The name of the bank 
+  <DIV class=MsoNormal>misc text &nbsp;- The name of the bank 
 chain</DIV></LI></UL>
+<P class=MsoNormal>StdShopKeeper</P>
+<UL>
+  <LI>misc text - Prejudice factors.&nbsp; See the field of the same name under 
+  GenShopKeeper above!</LI></UL>
 
 </BODY>
 </HTML>

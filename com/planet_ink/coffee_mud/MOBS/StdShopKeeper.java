@@ -935,6 +935,59 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 	}
 
+	private double prejudiceValueFromPart(MOB mob, boolean sellTo, String part)
+	{
+		int x=part.indexOf("=");
+		if(x<0) return 0.0;
+		String sellorby=part.substring(0,x);
+		part=part.substring(x+1);
+		if(sellTo&&(!sellorby.trim().equalsIgnoreCase("SELL")))
+		   return 0.0;
+		if((!sellTo)&&(!sellorby.trim().equalsIgnoreCase("BUY")))
+		   return 0.0;
+		if(part.trim().indexOf(" ")<0)
+			return Util.s_double(part.trim());
+		Vector V=Util.parse(part.trim());
+		double d=0.0;
+		boolean yes=false;
+		for(int v=0;v<V.size();v++)
+		{
+			String bit=(String)V.elementAt(v);
+			if(Util.s_double(bit)!=0.0)
+				d=Util.s_double(bit);
+			if(bit.equalsIgnoreCase(mob.charStats().getMyRace().racialCategory()))
+			{	yes=true; break;}
+			if(bit.equalsIgnoreCase(CommonStrings.shortAlignmentStr(mob.getAlignment())))
+			{ yes=true; break;}
+		}
+		if(yes) return d;
+		return 0.0;
+		
+	}
+	private double prejudiceFactor(MOB mob, boolean sellTo)
+	{
+		if(prejudiceFactors().length()==0) return 1.0;
+		if(prejudiceFactors().indexOf("=")<0)
+		{
+			if(Util.s_double(prejudiceFactors())!=0.0)
+				return Util.s_double(prejudiceFactors());
+			return 1.0;
+		}
+		String factors=prejudiceFactors().toUpperCase();
+		int x=factors.indexOf(";");
+		while(x>=0)
+		{
+			String part=factors.substring(0,x).trim();
+			factors=factors.substring(x+1).trim();
+			double d=prejudiceValueFromPart(mob,sellTo,part);
+			if(d!=0.0) return d;
+			x=factors.indexOf(";");
+		}
+		double d=prejudiceValueFromPart(mob,sellTo,factors.trim());
+		if(d!=0.0) return d;
+		return 1.0;
+	}
+	
 	private int yourValue(MOB mob, Environmental product, boolean sellTo)
 	{
 		int val=0;
@@ -954,6 +1007,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		else
 			val=CMAble.lowestQualifyingLevel(product.ID())*25;
 		if(mob==null) return val;
+		
+		double d=prejudiceFactor(mob,sellTo);
+		val=(int)Math.round(Util.mul(d,val));
 
 		//double halfPrice=Math.round(Util.div(val,2.0));
 		double quarterPrice=Math.round(Util.div(val,4.0));

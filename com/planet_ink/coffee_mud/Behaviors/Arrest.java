@@ -237,9 +237,10 @@ public class Arrest extends StdBehavior
 		{
 			boolean aCrime=false;
 			Vector V=Util.parse(crimeLocs);
+			String display=mob.location().displayText().toUpperCase().trim();
 			for(int v=0;v<V.size();v++)
 			{
-				if(CoffeeUtensils.containsString(mob.location().displayText(),(String)V.elementAt(v)))
+				if(CoffeeUtensils.containsString(display,((String)V.elementAt(v)).toUpperCase()))
 				{ aCrime=true;break;}
 			}
 			if(!aCrime) return;
@@ -249,7 +250,7 @@ public class Arrest extends StdBehavior
 		if(victim!=null)
 		{
 			String races=(String)laws.get("PROTECTED");
-			if((races!=null)&&(races.length()>0)&&(!CoffeeUtensils.containsString(races,victim.charStats().getMyRace().name())))
+			if((races!=null)&&(races.length()>0)&&(!CoffeeUtensils.containsString(races,victim.charStats().getMyRace().racialCategory())))
 			   return;
 		}
 		
