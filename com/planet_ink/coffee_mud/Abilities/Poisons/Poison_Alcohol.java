@@ -243,6 +243,7 @@ public class Poison_Alcohol extends Poison
 		if((givenTarget instanceof MOB)&&(auto)&&(givenTarget.fetchEffect(ID())!=null))
 		{
 			Vector found=new Vector();
+			largest=0;
 			for(int a=0;a<givenTarget.numEffects();a++)
 			{
 				Ability A=givenTarget.fetchEffect(a);
