@@ -1,8 +1,6 @@
-mention clanpremise in clan help
 add MOTY to MOTD and document in Archons guide
 update Archons guide for Effects instead of Affects
 add macros to journal for clan scores, champion players, etc..
-add non-activation of law system until clanbook turns it on
 Matching rings These two rings have keyed identities. One ring is the master, one is the subordinate. The MOB wearing the subordinate ring will always try to move towards the MASTER ring.
 programmers guide needs updating
 look into genwater and emptyability
