@@ -42,7 +42,7 @@ public class Skill_Dirt extends StdAbility
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(!doneTicking)
-			affectableStats.setDisposition(affectableStats.disposition()|Sense.CAN_SEE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE);
 	}
 
 	public int classificationCode()

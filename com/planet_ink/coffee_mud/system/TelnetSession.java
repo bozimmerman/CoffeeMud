@@ -649,6 +649,7 @@ public class TelnetSession extends Thread implements Session
 						String input=readlineContinue();
 						if(input!=null)
 							enque(0,Util.parse(input));
+						if(mob==null) break;
 						if((((MOB)mob).lastTickedDateTime().after(lastCMDDateTime))||(!mob.isInCombat()))
 						{
 							CMDS=deque();

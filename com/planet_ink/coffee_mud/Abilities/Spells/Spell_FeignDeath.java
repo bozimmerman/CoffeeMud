@@ -54,6 +54,14 @@ public class Spell_FeignDeath extends Spell
 		super.unInvoke();
 	}
 
+	public void peaceAt(MOB mob)
+	{
+		if(mob.location()!=null)
+		for(int m=0;m<mob.location().numInhabitants();m++)
+			if(mob.location().fetchInhabitant(m).getVictim()==mob)
+				mob.location().fetchInhabitant(m).setVictim(null);
+	}
+	
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
@@ -69,6 +77,7 @@ public class Spell_FeignDeath extends Spell
 			if(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
 			{
 				mob.tell("You are unable to attack in this semi-incorporeal form.");
+				peaceAt(mob);
 				return false;
 			}
 			else
@@ -80,6 +89,7 @@ public class Spell_FeignDeath extends Spell
 					mob.tell("You are unable to make sounds in this semi-incorporeal form.");
 				else
 					mob.tell("You are unable to do that this semi-incorporeal form.");
+				peaceAt(mob);
 				return false;
 			}
 		}
@@ -117,6 +127,7 @@ public class Spell_FeignDeath extends Spell
 		{
 			mob.location().send(mob,msg);
 			target.makePeace();
+			peaceAt(target);
 			deathRoom=mob.location();
 			Body=(DeadBody)CMClass.getItem("Corpse");
 			beneficialAffect(mob,mob,0);

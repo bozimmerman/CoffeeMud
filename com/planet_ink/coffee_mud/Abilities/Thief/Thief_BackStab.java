@@ -58,6 +58,14 @@ public class Thief_BackStab extends ThiefSkill
 			mob.tell(mob,target,"Backstab <T-HIM-HER> with what?");
 			return false;
 		}
+		if((weapon.weaponClassification()==Weapon.CLASS_BLUNT)
+		||(weapon.weaponClassification()==Weapon.CLASS_HAMMER)
+		||(weapon.weaponClassification()==Weapon.CLASS_RANGED)
+		||(weapon.weaponClassification()==Weapon.CLASS_STAFF))
+		{
+			mob.tell(mob,target,"You cannot stab anyone with "+weapon.name()+".");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -72,7 +80,10 @@ public class Thief_BackStab extends ThiefSkill
 			if(!success)
 				mob.location().show(target,mob,Affect.MSG_OK_VISUAL,auto?"":"<S-NAME> spot(s) <T-NAME>!");
 			else
+			{
 				mob.envStats().setDamage(mob.envStats().damage()*factor);
+				mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+100);
+			}
 			ExternalPlay.doAttack(mob,target,weapon);
 			mob.recoverEnvStats();
 		}

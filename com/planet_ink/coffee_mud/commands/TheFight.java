@@ -390,12 +390,12 @@ public class TheFight
 		if((mob.getBitmap()&MOB.ATT_AUTOASSIST)>0)
 		{
 			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOASSIST);
-			mob.tell("Autogold has been turned on.");
+			mob.tell("Autoassist has been turned on.");
 		}
 		else
 		{
 			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOASSIST);
-			mob.tell("Autogold has been turned off.");
+			mob.tell("Autoassist has been turned off.");
 		}
 	}
 

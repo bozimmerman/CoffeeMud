@@ -50,7 +50,7 @@ public class Spell_Blur extends Spell
 		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL))
 		{
 			int pctDodge=invoker.charStats().getIntelligence();
-			if(Dice.rollPercentage()<pctDodge)
+			if(Dice.rollPercentage()<(pctDodge*2))
 			{
 				FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_VISUAL,"<T-NAME> can't seem to focus on <S-NAME>.");
 				mob.location().send(mob,msg);
