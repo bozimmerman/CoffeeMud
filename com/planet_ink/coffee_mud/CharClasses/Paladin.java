@@ -56,7 +56,7 @@ public class Paladin extends StdCharClass
 			
 			// qualify for all prayers
 			Cleric c=new Cleric(); // make sure a cleric is available
-			for(int level=1;level<25;level++)
+			for(int level=1;level<22;level++)
 			{
 				Vector V=CMAble.getLevelListings(c.ID(),level);
 				for(int v=0;v<V.size();v++)

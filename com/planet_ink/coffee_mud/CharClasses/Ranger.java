@@ -55,7 +55,7 @@ public class Ranger extends StdCharClass
 			
 			// qualify for all spells
 			Mage m=new Mage(); // make sure a mage is available
-			for(int level=1;level<25;level++)
+			for(int level=1;level<22;level++)
 			{
 				Vector V=CMAble.getLevelListings(m.ID(),level);
 				for(int v=0;v<V.size();v++)
