@@ -44,11 +44,12 @@ public class StdLimb extends StdItem
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(amWearingAt(Item.HELD))	
+		if(amWearingAt(Item.FLOATING_NEARBY))	
 			setRawWornCode(wearPlace());
 		
 		if((!amWearingAt(Item.INVENTORY))
 		&&(!amWearingAt(Item.HELD))
+		&&(!amWearingAt(Item.FLOATING_NEARBY))
 		&&(!amWearingAt(Item.WIELD)))
 		{
 			int num=partNum();
@@ -62,22 +63,22 @@ public class StdLimb extends StdItem
 	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
+		if(!super.okMessage(myHost,msg))
+			return false;
 		if(msg.amITarget(this))
 		{
 			MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_WEAR:
-				if(envStats().ability()>0)
-					mob.tell("You can't just wear that.");
-				else
-				if((msg.source().charStats().getBodyPart(partNum())+1)<=msg.source().charStats().getMyRace().bodyMask()[partNum()])
-					mob.tell("You don't have any empty sockets to wear that in.");
+			case CMMsg.TYP_HOLD:
+			case CMMsg.TYP_WIELD:
+				mob.tell("You can't just wear that.");
 				return false;
 			default:
 				break;
 			}
 		}
-		return super.okMessage(myHost,msg);
+		return true;
 	}
 }

@@ -1,3 +1,10 @@
+1  ) Loki       prayer_unholyword room message XX speaks the unholy word OF
+DEITY to target. (There is an extra space before OF DEITY that should not be
+there.)
+2  ) Loki       when animating dead thingies, the corpse needs to do a level
+check on the gear prior to donning it. Otherwise a level 90 character could
+kill a highlevel well equiped mob, and a low level necro raise and control
+it, with uberstats from equipment.
 items to wear on customized body parts.  Use default Amputation, compined with Limb items which, when worn, give parts back.
 we'd need a slavetrading skill, and the ability to have the mob items "grow up" in the shopkeepers care, and we'd need some way to transfer ownership (make them serve, etc) when you buy them.
 Execution skill for Arrest
