@@ -34,6 +34,9 @@ public class CMAble
 		able.qualLevel=qualLevel;
 		able.autoGain=autoGain;
 		ableMap.put(ability,able);
+		int arc_level=getQualifyingLevel("Archon",ability);
+		if((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
+			addCharAbilityMapping("Archon",qualLevel,ability,true);
 	}
 	
 	public static Vector getLevelListings(String charClass, int level)
@@ -116,28 +119,5 @@ public class CMAble
 				return ((CMAble)ableMap.get(ability)).defaultProfficiency;
 		}
 		return 0;
-	}
-	
-	public static int lowestQualifyingLevel(String ability)
-	{
-		if(lowestQualifyingLevelMap.containsKey(ability))
-			return ((Integer)lowestQualifyingLevelMap.get(ability)).intValue();
-		
-		if(CMClass.charClasses.size()==0) return -1;
-		
-		int lowestQualifyingLevel=Integer.MAX_VALUE;
-		if(CMClass.charClasses.size()>0)
-		{
-			for(int c=0;c<CMClass.charClasses.size();c++)
-			{
-				int lvl=getQualifyingLevel(((CharClass)CMClass.charClasses.elementAt(c)).ID(),ability);
-				if((lvl>=0)&&(lvl<lowestQualifyingLevel))
-					lowestQualifyingLevel=lvl;
-			}
-		}
-		if(lowestQualifyingLevel==Integer.MAX_VALUE)
-			lowestQualifyingLevel=-1;
-		lowestQualifyingLevelMap.put(ability,new Integer(lowestQualifyingLevel));
-		return lowestQualifyingLevel;
 	}
 }

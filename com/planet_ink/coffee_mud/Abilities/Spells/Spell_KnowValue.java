@@ -44,7 +44,7 @@ public class Spell_KnowValue extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> weigh(s) the value <T-NAMESELF> carefully.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> weigh(s) the value of <T-NAMESELF> carefully.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -59,7 +59,7 @@ public class Spell_KnowValue extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> weigh(s) <T-NAMESELF>, looking more frustrated every second.");
+			beneficialVisualFizzle(mob,target,"<S-NAME> weigh(s) the value of <T-NAMESELF>, looking more frustrated every second.");
 
 
 		// return whether it worked

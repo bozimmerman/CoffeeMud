@@ -90,9 +90,6 @@ public class StdAbility implements Ability, Cloneable
 		if(student.charStats().getMyClass()==null)
 			return -1;
 
-		if(student.isASysOp(null))
-			return CMAble.lowestQualifyingLevel(ID());
-		
 		return CMAble.getQualifyingLevel(student.charStats().getMyClass().ID(),ID());
 	}
 

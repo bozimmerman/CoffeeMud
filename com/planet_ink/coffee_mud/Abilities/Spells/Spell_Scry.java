@@ -35,19 +35,6 @@ public class Spell_Scry extends Spell
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
-		super.affect(affect);
-		if((affected instanceof MOB)
-		&&(affect.amISource((MOB)affected))
-		&&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING)
-		&&(invoker!=null)
-		&&(affect.target()!=null)
-		&&((((MOB)invoker).location()!=((MOB)affected).location())||(!(affect.target() instanceof Room))))
-		{
-			FullMsg newAffect=new FullMsg(invoker,affect.target(),Affect.TYP_EXAMINESOMETHING,null);
-			affect.target().affect(newAffect);
-		}
-		else
-		super.affect(affect);
 		if((affected instanceof MOB)
 		&&(affect.amISource((MOB)affected))
 		&&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING)
@@ -60,9 +47,9 @@ public class Spell_Scry extends Spell
 		}
 		else
 		if((affected instanceof MOB)
-		&&(affect.amISource((MOB)affected))
 		&&(invoker!=null)
 		&&(((MOB)invoker).location()!=((MOB)affected).location())
+		&&(affect.othersCode()!=Affect.NO_EFFECT)
 		&&(affect.othersMessage()!=null))
 			((MOB)invoker).affect(affect);
 	}

@@ -77,7 +77,8 @@ public class Spell_ComprehendLangs extends Spell
 		&&(affect.tool() !=null)
 		&&(affect.sourceMessage()!=null)
 		&&(affect.tool() instanceof Ability)
-		&&(((Ability)affect.tool()).classificationCode()==Ability.LANGUAGE))
+		&&(((Ability)affect.tool()).classificationCode()==Ability.LANGUAGE)
+		&&(((MOB)affected).fetchAffect(affect.tool().ID())==null))
 		{
 			String msg=this.getMsgFromAffect(affect.sourceMessage());
 			if(msg!=null)

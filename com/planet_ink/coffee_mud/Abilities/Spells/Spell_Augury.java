@@ -106,7 +106,8 @@ public class Spell_Augury extends Spell
 				||(aggressiveMonster)
 				||((opExit!=null)&&((opExit.isTrapped())||isTrapped(opExit))))
 					mob.tell("You feel going that way would be bad.");
-				mob.tell("You feel going that way would be good.");
+				else
+					mob.tell("You feel going that way would be good.");
 			}
 
 		}
