@@ -44,16 +44,6 @@ public class StdContainer extends StdItem implements Container
 				&&(affect.tool() instanceof Item))
 				{
 					Item newitem=(Item)affect.tool();
-					if(capacity>0)
-					{
-						if((envStats().weight()+newitem.envStats().weight())>capacity)
-						{
-							mob.tell(name()+" is full.");
-							return false;
-						}
-						return true;
-					}
-					else
 					if(hasALid()&&(!isOpen()))
 					{
 						mob.tell(mob,null,name()+" is closed.");
@@ -76,6 +66,16 @@ public class StdContainer extends StdItem implements Container
 					{
 						mob.tell(mob,null,"You are wearing that!");
 						return false;
+					}
+					else
+					if(capacity>0)
+					{
+						if((envStats().weight()+newitem.envStats().weight())>capacity)
+						{
+							mob.tell(name()+" is full.");
+							return false;
+						}
+						return true;
 					}
 				}
 				break;

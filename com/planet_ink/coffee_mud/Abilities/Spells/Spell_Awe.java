@@ -48,7 +48,10 @@ public class Spell_Awe extends Spell
 			{
 				affect.source().tell("You are too much in awe of "+target.name());
 				if(target.getVictim()==affect.source())
+				{
 					target.makePeace();
+					target.setVictim(null);
+				}
 				return false;
 			}
 		}

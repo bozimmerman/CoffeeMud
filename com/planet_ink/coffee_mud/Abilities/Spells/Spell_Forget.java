@@ -51,7 +51,7 @@ public class Spell_Forget extends Spell
 		if((affect.amISource(mob))
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Ability)
-		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_MIND)))
+		&&(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+10)))
 		{
 			mob.tell("You can't remember "+affect.tool().name()+"!");
 			return false;

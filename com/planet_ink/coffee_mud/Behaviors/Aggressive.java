@@ -43,7 +43,6 @@ public class Aggressive extends StdBehavior
 			
 			// normal attack
 			ExternalPlay.postAttack(monster,mob,monster.fetchWieldedItem());
-			monster.setVictim(mob);
 		}
 	}
 	public static void pickAFight(MOB observer)

@@ -34,6 +34,13 @@ public class Spell_Permanency extends Spell
 	{
 		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
 	}
+	public String displayText()
+	{
+		if(permanentAbility!=null)
+			return "(Permanency of "+permanentAbility.name()+")";
+		else
+			return "(Permanency of nothing!)";
+	}
 	
 	public void unInvoke()
 	{
@@ -80,7 +87,7 @@ public class Spell_Permanency extends Spell
 					Ability A=target.fetchAffect(a);
 					if((A.invoker()==mob)
 					 &&(!A.isAnAutoEffect())
-					 &&(!A.canBeUninvoked())
+					 &&(A.canBeUninvoked())
 					 &&(A instanceof StdAbility)
 					 &&((A.classificationCode()&Ability.ALL_CODES)!=Ability.PROPERTY)
 					 &&(((StdAbility)A).getTickDownRemaining()>0)
