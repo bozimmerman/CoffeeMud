@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Prayer_BladeBarrier extends Prayer
 {
+	String lastMessage=null;
 	public Prayer_BladeBarrier()
 	{
 		super();
@@ -45,25 +46,36 @@ public class Prayer_BladeBarrier extends Prayer
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
-		if(invoker==null) return;
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
-
+		if((invoker==null) 
+		||(affected==null)
+		||(!(affected instanceof MOB)))
+			return;
 		if(affect.target()==invoker)
 		{
-			if((Dice.rollPercentage()>50+((MOB)affect.target()).charStats().getDexterity())
-			&&(!Util.bset(affect.targetCode(),Affect.ACT_GENERAL))
+			if((Dice.rollPercentage()>60+affect.source().charStats().getDexterity())
+			&&((lastMessage==null)||(!lastMessage.startsWith("The blade barrier around")))
 			&&((Util.bset(affect.targetMajor(),Affect.AFF_TOUCHED))
 			   ||(Util.bset(affect.targetMajor(),Affect.AFF_MOVEDON))))
 			{
 				int level=(int)Math.round(Util.div(invoker.envStats().level(),6.0));
 				if(level>5) level=5;
 				int damage=Dice.roll(2,level,0);
-				affect.source().location().show((MOB)affect.target(),affect.source(),Affect.MSG_OK_ACTION,"The blade barrier around <S-NAME> "+ExternalPlay.hitWord(-1,damage)+" <T-NAME>!");
+				StringBuffer hitWord=new StringBuffer(ExternalPlay.hitWord(-1,damage));
+				if(hitWord.charAt(hitWord.length()-1)==')')
+					hitWord.deleteCharAt(hitWord.length()-1);
+				if(hitWord.charAt(hitWord.length()-2)=='(')
+					hitWord.deleteCharAt(hitWord.length()-2);
+				if(hitWord.charAt(hitWord.length()-3)=='(')
+					hitWord.deleteCharAt(hitWord.length()-3);
+				affect.source().location().show((MOB)affect.target(),affect.source(),Affect.MSG_OK_ACTION,"The blade barrier around <S-NAME> "+hitWord+" <T-NAME>!");
 				ExternalPlay.postDamage((MOB)affect.target(),affect.source(),this,damage);
+				lastMessage="The blade barrier around";
 			}
-
+			else
+				lastMessage=affect.othersMessage();
 		}
+		else
+			lastMessage=affect.othersMessage();
 		return;
 	}
 
