@@ -135,6 +135,19 @@ public class CommonSkill extends StdAbility
 		return V;
 	}
 
+	protected void commonTell(MOB mob, Environmental target, Environmental tool, String str)
+	{
+		if(mob.isMonster()&&(mob.amFollowing()!=null))
+		{
+			if(str.startsWith("You")) str="I"+str.substring(3);
+			if(target!=null) str=Util.replaceAll(str,"<T-NAME>",target.name());
+			if(tool!=null)  str=Util.replaceAll(str,"<O-NAME>",tool.name());
+			ExternalPlay.quickSay(mob,null,str,false,false);
+		}
+		else
+			mob.tell(mob,target,tool,str);
+	}
+
 	protected void commonTell(MOB mob, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))

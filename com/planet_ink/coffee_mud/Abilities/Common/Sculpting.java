@@ -301,7 +301,7 @@ public class Sculpting extends CommonSkill
 			if((!building.isGettable())
 			&&(!ExternalPlay.doesOwnThisProperty(mob,mob.location())))
 			{
-				mob.tell("You are not allowed to build that here.");
+				commonTell(mob,"You are not allowed to build that here.");
 				return false;
 			}
 			building.text();

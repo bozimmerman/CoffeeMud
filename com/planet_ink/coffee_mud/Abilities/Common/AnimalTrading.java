@@ -32,7 +32,7 @@ public class AnimalTrading extends CommonSkill
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell("Sell what?");
+			commonTell(mob,"Sell what?");
 			return false;
 		}
 		

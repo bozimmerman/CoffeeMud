@@ -589,13 +589,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		if(V.size()==0)
 		{
-			mob.tell("You don't seem to be carrying '"+itemName+"'.");
+			commonTell(mob,"You don't seem to be carrying '"+itemName+"'.");
 			return false;
 		}
 		
 		if((numberInStock(target)<=0)&&(val<=0))
 		{
-			mob.tell("You failed to specify a price for '"+itemName+"'.");
+			commonTell(mob,"You failed to specify a price for '"+itemName+"'.");
 			return false;
 		}
 		
@@ -604,7 +604,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		
 		if(!profficiencyCheck(0,auto))
 		{
-			mob.tell(mob,target,null,"You fail to put <T-NAME> up for sale.");
+			commonTell(mob,target,null,"You fail to put <T-NAME> up for sale.");
 			return false;
 		}
 		

@@ -73,10 +73,10 @@ public class Speculate extends CommonSkill
 								}
 							}
 						}
-						mob.tell(str.toString());
+						commonTell(mob,str.toString());
 					}
 					else
-						mob.tell("You don't find any good resources around here.");
+						commonTell(mob,"You don't find any good resources around here.");
 				}
 			}
 		}

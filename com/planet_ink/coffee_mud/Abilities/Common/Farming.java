@@ -36,7 +36,7 @@ public class Farming extends CommonSkill
 			{
 				if(found==null)
 				{
-					mob.tell("Your "+foundShortName+" crop has failed.\n\r");
+					commonTell(mob,"Your "+foundShortName+" crop has failed.\n\r");
 					unInvoke();
 				}
 			}

@@ -75,7 +75,10 @@ public class Chant_PlantSnare extends Chant
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_HILLS)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP))
+		{
 			mob.tell("There doesn't seem to be a large enough mass of plant life around here...\n\r");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

@@ -46,10 +46,13 @@ public class Herbology extends CommonSkill
 				else
 				{
 					String herb=herbList[Dice.roll(1,herbList.length,-1)];
-					mob.tell(found.name()+" appears to be "+herb+".");
+					commonTell(mob,found.name()+" appears to be "+herb+".");
 					String name=found.name();
 					name=name.substring(0,name.length()-5).trim();
-					found.setName(name+" "+herb);
+					if(name.length()>0)
+						found.setName(name+" "+herb);
+					else
+						found.setName("some "+herb);
 					found.setDisplayText(found.name()+" is here");
 					found.setDescription("");
 					found.text();

@@ -588,8 +588,17 @@ public class Cooking extends CommonSkill
 				if(I instanceof Food)
 					drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment());
 			}
-			drink.setLiquidHeld(drink.liquidRemaining());
-			drink.setThirstQuenched(drink.liquidRemaining());
+			if(drink.liquidRemaining()>0)
+			{
+				drink.setLiquidHeld(drink.liquidRemaining());
+				drink.setThirstQuenched(drink.liquidRemaining());
+			}
+			else
+			{
+				drink.setLiquidHeld(1);
+				drink.setLiquidRemaining(1);
+				drink.setThirstQuenched(1);
+			}
 			drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()/finalAmount);
 			if(burnt)drink.setThirstQuenched(1);
 		}
