@@ -10,6 +10,9 @@ public class Prop_ItemTransporter extends Property
 	Room roomDestination=null;
 	MOB mobDestination=null;
 	Item nextDestination=null;
+	Room roomMover=null;
+	MOB mobMover=null;
+	Item container=null;
 	public Prop_ItemTransporter()
 	{
 		super();
@@ -115,8 +118,9 @@ public class Prop_ItemTransporter extends Property
 			return false;
 		if(affected==null) return true;
 		if((affect.amITarget(affected))
-		&&((affect.targetMinor()==Affect.TYP_PUT)||(affect.targetMinor()==Affect.TYP_DROP))
-		&&((affected instanceof Room)||(affected instanceof Item))
+		&&((affect.targetMinor()==Affect.TYP_PUT)
+		   ||(affect.targetMinor()==Affect.TYP_DROP)
+		   ||(affect.targetMinor()==Affect.TYP_GIVE))
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Item))
 		{
@@ -125,6 +129,7 @@ public class Prop_ItemTransporter extends Property
 				affect.source().tell("The transporter has no possible ItemTransReceiver with the code '"+text()+"'.");
 				return false;
 			}
+			setMover();
 		}
 		else
 		if((affected instanceof MOB)
@@ -138,89 +143,100 @@ public class Prop_ItemTransporter extends Property
 				affect.source().tell("The transporter has no possible ItemTransReceiver with the code '"+text()+"'.");
 				return false;
 			}
+			setMover();
 		}
 		return true;
 	}
+	
+	public void setMover()
+	{
+		if(affected instanceof Room)
+			roomMover=(Room)affected;
+		else
+		if(affected instanceof MOB)
+			mobMover=(MOB)affected;
+		else
+		if(affected instanceof Item)
+		{
+			container=(Item)affected;
+			if((container.myOwner()!=null)&&(container.myOwner() instanceof Room))
+				roomMover=(Room)container.myOwner();
+			else
+			if((container.myOwner()!=null)&&(container.myOwner() instanceof MOB))
+				mobMover=(MOB)container.myOwner();
+		}
+	}
+	
+	public void tryToMoveStuff()
+	{
+		Vector itemsToMove=new Vector();
+		if(roomMover!=null)
+		{
+			for(int i=0;i<roomMover.numItems();i++)
+			{
+				Item item=roomMover.fetchItem(i);
+				if((item!=null)
+				   &&(item!=container)
+				   &&(item.amWearingAt(Item.INVENTORY))
+				   &&((item.location()==container)||(ultimateParent(item)==container)))
+				   itemsToMove.addElement(item);
+			}
+			for(int i=0;i<itemsToMove.size();i++)
+				roomMover.delItem((Item)itemsToMove.elementAt(i));
+		}
+		else
+		if(mobMover!=null)
+		{
+			int oldNum=itemsToMove.size();
+			for(int i=0;i<mobMover.inventorySize();i++)
+			{
+				Item item=mobMover.fetchInventory(i);
+				if((item!=null)
+				   &&(item!=container)
+				   &&(item.amWearingAt(Item.INVENTORY))
+				   &&((item.location()==container)||(ultimateParent(item)==container)))
+				   itemsToMove.addElement(item);
+			}
+			for(int i=oldNum;i<itemsToMove.size();i++)
+				mobMover.delInventory((Item)itemsToMove.elementAt(i));
+		}
+		if(itemsToMove.size()>0)
+		{
+			if(roomDestination!=null)
+				for(int i=0;i<itemsToMove.size();i++)
+				{
+					Item item=(Item)itemsToMove.elementAt(i);
+					if((item.location()==null)||(item.location()==container))
+						item.setLocation(nextDestination);
+					roomDestination.addItem(item);
+				}
+			if(mobDestination!=null)
+				for(int i=0;i<itemsToMove.size();i++)
+				{
+					Item item=(Item)itemsToMove.elementAt(i);
+					if((item.location()==null)||(item.location()==container))
+						item.setLocation(nextDestination);
+					mobDestination.addInventory(item);
+				}
+		}
+	}
+	public boolean tick(int tickID)
+	{
+		if(tickID==Host.MOB_TICK)
+			tryToMoveStuff();
+		return true;
+	}
+	
 	public void affect(Affect affect)
 	{
 		// amazingly important that this happens first!
 		super.affect(affect);
 		if(affected==null) return;
-		if((mobDestination!=null)||(roomDestination!=null))
-		{
-			Room roomMover=null;
-			MOB mobMover=null;
-			Item container=null;
-			if((affect.amITarget(affected))
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Item))
-			{
-				if((affected instanceof Room)
-				&&(affect.targetMinor()==Affect.TYP_DROP))
-					roomMover=(Room)affected;
-				else
-				if((affected instanceof Item)
-				&&(affect.targetMinor()==Affect.TYP_PUT))
-				{
-					container=(Item)affected;
-					if((container.myOwner()!=null)&&(container.myOwner() instanceof Room))
-						roomMover=(Room)container.myOwner();
-					else
-					if((container.myOwner()!=null)&&(container.myOwner() instanceof MOB))
-						mobMover=(MOB)container.myOwner();
-				}
-			}
-			else
-			if((affected instanceof MOB)
-			&&(affect.amISource((MOB)affected))
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof Item)
-			&&(affect.targetMinor()==Affect.TYP_GET))
-				mobMover=(MOB)affect.source();
-			Vector itemsToMove=new Vector();
-			if(roomMover!=null)
-			{
-				for(int i=0;i<roomMover.numItems();i++)
-				{
-					Item item=roomMover.fetchItem(i);
-					if((item!=null)&&(item!=container)&&(ultimateParent(item)==container))
-					   itemsToMove.addElement(item);
-				}
-				for(int i=0;i<itemsToMove.size();i++)
-					roomMover.delItem((Item)itemsToMove.elementAt(i));
-			}
-			else
-			if(mobMover!=null)
-			{
-				int oldNum=itemsToMove.size();
-				for(int i=0;i<mobMover.inventorySize();i++)
-				{
-					Item item=mobMover.fetchInventory(i);
-					if((item!=null)&&(item!=container)&&(ultimateParent(item)==container))
-					   itemsToMove.addElement(item);
-				}
-				for(int i=oldNum;i<itemsToMove.size();i++)
-					mobMover.delInventory((Item)itemsToMove.elementAt(i));
-			}
-			if(itemsToMove.size()>0)
-			{
-				if(roomDestination!=null)
-					for(int i=0;i<itemsToMove.size();i++)
-					{
-						Item item=(Item)itemsToMove.elementAt(i);
-						if((item.location()==null)||(item.location()==container))
-							item.setLocation(nextDestination);
-						roomDestination.addItem(item);
-					}
-				if(mobDestination!=null)
-					for(int i=0;i<itemsToMove.size();i++)
-					{
-						Item item=(Item)itemsToMove.elementAt(i);
-						if((item.location()==null)||(item.location()==container))
-							item.setLocation(nextDestination);
-						mobDestination.addInventory(item);
-					}
-			}
-		}
+		if(((mobDestination!=null)||(roomDestination!=null))
+		&&((affect.targetMinor()==Affect.TYP_GET)
+		||(affect.targetMinor()==Affect.TYP_GIVE)
+		||(affect.targetMinor()==Affect.TYP_PUT)
+		||(affect.targetMinor()==Affect.TYP_DROP)))
+			tryToMoveStuff();
 	}
 }

@@ -21,7 +21,7 @@ public class StdMaze extends StdGrid
 
 	protected void buildFinalLinks()
 	{
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
 		{
 			Room dirRoom=rawDoors()[d];
 			if(dirRoom!=null)
@@ -83,7 +83,7 @@ public class StdMaze extends StdGrid
 		while(okRoom)
 		{
 			okRoom=false;
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
 			{
 				Room possRoom=roomDir(x,y,d);
 				if(possRoom!=null)

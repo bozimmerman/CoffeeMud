@@ -4,7 +4,7 @@ package com.planet_ink.coffee_mud.utils;
 import com.planet_ink.coffee_mud.interfaces.Room;
 public class Directions
 {
-	public final static int NUM_DIRECTIONS=6;
+	public final static int NUM_DIRECTIONS=7;
 	
 	public static final int NORTH=0;
 	public static final int SOUTH=1;
@@ -12,6 +12,8 @@ public class Directions
 	public static final int WEST=3;
 	public static final int UP=4;
 	public static final int DOWN=5;
+	
+	public static final int GATE=NUM_DIRECTIONS-1;
 
 											   
 	public static String getDirectionName(String theDir)
@@ -35,6 +37,8 @@ public class Directions
 				return "Up";
 			case DOWN:
 				return "Down";
+			case GATE:
+				return "Here";
 		}
 		return "";
 	}
@@ -42,13 +46,13 @@ public class Directions
 	public static char getDirectionChar(int code)
 	{
 		if(code<NUM_DIRECTIONS)
-			return ("NSEWUD").charAt(code);
+			return ("NSEWUDV").charAt(code);
 		return ' ';
 	}
 
 	public static int getDirectionCode(char theChar)
 	{
-		int code=("NSEWUD").indexOf(Character.toUpperCase(theChar));
+		int code=("NSEWUDV").indexOf(Character.toUpperCase(theChar));
 		return code;
 	}
 	
@@ -56,12 +60,10 @@ public class Directions
 	{
 		int code=-1;
 		if (theDir.length()>0)
-			code=("NSEWUD").indexOf(Character.toUpperCase(theDir.charAt(0)));
+			code=("NSEWUDV").indexOf(Character.toUpperCase(theDir.charAt(0)));
 		return code;
 	}
 	
-	
-
 	public static int getGoodDirectionCode(String theDir)
 	{
 		int code=-1;
@@ -91,6 +93,12 @@ public class Directions
 		else
 		if(("BELOW").startsWith(theDir.toUpperCase()))
 		   return DOWN;
+		else
+		if(("NOWHERE").startsWith(theDir.toUpperCase()))
+		   return GATE;
+		else
+		if(("HERE").startsWith(theDir.toUpperCase()))
+		   return GATE;
 		
 		return code;
 	}
@@ -107,18 +115,20 @@ public class Directions
 	{
 		switch(code)
 		{
-			case NORTH:
-				return "the north";
-			case SOUTH:
-				return "the south";
-			case EAST:
-				return "the east";
-			case WEST:
-				return "the west";
-			case UP:
-				return "above";
-			case DOWN:
-				return "below";
+		case NORTH:
+			return "the north";
+		case SOUTH:
+			return "the south";
+		case EAST:
+			return "the east";
+		case WEST:
+			return "the west";
+		case UP:
+			return "above";
+		case DOWN:
+			return "below";
+		case GATE:
+			return "out of nowhere";
 		}
 		return "";
 	}
@@ -127,18 +137,20 @@ public class Directions
 	{
 		switch(code)
 		{
-			case NORTH:
-				return "to the north";
-			case SOUTH:
-				return "to the south";
-			case EAST:
-				return "to the east";
-			case WEST:
-				return "to the west";
-			case UP:
-				return "above you";
-			case DOWN:
-				return "below";
+		case NORTH:
+			return "to the north";
+		case SOUTH:
+			return "to the south";
+		case EAST:
+			return "to the east";
+		case WEST:
+			return "to the west";
+		case UP:
+			return "above you";
+		case DOWN:
+			return "below";
+		case GATE:
+			return "here";
 		}
 		return "";
 	}
@@ -147,18 +159,20 @@ public class Directions
 	{
 		switch(code)
 		{
-			case NORTH:
-				return SOUTH;
-			case SOUTH:
-				return NORTH;
-			case WEST:
-				return EAST;
-			case EAST:
-				return WEST;
-			case UP:
-				return DOWN;
-			case DOWN:
-				return UP;
+		case NORTH:
+			return SOUTH;
+		case SOUTH:
+			return NORTH;
+		case WEST:
+			return EAST;
+		case EAST:
+			return WEST;
+		case UP:
+			return DOWN;
+		case DOWN:
+			return UP;
+		case GATE:
+			return GATE;
 		}
 		return -1;
 	}

@@ -20,16 +20,11 @@
 ! Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it will send the items to the appropriate GateObject.  The GateObject can be either a container or not. If not, the GateObject will drop its cargo on the floor.  The TeleportingContainer and the GateObject will have identical MiscText fields to establish the Keys between them.
 ! Forget spell to make someone forget a skill they try, at random!
 ! Predict Weather spell! 
+! Multi-Room Gate would work the same way.  An Entry, Exit, and TwoWay type would be constructed.  The Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course.  The  Following thing would be automatic, if an Exit and Direction extensions are used. 
+! genbed, gentable
+! ranger skills: find water
 
-A Multi-Room Gate would work the same way.  An Entry, Exit, and TwoWay type would be constructed.  The
-Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course.  The 
-Following thing would be automatic, if an Exit and Direction extensions are used.
-
-ranger skills: find water, hunt (finds a huntable animal)
-
-target commmand to switch among targets fighting you
-
-genbed, gentable
+kill commmand to switch among targets fighting you
 
 Two-handed fighting
 

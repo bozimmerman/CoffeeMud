@@ -175,6 +175,9 @@ public class CommandProcessor
 				case CommandSet.EMOTE:
 					basicSenses.emote(mob,commands);
 					break;
+				case CommandSet.ENTER:
+					movement.enter(mob,commands);
+					break;
 				case CommandSet.EVOKE: // an ability
 					abilityEvoker.evoke(mob,commands);
 					break;

@@ -51,13 +51,13 @@ public class Spell_DetectWater extends Spell
 		if(I.location()==container)
 		{
 			if(((I instanceof Drink))
-			&&(!((Drink)I).containsDrink())
+			&&(((Drink)I).containsDrink())
 			&&(Sense.canBeSeenBy(I,mob)))
 				msg.append(I.name()+" contains some sort of liquid.\n\r");
 		}
 		else
 		if((I.location()!=null)&&(I.location().location()==container))
-			if(msg.toString().indexOf(I.location().name()+" contains some sort of gold.")<0)
+			if(msg.toString().indexOf(I.location().name()+" contains some sort of liquid.")<0)
 				msg.append(I.location().name()+" contains some sort of liquid.\n\r");
 		return msg.toString();
 	}
@@ -95,11 +95,7 @@ public class Spell_DetectWater extends Spell
 				{
 					MOB M=room.fetchInhabitant(m);
 					if((M!=null)&&(M!=mob))
-					{
-						String ms=waterHere(mob,M,null);
-						if(ms.length()>0)
-							msg.append(E.name()+" is carrying some liquids.\n\r");
-					}
+						msg.append(waterHere(mob,M,null));
 				}
 			}
 		}
@@ -119,6 +115,19 @@ public class Spell_DetectWater extends Spell
 				waterCheck(mob,I,container,msg2);
 				if(msg2.length()>0)
 					return E.name()+" is carrying some liquids.";
+			}
+			if(E instanceof ShopKeeper)
+			{
+				StringBuffer msg2=new StringBuffer("");
+				Vector V=((ShopKeeper)E).getUniqueStoreInventory();
+				for(int v=0;v<V.size();v++)
+				{
+					Environmental E2=(Environmental)V.elementAt(v);
+					if(E2 instanceof Item)
+						waterCheck(mob,(Item)E2,container,msg2);
+					if(msg2.length()>0)
+						return E.name()+" has some liquids in stock.";
+				}
 			}
 		}
 		return msg.toString();

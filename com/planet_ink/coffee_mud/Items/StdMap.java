@@ -285,7 +285,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		{
 			return ' ';
 		}
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
 		{
 			if(room.r.rawDoors()[d]==nextRoom.r)
 			{
@@ -403,7 +403,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 			return false;
 
 		boolean ok=false;
-		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
+		for(int e=0;e<Directions.NUM_DIRECTIONS-1;e++)
 		{
 			Exit exit=room.r.rawExits()[e];
 			if(exit!=null)
@@ -444,7 +444,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
             MapRoom room=(MapRoom)areaMap.elementAt(i);
             room.x=0;
             room.y=0;
-            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+            for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
             {
                 Room dir=room.r.rawDoors()[d];
                 if(dir!=null)
@@ -517,7 +517,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
                 {
                     MapRoom roomToBlame=(MapRoom)allRooms.elementAt(r);
                     if(roomToBlame!=room)
-                        for(int rd=0;rd<Directions.NUM_DIRECTIONS;rd++)
+                        for(int rd=0;rd<Directions.NUM_DIRECTIONS-1;rd++)
                         {
                             Room RD=roomToBlame.r.rawDoors()[rd];
 							if(RD!=null)
@@ -546,7 +546,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
         // considered processed only once!
         processed.put(room.r.ID(),room);
 
-        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
         {
             String roomID=null;
 			Exit exit=null;

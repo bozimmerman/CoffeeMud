@@ -429,12 +429,11 @@ public class StdAbility implements Ability, Cloneable
 			if(diff>0)
 			switch(diff)
 			{
-			case 1: manaConsumed=40; break;
-			case 2: manaConsumed=35; break;
-			case 3: manaConsumed=25; break;
-			case 4: manaConsumed=20; break;
-			case 5: manaConsumed=15; break;
-			case 6: manaConsumed=10; break;
+			case 1: manaConsumed=35; break;
+			case 2: manaConsumed=25; break;
+			case 3: manaConsumed=20; break;
+			case 4: manaConsumed=15; break;
+			case 5: manaConsumed=10; break;
 			default: manaConsumed=5; break;
 			}
 

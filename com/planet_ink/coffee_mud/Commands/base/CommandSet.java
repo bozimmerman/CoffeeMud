@@ -130,6 +130,7 @@ public class CommandSet extends Hashtable
 	public static final int REBUKE=118;
 	public static final int CRAWL=119;
 	public static final int TIME=120;
+	public static final int ENTER=121;
 
 	public CommandSet()
 	{
@@ -308,6 +309,7 @@ public class CommandSet extends Hashtable
 		put("WIZINV",new Integer(WIZINV));
 		put("XML",new Integer(XML));
 		put("YELL",new Integer(YELL));
+		put("ENTER",new Integer(ENTER));
 	}
 
 

@@ -35,7 +35,7 @@ public class EndlessSky extends StdGrid
 
 	protected void buildFinalLinks()
 	{
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
 		{
 			Room dirRoom=rawDoors()[d];
 			if(dirRoom!=null)

@@ -1,7 +1,7 @@
 ^HMOVEMENT^N                            ^HCOMMUNICATION^?
 north south east west up down       gossip chat gratz greet
 exits recall ride crawl             answer quote say tell channels
-sleep wake rest stand               quiet emote socials yell ask
+sleep wake rest stand enter         quiet emote socials yell ask
 
 ^HCOMBAT/SPELLS/SKILLS^?                ^HINFORMATION^?
 kill backstab flee wimpy rescue     help credits commands areas

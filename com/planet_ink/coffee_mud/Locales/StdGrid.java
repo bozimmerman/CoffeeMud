@@ -84,7 +84,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		
 		if(loc.ID().length()==0) // might be a child of an adjacent grid!
 		{
-			for(int x=0;x<Directions.NUM_DIRECTIONS;x++)
+			for(int x=0;x<Directions.NUM_DIRECTIONS-1;x++)
 				if((doors[x]!=null)
 				   &&(doors[x] instanceof GridLocale)
 				   &&(((GridLocale)doors[x]).isMyChild(loc)))
@@ -96,7 +96,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		
 		if(oldDirCode<0)
-			for(int x=0;x<Directions.NUM_DIRECTIONS;x++)
+			for(int x=0;x<Directions.NUM_DIRECTIONS-1;x++)
 				if((doors[x]!=null)&&(doors[x]==loc))
 				{
 					oldDirCode=x;
@@ -189,7 +189,7 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	protected void buildFinalLinks()
 	{
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
 		{
 			Room dirRoom=this.rawDoors()[d];
 			if(dirRoom!=null)

@@ -19,6 +19,52 @@ public class Movement
 		}
 	}
 
+	public void enter(MOB mob, Vector commands)
+	{
+		if(commands.size()<=1)
+		{
+			mob.tell("Enter what or where? Try EXITS.");
+			return;
+		}
+		String enterWhat=Util.combine(commands,1).toUpperCase();
+		int dir=-1;
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			Exit e=mob.location().getExitInDir(d);
+			if((e!=null)&&(mob.location().getRoomInDir(d)!=null))
+			{
+				if((Sense.canBeSeenBy(e,mob))
+				&&((e.name().equalsIgnoreCase(enterWhat))
+				||(e.displayText().equalsIgnoreCase(enterWhat))
+				||(e.description().equalsIgnoreCase(enterWhat))))
+				{
+					dir=d; break;
+				}
+			}
+		}
+		if(dir<0)
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			Exit e=mob.location().getExitInDir(d);
+			if((e!=null)&&(mob.location().getRoomInDir(d)!=null))
+			{
+				if((Sense.canBeSeenBy(e,mob))
+				&&(((CoffeeUtensils.containsString(e.name().toUpperCase(),enterWhat))
+				||(CoffeeUtensils.containsString(e.displayText().toUpperCase(),enterWhat))
+				||(CoffeeUtensils.containsString(e.description().toUpperCase(),enterWhat)))))
+				{
+					dir=d; break;
+				}
+			}
+		}
+		if(dir<0)
+		{
+			mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
+			return;
+		}
+		move(mob,dir,false);
+	}
+	
 	public void crawl(MOB mob, Vector commands)
 	{
 		boolean tagged=false;

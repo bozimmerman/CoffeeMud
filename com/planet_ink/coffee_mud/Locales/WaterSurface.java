@@ -66,6 +66,7 @@ public class WaterSurface extends StdRoom
 
 	public void affect(Affect affect)
 	{
+		super.affect(affect);
 		if((affect.target() instanceof Item)
 		   &&(affect.targetMinor()==Affect.TYP_DROP)
 		   &&(!Sense.isSleeping(this)))
