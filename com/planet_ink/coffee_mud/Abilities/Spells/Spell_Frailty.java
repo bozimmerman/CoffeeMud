@@ -26,7 +26,7 @@ public class Spell_Frailty extends Spell
 		MOB mob=(MOB)affected;
 		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
 		{
-			int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),2.0));
+			int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
 			SaucerSupport.adjustDamageMessage(affect,recovery);
 		}
 		return true;
