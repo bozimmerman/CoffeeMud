@@ -8,10 +8,10 @@ import com.planet_ink.coffee_mud.utils.*;
 public class MOBloader
 {
 
-	public static void DBRead(MOB mob)
+	public static boolean DBReadUserOnly(MOB mob)
 	{
-		if(mob.ID().length()==0) return;
-
+		if(mob.ID().length()==0) return false;
+		boolean found=false;
 		DBConnection D=null;
 		try
 		{
@@ -60,6 +60,7 @@ public class MOBloader
 				mob.setLeigeID(DBConnections.getRes(R,"CMLEIG"));
 				mob.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 				mob.baseEnvStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
+				found=true;
 			}
 			DBConnector.DBDone(D);
 		}
@@ -68,7 +69,16 @@ public class MOBloader
 			Log.errOut("MOB",sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		return found;
+	}
+	
+	public static void DBRead(MOB mob)
+	{
+		if(mob.ID().length()==0) return;
 
+		DBReadUserOnly(mob);
+
+		DBConnection D=null;
 		// now grab the items
 		try
 		{

@@ -239,6 +239,11 @@ public class ExternalPlay
 		if(sysPlayer!=null) return sysPlayer.listTicks(whichTick);
 		return new StringBuffer();
 	}
+	public static boolean DBReadUserOnly(MOB mob)
+	{
+		if(sysPlayer!=null) return sysPlayer.DBReadUserOnly(mob);
+		return false;
+	}
 	public static boolean DBUserSearch(MOB mob, String Login)
 	{
 		if(sysPlayer!=null) return sysPlayer.DBUserSearch(mob,Login);

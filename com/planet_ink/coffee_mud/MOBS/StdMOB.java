@@ -1650,7 +1650,6 @@ public class StdMOB implements MOB
 
 	public boolean isASysOp(Room of)
 	{
-		if(isMonster()) return false;
 		if(baseCharStats()==null) return false;
 		if(baseCharStats().getMyClass()==null) return false;
 		if(this.baseCharStats().getMyClass().ID().equals("Archon"))

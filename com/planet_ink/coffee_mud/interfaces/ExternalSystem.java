@@ -31,6 +31,7 @@ public interface ExternalSystem
 	public void DBDeleteJournal(String Journal, int which);
 	public void clearDebri(Room room, int taskCode);
 	public StringBuffer listTicks(int whichTick);
+	public boolean DBReadUserOnly(MOB mob);
 	public boolean DBUserSearch(MOB mob, String Login);
 	public void vassals(MOB mob, String leigeID);
 }

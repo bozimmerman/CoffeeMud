@@ -419,8 +419,14 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 								foundMacro=foundMacro.substring(3);
 								try
 								{
+									String compare="true";
+									if(foundMacro.startsWith("!"))
+									{
+										foundMacro=foundMacro.substring(1);
+										compare="false";
+									}
 									String q=runMacro(foundMacro);
-									if((q!=null)&&(q.equalsIgnoreCase("true")))
+									if((q!=null)&&(q.equalsIgnoreCase(compare)))
 									{
 										if(v2>=0)
 											s.replace(v2,v+7,"");
@@ -435,25 +441,25 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 										else
 											s.replace(i,v+7,"");
 									}
-									foundMacro="";
 								}
 								catch (HTTPRedirectException e)
 								{
 									redirectTo = e.getMessage();
 								}
 							}
+							continue;
 						}
 						else
 						if(foundMacro.equalsIgnoreCase("endif"))
 						{
 							s.replace(i,i+7,"");
-							foundMacro="";
+							continue;
 						}
 						else
 						if(foundMacro.equalsIgnoreCase("else"))
 						{
 							s.replace(i,i+6,"");
-							foundMacro="";
+							continue;
 						}
 						else
 						if(foundMacro.equalsIgnoreCase("loop"))
@@ -483,15 +489,18 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 									ldex+=s3.length();
 								}
 							}
-
+							continue;
 						}
 						else
 						if(foundMacro.equalsIgnoreCase("break"))
 							return ("").getBytes();
-						// seperated on purpose?
-						if(foundMacro.equalsIgnoreCase("back"))
-							s.replace(i,i+6, "[back without loop]" );
 						else
+						if(foundMacro.equalsIgnoreCase("back"))
+						{
+							s.replace(i,i+6, "[back without loop]" );
+							continue;
+						}
+						
 						if(foundMacro.length()>0)
 						{
 							try

@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.utils.*;
 public class Authenticate extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public boolean isAdminMacro()	{return true;}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
@@ -16,7 +17,7 @@ public class Authenticate extends StdWebMacro
 			return Encrypt(getLogin(httpReq))+"\""+Encrypt(getPassword(httpReq));
 		else
 		{
-			if(authenticated(getLogin(httpReq),getPassword(httpReq)))
+			if(authenticated(httpReq,getLogin(httpReq),getPassword(httpReq)))
 				return "true";
 			else
 				return "false";
@@ -26,15 +27,28 @@ public class Authenticate extends StdWebMacro
 	private static final String ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~1!2@3#4$5%6^7&8*9(0)-_=+[{]}|;:',<.>/? ";
 	private static final String FILTER="peniswrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad";
 
-	public static boolean authenticated(String login, String password)
+	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
 	{
 		MOB mob=(MOB)CMMap.MOBs.get(login);
 		if(mob==null)
 		{
 			mob=CMClass.getMOB("StdMOB");
-			if(!ExternalPlay.DBUserSearch(mob,login))
+			mob.setName(login);
+			if(!ExternalPlay.DBReadUserOnly(mob))
 				return false;
+			mob.recoverEnvStats();
+			mob.recoverCharStats();
 		}
+		boolean subOp=false;
+		boolean sysop=mob.isASysOp(null);
+		httpReq.getRequestParameters().put("SYSOP",""+sysop);
+		for(int a=0;a<CMMap.numAreas();a++)
+		{
+			Area A=(Area)CMMap.getArea(a);
+			if(A.amISubOp(mob.name()))
+			{ subOp=true; break;}
+		}
+		httpReq.getRequestParameters().put("SUBOP",""+(sysop||subOp));
 		return mob.password().equalsIgnoreCase(password)&&(mob.name().trim().length()>0);
 	}
 	

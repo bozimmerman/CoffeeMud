@@ -1,12 +1,30 @@
-@if?Authenticate@
-<HTML><BODY>
-<FORM NAME=SELECTAREA METHOD=GET TARGET=/selectarea.cmvp>
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH">
-Logged In!
+@if?!Authenticate@ @AddFile?failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?nopriv.cmvp@ @else@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="admin.css">
+	<title>CoffeeMUD MUDGrinder</title>
+</head>
+
+<body>
+
+<div align="center">
+<IMG SRC="images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<h3>CoffeeMUD MUDGrinder</H3>
+<br>
+<FORM NAME=SELECTAREA METHOD=GET TARGET=/grindermain.cmvp>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 </FORM>
 </BODY>
 </HTML>
-@else@ @AddFile?failedlogin.cmvp@ @endif@
+@endif@ 
+@endif@ 
+
 
 
 

@@ -76,6 +76,10 @@ public class ExternalSystems implements ExternalSystem
 	{
 		return MOBloader.DBUserSearch(mob,Login);
 	}
+	public boolean DBReadUserOnly(MOB mob)
+	{
+		return MOBloader.DBReadUserOnly(mob);
+	}
 	public StringBuffer listTicks(int whichTick)
 	{
 		return ServiceEngine.listTicks(whichTick);
