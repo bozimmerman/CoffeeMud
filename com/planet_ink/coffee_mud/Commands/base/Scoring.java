@@ -230,7 +230,7 @@ public class Scoring
 			mob.tell("Valid parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
 		else
 		if(!mob.isMonster())
-			mob.session().unfilteredPrintln("^BYou now qualify for the following:^?"+msg.toString());
+			mob.session().unfilteredPrintln("^BYou now qualify for the following unknown abilities:^?"+msg.toString());
 	}
 
 	public void prayers(MOB mob)
@@ -389,6 +389,7 @@ public class Scoring
 			Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
 			int level=thisAbility.qualifyingLevel(able);
 			if((thisAbility.qualifiesByLevel(able))
+			&&(able.fetchAbility(thisAbility.ID())==null)
 			&&(level>highestLevel)
 			&&(level<lowestLevel)
 			&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))

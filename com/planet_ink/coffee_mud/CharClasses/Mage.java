@@ -266,6 +266,7 @@ public class Mage extends StdCharClass
 			return false;
 		if(!(mob.charStats().getMyRace().ID().equals("Human"))
 		&& !(mob.charStats().getMyRace().ID().equals("Elf"))
+		&& !(mob.charStats().getMyRace().ID().equals("Gnome"))
 		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
 			return(false);
 		return true;
