@@ -163,8 +163,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 
 			}
-			requestMain = URLDecoder.decode(requestMain);
-			/* for sun vm 1.4
 			try
 			{
 				requestMain = URLDecoder.decode(requestMain,"UTF-8");
@@ -173,8 +171,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			{
 				Log.errOut(getName(),"Received wrong encoding");
 			}
-			*/
-			
 			return true;
 		}
 		catch (Exception e)
@@ -193,7 +189,14 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			String key=(String)e.nextElement();
 			String value=(String)getRequestParameters().get(key);
 			if(buf.length()>0) buf.append("&");
-			buf.append(URLEncoder.encode(key)+"="+URLEncoder.encode(value));
+			try
+			{
+				buf.append(URLEncoder.encode(key,"UTF-8")+"="+URLEncoder.encode(value,"UTF-8"));
+			}  
+			catch(java.io.UnsupportedEncodingException es)
+			{
+				Log.errOut(getName(),"Wrong Encoding");
+			}
 		}
 		requestParametersEncoded=buf.toString();
 	}
@@ -245,20 +248,16 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				thisParamName = thisParam.substring(0,eq);
 				thisParamValue = "";
 				if (eq < thisParam.length())
-						thisParamValue=preFilter(new StringBuffer(URLDecoder.decode(thisParam.substring(eq+1))));
-				/* for java vm 1.4
-				if (eq < thisParam.length())
 				{
 					try
 					{
-						thisParamValue=URLDecoder.decode(thisParam.substring(eq+1), "UTF-8");
+						thisParamValue=preFilter(new StringBuffer(URLDecoder.decode(thisParam.substring(eq+1), "UTF-8")));
 					}
 					catch(UnsupportedEncodingException e)
 					{
 						Log.errOut(getName(),"Received wrong encoding.2");
 					}
 				}
-				*/
 			}
 			if(!requestParametersTable.containsKey(thisParamName.toUpperCase()))
 				requestParametersTable.put(thisParamName.toUpperCase(),thisParamValue);

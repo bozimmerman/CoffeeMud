@@ -34,6 +34,7 @@ public class PlayerHelper extends StdBehavior
 		MOB target=(MOB)affect.target();
 
 		if((mob!=monster)
+		&&(target!=monster)
 		&&(Sense.canBeSeenBy(mob,monster))
 		&&(Sense.canBeSeenBy(target,monster))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))

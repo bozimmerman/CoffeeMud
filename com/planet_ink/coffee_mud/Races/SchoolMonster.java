@@ -16,7 +16,7 @@ public class SchoolMonster extends StdRace
 		// inches
 		shortestMale=24;
 		shortestFemale=24;
-		heightVariance=12;
+		heightVariance=52;
 		// pounds
 		lightestWeight=60;
 		weightVariance=60;

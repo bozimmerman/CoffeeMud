@@ -46,6 +46,7 @@ public class BrotherHelper extends StdBehavior
 		MOB target=(MOB)affect.target();
 
 		if((source!=observer)
+		&&(target!=observer)
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(target,observer))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))

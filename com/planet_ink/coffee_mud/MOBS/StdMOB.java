@@ -303,7 +303,8 @@ public class StdMOB implements MOB
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		if((Sense.isLight(this))&&(affected instanceof Room))
+		if(((Sense.isLight(this))||((amFollowing()!=null)&&(Sense.isLight(amFollowing()))))
+								   &&(affected instanceof Room))
 		{
 			if(Sense.isInDark(affected))
 				affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);

@@ -18,16 +18,16 @@ public class AreaNameEncoded extends StdWebMacro
 		{
 			Area A=CMMap.getArea(last);
 			if(A!=null)
-				return URLEncoder.encode(A.name());
-			/* for java vm 1.4
-			if(A!=null)
 			{
 				try
 				{
 					return URLEncoder.encode(A.name(),"UTF-8");
-				}  catch(UnsupportedEncodingException e){}
+				}  
+				catch(java.io.UnsupportedEncodingException e)
+				{
+					Log.errOut(name(),"Wrong Encoding");
+				}
 			}
-			*/
 		}
 		return "";
 	}

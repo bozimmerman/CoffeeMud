@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.web.macros.grinder;
 import java.net.*;
 import java.util.*;
+import java.net.URLEncoder;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -251,7 +252,14 @@ public class GrinderMap
 							String roomID=GR.roomID;
 							if(roomID.startsWith(area.name()+"#"))
 							    roomID=roomID.substring(roomID.indexOf("#"));
-							buf.append("<a name=\""+URLEncoder.encode(GR.roomID)+"\" href=\"javascript:Clicked('rmmenu.cmvp','','"+GR.roomID+"','');\"><FONT SIZE=-1><B>"+roomID+"</B></FONT></a><BR>");
+							try
+							{
+								buf.append("<a name=\""+URLEncoder.encode(GR.roomID,"UTF-8")+"\" href=\"javascript:Clicked('rmmenu.cmvp','','"+GR.roomID+"','');\"><FONT SIZE=-1><B>"+roomID+"</B></FONT></a><BR>");
+							}  
+							catch(java.io.UnsupportedEncodingException e)
+							{
+								Log.errOut("GrinderMap","Wrong Encoding");
+							}
 							buf.append("<FONT SIZE=-2>("+CMClass.className(GR.room)+")<BR>");
 							String displayText=GR.room.displayText();
 							if(displayText.length()>20)	displayText=displayText.substring(0,20)+"...";

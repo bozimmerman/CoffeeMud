@@ -34,6 +34,7 @@ public class ClanHelper extends StdBehavior
 		MOB target=(MOB)affect.target();
 
 		if((source!=observer)
+		&&(target!=observer)
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer))
