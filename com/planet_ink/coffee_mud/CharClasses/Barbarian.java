@@ -13,13 +13,13 @@ public class Barbarian extends StdCharClass
 	public int getMinHitPointsLevel(){return 3;}
 	public int getMaxHitPointsLevel(){return 25;}
 	public int getBonusPracLevel(){return -1;}
-	public int getBonusManaLevel(){return 8;}
+	public int getBonusManaLevel(){return 4;}
 	public int getBonusAttackLevel(){return 2;}
 	public int getAttackAttribute(){return CharStats.STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
-	public int getMovementMultiplier(){return 8;}
+	public int getMovementMultiplier(){return 13;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}

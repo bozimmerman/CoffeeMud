@@ -1,3 +1,6 @@
+document motd and other files somewhere
+better document the damn variable eq thang
+document MPM2I2M -- test, does it work?
 As of now, there is just one result of a kill, a corpse. Can it be added in future builds, the ability to return something other than a corpse? E.g. If I killed a living warrior, it will return a corpse as usual, however, if I destroyed a robot, a corpse should not be returned, rather "the remains", or "scraps of" are here. Likewise, if  rock monster was killed/golem, would return, "the pieces of a rock monsert has just been slain" or something or other. Further, how might one go about making a corpse disappear once killed? Like if a ghost were to be killed, it doesn't leave behind a "corpse", rather the mesage 'xxx disappears in to nothingness
 Ability to buy space ship areas, and add them to shopkeepers
 mutable body parts, with ability to grant powers

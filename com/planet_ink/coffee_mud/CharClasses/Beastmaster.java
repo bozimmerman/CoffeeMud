@@ -13,7 +13,7 @@ public class Beastmaster extends StdCharClass
 	public int getMinHitPointsLevel(){return 5;}
 	public int getMaxHitPointsLevel(){return 25;}
 	public int getBonusPracLevel(){return 2;}
-	public int getBonusManaLevel(){return 15;}
+	public int getBonusManaLevel(){return 7;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.CONSTITUTION;}
 	public int getLevelsPerBonusDamage(){ return 6;}

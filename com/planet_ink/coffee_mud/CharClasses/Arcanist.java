@@ -12,7 +12,7 @@ public class Arcanist extends Thief
 	private static boolean abilitiesLoaded2=false;
 	public boolean loaded(){return abilitiesLoaded2;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};
-	public int getBonusManaLevel(){return 18;}
+	public int getBonusManaLevel(){return 9;}
 
 	public Arcanist()
 	{

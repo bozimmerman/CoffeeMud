@@ -140,11 +140,16 @@ public class Create extends BaseGenerics
 		if(newItem.subjectToWearAndTear())
 			newItem.setUsesRemaining(100);
 		if(dest instanceof Room)
+		{
 			((Room)dest).addItem(newItem);
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
+		}
 		else
 		if(dest instanceof MOB)
+		{
 			((MOB)dest).addInventory(newItem);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops into "+dest.name()+"'s arms.");
+		}
 
 		if(newItem.isGeneric())
 			genMiscSet(mob,newItem);

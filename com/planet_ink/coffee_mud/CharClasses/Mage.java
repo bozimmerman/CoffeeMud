@@ -12,12 +12,13 @@ public class Mage extends StdCharClass
 	public String baseClass(){return ID();}
 	public int getMaxHitPointsLevel(){return 8;}
 	public int getBonusPracLevel(){return 4;}
-	public int getBonusManaLevel(){return 20;}
+	public int getBonusManaLevel(){return 10;}
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.INTELLIGENCE;}
 	public int getLevelsPerBonusDamage(){ return 10;}
 	public int getPracsFirstLevel(){return 6;}
 	public int getTrainsFirstLevel(){return 3;}
+	public int getMovementMultiplier(){return 8;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};

@@ -628,12 +628,14 @@ public class BaseGenerics extends StdCommand
 				}
 
 				if((showFlag!=showNumber)&&(showFlag>-999)) return;
-				String newName=mob.session().prompt("Enter something new (?)\n\r:","");
+				String newName=null;
+				
 				if((E instanceof Wand)
 				||(E instanceof Scroll)
 				||((E instanceof Pill)&&(!(CMClass.className(E).endsWith("SuperPill"))))
 				||(E instanceof Potion))
 				{
+					newName=mob.session().prompt("Enter something new (?)\n\r:","");
 					if(newName.length()==0)
 						ok=true;
 					else
@@ -675,6 +677,8 @@ public class BaseGenerics extends StdCommand
 						}
 					}
 				}
+				else
+					newName=mob.session().prompt("Enter something new\n\r:","");
 
 				if(ok)
 				{

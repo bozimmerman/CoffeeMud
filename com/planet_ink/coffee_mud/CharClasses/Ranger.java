@@ -12,8 +12,9 @@ public class Ranger extends StdCharClass
 	public String baseClass(){return "Fighter";}
 	public int getMaxHitPointsLevel(){return 22;}
 	public int getBonusPracLevel(){return 0;}
-	public int getBonusManaLevel(){return 10;}
+	public int getBonusManaLevel(){return 5;}
 	public int getBonusAttackLevel(){return 2;}
+	public int getMovementMultiplier(){return 12;}
 	public int getAttackAttribute(){return CharStats.STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getPracsFirstLevel(){return 3;}

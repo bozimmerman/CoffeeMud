@@ -91,7 +91,7 @@ public class Spell_BigMouth extends Spell
 			{
 				MOB TastyMorsel=(MOB)msg.target();
 				Stomach().bringMobHere(TastyMorsel,false);
-				FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,Stomach().description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+				FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 				Stomach().send(TastyMorsel,enterMsg);
 			}
 			if((msg.target() instanceof Item)
@@ -123,7 +123,7 @@ public class Spell_BigMouth extends Spell
 			myStomach = CMClass.getLocale("StdRoom");
 			myStomach.setArea(CMMap.getRandomArea());
 			myStomach.setName("The Stomach of "+affected.name());
-			myStomach.setDescription("You are in the stomach of "+affected.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+			myStomach.setDescription("You are in the stomach of "+affected.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been swallowed whole and are being digested.");
 		}
 		return myStomach;
 	}
@@ -178,7 +178,7 @@ public class Spell_BigMouth extends Spell
 											   TastyMorsel,
 											   null,
 											   CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,
-											   "<S-NAME> Digests <T-NAMESELF>!!");
+											   "<S-NAME> digests <T-NAMESELF>!!");
 					// no OKaffectS, since the dragon is not in his own stomach.
 					Stomach().send(mob,DigestMsg);
 					int damage=(int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2));

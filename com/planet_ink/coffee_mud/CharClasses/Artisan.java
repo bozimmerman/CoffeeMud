@@ -12,7 +12,7 @@ public class Artisan extends StdCharClass
 	public String baseClass(){return "Commoner";}
 	public int getMaxHitPointsLevel(){return 8;}
 	public int getBonusPracLevel(){return 2;}
-	public int getBonusManaLevel(){return 12;}
+	public int getBonusManaLevel(){return 6;}
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.WISDOM;}
 	public int getLevelsPerBonusDamage(){ return 15;}

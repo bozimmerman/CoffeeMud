@@ -12,10 +12,11 @@ public class Thief extends StdCharClass
 	public String baseClass(){return "Thief";}
 	public int getMaxHitPointsLevel(){return 16;}
 	public int getBonusPracLevel(){return 1;}
-	public int getBonusManaLevel(){return 12;}
+	public int getBonusManaLevel(){return 5;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 5;}
+	public int getMovementMultiplier(){return 10;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}

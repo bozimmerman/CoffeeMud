@@ -12,13 +12,14 @@ public class Fighter extends StdCharClass
 	public String baseClass(){return ID();}
 	public int getMaxHitPointsLevel(){return 24;}
 	public int getBonusPracLevel(){return -1;}
-	public int getBonusManaLevel(){return 8;}
+	public int getBonusManaLevel(){return 4;}
 	public int getBonusAttackLevel(){return 2;}
 	public int getAttackAttribute(){return CharStats.STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	public int getMovementMultiplier(){return 12;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};

@@ -123,18 +123,22 @@ public class Copy extends StdCommand
 				Item newItem=(Item)E.copyOf();
 				newItem.setContainer(null);
 				newItem.wearAt(0);
+				String end="from the sky";
 				if(dest instanceof Room)
 					((Room)dest).addItem(newItem);
 				else
 				if(dest instanceof MOB)
+				{
 					((MOB)dest).addInventory(newItem);
+					end="into "+dest+"'s arms";
+				}
 				room.recoverRoomStats();
 				if(i==0)
 				{
 					if(number>1)
-						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+"s drop from the sky.");
+						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+"s "+end+".");
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
+						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" "+end+".");
 					Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" item "+newItem.ID()+".");
 				}
 			}

@@ -12,7 +12,7 @@ public class Monk extends StdCharClass
 	public String baseClass(){return "Fighter";}
 	public int getMaxHitPointsLevel(){return 24;}
 	public int getBonusPracLevel(){return -1;}
-	public int getBonusManaLevel(){return 8;}
+	public int getBonusManaLevel(){return 4;}
 	public int getBonusAttackLevel(){return 2;}
 	public int getAttackAttribute(){return CharStats.STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 1;}

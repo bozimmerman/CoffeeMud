@@ -13,13 +13,13 @@ public class StdCharClass implements CharClass, Cloneable
 	public int getMinHitPointsLevel(){return 2;}
 	public int getMaxHitPointsLevel(){return 12;}
 	public int getBonusPracLevel(){return 0;}
-	public int getBonusManaLevel(){return 15;}
+	public int getBonusManaLevel(){return 7;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.STRENGTH;}
 	public int getPracsFirstLevel(){return 5;}
 	public int getTrainsFirstLevel(){return 3;}
 	public int getLevelsPerBonusDamage(){ return 1;}
-	public int getMovementMultiplier(){return 5;}
+	public int getMovementMultiplier(){return 10;}
 	protected int maxStatAdj[]={0,0,0,0,0,0};
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	protected Vector outfitChoices=null;
@@ -412,8 +412,7 @@ public class StdCharClass implements CharClass, Cloneable
 		int maxConStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.CONSTITUTION));
 		if(conStat>maxConStat) conStat=maxConStat;
-		int newHitPointGain=getMinHitPointsLevel()+(int)Math.floor(Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()));
-		newHitPointGain+=(int)Math.floor(Util.div(conStat,2.0))-4;
+		int newHitPointGain=(int)Math.floor(Util.mul(Util.div(conStat,18.0),(getMinHitPointsLevel()+Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()))));
 		if(newHitPointGain<=0)
 		{
 			if(conStat>=1)
@@ -433,7 +432,7 @@ public class StdCharClass implements CharClass, Cloneable
 		int maxMvStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.STRENGTH));
 		if(mvStat>maxMvStat) mvStat=maxMvStat;
-		int mvGain=(int)Math.round(lvlMul*Util.mul(Util.div(mvStat,9.0),getMovementMultiplier()));
+		int mvGain=(int)Math.round(lvlMul*Util.mul(Util.div(mvStat,18.0),getMovementMultiplier()));
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
@@ -657,7 +656,7 @@ public class StdCharClass implements CharClass, Cloneable
 		double lvlMul=1.0;//-Util.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
 		for(int i=1;i<mob.baseEnvStats().level();i++)
-			move+=((int)Math.round(lvlMul*Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),9.0)*getMovementMultiplier()));
+			move+=((int)Math.round(lvlMul*Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),18.0)*getMovementMultiplier()));
 		return move;
 	}
 

@@ -12,8 +12,9 @@ public class Jester extends StdCharClass
 	public String baseClass(){return "Bard";}
 	public int getMaxHitPointsLevel(){return 18;}
 	public int getBonusPracLevel(){return 1;}
-	public int getBonusManaLevel(){return 8;}
+	public int getBonusManaLevel(){return 4;}
 	public int getBonusAttackLevel(){return 1;}
+	public int getMovementMultiplier(){return 16;}
 	public int getAttackAttribute(){return CharStats.CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 4;}
 	private static boolean abilitiesLoaded=false;
@@ -128,8 +129,6 @@ public class Jester extends StdCharClass
 	{
 		return true;
 	}
-
-	public int getMovementMultiplier(){return 18;}
 
 	public String statQualifications(){return "Charisma 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
