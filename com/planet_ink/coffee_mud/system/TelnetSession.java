@@ -606,7 +606,7 @@ public class TelnetSession extends Thread implements Session
 							buf.setCharAt(loop,(char)((dig1*16)+dig2));
 							buf.deleteCharAt(loop+1);
 							if(buf.charAt(loop)==13)
-								buf.setCharAt(loop+1,(char)10);
+								buf.setCharAt(loop+1,'\r');
 							else
 								buf.deleteCharAt(loop+1);
 						}
