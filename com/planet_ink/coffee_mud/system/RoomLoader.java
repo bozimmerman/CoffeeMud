@@ -238,7 +238,7 @@ public class RoomLoader
 					newMOB.recoverEnvStats();
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
-					newMOB.bringToLife(thisRoom);
+					newMOB.bringToLife(thisRoom,true);
 				}
 			}
 			DBConnector.DBDone(D);

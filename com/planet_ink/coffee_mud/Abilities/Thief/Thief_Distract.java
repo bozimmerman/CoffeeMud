@@ -20,7 +20,7 @@ public class Thief_Distract extends ThiefSkill
 		canTargetCode=Ability.CAN_MOBS;
 		canAffectCode=Ability.CAN_MOBS;
 		
-		quality=Ability.MALICIOUS;
+		quality=Ability.OK_OTHERS;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
@@ -118,7 +118,7 @@ public class Thief_Distract extends ThiefSkill
 		boolean success=profficiencyCheck(-levelDiff,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.MSG_NOISYMOVEMENT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

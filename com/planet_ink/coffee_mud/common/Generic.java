@@ -415,7 +415,7 @@ public class Generic
 					newMOB.recoverEnvStats();
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
-					newMOB.bringToLife(newRoom);
+					newMOB.bringToLife(newRoom,true);
 				}
 				Hashtable itemLocTable=new Hashtable();
 				Hashtable identTable=new Hashtable();

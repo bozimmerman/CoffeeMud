@@ -379,7 +379,7 @@ public class XMLIO
 					newMOB.recoverEnvStats();
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
-					newMOB.bringToLife(room);
+					newMOB.bringToLife(room,true);
 
 				}
 				// now rebuild!

@@ -16,7 +16,7 @@ public class GrinderRooms
 		M.recoverEnvStats();
 		M.recoverMaxState();
 		M.resetToMaxState();
-		M.bringToLife(R);
+		M.bringToLife(R,true);
 		R.recoverRoomStats();
 	}
 	public static void happilyAddItem(Item I, Room R)

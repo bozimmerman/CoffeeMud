@@ -165,7 +165,7 @@ public class Spell_FindFamiliar extends Spell
 		A.setMiscText(""+choice);
 		newMOB.addNonUninvokableAffect(A);
 		newMOB.text();
-		newMOB.bringToLife(caster.location());
+		newMOB.bringToLife(caster.location(),true);
 		caster.location().recoverRoomStats();
 		return(newMOB);
 

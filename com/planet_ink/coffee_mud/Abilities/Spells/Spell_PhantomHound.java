@@ -153,7 +153,7 @@ public class Spell_PhantomHound extends Spell
 				beast.recoverMaxState();
 				beast.resetToMaxState();
 				beast.text();
-				beast.bringToLife(mob.location());
+				beast.bringToLife(mob.location(),true);
 				beast.setStartRoom(null);
 				victim=mob.getVictim();
 				victim.setVictim(beast);

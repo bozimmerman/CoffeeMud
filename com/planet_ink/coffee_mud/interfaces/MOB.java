@@ -44,7 +44,7 @@ public interface MOB
 	public boolean amDead();
 	public DeadBody killMeDead();
 	public boolean isInCombat();
-	public void bringToLife(Room newLocation);
+	public void bringToLife(Room newLocation, boolean resetStats);
 	public void destroy();
 	public MOB getVictim();
 	public void setVictim(MOB mob);

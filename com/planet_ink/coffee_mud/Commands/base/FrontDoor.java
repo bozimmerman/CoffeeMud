@@ -105,7 +105,7 @@ public class FrontDoor
 							thisSession.setMob(null);
 							thisSession.setKillFlag(true);
 							Log.sysOut("FrontDoor","Session swap for "+mob.session().mob().name()+".");
-							mob.session().mob().bringToLife(oldRoom);
+							mob.session().mob().bringToLife(oldRoom,false);
 							return true;
 						}
 					}
@@ -118,6 +118,7 @@ public class FrontDoor
 					mob.setSession(oldMOB.session());
 					if(mob!=oldMOB)
 						oldMOB.setSession(null);
+					mob.bringToLife(mob.location(),false);
 				}
 				else
 				{
@@ -130,8 +131,8 @@ public class FrontDoor
 							//mob.baseCharStats().getMyClass().startCharacter(mob,false,true);
 							mob.baseCharStats().getMyRace().startRacing(mob,true);
 						}
+					mob.bringToLife(mob.location(),true);
 				}
-				mob.bringToLife(mob.location());
 				ExternalPlay.DBReadFollowers(mob);
 			}
 			else
@@ -375,7 +376,7 @@ public class FrontDoor
 					break;
 				}
 
-				mob.bringToLife(mob.location());
+				mob.bringToLife(mob.location(),true);
 				ExternalPlay.DBCreateCharacter(mob);
 				if(CMMap.MOBs.get(mob.ID())==null)
 					CMMap.MOBs.put(mob.ID(),mob);

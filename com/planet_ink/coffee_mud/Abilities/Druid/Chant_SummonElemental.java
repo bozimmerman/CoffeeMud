@@ -122,7 +122,7 @@ public class Chant_SummonElemental extends Chant
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		newMOB.bringToLife(caster.location());
+		newMOB.bringToLife(caster.location(),true);
 		newMOB.setStartRoom(null);
 		newMOB.addNonUninvokableAffect(this);
 		return(newMOB);

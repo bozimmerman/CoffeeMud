@@ -79,7 +79,7 @@ public class Chant_SummonAnimal extends Chant
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, adjustedLevel(mob));
-				target.bringToLife(newRoom);
+				target.bringToLife(newRoom,true);
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				ExternalPlay.move(target,opDir,false);

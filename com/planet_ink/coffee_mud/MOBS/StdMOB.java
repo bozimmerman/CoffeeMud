@@ -398,13 +398,14 @@ public class StdMOB implements MOB
 	public void setReplyTo(MOB mob)
 	{	replyTo=mob;	}
 	
-	public void bringToLife(Room newLocation)
+	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		amDead=false;
 		recoverEnvStats();
 		recoverCharStats();
 		recoverMaxState();
-		resetToMaxState();
+		if(resetStats)
+			resetToMaxState();
 		setMiscText(miscText);
 		if(getStartRoom()==null)
 			setStartRoom(CMMap.startRoom());
@@ -602,7 +603,7 @@ public class StdMOB implements MOB
 		}
 		setFollowing(null);
 		if((!isMonster())&&(soulMate()==null))
-			bringToLife(getStartRoom());
+			bringToLife(getStartRoom(),true);
 		Body.startTicker(deathRoom);
 		deathRoom.recoverRoomStats();
 		return Body;
@@ -1559,7 +1560,7 @@ public class StdMOB implements MOB
 					{
 						envStats().setRejuv(envStats().rejuv()-1);
 						if(envStats().rejuv()<0)
-							bringToLife(getStartRoom());
+							bringToLife(getStartRoom(),true);
 					}
 					else
 					{

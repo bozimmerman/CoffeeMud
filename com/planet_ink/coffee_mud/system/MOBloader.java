@@ -317,7 +317,7 @@ public class MOBloader
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.setFollowing(mob);
-					newMOB.bringToLife(mob.location());
+					newMOB.bringToLife(mob.location(),true);
 				}
 			}
 			DBConnector.DBDone(D);

@@ -103,7 +103,7 @@ public class Hunting extends CommonSkill
 					mob.tell("You need to find the "+foundShortName+" nearby before the trail goes cold!");
 					displayText="You are hunting for "+found.name();
 					verb="hunting for "+found.name();
-					found.bringToLife(nearByRoom());
+					found.bringToLife(nearByRoom(),true);
 				}
 				else
 				{

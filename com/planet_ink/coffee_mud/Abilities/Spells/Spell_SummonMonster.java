@@ -90,7 +90,7 @@ public class Spell_SummonMonster extends Spell
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		newMOB.bringToLife(caster.location());
+		newMOB.bringToLife(caster.location(),true);
 		newMOB.setStartRoom(null);
 		return(newMOB);
 

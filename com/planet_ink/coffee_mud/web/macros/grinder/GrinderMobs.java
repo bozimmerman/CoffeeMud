@@ -307,13 +307,13 @@ public class GrinderMobs
 		M.resetToMaxState();
 		M.text();
 		if(mobCode.equals("NEW"))
-			M.bringToLife(R);
+			M.bringToLife(R,true);
 		else
 		if(M!=oldM)
 		{
 			oldM.destroy();
 			R.delInhabitant(oldM);
-			M.bringToLife(R);
+			M.bringToLife(R,true);
 		}
 		R.recoverRoomStats();
 		ExternalPlay.DBUpdateMOBs(R);

@@ -2941,7 +2941,7 @@ public class Import
 						if(M==null)
 							returnAnError(mob,"Reset error (no mob) on line: "+s+", area="+areaName);
 						else
-							M.bringToLife(R);
+							M.bringToLife(R,true);
 								
 					}
 				}

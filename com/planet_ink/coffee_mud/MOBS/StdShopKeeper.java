@@ -537,7 +537,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						product.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 						product.recoverEnvStats();
 						product.setMiscText(product.text());
-						((MOB)product).bringToLife(mob.location());
+						((MOB)product).bringToLife(mob.location(),true);
 						ExternalPlay.follow((MOB)product,mob,false);
 						if(((MOB)product).amFollowing()==null)
 							mob.tell("You cannot accept any more followers!");

@@ -138,7 +138,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.text();
-		newMOB.bringToLife(caster.location());
+		newMOB.bringToLife(caster.location(),true);
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

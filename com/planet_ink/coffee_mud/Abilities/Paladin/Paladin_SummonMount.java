@@ -103,7 +103,7 @@ public class Paladin_SummonMount extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, adjustedLevel(mob));
-				target.bringToLife(newRoom);
+				target.bringToLife(newRoom,true);
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				ExternalPlay.move(target,opDir,false);

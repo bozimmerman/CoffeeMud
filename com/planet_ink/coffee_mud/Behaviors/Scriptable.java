@@ -441,7 +441,7 @@ public class Scriptable extends ActiveTicker
 				if(m!=null)
 				{
 					m=(MOB)m.copyOf();
-					m.bringToLife(lastKnownLocation);
+					m.bringToLife(lastKnownLocation,true);
 				}
 			}
 			else

@@ -37,9 +37,6 @@ public class GoodGuardian extends StdBehavior
 					anythingToDo=true;
 			}
 		}
-
-
-
 		if(victim!=null)
 		{
 			if(!BrotherHelper.isBrother(victim,observer))
@@ -65,6 +62,7 @@ public class GoodGuardian extends StdBehavior
 					FullMsg msgs=new FullMsg(observer,inhab,Affect.MSG_NOISYMOVEMENT,msg);
 					if(observer.location().okAffect(msgs))
 					{
+						//observer.location().send(observer,msgs);
 						inhab.getVictim().makePeace();
 						inhab.makePeace();
 					}

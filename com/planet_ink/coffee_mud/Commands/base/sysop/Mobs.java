@@ -196,7 +196,7 @@ public class Mobs
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		newMOB.bringToLife(mob.location());
+		newMOB.bringToLife(mob.location(),true);
 		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
 		new Generic().genMiscSet(mob,newMOB);
 		Log.sysOut("Mobs",mob.ID()+" created mob "+newMOB.ID()+".");
