@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 
-public class Spell_ResistMagicMissilesjava
+public class Spell_ResistMagicMissiles
 {
 }
