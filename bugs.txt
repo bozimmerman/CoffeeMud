@@ -1,7 +1,11 @@
-The mobs in Narnia are crawling around instead of walking.
-thingrids are broken. They don't seem to link e-w well. They keep looping back on themselves. I have a grid ItantanSea#1 (s-#2) (e(#11) (N-#0). I can go north south fine, but east west keeps looping me back into the same grid room.
-spraypaint is the command, which doesn't seem to want to unload/reload.
+Patrolling rideables don't carry the ridden
+look into a mob with a limiteditems(1) prop .. kill the mob, get the sword.
+The deviations is calculating based on a single attack -- again, that's my guess.  I'll check deviations and fix it for the next build if that's the case.
+some sort of answer to scan (exits)
+the dance/song bug is still there, valor, armor, etc...
+?The mobs in Narnia are crawling around instead of walking.
 items to wear on customized body parts.  Use default Amputation, compined with Limb items which, when worn, give parts back.
+spraypaint is the command, which doesn't seem to want to unload/reload.
 Injury -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.
 Install ship battery
 ability to deposit a container and its contents.

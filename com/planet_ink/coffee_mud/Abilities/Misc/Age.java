@@ -63,12 +63,12 @@ public class Age extends StdAbility
 		day*=(long)60; // one hour
 		day*=(long)24; // on day
 		long ellapsed=(System.currentTimeMillis()-(long)l);
-		if(affected instanceof Item)
+		if((affected instanceof Item)&&(affected instanceof CagedAnimal))
 		{
 			if(ellapsed>(long)(30*day))
 			{
 				Room R=CoffeeUtensils.roomLocation(affected);
-				if((R!=null)&&(affected instanceof CagedAnimal))
+				if(R!=null)
 				{
 					Item I=(Item)affected;
 					MOB following=null;
@@ -76,7 +76,10 @@ public class Age extends StdAbility
 					{
 						following=((MOB)I.owner());
 						if(!Sense.isInTheGame(following,true))
+						{
+							norecurse=false;
 							return;
+						}
 					}
 							
 					CagedAnimal C=(CagedAnimal)affected;

@@ -289,7 +289,6 @@ public class FrontLogin extends StdCommand
 					&&(S.mob()!=mob)
 					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 					&&(S.mob().playerStats()!=null)
-					&&(CMSecurity.isAllowedAnywhere(S.mob(),"WIZINV")||CMSecurity.isAllowedAnywhere(S.mob(),"WIZINV"))
 					&&((S.mob().playerStats().getFriends().contains(mob.Name())||S.mob().playerStats().getFriends().contains("All"))))
 						S.mob().tell("^X"+mob.Name()+" has logged on.^.^?");
 				}

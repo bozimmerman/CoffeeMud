@@ -160,7 +160,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			adjLevel+=(CMAble.qualifyingClassLevel(caster,this)-qualifyingLevel);
 		else
 			adjLevel=caster.envStats().level()-lowestQualifyingLevel-25;
-		if(asLevel>=0) adjLevel=asLevel;
+		if(asLevel>0) adjLevel=asLevel;
 		if(adjLevel<lowestQualifyingLevel)
 			adjLevel=lowestQualifyingLevel;
 		if(adjLevel<1) return 1;

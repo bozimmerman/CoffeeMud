@@ -22,44 +22,8 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Injury extends StdAbility
+public class Injury extends Amputation
 {
 	public String ID() { return "Injury"; }
 	public String name(){ return "Injury";}
-	public String displayText()
-	{
-		return "";
-	}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.INDIFFERENT;}
-	public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings = {"INJURE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public boolean canBeUninvoked(){return false;}
-	public boolean isAutoInvoked(){return true;}
-	public int classificationCode(){return Ability.PROPERTY;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-
-	public void executeMsg(Environmental host, CMMsg msg)
-	{
-		if((msg.target()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
-		&&(Sense.canBeSeenBy(affected,msg.source()))
-		&&(affected instanceof MOB))
-		{
-			// *TODO Show Injuries
-		}
-		super.executeMsg(host,msg);
-	}
-	
-	public void setMiscText(String text)
-	{
-		super.setMiscText(text);
-	}
-
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
-	{
-        return true;
-	}
 }
