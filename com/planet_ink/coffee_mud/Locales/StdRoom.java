@@ -28,6 +28,7 @@ public class StdRoom
 	protected String myID="room#";
 	protected String name="the room";
 	protected String displayText="Standard Room";
+	protected String imageName="";
 	protected byte[] description=null;
 	protected Area myArea=null;
 	protected EnvStats envStats=new DefaultEnvStats();
@@ -80,6 +81,9 @@ public class StdRoom
 		return name;
 	}
 
+	public String image(){return imageName;}
+	public void setImage(String newImage){imageName=newImage;}
+	
 	public boolean isGeneric(){return false;}
 	private void cloneFix(Room E)
 	{
@@ -793,7 +797,7 @@ public class StdRoom
 					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 						Say.append("^H("+CMClass.className(mob2)+")^N ");
 
-					Say.append("^M^<RMob '"+mob2.name()+"'^>");
+					Say.append("^M^<RMob^>");
 					if(mob2.displayText(mob).length()>0)
 						Say.append(mob2.displayText(mob));
 					else

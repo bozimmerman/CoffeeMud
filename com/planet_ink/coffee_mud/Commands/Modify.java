@@ -396,6 +396,7 @@ public class Modify extends BaseGenerics
 				genSubOps(mob,myArea,++showNumber,showFlag);
 				genBehaviors(mob,myArea,++showNumber,showFlag);
 				genAffects(mob,myArea,++showNumber,showFlag);
+				genImage(mob,myArea,++showNumber,showFlag);
 				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
 				showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));

@@ -28,6 +28,7 @@ public class StdExit implements Exit
 	protected boolean isOpen=true;
 	protected boolean isLocked=false;
 	protected String miscText="";
+	protected String imageName="";
 	protected Vector affects=null;
 	protected Vector behaviors=null;
 
@@ -79,6 +80,9 @@ public class StdExit implements Exit
 		baseEnvStats=newBaseEnvStats.cloneStats();
 	}
 
+	public String image(){return imageName;}
+	public void setImage(String newImage){imageName=newImage;}
+	
 	public Environmental newInstance()
 	{
 		try{

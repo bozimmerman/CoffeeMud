@@ -190,7 +190,7 @@ public class FrontLogin extends StdCommand
 		if(mob.session()==null)
 			return false;
 
-		String login=mob.session().prompt("name:");
+		String login=mob.session().prompt("name:^<USER^>");
 		if(login==null) return false;
 		login=login.trim();
 		if(login.length()==0) return false;
@@ -198,7 +198,7 @@ public class FrontLogin extends StdCommand
 		boolean found=CMClass.DBEngine().DBUserSearch(mob,login);
 		if(found)
 		{
-			mob.session().print("password:");
+			mob.session().print("password:^<PASSWORD^>");
 			String password=mob.session().blockingIn();
 			PlayerStats pstats=mob.playerStats();
 			

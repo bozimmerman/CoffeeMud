@@ -41,6 +41,19 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
+	static void genImage(MOB mob, Environmental E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". GIF file: '"+E.image()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new filename\n\r:","");
+		if(newName.length()>0)
+			E.setName(newName);
+		else
+			mob.tell("(no change)");
+	}
+
 	static void genCorpseData(MOB mob, DeadBody E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4552,6 +4565,7 @@ public class BaseGenerics extends StdCommand
 			genAffects(mob,me,++showNumber,showFlag);
 			if(me instanceof LandTitle)
 				genTitleRoom(mob,(LandTitle)me,++showNumber,showFlag);
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -4598,6 +4612,7 @@ public class BaseGenerics extends StdCommand
 			if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -4648,6 +4663,7 @@ public class BaseGenerics extends StdCommand
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
 			if(me instanceof Perfume)
 				((Perfume)me).setSmellList(genText(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,"Smells list (; delimited)"));
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -4726,6 +4742,7 @@ public class BaseGenerics extends StdCommand
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -4783,6 +4800,7 @@ public class BaseGenerics extends StdCommand
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
 			}
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -4845,6 +4863,7 @@ public class BaseGenerics extends StdCommand
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -4898,6 +4917,7 @@ public class BaseGenerics extends StdCommand
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -4942,6 +4962,7 @@ public class BaseGenerics extends StdCommand
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -4986,6 +5007,7 @@ public class BaseGenerics extends StdCommand
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -5061,6 +5083,7 @@ public class BaseGenerics extends StdCommand
 			}
 			genTattoos(mob,me,++showNumber,showFlag);
 			genEducations(mob,me,++showNumber,showFlag);
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -5135,6 +5158,7 @@ public class BaseGenerics extends StdCommand
 			genTitles(mob,me,++showNumber,showFlag);
 			genEmail(mob,me,++showNumber,showFlag);
 			genSecurity(mob,me,++showNumber,showFlag);
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -5219,6 +5243,7 @@ public class BaseGenerics extends StdCommand
 			genSensesMask(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genTattoos(mob,(MOB)me,++showNumber,showFlag);
 			genEducations(mob,(MOB)me,++showNumber,showFlag);
+			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));

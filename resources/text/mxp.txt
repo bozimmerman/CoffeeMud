@@ -7,24 +7,28 @@
 <!ELEMENT EX '<SEND>'>
 
 <!-- tags dealing with room items -->
-<!ELEMENT CRItem '<SEND HREF="GET &name; from &container;" hint="Right-mouse client to get from object|GET &name; from &container;">' ATT='name container'>
-<!ELEMENT CMItem '<SEND HREF="GET &name; from &container;" hint="Right-mouse client to get from object|GET &name; from &container;">' ATT='name container'>
-<!ELEMENT RItem '<SEND HREF="GET &name;|LOOK &name;|DRINK &name;" hint="Right-mouse client to use this object|GET &name;|LOOK &name;|DRINK &name;">' ATT='name'>
-<!ELEMENT MItem '<SEND HREF="WEAR &name;|DROP &name;|LOOK &name;|DRINK &name;|EAT &name;|HOLD &name;" hint="Right-mouse client to use this object|WEAR &name;|DROP &name;|LOOK &name;|DRINK &name;|EAT &name;|HOLD &name;">' ATT='name'>
-<!ELEMENT EItem '<SEND HREF="REMOVE &name;|LOOK &name;" hint="Right-mouse client to use this object|REMOVE &name;|LOOK &name;">' ATT='name'>
-<!ELEMENT RMob '<SEND HREF="CONSIDER &name;|LOOK &name;|KILL &name;" hint="Right-mouse client to affect this creature|CONSIDER &name;|LOOK &name;|KILL &name;">' ATT='name'>
+<!ELEMENT CRItem '<SEND HREF="GET &quot;&text;&quot; from &quot;&container;&quot;" hint="Right-mouse client to get from object|GET &text; from &container;">'>
+<!ELEMENT CMItem '<SEND HREF="GET &quot;&text;&quot; from &quot;&container;&quot;" hint="Right-mouse client to get from object|GET &text; from &container;">'>
+<!ELEMENT RItem '<SEND HREF="GET &text;|LOOK &text;|DRINK &text;" hint="Right-mouse client to use this object|GET &text;|LOOK &text;|DRINK &text;">'>
+<!ELEMENT MItem '<SEND HREF="WEAR &text;|DROP &text;|LOOK &text;|DRINK &text;|EAT &text;|HOLD &text;" hint="Right-mouse client to use this object|WEAR &text;|DROP &text;|LOOK &text;|DRINK &text;|EAT &text;|HOLD &text;">'>
+<!ELEMENT EItem '<SEND HREF="REMOVE &text;|LOOK &text;" hint="Right-mouse client to use this object|REMOVE &text;|LOOK &text;">'>
+<!ELEMENT RMob '<SEND HREF="CONSIDER &text;|LOOK &text;|KILL &text;" hint="Right-mouse client to affect this creature|CONSIDER &text;|LOOK &text;|KILL &text;">'>
 
 <!-- miscellaneous tags -->
 <!ELEMENT FIGHT FLAG='Fight'>
 <!ELEMENT HELP '<SEND HREF="HELP &text;" hint="Click to view the help entry.">'>
+<!ELEMENT SHOP '<SEND HREF="VIEW &quot;&text;&quot; &quot;&shopkeeper;&quot;|BUY &quot;&text;&quot; &quot;&shopkeeper;&quot;" hint="Right-mouse client to use this object|VIEW &quot;&text;&quot; &quot;&shopkeeper;&quot;|BUY &quot;&text;&quot; &quot;&shopkeeper;&quot;">'>
+<!ELEMENT Health EMPTY ATT='name'>
+<!ELEMENT HealthText EMPTY ATT='name'>
+<GAUGE vichp Max=vicmaxhp color=red Caption="Enemy Damage">
 
 <!-- the next elements deal with the MUD prompt -->
 <!ELEMENT Prompt FLAG="Prompt">
-<!ELEMENT Exp FLAG="Set exp">
-<!ELEMENT ExpNeed FLAG="Set expneed">
-<!ELEMENT Hp FLAG="Set hp">
-<!ELEMENT MaxHp FLAG="Set maxhp">
-<!ELEMENT Mana FLAG="Set mana">
-<!ELEMENT MaxMana FLAG="Set maxmana">
-<!ELEMENT Move FLAG="Set mana">
-<!ELEMENT MaxMove FLAG="Set maxmana">
+<!ELEMENT Exp '<!ENTITY Exp "&text">' FLAG="Set exp">
+<!ELEMENT ExpNeed '<!ENTITY ExpNeed "&text">' FLAG="Set expneed">
+<!ELEMENT Hp '<!ENTITY Hp "&text">' FLAG="Set hp">
+<!ELEMENT MaxHp '<!ENTITY MaxHp "&text">' FLAG="Set maxhp">
+<!ELEMENT Mana '<!ENTITY Mana "&text">' FLAG="Set mana">
+<!ELEMENT MaxMana '<!ENTITY MaxMana "&text">' FLAG="Set maxmana">
+<!ELEMENT Move '<!ENTITY Move "&text">' FLAG="Set move">
+<!ELEMENT MaxMove '<!ENTITY MaxMove "&text">' FLAG="Set maxmove">

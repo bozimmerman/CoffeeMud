@@ -1159,9 +1159,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						}
 	
 						String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",totalWidth-csize);
-						str.append(c+((totalCols>1)?c:"")+"^.^N\n\r");
+						str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY Shopkeeper \""+name()+"\"^>\n\r");
 						int colNum=0;
 						int rowNum=0;
+						
 						for(int i=0;i<inventory.size();i++)
 						{
 							Environmental E=(Environmental)inventory.elementAt(i);
@@ -1171,12 +1172,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								int val[]=yourValue(mob,E,true);
 								String col=null;
 								if(val[1]>0)
-									col=Util.padRight("["+val[1]+"qp",5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+									col=Util.padRight("["+val[1]+"qp",5+csize)+"] ^<SHOP^>"+Util.padRight(E.name()+"^</SHOP^>",totalWidth-csize);
 								else
 								if(val[2]>0)
-									col=Util.padRight("["+val[2]+"xp",5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+									col=Util.padRight("["+val[2]+"xp",5+csize)+"] ^<SHOP^>"+Util.padRight(E.name()+"^</SHOP^>",totalWidth-csize);
 								else
-									col=Util.padRight("["+val[0],5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+									col=Util.padRight("["+val[0],5+csize)+"] ^<SHOP^>"+Util.padRight(E.name()+"^</SHOP^>",totalWidth-csize);
 								if((++colNum)>totalCols)
 								{
 									str.append("\n\r");

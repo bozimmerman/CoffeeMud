@@ -690,6 +690,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		public String accountForYourself(){return "";}
 		public int affectType(){return 0;}
 		public String requirements(){return "";}
+		public String image(){return "";}
+		public void setImage(String newImage){}
 		public boolean canAffect(Environmental E){	return false;}
 		public boolean canTarget(Environmental E){ return false;}
 		public void affectEnvStats(Environmental affected, EnvStats affectableStats){}

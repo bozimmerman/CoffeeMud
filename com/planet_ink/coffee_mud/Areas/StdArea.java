@@ -26,6 +26,7 @@ public class StdArea implements Area
 	protected String description="";
 	protected String miscText="";
 	protected String archPath="";
+	protected String imageName="";
 	protected int techLevel=0;
 	protected int climateID=Area.CLIMASK_NORMAL;
 	protected Vector properRooms=null;
@@ -99,6 +100,9 @@ public class StdArea implements Area
 	public String getArchivePath(){return archPath;}
 	public void setArchivePath(String pathFile){archPath=pathFile;}
 
+	public String image(){return imageName;}
+	public void setImage(String newImage){imageName=newImage;}
+	
 	public boolean getMobility(){return mobility;}
 	public void toggleMobility(boolean onoff){mobility=onoff;}
 	public boolean amISubOp(String username)

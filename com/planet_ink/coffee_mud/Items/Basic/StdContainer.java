@@ -376,7 +376,7 @@ public class StdContainer extends StdItem implements Container
 				    //    buf.append(Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".\n\r");
 					if((isOpen)&&((capacity>0)||(getContents().size()>0)))
 					{
-						buf.append(name()+" contains:\n\r");
+						buf.append(name()+" contains:^<!ENTITY container \""+name()+"\"^>\n\r");
 						Vector newItems=new Vector();
 						if((this instanceof Drink)&&(((Drink)this).liquidRemaining()>0))
 						{
@@ -403,7 +403,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLister.niceLister(mob,newItems,true,"CMItem"," '"+name()+"'"));
+							buf.append(CMLister.niceLister(mob,newItems,true,"CMItem",""));
 						}
 						else
 						if(owner instanceof Room)
@@ -416,7 +416,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLister.niceLister(mob,newItems,true,"CRItem"," '"+name()+"'"));
+							buf.append(CMLister.niceLister(mob,newItems,true,"CRItem",""));
 						}
 					}
 					else

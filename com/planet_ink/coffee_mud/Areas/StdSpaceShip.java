@@ -33,6 +33,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected static Climate climateObj=null;
 	protected Vector parents=null;
     protected Vector parentsToLoad=new Vector();
+    protected String imageName="";
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
 	{
@@ -120,6 +121,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public int getTechLevel(){return Area.TECH_HIGH;}
 	public void setTechLevel(int level){}
 
+	public String image(){return imageName;}
+	public void setImage(String newImage){imageName=newImage;}
+	
 	public String getArchivePath(){return "";}
 	public void setArchivePath(String pathFile){}
 	

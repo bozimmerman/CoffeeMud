@@ -32,6 +32,7 @@ public class StdItem implements Item
 	protected int 		myUses=Integer.MAX_VALUE;
 	protected long 		myWornCode=Item.INVENTORY;
 	protected String 	miscText="";
+	protected String    imageName="";
 	protected String	secretIdentity=null;
 	protected boolean	wornLogicalAnd=false;
 	protected long 		properWornBitmap=Item.HELD;
@@ -62,6 +63,9 @@ public class StdItem implements Item
 		if(envStats().newName()!=null) return envStats().newName();
 		return name;
 	}
+	public String image(){return imageName;}
+	public void setImage(String newImage){imageName=newImage;}
+	
 	public EnvStats envStats()
 	{
 		return envStats;

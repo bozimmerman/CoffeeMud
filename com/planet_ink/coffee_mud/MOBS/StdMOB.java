@@ -43,6 +43,7 @@ public class StdMOB implements MOB
 	protected boolean pleaseDestroy=false;
 	protected byte[] description=null;
 	protected String displayText="";
+	protected String imageName="";
 	protected byte[] miscText=null;
 
 	protected long tickStatus=Tickable.STATUS_NOT;
@@ -197,6 +198,9 @@ public class StdMOB implements MOB
 	    return Util.replaceAll((String)playerStats.getTitles().firstElement(),"*",Name());
 	}
 
+	public String image(){return imageName;}
+	public void setImage(String newImage){imageName=newImage;}
+	
 	public StdMOB(){}
 
 	protected void cloneFix(MOB E)
@@ -1005,9 +1009,10 @@ public class StdMOB implements MOB
 
 	public String healthText()
 	{
+	    String mxp="^<!ENTITY vicmaxhp \""+maxState().getHitPoints()+"\"^>^<!ENTITY vichp \""+curState().getHitPoints()+"\"^>^<Health^>^<HealthText \""+name()+"\"^>";
 		if((charStats()!=null)&&(charStats().getMyRace()!=null))
-			return charStats().getMyRace().healthText(this);
-		return CommonStrings.standardMobCondition(this);
+			return mxp+charStats().getMyRace().healthText(this)+"^</HealthText^>";
+		return mxp+CommonStrings.standardMobCondition(this)+"^</HealthText^>";
 	}
 
 	public void dequeCommand()

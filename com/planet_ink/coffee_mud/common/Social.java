@@ -236,6 +236,8 @@ public class Social implements Environmental
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return 0;}
 
+	public String image(){return "";}
+	public void setImage(String newImage){}
 	public void addEffect(Ability to){}
 	public void addNonUninvokableEffect(Ability to){}
 	public void delEffect(Ability to){}

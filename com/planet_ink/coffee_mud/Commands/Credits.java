@@ -31,7 +31,7 @@ public class Credits extends StdCommand
 	{
 		StringBuffer credits=Resources.getFileResource("text"+File.separatorChar+"credits.txt");
 		if((credits!=null)&&(mob.session()!=null))
-			mob.session().rawPrintln(credits.toString());
+			mob.session().colorOnlyPrintln(credits.toString());
 		else
 			mob.tell("CoffeeMud is (C)2001-2004 by Bo Zimmerman");
 		return false;

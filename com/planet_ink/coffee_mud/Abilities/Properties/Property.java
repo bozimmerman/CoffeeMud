@@ -45,6 +45,8 @@ public class Property implements Ability, Cloneable
 	public void setName(String newName){}
 	public void setDescription(String newDescription){}
 	public void setDisplayText(String newDisplayText){}
+	public String image(){return "";}
+	public void setImage(String newImage){}
 	public MOB invoker(){return null;}
 	public void setInvoker(MOB mob){}
 	public static final String[] empty={};

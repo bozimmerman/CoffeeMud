@@ -33,6 +33,9 @@ public class GenWallpaper implements Item
 	public boolean isGeneric(){return true;}
 	public Rideable riding(){return null;}
 	public void setRiding(Rideable one){};
+	public String image(){return "";}
+	public void setImage(String newImage){}
+	
 
 	public String Name(){ return name;}
 	public String name()

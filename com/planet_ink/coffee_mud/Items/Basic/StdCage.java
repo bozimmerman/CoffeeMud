@@ -54,7 +54,7 @@ public class StdCage extends StdContainer
 				//if(msg.source().charStats().getStat(CharStats.INTELLIGENCE)>=10)
 			    //    buf.append(Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_DESCS[(material()&EnvResource.				        response.append("\n\r"+Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+"."))>>8].toLowerCase()+".\n\r");
 				if((isOpen)&&((capacity>0)||(getContents().size()>0)))
-					buf.append(name()+" contains:\n\r");
+					buf.append(name()+" contains:^<!ENTITY Container \""+name()+"\"^>\n\r");
 				Vector newItems=new Vector();
 
 				if(owner instanceof MOB)
@@ -66,7 +66,7 @@ public class StdCage extends StdContainer
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLister.niceLister(mob,newItems,true,"CMItem"," '"+name()+"'"));
+					buf.append(CMLister.niceLister(mob,newItems,true,"CMItem",""));
 				}
 				else
 				if(owner instanceof Room)
@@ -79,7 +79,7 @@ public class StdCage extends StdContainer
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLister.niceLister(mob,newItems,true,"CRItem"," '"+name()+"'"));
+					buf.append(CMLister.niceLister(mob,newItems,true,"CRItem",""));
 				}
 				mob.tell(buf.toString());
 			}
