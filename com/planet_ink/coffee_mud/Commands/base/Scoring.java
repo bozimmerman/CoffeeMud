@@ -347,6 +347,23 @@ public class Scoring
 			msg.append(getQualifiedAbilities(mob,Ability.SONG,-1,"\n\r^HSongs:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("LANGS"))||(qual.equalsIgnoreCase("LANG"))||(qual.equalsIgnoreCase("LANGUAGES")))
 			msg.append(getQualifiedAbilities(mob,Ability.LANGUAGE,-1,"\n\r^HLanguages:^? "));
+		int domain=-1;
+		String domainName="";
+		if(qual.length()>0)
+		{
+			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
+				if(Ability.DOMAIN_DESCS[i].startsWith(qual))
+				{ domain=i<<5; break;}
+				else
+				if((Ability.DOMAIN_DESCS[i].indexOf("/")>=0)
+				&&(Ability.DOMAIN_DESCS[i].substring(Ability.DOMAIN_DESCS[i].indexOf("/")+1).startsWith(qual)))
+				{ domain=i<<5; break;}
+			if(domain>0)
+			{
+				domainName=Util.capitalize(Ability.DOMAIN_DESCS[domain>>5]);
+				msg.append(getQualifiedAbilities(mob,Ability.SPELL,domain,"\n\r^H"+domainName+" spells:^? "));
+			}
+		}
 		if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
 		&&(mob!=null)
 		&&((qual.length()==0)
@@ -543,7 +560,10 @@ public class Scoring
 		return getQualifiedAbilities(able,V,mask,prefix);
 	}
 	
-	public static StringBuffer getQualifiedAbilities(MOB able, Vector ofTypes, int mask, String prefix)
+	public static StringBuffer getQualifiedAbilities(MOB able, 
+													 Vector ofTypes, 
+													 int mask, 
+													 String prefix)
 	{
 		int highestLevel=0;
 		StringBuffer msg=new StringBuffer("");

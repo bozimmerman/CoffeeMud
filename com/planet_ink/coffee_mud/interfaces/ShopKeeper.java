@@ -18,12 +18,20 @@ public interface ShopKeeper extends MOB
 	public final static int DEAL_LANDSELLER=13;
 	public final static int DEAL_ANYTECHNOLOGY=14;
 	public final static int DEAL_CLANDSELLER=15;
+	public final static int DEAL_FOODSELLER=16;
+	public final static int DEAL_BUTCHER=17;
+	public final static int DEAL_GROWER=18;
+	public final static int DEAL_HIDESELLER=19;
+	public final static int DEAL_LUMBERER=20;
+	public final static int DEAL_METALSMITH=21;
+	public final static int DEAL_STONEYARDER=22;
 	
 	public final static String[] SOLDCODES={
 		"ANYTHING","GENERAL","ARMOR","MAGIC","WEAPONS",
 		"PETS","LEATHER","INVENTORY ONLY","TRAINER",
 		"CASTER","JEWELLERY","POTIONS","BANKER","LAND",
-		"ANY TECHNOLOGY","CLAN LAND"};
+		"ANY TECHNOLOGY","CLAN LAND","FOODS","MEATS",
+	    "VEGETABLES","HIDES","LUMBER","METALS","ROCKS"};
 	
 	public int whatIsSold();
 	public void setWhatIsSold(int newSellCode);

@@ -1,12 +1,3 @@
-problems flying during storms
-Sparring room where death does not really happen
-Archon broadcast command (like a channel)
-Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
-ARTIST ability to make wallpaper -- make Paintings.
-there is no help for TIME. It might be helpful to put in a help, that tells when the sun rises and sets.
-Need a jeweler shopkeeper
-we need a shopkeeper of type GROCER who buys all foodstuffs, as well as other RESOURCE based shopkeepers that will buy any metal, wood, or stone.
-qualify command should allow you to type QUALIFY ILLUSION to see what illusion spells you qualify for.
 new skill: Scrap--turns an item of at least 5lbs into 1 lb of material of the type it is made of.
 add fountain, pit to the mason skill.
 add Arch to mason, that modifies an open passageway with a Majestic Arch
@@ -21,6 +12,7 @@ haggle skill to lower prices HAGGLE 300 item
 WHISPER command to talk to everyone at a table only LISTEN should counter it.
 racial abilities (abilities tied to the race)
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
+Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
 Infection: Hitpoints are recovered at 1/2 rate. 
 Can we have a new feature? Prop_changeTimeDay targets: items
 add currents to water...

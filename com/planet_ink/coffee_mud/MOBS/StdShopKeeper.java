@@ -169,6 +169,20 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return "Clan estates";
 		case DEAL_ANYTECHNOLOGY:
 			return "Any technology";
+		case DEAL_BUTCHER:
+			return "Meats";
+		case DEAL_FOODSELLER:
+			return "Foodstuff";
+		case DEAL_GROWER:
+			return "Vegetables";
+		case DEAL_HIDESELLER:
+			return "Hides and Furs";
+		case DEAL_LUMBERER:
+			return "Lumber";
+		case DEAL_METALSMITH:
+			return "Metal ores";
+		case DEAL_STONEYARDER:
+			return "Stone and rock";
 		default:
 			return "... I have no idea WHAT I sell";
 		}
@@ -255,16 +269,20 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					&&(!(thisThang instanceof MiscMagic))
 					&&(!(thisThang instanceof Weapon))
 					&&(!(thisThang instanceof MOB))
+					&&(!(thisThang instanceof EnvResource))
 					&&(!(thisThang instanceof Ability)));
 		case DEAL_LEATHER:
 			return ((thisThang instanceof Item)
-					&&((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER));
+					&&((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)
+					&&(!(thisThang instanceof EnvResource)));
 		case DEAL_PETS:
 			return (thisThang instanceof MOB);
 		case DEAL_INVENTORYONLY:
 			return (inBaseInventory(thisThang));
 		case DEAL_JEWELLER:
 			return ((thisThang instanceof Item)
+					&&(!(thisThang instanceof Weapon))
+					&&(!(thisThang instanceof MiscMagic))
 					&&(((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
 					||((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
 					||((Item)thisThang).canBeWornAt(Item.ON_EARS)
@@ -278,6 +296,33 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return (thisThang instanceof LandTitle);
 		case DEAL_ANYTECHNOLOGY:
 			return (thisThang instanceof Electronics);
+		case DEAL_BUTCHER:
+			return ((thisThang instanceof EnvResource)
+				&&(((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH);
+		case DEAL_FOODSELLER:
+			return (((thisThang instanceof Food)||(thisThang instanceof Drink))
+					&&(!(thisThang instanceof EnvResource)));
+		case DEAL_GROWER:
+			return ((thisThang instanceof EnvResource)
+				&&(((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION);
+		case DEAL_HIDESELLER:
+			return ((thisThang instanceof EnvResource)
+				&&((((EnvResource)thisThang).material()==EnvResource.RESOURCE_HIDE)
+				||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_FEATHERS)
+				||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_LEATHER)
+				||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_SCALES)
+				||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_WOOL)
+				||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_FUR)));
+		case DEAL_LUMBERER:
+			return ((thisThang instanceof EnvResource)
+				&&((((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN));
+		case DEAL_METALSMITH:
+			return ((thisThang instanceof EnvResource)
+				&&(((((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+				||(((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL));
+		case DEAL_STONEYARDER:
+			return ((thisThang instanceof EnvResource)
+				&&((((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK));
 		}
 
 		return false;
