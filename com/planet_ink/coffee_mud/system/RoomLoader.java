@@ -585,6 +585,7 @@ public class RoomLoader
 			{
 				CMMap.CrossExit CE=(CMMap.CrossExit)exits.elementAt(v);
 				Room R=CMMap.getRoom(CE.destRoomID);
+				if(R==null) continue;
 				if(R.getGridParent()!=null) R=R.getGridParent();
 				if((R.roomID().length()>0)&&(!done.contains(R.roomID())))
 				{

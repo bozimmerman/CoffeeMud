@@ -508,11 +508,19 @@ public class StdItem implements Item
 			{
 				if((cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
 				{
-					if((!CommonMsgs.remove(mob,alreadyWearing,false))
-					||(!canWear(mob,0)))
+					if(!CommonMsgs.remove(mob,alreadyWearing,false))
 					{
 						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
 						return false;
+					}
+					else
+					{
+						alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
+						if((alreadyWearing!=null)&&(!canWear(mob,0)))
+						{
+							mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+							return false;
+						}
 					}
 				}
 				else

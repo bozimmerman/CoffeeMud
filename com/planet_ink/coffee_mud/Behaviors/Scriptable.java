@@ -162,6 +162,7 @@ public class Scriptable extends StdBehavior
 		"ISLOCKED", // 60
 		"STRIN", // 61 
 		"CALLFUNC", // 62
+		"NUMPCSROOM" // 63
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -1344,6 +1345,14 @@ public class Scriptable extends StdBehavior
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
 				if(lastKnownLocation!=null)
 					returnable=simpleEval(scripted,""+lastKnownLocation.numInhabitants(),arg2,arg1,"NUMMOBSROOM");
+				break;
+			}
+			case 63: // numpcsroom
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
+				if(lastKnownLocation!=null)
+					returnable=simpleEval(scripted,""+lastKnownLocation.numPCInhabitants(),arg2,arg1,"NUMPCSROOM");
 				break;
 			}
 			case 46: // numitemsroom
@@ -2565,6 +2574,12 @@ public class Scriptable extends StdBehavior
 					results.append(""+lastKnownLocation.numInhabitants());
 				break;
 			}
+			case 63: // numpcsroom
+			{
+				if(lastKnownLocation!=null)
+					results.append(""+lastKnownLocation.numPCInhabitants());
+				break;
+			}
 			case 46: // numitemsroom
 			{
 				int ct=0;
@@ -3242,11 +3257,11 @@ public class Scriptable extends StdBehavior
 						for(Enumeration e=H.keys();e.hasMoreElements();)
 						{
 							String vn=(String)e.nextElement();
-							set.addElement(key,vn);
+							set.addElement(key.substring(10),vn);
 						}
 					}
 					else
-						set.addElement(key,varname);
+						set.addElement(key.substring(10),varname);
 				}
 			}
 		}
@@ -4546,7 +4561,7 @@ public class Scriptable extends StdBehavior
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if(Dice.rollPercentage()<prcnt)
 					{
-						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,2,null));
+						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
 						return;
 					}
 				}
@@ -4560,7 +4575,7 @@ public class Scriptable extends StdBehavior
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if(Dice.rollPercentage()<prcnt)
 					{
-						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,2,null));
+						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
 						return;
 					}
 				}
@@ -4585,7 +4600,7 @@ public class Scriptable extends StdBehavior
 						trigger=trigger.substring(1).trim();
 						if(match(str,trigger))
 						{
-							que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,2,str));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str));
 							return;
 						}
 					}
@@ -4597,7 +4612,7 @@ public class Scriptable extends StdBehavior
 							String t=Util.getCleanBit(trigger,i);
 							if(str.indexOf(" "+t+" ")>=0)
 							{
-								que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,2,t));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,t));
 								return;
 							}
 						}
@@ -4618,7 +4633,7 @@ public class Scriptable extends StdBehavior
 						if(((" "+trigger+" ").indexOf(msg.tool().Name().toUpperCase())>=0)
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
-							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,2,null));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
 							return;
 						}
 					}
@@ -4631,7 +4646,7 @@ public class Scriptable extends StdBehavior
 							if(((" "+msg.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
 							||(t.equalsIgnoreCase("ALL")))
 							{
-								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,2,null));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
 								return;
 							}
 						}
@@ -4651,7 +4666,7 @@ public class Scriptable extends StdBehavior
 						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
-							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 							return;
 						}
 					}
@@ -4664,7 +4679,7 @@ public class Scriptable extends StdBehavior
 							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
 							||(t.equalsIgnoreCase("ALL")))
 							{
-								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 								return;
 							}
 						}
@@ -4684,7 +4699,7 @@ public class Scriptable extends StdBehavior
 						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
-							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,1,null));
 							return;
 						}
 					}
@@ -4697,7 +4712,7 @@ public class Scriptable extends StdBehavior
 							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
 							||(t.equalsIgnoreCase("ALL")))
 							{
-								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 								return;
 							}
 						}
@@ -4717,7 +4732,7 @@ public class Scriptable extends StdBehavior
 						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
-							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 							return;
 						}
 					}
@@ -4730,7 +4745,7 @@ public class Scriptable extends StdBehavior
 							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
 							||(t.equalsIgnoreCase("ALL")))
 							{
-								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 								return;
 							}
 						}
@@ -4750,7 +4765,7 @@ public class Scriptable extends StdBehavior
 						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
-							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 							return;
 						}
 					}
@@ -4763,7 +4778,7 @@ public class Scriptable extends StdBehavior
 							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
 							||(t.equalsIgnoreCase("ALL")))
 							{
-								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 								return;
 							}
 						}
@@ -4784,7 +4799,7 @@ public class Scriptable extends StdBehavior
 						if(((" "+trigger+" ").indexOf(msg.tool().Name().toUpperCase())>=0)
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
-							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,2,null));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
 							return;
 						}
 					}
@@ -4797,7 +4812,7 @@ public class Scriptable extends StdBehavior
 							if(((" "+msg.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
 							||(t.equalsIgnoreCase("ALL")))
 							{
-								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,2,null));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
 								return;
 							}
 						}
@@ -4819,7 +4834,7 @@ public class Scriptable extends StdBehavior
 						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
-							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 							return;
 						}
 					}
@@ -4832,7 +4847,7 @@ public class Scriptable extends StdBehavior
 							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
 							||(t.equalsIgnoreCase("ALL")))
 							{
-								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,2,null));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 								return;
 							}
 						}
@@ -4851,7 +4866,7 @@ public class Scriptable extends StdBehavior
 					if((((Coins)msg.tool()).numberOfCoins()>=t)
 					||(trigger.equalsIgnoreCase("ALL")))
 					{
-						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,2,null));
+						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
 						return;
 					}
 				}
@@ -4864,7 +4879,7 @@ public class Scriptable extends StdBehavior
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if(Dice.rollPercentage()<prcnt)
 					{
-						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,2,null));
+						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
 						return;
 					}
 				}
@@ -4878,7 +4893,7 @@ public class Scriptable extends StdBehavior
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if(Dice.rollPercentage()<prcnt)
 					{
-						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,2,null));
+						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
 						return;
 					}
 				}
@@ -4944,12 +4959,12 @@ public class Scriptable extends StdBehavior
 							Tool=(Item)msg.tool();
 						if(Tool==null) Tool=defaultItem;
 						if(msg.target() instanceof MOB)
-							que.addElement(new ScriptableResponse(affecting,msg.source(),(MOB)msg.target(),monster,Tool,defaultItem,script,2,str));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),(MOB)msg.target(),monster,Tool,defaultItem,script,1,str));
 						else
 						if(msg.target() instanceof Item)
-							que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,2,str));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str));
 						else
-							que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,2,str));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str));
 						return;
 					}
 				}
@@ -5162,15 +5177,15 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
-
-			try{
-				for(int q=que.size()-1;q>=0;q--)
-				{
-					ScriptableResponse SB=(ScriptableResponse)que.elementAt(q);
-					if(SB.tickOrGo()) que.removeElement(SB);
-				}
-			}catch(Exception e){}
 		}
+		try{
+			for(int q=que.size()-1;q>=0;q--)
+			{
+				ScriptableResponse SB=(ScriptableResponse)que.elementAt(q);
+				if(SB.tickOrGo()) 
+					que.removeElement(SB);
+			}
+		}catch(Exception e){}
 		return true;
 	}
 }

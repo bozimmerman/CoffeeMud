@@ -196,10 +196,10 @@ public class Sculpting extends CraftingSkill
 			String recipeName=Util.combine(commands,0);
 			String rest="";
 			Vector foundRecipe=null;
-			Vector matches=matchingRecipeNames(recipes,recipeName);
+			Vector matches=matchingRecipeNames(recipes,recipeName,true);
 			if(matches.size()==0)
 			{
-				matches=matchingRecipeNames(recipes,(String)commands.firstElement());
+				matches=matchingRecipeNames(recipes,(String)commands.firstElement(),true);
 				if(matches.size()>0)
 				{
 					recipeName=(String)commands.firstElement();

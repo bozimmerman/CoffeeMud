@@ -312,7 +312,7 @@ public class CraftingSkill extends CommonSkill
 		}
 	}
 
-	protected Vector matchingRecipeNames(Vector recipes, String recipeName)
+	protected Vector matchingRecipeNames(Vector recipes, String recipeName, boolean beLoose)
 	{
 		Vector matches=new Vector();
 		if(recipeName.length()==0) return matches;
@@ -333,22 +333,35 @@ public class CraftingSkill extends CommonSkill
 			if(V.size()>0)
 			{
 				String item=(String)V.elementAt(0);
-				if((replacePercent(item,"").toUpperCase().indexOf(recipeName.toUpperCase())>=0)
-				||(recipeName.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+				if((replacePercent(item,"").toUpperCase().indexOf(recipeName.toUpperCase())>=0))
 					matches.addElement(V);
 			}
 		}
 		if(matches.size()>0) return matches;
-		String lastWord=(String)Util.parse(recipeName).lastElement();
-		for(int r=0;r<recipes.size();r++)
+		if(beLoose)
 		{
-			Vector V=(Vector)recipes.elementAt(r);
-			if(V.size()>0)
+			for(int r=0;r<recipes.size();r++)
 			{
-				String item=(String)V.elementAt(0);
-				if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
-				||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
-					matches.addElement(V);
+				Vector V=(Vector)recipes.elementAt(r);
+				if(V.size()>0)
+				{
+					String item=(String)V.elementAt(0);
+					if((recipeName.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+						matches.addElement(V);
+				}
+			}
+			if(matches.size()>0) return matches;
+			String lastWord=(String)Util.parse(recipeName).lastElement();
+			for(int r=0;r<recipes.size();r++)
+			{
+				Vector V=(Vector)recipes.elementAt(r);
+				if(V.size()>0)
+				{
+					String item=(String)V.elementAt(0);
+					if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
+					||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+						matches.addElement(V);
+				}
 			}
 		}
 		return matches;

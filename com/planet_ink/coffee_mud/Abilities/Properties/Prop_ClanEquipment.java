@@ -245,11 +245,7 @@ public class Prop_ClanEquipment extends Property
 						int flameDamage = Dice.roll(1, 6, 0);
 						flameDamage *= PowerLevel;
 						MUDFight.postDamage(mob,target,null,flameDamage, CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect, WeaponType,
-												   "^FThe magic of " +
-						                           clanType + " " + clanName +
-						                           " courses through " + me.name() +
-						                           " and " +
-						                           "<DAMAGE>"+
+												   "^FThe magic of " +clanName+" <DAMAGE>"+
 						                           " <T-NAME>!^?");
 						wandUse.helpProfficiency(mob);
 						return;
@@ -334,9 +330,8 @@ public class Prop_ClanEquipment extends Property
 			for(int i=0;i<PowerLevel;i++)
 				flameDamage=flameDamage*1.5;
 			String str="^FThe magic of " +
-			            clanType + " " + clanName +
-			            " courses through " + affected.name() +
-			            " and <DAMAGE> <T-NAME>!^?";
+			             clanName +
+			            " <DAMAGE> <T-NAME>!^?";
 			MUDFight.postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
 								CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect,
 								WeaponType,
@@ -373,7 +368,7 @@ public class Prop_ClanEquipment extends Property
 					    MUDFight.postDamage(mob, source, this, damage,
 					                            CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL| TypeOfEffect
 												, WeaponType,
-					                            "^FThe magic of " + clanType + " " +
+					                            "^FThe magic of " +
 					                            clanName +
 					                            " around <S-NAME> <DAMAGE> <T-NAME>!^?");
 					}

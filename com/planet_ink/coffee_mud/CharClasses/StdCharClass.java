@@ -574,7 +574,7 @@ public class StdCharClass implements CharClass, Cloneable
             {
                 int sireShare=(int)Math.round(Util.div(amount,10.0));
                 amount-=sireShare;
-				if(MUDFight.postExperience(sire,null,"",sireShare,true))
+				if(MUDFight.postExperience(sire,null,"",-sireShare,true))
 					sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
             }
         }

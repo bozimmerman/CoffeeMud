@@ -521,9 +521,11 @@ public class StdRideable extends StdContainer implements Rideable
 		if((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
 		&&(amRiding(msg.source()))
 		&&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
-		&&(((!CoffeeUtensils.reachableItem(msg.source(),msg.target())))
-			|| ((!CoffeeUtensils.reachableItem(msg.source(),msg.tool())))
-			|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target()!=null)&&(msg.target() instanceof MOB)&&(msg.target()!=this)&&(!amRiding((MOB)msg.target())))))
+		&&(msg.target()!=this)
+		&&(msg.tool()!=this)
+		&&((!CoffeeUtensils.reachableItem(msg.source(),msg.target()))
+		|| (!CoffeeUtensils.reachableItem(msg.source(),msg.tool()))
+		|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target()!=null)&&(msg.target() instanceof MOB)&&(msg.target()!=this)&&(!amRiding((MOB)msg.target())))))
 		{
 
 			msg.source().tell("You cannot do that while "+stateString(msg.source())+" "+name()+".");

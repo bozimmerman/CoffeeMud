@@ -1,93 +1,218 @@
 ONCE_PROG
-	MPSETVAR $i KBBET '*$%LEVEL($i)%'
-	MPSETVAR $i KBPLAYERS ''
-	MPSETVAR $i KBPLAY ''
+	MPSETVAR $i KBBET '$%LEVEL($i)%'
+	MPCANNFUNC ClearOut
 ~
 
 GREET_PROG 100
 	IF VAR($i KBBET == '')
-		MPSETVAR $i KBBET '*$%LEVEL($i)%'
+		MPSETVAR $i KBBET '$%LEVEL($i)%'
 	ENDIF
-	IF ISPC($n) AND VAR($n KBPLAY == '')
+	IF ISPC($n) AND VAR($n KBROUND == '')
 		say "$n" Hey $n. Wanna play some knucklebones?
 		say "$n" If you want to join in, grab some friends and drop $<$i KBBET> gold here.
 	ENDIF
 ~
 
 FUNCTION_PROG ClearOut
+	MPSETVAR $i KBPLAYERS
+	MPSETVAR $i KBPLAYED
+	MPSETVAR $i KBSTART
+	MPSETVAR $i KBLEADER
+	MPSETVAR $i KBLEADSCORE
+	MPSETVAR $i KBROUND
+	MPSETVAR * KBROLL
+	MPSETVAR * KBHIGHEROF
+	MPSETVAR * KBHIGHEROFTWO
+	MPSETVAR * KBLOWEROFTWO
+	MPSETVAR * KBBESTTWO
+	MPSETVAR * KBDIE1
+	MPSETVAR * KBDIE2
+	MPSETVAR * KBMYBET
+~
+
+FUNCTION_PROG StartPlay
+	IF VAR($i KBROUND == '0') AND VAR($i KBROUND != '')
+		IF VAR($i KBPLAYERS < 2)
+			say "Sorry, but we need at least 2 players for a game.  Here is your money back."
+			MPOLOAD $<$i KBBET>
+			give $<$i KBBET> $n
+			MPCALLFUNC ClearOut
+		ELSE
+			MPSETVAR $i KBROUND '1'
+			MPSETVAR $i KBPLAYED
+			say "Alright everyone, now take these dice and emote 'throw' or 'toss' (EMOTE THROW) to play.  You have a few seconds so hurry up."
+			MPSETVAR * KBROLL
+			MPALARM 4 MPCALLFUNC NextRound
+		ENDIF
+	ENDIF
+~
+
+FUNCTION_PROG NextRound
+	IF VAR($i KBROUND == 1)
+		IF VAR($i KBLEADER == '')
+			say "Since noone has chosen to throw their dice.  This game is hereby forfeit, and the house keeps the winnings."
+			MPCALLFUNC ClearOut
+		ELSE
+			say "Well done.  $<$i KBLEADER> appears to be our leader with a score of $<$i KBLEADSCORE> !!  Now $<$i KBSTART> has a few seconds to either throw the dice again, or stand pat.  If he rolls again, all be given a chance to roll again."
+			MPSETVAR $i KBROUND '2'
+			MPSETVAR $i KBPLAYED
+			MPALARM 3 MPCALLFUNC SkipLastRound
+		ENDIF
+	ENDIF
+~
+
+FUNCTION_PROG SkipLastRound
+	IF VAR($i KBROUND == 2)
+		say "$<$i KBSTART> has chosen to stand pat.  $<$i KBLEADER> is our winner with a score of $<$i KBLEADSCORE> !!"
+		MPSETVAR $i KBPLAYERS *$<$i KBBET>
+		MPOLOAD $<$i KBPLAYERS>
+		give $<$i KBPLAYERS> $<$i KBLEADER>
+		MPCALLFUNC ClearOut
+	ENDIF
+~
+
+FUNCTION_PROG LastRound
+	IF VAR($i KBROUND == 3)
+		MPSETVAR $i KBROUND
+		say "$<$i KBLEADER> is our winner with a score of $<$i KBLEADSCORE>!"
+		MPSETVAR $i KBPLAYERS *$<$i KBBET>
+		MPOLOAD $<$i KBPLAYERS>
+		give $<$i KBPLAYERS> $<$i KBLEADER>
+		MPCALLFUNC ClearOut
+	ENDIF
+~
+
+GET_PROG 'gold coins' 'gold coin'
+	IF VAR($i KBROUND == '0') AND VAR($i KBROUND != '')
+		say $n Hey! You just robbed the pot! Damn! Ok, everyone re-bet.
+		MPCALLFUNC ClearOut
+	ENDIF
 ~
 
 DROP_PROG 'gold coins' 'gold coin'
-	IF ISHERE($o)
-		IF GOLDAMT($o != '$<$i KBBET>') OR VAR($n KBMYBET > 0)
-			say "$n" The bet is $<$i KBBET>.  No more, no less.
-			MPOLOAD $%GOLDAMT($o)%
-			give $%GOLDAMT($o)% $n
+	IF VAR($i KBBET == '')
+		MPSETVAR $i KBBET '$%LEVEL($i)%'
+	ENDIF
+	IF ISNPC($n) AND EVAL('$n' != '$i')
+		say "$n" I'm sorry, but your kind can not play.
+		MPPURGE $o
+		RETURN
+	ENDIF
+	IF ISPC($n)
+		IF VAR($i KBROUND != '') AND VAR($i KBROUND != '0')
+			say "$n" Sorry, the game's already started.  Games go quickly, however, so please wait."
+			MPOLOAD $%GOLDAMT($p)%
+			give $%GOLDAMT($p)% $n
 		ELSE
-			MPSETVAR $n CPMYBET $%GOLDAMT($o)%
-			say "$n" Ok! Now, just take these dice and emote 'throw' or 'toss' (EMOTE THROW) to play.
-			MPSETVAR $n CPDICE 
+			IF GOLDAMT($p != '$<$i KBBET>') OR VAR($n KBMYBET >= 1)
+				say "$n" The bet is $<$i KBBET> --  no more, no less.
+				MPOLOAD $%GOLDAMT($p)%
+				give $%GOLDAMT($p)% $n
+			ELSE
+				MPSETVAR $n KBMYBET $%GOLDAMT($p)%
+				IF VAR($i KBPLAYERS == '')
+					say "$n" Ok! Lets wait for a few more players and then we'll start.
+					MPSETVAR $i KBROUND 0
+					MPALARM 10 MPCALLFUNC StartPlay
+					MPSETVAR $i KBPLAYERS 1
+				ELSE
+					MPSETVAR $i KBPLAYERS ++
+					IF EVAL('$%NUMPCSROOM()%' == '$<$i KBPLAYERS>')
+						MPCALLFUNC StartPlay
+					ELSE
+						say "$n" Thanks, we'll start the game any second now.
+					ENDIF
+				ENDIF
+			ENDIF
 		ENDIF
 		MPPURGE $o
 	ENDIF
 ~
 
+FUNCTION_PROG SelectHigherOf
+	MPSETVAR $n KBHIGHEROF $g.2
+	IF EVAL('$g.2' < '$g.3')
+		MPSETVAR $n KBHIGHEROF $g.3
+	ENDIF
+	MPSETVAR $n KBHIGHEROFTWO $g.0
+	MPSETVAR $n KBLOWEROFTWO $g.1
+	IF EVAL('$g.0' < '$g.1')
+		MPSETVAR $n KBHIGHEROFTWO $g.1
+		MPSETVAR $n KBLOWEROFTWO $g.0
+	ENDIF
+	IF EVAL('$<$n KBHIGHEROF>' > '$<$n KBLOWEROFTWO>')
+		RETURN $<$n KBHIGHEROF> $<$n KBHIGHEROFTWO>
+	ENDIF
+	RETURN $g.0 $g.1
+~
+
 ACT_PROG throw throws toss tosses
-	IF ISPC($n) AND VAR($n KBMYBET == '')
-		say "$n" Wanna play knucklebones? If so, grab some friends and drop $<$i KBBET> gold here.
+	IF VAR($i KBROUND == 0)
+		say "$n" The game hasn't started yet.  Please wait until you are instructed to throw the dice.
 	ELSE
-		MPSETVAR $n CPDIE1 '$%RANDNUM(6)%'
-		MPSETVAR $n CPDIE2 '$%RANDNUM(6)%'
-		MPSETVAR $n CPTOTAL $<$n CPDIE1>
-		MPSETVAR $n CPTOTAL +$<$n CPDIE2>
-		IF VAR($n CPDICE == '')
-			MPECHO The come out dice thrown by $n roll to a stop, showing $<$n CPDIE1> and $<$n CPDIE2>.
-			MPSETVAR $n CPDICE $<$n CPTOTAL>
-			IF VAR($n CPDICE == 2) OR VAR($n CPDICE == 3) OR VAR($n CPDICE == 12)
-				say "$n" You rolled craps! Sorry man. Throw down some more gold to play again!
-				MPCALLFUNC ClearOut
-			ELSE
-				IF VAR($n CPDICE == 7) OR VAR($n CPDICE == 11)
-					say "$n" We have a winner! Great roll!
-					MPSETVAR $n CPMYBET '*2'
-					MPOLOAD $<$n CPMYBET>
-					give $<$n CPMYBET> $n
-					say "$n" Drop some more gold to play again!
-					MPCALLFUNC ClearOut
-				ELSE
-					say "$n" Ok, your point is $<$n CPDICE>.  Throw those dice again!
-				ENDIF
-			ENDIF
+		IF ISPC($n) AND VAR($n KBMYBET == '')
+			say "$n" Wanna play knucklebones? If so, grab some friends and drop $<$i KBBET> gold here.
 		ELSE
-			MPECHO The dice thrown by $n roll to a stop, showing $<$n CPDIE1> and $<$n CPDIE2>.
-			IF VAR($n CPTOTAL == 7)
-				say "$n" Ouch! Unlucky 7! You lose!  Put down some more gold to play again!
-				MPCALLFUNC ClearOut
-			ELSE
-				IF VAR($n CPDICE == '$<$n CPTOTAL>')
-					say "$n" You made your point!  That's a winner!
-					MPSETVAR $n CPMYBET '*2'
-					MPOLOAD $<$n CPMYBET>
-					give $<$n CPMYBET> $n
-					say "$n" Drop some more gold and play again!
-					MPCALLFUNC ClearOut
+			IF VAR($i KBROUND == 2) AND EVAL($n != '$<$i KBSTART>')
+				say $n Please wait for $<$i KBSTART> to decide whether or not to throw again.
+				RETURN
+			ENDIF
+			IF EVAL('$<$n KBROLL>.0' < '$<$i KBROUND>')
+				MPSETVAR $n KBDIE1 '$%RANDNUM(6)%'
+				MPSETVAR $n KBDIE2 '$%RANDNUM(6)%'
+				IF VAR($n KBROLL != '')
+					MPSETVAR $n KBBESTTWO $%CALLFUNC(SelectHigherOf $<$n KBDIE1> $<$n KBDIE2> $<$n KBROLL>.1 $<$n KBROLL>.2)%
 				ELSE
-					say "$n" No help. Throw those dice again.
+					MPSETVAR $n KBBESTTWO $<$n KBDIE1> $<$n KBDIE2>
 				ENDIF
+				IF VAR($i KBSTART == '')
+					MPSETVAR $i KBSTART $<$i KBLEADER>
+				ENDIF
+				MPSETVAR $n KBTOTAL $<$n KBBESTTWO>.0
+				MPSETVAR $n KBTOTAL +$<$n KBBESTTWO>.1
+				MPSETVAR $n KBROLL $<$i KBROUND> $<$n KBBESTTWO> $<$n KBTOTAL>
+				MPECHO The dice thrown by $n roll to a stop, showing $<$n KBDIE1> and $<$n KBDIE2>
+				IF VAR($n KBTOTAL > '$<$i KBLEADSCORE>')
+					MPSETVAR $i KBLEADSCORE $<$n KBTOTAL>
+					MPSETVAR $i KBLEADER $n
+				ENDIF
+				MPSETVAR $i KBPLAYED ++
+				IF VAR($i KBROUND == 2) AND EVAL($n == '$<$i KBSTART>')
+					MPSETVAR $i KBROUND 3
+					MPALARM 4 MPCALLFUNC LastRound
+					say It seems $n has chosen to roll again.  You all now have a few seconds to do the same, if you wish.
+					MPSETVAR $i KBPLAYED
+				ELSE
+					IF EVAL('$<$i KBPLAYERS>' == '$<$i KBPLAYED>')
+						IF VAR($i KBROUND == 1)
+							MPCALLFUNC NextRound
+						ELSE
+							IF VAR($i KBROUND == 3)
+								MPCALLFUNC LastRound
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ELSE
+				say $n You've already thrown dice this round.
 			ENDIF
 		ENDIF
 	ENDIF
 ~
 
 SPEECH_PROG toss throw tosses throws
-	IF VAR($n KBPLAY != '')
-		IF ISPC($n) AND VAR($n KBMYBET == '')
-			say "$n" Wanna play knucklebones? If so, grab some friends and drop $<$i KBBET> gold here.
-		ELSE
-			say "$n" Try entering EMOTE $g.
-		ENDIF
+	IF VAR($n KBROUND == '')
+		say "$n" Wanna play knucklebones? If so, grab some friends and drop $<$i KBBET> gold here.
 	ELSE
-		say "$n" Patience!  The game is not yet started.  I will let you know.
+		IF VAR($n KBROUND == '0')
+			say "$n" Patience!  The game is not yet started.  I will let you know.
+		ELSE
+			IF ISPC($n) AND VAR($n KBMYBET == '')
+				say "$n" Wanna play knucklebones? If so, grab some friends and drop $<$i KBBET> gold here.
+			ELSE
+				say "$n" Try entering EMOTE $g
+			ENDIF
+		ENDIF
 	ENDIF
 ~
 

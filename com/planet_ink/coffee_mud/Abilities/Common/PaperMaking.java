@@ -131,7 +131,7 @@ public class PaperMaking extends CraftingSkill
 			String materialDesc="";
 			String recipeName=Util.combine(commands,0);
 			Vector foundRecipe=null;
-			Vector matches=matchingRecipeNames(recipes,recipeName);
+			Vector matches=matchingRecipeNames(recipes,recipeName,true);
 			for(int r=0;r<matches.size();r++)
 			{
 				Vector V=(Vector)matches.elementAt(r);

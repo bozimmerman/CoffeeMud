@@ -67,7 +67,20 @@ public class Archon_Metacraft extends CraftingSkill
 			if(skill instanceof CraftingSkill)
 			{
 				Vector V=((CraftingSkill)skill).fetchRecipes();
-				V=matchingRecipeNames(V,recipe);
+				V=matchingRecipeNames(V,recipe,false);
+				if((V!=null)&&(V.size()>0))
+					break;
+			}
+			skill=null;
+		}
+		if(skill==null)
+		for(int i=0;i<craftingSkills.size();i++)
+		{
+			skill=(Ability)craftingSkills.elementAt(i);
+			if(skill instanceof CraftingSkill)
+			{
+				Vector V=((CraftingSkill)skill).fetchRecipes();
+				V=matchingRecipeNames(V,recipe,true);
 				if((V!=null)&&(V.size()>0))
 					break;
 			}

@@ -38,13 +38,14 @@ public class Prayer_MassHeal extends Prayer
 		for(Iterator e=h.iterator();e.hasNext();)
 		{
 			MOB target=(MOB)e.next();
+			boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 			if(success)
 			{
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) surrounded by a white light.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
+				FullMsg msg=new FullMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|affectType(auto),auto?"<T-NAME> become(s) surrounded by a white light.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
