@@ -44,8 +44,12 @@ public class Thief_Hide extends ThiefSkill
 
 		if(affect.amISource(mob))
 		{
+			
 			if(((!Util.bset(affect.sourceMajor(),Affect.ACT_SOUND)
-				 ||(affect.sourceMinor()==Affect.TYP_SPEAK)))
+				 ||(affect.sourceMinor()==Affect.TYP_SPEAK)
+				 ||(affect.sourceMinor()==Affect.TYP_ENTER)
+				 ||(affect.sourceMinor()==Affect.TYP_LEAVE)
+				 ||(affect.sourceMinor()==Affect.TYP_RECALL)))
 			 &&(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
 			 &&(affect.sourceMinor()!=Affect.TYP_EXAMINESOMETHING)
 			 &&(affect.sourceMajor()>0))

@@ -85,34 +85,6 @@ public class StdItem implements Item
 	{
 		return isAContainer;
 	}
-	public String viewableText(MOB mob, int reps)
-	{
-		StringBuffer say=new StringBuffer("");
-		if(location()==null)
-		{
-			if((Sense.canBeSeenBy(this,mob))&&((displayText().length()>0)||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)))
-			{
-				if(reps==0)	say.append("      ");
-				else
-				if(reps>0)	say.append(" ("+Util.padLeft(""+(reps+1),2)+") ");
-				
-				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
-					say.append("^H("+CMClass.className(this)+")^N ");
-
-				say.append("^I");
-				if(envStats().replacementName()!=null)
-					say.append(envStats().replacementName());
-				else
-				if(displayText().length()>0)
-					say.append(displayText());
-				else
-					say.append(name());
-				say.append(" "+Sense.colorCodes(this,mob)+"^N\n\r");
-			}
-		}
-		return say.toString();
-	}
-	
 	public Environmental newInstance()
 	{
 		return new StdItem();

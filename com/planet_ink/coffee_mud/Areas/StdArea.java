@@ -148,6 +148,16 @@ public class StdArea implements Area
 			return "You can't tell much about the weather from here.";
 		return getWeatherDescription();
 	}
+	private String numAppendage(int num)
+	{
+		switch(num)
+		{
+		case 1: return "st";
+		case 2: return "nd";
+		case 3: return "rd";
+		}
+		return "th";
+	}
 	public String timeDescription(MOB mob, Room room)
 	{
 		StringBuffer timeDesc=new StringBuffer("");
@@ -161,7 +171,9 @@ public class StdArea implements Area
 		case Area.TIME_NIGHT: timeDesc.append("It is nighttime "); break;
 		}
 		timeDesc.append("(Hour: "+getTimeOfDay()+"/"+(Area.A_FULL_DAY-1)+")");
-		
+		timeDesc.append("\n\rIt is the "+getDayOfMonth()+numAppendage(getDayOfMonth()));
+		timeDesc.append(" day of the "+getMonth()+numAppendage(getMonth()));
+		timeDesc.append(" month.  It is "+(Area.SEASON_DESCS[getSeasonCode()]).toLowerCase()+".");
 		if(Sense.canSee(mob))
 		if((timeCode==Area.TIME_NIGHT)&&((room.domainType()&Room.INDOORS)==0))
 		{

@@ -86,13 +86,26 @@ public class Scoring
 				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 					say.append("^H("+CMClass.className(item)+")^N ");
 				say.append("^I");
-				if(useName)
-					say.append(item.name());
+				if(item.envStats().replacementName()!=null)
+				{
+					if(useName)
+						say.append(item.envStats().replacementName());
+					else
+					if(item.displayText().length()>0)
+						say.append(item.envStats().replacementName()+" is here");
+					else
+						say.append(item.envStats().replacementName());
+				}
 				else
-				if(item.displayText().length()>0)
-					say.append(item.displayText());
-				else
-					say.append(item.name());
+				{
+					if(useName)
+						say.append(item.name());
+					else
+					if(item.displayText().length()>0)
+						say.append(item.displayText());
+					else
+						say.append(item.name());
+				}
 				say.append(" "+Sense.colorCodes(item,mob)+"^N\n\r");
 			}
 		}
