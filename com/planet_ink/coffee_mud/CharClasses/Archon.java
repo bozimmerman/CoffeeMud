@@ -63,26 +63,40 @@ public class Archon extends StdCharClass
 	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
+		// the most efficient way of doing this -- just hash em!
+		Hashtable alreadyAble=new Hashtable();
+		Hashtable alreadyAff=new Hashtable();
+		for(int a=0;a<mob.numAffects();a++)
+		{
+			Ability A=mob.fetchAffect(a);
+			if(A!=null) alreadyAff.put(A.ID(),A);
+		}
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability A=mob.fetchAbility(a);
+			if(A!=null)
+			{
+				A.setProfficiency(100);
+				A.setBorrowed(mob,true);
+				Ability A2=(Ability)alreadyAff.get(A.ID());
+				if(A2!=null)
+					A2.setProfficiency(100);
+				else
+					A.autoInvocation(mob);
+				alreadyAble.put(A.ID(),A);
+			}
+		}
 		int classLevel=mob.charStats().getClassLevel(this);
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			int lvl=CMAble.getQualifyingLevel(ID(),A.ID());
-			if((lvl>0)&&(lvl<=classLevel))
-			{
-				Ability mine=mob.fetchAbility(A.ID());
-				if(mine!=null)
-				{
-					mine.setProfficiency(100);
-					mine.setBorrowed(mob,true);
-					if(mob.fetchAffect(A.ID())!=null)
-						mob.fetchAffect(A.ID()).setProfficiency(100);
-					else
-						mine.autoInvocation(mob);
-				}
-				else
-					giveMobAbility(mob,A,100,"",true,false);
-			}
+			if((lvl>0)
+			&&(lvl<=classLevel)
+			&&(!alreadyAble.containsKey(A.ID())))
+				giveMobAbility(mob,A,100,"",true,false);
 		}
+		alreadyAble.clear();
+		alreadyAff.clear();
 	}
 }

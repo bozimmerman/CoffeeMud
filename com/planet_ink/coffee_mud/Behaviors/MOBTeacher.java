@@ -34,20 +34,22 @@ public class MOBTeacher extends CombatAbilities
 		mob.recoverCharStats();
 	}
 
-	private void classAbles(MOB mob)
+	private void classAbles(MOB mob, Hashtable myAbles)
 	{
+		boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			Ability A2=mob.fetchAbility(A.ID());
+			Ability A2=(Ability)myAbles.get(A.ID());
 			if(A2==null)
 			{
-				if((CMAble.qualifiesByLevel(mob,A)||((mob.charStats().getCurrentClass().ID().equals("StdCharClass")))
-				   &&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
+				if(((stdCharClass&&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
+				   ||CMAble.qualifiesByLevel(mob,A))
 				{
 					A=(Ability)A.copyOf();
 					A.setBorrowed(myMOB,true);
 					A.setProfficiency(100);
+					myAbles.put(A.ID(),A);
 					mob.addAbility(A);
 				}
 			}
@@ -78,6 +80,12 @@ public class MOBTeacher extends CombatAbilities
 		}
 		else
 		{
+			Hashtable myAbles=new Hashtable();
+			for(int a=0;a<myMOB.numAbilities();a++)
+			{
+				A=myMOB.fetchAbility(a);
+				if(A!=null) myAbles.put(A.ID(),A);
+			}
 			myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
 			myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
 			String parm=getParms().toUpperCase();
@@ -88,13 +96,13 @@ public class MOBTeacher extends CombatAbilities
 				if(x>=0)
 				{
 					setTheCharClass(myMOB,C);
-					classAbles(myMOB);
+					classAbles(myMOB,myAbles);
 					myMOB.recoverCharStats();
 				}
 			}
 			myMOB.recoverCharStats();
 			if(myMOB.charStats().getCurrentClass().ID().equals("StdCharClass"))
-				classAbles(myMOB);
+				classAbles(myMOB,myAbles);
 			int lvl=myMOB.envStats().level()/myMOB.baseCharStats().numClasses();
 			if(lvl<1) lvl=1;
 			for(int i=0;i<myMOB.baseCharStats().numClasses();i++)

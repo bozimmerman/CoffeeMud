@@ -1,4 +1,2 @@
 GAES still isn't done
 Jeremy's class load problem is serious!
-Figure out what takes so long for mobs to load!
-Figure out what takes Archons so long to load!
