@@ -11,6 +11,7 @@ public class Mining extends CommonSkill
 	private static final String[] triggerStrings = {"MINE","MINING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return FLAG_GATHERING;}
+	protected boolean allowedWhileMounted(){return false;}
 
 	private Item found=null;
 	private String foundShortName="";

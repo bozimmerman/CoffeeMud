@@ -11,6 +11,7 @@ public class Chopping extends CommonSkill
 	private static final String[] triggerStrings = {"CHOP","CHOPPING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return FLAG_GATHERING;}
+	protected boolean allowedWhileMounted(){return false;}
 
 	private Item found=null;
 	private String foundShortName="";

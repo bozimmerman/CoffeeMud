@@ -20,6 +20,8 @@ public class CommonSkill extends StdAbility
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
 	protected int practicesToPractice(){return 1;}
 
+	protected boolean allowedWhileMounted(){return true;}
+	
 	protected Room activityRoom=null;
 	protected boolean aborted=false;
 	protected boolean helping=false;
@@ -193,6 +195,12 @@ public class CommonSkill extends StdAbility
 			commonEmote(mob,"<S-NAME> <S-IS-ARE> in combat!");
 			return false;
 		}
+		if((!allowedWhileMounted())&&(mob.riding()!=null))
+		{
+			commonEmote(mob,"You can't do that while "+mob.riding().stateString(mob)+" "+mob.riding().name()+".");
+			return false;
+		}
+		
 		if(!Sense.canBeSeenBy(mob.location(),mob))
 		{
 			commonTell(mob,"<S-NAME> can't see to do that!");

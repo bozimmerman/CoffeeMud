@@ -11,6 +11,7 @@ public class Digging extends CommonSkill
 	private static final String[] triggerStrings = {"DIG","DIGGING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return FLAG_GATHERING;}
+	protected boolean allowedWhileMounted(){return false;}
 
 	private Item found=null;
 	private String foundShortName="";

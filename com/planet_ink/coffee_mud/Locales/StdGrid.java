@@ -60,35 +60,38 @@ public class StdGrid extends StdRoom implements GridLocale
 			displayTexts.addElement(newDisplayText);
 	}
 
-	public Room getAltRoomFrom(Room loc)
+	public Room getAltRoomFrom(Room loc, int direction)
 	{
-		int oldDirCode=-1;
-		if(loc==null) return null;
-
+		if((loc==null)||(direction<0))
+			return null;
+		int opDirection=Directions.getOpDirectionCode(direction);
+		
 		getBuiltGrid();
 
 		Room oldLoc=loc;
 		if(loc.roomID().length()==0) // might be a child of an adjacent grid!
 		{
-			for(int x=0;x<Directions.NUM_DIRECTIONS-1;x++)
-				if((doors[x]!=null)
-				&&(doors[x] instanceof GridLocale)
-				&&(((GridLocale)doors[x]).isMyChild(loc)))
+			if((doors[opDirection] instanceof GridLocale)&&(((GridLocale)doors[opDirection]).isMyChild(loc)))
+				loc=doors[opDirection];
+			else
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				if((doors[d] instanceof GridLocale)&&(((GridLocale)doors[d]).isMyChild(loc)))
+				{	loc=doors[d]; break;}
+			if(loc==oldLoc)
+				for(Enumeration e=loc.getArea().getMap();e.hasMoreElements();)
 				{
-					loc=doors[x];
-					oldDirCode=x;
-					break;
+					Room R=(Room)e.nextElement();
+					if((R instanceof GridLocale)&&(((GridLocale)R).isMyChild(loc)))
+					{	loc=R; break;}
+				}
+			if(loc==oldLoc)
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					if((R instanceof GridLocale)&&(((GridLocale)R).isMyChild(loc)))
+					{	loc=R; break;}
 				}
 		}
-
-		if(oldDirCode<0)
-			for(int x=0;x<Directions.NUM_DIRECTIONS-1;x++)
-				if((doors[x]!=null)&&(doors[x]==loc))
-				{
-					oldDirCode=x;
-					break;
-				}
-		if(oldDirCode<0) return null;
 
 		if((oldLoc!=loc)&&(loc instanceof GridLocale))
 		{
@@ -98,7 +101,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				int y=((GridLocale)loc).getChildY(oldLoc);
 				int x=((GridLocale)loc).getChildX(oldLoc);
 				if((x>=0)&&(y>=0))
-				switch(oldDirCode)
+				switch(opDirection)
 				{
 				case Directions.EAST:
 					if((((GridLocale)loc).ySize()==ySize()))
@@ -119,8 +122,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				}
 			}
 		}
-
-		return alts[oldDirCode];
+		return alts[opDirection];
 	}
 
 	public Room[][] getBuiltGrid()
@@ -449,15 +451,20 @@ public class StdGrid extends StdRoom implements GridLocale
 			MOB mob=msg.source();
 			if((mob.location()!=null)&&(mob.location().roomID().length()>0))
 			{
-				Room altRoom=getAltRoomFrom(mob.location());
-				if(altRoom==null)
+				int direction=-1;
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				{
+					if(mob.location().getRoomInDir(d)==this)
+						direction=d;
+				}
+				if(direction<0)
 				{
 					mob.tell("Some great evil is preventing your movement that way.");
 					return false;
 				}
 				else
 				msg.modify(msg.source(),
-							  altRoom,
+							  getAltRoomFrom(mob.location(),direction),
 							  msg.tool(),
 							  msg.sourceCode(),
 							  msg.sourceMessage(),

@@ -904,13 +904,10 @@ public class StdRoom
 		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return null;
 		Room nextRoom=rawDoors()[direction];
-		if(nextRoom!=null)
+		if(nextRoom instanceof GridLocale)
 		{
-			if(nextRoom instanceof GridLocale)
-			{
-				Room realRoom=((GridLocale)nextRoom).getAltRoomFrom(this);
-				if(realRoom!=null) return realRoom;
-			}
+			Room realRoom=((GridLocale)nextRoom).getAltRoomFrom(this,direction);
+			if(realRoom!=null) return realRoom;
 		}
 		return nextRoom;
 	}

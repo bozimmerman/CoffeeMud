@@ -4,7 +4,7 @@ import java.util.Vector;
 
 public interface GridLocale extends Room
 {
-	public Room getAltRoomFrom(Room loc);
+	public Room getAltRoomFrom(Room loc, int direction);
 	public void buildGrid();
 	public void clearGrid();
 	public String getChildLocaleID();
