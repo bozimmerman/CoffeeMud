@@ -8,6 +8,12 @@ born chars start with 66 stat points, made ones are 70
 there is no listing for genpipe in the archon manual
 I would like there to be support for the genpipe to be consumed when the tobacco burns out if there is a decay feature on it, or if it`s uses is set to 1 or something like that. (Cigars and cigarettes).
 Ban by e-mail address?
+Name        {60 80} Sansara Margate~ not parsing right!
+GenDoor
+(copy) not appearing next to your titles
+Some ISMOON check for making events only happen in certain lunar phases.
+construct desc (outside door of my room) blah doesn't recognize ownership
+
 
 
 SMTP Server

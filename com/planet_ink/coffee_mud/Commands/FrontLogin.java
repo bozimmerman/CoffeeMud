@@ -188,6 +188,7 @@ public class FrontLogin extends StdCommand
 			mob.session().print("password:");
 			String password=mob.session().blockingIn();
 			PlayerStats pstats=mob.playerStats();
+			
 			if((pstats!=null)
 			&&(pstats.password().equalsIgnoreCase(password))
 			&&(mob.Name().trim().length()>0))
