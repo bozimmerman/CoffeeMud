@@ -50,8 +50,9 @@ public class Skill_RegionalAwareness extends StdAbility
 		case Room.DOMAIN_OUTDOORS_DESERT:return '.';
 		case Room.DOMAIN_OUTDOORS_HILLS:return 'h';
 		case Room.DOMAIN_OUTDOORS_MOUNTAINS:return 'M';
-		case Room.DOMAIN_OUTDOORS_SPACEPORT:return '*';
-		default: return '#';
+		case Room.DOMAIN_OUTDOORS_SPACEPORT:return '@';
+		default: 
+			return '#';
 		}
 	}
 	
@@ -73,24 +74,62 @@ public class Skill_RegionalAwareness extends StdAbility
 				
 				int diameter=2+(adjustedLevel(mob)/10);
 				char[][] map=new char[diameter][diameter];
+				for(int i=0;i<diameter;i++)
+					for(int i2=0;i2<diameter;i2++)
+						map[i][i2]=' ';
 				Room[][] rmap=new Room[diameter][diameter];
 				Vector rooms=new Vector();
 				HashSet closedPaths=new HashSet();
 				MUDTracker.getRadiantRooms(mob.location(),rooms,true,false,true,null,diameter);
 				rmap[diameter/2][diameter/2]=mob.location();
-				map[diameter/2][diameter/2]=roomChar(mob.location());
-				int lastlevel=-1;
+				map[diameter/2][diameter/2]='*';
 				for(int i=0;i<rooms.size();i++)
 				{
 					Room R=(Room)rooms.elementAt(i);
-					if(R==mob.location())
-					{
-						lastlevel=1;
+					if((closedPaths.contains(R)) 
+					||(R==mob.location()))
 						continue;
+					Room parentR=null;
+					int parentDir=-1;
+					int[] xy=null;
+					for(int i2=0;(i2<diameter)&&(parentR==null);i2++)
+						for(int i3=0;(i3<diameter)&&(parentR==null);i3++)
+						{
+							Room R2=(Room)rmap[i2][i3];
+							if(R2!=null)
+							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								if((R2.getRoomInDir(d)==R)
+								&&(!closedPaths.contains(R2))
+								&&(R2.getExitInDir(d)!=null))
+								{
+									parentR=R2;
+									parentDir=d;
+									xy=Directions.adjustXYByDirections(i3,i2,d);
+									break;
+								}
+						}
+					if((parentDir<0)
+					||(xy[0]<0)||(xy[0]>=diameter)||(xy[1]<0)||(xy[1]>=diameter)
+					||(map[xy[1]][xy[0]]!=' '))
+						closedPaths.add(R);
+					else
+					{
+						map[xy[1]][xy[0]]=roomChar(R);
+						rmap[xy[1]][xy[0]]=R;
+					
+						if((R.domainType()&Room.INDOORS)==Room.INDOORS)
+							closedPaths.add(R);
 					}
 				}
+				StringBuffer str=new StringBuffer("");
+				for(int i2=0;i2<diameter;i2++)
+				{
+					for(int i3=0;i3<diameter;i3++)
+						str.append(map[i2][i3]);
+					str.append("\n\r");
+				}
+				if(mob.session()!=null) mob.session().rawPrintln(str.toString());
 			}
-				
 		}
 		else
 			beneficialVisualFizzle(mob,null,"<S-NAME> peer(s) around distantly, looking frustrated.");

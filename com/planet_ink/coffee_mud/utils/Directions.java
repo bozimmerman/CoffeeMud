@@ -122,6 +122,20 @@ public class Directions
 		return code;
 	}
 	
+	public static int[] adjustXYByDirections(int x, int y, int direction)
+	{
+		switch(direction)
+		{
+		case Directions.NORTH: y--; break;
+		case Directions.SOUTH: y++; break;
+		case Directions.EAST: x++; break;
+		case Directions.WEST: x--; break;
+		}
+		int[] xy=new int[2];
+		xy[0]=x;
+		xy[1]=y;
+		return xy;
+	}
 	
 
 	public static String getFromDirectionName(String theDir)

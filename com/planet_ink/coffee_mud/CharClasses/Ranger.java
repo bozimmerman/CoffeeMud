@@ -143,6 +143,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),23,"Ranger_Enemy4",true);
 			
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_AnimalSpy",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Skill_RegionalAwareness",false);
 			
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonMount",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_CalledShot",true);
