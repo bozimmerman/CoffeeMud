@@ -1735,12 +1735,14 @@ public class Scriptable extends StdBehavior
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1));
 				int num=0;
+				Room R=null;
+				MOB M=null;
 				for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
-					Room R=(Room)e.nextElement();
+					R=(Room)e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						M=R.fetchInhabitant(m);
 						if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
 							num++;
 					}
@@ -3170,12 +3172,14 @@ public class Scriptable extends StdBehavior
 			{
 				int num=0;
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z)));
+				Room R=null;
+				MOB M=null;
 				for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
-					Room R=(Room)e.nextElement();
+					R=(Room)e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						M=R.fetchInhabitant(m);
 						if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
 							num++;
 					}
@@ -3187,12 +3191,14 @@ public class Scriptable extends StdBehavior
 			{
 				int num=0;
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z)));
+				Room R=null;
+				MOB M=null;
 				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 				{
-					Room R=(Room)e.nextElement();
+					R=(Room)e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						M=R.fetchInhabitant(m);
 						if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
 							num++;
 					}
@@ -4982,8 +4988,8 @@ public class Scriptable extends StdBehavior
 			}
 			case 37: // mpenable
 			{
-				String cast=Util.getCleanBit(s,1);
-				Environmental newTarget=getArgumentMOB(Util.getCleanBit(s,2),source,monster,target,primaryItem,secondaryItem,msg);
+				Environmental newTarget=getArgumentMOB(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				String cast=Util.getCleanBit(s,2);
 				String p2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
 				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,3));
 				Ability A=null;
@@ -4998,8 +5004,8 @@ public class Scriptable extends StdBehavior
 			}
 			case 38: // mpdisable
 			{
-				String cast=Util.getCleanBit(s,1);
-				Environmental newTarget=getArgumentMOB(Util.getPastBitClean(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				Environmental newTarget=getArgumentMOB(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				String cast=Util.getPastBitClean(s,1);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
 					Ability A=((MOB)newTarget).findAbility(cast);

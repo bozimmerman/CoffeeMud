@@ -109,41 +109,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			if((A!=null)&&(A.isBorrowed(R)))
 				return false;
 		}
-		if(R.getGridParent() instanceof StdThinGrid)
-		{
-			StdThinGrid STG=(StdThinGrid)R.getGridParent();
-			synchronized(STG.rooms)
-			{
-				for(int i=0;i<STG.rooms.size();i++)
-				{
-					if(STG.rooms.elementAt(i,1)==R)
-					{
-						long l=((Long)STG.rooms.elementAt(i,4)).longValue();
-						if((System.currentTimeMillis()-l)<EXPIRATION)
-							return false;
-					}
-				}
-			}
-		}
 		return true;
-	}
-	
-	protected static boolean cleanRoomCenter(Room R)
-	{
-		if(!cleanRoom(R)) 
-			return false;
-		boolean foundOne=false;
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-		{
-			Room R2=R.rawDoors()[d];
-			if(R2!=null)
-			{
-				foundOne=true;
-				if(!cleanRoom(R2))
-					return false;
-			}
-		}
-		return foundOne;
 	}
 	
 	protected Room getMakeSingleGridRoom(int x, int y)
@@ -462,6 +428,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 
 	protected static void clearRoom(Room room, Room bringBackHere)
 	{
+		room.setGridParent(null);
 		while(room.numInhabitants()>0)
 		{
 			MOB M=room.fetchInhabitant(0);
@@ -495,7 +462,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			room.rawDoors()[d]=null;
 			room.rawExits()[d]=null;
 		}
-		room.setGridParent(null);
 		CMMap.delRoom(room);
 	}
 	
@@ -640,9 +606,17 @@ public class StdThinGrid extends StdRoom implements GridLocale
 									if(((Long)DV.elementAt(r,4)).longValue()<time)
 									{
 										R=(Room)DV.elementAt(r,1);
-										if(cleanRoomCenter(R))
+										if(!cleanRoom(R)) continue;
+										boolean cleanOne=true;
+										for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 										{
-											DV.removeElement(R);
+											Room R2=R.rawDoors()[d];
+											if((R2!=null)&&(!cleanRoom(R2)))
+											{ cleanOne=false; break;}
+										}
+										if(cleanOne)
+										{
+											DV.removeElementAt(r);
 											clearRoom(R,null);
 										}
 									}

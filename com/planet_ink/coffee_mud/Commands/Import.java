@@ -4790,6 +4790,7 @@ public class Import extends StdCommand
 						String descStr=CoffeeFilter.safetyFilter(eatLineSquiggle(roomV));
 						String nameStr=CoffeeFilter.safetyFilter(eatLineSquiggle(roomV));
 						String codeStr=eatLine(roomV);
+						if(dirCode<Directions.NUM_DIRECTIONS)
 						switch(dirCode)
 						{
 						case 0: dirCode=Directions.NORTH; break;
@@ -4798,10 +4799,12 @@ public class Import extends StdCommand
 						case 3: dirCode=Directions.WEST; break;
 						case 4: dirCode=Directions.UP; break;
 						case 5: dirCode=Directions.DOWN; break;
-						case 6:
-						case 7:
-						case 8:
-						case 9:
+						case 6: dirCode=Directions.NORTHWEST; break;
+						case 7: dirCode=Directions.NORTHEAST; break;
+						case 8: dirCode=Directions.SOUTHWEST; break;
+						case 9: dirCode=Directions.SOUTHEAST; break;
+						case 10: dirCode=Directions.GATE; break;
+						default: 
 							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 								if(R.rawDoors()[d]==null)
 								{
@@ -4809,11 +4812,17 @@ public class Import extends StdCommand
 									break;
 								}
 							break;
-						case 10: dirCode=Directions.GATE; break;
-						default:
-								returnAnError(mob,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName);
-								continue;
 						}
+						else
+						if((dirCode==10)&&(Directions.NUM_DIRECTIONS<10))
+						    dirCode=Directions.GATE;
+						else
+						for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+							if(R.rawDoors()[d]==null)
+							{
+								dirCode=d;
+								break;
+							}
 						if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS))
 						{
 							returnAnError(mob,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName);

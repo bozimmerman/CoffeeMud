@@ -108,10 +108,7 @@ public class BaseGenerics extends StdCommand
 		    if((newName.indexOf("=")<0)&&(!BeanCounter.getAllCurrencies().contains(newName.trim().toUpperCase())))
 		    {
 		        Vector V=BeanCounter.getAllCurrencies();
-		        for(int v=0;v<V.size();v++)
-		            if(((String)V.elementAt(v)).length()==0)
-		                V.setElementAt("DEFAULT",v);
-		        mob.tell("'"+newName.trim().toUpperCase()+"' is not a known currency. Existing currencies include: "+Util.toStringList(V));
+		        mob.tell("'"+newName.trim().toUpperCase()+"' is not a known currency. Existing currencies include: DEFAULT"+Util.toStringList(V));
 		    }
 		    else
 		    if(newName.indexOf("=")>=0)
