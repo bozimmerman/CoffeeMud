@@ -294,6 +294,7 @@ public class Cooking extends CommonSkill
 		String possiblyMissing=null;
 		boolean foundOptional=false;
 		boolean hasOptional=false;
+		String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
 		for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 		{
 			String ingredient=(String)Vr.elementAt(vr);
@@ -301,23 +302,24 @@ public class Cooking extends CommonSkill
 			{
 				int amount=1;
 				if(vr<Vr.size()-1)amount=Util.s_int((String)Vr.elementAt(vr+1));
+				boolean found=false;
+				for(Enumeration e=oldContents.keys();e.hasMoreElements();)
+				{
+					String ingredient2=((String)e.nextElement()).toUpperCase();
+					if((ingredient2.startsWith(ingredient.toUpperCase()+"/"))
+					||(ingredient2.endsWith("/"+ingredient.toUpperCase())))
+					{ found=true; break;}
+				}
 				if(amount>=0)
 				{
-					boolean found=false;
-					for(Enumeration e=oldContents.keys();e.hasMoreElements();)
-					{
-						String ingredient2=((String)e.nextElement()).toUpperCase();
-						if((ingredient2.startsWith(ingredient.toUpperCase()+"/"))
-						||(ingredient2.endsWith("/"+ingredient.toUpperCase())))
-						{ found=true; break;}
-					}
 					if(!found)
 						missing.addElement(ingredient);
 				}
 				else
-				if(amount<0){
+				if(amount<0)
+				{
 					foundOptional=true;
-					if(oldContents.containsKey(ingredient.toUpperCase()))
+					if(found)
 						hasOptional=true;
 					else
 						possiblyMissing=ingredient;

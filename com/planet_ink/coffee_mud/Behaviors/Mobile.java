@@ -138,6 +138,7 @@ public class Mobile extends ActiveTicker
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))
 		&&(ticking instanceof MOB)
+		&&(!((MOB)ticking).isInCombat())
 		&&(!CommonStrings.isDisabled("MOBILITY")))
 		{
 			Vector objections=null;

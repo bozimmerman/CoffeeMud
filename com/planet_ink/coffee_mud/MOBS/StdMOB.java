@@ -2505,8 +2505,11 @@ public class StdMOB implements MOB
 			if(amFollowing.fetchFollower(this)!=null)
 				amFollowing.delFollower(this);
 		}
-		if(mob.fetchFollower(this)==null)
-			mob.addFollower(this);
+		if(mob!=null)
+		{
+			if(mob.fetchFollower(this)==null)
+				mob.addFollower(this);
+		}
 		amFollowing=mob;
 	}
 	private void addFollowers(MOB mob, Hashtable toThis)

@@ -103,10 +103,13 @@ public class StatRejuvCharts extends StdWebMacro
 					man=man*.5;
 		
 				double lvl=new Integer(mob.envStats().level()).doubleValue();
+				double lvlby1p5=Util.div(lvl,1.5);
+				double lvlby2=Util.div(lvl,2.0);
+				double lvlby3=Util.div(lvl,3.0);
 
-				double hpGain=(con>1.0)?((con/25.0)*lvl*0.5)+(con/4.5)+1.0:1.0;
-				double manaGain=(man>2.0)?((man/50.0)*lvl*1.0)+(man/4.5)+1.0:1.0;
-				double moveGain=(str>1.0)?((str/25.0)*lvl*1.0)+(str/2.0)+4.0:1.0;
+				double hpGain=(con>1.0)?((con/40.0)*lvlby1p5)+(con/4.5)+2.0:1.0;
+				double manaGain=(man>2.0)?((man/80.0)*lvl)+(man/4.5)+2.0:1.0;
+				double moveGain=(str>1.0)?((str/40.0)*lvl)+(str/3.0)+5.0:1.0;
 		
 				if(Sense.isSleeping(mob))
 				{
