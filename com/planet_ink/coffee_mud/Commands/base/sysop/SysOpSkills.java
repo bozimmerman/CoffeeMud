@@ -344,6 +344,8 @@ public class SysOpSkills
 
 		MOB target=getTarget(mob,commands,true);
 		if((target==null)||((target!=null)&&(!target.isMonster())))
+			target=mob.location().fetchInhabitant(MOBname);
+		if((target==null)||((target!=null)&&(!target.isMonster())))
 		{
 			Vector V=mob.isASysOp(null)?CMMap.getRoomVector():mob.location().getArea().getMyMap();
 			for(int m=0;m<V.size();m++)

@@ -62,7 +62,7 @@ public class Spell_SpellTurning extends Spell
 		&&(affect.tool() instanceof Ability)
 		&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 		&&(!mob.amDead())
-		&&(profficiencyCheck(0,false)))
+		&&(profficiencyCheck(-(affect.source().envStats().level()*2),false)))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The field around <S-NAME> reflects the spell!");
 			Ability A=(Ability)affect.tool();
