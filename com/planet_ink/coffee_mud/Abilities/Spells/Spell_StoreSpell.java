@@ -127,6 +127,11 @@ public class Spell_StoreSpell extends Spell
 			mob.tell("You don't know how to enchant anything with '"+spellName+"'.");
 			return false;
 		}
+		if(CMAble.lowestQualifyingLevel(wandThis.ID())>24)
+		{
+			mob.tell("That spell is too powerful to store.");
+			return false;
+		}
 		Ability A=item.fetchEffect(ID());
 		if((A!=null)&&(A.text().length()>0)&&(!A.text().startsWith(wandThis.ID()+"/")))
 		{

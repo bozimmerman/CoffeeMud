@@ -1,11 +1,13 @@
 add reset MOBSTATS ROOM *, MOBSTATS AREA *, MOBSTATS WORLD *, 
 overview grid type thingy
 In StdRace, ReRoll doesn’t honor BASEMAXSTAT:
-combat precognition has no failed message.
 ability to deposit a container and its contents.
 monetary tax rate on shopkeepers in controlled areas
 Can't type: gain paladin's goodness had to type gain goodness
 the DISPLAY command should also show the contents of an open container.
+Katarina got BANISH as one of her 'every other level random out of class skill gain.'
+An archon should ALWAYS be able to see a subop when wizinv.
+Second bug. I believe Axlen had this one before.. Plinia (daughter) become a follower mob. But there's two of her. What's up with this? Anyway.. following that. I managed to get one of her arrested. The cityguard took'er into Hero territory at the top of the rainbow bridge. Not good.
 
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 In the Archon's Guide, small arrangement of links to various parts of the webpage 

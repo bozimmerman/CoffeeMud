@@ -197,6 +197,7 @@ public class Oracle extends Cleric
 						&&(lql>0)
 						&&(!CMAble.getSecretSkill(C.ID(),true,A.ID()))
 						&&(CMAble.getQualifyingLevel(ID(),true,A.ID())<0)
+						&&(!CMAble.classOnly("Archon",A.ID()))
 						&&(mob.fetchAbility(A.ID())==null))
 						{
 							newOne=A;

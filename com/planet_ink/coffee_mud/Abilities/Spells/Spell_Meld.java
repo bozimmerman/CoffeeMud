@@ -214,7 +214,7 @@ public class Spell_Meld extends Spell
 					gc.setSecretIdentity(itemOne.rawSecretIdentity()+", "+itemTwo.rawSecretIdentity());
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.baseEnvStats().setWeight(itemOne.baseEnvStats().weight()+itemTwo.baseEnvStats().weight());
-					gc.baseEnvStats().setArmor(itemOne.baseEnvStats().armor()+itemTwo.baseEnvStats().armor());
+					gc.baseEnvStats().setArmor((itemOne.baseEnvStats().armor()+itemTwo.baseEnvStats().armor())/2);
 					gc.setMaterial(material);
 					gc.setCapacity(0);
 					if(itemOne instanceof Container)
@@ -227,7 +227,7 @@ public class Spell_Meld extends Spell
 					gc.baseEnvStats().setLevel(itemOne.baseEnvStats().level());
 					if(itemTwo.baseEnvStats().level()>itemOne.baseEnvStats().level())
 						gc.baseEnvStats().setLevel(itemTwo.baseEnvStats().level());
-					gc.baseEnvStats().setAbility(itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability());
+					gc.baseEnvStats().setAbility((itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability())/2);
 					melded=gc;
 					mob.addInventory(gc);
 				}
@@ -241,16 +241,21 @@ public class Spell_Meld extends Spell
 					gc.setSecretIdentity(itemOne.rawSecretIdentity()+", "+itemTwo.rawSecretIdentity());
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.baseEnvStats().setWeight(itemOne.baseEnvStats().weight()+itemTwo.baseEnvStats().weight());
-					gc.baseEnvStats().setAttackAdjustment(itemOne.baseEnvStats().attackAdjustment()+itemTwo.baseEnvStats().attackAdjustment());
-					gc.baseEnvStats().setDamage(itemOne.baseEnvStats().damage()+itemTwo.baseEnvStats().damage());
-					gc.setWeaponType(((Weapon)itemOne).weaponType());
-					gc.setWeaponClassification(((Weapon)itemTwo).weaponClassification());
+					gc.baseEnvStats().setAttackAdjustment((itemOne.baseEnvStats().attackAdjustment()+itemTwo.baseEnvStats().attackAdjustment())/2);
+					gc.baseEnvStats().setDamage((itemOne.baseEnvStats().damage()+itemTwo.baseEnvStats().damage())/2);
+					if(itemOne instanceof Weapon)
+						gc.setWeaponType(((Weapon)itemOne).weaponType());
+					else
+						gc.setWeaponType(((Weapon)itemTwo).weaponType());
+					if(itemTwo instanceof Weapon)
+						gc.setWeaponClassification(((Weapon)itemTwo).weaponClassification());
+					else
+						gc.setWeaponClassification(((Weapon)itemOne).weaponClassification());
 					gc.setRawLogicalAnd(true);
-
 					gc.baseEnvStats().setLevel(itemOne.baseEnvStats().level());
 					if(itemTwo.baseEnvStats().level()>itemOne.baseEnvStats().level())
 						gc.baseEnvStats().setLevel(itemTwo.baseEnvStats().level());
-					gc.baseEnvStats().setAbility(itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability());
+					gc.baseEnvStats().setAbility((itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability())/2);
 					melded=gc;
 					mob.addInventory(gc);
 				}
