@@ -56,12 +56,12 @@ public class Reset
 				Room room=(Room)rooms.elementAt(r);
 				room(room);
 				boolean somethingDone=false;
-				mob.tell(room.ID()+"/"+room.name()+"/"+room.displayText());
+				mob.tell(room.ID()+"/"+room.name()+"/"+room.displayText()+"--------------------");
 				for(int i=0;i<room.numItems();i++)
 				{
 					Item I=room.fetchItem(i);
 					if(I.ID().equalsIgnoreCase("GenWallpaper")) continue;
-					String str=mob.session().prompt(I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
+					String str=mob.session().prompt(" "+I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
 					if(str.length()>0)
 					for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)
 					{
@@ -69,7 +69,7 @@ public class Reset
 						{
 							I.setMaterial(EnvResource.RESOURCE_DATA[ii][0]);
 							somethingDone=true;
-							mob.tell("Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
+							mob.tell(" Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
 							break;
 						}
 					}
@@ -81,16 +81,16 @@ public class Reset
 				{
 					MOB M=room.fetchInhabitant(m);
 					if(M==mob) continue;
-					String str=mob.session().prompt(M.name()+"/"+M.charStats().getMyRace().ID(),"");
+					String str=mob.session().prompt(" "+M.name()+"/"+M.charStats().getMyRace().ID(),"");
 					if(str.length()>0)
 					{
 						Race R=CMClass.getRace(str);
 						if(R==null)
-							str=mob.session().prompt(M.name()+"/"+M.charStats().getMyRace().ID(),"");
+							str=mob.session().prompt(" "+M.name()+"/"+M.charStats().getMyRace().ID(),"");
 						else
 						if(R!=null)
 						{
-							mob.tell("Changed to "+R.ID());
+							mob.tell(" Changed to "+R.ID());
 							M.baseCharStats().setMyRace(R);
 							R.setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.GENDER));
 							M.recoverCharStats();
@@ -101,12 +101,12 @@ public class Reset
 					for(int i=M.inventorySize()-1;i>=0;i--)
 					{
 						Item I=M.fetchInventory(i);
-						str=mob.session().prompt(I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
+						str=mob.session().prompt("   "+I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
 						if(str.equalsIgnoreCase("delete"))
 						{
 							M.delInventory(I);
 							somethingDone=true;
-							mob.tell("deleted");
+							mob.tell("   deleted");
 						}
 						else
 						if(str.length()>0)
@@ -116,7 +116,7 @@ public class Reset
 							{
 								I.setMaterial(EnvResource.RESOURCE_DATA[ii][0]);
 								somethingDone=true;
-								mob.tell("Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
+								mob.tell("   Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
 								break;
 							}
 						}
@@ -130,12 +130,12 @@ public class Reset
 							if(E instanceof Item)
 							{
 								Item I=(Item)E;
-								str=mob.session().prompt(I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
+								str=mob.session().prompt(" - "+I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
 								if(str.equalsIgnoreCase("delete"))
 								{
 									((ShopKeeper)M).delStoreInventory(I);
 									somethingDone=true;
-									mob.tell("deleted");
+									mob.tell(" - deleted");
 								}
 								else
 								if(str.length()>0)
@@ -146,7 +146,7 @@ public class Reset
 										int numInStock=((ShopKeeper)M).numberInStock(I);
 										I.setMaterial(EnvResource.RESOURCE_DATA[ii][0]);
 										somethingDone=true;
-										mob.tell("Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
+										mob.tell(" - Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
 										((ShopKeeper)M).delStoreInventory(I);
 										((ShopKeeper)M).addStoreInventory(I,numInStock);
 										break;
