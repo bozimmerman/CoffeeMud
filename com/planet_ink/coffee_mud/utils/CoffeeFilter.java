@@ -80,14 +80,14 @@ public class CoffeeFilter
 	}
 	
 	public static String fullOutFilter(Session S,
+									   MOB mob,
 									   Environmental source,
 									   Environmental target,
 									   Environmental tool,
 									   String msg,
 									   boolean wrapOnly)
 	{
-		if(S==null) return msg;
-		if(S.mob()==null) return msg;
+		if(mob==null) return msg;
 		if(msg==null) return null;
 
 		if(msg.length()==0) return msg;
@@ -133,6 +133,7 @@ public class CoffeeFilter
 					break;
 				case '!':
 					if((loop<buf.length()-10)
+					&&(S!=null)
 					&&(buf.charAt(loop+1)=='!')
 					&&((buf.substring(loop+2,loop+7).equalsIgnoreCase("sound"))
 					   ||(buf.substring(loop+2,loop+7).equalsIgnoreCase("music"))))
@@ -143,8 +144,8 @@ public class CoffeeFilter
 						{
 							if(((S.getTermID()&2)==2)
 							&&((source==null)
-							   ||(source==S.mob())
-							   ||(Sense.canBeHeardBy(source,S.mob()))))
+							   ||(source==mob)
+							   ||(Sense.canBeHeardBy(source,mob))))
 							{
 								loop=y;
 								len=len+(y-loop)+1;
@@ -287,10 +288,10 @@ public class CoffeeFilter
 									if(regarding==null)
 										replacement="";
 									else
-									if(S.mob()==regarding)
+									if(mob==regarding)
 										replacement="you";
 									else
-									if((!Sense.canSee(S.mob()))||(!Sense.canBeSeenBy(regarding,S.mob())))
+									if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
 										replacement=((regarding instanceof MOB)?"someone":"something");
 									else
 										replacement=regarding.name();
@@ -301,13 +302,13 @@ public class CoffeeFilter
 									if(regarding==null)
 										replacement="";
 									else
-									if(((source==target)||(target==null))&&(S.mob()==regarding))
+									if(((source==target)||(target==null))&&(mob==regarding))
 										replacement="yourself";
 									else
-									if(S.mob()==regarding)
+									if(mob==regarding)
 										replacement="you";
 									else
-									if((!Sense.canSee(S.mob()))||(!Sense.canBeSeenBy(regarding,S.mob())))
+									if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
 										replacement=((regarding instanceof MOB)?"someone":"something");
 									else
 									if(source==target)
@@ -321,10 +322,10 @@ public class CoffeeFilter
 									if(regarding==null)
 										replacement="";
 									else
-									if(S.mob()==regarding)
+									if(mob==regarding)
 										replacement="your";
 									else
-									if((!Sense.canSee(S.mob()))||(!Sense.canBeSeenBy(regarding,S.mob())))
+									if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
 										replacement=((regarding instanceof MOB)?"someone's":"something's");
 									else
 										replacement=regarding.name()+"'s";
@@ -335,7 +336,7 @@ public class CoffeeFilter
 									if(regarding==null)
 										replacement="";
 									else
-									if(S.mob()==regarding)
+									if(mob==regarding)
 										replacement="your";
 									else
 									if(regarding instanceof MOB)
@@ -350,7 +351,7 @@ public class CoffeeFilter
 									if(regarding==null)
 										replacement="";
 									else
-									if(S.mob()==regarding)
+									if(mob==regarding)
 										replacement="you";
 									else
 									if(regarding instanceof MOB)
@@ -365,7 +366,7 @@ public class CoffeeFilter
 									if(regarding==null)
 										replacement="themself";
 									else
-									if(S.mob()==regarding)
+									if(mob==regarding)
 										replacement="yourself";
 									else
 									if(regarding instanceof MOB)
@@ -380,7 +381,7 @@ public class CoffeeFilter
 									if(regarding==null)
 										replacement="themself";
 									else
-									if(S.mob()==regarding)
+									if(mob==regarding)
 										replacement="yourself";
 									else
 									if(regarding instanceof MOB)
@@ -394,7 +395,7 @@ public class CoffeeFilter
 									if(regarding==null)
 										replacement="";
 									else
-									if(S.mob()==regarding)
+									if(mob==regarding)
 										replacement="you";
 									else
 									if(regarding instanceof MOB)
@@ -408,7 +409,7 @@ public class CoffeeFilter
 									if(regarding==null)
 										replacement="";
 									else
-									if(S.mob()==regarding)
+									if(mob==regarding)
 										replacement="are";
 									else
 									if(regarding instanceof MOB)
@@ -420,7 +421,7 @@ public class CoffeeFilter
 									if(regarding==null)
 										replacement="";
 									else
-									if(S.mob()==regarding)
+									if(mob==regarding)
 										replacement="have";
 									else
 									if(regarding instanceof MOB)
@@ -439,7 +440,7 @@ public class CoffeeFilter
 					break;
 					case '^':
 					{
-						if (loop<buf.length()-1)
+						if((loop<buf.length()-1)&&(S!=null))
 						{
 							int colorID = S.getColor( buf.charAt(loop+1) );
 							if (colorID != -1)
@@ -507,7 +508,7 @@ public class CoffeeFilter
 
 		if((firstAlpha>=0)&&(firstAlpha<buf.length()))
 			buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
-		if ((S.currentColor() != ((int)'N'))&&((S.getTermID()&1)==1))
+		if ((S!=null)&&(S.currentColor() != ((int)'N'))&&((S.getTermID()&1)==1))
 			buf.append(S.makeEscape((int)'N'));
 
 		/* fabulous debug code

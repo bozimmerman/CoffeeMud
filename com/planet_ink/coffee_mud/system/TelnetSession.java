@@ -213,32 +213,32 @@ public class TelnetSession extends Thread implements Session
 	}
 
 	public void print(String msg)
-	{ onlyPrint(CoffeeFilter.fullOutFilter(this,mob,mob,null,msg,false),-1); }
+	{ onlyPrint(CoffeeFilter.fullOutFilter(this,mob,mob,mob,null,msg,false),-1); }
 
 	public void rawPrintln(String msg){rawPrintln(msg,-1);}
 	public void rawPrintln(String msg, int pageBreak)
 	{ if(msg==null)return; rawPrint(msg+"\n\r",pageBreak);}
 
 	public void stdPrint(String msg)
-	{ rawPrint(CoffeeFilter.fullOutFilter(this,mob,mob,null,msg,false)); }
+	{ rawPrint(CoffeeFilter.fullOutFilter(this,mob,mob,mob,null,msg,false)); }
 
 	public void print(Environmental src, Environmental trg, Environmental tol, String msg)
-	{ onlyPrint((CoffeeFilter.fullOutFilter(this,src,trg,tol,msg,false)),-1);}
+	{ onlyPrint((CoffeeFilter.fullOutFilter(this,mob,src,trg,tol,msg,false)),-1);}
 
 	public void stdPrint(Environmental src, Environmental trg, Environmental tol, String msg)
-	{ rawPrint(CoffeeFilter.fullOutFilter(this,src,trg,trg,msg,false)); }
+	{ rawPrint(CoffeeFilter.fullOutFilter(this,mob,src,trg,trg,msg,false)); }
 
 	public void println(String msg)
 	{ if(msg==null)return; print(msg+"\n\r");}
 
 	public void unfilteredPrintln(String msg)
 	{ if(msg==null)return;
-	  onlyPrint(CoffeeFilter.fullOutFilter(this,mob,mob,null,msg,true)+"\n\r",-1);
+	  onlyPrint(CoffeeFilter.fullOutFilter(this,mob,mob,mob,null,msg,true)+"\n\r",-1);
 	  needPrompt=true;
 	}
 
 	public void unfilteredPrint(String msg)
-	{ onlyPrint(CoffeeFilter.fullOutFilter(this,mob,mob,null,msg,true),-1);
+	{ onlyPrint(CoffeeFilter.fullOutFilter(this,mob,mob,mob,null,msg,true),-1);
 	  needPrompt=true;
 	}
 
@@ -259,17 +259,17 @@ public class TelnetSession extends Thread implements Session
 
 	public void stdPrintln(String msg)
 	{ if(msg==null)return;
-	  rawPrint(CoffeeFilter.fullOutFilter(this,mob,mob,null,msg,false)+"\n\r");
+	  rawPrint(CoffeeFilter.fullOutFilter(this,mob,mob,mob,null,msg,false)+"\n\r");
 	}
 
 	public void println(Environmental src, Environmental trg, Environmental tol, String msg)
 	{ if(msg==null)return;
-	  onlyPrint(CoffeeFilter.fullOutFilter(this,src,trg,tol,msg,false)+"\n\r",-1);
+	  onlyPrint(CoffeeFilter.fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r",-1);
 	}
 
 	public void stdPrintln(Environmental src,Environmental trg, Environmental tol, String msg)
 	{ if(msg==null)return;
-	  rawPrint(CoffeeFilter.fullOutFilter(this,src,trg,tol,msg,false)+"\n\r");
+	  rawPrint(CoffeeFilter.fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r");
 	}
 
 	public void setPromptFlag(boolean truefalse)

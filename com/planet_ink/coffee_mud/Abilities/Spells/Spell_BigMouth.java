@@ -24,13 +24,13 @@ public class Spell_BigMouth extends Spell
 		if((msg.amISource(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_EAT)
 		&&(msg.target()!=null)
-		&&(Stomach!=null)
+		&&(Stomach()!=null)
 		&&(msg.target() instanceof MOB))
 		{
 			MOB target=(MOB)msg.target();
 			if(target.envStats().weight()<(mob.envStats().weight()/3))
 			{
-				if((Stomach!=null)&&(Stomach.numInhabitants()>(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this))))
+				if((Stomach()!=null)&&(Stomach().numInhabitants()>(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this))))
 				{
 					mob.tell("Your stomach is too full.");
 					return false;
@@ -53,42 +53,59 @@ public class Spell_BigMouth extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
-	private Room Stomach = null;
+	private Room myStomach = null;
+	private Room lastKnownRoom=null;
+	private Room lastKnownLocation()
+	{
+		Room R=null;
+		if(affected instanceof MOB) 
+			R=((MOB)affected).location();
+		if(R==null)R=CoffeeUtensils.roomLocation(affected);
+		if(R!=null) lastKnownRoom=R;
+		return lastKnownRoom;
+	}
+	private Room Stomach()
+	{
+		if((myStomach==null)&&(affected!=null))
+		{
+			myStomach = CMClass.getLocale("StdRoom");
+			myStomach.setArea(CMMap.getRandomArea());
+			myStomach.setName("The Stomach of "+affected.name());
+			myStomach.setDescription("You are in the stomach of "+affected.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+		}
+		return myStomach;
+	}
 	private int digestDown=4;
-	private Room lastKnownLocation=null;
 
 	public void kill()
 	{
-		if(lastKnownLocation==null) return;
-		if(Stomach==null) return;
+		if((Stomach()==null)||(lastKnownLocation()==null))
+		   return;
 
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach
-		int morselCount = Stomach.numInhabitants();
+		int morselCount = Stomach().numInhabitants();
 		for (int x=morselCount-1;x>=0;x--)
 		{
 			// ===== get the tasty morsels
-			MOB TastyMorsel = Stomach.fetchInhabitant(x);
+			MOB TastyMorsel = Stomach().fetchInhabitant(x);
 			if(TastyMorsel!=null)
-				lastKnownLocation.bringMobHere(TastyMorsel,false);
+				lastKnownLocation().bringMobHere(TastyMorsel,false);
 		}
 
 		// =====move the inventory of the stomach to the room
-		int itemCount = Stomach.numItems();
+		int itemCount = Stomach().numItems();
 		for (int y=itemCount-1;y>=0;y--)
 		{
-			Item PartiallyDigestedItem = Stomach.fetchItem(y);
+			Item PartiallyDigestedItem = Stomach().fetchItem(y);
 			if (PartiallyDigestedItem!=null)
 			{
-				lastKnownLocation.addItemRefuse(PartiallyDigestedItem,Item.REFUSE_PLAYER_DROP);
-				Stomach.delItem(PartiallyDigestedItem);
+				lastKnownLocation().addItemRefuse(PartiallyDigestedItem,Item.REFUSE_PLAYER_DROP);
+				Stomach().delItem(PartiallyDigestedItem);
 			}
 		}
 		if((morselCount>0)||(itemCount>0))
-		{
-			lastKnownLocation.recoverRoomStats();
-		}
-		lastKnownLocation=null;
+			lastKnownLocation().recoverRoomStats();
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -96,15 +113,13 @@ public class Spell_BigMouth extends Spell
 		if(!super.tick(ticking,tickID)) return false;
 		if(invoker()==null) return true;
 		MOB mob=(MOB)invoker();
-		if(mob.location()!=null)
-			lastKnownLocation=mob.location();
-		if((!mob.amDead())&&((--digestDown)<=0)&&(Stomach!=null))
+		if((!mob.amDead())&&((--digestDown)<=0)&&(Stomach()!=null))
 		{
 			digestDown=2;
-			for (int x=0;x<Stomach.numInhabitants();x++)
+			for (int x=0;x<Stomach().numInhabitants();x++)
 			{
 				// ===== get a tasty morsel
-				MOB TastyMorsel = Stomach.fetchInhabitant(x);
+				MOB TastyMorsel = Stomach().fetchInhabitant(x);
 				if (TastyMorsel != null)
 				{
 					FullMsg DigestMsg=new FullMsg(mob,
@@ -113,7 +128,7 @@ public class Spell_BigMouth extends Spell
 											   CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,
 											   "<S-NAME> Digests <T-NAMESELF>!!");
 					// no OKaffectS, since the dragon is not in his own stomach.
-					Stomach.send(mob,DigestMsg);
+					Stomach().send(mob,DigestMsg);
 					int damage=(int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2));
 					if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
 					MUDFight.postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
@@ -144,14 +159,13 @@ public class Spell_BigMouth extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_EAT)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
-		&&(Stomach!=null)
+		&&(Stomach()!=null)
 		&&(msg.target().envStats().weight()<(mob.envStats().weight()/2)))
 		{
-			lastKnownLocation=mob.location();
 			MOB TastyMorsel=(MOB)msg.target();
-			Stomach.bringMobHere(TastyMorsel,false);
-			FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
-			Stomach.send(TastyMorsel,enterMsg);
+			Stomach().bringMobHere(TastyMorsel,false);
+			FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,Stomach().description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+			Stomach().send(TastyMorsel,enterMsg);
 		}
 		if((msg.amISource(mob))
 		&&((msg.sourceMinor()==CMMsg.TYP_QUIT)||(msg.sourceMinor()==CMMsg.TYP_DEATH)))
@@ -173,11 +187,11 @@ public class Spell_BigMouth extends Spell
 			if(thang instanceof MOB)
 			{
 				((MOB)thang).tell("Your mouth shrinks to normal size.");
-				if((Stomach!=null)&&(Stomach.numInhabitants()>0))
+				if((Stomach()!=null)&&(Stomach().numInhabitants()>0))
 				{
 					unInvoked=false;
 					Spell_BigMouth A =(Spell_BigMouth)this.copyOf();
-					A.startTickDown(invoker,Stomach,10000);
+					A.startTickDown(invoker,Stomach(),10000);
 				}
 			}
 			else
@@ -196,16 +210,6 @@ public class Spell_BigMouth extends Spell
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already the owner of a huge mouth.");
 			return false;
-		}
-
-		if(Stomach==null)
-		{
-			Stomach = CMClass.getLocale("StdRoom");
-			lastKnownLocation=mob.location();
-			if(lastKnownLocation!=null)
-				Stomach.setArea(lastKnownLocation.getArea());
-			Stomach.setName("The Stomach of "+mob.name());
-			Stomach.setDescription("You are in the stomach of "+mob.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
 		}
 
 		// the invoke method for spells receives as

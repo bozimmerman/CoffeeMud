@@ -4153,7 +4153,7 @@ public class Scriptable extends StdBehavior
 					if(str==null) str=msg.targetMessage();
 					if(str==null) str=msg.sourceMessage();
 					if(str==null) break;
-					str=" "+str.toUpperCase()+" ";
+					str=" "+CoffeeFilter.fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase()+" ";;
 					trigger=Util.getPastBit(trigger.trim(),0);
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
