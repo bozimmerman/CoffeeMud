@@ -1395,7 +1395,7 @@ public class Generic
 				buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
 			}
 		}
-		String newType=mob.session().choose("Enter a new value\n\r:",codes.toString(),"");
+		String newType=mob.session().choose(buf.toString()+"Enter a new value\n\r:",codes.toString(),"");
 		int newValue=-1;
 		if(newType.length()>0)
 			newValue=codeStr.indexOf(newType.toUpperCase());
