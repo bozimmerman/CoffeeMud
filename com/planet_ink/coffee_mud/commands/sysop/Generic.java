@@ -1541,6 +1541,8 @@ public class Generic
 			genExitMisc(mob,me);
 			genLevelRestrict(mob,me);
 			genDisposition(mob,me);
+			genBehaviors(mob,me);
+			genAffects(mob,me);
 			ok=true;
 			if(me.text().length()>=maxLength)
 			{
