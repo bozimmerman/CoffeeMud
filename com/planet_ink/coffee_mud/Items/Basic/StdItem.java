@@ -197,7 +197,7 @@ public class StdItem implements Item
 	}
 	public void wearIfPossible(MOB mob)
 	{
-		for(int i=1;i<wornOrder.length;i++)
+		for(int i=0;i<wornOrder.length;i++)
 		{
 			if((fitsOn(wornOrder[i]))
 			&&(canWear(mob,wornOrder[i])))

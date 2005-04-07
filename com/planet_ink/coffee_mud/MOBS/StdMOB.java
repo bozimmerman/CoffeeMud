@@ -2340,11 +2340,7 @@ public class StdMOB implements MOB
 					if((playerStats()!=null)
 					&&(!Util.bset(getBitmap(),MOB.ATT_QUIET))
 					&&(!Util.isSet(playerStats().getChannelMask(),channelCode)))
-					{
-					    //Vector snoopsToDelete=ChannelSet.clearInvalidSnoopers(session(),channelCode);
 						tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
-						//ChannelSet.restoreInvalidSnoopers(session(),snoopsToDelete);
-					}
 				}
 			}
 
@@ -2403,15 +2399,11 @@ public class StdMOB implements MOB
 			else
 			if(Util.bset(othersMajor,CMMsg.MASK_CHANNEL))
 			{
-		        int channelCode=((msg.targetCode()-CMMsg.MASK_CHANNEL)-CMMsg.TYP_CHANNEL);
+		        int channelCode=((msg.othersCode()-CMMsg.MASK_CHANNEL)-CMMsg.TYP_CHANNEL);
 				if((playerStats()!=null)
 				&&(!Util.bset(getBitmap(),MOB.ATT_QUIET))
 				&&(!Util.isSet(playerStats().getChannelMask(),channelCode)))
-				{
-				    //Vector snoopsToDelete=ChannelSet.clearInvalidSnoopers(session(),channelCode);
 					tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
-					//ChannelSet.restoreInvalidSnoopers(session(),snoopsToDelete);
-				}
 			}
 			else
 			if((Util.bset(othersMajor,CMMsg.MASK_SOUND))

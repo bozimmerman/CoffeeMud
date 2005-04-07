@@ -81,6 +81,9 @@ public class Snoop extends StdCommand
 		if(SnoopOn==null)
 			mob.tell("You can't find anyone to snoop on by that name.");
 		else
+		if(CMSecurity.isASysOp(SnoopOn.mob())&&(!CMSecurity.isASysOp(mob)))
+		    mob.tell("Only another Archon can snoop on "+mob.name()+".");
+		else
 		{
 			Vector snoop=new Vector();
 			snoop.addElement(SnoopOn);

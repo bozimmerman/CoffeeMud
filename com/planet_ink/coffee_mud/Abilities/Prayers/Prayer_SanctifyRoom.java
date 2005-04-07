@@ -36,7 +36,7 @@ public class Prayer_SanctifyRoom extends Prayer
 			return super.okMessage(myHost,msg);
 
 		Room R=(Room)affected;
-		if((msg.targetMinor()==CMMsg.TYP_GET)
+		if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PULL)||(msg.targetMinor()==CMMsg.TYP_PUSH))
 		&&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
 		{
 			boolean inRoom=false;
