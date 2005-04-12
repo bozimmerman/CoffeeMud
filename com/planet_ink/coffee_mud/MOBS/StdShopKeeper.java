@@ -606,9 +606,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			}
 			else
 				storeInventory.removeElement(item);
+			item.baseEnvStats().setRejuv(0);
+			item.envStats().setRejuv(0);
 		}
-		item.baseEnvStats().setRejuv(0);
-		item.envStats().setRejuv(0);
 		return item;
 	}
 

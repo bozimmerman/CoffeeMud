@@ -375,9 +375,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 				{
 					if(msg.tool() instanceof Container)
 						((Container)msg.tool()).emptyPlease();
-					FullMsg msg2=new FullMsg(msg.source(),msg.tool(),null,CMMsg.MSG_DROP,null);
+					FullMsg msg2=new FullMsg(msg.source(),msg.tool(),null,CMMsg.MSG_DROP,null,CMMsg.MSG_DROP,"GIVE",CMMsg.MSG_DROP,null);
 					location().send(this,msg2);
-					msg2=new FullMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET,null);
+					msg2=new FullMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET,null,CMMsg.MSG_GET,"GIVE",CMMsg.MSG_GET,null);
 					location().send(this,msg2);
 					if(msg.tool() instanceof Coins)
 					{

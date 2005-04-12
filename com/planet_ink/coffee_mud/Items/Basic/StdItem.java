@@ -1073,7 +1073,7 @@ public class StdItem implements Item
 			}
 			unWear();
 			setContainer(null);
-			if(this instanceof Coins)
+			if((this instanceof Coins)&&((msg.targetMessage()==null)||(!msg.targetMessage().equals("GIVE"))))
 			    ((Coins)this).putCoinsBack();
 			break;
 		case CMMsg.TYP_WRITE:

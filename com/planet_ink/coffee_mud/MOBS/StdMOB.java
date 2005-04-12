@@ -2275,9 +2275,9 @@ public class StdMOB implements MOB
 				 &&(msg.tool()!=null)
 				 &&(msg.tool() instanceof Item))
 				{
-					FullMsg msg2=new FullMsg(msg.source(),msg.tool(),null,CMMsg.MSG_DROP,null);
+					FullMsg msg2=new FullMsg(msg.source(),msg.tool(),null,CMMsg.MSG_DROP,null,CMMsg.MSG_DROP,"GIVE",CMMsg.MSG_DROP,null);
 					location().send(this,msg2);
-					msg2=new FullMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET,null);
+					msg2=new FullMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET,null,CMMsg.MSG_GET,"GIVE",CMMsg.MSG_GET,null);
 					location().send(this,msg2);
 				}
 				else
