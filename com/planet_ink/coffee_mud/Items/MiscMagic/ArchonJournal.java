@@ -28,8 +28,9 @@ public class ArchonJournal extends StdJournal implements ArchonOnly, MiscMagic
 		super();
 
 		setName("");
-		setDisplayText("the Archon Journal");
-		setDescription("a fabulous tome of wisdom has been left here");
+		setName("the Archon Journal");
+		setDisplayText("a fabulous tome of wisdom has been left here");
+		setDescription("");
 		secretIdentity="The Archon's Journal.  Just READ me.";
 		baseGoldValue=20000;
 		material=EnvResource.RESOURCE_OAK;
