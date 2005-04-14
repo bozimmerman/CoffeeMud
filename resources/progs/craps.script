@@ -10,7 +10,7 @@ GREET_PROG 100
 	ENDIF
 	IF ISPC($n) AND VAR($n CPMYBET == '')
 		say "$n" Hey $n. Wanna play some craps?
-		say "$n" If you want to join in, just drop some gold here.
+		say "$n" If you want to join in, just drop some money here.
 	ENDIF
 ~
 
@@ -55,7 +55,7 @@ DROP_PROG 'stdcoins' 'gencoins'
 
 ACT_PROG throw throws toss tosses
 	IF ISPC($n) AND VAR($n CPMYBET == '')
-		say "$n" Wanna play some craps? Just drop some gold here.
+		say "$n" Wanna play some craps? Just drop some money here.
 	ELSE
 		MPSETVAR $n CPDIE1 '$%RANDNUM(6)%'
 		MPSETVAR $n CPDIE2 '$%RANDNUM(6)%'
@@ -65,7 +65,7 @@ ACT_PROG throw throws toss tosses
 			MPECHO The come out dice thrown by $n roll to a stop, showing $<$n CPDIE1> and $<$n CPDIE2>.
 			MPSETVAR $n CPDICE $<$n CPTOTAL>
 			IF VAR($n CPDICE == 2) OR VAR($n CPDICE == 3) OR VAR($n CPDICE == 12)
-				say "$n" You rolled craps! Sorry man. Throw down some more gold to play again!
+				say "$n" You rolled craps! Sorry man. Throw down some more money to play again!
 				MPCALLFUNC ClearOut
 			ELSE
 				IF VAR($n CPDICE == 7) OR VAR($n CPDICE == 11)
@@ -73,7 +73,7 @@ ACT_PROG throw throws toss tosses
 					MPSETVAR $n CPMYBET '*2'
 					MPOLOAD $<$n CPMYBET>
 					give $<$n CPMYBET> $n
-					say "$n" Drop some more gold to play again!
+					say "$n" Drop some more money to play again!
 					MPCALLFUNC ClearOut
 				ELSE
 					say "$n" Ok, your point is $<$n CPDICE>.  Throw those dice again!
@@ -82,7 +82,7 @@ ACT_PROG throw throws toss tosses
 		ELSE
 			MPECHO The dice thrown by $n roll to a stop, showing $<$n CPDIE1> and $<$n CPDIE2>.
 			IF VAR($n CPTOTAL == 7)
-				say "$n" Ouch! Unlucky 7! You lose!  Put down some more gold to play again!
+				say "$n" Ouch! Unlucky 7! You lose!  Put down some more money to play again!
 				MPCALLFUNC ClearOut
 			ELSE
 				IF VAR($n CPDICE == '$<$n CPTOTAL>')
@@ -90,7 +90,7 @@ ACT_PROG throw throws toss tosses
 					MPSETVAR $n CPMYBET '*2'
 					MPOLOAD $<$n CPMYBET>
 					give $<$n CPMYBET> $n
-					say "$n" Drop some more gold and play again!
+					say "$n" Drop some more money and play again!
 					MPCALLFUNC ClearOut
 				ELSE
 					say "$n" No help. Throw those dice again.
@@ -102,7 +102,7 @@ ACT_PROG throw throws toss tosses
 
 SPEECH_PROG toss throw tosses throws
 	IF ISPC($n) AND VAR($n CPMYBET == '')
-		say "$n" Wanna play some craps? Just drop some gold here.
+		say "$n" Wanna play some craps? Just drop some money here.
 	ELSE
 		say "$n" Hey! Less talk and more dice!  Try entering EMOTE $g.
 	ENDIF
@@ -110,7 +110,7 @@ SPEECH_PROG toss throw tosses throws
 
 SPEECH_PROG point
 	IF ISPC($n) AND VAR($n CPMYBET == '')
-		say "$n" Wanna play some craps? Just drop some gold here.
+		say "$n" Wanna play some craps? Just drop some money here.
 	ELSE
 		IF VAR($n CPDICE == '')
 			say "$n" You havn't tossed your dice yet! Try entering EMOTE THROW.
@@ -125,7 +125,7 @@ SPEECH_PROG rules rule
 ~
 
 SPEECH_PROG ante
-    say "$n" There's no ANTE man.  Just drop some gold (DROP 10) to play!
+    say "$n" There's no ANTE man.  Just drop some money (DROP 10) to play!
 ~
 SPEECH_PROG cheat cheater cheating
 	say "$n" No cheaters here, man.  Those dice are straight!

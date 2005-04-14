@@ -12,7 +12,7 @@ GREET_PROG 100
 	ENDIF
 	IF ISPC($n) AND VAR($n MYBJVALS == '')
 		say "$n" Hello $n. I'm dealing blackjack.
-		say "$n" My ante is $<$i BJANTE>. If you want to join in, give me $<$i BJANTE> gold.
+		say "$n" My ante is $<$i BJANTE>. If you want to join in, give me $<$i BJANTE>.
 	ENDIF
 ~
 
@@ -167,13 +167,17 @@ GIVE_PROG 'stdcoins' 'gencoins'
 					ENDIF
 				ENDIF
 			ENDIF
+		ELSE
+			say $n The ante is $<$i BJANTE>.
+			MPOLOAD $%GOLDAMT($o)%
+			give $%GOLDAMT($o)% $n
 		ENDIF
 	ENDIF
 ~
 
 SPEECH_PROG hit
 	IF VAR($n MYBJVALS == '')
-		say "$n" You are not currently playing.  Ante up $<$i BJANTE> gold and we'll start up a game.
+		say "$n" You are not currently playing.  Ante up $<$i BJANTE> and we'll start up a game.
 	ELSE
 		MPCALLFUNC DealOut $<$n MYBJVALS>
 		MPSETVAR $n MYBJVALS $<$n BJLIST>
@@ -256,7 +260,7 @@ FUNCTION_PROG DoStay
 
 SPEECH_PROG stay stand
 	IF VAR($n MYBJVALS == '')
-		say "$n" You are not currently playing.  Ante up $<$i BJANTE> gold and we'll start up a game.
+		say "$n" You are not currently playing.  Ante up $<$i BJANTE> and we'll start up a game.
 	ELSE
 		MPCALLFUNC DoStay	
 	ENDIF
@@ -264,7 +268,7 @@ SPEECH_PROG stay stand
 
 SPEECH_PROG round? round
 IF VAR($n MYBJVALS == '')
-	say "$n" You are not currently playing.  Ante up $<$i BJANTE> gold and we'll start up a game.
+	say "$n" You are not currently playing.  Ante up $<$i BJANTE> and we'll start up a game.
 ELSE
 	IF EVAL('$<$n MYBJVALS>.5' > 0)
 		say "$n" You are in round 5.

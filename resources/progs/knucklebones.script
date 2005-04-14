@@ -9,7 +9,7 @@ GREET_PROG 100
 	ENDIF
 	IF ISPC($n) AND VAR($n KBROUND == '')
 		say "$n" Hey $n. Wanna play some knucklebones?
-		say "$n" If you want to join in, grab some friends and drop $<$i KBBET> gold here.
+		say "$n" If you want to join in, grab some friends and drop $<$i KBBET> here.
 	ENDIF
 ~
 
@@ -154,7 +154,7 @@ ACT_PROG throw throws toss tosses
 		say "$n" The game hasn't started yet.  Please wait until you are instructed to throw the dice.
 	ELSE
 		IF ISPC($n) AND VAR($n KBMYBET == '')
-			say "$n" Wanna play knucklebones? If so, grab some friends and drop $<$i KBBET> gold here.
+			say "$n" Wanna play knucklebones? If so, grab some friends and drop $<$i KBBET> here.
 		ELSE
 			IF VAR($i KBROUND == 2) AND EVAL($n != '$<$i KBSTART>')
 				say $n Please wait for $<$i KBSTART> to decide whether or not to throw again.
@@ -205,13 +205,13 @@ ACT_PROG throw throws toss tosses
 
 SPEECH_PROG toss throw tosses throws
 	IF VAR($n KBROUND == '')
-		say "$n" Wanna play knucklebones? If so, grab some friends and drop $<$i KBBET> gold here.
+		say "$n" Wanna play knucklebones? If so, grab some friends and drop $<$i KBBET> here.
 	ELSE
 		IF VAR($n KBROUND == '0')
 			say "$n" Patience!  The game is not yet started.  I will let you know.
 		ELSE
 			IF ISPC($n) AND VAR($n KBMYBET == '')
-				say "$n" Wanna play knucklebones? If so, grab some friends and drop $<$i KBBET> gold here.
+				say "$n" Wanna play knucklebones? If so, grab some friends and drop $<$i KBBET> here.
 			ELSE
 				say "$n" Try entering EMOTE $g
 			ENDIF
@@ -224,7 +224,7 @@ SPEECH_PROG rules rule
 ~
 
 SPEECH_PROG ante
-	say "$n" The bet is $<$i KBBET> gold.
+	say "$n" The bet is $<$i KBBET>.
 ~
 
 SPEECH_PROG cheat cheater cheating
