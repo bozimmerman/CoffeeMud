@@ -101,9 +101,9 @@ public class Whisper extends StdCommand
 		}
 		else
 		{
-			msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<WHISPER \""+target.name()+"\"^><S-NAME> whisper(s) to <T-NAMESELF> '<^/WHISPER^>"+combinedCommands+"'.^?"
-										   ,CMMsg.MSG_SPEAK,"^T^<WHISPER \""+target.name()+"\"^><S-NAME> whisper(s) to <T-NAMESELF> '<^/WHISPER^>"+combinedCommands+"'.^?"
-										   ,CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) something to <T-NAMESELF>.<^/WHISPER^>^?");
+			msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<WHISPER \""+target.name()+"\"^><S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'.^</WHISPER^>^?"
+										   ,CMMsg.MSG_SPEAK,"^T^<WHISPER \""+target.name()+"\"^><S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'^</WHISPER^>.^?"
+										   ,CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) something to <T-NAMESELF>.^</WHISPER^>^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

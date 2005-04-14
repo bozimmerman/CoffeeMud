@@ -82,14 +82,17 @@ FUNCTION_PROG LastRound
 	ENDIF
 ~
 
-GET_PROG 'gold coins' 'gold coin'
-	IF VAR($i KBROUND == '0') AND VAR($i KBROUND != '')
+GET_PROG 'stdcoins' 'gencoins'
+	IF GOLDAMT($o > 0) AND VAR($i KBROUND == '0') AND VAR($i KBROUND != '')
 		say $n Hey! You just robbed the pot! Damn! Ok, everyone re-bet.
 		MPCALLFUNC ClearOut
 	ENDIF
 ~
 
-DROP_PROG 'gold coins' 'gold coin'
+DROP_PROG 'stdcoins' 'gencoins'
+	IF GOLDAMT($o <= 0)
+		RETURN
+	ENDIF
 	IF VAR($i KBBET == '')
 		MPSETVAR $i KBBET '$%LEVEL($i)%'
 	ENDIF

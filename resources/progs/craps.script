@@ -24,8 +24,8 @@ FUNCTION_PROG ClearOut
 	MPSETVAR $n CPDICE 
 ~
 
-DROP_PROG 'gold coins' 'gold coin'
-	IF ISHERE($o)
+DROP_PROG 'stdcoins' 'gencoins'
+	IF ISHERE($o) AND GOLDAMT($o > 0)
 		IF GOLDAMT($o > '$<$i CPMAXBET>')
 			say "$n" Whoa! I can't cover THAT much.  $<$i CPMAXBET> is the max bet!
 			MPOLOAD $%GOLDAMT($o)%

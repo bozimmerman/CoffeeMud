@@ -1670,7 +1670,7 @@ public class StdMOB implements MOB
 			&&(msg.sourceMinor()!=CMMsg.TYP_SELL)
 			&&(msg.sourceMinor()!=CMMsg.TYP_VIEW))
 			{
-				int useRange=rangeToTarget();
+				int useRange=-1;
 				Environmental tool=msg.tool();
 				if(getVictim()!=null)
 				{

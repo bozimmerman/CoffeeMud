@@ -37,6 +37,7 @@ public class Sheath extends BaseItemParser
 			if((I!=null)
 			&&(!I.amWearingAt(Item.INVENTORY))
 			&&(I instanceof Container)
+			&&(!(I instanceof Drink))
 			&&(((Container)I).capacity()>0)
 			&&(((Container)I).containTypes()!=Container.CONTAIN_ANYTHING))
 				sheaths.addElement(I);

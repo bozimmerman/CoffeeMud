@@ -105,12 +105,15 @@ public class Patroller extends ActiveTicker
 	    return super.okMessage(host,msg);
 	}
 	
+	private long tickStatus=Tickable.STATUS_NOT;
+	public long getTickStatus(){    return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 		    return false;
 		if(canAct(ticking,tickID))
 		{
+		    tickStatus=Tickable.STATUS_START;
 			Room thisRoom=null;
 			if(ticking instanceof MOB) 
 			    thisRoom=((MOB)ticking).location();
@@ -132,18 +135,32 @@ public class Patroller extends ActiveTicker
 				}
 				thisRoom=R;
 			}
-			if(thisRoom==null) return true;
+			if(thisRoom==null) 
+			{
+			    tickStatus=Tickable.STATUS_NOT;
+			    return true;
+			}
 			
+		    tickStatus=Tickable.STATUS_MISC+0;
 			if(!rideOk)
 			{
 				if(((ticking instanceof Rideable)&&(((Rideable)ticking).numRiders()>0))
 				||((ticking instanceof MOB)&&(((MOB)ticking).amFollowing()!=null)&&(((MOB)ticking).location()==((MOB)ticking).amFollowing().location())))
-					return true;
+				{
+				    tickStatus=Tickable.STATUS_NOT;
+				    return true;
+				}
 			}
+		    tickStatus=Tickable.STATUS_MISC+1;
 			
 			Room thatRoom=null;
 			Vector steps=getSteps();
-			if(steps.size()==0) return true;
+			if(steps.size()==0)
+			{
+			    tickStatus=Tickable.STATUS_NOT;
+			    return true;
+			}
+		    tickStatus=Tickable.STATUS_MISC+2;
 			if((step<0)||(step>=steps.size())) step=0;
 			String nxt=(String)steps.elementAt(step);
 
@@ -156,10 +173,12 @@ public class Patroller extends ActiveTicker
 			if(nxt.equalsIgnoreCase("."))
 			{
 				step++;
-				return true;
+			    tickStatus=Tickable.STATUS_NOT;
+			    return true;
 			}
 
 			
+		    tickStatus=Tickable.STATUS_MISC+3;
 			int direction=Directions.getGoodDirectionCode(nxt);
 			if(direction<0)
 			{
@@ -167,9 +186,11 @@ public class Patroller extends ActiveTicker
 				{
 				    correction=null;
 				    step++;
+				    tickStatus=Tickable.STATUS_NOT;
 				    return true;
 				}
 				        
+			    tickStatus=Tickable.STATUS_MISC+4;
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R=thisRoom.getRoomInDir(d);
@@ -187,6 +208,7 @@ public class Patroller extends ActiveTicker
 				thatRoom=thisRoom.getRoomInDir(direction);
 			Room destinationRoomForThisStep=thatRoom;
 
+		    tickStatus=Tickable.STATUS_MISC+5;
 			if((direction<0)||(thatRoom==null))
 			{
 			    Room R=CMMap.getRoom(nxt);
@@ -201,6 +223,7 @@ public class Patroller extends ActiveTicker
 				            ||((ticking instanceof Rider)&&(((Rider)ticking).riding()!=null)&&(((Rider)ticking).riding().rideBasis()==Rideable.RIDEABLE_WATER))
 					        ||((ticking instanceof Rideable)&&(((Rideable)ticking).rideBasis()==Rideable.RIDEABLE_WATER)));
 			        
+				    tickStatus=Tickable.STATUS_MISC+6;
 			        if(R instanceof GridLocale)
 			        {
 			            boolean GridLocaleFixed=false;
@@ -220,6 +243,7 @@ public class Patroller extends ActiveTicker
 				            R=((GridLocale)R).getRandomChild();
 			            }
 			        }
+				    tickStatus=Tickable.STATUS_MISC+7;
 			        destinationRoomForThisStep=R;
 			        direction=-1;
 			        if(correction!=null)
@@ -230,6 +254,7 @@ public class Patroller extends ActiveTicker
 			            else
 			                thatRoom=thisRoom.getRoomInDir(direction);
 			        }
+				    tickStatus=Tickable.STATUS_MISC+8;
 					if((direction<0)||(thatRoom==null))
 			        {
 			            correction=MUDTracker.findBastardTheBestWay(thisRoom,
@@ -240,41 +265,57 @@ public class Patroller extends ActiveTicker
 			                    	!airOk,
 			                    	!waterOk,
 			                    	diameter);
+					    tickStatus=Tickable.STATUS_MISC+9;
 			            if(correction!=null)
 				            direction=MUDTracker.trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);
 			            else
 			                direction=-1;
+					    tickStatus=Tickable.STATUS_MISC+10;
 			            if(direction>=0)
 			                thatRoom=thisRoom.getRoomInDir(direction);
 			            else
 			                correction=null;
 			        }
+				    tickStatus=Tickable.STATUS_MISC+11;
 					if((direction<0)||(thatRoom==null))
 					{
 					    step=0;
-						return true;
+					    tickStatus=Tickable.STATUS_NOT;
+					    return true;
 					}
+				    tickStatus=Tickable.STATUS_MISC+12;
 			    }
 			    else
 			    {
 			        Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" is utterly unknown!");
-					return true;
+				    tickStatus=Tickable.STATUS_NOT;
+				    return true;
 			    }
 			}
 			else
 			    correction=null;
+		    tickStatus=Tickable.STATUS_MISC+13;
 			Exit E=thisRoom.getExitInDir(direction);
-			if(E==null) return true;
+			if(E==null)
+		    {
+			    tickStatus=Tickable.STATUS_NOT;
+			    return true;
+		    }
 			
+		    tickStatus=Tickable.STATUS_MISC+14;
 			for(int m=0;m<thisRoom.numInhabitants();m++)
 			{
 				MOB inhab=thisRoom.fetchInhabitant(m);
 				if((inhab!=null)
 				&&(CMSecurity.isAllowed(inhab,thisRoom,"CMDMOBS")
 				   ||CMSecurity.isAllowed(inhab,thisRoom,"CMDROOMS")))
-					return false;
+			    {
+				    tickStatus=Tickable.STATUS_NOT;
+				    return true;
+			    }
 			}
 			
+		    tickStatus=Tickable.STATUS_MISC+15;
 			if(ticking instanceof Item)
 			{
 				Item I=(Item)ticking;
@@ -290,30 +331,49 @@ public class Patroller extends ActiveTicker
 						Rider R=(Rider)riders.elementAt(i);
 						if(R instanceof MOB)
 						{
+						    tickStatus=Tickable.STATUS_MISC+16;
 							MOB mob=(MOB)R;
 							FullMsg enterMsg=new FullMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 							FullMsg leaveMsg=new FullMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
 							rideFlag=true;
 							if((E!=null)&&(!E.okMessage(mob,enterMsg)))
-							{	rideFlag=false;	return true;}
+							{	
+							    rideFlag=false;	
+							    tickStatus=Tickable.STATUS_NOT;
+							    return true;
+							}
 							else
 							if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg)))
-							{	rideFlag=false;	return true;}
+							{	
+							    rideFlag=false;	
+							    tickStatus=Tickable.STATUS_NOT;
+							    return true;
+							}
 							else
 							if(!enterMsg.target().okMessage(mob,enterMsg))
-							{	rideFlag=false;	return true;}
+							{	
+							    rideFlag=false;	
+							    tickStatus=Tickable.STATUS_NOT;
+							    return true;
+							}
 							else
 							if(!mob.okMessage(mob,enterMsg))
-							{	rideFlag=false;	return true;}
+							{	
+							    rideFlag=false;	
+							    tickStatus=Tickable.STATUS_NOT;
+							    return true;
+							}
 							rideFlag=false;
 						}
 					}
 				}
 				
+			    tickStatus=Tickable.STATUS_MISC+17;
 				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> goes "+Directions.getDirectionName(direction)+".");
 				thatRoom.bringItemHere(I,-1);
 				if(I.owner()==thatRoom)
 				{
+				    tickStatus=Tickable.STATUS_MISC+18;
 					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> arrives from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))+".");
 					if(riders!=null)
 					for(int i=0;i<riders.size();i++)
@@ -347,6 +407,7 @@ public class Patroller extends ActiveTicker
 			else
 			if(ticking instanceof MOB)
 			{
+			    tickStatus=Tickable.STATUS_MISC+19;
 				// ridden things dont wander!
 				MOB mob=(MOB)ticking;
 
@@ -369,8 +430,13 @@ public class Patroller extends ActiveTicker
 						CoffeeUtensils.roomAffectFully(msg,thisRoom,direction);
 					}
 				}
-				if(!E.isOpen()) return true;
+				if(!E.isOpen())
+				{	
+				    tickStatus=Tickable.STATUS_NOT;
+				    return true;
+				}
 
+			    tickStatus=Tickable.STATUS_MISC+20;
 				Ability A=mob.fetchAbility("Thief_Sneak");
 				if(A!=null)
 				{
@@ -395,12 +461,14 @@ public class Patroller extends ActiveTicker
 					rideFlag=false;
 				}
 
+			    tickStatus=Tickable.STATUS_MISC+21;
 				if(mob.location()==destinationRoomForThisStep)
 					step++;
 				else
 					tickDown=0;
 			}
 		}
+	    tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 }

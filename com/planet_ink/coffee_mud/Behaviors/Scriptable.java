@@ -1682,7 +1682,7 @@ public class Scriptable extends StdBehavior
 			case 14: // affected
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getPastBitClean(evaluable.substring(y+1,z),0);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if(E==null)
 					returnable=false;
@@ -1693,7 +1693,7 @@ public class Scriptable extends StdBehavior
 			case 69: // isbehave
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getPastBitClean(evaluable.substring(y+1,z),0);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if(E==null)
 					returnable=false;
@@ -5304,6 +5304,7 @@ public class Scriptable extends StdBehavior
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();
 						if(((" "+trigger+" ").indexOf(msg.tool().Name().toUpperCase())>=0)
+						||(msg.tool().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
 							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
@@ -5317,6 +5318,7 @@ public class Scriptable extends StdBehavior
 						{
 							String t=Util.getCleanBit(trigger,i).toUpperCase();
 							if(((" "+msg.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.tool().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
 								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
@@ -5338,6 +5340,7 @@ public class Scriptable extends StdBehavior
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();
 						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
+						||(msg.target().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
 							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
@@ -5351,6 +5354,7 @@ public class Scriptable extends StdBehavior
 						{
 							String t=Util.getCleanBit(trigger,i).toUpperCase();
 							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.target().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
 								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
@@ -5372,6 +5376,7 @@ public class Scriptable extends StdBehavior
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();
 						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
+						||(msg.target().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
 							if(msg.target() instanceof Coins)
@@ -5388,6 +5393,7 @@ public class Scriptable extends StdBehavior
 						{
 							String t=Util.getCleanBit(trigger,i).toUpperCase();
 							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.target().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
 								if(msg.target() instanceof Coins)
@@ -5412,6 +5418,7 @@ public class Scriptable extends StdBehavior
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();
 						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
+						||(msg.target().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
 							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
@@ -5425,6 +5432,7 @@ public class Scriptable extends StdBehavior
 						{
 							String t=Util.getCleanBit(trigger,i).toUpperCase();
 							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.target().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
 								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
@@ -5446,6 +5454,7 @@ public class Scriptable extends StdBehavior
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();
 						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
+						||(msg.target().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
 							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
@@ -5459,6 +5468,7 @@ public class Scriptable extends StdBehavior
 						{
 							String t=Util.getCleanBit(trigger,i).toUpperCase();
 							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.target().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
 								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
@@ -5481,6 +5491,7 @@ public class Scriptable extends StdBehavior
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();
 						if(((" "+trigger+" ").indexOf(msg.tool().Name().toUpperCase())>=0)
+						||(msg.tool().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
 							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
@@ -5497,6 +5508,7 @@ public class Scriptable extends StdBehavior
 						{
 							String t=Util.getCleanBit(trigger,i).toUpperCase();
 							if(((" "+msg.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.tool().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
 								if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
@@ -5523,6 +5535,7 @@ public class Scriptable extends StdBehavior
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();
 						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
+						||(msg.target().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
 							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
@@ -5536,6 +5549,7 @@ public class Scriptable extends StdBehavior
 						{
 							String t=Util.getCleanBit(trigger,i).toUpperCase();
 							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.target().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
 								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));

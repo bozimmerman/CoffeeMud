@@ -33,6 +33,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	public int difficultyLevel(){return 7;}
 	int plagueDown=4;
 	String godName="The Demon";
+	private boolean ispoke=false;
 
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
@@ -49,6 +50,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			plagueDown=4;
 			if(invoker==null) invoker=mob;
 			if(mob.location()==null) return false;
+			ispoke=false;
 			switch(Dice.roll(1,12,0))
 			{
 			case 1:	CommonMsgs.say(mob,null,"Repent, or "+godName+" will consume your soul!",false,false); break;
@@ -67,15 +69,22 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 					CommonMsgs.say(mob,null,"Our doom is upon us! The end is near!",false,false);
 					break;
 			}
-			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
-			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchEffect(ID())==null))
-				if(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
-				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
-					maliciousAffect(invoker,target,0,0,-1);
-				}
-				else
-				    spreadImmunity(target);
+			if((Sense.canSpeak(mob))&&(ispoke))
+			{
+				MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
+				if((target!=null)
+				&&(Sense.canBeHeardBy(mob,target))
+				&&(target!=invoker)
+				&&(target!=mob)
+				&&(target.fetchEffect(ID())==null))
+					if(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
+					{
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
+						maliciousAffect(invoker,target,0,0,-1);
+					}
+					else
+					    spreadImmunity(target);
+			}
 		}
 		return true;
 	}
@@ -88,6 +97,15 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			affectableStats.setStat(CharStats.INTELLIGENCE,3);
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+	    super.executeMsg(myHost,msg);
+	    if((affected!=null)
+	    &&(msg.source()==affected)
+	    &&(msg.sourceMinor()==CMMsg.TYP_SPEAK))
+	        ispoke=true;
+	}	
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

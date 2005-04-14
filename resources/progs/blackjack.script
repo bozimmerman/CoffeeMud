@@ -130,7 +130,7 @@ FUNCTION_PROG GameLoseOver
 	MPCALLFUNC GameOver
 ~
 
-GIVE_PROG coins
+GIVE_PROG 'stdcoins' 'gencoins'
 	MPGSET $i MONEY 0
 	IF VAR($n MYBJVALS == '')
 		IF (GOLDAMT($o >= '$<$i BJANTE>'))
