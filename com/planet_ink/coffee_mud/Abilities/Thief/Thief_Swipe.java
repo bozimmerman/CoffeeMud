@@ -80,6 +80,11 @@ public class Thief_Swipe extends ThiefSkill
 			mob.tell("You cannot swipe from "+target.charStats().himher()+".");
 			return false;
 		}
+		if(target==mob)
+		{
+			mob.tell("You cannot swipe from yourself.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

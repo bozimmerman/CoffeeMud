@@ -100,6 +100,11 @@ public class Thief_Robbery extends ThiefSkill
 			mob.tell("You cannot rob from "+target.charStats().himher()+".");
 			return false;
 		}
+		if(target==mob)
+		{
+			mob.tell("You cannot rob yourself.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

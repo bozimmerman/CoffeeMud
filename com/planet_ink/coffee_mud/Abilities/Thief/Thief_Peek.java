@@ -45,6 +45,12 @@ public class Thief_Peek extends ThiefSkill
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
+		if(target==mob)
+		{
+			mob.tell("You cannot peek at yourself. Try Inventory.");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
