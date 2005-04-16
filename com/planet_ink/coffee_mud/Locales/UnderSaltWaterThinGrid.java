@@ -38,6 +38,13 @@ public class UnderSaltWaterThinGrid extends UnderWaterThinGrid
 	}
 
 
+	public Environmental newInstance()
+	{
+	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	        return super.newInstance();
+	    else
+	        return new UnderSaltWaterGrid().newInstance();
+	}
 	public String getChildLocaleID(){return "UnderSaltWater";}
 
 	public Vector resourceChoices(){return UnderSaltWater.roomResources;}

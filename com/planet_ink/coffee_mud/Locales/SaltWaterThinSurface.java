@@ -33,4 +33,11 @@ public class SaltWaterThinSurface extends SaltWaterSurface
 		domainCondition=Room.CONDITION_WET;
 	}
 	protected String UnderWaterLocaleID(){return "UnderSaltWaterThinGrid";}
+	public Environmental newInstance()
+	{
+	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	        return super.newInstance();
+	    else
+	        return new SaltWaterSurface().newInstance();
+	}
 }

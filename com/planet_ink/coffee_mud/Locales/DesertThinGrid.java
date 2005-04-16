@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.utils.Log;
 import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
@@ -30,6 +31,14 @@ public class DesertThinGrid extends StdThinGrid
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_DESERT;
 		domainCondition=Room.CONDITION_HOT;
+	}
+
+	public Environmental newInstance()
+	{
+	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	        return super.newInstance();
+	    else
+	        return new DesertGrid().newInstance();
 	}
 
 	public String getChildLocaleID(){return "Desert";}

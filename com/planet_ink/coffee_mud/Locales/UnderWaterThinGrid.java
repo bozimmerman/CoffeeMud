@@ -45,6 +45,14 @@ public class UnderWaterThinGrid extends StdThinGrid
 	}
 
 
+	public Environmental newInstance()
+	{
+	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	        return super.newInstance();
+	    else
+	        return new UnderWaterGrid().newInstance();
+	}
+	
 	public String getChildLocaleID(){return "UnderWater";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

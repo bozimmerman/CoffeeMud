@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+
 import java.util.*;
 
 /* 
@@ -32,6 +33,13 @@ public class GreatThinLake extends StdThinGrid
 		domainCondition=Room.CONDITION_WET;
 	}
 
+	public Environmental newInstance()
+	{
+	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	        return super.newInstance();
+	    else
+	        return new GreatLake().newInstance();
+	}
 	public String getChildLocaleID(){return "WaterSurface";}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 }

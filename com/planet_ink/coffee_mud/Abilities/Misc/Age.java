@@ -345,7 +345,7 @@ public class Age extends StdAbility
 				{ if(!B.getParms().equalsIgnoreCase(happyBabyEmoter)) B.setParms(happyBabyEmoter);}
 			}
 		}
-		if(((System.currentTimeMillis()-lastSoiling)>(IQCalendar.MILI_MINUTE/2))&&(Dice.rollPercentage()<10))
+		if(((System.currentTimeMillis()-lastSoiling)>(IQCalendar.MILI_MINUTE*30))&&(Dice.rollPercentage()<10))
 		{
 		    if(lastSoiling==0)
 			    lastSoiling=System.currentTimeMillis();

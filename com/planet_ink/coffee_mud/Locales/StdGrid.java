@@ -447,6 +447,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	{
 		try
 		{
+		    boolean roomsYes=false;
 			if(subMap!=null)
 			for(int x=0;x<subMap.length;x++)
 				for(int y=0;y<subMap[x].length;y++)
@@ -484,9 +485,15 @@ public class StdGrid extends StdRoom implements GridLocale
 					}
 					room.clearSky();
 					room.destroyRoom();
-					CMMap.delRoom(room);
+					CMMap.justDelRoom(room);
 					room.setGridParent(null);
-				}
+					roomsYes=true;
+			    }
+		    if(roomsYes)
+		    {
+			    CMMap.theWorldChanged();
+			    CMMap.trimRoomsList();
+		    }
 			subMap=null;
 		}
 		catch(Exception e){}

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+
 import java.util.*;
 
 /* 
@@ -31,6 +32,13 @@ public class PlainsThinGrid extends StdThinGrid
 		domainCondition=Room.CONDITION_NORMAL;
 	}
 
+	public Environmental newInstance()
+	{
+	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	        return super.newInstance();
+	    else
+	        return new PlainsGrid().newInstance();
+	}
 	public String getChildLocaleID(){return "Plains";}
 	public Vector resourceChoices(){return Plains.roomResources;}
 }

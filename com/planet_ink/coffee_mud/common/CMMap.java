@@ -45,6 +45,13 @@ public class CMMap
 	{
 		areasList.remove(oneToDel);
 	}
+	public static void trimRoomsList()
+	{
+	    synchronized(roomsList)
+	    {
+	        roomsList.trimToSize();
+	    }
+	}
 	public static Area getArea(String calledThis)
 	{
 		for(Enumeration a=areas();a.hasMoreElements();)
@@ -183,20 +190,29 @@ public class CMMap
 	public static int numRooms() { return roomsList.size(); }
 	public static void addRoom(Room newOne)
 	{
-		roomsList.addElement(newOne);
+	    synchronized(roomsList)
+	    {
+			roomsList.addElement(newOne);
+	    }
 		theWorldChanged();
 	}
 	public static void delRoom(Room oneToDel)
 	{
-		if(oneToDel instanceof GridLocale)
-			((GridLocale)oneToDel).clearGrid(null);
-		roomsList.remove(oneToDel);
+	    synchronized(roomsList)
+	    {
+			if(oneToDel instanceof GridLocale)
+				((GridLocale)oneToDel).clearGrid(null);
+			roomsList.removeElement(oneToDel);
+	    }
 		theWorldChanged();
 	}
 	public static void justDelRoom(Room oneToDel)
 	{
-	    if(oneToDel!=null)
-			roomsList.remove(oneToDel);
+	    synchronized(roomsList)
+	    {
+		    if(oneToDel!=null)
+				roomsList.removeElement(oneToDel);
+	    }
 	}
 	
 
@@ -245,10 +261,13 @@ public class CMMap
 	}
 	public static void replaceRoom(Room newOne, Room oldOne)
 	{
-		if(oldOne instanceof GridLocale)
-		  ((GridLocale)oldOne).clearGrid(null);
-		roomsList.remove(oldOne);
-		roomsList.addElement(newOne);
+	    synchronized(roomsList)
+	    {
+			if(oldOne instanceof GridLocale)
+			  ((GridLocale)oldOne).clearGrid(null);
+			roomsList.removeElement(oldOne);
+			roomsList.addElement(newOne);
+	    }
 		theWorldChanged();
 	}
 	public static Room getFirstRoom()

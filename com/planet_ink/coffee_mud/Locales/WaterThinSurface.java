@@ -33,4 +33,11 @@ public class WaterThinSurface extends WaterSurface
 		domainCondition=Room.CONDITION_WET;
 	}
 	protected String UnderWaterLocaleID(){return "UnderWaterThinGrid";}
+	public Environmental newInstance()
+	{
+	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	        return super.newInstance();
+	    else
+	        return new WaterSurface().newInstance();
+	}
 }

@@ -44,6 +44,14 @@ public class EndlessThinSky extends StdThinGrid
 	}
 
 
+	public Environmental newInstance()
+	{
+	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	        return super.newInstance();
+	    else
+	        return new EndlessSky().newInstance();
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

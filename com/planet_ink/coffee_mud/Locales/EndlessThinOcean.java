@@ -33,6 +33,13 @@ public class EndlessThinOcean extends StdThinGrid
 		domainCondition=Room.CONDITION_WET;
 	}
 
+	public Environmental newInstance()
+	{
+	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	        return super.newInstance();
+	    else
+	        return new EndlessOcean().newInstance();
+	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

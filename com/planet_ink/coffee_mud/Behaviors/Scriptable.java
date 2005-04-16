@@ -113,6 +113,8 @@ public class Scriptable extends StdBehavior
 		"REMOVE_PROG", // 24
 		"CONSUME_PROG", // 25
 		"DAMAGE_PROG", // 26
+		"BUY_PROG", // 27
+		"SELL_PROG", // 28
 	};
 	private static final String[] funcs={
 		"RAND", //1
@@ -2401,7 +2403,7 @@ public class Scriptable extends StdBehavior
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
-				if((arg2.length()==0)||(arg3.length()==0))
+				if(arg2.length()==0)
 				{
 					scriptableError(scripted,"DEITY","Syntax",evaluable);
 					return returnable;
@@ -2412,10 +2414,10 @@ public class Scriptable extends StdBehavior
 				{
 					String sex=((MOB)E).getWorshipCharID();
 					if(arg2.equals("=="))
-						returnable=sex.startsWith(arg3);
+						returnable=sex.equalsIgnoreCase(arg3);
 					else
 					if(arg2.equals("!="))
-						returnable=!sex.startsWith(arg3);
+						returnable=!sex.equalsIgnoreCase(arg3);
 					else
 					{
 						scriptableError(scripted,"DEITY","Syntax",evaluable);
@@ -5521,6 +5523,90 @@ public class Scriptable extends StdBehavior
 					}
 				}
 				break;
+			case 27: // buy_prog
+				if((msg.targetMinor()==CMMsg.TYP_BUY)
+				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
+				&&(msg.tool() instanceof Item)
+				&&(!msg.amISource(monster))
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					trigger=trigger.substring(8).trim();
+					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(((" "+trigger+" ").indexOf(msg.tool().Name().toUpperCase())>=0)
+						||(msg.tool().ID().equalsIgnoreCase(trigger))
+						||(trigger.equalsIgnoreCase("ALL")))
+						{
+							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
+								execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null);
+							else
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
+							return;
+						}
+					}
+					else
+					{
+						int num=Util.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=Util.getCleanBit(trigger,i).toUpperCase();
+							if(((" "+msg.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.tool().ID().equalsIgnoreCase(t))
+							||(t.equalsIgnoreCase("ALL")))
+							{
+								if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
+									execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null);
+								else
+									que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
+								return;
+							}
+						}
+					}
+				}
+				break;
+			case 28: // sell_prog
+				if((msg.targetMinor()==CMMsg.TYP_SELL)
+				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
+				&&(msg.tool() instanceof Item)
+				&&(!msg.amISource(monster))
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					trigger=trigger.substring(8).trim();
+					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(((" "+trigger+" ").indexOf(msg.tool().Name().toUpperCase())>=0)
+						||(msg.tool().ID().equalsIgnoreCase(trigger))
+						||(trigger.equalsIgnoreCase("ALL")))
+						{
+							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
+								execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null);
+							else
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
+							return;
+						}
+					}
+					else
+					{
+						int num=Util.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=Util.getCleanBit(trigger,i).toUpperCase();
+							if(((" "+msg.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.tool().ID().equalsIgnoreCase(t))
+							||(t.equalsIgnoreCase("ALL")))
+							{
+								if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
+									execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null);
+								else
+									que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
+								return;
+							}
+						}
+					}
+				}
+				break;
 			case 23: // wear_prog
 				if(((msg.targetMinor()==CMMsg.TYP_WEAR)
 					||(msg.targetMinor()==CMMsg.TYP_HOLD)
@@ -5755,9 +5841,9 @@ public class Scriptable extends StdBehavior
 		Vector scripts=getScripts();
 
 		int triggerCode=-1;
-		for(int v=0;v<scripts.size();v++)
+		for(int thisScriptIndex=0;thisScriptIndex<scripts.size();thisScriptIndex++)
 		{
-			Vector script=(Vector)scripts.elementAt(v);
+			Vector script=(Vector)scripts.elementAt(thisScriptIndex);
 			String trigger="";
 			if(script.size()>0)
 				trigger=((String)script.elementAt(0)).toUpperCase().trim();
@@ -5777,28 +5863,28 @@ public class Scriptable extends StdBehavior
 				if(!mob.amDead())
 				{
 					int targetTick=-1;
-					if(delayTargetTimes.containsKey(new Integer(v)))
-						targetTick=((Integer)delayTargetTimes.get(new Integer(v))).intValue();
+					if(delayTargetTimes.containsKey(new Integer(thisScriptIndex)))
+						targetTick=((Integer)delayTargetTimes.get(new Integer(thisScriptIndex))).intValue();
 					else
 					{
 						int low=Util.s_int(Util.getCleanBit(trigger,1));
 						int high=Util.s_int(Util.getCleanBit(trigger,2));
 						if(high<low) high=low;
 						targetTick=Dice.roll(1,high-low+1,low-1);
-						delayTargetTimes.put(new Integer(v),new Integer(targetTick));
+						delayTargetTimes.put(new Integer(thisScriptIndex),new Integer(targetTick));
 					}
 					int delayProgCounter=0;
-					if(delayProgCounters.containsKey(new Integer(v)))
-						delayProgCounter=((Integer)delayProgCounters.get(new Integer(v))).intValue();
+					if(delayProgCounters.containsKey(new Integer(thisScriptIndex)))
+						delayProgCounter=((Integer)delayProgCounters.get(new Integer(thisScriptIndex))).intValue();
 					else
-						delayProgCounters.put(new Integer(v),new Integer(0));
+						delayProgCounters.put(new Integer(thisScriptIndex),new Integer(0));
 					if(delayProgCounter==targetTick)
 					{
 						execute(affecting,mob,mob,mob,defaultItem,null,script,null);
 						delayProgCounter=-1;
 					}
-					delayProgCounters.remove(new Integer(v));
-					delayProgCounters.put(new Integer(v),new Integer(delayProgCounter+1));
+					delayProgCounters.remove(new Integer(thisScriptIndex));
+					delayProgCounters.put(new Integer(thisScriptIndex),new Integer(delayProgCounter+1));
 				}
 				break;
 			case 7: // fightProg
@@ -5829,8 +5915,8 @@ public class Scriptable extends StdBehavior
 				&&(!mob.amDead()))
 				{
 					int lastTimeProgDone=-1;
-					if(lastTimeProgsDone.containsKey(new Integer(v)))
-						lastTimeProgDone=((Integer)lastTimeProgsDone.get(new Integer(v))).intValue();
+					if(lastTimeProgsDone.containsKey(new Integer(thisScriptIndex)))
+						lastTimeProgDone=((Integer)lastTimeProgsDone.get(new Integer(thisScriptIndex))).intValue();
 					int time=mob.location().getArea().getTimeObj().getTimeOfDay();
 					if(lastTimeProgDone!=time)
 					{
@@ -5841,13 +5927,13 @@ public class Scriptable extends StdBehavior
 							{
 								done=true;
 								execute(affecting,mob,mob,mob,defaultItem,null,script,null);
-								lastTimeProgsDone.remove(new Integer(v));
-								lastTimeProgsDone.put(new Integer(v),new Integer(time));
+								lastTimeProgsDone.remove(new Integer(thisScriptIndex));
+								lastTimeProgsDone.put(new Integer(thisScriptIndex),new Integer(time));
 								break;
 							}
 						}
 						if(!done)
-							lastDayProgsDone.remove(new Integer(v));
+						    lastTimeProgsDone.remove(new Integer(thisScriptIndex));
 					}
 				}
 				break;
@@ -5856,8 +5942,8 @@ public class Scriptable extends StdBehavior
 				&&(!mob.amDead()))
 				{
 					int lastDayProgDone=-1;
-					if(lastDayProgsDone.containsKey(new Integer(v)))
-						lastDayProgDone=((Integer)lastDayProgsDone.get(new Integer(v))).intValue();
+					if(lastDayProgsDone.containsKey(new Integer(thisScriptIndex)))
+						lastDayProgDone=((Integer)lastDayProgsDone.get(new Integer(thisScriptIndex))).intValue();
 					int day=mob.location().getArea().getTimeObj().getDayOfMonth();
 					if(lastDayProgDone!=day)
 					{
@@ -5868,13 +5954,13 @@ public class Scriptable extends StdBehavior
 							{
 								done=true;
 								execute(affecting,mob,mob,mob,defaultItem,null,script,null);
-								lastDayProgsDone.remove(new Integer(v));
-								lastDayProgsDone.put(new Integer(v),new Integer(day));
+								lastDayProgsDone.remove(new Integer(thisScriptIndex));
+								lastDayProgsDone.put(new Integer(thisScriptIndex),new Integer(day));
 								break;
 							}
 						}
 						if(!done)
-							lastDayProgsDone.remove(new Integer(v));
+							lastDayProgsDone.remove(new Integer(thisScriptIndex));
 					}
 				}
 				break;

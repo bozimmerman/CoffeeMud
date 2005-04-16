@@ -506,12 +506,18 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				Room room=(Room)rooms.elementAt(r,1);
 				clearRoom(room,bringBackHere,null);
 			}
+		    boolean roomsYes=rooms.size()>0;
 		    while(rooms.size()>0)
 		    {
 				Room room=(Room)rooms.elementAt(0,1);
 				rooms.removeElementAt(0);
 				room.destroyRoom();
-		        CMMap.delRoom(room);
+				CMMap.justDelRoom(room);
+		    }
+		    if(roomsYes)
+		    {
+			    CMMap.theWorldChanged();
+			    CMMap.trimRoomsList();
 		    }
 		}
 		catch(Exception e){}
@@ -616,7 +622,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			return;
 		tickStarted=true;
 		ThinGridVacuum TGV=new ThinGridVacuum();
-		CMClass.ThreadEngine().startTickDown(TGV,MudHost.TICK_ROOM_BEHAVIOR,30);
+		CMClass.ThreadEngine().startTickDown(TGV,MudHost.TICK_ROOM_BEHAVIOR,450);
 	}
 	
 	protected static class ThinGridVacuum implements Tickable
@@ -694,6 +700,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			    tickStatus=Tickable.STATUS_MISC+11;
 			}
 			CMMap.theWorldChanged();
+			CMMap.trimRoomsList();
 			tickStatus=Tickable.STATUS_NOT;
 			return true;
 		}

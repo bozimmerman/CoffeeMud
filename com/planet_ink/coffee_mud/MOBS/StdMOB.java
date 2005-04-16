@@ -2948,7 +2948,10 @@ public class StdMOB implements MOB
 		return !pleaseDestroy;
 	}
 
-	public boolean isMonster(){	return (mySession==null);}
+	public boolean isMonster()
+	{	
+	    return (mySession==null);
+	}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public void confirmWearability()

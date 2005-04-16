@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+
 import java.util.*;
 
 /* 
@@ -31,5 +32,12 @@ public class StoneThinGrid extends StdThinGrid
 		recoverEnvStats();
 	}
 
+	public Environmental newInstance()
+	{
+	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	        return super.newInstance();
+	    else
+	        return new StoneGrid().newInstance();
+	}
 	public String getChildLocaleID(){return "StoneRoom";}
 }

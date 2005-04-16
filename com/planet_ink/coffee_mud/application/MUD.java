@@ -442,9 +442,6 @@ public class MUD extends Thread implements MudHost
 				}
 				else
 				{
-					String address="unknown";
-					try{address=sock.getInetAddress().getHostAddress();}catch(Exception e){}
-					Log.sysOut("MUD","Rejecting a connection from "+address+" on port "+port);
 					StringBuffer rejectText=Resources.getFileResource("text"+File.separatorChar+"offline.txt");
 					PrintWriter out = new PrintWriter(sock.getOutputStream());
 					out.println("\n\rOFFLINE: " + CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS)+"\n\r");

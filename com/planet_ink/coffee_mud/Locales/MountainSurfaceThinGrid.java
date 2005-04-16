@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+
 import java.util.*;
 
 /* 
@@ -32,6 +33,13 @@ public class MountainSurfaceThinGrid extends StdThinGrid
 		domainCondition=Room.CONDITION_NORMAL;
 	}
 
+	public Environmental newInstance()
+	{
+	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	        return super.newInstance();
+	    else
+	        return new MountainSurfaceGrid().newInstance();
+	}
 	public String getChildLocaleID(){return "MountainSurface";}
 	public Vector resourceChoices(){return Mountains.roomResources;}
 }

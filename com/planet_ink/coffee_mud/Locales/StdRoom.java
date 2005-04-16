@@ -250,7 +250,7 @@ public class StdRoom
 		&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE)>0))
 		{
 			Exit o=CMClass.getExit("StdOpenDoorway");
-			EndlessThinSky sky=new EndlessThinSky();
+			GridLocale sky=(GridLocale)CMClass.getLocale("EndlessThinSky");
 			sky.setArea(getArea());
 			sky.setRoomID("");
 			rawDoors()[Directions.UP]=sky;
@@ -1010,6 +1010,7 @@ public class StdRoom
 			int y=GP.getChildY(this);
 			if((x>=0)&&(x<GP.xSize())&&(y>=0)&&(y<GP.ySize()))
 			    ((StdThinGrid)GP).fillExitsOfGridRoom(this,x,y);
+			nextRoom=rawDoors()[direction];
 		}
 		    
 		if(nextRoom instanceof GridLocale)
