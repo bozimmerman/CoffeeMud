@@ -1254,6 +1254,15 @@ public class StdRoom
 		if(this instanceof GridLocale)
 			((GridLocale)this).clearGrid(null);
 		clearSky();
+	    int d=0;
+	    Room R=null;
+		for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+		{
+		    R=(Room)e.nextElement();
+		    for(d=0;d<R.rawDoors().length;d++)
+		        if(R.rawDoors()[d]==this)
+		            R.rawDoors()[d]=null;
+		}
 		CMClass.ThreadEngine().deleteTick(this,-1);
 	}
 

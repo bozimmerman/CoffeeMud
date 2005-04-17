@@ -72,6 +72,12 @@ public class Spell_Timeport extends Spell
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
+		    if(!canBeUninvoked())
+		    {
+				msg.source().tell("The timeport spell on you fizzles away.");
+		        affected.delEffect(this);
+		    }
+		    else
 			if(msg.amISource((MOB)affected))
 				if((!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 				&&(!Util.bset(msg.targetCode(),CMMsg.MASK_GENERAL)))

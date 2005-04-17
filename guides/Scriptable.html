@@ -151,8 +151,7 @@ from largest gold amount to smallest gold amount. So if you have a bribe_prog
 250 and a bribe_prog 100, the 250 must be listed first, and then the 100. If you 
 don’t do this your larger sum bribe_progs will never be triggered.</P>
 <P><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">buy_prog<?XML:NAMESPACE 
-PREFIX = O /><O:P></O:P></SPAN></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">buy_prog<O:P></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>buy_prog [keyword list]<BR>buy_prog p [keyword 
 phrase]<BR>buy_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by buying an item&nbsp;from 
@@ -602,36 +601,36 @@ lists but some of the same keywords – for example a remove_prog p apple red
 juicy and a remove_prog p apple red poisoned.</P>
 <P><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">sell_prog<O:P></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>sell_prog [keyword list]<BR>sell_prog p 
-[keyword phrase]<BR>sell_prog all</EM></P>
-<P class=MsoNormal>This type of mobprog is triggered by selling an item to a 
-shopkeeper. If the&nbsp;item being sold&nbsp;has any of the keywords of the 
-sell_prog, the prog is triggered. If there is a ‘p’ placed before the keyword 
-list, the keywords of the item must exactly match that of the sell_prog. If 
-there is not, then any item with any of the keywords in the list in it will 
-trigger it. If a sell_prog all is used, then the sell_prog will trigger for any 
-item at all being&nbsp;sold. This type of prog is usually used for in-zone 
-quests and special mob behavior, and has a variety of uses.</P>
+<P class=MsoNormal>Usage:<BR><EM>sell_prog [keyword list]<BR>sell_prog 
+p [keyword phrase]<BR>sell_prog all</EM></P>
+<P class=MsoNormal>This type of mobprog is triggered by 
+selling an item to a shopkeeper. If the&nbsp;item being sold&nbsp;has any of the 
+keywords of the sell_prog, the prog is triggered. If there is a ‘p’ placed 
+before the keyword list, the keywords of the item must exactly match that of the 
+sell_prog. If there is not, then any item with any of the keywords in the list 
+in it will trigger it. If a sell_prog all is used, then the sell_prog will 
+trigger for any item at all being&nbsp;sold. This type of prog is usually used 
+for in-zone quests and special mob behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>sell_prog orange apple banana</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+<P class=MsoNormal><EM>sell_prog 
+orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
 item&nbsp;being sold&nbsp; has any of the keywords orange, apple, or banana. 
 This means that it would be triggered by&nbsp;selling a banana, an apple pie, or 
 even an orange shield.)</P>
-<P class=MsoNormal><EM>sell_prog p apple pie delicious</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-item being sold has the exact keywords apple pie delicious. The prog would not 
-be triggered by selling anything with keywords red apple or blackberry pie or 
+<P class=MsoNormal><EM>sell_prog p 
+apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the item 
+being sold has the exact keywords apple pie delicious. The prog would not be 
+triggered by selling anything with keywords red apple or blackberry pie or 
 anything except the exact order and wording of the keyword list.)<SPAN 
 style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
-<P class=MsoNormal><EM>sell_prog all</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any 
-sort of item is sold.)</P>
-<P class=MsoNormal>MULTIPLE PROGS: You can have more than one sell_prog on a 
-mob. Generally it is best not to have sell_progs with the same keywords in them, 
-unless they are a sell_prog p with different keyword lists but some of the same 
-keywords – for example a sell_prog p apple red juicy and a sell_prog p apple red 
-poisoned.</P>
+<P class=MsoNormal><EM>sell_prog 
+all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+</SPAN>(This will trigger if any sort of item is sold.)</P>
+<P class=MsoNormal>MULTIPLE PROGS: You can have more than 
+one sell_prog on a mob. Generally it is best not to have sell_progs with the 
+same keywords in them, unless they are a sell_prog p with different keyword 
+lists but some of the same keywords – for example a sell_prog p apple red juicy 
+and a sell_prog p apple red poisoned.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">speech_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>speech_prog [trigger message]<BR>speech_prog p [trigger message]</EM></P>
@@ -669,7 +668,7 @@ day (0-15)&nbsp;in CoffeeMud.</P>
 10</EM><SPAN style="mso-spacerun: yes"><EM>&nbsp;1 2</EM>&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 
 if&nbsp;hour of the&nbsp;day is 10, 1, or 2. )</P>
 <P class=MsoNormal><EM>time_prog&nbsp;3</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger on 
-the&nbsp;3rd&nbsp;hour of every month .)&nbsp;</P><o:p></O:P>
+the&nbsp;3rd&nbsp;hour of every day.)&nbsp;</P><o:p></O:P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">wear_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>wear_prog [keyword list]<BR>wear_prog 
@@ -763,7 +762,7 @@ being the sword.</P>
     <TD colSpan=2>A random pc inhabitants name.</TD></TR>
   <TR>
     <TD>$R</TD>
-    <TD colSpan=2>A random pcinhabitants name.</TD></TR>
+    <TD colSpan=2>A random pc inhabitants name.</TD></TR>
   <TR>
     <TD>$j</TD>
     <TD colSpan=2>The pronoun he/she of the 

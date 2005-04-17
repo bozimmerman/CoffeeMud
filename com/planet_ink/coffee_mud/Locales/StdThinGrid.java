@@ -697,7 +697,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				R.destroyRoom();
 			    tickStatus=Tickable.STATUS_MISC+10;
 				CMMap.justDelRoom(R);
-			    tickStatus=Tickable.STATUS_MISC+11;
 			}
 			CMMap.theWorldChanged();
 			CMMap.trimRoomsList();
