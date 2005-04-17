@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -85,7 +85,7 @@ public class Paladin_SummonMount extends StdAbility
 			mob.tell("You must be outdoors to call your mount.");
 			return false;
 		}
-		if((!auto)&&(mob.getAlignment()<650))
+		if((!auto)&&(!(Sense.isGood(mob))))
 		{
 			mob.tell("Your alignment has alienated you from your god.");
 			return false;
@@ -157,7 +157,7 @@ public class Paladin_SummonMount extends StdAbility
 		newMOB.baseEnvStats().setAbility(11);
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setWeight(500);
-		newMOB.setAlignment(1000);
+		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_GOOD));
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');

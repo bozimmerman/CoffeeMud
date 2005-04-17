@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@ import java.util.*;
 public class CommonStrings extends Scriptable
 {
 	private CommonStrings(){};
-	
+
 	public static final int SYSTEM_PKILL=0;
 	public static final int SYSTEM_MULTICLASS=1;
 	public static final int SYSTEM_PLAYERDEATH=2;
@@ -67,7 +67,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_CLANTROPAREA=42;
 	public static final int SYSTEM_COLORSCHEME=43;
 	public static final int SYSTEM_SMTPSERVERNAME=44;
-	public static final int NUM_SYSTEM=45;
+    public static final int SYSTEM_ENABLEALIGN=45;
+	public static final int NUM_SYSTEM=46;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -126,7 +127,7 @@ public class CommonStrings extends Scriptable
 	private static Vector sayFilter=new Vector();
 	private static Vector channelFilter=new Vector();
 	private static Vector emoteFilter=new Vector();
-	
+
 	public static int pkillLevelDiff=26;
 
 	public static int getPKillLevelDiff(){return pkillLevelDiff;}
@@ -176,7 +177,7 @@ public class CommonStrings extends Scriptable
 		if(val==null) val="";
 		setUpLowVar(varNum,upperFy?val.toUpperCase():val);
 	}
-	
+
 	public static void setVar(int varNum, String val)
 	{
 		if(val==null) val="";
@@ -199,7 +200,7 @@ public class CommonStrings extends Scriptable
 			break;
 		}
 	}
-	
+
 	public static void loadCommonINISettings(INI page)
 	{
 		setVar(SYSTEM_BADNAMES,page.getStr("BADNAMES"));
@@ -243,8 +244,9 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_CLANTROPEXP,page.getStr("CLANTROPEXP"));
 		setVar(SYSTEM_COLORSCHEME,page.getStr("COLORSCHEME"));
 		setVar(SYSTEM_SMTPSERVERNAME,page.getStr("SMTPSERVERNAME"));
+                setVar(SYSTEM_ENABLEALIGN,page.getStr("ENABLEALIGN"));
 		CMColor.clookup=null;
-		
+
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
 		else
@@ -253,11 +255,11 @@ public class CommonStrings extends Scriptable
 		else
 			setIntVar(SYSTEMI_MANACONSUMEAMT,Util.s_int(page.getStr("MANACONSUMEAMT").trim()));
 		String s=page.getStr("COMBATSYSTEM");
-		if(s.equalsIgnoreCase("queue")) 
+		if(s.equalsIgnoreCase("queue"))
 			setIntVar(SYSTEMI_COMBATSYSTEM,1);
 		else
 			setIntVar(SYSTEMI_COMBATSYSTEM,0);
-		
+
 		setIntVar(SYSTEMI_MANACONSUMETIME,page.getStr("MANACONSUMETIME"));
 		setIntVar(SYSTEMI_PAGEBREAK,page.getStr("PAGEBREAK"));
 		setIntVar(SYSTEMI_MINMOVETIME,page.getStr("MINMOVETIME"));
@@ -313,24 +315,24 @@ public class CommonStrings extends Scriptable
 		stateVar=page.getStr("STARTMOVE");
 		if((stateVar.length()>0)&&(Util.isNumber(stateVar)))
 		    CommonStrings.setIntVar(SYSTEMI_STARTMOVE,Util.s_int(stateVar));
-		
+
 		Directions.ReInitialize(page.getInt("DIRECTIONS"));
-		
+
 		if(Util.s_int(page.getStr("HOURSINDAY"))>0)
 			DefaultTimeClock.globalClock.setHoursInDay(Util.s_int(page.getStr("HOURSINDAY")));
-		
+
 		if(Util.s_int(page.getStr("DAYSINMONTH"))>0)
 			DefaultTimeClock.globalClock.setDaysInMonth(Util.s_int(page.getStr("DAYSINMONTH")));
-		
+
 		String monthsInYear=page.getStr("MONTHSINYEAR");
 		if(monthsInYear.trim().length()>0)
 			DefaultTimeClock.globalClock.setMonthsInYear(Util.toStringArray(Util.parseCommas(monthsInYear,true)));
-		
+
 		DefaultTimeClock.globalClock.setDaysInWeek(Util.toStringArray(Util.parseCommas(page.getStr("DAYSINWEEK"),true)));
-		
+
 		if(page.containsKey("YEARDESC"))
 			DefaultTimeClock.globalClock.setYearNames(Util.toStringArray(Util.parseCommas(page.getStr("YEARDESC"),true)));
-		
+
 		if(page.containsKey("DAWNHR")&&page.containsKey("DAYHR")
 			&&page.containsKey("DUSKHR")&&page.containsKey("NIGHTHR"))
 		DefaultTimeClock.globalClock.setDawnToDusk(
@@ -338,7 +340,7 @@ public class CommonStrings extends Scriptable
 									Util.s_int(page.getStr("DAYHR")),
 									Util.s_int(page.getStr("DUSKHR")),
 									Util.s_int(page.getStr("NIGHTHR")));
-		
+
 		setIntVar(SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_UTILTHREAD_SLEEP*DefaultTimeClock.globalClock.getHoursInDay()/MudHost.TICK_TIME)));
 		setIntVar(SYSTEMI_TICKSPERMUDMONTH,""+""+((MudHost.TIME_UTILTHREAD_SLEEP*DefaultTimeClock.globalClock.getHoursInDay()*DefaultTimeClock.globalClock.getDaysInMonth()/MudHost.TICK_TIME)));
 		CMSecurity.setDisableVars(page.getStr("DISABLE"));
@@ -346,7 +348,7 @@ public class CommonStrings extends Scriptable
 			Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));
 		CMSecurity.setDebugVars(page.getStr("DEBUG"));
 		CMSecurity.setSaveFlags(page.getStr("SAVE"));
-		
+
 	}
 
 	public static String standardHitWord(int type, int damage)
@@ -582,7 +584,7 @@ public class CommonStrings extends Scriptable
 	{
 	    return (CommonStrings.getIntVar(CommonStrings.SYSTEMI_MUDTHEME)&i)>0;
 	}
-	
+
 	public static String standardMobCondition(MOB mob)
 	{
 		switch((int)Math.round(Math.floor((Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10)))
@@ -619,6 +621,29 @@ public class CommonStrings extends Scriptable
 		else return "pure goodness";
 
 	}
+
+    public static String factionStr(int factionChange, String which) {
+        double pct=Util.div(factionChange,Factions.getTotal(which))*100;
+        pct=Util.div(pct,Factions.getRateModifier(which));
+        String degree="";
+        if(pct<0.1)      degree="insignificantly";
+        else if(pct<0.2) degree="imperceptibly";
+        else if(pct<0.4) degree="inappreciably";
+        else if(pct<0.6) degree="marginally";
+        else if(pct<0.8) degree="slightly";
+        else if(pct<1.5) degree="gradually";// low middle
+        else if(pct<3.0) degree="decidedly";// high middle
+        else if(pct<4.5) degree="notably";
+        else if(pct<6.0) degree="considerably";
+        else if(pct<7.5) degree="greatly";
+        else if(pct<9.0) degree="vastly";
+        else degree="astonishingly";
+        if(factionChange>0)
+            return degree+" increased ("+factionChange+").";
+        else
+            return degree+" decreased ("+factionChange+").";
+    }
+
 	private static String lastStr="";
 	private static long lastRes=0;
 	public static void resistanceMsgs(CMMsg msg, MOB source, MOB target)
@@ -642,7 +667,7 @@ public class CommonStrings extends Scriptable
 		    if(msg.tool() instanceof Ability)
 				tool=((Ability)msg.tool()).name();
 		}
-		
+
 		String tackOn=null;
 		switch(msg.targetMinor())
 		{
@@ -683,7 +708,7 @@ public class CommonStrings extends Scriptable
 
 	public static String msp(String soundName, int priority)
 	{ return msp(soundName,50,Dice.roll(1,50,priority));}
-	
+
 	public static String applyFilter(String msg, int whichFilter)
 	{
 		Vector filter=null;
@@ -693,9 +718,9 @@ public class CommonStrings extends Scriptable
 		case SYSTEM_SAYFILTER: filter=sayFilter; break;
 		case SYSTEM_CHANNELFILTER: filter=channelFilter; break;
 		}
-		if((filter==null)||(filter.size()==0)) 
+		if((filter==null)||(filter.size()==0))
 			return msg;
-		
+
 		int fdex=0;
 		int len=0;
 		StringBuffer newMsg=null;
@@ -712,7 +737,7 @@ public class CommonStrings extends Scriptable
 				&&((len==upp.length())
 					||(!Character.isLetter(upp.charAt(len)))))
 				{
-					
+
 					for(;fdex<len;fdex++)
 						if(!Character.isWhitespace(msg.charAt(fdex)))
 						{

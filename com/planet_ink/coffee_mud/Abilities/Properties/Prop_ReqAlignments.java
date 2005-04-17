@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ public class Prop_ReqAlignments extends Property
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
 		int x=text().toUpperCase().indexOf("ALL");
-		int y=text().toUpperCase().indexOf(CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase());
+		int y=text().toUpperCase().indexOf(Factions.getZapTerm(Factions.AlignID(),mob.fetchFaction(Factions.AlignID())));
 		if(((x>0)
 			&&(text().charAt(x-1)=='-')
 			&&((y<=0)

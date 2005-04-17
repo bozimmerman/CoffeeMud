@@ -2095,33 +2095,44 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genAlignment(MOB mob, MOB E, int showNumber, int showFlag)
-		throws IOException
-	{
+    public static void genFaction(MOB mob, MOB E, int showNumber, int showFlag)
+    throws IOException
+    {
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Alignment: '"+CommonStrings.alignmentStr(E.getAlignment())+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newType=mob.session().choose("Enter a new alignment (G/N/E)\n\r:","GNE","");
-		int newValue=-1;
-		if(newType.length()>0)
-			newValue=("GNE").indexOf(newType.toUpperCase());
-		if(newValue>=0)
-			switch(newValue)
-			{
-			case 0:
-				E.setAlignment(1000);
-				break;
-			case 1:
-				E.setAlignment(500);
-				break;
-			case 2:
-				E.setAlignment(0);
-				break;
-			}
-		else
-			mob.tell("(no change)");
+		String newFact="Q";
+		while(newFact.length()>0)
+		{
+		    mob.tell(showNumber+". Factions: "+E.getFactionListing());
+		    if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		    newFact=mob.session().prompt("Enter a faction name to add or remove\n\r:","");
+		    if(newFact.length()>0)
+		    {
+		        Faction lookedUp=Factions.getFactionByName(newFact);
+		        if(lookedUp==null) Factions.getFaction(newFact);
+		        if(lookedUp!=null)
+		        {
+		            if (E.fetchFaction(lookedUp.ID)!=Integer.MAX_VALUE)
+		            {
+		                // this mob already has this faction, they must want it removed
+		                E.removeFaction(lookedUp.ID);
+		                mob.tell("Faction '" + lookedUp.name + "' removed.");
+		            }
+		            else
+		            {
+						int value =new Integer(mob.session().prompt("How much faction ("+lookedUp.findDefault(E)+")?",
+						           new Integer(lookedUp.findDefault(E)).toString())).intValue();
+			            if(value<lookedUp.minimum) value=lookedUp.minimum;
+					    if(value>lookedUp.maximum) value=lookedUp.maximum;
+		                E.addFaction(lookedUp.ID,value);
+		                mob.tell("Faction '" + lookedUp.name + "' added.");
+		            }
+		         }
+		         else
+		            mob.tell("'"+newFact+"' is not recognized as a valid faction name or file.");
+		    }
+		}
 	}
-
+    
 	public static void genGender(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -5418,7 +5429,6 @@ public class BaseGenerics extends StdCommand
 			genDamage(mob,me,++showNumber,showFlag);
 			genArmor(mob,me,++showNumber,showFlag);
 			genHitPoints(mob,me,++showNumber,showFlag);
-			genAlignment(mob,me,++showNumber,showFlag);
 			genMoney(mob,me,++showNumber,showFlag);
 			genAbilities(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
@@ -5443,6 +5453,7 @@ public class BaseGenerics extends StdCommand
 				genDeity0(mob,(Deity)me,++showNumber,showFlag);
 				genDeity7(mob,(Deity)me,++showNumber,showFlag);
 			}
+			genFaction(mob,me,++showNumber,showFlag);
 			genTattoos(mob,me,++showNumber,showFlag);
 			genEducations(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
@@ -5503,7 +5514,6 @@ public class BaseGenerics extends StdCommand
 			genDamage(mob,me,++showNumber,showFlag);
 			genArmor(mob,me,++showNumber,showFlag);
 			genHitPoints(mob,me,++showNumber,showFlag);
-			genAlignment(mob,me,++showNumber,showFlag);
 			genMoney(mob,me,++showNumber,showFlag);
 			genAbilities(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
@@ -5515,6 +5525,7 @@ public class BaseGenerics extends StdCommand
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
 			}
+			genFaction(mob,me,++showNumber,showFlag);
 			genTattoos(mob,me,++showNumber,showFlag);
 			genEducations(mob,me,++showNumber,showFlag);
 			genTitles(mob,me,++showNumber,showFlag);
@@ -5581,7 +5592,6 @@ public class BaseGenerics extends StdCommand
 			genArmor(mob,me,++showNumber,showFlag);
 			if(me instanceof MOB)
 				genHitPoints(mob,(MOB)me,++showNumber,showFlag);
-			genAlignment(mob,mme,++showNumber,showFlag);
 			genMoney(mob,mme,++showNumber,showFlag);
 			genAbilities(mob,mme,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
@@ -5603,6 +5613,7 @@ public class BaseGenerics extends StdCommand
 			}
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genSensesMask(mob,me.baseEnvStats(),++showNumber,showFlag);
+			genFaction(mob,mme,++showNumber,showFlag);
 			genTattoos(mob,(MOB)me,++showNumber,showFlag);
 			genEducations(mob,(MOB)me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);

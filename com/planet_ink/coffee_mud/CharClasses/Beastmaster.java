@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -202,7 +202,7 @@ public class Beastmaster extends StdCharClass
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
 		&&(Dice.rollPercentage()<50))
 		{
-			if(((Ability)msg.tool()).appropriateToMyAlignment(myChar.getAlignment()))
+			if(((Ability)msg.tool()).appropriateToMyFactions(myChar))
 				return true;
 			myChar.tell("Extreme emotions disrupt your chant.");
 			return false;
@@ -238,7 +238,7 @@ public class Beastmaster extends StdCharClass
 		}
 		return outfitChoices;
 	}
-	
+
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -268,7 +268,7 @@ public class Beastmaster extends StdCharClass
 		&&(!skill.ID().equals("Herbalism"))
 		&&(!skill.ID().equals("Masonry")))
 			return duration*2;
-		   
+
 		return duration;
 	}
 }

@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -88,7 +88,7 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.recoverCharStats();
 				newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 				newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
-				newMOB.setAlignment(0);
+				if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_EVIL));
 				newMOB.baseState().setHitPoints(15*newMOB.baseEnvStats().level());
 				newMOB.baseState().setMovement(30);
 				newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));

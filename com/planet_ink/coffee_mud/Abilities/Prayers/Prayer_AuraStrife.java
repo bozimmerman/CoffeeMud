@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ public class Prayer_AuraStrife extends Prayer
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if((invoker()!=null)&&(affected!=invoker())&&(invoker().getAlignment()<350))
+		if((invoker()!=null)&&(affected!=invoker())&&(Sense.isEvil(invoker())))
 		{
 			int levels=invoker().charStats().getClassLevel("Templar");
 			if(levels<0) levels=invoker().envStats().level();
@@ -89,7 +89,7 @@ public class Prayer_AuraStrife extends Prayer
 				}
 			}
 			else
-			if((mob.location()!=null)&&(invoker().getAlignment()<350))
+			if((mob.location()!=null)&&(Sense.isEvil(invoker())))
 			for(int m=0;m<mob.location().numInhabitants();m++)
 			{
 				MOB M=mob.location().fetchInhabitant(m);

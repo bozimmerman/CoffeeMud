@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -132,7 +132,7 @@ public class Chant_SummonFlyTrap extends Chant
 		newMOB.setName("a large flytrap");
 		newMOB.setDisplayText(newMOB.Name()+" is planted here");
 		newMOB.setDescription("");
-		newMOB.setAlignment(500);
+		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_NEUTRAL));
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
 		Behavior B=CMClass.getBehavior("Aggressive");

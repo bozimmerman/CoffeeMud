@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@ public class List extends StdCommand
 
 	public StringBuffer roomDetails(Vector these, Room likeRoom)
 	{return roomDetails(these.elements(),likeRoom);}
-	
+
 	public StringBuffer roomDetails(Enumeration these, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
@@ -200,7 +200,7 @@ public class List extends StdCommand
 					&&(M.getStartRoom().getArea()==R.getArea()))
 					{
 						numMobs++;
-						totalAlignment+=M.getAlignment();
+						if((Factions.isAlignEnabled())&&(M.fetchFaction(Factions.AlignID())!=Integer.MAX_VALUE)) totalAlignment+=M.fetchFaction(Factions.AlignID());
 						totalLevels+=M.envStats().level();
 					}
 				}
@@ -258,7 +258,9 @@ public class List extends StdCommand
 				}
 			}
 			if(numMobs>0)
-				buf.append(numMobs+" mobs\t"+(totalLevels/numMobs)+" avg levels\t"+(totalAlignment/numMobs)+" avg alignment");
+				buf.append(numMobs+" mobs\t"+(totalLevels/numMobs)+" avg levels\t");
+            if((numMobs>0)&&Factions.isAlignEnabled())
+                buf.append((totalAlignment/numMobs)+" avg alignment");
 			if(linkedGroups.size()>0)
 			{
 				buf.append("\tgroups: "+linkedGroups.size()+" sizes: ");
@@ -671,7 +673,7 @@ public class List extends StdCommand
 		}
 		return str.toString();
 	}
-	
+
 	public Vector getMyCmdWords(MOB mob)
 	{
 		Vector V=new Vector();
@@ -685,7 +687,7 @@ public class List extends StdCommand
 		}
 		return V;
 	}
-	
+
 	public int getMyCmdCode(MOB mob, String s)
 	{
 		s=s.toUpperCase().trim();
@@ -700,7 +702,7 @@ public class List extends StdCommand
 		}
 		return -1;
 	}
-	
+
 	public int getAnyCode(MOB mob)
 	{
 		for(int i=0;i<SECURITY_LISTMAP.length;i++)
@@ -760,8 +762,9 @@ public class List extends StdCommand
 		/*43*/{"SUPERPOWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*44*/{"DEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*45*/{"EVILDEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+        /*46*/{"FACTIONS","LISTADMIN"},
 	};
-	
+
 	public void archonlist(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -863,6 +866,7 @@ public class List extends StdCommand
 		case 43: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SUPERPOWER).toString()); break;
 		case 44:
 		case 45: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.EVILDEED).toString()); break;
+        case 46: s.wraplessPrintln(Factions.listFactions()); break;
 		default:
 			s.println("List?!");
 			break;

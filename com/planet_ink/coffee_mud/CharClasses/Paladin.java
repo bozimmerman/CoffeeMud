@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,77 +66,77 @@ public class Paladin extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
 			CMAble.addCharAbilityMapping(ID(),1,"Paladin_HealingHands",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Paladin_ImprovedResists",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),5,"Paladin_SummonMount",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureLight",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_SenseEvil",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_WandUse",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),7,"Paladin_DiseaseImmunity",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtEvil",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_CureDeafness",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_CureSerious",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Paladin_Defend",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Bless",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_Freedom",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),13,"Paladin_Courage",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_DispelEvil",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),14,"Prayer_RestoreVoice",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Cleave",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_RemovePoison",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Paladin_Breakup",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_CureDisease",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Paladin_MountedCharge",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),17,"Paladin_PoisonImmunity",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Sanctuary",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_CureCritical",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Trip",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),19,"Paladin_Aura",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_HolyAura",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_Calm",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_CureBlindness",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BladeBarrier",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_Godstrike",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),24,"Fighter_Sweep",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_MassFreedom",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),25,"Paladin_Goodness",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Heal",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",true);
 
 		}
@@ -171,7 +171,7 @@ public class Paladin extends StdCharClass
 		MOB myChar=(MOB)myHost;
 		if((msg.amISource(myChar))
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-		&&(myChar.getAlignment() < 650)
+		&&(!Sense.isGood(myChar))
 		&&((msg.tool()==null)||((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 								&&(myChar.isMine(msg.tool()))))
 		&&(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2))

@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,7 +50,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public boolean raceless(){return false;}
 	public boolean leveless(){return false;}
 	public boolean expless(){return false;}
-	
+
 	public StdCharClass()
 	{
 		if(!commonMapped)
@@ -109,17 +109,17 @@ public class StdCharClass implements CharClass, Cloneable
 			CMAble.addCharAbilityMapping("All",4,"Wainwrighting",false);
 			CMAble.addCharAbilityMapping("All",1,"Weaponsmithing",false);
 			CMAble.addCharAbilityMapping("All",1,"Weaving",false);
-		
-		
+
+
 			CMAble.addCharAbilityMapping("Mage",1,"Alchemy",false);
 			CMAble.addCharAbilityMapping("Bard",10,"Alchemy",false);
 			CMAble.addCharAbilityMapping("Cleric",1,"Alchemy",false);
 		}
 	}
-	
+
 	public boolean isGeneric(){return false;}
 	public int availabilityCode(){return 0;}
-	
+
 	public void cloneFix(CharClass C)
 	{
 	}
@@ -389,13 +389,7 @@ public class StdCharClass implements CharClass, Cloneable
 					levelFactor=new Integer(levelLimit).doubleValue();
 				theAmount=theAmount+Util.mul(levelFactor,amount);
 			}
-
-			double victimFactor=Util.div((500.0-new Integer(victim.getAlignment()).doubleValue()),10.0);
-			double mobFactor=Util.div(Math.abs(500.0-new Integer(mob.getAlignment()).doubleValue()),1000.0)+0.5;
-			mob.setAlignment(mob.getAlignment()+(int)Math.round(mobFactor*victimFactor*0.50));
-
-			double alignExpFactor=Math.abs(Util.div(victim.getAlignment()-mob.getAlignment(),1000.0));
-			amount=(int)Math.round((theAmount/2.0)+((theAmount/2.0)*alignExpFactor));
+            amount = (int)Math.round(theAmount);
 		}
 		if((mob.getLiegeID().length()>0)&&(amount>2))
 		{

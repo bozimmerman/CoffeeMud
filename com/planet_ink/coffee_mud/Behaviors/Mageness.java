@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ public class Mageness extends CombatAbilities
 				addThis=CMClass.randomAbility();
 				if((CMAble.qualifyingLevel(mob,addThis)<0)
 				||(!CMAble.qualifiesByLevel(mob,addThis))
-				||(((addThis.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)&&(!addThis.appropriateToMyAlignment(mob.getAlignment())))
+				||(((addThis.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)&&(!addThis.appropriateToMyFactions(mob)))
 				||(mob.fetchAbility(addThis.ID())!=null)
 				||((addThis.quality()!=Ability.MALICIOUS)
 				   &&(addThis.quality()!=Ability.BENEFICIAL_SELF)

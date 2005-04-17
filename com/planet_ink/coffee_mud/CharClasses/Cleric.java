@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,8 +43,8 @@ public class Cleric extends StdCharClass
 	private HashSet disallowedWeaponsE=buildDisallowedWeaponClasses(CharClass.WEAPONS_EVILCLERIC);
 	protected HashSet disallowedWeaponClasses(MOB mob)
 	{
-		if(mob.getAlignment()<=350) return disallowedWeaponsE;
-		if(mob.getAlignment()>=650) return disallowedWeaponsG;
+		if(Sense.isEvil(mob)) return disallowedWeaponsE;
+		if(Sense.isGood(mob)) return disallowedWeaponsG;
 		return disallowedWeaponsN;
 	}
 	private static boolean abilitiesLoaded=false;
@@ -55,7 +55,7 @@ public class Cleric extends StdCharClass
 	public Cleric()
 	{
 		super();
-		if(!ID().equals("Cleric")) 
+		if(!ID().equals("Cleric"))
 		    return;
 
 		maxStatAdj[CharStats.WISDOM]=7;
@@ -204,7 +204,7 @@ public class Cleric extends StdCharClass
 			}
 			return;
 		}
-		
+
 		if(!ID().equals("Cleric")) return;
 
 		for(int a=0;a<mob.numLearnedAbilities();a++)
@@ -222,7 +222,7 @@ public class Cleric extends StdCharClass
 			Ability A=(Ability)a.nextElement();
 			if((CMAble.getQualifyingLevel(ID(),true,A.ID())>0)
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-			&&(A.appropriateToMyAlignment(mob.getAlignment()))
+			&&(A.appropriateToMyFactions(mob))
 			&&(!CMAble.getSecretSkill(ID(),true,A.ID()))
 			&&(CMAble.getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
 			&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
@@ -277,18 +277,17 @@ public class Cleric extends StdCharClass
 		&&(myChar.isMine(msg.tool()))
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool())))
 		{
-			int align=myChar.getAlignment();
 			Ability A=(Ability)msg.tool();
 
-			if(A.appropriateToMyAlignment(align))
+			if(A.appropriateToMyFactions(myChar))
 				return true;
 			int hq=holyQuality(A);
 			int basis=0;
-				
+
 			switch(alwaysFlunksThisQuality())
 			{
 			case 0:
-				if(align<500)
+				if(Sense.isEvil(myChar))
 				{
 					myChar.tell("Your immoral strife disrupts the prayer.");
 					return false;
@@ -296,7 +295,7 @@ public class Cleric extends StdCharClass
 				if(hq==0) basis=100;
 				break;
 			case 500:
-				if((align>350)&&(align<650))
+				if(Sense.isNeutral(myChar))
 				{
 					myChar.tell("Your moral weakness disrupts the prayer.");
 					return false;
@@ -304,7 +303,7 @@ public class Cleric extends StdCharClass
 				if(hq==500) basis=100;
 				break;
 			case 1000:
-				if(align>500)
+				if(Sense.isGood(myChar))
 				{
 					myChar.tell("Your moral confusion disrupts the prayer.");
 					return false;
@@ -315,14 +314,13 @@ public class Cleric extends StdCharClass
 			if(basis==0)
 			{
 				if(hq==0)
-					basis=align/10;
+					basis=Factions.getAlignPurity(myChar.fetchFaction(Factions.AlignID()),Faction.ALIGN_EVIL);
 				else
 				if(hq==1000)
-					basis=(1000-align)/10;
+					basis=Factions.getAlignPurity(myChar.fetchFaction(Factions.AlignID()),Faction.ALIGN_GOOD);
 				else
 				{
-					basis=(500-align)/10;
-					if(basis<0) basis=basis*-1;
+					basis=Factions.getAlignPurity(myChar.fetchFaction(Factions.AlignID()),Faction.ALIGN_NEUTRAL);
 					basis-=10;
 				}
 			}
@@ -335,10 +333,10 @@ public class Cleric extends StdCharClass
 			if(hq==1000)
 				myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
 			else
-			if(align>650)
+			if(Sense.isGood(myChar))
 				myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
 			else
-			if(align<350)
+			if(Sense.isEvil(myChar))
 				myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
 			return false;
 		}

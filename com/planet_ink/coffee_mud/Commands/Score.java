@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,7 +66,7 @@ public class Score extends Affect
 			msg.append("You are ^H"+mob.Name()+"^? the ^H"+mob.charStats().getCurrentClass().name()+"^?.\n\r");
 		else
 			msg.append("You are ^H"+mob.Name()+"^?.\n\r");
-		    
+
 		//if(mob.image().length()>0) msg.append("^<IMAGE '"+mob.image()+"' URL=\""+CommonStrings.getVar(CommonStrings.SYSTEM_IMAGEURL)+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
 		if((!CMSecurity.isDisabled("CLASSES"))
 		&&(classLevel<mob.envStats().level()))
@@ -151,7 +151,8 @@ public class Score extends Affect
 					msg.append("You need ^!"+(mob.getExpNeededLevel())+"^? experience points to advance to the next level.\n\r");
 			}
 		}
-		msg.append("Your alignment is      : ^H"+CommonStrings.alignmentStr(mob.getAlignment())+" ("+mob.getAlignment()+")^?.\n\r");
+		if(Factions.isAlignEnabled())
+            msg.append("Your alignment is      : ^H"+Factions.getRange(Factions.AlignID(),mob.fetchFaction(Factions.AlignID())).Name+"^?.\n\r");
 		msg.append("Your armored defense is: ^H"+CommonStrings.armorStr(adjustedArmor)+"^?.\n\r");
 		msg.append("Your combat prowess is : ^H"+CommonStrings.fightingProwessStr(adjustedAttack)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");

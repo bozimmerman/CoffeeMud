@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -171,7 +171,7 @@ public class Spell_SummonSteed extends Spell
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-		newMOB.setAlignment(500);
+		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_NEUTRAL));
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();

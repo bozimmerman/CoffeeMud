@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,10 +64,10 @@ public class Dance_Polka extends Dance
 		if(mob==invoker) return true;
 		if((Dice.rollPercentage()<25)&&(Sense.canMove(mob)))
 		{
-			if(mob.getAlignment()<350)
+			if(Sense.isEvil(mob))
 				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
 			else
-			if(mob.getAlignment()<650)
+			if(!Sense.isGood(mob))
 				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
 			else
 				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");

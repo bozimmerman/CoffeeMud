@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,7 @@ public class Prayer_Hellfire extends Prayer
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		if((success)&&(target.getAlignment()>650))
+		if((success)&&(Sense.isGood(target)))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
@@ -54,7 +54,7 @@ public class Prayer_Hellfire extends Prayer
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob,asLevel),adjustedLevel(mob,asLevel));
 					if(undead) harming=harming/2;
-					if(target.getAlignment()>650)
+					if(Sense.isGood(target))
 						MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURNING,"The unholy HELLFIRE <DAMAGE> <T-NAME>!");
 				}
 			}

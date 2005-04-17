@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,7 @@ public class Paladin_Aura extends Paladin
 			try
 			{
 				MOB mob=(MOB)paladinsGroup.elementAt(i);
-				if((mob.getAlignment()<350)&&(pass))
+				if(( Sense.isEvil(mob) )&&(pass))
 				{
 					int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
 					MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGE> <T-NAME>!^?");
@@ -58,7 +58,7 @@ public class Paladin_Aura extends Paladin
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((invoker==null)||(invoker.getAlignment()<650))
+		if((invoker==null)||(!(Sense.isGood(invoker))))
 			return true;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;

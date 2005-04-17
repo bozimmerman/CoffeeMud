@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,9 +62,31 @@ public class Unload extends StdCommand
 		if(str.equalsIgnoreCase("all"))
 		{
 			mob.tell("All resources unloaded.");
+            Factions.removeFaction(null);
 			Resources.clearResources();
 			return false;
 		}
+        // Faction Unloading
+        if(((String)commands.elementAt(1)).equalsIgnoreCase("FACTION"))
+        {
+            String which=Util.combine(commands,2);
+            if(which.length()==0) {
+                // No factions specified.  That's fine, they must mean ALL FACTIONS!!! hahahahaha
+                Factions.removeFaction(null);
+            }
+            else
+            {
+                if(Factions.removeFaction(which)) {
+                    mob.tell("Faction '"+which+"' unloaded.");
+                    return false;
+                }
+                else
+                {
+                    mob.tell("Unknown Faction '"+which+"'.  Use LIST FACTIONS.");
+                    return false;
+                }
+            }
+        }
 		Vector V=Resources.findResourceKeys(str);
 		if(V.size()==0)
 		{
@@ -77,7 +99,6 @@ public class Unload extends StdCommand
 			Resources.removeResource(key);
 			mob.tell("Resource '"+key+"' unloaded.");
 		}
-
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

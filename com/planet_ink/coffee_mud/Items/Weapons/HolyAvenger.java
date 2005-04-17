@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,7 +61,7 @@ public class HolyAvenger extends TwoHandedSword
 		case CMMsg.TYP_WIELD:
 		case CMMsg.TYP_GET:
 			if((!msg.source().charStats().getCurrentClass().ID().equals("Paladin"))
-			||(msg.source().getAlignment()<650))
+			||(!Sense.isGood(msg.source())))
 			{
 				unWear();
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,name()+" flashes and flies out of <S-HIS-HER> hands!");
@@ -85,7 +85,7 @@ public class HolyAvenger extends TwoHandedSword
 		&&(msg.tool()==this)
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead())
-		&&(((MOB)msg.target()).getAlignment()<350))
+		&&(Sense.isEvil(msg.target())))
 		{
 			FullMsg msg2=new FullMsg(msg.source(),msg.target(),new HolyAvenger(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(msg.source().location().okMessage(msg.source(),msg2))

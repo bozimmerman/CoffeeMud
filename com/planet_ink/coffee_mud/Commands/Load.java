@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,6 +35,15 @@ public class Load extends StdCommand
 		}
 		String what=(String)commands.elementAt(1);
 		String name=Util.combine(commands,2);
+        if(what.equalsIgnoreCase("FACTION"))
+        {
+            Faction F=Factions.getFaction(name);
+            if(F==null)
+                mob.tell("Faction file '"+name+"' was not found.");
+            else
+                mob.tell("Faction '"+F.name+"' from file '"+name+"' was loaded.");
+            return false;
+        }
 		if(what.equalsIgnoreCase("RESOURCE"))
 		{
 			StringBuffer buf=Resources.getFileResource(name);

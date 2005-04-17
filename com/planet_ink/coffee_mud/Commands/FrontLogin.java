@@ -697,6 +697,22 @@ public class FrontLogin extends StdCommand
 					mob.setAlignment(500);
 					break;
 				}
+                if(Factions.isAlignEnabled()) {
+                    String alignID=Factions.AlignID();
+                    switch(alignment.charAt(0))
+                    {
+                        case 'G':
+                            mob.addFaction(alignID,Factions.getMaximum(alignID));
+                            break;
+                        case 'E':
+                            mob.addFaction(alignID,Factions.getMinimum(alignID));
+                            break;
+                        case 'N':
+                        default:
+                            mob.addFaction(alignID,((Factions.getMinimum(alignID)+Factions.getMaximum(alignID)) / 2));
+                            break;
+                    }
+                }
 				mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 				CoffeeUtensils.outfit(mob,mob.baseCharStats().getCurrentClass().outfit());
 				mob.setStartRoom(CMMap.getStartRoom(mob));

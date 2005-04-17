@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -132,7 +132,7 @@ public class Healer extends Cleric
 		MOB myChar=(MOB)ticking;
 		if((tickID==MudHost.TICK_MOB)
 		&&(myChar.charStats().getClassLevel(this)>=30)
-		&&(myChar.getAlignment()>=650))
+		&&(Sense.isGood(myChar)))
 		{
 		    int x=downs.indexOf(myChar.Name());
 			int fiveDown=5;
@@ -290,5 +290,5 @@ public class Healer extends Cleric
 		}
 		return outfitChoices;
 	}
-	
+
 }

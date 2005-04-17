@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,7 +66,7 @@ public class Skill_ControlUndead extends StdAbility
 			return false;
 		}
 
-		if(mob.getAlignment()>650)
+		if(Sense.isGood(mob))
 		{
 			mob.tell("Only the wicked may control the undead.");
 			return false;

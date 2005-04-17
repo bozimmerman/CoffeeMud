@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ public class Paladin extends StdAbility
 		if((affected==null)||(!(affected instanceof MOB)))
 			return false;
 		if(invoker==null) invoker=(MOB)affected;
-		if(invoker.getAlignment()<650)
+		if(!(Sense.isGood(invoker)))
 			return false;
 		if(paladinsGroup!=null)
 		{

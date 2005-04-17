@@ -5,8 +5,10 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
-   Copyright 2000-2005 Bo Zimmerman
+/*
+* <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
+* <p>Portions Copyright (c) 2004 Bo Zimmerman</p>
+
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -28,8 +30,8 @@ public class Deviations extends StdCommand
 	public String[] getAccessWords(){return access;}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	
-	private String mobHeader() 
+
+	private String mobHeader()
 	{
 		StringBuffer str=new StringBuffer();
 		str.append("\n\r");
@@ -40,12 +42,12 @@ public class Deviations extends StdCommand
 		str.append(Util.padRight("Armor",5)+" ");
 		str.append(Util.padRight("Speed",5)+" ");
 		str.append(Util.padRight("Rejuv",5)+" ");
-		str.append(Util.padRight("Align",5)+" ");
+		if(Factions.isAlignEnabled()) str.append(Util.padRight("Align",7)+" ");
 		str.append(Util.padRight("Worn",5));
 		str.append("\n\r");
 		return str.toString();
 	}
-	private String itemHeader() 
+	private String itemHeader()
 	{
 		StringBuffer str=new StringBuffer();
 		str.append("\n\r");
@@ -207,7 +209,7 @@ public class Deviations extends StdCommand
 												I.baseGoldValue(),
 												vals,"VALUE"),5)+" ");
 				itemResults.append(Util.padRight(""+((I.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+I.envStats().rejuv()),5)+" ");
-				if(I instanceof Weapon) 
+				if(I instanceof Weapon)
 					itemResults.append(Util.padRight(""+I.baseEnvStats().weight(),4));
 				else
 					itemResults.append(Util.padRight(""+getDeviation(
@@ -237,12 +239,12 @@ public class Deviations extends StdCommand
 												(int)Math.round(M.baseEnvStats().speed()),
 												(int)Math.round(M.baseCharStats().getCurrentClass().getLevelSpeed(M))),5)+" ");
 				mobResults.append(Util.padRight(""+((M.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.envStats().rejuv()) ,5)+" ");
-				mobResults.append(Util.padRight(""+M.getAlignment(),5)+" ");
+				if(Factions.isAlignEnabled()) mobResults.append(Util.padRight(""+(M.fetchFaction(Factions.AlignID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(Factions.AlignID())),7)+" ");
 				int reallyWornCount = 0;
-				for(int j=0;j<M.inventorySize();j++) 
+				for(int j=0;j<M.inventorySize();j++)
 				{
 					Item Iw=M.fetchInventory(j);
-					if(!(Iw.amWearingAt(Item.INVENTORY))) 
+					if(!(Iw.amWearingAt(Item.INVENTORY)))
 						reallyWornCount++;
 				}
 				mobResults.append(Util.padRight(""+reallyWornCount,5)+" ");

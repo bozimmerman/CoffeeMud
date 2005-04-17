@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.Vector;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -161,7 +161,7 @@ public class Property implements Ability, Cloneable
 	{ miscText=newMiscText;}
 	public String text()
 	{ return miscText;}
-	public boolean appropriateToMyAlignment(int alignment){return true;}
+	public boolean appropriateToMyFactions(MOB mob){return true;}
 	public String accountForYourself(){return "";}
 	public int affectType(){return 0;}
 	public String requirements(){return "";}

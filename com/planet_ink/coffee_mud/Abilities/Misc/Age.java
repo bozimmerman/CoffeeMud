@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -180,7 +180,7 @@ public class Age extends StdAbility
 					babe.baseCharStats().setStat(CharStats.STRENGTH,6);
 					babe.baseCharStats().setStat(CharStats.WISDOM,6);
 					if(babe.amFollowing()!=null)
-						babe.setAlignment(babe.amFollowing().getAlignment());
+						babe.copyFactions(babe.amFollowing());
 					babe.baseEnvStats().setHeight(babe.baseEnvStats().height()*5);
 					babe.baseEnvStats().setWeight(babe.baseEnvStats().weight()*5);
 					babe.baseState().setHitPoints(4);
@@ -214,7 +214,7 @@ public class Age extends StdAbility
 					newMan.setAgeHours(babe.getAgeHours());
 					newMan.setBaseCharStats(babe.baseCharStats());
 					newMan.setBaseEnvStats(babe.baseEnvStats());
-					if(liege!=null)	newMan.setAlignment(liege.getAlignment());
+					if(liege!=null)	newMan.copyFactions(liege);
 					newMan.baseEnvStats().setLevel(1);
 					newMan.setBitmap(babe.getBitmap());
 					newMan.setClanID(babe.getClanID());

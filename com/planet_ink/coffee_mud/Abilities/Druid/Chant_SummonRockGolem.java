@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -104,7 +104,7 @@ public class Chant_SummonRockGolem extends Chant
 		newMOB.setName("an golem of stone");
 		newMOB.setDisplayText("an stone golem lumbers around here.");
 		newMOB.setDescription("A large beast, made of rock and stone, with a hard stare.");
-		newMOB.setAlignment(500);
+		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_NEUTRAL));
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("StoneGolem"));
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();

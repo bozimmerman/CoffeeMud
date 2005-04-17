@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -1210,7 +1210,15 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		}
 		return true;
 	}
-	public boolean appropriateToMyAlignment(int alignment){return true;}
+
+    public boolean appropriateToMyFactions(MOB mob) {
+        for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
+            String factionID=(String)e.nextElement();
+            Faction F=Factions.getFaction(factionID);
+            if(F.hasUsage(this)) return F.canUse(mob,this);
+        }
+        return true;
+    }
 
 	public void addEffect(Ability to){}
 	public void addNonUninvokableEffect(Ability to){}

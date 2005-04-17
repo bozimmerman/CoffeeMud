@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,7 +111,7 @@ public class StdArea implements Area
 
 	public String image(){return imageName;}
 	public void setImage(String newImage){imageName=newImage;}
-	
+
 	public boolean getMobility(){return mobility;}
 	public void toggleMobility(boolean onoff){mobility=onoff;}
 	public boolean amISubOp(String username)
@@ -249,7 +249,7 @@ public class StdArea implements Area
 		for(int i=0;i<parents.size();i++)
 			if(!((Area)parents.elementAt(i)).okMessage(myHost,msg))
 				return false;
-		
+
 		if((getTechLevel()>0)&&(!Util.bset(getTechLevel(),Area.THEME_FANTASY)))
 		{
 			if((Util.bset(msg.sourceCode(),CMMsg.MASK_MAGIC))
@@ -337,7 +337,7 @@ public class StdArea implements Area
 		if((msg.sourceMinor()==CMMsg.TYP_RETIRE)
 		&&(amISubOp(msg.source().Name())))
 			delSubOp(msg.source().Name());
-		
+
 		if(parents!=null)
 		for(int i=0;i<parents.size();i++)
 			((Area)parents.elementAt(i)).executeMsg(myHost,msg);
@@ -356,7 +356,7 @@ public class StdArea implements Area
 	}
 
 	public long getTickStatus(){ return tickStatus;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(stopTicking) return false;
@@ -581,8 +581,8 @@ public class StdArea implements Area
 				{
 					int lvl=mob.baseEnvStats().level();
 					levelRanges.addElement(new Integer(lvl));
-					alignRanges.addElement(new Integer(mob.getAlignment()));
-					totalAlignments+=mob.getAlignment();
+					if(mob.fetchFaction(Factions.AlignID())!= Integer.MAX_VALUE) alignRanges.addElement(new Integer(mob.fetchFaction(Factions.AlignID())));
+					if(mob.fetchFaction(Factions.AlignID())!= Integer.MAX_VALUE) totalAlignments+=mob.fetchFaction(Factions.AlignID());
 					statData[Area.AREASTAT_POPULATION]++;
 					statData[Area.AREASTAT_TOTLEVEL]+=lvl;
 					if(!Sense.isAnimalIntelligence(mob))
@@ -627,8 +627,8 @@ public class StdArea implements Area
 			s.append("Level range    : "+statData[Area.AREASTAT_MINLEVEL]+" to "+statData[Area.AREASTAT_MAXLEVEL]+"\n\r");
 			s.append("Average level  : "+statData[Area.AREASTAT_AVGLEVEL]+"\n\r");
 			s.append("Median level   : "+statData[Area.AREASTAT_MEDLEVEL]+"\n\r");
-			s.append("Avg. Alignment : "+statData[Area.AREASTAT_AVGALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_AVGALIGN])+")\n\r");
-			s.append("Med. Alignment : "+statData[Area.AREASTAT_MEDALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_MEDALIGN])+")\n\r");
+			if(Factions.isAlignEnabled()) s.append("Avg. Alignment : "+statData[Area.AREASTAT_AVGALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_AVGALIGN])+")\n\r");
+			if(Factions.isAlignEnabled()) s.append("Med. Alignment : "+statData[Area.AREASTAT_MEDALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_MEDALIGN])+")\n\r");
 		}
 		Resources.submitResource("HELP_"+Name().toUpperCase(),s);
 		return s;
@@ -717,7 +717,7 @@ public class StdArea implements Area
 			return (Room)metroRooms.elementAt(Dice.roll(1,metroRooms.size(),-1));
 		}
 	}
-	
+
 	public Enumeration getProperMap()
 	{
 		synchronized(roomSemaphore)
@@ -760,7 +760,7 @@ public class StdArea implements Area
 		synchronized(roomSemaphore)
 		{
 			if(metroRooms!=null) return;
-			if(properRooms==null) 
+			if(properRooms==null)
 				makeProperMap();
 			if(getNumChildren()<=0)
 			{
@@ -788,12 +788,12 @@ public class StdArea implements Area
     public void addParentToLoad(String str) { parentsToLoad.addElement(str);}
 
 	// Children
-	public void initChildren() 
+	public void initChildren()
 	{
-	    if(children==null) 
+	    if(children==null)
 		{
 	        children=new Vector();
-	        for(int i=0;i<childrenToLoad.size();i++) 
+	        for(int i=0;i<childrenToLoad.size();i++)
 			{
 	          Area A=CMMap.getArea((String)childrenToLoad.elementAt(i));
 	          if(A==null)

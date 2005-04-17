@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ public class Paladin_Courage extends Paladin
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((invoker==null)||(invoker.getAlignment()<650))
+		if((invoker==null)||(!(Sense.isGood(invoker))))
 			return true;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
@@ -46,7 +46,7 @@ public class Paladin_Courage extends Paladin
 		   &&(msg.target() instanceof MOB)
 		   &&(msg.source()!=invoker))
 		{
-			if((invoker.getAlignment()>650)
+			if((Sense.isGood(invoker))
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
 			&&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))

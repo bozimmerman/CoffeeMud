@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,7 +61,7 @@ public class NiceAbilities extends ActiveTicker
 				{
 					if((tryThisOne.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 					{
-						if(!tryThisOne.appropriateToMyAlignment(mob.getAlignment()))
+						if(!tryThisOne.appropriateToMyFactions(mob))
 							tryThisOne=null;
 					}
 				}

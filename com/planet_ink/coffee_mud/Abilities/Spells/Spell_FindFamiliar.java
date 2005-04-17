@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -150,7 +150,7 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-		newMOB.setAlignment(1000);
+		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_GOOD));
 		newMOB.setStartRoom(null);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();

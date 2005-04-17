@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,7 @@ public class Prayer_ProtGood extends Prayer
 
 		MOB mob=(MOB)affected;
 
-		if(mob.getAlignment()>650)
+		if(Sense.isGood(mob))
 		{
 			int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
 			MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!");
@@ -83,7 +83,7 @@ public class Prayer_ProtGood extends Prayer
 		if(mob.isInCombat())
 		{
 			MOB victim=mob.getVictim();
-			if(victim.getAlignment()>650)
+			if(Sense.isGood(victim))
 				affectableStats.setArmor(affectableStats.armor()-10);
 		}
 	}

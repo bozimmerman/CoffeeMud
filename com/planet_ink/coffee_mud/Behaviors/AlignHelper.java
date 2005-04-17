@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,14 +44,15 @@ public class AlignHelper extends StdBehavior
 		if((source!=observer)
 		&&(target!=observer)
 		&&(source!=target)
+		&&(Factions.isAlignEnabled())
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer))
 		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		&&(CommonStrings.shortAlignmentStr(target.getAlignment()).equals(CommonStrings.shortAlignmentStr(observer.getAlignment()))))
+	    &&( (Sense.isEvil(target)&&Sense.isEvil(observer))||(Sense.isNeutral(target)&&Sense.isNeutral(observer))||(Sense.isGood(target)&&Sense.isGood(observer))))
 		{
 			boolean yep=Aggressive.startFight(observer,source,true);
-			if(yep)	CommonMsgs.say(observer,null,CommonStrings.shortAlignmentStr(observer.getAlignment()).toUpperCase()+" PEOPLE UNITE! CHARGE!",false,false);
+			if(yep)	CommonMsgs.say(observer,null,Factions.getZapTerm(Factions.AlignID(),observer.fetchFaction(Factions.AlignID()))+" PEOPLE UNITE! CHARGE!",false,false);
 		}
 	}
 }

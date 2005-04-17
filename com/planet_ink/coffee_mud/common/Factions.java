@@ -19,96 +19,107 @@ import java.io.*;
  * <p>limitations under the License.
  */
 
-public class Factions {
-    public static Hashtable factionSet = new Hashtable();
-
-    public Factions() {
-    }
-
-    public static Faction getFaction(String factionID) {
+public class Factions 
+{
+	public static Hashtable factionSet = new Hashtable();
+	
+	public Factions() 
+	{
+	}
+	
+	public static Faction getFaction(String factionID) 
+	{
 		factionID=factionID.toUpperCase();
-        if(Resources.getFileResource(factionID)!=null)
-        {
-            if(!factionSet.containsKey(factionID))
-            {
-                Faction f=new Faction(Resources.getFileResource(factionID),factionID);
-                factionSet.put(factionID,f);
-                return f;
-            }
-            return (Faction)factionSet.get(factionID);
-        }
-        return null;
-    }
-
-    public static Faction getFactionByName(String factionNamed) {
-        for(Enumeration e=factionSet.keys();e.hasMoreElements();) {
-            Faction f=(Faction)factionSet.get((String)e.nextElement());
-            if(f.name.equalsIgnoreCase(factionNamed)) return f;
-        }
-        return null;
-    }
-
-    public static boolean removeFaction(String factionID) {
-        if(factionID==null) {
-            for(Enumeration e=factionSet.keys();e.hasMoreElements();) {
-                Faction f=(Faction)factionSet.get((String)e.nextElement());
-                removeFaction(f.ID);
-            }
-            return true;
-        }
-        else
-        {
-            Faction F=getFactionByName(factionID);
-            if(F==null) F=getFaction(factionID);
-            if(F==null) return false;
-            Resources.removeResource(F.ID);
-            factionSet.remove(F.ID);
-            return true;
-        }
-    }
-
-    public static String listFactions() {
-        StringBuffer msg=new StringBuffer();
-        msg.append("\n\r^.^N");
-        msg.append("+--------------------------------+-----------------------------------------+\n\r");
-        msg.append("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r");
-        msg.append("+--------------------------------+-----------------------------------------+\n\r");
-        for(Enumeration e=factionSet.keys();e.hasMoreElements();) {
-            Faction f=(Faction)factionSet.get((String)e.nextElement());
-            msg.append("| ");
-            msg.append(Util.padRight(f.name,30));
-            msg.append(" | ");
-            msg.append(Util.padRight(f.ID,39));
-            msg.append(" |\n\r");
-        }
-        msg.append("+--------------------------------+-----------------------------------------+\n\r");
-        msg.append("\n\r");
-        return msg.toString();
-    }
-
-    public static String getName(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.name; return null; }
-    public static int getMinimum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.minimum; return 0; }
-    public static int getMaximum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.maximum; return 0; }
-    public static int getPercent(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercent(faction); return 0; }
-    public static int getPercentFromAvg(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercentFromAvg(faction); return 0; }
-    public static boolean getExperience(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.experience; return false; }
-    public static Faction.Range getRange(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRange(faction); return null; }
-    public static String getZapTerm(String factionID, int faction) { Faction.Range R=getRange(factionID,faction); if(R!=null) return R.zap; return null; }
-    public static Vector getRanges(String factionID) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRanges(); return null; }
-	public static Double getRangePercent(String factionID, int faction) { Faction.Range R=Factions.getRange(factionID,faction); if(R==null) return null; return new Double(Util.div((faction - R.low),(R.high - R.low)) * 100.0);}
-    public static double getRateModifier(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.rateModifier; return 0; }
-    public static int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum-f.minimum); return 0; }
-    public static int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
-
-    public static boolean isAlignEnabled() { return CommonStrings.getVar(CommonStrings.SYSTEM_ENABLEALIGN)!="DISABLED"; }
-    public static String AlignID() { if(isAlignEnabled()) return CommonStrings.getVar(CommonStrings.SYSTEM_ENABLEALIGN); return ""; }
-
-	public static int getAlignPurity(int faction, int AlignEq) {
+	    if(Resources.getFileResource(factionID)!=null)
+	    {
+	        if(!factionSet.containsKey(factionID))
+	        {
+	            Faction f=new Faction(Resources.getFileResource(factionID),factionID);
+	            factionSet.put(factionID,f);
+	            return f;
+	        }
+	        return (Faction)factionSet.get(factionID);
+	    }
+	    return null;
+	}
+	
+	public static Faction getFactionByName(String factionNamed) 
+	{
+	    for(Enumeration e=factionSet.keys();e.hasMoreElements();) 
+	    {
+	        Faction f=(Faction)factionSet.get(e.nextElement());
+	        if(f.name.equalsIgnoreCase(factionNamed)) return f;
+	    }
+	    return null;
+	}
+	
+	public static boolean removeFaction(String factionID) 
+	{
+	    if(factionID==null) 
+	    {
+	        for(Enumeration e=factionSet.keys();e.hasMoreElements();) 
+	        {
+	            Faction f=(Faction)factionSet.get(e.nextElement());
+	            removeFaction(f.ID);
+	        }
+	        return true;
+	    }
+	    else
+	    {
+	        Faction F=getFactionByName(factionID);
+	        if(F==null) F=getFaction(factionID);
+	        if(F==null) return false;
+	        Resources.removeResource(F.ID);
+	        factionSet.remove(F.ID);
+	        return true;
+	    }
+	}
+	
+	public static String listFactions() 
+	{
+	    StringBuffer msg=new StringBuffer();
+	    msg.append("\n\r^.^N");
+	    msg.append("+--------------------------------+-----------------------------------------+\n\r");
+	    msg.append("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r");
+	    msg.append("+--------------------------------+-----------------------------------------+\n\r");
+	    for(Enumeration e=factionSet.keys();e.hasMoreElements();) 
+	    {
+	        Faction f=(Faction)factionSet.get(e.nextElement());
+	        msg.append("| ");
+	        msg.append(Util.padRight(f.name,30));
+	        msg.append(" | ");
+	        msg.append(Util.padRight(f.ID,39));
+	        msg.append(" |\n\r");
+	    }
+	    msg.append("+--------------------------------+-----------------------------------------+\n\r");
+	    msg.append("\n\r");
+	    return msg.toString();
+	}
+	
+	public static String getName(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.name; return null; }
+	public static int getMinimum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.minimum; return 0; }
+	public static int getMaximum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.maximum; return 0; }
+	public static int getPercent(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercent(faction); return 0; }
+	public static int getPercentFromAvg(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercentFromAvg(faction); return 0; }
+	public static boolean getExperience(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.experience; return false; }
+	public static Faction.FactionRange getRange(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRange(faction); return null; }
+	public static String getZapTerm(String factionID, int faction) { Faction.FactionRange R=getRange(factionID,faction); if(R!=null) return R.zap; return null; }
+	public static Vector getRanges(String factionID) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRanges(); return null; }
+	public static Double getRangePercent(String factionID, int faction) { Faction.FactionRange R=Factions.getRange(factionID,faction); if(R==null) return null; return new Double(Util.div((faction - R.low),(R.high - R.low)) * 100.0);}
+	public static double getRateModifier(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.rateModifier; return 0; }
+	public static int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum-f.minimum); return 0; }
+	public static int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
+	
+	public static boolean isAlignEnabled() { return CommonStrings.getVar(CommonStrings.SYSTEM_ENABLEALIGN)!="DISABLED"; }
+	public static String AlignID() { if(isAlignEnabled()) return CommonStrings.getVar(CommonStrings.SYSTEM_ENABLEALIGN); return ""; }
+	
+	public static int getAlignPurity(int faction, int AlignEq) 
+	{
 		int bottom=0;
 		int top=0;
 		Vector ranges = getRanges(AlignID());
 		for(int i=0;i<ranges.size();i++) {
-			Faction.Range R=(Faction.Range)ranges.elementAt(i);
+			Faction.FactionRange R=(Faction.FactionRange)ranges.elementAt(i);
 			if(R.AlignEquiv==AlignEq) {
 				if(R.low<bottom) bottom=R.low;
 				if(R.high>top) top=R.high;
@@ -125,14 +136,15 @@ public class Factions {
 				return 0;
 		}
 	}
-
+	
 	// Please don't mock the name, I couldn't think of a better one.  Sadly.
-	public static int getAlignThingie(int AlignEq) {
+	public static int getAlignThingie(int AlignEq) 
+	{
 		int bottom=0;
 		int top=0;
 		Vector ranges = getRanges(AlignID());
 		for(int i=0;i<ranges.size();i++) {
-			Faction.Range R=(Faction.Range)ranges.elementAt(i);
+			Faction.FactionRange R=(Faction.FactionRange)ranges.elementAt(i);
 			if(R.AlignEquiv==AlignEq) {
 				if(R.low<bottom) bottom=R.low;
 				if(R.high>top) top=R.high;

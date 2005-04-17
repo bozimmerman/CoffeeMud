@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -150,7 +150,7 @@ public class Spell_Phantasm extends Spell
 		CharClass C=CMClass.getCharClass("Fighter");
 		newMOB.baseCharStats().setCurrentClass(C);
 		newMOB.baseEnvStats().setLevel(level+10);
-		newMOB.setAlignment(0);
+		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_EVIL));
 		newMOB.baseEnvStats().setWeight(850);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);

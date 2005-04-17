@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -101,7 +101,7 @@ public class Spell_DemonGate extends Spell
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob, mob.envStats().level());
 				if(Dice.rollPercentage()<10)
-                { 
+                {
 					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");
                     myMonster.setVictim(mob);
                 }
@@ -128,7 +128,7 @@ public class Spell_DemonGate extends Spell
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(43);
 		newMOB.baseEnvStats().setLevel(level+10);
-		newMOB.setAlignment(0);
+		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_EVIL));
 		newMOB.baseEnvStats().setWeight(850);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);

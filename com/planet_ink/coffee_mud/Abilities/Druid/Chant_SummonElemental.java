@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -101,7 +101,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setDisplayText("a fire elemental is flaming nearby.");
 			newMOB.setDescription("A large beast, wreathed in flame, with sparkling eyes and a hot temper.");
 			newMOB.baseEnvStats().setDisposition(newMOB.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
-			newMOB.setAlignment(0);
+			if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_EVIL));
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("FireElemental"));
 			newMOB.addAbility(CMClass.getAbility("Firebreath"));
 			break;
@@ -109,7 +109,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setName("an ice elemental");
 			newMOB.setDisplayText("an ice elemental is chilling out here.");
 			newMOB.setDescription("A large beast, made of ice, with crytaline eyes and a cold disposition.");
-			newMOB.setAlignment(1000);
+			if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_GOOD));
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("WaterElemental"));
 			newMOB.addAbility(CMClass.getAbility("Frostbreath"));
 			break;
@@ -117,7 +117,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setName("an earth elemental");
 			newMOB.setDisplayText("an earth elemental looks right at home.");
 			newMOB.setDescription("A large beast, made of rock and dirt, with a hard stare.");
-			newMOB.setAlignment(500);
+			if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_NEUTRAL));
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("EarthElemental"));
 			newMOB.addAbility(CMClass.getAbility("Gasbreath"));
 			break;
@@ -125,7 +125,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setName("an air elemental");
 			newMOB.setDisplayText("an air elemental blows right by.");
 			newMOB.setDescription("A large beast, made of swirling clouds and air.");
-			newMOB.setAlignment(1000);
+			if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_GOOD));
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
 			newMOB.addAbility(CMClass.getAbility("Lighteningbreath"));
 			break;

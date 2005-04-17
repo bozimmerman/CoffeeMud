@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ public class GoodExecutioner  extends StdBehavior
 			if((B!=null)&&(B.grantsAggressivenessTo(M)))
 				return true;
 		}
-		return ((M.getAlignment()<350)||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")));
+		return ((Sense.isEvil(M))||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")));
 	}
 
 	/** this method defines how this thing responds

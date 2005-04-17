@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ public class Paladin_DiseaseImmunity extends Paladin
 		if((msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_DISEASE)
 		&&(!mob.amDead())
-		&&(mob.getAlignment()>650)
+		&&(Sense.isGood(mob))
 		&&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 			return false;
 		return super.okMessage(myHost,msg);
@@ -44,7 +44,7 @@ public class Paladin_DiseaseImmunity extends Paladin
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if((affected!=null)&&(affected.getAlignment()>650))
+		if((affected!=null)&&(Sense.isGood(affected)))
 			affectableStats.setStat(CharStats.SAVE_DISEASE,affectableStats.getStat(CharStats.SAVE_DISEASE)+50+profficiency());
 	}
 }

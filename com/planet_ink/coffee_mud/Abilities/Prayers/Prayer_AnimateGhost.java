@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,7 +56,7 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.baseEnvStats().setDisposition(EnvStats.IS_FLYING|((mob==null)?EnvStats.IS_INVISIBLE:0));
 		newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INVISIBLE);
 		newMOB.baseEnvStats().setDamage(4);
-		newMOB.setAlignment(0);
+		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_EVIL));
 		newMOB.baseState().setHitPoints(10*newMOB.baseEnvStats().level());
 		newMOB.baseState().setMovement(newMOB.baseCharStats().getCurrentClass().getLevelMove(newMOB));
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));

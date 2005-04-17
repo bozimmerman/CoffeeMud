@@ -69,6 +69,9 @@ public class StdMOB implements MOB
 	/* list of educations*/
 	protected Vector educations=new Vector();
 
+        /* list of factions*/
+        protected Hashtable factions=new Hashtable();
+
 	protected DVector commandQue=new DVector(2);
 
 	// gained attributes
@@ -113,6 +116,14 @@ public class StdMOB implements MOB
 		attributesBitmap=newVal;
 		if(mySession!=null) mySession.initTermID(attributesBitmap);
 	}
+    public String getFactionListing() {
+        StringBuffer msg=new StringBuffer();
+        for(Enumeration e=fetchFactions();e.hasMoreElements();) {
+            Faction F=Factions.getFaction((String)e.nextElement());
+            msg.append(F.name+"("+fetchFaction(F.ID)+");");
+        }
+        return msg.toString();
+    }
 
 	protected int tickCounter=0;
 	private long lastMoveTime=0;
@@ -1250,6 +1261,13 @@ public class StdMOB implements MOB
 				return false;
 		}
 
+        // Faction Change
+        for(Enumeration e=fetchFactions();e.hasMoreElements();) {
+            Faction f=Factions.getFaction((String)e.nextElement());
+            if ((f != null) && (!f.okMessage(this, msg)))
+                return false;
+        }
+
 		MOB mob=msg.source();
 		if((msg.sourceCode()!=CMMsg.NO_EFFECT)&&(msg.amISource(this)))
 		{
@@ -2040,6 +2058,9 @@ public class StdMOB implements MOB
 						charStats().getCurrentClass().loseExperience(this,-msg.value());
 				}
 				break;
+            case CMMsg.TYP_FACTIONCHANGE:
+                adjustFaction(msg.othersMessage(),msg.value());
+                break;
 			case CMMsg.TYP_DEATH:
 				if(!amDead)
 				{
@@ -2462,6 +2483,12 @@ public class StdMOB implements MOB
 			if(A!=null)
 				A.executeMsg(this,msg);
 		}
+
+        // Faction Change
+        for(Enumeration e=fetchFactions();e.hasMoreElements();) {
+            Faction f=Factions.getFaction((String)e.nextElement());
+            f.executeMsg(this,msg);
+        }
 	}
 
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
@@ -3405,6 +3432,55 @@ public class StdMOB implements MOB
 		}catch(Exception e){}
 		return null;
 	}
+
+        /** Manipulation of the factions list */
+        public void addFaction(String which)
+        {
+			which=which.toUpperCase();
+            if(factions==null) factions=new Hashtable();
+            // Find the default faction for this mob
+
+            addFaction(which,0);
+        }
+        public void addFaction(String which,int start)
+        {
+			which=which.toUpperCase();
+            factions.put(which,new Integer(start));
+        }
+        public void adjustFaction(String which,int amount)
+        {
+			which=which.toUpperCase();
+            if(!factions.containsKey(which))
+                addFaction(which,amount);
+            else
+                factions.put(which,new Integer(((Integer)factions.get(which)).intValue()+amount));
+            if(!(which.equalsIgnoreCase(Factions.AlignID())))
+                tell("Your standing with "+Factions.getName(which)+" has "+CommonStrings.factionStr(amount,which));
+            else
+                tell("Your "+Factions.getName(which)+" has "+CommonStrings.factionStr(amount,which));
+        }
+        public Enumeration fetchFactions()
+        {
+            return factions.keys();
+        }
+        public int fetchFaction(String which)
+        {
+			which=which.toUpperCase();
+            if(!factions.containsKey(which)) return Integer.MAX_VALUE;
+            return ((Integer)factions.get(which)).intValue();
+        }
+        public void removeFaction(String which)
+        {
+			which=which.toUpperCase();
+            factions.remove(which);
+        }
+        public void copyFactions(MOB source)
+        {
+            for(Enumeration e=source.fetchFactions();e.hasMoreElements();) {
+                String fID=(String)e.nextElement();
+                addFaction(fID,source.fetchFaction(fID));
+            }
+        }
 
 	public int freeWearPositions(long wornCode)
 	{

@@ -3,7 +3,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -1263,7 +1263,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{ yes=true; break;}
 			if(bit.equalsIgnoreCase(mob.charStats().getMyRace().racialCategory()))
 			{	yes=true; break;}
-			if(bit.equalsIgnoreCase(CommonStrings.shortAlignmentStr(mob.getAlignment())))
+			if(bit.equalsIgnoreCase( Factions.getZapTerm(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()))))
 			{ yes=true; break;}
 		}
 		if(yes) return d;

@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ public class Prayer_MoralBalance extends Prayer
 		boolean success=profficiencyCheck(mob,0,auto);
 		FullMsg msg2=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
 
-		if(success)
+		if((success)&&Factions.isAlignEnabled())
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
@@ -51,12 +51,8 @@ public class Prayer_MoralBalance extends Prayer
 				if(msg.value()<=0)
 				{
 					target.tell("Your views on the world suddenly moderate.");
-					int targetAlignment = target.getAlignment();
-					int alignmentShift = targetAlignment - 500;
-					alignmentShift /= 2;
-					alignmentShift *= -1;
-					alignmentShift = 500 + alignmentShift;
-					target.setAlignment(alignmentShift);
+                    Faction align=Factions.getFaction(Factions.AlignID());
+                    target.addFaction(Factions.AlignID(),(int)Math.round(Util.div((align.maximum-align.minimum)-target.fetchFaction(Factions.AlignID()),2)));
 
 					if(!target.isInCombat() && target.isMonster())
 					{

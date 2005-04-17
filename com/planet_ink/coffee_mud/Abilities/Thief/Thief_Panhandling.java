@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -108,8 +108,14 @@ public class Thief_Panhandling extends ThiefSkill
 						CommonMsgs.say(mob,mob2,"Gold piece for a poor soul down on "+mob.charStats().hisher()+" luck?",false,false);
 						break;
 					}
-					if(((Dice.rollPercentage()*10)<mob2.getAlignment())
-					&&(Dice.rollPercentage()>mob2.charStats().getSave(CharStats.SAVE_JUSTICE)))
+                    // if align is enabled AND they're good AND they make a justice save
+                    // OR
+                    // align is disabled and they make a justice save
+                    if( ( (Factions.isAlignEnabled())
+                         &&((Dice.rollPercentage()*10)<(Factions.getPercent(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()))))
+                         &&(Dice.rollPercentage()>mob2.charStats().getSave(CharStats.SAVE_JUSTICE)))
+                        ||(!(Factions.isAlignEnabled())
+                         &&(Dice.rollPercentage()>mob2.charStats().getSave(CharStats.SAVE_JUSTICE))))
 					{
 					    double total=BeanCounter.getTotalAbsoluteNativeValue(mob2);
 					    if(total>1.0)

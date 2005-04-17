@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,18 +41,12 @@ public class Chant extends StdAbility
 
 	public int classificationCode()	{ return Ability.CHANT;	}
 
-	public boolean appropriateToMyAlignment(int alignment)
-	{
-		if((alignment>650)||(alignment<350))
-			return false;
-		return true;
-	}
 	public void helpProfficiency(MOB mob)
 	{
 
 		Ability A=mob.fetchAbility(this.ID());
 		if(A==null) return;
-		if(A.appropriateToMyAlignment(mob.getAlignment()))
+		if(A.appropriateToMyFactions(mob))
 		{
 			super.helpProfficiency(mob);
 			return;
@@ -71,7 +65,7 @@ public class Chant extends StdAbility
 		&&(mob.isMine(this))
 		&&(Dice.rollPercentage()<50))
 		{
-			if(!appropriateToMyAlignment(mob.getAlignment()))
+			if(!appropriateToMyFactions(mob))
 			{
 				mob.tell("Extreme emotions disrupt your chant.");
 				return false;

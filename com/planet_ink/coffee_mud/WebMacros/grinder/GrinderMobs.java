@@ -74,6 +74,36 @@ public class GrinderMobs
 		return "";
 	}
 
+	public static String factions(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		for(Enumeration e=E.fetchFactions();e.hasMoreElements();)
+		{
+			String strip=(String)e.nextElement();
+			E.removeFaction(strip);
+		}
+		if(httpReq.isRequestParameter("FACTION1"))
+		{
+			int num=1;
+			String whichFaction=httpReq.getRequestParameter("FACTION"+num);
+			String howMuch=httpReq.getRequestParameter("FACTDATA"+num);
+			while((whichFaction!=null)&&(howMuch!=null))
+			{
+				if(whichFaction.length()>0)
+				{
+					Faction F=Factions.getFactionByName(whichFaction);
+					int amt=new Integer(howMuch).intValue();
+					if(amt<F.minimum) amt=F.minimum;
+					if(amt>F.maximum) amt=F.maximum;
+					if(F!=null) E.addFaction(F.ID,amt);
+				}
+				num++;
+				whichFaction=httpReq.getRequestParameter("FACTION"+num);
+				howMuch=httpReq.getRequestParameter("FACTDATA"+num);
+			}
+		}
+		return "";
+	}
+	
 	public static String blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		while(E.numBlessings()>0)
@@ -393,6 +423,8 @@ public class GrinderMobs
 			error=GrinderMobs.senses(M,httpReq,parms);
 			if(error.length()>0) return error;
 			error=GrinderAreas.doAffectsNBehavs(M,httpReq,parms);
+			if(error.length()>0) return error;
+			error=GrinderMobs.factions(M,httpReq,parms);
 			if(error.length()>0) return error;
 			error=GrinderMobs.abilities(M,httpReq,parms);
 			if(error.length()>0) return error;

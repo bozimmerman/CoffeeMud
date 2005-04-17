@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -72,20 +72,31 @@ public class Spell_Clone extends Spell
 				B.startBehavior(myMonster);
 				if(Dice.rollPercentage()<50)
 				{
-					if(mob.getAlignment()<500)
+					if(Sense.isGood(mob))
 					{
 						B=CMClass.getBehavior("MobileGoodGuardian");
 						myMonster.addBehavior(B);
 						B.startBehavior(myMonster);
-						myMonster.setAlignment(1000);
+						myMonster.addFaction(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
 					}
 					else
+                    if(Sense.isEvil(mob))
 					{
 						B=CMClass.getBehavior("MobileAggressive");
 						myMonster.addBehavior(B);
 						B.startBehavior(myMonster);
-						myMonster.setAlignment(0);
+						myMonster.addFaction(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));;
 					}
+                    else
+                    {
+                        B=CMClass.getBehavior("Mobile");
+                        myMonster.addBehavior(B);
+                        B.startBehavior(myMonster);
+                        B=CMClass.getBehavior("Guard");
+                        myMonster.addBehavior(B);
+                        B.startBehavior(myMonster);
+                        myMonster.addFaction(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
+                    }
 					myMonster.setVictim(mob);
 				}
 				else

@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -367,11 +367,11 @@ public class CMMap
 		realrace.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity.replace(' ','_');
-		String align=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase();
+		String align=Factions.getZapTerm(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
 		String roomID=(String)startRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)startRooms.get(realrace);
-		if((roomID==null)||(roomID.length()==0))
+		if(((roomID==null)||(roomID.length()==0))&&Factions.isAlignEnabled())
 			roomID=(String)startRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=(String)startRooms.get(deity);
@@ -394,9 +394,9 @@ public class CMMap
 		race.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity.replace(' ','_');
-		String align=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase();
+		String align=Factions.getZapTerm(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
 		String roomID=(String)deathRooms.get(race);
-		if((roomID==null)||(roomID.length()==0))
+		if(((roomID==null)||(roomID.length()==0))&&Factions.isAlignEnabled())
 			roomID=(String)deathRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=(String)deathRooms.get(deity);
@@ -435,11 +435,11 @@ public class CMMap
 		realrace.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity.replace(' ','_');
-		String align=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase();
+		String align=Factions.getZapTerm(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
 		String roomID=(String)bodyRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)bodyRooms.get(realrace);
-		if((roomID==null)||(roomID.length()==0))
+		if(((roomID==null)||(roomID.length()==0))&&Factions.isAlignEnabled())
 			roomID=(String)bodyRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=(String)bodyRooms.get(deity);
@@ -538,7 +538,7 @@ public class CMMap
 		startRooms=new Hashtable();
 		deathRooms=new Hashtable();
 	}
-	
+
 	public static class CrossExit
 	{
 		public int x;

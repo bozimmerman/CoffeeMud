@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,14 +45,18 @@ public class Spell_KnowAlignment extends Spell
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			if(success)
-				mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+CommonStrings.alignmentStr(target.getAlignment())+".");
-			else
-			{
-				MOB newMOB=CMClass.getMOB("StdMOB");
-				newMOB.setAlignment(Dice.rollPercentage()*10);
-				mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+CommonStrings.alignmentStr(newMOB.getAlignment())+".");
-			}
+            if(Factions.isAlignEnabled()) {
+                if(success)
+                    mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+CommonStrings.factionStr(mob.fetchFaction(Factions.AlignID()),Factions.AlignID())+".");
+                else
+                {
+                    mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+CommonStrings.factionStr(Factions.getRandom(Factions.AlignID()),Factions.AlignID())+".");
+                }
+            }
+            else
+            {
+                mob.tell(mob,target,null,"What is this 'alignment' of which you speak?");
+            }
 		}
 
 

@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" looks enraged!");
 		newMOB.setDescription("");
-		newMOB.setAlignment(500);
+		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_NEUTRAL));
 		Ability A=CMClass.getAbility("Fighter_Rescue");
 		A.setProfficiency(100);
 		newMOB.addAbility(A);

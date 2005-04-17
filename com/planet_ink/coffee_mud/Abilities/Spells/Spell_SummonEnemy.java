@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,8 +102,8 @@ public class Spell_SummonEnemy extends Spell
 				&&(mob.charStats().getMyRace()!=null)
 				&&(CommonStrings.isTheme(mob.charStats().getMyRace().availabilityCode()))
 				&&(Util.bset(mob.charStats().getMyRace().availabilityCode(),Area.THEME_SKILLONLYMASK))
-				&&(Math.abs(new Integer(mob.getAlignment()-caster.getAlignment()).doubleValue())>350.0))
-					monster=mob;
+                &&( (Sense.isGood(caster)&&Sense.isEvil(mob)) || (Sense.isEvil(caster)&&Sense.isGood(mob))))
+        			monster=mob;
 			}
 		}
 		if(monster==null) return null;

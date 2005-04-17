@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ public class Pregnancy extends StdAbility
 	public String ID() { return "Pregnancy"; }
 	public String name(){ return "Pregnancy";}
 	protected long monthsRemaining=-1;
-	
+
 	public String displayText()
 	{
 		int x=text().indexOf("/");
@@ -75,7 +75,7 @@ public class Pregnancy extends StdAbility
 										  CMMsg.NO_EFFECT,null));
 		super.executeMsg(host,msg);
 	}
-	
+
 	public Race mixRaces(MOB babe, Race race1, Race race2, String ID, String name)
 	{
 		Race GR=CMClass.getRace("GenRace").copyOf();
@@ -174,9 +174,9 @@ public class Pregnancy extends StdAbility
 		CS.setMovement(STARTCS.getMovement()/2);
 		CS.setThirst(STARTCS.getThirst()/2);
 		GR.setStat("STARTASTATE",CoffeeMaker.getCharStateStr(STARTCS));
-		
+
 		GR.setStat("DISFLAGS",""+(Util.s_int(race1.getStat("DISFLAGS"))|Util.s_int(race2.getStat("DISFLAGS"))));
-		
+
 		GR.setStat("NUMRSC","");
 		for(int i=0;i<nonHuman.myResources().size();i++)
 			GR.setStat("GETRSCID"+i,((Item)nonHuman.myResources().elementAt(i)).ID());
@@ -246,7 +246,7 @@ public class Pregnancy extends StdAbility
 			GR.setStat("GETREFFLVL"+(i+data1.size()),""+CMAble.getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
 			GR.setStat("GETREFFPARM"+(i+data1.size()),""+CMAble.getDefaultProfficiency(race2.ID(),false,(String)data2.elementAt(i)));
 		}
-		
+
 		CMClass.addRace(GR);
 		CMClass.DBEngine().DBCreateRace(GR.ID(),GR.racialParms());
 		return GR;
@@ -386,7 +386,7 @@ public class Pregnancy extends StdAbility
 							if(R==null) R=mob.baseCharStats().getMyRace();
 							String name="a baby "+((gender=='M')?"boy":"girl")+" "+R.name().toLowerCase();
 							babe.setName(name);
-							babe.setAlignment(1000);
+							if(Factions.isAlignEnabled()) babe.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_GOOD));
 							babe.setClanID(mob.getClanID());
 							babe.setLiegeID(mob.getLiegeID());
 							babe.setDescription(desc);
@@ -503,7 +503,7 @@ public class Pregnancy extends StdAbility
 		if(birthmonths<=0) birthmonths=5;
 		long ticksperbirthperiod=tickspermudmonth*birthmonths;
 		long millisperbirthperiod=ticksperbirthperiod*MudHost.TICK_TIME;
-		
+
 		long end=start+millisperbirthperiod;
 		if(success)
 		{

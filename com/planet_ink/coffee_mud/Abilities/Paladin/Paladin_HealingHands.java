@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,7 @@ public class Paladin_HealingHands extends StdAbility
 		if(!Sense.aliveAwakeMobile(mob,false))
 			return false;
 
-		if((!auto)&&(mob.getAlignment()<650))
+		if((!auto)&&(!(Sense.isGood(mob))))
 		{
 			mob.tell("Your alignment has alienated your god from you.");
 			return false;

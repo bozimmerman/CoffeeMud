@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,13 +25,13 @@ public class NastyAbilities extends ActiveTicker
 	public String ID(){return "NastyAbilities";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	boolean fightok=false;
-	
+
 	public NastyAbilities()
 	{
 		minTicks=10; maxTicks=20; chance=100;
 		tickReset();
 	}
-	
+
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -67,7 +67,7 @@ public class NastyAbilities extends ActiveTicker
 				{
 					if((tryThisOne.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 					{
-						if(!tryThisOne.appropriateToMyAlignment(mob.getAlignment()))
+						if(!tryThisOne.appropriateToMyFactions(mob))
 							tryThisOne=null;
 					}
 				}
@@ -92,7 +92,7 @@ public class NastyAbilities extends ActiveTicker
 						tryThisOne.invoke(mob,new Vector(),null,false,0);
 					else
 						tryThisOne.invoke(mob,V,target,false,0);
-					
+
 					if(!fightok)
 					for(int i=0;i<thisRoom.numInhabitants();i++)
 					{

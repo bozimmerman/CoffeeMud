@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ public class Skill_TurnUndead extends StdAbility
 			return false;
 		}
 
-		if(mob.getAlignment()<350)
+		if(Sense.isEvil(mob))
 		{
 			mob.tell("Only the riteous may turn the undead.");
 			return false;

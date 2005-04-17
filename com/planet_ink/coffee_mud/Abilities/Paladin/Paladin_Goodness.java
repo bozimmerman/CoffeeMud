@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,13 +44,13 @@ public class Paladin_Goodness extends Paladin
 			{
 				MOB target=mob.location().fetchInhabitant(m);
 				if((target!=null)
-				&&(target.getAlignment()<350)
+				&&(Sense.isEvil(target))
 				&&((paladinsGroup.contains(target))
 					||((target.getVictim()==invoker)&&(target.rangeToTarget()==0)))
 			    &&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 				{
 					int harming=Dice.roll(1,15,0);
-					if(target.getAlignment()<350)
+					if(Sense.isEvil(target))
 						MUDFight.postDamage(invoker,target,this,harming,CMMsg.MASK_EYES|CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"^SThe aura of goodness around <S-NAME> <DAMAGE> <T-NAME>!^?");
 				}
 			}

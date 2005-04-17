@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -69,7 +69,7 @@ public class Prayer_DivineLuck extends Prayer
 		if(mob.isInCombat())
 		{
 			MOB victim=mob.getVictim();
-			if(victim.getAlignment()<350)
+			if(Sense.isEvil(victim))
 				affectableStats.setArmor(affectableStats.armor()-10);
 		}
 	}

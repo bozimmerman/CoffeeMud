@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -178,7 +178,7 @@ public class SkyWatcher extends StdCharClass
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
 		&&(Dice.rollPercentage()<50))
 		{
-			if(((Ability)msg.tool()).appropriateToMyAlignment(myChar.getAlignment()))
+			if(((Ability)msg.tool()).appropriateToMyFactions(myChar))
 				return true;
 			myChar.tell("Extreme emotions disrupt your chant.");
 			return false;
@@ -286,7 +286,7 @@ public class SkyWatcher extends StdCharClass
 		}
 		return outfitChoices;
 	}
-	
+
 	public int classDurationModifier(MOB myChar,
 									 Ability skill,
 									 int duration)
@@ -299,7 +299,7 @@ public class SkyWatcher extends StdCharClass
 		&&(!skill.ID().equals("Herbalism"))
 		&&(!skill.ID().equals("Masonry")))
 			return duration*2;
-		   
+
 		return duration;
 	}
 }

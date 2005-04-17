@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -160,7 +160,7 @@ public class Druid_PackCall extends StdAbility
 					newMOB.setName(name);
 					newMOB.setDisplayText("a loyal "+raceName+" is here");
 					newMOB.setDescription("");
-					newMOB.setAlignment(mob.getAlignment());
+					if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
 					Ability A=CMClass.getAbility("Fighter_Rescue");
 					A.setProfficiency(100);
 					newMOB.addAbility(A);

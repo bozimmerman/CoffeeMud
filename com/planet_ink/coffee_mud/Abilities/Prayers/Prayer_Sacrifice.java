@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -82,7 +82,7 @@ public class Prayer_Sacrifice extends Prayer
 			{
 				mob.location().send(mob,msg);
 				target.destroy();
-				if(mob.getAlignment()>=500)
+				if(Sense.isGood(mob))
 				{
 					double exp=5.0;
 					int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);

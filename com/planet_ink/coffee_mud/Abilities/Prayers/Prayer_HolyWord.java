@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,13 +39,13 @@ public class Prayer_HolyWord extends Prayer
 		MOB mob=(MOB)affected;
 
 		if(mob==invoker) return;
-		if(mob.getAlignment()>650)
+		if(Sense.isGood(mob))
 		{
 			affectableStats.setArmor(affectableStats.armor()-30);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20);
 		}
 		else
-		if(mob.getAlignment()<350)
+		if(Sense.isEvil(mob))
 		{
 			affectableStats.setArmor(affectableStats.armor()+30);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20);
@@ -86,7 +86,7 @@ public class Prayer_HolyWord extends Prayer
 
 			int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-			if(target.getAlignment()<350)
+			if(Sense.isEvil(target))
 				affectType=affectType|CMMsg.MASK_MALICIOUS;
 
 			if(success)

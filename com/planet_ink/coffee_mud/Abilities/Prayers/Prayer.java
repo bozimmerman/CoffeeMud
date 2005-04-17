@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -90,38 +90,12 @@ public class Prayer extends StdAbility
 			return "praying";
 	}
 
-	public boolean appropriateToMyAlignment(int alignment)
-	{
-		int qual=0;
-		if(Util.bset(flags(),Ability.FLAG_HOLY))
-		{
-			if(!Util.bset(flags(),Ability.FLAG_UNHOLY))
-				qual=1;
-		}
-		else
-		if(Util.bset(flags(),Ability.FLAG_UNHOLY))
-			qual=2;
-		switch(qual)
-		{
-		case 0:
-			if((alignment>350)&&(alignment<650))
-				return true;
-			break;
-		case 1:
-			if(alignment>650) return true;
-			break;
-		case 2:
-			if(alignment<350) return true;
-			break;
-		}
-		return false;
-	}
 	public void helpProfficiency(MOB mob)
 	{
 
 		Ability A=mob.fetchAbility(this.ID());
 		if(A==null) return;
-		if(A.appropriateToMyAlignment(mob.getAlignment()))
+		if(A.appropriateToMyFactions(mob))
 		{
 			super.helpProfficiency(mob);
 			return;
@@ -136,7 +110,7 @@ public class Prayer extends StdAbility
 		&&(!mob.isMonster())
 		&&(!disregardsArmorCheck(mob))
 		&&(mob.isMine(this))
-		&&(!appropriateToMyAlignment(mob.getAlignment())))
+		&&(!appropriateToMyFactions(mob)))
 		{
 			int hq=500;
 			if(Util.bset(flags(),Ability.FLAG_HOLY))
@@ -150,14 +124,13 @@ public class Prayer extends StdAbility
 
 			int basis=0;
 			if(hq==0)
-				basis=mob.getAlignment()/10;
+				basis=Factions.getAlignPurity(mob.fetchFaction(Factions.AlignID()),Faction.ALIGN_EVIL);
 			else
 			if(hq==1000)
-				basis=(1000-mob.getAlignment())/10;
+				basis=Factions.getAlignPurity(mob.fetchFaction(Factions.AlignID()),Faction.ALIGN_GOOD);
 			else
 			{
-				basis=(500-mob.getAlignment())/10;
-				if(basis<0) basis=basis*-1;
+				basis=Factions.getAlignPurity(mob.fetchFaction(Factions.AlignID()),Faction.ALIGN_NEUTRAL);
 				basis-=10;
 			}
 
@@ -170,10 +143,10 @@ public class Prayer extends StdAbility
 			if(hq==1000)
 				mob.tell("The goodness of "+name()+" disrupts your prayer.");
 			else
-			if(mob.getAlignment()>650)
+			if(Sense.isGood(mob))
 				mob.tell("The anti-good nature of "+name()+" disrupts your thought.");
 			else
-			if(mob.getAlignment()<350)
+			if(Sense.isEvil(mob))
 				mob.tell("The anti-evil nature of "+name()+" disrupts your thought.");
 			return false;
 		}

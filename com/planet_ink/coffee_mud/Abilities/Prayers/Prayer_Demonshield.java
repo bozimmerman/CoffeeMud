@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,7 +64,7 @@ public class Prayer_Demonshield extends Prayer
 			   &&(msg.targetMessage().length()>0))
 			{
 				if((Dice.rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*3))
-				   &&(source.getAlignment()>350))
+				   &&(!Sense.isEvil(source)))
 				{
 					FullMsg msg2=new FullMsg(source,mob,this,affectType(true),null);
 					if(source.location().okMessage(source,msg2))

@@ -82,7 +82,7 @@ public class Disease_Lycanthropy extends Disease
 			MOB M=room.fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=mob)
-			&&(M.getAlignment()>350)
+			&&(!Sense.isEvil(M))
 			&&(mob.mayIFight(M))
 			&&(M.envStats().level()<(mob.envStats().level()+5)))
 				return M;

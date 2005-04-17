@@ -4,8 +4,9 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
-   Copyright 2000-2005 Bo Zimmerman
+/*
+* <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
+* <p>Portions Copyright (c) 2004 Bo Zimmerman</p>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -29,11 +30,13 @@ public class Announce extends StdCommand
 	public void sendAnnounce(String announcement, Session S)
 	{
 	  	StringBuffer Message=new StringBuffer("");
-	  	int alignType=1;
-	  	if(S.mob().getAlignment()<350)
-	  		alignType=0;
-	  	else
-	  	if(S.mob().getAlignment()<650) alignType= 2;
+	  	int alignType=2;
+        if(Factions.isAlignEnabled()) {
+            if (Sense.isEvil(S.mob()))
+                alignType = 0;
+            else
+            if (Sense.isGood(S.mob())) alignType = 1;
+        }
 	  	switch(alignType)
 	  	{
 	  	  case 0:

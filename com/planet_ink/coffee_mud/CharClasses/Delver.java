@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,7 +66,7 @@ public class Delver extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_Tether",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_CaveFishing",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_Darkvision",false);
 
@@ -76,10 +76,10 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_StrikeBarren",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_DeepDarkness",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_Mold",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_MagneticField",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_EndureRust",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_Brittle",false);
 
@@ -115,7 +115,7 @@ public class Delver extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_Labyrinth",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_FungusFeet",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_RustCurse",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_TremorSense",true);
 
@@ -130,13 +130,13 @@ public class Delver extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindOre",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_MassFungalGrowth",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_FindGem",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_VolcanicChasm",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonRockGolem",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_MetalMold",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
 		}
 	}
@@ -159,7 +159,7 @@ public class Delver extends StdCharClass
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
 		&&(Dice.rollPercentage()<50))
 		{
-			if(((Ability)msg.tool()).appropriateToMyAlignment(myChar.getAlignment()))
+			if(((Ability)msg.tool()).appropriateToMyFactions(myChar))
 				return true;
 			myChar.tell("Extreme emotions disrupt your chant.");
 			return false;
@@ -225,7 +225,7 @@ public class Delver extends StdCharClass
 		}
 		return outfitChoices;
 	}
-	
+
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -258,7 +258,7 @@ public class Delver extends StdCharClass
 		&&(!skill.ID().equals("Herbalism"))
 		&&(!skill.ID().equals("Masonry")))
 			return duration*2;
-		   
+
 		return duration;
 	}
 }

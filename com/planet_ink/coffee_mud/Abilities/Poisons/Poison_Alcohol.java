@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,13 +42,13 @@ public class Poison_Alcohol extends Poison
 	protected int alchoholContribution(){return 1;}
 	protected int level(){return 1;}
 	protected int drunkness=5;
-	
+
 	public Poison_Alcohol()
 	{
 		super();
 		drunkness=5;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(affected instanceof MOB)
@@ -93,7 +93,7 @@ public class Poison_Alcohol extends Poison
 		Room room=mob.location();
 		if((Dice.rollPercentage()<(4*drunkness))&&(Sense.aliveAwakeMobile(mob,true))&&(room!=null))
 		{
-			if(mob.getAlignment()<350)
+			if(Sense.isEvil(mob))
 			switch(Dice.roll(1,9,-1))
 			{
 			case 0:
@@ -125,7 +125,7 @@ public class Poison_Alcohol extends Poison
 				break;
 			}
 			else
-			if(mob.getAlignment()<650)
+			if(!Sense.isGood(mob))
 			switch(Dice.roll(1,9,-1))
 			{
 			case 0:
@@ -237,7 +237,7 @@ public class Poison_Alcohol extends Poison
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int largest=alchoholContribution();

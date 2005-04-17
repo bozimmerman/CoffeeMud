@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.io.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -181,7 +181,7 @@ public class Arrest extends StdBehavior
 						W2.setState(state);
 				}
 		}
-		
+
 		public Environmental[] getTreasuryNSafe(Area A)
 		{
             Room treasuryR=null;
@@ -208,9 +208,9 @@ public class Arrest extends StdBehavior
 					{
 					    R=(Room)e.nextElement();
 					    if(R.fetchAnyItem(item) instanceof Container)
-					    { 
+					    {
 					        container=R.fetchAnyItem(item);
-					        treasuryR=R; 
+					        treasuryR=R;
 					        break;
 				        }
 					}
@@ -223,7 +223,7 @@ public class Arrest extends StdBehavior
 	        ES[1]=container;
 	        return ES;
 		}
-		
+
 		public void propertyTaxTick(Area A, boolean debugging)
 		{
 		    if(lastMonthChecked!=A.getTimeObj().getMonth())
@@ -250,7 +250,7 @@ public class Arrest extends StdBehavior
                 Room treasuryR=(Room)Treas[0];
                 Item container=(Item)Treas[1];
 		        String[] evasionBits=(String[])taxLaws().get("TAXEVASION");
-		        
+
 			    for(Enumeration e=owners.keys();e.hasMoreElements();)
 			    {
 			        String owner=(String)e.nextElement();
@@ -261,14 +261,14 @@ public class Arrest extends StdBehavior
 				    else
 				        responsibleMob=CMMap.getLoadPlayer(owner);
 			        Vector particulars=(Vector)owners.get(owner);
-			        
+
 			        double totalValue=0;
 			        double paid=0;
 			        double owed=0;
 			        StringBuffer properties=new StringBuffer("");
 			        LandTitle T=null;
 			        Vector propertyRooms=null;
-			        
+
 			        for(int p=0;p<particulars.size();p++)
 			        {
 			            if(p>0) properties.append(", ");
@@ -287,7 +287,7 @@ public class Arrest extends StdBehavior
 			            }
 			        }
 			        owed+=Util.mul(totalValue,tax);
-			        
+
 			        if(owed>0)
 			        for(int p=0;p<particulars.size();p++)
 			        {
@@ -388,7 +388,7 @@ public class Arrest extends StdBehavior
 			            }
 			        }
 			    }
-			    
+
 		    }
 		}
 
@@ -510,7 +510,7 @@ public class Arrest extends StdBehavior
 			if(taxLaw.length()>0) taxLaws.put("SALESTAX",taxLaw);
 			taxLaw=getInternalStr("CITTAX");
 			if(taxLaw.length()>0) taxLaws.put("CITTAX",taxLaw);
-			
+
 			basicCrimes.clear();
 			String basicLaw=getInternalStr("MURDER");
 			if(basicLaw.length()>0) basicCrimes.put("MURDER",getInternalBits(basicLaw));
@@ -620,7 +620,7 @@ public class Arrest extends StdBehavior
 			}
 			return W;
 		}
-		
+
 		public LegalWarrant getWarrant(MOB mob, int which)
 		{
 			int one=0;
@@ -1060,7 +1060,7 @@ public class Arrest extends StdBehavior
 			if(M.isMonster()
 			&&(M!=accused)
 			&&(M.charStats().getStat(CharStats.INTELLIGENCE)>3)
-			&&(Dice.rollPercentage()<=(M.getAlignment()/10)))
+			&&(Dice.rollPercentage()<=( Factions.getPercent(Factions.AlignID(),M.fetchFaction(Factions.AlignID())))))
 				return M;
 		}
 		return null;
@@ -1257,7 +1257,7 @@ public class Arrest extends StdBehavior
 		highest--;
 		if(highest>Law.ACTION_HIGHEST) highest=Law.ACTION_HIGHEST;
 		int adjusted=highest;
-		if((criminal.getAlignment()>650)&&(adjusted>0))
+		if((Sense.isGood(criminal))&&(adjusted>0))
 			adjusted--;
 		return adjusted;
 	}
@@ -1786,7 +1786,7 @@ public class Arrest extends StdBehavior
 			    Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Witness required, and none present: "+(witness==null?null:witness.Name())+".");
 		    return false;
 		}
-		
+
 		// is the location significant to this crime?
 		if(crimeLocs.trim().length()>0)
 		{
@@ -2091,7 +2091,7 @@ public class Arrest extends StdBehavior
 		&&(!msg.target().name().equals(msg.source().name()))
 		&&(msg.target() instanceof MOB))
 		{
-			
+
 			if(isTheJudge(laws,(MOB)msg.target()))
 			{
 				Room R=msg.source().location();
@@ -2190,7 +2190,7 @@ public class Arrest extends StdBehavior
 						}
 					}
 				}
-		        
+
 		    }
 			if(msg.sourceMinor()==CMMsg.TYP_ENTER)
 			{
@@ -2812,10 +2812,10 @@ public class Arrest extends StdBehavior
 						Room jail=findTheJail(W.criminal(),myArea,laws);
 						if(jail!=null)
 						{
-							
+
 							Ability A=W.criminal().fetchEffect("Prisoner");
 							if(A!=null){ A.unInvoke(); W.criminal().delEffect(A);}
-							
+
 							makePeace(officer.location());
 							W.setJail(jail);
 							// cuff him!

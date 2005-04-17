@@ -1465,7 +1465,7 @@ public class Scriptable extends StdBehavior
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-					returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("good");
+					returnable=Sense.isGood(E);
 				break;
 			}
 			case 8: // isevil
@@ -1475,7 +1475,7 @@ public class Scriptable extends StdBehavior
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-					returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("evil");
+					returnable=Sense.isEvil(E);
 				break;
 			}
 			case 9: // isneutral
@@ -1485,7 +1485,7 @@ public class Scriptable extends StdBehavior
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-					returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("neutral");
+					returnable=Sense.isNeutral(E);
 				break;
 			}
 			case 54: // isalive
@@ -2996,7 +2996,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&((E instanceof MOB)))
-					results.append(CommonStrings.alignmentStr(((MOB)E).getAlignment()));
+					results.append(Factions.getRange(Factions.AlignID(),((MOB)E).fetchFaction(Factions.AlignID())).Name);
 				break;
 			}
 			case 8: // isevil
@@ -3004,7 +3004,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&((E instanceof MOB)))
-					results.append(CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()));
+					results.append(Factions.getZapTerm(Factions.AlignID(),((MOB)E).fetchFaction(Factions.AlignID())));
 				break;
 			}
 			case 9: // isneutral
@@ -3012,7 +3012,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&((E instanceof MOB)))
-					results.append(((MOB)E).getAlignment());
+					results.append(((MOB)E).fetchFaction(Factions.AlignID()));
 				break;
 			}
 			case 11: // isimmort

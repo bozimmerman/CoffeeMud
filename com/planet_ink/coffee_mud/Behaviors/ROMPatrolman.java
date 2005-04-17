@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -97,7 +97,7 @@ public class ROMPatrolman extends StdBehavior
 				&&(inhab.isInCombat())
 				&&(inhab.getVictim().isInCombat())
 				&&((observer.envStats().level()>(inhab.envStats().level()+5))
-				&&(observer.getAlignment()>350)))
+				&&(!Sense.isEvil(observer))))
 				{
 					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
 					FullMsg msgs=new FullMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);

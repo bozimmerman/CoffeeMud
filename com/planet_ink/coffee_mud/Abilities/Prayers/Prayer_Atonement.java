@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,7 @@ public class Prayer_Atonement extends Prayer
 		if((mob!=target)&&(!mob.getGroupMembers(new HashSet()).contains(target)))
 			msg2=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
 
-		if(success)
+		if(success&&Factions.isAlignEnabled())
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
@@ -56,11 +56,7 @@ public class Prayer_Atonement extends Prayer
 				{
 					target.tell("Good, pure thoughts fill your head.");
 					int evilness=Dice.roll(10,adjustedLevel(mob,asLevel),0);
-					int targetAlignment = target.getAlignment();
-					if(targetAlignment + evilness >= 1000)
-					   target.setAlignment(1000);
-					else
-					   target.setAlignment(target.getAlignment() + evilness);
+					target.adjustFaction(Factions.AlignID(),evilness);
 				}
 				if(msg2!=null) mob.location().send(mob,msg2);
 			}

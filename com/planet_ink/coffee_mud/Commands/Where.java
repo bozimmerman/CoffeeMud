@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +52,7 @@ public class Where extends StdCommand
 			return true;
 		return false;
 	}
-	
+
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -90,7 +90,7 @@ public class Where extends StdCommand
 			}
 			else
 			{
-				
+
 				Enumeration r=CMMap.rooms();
 				if(who.toUpperCase().startsWith("AREA "))
 				{
@@ -209,29 +209,29 @@ public class Where extends StdCommand
 		}
 		else
 		{
-			int alignment=mob.getAlignment();
+			int alignment=mob.fetchFaction(Factions.AlignID());
 			for(int i=commands.size()-1;i>=0;i--)
 			{
 				String s=(String)commands.elementAt(i);
 				if(s.equalsIgnoreCase("good"))
 				{
-					alignment=0;
+					alignment=Factions.getAlignThingie(Faction.ALIGN_GOOD);
 					commands.removeElementAt(i);
 				}
 				else
 				if(s.equalsIgnoreCase("neutral"))
 				{
-					alignment=500;
+					alignment=Factions.getAlignThingie(Faction.ALIGN_NEUTRAL);
 					commands.removeElementAt(i);
 				}
 				else
 				if(s.equalsIgnoreCase("evil"))
 				{
-					alignment=1000;
+					alignment=Factions.getAlignThingie(Faction.ALIGN_EVIL);
 					commands.removeElementAt(i);
 				}
 			}
-												 
+
 			int adjust=Util.s_int(Util.combine(commands,1));
 			DVector levelsVec=new DVector(2);
 			DVector mobsVec=new DVector(2);
