@@ -58,6 +58,7 @@ public class Skill_Recall extends StdAbility
 					msg=new FullMsg(follower,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?getScr("Skills","recallgo1"):getScr("Skills","recallgo3",mob.name()));
 					if((follower!=null)
 					&&(follower.isMonster())
+					&&(!follower.isPossessing())
 					&&(follower.location()==recalledRoom)
 					&&(recalledRoom.isInhabitant(follower))
 					&&(recalledRoom.okMessage(follower,msg)))

@@ -510,7 +510,7 @@ public class StdMOB implements MOB
 			MOB follower=fetchFollower(0);
 			if(follower!=null)
 			{
-				if(follower.isMonster())
+				if((follower.isMonster())&&(!follower.isPossessing()))
 					oldFollowers.addElement(follower,new Integer(fetchFollowerOrder(follower)));
 				follower.setFollowing(null);
 				delFollower(follower);
@@ -2952,6 +2952,22 @@ public class StdMOB implements MOB
 	{	
 	    return (mySession==null);
 	}
+	public boolean isPossessing()
+	{
+	    try
+	    {
+	        Session S=null;
+		    for(int s=0;s<Sessions.size();s++)
+		    {
+		        S=Sessions.elementAt(s);
+		        if((S.mob()!=null)&&(S.mob().soulMate()==this))
+		            return true;
+		    }
+	    }
+	    catch(Exception e){}
+	    return false;
+	}
+	
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public void confirmWearability()

@@ -27,7 +27,7 @@ public class Poison_Ghoultouch extends Poison
 	public String name(){ return "Ghoultouch";}
 	private static final String[] triggerStrings = {"POISONGHOUL"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return Ability.FLAG_BINDING|Ability.FLAG_PARALYZING;}
+	public long flags(){return Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY;}
 
 	protected int POISON_TICKS(){return 15;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}

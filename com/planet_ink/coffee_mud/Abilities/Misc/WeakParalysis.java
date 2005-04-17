@@ -33,7 +33,7 @@ public class WeakParalysis extends StdAbility
 	private static final String[] triggerStrings = {"WPARALYZE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public long flags(){return Ability.FLAG_BINDING|Ability.FLAG_PARALYZING;}
+	public long flags(){return Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -51,7 +51,7 @@ public class Prayer_MassMobility extends Prayer
 			{
 				A.affectEnvStats(newMOB,newMOB.envStats());
 				if((!Sense.aliveAwakeMobile(newMOB,true))
-				   ||(Util.bset(A.flags(),Ability.FLAG_BINDING))
+				   ||(Util.bset(A.flags(),Ability.FLAG_PARALYZING))
 				   ||(!A.okMessage(newMOB,msg2)))
 				{
 					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The aura around <S-NAME> repels the "+A.name()+" from <T-NAME>.");

@@ -24,6 +24,7 @@ import com.planet_ink.coffee_mud.i3.server.Server;
 import com.planet_ink.coffee_mud.utils.Log;
 import com.planet_ink.coffee_mud.common.CommonStrings;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -551,7 +552,7 @@ public abstract class Interactive implements ServerUser {
  */
 class InputThread implements Runnable {
     private Vector                  input_buffer;
-    private java.io.DataInputStream stream;
+    private BufferedReader 			stream;
     private boolean                 destructed;
     private Thread                  thread;
     private Interactive             user;
@@ -570,7 +571,7 @@ class InputThread implements Runnable {
         destructed = false;
         user = u;
         input_buffer = new Vector(10);
-        stream = new java.io.DataInputStream(s.getInputStream());
+        stream = new java.io.BufferedReader(new java.io.InputStreamReader(s.getInputStream()));
         thread = new Thread(this);
         thread.start();
     }

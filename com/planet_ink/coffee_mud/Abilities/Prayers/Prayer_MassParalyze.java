@@ -25,7 +25,7 @@ public class Prayer_MassParalyze extends Prayer
 	public String ID() { return "Prayer_MassParalyze"; }
 	public String name(){ return "Mass Paralyze";}
 	public int quality(){ return MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_BINDING|Ability.FLAG_PARALYZING;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
 	public String displayText(){ return "(Paralyzed)";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

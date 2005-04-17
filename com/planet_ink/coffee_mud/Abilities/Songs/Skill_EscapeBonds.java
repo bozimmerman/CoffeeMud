@@ -36,7 +36,7 @@ public class Skill_EscapeBonds extends BardSkill
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
-		if(!Sense.isBoundOrHeld(mob))
+		if(!Sense.isBound(mob))
 			unInvoke();
 		else
 			stats.setStat(CharStats.STRENGTH,stats.getStat(CharStats.STRENGTH)+stats.getStat(CharStats.DEXTERITY)+mob.envStats().level());
@@ -44,7 +44,7 @@ public class Skill_EscapeBonds extends BardSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!Sense.isBoundOrHeld(mob))
+		if(!Sense.isBound(mob))
 		{
 			mob.tell("You don't seem to be bound by anything you can escape!");
 			return false;

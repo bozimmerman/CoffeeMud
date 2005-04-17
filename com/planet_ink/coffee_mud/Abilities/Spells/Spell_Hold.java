@@ -28,7 +28,7 @@ public class Spell_Hold extends Spell
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public long flags(){return Ability.FLAG_BINDING;}
+	public long flags(){return Ability.FLAG_PARALYZING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -29,7 +29,6 @@ public class Prisoner extends StdAbility
 	public String displayText(){ return "(Prisoner's Geas)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public long flags(){return Ability.FLAG_BINDING;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

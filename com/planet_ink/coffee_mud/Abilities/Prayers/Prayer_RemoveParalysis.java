@@ -36,7 +36,7 @@ public class Prayer_RemoveParalysis extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		Vector offensiveAffects=Sense.flaggedAffects(target,Ability.FLAG_PARALYZING);
+		Vector offensiveAffects=Sense.flaggedAffects(target,Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY);
 
 		if((success)&&(offensiveAffects.size()>0))
 		{

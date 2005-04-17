@@ -29,7 +29,7 @@ public class Chant_CaveIn extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|CAN_EXITS;}
 	public int amountRemaining=0;
-	public long flags(){return Ability.FLAG_BINDING;}
+	public long flags(){return Ability.FLAG_PARALYZING;}
 
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{

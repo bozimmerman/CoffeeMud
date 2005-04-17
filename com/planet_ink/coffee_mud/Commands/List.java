@@ -551,9 +551,9 @@ public class List extends StdCommand
 			if((whichTick<0)||(whichTick==v))
 			for(int t=0;t<tickersSize;t++)
 			{
-				long tickerlaststartdate=Util.s_long(CMClass.ThreadEngine().tickInfo("tickerlaststartdate"+v+"-"+t));
-				long tickerlaststopdate=Util.s_long(CMClass.ThreadEngine().tickInfo("tickerlaststopdate"+v+"-"+t));
-				boolean isActive=(tickerlaststopdate<tickerlaststartdate);
+				long tickerlaststartdate=Util.s_long(CMClass.ThreadEngine().tickInfo("tickerlaststartmillis"+v+"-"+t));
+				long tickerlaststopdate=Util.s_long(CMClass.ThreadEngine().tickInfo("tickerlaststopmillis"+v+"-"+t));
+				boolean isActive=(tickerlaststopdate<tickerlaststartdate);			
 				if((!activeOnly)||(isActive))
 				{
 					String name=CMClass.ThreadEngine().tickInfo("tickerName"+v+"-"+t);

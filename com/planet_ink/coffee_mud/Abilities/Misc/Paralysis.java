@@ -33,7 +33,7 @@ public class Paralysis extends StdAbility
 	private static final String[] triggerStrings = {"PARALYZE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public long flags(){return Ability.FLAG_BINDING|Ability.FLAG_PARALYZING;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

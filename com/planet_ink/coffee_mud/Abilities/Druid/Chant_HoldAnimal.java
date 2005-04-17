@@ -29,7 +29,7 @@ public class Chant_HoldAnimal extends Chant
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public long flags(){return Ability.FLAG_BINDING;}
+	public long flags(){return Ability.FLAG_PARALYZING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -288,6 +288,7 @@ public class FrontLogin extends StdCommand
 						Room R=follower.location();
 						if((follower!=null)
 						&&(follower.isMonster())
+						&&(!follower.isPossessing())
 						&&((R==null)||(!R.isInhabitant(follower))))
 						{
 						    if(R==null) R=mob.location();

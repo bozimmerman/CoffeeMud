@@ -25,7 +25,7 @@ public class Prayer_Paralyze extends Prayer
 	public String ID() { return "Prayer_Paralyze"; }
 	public String name(){ return "Paralyze";}
 	public int quality(){ return MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_BINDING|Ability.FLAG_PARALYZING;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
 	public String displayText(){ return "(Paralyzed)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

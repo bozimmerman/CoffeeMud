@@ -28,7 +28,7 @@ public class Chant_MagneticField extends Chant
 	public String displayText(){return "(Magnetic Field chant)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public long flags(){return Ability.FLAG_BINDING;}
+	public long flags(){return Ability.FLAG_PARALYZING;}
 
 	public boolean wearingHeldMetal(Environmental affected)
 	{

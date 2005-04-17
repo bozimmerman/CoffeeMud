@@ -56,7 +56,7 @@ public class Spell_FreeMovement extends Spell
 		&&(!mob.amDead()))
 		{
 			Ability A=(Ability)msg.tool();
-			if(Util.bset(A.flags(),Ability.FLAG_BINDING))
+			if(Util.bset(A.flags(),Ability.FLAG_PARALYZING))
 			{
 				msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
 				return false;
@@ -70,7 +70,7 @@ public class Spell_FreeMovement extends Spell
 				{
 					A.affectEnvStats(newMOB,newMOB.envStats());
 					if((!Sense.aliveAwakeMobile(newMOB,true))
-					   ||(Util.bset(A.flags(),Ability.FLAG_BINDING))
+					   ||(Util.bset(A.flags(),Ability.FLAG_PARALYZING))
 					   ||(!A.okMessage(newMOB,msg2)))
 					{
 						msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));

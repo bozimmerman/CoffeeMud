@@ -32,10 +32,10 @@ public class ColorSet extends StdCommand
 		String what=CMColor.translateANSItoCMCode(code);
 		while((what!=null)&&(what.length()>1))
 		{
-			for(int ii=0;ii<CMColor.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
-				if(what.charAt(1)==CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii].charAt(0))
+			for(int ii=0;ii<CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS.length;ii++)
+				if(what.charAt(1)==CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii].charAt(0))
 				{
-					buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+					buf.append("^"+CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
 					break;
 				}
 		    if(what.indexOf("|")>0)
@@ -49,7 +49,7 @@ public class ColorSet extends StdCommand
 		return buf.toString();
 	}
 
-	private int pickColor(MOB mob, String prompt)
+	private int pickColor(MOB mob, String[] set, String prompt)
 	throws java.io.IOException
 	{
 		String newColor=mob.session().prompt(prompt,"");
@@ -57,7 +57,7 @@ public class ColorSet extends StdCommand
 		if(newColor.length()>0)
 		{
 			colorNum=-1;
-			for(int ii=0;ii<CMColor.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
+			for(int ii=0;ii<set.length;ii++)
 				if(CMColor.COLOR_ALLCOLORNAMES[ii].toUpperCase().startsWith(newColor.toUpperCase()))
 				{
 					colorNum=ii; 
@@ -128,7 +128,7 @@ public class ColorSet extends StdCommand
 						buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
 					}
 					mob.session().println(buf.toString()+"^N");
-					int colorNum=pickColor(mob,"Enter Name of New Color: ");
+					int colorNum=pickColor(mob,CMColor.COLOR_ALLNORMALCOLORCODELETTERS,"Enter Name of New Color: ");
 					if(colorNum<0)
 						mob.tell("That is not a valid color!");
 					else
@@ -141,11 +141,14 @@ public class ColorSet extends StdCommand
 				{
 					buf.append("^N\n\r\n\rAvailable Background Colors: ");
 					boolean first=true;
-					for(int ii=0;ii<CMColor.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
-					    if(Character.isUpperCase(CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii].charAt(0)))
+					for(int ii=0;ii<CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS.length;ii++)
+					    if(Character.isUpperCase(CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii].charAt(0)))
 						{
 						    if(first)first=false; else buf.append(", ");
-							buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+						    if(CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]==CMColor.COLOR_BLACK)
+								buf.append("^"+CMColor.COLOR_WHITE+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+						    else
+								buf.append("^"+CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
 						}
 					buf.append("^N\n\rAvailable Foreground Colors: ");
 					first=true;
@@ -156,18 +159,18 @@ public class ColorSet extends StdCommand
 							buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
 						}
 					mob.session().println(buf.toString()+"^N");
-					int colorNum1=pickColor(mob,"Enter Name of Background Color: ");
-					if((colorNum1<0)||(!Character.isUpperCase(CMColor.COLOR_ALLNORMALCOLORCODELETTERS[colorNum1].charAt(0))))
+					int colorNum1=pickColor(mob,CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS,"Enter Name of Background Color: ");
+					if((colorNum1<0)||(!Character.isUpperCase(CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[colorNum1].charAt(0))))
 						mob.tell("That is not a valid Background color!");
 					else
 					{
-						int colorNum2=pickColor(mob,"Enter Name of Foreground Color: ");
+						int colorNum2=pickColor(mob,CMColor.COLOR_ALLNORMALCOLORCODELETTERS,"Enter Name of Foreground Color: ");
 						if((colorNum2<0)||(Character.isUpperCase(CMColor.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2].charAt(0))))
 							mob.tell("That is not a valid Foreground color!");
 						else
 						{
 						    changes=true;
-						    clookup[theSet[num][1].charAt(0)]=CMColor.translateCMCodeToANSI("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[colorNum1]+"|^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2]);
+						    clookup[theSet[num][1].charAt(0)]=CMColor.translateCMCodeToANSI("^"+CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[colorNum1]+"|^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2]);
 						}
 					}
 				}
