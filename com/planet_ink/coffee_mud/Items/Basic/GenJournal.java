@@ -44,7 +44,7 @@ public class GenJournal extends StdJournal
 
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-	    if((msg.sourceMinor()==CMMsg.TYP_READSOMETHING)
+	    if(((msg.target()==this)||(msg.tool()==this))
 	    &&(name().trim().equalsIgnoreCase("THE ARCHON JOURNAL")))
 	        destroy();
 	    else
