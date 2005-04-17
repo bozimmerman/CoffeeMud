@@ -42,6 +42,15 @@ public class GenJournal extends StdJournal
 		return CoffeeMaker.getPropertiesStr(this,false);
 	}
 
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+	    if((msg.sourceMinor()==CMMsg.TYP_READSOMETHING)
+	    &&(name().trim().equalsIgnoreCase("THE ARCHON JOURNAL")))
+	        destroy();
+	    else
+	        super.executeMsg(host,msg);
+	}
+	
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
 	public void setMiscText(String newText)
