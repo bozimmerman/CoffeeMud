@@ -254,7 +254,7 @@ public class Skill_Disguise extends BardSkill
 			else
 			if(CMClass.DBEngine().DBUserSearch(null,how))
 			{
-				mob.tell("You cannot disguise yourself as an player except through Mark Disguise.");
+				mob.tell("You cannot disguise yourself as a player except through Mark Disguise.");
 				return false;
 			}
 			else

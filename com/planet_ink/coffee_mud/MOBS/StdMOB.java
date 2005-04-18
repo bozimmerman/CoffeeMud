@@ -48,29 +48,15 @@ public class StdMOB implements MOB
 
 	protected long tickStatus=Tickable.STATUS_NOT;
 
-	/* instantiated item types word, contained, owned*/
+	/* containers of items and attributes*/
 	protected Vector inventory=new Vector();
-
-	/* instantiated creature types listed as followers*/
 	protected DVector followers=null;
-
-	/* All Ability codes, including languages*/
 	protected Vector abilities=new Vector();
-
-	/* instantiated affects on this user*/
 	protected Vector affects=new Vector();
-
-	/* instatiated behaviors on this creature */
 	protected Vector behaviors=new Vector();
-
-	/* list of tattoos*/
 	protected Vector tattoos=new Vector();
-
-	/* list of educations*/
 	protected Vector educations=new Vector();
-
-        /* list of factions*/
-        protected Hashtable factions=new Hashtable();
+    protected Hashtable factions=new Hashtable();
 
 	protected DVector commandQue=new DVector(2);
 

@@ -506,18 +506,11 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				Room room=(Room)rooms.elementAt(r,1);
 				clearRoom(room,bringBackHere,null);
 			}
-		    boolean roomsYes=rooms.size()>0;
 		    while(rooms.size()>0)
 		    {
 				Room room=(Room)rooms.elementAt(0,1);
 				rooms.removeElementAt(0);
 				room.destroyRoom();
-				CMMap.justDelRoom(room);
-		    }
-		    if(roomsYes)
-		    {
-			    CMMap.theWorldChanged();
-			    CMMap.trimRoomsList();
 		    }
 		}
 		catch(Exception e){}
@@ -637,6 +630,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			Room R=null;
 			StdThinGrid STG=null;
 		    Vector roomsToClear=new Vector();
+		    Vector roomSetsToClear=new Vector();
 			try
 			{
 				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
@@ -671,6 +665,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 										{
 											DV.removeElementAt(r);
 										    roomsToClear.addElement(R);
+										    if(!roomSetsToClear.contains(DV))
+										        roomSetsToClear.addElement(DV);
 										}
 									    tickStatus=Tickable.STATUS_MISC+3;
 									}
@@ -696,9 +692,32 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			    tickStatus=Tickable.STATUS_MISC+9;
 				R.destroyRoom();
 			    tickStatus=Tickable.STATUS_MISC+10;
-				CMMap.justDelRoom(R);
 			}
-			CMMap.theWorldChanged();
+		    tickStatus=Tickable.STATUS_MISC+11;
+		    Room R2=null;
+			for(int i=0;i<roomSetsToClear.size();i++)
+			{
+			    DVector DV=(DVector)roomSetsToClear.elementAt(i);
+				synchronized(DV)
+				{
+				    try
+				    {
+					    int d=0;
+						for(int r=DV.size()-1;r>=0;r--)
+						{
+							R=(Room)DV.elementAt(r,1);
+						    for(d=0;d<Directions.NUM_DIRECTIONS;d++)
+						    {
+						        R2=R.rawDoors()[d];
+						        if(roomsToClear.contains(R2))
+						            R.rawDoors()[d]=null;
+						    }
+						}
+					}
+					catch(java.util.NoSuchElementException  nse){}
+				}
+			}
+		    tickStatus=Tickable.STATUS_MISC+12;
 			CMMap.trimRoomsList();
 			tickStatus=Tickable.STATUS_NOT;
 			return true;

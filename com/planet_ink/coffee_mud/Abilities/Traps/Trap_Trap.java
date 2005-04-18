@@ -302,9 +302,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			myPit.rawExits()[Directions.UP]=null;
 			*/
 			if(myPit!=null) myPit.destroyRoom();
-			CMMap.delRoom(myPit);
 			if(myPitUp!=null) myPitUp.destroyRoom();
-			CMMap.delRoom(myPitUp);
 		}
 		super.unInvoke();
 	}

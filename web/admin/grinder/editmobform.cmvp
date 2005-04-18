@@ -43,6 +43,16 @@
 			if(ME.selectedIndex>0)
 				ReShow();
 		}
+		function EditFaction(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
+		function AddFaction(ME)
+		{
+			if(ME.selectedIndex>0)
+				ReShow();
+		}
 		function EditAffect(ME)
 		{
 			if(ME.selectedIndex==0)
@@ -198,12 +208,10 @@
     </TD>
 </TR>
 <TR>
-	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Alignment:</B></FONT></TD>
-    <TD WIDTH=450 COLSPAN=2>
-    <SELECT NAME=ALIGNMENT>
-    @MobData?ALIGNMENT@
-    </SELECT>
-    </TD>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Factions:</B></FONT></TD>
+    	<TD WIDTH=450 COLSPAN=2>
+	@MobData?FACTIONS@
+	</TD>
 </TR>
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Money:</B></FONT></TD>

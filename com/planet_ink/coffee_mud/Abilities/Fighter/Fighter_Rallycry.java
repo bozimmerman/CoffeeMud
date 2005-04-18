@@ -64,7 +64,7 @@ public class Fighter_Rallycry extends StdAbility
 
 		if(canBeUninvoked())
 		{
-			mob.tell("You feel less rallyed.");
+			mob.tell("You feel less rallied.");
 			if(mob.curState().getHitPoints()>mob.baseState().getHitPoints())
 				mob.curState().setHitPoints(mob.baseState().getHitPoints());
 		}
@@ -87,7 +87,7 @@ public class Fighter_Rallycry extends StdAbility
 				for(Iterator e=h.iterator();e.hasNext();)
 				{
 					MOB target=(MOB)e.next();
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) rallyed!");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) rallied!");
 					timesTicking=0;
 					hpUp=mob.envStats().level();
 					beneficialAffect(mob,target,asLevel,0);

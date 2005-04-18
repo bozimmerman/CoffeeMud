@@ -275,6 +275,12 @@ public class Go extends StdCommand
 		mob.location().delInhabitant(mob);
 		((Room)leaveMsg.target()).send(mob,leaveMsg);
 
+		if(enterMsg.target()==null)
+		{
+		    ((Room)leaveMsg.target()).bringMobHere(mob,false);
+			mob.tell(getScr("Movement","moveerr1"));
+			return false;
+		}
 		mob.setLocation((Room)enterMsg.target());
 		((Room)enterMsg.target()).addInhabitant(mob);
 		((Room)enterMsg.target()).send(mob,enterMsg);

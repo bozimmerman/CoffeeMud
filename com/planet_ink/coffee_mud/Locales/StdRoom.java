@@ -299,7 +299,6 @@ public class StdRoom
 			room.rawDoors()[Directions.DOWN]=null;
 			room.rawExits()[Directions.DOWN]=null;
 			room.destroyRoom();
-			CMMap.delRoom(room);
 			skyedYet=false;
 		}
 	}
@@ -1254,16 +1253,8 @@ public class StdRoom
 		if(this instanceof GridLocale)
 			((GridLocale)this).clearGrid(null);
 		clearSky();
-	    int d=0;
-	    Room R=null;
-		for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
-		{
-		    R=(Room)e.nextElement();
-		    for(d=0;d<R.rawDoors().length;d++)
-		        if(R.rawDoors()[d]==this)
-		            R.rawDoors()[d]=null;
-		}
 		CMClass.ThreadEngine().deleteTick(this,-1);
+		CMMap.delRoom(this);
 	}
 
 	public MOB fetchInhabitant(String inhabitantID)

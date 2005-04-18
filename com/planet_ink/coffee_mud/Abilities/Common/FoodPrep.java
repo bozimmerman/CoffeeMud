@@ -24,7 +24,7 @@ import java.util.*;
 public class FoodPrep extends Cooking
 {
 	public String ID() { return "FoodPrep"; }
-	public String name(){ return "Food Prep.";}
+	public String name(){ return "Food Prep";}
 	private static final String[] triggerStrings = {"FOODPREPPING","FPREP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public String cookWordShort(){return "make";};

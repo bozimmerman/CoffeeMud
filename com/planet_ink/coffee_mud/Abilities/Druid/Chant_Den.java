@@ -60,7 +60,6 @@ public class Chant_Den extends Chant
 					R.rawExits()[d]=null;
 				}
 				R.destroyRoom();
-				CMMap.delRoom(R);
 				room.rawDoors()[Directions.UP]=null;
 				room.rawExits()[Directions.UP]=null;
 			}
