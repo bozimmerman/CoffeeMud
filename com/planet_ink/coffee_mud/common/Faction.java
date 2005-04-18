@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.*;
 import java.lang.reflect.*;
@@ -386,6 +387,25 @@ public class Faction implements MsgListener
                 source.adjustFaction(ID,factionAdj);
     }
 
+	 public String usageFactors(Ability A) 
+	 { 
+         StringBuffer ranges=new StringBuffer(); 
+         for(int i=0;i<abilityUsages.size();i++) 
+         { 
+              FactionAbilityUsage usage=(FactionAbilityUsage)abilityUsages.elementAt(i); 
+              if(A.classificationCode()!=usage.type) continue; 
+              if(!Util.bset(A.flags(),usage.flag)) continue; 
+              for(int k=usage.low;k<=usage.high;k++) 
+              { 
+                   FactionRange R=fetchRange(k); 
+                   if(ranges.indexOf(R.Name)>0) continue; 
+                   if(ranges.length()>0) ranges.append(", "); 
+                   ranges.append(R.Name); 
+              } 
+         } 
+         return ranges.toString(); 
+    }
+	 
     public static class FactionChangeEvent 
     {
         public String ID;

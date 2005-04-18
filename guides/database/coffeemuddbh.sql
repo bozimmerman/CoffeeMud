@@ -59,6 +59,7 @@ CMCLRO integer NULL,
 CMEMAL varchar (255),
 CMPFIL varchar (255) NULL,
 CMSAVE varchar (150) NULL,
+CMMXML varchar (255) NULL,
 PRIMARY KEY (CMUSERID)
 );
 

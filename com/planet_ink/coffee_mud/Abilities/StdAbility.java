@@ -1211,11 +1211,14 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		return true;
 	}
 
-    public boolean appropriateToMyFactions(MOB mob) {
-        for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
+    public boolean appropriateToMyFactions(MOB mob) 
+    {
+        for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) 
+        {
             String factionID=(String)e.nextElement();
             Faction F=Factions.getFaction(factionID);
-            if(F.hasUsage(this)) return F.canUse(mob,this);
+            if(F.hasUsage(this)) 
+                return F.canUse(mob,this);
         }
         return true;
     }

@@ -84,21 +84,27 @@ public class Spell_Delude extends Spell
 					if(success)
 					{
                         int which=0;
-                        if(Sense.isEvil(mob)) which=1;
-                        else if(Sense.isGood(mob)) which=2;
+                        if(Sense.isEvil(mob)) 
+                            which=1;
+                        else 
+                        if(Sense.isGood(mob)) 
+                            which=2;
                         else
+                        if(Dice.rollPercentage()>50) 
+                            which=1;
+                        else 
+                            which=2;
+                        switch(which) 
                         {
-                            if(Dice.rollPercentage()>50) which=1;
-                            else which=2;
-                        }
-                        switch(which) {
                             case 1:
                                 // find a good range, set them within that
                                 int newAlign=0;
                                 Vector v=Factions.getRanges(Factions.AlignID());
-                                for(int i=0;i<v.size();i++) {
+                                for(int i=0;i<v.size();i++) 
+                                {
                                     Faction.FactionRange R=(Faction.FactionRange)v.elementAt(i);
-                                    if(R.AlignEquiv==Faction.ALIGN_GOOD) {
+                                    if(R.AlignEquiv==Faction.ALIGN_GOOD) 
+                                    {
                                         newAlign = R.random();
                                         break;
                                     }
@@ -109,9 +115,11 @@ public class Spell_Delude extends Spell
                                 // find an evil range, set them within that
                                 newAlign=0;
                                 v=Factions.getRanges(Factions.AlignID());
-                                for(int i=0;i<v.size();i++) {
+                                for(int i=0;i<v.size();i++) 
+                                {
                                     Faction.FactionRange R=(Faction.FactionRange)v.elementAt(i);
-                                    if(R.AlignEquiv==Faction.ALIGN_EVIL) {
+                                    if(R.AlignEquiv==Faction.ALIGN_EVIL) 
+                                    {
                                         newAlign = R.random();
                                         break;
                                     }

@@ -54,6 +54,7 @@ CMCLRO integer NULL
 CMEMAL string NULL
 CMPFIL string NULL
 CMSAVE string NULL
+CMMXML string NULL
 
 CMCHFO
 CMUSERID string KEY

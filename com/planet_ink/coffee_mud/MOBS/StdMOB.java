@@ -1240,31 +1240,35 @@ public class StdMOB implements MOB
 				return false;
 		}
 
+		Ability A=null;
 		for(int i=0;i<numAllEffects();i++)
 		{
-			Ability aff=fetchEffect(i);
-			if((aff!=null)&&(!aff.okMessage(this,msg)))
+			A=fetchEffect(i);
+			if((A!=null)&&(!A.okMessage(this,msg)))
 				return false;
 		}
 
+		Item I=null;
 		for(int i=0;i<inventorySize();i++)
 		{
-			Item I=fetchInventory(i);
+			I=fetchInventory(i);
 			if((I!=null)&&(!I.okMessage(this,msg)))
 				return false;
 		}
 
+		Behavior B=null;
 		for(int b=0;b<numBehaviors();b++)
 		{
-			Behavior B=fetchBehavior(b);
+			B=fetchBehavior(b);
 			if((B!=null)&&(!B.okMessage(this,msg)))
 				return false;
 		}
 
-        // Faction Change
-        for(Enumeration e=fetchFactions();e.hasMoreElements();) {
-            Faction f=Factions.getFaction((String)e.nextElement());
-            if ((f != null) && (!f.okMessage(this, msg)))
+		Faction F=null;
+        for(Enumeration e=fetchFactions();e.hasMoreElements();) 
+        {
+            F=Factions.getFaction((String)e.nextElement());
+            if ((F != null) && (!F.okMessage(this, msg)))
                 return false;
         }
 
@@ -1916,7 +1920,7 @@ public class StdMOB implements MOB
 				&&(Dice.rollPercentage()==1)
 			    &&(fetchEffect("Disease_Depression")==null))
 				{
-				    Ability A=CMClass.getAbility("Disease_Depression");
+				    A=CMClass.getAbility("Disease_Depression");
 				    if(A!=null) A.invoke(this,this,true,0);
 				}
 			}
@@ -2470,24 +2474,27 @@ public class StdMOB implements MOB
 			}
 		}
 
+		Item I=null;
 		for(int i=0;i<inventorySize();i++)
 		{
-			Item I=fetchInventory(i);
+			I=fetchInventory(i);
 			if(I!=null)
 				I.executeMsg(this,msg);
 		}
 
+		Ability A=null;
 		for(int i=0;i<numAllEffects();i++)
 		{
-			Ability A=fetchEffect(i);
+			A=fetchEffect(i);
 			if(A!=null)
 				A.executeMsg(this,msg);
 		}
 
-        // Faction Change
-        for(Enumeration e=fetchFactions();e.hasMoreElements();) {
-            Faction f=Factions.getFaction((String)e.nextElement());
-            f.executeMsg(this,msg);
+        Faction F=null;
+        for(Enumeration e=fetchFactions();e.hasMoreElements();) 
+        {
+            F=Factions.getFaction((String)e.nextElement());
+            F.executeMsg(this,msg);
         }
 	}
 
@@ -3433,54 +3440,55 @@ public class StdMOB implements MOB
 		return null;
 	}
 
-        /** Manipulation of the factions list */
-        public void addFaction(String which)
-        {
-			which=which.toUpperCase();
-            if(factions==null) factions=new Hashtable();
-            // Find the default faction for this mob
+    /** Manipulation of the factions list */
+    public void addFaction(String which)
+    {
+		which=which.toUpperCase();
+        if(factions==null) factions=new Hashtable();
+        // Find the default faction for this mob
 
-            addFaction(which,0);
-        }
-        public void addFaction(String which,int start)
+        addFaction(which,0);
+    }
+    public void addFaction(String which,int start)
+    {
+		which=which.toUpperCase();
+        factions.put(which,new Integer(start));
+    }
+    public void adjustFaction(String which,int amount)
+    {
+		which=which.toUpperCase();
+        if(!factions.containsKey(which))
+            addFaction(which,amount);
+        else
+            factions.put(which,new Integer(((Integer)factions.get(which)).intValue()+amount));
+        if(!(which.equalsIgnoreCase(Factions.AlignID())))
+            tell("Your standing with "+Factions.getName(which)+" has "+CommonStrings.factionStr(amount,which));
+        else
+            tell("Your "+Factions.getName(which)+" has "+CommonStrings.factionStr(amount,which));
+    }
+    public Enumeration fetchFactions()
+    {
+        return factions.keys();
+    }
+    public int fetchFaction(String which)
+    {
+		which=which.toUpperCase();
+        if(!factions.containsKey(which)) return Integer.MAX_VALUE;
+        return ((Integer)factions.get(which)).intValue();
+    }
+    public void removeFaction(String which)
+    {
+		which=which.toUpperCase();
+        factions.remove(which);
+    }
+    public void copyFactions(MOB source)
+    {
+        for(Enumeration e=source.fetchFactions();e.hasMoreElements();) 
         {
-			which=which.toUpperCase();
-            factions.put(which,new Integer(start));
+            String fID=(String)e.nextElement();
+            addFaction(fID,source.fetchFaction(fID));
         }
-        public void adjustFaction(String which,int amount)
-        {
-			which=which.toUpperCase();
-            if(!factions.containsKey(which))
-                addFaction(which,amount);
-            else
-                factions.put(which,new Integer(((Integer)factions.get(which)).intValue()+amount));
-            if(!(which.equalsIgnoreCase(Factions.AlignID())))
-                tell("Your standing with "+Factions.getName(which)+" has "+CommonStrings.factionStr(amount,which));
-            else
-                tell("Your "+Factions.getName(which)+" has "+CommonStrings.factionStr(amount,which));
-        }
-        public Enumeration fetchFactions()
-        {
-            return factions.keys();
-        }
-        public int fetchFaction(String which)
-        {
-			which=which.toUpperCase();
-            if(!factions.containsKey(which)) return Integer.MAX_VALUE;
-            return ((Integer)factions.get(which)).intValue();
-        }
-        public void removeFaction(String which)
-        {
-			which=which.toUpperCase();
-            factions.remove(which);
-        }
-        public void copyFactions(MOB source)
-        {
-            for(Enumeration e=source.fetchFactions();e.hasMoreElements();) {
-                String fID=(String)e.nextElement();
-                addFaction(fID,source.fetchFaction(fID));
-            }
-        }
+    }
 
 	public int freeWearPositions(long wornCode)
 	{

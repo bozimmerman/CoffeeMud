@@ -58,6 +58,7 @@ CMCLRO integer,
 CMEMAL varchar (255),
 CMPFIL long varchar,
 CMSAVE varchar (150),
+CMMXML long varchar,
 PRIMARY KEY (CMUSERID)
 );
 

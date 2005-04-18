@@ -2095,6 +2095,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
+	//TODO: create a new genalignment feature for alignment enabled systems
     public static void genFaction(MOB mob, MOB E, int showNumber, int showFlag)
     throws IOException
     {
