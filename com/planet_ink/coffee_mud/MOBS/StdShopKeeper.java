@@ -42,7 +42,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		Username="a shopkeeper";
 		setDescription("He\\`s pleased to be of assistance.");
 		setDisplayText("A shopkeeper is waiting to serve you.");
-		setAlignment(1000);
+		Factions.setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(0);
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);

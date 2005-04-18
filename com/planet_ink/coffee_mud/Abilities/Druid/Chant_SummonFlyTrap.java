@@ -132,7 +132,7 @@ public class Chant_SummonFlyTrap extends Chant
 		newMOB.setName("a large flytrap");
 		newMOB.setDisplayText(newMOB.Name()+" is planted here");
 		newMOB.setDescription("");
-		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_NEUTRAL));
+		Factions.setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
 		Behavior B=CMClass.getBehavior("Aggressive");

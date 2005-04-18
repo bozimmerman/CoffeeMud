@@ -30,7 +30,7 @@ public class Falcon extends StdMOB
 		Username="a falcon";
 		setDescription("a small hunting bird.");
 		setDisplayText("A falcon flies nearby.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

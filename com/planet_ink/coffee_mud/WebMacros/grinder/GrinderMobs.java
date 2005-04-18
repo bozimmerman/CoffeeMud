@@ -302,7 +302,16 @@ public class GrinderMobs
 				M.baseEnvStats().setArmor(Util.s_int(old));
 				break;
 			case 16: // alignment
-				M.setAlignment(Util.s_int(old));
+			    if(Factions.isAlignEnabled())
+			    {
+			        if(Util.s_int(old)<350)
+			            Factions.setAlignment(M,Faction.ALIGN_EVIL);
+			        else
+			        if(Util.s_int(old)>650)
+			            Factions.setAlignment(M,Faction.ALIGN_GOOD);
+			        else
+			            Factions.setAlignment(M,Faction.ALIGN_NEUTRAL);
+			    }
 				break;
 			case 17: // money
 				BeanCounter.setMoney(M,Util.s_int(old));

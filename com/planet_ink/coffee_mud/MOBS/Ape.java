@@ -28,7 +28,7 @@ public class Ape extends StdMOB
 		Username="an ape";
 		setDescription("The ape is big, the ape is black, the ape means business..");
 		setDisplayText("An ape sits here watching you.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
 

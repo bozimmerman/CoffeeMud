@@ -28,7 +28,7 @@ public class Teacher extends StdMOB
 		Username="Cornelius, Knower of All Things";
 		setDescription("He looks wise beyond his years.");
 		setDisplayText("Cornelius is standing here contemplating your ignorance.");
-		setAlignment(1000);
+		Factions.setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(100);
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(200);

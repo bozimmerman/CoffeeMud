@@ -28,7 +28,7 @@ public class Undead extends StdMOB
 		Username="an undead being";
 		setDescription("decayed and rotting, a dead body has been brought back to life...");
 		setDisplayText("an undead thing slowly moves about.");
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
 		baseEnvStats.setWeight(30);
 		setWimpHitPoint(0);

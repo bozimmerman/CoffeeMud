@@ -30,7 +30,7 @@ public class InvisibleStalker extends StdMOB
 		Username="an Invisible Stalker";
 		setDescription("A shimmering blob of energy.");
 		setDisplayText("An invisible stalker hunts here.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		baseEnvStats.setWeight(10 + Math.abs(randomizer.nextInt() % 10));
 

@@ -28,7 +28,7 @@ public class GenUndead extends GenMob
 		Username="a generic undead being";
 		setDescription("He looks dead to me.");
 		setDisplayText("A generic undead mob stands here.");
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);

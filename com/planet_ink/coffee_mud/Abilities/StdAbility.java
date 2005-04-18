@@ -1217,7 +1217,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
         {
             String factionID=(String)e.nextElement();
             Faction F=Factions.getFaction(factionID);
-            if(F.hasUsage(this)) 
+            if((F!=null)&&F.hasUsage(this)) 
                 return F.canUse(mob,this);
         }
         return true;

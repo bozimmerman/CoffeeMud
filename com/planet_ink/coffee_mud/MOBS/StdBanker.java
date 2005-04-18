@@ -33,7 +33,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		Username="a banker";
 		setDescription("He\\`s pleased to be of assistance.");
 		setDisplayText("A banker is waiting to serve you.");
-		setAlignment(1000);
+		Factions.setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(0);
 		whatISell=ShopKeeper.DEAL_BANKER;
 		baseEnvStats.setWeight(150);

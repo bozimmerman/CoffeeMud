@@ -29,7 +29,7 @@ public class Chimp extends StdMOB
 		Username="a chimp";
 		setDescription("The chimp is reddish brown with a big pink butt.");
 		setDisplayText("A chimp sits here watching you.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
 

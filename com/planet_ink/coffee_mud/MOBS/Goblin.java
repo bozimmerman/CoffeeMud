@@ -69,7 +69,7 @@ public class Goblin extends StdMOB
 		setMoney(randomizer.nextInt() % 15);
 		setWimpHitPoint(0);
 		baseEnvStats.setWeight(40 + Math.abs(randomizer.nextInt() % 30));
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		baseCharStats().setStat(CharStats.INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.CHARISMA,2 + Math.abs(randomizer.nextInt() % 3));
 		baseEnvStats().setArmor(25 + Math.abs(randomizer.nextInt() % 20));

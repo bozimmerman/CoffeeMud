@@ -29,7 +29,7 @@ public class Bugbear extends StdMOB
 		Username="a Bugbear";
 		setDescription("a 7 foot tall, hairy, yellow-brown, muscular creature with sharp teeth and recessed eyes.");
 		setDisplayText("A large Bugbear stands here.");
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(20);
 		baseEnvStats.setWeight(300);
 		setWimpHitPoint(0);

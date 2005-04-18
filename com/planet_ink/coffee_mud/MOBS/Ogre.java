@@ -29,7 +29,7 @@ public class Ogre extends StdMOB
 		Username="an Ogre";
 		setDescription("Nine foot tall and with skin that is a covered in bumps and dead yellow in color..");
 		setDisplayText("An ogre stares at you while he clenches his fists.");
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
 		baseEnvStats.setWeight(350);
 		setWimpHitPoint(0);

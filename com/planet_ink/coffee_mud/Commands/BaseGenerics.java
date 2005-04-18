@@ -2095,7 +2095,20 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	//TODO: create a new genalignment feature for alignment enabled systems
+    public static void genAlignment(MOB mob, MOB E, int showNumber, int showFlag)
+    throws IOException
+    {
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		Faction F=Factions.getFaction(Factions.AlignID());
+		if(F==null) return;
+		mob.tell(showNumber+". "+F.name+": "+Factions.getRange(Factions.AlignID(),E.fetchFaction(Factions.AlignID())).Name+" ("+E.fetchFaction(Factions.AlignID())+")");
+	    if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newOne=mob.session().prompt("Enter a new value ("+F.minimum+" - "+F.maximum+"): ");
+		if(Util.isInteger(newOne))
+		    E.addFaction(Factions.AlignID(),Util.s_int(newOne));
+		else
+		    mob.tell("(no change)");
+    }
     public static void genFaction(MOB mob, MOB E, int showNumber, int showFlag)
     throws IOException
     {
@@ -5419,6 +5432,7 @@ public class BaseGenerics extends StdCommand
 				me.baseCharStats().getCurrentClass().fillOutMOB(me,me.baseEnvStats().level());
 			genRejuv(mob,me,++showNumber,showFlag);
 			genRace(mob,me,++showNumber,showFlag);
+			if(Factions.isAlignEnabled()) genAlignment(mob,me,++showNumber,showFlag);
 			genGender(mob,me,++showNumber,showFlag);
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
@@ -5507,6 +5521,7 @@ public class BaseGenerics extends StdCommand
 			genRace(mob,me,++showNumber,showFlag);
 			genCharClass(mob,me,++showNumber,showFlag);
 			genCharStats(mob,me,++showNumber,showFlag);
+			if(Factions.isAlignEnabled()) genAlignment(mob,me,++showNumber,showFlag);
 			genGender(mob,me,++showNumber,showFlag);
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
@@ -5583,6 +5598,7 @@ public class BaseGenerics extends StdCommand
 			genRace(mob,mme,++showNumber,showFlag);
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
+			if(Factions.isAlignEnabled()) genAlignment(mob,(MOB)me,++showNumber,showFlag);
 			genGender(mob,mme,++showNumber,showFlag);
 			genClan(mob,mme,++showNumber,showFlag);
 			genSpeed(mob,me,++showNumber,showFlag);

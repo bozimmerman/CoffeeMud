@@ -30,7 +30,7 @@ public class Dog extends StdMOB
 		Username="a dog";
 		setDescription("It\\`s furry with four legs, just like a dog ought to be.");
 		setDisplayText("A dog scurries nearby.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		baseEnvStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);

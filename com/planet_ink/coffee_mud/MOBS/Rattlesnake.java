@@ -28,7 +28,7 @@ public class Rattlesnake extends StdMOB
 		Username="a rattlesnake";
 		setDescription("A fearsome creature with long fangs and an effective warning for the unwary.");
 		setDisplayText("A rattlesnake shakes his tale at you furiously");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 
 		addBehavior(CMClass.getBehavior("CombatAbilities"));

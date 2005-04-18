@@ -133,16 +133,9 @@ public class StdMOB implements MOB
 	protected int DeityIndex=-1;
 	public String getLiegeID(){return LiegeID;}
 	public String getWorshipCharID(){return WorshipCharID;}
-	public int getAlignment(){return Alignment;}
 	public int getWimpHitPoint(){return WimpHitPoint;}
 	public int getQuestPoint(){return QuestPoint;}
 	public void setLiegeID(String newVal){LiegeID=newVal;}
-	public void setAlignment(int newVal)
-	{
-		if(newVal<0) newVal=0;
-		if(newVal>1000) newVal=1000;
-		Alignment=newVal;
-	}
 	public void setWorshipCharID(String newVal){ WorshipCharID=newVal;}
 	public void setWimpHitPoint(int newVal){ WimpHitPoint=newVal;}
 	public void setQuestPoint(int newVal){ QuestPoint=newVal;}

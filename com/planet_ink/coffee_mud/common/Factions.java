@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.system.DBConnections;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.*;
 /**
@@ -110,8 +112,28 @@ public class Factions
 	public static int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum-f.minimum); return 0; }
 	public static int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
 	
-	public static boolean isAlignEnabled() { return CommonStrings.getVar(CommonStrings.SYSTEM_ENABLEALIGN)!="DISABLED"; }
+	public static boolean isAlignEnabled() { return CommonStrings.getVar(CommonStrings.SYSTEM_ENABLEALIGN).length()>0; }
 	public static String AlignID() { if(isAlignEnabled()) return CommonStrings.getVar(CommonStrings.SYSTEM_ENABLEALIGN); return ""; }
+	public static void setAlignment(MOB mob, int newAlignment)
+	{
+	    if(Factions.isAlignEnabled()) 
+	        mob.addFaction(AlignID(),getAlignThingie(newAlignment));
+	}
+	public static void setAlignmentOldRange(MOB mob, int oldRange)
+	{
+		if(Factions.isAlignEnabled())
+		{
+			if(oldRange>=650)
+				Factions.setAlignment(mob,Faction.ALIGN_GOOD);
+			else
+			if(oldRange>=350) 
+			    Factions.setAlignment(mob,Faction.ALIGN_NEUTRAL);
+			else
+			if(oldRange>=0) 
+			    Factions.setAlignment(mob,Faction.ALIGN_EVIL);
+			else{ /* a -1 value is the new norm */}
+		}
+	}
 	
 	public static int getAlignPurity(int faction, int AlignEq) 
 	{
@@ -143,6 +165,7 @@ public class Factions
 		int bottom=0;
 		int top=0;
 		Vector ranges = getRanges(AlignID());
+	    if(ranges==null) return 0;
 		for(int i=0;i<ranges.size();i++) {
 			Faction.FactionRange R=(Faction.FactionRange)ranges.elementAt(i);
 			if(R.AlignEquiv==AlignEq) {

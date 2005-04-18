@@ -29,7 +29,7 @@ public class CharGen extends StdCommand
 	private MOB levelMOBup(int level, CharClass C)
 	{
 		MOB mob=CMClass.getMOB("StdMOB");
-		mob.setAlignment(500);
+		Factions.setAlignment(mob,Faction.ALIGN_NEUTRAL);
 		mob.setName("Average Joe");
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.GENDER,'M');

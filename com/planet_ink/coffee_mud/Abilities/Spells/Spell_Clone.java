@@ -70,7 +70,7 @@ public class Spell_Clone extends Spell
 				Behavior B=CMClass.getBehavior("CombatAbilities");
 				myMonster.addBehavior(B);
 				B.startBehavior(myMonster);
-				if(Dice.rollPercentage()<50)
+				if((Dice.rollPercentage()<50)&&(Factions.isAlignEnabled()))
 				{
 					if(Sense.isGood(mob))
 					{

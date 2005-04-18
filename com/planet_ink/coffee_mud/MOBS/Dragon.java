@@ -119,17 +119,17 @@ public class Dragon extends StdMOB
 		// ===== set the mod based on the color
 		switch (DragonColor())
 		{
-			case WHITE:		PointMod = 1;	setAlignment(0);	break;
-			case BLACK:		PointMod = 2;	setAlignment(0);	break;
-			case BLUE:		PointMod = 3;	setAlignment(0);	break;
-			case GREEN:		PointMod = 4;	setAlignment(0);	break;
-			case RED:		PointMod = 5;	setAlignment(0);	break;
-			case BRASS:		PointMod = 1;	setAlignment(1000);	break;
-			case COPPER:	PointMod = 2;	setAlignment(1000);	break;
-			case BRONZE:	PointMod = 3;	setAlignment(1000);	break;
-			case SILVER:	PointMod = 4;	setAlignment(1000);	break;
-			case GOLD:		PointMod = 5;	setAlignment(1000);	break;
-			default:		PointMod = 3;	setAlignment(500);	break;
+			case WHITE:		PointMod = 1;	Factions.setAlignment(this,Faction.ALIGN_EVIL);	break;
+			case BLACK:		PointMod = 2;	Factions.setAlignment(this,Faction.ALIGN_EVIL);	break;
+			case BLUE:		PointMod = 3;	Factions.setAlignment(this,Faction.ALIGN_EVIL);	break;
+			case GREEN:		PointMod = 4;	Factions.setAlignment(this,Faction.ALIGN_EVIL);	break;
+			case RED:		PointMod = 5;	Factions.setAlignment(this,Faction.ALIGN_EVIL);	break;
+			case BRASS:		PointMod = 1;	Factions.setAlignment(this,Faction.ALIGN_GOOD);	break;
+			case COPPER:	PointMod = 2;	Factions.setAlignment(this,Faction.ALIGN_GOOD);	break;
+			case BRONZE:	PointMod = 3;	Factions.setAlignment(this,Faction.ALIGN_GOOD);	break;
+			case SILVER:	PointMod = 4;	Factions.setAlignment(this,Faction.ALIGN_GOOD);	break;
+			case GOLD:		PointMod = 5;	Factions.setAlignment(this,Faction.ALIGN_GOOD);	break;
+			default:		PointMod = 3;	Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);	break;
 		}
 
 		baseState.setHitPoints(((7+PointMod) * 10 * DragonAge()));

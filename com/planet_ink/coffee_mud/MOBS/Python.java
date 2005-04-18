@@ -28,7 +28,7 @@ public class Python extends StdMOB
 		Username="a python";
 		setDescription("A humungous snake that is known for squeezing you to DEATH.");
 		setDisplayText("A python wants to give you a hug.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 
 		baseEnvStats().setDamage(7);

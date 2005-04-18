@@ -30,7 +30,7 @@ public class Puppy extends StdMOB
 		Username="a puppy";
 		setDescription("It\\`s small, cute, and furry with four legs, just like a puppy ought to be.");
 		setDisplayText("A puppy scurries nearby.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		baseEnvStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);

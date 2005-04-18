@@ -51,8 +51,9 @@ public class Prayer_MoralBalance extends Prayer
 				if(msg.value()<=0)
 				{
 					target.tell("Your views on the world suddenly moderate.");
-                    Faction align=Factions.getFaction(Factions.AlignID());
-                    target.addFaction(Factions.AlignID(),(int)Math.round(Util.div((align.maximum-align.minimum)-target.fetchFaction(Factions.AlignID()),2)));
+                    Faction F=Factions.getFaction(Factions.AlignID());
+                    if(F!=null)
+	                    target.addFaction(Factions.AlignID(),(int)Math.round(Util.div((F.maximum-F.minimum)-target.fetchFaction(Factions.AlignID()),2)));
 
 					if(!target.isInCombat() && target.isMonster())
 					{

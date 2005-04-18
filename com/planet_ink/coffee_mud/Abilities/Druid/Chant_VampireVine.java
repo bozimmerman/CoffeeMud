@@ -64,7 +64,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" looks enraged!");
 		newMOB.setDescription("");
-		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_NEUTRAL));
+		Factions.setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		Ability A=CMClass.getAbility("Fighter_Rescue");
 		A.setProfficiency(100);
 		newMOB.addAbility(A);

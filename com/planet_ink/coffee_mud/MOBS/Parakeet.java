@@ -28,7 +28,7 @@ public class Parakeet extends StdMOB
 		Username="a parakeet";
 		setDescription("a small colorful bird.");
 		setDisplayText("A parakeet flies nearby.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

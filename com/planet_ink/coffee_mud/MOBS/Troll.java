@@ -34,7 +34,7 @@ public class Troll extends StdMOB
 		Username="a troll";
 		setDescription("Nine foot tall and reeking of rotten meat..");
 		setDisplayText("A mean looking troll glares at you.");
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
 		baseEnvStats.setWeight(350);
 		setWimpHitPoint(0);

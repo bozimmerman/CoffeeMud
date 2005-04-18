@@ -30,7 +30,7 @@ public class Raven extends StdMOB
 		Username="a raven";
 		setDescription("It\\`s a small black bird with a long yellow beak.");
 		setDisplayText("A raven flutters nearby.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		baseEnvStats.setWeight(20 + Math.abs(randomizer.nextInt() % 5));
 		setWimpHitPoint(2);

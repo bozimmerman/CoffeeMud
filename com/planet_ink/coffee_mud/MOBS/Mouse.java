@@ -28,7 +28,7 @@ public class Mouse extends StdMOB
 		Username="a mouse";
 		setDescription("The little mouse is a small white rodent.");
 		setDisplayText("A little mouse tries to scurry out of your way.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
 

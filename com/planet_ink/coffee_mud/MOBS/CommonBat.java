@@ -30,7 +30,7 @@ public class CommonBat extends StdMOB
 		Username="a common bat";
 		setDescription("It seemingly has the body of a rat with wings.");
 		setDisplayText("A bat flies nearby.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

@@ -28,16 +28,6 @@ public class FactionList extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-        // DEBUGGING ONLY!!!
-        if(commands.size()>1) {
-            int amt=new Integer((String)commands.elementAt(1)).intValue();
-            if(Factions.getFactionByName(Util.combine(commands,2))!=null)
-                mob.adjustFaction(Factions.getFactionByName(Util.combine(commands,2)).ID,amt);
-            else
-                mob.addFaction(Factions.getFactionByName(Util.combine(commands,2)).ID,amt);
-//            mob.tell("Faction '"+Factions.getFactionByName(Util.combine(commands,2)).ID+"' adjusted by "+amt+".");
-            return false;
-        }
 		StringBuffer msg=new StringBuffer("\n\r^HFaction Standings:^?^N\n\r");
         for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
             String name=(String)e.nextElement();
@@ -48,10 +38,11 @@ public class FactionList extends StdCommand
 		return false;
 	}
 
-    public String formatFactionLine(String name,int faction) {
+    public String formatFactionLine(String name,int faction) 
+    {
         StringBuffer line=new StringBuffer();
         line.append("  "+Util.padRight(Util.capitalize(Factions.getName(name).toLowerCase()),21)+" ");
-        Faction.Range R=Factions.getRange(name,faction);
+        Faction.FactionRange R=Factions.getRange(name,faction);
         line.append(Util.padRight(R.Name,17)+" ");
         line.append("[");
         line.append(Util.padRight(calcRangeBar(name,faction),25));
@@ -59,10 +50,12 @@ public class FactionList extends StdCommand
         return line.toString();
     }
 
-    public String calcRangeBar(String factionID, int faction) {
+    public String calcRangeBar(String factionID, int faction) 
+    {
 		StringBuffer bar=new StringBuffer();
         Double fill=new Double(Util.div(Factions.getRangePercent(factionID,faction).doubleValue(),4));
-        for(int i=0;i<fill.intValue();i++) {
+        for(int i=0;i<fill.intValue();i++) 
+        {
             bar.append("*");
         }
         return bar.toString();

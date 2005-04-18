@@ -88,7 +88,7 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.recoverCharStats();
 				newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 				newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
-				if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_EVIL));
+				Factions.setAlignment(newMOB,Faction.ALIGN_EVIL);
 				newMOB.baseState().setHitPoints(15*newMOB.baseEnvStats().level());
 				newMOB.baseState().setMovement(30);
 				newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));

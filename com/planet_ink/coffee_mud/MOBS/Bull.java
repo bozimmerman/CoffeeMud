@@ -28,7 +28,7 @@ public class Bull extends StdMOB
 		Username="a bull";
 		setDescription("A large lumbering beast that looks too slow to get out of your way.");
 		setDisplayText("An old bull doesn`t look happy to see you.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

@@ -150,7 +150,7 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_GOOD));
+		Factions.setAlignment(newMOB,Faction.ALIGN_GOOD);
 		newMOB.setStartRoom(null);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();

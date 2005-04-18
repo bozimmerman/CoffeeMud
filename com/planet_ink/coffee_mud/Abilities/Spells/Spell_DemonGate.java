@@ -128,7 +128,7 @@ public class Spell_DemonGate extends Spell
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(43);
 		newMOB.baseEnvStats().setLevel(level+10);
-		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_EVIL));
+		Factions.setAlignment(newMOB,Faction.ALIGN_EVIL);
 		newMOB.baseEnvStats().setWeight(850);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);

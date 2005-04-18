@@ -29,7 +29,7 @@ public class LizardMan extends StdMOB
 		Username="a Lizard Man";
 		setDescription("a 6 foot tall reptilian humanoid.");
 		setDisplayText("A mean looking Lizard Man stands here.");
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(20);
 		baseEnvStats.setWeight(225);
 		setWimpHitPoint(0);

@@ -29,7 +29,7 @@ public class Citizen extends StdMOB
 		setDescription("");
 		baseCharStats().setStat(CharStats.GENDER,(Dice.rollPercentage()>50)?'M':'F');
 		setDisplayText("A citizen goes about "+baseCharStats().hisher()+" business.");
-		setAlignment(700);
+		Factions.setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(10);
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);

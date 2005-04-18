@@ -28,7 +28,7 @@ public class Lizard extends StdMOB
 		Username="a lizard";
 		setDescription("A small unobtrusize reptile with rough green skin.");
 		setDisplayText("A lizard scurries by.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 
 		baseEnvStats().setDamage(1);

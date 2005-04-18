@@ -28,7 +28,7 @@ public class Pig extends StdMOB
 		Username="a pig";
 		setDescription("A large pink hairless animal with hooved feet.");
 		setDisplayText("A pig snorts at you.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
 

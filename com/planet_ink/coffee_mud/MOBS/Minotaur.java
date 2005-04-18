@@ -31,7 +31,7 @@ public class Minotaur extends StdMOB
 		Username="a minotaur";
 		setDescription("A tall humanoid with the head of a bull, and the body of a very muscular man.  It\\`s covered in red fur.");
 		setDisplayText("A minotaur glares at you.");
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(0);
 		baseEnvStats.setWeight(350 + Math.abs(randomizer.nextInt() % 55));
 

@@ -702,23 +702,11 @@ public class FrontLogin extends StdCommand
 
 				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"alignment.txt").toString());
 
-				String alignment="";
-				while(alignment.length()==0)
-					alignment=mob.session().choose("Select a starting alignment:\n\r Good, Evil, or Neutral (G/N/E): ","GNE","");
-				switch(alignment.charAt(0))
+				if(Factions.isAlignEnabled())
 				{
-				case 'G':
-					mob.setAlignment(1000);
-					break;
-				case 'E':
-					mob.setAlignment(0);
-					break;
-				case 'N':
-				default:
-					mob.setAlignment(500);
-					break;
-				}
-                if(Factions.isAlignEnabled()) {
+					String alignment="";
+					while(alignment.length()==0)
+						alignment=mob.session().choose("Select a starting alignment:\n\r Good, Evil, or Neutral (G/N/E): ","GNE","");
                     String alignID=Factions.AlignID();
                     switch(alignment.charAt(0))
                     {
@@ -733,7 +721,7 @@ public class FrontLogin extends StdCommand
                             mob.addFaction(alignID,((Factions.getMinimum(alignID)+Factions.getMaximum(alignID)) / 2));
                             break;
                     }
-                }
+				}
 				mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 				CoffeeUtensils.outfit(mob,mob.baseCharStats().getCurrentClass().outfit());
 				mob.setStartRoom(CMMap.getStartRoom(mob));

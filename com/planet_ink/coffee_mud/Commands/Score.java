@@ -154,9 +154,8 @@ public class Score extends Affect
 					msg.append("You need ^!"+(mob.getExpNeededLevel())+"^? experience points to advance to the next level.\n\r");
 			}
 		}
-		//TODO: Should ALL factions be displayed like alignment?
-		if(Factions.isAlignEnabled())
-            msg.append("Your alignment is      : ^H"+Factions.getRange(Factions.AlignID(),mob.fetchFaction(Factions.AlignID())).Name+"^?.\n\r");
+		if((Factions.isAlignEnabled())&&(Factions.getFaction(Factions.AlignID())!=null))
+            msg.append("Your "+Factions.getFaction(Factions.AlignID()).name+" is      : ^H"+Factions.getRange(Factions.AlignID(),mob.fetchFaction(Factions.AlignID())).Name+"^?.\n\r");
 		msg.append("Your armored defense is: ^H"+CommonStrings.armorStr(adjustedArmor)+"^?.\n\r");
 		msg.append("Your combat prowess is : ^H"+CommonStrings.fightingProwessStr(adjustedAttack)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");

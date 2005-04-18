@@ -28,8 +28,7 @@ public class AngryCitizen extends StdMOB
 		Username="an angry citizen";
 		setDescription("He\\`s dirty, cranky, and very hickish.");
 		setDisplayText("An angry citizen stands here shouting.");
-		//TODO: Make an easier way to set alignment, and implement it -- Don't forget those nasty faction sets
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);

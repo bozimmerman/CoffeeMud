@@ -386,7 +386,7 @@ public class Pregnancy extends StdAbility
 							if(R==null) R=mob.baseCharStats().getMyRace();
 							String name="a baby "+((gender=='M')?"boy":"girl")+" "+R.name().toLowerCase();
 							babe.setName(name);
-							if(Factions.isAlignEnabled()) babe.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_GOOD));
+							Factions.setAlignment(babe,Faction.ALIGN_GOOD);
 							babe.setClanID(mob.getClanID());
 							babe.setLiegeID(mob.getLiegeID());
 							babe.setDescription(desc);

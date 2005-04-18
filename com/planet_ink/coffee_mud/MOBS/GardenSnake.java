@@ -28,7 +28,7 @@ public class GardenSnake extends StdMOB
 		Username="a garden snake";
 		setDescription("A harmless little green string.");
 		setDisplayText("A little garden snake slithers around looking for bugs.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 
 		baseEnvStats().setDamage(1);

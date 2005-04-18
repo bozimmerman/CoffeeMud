@@ -40,7 +40,7 @@ public class Doppleganger extends StdMOB
 		setBaseEnvStats(new DefaultEnvStats());
 		setBaseCharStats(new DefaultCharStats());
 		setBaseState(new DefaultCharState());
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(250);
 		baseEnvStats.setWeight(100 + Math.abs(randomizer.nextInt() % 101));
 

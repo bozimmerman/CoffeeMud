@@ -29,7 +29,7 @@ public class Bee extends StdMOB
 		Username="a bee";
 		setDescription("It\\`s a small buzzing insect with a nasty stinger on its butt.");
 		setDisplayText("A bee buzzes around here.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		baseEnvStats.setWeight(1);
 		setWimpHitPoint(2);

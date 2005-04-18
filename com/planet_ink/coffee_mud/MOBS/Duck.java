@@ -30,7 +30,7 @@ public class Duck extends StdMOB
 		Username="a duck";
 		setDescription("It\\`s a small duck with orange webbed feet and a wagging tail.");
 		setDisplayText("A duck waddles here.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		baseEnvStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);

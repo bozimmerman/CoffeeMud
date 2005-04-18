@@ -104,7 +104,7 @@ public class Prayer_SummonElemental extends Prayer
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(13);
 		newMOB.baseEnvStats().setLevel(level/2);
-		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_NEUTRAL));
+		Factions.setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.baseEnvStats().setWeight(850);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseEnvStats().setDamage(caster.envStats().damage()/2);

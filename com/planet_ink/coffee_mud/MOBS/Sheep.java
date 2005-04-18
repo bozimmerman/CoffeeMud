@@ -28,7 +28,7 @@ public class Sheep extends StdMOB
 		Username="a sheep";
 		setDescription("She looks warm in that big fluffy coat of wool, but is nervous that you are so close.");
 		setDisplayText("A sheep has wandered away from the herd.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

@@ -187,7 +187,7 @@ public class Chant_SaplingWorkers extends Chant
 		A.setProfficiency(100);
 		newMOB.addAbility(A);
 		newMOB.setDescription("");
-		if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_NEUTRAL));
+		Factions.setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));

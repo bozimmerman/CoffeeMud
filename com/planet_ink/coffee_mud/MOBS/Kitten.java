@@ -30,7 +30,7 @@ public class Kitten extends StdMOB
 		Username="a kitten";
 		setDescription("It\\`s small, cute, and furry with four legs, and a long fluffy tail.");
 		setDisplayText("A kitten watches you.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		baseEnvStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);

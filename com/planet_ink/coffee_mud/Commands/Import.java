@@ -1914,7 +1914,7 @@ public class Import extends StdCommand
 			if(!mobDescription.trim().equalsIgnoreCase("OLDSTYLE"))
 				M.setDescription(mobDescription);
 			aliFlag=(int)Math.round(Util.div(aliFlag,2));
-			M.setAlignment(500+aliFlag);
+			Factions.setAlignmentOldRange(M,500+aliFlag);
 			M.setStartRoom(putInRoom);
 			M.setLocation(putInRoom);
 			M.baseCharStats().setMyRace(R);
@@ -1990,7 +1990,7 @@ public class Import extends StdCommand
 			}
 			if(Util.isSet(affFlag,6))
 			{
-				if(M.getAlignment()<350)
+				if(Sense.isEvil(M))
 				   M.addNonUninvokableEffect(CMClass.getAbility("Prayer_UnholyWord"));
 				else
 				   M.addNonUninvokableEffect(CMClass.getAbility("Prayer_HolyWord"));

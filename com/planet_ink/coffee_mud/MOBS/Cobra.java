@@ -28,7 +28,7 @@ public class Cobra extends StdMOB
 		Username="a cobra";
 		setDescription("A fearsome creature with long fangs and a menacing head.");
 		setDisplayText("A cobra is hissing at you.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 
 		addBehavior(CMClass.getBehavior("CombatAbilities"));

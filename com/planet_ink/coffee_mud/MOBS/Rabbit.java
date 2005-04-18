@@ -30,7 +30,7 @@ public class Rabbit extends StdMOB
 		Username="a rabbit";
 		setDescription("It\\`s small, cute, and fluffy with a cute cotton-ball tail.");
 		setDisplayText("A rabbit hops by.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		baseEnvStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);

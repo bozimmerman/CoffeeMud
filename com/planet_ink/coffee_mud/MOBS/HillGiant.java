@@ -28,7 +28,7 @@ public class HillGiant extends StdMOB
 		Username="a Hill Giant";
 		setDescription("A tall humanoid standing about 16 feet tall and very smelly.");
 		setDisplayText("A Hill Giant glares at you.");
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(0);
 		baseEnvStats.setWeight(3500 + Dice.roll(1, 1000, 0));
 

@@ -30,7 +30,7 @@ public class Wolf extends StdMOB
 		Username="a wolf";
 		setDescription("A powerful wolf with grey fur and amber eyes.");
 		setDisplayText("A wolf growls and stares at you.");
-		setAlignment(500);
+		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

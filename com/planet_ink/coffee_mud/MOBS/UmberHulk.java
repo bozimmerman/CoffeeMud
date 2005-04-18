@@ -33,7 +33,7 @@ public class UmberHulk extends StdMOB
 		Username="an Umber Hulk";
 		setDescription("An 8 foot tall, 5 foot wide mass of meanness just waiting to eat....");
 		setDisplayText("A huge Umber Hulk eyes you.");
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
 		baseEnvStats.setWeight(350);
 		setWimpHitPoint(0);

@@ -101,7 +101,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setDisplayText("a fire elemental is flaming nearby.");
 			newMOB.setDescription("A large beast, wreathed in flame, with sparkling eyes and a hot temper.");
 			newMOB.baseEnvStats().setDisposition(newMOB.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
-			if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_EVIL));
+			Factions.setAlignment(newMOB,Faction.ALIGN_EVIL);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("FireElemental"));
 			newMOB.addAbility(CMClass.getAbility("Firebreath"));
 			break;
@@ -109,7 +109,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setName("an ice elemental");
 			newMOB.setDisplayText("an ice elemental is chilling out here.");
 			newMOB.setDescription("A large beast, made of ice, with crytaline eyes and a cold disposition.");
-			if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_GOOD));
+			Factions.setAlignment(newMOB,Faction.ALIGN_GOOD);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("WaterElemental"));
 			newMOB.addAbility(CMClass.getAbility("Frostbreath"));
 			break;
@@ -117,7 +117,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setName("an earth elemental");
 			newMOB.setDisplayText("an earth elemental looks right at home.");
 			newMOB.setDescription("A large beast, made of rock and dirt, with a hard stare.");
-			if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_NEUTRAL));
+			Factions.setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("EarthElemental"));
 			newMOB.addAbility(CMClass.getAbility("Gasbreath"));
 			break;
@@ -125,7 +125,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setName("an air elemental");
 			newMOB.setDisplayText("an air elemental blows right by.");
 			newMOB.setDescription("A large beast, made of swirling clouds and air.");
-			if(Factions.isAlignEnabled()) newMOB.addFaction(Factions.AlignID(),Factions.getAlignThingie(Faction.ALIGN_GOOD));
+			Factions.setAlignment(newMOB,Faction.ALIGN_GOOD);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
 			newMOB.addAbility(CMClass.getAbility("Lighteningbreath"));
 			break;

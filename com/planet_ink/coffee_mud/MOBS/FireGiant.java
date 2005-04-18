@@ -30,7 +30,7 @@ public class FireGiant extends StdMOB
 		Username="a Fire Giant";
 		setDescription("A tall humanoid standing about 18 feet tall, 12 foot chest, coal black skin and fire red-orange hair.");
 		setDisplayText("A Fire Giant ponders killing you.");
-		setAlignment(0);
+		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(0);
 		baseEnvStats.setWeight(6500 + Math.abs(randomizer.nextInt() % 1001));
 
