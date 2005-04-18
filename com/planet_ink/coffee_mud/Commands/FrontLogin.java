@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.exceptions.HTTPRedirectException;
 import java.util.*;
 import java.io.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -155,7 +155,7 @@ public class FrontLogin extends StdCommand
 
 	public void showTheNews(MOB mob)
 	{
-		if(mob.session()!=null)	
+		if(mob.session()!=null)
 		{
 		    mob.session().initTermID(mob.getBitmap());
 		    if(Util.bset(mob.getBitmap(),MOB.ATT_MXP))
@@ -178,10 +178,27 @@ public class FrontLogin extends StdCommand
 		||(mob.isMonster())
 		||(Util.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))
 			return;
-		
+
 		Command C=CMClass.getCommand("MOTD");
 		try{ C.execute(mob,Util.parse("MOTD NEW"));}catch(Exception e){}
 	}
+
+    public boolean checkExpiration(MOB mob)
+    {
+        if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ACCOUNTEXPIRATION)) return true;
+        MOB newMob=CMMap.getLoadPlayer(mob.name());
+        if(CMSecurity.isASysOp(newMob)) return true;
+        if((newMob.playerStats()!=null)
+        &&(newMob.playerStats().getAccountExpiration()<=System.currentTimeMillis()))
+        {
+            mob.tell("\n\r"+CommonStrings.getVar(CommonStrings.SYSTEM_EXPCONTACTLINE)+"\n\r\n\r");
+            mob.session().setKillFlag(true);
+            if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+               pendingLogins.remove(mob.Name().toUpperCase());
+            return false;
+        }
+        return true;
+    }
 
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -199,7 +216,7 @@ public class FrontLogin extends StdCommand
 	        else
 	        if(((String)commands.elementAt(i)).equalsIgnoreCase("LAST"))
 	            attempt=Integer.MAX_VALUE;
-		        
+
 		String login=mob.session().prompt("name:^<USER^>");
 		if(login==null) return false;
 		login=login.trim();
@@ -211,7 +228,7 @@ public class FrontLogin extends StdCommand
 			mob.session().print("password:^<PASSWORD^>");
 			String password=mob.session().blockingIn();
 			PlayerStats pstats=mob.playerStats();
-			
+
 			if((pstats!=null)
 			&&(pstats.password().equalsIgnoreCase(password))
 			&&(mob.Name().trim().length()>0))
@@ -235,7 +252,8 @@ public class FrontLogin extends StdCommand
 					}
 					CMClass.DBEngine().DBUpdateEmail(mob);
 				}
-				
+                if(!checkExpiration(mob)) return false;
+
 				Long L=(Long)pendingLogins.get(mob.Name().toUpperCase());
 				if((L!=null)&&((System.currentTimeMillis()-L.longValue())<(10*60*1000)))
 				{
@@ -245,7 +263,7 @@ public class FrontLogin extends StdCommand
 				if(pendingLogins.containsKey(mob.Name().toUpperCase()))
 				   pendingLogins.remove(mob.Name().toUpperCase());
 				pendingLogins.put(mob.Name().toUpperCase(),new Long(System.currentTimeMillis()));
-				
+
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session thisSession=Sessions.elementAt(s);
@@ -269,7 +287,7 @@ public class FrontLogin extends StdCommand
 						}
 					}
 				}
-				
+
 				MOB oldMOB=mob;
 				if(CMMap.getPlayer(oldMOB.Name())!=null)
 				{
@@ -417,7 +435,7 @@ public class FrontLogin extends StdCommand
 				mob.setBitmap(MOB.ATT_AUTOEXITS);
 				if(mob.session().confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
-				
+
 				int themeCode=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MUDTHEME);
 				int theme=Area.THEME_FANTASY;
 				switch(themeCode)
@@ -436,7 +454,7 @@ public class FrontLogin extends StdCommand
 						if(Util.bset(themeCode,Area.THEME_TECHNOLOGY)){ choices+="T"; selections+="/T";}
 						if(choices.length()==0)
 						{
-						    choices="F"; 
+						    choices="F";
 						    selections="/F";
 						}
 					    while((theme<0)&&(!mob.session().killFlag()))
@@ -534,13 +552,16 @@ public class FrontLogin extends StdCommand
 				mob.baseState().setHitPoints(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTHP));
 				mob.baseState().setMovement(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTMOVE));
 				mob.baseState().setMana(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTMANA));
-				
+
 				String Gender="";
 				while(Gender.length()==0)
 					Gender=mob.session().choose("\n\r^!What is your gender (M/F)?^N","MF","");
 
 				mob.baseCharStats().setStat(CharStats.GENDER,Gender.toUpperCase().charAt(0));
 				mob.baseCharStats().getMyRace().startRacing(mob,false);
+
+                if((CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ACCOUNTEXPIRATION))&&(mob.playerStats()!=null))
+                    mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000*60*60*24*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TRIALDAYS)));
 
 				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"stats.txt").toString());
 
@@ -673,7 +694,7 @@ public class FrontLogin extends StdCommand
 			        Ability A=CMClass.getAbility("Allergies");
 			        if(A!=null) A.invoke(mob,mob,true,0);
 				}
-				
+
 				mob.recoverCharStats();
 				mob.recoverEnvStats();
 				mob.recoverMaxState();

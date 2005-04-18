@@ -68,7 +68,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_COLORSCHEME=43;
 	public static final int SYSTEM_SMTPSERVERNAME=44;
     public static final int SYSTEM_ENABLEALIGN=45;
-	public static final int NUM_SYSTEM=46;
+    public static final int SYSTEM_EXPCONTACTLINE=46;
+	public static final int NUM_SYSTEM=47;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -108,7 +109,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_STARTHP=35;
 	public static final int SYSTEMI_STARTMANA=36;
 	public static final int SYSTEMI_STARTMOVE=37;
-	public static final int NUMI_SYSTEM=38;
+    public static final int SYSTEMI_TRIALDAYS=38;
+	public static final int NUMI_SYSTEM=39;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -119,7 +121,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMB_MOBNOCACHE=6;
 	public static final int SYSTEMB_ROOMDNOCACHE=7;
 	public static final int SYSTEMB_MUDSHUTTINGDOWN=8;
-	public static final int NUMB_SYSTEM=9;
+    public static final int SYSTEMB_ACCOUNTEXPIRATION=9;
+	public static final int NUMB_SYSTEM=10;
 
 	private static String[] sysVars=new String[NUM_SYSTEM];
 	private static Integer[] sysInts=new Integer[NUMI_SYSTEM];
@@ -244,7 +247,9 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_CLANTROPEXP,page.getStr("CLANTROPEXP"));
 		setVar(SYSTEM_COLORSCHEME,page.getStr("COLORSCHEME"));
 		setVar(SYSTEM_SMTPSERVERNAME,page.getStr("SMTPSERVERNAME"));
-                setVar(SYSTEM_ENABLEALIGN,page.getStr("ENABLEALIGN"));
+        setVar(SYSTEM_ENABLEALIGN,page.getStr("ENABLEALIGN"));
+        setVar(SYSTEM_EXPCONTACTLINE,page.getStr("EXPCONTACTLINE"));
+        setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,page.getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
 		CMColor.clookup=null;
 
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
@@ -289,6 +294,7 @@ public class CommonStrings extends Scriptable
 		setIntVar(SYSTEMI_LASTPLAYERLEVEL,page.getStr("LASTPLAYERLEVEL"));
 		setIntVar(SYSTEMI_JOURNALLIMIT,page.getStr("JOURNALLIMIT"));
 		setIntVar(SYSTEMI_MUDTHEME,page.getStr("MUDTHEME"));
+        setIntVar(SYSTEMI_TRIALDAYS,page.getStr("TRIALDAYS"));
 		Vector V=Util.parseCommas(page.getStr("INJURYSYSTEM"),true);
 		if(V.size()!=5)
 		{

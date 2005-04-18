@@ -46,6 +46,7 @@ public class DefaultPlayerStats implements PlayerStats
 	private int[] birthday=null;
 	private MOB replyTo=null;
 	private Vector securityGroups=new Vector();
+    private long accountExpiration=0;
 
 	public String lastIP(){return lastIP;}
 	public void setLastIP(String ip){lastIP=ip;}
@@ -188,6 +189,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
 			+"<WRAP>"+wrap+"</WRAP>"
 			+getTitleXML()
+			+"<ACCTEXP>"+accountExpiration+"</ACCTEXP>"
 			+((birthday!=null)?"<BIRTHDAY>"+Util.toStringList(birthday)+"</BIRTHDAY>":"")
 			+((poofin.length()>0)?"<POOFIN>"+poofin+"</POOFIN>":"")
 			+((poofout.length()>0)?"<POOFOUT>"+poofout+"</POOFOUT>":"")
@@ -199,6 +201,14 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		friends=getHashFrom(XMLManager.returnXMLValue(str,"FRIENDS"));
 		ignored=getHashFrom(XMLManager.returnXMLValue(str,"IGNORED"));
+        if(XMLManager.returnXMLValue(str,"ACCTEXP").length()>0)
+            setAccountExpiration(Util.s_long(XMLManager.returnXMLValue(str,"ACCTEXP")));
+        else
+        {
+            IQCalendar C=new IQCalendar();
+            C.add(Calendar.DATE,15);
+            setAccountExpiration(C.getTimeInMillis());
+        }
 		String oldWrap=XMLManager.returnXMLValue(str,"WRAP");
 		if(Util.isInteger(oldWrap)) wrap=Util.s_int(oldWrap);
 		setSecurityGroupStr(XMLManager.returnXMLValue(str,"SECGRPS"));
@@ -277,4 +287,9 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return true;
 	}
+	
+
+    // Acct Expire Code
+    public long getAccountExpiration() {return accountExpiration;}
+    public void setAccountExpiration(long newVal){accountExpiration=newVal;}
 }

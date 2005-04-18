@@ -89,6 +89,9 @@ public class Score extends Affect
 			msg.append(classList.toString()+".\n\r");
 		}
 
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
+			msg.append("Your account is Registered and Active until: "+new IQCalendar(mob.playerStats().getAccountExpiration()).d2String()+"!/n/r");
+
 		String genderName="neuter";
 		if(mob.charStats().getStat(CharStats.GENDER)=='M') genderName="male";
 		else
