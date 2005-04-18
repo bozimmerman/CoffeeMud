@@ -5894,6 +5894,19 @@ public class Scriptable extends StdBehavior
 					if(Dice.rollPercentage()<prcnt)
 						execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null);
 				}
+				else
+				if((ticking instanceof Item)
+				&&(((Item)ticking).owner() instanceof MOB)
+				&&(((MOB)((Item)ticking).owner()).isInCombat()))
+				{
+					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
+					if(Dice.rollPercentage()<prcnt)
+					{
+					    MOB M=(MOB)((Item)ticking).owner();
+					    if(!M.amDead())
+							execute(affecting,M,mob.getVictim(),mob,defaultItem,null,script,null);
+					}
+				}
 				break;
 			case 11: // hitprcnt
 				if((mob.isInCombat())&&(!mob.amDead()))
@@ -5901,6 +5914,19 @@ public class Scriptable extends StdBehavior
 					int floor=(int)Math.round(Util.mul(Util.div(Util.s_int(Util.getCleanBit(trigger,1)),100.0),mob.maxState().getHitPoints()));
 					if(mob.curState().getHitPoints()<=floor)
 						execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null);
+				}
+				else
+				if((ticking instanceof Item)
+				&&(((Item)ticking).owner() instanceof MOB)
+				&&(((MOB)((Item)ticking).owner()).isInCombat()))
+				{
+				    MOB M=(MOB)((Item)ticking).owner();
+				    if(!M.amDead())
+				    {
+						int floor=(int)Math.round(Util.mul(Util.div(Util.s_int(Util.getCleanBit(trigger,1)),100.0),M.maxState().getHitPoints()));
+						if(M.curState().getHitPoints()<=floor)
+							execute(affecting,M,mob.getVictim(),mob,defaultItem,null,script,null);
+				    }
 				}
 				break;
 			case 6: // once_prog
