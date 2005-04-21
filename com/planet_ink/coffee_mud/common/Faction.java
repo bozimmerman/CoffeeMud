@@ -21,93 +21,105 @@ import java.lang.reflect.*;
  * <p>limitations under the License.
  */
 
-public class Faction implements MsgListener 
+public class Faction implements MsgListener
 {
-	public String ID;
-    public String name;
+	public String ID="";
+    public String name="";
+    public String choiceIntro="";
     public int minimum;
     public int maximum;
+    public int highest;
+    public int lowest;
     public boolean experience;
-    public Vector ranges;
-    public Vector defaults;
+    public boolean showinscore;
+    public boolean showinareareport;
+    public boolean showineditor;
+    public Vector ranges=new Vector();
+    public Vector defaults=new Vector();
+    public Vector autoDefaults=new Vector();
     public double rateModifier;
-    public Hashtable Changes;
-    public Hashtable ChangeMap;
-    public Vector factors;
-    public Hashtable relations;
-    public Vector abilityUsages;
+    public Hashtable Changes=new Hashtable();
+    public Hashtable ChangeMap=new Hashtable();
+    public Vector factors=new Vector();
+    public Hashtable relations=new Hashtable();
+    public Vector abilityUsages=new Vector();
+    public Vector choices=new Vector();
 
     public final static int ALIGN_INDIFF=0;
     public final static int ALIGN_EVIL=1;
     public final static int ALIGN_NEUTRAL=2;
     public final static int ALIGN_GOOD=3;
+    public final static String[] ALIGN_NAMES={"","EVIL","NEUTRAL","GOOD"};
 
     public Faction(StringBuffer file, String fID) 
     {
         boolean debug = false;
-
-        try 
+        
+        ID = fID;
+        INI alignProp = new INI(file.toString());
+		if(alignProp.isEmpty()) return;
+        name=alignProp.getStr("NAME");
+        choiceIntro=alignProp.getStr("CHOICEINTRO");
+        minimum=alignProp.getInt("MINIMUM");
+        maximum=alignProp.getInt("MAXIMUM");
+        experience=alignProp.getBoolean("EXPERIENCE");
+        rateModifier=alignProp.getDouble("RATEMODIFIER");
+        showinscore=alignProp.getBoolean("SCOREDISPLAY");
+        showinareareport=alignProp.getBoolean("AREADISPLAY");
+        showineditor=alignProp.getBoolean("EDITALONE");
+        defaults =Util.parseSemicolons(alignProp.getStr("DEFAULT"),true);
+        autoDefaults =Util.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true);
+        choices =Util.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true);
+        ranges=new Vector();
+        Changes=new Hashtable();
+        ChangeMap=new Hashtable();
+        factors=new Vector();
+        relations=new Hashtable();
+        abilityUsages=new Vector();
+        highest=Integer.MIN_VALUE;
+        lowest=Integer.MAX_VALUE;
+        for(Enumeration e=alignProp.keys();e.hasMoreElements();)
         {
-            ID = fID;
-            Properties alignProp = new Properties();
-            alignProp.load(new ByteArrayInputStream(file.toString().getBytes()));
-			if(alignProp.isEmpty()) return;
-            name=alignProp.getProperty("NAME");
-            minimum=(new Integer(alignProp.getProperty("MINIMUM")).intValue());
-            maximum=(new Integer(alignProp.getProperty("MAXIMUM")).intValue());
-            experience=(new Boolean(alignProp.getProperty("EXPERIENCE")).booleanValue());
-            rateModifier=new Double(alignProp.getProperty("RATEMODIFIER")).doubleValue();
-            setupDefaults(alignProp.getProperty("DEFAULT"));
-            ranges=new Vector();
-            Changes=new Hashtable();
-            ChangeMap=new Hashtable();
-            factors=new Vector();
-            relations=new Hashtable();
-            abilityUsages=new Vector();
-
-            for(Enumeration e=alignProp.keys();e.hasMoreElements();)
+            if(debug) Log.sysOut("FACTIONS","Starting Key Loop");
+            String key = (String) e.nextElement();
+            if(debug) Log.sysOut("FACTIONS","  Key Found     :"+key);
+            String words = (String) alignProp.get(key);
+            if(debug) Log.sysOut("FACTIONS","  Words Found   :"+words);
+            if(key.startsWith("RANGE"))
             {
-                if(debug) Log.sysOut("FACTIONS","Starting Key Loop");
-                String key = (String) e.nextElement();
-                if(debug) Log.sysOut("FACTIONS","  Key Found     :"+key);
-                String words = (String) alignProp.get(key);
-                if(debug) Log.sysOut("FACTIONS","  Words Found   :"+words);
-                if(key.startsWith("RANGE"))
-                {
-                    FactionRange R=new FactionRange(words);
-                    ranges.add(R);
-                }
-                if(key.startsWith("CHANGE"))
-                {
-                    FactionChangeEvent C=new FactionChangeEvent(words);
-                    Changes.put(key.toUpperCase(),C);
-                    ChangeMap.put(C.ID.toUpperCase(),C);
-                }
-                if(key.startsWith("FACTOR"))
-                {
-                    Vector factor=Util.parseSemicolons(words,true);
-                    factors.add(factor);
-                }
-                if(key.startsWith("RELATION"))
-                {
-                    Vector v=Util.parseSemicolons(words,true);
-                    String who=(String)v.elementAt(0);
-                    double factor;
-                    String amt=((String)v.elementAt(1)).trim();
-                    if(amt.endsWith("%"))
-                        factor=Util.div(Util.s_int(amt.substring(0,amt.length()-1)),100.0);
-                    else
-                        factor=1;
-                    relations.put(who,new Double(factor));
-                }
-                if(key.startsWith("ABILITY"))
-                {
-                    FactionAbilityUsage A=new FactionAbilityUsage(words);
-                    abilityUsages.add(A);
-                }
+                FactionRange R=new FactionRange(this,words);
+                ranges.add(R);
+                if(R.low<lowest) lowest=R.low;
+                if(R.high>highest) highest=R.high;
             }
-        }
-        catch (IOException ex) {
+            if(key.startsWith("CHANGE"))
+            {
+                FactionChangeEvent C=new FactionChangeEvent(words);
+                Changes.put(key.toUpperCase(),C);
+                ChangeMap.put(C.ID.toUpperCase(),C);
+            }
+            if(key.startsWith("FACTOR"))
+            {
+                Vector factor=Util.parseSemicolons(words,true);
+                factors.add(factor);
+            }
+            if(key.startsWith("RELATION"))
+            {
+                Vector v=Util.parseSemicolons(words,true);
+                String who=(String)v.elementAt(0);
+                double factor;
+                String amt=((String)v.elementAt(1)).trim();
+                if(amt.endsWith("%"))
+                    factor=Util.div(Util.s_int(amt.substring(0,amt.length()-1)),100.0);
+                else
+                    factor=1;
+                relations.put(who,new Double(factor));
+            }
+            if(key.startsWith("ABILITY"))
+            {
+                FactionAbilityUsage A=new FactionAbilityUsage(words);
+                abilityUsages.add(A);
+            }
         }
     }
 
@@ -125,6 +137,32 @@ public class Faction implements MsgListener
         return null;
     }
 
+    public Vector findChoices(MOB mob)
+    {
+        Vector mine=new Vector();
+        if(choices!=null) 
+        {
+            for(int i=0;i<choices.size();i++) 
+            {
+                if(Util.isInteger((String)choices.elementAt(i)))
+                    mine.addElement(new Integer(Util.s_int((String)defaults.elementAt(i))));
+                else
+                if(MUDZapper.zapperCheck((String)choices.elementAt(i), mob)) 
+                {
+                    Vector v=Util.parse((String)choices.elementAt(i));
+                    for(int j=0;j<v.size();j++) 
+                    {
+                        if(Util.isInteger((String)v.elementAt(j)))
+                            mine.addElement(new Integer(Util.s_int((String)v.elementAt(j))));
+                    }
+                }
+            }
+        }
+        return mine;
+        
+    }
+    
+    
     public FactionChangeEvent findChangeEvent(Ability key) 
     {
         // Direct ability ID's
@@ -187,14 +225,6 @@ public class Faction implements MsgListener
         return maximum - gen.nextInt(maximum-minimum);
     }
 
-    public void setupDefaults(String s) 
-    {
-        if(defaults==null)
-        {
-            defaults =Util.parseSemicolons(s,true);
-        }
-    }
-
     public int findDefault(MOB mob) 
     {
         if(defaults!=null) 
@@ -207,20 +237,45 @@ public class Faction implements MsgListener
                     for(int j=0;j<v.size();j++) 
                     {
                         if(Util.isNumber((String)v.elementAt(j)))
-                            return Integer.parseInt((String)v.elementAt(j));
+                            return Util.s_int((String)v.elementAt(j));
                     }
                 }
                 else
                 {
                     if(Util.isNumber((String)defaults.elementAt(i)))
-                         return Integer.parseInt((String)defaults.elementAt(i));
+                         return Util.s_int((String)defaults.elementAt(i));
                 }
             }
         }
         return 0;
     }
 
-    public boolean hasFaction(MOB mob, String ID) 
+    public int findAutoDefault(MOB mob) 
+    {
+        if(autoDefaults!=null) 
+        {
+            for(int i=0;i<defaults.size();i++) 
+            {
+                if(MUDZapper.zapperCheck((String)autoDefaults.elementAt(i), mob)) 
+                {
+                    Vector v=Util.parse((String)autoDefaults.elementAt(i));
+                    for(int j=0;j<v.size();j++) 
+                    {
+                        if(Util.isNumber((String)v.elementAt(j)))
+                            return Util.s_int((String)v.elementAt(j));
+                    }
+                }
+                else
+                {
+                    if(Util.isNumber((String)autoDefaults.elementAt(i)))
+                         return Util.s_int((String)autoDefaults.elementAt(i));
+                }
+            }
+        }
+        return Integer.MAX_VALUE;
+    }
+
+    public boolean hasFaction(MOB mob) 
     {
         return (mob.fetchFaction(ID)!=Integer.MAX_VALUE);
     }
@@ -279,8 +334,7 @@ public class Faction implements MsgListener
         }
 
         // Ability Watching
-        if((msg.tool()!=null)
-        &&(msg.tool() instanceof Ability)
+        if((msg.tool() instanceof Ability)
         &&(msg.othersMessage()!=null)
         &&(findChangeEvent((Ability)msg.tool())!=null))
         {
@@ -311,6 +365,14 @@ public class Faction implements MsgListener
 
     public void executeChange(MOB source, MOB target, FactionChangeEvent event) 
     {
+        if(event.direction==FactionChangeEvent.FACTION_ADD)
+        {
+            MOB mob=(target!=null)?target:source;
+            if((mob!=null)&&(!hasFaction(mob)))
+                target.addFaction(ID,findDefault(mob));
+            return;
+        }
+        
         int targetFaction = 0;
         if(target!=null)
             targetFaction=target.fetchFaction(ID);
@@ -320,71 +382,76 @@ public class Faction implements MsgListener
             targetFaction = source.fetchFaction(ID) * -1;
         }
 
-            double theAmount=new Integer(100).doubleValue();
-            int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);
-            int levelDiff=target.envStats().level()-source.envStats().level();
+        double theAmount=new Integer(100).doubleValue();
+        int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);
+        int levelDiff=target.envStats().level()-source.envStats().level();
 
-            if(levelDiff<(-levelLimit) )
-                theAmount=0.0;
-            else
-            if(levelLimit>0)
+        if(levelDiff<(-levelLimit) )
+            theAmount=0.0;
+        else
+        if(levelLimit>0)
+        {
+            double levelFactor=Util.div(levelDiff,levelLimit);
+            if(levelFactor>new Integer(levelLimit).doubleValue())
+                levelFactor=new Integer(levelLimit).doubleValue();
+            theAmount=theAmount+Util.mul(levelFactor,100);
+        }
+
+        int baseExp=(int)Math.round(theAmount);
+        int factionAdj=1;
+        int changeDir=0;
+        switch(event.direction) 
+        {
+        case FactionChangeEvent.FACTION_UP:
+            changeDir=1;  break;
+        case FactionChangeEvent.FACTION_DOWN:
+            changeDir=-1; break;
+        case FactionChangeEvent.FACTION_OPPOSITE:
+            changeDir= -1 * targetFaction / Math.abs(target.fetchFaction(ID)); 
+        	break;
+        }
+        // Pardon the completely random seeming 1.42 and 150.
+        // They're the result of making graphs of scenarios and massaging the formula, nothing more or less.
+        if(hasFaction(target))
+          factionAdj=(int)Math.round((Util.mul(changeDir,(Util.mul(((( maximum + minimum )/ 2) - Math.abs(targetFaction)),( rateModifier + ( Util.mul(Util.div(Math.pow(baseExp,1.42),150),rateModifier))))))));
+        else
+        if(event.targetIndifference)
+            factionAdj=(int)Math.round((Util.mul(changeDir,(Util.mul(((( maximum + minimum )/ 2) - Math.abs(findDefault(target))),( rateModifier + ( Util.mul(Util.div(Math.pow(baseExp,1.42),150),rateModifier))))))));
+        factionAdj*=event.factor;
+        if(event.direction==FactionChangeEvent.FACTION_MAXIMUM)
+            factionAdj=maximum-source.fetchFaction(ID);
+        if(event.direction==FactionChangeEvent.FACTION_MINIMUM)
+            factionAdj=minimum-source.fetchFaction(ID);
+
+        factionAdj=(int)Math.round(Util.mul(factionAdj,findFactor(source,(factionAdj>=0))));
+        if(event.direction==FactionChangeEvent.FACTION_REMOVE)
+            factionAdj=Integer.MAX_VALUE;
+
+        FullMsg FacMsg=new FullMsg(source,target,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
+        FacMsg.setValue(factionAdj);
+        if(source.location()!=null)
+        {
+            if(source.location().okMessage(source,FacMsg))
             {
-                double levelFactor=Util.div(levelDiff,levelLimit);
-                if(levelFactor>new Integer(levelLimit).doubleValue())
-                    levelFactor=new Integer(levelLimit).doubleValue();
-                theAmount=theAmount+Util.mul(levelFactor,100);
-            }
-
-            int baseExp=(int)Math.round(theAmount);
-            int factionAdj=1;
-            int changeDir=0;
-            switch(event.direction) 
-            {
-            case FactionChangeEvent.FACTION_UP:
-                changeDir=1;  break;
-            case FactionChangeEvent.FACTION_DOWN:
-                changeDir=-1; break;
-            case FactionChangeEvent.FACTION_OPPOSITE:
-                changeDir= -1 * targetFaction / Math.abs(target.fetchFaction(ID)); 
-            	break;
-            }
-            // Pardon the completely random seeming 1.42 and 150.
-            // They're the result of making graphs of scenarios and massaging the formula, nothing more or less.
-            if(hasFaction(target,ID))
-              factionAdj=(int)Math.round((Util.mul(changeDir,(Util.mul(((( maximum + minimum )/ 2) - Math.abs(targetFaction)),( rateModifier + ( Util.mul(Util.div(Math.pow(baseExp,1.42),150),rateModifier))))))));
-            else
-                if(event.targetIndifference)
-                    factionAdj=(int)Math.round((Util.mul(changeDir,(Util.mul(((( maximum + minimum )/ 2) - Math.abs(findDefault(target))),( rateModifier + ( Util.mul(Util.div(Math.pow(baseExp,1.42),150),rateModifier))))))));
-            factionAdj*=event.factor;
-            if(event.direction==FactionChangeEvent.FACTION_MAXIMUM)
-                factionAdj=maximum-source.fetchFaction(ID);
-            if(event.direction==FactionChangeEvent.FACTION_MINIMUM)
-                factionAdj=minimum-source.fetchFaction(ID);
-
-            factionAdj=(int)Math.round(Util.mul(factionAdj,findFactor(source,(factionAdj>=0))));
-
-            FullMsg FacMsg=new FullMsg(source,target,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
-            FacMsg.setValue(factionAdj);
-            if(source.location()!=null)
-            {
-                if(source.location().okMessage(source,FacMsg))
+                source.location().send(source, FacMsg);
+                factionAdj=FacMsg.value();
+                if((factionAdj!=Integer.MAX_VALUE)&&(factionAdj!=Integer.MIN_VALUE))
                 {
-                    source.location().send(source, FacMsg);
-                    factionAdj=FacMsg.value();
-                    // Now execute the changes on the relation.  We do this AFTER the execution of the first so
-                    // that any changes from okMessage are incorporated
-                    for(Enumeration e=relations.keys();e.hasMoreElements();) 
-                    {
-                        String relID=((String)e.nextElement());
-                        FacMsg=new FullMsg(source,target,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
-                        FacMsg.setValue((int)Math.round(Util.mul(factionAdj, ((Double)relations.get(relID)).doubleValue())));
-                        if(source.location().okMessage(source,FacMsg))
-                            source.location().send(source, FacMsg);
-                    }
+	                // Now execute the changes on the relation.  We do this AFTER the execution of the first so
+	                // that any changes from okMessage are incorporated
+	                for(Enumeration e=relations.keys();e.hasMoreElements();) 
+	                {
+	                    String relID=((String)e.nextElement());
+	                    FacMsg=new FullMsg(source,target,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
+	                    FacMsg.setValue((int)Math.round(Util.mul(factionAdj, ((Double)relations.get(relID)).doubleValue())));
+	                    if(source.location().okMessage(source,FacMsg))
+	                        source.location().send(source, FacMsg);
+	                }
                 }
             }
-            else
-                source.adjustFaction(ID,factionAdj);
+        }
+        else
+            source.adjustFaction(ID,factionAdj);
     }
 
 	 public String usageFactors(Ability A) 
@@ -419,6 +486,8 @@ public class Faction implements MsgListener
         public static final int FACTION_OPPOSITE = 2;
         public static final int FACTION_MINIMUM = 3;
         public static final int FACTION_MAXIMUM = 4;
+        public static final int FACTION_REMOVE = 5;
+        public static final int FACTION_ADD = 6;
 
         public String toString() {
             return "FactionChangeEvent Event '"+ID+"': ["+direction+"] ["+factor+"] ["+zapper+"] ["+targetIndifference+"]";
@@ -435,14 +504,20 @@ public class Faction implements MsgListener
             if(d.startsWith("D")) {
                 direction = FACTION_DOWN;
             }
-            if(d.startsWith("U")) {
+            if(d.startsWith("OPP")) {
                 direction = FACTION_OPPOSITE;
+            }
+            if(d.startsWith("REM")) {
+                direction = FACTION_REMOVE;
             }
             if(d.startsWith("MIN")) {
                 direction = FACTION_MINIMUM;
             }
             if(d.startsWith("MAX")) {
                 direction = FACTION_MAXIMUM;
+            }
+            if(d.startsWith("ADD")) {
+                direction = FACTION_ADD;
             }
             String amt=((String)v.elementAt(2)).trim();
             if(amt.endsWith("%"))
@@ -467,24 +542,23 @@ public class Faction implements MsgListener
         public int low;
         public int high;
         public String Name;
-        public String zap;
         public int AlignEquiv;
+        public Faction myFaction;
 
-        public FactionRange(String key) 
+        public FactionRange(Faction F, String key) 
         {
             Vector v = Util.parseSemicolons(key,true);
             Name = (String) v.elementAt(2);
             low = new Integer( (String) v.elementAt(0)).intValue();
             high = new Integer( (String) v.elementAt(1)).intValue();
-            zap = (String) v.elementAt(3);
-            if(v.size()>4) {
-                if(((String)v.elementAt(4)).equalsIgnoreCase("GOOD")) 
+            if(v.size()>3) {
+                if(((String)v.elementAt(3)).equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_GOOD])) 
                     AlignEquiv = Faction.ALIGN_GOOD;
                 else 
-                if(((String)v.elementAt(4)).equalsIgnoreCase("NEUTRAL")) 
+                if(((String)v.elementAt(3)).equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_NEUTRAL])) 
                     AlignEquiv = Faction.ALIGN_NEUTRAL;
                 else 
-                if(((String)v.elementAt(4)).equalsIgnoreCase("EVIL")) 
+                if(((String)v.elementAt(3)).equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_EVIL])) 
                     AlignEquiv = Faction.ALIGN_EVIL;
                 else 
                     AlignEquiv = Faction.ALIGN_INDIFF;

@@ -621,7 +621,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		-((StdAbility)A).lastProfHelp)<60000)
 			return;
 
-		if(A.profficiency()<100)
+		if((A.profficiency()<100)&&(A.appropriateToMyFactions(mob)))
 		{
 			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.profficiency())
 			{

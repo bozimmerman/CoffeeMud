@@ -200,7 +200,9 @@ public class List extends StdCommand
 					&&(M.getStartRoom().getArea()==R.getArea()))
 					{
 						numMobs++;
-						if((Factions.isAlignEnabled())&&(M.fetchFaction(Factions.AlignID())!=Integer.MAX_VALUE)) totalAlignment+=M.fetchFaction(Factions.AlignID());
+						if((Factions.getFaction(Factions.AlignID())!=null)
+						&&(M.fetchFaction(Factions.AlignID())!=Integer.MAX_VALUE)) 
+						    totalAlignment+=M.fetchFaction(Factions.AlignID());
 						totalLevels+=M.envStats().level();
 					}
 				}
@@ -259,7 +261,7 @@ public class List extends StdCommand
 			}
 			if(numMobs>0)
 				buf.append(numMobs+" mobs\t"+(totalLevels/numMobs)+" avg levels\t");
-            if((numMobs>0)&&Factions.isAlignEnabled())
+            if((numMobs>0)&&(Factions.getFaction(Factions.AlignID())!=null))
                 buf.append((totalAlignment/numMobs)+" avg alignment");
 			if(linkedGroups.size()>0)
 			{

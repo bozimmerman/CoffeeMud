@@ -65,7 +65,7 @@ public class Spell_Delude extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 
 
-		if((success)&&(Factions.isAlignEnabled()))
+		if((success)&&(Factions.getFaction(Factions.AlignID())!=null))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the

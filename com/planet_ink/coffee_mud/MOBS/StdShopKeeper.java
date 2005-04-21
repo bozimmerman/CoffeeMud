@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.MOBS;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -1254,6 +1255,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		Vector V=Util.parse(part.trim());
 		double d=0.0;
 		boolean yes=false;
+	    Vector VF=mob.fetchFactionRanges();
+	    String align=Sense.getAlignmentName(mob);
 		for(int v=0;v<V.size();v++)
 		{
 			String bit=(String)V.elementAt(v);
@@ -1263,8 +1266,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{ yes=true; break;}
 			if(bit.equalsIgnoreCase(mob.charStats().getMyRace().racialCategory()))
 			{	yes=true; break;}
-			if(bit.equalsIgnoreCase( Factions.getZapTerm(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()))))
+			if(bit.equalsIgnoreCase(align))
 			{ yes=true; break;}
+		    for(int vf=0;vf<VF.size();vf++)
+			    if(bit.equalsIgnoreCase((String)V.elementAt(v)))
+			    { yes=true; break;}
 		}
 		if(yes) return d;
 		return 0.0;

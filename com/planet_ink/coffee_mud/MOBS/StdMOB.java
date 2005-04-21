@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.MOBS;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -102,9 +103,11 @@ public class StdMOB implements MOB
 		attributesBitmap=newVal;
 		if(mySession!=null) mySession.initTermID(attributesBitmap);
 	}
-    public String getFactionListing() {
+    public String getFactionListing() 
+    {
         StringBuffer msg=new StringBuffer();
-        for(Enumeration e=fetchFactions();e.hasMoreElements();) {
+        for(Enumeration e=fetchFactions();e.hasMoreElements();) 
+        {
             Faction F=Factions.getFaction((String)e.nextElement());
             msg.append(F.name+"("+fetchFaction(F.ID)+");");
         }
@@ -582,7 +585,14 @@ public class StdMOB implements MOB
 		location().recoverRoomStats();
 		if((!isGeneric())&&(resetStats))
 			resetToMaxState();
-
+		Faction F=null;
+		for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+		{
+		    F=(Faction)e.nextElement();
+		    if((!F.hasFaction(this))&&(F.findAutoDefault(this)!=Integer.MAX_VALUE))
+		        addFaction(F.ID,F.findAutoDefault(this));
+		}
+		    
 		if(Sense.isSleeping(this))
 			tell("(You are asleep)");
 		else
@@ -2042,7 +2052,13 @@ public class StdMOB implements MOB
 				}
 				break;
             case CMMsg.TYP_FACTIONCHANGE:
-                adjustFaction(msg.othersMessage(),msg.value());
+                if(msg.othersMessage()!=null)
+                {
+	                if((msg.value()==Integer.MAX_VALUE)||(msg.value()==Integer.MIN_VALUE))
+	                    removeFaction(msg.othersMessage());
+	                else
+		                adjustFaction(msg.othersMessage(),msg.value());
+                }
                 break;
 			case CMMsg.TYP_DEATH:
 				if(!amDead)
@@ -3467,6 +3483,18 @@ public class StdMOB implements MOB
             String fID=(String)e.nextElement();
             addFaction(fID,source.fetchFaction(fID));
         }
+    }
+    public Vector fetchFactionRanges()
+    {
+        Faction F=null;
+        Vector V=new Vector();
+        for(Enumeration e=fetchFactions();e.hasMoreElements();)
+        {
+            F=Factions.getFaction((String)e.nextElement());
+            if(F==null) continue;
+            V.addElement(Factions.getRange(F.ID,fetchFaction(F.ID)));
+        }
+        return V;
     }
 
 	public int freeWearPositions(long wornCode)

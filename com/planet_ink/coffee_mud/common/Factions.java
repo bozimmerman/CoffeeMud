@@ -21,12 +21,20 @@ import java.io.*;
  * <p>limitations under the License.
  */
 
-public class Factions 
+public class Factions implements Tickable
 {
 	public static Hashtable factionSet = new Hashtable();
+	public static Hashtable hashedFactionRanges=new Hashtable();
 	
 	public Factions() 
 	{
+	}
+	
+	
+	public static void clearFactions()
+	{
+	    factionSet.clear();
+	    hashedFactionRanges.clear();
 	}
 	
 	public static Faction getFaction(String factionID) 
@@ -36,12 +44,25 @@ public class Factions
 	    {
 	        if(!factionSet.containsKey(factionID))
 	        {
-	            Faction f=new Faction(Resources.getFileResource(factionID),factionID);
-	            factionSet.put(factionID,f);
-	            return f;
+	            Faction F=new Faction(Resources.getFileResource(factionID),factionID);
+	            for(int r=0;r<F.ranges.size();r++)
+	            {
+	                Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(r);
+	                if(!hashedFactionRanges.containsKey(FR.Name.toUpperCase()))
+	                    hashedFactionRanges.put(FR.Name.toUpperCase(),FR);
+	            }
+	            factionSet.put(factionID,F);
+	            return F;
 	        }
 	        return (Faction)factionSet.get(factionID);
 	    }
+	    return null;
+	}
+	
+	public static Faction getFactionByRangeName(String rangeID)
+	{
+	    if(hashedFactionRanges.containsKey(rangeID.toUpperCase()))
+	        return (Faction)hashedFactionRanges.get(rangeID.toUpperCase());
 	    return null;
 	}
 	
@@ -98,30 +119,32 @@ public class Factions
 	    return msg.toString();
 	}
 	
-	public static String getName(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.name; return null; }
+	public String ID(){return "Factions";}
+	public String name(){return "Factions";}
+	public long getTickStatus(){ return Tickable.STATUS_NOT;}
+	public static String getName(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.name; return ""; }
 	public static int getMinimum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.minimum; return 0; }
 	public static int getMaximum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.maximum; return 0; }
 	public static int getPercent(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercent(faction); return 0; }
 	public static int getPercentFromAvg(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercentFromAvg(faction); return 0; }
 	public static boolean getExperience(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.experience; return false; }
 	public static Faction.FactionRange getRange(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRange(faction); return null; }
-	public static String getZapTerm(String factionID, int faction) { Faction.FactionRange R=getRange(factionID,faction); if(R!=null) return R.zap; return null; }
 	public static Vector getRanges(String factionID) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRanges(); return null; }
 	public static Double getRangePercent(String factionID, int faction) { Faction.FactionRange R=Factions.getRange(factionID,faction); if(R==null) return null; return new Double(Util.div((faction - R.low),(R.high - R.low)) * 100.0);}
 	public static double getRateModifier(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.rateModifier; return 0; }
 	public static int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum-f.minimum); return 0; }
 	public static int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
 	
-	public static boolean isAlignEnabled() { return CommonStrings.getVar(CommonStrings.SYSTEM_ENABLEALIGN).length()>0; }
-	public static String AlignID() { if(isAlignEnabled()) return CommonStrings.getVar(CommonStrings.SYSTEM_ENABLEALIGN); return ""; }
+	public static String AlignID() { return "ALIGNMENT.INI"; }
 	public static void setAlignment(MOB mob, int newAlignment)
 	{
-	    if(Factions.isAlignEnabled()) 
+	    if(getFaction(AlignID())!=null) 
 	        mob.addFaction(AlignID(),getAlignThingie(newAlignment));
 	}
+	
 	public static void setAlignmentOldRange(MOB mob, int oldRange)
 	{
-		if(Factions.isAlignEnabled())
+		if(getFaction(AlignID())!=null)
 		{
 			if(oldRange>=650)
 				Factions.setAlignment(mob,Faction.ALIGN_GOOD);
@@ -133,6 +156,32 @@ public class Factions
 			    Factions.setAlignment(mob,Faction.ALIGN_EVIL);
 			else{ /* a -1 value is the new norm */}
 		}
+	}
+	public boolean tick(Tickable ticking, int tickID)
+	{
+	    try
+	    {
+		    Session S=null;
+		    MOB mob=null;
+		    Faction F=null;
+		    Faction.FactionChangeEvent CE=null; 
+		    for(int s=0;s<Sessions.size();s++)
+		    {
+		        S=Sessions.elementAt(s);
+		        mob=(!S.killFlag())?S.mob():null;
+		        if(mob!=null)
+		        {
+		            for(Enumeration e=factionSet.elements();e.hasMoreElements();)
+		            {
+		                F=(Faction)e.nextElement();
+		                CE=F.findChangeEvent("ADD");
+		                if((CE!=null)&&(CE.applies(mob)))
+		                    F.executeChange(mob,mob,CE);
+		            }
+		        }
+		    }
+	    }catch(Exception e){}
+	    return true;
 	}
 	
 	public static int getAlignPurity(int faction, int AlignEq) 
@@ -173,7 +222,8 @@ public class Factions
 				if(R.high>top) top=R.high;
 			}
 		}
-		switch(AlignEq) {
+		switch(AlignEq) 
+		{
 			case Faction.ALIGN_GOOD:
 				return top;
 			case Faction.ALIGN_EVIL:

@@ -367,12 +367,19 @@ public class CMMap
 		realrace.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity.replace(' ','_');
-		String align=Factions.getZapTerm(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
+		String align=Sense.getAlignmentName(mob);
 		String roomID=(String)startRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)startRooms.get(realrace);
-		if(((roomID==null)||(roomID.length()==0))&&Factions.isAlignEnabled())
+		if(((roomID==null)||(roomID.length()==0)))
 			roomID=(String)startRooms.get(align);
+		if(((roomID==null)||(roomID.length()==0)))
+		{
+		    Vector V=mob.fetchFactionRanges();
+		    for(int v=0;v<V.size();v++)
+			    if(startRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
+			    { roomID=(String)startRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
+		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=(String)startRooms.get(deity);
 		if((roomID==null)||(roomID.length()==0))
@@ -394,10 +401,17 @@ public class CMMap
 		race.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity.replace(' ','_');
-		String align=Factions.getZapTerm(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
+		String align=Sense.getAlignmentName(mob);
 		String roomID=(String)deathRooms.get(race);
-		if(((roomID==null)||(roomID.length()==0))&&Factions.isAlignEnabled())
+		if(((roomID==null)||(roomID.length()==0)))
 			roomID=(String)deathRooms.get(align);
+		if(((roomID==null)||(roomID.length()==0)))
+		{
+		    Vector V=mob.fetchFactionRanges();
+		    for(int v=0;v<V.size();v++)
+			    if(deathRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
+			    { roomID=(String)deathRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
+		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=(String)deathRooms.get(deity);
 		if((roomID==null)||(roomID.length()==0))
@@ -435,12 +449,19 @@ public class CMMap
 		realrace.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity.replace(' ','_');
-		String align=Factions.getZapTerm(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
+		String align=Sense.getAlignmentName(mob);
 		String roomID=(String)bodyRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)bodyRooms.get(realrace);
-		if(((roomID==null)||(roomID.length()==0))&&Factions.isAlignEnabled())
+		if(((roomID==null)||(roomID.length()==0)))
 			roomID=(String)bodyRooms.get(align);
+		if(((roomID==null)||(roomID.length()==0)))
+		{
+		    Vector V=mob.fetchFactionRanges();
+		    for(int v=0;v<V.size();v++)
+			    if(bodyRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
+			    { roomID=(String)bodyRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
+		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=(String)bodyRooms.get(deity);
 		if((roomID==null)||(roomID.length()==0))

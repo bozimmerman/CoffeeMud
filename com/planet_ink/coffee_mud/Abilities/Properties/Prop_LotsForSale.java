@@ -69,7 +69,6 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					R.rawExits()[d]=null;
 					updateExits=true;
 					CoffeeUtensils.obliterateRoom(R2);
-					R2.getArea().fillInAreaRoom(R2);
 				}
 			}
 			if(!foundOne)
@@ -78,7 +77,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				return;
 			}
 			if(updateExits)
+			{
 				CMClass.DBEngine().DBUpdateExits(R);
+				R.getArea().fillInAreaRoom(R);
+			}
 		}
 		else
 		{
@@ -113,8 +115,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				}
 			}
 			if(updateExits)
+			{
 				CMClass.DBEngine().DBUpdateExits(R);
-			R.getArea().fillInAreaRoom(R);
+				R.getArea().fillInAreaRoom(R);
+			}
 		}
 	}
 }

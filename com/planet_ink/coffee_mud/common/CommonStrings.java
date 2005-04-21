@@ -67,9 +67,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_CLANTROPAREA=42;
 	public static final int SYSTEM_COLORSCHEME=43;
 	public static final int SYSTEM_SMTPSERVERNAME=44;
-    public static final int SYSTEM_ENABLEALIGN=45;
-    public static final int SYSTEM_EXPCONTACTLINE=46;
-	public static final int NUM_SYSTEM=47;
+    public static final int SYSTEM_EXPCONTACTLINE=45;
+	public static final int NUM_SYSTEM=46;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -247,11 +246,14 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_CLANTROPEXP,page.getStr("CLANTROPEXP"));
 		setVar(SYSTEM_COLORSCHEME,page.getStr("COLORSCHEME"));
 		setVar(SYSTEM_SMTPSERVERNAME,page.getStr("SMTPSERVERNAME"));
-        setVar(SYSTEM_ENABLEALIGN,page.getStr("ENABLEALIGN"));
         setVar(SYSTEM_EXPCONTACTLINE,page.getStr("EXPCONTACTLINE"));
         setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,page.getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
+        Vector preLoadFactions=Util.parse(page.getStr("FACTIONS"));
+        Factions.clearFactions();
+        for(int i=0;i<preLoadFactions.size();i++)
+            Factions.getFaction((String)preLoadFactions.elementAt(i));
+        
 		CMColor.clookup=null;
-
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
 		else

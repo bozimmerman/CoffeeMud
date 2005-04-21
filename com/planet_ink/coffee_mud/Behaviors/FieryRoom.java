@@ -6,164 +6,152 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 /**
- * <p>Title: False Realities Flavored CoffeeMUD</p>
- * <p>Description: The False Realities Version of CoffeeMUD</p>
- * <p>Copyright: Copyright (c) 2004 Jeremy Vyska</p>
- * <p>Licensed under the Apache License, Version 2.0 (the "License");
- * <p>you may not use this file except in compliance with the License.
- * <p>You may obtain a copy of the License at
- *
- * <p>       http://www.apache.org/licenses/LICENSE-2.0
- *
- * <p>Unless required by applicable law or agreed to in writing, software
- * <p>distributed under the License is distributed on an "AS IS" BASIS,
- * <p>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * <p>See the License for the specific language governing permissions and
- * <p>limitations under the License.
+ * <p>Title: False Realities Presents FieryRoom</p>
+ * <p>Description: False Realities - Discover your true destiny and change history...</p>
  * <p>Company: http://www.falserealities.com</p>
- * @author FR - Jeremy Vyska; CM - Bo Zimmerman
- * @version 1.0.0.0
+ * @author Tulath (a.k.a.) Jeremy Vyska
  */
-// min=100 max=200 chance=100;damage=77 Title="A Horribly Blackened Spot" Description="This place was once just like any part of the road.  Now it is nothing more than a sooty pit." NOSTOP eqchance=17
+public class FieryRoom
+    extends ActiveTicker {
+    public String ID() {
+        return "FieryRoom"; }
 
-public class FieryRoom extends ActiveTicker 
-{
-    public String ID(){return "FieryRoom";}
-	protected int canImproveCode(){return Behavior.CAN_ROOMS;}
-    private String newDisplay="";
-    private String newDesc="";
-    private int directDamage=10;
-    private int eqChance=0;
-    private boolean noNpc=false;
-    private boolean notStart=false;
+    protected int canImproveCode() {
+        return Behavior.CAN_ROOMS; }
 
-    public FieryRoom() 
-	{
-        minTicks=100;maxTicks=200;chance=100;
+    public Behavior newInstance() {
+        return new FieryRoom(); }
+
+    private String newDisplay = "";
+    private String newDesc = "";
+    private int directDamage = 10;
+    private int eqChance = 0;
+    private int burnTicks = 12;
+    private boolean noStop = false;
+    private boolean noNpc = false;
+    private boolean noFireText = false;
+
+    private String[] FireTexts = {"The fire here crackles and burns."};
+
+    public FieryRoom() {
+        minTicks = 5; maxTicks = 10; chance = 100;
         tickReset();
     }
 
-    public void setParms(String newParms)
-    {
+    public void setParms(String newParms) {
         super.setParms(newParms);
-        newDisplay=Util.getParmStr(newParms,"Title","A Charred Ruin");
-        newDesc=Util.getParmStr(newParms,"Description","Whatever was once here is now nothing more than ash.");
-        directDamage=Util.getParmInt(newParms,"damage",10);
-        if(newParms.toUpperCase().indexOf("NONPC")>0) noNpc = true;
-        if(newParms.toUpperCase().indexOf("NOTSTART")>0) notStart = true;
-        eqChance=Util.getParmInt(newParms,"eqchance",0);
+        newDisplay = Util.getParmStr(newParms, "Title", "A Charred Ruin");
+        newDesc = Util.getParmStr(newParms, "Description", "Whatever was once here is now nothing more than ash.");
+        directDamage = Util.getParmInt(newParms, "damage", 10);
+        if (newParms.toUpperCase().indexOf("NOSTOP") > 0) noStop = true;
+        if (newParms.toUpperCase().indexOf("NONPC") > 0) noNpc = true;
+        if (newParms.toUpperCase().indexOf("NOFIRETEXT") > 0) noFireText = true;
+        eqChance = Util.getParmInt(newParms, "eqchance", 0);
+        burnTicks = Util.getParmInt(newParms, "burnticks", 12);
+        setFireTexts();
     }
 
-    public boolean tick(Tickable ticking, int tickID)
-    {
+    private void setFireTexts() {
+        String[] newFireTexts = {"The fire here crackles and burns.",
+                                  "The intense heat of the fire here is "+(directDamage>0?"very painful":"very unpleasant")+".",
+                                  "The flames dance around you"+(eqChance>0?", licking at your clothes.":"."),
+                                  "The fire is burning out of control. You fear for your safety"+(noStop?".":" as it looks like this place is being completely consumed."),
+                                  "You hear popping and sizzling as something burns.",
+                                  "The smoke here is very thick and you worry about whether you will be able to breathe."};
+        FireTexts = newFireTexts;
+    }
+
+    public boolean tick(Tickable ticking, int tickID) {
         super.tick(ticking, tickID);
         // on every tick, we may do damage OR eq handling.
-        Room room=(Room)ticking;
-/*                room.showHappens(Affect.MSG_OK_ACTION,"FieryRoom Report: \n\r"
-                         +"The room will eventually be: \n\r"
-                         +newDisplay+"\n\r"
-                         +newDesc+"\n\r"
-                         +"-----------------\n\r"
-                         +"Damage per tick will be:   "+directDamage+"\n\r"
-                         +"This room will "+(noStop?"NOT ":"")+"stop burning.\n\r"
-                         +"There is a "+eqChance+"% of equipment loss.\n\r"
-                         );*/
-        if((directDamage>0)||(eqChance>0)) 
-		{
+        Room room = (Room) ticking;
+        if ( (directDamage > 0) || (eqChance > 0)) {
             // for each inhab, do directDamage to them.
-            for (int i = 0; i < room.numInhabitants(); i++) 
-			{
+            for (int i = 0; i < room.numInhabitants(); i++) {
                 MOB inhab = room.fetchInhabitant(i);
-                if(inhab.isMonster()) 
-				{
-                    boolean reallyAffect=true;
-                    if(notStart&&(inhab.getStartRoom()!=null)&&
-                       inhab.getStartRoom().roomID().equalsIgnoreCase(room.roomID())) 
-					{
-                        reallyAffect=false;
-                    }
-                    if(noNpc) 
-					{
-                        reallyAffect=false;
-                        HashSet group=inhab.getGroupMembers(new HashSet());
-						for(Iterator e=group.iterator();e.hasNext();)
-                        {
-                            MOB follower=(MOB)e.next();
-                            if(!(follower.isMonster())) 
-							{
-                                reallyAffect=true;
+                if (inhab.isMonster()) {
+                    boolean reallyAffect = true;
+                    if (noNpc) {
+                        reallyAffect = false;
+                        HashSet group = inhab.getGroupMembers(new HashSet());
+                        for (Iterator e = group.iterator(); e.hasNext(); ) {
+                            MOB follower = (MOB) e.next();
+                            if (! (follower.isMonster())) {
+                                reallyAffect = true;
                                 break;
                             }
                         }
                     }
-                    if (reallyAffect) 
-					{
+                    if (reallyAffect) {
                         dealDamage(inhab);
-                        if(Dice.rollPercentage()>eqChance)
+                        if (Dice.rollPercentage() > eqChance)
                             eqRoast(inhab);
                     }
                 }
-                else
-                {
-                    if(!CMSecurity.isAllowed(inhab,room,"CMDROOMS"))
-					{
+                else {
+                    if((!CMSecurity.isAllowed(inhab,inhab.location(),"ORDER"))
+        		&&(!CMSecurity.isAllowed(inhab,inhab.location(),"CMDROOMS"))) {
                         dealDamage(inhab);
-                        if(Dice.rollPercentage()>eqChance)
+                        if (Dice.rollPercentage() > eqChance)
                             eqRoast(inhab);
                     }
                 }
             }
         }
-        if (canAct(ticking, tickID)) 
-		{
-            if (ticking instanceof Room) 
-			{
-                // The tick happened.  This means the room gets set
-                // to the torched text and the behavior goes away.
-                room.setDisplayText(newDisplay);
-                room.setDescription(newDesc);
-                room.delBehavior(this);
+        if (canAct(ticking, tickID)) {
+            if (ticking instanceof Room) {
+                // % chance of burning each item in the room.
+                roastRoom(room);
+                // The tick happened.  If NOT NoFireText, Do flame emotes
+                if(!noFireText) {
+                    Room R = (Room) ticking;
+                    String pickedText=FireTexts[Dice.roll(1,FireTexts.length,0)-1];
+                    R.showHappens(CMMsg.MSG_OK_ACTION,pickedText);
+                }
+                if (!noStop) {
+                    if(burnTicks==0) {
+                        // NOSTOP is false.  This means the room gets set
+                        // to the torched text and the behavior goes away.
+                        room.setDisplayText(newDisplay);
+                        room.setDescription(newDesc);
+                        room.delBehavior(this);
+                    }
+                    else
+                        --burnTicks;
+                }
             }
         }
         return true;
     }
 
-    private void dealDamage(MOB mob) 
-	{
-        MUDFight.postDamage(mob, mob, null, directDamage, CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
-                                "The fire here <DAMAGE> <T-NAME>!");
+    private void dealDamage(MOB mob) {
+        MUDFight.postDamage(mob, mob, null, directDamage, CMMsg.MASK_GENERAL | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
+                            "The fire here <DAMAGE> <T-NAME>!");
     }
 
-    private void eqRoast(MOB mob) 
-	{
-        Item target=getSomething(mob);
-        if(target!=null) 
-		{
-            switch(target.material()&EnvResource.MATERIAL_MASK)
-            {
+    private void eqRoast(MOB mob) {
+        Item target = getSomething(mob);
+        if (target != null) {
+            switch (target.material() & EnvResource.MATERIAL_MASK) {
                 case EnvResource.MATERIAL_GLASS:
                 case EnvResource.MATERIAL_METAL:
                 case EnvResource.MATERIAL_MITHRIL:
                 case EnvResource.MATERIAL_PLASTIC:
                 case EnvResource.MATERIAL_PRECIOUS:
                 case EnvResource.MATERIAL_ROCK:
-                case EnvResource.MATERIAL_UNKNOWN:
-                {
+                case EnvResource.MATERIAL_UNKNOWN: {
                     // all these we'll make get hot and be dropped.
-                    int damage=Dice.roll(1,6,1);
-                    MUDFight.postDamage(mob,mob,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,target.name()+" <DAMAGE> <T-NAME>!");
-                    if(Dice.rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
-                    {
-                        CommonMsgs.drop(mob,target,false,false);
+                    int damage = Dice.roll(1, 6, 1);
+                    MUDFight.postDamage(mob, mob, null, damage, CMMsg.MASK_GENERAL | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, target.name() + " <DAMAGE> <T-NAME>!");
+                    if (Dice.rollPercentage() < mob.charStats().getStat(CharStats.STRENGTH)) {
+                        CommonMsgs.drop(mob, target, false, false);
                     }
                     break;
                 }
-                default:
-                {
-                    Ability burn=CMClass.getAbility("Burning");
-                    if(burn!=null) 
-					{
-                        mob.location().showHappens(CMMsg.MSG_OK_ACTION,target.Name()+" begins to burn!");
+                default: {
+                    Ability burn = CMClass.getAbility("Burning");
+                    if (burn != null) {
+                        mob.location().showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
                         target.addEffect(burn);
                         target.recoverEnvStats();
                     }
@@ -172,13 +160,23 @@ public class FieryRoom extends ActiveTicker
         }
     }
 
-    private static Item getSomething(MOB mob)
-    {
+    private static void roastRoom(Room which) {
+      for(int i=0;i<which.numItems();i++) {
+        Item target=which.fetchItem(i);
+        Ability burn = CMClass.getAbility("Burning");
+                    if((burn != null)&&(Dice.rollPercentage()>60)) {
+                        which.showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
+                        target.addEffect(burn);
+                        target.recoverEnvStats();
+                    }
+      }
+    }
+
+    private static Item getSomething(MOB mob) {
         Vector good = new Vector();
         Vector great = new Vector();
         Item target = null;
-        for (int i = 0; i < mob.inventorySize(); i++) 
-		{
+        for (int i = 0; i < mob.inventorySize(); i++) {
             Item I = mob.fetchInventory(i);
             if (I.amWearingAt(Item.INVENTORY))
                 good.addElement(I);

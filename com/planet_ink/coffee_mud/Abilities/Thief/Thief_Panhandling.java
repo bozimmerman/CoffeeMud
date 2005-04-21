@@ -108,14 +108,7 @@ public class Thief_Panhandling extends ThiefSkill
 						CommonMsgs.say(mob,mob2,"Gold piece for a poor soul down on "+mob.charStats().hisher()+" luck?",false,false);
 						break;
 					}
-                    // if align is enabled AND they're good AND they make a justice save
-                    // OR
-                    // align is disabled and they make a justice save
-                    if( ( (Factions.isAlignEnabled())
-                         &&((Dice.rollPercentage()*10)<(Factions.getPercent(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()))))
-                         &&(Dice.rollPercentage()>mob2.charStats().getSave(CharStats.SAVE_JUSTICE)))
-                        ||(!(Factions.isAlignEnabled())
-                         &&(Dice.rollPercentage()>mob2.charStats().getSave(CharStats.SAVE_JUSTICE))))
+                    if(Dice.rollPercentage()>(mob2.charStats().getSave(CharStats.SAVE_JUSTICE)+(Sense.isGood(mob)?10:0)))
 					{
 					    double total=BeanCounter.getTotalAbsoluteNativeValue(mob2);
 					    if(total>1.0)

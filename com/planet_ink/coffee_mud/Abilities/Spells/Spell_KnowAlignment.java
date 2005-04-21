@@ -45,17 +45,11 @@ public class Spell_KnowAlignment extends Spell
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-            if(Factions.isAlignEnabled()) {
-                if(success)
-                    mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+CommonStrings.factionStr(mob.fetchFaction(Factions.AlignID()),Factions.AlignID())+".");
-                else
-                {
-                    mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+CommonStrings.factionStr(Factions.getRandom(Factions.AlignID()),Factions.AlignID())+".");
-                }
-            }
+            if(success)
+                mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+Sense.getAlignmentName(target).toLowerCase()+".");
             else
             {
-                mob.tell(mob,target,null,"What is this 'alignment' of which you speak?");
+                mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+Faction.ALIGN_NAMES[Dice.roll(1,Faction.ALIGN_NAMES.length-1,0)].toLowerCase()+".");
             }
 		}
 

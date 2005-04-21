@@ -31,12 +31,11 @@ public class Announce extends StdCommand
 	{
 	  	StringBuffer Message=new StringBuffer("");
 	  	int alignType=2;
-        if(Factions.isAlignEnabled()) {
-            if (Sense.isEvil(S.mob()))
-                alignType = 0;
-            else
-            if (Sense.isGood(S.mob())) alignType = 1;
-        }
+        if (Sense.isEvil(S.mob()))
+            alignType = 0;
+        else
+        if (Sense.isGood(S.mob())) 
+            alignType = 1;
 	  	switch(alignType)
 	  	{
 	  	  case 0:

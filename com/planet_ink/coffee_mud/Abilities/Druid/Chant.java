@@ -41,19 +41,6 @@ public class Chant extends StdAbility
 
 	public int classificationCode()	{ return Ability.CHANT;	}
 
-	public void helpProfficiency(MOB mob)
-	{
-
-		Ability A=mob.fetchAbility(this.ID());
-		if(A==null) return;
-		if(A.appropriateToMyFactions(mob))
-		{
-			super.helpProfficiency(mob);
-			return;
-		}
-		return;
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

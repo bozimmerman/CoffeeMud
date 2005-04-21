@@ -70,14 +70,14 @@ public class Spell_Clone extends Spell
 				Behavior B=CMClass.getBehavior("CombatAbilities");
 				myMonster.addBehavior(B);
 				B.startBehavior(myMonster);
-				if((Dice.rollPercentage()<50)&&(Factions.isAlignEnabled()))
+				if(Dice.rollPercentage()<50)
 				{
 					if(Sense.isGood(mob))
 					{
 						B=CMClass.getBehavior("MobileGoodGuardian");
 						myMonster.addBehavior(B);
 						B.startBehavior(myMonster);
-						myMonster.addFaction(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
+						myMonster.copyFactions(mob);
 					}
 					else
                     if(Sense.isEvil(mob))
@@ -85,7 +85,7 @@ public class Spell_Clone extends Spell
 						B=CMClass.getBehavior("MobileAggressive");
 						myMonster.addBehavior(B);
 						B.startBehavior(myMonster);
-						myMonster.addFaction(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));;
+						myMonster.copyFactions(mob);
 					}
                     else
                     {
@@ -95,7 +95,7 @@ public class Spell_Clone extends Spell
                         B=CMClass.getBehavior("Guard");
                         myMonster.addBehavior(B);
                         B.startBehavior(myMonster);
-                        myMonster.addFaction(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
+						myMonster.copyFactions(mob);
                     }
 					myMonster.setVictim(mob);
 				}

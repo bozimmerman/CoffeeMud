@@ -92,7 +92,7 @@ public class BodyPiercing extends CommonSkill
 		        		  Item.ON_EYES,
 		        		  Item.ON_TORSO};
 		String fullPartName=null;
-		for(int i=0;i<Item.wornLocation.length;i++)
+		for(int i=0;i<Item.wornCodes.length;i++)
 		{
 		    for(int ii=0;ii<piercable.length;ii++)
 		        if(Item.wornCodes[i]==piercable[ii])

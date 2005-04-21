@@ -561,6 +561,13 @@ public class StdArea implements Area
 
 		Vector levelRanges=new Vector();
 		Vector alignRanges=new Vector();
+		Faction theFaction=null;
+		for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+		{
+		    Faction F=(Faction)e.nextElement();
+		    if(F.showinareareport)
+		        theFaction=F;
+		}
 		statData=new int[Area.AREASTAT_NUMBER];
 		statData[Area.AREASTAT_POPULATION]=0;
 		statData[Area.AREASTAT_MINLEVEL]=Integer.MAX_VALUE;
@@ -581,8 +588,11 @@ public class StdArea implements Area
 				{
 					int lvl=mob.baseEnvStats().level();
 					levelRanges.addElement(new Integer(lvl));
-					if(mob.fetchFaction(Factions.AlignID())!= Integer.MAX_VALUE) alignRanges.addElement(new Integer(mob.fetchFaction(Factions.AlignID())));
-					if(mob.fetchFaction(Factions.AlignID())!= Integer.MAX_VALUE) totalAlignments+=mob.fetchFaction(Factions.AlignID());
+					if((theFaction!=null)&&(mob.fetchFaction(theFaction.ID)!=Integer.MAX_VALUE))
+					{
+					    alignRanges.addElement(new Integer(mob.fetchFaction(theFaction.ID)));
+					    totalAlignments+=mob.fetchFaction(theFaction.ID);
+					}
 					statData[Area.AREASTAT_POPULATION]++;
 					statData[Area.AREASTAT_TOTLEVEL]+=lvl;
 					if(!Sense.isAnimalIntelligence(mob))
@@ -627,8 +637,8 @@ public class StdArea implements Area
 			s.append("Level range    : "+statData[Area.AREASTAT_MINLEVEL]+" to "+statData[Area.AREASTAT_MAXLEVEL]+"\n\r");
 			s.append("Average level  : "+statData[Area.AREASTAT_AVGLEVEL]+"\n\r");
 			s.append("Median level   : "+statData[Area.AREASTAT_MEDLEVEL]+"\n\r");
-			if(Factions.isAlignEnabled()) s.append("Avg. Alignment : "+statData[Area.AREASTAT_AVGALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_AVGALIGN])+")\n\r");
-			if(Factions.isAlignEnabled()) s.append("Med. Alignment : "+statData[Area.AREASTAT_MEDALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_MEDALIGN])+")\n\r");
+			if(theFaction!=null) s.append("Avg. "+Util.padRight(theFaction.name,10)+": "+statData[Area.AREASTAT_AVGALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_AVGALIGN])+")\n\r");
+			if(theFaction!=null) s.append("Med. "+Util.padRight(theFaction.name,10)+": "+statData[Area.AREASTAT_MEDALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_MEDALIGN])+")\n\r");
 		}
 		Resources.submitResource("HELP_"+Name().toUpperCase(),s);
 		return s;

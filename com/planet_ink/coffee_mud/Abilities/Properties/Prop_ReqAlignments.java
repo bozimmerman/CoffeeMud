@@ -34,7 +34,7 @@ public class Prop_ReqAlignments extends Property
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
 		int x=text().toUpperCase().indexOf("ALL");
-		int y=text().toUpperCase().indexOf(Factions.getZapTerm(Factions.AlignID(),mob.fetchFaction(Factions.AlignID())));
+		int y=text().toUpperCase().indexOf(Sense.getAlignmentName(mob));
 		if(((x>0)
 			&&(text().charAt(x-1)=='-')
 			&&((y<=0)

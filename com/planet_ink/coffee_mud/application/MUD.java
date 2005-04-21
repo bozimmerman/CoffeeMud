@@ -198,6 +198,9 @@ public class MUD extends Thread implements MudHost
 
 		ClanLoader.DBRead();
 		Log.sysOut("MUD","Clans loaded      : "+Clans.size());
+		
+		Factions FS=new Factions();
+		CMClass.ThreadEngine().startTickDown(FS,MudHost.TICK_MOB,10);
 
 		Log.sysOut("MUD","Loading map...");
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading rooms....");

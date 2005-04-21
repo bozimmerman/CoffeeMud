@@ -24,7 +24,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 {
 	public String ID(){return "StdThinGrid";}
 	
-	public final static long EXPIRATION=300000;
+	public final static long EXPIRATION=1800000;
 	
 	protected Vector descriptions=new Vector();
 	protected Vector displayTexts=new Vector();

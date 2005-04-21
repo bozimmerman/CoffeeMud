@@ -107,6 +107,24 @@ public class INI extends Properties
 		return false;
 	}
 
+	/** retrieve a particular .ini file entry as a double
+	*
+	* <br><br><b>Usage:</b>  int i=propertyGetterOfInteger(p,"TAG");
+	* @param tagToGet	the property tag to retreive.
+	* @return int	the value of the .ini file tag
+	*/
+	public double getDouble(String tagToGet)
+	{
+		try
+		{
+			return Double.parseDouble(getStr(tagToGet));
+		}
+		catch(Throwable t)
+		{
+			return 0.0;
+		}
+	}
+	
 	/** retrieve a particular .ini file entry as an integer
 	*
 	* <br><br><b>Usage:</b>  int i=propertyGetterOfInteger(p,"TAG");

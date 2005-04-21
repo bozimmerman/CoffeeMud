@@ -1060,7 +1060,7 @@ public class Arrest extends StdBehavior
 			if(M.isMonster()
 			&&(M!=accused)
 			&&(M.charStats().getStat(CharStats.INTELLIGENCE)>3)
-			&&(Dice.rollPercentage()<=( Factions.getPercent(Factions.AlignID(),M.fetchFaction(Factions.AlignID())))))
+			&&(Dice.rollPercentage()<=(Sense.isEvil(accused)?25:(Sense.isGood(accused)?95:50))))
 				return M;
 		}
 		return null;

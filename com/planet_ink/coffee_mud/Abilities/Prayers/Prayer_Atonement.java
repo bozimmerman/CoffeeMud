@@ -41,7 +41,7 @@ public class Prayer_Atonement extends Prayer
 		if((mob!=target)&&(!mob.getGroupMembers(new HashSet()).contains(target)))
 			msg2=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
 
-		if(success&&Factions.isAlignEnabled())
+		if(success&&(Factions.getFaction(Factions.AlignID())!=null))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the

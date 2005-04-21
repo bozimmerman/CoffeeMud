@@ -42,7 +42,8 @@ public class Deviations extends StdCommand
 		str.append(Util.padRight("Armor",5)+" ");
 		str.append(Util.padRight("Speed",5)+" ");
 		str.append(Util.padRight("Rejuv",5)+" ");
-		if(Factions.isAlignEnabled()) str.append(Util.padRight("Align",7)+" ");
+		if(Factions.getFaction(Factions.AlignID())!=null) 
+		    str.append(Util.padRight("Align",7)+" ");
 		str.append(Util.padRight("Worn",5));
 		str.append("\n\r");
 		return str.toString();
@@ -239,7 +240,8 @@ public class Deviations extends StdCommand
 												(int)Math.round(M.baseEnvStats().speed()),
 												(int)Math.round(M.baseCharStats().getCurrentClass().getLevelSpeed(M))),5)+" ");
 				mobResults.append(Util.padRight(""+((M.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.envStats().rejuv()) ,5)+" ");
-				if(Factions.isAlignEnabled()) mobResults.append(Util.padRight(""+(M.fetchFaction(Factions.AlignID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(Factions.AlignID())),7)+" ");
+				if(Factions.getFaction(Factions.AlignID())!=null) 
+				    mobResults.append(Util.padRight(""+(M.fetchFaction(Factions.AlignID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(Factions.AlignID())),7)+" ");
 				int reallyWornCount = 0;
 				for(int j=0;j<M.inventorySize();j++)
 				{

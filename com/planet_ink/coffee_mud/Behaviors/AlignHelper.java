@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -44,7 +45,6 @@ public class AlignHelper extends StdBehavior
 		if((source!=observer)
 		&&(target!=observer)
 		&&(source!=target)
-		&&(Factions.isAlignEnabled())
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer))
@@ -52,7 +52,7 @@ public class AlignHelper extends StdBehavior
 	    &&( (Sense.isEvil(target)&&Sense.isEvil(observer))||(Sense.isNeutral(target)&&Sense.isNeutral(observer))||(Sense.isGood(target)&&Sense.isGood(observer))))
 		{
 			boolean yep=Aggressive.startFight(observer,source,true);
-			if(yep)	CommonMsgs.say(observer,null,Factions.getZapTerm(Factions.AlignID(),observer.fetchFaction(Factions.AlignID()))+" PEOPLE UNITE! CHARGE!",false,false);
+			if(yep)	CommonMsgs.say(observer,null,Sense.getAlignmentName(observer)+" PEOPLE UNITE! CHARGE!",false,false);
 		}
 	}
 }

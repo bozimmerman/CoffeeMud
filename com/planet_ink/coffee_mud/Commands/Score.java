@@ -154,8 +154,13 @@ public class Score extends Affect
 					msg.append("You need ^!"+(mob.getExpNeededLevel())+"^? experience points to advance to the next level.\n\r");
 			}
 		}
-		if((Factions.isAlignEnabled())&&(Factions.getFaction(Factions.AlignID())!=null))
-            msg.append("Your "+Factions.getFaction(Factions.AlignID()).name+" is      : ^H"+Factions.getRange(Factions.AlignID(),mob.fetchFaction(Factions.AlignID())).Name+"^?.\n\r");
+		for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
+		{
+		    String factionID=(String)e.nextElement();
+		    Faction.FactionRange FR=Factions.getRange(factionID,mob.fetchFaction(factionID));
+		    if((FR!=null)&&(FR.myFaction.showinscore))
+	            msg.append("Your "+Util.padRight(FR.myFaction.name+" is",18)+": ^H"+FR.Name+"^?.\n\r");
+		}
 		msg.append("Your armored defense is: ^H"+CommonStrings.armorStr(adjustedArmor)+"^?.\n\r");
 		msg.append("Your combat prowess is : ^H"+CommonStrings.fightingProwessStr(adjustedAttack)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");

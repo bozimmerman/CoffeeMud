@@ -160,8 +160,7 @@ public class Druid_PackCall extends StdAbility
 					newMOB.setName(name);
 					newMOB.setDisplayText("a loyal "+raceName+" is here");
 					newMOB.setDescription("");
-					if(Factions.isAlignEnabled()) 
-					    newMOB.addFaction(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));
+					newMOB.copyFactions(mob);
 					Ability A=CMClass.getAbility("Fighter_Rescue");
 					A.setProfficiency(100);
 					newMOB.addAbility(A);

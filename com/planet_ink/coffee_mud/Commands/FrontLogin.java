@@ -700,27 +700,57 @@ public class FrontLogin extends StdCommand
 				mob.recoverMaxState();
 				mob.resetToMaxState();
 
-				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"alignment.txt").toString());
-
-				if(Factions.isAlignEnabled())
+				
+				Faction F=null;
+				Vector mine=null;
+				int defaultValue=0;
+				for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
 				{
-					String alignment="";
-					while(alignment.length()==0)
-						alignment=mob.session().choose("Select a starting alignment:\n\r Good, Evil, or Neutral (G/N/E): ","GNE","");
-                    String alignID=Factions.AlignID();
-                    switch(alignment.charAt(0))
-                    {
-                        case 'G':
-                            mob.addFaction(alignID,Factions.getMaximum(alignID));
-                            break;
-                        case 'E':
-                            mob.addFaction(alignID,Factions.getMinimum(alignID));
-                            break;
-                        case 'N':
-                        default:
-                            mob.addFaction(alignID,((Factions.getMinimum(alignID)+Factions.getMaximum(alignID)) / 2));
-                            break;
-                    }
+				    F=(Faction)e.nextElement();
+				    mine=F.findChoices(mob);
+				    defaultValue=F.findAutoDefault(mob);
+				    if(defaultValue!=Integer.MAX_VALUE)
+				        mob.addFaction(F.ID,defaultValue);
+				    if(mine.size()==1)
+				        mob.addFaction(F.ID,((Integer)mine.firstElement()).intValue());
+				    else
+				    if(mine.size()>1)
+				    {
+				        if((F.choiceIntro!=null)&&(F.choiceIntro.length()>0))
+							mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource(F.choiceIntro).toString());
+				        StringBuffer menu=new StringBuffer("Select one: ");
+				        Vector namedChoices=new Vector();
+				        for(int m=0;m<mine.size();m++)
+				        {
+				            Faction.FactionRange FR=Factions.getRange(F.ID,((Integer)mine.elementAt(m)).intValue());
+				            if(FR!=null)
+				            {
+				                namedChoices.addElement(FR.Name.toUpperCase());
+				                menu.append(FR.Name+", ");
+				            }
+				            else
+				                namedChoices.addElement(""+((Integer)mine.elementAt(m)).intValue());
+				        }
+						if(mine.size()==namedChoices.size())
+						{
+							String alignment="";
+							while((!namedChoices.contains(alignment))
+							&&(!mob.session().killFlag()))
+							{
+								alignment=mob.session().prompt(menu.toString().substring(0,menu.length()-2)+".","").toUpperCase();
+								if(!namedChoices.contains(alignment))
+								    for(int i=0;i<namedChoices.size();i++)
+								        if(((String)namedChoices.elementAt(i)).startsWith(alignment.toUpperCase()))
+								        { alignment=(String)namedChoices.elementAt(i); break;}
+							}
+							if(!mob.session().killFlag())
+							{
+								int valueIndex=namedChoices.indexOf(alignment);
+								if(valueIndex>=0)
+								    mob.addFaction(F.ID,((Integer)mine.elementAt(valueIndex)).intValue());
+							}
+						}
+				    }
 				}
 				mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 				CoffeeUtensils.outfit(mob,mob.baseCharStats().getCurrentClass().outfit());

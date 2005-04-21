@@ -2095,19 +2095,42 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-    public static void genAlignment(MOB mob, MOB E, int showNumber, int showFlag)
+    public static void genSpecialFaction(MOB mob, MOB E, int showNumber, int showFlag, Faction F)
     throws IOException
     {
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		Faction F=Factions.getFaction(Factions.AlignID());
 		if(F==null) return;
-		mob.tell(showNumber+". "+F.name+": "+Factions.getRange(Factions.AlignID(),E.fetchFaction(Factions.AlignID())).Name+" ("+E.fetchFaction(Factions.AlignID())+")");
+		mob.tell(showNumber+". "+F.name+": "+Factions.getRange(F.ID,E.fetchFaction(F.ID)).Name+" ("+E.fetchFaction(F.ID)+")");
 	    if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newOne=mob.session().prompt("Enter a new value ("+F.minimum+" - "+F.maximum+"): ");
+	    if(F.ranges!=null)
+	    for(int v=0;v<F.ranges.size();v++)
+	    {
+	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(v);
+	        mob.tell(Util.padRight(FR.Name,20)+": "+FR.low+" - "+FR.high+")");
+	    }
+		String newOne=mob.session().prompt("Enter a new value: ");
 		if(Util.isInteger(newOne))
-		    E.addFaction(Factions.AlignID(),Util.s_int(newOne));
+		{
+		    E.addFaction(F.ID,Util.s_int(newOne));
+	        return;
+		}
 		else
-		    mob.tell("(no change)");
+	    for(int v=0;v<F.ranges.size();v++)
+	    {
+	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(v);
+	        if(FR.Name.toUpperCase().startsWith(newOne))
+	        {
+	            if(FR.low==F.lowest) 
+	                E.addFaction(F.ID,FR.low);
+	            else
+	            if(FR.high==F.highest) 
+	                E.addFaction(F.ID,FR.high);
+	            else
+	                E.addFaction(F.ID,FR.low+((FR.high-FR.low)/2));
+	            return;
+	        }
+	    }
+	    mob.tell("(no change)");
     }
     public static void genFaction(MOB mob, MOB E, int showNumber, int showFlag)
     throws IOException
@@ -5432,7 +5455,15 @@ public class BaseGenerics extends StdCommand
 				me.baseCharStats().getCurrentClass().fillOutMOB(me,me.baseEnvStats().level());
 			genRejuv(mob,me,++showNumber,showFlag);
 			genRace(mob,me,++showNumber,showFlag);
-			if(Factions.isAlignEnabled()) genAlignment(mob,me,++showNumber,showFlag);
+			Faction F=null;
+			for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+			{
+			    F=(Faction)e.nextElement();
+			    if((!F.hasFaction(me))&&(F.findAutoDefault(me)!=Integer.MAX_VALUE))
+			        mob.addFaction(F.ID,F.findAutoDefault(me));
+			    if(F.showineditor)
+				    genSpecialFaction(mob,me,++showNumber,showFlag,F);
+			}
 			genGender(mob,me,++showNumber,showFlag);
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
@@ -5521,7 +5552,15 @@ public class BaseGenerics extends StdCommand
 			genRace(mob,me,++showNumber,showFlag);
 			genCharClass(mob,me,++showNumber,showFlag);
 			genCharStats(mob,me,++showNumber,showFlag);
-			if(Factions.isAlignEnabled()) genAlignment(mob,me,++showNumber,showFlag);
+			Faction F=null;
+			for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+			{
+			    F=(Faction)e.nextElement();
+			    if((!F.hasFaction(me))&&(F.findAutoDefault(me)!=Integer.MAX_VALUE))
+			        mob.addFaction(F.ID,F.findAutoDefault(me));
+			    if(F.showineditor)
+				    genSpecialFaction(mob,me,++showNumber,showFlag,F);
+			}
 			genGender(mob,me,++showNumber,showFlag);
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
@@ -5598,7 +5637,15 @@ public class BaseGenerics extends StdCommand
 			genRace(mob,mme,++showNumber,showFlag);
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
-			if(Factions.isAlignEnabled()) genAlignment(mob,(MOB)me,++showNumber,showFlag);
+			Faction F=null;
+			for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+			{
+			    F=(Faction)e.nextElement();
+			    if((!F.hasFaction((MOB)me))&&(F.findAutoDefault((MOB)me)!=Integer.MAX_VALUE))
+			        mob.addFaction(F.ID,F.findAutoDefault((MOB)me));
+			    if(F.showineditor)
+				    genSpecialFaction(mob,(MOB)me,++showNumber,showFlag,F);
+			}
 			genGender(mob,mme,++showNumber,showFlag);
 			genClan(mob,mme,++showNumber,showFlag);
 			genSpeed(mob,me,++showNumber,showFlag);

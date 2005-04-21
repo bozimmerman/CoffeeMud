@@ -90,18 +90,6 @@ public class Prayer extends StdAbility
 			return "praying";
 	}
 
-	public void helpProfficiency(MOB mob)
-	{
-
-		Ability A=mob.fetchAbility(this.ID());
-		if(A==null) return;
-		if(A.appropriateToMyFactions(mob))
-		{
-			super.helpProfficiency(mob);
-			return;
-		}
-		return;
-	}
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,target,auto,asLevel))
