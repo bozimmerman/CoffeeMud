@@ -375,21 +375,19 @@ public class StdCharClass implements CharClass, Cloneable
 	{
 		if(victim!=null)
 		{
-			double theAmount=new Integer(amount).doubleValue();
 			int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);
 			int levelDiff=victim.envStats().level()-mob.envStats().level();
 
 			if(levelDiff<(-levelLimit) )
-				theAmount=0.0;
+				amount=0;
 			else
 			if(levelLimit>0)
 			{
 				double levelFactor=Util.div(levelDiff,levelLimit);
 				if(levelFactor>new Integer(levelLimit).doubleValue())
 					levelFactor=new Integer(levelLimit).doubleValue();
-				theAmount=theAmount+Util.mul(levelFactor,amount);
+				amount=(int)Math.round(new Integer(amount).doubleValue()+Util.mul(levelFactor,amount));
 			}
-            amount = (int)Math.round(theAmount);
 		}
 		if((mob.getLiegeID().length()>0)&&(amount>2))
 		{

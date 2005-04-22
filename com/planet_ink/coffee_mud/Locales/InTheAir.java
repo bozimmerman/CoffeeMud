@@ -131,6 +131,17 @@ public class InTheAir extends StdRoom
 	{
 		if(Sense.isSleeping(room))
 			return true;
+		if((msg.sourceMinor()==CMMsg.TYP_SIT)&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
+		{
+		    msg.source().tell("You can't sit here.");
+		    return false;
+		}
+		if((msg.sourceMinor()==CMMsg.TYP_SLEEP)&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
+		{
+		    msg.source().tell("You can't sleep here.");
+		    return false;
+		}
+		        
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.amITarget(room)))
 		{

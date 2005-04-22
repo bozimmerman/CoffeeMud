@@ -737,10 +737,14 @@ public class FrontLogin extends StdCommand
 							while((!namedChoices.contains(alignment))
 							&&(!mob.session().killFlag()))
 							{
-								alignment=mob.session().prompt(menu.toString().substring(0,menu.length()-2)+".","").toUpperCase();
+								alignment=mob.session().prompt(menu.toString().substring(0,menu.length()-2)+".\n\r: ","").toUpperCase();
 								if(!namedChoices.contains(alignment))
 								    for(int i=0;i<namedChoices.size();i++)
 								        if(((String)namedChoices.elementAt(i)).startsWith(alignment.toUpperCase()))
+								        { alignment=(String)namedChoices.elementAt(i); break;}
+								if(!namedChoices.contains(alignment))
+								    for(int i=0;i<namedChoices.size();i++)
+								        if(((String)namedChoices.elementAt(i)).indexOf(alignment.toUpperCase())>=0)
 								        { alignment=(String)namedChoices.elementAt(i); break;}
 							}
 							if(!mob.session().killFlag())

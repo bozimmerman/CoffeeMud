@@ -26,6 +26,18 @@ public class INI extends Properties
 	public boolean loaded=false;
 
 
+	public INI(InputStream in)
+	{
+		try
+		{
+			this.load(in);
+			loaded=true;
+		}
+		catch(IOException e)
+		{
+			loaded=false;
+		}
+	}
 	public INI(String filename)
 	{
 		try

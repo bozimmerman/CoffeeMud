@@ -248,7 +248,7 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_SMTPSERVERNAME,page.getStr("SMTPSERVERNAME"));
         setVar(SYSTEM_EXPCONTACTLINE,page.getStr("EXPCONTACTLINE"));
         setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,page.getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
-        Vector preLoadFactions=Util.parse(page.getStr("FACTIONS"));
+        Vector preLoadFactions=Util.parseSemicolons(page.getStr("FACTIONS"),true);
         Factions.clearFactions();
         for(int i=0;i<preLoadFactions.size();i++)
             Factions.getFaction((String)preLoadFactions.elementAt(i));

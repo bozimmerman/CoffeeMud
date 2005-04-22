@@ -2996,7 +2996,13 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&((E instanceof MOB)))
-					results.append(Factions.getRange(Factions.AlignID(),((MOB)E).fetchFaction(Factions.AlignID())).Name);
+				{
+				    Faction.FactionRange FR=Factions.getRange(Factions.AlignID(),((MOB)E).fetchFaction(Factions.AlignID()));
+				    if(FR!=null)
+						results.append(FR.Name);
+				    else
+				        results.append(((MOB)E).fetchFaction(Factions.AlignID()));
+				}
 				break;
 			}
 			case 8: // isevil

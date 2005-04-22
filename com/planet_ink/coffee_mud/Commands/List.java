@@ -120,6 +120,12 @@ public class List extends StdCommand
 
 	public StringBuffer listLinkages(MOB mob)
 	{
+	    Faction useFaction=null;
+	    for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+	    {
+	        Faction F=(Faction)e.nextElement();
+	        if(F.showinspecialreported) useFaction=F;
+	    }
 		StringBuffer buf=new StringBuffer("Links: \n\r");
 		Vector areaLinkGroups=new Vector();
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
@@ -200,9 +206,10 @@ public class List extends StdCommand
 					&&(M.getStartRoom().getArea()==R.getArea()))
 					{
 						numMobs++;
-						if((Factions.getFaction(Factions.AlignID())!=null)
-						&&(M.fetchFaction(Factions.AlignID())!=Integer.MAX_VALUE)) 
-						    totalAlignment+=M.fetchFaction(Factions.AlignID());
+						if((useFaction!=null)
+						&&(Factions.getFaction(useFaction.ID)!=null)
+						&&(M.fetchFaction(useFaction.ID)!=Integer.MAX_VALUE)) 
+						    totalAlignment+=M.fetchFaction(useFaction.ID);
 						totalLevels+=M.envStats().level();
 					}
 				}
@@ -261,8 +268,8 @@ public class List extends StdCommand
 			}
 			if(numMobs>0)
 				buf.append(numMobs+" mobs\t"+(totalLevels/numMobs)+" avg levels\t");
-            if((numMobs>0)&&(Factions.getFaction(Factions.AlignID())!=null))
-                buf.append((totalAlignment/numMobs)+" avg alignment");
+            if((numMobs>0)&&(useFaction!=null)&&(Factions.getFaction(useFaction.ID)!=null))
+                buf.append((totalAlignment/numMobs)+" avg "+useFaction.name);
 			if(linkedGroups.size()>0)
 			{
 				buf.append("\tgroups: "+linkedGroups.size()+" sizes: ");

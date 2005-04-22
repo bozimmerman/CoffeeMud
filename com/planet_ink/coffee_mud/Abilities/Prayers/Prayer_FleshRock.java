@@ -38,6 +38,7 @@ public class Prayer_FleshRock extends Prayer
 		&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
+			mob.makePeace();
 			if((statue.owner()!=null)&&(statue.owner()!=mob.location()))
 			{
 				Room room=null;

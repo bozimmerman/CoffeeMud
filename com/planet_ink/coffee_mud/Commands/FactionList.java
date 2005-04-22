@@ -23,7 +23,7 @@ public class FactionList extends StdCommand
 {
 	public FactionList(){}
 
-	private String[] access={"FACTION","FAC"};
+	private String[] access={"FACTIONS","FAC"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -42,8 +42,11 @@ public class FactionList extends StdCommand
     {
         StringBuffer line=new StringBuffer();
         line.append("  "+Util.padRight(Util.capitalize(Factions.getName(name).toLowerCase()),21)+" ");
-        Faction.FactionRange R=Factions.getRange(name,faction);
-        line.append(Util.padRight(R.Name,17)+" ");
+        Faction.FactionRange FR=Factions.getRange(name,faction);
+        if(FR==null)
+	        line.append(Util.padRight(""+faction,17)+" ");
+        else
+	        line.append(Util.padRight(FR.Name,17)+" ");
         line.append("[");
         line.append(Util.padRight(calcRangeBar(name,faction),25));
         line.append("]\n\r");
@@ -53,7 +56,7 @@ public class FactionList extends StdCommand
     public String calcRangeBar(String factionID, int faction) 
     {
 		StringBuffer bar=new StringBuffer();
-        Double fill=new Double(Util.div(Factions.getRangePercent(factionID,faction).doubleValue(),4));
+        Double fill=new Double(Util.div(Factions.getRangePercent(factionID,faction),4));
         for(int i=0;i<fill.intValue();i++) 
         {
             bar.append("*");

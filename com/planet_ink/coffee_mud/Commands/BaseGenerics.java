@@ -2100,7 +2100,8 @@ public class BaseGenerics extends StdCommand
     {
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(F==null) return;
-		mob.tell(showNumber+". "+F.name+": "+Factions.getRange(F.ID,E.fetchFaction(F.ID)).Name+" ("+E.fetchFaction(F.ID)+")");
+		Faction.FactionRange myFR=Factions.getRange(F.ID,E.fetchFaction(F.ID));
+		mob.tell(showNumber+". "+F.name+": "+((myFR!=null)?myFR.Name:"UNDEFINED")+" ("+E.fetchFaction(F.ID)+")");
 	    if((showFlag!=showNumber)&&(showFlag>-999)) return;
 	    if(F.ranges!=null)
 	    for(int v=0;v<F.ranges.size();v++)
@@ -2118,7 +2119,7 @@ public class BaseGenerics extends StdCommand
 	    for(int v=0;v<F.ranges.size();v++)
 	    {
 	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(v);
-	        if(FR.Name.toUpperCase().startsWith(newOne))
+	        if(FR.Name.toUpperCase().startsWith(newOne.toUpperCase()))
 	        {
 	            if(FR.low==F.lowest) 
 	                E.addFaction(F.ID,FR.low);

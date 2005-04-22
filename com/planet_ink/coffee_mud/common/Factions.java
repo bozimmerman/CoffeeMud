@@ -24,7 +24,7 @@ import java.io.*;
 public class Factions implements Tickable
 {
 	public static Hashtable factionSet = new Hashtable();
-	public static Hashtable hashedFactionRanges=new Hashtable();
+	private static Hashtable hashedFactionRanges=new Hashtable();
 	
 	public Factions() 
 	{
@@ -37,32 +37,34 @@ public class Factions implements Tickable
 	    hashedFactionRanges.clear();
 	}
 	
+	public static Hashtable rangeCodeNames(){ return hashedFactionRanges; }
+	
 	public static Faction getFaction(String factionID) 
 	{
+	    if(factionID==null) return null;
+		Faction F=(Faction)factionSet.get(factionID.toUpperCase());
+		if(F!=null) return F;
 		factionID=factionID.toUpperCase();
 	    if(Resources.getFileResource(factionID)!=null)
 	    {
-	        if(!factionSet.containsKey(factionID))
-	        {
-	            Faction F=new Faction(Resources.getFileResource(factionID),factionID);
-	            for(int r=0;r<F.ranges.size();r++)
-	            {
-	                Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(r);
-	                if(!hashedFactionRanges.containsKey(FR.Name.toUpperCase()))
-	                    hashedFactionRanges.put(FR.Name.toUpperCase(),FR);
-	            }
-	            factionSet.put(factionID,F);
-	            return F;
-	        }
-	        return (Faction)factionSet.get(factionID);
+            F=new Faction(Resources.getFileResource(factionID),factionID);
+            for(int r=0;r<F.ranges.size();r++)
+            {
+                Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(r);
+                String CodeName=(FR.CodeName.length()>0)?FR.CodeName.toUpperCase():FR.Name.toUpperCase();
+                if(!hashedFactionRanges.containsKey(CodeName))
+                    hashedFactionRanges.put(CodeName,FR);
+            }
+            factionSet.put(factionID,F);
+            return F;
 	    }
-	    return null;
+        return null;
 	}
 	
-	public static Faction getFactionByRangeName(String rangeID)
+	public static Faction getFactionByRangeCodeName(String rangeCodeName)
 	{
-	    if(hashedFactionRanges.containsKey(rangeID.toUpperCase()))
-	        return (Faction)hashedFactionRanges.get(rangeID.toUpperCase());
+	    if(hashedFactionRanges.containsKey(rangeCodeName.toUpperCase()))
+	        return (Faction)hashedFactionRanges.get(rangeCodeName.toUpperCase());
 	    return null;
 	}
 	
@@ -127,10 +129,9 @@ public class Factions implements Tickable
 	public static int getMaximum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.maximum; return 0; }
 	public static int getPercent(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercent(faction); return 0; }
 	public static int getPercentFromAvg(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercentFromAvg(faction); return 0; }
-	public static boolean getExperience(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.experience; return false; }
 	public static Faction.FactionRange getRange(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRange(faction); return null; }
 	public static Vector getRanges(String factionID) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRanges(); return null; }
-	public static Double getRangePercent(String factionID, int faction) { Faction.FactionRange R=Factions.getRange(factionID,faction); if(R==null) return null; return new Double(Util.div((faction - R.low),(R.high - R.low)) * 100.0);}
+	public static double getRangePercent(String factionID, int faction) { Faction.FactionRange R=Factions.getRange(factionID,faction); if(R==null) return 0.0; return (Util.div((faction - R.low),(R.high - R.low)) * 100.0);}
 	public static double getRateModifier(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.rateModifier; return 0; }
 	public static int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum-f.minimum); return 0; }
 	public static int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
@@ -174,7 +175,14 @@ public class Factions implements Tickable
 		            for(Enumeration e=factionSet.elements();e.hasMoreElements();)
 		            {
 		                F=(Faction)e.nextElement();
-		                CE=F.findChangeEvent("ADD");
+		                CE=F.findChangeEvent("ADDOUTSIDER");
+		                if((CE!=null)&&(CE.applies(mob))&&(!F.hasFaction(mob)))
+		                    F.executeChange(mob,mob,CE);
+		            }
+		            for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
+		            {
+		                F=(Faction)e.nextElement();
+		                CE=F.findChangeEvent("TIME");
 		                if((CE!=null)&&(CE.applies(mob)))
 		                    F.executeChange(mob,mob,CE);
 		            }

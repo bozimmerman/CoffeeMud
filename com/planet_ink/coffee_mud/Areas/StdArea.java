@@ -565,7 +565,7 @@ public class StdArea implements Area
 		for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
 		{
 		    Faction F=(Faction)e.nextElement();
-		    if(F.showinareareport)
+		    if(F.showinspecialreported)
 		        theFaction=F;
 		}
 		statData=new int[Area.AREASTAT_NUMBER];

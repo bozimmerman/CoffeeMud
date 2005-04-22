@@ -558,18 +558,30 @@ public class Intermud implements Runnable, Persistent, Serializable
     }
 
     // Send a formatted mud mode packet to the router
-    private void send(String str) {
-        int x = str.length();
-
+    private void send(String str) 
+    {
         if(CMSecurity.isDebugging("I3"))
             Log.sysOut("Intermud","Sending: "+str);
-        try {
-            output.writeInt(x);
-            output.writeBytes(str);
+        try 
+        {
+            // Remove non-printables, as required by the I3 specification
+            // (Contributed by David Green <green@couchpotato.net>)
+            byte[] packet = str.getBytes("ISO-8859-1");
+            for (int i = 0; i < packet.length; i++) 
+            {
+                // 160 is a non-breaking space. We'll consider that "printable".
+                if (packet[i] < 32 || (packet[i] >= 127 && packet[i] <= 159)) 
+                {
+                    // Java uses it as a replacement character,
+                    // so it's probably ok for us too.
+                    packet[i] = '?';
+                }
+            }
+            output.writeInt(packet.length);
+            output.write(packet);
         }
         catch( java.io.IOException e ) {
-			if(e.getMessage()!=null)
-				Log.errOut("InterMud","557-"+e.getMessage());
+            if(e.getMessage()!=null) Log.errOut("InterMud","557-"+e.getMessage());
         }
     }
 

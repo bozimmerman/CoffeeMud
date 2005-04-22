@@ -39,6 +39,11 @@ public class Spell_EnchantArmor extends Spell
 			mob.tell("You can't enchant that with an Enchant Armor spell!");
 			return false;
 		}
+		if((target.envStats().ability()>2)&&(!auto))
+		{
+			mob.tell(target.name()+" cannot be enchanted further.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -53,16 +58,11 @@ public class Spell_EnchantArmor extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(target.envStats().ability()>2)
-					mob.tell(target.name()+" cannot be enchanted further.");
-				else
-				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glows!");
-					target.baseEnvStats().setAbility(target.baseEnvStats().ability()+1);
-					target.baseEnvStats().setLevel(target.baseEnvStats().level()+3);
-					target.recoverEnvStats();
-					mob.recoverEnvStats();
-				}
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glows!");
+				target.baseEnvStats().setAbility(target.baseEnvStats().ability()+1);
+				target.baseEnvStats().setLevel(target.baseEnvStats().level()+3);
+				target.recoverEnvStats();
+				mob.recoverEnvStats();
 			}
 
 		}

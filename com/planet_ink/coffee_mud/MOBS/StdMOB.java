@@ -3456,10 +3456,6 @@ public class StdMOB implements MOB
             addFaction(which,amount);
         else
             factions.put(which,new Integer(((Integer)factions.get(which)).intValue()+amount));
-        if(!(which.equalsIgnoreCase(Factions.AlignID())))
-            tell("Your standing with "+Factions.getName(which)+" has "+CommonStrings.factionStr(amount,which));
-        else
-            tell("Your "+Factions.getName(which)+" has "+CommonStrings.factionStr(amount,which));
     }
     public Enumeration fetchFactions()
     {
@@ -3487,12 +3483,14 @@ public class StdMOB implements MOB
     public Vector fetchFactionRanges()
     {
         Faction F=null;
+        Faction.FactionRange FR=null;
         Vector V=new Vector();
         for(Enumeration e=fetchFactions();e.hasMoreElements();)
         {
             F=Factions.getFaction((String)e.nextElement());
             if(F==null) continue;
-            V.addElement(Factions.getRange(F.ID,fetchFaction(F.ID)));
+            FR=Factions.getRange(F.ID,fetchFaction(F.ID));
+            if(FR!=null) V.addElement(FR.ID);
         }
         return V;
     }

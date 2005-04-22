@@ -90,7 +90,7 @@ public class GrinderMobs
 			{
 				if(whichFaction.length()>0)
 				{
-					Faction F=Factions.getFactionByName(whichFaction);
+					Faction F=Factions.getFaction(whichFaction);
 					int amt=new Integer(howMuch).intValue();
 					if(amt<F.minimum) amt=F.minimum;
 					if(amt>F.maximum) amt=F.maximum;

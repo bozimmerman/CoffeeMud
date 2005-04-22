@@ -38,6 +38,7 @@ public class Spell_FleshStone extends Spell
 		&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
+			mob.makePeace();
 			if((statue.owner()!=null)&&(statue.owner()!=mob.location()))
 			{
 				Room room=null;
