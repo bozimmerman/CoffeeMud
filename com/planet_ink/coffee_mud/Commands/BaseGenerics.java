@@ -5345,6 +5345,8 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
+	
+	
 	public static void modifyGenInstrument(MOB mob, MusicalInstrument me)
 		throws IOException
 	{
@@ -5390,6 +5392,8 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
+	
+	
 	public static void modifyGenExit(MOB mob, Exit me)
 		throws IOException
 	{
@@ -5435,6 +5439,8 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
+	
+	
 	public static void modifyGenMOB(MOB mob, MOB me)
 		throws IOException
 	{
@@ -5452,7 +5458,7 @@ public class BaseGenerics extends StdCommand
 			genDescription(mob,me,++showNumber,showFlag);
 			int oldLevel=me.baseEnvStats().level();
 			genLevel(mob,me,++showNumber,showFlag);
-			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
+			if((oldLevel<2)&&(me.baseEnvStats().level()>1))
 				me.baseCharStats().getCurrentClass().fillOutMOB(me,me.baseEnvStats().level());
 			genRejuv(mob,me,++showNumber,showFlag);
 			genRace(mob,me,++showNumber,showFlag);
@@ -5470,7 +5476,7 @@ public class BaseGenerics extends StdCommand
 			genWeight(mob,me,++showNumber,showFlag);
 			genClan(mob,me,++showNumber,showFlag);
 			genSpeed(mob,me,++showNumber,showFlag);
-			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
+			if((oldLevel<2)&&(me.baseEnvStats().level()>1))
 				me.baseEnvStats().setDamage((int)Math.round(Util.div(me.baseEnvStats().damage(),me.baseEnvStats().speed())));
 			genAttack(mob,me,++showNumber,showFlag);
 			genDamage(mob,me,++showNumber,showFlag);
@@ -5632,7 +5638,7 @@ public class BaseGenerics extends StdCommand
 			genDescription(mob,me,++showNumber,showFlag);
 			int oldLevel=me.baseEnvStats().level();
 			genLevel(mob,me,++showNumber,showFlag);
-			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
+			if((oldLevel<2)&&(me.baseEnvStats().level()>1))
 				mme.baseCharStats().getCurrentClass().fillOutMOB(mme,me.baseEnvStats().level());
 			genRejuv(mob,me,++showNumber,showFlag);
 			genRace(mob,mme,++showNumber,showFlag);
@@ -5650,7 +5656,7 @@ public class BaseGenerics extends StdCommand
 			genGender(mob,mme,++showNumber,showFlag);
 			genClan(mob,mme,++showNumber,showFlag);
 			genSpeed(mob,me,++showNumber,showFlag);
-			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
+			if((oldLevel<2)&&(me.baseEnvStats().level()>1))
 				me.baseEnvStats().setDamage((int)Math.round(Util.div(me.baseEnvStats().damage(),me.baseEnvStats().speed())));
 			genAttack(mob,me,++showNumber,showFlag);
 			genDamage(mob,me,++showNumber,showFlag);
@@ -5701,7 +5707,6 @@ public class BaseGenerics extends StdCommand
 				me.setMiscText(me.text());
 			}
 		}
-
 		mob.tell("\n\rNow don't forget to equip him with non-generic items before saving! If you DO add items to his list, be sure to come back here in case you've exceeded the string limit again.\n\r");
 	}
 }

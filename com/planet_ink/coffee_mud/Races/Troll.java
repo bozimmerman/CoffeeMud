@@ -115,7 +115,7 @@ public class Troll extends StdRace
 			{
 				for(int i=0;i<4;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
+					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource

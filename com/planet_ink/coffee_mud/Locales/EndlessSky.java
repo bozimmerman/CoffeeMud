@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -69,8 +70,9 @@ public class EndlessSky extends StdGrid
 	protected void buildFinalLinks()
 	{
 		Exit ox=CMClass.getExit("Open");
-		for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
+		    if(d==Directions.GATE) continue;
 			Room dirRoom=rawDoors()[d];
 			Exit dirExit=rawExits()[d];
 			if((dirExit==null)||(dirExit.hasADoor()))
@@ -102,6 +104,18 @@ public class EndlessSky extends StdGrid
 						break;
 					case Directions.DOWN:
 						linkRoom(subMap[subMap.length-1][subMap[0].length-1],dirRoom,d,dirExit,altExit);
+						break;
+					case Directions.NORTHEAST:
+						linkRoom(subMap[subMap.length-1][0],dirRoom,d,dirExit,altExit);
+						break;
+					case Directions.NORTHWEST:
+						linkRoom(subMap[0][0],dirRoom,d,dirExit,altExit);
+						break;
+					case Directions.SOUTHEAST:
+						linkRoom(subMap[subMap.length-1][subMap[0].length-1],dirRoom,d,dirExit,altExit);
+						break;
+					case Directions.SOUTHWEST:
+						linkRoom(subMap[0][subMap[0].length-1],dirRoom,d,dirExit,altExit);
 						break;
 				}
 			}

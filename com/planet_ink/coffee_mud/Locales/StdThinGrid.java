@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -208,21 +209,88 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if((rawDoors()[Directions.EAST]!=null)&&(rawExits()[Directions.EAST]!=null))
 			linkRoom(R,rawDoors()[Directions.EAST],Directions.EAST,rawExits()[Directions.EAST],rawExits()[Directions.EAST]);
 		
+		if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS)
+		{
+			if((y>0)&&(x>0))
+			{
+				R2=getMakeSingleGridRoom(x-1,y-1);
+				if(R2!=null)
+					linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
+			}
+			else
+			if((rawDoors()[Directions.NORTHWEST]!=null)&&(rawExits()[Directions.NORTHWEST]!=null))
+				linkRoom(R,rawDoors()[Directions.NORTHWEST],Directions.NORTHWEST,rawExits()[Directions.NORTHWEST],rawExits()[Directions.NORTHWEST]);
+			
+			if((x>0)&&(y<(ySize()-1)))
+			{
+				R2=getMakeSingleGridRoom(x-1,y+1);
+				if(R2!=null) 
+					linkRoom(R,R2,Directions.SOUTHWEST,ox,ox);
+			}
+			else
+			if((rawDoors()[Directions.SOUTHWEST]!=null)&&(rawExits()[Directions.SOUTHWEST]!=null))
+				linkRoom(R,rawDoors()[Directions.SOUTHWEST],Directions.SOUTHWEST,rawExits()[Directions.SOUTHWEST],rawExits()[Directions.SOUTHWEST]);
+			
+			if((x<(xSize()-1))&&(y>0))
+			{
+				R2=getMakeSingleGridRoom(x+1,y-1);
+				if(R2!=null) 
+					linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
+			}
+			else
+			if((rawDoors()[Directions.NORTHEAST]!=null)&&(rawExits()[Directions.NORTHEAST]!=null))
+				linkRoom(R,rawDoors()[Directions.NORTHEAST],Directions.NORTHEAST,rawExits()[Directions.NORTHEAST],rawExits()[Directions.NORTHEAST]);
+			if((x<(xSize()-1))&&(y<(ySize()-1)))
+			{
+				R2=getMakeSingleGridRoom(x+1,y+1);
+				if(R2!=null) 
+					linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
+			}
+			else
+			if((rawDoors()[Directions.SOUTHEAST]!=null)&&(rawExits()[Directions.SOUTHEAST]!=null))
+				linkRoom(R,rawDoors()[Directions.SOUTHEAST],Directions.SOUTHEAST,rawExits()[Directions.SOUTHEAST],rawExits()[Directions.SOUTHEAST]);
+		}
+		
 		for(int d=0;d<gridexits.size();d++)
 		{
 			CMMap.CrossExit EX=(CMMap.CrossExit)gridexits.elementAt(d);
 			try{
 				if((EX.out)&&(EX.x==x)&&(EX.y==y))
-				{
-					if((EX.x==0)&&(EX.dir==Directions.WEST))
-						tryFillInExtraneousExternal(EX,ox,R);
-					if((EX.x==xSize()-1)&&(EX.dir==Directions.EAST))
-						tryFillInExtraneousExternal(EX,ox,R);
-					if((EX.y==0)&&(EX.dir==Directions.NORTH))
-						tryFillInExtraneousExternal(EX,ox,R);
-					if((EX.y==ySize()-1)&&(EX.dir==Directions.SOUTH))
-						tryFillInExtraneousExternal(EX,ox,R);
-				}
+					switch(EX.dir)
+					{
+					case Directions.NORTH:
+						if(EX.y==0)
+							tryFillInExtraneousExternal(EX,ox,R);
+						break;
+					case Directions.SOUTH:
+						if(EX.y==ySize()-1)
+							tryFillInExtraneousExternal(EX,ox,R);
+						break;
+					case Directions.EAST:
+						if(EX.x==xSize()-1)
+							tryFillInExtraneousExternal(EX,ox,R);
+						break;
+					case Directions.WEST:
+						if(EX.x==0)
+							tryFillInExtraneousExternal(EX,ox,R);
+						break;
+					case Directions.NORTHEAST:
+						if((EX.y==0)&&(EX.x==xSize()-1))
+							tryFillInExtraneousExternal(EX,ox,R);
+						break;
+					case Directions.SOUTHWEST:
+						if((EX.y==ySize()-1)&&(EX.x==0))
+							tryFillInExtraneousExternal(EX,ox,R);
+						break;
+					case Directions.NORTHWEST:
+						if((EX.y==0)&&(EX.x==0))
+							tryFillInExtraneousExternal(EX,ox,R);
+						break;
+					case Directions.SOUTHEAST:
+						if((EX.y==ySize()-1)&&(EX.x==xSize()-1))
+							tryFillInExtraneousExternal(EX,ox,R);
+						break;
+					}
 			}catch(Exception e){}
 		}
 		working.remove(R);
@@ -301,6 +369,14 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				if((((GridLocale)loc).xSize()==xSize()))
 					return getMakeGridRoom(x,0);
 				break;
+			case Directions.NORTHWEST:
+				return getMakeGridRoom(0,0);
+			case Directions.SOUTHEAST:
+				return getMakeGridRoom(xSize()-1,ySize()-1);
+			case Directions.NORTHEAST:
+				return getMakeGridRoom(xSize()-1,0);
+			case Directions.SOUTHWEST:
+				return getMakeGridRoom(0,ySize()-1);
 			case Directions.SOUTH:
 				if((((GridLocale)loc).xSize()==xSize()))
 					return getMakeGridRoom(x,ySize()-1);
@@ -324,6 +400,22 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			break;
 		case Directions.WEST:
 			y=ySize()/2;
+			break;
+		case Directions.NORTHWEST:
+			x=0;
+			y=0;
+			break;
+		case Directions.NORTHEAST:
+			x=xSize()-1;
+			y=0;
+			break;
+		case Directions.SOUTHWEST:
+			x=0;
+			y=ySize()-1;
+			break;
+		case Directions.SOUTHEAST:
+			x=xSize()-1;
+			y=ySize()-1;
 			break;
 		case Directions.UP:
 		case Directions.DOWN:
@@ -614,8 +706,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return;
 		tickStarted=true;
-		ThinGridVacuum TGV=new ThinGridVacuum();
-		CMClass.ThreadEngine().startTickDown(TGV,MudHost.TICK_ROOM_BEHAVIOR,450);
+		//Permanently disabled until the roomdestroy problem can be fixed.
+		//ThinGridVacuum TGV=new ThinGridVacuum();
+		//CMClass.ThreadEngine().startTickDown(TGV,MudHost.TICK_ROOM_BEHAVIOR,450);
 	}
 	
 	protected static class ThinGridVacuum implements Tickable

@@ -3,7 +3,7 @@
 
    Bo would like to acknowledge and thank the following 
    people for contributing, both directly and indirectly 
-   to the development of CoffeeMud:
+   to the development of CoffeeMud.
 
    Tim Kassebaum, for putting in lord knows how many hours 
    doing head and documentation work for versions 3.0 -, 
@@ -11,6 +11,11 @@
    common skill, for uncountable ideas (and for documenting 
    those too), and for SOMEHOW finding time to playtest amidst
    all this.  And of course Hojo, playtesting, bugfinding FOOL!
+
+   Jeremy Vyska for clan, Faction and miscellaneous enhancements.
+
+   The good people at www.yourkit.com for supporting us with
+   licenses to their java profiling software.
 
    Jef Kamenek and David Walters, for single handedly adding 
    the ANSI support, Archon Help, some very important changes 
@@ -20,8 +25,6 @@
    Thomas Neumann for the fakedb package.
 
    George Reese for kindly providing his I3 java implementation.
-
-   Jeremy Vyska for clan support and miscellaneous enhancements.
 
    Sky for the Moving Behavior.
 
@@ -37,4 +40,3 @@
    Tyra and Lori - for single handedly inspiring this project.  I have 
    never ever forgotten that fact, nor the unusual circumstances 
    surrounding it.  I hope in time they have forgiven me. :)
-   

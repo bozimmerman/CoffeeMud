@@ -107,7 +107,7 @@ public class Spell_Permanency extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> incant(s) to <T-NAMESELF>, but loses patience.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> incant(s) to <T-NAMESELF>, but lose(s) patience.");
 
 
 		// return whether it worked

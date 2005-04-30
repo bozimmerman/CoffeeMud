@@ -146,6 +146,20 @@ public class Skill_CollectBounty extends StdAbility
 		    mob.tell(target.name()+" is not wanted for anything here.");
 		    return false;
 		}
+		if((target.amDead())||(!Sense.isInTheGame(target,true)))
+		{
+		    mob.tell(target.name()+" is not _really_ here.");
+		    return false;
+		}
+		for(int w=0;w<warrants.size();w++)
+		{
+		    LegalWarrant W=(LegalWarrant)warrants.elementAt(w);
+		    if(W.crime().equalsIgnoreCase("pardoned"))
+		    {
+		        mob.tell(target.name()+" has been pardoned, and is no longer a criminal.");
+		        return false;
+		    }
+		}
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

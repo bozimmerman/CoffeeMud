@@ -37,14 +37,44 @@ public class Factions implements Tickable
 	    hashedFactionRanges.clear();
 	}
 	
-	public static Hashtable rangeCodeNames(){ return hashedFactionRanges; }
+	private static Hashtable rangeCodeNames(){ return hashedFactionRanges; }
+	public static boolean isRangeCodeName(String key){ return rangeCodeNames().containsKey(key.toUpperCase());}
+	public static boolean isFactionedThisWay(MOB mob, String rangeCodeName)
+	{
+	    Faction.FactionRange FR=(Faction.FactionRange)rangeCodeNames().get(rangeCodeName.toUpperCase());
+	    if(FR==null) return false;
+	    Faction.FactionRange FR2=FR.myFaction.fetchRange(mob.fetchFaction(FR.myFaction.ID));
+	    if(FR2==null) return false;
+	    return FR2.CodeName.equalsIgnoreCase(FR.CodeName);
+	}
+	public static String rangeDescription(String rangeCodeName, String andOr)
+	{
+	    Faction.FactionRange FR=(Faction.FactionRange)rangeCodeNames().get(rangeCodeName.toUpperCase());
+	    if((FR==null)||(FR.myFaction==null)||(FR.myFaction.ranges.size()<=0))
+	        return "";
+	    Vector relevantFactions=new Vector();
+	    for(int r=0;r<FR.myFaction.ranges.size();r++)
+	    {
+	        if((((Faction.FactionRange)FR.myFaction.ranges.elementAt(r)).CodeName.equalsIgnoreCase(FR.CodeName)))
+	            relevantFactions.addElement(FR.myFaction.ranges.elementAt(r));
+	    }
+	    if(relevantFactions.size()==0) return "";
+	    if(relevantFactions.size()==1)
+	        return FR.myFaction.name+" of "+((Faction.FactionRange)relevantFactions.firstElement()).Name;
+	    StringBuffer buf=new StringBuffer(FR.myFaction.name+" of ");
+	    for(int i=0;i<relevantFactions.size()-1;i++)
+	        buf.append(((Faction.FactionRange)relevantFactions.elementAt(i)).Name+", ");
+        buf.append(andOr+((Faction.FactionRange)relevantFactions.lastElement()).Name);
+        return buf.toString();
+	}
+	    
+	
 	
 	public static Faction getFaction(String factionID) 
 	{
 	    if(factionID==null) return null;
 		Faction F=(Faction)factionSet.get(factionID.toUpperCase());
 		if(F!=null) return F;
-		factionID=factionID.toUpperCase();
 	    if(Resources.getFileResource(factionID)!=null)
 	    {
             F=new Faction(Resources.getFileResource(factionID),factionID);
@@ -55,7 +85,7 @@ public class Factions implements Tickable
                 if(!hashedFactionRanges.containsKey(CodeName))
                     hashedFactionRanges.put(CodeName,FR);
             }
-            factionSet.put(factionID,F);
+            factionSet.put(factionID.toUpperCase(),F);
             return F;
 	    }
         return null;
@@ -95,7 +125,7 @@ public class Factions implements Tickable
 	        if(F==null) F=getFaction(factionID);
 	        if(F==null) return false;
 	        Resources.removeResource(F.ID);
-	        factionSet.remove(F.ID);
+	        factionSet.remove(F.ID.toUpperCase());
 	        return true;
 	    }
 	}
@@ -136,7 +166,7 @@ public class Factions implements Tickable
 	public static int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum-f.minimum); return 0; }
 	public static int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
 	
-	public static String AlignID() { return "ALIGNMENT.INI"; }
+	public static String AlignID() { return "alignment.ini"; }
 	public static void setAlignment(MOB mob, int newAlignment)
 	{
 	    if(getFaction(AlignID())!=null) 
@@ -194,23 +224,27 @@ public class Factions implements Tickable
 	
 	public static int getAlignPurity(int faction, int AlignEq) 
 	{
-		int bottom=0;
-		int top=0;
+		int bottom=Integer.MAX_VALUE;
+		int top=Integer.MIN_VALUE;
+        int pct=getPercent(AlignID(),faction);
 		Vector ranges = getRanges(AlignID());
-		for(int i=0;i<ranges.size();i++) {
+		for(int i=0;i<ranges.size();i++) 
+        {
 			Faction.FactionRange R=(Faction.FactionRange)ranges.elementAt(i);
-			if(R.AlignEquiv==AlignEq) {
+			if(R.AlignEquiv==AlignEq) 
+            {
 				if(R.low<bottom) bottom=R.low;
 				if(R.high>top) top=R.high;
 			}
 		}
-		switch(AlignEq) {
+		switch(AlignEq) 
+        {
 			case Faction.ALIGN_GOOD:
-				return Math.abs(getPercent(AlignID(),faction) - getPercent(AlignID(),top));
+				return Math.abs(pct - getPercent(AlignID(),top));
 			case Faction.ALIGN_EVIL:
-				return Math.abs(getPercent(AlignID(),bottom) - getPercent(AlignID(),faction));
+				return Math.abs(getPercent(AlignID(),bottom) - pct);
 			case Faction.ALIGN_NEUTRAL:
-				return Math.abs(getPercent(AlignID(),(int)Math.round(Util.div((top+bottom),2))) - getPercent(AlignID(),faction));
+				return Math.abs(getPercent(AlignID(),(int)Math.round(Util.div((top+bottom),2))) - pct);
 			default:
 				return 0;
 		}
@@ -219,11 +253,12 @@ public class Factions implements Tickable
 	// Please don't mock the name, I couldn't think of a better one.  Sadly.
 	public static int getAlignThingie(int AlignEq) 
 	{
-		int bottom=0;
-		int top=0;
+        int bottom=Integer.MAX_VALUE;
+        int top=Integer.MIN_VALUE;
 		Vector ranges = getRanges(AlignID());
 	    if(ranges==null) return 0;
-		for(int i=0;i<ranges.size();i++) {
+		for(int i=0;i<ranges.size();i++) 
+        {
 			Faction.FactionRange R=(Faction.FactionRange)ranges.elementAt(i);
 			if(R.AlignEquiv==AlignEq) {
 				if(R.low<bottom) bottom=R.low;

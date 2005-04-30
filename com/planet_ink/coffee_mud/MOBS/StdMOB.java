@@ -3438,24 +3438,27 @@ public class StdMOB implements MOB
     /** Manipulation of the factions list */
     public void addFaction(String which)
     {
-		which=which.toUpperCase();
         if(factions==null) factions=new Hashtable();
-        // Find the default faction for this mob
-
-        addFaction(which,0);
+        Faction F=Factions.getFaction(which);
+        if(F==null) return;
+        addFaction(F.ID.toUpperCase(),F.findDefault(this));
     }
     public void addFaction(String which,int start)
     {
-		which=which.toUpperCase();
-        factions.put(which,new Integer(start));
+        Faction F=Factions.getFaction(which);
+        if(F==null) return;
+        if(start>F.maximum) start=F.maximum;
+        if(start<F.minimum) start=F.minimum;
+        factions.put(F.ID.toUpperCase(),new Integer(start));
     }
     public void adjustFaction(String which,int amount)
     {
-		which=which.toUpperCase();
-        if(!factions.containsKey(which))
-            addFaction(which,amount);
+        Faction F=Factions.getFaction(which);
+        if(F==null) return;
+        if(!factions.containsKey(F.ID.toUpperCase()))
+            addFaction(F.ID.toUpperCase(),amount);
         else
-            factions.put(which,new Integer(((Integer)factions.get(which)).intValue()+amount));
+            addFaction(F.ID.toUpperCase(),((Integer)factions.get(F.ID.toUpperCase())).intValue()+amount);
     }
     public Enumeration fetchFactions()
     {
@@ -3469,8 +3472,7 @@ public class StdMOB implements MOB
     }
     public void removeFaction(String which)
     {
-		which=which.toUpperCase();
-        factions.remove(which);
+        factions.remove(which.toUpperCase());
     }
     public void copyFactions(MOB source)
     {

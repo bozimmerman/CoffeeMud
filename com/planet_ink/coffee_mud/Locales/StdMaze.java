@@ -49,6 +49,7 @@ public class StdMaze extends StdGrid
 	{
 		if(dirCode==Directions.UP) return false;
 		if(dirCode==Directions.DOWN) return false;
+		if(dirCode>=Directions.GATE) return false;
 		if((x==0)&&(dirCode==Directions.WEST)) return false;
 		if((y==0)&&(dirCode==Directions.NORTH)) return false;
 		if((x>=(subMap.length-1))&&(dirCode==Directions.EAST)) return false;
@@ -97,8 +98,9 @@ public class StdMaze extends StdGrid
 		while(okRoom)
 		{
 			okRoom=false;
-			for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
+			    if(d==Directions.GATE) continue;
 				Room possRoom=roomDir(x,y,d);
 				if(possRoom!=null)
 					if(visited.get(possRoom)==null)

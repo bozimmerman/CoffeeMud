@@ -1,25 +1,26 @@
-name,level,ticks,wood,value,class,misc,capacity
-% Bundle	1	1	25	0	GenResource	BUNDLE
-% comb	1	5	1	1	GenItem		0
-% Table	6	30	50	20	GenRideable	TABLE	150
-% Stool	6	30	10	6	GenChair	CHAIR	1
-% Chair	6	30	15	10	GenChair	CHAIR	1
+name,level,ticks,wood,value,class,misc,capacity								
+% Bundle	1	1	25	0	GenResource	BUNDLE		
+% comb	1	5	1	1	GenItem		0	
+% Table	6	30	50	20	GenRideable	TABLE	150	
+% Stool	6	30	10	6	GenChair	CHAIR	1	
+% Chair	6	30	15	10	GenChair	CHAIR	1	
 % Bench	6	40	30	15	GenChair	CHAIR	4	10
-% Bed	6	50	70	20	GenBed	BED	2
-% Statue	12	22	100	100	GenItem	STATUE	0
-% Figurine	3	40	30	25	GenItem	STATUE	0
-% Sword	11	20	6	320	GenWeapon	SWORD	10
-% Knife	5	10	2	42	GenWeapon	DAGGER	4
-% Spear	14	20	6	408	GenSpear	THROWN	12
-% Short sword	7	20	4	49	GenWeapon	SWORD	6
-% Club	1	10	10	218	GenWeapon	BLUNT	3
-% Great Club	21	20	30	1752	GenWeapon	BLUNT	24
-% Sliver	24	10	1	668	GenWeapon	EDGED	18
-% Flail	13	40	15	692	GenWeapon	FLAIL	14
-% Skull mace	50	80	12	3602	GenWeapon	BLUNT	41
-% Altar	10	100	100	200	GenRideable	TABLE	1000
-Sacrificial % Altar	30	200	150	500	GenRideable TABLE	1000
-% Throne	25	40	50	150	GenRideable	CHAIR	1
-Drinking Horn	4	10	4	5	GenDrink		100
-% Spoon	8	10	1	2	GenDrink		1
-% Pipe	12	40	2	10	GenPipe		1
+% Bed	6	50	70	20	GenBed	BED	2	
+% Statue	12	22	100	100	GenItem	STATUE	0	
+% Figurine	3	40	30	25	GenItem	STATUE	0	
+% Sword	11	20	6	320	GenWeapon	SWORD	10	
+% Knife	5	10	2	42	GenWeapon	DAGGER	4	
+% Spear	14	20	6	408	GenSpear	THROWN	12	
+% Short sword	7	20	4	49	GenWeapon	SWORD	6	
+% Club	1	10	10	218	GenWeapon	BLUNT	3	
+% Great Club	21	20	30	1752	GenWeapon	BLUNT	24	
+% Sliver	24	10	1	668	GenWeapon	EDGED	18	
+% Flail	13	40	15	692	GenWeapon	FLAIL	14	
+% Skull mace	50	80	12	3602	GenWeapon	BLUNT	41	
+% Altar	10	100	100	200	GenRideable	TABLE	1000	
+Sacrificial % Altar	30	200	150	500	GenRideable	TABLE	1000	
+% Throne	25	40	50	150	GenRideable	CHAIR	1	
+Drinking Horn	4	10	4	5	GenDrink		100	
+% Spoon	8	10	1	2	GenDrink		1	
+% Pipe	12	40	2	10	GenPipe		1	
+

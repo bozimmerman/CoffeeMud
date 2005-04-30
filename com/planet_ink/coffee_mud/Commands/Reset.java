@@ -432,6 +432,73 @@ public class Reset extends StdCommand
 
 		}
 		else
+		if(s.equalsIgnoreCase("mobcombatabilityduplicates"))
+		{
+			s="room";
+			if(commands.size()>1) s=(String)commands.elementAt(1);
+			Vector rooms=new Vector();
+			if(s.toUpperCase().startsWith("ROOM"))
+				rooms.addElement(mob.location());
+			else
+			if(s.toUpperCase().startsWith("AREA"))
+			{
+			    try
+			    {
+					for(Enumeration e=mob.location().getArea().getProperMap();e.hasMoreElements();)
+						rooms.addElement(e.nextElement());
+			    }catch(NoSuchElementException nse){}
+			}
+			else
+			if(s.toUpperCase().startsWith("WORLD"))
+			{
+			    try
+			    {
+					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+						rooms.addElement(e.nextElement());
+			    }catch(NoSuchElementException nse){}
+			}
+			else
+			{
+				mob.tell("Try ROOM, AREA, or WORLD.");
+				return false;
+			}
+
+			for(Enumeration r=rooms.elements();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				R.getArea().toggleMobility(false);
+				CoffeeUtensils.resetRoom(R);
+				boolean somethingDone=false;
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					MOB M=R.fetchInhabitant(m);
+					if((M.isEligibleMonster())&&(M.getStartRoom()==R))
+					{
+					    Behavior B=M.fetchBehavior("CombatAbilities");
+					    if(B==null) continue;
+					    Behavior BB=B;
+					    for(int b=0;b<M.numBehaviors();b++)
+					    {
+					        B=M.fetchBehavior(b);
+					        if(B.getClass().getSuperclass().getName().endsWith("CombatAbilities"))
+					        {
+					            M.delBehavior(BB);
+					            mob.tell(M.name()+" in "+CMMap.getExtendedRoomID(R)+" was FIXED!");
+								M.recoverEnvStats();
+								somethingDone=true;
+					        }
+					    }
+					}
+				}
+				if(somethingDone)
+				{
+					CMClass.DBEngine().DBUpdateMOBs(R);
+				}
+				R.getArea().toggleMobility(true);
+			}
+
+		}
+		else
 		if(s.equalsIgnoreCase("groundlydoors"))
 		{
 			if(mob.session()==null) return false;

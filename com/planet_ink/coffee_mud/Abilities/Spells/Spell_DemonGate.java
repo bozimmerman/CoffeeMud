@@ -117,7 +117,7 @@ public class Spell_DemonGate extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to open the gates of the abyss, but fails.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to open the gates of the abyss, but fail(s).");
 
 		// return whether it worked
 		return success;

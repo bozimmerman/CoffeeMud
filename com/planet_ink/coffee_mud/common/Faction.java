@@ -205,14 +205,14 @@ public class Faction implements MsgListener
 
     public int asPercent(int faction) 
     {
-        return Util.mul((int)Math.round(Util.div(faction+(0-minimum),(maximum-minimum))),100);
+        return (int)Math.round(Util.mul(Util.div(faction-minimum,(maximum-minimum)),100));
     }
 
     public int asPercentFromAvg(int faction) 
     {
         // =(( (B2+A2) / 2 ) - C2) / (B2-A2) * 100
         // C = current, A = min, B = Max
-        return Util.mul((int)Math.round(Util.div(((maximum+minimum)/2)-faction,maximum-minimum)),100);
+        return (int)Math.round(Util.mul(Util.div(((maximum+minimum)/2)-faction,maximum-minimum),100));
     }
 
     public int randomFaction() 
@@ -278,27 +278,38 @@ public class Faction implements MsgListener
 
     public boolean hasUsage(Ability A) 
     {
+        FactionAbilityUsage usage=null;
         for(int i=0;i<abilityUsages.size();i++) 
         {
-            FactionAbilityUsage usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
-            if(A.classificationCode()!=usage.type) continue;
-            if(!Util.bset(A.flags(),usage.flag)) continue;
-            return true;
+            usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
+            if((usage.possibleAbilityID&&usage.ID.equalsIgnoreCase(A.ID()))
+            ||(((usage.type<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type))
+                &&((usage.flag<0)||(Util.bset(A.flags(),usage.flag)))
+                &&((usage.notflag<0)||(!Util.bset(A.flags(),usage.notflag)))
+                &&((usage.domain<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain))))
+                return true;
         }
         return false;
     }
 
     public boolean canUse(MOB mob, Ability A) 
     {
+        FactionAbilityUsage usage=null;
         for(int i=0;i<abilityUsages.size();i++) 
         {
-            FactionAbilityUsage usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
-            if(A.classificationCode()!=usage.type) continue;
-            if(!Util.bset(A.flags(),usage.flag)) continue;
-            int faction=mob.fetchFaction(ID);
-            if((faction >= usage.low) && (faction <= usage.high)) return true;
+            usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
+            if((usage.possibleAbilityID&&usage.ID.equalsIgnoreCase(A.ID()))
+            ||(((usage.type<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type))
+                &&((usage.flag<0)||(Util.bset(A.flags(),usage.flag)))
+                &&((usage.notflag<0)||(!Util.bset(A.flags(),usage.notflag)))
+                &&((usage.domain<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain))))
+            {
+                int faction=mob.fetchFaction(ID);
+                if((faction < usage.low) || (faction > usage.high)) 
+                    return false;
+            }
         }
-        return false;
+        return true;
     }
 
     public double findFactor(MOB mob, boolean gain) 
@@ -321,6 +332,7 @@ public class Faction implements MsgListener
     public void executeMsg(Environmental myHost, CMMsg msg) 
     {
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)    // A death occured
+		&&(msg.source()==myHost)
 		&&(msg.tool() instanceof MOB))
         {
             FactionChangeEvent C=findChangeEvent("MURDER");
@@ -353,16 +365,16 @@ public class Faction implements MsgListener
             MOB killer=msg.source();
             MOB vic=(MOB)msg.target();
 
+            if(experienceFlag.equals("HIGHER"))
+                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * Util.div(Math.abs(killer.fetchFaction(ID)-minimum),(maximum - minimum)))));
+            else
+            if(experienceFlag.equals("LOWER"))
+                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * Util.div(Math.abs(maximum-killer.fetchFaction(ID)),(maximum - minimum)))));
+            else
             if(vic.fetchFaction(ID)!=Integer.MAX_VALUE)
             {
                 if(experienceFlag.equals("EXTREME"))
 	                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * Util.div(Math.abs(vic.fetchFaction(ID) - killer.fetchFaction(ID)),(maximum - minimum)))));
-                else
-                if(experienceFlag.equals("HIGHER"))
-	                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * Util.div(Math.abs(killer.fetchFaction(ID)-minimum),(maximum - minimum)))));
-                else
-                if(experienceFlag.equals("LOWER"))
-	                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * Util.div(Math.abs(maximum-killer.fetchFaction(ID)),(maximum - minimum)))));
                 else
                 if(experienceFlag.equals("FOLLOWHIGHER"))
 	                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * Util.div(Math.abs(vic.fetchFaction(ID)-minimum),(maximum - minimum)))));
@@ -410,7 +422,7 @@ public class Faction implements MsgListener
 	            baseChangeAmount=baseChangeAmount+Util.mul(levelFactor,100);
 	        }
         }
-        
+
         int factionAdj=1;
         int changeDir=0;
         switch(event.direction) 
@@ -507,21 +519,33 @@ public class Faction implements MsgListener
 
 	 public String usageFactors(Ability A) 
 	 { 
-         StringBuffer ranges=new StringBuffer(); 
+         StringBuffer rangeStr=new StringBuffer(); 
+         FactionAbilityUsage usage=null;
+         HashSet namesAdded=new HashSet();
          for(int i=0;i<abilityUsages.size();i++) 
-         { 
-              FactionAbilityUsage usage=(FactionAbilityUsage)abilityUsages.elementAt(i); 
-              if(A.classificationCode()!=usage.type) continue; 
-              if(!Util.bset(A.flags(),usage.flag)) continue; 
-              for(int k=usage.low;k<=usage.high;k++) 
-              { 
-                   FactionRange R=fetchRange(k); 
-                   if(ranges.indexOf(R.Name)>0) continue; 
-                   if(ranges.length()>0) ranges.append(", "); 
-                   ranges.append(R.Name); 
-              } 
-         } 
-         return ranges.toString(); 
+         {
+             usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
+             if((usage.possibleAbilityID&&usage.ID.equalsIgnoreCase(A.ID()))
+             ||(((usage.type<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type))
+                 &&((usage.flag<0)||(Util.bset(A.flags(),usage.flag)))
+                 &&((usage.notflag<0)||(!Util.bset(A.flags(),usage.notflag)))
+                 &&((usage.domain<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain))))
+             {
+                for(int r=0;r<ranges.size();r++)
+                { 
+                     FactionRange R=(FactionRange)ranges.elementAt(r);
+                     if((((R.high<=usage.high)&&(R.high>=usage.low))
+                         ||((R.low>=usage.low))&&(R.low<=usage.high))
+                     &&(!namesAdded.contains(R.Name)))
+                     {
+                         namesAdded.add(R.Name);
+                         if(rangeStr.length()>0) rangeStr.append(", "); 
+                         rangeStr.append(R.Name); 
+                     }
+                }
+             }
+         }
+         return rangeStr.toString(); 
     }
 	 
     public static class FactionChangeEvent 
@@ -672,33 +696,49 @@ public class Faction implements MsgListener
     public static class FactionAbilityUsage 
     {
         public String ID="";
-        public int type;
-        public int flag;
-        public int low;
-        public int high;
+        public boolean possibleAbilityID=false;
+        public int type=-1;
+        public int domain=-1;
+        public int flag=-1;
+        public int low=0;
+        public int high=0;
+        public int notflag=-1;
 
         public FactionAbilityUsage(String key) 
         {
             Vector v = Util.parseSemicolons(key,false);
             ID=(String)v.elementAt(0);
-            for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
+            Vector flags=Util.parse(ID);
+            for(int f=0;f<flags.size();f++)
             {
-                if((String)v.elementAt(1)==Ability.TYPE_DESCS[i]) 
-                {
-                    type=i;
-                    break;
-                }
+                String strflag=(String)flags.elementAt(f);
+                boolean not=strflag.startsWith("!");
+                if(not) strflag=strflag.substring(1);
+                for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
+                    if(Ability.TYPE_DESCS[i].equalsIgnoreCase(strflag))
+                        type=i;
+                for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+                    if(Ability.DOMAIN_DESCS[i].equalsIgnoreCase(strflag))
+                        domain=i<<5;
+                for(int i=0;i< Ability.FLAG_DESCS.length;i++)
+                    if(Ability.FLAG_DESCS[i].equalsIgnoreCase(strflag))
+                    {
+                        if(not)
+                        {
+                            if(notflag<0) notflag=0;
+                            notflag=notflag|Util.pow(2,i);
+                        }
+                        else
+                        {
+                            if(flag<0) flag=0;
+                            flag=flag|Util.pow(2,i);
+                        }
+                    }
             }
-            for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
-            {
-                if((String)v.elementAt(1)==Ability.FLAG_DESCS[i]) 
-                {
-                    flag=i;
-                    break;
-                }
-            }
-            low = new Integer( (String) v.elementAt(2)).intValue();
-            high = new Integer( (String) v.elementAt(3)).intValue();
+            low = new Integer( (String) v.elementAt(1)).intValue();
+            high = new Integer( (String) v.elementAt(2)).intValue();
+            if((type<0)&&(domain<0)&&(flag<0))
+                possibleAbilityID=true;
         }
     }
 }

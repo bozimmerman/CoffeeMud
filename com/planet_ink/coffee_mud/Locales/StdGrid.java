@@ -126,6 +126,10 @@ public class StdGrid extends StdRoom implements GridLocale
 					if((((GridLocale)loc).ySize()==ySize()))
 						return grid[0][y];
 					break;
+				case Directions.NORTHWEST:
+					return grid[0][0];
+				case Directions.NORTHEAST:
+					return grid[grid.length-1][0];
 				case Directions.NORTH:
 					if((((GridLocale)loc).xSize()==xSize()))
 						return grid[x][0];
@@ -134,6 +138,10 @@ public class StdGrid extends StdRoom implements GridLocale
 					if((((GridLocale)loc).xSize()==xSize()))
 						return grid[x][grid[0].length-1];
 					break;
+				case Directions.SOUTHEAST:
+					return grid[grid.length-1][grid[0].length-1];
+				case Directions.SOUTHWEST:
+					return grid[0][grid[0].length-1];
 				}
 			}
 		}
@@ -252,8 +260,20 @@ public class StdGrid extends StdRoom implements GridLocale
 		int y=0;
 		switch(dirCode)
 		{
+		case Directions.NORTHEAST:
+			x=subMap.length-1;
+			break;
+		case Directions.NORTHWEST:
+		    break;
 		case Directions.NORTH:
 			x=subMap.length/2;
+			break;
+		case Directions.SOUTHEAST:
+			y=subMap[0].length-1;
+			x=subMap.length-1;
+			break;
+		case Directions.SOUTHWEST:
+			y=subMap[0].length-1;
 			break;
 		case Directions.SOUTH:
 			x=subMap.length/2;
@@ -288,11 +308,15 @@ public class StdGrid extends StdRoom implements GridLocale
 				{
 					switch(dirCode)
 					{
+					case Directions.NORTHEAST:
 					case Directions.NORTH:
+					case Directions.SOUTHEAST:
 					case Directions.SOUTH:
 						xadjust++;
 						break;
+					case Directions.NORTHWEST:
 					case Directions.EAST:
+					case Directions.SOUTHWEST:
 					case Directions.WEST:
 						yadjust++;
 						break;
@@ -315,8 +339,9 @@ public class StdGrid extends StdRoom implements GridLocale
 	protected void buildFinalLinks()
 	{
 		Exit ox=CMClass.getExit("Open");
-		for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
+		    if(d==Directions.GATE) continue;
 			Room dirRoom=rawDoors()[d];
 			Exit dirExit=rawExits()[d];
 			if((dirExit==null)||(dirExit.hasADoor()))
@@ -334,6 +359,18 @@ public class StdGrid extends StdRoom implements GridLocale
 					case Directions.SOUTH:
 						for(int x=0;x<subMap.length;x++)
 							linkRoom(subMap[x][subMap[x].length-1],dirRoom,d,dirExit,altExit);
+						break;
+					case Directions.NORTHEAST:
+						linkRoom(subMap[subMap.length-1][0],dirRoom,d,dirExit,altExit);
+						break;
+					case Directions.NORTHWEST:
+						linkRoom(subMap[0][0],dirRoom,d,dirExit,altExit);
+						break;
+					case Directions.SOUTHEAST:
+						linkRoom(subMap[subMap.length-1][subMap[0].length-1],dirRoom,d,dirExit,altExit);
+						break;
+					case Directions.SOUTHWEST:
+						linkRoom(subMap[0][subMap[0].length-1],dirRoom,d,dirExit,altExit);
 						break;
 					case Directions.EAST:
 						for(int y=0;y<subMap[0].length;y++)
@@ -386,15 +423,40 @@ public class StdGrid extends StdRoom implements GridLocale
 			CMMap.CrossExit EX=(CMMap.CrossExit)gridexits.elementAt(d);
 			try{
 				if(EX.out)
+				switch(EX.dir)
 				{
-					if((EX.x==0)&&(EX.dir==Directions.WEST))
+				case Directions.NORTH:
+					if(EX.y==0)
 						tryFillInExtraneousExternal(EX,ox);
-					if((EX.x==xSize()-1)&&(EX.dir==Directions.EAST))
+					break;
+				case Directions.SOUTH:
+					if(EX.y==ySize()-1)
 						tryFillInExtraneousExternal(EX,ox);
-					if((EX.y==0)&&(EX.dir==Directions.NORTH))
+					break;
+				case Directions.EAST:
+					if(EX.x==xSize()-1)
 						tryFillInExtraneousExternal(EX,ox);
-					if((EX.y==ySize()-1)&&(EX.dir==Directions.SOUTH))
+					break;
+				case Directions.WEST:
+					if(EX.x==0)
 						tryFillInExtraneousExternal(EX,ox);
+					break;
+				case Directions.NORTHEAST:
+					if((EX.y==0)&&(EX.x==xSize()-1))
+						tryFillInExtraneousExternal(EX,ox);
+					break;
+				case Directions.SOUTHWEST:
+					if((EX.y==ySize()-1)&&(EX.x==0))
+						tryFillInExtraneousExternal(EX,ox);
+					break;
+				case Directions.NORTHWEST:
+					if((EX.y==0)&&(EX.x==0))
+						tryFillInExtraneousExternal(EX,ox);
+					break;
+				case Directions.SOUTHEAST:
+					if((EX.y==ySize()-1)&&(EX.x==xSize()-1))
+						tryFillInExtraneousExternal(EX,ox);
+					break;
 				}
 			}catch(Exception e){}
 		}
@@ -418,6 +480,13 @@ public class StdGrid extends StdRoom implements GridLocale
 							linkRoom(newRoom,subMap[x][y-1],Directions.NORTH,ox,ox);
 						if((x>0)&&(subMap[x-1][y]!=null))
 							linkRoom(newRoom,subMap[x-1][y],Directions.WEST,ox,ox);
+						if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS)
+						{
+						    if((y>0)&&(x>0)&&(subMap[x-1][y-1]!=null))
+								linkRoom(newRoom,subMap[x-1][y-1],Directions.NORTHWEST,ox,ox);
+						    if(((y+1)<subMap[x].length)&&(x>0)&&(subMap[x-1][y+1]!=null))
+								linkRoom(newRoom,subMap[x-1][y+1],Directions.SOUTHWEST,ox,ox);
+						}
 						CMMap.addRoom(newRoom);
 					}
 				}

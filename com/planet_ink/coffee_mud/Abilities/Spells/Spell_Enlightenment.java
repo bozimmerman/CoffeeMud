@@ -98,7 +98,7 @@ public class Spell_Enlightenment extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> educate(s) <T-NAMESELF>, who looks perplexed.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to educate <T-NAMESELF>, but look(s) perplexed.");
 
 
 		// return whether it worked

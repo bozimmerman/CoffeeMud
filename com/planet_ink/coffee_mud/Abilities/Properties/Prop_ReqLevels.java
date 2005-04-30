@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,50 +51,52 @@ public class Prop_ReqLevels extends Property
 
 		int lastPlace=0;
 		int x=0;
-		while(x>=0)
-		{
-			x=text().indexOf(">",lastPlace);
-			if(x<0)	x=text().indexOf("<",lastPlace);
-			if(x<0)	x=text().indexOf("=",lastPlace);
-			if(x>=0)
-			{
-				char primaryChar=text().charAt(x);
-				x++;
-				boolean ok=false;
-				boolean andEqual=false;
-				if(text().charAt(x)=='=')
-				{
-					andEqual=true;
-					x++;
-				}
-				lastPlace=x;
+        String text=text().trim();
+        if(text.length()==0) return true;
+        while(x>=0)
+        {
+            x=text.indexOf(">",lastPlace);
+            if(x<0) x=text.indexOf("<",lastPlace);
+            if(x<0) x=text.indexOf("=",lastPlace);
+            if(x>=0)
+            {
+                char primaryChar=text.charAt(x);
+                x++;
+                boolean andEqual=false;
+                if(text.charAt(x)=='=')
+                {
+                    andEqual=true;
+                    x++;
+                }
+                lastPlace=x;
 
-				String cmpString="";
-				while((x<text().length())&&
-					  (((text().charAt(x)==' ')&&(cmpString.length()==0))
-					   ||(Character.isDigit(text().charAt(x)))))
-				{
-					if(Character.isDigit(text().charAt(x)))
-						cmpString+=text().charAt(x);
-					x++;
-				}
-				if(cmpString.length()>0)
-				{
-					int cmpLevel=Util.s_int(cmpString);
-					if((cmpLevel==lvl)&&(andEqual))
-						ok=true;
-					else
-					switch(primaryChar)
-					{
-					case '>': ok=(lvl>cmpLevel); break;
-					case '<': ok=(lvl<cmpLevel); break;
-					case '=': ok=(lvl==cmpLevel); break;
-					}
-				}
-				return ok;
-			}
-		}
-		return true;
+                boolean found=false;
+                String cmpString="";
+                while((x<text.length())&&
+                      (((text.charAt(x)==' ')&&(cmpString.length()==0))
+                       ||(Character.isDigit(text.charAt(x)))))
+                {
+                    if(Character.isDigit(text.charAt(x)))
+                        cmpString+=text.charAt(x);
+                    x++;
+                }
+                if(cmpString.length()>0)
+                {
+                    int cmpLevel=Util.s_int(cmpString);
+                    if((cmpLevel==lvl)&&(andEqual))
+                        found=true;
+                    else
+                    switch(primaryChar)
+                    {
+                    case '>': found=(lvl>cmpLevel); break;
+                    case '<': found=(lvl<cmpLevel); break;
+                    case '=': found=(lvl==cmpLevel); break;
+                    }
+                }
+                if(found) return true;
+            }
+        }
+		return false;
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

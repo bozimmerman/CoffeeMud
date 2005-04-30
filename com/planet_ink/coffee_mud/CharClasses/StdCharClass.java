@@ -425,7 +425,9 @@ public class StdCharClass implements CharClass, Cloneable
 	public void unLevel(MOB mob)
 	{
 		if((mob.baseEnvStats().level()<2) 
-		||(CMSecurity.isDisabled("LEVELS")))
+		||(CMSecurity.isDisabled("LEVELS"))
+		||(leveless())
+		||(mob.charStats().getMyRace().leveless()))
 		    return;
 		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CommonStrings.msp("doh.wav",60));
 		if(!mob.isMonster())
@@ -601,12 +603,15 @@ public class StdCharClass implements CharClass, Cloneable
         }
 		mob.setExperience(mob.getExperience()-amount);
 		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
-		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))
+		if((mob.getExperience()<neededLowest)
+		&&(mob.baseEnvStats().level()>1))
 			unLevel(mob);
 	}
 	public void level(MOB mob)
 	{
-	    if(CMSecurity.isDisabled("LEVELS")) 
+	    if((CMSecurity.isDisabled("LEVELS"))
+		||(leveless())
+		||(mob.charStats().getMyRace().leveless()))
 	        return;
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CommonStrings.msp("level_gain.wav",60));
 		theNews.append(levelAdjuster(mob,1));

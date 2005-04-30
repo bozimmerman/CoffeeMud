@@ -115,7 +115,7 @@ public class ClanVote extends BaseClanner
 						break;
 					}
 					msg.append(CV.matter+"\n\r");
-					if(CV.voteStatus==Clan.VSTAT_STARTED)
+					if((CV.voteStatus==Clan.VSTAT_STARTED)&&(myVote==null))
 					{
 						mob.tell(msg.toString());
 						msg=new StringBuffer("");

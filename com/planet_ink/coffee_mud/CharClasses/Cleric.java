@@ -278,9 +278,9 @@ public class Cleric extends StdCharClass
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool())))
 		{
 			Ability A=(Ability)msg.tool();
-
 			if(A.appropriateToMyFactions(myChar))
 				return true;
+            
 			int hq=holyQuality(A);
 			int basis=0;
 

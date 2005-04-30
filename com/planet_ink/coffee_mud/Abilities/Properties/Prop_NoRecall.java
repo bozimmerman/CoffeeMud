@@ -24,7 +24,7 @@ public class Prop_NoRecall extends Property
 {
 	public String ID() { return "Prop_NoRecall"; }
 	public String name(){ return "Recall Neuralizing";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS;}
 
 	public String accountForYourself()
 	{ return "No Recall Field";	}
@@ -33,7 +33,10 @@ public class Prop_NoRecall extends Property
 	{
 		if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 		{
-			if((msg.source()!=null)&&(msg.source().location()!=null))
+            if(((!(myHost instanceof Item))
+                ||(msg.source()==((Item)myHost).owner()))
+            &&(msg.source()!=null)
+			&&(msg.source().location()!=null))
 				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but the magic fizzles.");
 			return false;
 		}
