@@ -62,19 +62,17 @@ RATEMODIFIER=1.0
 # Faction Ranges
 # This is used when the user is listing what standing they have
 # with a given faction.
-#   [Code Name] is the term is used by zappers.  It should be a simple
-#   code word used to represent that range.  Several ranges may share
-#   the same code name.
+#   [Cpde Name] is the term is used by zappers
 #   [Align Flag] is in case the faction is being used as an alignment
 #                replacement.
-#RANGEX = [low]  ; [high]; [long name]   ; [code name] ; [align flag]
-RANGE1  = -10000 ; -7500 ; pure evil     ; PUREEVIL    ; EVIL
-RANGE2  =  -7499 ; -4500 ; evil          ; JUSTEVIL    ; EVIL
-RANGE3  =  -4499 ; -1500 ; somewhat evil ; NEUTEVIL    ; NEUTRAL
-RANGE4  =  -1499 ;  1500 ; pure neutral  ; PNEUTRAL    ; NEUTRAL
-RANGE5  =   1501 ;  4500 ; somewhat good ; NEUTGOOD    ; NEUTRAL
-RANGE6  =   4501 ;  7500 ; good          ; JUSTGOOD    ; GOOD
-RANGE7  =   7501 ; 10000 ; pure goodness ; PUREGOOD    ; GOOD
+# RANGEX = [low]; [high]; [long name] ; code name ; [align flag]
+RANGE1= -10000 ; -7500 ; pure evil     ; EVIL ; EVIL
+RANGE2= -7499  ; -4500 ; evil          ; EVIL ; EVIL
+RANGE3= -4499  ; -1500 ; somewhat evil ; NEUTRAL ; NEUTRAL
+RANGE4= -1499  ; 1500  ; pure neutral  ; NEUTRAL ; NEUTRAL
+RANGE5= 1501   ; 4500  ; somewhat good ; NEUTRAL ; NEUTRAL
+RANGE6= 4501   ; 7500  ; good          ; GOOD ; GOOD
+RANGE7= 7501   ; 10000 ; pure goodness ; GOOD ; GOOD
 
 # Experience factor
 # Does being the same/opposite end of the faction have impact on experience gained?
@@ -159,19 +157,13 @@ EXPERIENCE=EXTREME
 # 	This change will not trigger if cast on a human.
 #
 # Change string format:
-# CHANGEX = [TYPE];[DIRECTION];[FACTOR %];[FLAGS];[ZAPPER]
+# 	CHANGEX = [TYPE];[DIRECTION];[FACTOR %];[FLAGS];[ZAPPER]
 CHANGE1=MURDER;OPPOSITE;100%;OUTSIDER;;
 
 # Ability Usage Controls
-# Controlling whether, by default, an ability of the type, or with the given flag, 
-# is flagged as being appropriate for the given range of faction.  This has a big
-# impact on some character classes, and especially on MOB skill usage.
-# The first parameter is either a skill ID, type, spell domain, or flag name.  Flag
-# names can be prefixed with a "!" to denote the requirement that this flag NOT be found.
-# All first parm values must match a given skill before the faction range check 
-# is made to evaluate elligibility. 
-# ABILITYX = [SKILL NAME/TYPE/DOMAIN/FLAGS];[MIN RANGE];[MAX RANGE]
-ABILITY1=PRAYER HOLY UNHOLY;-4499;4500
-ABILITY2=PRAYER HOLY !UNHOLY;4501;10000
-ABILITY3=PRAYER UNHOLY !HOLY;-4500;-10000
-ABILITY4=CHANT;-4499;4500
+# To be documented and expanded.... roughly:
+# [SKILL TYPE];[FLAG TYPE];[MIN RANGE];[MAX RANGE]
+ABILITY1=PRAYER;HOLY;4501;10000
+ABILITY2=PRAYER;UNHOLY;-4500;-10000
+ABILITY3=PRAYER;;-4499;4500
+ABILITY4=CHANT;;-4499;4500
