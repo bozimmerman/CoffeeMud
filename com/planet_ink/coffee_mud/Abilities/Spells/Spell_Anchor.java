@@ -85,10 +85,17 @@ public class Spell_Anchor extends Spell
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
 				roomD=null;
 
-			if(roomS!=null)
-				roomS.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
-			if(roomD!=null)
-				roomD.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+            Ability A=(Ability)msg.tool();
+            if((A.classificationCode()==Ability.CHANT)
+            ||(A.classificationCode()==Ability.SPELL)
+            ||(A.classificationCode()==Ability.PRAYER)
+            ||(A.classificationCode()==Ability.SONG))
+            {
+    			if(roomS!=null)
+    				roomS.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+    			if(roomD!=null)
+    				roomD.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+            }
 			return false;
 		}
 		return true;

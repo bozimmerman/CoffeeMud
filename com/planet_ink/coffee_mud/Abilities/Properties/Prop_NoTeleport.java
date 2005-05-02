@@ -41,7 +41,12 @@ public class Prop_NoTeleport extends Property
 			if(((!shere)&&(!summon)&&(teleport))
 			   ||((shere)&&(summon)))
 			{
-				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+                Ability A=(Ability)msg.tool();
+                if((A.classificationCode()==Ability.CHANT)
+                ||(A.classificationCode()==Ability.SPELL)
+                ||(A.classificationCode()==Ability.PRAYER)
+                ||(A.classificationCode()==Ability.SONG))
+    				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 				return false;
 			}
 		}

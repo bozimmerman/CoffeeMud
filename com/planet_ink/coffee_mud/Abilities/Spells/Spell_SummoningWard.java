@@ -75,9 +75,16 @@ public class Spell_SummoningWard extends Spell
 			&&(msg.tool() instanceof Ability)
 			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
 			{
-				if((msg.source().location()!=null)&&(msg.source().location()!=R))
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+                Ability A=(Ability)msg.tool();
+                if((A.classificationCode()==Ability.CHANT)
+                ||(A.classificationCode()==Ability.SPELL)
+                ||(A.classificationCode()==Ability.PRAYER)
+                ||(A.classificationCode()==Ability.SONG))
+                {
+    				if((msg.source().location()!=null)&&(msg.source().location()!=R))
+    					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+    				R.showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+                }
 				return false;
 			}
 		}

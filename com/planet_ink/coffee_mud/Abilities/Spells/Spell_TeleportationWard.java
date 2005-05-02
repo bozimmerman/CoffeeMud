@@ -62,7 +62,12 @@ public class Spell_TeleportationWard extends Spell
 			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))
 			&&(!mob.amDead()))
 			{
-				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+                Ability A=(Ability)msg.tool();
+                if((A.classificationCode()==Ability.CHANT)
+                ||(A.classificationCode()==Ability.SPELL)
+                ||(A.classificationCode()==Ability.PRAYER)
+                ||(A.classificationCode()==Ability.SONG))
+    				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
 				return false;
 			}
 		}

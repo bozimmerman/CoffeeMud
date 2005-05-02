@@ -49,6 +49,7 @@ public class WaterCurrents extends ActiveTicker
 	}
 	public void applyCurrents(Room R, Vector done)
 	{
+        Vector todo=new Vector();
 		if((R!=null)&&(R.numInhabitants()>0))
 		{
 		    MOB M=null;
@@ -62,7 +63,10 @@ public class WaterCurrents extends ActiveTicker
 				&&((!(M instanceof Rideable))||(((Rideable)M).numRiders()==0))
 				&&(!M.isInCombat())
 				&&(!done.contains(M)))
+                {
+                    todo.addElement(M);
 					done.addElement(M);
+                }
 			}
 		}
 		if((R!=null)&&(R.numItems()>0))
@@ -78,10 +82,13 @@ public class WaterCurrents extends ActiveTicker
 				        ||(((Rideable)I).numRiders()==0))
 				&&(!Sense.isInFlight(I))
 				&&(!done.contains(I)))
+                {
+                    todo.addElement(I);
 				    done.addElement(I);
+                }
 			}
 		}
-		if((done.size()>0)&&(R!=null))
+		if((todo.size()>0)&&(R!=null))
 		{
 			int dir=-1;
 			Room R2=null;
@@ -109,22 +116,24 @@ public class WaterCurrents extends ActiveTicker
 			{
 			    MOB M=null;
 			    Item I=null;
-				for(int m=0;m<done.size();m++)
+				for(int m=0;m<todo.size();m++)
 				{
-				    if(done.elementAt(m) instanceof MOB)
+				    if(todo.elementAt(m) instanceof MOB)
 				    {
-						M=(MOB)done.elementAt(m);
-						if(R.show(M,null,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current."))
+						M=(MOB)todo.elementAt(m);
+                        FullMsg themsg=new FullMsg(M,M,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
+                        if(R.okMessage(M,themsg))
 						{
+                            R.send(M,themsg);
 							R2.bringMobHere(M,false);
 							R2.showOthers(M,null,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
 							CommonMsgs.look(M,true);
 						}
 				    }
 				    else
-				    if(done.elementAt(m) instanceof Item)
+				    if(todo.elementAt(m) instanceof Item)
 				    {
-						I=(Item)done.elementAt(m);
+						I=(Item)todo.elementAt(m);
 						R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" is swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
 						R2.bringItemHere(I,Item.REFUSE_PLAYER_DROP);
 						R2.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" is swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
