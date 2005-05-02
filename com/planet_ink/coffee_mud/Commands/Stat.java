@@ -75,7 +75,7 @@ public class Stat extends BaseAbleLister
 		Vector V=CMClass.DBEngine().DBReadStats(ENDQ.getTimeInMillis()-1);
 		if(V.size()==0){ mob.tell("No Stats?!"); return false;}
 		StringBuffer table=new StringBuffer("");
-		table.append("^xStatistics since "+ENDQ.d2String()+":^.^N\n");
+		table.append("^xStatistics since "+ENDQ.d2String()+":^.^N\n\r\n\r");
 		table.append(Util.padRight("Date",25)
 					 +Util.padRight("CONs",5)
 					 +Util.padRight("HIGH",5)

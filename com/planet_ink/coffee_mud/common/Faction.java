@@ -102,7 +102,6 @@ public class Faction implements MsgListener
             }
             if(key.startsWith("CHANGE"))
             {
-                
                 FactionChangeEvent C=new FactionChangeEvent(words);
                 Changes.put(C.ID.toUpperCase(),C);
             }
@@ -392,8 +391,9 @@ public class Faction implements MsgListener
     {
         int sourceFaction= source.fetchFaction(ID);
         int targetFaction = sourceFaction * -1;
-        if((source==target)&&(!event.selfTargetOK))
+        if((source==target)&&(!event.selfTargetOK)&&(!event.ID.equalsIgnoreCase("TIME")))
             return;
+        
         if(target!=null)
         {
             if(hasFaction(target))
@@ -404,7 +404,7 @@ public class Faction implements MsgListener
         }
         else 
             target = source;
-
+        
         double baseChangeAmount=new Integer(100).doubleValue();
         if((source!=target)&&(target!=null)&&(!event.just100))
         {

@@ -1150,7 +1150,6 @@ public class Modify extends BaseGenerics
 					genMiscSet(mob,thang);
 				thang.recoverEnvStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
-				Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.ID()+".");
 			}
 			else
 			if((Directions.getGoodDirectionCode(allWord)>=0)||(thang instanceof Exit))

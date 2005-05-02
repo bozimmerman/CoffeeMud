@@ -190,30 +190,44 @@ public class Factions implements Tickable
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
+        if(Sessions.size()==0) 
+            return true;
 	    try
 	    {
 		    Session S=null;
 		    MOB mob=null;
 		    Faction F=null;
 		    Faction.FactionChangeEvent CE=null; 
+            DVector outSiders=new DVector(2);
+            DVector timers=new DVector(2);
+            for(Enumeration e=factionSet.elements();e.hasMoreElements();)
+            {
+                F=(Faction)e.nextElement();
+                CE=F.findChangeEvent("ADDOUTSIDER");
+                if(CE!=null) outSiders.addElement(CE,F);
+                CE=F.findChangeEvent("TIME");
+                if(CE!=null) timers.addElement(CE,F);
+            }
+            if((outSiders.size()==0)&&(timers.size()==0)) 
+                return true;
 		    for(int s=0;s<Sessions.size();s++)
 		    {
 		        S=Sessions.elementAt(s);
 		        mob=(!S.killFlag())?S.mob():null;
 		        if(mob!=null)
 		        {
-		            for(Enumeration e=factionSet.elements();e.hasMoreElements();)
+                    for(int o=0;o<outSiders.size();o++)
 		            {
-		                F=(Faction)e.nextElement();
-		                CE=F.findChangeEvent("ADDOUTSIDER");
-		                if((CE!=null)&&(CE.applies(mob))&&(!F.hasFaction(mob)))
+		                CE=(Faction.FactionChangeEvent)outSiders.elementAt(o,1);
+                        F=(Faction)outSiders.elementAt(o,2);
+		                if((CE.applies(mob))&&(!F.hasFaction(mob)))
 		                    F.executeChange(mob,mob,CE);
 		            }
-		            for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
-		            {
-		                F=(Faction)e.nextElement();
-		                CE=F.findChangeEvent("TIME");
-		                if((CE!=null)&&(CE.applies(mob)))
+                    for(int o=0;o<timers.size();o++)
+                    {
+                        CE=(Faction.FactionChangeEvent)timers.elementAt(o,1);
+                        F=(Faction)timers.elementAt(o,2);
+		                if((CE.applies(mob))&&(F.hasFaction(mob)))
 		                    F.executeChange(mob,mob,CE);
 		            }
 		        }
