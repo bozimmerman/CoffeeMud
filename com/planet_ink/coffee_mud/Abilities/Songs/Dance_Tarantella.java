@@ -50,7 +50,7 @@ public class Dance_Tarantella extends Dance
 			for(int a=0;a<mob.numEffects();a++)
 			{
 				Ability A=mob.fetchEffect(a);
-				if((A!=null)&&(A.classificationCode()==Ability.POISON))
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
 				{
 					if(offenders==null) offenders=new Vector();
 					offenders.addElement(A);

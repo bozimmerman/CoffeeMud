@@ -36,7 +36,7 @@ public class Spell_DetectPoison extends Spell
 		for(int a=0;a<fromMe.numEffects();a++)
 		{
 			Ability A=fromMe.fetchEffect(a);
-			if((A!=null)&&(A.classificationCode()==Ability.POISON))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
 				offenders.addElement(A);
 		}
 		if(fromMe instanceof MOB)
@@ -45,7 +45,7 @@ public class Spell_DetectPoison extends Spell
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
-				if((A!=null)&&(A.classificationCode()==Ability.POISON))
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
 					offenders.addElement(A);
 			}
 		}

@@ -179,7 +179,7 @@ public class Skill_Enslave extends StdAbility
 			    for(int a=mob.numEffects()-1;a>=0;a--)
 			    {
 			        Ability A=mob.fetchEffect(a);
-			        if((A!=null)&&(A.classificationCode()==Ability.COMMON_SKILL))
+			        if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
 			            if(!A.tick(ticking,tickID))
 			                mob.delEffect(A);
 			    }

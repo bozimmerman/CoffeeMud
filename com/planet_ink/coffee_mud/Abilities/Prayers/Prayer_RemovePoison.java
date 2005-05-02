@@ -34,7 +34,7 @@ public class Prayer_RemovePoison extends Prayer
 		for(int a=0;a<fromMe.numEffects();a++)
 		{
 			Ability A=fromMe.fetchEffect(a);
-			if((A!=null)&&(A.classificationCode()==Ability.POISON))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
 				offenders.addElement(A);
 		}
 		return offenders;

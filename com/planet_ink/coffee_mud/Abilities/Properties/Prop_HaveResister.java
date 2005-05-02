@@ -177,7 +177,7 @@ public class Prop_HaveResister extends Property
 					}
 				}
 				else
-				if((A.classificationCode()==Ability.PRAYER)
+				if(((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 				&&(Util.bset(A.flags(),Ability.FLAG_HOLY))
 				&&(!Util.bset(A.flags(),Ability.FLAG_UNHOLY)))
 				{

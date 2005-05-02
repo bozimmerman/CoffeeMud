@@ -37,7 +37,7 @@ public class Trap_SleepGas extends StdTrap
 		{
 			Ability A=fromMe.fetchEffect(a);
 			if((A!=null)
-			&&(A.classificationCode()==Ability.POISON)
+			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON)
 			&&(A.ID().equalsIgnoreCase("Poison_Slumberall")))
 				offenders.addElement(A);
 		}

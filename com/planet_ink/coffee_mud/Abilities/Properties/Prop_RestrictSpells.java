@@ -50,10 +50,10 @@ public class Prop_RestrictSpells extends Property
 				roomD=null;
 
             Ability A=(Ability)msg.tool();
-            if((A.classificationCode()==Ability.CHANT)
-            ||(A.classificationCode()==Ability.SPELL)
-            ||(A.classificationCode()==Ability.PRAYER)
-            ||(A.classificationCode()==Ability.SONG))
+            if(((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
+            ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+            ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+            ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG))
             {
     			if(roomS!=null)
     				roomS.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");

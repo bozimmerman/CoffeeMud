@@ -990,7 +990,7 @@ public class BaseGenerics extends StdCommand
 				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 				{
 				 	A=(Ability)e.nextElement();
-				 	if((A.classificationCode()==Ability.COMMON_SKILL)
+				 	if(((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
 				 	&&(Util.bset(A.flags(),Ability.FLAG_CRAFTING)))
 				 	    str.append(A.ID()+"\n\r");
 				}

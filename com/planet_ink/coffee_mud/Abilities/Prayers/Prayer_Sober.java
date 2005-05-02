@@ -36,7 +36,7 @@ public class Prayer_Sober extends Prayer
 			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)
 			{
-				if((A.classificationCode()==Ability.POISON)
+				if(((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON)
 				&&((A.ID().toUpperCase().indexOf("INEBRIA")>=0)
 				   ||(A.ID().toUpperCase().indexOf("ALCOHOL")>=0)
 				   ||(A.ID().toUpperCase().indexOf("POLKA")>=0)
