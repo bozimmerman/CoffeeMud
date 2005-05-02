@@ -193,10 +193,15 @@ public class StdJournal extends StdItem
 								    journal=journal.trim();
 								    if(journal.length()>0)
 								    {
-								        if((!journal.equalsIgnoreCase("bugs"))
-								        &&(!journal.equalsIgnoreCase("typos"))
-								        &&(!journal.equalsIgnoreCase("ideas"))
-								        &&(CMClass.DBEngine().DBCountJournal(journal.toUpperCase(),null,null)<=0))
+                                        String realName=null;
+                                        realName=(journal.equalsIgnoreCase("bugs")
+                                                  ||journal.equalsIgnoreCase("typos")
+                                                  ||journal.equalsIgnoreCase("ideas"))?"SYSTEM_"+journal.toUpperCase():null;
+                                        if(realName==null)
+                                            realName=CMClass.DBEngine().DBGetRealJournalName(journal);
+                                        if(realName==null)
+                                            realName=CMClass.DBEngine().DBGetRealJournalName(journal.toUpperCase());
+								        if(realName==null)
 											mob.tell("The journal '"+journal+"' does not presently exist.  Aborted.");
 								        else
 								        {
@@ -207,11 +212,7 @@ public class StdJournal extends StdItem
 											String subject=(String)entry2.elementAt(4);
 											String message=(String)entry2.elementAt(5);
 											CMClass.DBEngine().DBDeleteJournal(Name(),which-1);
-									        if((journal.equalsIgnoreCase("bugs"))
-									        ||(journal.equalsIgnoreCase("typos"))
-									        ||(journal.equalsIgnoreCase("ideas")))
-									        	journal="SYSTEM_"+journal.toUpperCase();
-											CMClass.DBEngine().DBWriteJournal(journal.toUpperCase(),
+											CMClass.DBEngine().DBWriteJournal(realName,
 																			  from2,
 																			  to,
 																			  subject,

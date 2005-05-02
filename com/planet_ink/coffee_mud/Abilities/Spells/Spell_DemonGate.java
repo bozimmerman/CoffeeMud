@@ -69,7 +69,7 @@ public class Spell_DemonGate extends Spell
             if(mob.amFollowing()!=null)
                 mob.location().showOthers(mob,mob.amFollowing(),CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> uses the fight to wrest itself from out of <T-YOUPOSS> control!^?%0DTo <T-YOUPOSS> great relief, it disappears back into its home plane.^</FIGHT^>^?");
             else
-                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> disappears back into it's home plane.");
+                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> disappears back into its home plane.");
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}

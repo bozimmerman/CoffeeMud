@@ -67,7 +67,7 @@ public class GTell extends StdCommand
 			&&(target.okMessage(target,msg)))
 			{
 				if(target.playerStats()!=null)
-					target.playerStats().addGTellStack(CoffeeFilter.fullOutFilter(target.session(),target,mob,target,null,msg.sourceMessage(),false));
+					target.playerStats().addGTellStack(CoffeeFilter.fullOutFilter(target.session(),target,mob,target,null,Util.removeColors(msg.sourceMessage()),false));
 				target.executeMsg(target,msg);
 				if(msg.trailerMsgs()!=null)
 				{

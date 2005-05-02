@@ -84,7 +84,7 @@ public class Spell_FeignDeath extends Spell
 				if(Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
 					mob.tell("You are unable to make sounds in this semi-incorporeal form.");
 				else
-					mob.tell("You are unable to do that this semi-incorporeal form.");
+					mob.tell("You are unable to do that in this semi-incorporeal form.");
 				peaceAt(mob);
 				return false;
 			}
