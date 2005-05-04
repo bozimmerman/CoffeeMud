@@ -30,6 +30,7 @@ public class LockSmith extends CraftingSkill
 	private static final String[] triggerStrings = {"LOCKSMITH","LOCKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
+    private String keyCode="";
 	private Item building=null;
 	private Environmental workingOn=null;
 	private boolean messedUp=false;
@@ -57,13 +58,15 @@ public class LockSmith extends CraftingSkill
 
 	public Item getBuilding(Environmental target)
 	{
-		String keyName=""+Math.random();
+		String keyName=keyCode;
 		Item newbuilding=CMClass.getItem("GenKey");
 		if((workingOn instanceof Exit)
-		&&((Exit)workingOn).hasALock())
+		&&((Exit)workingOn).hasALock()
+        &&(((Exit)workingOn).keyName().length()>0))
 			keyName=((Exit)workingOn).keyName();
 		if((workingOn instanceof Container)
-		&&((Container)workingOn).hasALock())
+		&&(((Container)workingOn).hasALock())
+        &&(((Container)workingOn).keyName().length()>0))
 			keyName=((Container)workingOn).keyName();
 		((Key)newbuilding).setKey(keyName);
 		return newbuilding;
@@ -100,7 +103,11 @@ public class LockSmith extends CraftingSkill
 							((Exit)workingOn).recoverEnvStats();
 							((Exit)workingOn).setDoorsNLocks(true,false,true,true,true,true);
 							if(building instanceof Key)
+                            {
+                                if(((Key)building).getKey().length()==0)
+                                    ((Key)building).setKey(keyCode);
 								((Exit)workingOn).setKeyName(((Key)building).getKey());
+                            }
 							CMClass.DBEngine().DBUpdateExits(mob.location());
 							if((exit2!=null)
 							   &&(!boltlock)
@@ -129,7 +136,11 @@ public class LockSmith extends CraftingSkill
 							}
 							((Container)workingOn).setLidsNLocks(true,false,true,true);
 							if(building instanceof Key)
+                            {
+                                if(((Key)building).getKey().length()==0)
+                                    ((Key)building).setKey(keyCode);
 								((Container)workingOn).setKeyName(((Key)building).getKey());
+                            }
 						}
 					}
 				}
@@ -145,6 +156,7 @@ public class LockSmith extends CraftingSkill
 			commonTell(mob,"Locksmith what or where? Enter the name of a container or door direction. Put the word \"boltlock\" in front of the door direction to make a one-way lock.");
 			return false;
 		}
+        keyCode=""+Math.random();
 		String startStr=null;
 		int completion=8;
 		building=null;

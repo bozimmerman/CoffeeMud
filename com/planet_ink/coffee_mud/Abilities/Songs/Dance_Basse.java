@@ -31,11 +31,13 @@ public class Dance_Basse extends Dance
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&((msg.amITarget(affected))))
 		{
 			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().getVictim()!=target)
+            &&(msg.source().location()==target.location())
 			&&(Dice.rollPercentage()>((msg.source().envStats().level()-target.envStats().level())*10)))
 			{
 				msg.source().tell("You are too much in awe of "+target.name());

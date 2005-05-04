@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -30,11 +31,14 @@ public class Chant_AnimalFriendship extends Chant
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&((msg.amITarget(affected)))
 		&&(Sense.isAnimalIntelligence(msg.source())))
 		{
 			MOB target=(MOB)msg.target();
-			if((!target.isInCombat())&&(msg.source().getVictim()!=target))
+			if((!target.isInCombat())
+            &&(msg.source().location()==target.location())
+            &&(msg.source().getVictim()!=target))
 			{
 				msg.source().tell("You feel too friendly towards "+target.name());
 				if(target.getVictim()==msg.source())

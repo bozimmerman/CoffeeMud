@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -106,11 +107,13 @@ public class Stone extends StdRace
 		else
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
 		&&(myHost instanceof MOB)
-		&&(msg.amITarget(myHost)))
+		&&(msg.amITarget(myHost))
+        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL)))
 		{
 			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().isMonster())
+            &&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
 				msg.source().tell("Attack a rock?!");

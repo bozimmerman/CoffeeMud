@@ -40,7 +40,7 @@ public class Throw extends StdCommand
 		commands.removeElement(str);
 		String what=Util.combine(commands,0);
 		Item item=mob.fetchWornItem(what);
-		if(item==null) item=mob.fetchInventory(what);
+		if(item==null) item=mob.fetchInventory(null,what);
 		if((item==null)||(!Sense.canBeSeenBy(item,mob)))
 		{
 			mob.tell("You don't seem to have a '"+what+"'!");

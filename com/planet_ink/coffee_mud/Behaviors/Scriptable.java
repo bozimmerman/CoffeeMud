@@ -734,7 +734,7 @@ public class Scriptable extends StdBehavior
 							MOB M=R.fetchInhabitant(i);
 							if(M!=null)
 							{
-								E=M.fetchInventory(null,thisName);
+								E=M.fetchInventory(thisName);
 								if((CoffeeUtensils.getShopKeeper(M)!=null)&&(E==null))
 									E=CoffeeUtensils.getShopKeeper(M).getStock(thisName,null);
 							}
@@ -4656,7 +4656,9 @@ public class Scriptable extends StdBehavior
 						Vector V=new Vector();
 						V.addElement("");
 						V.addElement(s.trim());
+                        lastKnownLocation=goHere;
 						execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg);
+                        lastKnownLocation=lastPlace;
 						lastPlace.bringMobHere(monster,true);
 						if(!(scripted instanceof MOB))
 						{
@@ -5531,7 +5533,8 @@ public class Scriptable extends StdBehavior
 				break;
 			case 27: // buy_prog
 				if((msg.targetMinor()==CMMsg.TYP_BUY)
-				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
+				&&((!(affecting instanceof ShopKeeper))
+                    ||msg.amITarget(affecting))
 				&&(msg.tool() instanceof Item)
 				&&(!msg.amISource(monster))
 				&&(canFreelyBehaveNormal(monster)))

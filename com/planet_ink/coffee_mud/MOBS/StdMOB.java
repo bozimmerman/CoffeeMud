@@ -3046,7 +3046,11 @@ public class StdMOB implements MOB
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	public Item fetchFromInventory(Item goodLocation, String itemName, int wornCode, boolean allowCoins)
+	public Item fetchFromInventory(Item goodLocation, 
+                                   String itemName, 
+                                   int wornCode, 
+                                   boolean allowCoins,
+                                   boolean respectLocationAndWornCode)
 	{
 	    Vector inv=inventory;
 	    if(!allowCoins)
@@ -3056,14 +3060,23 @@ public class StdMOB implements MOB
 	            if(inv.elementAt(v) instanceof Coins)
 	                inv.removeElementAt(v);
 	    }
-		Item item=EnglishParser.fetchAvailableItem(inv,itemName,goodLocation,wornCode,true);
-		if(item==null) item=EnglishParser.fetchAvailableItem(inv,itemName,goodLocation,wornCode,false);
+        Item item=null;
+        if(respectLocationAndWornCode)
+        {
+    		item=EnglishParser.fetchAvailableItem(inv,itemName,goodLocation,wornCode,true);
+    		if(item==null) item=EnglishParser.fetchAvailableItem(inv,itemName,goodLocation,wornCode,false);
+        }
+        else
+        {
+            item=(Item)EnglishParser.fetchEnvironmental(inv,itemName,true);
+            if(item==null) item=(Item)EnglishParser.fetchEnvironmental(inv,itemName,false);
+        }
 		return item;
 	}
-	public Item fetchInventory(String itemName){ return fetchFromInventory(null,itemName,Item.WORN_REQ_ANY,true);}
-	public Item fetchInventory(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORN_REQ_ANY,true);}
-	public Item fetchCarried(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORN_REQ_UNWORNONLY,true);}
-	public Item fetchWornItem(String itemName){ return fetchFromInventory(null,itemName,Item.WORN_REQ_WORNONLY,true);}
+	public Item fetchInventory(String itemName){ return fetchFromInventory(null,itemName,Item.WORN_REQ_ANY,true,false);}
+	public Item fetchInventory(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORN_REQ_ANY,true,true);}
+	public Item fetchCarried(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORN_REQ_UNWORNONLY,true,true);}
+	public Item fetchWornItem(String itemName){ return fetchFromInventory(null,itemName,Item.WORN_REQ_WORNONLY,true,true);}
 	
 	public void addFollower(MOB follower, int order)
 	{

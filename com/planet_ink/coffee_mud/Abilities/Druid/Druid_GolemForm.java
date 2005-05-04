@@ -152,7 +152,9 @@ public class Druid_GolemForm extends StdAbility
 
 	public void setRaceName(MOB mob)
 	{
-		int classLevel=CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this);
+        int qualClassLevel=CMAble.qualifyingClassLevel(mob,this);
+        int classLevel=qualClassLevel-CMAble.qualifyingLevel(mob,this);
+        if(qualClassLevel<0) classLevel=30;
 		raceName=getRaceName(classLevel);
 		newRace=getRace(classLevel);
 	}
@@ -205,7 +207,9 @@ public class Druid_GolemForm extends StdAbility
 			}
 		}
 
-		int classLevel=CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this);
+        int qualClassLevel=CMAble.qualifyingClassLevel(mob,this);
+        int classLevel=qualClassLevel-CMAble.qualifyingLevel(mob,this);
+        if(qualClassLevel<0) classLevel=30;
 		String choice=Util.combine(commands,0);
 		if(choice.trim().length()>0)
 		{

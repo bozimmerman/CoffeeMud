@@ -27,6 +27,7 @@ public class Prop_HaveEnabler extends Property
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private Item myItem=null;
 	private MOB lastMOB=null;
+    private Vector lastMOBeffected=new Vector();
 	boolean processing=false;
 	protected Vector spellV=null;
 	public Vector getMySpellsV()
@@ -96,9 +97,13 @@ public class Prop_HaveEnabler extends Property
 					else
 						A.setMiscText(t.substring(x+1));
 				}
+                Ability A2=newMOB.fetchEffect(A.ID());
 				A.setProfficiency(proff);
 				newMOB.addAbility(A);
 				A.setBorrowed(newMOB,true);
+                A.autoInvocation(newMOB);
+                if((A2==null)&&(!lastMOBeffected.contains(A.ID()))) 
+                    lastMOBeffected.addElement(A.ID());
 			}
 		}
 		lastMOB=newMOB;
@@ -106,12 +111,24 @@ public class Prop_HaveEnabler extends Property
 
 	public void removeMyAffectsFromLastMob()
 	{
+        if(lastMOB==null) return;
 		Vector V=getMySpellsV();
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
 			lastMOB.delAbility(A);
 		}
+        for(Iterator e=lastMOBeffected.iterator();e.hasNext();)
+        {
+            String AID=(String)e.next();
+            Ability A2=lastMOB.fetchEffect(AID);
+            if(A2!=null)
+            {
+                A2.unInvoke();
+                A2.delEffect(A2);
+            }
+        }
+        lastMOBeffected.clear();
 		lastMOB=null;
 	}
 

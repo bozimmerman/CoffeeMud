@@ -77,7 +77,7 @@ public class Modify extends BaseGenerics
 			modItem=srchMob.fetchInventory(itemID);
 		else
 		if(srchRoom!=null)
-			modItem=srchRoom.fetchItem(null,itemID);
+			modItem=srchRoom.fetchAnyItem(itemID);
 		if(modItem==null)
 		{
 			mob.tell("I don't see '"+itemID+" here.\n\r");
@@ -1013,6 +1013,11 @@ public class Modify extends BaseGenerics
 			else
 			{
 				String name=Util.combine(commands,2);
+                if(Util.isInteger(name))
+                {
+                    Quest Q=Quests.fetchQuest(Util.s_int(name));
+                    if(Q!=null) name=Q.name();
+                }
 				Quest Q=Quests.fetchQuest(name);
 				if(Q==null)
 					mob.tell("Quest '"+name+"' is unknown.  Try list quests.");

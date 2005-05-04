@@ -61,8 +61,8 @@ public class StdFood extends StdItem implements Food
 			MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_DRINK:
-				if(mob.isMine(this))
+			case CMMsg.TYP_EAT:
+				if((mob.isMine(this))||(!Sense.isGettable(this)))
 					return true;
 				else
 				{

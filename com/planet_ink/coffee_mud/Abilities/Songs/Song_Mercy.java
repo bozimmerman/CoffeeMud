@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Songs;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -50,12 +51,15 @@ public class Song_Mercy extends Song
 	{
 		MOB mob=(MOB)affected;
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&(mob.location()!=null)
 		&&((msg.amITarget(mob)))
 		&&((count>0)||(lastRoom==null)||(lastRoom!=mob.location())))
 		{
 			MOB target=(MOB)msg.target();
-			if((!target.isInCombat())&&(msg.source().getVictim()!=target))
+			if((!target.isInCombat())
+            &&(mob.location()==target.location())
+            &&(msg.source().getVictim()!=target))
 			{
 				msg.source().tell("You feel like showing "+target.name()+" mercy right now.");
 				if(target.getVictim()==msg.source())

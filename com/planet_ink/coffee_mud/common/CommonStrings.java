@@ -611,47 +611,6 @@ public class CommonStrings extends Scriptable
 		}
 	}
 
-	public static String shortAlignmentStr(int al)
-	{
-		if(al<350) return "evil";
-		else if(al<650)	return "neutral";
-		else return "good";
-	}
-
-	public static String alignmentStr(int al)
-	{
-		if(al<50) return "pure evil";
-		else if(al<300) return "evil";
-		else if(al<425)	return "somewhat evil";
-		else if(al<575)	return "pure neutral";
-		else if(al<700)	return "somewhat good";
-		else if(al<950)	return "good";
-		else return "pure goodness";
-
-	}
-
-    public static String factionStr(int factionChange, String which) {
-        double pct=Util.div(factionChange,Factions.getTotal(which))*100;
-        pct=Util.div(pct,Factions.getRateModifier(which));
-        String degree="";
-        if(pct<0.1)      degree="insignificantly";
-        else if(pct<0.2) degree="imperceptibly";
-        else if(pct<0.4) degree="inappreciably";
-        else if(pct<0.6) degree="marginally";
-        else if(pct<0.8) degree="slightly";
-        else if(pct<1.5) degree="gradually";// low middle
-        else if(pct<3.0) degree="decidedly";// high middle
-        else if(pct<4.5) degree="notably";
-        else if(pct<6.0) degree="considerably";
-        else if(pct<7.5) degree="greatly";
-        else if(pct<9.0) degree="vastly";
-        else degree="astonishingly";
-        if(factionChange>0)
-            return degree+" increased ("+factionChange+").";
-        else
-            return degree+" decreased ("+factionChange+").";
-    }
-
 	private static String lastStr="";
 	private static long lastRes=0;
 	public static void resistanceMsgs(CMMsg msg, MOB source, MOB target)

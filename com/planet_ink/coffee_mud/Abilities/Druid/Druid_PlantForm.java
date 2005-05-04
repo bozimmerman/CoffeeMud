@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -62,11 +63,13 @@ public class Druid_PlantForm extends StdAbility
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&((msg.amITarget(affected))))
 		{
 			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().isMonster())
+            &&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
 				msg.source().tell("Attack a plant?!");
@@ -182,7 +185,9 @@ public class Druid_PlantForm extends StdAbility
 			return false;
 		}
 
-		int classLevel=CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this);
+        int qualClassLevel=CMAble.qualifyingClassLevel(mob,this);
+        int classLevel=qualClassLevel-CMAble.qualifyingLevel(mob,this);
+        if(qualClassLevel<0) classLevel=30;
 		String choice=Util.combine(commands,0);
 		if(choice.trim().length()>0)
 		{

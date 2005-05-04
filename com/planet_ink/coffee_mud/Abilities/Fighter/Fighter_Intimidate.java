@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -37,6 +38,7 @@ public class Fighter_Intimidate extends StdAbility
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&((msg.amITarget(affected))))
 		{
 			MOB target=(MOB)msg.target();
@@ -47,6 +49,7 @@ public class Fighter_Intimidate extends StdAbility
 			if((!target.isInCombat())
 			&&(msg.source().getVictim()!=target)
 			&&(levelDiff<0)
+            &&(mob.location()==target.location())
 			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,(-(100+levelDiff))+(target.charStats().getStat(CharStats.CHARISMA)*2),false)))
 			{
 				msg.source().tell("You are too intimidated by "+target.name());

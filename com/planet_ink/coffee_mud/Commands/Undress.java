@@ -51,7 +51,7 @@ public class Undress extends StdCommand
 		}
 		if(target.willFollowOrdersOf(mob)||(Sense.isBoundOrHeld(target)))
 		{
-			Item item=target.fetchInventory(what);
+			Item item=target.fetchInventory(null,what);
 			if((item==null)
 			   ||(!Sense.canBeSeenBy(item,mob))
 			   ||(item.amWearingAt(Item.INVENTORY)))

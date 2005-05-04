@@ -303,7 +303,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
 					MOB M=mob.location().fetchInhabitant(i);
-					target=M.fetchInventory(targetName);
+					target=M.fetchInventory(null,targetName);
 					if(target!=null)
 					{
 						switch(wornReqCode)

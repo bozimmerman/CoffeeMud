@@ -63,7 +63,7 @@ public class Skill_Buffoonery extends BardSkill
 			mob.tell("You must specify a target, and what item to swap on the target!");
 			return false;
 		}
-		Item I=mob.fetchInventory((String)commands.lastElement());
+		Item I=mob.fetchInventory(null,(String)commands.lastElement());
 		if((I==null)||(!Sense.canBeSeenBy(I,mob)))
 		{
 			mob.tell("You don't seem to have '"+((String)commands.lastElement())+"'.");

@@ -578,12 +578,14 @@ public class StdArea implements Area
 		statData[Area.AREASTAT_TOTLEVEL]=0;
 		statData[Area.AREASTAT_INTLEVEL]=0;
 		long totalAlignments=0;
+        Room R=null;
+        MOB mob=null;
 		for(Enumeration r=getProperMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
+			R=(Room)r.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB mob=R.fetchInhabitant(i);
+				mob=R.fetchInhabitant(i);
 				if((mob!=null)&&(mob.isMonster()))
 				{
 					int lvl=mob.baseEnvStats().level();
@@ -637,8 +639,8 @@ public class StdArea implements Area
 			s.append("Level range    : "+statData[Area.AREASTAT_MINLEVEL]+" to "+statData[Area.AREASTAT_MAXLEVEL]+"\n\r");
 			s.append("Average level  : "+statData[Area.AREASTAT_AVGLEVEL]+"\n\r");
 			s.append("Median level   : "+statData[Area.AREASTAT_MEDLEVEL]+"\n\r");
-			if(theFaction!=null) s.append("Avg. "+Util.padRight(theFaction.name,10)+": "+statData[Area.AREASTAT_AVGALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_AVGALIGN])+")\n\r");
-			if(theFaction!=null) s.append("Med. "+Util.padRight(theFaction.name,10)+": "+statData[Area.AREASTAT_MEDALIGN]+" ("+CommonStrings.alignmentStr(statData[Area.AREASTAT_MEDALIGN])+")\n\r");
+			if(theFaction!=null) s.append("Avg. "+Util.padRight(theFaction.name,10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_AVGALIGN])+"\n\r");
+			if(theFaction!=null) s.append("Med. "+Util.padRight(theFaction.name,10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_MEDALIGN])+"\n\r");
 		}
 		Resources.submitResource("HELP_"+Name().toUpperCase(),s);
 		return s;

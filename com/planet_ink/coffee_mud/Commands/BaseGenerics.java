@@ -339,15 +339,27 @@ public class BaseGenerics extends StdCommand
 		if((R==null)||(newRoom==null)) return R;
 		Room oldR=R;
 		R=newRoom;
+        Vector oldBehavsNEffects=new Vector();
 		for(int a=oldR.numEffects()-1;a>=0;a--)
 		{
 			Ability A=oldR.fetchEffect(a);
 			if(A!=null)
 			{
-				A.unInvoke();
-				oldR.delEffect(A);
+                if(!A.canBeUninvoked())
+                {
+                    oldBehavsNEffects.addElement(A);
+                    oldR.delEffect(A);
+                }
+                else
+    				A.unInvoke();
 			}
 		}
+        for(int b=0;b<oldR.numBehaviors();b++)
+        {
+            Behavior B=oldR.fetchBehavior(b);
+            if(B!=null)
+                oldBehavsNEffects.addElement(B);
+        }
 		CMClass.ThreadEngine().deleteTick(oldR,-1);
 		CMMap.delRoom(oldR);
 		CMMap.addRoom(R);
@@ -453,6 +465,13 @@ public class BaseGenerics extends StdCommand
 	    }catch(NoSuchElementException e){}
 		R.getArea().clearMaps();
 		R.getArea().fillInAreaRoom(R);
+        for(int i=0;i<oldBehavsNEffects.size();i++)
+        {
+            if(oldBehavsNEffects.elementAt(i) instanceof Behavior)
+                R.addBehavior((Behavior)oldBehavsNEffects.elementAt(i));
+            else
+                R.addNonUninvokableEffect((Ability)oldBehavsNEffects.elementAt(i));
+        }
 		CMClass.DBEngine().DBUpdateRoom(R);
 		CMClass.DBEngine().DBUpdateMOBs(R);
 		CMClass.DBEngine().DBUpdateItems(R);
@@ -2770,13 +2789,15 @@ public class BaseGenerics extends StdCommand
 			newValue=codeStr.indexOf(newType.toUpperCase());
 		if(newValue>=0)
 		{
-			if(E.whatIsSold()!=newValue)
-			{
-				Vector V=E.getUniqueStoreInventory();
-				for(int b=0;b<V.size();b++)
-					E.delStoreInventory((Environmental)V.elementAt(b));
-			}
+			boolean reexamine=(E.whatIsSold()!=newValue);
 			E.setWhatIsSold(newValue);
+            if(reexamine)
+            {
+                Vector V=E.getUniqueStoreInventory();
+                for(int b=0;b<V.size();b++)
+                    if(!E.doISellThis((Environmental)V.elementAt(b)))
+                        E.delStoreInventory((Environmental)V.elementAt(b));
+            }
 		}
 	}
 

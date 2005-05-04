@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -157,13 +158,16 @@ public class Prop_Familiar extends Property
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&(familiarWith!=null)
 		&&(familiarTo!=null)
 		&&((msg.amITarget(familiarWith))||(msg.amITarget(familiarTo)))
 		&&(familiarType==RABBIT))
 		{
 			MOB target=(MOB)msg.target();
-			if((!target.isInCombat())&&(msg.source().getVictim()!=target))
+			if((!target.isInCombat())
+            &&(msg.source().location()==target.location())
+            &&(msg.source().getVictim()!=target))
 			{
 				msg.source().tell("You are too much in awe of "+target.name());
 				if(familiarWith.getVictim()==msg.source())

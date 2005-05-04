@@ -253,7 +253,7 @@ public class CraftingSkill extends CommonSkill
 			amt=amt*2;
 			break;
 		}
-		if(amt<0) amt=1;
+		if(amt<=0) amt=1;
 		return amt;
 	}
 	
@@ -277,8 +277,8 @@ public class CraftingSkill extends CommonSkill
 		{
 			data[0][FOUND_AMT]=req1Required;
 			data[1][FOUND_AMT]=req2Required;
-			data[1][FOUND_CODE]=autoGeneration;
 			data[0][FOUND_CODE]=autoGeneration;
+            data[1][FOUND_CODE]=autoGeneration;
 			return data;
 		}
 

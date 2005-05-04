@@ -37,6 +37,8 @@ public class Prayer_SanctifyRoom extends Prayer
 
 		Room R=(Room)affected;
 		if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PULL)||(msg.targetMinor()==CMMsg.TYP_PUSH))
+        &&((!(msg.target() instanceof Item))||(msg.source().isMine(msg.target())))
+        &&((!(msg.tool() instanceof Item))||(msg.source().isMine(msg.tool())))
 		&&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
 		{
 			boolean inRoom=false;

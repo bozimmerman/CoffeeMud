@@ -51,7 +51,7 @@ public class Feed extends StdCommand
 		}
 		if(target.willFollowOrdersOf(mob)||(Sense.isBoundOrHeld(target)))
 		{
-			Item item=mob.fetchInventory(what);
+			Item item=mob.fetchInventory(null,what);
 			if((item==null)||(!Sense.canBeSeenBy(item,mob)))
 			{
 				mob.tell("I don't see "+what+" here.");

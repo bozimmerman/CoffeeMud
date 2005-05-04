@@ -81,7 +81,7 @@ public class Copy extends StdCommand
 				{
 					Room R=(Room)r.nextElement();
 					E=R.fetchInhabitant(name);
-					if(E==null) E=R.fetchItem(null,name);
+					if(E==null) E=R.fetchAnyItem(name);
 					if(E!=null) break;
 				}
 		    }catch(NoSuchElementException e){}

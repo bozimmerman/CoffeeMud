@@ -109,16 +109,16 @@ public class Take extends BaseItemParser
 				}
 				else
 					giveThis=victim.fetchCarried(null,thingToGive+addendumStr);
-				
 				if((giveThis==null)
 				&&(V.size()==0)
 				&&(addendumStr.length()==0)
 				&&(!allFlag))
-					giveThis=victim.fetchWornItem(thingToGive);
+					giveThis=victim.fetchInventory(thingToGive);
 				if(giveThis==null) break;
 				if(giveThis instanceof Item)
 				{
 					((Item)giveThis).unWear();
+                    ((Item)giveThis).setContainer(null);
 					V.addElement(giveThis);
 				}
 				addendumStr="."+(++addendum);

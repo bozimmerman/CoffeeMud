@@ -2715,6 +2715,21 @@ public class Import extends StdCommand
 			M.baseEnvStats().setRejuv((int)rejuv);
 			if(M.displayText().toUpperCase().indexOf("MONEY CHANGER")>=0)
 				M.addBehavior(CMClass.getBehavior("MoneyChanger"));
+            Behavior B=M.fetchBehavior("CombatAbilities");
+            if(B!=null)
+            {
+                Behavior BB=B;
+                for(int b=0;b<M.numBehaviors();b++)
+                {
+                    B=M.fetchBehavior(b);
+                    if(B.getClass().getSuperclass().getName().endsWith("CombatAbilities"))
+                    {
+                        M.delBehavior(BB);
+                        M.recoverEnvStats();
+                        break;
+                    }
+                }
+            }
 			M.recoverCharStats();
 			M.recoverEnvStats();
 			M.recoverMaxState();

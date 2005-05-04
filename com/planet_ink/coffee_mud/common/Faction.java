@@ -201,6 +201,19 @@ public class Faction implements MsgListener
         }
         return null;
     }
+    public String fetchRangeName(int faction) 
+    {
+        if(ranges!=null) 
+        {
+            for (int i = 0; i < ranges.size(); i++) 
+            {
+                FactionRange R = (FactionRange) ranges.elementAt(i);
+                if ( (faction >= R.low) && (faction <= R.high))
+                    return R.Name;
+            }
+        }
+        return "";
+    }
 
     public int asPercent(int faction) 
     {

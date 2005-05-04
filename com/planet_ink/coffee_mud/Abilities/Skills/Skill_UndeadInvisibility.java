@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -35,12 +36,14 @@ public class Skill_UndeadInvisibility extends StdAbility
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&((msg.amITarget(affected))))
 		{
 			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
-			   &&(msg.source().charStats().getMyRace().racialCategory().equals("Undead"))
-			   &&(msg.source().getVictim()!=target))
+            &&(msg.source().location()==target.location())
+		    &&(msg.source().charStats().getMyRace().racialCategory().equals("Undead"))
+		    &&(msg.source().getVictim()!=target))
 			{
 				msg.source().tell("You don't see "+target.name());
 				if(target.getVictim()==msg.source())
