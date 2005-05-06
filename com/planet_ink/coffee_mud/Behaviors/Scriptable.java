@@ -5550,7 +5550,7 @@ public class Scriptable extends StdBehavior
 							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
 								execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null);
 							else
-								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),(Item)msg.tool(),script,1,null));
 							return;
 						}
 					}
@@ -5567,7 +5567,7 @@ public class Scriptable extends StdBehavior
 								if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
 									execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null);
 								else
-									que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
+									que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),(Item)msg.tool(),script,1,null));
 								return;
 							}
 						}

@@ -21,4 +21,6 @@ public class Lighteningbreath extends Dragonbreath
 	public String ID() { return "Lighteningbreath"; }
 	public String name(){ return "Lighteningbreath";}
 	public String text(){return "lightning";}
+    private static final String[] triggerStrings = {"LIGHTENINGBREATH"};
+    public String[] triggerStrings(){return triggerStrings;}
 }

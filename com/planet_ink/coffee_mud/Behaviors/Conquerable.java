@@ -275,6 +275,8 @@ public class Conquerable extends Arrest
 		&&(myArea!=null))
 		{
 			HashSet doneMOBs=new HashSet();
+            HashSet doneRooms=new HashSet();
+            clanItems.clear();
 			Vector itemSet=CMClass.DBEngine().DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 			if((itemSet!=null)&&(itemSet.size()>0)&&(((Vector)itemSet.firstElement()).size()>3))
 			{
@@ -336,11 +338,30 @@ public class Conquerable extends Arrest
 										}
 									if(foundMOB!=null)
 									{
-										foundMOB.addInventory(newItem);
-										newItem.wearIfPossible(foundMOB);
+                                        boolean found=false;
+                                        for(int i=0;i<foundMOB.inventorySize();i++)
+                                            if(newItem.sameAs(foundMOB.fetchInventory(i)))
+                                                found=true;
+                                        if(!found)
+                                        {
+    										foundMOB.addInventory(newItem);
+    										newItem.wearIfPossible(foundMOB);
+                                        }
 									}
 									else
+                                    {
+                                        if(!doneRooms.contains(R))
+                                        {
+                                            doneRooms.add(R);
+                                            for(int i=R.numItems()-1;i>=0;i--)
+                                            {
+                                                Item I=R.fetchItem(i);
+                                                if(I instanceof ClanItem)
+                                                    I.destroy();
+                                            }
+                                        }
 										R.addItem(newItem);
+                                    }
 									clanItems.addElement(newItem);
 								}
 							}

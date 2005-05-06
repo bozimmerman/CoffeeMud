@@ -101,7 +101,10 @@ public class StdClanPamphlet extends StdClanItem
 						FullMsg newMsg=new FullMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 						if(mob.location().okMessage(mob,newMsg))
 							mob.location().send(mob,newMsg);
-						if(!M.isMine(I)) ((Item)I).destroy();
+						if(!M.isMine(I)) 
+                            ((Item)I).destroy();
+                        if(mob.isMine(I))
+                            ((Item)I).destroy();
 					}
 				}
 			}

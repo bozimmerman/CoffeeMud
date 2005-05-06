@@ -254,9 +254,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	{
 		if((whatISell==DEAL_INVENTORYONLY)&&(!inBaseInventory(thisThang)))
 			baseInventory.addElement(thisThang.copyOf());
-		if(prices.containsKey(thisThang.ID()+"/"+thisThang.name()))
-			prices.remove(thisThang.ID()+"/"+thisThang.name());
-		prices.put(thisThang.ID()+"/"+thisThang.name(),new Integer(price));
+        addRawStockPrice(thisThang,price);
 		if(thisThang instanceof InnKey)
 		{
 			for(int v=0;v<number;v++)
@@ -338,7 +336,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				duplicateInventory.remove(E);
 			}
 		}
-		prices.remove(thisThang.ID()+"/"+thisThang.name());
+        removeRawStockPrice(thisThang);
 	}
 
 	public boolean doISellThis(Environmental thisThang)
@@ -530,10 +528,37 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return true;
 	}
 
+    private Integer rawStockPrice(Environmental likeThis)
+    {
+        if(likeThis==null) return null;
+        if(likeThis.isGeneric())
+            return (Integer)prices.get(likeThis.ID()+"/"+likeThis.name());
+        else
+            return (Integer)prices.get(likeThis.ID());
+    }
+    private void removeRawStockPrice(Environmental likeThis)
+    {
+        if(likeThis==null) return;
+        if((likeThis.isGeneric())&&(prices.containsKey(likeThis.ID()+"/"+likeThis.name())))
+            prices.remove(likeThis.ID()+"/"+likeThis.name());
+        else
+        if((!likeThis.isGeneric())&&(prices.containsKey(likeThis.ID())))
+            prices.remove(likeThis.ID());
+    }
+    private void addRawStockPrice(Environmental likeThis, int price)
+    {
+        if(likeThis==null) return;
+        removeRawStockPrice(likeThis);
+        if(likeThis.isGeneric())
+            prices.put(likeThis.ID()+"/"+likeThis.name(),new Integer(price));
+        else
+        if((!likeThis.isGeneric())&&(prices.containsKey(likeThis.ID())))
+            prices.put(likeThis.ID(),new Integer(price));
+    }
 	public int stockPrice(Environmental likeThis)
 	{
-		if(prices.containsKey(likeThis.ID()+"/"+likeThis.name()))
-		   return ((Integer)prices.get(likeThis.ID()+"/"+likeThis.name())).intValue();
+        Integer I=rawStockPrice(likeThis);
+        if(I!=null) return I.intValue();
 		return -1;
 	}
 	public int numberInStock(Environmental likeThis)
@@ -1338,7 +1363,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	{
 	    ShopPrice val=new ShopPrice();
 		if(product==null) return val;
-		Integer I=(Integer)prices.get(product.ID()+"/"+product.name());
+		Integer I=rawStockPrice(product);
 		if((I!=null)&&(I.intValue()<=-100))
 		{
 			if(I.intValue()<=-1000)

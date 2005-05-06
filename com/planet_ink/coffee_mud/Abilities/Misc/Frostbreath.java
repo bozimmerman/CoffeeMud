@@ -21,4 +21,6 @@ public class Frostbreath extends Dragonbreath
 	public String ID() { return "Frostbreath"; }
 	public String name(){ return "Frostbreath";}
 	public String text(){return "cold";}
+    private static final String[] triggerStrings = {"FROSTBREATH"};
+    public String[] triggerStrings(){return triggerStrings;}
 }

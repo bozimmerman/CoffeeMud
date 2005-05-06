@@ -142,6 +142,7 @@ public class GenWallpaper implements Item
 	}
 	public Item container(){return null;}
 	public Item ultimateContainer(){return this;}
+    public void wearEvenIfImpossible(MOB mob){}
 	public String rawSecretIdentity(){return "";}
 	public String secretIdentity(){return "";}
 	public void setSecretIdentity(String newIdentity){}

@@ -22,4 +22,6 @@ public class Firebreath extends Dragonbreath
 	public String name(){ return "Firebreath";}
 	public String text(){return "fire";}
 	public void setMiscText(String newText){super.setMiscText(text());}
+    private static final String[] triggerStrings = {"FIREBREATH"};
+    public String[] triggerStrings(){return triggerStrings;}
 }

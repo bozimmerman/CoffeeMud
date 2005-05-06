@@ -22,4 +22,6 @@ public class Acidbreath extends Dragonbreath
 	public String name(){ return "Acidbreath";}
 	public String text(){return "acid";}
 	public void setMiscText(String newText){super.setMiscText(text());}
+    private static final String[] triggerStrings = {"ACIDBREATH"};
+    public String[] triggerStrings(){return triggerStrings;}
 }

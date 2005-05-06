@@ -517,7 +517,7 @@ public class GrinderItems
 			   &&((httpReq.getRequestParameter("BEINGWORN")).equals("on")))
 			{
 				if(I.amWearingAt(Item.INVENTORY))
-					I.wearIfPossible(M);
+					I.wearEvenIfImpossible(M);
 			}
 			else
 				I.wearAt(Item.INVENTORY);

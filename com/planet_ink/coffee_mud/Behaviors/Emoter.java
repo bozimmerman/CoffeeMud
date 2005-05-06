@@ -50,40 +50,42 @@ public class Emoter extends ActiveTicker
 	protected final static int EMOTE_SMELL=2;
 	protected int emoteType=0;
 
-	private void setEmoteTypes(Vector V)
+    private boolean setEmoteType(String str)
+    {
+        str=str.toUpperCase().trim();
+        if(str.equals("BROADCAST"))
+            broadcast=true;
+        else
+        if(str.equals("NOBROADCAST"))
+            broadcast=false;
+        else
+        if(str.equals("VISUAL")||(str.equals("SIGHT")))
+            emoteType=EMOTE_VISUAL;
+        else
+        if(str.equals("AROMA")||(str.equals("SMELL")))
+            emoteType=EMOTE_SMELL;
+        else
+        if(str.equals("SOUND")||(str.equals("NOISE")))
+            emoteType=EMOTE_SOUND;
+        else
+            return false;
+        return true;
+    }
+	private void setEmoteTypes(Vector V, boolean respectOnlyBeginningAndEnd)
 	{
+        if(respectOnlyBeginningAndEnd)
+        {
+            if(setEmoteType((String)V.firstElement()))
+                V.removeElementAt(0);
+            else
+            if(setEmoteType((String)V.lastElement()))
+                V.removeElementAt(V.size()-1);
+        }
+        else
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			String str=((String)V.elementAt(v)).toUpperCase();
-			if(str.equals("BROADCAST"))
-			{
-				V.removeElementAt(v);
-				broadcast=true;
-			}
-			else
-			if(str.equals("NOBROADCAST"))
-			{
-				V.removeElementAt(v);
-				broadcast=false;
-			}
-			else
-			if(str.equals("VISUAL")||(str.equals("SIGHT")))
-			{
-				V.removeElementAt(v);
-				emoteType=EMOTE_VISUAL;
-			}
-			else
-			if(str.equals("AROMA")||(str.equals("SMELL")))
-			{
-				V.removeElementAt(v);
-				emoteType=EMOTE_SMELL;
-			}
-			else
-			if(str.equals("SOUND")||(str.equals("NOISE")))
-			{
-				V.removeElementAt(v);
-				emoteType=EMOTE_SOUND;
-			}
+            if(setEmoteType((String)V.elementAt(v)))
+                V.removeElementAt(v);
 		}
 	}
 
@@ -100,7 +102,7 @@ public class Emoter extends ActiveTicker
 		if(x>0)
 		{
 			String oldParms=newParms.substring(0,x);
-			setEmoteTypes(Util.parse(oldParms));
+			setEmoteTypes(Util.parse(oldParms),false);
 			newParms=newParms.substring(x+1);
 		}
 		int defaultType=emoteType;
@@ -122,7 +124,7 @@ public class Emoter extends ActiveTicker
 				Vector V=Util.parse(thisEmote);
 				emoteType=defaultType;
 				broadcast=defaultBroadcast;
-				setEmoteTypes(V);
+				setEmoteTypes(V,true);
 				thisEmote=Util.combine(V,0);
 				if(thisEmote.length()>0)
 				{

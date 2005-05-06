@@ -158,6 +158,13 @@ public class UnderWaterGrid extends StdGrid
 
 						if((x>0)&&(subMap[x-1][y]!=null))
 							linkRoom(newRoom,subMap[x-1][y],Directions.WEST,ox,ox);
+                        
+                        if((y>0)&&(x>0)&&(subMap[x-1][y-1]!=null)&&(Directions.NORTHWEST<Directions.NUM_DIRECTIONS))
+                            linkRoom(newRoom,subMap[x-1][y-1],Directions.NORTHWEST,ox,ox);
+                        
+                        if((y>0)&&(x<subMap.length-1)&&(subMap[x+1][y-1]!=null)&&(Directions.NORTHEAST<Directions.NUM_DIRECTIONS))
+                            linkRoom(newRoom,subMap[x+1][y-1],Directions.NORTHEAST,ox,ox);
+                        
 						CMMap.addRoom(newRoom);
 					}
 				}
@@ -172,6 +179,10 @@ public class UnderWaterGrid extends StdGrid
 				linkRoom(subMap[x][0],subMap[x][subMap[x].length-1],Directions.NORTH,ox,ox);
 			for(int x=1;x<subMap.length;x++)
 				linkRoom(subMap[x][0],subMap[x-1][subMap[x].length-1],Directions.UP,ox,ox);
+            if(Directions.NORTHWEST<Directions.NUM_DIRECTIONS)
+                linkRoom(subMap[0][0],subMap[subMap.length-1][subMap[0].length-1],Directions.NORTHWEST,ox,ox);
+            if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS)
+                linkRoom(subMap[subMap.length-1][0],subMap[0][subMap[0].length-1],Directions.NORTHEAST,ox,ox);
 		}
 		catch(Exception e)
 		{

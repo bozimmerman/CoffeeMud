@@ -22,4 +22,6 @@ public class Gasbreath extends Dragonbreath
 	public String name(){ return "Gasbreath";}
 	public String text(){return "gas";}
 	public void setMiscText(String newText){super.setMiscText(text());}
+    private static final String[] triggerStrings = {"GASBREATH"};
+    public String[] triggerStrings(){return triggerStrings;}
 }

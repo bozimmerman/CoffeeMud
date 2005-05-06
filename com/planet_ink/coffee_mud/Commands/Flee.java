@@ -97,6 +97,25 @@ public class Flee extends Go
 				}
 			}
 			else
+            if(whatToDo.startsWith("LOSESK"))
+            {
+                if(mob.numLearnedAbilities()>0)
+                {
+                    Ability A=mob.fetchAbility(Dice.roll(1,mob.numLearnedAbilities(),-1));
+                    if(A!=null)
+                    {
+                        mob.tell(getScr("Movement","loseskill",A.Name()));
+                        mob.delAbility(A);
+                        if(A.isAutoInvoked())
+                        {
+                            Ability A2=mob.fetchEffect(A.ID());
+                            A2.unInvoke();
+                            mob.delEffect(A2);
+                        }
+                    }
+                }
+            }
+            else
 			if((whatToDo.trim().equals("0"))||(Util.s_int(whatToDo)>0))
 				lostExperience=Util.s_int(whatToDo);
 			else

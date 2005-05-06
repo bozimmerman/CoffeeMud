@@ -195,6 +195,17 @@ public class StdItem implements Item
 		if(wornCode<=0)	return true;
 		return ((properWornBitmap & wornCode)==wornCode);
 	}
+    public void wearEvenIfImpossible(MOB mob)
+    {
+        for(int i=0;i<wornOrder.length;i++)
+        {
+            if(fitsOn(wornOrder[i]))
+            {
+                wearAt(wornOrder[i]);
+                break;
+            }
+        }
+    }
 	public void wearIfPossible(MOB mob)
 	{
 		for(int i=0;i<wornOrder.length;i++)

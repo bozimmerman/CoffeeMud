@@ -501,7 +501,7 @@ public class BaseGenerics extends StdCommand
 				if(newRoom==null)
 					mob.tell("'"+newName+"' does not exist. No Change.");
 				else
-				if(mob.session().confirm("This will change the room type of room '"+R.roomID()+"'.  Are you absolutely sure (y/N)? ","N"))
+				if(mob.session().confirm("This will change the room type of room '"+R.roomID()+"'.  It will automatically save any mobs and items in this room permanently.  Are you absolutely sure (y/N)? ","N"))
 					R=changeRoomType(R,newRoom);
 				R.recoverRoomStats();
 			}
