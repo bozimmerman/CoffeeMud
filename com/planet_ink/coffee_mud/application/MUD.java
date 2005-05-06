@@ -858,6 +858,11 @@ public class MUD extends Thread implements MudHost
 					Log.sysOut("MUD", "-->Thread: "+T.ID()+"-"+T.name()+"-"+T.getTickStatus() + "\n\r");
 			    }
 			    else
+                if((tArray[i] instanceof Tick)
+                &&(((Tick)tArray[i]).lastClient!=null)
+                &&(((Tick)tArray[i]).lastClient.clientObject!=null))
+                    Log.sysOut("MUD", "-->Thread: "+tArray[i].getName()+" "+((Tick)tArray[i]).lastClient.clientObject.ID()+"-"+((Tick)tArray[i]).lastClient.clientObject.name()+"-"+((Tick)tArray[i]).lastClient.clientObject.getTickStatus() + "\n\r");
+                else
 					Log.sysOut("MUD", "-->Thread: "+tArray[i].getName() + "\n\r");
 			}
 		}

@@ -130,7 +130,7 @@ public class BaseGenerics extends StdCommand
 				mob.tell("(no change)");
 		}
 	}
-	
+    
 	static void genCurrency(MOB mob, Area A, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -3444,8 +3444,59 @@ public class BaseGenerics extends StdCommand
 		if(newName.length()>0)
 			return newName;
 		else
+        {
+            mob.tell("(no change)");
 			return oldVal;
+        }
 	}
+    static boolean genBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
+    throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+        mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+        if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+        String newName=mob.session().prompt("Enter true or false:","");
+        if(newName.toUpperCase().startsWith("T")||newName.startsWith("F"))
+            return newName.toUpperCase().startsWith("T");
+        else
+        {
+            mob.tell("(no change)");
+            return oldVal;
+        }
+    }
+    
+    static double genDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
+    throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+        mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+        if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+        String newName=mob.session().prompt("Enter a new value:","");
+        if(Util.isDouble(newName))
+            return Util.s_double(newName);
+        else
+        {
+            mob.tell("(no change)");
+            return oldVal;
+        }
+    }
+    
+    static int genInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
+    throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+        mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+        if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+        String newName=mob.session().prompt("Enter a new value:","");
+        if(Util.isInteger(newName))
+            return Util.s_int(newName);
+        else
+        {
+            mob.tell("(no change)");
+            return oldVal;
+        }
+    }
+    
 	static void genText(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
@@ -4893,6 +4944,347 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
+
+    public static void modifyFaction(MOB mob, Faction me)
+    throws IOException
+    {
+        if(mob.isMonster())
+            return;
+        boolean ok=false;
+        int showFlag=-1;
+        if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+            showFlag=-999;
+        while(!ok)
+        {
+            int showNumber=0;
+            // name
+            me.name=genText(mob,me.name,++showNumber,showFlag,"Name");
+            
+            // ranges
+            ++showNumber;
+            if(me.ranges.size()==0)
+                me.ranges.addElement(new Faction.FactionRange(me,"0;100;Sample Range;SAMPLE;"));
+            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            {
+                if((showFlag>0)&&(showFlag!=showNumber)) break;
+                StringBuffer list=new StringBuffer("Ranges List:\n\r");
+                list.append(Util.padRight("Name",21)+Util.padRight("Min",6)+Util.padRight("Max",6)+Util.padRight("Code",16)+Util.padRight("Align",6)+"\n\r");
+                for(int r=0;r<me.ranges.size();r++)
+                {
+                    Faction.FactionRange FR=(Faction.FactionRange)me.ranges.elementAt(r);
+                    list.append(Util.padRight(FR.Name,20)+" ");
+                    list.append(Util.padRight(""+FR.low,5)+" ");
+                    list.append(Util.padRight(""+FR.high,5)+" ");
+                    list.append(Util.padRight(FR.CodeName,15)+" ");
+                    list.append(Util.padRight(Faction.ALIGN_NAMES[FR.AlignEquiv],5)+"\n\r");
+                }
+                mob.tell(list.toString());
+                if((showFlag<=0)||(showFlag==showNumber))
+                {
+                    String which=mob.session().prompt("Enter a name to add, remove, or modify:","");
+                    if(which.length()==0)
+                        break;
+                    Faction.FactionRange FR=null;
+                    for(int r=0;r<me.ranges.size();r++)
+                    {
+                        if(((Faction.FactionRange)me.ranges.elementAt(r)).Name.equalsIgnoreCase(which))
+                            FR=(Faction.FactionRange)me.ranges.elementAt(r);
+                    }
+                    if(FR==null)
+                    {
+                        if(mob.session().confirm("Create a new faction called '"+which+"' (y/N): ","N"))
+                            FR=new Faction.FactionRange(me,"0;100;Change My Name;CHANGEMYCODENAME;");
+                    }
+                    else
+                    if(mob.session().choose("Would you like to M)odify or D)elete this range (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                    {
+                        me.ranges.remove(FR);
+                        mob.tell("Range deleted.");
+                        FR=null;
+                    }
+                    if(FR!=null)
+                    {
+                        String newName=mob.session().prompt("Enter a new name ("+FR.Name+")\n\r: ",FR.Name);
+                        boolean error99=false;
+                        if(newName.length()==0)
+                            error99=true;
+                        else
+                        for(int r=0;r<me.ranges.size();r++)
+                        {
+                            Faction.FactionRange FR3=(Faction.FactionRange)me.ranges.elementAt(r);
+                            if(FR3.Name.equalsIgnoreCase(FR.Name)&&(FR3!=FR))
+                            { mob.tell("A range already exists with that name!"); error99=true; break;} 
+                        }
+                        if(error99)
+                            mob.tell("No Change");
+                        else
+                            FR.Name=newName;
+                        newName=mob.session().prompt("Enter the low end of the range ("+FR.low+")\n\r: ",""+FR.low);
+                        if(!Util.isInteger(newName))
+                            mob.tell("No Change");
+                        else
+                            FR.low=Util.s_int(newName);
+                        newName=mob.session().prompt("Enter the high end of the range ("+FR.low+")\n\r: ",""+FR.high);
+                        if((!Util.isInteger(newName))||(Util.s_int(newName)<FR.low))
+                            mob.tell("No Change");
+                        else
+                            FR.high=Util.s_int(newName);
+                        newName=mob.session().prompt("Enter a code-name ("+FR.CodeName+")\n\r: ",""+FR.CodeName);
+                        if(newName.trim().length()==0)
+                            mob.tell("No Change");
+                        else
+                            FR.CodeName=newName.toUpperCase().trim();
+                        StringBuffer prompt=new StringBuffer("");
+                        StringBuffer choices=new StringBuffer("");
+                        for(int r=0;r<Faction.ALIGN_NAMES.length;r++)
+                        {
+                            choices.append(""+r);
+                            prompt.append(r+") "+Faction.ALIGN_NAMES[r].toLowerCase()+"\n\r");
+                        }
+                        FR.AlignEquiv=Util.s_int(mob.session().choose(prompt.toString()+"Enter alignment equivalency or 0: ",choices.toString(),""+FR.AlignEquiv));
+                    }
+                }
+                else
+                    break;
+            }
+            
+            
+            // show in score
+            me.showinscore=genBool(mob,me.showinscore,++showNumber,showFlag,"Show in 'Score'");
+            
+            // show in special reports
+            boolean alreadyReporter=false;
+            for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+            {
+                Faction F2=(Faction)e.nextElement();
+                if(F2.showinspecialreported) alreadyReporter=true;
+            }
+            if(!alreadyReporter)
+                me.showinspecialreported=genBool(mob,me.showinspecialreported,++showNumber,showFlag,"Show in Reports");
+            
+            // show in editor
+            me.showineditor=genBool(mob,me.showineditor,++showNumber,showFlag,"Show in MOB Editor");
+            
+            // auto defaults
+            me.autoDefaults=Util.parseSemicolons(BaseGenerics.genText(mob,Util.toSemicolonList(me.autoDefaults),showNumber,showFlag,"Auto-Default values/masks (semicolon-delimited)"),true);
+            
+            // non-auto defaults
+            boolean error=true;
+            if(me.defaults.size()==0)
+                me.defaults.addElement("0");
+            while(error&&(mob.session()!=null)&&(!mob.session().killFlag()))
+            {
+                error=false;
+                String newDefaults=BaseGenerics.genText(mob,Util.toSemicolonList(me.defaults),showNumber,showFlag,"Non-auto default values/masks (semicolon-delimited)");
+                Vector V=Util.parseSemicolons(newDefaults,true);
+                if(V.size()==0)
+                {
+                    mob.tell("This field may not be empty.");
+                    error=true;
+                }
+                me.defaults=Util.parseSemicolons(newDefaults,true);
+            }
+            
+            // choices and choice intro
+            me.choices=Util.parseSemicolons(BaseGenerics.genText(mob,Util.toSemicolonList(me.choices),++showNumber,showFlag,"New user choice values (semicolon-delimited)"),true);
+            if(me.choices.size()>0)
+                me.choiceIntro=BaseGenerics.genText(mob,me.choiceIntro,++showNumber,showFlag,"Choice intro filename");
+            
+            // rate modifier
+            me.rateModifier=BaseGenerics.genDouble(mob,me.rateModifier,++showNumber,showFlag,"Rate modifier");
+            
+            // experience flag
+            boolean error2=true;
+            ++showNumber;
+            while(error2&&(mob.session()!=null)&&(!mob.session().killFlag()))
+            {
+                error2=false;
+                StringBuffer nextPrompt=new StringBuffer("");
+                int myval=-1;
+                for(int i=0;i<Faction.EXPAFFECT_NAMES.length;i++)
+                {
+                    if(me.experienceFlag.equalsIgnoreCase(Faction.EXPAFFECT_NAMES[i]))
+                        myval=i;
+                    nextPrompt.append((i+1)+") "+Util.capitalize(Faction.EXPAFFECT_NAMES[i].toLowerCase())+"\n\r");
+                }
+                if(myval<0){ me.experienceFlag="NONE"; myval=0;}
+                String prompt="Affect on experience";
+                if((showFlag<=0)||(showFlag==showNumber))
+                    prompt=nextPrompt.toString()+"\n\r"+prompt;
+                int mynewval=BaseGenerics.genInteger(mob,myval,showNumber,showFlag,prompt);
+                if((mynewval<0)||(mynewval>=Faction.EXPAFFECT_NAMES.length))
+                {
+                    mob.tell("That value is not valid.");
+                    error2=true;
+                }
+                else
+                    me.experienceFlag=Faction.EXPAFFECT_NAMES[mynewval];
+            }
+            
+            // factors by mask
+            ++showNumber;
+            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            {
+                if((showFlag>0)&&(showFlag!=showNumber)) break;
+                StringBuffer list=new StringBuffer("Masked value change factors:\n\r");
+                list.append("#) "+Util.padRight("Mask",31)+Util.padRight("Loss",6)+Util.padRight("Gain",6)+"\n\r");
+                StringBuffer choices=new StringBuffer("");
+                for(int r=0;r<me.factors.size();r++)
+                {
+                    Vector factor=(Vector)me.factors.elementAt(r);
+                    if(factor.size()!=2)
+                        me.factors.removeElement(factor);
+                    else
+                    {
+                        choices.append(((char)('A'+r)));
+                        list.append((((char)('A'+r))+") "));
+                        list.append(Util.padRight((String)factor.elementAt(2),30)+" ");
+                        list.append(Util.padRight(""+Util.s_double((String)factor.elementAt(1)),5)+" ");
+                        list.append(Util.padRight(""+Util.s_double((String)factor.elementAt(0)),5)+"\n\r");
+                    }
+                }
+                mob.tell(list.toString());
+                if((showFlag<=0)||(showFlag==showNumber))
+                {
+                    String which=mob.session().choose("Enter a faction to remove, or modify, or enter 0 to Add:","0"+choices.toString(),"").trim().toUpperCase();
+                    int factorNum=choices.toString().indexOf(which);
+                    if((which.length()!=1)
+                    ||((!which.equalsIgnoreCase("0"))
+                        &&((factorNum<0)||(factorNum>=me.factors.size()))))
+                        break;
+                    Vector factor=null;
+                    if(!which.equalsIgnoreCase("0"))
+                        factor=(Vector)me.factors.elementAt(factorNum);
+                    if(factor!=null)
+                    if(mob.session().choose("Would you like to M)odify or D)elete this range (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                    {
+                        me.factors.remove(factor);
+                        mob.tell("Factor deleted.");
+                        factor=null;
+                    }
+                    if(factor!=null)
+                    {
+                        String mask=mob.session().prompt("Enter a new zapper mask ("+((String)factor.elementAt(2))+")\n\r: ",((String)factor.elementAt(2)));
+                        double newHigh=Util.s_double((String)factor.elementAt(0));
+                        String newName=mob.session().prompt("Enter a gain amount ("+newHigh+"): ",""+newHigh);
+                        if(!Util.isDouble(newName))
+                            mob.tell("No Change");
+                        else
+                            newHigh=Util.s_double(newName);
+                        
+                        double newLow=Util.s_double((String)factor.elementAt(1));
+                        newName=mob.session().prompt("Enter a loss amount ("+newLow+"): ",""+newLow);
+                        if(!Util.isDouble(newName))
+                            mob.tell("No Change");
+                        else
+                            newLow=Util.s_double(newName);
+                        me.factors.removeElement(factor);
+                        me.factors.addElement(Util.parseSemicolons(newHigh+";"+newLow+";"+mask,false));
+                    }
+                }
+                else
+                    break;
+            }
+            
+            // relations between factions
+            ++showNumber;
+            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            {
+                if((showFlag>0)&&(showFlag!=showNumber)) break;
+                StringBuffer list=new StringBuffer("Cross-Faction Relations:\n\r");
+                list.append(Util.padRight("Faction",31)+"Percentage change\n\r");
+                for(Enumeration e=me.relations.keys();e.hasMoreElements();)
+                {
+                    String key=(String)e.nextElement();
+                    Double value=(Double)me.relations.get(key);
+                    Faction F=Factions.getFaction(key);
+                    if(F!=null)
+                    {
+                        list.append(Util.padRight(F.name,31)+" ");
+                        long lval=Math.round(value.doubleValue()*100.0);
+                        list.append(lval+"%");
+                    }
+                }
+                mob.tell(list.toString());
+                if((showFlag<=0)||(showFlag==showNumber))
+                {
+                    String which=mob.session().prompt("Enter a faction to add, remove, or modify relations:","");
+                    if(which.length()==0)
+                        break;
+                    Faction theF=null;
+                    for(Enumeration e=me.relations.keys();e.hasMoreElements();)
+                    {
+                        String key=(String)e.nextElement();
+                        Faction F=Factions.getFaction(key);
+                        if((F!=null)&&(F.name.equalsIgnoreCase(which)))
+                            theF=F;
+                    }
+                    if(theF==null)
+                    {
+                        Faction possibleF=Factions.getFaction(which);
+                        if(possibleF==null)
+                            mob.tell("'"+which+"' is not a valid faction.");
+                        else
+                        if(mob.session().confirm("Create a new relation for faction  '"+possibleF.name+"' (y/N): ","N"))
+                        {
+                            theF=possibleF;
+                            me.relations.put(theF.ID,new Double(1.0));
+                        }
+                    }
+                    else
+                    if(mob.session().choose("Would you like to M)odify or D)elete this relation (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                    {
+                        me.relations.remove(theF.ID);
+                        mob.tell("Relation deleted.");
+                        theF=null;
+                    }
+                    if(theF!=null)
+                    {
+                        long amount=Math.round(((Double)me.relations.get(theF.ID)).doubleValue()*100.0);
+                        String newName=mob.session().prompt("Enter a relation amount ("+amount+"%): ",""+amount+"%");
+                        if(newName.endsWith("%")) newName=newName.substring(0,newName.length()-1);
+                        if(!Util.isInteger(newName))
+                            mob.tell("No Change");
+                        else
+                            amount=Util.s_long(newName);
+                        me.relations.remove(theF.ID);
+                        me.relations.put(theF.ID,new Double(amount/100.0));
+                    }
+                }
+                else
+                    break;
+            }
+            
+            // calculate new max/min
+            me.minimum=Integer.MAX_VALUE;
+            me.maximum=Integer.MIN_VALUE;
+            for(int r=0;r<me.ranges.size();r++)
+            {
+                Faction.FactionRange FR=(Faction.FactionRange)me.ranges.elementAt(r);
+                if(FR.high>me.maximum) me.maximum=FR.high;
+                if(FR.low<me.maximum) me.minimum=FR.low;
+            }
+            if(me.minimum==Integer.MAX_VALUE) me.minimum=Integer.MIN_VALUE;
+            if(me.maximum==Integer.MIN_VALUE) me.maximum=Integer.MAX_VALUE;
+            if(me.maximum<me.minimum)
+            {
+                int oldMin=me.minimum;
+                me.minimum=me.maximum;
+                me.maximum=oldMin;
+            }
+            me.middle=me.minimum+(int)Math.round(Util.div(me.maximum-me.minimum,2.0));
+            me.difference=Util.abs(me.maximum-me.minimum);
+            
+            if(showFlag<-900){ ok=true; break;}
+            if(showFlag>0){ showFlag=-1; continue;}
+            showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+            if(showFlag<=0)
+            {
+                showFlag=-1;
+                ok=true;
+            }
+        }
+    }
 
 	public static void modifyGenRace(MOB mob, Race me)
 		throws IOException

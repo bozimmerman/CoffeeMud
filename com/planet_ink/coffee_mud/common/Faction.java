@@ -26,16 +26,16 @@ public class Faction implements MsgListener
 	public String ID="";
     public String name="";
     public String choiceIntro="";
-    public int minimum;
-    public int middle;
+    public int minimum=Integer.MIN_VALUE;
+    public int middle=0;
     public int difference;
-    public int maximum;
-    public int highest;
-    public int lowest;
+    public int maximum=Integer.MAX_VALUE;
+    public int highest=Integer.MAX_VALUE;
+    public int lowest=Integer.MIN_VALUE;
     public String experienceFlag="";
-    public boolean showinscore;
-    public boolean showinspecialreported;
-    public boolean showineditor;
+    public boolean showinscore=false;
+    public boolean showinspecialreported=false;
+    public boolean showineditor=false;
     public Vector ranges=new Vector();
     public Vector defaults=new Vector();
     public Vector autoDefaults=new Vector();
@@ -51,6 +51,7 @@ public class Faction implements MsgListener
     public final static int ALIGN_NEUTRAL=2;
     public final static int ALIGN_GOOD=3;
     public final static String[] ALIGN_NAMES={"","EVIL","NEUTRAL","GOOD"};
+    public final static String[] EXPAFFECT_NAMES={"NONE","EXTREME","HIGHER","LOWER","FOLLOWHIGHER","FOLLOWLOWER"};
 
     public Faction(StringBuffer file, String fID) 
     {
@@ -107,20 +108,23 @@ public class Faction implements MsgListener
             }
             if(key.startsWith("FACTOR"))
             {
-                Vector factor=Util.parseSemicolons(words,true);
+                Vector factor=Util.parseSemicolons(words,false);
                 factors.add(factor);
             }
             if(key.startsWith("RELATION"))
             {
-                Vector v=Util.parseSemicolons(words,true);
-                String who=(String)v.elementAt(0);
-                double factor;
-                String amt=((String)v.elementAt(1)).trim();
-                if(amt.endsWith("%"))
-                    factor=Util.div(Util.s_int(amt.substring(0,amt.length()-1)),100.0);
-                else
-                    factor=1;
-                relations.put(who,new Double(factor));
+                Vector v=Util.parse(words);
+                if(v.size()>=2)
+                {
+                    String who=(String)v.elementAt(0);
+                    double factor;
+                    String amt=((String)v.elementAt(1)).trim();
+                    if(amt.endsWith("%"))
+                        factor=Util.div(Util.s_int(amt.substring(0,amt.length()-1)),100.0);
+                    else
+                        factor=1;
+                    relations.put(who,new Double(factor));
+                }
             }
             if(key.startsWith("ABILITY"))
             {
@@ -329,13 +333,13 @@ public class Faction implements MsgListener
         for(int i=0;i<factors.size();i++)
         {
             Vector factor=(Vector)factors.elementAt(i);
-            if((((String)factor.elementAt(2)).length()>0)
+            if((factor.size()>2)
             &&(MUDZapper.zapperCheck(((String)factor.elementAt(2)),mob))) 
             {
                  if(gain)
-                     return new Double(((String)factor.elementAt(2))).doubleValue();
+                     return Util.s_double(((String)factor.elementAt(1)));
                  else
-                     return new Double(((String)factor.elementAt(2))).doubleValue();
+                     return Util.s_double(((String)factor.elementAt(0)));
              }
         }
         return 1.0;
@@ -418,7 +422,7 @@ public class Faction implements MsgListener
         else 
             target = source;
         
-        double baseChangeAmount=new Integer(100).doubleValue();
+        double baseChangeAmount=100.0;
         if((source!=target)&&(target!=null)&&(!event.just100))
         {
 	        int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);
@@ -601,7 +605,7 @@ public class Faction implements MsgListener
 
         public FactionChangeEvent(String key) 
         {
-            Vector v = Util.parseSemicolons(key,true);
+            Vector v = Util.parseSemicolons(key,false);
             ID=(String)v.elementAt(0);
             for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
                 if(Ability.TYPE_DESCS[i].equalsIgnoreCase(ID))
@@ -664,6 +668,20 @@ public class Faction implements MsgListener
         }
     }
 
+    public static int getAlignEquiv(String str)
+    {
+        if(str.equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_GOOD])) 
+            return Faction.ALIGN_GOOD;
+        else 
+        if(str.equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_NEUTRAL])) 
+            return Faction.ALIGN_NEUTRAL;
+        else 
+        if(str.equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_EVIL])) 
+            return  Faction.ALIGN_EVIL;
+        else 
+            return  Faction.ALIGN_INDIFF;
+    }
+    
     public static class FactionRange 
     {
         public String ID="";
@@ -677,24 +695,14 @@ public class Faction implements MsgListener
         public FactionRange(Faction F, String key) 
         {
             myFaction=F;
-            Vector v = Util.parseSemicolons(key,true);
+            Vector v = Util.parseSemicolons(key,false);
             Name = (String) v.elementAt(2);
-            low = new Integer( (String) v.elementAt(0)).intValue();
-            high = new Integer( (String) v.elementAt(1)).intValue();
+            low = Util.s_int( (String) v.elementAt(0));
+            high = Util.s_int( (String) v.elementAt(1));
             if(v.size()>3)
                 CodeName=(String)v.elementAt(3);
-            if(v.size()>4) {
-                if(((String)v.elementAt(4)).equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_GOOD])) 
-                    AlignEquiv = Faction.ALIGN_GOOD;
-                else 
-                if(((String)v.elementAt(4)).equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_NEUTRAL])) 
-                    AlignEquiv = Faction.ALIGN_NEUTRAL;
-                else 
-                if(((String)v.elementAt(4)).equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_EVIL])) 
-                    AlignEquiv = Faction.ALIGN_EVIL;
-                else 
-                    AlignEquiv = Faction.ALIGN_INDIFF;
-            }
+            if(v.size()>4) 
+                AlignEquiv = getAlignEquiv((String)v.elementAt(4));
             else
                 AlignEquiv = Faction.ALIGN_INDIFF;
         }
@@ -748,8 +756,8 @@ public class Faction implements MsgListener
                         }
                     }
             }
-            low = new Integer( (String) v.elementAt(1)).intValue();
-            high = new Integer( (String) v.elementAt(2)).intValue();
+            low = Util.s_int( (String) v.elementAt(1));
+            high = Util.s_int( (String) v.elementAt(2));
             if((type<0)&&(domain<0)&&(flag<0))
                 possibleAbilityID=true;
         }
