@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -74,27 +75,54 @@ public class EndlessThinOcean extends StdThinGrid
 			if(R2!=null)
 				linkRoom(R,R2,Directions.NORTH,ox,ox);
 		}
-		else
+        else
 		if((y==ySize()-1)&&(R.rawDoors()[Directions.SOUTH]==null))
 		{
 			R2=getMakeSingleGridRoom(x,ySize()/2);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.SOUTH,ox,ox);
 		}
-		
-		
 		if((x==0)&&(R.rawDoors()[Directions.WEST]==null))
 		{
 			R2=getMakeSingleGridRoom(xSize()/2,y);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.WEST,ox,ox);
 		}
-		else
+        else
 		if((x==xSize()-1)&&(R.rawDoors()[Directions.EAST]==null))
 		{
 			R2=getMakeSingleGridRoom(xSize()/2,y);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.EAST,ox,ox);
 		}
+        if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS)
+        {
+            if(((x==0)||(y==0))&&(R.rawDoors()[Directions.NORTHWEST]==null))
+            {
+                R2=getMakeSingleGridRoom(xSize()/2,ySize()/2);
+                if(R2!=null)
+                    linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
+            }
+            else
+            if(((x==xSize()-1)||(y==ySize()-1))&&(R.rawDoors()[Directions.SOUTHEAST]==null))
+            {
+                R2=getMakeSingleGridRoom(xSize()/2,ySize()/2);
+                if(R2!=null)
+                    linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
+            }
+            if(((x==xSize()-1)||(y==0))&&(R.rawDoors()[Directions.NORTHEAST]==null))
+            {
+                R2=getMakeSingleGridRoom(xSize()/2,ySize()/2);
+                if(R2!=null)
+                    linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
+            }
+            else
+            if(((x==0)||(y==ySize()-1))&&(R.rawDoors()[Directions.SOUTHWEST]==null))
+            {
+                R2=getMakeSingleGridRoom(xSize()/2,ySize()/2);
+                if(R2!=null)
+                    linkRoom(R,R2,Directions.SOUTHWEST,ox,ox);
+            }
+        }
 	}
 }

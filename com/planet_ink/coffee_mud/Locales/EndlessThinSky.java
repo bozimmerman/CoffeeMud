@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -170,5 +171,36 @@ public class EndlessThinSky extends StdThinGrid
 			if(R2!=null)
 				linkRoom(R,R2,Directions.EAST,ox,ox);
 		}
+        
+        if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS)
+        {
+            if(((x==0)||(y==0))&&(R.rawDoors()[Directions.NORTHWEST]==null))
+            {
+                R2=getMakeSingleGridRoom(xSize()-1,ySize()-1);
+                if(R2!=null)
+                    linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
+            }
+            else
+            if(((x==xSize()-1)||(y==ySize()-1))&&(R.rawDoors()[Directions.SOUTHEAST]==null))
+            {
+                R2=getMakeSingleGridRoom(0,0);
+                if(R2!=null)
+                    linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
+            }
+            
+            if(((x==xSize()-1)||(y==0))&&(R.rawDoors()[Directions.NORTHEAST]==null))
+            {
+                R2=getMakeSingleGridRoom(0,ySize()-1);
+                if(R2!=null)
+                    linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
+            }
+            else
+            if(((x==0)||(y==ySize()-1))&&(R.rawDoors()[Directions.SOUTHWEST]==null))
+            {
+                R2=getMakeSingleGridRoom(xSize()-1,0);
+                if(R2!=null)
+                    linkRoom(R,R2,Directions.SOUTHWEST,ox,ox);
+            }
+        }
 	}
 }

@@ -75,21 +75,41 @@ public class EndlessOcean extends StdGrid
             if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS)
             {
                 if(rawDoors()[Directions.NORTHEAST]==null)
+                {
                     for(int i=0;i<subMap.length;i++)
                         if(subMap[i][0]!=null)
                             linkRoom(subMap[i][0],subMap[xSize()/2][ySize()/2],Directions.NORTHEAST,ox,ox);
+                    for(int i=0;i<subMap[0].length;i++)
+                        if(subMap[subMap.length-1][i]!=null)
+                            linkRoom(subMap[subMap.length-1][i],subMap[xSize()/2][ySize()/2],Directions.NORTHEAST,ox,ox);
+                }
                 if(rawDoors()[Directions.NORTHWEST]==null)
+                {
                     for(int i=0;i<subMap.length;i++)
                         if(subMap[i][0]!=null)
                             linkRoom(subMap[i][0],subMap[xSize()/2][ySize()/2],Directions.NORTHWEST,ox,ox);
+                    for(int i=0;i<subMap[0].length;i++)
+                        if(subMap[0][i]!=null)
+                            linkRoom(subMap[0][i],subMap[xSize()/2][ySize()/2],Directions.NORTHWEST,ox,ox);
+                }
                 if(rawDoors()[Directions.SOUTHWEST]==null)
+                {
                     for(int i=0;i<subMap.length;i++)
                         if(subMap[i][ySize()-1]!=null)
-                            linkRoom(subMap[i][ySize()-1],subMap[xSize()/2][ySize()/2],Directions.NORTHWEST,ox,ox);
+                            linkRoom(subMap[i][ySize()-1],subMap[xSize()/2][ySize()/2],Directions.SOUTHWEST,ox,ox);
+                    for(int i=0;i<subMap[0].length;i++)
+                        if(subMap[0][i]!=null)
+                            linkRoom(subMap[0][i],subMap[xSize()/2][ySize()/2],Directions.SOUTHWEST,ox,ox);
+                }
                 if(rawDoors()[Directions.SOUTHEAST]==null)
+                {
                     for(int i=0;i<subMap.length;i++)
                         if(subMap[i][ySize()-1]!=null)
-                            linkRoom(subMap[i][ySize()-1],subMap[xSize()/2][ySize()/2],Directions.NORTHWEST,ox,ox);
+                            linkRoom(subMap[i][ySize()-1],subMap[xSize()/2][ySize()/2],Directions.SOUTHEAST,ox,ox);
+                    for(int i=0;i<subMap[0].length;i++)
+                        if(subMap[subMap.length-1][i]!=null)
+                            linkRoom(subMap[subMap.length-1][i],subMap[xSize()/2][ySize()/2],Directions.NORTHEAST,ox,ox);
+                }
             }
 		}
 	}
