@@ -33,7 +33,7 @@ public class ArchonJournal extends StdJournal implements ArchonOnly, MiscMagic
 		setDescription("");
 		secretIdentity="The Archon's Journal.  Just READ me.";
 		baseGoldValue=20000;
-		material=EnvResource.RESOURCE_OAK;
+		material=EnvResource.RESOURCE_PAPER;
 		recoverEnvStats();
 	}
 	

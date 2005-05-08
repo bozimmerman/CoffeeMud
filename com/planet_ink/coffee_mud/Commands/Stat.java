@@ -26,9 +26,8 @@ public class Stat extends BaseAbleLister
 	private String[] access={"STAT"};
 	public String[] getAccessWords(){return access;}
 
-	public MOB getTarget(MOB mob, Vector commands, boolean quiet)
+	public MOB getTarget(MOB mob, String targetName, boolean quiet)
 	{
-		String targetName=Util.combine(commands,0);
 		MOB target=null;
 		if(targetName.length()>0)
 		{
@@ -44,22 +43,6 @@ public class Stat extends BaseAbleLister
 				}
 			}
 		}
-
-		if(target!=null)
-			targetName=target.name();
-
-		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
-		{
-			if(!quiet)
-			{
-				if(targetName.trim().length()==0)
-					mob.tell("You don't see them here.");
-				else
-					mob.tell("You don't see '"+targetName+"' here.");
-			}
-			return null;
-		}
-
 		return target;
 	}
 
@@ -227,7 +210,7 @@ public class Stat extends BaseAbleLister
 			}
 		}
 		String MOBname=Util.combine(commands,0);
-		MOB target=getTarget(mob,commands,true);
+		MOB target=getTarget(mob,MOBname,true);
 		if((target==null)||((target!=null)&&(!target.isMonster())))
 			target=mob.location().fetchInhabitant(MOBname);
 		if((target==null)||((target!=null)&&(!target.isMonster())))

@@ -235,7 +235,15 @@ public class Clans implements Clan, Tickable
 	public static Clan getClan(String id)
 	{
 		if(id.length()==0) return null;
-		return (Clan)all.get(id.toUpperCase());
+		Clan C=(Clan)all.get(id.toUpperCase());
+        if(C!=null) return C;
+        for(Enumeration e=all.keys();e.hasMoreElements();)
+        {
+            C=(Clan)e.nextElement();
+            if(EnglishParser.containsString(Util.removeColors(C.name()),id))
+                return C;
+        }
+        return null;
 	}
 
 	public static Clan getClanType(int type)

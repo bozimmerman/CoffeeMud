@@ -49,7 +49,7 @@ public class Expire extends StdCommand
         else 
         {
             String playerName=(String)commands.elementAt(0);
-            int days=new Integer((String)commands.elementAt(1)).intValue()*1000*60*60*24;
+            long days=Util.s_long((String)commands.elementAt(1))*1000*60*60*24;
             MOB player=CMMap.getLoadPlayer(playerName);
             if((player==null)||(player.playerStats()==null)) 
             {
