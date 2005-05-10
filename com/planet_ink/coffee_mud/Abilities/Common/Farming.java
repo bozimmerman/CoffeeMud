@@ -107,10 +107,12 @@ public class Farming extends GatheringSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        bundling=false;
 		if((!auto)
 		&&(commands.size()>0)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
 		{
+            bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
 			    return super.bundle(mob,commands);
 			else

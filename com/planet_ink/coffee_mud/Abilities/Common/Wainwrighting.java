@@ -176,6 +176,7 @@ public class Wainwrighting extends CraftingSkill
 											autoGenerate);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
+        bundling=misctype.equalsIgnoreCase("BUNDLE");
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,autoGenerate);
@@ -187,7 +188,7 @@ public class Wainwrighting extends CraftingSkill
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
-		if(misctype.equalsIgnoreCase("BUNDLE"))
+		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
 			itemName=Util.startWithAorAn(itemName);
@@ -238,7 +239,7 @@ public class Wainwrighting extends CraftingSkill
 				key.text();
 			}
 		}
-		if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
+		if(bundling) building.setBaseValue(lostValue);
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();
@@ -247,7 +248,7 @@ public class Wainwrighting extends CraftingSkill
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<15) completion=15;
 
-		if(misctype.equalsIgnoreCase("bundle"))
+		if(bundling)
 		{
 			messedUp=false;
 			completion=1;
@@ -270,7 +271,7 @@ public class Wainwrighting extends CraftingSkill
 			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		else
-		if(misctype.equalsIgnoreCase("bundle"))
+		if(bundling)
 		{
 			messedUp=false;
 			aborted=false;

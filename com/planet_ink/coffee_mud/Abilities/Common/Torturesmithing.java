@@ -112,6 +112,7 @@ public class Torturesmithing extends CraftingSkill
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
+        bundling=false;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
@@ -185,10 +186,11 @@ public class Torturesmithing extends CraftingSkill
 		    pm=new int[1];
 			pm[0]=EnvResource.MATERIAL_CLOTH;
 		}
+        bundling=misctype.equalsIgnoreCase("BUNDLE");
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"wood or cloth",pm,
 											0,null,null,
-											misctype.equalsIgnoreCase("BUNDLE"),
+                                            bundling,
 											autoGenerate);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
@@ -203,7 +205,7 @@ public class Torturesmithing extends CraftingSkill
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
-		if(misctype.equalsIgnoreCase("BUNDLE"))
+		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
 			itemName=Util.startWithAorAn(itemName);
@@ -297,7 +299,7 @@ public class Torturesmithing extends CraftingSkill
 				((Drink)building).setLiquidRemaining(0);
 			}
 		}
-		if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
+		if(bundling) building.setBaseValue(lostValue);
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();

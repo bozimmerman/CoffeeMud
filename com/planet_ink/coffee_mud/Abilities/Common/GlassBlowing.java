@@ -114,6 +114,7 @@ public class GlassBlowing extends CraftingSkill
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
+        bundling=false;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
@@ -167,11 +168,12 @@ public class GlassBlowing extends CraftingSkill
 		int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 		if(amount>woodRequired) woodRequired=amount;
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+        bundling=misctype.equalsIgnoreCase("BUNDLE");
 		int[] pm={EnvResource.RESOURCE_SAND,EnvResource.RESOURCE_CRYSTAL,EnvResource.RESOURCE_GLASS};
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"sand",pm,
 											0,null,null,
-											misctype.equalsIgnoreCase("BUNDLE"),
+                                            bundling,
 											autoGenerate);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
@@ -186,7 +188,7 @@ public class GlassBlowing extends CraftingSkill
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
-		if(misctype.equalsIgnoreCase("BUNDLE"))
+		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
 			itemName=Util.startWithAorAn(itemName);
@@ -233,7 +235,7 @@ public class GlassBlowing extends CraftingSkill
 					((Drink)building).setThirstQuenched(capacity*50);
 			}
 		}
-		if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
+		if(bundling) building.setBaseValue(lostValue);
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();
@@ -242,7 +244,7 @@ public class GlassBlowing extends CraftingSkill
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<4) completion=4;
 
-		if(misctype.equalsIgnoreCase("bundle"))
+		if(bundling)
 		{
 			messedUp=false;
 			completion=1;
@@ -265,7 +267,7 @@ public class GlassBlowing extends CraftingSkill
 			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		else
-		if(misctype.equalsIgnoreCase("bundle"))
+		if(bundling)
 		{
 			messedUp=false;
 			aborted=false;

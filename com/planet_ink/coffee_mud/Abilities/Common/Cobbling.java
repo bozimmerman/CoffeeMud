@@ -165,7 +165,7 @@ public class Cobbling extends CraftingSkill
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
-		boolean bundle=false;
+        bundling=false;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
@@ -281,10 +281,11 @@ public class Cobbling extends CraftingSkill
 			if(amount>woodRequired) woodRequired=amount;
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 			int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL,EnvResource.MATERIAL_CLOTH,EnvResource.MATERIAL_WOODEN,EnvResource.MATERIAL_LEATHER};
+            bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"metal",pm,
 												0,null,null,
-												misctype.equalsIgnoreCase("BUNDLE"),
+                                                bundling,
 												autoGenerate);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
@@ -321,8 +322,7 @@ public class Cobbling extends CraftingSkill
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
-			bundle=misctype.equalsIgnoreCase("BUNDLE");
-			if(bundle) building.setBaseValue(lostValue);
+			if(bundling) building.setBaseValue(lostValue);
 			addSpells(building,spell);
 			if(building instanceof Armor)
 			{
@@ -374,7 +374,7 @@ public class Cobbling extends CraftingSkill
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<6) completion=6;
 
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			completion=1;
@@ -397,7 +397,7 @@ public class Cobbling extends CraftingSkill
 			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		else
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			aborted=false;

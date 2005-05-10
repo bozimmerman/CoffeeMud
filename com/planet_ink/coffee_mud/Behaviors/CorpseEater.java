@@ -79,6 +79,15 @@ public class CorpseEater extends ActiveTicker
 					if(getParms().length()>0)
 					{
 						MOB mob2=makeMOBfromCorpse((DeadBody)I,null);
+                        if(((DeadBody)I).playerCorpse())
+                        {
+                            if(getParms().toUpperCase().indexOf("-PLAYER")>=0)
+                                continue;
+                        }
+                        else
+                        if((getParms().toUpperCase().indexOf("-NPC")>=0)
+                        ||(getParms().toUpperCase().indexOf("-MOB")>=0))
+                            continue;
 						if(!MUDZapper.zapperCheck(getParms(),mob2))
 							continue;
 					}

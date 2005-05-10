@@ -157,7 +157,7 @@ public class MasterTailoring extends CraftingSkill
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
-		boolean bundle=false;
+        bundling=false;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
@@ -264,11 +264,12 @@ public class MasterTailoring extends CraftingSkill
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+            bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[] pm={EnvResource.MATERIAL_CLOTH};
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"cloth",pm,
 												0,null,null,
-												misctype.equalsIgnoreCase("BUNDLE"),
+                                                bundling,
 												autoGenerate);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
@@ -302,8 +303,7 @@ public class MasterTailoring extends CraftingSkill
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
-			bundle=misctype.equalsIgnoreCase("BUNDLE");
-			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
+			if(bundling) building.setBaseValue(lostValue);
 			addSpells(building,spell);
 			if(building instanceof Weapon)
 			{
@@ -378,7 +378,7 @@ public class MasterTailoring extends CraftingSkill
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<4) completion=4;
 
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			completion=1;
@@ -401,7 +401,7 @@ public class MasterTailoring extends CraftingSkill
 			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		else
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			aborted=false;

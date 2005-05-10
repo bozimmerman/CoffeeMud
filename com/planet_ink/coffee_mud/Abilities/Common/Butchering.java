@@ -89,10 +89,12 @@ public class Butchering extends GatheringSkill
 		body=null;
 		Item I=null;
 		
+        bundling=false;
 		if((!auto)
 		&&(commands.size()>0)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
 		{
+            bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
 			    return super.bundle(mob,commands);
 			else

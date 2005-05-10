@@ -42,6 +42,7 @@ public class CommonSkill extends StdAbility
 	protected Room activityRoom=null;
 	protected boolean aborted=false;
 	protected boolean helping=false;
+    protected boolean bundling=false;
 	protected CommonSkill helpingAbility=null;
 	protected int tickUp=0;
 	protected String verb="working";
@@ -338,8 +339,8 @@ public class CommonSkill extends StdAbility
 		mob.curState().adjHitPoints(-consumed[2],mob.maxState());
 		activityRoom=mob.location();
 		
-		
-		helpProfficiency(mob);
+        if(!bundling)
+    		helpProfficiency(mob);
 
 		return true;
 	}

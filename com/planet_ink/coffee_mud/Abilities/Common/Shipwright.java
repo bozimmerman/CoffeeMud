@@ -163,7 +163,7 @@ public class Shipwright extends CraftingSkill
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int completion=4;
-		boolean bundle=false;
+        bundling=false;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",16)+" Lvl Wood required\n\r");
@@ -238,6 +238,7 @@ public class Shipwright extends CraftingSkill
 			if(amount>woodRequired) woodRequired=amount;
 			int[] pm={EnvResource.MATERIAL_WOODEN};
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+            bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"wood",pm,
 												0,null,null,
@@ -275,8 +276,7 @@ public class Shipwright extends CraftingSkill
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			String capacity=(String)foundRecipe.elementAt(RCP_CAPACITY);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
-			bundle=misctype.equalsIgnoreCase("BUNDLE");
-			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
+			if(bundling) building.setBaseValue(lostValue);
 			addSpells(building,spell);
 			key=null;
 			if(building instanceof Rideable)
@@ -309,7 +309,7 @@ public class Shipwright extends CraftingSkill
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<4) completion=4;
 
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			completion=1;
@@ -332,7 +332,7 @@ public class Shipwright extends CraftingSkill
 			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		else
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			aborted=false;

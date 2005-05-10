@@ -113,6 +113,7 @@ public class Pottery extends CraftingSkill
 		}
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
+        bundling=false;
 		String startStr=null;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
@@ -181,10 +182,11 @@ public class Pottery extends CraftingSkill
 		if(amount>woodRequired) woodRequired=amount;
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 		int[] pm={EnvResource.RESOURCE_CLAY,EnvResource.RESOURCE_CHINA};
+        bundling=misctype.equalsIgnoreCase("BUNDLE");
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"clay",pm,
 											0,null,null,
-											misctype.equalsIgnoreCase("BUNDLE"),
+                                            bundling,
 											autoGenerate);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
@@ -199,7 +201,7 @@ public class Pottery extends CraftingSkill
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
-		if(misctype.equalsIgnoreCase("BUNDLE"))
+		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
 			itemName=Util.startWithAorAn(itemName);
@@ -243,7 +245,7 @@ public class Pottery extends CraftingSkill
 					((Drink)building).setThirstQuenched(capacity*50);
 			}
 		}
-		if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
+		if(bundling) building.setBaseValue(lostValue);
 		if(misctype.equalsIgnoreCase("stone")) building.setMaterial(EnvResource.RESOURCE_STONE);
 		building.recoverEnvStats();
 		building.text();
@@ -253,7 +255,7 @@ public class Pottery extends CraftingSkill
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<4) completion=4;
 
-		if(misctype.equalsIgnoreCase("bundle"))
+		if(bundling)
 		{
 			messedUp=false;
 			completion=1;
@@ -276,7 +278,7 @@ public class Pottery extends CraftingSkill
 			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		else
-		if(misctype.equalsIgnoreCase("bundle"))
+		if(bundling)
 		{
 			messedUp=false;
 			aborted=false;

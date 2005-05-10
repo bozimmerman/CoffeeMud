@@ -217,7 +217,7 @@ public class Weaponsmithing extends CraftingSkill
 		}
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
-		boolean bundle=false;
+        bundling=false;
 		String startStr=null;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
@@ -307,6 +307,8 @@ public class Weaponsmithing extends CraftingSkill
 			if(amount>woodRequired) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
 			int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
+            String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+            bundling=spell.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"metal",pm,
 												otherRequired.length()>0?1:0,otherRequired,null,
@@ -339,9 +341,7 @@ public class Weaponsmithing extends CraftingSkill
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
-			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
-			bundle=spell.equalsIgnoreCase("BUNDLE");
-			if(spell.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
+			if(bundling) building.setBaseValue(lostValue);
 			addSpells(building,spell);
 			if(building instanceof Weapon)
 			{
@@ -363,7 +363,7 @@ public class Weaponsmithing extends CraftingSkill
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<6) completion=6;
 
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			completion=1;
@@ -386,7 +386,7 @@ public class Weaponsmithing extends CraftingSkill
 			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		else
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			aborted=false;

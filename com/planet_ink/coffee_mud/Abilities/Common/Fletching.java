@@ -149,7 +149,7 @@ public class Fletching extends CraftingSkill
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
-		boolean bundle=false;
+        bundling=false;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
@@ -258,6 +258,8 @@ public class Fletching extends CraftingSkill
 					return false;
 				}
 			}
+            String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+            bundling=spell.equalsIgnoreCase("BUNDLE");
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,autoGenerate);
@@ -285,9 +287,7 @@ public class Fletching extends CraftingSkill
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_AMOCAPACITY));
 			int maxrange=Util.s_int((String)foundRecipe.elementAt(RCP_MAXRANGE));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
-			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
-			bundle=spell.equalsIgnoreCase("BUNDLE");
-			if(bundle) building.setBaseValue(lostValue);
+			if(bundling) building.setBaseValue(lostValue);
 			addSpells(building,spell);
 			if(building instanceof Weapon)
 			{
@@ -316,7 +316,7 @@ public class Fletching extends CraftingSkill
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<4) completion=4;
 
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			completion=1;
@@ -339,7 +339,7 @@ public class Fletching extends CraftingSkill
 			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		else
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			aborted=false;

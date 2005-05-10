@@ -134,8 +134,8 @@ public class LeatherWorking extends CraftingSkill
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		String prefix="";
-		boolean bundle=false;
-		int multiplier=1;
+        bundling=false;
+        int multiplier=1;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
@@ -300,12 +300,13 @@ public class LeatherWorking extends CraftingSkill
 			int[] pm={EnvResource.MATERIAL_LEATHER};
 			int[] pm1={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+            bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"leather",pm,
 												(multiplier==3)?1:0,
 												(multiplier==3)?"metal":null,
 												(multiplier==3)?pm1:null,
-												misctype.equalsIgnoreCase("BUNDLE"),
+                                                bundling,
 												autoGenerate);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
@@ -320,7 +321,7 @@ public class LeatherWorking extends CraftingSkill
 			}
 			completion=(multiplier*Util.s_int((String)foundRecipe.elementAt(RCP_TICKS)))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)])).toLowerCase();
-			if(misctype.equalsIgnoreCase("BUNDLE"))
+			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
 			if(itemName.endsWith("s"))
@@ -342,8 +343,7 @@ public class LeatherWorking extends CraftingSkill
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+(multiplier-1);
-			bundle=misctype.equalsIgnoreCase("BUNDLE");
-			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
+			if(bundling) building.setBaseValue(lostValue);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			addSpells(building,spell);
 			if(building instanceof Weapon)
@@ -433,7 +433,7 @@ public class LeatherWorking extends CraftingSkill
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<4) completion=4;
 
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			completion=1;
@@ -456,7 +456,7 @@ public class LeatherWorking extends CraftingSkill
 			beneficialAffect(mob,mob,asLevel,completion);
 		}
 		else
-		if(bundle)
+		if(bundling)
 		{
 			messedUp=false;
 			aborted=false;
