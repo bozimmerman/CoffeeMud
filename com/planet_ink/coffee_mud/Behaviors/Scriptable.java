@@ -2443,7 +2443,7 @@ public class Scriptable extends StdBehavior
 				    clanID=((MOB)E).getClanID();
 				else
 					clanID=varify(source,target,monster,primaryItem,secondaryItem,msg,arg1);
-				Clan C=Clans.getClan(clanID);
+				Clan C=Clans.findClan(clanID);
 				if(C!=null)
 				{
 				    int whichVar=-1;
@@ -3621,7 +3621,7 @@ public class Scriptable extends StdBehavior
 				    clanID=((MOB)E).getClanID();
 				else
 					clanID=varify(source,target,monster,primaryItem,secondaryItem,msg,arg1);
-				Clan C=Clans.getClan(clanID);
+				Clan C=Clans.findClan(clanID);
 				if(C!=null)
 				{
 				    int whichVar=-1;

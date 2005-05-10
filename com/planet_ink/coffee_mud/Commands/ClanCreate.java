@@ -50,7 +50,7 @@ public class ClanCreate extends BaseClanner
 						String doubleCheck=mob.session().prompt("Enter the name of your new clan exactly how you want it:","");
 						if(doubleCheck.length()<1)
 							return false;
-						Clan C=Clans.getClan(doubleCheck);
+						Clan C=Clans.findClan(doubleCheck);
 						if((CMClass.DBEngine().DBUserSearch(null,doubleCheck))
 						||(doubleCheck.equalsIgnoreCase("All")))
 							msg.append("That name is not available for clans.");

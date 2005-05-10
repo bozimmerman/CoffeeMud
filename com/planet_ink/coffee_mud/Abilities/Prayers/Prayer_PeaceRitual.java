@@ -122,7 +122,7 @@ public class Prayer_PeaceRitual extends Prayer
 			return false;
 		}
 		clan2=Util.combine(commands,0);
-		Clan otherClan=Clans.getClan(clan2);
+		Clan otherClan=Clans.findClan(clan2);
 		if((otherClan==null)
 		||((myClan.getClanRelations(clan2)!=Clan.REL_WAR)&&(otherClan.getClanRelations(clan1)!=Clan.REL_WAR)))
 		{

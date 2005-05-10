@@ -36,7 +36,7 @@ public class ClanApply extends BaseClanner
 		{
 			if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 			{
-				Clan C=Clans.getClan(qual);
+				Clan C=Clans.findClan(qual);
 				if(C!=null)
 				{
 					if((MUDZapper.zapperCheck(C.getAcceptanceSettings(),mob))

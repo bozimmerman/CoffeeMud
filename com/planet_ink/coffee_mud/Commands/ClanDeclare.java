@@ -67,7 +67,7 @@ public class ClanDeclare extends BaseClanner
 						mob.tell("'"+rel+"' is not a valid relationship. Try WAR, HOSTILE, NEUTRAL, FRIENDLY, or ALLY.");
 						return false;
 					}
-					Clan C2=Clans.getClan(clan);
+					Clan C2=Clans.findClan(clan);
 					if(C2==null)
 					{
 						mob.tell(clan+" isn't valid clan.");

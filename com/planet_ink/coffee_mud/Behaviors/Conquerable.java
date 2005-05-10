@@ -537,7 +537,7 @@ public class Conquerable extends Arrest
 	{
 		if((holdingClan.equals(clanID))||(totalControlPoints<0))
 			return;
-		Clan C=Clans.getClan(clanID);
+		Clan C=Clans.findClan(clanID);
 		if(C==null) return;
 
 		if(holdingClan.length()>0)
@@ -583,7 +583,7 @@ public class Conquerable extends Arrest
 
 	private boolean flagFound(Area A, String clanID)
 	{
-		if(Clans.getClan(clanID)==null) return false;
+		if(Clans.findClan(clanID)==null) return false;
 		synchronized(clanItems)
 		{
 			for(int i=0;i<clanItems.size();i++)

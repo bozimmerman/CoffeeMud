@@ -831,7 +831,7 @@ public class Destroy extends BaseItemParser
 			else
 			{
 				String name=Util.combine(commands,2);
-				Clan C=Clans.getClan(name);
+				Clan C=Clans.findClan(name);
 				if(C==null)
 					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
 				else
