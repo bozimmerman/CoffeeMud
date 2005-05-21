@@ -118,7 +118,7 @@ public class Prop_LimitedItems extends Property
 				for(int v=0;v<V.size();v++)
 				{
 					MOB M=CMMap.getLoadPlayer((String)((Vector)V.elementAt(v)).firstElement());
-					if((M.location()!=null)&&(M.location().isInhabitant(M)))
+					if((M!=null)&&(M.location()!=null)&&(M.location().isInhabitant(M)))
 						Log.sysOut("Prop_LimitedItems",M.name()+" is in the Game!!!");
 				}
 				Log.sysOut("Prop_LimitedItems","Done checking player inventories");
