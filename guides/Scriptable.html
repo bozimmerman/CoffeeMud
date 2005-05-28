@@ -479,6 +479,37 @@ mob’s hit points are 50% or under every round of combat.)</P>
 of combat. This means, more or less, every round of combat the mob will ever be 
 in.)&nbsp;</P>
 <P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">login_prog<?XML:NAMESPACE 
+PREFIX = O /><O:P></O:P></SPAN></P>
+<P class=MsoNormal>Usage:<BR><EM>login_prog [integer percentage]</EM></P>
+<P class=MsoNormal>This type of mobprog checks a percentage chance every time 
+someone enters the game. If the random number generated between 1 and 100 is 
+equal to or below the percentage of the login_prog, the prog is triggered. </P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>login_prog 25</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This prog will be triggered 
+25% of the time when someone enters the game.)</P>
+<P class=MsoNormal><EM>login_prog 100</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This prog will be triggered 
+100% of the time when someone enters the game. This means every time.)</P>
+<P class=MsoNormal>SPECIAL NOTES: This program will trigger every time a player 
+enters the game, regardless of whether they are in the same room, or even 
+whether the scripted monster can see or detect the player.</P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">logoff_prog<O:P></O:P></SPAN></P>
+<P class=MsoNormal>Usage:<BR><EM>logoff_prog [integer percentage]</EM></P>
+<P class=MsoNormal>This type of mobprog checks a percentage chance every time 
+someone leaves the game. If the random number generated between 1 and 100 is 
+equal to or below the percentage of the logoff_prog, the prog is triggered. </P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>logoff_prog 25</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This prog will be triggered 
+25% of the time when someone leaves the game.)</P>
+<P class=MsoNormal><EM>logoff_prog 100</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This prog will be triggered 
+100% of the time when someone leaves the game. This means every time.)</P>
+<P class=MsoNormal>SPECIAL NOTES: This program will trigger every time a player 
+leaves the game, regardless of whether they are in the same room, or even 
+whether the scripted monster can see or detect the player.</P>
+<P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">once_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>once_prog</EM></P>
 <P class=MsoNormal>This type of mobprog is 
@@ -992,6 +1023,9 @@ useless. </P>
     <TD>INROOM()</TD>
     <TD>Returns the raw id of the room the scripted 
       monster is in.</TD></TR>
+  <TR>
+    <TD>IPADDRESS([code])</TD>
+    <TD>Returns the ipaddress of the player.</TD></TR>
   <TR>
     <TD>ISABLE([code]&nbsp; [skill name])</TD>
     <TD>Returns the given mobs profficiency in the given 
@@ -2381,6 +2415,16 @@ a bathroom.<BR>endif</EM></P>
 MyArea#20001)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am not in room MyArea#20001.<BR>else<BR><SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am in room 
 MyArea#20001.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ipaddress</SPAN></B></P>
+<P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>ipaddress(character == string)</EM></P>
+<P class=MsoNormal>This compares the player characters 
+ipaddress to the&nbsp;string.&nbsp; The '==' may also be '!='.&nbsp; </P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if ipaddress($n 
+== '127.0.0.1')<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho You are logging on from the mud 
+server<BR></EM><EM>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho You must be someone else.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isable</SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>isable(character spellid)</EM></P>

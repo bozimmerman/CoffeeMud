@@ -250,6 +250,7 @@ public class ScrimShaw extends CraftingSkill
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+System.out.println(capacity);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			if(bundling) building.setBaseValue(lostValue);
 			addSpells(building,spell);
@@ -340,7 +341,7 @@ public class ScrimShaw extends CraftingSkill
 			if(building instanceof Light)
 			{
 				((Light)building).setDuration(capacity);
-				if(building instanceof Container)
+				if((building instanceof Container)&&(((Container)building).containTypes()!=Container.CONTAIN_SMOKEABLES))
 					((Container)building).setCapacity(0);
 			}
 			building.recoverEnvStats();

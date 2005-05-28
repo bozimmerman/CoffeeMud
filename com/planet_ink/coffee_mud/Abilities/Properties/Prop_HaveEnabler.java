@@ -109,6 +109,17 @@ public class Prop_HaveEnabler extends Property
 		lastMOB=newMOB;
 	}
 
+    public void setAffectedOne(Environmental E)
+    {
+        if(E==null)
+        {
+            if((lastMOB!=null)
+            &&(lastMOB.location()!=null))
+                removeMyAffectsFromLastMob();
+        }
+        super.setAffectedOne(E);
+    }
+    
 	public void removeMyAffectsFromLastMob()
 	{
         if(lastMOB==null) return;
@@ -145,8 +156,10 @@ public class Prop_HaveEnabler extends Property
 			&&(lastMOB.location()!=null))
 				removeMyAffectsFromLastMob();
 			
-			if((lastMOB==null)&&(myItem.owner()!=null)
-			&&(myItem.owner() instanceof MOB)&&(((MOB)myItem.owner()).location()!=null))
+			if((lastMOB==null)
+            &&(myItem.owner()!=null)
+			&&(myItem.owner() instanceof MOB)
+            &&(((MOB)myItem.owner()).location()!=null))
 				addMeIfNeccessary((MOB)myItem.owner());
 		}
 		super.affectEnvStats(affectedMOB,affectableStats);

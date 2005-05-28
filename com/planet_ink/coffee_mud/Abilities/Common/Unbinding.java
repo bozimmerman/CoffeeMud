@@ -59,13 +59,25 @@ public class Unbinding extends CommonSkill
 			if((found!=null)&&(mob!=null))
 			{
 			    if(found.location()!=mob.location())
+                {
+                    aborted=true;
 				    unInvoke();
+                }
 			    if(!Sense.canBeSeenBy(found,mob))
-			        unInvoke();
+                {
+                    aborted=true;
+                    unInvoke();
+                }
 			    if(!Sense.aliveAwakeMobile(mob,false))
-			        unInvoke();
+                {
+                    aborted=true;
+                    unInvoke();
+                }
 			    if((removing!=null)&&(found.fetchEffect(removing.ID())!=removing))
-			        unInvoke();
+                {
+                    aborted=true;
+                    unInvoke();
+                }
 			}
 		}
 		return super.tick(ticking,tickID);

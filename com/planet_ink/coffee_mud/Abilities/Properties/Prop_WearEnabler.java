@@ -104,6 +104,17 @@ public class Prop_WearEnabler extends Property
 		lastMOB=newMOB;
 	}
 
+    public void setAffectedOne(Environmental E)
+    {
+        if(E==null)
+        {
+            if((lastMOB!=null)
+            &&(lastMOB.location()!=null))
+                removeMyAffectsFromLastMob();
+        }
+        super.setAffectedOne(E);
+    }
+    
 	public void removeMyAffectsFromLastMob()
 	{
 		Vector V=getMySpellsV();

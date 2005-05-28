@@ -207,9 +207,27 @@ public class CommonSkill extends StdAbility
 			&&(!Sense.enchanted(I))
 			&&(I.material()==otherMaterial))
 			{
-				otherMaterial=-1;
-				lostValue+=I.value();
-				I.destroy();
+                otherMaterial=-1;
+                if(I.baseEnvStats().weight()>1)
+                {
+                    I.baseEnvStats().setWeight(I.baseEnvStats().weight()-1);
+                    I.destroy();
+                    Environmental E=null;
+                    for(int x=0;x<I.baseEnvStats().weight();x++)
+                    {
+                        E=CoffeeUtensils.makeResource(otherMaterial,-1,true);
+                        if(E instanceof Item)
+                            room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
+                    }
+                    if(E instanceof Item)
+                        lostValue+=((Item)E).value();
+                    break;
+                }
+                else
+                {
+                    lostValue+=I.value();
+                    I.destroy();
+                }
 			}
 			else
 			if((I instanceof EnvResource)
@@ -223,12 +241,15 @@ public class CommonSkill extends StdAbility
 					I.baseEnvStats().setWeight(I.baseEnvStats().weight()-howMuch);
 					I.destroy();
 					lostValue+=I.value();
+                    Environmental E=null;
 					for(int x=0;x<I.baseEnvStats().weight();x++)
 					{
-						Environmental E=CoffeeUtensils.makeResource(finalMaterial,-1,true);
+						E=CoffeeUtensils.makeResource(finalMaterial,-1,true);
 						if(E instanceof Item)
 							room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
 					}
+                    if(E instanceof Item)
+                        lostValue+=(((Item)E).value()*howMuch);
 					break;
 				}
 				else

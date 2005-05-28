@@ -1075,7 +1075,8 @@ public class Modify extends BaseGenerics
 				thang=srchRoom.fetchFromRoomFavorItems(null,allWord,Item.WORN_REQ_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);
+				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) 
+                    return errorOut(mob);
 				if(!thang.isGeneric())
 				{
 					int showFlag=-1;
@@ -1104,12 +1105,13 @@ public class Modify extends BaseGenerics
 					genMiscSet(mob,thang);
 				thang.recoverEnvStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
-				Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.ID()+".");
+                Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.Name()+" ("+thang.ID()+") in "+CMMap.getExtendedRoomID(mob.location())+".");
 			}
 			else
 			if((thang!=null)&&(thang instanceof MOB))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);
+				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) 
+                    return errorOut(mob);
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
 					int showFlag=-1;
@@ -1132,6 +1134,7 @@ public class Modify extends BaseGenerics
 							ok=true;
 						}
 					}
+                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMMap.getExtendedRoomID(((MOB)thang).location())+".");
 				}
 				else
 				if(!((MOB)thang).isMonster())
@@ -1140,19 +1143,10 @@ public class Modify extends BaseGenerics
 					players(mob,Util.parse("MODIFY USER \""+thang.Name()+"\""));
 				}
 				else
-				if(thang instanceof Room)
-				{
-					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")) return errorOut(mob);
+                {
 					genMiscSet(mob,thang);
-				}
-				else
-				if(thang instanceof Exit)
-				{
-					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
-					genMiscSet(mob,thang);
-				}
-				else
-					genMiscSet(mob,thang);
+                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMMap.getExtendedRoomID(((MOB)thang).location())+".");
+                }
 				thang.recoverEnvStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 			}

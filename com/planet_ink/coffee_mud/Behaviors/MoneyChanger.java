@@ -168,6 +168,7 @@ public class MoneyChanger extends StdBehavior
 			}
 			else
 				CommonMsgs.say(observer,source,"Gee, thanks. :)",true,false);
+            ((Coins)msg.tool()).destroy();
 		}
 	}
 }

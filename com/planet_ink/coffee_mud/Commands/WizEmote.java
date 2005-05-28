@@ -32,6 +32,31 @@ public class WizEmote extends StdCommand
 		{
 			String who=(String)commands.elementAt(1);
 			String msg=Util.combine(commands,2);
+            if(who.toUpperCase().equals("HERE"))
+            {
+                for(int s=0;s<Sessions.size();s++)
+                {
+                    Session S=Sessions.elementAt(s);
+                    if((S.mob()!=null)
+                    &&(S.mob().location()==mob.location())
+                    &&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
+                        S.stdPrintln("^w"+msg+"^?");
+                }
+            }
+            else
+            if(CMMap.getRoom(who)!=null)
+            {
+                Room R=CMMap.getRoom(who);
+                for(int s=0;s<Sessions.size();s++)
+                {
+                    Session S=Sessions.elementAt(s);
+                    if((S.mob()!=null)
+                    &&(S.mob().location()==R)
+                    &&(CMSecurity.isAllowed(mob,R,"WIZEMOTE")))
+                        S.stdPrintln("^w"+msg+"^?");
+                }
+            }
+            else
 			if(who.toUpperCase().equals("ALL"))
 			{
 				for(int s=0;s<Sessions.size();s++)

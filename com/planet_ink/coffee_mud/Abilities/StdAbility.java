@@ -615,13 +615,17 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	{
 		if(mob==null) return;
 		Ability A=mob.fetchAbility(ID());
-		if((A==null)||(A.isBorrowed(mob))) return;
+		if((A==null)
+        ||(A.isBorrowed(mob))) return;
 
 		if((System.currentTimeMillis()
 		-((StdAbility)A).lastProfHelp)<60000)
 			return;
-
-		if((A.profficiency()<100)&&(A.appropriateToMyFactions(mob)))
+        
+        if(!A.appropriateToMyFactions(mob))
+            return;
+        
+		if(A.profficiency()<100)
 		{
 			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.profficiency())
 			{

@@ -115,6 +115,8 @@ public class Scriptable extends StdBehavior
 		"DAMAGE_PROG", // 26
 		"BUY_PROG", // 27
 		"SELL_PROG", // 28
+        "LOGIN_PROG", // 29
+        "LOGOFF_PROG", // 30
 	};
 	private static final String[] funcs={
 		"RAND", //1
@@ -186,6 +188,7 @@ public class Scriptable extends StdBehavior
 		"HASTITLE", // 67
 		"CLANDATA", // 68
 		"ISBEHAVE", // 69
+        "IPADDRESS" // 70
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -1063,31 +1066,36 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
-			if((middle.length()>0)
-			&&(back.startsWith("."))
-			&&(back.length()>1)
-			&&(Character.isDigit(back.charAt(1))))
-			{
-				int x=1;
-				while((x<back.length())
-				&&(Character.isDigit(back.charAt(x))))
-					x++;
-				int y=Util.s_int(back.substring(1,x));
-				back=back.substring(x);
-				boolean rest=back.startsWith("..");
-				if(rest) back=back.substring(2);
-				Vector V=Util.parse(middle);
-				if((V.size()>0)&&(y>=0))
-				{
-					if(y>=V.size())
-						middle="";
-					else
-					if(rest)
-					    middle=Util.combine(V,y);
-					else
-						middle=(String)V.elementAt(y);
-				}
-			}
+            if((middle.length()>0)
+            &&(back.startsWith("."))
+            &&(back.length()>2))
+            {
+                if((back.charAt(1)=='$')
+                &&(back.indexOf(">")>1))
+                    back=varify(source,target,monster,primaryItem,secondaryItem,back.substring(0,back.indexOf(">")+1),varifyable);
+    			if(Character.isDigit(back.charAt(1)))
+    			{
+    				int x=1;
+    				while((x<back.length())
+    				&&(Character.isDigit(back.charAt(x))))
+    					x++;
+    				int y=Util.s_int(back.substring(1,x));
+    				back=back.substring(x);
+    				boolean rest=back.startsWith("..");
+    				if(rest) back=back.substring(2);
+    				Vector V=Util.parse(middle);
+    				if((V.size()>0)&&(y>=0))
+    				{
+    					if(y>=V.size())
+    						middle="";
+    					else
+    					if(rest)
+    					    middle=Util.combine(V,y);
+    					else
+    						middle=(String)V.elementAt(y);
+    				}
+    			}
+            }
 			varifyable=front+middle+back;
 			t=varifyable.indexOf("$");
 		}
@@ -1703,6 +1711,18 @@ public class Scriptable extends StdBehavior
 					returnable=(E.fetchBehavior(arg2)!=null);
 				break;
 			}
+            case 70: // ipaddress
+            {
+                String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+                String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+                String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(evaluable.substring(y+1,z),1));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if((E==null)||(!(E instanceof MOB))||(((MOB)E).isMonster()))
+                    returnable=false;
+                else
+                    returnable=simpleEvalStr(scripted,((MOB)E).session().getAddress(),arg3,arg2,"ADDRESS");
+                break;
+            }
 			case 28: // questwinner
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
@@ -3209,6 +3229,14 @@ public class Scriptable extends StdBehavior
 					results.append(E.fetchBehavior(i).ID()+" ");
 				break;
 			}
+            case 70: // ipaddress
+            {
+                String arg1=Util.cleanBit(evaluable.substring(y+1,z));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if((E!=null)&&(E instanceof MOB)&&(!((MOB)E).isMonster()))
+                    results.append(((MOB)E).session().getAddress());
+                break;
+            }
 			case 28: // questwinner
 			case 29: // questmob
 			case 31: // isquestmobalive
@@ -3697,10 +3725,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&(E instanceof MOB))
-				{
-					String sex=((MOB)E).charStats().displayClassName().toUpperCase();
-					results.append(sex);
-				}
+					results.append(((MOB)E).charStats().displayClassName());
 				break;
 			}
 			case 64: // deity
@@ -3730,10 +3755,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&(E instanceof MOB))
-				{
-					String sex=((MOB)E).charStats().getCurrentClass().baseClass().toUpperCase();
-					results.append(sex);
-				}
+					results.append(((MOB)E).charStats().getCurrentClass().baseClass());
 				break;
 			}
 			case 23: // race
@@ -3741,10 +3763,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&(E instanceof MOB))
-				{
-					String sex=((MOB)E).charStats().raceName().toUpperCase();
-					results.append(sex);
-				}
+					results.append(((MOB)E).charStats().raceName());
 				break;
 			}
 			case 24: //racecat
@@ -3752,10 +3771,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&(E instanceof MOB))
-				{
-					String sex=((MOB)E).charStats().getMyRace().racialCategory().toUpperCase();
-					results.append(sex);
-				}
+					results.append(((MOB)E).charStats().getMyRace().racialCategory());
 				break;
 			}
 			case 25: // goldamt
@@ -5725,6 +5741,30 @@ public class Scriptable extends StdBehavior
 					return;
 				}
 				break;
+            case 29: // login_prog
+                if((msg.sourceMinor()==CMMsg.TYP_LOGIN)
+                &&(canFreelyBehaveNormal(monster)))
+                {
+                    int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
+                    if(Dice.rollPercentage()<prcnt)
+                    {
+                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
+                        return;
+                    }
+                }
+                break;
+            case 30: // logoff_prog
+                if((msg.sourceMinor()==CMMsg.TYP_QUIT)
+                &&(canFreelyBehaveNormal(monster)))
+                {
+                    int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
+                    if(Dice.rollPercentage()<prcnt)
+                    {
+                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
+                        return;
+                    }
+                }
+                break;
 			case 12: // mask prog
 			case 18: // act prog
 				if(!msg.amISource(monster))

@@ -42,9 +42,13 @@ public class FrontLogin extends StdCommand
 	private static Vector classQualifies(MOB mob, int theme)
 	{
 		Vector them=new Vector();
+        HashSet doneClasses=new HashSet();
 		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			CharClass C=(CharClass)c.nextElement();
+            if(doneClasses.contains(C.ID())) continue;
+            C=CMClass.getCharClass(C.ID());
+            doneClasses.add(C.ID());
 			if(classOkForMe(mob,C,theme))
 				them.addElement(C);
 		}
@@ -476,9 +480,13 @@ public class FrontLogin extends StdCommand
 
 				StringBuffer listOfRaces=new StringBuffer("[");
 				boolean tmpFirst = true;
+                HashSet doneRaces=new HashSet();
 				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
 					Race R=(Race)r.nextElement();
+                    if(doneRaces.contains(R.ID())) continue;
+                    R=CMClass.getRace(R.ID());
+                    doneRaces.add(R.ID());
 					if((CommonStrings.isTheme(R.availabilityCode()))
 					&&(!Util.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))
 					&&(Util.bset(R.availabilityCode(),theme)))
@@ -519,7 +527,7 @@ public class FrontLogin extends StdCommand
 								if((R.name().equalsIgnoreCase(raceStr))
 								&&(CommonStrings.isTheme(R.availabilityCode()))
 								&&(Util.bset(R.availabilityCode(),theme))
-								&&(!Util.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+								&&(!Util.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 								{
 									newRace=R;
 									break;

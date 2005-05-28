@@ -96,7 +96,7 @@ public class Chant_Bury extends Chant
 			{
 				mob.location().send(mob,msg);
 				target.destroy();
-				if(!Sense.isNeutral(mob))
+				if(Sense.isNeutral(mob))
 				{
 					double exp=10.0;
 					int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);

@@ -233,7 +233,12 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.tool()==this))
 		{
 			LandTitle A=fetchALandTitle();
-			if((A!=null)&&(A.landOwner().length()>0))
+			if((A!=null)
+            &&(A.landOwner().length()==0)
+            ||((A.landOwner().length()>0)
+                &&(!A.landOwner().equals(msg.source().Name()))
+                &&(!((msg.source().isMarriedToLiege())&&(A.landOwner().equals(msg.source().getLiegeID()))))
+                &&(!A.landOwner().equals(msg.source().getClanID()))))
 			{
 		        String str="I'm sorry, '"+msg.tool().Name()+" must be destroyed.";
 		        if(((MOB)msg.target()).isMonster())
@@ -242,7 +247,7 @@ public class StdTitle extends StdItem implements LandTitle
 		            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
 		        destroy();
 				ShopKeeper SK=CoffeeUtensils.getShopKeeper((MOB)msg.target());
-				if(SK!=null) SK.removeStock(Name(),msg.source());
+				if(SK!=null) SK.removeStock(msg.tool().Name(),msg.source());
 		        return false;
 			}
 		}

@@ -45,6 +45,4 @@ public class StdBow extends StdWeapon
 		weaponClassification=Weapon.CLASS_RANGED;
 		setRawLogicalAnd(true);
 	}
-
-
 }

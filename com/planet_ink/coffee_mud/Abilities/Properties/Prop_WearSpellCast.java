@@ -107,6 +107,17 @@ public class Prop_WearSpellCast extends Property
 		lastMOB=newMOB;
 	}
 
+    public void setAffectedOne(Environmental E)
+    {
+        if(E==null)
+        {
+            if((lastMOB!=null)
+            &&(lastMOB.location()!=null))
+                removeMyAffectsFromLastMob();
+        }
+        super.setAffectedOne(E);
+    }
+    
 	public void removeMyAffectsFromLastMob()
 	{
 		Hashtable h=getMySpellsH();
