@@ -1,7 +1,9 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.system.Tick;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -80,8 +82,26 @@ public class List extends StdCommand
 		{
 			if (tArray[i] != null)
 			{
-				lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
-				lines.append(tArray[i].getName() + "\n\r");
+                lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
+                lines.append(Util.padRight(tArray[i].getName(),20)+": ");
+                if(tArray[i] instanceof Session)
+                {
+                    Session S=(Session)tArray[i];
+                    lines.append("Session "+S.getTermID()+"-"+S.getStatus()+"-"+Util.combine(S.previousCMD(),0) + "\n\r");
+                }
+                else
+                if(tArray[i] instanceof Tickable)
+                {
+                    Tickable T=(Tickable)tArray[i];
+                    lines.append("Tickable "+T.ID()+"-"+T.name()+"-"+T.getTickStatus() + "\n\r");
+                }
+                else
+                if((tArray[i] instanceof Tick)
+                &&(((Tick)tArray[i]).lastClient!=null)
+                &&(((Tick)tArray[i]).lastClient.clientObject!=null))
+                    lines.append("Tick "+tArray[i].getName()+" "+((Tick)tArray[i]).lastClient.clientObject.ID()+"-"+((Tick)tArray[i]).lastClient.clientObject.name()+"-"+((Tick)tArray[i]).lastClient.clientObject.getTickStatus() + "\n\r");
+                else
+                    lines.append("Thread "+tArray[i].getName() + "\n\r");
 			}
 		}
 

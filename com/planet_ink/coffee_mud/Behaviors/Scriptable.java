@@ -188,7 +188,8 @@ public class Scriptable extends StdBehavior
 		"HASTITLE", // 67
 		"CLANDATA", // 68
 		"ISBEHAVE", // 69
-        "IPADDRESS" // 70
+        "IPADDRESS", // 70
+        "RAND0NUM", // 71
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -1070,10 +1071,9 @@ public class Scriptable extends StdBehavior
             &&(back.startsWith("."))
             &&(back.length()>2))
             {
-                if((back.charAt(1)=='$')
-                &&(back.indexOf(">")>1))
-                    back=varify(source,target,monster,primaryItem,secondaryItem,back.substring(0,back.indexOf(">")+1),varifyable);
-    			if(Character.isDigit(back.charAt(1)))
+                if(back.charAt(1)=='$')
+                    back=varify(source,target,monster,primaryItem,secondaryItem,msg,back);
+    			if((back.length()>1)&&Character.isDigit(back.charAt(1)))
     			{
     				int x=1;
     				while((x<back.length())
@@ -2826,6 +2826,14 @@ public class Scriptable extends StdBehavior
 				returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RANDNUM");
 				break;
 			}
+            case 71: // rand0num
+            {
+                int arg1=Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase());
+                String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+                int arg3=Dice.roll(1,Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1))),-1);
+                returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RANDNUM");
+                break;
+            }
 			case 53: // incontainer
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
@@ -3874,6 +3882,13 @@ public class Scriptable extends StdBehavior
 				results.append(Dice.roll(1,arg1,0));
 				break;
 			}
+            case 71: // randnum
+            {
+                String arg1String=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z))).toUpperCase();
+                int arg1=Util.s_int(arg1String);
+                results.append(Dice.roll(1,arg1,-1));
+                break;
+            }
 			default:
 				scriptableError(scripted,"Unknown Val",preFab,evaluable);
 				return results.toString();

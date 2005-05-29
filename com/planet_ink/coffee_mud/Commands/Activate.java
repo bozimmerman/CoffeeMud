@@ -62,6 +62,7 @@ public class Activate extends BaseItemParser
 	}
 	public int ticksToExecute(){return 1;}
 	public boolean canBeOrdered(){return true;}
+    public boolean securityCheck(MOB mob){return CMSecurity.isASysOp(mob);}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }
