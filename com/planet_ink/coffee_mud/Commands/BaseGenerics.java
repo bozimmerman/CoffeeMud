@@ -5275,6 +5275,8 @@ public class BaseGenerics extends StdCommand
             me.middle=me.minimum+(int)Math.round(Util.div(me.maximum-me.minimum,2.0));
             me.difference=Util.abs(me.maximum-me.minimum);
             
+            
+            
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
             showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));

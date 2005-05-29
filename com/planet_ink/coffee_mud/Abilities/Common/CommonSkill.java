@@ -200,6 +200,7 @@ public class CommonSkill extends StdAbility
 			if(I==null) break;
 			if(I==never) continue;
 
+System.out.println(otherMaterial+"/"+I.name());
 			if((otherMaterial>0)
 			&&(I instanceof EnvResource)
 			&&(I.container()==null)
@@ -207,11 +208,9 @@ public class CommonSkill extends StdAbility
 			&&(!Sense.enchanted(I))
 			&&(I.material()==otherMaterial))
 			{
-                otherMaterial=-1;
                 if(I.baseEnvStats().weight()>1)
                 {
                     I.baseEnvStats().setWeight(I.baseEnvStats().weight()-1);
-                    I.destroy();
                     Environmental E=null;
                     for(int x=0;x<I.baseEnvStats().weight();x++)
                     {
@@ -221,13 +220,14 @@ public class CommonSkill extends StdAbility
                     }
                     if(E instanceof Item)
                         lostValue+=((Item)E).value();
-                    break;
+                    I.destroy();
                 }
                 else
                 {
                     lostValue+=I.value();
                     I.destroy();
                 }
+                otherMaterial=-1;
 			}
 			else
 			if((I instanceof EnvResource)
@@ -239,7 +239,6 @@ public class CommonSkill extends StdAbility
 				if(I.baseEnvStats().weight()>howMuch)
 				{
 					I.baseEnvStats().setWeight(I.baseEnvStats().weight()-howMuch);
-					I.destroy();
 					lostValue+=I.value();
                     Environmental E=null;
 					for(int x=0;x<I.baseEnvStats().weight();x++)
@@ -250,16 +249,17 @@ public class CommonSkill extends StdAbility
 					}
                     if(E instanceof Item)
                         lostValue+=(((Item)E).value()*howMuch);
-					break;
+                    I.destroy();
+                    howMuch=0;
 				}
 				else
 				{
 					howMuch-=I.baseEnvStats().weight();
 					I.destroy();
 					lostValue+=I.value();
-					if(howMuch<=0)
-						break;
 				}
+                if(howMuch<=0)
+                    finalMaterial=-1;
 			}
 		}
 		return lostValue;

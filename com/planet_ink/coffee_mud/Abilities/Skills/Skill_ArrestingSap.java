@@ -136,11 +136,13 @@ public class Skill_ArrestingSap extends StdAbility
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_GENERAL:CMMsg.MASK_MALICIOUS),(mob==target)?"<T-NAME> hit(s) the floor!":"^F^<FIGHT^><S-NAME> rear(s) back and sap(s) <T-NAMESELF>, knocking <T-HIM-HER> out!^</FIGHT^>^?");
+            if(target.riding()!=null)
+                msg.addTrailerMsg(new FullMsg(target,target.riding(),CMMsg.TYP_DISMOUNT,null));
 			if(mob.location().okMessage(mob,msg))
 			{
-                if(mob.riding()!=null) 
-                    mob.setRiding(null);
 				mob.location().send(mob,msg);
+                if(target.riding()!=null) 
+                    target.setRiding(null);
 				success=maliciousAffect(mob,target,asLevel,3,-1);
 				if(mob.getVictim()==target) mob.setVictim(null);
 			}
