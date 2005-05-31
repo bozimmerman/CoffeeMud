@@ -384,12 +384,12 @@ public class List extends StdCommand
 		buf.append("^xSave Thread report:^.^N\n\r");
 		long saveThreadMilliTotal=Util.s_long(CMClass.ThreadEngine().systemReport("saveThreadMilliTotal"));
 		long saveThreadTickTotal=Util.s_long(CMClass.ThreadEngine().systemReport("saveThreadTickTotal"));
-		buf.append("The Save Thread has consumed: ^H"+Util.returnTime(saveThreadMilliTotal,saveThreadTickTotal)+"^?.\n\r");
+		buf.append("The Save Thread has consumed: ^H"+Util.returnTime(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMClass.ThreadEngine().systemReport("saveThreadStatus")+")^?.\n\r");
 		buf.append("\n\r");
 		buf.append("^xUtility Thread report:^.^N\n\r");
 		long utilThreadMilliTotal=Util.s_long(CMClass.ThreadEngine().systemReport("utilThreadMilliTotal"));
 		long utilThreadTickTotal=Util.s_long(CMClass.ThreadEngine().systemReport("utilThreadTickTotal"));
-		buf.append("The Utility Thread has consumed: ^H"+Util.returnTime(utilThreadMilliTotal,utilThreadTickTotal)+"^?.\n\r");
+		buf.append("The Utility Thread has consumed: ^H"+Util.returnTime(utilThreadMilliTotal,utilThreadTickTotal)+" ("+CMClass.ThreadEngine().systemReport("utilThreadStatus")+")^?.\n\r");
 		buf.append("\n\r");
 		buf.append("^xSession report:^.^N\n\r");
 		long totalMOBMillis=Util.s_long(CMClass.ThreadEngine().systemReport("totalMOBMillis"));

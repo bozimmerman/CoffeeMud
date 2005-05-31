@@ -92,7 +92,7 @@ public class Decay extends ActiveTicker
 					}
 					else
 					if(E instanceof Room)
-						((Room)E).showHappens(CMMsg.MSG_OK_VISUAL,item.name()+answer);
+						((Room)E).showHappens(CMMsg.MSG_OK_VISUAL,item.name()+" "+answer);
 				}
 				room.recoverRoomStats();
 			}

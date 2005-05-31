@@ -568,6 +568,7 @@ public class Faction implements MsgListener
     public static class FactionChangeEvent 
     {
         public String ID="";
+        public String flagCache="";
         public int IDclassFilter=-1;
         public int IDflagFilter=-1;
         public int IDdomainFilter=-1;
@@ -598,52 +599,24 @@ public class Faction implements MsgListener
             "AWAY",
             "TOWARD"
         };
-
+        public static final String[] VALID_FLAGS={
+            "OUTSIDER","SELFOK","JUST100"
+        };
+        public static final String[] MISC_TRIGGERS={
+            "MURDER","TIME","ADDOUTSIDER"
+        };
+        
         public String toString() {
             return "FactionChangeEvent Event '"+ID+"': ["+FACTION_DIRECTIONS[direction]+"] ["+factor+"] ["+zapper+"] ["+outsiderTargetOK+"]";
         }
 
+        public FactionChangeEvent(){}
+        
         public FactionChangeEvent(String key) 
         {
             Vector v = Util.parseSemicolons(key,false);
-            ID=(String)v.elementAt(0);
-            for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
-                if(Ability.TYPE_DESCS[i].equalsIgnoreCase(ID))
-                    IDclassFilter=i;
-            for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
-                if(Ability.TYPE_DESCS[i].equalsIgnoreCase(ID))
-                    IDdomainFilter=i<<5;
-            for(int i=0;i< Ability.FLAG_DESCS.length;i++)
-                if(Ability.FLAG_DESCS[i].equalsIgnoreCase(ID))
-                    IDflagFilter=Util.pow(2,i);
-            String d=(String)v.elementAt(1);
-            if(d.startsWith("U")) {
-                direction = FACTION_UP;
-            }
-            if(d.startsWith("D")) {
-                direction = FACTION_DOWN;
-            }
-            if(d.startsWith("OPP")) {
-                direction = FACTION_OPPOSITE;
-            }
-            if(d.startsWith("REM")) {
-                direction = FACTION_REMOVE;
-            }
-            if(d.startsWith("MIN")) {
-                direction = FACTION_MINIMUM;
-            }
-            if(d.startsWith("MAX")) {
-                direction = FACTION_MAXIMUM;
-            }
-            if(d.startsWith("ADD")) {
-                direction = FACTION_ADD;
-            }
-            if(d.startsWith("TOW")) {
-                direction = FACTION_TOWARD;
-            }
-            if(d.startsWith("AWA")) {
-                direction = FACTION_AWAY;
-            }
+            setFilterID((String)v.elementAt(0));
+            setDirection((String)v.elementAt(1));
             String amt=((String)v.elementAt(2)).trim();
             if(amt.endsWith("%"))
                 factor=Util.div(Util.s_int(amt.substring(0,amt.length()-1)),100.0);
@@ -651,16 +624,91 @@ public class Faction implements MsgListener
                 factor=1.0;
             
             if(v.size()>3)
-            {
-	            Vector flags=Util.parse(((String)v.elementAt(3)).toUpperCase());
-	            if(flags.contains("OUTSIDER")) outsiderTargetOK=true;
-	            if(flags.contains("SELFOK")) selfTargetOK=true;
-	            if(flags.contains("JUST100")) just100=true;
-            }
+                setFlags((String)v.elementAt(3));
             if(v.size()>4) 
                 zapper = (String)v.elementAt(4);
         }
-
+        
+        private static String _ALL_TYPES=null;
+        public static String ALL_TYPES()
+        {
+            StringBuffer ALL_TYPES=new StringBuffer("");
+            if(_ALL_TYPES!=null) return _ALL_TYPES;
+            for(int i=0;i<MISC_TRIGGERS.length;i++) 
+                ALL_TYPES.append(MISC_TRIGGERS[i]+", ");
+            for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
+                ALL_TYPES.append(Ability.TYPE_DESCS[i]+", ");
+            for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+                ALL_TYPES.append(Ability.DOMAIN_DESCS[i]+", ");
+            for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
+                ALL_TYPES.append(Ability.FLAG_DESCS[i]+", ");
+            _ALL_TYPES=ALL_TYPES.substring(0,ALL_TYPES.length()-2);
+            return _ALL_TYPES;
+        }
+        public boolean setFilterID(String newID)
+        {
+            for(int i=0;i<MISC_TRIGGERS.length;i++) 
+                return true;
+            for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
+                if(Ability.TYPE_DESCS[i].equalsIgnoreCase(newID))
+                {    IDclassFilter=i; ID=newID; return true;}
+            for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+                if(Ability.DOMAIN_DESCS[i].equalsIgnoreCase(newID))
+                {    IDdomainFilter=i<<5;  ID=newID;return true;}
+            for(int i=0;i< Ability.FLAG_DESCS.length;i++)
+                if(Ability.FLAG_DESCS[i].equalsIgnoreCase(newID))
+                { IDflagFilter=Util.pow(2,i);  ID=newID; return true;}
+            return false;
+        }
+        public boolean setDirection(String d)
+        {
+            if(d.startsWith("U")) {
+                direction = FACTION_UP;
+            }
+            else
+            if(d.startsWith("D")) {
+                direction = FACTION_DOWN;
+            }
+            else
+            if(d.startsWith("OPP")) {
+                direction = FACTION_OPPOSITE;
+            }
+            else
+            if(d.startsWith("REM")) {
+                direction = FACTION_REMOVE;
+            }
+            else
+            if(d.startsWith("MIN")) {
+                direction = FACTION_MINIMUM;
+            }
+            else
+            if(d.startsWith("MAX")) {
+                direction = FACTION_MAXIMUM;
+            }
+            else
+            if(d.startsWith("ADD")) {
+                direction = FACTION_ADD;
+            }
+            else
+            if(d.startsWith("TOW")) {
+                direction = FACTION_TOWARD;
+            }
+            else
+            if(d.startsWith("AWA")) {
+                direction = FACTION_AWAY;
+            }
+            else
+                return false;
+            return true;
+        }
+        public void setFlags(String newFlagCache)
+        {
+            flagCache=newFlagCache.toUpperCase().trim();
+            Vector flags=Util.parse(flagCache);
+            if(flags.contains("OUTSIDER")) outsiderTargetOK=true;
+            if(flags.contains("SELFOK")) selfTargetOK=true;
+            if(flags.contains("JUST100")) just100=true;
+        }
         public boolean applies(MOB mob) 
         {
             if(zapper==null) return true;
@@ -725,10 +773,17 @@ public class Faction implements MsgListener
         public int high=0;
         public int notflag=-1;
 
+        public FactionAbilityUsage(){} 
         public FactionAbilityUsage(String key) 
         {
             Vector v = Util.parseSemicolons(key,false);
-            ID=(String)v.elementAt(0);
+            setAbilityFlag((String)v.firstElement());
+            low = Util.s_int( (String) v.elementAt(1));
+            high = Util.s_int( (String) v.elementAt(2));
+        }
+        public void setAbilityFlag(String str)
+        {
+            ID=str;
             Vector flags=Util.parse(ID);
             for(int f=0;f<flags.size();f++)
             {
@@ -756,8 +811,6 @@ public class Faction implements MsgListener
                         }
                     }
             }
-            low = Util.s_int( (String) v.elementAt(1));
-            high = Util.s_int( (String) v.elementAt(2));
             if((type<0)&&(domain<0)&&(flag<0))
                 possibleAbilityID=true;
         }

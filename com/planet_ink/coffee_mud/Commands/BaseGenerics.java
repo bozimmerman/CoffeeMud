@@ -5203,6 +5203,7 @@ public class BaseGenerics extends StdCommand
                         list.append(Util.padRight(F.name,31)+" ");
                         long lval=Math.round(value.doubleValue()*100.0);
                         list.append(lval+"%");
+                        list.append("\n\r");
                     }
                 }
                 mob.tell(list.toString());
@@ -5249,6 +5250,200 @@ public class BaseGenerics extends StdCommand
                             amount=Util.s_long(newName);
                         me.relations.remove(theF.ID);
                         me.relations.put(theF.ID,new Double(amount/100.0));
+                    }
+                }
+                else
+                    break;
+            }
+            
+            // faction change triggers
+            ++showNumber;
+            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            {
+                if((showFlag>0)&&(showFlag!=showNumber)) break;
+                StringBuffer list=new StringBuffer(showNumber+") Faction Change Triggers:\n\r");
+                list.append("  "+Util.padRight("Type",15)
+                        +" "+Util.padRight("Direction",10)
+                        +" "+Util.padRight("Factor",10)
+                        +" "+Util.padRight("Flags",20)
+                        +" Mask\n\r");
+                for(Enumeration e=me.Changes.elements();e.hasMoreElements();)
+                {
+                    Faction.FactionChangeEvent CE=(Faction.FactionChangeEvent)e.nextElement();
+                    if(CE!=null)
+                    {
+                        list.append("  ");
+                        list.append(Util.padRight(CE.ID,15)+" ");
+                        list.append(Util.padRight(Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction],10)+" ");
+                        list.append(Util.padRight(Math.round(CE.factor*100.0)+"%",10)+" ");
+                        list.append(Util.padRight(CE.flagCache,20)+" ");
+                        list.append(CE.zapper+"\n\r");
+                    }
+                }
+                mob.tell(list.toString());
+                if((showFlag<=0)||(showFlag==showNumber))
+                {
+                    String which=mob.session().prompt("Enter a valid trigger to add, remove, or modify (?):","");
+                    if(which.length()==0)
+                        break;
+                    which=which.toUpperCase().trim();
+                    if(which.equalsIgnoreCase("?"))
+                    {
+                        mob.tell("Valid triggers: \n\r"+Faction.FactionChangeEvent.ALL_TYPES());
+                        continue;
+                    }
+                    
+                    Faction.FactionChangeEvent CE=(Faction.FactionChangeEvent)me.Changes.get(which);
+                    if(CE==null)
+                    {
+                        CE=new Faction.FactionChangeEvent();
+                        if(!CE.setFilterID(which))
+                        {
+                            mob.tell("That ID is invalid.  Try '?'.");
+                            continue;
+                        }
+                        else
+                        if(!mob.session().confirm("Create a new trigger using ID '"+which+"' (y/N): ","N"))
+                        {
+                            CE=null;
+                            continue;
+                        }
+                        else
+                            me.Changes.put(CE.ID.toUpperCase(),CE);
+                    }
+                    else
+                    if(mob.session().choose("Would you like to M)odify or D)elete this trigger (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                    {
+                        me.Changes.remove(CE.ID);
+                        mob.tell("Trigger deleted.");
+                        CE=null;
+                    }
+                    if(CE!=null)
+                    {
+                        StringBuffer directions=new StringBuffer("Valid directions:\n\r");
+                        StringBuffer cmds=new StringBuffer("");
+                        for(int i=0;i<Faction.FactionChangeEvent.FACTION_DIRECTIONS.length;i++)
+                        {
+                            directions.append((i+1)+") "+Faction.FactionChangeEvent.FACTION_DIRECTIONS[i]+"\n\r");
+                            cmds.append((char)('A'+i));
+                        }
+                        String str=mob.session().choose(directions+"\n\rSelect a new direction ("+Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction]+"): ",cmds.toString()+"\n\r","");
+                        if((str.length()==0)||str.equals("\n")||str.equals("\r")||(!Util.isInteger(str)))
+                            mob.tell("(no change)");
+                        else
+                            CE.direction=(Util.s_int(str)-'A');
+                    }
+                    if(CE!=null)
+                    {
+                        int amount=(int)Math.round(CE.factor*100.0);
+                        String newName=mob.session().prompt("Enter a new factor ("+amount+"%): ",""+amount+"%");
+                        if(newName.endsWith("%")) newName=newName.substring(0,newName.length()-1);
+                        if(!Util.isInteger(newName))
+                            mob.tell("(no Change)");
+                        else
+                            CE.factor=new Double(Util.s_int(newName)/100.0).doubleValue();
+                    }
+                    if(CE!=null)
+                    {
+                        mob.tell("Valid flags include: "+Util.toStringList(Faction.FactionChangeEvent.VALID_FLAGS)+"\n\r");
+                        String newFlags=mob.session().prompt("Enter new flag(s) ("+CE.flagCache+"): ",CE.flagCache);
+                        if((newFlags.length()==0)||(newFlags.equals(CE.flagCache)))
+                            mob.tell("(no change)");
+                        else
+                            CE.setFlags(newFlags);
+                    }
+                    if(CE!=null)
+                    {
+                        String newFlags=mob.session().prompt("Zapper mask ("+CE.zapper+"): ",CE.zapper);
+                        if((newFlags.length()==0)||(newFlags.equals(CE.zapper)))
+                            mob.tell("(no change)");
+                        else
+                            CE.zapper=newFlags;
+                    }
+                }
+                else
+                    break;
+            }
+            
+            // faction change triggers
+            ++showNumber;
+            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            {
+                if((showFlag>0)&&(showFlag!=showNumber)) break;
+                StringBuffer list=new StringBuffer(showNumber+") Ability allowances:\n\r");
+                list.append("  "+Util.padRight("Ability masks",40)
+                        +" "+Util.padRight("Low value",10)
+                        +" "+Util.padRight("High value",10)
+                        +"\n\r");
+                int num=0;
+                for(Enumeration e=me.abilityUsages.elements();e.hasMoreElements();)
+                {
+                    Faction.FactionAbilityUsage CA=(Faction.FactionAbilityUsage)e.nextElement();
+                    if(CA!=null)
+                    {
+                        list.append("  "+(('A'+num)+") "));
+                        list.append(Util.padRight(CA.ID,40)+" ");
+                        list.append(Util.padRight(CA.low+"",10)+" ");
+                        list.append(Util.padRight(CA.high+"",10)+" "); 
+                        list.append("\n\r");
+                        num++;
+                    }
+                }
+                mob.tell(list.toString());
+                if((showFlag<=0)||(showFlag==showNumber))
+                {
+                    String which=mob.session().prompt("Select a valid allowance to remove or modify, or enter 'NEW':","");
+                    if(which.length()==0)
+                        break;
+                    which=which.toUpperCase().trim();
+                    Faction.FactionAbilityUsage CA=null;
+                    if(!which.equalsIgnoreCase("NEW"))
+                    {
+                        num=(which.charAt(0)-'A');
+                        if((num<0)||(num>=me.abilityUsages.size()))
+                            break;
+                        CA=(Faction.FactionAbilityUsage)me.abilityUsages.elementAt(num);
+                        if(CA==null)
+                        {
+                            mob.tell("That allowance is invalid..");
+                            continue;
+                        }
+                        if(mob.session().choose("Would you like to M)odify or D)elete this allowance (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                        {
+                            me.abilityUsages.remove(CA);
+                            mob.tell("Allowance deleted.");
+                            CA=null;
+                        }
+                    }
+                    else
+                    if(!mob.session().confirm("Create a new allowance (y/N): ","N"))
+                    {
+                        CA=null;
+                        continue;
+                    }
+                    else
+                    {
+                        CA=new Faction.FactionAbilityUsage();
+                        me.abilityUsages.addElement(CA);
+                    }
+                    if(CA!=null)
+                    {
+                        String newFlags=mob.session().prompt("Ability determinate mask ("+CA.ID+"): ",CA.ID);
+                        if((newFlags.length()==0)||(newFlags.equals(CA.ID)))
+                            mob.tell("(no change)");
+                        else
+                            CA.setAbilityFlag(newFlags);
+                        String newName=mob.session().prompt("Enter the minimum value to use the ability ("+CA.low+"): ",""+CA.low);
+                        if((!Util.isInteger(newName))||(CA.low==Util.s_int(newName)))
+                            mob.tell("(no Change)");
+                        else
+                            CA.low=Util.s_int(newName);
+                        newName=mob.session().prompt("Enter the maximum value to use the ability ("+CA.high+"): ",""+CA.high);
+                        if((!Util.isInteger(newName))||(CA.high==Util.s_int(newName)))
+                            mob.tell("(no Change)");
+                        else
+                            CA.high=Util.s_int(newName);
+                        if(CA.high<CA.low) CA.high=CA.low;
                     }
                 }
                 else
