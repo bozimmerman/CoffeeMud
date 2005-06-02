@@ -4440,7 +4440,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 9: // mpcast
 			{
-				String cast=Util.getCleanBit(s,1);
+				String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				Ability A=null;
 				if(cast!=null) A=CMClass.findAbility(cast);
@@ -4453,7 +4453,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 30: // mpaffect
 			{
-				String cast=Util.getCleanBit(s,1);
+                String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,2));
 				Ability A=null;
@@ -4470,7 +4470,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 31: // mpbehave
 			{
-				String cast=Util.getCleanBit(s,1);
+                String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,2));
 				Behavior A=null;
@@ -4484,7 +4484,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 32: // mpunbehave
 			{
-				String cast=Util.getCleanBit(s,1);
+                String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if(newTarget!=null)
 				{
@@ -5161,7 +5161,7 @@ public class Scriptable extends StdBehavior
 			case 37: // mpenable
 			{
 				Environmental newTarget=getArgumentMOB(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
-				String cast=Util.getCleanBit(s,2);
+                String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
 				String p2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
 				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,3));
 				Ability A=null;
@@ -5177,7 +5177,7 @@ public class Scriptable extends StdBehavior
 			case 38: // mpdisable
 			{
 				Environmental newTarget=getArgumentMOB(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
-				String cast=Util.getPastBitClean(s,1);
+                String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(s,1));
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
 					Ability A=((MOB)newTarget).findAbility(cast);

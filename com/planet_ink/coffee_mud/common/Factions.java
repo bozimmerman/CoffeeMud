@@ -75,9 +75,10 @@ public class Factions implements Tickable
 	    if(factionID==null) return null;
 		Faction F=(Faction)factionSet.get(factionID.toUpperCase());
 		if(F!=null) return F;
-	    if(Resources.getFileResource(factionID)!=null)
+        StringBuffer buf=Resources.getFileResource(factionID);
+	    if((buf!=null)&&(buf.length()>0))
 	    {
-            F=new Faction(Resources.getFileResource(factionID),factionID);
+            F=new Faction(buf,factionID);
             for(int r=0;r<F.ranges.size();r++)
             {
                 Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(r);

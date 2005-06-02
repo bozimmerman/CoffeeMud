@@ -1038,6 +1038,25 @@ public class Modify extends BaseGenerics
 				}
 			}
 		}
+        else
+        if(commandType.equals("FACTION"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            if(commands.size()<3)
+                mob.tell("Modify which faction?  Use list factions.");
+            else
+            {
+                String name=Util.combine(commands,2);
+                Faction F=Factions.getFaction(name);
+                if(F==null) F=Factions.getFactionByName(name);
+                if(F==null)
+                    mob.tell("Faction '"+name+"' is unknown.  Try list factions.");
+                else
+                if(!mob.isMonster())
+                    modifyFaction(mob,F);
+            }
+        }
 		else
 		{
 			String allWord=Util.combine(commands,1);

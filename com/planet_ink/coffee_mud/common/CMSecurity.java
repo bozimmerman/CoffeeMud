@@ -35,7 +35,7 @@ public class CMSecurity
 	// I3, ABOVELAW (also law books), WIZINV (includes see WIZINV)
 	// CMDMOBS (also prevents walkaways)
 	// SUPERSKILL (never fails skills), IMMORT (never dies), MXPTAGS
-	// JOURNALS, PKILL, SESSIONS, TRAILTO, 
+	// JOURNALS, PKILL, SESSIONS, TRAILTO, CMDFACTIONS
 	// LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
 	//		cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat
 	// 
