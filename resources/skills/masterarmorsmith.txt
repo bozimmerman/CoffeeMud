@@ -189,7 +189,7 @@ Demonic % Locking Gauntlets	77	145	16	2048	GenArmor	HANDS	0	8	0	Prop_WearSpellCa
 Demonic % Girdle	81	145	16	2048	GenArmor	WAIST	100	8	32	
 Demonic % Leggings	87	145	51	7369	GenArmor	LEGS	0	34	0	
 Demonic % Greaves	77	145	32	4096	GenArmor	FEET	0	8	0	
-% Demon Armor	77	145	510	73695	GenArmor	HEAD&&NECK&&ARMS&&TORSO&&LEGS&&HANDS&&FEET&&EYES	0	170	0	Prop_WearResister;Poison;Disease;holy
+% Demon Armor	77	145	510	73695	GenArmor	HEAD&&NECK&&ARMS&&TORSO&&LEGS&&HANDS&&FEET&&EYES	0	170	0	*Prop_WearResister;-GOOD
 Sacred % Mantle	77	145	16	2048	GenArmor	NECK	0	8	0	
 Sacred % Jacket	87	145	153	22108	GenArmor	TORSO&&ARMS	0	68	0	
 Sacred % Armament	87	145	153	22108	GenArmor	BODY	0	78	0	
@@ -201,4 +201,4 @@ Sacred % Girdle	81	145	16	2048	GenArmor	WAIST	100	8	32
 Sacred % Skirt	87	145	51	7369	GenArmor	LEGS	0	34	0	
 Sacred % Boots	78	145	32	4096	GenArmor	FEET	25	8	8	
 Sacred % Shirt	87	145	102	14739	GenArmor	TORSO	0	51	0	
-% Hallowed Vestments	77	145	510	73695	GenArmor	HEAD&&NECK&&ARMS&&TORSO&&LEGS&&HANDS&&FEET&&EYES	0	170	0	Prop_WearResister;Evil;Poison;Disease
+% Hallowed Vestments	77	145	510	73695	GenArmor	HEAD&&NECK&&ARMS&&TORSO&&LEGS&&HANDS&&FEET&&EYES	0	170	0	*Prop_WearResister;-Evil

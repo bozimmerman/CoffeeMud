@@ -52,6 +52,26 @@ public class Faction implements MsgListener
     public final static int ALIGN_GOOD=3;
     public final static String[] ALIGN_NAMES={"","EVIL","NEUTRAL","GOOD"};
     public final static String[] EXPAFFECT_NAMES={"NONE","EXTREME","HIGHER","LOWER","FOLLOWHIGHER","FOLLOWLOWER"};
+    public final static int TAG_NAME=0;
+    public final static int TAG_MINIMUM=1;
+    public final static int TAG_MAXIMUM=2;
+    public final static int TAG_SCOREDISPLAY=3;
+    public final static int TAG_SPECIALREPORTED=4;
+    public final static int TAG_EDITALONE=5;
+    public final static int TAG_DEFAULT=6;
+    public final static int TAG_AUTODEFAULTS=7;
+    public final static int TAG_AUTOCHOICES=8;
+    public final static int TAG_CHOICEINTRO=9;
+    public final static int TAG_RATEMODIFIER=10;
+    public final static int TAG_EXPERIENCE=11;
+    public final static int TAG_RANGE_=12;
+    public final static int TAG_CHANGE_=13;
+    public final static int TAG_ABILITY_=14;
+    public final static int TAG_FACTOR_=15;
+    public final static int TAG_RELATION_=16;
+    public final static String[] ALL_TAGS={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY","SPECIALREPORTED","EDITALONE","DEFAULT",
+        "AUTODEFAULTS","AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE","RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*"};
+
 
     public Faction(StringBuffer file, String fID) 
     {
@@ -134,6 +154,110 @@ public class Faction implements MsgListener
         }
     }
 
+    public static int isTag(String tag)
+    {
+        for(int i=0;i<ALL_TAGS.length;i++)
+            if(tag.equalsIgnoreCase(ALL_TAGS[i]))
+                return i;
+            else
+            if(ALL_TAGS[i].endsWith("*")&&tag.startsWith(ALL_TAGS[i].substring(0,ALL_TAGS[i].length()-1)))
+                return i;
+        return -1;
+    }
+    
+    public String getTagValue(String tag)
+    {
+        int tagRef=isTag(tag);
+        if(tagRef<0) return "";
+        int numCall=-1;
+        if((tagRef<ALL_TAGS.length)&&(ALL_TAGS[tagRef].endsWith("*")))
+            if(Util.isInteger(tag.substring(ALL_TAGS.length-1)))
+                numCall=Util.s_int(tag.substring(ALL_TAGS.length-1));
+        switch(tagRef)
+        {
+        case TAG_NAME: return name;
+        case TAG_MINIMUM: return ""+minimum;
+        case TAG_MAXIMUM: return ""+maximum;
+        case TAG_SCOREDISPLAY: return Boolean.toString(showinscore).toUpperCase();
+        case TAG_SPECIALREPORTED: return Boolean.toString(showinspecialreported).toUpperCase();
+        case TAG_EDITALONE: return Boolean.toString(showineditor).toUpperCase();
+        case TAG_DEFAULT: return Util.toSemicolonList(defaults);
+        case TAG_AUTODEFAULTS: return Util.toSemicolonList(autoDefaults);
+        case TAG_AUTOCHOICES: return Util.toSemicolonList(choices);
+        case TAG_RATEMODIFIER: return ""+rateModifier;
+        case TAG_EXPERIENCE: return ""+experienceFlag;
+        case TAG_RANGE_:
+        {
+            if((numCall<0)||(numCall>=ranges.size()))
+                return ""+ranges.size();
+            return ((FactionRange)ranges.elementAt(numCall)).toString();
+        }
+        case TAG_CHANGE_:
+        {
+            if((numCall<0)||(numCall>=Changes.size()))
+                return ""+Changes.size();
+            int i=0;
+            for(Enumeration e=Changes.elements();e.hasMoreElements();)
+            {
+                FactionChangeEvent FC=(FactionChangeEvent)e.nextElement();
+                if(i==numCall)
+                    return FC.toString();
+                i++;
+            }
+            return "";
+        }
+        case TAG_ABILITY_:
+        {
+            if((numCall<0)||(numCall>=abilityUsages.size()))
+                return ""+abilityUsages.size();
+            return ((FactionAbilityUsage)abilityUsages.elementAt(numCall)).toString();
+        }
+        case TAG_FACTOR_:
+        {
+            if((numCall<0)||(numCall>=factors.size()))
+                return ""+factors.size();
+            return Util.toSemicolonList((Vector)factors.elementAt(numCall));
+        }
+        case TAG_RELATION_:
+        {
+            if((numCall<0)||(numCall>=relations.size()))
+                return ""+relations.size();
+            int i=0;
+            for(Enumeration e=relations.keys();e.hasMoreElements();)
+            {
+                String factionName=(String)e.nextElement();
+                Double D=(Double)relations.get(factionName);
+                if(i==numCall)
+                    return factionName+";"+((int)Math.round(D.doubleValue()*100.0))+"%";
+                i++;
+            }
+            return "";
+        }
+        }
+        return "";
+    }
+    
+    public String getINIDef(String tag, String delimeter)
+    {
+        int tagRef=isTag(tag);
+        if(tagRef<0)
+            return "";
+        String rawTagName=ALL_TAGS[tagRef];
+        if(ALL_TAGS[tagRef].endsWith("*"))
+        {
+            int number=Util.s_int(getTagValue(rawTagName));
+            StringBuffer str=new StringBuffer("");
+            for(int i=0;i<number;i++)
+            {
+                String value=getTagValue(rawTagName.substring(0,rawTagName.length()-1)+i);
+                str.append(rawTagName.substring(0,rawTagName.length()-1)+(i+1)+"="+value+delimeter);
+            }
+            return str.toString();
+        }
+        else
+            return rawTagName+"="+getTagValue(tag);
+    }
+    
     public FactionChangeEvent findChangeEvent(String key) 
     {
         if(Changes.containsKey(key)) 
@@ -606,8 +730,9 @@ public class Faction implements MsgListener
             "MURDER","TIME","ADDOUTSIDER"
         };
         
-        public String toString() {
-            return "FactionChangeEvent Event '"+ID+"': ["+FACTION_DIRECTIONS[direction]+"] ["+factor+"] ["+zapper+"] ["+outsiderTargetOK+"]";
+        public String toString()
+        {
+            return ID+";"+FACTION_DIRECTIONS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+zapper;
         }
 
         public FactionChangeEvent(){}
@@ -755,6 +880,10 @@ public class Faction implements MsgListener
                 AlignEquiv = Faction.ALIGN_INDIFF;
         }
 
+        public String toString()
+        {
+            return low +";"+high+";"+Name+";"+CodeName+";"+ALIGN_NAMES[AlignEquiv];
+        }
         public int random() 
         {
             Random gen = new Random();
@@ -780,6 +909,10 @@ public class Faction implements MsgListener
             setAbilityFlag((String)v.firstElement());
             low = Util.s_int( (String) v.elementAt(1));
             high = Util.s_int( (String) v.elementAt(2));
+        }
+        public String toString()
+        {
+            return ID+";"+low+";"+high;
         }
         public void setAbilityFlag(String str)
         {

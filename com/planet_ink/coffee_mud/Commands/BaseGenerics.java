@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 
@@ -5460,6 +5461,76 @@ public class BaseGenerics extends StdCommand
                 showFlag=-1;
                 ok=true;
             }
+        }
+        if((me.ID.length()>0)&&(Factions.getFaction(me.ID)!=null))
+        {
+            Vector oldV=Resources.getFileLineVector(Resources.getFileResource(me.ID));
+            if(oldV.size()<10)
+            {
+                
+            }
+            boolean[] defined=new boolean[Faction.ALL_TAGS.length];
+            for(int i=0;i<defined.length;i++) defined[i]=false;
+            for(int v=0;v<oldV.size();v++)
+            {
+                String s=(String)oldV.elementAt(v);
+                if(!(s.trim().startsWith("#")||s.trim().length()==0||(s.indexOf("=")<0)))
+                {
+                    String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
+                    int tagRef=Faction.isTag(tag);
+                    if(tagRef>=0) defined[tagRef]=true;
+                }
+            }
+            boolean[] done=new boolean[Faction.ALL_TAGS.length];
+            for(int i=0;i<done.length;i++) done[i]=false;
+            int lastCommented=-1;
+            String CR="\r\n";
+            StringBuffer buf=new StringBuffer("");
+            for(int v=0;v<oldV.size();v++)
+            {
+                String s=(String)oldV.elementAt(v);
+                if(s.trim().length()==0)
+                {
+                    if((lastCommented>=0)&&(!done[lastCommented]))
+                    {
+                        lastCommented=-1;
+                        done[lastCommented]=true;
+                        buf.append(me.getINIDef(Faction.ALL_TAGS[lastCommented],CR)+CR);
+                    }
+                }
+                else
+                if(s.trim().startsWith("#")||(s.indexOf("=")<0))
+                {
+                    buf.append(s+CR);
+                    int x=s.indexOf("=");
+                    if(x>=0)
+                    {
+                        s=s.substring(0,x).trim();
+                        int first=s.length()-1;
+                        for(;first>=0;first--)
+                            if(!Character.isLetterOrDigit(s.charAt(first)))
+                                break;
+                        first=Faction.isTag(s.substring(first).trim().toUpperCase());
+                        if(first>=0) lastCommented=first;
+                    }
+                }
+                else
+                {
+                    String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
+                    int tagRef=Faction.isTag(tag);
+                    if(tagRef<0) 
+                        buf.append(s+CR);
+                    else
+                    if(!done[tagRef])
+                    {
+                        done[tagRef]=true;
+                        buf.append(me.getINIDef(tag,CR)+CR);
+                    }
+                }
+            }
+            Resources.removeResource(me.ID);
+            Resources.submitResource(me.ID,buf);
+            Resources.saveFileResource(me.ID);
         }
     }
 
