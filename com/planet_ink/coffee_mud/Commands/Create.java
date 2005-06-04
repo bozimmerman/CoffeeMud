@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.IOException;
 
@@ -485,6 +486,37 @@ public class Create extends BaseGenerics
 			socials(mob,commands);
 		}
 		else
+        if(commandType.equals("FACTION"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            if((commands.size()<3)||(Util.combine(commands,2).indexOf(".")<0))
+                mob.tell("Create which faction?  You must give a filename with an extension.");
+            else
+            {
+                String name=Util.combine(commands,2);
+                Faction F=Factions.getFaction(name);
+                if(F==null) F=Factions.getFactionByName(name);
+                if(F!=null)
+                    mob.tell("Faction '"+name+"' already exists.  Try another.");
+                else
+                if((!mob.isMonster())&&(mob.session().confirm("Create a new faction with ID/filename: 'resources"+java.io.File.separatorChar+name+"' (N/y)? ","N")))
+                {
+                    StringBuffer template=Resources.getFileRaw("resources"+java.io.File.separatorChar+"data"+java.io.File.separatorChar+"factiontemplate.ini");
+                    if((template==null)||(template.length()==0))
+                    {
+                        mob.tell("The file 'resources"+java.io.File.separatorChar+"data"+java.io.File.separatorChar+"factiontemplate.ini' could not be located and is required for command line faction creation.");
+                        return false;
+                    }
+                    Resources.submitResource(name,template);
+                    Resources.saveFileResource(name,template);
+                    F=new Faction(template,name);
+                    modifyFaction(mob,F);
+                    Log.sysOut("CreateEdit",mob.Name()+" created Faction "+F.name+" ("+F.ID+").");
+                }
+            }
+        }
+        else
 		if(commandType.equals("MOB"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);
@@ -577,10 +609,10 @@ public class Create extends BaseGenerics
 						execute(mob,commands);
 					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, MOB, RACE, CLASS or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, RACE, CLASS or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, MOB, RACE, CLASS, or ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, RACE, CLASS, or ROOM.");
 			}
 		}
 		return false;

@@ -1054,7 +1054,10 @@ public class Modify extends BaseGenerics
                     mob.tell("Faction '"+name+"' is unknown.  Try list factions.");
                 else
                 if(!mob.isMonster())
+                {
                     modifyFaction(mob,F);
+                    Log.sysOut("CreateEdit",mob.Name()+" modified Faction "+F.name+" ("+F.ID+").");
+                }
             }
         }
 		else
@@ -1212,7 +1215,7 @@ public class Modify extends BaseGenerics
 				execute(mob,commands);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, EXIT, QUEST, MOB, USER, SOCIAL, CLAN, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, EXIT, QUEST, MOB, USER, FACTION, SOCIAL, CLAN, or ROOM.");
 		}
 		return false;
 	}

@@ -281,14 +281,14 @@ public class Resources
 	    return myRsc;
 	}
 	
-	public static void saveFileResource(String filename)
-	{saveFileResource(filename,getFileResource(filename));}
-	public static void saveFile(String filename, StringBuffer myRsc)
+	public static boolean saveFileResource(String filename)
+	{return saveFileResource(filename,getFileResource(filename));}
+	public static boolean saveFile(String filename, StringBuffer myRsc)
 	{
 		if(myRsc==null)
 		{
 			Log.errOut("Resources","Unable to save file '"+filename+"': No Data.");
-			return;
+			return false;
 		}
 		try
 		{
@@ -296,18 +296,20 @@ public class Resources
 			FileWriter FW=new FileWriter(F);
 			FW.write(saveBufNormalize(myRsc).toString());
 			FW.close();
+            return true;
 		}
 		catch(IOException e)
 		{
-			Log.errOut("Resources",e);
+			Log.errOut("Resources","Save "+filename+": "+e.getMessage());
 		}
+        return false;
 	}
-	public static void saveFileResource(String filename, StringBuffer myRsc)
+	public static boolean saveFileResource(String filename, StringBuffer myRsc)
 	{
 		if(myRsc==null)
 		{
 			Log.errOut("Resources","Unable to save file resource '"+filename+"': No Data.");
-			return;
+			return false;
 		}
 		try
 		{
@@ -315,11 +317,13 @@ public class Resources
 			FileWriter FW=new FileWriter(F);
 			FW.write(saveBufNormalize(myRsc).toString());
 			FW.close();
+            return true;
 		}
 		catch(IOException e)
 		{
-			Log.errOut("Resources",e);
+            Log.errOut("Resources","Save "+filename+": "+e.getMessage());
 		}
+        return false;
 	}
 	
 	public static void setCompression(boolean truefalse)

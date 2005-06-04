@@ -4965,16 +4965,16 @@ public class BaseGenerics extends StdCommand
             ++showNumber;
             if(me.ranges.size()==0)
                 me.ranges.addElement(new Faction.FactionRange(me,"0;100;Sample Range;SAMPLE;"));
-            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
-                StringBuffer list=new StringBuffer(showNumber+") Ranges List:\n\r");
-                list.append(Util.padRight("   Name",21)+Util.padRight("Min",6)+Util.padRight("Max",6)+Util.padRight("Code",16)+Util.padRight("Align",6)+"\n\r");
+                StringBuffer list=new StringBuffer(showNumber+") Faction Division/Ranges List:\n\r");
+                list.append(Util.padRight("   Name",21)+Util.padRight("Min",11)+Util.padRight("Max",11)+Util.padRight("Code",16)+Util.padRight("Align",6)+"\n\r");
                 for(int r=0;r<me.ranges.size();r++)
                 {
                     Faction.FactionRange FR=(Faction.FactionRange)me.ranges.elementAt(r);
                     list.append(Util.padRight("   "+FR.Name,20)+" ");
-                    list.append(Util.padRight(""+FR.low,5)+" ");
-                    list.append(Util.padRight(""+FR.high,5)+" ");
+                    list.append(Util.padRight(""+FR.low,10)+" ");
+                    list.append(Util.padRight(""+FR.high,10)+" ");
                     list.append(Util.padRight(FR.CodeName,15)+" ");
                     list.append(Util.padRight(Faction.ALIGN_NAMES[FR.AlignEquiv],5)+"\n\r");
                 }
@@ -4991,8 +4991,11 @@ public class BaseGenerics extends StdCommand
                 }
                 if(FR==null)
                 {
-                    if(mob.session().confirm("Create a new faction called '"+which+"' (y/N): ","N"))
-                        FR=new Faction.FactionRange(me,"0;100;Change My Name;CHANGEMYCODENAME;");
+                    if(mob.session().confirm("Create a new range called '"+which+"' (y/N): ","N"))
+                    {
+                        FR=new Faction.FactionRange(me,"0;100;"+which+";CHANGEMYCODENAME;");
+                        me.ranges.addElement(FR);
+                    }
                 }
                 else
                 if(mob.session().choose("Would you like to M)odify or D)elete this range (M/d): ","MD","M").toUpperCase().startsWith("D"))
@@ -5023,8 +5026,8 @@ public class BaseGenerics extends StdCommand
                         mob.tell("No Change");
                     else
                         FR.low=Util.s_int(newName);
-                    newName=mob.session().prompt("Enter the high end of the range ("+FR.low+")\n\r: ",""+FR.high);
-                    if((!Util.isInteger(newName))||(Util.s_int(newName)<FR.low))
+                    newName=mob.session().prompt("Enter the high end of the range ("+FR.high+")\n\r: ",""+FR.high);
+                    if((!Util.isInteger(newName))||(Util.s_int(newName)<FR.high))
                         mob.tell("No Change");
                     else
                         FR.high=Util.s_int(newName);
@@ -5033,12 +5036,15 @@ public class BaseGenerics extends StdCommand
                         mob.tell("No Change");
                     else
                         FR.CodeName=newName.toUpperCase().trim();
-                    StringBuffer prompt=new StringBuffer("");
+                    StringBuffer prompt=new StringBuffer("Select the 'virtue' (if any) of this range:\n\r");
                     StringBuffer choices=new StringBuffer("");
                     for(int r=0;r<Faction.ALIGN_NAMES.length;r++)
                     {
                         choices.append(""+r);
-                        prompt.append(r+") "+Faction.ALIGN_NAMES[r].toLowerCase()+"\n\r");
+                        if(r==Faction.ALIGN_INDIFF)
+                            prompt.append(r+") Not applicable\n\r");
+                        else
+                            prompt.append(r+") "+Faction.ALIGN_NAMES[r].toLowerCase()+"\n\r");
                     }
                     FR.AlignEquiv=Util.s_int(mob.session().choose(prompt.toString()+"Enter alignment equivalency or 0: ",choices.toString(),""+FR.AlignEquiv));
                 }
@@ -5062,16 +5068,18 @@ public class BaseGenerics extends StdCommand
             me.showineditor=genBool(mob,me.showineditor,++showNumber,showFlag,"Show in MOB Editor");
             
             // auto defaults
-            me.autoDefaults=Util.parseSemicolons(BaseGenerics.genText(mob,Util.toSemicolonList(me.autoDefaults),++showNumber,showFlag,"Auto-Default values/masks (semicolon-delimited)"),true);
+            boolean error=true;
+            me.autoDefaults=Util.parseSemicolons(BaseGenerics.genText(mob,Util.toSemicolonList(me.autoDefaults),++showNumber,showFlag,"Optional automatic assigned values with zapper masks (semicolon delimited).\n\r   "),true);
             
             // non-auto defaults
-            boolean error=true;
+            error=true;
             if(me.defaults.size()==0)
                 me.defaults.addElement("0");
+            ++showNumber;
             while(error&&(mob.session()!=null)&&(!mob.session().killFlag()))
             {
                 error=false;
-                String newDefaults=BaseGenerics.genText(mob,Util.toSemicolonList(me.defaults),showNumber,showFlag,"Non-auto default values/masks (semicolon-delimited)");
+                String newDefaults=BaseGenerics.genText(mob,Util.toSemicolonList(me.defaults),showNumber,showFlag,"Other default values with zapper masks (semicolon delimited).\n\r   ");
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
                 Vector V=Util.parseSemicolons(newDefaults,true);
                 if(V.size()==0)
@@ -5083,20 +5091,24 @@ public class BaseGenerics extends StdCommand
             }
             
             // choices and choice intro
-            me.choices=Util.parseSemicolons(BaseGenerics.genText(mob,Util.toSemicolonList(me.choices),++showNumber,showFlag,"New user choice values (semicolon-delimited)"),true);
+            me.choices=Util.parseSemicolons(BaseGenerics.genText(mob,Util.toSemicolonList(me.choices),++showNumber,showFlag,"Optional new player value choices (semicolon-delimited).\n\r   "),true);
             if(me.choices.size()>0)
-                me.choiceIntro=BaseGenerics.genText(mob,me.choiceIntro,++showNumber,showFlag,"Choice intro filename");
+                me.choiceIntro=BaseGenerics.genText(mob,me.choiceIntro,++showNumber,showFlag,"Optional choices introduction text. Filename");
             
             // rate modifier
-            me.rateModifier=BaseGenerics.genDouble(mob,me.rateModifier,++showNumber,showFlag,"Rate modifier");
+            String newModifier=BaseGenerics.genText(mob,Math.round(me.rateModifier*100.0)+"%",++showNumber,showFlag,"Rate modifier");
+            if(newModifier.endsWith("%"))
+                newModifier=newModifier.substring(0,newModifier.length()-1);
+            if(Util.isNumber(newModifier))
+                me.rateModifier=Util.s_double(newModifier)/100.0;
             
             // experience flag
             boolean error2=true;
             ++showNumber;
-            while(error2&&(mob.session()!=null)&&(!mob.session().killFlag()))
+            while(error2&&(mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 error2=false;
-                StringBuffer nextPrompt=new StringBuffer("");
+                StringBuffer nextPrompt=new StringBuffer("\n\r");
                 int myval=-1;
                 for(int i=0;i<Faction.EXPAFFECT_NAMES.length;i++)
                 {
@@ -5105,45 +5117,47 @@ public class BaseGenerics extends StdCommand
                     nextPrompt.append("  "+(i+1)+") "+Util.capitalize(Faction.EXPAFFECT_NAMES[i].toLowerCase())+"\n\r");
                 }
                 if(myval<0){ me.experienceFlag="NONE"; myval=0;}
-                mob.tell(showNumber+") Affect on experience: "+Faction.EXPAFFECT_NAMES[myval]);
                 if((showFlag!=showNumber)&&(showFlag>-999))
+                {
+                    mob.tell(showNumber+") Affect on experience: "+Faction.EXPAFFECT_NAMES[myval]);
                     break;
-                String prompt=nextPrompt.toString()+"\n\rSelct a value: ";
-                int mynewval=BaseGenerics.genInteger(mob,myval,showNumber,showFlag,prompt);
+                }
+                String prompt="Affect on experience: "+Faction.EXPAFFECT_NAMES[myval]+nextPrompt.toString()+"\n\rSelect a value: ";
+                int mynewval=BaseGenerics.genInteger(mob,myval+1,showNumber,showFlag,prompt);
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
-                if((mynewval<0)||(mynewval>=Faction.EXPAFFECT_NAMES.length))
+                if((mynewval<=0)||(mynewval>Faction.EXPAFFECT_NAMES.length))
                 {
                     mob.tell("That value is not valid.");
                     error2=true;
                 }
                 else
-                    me.experienceFlag=Faction.EXPAFFECT_NAMES[mynewval];
+                    me.experienceFlag=Faction.EXPAFFECT_NAMES[mynewval-1];
             }
             
             // factors by mask
             ++showNumber;
-            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
-                StringBuffer list=new StringBuffer(showNumber+") Masked value change factors:\n\r");
-                list.append("    #) "+Util.padRight("Mask",31)+Util.padRight("Loss",6)+Util.padRight("Gain",6)+"\n\r");
+                StringBuffer list=new StringBuffer(showNumber+") Faction change adjustment Factors with Zapper Masks:\n\r");
+                list.append("    #) "+Util.padRight("Zapper Mask",31)+Util.padRight("Loss",6)+Util.padRight("Gain",6)+"\n\r");
                 StringBuffer choices=new StringBuffer("");
                 for(int r=0;r<me.factors.size();r++)
                 {
                     Vector factor=(Vector)me.factors.elementAt(r);
-                    if(factor.size()!=2)
+                    if(factor.size()!=3)
                         me.factors.removeElement(factor);
                     else
                     {
                         choices.append(((char)('A'+r)));
                         list.append("    "+(((char)('A'+r))+") "));
                         list.append(Util.padRight((String)factor.elementAt(2),30)+" ");
-                        list.append(Util.padRight(""+Util.s_double((String)factor.elementAt(1)),5)+" ");
-                        list.append(Util.padRight(""+Util.s_double((String)factor.elementAt(0)),5)+"\n\r");
+                        list.append(Util.padRight(""+Math.round(Util.s_double((String)factor.elementAt(1))*100.0)+"%",5)+" ");
+                        list.append(Util.padRight(""+Math.round(Util.s_double((String)factor.elementAt(0))*100.0)+"%",5)+"\n\r");
                     }
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
-                String which=mob.session().choose("Enter a faction to remove, or modify, or enter 0 to Add:","0"+choices.toString(),"").trim().toUpperCase();
+                String which=mob.session().choose("Enter a # to remove, or modify, or enter 0 to Add:","0"+choices.toString(),"").trim().toUpperCase();
                 int factorNum=choices.toString().indexOf(which);
                 if((which.length()!=1)
                 ||((!which.equalsIgnoreCase("0"))
@@ -5151,38 +5165,56 @@ public class BaseGenerics extends StdCommand
                     break;
                 Vector factor=null;
                 if(!which.equalsIgnoreCase("0"))
-                    factor=(Vector)me.factors.elementAt(factorNum);
-                if(factor!=null)
-                if(mob.session().choose("Would you like to M)odify or D)elete this range (M/d): ","MD","M").toUpperCase().startsWith("D"))
                 {
-                    me.factors.remove(factor);
-                    mob.tell("Factor deleted.");
-                    factor=null;
+                    factor=(Vector)me.factors.elementAt(factorNum);
+                    if(factor!=null)
+                        if(mob.session().choose("Would you like to M)odify or D)elete this range (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                        {
+                            me.factors.remove(factor);
+                            mob.tell("Factor deleted.");
+                            factor=null;
+                        }
+                }
+                else
+                {
+                    factor=new Vector();
+                    factor.addElement("1.0");
+                    factor.addElement("1.0");
+                    factor.addElement("");
+                    me.factors.addElement(factor);
                 }
                 if(factor!=null)
                 {
                     String mask=mob.session().prompt("Enter a new zapper mask ("+((String)factor.elementAt(2))+")\n\r: ",((String)factor.elementAt(2)));
                     double newHigh=Util.s_double((String)factor.elementAt(0));
-                    String newName=mob.session().prompt("Enter a gain amount ("+newHigh+"): ",""+newHigh);
-                    if(!Util.isDouble(newName))
+                    String newName=mob.session().prompt("Enter gain adjustment ("+Math.round(newHigh*100)+"%): ",Math.round(newHigh*100)+"%").trim();
+                    if(newName.endsWith("%"))
+                        newName=newName.substring(0,newName.length()-1);
+                    if(!Util.isNumber(newName))
                         mob.tell("No Change");
                     else
-                        newHigh=Util.s_double(newName);
+                        newHigh=Util.s_double(newName)/100.0;
                     
                     double newLow=Util.s_double((String)factor.elementAt(1));
-                    newName=mob.session().prompt("Enter a loss amount ("+newLow+"): ",""+newLow);
-                    if(!Util.isDouble(newName))
+                    newName=mob.session().prompt("Enter loss adjustment ("+Math.round(newLow*100)+"%): ",Math.round(newLow*100)+"%").trim();
+                    if(newName.endsWith("%"))
+                        newName=newName.substring(0,newName.length()-1);
+                    if(!Util.isNumber(newName))
                         mob.tell("No Change");
                     else
-                        newLow=Util.s_double(newName);
+                        newLow=Util.s_double(newName)/100.0;
                     me.factors.removeElement(factor);
-                    me.factors.addElement(Util.parseSemicolons(newHigh+";"+newLow+";"+mask,false));
+                    factor=new Vector();
+                    factor.addElement(""+newHigh);
+                    factor.addElement(""+newLow);
+                    factor.addElement(""+mask);
+                    me.factors.addElement(factor);
                 }
             }
             
             // relations between factions
             ++showNumber;
-            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(showNumber+") Cross-Faction Relations:\n\r");
                 list.append("    "+Util.padRight("Faction",31)+"Percentage change\n\r");
@@ -5215,6 +5247,7 @@ public class BaseGenerics extends StdCommand
                 if(theF==null)
                 {
                     Faction possibleF=Factions.getFaction(which);
+                    if(possibleF==null) possibleF=Factions.getFactionByName(which);
                     if(possibleF==null)
                         mob.tell("'"+which+"' is not a valid faction.");
                     else
@@ -5237,7 +5270,7 @@ public class BaseGenerics extends StdCommand
                     String newName=mob.session().prompt("Enter a relation amount ("+amount+"%): ",""+amount+"%");
                     if(newName.endsWith("%")) newName=newName.substring(0,newName.length()-1);
                     if(!Util.isInteger(newName))
-                        mob.tell("No Change");
+                        mob.tell("(no change)");
                     else
                         amount=Util.s_long(newName);
                     me.relations.remove(theF.ID);
@@ -5247,7 +5280,7 @@ public class BaseGenerics extends StdCommand
             
             // faction change triggers
             ++showNumber;
-            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(showNumber+") Faction Change Triggers:\n\r");
                 list.append("    "+Util.padRight("Type",15)
@@ -5311,17 +5344,18 @@ public class BaseGenerics extends StdCommand
                     StringBuffer cmds=new StringBuffer("");
                     for(int i=0;i<Faction.FactionChangeEvent.FACTION_DIRECTIONS.length;i++)
                     {
-                        directions.append((i+1)+") "+Faction.FactionChangeEvent.FACTION_DIRECTIONS[i]+"\n\r");
+                        directions.append(((char)('A'+i))+") "+Faction.FactionChangeEvent.FACTION_DIRECTIONS[i]+"\n\r");
                         cmds.append((char)('A'+i));
                     }
                     String str=mob.session().choose(directions+"\n\rSelect a new direction ("+Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction]+"): ",cmds.toString()+"\n\r","");
-                    if((str.length()==0)||str.equals("\n")||str.equals("\r")||(!Util.isInteger(str)))
+                    if((str.length()==0)||str.equals("\n")||str.equals("\r")||(cmds.toString().indexOf(str.charAt(0))<0))
                         mob.tell("(no change)");
                     else
-                        CE.direction=(Util.s_int(str)-'A');
+                        CE.direction=(cmds.toString().indexOf(str.charAt(0)));
                 }
                 if(CE!=null)
                 {
+                    if(CE.factor==0.0) CE.factor=1.0;
                     int amount=(int)Math.round(CE.factor*100.0);
                     String newName=mob.session().prompt("Enter a new factor ("+amount+"%): ",""+amount+"%");
                     if(newName.endsWith("%")) newName=newName.substring(0,newName.length()-1);
@@ -5349,9 +5383,9 @@ public class BaseGenerics extends StdCommand
                 }
             }
             
-            // faction change triggers
+            // Ability allowances
             ++showNumber;
-            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 if((showFlag>0)&&(showFlag!=showNumber)) break;
                 StringBuffer list=new StringBuffer(showNumber+") Ability allowances:\n\r");
@@ -5361,6 +5395,7 @@ public class BaseGenerics extends StdCommand
                         +" "+Util.padRight("High value",10)
                         +"\n\r");
                 int num=0;
+                StringBuffer choices=new StringBuffer("0\n\r");
                 for(Enumeration e=me.abilityUsages.elements();e.hasMoreElements();)
                 {
                     Faction.FactionAbilityUsage CA=(Faction.FactionAbilityUsage)e.nextElement();
@@ -5371,17 +5406,18 @@ public class BaseGenerics extends StdCommand
                         list.append(Util.padRight(CA.low+"",10)+" ");
                         list.append(Util.padRight(CA.high+"",10)+" "); 
                         list.append("\n\r");
+                        choices.append((char)('A'+num));
                         num++;
                     }
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
-                String which=mob.session().prompt("Select a valid allowance to remove or modify, or enter 'NEW':","");
-                if(which.length()==0)
+                String which=mob.session().choose("Select an allowance to remove or modify, or enter 0 to Add:",choices.toString(),"");
+                if(which.length()!=1)
                     break;
                 which=which.toUpperCase().trim();
                 Faction.FactionAbilityUsage CA=null;
-                if(!which.equalsIgnoreCase("NEW"))
+                if(!which.equalsIgnoreCase("0"))
                 {
                     num=(which.charAt(0)-'A');
                     if((num<0)||(num>=me.abilityUsages.size()))
@@ -5412,11 +5448,43 @@ public class BaseGenerics extends StdCommand
                 }
                 if(CA!=null)
                 {
-                    String newFlags=mob.session().prompt("Ability determinate mask ("+CA.ID+"): ",CA.ID);
-                    if((newFlags.length()==0)||(newFlags.equals(CA.ID)))
-                        mob.tell("(no change)");
-                    else
-                        CA.setAbilityFlag(newFlags);
+                    boolean cont=false;
+                    while((!cont)&&(!mob.session().killFlag()))
+                    {
+                        String newFlags=mob.session().prompt("Ability determinate masks or ? ("+CA.ID+"): ",CA.ID);
+                        if(newFlags.equalsIgnoreCase("?"))
+                        {
+                            StringBuffer vals=new StringBuffer("Valid masks: \n\r");
+                            for(int i=0;i<Ability.TYPE_DESCS.length;i++)
+                                vals.append(Ability.TYPE_DESCS[i]+", ");
+                            for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+                                vals.append(Ability.DOMAIN_DESCS[i]+", ");
+                            for(int i=0;i< Ability.FLAG_DESCS.length;i++)
+                                vals.append(Ability.FLAG_DESCS[i]+", ");
+                            vals.append(" * Any ABILITY ID (skill/prayer/spell/etc)");
+                            mob.tell(vals.toString());
+                            cont=false;
+                        }
+                        else
+                        {
+                            cont=true;
+                            if((newFlags.length()==0)||(newFlags.equals(CA.ID)))
+                                mob.tell("(no change)");
+                            else
+                            {
+                                Vector unknowns=CA.setAbilityFlag(newFlags);
+                                if(unknowns.size()>0)
+                                    for(int i=unknowns.size()-1;i>=0;i--)
+                                        if(CMClass.getAbility((String)unknowns.elementAt(i))!=null)
+                                            unknowns.removeElementAt(i);
+                                if(unknowns.size()>0)
+                                {
+                                    mob.tell("The following are unknown masks: '"+Util.toStringList(unknowns)+"'.  Please correct them.");
+                                    cont=false;
+                                }
+                            }
+                        }
+                    }
                     String newName=mob.session().prompt("Enter the minimum value to use the ability ("+CA.low+"): ",""+CA.low);
                     if((!Util.isInteger(newName))||(CA.low==Util.s_int(newName)))
                         mob.tell("(no Change)");
@@ -5484,7 +5552,7 @@ public class BaseGenerics extends StdCommand
             boolean[] done=new boolean[Faction.ALL_TAGS.length];
             for(int i=0;i<done.length;i++) done[i]=false;
             int lastCommented=-1;
-            String CR="\r\n";
+            String CR="\n\r";
             StringBuffer buf=new StringBuffer("");
             for(int v=0;v<oldV.size();v++)
             {
@@ -5493,9 +5561,9 @@ public class BaseGenerics extends StdCommand
                 {
                     if((lastCommented>=0)&&(!done[lastCommented]))
                     {
-                        lastCommented=-1;
                         done[lastCommented]=true;
                         buf.append(me.getINIDef(Faction.ALL_TAGS[lastCommented],CR)+CR);
+                        lastCommented=-1;
                     }
                 }
                 else
@@ -5528,9 +5596,12 @@ public class BaseGenerics extends StdCommand
                     }
                 }
             }
+            if((lastCommented>=0)&&(!done[lastCommented]))
+                buf.append(me.getINIDef(Faction.ALL_TAGS[lastCommented],CR)+CR);
             Resources.removeResource(me.ID);
             Resources.submitResource(me.ID,buf);
-            Resources.saveFileResource(me.ID);
+            if(!Resources.saveFileResource(me.ID))
+                mob.tell("Faction File '"+me.ID+"' could not be modified.  Make sure it is not READ-ONLY.");
         }
     }
 
@@ -6238,6 +6309,9 @@ public class BaseGenerics extends StdCommand
 			genArmor(mob,me,++showNumber,showFlag);
 			genHitPoints(mob,me,++showNumber,showFlag);
 			genMoney(mob,me,++showNumber,showFlag);
+            me.setTrains(BaseGenerics.genInteger(mob,me.getTrains(),++showNumber,showFlag,"Training Points"));
+            me.setPractices(BaseGenerics.genInteger(mob,me.getPractices(),++showNumber,showFlag,"Practice Points"));
+            me.setQuestPoint(BaseGenerics.genInteger(mob,me.getQuestPoint(),++showNumber,showFlag,"Quest Points"));
 			genAbilities(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);

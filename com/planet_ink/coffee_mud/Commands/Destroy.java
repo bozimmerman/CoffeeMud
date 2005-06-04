@@ -759,6 +759,39 @@ public class Destroy extends BaseItemParser
 				mob.tell("Bug deletion submitted.");
 			}
 		}
+        else
+        if(commandType.equals("FACTION"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            if(commands.size()<3)
+                mob.tell("Destroy which faction?  Use list factions.");
+            else
+            {
+                String name=Util.combine(commands,2);
+                Faction F=Factions.getFaction(name);
+                if(F==null) F=Factions.getFactionByName(name);
+                if(F==null)
+                    mob.tell("Faction '"+name+"' is unknown.  Try list factions.");
+                else
+                if((!mob.isMonster())&&(mob.session().confirm("Destroy file '"+F.ID+"' -- this could have unexpected consequences in the future -- (N/y)? ","N")))
+                {
+                    try
+                    {
+                        java.io.File F2=new java.io.File("resources"+java.io.File.separatorChar+F.ID);
+                        if(F2.exists()) F2.delete();
+                        Log.sysOut("CreateEdit",mob.Name()+" destroyed Faction "+F.name+" ("+F.ID+").");
+                        mob.tell("Faction File '"+F.ID+"' deleted.");
+                        Resources.removeResource(F.ID);
+                    }
+                    catch(Exception e)
+                    {
+                        Log.errOut("CreateEdit",e);
+                        mob.tell("Faction File '"+F.ID+"' could NOT be deleted.");
+                    }
+                }
+            }
+        }
 		else
 		if(commandType.equals("IDEA"))
 		{
@@ -914,7 +947,7 @@ public class Destroy extends BaseItemParser
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, USER, MOB, QUEST, SOCIAL, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, or a ROOM.");
+						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, SOCIAL, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, or a ROOM.");
 				}
 			}
 		}

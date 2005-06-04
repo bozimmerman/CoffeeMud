@@ -62,7 +62,7 @@ public class Spell_Spellbinding extends Spell
 		{
 			ByteArrayOutputStream bytes=new ByteArrayOutputStream();
 			new ObjectOutputStream(bytes).writeObject(spellbindings);
-			return Util.toSemicolonList(bytes.toByteArray());
+			return Util.toSemicolonList(bytes.toByteArray())+";";
 		}
 		catch(Exception e)
 		{

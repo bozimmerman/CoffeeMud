@@ -39,7 +39,7 @@ public class Faction implements MsgListener
     public Vector ranges=new Vector();
     public Vector defaults=new Vector();
     public Vector autoDefaults=new Vector();
-    public double rateModifier;
+    public double rateModifier=1.0;
     public Hashtable Changes=new Hashtable();
     public Vector factors=new Vector();
     public Hashtable relations=new Hashtable();
@@ -72,6 +72,20 @@ public class Faction implements MsgListener
     public final static String[] ALL_TAGS={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY","SPECIALREPORTED","EDITALONE","DEFAULT",
         "AUTODEFAULTS","AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE","RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*"};
 
+    public Faction(String aname)
+    {
+        ID=aname;
+        name=aname;
+        minimum=0;
+        middle=50;
+        maximum=100;
+        highest=100;
+        lowest=0;
+        difference=Util.abs(maximum-minimum);
+        experienceFlag="EXTREME";
+        ranges.addElement(new Faction.FactionRange(this,"0;100;Sample Range;SAMPLE;"));
+        defaults.addElement("0");
+    }
 
     public Faction(StringBuffer file, String fID) 
     {
@@ -171,8 +185,8 @@ public class Faction implements MsgListener
         if(tagRef<0) return "";
         int numCall=-1;
         if((tagRef<ALL_TAGS.length)&&(ALL_TAGS[tagRef].endsWith("*")))
-            if(Util.isInteger(tag.substring(ALL_TAGS.length-1)))
-                numCall=Util.s_int(tag.substring(ALL_TAGS.length-1));
+            if(Util.isInteger(tag.substring(ALL_TAGS[tagRef].length()-1)))
+                numCall=Util.s_int(tag.substring(ALL_TAGS[tagRef].length()-1));
         switch(tagRef)
         {
         case TAG_NAME: return name;
@@ -183,6 +197,7 @@ public class Faction implements MsgListener
         case TAG_EDITALONE: return Boolean.toString(showineditor).toUpperCase();
         case TAG_DEFAULT: return Util.toSemicolonList(defaults);
         case TAG_AUTODEFAULTS: return Util.toSemicolonList(autoDefaults);
+        case TAG_CHOICEINTRO: return choiceIntro;
         case TAG_AUTOCHOICES: return Util.toSemicolonList(choices);
         case TAG_RATEMODIFIER: return ""+rateModifier;
         case TAG_EXPERIENCE: return ""+experienceFlag;
@@ -228,7 +243,7 @@ public class Faction implements MsgListener
                 String factionName=(String)e.nextElement();
                 Double D=(Double)relations.get(factionName);
                 if(i==numCall)
-                    return factionName+";"+((int)Math.round(D.doubleValue()*100.0))+"%";
+                    return factionName+" "+((int)Math.round(D.doubleValue()*100.0))+"%";
                 i++;
             }
             return "";
@@ -255,7 +270,7 @@ public class Faction implements MsgListener
             return str.toString();
         }
         else
-            return rawTagName+"="+getTagValue(tag);
+            return rawTagName+"="+getTagValue(tag)+delimeter;
     }
     
     public FactionChangeEvent findChangeEvent(String key) 
@@ -773,7 +788,8 @@ public class Faction implements MsgListener
         public boolean setFilterID(String newID)
         {
             for(int i=0;i<MISC_TRIGGERS.length;i++) 
-                return true;
+                if(MISC_TRIGGERS[i].equalsIgnoreCase(newID))
+                { ID=newID;    return true;}
             for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
                 if(Ability.TYPE_DESCS[i].equalsIgnoreCase(newID))
                 {    IDclassFilter=i; ID=newID; return true;}
@@ -914,24 +930,35 @@ public class Faction implements MsgListener
         {
             return ID+";"+low+";"+high;
         }
-        public void setAbilityFlag(String str)
+        public Vector setAbilityFlag(String str)
         {
             ID=str;
             Vector flags=Util.parse(ID);
+            Vector unknowns=new Vector();
             for(int f=0;f<flags.size();f++)
             {
                 String strflag=(String)flags.elementAt(f);
                 boolean not=strflag.startsWith("!");
                 if(not) strflag=strflag.substring(1);
+                boolean known=false;
                 for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
                     if(Ability.TYPE_DESCS[i].equalsIgnoreCase(strflag))
+                    {
                         type=i;
+                        known=true;
+                    }
+                if(!known)
                 for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
                     if(Ability.DOMAIN_DESCS[i].equalsIgnoreCase(strflag))
+                    {
                         domain=i<<5;
+                        known=true;
+                    }
+                if(!known)
                 for(int i=0;i< Ability.FLAG_DESCS.length;i++)
                     if(Ability.FLAG_DESCS[i].equalsIgnoreCase(strflag))
                     {
+                        known=true;
                         if(not)
                         {
                             if(notflag<0) notflag=0;
@@ -943,9 +970,12 @@ public class Faction implements MsgListener
                             flag=flag|Util.pow(2,i);
                         }
                     }
+                if(!known)
+                    unknowns.addElement(strflag);
             }
             if((type<0)&&(domain<0)&&(flag<0))
                 possibleAbilityID=true;
+            return unknowns;
         }
     }
 }
