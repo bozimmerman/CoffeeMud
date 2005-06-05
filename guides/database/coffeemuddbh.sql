@@ -147,7 +147,7 @@ CMCLIM integer NULL ,
 CMSUBS varchar (100) NULL ,
 CMDESC varchar (255) NULL ,
 CMROTX varchar (255) NULL , 
-CMTECH integer NULL
+CMTECH integer NULL ,
 PRIMARY KEY (CMAREA)
 );
 
