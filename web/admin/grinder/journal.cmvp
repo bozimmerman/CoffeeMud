@@ -13,7 +13,6 @@
 			document.JOURNAL.JOURNAL.value='';
 			document.JOURNAL.JOURNALMESSAGE.value='';
 			document.JOURNAL.FUNCTION.value='';
-			document.JOURNAL.action="journal.cmvp#"+journal;
 			document.JOURNAL.submit();
 		}
 		function Clicked1(journal)
