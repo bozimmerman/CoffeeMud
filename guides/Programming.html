@@ -7,7 +7,7 @@
 
 <P align=center><STRONG><FONT 
 size=6>Programming</FONT></STRONG></P>
-<P align=center><STRONG><FONT size=6>for CoffeeMud 4.6</FONT></STRONG></P>
+<P align=center><STRONG><FONT size=6>for CoffeeMud 4.7</FONT></STRONG></P>
 <P align=left>
 <TABLE WIDTH="100%" BGCOLOR=yellow BORDER=1>
 <TR>
@@ -629,7 +629,7 @@ addAbility(CMClass.getAbility("Poison"));
 addBehavior(CMClass.getBehavior("MudChat"));
 addBehavior(CMClass.getBehavior("Mobile"));
 addBehavior(CMClass.getBehavior("CombatAbilities"));
-</PRE>
+</pre>
 <P><FONT size=4></FONT></P>
 <P><FONT size=4>The commands above 
 will make the MOB permanently Berzerk, gives it the ability to Poison folks 
@@ -1905,17 +1905,14 @@ baseClass of "Fighter". This means that the Fighter class is one of the classes
 which may be chosen by a new player (since it's ID() and baseClass() are the 
 same), and that any of the baseClass() "Fighter" classes may switch amongst each 
 other. If your CoffeeMud system is using the multi-class or single classing 
-system, this method is irrelevant.</FONT></P>
-<pre>
-	public int getHPDivisor(){return 3;}
+system, this method is irrelevant.</FONT></P><pre>	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 1;}
 	public int getHPDie(){return 6;}
 </PRE>
 <P align=left><FONT size=4>Next come 
 the hit point ranges.&nbsp;&nbsp;When a player with this class gains a 
-level,these values will determine hit points gained based on class and constitution.</FONT></P>
-<pre>
-public int getPracsFirstLevel(){return 3;}
+level,these values will determine hit points gained based on class and 
+constitution.</FONT></P><pre>public int getPracsFirstLevel(){return 3;}
 public int getTrainsFirstLevel(){return 1;}
 public int getBonusPracLevel(){return 0;}
 </PRE>
@@ -1932,16 +1929,13 @@ Intelligence, Wisdom, Dexterity, Constitution, or Charisma) are used to
 determine any attack bonuses whenever the player gains a level.&nbsp; Usually 
 this is Strength. The number of bonus attack points received by a player when a 
 level is gained is determined by dividing the players score in this attribute by 
-6, and then adding the value returned by getBonusAttackLevel(). </FONT></P>
-<pre>
-	public int getManaDivisor(){return 3;}
+6, and then adding the value returned by getBonusAttackLevel(). </FONT></P><pre>	public int getManaDivisor(){return 3;}
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 6;}
 </PRE>
-<P align=left><FONT size=4>These methods
-determines how much mana a player receives when they gain a level in this class. 
-</FONT></P>
-<pre>public int getLevelsPerBonusDamage(){ return 25;}
+<P align=left><FONT size=4>These 
+methods determines how much mana a player receives when they gain a level in 
+this class. </FONT></P><pre>public int getLevelsPerBonusDamage(){ return 25;}
 </PRE>
 <P align=left><FONT size=4>This score 
 determines how many levels a player must make, in this class, before they will 
@@ -3248,8 +3242,8 @@ digressions&nbsp;discussion in a previous section) in this case uses a
 TYP_JUSTICE message (meaning an attack on dignity), with the malicious and 
 movement flags set.&nbsp; If this message gets sent,&nbsp;a call to 
 maliciousAffect is made. The first parameter is the invoker, and the second 
-parameter is the one its being invoked upon.&nbsp; The third parameter is the
-level of the affect, or 0 for default values.  The forth parameter is the 
+parameter is the one its being invoked upon.&nbsp; The third parameter is the 
+level of the affect, or 0 for default values. The forth parameter is the 
 duration of the Effect in ticks, which you can see is dependent in this case 
 upon whether the message came back with a value()&gt;0 (meaning the saving throw 
 was made).&nbsp; If the forth parameter is 0, then the default duration formula 
@@ -3342,8 +3336,7 @@ domains include: </FONT></P>
     <TD>DOMAIN_CONJURATION</TD>
     <TD>Spells that transport people or 
   items.</TD></TR></TABLE></P>
-<P align=left><FONT size=4></FONT>&nbsp;</P></FONT><PRE>
-   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+<P align=left><FONT size=4></FONT>&nbsp;</P></FONT><PRE>   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
    {
       MOB target=getTarget(mob,commands,givenTarget);
       if(target==null) return false;
