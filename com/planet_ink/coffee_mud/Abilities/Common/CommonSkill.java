@@ -200,7 +200,6 @@ public class CommonSkill extends StdAbility
 			if(I==null) break;
 			if(I==never) continue;
 
-System.out.println(otherMaterial+"/"+I.name());
 			if((otherMaterial>0)
 			&&(I instanceof EnvResource)
 			&&(I.container()==null)
