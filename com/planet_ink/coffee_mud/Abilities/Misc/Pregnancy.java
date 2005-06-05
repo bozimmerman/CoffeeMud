@@ -46,7 +46,7 @@ public class Pregnancy extends StdAbility
 			if(months<1)
 				return "("+days+" day(s) pregnant)";
 			else
-				return "("+months+" months(s) pregnant)";
+				return "("+months+" month(s) pregnant)";
 		}
 		return "";
 	}
