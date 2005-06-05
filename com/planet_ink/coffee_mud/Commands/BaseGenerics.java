@@ -5303,16 +5303,14 @@ public class BaseGenerics extends StdCommand
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
-                String which=mob.session().prompt("Enter a valid trigger to add, remove, or modify (?):","");
-                if(which.length()==0)
-                    break;
+                String which=mob.session().prompt("Select a trigger ID to add, remove, or modify (?):","");
                 which=which.toUpperCase().trim();
+                if(which.length()==0) break;
                 if(which.equalsIgnoreCase("?"))
                 {
                     mob.tell("Valid triggers: \n\r"+Faction.FactionChangeEvent.ALL_TYPES());
                     continue;
                 }
-                
                 Faction.FactionChangeEvent CE=(Faction.FactionChangeEvent)me.Changes.get(which);
                 if(CE==null)
                 {
@@ -5326,7 +5324,7 @@ public class BaseGenerics extends StdCommand
                     if(!mob.session().confirm("Create a new trigger using ID '"+which+"' (y/N): ","N"))
                     {
                         CE=null;
-                        continue;
+                        break;
                     }
                     else
                         me.Changes.put(CE.ID.toUpperCase(),CE);
@@ -5338,6 +5336,7 @@ public class BaseGenerics extends StdCommand
                     mob.tell("Trigger deleted.");
                     CE=null;
                 }
+                
                 if(CE!=null)
                 {
                     StringBuffer directions=new StringBuffer("Valid directions:\n\r");
@@ -5357,7 +5356,7 @@ public class BaseGenerics extends StdCommand
                 {
                     if(CE.factor==0.0) CE.factor=1.0;
                     int amount=(int)Math.round(CE.factor*100.0);
-                    String newName=mob.session().prompt("Enter a new factor ("+amount+"%): ",""+amount+"%");
+                    String newName=mob.session().prompt("Enter the amount factor ("+amount+"%): ",""+amount+"%");
                     if(newName.endsWith("%")) newName=newName.substring(0,newName.length()-1);
                     if(!Util.isInteger(newName))
                         mob.tell("(no Change)");

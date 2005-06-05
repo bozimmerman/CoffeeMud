@@ -552,7 +552,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
         if(likeThis.isGeneric())
             prices.put(likeThis.ID()+"/"+likeThis.name(),new Integer(price));
         else
-        if((!likeThis.isGeneric())&&(prices.containsKey(likeThis.ID())))
             prices.put(likeThis.ID(),new Integer(price));
     }
 	public int stockPrice(Environmental likeThis)

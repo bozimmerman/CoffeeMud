@@ -66,7 +66,7 @@ public class List extends StdCommand
 		return lines;
 	}
 
-	public void dumpThreadGroup(StringBuffer lines,ThreadGroup tGroup)
+	public void dumpThreadGroup(StringBuffer lines,ThreadGroup tGroup, boolean ignoreZeroTickThreads)
 	{
 		int ac = tGroup.activeCount();
 		int agc = tGroup.activeGroupCount();
@@ -82,6 +82,12 @@ public class List extends StdCommand
 		{
 			if (tArray[i] != null)
 			{
+                if((tArray[i] instanceof Tick)
+                &&(((Tick)tArray[i]).lastClient!=null)
+                &&(((Tick)tArray[i]).lastClient.clientObject!=null)
+                &&(ignoreZeroTickThreads)
+                &&(((Tick)tArray[i]).lastClient.clientObject.getTickStatus()==0))
+                    continue;
                 lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
                 lines.append(Util.padRight(tArray[i].getName(),20)+": ");
                 if(tArray[i] instanceof Session)
@@ -99,7 +105,11 @@ public class List extends StdCommand
                 if((tArray[i] instanceof Tick)
                 &&(((Tick)tArray[i]).lastClient!=null)
                 &&(((Tick)tArray[i]).lastClient.clientObject!=null))
-                    lines.append("Tick "+tArray[i].getName()+" "+((Tick)tArray[i]).lastClient.clientObject.ID()+"-"+((Tick)tArray[i]).lastClient.clientObject.name()+"-"+((Tick)tArray[i]).lastClient.clientObject.getTickStatus() + "\n\r");
+                    lines.append("Tick "+tArray[i].getName()+" "
+                            +((Tick)tArray[i]).lastClient.clientObject.ID()
+                            +"-"+((Tick)tArray[i]).lastClient.clientObject.name()
+                            +"-"+((Tick)tArray[i]).lastClient.clientObject.getTickStatus() 
+                            +" ("+CMClass.ThreadEngine().getTickStatusSummary(((Tick)tArray[i]).lastClient.clientObject)+")\n\r");
                 else
                     lines.append("Thread "+tArray[i].getName() + "\n\r");
 			}
@@ -111,14 +121,14 @@ public class List extends StdCommand
 			for (int i = 0; i<agc; ++i)
 			{
 				if (tgArray[i] != null)
-					dumpThreadGroup(lines,tgArray[i]);
+					dumpThreadGroup(lines,tgArray[i],ignoreZeroTickThreads);
 			}
 			lines.append("}\n\r");
 		}
 	}
 
 
-	public StringBuffer listThreads(MOB mob)
+	public StringBuffer listThreads(MOB mob, boolean ignoreZeroTickThreads)
 	{
 		StringBuffer lines=new StringBuffer("^xStatus|Name                 ^.^?\n\r");
 		try
@@ -127,7 +137,7 @@ public class List extends StdCommand
 			while (topTG != null && topTG.getParent() != null)
 				topTG = topTG.getParent();
 			if (topTG != null)
-				dumpThreadGroup(lines,topTG);
+				dumpThreadGroup(lines,topTG,ignoreZeroTickThreads);
 
 		}
 		catch (Exception e)
@@ -887,7 +897,7 @@ public class List extends StdCommand
 		case 35: listUsers(mob,commands); break;
 		case 36: s.println(listLinkages(mob).toString()); break;
 		case 37: s.println(listReports(mob).toString()); break;
-		case 38: s.println(listThreads(mob).toString()); break;
+		case 38: s.println(listThreads(mob,Util.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
 		case 39: s.wraplessPrintln(CMLister.reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString()); break;
 		case 40: s.wraplessPrintln(reallyFindOneWays(mob,commands)); break;
 		case 41: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.CHANT).toString()); break;

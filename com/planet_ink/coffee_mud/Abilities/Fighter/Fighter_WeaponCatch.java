@@ -48,7 +48,11 @@ public class Fighter_WeaponCatch extends StdAbility
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false))
 		&&(mob.rangeToTarget()==0))
 		{
-			FullMsg msg2=new FullMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<T-NAME> disarm(s) <S-NAMESELF>, but <S-NAME> catch(es) the weapon!");
+			FullMsg msg2=new FullMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,
+                    "<T-NAME> disarm <S-NAMESELF>, but <S-NAME> catch the weapon!",
+                    "<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catches the weapon!",
+                    "<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catches the weapon!"
+                    );
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);

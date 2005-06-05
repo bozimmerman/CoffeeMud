@@ -17,7 +17,7 @@ Designer % Cravat	72	10	5	250	GenArmor	NECK	0	5	0
 Designer % Tie	72	15	3	150	GenArmor	NECK	0	5	0	
 Designer % Rabat	72	20	2	100	GenArmor	NECK	0	5	0	
 Designer % Jabot	91	20	12	864	GenArmor	NECK	0	6	0	
-Designer % Bikini	38	20	2	1036	GenArmor	TORSO	0	18	0	Prop_WearAdjuster(CHA+1)
+Designer % Bikini	38	20	2	1036	GenArmor	TORSO	0	18	0	*Prop_WearAdjuster;CHA+1
 Designer % Kimono	53	60	6	168	GenArmor	TORSO&&ARMS	10	30	0	
 Designer % Smoking Jacket	73	80	20	1000	GenArmor	TORSO&&ARMS	5	40	0	
 Designer % Caftan	42	40	18	441	GenArmor	TORSO&&ARMS&&LEGS	0	42	0	

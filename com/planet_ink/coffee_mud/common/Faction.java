@@ -782,7 +782,7 @@ public class Faction implements MsgListener
                 ALL_TYPES.append(Ability.DOMAIN_DESCS[i]+", ");
             for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
                 ALL_TYPES.append(Ability.FLAG_DESCS[i]+", ");
-            _ALL_TYPES=ALL_TYPES.substring(0,ALL_TYPES.length()-2);
+            _ALL_TYPES=ALL_TYPES.toString()+" a valid Skill, Spell, Chant, etc. ID.";
             return _ALL_TYPES;
         }
         public boolean setFilterID(String newID)
@@ -799,6 +799,8 @@ public class Faction implements MsgListener
             for(int i=0;i< Ability.FLAG_DESCS.length;i++)
                 if(Ability.FLAG_DESCS[i].equalsIgnoreCase(newID))
                 { IDflagFilter=Util.pow(2,i);  ID=newID; return true;}
+            if(CMClass.getAbility(newID)!=null)
+            { ID=newID; return true;}
             return false;
         }
         public boolean setDirection(String d)

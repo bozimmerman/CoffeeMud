@@ -11,7 +11,7 @@ name,level,ticks,wood,value,class,misc,capacity,armordmg,extraMaterialRequiremen
 % Choker	8	20	2	50	GenArmor	NECK	0	0		
 % Earrings	9	20	1	20	GenArmor	EARS	0	0	PRECIOUS	
 % Hairpin	10	10	1	40	GenArmor	HEAD	0	0	PRECIOUS	
-% Wedding Band	10	20	1	250	GenArmor	LEFT FINGER||RIGHT FINGER	0	0		Prayer_Fidelity
+% Wedding Band	10	20	1	250	GenArmor	LEFT FINGER||RIGHT FINGER	0	0		*Prop_WearSpellCast;Prayer_Fidelity
 % Brooch	11	30	2	100	GenArmor	NECK	0	0		
 % Eye Glasses	11	50	2	20	GenArmor	EYES	0	0	GLASS	
 % Tiara	13	80	10	200	GenArmor	HEAD	0	0		
@@ -26,7 +26,7 @@ name,level,ticks,wood,value,class,misc,capacity,armordmg,extraMaterialRequiremen
 % Bangle Bracelet	19	50	3	250	GenArmor	LEFT WRIST||RIGHT WRIST	10	0	PRECIOUS	
 % Armlet	12	30	5	20	GenArmor	ARMS	0	0		
 % Charm	5	30	1	10	GenItem	STATUE	0	0	WOODEN	
-% Cufflinks	24	50	2	500	GenArmor	LEFT WRIST||RIGHT WRIST	0	0	PRECIOUS	Prop_WearAdjuster(CHA+1)
+% Cufflinks	24	50	2	500	GenArmor	LEFT WRIST||RIGHT WRIST	0	0	PRECIOUS	*Prop_WearAdjuster;CHA+1
 % Bindi	25	40	1	500	GenArmor	EYES	0	0	PRECIOUS	
 % Bejewelled Rose	23	120	5	500	GenItem		0	0	PRECIOUS	
 % Bejewelled Flower	19	100	5	100	GenItem		0	0	PRECIOUS	

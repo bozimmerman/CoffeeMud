@@ -112,7 +112,7 @@ public class Prayer_Stasis extends Prayer
 				if(msg.value()<=0)
 				{
 					success=beneficialAffect(mob,target,asLevel,10);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is surrounded by a stasis field!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> surrounded by a stasis field!");
 				}
 			}
 		}

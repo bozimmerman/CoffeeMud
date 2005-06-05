@@ -2520,7 +2520,7 @@ public class Scriptable extends StdBehavior
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
-				if((arg2.length()==0)||(arg3.length()==0))
+				if(arg2.length()==0)
 				{
 					scriptableError(scripted,"CLAN","Syntax",evaluable);
 					return returnable;
@@ -5234,6 +5234,23 @@ public class Scriptable extends StdBehavior
 			return true;
 		return false;
 	}
+    
+    private Item makeCheapItem(Environmental E)
+    {
+        Item product=null;
+        if(E instanceof Item)
+            product=(Item)E;
+        else
+        {
+            product=CMClass.getItem("StdItem");
+            product.setName(E.Name());
+            product.setDisplayText(E.displayText());
+            product.setDescription(E.description());
+            product.setBaseEnvStats(E.baseEnvStats().cloneStats());
+            product.recoverEnvStats();
+        }
+        return product;
+    }
 
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
@@ -5566,7 +5583,6 @@ public class Scriptable extends StdBehavior
 				if((msg.targetMinor()==CMMsg.TYP_BUY)
 				&&((!(affecting instanceof ShopKeeper))
                     ||msg.amITarget(affecting))
-				&&(msg.tool() instanceof Item)
 				&&(!msg.amISource(monster))
 				&&(canFreelyBehaveNormal(monster)))
 				{
@@ -5578,10 +5594,12 @@ public class Scriptable extends StdBehavior
 						||(msg.tool().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
-							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-								execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null);
+                            Item product=makeCheapItem(msg.tool());
+							if((product instanceof Coins)
+                            &&(product.owner() instanceof Room))
+								execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null);
 							else
-								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),(Item)msg.tool(),script,1,null));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
 							return;
 						}
 					}
@@ -5595,10 +5613,12 @@ public class Scriptable extends StdBehavior
 							||(msg.tool().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
-								if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-									execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null);
+                                Item product=makeCheapItem(msg.tool());
+								if((product instanceof Coins)
+                                &&(product.owner() instanceof Room))
+									execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null);
 								else
-									que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),(Item)msg.tool(),script,1,null));
+									que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
 								return;
 							}
 						}
@@ -5608,7 +5628,6 @@ public class Scriptable extends StdBehavior
 			case 28: // sell_prog
 				if((msg.targetMinor()==CMMsg.TYP_SELL)
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
-				&&(msg.tool() instanceof Item)
 				&&(!msg.amISource(monster))
 				&&(canFreelyBehaveNormal(monster)))
 				{
@@ -5620,10 +5639,12 @@ public class Scriptable extends StdBehavior
 						||(msg.tool().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
-							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-								execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null);
-							else
-								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
+                            Item product=makeCheapItem(msg.tool());
+                            if((product instanceof Coins)
+                            &&(product.owner() instanceof Room))
+                                execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null);
+                            else
+                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
 							return;
 						}
 					}
@@ -5637,10 +5658,12 @@ public class Scriptable extends StdBehavior
 							||(msg.tool().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
-								if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-									execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null);
-								else
-									que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
+                                Item product=makeCheapItem(msg.tool());
+                                if((product instanceof Coins)
+                                &&(product.owner() instanceof Room))
+                                    execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null);
+                                else
+                                    que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
 								return;
 							}
 						}
