@@ -54,6 +54,8 @@ public class MUD extends Thread implements MudHost
 	public boolean acceptConnections=false;
 	public String host="MyHost";
 	public int port=5555;
+    public final static String[] STATE_STRING={"waiting","accepting","allowing"};
+    public int state=0;
 	ServerSocket servsock=null;
 
 	public MUD()
@@ -358,7 +360,9 @@ public class MUD extends Thread implements MudHost
 
 			while(true)
 			{
+                state=0;
 				sock=servsock.accept();
+                state=1;
 
 				if (acceptConnections)
 				{
@@ -435,6 +439,7 @@ public class MUD extends Thread implements MudHost
 					}
 					else
 					{
+                        state=2;
 						StringBuffer introText=Resources.getFileResource("text"+File.separatorChar+"intro.txt");
 						TelnetSession S=new TelnetSession(sock,
 							introText != null ? introText.toString() : null);
@@ -484,6 +489,14 @@ public class MUD extends Thread implements MudHost
 
 		Log.sysOut("MUD","CoffeeMud Server on port "+port+" stopped!");
 	}
+    public String getStatus()
+    {
+        if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSHUTTINGDOWN))
+            return CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS);
+        if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+            return CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS);
+        return STATE_STRING[state];
+    }
 
 	public void shutdown(Session S, boolean keepItDown, String externalCommand)
 	{

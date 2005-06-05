@@ -85,9 +85,12 @@ public class List extends StdCommand
                 if((tArray[i] instanceof Tick)
                 &&(((Tick)tArray[i]).lastClient!=null)
                 &&(((Tick)tArray[i]).lastClient.clientObject!=null)
-                &&(ignoreZeroTickThreads)
                 &&(((Tick)tArray[i]).lastClient.clientObject.getTickStatus()==0))
                     continue;
+                if((tArray[i] instanceof Tickable)
+                &&(((Tickable)tArray[i]).getTickStatus()==0))
+                    continue;
+                
                 lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
                 lines.append(Util.padRight(tArray[i].getName(),20)+": ");
                 if(tArray[i] instanceof Session)
@@ -111,7 +114,10 @@ public class List extends StdCommand
                             +"-"+((Tick)tArray[i]).lastClient.clientObject.getTickStatus() 
                             +" ("+CMClass.ThreadEngine().getTickStatusSummary(((Tick)tArray[i]).lastClient.clientObject)+")\n\r");
                 else
-                    lines.append("Thread "+tArray[i].getName() + "\n\r");
+                {
+                    String status=CMClass.ThreadEngine().getServiceThreadSummary(tArray[i]);
+                    lines.append("Thread "+tArray[i].getName() + status+"\n\r");
+                }
 			}
 		}
 

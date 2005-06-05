@@ -70,7 +70,7 @@ public class ClanMorgueSet extends BaseClanner
 				{
 					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
 					{
-						C.setRecall(CMMap.getExtendedRoomID(R));
+						C.setMorgue(CMMap.getExtendedRoomID(R));
 						C.update();
 						mob.tell("Your "+C.typeName()+" morgue is now set to "+R.roomTitle()+".");
 						clanAnnounce(mob, "Your "+C.typeName()+" morgue is now set to "+R.roomTitle()+".");
