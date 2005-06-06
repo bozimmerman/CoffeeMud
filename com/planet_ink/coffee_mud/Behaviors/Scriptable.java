@@ -1069,7 +1069,7 @@ public class Scriptable extends StdBehavior
 			}
             if((middle.length()>0)
             &&(back.startsWith("."))
-            &&(back.length()>2))
+            &&(back.length()>1))
             {
                 if(back.charAt(1)=='$')
                     back=varify(source,target,monster,primaryItem,secondaryItem,msg,back);
