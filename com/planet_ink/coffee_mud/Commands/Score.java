@@ -122,7 +122,7 @@ public class Score extends Affect
 			{
 				String role=Clans.getRoleName(C.getGovernment(),mob.getClanRole(),true,false);
 				role=Util.startWithAorAn(role);
-				msg.append("You are "+role+" of the ^H"+mob.getClanID()+"^? Clan.\n\r");
+				msg.append("You are "+role+" of the ^H"+mob.getClanID()+"^?^. Clan.\n\r");
 			}
 		}
 		msg.append("\n\rYour stats are: \n\r^!"+mob.charStats().getStats()+"^?\n\r");

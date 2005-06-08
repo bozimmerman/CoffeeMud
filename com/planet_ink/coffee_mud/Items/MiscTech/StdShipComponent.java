@@ -34,4 +34,8 @@ public class StdShipComponent extends StdShipItem implements ShipComponent
 		baseGoldValue=0;
 		recoverEnvStats();
 	}
+    /** Standard component weights
+     *  1 ROOM=500, THRUSTER,POWERPLANT=100.  COMM=20.  LIFESUPP=50,
+     *  FUEL=2730, CONSOLE=1,  JOHNGLEN=130, MAX ACC=5.5G
+     */
 }

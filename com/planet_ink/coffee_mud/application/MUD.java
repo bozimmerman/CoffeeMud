@@ -394,35 +394,38 @@ public class MUD extends Thread implements MudHost
 					long LastConnectionDelay=(5*60*1000);
 					boolean anyAtThisAddress=false;
 					int maxAtThisAddress=6;
-					try{
-						for(int a=accessed.size()-1;a>=0;a--)
-						{
-							if((((Long)accessed.elementAt(a,2)).longValue()+LastConnectionDelay)<System.currentTimeMillis())
-								accessed.removeElementAt(a);
-							else
-							if(((String)accessed.elementAt(a,1)).trim().equalsIgnoreCase(address))
-							{
-								anyAtThisAddress=true;
-								if((((Long)accessed.elementAt(a,2)).longValue()+ConnectionWindow)>System.currentTimeMillis())
-									numAtThisAddress++;
-							}
-						}
-						if(autoblocked.contains(address.toUpperCase()))
-						{
-							if(!anyAtThisAddress)
-								autoblocked.remove(address.toUpperCase());
-							else
-								proceed=2;
-						}
-						else
-						if(numAtThisAddress>=maxAtThisAddress)
-						{
-							autoblocked.addElement(address.toUpperCase());
-							proceed=2;
-						}
-					}catch(java.lang.ArrayIndexOutOfBoundsException e){}
-
-					accessed.addElement(address,new Long(System.currentTimeMillis()));
+                    if(!CMSecurity.isDisabled("CONNSPAMBLOCK"))
+                    {
+    					try{
+    						for(int a=accessed.size()-1;a>=0;a--)
+    						{
+    							if((((Long)accessed.elementAt(a,2)).longValue()+LastConnectionDelay)<System.currentTimeMillis())
+    								accessed.removeElementAt(a);
+    							else
+    							if(((String)accessed.elementAt(a,1)).trim().equalsIgnoreCase(address))
+    							{
+    								anyAtThisAddress=true;
+    								if((((Long)accessed.elementAt(a,2)).longValue()+ConnectionWindow)>System.currentTimeMillis())
+    									numAtThisAddress++;
+    							}
+    						}
+    						if(autoblocked.contains(address.toUpperCase()))
+    						{
+    							if(!anyAtThisAddress)
+    								autoblocked.remove(address.toUpperCase());
+    							else
+    								proceed=2;
+    						}
+    						else
+    						if(numAtThisAddress>=maxAtThisAddress)
+    						{
+    							autoblocked.addElement(address.toUpperCase());
+    							proceed=2;
+    						}
+    					}catch(java.lang.ArrayIndexOutOfBoundsException e){}
+    
+    					accessed.addElement(address,new Long(System.currentTimeMillis()));
+                    }
 					if(proceed!=0)
 					{
 						Log.sysOut("MUD","Blocking a connection from "+address+" on port "+port);
