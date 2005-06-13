@@ -52,6 +52,7 @@ public class GenWallpaper implements Item
 	{ envStats().setSensesMask(envStats().sensesMask()|EnvStats.SENSE_ITEMNOTGET);}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public boolean isAContainer(){return false;}
+    public int numberOfItems(){return 1;}
 	public Environmental newInstance()
 	{
 		try{

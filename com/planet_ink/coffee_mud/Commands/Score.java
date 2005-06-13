@@ -133,7 +133,7 @@ public class Score extends Affect
 			msg.append("You are incorporeal, but still weigh "+mob.baseWeight()+" pounds.\n\r");
 		else
 			msg.append("You are "+mob.envStats().height()+" inches tall and weigh "+mob.baseWeight()+" pounds.\n\r");
-		msg.append("You have ^!"+mob.envStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds of encumbrance.\n\r");
+		msg.append("You are carrying ^!"+mob.inventorySize()+"^?/^!"+mob.maxCarry()+"^? items weighing ^!"+mob.envStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds.\n\r");
 		msg.append("You have ^!"+mob.getPractices()+"^? practices, ^!"+mob.getTrains()+"^? training sessions, and ^H"+mob.getQuestPoint()+"^? quest points.\n\r");
 		if((!CMSecurity.isDisabled("EXPERIENCE"))
 		&&!mob.charStats().getCurrentClass().expless()

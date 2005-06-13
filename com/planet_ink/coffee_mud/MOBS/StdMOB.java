@@ -339,6 +339,12 @@ public class StdMOB implements MOB
 		double bodyWeight=new Integer(baseWeight()).doubleValue();
 		return (int)Math.round(bodyWeight + ((str+10.0)*str*bodyWeight/150.0) + (str*5.0));
 	}
+    public int maxItems()
+    {
+        return (Item.wornOrder.length+2)
+                +(2*charStats().getStat(CharStats.DEXTERITY))
+                +(envStats().level());
+    }
 	public int maxFollowers()
 	{
 		return ((int)Math.round(Util.div(charStats().getStat(CharStats.CHARISMA),4.0))+1);

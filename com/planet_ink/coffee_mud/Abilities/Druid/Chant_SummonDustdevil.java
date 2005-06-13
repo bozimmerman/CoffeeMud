@@ -58,7 +58,8 @@ public class Chant_SummonDustdevil extends Chant
 					for(int i=0;i<V.size();i++)
 					{
 						Item I=(Item)V.elementAt(i);
-						if(mob.maxCarry()>=mob.envStats().weight()+I.envStats().weight())
+						if((mob.maxCarry()>=mob.envStats().weight()+I.envStats().weight())
+                        &&(mob.maxItems()>=(mob.inventorySize()+I.numberOfItems())))
 							CommonMsgs.get(mob,null,I,false);
 						else
 							giveUp=true;

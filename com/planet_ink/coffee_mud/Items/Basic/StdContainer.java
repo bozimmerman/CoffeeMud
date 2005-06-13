@@ -162,6 +162,12 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
+                        if((newitem.numberOfItems()>(mob.maxItems()-mob.inventorySize()))&&(!mob.isMine(this)))
+                        {
+                            mob.tell("You can't carry that many items.");
+                            return false;
+                        }
+                        else
 						if(!Sense.isGettable(newitem))
 						{
 							mob.tell("You can't get "+newitem.name()+".");
@@ -181,6 +187,12 @@ public class StdContainer extends StdItem implements Container
 					mob.tell(name()+" is too heavy.");
 					return false;
 				}
+                else
+                if(((numberOfItems()>mob.maxItems()-mob.inventorySize()))&&(!mob.isMine(this)))
+                {
+                    mob.tell("You can't carry that many items.");
+                    return false;
+                }
 				break;
 			case CMMsg.TYP_REMOVE:
 				if((msg.tool()!=null)

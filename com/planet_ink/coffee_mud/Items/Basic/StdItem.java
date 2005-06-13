@@ -491,6 +491,13 @@ public class StdItem implements Item
 	{
 		myContainer=newContainer;
 	}
+    public int numberOfItems()
+    {
+        if(!(this instanceof Container))
+            return 1;
+        else
+        return ((Container)this).getContents().size()+1;
+    }
 	public int usesRemaining()
 	{
 		return myUses;
@@ -782,6 +789,11 @@ public class StdItem implements Item
 					mob.tell(name()+" is too heavy.");
 					return false;
 				}
+                if((numberOfItems()>(mob.maxItems()-mob.inventorySize()))&&(!mob.isMine(this)))
+                {
+                    mob.tell("You can't carry that many items.");
+                    return false;
+                }
 				if(!Sense.isGettable(this))
 				{
 					mob.tell("You can't get "+name()+".");
