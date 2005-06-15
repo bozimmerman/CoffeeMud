@@ -29,6 +29,7 @@ public class MasterLeatherWorking extends CraftingSkill
 	public String name(){ return "Master Leather Working";}
 	private static final String[] triggerStrings = {"MASTERLEATHERWORKING","MLEATHERWORK","MLEATHERWORKING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected String supportedResourceString(){return "LEATHER";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
@@ -145,6 +146,16 @@ public class MasterLeatherWorking extends CraftingSkill
 			commonTell(mob,"Make what? Enter \"mleatherwork list\" for a list, \"mleatherwork refit <item>\" to resize, \"mleatherwork scan\", or \"mleatherwork mend <item>\".");
 			return false;
 		}
+        if((!auto)
+        &&(commands.size()>0)
+        &&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+        {
+            bundling=true;
+            if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+                return super.bundle(mob,commands);
+            else
+                return false;
+        }
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;

@@ -1,5 +1,4 @@
 name,level,ticks,wood,value,class,misc,capacity,armordmg,spell
-% Bundle	1	1	25	0	GenResource	BUNDLE			
 % Cup	1	20	1	1	GenDrink		5	
 % Key Ring	1	10	1	1	GenContainer	1024	100
 % Mug	1	20	1	1	GenDrink		5	

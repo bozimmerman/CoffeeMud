@@ -29,6 +29,7 @@ public class Sculpting extends CraftingSkill
 	public String name(){ return "Sculpting";}
 	private static final String[] triggerStrings = {"SCULPT","SCULPTING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected String supportedResourceString(){return "ROCK|STONE";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
@@ -137,6 +138,16 @@ public class Sculpting extends CraftingSkill
 			commonTell(mob,"Sculpt what? Enter \"sculpt list\" for a list, \"sculpt scan\", or \"sculpt mend <item>\".");
 			return false;
 		}
+        if((!auto)
+        &&(commands.size()>0)
+        &&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+        {
+            bundling=true;
+            if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+                return super.bundle(mob,commands);
+            else
+                return false;
+        }
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;

@@ -335,15 +335,19 @@ public class StdMOB implements MOB
 	
 	public int maxCarry()
 	{
+        if(CMSecurity.isAllowed(this,location(),"CARRYALL"))
+            return Integer.MAX_VALUE/2;
 		double str=new Integer(charStats().getStat(CharStats.STRENGTH)).doubleValue();
 		double bodyWeight=new Integer(baseWeight()).doubleValue();
 		return (int)Math.round(bodyWeight + ((str+10.0)*str*bodyWeight/150.0) + (str*5.0));
 	}
     public int maxItems()
     {
-        return (Item.wornOrder.length+2)
+        if(CMSecurity.isAllowed(this,location(),"CARRYALL"))
+            return Integer.MAX_VALUE/2;
+        return (2*Item.wornOrder.length)
                 +(2*charStats().getStat(CharStats.DEXTERITY))
-                +(envStats().level());
+                +(2*envStats().level());
     }
 	public int maxFollowers()
 	{

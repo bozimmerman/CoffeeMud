@@ -32,7 +32,7 @@ public class Score extends Affect
 		int adjustedAttack=mob.adjustedAttackBonus(null);
 		int adjustedArmor=(-mob.adjustedArmor())+50;
 
-		StringBuffer msg=new StringBuffer("");
+		StringBuffer msg=new StringBuffer("^N");
 
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 		if((!CMSecurity.isDisabled("CLASSES"))
@@ -125,16 +125,19 @@ public class Score extends Affect
 				msg.append("You are "+role+" of the ^H"+mob.getClanID()+"^?^. Clan.\n\r");
 			}
 		}
-		msg.append("\n\rYour stats are: \n\r^!"+mob.charStats().getStats()+"^?\n\r");
+		msg.append("\n\r^NYour stats are: \n\r^!"+mob.charStats().getStats()+"^?\n\r");
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? hit points, ^H");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? mana, and ^H");
 		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+"^? movement.\n\r");
 		if(mob.envStats().height()<0)
-			msg.append("You are incorporeal, but still weigh "+mob.baseWeight()+" pounds.\n\r");
+			msg.append("You are incorporeal, but still weigh ^!"+mob.baseWeight()+"^? pounds.\n\r");
 		else
-			msg.append("You are "+mob.envStats().height()+" inches tall and weigh "+mob.baseWeight()+" pounds.\n\r");
-		msg.append("You are carrying ^!"+mob.inventorySize()+"^?/^!"+mob.maxCarry()+"^? items weighing ^!"+mob.envStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds.\n\r");
-		msg.append("You have ^!"+mob.getPractices()+"^? practices, ^!"+mob.getTrains()+"^? training sessions, and ^H"+mob.getQuestPoint()+"^? quest points.\n\r");
+			msg.append("You are ^!"+mob.envStats().height()+"^? inches tall and weigh ^!"+mob.baseWeight()+"^? pounds.\n\r");
+        if(CMSecurity.isAllowed(mob,mob.location(),"CARRYALL"))
+            msg.append("You are carrying ^!"+mob.inventorySize()+"^?/^!"+mob.inventorySize()+"^? items weighing ^!"+mob.maxCarry()+"^? pounds.\n\r");
+        else
+    		msg.append("You are carrying ^!"+mob.inventorySize()+"^? items weighing ^!"+mob.envStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds.\n\r");
+		msg.append("You have ^!"+mob.getPractices()+"^? practices, ^!"+mob.getTrains()+"^? training sessions, and ^!"+mob.getQuestPoint()+"^? quest points.\n\r");
 		if((!CMSecurity.isDisabled("EXPERIENCE"))
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())

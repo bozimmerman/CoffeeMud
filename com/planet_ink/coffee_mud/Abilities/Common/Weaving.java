@@ -28,6 +28,7 @@ public class Weaving extends CraftingSkill
 	public String name(){ return "Weaving";}
 	private static final String[] triggerStrings = {"WEAVING","WEAVE"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected String supportedResourceString(){return "VEGETATION|HEMP|SILK|COTTON";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
@@ -143,6 +144,16 @@ public class Weaving extends CraftingSkill
 			commonTell(mob,"Weave what? Enter \"weave list\" for a list, \"weave refit <item>\" to resize, \"weave scan\", or \"weave mend <item>\".");
 			return false;
 		}
+        if((!auto)
+        &&(commands.size()>0)
+        &&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+        {
+            bundling=true;
+            if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+                return super.bundle(mob,commands);
+            else
+                return false;
+        }
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
         bundling=false;

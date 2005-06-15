@@ -29,6 +29,7 @@ public class Tailoring extends CraftingSkill
 	public String name(){ return "Tailoring";}
 	private static final String[] triggerStrings = {"KNIT","TAILOR","TAILORING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected String supportedResourceString(){return "CLOTH";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
@@ -139,6 +140,16 @@ public class Tailoring extends CraftingSkill
 			commonTell(mob,"Knit what? Enter \"knit list\" for a list, \"knit refit <item>\" to resize, \"knit scan\", or \"knit mend <item>\".");
 			return false;
 		}
+        if((!auto)
+        &&(commands.size()>0)
+        &&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+        {
+            bundling=true;
+            if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+                return super.bundle(mob,commands);
+            else
+                return false;
+        }
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;

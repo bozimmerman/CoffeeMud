@@ -2,7 +2,6 @@ name,level,ticks,wood,value,class,misc,capacity,armor,containmask,spell
 % Cushion	5	10	5	5	GenRideable	CHAIR	0	0	0	
 % Sleeping Bag	5	30	15	10	GenRideable	ENTER	0	0	0	
 % Tent	10	60	25	25	GenRideable	ENTER	5	0	0	
-% Bundle	1	1	25	0	GenResource	BUNDLE				
 % Pillow	1	10	5	1	GenBoffWeapon	BASHING		0	0	Prop_NoDamage
 Large % Pillow	10	10	5	27	GenBoffWeapon	BASHING	0	0	0	Prop_NoDamage
 % Armbands	3	30	1	18	GenArmor	ARMS	0	1	0	

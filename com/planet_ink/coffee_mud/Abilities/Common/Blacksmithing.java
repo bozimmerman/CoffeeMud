@@ -29,6 +29,7 @@ public class Blacksmithing extends CraftingSkill
 	public String name(){ return "Blacksmithing";}
 	private static final String[] triggerStrings = {"BLACKSMITH","BLACKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected String supportedResourceString(){return "METAL|MITHRIL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -116,6 +117,16 @@ public class Blacksmithing extends CraftingSkill
 			commonTell(mob,"Make what? Enter \""+triggerStrings[0].toLowerCase()+" list\" for a list.");
 			return false;
 		}
+        if((!auto)
+        &&(commands.size()>0)
+        &&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+        {
+            bundling=true;
+            if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+                return super.bundle(mob,commands);
+            else
+                return false;
+        }
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;

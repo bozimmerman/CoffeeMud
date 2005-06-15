@@ -28,6 +28,7 @@ public class Doe extends Deer
 		Username="a doe";
 		setDescription("A nervous, but beautifully graceful creation.");
 		setDisplayText("A doe looks up as you happen along.");
+        baseCharStats().setStat(CharStats.GENDER,'F');
 	}
 
 }

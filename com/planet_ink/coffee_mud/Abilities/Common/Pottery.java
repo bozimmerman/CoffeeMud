@@ -29,6 +29,7 @@ public class Pottery extends CraftingSkill
 	public String name(){ return "Pottery";}
 	private static final String[] triggerStrings = {"POT","POTTERY"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected String supportedResourceString(){return "CLAY|CHINA";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
@@ -111,6 +112,16 @@ public class Pottery extends CraftingSkill
 			commonTell(mob,"Make what? Enter \"pot list\" for a list.");
 			return false;
 		}
+        if((!auto)
+        &&(commands.size()>0)
+        &&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+        {
+            bundling=true;
+            if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+                return super.bundle(mob,commands);
+            else
+                return false;
+        }
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
         bundling=false;
