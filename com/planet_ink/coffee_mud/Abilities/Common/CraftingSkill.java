@@ -21,7 +21,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class CraftingSkill extends CommonSkill
+public class CraftingSkill extends GatheringSkill
 {
 	public String ID() { return "CraftingSkill"; }
 	public String name(){ return "Crafting Skill";}
