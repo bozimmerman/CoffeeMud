@@ -860,6 +860,14 @@ public class Scriptable extends StdBehavior
 				if(target!=null)
 					middle=target.name();
 				break;
+            case 'y':
+                if(source!=null)
+                    middle=source.charStats().sirmadam();
+                break;
+            case 'Y':
+                if((target!=null)&&(target instanceof MOB))
+                    middle=((MOB)target).charStats().sirmadam();
+                break;
 			case 'r':
 			case 'R':
 				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);

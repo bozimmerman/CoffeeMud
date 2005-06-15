@@ -247,8 +247,8 @@ public class Weaponsmithing extends CraftingSkill
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
-					if((level<=mob.envStats().level())
-					&&(canDo((String)V.elementAt(RCP_WEAPONCLASS),mob)))
+					if((autoGenerate>0)||((level<=mob.envStats().level())
+                                        &&((canDo((String)V.elementAt(RCP_WEAPONCLASS),mob)))))
 					{
 						buf.append(Util.padRight(item,17)+" "+Util.padRight(""+level,3)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -301,8 +301,8 @@ public class Weaponsmithing extends CraftingSkill
 				if(V.size()>0)
 				{
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					if((level<=mob.envStats().level())
-					&&(canDo((String)V.elementAt(RCP_WEAPONCLASS),mob)))
+					if((autoGenerate>0)||((level<=mob.envStats().level())
+                                        &&(canDo((String)V.elementAt(RCP_WEAPONCLASS),mob))))
 					{
 						foundRecipe=V;
 						break;

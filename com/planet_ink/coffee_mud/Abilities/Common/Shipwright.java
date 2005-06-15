@@ -233,7 +233,7 @@ public class Shipwright extends CraftingSkill
 				if(V.size()>0)
 				{
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					if(level<=mob.envStats().level())
+                    if((autoGenerate>0)||(level<=mob.envStats().level()))
 					{
 						foundRecipe=V;
 						break;

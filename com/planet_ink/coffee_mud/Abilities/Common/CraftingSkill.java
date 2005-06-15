@@ -374,8 +374,33 @@ public class CraftingSkill extends GatheringSkill
 		&&(recipes!=null)
 		&&(recipes.size()>0))
 		{
-			Vector randomRecipe=(Vector)recipes.elementAt(Dice.roll(1,recipes.size(),-1));
-			commands.addElement(randomRecipe.firstElement());
+            int tries=0;
+            int maxtries=100;
+            while((++tries)<maxtries)
+            {
+    			Vector randomRecipe=(Vector)recipes.elementAt(Dice.roll(1,recipes.size(),-1));
+                boolean proceed=true;
+                if((randomRecipe.size()>1))
+                {
+                    int levelIndex=-1;
+                    for(int i=1;i<randomRecipe.size();i++)
+                    {
+                        if(Util.isInteger((String)randomRecipe.elementAt(i)))
+                        {
+                            levelIndex=i;
+                            break;
+                        }
+                    }
+                    if((levelIndex>0)
+                    &&(mob.envStats().level()<Util.s_int((String)randomRecipe.elementAt(levelIndex))))
+                        proceed=false;
+                }
+                if((proceed)||(tries==(maxtries-1)))
+                {
+        			commands.addElement(randomRecipe.firstElement());
+                    break;
+                }
+            }
 		}
 	}
 

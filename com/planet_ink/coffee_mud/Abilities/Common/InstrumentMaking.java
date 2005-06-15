@@ -158,7 +158,7 @@ public class InstrumentMaking extends CraftingSkill
 			{
 				String race=((String)V.elementAt(RCP_RACES)).trim();
 				int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-				if((level<=mob.envStats().level())
+				if(((autoGenerate>0)||(level<=mob.envStats().level()))
 				&&((race.length()==0)||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 				{
 					foundRecipe=V;

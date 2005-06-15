@@ -189,6 +189,9 @@ tage:</FONT>&nbsp;</P>
     <TD>Outputs 'You' if Observer=Source, otherwise 
       'He'/'She'</TD></TR>
   <TR>
+    <TD width="20%">&lt;S-SIRMADAM&gt;</TD>
+    <TD>Outputs 'Sir'/'Madam'</TD></TR>
+  <TR>
     <TD width="20%">&lt;S-IS-ARE&gt;</TD>
     <TD>Outputs 'Are' if Observer=Source, otherwise 
     'Is'.</TD></TR>
@@ -228,6 +231,9 @@ tage:</FONT>&nbsp;</P>
     <TD width="20%">&lt;T-HE-SHE&gt;</TD>
     <TD>Outputs 'You' if Observer=Target, otherwise 
       'He'/'She'</TD></TR>
+  <TR>
+    <TD width="20%">&lt;T-SIRMADAM&gt;</TD>
+    <TD>Outputs 'Sir'/'Madam'</TD></TR>
   <TR>
     <TD width="20%">&lt;T-IS-ARE&gt;</TD>
     <TD>Outputs 'Are' if Observer=Target, otherwise 
@@ -1971,7 +1977,8 @@ requiredArmorSourceMinor may not be. The later method returns the MINOR code of
 the SOURCE code of the message generating the skill use. Typically this method 
 will either return -1 for non spell casters, or CMMsg.TYP_CAST_SPELL for spell 
 casters. See the digressions for more information on what the heck a source code 
-of a message might be. </FONT></P><pre>public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
+of a message might be. </FONT></P>
+<pre>public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 
 private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
@@ -1980,7 +1987,7 @@ private HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
 protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
 
 </PRE>
-<P align=left><FONT size=4>The The 
+<P align=left><FONT size=4>The 
 StdCharClass will automatically enforce weapon restrictions whenever a weapon 
 attack is made, provided these methods are defined. The allowedWeaponLevel() 
 method returns an equate defined in the CharClass interface which may specify 
@@ -1992,7 +1999,17 @@ disallowedWeaponClasses(MOB mob) and requiredWeaponMaterials() methods return
 HashSet objects which, due to the method calls in StdCharClass seen above, are 
 totally derivative of the value you already put in allowedWeaponLevel(). In 
 other words, so long as you include the allowedWeaponLevel() method, you should 
-also include those next four methods, exactly as you see them. </FONT></P><pre>private static boolean abilitiesLoaded=false;
+also include those next four methods, exactly as you see them. </FONT></P>
+<pre>
+public int availabilityCode(){return Area.THEME_FANTASY;}
+</pre>
+<P align=left><FONT size=4>The method availabilityCode defines how players can access this race.&nbsp; 
+Possible values for this constant include: 'Area.THEME_FANTASY' (makes the 
+class&nbsp;available for players to choose when creating fantasy characters), 
+'Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK' (makes the class available to spells or Skills, 
+but not for&nbsp;player creation), or '0' (the class is not 
+available to spells or for player creation.)&nbsp;</FONT></P>
+<pre>private static boolean abilitiesLoaded=false;
 public boolean loaded(){return abilitiesLoaded;}
 public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
@@ -2189,7 +2206,7 @@ race.&nbsp;</FONT></P><pre>public String ID(){	return "Grumbler"; }
 public String name(){ return "Grumbler"; }
 public String racialCategory(){return "Grumbler";}
 protected static Vector resources=new Vector();
-public int availability(){return Race.AVAILABLE_MAGICONLY;}
+public int availabilityCode(){return Area.THEME_FANTASY;}
 </PRE>
 <P align=left><FONT size=4>The first 
 methods return the unique ID of the Race (which must always match the java/class 
@@ -2202,11 +2219,11 @@ restrictions on doors and with shopkeepers.&nbsp; In many ways, the racial
 category is more important than the name of the race itself, if functionality is 
 considered.&nbsp; </FONT></P>
 <P align=left><FONT size=4>The last 
-method list above, availability, defines how players can access this race.&nbsp; 
-Possible values for this constant include: Race.AVAILABLE_ALL (makes the 
-race&nbsp;available for players to choose when creating characters), 
-Race.AVAILABLE_MAGICONLY (makes the race available to spells such as Polymorph 
-or Wish, but not for&nbsp;player creation), Race.AVAILABLE_NONE (the race is not 
+method list above, availabilityCode, defines how players can access this race.&nbsp; 
+Possible values for this constant include: 'Area.THEME_FANTASY' (makes the 
+race&nbsp;available for players to choose when creating fantasy characters), 
+'Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK' (makes the race available to spells such as Polymorph 
+or Wish, but not for&nbsp;player creation), or '0' (the race is not 
 available to spells or for player creation.)&nbsp;</FONT></P><pre>protected int shortestMale(){return 84;}
 protected int shortestFemale(){return 78;}
 protected int heightVariance(){return 80;}

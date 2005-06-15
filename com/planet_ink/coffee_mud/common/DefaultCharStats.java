@@ -492,6 +492,30 @@ public class DefaultCharStats implements Cloneable, CharStats
 		default: return "it";
 		}
 	}
+    public String sirmadam()
+    {
+        char c=(char)getStat(GENDER);
+        if((genderName!=null)&&(genderName.length()>0))
+            c=Character.toUpperCase(genderName.charAt(0));
+        switch(c)
+        {
+        case 'M': return "sir";
+        case 'F': return "madam";
+        default: return "sir";
+        }
+    }
+    public String SirMadam()
+    {
+        char c=(char)getStat(GENDER);
+        if((genderName!=null)&&(genderName.length()>0))
+            c=Character.toUpperCase(genderName.charAt(0));
+        switch(c)
+        {
+        case 'M': return "Sir";
+        case 'F': return "Madam";
+        default: return "Sir";
+        }
+    }
 
 	public String HeShe()
 	{

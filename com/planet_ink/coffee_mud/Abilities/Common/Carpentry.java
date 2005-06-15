@@ -149,6 +149,16 @@ public class Carpentry extends CraftingSkill
 			commonTell(mob,"Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, \"carve scan\", or \"carve mend <item>\".");
 			return false;
 		}
+        if((!auto)
+        &&(commands.size()>0)
+        &&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+        {
+            bundling=true;
+            if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+                return super.bundle(mob,commands);
+            else
+                return false;
+        }
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
@@ -253,8 +263,8 @@ public class Carpentry extends CraftingSkill
 				if(V.size()>0)
 				{
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					if(level<=mob.envStats().level())
-					{
+                    if((autoGenerate>0)||(level<=mob.envStats().level()))
+                    {
 						foundRecipe=V;
 						break;
 					}
