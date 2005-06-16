@@ -85,7 +85,7 @@ public class Chant_SummonTornado extends Chant
 				for(int i=0;i<mob.location().numItems();i++)
 				{
 					Item I=mob.location().fetchItem(i);
-					if((I!=null)&&(I.container()==null))
+					if((I!=null)&&(I.container()==null)&&(Sense.isGettable(I)))
 						stuff.addElement(I);
 				}
 				HashSet H=properTargets(mob,givenTarget,true);
@@ -182,7 +182,7 @@ public class Chant_SummonTornado extends Chant
 							if((msg.value()>0)||(msg2.value()>0))
 								damage = (int)Math.round(Util.div(damage,2.0));
 							MUDFight.postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
-							if(R!=mob.location()) M.tell("Wait a minute! Where are you?");
+							//if(R!=mob.location()) M.tell("Wait a minute! Where are you?");
 						}
 					}
 				}

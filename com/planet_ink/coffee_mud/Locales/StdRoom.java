@@ -1133,9 +1133,7 @@ public class StdRoom
 
 	public void showHappens(int allCode, String allMessage)
 	{
-		MOB everywhereMOB=CMClass.getMOB("StdMOB");
-		everywhereMOB.setName("nobody");
-		everywhereMOB.setLocation(this);
+		MOB everywhereMOB=CMMap.god(this);
 		FullMsg msg=new FullMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
 		send(everywhereMOB,msg);
 	}

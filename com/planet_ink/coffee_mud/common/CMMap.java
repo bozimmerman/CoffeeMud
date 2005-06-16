@@ -82,6 +82,15 @@ public class CMMap
 		}
 		return A;
 	}
+    
+    public static MOB god(Room R){
+        MOB everywhereMOB=CMClass.getMOB("StdMOB");
+        everywhereMOB.setName("somebody");
+        everywhereMOB.setLocation(R);
+        everywhereMOB.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN);
+        everywhereMOB.envStats().setDisposition(EnvStats.IS_NOT_SEEN);
+        return everywhereMOB;
+    }
 
 	public static boolean isObjectInSpace(SpaceObject O){return space.contains(O);}
 	public static void delObjectInSpace(SpaceObject O){	space.removeElement(O);}

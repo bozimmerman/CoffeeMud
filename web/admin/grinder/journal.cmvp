@@ -152,7 +152,7 @@
 							</TD>
 							<TD WIDTH=50% ALIGN=RIGHT>
 							@if?CheckAuthCode?AUTH_JOURNALS=true@
-							<INPUT TYPE=BUTTON NAME=TRANSFER VALUE="Transfer TO:" ONCLICK="if(document.JOURNAL.NEWJOURNAL.selectedIndex>0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','TRANSFER');">
+							<INPUT TYPE=BUTTON NAME=TRANSFER VALUE="Transfer TO:" ONCLICK="if(document.JOURNAL.NEWJOURNAL.selectedIndex>=0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','TRANSFER');">
 							@AddRequestParameter?THISJOURNAL=@@RequestParameter?JOURNAL@@ @
 							<SELECT NAME=NEWJOURNAL>
 							@JournalNext?RESET@

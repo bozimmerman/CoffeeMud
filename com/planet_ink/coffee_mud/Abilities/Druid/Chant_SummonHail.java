@@ -41,7 +41,7 @@ public class Chant_SummonHail extends Chant
         }
         if((!auto)
         &&((mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINTER_COLD)
-            ||(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_HAIL)))
+            &&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_HAIL)))
         {
             mob.tell("This chant requires a cold snap or a hail storm!");
             return false;
@@ -92,7 +92,7 @@ public class Chant_SummonHail extends Chant
                 }
                 if(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_HAIL)
                 {
-                    mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINTER_COLD);
+                    mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_HAIL);
                     mob.location().getArea().getClimateObj().forceWeatherTick(mob.location().getArea());
                 }
             }
