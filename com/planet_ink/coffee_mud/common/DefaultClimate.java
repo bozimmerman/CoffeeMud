@@ -26,8 +26,6 @@ public class DefaultClimate implements Climate
 	public long getTickStatus(){return tickStatus;}
 	protected int currentWeather=WEATHER_CLEAR;
 	protected int nextWeather=WEATHER_CLEAR;
-	protected int botherDown=BOTHER_WEATHER_TICKS;
-	private static final int WEATHER_TICK_DOWN=300; // 300 = 20 minutes * 60 seconds / 4
 	protected int weatherTicker=WEATHER_TICK_DOWN;
 	protected static int windDirection=Directions.NORTH;
 
@@ -327,9 +325,6 @@ public class DefaultClimate implements Climate
 				case 3: say=stopWord+" "+getWeatherDescription(A); break;
 				}
 			}
-			else
-			if(currentWeather==Climate.WEATHER_THUNDERSTORM)
-				say="A bolt of lightning streaks across the sky.";
 
 			if(say!=null)
 			{
@@ -355,180 +350,8 @@ public class DefaultClimate implements Climate
 		{
 			Area A=(Area)ticking;
 			tickStatus=Tickable.STATUS_WEATHER;
-			if((--botherDown)<=0)
-			{
-				botherDown=Climate.BOTHER_WEATHER_TICKS;
-				switch(weatherType(null))
-				{
-				case Climate.WEATHER_BLIZZARD:
-				case Climate.WEATHER_SLEET:
-				case Climate.WEATHER_SNOW:
-				case Climate.WEATHER_HAIL:
-				case Climate.WEATHER_THUNDERSTORM:
-				case Climate.WEATHER_RAIN:
-					for(Enumeration r=A.getProperMap();r.hasMoreElements();)
-					{
-						Room R=(Room)r.nextElement();
-						if(CoffeeUtensils.hasASky(R))
-							for(int i=0;i<R.numInhabitants();i++)
-							{
-								MOB mob=R.fetchInhabitant(i);
-								if((mob!=null)
-								&&(!mob.isMonster())
-								&&(Sense.aliveAwakeMobile(mob,true)))
-									mob.tell(getWeatherDescription(A));
-							}
-					}
-					break;
-				}
-			}
 			weatherTick(A);
-			if(weatherTicker==1)
-			{
-				int coldChance=0;
-				int fluChance=0;
-				int rustChance=0;
-				switch(weatherType(null))
-				{
-				case Climate.WEATHER_BLIZZARD:
-				case Climate.WEATHER_SLEET:
-				case Climate.WEATHER_SNOW:
-					coldChance=99;
-					fluChance=25;
-					rustChance=5;
-					break;
-				case Climate.WEATHER_HAIL:
-					coldChance=50;
-					rustChance=5;
-					break;
-				case Climate.WEATHER_THUNDERSTORM:
-				case Climate.WEATHER_RAIN:
-					coldChance=25;
-					rustChance=5;
-					break;
-				case Climate.WEATHER_WINTER_COLD:
-					coldChance=75;
-					fluChance=10;
-					break;
-				}
-				long[] allspot={Item.ON_FEET,Item.ON_TORSO,Item.ON_LEGS};
-				long allcode=0;
-				for(int l=0;l<allspot.length;l++)
-					allcode=allcode|allspot[l];
-
-				for(int s=0;s<Sessions.size();s++)
-				{
-					Session S=Sessions.elementAt(s);
-					if((S.mob()==null)
-					||(S.mob().location()==null)
-					||(S.mob().location().getArea()!=this)
-					||(S.mob().isMonster()))
-						continue;
-
-					MOB M=S.mob();
-					Room R=M.location();
-
-					if(coldChance>0)
-					{
-						if((R.domainConditions()&Room.CONDITION_COLD)>0) 
-						{
-							coldChance+=10;
-							fluChance+=5;
-						}
-						if((R.domainConditions()&Room.CONDITION_WET)>0)
-							coldChance+=5;
-						int save=(M.charStats().getStat(CharStats.SAVE_COLD)+M.charStats().getStat(CharStats.SAVE_WATER))/2;
-						if((Dice.rollPercentage()<(coldChance-save))
-						&&((weatherType(S.mob().location())!=Climate.WEATHER_CLEAR)))
-						{
-							long coveredPlaces=0;
-							Item I=CMClass.getItem("GenItem");
-							I.setRawLogicalAnd(false);
-							for(int l=0;l<allspot.length;l++)
-							{
-								I.setRawProperLocationBitmap(allspot[l]);
-								if(M.getWearPositions(allspot[l])==0)
-									coveredPlaces=coveredPlaces|allspot[l];
-							}
-							for(int i=0;i<M.inventorySize();i++)
-							{
-								I=M.fetchInventory(i);
-								if((I==null)||(I.amWearingAt(Item.INVENTORY)))
-								   continue;
-								if(I.amWearingAt(Item.ABOUT_BODY))
-									coveredPlaces=coveredPlaces|Item.ON_TORSO|Item.ON_LEGS;
-								for(int l=0;l<allspot.length;l++)
-									if(I.amWearingAt(allspot[l]))
-										coveredPlaces=coveredPlaces|allspot[l];
-							}
-							if(coveredPlaces!=allcode)
-							{
-								Ability COLD=CMClass.getAbility("Disease_Cold");
-								if(Dice.rollPercentage()<(fluChance+(((M.location().domainConditions()&Room.CONDITION_WET)>0)?10:0)))
-									COLD=CMClass.getAbility("Disease_Flu");
-								if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null))
-									COLD.invoke(M,M,true,0);
-							}
-						}
-					}
-
-					switch(R.domainType())
-					{
-					case Room.DOMAIN_INDOORS_UNDERWATER:
-					case Room.DOMAIN_INDOORS_WATERSURFACE:
-					case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-					case Room.DOMAIN_OUTDOORS_UNDERWATER:
-						rustChance+=5;
-						break;
-					default:
-						break;
-					}
-					if((R.domainConditions()&Room.CONDITION_WET)>0) 
-						rustChance+=2;
-					if(Dice.rollPercentage()<rustChance)
-					{
-						int weatherType=weatherType(R);
-						String weatherDesc=Climate.WEATHER_DESCS[weatherType].toLowerCase();
-						Vector rustThese=new Vector();
-						for(int i=0;i<M.inventorySize();i++)
-						{
-							Item I=M.fetchInventory(i);
-							if(I==null)	continue;
-							if((!I.amWearingAt(Item.INVENTORY))
-							&&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
-							&&(I.subjectToWearAndTear())
-							&&((Dice.rollPercentage()>I.envStats().ability()*25)))
-								rustThese.addElement(I);
-							else
-							if(I.amWearingAt(Item.ABOUT_BODY)
-							&&(((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)))
-							{	rustThese.clear();	break;	}
-						}
-						if(R!=null)
-						for(int i=0;i<rustThese.size();i++)
-						{
-							Item I=(Item)rustThese.elementAt(i);
-							FullMsg msg=new FullMsg(M,I,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,(weatherType!=0)?"<T-NAME> rusts in the "+weatherDesc+".":"<T-NAME> rusts in the water.",CMMsg.TYP_WATER,null,CMMsg.NO_EFFECT,null);
-							if(R.okMessage(M,msg))
-							{
-								R.send(M,msg);
-								if(msg.value()<=0)
-								{
-									I.setUsesRemaining(I.usesRemaining()-1);
-									if(I.usesRemaining()<=0)
-									{
-										msg=new FullMsg(M,null,null,CMMsg.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" carried by "+M.name()+" is destroyed!");
-										if(R.okMessage(M,msg))
-											R.send(M,msg);
-										I.destroy();
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+        }
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}

@@ -120,17 +120,23 @@ public class Farming extends GatheringSkill
 		}
 		
 		verb="planting";
-		if((mob.location().domainType()&Room.INDOORS)>0)
+		if((!auto)&&((mob.location().domainType()&Room.INDOORS)>0))
 		{
 			commonTell(mob,"You can't plant anything indoors!");
 			return false;
 		}
+        if((!auto)&&(mob.location().getArea().getClimateObj().weatherType(mob.location())==Climate.WEATHER_DROUGHT))
+        {
+            commonTell(mob,"The current drought conditions make planting useless.");
+            return false;
+        }
 		if(mob.location().fetchEffect("Farming")!=null)
 		{
 			commonTell(mob,"It looks like a crop is already growing here.");
 			return false;
 		}
 		if(mob.isMonster()
+        &&(!auto)
 		&&(!Sense.isAnimalIntelligence(mob))
 		&&(commands.size()==0))
 		{

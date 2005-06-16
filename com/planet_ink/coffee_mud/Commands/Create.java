@@ -352,6 +352,7 @@ public class Create extends BaseGenerics
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The size of the world just increased!");
 		mob.tell("You are now at "+R.roomID()+".");
 		R.bringMobHere(mob,true);
+        CoffeeMaker.addWeatherToAreaIfNecessary(A);
 	}
 
 	public void classes(MOB mob, Vector commands)

@@ -2573,7 +2573,7 @@ public class BaseGenerics extends StdCommand
 			for(int b=0;b<E.numBehaviors();b++)
 			{
 				Behavior B=E.fetchBehavior(b);
-				if(B!=null)
+				if((B!=null)&&(!B.isBorrowed()))
 				{
 					behaviorstr+=B.ID();
 					if(B.getParms().trim().length()>0)

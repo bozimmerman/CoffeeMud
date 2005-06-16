@@ -254,6 +254,7 @@ public class Modify extends BaseGenerics
 						if(areaType.length()==0) areaType="StdArea";
 						A=CMClass.DBEngine().DBCreateArea(restStr,areaType);
 						mob.location().setArea(A);
+                        CoffeeMaker.addWeatherToAreaIfNecessary(A);
 						reid=true;
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"This entire area twitches.\n\r");

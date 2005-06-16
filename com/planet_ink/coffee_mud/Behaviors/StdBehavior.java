@@ -33,6 +33,7 @@ public class StdBehavior implements Behavior
 	public long flags(){return 0;}
 	public boolean grantsAggressivenessTo(MOB M){return false;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
+    protected boolean isBorrowedBehavior=false;
 
 	protected String parms="";
 
@@ -63,6 +64,8 @@ public class StdBehavior implements Behavior
 	{
 
 	}
+    public void setBorrowed(boolean truefalse){isBorrowedBehavior=truefalse;}
+    public boolean isBorrowed(){return isBorrowedBehavior;}
 	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
 	{ return false; }
 	protected MOB getBehaversMOB(Tickable ticking)

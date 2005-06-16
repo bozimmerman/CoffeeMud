@@ -24,7 +24,7 @@ public class PuddleMaker extends StdBehavior
 {
 	public String ID(){return "PuddleMaker";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
-
+    protected int lastWeather=-1;
 
 	public boolean coldWetWeather(int weather)
 	{
@@ -38,6 +38,19 @@ public class PuddleMaker extends StdBehavior
 		}
 		return false;
 	}
+    public boolean coldWeather(int weather)
+    {
+        switch(weather)
+        {
+        case Climate.WEATHER_BLIZZARD:
+        case Climate.WEATHER_SLEET:
+        case Climate.WEATHER_SNOW:
+        case Climate.WEATHER_HAIL:
+        case Climate.WEATHER_WINTER_COLD:
+            return true;
+        }
+        return false;
+    }
 	public boolean dryWeather(int weather)
 	{
 		switch(weather)
@@ -106,7 +119,6 @@ public class PuddleMaker extends StdBehavior
 
 
 
-	int lastWeather=-1;
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

@@ -29,7 +29,7 @@ public class Chant_SummonTornado extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.MALICIOUS;}
-	public long flags(){return Ability.FLAG_MOVING;}
+	public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_WEATHERAFFECTING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -45,7 +45,8 @@ public class Chant_SummonTornado extends Chant
 			return false;
 		}
 		if((mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
-		&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINDY))
+		&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINDY)
+        &&(!auto))
 		{
 			mob.tell("This chant requires a thunderstorm!");
 			return false;

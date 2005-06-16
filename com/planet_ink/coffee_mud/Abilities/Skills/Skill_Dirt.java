@@ -87,7 +87,8 @@ public class Skill_Dirt extends StdAbility
 		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_CAVE)
 		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_WOOD))
 		{
-			mob.tell("There's no dirt here to kick!");
+            if(!auto)
+    			mob.tell("There's no dirt here to kick!");
 			return false;
 		}
 

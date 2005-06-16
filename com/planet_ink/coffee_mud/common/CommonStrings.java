@@ -68,7 +68,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_COLORSCHEME=43;
 	public static final int SYSTEM_SMTPSERVERNAME=44;
     public static final int SYSTEM_EXPCONTACTLINE=45;
-	public static final int NUM_SYSTEM=46;
+    public static final int SYSTEM_AUTOWEATHERPARMS=46;
+	public static final int NUM_SYSTEM=47;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -247,6 +248,7 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_COLORSCHEME,page.getStr("COLORSCHEME"));
 		setVar(SYSTEM_SMTPSERVERNAME,page.getStr("SMTPSERVERNAME"));
         setVar(SYSTEM_EXPCONTACTLINE,page.getStr("EXPCONTACTLINE"));
+        setVar(SYSTEM_AUTOWEATHERPARMS,page.getStr("AUTOWEATHERPARMS"));
         setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,page.getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
         Vector preLoadFactions=Util.parseSemicolons(page.getStr("FACTIONS"),true);
         Factions.clearFactions();

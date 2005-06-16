@@ -287,6 +287,7 @@ public class GrinderAreas
 		{
 		    Area A2=(Area)areasNeedingUpdates.elementAt(i);
 			CMClass.DBEngine().DBUpdateArea(A2.Name(),A2);
+            CoffeeMaker.addWeatherToAreaIfNecessary(A2);
 		}
 		return "";
 	}

@@ -33,6 +33,43 @@ public class Burning extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
+        
+        if((affected instanceof Item)&&(((Item)affected).owner() instanceof Room))
+        {
+            int unInvokeChance=0;
+            String what=null;
+            switch(((Room)(((Item)affected).owner())).getArea().getClimateObj().weatherType(((Room)(((Item)affected).owner()))))
+            {
+            case Climate.WEATHER_RAIN:
+                what="rain";
+                unInvokeChance=10;
+                break;
+            case Climate.WEATHER_THUNDERSTORM:
+                what="pounding rain";
+                unInvokeChance=15;
+                break;
+            case Climate.WEATHER_SLEET:
+                what="sleet";
+                unInvokeChance=5;
+                break;
+            case Climate.WEATHER_BLIZZARD:
+                what="swirling snow";
+                unInvokeChance=10;
+                break;
+            case Climate.WEATHER_SNOW:
+                what="snow";
+                unInvokeChance=10;
+                break;
+            }
+            if(Dice.rollPercentage()<unInvokeChance)
+            {
+                Room R=((Room)(((Item)affected).owner()));
+                if(R.numInhabitants()>0)
+                    R.showHappens(CMMsg.MSG_OK_ACTION,"The "+what+" puts out "+affected.name()+".");
+                unInvoke();
+                return false;
+            }
+        }
 		if((tickDown<2)&&(affected!=null))
 		{
 			if(affected instanceof Item)
