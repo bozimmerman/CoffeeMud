@@ -80,11 +80,11 @@ public class WeatherAffects extends PuddleMaker
     private void resetBotherTicks(){botherDown=Util.getParmInt(parms,"botherticks",Climate.WEATHER_TICK_DOWN/3);}
     private void resetDiseaseTicks(){diseaseDown=Util.getParmInt(parms,"diseaseticks",Climate.WEATHER_TICK_DOWN);}
     private void resetRustTicks(){rustDown=Util.getParmInt(parms,"rustticks",30);}
-    private void resetLightningTicks(){lightningDown=Util.getParmInt(parms,"lightningticks",Climate.WEATHER_TICK_DOWN/2);}
-    private void resetRumbleTicks(){rumbleDown=Util.getParmInt(parms,"rumbleticks",Climate.WEATHER_TICK_DOWN/3);}
-    private void resetGustTicks(){gustDown=Util.getParmInt(parms,"gustticks",Climate.WEATHER_TICK_DOWN/2);}
-    private void resetTornadoTicks(){tornadoDown=Util.getParmInt(parms,"tornadoticks",Climate.WEATHER_TICK_DOWN*2);}
-    private void resetHailTicks(){hailDown=Util.getParmInt(parms,"hailticks",Climate.WEATHER_TICK_DOWN/3);}
+    private void resetLightningTicks(){lightningDown=Util.getParmInt(parms,"lightningticks",Climate.WEATHER_TICK_DOWN*4);}
+    private void resetRumbleTicks(){rumbleDown=Util.getParmInt(parms,"rumbleticks",Climate.WEATHER_TICK_DOWN/4);}
+    private void resetGustTicks(){gustDown=Util.getParmInt(parms,"gustticks",Climate.WEATHER_TICK_DOWN);}
+    private void resetTornadoTicks(){tornadoDown=Util.getParmInt(parms,"tornadoticks",Climate.WEATHER_TICK_DOWN*10);}
+    private void resetHailTicks(){hailDown=Util.getParmInt(parms,"hailticks",Climate.WEATHER_TICK_DOWN/2);}
     private void resetDustTicks(){dustDown=Util.getParmInt(parms,"dustticks",50);}
     
 	public Area area(Environmental host)
@@ -253,7 +253,8 @@ public class WeatherAffects extends PuddleMaker
                             MOB mob=R.fetchInhabitant(i);
                             if((mob!=null)
                             &&(!mob.isMonster())
-                            &&(Sense.aliveAwakeMobile(mob,true)))
+                            &&(Sense.aliveAwakeMobile(mob,true))
+                            &&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER)))
                                 mob.tell(C.getWeatherDescription(A));
                         }
                 }
@@ -392,7 +393,6 @@ public class WeatherAffects extends PuddleMaker
         if((rumbleDown--)==1)
         {
             resetRumbleTicks();
-            HashSet roomsDone=new HashSet();
             for(int s=0;s<Sessions.size();s++)
             {
                 Session S=Sessions.elementAt(s);
@@ -400,52 +400,51 @@ public class WeatherAffects extends PuddleMaker
                 ||(S.mob().location()==null)
                 ||(S.mob().location().getArea()!=A)
                 ||(S.mob().isMonster())
-                ||(roomsDone.contains(S.mob().location())))
+                ||(!Util.bset(S.mob().getBitmap(),MOB.ATT_AUTOWEATHER)))
                     continue;
                 Room R=S.mob().location();
                 if(R!=null)
                 {
-                    roomsDone.add(R);
                     switch(C.weatherType(null))
                     {
                     case Climate.WEATHER_THUNDERSTORM:
                     {
                         if(C.weatherType(R)!=Climate.WEATHER_THUNDERSTORM)
-                            R.showHappens(CMMsg.MSG_OK_ACTION,"A thunderous rumble and CRACK of lightning can be heard.");
+                            S.mob().tell("A thunderous rumble and CRACK of lightning can be heard.");
                         else
                         if(R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY)
-                            R.showHappens(CMMsg.MSG_OK_ACTION,"A thunderous rumble and CRACK of lightning can be heard as the pounding rain soaks you.");
+                            S.mob().tell("A thunderous rumble and CRACK of lightning can be heard as the pounding rain soaks you.");
                         else
-                            R.showHappens(CMMsg.MSG_OK_ACTION,"A bolt of lightning streaks across the sky as the pounding rain soaks you!");
+                            S.mob().tell("A bolt of lightning streaks across the sky as the pounding rain soaks you!");
                         break;
                     }
                     case Climate.WEATHER_BLIZZARD:
                         if(C.weatherType(R)==Climate.WEATHER_BLIZZARD)
-                            R.showHappens(CMMsg.MSG_OK_ACTION,"Swirling clouds of snow buffet you.");
+                            S.mob().tell("Swirling clouds of snow buffet you.");
                         break;
                     case Climate.WEATHER_SNOW:
                         if(C.weatherType(R)==Climate.WEATHER_SNOW)
-                            R.showHappens(CMMsg.MSG_OK_ACTION,"Snowflakes fall lightly on you.");
+                            S.mob().tell("Snowflakes fall lightly on you.");
                         break;
                     case Climate.WEATHER_DUSTSTORM:
                         if(C.weatherType(R)==Climate.WEATHER_DUSTSTORM)
-                            R.showHappens(CMMsg.MSG_OK_ACTION,"Swirling clouds of dust assault you.");
+                            S.mob().tell("Swirling clouds of dust assault you.");
                         break;
                     case Climate.WEATHER_HAIL:
                         if(C.weatherType(R)==Climate.WEATHER_HAIL)
-                            R.showHappens(CMMsg.MSG_OK_ACTION,"You are being pelleted by hail! Ouch!");
+                            S.mob().tell("You are being pelleted by hail! Ouch!");
                         break;
                     case Climate.WEATHER_RAIN:
                         if(C.weatherType(R)==Climate.WEATHER_RAIN)
-                            R.showHappens(CMMsg.MSG_OK_ACTION,"The rain is soaking you!");
+                            S.mob().tell("The rain is soaking you!");
                         break;
                     case Climate.WEATHER_SLEET:
                         if(C.weatherType(R)==Climate.WEATHER_SLEET)
-                            R.showHappens(CMMsg.MSG_OK_ACTION,"Cold and blistering sleet is soaking you numb!");
+                            S.mob().tell("Cold and blistering sleet is soaking you numb!");
                         break;
                     case Climate.WEATHER_WINDY:
                         if(C.weatherType(R)==Climate.WEATHER_WINDY)
-                            R.showHappens(CMMsg.MSG_OK_ACTION,"The wind gusts around you.");
+                            S.mob().tell("The wind gusts around you.");
                         break;
                     }
                 }
