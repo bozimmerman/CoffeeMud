@@ -1977,8 +1977,7 @@ requiredArmorSourceMinor may not be. The later method returns the MINOR code of
 the SOURCE code of the message generating the skill use. Typically this method 
 will either return -1 for non spell casters, or CMMsg.TYP_CAST_SPELL for spell 
 casters. See the digressions for more information on what the heck a source code 
-of a message might be. </FONT></P>
-<pre>public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
+of a message might be. </FONT></P><pre>public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 
 private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
@@ -1999,17 +1998,15 @@ disallowedWeaponClasses(MOB mob) and requiredWeaponMaterials() methods return
 HashSet objects which, due to the method calls in StdCharClass seen above, are 
 totally derivative of the value you already put in allowedWeaponLevel(). In 
 other words, so long as you include the allowedWeaponLevel() method, you should 
-also include those next four methods, exactly as you see them. </FONT></P>
-<pre>
-public int availabilityCode(){return Area.THEME_FANTASY;}
-</pre>
-<P align=left><FONT size=4>The method availabilityCode defines how players can access this race.&nbsp; 
-Possible values for this constant include: 'Area.THEME_FANTASY' (makes the 
-class&nbsp;available for players to choose when creating fantasy characters), 
-'Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK' (makes the class available to spells or Skills, 
-but not for&nbsp;player creation), or '0' (the class is not 
-available to spells or for player creation.)&nbsp;</FONT></P>
-<pre>private static boolean abilitiesLoaded=false;
+also include those next four methods, exactly as you see them. </FONT></P><pre>public int availabilityCode(){return Area.THEME_FANTASY;}
+</PRE>
+<P align=left><FONT size=4>The method 
+availabilityCode defines how players can access this race.&nbsp; Possible values 
+for this constant include: 'Area.THEME_FANTASY' (makes the class&nbsp;available 
+for players to choose when creating fantasy characters), 
+'Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK' (makes the class available to 
+spells or Skills, but not for&nbsp;player creation), or '0' (the class is not 
+available to spells or for player creation.)&nbsp;</FONT></P><pre>private static boolean abilitiesLoaded=false;
 public boolean loaded(){return abilitiesLoaded;}
 public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
@@ -2219,12 +2216,13 @@ restrictions on doors and with shopkeepers.&nbsp; In many ways, the racial
 category is more important than the name of the race itself, if functionality is 
 considered.&nbsp; </FONT></P>
 <P align=left><FONT size=4>The last 
-method list above, availabilityCode, defines how players can access this race.&nbsp; 
-Possible values for this constant include: 'Area.THEME_FANTASY' (makes the 
-race&nbsp;available for players to choose when creating fantasy characters), 
-'Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK' (makes the race available to spells such as Polymorph 
-or Wish, but not for&nbsp;player creation), or '0' (the race is not 
-available to spells or for player creation.)&nbsp;</FONT></P><pre>protected int shortestMale(){return 84;}
+method list above, availabilityCode, defines how players can access this 
+race.&nbsp; Possible values for this constant include: 'Area.THEME_FANTASY' 
+(makes the race&nbsp;available for players to choose when creating fantasy 
+characters), 'Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK' (makes the race 
+available to spells such as Polymorph or Wish, but not for&nbsp;player 
+creation), or '0' (the race is not available to spells or for player 
+creation.)&nbsp;</FONT></P><pre>protected int shortestMale(){return 84;}
 protected int shortestFemale(){return 78;}
 protected int heightVariance(){return 80;}
 protected int lightestWeight(){return 2000;}
@@ -3142,7 +3140,22 @@ expires.&nbsp; The super.unInvoke() method, which is located in StdAbility.java,
 actually does the work of removing the Effect from the affected object (stored 
 in the variable affected), and then setting affected to null.&nbsp; In this 
 particular unInvoke() method, we also see the code trying to force the mob back 
-to his feet.</FONT></P><PRE>   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+to his feet.</FONT></P><PRE>   public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+   { return true;}
+</PRE>
+<P></P>
+<P align=left><FONT size=4>The 
+preInvoke method is an optional method that normally just returns true.&nbsp; 
+Unless you have reason to do so, you do not need to override the standard 
+preInvoke method in StdAbility.java.&nbsp; The preInvoke method must return true 
+before the invoke method (below) is executed.&nbsp; The difference between the 
+two is that the preInvoke method is called at the moment the skill command words 
+are entered, even if the skill is coded, via the castingTime() or 
+combatCastingTime() methods, to invoke at some later time.&nbsp; If your skill 
+does invoke at a later time, it is generally useful to use the preInvoke method 
+to scan the commands Vector, which contains the command parameter strings minus 
+any trigger words, for errors.&nbsp; You may also give the user a message that 
+their skill will invoke later on.</FONT></P><PRE>   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
    {
 </PRE>
 <P></P>
