@@ -835,9 +835,6 @@ public class StdRoom
 			if((!careAboutBrief)||(!Util.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
 			{
 				Say.append("^L^<RDesc^>" + roomDescription()+"^</RDesc^>");
-				if((Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
-				&&((domainType()&Room.INDOORS)==0))
-					Say.append("\n\r\n\r"+getArea().getClimateObj().weatherDescription(this));
 				Say.append("^N\n\r\n\r");
 			}
 		}

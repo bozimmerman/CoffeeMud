@@ -4164,7 +4164,10 @@ public class Scriptable extends StdBehavior
 							{
 								if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
 								{
-									M.baseCharStats().setStat(i,Util.s_int(arg3));
+                                    if((arg3.length()==1)&&(Character.isLetter(arg3.charAt(0))))
+    									M.baseCharStats().setStat(i,arg3.charAt(0));
+                                    else
+                                        M.baseCharStats().setStat(i,Util.s_int(arg3));
 									M.recoverCharStats();
 									found=true;
 									break;

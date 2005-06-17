@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -288,7 +289,18 @@ public class Go extends StdCommand
 		if(opExit!=null) opExit.executeMsg(mob,leaveMsg);
 
 		if(!nolook)
+        {
 			CommonMsgs.look(mob,true);
+            if((!mob.isMonster())
+            &&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
+            &&(thisRoom!=null)
+            &&(((Room)enterMsg.target())!=null)
+            &&((thisRoom.domainType()&Room.INDOORS)>0)
+            &&((((Room)enterMsg.target()).domainType()&Room.INDOORS)==0)
+            &&(((Room)enterMsg.target()).getArea().getClimateObj().weatherType(((Room)enterMsg.target()))!=Climate.WEATHER_CLEAR)
+            &&(((Room)enterMsg.target()).isInhabitant(mob)))
+                mob.tell("/n/r"+((Room)enterMsg.target()).getArea().getClimateObj().weatherDescription(((Room)enterMsg.target())));
+        }
 
 		if(!noriders)
 			ridersBehind(riders,(Room)leaveMsg.target(),(Room)enterMsg.target(),directionCode,flee);

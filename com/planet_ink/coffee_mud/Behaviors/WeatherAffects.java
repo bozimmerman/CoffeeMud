@@ -84,7 +84,7 @@ public class WeatherAffects extends PuddleMaker
     private void resetRumbleTicks(){rumbleDown=Util.getParmInt(parms,"rumbleticks",Climate.WEATHER_TICK_DOWN/3);}
     private void resetGustTicks(){gustDown=Util.getParmInt(parms,"gustticks",Climate.WEATHER_TICK_DOWN/2);}
     private void resetTornadoTicks(){tornadoDown=Util.getParmInt(parms,"tornadoticks",Climate.WEATHER_TICK_DOWN*2);}
-    private void resetHailTicks(){hailDown=Util.getParmInt(parms,"hailticks",50);}
+    private void resetHailTicks(){hailDown=Util.getParmInt(parms,"hailticks",Climate.WEATHER_TICK_DOWN/3);}
     private void resetDustTicks(){dustDown=Util.getParmInt(parms,"dustticks",50);}
     
 	public Area area(Environmental host)
@@ -183,11 +183,6 @@ public class WeatherAffects extends PuddleMaker
 		return true;
 	}
     
-    public void executeMsg(Environmental host, CMMsg msg)
-    {
-        super.executeMsg(host,msg);
-    }
-    
     public boolean tick(Tickable ticking, int tickID)
     {
         int realLastWeather=super.lastWeather;
@@ -210,7 +205,9 @@ public class WeatherAffects extends PuddleMaker
             {
                 Room R=(Room)ticking;
                 if((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-                &&(Dice.rollPercentage()<freezeOverChance))
+                &&(Dice.rollPercentage()<freezeOverChance)
+                &&(R instanceof Drink)
+                &&(((Drink)R).liquidType()==EnvResource.RESOURCE_FRESHWATER))
                 {
                     Ability A2=CMClass.getAbility("Spell_IceSheet");
                     if(A2!=null)
