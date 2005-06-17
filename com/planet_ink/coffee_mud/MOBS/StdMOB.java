@@ -1134,7 +1134,11 @@ public class StdMOB implements MOB
 				tickDown=((Command)O).ticksToExecute();
 			else
 			if(O instanceof Ability)
+            {
 				tickDown=isInCombat()?((Ability)O).combatCastingTime():((Ability)O).castingTime();
+                if(!EnglishParser.preEvoke(this,commands))
+                    return;
+            }
 
 			if(((!isInCombat())&&(tickDown<2))
 			||(tickDown==0))

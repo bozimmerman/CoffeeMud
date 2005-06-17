@@ -218,6 +218,7 @@ public class WaterCurrents extends ActiveTicker
 		public MOB invoker(){return null;}
 		public void setInvoker(MOB mob){}
 		public String[] triggerStrings(){return empty;}
+        public boolean preInvoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel){return true;}
 		public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel){return false;}
 		public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel){return false;}
 		public boolean autoInvocation(MOB mob){return false;}

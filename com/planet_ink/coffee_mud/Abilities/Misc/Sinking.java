@@ -28,6 +28,7 @@ public class Sinking extends StdAbility
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
+    protected boolean isTreading=false;
 	public Room room=null;
 
 	private boolean reversed(){return profficiency()==100;}
@@ -147,10 +148,14 @@ public class Sinking extends StdAbility
 					if((mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> tread(s) water."))
 					&&(!mob.isMonster()))
 					{
+                        isTreading=true;
 						mob.curState().expendEnergy(mob,mob.maxState(),true);
+                        mob.recoverEnvStats();
 						return true;
 					}
 				}
+                isTreading=false;
+                mob.recoverEnvStats();
 				mob.tell("\n\r\n\rYOU ARE SINKING "+addStr.toUpperCase()+"!!\n\r\n\r");
 				MUDTracker.move(mob,direction,false,false);
 				if(!canSinkFrom(mob.location(),direction))
@@ -230,6 +235,7 @@ public class Sinking extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		if((!Sense.isWaterWorthy(affected))
 		&&(!Sense.isInFlight(affected))
+        &&(!isTreading)
 		&&(affected.envStats().weight()>=1))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FALLING);
 	}

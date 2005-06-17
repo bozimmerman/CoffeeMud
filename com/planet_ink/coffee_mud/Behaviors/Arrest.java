@@ -1819,7 +1819,7 @@ public class Arrest extends StdBehavior
 				else
 				if(str.endsWith("HOME")&&(str.length()<6))
 				{
-					if(CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+					if(CoffeeUtensils.doesHavePriviledgesHere(mob,mob.location()))
 						if(str.startsWith("!")) 
 						{
 							if(CMSecurity.isDebugging("ARREST")) 

@@ -840,40 +840,63 @@ public class StdRoom
 		}
 
 		Vector viewItems=new Vector();
+        int itemsInTheDarkness=0;
 		for(int c=0;c<numItems();c++)
 		{
 			Item item=fetchItem(c);
-			if((item!=null)&&(item.container()==null))
+			if((item!=null)
+            &&(item.container()==null))
+            {
+                if(Sense.canBarelyBeSeenBy(item,mob))
+                    itemsInTheDarkness++;
 				viewItems.addElement(item);
+            }
 		}
-		Say.append(CMLister.niceLister(mob,viewItems,false,"RItem"," \"*\""));
+        StringBuffer itemStr=CMLister.niceLister(mob,viewItems,false,"RItem"," \"*\"");
+        if(itemStr.length()>0)
+    		Say.append(itemStr);
 
+        int mobsInTheDarkness=0;
 		for(int i=0;i<numInhabitants();i++)
 		{
 			MOB mob2=fetchInhabitant(i);
 			if((mob2!=null)&&(mob2!=mob))
 			{
-			   if(((Sense.canBeSeenBy(mob2,mob))
-			   &&(mob2.displayText(mob).length()>0))
-				  ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
-				{
-					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-						Say.append("^H("+CMClass.className(mob2)+")^N ");
-
-					Say.append("^M^<RMob \""+mob2.name()+"\"^>");
-					if(mob2.displayText(mob).length()>0)
-						Say.append(mob2.displayText(mob));
-					else
-						Say.append(mob2.name());
-					Say.append("^</RMob^>"+Sense.colorCodes(mob2,mob)+"^N\n\r");
-				}
+               if((mob2.displayText(mob).length()>0)
+               ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+               {
+    			   if(Sense.canBeSeenBy(mob2,mob))
+                   {
+    					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+    						Say.append("^H("+CMClass.className(mob2)+")^N ");
+    
+    					Say.append("^M^<RMob \""+mob2.name()+"\"^>");
+    					if(mob2.displayText(mob).length()>0)
+    						Say.append(mob2.displayText(mob));
+    					else
+    						Say.append(mob2.name());
+    					Say.append("^</RMob^>"+Sense.colorCodes(mob2,mob)+"^N\n\r");
+                   }
+                   else
+                   if(Sense.canBarelyBeSeenBy(mob2,mob))
+                       mobsInTheDarkness++;
+               }
 			}
 		}
 
 		if(Say.length()==0)
 			mob.tell("You can't see anything!");
 		else
+        {
 			mob.tell(Say.toString());
+            if(itemsInTheDarkness>0)
+                mob.tell("      ^IThere is something here, but it's too dark to make out.^?\n\r");
+            if(mobsInTheDarkness>1)
+                mob.tell("^MThe darkness conceals several others.^?\n\r");
+            else
+            if(mobsInTheDarkness>0)
+                mob.tell("^MYou are not alone, but it's too dark to tell.^?\n\r");
+        }
 	}
 
 	public void bringMobHere(MOB mob, boolean andFollowers)

@@ -100,6 +100,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_ResistGas",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_Grease",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_SummoningWard",false);
+            CMAble.addCharAbilityMapping(ID(),3,"Spell_SummonCompanion",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_WizardLock",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_Deafness",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_Knock",false);

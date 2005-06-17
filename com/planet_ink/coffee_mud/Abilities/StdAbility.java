@@ -646,6 +646,10 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			A.setProfficiency(100);
 	}
 
+    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    {
+        return true;
+    }
 	public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel)
 	{
 		Vector V=new Vector();

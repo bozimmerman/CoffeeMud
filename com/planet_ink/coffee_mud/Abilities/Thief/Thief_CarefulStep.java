@@ -33,27 +33,41 @@ public class Thief_CarefulStep extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
+    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    {
+        String dir=Util.combine(commands,0);
+        if(commands.size()>0) dir=(String)commands.lastElement();
+        int dirCode=Directions.getGoodDirectionCode(dir);
+        if(dirCode<0)
+        {
+            mob.tell("Step where?");
+            return false;
+        }
+        if(mob.isInCombat())
+        {
+            mob.tell("Not while you are fighting!");
+            return false;
+        }
+
+        if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
+        {
+            mob.tell("Step where?");
+            return false;
+        }
+        FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) walking carefully "+Directions.getDirectionName(dirCode)+".");
+        if(mob.location().okMessage(mob,msg))
+            mob.location().send(mob,msg);
+        else
+            return false;
+        return true;
+    }
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String dir=Util.combine(commands,0);
 		if(commands.size()>0) dir=(String)commands.lastElement();
 		int dirCode=Directions.getGoodDirectionCode(dir);
-		if(dirCode<0)
-		{
-			mob.tell("Step where?");
-			return false;
-		}
-		if(mob.isInCombat())
-		{
-			mob.tell("Not while you are fighting!");
-			return false;
-		}
-
-		if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
-		{
-			mob.tell("Step where?");
-			return false;
-		}
+        if(!preInvoke(mob,commands,givenTarget,auto,asLevel))
+            return false;
 
 		HashSet H=mob.getGroupMembers(new HashSet());
 		int highestLevel=0;

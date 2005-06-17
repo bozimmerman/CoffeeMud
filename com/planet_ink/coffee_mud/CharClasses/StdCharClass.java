@@ -617,7 +617,7 @@ public class StdCharClass implements CharClass, Cloneable
 		theNews.append(levelAdjuster(mob,1));
 		if(mob.playerStats()!=null)
 		{
-			CommonMsgs.channel("WIZINFO","",mob.Name()+" has just gained a level.",true);
+			CommonMsgs.channel("WIZINFO","",mob.Name()+" has just gained a level at "+CMMap.getExtendedRoomID(mob.location())+".",true);
 			if(mob.soulMate()==null)
 				CoffeeTables.bump(mob,CoffeeTables.STAT_LEVELSGAINED);
 		}

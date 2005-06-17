@@ -128,7 +128,8 @@ public class DefaultClimate implements Climate
 	}
 	public boolean canSeeTheMoon(Room room)
 	{
-		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_NIGHT)&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DUSK))
+		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_NIGHT)
+                &&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DUSK))
 		||(!CoffeeUtensils.hasASky(room)))
 			return false;
 		switch(weatherType(room))

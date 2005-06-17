@@ -137,7 +137,7 @@ public class FireBuilding extends CommonSkill
 			if(!(lighting instanceof EnvResource))
 			{
 				LandTitle t=CoffeeUtensils.getLandTitle(mob.location());
-				if((t!=null)&&(!CoffeeUtensils.doesOwnThisProperty(mob,mob.location())))
+				if((t!=null)&&(!CoffeeUtensils.doesHavePriviledgesHere(mob,mob.location())))
 				{
 					mob.tell("You are not allowed to burn anything here.");
 					return false;

@@ -122,7 +122,7 @@ public class WaterSurface extends StdRoom implements Drink
 		   ||(!(msg.tool() instanceof Ability))
 		   ||(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
 		&&(!Sense.isFalling(msg.source()))
-		&&(!Sense.isInFlight(msg.source()))
+        &&(!Sense.isInFlight(msg.source()))
 		&&(!Sense.isWaterWorthy(msg.source())))
 		{
 			MOB mob=msg.source();

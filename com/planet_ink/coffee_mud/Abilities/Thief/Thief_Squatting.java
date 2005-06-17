@@ -104,9 +104,9 @@ public class Thief_Squatting extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if(CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+		if(CoffeeUtensils.doesHavePriviledgesHere(mob,mob.location()))
 		{
-			mob.tell("You already own this property!");
+			mob.tell("This is your place already!");
 			return false;
 		}
 		LandTitle T=CoffeeUtensils.getLandTitle(mob.location());
