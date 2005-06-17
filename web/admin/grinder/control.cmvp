@@ -80,6 +80,12 @@
 			w=window.open("/ahelp.cmvp?HELPTOPIC="+named,
 			            "Help",strFeatures, false);
 		}
+		function openUp3(named)
+		{
+			var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/behavior.cmvp?BEHAVIOR="+named,
+			            "Behavior",strFeatures, false);
+		}
 	//-->
 	</SCRIPT>
 	//-->
@@ -225,6 +231,16 @@
 		<BR>
 		<FONT COLOR=WHITE>@INIValue?MASK=NIGHTHR&INIHELP@
 		</TD></TR>
+		
+		<TR><TD WIDTH=20% VALIGN=TOP><FONT COLOR=WHITE>AUTOWEATHERPARMS</FONT>
+		</TD><TD WIDTH=80% VALIGN=TOP>
+		<INPUT TYPE=TEXT NAME=AUTOWEATHERPARMS SIZE=10 VALUE="@INIValue?MASK=AUTOWEATHERPARMS&VALUE@">
+		<BR>
+		<FONT COLOR=WHITE>@INIValue?MASK=AUTOWEATHERPARMS&INIHELP@
+		<P>
+		<A HREF="javascript:openUp3('WEATHERAFFECTS')">Click here for WeatherAffects help</a>
+		</TD></TR>
+		
 		</TABLE>
 	@endif@
 	@if?CheckReqParm?INIPAGE=SECURITY@

@@ -299,7 +299,7 @@ public class Go extends StdCommand
             &&((((Room)enterMsg.target()).domainType()&Room.INDOORS)==0)
             &&(((Room)enterMsg.target()).getArea().getClimateObj().weatherType(((Room)enterMsg.target()))!=Climate.WEATHER_CLEAR)
             &&(((Room)enterMsg.target()).isInhabitant(mob)))
-                mob.tell("/n/r"+((Room)enterMsg.target()).getArea().getClimateObj().weatherDescription(((Room)enterMsg.target())));
+                mob.tell("\n\r"+((Room)enterMsg.target()).getArea().getClimateObj().weatherDescription(((Room)enterMsg.target())));
         }
 
 		if(!noriders)
