@@ -126,7 +126,7 @@ public class Chant_EelShock extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_GENERAL:0),"<T-NAME> is stunned.");
+				FullMsg msg=new FullMsg(mob,target,this,verbalCastMask(auto)|CMMsg.TYP_ELECTRIC,"<T-NAME> is stunned.");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);

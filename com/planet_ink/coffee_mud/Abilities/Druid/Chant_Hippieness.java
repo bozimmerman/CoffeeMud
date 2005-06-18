@@ -170,7 +170,7 @@ public class Chant_Hippieness extends Chant
 					oldClan=target.getClanID();
 					target.setClanID("");
 					CommonMsgs.say(target,null,"Far out...",false,false);
-					maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
+					maliciousAffect(mob,target,asLevel,0,verbalCastMask(auto)|CMMsg.TYP_MIND);
 				}
 			}
 		}

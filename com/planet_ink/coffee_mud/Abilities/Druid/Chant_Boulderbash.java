@@ -60,7 +60,7 @@ public class Chant_Boulderbash extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A boulder flies through the air!":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a huge rock flies at <T-HIM-HER>!^?"));
-			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+			FullMsg msg2=new FullMsg(mob,target,this,verbalCastMask(auto)|CMMsg.TYP_JUSTICE,null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);

@@ -62,7 +62,7 @@ public class Chant_SummonHail extends Chant
         if(success)
         {
             FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"Hailstones falling from the sky whack <T-NAME>.":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a volley of hailstones assaults <T-HIM-HER>!^?"));
-            FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_GENERAL:0),null);
+            FullMsg msg2=new FullMsg(mob,target,this,verbalCastMask(auto)|CMMsg.TYP_WATER,null);
             if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
             {
                 mob.location().send(mob,msg);

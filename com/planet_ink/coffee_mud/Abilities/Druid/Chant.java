@@ -26,19 +26,48 @@ public class Chant extends StdAbility
 	public String ID() { return "Chant"; }
 	public String name(){ return "a Druidic Chant";}
 	public String displayText(){return "(in the natural order)";}
-	protected int affectType(boolean auto){
-		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-		if(quality()==Ability.MALICIOUS)
-			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-		return affectType;
+    protected boolean renderedMundane=false;
+	protected int affectType(boolean auto)
+    {
+        int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
+        if(renderedMundane)
+        {
+            affectType=CMMsg.MSG_NOISE|CMMsg.MASK_MOUTH;
+            if(quality()==Ability.MALICIOUS)
+                affectType=affectType|CMMsg.MASK_MALICIOUS;
+        }
+        else
+        if(quality()==Ability.MALICIOUS)
+            affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
+            
+        if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+        return affectType;
 	}
+    protected int verbalCastMask(boolean auto)
+    {
+        int affectType=CMMsg.MSK_CAST_MALICIOUS_VERBAL;
+        if(renderedMundane)
+        {
+            affectType=CMMsg.MASK_SOUND|CMMsg.MASK_MOUTH;
+            if(quality()==Ability.MALICIOUS)
+                affectType=affectType|CMMsg.MASK_MALICIOUS;
+        }
+        if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+        return affectType;
+    }
 	private static final String[] triggerStrings = {"CHANT","CH"};
 	public int quality(){return Ability.OK_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 
+    public void setMiscText(String newText)
+    {
+        if(newText.equalsIgnoreCase("render mundane"))
+            renderedMundane=true;
+        else
+            super.setMiscText(newText);
+    }
 	public int classificationCode()	{ return Ability.CHANT;	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

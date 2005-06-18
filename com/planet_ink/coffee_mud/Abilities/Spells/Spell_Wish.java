@@ -81,7 +81,7 @@ public class Spell_Wish extends Spell
 	public void age(MOB mob)
 	{
 	    Ability A=CMClass.getAbility("Chant_SpeedAging");
-	    if(A!=null) A.invoke(mob,mob,true,0);
+	    if(A!=null){ A.setAbilityCode(65536); A.invoke(mob,mob,true,0);}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

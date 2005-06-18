@@ -76,7 +76,7 @@ public class Chant_ExplosiveDecompression extends Chant
 						MOB M=target.fetchInhabitant(i);
 						if((M!=null)&&(M!=mob))
 						{
-							FullMsg msg2=new FullMsg(mob,M,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_GENERAL:0),null);
+							FullMsg msg2=new FullMsg(mob,M,this,verbalCastMask(auto)|CMMsg.TYP_FIRE,null);
 							if(mob.location().okMessage(mob,msg2))
 							{
 								mob.location().send(mob,msg2);

@@ -475,7 +475,11 @@ public class WeatherAffects extends PuddleMaker
                     R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
                     MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
                     Ability A2=CMClass.getAbility("Chant_SummonLightning");
-                    if(A2!=null) A2.invoke(M,M,true,M.envStats().level());
+                    if(A2!=null)
+                    { 
+                        A2.setMiscText("RENDER MUNDANE"); 
+                        A2.invoke(M,M,true,M.envStats().level());
+                    }
                     for(int i=0;i<choices.size();i++)
                         if(choices.elementAt(i)!=R)
                             if((((Room)choices.elementAt(i)).getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY)
@@ -514,6 +518,7 @@ public class WeatherAffects extends PuddleMaker
                     Ability A2=CMClass.getAbility("Chant_SummonTornado");
                     if(A2!=null)
                     {
+                        A2.setMiscText("RENDER MUNDANE"); 
                         MOB mob=CMMap.god(R);
                         A2.invoke(mob,null,true,0);
                     }
@@ -580,7 +585,11 @@ public class WeatherAffects extends PuddleMaker
                     R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
                     MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
                     Ability A2=CMClass.getAbility("Chant_SummonHail");
-                    if(A2!=null) A2.invoke(M,M,true,M.envStats().level());
+                    if(A2!=null)
+                    {
+                        A2.setMiscText("RENDER MUNDANE"); 
+                        A2.invoke(M,M,true,M.envStats().level());
+                    }
                 }
             }
         }
@@ -645,7 +654,11 @@ public class WeatherAffects extends PuddleMaker
                     R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
                     MOB M=CMMap.god(R);
                     Ability A2=CMClass.getAbility("Chant_WindGust");
-                    if(A2!=null) A2.invoke(M,M,true,M.envStats().level());
+                    if(A2!=null)
+                    {
+                        A2.setMiscText("RENDER MUNDANE"); 
+                        A2.invoke(M,M,true,M.envStats().level());
+                    }
                 }
             }
         }

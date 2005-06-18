@@ -57,7 +57,7 @@ public class Chant_SummonFear extends Chant
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> frighten(s) <T-NAMESELF> with <S-HIS-HER> chant.^?");
-				FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+				FullMsg msg2=new FullMsg(mob,target,this,verbalCastMask(auto)|CMMsg.TYP_MIND,null);
 				if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 				{
 					mob.location().send(mob,msg);

@@ -163,7 +163,7 @@ public class Chant_SummonTornado extends Chant
 						MOB M=(MOB)O;
 						msg=new FullMsg(M,mob.location(),null,CMMsg.MSG_LEAVE|CMMsg.MASK_GENERAL,CMMsg.MSG_LEAVE,CMMsg.NO_EFFECT,null);
 						FullMsg msg2=new FullMsg(mob,M,this,affectType(auto),null);
-						FullMsg msg3=new FullMsg(mob,M,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+						FullMsg msg3=new FullMsg(mob,M,this,verbalCastMask(auto)|CMMsg.TYP_JUSTICE,null);
 						if((mob.location().okMessage(M,msg))
 						&&(mob.location().okMessage(mob,msg2))
 						&&(mob.location().okMessage(mob,msg3)))
