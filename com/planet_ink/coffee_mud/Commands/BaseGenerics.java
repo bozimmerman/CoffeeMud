@@ -6346,7 +6346,7 @@ public class BaseGenerics extends StdCommand
 					CMClass.DBEngine().DBDeleteMOB(fakeMe);
 					CMClass.DBEngine().DBCreateCharacter(me);
 				}
-				CMClass.DBEngine().DBUpdateMOB(me);
+				CMClass.DBEngine().DBUpdatePlayer(me);
 				CMClass.DBEngine().DBUpdateFollowers(me);
 			}
 		}

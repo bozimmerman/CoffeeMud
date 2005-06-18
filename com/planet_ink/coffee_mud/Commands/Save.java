@@ -32,7 +32,7 @@ public class Save extends StdCommand
 		{
 		    if(!mob.isMonster())
 		    {
-				CMClass.DBEngine().DBUpdateMOB(mob);
+				CMClass.DBEngine().DBUpdatePlayer(mob);
 				CMClass.DBEngine().DBUpdateFollowers(mob);
 				mob.tell("Your player record has been updated.");
 		    }
@@ -57,7 +57,7 @@ public class Save extends StdCommand
 				MOB M=session.mob();
 				if(M!=null)
 				{
-					CMClass.DBEngine().DBUpdateMOB(M);
+					CMClass.DBEngine().DBUpdatePlayer(M);
 					CMClass.DBEngine().DBUpdateFollowers(M);
 				}
 			}

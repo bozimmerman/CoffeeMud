@@ -833,6 +833,22 @@ public class Reset extends StdCommand
 		if(s.equalsIgnoreCase("clantick"))
 			Clans.tickAllClans();
 		else
+        if(s.equalsIgnoreCase("autoweather"))
+        {
+            if(mob.session()!=null)
+            {
+                mob.session().print(mob,null,null,"Modifying players...");
+                Vector V=CMClass.DBEngine().userList();
+                while(V.size()>0)
+                {
+                    MOB M=CMMap.getLoadPlayer((String)V.firstElement());
+                    V.removeElementAt(0);
+                    M.setBitmap(M.getBitmap()|MOB.ATT_AUTOWEATHER);
+                    CMClass.DBEngine().DBUpdatePlayerStatsOnly(M);
+                }
+            }
+        }
+        else
 		if(s.equalsIgnoreCase("arearacemat"))
 		{
 			// this is just utility code and will change frequently

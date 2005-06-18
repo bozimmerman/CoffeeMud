@@ -4256,7 +4256,7 @@ public class Import extends StdCommand
 						    M.baseCharStats().setStat(CharStats.AGE,M.playerStats().initializeBirthday((int)Math.round(Util.div(M.getAgeHours(),60.0)),M.baseCharStats().getMyRace()));
 						    M.recoverCharStats();
 						}
-						CMClass.DBEngine().DBUpdateMOB(M);
+						CMClass.DBEngine().DBUpdatePlayer(M);
 						M.removeFromGame();
 					}
 					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);

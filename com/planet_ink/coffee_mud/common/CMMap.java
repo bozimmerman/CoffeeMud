@@ -356,7 +356,7 @@ public class CMMap
 		{
 			M=CMClass.getMOB("StdMOB");
 			M.setName(TM.Name());
-			CMClass.DBEngine().DBReadMOB(M);
+			CMClass.DBEngine().DBReadPlayer(M);
 			CMClass.DBEngine().DBReadFollowers(M,false);
 			if(M.playerStats()!=null)
 				M.playerStats().setUpdated(M.playerStats().lastDateTime());

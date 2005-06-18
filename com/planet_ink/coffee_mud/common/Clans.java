@@ -410,7 +410,7 @@ public class Clans implements Clan, Tickable
 			    M.playerStats().getTitles().remove(title);
 		}
 		if((did)&&(!CMSecurity.isSaveFlag("NOPLAYERS")))
-			CMClass.DBEngine().DBUpdateMOB(M);
+			CMClass.DBEngine().DBUpdatePlayer(M);
 		return did;
 	}
 

@@ -325,7 +325,7 @@ public class FrontLogin extends StdCommand
 				}
 				else
 				{
-					CMClass.DBEngine().DBReadMOB(mob);
+					CMClass.DBEngine().DBReadPlayer(mob);
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
 					CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
@@ -797,7 +797,7 @@ public class FrontLogin extends StdCommand
 				if((CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("NEVER"))
 				&&(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
-				CMClass.DBEngine().DBUpdateMOB(mob);
+				CMClass.DBEngine().DBUpdatePlayer(mob);
 				CommonMsgs.channel("WIZINFO","",mob.Name()+" has just been created.",true);
 				CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
 				CoffeeTables.bump(mob,CoffeeTables.STAT_NEWPLAYERS);

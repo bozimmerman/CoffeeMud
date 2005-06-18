@@ -88,7 +88,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						mob.charStats().getCurrentClass().startCharacter(mob,true,false);
 						CoffeeUtensils.outfit(mob,mob.charStats().getCurrentClass().outfit());
 						mob.setSession(session);
-						CMClass.DBEngine().DBUpdateMOB(mob);
+						CMClass.DBEngine().DBUpdatePlayer(mob);
 					}
 				}
 				mob.tell("The book vanishes out of your hands.");
