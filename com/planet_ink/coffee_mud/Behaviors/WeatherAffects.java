@@ -665,22 +665,6 @@ public class WeatherAffects extends PuddleMaker
         if((rustDown--)==1)
         {
             resetRustTicks();
-            int rustChance=0;
-            switch(C.weatherType(null))
-            {
-            case Climate.WEATHER_BLIZZARD:
-            case Climate.WEATHER_SLEET:
-            case Climate.WEATHER_SNOW:
-                rustChance=5;
-                break;
-            case Climate.WEATHER_HAIL:
-                rustChance=5;
-                break;
-            case Climate.WEATHER_THUNDERSTORM:
-            case Climate.WEATHER_RAIN:
-                rustChance=5;
-                break;
-            }
             for(int s=0;s<Sessions.size();s++)
             {
                 Session S=Sessions.elementAt(s);
@@ -689,6 +673,22 @@ public class WeatherAffects extends PuddleMaker
                 ||(S.mob().location().getArea()!=A)
                 ||(S.mob().isMonster()))
                     continue;
+                int rustChance=0;
+                switch(C.weatherType(S.mob().location()))
+                {
+                case Climate.WEATHER_BLIZZARD:
+                case Climate.WEATHER_SLEET:
+                case Climate.WEATHER_SNOW:
+                    rustChance=5;
+                    break;
+                case Climate.WEATHER_HAIL:
+                    rustChance=5;
+                    break;
+                case Climate.WEATHER_THUNDERSTORM:
+                case Climate.WEATHER_RAIN:
+                    rustChance=5;
+                    break;
+                }
 
                 MOB M=S.mob();
                 Room R=M.location();

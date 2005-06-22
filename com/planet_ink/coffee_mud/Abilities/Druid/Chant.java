@@ -68,7 +68,7 @@ public class Chant extends StdAbility
         else
             super.setMiscText(newText);
     }
-	public int classificationCode()	{ return Ability.CHANT;	}
+	public int classificationCode()	{ return renderedMundane?Ability.SKILL:Ability.CHANT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -79,6 +79,7 @@ public class Chant extends StdAbility
 		&&(!mob.isMonster())
 		&&(!disregardsArmorCheck(mob))
 		&&(mob.isMine(this))
+        &&(!renderedMundane)
 		&&(Dice.rollPercentage()<50))
 		{
 			if(!appropriateToMyFactions(mob))

@@ -199,6 +199,8 @@ public class Poison extends StdAbility
 						else
 						    success=true;
 					}
+                    else
+                        success=maliciousAffect(mob,target,asLevel,100,-1);
 				}
 				else
 					success=false;

@@ -67,7 +67,8 @@ public class Score extends Affect
 		else
 			msg.append("You are ^H"+mob.Name()+"^?.\n\r");
 
-		//if(mob.image().length()>0) msg.append("^<IMAGE '"+mob.image()+"' URL=\""+CommonStrings.getVar(CommonStrings.SYSTEM_IMAGEURL)+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
+		//if(CommonStrings.mxpImagePath(mob.image()).length()>0)
+        //    msg.append("^<IMAGE '"+mob.image()+"' URL=\""+CommonStrings.mxpImagePath(mob.image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
 		if((!CMSecurity.isDisabled("CLASSES"))
 		&&(classLevel<mob.envStats().level()))
 		{

@@ -69,7 +69,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_SMTPSERVERNAME=44;
     public static final int SYSTEM_EXPCONTACTLINE=45;
     public static final int SYSTEM_AUTOWEATHERPARMS=46;
-	public static final int NUM_SYSTEM=47;
+    public static final int SYSTEM_MXPIMAGEPATH=47;
+	public static final int NUM_SYSTEM=48;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -249,6 +250,7 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_SMTPSERVERNAME,page.getStr("SMTPSERVERNAME"));
         setVar(SYSTEM_EXPCONTACTLINE,page.getStr("EXPCONTACTLINE"));
         setVar(SYSTEM_AUTOWEATHERPARMS,page.getStr("AUTOWEATHERPARMS"));
+        setUpLowVar(SYSTEM_MXPIMAGEPATH,page.getStr("MXPIMAGEPATH"));
         setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,page.getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
         Vector preLoadFactions=Util.parseSemicolons(page.getStr("FACTIONS"),true);
         Factions.clearFactions();
@@ -675,7 +677,19 @@ public class CommonStrings extends Scriptable
 			return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
 	}
 
-	public static String msp(String soundName, int priority)
+    public static String mxpImagePath(String fileName)
+    {
+        if((fileName==null)||(fileName.trim().length()==0))
+            return "";
+        if(getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+            return "";
+        if(getVar(SYSTEM_MXPIMAGEPATH).endsWith("/"))
+            return getVar(SYSTEM_MXPIMAGEPATH)+fileName;
+        else
+            return getVar(SYSTEM_MXPIMAGEPATH)+"/"+fileName;
+    }
+
+    public static String msp(String soundName, int priority)
 	{ return msp(soundName,50,Dice.roll(1,50,priority));}
 
 	public static String applyFilter(String msg, int whichFilter)

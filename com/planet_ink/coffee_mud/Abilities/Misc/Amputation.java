@@ -451,7 +451,7 @@ public class Amputation extends StdAbility
 		else
 		if(choice.toUpperCase().startsWith("LEFT "))
 		    choice=choice.substring(5).trim();
-		MOB target=getTarget(mob,commands,givenTarget);
+		MOB target=super.getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
 		if(!auto)
 		{
@@ -467,7 +467,7 @@ public class Amputation extends StdAbility
 			}
 			if(warrants.size()==0)
 			{
-			    mob.tell("You are not allowed to amputate from "+target.Name()+" at this time.");
+			    mob.tell("You are not authorized by law to amputate from "+target.Name()+" at this time.");
 			    return false;
 			}
 			Item w=mob.fetchWieldedItem();

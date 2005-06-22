@@ -970,24 +970,29 @@ public class Scriptable extends StdBehavior
 						String mid=back.substring(0,x);
 						int y=mid.indexOf(" ");
 						Environmental E=null;
+                        String arg1="";
 						if(y>=0)
 						{
-							E=getArgumentItem(mid.substring(0,y).trim(),source,monster,monster,target,primaryItem,secondaryItem,msg);
+                            arg1=mid.substring(0,y).trim();
+							E=getArgumentItem(arg1,source,monster,monster,target,primaryItem,secondaryItem,msg);
 							mid=mid.substring(y+1).trim();
 						}
-						if(E!=null)
-						{
-							middle=null;
-							Hashtable H=null;
-							if(E instanceof Room)
-								H=(Hashtable)Resources.getResource("SCRIPTVAR-"+CMMap.getExtendedRoomID((Room)E));
-							else
-								H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
-							if(H!=null)
-								middle=(String)H.get(mid.toUpperCase());
-							if(middle==null) middle="";
-						}
-						back=back.substring(x+1);
+                        if(arg1.length()>0)
+                        {
+                            Hashtable H=null;
+                            middle=null;
+    						if(E==null)
+                                H=(Hashtable)Resources.getResource("SCRIPTVAR-"+arg1);
+                            else
+    						if(E instanceof Room)
+    							H=(Hashtable)Resources.getResource("SCRIPTVAR-"+CMMap.getExtendedRoomID((Room)E));
+    						else
+    							H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
+    						if(H!=null)
+    							middle=(String)H.get(mid.toUpperCase());
+    						if(middle==null) middle="";
+                        }
+                        back=back.substring(x+1);
 					}
 				}
 				break;
@@ -2742,43 +2747,42 @@ public class Scriptable extends StdBehavior
 					scriptableError(scripted,"VAR","Syntax",evaluable);
 					return returnable;
 				}
-				if(E==null)
-					returnable=false;
+                Hashtable H=null;
+				if(E==null) 
+                    H=(Hashtable)Resources.getResource("SCRIPTVAR-"+varify(source,target,monster,primaryItem,secondaryItem,msg,arg1));
+				else
+				if(E instanceof Room)
+					H=(Hashtable)Resources.getResource("SCRIPTVAR-"+CMMap.getExtendedRoomID((Room)E));
+				else
+					H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
+                
+				String val="";
+				if(H!=null)
+				{
+					val=(String)H.get(arg2.toUpperCase());
+					if(val==null) val="";
+				}
+				if(arg3.equals("=="))
+					returnable=val.equals(arg4);
+				else
+				if(arg3.equals("!="))
+					returnable=!val.equals(arg4);
+				else
+				if(arg3.equals(">"))
+					returnable=Util.s_int(val)>Util.s_int(arg4);
+				else
+				if(arg3.equals("<"))
+					returnable=Util.s_int(val)<Util.s_int(arg4);
+				else
+				if(arg3.equals(">="))
+					returnable=Util.s_int(val)>=Util.s_int(arg4);
+				else
+				if(arg3.equals("<="))
+					returnable=Util.s_int(val)<=Util.s_int(arg4);
 				else
 				{
-					Hashtable H=null;
-					if(E instanceof Room)
-						H=(Hashtable)Resources.getResource("SCRIPTVAR-"+CMMap.getExtendedRoomID((Room)E));
-					else
-						H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
-					String val="";
-					if(H!=null)
-					{
-						val=(String)H.get(arg2.toUpperCase());
-						if(val==null) val="";
-					}
-					if(arg3.equals("=="))
-						returnable=val.equals(arg4);
-					else
-					if(arg3.equals("!="))
-						returnable=!val.equals(arg4);
-					else
-					if(arg3.equals(">"))
-						returnable=Util.s_int(val)>Util.s_int(arg4);
-					else
-					if(arg3.equals("<"))
-						returnable=Util.s_int(val)<Util.s_int(arg4);
-					else
-					if(arg3.equals(">="))
-						returnable=Util.s_int(val)>=Util.s_int(arg4);
-					else
-					if(arg3.equals("<="))
-						returnable=Util.s_int(val)<=Util.s_int(arg4);
-					else
-					{
-						scriptableError(scripted,"VAR","Syntax",evaluable);
-						return returnable;
-					}
+					scriptableError(scripted,"VAR","Syntax",evaluable);
+					return returnable;
 				}
 				break;
 			}
@@ -3852,21 +3856,21 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getPastBitClean(evaluable.substring(y+1,z),0).toUpperCase();
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
-				if(E!=null)
+                Hashtable H=null;
+                if(E==null) 
+                    H=(Hashtable)Resources.getResource("SCRIPTVAR-"+varify(source,target,monster,primaryItem,secondaryItem,msg,arg1));
+                else
+                if(E instanceof Room)
+                    H=(Hashtable)Resources.getResource("SCRIPTVAR-"+CMMap.getExtendedRoomID((Room)E));
+                else
+                    H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
+				String val="";
+				if(H!=null)
 				{
-					Hashtable H=null;
-					if(E instanceof Room)
-						H=(Hashtable)Resources.getResource("SCRIPTVAR-"+CMMap.getExtendedRoomID((Room)E));
-					else
-						H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
-					String val="";
-					if(H!=null)
-					{
-						val=(String)H.get(arg2.toUpperCase());
-						if(val==null) val="";
-					}
-					results.append(val);
+					val=(String)H.get(arg2.toUpperCase());
+					if(val==null) val="";
 				}
+				results.append(val);
 				break;
 			}
 			case 41: // eval

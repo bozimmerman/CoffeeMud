@@ -142,9 +142,11 @@ public class Chant_FindPlant extends Chant
 		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
 
+        if((commands.size()==0)&&(text().length()>0))
+            commands.addElement(text());
 		if(commands.size()==0)
 		{
-			mob.tell("Find which plant?  Use 'CHANT \""+name()+"\" LIST' for a list.");
+			mob.tell("Find which "+lookingFor+"?  Use 'CHANT \""+name()+"\" LIST' for a list.");
 			return false;
 		}
 		String s=Util.combine(commands,0);

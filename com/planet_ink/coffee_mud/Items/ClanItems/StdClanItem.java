@@ -55,16 +55,15 @@ public class StdClanItem extends StdItem implements ClanItem
 		        destroy();
 		    lastClanCheck=System.currentTimeMillis();
 	    }
-		if(StdClanItem.stdExecuteMsg(this,msg))
-			super.executeMsg(myHost,msg);
 	}
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(StdClanItem.stdOkMessage(this,msg))
 			return super.okMessage(myHost,msg);
 		return false;
 	}
-
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!StdClanItem.standardTick(this,tickID))
@@ -204,8 +203,8 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		else
 		if((msg.amITarget(myHost))
-		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
-		&&(((ClanItem)myHost).clanID().length()>0))
+        &&(((ClanItem)myHost).clanID().length()>0)
+        &&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)))
 		{
 			if(msg.source().getClanID().length()==0)
 			{
@@ -232,7 +231,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					return false;
 				}
 			}
-		}
+        }
 		return true;
 	}
 
