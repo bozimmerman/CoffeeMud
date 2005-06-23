@@ -129,7 +129,7 @@ mo	COWER SELF	You are afraid of your own shadow!	<S-NAME> cowers in the corner a
 ww	SCREAM <T-NAME>	ARRRRRRRRRRGH!!!!!  Yes, it MUST have been <T-HIS-HER> fault!!!	<S-NAME> screams loudly at <T-NAMESELF>.  Better leave before <S-NAME> blames you, too!!!	<S-NAME> screams at you!  That's not nice!  *sniff*	Your lungs can't reach that far!
 oo	NUDGE	Nudge whom?			
 ov	FBEG <T-NAME>	You beg forgiveness from <T-NAME>.	<S-NAME> begs <T-NAME> for mercy.	<S-NAME> begs <T-NAME> for forgiveness.	Who do you want to beg forgiveness from?
-mo	GRIN <T-NAME>	You grin.	<S-NAME> grins.		
+mo	GRIN	You grin.	<S-NAME> grins.		
 mv	REGAL <T-NAME>	You look regally down your nose at <T-NAME>.	<S-NAME> looks down upon <T-NAME> haughtily.	<S-NAME> looks down upon <T-NAME> haughtily.	They left too quickly, it seems.
 mv	FROLICK <T-NAME>	You frolick about <T-NAME>, trying to make <T-HIM-HER> dizzy. Or disgusted. Or both.	<S-NAME> frolicks playfully about <T-NAME>.	<S-NAME> frolicks around <T-NAME> playfully.	They left too quickly, it seems.
 wo	COMFORT	Do you feel uncomfortable?			
@@ -170,7 +170,7 @@ mo	WRIST	You hold out out a wrist for a slap.	<S-NAME> holds out a wrist for a s
 oo	BOW <T-NAME>	You bow before <T-HIM-HER>.	<S-NAME> bows before <T-NAMESELF>.	<S-NAME> bows before you.	Who's that?
 oo	AWE <T-NAME>	You stand in awe of <T-name>, like WOW, dude!	<S-name> stands in awe of <T-name>.	<S-name> stands in awe of you.	You must be imagining things, they aren`t here.
 mo	MATE SELF	You make passionate love to yourself.	You don't want to know what <S-NAME> is doing right now.		
-mo	LICK <T-NAME>	You lick your mouth and smile.	<S-NAME> licks <S-HIS-HER> mouth and smiles.		
+mo	LICK <T-NAME>	You delicately lick <T-YOUPOSS> jawline.	<S-NAME> delicately licks <T-YOUPOSS> jawline.	<S-NAME> delicately licks your jawline.	Lick away, that person is not here!!
 ov	CRAMP <T-NAME>	You hammerlock <T-HIM-HER>, screaming, "AAAAARRRRRGH!! I HAVE A CRAMP!!!"	<S-NAME> hammerlocks <T-NAMESELF>, screaming, "AAAAARRRRRGH!! I HAVE A CRAMP!!!".	<S-NAME> hammerlocks you, screaming "AAAAARRRRRGH!! I HAVE A CRAMP!!!"	Suffering as you are, you didn't see that person slip out.
 mo	NIBBLE	Nibble on who ?			
 ww	RAMBLE	You ramble on and on.	<S-NAME> rambles on about a boring exploit.		
@@ -657,6 +657,7 @@ oo	STRUT SELF	You strut to yourself, lost in your own world.	<S-NAME> struts to 
 mo	EYE <T-NAME>	You eye <t-name> suspiciously.	<s-name> sizes up <t-name> carefully. You wonder what <s-he-she> is up to.	<s-name> eyes you suspiciously. What did you do?	You must be going blind! They aren`t here.
 ww	CRITICIZE SELF	You criticize yourself profusely.	<S-NAME> tears <S-HIM-HERSELF> apart, cursing <S-HIS-HER> own stupidity.		
 ov	RUN	You run away in terror and horror!	<S-NAME> runs away in utter terror!		
+mv	LICK SELF	You lick your lips and smile.	<S-NAME> licks <S-HIS-HER> mouth and smiles.		
 mv	ANGELIC <T-NAME>	You smile angelically at <T-NAME>, the epitome of innocence exuding from you.	In an attempt to be the epitome of innocence, <S-NAME> smiles angelically at <T-NAME>.	<S-NAME> tries to smile angelically at you. And pigs fly.	You and innocence mix like oil and water -- and they knew that before they left.
 mo	RUB	You rub your hands together in greedy anticipation.	<S-NAME> rubs <S-HIS-HER> hands together in greedy anticipation.		
 mt	RUB <T-NAME>	You give <T-NAMESELF> a nice, long, kinky rubdown.	<S-NAME> gives <T-NAMESELF> a nice long rubdown.	<S-NAME> gives you a rubdown, running <S-HIS-HER> hands over your tense shoulders...Mmmm...	Shame to waste those talented hands, but they've already left.
