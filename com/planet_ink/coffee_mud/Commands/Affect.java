@@ -39,11 +39,7 @@ public class Affect extends StdCommand
 				if(disp.length()>25) colnum=99;
 			}
 		}
-		if(msg.length()==0)
-			msg.append("Nothing!");
-		else
-			msg.append("^?");
-		msg.append("\n\r");
+		msg.append("^N\n\r");
 		return msg.toString();
 	}
 	
@@ -79,7 +75,11 @@ public class Affect extends StdCommand
 		{
 			if(S==mob.session())
 				S.colorOnlyPrint("\n\r^!You are affected by:^? ");
-			S.colorOnlyPrintln(getAffects(mob));
+            String msg=getAffects(mob);
+            if(msg.length()<5)
+                S.colorOnlyPrintln("Nothing!\n\r^N");
+            else
+                S.colorOnlyPrintln(msg);
 		}
 		return false;
 	}

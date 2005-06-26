@@ -84,8 +84,7 @@ public class StdLimb extends StdItem
 	{
 		if(where==Item.HELD) 
 			return super.canWear(mob,where);
-		if((where==Item.FLOATING_NEARBY)
-		||(envStats().ability()!=0))
+		if(where==Item.FLOATING_NEARBY)
 			return false;
 		if(partNum()<0) return false;
 		if((where!=0)&&(where!=wearPlace()))
@@ -100,7 +99,6 @@ public class StdLimb extends StdItem
 			if((I instanceof StdLimb)
 			&&(((StdLimb)I).partNum()==partNum())
 			&&(I.amWearingAt(wearPlace()))
-			&&(I.envStats().ability()==0)
 			&&(I.container()==null))
 				numWorkingParts++;
 		}
@@ -113,8 +111,7 @@ public class StdLimb extends StdItem
 	{
 		if(wornCode==Item.HELD) 
 			return super.fitsOn(wornCode);
-		if((wornCode==Item.FLOATING_NEARBY)
-		||(envStats().ability()!=0))
+		if(wornCode==Item.FLOATING_NEARBY)
 			return false;
 		if(wornCode<=0)	return true;
 		return wearPlace()==wornCode;
@@ -127,8 +124,7 @@ public class StdLimb extends StdItem
 			mob.tell("This limb looks malformed.");
 			return false;
 		}
-		if((envStats().ability()!=0)
-		||(!canWear(mob,0)))
+		if(!canWear(mob,0))
 		{
 			mob.tell("You don't have any empty sockets to wear "+name()+" on.");
 			return false;

@@ -1155,7 +1155,7 @@ public class StdRoom
 	{
 		MOB everywhereMOB=CMMap.god(this);
 		FullMsg msg=new FullMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
-		send(everywhereMOB,msg);
+		sendOthers(everywhereMOB,msg);
 	}
 	public void showHappens(int allCode, Environmental like, String allMessage)
 	{

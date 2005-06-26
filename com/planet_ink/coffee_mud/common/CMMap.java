@@ -87,8 +87,6 @@ public class CMMap
         MOB everywhereMOB=CMClass.getMOB("StdMOB");
         everywhereMOB.setName("somebody");
         everywhereMOB.setLocation(R);
-        everywhereMOB.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN);
-        everywhereMOB.envStats().setDisposition(EnvStats.IS_NOT_SEEN);
         return everywhereMOB;
     }
 

@@ -2,7 +2,7 @@
 <HTML>
 <HEAD>
 <meta name="robots" content="noindex,nofollow">
-<TITLE>@RequestParameter?HELPTOPIC@</TITLE>
+<TITLE>Help Topics: @RequestParameter?HELPTOPIC@</TITLE>
 </HEAD>
 <BODY BGCOLOR=#000066 TEXT=#FFFFFF>
 <H3>@RequestParameter?HELPTOPIC@</H3>

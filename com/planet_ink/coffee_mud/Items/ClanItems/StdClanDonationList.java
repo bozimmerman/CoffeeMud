@@ -27,6 +27,8 @@ import java.io.*;
 public class StdClanDonationList extends StdClanItem
 {
 
+    private Item lastItem=null;
+    
     public StdClanDonationList()
     {
         super();
@@ -41,12 +43,33 @@ public class StdClanDonationList extends StdClanItem
         material=EnvResource.RESOURCE_PAPER;
     }
     
+    public boolean okMessage(Environmental myHost, CMMsg msg)
+    {
+        if((((ClanItem)this).clanID().length()>0)
+        &&(Sense.isGettable(this))
+        &&(msg.target()==this)
+        &&(owner() instanceof Room))
+        {
+            Clan C=Clans.getClan(clanID());
+            if((C!=null)&&(C.getDonation().length()>0))
+            {
+                Room R=CMMap.getRoom(C.getDonation());
+                if(R==owner())
+                {
+                    Sense.setGettable(this,false);
+                    text();
+                }
+            }
+        }
+        return super.okMessage(myHost,msg);
+    }
+    
     public void executeMsg(Environmental myHost, CMMsg msg)
     {
-    
-        if(((ClanItem)myHost).clanID().length()>0)
+        if(((ClanItem)this).clanID().length()>0)
         {
-            if((msg.target()==this)&&(msg.targetMinor()==CMMsg.TYP_READSOMETHING))
+            if((msg.target()==this)
+            &&(msg.targetMinor()==CMMsg.TYP_READSOMETHING))
             {
                 MOB mob=msg.source();
                 if(Sense.canBeSeenBy(this,mob))
@@ -66,14 +89,23 @@ public class StdClanDonationList extends StdClanItem
                         if(x>0)
                         {
                             val=Util.s_long(key.substring(0,x));
+                            boolean did=false;
                             for(int i=0;i<sorted.size();i++)
                                 if(((Long)((Object[])sorted.elementAt(i))[0]).longValue()>val)
                                 {
+                                    did=true;
                                     Object[] O=new Object[2];
                                     O[0]=new Long(val);
                                     O[1]=(String)set.elementAt(3);
                                     sorted.insertElementAt(O,i);
                                 }
+                            if(!did) 
+                            {
+                                Object[] O=new Object[2];
+                                O[0]=new Long(val);
+                                O[1]=(String)set.elementAt(3);
+                                sorted.addElement(O);
+                            }
                         }
                         V.removeElementAt(0);
                     }
@@ -91,8 +123,22 @@ public class StdClanDonationList extends StdClanItem
             else
             if((msg.target() instanceof Item)
             &&(msg.tool() instanceof Ability)
+            &&(msg.target()!=lastItem)
             &&(msg.tool().ID().equalsIgnoreCase("Spell_ClanDonate")))
-                CMClass.DBEngine().DBCreateData(clanID(),"DONATIONS",System.currentTimeMillis()+"/"+msg.source().name()+"/"+Math.random(),msg.source().name()+" donated "+msg.target().name()+" on "+msg.source().location().getArea().getTimeObj().timeDescription(msg.source(),msg.source().location())+".");
+            {
+                lastItem=(Item)msg.target();
+                CMClass.DBEngine().DBCreateData(clanID(),"DONATIONS",System.currentTimeMillis()+"/"+msg.source().name()+"/"+Math.random(),msg.source().name()+" donated "+msg.target().name()+" at "+msg.source().location().getArea().getTimeObj().getShortTimeDescription()+".");
+            }
+            else
+            if((msg.targetMinor()==CMMsg.TYP_GET)
+            &&(msg.target() instanceof Item)
+            &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
+                CMClass.DBEngine().DBCreateData(clanID(),"DONATIONS",System.currentTimeMillis()+"/"+msg.source().name()+"/"+Math.random(),msg.source().name()+" gets "+msg.target().name()+" at "+msg.source().location().getArea().getTimeObj().getShortTimeDescription()+".");
+            else
+            if((msg.targetMinor()==CMMsg.TYP_DROP)
+            &&(msg.target() instanceof Item)
+            &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
+                CMClass.DBEngine().DBCreateData(clanID(),"DONATIONS",System.currentTimeMillis()+"/"+msg.source().name()+"/"+Math.random(),msg.source().name()+" drops "+msg.target().name()+" at "+msg.source().location().getArea().getTimeObj().getShortTimeDescription()+".");
         }
         super.executeMsg(myHost,msg);
     }

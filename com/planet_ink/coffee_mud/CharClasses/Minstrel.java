@@ -53,7 +53,7 @@ public class Minstrel extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);

@@ -139,7 +139,7 @@ public class Spell_Portal extends Spell
 				e.setDisplayText("A swirling portal to somewhere");
 				e.setDoorsNLocks(false,true,false,false,false,false);
 				e.setExitParams("portal","close","open","closed.");
-				e.setName("portal");
+				e.setName("a swirling portal");
 				Ability A1=CMClass.getAbility("Prop_RoomView");
 				if(A1!=null){
 					A1.setMiscText(CMMap.getExtendedRoomID(newRoom));

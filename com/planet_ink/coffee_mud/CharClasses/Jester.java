@@ -54,7 +54,7 @@ public class Jester extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Alchemy",false);

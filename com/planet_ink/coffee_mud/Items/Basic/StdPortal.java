@@ -78,12 +78,6 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			{
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 				{
-					if((msg.source().location().rawDoors()[Directions.GATE]!=null)
-					||(msg.source().location().rawExits()[Directions.GATE]!=null))
-					{
-						msg.source().tell("There is already another portal here.");
-						return false;
-					}
 					Vector V=Util.parseSemicolons(readableText(),true);
 					if(V.size()==0)
 					{
@@ -138,20 +132,23 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 				{
 					Room thisRoom=msg.source().location();
-					if((thisRoom.rawDoors()[Directions.GATE]==null)
-					   &&(thisRoom.rawExits()[Directions.GATE]==null))
-					{
-						Vector V=Util.parseSemicolons(readableText(),true);
-						Room R=null;
-						if(V.size()>0)
-							R=CMMap.getRoom((String)V.elementAt(Dice.roll(1,V.size(),-1)));
-						if(R==null) R=thisRoom;
-						thisRoom.rawDoors()[Directions.GATE]=R;
-						thisRoom.rawExits()[Directions.GATE]=CMClass.getExit("Open");
-						MUDTracker.move(msg.source(),Directions.GATE,false,false,false);
-						thisRoom.rawDoors()[Directions.GATE]=null;
-						thisRoom.rawExits()[Directions.GATE]=null;
-					}
+					Vector V=Util.parseSemicolons(readableText(),true);
+					Room R=null;
+					if(V.size()>0)
+						R=CMMap.getRoom((String)V.elementAt(Dice.roll(1,V.size(),-1)));
+					if(R==null) R=thisRoom;
+                    Exit E=CMClass.getExit("OpenNameable");
+                    E.setMiscText(name());
+                    Exit oldE=thisRoom.rawExits()[Directions.GATE];
+                    Room oldR=thisRoom.rawDoors()[Directions.GATE];
+                    Exit oldE2=R.rawExits()[Directions.GATE];
+					thisRoom.rawDoors()[Directions.GATE]=R;
+					thisRoom.rawExits()[Directions.GATE]=E;
+                    R.rawExits()[Directions.GATE]=E;
+					MUDTracker.move(msg.source(),Directions.GATE,false,false,false);
+					thisRoom.rawDoors()[Directions.GATE]=oldR;
+					thisRoom.rawExits()[Directions.GATE]=oldE;
+                    R.rawExits()[Directions.GATE]=oldE2;
 				}
 			}
 			break;

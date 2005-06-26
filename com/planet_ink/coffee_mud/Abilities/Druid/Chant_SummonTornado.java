@@ -24,7 +24,7 @@ import java.util.*;
 public class Chant_SummonTornado extends Chant
 {
 	public String ID() { return "Chant_SummonTornado"; }
-	public String name(){return "Summon Tornado";}
+	public String name(){return renderedMundane?"tornado":"Summon Tornado";}
 	public String displayText(){return "(Inside a Tornado)";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}

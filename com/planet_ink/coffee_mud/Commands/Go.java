@@ -189,8 +189,8 @@ public class Go extends StdCommand
 		}
 
 		Exit opExit=thisRoom.getReverseExit(directionCode);
-		String directionName=Directions.getDirectionName(directionCode);
-		String otherDirectionName=Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
+		String directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():Directions.getDirectionName(directionCode);
+		String otherDirectionName=(Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
 
 		int generalMask=always?CMMsg.MASK_GENERAL:0;
 		int leaveCode=generalMask|CMMsg.MSG_LEAVE;

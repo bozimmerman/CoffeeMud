@@ -24,7 +24,7 @@ import java.util.*;
 public class Chant_SummonLightning extends Chant
 {
 	public String ID() { return "Chant_SummonLightning"; }
-	public String name(){ return "Summon Lightning";}
+	public String name(){ return renderedMundane?"lightning":"Summon Lightning";}
 	public int quality(){return Ability.MALICIOUS;}
 	public int maxRange(){return 10;}
 	protected int canAffectCode(){return 0;}

@@ -58,17 +58,16 @@ public class LockSmith extends CraftingSkill
 
 	public Item getBuilding(Environmental target)
 	{
-		String keyName=keyCode;
 		Item newbuilding=CMClass.getItem("GenKey");
 		if((workingOn instanceof Exit)
 		&&((Exit)workingOn).hasALock()
         &&(((Exit)workingOn).keyName().length()>0))
-			keyName=((Exit)workingOn).keyName();
+			keyCode=((Exit)workingOn).keyName();
 		if((workingOn instanceof Container)
 		&&(((Container)workingOn).hasALock())
         &&(((Container)workingOn).keyName().length()>0))
-			keyName=((Container)workingOn).keyName();
-		((Key)newbuilding).setKey(keyName);
+            keyCode=((Container)workingOn).keyName();
+		((Key)newbuilding).setKey(keyCode);
 		return newbuilding;
 	}
 
@@ -80,7 +79,7 @@ public class LockSmith extends CraftingSkill
 			if(tickDown==6)
 			{
 				if(building==null) building=getBuilding(workingOn);
-				if((workingOn!=null)&&(mob.location()!=null))
+				if((workingOn!=null)&&(mob.location()!=null)&&(!aborted))
 				{
 					if(workingOn instanceof Exit)
 					{
@@ -96,31 +95,33 @@ public class LockSmith extends CraftingSkill
 								building=null;
 								unInvoke();
 							}
-
-							Exit exit2=mob.location().getPairedExit(dir);
-							Room room2=mob.location().getRoomInDir(dir);
-							((Exit)workingOn).baseEnvStats().setLevel(mob.envStats().level());
-							((Exit)workingOn).recoverEnvStats();
-							((Exit)workingOn).setDoorsNLocks(true,false,true,true,true,true);
-							if(building instanceof Key)
+                            else
                             {
-                                if(((Key)building).getKey().length()==0)
-                                    ((Key)building).setKey(keyCode);
-								((Exit)workingOn).setKeyName(((Key)building).getKey());
+    							Exit exit2=mob.location().getPairedExit(dir);
+    							Room room2=mob.location().getRoomInDir(dir);
+    							((Exit)workingOn).baseEnvStats().setLevel(mob.envStats().level());
+    							((Exit)workingOn).recoverEnvStats();
+    							((Exit)workingOn).setDoorsNLocks(true,false,true,true,true,true);
+    							if(building instanceof Key)
+                                {
+                                    if(((Key)building).getKey().length()==0)
+                                        ((Key)building).setKey(keyCode);
+    								((Exit)workingOn).setKeyName(((Key)building).getKey());
+                                }
+    							CMClass.DBEngine().DBUpdateExits(mob.location());
+    							if((exit2!=null)
+    							   &&(!boltlock)
+    							   &&(exit2.hasADoor())
+    							   &&(exit2.isGeneric())
+    							   &&(room2!=null))
+    							{
+    								exit2.baseEnvStats().setLevel(mob.envStats().level());
+    								exit2.setDoorsNLocks(true,false,true,true,true,true);
+    								if(building instanceof Key)
+    									exit2.setKeyName(((Key)building).getKey());
+    								CMClass.DBEngine().DBUpdateExits(room2);
+    							}
                             }
-							CMClass.DBEngine().DBUpdateExits(mob.location());
-							if((exit2!=null)
-							   &&(!boltlock)
-							   &&(exit2.hasADoor())
-							   &&(exit2.isGeneric())
-							   &&(room2!=null))
-							{
-								exit2.baseEnvStats().setLevel(mob.envStats().level());
-								exit2.setDoorsNLocks(true,false,true,true,true,true);
-								if(building instanceof Key)
-									exit2.setKeyName(((Key)building).getKey());
-								CMClass.DBEngine().DBUpdateExits(room2);
-							}
 						}
 					}
 					else
@@ -134,12 +135,15 @@ public class LockSmith extends CraftingSkill
 								building=null;
 								unInvoke();
 							}
-							((Container)workingOn).setLidsNLocks(true,false,true,true);
-							if(building instanceof Key)
+                            else
                             {
-                                if(((Key)building).getKey().length()==0)
-                                    ((Key)building).setKey(keyCode);
-								((Container)workingOn).setKeyName(((Key)building).getKey());
+    							((Container)workingOn).setLidsNLocks(true,false,true,true);
+    							if(building instanceof Key)
+                                {
+                                    if(((Key)building).getKey().length()==0)
+                                        ((Key)building).setKey(keyCode);
+    								((Container)workingOn).setKeyName(((Key)building).getKey());
+                                }
                             }
 						}
 					}

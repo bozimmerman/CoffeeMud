@@ -25,7 +25,7 @@ import java.util.*;
 public class Chant_SummonHail extends Chant
 {
     public String ID() { return "Chant_SummonHail"; }
-    public String name(){ return "Summon Hail";}
+    public String name(){ return renderedMundane?"hail":"Summon Hail";}
     public int quality(){return Ability.MALICIOUS;}
     public int maxRange(){return 10;}
     protected int canAffectCode(){return 0;}

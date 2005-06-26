@@ -5117,24 +5117,12 @@ public class Import extends StdCommand
 								{
 									((ShopKeeper)M).setWhatIsSold(ShopKeeper.DEAL_INVENTORYONLY);
 									((ShopKeeper)M).addStoreInventory(CMClass.getStdItem("Parchment"),num,-1);
-									Item journal1=CMClass.getStdItem("GenJournal");
-									journal1.setName("the bug journal");
-									journal1.setBaseValue(250);
-									journal1.recoverEnvStats();
-									journal1.text();
-									((ShopKeeper)M).addStoreInventory(journal1,num,-1);
 									Item journal2=CMClass.getStdItem("GenJournal");
 									journal2.setName("the adventurers journal");
 									journal2.setBaseValue(250);
 									journal2.recoverEnvStats();
 									journal2.text();
 									((ShopKeeper)M).addStoreInventory(journal2,num,-1);
-									Item journal3=CMClass.getStdItem("GenJournal");
-									journal3.setName("a feature guide");
-									journal3.setBaseValue(500);
-									journal3.recoverEnvStats();
-									journal3.text();
-									((ShopKeeper)M).addStoreInventory(journal3,num,-1);
 								}
 								else
 								if(((ShopKeeper)M).whatIsSold()==ShopKeeper.DEAL_WEAPONS)

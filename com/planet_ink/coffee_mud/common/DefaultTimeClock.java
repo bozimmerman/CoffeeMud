@@ -65,6 +65,23 @@ public class DefaultTimeClock implements TimeClock
 	public int getDaysInWeek(){return weekNames.length;}
 	public void setDaysInWeek(String[] days){weekNames=days;}
 	
+    public String getShortTimeDescription()
+    {
+        StringBuffer timeDesc=new StringBuffer("");
+        timeDesc.append("hour "+getTimeOfDay()+" on ");
+        if(getDaysInWeek()>0)
+        {
+            long x=((long)getYear())*((long)getMonthsInYear())*getDaysInMonth();
+            x=x+((long)(getMonth()-1))*((long)getDaysInMonth());
+            x=x+getDayOfMonth();
+            timeDesc.append(getWeekNames()[(int)(x%getDaysInWeek())]+", ");
+        }
+        timeDesc.append("the "+getDayOfMonth()+numAppendage(getDayOfMonth()));
+        timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
+        if(getYearNames().length>0)
+            timeDesc.append(", "+Util.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
+        return timeDesc.toString();
+    }
 	public String timeDescription(MOB mob, Room room)
 	{
 		StringBuffer timeDesc=new StringBuffer("");

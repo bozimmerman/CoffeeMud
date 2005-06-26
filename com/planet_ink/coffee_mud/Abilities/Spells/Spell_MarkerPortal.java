@@ -126,7 +126,7 @@ public class Spell_MarkerPortal extends Spell
 				e.setDisplayText("A swirling portal to somewhere");
 				e.setDoorsNLocks(false,true,false,false,false,false);
 				e.setExitParams("portal","close","open","closed.");
-				e.setName("portal");
+				e.setName("a swirling portal");
 				oldRoom.rawDoors()[Directions.GATE]=newRoom;
 				newRoom.rawDoors()[Directions.GATE]=oldRoom;
 				oldRoom.rawExits()[Directions.GATE]=e;

@@ -98,7 +98,7 @@ public class Thief_Con extends ThiefSkill
 
 		if(!success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> into '"+Util.combine(commands,0)+"', but is unsuccesssful.^?");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> into '"+Util.combine(commands,0)+"', but <S-IS-ARE> unsuccessful.^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

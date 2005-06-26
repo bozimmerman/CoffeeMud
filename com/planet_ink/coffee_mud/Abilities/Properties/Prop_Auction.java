@@ -107,21 +107,30 @@ public class Prop_Auction extends Property
 						}
 						else
 						{
-						    BeanCounter.subtractMoney(highBidder,currency,bid);
-							BeanCounter.addMoney(M,currency,bid);
 							if((auctioning instanceof Item)
-							   &&(Sense.isInTheGame(highBidder,true)))
+						    &&(Sense.isInTheGame(highBidder,true))
+                            &&(Sense.isInTheGame(M,true)))
 							{
 								((Item)auctioning).unWear();
 								highBidder.location().bringItemHere((Item)auctioning,Item.REFUSE_PLAYER_DROP);
-								CommonMsgs.get(highBidder,null,(Item)auctioning,false);
-								M.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to you as payment from "+highBidder.name()+".  The goods have also been transferred in exchange.");
-								highBidder.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to "+M.name()+".  You should have received the auctioned goods.  This auction is complete.");
+								if(CommonMsgs.get(highBidder,null,(Item)auctioning,false))
+                                {
+                                    BeanCounter.subtractMoney(highBidder,currency,bid);
+                                    BeanCounter.addMoney(M,currency,bid);
+    								M.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to you as payment from "+highBidder.name()+".  The goods have also been transferred in exchange.");
+    								highBidder.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to "+M.name()+".  You should have received the auctioned goods.  This auction is complete.");
+                                }
+                                else
+                                {
+                                    M.giveItem((Item)auctioning);
+                                    M.tell("Your transaction could not be completed because "+highBidder.name()+" was unable to collect the item.  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+" for "+BeanCounter.nameCurrencyShort(M,bid)+".");
+                                    highBidder.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+M.name()+" about receipt of "+auctioning.name()+" for "+BeanCounter.nameCurrencyShort(M,bid)+".");
+                                }
 							}
 							else
 							{
-								M.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to you as payment from "+highBidder.name()+".  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+".");
-								highBidder.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to "+M.name()+".  Please contact "+M.name()+" about receipt of "+auctioning.name()+".");
+								M.tell("Your transaction could not be completed.  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+" for "+BeanCounter.nameCurrencyShort(M,bid)+".");
+								highBidder.tell("Your transaction could not be completed.  Please contact "+M.name()+" about receipt of "+auctioning.name()+" for "+BeanCounter.nameCurrencyShort(M,bid)+".");
 							}
 						}
 					}

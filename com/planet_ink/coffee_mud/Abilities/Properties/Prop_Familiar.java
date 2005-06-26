@@ -95,9 +95,9 @@ public class Prop_Familiar extends Property
 			if(familiar.amDead())
 				return removeMeFromFamiliarTo();
 			if((!imthedaddy)
-			   &&(familiarTo==null)
-			   &&(familiarWith==null)
-			   &&(((MOB)affected).amFollowing()!=null))
+		    &&(familiarTo==null)
+		    &&(familiarWith==null)
+		    &&(((MOB)affected).amFollowing()!=null))
 			{
 				familiarWith=(MOB)affected;
 				familiarTo=familiarWith.amFollowing();
@@ -109,20 +109,19 @@ public class Prop_Familiar extends Property
 				familiarTo.recoverCharStats();
 				familiarTo.recoverEnvStats();
 			}
-			if((familiarWith!=null)&&(familiarTo!=null))
-			{
-				if((familiarWith.amFollowing()==null)
-				||(familiarWith.amDead())
-				||(familiarTo.amDead())
-				||(familiarWith.amFollowing()!=familiarTo))
-					removeMeFromFamiliarTo();
-			}
+			if((familiarWith!=null)
+            &&(familiarTo!=null)
+			&&((familiarWith.amFollowing()==null)||(familiarWith.amFollowing()!=familiarTo))
+			&&(Sense.isInTheGame(familiarWith,true)))
+                removeMeFromFamiliarTo();
 		}
 		return super.tick(ticking,tickID);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
+        
+        if((familiarWith!=null)&&(familiarTo!=null)&&(familiarWith.location()==familiarTo.location()))
 		switch(familiarType)
 		{
 		case DOG:
@@ -162,6 +161,7 @@ public class Prop_Familiar extends Property
 		&&(familiarWith!=null)
 		&&(familiarTo!=null)
 		&&((msg.amITarget(familiarWith))||(msg.amITarget(familiarTo)))
+        &&(familiarWith.location()==familiarTo.location())
 		&&(familiarType==RABBIT))
 		{
 			MOB target=(MOB)msg.target();
@@ -180,6 +180,14 @@ public class Prop_Familiar extends Property
 		return super.okMessage(myHost,msg);
 	}
 
+    public void executeMsg(Environmental host, CMMsg msg)
+    {
+        if((msg.sourceMinor()==CMMsg.TYP_DEATH)
+        &&((msg.source()==familiarWith)||(msg.source()==familiarTo)))
+            removeMeFromFamiliarTo();
+        super.executeMsg(host,msg);
+    }
+    
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -193,6 +201,7 @@ public class Prop_Familiar extends Property
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
+        if((familiarWith!=null)&&(familiarTo!=null)&&(familiarWith.location()==familiarTo.location()))
 		switch(familiarType)
 		{
 		case DOG:
@@ -202,7 +211,7 @@ public class Prop_Familiar extends Property
 				affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+1);
 				break;
 		case CAT:
-				affectableStats.setStat(CharStats.SAVE_PARALYSIS,affectableStats.getStat(CharStats.SAVE_PARALYSIS)+1);
+				affectableStats.setStat(CharStats.SAVE_PARALYSIS,affectableStats.getStat(CharStats.SAVE_PARALYSIS)+100);
 				break;
 		case BAT:
 				affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+1);

@@ -35,8 +35,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected int budgetTickDown=2;
 	protected String devalueRate="";
 
-	private final static Hashtable titleSets=new Hashtable();
-
 	public StdShopKeeper()
 	{
 		super();
@@ -465,7 +463,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if(baseInventory!=null)baseInventory.clear();
 				if(duplicateInventory!=null) duplicateInventory.clear();
 				if(prices!=null) prices.clear();
-				if(titleSets!=null) titleSets.clear();
 				invResetTickDown=invResetRate();
 				if(invResetTickDown==0) invResetTickDown=Util.s_int(CommonStrings.getVar(CommonStrings.SYSTEM_INVRESETRATE));
 				if(invResetTickDown==0) invResetTickDown=Integer.MAX_VALUE;
@@ -912,13 +909,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					budgetRemaining=budgetRemaining-Math.round(val);
 					mob.recoverEnvStats();
 					mob.tell(name()+" pays you "+BeanCounter.nameCurrencyShort(this,val)+" for "+msg.tool().name()+".");
-					if(msg.tool() instanceof LandTitle)
-					{
-						Object removeKey=null;
-						for(Enumeration e=titleSets.keys();e.hasMoreElements();)
-						{ Object O=e.nextElement();if(titleSets.get(O)==msg.tool()) removeKey=O; break;}
-						if(removeKey!=null) titleSets.remove(removeKey);
-					}
 					if(msg.tool() instanceof Item)
 					{
 						Item item=(Item)msg.tool();
@@ -1075,13 +1065,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						FullMsg msg2=new FullMsg(mobFor,product,this,CMMsg.MSG_GET,null);
 						if((product instanceof LandTitle)||(location().okMessage(mobFor,msg2)))
 						{
-							if(product instanceof LandTitle)
-							{
-								Object removeKey=null;
-								for(Enumeration e=titleSets.keys();e.hasMoreElements();)
-								{ Object O=e.nextElement();if(titleSets.get(O)==product) removeKey=O; break;}
-								if(removeKey!=null) titleSets.remove(removeKey);
-							}
 							tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 							location().send(mobFor,msg2);
 							if((msg.tool() instanceof InnKey)&&(location()!=null))
@@ -1488,13 +1471,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				}
 			}
 			else
-				for(Enumeration r=getStartRoom().getArea().getProperMap();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					LandTitle A=CoffeeUtensils.getLandTitle(R);
-					if((A!=null)&&(R.roomID().length()>0))
-						titles.put(R,A);
-				}
+			for(Enumeration r=getStartRoom().getArea().getProperMap();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				LandTitle A=CoffeeUtensils.getLandTitle(R);
+				if((A!=null)&&(R.roomID().length()>0))
+					titles.put(R,A);
+			}
 
 			for(Enumeration r=titles.keys();r.hasMoreElements();)
 			{
@@ -1510,21 +1493,16 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						for(int v=0;v<V2.size();v++)
 							roomsHandling.add(V2.elementAt(v));
 					}
-					Item I=(Item)titleSets.get(A);
-					if(I==null)
-					{
-						I=CMClass.getItem("GenTitle");
-						if(R instanceof Room)
-							((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID((Room)R));
-						else
-							((LandTitle)I).setLandPropertyID(R.Name());
-						if((((LandTitle)I).landOwner().length()>0)
-						&&(!I.Name().endsWith(" (Copy)")))
-							I.setName(I.Name()+" (Copy)");
-						I.text();
-						I.recoverEnvStats();
-						titleSets.put(A,I);
-					}
+					Item I=CMClass.getItem("GenTitle");
+					if(R instanceof Room)
+						((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID((Room)R));
+					else
+						((LandTitle)I).setLandPropertyID(R.Name());
+					if((((LandTitle)I).landOwner().length()>0)
+					&&(!I.Name().endsWith(" (Copy)")))
+						I.setName(I.Name()+" (Copy)");
+					I.text();
+					I.recoverEnvStats();
 					if((A.landOwner().length()>0)
 					&&(!A.landOwner().equals(name))
 					&&((!A.landOwner().equals(mob.getLiegeID()))||(!mob.isMarriedToLiege())))

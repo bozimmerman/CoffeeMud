@@ -120,7 +120,7 @@ public class Prayer_Gateway extends Prayer
 				e.setDisplayText("A divine gateway to somewhere");
 				e.setDoorsNLocks(false,true,false,false,false,false);
 				e.setExitParams("gateway","close","open","closed.");
-				e.setName("gateway");
+				e.setName("a divine gateway");
 				mob.location().rawDoors()[Directions.GATE]=newRoom;
 				newRoom.rawDoors()[Directions.GATE]=mob.location();
 				mob.location().rawExits()[Directions.GATE]=e;

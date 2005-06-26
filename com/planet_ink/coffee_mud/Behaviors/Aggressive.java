@@ -86,9 +86,6 @@ public class Aggressive extends StdBehavior
 			MOB mob=observer.location().fetchInhabitant(i);
 			if((mob!=null)&&(mob!=observer))
 			{
-				if(mob.charStats().getCurrentClass().ID().equals("Archon"))
-					return false;
-
 				if((startItWith==null)
 				&&(MUDZapper.zapperCheck(zapStr,mob)))
 					 startItWith=mob;
