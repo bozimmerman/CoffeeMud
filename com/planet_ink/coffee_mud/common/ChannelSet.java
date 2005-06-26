@@ -119,7 +119,7 @@ public class ChannelSet
 		return false;
 	}
 	
-	public static boolean mayReadThisChannel(MOB M, int i)
+	public static boolean mayReadThisChannel(MOB M, int i, boolean zapCheckOnly)
 	{
 	    if(M==null) return false;
 	    
@@ -130,8 +130,7 @@ public class ChannelSet
 		&&((M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT)))
 		    return false;
 
-		if((!M.amDead())
-		&&(M.location()!=null)
+		if(((zapCheckOnly)||((!M.amDead())&&(M.location()!=null)))
 		&&(MUDZapper.zapperCheck(getChannelMask(i),M))
 		&&(!Util.isSet(M.playerStats().getChannelMask(),i)))
 			return true;
@@ -248,7 +247,7 @@ public class ChannelSet
 		        if((S!=mySession)
 		        &&(S.mob()!=null)
 		        &&(mySession.amBeingSnoopedBy(S))
-		        &&(!ChannelSet.mayReadThisChannel(S.mob(),channelCode)))
+		        &&(!ChannelSet.mayReadThisChannel(S.mob(),channelCode,false)))
 		        {
 		            if(invalid==null) invalid=new Vector();
 		            invalid.add(S);
