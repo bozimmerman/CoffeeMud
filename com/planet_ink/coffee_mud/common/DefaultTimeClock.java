@@ -131,6 +131,7 @@ public class DefaultTimeClock implements TimeClock
 	private String numAppendage(int num)
 	{
 	    String strn=""+num;
+        if((num<11)||(num>13))
 		switch(Util.s_int(""+(strn).charAt(strn.length()-1)))
 		{
 		case 1: return "st";

@@ -110,11 +110,11 @@ public class GenCoins extends GenItem implements Coins
 			{
 				Item I=R.fetchItem(i);
 				if((I!=null)
-				   &&(I!=this)
-				   &&(I instanceof Coins)
-				   &&(((Coins)I).getDenomination()==getDenomination())
-				   &&((Coins)I).getCurrency().equals(getCurrency())
-				   &&(I.container()==container()))
+			    &&(I!=this)
+			    &&(I instanceof Coins)
+			    &&(((Coins)I).getDenomination()==getDenomination())
+			    &&((Coins)I).getCurrency().equals(getCurrency())
+			    &&(I.container()==container()))
 				{
 					alternative=(Coins)I;
 					break;
@@ -129,19 +129,20 @@ public class GenCoins extends GenItem implements Coins
 			{
 				Item I=M.fetchInventory(i);
 				if((I!=null)
-				   &&(I!=this)
-				   &&(I instanceof Coins)
-				   &&(((Coins)I).getDenomination()==getDenomination())
-				   &&((Coins)I).getCurrency().equals(getCurrency())
-				   &&(I.container()==container()))
+			    &&(I!=this)
+			    &&(I instanceof Coins)
+			    &&(((Coins)I).getDenomination()==getDenomination())
+			    &&((Coins)I).getCurrency().equals(getCurrency())
+			    &&(I.container()==container()))
 				{
 					alternative=(Coins)I;
 					break;
 				}
 			}
 		}
-		if(alternative!=null)
+		if((alternative!=null)&&(alternative!=this))
 		{
+System.out.println(alternative.owner().name()+"/"+alternative.name());            
 			alternative.setNumberOfCoins(alternative.getNumberOfCoins()+getNumberOfCoins());
 			destroy();
 			return true;

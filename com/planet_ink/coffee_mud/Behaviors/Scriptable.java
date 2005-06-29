@@ -1369,8 +1369,7 @@ public class Scriptable extends StdBehavior
 			}
 			else
 			{
-			    if(tickStatus!=Tickable.STATUS_NOT)
-				    tickStatus=Tickable.STATUS_MISC+funcCode.intValue();
+		    tickStatus=Tickable.STATUS_MISC+funcCode.intValue();
 			switch(funcCode.intValue())
 			{
 			case 1: // rand
@@ -2952,8 +2951,7 @@ public class Scriptable extends StdBehavior
 			}
 			else
 			{
-			    if(tickStatus!=Tickable.STATUS_NOT)
-			        tickStatus=Tickable.STATUS_MISC2+funcCode.intValue();
+	        tickStatus=Tickable.STATUS_MISC2+funcCode.intValue();
 			switch(funcCode.intValue())
 			{
 			case 1: // rand
@@ -3942,7 +3940,8 @@ public class Scriptable extends StdBehavior
 						  Vector script,
 					  	  String msg)
 	{
-		for(int si=1;si<script.size();si++)
+        tickStatus=Tickable.STATUS_START;
+        for(int si=1;si<script.size();si++)
 		{
 			String s=((String)script.elementAt(si)).trim();
 			String cmd=Util.getCleanBit(s,0).toUpperCase();
@@ -3952,8 +3951,7 @@ public class Scriptable extends StdBehavior
 			        if(methods[i].startsWith(cmd))
 			            methCode=new Integer(i);
 			if(methCode==null) methCode=new Integer(0);
-		    if(tickStatus!=Tickable.STATUS_NOT)
-			    tickStatus=Tickable.STATUS_MISC3+methCode.intValue();
+		    tickStatus=Tickable.STATUS_MISC3+methCode.intValue();
 			if(cmd.length()==0)
 				continue;
 			else
@@ -4002,6 +4000,7 @@ public class Scriptable extends StdBehavior
 				if(!foundendif)
 				{
 					scriptableError(scripted,"IF","Syntax"," Without ENDIF!");
+                    tickStatus=Tickable.STATUS_END;
 					return null;
 				}
 				if(V.size()>1)
@@ -4010,12 +4009,17 @@ public class Scriptable extends StdBehavior
 					//for(int v=0;v<V.size();v++)
 					//	source.tell("Statement "+((String)V.elementAt(v)));
 					String response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg);
-					if(response!=null) return response;
+					if(response!=null) 
+                    {
+                        tickStatus=Tickable.STATUS_END;
+                        return response;
+                    }
 					//source.tell("Stopping "+conditionStr);
 				}
 				break;
 			}
 			case 50: // break;
+                tickStatus=Tickable.STATUS_END;
 				return null;
 			case 1: // mpasound
 			{
@@ -4432,7 +4436,8 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 			case 48: // return
-				return varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
+                tickStatus=Tickable.STATUS_END;
+                return varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
 			case 7: // mpechoat
 			{
 				Environmental newTarget=getArgumentMOB(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
@@ -5210,6 +5215,7 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 		}
+        tickStatus=Tickable.STATUS_END;
 		return null;
 	}
 
@@ -5925,7 +5931,6 @@ public class Scriptable extends StdBehavior
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-	    tickStatus=Tickable.STATUS_START;
 		super.tick(ticking,tickID);
 		MOB mob=getScriptableMOB(ticking);
 
@@ -5934,7 +5939,6 @@ public class Scriptable extends StdBehavior
 		if((mob==null)||(lastKnownLocation==null))
 		{
 			altStatusTickable=null;
-		    tickStatus=Tickable.STATUS_NOT;
 			return true;
 		}
 
@@ -6120,7 +6124,6 @@ public class Scriptable extends StdBehavior
 					que.removeElement(SB);
 			}
 		}catch(Exception e){}
-	    tickStatus=Tickable.STATUS_NOT;
 		altStatusTickable=null;
 		return true;
 	}

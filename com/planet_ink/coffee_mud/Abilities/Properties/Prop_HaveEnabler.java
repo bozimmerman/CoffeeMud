@@ -28,6 +28,7 @@ public class Prop_HaveEnabler extends Property
 	private Item myItem=null;
 	private MOB lastMOB=null;
     private Vector lastMOBeffected=new Vector();
+    boolean processing2=false;
 	boolean processing=false;
 	protected Vector spellV=null;
 	public Vector getMySpellsV()
@@ -143,11 +144,24 @@ public class Prop_HaveEnabler extends Property
 		lastMOB=null;
 	}
 
+    public void recoverEnvStats()
+    {
+        if(processing2) return;
+        processing2=true;
+        super.recoverEnvStats();
+        if((affected instanceof Item)
+        &&(lastMOB!=null)
+        &&((((Item)affected).owner()!=lastMOB)||(((Item)affected).amDestroyed()))
+        &&(lastMOB.location()!=null))
+            removeMyAffectsFromLastMob();
+        processing2=false;
+    }
+    
 	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;
-		if((affectedMOB!=null)&&(affectedMOB instanceof Item))
+		if(affectedMOB instanceof Item)
 		{
 			myItem=(Item)affectedMOB;
 

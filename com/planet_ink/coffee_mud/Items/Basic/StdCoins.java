@@ -159,8 +159,9 @@ public class StdCoins extends StdItem implements Coins
 				}
 			}
 		}
-		if(alternative!=null)
+		if((alternative!=null)&&(alternative!=this))
 		{
+System.out.println(alternative.owner().name()+"/"+alternative.name());            
 			alternative.setNumberOfCoins(alternative.getNumberOfCoins()+getNumberOfCoins());
 			destroy();
 			return true;

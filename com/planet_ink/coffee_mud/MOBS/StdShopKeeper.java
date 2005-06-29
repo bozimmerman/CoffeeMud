@@ -1493,16 +1493,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						for(int v=0;v<V2.size();v++)
 							roomsHandling.add(V2.elementAt(v));
 					}
-					Item I=CMClass.getItem("GenTitle");
-					if(R instanceof Room)
-						((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID((Room)R));
-					else
-						((LandTitle)I).setLandPropertyID(R.Name());
-					if((((LandTitle)I).landOwner().length()>0)
-					&&(!I.Name().endsWith(" (Copy)")))
-						I.setName(I.Name()+" (Copy)");
-					I.text();
-					I.recoverEnvStats();
 					if((A.landOwner().length()>0)
 					&&(!A.landOwner().equals(name))
 					&&((!A.landOwner().equals(mob.getLiegeID()))||(!mob.isMarriedToLiege())))
@@ -1531,10 +1521,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							}
 						if(skipThisOne) continue;
 					}
+                    Item I=CMClass.getItem("GenTitle");
+                    if(R instanceof Room)
+                        ((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID((Room)R));
+                    else
+                        ((LandTitle)I).setLandPropertyID(R.Name());
+                    if((((LandTitle)I).landOwner().length()>0)
+                    &&(!I.Name().endsWith(" (Copy)")))
+                        I.setName(I.Name()+" (Copy)");
+                    I.text();
+                    I.recoverEnvStats();
 					if((A.landOwner().length()==0)
 					&&(I.Name().endsWith(" (Copy)")))
 						I.setName(I.Name().substring(0,I.Name().length()-7));
-
 					V.addElement(I);
 				}
 			}

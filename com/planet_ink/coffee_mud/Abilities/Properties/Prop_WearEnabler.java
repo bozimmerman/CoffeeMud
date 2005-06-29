@@ -28,6 +28,7 @@ public class Prop_WearEnabler extends Property
 	private Item myItem=null;
 	private MOB lastMOB=null;
 	boolean processing=false;
+    boolean processing2=false;
 	protected Vector spellV=null;
 	public Vector getMySpellsV()
 	{
@@ -126,6 +127,19 @@ public class Prop_WearEnabler extends Property
 		lastMOB=null;
 	}
 
+    public void recoverEnvStats()
+    {
+        if(processing2) return;
+        processing2=true;
+        super.recoverEnvStats();
+        if((affected instanceof Item)
+        &&(lastMOB!=null)
+        &&((((Item)affected).owner()!=lastMOB)||(((Item)affected).amDestroyed()))
+        &&(lastMOB.location()!=null))
+            removeMyAffectsFromLastMob();
+        processing2=false;
+    }
+    
 	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
 	{
 		if(processing) return;

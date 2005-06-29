@@ -146,8 +146,7 @@ public class MoneyChanger extends StdBehavior
 		&&(msg.amITarget(observer))
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(observer,source))
-		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
-		&&(msg.tool()!=null)
+        &&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.tool() instanceof Coins))
 		{
 			double value=((Coins)msg.tool()).getTotalValue();
@@ -160,15 +159,26 @@ public class MoneyChanger extends StdBehavior
 			    amountToTake=BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer));
 			value-=amountToTake;
 			observer.recoverEnvStats();
-			if((value>0.0)&&(BeanCounter.makeBestCurrency(observer,value)!=null))
+            Coins C=BeanCounter.makeBestCurrency(observer,value);
+			if((value>0.0)&&(C!=null))
 			{
-				BeanCounter.giveSomeoneMoney(observer,source,value);
-				FullMsg newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
+				FullMsg newMsg=new FullMsg(observer,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
+                C.setOwner(observer);
+                C.destroy();
 				msg.addTrailerMsg(newMsg);
 			}
 			else
 				CommonMsgs.say(observer,source,"Gee, thanks. :)",true,false);
             ((Coins)msg.tool()).destroy();
 		}
+        else
+        if((msg.source()==observer)
+        &&(msg.target() instanceof MOB)
+        &&(msg.targetMinor()==CMMsg.TYP_SPEAK)
+        &&(msg.tool() instanceof Coins)
+        &&(((Coins)msg.tool()).amDestroyed())
+        &&(!msg.source().isMine(msg.tool()))
+        &&(!((MOB)msg.target()).isMine(msg.tool())))
+            BeanCounter.giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).value());
 	}
 }
