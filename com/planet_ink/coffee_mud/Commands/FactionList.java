@@ -31,7 +31,9 @@ public class FactionList extends StdCommand
 		StringBuffer msg=new StringBuffer("\n\r^HFaction Standings:^?^N\n\r");
         for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
             String name=(String)e.nextElement();
-            msg.append(formatFactionLine(name,mob.fetchFaction(name)));
+            Faction F=Factions.getFaction(name);
+            if((F!=null)||(F.showinfactionscommand))
+                msg.append(formatFactionLine(name,mob.fetchFaction(name)));
         }
 		if(!mob.isMonster())
 			mob.session().colorOnlyPrintln(msg.toString());

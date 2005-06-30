@@ -36,6 +36,7 @@ public class Faction implements MsgListener
     public boolean showinscore=false;
     public boolean showinspecialreported=false;
     public boolean showineditor=false;
+    public boolean showinfactionscommand=true;
     public Vector ranges=new Vector();
     public Vector defaults=new Vector();
     public Vector autoDefaults=new Vector();
@@ -69,8 +70,10 @@ public class Faction implements MsgListener
     public final static int TAG_ABILITY_=14;
     public final static int TAG_FACTOR_=15;
     public final static int TAG_RELATION_=16;
+    public final static int TAG_SHOWINFACTIONSCMD=17;
     public final static String[] ALL_TAGS={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY","SPECIALREPORTED","EDITALONE","DEFAULT",
-        "AUTODEFAULTS","AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE","RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*"};
+        "AUTODEFAULTS","AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE","RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*",
+        "SHOWINFACTIONSCMD"};
 
     public Faction(String aname)
     {
@@ -109,6 +112,7 @@ public class Faction implements MsgListener
         if(experienceFlag.length()==0) experienceFlag="NONE";
         rateModifier=alignProp.getDouble("RATEMODIFIER");
         showinscore=alignProp.getBoolean("SCOREDISPLAY");
+        showinfactionscommand=alignProp.getBoolean("SHOWINFACTIONSCMD");
         showinspecialreported=alignProp.getBoolean("SPECIALREPORTED");
         showineditor=alignProp.getBoolean("EDITALONE");
         defaults =Util.parseSemicolons(alignProp.getStr("DEFAULT"),true);
@@ -193,6 +197,7 @@ public class Faction implements MsgListener
         case TAG_MINIMUM: return ""+minimum;
         case TAG_MAXIMUM: return ""+maximum;
         case TAG_SCOREDISPLAY: return Boolean.toString(showinscore).toUpperCase();
+        case TAG_SHOWINFACTIONSCMD: return Boolean.toString(showinfactionscommand).toUpperCase();
         case TAG_SPECIALREPORTED: return Boolean.toString(showinspecialreported).toUpperCase();
         case TAG_EDITALONE: return Boolean.toString(showineditor).toUpperCase();
         case TAG_DEFAULT: return Util.toSemicolonList(defaults);

@@ -765,7 +765,10 @@ public class CMClass extends ClassLoader
 			Race R=(Race)races.elementAt(i);
 			if(R.ID().compareToIgnoreCase(GR.ID())>=0)
 			{
-				races.insertElementAt(GR,i);
+                if(R.ID().compareToIgnoreCase(GR.ID())==0)
+    				races.setElementAt(GR,i);
+                else
+                    races.insertElementAt(GR,i);
 				return;
 			}
 		}
@@ -778,7 +781,10 @@ public class CMClass extends ClassLoader
 			CharClass C=(CharClass)charClasses.elementAt(i);
 			if(C.ID().compareToIgnoreCase(CR.ID())>=0)
 			{
-				charClasses.insertElementAt(CR,i);
+                if(C.ID().compareToIgnoreCase(CR.ID())==0)
+                    charClasses.setElementAt(CR,i);
+                else
+    				charClasses.insertElementAt(CR,i);
 				return;
 			}
 		}

@@ -5054,6 +5054,9 @@ public class BaseGenerics extends StdCommand
             // show in score
             me.showinscore=genBool(mob,me.showinscore,++showNumber,showFlag,"Show in 'Score'");
             
+            // show in factions
+            me.showinfactionscommand=genBool(mob,me.showinfactionscommand,++showNumber,showFlag,"Show in 'Factions' command");
+            
             // show in special reports
             boolean alreadyReporter=false;
             for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
