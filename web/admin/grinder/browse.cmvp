@@ -52,6 +52,7 @@
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 @if?CheckReqParm?FUNCTION=NEWDIR@<FONT COLOR=RED>@FileMgr?CREATEDIR@</FONT><BR>@endif@
+@if?CheckReqParm?FUNCTION=UPLOAD@<FONT COLOR=RED>@FileMgr?UPLOAD@</FONT><BR>@endif@
 <a href="javascript:CreateDir();"><FONT COLOR=YELLOW>*create new dir*</FONT></a><P>
 <BR><BR>
 <a href="javascript:BackDir()"><FONT COLOR=YELLOW>..</FONT></a><BR>
@@ -68,6 +69,15 @@
 	<BR>
 @back@
 <a href="javascript:NewFile('@RequestParametersEncoded@');"><FONT COLOR=WHITE>*create new file*</FONT></a><BR>
+</FORM>
+<HR>
+<FONT COLOR=WHITE>*upload a file*</FONT>
+<FORM NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=browse.cmvp METHOD=POST>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="UPLOAD">
+<INPUT TYPE=FILE NAME=FILE>
+<INPUT TYPE=SUBMIT NAME=SUBMIT VALUE=SUBMIT>
 </FORM>
 </BODY>
 </HTML>
