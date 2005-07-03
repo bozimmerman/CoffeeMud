@@ -21,13 +21,14 @@ some familiarty with HTTP, mime types, and stuff like that.</p>
 on port 27744 and the administrative web site on port 27777.&nbsp; To browse the
 default public web site, just open up the following URL in your
 browser:<BR><BR><A
-href="http://localhost:27744/">http://localhost:27744/</A></P>
+ href="http://localhost:27744/">http://localhost:27744/</A></P>
 <P>To connect to the administrative web site, use the following URL:</P>
 <P><A href="http://localhost:27777/">http://localhost:27777/</A></P>
 
 <p><b>What it does and doesn't do:</b><br>
-It
-only supports GET, urlencoded POST&nbsp;and HEAD
+It supports 
+GET,
+urlencoded and multipart POST requests,&nbsp;and HEAD
 requests (I think HEAD is HTTP 1.1, but it's supported anyway).&nbsp;
 It does not cache.
 </p>
@@ -207,9 +208,9 @@ be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqPa
       names.&nbsp; This macro inserts the contents of one of the files at random from one of the directories 
       into the current document. If the parameter LINKONLY is included, this macro will instead insert the 
       path and file name of the random file.</TD></TR>
-<TR><TD>AddRequestParameter</TD><TD>       The parameters
-      for this macro are one or more
-      ReqParmnamesandvalues.&nbsp;Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually
+<TR><TD>AddRequestParameter</TD><TD>        The
+      parameters for this macro are one or
+      moreReqParmnamesandvalues.&nbsp;Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually
       used to provide literal data for other macros which may require certain
       Request parameter data.</TD></TR>
 <TR><TD>AreaData</TD><TD>Requires ReqParm AREA be set to a valid area
@@ -261,11 +262,11 @@ be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqPa
       returned by many other macros as a means of creating breaks in
 loops.</TD></TR>
 <TR><TD>ChannelBackLogNext</TD><TD>Requires ReqParms LOGIN and PASSWORD to be unencrypted login data, or AUTH to be 
-	encrypted login data.  Also requires CHANNEL to be the name of a valid channel. 
+	encrypted login data.&nbsp; Also requires CHANNEL to be the name of a valid channel. 
 	Returns the next available channel message, and sets ReqParm CHANNELBACKLOGNUM.  Will
 	not break out if MacParm EMPTYOK is given.</TD></TR>
 <TR><TD>ChannelNext</TD><TD>Requires ReqParms LOGIN and PASSWORD to be unencrypted login data, or AUTH to be 
-	encrypted login data.  Returns the next available channel in ReqParm CHANNEL.  Will
+	encrypted login data.&nbsp; Returns the next available channel in ReqParm CHANNEL.  Will
 	clear out if MacParm RESET is given.</TD></TR>
 <TR><TD>CharClassData</TD><TD>Requires ReqParm CLASS be set to a
       valid&nbsp;character class&nbsp;id.&nbsp;Returns data about this class
