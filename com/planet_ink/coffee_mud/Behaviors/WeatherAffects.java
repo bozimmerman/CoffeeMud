@@ -455,8 +455,7 @@ public class WeatherAffects extends PuddleMaker
             resetLightningTicks();
             if(C.weatherType(null)==Climate.WEATHER_THUNDERSTORM)
             {
-                Vector choices=new Vector();
-                Room R=null;
+                boolean playerAround=false;
                 for(int s=0;s<Sessions.size();s++)
                 {
                     Session S=Sessions.elementAt(s);
@@ -466,27 +465,34 @@ public class WeatherAffects extends PuddleMaker
                     ||(S.mob().isMonster())
                     ||(C.weatherType(S.mob().location())!=Climate.WEATHER_THUNDERSTORM))
                         continue;
-                    R=S.mob().location();
-                    if((R!=null)&&(!choices.contains(R)))
-                        choices.addElement(R);
+                    playerAround=true;
                 }
-                if(choices.size()>0)
+                if(playerAround)
                 {
-                    R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
+                    Room R=A.getRandomProperRoom();
                     MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
-                    Ability A2=CMClass.getAbility("Chant_SummonLightning");
-                    if(A2!=null)
-                    { 
-                        A2.setMiscText("RENDER MUNDANE"); 
-                        A2.invoke(M,M,true,M.envStats().level());
+                    if(M!=null)
+                    {
+                        Ability A2=CMClass.getAbility("Chant_SummonLightning");
+                        if(A2!=null)
+                        { 
+                            A2.setMiscText("RENDER MUNDANE"); 
+                            A2.invoke(M,M,true,M.envStats().level());
+                        }
                     }
-                    for(int i=0;i<choices.size();i++)
-                        if(choices.elementAt(i)!=R)
-                            if((((Room)choices.elementAt(i)).getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY)
-                            ||(C.weatherType(((Room)choices.elementAt(i)))!=Climate.WEATHER_THUNDERSTORM))
-                                ((Room)choices.elementAt(i)).showHappens(CMMsg.MSG_OK_ACTION,"A thunderous rumble and CRACK of lightning can be heard.!");
+                    else
+                        R=null;
+                    Room R2=null;
+                    for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+                    {
+                        R2=(Room)e.nextElement();
+                        if((R2!=R)&&(R2.numInhabitants()>0))
+                            if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
+                            ||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"A thunderous rumble and crack of lightning can be heard.!");
                             else
-                                ((Room)choices.elementAt(i)).showHappens(CMMsg.MSG_OK_ACTION,"A bolt of lightning streaks across the sky!");
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"You hear a thunderous rumble as a bolt of lightning streaks across the sky!");
+                    }
                 }
             }
         }
@@ -496,8 +502,7 @@ public class WeatherAffects extends PuddleMaker
             if((C.weatherType(null)==Climate.WEATHER_THUNDERSTORM)
             ||(C.weatherType(null)==Climate.WEATHER_WINDY))
             {
-                Vector choices=new Vector();
-                Room R=null;
+                boolean playerAround=false;
                 for(int s=0;s<Sessions.size();s++)
                 {
                     Session S=Sessions.elementAt(s);
@@ -505,29 +510,37 @@ public class WeatherAffects extends PuddleMaker
                     ||(S.mob().location()==null)
                     ||(S.mob().location().getArea()!=A)
                     ||(S.mob().isMonster())
-                    ||((C.weatherType(S.mob().location())!=Climate.WEATHER_WINDY)
-                        &&(C.weatherType(S.mob().location())!=Climate.WEATHER_THUNDERSTORM)))
+                    ||(C.weatherType(S.mob().location())!=Climate.WEATHER_THUNDERSTORM))
                         continue;
-                    R=S.mob().location();
-                    if((R!=null)&&(!choices.contains(R)))
-                        choices.addElement(R);
+                    playerAround=true;
                 }
-                if(choices.size()>0)
+                if(playerAround)
                 {
-                    R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
-                    Ability A2=CMClass.getAbility("Chant_SummonTornado");
-                    if(A2!=null)
+                    Room R=A.getRandomProperRoom();
+                    MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+                    if(M!=null)
                     {
-                        A2.setMiscText("RENDER MUNDANE"); 
-                        MOB mob=CMMap.god(R);
-                        A2.invoke(mob,null,true,0);
+                        Ability A2=CMClass.getAbility("Chant_SummonTornado");
+                        if(A2!=null)
+                        {
+                            A2.setMiscText("RENDER MUNDANE"); 
+                            MOB mob=CMMap.god(R);
+                            A2.invoke(mob,null,true,0);
+                        }
                     }
-                    for(int i=0;i<choices.size();i++)
-                        if(choices.elementAt(i)!=R)
-                            if(C.weatherType(((Room)choices.elementAt(i)))==0)
-                                ((Room)choices.elementAt(i)).showHappens(CMMsg.MSG_OK_ACTION,"The terrible rumble of a tornado can be heard.!");
+                    else
+                        R=null;
+                    Room R2=null;
+                    for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+                    {
+                        R2=(Room)e.nextElement();
+                        if((R2!=R)&&(R2.numInhabitants()>0))
+                            if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
+                            ||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"The terrible rumble of a tornado can be heard.!");
                             else
-                                ((Room)choices.elementAt(i)).showHappens(CMMsg.MSG_OK_ACTION,"A huge and terrible tornado touches down somewhere near by.");
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"A huge and terrible tornado touches down somewhere near by.");
+                    }
                 }
             }
         }

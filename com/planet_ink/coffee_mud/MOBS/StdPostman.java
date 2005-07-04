@@ -315,20 +315,31 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         return minimumPostage()+Util.mul(postagePerPound(),chargeableWeight);
     }
     
-    protected double getCODChargeForPiece(Vector data)
+    protected double getHoldingCost(Vector data, int chargeableWeight)
     {
         if(data.size()<NUM_PIECES)
             return 0.0;
-        int chargeableWeight=getChargeableWeight(makeItem(data));
-        double COD=Util.s_double((String)data.elementAt(PIECE_COD));
-        if(COD==0.0) return 0.0; 
-        double amt=getSimplePostage(chargeableWeight)+COD;
+        if(getStartRoom()==null) return 0.0;
+        double amt=0.0;
         TimeClock TC=(getStartRoom()==null)?DefaultTimeClock.globalClock:getStartRoom().getArea().getTimeObj();
         long time=System.currentTimeMillis()-Util.s_long((String)data.elementAt(PIECE_TIME));
         long millisPerMudMonth=TC.getDaysInMonth()*MudHost.TIME_UTILTHREAD_SLEEP*TC.getHoursInDay();
         if(time<=0) return amt;
         amt+=Util.mul(Util.mul(Math.floor(Util.div(time,millisPerMudMonth)),holdFeePerPound()),chargeableWeight);
         return amt;
+    }
+    
+    
+    protected double getCODChargeForPiece(Vector data)
+    {
+        if(data.size()<NUM_PIECES)
+            return 0.0;
+        int chargeableWeight=getChargeableWeight(makeItem(data));
+        double COD=Util.s_double((String)data.elementAt(PIECE_COD));
+        double amt=0.0;
+        if(COD>0.0) 
+            amt=getSimplePostage(chargeableWeight)+COD;
+        return amt+getHoldingCost(data,chargeableWeight);
     }
     
     protected String getBranchPostableTo(String toWhom, String branch, Hashtable allBranchBoxes)
@@ -629,14 +640,20 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         double totalCharge=getCODChargeForPiece(data);
                         if((totalCharge>0.0)&&(BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),this)>=totalCharge))
                         {
-                            Coins returnMoney=BeanCounter.makeBestCurrency(this,Util.s_double((String)data.elementAt(PIECE_COD)));
+                            
+                            BeanCounter.subtractMoney(msg.source(),totalCharge);
+                            double COD=Util.s_double((String)data.elementAt(PIECE_COD));
+                            Coins returnMoney=null;
+                            if(COD>0.0)
+                                returnMoney=BeanCounter.makeBestCurrency(this,COD);
                             if(returnMoney!=null)
                             {
-                                CommonMsgs.say(this,mob,"The total charge on that was a COD charge of "+returnMoney.Name()+" plus "+BeanCounter.nameCurrencyShort(this,totalCharge-returnMoney.getTotalValue())+" postage.",true,false);
-                                BeanCounter.subtractMoney(msg.source(),totalCharge);
-                                addToBox(postalChain(),returnMoney,(String)data.elementAt(PIECE_TO),(String)data.elementAt(PIECE_FROM),System.currentTimeMillis(),0.0);
                                 CommonMsgs.say(this,mob,"The COD amount of "+returnMoney.Name()+" has been sent back to "+((String)data.elementAt(PIECE_FROM))+".",true,false);
+                                addToBox(postalChain(),returnMoney,(String)data.elementAt(PIECE_TO),(String)data.elementAt(PIECE_FROM),System.currentTimeMillis(),0.0);
+                                CommonMsgs.say(this,mob,"The total charge on that was a COD charge of "+returnMoney.Name()+" plus "+BeanCounter.nameCurrencyShort(this,totalCharge-COD)+" postage and holding fees.",true,false);
                             }
+                            else
+                                CommonMsgs.say(this,mob,"The total charge on that was "+BeanCounter.nameCurrencyShort(this,totalCharge)+" in holding/storage fees.",true,false);
                         }
                         CommonMsgs.say(this,mob,"There ya go!",true,false);
                         if(location()!=null)

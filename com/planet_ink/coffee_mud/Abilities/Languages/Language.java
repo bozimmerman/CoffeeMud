@@ -201,7 +201,8 @@ public class Language extends StdAbility
 							  subStitute(msg.targetMessage(),str),
 							  msg.othersCode(),
 							  subStitute(msg.othersMessage(),str));
-				helpProfficiency((MOB)affected);
+                if(Sense.aliveAwakeMobile((MOB)affected,true))
+    				helpProfficiency((MOB)affected);
 			}
 		}
 		return super.okMessage(myHost,msg);

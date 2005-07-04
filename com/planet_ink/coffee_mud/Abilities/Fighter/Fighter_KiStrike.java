@@ -40,7 +40,7 @@ public class Fighter_KiStrike extends StdAbility
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(!done)
-		&&(msg.tool() instanceof Weapon)
+		&&((msg.tool() instanceof Weapon)||(msg.tool()==null))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			done=true;
@@ -48,7 +48,7 @@ public class Fighter_KiStrike extends StdAbility
 			if((Sense.aliveAwakeMobile(mob,true))
 			&&(mob.location()!=null))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_SPEAK,"<S-NAME> yell(s) KIA!");
+				mob.location().show(mob,null,CMMsg.MSG_SPEAK,"<S-NAME> yell(s) 'KIA'!");
 				unInvoke();
 			}
 

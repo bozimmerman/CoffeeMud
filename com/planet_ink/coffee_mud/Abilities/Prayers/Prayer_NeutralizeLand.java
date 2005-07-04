@@ -51,7 +51,9 @@ public class Prayer_NeutralizeLand extends Prayer
 				for(int a=0;a<target.numEffects();a++)
 				{
 					Ability A=target.fetchEffect(a);
-					if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())
+					if((A!=null)
+                    &&((A.canBeUninvoked())||(A.invoker()==mob)||A.text().equals(mob.Name())||((mob.getClanID().length()>0)&&(A.text().equals(mob.getClanID()))))
+                    &&(!A.isAutoInvoked())
 					&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 					   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 					   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
