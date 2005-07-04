@@ -23,7 +23,7 @@ public class GenPostman extends StdPostman
 {
     public String ID(){return "GenPostman";}
     private String PrejudiceFactors="";
-    private String bankChain="main";
+    private String postalChain="main";
     private String IgnoreMask="";
 
     public GenPostman()
@@ -49,8 +49,8 @@ public class GenPostman extends StdPostman
     public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
     public String ignoreMask(){return IgnoreMask;}
     public void setIgnoreMask(String factors){IgnoreMask=factors;}
-    public String bankChain(){return bankChain;}
-    public void setBankChain(String name){bankChain=name;}
+    public String postalChain(){return postalChain;}
+    public void setPostalChain(String name){postalChain=name;}
 
     public void setMiscText(String newText)
     {

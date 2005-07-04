@@ -65,6 +65,15 @@ public class DefaultTimeClock implements TimeClock, Cloneable
 	public int getDaysInWeek(){return weekNames.length;}
 	public void setDaysInWeek(String[] days){weekNames=days;}
 	
+    public String getShortestTimeDescription()
+    {
+        StringBuffer timeDesc=new StringBuffer("");
+        timeDesc.append(getYear());
+        timeDesc.append("/"+getMonth());
+        timeDesc.append("/"+getDayOfMonth());
+        timeDesc.append(" HR:"+getTimeOfDay());
+        return timeDesc.toString();
+    }
     public String getShortTimeDescription()
     {
         StringBuffer timeDesc=new StringBuffer("");

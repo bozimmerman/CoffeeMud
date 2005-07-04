@@ -162,7 +162,12 @@ public class Factions implements Tickable
 	public static int getPercentFromAvg(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercentFromAvg(faction); return 0; }
 	public static Faction.FactionRange getRange(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRange(faction); return null; }
 	public static Vector getRanges(String factionID) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRanges(); return null; }
-	public static double getRangePercent(String factionID, int faction) { Faction.FactionRange R=Factions.getRange(factionID,faction); if(R==null) return 0.0; return (Util.div((faction - R.low),(R.high - R.low)) * 100.0);}
+	public static double getRangePercent(String factionID, int faction) 
+    { 
+        Faction F=Factions.getFaction(factionID); 
+        if(F==null) return 0.0;
+        return (Util.div((faction - F.minimum),(F.maximum - F.minimum)) * 100.0);
+    }
 	public static double getRateModifier(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.rateModifier; return 0; }
 	public static int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum-f.minimum); return 0; }
 	public static int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }

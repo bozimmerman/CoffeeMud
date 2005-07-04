@@ -2761,7 +2761,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". Shopkeeper type: '"+E.storeKeeperString()+"'.");
 		StringBuffer buf=new StringBuffer("");
 		StringBuffer codes=new StringBuffer("");
-		String codeStr="0123456789ABCDEFGHIJKLMNOPQR";
+		String codeStr="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		if(E instanceof Banker)
 		{
 			int r=ShopKeeper.DEAL_BANKER;
@@ -3504,7 +3504,7 @@ public class BaseGenerics extends StdCommand
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newName=mob.session().prompt("Enter a new value:","");
-        if(Util.isDouble(newName))
+        if(Util.isNumber(newName))
             return Util.s_double(newName);
         else
         {

@@ -67,10 +67,55 @@ public class MOTD extends StdCommand
 						buf.append("\n\r--------------------------------------\n\r");
 					}
 				}
+                Vector postalChains=new Vector();
+                Vector postalBranches=new Vector();
+                PostOffice P=null;
+                for(Enumeration e=CMMap.postOffices();e.hasMoreElements();)
+                {
+                    P=(PostOffice)e.nextElement();
+                    if(!postalChains.contains(P.postalChain()))
+                        postalChains.addElement(P.postalChain());
+                    if(!postalBranches.contains(P.postalBranch()))
+                        postalBranches.addElement(P.postalBranch());
+                }
+                if((postalChains.size()>0)&&(P!=null))
+                {
+                    Vector V=CMClass.DBEngine().DBReadData(mob.Name(),postalChains);
+                    Hashtable res=getPostalResults(V,mob.playerStats().lastDateTime());
+                    for(Enumeration e=res.keys();e.hasMoreElements();)
+                    {
+                        P=(PostOffice)e.nextElement();
+                        int[] ct=(int[])res.get(P);
+                        buf.append("\n\r"+report("You have",P,ct));
+                    }
+                    Hashtable res2=new Hashtable();
+                    Clan C=null;
+                    if(mob.getClanID().length()>0)
+                    {
+                        C=Clans.getClan(mob.getClanID());
+                        if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANWITHDRAW)>=0))
+                        {
+                            V=CMClass.DBEngine().DBReadData(C.name(),postalChains);
+                            if(V.size()>0)
+                                res=getPostalResults(V,mob.playerStats().lastDateTime());
+                        }
+                    }
+                    if(C!=null)
+                    for(Enumeration e=res2.keys();e.hasMoreElements();)
+                    {
+                        P=(PostOffice)e.nextElement();
+                        int[] ct=(int[])res2.get(P);
+                        buf.append("\n\r"+report("Your "+C.typeName()+" has",P,ct));
+                    }
+                    if((res.size()>0)||((C!=null)&&(res2.size()>0)))
+                        buf.append("\n\r--------------------------------------\n\r");
+                }
+                
 				if(mob.session()!=null)
                     if(buf.length()>0)
                         mob.session().wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());
                     else
+                    if(Util.combine(commands,1).equalsIgnoreCase("AGAIN"))
                         mob.session().println("No MOTD to re-read.");
 			}
 			catch(HTTPRedirectException e){}
@@ -90,6 +135,51 @@ public class MOTD extends StdCommand
 		mob.tell("Enter MOTD AGAIN to see the message over again.");
 		return false;
 	}
+    
+    private String report(String whom, PostOffice P, int[] ct)
+    {
+        String branchName=P.postalBranch();
+        if((P instanceof MOB)&&(((MOB)P).getStartRoom()!=null))
+            branchName=((MOB)P).getStartRoom().getArea().Name();
+        else
+        {
+            int x=branchName.indexOf("#");
+            if(x>=0) branchName=branchName.substring(0,x);
+        }
+        if(ct[0]>0)
+            return whom+" "+ct[0]+" new of "+ct[1]+" items at the "+branchName+" branch of the "+P.postalChain()+" post office.";
+        else
+            return whom+" "+ct[1]+" items still waiting at the "+branchName+" branch of the "+P.postalChain()+" post office.";
+    }
+    
+    private Hashtable getPostalResults(Vector mailData, long newTimeDate)
+    {
+        Hashtable results=new Hashtable();
+        PostOffice P=null;
+        for(int i=0;i<mailData.size();i++)
+        {
+            Vector letter=(Vector)mailData.elementAt(i);
+            String chain=(String)letter.elementAt(1);
+            String branch=(String)letter.elementAt(2);
+            int x=branch.indexOf(";");
+            if(x<0) continue;
+            branch=branch.substring(0,x);
+            P=CMMap.getPostOffice(chain,branch);
+            if(P==null) continue;
+            Vector pieces=P.parsePostalItemData((String)letter.elementAt(3));
+            int[] ct=(int[])results.get(P);
+            if(ct==null)
+            {
+                ct=new int[2];
+                results.put(P,ct);
+            }
+            ct[1]++;
+            if(Util.s_long((String)pieces.elementAt(PostOffice.PIECE_TIME))>newTimeDate)
+                ct[0]++;
+        }
+        return results;
+    }
+    
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
 

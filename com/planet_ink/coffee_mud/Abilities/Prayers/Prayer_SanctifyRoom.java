@@ -89,6 +89,9 @@ public class Prayer_SanctifyRoom extends Prayer
 				if((target instanceof Room)
 				&&(CoffeeUtensils.doesOwnThisProperty(mob,((Room)target))))
 				{
+                    
+                    if((mob.getClanID().length()>0)&&(CoffeeUtensils.doesOwnThisProperty(mob.getClanID(),((Room)target))))
+                        setMiscText(mob.getClanID());
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMClass.DBEngine().DBUpdateRoom((Room)target);
 				}

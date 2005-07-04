@@ -172,7 +172,7 @@ public class GenWallpaper implements Item
 	public void setContainer(Item newContainer){}
 	public int usesRemaining(){return Integer.MAX_VALUE;}
 	public void setUsesRemaining(int newUses){}
-	public boolean savable(){return true;}
+	public boolean savable(){return Sense.canBeSaved(this);}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		MOB mob=msg.source();

@@ -5802,7 +5802,8 @@ public class Scriptable extends StdBehavior
 				break;
             case 29: // login_prog
                 if((msg.sourceMinor()==CMMsg.TYP_LOGIN)
-                &&(canFreelyBehaveNormal(monster)))
+                &&(canFreelyBehaveNormal(monster))
+                &&(!Sense.isCloaked(msg.source())))
                 {
                     int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
                     if(Dice.rollPercentage()<prcnt)
@@ -5814,7 +5815,8 @@ public class Scriptable extends StdBehavior
                 break;
             case 30: // logoff_prog
                 if((msg.sourceMinor()==CMMsg.TYP_QUIT)
-                &&(canFreelyBehaveNormal(monster)))
+                &&(canFreelyBehaveNormal(monster))
+                &&(!Sense.isCloaked(msg.source())))
                 {
                     int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
                     if(Dice.rollPercentage()<prcnt)

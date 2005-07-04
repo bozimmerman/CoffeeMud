@@ -507,7 +507,7 @@ public class StdItem implements Item
 		myUses=newUses;
 	}
 
-	public boolean savable(){return true;}
+	public boolean savable(){return Sense.canBeSaved(this);}
 
 	protected String dispossessionTimeLeftString()
 	{

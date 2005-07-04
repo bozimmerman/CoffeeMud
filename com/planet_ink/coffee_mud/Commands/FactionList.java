@@ -32,7 +32,7 @@ public class FactionList extends StdCommand
         for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
             String name=(String)e.nextElement();
             Faction F=Factions.getFaction(name);
-            if((F!=null)||(F.showinfactionscommand))
+            if((F!=null)&&(F.showinfactionscommand))
                 msg.append(formatFactionLine(name,mob.fetchFaction(name)));
         }
 		if(!mob.isMonster())

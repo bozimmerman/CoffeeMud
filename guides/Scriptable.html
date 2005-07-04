@@ -494,7 +494,8 @@ prog will be triggered 25% of the time when someone enters the game.)</P>
 game. This means every time.)</P>
 <P class=MsoNormal>SPECIAL NOTES: This program will trigger 
 every time a player enters the game, regardless of whether they are in the same 
-room, or even whether the scripted monster can see or detect the player.</P>
+room, or even whether the scripted monster can see or detect the player.&nbsp; 
+The exception to this is cloaked admins, which will not trigger.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">logoff_prog<O:P></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>logoff_prog [integer percentage]</EM></P>
@@ -511,7 +512,8 @@ prog will be triggered 25% of the time when someone leaves the game.)</P>
 game. This means every time.)</P>
 <P class=MsoNormal>SPECIAL NOTES: This program will trigger 
 every time a player leaves the game, regardless of whether they are in the same 
-room, or even whether the scripted monster can see or detect the player.</P>
+room, or even whether the scripted monster can see or detect the player.&nbsp; 
+The exception to this is cloaked admins, which will not trigger.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">once_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>once_prog</EM></P>
@@ -1665,16 +1667,16 @@ include:&nbsp;"CLASS", "RACE", "LEVEL", "ABILITY", "NAME", "DISPLAY",
 "DESCRIPTION", "MONEY", "ALIGNMENT", "DISPOSITION", "SENSES", "ARMOR", "DAMAGE", 
 "ATTACK", "SPEED", "AFFBEHAV", "ABLES", "INVENTORY", "TATTS", "EDUS", 
 "RIDEBASIS", "MOBSHELD", "WHATISELL", "PREJUDICE", "BANKCHAIN", "COININT", 
-"IGNOREMASK", "POSTCHAIN", "POSTMIN", "POSTLBS", "POSTHOLD", "POSTNEW", "POSTHELD",
-"ITEMINT", "HITS", "MANA", "MOVE", "HUNGER", "THIRST", "FATIGUE", "STRENGTH", 
-"INTELLIGENCE", "DEXTERITY", "CONSTITUTION", "CHARISMA", "WISDOM", "GENDER", 
-"PARALYSIS SAVE", "SAVE VS FIRE", "SAVE VS COLD", "SAVE VS WATER", "SAVE VS 
-GAS", "SAVE VS MIND", "GENERAL SAVE", "JUSTICE SAVE", "SAVE VS ACID", "SAVE VS 
-ELECTRICITY", "SAVE VS POISON", "SAVE VS UNDEAD", "SAVE VS MAGIC", "SAVE VS 
-DISEASE", "SAVE VS TRAPS", "MAX STRENGTH ADJ.", "MAX INTELLIGENCE ADJ.", "MAX 
-DEXTERITY ADJ.", "MAX CONSTITUTION ADJ.", "MAX CHARISMA ADJ.", "MAX WISDOM 
-ADJ.", "SENSES", "DISPOSITION", "LEVEL", "ABILITY", "REJUV", "WEIGHT", "HEIGHT", 
-"ARMOR", "DAMAGE", "ATTACK"</P>
+"IGNOREMASK", "POSTCHAIN", "POSTMIN", "POSTLBS", "POSTHOLD", "POSTNEW", 
+"POSTHELD", "ITEMINT", "HITS", "MANA", "MOVE", "HUNGER", "THIRST", "FATIGUE", 
+"STRENGTH", "INTELLIGENCE", "DEXTERITY", "CONSTITUTION", "CHARISMA", "WISDOM", 
+"GENDER", "PARALYSIS SAVE", "SAVE VS FIRE", "SAVE VS COLD", "SAVE VS WATER", 
+"SAVE VS GAS", "SAVE VS MIND", "GENERAL SAVE", "JUSTICE SAVE", "SAVE VS ACID", 
+"SAVE VS ELECTRICITY", "SAVE VS POISON", "SAVE VS UNDEAD", "SAVE VS MAGIC", 
+"SAVE VS DISEASE", "SAVE VS TRAPS", "MAX STRENGTH ADJ.", "MAX INTELLIGENCE 
+ADJ.", "MAX DEXTERITY ADJ.", "MAX CONSTITUTION ADJ.", "MAX CHARISMA ADJ.", "MAX 
+WISDOM ADJ.", "SENSES", "DISPOSITION", "LEVEL", "ABILITY", "REJUV", "WEIGHT", 
+"HEIGHT", "ARMOR", "DAMAGE", "ATTACK"</P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpgset&nbsp;$n CHARISMA 10<BR>mpgset $n&nbsp;NAME my name is mud</EM> </P>
 <P class=MsoNormal>SPECIAL NOTES: Be very careful with this 
