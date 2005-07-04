@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -43,11 +44,17 @@ public class Prayer_BloodHearth extends Prayer
 		{
 			HashSet H=msg.source().getGroupMembers(new HashSet());
 			for(Iterator e=H.iterator();e.hasNext();)
-				if(CoffeeUtensils.doesHavePriviledgesHere((MOB)e.next(),R))
-				{
+            {
+                MOB M=(MOB)e.next();
+                if((CoffeeUtensils.doesHavePriviledgesHere(M,R))
+                ||((text().length()>0)
+                    &&((M.Name().equals(text()))
+                        ||(M.getClanID().equals(text())))))
+                {
 					msg.setValue(msg.value()+(msg.value()/2));
 					break;
 				}
+            }
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -77,6 +84,8 @@ public class Prayer_BloodHearth extends Prayer
 				if((target instanceof Room)
 				&&(CoffeeUtensils.doesOwnThisProperty(mob,((Room)target))))
 				{
+                    if((mob.getClanID().length()>0)&&(CoffeeUtensils.doesOwnThisProperty(mob.getClanID(),((Room)target))))
+                        setMiscText(mob.getClanID());
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMClass.DBEngine().DBUpdateRoom((Room)target);
 				}
