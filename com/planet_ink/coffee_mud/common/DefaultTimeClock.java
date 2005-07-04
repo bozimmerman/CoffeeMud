@@ -19,7 +19,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DefaultTimeClock implements TimeClock
+public class DefaultTimeClock implements TimeClock, Cloneable
 {
 	public String ID(){return "DefaultTimeClock";}
 	public String name(){return "Time Object";}
@@ -176,6 +176,22 @@ public class DefaultTimeClock implements TimeClock
 		time=t;
 		return getTODCode()!=oldCode;
 	}
+    
+    public TimeClock deriveClock(long millis)
+    {
+        try
+        {
+            TimeClock C=(TimeClock)this.clone();
+            long diff=(System.currentTimeMillis()-millis)/MudHost.TIME_UTILTHREAD_SLEEP;
+            C.tickTock((int)diff);
+            return C;
+        }
+        catch(CloneNotSupportedException e)
+        {
+            
+        }
+        return globalClock;
+    }
 
 	public void raiseLowerTheSunEverywhere()
 	{

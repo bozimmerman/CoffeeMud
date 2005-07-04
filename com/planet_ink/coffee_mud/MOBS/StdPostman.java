@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.MOBS;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -21,11 +22,14 @@ import com.planet_ink.coffee_mud.common.*;
 */
 public class StdPostman extends StdShopKeeper implements PostOffice
 {
-    public String ID(){return "StdBanker";}
+    public String ID(){return "StdPostman";}
 
-    protected double coinInterest=-0.008;
-    protected double itemInterest=-0.001;
-    protected static Hashtable bankTimes=new Hashtable();
+    protected double minimumPostage=1.0;
+    protected double postagePerPound=1.0;
+    protected double holdFeePerPound=0.10;
+    protected double feeForNewBox=50.0;
+    protected int maxMudMonthsHeld=12;
+    protected static Hashtable postalTimes=new Hashtable();
 
     public StdPostman()
     {
@@ -54,6 +58,28 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
 
 
+    public double minimumPostage(){return minimumPostage;}
+    public void setMinimumPostage(double d){minimumPostage=d;}
+    public double postagePerPound(){return postagePerPound;}
+    public void setPostagePerPound(double d){postagePerPound=d;}
+    public double holdFeePerPound(){return holdFeePerPound;}
+    public void setHoldFeePerPound(double d){holdFeePerPound=d;}
+    public double feeForNewBox(){return feeForNewBox;}
+    public void setFeeForNewBox(double d){feeForNewBox=d;}
+    public int maxMudMonthsHeld(){return maxMudMonthsHeld;}
+    public void setMaxMudMonthsHeld(int months){maxMudMonthsHeld=months;}
+    
+    public void destroy()
+    {
+        super.destroy();
+        CMMap.delPostOffice(this);
+    }
+    public void bringToLife(Room newLocation, boolean resetStats)
+    {
+        super.bringToLife(newLocation,resetStats);
+        CMMap.addPostOffice(this);
+    }
+    
     public int whatIsSold(){return whatISell;}
     public void setWhatIsSold(int newSellCode){
         if(newSellCode!=ShopKeeper.DEAL_CLANPOSTMAN)
@@ -61,34 +87,40 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         else
             whatISell=ShopKeeper.DEAL_CLANPOSTMAN;
     }
-    public String prejudiceFactors(){return "";}
-    public void setPrejudiceFactors(String factors){}
 
     public String postalChain(){return text();}
     public void setPostalChain(String name){setMiscText(name);}
+    public String postalBranch(){return CMMap.getExtendedRoomID(getStartRoom());}
 
-    public void addToBox(String mob, Item thisThang)
+    public void addToBox(String mob, Item thisThang, String from, String to, long holdTime, double COD)
     {
         String name=thisThang.ID();
-        if(thisThang instanceof Coins) name="COINS";
-        CMClass.DBEngine().DBCreateData(mob,postalChain(),""+thisThang+Math.random(),name+";"+CoffeeMaker.getPropertiesStr(thisThang,true));
+        CMClass.DBEngine().DBCreateData(mob,
+                postalChain(),
+                postalBranch()+";"+thisThang+Math.random(),
+                from+";"
+                +to+";"
+                +holdTime+";"
+                +COD+";"
+                +name+";"
+                +CoffeeMaker.getPropertiesStr(thisThang,true));
     }
 
-    public void addToBox(MOB mob, Item thisThang)
+    public void addToBox(MOB mob, Item thisThang, String from, String to, long holdTime, double COD)
     {
         if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
         {
             if(mob.getClanID().length()==0)
                 return;
-            addToBox(mob.getClanID(),thisThang);
+            addToBox(mob.getClanID(),thisThang,from,to,holdTime,COD);
         }
         else
-            addToBox(mob.Name(),thisThang);
+            addToBox(mob.Name(),thisThang,from,to,holdTime,COD);
     }
 
     public boolean delFromBox(MOB mob, Item thisThang)
     {
-        if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
         {
             if(mob.getClanID().length()>0)
                 return delFromBox(mob.getClanID(),thisThang);
@@ -98,50 +130,26 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         return false;
     }
 
-    protected Item makeItem(String data)
-    {
-        int x=data.indexOf(";");
-        if(x<0) return null;
-        Item I=null;
-        if(data.substring(0,x).equals("COINS"))
-            I=CMClass.getItem("StdCoins");
-        else
-            I=CMClass.getItem(data.substring(0,x));
-        if(I!=null)
-        {
-            CoffeeMaker.setPropertiesStr(I,data.substring(x+1),true);
-            if((I instanceof Coins)
-            &&(((Coins)I).getDenomination()==0.0)
-            &&(((Coins)I).getNumberOfCoins()>0)) 
-                ((Coins)I).setDenomination(1.0);
-            I.recoverEnvStats();
-            I.text();
-            return I;
-        }
-        return null;
-    }
-
     public boolean delFromBox(String mob, Item thisThang)
     {
         Vector V=getBoxRowData(mob);
-        boolean money=thisThang instanceof Coins;
         boolean found=false;
         for(int v=V.size()-1;v>=0;v--)
         {
             Vector V2=(Vector)V.elementAt(v);
-            if(money&&((String)V2.elementAt(DATA_DATA)).startsWith("COINS;"))
+            if((V2.size()>3)
+            &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+";")))
             {
-                CMClass.DBEngine().DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_CHAIN)),((String)V2.elementAt(DATA_KEY)));
-                found=true;
-            }
-            if(!money)
-            {
-                Item I=makeItem((String)V2.elementAt(DATA_DATA));
+                Item I=makeItem(parsePieceData((String)V2.elementAt(DATA_DATA)));
                 if(I==null) continue;
                 if(thisThang.sameAs(I))
                 {
-                    CMClass.DBEngine().DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_CHAIN)),((String)V2.elementAt(DATA_KEY)));
-                    return true;
+                    found=true;
+                    CMClass.DBEngine().DBDeleteData(
+                            ((String)V2.elementAt(DATA_USERID)),
+                            ((String)V2.elementAt(DATA_CHAIN)),
+                            ((String)V2.elementAt(DATA_KEY)));
+                    break;
                 }
             }
         }
@@ -151,21 +159,74 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     {
         CMClass.DBEngine().DBDeleteData(mob,postalChain());
     };
-    public int numberInBox(String mob)
+    public Hashtable getOurOpenBoxes(String mob)
     {
-        return getBoxRowData(mob).size();
-    };
-    public Vector getAllBoxItems(String mob)
+        Hashtable branches=new Hashtable();
+        Vector V=CMClass.DBEngine().DBReadData(mob,postalChain());
+        if(V==null) return branches;
+        for(int v=0;v<V.size();v++)
+        {
+            Vector V2=(Vector)V.elementAt(v);
+            if(V2.size()>3)
+            {
+                String key=(String)V2.elementAt(DATA_KEY);
+                int x=key.indexOf("/");
+                if(x>0)
+                    branches.put(key.substring(0,x),key.substring(x+1));
+            }
+        }
+        return branches;
+    }
+    public void createBoxHere(String mob, String forward)
+    {
+        if(!getOurOpenBoxes(mob).containsKey(postalBranch()))
+        {
+            CMClass.DBEngine().DBCreateData(mob,
+                    postalChain(),
+                    postalBranch()+"/"+forward,
+                    "50");
+        }
+    }
+    public void deleteBoxHere(String mob)
+    {
+        Vector V=getBoxRowData(mob);
+        if(V==null) return;
+        for(int v=0;v<V.size();v++)
+        {
+            Vector V2=(Vector)V.elementAt(v);
+            if((V2.size()>3)
+            &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+"/")))
+            {
+                CMClass.DBEngine().DBDeleteData(
+                ((String)V2.elementAt(DATA_USERID)),
+                ((String)V2.elementAt(DATA_CHAIN)),
+                ((String)V2.elementAt(DATA_KEY)));
+            }
+        }
+    }
+    public Vector getAllBoxItemVectors(String mob)
     {
         Vector V=getBoxRowData(mob);
         Vector mine=new Vector();
         for(int v=0;v<V.size();v++)
         {
             Vector V2=(Vector)V.elementAt(v);
-            if(V2.size()>3)
+            if((V2.size()>3)
+            &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+";")))
             {
-                Item I=makeItem((String)V2.elementAt(DATA_DATA));
-                if(I!=null) mine.addElement(I);
+                Vector V3=parsePieceData((String)V2.elementAt(DATA_DATA));
+                Item I=makeItem(V3);
+                if(I!=null) 
+                {
+                    Vector V4=new Vector();
+                    V4.addElement(V3.elementAt(PIECE_FROM));
+                    V4.addElement(V3.elementAt(PIECE_TO));
+                    V4.addElement(V3.elementAt(PIECE_TIME));
+                    V4.addElement(V3.elementAt(PIECE_COD));
+                    V4.addElement(V3.elementAt(PIECE_CLASSID));
+                    V4.addElement(I);
+                    mine.addElement(V4);
+                }
             }
         }
         return mine;
@@ -174,26 +235,9 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     {
         return CMClass.DBEngine().DBReadData(mob,postalChain());
     };
-    public Vector getBoxNames()
-    {
-        Vector V=CMClass.DBEngine().DBReadData(postalChain());
-        HashSet h=new HashSet();
-        Vector mine=new Vector();
-        for(int v=0;v<V.size();v++)
-        {
-            Vector V2=(Vector)V.elementAt(v);
-            if(!h.contains(V2.elementAt(DATA_USERID)))
-            {
-                h.add(V2.elementAt(DATA_USERID));
-                mine.addElement(V2.elementAt(DATA_USERID));
-            }
-        }
-        return mine;
-    }
-
     public Item findBoxContents(MOB mob, String likeThis)
     {
-        if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
         {
             if(mob.getClanID().length()==0) return null;
             return findBoxContents(mob.getClanID(),likeThis);
@@ -205,152 +249,281 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     public Item findBoxContents(String mob, String likeThis)
     {
         Vector V=getBoxRowData(mob);
-        if(Util.s_int(likeThis)>0)
-            for(int v=0;v<V.size();v++)
-            {
-                Vector V2=(Vector)V.elementAt(v);
-                if(((String)V2.elementAt(DATA_DATA)).startsWith("COINS;"))
-                    return makeItem((String)V2.elementAt(DATA_DATA));
-            }
-        else
         for(int v=0;v<V.size();v++)
         {
             Vector V2=(Vector)V.elementAt(v);
-            Item I=makeItem((String)V2.elementAt(DATA_DATA));
-            if(I==null) continue;
-            if(EnglishParser.containsString(I.Name(),likeThis))
-                return I;
+            if((V2.size()>3)
+            &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+";")))
+            {
+                Item I=makeItem(parsePieceData((String)V2.elementAt(DATA_DATA)));
+                if(I==null) continue;
+                if(EnglishParser.containsString(I.Name(),likeThis))
+                    return I;
+            }
         }
         return null;
     };
 
+    public Vector findExactBoxData(String mob, Item likeThis)
+    {
+        Vector V=getBoxRowData(mob);
+        for(int v=0;v<V.size();v++)
+        {
+            Vector V2=(Vector)V.elementAt(v);
+            if((V2.size()>3)
+            &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+";")))
+            {
+                Item I=makeItem(parsePieceData((String)V2.elementAt(DATA_DATA)));
+                if(I==null) continue;
+                if(I.sameAs(likeThis))
+                    return parsePieceData((String)V2.elementAt(DATA_DATA));
+            }
+        }
+        return null;
+    };
 
-
-    public void setCoinInterest(double interest){coinInterest=interest;};
-    public void setItemInterest(double interest){itemInterest=interest;};
-    public double getCoinInterest(){return coinInterest;};
-    public double getItemInterest(){return itemInterest;};
+    protected Vector parsePieceData(String data)
+    {
+        Vector V=new Vector();
+        for(int i=0;i<5;i++)
+        {
+            int x=data.indexOf(";");
+            if(x<0) return new Vector();
+            V.addElement(data.substring(0,x));
+            data=data.substring(x+1);
+        }
+        V.addElement(data);
+        return V;
+    }
+    
+    protected Item makeItem(Vector data)
+    {
+        if(data.size()<NUM_PIECES)
+            return null;
+        Item I=CMClass.getItem((String)data.elementAt(PIECE_CLASSID));
+        if(I!=null)
+        {
+            CoffeeMaker.setPropertiesStr(I,(String)data.elementAt(PIECE_MISCDATA),true);
+            I.recoverEnvStats();
+            I.text();
+            return I;
+        }
+        return null;
+    }
+    
+    protected double getTotalChargeForPiece(Vector data)
+    {
+        if(data.size()<NUM_PIECES)
+            return 0.0;
+        if(getStartRoom()==null) return 0.0;
+        double COD=Util.s_double((String)data.elementAt(PIECE_COD));
+        if(COD==0.0) return 0.0;
+        Item I=makeItem(data);
+        if(I==null) return 0.0;
+        TimeClock TC=getStartRoom().getArea().getTimeObj();
+        double amt=minimumPostage()+COD;
+        int chargeableWeight=0;
+        if(I.envStats().weight()>0)
+            chargeableWeight=(I.envStats().weight()-1);
+        amt+=Util.mul(postagePerPound,chargeableWeight);
+        if(chargeableWeight<=0) return amt;
+        long time=System.currentTimeMillis()-Util.s_long((String)data.elementAt(PIECE_TIME));
+        long millisPerMudMonth=TC.getDaysInMonth()*MudHost.TIME_UTILTHREAD_SLEEP*TC.getHoursInDay();
+        if(time<0) return amt;
+        amt+=Util.mul(Util.mul(Math.floor(Util.div(time,millisPerMudMonth)),holdFeePerPound()),chargeableWeight);
+        return amt;
+    }
+    
+    protected String getBranchPostableTo(String toWhom, String branch, Hashtable allBranchBoxes)
+    {
+        String forward=(String)allBranchBoxes.get(branch);
+        if(forward==null) return null;
+        if(forward.equalsIgnoreCase(toWhom))
+            return branch;
+        PostOffice P=CMMap.getPostOffice(postalChain(),forward);
+        if(P!=null)
+        {
+            forward=(String)allBranchBoxes.get(P.postalBranch());
+            if((forward!=null)&&forward.equalsIgnoreCase(toWhom))
+                return P.postalBranch();
+        }
+        return null;
+    }
+    
+    public String findProperBranch(String toWhom)
+    {
+        if(CMMap.getLoadPlayer(toWhom)!=null)
+        {
+            MOB M=CMMap.getLoadPlayer(toWhom);
+            if(M.getStartRoom()!=null)
+            {
+                Hashtable allBranchBoxes=getOurOpenBoxes(toWhom);
+                PostOffice P=CMMap.getPostOffice(postalChain(),M.getStartRoom().getArea().Name());
+                String branch=null;
+                if(P!=null)
+                {
+                    branch=getBranchPostableTo(toWhom,P.postalBranch(),allBranchBoxes);
+                    if(branch!=null) return branch;
+                    if((branch==null)&&(allBranchBoxes.size()==0))
+                    {
+                        P.createBoxHere(toWhom,toWhom);
+                        return P.postalBranch();
+                    }
+                }
+                branch=getBranchPostableTo(toWhom,postalBranch(),allBranchBoxes);
+                if(branch!=null) return branch;
+                for(Enumeration e=allBranchBoxes.keys();e.hasMoreElements();)
+                {
+                    String tryBranch=(String)e.nextElement();
+                    branch=getBranchPostableTo(toWhom,tryBranch,allBranchBoxes);
+                    if(branch!=null) return branch;
+                }
+                if(P!=null)
+                {
+                    P.deleteBoxHere(toWhom);
+                    P.createBoxHere(toWhom,toWhom);
+                    return P.postalBranch();
+                }
+            }
+        }
+        else
+        if(Clans.getClan(toWhom)!=null)
+        {
+            Hashtable allBranchBoxes=getOurOpenBoxes(toWhom);
+            String branch=getBranchPostableTo(toWhom,postalBranch(),allBranchBoxes);
+            if(branch!=null) return branch;
+            for(Enumeration e=allBranchBoxes.keys();e.hasMoreElements();)
+            {
+                String tryBranch=(String)e.nextElement();
+                branch=getBranchPostableTo(toWhom,tryBranch,allBranchBoxes);
+                if(branch!=null) return branch;
+            }
+        }
+        return null;
+    }
 
     public boolean tick(Tickable ticking, int tickID)
     {
         if(!super.tick(ticking,tickID))
             return false;
-        try{
-        if(tickID==MudHost.TICK_MOB)
+        if((tickID==MudHost.TICK_MOB)&&(location()!=null))
         {
             boolean proceed=false;
             // handle interest by watching the days go by...
-            // put stuff up for sale if the account runs out
-            synchronized(postalChain())
+            // each chain is handled by one branch, 
+            // since pending mail all looks the same.
+            Long L=(Long)postalTimes.get(postalChain()+"/"+postalBranch());
+            if((L==null)||(L.longValue()<System.currentTimeMillis()))
             {
-                Long L=(Long)bankTimes.get(postalChain());
-                if((L==null)||(L.longValue()<System.currentTimeMillis()))
+                L=new Long(System.currentTimeMillis()+new Long((location().getArea().getTimeObj().getHoursInDay())*MudHost.TIME_MILIS_PER_MUDHOUR*5).longValue());
+                proceed=true;
+                postalTimes.remove(postalChain()+"/"+postalBranch());
+                postalTimes.put(postalChain()+"/"+postalBranch(),L);
+            }
+            if(proceed)
+            {
+                Vector V=getBoxRowData(postalChain());
+                // first parse all the pending mail,
+                // and remove it from the sorter
+                Vector parsed=new Vector();
+                if(V==null) V=new Vector();
+                for(int v=0;v<V.size();v++)
                 {
-                    L=new Long(System.currentTimeMillis()+new Long((location().getArea().getTimeObj().getHoursInDay())*MudHost.TIME_MILIS_PER_MUDHOUR*5).intValue());
-                    proceed=true;
-                    bankTimes.remove(postalChain());
-                    bankTimes.put(postalChain(),L);
+                    Vector V2=(Vector)V.elementAt(v);
+                    parsed.addElement(parsePieceData((String)V2.elementAt(DATA_DATA)));
+                    CMClass.DBEngine().DBDeleteData(
+                    ((String)V2.elementAt(DATA_USERID)),
+                    ((String)V2.elementAt(DATA_CHAIN)),
+                    ((String)V2.elementAt(DATA_KEY)));
                 }
-                if(proceed)
+                PostOffice P=null;
+                for(int v=0;v<parsed.size();v++)
                 {
-                    Vector V=CMClass.DBEngine().DBReadData(postalChain());
-                    Vector userNames=new Vector();
-                    for(int v=0;v<V.size();v++)
+                    Vector V2=(Vector)parsed.elementAt(v);
+                    String toWhom=(String)V2.elementAt(PIECE_TO);
+                    String deliveryBranch=findProperBranch(toWhom);
+                    if(deliveryBranch!=null)
                     {
-                        Vector V2=(Vector)V.elementAt(v);
-                        String name=(String)V2.elementAt(0);
-                        if(!userNames.contains(name))
+                        P=CMMap.getPostOffice(postalChain(),deliveryBranch);
+                        if(P!=null)
                         {
-                            if(!CMClass.DBEngine().DBUserSearch(null,name))
+                            Item I=makeItem((Vector)V.elementAt(v));
+                            if(I!=null)
                             {
-                                if((Clans.getClan(name))==null)
-                                    emptyBox(name);
-                                else
-                                    userNames.addElement(name);
+                                P.addToBox(toWhom,I,(String)V2.elementAt(PIECE_FROM),(String)V2.elementAt(PIECE_TO),Util.s_long((String)V2.elementAt(PIECE_TIME)),Util.s_double((String)V2.elementAt(PIECE_COD)));
+                                continue;
                             }
-                            else
-                                userNames.addElement(name);
                         }
                     }
-                    for(int u=0;u<userNames.size();u++)
+                    String fromWhom=(String)V2.elementAt(PIECE_FROM);
+                    deliveryBranch=findProperBranch(fromWhom);
+                    if(deliveryBranch!=null)
                     {
-                        String name=(String)userNames.elementAt(u);
-                        Coins coinItem=null;
-                        int totalValue=0;
-                        V=getAllBoxItems(name);
-                        for(int v=0;v<V.size();v++)
+                        P=CMMap.getPostOffice(postalChain(),deliveryBranch);
+                        if(P!=null)
                         {
-                            Item I=(Item)V.elementAt(v);
-                            if(I instanceof Coins)
-                                coinItem=(Coins)I;
-                            else
-                            if(itemInterest!=0.0)
-                                totalValue+=I.value();
+                            Item I=makeItem((Vector)V.elementAt(v));
+                            if(I!=null)
+                                P.addToBox(fromWhom,I,(String)V2.elementAt(PIECE_TO),"POSTMASTER",System.currentTimeMillis(),0.0);
                         }
-                        double newBalance=0.0;
-                        if(coinItem!=null) newBalance=coinItem.getTotalValue();
-                        newBalance+=Util.mul(newBalance,coinInterest);
-                        if(totalValue>0)
-                            newBalance+=Util.mul(totalValue,itemInterest);
-                        if(newBalance<0)
+                    }
+                    
+                }
+                V=CMClass.DBEngine().DBReadData(postalChain());
+                TimeClock TC=null;
+                if(getStartRoom()!=null) TC=getStartRoom().getArea().getTimeObj();
+                if((TC!=null)&&(maxMudMonthsHeld()>0))
+                for(int v=0;v<V.size();v++)
+                {
+                    Vector V2=(Vector)V.elementAt(v);
+                    if((V2.size()>3)
+                    &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+";")))
+                    {
+                        Vector data=parsePieceData(((String)V2.elementAt(DATA_DATA)));
+                        if((data!=null)&&(data.size()>1)&&(getStartRoom()!=null))
                         {
-                            for(int v=0;v<V.size();v++)
+                            long time=System.currentTimeMillis()-Util.s_long((String)data.elementAt(PIECE_TIME));
+                            long millisPerMudMonth=TC.getDaysInMonth()*MudHost.TIME_UTILTHREAD_SLEEP*TC.getHoursInDay();
+                            if(time>0)
                             {
-                                Item I=(Item)V.elementAt(v);
-                                if(!(I instanceof Coins))
-                                    addStoreInventory(I);
+                                int months=(int)Math.round(Math.floor(Util.div(time,millisPerMudMonth)));
+                                if(months>maxMudMonthsHeld())
+                                {
+                                    Item I=makeItem(V2);
+                                    CMClass.DBEngine().DBDeleteData(
+                                            ((String)V2.elementAt(DATA_USERID)),
+                                            ((String)V2.elementAt(DATA_CHAIN)),
+                                            ((String)V2.elementAt(DATA_KEY)));
+                                    if(I!=null)
+                                        addStoreInventory(I);
+                                }
                             }
-                            emptyBox(name);
-                        }
-                        else
-                        if((coinItem==null)||(newBalance!=coinItem.getTotalValue()))
-                        {
-                            if(coinItem!=null)
-                            {
-                                if(newBalance>coinItem.getTotalValue())
-                                    BeanCounter.bankLedger(postalChain(),name,CoffeeUtensils.getFormattedDate(this)+": Deposit of "+BeanCounter.nameCurrencyShort(this,newBalance-coinItem.getTotalValue())+": Interest paid.");
-                                else
-                                    BeanCounter.bankLedger(postalChain(),name,CoffeeUtensils.getFormattedDate(this)+": Withdrawl of "+BeanCounter.nameCurrencyShort(this,coinItem.getTotalValue()-newBalance)+": Interest charged.");
-                                delFromBox(name,coinItem);
-                            }
-                            String currency=BeanCounter.getCurrency(this);
-                            coinItem=BeanCounter.makeBestCurrency(currency,newBalance);
-                            if(coinItem!=null)
-                                addToBox(name,coinItem);
                         }
                     }
                 }
             }
         }
-        }catch(Exception e){Log.errOut("StdBanker",e);}
         return true;
     }
 
-    protected double getBalance(MOB mob)
+    public void autoGive(MOB src, MOB tgt, Item I)
     {
-        Item old=findBoxContents(mob,""+Integer.MAX_VALUE);
-        if((old!=null)&&(old instanceof Coins))
-            return ((Coins)old).getTotalValue();
-        return 0;
+        FullMsg msg2=new FullMsg(src,I,null,CMMsg.MSG_DROP,null,CMMsg.MSG_DROP,"GIVE",CMMsg.MSG_DROP,null);
+        location().send(this,msg2);
+        msg2=new FullMsg(tgt,I,null,CMMsg.MSG_GET,null,CMMsg.MSG_GET,"GIVE",CMMsg.MSG_GET,null);
+        location().send(this,msg2);
     }
-
-    protected double minBalance(MOB mob)
+    
+    protected String getMsgFromAffect(String msg)
     {
-        Vector V=null;
-        if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-            V=getAllBoxItems(mob.getClanID());
-        else
-            V=getAllBoxItems(mob.Name());
-        double min=0;
-        for(int v=0;v<V.size();v++)
-        {
-            Item I=(Item)V.elementAt(v);
-            if(I instanceof Coins) continue;
-            min+=Util.div(I.value(),2.0);
-        }
-        return min;
+        if(msg==null) return null;
+        int start=msg.indexOf("'");
+        int end=msg.lastIndexOf("'");
+        if((start>0)&&(end>start))
+            return msg.substring(start+1,end);
+        return "";
     }
-
+    
     public void executeMsg(Environmental myHost, CMMsg msg)
     {
         MOB mob=msg.source();
@@ -363,118 +536,115 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 {
                     if(msg.tool() instanceof Container)
                         ((Container)msg.tool()).emptyPlease();
-                    FullMsg msg2=new FullMsg(msg.source(),msg.tool(),null,CMMsg.MSG_DROP,null,CMMsg.MSG_DROP,"GIVE",CMMsg.MSG_DROP,null);
-                    location().send(this,msg2);
-                    msg2=new FullMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET,null,CMMsg.MSG_GET,"GIVE",CMMsg.MSG_GET,null);
-                    location().send(this,msg2);
-                    if(msg.tool() instanceof Coins)
+                    Session S=msg.source().session();
+                    if((!msg.source().isMonster())&&(S!=null)&&(msg.tool() instanceof Item))
                     {
-                        Coins older=(Coins)msg.tool();
-                        double newValue=older.getTotalValue();
-                        Item old=findBoxContents(msg.source(),""+Integer.MAX_VALUE);
-                        MOB owner=msg.source();
-                        if((old==null)
-                        &&(whatISell!=ShopKeeper.DEAL_CLANBANKER)
-                        &&(msg.source().isMarriedToLiege()))
+                        autoGive(msg.source(),this,(Item)msg.tool());
+                        if(isMine(msg.tool()))
                         {
-                            old=findBoxContents(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
-                            if(old!=null) owner=CMMap.getPlayer(msg.source().getLiegeID());
+                            try
+                            {
+                                String toWhom=S.prompt("Address this to whom? ","");
+                                if((toWhom!=null)&&(toWhom.length()>0)
+                                &&((CMMap.getLoadPlayer(toWhom)!=null)||(Clans.findClan(toWhom)!=null)))
+                                {
+                                    String fromWhom=msg.source().Name();
+                                    if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                                        fromWhom=msg.source().getClanID();
+                                    if(CMMap.getLoadPlayer(toWhom)!=null)
+                                        toWhom=CMMap.getLoadPlayer(toWhom).Name();
+                                    else
+                                        toWhom=Clans.findClan(toWhom).name();
+                                    double amt=minimumPostage();
+                                    if(msg.tool().envStats().weight()>0)
+                                        amt+=Util.mul(postagePerPound,(msg.tool().envStats().weight()-1));
+                                    double COD=0.0;
+                                    boolean deliver=true;
+                                    String choice=S.choose("Postage on this will be "+BeanCounter.nameCurrencyShort(msg.source(),amt)+".  Would you like to P)ay this now, or be C)harged on delivery (c/P)?","CP\n","P").trim().toUpperCase();
+                                    if(choice.startsWith("C"))
+                                    {
+                                        String CODstr=S.prompt("Enter COD amount ("+BeanCounter.getDenominationName(BeanCounter.getCurrency(this),BeanCounter.getLowestDenomination(BeanCounter.getCurrency(this)))+"): ");
+                                        if((CODstr.length()==0)||(!Util.isNumber(CODstr))||(Util.s_double(CODstr)<=0.0))
+                                        {
+                                            CommonMsgs.say(this,mob,"That is not a valid amount.",true,false);
+                                            autoGive(this,msg.source(),(Item)msg.tool());
+                                            deliver=false;
+                                        }
+                                        else
+                                        {
+                                            COD=Util.s_double(CODstr);
+                                            amt=0.0;
+                                        }
+                                    }
+                                    else
+                                    if((amt>0.0)&&(BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),this)<amt))
+                                    {
+                                        CommonMsgs.say(this,mob,"You can't afford postage.",true,false);
+                                        autoGive(this,msg.source(),(Item)msg.tool());
+                                        deliver=false;
+                                    }
+                                    else
+                                        BeanCounter.subtractMoney(mob,BeanCounter.getCurrency(this),amt);
+                                    if(deliver)
+                                    {
+                                        addToBox(postalChain(),(Item)msg.tool(),fromWhom,toWhom,System.currentTimeMillis(),COD);
+                                        CommonMsgs.say(this,mob,"I'll deliver that for ya right away!",true,false);
+                                        ((Item)msg.tool()).destroy();
+                                    }
+                                }
+                                else
+                                {
+                                    CommonMsgs.say(this,mob,"That is not a valid player or clan name.",true,false);
+                                    autoGive(this,msg.source(),(Item)msg.tool());
+                                }
+                            }
+                            catch(Exception e)
+                            {
+                                CommonMsgs.drop(mob,msg.tool(),false,false);
+                            }
                         }
-                        if((old!=null)&&(old instanceof Coins))
-                            newValue+=((Coins)old).getTotalValue();
-                        Coins item=BeanCounter.makeBestCurrency(BeanCounter.getCurrency(this),newValue);
-                        if(old!=null) delFromBox(owner,old);
-                        if(item!=null)
-                            addToBox(owner,item);
-                        if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-                            CommonMsgs.say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+BeanCounter.nameCurrencyLong(this,getBalance(owner))+".",true,false);
                         else
-                            CommonMsgs.say(this,mob,"Ok, your new balance is "+BeanCounter.nameCurrencyLong(this,getBalance(owner))+".",true,false);
-                        recoverEnvStats();
-                        ((Coins)msg.tool()).setNumberOfCoins(0);
-                        double riches=BeanCounter.getTotalAbsoluteNativeValue(this);
-                        if(riches>0.0) BeanCounter.subtractMoney(this,riches);
-                    }
-                    else
-                    {
-                        addToBox(msg.source(),(Item)msg.tool());
-                        CommonMsgs.say(this,mob,"Thank you, "+msg.tool().name()+" is safe with us.",true,false);
-                        ((Item)msg.tool()).destroy();
+                            CommonMsgs.say(this,mob,"Ugh, I can't seem to deliver "+msg.tool().name()+".",true,false);
                     }
                 }
                 return;
             case CMMsg.TYP_WITHDRAW:
                 {
+                    String thename=msg.source().Name();
+                    if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                        thename=msg.source().getClanID();
                     Item old=(Item)msg.tool();
-                    if(old instanceof Coins)
-                    {
-                        Item depositInventoryItem=findBoxContents(msg.source(),""+Integer.MAX_VALUE);
-                        MOB owner=msg.source();
-                        if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
-                        &&(msg.source().isMarriedToLiege())
-                        &&((depositInventoryItem==null)
-                                ||((depositInventoryItem instanceof Coins)
-                                        &&(((Coins)depositInventoryItem).getTotalValue()<((Coins)old).getTotalValue()))))
-                        {
-                            Item item2=findBoxContents(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
-                            if((item2!=null)&&(item2 instanceof Coins)&&(((Coins)item2).getTotalValue()>=((Coins)old).getTotalValue()))
-                            {
-                                depositInventoryItem=item2;
-                                owner=CMMap.getPlayer(msg.source().getLiegeID());
-                            }
-                        }
-                        if((depositInventoryItem!=null)
-                        &&(depositInventoryItem instanceof Coins)
-                        &&(old instanceof Coins)
-                        &&(((Coins)depositInventoryItem).getTotalValue()>=((Coins)old).getTotalValue()))
-                        {
-                            Coins coins=BeanCounter.makeBestCurrency(this,((Coins)depositInventoryItem).getTotalValue()-((Coins)old).getTotalValue());
-                            delFromBox(owner,depositInventoryItem);
-                            
-                            addInventory(old);
-                            FullMsg newMsg=new FullMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
-                            if(location().okMessage(this,newMsg))
-                            {
-                                location().send(this,newMsg);
-                                ((Coins)old).putCoinsBack();
-                            }
-                            else
-                                CommonMsgs.drop(this,old,true,false);
-                            if((coins==null)||(coins.getNumberOfCoins()<=0))
-                            {
-                                if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-                                    CommonMsgs.say(this,mob,"I have closed the account for Clan "+owner.getClanID()+". Thanks for your business.",true,false);
-                                else
-                                    CommonMsgs.say(this,mob,"I have closed that account. Thanks for your business.",true,false);
-                                return;
-                            }
-                            else
-                            {
-                                addToBox(owner,coins);
-                                if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-                                    CommonMsgs.say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+BeanCounter.nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
-                                else
-                                    CommonMsgs.say(this,mob,"Ok, your new balance is "+BeanCounter.nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
-                            }
-                        }
-                        else
-                            CommonMsgs.say(this,mob,"But, your balance is "+BeanCounter.nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);
-                    }
+                    Vector data=findExactBoxData(thename,(Item)msg.tool());
+                    if((data==null)
+                    &&(whatISell!=ShopKeeper.DEAL_CLANPOSTMAN)
+                    &&(msg.source().isMarriedToLiege()))
+                        data=findExactBoxData(msg.source().getLiegeID(),(Item)msg.tool());
+                    if((data==null)||(data.size()<NUM_PIECES))
+                        CommonMsgs.say(this,mob,"You want WHAT? Try LIST.",true,false);
                     else
                     {
                         if((!delFromBox(msg.source(),old))
-                        &&(whatISell!=ShopKeeper.DEAL_CLANBANKER)
+                        &&(whatISell!=ShopKeeper.DEAL_CLANPOSTMAN)
                         &&(msg.source().isMarriedToLiege()))
                             delFromBox(msg.source().getLiegeID(),old);
-
-                        CommonMsgs.say(this,mob,"Thank you for your trust.",true,false);
+                        double totalCharge=getTotalChargeForPiece(data);
+                        if((totalCharge>0.0)&&(BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),this)>=totalCharge))
+                        {
+                            Item returnMoney=BeanCounter.makeBestCurrency(this,Util.s_double((String)data.elementAt(PIECE_COD)));
+                            if(returnMoney!=null)
+                            {
+                                BeanCounter.subtractMoney(msg.source(),totalCharge);
+                                addToBox(postalChain(),returnMoney,(String)data.elementAt(PIECE_TO),(String)data.elementAt(PIECE_FROM),System.currentTimeMillis(),0.0);
+                                CommonMsgs.say(this,mob,"The COD amount of "+returnMoney.Name()+" has been sent back to "+((String)data.elementAt(PIECE_FROM))+".",true,false);
+                            }
+                        }
+                        CommonMsgs.say(this,mob,"There ya go!",true,false);
                         if(location()!=null)
                             location().addItemRefuse(old,Item.REFUSE_PLAYER_DROP);
                         FullMsg msg2=new FullMsg(mob,old,this,CMMsg.MSG_GET,null);
                         if(location().okMessage(mob,msg2))
                             location().send(mob,msg2);
                     }
-
                 }
                 return;
             case CMMsg.TYP_VALUE:
@@ -485,76 +655,159 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             case CMMsg.TYP_BUY:
                 super.executeMsg(myHost,msg);
                 return;
+            case CMMsg.TYP_SPEAK:
+            {
+                super.executeMsg(myHost,msg);
+                String str=getMsgFromAffect(msg.targetMessage());
+                String theName=msg.source().Name();
+                if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                    theName=msg.source().getClanID();
+                if((str!=null)&&(str.trim().equalsIgnoreCase("open")))
+                {
+                    if((whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                    &&((theName.length()==0)
+                      ||(Clans.getClan(theName)==null)))
+                        CommonMsgs.say(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
+                    else
+                    if(getOurOpenBoxes(theName).containsKey(postalBranch()))
+                    {
+                        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                            CommonMsgs.say(this,mob,"Your clan already has a box open here!",true,false);
+                        else
+                            CommonMsgs.say(this,mob,"You already have a box open here!",true,false);
+                    }
+                    else
+                    if(feeForNewBox()>0.0)
+                    {
+                        if(BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),this)<feeForNewBox())
+                        {
+                            CommonMsgs.say(this,mob,"Too bad you can't afford it.",true,false);
+                            return;
+                        }
+                        else
+                            BeanCounter.subtractMoney(msg.source(),BeanCounter.getCurrency(this),feeForNewBox());
+                        createBoxHere(theName,theName);
+                        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                            CommonMsgs.say(this,mob,"A box has been opened for your clan.",true,false);
+                        else
+                            CommonMsgs.say(this,mob,"A box has been opened for you.",true,false);
+                    }
+                    else
+                    {
+                        createBoxHere(theName,theName);
+                        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                            CommonMsgs.say(this,mob,"A box has been opened for your clan.",true,false);
+                        else
+                            CommonMsgs.say(this,mob,"A box has been opened for you.",true,false);
+                    }
+                }
+                else
+                if((str!=null)&&(str.trim().equalsIgnoreCase("close")))
+                {
+                    if(!getOurOpenBoxes(theName).containsKey(postalBranch()))
+                    {
+                        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                            CommonMsgs.say(this,mob,"Your clan does not have a box here!",true,false);
+                        else
+                            CommonMsgs.say(this,mob,"You don't have a box open here!",true,false);
+                    }
+                    else
+                    if(getAllBoxItemVectors(theName).size()>0)
+                        CommonMsgs.say(this,mob,"That box has pending items which must be removed first.",true,false);
+                    else
+                    {
+                        deleteBoxHere(theName);
+                        CommonMsgs.say(this,mob,"That box is now closed.",true,false);
+                    }
+                }
+                else
+                if((str!=null)&&(str.toUpperCase().trim().startsWith("FORWARD")))
+                {
+                    str=str.trim().substring(7).trim();
+                    if(!getOurOpenBoxes(theName).containsKey(postalBranch()))
+                    {
+                        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                            CommonMsgs.say(this,mob,"Your clan does not have a box here!",true,false);
+                        else
+                            CommonMsgs.say(this,mob,"You don't have a box open here!",true,false);
+                    }
+                    else
+                    {
+                        Area A=CMMap.findArea(str);
+                        if(A==null)
+                            CommonMsgs.say(this,mob,"I don't know of an area called '"+str+"'.",true,false);
+                        else
+                        {
+                            PostOffice P=CMMap.getPostOffice(postalBranch(),A.Name());
+                            if(P==null)
+                                CommonMsgs.say(this,mob,"I'm sorry, we don't have a branch in "+A.name()+".",true,false);
+                            else
+                            if(!P.getOurOpenBoxes(theName).containsKey(P.postalBranch()))
+                            {
+                                if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                                    CommonMsgs.say(this,mob,"I'm sorry, your clan does not have a box at our branch in "+A.name()+".",true,false);
+                                else
+                                    CommonMsgs.say(this,mob,"I'm sorry, you don't have a box at our branch in "+A.name()+".",true,false);
+                            }
+                            else
+                            {
+                                deleteBoxHere(theName);
+                                createBoxHere(theName,P.postalBranch());
+                                CommonMsgs.say(this,mob,"Ok, mail will now be forwarded to our branch in "+A.name()+".",true,false);
+                            }
+                        }
+                    }
+                }
+                return;
+            }
             case CMMsg.TYP_LIST:
             {
                 super.executeMsg(myHost,msg);
                 Vector V=null;
-                if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-                    V=getAllBoxItems(mob.getClanID());
+                if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                    V=getAllBoxItemVectors(mob.getClanID());
                 else
                 {
-                    V=getAllBoxItems(mob.Name());
+                    V=getAllBoxItemVectors(mob.Name());
                     if(mob.isMarriedToLiege())
                     {
-                        Vector V2=getAllBoxItems(mob.getLiegeID());
+                        Vector V2=getAllBoxItemVectors(mob.getLiegeID());
                         if((V2!=null)&&(V2.size()>0))
                             Util.addToVector(V2,V);
                     }
                 }
 
                 StringBuffer str=new StringBuffer("");
-                str.append("\n\rAccount balance at '"+postalChain()+"'.\n\r");
-                String c="^x[Item                              ] ";
-                str.append(c+c+"^.^N\n\r");
-                int colNum=0;
-                boolean otherThanCoins=false;
+                str.append("\n\rItems in your postal box here:\n\r");
+                str.append("^x[COD   ][From           ][Sent              ][Item                     ]^.^N\n\r");
+                TimeClock C=DefaultTimeClock.globalClock;
+                if(getStartRoom()!=null) C=getStartRoom().getArea().getTimeObj();
+                boolean codCharge=false;
                 for(int i=0;i<V.size();i++)
                 {
-                    Item I=(Item)V.elementAt(i);
-                    if(!(I instanceof Coins))
+                    Vector V2=(Vector)V.elementAt(i);
+                    if(Util.s_double((String)V2.elementAt(PIECE_COD))>0.0)
                     {
-                        otherThanCoins=true;
-                        String col=null;
-                        col="["+Util.padRight(I.name(),34)+"] ";
-                        if((++colNum)>2)
-                        {
-                            str.append("\n\r");
-                            colNum=1;
-                        }
-                        str.append(col);
+                        codCharge=true;
+                        str.append("["+Util.padRight(""+BeanCounter.abbreviatedPrice(this,Util.s_double((String)V2.elementAt(PIECE_COD))),6)+"]");
                     }
-                }
-                if(!otherThanCoins)
-                    str=new StringBuffer("\n\r^N");
-                else
-                    str.append("\n\r\n\r");
-                double balance=getBalance(mob);
-                if(balance>0)
-                {
-                    if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-                        str.append("Clan "+mob.getClanID()+" has a balance of ^H"+BeanCounter.nameCurrencyLong(this,balance)+"^?.");
                     else
-                        str.append("Your balance is ^H"+BeanCounter.nameCurrencyLong(this,balance)+"^?.");
+                        str.append("[      ]");
+                    str.append("["+Util.padRight((String)V2.elementAt(PIECE_FROM),15)+"]");
+                    TimeClock C2=C.deriveClock(Util.s_long((String)V2.elementAt(PIECE_TIME)));
+                    str.append("["+Util.padRight(C2.getShortTimeDescription(),18)+"]");
+                    str.append("["+Util.padRight(((Item)V2.elementAt(PIECE_MISCDATA)).Name(),25)+"]");
+                    mob.tell(str.toString()+"^T");
+                    str=new StringBuffer("\n\r^N");
                 }
-                if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
-                &&(mob.isMarriedToLiege()))
-                {
-                    balance=getBalance(CMMap.getPlayer(mob.getLiegeID()));
-                    str.append("Your spouses balance is ^H"+balance+"^? gold coins.");
-                }
-                if(coinInterest!=0.0)
-                {
-                    double cci=Util.mul(Math.abs(coinInterest),100.0);
-                    String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-                    str.append("\n\rThey "+ci+"weekly on money deposited here.");
-                }
-                if(itemInterest!=0.0)
-                {
-                    double cci=Util.mul(Math.abs(itemInterest),100.0);
-                    String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-                    str.append("\n\rThey "+ci+"weekly on items deposited here.");
-                }
-                mob.tell(str.toString()+"^T");
+                str.append("\n\r");
+                if(codCharge)
+                    str.append("* COD charges above include all shipping costs.\n\r");
+                str.append("* This branch charges minimum "+BeanCounter.nameCurrencyShort(this,minimumPostage())+" postage for first pound.\n\r");
+                str.append("* An additional "+BeanCounter.nameCurrencyShort(this,postagePerPound())+" per pound is charged for packages.\n\r");
+                str.append("* A charge of "+BeanCounter.nameCurrencyShort(this,holdFeePerPound())+" per pound per month is charged for holding.\n\r");
+                str.append("To forward your mail, 'say \""+name()+"\" \"forward <areaname>\"'.  Use 'say \""+name()+"\" close' to close your box.\n\r");
+                mob.tell(str.toString());
                 return;
             }
             default:
@@ -577,23 +830,10 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             case CMMsg.TYP_GIVE:
             case CMMsg.TYP_DEPOSIT:
                 {
+                    if(!ignoreIfNecessary(msg.source())) 
+                        return false;
                     if(msg.tool()==null) return false;
-                    double balance=getBalance(mob);
-                    if(msg.tool() instanceof Coins)
-                    {
-                        if((Double.MAX_VALUE-balance)<=((Coins)msg.tool()).getTotalValue())
-                        {
-                            CommonMsgs.say(this,mob,"I'm sorry, the law prevents us from holding that much money in one account.",true,false);
-                            return false;
-                        }
-                        if(!((Coins)msg.tool()).getCurrency().equalsIgnoreCase(BeanCounter.getCurrency(this)))
-                        {
-                            CommonMsgs.say(this,mob,"I'm sorry, this bank only deals in "+BeanCounter.getDenominationName(BeanCounter.getCurrency(this))+".",true,false);
-                            return false;
-                        }
-                        return true;
-                    }
-                    if((whatISell==ShopKeeper.DEAL_CLANBANKER)
+                    if((whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
                     &&((msg.source().getClanID().length()==0)
                       ||(Clans.getClan(msg.source().getClanID())==null)))
                     {
@@ -605,21 +845,14 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
                         return false;
                     }
-                    double minbalance=minBalance(mob)+Util.div(((Item)msg.tool()).value(),2.0);
-                    if(balance<minbalance)
-                    {
-                        if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-                            CommonMsgs.say(this,mob,"Clan "+msg.source().getClanID()+" will need a total balance of "+BeanCounter.nameCurrencyShort(this,minbalance)+" for me to hold that.",true,false);
-                        else
-                            CommonMsgs.say(this,mob,"You'll need a total balance of "+BeanCounter.nameCurrencyShort(this,minbalance)+" for me to hold that.",true,false);
-                        return false;
-                    }
                 }
                 return true;
             case CMMsg.TYP_WITHDRAW:
                 {
+                    if(!ignoreIfNecessary(msg.source())) 
+                        return false;
                     String thename=msg.source().Name();
-                    if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+                    if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
                     {
                         thename=msg.source().getClanID();
                         Clan C=Clans.getClan(msg.source().getClanID());
@@ -643,64 +876,21 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     }
                     if((msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                         return false;
-                    MOB owner=msg.source();
-                    double balance=getBalance(owner);
-                    if(msg.tool() instanceof Coins)
+                    Vector data=findExactBoxData(thename,(Item)msg.tool());
+                    if((data==null)
+                    &&(whatISell!=ShopKeeper.DEAL_CLANPOSTMAN)
+                    &&(msg.source().isMarriedToLiege()))
+                        data=findExactBoxData(msg.source().getLiegeID(),(Item)msg.tool());
+                    if((data==null)||(data.size()<NUM_PIECES))
                     {
-                        if(!((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(this)))
-                        {
-                            CommonMsgs.say(this,mob,"I'm sorry, I can only give you "+BeanCounter.getDenominationName(BeanCounter.getCurrency(this))+".",true,false);
-                            return false;
-                        }
-                        
-                        if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
-                        &&(owner.isMarriedToLiege())
-                        &&(balance<((Coins)msg.tool()).getTotalValue()))
-                        {
-                            MOB M=CMMap.getLoadPlayer(owner.getLiegeID());
-                            double b=0.0;
-                            if(M!=null) b=getBalance(M);
-                            if((M!=null)&&(b>=((Coins)msg.tool()).getTotalValue()))
-                            {
-                                owner=M;
-                                balance=b;
-                                thename=owner.Name();
-                            }
-                        }
+                        CommonMsgs.say(this,mob,"You want WHAT? Try LIST.",true,false);
+                        return false;
                     }
-                    else
-                    if(findBoxContents(thename,msg.tool().Name())==null)
+                    double totalCharge=getTotalChargeForPiece(data);
+                    if(BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),this)<totalCharge)
                     {
-                        if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
-                        &&(msg.source().isMarriedToLiege())
-                        &&(findBoxContents(msg.source().getLiegeID(),msg.tool().Name())!=null))
-                            owner=CMMap.getPlayer(msg.source().getLiegeID());
-                        else
-                        {
-                            CommonMsgs.say(this,mob,"You want WHAT?",true,false);
-                            return false;
-                        }
-                    }
-                    double minbalance=minBalance(owner);
-                    if(msg.tool() instanceof Coins)
-                    {
-                        if(((Coins)msg.tool()).getTotalValue()>balance)
-                        {
-                            if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-                                CommonMsgs.say(this,mob,"I'm sorry, Clan "+thename+" has only "+BeanCounter.nameCurrencyShort(this,balance)+" in its account.",true,false);
-                            else
-                                CommonMsgs.say(this,mob,"I'm sorry, you have only "+BeanCounter.nameCurrencyShort(this,balance)+" in that account.",true,false);
-                            return false;
-                        }
-                        if(minbalance==0) return true;
-                        if(((Coins)msg.tool()).getTotalValue()>(balance-minbalance))
-                        {
-                            if((balance-minbalance)>0)
-                                CommonMsgs.say(this,mob,"I'm sorry, you may only withdraw "+BeanCounter.nameCurrencyShort(this,balance-minbalance)+"  at this time.",true,false);
-                            else
-                                CommonMsgs.say(this,mob,"I am holding other items in trust, so you may not withdraw funds at this time.",true,false);
-                            return false;
-                        }
+                        CommonMsgs.say(this,mob,"The total charge to receive that item is "+BeanCounter.nameCurrencyShort(this,totalCharge)+". You don't have enough." ,true,false);
+                        return false;
                     }
                 }
                 return true;
@@ -712,8 +902,10 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 return super.okMessage(myHost,msg);
             case CMMsg.TYP_LIST:
             {
+                if(!ignoreIfNecessary(msg.source())) 
+                    return false;
                 String thename=msg.source().Name();
-                if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+                if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
                 {
                     thename=msg.source().getClanID();
                     Clan C=Clans.getClan(msg.source().getClanID());
@@ -730,31 +922,26 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     }
                 }
                 else
-                if((numberInBox(thename)==0)
-                &&((whatISell==ShopKeeper.DEAL_CLANBANKER)
+                if((!getOurOpenBoxes(thename).containsKey(postalBranch()))
+                &&((whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
                    ||(!msg.source().isMarriedToLiege())
-                   ||(numberInBox(msg.source().getLiegeID())==0)))
+                   ||(!getOurOpenBoxes(msg.source().getLiegeID()).containsKey(postalBranch()))))
                 {
+                    if((whatISell!=ShopKeeper.DEAL_CLANPOSTMAN)
+                    &&(msg.source().getStartRoom().getArea()==getStartRoom().getArea()))
+                    {
+                        createBoxHere(msg.source().Name(),msg.source().Name());
+                        return true;
+                    }
                     StringBuffer str=new StringBuffer("");
-                    if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-                        str.append("The Clan "+thename+" does not have an account with us, I'm afraid.");
+                    if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                        str.append("The Clan "+thename+" does not have a postal box at this branch, I'm afraid.");
                     else
-                        str.append("You don't have an account with us, I'm afraid.");
-                    if(coinInterest!=0.0)
-                    {
-                        double cci=Util.mul(Math.abs(coinInterest),100.0);
-                        String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-                        str.append("\n\rWe "+ci+"weekly on money deposited here.");
-                    }
-                    if(itemInterest!=0.0)
-                    {
-                        double cci=Util.mul(Math.abs(itemInterest),100.0);
-                        String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-                        str.append("\n\rWe "+ci+"weekly on items kept with us.");
-                    }
+                        str.append("You don't have a postal box at this branch, I'm afraid.");
                     if(postalChain().length()>0)
-                        str.append("\n\rI am a banker for "+postalChain()+".");
+                        str.append("\n\rThis branch is part of the "+postalChain()+" postal chain.");
                     CommonMsgs.say(this,mob,str.toString()+"^T",true,false);
+                    mob.tell("Use 'say \""+name()+"\" open' to open a box here"+((feeForNewBox()<=0.0)?".":(" for "+BeanCounter.nameCurrencyShort(this,feeForNewBox())+".")));
                     return false;
                 }
                 else

@@ -953,7 +953,13 @@ public class List extends StdCommand
 		for(int i=0;i<V.size();i++)
 		{
 			MOB shopkeeper=(MOB)V.elementAt(i);
-			FullMsg newMsg=new FullMsg(mob,shopkeeper,null,CMMsg.MSG_LIST,(shopkeeper instanceof Banker)?"<S-NAME> review(s) <S-HIS-HER> account with <T-NAMESELF>.":"<S-NAME> review(s) <T-YOUPOSS> inventory.");
+            String str="<S-NAME> review(s) <T-YOUPOSS> inventory.";
+            if(shopkeeper instanceof Banker)
+                str="<S-NAME> review(s) <S-HIS-HER> account with <T-NAMESELF>.";
+            else
+            if(shopkeeper instanceof PostOffice)
+                str="<S-NAME> check(s) <S-HIS-HER> postal box with <T-NAMESELF>.";
+			FullMsg newMsg=new FullMsg(mob,shopkeeper,null,CMMsg.MSG_LIST,str);
 			if(!mob.location().okMessage(mob,newMsg))
 				return false;
 			mob.location().send(mob,newMsg);

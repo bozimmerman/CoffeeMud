@@ -213,7 +213,9 @@ public class StdTitle extends StdItem implements LandTitle
 			    if((((SK.whatIsSold()==ShopKeeper.DEAL_CLANBANKER)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANDSELLER))
 			            &&(!A.landOwner().equals(msg.source().getClanID())))
 			    ||(((SK.whatIsSold()==ShopKeeper.DEAL_BANKER)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANBANKER))
-			            &&(!A.landOwner().equals(msg.source().Name()))))
+			            &&(!A.landOwner().equals(msg.source().Name())))
+                ||(((SK.whatIsSold()==ShopKeeper.DEAL_POSTMAN)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANPOSTMAN))
+                        &&(!A.landOwner().equals(msg.source().Name()))))
 			    {
 			        String str="I'm sorry, '"+msg.tool().Name()+" is not for sale.  It already belongs to "+A.landOwner()+".  It should be destroyed.";
 			        if(((MOB)msg.target()).isMonster())
@@ -283,7 +285,8 @@ public class StdTitle extends StdItem implements LandTitle
 			||(msg.source().getLiegeID().equals(landOwner())&&msg.source().isMarriedToLiege()))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
-		&&(!(msg.target() instanceof Banker)))
+		&&(!(msg.target() instanceof Banker))
+        &&(!(msg.target() instanceof PostOffice)))
 		{
 			LandTitle A=fetchALandTitle();
 			if(A==null)

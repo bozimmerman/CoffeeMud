@@ -61,8 +61,6 @@ public class StdBanker extends StdShopKeeper implements Banker
 		else
 			whatISell=ShopKeeper.DEAL_CLANBANKER;
 	}
-	public String prejudiceFactors(){return "";}
-	public void setPrejudiceFactors(String factors){}
 
 	public String bankChain(){return text();}
 	public void setBankChain(String name){setMiscText(name);}
@@ -258,7 +256,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				Long L=(Long)bankTimes.get(bankChain());
 				if((L==null)||(L.longValue()<System.currentTimeMillis()))
 				{
-					L=new Long(System.currentTimeMillis()+new Long((location().getArea().getTimeObj().getHoursInDay())*MudHost.TIME_MILIS_PER_MUDHOUR*5).intValue());
+					L=new Long(System.currentTimeMillis()+new Long((location().getArea().getTimeObj().getHoursInDay())*MudHost.TIME_MILIS_PER_MUDHOUR*5).longValue());
 					proceed=true;
 					bankTimes.remove(bankChain());
 					bankTimes.put(bankChain(),L);
@@ -591,7 +589,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_DEPOSIT:
 				{
-					if(msg.tool()==null) return false;
+                    if(!ignoreIfNecessary(msg.source())) 
+                        return false;
+					if(msg.tool()==null) 
+                        return false;
 					double balance=getBalance(mob);
 					if(msg.tool() instanceof Coins)
 					{
@@ -632,6 +633,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return true;
 			case CMMsg.TYP_WITHDRAW:
 				{
+                    if(!ignoreIfNecessary(msg.source())) 
+                        return false;
 					String thename=msg.source().Name();
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 					{
@@ -726,6 +729,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return super.okMessage(myHost,msg);
 			case CMMsg.TYP_LIST:
 			{
+                if(!ignoreIfNecessary(msg.source())) 
+                    return false;
 				String thename=msg.source().Name();
 				if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 				{

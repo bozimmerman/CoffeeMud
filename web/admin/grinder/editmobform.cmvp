@@ -361,6 +361,10 @@
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Prejudices:</B></FONT>
 		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=SHOPPREJ SIZE=60 MAXLENGTH=255 VALUE="@MobData?SHOPPREJ@">
 	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Ignorable Mask:</B></FONT>
+		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=IGNOREMASK SIZE=60 MAXLENGTH=255 VALUE="@MobData?IGNOREMASK@">
+	</TR>
 	@if?MobData?ISBANKER@
 		<TR>
 			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Bank Chain Name:</B></FONT></TD>
@@ -378,21 +382,54 @@
 		    </TD>
 		</TR>
 	@else@
-		<TR>
-			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Budget:</B></FONT></TD>
-		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=BUDGET SIZE=30 VALUE="@MobData?BUDGET@">
-		    </TD>
-		</TR>
-		<TR>
-			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Deval. Rate(s):</B></FONT></TD>
-		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DEVALRATE SIZE=7 VALUE="@MobData?DEVALRATE@">
-		    </TD>
-		</TR>
-		<TR>
-			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Inv. Reset (Ticks):</B></FONT></TD>
-		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=INVRESETRATE SIZE=7 VALUE="@MobData?INVRESETRATE@">
-		    </TD>
-		</TR>
+		@if?MobData?ISPOSTMAN@
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Fee to open a new box:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTNEW SIZE=7 VALUE="@MobData?POSTNEW@">
+			    </TD>
+			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Postal Chain Name:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTCHAIN SIZE=50 VALUE="@MobData?POSTCHAIN@">
+			    </TD>
+			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Minimum postage cost:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTMIN SIZE=7 VALUE="@MobData?POSTMIN@">
+			    </TD>
+			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Postage cost/pound after first pound:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTLBS SIZE=7 VALUE="@MobData?POSTLBS@">
+			    </TD>
+			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Holding fee per pound per month:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTHOLD SIZE=7 VALUE="@MobData?POSTHOLD@">
+			    </TD>
+			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Maximum months held:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTHELD SIZE=7 VALUE="@MobData?POSTHELD@">
+			    </TD>
+			</TR>
+		@else@
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Budget:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=BUDGET SIZE=30 VALUE="@MobData?BUDGET@">
+			    </TD>
+			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Deval. Rate(s):</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DEVALRATE SIZE=7 VALUE="@MobData?DEVALRATE@">
+			    </TD>
+			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Inv. Reset (Ticks):</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=INVRESETRATE SIZE=7 VALUE="@MobData?INVRESETRATE@">
+			    </TD>
+			</TR>
+		@endif@
 	@endif@
 @endif@
 <TR>

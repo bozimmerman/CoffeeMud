@@ -39,14 +39,20 @@ public class ClanApply extends BaseClanner
 				Clan C=Clans.findClan(qual);
 				if(C!=null)
 				{
-					if((MUDZapper.zapperCheck(C.getAcceptanceSettings(),mob))
-					&&(MUDZapper.zapperCheck("-<"+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL),mob)))
+					if(MUDZapper.zapperCheck(C.getAcceptanceSettings(),mob))
 					{
-						CMClass.DBEngine().DBUpdateClanMembership(mob.Name(), C.ID(), Clan.POS_APPLICANT);
-						mob.setClanID(C.ID());
-						mob.setClanRole(Clan.POS_APPLICANT);
-						clanAnnounce(mob,"New Applicant: "+mob.Name());
-						mob.tell("You have successfully applied for membership in clan "+C.ID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");
+                        if(MUDZapper.zapperCheck("-<"+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL),mob))
+                        {
+    						CMClass.DBEngine().DBUpdateClanMembership(mob.Name(), C.ID(), Clan.POS_APPLICANT);
+    						mob.setClanID(C.ID());
+    						mob.setClanRole(Clan.POS_APPLICANT);
+    						clanAnnounce(mob,"New Applicant: "+mob.Name());
+    						mob.tell("You have successfully applied for membership in clan "+C.ID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");
+                        }
+                        else
+                        {
+                            msg.append("You must be at least level "+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL)+" to join a clan.");
+                        }
 					}
 					else
 					{

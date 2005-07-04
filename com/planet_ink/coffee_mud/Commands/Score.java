@@ -137,7 +137,7 @@ public class Score extends Affect
         if(CMSecurity.isAllowed(mob,mob.location(),"CARRYALL"))
             msg.append("You are carrying ^!"+mob.inventorySize()+"^? items weighing ^!"+mob.envStats().weight()+"^? pounds.\n\r");
         else
-    		msg.append("You are carrying ^!"+mob.inventorySize()+"^? items weighing ^!"+mob.envStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds.\n\r");
+    		msg.append("You are carrying ^!"+mob.inventorySize()+"^?/^!"+mob.maxItems()+"^? items weighing ^!"+mob.envStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds.\n\r");
 		msg.append("You have ^!"+mob.getPractices()+"^? practices, ^!"+mob.getTrains()+"^? training sessions, and ^!"+mob.getQuestPoint()+"^? quest points.\n\r");
 		if((!CMSecurity.isDisabled("EXPERIENCE"))
 		&&!mob.charStats().getCurrentClass().expless()

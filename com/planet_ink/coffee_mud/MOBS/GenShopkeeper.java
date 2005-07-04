@@ -23,6 +23,7 @@ public class GenShopkeeper extends StdShopKeeper
 {
 	public String ID(){return "GenShopkeeper";}
 	private String PrejudiceFactors="";
+    private String IgnoreMask="";
 
 	public GenShopkeeper()
 	{
@@ -37,6 +38,8 @@ public class GenShopkeeper extends StdShopKeeper
 
 	public String prejudiceFactors(){return PrejudiceFactors;}
 	public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
+    public String ignoreMask(){return IgnoreMask;}
+    public void setIgnoreMask(String factors){IgnoreMask=factors;}
 	public String text()
 	{
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
@@ -51,7 +54,7 @@ public class GenShopkeeper extends StdShopKeeper
 		super.setMiscText(newText);
 		CoffeeMaker.resetGenMOB(this,newText);
 	}
-	private static String[] MYCODES={"WHATISELL","PREJUDICE","BUDGET","DEVALRATE","INVRESETRATE"};
+	private static String[] MYCODES={"WHATISELL","PREJUDICE","BUDGET","DEVALRATE","INVRESETRATE","IGNOREMASK"};
 	public String getStat(String code)
 	{
 		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
@@ -64,6 +67,7 @@ public class GenShopkeeper extends StdShopKeeper
 		case 2: return budget();
 		case 3: return devalueRate();
 		case 4: return ""+invResetRate();
+        case 5: return ignoreMask();
 		}
 		return "";
 	}
@@ -79,6 +83,7 @@ public class GenShopkeeper extends StdShopKeeper
 		case 2: setBudget(val); break;
 		case 3: setDevalueRate(val); break;
 		case 4: setInvResetRate(Util.s_int(val)); break;
+        case 5: setIgnoreMask(val); break;
 		}
 	}
 	protected int getCodeNum(String code){

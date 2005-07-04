@@ -236,7 +236,9 @@ public class GrinderMobs
 						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
 						  "CLESIN","WORSIN","CLEPOW","CURSES","POWERS",
 						  "CLANID","TATTOOS","EDUCATIONS",
-						  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE"};
+						  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
+                          "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
+                          "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -415,6 +417,36 @@ public class GrinderMobs
 			case 45: // image
 			    M.setImage(old);
 			    break;
+            case 46: // is postman
+                break;
+            case 47: // postal chain
+                if(M instanceof PostOffice)
+                    ((PostOffice)M).setPostalChain(old);
+                break;
+            case 48: // minimum postage
+                if(M instanceof PostOffice)
+                    ((PostOffice)M).setMinimumPostage(Util.s_double(old));
+                break;
+            case 49: // postage per pound after first
+                if(M instanceof PostOffice)
+                    ((PostOffice)M).setPostagePerPound(Util.s_double(old));
+                break;
+            case 50: // holding fee per pound per month
+                if(M instanceof PostOffice)
+                    ((PostOffice)M).setHoldFeePerPound(Util.s_double(old));
+                break;
+            case 51: // new box fee
+                if(M instanceof PostOffice)
+                    ((PostOffice)M).setFeeForNewBox(Util.s_double(old));
+                break;
+            case 52: // maximum months held
+                if(M instanceof PostOffice)
+                    ((PostOffice)M).setMaxMudMonthsHeld(Util.s_int(old));
+                break;
+            case 53: // shopkeeper ignore mask
+                if(M instanceof ShopKeeper)
+                    ((ShopKeeper)M).setIgnoreMask(old);
+                break;
 			}
 		}
 

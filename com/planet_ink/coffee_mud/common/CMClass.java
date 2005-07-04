@@ -792,7 +792,7 @@ public class CMClass extends ClassLoader
 	}
 	public static void delCharClass(CharClass C)
 	{
-		races.removeElement(C);
+        charClasses.removeElement(C);
 	}
 	public static void delRace(Race R)
 	{

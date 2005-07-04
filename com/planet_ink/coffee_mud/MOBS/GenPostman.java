@@ -24,6 +24,7 @@ public class GenPostman extends StdPostman
     public String ID(){return "GenPostman";}
     private String PrejudiceFactors="";
     private String bankChain="main";
+    private String IgnoreMask="";
 
     public GenPostman()
     {
@@ -46,6 +47,8 @@ public class GenPostman extends StdPostman
 
     public String prejudiceFactors(){return PrejudiceFactors;}
     public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
+    public String ignoreMask(){return IgnoreMask;}
+    public void setIgnoreMask(String factors){IgnoreMask=factors;}
     public String bankChain(){return bankChain;}
     public void setBankChain(String name){bankChain=name;}
 
@@ -57,7 +60,8 @@ public class GenPostman extends StdPostman
     private static String[] MYCODES={"WHATISELL",
                                      "PREJUDICE",
                                      "POSTCHAIN","POSTMIN","POSTLBS",
-                                     "POSTHOLD","POSTNEW","POSTHELD"};
+                                     "POSTHOLD","POSTNEW","POSTHELD",
+                                     "IGNOREMASK"};
     public String getStat(String code)
     {
         if(CoffeeMaker.getGenMobCodeNum(code)>=0)
@@ -73,6 +77,7 @@ public class GenPostman extends StdPostman
         case 5: return ""+holdFeePerPound();
         case 6: return ""+feeForNewBox();
         case 7: return ""+maxMudMonthsHeld();
+        case 8: return ignoreMask();
         }
         return "";
     }
@@ -91,6 +96,7 @@ public class GenPostman extends StdPostman
         case 5: setHoldFeePerPound(Util.s_double(val)); break;
         case 6: setFeeForNewBox(Util.s_double(val)); break;
         case 7: setMaxMudMonthsHeld(Util.s_int(val)); break;
+        case 8: setIgnoreMask(val); break;
         }
     }
     protected int getCodeNum(String code){

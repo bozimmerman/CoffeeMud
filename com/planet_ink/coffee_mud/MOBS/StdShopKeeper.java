@@ -243,6 +243,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return "Clan Ships";
 		case DEAL_SLAVES:
 		    return "Slaves";
+        case DEAL_POSTMAN:
+            return "My services as a Postman";
+        case DEAL_CLANPOSTMAN:
+            return "My services as a Postman for Clans";
 		default:
 			return "... I have no idea WHAT I sell";
 		}
@@ -634,6 +638,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return item;
 	}
 
+    protected boolean ignoreIfNecessary(MOB mob)
+    {
+        String ignoreMask=ignoreMask();
+        if(ignoreMask.length()==0) ignoreMask=CommonStrings.getVar(CommonStrings.SYSTEM_IGNOREMASK);
+        if((ignoreMask.length()>0)&&(!MUDZapper.zapperCheck(ignoreMask(),mob)))
+        {
+            mob.tell(this,null,null,"<S-NAME> appear(s) to be ignoring you.");
+            return false;
+        }
+        return true;
+    }
+    
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -644,6 +661,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_VALUE:
 			case CMMsg.TYP_SELL:
 			{
+                if(!ignoreIfNecessary(msg.source())) 
+                    return false;
 				if((msg.tool()!=null)
 				&&(doISellThis(msg.tool()))
 				&&(!(msg.tool() instanceof Coins)))
@@ -694,6 +713,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_BUY:
 			case CMMsg.TYP_VIEW:
 			{
+                if(!ignoreIfNecessary(msg.source())) 
+                    return false;
 				if((msg.tool()!=null)
 				&&(doIHaveThisInStock(msg.tool().Name()+"$",mob)))
 				{
@@ -793,7 +814,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				return false;
 			}
 			case CMMsg.TYP_LIST:
+            {
+                if(!ignoreIfNecessary(msg.source())) 
+                    return false;
 				return super.okMessage(myHost,msg);
+            }
 			default:
 				break;
 			}
@@ -1226,7 +1251,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if(str.length()==0)
 					{
 						if((whatISell!=DEAL_BANKER)
-						&&(whatISell!=DEAL_CLANBANKER))
+						&&(whatISell!=DEAL_CLANBANKER)
+                        &&(whatISell!=DEAL_CLANPOSTMAN)
+                        &&(whatISell!=DEAL_POSTMAN))
 							CommonMsgs.say(this,mob,"I have nothing for sale.",false,false);
 					}
 					else
@@ -1264,6 +1291,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		boolean yes=false;
 	    Vector VF=mob.fetchFactionRanges();
 	    String align=Sense.getAlignmentName(mob);
+        String sex=mob.charStats().genderName();
 		for(int v=0;v<V.size();v++)
 		{
 			String bit=(String)V.elementAt(v);
@@ -1271,6 +1299,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				d=Util.s_double(bit);
             if(bit.equalsIgnoreCase(mob.charStats().getCurrentClass().name() ))
 			{ yes=true; break;}
+            if(bit.equalsIgnoreCase(sex ))
+            { yes=true; break;}
 			if(bit.equalsIgnoreCase(mob.charStats().getMyRace().racialCategory()))
 			{	yes=true; break;}
 			if(bit.equalsIgnoreCase(align))
@@ -1543,6 +1573,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	
 	public String prejudiceFactors(){return Util.decompressString(miscText);}
 	public void setPrejudiceFactors(String factors){miscText=Util.compressString(factors);}
+    
+    public String ignoreMask(){return "";}
+    public void setIgnoreMask(String factors){}
 
 	public String budget(){return budget;}
 	public void setBudget(String factors){budget=factors; budgetTickDown=0;}

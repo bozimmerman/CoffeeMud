@@ -70,7 +70,8 @@ public class CommonStrings extends Scriptable
     public static final int SYSTEM_EXPCONTACTLINE=45;
     public static final int SYSTEM_AUTOWEATHERPARMS=46;
     public static final int SYSTEM_MXPIMAGEPATH=47;
-	public static final int NUM_SYSTEM=48;
+    public static final int SYSTEM_IGNOREMASK=48;
+	public static final int NUM_SYSTEM=49;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -233,6 +234,7 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_MUDDOMAIN,page.getStr("DOMAIN"));
 		setVar(SYSTEM_I3EMAIL,page.getStr("I3EMAIL"));
 		setVar(SYSTEM_PREJUDICE,page.getStr("PREJUDICE"));
+        setVar(SYSTEM_IGNOREMASK,page.getStr("IGNOREMASK"));
 		setVar(SYSTEM_BUDGET,page.getStr("BUDGET"));
 		setVar(SYSTEM_DEVALUERATE,page.getStr("DEVALUERATE"));
 		setVar(SYSTEM_INVRESETRATE,page.getStr("INVRESETRATE"));

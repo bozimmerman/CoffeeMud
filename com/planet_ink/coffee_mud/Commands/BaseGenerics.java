@@ -2774,9 +2774,24 @@ public class BaseGenerics extends StdCommand
 			buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
 		}
 		else
+        if(E instanceof PostOffice)
+        {
+            int r=ShopKeeper.DEAL_POSTMAN;
+            char c=codeStr.charAt(r);
+            codes.append(c);
+            buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
+            r=ShopKeeper.DEAL_CLANPOSTMAN;
+            c=codeStr.charAt(r);
+            codes.append(c);
+            buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
+        }
+        else
 		for(int r=0;r<ShopKeeper.SOLDCODES.length;r++)
 		{
-			if((r!=ShopKeeper.DEAL_CLANBANKER)&&(r!=ShopKeeper.DEAL_BANKER))
+			if((r!=ShopKeeper.DEAL_CLANBANKER)
+            &&(r!=ShopKeeper.DEAL_BANKER)
+            &&(r!=ShopKeeper.DEAL_CLANPOSTMAN)
+            &&(r!=ShopKeeper.DEAL_POSTMAN))
 			{
 				char c=codeStr.charAt(r);
 				codes.append(c);
@@ -2965,6 +2980,22 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 	
+    public static void genShopkeeper7(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+    throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return;
+        mob.tell(showNumber+". Ignore Mask: '"+E.ignoreMask()+"'.");
+        if((showFlag!=showNumber)&&(showFlag>-999)) return;
+        String newValue=mob.session().prompt("Enter a new string (null=no mask)\n\r:","");
+        if(newValue.equalsIgnoreCase("null"))
+            E.setIgnoreMask("");
+        else
+        if(newValue.length()>0)
+            E.setIgnoreMask(newValue);
+        else
+            mob.tell("(no change)");
+    }
+
 	public static void genAbilities(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -3457,7 +3488,7 @@ public class BaseGenerics extends StdCommand
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newName=mob.session().prompt("Enter true or false:","");
-        if(newName.toUpperCase().startsWith("T")||newName.startsWith("F"))
+        if(newName.toUpperCase().startsWith("T")||newName.toUpperCase().startsWith("F"))
             return newName.toUpperCase().startsWith("T");
         else
         {
@@ -5027,7 +5058,7 @@ public class BaseGenerics extends StdCommand
                     else
                         FR.low=Util.s_int(newName);
                     newName=mob.session().prompt("Enter the high end of the range ("+FR.high+")\n\r: ",""+FR.high);
-                    if((!Util.isInteger(newName))||(Util.s_int(newName)<FR.high))
+                    if((!Util.isInteger(newName))||(Util.s_int(newName)<FR.low))
                         mob.tell("No Change");
                     else
                         FR.high=Util.s_int(newName);
@@ -5508,7 +5539,7 @@ public class BaseGenerics extends StdCommand
             {
                 Faction.FactionRange FR=(Faction.FactionRange)me.ranges.elementAt(r);
                 if(FR.high>me.maximum) me.maximum=FR.high;
-                if(FR.low<me.maximum) me.minimum=FR.low;
+                if(FR.low<me.minimum) me.minimum=FR.low;
             }
             if(me.minimum==Integer.MAX_VALUE) me.minimum=Integer.MIN_VALUE;
             if(me.maximum==Integer.MIN_VALUE) me.maximum=Integer.MAX_VALUE;
@@ -6407,6 +6438,7 @@ public class BaseGenerics extends StdCommand
 			genShopkeeper1(mob,me,++showNumber,showFlag);
 			genShopkeeper2(mob,me,++showNumber,showFlag);
 			genShopkeeper3(mob,me,++showNumber,showFlag);
+            genShopkeeper7(mob,me,++showNumber,showFlag);
 			if(me instanceof Banker)
 			{
 				genBanker1(mob,(Banker)me,++showNumber,showFlag);
@@ -6414,6 +6446,16 @@ public class BaseGenerics extends StdCommand
 				genBanker3(mob,(Banker)me,++showNumber,showFlag);
 			}
 			else
+            if(me instanceof PostOffice)
+            {
+                ((PostOffice)me).setPostalChain(BaseGenerics.genText(mob,((PostOffice)me).postalChain(),++showNumber,showFlag,"Postal chain"));
+                ((PostOffice)me).setFeeForNewBox(BaseGenerics.genDouble(mob,((PostOffice)me).feeForNewBox(),++showNumber,showFlag,"Fee to open a new box"));
+                ((PostOffice)me).setMinimumPostage(BaseGenerics.genDouble(mob,((PostOffice)me).minimumPostage(),++showNumber,showFlag,"Minimum postage cost"));
+                ((PostOffice)me).setPostagePerPound(BaseGenerics.genDouble(mob,((PostOffice)me).postagePerPound(),++showNumber,showFlag,"Postage cost per pound after 1st pound"));
+                ((PostOffice)me).setHoldFeePerPound(BaseGenerics.genDouble(mob,((PostOffice)me).holdFeePerPound(),++showNumber,showFlag,"Holding fee per pound per month"));
+                ((PostOffice)me).setMaxMudMonthsHeld(BaseGenerics.genInteger(mob,((PostOffice)me).maxMudMonthsHeld(),++showNumber,showFlag,"Maximum number of months held"));
+            }
+            else
 			{
 				genShopkeeper4(mob,me,++showNumber,showFlag);
 				genShopkeeper5(mob,me,++showNumber,showFlag);

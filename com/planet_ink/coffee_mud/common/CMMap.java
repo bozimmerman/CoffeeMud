@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
+import com.sun.rsasign.p;
 
 import java.util.*;
 /*
@@ -24,6 +25,7 @@ public class CMMap
 	protected static Vector roomsList = new Vector();
 	protected static Vector playersList = new Vector();
 	protected static Vector deitiesList = new Vector();
+    protected static Vector postOfficeList=new Vector();
 	protected static Hashtable startRooms=new Hashtable();
 	protected static Hashtable deathRooms=new Hashtable();
 	protected static Hashtable bodyRooms=new Hashtable();
@@ -62,6 +64,18 @@ public class CMMap
 		}
 		return null;
 	}
+    public static Area findArea(String calledThis)
+    {
+        Area A=getArea(calledThis);
+        if(A!=null) return A;
+        for(Enumeration a=areas();a.hasMoreElements();)
+        {
+            A=(Area)a.nextElement();
+            if(A.Name().toUpperCase().startsWith(calledThis))
+                return A;
+        }
+        return null;
+    }
 	public static Enumeration areas(){
 		return areasList.elements();
 	}
@@ -318,6 +332,41 @@ public class CMMap
 	}
 	public static Enumeration deities() { return deitiesList.elements(); }
 
+    public static int numPostOffices() { return postOfficeList.size(); }
+    public static void addPostOffice(PostOffice newOne)
+    {
+        if (!postOfficeList.contains(newOne))
+            postOfficeList.add(newOne);
+    }
+    public static void delPostOffice(PostOffice oneToDel)
+    {
+        postOfficeList.remove(oneToDel);
+    }
+    public static PostOffice getPostOffice(String chain, String areaNameOrBranch)
+    {
+        PostOffice P = null;
+        for (Enumeration i=postOffices(); i.hasMoreElements();)
+        {
+            P = (PostOffice)i.nextElement();
+            if((P.postalChain().equalsIgnoreCase(chain))
+            &&(P.postalBranch().equalsIgnoreCase(areaNameOrBranch)))
+                return P;
+        }
+        Area A=CMMap.findArea(areaNameOrBranch);
+        if(A==null) return null;
+        for (Enumeration i=postOffices(); i.hasMoreElements();)
+        {
+            P = (PostOffice)i.nextElement();
+            if((P.postalChain().equalsIgnoreCase(chain))
+            &&(P instanceof MOB)
+            &&(((MOB)P).getStartRoom()!=null)
+            &&(((MOB)P).getStartRoom().getArea()==A))
+                return P;
+        }
+        return null;
+    }
+    public static Enumeration postOffices() { return postOfficeList.elements(); }
+    
 	public static int numPlayers() { return playersList.size(); }
 	public static void addPlayer(MOB newOne) { playersList.add(newOne); }
 	public static void delPlayer(MOB oneToDel) { playersList.remove(oneToDel); }

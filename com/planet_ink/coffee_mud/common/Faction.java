@@ -410,7 +410,7 @@ public class Faction implements MsgListener
     {
         if(autoDefaults!=null) 
         {
-            for(int i=0;i<defaults.size();i++) 
+            for(int i=0;i<autoDefaults.size();i++) 
             {
                 if(MUDZapper.zapperCheck((String)autoDefaults.elementAt(i), mob)) 
                 {

@@ -24,6 +24,7 @@ public class GenBanker extends StdBanker
 	public String ID(){return "GenBanker";}
 	private String PrejudiceFactors="";
 	private String bankChain="GenBank";
+    private String IgnoreMask="";
 
 	public GenBanker()
 	{
@@ -47,6 +48,8 @@ public class GenBanker extends StdBanker
 
 	public String prejudiceFactors(){return PrejudiceFactors;}
 	public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
+    public String ignoreMask(){return IgnoreMask;}
+    public void setIgnoreMask(String factors){IgnoreMask=factors;}
 	public String bankChain(){return bankChain;}
 	public void setBankChain(String name){bankChain=name;}
 
@@ -55,7 +58,7 @@ public class GenBanker extends StdBanker
 		super.setMiscText(newText);
 		CoffeeMaker.resetGenMOB(this,newText);
 	}
-	private static String[] MYCODES={"WHATISELL","PREJUDICE","BANKCHAIN","COININT","ITEMINT"};
+	private static String[] MYCODES={"WHATISELL","PREJUDICE","BANKCHAIN","COININT","ITEMINT","IGNOREMASK"};
 	public String getStat(String code)
 	{
 		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
@@ -68,6 +71,7 @@ public class GenBanker extends StdBanker
 		case 2: return bankChain();
 		case 3: return ""+getCoinInterest();
 		case 4: return ""+getItemInterest();
+        case 5: return ignoreMask();
 		}
 		return "";
 	}
@@ -83,6 +87,7 @@ public class GenBanker extends StdBanker
 		case 2: setBankChain(val); break;
 		case 3: setCoinInterest(Util.s_double(val)); break;
 		case 4: setItemInterest(Util.s_double(val)); break;
+        case 5: setIgnoreMask(val); break;
 		}
 	}
 	protected int getCodeNum(String code){

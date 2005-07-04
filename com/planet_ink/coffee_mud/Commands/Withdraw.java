@@ -28,9 +28,9 @@ public class Withdraw extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Withdraw how much from whom?");
+		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Withdraw what or how much from whom?");
 		if(shopkeeper==null) return false;
-		if(!(shopkeeper instanceof Banker))
+		if((!(shopkeeper instanceof Banker))&&(!(shopkeeper instanceof PostOffice)))
 		{
 			mob.tell("You can not withdraw anything from "+shopkeeper.name()+".");
 			return false;
@@ -46,49 +46,67 @@ public class Withdraw extends StdCommand
 	    String currency=EnglishParser.numPossibleGoldCurrency(shopkeeper,str);
 	    double denomination=EnglishParser.numPossibleGoldDenomination(shopkeeper,currency,str);
 		Item thisThang=null;
-		if(numCoins>0)
-		{
-		    if(denomination==0.0)
-		    {
-				mob.tell("Withdraw how much?");
-				return false;
-		    }
-		    else
-		    {
-				thisThang=((Banker)shopkeeper).findDepositInventory(mob,""+Integer.MAX_VALUE);
-				if(thisThang instanceof Coins)
-				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
-		    }
-		}
-		else
-			thisThang=((Banker)shopkeeper).findDepositInventory(mob,str);
-
-		if(((thisThang==null)||((thisThang instanceof Coins)&&(((Coins)thisThang).getNumberOfCoins()<=0)))
-		&&(((Banker)shopkeeper).whatIsSold()!=ShopKeeper.DEAL_CLANBANKER)
-		&&(mob.isMarriedToLiege()))
-		{
-			MOB mob2=CMMap.getPlayer(mob.getLiegeID());
-			if(numCoins>0)
-			{
-				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,""+Integer.MAX_VALUE);
-				if(thisThang instanceof Coins)
-				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
-				else
-			    {
-					mob.tell("Withdraw how much?");
-					return false;
-			    }
-			}
-			else
-				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,str);
-		}
+        if(shopkeeper instanceof Banker)
+        {
+    		if(numCoins>0)
+    		{
+    		    if(denomination==0.0)
+    		    {
+    				mob.tell("Withdraw how much?");
+    				return false;
+    		    }
+    		    else
+    		    {
+    				thisThang=((Banker)shopkeeper).findDepositInventory(mob,""+Integer.MAX_VALUE);
+    				if(thisThang instanceof Coins)
+    				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
+    		    }
+    		}
+    		else
+    			thisThang=((Banker)shopkeeper).findDepositInventory(mob,str);
+    
+    		if(((thisThang==null)||((thisThang instanceof Coins)&&(((Coins)thisThang).getNumberOfCoins()<=0)))
+    		&&(((Banker)shopkeeper).whatIsSold()!=ShopKeeper.DEAL_CLANBANKER)
+    		&&(mob.isMarriedToLiege()))
+    		{
+    			MOB mob2=CMMap.getPlayer(mob.getLiegeID());
+    			if(numCoins>0)
+    			{
+    				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,""+Integer.MAX_VALUE);
+    				if(thisThang instanceof Coins)
+    				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
+    				else
+    			    {
+    					mob.tell("Withdraw how much?");
+    					return false;
+    			    }
+    			}
+    			else
+    				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,str);
+    		}
+        }
+        else
+        if(shopkeeper instanceof PostOffice)
+        {
+            thisThang=((PostOffice)shopkeeper).findBoxContents(mob,str);
+            if((thisThang==null)
+            &&(((PostOffice)shopkeeper).whatIsSold()!=ShopKeeper.DEAL_CLANPOSTMAN)
+            &&(mob.isMarriedToLiege()))
+            {
+                MOB mob2=CMMap.getPlayer(mob.getLiegeID());
+                thisThang=((PostOffice)shopkeeper).findBoxContents(mob2,str);
+            }
+        }
 
 		if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
 		{
 			mob.tell("That doesn't appear to be available.  Try LIST.");
 			return false;
 		}
-		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_WITHDRAW,"<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.name()+".");
+        String str2="<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.name()+".";
+        if(shopkeeper instanceof PostOffice)
+            str2="<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> postal box with "+shopkeeper.name()+".";
+		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_WITHDRAW,str2);
 		if(!mob.location().okMessage(mob,newMsg))
 			return false;
 		mob.location().send(mob,newMsg);

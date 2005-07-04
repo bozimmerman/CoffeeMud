@@ -348,6 +348,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public void clearStoreInventory(){setMiscText("");}
 	public String prejudiceFactors(){return "";}
 	public void setPrejudiceFactors(String factors){}
+    public String ignoreMask(){return "";}
+    public void setIgnoreMask(String factors){}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -30,7 +30,7 @@ public class Deposit extends BaseItemParser
 	{
 		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Deposit how much with whom?");
 		if(shopkeeper==null) return false;
-		if(!(shopkeeper instanceof Banker))
+		if((!(shopkeeper instanceof Banker))&&(!(shopkeeper instanceof PostOffice)))
 		{
 			mob.tell("You can not deposit anything with "+shopkeeper.name()+".");
 			return false;
@@ -54,7 +54,11 @@ public class Deposit extends BaseItemParser
 		else
 	    if(((Coins)thisThang).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thisName))
 	        return false;
-		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,"<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>.");
+		FullMsg newMsg=null;
+        if(shopkeeper instanceof Banker)
+            newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,"<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>.");
+        else
+            newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,"<S-NAME> mail(s) <O-NAME>.");
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 		return false;
