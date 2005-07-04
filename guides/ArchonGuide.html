@@ -728,7 +728,7 @@ populate your cities, dwell in your dungeons, or hide in your pantries.&nbsp;
 They are too numerous to list here.&nbsp;</P>
 <P>If a creature is not listed there that you require, 
 there is always the GenMob, that nasty formless being that can be shaped by the 
-Archon to appear and behave exactly as it should.&nbsp; GenShopkeepers and 
+Archon to appear and behave exactly as it should.&nbsp; GenShopkeepers, GenPostman, and 
 GenBankers&nbsp;are&nbsp;available to provide valuable services for your 
 community.&nbsp; GenDeitys give your Clerics employment. GenRideable mobs 
 provide transport.&nbsp; For more devious spirits, however, the GenUndead is 
@@ -1103,13 +1103,13 @@ fear not, for the land does not grow weary of your molding.&nbsp; </P>
 <P>Currency is the system of&nbsp;money used by the 
 inhabitants of the area.&nbsp;It is defined using the <EM>Currency</EM> field when creating and modifying Areas as 
 discussed in the previous section.&nbsp; All of the bankers, money changers, tax 
-collectors, and shopkeepers will deal in the&nbsp;currency that you define for 
-the area.&nbsp; &nbsp;By default, all areas will use a system of currency that 
-includes gold coins, and golden notes, whole notes, and Archon notes.&nbsp; You 
-can change this system by defining your own, however.&nbsp; The way you do this 
-is by entering a name for your currency, followed by an equal sign, and then a 
-series of relative&nbsp;values and currency names, all separated by 
-semicolons.&nbsp; Let's look at an example:</P>
+collectors, postmen, and shopkeepers will deal in the&nbsp;currency that you 
+define for the area.&nbsp; &nbsp;By default, all areas will use a system of 
+currency that includes gold coins, and golden notes, whole notes, and Archon 
+notes.&nbsp; You can change this system by defining your own, however.&nbsp; The 
+way you do this is by entering a name for your currency, followed by an equal 
+sign, and then a series of relative&nbsp;values and currency names, all 
+separated by semicolons.&nbsp; Let's look at an example:</P>
 <P><PRE>US=0.01 penny(s);0.1 dime(s);.25 quarter(s);1.0 dollar(s)
 </PRE>
 <P></P>
@@ -3010,7 +3010,7 @@ that it will only deal with Clan Treasurers.</P>
 GenShopKeeper above, you are presented with a list of properties to fill 
 in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties 
 include all of the fields listed above under GenMob and GenShopKeeper, 
-plus&nbsp;one&nbsp;more:</P>
+plus&nbsp;a few more:</P>
 <P><STRONG>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -3034,6 +3034,59 @@ plus&nbsp;one&nbsp;more:</P>
     <TD>This is a unique identifier for the bank chain. 
       All GenBankers with the same Bank Name will offer the same accounts to 
       players.</TD></TR></TABLE></STRONG><BR></P>
+<P><a name=genm6><STRONG>The 
+"GenPostman"</STRONG></A></P></STRONG>
+<P>A Postman is a special type of ShopKeeper that delivers 
+items from one postman in the branch to another.&nbsp; Each postman holds&nbsp;a 
+special private box for players or clans.&nbsp; Postman can charge to deliver 
+items from one box to another, and can charge for the amount of time an item 
+remains in a box.&nbsp; Every player receives a free box with any postman in the 
+same area as their Recall/Beacon point.&nbsp; Other boxes with other postmen 
+must be purchased.&nbsp; Clans must always purchases their boxes.</P>
+<P>Whenever a GenPostman is created, much like the 
+GenShopKeeper above, you are presented with a list of properties to fill 
+in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties 
+include all of the fields listed above under GenMob and GenShopKeeper, 
+plus&nbsp;a few more:</P>
+<P><STRONG>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG 
+      >Property</STRONG></TD>
+    <TD width="75%"><STRONG 
+      >Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Postal Chain</EM></TD>
+    <TD>This is a unique identifier for the postal chain. 
+      Postmen will only deliver mail among members of the same chain.&nbsp; 
+      Player/Clan boxes are opened with individual postmen, however.</TD></TR>
+  <TR>
+    <TD><EM>Fee to open a new box</EM></TD>
+    <TD>This is the amount of money charged to open a new 
+      box with a postman.&nbsp; The money is&nbsp;expressed in terms of base 
+      value, though the currency accepted will reflect the area where the 
+      postman is.&nbsp;</TD></TR>
+  <TR>
+    <TD><EM>Minimum postage cost</EM></TD>
+    <TD>This is the minimum amount of money charged 
+      players to deliver an item.</TD></TR>
+  <TR>
+    <TD><EM>Postage cost per pound after 1st 
+pound</EM></TD>
+    <TD>This is the amount of postage money charged, per 
+      pound of the item,&nbsp;for each pound over the first one.</TD></TR>
+  <TR>
+    <TD><EM>Holding fee per pound per month</EM></TD>
+    <TD>This is the amount of money charged every mud 
+      month that an item remains idle in a postal box.&nbsp; The first month is 
+      always free.</TD></TR>
+  <TR>
+    <TD><EM>Maximum number of months held</EM></TD>
+    <TD>This is the maximum number of mud months which a 
+      postman will hold an item idle in a postal box.&nbsp; After this duration 
+      expires, the postman will put the item up for sale to recoup 
+  losses.</TD></TR></TABLE></STRONG><BR></P>
 <P><STRONG><a name=genm4>The "GenRideable"</A></STRONG></STRONG></P>
 <P>Whenever a GenRideable is created, much like the GenMob 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
@@ -4191,6 +4244,11 @@ color=green size=5><A name=appb>Appendix B: Special Standard MOBs</A></FONT></ST
   <LI>
   <DIV class=MsoNormal>misc text &nbsp;- The name of the 
   bank chain</DIV></LI></UL>
+<P class=MsoNormal>StdPostman</P>
+<UL>
+  <LI>
+  <DIV class=MsoNormal>misc text &nbsp;- The name of the 
+  postal chain</DIV></LI></UL>
 <P class=MsoNormal>StdShopKeeper</P>
 <UL>
   <LI>misc text - Prejudice factors.&nbsp; See the field of 
@@ -7171,7 +7229,7 @@ the clantalk channel to talk to your clan, as well as use the 'Clan
 Home'&nbsp;and 'Clan Donate' spells. The 'clanhome' location and the 
 'clandonate' location can be set by bosses using the 'clanhomeset' and 
 'clandonateset' commands. Clan morgues can be designated with the 
-'clanmorgueset' command. Bosses and treasurers may deal with any Clan bankers in 
+'clanmorgueset' command. Bosses and treasurers may deal with any Clan bankers and Clan Postmen in 
 your game. If MINCLANMEMBERS don't at least login in DAYSCLANDEATH days, then 
 the clan will be purged automatically. </P>
 <P align=left><STRONG><FONT 
@@ -7530,10 +7588,7 @@ otherwise 'His'/'Her'. <BR>&lt;S-HIM-HER&gt; Outputs 'You'
 if Observer=Source, otherwise 'Him'/'Her'. <BR>&lt;S-NAME&gt; Outputs 'You' if Observer=Source, otherwise 
 the Name. <BR>&lt;S-NAMESELF&gt; Outputs 'Yourself' if 
 Observer=Source, otherwise the Name <BR>&lt;S-HE-SHE&gt; 
-Outputs 'You' if Observer=Source, otherwise 'He'/'She' 
-<BR>&lt;S-SIRMADAM&gt; 
-Outputs 'Sir'/'Madam' 
-<BR>&lt;S-IS-ARE&gt; Outputs 'Are' if Observer=Source, 
+Outputs 'You' if Observer=Source, otherwise 'He'/'She' <BR>&lt;S-SIRMADAM&gt; Outputs 'Sir'/'Madam' <BR>&lt;S-IS-ARE&gt; Outputs 'Are' if Observer=Source, 
 otherwise 'Is'. <BR>&lt;S-HAS-HAVE&gt; Outputs 'Have' if 
 Observer=Source, otherwise 'Has'. <BR>&lt;S-YOUPOSS&gt; 
 Outputs 'Your' if Observer=Source, otherwise the Name`s <BR>&lt;S-HIM-HERSELF&gt; Outputs 'Yourself' if 
@@ -7543,10 +7598,7 @@ otherwise 'His'/'Her'. <BR>&lt;T-HIM-HER&gt; Outputs 'You'
 if Observer=Target, otherwise 'Him'/'Her'. <BR>&lt;T-NAME&gt; Outputs 'You' if Observer=Target, otherwise 
 the Name. <BR>&lt;T-NAMESELF&gt; Outputs 'Yourself' if 
 Observer=Target, otherwise the Name <BR>&lt;T-HE-SHE&gt; 
-Outputs 'You' if Observer=Target, otherwise 'He'/'She' 
-<BR>&lt;T-SIRMADAM&gt; 
-Outputs 'Sir'/'Madam' 
-<BR>&lt;T-IS-ARE&gt; Outputs 'Are' if Observer=Target, 
+Outputs 'You' if Observer=Target, otherwise 'He'/'She' <BR>&lt;T-SIRMADAM&gt; Outputs 'Sir'/'Madam' <BR>&lt;T-IS-ARE&gt; Outputs 'Are' if Observer=Target, 
 otherwise 'Is'. <BR>&lt;T-HAS-HAVE&gt; Outputs 'Have' if 
 Observer=Target, otherwise 'Has'. <BR>&lt;T-YOUPOSS&gt; 
 Outputs 'Your' if Observer=Target, otherwise the Name with an '`s' <BR>&lt;T-HIM-HERSELF&gt; Outputs 'Yourself' if 
@@ -7818,7 +7870,7 @@ color=green size=3>Generic MOB Types
   <TR>
     <TD width="20%"><A href="#genm5" ><FONT color=black 
       >GenDeity</FONT></A></TD>
-    <TD width="20%"><A href="#genm" ><FONT color=black></FONT></A></TD>
+    <TD width="20%"><A href="#genm6" ><FONT color=black>GenPostman</FONT></A></TD>
     <TD width="20%"><A href="#genm" ><FONT color=black></FONT></A></TD>
     <TD width="20%"><A href="#genm" ><FONT color=black></FONT></A></TD>
     <TD width="20%"><A href="#genm" ><FONT color=black 
