@@ -328,6 +328,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			{
 				Item I=R.fetchItem(i);
 				if((I.dispossessionTime()!=0)
+                &&(I.savable())
 				&&(!(I instanceof DeadBody)))
 				{
 					I.setDispossessionTime(0);

@@ -2677,7 +2677,10 @@ public class StdMOB implements MOB
 					if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)!=MUDFight.COMBAT_DEFAULT)
 						while((numAttacks>0)&&(commandQue.size()>0))
 						{
-							dequeCommand();
+                            if(mySession!=null)
+    							mySession.dequeCommand();
+                            else
+                                dequeCommand();
 							numAttacks--;
 						}
 					
@@ -2750,7 +2753,10 @@ public class StdMOB implements MOB
 					}
 
 					if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)==MUDFight.COMBAT_DEFAULT)
-						dequeCommand();
+                        if(mySession!=null)
+                            mySession.dequeCommand();
+                        else
+                            dequeCommand();
 					
 					if(!isMonster())
 					{
@@ -2767,7 +2773,10 @@ public class StdMOB implements MOB
 					&&(peaceTime>=SHEATH_TIME)
 					&&(Sense.aliveAwakeMobile(this,true)))
 						CommonMsgs.sheath(this,true);
-					dequeCommand();
+                    if(mySession!=null)
+                        mySession.dequeCommand();
+                    else
+                        dequeCommand();
 				}
 				tickStatus=Tickable.STATUS_OTHER;
 				if(!isMonster())
