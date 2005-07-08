@@ -2543,10 +2543,10 @@ public class Scriptable extends StdBehavior
 				{
 					String sex=((MOB)E).getClanID();
 					if(arg2.equals("=="))
-						returnable=sex.startsWith(arg3);
+						returnable=sex.equalsIgnoreCase(arg3);
 					else
 					if(arg2.equals("!="))
-						returnable=!sex.startsWith(arg3);
+						returnable=!sex.equalsIgnoreCase(arg3);
 					else
 					{
 						scriptableError(scripted,"CLAN","Syntax",evaluable);

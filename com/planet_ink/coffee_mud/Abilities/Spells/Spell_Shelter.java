@@ -87,25 +87,22 @@ public class Spell_Shelter extends Spell
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB follower=(MOB)f.next();
-				if(follower==mob)
+				FullMsg enterMsg=new FullMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere.");
+				FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,affectType(auto),"<S-NAME> disappear(s) into oblivion.");
+				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 				{
-					FullMsg enterMsg=new FullMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere.");
-					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,affectType(auto),"<S-NAME> disappear(s) into oblivion.");
-					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
+					if(follower.isInCombat())
 					{
-						if(follower.isInCombat())
-						{
-							CommonMsgs.flee(follower,("NOWHERE"));
-							follower.makePeace();
-						}
-						thisRoom.send(follower,leaveMsg);
-						newRoom.bringMobHere(follower,false);
-						newRoom.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
-						CommonMsgs.look(follower,true);
-						if(follower==mob)
-							beneficialAffect(mob,mob,asLevel,999999);
+						CommonMsgs.flee(follower,("NOWHERE"));
+						follower.makePeace();
 					}
+					thisRoom.send(follower,leaveMsg);
+					newRoom.bringMobHere(follower,false);
+					newRoom.send(follower,enterMsg);
+					follower.tell("\n\r\n\r");
+					CommonMsgs.look(follower,true);
+					if(follower==mob)
+						beneficialAffect(mob,mob,asLevel,999999);
 				}
 			}
 		}

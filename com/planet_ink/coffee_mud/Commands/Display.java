@@ -73,7 +73,6 @@ public class Display extends BaseItemParser
 			{
 			    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thingToGive))
 			        return false;
-				allFlag=false;
 			}
 			else
 				giveThis=mob.fetchCarried(null,thingToGive+addendumStr);

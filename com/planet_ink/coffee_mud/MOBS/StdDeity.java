@@ -786,11 +786,13 @@ public class StdDeity extends StdMOB implements Deity
 				}
 			}
 			long curTime=System.currentTimeMillis()-60000;
+            Long L=null;
+            String key=null;
 			for(Enumeration e=trigBlessingTimes.keys();e.hasMoreElements();)
 			{
-				String key=(String)e.nextElement();
-				Long L=(Long)trigBlessingTimes.get(key);
-				if(L.longValue()<curTime)
+				key=(String)e.nextElement();
+				L=(Long)trigBlessingTimes.get(key);
+				if((L!=null)&&(L.longValue()<curTime))
 				{
 					trigBlessingTimes.remove(key);
 					trigBlessingParts.remove(key);
@@ -798,9 +800,9 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			for(Enumeration e=trigPowerTimes.keys();e.hasMoreElements();)
 			{
-				String key=(String)e.nextElement();
-				Long L=(Long)trigPowerTimes.get(key);
-				if(L.longValue()<curTime)
+				key=(String)e.nextElement();
+				L=(Long)trigPowerTimes.get(key);
+                if((L!=null)&&(L.longValue()<curTime))
 				{
 					trigPowerTimes.remove(key);
 					trigPowerParts.remove(key);
@@ -808,9 +810,9 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			for(Enumeration e=trigCurseTimes.keys();e.hasMoreElements();)
 			{
-				String key=(String)e.nextElement();
-				Long L=(Long)trigCurseTimes.get(key);
-				if(L.longValue()<curTime)
+                key=(String)e.nextElement();
+                L=(Long)trigPowerTimes.get(key);
+                if((L!=null)&&(L.longValue()<curTime))
 				{
 					trigCurseTimes.remove(key);
 					trigCurseParts.remove(key);

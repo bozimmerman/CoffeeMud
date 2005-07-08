@@ -47,7 +47,8 @@ public class TaxCollector extends StdBehavior
 	public double[] totalMoneyOwed(MOB collector,MOB M)
 	{
 	    double[] owed=new double[3];
-	    if((peopleWhoOwe.contains(M.Name()))||((M.getClanID().length()>0)&&(peopleWhoOwe.contains(M.getClanID()))))
+	    if((peopleWhoOwe.contains(M.Name()))
+        ||((M.getClanID().length()>0)&&(peopleWhoOwe.contains(M.getClanID()))))
 	    {
 	        for(int t=0;t<taxableProperties.size();t++)
 	        {
@@ -58,13 +59,26 @@ public class TaxCollector extends StdBehavior
 	                owed[2]+=new Integer(T.backTaxes()).doubleValue();
 	        }
 	    }
-		Law theLaw=CoffeeUtensils.getTheLaw(M.location(),M);
-		if(theLaw!=null)
-		{
-			double cittax=Util.s_double((String)theLaw.taxLaws().get("CITTAX"));
-			if(cittax>0.0)
-			    owed[1]=Util.mul(BeanCounter.getTotalAbsoluteShopKeepersValue(M,collector),Util.div(cittax,100.0));
-		}
+        Behavior B=CoffeeUtensils.getLegalBehavior(M.location());
+        if(B!=null)
+        {
+            Area A2=CoffeeUtensils.getLegalObject(M.location());
+            if((A2!=null)
+            &&(!B.modifyBehavior(A2,M,new Integer(Law.MOD_ISOFFICER)))
+            &&(!B.modifyBehavior(A2,M,new Integer(Law.MOD_ISJUDGE))))
+            {
+                Vector VB=new Vector();
+                VB.addElement(new Integer(Law.MOD_LEGALINFO));
+                B.modifyBehavior(A2,M,VB);
+                Law theLaw=(Law)VB.firstElement();
+                if(theLaw!=null)
+                {
+                    double cittax=Util.s_double((String)theLaw.taxLaws().get("CITTAX"));
+                    if(cittax>0.0)
+                        owed[1]=Util.mul(BeanCounter.getTotalAbsoluteShopKeepersValue(M,collector),Util.div(cittax,100.0));
+                }
+            }
+        }
 		else
 			owed[1]=Util.div(BeanCounter.getTotalAbsoluteShopKeepersValue(M,collector),10.0);
 		owed[0]=owed[1]+owed[2];
@@ -139,7 +153,7 @@ public class TaxCollector extends StdBehavior
 				if((paidBackTaxes)&&(numBackTaxesUnpaid==0)&&(mob.location()!=null))
 				{
 				    Behavior B=CoffeeUtensils.getLegalBehavior(mob.location().getArea());
-				    if(B!=null)
+				    if((B!=null)&&(!msg.source().isMonster()))
 				    {
 						Vector VB=new Vector();
 						Area A2=CoffeeUtensils.getLegalObject(mob.location().getArea());
@@ -181,11 +195,16 @@ public class TaxCollector extends StdBehavior
 			if((paid!=null)&&(paid.contains(msg.source())))
 		        owe[0]-=owe[1];
 			String owed=BeanCounter.nameCurrencyShort(currency,owe[0]);
-			if((coins<owe[0])||(!((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(mob))))
+            if((!((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(mob))))
+            {
+                msg.source().tell(mob.name()+" refuses your money.");
+                CommonMsgs.say(mob,msg.source(),"I don't accept that kind of currency.",false,false);
+                return false;
+            }
+			if(coins<owe[0])
 			{
 			    msg.source().tell(mob.name()+" refuses your money.");
-			    if(coins<owe[0])
-					CommonMsgs.say(mob,msg.source(),"That's not enough.  You owe "+owed+".  Try again.",false,false);
+				CommonMsgs.say(mob,msg.source(),"That's not enough.  You owe "+owed+".  Try again.",false,false);
 				return false;
 			}
 		}

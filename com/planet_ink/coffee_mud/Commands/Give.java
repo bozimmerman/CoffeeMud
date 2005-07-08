@@ -67,6 +67,7 @@ public class Give extends BaseItemParser
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
+        boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
 		do
 		{
 			Environmental giveThis=EnglishParser.bestPossibleGold(mob,null,thingToGive);
@@ -77,7 +78,6 @@ public class Give extends BaseItemParser
 			        ((Coins)giveThis).putCoinsBack();
 			        return false;
 			    }
-				allFlag=false;
 			}
 			else
 				giveThis=mob.fetchCarried(null,thingToGive+addendumStr);
@@ -104,10 +104,15 @@ public class Give extends BaseItemParser
 					}
 				}
 			}
-			if(giveThis==null) break;
-			if(Sense.canBeSeenBy(giveThis,mob))
-				V.addElement(giveThis);
-			addendumStr="."+(++addendum);
+            if((allFlag)&&(!onlyGoldFlag)&&(giveThis instanceof Coins))
+                giveThis=null;
+            else
+            {
+    			if(giveThis==null) break;
+    			if(Sense.canBeSeenBy(giveThis,mob))
+    				V.addElement(giveThis);
+    			addendumStr="."+(++addendum);
+            }
 		}
 		while((allFlag)&&(addendum<=maxToGive));
 

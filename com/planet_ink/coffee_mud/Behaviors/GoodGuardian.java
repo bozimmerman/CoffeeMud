@@ -58,7 +58,11 @@ public class GoodGuardian extends StdBehavior
 
 		if(victim!=null)
 		{
-			if(!BrotherHelper.isBrother(victim,observer))
+			if((!BrotherHelper.isBrother(victim,observer))
+            &&(!victim.amDead())
+            &&(victim.isInCombat())
+            &&(!victim.getVictim().amDead())
+            &&(victim.getVictim().isInCombat()))
 			{
 				boolean yep=Aggressive.startFight(observer,victim,true);
 				if(yep)	CommonMsgs.say(observer,null,"PROTECT THE INNOCENT!",false,false);

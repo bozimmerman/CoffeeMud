@@ -86,7 +86,7 @@ public class Spell_MarkerSummoning extends Spell
 
 		if((success)&&(inhabs.size()>0))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> summon(s) the power of <S-HIS-HER> marker energy!^?");
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MASK_MOVE|affectType(auto),auto?"":"^S<S-NAME> summon(s) the power of <S-HIS-HER> marker energy!^?");
 			if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);

@@ -49,16 +49,25 @@ public class DefaultCharStats implements Cloneable, CharStats
 	{
 		int x=classes.indexOf(";");
 		Vector MyClasses=new Vector();
+        CharClass C=null;
 		while(x>=0)
 		{
 			String theClass=classes.substring(0,x).trim();
 			classes=classes.substring(x+1);
 			if(theClass.length()>0)
-				MyClasses.addElement(CMClass.getCharClass(theClass));
+            {
+                C=CMClass.getCharClass(theClass);
+                if(C!=null)
+                    MyClasses.addElement(C);
+            }
 			x=classes.indexOf(";");
 		}
 		if(classes.trim().length()>0)
-			MyClasses.addElement(CMClass.getCharClass(classes.trim()));
+        {
+            C=CMClass.getCharClass(classes.trim());
+            if(C!=null)
+                MyClasses.addElement(C);
+        }
 		myClasses=new CharClass[MyClasses.size()];
 		for(int i=0;i<MyClasses.size();i++)
 			myClasses[i]=(CharClass)MyClasses.elementAt(i);
@@ -135,6 +144,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 			else
 				return "level "+displayClassLevel+" "+displayClassName;
 		}
+        if(mob==null) return "";
 		int classLevel=getClassLevel(getCurrentClass());
 		String levelStr=null;
 		if(classLevel>=mob.envStats().level())
@@ -148,6 +158,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 	}
 	public String displayClassLevelOnly(MOB mob)
 	{
+        if(mob==null) return "";
 		if(displayClassLevel!=null)
 			return displayClassLevel;
 		int classLevel=getClassLevel(getCurrentClass());
@@ -213,6 +224,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 	
 	public void setClassLevel(CharClass aClass, int level)
 	{
+        if(aClass==null) return;
 		if(myClasses==null)
 		{
 			myClasses=new CharClass[1];
@@ -256,6 +268,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 	
 	public void setCurrentClass(CharClass aClass)
 	{
+        if(aClass==null) return;
 		if(((myClasses==null)||(myLevels==null))
 		||((numClasses()==1)&&(myClasses[0].ID().equals("StdCharClass"))))
 		{

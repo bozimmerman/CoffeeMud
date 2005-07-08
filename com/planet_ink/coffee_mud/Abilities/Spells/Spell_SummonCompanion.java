@@ -75,7 +75,7 @@ public class Spell_SummonCompanion extends Spell
         
         if(success)
         {
-            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> companion in a mighty cry!^?");
+            FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|affectType(auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> companion in a mighty cry!^?");
             if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
             {
                 mob.location().send(mob,msg);

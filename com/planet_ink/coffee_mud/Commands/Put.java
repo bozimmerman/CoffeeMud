@@ -114,6 +114,7 @@ public class Put extends BaseItemParser
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
+        boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
 		do
 		{
 			Environmental putThis=EnglishParser.bestPossibleGold(mob,null,thingToPut);
@@ -121,14 +122,18 @@ public class Put extends BaseItemParser
 			{
 			    if(((Coins)putThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thingToPut))
 			        return false;
-				allFlag=false;
 			}
 			else
 				putThis=mob.fetchCarried(null,thingToPut+addendumStr);
-			if(putThis==null) break;
-			if((Sense.canBeSeenBy(putThis,mob))
-			&&(!V.contains(putThis)))
-				V.addElement(putThis);
+            if((allFlag)&&(!onlyGoldFlag)&&(putThis instanceof Coins))
+                putThis=null;
+            else
+            {
+    			if(putThis==null) break;
+    			if((Sense.canBeSeenBy(putThis,mob))
+    			&&(!V.contains(putThis)))
+    				V.addElement(putThis);
+            }
 			addendumStr="."+(++addendum);
 		}
 		while((allFlag)&&(addendum<=maxToPut));

@@ -21,5 +21,18 @@ import java.util.*;
 */
 public class BaseItemParser extends StdCommand
 {
-    // deprecated by the extension of util.EnglishParser
+    // mostly deprecated by the extension of util.EnglishParser
+    public boolean hasOnlyGoldInInventory(MOB mob)
+    {
+        if(mob==null) return true;
+        for(int i=0;i<mob.inventorySize();i++)
+        {
+            Item I=mob.fetchInventory(i);
+            if((I.amWearingAt(Item.INVENTORY))
+            &&(!(I instanceof Coins)))
+                return false;
+        }
+        return true;
+    }
+    
 }

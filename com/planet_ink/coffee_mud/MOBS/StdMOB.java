@@ -2186,11 +2186,6 @@ public class StdMOB implements MOB
 				}
 				break;
 			case CMMsg.TYP_QUIT:
-				if(mob.isInCombat())
-				{
-					CommonMsgs.flee(mob,"NOWHERE");
-					mob.makePeace();
-				}
 				tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 				break;
 			case CMMsg.TYP_STAND:
