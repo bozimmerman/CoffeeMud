@@ -282,7 +282,10 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.source()!=null)
 		&&(landOwner().length()>0)
 		&&((msg.source().Name().equals(landOwner()))
-			||(msg.source().getLiegeID().equals(landOwner())&&msg.source().isMarriedToLiege()))
+			||(msg.source().getLiegeID().equals(landOwner())&&msg.source().isMarriedToLiege())
+            ||(msg.source().getClanID().equals(landOwner())
+                &&(Clans.getClan(msg.source().getClanID())!=null)
+                &&(Clans.getClan(msg.source().getClanID()).allowedToDoThis(msg.source(),Clan.FUNC_CLANPROPERTYOWNER)>=0)))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(!(msg.target() instanceof Banker))
@@ -295,7 +298,12 @@ public class StdTitle extends StdItem implements LandTitle
 				Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
 				return;
 			}
-			A.setLandOwner(msg.target().Name());
+            if(msg.source().getClanID().equals(landOwner())
+            &&(Clans.getClan(msg.source().getClanID())!=null)
+            &&(Clans.getClan(msg.source().getClanID()).allowedToDoThis(msg.source(),Clan.FUNC_CLANPROPERTYOWNER)>=0))
+                A.setLandOwner(((MOB)msg.target()).getClanID());
+            else
+    			A.setLandOwner(msg.target().Name());
 			A.setBackTaxes(0);
 			updateTitle();
 			updateLot();

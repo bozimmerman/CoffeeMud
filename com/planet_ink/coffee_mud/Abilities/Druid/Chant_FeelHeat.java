@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -55,30 +56,34 @@ public class Chant_FeelHeat extends Chant
 		if(tickID!=MudHost.TICK_MOB) return false;
 		if((affecting()!=null)&&(affecting() instanceof MOB))
 		{
-			MOB dummy=(MOB)affecting();
-			Room room=dummy.location();
+			MOB M=(MOB)affecting();
+			Room room=M.location();
 			if(room!=null)
 			{
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HEAT_WAVE)
-				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_FIRE)))
+				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
 					int damage=Dice.roll(1,8,0);
-					MUDFight.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
+					MUDFight.postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DUSTSTORM)
-				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_FIRE)))
+				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
 					int damage=Dice.roll(1,16,0);
-					MUDFight.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
+					MUDFight.postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DROUGHT)
-				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_FIRE)))
+				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
 					int damage=Dice.roll(1,8,0);
-					MUDFight.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
+					MUDFight.postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
 				}
+                else
+                    return true;
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                    MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
 			}
 		}
 		return true;

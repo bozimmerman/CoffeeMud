@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -38,7 +39,11 @@ public class Chant_VolcanicChasm extends Chant
 			{
 				MOB M=R.fetchInhabitant(i);
 				if((M!=null)&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
+                {
 					MUDFight.postDamage(invoker(),M,this,Dice.roll(1,M.envStats().level(),1),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_MELTING,"The extreme heat <DAMAGE> <T-NAME>!");
+                    if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                        MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
+                }
 			}
 			for(int i=0;i<R.numItems();i++)
 			{

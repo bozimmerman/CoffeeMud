@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -62,7 +63,11 @@ public class Chant_DeathMoon extends Chant
 			{
 				MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(M!=invoker))
+                {
 					MUDFight.postDamage(invoker,M,this,Dice.roll(1,M.envStats().level(),0),CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The gaze of the death moon <DAMAGE> <T-NAME>!");
+                    if((!M.isInCombat())&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                        MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
+                }
 			}
 		}
 		return true;

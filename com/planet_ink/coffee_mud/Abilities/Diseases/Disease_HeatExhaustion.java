@@ -46,6 +46,7 @@ public class Disease_HeatExhaustion extends Disease
         if((theRoom==null)
         &&(R!=null))
             theRoom=R.getArea().getRandomProperRoom();
+        if(R==theRoom) theRoom=null;
         return theRoom;
     }
     
@@ -57,7 +58,7 @@ public class Disease_HeatExhaustion extends Disease
         &&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
         {
             Room R=room(msg.source().location());
-            if(R==null) return false;
+            if((R==null)||(R==msg.source().location())) return true;
             FullMsg msg2=new FullMsg(msg.source(),R,msg.tool(),
                           msg.sourceCode(),msg.sourceMessage(),
                           msg.targetCode(),msg.targetMessage(),

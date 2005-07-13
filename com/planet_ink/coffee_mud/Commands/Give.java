@@ -68,19 +68,18 @@ public class Give extends BaseItemParser
 		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
         boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
+        Item giveThis=EnglishParser.bestPossibleGold(mob,null,thingToGive);
+        if(giveThis!=null)
+        {
+            if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thingToGive))
+                return false;
+            if(Sense.canBeSeenBy(giveThis,mob))
+                V.addElement(giveThis);
+        }
+        if(V.size()==0)
 		do
 		{
-			Environmental giveThis=EnglishParser.bestPossibleGold(mob,null,thingToGive);
-			if(giveThis!=null)
-			{
-			    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thingToGive))
-			    {
-			        ((Coins)giveThis).putCoinsBack();
-			        return false;
-			    }
-			}
-			else
-				giveThis=mob.fetchCarried(null,thingToGive+addendumStr);
+			giveThis=mob.fetchCarried(null,thingToGive+addendumStr);
 			if((giveThis==null)
 			&&(V.size()==0)
 			&&(addendumStr.length()==0)
@@ -104,7 +103,7 @@ public class Give extends BaseItemParser
 					}
 				}
 			}
-            if((allFlag)&&(!onlyGoldFlag)&&(giveThis instanceof Coins))
+            if((allFlag)&&(!onlyGoldFlag)&&(giveThis instanceof Coins)&&(thingToGive.equalsIgnoreCase("all")))
                 giveThis=null;
             else
             {
@@ -121,7 +120,7 @@ public class Give extends BaseItemParser
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			Environmental giveThis=(Environmental)V.elementAt(i);
+			giveThis=(Item)V.elementAt(i);
 			FullMsg newMsg=new FullMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);

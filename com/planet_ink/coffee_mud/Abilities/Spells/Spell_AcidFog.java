@@ -39,14 +39,16 @@ public class Spell_AcidFog extends Spell
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB vic=(MOB)affected;
-			if(vic.location()!=castingLocation)
+			MOB M=(MOB)affected;
+			if(M.location()!=castingLocation)
 				unInvoke();
 			else
-			if((!vic.amDead())&&(vic.location()!=null))
+			if((!M.amDead())&&(M.location()!=null))
 			{
-				int damage=vic.envStats().level();
-				MUDFight.postDamage(invoker,vic,this,Dice.roll(1,damage,0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
+				int damage=M.envStats().level();
+				MUDFight.postDamage(invoker,M,this,Dice.roll(1,damage,0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                    MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
 			}
 		}
 		return super.tick(ticking,tickID);

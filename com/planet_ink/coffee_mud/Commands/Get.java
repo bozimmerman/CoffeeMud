@@ -69,41 +69,6 @@ public class Get extends BaseItemParser
 		return true;
 	}
 
-	protected Environmental unbundle(Item I)
-	{
-		if((I instanceof EnvResource)
-		&&(I.container()==null)
-		&&(!Sense.isOnFire(I))
-		&&(!Sense.enchanted(I)))
-		{
-		    Ability rott=I.fetchEffect("Poison_Rotten");
-			if(I.baseEnvStats().weight()>1)
-			{
-			    Environmental owner=I.owner();
-				I.baseEnvStats().setWeight(I.baseEnvStats().weight());
-				I.destroy();
-				Environmental E=null;
-				for(int x=0;x<I.baseEnvStats().weight();x++)
-				{
-					E=CoffeeUtensils.makeResource(I.material(),-1,true);
-					if(E instanceof Item)
-					{
-					    if((E instanceof Food)&&(I instanceof Food))
-					        ((Food)E).setDecayTime(((Food)I).decayTime());
-					    if(rott!=null)
-					        E.addNonUninvokableEffect((Ability)rott.copyOf());
-					    if(owner instanceof Room)
-							((Room)owner).addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
-					    else
-					    if(owner instanceof MOB)
-					        ((MOB)owner).addInventory((Item)E);
-					}
-				}
-				return E;
-			}
-		}
-		return null;
-	}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -175,7 +140,7 @@ public class Get extends BaseItemParser
 				    
 				    Environmental toWhat=null;
 				    if(fromWhat instanceof Item)
-					    toWhat=unbundle((Item)fromWhat);
+					    toWhat=CoffeeUtensils.unbundle((Item)fromWhat);
 				    if(toWhat==null)
 				    {
 				        mob.tell("You can't get anything from "+fromWhat.name()+".");

@@ -358,6 +358,19 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		MOB shopperM=msg.source();
 		MOB merchantM=(MOB)affected;
+        if((msg.source()==merchantM)
+        &&(msg.targetMinor()==CMMsg.TYP_GET)
+        &&(msg.target() instanceof Item))
+        {
+            Item newitem=(Item)msg.target();
+            if((newitem.numberOfItems()>(merchantM.maxItems()-(merchantM.inventorySize()+inventorySize.size())))
+            &&(!merchantM.isMine(this)))
+            {
+                merchantM.tell("You can't carry that many items.");
+                return false;
+            }
+        }
+        
 		if(msg.amITarget(merchantM))
 		{
 			switch(msg.targetMinor())

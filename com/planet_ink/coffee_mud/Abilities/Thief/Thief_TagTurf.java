@@ -38,6 +38,7 @@ public class Thief_TagTurf extends ThiefSkill
 			return false;
 
 		if((!msg.source().Name().equals(text()))
+        &&((msg.source().getClanID().length()==0)||(!msg.source().getClanID().equals(text())))
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.THIEF_SKILL))
 		{
@@ -55,7 +56,8 @@ public class Thief_TagTurf extends ThiefSkill
 		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 		&&((Sense.canSeeHidden(msg.source()))||(msg.source().Name().equals(text()))))
 		{
-			if(msg.source().Name().equals(text()))
+            if((msg.source().Name().equals(text()))
+            ||((msg.source().getClanID().length()>0)&&(msg.source().getClanID().equals(text()))))
 				msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),null,
 										CMMsg.MSG_OK_VISUAL,"This is your turf.",
 										CMMsg.NO_EFFECT,null,
@@ -76,10 +78,22 @@ public class Thief_TagTurf extends ThiefSkill
 		Room target=mob.location();
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof Room))
 			target=(Room)givenTarget;
-		if(target.fetchEffect(ID())!=null)
+        Ability A=target.fetchEffect(ID());
+		if(A!=null)
 		{
-			mob.tell("This place has already been tagged.");
-			return false;
+            if((A.text().equals(mob.Name())||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))))
+            &&(Util.combine(commands,0).equalsIgnoreCase("UNTAG")))
+            {
+                A.unInvoke();
+                target.delEffect(A);
+                mob.tell("This place has been untagged.");
+                return true;
+            }
+            else
+            {
+    			mob.tell("This place has already been tagged.");
+    			return false;
+            }
 		}
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD)
@@ -107,7 +121,10 @@ public class Thief_TagTurf extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			setMiscText(mob.Name());
+            if(mob.getClanID().length()>0)
+    			setMiscText(mob.Name());
+            else
+                setMiscText(mob.getClanID());
 			beneficialAffect(mob,target,asLevel,(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)));
 		}
 		return success;

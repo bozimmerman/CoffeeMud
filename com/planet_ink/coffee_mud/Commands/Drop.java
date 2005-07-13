@@ -83,16 +83,18 @@ public class Drop extends BaseItemParser
 		int addendum=1;
 		String addendumStr="";
         boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
+        Item dropThis=EnglishParser.bestPossibleGold(mob,null,whatToDrop);
+        if(dropThis!=null)
+        {
+            if(((Coins)dropThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,whatToDrop+addendumStr))
+                return false;
+            if(Sense.canBeSeenBy(dropThis,mob))
+                V.addElement(dropThis);
+        }
+        if(V.size()==0)
 		do
 		{
-            Item dropThis=EnglishParser.bestPossibleGold(mob,null,whatToDrop+addendumStr);
-            if(dropThis!=null)
-            {
-                if(((Coins)dropThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,whatToDrop+addendumStr))
-                    return false;
-            }
-            else
-                dropThis=mob.fetchCarried(container,whatToDrop+addendumStr);
+            dropThis=mob.fetchCarried(container,whatToDrop+addendumStr);
 			if((dropThis==null)
 			&&(container==null)
 			&&(V.size()==0)
@@ -117,7 +119,7 @@ public class Drop extends BaseItemParser
 					}
 				}
 			}
-            if((allFlag)&&(!onlyGoldFlag)&&(dropThis instanceof Coins))
+            if((allFlag)&&(!onlyGoldFlag)&&(dropThis instanceof Coins)&&(whatToDrop.equalsIgnoreCase("all")))
                 dropThis=null;
             else
             {

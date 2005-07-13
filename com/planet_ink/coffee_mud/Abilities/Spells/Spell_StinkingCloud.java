@@ -40,19 +40,21 @@ public class Spell_StinkingCloud extends Spell
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB vic=(MOB)affected;
-			if((vic.location()!=castingLocation)||(vic.amDead()))
+			MOB M=(MOB)affected;
+			if((M.location()!=castingLocation)||(M.amDead()))
 				unInvoke();
 			else
-			if((!vic.amDead())&&(vic.location()!=null)&&(Sense.canSmell(vic)))
+			if((!M.amDead())&&(M.location()!=null)&&(Sense.canSmell(M)))
 			{
-				if((vic.curState().getHunger()<=0))
-					MUDFight.postDamage(invoker,vic,this,vic.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) in the stinking cloud.");
+				if((M.curState().getHunger()<=0))
+					MUDFight.postDamage(invoker,M,this,M.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) in the stinking cloud.");
 				else
 				{
-					MUDFight.postDamage(invoker,vic,this,vic.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
-					vic.curState().adjHunger(-500,vic.maxState().maxHunger(vic.baseWeight()));
+					MUDFight.postDamage(invoker,M,this,M.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
+					M.curState().adjHunger(-500,M.maxState().maxHunger(M.baseWeight()));
 				}
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                    MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
 			}
 			else
 				unInvoke();

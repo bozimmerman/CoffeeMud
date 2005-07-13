@@ -60,7 +60,7 @@ public class Prayer_Sanctum extends Prayer
 					&&(!mob.isInCombat()))
 					{
 						String t="No fighting!";
-						if(text().length()>0)
+						if(text().indexOf(";")>0)
 						{
 							Vector V=Util.parseSemicolons(text(),true);
 							t=(String)V.elementAt(Dice.roll(1,V.size(),-1));
@@ -73,7 +73,7 @@ public class Prayer_Sanctum extends Prayer
 				else
 				{
 					String t="You feel too peaceful here.";
-					if(text().length()>0)
+                    if(text().indexOf(";")>0)
 					{
 						Vector V=Util.parseSemicolons(text(),true);
 						t=(String)V.elementAt(Dice.roll(1,V.size(),-1));

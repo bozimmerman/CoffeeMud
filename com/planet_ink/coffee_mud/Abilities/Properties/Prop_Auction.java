@@ -119,6 +119,11 @@ public class Prop_Auction extends Property
                                     BeanCounter.addMoney(M,currency,bid);
     								M.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to you as payment from "+highBidder.name()+".  The goods have also been transferred in exchange.");
     								highBidder.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to "+M.name()+".  You should have received the auctioned goods.  This auction is complete.");
+                                    if(auctioning instanceof LandTitle)
+                                    {
+                                        FullMsg msg=new FullMsg(M,highBidder,auctioning,CMMsg.MASK_GENERAL|CMMsg.TYP_GIVE,null);
+                                        auctioning.executeMsg(highBidder,msg);
+                                    }
                                 }
                                 else
                                 {

@@ -115,17 +115,19 @@ public class Put extends BaseItemParser
 		if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
         boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
+        Item putThis=EnglishParser.bestPossibleGold(mob,null,thingToPut);
+        if(putThis!=null)
+        {
+            if(((Coins)putThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thingToPut))
+                return false;
+            if(Sense.canBeSeenBy(putThis,mob))
+                V.addElement(putThis);
+        }
+        if(V.size()==0)
 		do
 		{
-			Environmental putThis=EnglishParser.bestPossibleGold(mob,null,thingToPut);
-			if(putThis!=null)
-			{
-			    if(((Coins)putThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thingToPut))
-			        return false;
-			}
-			else
-				putThis=mob.fetchCarried(null,thingToPut+addendumStr);
-            if((allFlag)&&(!onlyGoldFlag)&&(putThis instanceof Coins))
+			putThis=mob.fetchCarried(null,thingToPut+addendumStr);
+            if((allFlag)&&(!onlyGoldFlag)&&(putThis instanceof Coins)&&(thingToPut.equalsIgnoreCase("ALL")))
                 putThis=null;
             else
             {
@@ -146,7 +148,7 @@ public class Put extends BaseItemParser
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			Environmental putThis=(Environmental)V.elementAt(i);
+			putThis=(Item)V.elementAt(i);
 			String putWord=(putThis instanceof Rideable)?((Rideable)putThis).putString(mob):"in";
 			FullMsg putMsg=new FullMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,"<S-NAME> put(s) <O-NAME> "+putWord+" <T-NAME>.");
 			if(mob.location().okMessage(mob,putMsg))

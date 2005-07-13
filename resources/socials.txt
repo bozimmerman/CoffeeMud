@@ -7,6 +7,7 @@ ss	SNICKER	You snicker.	<S-NAME> snickers.
 ss	SNARL <T-NAME>	You snarl at <T-HIM-HER>.	<S-NAME> snarls at <T-NAMESELF>.	<S-NAME> snarls at you, for some reason.	No need to snarl!
 mo	OOGLE	You start to oogle at everyone in the room.	<S-NAME> oogles at everyone in the room.		
 mo	WONDER SELF	You wonder about yourself and your purpose here.	A blank stare crosses <S-NAME>'s face.  What could <S-HE-SHE> be wondering about?		
+m 	BATHE	You bathe yourself.	<s-name> bathes <s-him-herself>.		
 mo	CONTEMPLATE	You bite your lip contemplatively.	<S-NAME> bites <S-HIS-HER> lip contemplatively.		
 sv	YEEHAW	You mount your pony(?) and shout YEEEEEEEHAAAAAAAW!	<S-NAME> bounces up and down screaming *YEEEEEEHAAAAAAW!*		
 oo	PILLOW	You raise a pillow over your head and look around savagely.	<S-NAME> raises a pillow over <S-HIS-HER> head and looks around savagely.		
@@ -171,6 +172,7 @@ mo	WRIST	You hold out out a wrist for a slap.	<S-NAME> holds out a wrist for a s
 oo	BOW <T-NAME>	You bow before <T-HIM-HER>.	<S-NAME> bows before <T-NAMESELF>.	<S-NAME> bows before you.	Who's that?
 oo	AWE <T-NAME>	You stand in awe of <T-NAME>, like WOW, dude!	<S-NAME> stands in awe of <T-NAME>.	<S-NAME> stands in awe of you.	You must be imagining things, they aren`t here.
 mo	MATE SELF	You make passionate love to yourself.	You don't want to know what <S-NAME> is doing right now.		
+m 	BATHE SELF	You scrub yourself clean while humming `Rubber ducky" quietly.	<s-name> hums `Rubber ducky" softly to <s-his-herself>.		
 mo	LICK <T-NAME>	You delicately lick <T-YOUPOSS> jawline.	<S-NAME> delicately licks <T-YOUPOSS> jawline.	<S-NAME> delicately licks your jawline.	Lick away, that person is not here!!
 ov	CRAMP <T-NAME>	You hammerlock <T-HIM-HER>, screaming, "AAAAARRRRRGH!! I HAVE A CRAMP!!!"	<S-NAME> hammerlocks <T-NAMESELF>, screaming, "AAAAARRRRRGH!! I HAVE A CRAMP!!!".	<S-NAME> hammerlocks you, screaming "AAAAARRRRRGH!! I HAVE A CRAMP!!!"	Suffering as you are, you didn't see that person slip out.
 mo	NIBBLE	Nibble on who ?			
@@ -426,6 +428,7 @@ oo	BEARHUG SELF	You vainly clutch yourself in a bearhug for consolation.	<S-NAME
 mo	GROVEL <T-NAME>	You grovel before <T-HIM-HER>	<S-NAME> grovels in the dirt before <T-NAMESELF>.	<S-NAME> grovels in the dirt before you.	Who?
 mo	BLUSH <T-NAME>	You get flustered upon seeing <T-HIM-HER>.	<S-NAME> blushes as <S-HE-SHE> sees <T-NAMESELF> here.	<S-NAME> blushes as <S-HE-SHE> sees you here.  Such an effect on people!	You blush as you notice that person isn't here.
 ww	PINCH	You say, 'A pinch of this, and a dab of that.'	<S-NAME> says, 'A pinch of this and a dab of that.'		
+mv	BATHE <T-NAME>	You wash <t-name> gently.	<s-name> gently bathes <t-name>.	<s-name> gently bathes you. Mmmm..this is the life.	Bathe who?
 mo	BITE SELF	You bite your knuckle in anguish.	<S-NAME> bites <S-HIS-HER> knuckle in anguish...the tragedy!		
 mt	NOOGIE <T-NAME>	You grab <T-NAMESELF>, get <T-HIM-HER> in a head lock and NOOGIE <T-HIM-HER>!	<S-NAME> grabs <T-NAMESELF> in a head lock and NOOGIES <T-HIM-HER>... ARGH!!!	Oh NO, <S-NAME> grabs you, throws you in a head lock and NOOGIES you!	That person has gone off to other lands...
 ov	PIE <T-NAME>	You toss a pie at <T-NAMESELF> and hit <T-HIM-HER> right in the FACE!	<S-NAME> tosses a pie at <T-NAMESELF> and hits <T-HIM-HER> right in the FACE!	<S-NAME> tossed a pie in your face... and now you are all covered in GOO!	That person isn't here...

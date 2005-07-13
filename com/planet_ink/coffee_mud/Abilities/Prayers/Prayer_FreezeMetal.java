@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -87,6 +88,8 @@ public class Prayer_FreezeMetal extends Prayer
 				MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 			}
 		}
+        if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,mob)))
+            MUDFight.postAttack(mob,invoker,mob.fetchWieldedItem());
 		return true;
 	}
 

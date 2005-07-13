@@ -201,6 +201,13 @@ public class Farming extends GatheringSkill
 			commonTell(mob,"You'll need to have some "+foundShortName+" to seed from on the ground first.");
 			return false;
 		}
+        mine=(Item)CoffeeUtensils.unbundle((Item)mine);
+        if(mine==null)
+        {
+            commonTell(mob,mine.name()+" is not suitable for use as a seed crop.");
+            return false;
+        }
+        
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -219,6 +226,7 @@ public class Farming extends GatheringSkill
 				found.text();
 			}
 		}
+        
 		mine.destroy();
 		int duration=45-mob.envStats().level();
 		if(duration<25) duration=25;

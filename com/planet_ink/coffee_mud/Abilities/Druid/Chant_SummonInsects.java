@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -39,12 +40,16 @@ public class Chant_SummonInsects extends Chant
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB vic=(MOB)affected;
-			if(vic.location()!=castingLocation)
+			MOB M=(MOB)affected;
+			if(M.location()!=castingLocation)
 				unInvoke();
 			else
-			if((!vic.amDead())&&(vic.location()!=null))
-				MUDFight.postDamage(invoker,vic,this,Dice.roll(1,3,0),CMMsg.TYP_OK_VISUAL,-1,"<T-NAME> <T-IS-ARE> stung by the swarm!");
+			if((!M.amDead())&&(M.location()!=null))
+            {
+				MUDFight.postDamage(invoker,M,this,Dice.roll(1,3,0),CMMsg.TYP_OK_VISUAL,-1,"<T-NAME> <T-IS-ARE> stung by the swarm!");
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                    MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
+            }
 		}
 		return super.tick(ticking,tickID);
 	}

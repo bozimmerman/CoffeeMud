@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -42,14 +43,16 @@ public class Chant_FeelElectricity extends Chant
 		if(tickID!=MudHost.TICK_MOB) return false;
 		if((affecting()!=null)&&(affecting() instanceof MOB))
 		{
-			MOB dummy=(MOB)affecting();
-			Room room=dummy.location();
+			MOB M=(MOB)affecting();
+			Room room=M.location();
 			if((room!=null)
 			&&(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)
-			&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_ELECTRIC)))
+			&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_ELECTRIC)))
 			{
 				int damage=Dice.roll(1,5,0);
-				MUDFight.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The electricity in the air <DAMAGE> <T-NAME>!");
+				MUDFight.postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The electricity in the air <DAMAGE> <T-NAME>!");
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                    MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
 			}
 		}
 		return true;

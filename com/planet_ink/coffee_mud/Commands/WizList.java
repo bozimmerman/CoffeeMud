@@ -36,6 +36,7 @@ public class WizList extends StdCommand
 		head.append("] Archon Character Name^.^?\n\r");
 		mob.tell("^x["+Util.centerPreserve("The Archons of "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME),head.length()-10)+"]^.^?");
 		Vector allUsers=CMClass.DBEngine().getUserList();
+        CharClass C=CMClass.getCharClass("Archon");
 		for(int u=0;u<allUsers.size();u++)
 		{
 			Vector U=(Vector)allUsers.elementAt(u);
@@ -43,7 +44,10 @@ public class WizList extends StdCommand
 			{
 				head.append("[");
 				head.append(Util.padRight((String)U.elementAt(2),8)+" ");
-				head.append(Util.padRight((String)U.elementAt(3),4)+" ");
+                if((C==null)||(!C.leveless()))
+    				head.append(Util.padRight((String)U.elementAt(3),4)+" ");
+                else
+                    head.append(Util.padRight("    ",4)+" ");
 				head.append(Util.padRight(IQCalendar.d2String(Util.s_long((String)U.elementAt(5))),18)+" ");
 				head.append("] "+Util.padRight((String)U.elementAt(0),25));
 				head.append("\n\r");

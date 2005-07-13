@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -86,9 +87,13 @@ public class Spell_FlamingEnsnarement extends Spell
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB vic=(MOB)affected;
-			if((!vic.amDead())&&(vic.location()!=null))
-				MUDFight.postDamage(invoker,vic,this,Dice.roll(2,4,0),CMMsg.TYP_FIRE,-1,"<T-NAME> get(s) singed from <T-HIS-HER> flaming ensnarement!");
+			MOB M=(MOB)affected;
+			if((!M.amDead())&&(M.location()!=null))
+            {
+				MUDFight.postDamage(invoker,M,this,Dice.roll(2,4,0),CMMsg.TYP_FIRE,-1,"<T-NAME> get(s) singed from <T-HIS-HER> flaming ensnarement!");
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                    MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
+            }
 		}
 		return super.tick(ticking,tickID);
 	}
