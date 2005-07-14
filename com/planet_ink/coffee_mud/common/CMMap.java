@@ -31,6 +31,7 @@ public class CMMap
 	protected static Hashtable bodyRooms=new Hashtable();
 	protected static final int QUADRANT_WIDTH=10;
 	protected static Vector space=new Vector();
+    protected static Hashtable globalHandlers=new Hashtable();
 
 	public static void theWorldChanged()
 	{
@@ -96,6 +97,28 @@ public class CMMap
 		}
 		return A;
 	}
+
+    public static void addGlobalHandler(Environmental E, int minorCode)
+    {
+        Vector V=(Vector)globalHandlers.get(new Integer(minorCode));
+        if(V==null)
+        {
+            V=new Vector();
+            globalHandlers.put(new Integer(minorCode),V);
+        }
+        if(!V.contains(E))
+            V.add(E);
+    }
+    
+    public static void delGlobalHandler(Environmental E, int minorCode)
+    {
+        Vector V=(Vector)globalHandlers.get(new Integer(minorCode));
+        if(V==null) return;
+        V.removeElement(E);
+    }
+    
+    
+    
     
     public static MOB god(Room R){
         MOB everywhereMOB=CMClass.getMOB("StdMOB");
@@ -235,7 +258,41 @@ public class CMMap
 				roomsList.removeElement(oneToDel);
 	    }
 	}
-	
+
+    
+    public static boolean sendGlobalMessage(MOB host, int minorCode, CMMsg msg)
+    {
+        Vector V=(Vector)globalHandlers.get(new Integer(minorCode));
+        if(V==null) return true;
+        try{
+            Environmental E=null;
+            Room R=null;
+            for(int v=V.size()-1;v>=0;v--)
+            {
+                E=(Environmental)V.elementAt(v);
+                if(!Sense.isInTheGame(E,true))
+                    CMMap.delGlobalHandler(E,minorCode);
+                else
+                {
+                    R=CoffeeUtensils.roomLocation(E);
+                    if(R!=null)
+                    {
+                        if(!R.okMessage(host,msg))
+                            return false;
+                    }
+                }
+            }
+            for(int v=V.size()-1;v>=0;v--)
+            {
+                E=(Environmental)V.elementAt(v);
+                R=CoffeeUtensils.roomLocation(E);
+                if(R!=null)
+                    R.send(host,msg);
+            }
+        }
+        catch(ArrayIndexOutOfBoundsException x){}
+        return true;
+    }
 
 	public static String getExtendedRoomID(Room R)
 	{
@@ -614,6 +671,7 @@ public class CMMap
 		bodyRooms=new Hashtable();
 		startRooms=new Hashtable();
 		deathRooms=new Hashtable();
+        globalHandlers.clear();
 	}
 
 	public static class CrossExit

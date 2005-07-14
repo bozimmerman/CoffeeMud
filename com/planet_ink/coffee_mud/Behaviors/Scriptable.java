@@ -37,6 +37,7 @@ public class Scriptable extends StdBehavior
 	private Hashtable lastTimeProgsDone=new Hashtable();
 	private Hashtable lastDayProgsDone=new Hashtable();
 	private long tickStatus=Tickable.STATUS_NOT;
+    
 	public long getTickStatus()
 	{
 	    Tickable T=altStatusTickable;
