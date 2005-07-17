@@ -21,10 +21,10 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_CureExhaustion extends Prayer
+public class Prayer_CureFatigue extends Prayer
 {
-    public String ID() { return "Prayer_CureExhaustion"; }
-    public String name(){ return "Cure Exhaustion";}
+    public String ID() { return "Prayer_CureFatigue"; }
+    public String name(){ return "Cure Fatigue";}
     public int quality(){ return BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY;}
     protected long minCastWaitTime(){return MudHost.TICK_TIME/2;}
@@ -45,14 +45,14 @@ public class Prayer_CureExhaustion extends Prayer
             // and add it to the affects list of the
             // affected MOB.  Then tell everyone else
             // what happened.
-            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A soft white glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a moderate invigorating touch to <T-NAMESELF>.^?");
+            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A soft white glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a light invigorating touch to <T-NAMESELF>.^?");
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);
-                int healing=Dice.roll(5,adjustedLevel(mob,asLevel),20);
-                target.curState().setFatigue(0);
+                int healing=Dice.roll(3,adjustedLevel(mob,asLevel),10);
+                target.curState().adjFatigue(-(target.curState().getFatigue()/2),target.maxState());
                 target.curState().adjMovement(healing,target.maxState());
-                target.tell("You feel pretty invigorated!");
+                target.tell("You feel slightly more invigorated!");
             }
         }
         else

@@ -28,7 +28,7 @@ public class Prayer_CauseExhaustion extends Prayer
     public String name(){ return "Cause Exhaustion";}
     public int quality(){ return MALICIOUS;}
     public long flags(){return Ability.FLAG_UNHOLY;}
-
+    
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         MOB target=this.getTarget(mob,commands,givenTarget);

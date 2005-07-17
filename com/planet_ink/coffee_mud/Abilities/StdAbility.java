@@ -66,7 +66,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	protected boolean canBeUninvoked=true;
 	protected boolean unInvoked=false;
 	protected int tickDown=-1;
-	protected long lastProfHelp=0;
+	protected long lastCastHelp=0;
 
 	public StdAbility()
 	{
@@ -100,6 +100,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	public int abilityCode(){return 0;}
 	public void setAbilityCode(int newCode){}
 	public Vector externalFiles(){return null;}
+    protected long minCastWaitTime(){return 0;}
 
 	// ** For most abilities, the following stuff actually matters */
 	public void setMiscText(String newMiscText)	{ miscText=newMiscText;}
@@ -619,7 +620,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
         ||(A.isBorrowed(mob))) return;
 
 		if((System.currentTimeMillis()
-		-((StdAbility)A).lastProfHelp)<60000)
+		-((StdAbility)A).lastCastHelp)<60000)
 			return;
         
         if(!A.appropriateToMyFactions(mob))
@@ -638,7 +639,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 						setProfficiency(profficiency()+1);
 					if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
 						mob.tell("You become better at "+A.name()+".");
-					((StdAbility)A).lastProfHelp=System.currentTimeMillis();
+					((StdAbility)A).lastCastHelp=System.currentTimeMillis();
 			    }
 			}
 		}
@@ -703,6 +704,16 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 				return false;
 			}
 			mob.curState().adjHitPoints(-consumed[2],mob.maxState());
+            
+            if((minCastWaitTime()>0)&&(lastCastHelp>0))
+            {
+                if((System.currentTimeMillis()-lastCastHelp)<minCastWaitTime())
+                {
+                    mob.tell("You must wait a short while before doing that again.");
+                    return false;
+                }
+            }
+            
 			helpProfficiency(mob);
 		}
 		else

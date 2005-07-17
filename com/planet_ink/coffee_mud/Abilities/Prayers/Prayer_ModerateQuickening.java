@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -21,12 +22,12 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_CureExhaustion extends Prayer
+public class Prayer_ModerateQuickening extends Prayer
 {
-    public String ID() { return "Prayer_CureExhaustion"; }
-    public String name(){ return "Cure Exhaustion";}
+    public String ID() { return "Prayer_ModerateQuickening"; }
+    public String name(){ return "Moderate Quickening";}
     public int quality(){ return BENEFICIAL_OTHERS;}
-    public long flags(){return Ability.FLAG_HOLY;}
+    public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
     protected long minCastWaitTime(){return MudHost.TICK_TIME/2;}
 
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -45,14 +46,13 @@ public class Prayer_CureExhaustion extends Prayer
             // and add it to the affects list of the
             // affected MOB.  Then tell everyone else
             // what happened.
-            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A soft white glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a moderate invigorating touch to <T-NAMESELF>.^?");
+            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A soft yellow glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a moderate quickening touch to <T-NAMESELF>.^?");
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);
                 int healing=Dice.roll(5,adjustedLevel(mob,asLevel),20);
-                target.curState().setFatigue(0);
-                target.curState().adjMovement(healing,target.maxState());
-                target.tell("You feel pretty invigorated!");
+                target.curState().adjMana(healing,target.maxState());
+                target.tell("You feel moderately restored!");
             }
         }
         else

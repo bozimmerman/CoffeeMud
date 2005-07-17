@@ -27,6 +27,7 @@ public class Prayer_Heal extends Prayer
 	public String name(){ return "Heal";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
+    protected long minCastWaitTime(){return MudHost.TICK_TIME/2;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

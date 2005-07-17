@@ -31,8 +31,8 @@ public class Paladin_HealingHands extends StdAbility
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.SKILL;}
-	protected long lastDone=0;
 	public long flags(){return Ability.FLAG_HEALING;}
+    protected long minCastWaitTime(){return MudHost.TICK_TIME;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -51,14 +51,6 @@ public class Paladin_HealingHands extends StdAbility
 			mob.tell("You don't have enough mana to do that.");
 			return false;
 		}
-
-		long now=System.currentTimeMillis();
-		if((now-lastDone)<1000)
-		{
-			mob.tell("You need a second to regather your strength.");
-			return false;
-		}
-		lastDone=now;
 
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -82,6 +74,7 @@ public class Paladin_HealingHands extends StdAbility
 				mob.curState().adjMana(manaLost,mob.maxState());
 				MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel a little better!");
+                lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else
