@@ -22,10 +22,10 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_MajorQuickening extends Prayer
+public class Prayer_MajorSalubrity extends Prayer
 {
-    public String ID() { return "Prayer_MajorQuickening"; }
-    public String name(){ return "Major Quickening";}
+    public String ID() { return "Prayer_MajorSalubrity"; }
+    public String name(){ return "Major Salubrity";}
     public int quality(){ return BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
     protected long minCastWaitTime(){return MudHost.TICK_TIME/2;}
@@ -46,7 +46,7 @@ public class Prayer_MajorQuickening extends Prayer
             // and add it to the affects list of the
             // affected MOB.  Then tell everyone else
             // what happened.
-            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A soft yellow glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a strong quickening touch to <T-NAMESELF>.^?");
+            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A soft yellow glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a strong touch of salubrity to <T-NAMESELF>.^?");
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);

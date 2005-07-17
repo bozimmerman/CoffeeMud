@@ -1152,7 +1152,7 @@ public class Import extends StdCommand
 		case 114: return "Undead_ColdTouch";
 		case 115: return ""; // spiritual wrath
 		case 120: return "Spell_Cloudkill";
-		case 121: return ""; // quickening
+		case 121: return "Prayer_MajorSalubrity"; // quickening
 		case 122: return "Chant_SummonElemental"; // summon elemental
 		case 124: return ""; // uplift
 		case 200: return "Acidbreath";

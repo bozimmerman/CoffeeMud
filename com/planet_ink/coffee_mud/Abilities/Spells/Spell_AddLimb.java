@@ -32,6 +32,7 @@ public class Spell_AddLimb extends Spell
 	public Item itemRef=null;
 	public long wornRef=0;
 	public int oldMsg=0;
+    private boolean noloop=false;
 
 	public void unInvoke()
 	{
@@ -40,12 +41,20 @@ public class Spell_AddLimb extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked())&&(mob!=null))
-		{
-			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> extra limb fades away.");
-			mob.confirmWearability();
-		}
+        try
+        {
+    		if((canBeUninvoked())&&(mob!=null)&&(!noloop))
+    		{
+                noloop=true;
+    			if((mob.location()!=null)&&(!mob.amDead()))
+    				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> extra limb fades away.");
+    			mob.confirmWearability();
+    		}
+        }
+        finally
+        {
+            noloop=false;
+        }
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
